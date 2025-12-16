@@ -11,8 +11,6 @@ import { Tidsperioden, Uttaksdagen, getValidTidsperiode, isValidDate } from '@na
 import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
-import styles from './mor-oppstartinformasjon.module.css';
-
 interface Props {
     oppstartDato: string | undefined;
 }
@@ -106,9 +104,13 @@ export const MorOppstartInformasjon = ({ oppstartDato }: Props) => {
         : intl.formatMessage({ id: 'termindato' });
 
     return (
-        <div className={styles.morOppstartinformasjon}>
+        <div
+            className={
+                'bg-ax-accent-200 mt-[3.2rem] -ml-[13rem] flex h-[3.5rem] w-[20rem] flex-col justify-center p-2 max-[768px]:mt-0 max-[768px]:ml-0'
+            }
+        >
             {starterPåUttaksdagEtterFamiliehendelse && (
-                <BodyShort size="small" className={styles.bold}>
+                <BodyShort size="small" className="font-bold">
                     <FormattedMessage
                         id="fordeling.oppstartValg.førsteUkedagEtterTerminFødsel"
                         values={{ fødselEllerTerminDato }}
@@ -116,7 +118,7 @@ export const MorOppstartInformasjon = ({ oppstartDato }: Props) => {
                 </BodyShort>
             )}
             {starterFørFamiliehendelse && (
-                <BodyShort size="small" className={styles.bold}>
+                <BodyShort size="small" className="font-bold">
                     <FormattedMessage
                         id="fordeling.oppstartValg.førFødselEllerTerminInfo"
                         values={{ varighetString, fødselEllerTermin }}
@@ -124,7 +126,7 @@ export const MorOppstartInformasjon = ({ oppstartDato }: Props) => {
                 </BodyShort>
             )}
             {starterPåFamiliehendelse && (
-                <BodyShort size="small" className={styles.bold}>
+                <BodyShort size="small" className="font-bold">
                     <FormattedMessage
                         id="fordeling.oppstartValg.påFødselEllerTermin"
                         values={{ fødselEllerTerminDato }}

@@ -11,6 +11,13 @@ import * as stories from './AppContainer.stories';
 const { SøkerErMann } = composeStories(stories);
 
 describe('<AppContainer>', () => {
+    beforeEach(() => {
+        vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
+            setAvailableLanguages: vi.fn(),
+            onLanguageSelect: vi.fn(),
+        }));
+    });
+
     it(
         'skal gå raskeste vei gjennom applikasjonen som far',
         mswWrapper(async ({ setHandlers }) => {
@@ -49,9 +56,9 @@ describe('<AppContainer>', () => {
             await waitFor(() => expect(screen.getAllByText('Arbeidsforhold og inntekt')).toHaveLength(2));
             expect(screen.getByText('Steg 4 av 9')).toBeInTheDocument();
             const neiRadios = screen.getAllByText('Nei');
-            await userEvent.click(neiRadios[0]);
-            await userEvent.click(neiRadios[1]);
-            await userEvent.click(neiRadios[2]);
+            await userEvent.click(neiRadios[0]!);
+            await userEvent.click(neiRadios[1]!);
+            await userEvent.click(neiRadios[2]!);
             await userEvent.click(screen.getByText('Neste steg'));
 
             await waitFor(() => expect(screen.getAllByText('Den andre forelderen')).toHaveLength(2));

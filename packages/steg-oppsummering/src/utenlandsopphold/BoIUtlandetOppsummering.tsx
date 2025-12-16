@@ -29,9 +29,6 @@ export const BoIUtlandetOppsummering = ({
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="BoIUtlandetOppsummeringspunkt.tittel" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id={'EndreSvar'} />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 <FormSummary.Answer>
@@ -93,6 +90,11 @@ export const BoIUtlandetOppsummering = ({
                     </FormSummary.Answer>
                 </FormSummary.Answers>
             )}
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 };

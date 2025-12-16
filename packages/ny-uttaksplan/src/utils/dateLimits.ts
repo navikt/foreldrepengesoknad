@@ -1,14 +1,14 @@
 import dayjs from 'dayjs';
 
-import { ISO_DATE_FORMAT, StønadskontoType } from '@navikt/fp-constants';
-import { UtsettelseÅrsakType } from '@navikt/fp-types';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { KontoTypeUttak } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { PeriodeHullType } from '../types/Planperiode';
 
 interface MinDateProps {
-    årsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
-    kontoType?: StønadskontoType;
+    årsak?: 'LOVBESTEMT_FERIE' | PeriodeHullType.PERIODE_UTEN_UTTAK;
+    kontoType?: KontoTypeUttak;
     familiehendelsedato: string;
     gjelderAdopsjon: boolean;
 }
@@ -16,7 +16,7 @@ interface MinDateProps {
 export const getMinDate = ({ årsak, kontoType, familiehendelsedato, gjelderAdopsjon }: MinDateProps) => {
     const ukedagFamiliehendelsedato = UttaksdagenString(familiehendelsedato).denneEllerNeste();
 
-    if (årsak === UtsettelseÅrsakType.Ferie) {
+    if (årsak === 'LOVBESTEMT_FERIE') {
         if (gjelderAdopsjon) {
             return UttaksdagenString(ukedagFamiliehendelsedato).denneEllerNeste();
         }
@@ -24,24 +24,29 @@ export const getMinDate = ({ årsak, kontoType, familiehendelsedato, gjelderAdop
         return UttaksdagenString(ukedagFamiliehendelsedato).leggTil(30);
     }
 
-    if (kontoType === StønadskontoType.ForeldrepengerFørFødsel) {
+    if (kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
         return UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(15);
     }
 
-    if (kontoType === StønadskontoType.Fellesperiode) {
+    if (kontoType === 'FELLESPERIODE') {
         return UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(60);
+    }
+
+    if (kontoType === 'FEDREKVOTE' && !gjelderAdopsjon) {
+        return UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(10);
     }
 
     return UttaksdagenString(ukedagFamiliehendelsedato).denneEllerNeste();
 };
 
 interface MaxDateProps {
-    kontoType?: StønadskontoType;
+    årsak?: 'LOVBESTEMT_FERIE' | PeriodeHullType.PERIODE_UTEN_UTTAK;
+    kontoType?: KontoTypeUttak;
     familiehendelsedato: string;
 }
 
-export const getMaxDate = ({ kontoType, familiehendelsedato }: MaxDateProps) => {
-    if (kontoType === StønadskontoType.ForeldrepengerFørFødsel) {
+export const getMaxDate = ({ kontoType, familiehendelsedato, årsak }: MaxDateProps) => {
+    if (kontoType === 'FORELDREPENGER_FØR_FØDSEL' && !årsak) {
         return UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige();
     }
 

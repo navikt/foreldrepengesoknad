@@ -2,11 +2,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
 interface Props {
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     harArbeidsforhold: boolean;
 }
 
@@ -18,15 +18,15 @@ export const HarArbeidsforhold = ({ arbeidsforhold, harArbeidsforhold }: Props) 
     }
 
     return (
-        <VStack gap="2">
+        <VStack gap="space-8">
             {arbeidsforhold.map((arbforhold) => (
-                <Box
-                    key={arbforhold.arbeidsgiverId + arbforhold.fom + arbforhold.tom}
+                <Box.New
+                    key={arbforhold.arbeidsgiverId + arbforhold.fom + arbforhold.fom}
                     padding="4"
-                    background="surface-action-subtle"
+                    background="brand-blue-moderate"
                     borderRadius="medium"
                 >
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <HStack justify="space-between">
                             <Heading size="xsmall">
                                 {arbforhold.arbeidsgiverIdType === 'orgnr' || arbforhold.arbeidsgiverNavn ? (
@@ -66,7 +66,7 @@ export const HarArbeidsforhold = ({ arbeidsforhold, harArbeidsforhold }: Props) 
                             />
                         </BodyShort>
                     </VStack>
-                </Box>
+                </Box.New>
             ))}
         </VStack>
     );

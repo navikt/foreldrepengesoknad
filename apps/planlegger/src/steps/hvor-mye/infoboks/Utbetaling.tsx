@@ -24,17 +24,17 @@ export const Utbetaling = ({ satser, lønnSøker, fornavn }: Props) => {
     const decimal80 = 80 / 100;
 
     const getMonthlyPayment = (lønn: number, decimal: number) => {
-        if (isNaN(lønn)) return 0;
+        if (Number.isNaN(lønn)) return 0;
         return Math.round(Math.min(lønn, monthlyMax) * decimal);
     };
 
     const getDailyPayment = (lønn: number, decimal: number) => {
-        if (isNaN(lønn)) return 0;
+        if (Number.isNaN(lønn)) return 0;
         return Math.round(Math.min((lønn * 12) / 260, dailyMax) * decimal);
     };
 
     return (
-        <VStack gap="4">
+        <VStack gap="space-16">
             <Infobox
                 header={
                     lønnSøker <= monthlyMax ? (
@@ -58,9 +58,17 @@ export const Utbetaling = ({ satser, lønnSøker, fornavn }: Props) => {
                     )
                 }
                 color="green"
-                icon={<WalletIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
+                icon={
+                    <WalletIcon
+                        height={24}
+                        width={24}
+                        color="var(--ax-bg-success-strong)"
+                        fontSize="1.5rem"
+                        aria-hidden
+                    />
+                }
             >
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <BodyShort>
                         <FormattedMessage
                             id="HvorMyeSteg.Utregning"

@@ -3,10 +3,10 @@ import { FormattedMessage } from 'react-intl';
 import { Accordion, BodyLong, BodyShort, Button, Detail, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { Bankkonto, Ytelse } from '@navikt/fp-types';
+import { Bankkonto_fpoversikt, Ytelse } from '@navikt/fp-types';
 
 interface Props {
-    bankkonto: Bankkonto | undefined;
+    bankkonto: Bankkonto_fpoversikt | undefined;
     ytelse: Ytelse | undefined;
     harMinstEttArbeidsforhold: boolean;
 }
@@ -19,13 +19,13 @@ export const KontonummerInfo = ({ bankkonto, ytelse, harMinstEttArbeidsforhold }
     return (
         <Accordion.Item>
             <Accordion.Header>
-                <VStack gap="1">
+                <VStack gap="space-4">
                     <Detail textColor="subtle">KONTONUMMER</Detail>
                     <BodyShort weight="semibold">{kontonummerTekst}</BodyShort>
                 </VStack>
             </Accordion.Header>
             <Accordion.Content>
-                <VStack gap="4">
+                <VStack gap="space-16">
                     <KontonummerInfoTekst
                         harKontonummer={harKontonummer}
                         ytelse={ytelse}

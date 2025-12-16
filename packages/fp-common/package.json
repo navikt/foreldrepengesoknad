@@ -1,82 +1,20 @@
 {
     "name": "@navikt/fp-common",
-    "main": "src/common/index.ts",
+    "main": "index.ts",
     "type": "module",
-    "types": "src/common/index.ts",
+    "types": "index.ts",
     "scripts": {
-        "prettier": "prettier --write src",
         "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
-        "lint:tsc": "tsc --noEmit",
-        "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color"
+        "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
+        "prettier": "prettier --write src"
     },
     "dependencies": {
-        "@navikt/ds-css": "7.22.0",
-        "@navikt/ds-react": "7.22.0",
-        "@navikt/fnrvalidator": "2.1.5",
-        "@navikt/fp-types": "workspace:*",
-        "@navikt/fp-utils": "workspace:*",
-        "@types/node": "22.15.18",
-        "@types/react": "19.1.7",
-        "@types/react-dom": "19.1.6",
-        "bytes": "3.1.2",
-        "classnames": "2.5.1",
-        "date-holidays": "3.24.3",
-        "dayjs": "1.11.12",
-        "formik": "2.4.6",
-        "history": "5.3.0",
-        "lodash": "4.17.21",
-        "react": "19.1.0",
-        "react-aria-menubutton": "7.0.3",
-        "react-collapse": "5.1.1",
-        "react-day-picker": "8.10.0",
-        "react-dom": "19.1.0",
-        "react-intl": "7.1.11",
-        "react-modal": "3.16.3",
-        "react-router-dom": "7.6.2",
-        "typescript": "5.8.3"
-    },
-    "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
-        "@navikt/fp-types": "workspace:*",
-        "@originjs/vite-plugin-commonjs": "1.0.3",
-        "@testing-library/jest-dom": "6.6.3",
-        "@testing-library/react": "16.3.0",
-        "@types/bytes": "3.1.5",
-        "@types/lodash": "4.17.17",
-        "@types/node": "20.12.2",
-        "@types/react-aria-menubutton": "6.2.14",
-        "@types/react-collapse": "5.0.4",
-        "@types/react-dom": "18.2.23",
-        "@vitejs/plugin-react": "4.5.2",
-        "copyfiles": "2.4.1",
-        "cross-env": "7.0.3",
-        "eslint": "9.28.0",
-        "less": "4.3.0",
-        "mockdate": "3.0.5",
-        "npm-run-all": "4.1.5",
-        "sass": "1.89.2",
-        "vite": "6.3.5"
+        "@navikt/fp-types": "workspace:*"
     },
-    "peerDependencies": {
-        "intl": "1.2.5",
-        "react": "18.2.0"
+    "devDependencies": {
+        "eslint": "9.39.1"
     },
-    "files": [
-        "package.json",
-        "/lib"
-    ],
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    },
-    "packageManager": "pnpm@9.1.4"
+    "packageManager": "pnpm@10.18.3"
 }

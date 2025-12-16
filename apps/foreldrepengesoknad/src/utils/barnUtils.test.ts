@@ -1,5 +1,5 @@
 import { Barn, BarnType } from '@navikt/fp-common';
-import { BarnFrontend } from '@navikt/fp-types';
+import { BarnDto_fpoversikt } from '@navikt/fp-types';
 
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from './barnUtils';
 
@@ -9,7 +9,8 @@ describe('barnUtils', () => {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-10-05', '2021-10-06'],
             termindato: '2021-09-05',
-        } as Barn;
+            antallBarn: 2,
+        } satisfies Barn;
 
         const dato = getFamiliehendelsedato(barn);
 
@@ -20,7 +21,8 @@ describe('barnUtils', () => {
         const barn = {
             type: BarnType.UFØDT,
             termindato: '2021-09-05',
-        } as Barn;
+            antallBarn: 1,
+        } satisfies Barn;
 
         const dato = getFamiliehendelsedato(barn);
 
@@ -30,11 +32,14 @@ describe('barnUtils', () => {
     it('skal returnere undefined når barn er adoptert', () => {
         const barn = {
             type: BarnType.ADOPTERT_STEBARN,
-        } as Barn;
+            antallBarn: 1,
+            fødselsdatoer: ['2021-01-01'],
+            adopsjonsdato: '2021-01-01',
+        } satisfies Barn;
 
         const dato = getFamiliehendelsedato(barn);
 
-        expect(dato).toBeUndefined();
+        expect(dato).toBe('2021-01-01');
     });
 
     it('skal finne registrert barn når barn er født og er registrert fra før med samme fnr', () => {
@@ -42,13 +47,20 @@ describe('barnUtils', () => {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-01-01'],
             fnr: ['123'],
-        } as Barn;
+            antallBarn: 1,
+        } satisfies Barn;
         const registrerteBarn = [
             {
                 fødselsdato: '2021-01-01',
                 fnr: '123',
+                kjønn: 'M',
+                navn: {
+                    fornavn: '',
+                    mellomnavn: undefined,
+                    etternavn: '',
+                },
             },
-        ] as BarnFrontend[];
+        ] satisfies BarnDto_fpoversikt[];
 
         const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 
@@ -58,13 +70,21 @@ describe('barnUtils', () => {
     it('skal ikke finne registrert barn når barn er ufødt', () => {
         const barn = {
             type: BarnType.UFØDT,
-        } as Barn;
+            antallBarn: 1,
+            termindato: '2021-09-05',
+        } satisfies Barn;
         const registrerteBarn = [
             {
                 fødselsdato: '2021-01-01',
                 fnr: '123',
+                kjønn: 'M',
+                navn: {
+                    fornavn: '',
+                    mellomnavn: undefined,
+                    etternavn: '',
+                },
             },
-        ] as BarnFrontend[];
+        ] satisfies BarnDto_fpoversikt[];
 
         const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 
@@ -75,13 +95,20 @@ describe('barnUtils', () => {
         const barn = {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-01-01'],
-        } as Barn;
+            antallBarn: 1,
+        } satisfies Barn;
         const registrerteBarn = [
             {
                 fødselsdato: '2017-01-01',
                 fnr: '123',
+                kjønn: 'M',
+                navn: {
+                    fornavn: '',
+                    mellomnavn: undefined,
+                    etternavn: '',
+                },
             },
-        ] as BarnFrontend[];
+        ] satisfies BarnDto_fpoversikt[];
 
         const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 
@@ -92,8 +119,9 @@ describe('barnUtils', () => {
         const barn = {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-01-01'],
-        } as Barn;
-        const registrerteBarn = [] as BarnFrontend[];
+            antallBarn: 1,
+        } satisfies Barn;
+        const registrerteBarn = [] satisfies BarnDto_fpoversikt[];
 
         const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 

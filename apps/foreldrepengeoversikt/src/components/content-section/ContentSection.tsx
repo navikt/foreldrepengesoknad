@@ -31,7 +31,7 @@ export const ContentSection = ({ heading, children, showSkeleton = false, skelet
                     {heading}
                 </Heading>
             )}
-            <div className={classNames(className, 'rounded-large bg-white p-4 border-2 border-deepblue-100')}>
+            <div className={classNames(className, 'bg-ax-bg-default border-ax-brand-blue-200 rounded-lg border-2 p-4')}>
                 {children}
             </div>
         </section>

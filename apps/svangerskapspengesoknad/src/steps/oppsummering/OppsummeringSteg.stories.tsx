@@ -6,11 +6,11 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
-import { DelivisTilretteleggingPeriodeType, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
+import { DelivisTilretteleggingPeriodeType, TilOgMedDatoType } from 'types/Tilrettelegging';
 
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
-import { FRILANS_ID, Søkerinfo } from '@navikt/fp-types';
+import { FRILANS_ID, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { OppsummeringSteg } from './OppsummeringSteg';
 
@@ -66,15 +66,17 @@ const DEFAULT_SØKERINFO = {
             stillingsprosent: 0,
         },
     ],
-    søker: {
-        etternavn: 'Oravakangas',
-        fornavn: 'Erlinga-Mask',
+    person: {
+        navn: {
+            etternavn: 'Oravakangas',
+            fornavn: 'Erlinga-Mask',
+        },
         fnr: '30088930610',
         fødselsdato: '1989-08-30',
         kjønn: 'K',
         barn: [],
     },
-} satisfies Søkerinfo;
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
 
 const promiseAction = () => () => {
     action('button-click')();
@@ -96,13 +98,13 @@ const meta = {
                     initialState={{
                         [ContextDataType.TILRETTELEGGINGER]: {
                             [ARBEIDSFORHOLD_ID]: {
-                                type: Tilretteleggingstype.INGEN,
+                                type: 'ingen',
                                 behovForTilretteleggingFom: '2024-0101',
                                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                                 enPeriodeMedTilretteleggingFom: '2024-0101',
                             },
                             [ANNEN_ARBEIDSFORHOLD_ID]: {
-                                type: Tilretteleggingstype.DELVIS,
+                                type: 'delvis',
                                 enPeriodeMedTilretteleggingStillingsprosent: '50',
                                 behovForTilretteleggingFom: '2024-0101',
                                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
@@ -111,13 +113,13 @@ const meta = {
                                     DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN,
                             },
                             [TREDJE_ARBEIDSFORHOLD_ID]: {
-                                type: Tilretteleggingstype.DELVIS,
+                                type: 'delvis',
                                 behovForTilretteleggingFom: '2024-0101',
                                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                                 delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
                             },
                             [EGEN_NÆRING_ID]: {
-                                type: Tilretteleggingstype.DELVIS,
+                                type: 'delvis',
                                 behovForTilretteleggingFom: '2024-0101',
                                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                                 enPeriodeMedTilretteleggingFom: '2024-0101',
@@ -125,7 +127,7 @@ const meta = {
                                     DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN,
                             },
                             [FRILANS_ID]: {
-                                type: Tilretteleggingstype.DELVIS,
+                                type: 'delvis',
                                 behovForTilretteleggingFom: '2024-0101',
                                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                                 enPeriodeMedTilretteleggingFom: '2024-0101',
@@ -141,10 +143,10 @@ const meta = {
                                     filename: 'vedlegg – Kopi (7).png',
                                     filesize: 7477,
                                     uploaded: true,
+                                    innsendingsType: 'LASTET_OPP',
                                     pending: false,
                                     type: AttachmentType.TILRETTELEGGING,
                                     skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
-                                    url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
                                     uuid: 'Created',
                                 },
                             ],
@@ -212,6 +214,7 @@ const meta = {
                             jobberFremdelesSomFrilans: false,
                             oppstart: '2023-01-01',
                         },
+                        [ContextDataType.VALGTE_ARBEIDSFORHOLD]: [ARBEIDSFORHOLD_ID],
                         [ContextDataType.EGEN_NÆRING]: {
                             navnPåNæringen: 'Skitt fiske',
                             fom: dayjs().subtract(5, 'years').format(ISO_DATE_FORMAT),
@@ -241,6 +244,6 @@ export const Default: Story = {
         sendSøknad: () => Promise.resolve(),
         søkerInfo: DEFAULT_SØKERINFO,
         mellomlagreSøknadOgNaviger: promiseAction(),
-        avbrytSøknad: promiseAction(),
+        avbrytSøknad: () => action('button-click'),
     },
 };

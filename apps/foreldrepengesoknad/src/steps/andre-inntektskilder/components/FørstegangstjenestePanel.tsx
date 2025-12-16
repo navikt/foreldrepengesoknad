@@ -23,11 +23,11 @@ export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
     const { control } = useFormContext<AndreInntekterFormValues>();
 
     if (inntektskilde.type !== AnnenInntektType.MILITÆRTJENESTE) {
-        throw Error('Inntektskilde ikke av type MILITÆRTJENESTE');
+        throw new Error('Inntektskilde ikke av type MILITÆRTJENESTE');
     }
 
     return (
-        <VStack gap="10">
+        <VStack gap="space-40">
             <RhfRadioGroup
                 name={`andreInntektskilder.${index}.pågående`}
                 control={control}
@@ -45,7 +45,7 @@ export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
                     <FormattedMessage id="FørstegangstjenestePanel.RadioButton.Ja" />
                 </Radio>
             </RhfRadioGroup>
-            <HStack gap="6">
+            <HStack gap="space-24">
                 <RhfDatepicker
                     name={`andreInntektskilder.${index}.fom`}
                     control={control}
@@ -80,7 +80,7 @@ export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
                 )}
             </HStack>
             <BluePanel isDarkBlue>
-                <HStack gap="2" wrap={false}>
+                <HStack gap="space-8" wrap={false}>
                     <div>
                         <FileIcon fontSize="1.5rem" />
                     </div>

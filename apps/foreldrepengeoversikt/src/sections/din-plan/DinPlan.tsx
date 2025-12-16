@@ -1,80 +1,102 @@
 import { BulletListIcon, CalendarIcon } from '@navikt/aksel-icons';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Foreldrepengesak } from 'types/Sak';
 
 import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, RettighetType, SaksperiodeNy } from '@navikt/fp-types';
+import { NavnPåForeldre, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
-import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
-import { UttaksplanNy, utledKomplettPlan } from '@navikt/fp-uttaksplan-ny';
+import { KvoteOppsummering, UttaksplanDataProvider, UttaksplanKalender, UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 
+import { hentUttaksKontoOptions } from '../../api/queries';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
-import { getBarnFraSak, getFamiliehendelseDato, utledFamiliesituasjon } from '../../utils/sakerUtils';
-import { KvoteOversikt } from './KvoteOppsummering';
+import { getBarnFraSak } from '../../utils/sakerUtils';
 
 interface Props {
     navnPåForeldre: NavnPåForeldre;
-    annenPartsPerioder: SaksperiodeNy[];
+    annenPartsPerioder: UttakPeriode_fpoversikt[];
 }
 
+// TODO (TOR) Send heller med gjeldendeSak som prop
 export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
     const gjeldendeSak = useGetSelectedSak();
+
+    if (gjeldendeSak?.ytelse !== 'FORELDREPENGER') {
+        return null;
+    }
+
+    return <DinPlanMedSak annenPartsPerioder={annenPartsPerioder} navnPåForeldre={navnPåForeldre} sak={gjeldendeSak} />;
+};
+
+const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { sak: Foreldrepengesak }) => {
     const isDesktop = useMedia('screen and (min-width: 768px)');
 
     const [visKalender, setVisKalender] = useState(false);
 
-    if (!gjeldendeSak || gjeldendeSak.ytelse !== 'FORELDREPENGER') {
+    const kontoQuery = useQuery(
+        hentUttaksKontoOptions({
+            brukerrolle: sak.forelder === 'MOR' ? 'MOR' : 'FAR',
+            morHarUføretrygd: sak.morUføretrygd,
+            rettighetstype: sak.rettighetType,
+            omsorgsovertakelseDato: sak.familiehendelse.omsorgsovertakelse,
+            antallBarn: sak.familiehendelse.antallBarn,
+            termindato: sak.familiehendelse.termindato,
+            // Fødselsdato trumfer omsorgsovertakelseDato i APIet
+            fødselsdato: sak.familiehendelse.omsorgsovertakelse ? undefined : sak.familiehendelse.fødselsdato,
+        }),
+    );
+    const konto = sak.dekningsgrad === 'HUNDRE' ? kontoQuery.data?.['100'] : kontoQuery.data?.['80'];
+
+    if (!konto) {
         return null;
     }
 
-    const søkersPerioder = gjeldendeSak.gjeldendeVedtak?.perioder;
-    const perioderSomErSøktOm = gjeldendeSak.åpenBehandling?.søknadsperioder;
-    const familiehendelse = gjeldendeSak.familiehendelse;
-    const sakTilhørerMor = gjeldendeSak.sakTilhørerMor;
-    const gjelderAdopsjon = gjeldendeSak.gjelderAdopsjon;
-    const rettighetType = gjeldendeSak.rettighetType;
-    const sakAvsluttet = gjeldendeSak.sakAvsluttet;
+    const getAnnenPartsPerioder = () => {
+        const perioderAnnenPartEØS = sak.gjeldendeVedtak?.perioderAnnenpartEøs;
 
-    const relevantePerioder = (søkersPerioder ?? perioderSomErSøktOm ?? []) as SaksperiodeNy[]; // TODO: fiks enum vs unions
+        if (perioderAnnenPartEØS && perioderAnnenPartEØS.length > 0) {
+            return perioderAnnenPartEØS;
+        }
+
+        return annenPartsPerioder;
+    };
+
+    const søkersPerioder = sak.gjeldendeVedtak?.perioder;
+    const perioderSomErSøktOm = sak.åpenBehandling?.søknadsperioder;
+    const familiehendelse = sak.familiehendelse;
+    const sakTilhørerMor = sak.sakTilhørerMor;
+    const gjelderAdopsjon = sak.gjelderAdopsjon;
+    const rettighetType = sak.rettighetType;
+    const sakAvsluttet = sak.sakAvsluttet;
+
+    const relevantePerioder = søkersPerioder ?? perioderSomErSøktOm ?? [];
     const søkerErFarEllerMedmor = !sakTilhørerMor;
-    const bareFarMedmorHarRett = rettighetType === RettighetType.BARE_SØKER_RETT && !sakTilhørerMor;
-    const erDeltUttak = rettighetType === RettighetType.BEGGE_RETT;
-    const morHarRett = sakTilhørerMor && (RettighetType.BEGGE_RETT || RettighetType.BARE_SØKER_RETT);
-    const søkerErAleneOmOmsorg = rettighetType === RettighetType.ALENEOMSORG;
+    const bareFarMedmorHarRett = rettighetType === 'BARE_SØKER_RETT' && !sakTilhørerMor;
+    const erDeltUttak = rettighetType === 'BEGGE_RETT';
+    const morHarRett = sakTilhørerMor && (rettighetType === 'BEGGE_RETT' || rettighetType === 'BARE_SØKER_RETT');
+    const søkerErAleneOmOmsorg = rettighetType === 'ALENEOMSORG';
     const harAktivitetskravIPeriodeUtenUttak = !erDeltUttak && !morHarRett && !søkerErAleneOmOmsorg;
-    const familiehendelseDato = getFamiliehendelseDato(familiehendelse);
     const barn = getBarnFraSak(familiehendelse, gjelderAdopsjon);
-    const familiesituasjon = utledFamiliesituasjon(familiehendelse, gjelderAdopsjon);
-
-    const komplettPlan = utledKomplettPlan({
-        familiehendelsedato: familiehendelseDato,
-        erFarEllerMedmor: søkerErFarEllerMedmor,
-        søkersPerioder: relevantePerioder,
-        annenPartsPerioder,
-        gjelderAdopsjon,
-        bareFarMedmorHarRett,
-        harAktivitetskravIPeriodeUtenUttak,
-        førsteUttaksdagNesteBarnsSak: undefined,
-        modus: 'innsyn',
-    });
+    const relevanteAnnenPartsPerioder = getAnnenPartsPerioder();
 
     return (
-        <VStack gap="10">
+        <VStack gap="space-40">
             {!sakAvsluttet && (
                 <HStack>
                     <Button
                         className="mt-4"
                         size={isDesktop ? 'small' : 'medium'}
                         variant="secondary"
-                        onClick={() => (window.location.href = 'https://www.nav.no/foreldrepenger/soknad')}
+                        onClick={() => (globalThis.location.href = 'https://www.nav.no/foreldrepenger/soknad')}
                     >
                         <FormattedMessage id="DinPlan.EndrePlan" />
                     </Button>
                 </HStack>
             )}
 
-            <VStack gap="10">
+            <VStack gap="space-40">
                 <ToggleGroup
                     defaultValue={visKalender ? 'kalender' : 'plan'}
                     onChange={(value: string) => setVisKalender(value === 'kalender')}
@@ -91,39 +113,27 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
                         label={<FormattedMessage id="DinPlan.Kalender" />}
                     />
                 </ToggleGroup>
-                {!visKalender && (
-                    <>
-                        <UttaksplanNy
-                            barn={barn}
-                            erFarEllerMedmor={søkerErFarEllerMedmor}
-                            familiehendelsedato={familiehendelseDato}
-                            navnPåForeldre={navnPåForeldre}
-                            annenPartsPerioder={annenPartsPerioder}
-                            søkersPerioder={relevantePerioder}
-                            gjelderAdopsjon={gjelderAdopsjon}
-                            bareFarMedmorHarRett={bareFarMedmorHarRett}
-                            familiesituasjon={familiesituasjon}
-                            førsteUttaksdagNesteBarnsSak={undefined}
-                            harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
-                            modus="innsyn"
-                            handleOnPlanChange={() => null}
-                            valgtStønadskonto={{} as any}
-                            erAleneOmOmsorg={søkerErAleneOmOmsorg}
-                        />
-                        <KvoteOversikt navnPåForeldre={navnPåForeldre} perioder={komplettPlan} />
-                    </>
-                )}
-                {visKalender && (
-                    <UttaksplanKalender
-                        bareFarMedmorHarRett={bareFarMedmorHarRett}
-                        barn={barn}
-                        erFarEllerMedmor={søkerErFarEllerMedmor}
-                        harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
-                        søkersPerioder={relevantePerioder}
-                        annenPartsPerioder={annenPartsPerioder}
-                        navnAnnenPart={søkerErFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor}
-                    />
-                )}
+                <UttaksplanDataProvider
+                    saksperioder={relevantePerioder.concat(relevanteAnnenPartsPerioder)}
+                    barn={barn}
+                    erFarEllerMedmor={søkerErFarEllerMedmor}
+                    navnPåForeldre={navnPåForeldre}
+                    modus="innsyn"
+                    valgtStønadskonto={konto}
+                    aleneOmOmsorg={søkerErAleneOmOmsorg}
+                    erMedmorDelAvSøknaden={false}
+                    bareFarMedmorHarRett={bareFarMedmorHarRett}
+                    harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
+                    erDeltUttak={erDeltUttak}
+                >
+                    {!visKalender && (
+                        <>
+                            <UttaksplanNy />
+                            <KvoteOppsummering visStatusIkoner={false} />
+                        </>
+                    )}
+                    {visKalender && <UttaksplanKalender readOnly={true} />}
+                </UttaksplanDataProvider>
             </VStack>
         </VStack>
     );

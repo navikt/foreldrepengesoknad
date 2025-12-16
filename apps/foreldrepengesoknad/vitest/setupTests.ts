@@ -1,21 +1,28 @@
-import { setProjectAnnotations } from '@storybook/react';
+import { setProjectAnnotations } from '@storybook/react-vite';
 import * as matchers from '@testing-library/jest-dom/matchers';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { beforeAll, expect } from 'vitest';
+import { expect } from 'vitest';
 
 import * as globalStorybookConfig from '../.storybook/preview';
 
-const annotations = setProjectAnnotations(globalStorybookConfig);
-
-// Run Storybook's beforeAll hook
-beforeAll(annotations.beforeAll);
+setProjectAnnotations(globalStorybookConfig);
 
 dayjs.extend(isSameOrAfter);
 
 expect.extend(matchers);
 
-// @ts-expect-error greit her
 if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
-    window.scrollTo = () => undefined;
+    globalThis.scrollTo = () => undefined;
+
+    if (globalThis.ReadableStream) {
+        const RS = globalThis.ReadableStream.prototype;
+
+        // Denne var tricky å finne ut av. Den feiler ikke i jsdom, men den blir stående å vente/henge på et eller annet uvisst.
+        // Resolver den derfor umiddelbart. Det er oppførsel (retries, opploadprogress, etc.) som ikke er relevant å teste i jsdom.
+        // Om det i fremtiden skal testes bør det skje i ekte browser - ikke jsdom
+        RS.cancel = function () {
+            return Promise.resolve();
+        };
+    }
 }

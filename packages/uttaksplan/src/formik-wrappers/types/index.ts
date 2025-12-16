@@ -1,5 +1,4 @@
 import { DayOfWeek } from 'react-day-picker';
-import { Accept } from 'react-dropzone';
 
 import { DatepickerDateRange } from '@navikt/fp-types';
 
@@ -17,14 +16,9 @@ export interface DateRange {
     from: Date;
     to: Date;
 }
-export interface OpenDateRange {
-    from: Date;
-    to?: Date;
-}
-
 export type CancelButtonTypes = 'primary' | 'secondary' | 'tertiary' | 'danger';
 
-export type FormError = React.ReactNode | boolean;
+export type FormError = React.ReactNode;
 
 export interface TestProps {
     'data-testid'?: string;
@@ -45,13 +39,6 @@ export interface CustomFormErrorHandler<ErrorType> {
 
 export type FieldErrorHandler<ErrorType> = (error: ErrorType, fieldName: string) => string;
 export type ErrorTypeChecker<ErrorType = any> = (error: ErrorType) => boolean;
-
-export const FileDropAcceptImagesAndPdf: Accept = {
-    'image/jpeg': ['.jpg', '.jpeg'],
-    'image/png': [],
-    'application/pdf': [],
-};
-
 export interface DatepickerLimitationsString {
     minDate?: string;
     maxDate?: string;

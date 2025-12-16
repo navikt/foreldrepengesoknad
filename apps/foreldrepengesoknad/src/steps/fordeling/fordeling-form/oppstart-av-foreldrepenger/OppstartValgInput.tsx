@@ -47,7 +47,7 @@ const getOppstartsvalgFarAleneomsorg = () => {
     return [OppstartValg.DATO_FOR_ALENEOMSORG, OppstartValg.ANNEN_DATO];
 };
 
-export const getErBarnetFødtMerEnnTolvUkerFørTermin = (
+const getErBarnetFødtMerEnnTolvUkerFørTermin = (
     erBarnetFødt: boolean,
     termindato: string | undefined,
     fødselsdato: string | undefined,
@@ -65,7 +65,7 @@ export const getErBarnetFødtInnenTreUkerFørTermin = (
     return erBarnetFødt && termindato && dayjs(fødselsdato).isSameOrAfter(treUkerFørTermin, 'd');
 };
 
-export const getErBarnetFødtMerEnnTreUkerFørTermin = (
+const getErBarnetFødtMerEnnTreUkerFørTermin = (
     erBarnetFødt: boolean,
     termindato: string | undefined,
     fødselsdato: string | undefined,
@@ -336,7 +336,7 @@ const getRadioOptionForAnnenDato = (
     return getRadioOptionAnnenDato();
 };
 
-export const mapOppstartValgToRadioOption = (
+const mapOppstartValgToRadioOption = (
     valg: OppstartValg,
     barn: Barn,
     erFødsel: boolean,

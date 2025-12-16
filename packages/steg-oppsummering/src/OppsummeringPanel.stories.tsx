@@ -84,6 +84,7 @@ export const ArbeidsforholdOgInntektOppsummering: Story = {
             <>
                 <ArbeidsforholdOppsummering
                     arbeidsforhold={[]}
+                    skalViseAlertOmIM={false}
                     arbeidsforholdOgInntekt={{
                         harJobbetSomFrilans: true,
                         harJobbetSomSelvstendigNæringsdrivende: true,

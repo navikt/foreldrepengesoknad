@@ -2,7 +2,7 @@ import { useIntl } from 'react-intl';
 import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
-import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { ArbeidsforholdOgInntektFp, Attachment } from '@navikt/fp-types';
 
 import { VedleggUploader, formaterPerioderForVisning } from '../attachment-uploaders/VedleggUploader';
@@ -24,7 +24,7 @@ export const EtterlønnEllerSluttvederlagDokumentasjon = ({
 
     if (
         !arbeidsforholdOgInntekt ||
-        (arbeidsforholdOgInntekt && arbeidsforholdOgInntekt.harHattAndreInntektskilder === false) ||
+        arbeidsforholdOgInntekt.harHattAndreInntektskilder === false ||
         !andreInntektskilder ||
         !andreInntektskilder.some((i) => i.type === AnnenInntektType.SLUTTPAKKE)
     ) {
@@ -49,7 +49,7 @@ export const EtterlønnEllerSluttvederlagDokumentasjon = ({
                 id: 'manglendeVedlegg.etterlønn.description',
             })}
             attachmentType={AttachmentType.ANNEN_INNTEKT}
-            metadataType={AttachmentMetadataType.OPPTJENING}
+            metadataType="OPPTJENING"
             perioder={perioder}
         />
     );

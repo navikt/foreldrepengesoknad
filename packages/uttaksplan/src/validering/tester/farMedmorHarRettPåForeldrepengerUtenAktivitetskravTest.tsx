@@ -2,7 +2,7 @@ import { IntlShape } from 'react-intl';
 
 import { Link } from '@navikt/ds-react';
 
-import { StønadskontoType, Søknadsinfo } from '@navikt/fp-common';
+import { Søknadsinfo } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 
 import { getVarighetString } from '../../components/periodeliste-item-header/PeriodelisteItemHeader';
@@ -26,9 +26,7 @@ export const farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest: RegelTest 
         };
     }
 
-    const kontoUtenAktivitetskrav = grunnlag.stønadskontoer.kontoer.find(
-        (k) => k.konto === StønadskontoType.AktivitetsfriKvote,
-    );
+    const kontoUtenAktivitetskrav = grunnlag.stønadskontoer.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
 
     const testPasserer = !kontoUtenAktivitetskrav || kontoUtenAktivitetskrav.dager === 0;
     const renderAsHtml = true;

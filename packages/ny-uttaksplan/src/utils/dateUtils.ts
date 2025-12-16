@@ -25,7 +25,7 @@ const getDateFromDateString = (dateString: string | undefined): Date | undefined
 
 export const ISOStringToDate = (dateString = ''): Date | undefined => getDateFromDateString(dateString);
 
-export const getUkerOgDagerFromDager = (dager: number): { uker: number; dager: number } => {
+const getUkerOgDagerFromDager = (dager: number): { uker: number; dager: number } => {
     const uker = Math.floor(dager / 5);
     return {
         dager: dager - uker * 5,
@@ -46,9 +46,15 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
     }
     const ukerStr = intl.formatMessage({ id: 'varighet.uker' }, { uker });
     if (dager > 0) {
-        return `${ukerStr}${intl.formatMessage({
-            id: format === 'full' ? `varighet.separator--full` : `varighet.separator--normal`,
-        })}${dagerStr}`;
+        const text =
+            format === 'full'
+                ? intl.formatMessage({
+                      id: `varighet.separator--full`,
+                  })
+                : intl.formatMessage({
+                      id: `varighet.separator--normal`,
+                  });
+        return `${ukerStr}${text}${dagerStr}`;
     }
     return ukerStr;
 };
@@ -63,7 +69,7 @@ export const formaterDatoKompakt = (dato: string): string => {
 
 type DateType = string | Date | undefined;
 
-export const formaterDato = (dato: DateType, datoformat?: string): string => {
+const formaterDato = (dato: DateType, datoformat?: string): string => {
     return dayjs(dato).format(datoformat ?? 'dddd D. MMMM YYYY');
 };
 

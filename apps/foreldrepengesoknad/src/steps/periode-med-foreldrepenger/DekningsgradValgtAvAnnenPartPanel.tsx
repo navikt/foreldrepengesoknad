@@ -7,22 +7,21 @@ import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad } from '@navikt/fp-common';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { Dekningsgrad, KontoBeregningDto } from '@navikt/fp-types';
 import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { InfoOmUtvidet80ProsentPeriode } from './InfoOmUtvidet80ProsentPeriode';
 
 type Props = {
-    goToPreviousDefaultStep: () => Promise<void>;
-    goToNextDefaultStep: () => Promise<void>;
+    goToPreviousDefaultStep: () => void;
+    goToNextDefaultStep: () => void;
     onAvsluttOgSlett?: () => void;
     onFortsettSenere?: () => void;
     fornavnAnnenForelder: string;
     kjønnAnnenForelder?: 'M' | 'K' | 'U';
     dekningsgrad: Dekningsgrad;
-    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
+    valgtStønadskonto: KontoBeregningDto;
 };
 
 export const DekningsgradValgtAvAnnenPartPanel = ({
@@ -51,9 +50,9 @@ export const DekningsgradValgtAvAnnenPartPanel = ({
     };
 
     const uker = getAntallUkerFraStønadskontoer(valgtStønadskonto.kontoer);
-    const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && dekningsgrad === Dekningsgrad.ÅTTI_PROSENT;
+    const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && dekningsgrad === '80';
     return (
-        <VStack gap="10">
+        <VStack gap="space-40">
             <Infobox
                 color="blue"
                 header={

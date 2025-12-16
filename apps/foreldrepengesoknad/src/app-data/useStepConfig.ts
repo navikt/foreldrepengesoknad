@@ -1,28 +1,19 @@
+import { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER, SøknadRoutes } from 'appData/routes.ts';
 import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
+import { skalViseOmsorgsovertakelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/OmsorgsovertakelseDokumentasjon.tsx';
+import { skalViseTerminbekreftelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/TerminbekreftelseDokumentasjon.tsx';
 import { AnnenInntektType } from 'types/AndreInntektskilder';
-import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
-import { getFarMedmorErAleneOmOmsorg, getMorHarRettPåForeldrepengerINorgeEllerEØS } from 'utils/personUtils';
 
-import { AnnenForelder, Barn, Søkerrolle, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
-import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
-import { getFamiliehendelsedato } from '@navikt/fp-utils';
-import { andreAugust2022ReglerGjelder, kreverUttaksplanVedlegg } from '@navikt/fp-uttaksplan';
+import { isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { kreverUttaksplanVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER, SøknadRoutes } from '../app-data/routes';
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
 
-const getKanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean => {
-    if (!isFarEllerMedmor(rolle)) {
-        return true;
-    }
-    return termindato ? andreAugust2022ReglerGjelder(termindato) : false;
-};
-
-// TODO Bør denne flyttast ut?
 const getPathToLabelMap = (intl: IntlShape) =>
     ({
         [SøknadRoutes.SØKERSITUASJON]: intl.formatMessage({ id: 'steps.label.søkersituasjon' }),
@@ -40,7 +31,10 @@ const getPathToLabelMap = (intl: IntlShape) =>
         [SøknadRoutes.UTTAKSPLAN]: intl.formatMessage({ id: 'steps.label.uttaksplan' }),
         [SøknadRoutes.OPPSUMMERING]: intl.formatMessage({ id: 'steps.label.oppsummering' }),
         [SøknadRoutes.DOKUMENTASJON]: intl.formatMessage({ id: 'søknad.manglendeVedlegg' }),
-    }) as Record<string, string>;
+        [SøknadRoutes.KVITTERING]: '',
+        [SøknadRoutes.VELKOMMEN]: '',
+        [SøknadRoutes.IKKE_MYNDIG]: '',
+    }) satisfies Record<SøknadRoutes, string>;
 
 const isAfterStep = (previousStepPath: SøknadRoutes, currentStepPath: SøknadRoutes): boolean => {
     return ROUTES_ORDER.indexOf(currentStepPath) > ROUTES_ORDER.indexOf(previousStepPath);
@@ -92,48 +86,10 @@ const showFrilansOgEgenNæringOgAndreInntekter = (
     return false;
 };
 
-const getBareFarMedmorHarRett = (
-    annenForelder: AnnenForelder | undefined,
-    søkersituasjon: SøkersituasjonFp | undefined,
-    erFarEllerMedmor: boolean,
-) => {
-    if (annenForelder === undefined || søkersituasjon === undefined) {
-        return false;
-    }
-
-    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
-    const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
-
-    const farMedmorErAleneOmOmsorg =
-        annenForelder !== undefined
-            ? getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder)
-            : false;
-
-    const bareFarMedmorHarRett =
-        !getMorHarRettPåForeldrepengerINorgeEllerEØS(søkersituasjon.rolle, erFarEllerMedmor, annenForelder) &&
-        !farMedmorErAleneOmOmsorg;
-
-    return bareFarMedmorHarRett;
-};
-
-const harIngenAktiveArbeidsforhold = (
-    arbeidsforhold: Arbeidsforhold[],
-    søkersituasjon: SøkersituasjonFp,
-    barn: Barn,
-) => {
-    const aktiveArbeidsforhold = getAktiveArbeidsforhold(
-        arbeidsforhold,
-        søkersituasjon.situasjon === 'adopsjon',
-        isFarEllerMedmor(søkersituasjon.rolle),
-        getFamiliehendelsedato(barn),
-    );
-    return aktiveArbeidsforhold.length === 0;
-};
-
 const showManglendeDokumentasjonSteg = (
     path: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     erEndringssøknad: boolean,
 ) => {
     if (path === SøknadRoutes.DOKUMENTASJON) {
@@ -148,15 +104,14 @@ const showManglendeDokumentasjonSteg = (
             !!annenForelder && isAnnenForelderOppgitt(annenForelder) && annenForelder.erAleneOmOmsorg;
 
         const erFarEllerMedmor = !!søkersituasjon && isFarEllerMedmor(søkersituasjon.rolle);
-
-        const skalHaOmBarnetDok =
-            søkersituasjon?.situasjon === 'adopsjon' ||
-            (barn &&
-                søkersituasjon &&
-                isUfødtBarn(barn) &&
-                (harIngenAktiveArbeidsforhold(arbeidsforhold, søkersituasjon, barn) ||
-                    getBareFarMedmorHarRett(annenForelder, søkersituasjon, erFarEllerMedmor)) &&
-                getKanSøkePåTermin(søkersituasjon.rolle, barn.termindato));
+        const skalHaTerminDokumentasjon = skalViseTerminbekreftelseDokumentasjon({
+            søkersituasjon,
+            barn,
+            erFarEllerMedmor,
+            arbeidsforhold,
+            annenForelder,
+        });
+        const skalHaAdopsjonDokumentasjon = skalViseOmsorgsovertakelseDokumentasjon(søkersituasjon);
 
         const skalHaUttakDok =
             annenForelder && uttaksplan
@@ -173,13 +128,19 @@ const showManglendeDokumentasjonSteg = (
             (i) => i.type === AnnenInntektType.MILITÆRTJENESTE || i.type === AnnenInntektType.SLUTTPAKKE,
         );
 
-        return skalHaAleneomsorgDok || skalHaOmBarnetDok || skalHaUttakDok || skalHaAndreInntekterDok;
+        return (
+            skalHaAleneomsorgDok ||
+            skalHaTerminDokumentasjon ||
+            skalHaAdopsjonDokumentasjon ||
+            skalHaUttakDok ||
+            skalHaAndreInntekterDok
+        );
     }
 
     return false;
 };
 
-export const useStepConfig = (arbeidsforhold: Arbeidsforhold[], erEndringssøknad = false) => {
+export const useStepConfig = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[], erEndringssøknad = false) => {
     const intl = useIntl();
     const pathToLabelMap = getPathToLabelMap(intl);
 
@@ -187,7 +148,7 @@ export const useStepConfig = (arbeidsforhold: Arbeidsforhold[], erEndringssøkna
     const getStateData = useContextGetAnyData();
 
     const currentPath = useMemo(
-        () => notEmpty(Object.values(SøknadRoutes).find((v) => v === decodeURIComponent(location.pathname))),
+        () => notEmpty(Object.values(SøknadRoutes).find((v) => v.toString() === decodeURIComponent(location.pathname))),
         [location.pathname],
     );
 

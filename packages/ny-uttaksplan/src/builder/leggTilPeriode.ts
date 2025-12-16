@@ -1,7 +1,5 @@
 import dayjs from 'dayjs';
 
-import { StønadskontoType } from '@navikt/fp-constants';
-import { SaksperiodeNy } from '@navikt/fp-types';
 import { TidsperiodenString, UttaksdagenString } from '@navikt/fp-utils';
 
 import { Planperiode } from '../types/Planperiode';
@@ -27,31 +25,9 @@ export const splittPeriodePåDato = (periode: Planperiode, dato: string): Planpe
     return [periodeFørDato, periodeFraOgMedDato];
 };
 
-export const splittSaksperiodePåDato = (periode: SaksperiodeNy, dato: string): SaksperiodeNy[] => {
-    const periodeFørDato: SaksperiodeNy = {
-        ...periode,
-        fom: periode.fom,
-        tom: UttaksdagenString(dato).forrige(),
-    };
-
-    const periodeFraOgMedDato: SaksperiodeNy = {
-        ...periode,
-        fom: UttaksdagenString(periodeFørDato.tom).neste(),
-        tom: periode.tom,
-    };
-
-    return [periodeFørDato, periodeFraOgMedDato];
-};
-
 export const splittUttaksperiodePåFamiliehendelsesdato = (periode: Planperiode, famDato: string): Planperiode[] => {
     const periodeFørFamDato: Planperiode = {
         ...periode,
-        kontoType:
-            periode.kontoType == StønadskontoType.Foreldrepenger
-                ? StønadskontoType.AktivitetsfriKvote
-                : periode.kontoType,
-        morsAktivitet: periode.kontoType == StønadskontoType.Foreldrepenger ? undefined : periode.morsAktivitet,
-        fom: periode.fom,
         tom: UttaksdagenString(famDato).forrige(),
     };
 
@@ -59,28 +35,6 @@ export const splittUttaksperiodePåFamiliehendelsesdato = (periode: Planperiode,
         ...periode,
         id: guid(),
         fom: UttaksdagenString(periodeFørFamDato.tom).neste(),
-        tom: periode.tom,
-    };
-
-    return [periodeFørFamDato, periodeFraOgMedFamDato];
-};
-
-export const splittSaksperiodePåFamiliehendelsesdato = (periode: SaksperiodeNy, famDato: string): SaksperiodeNy[] => {
-    const periodeFørFamDato: SaksperiodeNy = {
-        ...periode,
-        kontoType:
-            periode.kontoType == StønadskontoType.Foreldrepenger
-                ? StønadskontoType.AktivitetsfriKvote
-                : periode.kontoType,
-        morsAktivitet: periode.kontoType == StønadskontoType.Foreldrepenger ? undefined : periode.morsAktivitet,
-        fom: periode.fom,
-        tom: UttaksdagenString(famDato).forrige(),
-    };
-
-    const periodeFraOgMedFamDato: SaksperiodeNy = {
-        ...periode,
-        fom: UttaksdagenString(periodeFørFamDato.tom).neste(),
-        tom: periode.tom,
     };
 
     return [periodeFørFamDato, periodeFraOgMedFamDato];
@@ -132,10 +86,8 @@ export const leggTilPeriode = ({
         //     return [...perioder];
         // }
 
-        const foregåendePerioder = Periodene(perioder).finnAlleForegåendePerioder(berørtePerioder[0]);
-        const påfølgendePerioder = Periodene(perioder).finnAllePåfølgendePerioder(
-            berørtePerioder[berørtePerioder.length - 1],
-        );
+        const foregåendePerioder = Periodene(perioder).finnAlleForegåendePerioder(berørtePerioder[0]!);
+        const påfølgendePerioder = Periodene(perioder).finnAllePåfølgendePerioder(berørtePerioder.at(-1)!);
 
         //TODO: Må endre navn i normaliserPerioder hvis denne skal brukes
         const {
@@ -149,24 +101,19 @@ export const leggTilPeriode = ({
         });
 
         //Når ny periode starter før alle de gamle periodene
-        if (dayjs(normaliserteNyePerioder[0].fom).isBefore(normaliserteBerørtePerioder[0].fom, 'd')) {
-            erstattedeBerørtePerioder.unshift(normaliserteNyePerioder[0]);
+        if (dayjs(normaliserteNyePerioder[0]!.fom).isBefore(normaliserteBerørtePerioder[0]!.fom, 'd')) {
+            erstattedeBerørtePerioder.unshift(normaliserteNyePerioder[0]!);
         }
 
         //Når ny periode slutter etter alle de gamle periodene
-        if (
-            dayjs(normaliserteNyePerioder[normaliserteNyePerioder.length - 1].fom).isAfter(
-                normaliserteBerørtePerioder[normaliserteBerørtePerioder.length - 1].tom,
-                'd',
-            )
-        ) {
-            erstattedeBerørtePerioder.push(normaliserteNyePerioder[normaliserteNyePerioder.length - 1]);
+        if (dayjs(normaliserteNyePerioder.at(-1)!.fom).isAfter(normaliserteBerørtePerioder.at(-1)!.tom, 'd')) {
+            erstattedeBerørtePerioder.push(normaliserteNyePerioder.at(-1)!);
         }
 
         return [...foregåendePerioder, ...erstattedeBerørtePerioder, ...påfølgendePerioder];
     } else {
-        const førstePeriode = perioder[0];
-        const sistePeriode = perioder[perioder.length - 1];
+        const førstePeriode = perioder[0]!;
+        const sistePeriode = perioder.at(-1);
         const nyPeriodeFom = dayjs(nyPeriode.fom);
 
         if (nyPeriodeFom.isBefore(førstePeriode.fom, 'day')) {
@@ -194,7 +141,7 @@ export const leggTilPeriode = ({
             return [nyPeriode, ...perioder];
         } else {
             const tidsperiodeMellomSistePeriodeOgNyPeriode = getTidsperiodeMellomPerioder(
-                { fom: sistePeriode.fom, tom: sistePeriode.tom },
+                { fom: sistePeriode!.fom, tom: sistePeriode!.tom },
                 { fom: nyPeriode.fom, tom: nyPeriode.tom },
             );
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const noMatchMedia = typeof window !== 'undefined' && window.matchMedia === undefined;
+const noMatchMedia = typeof globalThis !== 'undefined' && globalThis.matchMedia === undefined;
 
 /**
  * @example useMedia("screen and (min-width: 1024px)")
@@ -15,8 +15,9 @@ export const useMedia = (media: string, fallback?: boolean): boolean | undefined
         if (noMatchMedia) {
             return;
         }
-        const mediaQueryList = window.matchMedia(media);
+        const mediaQueryList = globalThis.matchMedia(media);
 
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- TODO (TOR) - Vurder om denne kan fjennast
         setMatches(mediaQueryList.matches);
 
         const listener = (evt: MediaQueryListEvent) => {

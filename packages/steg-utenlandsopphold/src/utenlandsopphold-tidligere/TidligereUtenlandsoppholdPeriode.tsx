@@ -48,7 +48,7 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
     const maxDateTom = dayjs(DATE_TODAY).toDate();
 
     return (
-        <VStack gap="5" align="start">
+        <VStack gap="space-20" align="start">
             <RhfSelect
                 name={`utenlandsoppholdSiste12Mnd.${index}.landkode`}
                 control={control}
@@ -104,7 +104,7 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
                         alleAndreUtenlandsopphold,
                     ),
                 ]}
-                onChange={() => isSubmitted && trigger()}
+                onChange={() => isSubmitted && void trigger()}
                 defaultMonth={tom ? dayjs(tom).toDate() : undefined}
             />
             <RhfDatepicker
@@ -144,7 +144,7 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
                         alleAndreUtenlandsopphold,
                     ),
                 ]}
-                onChange={() => isSubmitted && trigger()}
+                onChange={() => isSubmitted && void trigger()}
             />
             {index > 0 && (
                 <Button

@@ -5,13 +5,12 @@ import {
     DelivisTilretteleggingPeriodeType,
     DelvisTilrettelegging,
     IngenTilrettelegging,
-    Tilretteleggingstype,
 } from 'types/Tilrettelegging';
 import { søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
 import { getTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold, FRILANS_ID } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
 import { ProgressStep } from '@navikt/fp-ui';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
@@ -23,10 +22,10 @@ const getStepLabels = (
     erFlereTilrettelegginger?: boolean,
     navn?: string,
 ): Record<SøknadRoute, string> => ({
+    [SøknadRoute.FORSIDE]: '',
     [SøknadRoute.BARNET]: intl.formatMessage({ id: 'steps.label.barnet' }),
     [SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT]: intl.formatMessage({ id: 'steps.label.arbeid' }),
     [SøknadRoute.ARBEID_I_UTLANDET]: intl.formatMessage({ id: 'steps.label.arbeidIUtlandet' }),
-    [SøknadRoute.FORSIDE]: '',
     [SøknadRoute.FRILANS]: intl.formatMessage({ id: 'steps.label.frilans' }),
     [SøknadRoute.HAR_BODD_I_UTLANDET]: intl.formatMessage({ id: 'steps.label.boIUtlandetIFortid' }),
     [SøknadRoute.NÆRING]: intl.formatMessage({ id: 'steps.label.næring' }),
@@ -46,6 +45,7 @@ const getStepLabels = (
     [SøknadRoute.FERIE]: erFlereTilrettelegginger
         ? intl.formatMessage({ id: 'steps.label.ferie.flere' }, { navn })
         : intl.formatMessage({ id: 'steps.label.ferie.en' }),
+    [SøknadRoute.KVITTERING]: '',
 });
 
 const createTilretteleggingSteps = ({
@@ -55,7 +55,7 @@ const createTilretteleggingSteps = ({
     tilretteleggingId,
     typeArbeidsgiver,
 }: {
-    currentPath: SøknadRoute | string;
+    currentPath: string;
     labels: Record<SøknadRoute, string>;
     tilretteleggingId: string;
     tilrettelegging?: DelvisTilrettelegging | IngenTilrettelegging;
@@ -78,7 +78,7 @@ const createTilretteleggingSteps = ({
     });
 
     if (
-        tilrettelegging?.type === Tilretteleggingstype.DELVIS &&
+        tilrettelegging?.type === 'delvis' &&
         tilrettelegging.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
     ) {
         const perioderPath = addTilretteleggingIdToRoute(SøknadRoute.PERIODER, tilretteleggingId);
@@ -104,7 +104,7 @@ const createTilretteleggingSteps = ({
 const getTilretteleggingLabels = (
     intl: IntlShape,
     erFlereTilrettelegginger: boolean,
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     id?: string,
 ): Record<SøknadRoute, string> => {
     if (id === FRILANS_ID || id === EGEN_NÆRING_ID) {
@@ -120,18 +120,18 @@ const getTilretteleggingLabels = (
     return getStepLabels(intl, erFlereTilrettelegginger, navn);
 };
 
-const createStep = (route: SøknadRoute, intl: IntlShape, currentPath: string): ProgressStep<SøknadRoute | string> => ({
+const createStep = (route: SøknadRoute, intl: IntlShape, currentPath: string): ProgressStep<string> => ({
     id: route,
     label: getStepLabels(intl)[route],
-    isSelected: currentPath === route,
+    isSelected: currentPath === route.toString(),
 });
 
 const getStepConfig = (
     intl: IntlShape,
-    currentPath: SøknadRoute | string,
-    arbeidsforhold: Arbeidsforhold[],
+    currentPath: string,
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     getStateData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-): Array<ProgressStep<SøknadRoute | string>> => {
+): Array<ProgressStep<string>> => {
     const arbeidsforholdOgInntekt = getStateData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const tilrettelegginger = getStateData(ContextDataType.TILRETTELEGGINGER);
     const valgteArbeidsforhold = getStateData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
@@ -180,7 +180,7 @@ const getStepConfig = (
     const harValgtFlereTilrettelegginger = !!valgteArbeidsforhold && valgteArbeidsforhold.length > 1;
     const harValgtEnTilrettelegging = !!valgteArbeidsforhold && valgteArbeidsforhold.length === 1;
     if (harValgtFlereTilrettelegginger) {
-        valgteArbeidsforhold.forEach((tilretteleggingId) => {
+        for (const tilretteleggingId of valgteArbeidsforhold) {
             const typeArbeidsgiver = getTypeArbeidForTilrettelegging(tilretteleggingId, arbeidsforhold);
             const labels = getTilretteleggingLabels(
                 intl,
@@ -197,26 +197,28 @@ const getStepConfig = (
                     typeArbeidsgiver,
                 }),
             );
-        });
+        }
     } else if ((harValgtEnTilrettelegging || harKunEttArbeid) && barn && arbeidsforholdOgInntekt) {
         const tilretteleggingId = harValgtEnTilrettelegging
             ? valgteArbeidsforhold[0]
             : getTilretteleggingId(arbeidsforhold, barn.termindato, arbeidsforholdOgInntekt);
         const labels = getTilretteleggingLabels(intl, false, arbeidsforhold, tilretteleggingId);
-        const typeArbeidsgiver = getTypeArbeidForTilrettelegging(tilretteleggingId, arbeidsforhold);
+        const typeArbeidsgiver = getTypeArbeidForTilrettelegging(tilretteleggingId!, arbeidsforhold);
 
         steps.push(
             ...createTilretteleggingSteps({
                 currentPath,
                 labels,
-                tilretteleggingId,
-                tilrettelegging: tilrettelegginger?.[tilretteleggingId],
+                tilretteleggingId: tilretteleggingId!,
+                tilrettelegging: tilrettelegginger?.[tilretteleggingId!],
                 typeArbeidsgiver,
             }),
         );
     } else {
-        steps.push(createStep(SøknadRoute.SKJEMA, intl, currentPath));
-        steps.push(createStep(SøknadRoute.TILRETTELEGGING, intl, currentPath));
+        steps.push(
+            createStep(SøknadRoute.SKJEMA, intl, currentPath),
+            createStep(SøknadRoute.TILRETTELEGGING, intl, currentPath),
+        );
 
         if (
             !arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende &&
@@ -231,7 +233,7 @@ const getStepConfig = (
     return steps;
 };
 
-export const useStepConfig = (arbeidsforhold: Arbeidsforhold[]): Array<ProgressStep<SøknadRoute | string>> => {
+export const useStepConfig = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[]): Array<ProgressStep<string>> => {
     const intl = useIntl();
 
     const location = useLocation();

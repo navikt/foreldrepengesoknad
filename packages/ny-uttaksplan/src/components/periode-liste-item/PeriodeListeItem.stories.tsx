@@ -3,45 +3,81 @@ import { ComponentProps } from 'react';
 
 import { Accordion } from '@navikt/ds-react';
 
-import { Forelder } from '@navikt/fp-common';
-import { BarnType, StønadskontoType } from '@navikt/fp-constants';
-import { ArbeidsgiverInfoType, Barn, UttakArbeidType } from '@navikt/fp-types';
+import { BarnType } from '@navikt/fp-constants';
+import { Barn, KontoBeregningDto } from '@navikt/fp-types';
 
-import { UttaksplanContextDataType, UttaksplanDataContext } from '../../context/UttaksplanDataContext';
+import { UttaksplanDataProvider } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType } from '../../types/Planperiode';
 import { PeriodeListeItem } from './PeriodeListeItem';
 
-type StoryArgs = { erFarEllerMedmor: boolean; familiehendelsedato: string; barn: Barn } & ComponentProps<
-    typeof PeriodeListeItem
->;
+const kontoNårBeggeHarRett = {
+    kontoer: [
+        {
+            konto: 'FELLESPERIODE',
+            dager: 80,
+        },
+        {
+            konto: 'MØDREKVOTE',
+            dager: 75,
+        },
+        {
+            konto: 'FEDREKVOTE',
+            dager: 75,
+        },
+        {
+            konto: 'FORELDREPENGER_FØR_FØDSEL',
+            dager: 15,
+        },
+    ],
+    minsteretter: {
+        farRundtFødsel: 0,
+        toTette: 0,
+    },
+    tillegg: {
+        flerbarn: 0,
+        prematur: 0,
+    },
+} satisfies KontoBeregningDto;
+
+type StoryArgs = {
+    erFarEllerMedmor: boolean;
+    familiehendelsedato: string;
+    barn: Barn;
+    erAleneOmOmsorg: boolean;
+} & ComponentProps<typeof PeriodeListeItem>;
 
 const customRenderer = ({
     erFarEllerMedmor,
     erFamiliehendelse,
     permisjonsperiode,
-    familiehendelsedato,
+    erAleneOmOmsorg,
+    handleAddPeriode,
     handleUpdatePeriode,
     handleDeletePeriode,
     handleDeletePerioder,
     barn,
 }: StoryArgs) => {
     return (
-        <UttaksplanDataContext
-            initialState={{
-                [UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR]: erFarEllerMedmor,
-                [UttaksplanContextDataType.BARN]: barn,
-                [UttaksplanContextDataType.FAMILIEHENDELSEDATO]: familiehendelsedato,
-                [UttaksplanContextDataType.FAMILIESITUASJON]: 'fødsel',
-                [UttaksplanContextDataType.MODUS]: 'planlegger',
-                [UttaksplanContextDataType.NAVN_PÅ_FORELDRE]: {
-                    farMedmor: 'Far',
-                    mor: 'Mor',
-                },
+        <UttaksplanDataProvider
+            erFarEllerMedmor={erFarEllerMedmor}
+            barn={barn}
+            aleneOmOmsorg={erAleneOmOmsorg}
+            modus="planlegger"
+            navnPåForeldre={{
+                farMedmor: 'Far',
+                mor: 'Mor',
             }}
+            valgtStønadskonto={kontoNårBeggeHarRett}
+            erMedmorDelAvSøknaden
+            bareFarMedmorHarRett={false}
+            harAktivitetskravIPeriodeUtenUttak={false}
+            erDeltUttak
+            saksperioder={[]}
         >
             <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
                 <Accordion>
                     <PeriodeListeItem
+                        handleAddPeriode={handleAddPeriode}
                         handleUpdatePeriode={handleUpdatePeriode}
                         handleDeletePeriode={handleDeletePeriode}
                         handleDeletePerioder={handleDeletePerioder}
@@ -50,7 +86,7 @@ const customRenderer = ({
                     />
                 </Accordion>
             </div>
-        </UttaksplanDataContext>
+        </UttaksplanDataProvider>
     );
 };
 
@@ -65,6 +101,7 @@ type Story = StoryObj<typeof meta>;
 
 export const UttaksperiodeMor: Story = {
     args: {
+        handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
@@ -74,6 +111,7 @@ export const UttaksperiodeMor: Story = {
             type: BarnType.FØDT,
             termindato: '2024-06-01',
         },
+        erAleneOmOmsorg: false,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-06-01',
         permisjonsperiode: {
@@ -81,14 +119,15 @@ export const UttaksperiodeMor: Story = {
                 fom: '2024-06-01',
                 tom: '2024-06-30',
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             perioder: [
                 {
+                    erAnnenPartEøs: false,
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-30',
-                    forelder: Forelder.mor,
-                    kontoType: StønadskontoType.Mødrekvote,
+                    forelder: 'MOR',
+                    kontoType: 'MØDREKVOTE',
                     readOnly: false,
                 },
             ],
@@ -98,6 +137,7 @@ export const UttaksperiodeMor: Story = {
 
 export const UttaksperiodeMorFlerePerioder: Story = {
     args: {
+        handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
@@ -107,6 +147,7 @@ export const UttaksperiodeMorFlerePerioder: Story = {
             type: BarnType.FØDT,
             termindato: '2024-06-01',
         },
+        erAleneOmOmsorg: false,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-06-01',
         permisjonsperiode: {
@@ -114,22 +155,24 @@ export const UttaksperiodeMorFlerePerioder: Story = {
                 fom: '2024-06-01',
                 tom: '2024-07-26',
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             perioder: [
                 {
+                    erAnnenPartEøs: false,
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-28',
-                    forelder: Forelder.mor,
-                    kontoType: StønadskontoType.Mødrekvote,
+                    forelder: 'MOR',
+                    kontoType: 'MØDREKVOTE',
                     readOnly: false,
                 },
                 {
+                    erAnnenPartEøs: false,
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-07-01',
                     tom: '2024-07-26',
-                    forelder: Forelder.mor,
-                    kontoType: StønadskontoType.Fellesperiode,
+                    forelder: 'MOR',
+                    kontoType: 'FELLESPERIODE',
                     readOnly: false,
                 },
             ],
@@ -139,6 +182,7 @@ export const UttaksperiodeMorFlerePerioder: Story = {
 
 export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
     args: {
+        handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
@@ -148,6 +192,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
             type: BarnType.FØDT,
             termindato: '2024-06-01',
         },
+        erAleneOmOmsorg: false,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-06-01',
         permisjonsperiode: {
@@ -155,36 +200,38 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
                 fom: '2024-06-01',
                 tom: '2024-07-26',
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             perioder: [
                 {
+                    erAnnenPartEøs: false,
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-28',
-                    kontoType: StønadskontoType.Mødrekvote,
+                    kontoType: 'MØDREKVOTE',
                     readOnly: false,
                 },
                 {
+                    erAnnenPartEøs: false,
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-07-01',
                     tom: '2024-07-26',
-                    forelder: Forelder.mor,
-                    kontoType: StønadskontoType.Fellesperiode,
+                    forelder: 'MOR',
+                    kontoType: 'FELLESPERIODE',
                     readOnly: false,
                 },
                 {
+                    erAnnenPartEøs: false,
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-07-29',
                     tom: '2024-08-23',
-                    forelder: Forelder.mor,
-                    kontoType: StønadskontoType.Fellesperiode,
+                    forelder: 'MOR',
+                    kontoType: 'FELLESPERIODE',
                     gradering: {
                         aktivitet: {
-                            type: UttakArbeidType.ORDINÆRT_ARBEID,
+                            type: 'ORDINÆRT_ARBEID',
                             arbeidsgiver: {
                                 id: '1',
-                                navn: 'TESTY TEST',
-                                type: ArbeidsgiverInfoType.ORGANISASJON,
+                                type: 'ORGANISASJON',
                             },
                         },
                         arbeidstidprosent: 50,
@@ -198,6 +245,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
 
 export const UttaksperiodeFar: Story = {
     args: {
+        handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
@@ -207,6 +255,7 @@ export const UttaksperiodeFar: Story = {
             type: BarnType.FØDT,
             termindato: '2024-06-01',
         },
+        erAleneOmOmsorg: false,
         erFarEllerMedmor: true,
         familiehendelsedato: '2024-06-01',
         permisjonsperiode: {
@@ -214,14 +263,15 @@ export const UttaksperiodeFar: Story = {
                 fom: '2024-06-01',
                 tom: '2024-06-28',
             },
-            forelder: Forelder.farMedmor,
+            forelder: 'FAR_MEDMOR',
             perioder: [
                 {
+                    erAnnenPartEøs: false,
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-28',
-                    forelder: Forelder.farMedmor,
-                    kontoType: StønadskontoType.Fedrekvote,
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FEDREKVOTE',
                     readOnly: false,
                 },
             ],
@@ -231,6 +281,7 @@ export const UttaksperiodeFar: Story = {
 
 export const PeriodeUtenUttak: Story = {
     args: {
+        handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
@@ -240,6 +291,7 @@ export const PeriodeUtenUttak: Story = {
             type: BarnType.FØDT,
             termindato: '2024-08-01',
         },
+        erAleneOmOmsorg: false,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-08-01',
         permisjonsperiode: {
@@ -250,6 +302,7 @@ export const PeriodeUtenUttak: Story = {
             },
             perioder: [
                 {
+                    erAnnenPartEøs: false,
                     id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-08-01',
                     tom: '2024-08-31',

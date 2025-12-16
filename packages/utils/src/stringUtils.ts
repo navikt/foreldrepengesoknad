@@ -25,7 +25,7 @@ export const capitalizeFirstLetterInEveryWordOnly = (s?: string): string | undef
 };
 
 const navnSlutterPåSLyd = (navn: string): boolean => {
-    const sisteBokstav = navn.charAt(navn.length - 1).toLowerCase();
+    const sisteBokstav = (navn.at(-1) ?? '').toLowerCase();
     return sisteBokstav === 's' || sisteBokstav === 'x' || sisteBokstav === 'z';
 };
 

@@ -1,440 +1,290 @@
 .days {
-    height: 19px;
-    padding: 2px 2px 2px 2px;
+    height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 2px 0 2px 0;
+    margin: 1px 1px 1px 1px;
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
-    line-height: 13px;
     letter-spacing: 0.06px;
-    cursor: default;
+    border-radius: 4px;
+    user-select: none;
+    all: 'unset';
 }
 
-.cursor {
+@media (max-width: 768px) {
+    .days {
+        height: 40px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .days {
+        height: 30px;
+        font-size: 14px;
+    }
+}
+
+.cursorAndHoover {
     cursor: pointer;
 }
 
+.cursorAndHoover:hover {
+    background-color: var(--ax-accent-200);
+}
+
+.srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 .blueDay {
-    background-color: var(--a-blue-300) !important;
+    background-color: var(--ax-accent-400) !important;
     print-color-adjust: exact;
 }
 
-.blueDaySelected {
-    border-top: 2px solid var(--a-blue-300);
-    border-bottom: 2px solid var(--a-blue-300);
-    border-left: 1px solid var(--a-blue-300);
-    border-right: 1px solid var(--a-blue-300);
+.darkblueDay {
+    background-color: var(--ax-accent-500) !important;
+    color: var(--ax-bg-default);
     print-color-adjust: exact;
 }
 
 .lightblueDay {
-    background-color: var(--a-data-surface-1-subtle) !important;
-    border-top: 2px solid var(--a-blue-300);
-    border-bottom: 2px solid var(--a-blue-300);
-    print-color-adjust: exact;
-}
-
-.lightblueDaySelected {
-    border-top: 2px solid var(--a-blue-300);
-    border-bottom: 2px solid var(--a-blue-300);
-    border-left: 1px solid var(--a-blue-300);
-    border-right: 1px solid var(--a-blue-300);
+    background-color: var(--ax-accent-300) !important;
+    border: 2px solid var(--ax-accent-500);
     print-color-adjust: exact;
 }
 
 .lightblueDay.firstDay {
-    border-left: 2px solid var(--a-blue-300);
+    border-left: 2px solid var(--ax-accent-500);
 }
 
 .lightblueDay.lastDay {
-    border-right: 2px solid var(--a-blue-300);
+    border-right: 2px solid var(--ax-accent-500);
 }
 
 .lightblueDay.firstAndLastDay {
-    border-left: 2px solid var(--a-blue-300);
-    border-right: 2px solid var(--a-blue-300);
+    border-left: 2px solid var(--ax-accent-500);
+    border-right: 2px solid var(--ax-accent-500);
 }
 
 .lightgreenDay {
-    background-color: var(--a-green-100) !important;
-    border-top: 2px solid var(--a-green-300);
-    border-bottom: 2px solid var(--a-green-300);
-    print-color-adjust: exact;
-}
-
-.lightgreenSelected {
-    border-top: 2px solid var(--a-green-300);
-    border-bottom: 2px solid var(--a-green-300);
-    border-left: 1px solid var(--a-green-300);
-    border-right: 1px solid var(--a-green-300);
+    background-color: var(--ax-success-400) !important;
+    border: 2px solid var(--ax-success-400);
     print-color-adjust: exact;
 }
 
 .lightgreenDay.firstDay {
-    border-left: 2px solid var(--a-green-300);
+    border-left: 2px solid var(--ax-success-400);
 }
 
 .lightgreenDay.lastDay {
-    border-right: 2px solid var(--a-green-300);
+    border-right: 2px solid var(--ax-success-400);
 }
 
 .lightgreenDay.firstAndLastDay {
-    border-left: 2px solid var(--a-green-300);
-    border-right: 2px solid var(--a-green-300);
+    border-left: 2px solid var(--ax-success-400);
+    border-right: 2px solid var(--ax-success-400);
 }
 
 .greenDay {
-    background-color: var(--a-green-300) !important;
-    print-color-adjust: exact;
-}
-
-.greenDaySelected {
-    border-top: 2px solid var(--a-green-300);
-    border-bottom: 2px solid var(--a-green-300);
-    border-left: 1px solid var(--a-green-300);
-    border-right: 1px solid var(--a-green-300);
+    background-color: var(--ax-success-400) !important;
     print-color-adjust: exact;
 }
 
 .greenStripedDay {
     background: linear-gradient(
         45deg,
-        var(--a-green-200) 0%,
-        var(--a-green-200) 15%,
-        white 15%,
-        white 30%,
-        var(--a-green-200) 30%,
-        var(--a-green-200) 45%,
-        white 45%,
-        white 60%,
-        var(--a-green-200) 60%,
-        var(--a-green-200) 75%,
-        white 75%,
-        white 90%,
-        var(--a-green-200) 90%
+        var(--ax-success-400) 0%,
+        var(--ax-success-400) 15%,
+        var(--ax-bg-default) 15%,
+        var(--ax-bg-default) 30%,
+        var(--ax-success-400) 30%,
+        var(--ax-success-400) 45%,
+        var(--ax-bg-default) 45%,
+        var(--ax-bg-default) 60%,
+        var(--ax-success-400) 60%,
+        var(--ax-success-400) 75%,
+        var(--ax-bg-default) 75%,
+        var(--ax-bg-default) 90%,
+        var(--ax-success-400) 90%
     ) !important;
-    border-top: 2px solid var(--a-green-300);
-    border-bottom: 2px solid var(--a-green-300);
-    print-color-adjust: exact;
-}
-
-.greenStripedDaySelected {
-    background: linear-gradient(
-        45deg,
-        var(--a-green-200) 0%,
-        var(--a-green-200) 15%,
-        white 15%,
-        white 30%,
-        var(--a-green-200) 30%,
-        var(--a-green-200) 45%,
-        white 45%,
-        white 60%,
-        var(--a-green-200) 60%,
-        var(--a-green-200) 75%,
-        white 75%,
-        white 90%,
-        var(--a-green-200) 90%
-    ) !important;
-    border-top: 2px solid var(--a-green-300);
-    border-bottom: 2px solid var(--a-green-300);
-    border-left: 1px solid var(--a-green-300);
-    border-right: 1px solid var(--a-green-300);
+    border: 2px solid var(--ax-success-500);
     print-color-adjust: exact;
 }
 
 .greenStripedDay.firstDay {
-    border-left: 2px solid var(--a-green-300);
+    border-left: 2px solid var(--ax-success-500);
 }
 
 .greenStripedDay.lastDay {
-    border-right: 2px solid var(--a-green-300);
+    border-right: 2px solid var(--ax-success-500);
 }
 
 .greenStripedDay.firstAndLastDay {
-    border-left: 2px solid var(--a-green-300);
-    border-right: 2px solid var(--a-green-300);
+    border-left: 2px solid var(--ax-success-500);
+    border-right: 2px solid var(--ax-success-500);
 }
 
 .blueStripedDay {
     background: linear-gradient(
         45deg,
-        var(--a-blue-200) 0%,
-        var(--a-blue-200) 15%,
-        white 15%,
-        white 30%,
-        var(--a-blue-200) 30%,
-        var(--a-blue-200) 45%,
-        white 45%,
-        white 60%,
-        var(--a-blue-200) 60%,
-        var(--a-blue-200) 75%,
-        white 75%,
-        white 90%,
-        var(--a-blue-200) 90%
+        var(--ax-accent-400) 0%,
+        var(--ax-accent-400) 15%,
+        var(--ax-bg-default) 15%,
+        var(--ax-bg-default) 30%,
+        var(--ax-accent-400) 30%,
+        var(--ax-accent-400) 45%,
+        var(--ax-bg-default) 45%,
+        var(--ax-bg-default) 60%,
+        var(--ax-accent-400) 60%,
+        var(--ax-accent-400) 75%,
+        var(--ax-bg-default) 75%,
+        var(--ax-bg-default) 90%,
+        var(--ax-accent-400) 90%
     ) !important;
-    border-top: 2px solid var(--a-blue-300);
-    border-bottom: 2px solid var(--a-blue-300);
-    print-color-adjust: exact;
-}
-
-.blueStripedDaySelected {
-    background: linear-gradient(
-        45deg,
-        var(--a-blue-200) 0%,
-        var(--a-blue-200) 15%,
-        white 15%,
-        white 30%,
-        var(--a-blue-200) 30%,
-        var(--a-blue-200) 45%,
-        white 45%,
-        white 60%,
-        var(--a-blue-200) 60%,
-        var(--a-blue-200) 75%,
-        white 75%,
-        white 90%,
-        var(--a-blue-200) 90%
-    ) !important;
-    border-top: 2px solid var(--a-blue-300);
-    border-bottom: 2px solid var(--a-blue-300);
-    border-left: 1px solid var(--a-blue-300);
-    border-right: 1px solid var(--a-blue-300);
+    border: 2px solid var(--ax-accent-500);
     print-color-adjust: exact;
 }
 
 .blueStripedDay.firstDay {
-    border-left: 2px solid var(--a-blue-300);
+    border-left: 2px solid var(--ax-accent-500);
 }
 
 .blueStripedDay.lastDay {
-    border-right: 2px solid var(--a-blue-300);
+    border-right: 2px solid var(--ax-accent-500);
 }
 
 .blueStripedDay.firstAndLastDay {
-    border-left: 2px solid var(--a-blue-300);
-    border-right: 2px solid var(--a-blue-300);
+    border-left: 2px solid var(--ax-accent-500);
+    border-right: 2px solid var(--ax-accent-500);
 }
 
 .grayDay {
-    background-color: var(--a-gray-200);
+    background-color: var(--ax-neutral-100);
     print-color-adjust: exact;
     cursor: default;
 }
 
 .blackDay {
-    background-color: var(--a-gray-800) !important;
-    color: white;
+    background-color: var(--ax-bg-neutral-strong) !important;
+    color: var(--ax-bg-default);
     print-color-adjust: exact;
 }
 
-.blackDaySelected {
-    border-top: 2px solid var(--a-gray-800);
-    border-bottom: 2px solid var(--a-gray-800);
-    border-left: 1px solid var(--a-gray-800);
-    border-right: 1px solid var(--a-gray-800);
+.blackOutlineDay {
+    border: 2px solid var(--ax-bg-neutral-strong);
     print-color-adjust: exact;
 }
 
 .blueOutlineDay {
-    border-top: 2px solid var(--a-blue-300);
-    border-bottom: 2px solid var(--a-blue-300);
-    print-color-adjust: exact;
-}
-
-.blueOutlineSelected {
-    border-top: 2px solid var(--a-blue-300);
-    border-bottom: 2px solid var(--a-blue-300);
-    border-left: 1px solid var(--a-blue-300);
-    border-right: 1px solid var(--a-blue-300);
+    border: 2px solid var(--ax-accent-500);
     print-color-adjust: exact;
 }
 
 .blueOutlineDay.firstDay {
-    border-left: 2px solid var(--a-blue-300);
+    border-left: 2px solid var(--ax-accent-500);
 }
 
 .blueOutlineDay.lastDay {
-    border-right: 2px solid var(--a-blue-300);
+    border-right: 2px solid var(--ax-accent-500);
 }
 
 .blueOutlineDay.firstAndLastDay {
-    border-left: 2px solid var(--a-blue-300);
-    border-right: 2px solid var(--a-blue-300);
+    border-left: 2px solid var(--ax-accent-500);
+    border-right: 2px solid var(--ax-accent-500);
 }
 
 .greenOutlineDay {
-    border-top: 2px solid var(--a-green-300);
-    border-bottom: 2px solid var(--a-green-300);
-    print-color-adjust: exact;
-}
-
-.greenOutlineDaySelected {
-    border-top: 2px solid var(--a-green-300);
-    border-bottom: 2px solid var(--a-green-300);
-    border-left: 1px solid var(--a-green-300);
-    border-right: 1px solid var(--a-green-300);
+    border: 2px solid var(--ax-success-400);
     print-color-adjust: exact;
 }
 
 .greenOutlineDay.firstDay {
-    border-left: 2px solid var(--a-green-300);
+    border-left: 2px solid var(--ax-success-400);
 }
 
 .greenOutlineDay.lastDay {
-    border-right: 2px solid var(--a-green-300);
+    border-right: 2px solid var(--ax-success-400);
 }
 
 .greenOutlineDay.firstAndLastDay {
-    border-left: 2px solid var(--a-green-300);
-    border-right: 2px solid var(--a-green-300);
+    border-left: 2px solid var(--ax-success-400);
+    border-right: 2px solid var(--ax-success-400);
 }
 
 .lightgreenBlueDay {
     background: linear-gradient(
         to top,
-        var(--a-blue-300),
-        var(--a-blue-300) 50%,
-        var(--a-green-100) 50%,
-        var(--a-green-100) 75%,
-        var(--a-green-100) 100%
+        var(--ax-accent-400),
+        var(--ax-accent-400) 50%,
+        var(--ax-success-200) 50%,
+        var(--ax-success-200) 75%,
+        var(--ax-success-200) 100%
     ) !important;
-    border-top: 2px solid var(--a-blue-300);
-    border-bottom: 2px solid var(--a-blue-300);
-    print-color-adjust: exact;
-}
-
-.lightgreenBlueDaySelected {
-    background: linear-gradient(
-        to top,
-        var(--a-blue-300),
-        var(--a-blue-300) 50%,
-        var(--a-green-100) 50%,
-        var(--a-green-100) 75%,
-        var(--a-green-100) 100%
-    ) !important;
-    border-top: 2px solid var(--a-blue-300);
-    border-bottom: 2px solid var(--a-blue-300);
-    border-left: 1px solid var(--a-blue-300);
-    border-right: 1px solid var(--a-blue-300);
+    border: 2px solid var(--ax-accent-400);
     print-color-adjust: exact;
 }
 
 .lightgreenBlueDay.firstDay {
-    border-left: 2px solid var(--a-blue-300);
+    border-left: 2px solid var(--ax-accent-500);
 }
 
 .lightgreenBlueDay.lastDay {
-    border-right: 2px solid var(--a-blue-300);
+    border-right: 2px solid var(--ax-accent-500);
 }
 
 .lightgreenBlueDay.firstAndLastDay {
-    border-left: 2px solid var(--a-blue-300);
-    border-right: 2px solid var(--a-blue-300);
+    border-left: 2px solid var(--ax-accent-500);
+    border-right: 2px solid var(--ax-accent-500);
 }
 
 .lightblueGreenDay {
     background: linear-gradient(
         to top,
-        var(--a-green-300),
-        var(--a-green-300) 50%,
-        var(--a-data-surface-1-subtle) 50%,
-        var(--a-data-surface-1-subtle) 100%
+        var(--ax-success-400),
+        var(--ax-success-400) 50%,
+        var(--ax-accent-300) 50%,
+        var(--ax-accent-300) 100%
     ) !important;
-    border-top: 2px solid var(--a-green-300);
-    border-bottom: 2px solid var(--a-green-300);
-    print-color-adjust: exact;
-}
-
-.lightblueGreenDaySelected {
-    background: linear-gradient(
-        to top,
-        var(--a-green-300),
-        var(--a-green-300) 50%,
-        var(--a-data-surface-1-subtle) 50%,
-        var(--a-data-surface-1-subtle) 100%
-    ) !important;
-    border-top: 2px solid var(--a-green-300);
-    border-bottom: 2px solid var(--a-green-300);
-    border-left: 1px solid var(--a-green-300);
-    border-right: 1px solid var(--a-green-300);
+    border: 2px solid var(--ax-success-400);
     print-color-adjust: exact;
 }
 
 .lightblueGreenDay.firstDay {
-    border-left: 2px solid var(--a-green-300);
+    border-left: 2px solid var(--ax-success-400);
 }
 
 .lightblueGreenDay.lastDay {
-    border-right: 2px solid var(--a-green-300);
+    border-right: 2px solid var(--ax-success-400);
 }
 
 .lightblueGreenDay.firstAndLastDay {
-    border-left: 2px solid var(--a-green-300);
-    border-right: 2px solid var(--a-green-300);
+    border-left: 2px solid var(--ax-success-400);
+    border-right: 2px solid var(--ax-success-400);
 }
 
 .none {
     padding-left: 2px;
     padding-right: 2px;
-    cursor: default;
 }
 
 .pinkDay {
-    --c: var(--a-red-100);
-    width: 20px;
-    height: 20px;
-    aspect-ratio: 1;
-    background:
-        radial-gradient(circle at 60% 65%, var(--c) 64%, #0000 65%) top left/50% 50%,
-        radial-gradient(circle at 40% 65%, var(--c) 64%, #0000 65%) top right/50% 50%,
-        conic-gradient(from -45deg at 50% 85.5%, var(--c) 90deg, #0000 0) bottom/100% 50%;
-    background-repeat: no-repeat;
-    padding: 0 2px 2px 2px;
-    margin-left: 1px;
+    background-color: var(--ax-danger-200) !important;
+    padding: 10px 10px 10px 10px;
     print-color-adjust: exact;
 }
 
 .purpleDay {
-    background-color: var(--a-purple-200) !important;
+    background-color: var(--ax-meta-purple-400) !important;
     print-color-adjust: exact;
-}
-
-.purpleDaySelected {
-    border-top: 2px solid var(--a-purple-200);
-    border-bottom: 2px solid var(--a-purple-200);
-    border-left: 1px solid var(--a-purple-200);
-    border-right: 1px solid var(--a-purple-200);
-    print-color-adjust: exact;
-}
-
-.firstDay {
-    border-radius: 1rem 0 0 1rem;
-    margin-left: 1px;
-}
-
-.lastDay {
-    border-radius: 0 1rem 1rem 0;
-    margin-right: 1px;
-}
-
-.firstAndLastDay {
-    border-radius: 1rem;
-}
-
-@media (max-width: 630px) {
-    .days {
-        height: 15px;
-        padding: 2px 0px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 2px 0 2px 0;
-        font-size: 10px;
-        font-style: normal;
-        font-weight: 600;
-        line-height: 13px;
-        letter-spacing: 0.06px;
-    }
 }

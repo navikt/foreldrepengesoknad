@@ -12,7 +12,7 @@ import {
     isUtsettelseMorInnlagt,
     isUttakAvFedrekvoteMorForSyk,
 } from '@navikt/fp-common';
-import { Periodetype, Skjemanummer, StønadskontoType } from '@navikt/fp-constants';
+import { Periodetype, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, AttachmentMetadataTidsperiode } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -31,7 +31,7 @@ interface ManglerDokumentasjonProps {
 }
 
 const ManglerDokumentasjon = ({ headerLabel, bodyLabel }: ManglerDokumentasjonProps) => (
-    <VStack gap="2">
+    <VStack gap="space-8">
         <Label>
             {headerLabel} <FormattedMessage id="dokumentasjon.mangler" />
         </Label>
@@ -64,14 +64,16 @@ export const DokumentasjonSendSenereLabel = ({
 }: Props) => {
     const tidsperioder = attachment.dokumenterer?.perioder;
 
-    const morErForSykEllerInnlagtFørsteSeksUker =
-        uttaksperioderSomManglerVedlegg.filter(isPeriodeMedMorInnleggelse).find((p) => {
-            if (p.type === Periodetype.Uttak && p.erMorForSyk === true && p.konto === StønadskontoType.Fedrekvote) {
+    const morErForSykEllerInnlagtFørsteSeksUker = uttaksperioderSomManglerVedlegg
+        .filter(isPeriodeMedMorInnleggelse)
+        .some((p) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison -- dette er riktig sjekk, men med to forskjellige Enums. Burde fikses
+            if (p.type === Periodetype.Uttak && p.erMorForSyk === true && p.konto === 'FEDREKVOTE') {
                 return true;
             }
 
             return false;
-        }) !== undefined;
+        });
 
     switch (attachment.skjemanummer) {
         case Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG:
@@ -252,7 +254,7 @@ export const DokumentasjonSendSenereLabel = ({
             );
         case Skjemanummer.DOK_UTDANNING_MOR:
             return (
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <Label>
                         <FormattedMessage id="manglendeVedlegg.studerer.label" />{' '}
                         <FormattedMessage id="dokumentasjon.mangler" />
@@ -291,7 +293,7 @@ export const DokumentasjonSendSenereLabel = ({
             );
         case Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR:
             return (
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <Label>
                         <FormattedMessage id="manglendeVedlegg.studererOgJobber.label" />{' '}
                         <FormattedMessage id="dokumentasjon.mangler" />

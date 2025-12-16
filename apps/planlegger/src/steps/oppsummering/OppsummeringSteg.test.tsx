@@ -39,7 +39,7 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Både Klara og Espen har jobbet 6 av de siste 10 månedene, og har tjent mer enn 62 014 kr det siste året.',
+                'Både Klara og Espen har jobbet minst 6 av de siste 10 månedene, og har tjent 65 080 kr eller mer det siste året.',
             ),
         ).toBeInTheDocument();
 
@@ -65,7 +65,7 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Både Klara og Esther har jobbet 6 av de siste 10 månedene, og har tjent mer enn 62 014 kr det siste året.',
+                'Både Klara og Esther har jobbet minst 6 av de siste 10 månedene, og har tjent 65 080 kr eller mer det siste året.',
             ),
         ).toBeInTheDocument();
 
@@ -93,8 +93,7 @@ describe('<OppsummeringSteg>', () => {
 
         expect(screen.getByText('Periode:')).toBeInTheDocument();
         expect(screen.getByText('14. okt. 2024 – 18. juli 2025')).toBeInTheDocument();
-        expect(screen.getByText('Uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Med aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
     });
 
     it('skal vise info der det er flere forsørgere og kun mor har rett til foreldrepenger', async () => {
@@ -107,11 +106,13 @@ describe('<OppsummeringSteg>', () => {
 
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(
-            screen.getByText('Klara har jobbet 6 av de siste 10 månedene og tjent mer enn 62 014 kr det siste året.'),
+            screen.getByText(
+                'Klara har jobbet minst 6 av de siste 10 månedene og tjent 65 080 kr eller mer det siste året.',
+            ),
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Espen har ikke jobbet 6 av de siste 10 månedene og tjent mer enn 62 014 kr det siste året.',
+                'Espen har ikke jobbet minst 6 av de siste 10 månedene og tjent 65 080 kr eller mer det siste året.',
             ),
         ).toBeInTheDocument();
 
@@ -138,11 +139,13 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Espen har ikke jobbet 6 av de siste 10 månedene og tjent mer enn 62 014 kr det siste året.',
+                'Espen har ikke jobbet minst 6 av de siste 10 månedene og tjent 65 080 kr eller mer det siste året.',
             ),
         ).toBeInTheDocument();
         expect(
-            screen.getByText('Hugo har jobbet 6 av de siste 10 månedene og tjent mer enn 62 014 kr det siste året.'),
+            screen.getByText(
+                'Hugo har jobbet minst 6 av de siste 10 månedene og tjent 65 080 kr eller mer det siste året.',
+            ),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Lengde')).toBeInTheDocument();
@@ -165,7 +168,7 @@ describe('<OppsummeringSteg>', () => {
 
         expect(
             screen.getByText(
-                'Espen vil få rundt 2 862 kr per dag hvis dere velger 100 % foreldrepenger eller 2 289 kr per dag med 80 %.',
+                'Espen vil få rundt 3 003 kr per dag hvis dere velger 100 % foreldrepenger eller 2 403 kr per dag med 80 %.',
             ),
         ).toBeInTheDocument();
     });
@@ -193,7 +196,7 @@ describe('<OppsummeringSteg>', () => {
     it('skal kun vise fars uttak i hvor mye-steget, der det er mor og far, men kun far rett til foreldrepenger', async () => {
         render(<MorOgFarKunFarHarRett />);
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
-        const hvorMyeHeading = screen.getAllByText('Hvor mye?')[0];
+        const hvorMyeHeading = screen.getAllByText('Hvor mye?')[0]!;
         const expansionCard = hvorMyeHeading.closest('.navds-expansioncard');
         if (expansionCard) {
             const vismerButton = expansionCard.querySelector('button[aria-expanded="false"]');

@@ -1,15 +1,6 @@
 import { IntlShape } from 'react-intl';
 
-import {
-    Forelder,
-    OppholdÅrsakType,
-    Periode,
-    PeriodeInfoType,
-    StønadskontoType,
-    Søknadsinfo,
-    isInfoPeriodeAnnenPart,
-    isUttaksperiode,
-} from '@navikt/fp-common';
+import { Periode, PeriodeInfoType, Søknadsinfo, isInfoPeriodeAnnenPart, isUttaksperiode } from '@navikt/fp-common';
 
 import { getVarighetString } from '../../components/periodeliste-item-header/PeriodelisteItemHeader';
 import { getStønadskontoNavn } from '../../utils/stønadskontoerUtils';
@@ -18,19 +9,11 @@ import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../utils/ty
 
 const harSøktOmFellesperiode = (periode: Periode, søkerErFarEllerMedmor: boolean) => {
     if (isUttaksperiode(periode)) {
-        if (
-            søkerErFarEllerMedmor &&
-            periode.forelder === Forelder.farMedmor &&
-            periode.konto === StønadskontoType.Fellesperiode
-        ) {
+        if (søkerErFarEllerMedmor && periode.forelder === 'FAR_MEDMOR' && periode.konto === 'FELLESPERIODE') {
             return true;
         }
 
-        if (
-            !søkerErFarEllerMedmor &&
-            periode.forelder === Forelder.mor &&
-            periode.konto === StønadskontoType.Fellesperiode
-        ) {
+        if (!søkerErFarEllerMedmor && periode.forelder === 'MOR' && periode.konto === 'FELLESPERIODE') {
             return true;
         }
     }
@@ -49,8 +32,7 @@ export const stønadskontoInneholderForMyeUttakKunSøkerTest: RegelTest = (grunn
         søkerErFarEllerMedmor,
         søkerErAleneOmOmsorg,
     } = grunnlag;
-    const harSelvSøktOmFellesperiode =
-        perioder.find((p) => harSøktOmFellesperiode(p, søkerErFarEllerMedmor)) !== undefined;
+    const harSelvSøktOmFellesperiode = perioder.some((p) => harSøktOmFellesperiode(p, søkerErFarEllerMedmor));
     const perioderSomSkalBrukes = perioder.filter((p) => {
         if (harSelvSøktOmFellesperiode) {
             return true;
@@ -59,7 +41,7 @@ export const stønadskontoInneholderForMyeUttakKunSøkerTest: RegelTest = (grunn
         if (
             isInfoPeriodeAnnenPart(p) &&
             p.infotype === PeriodeInfoType.uttakAnnenPart &&
-            p.årsak === OppholdÅrsakType.UttakFellesperiodeAnnenForelder
+            p.årsak === 'UTTAK_FELLESP_ANNEN_FORELDER'
         ) {
             return false;
         }

@@ -6,7 +6,7 @@ import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { HvorMye } from 'types/HvorMye';
 
-import { SaksperiodeNy } from '@navikt/fp-types';
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 export enum ContextDataType {
     HVEM_PLANLEGGER = 'HVEM_PLANLEGGER',
@@ -16,8 +16,6 @@ export enum ContextDataType {
     FORDELING = 'FORDELING',
     HVOR_MYE = 'HVOR_MYE',
     UTTAKSPLAN = 'UTTAKSPLAN',
-    ORIGINAL_UTTAKSPLAN = 'ORIGINAL_UTTAKSPLAN',
-    TILPASS_PLAN = 'TILPASS_PLAN',
 }
 
 export type ContextDataMap = {
@@ -27,12 +25,10 @@ export type ContextDataMap = {
     [ContextDataType.HVOR_MYE]?: HvorMye;
     [ContextDataType.HVOR_LANG_PERIODE]?: HvorLangPeriode;
     [ContextDataType.FORDELING]?: Fordeling;
-    [ContextDataType.UTTAKSPLAN]?: SaksperiodeNy[][];
-    [ContextDataType.ORIGINAL_UTTAKSPLAN]?: SaksperiodeNy[];
-    [ContextDataType.TILPASS_PLAN]?: boolean;
+    [ContextDataType.UTTAKSPLAN]?: UttakPeriode_fpoversikt[];
 };
 
-const defaultInitialState = {} as ContextDataMap;
+const defaultInitialState: ContextDataMap = {};
 
 export type Action =
     | { type: 'update'; key: ContextDataType; data: ContextDataMap[keyof ContextDataMap] }
@@ -91,29 +87,6 @@ export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((d
         },
         [dispatch, key],
     );
-};
-
-/** Hook returns save function usable with all data types  */
-export const useContextSaveAnyData = () => {
-    const dispatch = useContext(PlanleggerDispatchContext);
-    return useCallback(
-        <TYPE extends ContextDataType>(key: TYPE, data: ContextDataMap[TYPE]) => {
-            if (dispatch) {
-                dispatch({ type: 'update', key, data });
-            }
-        },
-        [dispatch],
-    );
-};
-
-/** Hook returns state reset function  */
-export const useContextReset = () => {
-    const dispatch = useContext(PlanleggerDispatchContext);
-    return useCallback(() => {
-        if (dispatch) {
-            dispatch({ type: 'reset' });
-        }
-    }, [dispatch]);
 };
 
 /** Hook returns data for one specific data type  */

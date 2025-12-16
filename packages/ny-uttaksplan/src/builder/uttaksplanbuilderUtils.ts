@@ -18,7 +18,6 @@ import {
     isUttaksperiode,
     normaliserPerioder,
 } from '../utils/periodeUtils';
-import { guid } from './guid';
 import { splittPeriodePåDato } from './leggTilPeriode';
 
 export const slåSammenLikePerioder = (
@@ -31,7 +30,7 @@ export const slåSammenLikePerioder = (
         return perioder;
     }
     const nyePerioder: Planperiode[] = [];
-    let forrigePeriode: Planperiode | undefined = { ...perioder[0] };
+    let forrigePeriode: Planperiode | undefined = { ...perioder[0]! };
     perioder.forEach((periode, index) => {
         if (index === 0) {
             return;
@@ -47,8 +46,10 @@ export const slåSammenLikePerioder = (
             if (
                 annenPartsUttak &&
                 isUttaksperiode(periode) &&
+                !periode.erAnnenPartEøs &&
                 periode.samtidigUttak &&
                 isUttaksperiode(forrigePeriode) &&
+                !forrigePeriode.erAnnenPartEøs &&
                 forrigePeriode.samtidigUttak
             ) {
                 const overlappendePerioderAnnenPartForrigePeriode =
@@ -206,16 +207,18 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
     return getSplittetPeriodeOmNødvendig(getPeriodeHull(tidsperiode), førsteUttaksdagNesteBarnsSak);
 };
 
-export const getPeriodeHull = (tidsperiode: Tidsperiode): Planperiode => ({
-    id: guid(),
+const getPeriodeHull = (tidsperiode: Tidsperiode): Planperiode => ({
+    erAnnenPartEøs: false,
+    id: `${tidsperiode.fom} - ${tidsperiode.tom} - ${PeriodeHullType.TAPTE_DAGER}`,
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
     periodeHullÅrsak: PeriodeHullType.TAPTE_DAGER,
     readOnly: false,
 });
 
-export const getNyPeriodeUtenUttak = (tidsperiode: Tidsperiode): Planperiode => ({
-    id: guid(),
+const getNyPeriodeUtenUttak = (tidsperiode: Tidsperiode): Planperiode => ({
+    erAnnenPartEøs: false,
+    id: `${tidsperiode.fom} - ${tidsperiode.tom} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
     periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
@@ -309,7 +312,7 @@ export const finnOgSettInnHull = (
             return res;
         }
 
-        const nestePeriode = perioder[index + 1];
+        const nestePeriode = perioder[index + 1]!;
 
         const tidsperiodeMellomPerioder: Tidsperiode = {
             fom: UttaksdagenString(periode.tom).neste(),
@@ -327,23 +330,80 @@ export const finnOgSettInnHull = (
         const uttaksdagerITidsperiode = TidsperiodenString(tidsperiodeMellomPerioder).getAntallUttaksdager();
 
         if (uttaksdagerITidsperiode > 0) {
-            res.push(
-                ...getPeriodeHullEllerPeriodeUtenUttak(
-                    tidsperiodeMellomPerioder,
-                    harAktivitetskravIPeriodeUtenUttak,
-                    familiehendelsesdato,
-                    erAdopsjon,
-                    bareFarHarRett,
-                    erFarEllerMedmor,
-                    førsteUttaksdagNesteBarnsSak,
-                ),
-            );
+            const fom = dayjs(tidsperiodeMellomPerioder.fom);
+            const tom = dayjs(tidsperiodeMellomPerioder.tom);
+            const familiehendelse = dayjs(familiehendelsesdato);
+
+            // Sjekk om perioden går over familiehendelsesdato
+            if (fom.isBefore(familiehendelse, 'day') && tom.isAfter(familiehendelse, 'day')) {
+                // Periode før familiehendelsesdato
+                const periodeFørFamiliehendelse: Tidsperiode = {
+                    fom: tidsperiodeMellomPerioder.fom,
+                    tom: UttaksdagenString(familiehendelsesdato).forrige(),
+                };
+
+                res.push(
+                    ...getPeriodeHullEllerPeriodeUtenUttak(
+                        periodeFørFamiliehendelse,
+                        harAktivitetskravIPeriodeUtenUttak,
+                        familiehendelsesdato,
+                        erAdopsjon,
+                        bareFarHarRett,
+                        erFarEllerMedmor,
+                        førsteUttaksdagNesteBarnsSak,
+                    ),
+                );
+
+                // Periode fra og med familiehendelsesdato
+                const periodeEtterFamiliehendelse: Tidsperiode = {
+                    fom: UttaksdagenString(familiehendelsesdato).denneEllerNeste(),
+                    tom: tidsperiodeMellomPerioder.tom,
+                };
+
+                res.push(
+                    ...getPeriodeHullEllerPeriodeUtenUttak(
+                        periodeEtterFamiliehendelse,
+                        harAktivitetskravIPeriodeUtenUttak,
+                        familiehendelsesdato,
+                        erAdopsjon,
+                        bareFarHarRett,
+                        erFarEllerMedmor,
+                        førsteUttaksdagNesteBarnsSak,
+                    ),
+                );
+            } else {
+                // Perioden går ikke over familiehendelsesdato, håndter normalt
+                res.push(
+                    ...getPeriodeHullEllerPeriodeUtenUttak(
+                        tidsperiodeMellomPerioder,
+                        harAktivitetskravIPeriodeUtenUttak,
+                        familiehendelsesdato,
+                        erAdopsjon,
+                        bareFarHarRett,
+                        erFarEllerMedmor,
+                        førsteUttaksdagNesteBarnsSak,
+                    ),
+                );
+            }
         }
 
         return res;
     }, [] as Planperiode[]);
 
     return result;
+};
+
+const beregnSamtidiguttaksprosent = (overlappendePeriode: Planperiode) => {
+    /*
+     Når man lager planen ønsker vi å automatisk endre på den andre parten sin uttaksprosent så man slipper gjøre to sett med endringer.
+     Men den må utledes utifra maks tillat prosent. Dette avhenger av hvilke kontoer som benyttes, eller om det er flerbarnsdager osv.
+     For nå gjør vi det enkelt slik at det blir rett i innsyn for eksisterende planer.
+    */
+    if (overlappendePeriode.erAnnenPartEøs) {
+        return 100;
+    }
+
+    return overlappendePeriode.samtidigUttak ?? 100;
 };
 
 export const settInnAnnenPartsUttak = (
@@ -367,7 +427,12 @@ export const settInnAnnenPartsUttak = (
         const overlappendePerioderAnnenPart = Periodene(normaliserteAnnenPartsPerioder).finnOverlappendePerioder(p);
 
         if (overlappendePerioderAnnenPart.length === 0) {
-            if (isUttaksperiode(p) && p.samtidigUttak !== undefined && initiellMappingFraSaksperioder) {
+            if (
+                isUttaksperiode(p) &&
+                !p.erAnnenPartEøs &&
+                p.samtidigUttak !== undefined &&
+                initiellMappingFraSaksperioder
+            ) {
                 res.push({
                     ...p,
                 });
@@ -381,18 +446,21 @@ export const settInnAnnenPartsUttak = (
         }
 
         if (isPeriodeUtenUttak(p) || isHull(p)) {
-            const overlappendePeriode = overlappendePerioderAnnenPart[0];
+            const overlappendePeriode = overlappendePerioderAnnenPart[0]!;
 
             res.push({ ...overlappendePeriode });
             return res;
         }
 
-        if (isUttaksperiode(p) && p.samtidigUttak) {
-            const overlappendePeriode = overlappendePerioderAnnenPart[0];
+        if (isUttaksperiode(p) && !p.erAnnenPartEøs && p.samtidigUttak) {
+            const overlappendePeriode = overlappendePerioderAnnenPart[0]!;
             res.push(p);
 
-            if (!isUtsettelsesperiodeAnnenPart(overlappendePeriode)) {
-                res.push({ ...overlappendePeriode });
+            if (!isUtsettelsesperiodeAnnenPart(overlappendePeriode) && !overlappendePeriode.erAnnenPartEøs) {
+                res.push({
+                    ...overlappendePeriode,
+                    samtidigUttak: beregnSamtidiguttaksprosent(overlappendePeriode),
+                });
             }
 
             return res;
@@ -404,12 +472,12 @@ export const settInnAnnenPartsUttak = (
 
     result.sort(sorterPerioder);
 
-    const førstePeriodeStartdato = perioder[0].fom;
+    const førstePeriodeStartdato = perioder[0]!.fom;
     const annenPartsUttakSomSlutterFørFørstePeriode = normaliserteAnnenPartsPerioder.filter((ap) =>
         dayjs(ap.tom).isBefore(førstePeriodeStartdato, 'day'),
     );
 
-    const sistePeriodeSluttdato = perioder[perioder.length - 1].tom;
+    const sistePeriodeSluttdato = perioder.at(-1)!.tom;
     const annenPartsUttakSomStarterEtterSistePeriode = normaliserteAnnenPartsPerioder.filter((ap) =>
         dayjs(ap.fom).isAfter(sistePeriodeSluttdato, 'day'),
     );

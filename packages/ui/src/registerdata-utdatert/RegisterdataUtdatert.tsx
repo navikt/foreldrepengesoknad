@@ -2,18 +2,18 @@ import { FormattedMessage } from 'react-intl';
 
 import { Alert, BodyShort, Button, Heading, VStack } from '@navikt/ds-react';
 
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { AppName } from '@navikt/fp-types';
 
 import { SkjemaRotLayout } from '../skjema-rotlayout/SkjemaRotLayout';
 
 interface Props {
-    slettMellomlagringOgLastSidePåNytt: () => void;
+    slettMellomlagringOgLastSidePåNytt: () => Promise<void>;
     appName: AppName;
 }
 
 export const RegisterdataUtdatert = ({ slettMellomlagringOgLastSidePåNytt, appName }: Props) => {
-    loggAmplitudeEvent({
+    loggUmamiEvent({
         origin: appName,
         eventName: 'besøk',
         eventData: { tittel: 'registerdataUtdatert' },
@@ -31,9 +31,9 @@ export const RegisterdataUtdatert = ({ slettMellomlagringOgLastSidePåNytt, appN
                 </>
             }
         >
-            <VStack gap="10">
+            <VStack gap="space-40">
                 <Alert variant="warning">
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <Heading size="small" level="3">
                             <FormattedMessage id="RegisterdataUtdatert.Heading" />
                         </Heading>
@@ -43,7 +43,7 @@ export const RegisterdataUtdatert = ({ slettMellomlagringOgLastSidePåNytt, appN
                     </VStack>
                 </Alert>
                 <div>
-                    <Button type="button" variant="primary" onClick={slettMellomlagringOgLastSidePåNytt}>
+                    <Button type="button" variant="primary" onClick={() => void slettMellomlagringOgLastSidePåNytt()}>
                         <FormattedMessage id="RegisterdataUtdatert.StartPaNytt" />
                     </Button>
                 </div>

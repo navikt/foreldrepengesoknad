@@ -17,7 +17,7 @@ import { Alert, BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 import { Søkersituasjon } from '@navikt/fp-common';
 import { ISO_DATE_REGEX } from '@navikt/fp-constants';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold, Søkerrolle } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, Søkerrolle } from '@navikt/fp-types';
 import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
 import { terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke } from '@navikt/fp-validation/src/form/dateFormValidation';
 
@@ -32,7 +32,7 @@ const getKanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean =
 
 interface Props {
     søkersituasjon: Søkersituasjon;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     søknadGjelderEtNyttBarn?: boolean;
 }
 
@@ -61,7 +61,7 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
     return (
         <>
             {søknadGjelderEtNyttBarn && (
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <RhfDatepicker
                         name="termindato"
                         control={formMethods.control}
@@ -93,7 +93,7 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
                     />
                     {!søkerErFarMedmor && (
                         <ReadMore header={intl.formatMessage({ id: 'omBarnet.termindato.åpneLabel' })}>
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <BodyShort>
                                     <FormattedMessage id="omBarnet.termindato.innhold.del1" />
                                 </BodyShort>
@@ -138,7 +138,7 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
             )}
             {(erForTidligTilÅSøkePåTermin || (farMedMorSøkerPåTermin && !kanSøkePåTermin)) && (
                 <Alert variant="warning">
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <Heading level="3" size="small">
                             <FormattedMessage id="omBarnet.termindato.erForTidligTilÅSøkePåTermin.heading" />
                         </Heading>

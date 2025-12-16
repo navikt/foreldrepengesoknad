@@ -2,8 +2,8 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { HvorMyeRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 
-import { StønadskontoType } from '@navikt/fp-constants';
-import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
+import { KontoBeregningDto } from '@navikt/fp-types';
 
 import { Arbeidssituasjon } from '../arbeidssituasjon/ArbeidssituasjonSide';
 import { OppsummeringSide } from './OppsummeringSide';
@@ -12,19 +12,19 @@ const STØNADSKONTOER = {
     '100': {
         kontoer: [
             {
-                konto: StønadskontoType.Mødrekvote,
+                konto: 'MØDREKVOTE',
                 dager: 75,
             },
             {
-                konto: StønadskontoType.Fedrekvote,
+                konto: 'FEDREKVOTE',
                 dager: 75,
             },
             {
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
                 dager: 80,
             },
             {
-                konto: StønadskontoType.ForeldrepengerFørFødsel,
+                konto: 'FORELDREPENGER_FØR_FØDSEL',
                 dager: 15,
             },
         ],
@@ -32,23 +32,23 @@ const STØNADSKONTOER = {
             farRundtFødsel: 0,
             toTette: 0,
         },
-    },
+    } satisfies KontoBeregningDto,
     '80': {
         kontoer: [
             {
-                konto: StønadskontoType.Mødrekvote,
+                konto: 'MØDREKVOTE',
                 dager: 95,
             },
             {
-                konto: StønadskontoType.Fedrekvote,
+                konto: 'FEDREKVOTE',
                 dager: 95,
             },
             {
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
                 dager: 90,
             },
             {
-                konto: StønadskontoType.ForeldrepengerFørFødsel,
+                konto: 'FORELDREPENGER_FØR_FØDSEL',
                 dager: 15,
             },
         ],
@@ -56,30 +56,7 @@ const STØNADSKONTOER = {
             farRundtFødsel: 0,
             toTette: 0,
         },
-    },
-} as TilgjengeligeStønadskontoer;
-
-const satser = {
-    engangstønad: [
-        {
-            fom: '01.01.2023',
-            verdi: 92648,
-        },
-        {
-            fom: '01.01.2021',
-            verdi: 90300,
-        },
-    ],
-    grunnbeløp: [
-        {
-            fom: '01.05.2024',
-            verdi: 124028,
-        },
-        {
-            fom: '01.05.2023',
-            verdi: 118620,
-        },
-    ],
+    } satisfies KontoBeregningDto,
 };
 
 interface StoryArgs {
@@ -104,7 +81,7 @@ type Story = StoryObj<typeof meta>;
 export const ArbeidstakerMed20000Imåneden: Story = {
     args: {
         stønadskontoer: STØNADSKONTOER,
-        satser: satser,
+        satser: DEFAULT_SATSER,
         arbeidssituasjon: {
             erArbeidstakerEllerFrilanser: true,
             erSelvstendigNæringsdrivende: false,

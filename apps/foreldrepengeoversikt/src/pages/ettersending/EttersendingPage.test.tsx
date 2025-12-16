@@ -111,11 +111,11 @@ describe('<EttersendingPage>', () => {
             const optionsTextContent = within(select)
                 .getAllByRole('option')
                 .map((o) => o.textContent);
-            expect(optionsTextContent[optionsTextContent.length - 1]).toBe('Annet dokument');
+            expect(optionsTextContent.at(-1)).toBe('Annet dokument');
         }),
     );
 
-    it('skal filtrere bort irrelevante dokumenttyper basert på verdier i queryparam', async () => {
+    it('skal filtrere bort irrelevante dokumenttyper basert på verdier i queryparam', () => {
         const utils = render(<SkalIkkeFeileOpplasting skjematypeQueryParamValue="I000141,I000063" />);
 
         const select = utils.getByLabelText('Hva inneholder dokumentene dine?');
@@ -131,7 +131,7 @@ describe('<EttersendingPage>', () => {
         expect(optionsTextContent.length).toBe(2);
     });
 
-    it('skal preselektere dokumenttype dersom kun én manglende dokumenttype i queryparam', async () => {
+    it('skal preselektere dokumenttype dersom kun én manglende dokumenttype i queryparam', () => {
         const utils = render(<SkalIkkeFeileOpplasting skjematypeQueryParamValue="I000141" />);
         const select = utils.getByLabelText('Hva inneholder dokumentene dine?');
         const preselectedOption = () => within(select).getByRole('option', { selected: true });

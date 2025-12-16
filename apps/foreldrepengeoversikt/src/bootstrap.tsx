@@ -9,7 +9,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
 import { AppContainer } from './AppContainer';
-import { urlPrefiks } from './api/api';
+import { urlPrefiks } from './api/queries.ts';
 // Viktig at ds-css importeres før AppContainer. Det gjør at Aksel+tailwind sin css laster før vår i de tilfellene vi vil overskrive.
 import './index.css';
 
@@ -17,8 +17,8 @@ dayjs.locale('nb');
 
 Sentry.init({
     dsn: 'https://b4fd4db97e7d4663852a5203961e3cee@sentry.gc.nav.no/6',
-    release: (window as any).APP_VERSION,
-    environment: window.location.hostname,
+    release: import.meta.env.VITE_SENTRY_RELEASE,
+    environment: globalThis.location.hostname,
     integrations: [Sentry.breadcrumbsIntegration({ console: false })],
 });
 

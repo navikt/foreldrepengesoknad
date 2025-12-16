@@ -20,7 +20,7 @@
 .ikonFrame {
     grid-column: 1;
     grid-row: 1;
-    background-color: var(--Global-Deepblue-500, #b1d9e9);
+    background-color: var(--ax-brand-blue-400);
     border-radius: 15px;
     width: 30px;
     height: 30px;
@@ -30,7 +30,7 @@
 }
 
 .ikon {
-    color: var(--Global-Deepblue-500, #005b82);
+    color: var(--ax-brand-blue-800);
     width: 25px;
     height: 25px;
     padding: 2px;

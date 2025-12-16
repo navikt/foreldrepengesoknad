@@ -9,18 +9,15 @@ import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 
 import { BodyShort, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { Barn, Dekningsgrad, isAdoptertBarn, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { StønadskontoType, links } from '@navikt/fp-constants';
+import { Barn, isAdoptertBarn, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { Dekningsgrad, KontoBeregningDto, SøkersituasjonFp } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { Uttaksdagen, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
-const finnSisteDagMedForeldrepenger = (
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
-    barn: Barn,
-): string | undefined => {
+const finnSisteDagMedForeldrepenger = (stønadskontoer: KontoBeregningDto, barn: Barn): string | undefined => {
     const erAdopsjon = isAdoptertBarn(barn);
     const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
@@ -32,9 +29,8 @@ const finnSisteDagMedForeldrepenger = (
     }
 
     const dagerSomSkalLeggesTil =
-        getAntallUkerFraStønadskontoer(
-            stønadskontoer.kontoer.filter((s) => s.konto !== StønadskontoType.ForeldrepengerFørFødsel),
-        ) * 5;
+        getAntallUkerFraStønadskontoer(stønadskontoer.kontoer.filter((s) => s.konto !== 'FORELDREPENGER_FØR_FØDSEL')) *
+        5;
 
     const førsteDag = Uttaksdagen(dayjs(dato).toDate()).denneEllerNeste();
     const sisteDag = Uttaksdagen(førsteDag).leggTil(dagerSomSkalLeggesTil - 1);
@@ -58,14 +54,14 @@ const getRadioBeskrivelse = (
 };
 
 type Props = {
-    goToPreviousDefaultStep: () => Promise<void>;
-    goToNextDefaultStep: () => Promise<void>;
+    goToPreviousDefaultStep: () => void;
+    goToNextDefaultStep: () => void;
     onAvsluttOgSlett?: () => void;
     onFortsettSenere?: () => void;
     barn: Barn;
     søkersituasjon: SøkersituasjonFp;
-    stønadskonto100: TilgjengeligeStønadskontoerForDekningsgrad;
-    stønadskonto80: TilgjengeligeStønadskontoerForDekningsgrad;
+    stønadskonto100: KontoBeregningDto;
+    stønadskonto80: KontoBeregningDto;
 };
 
 const getDekningsgradReadMoreTekst = (erDeltUttak: boolean, barn: Barn) => {
@@ -126,9 +122,9 @@ export const DekningsgradForm = ({
 
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-            <VStack gap="10">
+            <VStack gap="space-40">
                 <ErrorSummaryHookForm />
-                <VStack gap="4">
+                <VStack gap="space-16">
                     <RhfRadioGroup
                         name="dekningsgrad"
                         control={formMethods.control}
@@ -156,7 +152,7 @@ export const DekningsgradForm = ({
                         ]}
                     >
                         <Radio
-                            value={Dekningsgrad.HUNDRE_PROSENT}
+                            value={'100'}
                             description={getRadioBeskrivelse(
                                 intl,
                                 erAdopsjon,
@@ -176,7 +172,7 @@ export const DekningsgradForm = ({
                             />
                         </Radio>
                         <Radio
-                            value={Dekningsgrad.ÅTTI_PROSENT}
+                            value={'80'}
                             description={getRadioBeskrivelse(
                                 intl,
                                 erAdopsjon,

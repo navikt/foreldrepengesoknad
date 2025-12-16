@@ -25,6 +25,7 @@ export const RhfForm = <FormValues extends FieldValues>({
             <form
                 style={shouldUseFlexbox ? { display: 'flex', flexDirection: 'column', flex: '1' } : undefined}
                 className={className}
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
                 onSubmit={onSubmit ? handleSubmit((values) => onSubmit(values)) : undefined}
                 id={id}
             >

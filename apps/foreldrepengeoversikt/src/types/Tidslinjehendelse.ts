@@ -1,16 +1,6 @@
-import { TidslinjeHendelseDto } from '@navikt/fp-types';
+import { TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 
-/**
- * Beriket tidshendelsetype for visning
- */
-export type Tidslinjehendelse = Omit<TidslinjeHendelseDto, 'tidslinjeHendelseType'> & {
-    type?: string;
-    manglendeVedlegg: unknown[];
-    merInformasjon?: string;
-    linkTittel?: string;
-    eksternalUrl?: string;
-    internalUrl?: string;
-    tidligstBehandlingsDato?: string;
+export type Tidslinjehendelse2 = Omit<TidslinjeHendelseDto_fpoversikt, 'tidslinjeHendelseType'> & {
     utvidetTidslinjeHendelseType:
         | 'FØRSTEGANGSSØKNAD'
         | 'FØRSTEGANGSSØKNAD_NY'

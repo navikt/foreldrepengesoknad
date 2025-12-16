@@ -26,7 +26,7 @@ export const AvsluttModal = ({ onAvsluttOgSlett }: Props) => {
                     <BodyLong>{intl.formatMessage({ id: 'AvsluttModal.Info' })}</BodyLong>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="button" variant="primary" onClick={onAvsluttOgSlett}>
+                    <Button type="button" variant="primary" onClick={() => onAvsluttOgSlett()}>
                         {intl.formatMessage({ id: 'AvsluttModal.Delete' })}
                     </Button>
                     <Button type="button" variant="tertiary" onClick={() => setIsOpen(false)}>
@@ -40,6 +40,7 @@ export const AvsluttModal = ({ onAvsluttOgSlett }: Props) => {
                 icon={<TrashIcon aria-hidden />}
                 iconPosition="left"
                 onClick={() => setIsOpen(true)}
+                className="order-4"
             >
                 {intl.formatMessage({ id: 'StepFooter.Avslutt' })}
             </Button>

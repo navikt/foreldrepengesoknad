@@ -48,7 +48,7 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
                 <Radio value={true}>Ja</Radio>
                 <Radio value={false}>Nei</Radio>
             </RhfRadioGroup>
-            <VStack gap="4">
+            <VStack gap="space-16">
                 <RhfDatepicker
                     name="adopsjonsdato"
                     control={formMethods.control}
@@ -64,16 +64,16 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
                         ),
                     ]}
                 />
-                <Box padding="4" background="surface-alt-3-subtle" borderRadius="medium">
-                    <HStack gap="2">
+                <Box.New padding="4" background="brand-blue-moderate" borderRadius="medium">
+                    <HStack gap="space-8">
                         <FileIcon height={24} width={24} color="#005B82" />
-                        <VStack gap="2" style={{ width: '85%' }}>
+                        <VStack gap="space-8" style={{ width: '85%' }}>
                             <BodyLong>
                                 <FormattedMessage id="omBarnet.opplaste.bekreftelse" />
                             </BodyLong>
                         </VStack>
                     </HStack>
-                </Box>
+                </Box.New>
             </VStack>
             {søknadGjelderEtNyttBarn && (
                 <>
@@ -138,7 +138,7 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
                         <RhfDatepicker
                             name="ankomstdato"
                             control={formMethods.control}
-                            minDate={fødselsdatoer ? dayjs(fødselsdatoer[0].dato).toDate() : undefined}
+                            minDate={fødselsdatoer ? dayjs(fødselsdatoer[0]!.dato).toDate() : undefined}
                             maxDate={dayjs().add(6, 'months').toDate()}
                             label={intl.formatMessage({ id: 'omBarnet.ankomstDato' })}
                             validate={[

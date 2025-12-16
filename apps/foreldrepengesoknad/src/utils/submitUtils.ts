@@ -1,11 +1,9 @@
 import dayjs from 'dayjs';
 
 import {
-    Forelder,
     Periode,
     Periodetype,
     Utsettelsesperiode,
-    UtsettelseÅrsakType,
     isOppholdsperiode,
     isOverføringsperiode,
     isUtsettelsesperiode,
@@ -15,7 +13,7 @@ import { dateIsWithinRange } from '@navikt/fp-uttaksplan';
 
 import { guid } from './guid';
 
-export const erPeriodeSomSkalSendesInn = (periode: Periode): boolean => {
+const erPeriodeSomSkalSendesInn = (periode: Periode): boolean => {
     return (
         isUttaksperiode(periode) ||
         isOverføringsperiode(periode) ||
@@ -68,8 +66,8 @@ export const finnEndringerIUttaksplan = (
                 fom: førsteSlettedePeriode!.tidsperiode.fom,
                 tom: førsteSlettedePeriode!.tidsperiode.tom,
             },
-            årsak: UtsettelseÅrsakType.Fri,
-            forelder: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
+            årsak: 'FRI',
+            forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
             erArbeidstaker: false,
         } as Utsettelsesperiode;
         return [utsettelseForSlettedePerioder];

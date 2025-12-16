@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { API_URLS } from 'api/queries';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
@@ -7,20 +8,19 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 
-import { AnnenForelder, Barn, BarnType, Dekningsgrad, SaksperiodeDTO } from '@navikt/fp-common';
-import { ISO_DATE_FORMAT, StønadskontoType } from '@navikt/fp-constants';
+import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
-    Arbeidsforhold,
-    PersonFrontend,
+    Dekningsgrad,
+    EksternArbeidsforholdDto_fpoversikt,
+    KontoBeregningDto,
+    PersonDto_fpoversikt,
     SøkersituasjonFp,
-    TilgjengeligeStønadskontoerForDekningsgrad,
+    UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { FordelingSteg } from './FordelingSteg';
-
-const UTTAKSPLAN_ANNEN_URL = `${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`;
-const STØNADSKONTO_URL = `${import.meta.env.BASE_URL}/rest/konto`;
 
 const vedtakFar = {
     dekningsgrad: 'HUNDRE',
@@ -48,7 +48,7 @@ const vedtakFar = {
                 årsak: 'ANNET',
             },
         },
-    ] as SaksperiodeDTO[],
+    ] satisfies UttakPeriode_fpoversikt[],
 };
 
 const vedtakMor = {
@@ -77,24 +77,30 @@ const vedtakMor = {
                 årsak: 'ANNET',
             },
         },
-    ] as SaksperiodeDTO[],
+    ] satisfies UttakPeriode_fpoversikt[],
 };
 
 const søkerInfoKvinne = {
     fnr: '19047815714',
-    fornavn: 'Hanne',
-    etternavn: 'Mygg',
+    navn: {
+        fornavn: 'Hanne',
+        etternavn: 'Mygg',
+    },
     kjønn: 'K',
     fødselsdato: '1978-04-19',
-} as PersonFrontend;
+    barn: [],
+} satisfies PersonDto_fpoversikt;
 
 const søkerInfoMann = {
     fnr: '19047815715',
-    fornavn: 'Hans',
-    etternavn: 'Mygg',
+    navn: {
+        fornavn: 'Hans',
+        etternavn: 'Mygg',
+    },
     kjønn: 'M',
     fødselsdato: '1972-06-07',
-} as PersonFrontend;
+    barn: [],
+} satisfies PersonDto_fpoversikt;
 
 const promiseAction = () => () => {
     action('button-click')();
@@ -109,9 +115,9 @@ type StoryArgs = {
     annenForelder: AnnenForelder;
     barnet: Barn;
     erAleneOmOmsorg?: boolean;
-    søker: PersonFrontend;
+    person: PersonDto_fpoversikt;
     dekningsgrad: Dekningsgrad;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 } & ComponentProps<typeof FordelingSteg>;
 
 const meta = {
@@ -147,23 +153,29 @@ type Story = StoryObj<typeof meta>;
 
 //ALENEOMSORG
 
-const DEFAULT_STØNADSKONTO = { kontoer: [{}], minsteretter: {} } as TilgjengeligeStønadskontoerForDekningsgrad;
+const DEFAULT_STØNADSKONTO = {
+    kontoer: [],
+    minsteretter: {
+        farRundtFødsel: 0,
+        toTette: 0,
+    },
+} satisfies KontoBeregningDto;
 
 export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 280,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -171,7 +183,7 @@ export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                         '100': DEFAULT_STØNADSKONTO,
                     }),
                 ),
@@ -179,7 +191,7 @@ export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -192,13 +204,14 @@ export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
             termindato: '2021-09-24',
         },
         annenForelder: {
+            fnr: '1',
             fornavn: 'Hans',
             etternavn: 'Utvikler',
             kanIkkeOppgis: false,
             erAleneOmOmsorg: true,
             datoForAleneomsorg: '2021-09-21',
         },
-        dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+        dekningsgrad: '80',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -209,18 +222,18 @@ export const MorAleneomsorgEttBarnPrematurFødsel: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 294,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -232,14 +245,14 @@ export const MorAleneomsorgEttBarnPrematurFødsel: Story = {
                                 prematur: 64,
                                 flerbarn: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -252,13 +265,14 @@ export const MorAleneomsorgEttBarnPrematurFødsel: Story = {
             termindato: '2023-12-20',
         },
         annenForelder: {
+            fnr: '1',
             fornavn: 'Hans',
             etternavn: 'Utvikler',
             erAleneOmOmsorg: true,
             datoForAleneomsorg: '2023-09-21',
             kanIkkeOppgis: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -269,14 +283,14 @@ export const MorAleneomsorgAdopsjonTrillinger: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 460,
                                 },
                             ],
@@ -284,14 +298,14 @@ export const MorAleneomsorgAdopsjonTrillinger: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'adopsjon',
@@ -306,7 +320,7 @@ export const MorAleneomsorgAdopsjonTrillinger: Story = {
         annenForelder: {
             kanIkkeOppgis: true,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -317,14 +331,14 @@ export const FarMedmorAleneomsorgFødtTvillinger: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 385,
                                 },
                             ],
@@ -332,14 +346,14 @@ export const FarMedmorAleneomsorgFødtTvillinger: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -352,13 +366,14 @@ export const FarMedmorAleneomsorgFødtTvillinger: Story = {
             termindato: '2023-09-21',
         },
         annenForelder: {
+            fnr: '1',
             fornavn: 'Hanne',
             etternavn: 'Utvikler',
             erAleneOmOmsorg: true,
             datoForAleneomsorg: '2023-09-23',
             kanIkkeOppgis: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -369,14 +384,14 @@ export const FarMedmorAleneomsorgFødtFireBarnFør1Okt2021: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 460,
                                 },
                             ],
@@ -384,14 +399,14 @@ export const FarMedmorAleneomsorgFødtFireBarnFør1Okt2021: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -404,13 +419,14 @@ export const FarMedmorAleneomsorgFødtFireBarnFør1Okt2021: Story = {
             termindato: '2021-09-21',
         },
         annenForelder: {
+            fnr: '1',
             fornavn: 'Hanne',
             etternavn: 'Utvikler',
             erAleneOmOmsorg: true,
             datoForAleneomsorg: '2021-09-21',
             kanIkkeOppgis: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -421,14 +437,14 @@ export const FarMedmorAleneomsorgFødtTreBarnFørWLB: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 460,
                                 },
                             ],
@@ -436,14 +452,14 @@ export const FarMedmorAleneomsorgFødtTreBarnFørWLB: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -456,13 +472,14 @@ export const FarMedmorAleneomsorgFødtTreBarnFørWLB: Story = {
             termindato: '2022-07-21',
         },
         annenForelder: {
+            fnr: '1',
             fornavn: 'Hanne',
             etternavn: 'Utvikler',
             erAleneOmOmsorg: true,
             datoForAleneomsorg: '2022-09-21',
             kanIkkeOppgis: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -473,14 +490,14 @@ export const FarMedmorAleneomsorgEttBarnTerminEtterWLB: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 230,
                                 },
                             ],
@@ -488,14 +505,14 @@ export const FarMedmorAleneomsorgEttBarnTerminEtterWLB: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -507,13 +524,14 @@ export const FarMedmorAleneomsorgEttBarnTerminEtterWLB: Story = {
             termindato: '2024-07-21',
         },
         annenForelder: {
+            fnr: '1',
             erAleneOmOmsorg: true,
             fornavn: 'Hanne',
             etternavn: 'Utvikler',
             datoForAleneomsorg: '2024-09-21',
             kanIkkeOppgis: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -524,14 +542,14 @@ export const FarMedmorAleneomsorgPrematurtFødtBarn: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 273,
                                 },
                             ],
@@ -543,14 +561,14 @@ export const FarMedmorAleneomsorgPrematurtFødtBarn: Story = {
                                 prematur: 64,
                                 flerbarn: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'fødsel',
@@ -563,13 +581,14 @@ export const FarMedmorAleneomsorgPrematurtFødtBarn: Story = {
             termindato: '2024-04-21',
         },
         annenForelder: {
+            fnr: '1',
             fornavn: 'Hanne',
             etternavn: 'Utvikler',
             erAleneOmOmsorg: true,
             datoForAleneomsorg: '2024-01-21',
             kanIkkeOppgis: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -580,14 +599,14 @@ export const FarMedmorAleneomsorgAdopsjonFireBarn: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 460,
                                 },
                             ],
@@ -595,14 +614,14 @@ export const FarMedmorAleneomsorgAdopsjonFireBarn: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         erAleneOmOmsorg: true,
         søkersituasjon: {
             situasjon: 'adopsjon',
@@ -615,13 +634,14 @@ export const FarMedmorAleneomsorgAdopsjonFireBarn: Story = {
             adopsjonsdato: '2021-08-23',
         },
         annenForelder: {
+            fnr: '1',
             fornavn: 'Hanne',
             etternavn: 'Utvikler',
             erAleneOmOmsorg: true,
             datoForAleneomsorg: '2024-01-21',
             kanIkkeOppgis: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -633,26 +653,26 @@ export const MorDeltUttakEttBarnPrematurFødsel: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(undefined, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(undefined, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 100,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -664,14 +684,14 @@ export const MorDeltUttakEttBarnPrematurFødsel: Story = {
                                 prematur: 65,
                                 flerbarn: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -683,13 +703,14 @@ export const MorDeltUttakEttBarnPrematurFødsel: Story = {
             termindato: '2023-12-21',
         },
         annenForelder: {
+            erAleneOmOmsorg: false,
             fornavn: 'Hans',
             etternavn: 'Utvikler',
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -700,25 +721,25 @@ export const MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 101,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -730,7 +751,7 @@ export const MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning: Story = {
                                 prematur: 0,
                                 flerbarn: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                         '100': DEFAULT_STØNADSKONTO,
                     }),
                 ),
@@ -738,7 +759,7 @@ export const MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning: Story = {
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -754,8 +775,9 @@ export const MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
-        dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+        dekningsgrad: '80',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -766,26 +788,26 @@ export const MorDeltUttakEttBarnTermin: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 80,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -793,14 +815,14 @@ export const MorDeltUttakEttBarnTermin: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -816,8 +838,9 @@ export const MorDeltUttakEttBarnTermin: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -828,26 +851,26 @@ export const MorDeltUttakTvillingerFødt: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 165,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -859,14 +882,14 @@ export const MorDeltUttakTvillingerFødt: Story = {
                                 prematur: 0,
                                 flerbarn: 85,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -883,8 +906,9 @@ export const MorDeltUttakTvillingerFødt: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -895,26 +919,26 @@ export const MorDeltUttakFarSøkteMorsKvoteOgFellesperiode: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => HttpResponse.json(vedtakFar)),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(vedtakFar)),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 80,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -922,14 +946,14 @@ export const MorDeltUttakFarSøkteMorsKvoteOgFellesperiode: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -945,8 +969,9 @@ export const MorDeltUttakFarSøkteMorsKvoteOgFellesperiode: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -957,26 +982,26 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 80,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -984,14 +1009,14 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1008,8 +1033,9 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -1020,26 +1046,26 @@ export const FarMedmorSøkerDeltUttakTrillingerFødtFørWLB: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 370,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -1051,14 +1077,14 @@ export const FarMedmorSøkerDeltUttakTrillingerFødtFørWLB: Story = {
                                 prematur: 0,
                                 flerbarn: 230,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1075,8 +1101,9 @@ export const FarMedmorSøkerDeltUttakTrillingerFødtFørWLB: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -1087,26 +1114,26 @@ export const FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 370,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -1114,14 +1141,14 @@ export const FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1137,8 +1164,9 @@ export const FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -1149,26 +1177,26 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtPrematurt: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 100,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -1180,14 +1208,14 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtPrematurt: Story = {
                                 flerbarn: 0,
                                 prematur: 64,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1204,8 +1232,9 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtPrematurt: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -1216,26 +1245,26 @@ export const FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => HttpResponse.json(vedtakMor)),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(vedtakMor)),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 75,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 80,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -1243,14 +1272,14 @@ export const FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1267,8 +1296,9 @@ export const FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -1279,22 +1309,22 @@ export const FarSøkerAdopsjonToBarn: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 90,
                                 },
                             ],
@@ -1302,14 +1332,14 @@ export const FarSøkerAdopsjonToBarn: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'far',
@@ -1326,8 +1356,9 @@ export const FarSøkerAdopsjonToBarn: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -1338,21 +1369,21 @@ export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Stor
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 370,
                                 },
                             ],
@@ -1360,7 +1391,7 @@ export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Stor
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                         '100': DEFAULT_STØNADSKONTO,
                     }),
                 ),
@@ -1368,7 +1399,7 @@ export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Stor
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'mor',
@@ -1386,8 +1417,9 @@ export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Stor
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
-        dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+        dekningsgrad: '80',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -1400,25 +1432,25 @@ export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 90,
                                 },
                                 {
-                                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
                                     dager: 15,
                                 },
                             ],
@@ -1426,7 +1458,7 @@ export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                         '100': DEFAULT_STØNADSKONTO,
                     }),
                 ),
@@ -1434,7 +1466,7 @@ export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -1452,8 +1484,9 @@ export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
             harOppholdtSegIEØS: true,
             harRettPåForeldrepengerIEØS: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
-        dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+        dekningsgrad: '80',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -1464,22 +1497,22 @@ export const FarMedmorSøkerMorHarRettIEØSAdopsjon: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Mødrekvote,
+                                    konto: 'MØDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fedrekvote,
+                                    konto: 'FEDREKVOTE',
                                     dager: 95,
                                 },
                                 {
-                                    konto: StønadskontoType.Fellesperiode,
+                                    konto: 'FELLESPERIODE',
                                     dager: 90,
                                 },
                             ],
@@ -1487,14 +1520,14 @@ export const FarMedmorSøkerMorHarRettIEØSAdopsjon: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'far',
@@ -1513,8 +1546,9 @@ export const FarMedmorSøkerMorHarRettIEØSAdopsjon: Story = {
             harOppholdtSegIEØS: true,
             harRettPåForeldrepengerIEØS: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -1527,14 +1561,14 @@ export const BareMorHarRettTermin: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 230,
                                 },
                             ],
@@ -1542,14 +1576,14 @@ export const BareMorHarRettTermin: Story = {
                                 farRundtFødsel: 15,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -1565,8 +1599,9 @@ export const BareMorHarRettTermin: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: false,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -1577,14 +1612,14 @@ export const BareMorHarRettAdopsjon: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 230,
                                 },
                             ],
@@ -1592,14 +1627,14 @@ export const BareMorHarRettAdopsjon: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoKvinne,
+        person: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'mor',
@@ -1616,8 +1651,9 @@ export const BareMorHarRettAdopsjon: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: false,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -1628,18 +1664,18 @@ export const BareFarHarRettOgMorErUførTermin4Barn: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 155,
                                 },
                                 {
-                                    konto: StønadskontoType.AktivitetsfriKvote,
+                                    konto: 'AKTIVITETSFRI_KVOTE',
                                     dager: 375,
                                 },
                             ],
@@ -1647,14 +1683,14 @@ export const BareFarHarRettOgMorErUførTermin4Barn: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1670,9 +1706,10 @@ export const BareFarHarRettOgMorErUførTermin4Barn: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: false,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
             erMorUfør: true,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -1683,18 +1720,18 @@ export const BareFarHarRettOgMorErIkkeUførFødtBarn: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 210,
                                 },
                                 {
-                                    konto: StønadskontoType.AktivitetsfriKvote,
+                                    konto: 'AKTIVITETSFRI_KVOTE',
                                     dager: 40,
                                 },
                             ],
@@ -1702,14 +1739,14 @@ export const BareFarHarRettOgMorErIkkeUførFødtBarn: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1726,9 +1763,10 @@ export const BareFarHarRettOgMorErIkkeUførFødtBarn: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: false,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
             erMorUfør: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -1739,14 +1777,14 @@ export const BareFarHarRettTvillingerFødtFør1Okt2021: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 285,
                                 },
                             ],
@@ -1754,14 +1792,14 @@ export const BareFarHarRettTvillingerFødtFør1Okt2021: Story = {
                                 farRundtFødsel: 0,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -1778,9 +1816,10 @@ export const BareFarHarRettTvillingerFødtFør1Okt2021: Story = {
             fnr: '1212121313',
             harRettPåForeldrepengerINorge: false,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
             erMorUfør: true,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
@@ -1791,18 +1830,18 @@ export const BareFarHarRettAdopsjonMorErUfør: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.post(STØNADSKONTO_URL, () =>
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.Foreldrepenger,
+                                    konto: 'FORELDREPENGER',
                                     dager: 125,
                                 },
                                 {
-                                    konto: StønadskontoType.AktivitetsfriKvote,
+                                    konto: 'AKTIVITETSFRI_KVOTE',
                                     dager: 75,
                                 },
                             ],
@@ -1810,14 +1849,14 @@ export const BareFarHarRettAdopsjonMorErUfør: Story = {
                                 farRundtFødsel: 10,
                                 toTette: 0,
                             },
-                        },
+                        } satisfies KontoBeregningDto,
                     }),
                 ),
             ],
         },
     },
     args: {
-        søker: søkerInfoMann,
+        person: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'far',
@@ -1835,8 +1874,9 @@ export const BareFarHarRettAdopsjonMorErUfør: Story = {
             harRettPåForeldrepengerINorge: false,
             erMorUfør: true,
             kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),

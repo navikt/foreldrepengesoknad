@@ -10,18 +10,38 @@ type ProxyOptions = {
     scope: string;
 };
 
+const proxy = {
+    FPSOKNAD_API_SCOPE: serverConfig.påkrevMiljøVariabel('FPSOKNAD_API_SCOPE'),
+    FPSOKNAD_API_URL: serverConfig.påkrevMiljøVariabel('FPSOKNAD_API_URL'),
+    FPOVERSIKT_API_URL: serverConfig.påkrevMiljøVariabel('FPOVERSIKT_API_URL'),
+    FPOVERSIKT_API_SCOPE: serverConfig.påkrevMiljøVariabel('FPOVERSIKT_API_SCOPE'),
+    FPGRUNNDATA_API_URL: serverConfig.påkrevMiljøVariabel('FPGRUNNDATA_API_URL'),
+} as const;
+
 export function configureReverseProxyApi(router: Router) {
-    if (!serverConfig.proxy.apiUrl || !serverConfig.proxy.apiScope) {
-        throw new Error('Påkrevd miljøvariable SCOPE og URL ikke satt mot API');
-    }
     addProxyHandler(router, {
-        ingoingUrl: '/rest',
-        outgoingUrl: serverConfig.proxy.apiUrl,
-        scope: serverConfig.proxy.apiScope,
+        ingoingUrl: '/fpsoknad',
+        outgoingUrl: proxy.FPSOKNAD_API_URL,
+        scope: proxy.FPSOKNAD_API_SCOPE,
     });
+
+    addProxyHandler(router, {
+        ingoingUrl: '/fpoversikt',
+        outgoingUrl: proxy.FPOVERSIKT_API_URL,
+        scope: proxy.FPOVERSIKT_API_SCOPE,
+    });
+
+    router.use(
+        '/fpgrunndata',
+        createProxyMiddleware({
+            target: proxy.FPGRUNNDATA_API_URL,
+            changeOrigin: true,
+            logger: console,
+        }),
+    );
 }
 
-export function addProxyHandler(router: Router, { ingoingUrl, outgoingUrl, scope }: ProxyOptions) {
+function addProxyHandler(router: Router, { ingoingUrl, outgoingUrl, scope }: ProxyOptions) {
     router.use(
         ingoingUrl,
         async (request: Request, response: Response, next: NextFunction) => {

@@ -18,7 +18,7 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { BarnFrontend, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
+import { BarnDto_fpoversikt, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { isISODateString } from '@navikt/fp-utils';
 import { Perioden } from '@navikt/fp-uttaksplan';
 
@@ -49,9 +49,7 @@ const getDateFromDateString = (dateString: string | undefined): Date | undefined
     }
     return undefined;
 };
-
-export const date4YearsAgo = dayjs().subtract(4, 'year').startOf('day').toDate();
-
+dayjs().subtract(4, 'year').startOf('day').toDate();
 export const isDateABeforeDateB = (a: string, b: string): boolean => {
     if (!hasValue(a) || !hasValue(b) || !isISODateString(a) || !isISODateString(b)) {
         return false;
@@ -64,10 +62,8 @@ export const isDateABeforeDateB = (a: string, b: string): boolean => {
     return false;
 };
 
-export const getEldsteRegistrerteBarn = (registrerteBarn: BarnFrontend[]): BarnFrontend => {
-    return [...registrerteBarn].sort((a, b) => (isDateABeforeDateB(a.fødselsdato, b.fødselsdato) ? 1 : -1))[
-        registrerteBarn.length - 1
-    ];
+export const getEldsteRegistrerteBarn = (registrerteBarn: BarnDto_fpoversikt[]): BarnDto_fpoversikt => {
+    return [...registrerteBarn].sort((a, b) => (isDateABeforeDateB(a.fødselsdato, b.fødselsdato) ? 1 : -1)).at(-1)!;
 };
 
 export const sorterDatoEtterEldst = (dato: Date[]): string[] => {
@@ -75,7 +71,7 @@ export const sorterDatoEtterEldst = (dato: Date[]): string[] => {
 };
 
 export const getEldsteDato = (dato: Date[]): string => {
-    return sorterDatoEtterEldst(dato)[0];
+    return sorterDatoEtterEldst(dato)[0]!;
 };
 
 type DateValue = Date | undefined;
@@ -214,14 +210,15 @@ export const getEndringstidspunkt = (
                 }
             }
 
+            const sistePeriodeISøkersOpprinneligePlan = søkerensOpprinneligePlan.at(-1);
+
             //Hvis endringstidspunktet er etter siste periode i opprinnelig plan, og 'periode' er periode uten uttak,
             //finn første uttak/utsettelse etter endringstidspunktet
             if (
                 endringstidspunktNyPlan &&
                 isPeriodeUtenUttak(periode) &&
-                dayjs(endringstidspunktNyPlan).isAfter(
-                    søkerensOpprinneligePlan[søkerensOpprinneligePlan.length - 1].tidsperiode.tom,
-                )
+                sistePeriodeISøkersOpprinneligePlan &&
+                dayjs(endringstidspunktNyPlan).isAfter(sistePeriodeISøkersOpprinneligePlan.tidsperiode.tom)
             ) {
                 const førsteUttakEllerUtsettelseEtterEndring = søkerensUpdatedPlan.find(
                     (p) =>
@@ -235,9 +232,9 @@ export const getEndringstidspunkt = (
             }
         });
 
-        søkerensOpprinneligePlan.forEach((periode) => {
+        for (const periode of søkerensOpprinneligePlan) {
             if (endringstidspunktOpprinneligPlan) {
-                return;
+                continue;
             }
 
             const { fom } = periode.tidsperiode;
@@ -252,10 +249,10 @@ export const getEndringstidspunkt = (
             if (nyPeriodeMedSammeFom === undefined) {
                 endringstidspunktOpprinneligPlan = fom;
             }
-        });
+        }
     } else if (søkerensUpdatedPlan.length > 0) {
         // Bruker har slettet opprinnelig plan, send med alt
-        return søkerensUpdatedPlan[0].tidsperiode.fom;
+        return søkerensUpdatedPlan[0]!.tidsperiode.fom;
     }
 
     return getOldestDate(endringstidspunktNyPlan, endringstidspunktOpprinneligPlan);
@@ -353,11 +350,6 @@ export const getToTetteReglerGjelder = (
         dayjs(familiehendelsePlus48Uker).isAfter(familiehendelsesdatoNesteBarn, 'day')
     );
 };
-
-export const formaterDatoKompakt = (dato: Date): string => {
-    return formaterDato(dato, 'DD.MM.YYYY');
-};
-
 export const formaterDato = (dato: DateType, datoformat?: string): string => {
     return dayjs(dato).format(datoformat ?? 'dddd D. MMMM YYYY');
 };

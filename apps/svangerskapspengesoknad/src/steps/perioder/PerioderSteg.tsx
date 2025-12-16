@@ -16,7 +16,7 @@ import {
 import { BodyShort, Heading, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -27,10 +27,10 @@ type TilretteleggingPerioderFormValues = {
     varierendePerioder: PeriodeMedVariasjon[];
 };
 
-export interface Props {
+interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    avbrytSøknad: () => Promise<void>;
-    arbeidsforhold: Arbeidsforhold[];
+    avbrytSøknad: () => void;
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }
 
 export const PerioderSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
@@ -54,7 +54,7 @@ export const PerioderSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbei
 
     const typeArbeidsgiver = getTypeArbeidForTilrettelegging(valgtTilretteleggingId, arbeidsforhold);
     const navnArbeidsgiver = getArbeidsgiverNavnForTilrettelegging(intl, valgtTilretteleggingId, arbeidsforhold);
-    const valgtTilrettelegging = tilrettelegginger[valgtTilretteleggingId];
+    const valgtTilrettelegging = tilrettelegginger[valgtTilretteleggingId]!;
 
     const onSubmit = (values: TilretteleggingPerioderFormValues) => {
         oppdaterTilretteleggingerPerioder({
@@ -85,7 +85,7 @@ export const PerioderSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbei
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig} onStepChange={navigator.goToStep}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                    <VStack gap="10">
+                    <VStack gap="space-40">
                         <ErrorSummaryHookForm />
                         {!!valgteArbeidsforhold && valgteArbeidsforhold.length > 1 && (
                             <Bedriftsbanner

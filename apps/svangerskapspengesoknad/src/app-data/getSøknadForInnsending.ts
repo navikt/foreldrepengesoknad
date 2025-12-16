@@ -1,8 +1,5 @@
-import { AttachmentDTO } from 'types/AttachmentDTO';
 import { Barn } from 'types/Barn';
-import { SøknadDTO } from 'types/Søknad';
 import { DelvisTilrettelegging, IngenTilrettelegging, PeriodeMedVariasjon } from 'types/Tilrettelegging';
-import { TilretteleggingDTO } from 'types/TilretteleggingDto';
 import { getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import {
     getArbeidsgiverStillingerForTilrettelegging,
@@ -11,25 +8,34 @@ import {
     mapFlereTilretteleggingPerioder,
 } from 'utils/tilretteleggingUtils';
 
-import { AttachmentMetadataType } from '@navikt/fp-constants';
-import { Arbeidsforhold, Attachment, Frilans, LocaleNo, NæringDto } from '@navikt/fp-types';
+import {
+    Attachment,
+    EksternArbeidsforholdDto_fpoversikt,
+    Frilans,
+    Målform,
+    NæringDto,
+    PersonMedArbeidsforholdDto_fpoversikt,
+    SvangerskapspengesøknadDto,
+    TilretteleggingbehovDto,
+    VedleggDto,
+} from '@navikt/fp-types';
 import { getDecoratorLanguageCookie } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType } from './SvpDataContext';
 
 const finnTilretteleggingsbehov = (
-    alleArbeidsforhold: Arbeidsforhold[],
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     barn: Barn,
     tilrettelegginger: Record<string, DelvisTilrettelegging | IngenTilrettelegging>,
     tilretteleggingerPerioder?: Record<string, PeriodeMedVariasjon[]>,
     egenNæring?: NæringDto,
     frilans?: Frilans,
-): TilretteleggingDTO[] => {
+): TilretteleggingbehovDto[] => {
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
 
     return Object.keys(tilrettelegginger).map((tilretteleggingId) => {
-        const tilrettelegging = tilrettelegginger[tilretteleggingId];
+        const tilrettelegging = tilrettelegginger[tilretteleggingId]!;
         const perioder = tilretteleggingerPerioder?.[tilretteleggingId];
 
         const stillinger = getArbeidsgiverStillingerForTilrettelegging(
@@ -58,18 +64,18 @@ const finnTilretteleggingsbehov = (
 
 const finnVedlegg = (
     tilretteleggingerVedlegg: Record<string, Attachment[]>,
-    alleArbeidsforhold: Arbeidsforhold[],
-): AttachmentDTO[] => {
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+): VedleggDto[] => {
     const mappedVedlegg = Object.keys(tilretteleggingerVedlegg).map((tilretteleggingId) => {
-        const alleVedlegg = tilretteleggingerVedlegg[tilretteleggingId];
+        const alleVedlegg = tilretteleggingerVedlegg[tilretteleggingId]!;
         const arbeidsforhold = {
             id: tilretteleggingId,
             type: getTypeArbeidForTilrettelegging(tilretteleggingId, alleArbeidsforhold),
-        };
+        } as const;
         return alleVedlegg.map((vedlegg) => ({
             ...vedlegg,
             dokumenterer: {
-                type: AttachmentMetadataType.TILRETTELEGGING,
+                type: 'TILRETTELEGGING' as const,
                 arbeidsforhold,
             },
         }));
@@ -78,9 +84,9 @@ const finnVedlegg = (
 };
 
 export const getSøknadForInnsending = (
-    alleArbeidsforhold: Arbeidsforhold[],
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-): SøknadDTO => {
+): SvangerskapspengesøknadDto => {
     const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
@@ -92,21 +98,32 @@ export const getSøknadForInnsending = (
     const ferie = hentData(ContextDataType.FERIE);
 
     return {
-        språkkode: getDecoratorLanguageCookie('decorator-language') as LocaleNo,
+        søkerinfo: {
+            fnr: søkerinfo.person.fnr,
+            navn: søkerinfo.person.navn,
+            arbeidsforhold: søkerinfo.arbeidsforhold.map((af) => ({
+                navn: af.arbeidsgiverNavn,
+                orgnummer: af.arbeidsgiverId,
+                stillingsprosent: af.stillingsprosent,
+                fom: af.fom,
+                tom: af.tom,
+            })),
+        },
+        språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform,
         barn,
         frilans,
         egenNæring,
         andreInntekterSiste10Mnd: hentData(ContextDataType.ARBEID_I_UTLANDET)?.arbeidIUtlandet,
         utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
         tilretteleggingsbehov: finnTilretteleggingsbehov(
-            alleArbeidsforhold,
+            søkerinfo.arbeidsforhold,
             barn,
             tilrettelegginger,
             tilretteleggingerPerioder,
             egenNæring,
             frilans,
         ),
-        vedlegg: finnVedlegg(tilretteleggingerVedlegg, alleArbeidsforhold),
+        vedlegg: finnVedlegg(tilretteleggingerVedlegg, søkerinfo.arbeidsforhold),
         avtaltFerie: ferie ? Object.values(ferie).flatMap((f) => f.feriePerioder) : [],
     };
 };

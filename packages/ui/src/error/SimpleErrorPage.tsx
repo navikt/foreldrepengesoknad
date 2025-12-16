@@ -5,8 +5,8 @@ import { BodyShort, Box, Button, Heading, VStack } from '@navikt/ds-react';
 
 import { SkjemaRotLayout } from '../skjema-rotlayout/SkjemaRotLayout';
 
-const defaultRetryCallback = async () => {
-    window.location.href = window.location.origin;
+const defaultRetryCallback = () => {
+    globalThis.location.href = globalThis.location.origin;
 };
 
 interface Props {
@@ -15,11 +15,11 @@ interface Props {
 
 export const SimpleErrorPage = ({ retryCallback }: Props) => (
     <SkjemaRotLayout pageTitle="">
-        <Box background="surface-alt-3-subtle" borderRadius="large" padding="6">
-            <VStack gap="16">
-                <VStack gap="6">
+        <Box.New background="brand-blue-moderate" borderRadius="large" padding="6">
+            <VStack gap="space-64">
+                <VStack gap="space-24">
                     <LaptopTriangleIcon aria-hidden height={44} width={44} />
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <Heading size="medium">
                             <FormattedMessage id="SimpleErrorPage.ErrorHeader" />
                         </Heading>
@@ -32,6 +32,6 @@ export const SimpleErrorPage = ({ retryCallback }: Props) => (
                     <FormattedMessage id="SimpleErrorPage.TryAgain" />
                 </Button>
             </VStack>
-        </Box>
+        </Box.New>
     </SkjemaRotLayout>
 );

@@ -1,4 +1,5 @@
-import { Dekningsgrad } from './Dekningsgrad';
+import { Dekningsgrad } from '@navikt/fp-types';
+
 import { FamiliehendelseType } from './FamiliehendelseType';
 
 export interface Saksgrunnlag {
@@ -18,5 +19,5 @@ export interface Saksgrunnlag {
     familiehendelseDato: string;
     familiehendelseType: FamiliehendelseType;
     harAnnenForelderTilsvarendeRettEØS?: boolean;
-    ønskerJustertUttakVedFødsel: boolean | undefined;
+    ønskerJustertUttakVedFødsel?: boolean;
 }

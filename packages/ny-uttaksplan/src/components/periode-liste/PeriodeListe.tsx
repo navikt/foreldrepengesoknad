@@ -1,12 +1,9 @@
 import dayjs from 'dayjs';
 import { Fragment } from 'react';
 
-import { Accordion } from '@navikt/ds-react';
-
 import { isValidTidsperiodeString } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
 
-import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
+import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import { Periodene } from '../../utils/Periodene';
@@ -15,21 +12,22 @@ import { PeriodeListeItem } from './../periode-liste-item/PeriodeListeItem';
 
 interface Props {
     perioder: Planperiode[];
+    handleAddPeriode: (nyPeriode: Planperiode) => void;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
     handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
+    isAllAccordionsOpen?: boolean;
 }
 
-const getIndexOfFørstePeriodeEtterFødsel = (permisjonsperioder: Permisjonsperiode[], familiehendelsesdato: string) => {
-    return permisjonsperioder.findIndex(
-        (p) =>
-            isValidTidsperiodeString(p.tidsperiode) &&
-            dayjs(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato, 'd'),
-    );
-};
-
-export const PeriodeListe = ({ perioder, handleUpdatePeriode, handleDeletePeriode, handleDeletePerioder }: Props) => {
-    const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
+export const PeriodeListe = ({
+    perioder,
+    handleUpdatePeriode,
+    handleDeletePeriode,
+    handleDeletePerioder,
+    handleAddPeriode,
+    isAllAccordionsOpen,
+}: Props) => {
+    const { familiehendelsedato } = useUttaksplanData();
 
     const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder, familiehendelsedato);
     const indexOfFørstePeriodeEtterFødsel = getIndexOfFørstePeriodeEtterFødsel(permisjonsperioder, familiehendelsedato);
@@ -37,51 +35,65 @@ export const PeriodeListe = ({ perioder, handleUpdatePeriode, handleDeletePeriod
 
     return (
         <div>
-            <Accordion>
-                {permisjonsperioder.map((p, index) => {
-                    if (perioderEtterFamdato.length === 0) {
-                        return (
-                            <Fragment key={`${p.tidsperiode.fom}-${p.tidsperiode.tom}`}>
+            {permisjonsperioder.map((permisjonsperiode, index) => {
+                if (perioderEtterFamdato.length === 0) {
+                    return (
+                        <Fragment key={`${permisjonsperiode.tidsperiode.fom}-${permisjonsperiode.tidsperiode.tom}`}>
+                            <PeriodeListeItem
+                                handleAddPeriode={handleAddPeriode}
+                                handleUpdatePeriode={handleUpdatePeriode}
+                                handleDeletePeriode={handleDeletePeriode}
+                                handleDeletePerioder={handleDeletePerioder}
+                                permisjonsperiode={permisjonsperiode}
+                                isAllAccordionsOpen={isAllAccordionsOpen}
+                            />
+                            {permisjonsperioder.length - 1 === index && (
                                 <PeriodeListeItem
+                                    handleAddPeriode={handleAddPeriode}
                                     handleUpdatePeriode={handleUpdatePeriode}
                                     handleDeletePeriode={handleDeletePeriode}
                                     handleDeletePerioder={handleDeletePerioder}
-                                    permisjonsperiode={p}
+                                    permisjonsperiode={permisjonsperiode}
+                                    erFamiliehendelse
+                                    isAllAccordionsOpen={isAllAccordionsOpen}
                                 />
-                                {permisjonsperioder.length - 1 === index ? (
-                                    <PeriodeListeItem
-                                        handleUpdatePeriode={handleUpdatePeriode}
-                                        handleDeletePeriode={handleDeletePeriode}
-                                        handleDeletePerioder={handleDeletePerioder}
-                                        permisjonsperiode={p}
-                                        erFamiliehendelse={true}
-                                    />
-                                ) : null}
-                            </Fragment>
-                        );
-                    } else {
-                        return (
-                            <Fragment key={`${p.tidsperiode.fom}-${p.tidsperiode.tom}`}>
-                                {indexOfFørstePeriodeEtterFødsel === index ? (
-                                    <PeriodeListeItem
-                                        handleUpdatePeriode={handleUpdatePeriode}
-                                        handleDeletePeriode={handleDeletePeriode}
-                                        handleDeletePerioder={handleDeletePerioder}
-                                        permisjonsperiode={p}
-                                        erFamiliehendelse={true}
-                                    />
-                                ) : null}
+                            )}
+                        </Fragment>
+                    );
+                } else {
+                    return (
+                        <Fragment key={`${permisjonsperiode.tidsperiode.fom}-${permisjonsperiode.tidsperiode.tom}`}>
+                            {indexOfFørstePeriodeEtterFødsel === index && (
                                 <PeriodeListeItem
+                                    handleAddPeriode={handleAddPeriode}
                                     handleUpdatePeriode={handleUpdatePeriode}
                                     handleDeletePeriode={handleDeletePeriode}
                                     handleDeletePerioder={handleDeletePerioder}
-                                    permisjonsperiode={p}
+                                    permisjonsperiode={permisjonsperiode}
+                                    erFamiliehendelse
+                                    isAllAccordionsOpen={isAllAccordionsOpen}
                                 />
-                            </Fragment>
-                        );
-                    }
-                })}
-            </Accordion>
+                            )}
+                            <PeriodeListeItem
+                                handleAddPeriode={handleAddPeriode}
+                                handleUpdatePeriode={handleUpdatePeriode}
+                                handleDeletePeriode={handleDeletePeriode}
+                                handleDeletePerioder={handleDeletePerioder}
+                                permisjonsperiode={permisjonsperiode}
+                                isAllAccordionsOpen={isAllAccordionsOpen}
+                            />
+                        </Fragment>
+                    );
+                }
+            })}
         </div>
+    );
+};
+
+const getIndexOfFørstePeriodeEtterFødsel = (permisjonsperioder: Permisjonsperiode[], familiehendelsesdato: string) => {
+    return permisjonsperioder.findIndex(
+        (p) =>
+            isValidTidsperiodeString(p.tidsperiode) &&
+            dayjs(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato, 'd'),
     );
 };

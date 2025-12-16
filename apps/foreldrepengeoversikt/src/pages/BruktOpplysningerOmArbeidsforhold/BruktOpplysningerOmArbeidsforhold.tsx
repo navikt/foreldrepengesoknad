@@ -8,8 +8,8 @@ import { LayoutWrapper } from '../../sections/LayoutWrapper.tsx';
 
 export const BruktOpplysningerOmArbeidsforhold = () => {
     return (
-        <LayoutWrapper className="md:pb-28 p-4">
-            <VStack className="bg-white p-4 rounded-2xl border-2 shadow border-deepblue-200">
+        <LayoutWrapper className="ax-md:pb-28 p-4">
+            <VStack className="bg-ax-bg-default border-ax-brand-blue-300 rounded-2xl border-2 p-4 shadow">
                 <Heading size="small" level="2" spacing>
                     <FormattedMessage id="BruktOpplysningerOmArbeidsforhold.tittel" />
                 </Heading>

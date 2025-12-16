@@ -65,11 +65,12 @@ describe('<Arbeid som frilanser>', () => {
     it('skal avslutte søknad', async () => {
         const onAvsluttOgSlett = vi.fn();
 
-        render(<Default onAvsluttOgSlett={onAvsluttOgSlett} />);
+        render(<Default onFortsettSenere={vi.fn()} onAvsluttOgSlett={onAvsluttOgSlett} />);
 
         expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
 
-        await userEvent.click(screen.getAllByText('Avslutt')[0]);
+        await userEvent.click(screen.getAllByText('Slett søknaden')[0]!);
+        await userEvent.click(screen.getAllByText('Slett søknaden')[1]!);
 
         expect(screen.getAllByText('Fortsett senere')[0]).toBeInTheDocument();
     });

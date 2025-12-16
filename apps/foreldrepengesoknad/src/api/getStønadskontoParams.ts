@@ -15,7 +15,7 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { AnnenPartSak, SøkersituasjonFp } from '@navikt/fp-types';
+import { AnnenPartSak_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 
 const getFarHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
     if (erFarMedmor) {
@@ -29,7 +29,7 @@ const getFarHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder)
     return false;
 };
 
-export const getMorHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
+const getMorHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
     if (!erFarMedmor) {
         return true;
     }
@@ -101,7 +101,7 @@ export const getStønadskontoParams = ({
     annenForelder: AnnenForelder;
     søkersituasjon: SøkersituasjonFp;
     barnFraNesteSak?: BarnFraNesteSak;
-    annenPartsVedtak: AnnenPartSak | undefined;
+    annenPartsVedtak: AnnenPartSak_fpoversikt | undefined;
     eksisterendeSak?: EksisterendeSak;
 }) => {
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
@@ -118,8 +118,7 @@ export const getStønadskontoParams = ({
         annenForelder,
     );
 
-    const førsteUttaksdagNesteBarnsSak =
-        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+    const førsteUttaksdagNesteBarnsSak = barnFraNesteSak?.startdatoFørsteStønadsperiode;
 
     const eksisterendeVedtakAnnenPart = mapAnnenPartsEksisterendeSakFromDTO(
         annenPartsVedtak,

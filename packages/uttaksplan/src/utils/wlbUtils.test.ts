@@ -1,4 +1,4 @@
-import { Forelder, Periode, Periodetype, StønadskontoType } from '@navikt/fp-common';
+import { Periode, Periodetype } from '@navikt/fp-common';
 
 import {
     erFarMedmorSinWLBTidsperiodeRundtFødsel,
@@ -161,8 +161,8 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
     it('skal returnere at periode som går over fødsel skal splittes, når det er far/medmors periode rundt fødsel', () => {
         const periode = {
             type: Periodetype.Uttak,
-            konto: StønadskontoType.Fedrekvote,
-            forelder: Forelder.farMedmor,
+            konto: 'FEDREKVOTE',
+            forelder: 'FAR_MEDMOR',
             erMorForSyk: false,
             ønskerSamtidigUttak: true,
             samtidigUttakProsent: '100',
@@ -179,8 +179,8 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
     it('skal returnere at periode som ikke går over fødsel ikke skal splittes, når det er far/medmors periode rundt fødsel', () => {
         const periode = {
             type: Periodetype.Uttak,
-            konto: StønadskontoType.Fedrekvote,
-            forelder: Forelder.farMedmor,
+            konto: 'FEDREKVOTE',
+            forelder: 'FAR_MEDMOR',
             erMorForSyk: false,
             ønskerSamtidigUttak: true,
             samtidigUttakProsent: '100',
@@ -197,8 +197,8 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
     it('skal returnere at periode som slutter før fødsel ikke skal splittes, når det er far/medmors periode rundt fødsel', () => {
         const periode = {
             type: Periodetype.Uttak,
-            konto: StønadskontoType.Fedrekvote,
-            forelder: Forelder.farMedmor,
+            konto: 'FEDREKVOTE',
+            forelder: 'FAR_MEDMOR',
             erMorForSyk: false,
             ønskerSamtidigUttak: true,
             samtidigUttakProsent: '100',
@@ -215,8 +215,8 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
     it('skal returnere at periode som går over fødsel ikke skal splittes, når det ikke er samtidig uttaksperiode', () => {
         const periode = {
             type: Periodetype.Uttak,
-            konto: StønadskontoType.Fedrekvote,
-            forelder: Forelder.farMedmor,
+            konto: 'FEDREKVOTE',
+            forelder: 'FAR_MEDMOR',
             erMorForSyk: true,
             ønskerSamtidigUttak: false,
             tidsperiode: { fom: new Date('2022-05-25T00:00:00.000Z'), tom: new Date('2022-05-286T00:00:00.000Z') },
@@ -232,8 +232,8 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
     it('skal returnere at periode som går over fødsel skal splittes, når det er far/medmors periode og bare far/medmor har rett', () => {
         const periode = {
             type: Periodetype.Uttak,
-            konto: StønadskontoType.Foreldrepenger,
-            forelder: Forelder.farMedmor,
+            konto: 'FORELDREPENGER',
+            forelder: 'FAR_MEDMOR',
             tidsperiode: { fom: new Date('2022-05-25T00:00:00.000Z'), tom: new Date('2022-05-27T00:00:00.000Z') },
         } as Periode;
         const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
@@ -250,8 +250,8 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
         () => {
             const periode = {
                 type: Periodetype.Uttak,
-                konto: StønadskontoType.Foreldrepenger,
-                forelder: Forelder.farMedmor,
+                konto: 'FORELDREPENGER',
+                forelder: 'FAR_MEDMOR',
                 tidsperiode: { fom: new Date('2022-05-25T00:00:00.000Z'), tom: new Date('2022-05-27T00:00:00.000Z') },
             } as Periode;
             const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
@@ -270,7 +270,7 @@ describe('erFarMedmorSinWLBTidsperiodeRundtFødsel - når WLB gjelder', () => {
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             Periodetype.Uttak,
-            StønadskontoType.Fedrekvote,
+            'FEDREKVOTE',
             true, //erFarEllerMedmor
             new Date('2022-08-02T00:00:00.000Z'), //termindato
             'fødsel',
@@ -282,7 +282,7 @@ describe('erFarMedmorSinWLBTidsperiodeRundtFødsel - når WLB gjelder', () => {
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             Periodetype.Uttak,
-            StønadskontoType.Fedrekvote,
+            'FEDREKVOTE',
             false, //erFarEllerMedmor
             new Date('2022-08-02T00:00:00.000Z'), //termindato
             'fødsel',
@@ -294,7 +294,7 @@ describe('erFarMedmorSinWLBTidsperiodeRundtFødsel - når WLB gjelder', () => {
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             Periodetype.Uttak,
-            StønadskontoType.Fellesperiode,
+            'FELLESPERIODE',
             true, //erFarEllerMedmor
             new Date('2022-08-02T00:00:00.000Z'), //termindato
             'fødsel',
@@ -308,7 +308,7 @@ describe('erFarMedmorSinWLBTidsperiodeRundtFødsel - når WLB ikke gjelder', () 
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
             new Date('2022-08-01T00:00:00.000Z'), //familiehendelsesdato
             Periodetype.Uttak,
-            StønadskontoType.Fedrekvote,
+            'FEDREKVOTE',
             true, //erFarEllerMedmor
             new Date('2022-08-01T00:00:00.000Z'), //termindato,
             'fødsel',

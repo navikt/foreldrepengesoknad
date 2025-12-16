@@ -1,6 +1,6 @@
 import { IntlShape } from 'react-intl';
 
-import { Søknadsinfo, UtsettelseÅrsakType, isUtsettelsesperiode } from '@navikt/fp-common';
+import { Søknadsinfo, isUtsettelsesperiode } from '@navikt/fp-common';
 
 import uttaksConstants from '../../common/uttaksConstants';
 import { getVarighetString } from '../../components/periodeliste-item-header/PeriodelisteItemHeader';
@@ -8,9 +8,7 @@ import { Perioden } from '../../utils/Perioden';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 
 export const inneholderForMyeFerie: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
-    const ferieUtsettelser = grunnlag.perioder.filter(
-        (p) => isUtsettelsesperiode(p) && p.årsak === UtsettelseÅrsakType.Ferie,
-    );
+    const ferieUtsettelser = grunnlag.perioder.filter((p) => isUtsettelsesperiode(p) && p.årsak === 'LOVBESTEMT_FERIE');
     const ferieDager = ferieUtsettelser.reduce(
         (sumFerieDager, periode) => sumFerieDager + Perioden(periode).getAntallUttaksdager(),
         0,

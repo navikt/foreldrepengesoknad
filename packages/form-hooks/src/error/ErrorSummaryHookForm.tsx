@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-return */
 import { useEffect, useRef } from 'react';
 import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form';
 
@@ -21,6 +22,7 @@ const findAllErrors = (errors: FieldErrors<FieldValues>): FieldErrors<FieldValue
         if (Array.isArray(fieldValue)) {
             const alle = fieldValue.reduce((a, f) => {
                 return {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                     ...(f ? findAllErrors(f) : {}),
                     ...a,
                 };
@@ -51,6 +53,7 @@ export const ErrorSummaryHookForm = () => {
 
     // TODO Denne er ikkje optimal
     const mappedErrors = Object.values(flattenAndUniqueErrors).map((error) => ({
+        // eslint-disable-next-line @typescript-eslint/no-base-to-string
         message: error?.message?.toString(),
         //@ts-expect-error TODO Burde nok heller bruka setFocus her
         focus: error?.ref?.focus,

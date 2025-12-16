@@ -21,8 +21,9 @@ const promiseAction = () => () => {
 const barnetDefault = {
     erBarnetFødt: true,
     antallBarn: 1,
-    fødselsdato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
-} as BarnetErFødt;
+    fødselsdato: dayjs().subtract(9, 'day').format(ISO_DATE_FORMAT),
+    termindato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
+} satisfies BarnetErFødt;
 
 const utenlandsoppholdDefault = {
     harBoddUtenforNorgeSiste12Mnd: false,
@@ -100,10 +101,10 @@ export const AdopsjonAvEktefellesBarn: Story = {
                     filesize: 2323,
                     file: {} as File,
                     pending: false,
+                    innsendingsType: 'LASTET_OPP',
                     uploaded: true,
                     type: AttachmentType.OMSORGSOVERTAKELSE,
                     skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
-                    url: null,
                 },
             ],
         },
@@ -125,13 +126,13 @@ export const AdopsjonAvEktefellesFlereBarn: Story = {
                 {
                     id: '1',
                     filename: 'filnavn.pdf',
+                    innsendingsType: 'LASTET_OPP',
                     filesize: 2323,
                     file: {} as File,
                     pending: false,
                     uploaded: true,
                     type: AttachmentType.OMSORGSOVERTAKELSE,
                     skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
-                    url: null,
                 },
             ],
         },
@@ -156,10 +157,10 @@ export const BarnetErIkkeFodt: Story = {
                     filesize: 2323,
                     file: {} as File,
                     pending: false,
+                    innsendingsType: 'LASTET_OPP',
                     uploaded: true,
                     type: AttachmentType.TERMINBEKREFTELSE,
                     skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
-                    url: null,
                 },
             ],
         },

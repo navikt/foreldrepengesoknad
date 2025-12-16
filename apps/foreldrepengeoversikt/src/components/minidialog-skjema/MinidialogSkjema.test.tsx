@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { Skjemanummer } from '@navikt/fp-constants';
+import { EttersendelseDto } from '@navikt/fp-types';
 import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './MinidialogSkjema.stories';
@@ -40,14 +41,13 @@ describe('<MinidialogSkjema>', () => {
             expect(send).toHaveBeenNthCalledWith(1, {
                 brukerTekst: {
                     dokumentType: Skjemanummer.TILBAKEBETALING,
-                    overskrift: 'Svar på tilbakebetalingen',
                     tekst: 'Jeg ønsker ikke å uttale meg. Saken vil bli behandlet med de opplysningene som Nav har tilgjengelig.',
                 },
-                dialogId: '1',
+                fnr: '26430359419',
                 saksnummer: '1',
                 type: 'FORELDREPENGER',
                 vedlegg: [],
-            });
+            } satisfies EttersendelseDto);
         }),
     );
 
@@ -96,14 +96,13 @@ describe('<MinidialogSkjema>', () => {
             expect(send).toHaveBeenNthCalledWith(1, {
                 brukerTekst: {
                     dokumentType: Skjemanummer.TILBAKEBETALING,
-                    overskrift: 'Svar på tilbakebetalingen',
                     tekst: 'Dette er et svar som er minst 25 tegn langt',
                 },
-                dialogId: '1',
+                fnr: '26430359419',
                 saksnummer: '1',
                 type: 'FORELDREPENGER',
                 vedlegg: [],
-            });
+            } satisfies EttersendelseDto);
         }),
     );
 });

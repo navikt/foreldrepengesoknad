@@ -52,18 +52,18 @@ export const OppsummeringPanel = <TYPE extends string>({
     const [isError, setIsError] = useState(false);
 
     const send = () => {
-        if (!isChecked) {
-            setIsError(true);
-        } else {
+        if (isChecked) {
             setIsSubmitting(true);
-            sendSøknad();
+            void sendSøknad();
+        } else {
+            setIsError(true);
         }
     };
 
     return (
         <Step steps={stepConfig} onStepChange={onStepChange} noFieldsRequired>
-            <VStack gap="10">
-                <VStack gap="3">{children}</VStack>
+            <VStack gap="space-40">
+                <VStack gap="space-12">{children}</VStack>
                 <ConfirmationPanel
                     label={getSamtykkeTekst(intl, appName, ekstraSamtykketekst)}
                     onChange={() => setIsChecked((state) => !state)}

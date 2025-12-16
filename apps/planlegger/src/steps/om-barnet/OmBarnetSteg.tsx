@@ -5,6 +5,7 @@ import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
+import isEqual from 'lodash/isEqual';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
@@ -40,9 +41,13 @@ export const OmBarnetSteg = () => {
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const lagre = (formValues: OmBarnet) => {
         oppdaterOmBarnet(formValues);
+        if (omBarnet && !isEqual(omBarnet, formValues)) {
+            oppdaterUttaksplan(undefined);
+        }
 
         if (erBarnetFødt(formValues) && dayjs(formValues.fødselsdato).isBefore(DATE_3_YEARS_AGO)) {
             navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);
@@ -69,8 +74,8 @@ export const OmBarnetSteg = () => {
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
             <RhfForm formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
-                <VStack gap="10" style={{ flex: 1 }}>
-                    <VStack gap="8">
+                <VStack gap="space-40" style={{ flex: 1 }}>
+                    <VStack gap="space-32">
                         <Heading level="2" size="medium">
                             <FormattedMessage id="OmBarnetSteg.Tittel" />
                         </Heading>
@@ -107,7 +112,7 @@ export const OmBarnetSteg = () => {
                                     <PersonGroupIcon
                                         height={24}
                                         width={24}
-                                        color="#7F8900"
+                                        color="var(--ax-bg-success-strong)"
                                         fontSize="1.5rem"
                                         aria-hidden
                                     />

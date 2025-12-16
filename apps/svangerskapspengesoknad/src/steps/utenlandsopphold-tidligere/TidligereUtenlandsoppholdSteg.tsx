@@ -5,14 +5,14 @@ import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
 
 import { TidligereUtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
-import { Arbeidsforhold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 };
 
 export const TidligereUtenlandsoppholdSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {

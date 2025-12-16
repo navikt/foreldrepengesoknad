@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
-import { StønadskontoType } from '@navikt/fp-common';
 import {
     TidsperiodenString,
     UttaksdagenString,
@@ -276,7 +275,7 @@ function getAntallUttaksdager(perioder: Planperiode[]): number {
 
 function getForeldrepengerFørTermin(perioder: Planperiode[]): Planperiode | undefined {
     const periode: Planperiode | undefined = perioder.find(
-        (p) => isUttaksperiode(p) && p.kontoType === StønadskontoType.ForeldrepengerFørFødsel,
+        (p) => isUttaksperiode(p) && p.kontoType === 'FORELDREPENGER_FØR_FØDSEL',
     );
 
     return periode;
@@ -286,21 +285,9 @@ function getFørsteUttaksdagEtterSistePeriode(perioder: Planperiode[]): string |
     if (perioder.length === 0) {
         return undefined;
     }
-    return UttaksdagenString(perioder[perioder.length - 1].tom).neste();
+
+    return UttaksdagenString(perioder.at(-1)!.tom).neste();
 }
-
-export const uttaksplanErBareForeldrepengerFørFødsel = (perioder: Planperiode[]): boolean => {
-    const perioderUtenInfoPerioderEllerHull = perioder.filter((p) => !isHull(p));
-
-    if (perioderUtenInfoPerioderEllerHull.length === 0) {
-        return false;
-    }
-
-    return perioderUtenInfoPerioderEllerHull.every(
-        (periode) => isUttaksperiode(periode) && periode.kontoType === StønadskontoType.ForeldrepengerFørFødsel,
-    );
-};
-
 export const uttaksplanErBareOpphold = (perioder: Planperiode[]): boolean => {
     const perioderUtenInfoPerioder = perioder.filter((p) => !p.readOnly);
 
@@ -308,19 +295,13 @@ export const uttaksplanErBareOpphold = (perioder: Planperiode[]): boolean => {
         return false;
     }
 
-    return perioderUtenInfoPerioder.every((periode) => periode.oppholdÅrsak !== undefined);
-};
-
-export const uttaksplanSlutterMedOpphold = (perioder: Planperiode[]): boolean => {
-    return (
-        perioder
-            .filter((p) => !p.readOnly)
-            .slice()
-            .reverse()
-            .findIndex((periode) => periode.oppholdÅrsak !== undefined) === 0
-    );
+    return perioderUtenInfoPerioder.every((periode) => !periode.erAnnenPartEøs && periode.oppholdÅrsak !== undefined);
 };
 
 export const uttaksplanStarterMedOpphold = (perioder: Planperiode[]): boolean => {
-    return perioder.filter((p) => !p.readOnly).findIndex((periode) => periode.oppholdÅrsak !== undefined) === 0;
+    return (
+        perioder
+            .filter((p) => !p.readOnly)
+            .findIndex((periode) => !periode.erAnnenPartEøs && periode.oppholdÅrsak !== undefined) === 0
+    );
 };

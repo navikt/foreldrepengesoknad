@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
-import { Alert, HStack, Loader, VStack } from '@navikt/ds-react';
+import { Alert, HStack, Link, Loader, VStack } from '@navikt/ds-react';
 
 import { ScrollToTop } from './../../scroll-to-top/ScrollToTop';
 
@@ -17,7 +17,7 @@ export const MinidialogVenterPåSvar = ({ fetchCounter, allowedToFetch, saksnumm
             <>
                 <ScrollToTop />
                 <Alert variant="info">
-                    <HStack gap="4" justify="center">
+                    <HStack gap="space-16" justify="center">
                         <Loader />
                         Svaret ditt registreres i våre systemer.
                     </HStack>
@@ -30,9 +30,9 @@ export const MinidialogVenterPåSvar = ({ fetchCounter, allowedToFetch, saksnumm
         return (
             <>
                 <ScrollToTop />
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <Alert variant="success">Svaret ditt er registrert</Alert>
-                    <Link to={`/sak/${saksnummer}`}>
+                    <Link as={RouterLink} to={`/sak/${saksnummer}`}>
                         <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
                     </Link>
                 </VStack>
@@ -43,12 +43,12 @@ export const MinidialogVenterPåSvar = ({ fetchCounter, allowedToFetch, saksnumm
     return (
         <>
             <ScrollToTop />
-            <VStack gap="2">
+            <VStack gap="space-8">
                 <Alert variant="info">
                     Vi har fått svaret ditt, men det tar litt lenger tid enn vanlig å oppdatere saken. Du trenger ikke å
                     sende igjen.
                 </Alert>
-                <Link to={`/sak/${saksnummer}`}>
+                <Link as={RouterLink} to={`/sak/${saksnummer}`}>
                     <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
                 </Link>
             </VStack>

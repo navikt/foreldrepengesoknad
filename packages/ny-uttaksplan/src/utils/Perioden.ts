@@ -55,17 +55,21 @@ function erPerioderLike(p1: Planperiode, p2: Planperiode, inkluderTidsperiode = 
 }
 
 function getPeriodeFootprint(periode: Planperiode, inkluderTidsperiode = false) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { fom, tom, id, ...rest } = periode;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const sortedPeriode = {} as any;
     Object.keys(rest)
         .sort((a, b) => a.localeCompare(b))
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         .filter((key) => (rest as any)[key] !== undefined)
         .forEach((key) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
             sortedPeriode[key] = (rest as any)[key];
         });
     if (inkluderTidsperiode) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         sortedPeriode.fom = fom ? formaterDatoKompakt(fom) : undefined;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         sortedPeriode.tom = tom ? formaterDatoKompakt(tom) : undefined;
     }
     return JSON.stringify({ ...sortedPeriode });

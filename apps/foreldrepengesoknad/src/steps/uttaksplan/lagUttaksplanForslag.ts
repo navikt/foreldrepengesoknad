@@ -19,7 +19,7 @@ import {
     isAdoptertAnnetBarn,
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
-import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { KontoBeregningDto, SøkersituasjonFp } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import {
     finnOgSettInnHull,
@@ -30,7 +30,7 @@ import {
 const getSøkerensUttaksplanForslag = (
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,
-    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
+    valgtStønadskonto: KontoBeregningDto,
     annenForelder: AnnenForelder,
     annenPartsPerioder: Periode[] | undefined,
     fordeling: Fordeling,
@@ -47,9 +47,10 @@ const getSøkerensUttaksplanForslag = (
     const ankomstNorgeForAdoptertBarn =
         isAdoptertAnnetBarn(barn) && barn.adoptertIUtlandet ? dayjs(barn.ankomstdato).toDate() : undefined;
     const søkerErAleneOmOmsorg = getErAleneOmOmsorg(annenForelder);
+    const annenPartsSistePeriode = annenPartsPerioder?.at(-1);
     const annenPartsSisteDag =
-        annenPartsPerioder && annenPartsPerioder.length > 0
-            ? Uttaksdagen(annenPartsPerioder[annenPartsPerioder.length - 1].tidsperiode.tom).denneEllerForrige()
+        annenPartsPerioder && annenPartsSistePeriode
+            ? Uttaksdagen(annenPartsSistePeriode.tidsperiode.tom).denneEllerForrige()
             : undefined;
     const startdatoPermisjon = getOppstartsdatoFromFordelingValg(
         fordeling.oppstartAvForeldrepengerValg,
@@ -97,6 +98,7 @@ const getSøkerensUttaksplanForslag = (
         });
 
         return finnOgSettInnHull(
+            // @ts-expect-error (TOR): Fiks type
             forslag,
             harAktivitetskravIPeriodeUtenUttak,
             familiehendelsesdato,
@@ -181,7 +183,7 @@ const oppdaterPlanForslagMedAnnenPartsPerioder = (
 };
 
 export const lagUttaksplanForslag = (
-    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
+    valgtStønadskonto: KontoBeregningDto,
     annenPartsPerioder: Periode[] | undefined,
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,

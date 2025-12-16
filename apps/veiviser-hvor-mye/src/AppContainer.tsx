@@ -4,7 +4,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
-import { Provider } from '@navikt/ds-react';
+import { Provider, Theme } from '@navikt/ds-react';
 import { en, nb, nn } from '@navikt/ds-react/locales';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
@@ -31,7 +31,7 @@ declare global {
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            retry: process.env.NODE_ENV === 'test' ? false : 3,
+            retry: false,
         },
     },
 });
@@ -47,7 +47,7 @@ dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
 export const AppContainer = () => {
     const [locale, setLocale] = useState<LocaleAll>(getDecoratorLanguageCookie('decorator-language') as LocaleAll);
 
-    setAvailableLanguages([
+    void setAvailableLanguages([
         { locale: 'nb', handleInApp: true },
         { locale: 'nn', handleInApp: true },
         { locale: 'en', handleInApp: true },
@@ -60,17 +60,19 @@ export const AppContainer = () => {
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary
-                appName="veiviser-hvor-mye"
-                customErrorPage={<SimpleErrorPage retryCallback={() => location.reload()} />}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <ReactQueryDevtools />
-                    <Provider locale={getDsProviderLocale(locale)}>
-                        <HvorMyeVeiviser />
-                    </Provider>
-                </QueryClientProvider>
-            </ErrorBoundary>
+            <Theme theme="light">
+                <ErrorBoundary
+                    appName="veiviser-hvor-mye"
+                    customErrorPage={<SimpleErrorPage retryCallback={() => location.reload()} />}
+                >
+                    <QueryClientProvider client={queryClient}>
+                        <ReactQueryDevtools />
+                        <Provider locale={getDsProviderLocale(locale)}>
+                            <HvorMyeVeiviser />
+                        </Provider>
+                    </QueryClientProvider>
+                </ErrorBoundary>
+            </Theme>
         </IntlProvider>
     );
 };

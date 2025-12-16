@@ -1,5 +1,4 @@
 import * as Sentry from '@sentry/browser';
-import Environment from 'appData/Environment';
 import * as countries from 'i18n-iso-countries';
 import * as langEN from 'i18n-iso-countries/langs/en.json';
 import * as langNB from 'i18n-iso-countries/langs/nb.json';
@@ -19,8 +18,8 @@ countries.registerLocale(langEN);
 if (process.env.NODE_ENV !== 'development') {
     Sentry.init({
         dsn: 'https://e2de35941445465aae1e83fcbcc2934d@sentry.gc.nav.no/8',
-        release: Environment.APP_VERSION,
-        environment: window.location.hostname,
+        release: import.meta.env.VITE_SENTRY_RELEASE,
+        environment: globalThis.location.hostname,
         integrations: [Sentry.breadcrumbsIntegration({ console: false })],
     });
 }

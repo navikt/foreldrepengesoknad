@@ -1,13 +1,13 @@
-import { Forelder, Periode, StønadskontoType, Uttaksperiode, isUttaksperiode } from '@navikt/fp-common';
-import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { Periode, Uttaksperiode, isUttaksperiode } from '@navikt/fp-common';
+import { BrukerRolleSak_fpoversikt, KontoBeregningDto, KontoDto } from '@navikt/fp-types';
 
 import { Periodene } from './Periodene';
 import { beregnBrukteUttaksdager, getAllePerioderMedUttaksinfoFraUttaksplan } from './uttaksPlanStatus';
 
 interface ForeldersBrukteDager {
-    førTermin: Stønadskonto[];
-    etterTermin: Stønadskonto[];
-    alle: Stønadskonto[];
+    førTermin: KontoDto[];
+    etterTermin: KontoDto[];
+    alle: KontoDto[];
     dagerTotalt: number;
     dagerEgneKvoter: number;
     dagerAnnenForeldersKvote: number;
@@ -17,40 +17,40 @@ interface ForeldersBrukteDager {
 export interface BrukteDager {
     mor: ForeldersBrukteDager;
     farMedmor: ForeldersBrukteDager;
-    alle: Stønadskonto[];
+    alle: KontoDto[];
 }
 
 const isMorsPeriode = (periode: Uttaksperiode): boolean => {
-    return periode.forelder === Forelder.mor;
+    return periode.forelder === 'MOR';
 };
 const isFarsPeriode = (periode: Uttaksperiode): boolean => {
-    return periode.forelder === Forelder.farMedmor;
+    return periode.forelder === 'FAR_MEDMOR';
 };
-const isFellesperiodeKvote = (uttak: Stønadskonto): boolean => uttak.konto === StønadskontoType.Fellesperiode;
+const isFellesperiodeKvote = (uttak: KontoDto): boolean => uttak.konto === 'FELLESPERIODE';
 
-const isMorsKvote = (uttak: Stønadskonto): boolean => {
+const isMorsKvote = (uttak: KontoDto): boolean => {
     switch (uttak.konto) {
-        case StønadskontoType.ForeldrepengerFørFødsel:
-        case StønadskontoType.Mødrekvote:
+        case 'FORELDREPENGER_FØR_FØDSEL':
+        case 'MØDREKVOTE':
             return true;
         default:
             return false;
     }
 };
 
-const isFarMedmorsKvote = (uttak: Stønadskonto): boolean => {
-    return uttak.konto === StønadskontoType.Fedrekvote;
+const isFarMedmorsKvote = (uttak: KontoDto): boolean => {
+    return uttak.konto === 'FEDREKVOTE';
 };
 
-const summerBrukteUttaksdager = (uttak: Stønadskonto[]) => {
+const summerBrukteUttaksdager = (uttak: KontoDto[]) => {
     return uttak.reduce((dager, u) => dager + u.dager, 0);
 };
 
 const getBrukteDagerForForelder = (
-    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+    tilgjengeligeStønadskontoer: KontoBeregningDto,
     perioder: Uttaksperiode[],
     familiehendelsesdato: Date,
-    forelder: Forelder,
+    forelder: BrukerRolleSak_fpoversikt,
 ): ForeldersBrukteDager => {
     const perioderFørTermin = Periodene(perioder)
         .getPerioderFørFamiliehendelsesdato(familiehendelsesdato)
@@ -63,7 +63,7 @@ const getBrukteDagerForForelder = (
     const alle = beregnBrukteUttaksdager(tilgjengeligeStønadskontoer, perioder);
     const dagerTotalt = summerBrukteUttaksdager(alle);
 
-    const isMor = forelder === Forelder.mor;
+    const isMor = forelder === 'MOR';
     const dagerEgneKvoter = summerBrukteUttaksdager(alle.filter(isMor ? isMorsKvote : isFarMedmorsKvote));
     const dagerOverført = summerBrukteUttaksdager(alle.filter(isMor ? isFarMedmorsKvote : isMorsKvote));
     const dagerFellesperiode = summerBrukteUttaksdager(alle.filter(isFellesperiodeKvote));
@@ -80,7 +80,7 @@ const getBrukteDagerForForelder = (
 };
 
 export const getBrukteDager = (
-    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+    tilgjengeligeStønadskontoer: KontoBeregningDto,
     perioder: Periode[],
     familiehendelsesdato: Date,
 ): BrukteDager => {
@@ -90,13 +90,13 @@ export const getBrukteDager = (
             tilgjengeligeStønadskontoer,
             perioderMedUttak.filter(isMorsPeriode),
             familiehendelsesdato,
-            Forelder.mor,
+            'MOR',
         ),
         farMedmor: getBrukteDagerForForelder(
             tilgjengeligeStønadskontoer,
             perioderMedUttak.filter(isFarsPeriode),
             familiehendelsesdato,
-            Forelder.farMedmor,
+            'FAR_MEDMOR',
         ),
         alle: beregnBrukteUttaksdager(tilgjengeligeStønadskontoer, perioder),
     };

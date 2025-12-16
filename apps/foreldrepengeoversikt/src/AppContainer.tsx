@@ -1,15 +1,16 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
+import { HTTPError } from 'ky';
 import { Route, Routes } from 'react-router-dom';
 
-import { Provider } from '@navikt/ds-react';
+import { Provider, Theme } from '@navikt/ds-react';
 import { nb } from '@navikt/ds-react/locales';
 
+import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { ByttBrowserModal, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
-import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
 import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 
 import { Foreldrepengeoversikt } from './Foreldrepengeoversikt';
@@ -19,9 +20,18 @@ import { BruktOpplysningerOmArbeidsforhold } from './pages/BruktOpplysningerOmAr
 import { OversiktRoutes } from './routes/routes.ts';
 
 const queryClient = new QueryClient({
+    queryCache: new QueryCache({
+        onError: (error) => {
+            if (error instanceof HTTPError) {
+                if (error.response?.status === 401 || error.response?.status === 403) {
+                    location.reload();
+                }
+            }
+        },
+    }),
     defaultOptions: {
         queries: {
-            retry: process.env.NODE_ENV === 'test' ? false : 3,
+            retry: false,
         },
     },
 });
@@ -31,8 +41,8 @@ const allNbMessages = {
     ...uiMessages.nb,
     ...utilsMessages.nb,
     ...nyUttaksplanMessages.nb,
-    ...uttaksplanKalenderMessages.nb,
     ...formHookMessages.nb,
+    ...filopplasterMessages.nb,
 };
 
 declare global {
@@ -52,23 +62,25 @@ dayjs.locale('nb');
 
 export const AppContainer = () => {
     return (
-        <ErrorBoundary>
-            <QueryClientProvider client={queryClient}>
-                <ReactQueryDevtools />
-                <Provider locale={nb}>
-                    <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-                        <ByttBrowserModal />
-                        <Routes>
-                            {/* // Informasjonssiden er plassert her for å unngå fetching av persondata vi ikke har grunnlag for */}
-                            <Route
-                                path={OversiktRoutes.BRUKT_OPPLYSNINGER_OM_ARBEIDSFORHOLD}
-                                element={<BruktOpplysningerOmArbeidsforhold />}
-                            />
-                            <Route path="*" element={<Foreldrepengeoversikt />} />
-                        </Routes>
-                    </IntlProvider>
-                </Provider>
-            </QueryClientProvider>
-        </ErrorBoundary>
+        <Theme theme="light">
+            <ErrorBoundary>
+                <QueryClientProvider client={queryClient}>
+                    <ReactQueryDevtools />
+                    <Provider locale={nb}>
+                        <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
+                            <ByttBrowserModal />
+                            <Routes>
+                                {/* // Informasjonssiden er plassert her for å unngå fetching av persondata vi ikke har grunnlag for */}
+                                <Route
+                                    path={OversiktRoutes.BRUKT_OPPLYSNINGER_OM_ARBEIDSFORHOLD}
+                                    element={<BruktOpplysningerOmArbeidsforhold />}
+                                />
+                                <Route path="*" element={<Foreldrepengeoversikt />} />
+                            </Routes>
+                        </IntlProvider>
+                    </Provider>
+                </QueryClientProvider>
+            </ErrorBoundary>
+        </Theme>
     );
 };

@@ -1,12 +1,11 @@
 import classnames from 'classnames';
 
-import { PeriodeColor } from '@navikt/fp-constants';
-
+import { PeriodColor } from '../../components/stønadskonto-ikon/StønadskontoIkon';
 import planBemUtils from '../../utils/planBemUtils';
 import './iconBox.less';
 
-export interface Props {
-    color: PeriodeColor;
+interface Props {
+    color: PeriodColor;
     stripes?: boolean;
     children?: React.ReactNode;
 }

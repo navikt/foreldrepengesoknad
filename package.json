@@ -5,9 +5,11 @@
         "dev": "turbo dev",
         "build": "turbo build",
         "test": "turbo test",
+        "knip": "knip",
         "lint": "turbo lint",
         "lint:eslint": "turbo lint:eslint",
         "lint:tsc": "turbo lint:tsc",
+        "lint:fix": "turbo lint:fix",
         "prettier": "turbo prettier",
         "fp": "pnpm --filter foreldrepengesoknad run dev",
         "fp-prod": "pnpm --filter foreldrepengesoknad run start",
@@ -18,27 +20,30 @@
         "storybook-deploy-to-github": "gh-pages -d .storybook-static-build -t true",
         "deploy-storybook": "pnpm storybook-deploy-clean-folder && pnpm storybook-deploy-build-all && pnpm storybook-deploy-create-folder &&  pnpm storybook-deploy-to-github",
         "prepare": "husky install",
-        "openapi-ts": "openapi-ts"
+        "generate:local": "pnpm --filter @navikt/fp-types run generate:local",
+        "generate": "pnpm --filter @navikt/fp-types run generate"
     },
     "dependencies": {
         "gh-pages": "6.3.0",
-        "glob": "11.0.2",
+        "glob": "13.0.0",
         "husky": "9.1.7",
-        "lint-staged": "16.1.0",
+        "lint-staged": "16.2.7",
         "shelljs": "0.10.0",
-        "turbo": "2.5.4"
+        "turbo": "2.6.3"
+    },
+    "devDependencies": {
+        "@trivago/prettier-plugin-sort-imports": "6.0.0",
+        "knip": "5.72.0",
+        "msw": "2.12.4",
+        "msw-storybook-addon": "2.0.6",
+        "prettier": "3.7.4",
+        "prettier-plugin-tailwindcss": "0.7.2"
     },
     "lint-staged": {
         "apps/**/*.{ts,tsx,js,jsx, css}": "prettier --write",
         "packages/**/*.{ts,tsx,js,jsx, css}": "prettier --write"
     },
-    "packageManager": "pnpm@9.1.4",
-    "devDependencies": {
-        "@hey-api/client-fetch": "0.13.0",
-        "@hey-api/openapi-ts": "0.72.0",
-        "msw": "2.10.2",
-        "msw-storybook-addon": "2.0.5"
-    },
+    "packageManager": "pnpm@10.18.3",
     "msw": {
         "workerDirectory": [
             "./scripts/mock-service-worker"

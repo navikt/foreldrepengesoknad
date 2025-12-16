@@ -19,24 +19,22 @@ enum SelectableBarnOptions {
 
 const getRadioForUfødtBarn = (barna: ValgtBarn[], intl: IntlShape) => {
     return barna.map((barn) => {
-        const saksStatus =
-            barn.sak !== undefined ? getStatusTekst(barn.sak.åpenBehandling === undefined, intl) : undefined;
-        const saksnummerTekst =
-            barn.sak !== undefined
-                ? intl.formatMessage({ id: 'velkommen.barnVelger.saksnummer' }, { saksnummer: barn.sak.saksnummer })
-                : '';
+        const saksStatus = barn.sak ? getStatusTekst(barn.sak.åpenBehandling === undefined, intl) : undefined;
+        const saksnummerTekst = barn.sak
+            ? intl.formatMessage({ id: 'velkommen.barnVelger.saksnummer' }, { saksnummer: barn.sak.saksnummer })
+            : '';
 
         return (
             <Radio
                 key={barn.id}
                 value={barn.id}
-                description={barn.sak !== undefined ? `${saksnummerTekst}, ${saksStatus}` : saksnummerTekst}
+                description={barn.sak ? `${saksnummerTekst}, ${saksStatus}` : saksnummerTekst}
             >
                 <FormattedMessage
                     id="velkommen.barnVelger.ufødtBarn"
                     values={{
                         antallBarnTekst: getTekstForAntallBarn(barn.antallBarn, intl),
-                        termin: dayjs(barn.termindato!).format(DDMMMMYYY_DATE_FORMAT),
+                        termin: dayjs(barn.termindato).format(DDMMMMYYY_DATE_FORMAT),
                         b: (chunks) => <b>{chunks}</b>,
                     }}
                 />
@@ -65,18 +63,16 @@ const getRadioForFødtEllerAdoptertBarn = (barna: ValgtBarn[], intl: IntlShape) 
         const fødtAdoptertDatoTekst =
             barn.type === ValgtBarnType.FØDT || barn.type === ValgtBarnType.IKKE_UTFYLT
                 ? fødselsdatoerTekst
-                : dayjs(barn.omsorgsovertagelse!).format(DDMMMMYYY_DATE_FORMAT);
+                : dayjs(barn.omsorgsovertagelse).format(DDMMMMYYY_DATE_FORMAT);
         const situasjonTekst =
             barn.type === ValgtBarnType.FØDT || barn.type === ValgtBarnType.IKKE_UTFYLT
                 ? intl.formatMessage({ id: 'velkommen.barnVelger.født' })
                 : intl.formatMessage({ id: 'velkommen.barnVelger.adopsjon' });
 
-        const saksnummerTekst =
-            barn.sak !== undefined
-                ? intl.formatMessage({ id: 'velkommen.barnVelger.saksnummer' }, { saksnummer: barn.sak.saksnummer })
-                : '';
-        const saksStatus =
-            barn.sak !== undefined ? getStatusTekst(barn.sak.åpenBehandling === undefined, intl) : undefined;
+        const saksnummerTekst = barn.sak
+            ? intl.formatMessage({ id: 'velkommen.barnVelger.saksnummer' }, { saksnummer: barn.sak.saksnummer })
+            : '';
+        const saksStatus = barn.sak ? getStatusTekst(barn.sak.åpenBehandling === undefined, intl) : undefined;
 
         return (
             <Radio
@@ -110,7 +106,7 @@ export const BarnVelger = ({ selectableBarn }: Props) => {
     const ufødteBarn = selectableBarn.filter((b) => b.type === ValgtBarnType.UFØDT);
     const fødteOgAdopterteBarn = selectableBarn.filter((b) => b.type !== ValgtBarnType.UFØDT);
 
-    let radios = [] as ReactElement[];
+    let radios: ReactElement[] = [];
     if (fødteOgAdopterteBarn.length > 0) {
         radios = radios.concat(getRadioForFødtEllerAdoptertBarn(fødteOgAdopterteBarn, intl));
     }

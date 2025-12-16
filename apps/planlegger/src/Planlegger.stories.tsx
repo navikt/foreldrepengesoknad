@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { PlanleggerDataContext } from 'appData/PlanleggerDataContext';
+import { API_URLS } from 'appData/queries';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps, StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { StønadskontoType } from '@navikt/fp-constants';
-import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { KontoBeregningResultatDto } from '@navikt/fp-types';
 import { ErrorBoundary } from '@navikt/fp-ui';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -15,19 +15,19 @@ const STØNADSKONTOER = {
     '100': {
         kontoer: [
             {
-                konto: StønadskontoType.Mødrekvote,
+                konto: 'MØDREKVOTE',
                 dager: 75,
             },
             {
-                konto: StønadskontoType.Fedrekvote,
+                konto: 'FEDREKVOTE',
                 dager: 75,
             },
             {
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
                 dager: 80,
             },
             {
-                konto: StønadskontoType.ForeldrepengerFørFødsel,
+                konto: 'FORELDREPENGER_FØR_FØDSEL',
                 dager: 15,
             },
         ],
@@ -39,19 +39,19 @@ const STØNADSKONTOER = {
     '80': {
         kontoer: [
             {
-                konto: StønadskontoType.Mødrekvote,
+                konto: 'MØDREKVOTE',
                 dager: 95,
             },
             {
-                konto: StønadskontoType.Fedrekvote,
+                konto: 'FEDREKVOTE',
                 dager: 95,
             },
             {
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
                 dager: 90,
             },
             {
-                konto: StønadskontoType.ForeldrepengerFørFødsel,
+                konto: 'FORELDREPENGER_FØR_FØDSEL',
                 dager: 15,
             },
         ],
@@ -60,30 +60,7 @@ const STØNADSKONTOER = {
             toTette: 0,
         },
     },
-} satisfies TilgjengeligeStønadskontoer;
-
-const SATSER = {
-    engangstønad: [
-        {
-            fom: '01.01.2023',
-            verdi: 92648,
-        },
-        {
-            fom: '01.01.2021',
-            verdi: 90300,
-        },
-    ],
-    grunnbeløp: [
-        {
-            fom: '01.05.2024',
-            verdi: 124028,
-        },
-        {
-            fom: '01.05.2023',
-            verdi: 118620,
-        },
-    ],
-};
+} satisfies KontoBeregningResultatDto;
 
 const meta = {
     title: 'PlanleggerDataFetcher',
@@ -92,21 +69,18 @@ const meta = {
     parameters: {
         msw: {
             handlers: [
-                http.post(`${import.meta.env.BASE_URL}/rest/konto`, async ({ request }) => {
+                http.post(API_URLS.konto, async ({ request }) => {
                     const body = await request.json();
-                    const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', {
+                    const response = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
                         body: JSON.stringify(body),
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
                     });
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     const json = await response.json();
-                    return HttpResponse.json(json);
-                }),
-                http.get(`${import.meta.env.BASE_URL}/rest/satser`, async () => {
-                    const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/satser');
-                    const json = await response.json();
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                     return HttpResponse.json(json);
                 }),
             ],
@@ -141,10 +115,7 @@ export const DefaultMockaStønadskontoerOgSatser: Story = {
     ...Default,
     parameters: {
         msw: {
-            handlers: [
-                http.post(`${import.meta.env.BASE_URL}/rest/konto`, () => HttpResponse.json(STØNADSKONTOER)),
-                http.get(`${import.meta.env.BASE_URL}/rest/satser`, () => HttpResponse.json(SATSER)),
-            ],
+            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(STØNADSKONTOER))],
         },
     },
 };
@@ -154,12 +125,12 @@ export const FarFarMockaStønadskontoerOgSatser: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(`${import.meta.env.BASE_URL}/rest/konto`, () =>
+                http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '100': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.AktivitetsfriKvote,
+                                    konto: 'AKTIVITETSFRI_KVOTE',
                                     dager: 75,
                                 },
                             ],
@@ -171,7 +142,7 @@ export const FarFarMockaStønadskontoerOgSatser: Story = {
                         '80': {
                             kontoer: [
                                 {
-                                    konto: StønadskontoType.AktivitetsfriKvote,
+                                    konto: 'AKTIVITETSFRI_KVOTE',
                                     dager: 95,
                                 },
                             ],
@@ -180,9 +151,8 @@ export const FarFarMockaStønadskontoerOgSatser: Story = {
                                 toTette: 0,
                             },
                         },
-                    } as TilgjengeligeStønadskontoer),
+                    } satisfies KontoBeregningResultatDto),
                 ),
-                http.get(`${import.meta.env.BASE_URL}/rest/satser`, () => HttpResponse.json(SATSER)),
             ],
         },
     },

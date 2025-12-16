@@ -1,13 +1,13 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
-import { Heading, VStack } from '@navikt/ds-react';
+import { Heading, Loader, VStack } from '@navikt/ds-react';
 
 import { EttersendelseDto } from '@navikt/fp-types';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import { minidialogOptions, sendEttersending } from '../../api/api';
+import { minidialogOptions, sendEttersending } from '../../api/queries.ts';
 import { ContentSection } from '../../components/content-section/ContentSection';
 import { DinSakHeader } from '../../components/header/Header';
 import { MinidialogSkjema } from '../../components/minidialog-skjema/MinidialogSkjema';
@@ -17,20 +17,15 @@ import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
 
-interface Props {
-    fnr: string;
-}
-
-export const MinidialogPage = ({ fnr }: Props) => {
+export const MinidialogPage = () => {
     const params = useParams();
-    const minidialog = useQuery({
+    const minidialogQuery = useQuery({
         ...minidialogOptions(),
-        select: (data) =>
-            data.find(({ saksnr, dialogId }) => saksnr === params.saksnummer && dialogId === params.oppgaveId),
-    }).data;
+        select: (data) => data.find(({ saksnummer }) => saksnummer === params.saksnummer),
+    });
+
     const sak = useGetSelectedSak();
 
-    const navigate = useNavigate();
     const intl = useIntl();
     useDocumentTitle(
         `${intl.formatMessage({ id: 'oppgaver.tittel.tilbakebetaling' })} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
@@ -39,18 +34,22 @@ export const MinidialogPage = ({ fnr }: Props) => {
     useSetBackgroundColor('blue');
 
     const { mutate, isPending, isError, isSuccess } = useMutation({
-        mutationFn: (ettersendelse: EttersendelseDto) => sendEttersending(ettersendelse, fnr),
+        mutationFn: (ettersendelse: EttersendelseDto) => sendEttersending(ettersendelse),
     });
 
+    if (minidialogQuery.isPending) {
+        return <Loader />;
+    }
+
+    const minidialog = minidialogQuery.data;
     if (!minidialog || !sak) {
-        navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
-        return null;
+        return <Navigate to={`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`} />;
     }
 
     return (
         <PageRouteLayout header={<DinSakHeader sak={sak} />}>
             <ContentSection>
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <Heading size="medium" level="2">
                         <FormattedMessage id="miniDialog.tilbakekreving.undertittel" />
                     </Heading>

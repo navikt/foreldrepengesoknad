@@ -1,8 +1,8 @@
-name: "CodeQL"
+name: 'CodeQL'
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ['master']
     paths-ignore:
       - 'server_for_redirect/**'
       - '.github/workflows/build-redirect.yml'
@@ -10,7 +10,7 @@ on:
       - 'server/**'
       - '.github/workflows/build-server.yml'
   pull_request:
-    branches: [ "master" ]
+    branches: ['master']
     paths-ignore:
       - 'server_for_redirect/**'
       - '.github/workflows/build-redirect.yml'
@@ -22,12 +22,13 @@ on:
 
 jobs:
   codeql:
-   name: CodeQl
-   permissions:
-     actions: read
-     contents: read
-     security-events: write
-   uses: navikt/fp-gha-workflows/.github/workflows/codeql.yml@main
-   with:
-    language: javascript
-   secrets: inherit
+    name: CodeQl
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    uses: navikt/fp-gha-workflows/.github/workflows/codeql.yml@main
+    with:
+      language: javascript
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}

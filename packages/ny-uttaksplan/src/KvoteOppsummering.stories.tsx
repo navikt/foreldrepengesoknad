@@ -1,47 +1,63 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import dayjs from 'dayjs';
+import { ComponentProps } from 'react';
 
-import { Forelder, RettighetType } from '@navikt/fp-common';
-import { StønadskontoType } from '@navikt/fp-constants';
-import {
-    MorsAktivitet,
-    NavnPåForeldre,
-    OppholdÅrsakType,
-    PeriodeResultatÅrsak,
-    TilgjengeligeStønadskontoerForDekningsgrad,
-    UttakArbeidType,
-} from '@navikt/fp-types';
+import { BarnType } from '@navikt/fp-constants';
+import { KontoBeregningDto } from '@navikt/fp-types';
 
-import { KvoteOppsummering } from '.';
+import { KvoteOppsummering } from './KvoteOppsummering';
+import { UttaksplanDataProvider } from './context/UttaksplanDataContext';
 
 const meta = {
     component: KvoteOppsummering,
-} satisfies Meta<typeof KvoteOppsummering>;
+    args: {
+        navnPåForeldre: {
+            mor: 'Helga',
+            farMedmor: 'Espen',
+        },
+        barn: {
+            type: BarnType.UFØDT,
+            termindato: '2025-05-06',
+            antallBarn: 1,
+        },
+        visStatusIkoner: true,
+        modus: 'innsyn',
+        aleneOmOmsorg: false,
+        erMedmorDelAvSøknaden: true,
+        harAktivitetskravIPeriodeUtenUttak: true,
+        bareFarMedmorHarRett: false,
+        erDeltUttak: false,
+    },
+    render: (args) => {
+        const { visStatusIkoner, ...rest } = args;
+        return (
+            <UttaksplanDataProvider {...rest}>
+                <KvoteOppsummering visStatusIkoner={visStatusIkoner} />
+            </UttaksplanDataProvider>
+        );
+    },
+} satisfies Meta<
+    Omit<ComponentProps<typeof UttaksplanDataProvider>, 'children'> & ComponentProps<typeof KvoteOppsummering>
+>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const navnPåForeldre = {
-    mor: 'Helga',
-    farMedmor: 'Espen',
-} satisfies NavnPåForeldre;
-
 const kontoNårBeggeHarRett = {
     kontoer: [
         {
-            konto: StønadskontoType.Fellesperiode,
+            konto: 'FELLESPERIODE',
             dager: 80,
         },
         {
-            konto: StønadskontoType.Mødrekvote,
+            konto: 'MØDREKVOTE',
             dager: 75,
         },
         {
-            konto: StønadskontoType.Fedrekvote,
+            konto: 'FEDREKVOTE',
             dager: 75,
         },
         {
-            konto: StønadskontoType.ForeldrepengerFørFødsel,
+            konto: 'FORELDREPENGER_FØR_FØDSEL',
             dager: 15,
         },
     ],
@@ -53,354 +69,296 @@ const kontoNårBeggeHarRett = {
         flerbarn: 0,
         prematur: 0,
     },
-} satisfies TilgjengeligeStønadskontoerForDekningsgrad;
+} satisfies KontoBeregningDto;
 
 export const BeggeRettMorIngenDagerBrukt: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: kontoNårBeggeHarRett,
-        perioder: [],
-        rettighetType: RettighetType.BEGGE_RETT,
-        forelder: Forelder.mor,
+        valgtStønadskonto: kontoNårBeggeHarRett,
+        saksperioder: [],
+        aleneOmOmsorg: false,
+        erDeltUttak: true,
+        erFarEllerMedmor: false,
+        erMedmorDelAvSøknaden: false,
     },
 };
 
 export const BeggeRettMorAlleDagerBrukt: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: kontoNårBeggeHarRett,
-        perioder: [
+        valgtStønadskonto: kontoNårBeggeHarRett,
+        saksperioder: [
             {
                 fom: '2025-05-06',
                 tom: '2025-05-26',
-                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 resultat: {
                     innvilget: true,
                     trekkerMinsterett: true,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
-                id: '2025-05-06 - 2025-05-26 - FORELDREPENGER_FØR_FØDSEL',
-                readOnly: true,
+                forelder: 'MOR',
             },
             {
                 fom: '2025-05-27',
                 tom: '2025-09-08',
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 resultat: {
                     innvilget: true,
                     trekkerMinsterett: true,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
-                id: '2025-05-27 - 2025-09-08 - MØDREKVOTE',
-                readOnly: true,
+                forelder: 'MOR',
             },
             {
                 fom: '2025-09-09',
                 tom: '2025-12-29',
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 resultat: {
                     innvilget: true,
                     trekkerMinsterett: true,
                     trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                    årsak: 'ANNET',
                 },
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
-                id: '2025-09-09 - 2025-12-29 - FELLESPERIODE',
-                readOnly: true,
+                forelder: 'MOR',
             },
             {
                 fom: '2025-12-30',
                 tom: '2026-04-13',
-                kontoType: StønadskontoType.Fedrekvote,
+                kontoType: 'FEDREKVOTE',
                 flerbarnsdager: false,
-                forelder: Forelder.farMedmor,
-                id: '2025-12-30 - 2026-04-13 - FEDREKVOTE',
-                readOnly: true,
+                forelder: 'FAR_MEDMOR',
             },
         ],
-        rettighetType: RettighetType.BEGGE_RETT,
-        forelder: Forelder.mor,
+        aleneOmOmsorg: false,
+        erDeltUttak: true,
+        erFarEllerMedmor: false,
     },
 };
 
 export const BeggeRettMorForMangeDagerBrukt: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: kontoNårBeggeHarRett,
-        perioder: [
+        valgtStønadskonto: kontoNårBeggeHarRett,
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
-                fom: '2024-11-10',
+                fom: '2024-11-18',
                 tom: '2024-12-08',
-                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-12-09',
-                tom: '2025-03-18',
-                kontoType: StønadskontoType.Mødrekvote,
+                tom: '2025-03-21',
+                kontoType: 'MØDREKVOTE',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-03-24',
                 tom: '2025-05-16',
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-05-19',
-                tom: '2025-08-31',
-                oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                tom: '2025-08-29',
+                oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'FAR_MEDMOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-07-28',
                 tom: '2025-09-29',
-                oppholdÅrsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
-                kontoType: StønadskontoType.Fellesperiode,
+                oppholdÅrsak: 'FELLESPERIODE_ANNEN_FORELDER',
+                kontoType: 'FELLESPERIODE',
                 flerbarnsdager: false,
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-09-22',
-                tom: '2025-09-26',
-                kontoType: StønadskontoType.Mødrekvote,
+                tom: '2025-09-29',
+                kontoType: 'MØDREKVOTE',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
         ],
-        rettighetType: RettighetType.BEGGE_RETT,
-        forelder: Forelder.mor,
+        aleneOmOmsorg: false,
+        erDeltUttak: true,
+        erFarEllerMedmor: false,
+        erMedmorDelAvSøknaden: false,
     },
 };
 
 export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: kontoNårBeggeHarRett,
-        perioder: [
+        valgtStønadskonto: kontoNårBeggeHarRett,
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-11-18',
                 tom: '2024-12-06',
-                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-12-09',
                 tom: '2025-03-14',
-                kontoType: StønadskontoType.Mødrekvote,
-                samtidigUttak: 60.0,
+                kontoType: 'MØDREKVOTE',
+                samtidigUttak: 60,
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-03-24',
                 tom: '2025-05-16',
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 gradering: {
-                    arbeidstidprosent: 50.0,
+                    arbeidstidprosent: 50,
                     aktivitet: {
-                        type: UttakArbeidType.ORDINÆRT_ARBEID,
+                        type: 'ORDINÆRT_ARBEID',
                     },
                 },
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-05-19',
                 tom: '2025-08-31',
-                oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
         ],
-        rettighetType: RettighetType.BEGGE_RETT,
-        forelder: Forelder.mor,
+        aleneOmOmsorg: false,
+        erDeltUttak: true,
+        erFarEllerMedmor: false,
     },
 };
 
 export const BeggeRettMorLedigeDager: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: kontoNårBeggeHarRett,
-        perioder: [
+        valgtStønadskonto: kontoNårBeggeHarRett,
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-11-18',
                 tom: '2024-12-02',
-                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-12-09',
                 tom: '2025-02-14',
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-03-24',
                 tom: '2025-04-16',
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-05-19',
                 tom: '2025-08-17',
-                oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-07-28',
                 tom: '2025-09-12',
-                oppholdÅrsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+                oppholdÅrsak: 'FELLESPERIODE_ANNEN_FORELDER',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-09-22',
                 tom: '2025-09-24',
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
         ],
-        rettighetType: RettighetType.BEGGE_RETT,
-        forelder: Forelder.mor,
+        aleneOmOmsorg: false,
+        erDeltUttak: true,
+        erFarEllerMedmor: false,
     },
 };
 
 export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        familiehendelse: { antallBarn: 1, fødselsdato: dayjs(new Date()).format('DD.MM.YYYY') },
-        konto: kontoNårBeggeHarRett,
-        perioder: [
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2025-05-06'],
+            antallBarn: 1,
+        },
+        valgtStønadskonto: kontoNårBeggeHarRett,
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-11-18',
                 tom: '2024-12-02',
-                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-12-09',
                 tom: '2025-02-14',
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-03-24',
                 tom: '2025-04-16',
-                kontoType: StønadskontoType.Fellesperiode,
+                kontoType: 'FELLESPERIODE',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-05-19',
                 tom: '2025-08-17',
-                oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+                oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-07-28',
                 tom: '2025-09-12',
-                oppholdÅrsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+                oppholdÅrsak: 'FELLESPERIODE_ANNEN_FORELDER',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-09-22',
                 tom: '2025-09-24',
-                kontoType: StønadskontoType.Mødrekvote,
+                kontoType: 'MØDREKVOTE',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
         ],
-        rettighetType: RettighetType.BEGGE_RETT,
-        forelder: Forelder.mor,
+        aleneOmOmsorg: false,
+        erDeltUttak: true,
+        erFarEllerMedmor: false,
     },
 };
 
 const kontoNårBareFarHarRett = {
     kontoer: [
         {
-            konto: StønadskontoType.AktivitetsfriKvote,
+            konto: 'AKTIVITETSFRI_KVOTE',
             dager: 50,
         },
         {
-            konto: StønadskontoType.Foreldrepenger,
+            konto: 'FORELDREPENGER',
             dager: 150,
         },
     ],
@@ -412,82 +370,71 @@ const kontoNårBareFarHarRett = {
         flerbarn: 0,
         prematur: 0,
     },
-} satisfies TilgjengeligeStønadskontoerForDekningsgrad;
+} satisfies KontoBeregningDto;
 
 export const EnRettFarAlleDagerBrukt: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: kontoNårBareFarHarRett,
-        perioder: [
+        valgtStønadskonto: kontoNårBareFarHarRett,
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-12-06',
                 tom: '2025-02-13',
-                kontoType: StønadskontoType.Foreldrepenger,
-                morsAktivitet: MorsAktivitet.IkkeOppgitt,
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: 'IKKE_OPPGITT',
                 flerbarnsdager: false,
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-02-14',
                 tom: '2025-09-11',
-                kontoType: StønadskontoType.Foreldrepenger,
-                morsAktivitet: MorsAktivitet.Arbeid,
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: 'ARBEID',
                 flerbarnsdager: false,
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
             },
         ],
-        rettighetType: RettighetType.BARE_SØKER_RETT,
-        forelder: Forelder.farMedmor,
+        aleneOmOmsorg: false,
+        erDeltUttak: false,
+        erFarEllerMedmor: true,
     },
 };
 
 export const EnRettFarLedigeDager: Story = {
     args: {
-        navnPåForeldre,
         modus: 'planlegger',
-        visStatusIkoner: true,
-        konto: kontoNårBareFarHarRett,
-        perioder: [
+        valgtStønadskonto: kontoNårBareFarHarRett,
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-12-06',
                 tom: '2025-02-06',
-                kontoType: StønadskontoType.Foreldrepenger,
-                morsAktivitet: MorsAktivitet.IkkeOppgitt,
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: 'IKKE_OPPGITT',
                 flerbarnsdager: false,
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-02-14',
                 tom: '2025-09-04',
-                kontoType: StønadskontoType.Foreldrepenger,
-                morsAktivitet: MorsAktivitet.Arbeid,
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: 'ARBEID',
                 flerbarnsdager: false,
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
             },
         ],
-        rettighetType: RettighetType.BARE_SØKER_RETT,
-        forelder: Forelder.farMedmor,
+        aleneOmOmsorg: false,
+        erDeltUttak: false,
+        erFarEllerMedmor: true,
     },
 };
 
 const kontoNårBareMorHarRett = {
     kontoer: [
         {
-            konto: StønadskontoType.Foreldrepenger,
+            konto: 'FORELDREPENGER',
             dager: 230,
         },
         {
-            konto: StønadskontoType.ForeldrepengerFørFødsel,
+            konto: 'FORELDREPENGER_FØR_FØDSEL',
             dager: 15,
         },
     ],
@@ -499,110 +446,89 @@ const kontoNårBareMorHarRett = {
         flerbarn: 0,
         prematur: 0,
     },
-} satisfies TilgjengeligeStønadskontoerForDekningsgrad;
+} satisfies KontoBeregningDto;
 
 export const EnRettMorAlleDagerBrukt: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: kontoNårBareMorHarRett,
-        perioder: [
+        valgtStønadskonto: kontoNårBareMorHarRett,
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-11-19',
                 tom: '2024-12-09',
-                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-12-10',
                 tom: '2025-10-27',
-                kontoType: StønadskontoType.Foreldrepenger,
+                kontoType: 'FORELDREPENGER',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
         ],
-        rettighetType: RettighetType.BARE_SØKER_RETT,
-        forelder: Forelder.mor,
+        aleneOmOmsorg: false,
+        erDeltUttak: false,
+        erFarEllerMedmor: false,
     },
 };
 
 export const EnRettMorLedigeDager: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: kontoNårBareMorHarRett,
-        perioder: [
+        valgtStønadskonto: kontoNårBareMorHarRett,
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-11-19',
                 tom: '2024-12-01',
-                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-12-10',
                 tom: '2025-10-13',
-                kontoType: StønadskontoType.Foreldrepenger,
+                kontoType: 'FORELDREPENGER',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
         ],
-        rettighetType: RettighetType.BARE_SØKER_RETT,
-        forelder: Forelder.mor,
+        aleneOmOmsorg: false,
+        erDeltUttak: false,
+        erFarEllerMedmor: false,
     },
 };
 
 export const AleneomsorgMorLedigeDager: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: kontoNårBareMorHarRett,
-        perioder: [
+        valgtStønadskonto: kontoNårBareMorHarRett,
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-11-19',
                 tom: '2024-12-01',
-                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-12-10',
                 tom: '2025-10-13',
-                kontoType: StønadskontoType.Foreldrepenger,
+                kontoType: 'FORELDREPENGER',
                 flerbarnsdager: false,
-                forelder: Forelder.mor,
+                forelder: 'MOR',
             },
         ],
-        rettighetType: RettighetType.ALENEOMSORG,
-        forelder: Forelder.mor,
+        aleneOmOmsorg: true,
+        erDeltUttak: false,
+        erFarEllerMedmor: false,
     },
 };
 
 export const AleneomsorgFarLedigeDager: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: {
+        valgtStønadskonto: {
             kontoer: [
                 {
-                    konto: StønadskontoType.Foreldrepenger,
+                    konto: 'FORELDREPENGER',
                     dager: 230,
                 },
             ],
@@ -615,40 +541,34 @@ export const AleneomsorgFarLedigeDager: Story = {
                 prematur: 0,
             },
         },
-        perioder: [
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-11-01',
                 tom: '2025-07-04',
-                kontoType: StønadskontoType.Foreldrepenger,
+                kontoType: 'FORELDREPENGER',
                 flerbarnsdager: false,
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-09-12',
                 tom: '2025-09-25',
-                kontoType: StønadskontoType.Foreldrepenger,
+                kontoType: 'FORELDREPENGER',
                 flerbarnsdager: false,
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
             },
         ],
-        rettighetType: RettighetType.ALENEOMSORG,
-        forelder: Forelder.farMedmor,
+        aleneOmOmsorg: true,
+        erDeltUttak: false,
+        erFarEllerMedmor: true,
     },
 };
 
 export const AleneomsorgFarForMangeDager: Story = {
     args: {
-        navnPåForeldre,
-        modus: 'innsyn',
-        visStatusIkoner: true,
-        konto: {
+        valgtStønadskonto: {
             kontoer: [
                 {
-                    konto: StønadskontoType.Foreldrepenger,
+                    konto: 'FORELDREPENGER',
                     dager: 230,
                 },
             ],
@@ -661,27 +581,101 @@ export const AleneomsorgFarForMangeDager: Story = {
                 prematur: 0,
             },
         },
-        perioder: [
+        saksperioder: [
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2024-11-01',
                 tom: '2025-07-04',
-                kontoType: StønadskontoType.Foreldrepenger,
+                kontoType: 'FORELDREPENGER',
                 flerbarnsdager: false,
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
             },
             {
-                id: 'does-not-matter',
-                readOnly: true,
                 fom: '2025-09-12',
                 tom: '2025-12-30',
-                kontoType: StønadskontoType.Foreldrepenger,
+                kontoType: 'FORELDREPENGER',
                 flerbarnsdager: false,
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
             },
         ],
-        rettighetType: RettighetType.ALENEOMSORG,
-        forelder: Forelder.farMedmor,
+        aleneOmOmsorg: true,
+        erDeltUttak: false,
+        erFarEllerMedmor: true,
+    },
+};
+
+export const BeggeRettMorOgMedmorMorIngenDagerBrukt: Story = {
+    args: {
+        ...BeggeRettMorIngenDagerBrukt.args,
+        erMedmorDelAvSøknaden: true,
+        navnPåForeldre: {
+            mor: 'Helga',
+            farMedmor: 'Maria',
+        },
+    },
+};
+
+export const MorHarPrematuruker: Story = {
+    name: 'Mor har prematuruker',
+    args: {
+        valgtStønadskonto: {
+            kontoer: [
+                {
+                    konto: 'FELLESPERIODE',
+                    dager: 128,
+                },
+                {
+                    konto: 'MØDREKVOTE',
+                    dager: 75,
+                },
+                {
+                    konto: 'FEDREKVOTE',
+                    dager: 75,
+                },
+                {
+                    konto: 'FORELDREPENGER_FØR_FØDSEL',
+                    dager: 15,
+                },
+            ],
+            minsteretter: {
+                farRundtFødsel: 10,
+                toTette: 0,
+            },
+            tillegg: {
+                flerbarn: 0,
+                prematur: 48,
+            },
+        },
+        saksperioder: [
+            {
+                fom: '2025-08-13',
+                tom: '2025-10-10',
+                kontoType: 'FELLESPERIODE',
+                resultat: {
+                    innvilget: false,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'AVSLAG_FRATREKK_PLEIEPENGER',
+                },
+                utsettelseÅrsak: 'BARN_INNLAGT',
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            {
+                fom: '2025-10-11',
+                tom: '2025-11-25',
+                kontoType: 'MØDREKVOTE',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+        ],
+        aleneOmOmsorg: false,
+        erDeltUttak: true,
+        erFarEllerMedmor: false,
     },
 };

@@ -1,37 +1,32 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
-import { useRef } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
 import { saker } from 'storybookData/saker/saker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
-import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
+import { tidslinjeHendelserFP } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
 
-import { Søkerinfo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
-import { OversiktRoutes } from '../../routes/routes';
+import { API_URLS } from '../../api/queries.ts';
 import { SakOppslag } from '../../types/SakOppslag';
 import { mapSakerDTOToSaker } from '../../utils/sakerUtils';
 import { Forside } from './Forside';
 
 type StoryArgs = {
     saker: SakOppslag;
-    søkerinfo: Søkerinfo;
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt;
 };
 
 const meta = {
     title: 'Forside',
     decorators: [withQueryClient],
     render: (props) => {
-        const isFirstRender = useRef(false);
         return (
-            <MemoryRouter initialEntries={[`/${OversiktRoutes.TIDSLINJEN}/352011079`]}>
+            <MemoryRouter initialEntries={['/']}>
                 <Routes>
-                    <Route
-                        element={<Forside {...props} isFirstRender={isFirstRender} />}
-                        path={`/${OversiktRoutes.TIDSLINJEN}/:saksnummer`}
-                    />
+                    <Route element={<Forside {...props} />} path="/" />
                 </Routes>
             </MemoryRouter>
         );
@@ -45,13 +40,9 @@ export const Default: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker)),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/tidslinje`, () =>
-                    HttpResponse.json(tidslinjeHendelser),
-                ),
-                http.get(`${import.meta.env.BASE_URL}/rest/historikk/vedlegg`, () =>
-                    HttpResponse.json(manglendeVedlegg),
-                ),
+                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
             ],
         },
     },

@@ -5,6 +5,7 @@ import {
     Overføringsperiode,
     Periode,
     Periodetype,
+    UttakAnnenPartEØSInfoPeriode,
     UttakAnnenPartInfoPeriode,
     Uttaksperiode,
     isAvslåttPeriode,
@@ -12,15 +13,19 @@ import {
     isOppholdsperiode,
     isOverføringsperiode,
     isUttaksperiode,
+    isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
 import { PeriodeInfoType } from '@navikt/fp-constants';
-import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { KontoBeregningDto, KontoDto } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 
 import { Perioden } from './Perioden';
 import { getStønadskontoFromOppholdsårsak } from './periodeUtils';
 
 export const finnAntallDagerÅTrekke = (periode: Periode): number => {
+    if (isUttaksperiodeAnnenpartEøs(periode)) {
+        return periode.trekkdager;
+    }
     const dager = Perioden(periode).getAntallUttaksdager();
     if (isUttaksperiode(periode)) {
         const periodeErGradert = periode.stillingsprosent !== undefined;
@@ -50,25 +55,26 @@ export const getAllePerioderMedUttaksinfoFraUttaksplan = (perioder: Periode[]): 
 };
 
 export const beregnGjenståendeUttaksdager = (
-    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+    tilgjengeligeStønadskontoer: KontoBeregningDto,
     uttaksplan: Periode[],
     beregnDagerBrukt: boolean,
-): Stønadskonto[] => {
+): KontoDto[] => {
     const alleUttakIUttaksplan = getAllePerioderMedUttaksinfoFraUttaksplan(uttaksplan);
     return tilgjengeligeStønadskontoer.kontoer.map((konto) => {
         let antallDager = beregnDagerBrukt ? 0 : konto.dager;
-        const uttaksplanPerioder = alleUttakIUttaksplan.filter((p) => p.konto === konto.konto);
-        if (uttaksplanPerioder) {
-            uttaksplanPerioder.forEach((p: Periode) => {
-                if (p.type === Periodetype.Uttak || p.type === Periodetype.Overføring || isAvslåttPeriode(p)) {
-                    antallDager = beregnDagerBrukt
-                        ? antallDager + finnAntallDagerÅTrekke(p)
-                        : antallDager - finnAntallDagerÅTrekke(p);
-                }
-            });
+        const gjeldendeUttaksplanPerioder = alleUttakIUttaksplan.filter((p) => p.konto === konto.konto);
+        const uttaksplanPerioderNorge = gjeldendeUttaksplanPerioder
+            .filter((p) => !isUttaksperiodeAnnenpartEøs(p))
+            .filter((p) => p.type === Periodetype.Uttak || p.type === Periodetype.Overføring || isAvslåttPeriode(p));
+        const uttaksplanPerioderEøs = gjeldendeUttaksplanPerioder.filter((p) => isUttaksperiodeAnnenpartEøs(p));
 
-            antallDager = beregnDagerBrukt ? Math.floor(antallDager) : Math.ceil(antallDager);
-        }
+        const antallDagerForbruktTotalt =
+            Math.min(summerAntallDagerForbrukt(uttaksplanPerioderEøs), konto.dager) + // OBS: Kan være mer en tilgjengelig konto
+            summerAntallDagerForbrukt(uttaksplanPerioderNorge);
+        antallDager = beregnDagerBrukt
+            ? antallDager + antallDagerForbruktTotalt
+            : antallDager - antallDagerForbruktTotalt;
+        antallDager = beregnDagerBrukt ? Math.floor(antallDager) : Math.ceil(antallDager);
 
         return {
             konto: konto.konto,
@@ -77,10 +83,14 @@ export const beregnGjenståendeUttaksdager = (
     });
 };
 
+const summerAntallDagerForbrukt = (perioder: Periode[]): number => {
+    return perioder.flatMap((p) => finnAntallDagerÅTrekke(p)).reduce((sum, dager) => sum + dager, 0);
+};
+
 export const beregnBrukteUttaksdager = (
-    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+    tilgjengeligeStønadskontoer: KontoBeregningDto,
     uttaksplan: Periode[],
-): Stønadskonto[] => {
+): KontoDto[] => {
     return beregnGjenståendeUttaksdager(tilgjengeligeStønadskontoer, uttaksplan, true);
 };
 
@@ -93,7 +103,7 @@ const getUttakFraOppholdsperioder = (oppholdsperioder: Oppholdsperiode[]): Uttak
             id: opphold.id,
             tidsperiode: opphold.tidsperiode,
             type: Periodetype.Uttak,
-            konto: getStønadskontoFromOppholdsårsak(opphold.årsak)!,
+            konto: getStønadskontoFromOppholdsårsak(opphold.årsak),
             forelder: opphold.forelder,
         }),
     );
@@ -117,16 +127,16 @@ const getUttakFraInfoperioder = (perioder: InfoPeriode[]): Uttaksperiode[] => {
     if (perioder.length === 0) {
         return [];
     }
-    const oppholdAnnenPart: UttakAnnenPartInfoPeriode[] = [];
+    const oppholdAnnenPart: Array<UttakAnnenPartInfoPeriode | UttakAnnenPartEØSInfoPeriode> = [];
     perioder
         .filter((periode) => isAvslåttPeriode(periode) === false)
         .forEach((periode) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison -- to forskjellige enums med samme innhold
             if (periode.infotype === PeriodeInfoType.uttakAnnenPart) {
                 oppholdAnnenPart.push(periode);
             }
         });
     return oppholdAnnenPart.map((periode): Uttaksperiode => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { type, årsak, ...rest } = periode;
         return {
             type: Periodetype.Uttak,

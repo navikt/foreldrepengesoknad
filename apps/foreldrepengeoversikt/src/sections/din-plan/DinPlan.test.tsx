@@ -21,20 +21,20 @@ describe('<Default>', () => {
 
             const allButtons = screen.getAllByRole('button');
 
-            expect(within(allButtons[1]).getByText('10. juni - 30. juni')).toBeInTheDocument();
-            expect(within(allButtons[1]).getByText('3 uker')).toBeInTheDocument();
-            expect(within(allButtons[1]).getAllByText('Helga har foreldrepenger')).toHaveLength(2);
+            expect(within(allButtons[1]!).getByText('10. juni - 30. juni')).toBeInTheDocument();
+            expect(within(allButtons[1]!).getByText('3 uker')).toBeInTheDocument();
+            expect(within(allButtons[1]!).getAllByText('Helga har foreldrepenger')).toHaveLength(2);
 
-            expect(within(allButtons[2]).getByText('01. juli')).toBeInTheDocument();
-            expect(within(allButtons[2]).getAllByText('Fødsel')).toHaveLength(2);
+            expect(within(allButtons[2]!).getByText('01. juli')).toBeInTheDocument();
+            expect(within(allButtons[2]!).getAllByText('Fødsel')).toHaveLength(2);
 
-            expect(within(allButtons[3]).getByText('01. juli - 13. okt.')).toBeInTheDocument();
-            expect(within(allButtons[3]).getByText('15 uker')).toBeInTheDocument();
-            expect(within(allButtons[3]).getAllByText('Helga har foreldrepenger')).toHaveLength(2);
+            expect(within(allButtons[3]!).getByText('01. juli - 13. okt.')).toBeInTheDocument();
+            expect(within(allButtons[3]!).getByText('15 uker')).toBeInTheDocument();
+            expect(within(allButtons[3]!).getAllByText('Helga har foreldrepenger')).toHaveLength(2);
 
-            expect(within(allButtons[4]).getByText('14. okt. - 21. des.')).toBeInTheDocument();
-            expect(within(allButtons[4]).getByText('9 uker og 4 dager')).toBeInTheDocument();
-            expect(within(allButtons[4]).getAllByText('Dere har foreldrepenger')).toHaveLength(2);
+            expect(within(allButtons[4]!).getByText('14. okt. - 21. des.')).toBeInTheDocument();
+            expect(within(allButtons[4]!).getByText('9 uker og 4 dager')).toBeInTheDocument();
+            expect(within(allButtons[4]!).getAllByText('Dere har foreldrepenger')).toHaveLength(2);
         }),
     );
 
@@ -51,7 +51,7 @@ describe('<Default>', () => {
             expect(screen.getByText('Din periode')).toBeInTheDocument();
             expect(screen.getByText('Fødsel')).toBeInTheDocument();
             expect(screen.getByText('Du og Espen har permisjon samtidig')).toBeInTheDocument();
-            expect(screen.getByText('Helg (er ikke dager med foreldrepenger)')).toBeInTheDocument();
+            expect(screen.getByText('Helg')).toBeInTheDocument();
         }),
     );
 
@@ -69,23 +69,21 @@ describe('<Default>', () => {
             expect(screen.getByText('Fødsel')).toBeInTheDocument();
             expect(screen.getByText('Du og Helga har permisjon samtidig')).toBeInTheDocument();
             expect(screen.getByText('Din periode')).toBeInTheDocument();
-            expect(screen.getByText('Du kombinerer jobb og foreldrepenger')).toBeInTheDocument();
-            expect(screen.getByText('Helg (er ikke dager med foreldrepenger)')).toBeInTheDocument();
+            expect(screen.getByText('Helga kombinerer jobb og foreldrepenger')).toBeInTheDocument();
+            expect(screen.getByText('Helg')).toBeInTheDocument();
 
             const september = screen.getByTestId('year:2024;month:8');
-            expect(within(september).getByTestId('day:10;dayColor:LIGHTBLUE;dayType:FIRST_DAY')).toBeInTheDocument();
+            expect(within(september).getByTestId('day:10;dayColor:LIGHTBLUE')).toBeInTheDocument();
             expect(within(september).getAllByTestId('dayColor:LIGHTBLUE', { exact: false })).toHaveLength(15);
 
             const oktober = screen.getByTestId('year:2024;month:9');
-            expect(within(oktober).getByTestId('day:1;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-            expect(within(oktober).getByTestId('day:2;dayColor:LIGHTBLUEGREEN;dayType:FIRST_DAY')).toBeInTheDocument();
-            expect(
-                within(oktober).getByTestId('day:14;dayColor:LIGHTBLUEGREEN;dayType:FIRST_AND_LAST_DAY'),
-            ).toBeInTheDocument();
-            expect(within(oktober).getByTestId('day:15;dayColor:LIGHTBLUE;dayType:FIRST_DAY')).toBeInTheDocument();
-            expect(within(oktober).getByTestId('day:31;dayColor:LIGHTBLUE;dayType:LAST_DAY')).toBeInTheDocument();
+            expect(within(oktober).getByTestId('day:1;dayColor:PINK')).toBeInTheDocument();
+            expect(within(oktober).getByTestId('day:2;dayColor:LIGHTBLUEGREEN')).toBeInTheDocument();
+            expect(within(oktober).getByTestId('day:14;dayColor:LIGHTBLUEGREEN')).toBeInTheDocument();
+            expect(within(oktober).getByTestId('day:15;dayColor:LIGHTBLUE')).toBeInTheDocument();
+            expect(within(oktober).getByTestId('day:31;dayColor:LIGHTBLUE')).toBeInTheDocument();
             expect(within(oktober).getAllByTestId('dayColor:LIGHTBLUEGREEN', { exact: false })).toHaveLength(9);
-            expect(within(oktober).getAllByTestId('dayColor:LIGHTBLUE;', { exact: false })).toHaveLength(13);
+            expect(within(oktober).getAllByTestId(/dayColor:LIGHTBLUE$/)).toHaveLength(13);
 
             const november = screen.getByTestId('year:2024;month:10');
             expect(within(november).getAllByTestId('dayColor:LIGHTBLUE', { exact: false })).toHaveLength(21);
@@ -97,29 +95,23 @@ describe('<Default>', () => {
             expect(within(januar2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(23);
 
             const februar2025 = screen.getByTestId('year:2025;month:1');
-            expect(within(februar2025).getByTestId('day:3;dayColor:GREEN;dayType:FIRST_DAY')).toBeInTheDocument();
-            expect(within(februar2025).getByTestId('day:4;dayColor:GREEN;dayType:LAST_DAY')).toBeInTheDocument();
-            expect(
-                within(februar2025).getByTestId('day:5;dayColor:GREENSTRIPED;dayType:FIRST_DAY'),
-            ).toBeInTheDocument();
-            expect(
-                within(februar2025).getByTestId('day:28;dayColor:GREENSTRIPED;dayType:LAST_DAY'),
-            ).toBeInTheDocument();
-            expect(within(februar2025).getAllByTestId('dayColor:GREENSTRIPED', { exact: false })).toHaveLength(18);
+            expect(within(februar2025).getByTestId('day:3;dayColor:GREEN')).toBeInTheDocument();
+            expect(within(februar2025).getByTestId('day:4;dayColor:GREEN')).toBeInTheDocument();
+            expect(within(februar2025).getByTestId('day:5;dayColor:BLUESTRIPED')).toBeInTheDocument();
+            expect(within(februar2025).getByTestId('day:28;dayColor:BLUESTRIPED')).toBeInTheDocument();
+            expect(within(februar2025).getAllByTestId('dayColor:BLUESTRIPED', { exact: false })).toHaveLength(18);
 
             const mars2025 = screen.getByTestId('year:2025;month:2');
-            expect(within(mars2025).getByTestId('day:3;dayColor:GREENSTRIPED;dayType:FIRST_DAY')).toBeInTheDocument();
-            expect(within(mars2025).getByTestId('day:11;dayColor:GREENSTRIPED;dayType:LAST_DAY')).toBeInTheDocument();
-            expect(within(mars2025).getByTestId('day:19;dayColor:LIGHTBLUE;dayType:FIRST_DAY')).toBeInTheDocument();
-            expect(
-                within(mars2025).getByTestId('day:31;dayColor:LIGHTBLUE;dayType:FIRST_AND_LAST_DAY'),
-            ).toBeInTheDocument();
-            expect(within(mars2025).getAllByTestId('dayColor:GREENSTRIPED', { exact: false })).toHaveLength(7);
+            expect(within(mars2025).getByTestId('day:3;dayColor:BLUESTRIPED')).toBeInTheDocument();
+            expect(within(mars2025).getByTestId('day:11;dayColor:BLUESTRIPED')).toBeInTheDocument();
+            expect(within(mars2025).getByTestId('day:19;dayColor:LIGHTBLUE')).toBeInTheDocument();
+            expect(within(mars2025).getByTestId('day:31;dayColor:LIGHTBLUE')).toBeInTheDocument();
+            expect(within(mars2025).getAllByTestId('dayColor:BLUESTRIPED', { exact: false })).toHaveLength(7);
             expect(within(mars2025).getAllByTestId('dayColor:LIGHTBLUE', { exact: false })).toHaveLength(9);
 
             const april2025 = screen.getByTestId('year:2025;month:3');
-            expect(within(april2025).getByTestId('day:1;dayColor:LIGHTBLUE;dayType:FIRST_DAY')).toBeInTheDocument();
-            expect(within(april2025).getByTestId('day:22;dayColor:LIGHTBLUE;dayType:LAST_DAY')).toBeInTheDocument();
+            expect(within(april2025).getByTestId('day:1;dayColor:LIGHTBLUE')).toBeInTheDocument();
+            expect(within(april2025).getByTestId('day:22;dayColor:LIGHTBLUE')).toBeInTheDocument();
             expect(within(april2025).getAllByTestId('dayColor:LIGHTBLUE', { exact: false })).toHaveLength(16);
         }),
     );

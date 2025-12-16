@@ -5,6 +5,7 @@ import { saker } from 'storybookData/saker/saker';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
 
+import { API_URLS } from '../../api/queries.ts';
 import { OversiktRoutes } from '../../routes/routes';
 import { Snarveier } from './Snarveier';
 
@@ -29,7 +30,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     parameters: {
         msw: {
-            handlers: [http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker))],
+            handlers: [http.get(API_URLS.saker, () => HttpResponse.json(saker))],
         },
     },
 };

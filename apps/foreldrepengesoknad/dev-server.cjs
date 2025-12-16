@@ -3,7 +3,7 @@ const { injectDecoratorServerSide } = require('@navikt/nav-dekoratoren-moduler/s
 const express = require('express');
 const server = express();
 server.use(express.json());
-const path = require('path');
+const path = require('node:path');
 const mustacheExpress = require('mustache-express');
 const compression = require('compression');
 
@@ -55,9 +55,9 @@ const startServer = async () => {
     );
 
     server.use(
-        '/rest',
+        '/fpoversikt/api',
         createProxyMiddleware({
-            target: 'http://localhost:8888/rest',
+            target: 'http://localhost:8888/fpoversikt/api',
             changeOrigin: true,
             logger: console,
             on: {
@@ -66,7 +66,31 @@ const startServer = async () => {
         }),
     );
 
-    const fs = require('fs');
+    server.use(
+        '/fpsoknad/api',
+        createProxyMiddleware({
+            target: 'http://localhost:8888/fpsoknad/api',
+            changeOrigin: true,
+            logger: console,
+            on: {
+                proxyReq: fixRequestBody,
+            },
+        }),
+    );
+
+    server.use(
+        '/fpgrunndata/api',
+        createProxyMiddleware({
+            target: 'http://localhost:8888/fpgrunndata/api',
+            changeOrigin: true,
+            logger: console,
+            on: {
+                proxyReq: fixRequestBody,
+            },
+        }),
+    );
+
+    const fs = require('node:fs');
     fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), renderedHtml);
 
     const vite = await require('vite').createServer({
@@ -77,7 +101,7 @@ const startServer = async () => {
         },
         server: {
             middlewareMode: true,
-            port: 8080,
+            port: 5173,
             open: './index-decorated.html',
         },
     });

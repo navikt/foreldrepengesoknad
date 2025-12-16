@@ -6,8 +6,7 @@ import { initialize, mswLoader } from 'msw-storybook-addon';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { uiMessages } from '@navikt/fp-ui';
-import { getIntlDecorator } from '@navikt/fp-utils-test';
-import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
+import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 
 import '../src/index.css';
@@ -30,21 +29,18 @@ const withIntlProvider = getIntlDecorator({
     nb: {
         ...nbMessages,
         ...uiMessages.nb,
-        ...uttaksplanKalenderMessages.nb,
         ...nyUttaksplanMessages.nb,
         ...formHookMessages.nb,
     },
     nn: {
         ...nnMessages,
         ...uiMessages.nn,
-        ...uttaksplanKalenderMessages.nn,
         ...nyUttaksplanMessages.nn,
         ...formHookMessages.nn,
     },
     en: {
         ...enMessages,
         ...uiMessages.en,
-        ...uttaksplanKalenderMessages.en,
         ...nyUttaksplanMessages.en,
         ...formHookMessages.en,
     },
@@ -64,11 +60,32 @@ export const globalTypes = {
             dynamicTitle: true,
         },
     },
+    theme: {
+        name: 'Tema',
+        description: 'Aksel tema',
+        defaultValue: 'light',
+        toolbar: {
+            icon: 'circlehollow',
+            items: [
+                { value: 'light', icon: 'circlehollow', title: 'Lys' },
+                { value: 'dark', icon: 'circle', title: 'Mørk' },
+            ],
+            showName: true,
+        },
+    },
 };
+
+initialize({
+    onUnhandledRequest: 'bypass',
+    serviceWorker: {
+        url: './mockServiceWorker.js',
+    },
+});
 
 const preview: Preview = {
     decorators: [
         withIntlProvider,
+        withThemeDecorator,
         (Story, context) => {
             if (context.componentId.includes('components-')) {
                 return <Story />;
@@ -85,16 +102,8 @@ const preview: Preview = {
             );
         },
     ],
-    // beforeAll is available in Storybook 8.2. Else the call would happen outside of the preview object
-    beforeAll: async () => {
-        initialize({
-            onUnhandledRequest: 'bypass',
-            serviceWorker: {
-                url: './mockServiceWorker.js',
-            },
-        });
-    },
     loaders: [mswLoader],
 };
 
+//eslint-disable-next-line import/no-default-export
 export default preview;

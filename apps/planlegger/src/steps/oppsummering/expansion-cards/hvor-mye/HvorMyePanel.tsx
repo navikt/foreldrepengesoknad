@@ -33,9 +33,9 @@ export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
         Math.round(Math.min((lønn * 12) / 260, dailyMax) * decimal);
 
     return (
-        <VStack gap="10">
+        <VStack gap="space-40">
             <BluePanel>
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <HStack justify="space-between" wrap={false}>
                         <Heading size="xsmall" level="4" spacing>
                             <FormattedMessage
@@ -49,7 +49,13 @@ export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
                             />
                         </Heading>
                         <IconCircleWrapper size="medium" color="blue">
-                            <WalletIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />
+                            <WalletIcon
+                                height={24}
+                                width={24}
+                                color="var(--ax-bg-accent-strong)"
+                                fontSize="1.5rem"
+                                aria-hidden
+                            />
                         </IconCircleWrapper>
                     </HStack>
 

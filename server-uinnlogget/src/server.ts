@@ -7,11 +7,12 @@ import {
     setupActuators,
     setupAndServeHtml,
     setupServerDefaults,
+    setupSkjermleserCssTilgang,
 } from '@navikt/fp-server-utils';
 
 import { configureReverseProxyApi } from './reverseProxy';
 
-export const server = express();
+const server = express();
 
 setupServerDefaults(server);
 setupActuators(server);
@@ -21,6 +22,8 @@ const publicRouter = express.Router();
 
 // Logging i json format
 server.use(logger.morganMiddleware);
+
+setupSkjermleserCssTilgang(publicRouter);
 
 publicRouter.use(express.static('./public', { index: false }));
 server.use(serverConfig.app.publicPath, publicRouter);

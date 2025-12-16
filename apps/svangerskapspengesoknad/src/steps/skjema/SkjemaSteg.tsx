@@ -1,4 +1,5 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
+import { API_URLS } from 'appData/queries';
 import { RouteParams } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
@@ -10,12 +11,12 @@ import { getArbeidsgiverNavnForTilrettelegging, getTypeArbeidForTilrettelegging 
 
 import { Link, VStack } from '@navikt/ds-react';
 
-import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer, links } from '@navikt/fp-constants';
+import { FileUploader } from '@navikt/fp-filopplaster';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold, Attachment, FRILANS_ID } from '@navikt/fp-types';
-import { FileUploader, SkjemaRotLayout, Step } from '@navikt/fp-ui';
+import { Attachment, EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { Bedriftsbanner } from '../Bedriftsbanner';
@@ -38,8 +39,8 @@ type SkjemaFormData = {
 
 interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    avbrytSøknad: () => Promise<void>;
-    arbeidsforhold: Arbeidsforhold[];
+    avbrytSøknad: () => void;
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     maxAntallVedlegg?: number;
 }
 
@@ -74,7 +75,7 @@ export const SkjemaSteg = ({
         const antallVedleggAndreTilrettelegginger = tilretteleggingerVedlegg
             ? Object.keys(tilretteleggingerVedlegg)
                   .filter((id) => id !== tilretteleggingId)
-                  .reduce((total, id) => total + tilretteleggingerVedlegg[id].length, 0)
+                  .reduce((total, id) => total + tilretteleggingerVedlegg[id]!.length, 0)
             : 0;
         const antallNyeVedlegg = values.vedlegg ? values.vedlegg.length : 0;
         const antallVedlegg = antallVedleggAndreTilrettelegginger + antallNyeVedlegg;
@@ -115,7 +116,7 @@ export const SkjemaSteg = ({
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig} onStepChange={navigator.goToStep} noFieldsRequired>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                    <VStack gap="10">
+                    <VStack gap="space-40">
                         <ErrorSummaryHookForm />
                         {valgteArbeidsforhold && valgteArbeidsforhold.length > 1 && (
                             <Bedriftsbanner
@@ -123,7 +124,7 @@ export const SkjemaSteg = ({
                                 arbeidsforholdNavn={navnArbeidsgiver}
                             />
                         )}
-                        <VStack gap="4">
+                        <VStack gap="space-16">
                             <FileUploader
                                 label={finnFileUploaderLabel(intl, tilretteleggingId)}
                                 description={
@@ -150,7 +151,7 @@ export const SkjemaSteg = ({
                                 skjemanummer={Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING}
                                 existingAttachments={defaultValues?.vedlegg}
                                 updateAttachments={updateAttachments}
-                                saveAttachment={getSaveAttachmentFetch(import.meta.env.BASE_URL, 'svangerskapspenger')}
+                                uploadPath={API_URLS.sendVedlegg}
                             />
                         </VStack>
                         <StepButtonsHookForm

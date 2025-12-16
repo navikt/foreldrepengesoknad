@@ -13,9 +13,10 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { BodyShort, Heading, Link, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { RhfForm, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { RhfForm, RhfFormattertTallTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
+import { useScrollBehaviour } from '@navikt/fp-utils';
 import { isValidNumberForm, notEmpty } from '@navikt/fp-validation';
 
 import { Utbetaling } from './infoboks/Utbetaling';
@@ -61,17 +62,19 @@ export const HvorMyeSteg = ({ satser }: Props) => {
         navigator.goToNextStep(PlanleggerRoutes.HVOR_LANG_PERIODE);
     };
 
+    const { ref } = useScrollBehaviour();
+
     return (
-        <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
+        <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
-                <VStack gap="10" style={{ flex: 1 }}>
-                    <VStack gap="6">
+                <VStack gap="space-40" style={{ flex: 1 }}>
+                    <VStack gap="space-24">
                         <Heading size="medium" spacing level="2">
                             <FormattedMessage id="HvorMyeSteg.Tittel" />
                         </Heading>
-                        <VStack gap="2">
+                        <VStack gap="space-8">
                             <BluePanel isDarkBlue={true}>
-                                <RhfTextField
+                                <RhfFormattertTallTextField
                                     name={hvemHarRett === 'kunSøker2HarRett' ? 'lønnSøker2' : 'lønnSøker1'}
                                     control={formMethods.control}
                                     label={
@@ -98,9 +101,9 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                             )}
                         </VStack>
                         {!kunEnAvSøkereneHarRett && fornavnSøker2 && (
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <BluePanel isDarkBlue={true}>
-                                    <RhfTextField
+                                    <RhfFormattertTallTextField
                                         name="lønnSøker2"
                                         control={formMethods.control}
                                         label={
@@ -124,14 +127,14 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                                 )}
                             </VStack>
                         )}
-                        <VStack gap="2">
+                        <VStack gap="space-8">
                             <Infobox
                                 header={<FormattedMessage id="HvorMyeSteg.ViteMer" values={{ erAleneforsørger }} />}
                                 icon={
                                     <SackKronerIcon
                                         height={24}
                                         width={24}
-                                        color="#020C1CAD"
+                                        color="var(--ax-bg-neutral-strong)"
                                         fontSize="1.5rem"
                                         aria-hidden
                                     />

@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call */
 import { ArrowLeftIcon, ArrowRightIcon } from '@navikt/aksel-icons';
 import * as Sentry from '@sentry/browser';
 import { useQuery } from '@tanstack/react-query';
 import { getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter } from 'api/getStønadskontoParams';
-import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
+import { annenPartVedtakOptions, useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextComplete, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import { annenPartVedtakOptions } from 'appData/api';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
@@ -36,7 +36,6 @@ import { getSamtidigUttaksprosent } from 'utils/uttaksplanInfoUtils';
 import { Alert, Button, HGrid, VStack } from '@navikt/ds-react';
 
 import {
-    Forelder,
     Periode,
     isAnnenForelderOppgitt,
     isUfødtBarn,
@@ -45,7 +44,7 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
-import { Søkerinfo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Spinner, Step, StepFooter } from '@navikt/fp-ui';
 import {
     Periodene,
@@ -72,7 +71,7 @@ import { uttaksplanQuestionsConfig } from './uttaksplanQuestionConfig';
 const EMPTY_PERIOD_ARRAY: Periode[] = [];
 
 type Props = {
-    søkerInfo: Søkerinfo;
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
     erEndringssøknad: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
@@ -130,11 +129,10 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     const morErAleneOmOmsorg = getMorErAleneOmOmsorg(!erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
     const søkerErAleneOmOmsorg = morErAleneOmOmsorg || farMedmorErAleneOmOmsorg;
-    const forelderVedAleneomsorg = erDeltUttak ? undefined : erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
-    const navnPåForeldre = getNavnPåForeldre(søkerInfo.søker, annenForelder, erFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, erFarEllerMedmor, intl);
     const antallBarn = barn.antallBarn;
     const erFlerbarnssøknad = antallBarn > 1;
     const morHarRett = getMorHarRettPåForeldrepengerINorgeEllerEØS(rolle, erFarEllerMedmor, annenForelder);
@@ -147,15 +145,13 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
             ? annenForelder.fnr
             : undefined;
     const erAdopsjon = situasjon === 'adopsjon';
-    const annenForelderFnrNesteSak = barnFraNesteSak !== undefined ? barnFraNesteSak.annenForelderFnr : undefined;
+    const annenForelderFnrNesteSak = barnFraNesteSak ? barnFraNesteSak.annenForelderFnr : undefined;
     const førsteBarnFraNesteSakFnr =
         barnFraNesteSak !== undefined && barnFraNesteSak.fnr !== undefined && barnFraNesteSak.fnr.length > 0
             ? barnFraNesteSak.fnr[0]
             : undefined;
-    const familieHendelseDatoNesteSak =
-        barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
-    const førsteUttaksdagNesteBarnsSak =
-        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+    const familieHendelseDatoNesteSak = barnFraNesteSak ? barnFraNesteSak.familiehendelsesdato : undefined;
+    const førsteUttaksdagNesteBarnsSak = barnFraNesteSak ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
     const bareFarMedmorHarRett =
         !getMorHarRettPåForeldrepengerINorgeEllerEØS(søkersituasjon.rolle, erFarEllerMedmor, annenForelder) &&
@@ -166,13 +162,12 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     const eksisterendeSakAnnenPartRequestIsSuspended =
         søkerErAleneOmOmsorg || !annenForelderFnr || (barnFnr === undefined && familiehendelsesdato === undefined);
 
-    const startStønadsperiodeNyttBarn =
-        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+    const startStønadsperiodeNyttBarn = barnFraNesteSak?.startdatoFørsteStønadsperiode;
     const debouncedState = useDebounce(useContextComplete(), 3000);
     const initialRender = useRef(true);
     useEffect(() => {
         if (initialRender.current === false) {
-            mellomlagreSøknadOgNaviger();
+            void mellomlagreSøknadOgNaviger();
         }
         initialRender.current = false;
     }, [debouncedState, mellomlagreSøknadOgNaviger]);
@@ -223,7 +218,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
         oppdaterUttaksplan([]);
         oppdaterVedlegg({ ...vedlegg, ...nullstiltePeriodeVedlegg });
         oppdaterAppRoute(SøknadRoutes.FORDELING);
-        mellomlagreSøknadOgNaviger();
+        void mellomlagreSøknadOgNaviger();
         navigator.goToPreviousDefaultStep();
     };
 
@@ -284,7 +279,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
             !uttaksplanMetadata?.annenPartsUttakErLagtTilIPlan
         ) {
             //Sett samtidigUttak på søkerens perioder hvis de overlapper med annen parts samtidig uttak:
-            opprinneligPlan.forEach((p) => {
+            for (const p of opprinneligPlan) {
                 if (isUttaksperiode(p)) {
                     const overlappendePerioderAnnenPart = Periodene(
                         eksisterendeVedtakAnnenPart.uttaksplan,
@@ -302,18 +297,18 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                         }
                     }
                 }
-            });
+            }
 
             const uttaksplanMedAnnenPart = finnOgSettInnHull(
                 settInnAnnenPartsUttak(
                     opprinneligPlan,
                     eksisterendeVedtakAnnenPart.uttaksplan,
-                    familiehendelsesdatoDate!,
+                    familiehendelsesdatoDate,
                     førsteUttaksdagNesteBarnsSak,
                     true,
                 ),
                 harAktivitetskravIPeriodeUtenUttak,
-                familiehendelsesdatoDate!,
+                familiehendelsesdatoDate,
                 erAdopsjon,
                 bareFarMedmorHarRett,
                 erFarEllerMedmor,
@@ -378,7 +373,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
         uttaksplanMetadata,
     ]);
 
-    const onSubmit = async () => {
+    const onSubmit = () => {
         setIsSubmitting(true);
         setSubmitIsClicked(true);
 
@@ -394,13 +389,13 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
 
     const perioderMedUttakRundtFødsel = getPerioderMedUttakRundtFødsel(
         uttaksplan,
-        familiehendelsesdatoDate!,
+        familiehendelsesdatoDate,
         termindato ? dayjs(termindato).toDate() : undefined,
     );
 
     const visAutomatiskJusteringForm = getKanSøkersituasjonAutomatiskJustereRundtFødsel(
         erFarEllerMedmor,
-        familiehendelsesdatoDate!,
+        familiehendelsesdatoDate,
         situasjon,
         perioderMedUttakRundtFødsel,
         barn,
@@ -428,7 +423,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     };
 
     const ref = useRef<FormikValues>(null);
-    const clickHandler = async (values: FormikValues) => {
+    const clickHandler = (values: FormikValues) => {
         setSubmitIsClicked(true);
         if (uttaksplanErGyldig && !erTomEndringssøknad) {
             setIsSubmitting(true);
@@ -439,13 +434,13 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
             setØnskerJustertUttakVedFødselTilUndefinedHvisUgyldig();
 
             if (ønskerJustertUttakVedFødselErBesvart(values.ønskerAutomatiskJustering)) {
-                await onSubmit();
+                onSubmit();
             }
         }
     };
 
     const foreldreSituasjon = getForeldreparSituasjon(
-        søkerInfo.søker.kjønn,
+        søkerInfo.person.kjønn,
         annenForelderKjønn,
         erDeltUttak,
         morErAleneOmOmsorg,
@@ -503,7 +498,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
             );
             oppdaterUttaksplan(uttaksplanForslag);
             setHarPlanForslagIFørstegangssøknad(true);
-            mellomlagreSøknadOgNaviger();
+            void mellomlagreSøknadOgNaviger();
         }
     }, []);
 
@@ -592,10 +587,9 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                             {startStønadsperiodeNyttBarn && (
                                 <InfoOmNesteBarn minsterettUkerToTette={minsterettUkerToTette} />
                             )}
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <Uttaksplan
                                     foreldreSituasjon={foreldreSituasjon}
-                                    forelderVedAleneomsorg={forelderVedAleneomsorg}
                                     erDeltUttak={erDeltUttak}
                                     uttaksplan={uttaksplan}
                                     familiehendelsesdato={familiehendelsesdato}
@@ -631,7 +625,6 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                                     handleResetUttaksplan={handleResetUttaksplan}
                                     termindato={termindato ? dayjs(termindato).toDate() : undefined}
                                     barn={barn}
-                                    visAutomatiskJusteringForm={visAutomatiskJusteringForm}
                                     barnFraNesteSak={barnFraNesteSak}
                                     familiehendelsesdatoNesteSak={familieHendelseDatoNesteSak}
                                     førsteUttaksdagNesteBarnsSak={førsteUttaksdagNesteBarnsSak}

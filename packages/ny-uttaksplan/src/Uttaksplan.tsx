@@ -2,169 +2,71 @@ import { NotePencilDashIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import '@navikt/ds-css';
-import { BodyShort, Button, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre } from '@navikt/fp-common';
-import {
-    Barn,
-    Familiesituasjon,
-    SaksperiodeNy,
-    TilgjengeligeStønadskontoerForDekningsgrad,
-    UttaksplanModus,
-    isFødtBarn,
-} from '@navikt/fp-types';
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { omitMany } from '@navikt/fp-utils';
 
-import { Uttaksplanbuilder } from './builder/Uttaksplanbuilder';
-import { LeggTilPeriodeModal } from './components/legg-til-periode-modal/LeggTilPeriodeModal';
+import { UttaksplanHandlingKnapper } from './components/UttaksplanHandlingKnapper';
+import { LeggTilPeriodePanel } from './components/legg-til-periode-panel/LeggTilPeriodePanel';
 import { PeriodeListe } from './components/periode-liste/PeriodeListe';
-import { UttaksplanDataContext } from './context/UttaksplanDataContext';
+import { useUttaksplanData } from './context/UttaksplanDataContext';
+import { useUttaksplanRedigering } from './context/UttaksplanRedigeringContext';
+import { useUttaksplanBuilder } from './context/useUttaksplanBuilder';
 import { Planperiode } from './types/Planperiode';
-import { isHull, isPeriodeUtenUttak, mapSaksperiodeTilPlanperiode, utledKomplettPlan } from './utils/periodeUtils';
+import { isHull, isPeriodeUtenUttak } from './utils/periodeUtils';
 
-interface Props {
-    familiehendelsedato: string;
-    erFarEllerMedmor: boolean;
-    navnPåForeldre: NavnPåForeldre;
-    barn: Barn;
-    søkersPerioder: SaksperiodeNy[];
-    annenPartsPerioder?: SaksperiodeNy[];
-    gjelderAdopsjon: boolean;
-    bareFarMedmorHarRett: boolean;
-    harAktivitetskravIPeriodeUtenUttak: boolean;
-    førsteUttaksdagNesteBarnsSak: string | undefined;
-    familiesituasjon: Familiesituasjon;
-    handleOnPlanChange: (perioder: SaksperiodeNy[]) => void;
-    modus: UttaksplanModus;
-    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
-    erAleneOmOmsorg: boolean;
-}
+export const UttaksplanNy = () => {
+    const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
-export const UttaksplanNy = ({
-    familiehendelsedato,
-    erFarEllerMedmor,
-    navnPåForeldre,
-    barn,
-    søkersPerioder,
-    annenPartsPerioder,
-    gjelderAdopsjon,
-    bareFarMedmorHarRett,
-    harAktivitetskravIPeriodeUtenUttak,
-    førsteUttaksdagNesteBarnsSak,
-    familiesituasjon,
-    handleOnPlanChange,
-    modus,
-    valgtStønadskonto,
-    erAleneOmOmsorg,
-}: Props) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { modus, uttaksplan } = useUttaksplanData();
 
-    const komplettPlan = utledKomplettPlan({
-        familiehendelsedato,
-        erFarEllerMedmor,
-        søkersPerioder,
-        annenPartsPerioder,
-        gjelderAdopsjon,
-        bareFarMedmorHarRett,
-        harAktivitetskravIPeriodeUtenUttak,
-        førsteUttaksdagNesteBarnsSak,
-        modus,
-    });
+    const uttaksplanRedigering = useUttaksplanRedigering();
 
-    const annenPartsPlanperioder = annenPartsPerioder
-        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato, modus)
-        : undefined;
-    const builder = Uttaksplanbuilder(
-        komplettPlan,
-        familiehendelsedato,
-        harAktivitetskravIPeriodeUtenUttak,
-        gjelderAdopsjon,
-        bareFarMedmorHarRett,
-        erFarEllerMedmor,
-        førsteUttaksdagNesteBarnsSak,
-        annenPartsPlanperioder,
-    );
+    const uttaksplanBuilder = useUttaksplanBuilder();
 
-    const handleUpdatePeriode = (oppdatertPeriode: Planperiode) => {
-        const result = builder.oppdaterPeriode(oppdatertPeriode);
-        const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
+    const [isAllAccordionsOpen, setIsAllAccordionsOpen] = useState(false);
 
-        const saksPerioder = resultUtenHull.map((p) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
-            const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
-            return saksPeriodeNy;
-        });
-        handleOnPlanChange(saksPerioder);
+    const toggleAllAccordions = () => {
+        setIsAllAccordionsOpen(!isAllAccordionsOpen);
     };
-
-    const handleAddPeriode = (nyPeriode: Planperiode) => {
-        const result = builder.leggTilPeriode(nyPeriode);
-        const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
-
-        const saksPerioder = resultUtenHull.map((p) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
-            const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
-            return saksPeriodeNy;
-        });
-        handleOnPlanChange(saksPerioder);
-    };
-
-    const handleDeletePeriode = (slettetPeriode: Planperiode) => {
-        const result = builder.slettPeriode(slettetPeriode);
-        const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
-
-        const saksPerioder = resultUtenHull.map((p) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
-            const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
-            return saksPeriodeNy;
-        });
-        handleOnPlanChange(saksPerioder);
-    };
-
-    const handleDeletePerioder = (slettedePerioder: Planperiode[]) => {
-        const result = builder.slettPerioder(slettedePerioder);
-        const resultUtenHull = result.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
-
-        const saksPerioder = resultUtenHull.map((p) => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
-            const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = p;
-            return saksPeriodeNy;
-        });
-        handleOnPlanChange(saksPerioder);
-    };
-
-    const closeModal = () => setIsModalOpen(false);
-    const openModal = () => setIsModalOpen(true);
-
-    const erBarnetFødt = isFødtBarn(barn);
 
     return (
-        <UttaksplanDataContext
-            initialState={{
-                BARN: barn,
-                ER_FAR_ELLER_MEDMOR: erFarEllerMedmor,
-                FAMILIEHENDELSEDATO: familiehendelsedato,
-                NAVN_PÅ_FORELDRE: navnPåForeldre,
-                UTTAKSPLAN: komplettPlan,
-                FAMILIESITUASJON: familiesituasjon,
-                MODUS: modus,
-                VALGT_STØNADSKONTO: valgtStønadskonto,
-                ALENE_OM_OMSORG: erAleneOmOmsorg,
-            }}
-        >
-            {komplettPlan.length > 0 && (
+        <VStack gap="space-16">
+            {uttaksplan.length > 0 && (
                 <PeriodeListe
-                    perioder={komplettPlan}
-                    handleUpdatePeriode={handleUpdatePeriode}
-                    handleDeletePeriode={handleDeletePeriode}
-                    handleDeletePerioder={handleDeletePerioder}
+                    perioder={uttaksplan}
+                    handleAddPeriode={(nyPeriode: Planperiode) => {
+                        modifyPlan(
+                            uttaksplanBuilder.leggTilPeriode(nyPeriode),
+                            uttaksplanRedigering?.oppdaterUttaksplan,
+                        );
+                    }}
+                    handleUpdatePeriode={(oppdatertPeriode: Planperiode) => {
+                        modifyPlan(
+                            uttaksplanBuilder.oppdaterPeriode(oppdatertPeriode),
+                            uttaksplanRedigering?.oppdaterUttaksplan,
+                        );
+                    }}
+                    handleDeletePeriode={(slettetPeriode: Planperiode) => {
+                        modifyPlan(
+                            uttaksplanBuilder.slettPeriode(slettetPeriode),
+                            uttaksplanRedigering?.oppdaterUttaksplan,
+                        );
+                    }}
+                    handleDeletePerioder={(slettedePerioder: Planperiode[]) => {
+                        modifyPlan(
+                            uttaksplanBuilder.slettPerioder(slettedePerioder),
+                            uttaksplanRedigering?.oppdaterUttaksplan,
+                        );
+                    }}
+                    isAllAccordionsOpen={isAllAccordionsOpen}
                 />
             )}
-
-            {komplettPlan.length === 0 && (
-                <div style={{ display: 'flex', gap: '1rem' }}>
+            {uttaksplan.length === 0 && (
+                <HStack gap="space-12">
                     <NotePencilDashIcon fontSize={24} />
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <BodyShort weight="semibold" size="large">
                             <FormattedMessage id="uttaksplan.ingenPerioder.tittel" />
                         </BodyShort>
@@ -172,23 +74,62 @@ export const UttaksplanNy = ({
                             <FormattedMessage id="uttaksplan.ingenPerioder.body" />
                         </BodyShort>
                     </VStack>
-                </div>
+                </HStack>
             )}
-
-            {modus !== 'innsyn' && (
-                <Button variant="secondary" onClick={openModal}>
+            {modus !== 'innsyn' && !isLeggTilPeriodePanelOpen && (
+                <Button variant="secondary" onClick={() => setIsLeggTilPeriodePanelOpen(true)}>
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />
                 </Button>
             )}
-            {isModalOpen ? (
-                <LeggTilPeriodeModal
-                    closeModal={closeModal}
-                    handleAddPeriode={handleAddPeriode}
-                    isModalOpen={isModalOpen}
-                    erBarnetFødt={erBarnetFødt}
-                    gjelderAdopsjon={gjelderAdopsjon}
+            {isLeggTilPeriodePanelOpen && uttaksplanRedigering && (
+                <LeggTilPeriodePanel
+                    onCancel={() => setIsLeggTilPeriodePanelOpen(false)}
+                    handleAddPeriode={(nyPeriode: Planperiode) => {
+                        modifyPlan(
+                            uttaksplanBuilder.leggTilPeriode(nyPeriode),
+                            uttaksplanRedigering?.oppdaterUttaksplan,
+                        );
+                        setIsLeggTilPeriodePanelOpen(false);
+                    }}
                 />
-            ) : null}
-        </UttaksplanDataContext>
+            )}
+            {uttaksplanRedigering && (
+                <UttaksplanHandlingKnapper
+                    toggleAllAccordions={toggleAllAccordions}
+                    visKnapper
+                    tilbakestillPlan={
+                        uttaksplanRedigering.harEndretPlan
+                            ? () => uttaksplanRedigering.tilbakestillUttaksplan()
+                            : undefined
+                    }
+                    angreEndring={
+                        uttaksplanRedigering.uttaksplanVersjoner.length > 0
+                            ? () => uttaksplanRedigering.angreSisteEndring()
+                            : undefined
+                    }
+                    fjernAltIPlanen={() => uttaksplanRedigering.setVisFjernAltModal(true)}
+                />
+            )}
+        </VStack>
+    );
+};
+
+const modifyPlan = (
+    planperiode: Planperiode[],
+    oppdaterUttaksplan?: (perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>) => void,
+) => {
+    const resultUtenHull = planperiode.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
+
+    oppdaterUttaksplan?.(
+        resultUtenHull.map(
+            (p) =>
+                omitMany(p, [
+                    'id',
+                    'periodeHullÅrsak',
+                    'readOnly',
+                    'skalIkkeHaUttakFørTermin',
+                    'erAnnenPartEøs',
+                ]) satisfies UttakPeriode_fpoversikt,
+        ),
     );
 };

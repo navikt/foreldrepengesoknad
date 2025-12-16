@@ -2,23 +2,20 @@ import { FilesIcon, FolderFileIcon, PencilIcon, WalletIcon } from '@navikt/aksel
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-import { Alert, BodyShort, HGrid, HStack, Heading, Link, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, HGrid, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { links } from '@navikt/fp-constants';
-import { SaksperiodeNy, Satser, Søkerinfo, TidslinjeHendelseDto } from '@navikt/fp-types';
+import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
+import { PersonMedArbeidsforholdDto_fpoversikt, Satser, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
 import {
-    erSakOppdatertOptions,
     hentDokumenterOptions,
     hentManglendeVedleggOptions,
-    hentSatserOptions,
     hentTidslinjehendelserOptions,
-} from '../../api/api';
+} from '../../api/queries.ts';
 import { BekreftelseSendtSøknad } from '../../components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import { ContentSection } from '../../components/content-section/ContentSection';
 import { DinSakHeader, getSaksoversiktHeading } from '../../components/header/Header';
@@ -26,31 +23,25 @@ import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
 import { Svangerskapspenger } from '../../components/svangerskapspenger/Svangerskapspenger';
 import { useAnnenPartsVedtak } from '../../hooks/useAnnenPartsVedtak';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
-import {
-    useGetRedirectedFromSøknadsnummer,
-    useSetRedirectedFromSøknadsnummer,
-} from '../../hooks/useRedirectedFromSøknadsnummer';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
-import { DinPlan } from '../../sections/din-plan/DinPlan';
+import { DinPlan } from '../../sections/din-plan/DinPlan.tsx';
 import { Oppgaver } from '../../sections/oppgaver/Oppgaver';
-import { Tidslinje } from '../../sections/tidslinje/Tidslinje';
-import { RedirectSource } from '../../types/RedirectSource';
+import { Tidslinje } from '../../sections/tidslinje/Tidslinje.tsx';
 import { getNavnPåForeldre } from '../../utils/personUtils';
 import { getNavnAnnenForelder } from '../../utils/sakerUtils';
-import { getRelevantNyTidslinjehendelse } from '../../utils/tidslinjeUtils';
+import { getRelevantNyTidslinjehendelse } from '../../utils/tidslinjeUtils.ts';
 import { InntektsmeldingLenkePanel } from '../inntektsmelding-page/InntektsmeldingLenkePanel';
 
 dayjs.extend(isSameOrBefore);
 
 interface Props {
-    søkerinfo: Søkerinfo;
-    isFirstRender: React.MutableRefObject<boolean>;
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt;
 }
 
-const finnSøknadstidspunkt = (tidslinjehendelser: TidslinjeHendelseDto[]) => {
+const finnSøknadstidspunkt = (tidslinjehendelser: TidslinjeHendelseDto_fpoversikt[]) => {
     const nySøknadHendelse = [...tidslinjehendelser]
         .sort((t1, t2) => (dayjs(t1.opprettet).isBefore(t2.opprettet, 'day') ? 1 : -1))
         .find((th) => th.tidslinjeHendelseType === 'FØRSTEGANGSSØKNAD_NY');
@@ -62,30 +53,29 @@ const finnSøknadstidspunkt = (tidslinjehendelser: TidslinjeHendelseDto[]) => {
 const finnEngangstønadForSøknadstidspunkt = (satser: Satser, søknadstidspunkt: string | undefined) => {
     const { engangstønad } = satser;
     if (!søknadstidspunkt) {
-        return engangstønad[0].verdi;
+        return engangstønad[0]!.verdi;
     }
-    return engangstønad.filter((es) => dayjs(es.fom).isSameOrBefore(søknadstidspunkt))[0].verdi;
+
+    return engangstønad.find((es) => dayjs(es.fom).isSameOrBefore(søknadstidspunkt))?.verdi;
 };
 
-export const Saksoversikt = ({ søkerinfo, isFirstRender }: Props) => {
+export const Saksoversikt = ({ søkerinfo }: Props) => {
     const gjeldendeSak = useGetSelectedSak();
 
     return (
         <PageRouteLayout header={<DinSakHeader sak={gjeldendeSak} />}>
-            <SaksoversiktInner søkerinfo={søkerinfo} isFirstRender={isFirstRender} />
+            <SaksoversiktInner søkerinfo={søkerinfo} />
         </PageRouteLayout>
     );
 };
 
-const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
+const SaksoversiktInner = ({ søkerinfo }: Props) => {
     const intl = useIntl();
-    const params = useParams<{ saksnummer: string; redirect?: string }>();
-    const navigate = useNavigate();
+    const params = useParams<{ saksnummer: string }>();
 
     // Gjør denne dataen klar i cachen slik at bruker slipper loader senere.
     useQuery(hentDokumenterOptions(params.saksnummer!));
 
-    useSetRedirectedFromSøknadsnummer(params.redirect, params.saksnummer, isFirstRender);
     useSetBackgroundColor('blue');
     useSetSelectedRoute(OversiktRoutes.SAKSOVERSIKT);
 
@@ -95,66 +85,32 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
         `${getSaksoversiktHeading(gjeldendeSak?.ytelse)} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
     );
 
-    const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
-
     const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelserOptions(params.saksnummer!));
     const manglendeVedleggQuery = useQuery(hentManglendeVedleggOptions(params.saksnummer!));
-    const harIkkeOppdatertSakQuery = useQuery(erSakOppdatertOptions());
-    const harIkkeOppdatertSak = harIkkeOppdatertSakQuery.isSuccess && !harIkkeOppdatertSakQuery.data;
 
     const søknadstidspunkt = finnSøknadstidspunkt(tidslinjeHendelserQuery.data ?? []);
-    const ENGANGSTØNAD = useQuery({
-        ...hentSatserOptions(),
-        select: (satser) => finnEngangstønadForSøknadstidspunkt(satser, søknadstidspunkt),
-    }).data;
+
+    const ENGANGSTØNAD = finnEngangstønadForSøknadstidspunkt(DEFAULT_SATSER, søknadstidspunkt);
 
     const annenPartsVedtakQuery = useAnnenPartsVedtak(gjeldendeSak);
 
-    if (params.redirect === RedirectSource.REDIRECT_FROM_SØKNAD) {
-        navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
-    }
-
     const relevantNyTidslinjehendelse = getRelevantNyTidslinjehendelse(tidslinjeHendelserQuery.data ?? []);
-    const nettoppSendtInnSøknad =
-        redirectedFromSøknadsnummer === params.saksnummer || relevantNyTidslinjehendelse !== undefined;
-    const visBekreftelsePåSendtSøknad = nettoppSendtInnSøknad && gjeldendeSak?.åpenBehandling !== undefined;
+
+    const visBekreftelsePåSendtSøknad =
+        relevantNyTidslinjehendelse !== undefined && gjeldendeSak?.åpenBehandling !== undefined;
 
     const harMinstEttArbeidsforhold = !!søkerinfo.arbeidsforhold && søkerinfo.arbeidsforhold.length > 0;
-
-    if (harIkkeOppdatertSak) {
-        return (
-            <VStack gap="2">
-                {nettoppSendtInnSøknad && (
-                    <BekreftelseSendtSøknad
-                        relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
-                        bankkonto={søkerinfo.søker.bankkonto}
-                        ytelse={undefined}
-                        harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
-                        manglendeVedlegg={manglendeVedleggQuery.data ?? []}
-                        saksnummer={params.saksnummer}
-                    />
-                )}
-                <Alert variant="warning">
-                    Det ser ut som det tar litt tid å opprette saken din akkurat i dag. Søknaden din er sendt, så du kan
-                    vente litt og komme tilbake senere for å se alle detaljene i saken din.
-                </Alert>
-                <Link as={RouterLink} to={`${OversiktRoutes.HOVEDSIDE}`}>
-                    {intl.formatMessage({ id: 'saksoversikt' })}
-                </Link>
-            </VStack>
-        );
-    }
 
     if (!gjeldendeSak) {
         return <Alert variant="warning">{`Vi finner ingen sak med saksnummer: ${params.saksnummer}.`}</Alert>;
     }
 
     return (
-        <VStack gap="4">
+        <VStack gap="space-16">
             {visBekreftelsePåSendtSøknad && (
                 <BekreftelseSendtSøknad
                     relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
-                    bankkonto={søkerinfo.søker.bankkonto}
+                    bankkonto={søkerinfo.person.bankkonto}
                     ytelse={gjeldendeSak.ytelse}
                     harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
                     manglendeVedlegg={manglendeVedleggQuery.data ?? []}
@@ -163,7 +119,7 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
             )}
 
             <Oppgaver saksnummer={gjeldendeSak.saksnummer} />
-            <VStack gap="1">
+            <VStack gap="space-4">
                 <ContentSection
                     heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}
                     showSkeleton={tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending}
@@ -174,14 +130,10 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                         sak={gjeldendeSak}
                         tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
                         manglendeVedlegg={manglendeVedleggQuery.data ?? []}
-                        visHeleTidslinjen={false}
-                        søkersBarn={søkerinfo.søker.barn ?? []}
+                        søkersBarn={søkerinfo.person.barn ?? []}
                     />
                 </ContentSection>
-                <section className="mb-12">
-                    <LenkePanel tittel="Se hele prosessen" to={OversiktRoutes.TIDSLINJEN} />
-                </section>
-                <HGrid gap="4" columns={{ sm: 1, md: 2 }} className="mb-12">
+                <HGrid gap="space-16" columns={{ sm: 1, md: 2 }} className="mb-12">
                     <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
                     <LenkePanel tittel="Ettersend dokumenter" to={OversiktRoutes.ETTERSEND} Ikon={FilesIcon} />
                     {gjeldendeSak.ytelse === 'FORELDREPENGER' && (
@@ -208,10 +160,10 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                             skeletonProps={{ height: '210px', variant: 'rounded' }}
                         >
                             <DinPlan
-                                annenPartsPerioder={(annenPartsVedtakQuery.data?.perioder ?? []) as SaksperiodeNy[]} // TODO: fiks enum vs unions
+                                annenPartsPerioder={annenPartsVedtakQuery.data?.perioder ?? []}
                                 navnPåForeldre={getNavnPåForeldre(
                                     gjeldendeSak,
-                                    søkerinfo.søker.fornavn,
+                                    søkerinfo.person.navn.fornavn,
                                     getNavnAnnenForelder(søkerinfo, gjeldendeSak),
                                 )}
                             />
@@ -220,21 +172,21 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                 )}
                 {gjeldendeSak.ytelse === 'SVANGERSKAPSPENGER' && <Svangerskapspenger svpSak={gjeldendeSak} />}
                 {gjeldendeSak.ytelse === 'ENGANGSSTØNAD' && !gjeldendeSak.sakAvsluttet && (
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <ContentSection
                             heading={intl.formatMessage({ id: 'saksoversikt.dinPlan.søktOm' })}
                             showSkeleton={ENGANGSTØNAD === undefined}
                             skeletonProps={{ height: '90px', variant: 'rounded' }}
                         >
-                            <HStack gap="8" align="center">
+                            <HStack gap="space-32" align="center">
                                 <WalletIcon
-                                    className="p-1 rounded-full text-icon-info bg-green-100"
+                                    className="text-ax-text-info-decoration bg-ax-success-200 rounded-full p-1"
                                     width={40}
                                     height={40}
                                     aria-hidden
                                 />
 
-                                <VStack gap="2">
+                                <VStack gap="space-8">
                                     {ENGANGSTØNAD && (
                                         <Heading size="small">
                                             <FormattedMessage
@@ -243,11 +195,11 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                                             />
                                         </Heading>
                                     )}
-                                    {søkerinfo.søker.bankkonto?.kontonummer && (
+                                    {søkerinfo.person.bankkonto?.kontonummer && (
                                         <BodyShort>
                                             <FormattedMessage
                                                 id="saksoversikt.utbetales"
-                                                values={{ kontonr: søkerinfo.søker.bankkonto.kontonummer }}
+                                                values={{ kontonr: søkerinfo.person.bankkonto.kontonummer }}
                                             />
                                         </BodyShort>
                                     )}

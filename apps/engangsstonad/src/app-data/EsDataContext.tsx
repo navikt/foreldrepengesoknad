@@ -26,7 +26,7 @@ export type ContextDataMap = {
     [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: UtenlandsoppholdPeriode[];
 };
 
-const defaultInitialState = {} as ContextDataMap;
+const defaultInitialState: ContextDataMap = {};
 
 export type Action =
     | { type: 'update'; key: ContextDataType; data: ContextDataMap[keyof ContextDataMap] }
@@ -102,19 +102,6 @@ export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((d
             }
         },
         [dispatch, key],
-    );
-};
-
-/** Hook returns save function usable with all data types  */
-export const useContextSaveAnyData = () => {
-    const dispatch = useContext(EsDispatchContext);
-    return useCallback(
-        <TYPE extends ContextDataType>(key: TYPE, data: ContextDataMap[TYPE]) => {
-            if (dispatch) {
-                dispatch({ type: 'update', key, data });
-            }
-        },
-        [dispatch],
     );
 };
 

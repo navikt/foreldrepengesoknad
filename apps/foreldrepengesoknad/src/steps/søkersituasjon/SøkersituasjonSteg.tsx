@@ -7,12 +7,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Radio, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
 type Props = {
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     kjønn: 'M' | 'K' | 'U';
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
@@ -48,7 +48,7 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                    <VStack gap="10">
+                    <VStack gap="space-40">
                         <ErrorSummaryHookForm />
                         <RhfRadioGroup
                             name="situasjon"

@@ -43,7 +43,7 @@ const leggTilPeriodeOgBuild = (
         førsteUttaksdagNesteBarnsSak,
     );
 
-    fastePerioder.forEach((fastPeriode) => {
+    for (const fastPeriode of fastePerioder) {
         nyePerioder = leggTilPeriode({
             perioder: nyePerioder,
             nyPeriode: fastPeriode,
@@ -54,7 +54,7 @@ const leggTilPeriodeOgBuild = (
             erFarEllerMedmor,
             førsteUttaksdagNesteBarnsSak,
         });
-    });
+    }
 
     if (annenPartsUttak) {
         nyePerioder = finnOgSettInnHull(

@@ -1,4 +1,3 @@
-import { UtsettelseÅrsakType } from '@navikt/fp-common';
 import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { QuestionConfig, Questions } from '../../../formik-wrappers';
@@ -29,9 +28,9 @@ const PeriodeUtsettelseFormConfig: QuestionConfig<PeriodeUtsettelseFormConfigPay
     },
     [PeriodeUtsettelseFormField.bekrefterArbeidIPerioden]: {
         isAnswered: ({ values }) =>
-            values.årsak !== UtsettelseÅrsakType.Arbeid ||
+            values.årsak !== 'ARBEID' ||
             (hasValue(values.bekrefterArbeidIPerioden) && values.bekrefterArbeidIPerioden !== undefined),
-        isIncluded: ({ values }) => hasValue(values.årsak) && values.årsak === UtsettelseÅrsakType.Arbeid,
+        isIncluded: ({ values }) => hasValue(values.årsak) && values.årsak === 'ARBEID',
         visibilityFilter: ({ values }) => hasValue(values.årsak),
     },
     [PeriodeUtsettelseFormField.morsAktivitetIPerioden]: {
@@ -45,4 +44,5 @@ const PeriodeUtsettelseFormConfig: QuestionConfig<PeriodeUtsettelseFormConfigPay
 export const periodeUtsettelseFormQuestionsConfig = Questions<
     PeriodeUtsettelseFormConfigPayload,
     PeriodeUtsettelseFormField
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 >(PeriodeUtsettelseFormConfig);

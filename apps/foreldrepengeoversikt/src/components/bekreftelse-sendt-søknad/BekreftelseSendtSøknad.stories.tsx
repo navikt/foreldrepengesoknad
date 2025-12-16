@@ -5,17 +5,18 @@ import { endringFPSøknad, saker, sakerTidligFPSøknad, sakerVenterPåFpInntekts
 import { søkerinfo, søkerinfoUtenArbeidsforhold } from 'storybookData/sokerinfo/sokerinfo';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { TidslinjeHendelseDto } from '@navikt/fp-types';
+import { TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
+import { API_URLS } from '../../api/queries.ts';
 import { OversiktRoutes } from '../../routes/routes.ts';
 import { BekreftelseSendtSøknad } from './BekreftelseSendtSøknad';
 
 const defaultHandlers = {
     msw: {
         handlers: [
-            http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () => HttpResponse.json(søkerinfo)),
-            http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker)),
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
         ],
     },
 };
@@ -54,7 +55,7 @@ export const ForForeldrepenger: Story = {
                     tittel: 'Søknad',
                 },
             ],
-        } satisfies TidslinjeHendelseDto,
+        } satisfies TidslinjeHendelseDto_fpoversikt,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: 'FORELDREPENGER',
         harMinstEttArbeidsforhold: true,
@@ -67,10 +68,8 @@ export const ForForeldrepengerForTidligSøknad: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () => HttpResponse.json(søkerinfo)),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () =>
-                    HttpResponse.json(sakerTidligFPSøknad),
-                ),
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+                http.get(API_URLS.saker, () => HttpResponse.json(sakerTidligFPSøknad)),
             ],
         },
     },
@@ -81,10 +80,8 @@ export const ForForeldrepengerVenterPåInntektsmelding: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () => HttpResponse.json(søkerinfo)),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () =>
-                    HttpResponse.json(sakerVenterPåFpInntektsmelding),
-                ),
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+                http.get(API_URLS.saker, () => HttpResponse.json(sakerVenterPåFpInntektsmelding)),
             ],
         },
     },
@@ -95,8 +92,8 @@ export const ForForeldrepengerEndringsøknad: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () => HttpResponse.json(søkerinfo)),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(endringFPSøknad)),
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+                http.get(API_URLS.saker, () => HttpResponse.json(endringFPSøknad)),
             ],
         },
     },
@@ -110,10 +107,8 @@ export const ForForeldrepengerNårEnIkkeHarArbeidsforhold: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () =>
-                    HttpResponse.json(søkerinfoUtenArbeidsforhold),
-                ),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker)),
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfoUtenArbeidsforhold)),
+                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
             ],
         },
     },
@@ -139,7 +134,7 @@ export const ForForeldrepengerUtenTidligsteBehandlingsdato: Story = {
                     tittel: 'Søknad',
                 },
             ],
-        } satisfies TidslinjeHendelseDto,
+        } satisfies TidslinjeHendelseDto_fpoversikt,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: 'FORELDREPENGER',
         harMinstEttArbeidsforhold: true,
@@ -160,7 +155,7 @@ export const ForEngangsstønad: Story = {
                     tittel: 'Søknad',
                 },
             ],
-        } satisfies TidslinjeHendelseDto,
+        } satisfies TidslinjeHendelseDto_fpoversikt,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: 'ENGANGSSTØNAD',
         harMinstEttArbeidsforhold: true,
@@ -189,7 +184,7 @@ export const ForSvangerskapspenger: Story = {
                     tittel: 'Søknad',
                 },
             ],
-        } satisfies TidslinjeHendelseDto,
+        } satisfies TidslinjeHendelseDto_fpoversikt,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: 'SVANGERSKAPSPENGER',
         harMinstEttArbeidsforhold: true,
@@ -205,10 +200,8 @@ export const ForSvangerskapspengerUtenArbeidsforhold: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () =>
-                    HttpResponse.json(søkerinfoUtenArbeidsforhold),
-                ),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker)),
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfoUtenArbeidsforhold)),
+                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
             ],
         },
     },
@@ -228,7 +221,7 @@ export const ForSvangerskapspengerUtenTidligsteBehandlingsdato: Story = {
                     tittel: 'Søknad',
                 },
             ],
-        } satisfies TidslinjeHendelseDto,
+        } satisfies TidslinjeHendelseDto_fpoversikt,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: 'SVANGERSKAPSPENGER',
         harMinstEttArbeidsforhold: true,

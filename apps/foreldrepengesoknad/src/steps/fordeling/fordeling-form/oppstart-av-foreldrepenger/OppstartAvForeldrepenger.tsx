@@ -39,7 +39,7 @@ export const OppstartAvForeldrepenger = ({
     const visOppstartsDatoInput =
         oppstartsvalg.length <= 1 || (oppstartValg && OppstartValg.ANNEN_DATO === oppstartValg);
     return (
-        <VStack gap="5">
+        <VStack gap="space-20">
             <OppstartValgInput
                 oppstartsvalg={oppstartsvalg}
                 erFarEllerMedmor={erFarEllerMedmor}

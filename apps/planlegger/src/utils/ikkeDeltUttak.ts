@@ -1,72 +1,77 @@
-import { StønadskontoType } from '@navikt/fp-constants';
-import { PlanForslag, SaksperiodeNy, Situasjon, Stønadskonto } from '@navikt/fp-types';
+import { PlanForslag } from 'types/PlanForslag';
+
+import { KontoDto, Situasjon, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { UttaksdagenString, getTidsperiodeString } from '@navikt/fp-utils';
 import { andreAugust2022ReglerGjelder, sorterPerioder } from '@navikt/fp-uttaksplan-ny';
 
 const ikkeDeltUttakAdopsjonFarMedmor = (
     famDato: string,
-    foreldrepengerKonto: Stønadskonto,
+    foreldrepengerKonto: KontoDto,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: Stønadskonto | undefined,
+    aktivitetsfriKvote: KontoDto | undefined,
     bareFarMedmorHarRett: boolean,
     farOgFar: boolean,
 ): PlanForslag => {
     const førsteUttaksdag = UttaksdagenString(famDato).denneEllerNeste();
-    const perioder: SaksperiodeNy[] = [];
+    const perioder: UttakPeriode_fpoversikt[] = [];
 
-    if (erMorUfør !== true) {
-        if (farOgFar) {
-            const periode: SaksperiodeNy = {
-                kontoType: StønadskontoType.AktivitetsfriKvote,
-                fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).fom,
-                tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).tom,
-            };
-            perioder.push(periode);
-        } else {
-            let startDatoNestePeriode = førsteUttaksdag;
-            if (andreAugust2022ReglerGjelder(famDato) && !!bareFarMedmorHarRett && aktivitetsfriKvote) {
-                const aktivitetsFriPeriode: SaksperiodeNy = {
-                    kontoType: StønadskontoType.AktivitetsfriKvote,
-                    fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).fom,
-                    tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).tom,
-                };
-
-                perioder.push(aktivitetsFriPeriode);
-                startDatoNestePeriode = UttaksdagenString(aktivitetsFriPeriode.tom).neste();
-            }
-            const periode: SaksperiodeNy = {
-                kontoType: foreldrepengerKonto.konto,
-                fom: getTidsperiodeString(startDatoNestePeriode, foreldrepengerKonto.dager).fom,
-                tom: getTidsperiodeString(startDatoNestePeriode, foreldrepengerKonto.dager).tom,
-            };
-
-            perioder.push(periode);
-        }
-    } else {
-        const aktivitetsFriPeriode: SaksperiodeNy = {
-            kontoType: StønadskontoType.AktivitetsfriKvote,
+    if (erMorUfør) {
+        const aktivitetsFriPeriode: UttakPeriode_fpoversikt = {
+            kontoType: 'FORELDREPENGER',
+            morsAktivitet: 'IKKE_OPPGITT',
             fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).fom,
             tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).tom,
         };
         perioder.push(aktivitetsFriPeriode);
 
-        const aktivitetskravPeriode: SaksperiodeNy = {
-            kontoType: StønadskontoType.Foreldrepenger,
+        const aktivitetskravPeriode: UttakPeriode_fpoversikt = {
+            kontoType: 'FORELDREPENGER',
             fom: getTidsperiodeString(UttaksdagenString(aktivitetsFriPeriode.tom).neste(), foreldrepengerKonto.dager)
                 .fom,
             tom: getTidsperiodeString(UttaksdagenString(aktivitetsFriPeriode.tom).neste(), foreldrepengerKonto.dager)
                 .tom,
         };
         perioder.push(aktivitetskravPeriode);
+    } else if (farOgFar) {
+        const periode: UttakPeriode_fpoversikt = {
+            kontoType: 'FORELDREPENGER',
+            morsAktivitet: 'IKKE_OPPGITT',
+            fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).fom,
+            tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).tom,
+        };
+        perioder.push(periode);
+    } else {
+        let startDatoNestePeriode = førsteUttaksdag;
+        if (andreAugust2022ReglerGjelder(famDato) && !!bareFarMedmorHarRett && aktivitetsfriKvote) {
+            const aktivitetsFriPeriode: UttakPeriode_fpoversikt = {
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: 'IKKE_OPPGITT',
+                fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote.dager).fom,
+                tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote.dager).tom,
+            };
+
+            perioder.push(aktivitetsFriPeriode);
+            startDatoNestePeriode = UttaksdagenString(aktivitetsFriPeriode.tom).neste();
+        }
+        const periode: UttakPeriode_fpoversikt = {
+            kontoType:
+                foreldrepengerKonto.konto === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : foreldrepengerKonto.konto,
+            morsAktivitet: foreldrepengerKonto.konto === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : undefined,
+            fom: getTidsperiodeString(startDatoNestePeriode, foreldrepengerKonto.dager).fom,
+            tom: getTidsperiodeString(startDatoNestePeriode, foreldrepengerKonto.dager).tom,
+        };
+
+        perioder.push(periode);
     }
 
     return { søker1: perioder, søker2: [] };
 };
 
-const ikkeDeltUttakAdopsjonMor = (famDato: string, foreldrepengerKonto: Stønadskonto): PlanForslag => {
+const ikkeDeltUttakAdopsjonMor = (famDato: string, foreldrepengerKonto: KontoDto): PlanForslag => {
     const førsteUttaksdag = UttaksdagenString(famDato).denneEllerNeste();
-    const periode: SaksperiodeNy = {
-        kontoType: foreldrepengerKonto.konto,
+    const periode: UttakPeriode_fpoversikt = {
+        kontoType: foreldrepengerKonto.konto === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : foreldrepengerKonto.konto,
+        morsAktivitet: foreldrepengerKonto.konto === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : undefined,
         fom: getTidsperiodeString(førsteUttaksdag, foreldrepengerKonto.dager).fom,
         tom: getTidsperiodeString(førsteUttaksdag, foreldrepengerKonto.dager).tom,
     };
@@ -77,15 +82,13 @@ const ikkeDeltUttakAdopsjonMor = (famDato: string, foreldrepengerKonto: Stønads
 const ikkeDeltUttakAdopsjon = (
     famDato: string,
     erFarEllerMedmor: boolean,
-    foreldrepengerKonto: Stønadskonto,
+    foreldrepengerKonto: KontoDto,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: Stønadskonto | undefined,
+    aktivitetsfriKvote: KontoDto | undefined,
     bareFarMedmorHarRett: boolean,
     farOgFar: boolean,
 ) => {
-    if (!erFarEllerMedmor) {
-        return ikkeDeltUttakAdopsjonMor(famDato, foreldrepengerKonto);
-    } else {
+    if (erFarEllerMedmor) {
         return ikkeDeltUttakAdopsjonFarMedmor(
             famDato,
             foreldrepengerKonto,
@@ -94,20 +97,26 @@ const ikkeDeltUttakAdopsjon = (
             bareFarMedmorHarRett,
             farOgFar,
         );
+    } else {
+        return ikkeDeltUttakAdopsjonMor(famDato, foreldrepengerKonto);
     }
 };
 
 const ikkeDeltUttakFødselMor = (
     famDato: string,
-    foreldrepengerKonto: Stønadskonto,
-    foreldrePengerFørFødselKonto: Stønadskonto,
+    foreldrepengerKonto: KontoDto,
+    foreldrePengerFørFødselKonto: KontoDto,
 ): PlanForslag => {
     const førsteUttaksdag = UttaksdagenString(famDato).denneEllerNeste();
-    const perioder: SaksperiodeNy[] = [];
+    const perioder: UttakPeriode_fpoversikt[] = [];
 
     if (foreldrePengerFørFødselKonto !== undefined) {
-        const periodeFørFødsel: SaksperiodeNy = {
-            kontoType: foreldrePengerFørFødselKonto.konto,
+        const periodeFørFødsel: UttakPeriode_fpoversikt = {
+            kontoType:
+                foreldrePengerFørFødselKonto.konto === 'AKTIVITETSFRI_KVOTE'
+                    ? 'FORELDREPENGER'
+                    : foreldrePengerFørFødselKonto.konto,
+            morsAktivitet: foreldrePengerFørFødselKonto.konto === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : undefined,
             fom: UttaksdagenString(førsteUttaksdag).trekkFra(15),
             tom: UttaksdagenString(førsteUttaksdag).forrige(),
         };
@@ -117,8 +126,9 @@ const ikkeDeltUttakFødselMor = (
 
     const antallDagerIForeldrepenger = getTidsperiodeString(førsteUttaksdag, foreldrepengerKonto.dager);
 
-    const foreldrepengerPeriode: SaksperiodeNy = {
-        kontoType: foreldrepengerKonto.konto,
+    const foreldrepengerPeriode: UttakPeriode_fpoversikt = {
+        kontoType: foreldrepengerKonto.konto === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : foreldrepengerKonto.konto,
+        morsAktivitet: foreldrepengerKonto.konto === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : undefined,
         fom: antallDagerIForeldrepenger.fom,
         tom: antallDagerIForeldrepenger.tom,
     };
@@ -130,21 +140,55 @@ const ikkeDeltUttakFødselMor = (
 
 const ikkeDeltUttakFødselFarMedmor = (
     famDato: string,
-    foreldrepengerKonto: Stønadskonto,
+    foreldrepengerKonto: KontoDto,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: Stønadskonto | undefined,
+    aktivitetsfriKvote: KontoDto | undefined,
     bareFarMedmorHarRett: boolean,
     erAleneOmOmsorg: boolean,
     farOgFar: boolean,
     startdato?: string,
 ): PlanForslag => {
     const startDato = UttaksdagenString(startdato ?? famDato).denneEllerNeste();
-    const perioder: SaksperiodeNy[] = [];
+    const perioder: UttakPeriode_fpoversikt[] = [];
 
-    if (erMorUfør !== true) {
+    if (erMorUfør) {
+        if (erAleneOmOmsorg) {
+            const aktivitetskravPeriode: UttakPeriode_fpoversikt = {
+                kontoType: 'FORELDREPENGER',
+                fom: getTidsperiodeString(startDato, foreldrepengerKonto.dager).fom,
+                tom: getTidsperiodeString(startDato, foreldrepengerKonto.dager).tom,
+            };
+
+            perioder.push(aktivitetskravPeriode);
+        } else {
+            const aktivitetsFriPeriode: UttakPeriode_fpoversikt = {
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: 'IKKE_OPPGITT',
+                fom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).fom,
+                tom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).tom,
+            };
+
+            perioder.push(aktivitetsFriPeriode);
+
+            const aktivitetskravPeriode: UttakPeriode_fpoversikt = {
+                kontoType: 'FORELDREPENGER',
+                fom: getTidsperiodeString(
+                    UttaksdagenString(aktivitetsFriPeriode.tom).neste(),
+                    foreldrepengerKonto.dager,
+                ).fom,
+                tom: getTidsperiodeString(
+                    UttaksdagenString(aktivitetsFriPeriode.tom).neste(),
+                    foreldrepengerKonto.dager,
+                ).tom,
+            };
+
+            perioder.push(aktivitetskravPeriode);
+        }
+    } else {
         if (farOgFar) {
-            const periode: SaksperiodeNy = {
-                kontoType: StønadskontoType.AktivitetsfriKvote,
+            const periode: UttakPeriode_fpoversikt = {
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: 'IKKE_OPPGITT',
                 fom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).fom,
                 tom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).tom,
             };
@@ -157,55 +201,26 @@ const ikkeDeltUttakFødselFarMedmor = (
                 !erAleneOmOmsorg &&
                 aktivitetsfriKvote
             ) {
-                const aktivitetsFriPeriode: SaksperiodeNy = {
-                    kontoType: StønadskontoType.AktivitetsfriKvote,
-                    fom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).fom,
-                    tom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).tom,
+                const aktivitetsFriPeriode: UttakPeriode_fpoversikt = {
+                    kontoType: 'FORELDREPENGER',
+                    morsAktivitet: 'IKKE_OPPGITT',
+                    fom: getTidsperiodeString(startDato, aktivitetsfriKvote.dager).fom,
+                    tom: getTidsperiodeString(startDato, aktivitetsfriKvote.dager).tom,
                 };
 
                 perioder.push(aktivitetsFriPeriode);
                 startDatoNestePeriode = UttaksdagenString(aktivitetsFriPeriode.tom).neste();
             }
 
-            const periode: SaksperiodeNy = {
-                kontoType: foreldrepengerKonto.konto,
+            const periode: UttakPeriode_fpoversikt = {
+                kontoType:
+                    foreldrepengerKonto.konto === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : foreldrepengerKonto.konto,
+                morsAktivitet: foreldrepengerKonto.konto === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : undefined,
                 fom: getTidsperiodeString(startDatoNestePeriode, foreldrepengerKonto.dager).fom,
                 tom: getTidsperiodeString(startDatoNestePeriode, foreldrepengerKonto.dager).tom,
             };
 
             perioder.push(periode);
-        }
-    } else {
-        if (!erAleneOmOmsorg) {
-            const aktivitetsFriPeriode: SaksperiodeNy = {
-                kontoType: StønadskontoType.AktivitetsfriKvote,
-                fom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).fom,
-                tom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).tom,
-            };
-
-            perioder.push(aktivitetsFriPeriode);
-
-            const aktivitetskravPeriode: SaksperiodeNy = {
-                kontoType: StønadskontoType.Foreldrepenger,
-                fom: getTidsperiodeString(
-                    UttaksdagenString(aktivitetsFriPeriode.tom).neste(),
-                    foreldrepengerKonto.dager,
-                ).fom,
-                tom: getTidsperiodeString(
-                    UttaksdagenString(aktivitetsFriPeriode.tom).neste(),
-                    foreldrepengerKonto.dager,
-                ).tom,
-            };
-
-            perioder.push(aktivitetskravPeriode);
-        } else {
-            const aktivitetskravPeriode: SaksperiodeNy = {
-                kontoType: StønadskontoType.Foreldrepenger,
-                fom: getTidsperiodeString(startDato, foreldrepengerKonto.dager).fom,
-                tom: getTidsperiodeString(startDato, foreldrepengerKonto.dager).tom,
-            };
-
-            perioder.push(aktivitetskravPeriode);
         }
     }
 
@@ -215,18 +230,16 @@ const ikkeDeltUttakFødselFarMedmor = (
 const ikkeDeltUttakFødsel = (
     famDato: string,
     erFarEllerMedmor: boolean,
-    foreldrepengerKonto: Stønadskonto,
-    foreldrePengerFørFødselKonto: Stønadskonto | undefined,
+    foreldrepengerKonto: KontoDto,
+    foreldrePengerFørFødselKonto: KontoDto | undefined,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: Stønadskonto | undefined,
+    aktivitetsfriKvote: KontoDto | undefined,
     bareFarMedmorHarRett: boolean,
     erAleneOmOmsorg: boolean,
     farOgFar: boolean,
     startdato?: string,
 ) => {
-    if (!erFarEllerMedmor) {
-        return ikkeDeltUttakFødselMor(famDato, foreldrepengerKonto, foreldrePengerFørFødselKonto!);
-    } else {
+    if (erFarEllerMedmor) {
         return ikkeDeltUttakFødselFarMedmor(
             famDato,
             foreldrepengerKonto,
@@ -237,6 +250,8 @@ const ikkeDeltUttakFødsel = (
             farOgFar,
             startdato,
         );
+    } else {
+        return ikkeDeltUttakFødselMor(famDato, foreldrepengerKonto, foreldrePengerFørFødselKonto!);
     }
 };
 
@@ -244,7 +259,7 @@ interface IkkeDeltUttakProps {
     situasjon: Situasjon;
     famDato: string;
     erFarEllerMedmor: boolean;
-    tilgjengeligeStønadskontoer: Stønadskonto[];
+    tilgjengeligeStønadskontoer: KontoDto[];
     erMorUfør: boolean | undefined;
     bareFarMedmorHarRett: boolean;
     erAleneOmOmsorg: boolean;
@@ -263,15 +278,11 @@ export const ikkeDeltUttak = ({
     startdato,
     farOgFar,
 }: IkkeDeltUttakProps): PlanForslag => {
-    const foreldrepengerKonto = tilgjengeligeStønadskontoer.find(
-        (konto) => konto.konto === StønadskontoType.Foreldrepenger,
-    );
+    const foreldrepengerKonto = tilgjengeligeStønadskontoer.find((konto) => konto.konto === 'FORELDREPENGER');
     const foreldrePengerFørFødselKonto = tilgjengeligeStønadskontoer.find(
-        (konto) => konto.konto === StønadskontoType.ForeldrepengerFørFødsel,
+        (konto) => konto.konto === 'FORELDREPENGER_FØR_FØDSEL',
     );
-    const aktivitetsfriKvote = tilgjengeligeStønadskontoer.find(
-        (konto) => konto.konto === StønadskontoType.AktivitetsfriKvote,
-    );
+    const aktivitetsfriKvote = tilgjengeligeStønadskontoer.find((konto) => konto.konto === 'AKTIVITETSFRI_KVOTE');
 
     if (situasjon === 'adopsjon') {
         return ikkeDeltUttakAdopsjon(

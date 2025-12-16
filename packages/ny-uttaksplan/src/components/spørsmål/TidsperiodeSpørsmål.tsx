@@ -1,106 +1,128 @@
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { HStack, Heading } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
-import { UtsettelseÅrsakType } from '@navikt/fp-types';
-import { notEmpty } from '@navikt/fp-validation';
+import { isBeforeOrSame, isRequired, isValidDate, isWeekday } from '@navikt/fp-validation';
 
-import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
+import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import {
+    getFomDiverseValidators,
+    getFomKontoTypeValidators,
+    getFomÅrsakValidators,
+} from '../../utils/dateFomValidators';
 import { getMaxDate, getMinDate } from '../../utils/dateLimits';
-import { getFomValidators, getTomValidators } from '../../utils/dateValidators';
+import {
+    getTomDiverseValidators,
+    getTomKontoTypeValidators,
+    getTomÅrsakValidators,
+} from '../../utils/dateTomValidators';
+import { EndrePeriodePanelStepFormValues } from '../endre-periode-panel/steps/EndrePeriodePanelStep';
+import {
+    HvaVilDuGjøre,
+    LeggTilPeriodePanelFormValues,
+} from '../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 
 type Props = {
-    formMethods: any;
     valgtPeriode?: Planperiode;
-    gjelderAdopsjon: boolean;
-    erBarnetFødt: boolean;
-    oppholdsårsak?: UtsettelseÅrsakType.Ferie | PeriodeHullType.PERIODE_UTEN_UTTAK;
+    hvaVilDuGjøre: HvaVilDuGjøre;
 };
 
-export const TidsperiodeSpørsmål = ({
-    formMethods,
-    valgtPeriode,
-    gjelderAdopsjon,
-    erBarnetFødt,
-    oppholdsårsak,
-}: Props) => {
+export const TidsperiodeSpørsmål = ({ valgtPeriode, hvaVilDuGjøre }: Props) => {
     const intl = useIntl();
 
-    const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
+    const { familiehendelsedato, familiesituasjon } = useUttaksplanData();
 
-    const fomValue = formMethods.watch('fom');
-    const tomValue = formMethods.watch('tom');
-    const skalDuJobbe = formMethods.watch('skalDuJobbe');
-    const forelder = formMethods.watch('forelder');
-    const kontoType = formMethods.watch('kontoType');
+    const { watch, control } = useFormContext<LeggTilPeriodePanelFormValues | EndrePeriodePanelStepFormValues>();
 
-    const getÅrsak = () => {
-        if (valgtPeriode?.utsettelseÅrsak && valgtPeriode.utsettelseÅrsak === UtsettelseÅrsakType.Ferie) {
-            return valgtPeriode.utsettelseÅrsak;
-        }
+    const fomValue = watch('fom');
+    const kontoType = watch('kontoType');
+    const tomValue = watch('tom');
+    const samtidigUttak = watch('samtidigUttak');
+    const skalDuJobbe = watch('skalDuJobbe');
+    const forelder = watch('forelder');
 
-        if (valgtPeriode?.periodeHullÅrsak && valgtPeriode.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
-            return valgtPeriode.periodeHullÅrsak;
-        }
+    const årsak = getÅrsak(hvaVilDuGjøre, valgtPeriode);
 
-        return undefined;
-    };
-
-    const årsak = oppholdsårsak ?? getÅrsak();
     const minDate = getMinDate({
         årsak,
         kontoType: kontoType ?? valgtPeriode?.kontoType,
         familiehendelsedato,
-        gjelderAdopsjon,
+        gjelderAdopsjon: familiesituasjon === 'adopsjon',
     });
-    const maxDate = getMaxDate({ familiehendelsedato, kontoType: kontoType ?? valgtPeriode?.kontoType });
+    const maxDate = getMaxDate({ familiehendelsedato, kontoType: kontoType ?? valgtPeriode?.kontoType, årsak });
 
     return (
         <>
             <Heading size="medium">
                 <FormattedMessage id="uttaksplan.tidsperiodeSpørsmål.heading" />
             </Heading>
-            <HStack gap="4">
+            <HStack gap="space-16">
                 <RhfDatepicker
                     name="fom"
-                    control={formMethods.control}
+                    control={control}
                     showMonthAndYearDropdowns
                     minDate={minDate}
                     maxDate={maxDate}
                     label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.fom' })}
                     disableWeekends={true}
-                    validate={getFomValidators({
-                        intl,
-                        familiehendelsedato,
-                        kontoType: kontoType ?? valgtPeriode?.kontoType,
-                        tomValue,
-                        erBarnetFødt,
-                        minDate,
-                        maxDate,
-                        årsak,
-                        gjelderAdopsjon,
-                        skalDuJobbe,
-                        forelder,
-                    })}
+                    validate={[
+                        isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.påkrevd' })),
+                        isValidDate(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.gyldigDato' })),
+                        isBeforeOrSame(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.førTilDato' }), tomValue),
+                        isWeekday(intl.formatMessage({ id: 'endreTidsPeriodeModal.fom.måVæreUkedag' })),
+                        ...getFomKontoTypeValidators(
+                            intl,
+                            familiehendelsedato,
+                            familiesituasjon,
+                            tomValue,
+                            samtidigUttak,
+                            kontoType,
+                        ),
+                        ...getFomDiverseValidators(
+                            intl,
+                            familiehendelsedato,
+                            familiesituasjon,
+                            minDate,
+                            maxDate,
+                            samtidigUttak,
+                            kontoType,
+                            skalDuJobbe,
+                            forelder,
+                        ),
+                        ...getFomÅrsakValidators(intl, familiehendelsedato, familiesituasjon, årsak),
+                    ]}
                 />
                 <RhfDatepicker
                     name="tom"
-                    control={formMethods.control}
-                    validate={getTomValidators({
-                        intl,
-                        familiehendelsedato,
-                        kontoType: kontoType ?? valgtPeriode?.kontoType,
-                        fomValue,
-                        erBarnetFødt,
-                        minDate,
-                        maxDate,
-                        årsak,
-                        gjelderAdopsjon,
-                        skalDuJobbe,
-                        forelder,
-                    })}
+                    control={control}
+                    validate={[
+                        isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.påkrevd' })),
+                        isValidDate(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.gyldigDato' })),
+                        isWeekday(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.måVæreUkedag' })),
+                        ...getTomKontoTypeValidators(
+                            intl,
+                            familiehendelsedato,
+                            familiesituasjon,
+                            fomValue,
+                            samtidigUttak,
+                            kontoType,
+                        ),
+                        ...getTomDiverseValidators(
+                            intl,
+                            familiehendelsedato,
+                            familiesituasjon,
+                            minDate,
+                            maxDate,
+                            skalDuJobbe,
+                            samtidigUttak,
+                            forelder,
+                            kontoType,
+                        ),
+                        ...getTomÅrsakValidators(intl, familiehendelsedato, familiesituasjon, årsak),
+                    ]}
                     label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.tom' })}
                     disableWeekends={true}
                     minDate={fomValue}
@@ -109,4 +131,20 @@ export const TidsperiodeSpørsmål = ({
             </HStack>
         </>
     );
+};
+
+const getÅrsak = (hvaVilDuGjøre: HvaVilDuGjøre, valgtPeriode: Planperiode | undefined) => {
+    if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
+        return PeriodeHullType.PERIODE_UTEN_UTTAK;
+    }
+
+    if (!valgtPeriode?.erAnnenPartEøs && valgtPeriode?.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+        return valgtPeriode.utsettelseÅrsak;
+    }
+
+    if (valgtPeriode?.periodeHullÅrsak && valgtPeriode.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
+        return valgtPeriode.periodeHullÅrsak;
+    }
+
+    return undefined;
 };

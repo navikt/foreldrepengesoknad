@@ -331,7 +331,7 @@ describe('<OmBarnetSteg>', () => {
             await userEvent.tab();
 
             expect(screen.getByText('Adopterer du fra utlandet?')).toBeInTheDocument();
-            await userEvent.click(screen.getAllByText('Ja')[1]);
+            await userEvent.click(screen.getAllByText('Ja')[1]!);
 
             const kommerTilNorgeDatoInput = screen.getByLabelText('Når kommer barnet til Norge?');
             await userEvent.type(kommerTilNorgeDatoInput, dayjs().format(DDMMYYYY_DATE_FORMAT));

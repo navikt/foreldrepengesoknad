@@ -8,7 +8,7 @@ import { action } from 'storybook/actions';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
-import { FRILANS_ID, Frilans, NæringDto } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, FRILANS_ID, Frilans, NæringDto } from '@navikt/fp-types';
 
 import { TilretteleggingSteg } from './TilretteleggingSteg';
 
@@ -37,7 +37,7 @@ const DEFAULT_ARBEIDSFORHOLD = [
         fom: '2017-04-05T00:00:00.000Z',
         stillingsprosent: 100,
     },
-];
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
@@ -98,7 +98,7 @@ type Story = StoryObj<typeof meta>;
 export const ForArbeidsforhold: Story = {
     args: {
         mellomlagreSøknadOgNaviger: promiseAction(),
-        avbrytSøknad: promiseAction(),
+        avbrytSøknad: () => action('button-click'),
         arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
         valgtTilretteleggingId: VALGT_TILRETTELEGGING_ID,
     },

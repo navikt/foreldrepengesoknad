@@ -8,8 +8,8 @@
         "paths": {
             "storybookData/*": ["./../.storybook/storybook-data/*"]
         },
-        "types": ["@testing-library/jest-dom", "vite/client", "node", "vitest/globals"]
+        "types": ["vite/client", "@testing-library/jest-dom", "vitest/globals"]
     },
-    "include": ["src"],
+    "include": ["src", "mock-api", "vitest", "../../@types/vite.env.d.ts"],
     "exclude": ["node_modules"]
 }

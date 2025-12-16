@@ -18,11 +18,11 @@ type Props = {
 export const LenkePanel = ({ to, tittel, undertittel, Ikon, className, tag }: Props) => {
     return (
         <Link to={to} className={classNames(styles.LenkePanel, className)}>
-            <HStack gap="4" align="center" justify="space-between">
-                <HStack gap="4" align="center" wrap={false}>
+            <HStack gap="space-16" align="center" justify="space-between">
+                <HStack gap="space-16" align="center" wrap={false}>
                     {Ikon && (
                         <Ikon
-                            className="p-1 rounded-[50%] bg-deepblue-100 text-icon-info"
+                            className="bg-ax-brand-blue-200 text-ax-text-info-decoration rounded-[50%] p-1"
                             width={32}
                             height={32}
                             aria-hidden
@@ -41,7 +41,7 @@ export const LenkePanel = ({ to, tittel, undertittel, Ikon, className, tag }: Pr
                 </HStack>
                 {tag}
             </HStack>
-            <ArrowRightIcon className="text-icon-info" fontSize="24" aria-hidden />
+            <ArrowRightIcon className="text-ax-text-info-decoration" fontSize="24" aria-hidden />
         </Link>
     );
 };

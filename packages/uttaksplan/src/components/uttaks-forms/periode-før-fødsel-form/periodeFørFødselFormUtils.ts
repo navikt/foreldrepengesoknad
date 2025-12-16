@@ -1,12 +1,12 @@
 import dayjs from 'dayjs';
 
-import { ForeldrepengerFørFødselUttaksperiode, Periode, Periodetype, StønadskontoType } from '@navikt/fp-common';
+import { ForeldrepengerFørFødselUttaksperiode, Periode, Periodetype } from '@navikt/fp-common';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
 import uttaksConstants from '../../../common/uttaksConstants';
 import { PeriodeFørFødselFormData, PeriodeFørFødselFormField } from './periodeFørFødselFormConfig';
 
-export const initialValues: PeriodeFørFødselFormData = {
+const initialValues: PeriodeFørFødselFormData = {
     [PeriodeFørFødselFormField.fom]: undefined,
     [PeriodeFørFødselFormField.tom]: undefined,
     [PeriodeFørFødselFormField.skalIkkeHaUttakFørTermin]: false,
@@ -38,7 +38,7 @@ export const mapPeriodeFørFødselFormToPeriode = (
         type: Periodetype.Uttak,
         id: periode.id,
         forelder: periode.forelder,
-        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        konto: 'FORELDREPENGER_FØR_FØDSEL',
         tidsperiode: {
             fom: values.fom!,
             tom: values.tom!,

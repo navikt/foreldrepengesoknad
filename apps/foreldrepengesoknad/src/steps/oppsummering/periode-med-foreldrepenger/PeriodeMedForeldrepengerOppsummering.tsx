@@ -8,7 +8,6 @@ import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 import { FormSummary } from '@navikt/ds-react';
 
 import { isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { Dekningsgrad } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 interface Props {
@@ -28,9 +27,6 @@ export const PeriodeMedForeldrepengerOppsummering = ({ onVilEndreSvar }: Props) 
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="PeriodeMedForeldrepengerOppsummering.Tittel" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="Oppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 <FormSummary.Answer>
@@ -46,6 +42,11 @@ export const PeriodeMedForeldrepengerOppsummering = ({ onVilEndreSvar }: Props) 
                     </FormSummary.Value>
                 </FormSummary.Answer>
             </FormSummary.Answers>
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="Oppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 };
@@ -66,7 +67,7 @@ const PeriodeLabel = () => {
         return null;
     }
 
-    if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT) {
+    if (dekningsgrad === '100') {
         return (
             <FormattedMessage
                 id="uttaksplaninfo.49Uker"

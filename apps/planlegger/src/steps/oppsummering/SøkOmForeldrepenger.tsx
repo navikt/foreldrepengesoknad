@@ -20,7 +20,7 @@ export const SøkOmForeldrepenger = ({ erAlenesøker, barnet }: Props) => {
             color="gray"
             icon={<TasklistStartIcon aria-hidden height={24} width={24} />}
         >
-            <VStack gap="4">
+            <VStack gap="space-16">
                 <BodyShort>
                     <FormattedMessage
                         id="SøkOmForeldrepenger.BasertPå"

@@ -33,6 +33,7 @@ export enum ContextDataType {
 }
 
 export type ContextDataMap = {
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     [ContextDataType.APP_ROUTE]?: SøknadRoute | string;
     [ContextDataType.OM_BARNET]?: Barn;
     [ContextDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;
@@ -113,16 +114,6 @@ export const useContextGetAnyData = () => {
 export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((data: ContextDataMap[TYPE]) => void) => {
     const dispatch = useContext(SvpDispatchContext);
     return (data: ContextDataMap[TYPE]) => {
-        if (dispatch) {
-            dispatch({ type: 'update', key, data });
-        }
-    };
-};
-
-/** Hook returns save function usable with all data types  */
-export const useContextSaveAnyData = () => {
-    const dispatch = useContext(SvpDispatchContext);
-    return <TYPE extends ContextDataType>(key: TYPE, data: ContextDataMap[TYPE]) => {
         if (dispatch) {
             dispatch({ type: 'update', key, data });
         }

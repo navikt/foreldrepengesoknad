@@ -1,17 +1,18 @@
+import { API_URLS } from 'api/queries';
 import { FormattedMessage } from 'react-intl';
 import { VedleggDataType } from 'types/VedleggDataType';
 
 import { Alert, BodyLong, BodyShort, FormSummary, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre, Periode } from '@navikt/fp-common';
-import { AttachmentType, InnsendingsType } from '@navikt/fp-constants';
+import { AttachmentType } from '@navikt/fp-constants';
 
 import { DokumentasjonLastetOppLabel } from './DokumentasjonLastetOppLabel';
 import { DokumentasjonSendSenereLabel } from './DokumentasjonSendSenereLabel';
 
 interface Props {
     alleVedlegg?: VedleggDataType;
-    onVilEndreSvar: () => Promise<void>;
+    onVilEndreSvar: () => void;
     erSøkerFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
     uttaksperioderSomManglerVedlegg: Periode[];
@@ -20,8 +21,8 @@ interface Props {
 const skalViseVedlegg = (alleVedlegg: VedleggDataType): boolean => {
     // Sjekk om det er noen gyldige answers å vise
     return Object.values(alleVedlegg ?? {})
-        .flatMap((vedleggListe) => vedleggListe)
-        .some((vedlegg) => vedlegg.innsendingsType !== InnsendingsType.AUTOMATISK);
+        .flat()
+        .some((vedlegg) => vedlegg.innsendingsType !== 'AUTOMATISK');
 };
 
 export const DokumentasjonOppsummering = ({
@@ -38,12 +39,8 @@ export const DokumentasjonOppsummering = ({
     }
 
     const harSendSenereDokument = Object.values(alleVedlegg)
-        .flatMap((vedlegg) => vedlegg)
-        .some(
-            (v) =>
-                v.innsendingsType === InnsendingsType.SEND_SENERE &&
-                v.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
-        );
+        .flat()
+        .some((v) => v.innsendingsType === 'SEND_SENERE' && v.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON);
 
     if (!skalViseVedlegg(alleVedlegg)) {
         return null;
@@ -60,9 +57,6 @@ export const DokumentasjonOppsummering = ({
                             <FormattedMessage id="DokumentasjonOppsummering.Tittel" />
                         )}
                     </FormSummary.Heading>
-                    <FormSummary.EditLink onClick={onVilEndreSvar}>
-                        <FormattedMessage id="Oppsummering.EndreSvar" />
-                    </FormSummary.EditLink>
                 </FormSummary.Header>
                 <FormSummary.Answers>
                     {alleVedlegg &&
@@ -72,37 +66,39 @@ export const DokumentasjonOppsummering = ({
                                 if (idOgVedlegg[1].length === 0) {
                                     return false;
                                 }
-                                const vedlegg = idOgVedlegg[1][0];
+                                const vedlegg = idOgVedlegg[1][0]!;
 
-                                if (vedlegg.innsendingsType === InnsendingsType.AUTOMATISK) {
+                                if (vedlegg.innsendingsType === 'AUTOMATISK') {
                                     return false;
                                 }
                                 return true;
                             })
                             .map((idOgVedlegg) => (
-                                <FormSummary.Answer key={idOgVedlegg[1][0].id}>
+                                <FormSummary.Answer key={idOgVedlegg[1][0]!.id}>
                                     <FormSummary.Label>
-                                        {idOgVedlegg[1][0].innsendingsType === InnsendingsType.SEND_SENERE ? (
+                                        {idOgVedlegg[1][0]!.innsendingsType === 'SEND_SENERE' ? (
                                             <DokumentasjonSendSenereLabel
-                                                attachment={idOgVedlegg[1][0]}
+                                                attachment={idOgVedlegg[1][0]!}
                                                 erFarEllerMedmor={erSøkerFarEllerMedmor}
                                                 navnPåForeldre={navnPåForeldre}
                                                 uttaksperioderSomManglerVedlegg={uttaksperioderSomManglerVedlegg}
                                             />
                                         ) : (
-                                            <DokumentasjonLastetOppLabel attachment={idOgVedlegg[1][0]} />
+                                            <DokumentasjonLastetOppLabel attachment={idOgVedlegg[1][0]!} />
                                         )}
                                     </FormSummary.Label>
                                     <FormSummary.Value>
-                                        <VStack gap="2">
+                                        <VStack gap="space-8">
                                             {idOgVedlegg[1]
-                                                .filter(
-                                                    (vedlegg) =>
-                                                        vedlegg.innsendingsType !== InnsendingsType.SEND_SENERE,
-                                                )
+                                                .filter((vedlegg) => vedlegg.innsendingsType !== 'SEND_SENERE')
                                                 .map((vedlegg) => {
-                                                    return vedlegg.url ? (
-                                                        <Link key={vedlegg.id} href={vedlegg.url} target="_blank">
+                                                    return vedlegg.uuid ? (
+                                                        <Link
+                                                            key={vedlegg.id}
+                                                            download={vedlegg.filename}
+                                                            href={`${API_URLS.hentVedlegg(vedlegg.uuid)}`}
+                                                            target="_blank"
+                                                        >
                                                             {vedlegg.filename}
                                                         </Link>
                                                     ) : (
@@ -114,10 +110,15 @@ export const DokumentasjonOppsummering = ({
                                 </FormSummary.Answer>
                             ))}
                 </FormSummary.Answers>
+                <FormSummary.Footer>
+                    <FormSummary.EditLink onClick={onVilEndreSvar}>
+                        <FormattedMessage id="Oppsummering.EndreSvar" />
+                    </FormSummary.EditLink>
+                </FormSummary.Footer>
             </FormSummary>
             {harSendSenereDokument && (
                 <Alert variant="info">
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <Heading size="small" level="2">
                             <FormattedMessage id="oppsummering.manglerDokumentasjon.heading" />
                         </Heading>

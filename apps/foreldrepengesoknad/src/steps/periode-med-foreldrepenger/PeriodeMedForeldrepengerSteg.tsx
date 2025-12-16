@@ -10,8 +10,8 @@ import { getKjønnFromFnr } from 'utils/personUtils';
 
 import { Box, HStack } from '@navikt/ds-react';
 
-import { Dekningsgrad, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { IconCircleWrapper, SkjemaRotLayout, Spinner, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -20,7 +20,7 @@ import { DekningsgradValgtAvAnnenPartPanel } from './DekningsgradValgtAvAnnenPar
 import { InfoOmUtvidet80ProsentPeriode } from './InfoOmUtvidet80ProsentPeriode';
 
 type Props = {
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
@@ -53,14 +53,14 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
                 {tilgjengeligeStønadskontoerQuery.data && (
                     <>
                         {vis1Juli2024Info && (
-                            <Box padding="4" background="surface-alt-3-subtle" style={{ marginBottom: '2rem' }}>
+                            <Box.New padding="4" background="brand-blue-moderate" style={{ marginBottom: '2rem' }}>
                                 <HStack justify="space-between" align="start">
                                     <InfoOmUtvidet80ProsentPeriode />
                                     <IconCircleWrapper color="lightBlue" size="medium">
                                         <CalendarIcon height={24} width={24} />
                                     </IconCircleWrapper>
                                 </HStack>
-                            </Box>
+                            </Box.New>
                         )}
                         {visAnnenPartsValg && isAnnenForelderOppgitt(annenForelder) && (
                             <DekningsgradValgtAvAnnenPartPanel
@@ -70,16 +70,10 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
                                 goToNextDefaultStep={navigator.goToNextDefaultStep}
                                 fornavnAnnenForelder={annenForelder.fornavn}
                                 kjønnAnnenForelder={getKjønnFromFnr(annenForelder)}
-                                dekningsgrad={
-                                    annenPartVedtak.dekningsgrad === 'HUNDRE'
-                                        ? Dekningsgrad.HUNDRE_PROSENT
-                                        : Dekningsgrad.ÅTTI_PROSENT
-                                }
+                                dekningsgrad={annenPartVedtak.dekningsgrad === 'HUNDRE' ? '100' : '80'}
                                 valgtStønadskonto={
                                     tilgjengeligeStønadskontoerQuery.data[
-                                        annenPartVedtak.dekningsgrad === 'HUNDRE'
-                                            ? Dekningsgrad.HUNDRE_PROSENT
-                                            : Dekningsgrad.ÅTTI_PROSENT
+                                        annenPartVedtak.dekningsgrad === 'HUNDRE' ? '100' : '80'
                                     ]
                                 }
                             />
@@ -92,8 +86,8 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
                                 onFortsettSenere={navigator.fortsettSøknadSenere}
                                 barn={barn}
                                 søkersituasjon={søkersituasjon}
-                                stønadskonto100={tilgjengeligeStønadskontoerQuery.data[Dekningsgrad.HUNDRE_PROSENT]}
-                                stønadskonto80={tilgjengeligeStønadskontoerQuery.data[Dekningsgrad.ÅTTI_PROSENT]}
+                                stønadskonto100={tilgjengeligeStønadskontoerQuery.data['100']}
+                                stønadskonto80={tilgjengeligeStønadskontoerQuery.data['80']}
                             />
                         )}
                     </>

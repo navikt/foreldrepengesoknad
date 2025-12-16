@@ -14,7 +14,7 @@ import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { Søkerrolle } from '@navikt/fp-types';
 import { isAfterOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
 
-import { AnnenForelderFormData, erAnnenForelderOppgitt } from './AnnenForelderFormData';
+import { AnnenForelderFormData, isAnnenForelderOppgittFormData } from './AnnenForelderFormData';
 
 type Props = {
     rolle: Søkerrolle;
@@ -35,8 +35,8 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
         }).data ?? false;
 
     const formValues = formMethods.watch();
-    if (!erAnnenForelderOppgitt(formValues)) {
-        throw Error('Annen forelder skal alltid være oppgitt her');
+    if (!isAnnenForelderOppgittFormData(formValues)) {
+        throw new Error('Annen forelder skal alltid være oppgitt her');
     }
 
     return (
@@ -62,7 +62,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                     </Radio>
                 </RhfRadioGroup>
                 <ReadMore header={intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg.apneLabel' })}>
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <BodyLong>
                             <FormattedMessage id="annenForelder.aleneOmOmsorg.del1" />
                         </BodyLong>
@@ -195,7 +195,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                             id: 'annenForelder.harRettPåForeldrepengerIEØS.veileder.apneLabel',
                         })}
                     >
-                        <VStack gap="4">
+                        <VStack gap="space-16">
                             <div>
                                 <FormattedMessage id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del1"></FormattedMessage>
                             </div>

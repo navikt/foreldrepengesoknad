@@ -32,10 +32,11 @@ const {
 } = composeStories(stories);
 
 describe('<Oppsummering>', () => {
-    const getParentDiv = (element: HTMLElement) => within(notEmpty(element.closest('div')));
+    const getCardDiv = (element: HTMLElement) =>
+        within(notEmpty(element.closest('div')?.parentElement?.closest('div')));
     const checkAndGetParentDiv = (element: HTMLElement) => {
         expect(element).toBeInTheDocument();
-        return getParentDiv(element);
+        return within(notEmpty(element.closest('div')));
     };
 
     it('Skal bekrefte vilkårene og sende inn søknad', async () => {
@@ -62,11 +63,11 @@ describe('<Oppsummering>', () => {
         expect(sendSøknad).toHaveBeenCalledTimes(1);
     });
 
-    it('Skal vise informasjon om barnet, men har ikke info om andre foreldre eller arbeidsforhold', async () => {
+    it('Skal vise informasjon om barnet, men har ikke info om andre foreldre eller arbeidsforhold', () => {
         render(<Default />);
 
         expect(screen.getAllByText('Barnet')).toHaveLength(2);
-        const barnetDiv = getParentDiv(screen.getAllByText('Barnet')[1]);
+        const barnetDiv = getCardDiv(screen.getAllByText('Barnet')[1]!);
 
         expect(checkAndGetParentDiv(barnetDiv.getByText('Er barnet født?')).getByText('Ja')).toBeInTheDocument();
         expect(
@@ -80,11 +81,11 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
     });
 
-    it('Skal vise informasjon om farskapserklæring', async () => {
+    it('Skal vise informasjon om farskapserklæring', () => {
         render(<MorMedAnnenForelderUgift />);
 
         expect(screen.getAllByText('Den andre forelderen')).toHaveLength(2);
-        const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
+        const denAndreForelderenDiv = getCardDiv(screen.getAllByText('Den andre forelderen')[1]!);
 
         expect(
             checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
@@ -108,11 +109,11 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
     });
 
-    it('Skal vise riktig informasjon om aleneomsorg', async () => {
+    it('Skal vise riktig informasjon om aleneomsorg', () => {
         render(<MorMedAleneOmsorg />);
 
         expect(screen.getAllByText('Den andre forelderen')).toHaveLength(2);
-        const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
+        const denAndreForelderenDiv = getCardDiv(screen.getAllByText('Den andre forelderen')[1]!);
 
         expect(
             checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
@@ -126,11 +127,11 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
     });
 
-    it('Skal vise riktig informasjon om aleneomsorg og info om farskapserklæring', async () => {
+    it('Skal vise riktig informasjon om aleneomsorg og info om farskapserklæring', () => {
         render(<FarMedAleneOmsorg />);
 
         expect(screen.getAllByText('Den andre forelderen')).toHaveLength(2);
-        const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
+        const denAndreForelderenDiv = getCardDiv(screen.getAllByText('Den andre forelderen')[1]!);
 
         expect(
             checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
@@ -150,7 +151,7 @@ describe('<Oppsummering>', () => {
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
         expect(await screen.findAllByText('Barnet')).toHaveLength(2);
-        const barnetDiv = getParentDiv(screen.getAllByText('Barnet')[1]);
+        const barnetDiv = getCardDiv(screen.getAllByText('Barnet')[1]!);
 
         expect(
             checkAndGetParentDiv(barnetDiv.getByText('Gjelder søknaden din stebarnsadopsjon?')).getByText('Ja'),
@@ -167,7 +168,7 @@ describe('<Oppsummering>', () => {
         render(<MorMedUtenlandsopphold />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
-        await userEvent.click(screen.getAllByText('Bo i utlandet')[1]);
+        await userEvent.click(screen.getAllByText('Bo i utlandet')[1]!);
 
         expect(screen.getByText('Hvilket land har du bodd i de siste 12 månedene?')).toBeInTheDocument();
         expect(screen.getAllByText('Sverige')).toHaveLength(2);
@@ -191,7 +192,11 @@ describe('<Oppsummering>', () => {
         render(<MorMedArbeidsforholdOgAndreInntekter />);
 
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
-        const arbeidsforholdOgInntektDiv = getParentDiv(screen.getAllByText('Arbeidsforhold og inntekt')[1]);
+        expect(
+            screen.queryByText('blir kontaktet av Nav for å sende opplysninger om din inntekt', { exact: false }),
+        ).toBeInTheDocument();
+
+        const arbeidsforholdOgInntektDiv = getCardDiv(screen.getAllByText('Arbeidsforhold og inntekt')[1]!);
 
         expect(
             checkAndGetParentDiv(arbeidsforholdOgInntektDiv.getByText('Auto Joachim Bilpleie, 80%')).getByText(
@@ -222,10 +227,10 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
     });
 
-    it('Skal vise informasjon om uttaksplan', async () => {
+    it('Skal vise informasjon om uttaksplan', () => {
         render(<FarMedUførMorUgift />);
 
-        const dinPlanDiv = getParentDiv(screen.getByText('Din plan'));
+        const dinPlanDiv = getCardDiv(screen.getByText('Din plan'));
 
         expect(
             checkAndGetParentDiv(dinPlanDiv.getByText('Du har planlagt')).getByText(
@@ -255,7 +260,7 @@ describe('<Oppsummering>', () => {
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
         expect(screen.getAllByText('Den andre forelderen')).toHaveLength(2);
-        const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
+        const denAndreForelderenDiv = getCardDiv(screen.getAllByText('Den andre forelderen')[1]!);
 
         expect(
             checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
@@ -309,7 +314,7 @@ describe('<Oppsummering>', () => {
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
         expect(screen.getAllByText('Den andre forelderen')).toHaveLength(2);
-        const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
+        const denAndreForelderenDiv = getCardDiv(screen.getAllByText('Den andre forelderen')[1]!);
 
         expect(
             checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
@@ -347,7 +352,7 @@ describe('<Oppsummering>', () => {
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
-        const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
+        const denAndreForelderenDiv = getCardDiv(screen.getAllByText('Den andre forelderen')[1]!);
 
         expect(
             checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
@@ -424,28 +429,12 @@ describe('<Oppsummering>', () => {
 
             expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
-            const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
-
-            expect(
-                checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
-                    'Kari Nordmann, 02520489226',
-                ),
-            ).toBeInTheDocument();
-            expect(
-                checkAndGetParentDiv(
-                    denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?'),
-                ).getByText('Ja'),
-            ).toBeInTheDocument();
-            expect(
-                checkAndGetParentDiv(
-                    denAndreForelderenDiv.getByText('Har den andre forelderen rett til foreldrepenger i Norge?'),
-                ).getByText('Ja'),
-            ).toBeInTheDocument();
-            expect(
-                checkAndGetParentDiv(
-                    denAndreForelderenDiv.getByText('Har du orientert den andre forelderen om søknaden din?'),
-                ).getByText('Ja'),
-            ).toBeInTheDocument();
+            expect(screen.getByText('Navn og fødselsnummer')).toBeInTheDocument();
+            expect(screen.getByText('Kari Nordmann, 02520489226')).toBeInTheDocument();
+            expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
+            expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
+            expect(screen.getByText('Har du orientert den andre forelderen om søknaden din?')).toBeInTheDocument();
+            expect(screen.getAllByText('Ja')).toHaveLength(4);
 
             expect(screen.getByText('Dokumentasjon på at mor er i arbeid (mangler)')).toBeInTheDocument();
             expect(
@@ -465,28 +454,12 @@ describe('<Oppsummering>', () => {
 
             expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
-            const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
-
-            expect(
-                checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
-                    'Kari Nordmann, 02520489226',
-                ),
-            ).toBeInTheDocument();
-            expect(
-                checkAndGetParentDiv(
-                    denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?'),
-                ).getByText('Ja'),
-            ).toBeInTheDocument();
-            expect(
-                checkAndGetParentDiv(
-                    denAndreForelderenDiv.getByText('Har den andre forelderen rett til foreldrepenger i Norge?'),
-                ).getByText('Ja'),
-            ).toBeInTheDocument();
-            expect(
-                checkAndGetParentDiv(
-                    denAndreForelderenDiv.getByText('Har du orientert den andre forelderen om søknaden din?'),
-                ).getByText('Ja'),
-            ).toBeInTheDocument();
+            expect(screen.getByText('Navn og fødselsnummer')).toBeInTheDocument();
+            expect(screen.getByText('Kari Nordmann, 02520489226')).toBeInTheDocument();
+            expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
+            expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
+            expect(screen.getByText('Har du orientert den andre forelderen om søknaden din?')).toBeInTheDocument();
+            expect(screen.getAllByText('Ja')).toHaveLength(5);
 
             expect(screen.getByText('Dine perioder med foreldrepenger')).toBeInTheDocument();
             expect(screen.getByText('Fellesperiode', { selector: 'dd' })).toBeInTheDocument();
@@ -503,28 +476,13 @@ describe('<Oppsummering>', () => {
             render(<FarSøkerMorMåIkkeDokumentereArbeid />);
 
             expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
-            const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
 
-            expect(
-                checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
-                    'Kari Nordmann, 02520489226',
-                ),
-            ).toBeInTheDocument();
-            expect(
-                checkAndGetParentDiv(
-                    denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?'),
-                ).getByText('Ja'),
-            ).toBeInTheDocument();
-            expect(
-                checkAndGetParentDiv(
-                    denAndreForelderenDiv.getByText('Har den andre forelderen rett til foreldrepenger i Norge?'),
-                ).getByText('Ja'),
-            ).toBeInTheDocument();
-            expect(
-                checkAndGetParentDiv(
-                    denAndreForelderenDiv.getByText('Har du orientert den andre forelderen om søknaden din?'),
-                ).getByText('Ja'),
-            ).toBeInTheDocument();
+            expect(screen.getByText('Navn og fødselsnummer')).toBeInTheDocument();
+            expect(screen.getByText('Kari Nordmann, 02520489226')).toBeInTheDocument();
+            expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
+            expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
+            expect(screen.getByText('Har du orientert den andre forelderen om søknaden din?')).toBeInTheDocument();
+            expect(screen.getAllByText('Ja')).toHaveLength(4);
 
             expect(screen.queryByText('Dokumentasjon på at mor er i arbeid (mangler)')).not.toBeInTheDocument();
             expect(
@@ -544,28 +502,13 @@ describe('<Oppsummering>', () => {
 
             expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
-            const denAndreForelderenDiv = getParentDiv(screen.getAllByText('Den andre forelderen')[1]);
+            expect(screen.getByText('Navn og fødselsnummer')).toBeInTheDocument();
+            expect(screen.getByText('Kari Nordmann, 02520489226')).toBeInTheDocument();
+            expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
+            expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
+            expect(screen.getByText('Har du orientert den andre forelderen om søknaden din?')).toBeInTheDocument();
+            expect(screen.getAllByText('Ja')).toHaveLength(4);
 
-            expect(
-                checkAndGetParentDiv(denAndreForelderenDiv.getByText('Navn og fødselsnummer')).getByText(
-                    'Kari Nordmann, 02520489226',
-                ),
-            ).toBeInTheDocument();
-            expect(
-                checkAndGetParentDiv(
-                    denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?'),
-                ).getByText('Ja'),
-            ).toBeInTheDocument();
-            expect(
-                checkAndGetParentDiv(
-                    denAndreForelderenDiv.getByText('Har den andre forelderen rett til foreldrepenger i Norge?'),
-                ).getByText('Ja'),
-            ).toBeInTheDocument();
-            expect(
-                checkAndGetParentDiv(
-                    denAndreForelderenDiv.getByText('Har du orientert den andre forelderen om søknaden din?'),
-                ).getByText('Ja'),
-            ).toBeInTheDocument();
             expect(screen.queryByText('Dokumentasjon på at mor er i arbeid')).not.toBeInTheDocument();
             expect(
                 screen.queryByText(

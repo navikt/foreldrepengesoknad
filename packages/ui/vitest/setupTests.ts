@@ -1,6 +1,7 @@
-import { expect } from 'vitest';
+import { setProjectAnnotations } from '@storybook/react-vite';
 import * as matchers from '@testing-library/jest-dom/matchers';
-import { setProjectAnnotations } from '@storybook/react';
+import { expect } from 'vitest';
+
 import * as globalStorybookConfig from '../.storybook/preview';
 
 setProjectAnnotations(globalStorybookConfig);

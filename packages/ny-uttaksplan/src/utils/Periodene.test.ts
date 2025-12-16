@@ -1,17 +1,16 @@
-import { Forelder, StønadskontoType } from '@navikt/fp-constants';
-import { OppholdÅrsakType } from '@navikt/fp-types';
 import { UttaksdagenString, dateToISOString, getTidsperiodeString } from '@navikt/fp-utils';
 
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
-import { uttaksplanErBareOpphold, uttaksplanSlutterMedOpphold, uttaksplanStarterMedOpphold } from './Periodene';
+import { uttaksplanErBareOpphold, uttaksplanStarterMedOpphold } from './Periodene';
 
 const familiehendelsesdato = dateToISOString(new Date());
 const førsteUttaksdag = UttaksdagenString(familiehendelsesdato).denneEllerNeste();
 const førsteUttaksdagTidsperiode = getTidsperiodeString(førsteUttaksdag, 5);
 
 const uttakBase: Planperiode = {
-    forelder: Forelder.farMedmor,
-    kontoType: StønadskontoType.Fellesperiode,
+    erAnnenPartEøs: false,
+    forelder: 'FAR_MEDMOR',
+    kontoType: 'FELLESPERIODE',
     fom: førsteUttaksdagTidsperiode.tom,
     tom: førsteUttaksdagTidsperiode.fom,
     id: '1',
@@ -19,15 +18,17 @@ const uttakBase: Planperiode = {
 };
 
 const oppholdsBase: Planperiode = {
+    erAnnenPartEøs: false,
     id: '2',
-    oppholdÅrsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+    oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER',
     fom: førsteUttaksdagTidsperiode.fom,
     tom: førsteUttaksdagTidsperiode.tom,
-    forelder: Forelder.farMedmor,
+    forelder: 'FAR_MEDMOR',
     readOnly: false,
 };
 
 const infoBase: Planperiode = {
+    erAnnenPartEøs: false,
     fom: førsteUttaksdagTidsperiode.fom,
     tom: førsteUttaksdagTidsperiode.tom,
     readOnly: false,
@@ -55,28 +56,6 @@ describe('Periodene - uttaksplan er bare opphold', () => {
 
     it('denne regelen skal ikke bry seg om en tom uttaksplan', () => {
         const result = uttaksplanErBareOpphold([]);
-        expect(result).toBe(false);
-    });
-});
-
-describe('Periodene -  uttaksplan slutter med opphold', () => {
-    it('skal ikke godta en plan med bare opphold', () => {
-        const result = uttaksplanSlutterMedOpphold([{ ...opphold }]);
-        expect(result).toBe(true);
-    });
-
-    it('skal godta en plan som ikke er bare opphold', () => {
-        const result = uttaksplanSlutterMedOpphold([{ ...uttak }, { ...opphold }, { ...uttak }]);
-        expect(result).toBe(false);
-    });
-
-    it('skal ikke godta en plan som slutter med opphold', () => {
-        const result = uttaksplanSlutterMedOpphold([{ ...uttak }, { ...opphold }]);
-        expect(result).toBe(true);
-    });
-
-    it('denne regelen skal ikke bry seg om en tom uttaksplan', () => {
-        const result = uttaksplanSlutterMedOpphold([]);
         expect(result).toBe(false);
     });
 });

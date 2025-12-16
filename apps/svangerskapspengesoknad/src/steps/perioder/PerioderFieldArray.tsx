@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Barn } from 'types/Barn';
-import { PeriodeMedVariasjon, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
+import { PeriodeMedVariasjon, TilOgMedDatoType } from 'types/Tilrettelegging';
 import { getDefaultMonth, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import {
     getArbeidsgiverNavnForTilrettelegging,
@@ -16,8 +16,8 @@ import {
 import { Alert, BodyShort, Button, HStack, Heading, Radio, ReadMore, Tag, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfRadioGroup, RhfTextField } from '@navikt/fp-form-hooks';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { Arbeidsforhold, Frilans, NæringDto } from '@navikt/fp-types';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { EksternArbeidsforholdDto_fpoversikt, Frilans, NæringDto } from '@navikt/fp-types';
 import { HorizontalLine } from '@navikt/fp-ui';
 import { isAfterOrSame, isBeforeOrSame, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
@@ -31,7 +31,7 @@ import {
 import { validatePeriodeFom, validatePeriodeTom, validateStillingsprosentPåPerioder } from './perioderValidation';
 
 export const NEW_PERIODE = {
-    type: Tilretteleggingstype.DELVIS,
+    type: 'delvis',
     fom: '',
     tom: '',
     stillingsprosent: '',
@@ -47,7 +47,7 @@ interface Props {
     valgtTilretteleggingId: string;
     kanHaSVPFremTilTreUkerFørTermin: boolean;
     behovForTilretteleggingFom: string;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     egenNæring?: NæringDto;
     frilans?: Frilans;
 }
@@ -111,15 +111,15 @@ export const PerioderFieldArray = ({
             {fields.map((field, index) => {
                 const måSendeNySøknad = getMåSendeNySøknad(
                     periodeDerSøkerErTilbakeIOpprinneligStilling,
-                    alleVarierendePerioder[index],
+                    alleVarierendePerioder[index]!,
                     opprinneligStillingsprosent,
                 );
-                const minDatoTom = getMinDatoTom(alleVarierendePerioder[index].fom, behovForTilretteleggingFom);
+                const minDatoTom = getMinDatoTom(alleVarierendePerioder[index]!.fom, behovForTilretteleggingFom);
                 const defaultMonthTom = getDefaultMonth(minDatoTom, maxDato);
 
                 return (
                     <Fragment key={field.id}>
-                        <VStack gap="1">
+                        <VStack gap="space-4">
                             <HorizontalLine />
                             <HStack justify="space-between" align="center">
                                 <Tag variant="info-moderate">
@@ -154,7 +154,7 @@ export const PerioderFieldArray = ({
                                 isValidDate(intl.formatMessage({ id: 'valideringsfeil.periode.fom.gyldigDato' })),
                                 isBeforeOrSame(
                                     intl.formatMessage({ id: 'valideringsfeil.periode.fom.førTilDato' }),
-                                    alleVarierendePerioder[index].tom,
+                                    alleVarierendePerioder[index]!.tom,
                                 ),
                                 isBeforeOrSame(
                                     kanHaSVPFremTilTreUkerFørTermin
@@ -199,7 +199,7 @@ export const PerioderFieldArray = ({
                                 )}
                             </Radio>
                         </RhfRadioGroup>
-                        {alleVarierendePerioder[index].tomType === TilOgMedDatoType.VALGFRI_DATO && (
+                        {alleVarierendePerioder[index]!.tomType === TilOgMedDatoType.VALGFRI_DATO && (
                             <RhfDatepicker
                                 name={`varierendePerioder.${index}.tom`}
                                 control={formMethods.control}
@@ -209,7 +209,7 @@ export const PerioderFieldArray = ({
                                     isValidDate(intl.formatMessage({ id: 'valideringsfeil.periode.tom.gyldigDato' })),
                                     isAfterOrSame(
                                         intl.formatMessage({ id: 'valideringsfeil.periode.tom.etterTilDato' }),
-                                        alleVarierendePerioder[index].fom,
+                                        alleVarierendePerioder[index]!.fom,
                                     ),
                                     isBeforeOrSame(
                                         kanHaSVPFremTilTreUkerFørTermin
@@ -247,7 +247,7 @@ export const PerioderFieldArray = ({
                             />
                             <ReadMore
                                 onOpenChange={(open) =>
-                                    loggAmplitudeEvent({
+                                    loggUmamiEvent({
                                         origin: 'svangerskapspengesoknad',
                                         eventName: open ? 'readmore åpnet' : 'readmore lukket',
                                         eventData: {
@@ -260,7 +260,7 @@ export const PerioderFieldArray = ({
                                     id: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',
                                 })}
                             >
-                                <VStack gap="2">
+                                <VStack gap="space-8">
                                     <BodyShort>
                                         <FormattedMessage id="tilrettelegging.varierendePerioderStillingsprosent.info.tekst.del1"></FormattedMessage>
                                     </BodyShort>
@@ -272,7 +272,7 @@ export const PerioderFieldArray = ({
                         </div>
                         {måSendeNySøknad && (
                             <Alert variant="warning">
-                                <VStack gap="4">
+                                <VStack gap="space-16">
                                     <Heading size="small">
                                         <FormattedMessage id="perioder.alert.nySøknad.title" />
                                     </Heading>

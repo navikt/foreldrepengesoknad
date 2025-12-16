@@ -1,4 +1,4 @@
-import { DokumentDto } from '@navikt/fp-types';
+import { DokumentDto_fpoversikt } from '@navikt/fp-types';
 
 export const dokumenter = [
     {
@@ -57,4 +57,4 @@ export const dokumenter = [
         journalpostId: '598115877',
         dokumentId: '624862993',
     },
-] satisfies DokumentDto[];
+] satisfies DokumentDto_fpoversikt[];

@@ -1,94 +1,56 @@
-import { ExclamationmarkTriangleFillIcon, HeartFillIcon } from '@navikt/aksel-icons';
-
 import { HStack } from '@navikt/ds-react';
 
-import { PeriodeColor } from '@navikt/fp-constants';
-
+import { CalendarPeriodColor } from '../types/CalendarPeriodColor';
 import styles from './calendarLabel.module.css';
 
-export const getSirkel = (color: PeriodeColor) => {
-    switch (color) {
-        case PeriodeColor.BLUE:
-            return <div className={styles.blueCircle} />;
-        case PeriodeColor.GREEN:
-            return <div className={styles.greenCircle} />;
-        case PeriodeColor.LIGHTBLUE:
-        case PeriodeColor.BLUEOUTLINE:
-            return <div className={styles.blueOutlineCircle} />;
-        case PeriodeColor.GREENOUTLINE:
-        case PeriodeColor.LIGHTGREEN:
-            return <div className={styles.greenOutlineCircle} />;
-        case PeriodeColor.BLACK:
-            return <div className={styles.blackCircle} />;
-        case PeriodeColor.LIGHTBLUEGREEN:
-            return <div className={styles.lightblueGreenCircle} />;
-        case PeriodeColor.LIGHTGREENBLUE:
-            return <div className={styles.lightgreenBlueCircle} />;
-        case PeriodeColor.BLUESTRIPED:
-            return <div className={styles.blueStripedCircle} />;
-        case PeriodeColor.GREENSTRIPED:
-            return <div className={styles.greenStripedCircle} />;
-        case PeriodeColor.GRAY:
-            return <div className={styles.grayCircle} />;
-        case PeriodeColor.PURPLE:
-            return <div className={styles.purpleCircle} />;
-        default:
-            return null;
-    }
-};
-
-const PANEL_STYLE = {
-    [PeriodeColor.NONE]: styles.none,
-    [PeriodeColor.BLUE]: styles.bluePanel,
-    [PeriodeColor.LIGHTBLUE]: styles.bluePanel,
-    [PeriodeColor.BLUESTRIPED]: styles.bluePanel,
-    [PeriodeColor.LIGHTGREENBLUE]: styles.bluePanel,
-    [PeriodeColor.LIGHTBLUEGREEN]: styles.greenPanel,
-    [PeriodeColor.GREEN]: styles.greenPanel,
-    [PeriodeColor.LIGHTGREEN]: styles.greenPanel,
-    [PeriodeColor.GREENSTRIPED]: styles.greenPanel,
-    [PeriodeColor.GRAY]: styles.grayPanel,
-    [PeriodeColor.PINK]: styles.pinkPanel,
-    [PeriodeColor.PURPLE]: styles.purlpePanel,
-    [PeriodeColor.BLACK]: styles.grayPanel,
-    [PeriodeColor.GREENOUTLINE]: styles.greenOutlinePanel,
-    [PeriodeColor.BLUEOUTLINE]: styles.blueOutlinePanel,
-};
-
 interface Props {
-    children: React.ReactElement | React.ReactElement[];
-    iconType: PeriodeColor;
+    children: React.ReactNode;
+    color: CalendarPeriodColor;
 }
 
-export const CalendarLabel = ({ children, iconType }: Props) => {
-    if (iconType === PeriodeColor.PINK) {
+export const CalendarLabel = ({ children, color }: Props) => {
+    if (color !== 'DARKBLUE') {
         return (
-            <div className={styles.pinkPanel}>
-                <HStack gap="2" align="center">
-                    {children}
-                    <HeartFillIcon color="#F68282" aria-hidden />
-                </HStack>
-            </div>
+            <HStack gap="space-8" align="center" wrap={false}>
+                <div>{getRect(color)}</div>
+                {children}
+            </HStack>
         );
     }
-    if (iconType === PeriodeColor.BLACK) {
-        return (
-            <div className={styles.grayPanel}>
-                <HStack gap="2" align="center">
-                    <ExclamationmarkTriangleFillIcon style={{ color: '#FF9100' }} />
-                    {children}
-                    <div className={styles.margin}>{getSirkel(iconType)}</div>
-                </HStack>
-            </div>
-        );
-    } else {
-        return (
-            <div className={`${PANEL_STYLE[iconType]}`}>
-                <HStack gap="2" align="end" wrap={false}>
-                    {children}
-                    <div className={styles.margin}>{getSirkel(iconType)}</div>
-                </HStack>
-            </div>
-        );
+    return null;
+};
+
+const getRect = (color: CalendarPeriodColor) => {
+    switch (color) {
+        case 'BLUE':
+        case 'LIGHTBLUE':
+            return <div className={styles.blueRect} />;
+        case 'GREEN':
+        case 'LIGHTGREEN':
+            return <div className={styles.greenRect} />;
+        case 'BLUEOUTLINE':
+            return <div className={styles.blueOutlineRect} />;
+        case 'BLACKOUTLINE':
+            return <div className={styles.blackOutlineRect} />;
+        case 'GREENOUTLINE':
+            return <div className={styles.greenOutlineRect} />;
+        case 'BLACK':
+            return <div className={styles.blackRect} />;
+        case 'LIGHTBLUEGREEN':
+            return <div className={styles.lightblueGreenRect} />;
+        case 'LIGHTGREENBLUE':
+            return <div className={styles.lightgreenBlueRect} />;
+        case 'BLUESTRIPED':
+            return <div className={styles.blueStripedRect} />;
+        case 'GREENSTRIPED':
+            return <div className={styles.greenStripedRect} />;
+        case 'GRAY':
+            return <div className={styles.grayRect} />;
+        case 'PURPLE':
+            return <div className={styles.purpleRect} />;
+        case 'PINK':
+            return <div className={styles.pinkRect} />;
+        default:
+            return null;
     }
 };

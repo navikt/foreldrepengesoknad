@@ -72,7 +72,7 @@ export const isDateRangesOverlapping = (ranges: Period[]): boolean => {
         const sortedDates = [...ranges].sort(sortDateRange);
         const hasOverlap = sortedDates.find((d, idx) => {
             if (idx < sortedDates.length - 1) {
-                return dayjs(d.to).isSameOrAfter(sortedDates[idx + 1].from);
+                return dayjs(d.to).isSameOrAfter(sortedDates[idx + 1]!.from);
             }
             return false;
         });
@@ -137,4 +137,12 @@ export const dateStringIsSameOrAfter = (date: string | undefined, otherDate: str
         return dayjs(date).isSameOrAfter(otherDate, 'day');
     }
     return false;
+};
+
+export const convertStringOrDateToDate = (date: Date | string): Date => {
+    if (typeof date === 'string') {
+        return new Date(date);
+    }
+
+    return date;
 };

@@ -54,7 +54,7 @@ const starterInnenforGyldigAntallUkerFørTermin = (
     failText: { intlKey: 'uttaksplan.validering.feil.før12UkerFørTermin' },
 });
 
-export const getUttakTidsperiodeValidatorer = (
+const getUttakTidsperiodeValidatorer = (
     skalIkkeHaUttak: boolean,
     tidsperiode: Partial<TidsperiodeDate>,
     familiehendelsesdato: Date,

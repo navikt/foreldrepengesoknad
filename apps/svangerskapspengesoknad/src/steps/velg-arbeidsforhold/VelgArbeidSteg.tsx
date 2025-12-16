@@ -9,7 +9,7 @@ import { useIntl } from 'react-intl';
 import { Checkbox, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfCheckboxGroup, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
@@ -22,8 +22,8 @@ type VelgArbeidForm = {
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    avbrytSøknad: () => Promise<void>;
-    arbeidsforhold: Arbeidsforhold[];
+    avbrytSøknad: () => void;
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 };
 
 export const VelgArbeidSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
@@ -77,7 +77,7 @@ export const VelgArbeidSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arb
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig} onStepChange={navigator.goToStep}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                    <VStack gap="10">
+                    <VStack gap="space-40">
                         <ErrorSummaryHookForm />
                         <RhfCheckboxGroup
                             name="arbeidMedTilrettelegging"

@@ -21,8 +21,11 @@ export const mswWrapper = (
     return async () => {
         await worker.start();
         const setHandlers = (msw: Context['parameters']['msw']) => {
-            // @ts-expect-error Usikker på kva som er greia her
-            worker.use(...msw.handlers);
+            if (!msw) {
+                return;
+            }
+            const handlers = Array.isArray(msw) ? msw : msw.handlers;
+            worker.use(...(Array.isArray(handlers) ? handlers : Object.values(handlers).flat()));
         };
 
         try {

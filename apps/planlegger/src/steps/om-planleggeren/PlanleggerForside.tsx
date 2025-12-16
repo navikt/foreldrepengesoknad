@@ -15,15 +15,15 @@ export const PlanleggerForside = ({ children }: Props) => (
             <>
                 <Show below="md">
                     <BlueHeading>
-                        <VStack gap="4" align="center">
+                        <VStack gap="space-16" align="center">
                             <IconCircleWrapper color="lightBlue" size="xl">
                                 <CalendarIcon height={44} width={44} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
-                            <VStack gap="1" align="center">
+                            <VStack gap="space-4" align="center">
                                 <Heading size="large">
                                     <FormattedMessage id="PlanleggerForside.Tittel" />
                                 </Heading>
-                                <HStack gap="2" align="center">
+                                <HStack gap="space-8" align="center">
                                     <ClockIcon aria-hidden />
                                     <BodyShort>
                                         <FormattedMessage id="PlanleggerForside.Label" />
@@ -35,15 +35,15 @@ export const PlanleggerForside = ({ children }: Props) => (
                 </Show>
                 <Show above="md">
                     <BlueHeading>
-                        <VStack gap="4">
+                        <VStack gap="space-16">
                             <IconCircleWrapper color="lightBlue" size="large">
                                 <CalendarIcon height={30} width={30} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
-                            <VStack gap="1">
+                            <VStack gap="space-4">
                                 <Heading size="large">
                                     <FormattedMessage id="PlanleggerForside.Tittel" />
                                 </Heading>
-                                <HStack gap="2" align="center">
+                                <HStack gap="space-8" align="center">
                                     <ClockIcon aria-hidden />
                                     <BodyShort>
                                         <FormattedMessage id="PlanleggerForside.Label" />

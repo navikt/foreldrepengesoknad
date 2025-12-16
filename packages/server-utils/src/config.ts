@@ -1,6 +1,12 @@
-const proxy = {
-    apiScope: process.env.FORELDREPENGER_API_SCOPE,
-    apiUrl: process.env.FORELDREPENGER_API_URL,
+import logger from './logger';
+
+const påkrevMiljøVariabel = (name: string) => {
+    if (!process.env[name]) {
+        const errorMessage = `Missing required environment variable '${name}'`;
+        logger.error(errorMessage);
+        throw new Error(errorMessage);
+    }
+    return process.env[name];
 };
 
 const app = {
@@ -14,4 +20,4 @@ const app = {
 };
 
 // eslint-disable-next-line import/no-default-export
-export default { proxy, app };
+export default { app, påkrevMiljøVariabel };

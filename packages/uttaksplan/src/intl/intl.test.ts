@@ -1,4 +1,4 @@
-import { extract } from '@formatjs/cli-lib';
+import { extract } from '@formatjs/cli-lib/lib_esnext';
 import glob from 'fast-glob';
 
 import en from './messages/en_US.json';
@@ -10,10 +10,15 @@ describe('uttaksplan - intl messages', () => {
         const missingKeysBokmål = Object.keys(nb).filter((key) => !Object.keys(nn).includes(key));
         const missingKeysNynorsk = Object.keys(nn).filter((key) => !Object.keys(nb).includes(key));
 
-        // eslint-disable-next-line no-console
-        missingKeysBokmål.forEach((key) => console.log('key ' + key + ' not found in nn_NO.json.'));
-        // eslint-disable-next-line no-console
-        missingKeysNynorsk.forEach((key) => console.log('key ' + key + ' not found in nb_NO.json'));
+        for (const key of missingKeysBokmål) {
+            // eslint-disable-next-line no-console
+            console.log('key ' + key + ' not found in nn_NO.json.');
+        }
+
+        for (const key of missingKeysNynorsk) {
+            // eslint-disable-next-line no-console
+            console.log('key ' + key + ' not found in nb_NO.json.');
+        }
 
         expect(missingKeysBokmål.length).toBe(0);
         expect(missingKeysNynorsk.length).toBe(0);
@@ -23,10 +28,15 @@ describe('uttaksplan - intl messages', () => {
         const missingKeysBokmål = Object.keys(nb).filter((key) => !Object.keys(en).includes(key));
         const missingKeysEnglish = Object.keys(en).filter((key) => !Object.keys(nb).includes(key));
 
-        // eslint-disable-next-line no-console
-        missingKeysBokmål.forEach((key) => console.log('key ' + key + ' not found in en_US.json.'));
-        // eslint-disable-next-line no-console
-        missingKeysEnglish.forEach((key) => console.log('key ' + key + ' not found in nb_NO.json'));
+        for (const key of missingKeysBokmål) {
+            // eslint-disable-next-line no-console
+            console.log('key ' + key + ' not found in en_US.json.');
+        }
+
+        for (const key of missingKeysEnglish) {
+            // eslint-disable-next-line no-console
+            console.log('key ' + key + ' not found in nb_NO.json.');
+        }
 
         expect(missingKeysBokmål.length).toBe(0);
         expect(missingKeysEnglish.length).toBe(0);
@@ -34,19 +44,26 @@ describe('uttaksplan - intl messages', () => {
 
     it('Check that nynorsk og english language files contain the same keys', () => {
         const missingKeysNynorsk = Object.keys(nn).filter((key) => !Object.keys(en).includes(key));
-        const missingKeysEnglish = Object.keys(en).filter((key) => !Object.keys(nb).includes(key));
+        const missingKeysEnglish = Object.keys(en).filter((key) => !Object.keys(nn).includes(key));
 
-        // eslint-disable-next-line no-console
-        missingKeysNynorsk.forEach((key) => console.log('key ' + key + ' not found in en_US.json.'));
-        // eslint-disable-next-line no-console
-        missingKeysEnglish.forEach((key) => console.log('key ' + key + ' not found in nb_NO.json'));
+        for (const key of missingKeysNynorsk) {
+            // eslint-disable-next-line no-console
+            console.log('key ' + key + ' not found in en_US.json.');
+        }
+
+        for (const key of missingKeysEnglish) {
+            // eslint-disable-next-line no-console
+            console.log('key ' + key + ' not found in nn_NO.json.');
+        }
 
         expect(missingKeysNynorsk.length).toBe(0);
         expect(missingKeysEnglish.length).toBe(0);
     });
 
     it('Check that i18n strings in code exists in nb_NO language file', async () => {
-        const files = await glob('src/**/*.{ts,tsx}');
+        const files = await glob('src/**/*.{ts,tsx}', {
+            ignore: ['**/vite.env.d.ts'],
+        });
 
         const foundTranslations = await extract(files, {
             idInterpolationPattern: '[sha512:contenthash:base64:6]',
@@ -59,13 +76,19 @@ describe('uttaksplan - intl messages', () => {
             // eslint-disable-next-line no-console
             console.log('Not found in nb_NO.json:');
         }
-        // eslint-disable-next-line no-console
-        missingKeysBokmål.forEach((key) => console.log('key ' + key));
+
+        for (const key of missingKeysBokmål) {
+            // eslint-disable-next-line no-console
+            console.log('key ' + key);
+        }
+
         expect(missingKeysBokmål.length).toBe(0);
     });
 
     it('Check that all i18n strings nb_NO language file exists in code', async () => {
-        const files = await glob('src/**/*.{ts,tsx}');
+        const files = await glob('src/**/*.{ts,tsx}', {
+            ignore: ['**/vite.env.d.ts'],
+        });
         const foundTranslations = Object.keys(
             JSON.parse(
                 await extract(files, {
@@ -81,8 +104,12 @@ describe('uttaksplan - intl messages', () => {
             // eslint-disable-next-line no-console
             console.log('Not found in code:');
         }
-        // eslint-disable-next-line no-console
-        missingKeysCode.forEach((key) => console.log('key ' + key));
+
+        for (const key of missingKeysCode) {
+            // eslint-disable-next-line no-console
+            console.log('key ' + key);
+        }
+
         expect(missingKeysCode.length).toBe(0);
     });
 });

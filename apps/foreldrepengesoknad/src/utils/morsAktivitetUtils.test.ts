@@ -1,5 +1,3 @@
-import { MorsAktivitet } from '@navikt/fp-common';
-
 import { getMorsAktivitet } from './morsAktivitetUtils';
 
 describe('getMorsAktivitet', () => {
@@ -8,11 +6,11 @@ describe('getMorsAktivitet', () => {
     });
 
     it('should return mors aktivitet if there is input on mors aktivitet', () => {
-        expect(getMorsAktivitet(MorsAktivitet.Innlagt, undefined)).toEqual(MorsAktivitet.Innlagt);
+        expect(getMorsAktivitet('INNLAGT', undefined)).toEqual('INNLAGT');
     });
 
     it('should return mors aktivitet = TRENGER HJELP for no input on mors aktivitet and input that mor er syk', () => {
-        expect(getMorsAktivitet(undefined, true)).toEqual(MorsAktivitet.TrengerHjelp);
+        expect(getMorsAktivitet(undefined, true)).toEqual('TRENGER_HJELP');
     });
 
     it('should return undefined if no input on mors aktivitet and mor er syk is false', () => {

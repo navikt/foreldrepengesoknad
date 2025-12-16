@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 
-import { Alert, BodyShort, Checkbox as DsCheckbox, HStack, Heading, Label, Radio, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Checkbox, HStack, Heading, Label, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfCheckbox } from './RhfCheckbox';
 import { RhfCheckboxGroup } from './RhfCheckboxGroup';
@@ -10,6 +10,7 @@ import { RhfCombobox } from './RhfCombobox';
 import { RhfDateRangepicker } from './RhfDateRangepicker';
 import { RhfDatepicker } from './RhfDatepicker';
 import { RhfForm } from './RhfForm';
+import { RhfFormattertTallTextField } from './RhfFormattertTallTextField.tsx';
 import { RhfRadioGroup } from './RhfRadioGroup';
 import { RhfSelect } from './RhfSelect';
 import { RhfTextField } from './RhfTextField';
@@ -29,6 +30,7 @@ const meta = {
                 check: undefined,
                 checkpre: true,
                 textfield: undefined,
+                formattertTallTextField: undefined,
                 textfieldpre: 'Har en tekst',
                 textarea: undefined,
                 textareapre: 'Har en tekst',
@@ -46,7 +48,7 @@ const meta = {
         return (
             <RhfForm formMethods={formMethods}>
                 <HStack justify="space-between">
-                    <VStack gap="7" align="start">
+                    <VStack gap="space-28" align="start">
                         <RhfCheckbox name="check" control={formMethods.control} label="Dette er en checkbox" />
                         <RhfCheckbox
                             name="checkpre"
@@ -58,22 +60,28 @@ const meta = {
                             control={formMethods.control}
                             label="Dette er en gruppe med checkboxes"
                         >
-                            <DsCheckbox value="test1">test1</DsCheckbox>
-                            <DsCheckbox value="test2">test2</DsCheckbox>
+                            <Checkbox value="test1">test1</Checkbox>
+                            <Checkbox value="test2">test2</Checkbox>
                         </RhfCheckboxGroup>
                         <RhfCheckboxGroup
                             name="checkpanelpre"
                             control={formMethods.control}
                             label="Dette er en gruppe med checkboxes som er preutfyllt"
                         >
-                            <DsCheckbox value="test1">test1</DsCheckbox>
-                            <DsCheckbox value="test2">test2</DsCheckbox>
+                            <Checkbox value="test1">test1</Checkbox>
+                            <Checkbox value="test2">test2</Checkbox>
                         </RhfCheckboxGroup>
                         <RhfTextField name="textfield" control={formMethods.control} label="Dette er et tekstfelt" />
                         <RhfTextField
                             name="textfieldpre"
                             control={formMethods.control}
                             label="Dette er et tekstfelt med preutfyllt verdi"
+                            description="Beskrivelse"
+                        />
+                        <RhfFormattertTallTextField
+                            name="formattertTallTextField"
+                            control={formMethods.control}
+                            label="Tekstfelt for formattert tall"
                             description="Beskrivelse"
                         />
                         <RhfTextarea
@@ -179,10 +187,10 @@ const meta = {
                     </VStack>
                     <div>
                         <Alert variant="info">
-                            <VStack gap="5">
+                            <VStack gap="space-20">
                                 <Label>Values in form state:</Label>
                                 {Object.entries(stateVerdier).map((entry) => (
-                                    <BodyShort key={entry[0]}>{entry[0] + ': ' + entry[1]}</BodyShort>
+                                    <BodyShort key={entry[0]}>{entry[0] + ': ' + entry[1]?.toString()}</BodyShort>
                                 ))}
                             </VStack>
                         </Alert>

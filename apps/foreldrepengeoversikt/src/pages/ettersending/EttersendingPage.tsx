@@ -1,5 +1,5 @@
 import { PlusIcon } from '@navikt/aksel-icons';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { FormEvent, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Link, useLocation, useParams } from 'react-router-dom';
@@ -16,13 +16,13 @@ import {
     VStack,
 } from '@navikt/ds-react';
 
-import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { FileUploader } from '@navikt/fp-filopplaster';
 import { Attachment, EttersendelseDto, Ytelse } from '@navikt/fp-types';
-import { FileUploader } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
-import { sendEttersending, urlPrefiks } from '../../api/api';
+import { API_URLS, sendEttersending, søkerInfoOptions } from '../../api/queries.ts';
 import { EttersendingHeader } from '../../components/header/Header';
 import { ScrollToTop } from '../../components/scroll-to-top/ScrollToTop';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
@@ -34,23 +34,19 @@ import { SakOppslag } from '../../types/SakOppslag';
 import { getAlleYtelser } from '../../utils/sakerUtils';
 import { getRelevanteSkjemanummer } from '../../utils/skjemanummerUtils';
 
-const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad' => {
+const mapYtelse = (sakstype: Ytelse) => {
     if (sakstype === 'ENGANGSSTØNAD') {
-        return 'engangsstonad';
+        return API_URLS.lastOppESVedlegg;
     }
     if (sakstype === 'FORELDREPENGER') {
-        return 'foreldrepenger';
+        return API_URLS.lastOppFPVedlegg;
     }
-    return 'svangerskapspenger';
+    return API_URLS.lastOppSVPVedlegg;
 };
 
 const DEFAULT_OPTION = 'default';
 
-export const getAttachmentTypeSelectOptions = (
-    intl: IntlShape,
-    manglendeSkjemanummer: string[],
-    sak: Sak | undefined,
-) => {
+const getAttachmentTypeSelectOptions = (intl: IntlShape, manglendeSkjemanummer: string[], sak: Sak | undefined) => {
     if (!sak) {
         return null;
     }
@@ -86,16 +82,16 @@ const konverterSelectVerdi = (selectText: string): Skjemanummer | typeof DEFAULT
         return selectText;
     }
 
-    const snr = Object.values(Skjemanummer).find((value) => value === selectText);
+    const snr = Object.values(Skjemanummer).find((value) => value.toString() === selectText);
     if (snr) {
         return snr;
     }
 
-    throw Error('Valgt skjemanr finnes ikke');
+    throw new Error('Valgt skjemanr finnes ikke');
 };
 
 type Props = {
-    readonly saker: SakOppslag;
+    saker: SakOppslag;
 };
 
 const EttersendingPageInner = ({ saker }: Props) => {
@@ -106,8 +102,10 @@ const EttersendingPageInner = ({ saker }: Props) => {
     );
     useSetSelectedRoute(OversiktRoutes.ETTERSEND);
     const params = useParams();
+    const søkerInfo = useQuery(søkerInfoOptions()).data;
 
     const { search } = useLocation();
+    // TODO: bruk useSearchParams
     const skjematypeParam = new URLSearchParams(search).get('skjematype');
     const manglendeSkjemanummer = skjematypeParam ? skjematypeParam.split(',') : [];
     const alleYtelser = getAlleYtelser(saker);
@@ -117,7 +115,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
               manglendeSkjemanummer.length === 0 ? true : manglendeSkjemanummer.includes(skjemanummer),
           )
         : [];
-    const initialType = relevantSkjemanummer.length === 1 ? relevantSkjemanummer[0] : DEFAULT_OPTION;
+    const initialType = relevantSkjemanummer.length === 1 ? relevantSkjemanummer[0]! : DEFAULT_OPTION;
     const [type, setType] = useState<Skjemanummer | typeof DEFAULT_OPTION>(initialType);
     const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
     const [avventerVedlegg, setAvventerVedlegg] = useState(false);
@@ -137,6 +135,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
         mutate({
             saksnummer: sak!.saksnummer,
             type: sak!.ytelse,
+            fnr: notEmpty(søkerInfo).person.fnr,
             vedlegg,
         });
     };
@@ -145,7 +144,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
         return (
             <>
                 <ScrollToTop />
-                <VStack gap="2">
+                <VStack gap="space-16">
                     {isSuccess && <Alert variant="success">Dokumentene er sendt</Alert>}
                     {isError && (
                         <Alert variant="error">
@@ -153,9 +152,9 @@ const EttersendingPageInner = ({ saker }: Props) => {
                             kontakt brukerstøtte.
                         </Alert>
                     )}
-                    <Link to={`/sak/${sak!.saksnummer}`}>
+                    <NAVLink as={Link} to={`/sak/${sak!.saksnummer}`}>
                         <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
-                    </Link>
+                    </NAVLink>
                 </VStack>
             </>
         );
@@ -163,7 +162,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
 
     return (
         <form onSubmit={onSubmit}>
-            <VStack gap="4">
+            <VStack gap="space-16">
                 <BodyLong>
                     Dokumentene du laster opp vil bli lagt ved søknaden din. Du må velge hva dokumentene inneholder for
                     at saksbehandlerene i Nav skal kunne behandle saken din.
@@ -187,7 +186,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
                         attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                         skjemanummer={type}
                         existingAttachments={vedlegg}
-                        saveAttachment={getSaveAttachmentFetch(urlPrefiks, mapYtelse(sak!.ytelse))}
+                        uploadPath={mapYtelse(sak!.ytelse)}
                         skjemanummerTextMap={
                             sak
                                 ? getRelevanteSkjemanummer(sak).reduce(

@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
-import { Forelder, NavnPåForeldre } from '@navikt/fp-common';
+import { NavnPåForeldre } from '@navikt/fp-common';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
@@ -27,13 +27,13 @@ const HvemSkalHaUttakSpørsmål: FunctionComponent<Props> = ({ fieldName, navnP�
                     label: erFarEllerMedmor
                         ? capitalizeFirstLetter(navnPåForeldre.farMedmor)
                         : capitalizeFirstLetter(navnPåForeldre.mor),
-                    value: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
+                    value: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
                 },
                 {
                     label: erFarEllerMedmor
                         ? capitalizeFirstLetter(navnPåForeldre.mor)
                         : capitalizeFirstLetter(navnPåForeldre.farMedmor),
-                    value: erFarEllerMedmor ? Forelder.mor : Forelder.farMedmor,
+                    value: erFarEllerMedmor ? 'MOR' : 'FAR_MEDMOR',
                 },
             ]}
             validate={(value) => {

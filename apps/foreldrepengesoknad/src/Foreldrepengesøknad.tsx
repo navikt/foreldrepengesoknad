@@ -1,27 +1,23 @@
 import * as Sentry from '@sentry/browser';
 import { useQuery } from '@tanstack/react-query';
-import { storageParser } from 'api/storageParser';
+import { API_URLS, mellomlagretInfoOptions, sakerOptions, søkerinfoOptions } from 'api/queries';
 import { FpDataContext } from 'appData/FpDataContext';
 import { konverterMellomlagretDataTilAppData } from 'appData/konverterMellomlagretDataTilAppData';
 import { SøknadRoutes } from 'appData/routes';
-import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 import isEqual from 'lodash/isEqual';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
-import { Kvittering } from 'types/Kvittering';
 import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
-import { Saker, Søkerinfo } from '@navikt/fp-types';
 import { ErrorBoundary, RegisterdataUtdatert, Spinner } from '@navikt/fp-ui';
-import { redirect, useDocumentTitle } from '@navikt/fp-utils';
+import { useDocumentTitle } from '@navikt/fp-utils';
 
-import Environment from './Environment';
 import { ForeldrepengesøknadRoutes } from './ForeldrepengesøknadRoutes';
 
 export const slettMellomlagringOgLastSidePåNytt = async () => {
     try {
-        await ky.delete(`${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`);
+        await ky.delete(API_URLS.mellomlagring);
     } catch {
         // Vi bryr oss ikke om feil her. Logges bare i backend
     }
@@ -34,29 +30,11 @@ export const Foreldrepengesøknad = () => {
 
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
 
-    const søkerinfoQuery = useQuery({
-        queryKey: ['SØKERINFO'],
-        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, { timeout: 30000 }).json<Søkerinfo>(),
-        staleTime: Infinity,
-    });
+    const søkerinfoQuery = useQuery(søkerinfoOptions());
 
-    const sakerQuery = useQuery({
-        queryKey: ['SAKER'],
-        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`).json<Saker>(),
-        staleTime: Infinity,
-    });
+    const sakerQuery = useQuery(sakerOptions());
 
-    const mellomlagretInfoQuery = useQuery({
-        queryKey: ['MELLOMLAGRET_INFO'],
-        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`).text(),
-        select: (text: string) => {
-            // TODO (TOR) Ta vekk parsing her etter at ny uttaksplan (og rydding av andre Date i context) er gjort
-            return storageParser(text) as FpMellomlagretData;
-        },
-        staleTime: Infinity,
-    });
-
-    const [kvittering, setKvittering] = useState<Kvittering>();
+    const mellomlagretInfoQuery = useQuery(mellomlagretInfoOptions());
 
     useEffect(() => {
         if (søkerinfoQuery.error) {
@@ -81,18 +59,6 @@ export const Foreldrepengesøknad = () => {
         ? konverterMellomlagretDataTilAppData(mellomlagretInfoQuery.data)
         : undefined;
 
-    if (kvittering) {
-        if (Environment.INNSYN) {
-            redirect(
-                kvittering.saksNr
-                    ? `${Environment.INNSYN}/sak/${kvittering.saksNr}/redirectFromSoknad`
-                    : `${Environment.INNSYN}/redirectFromSoknad`,
-            );
-            return <Spinner />;
-        }
-        return <div>Redirected to Innsyn</div>;
-    }
-
     if (!sakerQuery.data || !søkerinfoQuery.data || mellomlagretInfoQuery.isPending) {
         return <Spinner />;
     }
@@ -111,7 +77,7 @@ export const Foreldrepengesøknad = () => {
     }
 
     return (
-        <ErrorBoundary appName="foreldrepengesoknad" retryCallback={slettMellomlagringOgLastSidePåNytt}>
+        <ErrorBoundary appName="foreldrepengesoknad" retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}>
             <FpDataContext initialState={initialState}>
                 <ForeldrepengesøknadRoutes
                     søkerInfo={søkerinfoQuery.data}
@@ -128,7 +94,6 @@ export const Foreldrepengesøknad = () => {
                     lagretSøknadGjelderNyttBarn={
                         skalBrukeMellomlagretData ? mellomlagretInfoQuery.data.søknadGjelderEtNyttBarn : false
                     }
-                    setKvittering={setKvittering}
                 />
             </FpDataContext>
         </ErrorBoundary>

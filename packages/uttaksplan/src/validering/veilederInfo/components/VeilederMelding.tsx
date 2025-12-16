@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { FormattedMessage } from 'react-intl';
 
 import { Alert, Label } from '@navikt/ds-react';

@@ -1,9 +1,10 @@
 # syntax=docker/dockerfile:1
 
 ARG NODE_BUILD_IMG=node:22-alpine
-ARG NODE_DEPLOY_IMG=gcr.io/distroless/nodejs22-debian12
+ARG NODE_DEPLOY_IMG=europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:22-slim
 ARG APP="foreldrepengesoknad"
 ARG SERVER="server"
+ARG SENTRY_RELEASE=""
 
 #########################################
 # PREPARE DEPS FOR BUILD
@@ -30,9 +31,7 @@ RUN apk fix \
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 
-RUN npm install -g pnpm@9.1.4 \
-    && pnpm install -g pnpm \
-    && npm uninstall -g pnpm
+RUN npm install -g pnpm@10.18.3
 COPY --from=prepare /usr/src/app ./
 
 RUN --mount=type=secret,id=PACKAGES_AUTH_TOKEN \
@@ -52,17 +51,22 @@ RUN pnpm exec turbo test
 #########################################
 FROM --platform=${BUILDPLATFORM} builder AS client
 ARG APP
+ARG SENTRY_RELEASE
 WORKDIR /usr/src/app/apps/${APP}
-RUN pnpm exec turbo test && mv /usr/src/app/apps/${APP}/dist /public
+ENV VITE_SENTRY_RELEASE=$SENTRY_RELEASE
+RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
+    SENTRY_AUTH_TOKEN=$(cat /run/secrets/SENTRY_AUTH_TOKEN) pnpm exec turbo test
+RUN mv /usr/src/app/apps/${APP}/dist /public
 
 #########################################
 # App Distroless
 #########################################
 FROM ${NODE_DEPLOY_IMG}
 ARG SERVER
-USER nonroot
 
-COPY --from=server-build /usr/src/app/${SERVER}/dist ./
-COPY --from=client /public ./public
+COPY --from=server-build /usr/src/app/${SERVER}/dist/index.js /app
+COPY --from=server-build /usr/src/app/${SERVER}/dist/default-stylesheet.css /app
+COPY --from=client /public /app/public
+WORKDIR /app
 
 CMD ["index.js"]

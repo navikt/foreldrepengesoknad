@@ -9,7 +9,7 @@ import { OmBarnet } from 'types/OmBarnet';
 import { VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { PersonFrontend, Søkersituasjon } from '@navikt/fp-types';
+import { Kjønn_fpoversikt, Søkersituasjon } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { omitOne } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -43,8 +43,8 @@ const mapOmBarnetFraStateTilForm = (omBarnet: OmBarnet) => ({
     antallBarnDropDown: omBarnet.antallBarn > 2 ? omBarnet.antallBarn.toString() : undefined,
 });
 
-export interface Props {
-    kjønn: PersonFrontend['kjønn'];
+interface Props {
+    kjønn: Kjønn_fpoversikt;
     mellomlagreOgNaviger: () => Promise<void>;
 }
 
@@ -77,7 +77,7 @@ export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}>
             <Step onStepChange={navigator.goToNextStep} steps={stepConfig}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                    <VStack gap="10">
+                    <VStack gap="space-40">
                         <ErrorSummaryHookForm />
                         {søkersituasjon?.situasjon === 'adopsjon' && <AdopsjonPanel kjønn={kjønn} />}
                         {søkersituasjon?.situasjon === 'fødsel' && <FødselPanel />}

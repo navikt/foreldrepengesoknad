@@ -4,7 +4,7 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
-import { loggExpansionCardOpen } from 'utils/amplitudeUtils';
+import { loggExpansionCardOpen } from 'utils/umamiUtils';
 
 import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
@@ -26,7 +26,7 @@ export const UforutsetteEndringer = ({ hvemPlanlegger, barnet, arbeidssituasjon 
     return (
         <ExpansionCard aria-label="." onToggle={loggExpansionCardOpen('toggle-uforutsette-endringer')} size="small">
             <ExpansionCard.Header>
-                <HStack gap="6" align="center" wrap={false}>
+                <HStack gap="space-24" align="center" wrap={false}>
                     <div>
                         <IconCircleWrapper color="lightBlue" size="medium">
                             <ExclamationmarkIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
@@ -40,7 +40,7 @@ export const UforutsetteEndringer = ({ hvemPlanlegger, barnet, arbeidssituasjon 
                 </HStack>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-                <VStack gap="5">
+                <VStack gap="space-20">
                     {erMorDelAvSøknaden(hvemPlanlegger) && !morHarIkkeRett ? (
                         <>
                             <HvisManBlirSyk arbeidssituasjon={arbeidssituasjon} />

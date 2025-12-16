@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 import { FieldErrors, FieldValues, Path } from 'react-hook-form';
 
 //TODO (TOR) Trur ein bør fjerna undefined her
@@ -19,5 +20,6 @@ export const getError = <T extends FieldValues>(
     // @ts-expect-error Denne må ein testa før ein fjernar
     const error = name.split('.').reduce((o, i) => (o !== undefined ? o[i] : o), errors);
     // @ts-expect-error fiks
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return error?.message;
 };

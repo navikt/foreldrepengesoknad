@@ -33,7 +33,8 @@ function FormikConfirmationCheckbox<FieldName, ErrorType>({
                         checked={field.value === true}
                         error={getErrorPropForFormikInput({ field, form, context, error })}
                         onChange={(evt) => {
-                            form.setFieldValue(`${name}`, (evt as React.ChangeEvent<HTMLInputElement>).target.checked);
+                            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                            void form.setFieldValue(`${name}`, evt.target.checked);
                             if (context) {
                                 context.onAfterFieldValueSet();
                             }

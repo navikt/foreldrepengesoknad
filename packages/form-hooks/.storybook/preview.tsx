@@ -1,6 +1,6 @@
 import { Preview } from '@storybook/react-vite';
 
-import { getIntlDecorator } from '@navikt/fp-utils-test';
+import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 
 import enMessages from '../src/intl/messages/en_US.json';
 import nbMessages from '../src/intl/messages/nb_NO.json';
@@ -37,10 +37,24 @@ export const globalTypes = {
             dynamicTitle: true,
         },
     },
+    theme: {
+        name: 'Tema',
+        description: 'Aksel tema',
+        defaultValue: 'light',
+        toolbar: {
+            icon: 'circlehollow',
+            items: [
+                { value: 'light', icon: 'circlehollow', title: 'Lys' },
+                { value: 'dark', icon: 'circle', title: 'Mørk' },
+            ],
+            showName: true,
+        },
+    },
 };
 
 const preview: Preview = {
-    decorators: [withIntlProvider],
+    decorators: [withIntlProvider, withThemeDecorator],
 };
 
+//eslint-disable-next-line import/no-default-export
 export default preview;

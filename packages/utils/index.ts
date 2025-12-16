@@ -20,6 +20,8 @@ export { shouldChangeBrowser } from './src/browserUtils';
 export { omitOne, omitMany } from './src/objectUtils';
 export { overlapperTidsperioder } from './src/tidsperiodeUtils';
 export { redirect } from './src/loginUtils';
+
+export { useAbortSignal } from './src/hooks/useAbortSignal';
 export { useDocumentTitle } from './src/hooks/useDocumentTitle';
 export { useBeforeUnload } from './src/hooks/useBeforeUnload';
 export { useScrollBehaviour } from './src/hooks/useScrollBehaviour';
@@ -32,7 +34,7 @@ export {
     replaceInvisibleCharsWithSpace,
     formatOppramsing,
 } from './src/stringUtils';
-export { getFamiliehendelsedato } from './src/barnUtils';
+export { getFamiliehendelsedato, getFamiliesituasjon, sorterPersonEtterEldstOgNavn } from './src/barnUtils';
 export { formatCurrencyWithKr, formatCurrency } from './src/currencyUtils';
 export { encodeToBase64, decodeBase64 } from './src/urlEncodingUtils';
 export {
@@ -77,6 +79,7 @@ export {
     dateIsSameOrAfter,
     dateIsSameOrBefore,
     formaterDatoUtenDag,
+    convertStringOrDateToDate,
 } from './src/dateUtils';
 
 export * from './src/uttak/Uttaksdagen';

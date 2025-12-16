@@ -18,12 +18,7 @@ import { formatValue } from '@navikt/fp-validation/src/form/numberFormValidation
 
 import { BlueRadioGroup } from '../BlueRadioGroup';
 
-export enum Situasjon {
-    MOR = 'mor',
-    FAR = 'far',
-    MEDMOR = 'medmor',
-}
-
+export type Situasjon = 'mor' | 'far' | 'medmor';
 export type FpEllerEsSituasjon = {
     situasjon: Situasjon;
     erIArbeid: boolean;
@@ -107,25 +102,25 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
             icon={<StrollerIcon height={36} width={36} fontSize="1.5rem" aria-hidden />}
         >
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
-                <VStack gap="6" style={{ flex: 1 }}>
+                <VStack gap="space-24" style={{ flex: 1 }}>
                     <BlueRadioGroup
                         name="situasjon"
                         control={formMethods.control}
                         label={<FormattedMessage id="SituasjonSide.HvemErDu" />}
                         onChange={resetFieldsAndScroll('situasjon')}
                     >
-                        <Radio value={Situasjon.MOR} autoFocus>
+                        <Radio value={'mor' satisfies Situasjon} autoFocus>
                             <FormattedMessage id="SituasjonSide.Mor" />
                         </Radio>
-                        <Radio value={Situasjon.FAR}>
+                        <Radio value={'far' satisfies Situasjon}>
                             <FormattedMessage id="SituasjonSide.Far" />
                         </Radio>
-                        <Radio value={Situasjon.MEDMOR}>
+                        <Radio value={'medmor' satisfies Situasjon}>
                             <FormattedMessage id="SituasjonSide.Medmor" />
                         </Radio>
                     </BlueRadioGroup>
                     {situasjon && (
-                        <VStack gap="4">
+                        <VStack gap="space-16">
                             <BlueRadioGroup
                                 name="erIArbeid"
                                 control={formMethods.control}
@@ -233,12 +228,12 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
 
                     {harHattInntekt && (
                         <VStack gap="3">
-                            <VStack gap="4">
+                            <VStack gap="space-16">
                                 <BluePanel
                                     isDarkBlue={lønnPerMåned === undefined || lønnPerMåned === null}
                                     shouldFadeIn
                                 >
-                                    <VStack gap="2">
+                                    <VStack gap="space-8">
                                         <RhfNumericField
                                             name="lønnPerMåned"
                                             control={formMethods.control}
@@ -265,7 +260,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                                 ),
                                             ]}
                                         />
-                                        <VStack gap="2">
+                                        <VStack gap="space-8">
                                             <Label>
                                                 <FormattedMessage id="SituasjonSide.Årsinntekt" />
                                             </Label>

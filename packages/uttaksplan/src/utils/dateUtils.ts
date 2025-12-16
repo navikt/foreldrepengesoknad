@@ -77,8 +77,8 @@ const getMeldingOmOverlappendeUtsettelser = (
         return intl.formatMessage(
             { id: 'valideringsfeil.overlapperEnUtsettelse' },
             {
-                fom: formatDate(overlappendeUtsettelsesPerioder[0].tidsperiode.fom),
-                tom: formatDate(overlappendeUtsettelsesPerioder[0].tidsperiode.tom),
+                fom: formatDate(overlappendeUtsettelsesPerioder[0]!.tidsperiode.fom),
+                tom: formatDate(overlappendeUtsettelsesPerioder[0]!.tidsperiode.tom),
             },
         );
     }
@@ -164,26 +164,6 @@ export const getToTetteReglerGjelder = (
         andreAugust2022ReglerGjelder(familiehendelsesdatoNesteBarn) &&
         dayjs(familiehendelsePlus48Uker).isAfter(familiehendelsesdatoNesteBarn, 'day')
     );
-};
-
-export const isDateToday = (date: string): boolean => {
-    if (dayjs().isSame(date, 'day')) {
-        return true;
-    }
-
-    return false;
-};
-
-export const isDateTodayOrInTheFuture = (date: string): boolean => {
-    return isDateInTheFuture(date) || isDateToday(date);
-};
-
-export const isDateInTheFuture = (date: string): boolean => {
-    if (dayjs().isBefore(date, 'day')) {
-        return true;
-    }
-
-    return false;
 };
 
 const validateFromDateInRange = ({

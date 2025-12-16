@@ -7,15 +7,11 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import {
     AnnenForelder,
-    AnnenForelderOppgitt,
     Arbeidsform,
     Barn,
-    MorsAktivitet,
     Periode,
     Periodetype,
-    StønadskontoType,
     Søkerrolle,
-    UtsettelseÅrsakType,
     UttaksperiodeBase,
     isAdoptertBarn,
     isAdoptertStebarn,
@@ -26,22 +22,18 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import {
-    AdopsjonDto,
+    AnnenForelderDto,
     Attachment,
+    BarnDto,
     BrukerRolle,
     EndringssøknadForeldrepengerDto,
     ForeldrepengesøknadDto,
-    FødselDto,
     KontoType,
     Målform,
-    NorskForelderDto,
-    OppholdsPeriodeDto,
-    OverføringsPeriodeDto,
-    TerminDto,
-    UtenlandskForelderDto,
-    UtsettelsesPeriodeDto,
-    UttaksPeriodeDto,
+    PersonMedArbeidsforholdDto_fpoversikt,
+    SøkerDto,
     UttaksplanDto,
+    Uttaksplanperiode,
     isUfødtBarn,
 } from '@navikt/fp-types';
 import {
@@ -54,8 +46,6 @@ import {
 import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
-export type UttaksplanPeriode = UttaksPeriodeDto | OverføringsPeriodeDto | OppholdsPeriodeDto | UtsettelsesPeriodeDto;
-
 export const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
@@ -65,7 +55,7 @@ const hentValgtSpråk = (): Målform => {
     return getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform;
 };
 
-const getUttaksperiodeForInnsending = (uttaksperiodeBase: UttaksperiodeBase): UttaksPeriodeDto => {
+const getUttaksperiodeForInnsending = (uttaksperiodeBase: UttaksperiodeBase): Uttaksplanperiode => {
     const uttaksperiode = {
         type: 'uttak' as const,
         fom: dateToISOString(uttaksperiodeBase.tidsperiode.fom),
@@ -75,6 +65,7 @@ const getUttaksperiodeForInnsending = (uttaksperiodeBase: UttaksperiodeBase): Ut
         ønskerSamtidigUttak: uttaksperiodeBase.ønskerSamtidigUttak,
         samtidigUttakProsent: toNumber(uttaksperiodeBase.samtidigUttakProsent) || undefined,
         ønskerFlerbarnsdager: uttaksperiodeBase.ønskerFlerbarnsdager,
+        ønskerGradering: uttaksperiodeBase.gradert,
     };
 
     if (uttaksperiodeBase.gradert) {
@@ -116,7 +107,7 @@ const skalPeriodeSendesInn = (periode: Periode) => {
     );
 };
 
-const cleanBarn = (barn: Barn): AdopsjonDto | FødselDto | TerminDto => {
+const cleanBarn = (barn: Barn): BarnDto => {
     if (isUfødtBarn(barn)) {
         return {
             type: 'termin',
@@ -130,7 +121,7 @@ const cleanBarn = (barn: Barn): AdopsjonDto | FødselDto | TerminDto => {
         return {
             type: 'fødsel',
             antallBarn: barn.antallBarn,
-            fødselsdato: barn.fødselsdatoer[0],
+            fødselsdato: barn.fødselsdatoer[0]!,
             termindato: barn.termindato,
         };
     }
@@ -144,11 +135,18 @@ const cleanBarn = (barn: Barn): AdopsjonDto | FødselDto | TerminDto => {
         };
     }
 
-    throw Error('Det er feil i data om barnet');
+    throw new Error('Det er feil i data om barnet');
 };
 
 const konverterRolle = (rolle: Søkerrolle): BrukerRolle => {
-    return rolle.toUpperCase() as BrukerRolle;
+    switch (rolle) {
+        case 'mor':
+            return 'MOR';
+        case 'far':
+            return 'FAR';
+        case 'medmor':
+            return 'MEDMOR';
+    }
 };
 
 const changeClientonlyKontotype = (
@@ -159,21 +157,16 @@ const changeClientonlyKontotype = (
     familiehendelsesdato: string,
 ) => {
     if (isUttaksperiode(periode)) {
-        if (periode.konto === StønadskontoType.Flerbarnsdager) {
-            periode.konto = !annenForelderHarRettPåForeldrepengerINorge
-                ? StønadskontoType.Foreldrepenger
-                : StønadskontoType.Fellesperiode;
-        }
-        if (periode.konto === StønadskontoType.AktivitetsfriKvote) {
-            periode.konto = StønadskontoType.Foreldrepenger;
+        if (periode.konto === 'AKTIVITETSFRI_KVOTE') {
+            periode.konto = 'FORELDREPENGER';
             if (
                 søkerErFarEllerMedmor &&
                 !annenForelderHarRettPåForeldrepengerINorge &&
                 andreAugust2022ReglerGjelder(familiehendelsesdato)
             ) {
-                periode.morsAktivitetIPerioden = MorsAktivitet.IkkeOppgitt;
+                periode.morsAktivitetIPerioden = 'IKKE_OPPGITT';
             } else if (morErUfør) {
-                periode.morsAktivitetIPerioden = MorsAktivitet.Uføre;
+                periode.morsAktivitetIPerioden = 'UFØRE';
             }
         }
     }
@@ -193,8 +186,9 @@ const getArbeidstakerFrilansSN = (arbeidsformer: Arbeidsform[] | undefined) => {
     }
 };
 
-const getPeriodeForInnsending = (periode: any): OverføringsPeriodeDto | OppholdsPeriodeDto | UtsettelsesPeriodeDto => {
+const getPeriodeForInnsending = (periode: Periode): Uttaksplanperiode => {
     const { tidsperiode, ...periodeRest } = periode;
+    // @ts-expect-error -- kontoType må mappes om
     return {
         ...periodeRest,
         fom: dateToISOString(tidsperiode.fom),
@@ -251,16 +245,16 @@ const cleanUttaksplan = (
 };
 
 export const getPeriodeVedTidspunkt = (
-    uttaksplan: UttaksplanPeriode[],
+    uttaksplan: Uttaksplanperiode[],
     tidspunkt: Date,
-): UttaksplanPeriode | undefined => {
+): Uttaksplanperiode | undefined => {
     return uttaksplan.find((periode) => dayjs(tidspunkt).isBetween(periode.fom, periode.tom, 'day', '[]'));
 };
 
 export const getUttaksplanMedFriUtsettelsesperiode = (
-    uttaksplan: UttaksplanPeriode[],
+    uttaksplan: Uttaksplanperiode[],
     endringstidspunkt: Date,
-): UttaksplanPeriode[] => {
+): Uttaksplanperiode[] => {
     const førstePeriodeEtterEndringstidspunkt = uttaksplan.find((periode) =>
         dayjs(periode.fom).isAfter(endringstidspunkt, 'day'),
     );
@@ -268,9 +262,9 @@ export const getUttaksplanMedFriUtsettelsesperiode = (
         ? Uttaksdagen(dayjs(førstePeriodeEtterEndringstidspunkt.fom).toDate()).forrige()
         : endringstidspunkt;
 
-    const endringsTidspunktPeriode: UtsettelsesPeriodeDto = {
+    const endringsTidspunktPeriode: Uttaksplanperiode = {
         type: Periodetype.Utsettelse,
-        årsak: UtsettelseÅrsakType.Fri,
+        årsak: 'FRI',
         fom: dateToISOString(endringstidspunkt),
         tom: dateToISOString(endringsTidspunktPeriodeTom),
         erArbeidstaker: false,
@@ -283,65 +277,61 @@ export const getUttaksplanMedFriUtsettelsesperiode = (
     return uttaksplan;
 };
 
-export const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefined): Attachment[] => {
+const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefined): Attachment[] => {
     if (!vedlegg) {
         return [];
     }
 
     const vedleggArray: Attachment[] = [];
 
-    Object.keys(vedlegg).forEach((key: unknown) => {
+    for (const key of Object.keys(vedlegg)) {
         const vedleggAvTypeSkjemanummer = vedlegg[key as GyldigeSkjemanummer];
 
         if (vedleggAvTypeSkjemanummer && vedleggAvTypeSkjemanummer.length > 0) {
             vedleggArray.push(...vedleggAvTypeSkjemanummer);
         }
-    });
+    }
 
     return vedleggArray;
 };
 
-export const cleanAnnenforelder = (
-    annenForelder: AnnenForelder | undefined,
-): UtenlandskForelderDto | NorskForelderDto | undefined => {
+const cleanAnnenforelder = (annenForelder: AnnenForelder | undefined): AnnenForelderDto | undefined => {
     if (annenForelder === undefined || isAnnenForelderIkkeOppgitt(annenForelder)) {
         return;
     }
 
-    const oppgitt = annenForelder as AnnenForelderOppgitt;
-
-    const harRettPåForeldrepenger = !!oppgitt.harRettPåForeldrepengerINorge;
+    const harRettPåForeldrepenger = !!annenForelder.harRettPåForeldrepengerINorge;
     /*
      Hvis bruker har svart på spørsmålet om annenForelder er informert så bruker vi det.
      Men i tilfelle endringssøknad så finnes ikke dette spørsmålet eksplisitt (det finnes implisitt i en checkbox for å kunne sende).
      I de tilfellene sier vi ja hvis annen forelder har rett i Norge.
     */
     const erInformertOmSøknaden = (() => {
-        if (oppgitt.erInformertOmSøknaden === undefined) {
+        if (annenForelder.erInformertOmSøknaden === undefined) {
             return harRettPåForeldrepenger ? true : undefined;
         }
-        return oppgitt.erInformertOmSøknaden;
+        return annenForelder.erInformertOmSøknaden;
     })();
 
     const baseData = {
-        fnr: oppgitt.fnr,
-        fornavn: oppgitt.fornavn,
-        etternavn: oppgitt.etternavn,
+        fnr: annenForelder.fnr,
+        fornavn: annenForelder.fornavn,
+        etternavn: annenForelder.etternavn,
         rettigheter: {
             harRettPåForeldrepenger,
             erInformertOmSøknaden,
-            erAleneOmOmsorg: oppgitt.erAleneOmOmsorg,
-            harMorUføretrygd: oppgitt.erMorUfør,
-            harAnnenForelderOppholdtSegIEØS: oppgitt.harOppholdtSegIEØS,
+            erAleneOmOmsorg: annenForelder.erAleneOmOmsorg,
+            harMorUføretrygd: annenForelder.erMorUfør,
+            harAnnenForelderOppholdtSegIEØS: annenForelder.harOppholdtSegIEØS,
             harAnnenForelderTilsvarendeRettEØS:
                 // Bevarer logikken fra steget og gammel oppførsel her siden harRettPåForeldrepengerIEØS defaulter til false mange plasser
-                oppgitt.harRettPåForeldrepengerINorge !== false || oppgitt.harOppholdtSegIEØS !== true
+                annenForelder.harRettPåForeldrepengerINorge !== false || annenForelder.harOppholdtSegIEØS !== true
                     ? undefined
-                    : oppgitt.harRettPåForeldrepengerIEØS,
+                    : annenForelder.harRettPåForeldrepengerIEØS,
         },
     };
-    return oppgitt.utenlandskFnr
-        ? { type: 'utenlandsk', ...baseData, bostedsland: oppgitt.bostedsland ?? 'UNDEFINED' }
+    return annenForelder.utenlandskFnr
+        ? { type: 'utenlandsk', ...baseData, bostedsland: annenForelder.bostedsland ?? 'UNDEFINED' }
         : { type: 'norsk', ...baseData };
 };
 
@@ -350,18 +340,20 @@ export const getSøknadsdataForInnsending = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: string,
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
     endringstidspunkt?: Date,
 ): ForeldrepengesøknadDto | EndringssøknadForeldrepengerDto => {
     if (erEndringssøknad) {
-        return cleanEndringssøknad(hentData, endringerIUttaksplan, familiehendelsesdato, endringstidspunkt);
+        return cleanEndringssøknad(hentData, endringerIUttaksplan, familiehendelsesdato, søkerinfo, endringstidspunkt);
     } else {
-        return cleanSøknad(hentData, familiehendelsesdato);
+        return cleanSøknad(hentData, familiehendelsesdato, søkerinfo);
     }
 };
 
 export const cleanSøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     familiehendelsesdato: string,
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
 ): ForeldrepengesøknadDto => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
@@ -385,6 +377,7 @@ export const cleanSøknad = (
         annenForelder,
     );
     return {
+        søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
         rolle: konverterRolle(søkersituasjon.rolle),
         språkkode: hentValgtSpråk(),
         frilans: frilans,
@@ -399,10 +392,25 @@ export const cleanSøknad = (
     };
 };
 
+const mapSøkerInfoTilSøknadDto = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt): SøkerDto => {
+    return {
+        fnr: søkerinfo.person.fnr,
+        navn: søkerinfo.person.navn,
+        arbeidsforhold: søkerinfo.arbeidsforhold.map((af) => ({
+            navn: af.arbeidsgiverNavn,
+            orgnummer: af.arbeidsgiverId,
+            stillingsprosent: af.stillingsprosent,
+            fom: af.fom,
+            tom: af.tom,
+        })),
+    };
+};
+
 export const cleanEndringssøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: string,
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
     endringstidspunkt?: Date,
 ): EndringssøknadForeldrepengerDto => {
     const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
@@ -413,6 +421,8 @@ export const cleanEndringssøknad = (
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const vedlegg = hentData(ContextDataType.VEDLEGG);
     return {
+        søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
+
         saksnummer: eksisterendeSak.saksnummer,
         rolle: konverterRolle(søkersituasjon.rolle),
         språkkode: hentValgtSpråk(),

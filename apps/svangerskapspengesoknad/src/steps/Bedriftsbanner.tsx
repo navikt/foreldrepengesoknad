@@ -6,18 +6,16 @@ import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
-import styles from './bedriftsbanner.module.css';
-
 interface Props {
     arbeidsforholdType: Arbeidsforholdstype;
     arbeidsforholdNavn?: string;
 }
 
 const getNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?: string) => {
-    if (type === Arbeidsforholdstype.FRILANSER) {
+    if (type === 'frilanser') {
         return intl.formatMessage({ id: 'bedriftsbanner.tittel.frilansarbeid' });
     }
-    if (type === Arbeidsforholdstype.SELVSTENDIG && (!navn || navn.trim().length === 0)) {
+    if (type === 'selvstendig' && (!navn || navn.trim().length === 0)) {
         return intl.formatMessage({ id: 'egenNæring' });
     }
     return capitalizeFirstLetterInEveryWordOnly(navn);
@@ -28,18 +26,18 @@ export const Bedriftsbanner = ({ arbeidsforholdType, arbeidsforholdNavn }: Props
     const navn = getNavn(arbeidsforholdType, intl, arbeidsforholdNavn);
 
     const detailTekst =
-        arbeidsforholdType !== Arbeidsforholdstype.FRILANSER
-            ? intl.formatMessage({ id: 'bedriftsbanner.detail' })
-            : intl.formatMessage({ id: 'bedriftsbanner.detail.frilans' });
+        arbeidsforholdType === 'frilanser'
+            ? intl.formatMessage({ id: 'bedriftsbanner.detail.frilans' })
+            : intl.formatMessage({ id: 'bedriftsbanner.detail' });
     return (
-        <div className={styles.bedriftsbanner}>
-            <HStack gap="5" align="center">
-                <Buildings3Icon aria-hidden={true} height="24px" width="24px" className={styles.ikon} />
-                <VStack gap="1">
-                    <BodyShort size="small" className={styles.bold}>
+        <div className="bg-ax-accent-200 border-ax-accent-400 rounded-[2px] border-2 p-4">
+            <HStack gap="space-20" align="center">
+                <Buildings3Icon aria-hidden={true} height="24px" width="24px" className="text-ax-accent-600" />
+                <VStack gap="space-4">
+                    <BodyShort size="small" className="font-bold">
                         {detailTekst}
                     </BodyShort>
-                    <BodyShort size="medium" className={styles.bold}>
+                    <BodyShort size="medium" className="font-bold">
                         {navn}
                     </BodyShort>
                 </VStack>

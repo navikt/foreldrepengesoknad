@@ -12,8 +12,8 @@
             "types/*": ["types/*"],
             "storybookData/*": ["./../.storybook/storybook-data/*"]
         },
-        "types": ["vite/client", "node", "@testing-library/jest-dom", "vitest/globals"]
+        "types": ["vite/client", "@testing-library/jest-dom", "vitest/globals"]
     },
-    "include": ["src/**/*", "@types", ".storybook/testData/**/*"],
+    "include": ["src", "mock-api", "vitest", "../../@types/vite.env.d.ts"],
     "exclude": ["node_modules"]
 }

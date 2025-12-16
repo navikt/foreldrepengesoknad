@@ -1,18 +1,17 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import dayjs from 'dayjs';
 import { useState } from 'react';
-import { action } from 'storybook/actions';
 
-import { BodyShort, Checkbox, CheckboxGroup, Detail, VStack } from '@navikt/ds-react';
+import { BodyShort, Detail, VStack } from '@navikt/ds-react';
 
-import { PeriodeColor } from '@navikt/fp-constants';
-
-import { Calendar, type Period } from './Calendar';
+import { Calendar } from './Calendar';
+import { CalendarPeriod } from './types/CalendarPeriod';
 
 const meta = {
     title: 'Calendar',
     component: Calendar,
     render: (args) => (
-        <div style={{ maxWidth: '704px' }}>
+        <div>
             <Calendar {...args} />
         </div>
     ),
@@ -23,26 +22,32 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
+        firstDateInCalendar: '2024-01-31',
+        lastDateInCalendar: '2024-08-30',
         periods: [
             {
                 fom: '2024-01-31',
                 tom: '2024-02-20',
-                color: PeriodeColor.BLUE,
+                color: 'BLUE',
+                srText: 'Mors periode',
             },
             {
                 fom: '2024-02-21',
                 tom: '2024-02-21',
-                color: PeriodeColor.PINK,
+                color: 'PINK',
+                srText: 'Termindato',
             },
             {
                 fom: '2024-02-22',
                 tom: '2024-05-05',
-                color: PeriodeColor.BLUE,
+                color: 'BLUE',
+                srText: 'Mors periode',
             },
             {
                 fom: '2024-05-06',
                 tom: '2024-08-30',
-                color: PeriodeColor.LIGHTGREEN,
+                color: 'LIGHTGREEN',
+                srText: 'Fars periode',
             },
         ],
     },
@@ -52,7 +57,6 @@ export const IkkeVisUkenr: Story = {
     args: {
         ...Default.args,
         showWeekNumbers: false,
-        dateClickCallback: action('button-click'),
     },
 };
 
@@ -60,7 +64,7 @@ export const MedTooltip: Story = {
     args: {
         ...Default.args,
         dateTooltipCallback: (date: string) => (
-            <VStack gap="1">
+            <VStack gap="space-4">
                 <BodyShort>Dette er en tooltip</BodyShort>
                 <Detail>{date}</Detail>
             </VStack>
@@ -68,51 +72,82 @@ export const MedTooltip: Story = {
     },
 };
 
-export const VisAlertVedDatoklikk: Story = {
-    args: {
-        ...Default.args,
-        dateClickCallback: (date: string) => alert(`Du klikket på datoen: ${date}`),
-    },
-};
-
-export const MedValgAvPerioder: Story = {
+export const VisKalenderMedValgAvEnkeltdager: Story = {
     args: Default.args,
     render: () => {
         const allePerioder = [
             {
                 fom: '2024-01-31',
                 tom: '2024-02-20',
-                color: PeriodeColor.BLUE,
+                color: 'BLUE',
+                srText: 'Mors periode',
             },
             {
                 fom: '2024-05-06',
                 tom: '2024-08-30',
-                color: PeriodeColor.LIGHTGREEN,
+                color: 'LIGHTGREEN',
+                srText: 'Fars periode',
             },
-        ] satisfies Period[];
+        ] satisfies CalendarPeriod[];
 
-        const [perioder, setPerioder] = useState<Period[]>(allePerioder);
+        const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
 
-        const handleChange = (val: string[]) => {
-            setPerioder(
-                perioder.map((p) => ({
-                    ...p,
-                    isSelected: val.includes(p.color),
-                })),
-            );
+        const [perioder, setPerioder] = useState<CalendarPeriod[]>(allePerioder);
+        const setSelectedPeriods = (value: React.SetStateAction<CalendarPeriod[]>) => {
+            setPerioder((old) => {
+                const newValue = typeof value === 'function' ? value(old) : value;
+                return newValue.sort(sortPeriods);
+            });
         };
 
         return (
-            <div style={{ maxWidth: '704px' }}>
-                <CheckboxGroup
-                    legend="Velg en periode for å se hvordan den vises i kalenderen."
-                    onChange={handleChange}
-                >
-                    <Checkbox value={PeriodeColor.BLUE}>Blå</Checkbox>
-                    <Checkbox value={PeriodeColor.LIGHTGREEN}>Grøn</Checkbox>
-                </CheckboxGroup>
-                <Calendar periods={perioder} />
-            </div>
+            <Calendar
+                periods={perioder}
+                isRangeSelection={false}
+                setSelectedPeriods={setSelectedPeriods}
+                firstDateInCalendar={allePerioder[0]!.fom}
+                lastDateInCalendar={allePerioder[1]!.tom}
+            />
+        );
+    },
+};
+
+export const VisKalenderMedValgAvPerioder: Story = {
+    args: Default.args,
+    render: () => {
+        const allePerioder = [
+            {
+                fom: '2024-01-31',
+                tom: '2024-02-20',
+                color: 'BLUE',
+                srText: 'Mors periode',
+            },
+            {
+                fom: '2024-05-06',
+                tom: '2024-08-30',
+                color: 'LIGHTGREEN',
+                srText: 'Fars periode',
+            },
+        ] satisfies CalendarPeriod[];
+
+        const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
+
+        const [perioder, setPerioder] = useState<CalendarPeriod[]>(allePerioder);
+        const setSelectedPeriods = (value: React.SetStateAction<CalendarPeriod[]>) => {
+            setPerioder((old) => {
+                const newValue = typeof value === 'function' ? value(old) : value;
+                return newValue.sort(sortPeriods);
+            });
+        };
+
+        return (
+            <Calendar
+                periods={perioder}
+                isRangeSelection
+                setSelectedPeriods={setSelectedPeriods}
+                firstDateInCalendar={allePerioder[0]!.fom}
+                lastDateInCalendar={allePerioder[1]!.tom}
+            />
         );
     },
 };
@@ -123,15 +158,18 @@ export const PeriodsWithGap: Story = {
             {
                 fom: '2024-01-31',
                 tom: '2024-02-20',
-                color: PeriodeColor.BLUE,
+                color: 'BLUE',
+                srText: 'Mors periode',
             },
             {
                 fom: '2024-05-06',
                 tom: '2024-08-30',
-                color: PeriodeColor.LIGHTGREEN,
+                color: 'LIGHTGREEN',
+                srText: 'Fars periode',
             },
         ],
-        dateClickCallback: action('button-click'),
+        firstDateInCalendar: '2024-01-31',
+        lastDateInCalendar: '2024-08-30',
     },
 };
 
@@ -141,14 +179,38 @@ export const PeriodsThatSpanOverAYear: Story = {
             {
                 fom: '2024-02-01',
                 tom: '2024-02-20',
-                color: PeriodeColor.BLUE,
+                color: 'BLUE',
+                srText: 'Mors periode',
             },
             {
                 fom: '2025-05-06',
                 tom: '2025-07-30',
-                color: PeriodeColor.LIGHTGREEN,
+                color: 'LIGHTGREEN',
+                srText: 'Fars periode',
             },
         ],
-        dateClickCallback: action('button-click'),
+        firstDateInCalendar: '2024-02-01',
+        lastDateInCalendar: '2025-07-30',
+    },
+};
+
+export const MedEnKolonne: Story = {
+    args: {
+        ...Default.args,
+        nrOfColumns: 1,
+    },
+};
+
+export const MedToKolonner: Story = {
+    args: {
+        ...Default.args,
+        nrOfColumns: 2,
+    },
+};
+
+export const MedTreKolonner: Story = {
+    args: {
+        ...Default.args,
+        nrOfColumns: 3,
     },
 };

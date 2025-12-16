@@ -15,9 +15,3 @@ export const Default: Story = {
         children: <div>blue</div>,
     },
 };
-
-export const DarkGreenHeader: Story = {
-    args: {
-        children: <div>dark blue</div>,
-    },
-};

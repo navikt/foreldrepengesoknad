@@ -7,10 +7,10 @@ import { Link as LinkInternal } from 'react-router-dom';
 import { Accordion, BodyLong, BodyShort, Button, Detail, HStack, Heading, Link, List, VStack } from '@navikt/ds-react';
 
 import { Skjemanummer, links } from '@navikt/fp-constants';
-import { Søkerinfo, TidslinjeHendelseDto, Ytelse } from '@navikt/fp-types';
+import { Bankkonto_fpoversikt, TidslinjeHendelseDto_fpoversikt, Ytelse } from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
 
-import { søkerInfoOptions } from '../../api/api.ts';
+import { søkerInfoOptions } from '../../api/queries.ts';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak.ts';
 import { OversiktRoutes } from '../../routes/routes';
 import { DokumentHendelse } from '../../sections/tidslinje/DokumentHendelse';
@@ -19,8 +19,8 @@ import { getTidligstDatoForInntektsmelding } from '../../utils/tidslinjeUtils.ts
 import { KontonummerInfo } from '../kontonummer-info/KontonummerInfo';
 
 interface Props {
-    relevantNyTidslinjehendelse: TidslinjeHendelseDto | undefined;
-    bankkonto: Søkerinfo['søker']['bankkonto'];
+    relevantNyTidslinjehendelse: TidslinjeHendelseDto_fpoversikt | undefined;
+    bankkonto?: Bankkonto_fpoversikt;
     ytelse: Ytelse | undefined;
     harMinstEttArbeidsforhold: boolean;
     manglendeVedlegg: Skjemanummer[];
@@ -45,10 +45,10 @@ export const BekreftelseSendtSøknad = ({
     const sendtInfoTekst = getTidspunktTekst(mottattDato);
 
     return (
-        <VStack gap="6" className="p-6 bg-white rounded-large shadow-xsmall">
-            <HStack gap="4">
-                <div className="w-[52px] h-[52px] rounded-[50%] bg-green-100 pt-[14px] pl-[14px]">
-                    <CheckmarkIcon fontSize={24} className="text-green-800" aria-hidden={true} />
+        <VStack gap="space-24" className="bg-ax-bg-default rounded-lg p-6">
+            <HStack gap="space-16">
+                <div className="bg-ax-success-200 h-[52px] w-[52px] rounded-[50%] pt-[14px] pl-[14px]">
+                    <CheckmarkIcon fontSize={24} className="text-ax-success-900" aria-hidden={true} />
                 </div>
                 <VStack>
                     <Heading level="2" size="small">
@@ -58,7 +58,7 @@ export const BekreftelseSendtSøknad = ({
                 </VStack>
             </HStack>
             {relevantDokument && (
-                <ul className="p-0 m-0">
+                <ul className="m-0 p-0">
                     <DokumentHendelse dokument={relevantDokument} visesITidslinjen={false} />
                 </ul>
             )}
@@ -66,7 +66,7 @@ export const BekreftelseSendtSøknad = ({
                 {manglendeVedlegg.length > 0 && (
                     <Accordion.Item>
                         <Accordion.Header>
-                            <VStack gap="1">
+                            <VStack gap="space-4">
                                 <Detail textColor="subtle">
                                     <FormattedMessage id="BekreftelseSendtSøknad.HuskPå" />
                                 </Detail>
@@ -76,7 +76,7 @@ export const BekreftelseSendtSøknad = ({
                             </VStack>
                         </Accordion.Header>
                         <Accordion.Content>
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <BodyLong>
                                     <FormattedMessage id="BekreftelseSendtSøknad.ManglendeDokumentasjonDetaljer" />
                                 </BodyLong>
@@ -165,7 +165,7 @@ const ForeldrepengerBekreftelse = () => {
             {visInformasjonOmInntektsmelding && (
                 <Accordion.Item>
                     <Accordion.Header>
-                        <VStack gap="1">
+                        <VStack gap="space-4">
                             <Detail textColor="subtle" uppercase>
                                 Neste steg
                             </Detail>
@@ -195,7 +195,7 @@ const ForeldrepengerBekreftelse = () => {
             {harMinstEttArbeidsforhold && (
                 <Accordion.Item>
                     <Accordion.Header>
-                        <VStack gap="1">
+                        <VStack gap="space-4">
                             <Detail textColor="subtle">
                                 <FormattedMessage id="BekreftelseSendtSøknad.HuskPå" />
                             </Detail>
@@ -214,7 +214,7 @@ const ForeldrepengerBekreftelse = () => {
             <TidligstMuligeSvar />
             <Accordion.Item>
                 <Accordion.Header>
-                    <VStack gap="1">
+                    <VStack gap="space-4">
                         <Detail textColor="subtle">
                             <FormattedMessage id="BekreftelseSendtSøknad.TilSenere" />
                         </Detail>
@@ -245,7 +245,7 @@ const SvangerskapspengerBekreftelse = () => {
             {visInformasjonOmInntektsmelding && (
                 <Accordion.Item>
                     <Accordion.Header>
-                        <VStack gap="1">
+                        <VStack gap="space-4">
                             <Detail textColor="subtle" uppercase>
                                 Neste steg
                             </Detail>
@@ -287,7 +287,7 @@ const TidligstMuligeSvar = () => {
     return (
         <Accordion.Item>
             <Accordion.Header>
-                <VStack gap="1">
+                <VStack gap="space-4">
                     <Detail textColor="subtle">
                         <FormattedMessage id="BekreftelseSendtSøknad.DuFårTidligstSvar" />
                     </Detail>
@@ -334,6 +334,7 @@ const useHarMinstEttArbeidsforhold = () => {
 };
 
 const useÅpenBehandlingTilstand = () => {
+    //eslint-disable-next-line react-hooks/rules-of-hooks -- Denne feiler fordi regelen ikkje taklar norske bokstavar i hook-navn
     const sak = useGetSelectedSak();
 
     if (!sak || sak.ytelse === 'ENGANGSSTØNAD') {
@@ -346,7 +347,7 @@ const useÅpenBehandlingTilstand = () => {
 const useGetTidligstMuligeSvar = () => {
     const sak = useGetSelectedSak();
 
-    if (!sak || sak.ytelse !== 'FORELDREPENGER') {
+    if (sak?.ytelse !== 'FORELDREPENGER') {
         return undefined;
     }
 

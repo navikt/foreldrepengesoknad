@@ -1,11 +1,10 @@
+import { Arbeidsform, UttakRundtFødselÅrsak } from '@navikt/fp-common';
 import {
-    Arbeidsform,
-    Forelder,
+    BrukerRolleSak_fpoversikt,
+    KontoTypeUttak,
     MorsAktivitet,
-    OverføringÅrsakType,
-    StønadskontoType,
-    UttakRundtFødselÅrsak,
-} from '@navikt/fp-common';
+    UttakOverføringÅrsak_fpoversikt,
+} from '@navikt/fp-types';
 
 import { YesOrNo, getTypedFormComponents } from '../../../formik-wrappers';
 
@@ -29,17 +28,17 @@ export enum PeriodeUttakFormField {
 export interface PeriodeUttakFormData {
     [PeriodeUttakFormField.fom]: Date | undefined;
     [PeriodeUttakFormField.tom]: Date | undefined;
-    [PeriodeUttakFormField.konto]: StønadskontoType | '';
+    [PeriodeUttakFormField.konto]: KontoTypeUttak | '';
     [PeriodeUttakFormField.samtidigUttak]: YesOrNo;
     [PeriodeUttakFormField.aktivitetskravMor]: MorsAktivitet | '';
-    [PeriodeUttakFormField.overføringsårsak]: OverføringÅrsakType | '';
+    [PeriodeUttakFormField.overføringsårsak]: UttakOverføringÅrsak_fpoversikt | '';
     [PeriodeUttakFormField.skalHaGradering]: YesOrNo;
     [PeriodeUttakFormField.stillingsprosent]: string;
     [PeriodeUttakFormField.arbeidsformer]: Arbeidsform | '';
     [PeriodeUttakFormField.erMorForSyk]: YesOrNo;
     [PeriodeUttakFormField.uttakRundtFødselÅrsak]: UttakRundtFødselÅrsak | '';
     [PeriodeUttakFormField.samtidigUttakProsent]: string;
-    [PeriodeUttakFormField.hvemSkalTaUttak]: Forelder | '';
+    [PeriodeUttakFormField.hvemSkalTaUttak]: BrukerRolleSak_fpoversikt | '';
     [PeriodeUttakFormField.ønskerFlerbarnsdager]: YesOrNo;
 }
 

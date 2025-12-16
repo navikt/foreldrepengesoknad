@@ -1,11 +1,14 @@
-import { UttaksplanDataContext } from '../../context/UttaksplanDataContext';
+import { ReactRenderer } from '@storybook/react-vite';
+import type { DecoratorFunction } from 'storybook/internal/types';
 
-export const withUttaksplanContextDecorator = (Story: any, { parameters }: any) => {
+import { UttaksplanDataProvider } from '../../context/UttaksplanDataContext';
+
+export const withUttaksplanContextDecorator: DecoratorFunction<ReactRenderer> = (Story, { parameters }) => {
     const { context } = parameters;
 
     return (
-        <UttaksplanDataContext initialState={context}>
+        <UttaksplanDataProvider {...context}>
             <Story />
-        </UttaksplanDataContext>
+        </UttaksplanDataProvider>
     );
 };

@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, SvpDataContext } from 'appData/SvpDataContext';
+import { API_URLS } from 'appData/queries';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { action } from 'storybook/actions';
@@ -42,9 +43,7 @@ export const Default: Story = {
     },
     parameters: {
         msw: {
-            handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(ingenSaker)),
-            ],
+            handlers: [http.get(API_URLS.saker, () => HttpResponse.json(ingenSaker))],
         },
     },
 };
@@ -57,7 +56,7 @@ export const MedEksisterendeSøknad: Story = {
     },
     parameters: {
         msw: {
-            handlers: [http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker))],
+            handlers: [http.get(API_URLS.saker, () => HttpResponse.json(saker))],
         },
     },
 };

@@ -187,14 +187,14 @@ describe('<ArbeidIUtlandetSteg>', () => {
         await userEvent.click(screen.getByText('Legg til flere arbeidsforhold i utlandet'));
 
         expect(screen.getAllByText('Hva er navnet på arbeidsgiveren din?')[1]).toBeInTheDocument();
-        const arbeidsgiverInput = screen.getAllByText('Hva er navnet på arbeidsgiveren din?')[1];
+        const arbeidsgiverInput = screen.getAllByText('Hva er navnet på arbeidsgiveren din?')[1]!;
         await userEvent.type(arbeidsgiverInput, 'Arbeidsgivernavn');
         await userEvent.tab();
 
         expect(screen.getByDisplayValue('Arbeidsgivernavn')).toBeInTheDocument();
 
         expect(screen.getAllByText('Fjern perioden', { exact: false })[0]).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Fjern perioden')[0]);
+        await userEvent.click(screen.getAllByText('Fjern perioden')[0]!);
 
         expect(screen.queryByDisplayValue('Arbeidsgivernavn')).not.toBeInTheDocument();
     });

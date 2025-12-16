@@ -2,27 +2,24 @@ import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { andreAugust2022ReglerGjelder } from 'utils/dateUtils';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor.ts';
+import { getFarMedmorErAleneOmOmsorg, getMorHarRettPåForeldrepengerINorgeEllerEØS } from 'utils/personUtils.ts';
 
-import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-common';
-import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
+import { AnnenForelder, Barn, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment, EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 
 import { VedleggUploader } from '../attachment-uploaders/VedleggUploader';
-
-const getKanSøkePåTermin = (erFarEllerMedmor: boolean, termindato: string): boolean => {
-    if (!erFarEllerMedmor) {
-        return true;
-    }
-    return termindato ? andreAugust2022ReglerGjelder(termindato) : false;
-};
 
 interface Props {
     attachments: Attachment[];
     updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
     barn: Barn;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     erFarEllerMedmor: boolean;
+    søkersituasjon?: SøkersituasjonFp;
+    annenForelder: AnnenForelder;
 }
 
 export const TerminbekreftelseDokumentasjon = ({
@@ -31,20 +28,19 @@ export const TerminbekreftelseDokumentasjon = ({
     barn,
     arbeidsforhold,
     erFarEllerMedmor,
+    søkersituasjon,
+    annenForelder,
 }: Props) => {
     const intl = useIntl();
 
-    const aktiveArbeidsforhold = getAktiveArbeidsforhold(
-        arbeidsforhold,
-        isAdoptertBarn(barn),
-        erFarEllerMedmor,
-        getFamiliehendelsedato(barn),
-    );
-
     if (
-        !isUfødtBarn(barn) ||
-        (aktiveArbeidsforhold.length > 0 && !erFarEllerMedmor) ||
-        !getKanSøkePåTermin(erFarEllerMedmor, barn.termindato)
+        !skalViseTerminbekreftelseDokumentasjon({
+            søkersituasjon,
+            barn,
+            arbeidsforhold,
+            annenForelder,
+            erFarEllerMedmor,
+        })
     ) {
         return null;
     }
@@ -56,12 +52,78 @@ export const TerminbekreftelseDokumentasjon = ({
             skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
             labelText={intl.formatMessage({ id: 'manglendeVedlegg.terminbekreftelse.tittel' })}
             description={intl.formatMessage({
-                id: !erFarEllerMedmor
-                    ? 'manglendeVedlegg.terminbekreftelse.description'
-                    : 'manglendeVedlegg.terminbekreftelse.description.farMedmor',
+                id: erFarEllerMedmor
+                    ? 'manglendeVedlegg.terminbekreftelse.description.farMedmor'
+                    : 'manglendeVedlegg.terminbekreftelse.description',
             })}
             attachmentType={AttachmentType.TERMINBEKREFTELSE}
-            metadataType={AttachmentMetadataType.BARN}
+            metadataType={'BARN'}
         />
     );
+};
+
+export const skalViseTerminbekreftelseDokumentasjon = ({
+    søkersituasjon,
+    barn,
+    arbeidsforhold,
+    annenForelder,
+    erFarEllerMedmor,
+}: {
+    barn?: Barn;
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    søkersituasjon?: SøkersituasjonFp;
+    annenForelder?: AnnenForelder;
+    erFarEllerMedmor: boolean;
+}) => {
+    if (!søkersituasjon || !barn) {
+        return null;
+    }
+
+    return (
+        isUfødtBarn(barn) &&
+        (harIngenAktiveArbeidsforhold(arbeidsforhold, søkersituasjon, barn) ||
+            getBareFarMedmorHarRett(annenForelder, søkersituasjon, erFarEllerMedmor)) &&
+        getKanSøkePåTermin(erFarEllerMedmor, barn.termindato)
+    );
+};
+
+const getBareFarMedmorHarRett = (
+    annenForelder: AnnenForelder | undefined,
+    søkersituasjon: SøkersituasjonFp | undefined,
+    erFarEllerMedmor: boolean,
+) => {
+    if (annenForelder === undefined || søkersituasjon === undefined) {
+        return false;
+    }
+
+    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
+    const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
+
+    const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(erFarEllerMedmor, erAleneOmOmsorg, annenForelder);
+
+    return (
+        !getMorHarRettPåForeldrepengerINorgeEllerEØS(søkersituasjon.rolle, erFarEllerMedmor, annenForelder) &&
+        !farMedmorErAleneOmOmsorg
+    );
+};
+
+const getKanSøkePåTermin = (erFarEllerMedmor: boolean, termindato: string): boolean => {
+    if (!erFarEllerMedmor) {
+        return true;
+    }
+    return termindato ? andreAugust2022ReglerGjelder(termindato) : false;
+};
+
+const harIngenAktiveArbeidsforhold = (
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+    søkersituasjon: SøkersituasjonFp,
+    barn: Barn,
+) => {
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(
+        arbeidsforhold,
+        søkersituasjon.situasjon === 'adopsjon',
+        isFarEllerMedmor(søkersituasjon.rolle),
+        getFamiliehendelsedato(barn),
+    );
+    return aktiveArbeidsforhold.length === 0;
 };

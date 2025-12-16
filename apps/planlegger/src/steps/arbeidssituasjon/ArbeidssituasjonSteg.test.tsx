@@ -37,7 +37,9 @@ describe('<ArbeidssituasjonSteg>', () => {
         expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
 
         await userEvent.click(
-            screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 62 014 kr det siste året'),
+            screen.getByText(
+                `Har jobbet minst 6 av de siste 10 månedene og har tjent 65 080 kr eller mer det siste året`,
+            ),
         );
 
         expect(screen.getByText('Klara vil ha rett til foreldrepenger')).toBeInTheDocument();
@@ -68,7 +70,9 @@ describe('<ArbeidssituasjonSteg>', () => {
         expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
 
         await userEvent.click(
-            screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 62 014 kr det siste året'),
+            screen.getByText(
+                'Har jobbet minst 6 av de siste 10 månedene og har tjent 65 080 kr eller mer det siste året',
+            ),
         );
 
         await userEvent.click(screen.getByText('Nei'));
@@ -142,7 +146,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         await userEvent.click(screen.getByText('Nei'));
 
-        await userEvent.click(screen.getAllByText('Ja')[1]);
+        await userEvent.click(screen.getAllByText('Ja')[1]!);
 
         await userEvent.click(screen.getByText('Neste'));
 
@@ -206,7 +210,9 @@ describe('<ArbeidssituasjonSteg>', () => {
         expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
         await userEvent.click(screen.getByText('Ingen av disse'));
 
-        expect(screen.getByText('Har medmor jobbet 6 av de siste 10 månedene', { exact: false })).toBeInTheDocument();
+        expect(
+            screen.getByText('Har medmor jobbet minst 6 av de siste 10 månedene', { exact: false }),
+        ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
         expect(screen.getByText('Medmor vil ha rett til foreldrepenger')).toBeInTheDocument();
     });

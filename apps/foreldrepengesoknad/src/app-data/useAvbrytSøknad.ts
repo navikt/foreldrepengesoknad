@@ -1,14 +1,14 @@
 import { useMutation } from '@tanstack/react-query';
+import { API_URLS } from 'api/queries';
 import ky from 'ky';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 
 import { useContextReset } from './FpDataContext';
 
 export const useAvbrytSøknad = (
-    fødselsnr: string,
     setErEndringssøknad: (erEndringssøknad: boolean) => void,
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void,
     setSøknadGjelderNyttBarn: (søknadGjelderNyttBarn?: boolean) => void,
@@ -17,11 +17,11 @@ export const useAvbrytSøknad = (
     const reset = useContextReset();
 
     const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`),
+        mutationFn: () => ky.delete(API_URLS.mellomlagring),
     });
 
-    const avbrytSøknadHandler = useCallback(async () => {
-        loggAmplitudeEvent({
+    const avbrytSøknadHandler = useCallback(() => {
+        loggUmamiEvent({
             origin: 'foreldrepengesoknad',
             eventName: 'skjema avbrutt',
         });
@@ -34,8 +34,8 @@ export const useAvbrytSøknad = (
 
         slettMellomlagring();
 
-        navigate('/');
-    }, [fødselsnr, navigate, reset, setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn]);
+        void navigate('/');
+    }, [slettMellomlagring, navigate, reset, setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn]);
 
     return avbrytSøknadHandler;
 };

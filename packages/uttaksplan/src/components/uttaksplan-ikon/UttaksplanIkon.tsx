@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
 import {
     BandageIcon,
     Buildings3Icon,
@@ -25,7 +26,7 @@ export enum UttaksplanIkonKeys {
     'feil' = 'feil',
 }
 
-export interface Props {
+interface Props {
     ikon: UttaksplanIkonKeys;
     title: string;
 }

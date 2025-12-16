@@ -5,12 +5,9 @@ import { ComponentProps } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { Barn } from 'types/Barn';
-import {
-    DelivisTilretteleggingPeriodeType,
-    DelvisTilrettelegging,
-    IngenTilrettelegging,
-    Tilretteleggingstype,
-} from 'types/Tilrettelegging';
+import { DelivisTilretteleggingPeriodeType, DelvisTilrettelegging, IngenTilrettelegging } from 'types/Tilrettelegging';
+
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { PerioderSteg } from './PerioderSteg';
 
@@ -77,7 +74,7 @@ const DEFAULT_ARBEIDSFORHOLD = [
         fom: '2023-11-01',
         stillingsprosent: 0,
     },
-];
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
 const DEFAULT_BARN = {
     erBarnetFødt: false,
@@ -144,11 +141,12 @@ export const Default: Story = {
         arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
         valgteArbeidsforhold: [TILRETTELEGGING_ID],
         mellomlagreSøknadOgNaviger: promiseAction(),
-        avbrytSøknad: promiseAction(),
+        avbrytSøknad: () => action('button-click'),
         tilrettelegging: {
-            type: Tilretteleggingstype.DELVIS,
+            type: 'delvis',
             delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
-        } as DelvisTilrettelegging,
+            behovForTilretteleggingFom: '2023-09-01',
+        } satisfies DelvisTilrettelegging,
     },
 };
 
@@ -156,9 +154,10 @@ export const FremTilFødselsdato: Story = {
     args: {
         ...Default.args,
         tilrettelegging: {
-            type: Tilretteleggingstype.DELVIS,
+            type: 'delvis',
             delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
-        } as DelvisTilrettelegging,
+            behovForTilretteleggingFom: '2023-09-01',
+        } satisfies DelvisTilrettelegging,
         barn: {
             erBarnetFødt: true,
             termindato: '2024-01-18',
@@ -174,8 +173,8 @@ export const FlereStillinger: Story = {
         valgteArbeidsforhold: [ANNEN_TILRETTELEGGING_ID],
         tilrettelegging: {
             behovForTilretteleggingFom: '2023-09-01',
-            type: Tilretteleggingstype.DELVIS,
+            type: 'delvis',
             delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
-        } as DelvisTilrettelegging,
+        } satisfies DelvisTilrettelegging,
     },
 };

@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { API_URLS } from 'api/queries';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
@@ -6,22 +7,10 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
-import { AndreInntektskilder } from 'types/AndreInntektskilder';
-import { AnnenInntektType } from 'types/AnnenInntekt';
+import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 
-import {
-    AnnenForelder,
-    Barn,
-    BarnType,
-    Forelder,
-    MorsAktivitet,
-    Periode,
-    Periodetype,
-    SivilstandType,
-    StønadskontoType,
-    UtsettelseÅrsakType,
-} from '@navikt/fp-common';
-import { ArbeidsforholdOgInntektFp, PersonFrontend, Situasjon, Søkerinfo } from '@navikt/fp-types';
+import { AnnenForelder, Barn, BarnType, Periode, Periodetype } from '@navikt/fp-common';
+import { ArbeidsforholdOgInntektFp, PersonMedArbeidsforholdDto_fpoversikt, Situasjon } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { ManglendeVedlegg } from './ManglendeVedlegg';
@@ -32,69 +21,66 @@ const promiseAction = () => () => {
 };
 
 const defaultSøkerinfo = {
-    søker: {
+    person: {
         fnr: '19047815714',
-        fornavn: 'TALENTFULL',
-        etternavn: 'MYGG',
+        navn: {
+            fornavn: 'TALENTFULL',
+            etternavn: 'MYGG',
+        },
         kjønn: 'K',
         fødselsdato: '1978-04-19',
         barn: [
             {
                 fnr: '21091981146',
                 fødselsdato: '2021-03-15',
-                annenForelder: {
+                annenPart: {
                     fnr: '12038517080',
                     fødselsdato: '1985-03-12',
-                    fornavn: 'LEALAUS',
-                    etternavn: 'BÆREPOSE',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
                 },
-                fornavn: 'KLØKTIG',
-                etternavn: 'MIDTPUNKT',
+                navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
                 kjønn: 'M',
             },
             {
                 fnr: '31091981146',
                 fødselsdato: '2022-08-02',
-                annenForelder: {
+                annenPart: {
                     fnr: '12038517080',
                     fødselsdato: '1985-03-12',
-                    fornavn: 'LEALAUS',
-                    etternavn: 'BÆREPOSE',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
                 },
-                fornavn: 'SNILT',
-                etternavn: 'MIDTPUNKT',
+                navn: { fornavn: 'SNILT', etternavn: 'MIDTPUNKT' },
                 kjønn: 'M',
             },
             {
                 fnr: '31091981147',
                 fødselsdato: '2022-08-02',
-                annenForelder: {
+                annenPart: {
                     fnr: '12038517080',
                     fødselsdato: '1985-03-12',
-                    fornavn: 'LEALAUS',
-                    etternavn: 'BÆREPOSE',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
                 },
-                fornavn: 'LYST',
-                etternavn: 'MIDTPUNKT',
+                navn: { fornavn: 'LYST', etternavn: 'MIDTPUNKT' },
                 kjønn: 'M',
             },
         ],
     },
     arbeidsforhold: [],
-} as Søkerinfo;
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
 
 const defaultAnnenForelder = {
     fornavn: 'Eline',
     etternavn: 'Hagen',
     kanIkkeOppgis: false,
     fnr: '21091981144',
+    erAleneOmOmsorg: false,
 } satisfies AnnenForelder;
 
 const defaultBarn = {
     antallBarn: 1,
     type: BarnType.FØDT,
     fødselsdatoer: ['2024-01-01'],
-} as Barn;
+} satisfies Barn;
 
 const defaultArbeidsforholdOgInntekt = {
     harHattAndreInntektskilder: false,
@@ -103,33 +89,30 @@ const defaultArbeidsforholdOgInntekt = {
 };
 
 const defaultSøkerinfoFar = {
-    søker: {
+    person: {
         fnr: '08099017784',
-        fornavn: 'FAR',
-        etternavn: 'MYGG',
+        navn: { fornavn: 'FAR', etternavn: 'MYGG' },
         kjønn: 'M',
         fødselsdato: '1978-04-19',
         barn: [
             {
                 fnr: '19047815714',
                 fødselsdato: '2021-03-15',
-                annenForelder: {
+                annenPart: {
                     fnr: '12038517080',
                     fødselsdato: '1985-03-12',
-                    fornavn: 'LEALAUS',
-                    etternavn: 'BÆREPOSE',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
                 },
-                fornavn: 'KLØKTIG',
-                etternavn: 'MIDTPUNKT',
+                navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
                 kjønn: 'K',
             },
         ],
         sivilstand: {
-            type: SivilstandType.GIFT,
+            type: 'GIFT',
         },
-    } as PersonFrontend,
+    },
     arbeidsforhold: [],
-};
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
 
 type StoryArgs = {
     rolle?: 'mor' | 'far' | 'medmor';
@@ -153,8 +136,11 @@ const meta = {
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger/vedlegg`,
-                    () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
+                    API_URLS.sendVedlegg,
+                    () =>
+                        new HttpResponse(JSON.stringify('uuid-test'), {
+                            status: 200,
+                        }),
                 ),
             ],
         },
@@ -320,8 +306,8 @@ export const FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid: Story = 
         uttaksplan: [
             {
                 id: '08499121-6620-16419-3321-0027063089154',
-                forelder: Forelder.farMedmor,
-                konto: StønadskontoType.Fedrekvote,
+                forelder: 'FAR_MEDMOR',
+                konto: 'FEDREKVOTE',
                 tidsperiode: {
                     fom: new Date(dayjs().add(10, 'month').startOf('month').add(3, 'day').format('YYYY-MM-DD')),
                     tom: new Date(dayjs().add(10, 'month').startOf('month').add(16, 'day').format('YYYY-MM-DD')),
@@ -335,14 +321,14 @@ export const FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid: Story = 
             },
             {
                 id: '0700701673-1838-30857-30810-219862607326',
-                forelder: Forelder.farMedmor,
-                konto: StønadskontoType.Fellesperiode,
+                forelder: 'FAR_MEDMOR',
+                konto: 'FELLESPERIODE',
                 tidsperiode: {
                     fom: new Date(dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD')),
                     tom: new Date(dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD')),
                 },
                 type: Periodetype.Uttak,
-                morsAktivitetIPerioden: MorsAktivitet.Arbeid,
+                morsAktivitetIPerioden: 'ARBEID',
                 erArbeidstaker: false,
                 gradert: false,
                 orgnumre: [],
@@ -354,7 +340,7 @@ export const FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid: Story = 
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    API_URLS.trengerDokumentereMorsArbeid,
                     () => new HttpResponse(JSON.stringify(false), { status: 200 }),
                 ),
             ],
@@ -368,7 +354,7 @@ export const FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid: Story = {
             ...defaultSøkerinfoFar,
             arbeidsforhold: [
                 {
-                    ...arbeidsforholdMorJobber80Prosent[0],
+                    ...arbeidsforholdMorJobber80Prosent[0]!,
                     stillingsprosent: 70,
                 },
             ],
@@ -386,8 +372,8 @@ export const FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid: Story = {
         uttaksplan: [
             {
                 id: '08499121-6620-16419-3321-0027063089154',
-                forelder: Forelder.farMedmor,
-                konto: StønadskontoType.Fedrekvote,
+                forelder: 'FAR_MEDMOR',
+                konto: 'FEDREKVOTE',
                 tidsperiode: {
                     fom: new Date(dayjs().add(10, 'month').startOf('month').add(3, 'day').format('YYYY-MM-DD')),
                     tom: new Date(dayjs().add(10, 'month').startOf('month').add(16, 'day').format('YYYY-MM-DD')),
@@ -401,14 +387,14 @@ export const FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid: Story = {
             },
             {
                 id: '0700701673-1838-30857-30810-219862607326',
-                forelder: Forelder.farMedmor,
-                konto: StønadskontoType.Fellesperiode,
+                forelder: 'FAR_MEDMOR',
+                konto: 'FELLESPERIODE',
                 tidsperiode: {
                     fom: new Date(dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD')),
                     tom: new Date(dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD')),
                 },
                 type: Periodetype.Uttak,
-                morsAktivitetIPerioden: MorsAktivitet.Arbeid,
+                morsAktivitetIPerioden: 'ARBEID',
                 erArbeidstaker: false,
                 gradert: false,
                 orgnumre: [],
@@ -420,7 +406,7 @@ export const FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid: Story = {
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    API_URLS.trengerDokumentereMorsArbeid,
                     () => new HttpResponse(JSON.stringify(true), { status: 200 }),
                 ),
             ],
@@ -444,14 +430,14 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
         uttaksplan: [
             {
                 id: '0700701673-1838-30857-30810-219862607326',
-                forelder: Forelder.mor,
-                konto: StønadskontoType.Fellesperiode,
+                forelder: 'MOR',
+                konto: 'FELLESPERIODE',
                 tidsperiode: {
                     fom: new Date(dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD')),
                     tom: new Date(dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD')),
                 },
                 type: Periodetype.Uttak,
-                morsAktivitetIPerioden: MorsAktivitet.Utdanning,
+                morsAktivitetIPerioden: 'UTDANNING',
                 erArbeidstaker: false,
                 gradert: false,
                 orgnumre: [],
@@ -463,7 +449,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
     parameters: {
         msw: {
             handlers: [
-                http.post('/foreldrepenger/soknad/rest/innsyn/v2/trengerDokumentereMorsArbeid', async () => {
+                http.post(API_URLS.trengerDokumentereMorsArbeid, () => {
                     return HttpResponse.json(true);
                 }),
             ],
@@ -489,14 +475,14 @@ export const BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbei
         uttaksplan: [
             {
                 id: '0700701673-1838-30857-30810-219862607326',
-                forelder: Forelder.farMedmor,
-                konto: StønadskontoType.Foreldrepenger,
+                forelder: 'FAR_MEDMOR',
+                konto: 'FORELDREPENGER',
                 tidsperiode: {
                     fom: new Date('2025-01-01'),
                     tom: new Date('2025-02-01'),
                 },
                 type: Periodetype.Uttak,
-                morsAktivitetIPerioden: MorsAktivitet.Arbeid,
+                morsAktivitetIPerioden: 'ARBEID',
                 erArbeidstaker: false,
                 gradert: false,
                 orgnumre: [],
@@ -504,14 +490,14 @@ export const BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbei
             },
             {
                 id: '0700701673-1838-30857-30810-219862607326',
-                forelder: Forelder.farMedmor,
+                forelder: 'FAR_MEDMOR',
                 tidsperiode: {
                     fom: new Date('2026-01-01'),
                     tom: new Date('2026-02-01'),
                 },
                 type: Periodetype.Utsettelse,
-                årsak: UtsettelseÅrsakType.Fri,
-                morsAktivitetIPerioden: MorsAktivitet.Arbeid,
+                årsak: 'FRI',
+                morsAktivitetIPerioden: 'ARBEID',
                 erArbeidstaker: false,
             },
         ],
@@ -520,7 +506,7 @@ export const BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbei
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    API_URLS.trengerDokumentereMorsArbeid,
                     () => new HttpResponse(JSON.stringify(false), { status: 200 }),
                 ),
             ],

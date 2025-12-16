@@ -1,11 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { action } from 'storybook/actions';
 
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+
 import { ArbeidsforholdOgInntektPanel } from './ArbeidsforholdOgInntektPanel';
 
 const DEFAULT_ARBEIDSFORHOLD = [
     {
-        id: '186699244-06994-0884-1562-860234771205',
         arbeidsgiverId: '975326209',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Sykehuset i Vestfold',
@@ -13,7 +14,6 @@ const DEFAULT_ARBEIDSFORHOLD = [
         stillingsprosent: 85.09,
     },
     {
-        id: '263929546-6215-9868-5127-161910165730101',
         arbeidsgiverId: '990322244',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
@@ -21,14 +21,13 @@ const DEFAULT_ARBEIDSFORHOLD = [
         stillingsprosent: 100,
     },
     {
-        id: '0132715641-23932-19917-03900-809964087910',
         arbeidsgiverId: '995090910',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Re Kommune',
         fom: '2018-06-01T00:00:00.000Z',
         stillingsprosent: 0,
     },
-];
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
 const meta = {
     component: ArbeidsforholdOgInntektPanel,

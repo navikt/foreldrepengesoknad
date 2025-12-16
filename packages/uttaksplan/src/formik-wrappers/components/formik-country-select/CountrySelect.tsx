@@ -13,9 +13,6 @@ interface Props extends TestProps, Omit<SelectProps, 'onChange' | 'children'> {
     showOnlyEuAndEftaCountries?: boolean;
     useAlpha3Code?: boolean;
 }
-
-export type ChangeEvent = React.ChangeEvent<HTMLSelectElement>;
-
 interface CountryOptionsCache {
     locale: string;
     options: React.ReactNode[];
@@ -31,14 +28,14 @@ const createCountryOptions = (
 
     const names: Array<[string, any]> = Object.entries(countries.getNames(lang));
     return names
-        .sort((a: string[], b: string[]) => a[1].localeCompare(b[1], lang))
+        .sort((a: string[], b: string[]) => a[1]!.localeCompare(b[1]!, lang))
         .filter((countryOptionValue: string[]) =>
-            filteredListEØSCountries(countryOptionValue[0], onluEuAndEftaCountries),
+            filteredListEØSCountries(countryOptionValue[0]!, onluEuAndEftaCountries),
         )
         .map((countryOptionValue: string[]) => (
             <option
                 key={countryOptionValue[0]}
-                value={useAlpha3Code ? getAlpha3Code(countryOptionValue[0]) : countryOptionValue[0]}
+                value={useAlpha3Code ? getAlpha3Code(countryOptionValue[0]!) : countryOptionValue[0]}
             >
                 {countryOptionValue[1]}
             </option>
@@ -72,7 +69,6 @@ class CountrySelect extends React.Component<Props> {
     }
 
     render() {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { onChange, name, showOnlyEuAndEftaCountries, locale, useAlpha3Code, ...restProps } = this.props;
         return (
             <Select name={name} {...restProps} onChange={(e) => onChange(e.target.value)} autoComplete="off">

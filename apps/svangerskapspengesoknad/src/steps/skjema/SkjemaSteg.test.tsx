@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
 import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './SkjemaSteg.stories';
@@ -41,7 +43,6 @@ describe('<SkjemaSteg>', () => {
             await userEvent.upload(fileInput, file);
 
             await userEvent.click(screen.getByText('Neste steg'));
-
             expect(screen.queryByText('Du må laste opp minst ett dokument')).not.toBeInTheDocument();
             expect(
                 await screen.findByText('Last opp skjema for risiko og tilrettelegging i svangerskapet'),
@@ -54,12 +55,14 @@ describe('<SkjemaSteg>', () => {
                             filename: 'hello.png',
                             filesize: 5,
                             pending: false,
-                            skjemanummer: 'I000109',
-                            type: 'tilrettelegging',
+                            skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
+                            type: AttachmentType.TILRETTELEGGING,
                             uploaded: true,
-                            url: 'test.com',
                             uuid: 'uuid-test',
-                        }),
+                            id: expect.any(String),
+                            file: expect.any(Object),
+                            innsendingsType: 'LASTET_OPP',
+                        } satisfies Attachment),
                     ],
                 },
                 key: ContextDataType.TILRETTELEGGINGER_VEDLEGG,

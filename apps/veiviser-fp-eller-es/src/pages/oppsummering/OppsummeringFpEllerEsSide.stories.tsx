@@ -2,23 +2,9 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { FpEllerEsRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 
-import { Situasjon } from '../situasjon/SituasjonSide';
-import { OppsummeringFpEllerEsSide } from './OppsummeringFpEllerEsSide';
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
 
-const satser = {
-    engangstønad: [
-        {
-            fom: '01.01.2023',
-            verdi: 92648,
-        },
-    ],
-    grunnbeløp: [
-        {
-            fom: '01.05.2024',
-            verdi: 124028,
-        },
-    ],
-};
+import { OppsummeringFpEllerEsSide } from './OppsummeringFpEllerEsSide';
 
 const meta = {
     title: 'fpEllerEs/OppsummeringFpEllerEsSide',
@@ -37,70 +23,70 @@ type Story = StoryObj<typeof meta>;
 
 export const MorHarTjentMerEnn200000OgHarRettTilFp: Story = {
     args: {
-        satser,
+        satser: DEFAULT_SATSER,
         fpEllerEsSituasjon: {
             borDuINorge: true,
             erIArbeid: true,
             harHattAndreInntekter: true,
             harHattInntekt: true,
             lønnPerMåned: '20000',
-            situasjon: Situasjon.MOR,
+            situasjon: 'mor',
             jobberDuINorge: true,
         },
     },
 };
 export const MorHarTjentMindreEnn200000OgHarRettTilFpOgEs: Story = {
     args: {
-        satser,
+        satser: DEFAULT_SATSER,
         fpEllerEsSituasjon: {
             borDuINorge: true,
             erIArbeid: true,
             harHattAndreInntekter: true,
             harHattInntekt: true,
             lønnPerMåned: '10000',
-            situasjon: Situasjon.MOR,
+            situasjon: 'mor',
             jobberDuINorge: true,
         },
     },
 };
 export const FarKanHaRettTilFp: Story = {
     args: {
-        satser,
+        satser: DEFAULT_SATSER,
         fpEllerEsSituasjon: {
             borDuINorge: true,
             erIArbeid: true,
             harHattAndreInntekter: false,
             harHattInntekt: true,
             lønnPerMåned: '10000',
-            situasjon: Situasjon.FAR,
+            situasjon: 'far',
             jobberDuINorge: true,
         },
     },
 };
 export const FarKanHaRettTilEs: Story = {
     args: {
-        satser,
+        satser: DEFAULT_SATSER,
         fpEllerEsSituasjon: {
             borDuINorge: true,
             erIArbeid: true,
             harHattAndreInntekter: false,
             harHattInntekt: true,
             lønnPerMåned: '1000',
-            situasjon: Situasjon.FAR,
+            situasjon: 'far',
             jobberDuINorge: true,
         },
     },
 };
 export const MorHarRettTilEs: Story = {
     args: {
-        satser,
+        satser: DEFAULT_SATSER,
         fpEllerEsSituasjon: {
             borDuINorge: true,
             erIArbeid: false,
             harHattAndreInntekter: false,
             harHattInntekt: true,
             lønnPerMåned: '1000',
-            situasjon: Situasjon.MOR,
+            situasjon: 'mor',
             jobberDuINorge: true,
         },
     },
@@ -108,14 +94,14 @@ export const MorHarRettTilEs: Story = {
 
 export const MorHarRettBorIkkeINorgeMenJobberINorge: Story = {
     args: {
-        satser,
+        satser: DEFAULT_SATSER,
         fpEllerEsSituasjon: {
             borDuINorge: false,
             erIArbeid: true,
             harHattAndreInntekter: false,
             harHattInntekt: true,
             lønnPerMåned: '10000',
-            situasjon: Situasjon.MOR,
+            situasjon: 'mor',
             jobberDuINorge: true,
         },
     },
@@ -123,28 +109,28 @@ export const MorHarRettBorIkkeINorgeMenJobberINorge: Story = {
 
 export const FarHarIkkeRett: Story = {
     args: {
-        satser,
+        satser: DEFAULT_SATSER,
         fpEllerEsSituasjon: {
             borDuINorge: false,
             erIArbeid: false,
             harHattAndreInntekter: false,
             harHattInntekt: true,
             lønnPerMåned: '0',
-            situasjon: Situasjon.FAR,
+            situasjon: 'far',
             jobberDuINorge: false,
         },
     },
 };
 export const MorHarIkkeRettJobberIkkeINorgeMenIUtlandet: Story = {
     args: {
-        satser,
+        satser: DEFAULT_SATSER,
         fpEllerEsSituasjon: {
             borDuINorge: false,
             erIArbeid: true,
             harHattAndreInntekter: false,
             harHattInntekt: true,
             lønnPerMåned: '10000',
-            situasjon: Situasjon.MOR,
+            situasjon: 'mor',
             jobberDuINorge: false,
         },
     },

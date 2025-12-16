@@ -6,7 +6,7 @@ import { Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { Søkersituasjon } from '@navikt/fp-common';
 import { RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
 
 import { BarnetFormValues } from '../OmBarnetFormValues';
@@ -35,7 +35,7 @@ interface Props {
     søkersituasjon: Søkersituasjon;
     erFarEllerMedmor: boolean;
     søknadGjelderEtNyttBarn: boolean;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }
 
 export const FødselPanel = ({ søkersituasjon, erFarEllerMedmor, søknadGjelderEtNyttBarn, arbeidsforhold }: Props) => {
@@ -69,7 +69,7 @@ export const FødselPanel = ({ søkersituasjon, erFarEllerMedmor, søknadGjelder
                         </RhfRadioGroup>
                         {!erFarEllerMedmor && (
                             <ReadMore header={intl.formatMessage({ id: 'omBarnet.erBarnetFødt.readMore.header' })}>
-                                <VStack gap="4">
+                                <VStack gap="space-16">
                                     <div>
                                         <FormattedMessage id="omBarnet.erBarnetFødt.readMore.innhold.del1" />
                                     </div>

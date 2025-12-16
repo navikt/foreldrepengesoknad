@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { Forelder } from '@navikt/fp-constants';
+import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
 import { TidsperiodenString, formatDateIso } from '@navikt/fp-utils';
 
 import { Permisjonsperiode } from '../types/Permisjonsperiode';
@@ -10,6 +10,7 @@ import {
     isOppholdsperiode,
     isOverføringsperiode,
     isPeriodeUtenUttak,
+    isPrematuruker,
     isUtsettelsesperiode,
     isUttaksperiode,
 } from './periodeUtils';
@@ -68,7 +69,7 @@ export const mapPerioderToPermisjonsperiode = (
     }
 
     let nyPermisjonsperiode: Permisjonsperiode | undefined = undefined;
-    let forelderForrigePeriode: Forelder | undefined = undefined;
+    let forelderForrigePeriode: BrukerRolleSak_fpoversikt | undefined = undefined;
     let erSamtidigUttak = false;
 
     perioder.forEach((periode, index) => {
@@ -117,20 +118,13 @@ export const mapPerioderToPermisjonsperiode = (
             return;
         }
 
-        if (isUttaksperiode(periode) || isOverføringsperiode(periode) || isOppholdsperiode(periode)) {
+        if (
+            !periode.erAnnenPartEøs &&
+            (isUttaksperiode(periode) || isOverføringsperiode(periode) || isOppholdsperiode(periode))
+        ) {
             const forelderType = periode.forelder;
 
-            if (!nyPermisjonsperiode) {
-                nyPermisjonsperiode = {
-                    forelder: forelderType,
-                    perioder: [{ ...periode }],
-                    tidsperiode: {
-                        fom: formatDateIso(periode.fom),
-                        tom: formatDateIso(periode.tom),
-                    },
-                    samtidigUttak: !!periode.samtidigUttak,
-                };
-            } else {
+            if (nyPermisjonsperiode) {
                 if (forelderForrigePeriode === periode.forelder && beggePerioderErPåSammeSideAvFamdato) {
                     nyPermisjonsperiode.perioder = [...nyPermisjonsperiode.perioder, { ...periode }];
                     nyPermisjonsperiode.tidsperiode.tom = formatDateIso(periode.tom);
@@ -144,6 +138,16 @@ export const mapPerioderToPermisjonsperiode = (
                         },
                     };
                 }
+            } else {
+                nyPermisjonsperiode = {
+                    forelder: forelderType,
+                    perioder: [{ ...periode }],
+                    tidsperiode: {
+                        fom: formatDateIso(periode.fom),
+                        tom: formatDateIso(periode.tom),
+                    },
+                    samtidigUttak: !!periode.samtidigUttak,
+                };
             }
 
             if (!permisjonsPerioder.includes(nyPermisjonsperiode)) {
@@ -185,6 +189,24 @@ export const mapPerioderToPermisjonsperiode = (
             nyPermisjonsperiode = undefined;
         }
 
+        if (!periode.erAnnenPartEøs && isPrematuruker(periode)) {
+            const forelderType = periode.forelder;
+
+            nyPermisjonsperiode = {
+                forelder: forelderType,
+                perioder: [{ ...periode }],
+                tidsperiode: {
+                    fom: formatDateIso(periode.fom),
+                    tom: formatDateIso(periode.tom),
+                },
+                erUtsettelse: false,
+            };
+
+            permisjonsPerioder.push(nyPermisjonsperiode);
+            forelderForrigePeriode = undefined;
+            nyPermisjonsperiode = undefined;
+        }
+
         if (isHull(periode)) {
             nyPermisjonsperiode = {
                 perioder: [{ ...periode }],
@@ -203,3 +225,14 @@ export const mapPerioderToPermisjonsperiode = (
 
     return permisjonsPerioder;
 };
+
+export const filtrerBortAnnenPartsIdentiskePerioder = (uttaksplan: Planperiode[], erFarEllerMedmor: boolean) =>
+    uttaksplan.reduce<Planperiode[]>((alle, periode) => {
+        const erSøkersPeriode = erPeriodeForSøker(periode, erFarEllerMedmor);
+        const filtrerte = uttaksplan.filter((p) => p.fom === periode.fom && p.tom === periode.tom);
+        return filtrerte.length > 1 && !erSøkersPeriode ? alle : alle.concat(periode);
+    }, []);
+
+export const erPeriodeForSøker = (periode: Planperiode, erFarEllerMedmor: boolean) =>
+    !periode.erAnnenPartEøs &&
+    ((periode.forelder === 'MOR' && !erFarEllerMedmor) || (periode.forelder === 'FAR_MEDMOR' && erFarEllerMedmor));

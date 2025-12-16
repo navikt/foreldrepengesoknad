@@ -15,8 +15,8 @@ import {
     RhfRadioGroup,
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import {
     enMånedSiden,
@@ -54,8 +54,8 @@ const validerTermindato = (intl: IntlShape, fødselsdato?: string) => (termindat
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    avbrytSøknad: () => Promise<void>;
-    arbeidsforhold: Arbeidsforhold[];
+    avbrytSøknad: () => void;
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 };
 
 export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
@@ -85,7 +85,7 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig} onStepChange={navigator.goToStep}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                    <VStack gap="10">
+                    <VStack gap="space-40">
                         <ErrorSummaryHookForm />
                         <div>
                             <RhfRadioGroup
@@ -109,7 +109,7 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
                             </RhfRadioGroup>
                             <ReadMore
                                 onOpenChange={(open) =>
-                                    loggAmplitudeEvent({
+                                    loggUmamiEvent({
                                         origin: 'svangerskapspengesoknad',
                                         eventName: open ? 'readmore åpnet' : 'readmore lukket',
                                         eventData: { tittel: 'barnet.erBarnetFødt.merInfo.tittel' },
@@ -149,7 +149,7 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
                                 ]}
                                 minDate={halvannetÅrSiden(new Date())}
                                 maxDate={dayjs().toDate()}
-                                onChange={() => formMethods.formState.isSubmitted && formMethods.trigger()}
+                                onChange={() => void (formMethods.formState.isSubmitted && formMethods.trigger())}
                             />
                         )}
                         <div>
@@ -195,7 +195,7 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
                             />
                             <ReadMore
                                 onOpenChange={(open) =>
-                                    loggAmplitudeEvent({
+                                    loggUmamiEvent({
                                         origin: 'svangerskapspengesoknad',
                                         eventName: open ? 'readmore åpnet' : 'readmore lukket',
                                         eventData: { tittel: 'barnet.termindato.merInfo.tittel' },

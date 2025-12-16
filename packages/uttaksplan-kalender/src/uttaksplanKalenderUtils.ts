@@ -1,8 +1,7 @@
 import { IntlShape } from 'react-intl';
 
-import { PeriodeColor, UtsettelseÅrsakType } from '@navikt/fp-constants';
-import { Barn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
-import { Period } from '@navikt/fp-ui';
+import { Barn, UtsettelsesÅrsak, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
+import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import {
     capitalizeFirstLetter,
     formaterDatoUtenDag,
@@ -10,34 +9,34 @@ import {
     getNavnGenitivEierform,
 } from '@navikt/fp-utils';
 
-const getUtsettelseÅrsakTekst = (årsak: UtsettelseÅrsakType, intl: IntlShape) => {
-    if (årsak === UtsettelseÅrsakType.Arbeid) {
+const getUtsettelseÅrsakTekst = (årsak: UtsettelsesÅrsak, intl: IntlShape) => {
+    if (årsak === 'ARBEID') {
         return intl.formatMessage({ id: `kalender.utsettelse.ARBEID` });
     }
-    if (årsak === UtsettelseÅrsakType.InstitusjonBarnet) {
+    if (årsak === 'INSTITUSJONSOPPHOLD_BARNET') {
         return intl.formatMessage({ id: `kalender.utsettelse.INSTITUSJONSOPPHOLD_BARNET` });
     }
-    if (årsak === UtsettelseÅrsakType.InstitusjonSøker) {
+    if (årsak === 'INSTITUSJONSOPPHOLD_SØKER') {
         return intl.formatMessage({ id: `kalender.utsettelse.INSTITUSJONSOPPHOLD_SØKER` });
     }
-    if (årsak === UtsettelseÅrsakType.Ferie) {
+    if (årsak === 'LOVBESTEMT_FERIE') {
         return intl.formatMessage({ id: `kalender.utsettelse.LOVBESTEMT_FERIE` });
     }
-    if (årsak === UtsettelseÅrsakType.Sykdom) {
+    if (årsak === 'SYKDOM') {
         return intl.formatMessage({ id: `kalender.utsettelse.SYKDOM` });
     }
-    if (årsak === UtsettelseÅrsakType.HvØvelse) {
+    if (årsak === 'HV_OVELSE') {
         return intl.formatMessage({ id: `kalender.utsettelse.HV_OVELSE` });
     }
-    if (årsak === UtsettelseÅrsakType.NavTiltak) {
+    if (årsak === 'NAV_TILTAK') {
         return intl.formatMessage({ id: `kalender.utsettelse.NAV_TILTAK` });
     }
     return '';
 };
 
-const getUtsettelseLabel = (unikeUtsettelseÅrsaker: UtsettelseÅrsakType[], intl: IntlShape): string => {
-    if (unikeUtsettelseÅrsaker.length === 1 && unikeUtsettelseÅrsaker[0] !== UtsettelseÅrsakType.Fri) {
-        const årsakTekst = getUtsettelseÅrsakTekst(unikeUtsettelseÅrsaker[0], intl);
+const getUtsettelseLabel = (unikeUtsettelseÅrsaker: UtsettelsesÅrsak[], intl: IntlShape): string => {
+    if (unikeUtsettelseÅrsaker.length === 1 && unikeUtsettelseÅrsaker[0] !== 'FRI') {
+        const årsakTekst = getUtsettelseÅrsakTekst(unikeUtsettelseÅrsaker[0]!, intl);
         return intl.formatMessage({ id: 'kalender.utsettelse' }, { årsak: årsakTekst });
     }
     return intl.formatMessage({ id: 'kalender.dinUtsettelse' });
@@ -63,32 +62,32 @@ const getSkjermlesertekstForFamiliehendelse = (barn: Barn, intl: IntlShape): str
 };
 
 export const getKalenderPeriodenavn = (
-    color: PeriodeColor,
+    color: CalendarPeriodColor,
     navnAnnenPart: string,
-    unikeUtsettelseÅrsaker: UtsettelseÅrsakType[],
+    unikeUtsettelseÅrsaker: UtsettelsesÅrsak[],
     erFarEllerMedmor: boolean,
     intl: IntlShape,
 ): string => {
     switch (color) {
-        case PeriodeColor.BLUE:
-        case PeriodeColor.GREEN:
+        case 'BLUE':
+        case 'GREEN':
             return intl.formatMessage({ id: 'kalender.dinPeriode' });
-        case PeriodeColor.BLUESTRIPED:
-        case PeriodeColor.GREENSTRIPED:
+        case 'BLUESTRIPED':
+        case 'GREENSTRIPED':
             return intl.formatMessage({ id: 'kalender.dinPeriode.gradert' });
-        case PeriodeColor.LIGHTBLUE:
-        case PeriodeColor.LIGHTGREEN:
+        case 'LIGHTBLUE':
+        case 'LIGHTGREEN':
             return intl.formatMessage(
                 { id: 'kalender.annenPartPeriode' },
                 { navnAnnenPart: getNavnGenitivEierform(capitalizeFirstLetter(navnAnnenPart), intl.locale) },
             );
-        case PeriodeColor.LIGHTBLUEGREEN:
-        case PeriodeColor.LIGHTGREENBLUE:
+        case 'LIGHTBLUEGREEN':
+        case 'LIGHTGREENBLUE':
             return intl.formatMessage(
                 { id: 'kalender.samtidigUttak' },
                 { navnAnnenPart: capitalizeFirstLetter(navnAnnenPart) },
             );
-        case PeriodeColor.GREENOUTLINE:
+        case 'GREENOUTLINE':
             return erFarEllerMedmor
                 ? getUtsettelseLabel(unikeUtsettelseÅrsaker, intl)
                 : intl.formatMessage(
@@ -96,16 +95,16 @@ export const getKalenderPeriodenavn = (
                       { navnAnnenPart: capitalizeFirstLetter(navnAnnenPart) },
                   );
 
-        case PeriodeColor.BLUEOUTLINE:
+        case 'BLUEOUTLINE':
             return erFarEllerMedmor
                 ? intl.formatMessage(
                       { id: 'kalender.utsettelseAnnenPart' },
                       { navnAnnenPart: capitalizeFirstLetter(navnAnnenPart) },
                   )
                 : getUtsettelseLabel(unikeUtsettelseÅrsaker, intl);
-        case PeriodeColor.BLACK:
+        case 'BLACK':
             return intl.formatMessage({ id: 'kalender.tapteDager' });
-        case PeriodeColor.GRAY:
+        case 'GRAY':
             return intl.formatMessage({ id: 'kalender.helg' });
         default:
             return '';
@@ -113,17 +112,17 @@ export const getKalenderPeriodenavn = (
 };
 
 export const getKalenderSkjermlesertekstForPeriode = (
-    period: Period,
+    period: CalendarPeriod,
     barn: Barn,
     navnAnnenPart: string,
-    unikeUtsettelseÅrsaker: UtsettelseÅrsakType[],
+    unikeUtsettelseÅrsaker: UtsettelsesÅrsak[],
     erFarEllerMedmor: boolean,
     intl: IntlShape,
-): string | undefined => {
-    if ([PeriodeColor.NONE, PeriodeColor.GRAY].includes(period.color)) {
-        return undefined;
+): string => {
+    if (['NONE', 'GRAY'].includes(period.color)) {
+        return '';
     }
-    if (period.color === PeriodeColor.PINK) {
+    if (period.color === 'PINK') {
         return getSkjermlesertekstForFamiliehendelse(barn, intl);
     }
     const periodeNavn = getKalenderPeriodenavn(

@@ -1,7 +1,7 @@
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
-import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, Søkersituasjon } from '@navikt/fp-types';
 
 import { VedleggUploader } from '../attachment-uploaders/VedleggUploader';
@@ -15,7 +15,7 @@ interface Props {
 export const OmsorgsovertakelseDokumentasjon = ({ attachments, updateAttachments, søkersituasjon }: Props) => {
     const intl = useIntl();
 
-    if (søkersituasjon.situasjon !== 'adopsjon') {
+    if (!skalViseOmsorgsovertakelseDokumentasjon(søkersituasjon)) {
         return null;
     }
 
@@ -27,7 +27,11 @@ export const OmsorgsovertakelseDokumentasjon = ({ attachments, updateAttachments
             labelText={intl.formatMessage({ id: 'manglendeVedlegg.omsorgsovertakelse.tittel' })}
             description={intl.formatMessage({ id: 'manglendeVedlegg.omsorgsovertakelse.description' })}
             attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
-            metadataType={AttachmentMetadataType.BARN}
+            metadataType="BARN"
         />
     );
+};
+
+export const skalViseOmsorgsovertakelseDokumentasjon = (søkersituasjon?: Søkersituasjon) => {
+    return søkersituasjon?.situasjon === 'adopsjon';
 };

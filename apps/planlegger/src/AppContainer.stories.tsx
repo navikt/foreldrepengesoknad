@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { API_URLS } from 'appData/queries';
 import { HttpResponse, http } from 'msw';
 import { StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { StønadskontoType } from '@navikt/fp-constants';
-import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { KontoBeregningResultatDto } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';
 
@@ -12,19 +12,19 @@ const STØNADSKONTOER = {
     '100': {
         kontoer: [
             {
-                konto: StønadskontoType.Mødrekvote,
+                konto: 'MØDREKVOTE',
                 dager: 75,
             },
             {
-                konto: StønadskontoType.Fedrekvote,
+                konto: 'FEDREKVOTE',
                 dager: 75,
             },
             {
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
                 dager: 80,
             },
             {
-                konto: StønadskontoType.ForeldrepengerFørFødsel,
+                konto: 'FORELDREPENGER_FØR_FØDSEL',
                 dager: 15,
             },
         ],
@@ -36,19 +36,19 @@ const STØNADSKONTOER = {
     '80': {
         kontoer: [
             {
-                konto: StønadskontoType.Mødrekvote,
+                konto: 'MØDREKVOTE',
                 dager: 95,
             },
             {
-                konto: StønadskontoType.Fedrekvote,
+                konto: 'FEDREKVOTE',
                 dager: 95,
             },
             {
-                konto: StønadskontoType.Fellesperiode,
+                konto: 'FELLESPERIODE',
                 dager: 90,
             },
             {
-                konto: StønadskontoType.ForeldrepengerFørFødsel,
+                konto: 'FORELDREPENGER_FØR_FØDSEL',
                 dager: 15,
             },
         ],
@@ -57,30 +57,7 @@ const STØNADSKONTOER = {
             toTette: 0,
         },
     },
-} satisfies TilgjengeligeStønadskontoer;
-
-const SATSER = {
-    engangstønad: [
-        {
-            fom: '01.01.2023',
-            verdi: 92648,
-        },
-        {
-            fom: '01.01.2021',
-            verdi: 90300,
-        },
-    ],
-    grunnbeløp: [
-        {
-            fom: '01.05.2024',
-            verdi: 124028,
-        },
-        {
-            fom: '01.05.2023',
-            verdi: 118620,
-        },
-    ],
-};
+} satisfies KontoBeregningResultatDto;
 
 const meta = {
     title: 'AppContainer',
@@ -88,21 +65,18 @@ const meta = {
     parameters: {
         msw: {
             handlers: [
-                http.post(`${import.meta.env.BASE_URL}/rest/konto`, async ({ request }) => {
+                http.post(API_URLS.konto, async ({ request }) => {
                     const body = await request.json();
-                    const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', {
+                    const response = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
                         body: JSON.stringify(body),
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
                     });
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     const json = await response.json();
-                    return HttpResponse.json(json);
-                }),
-                http.get(`${import.meta.env.BASE_URL}/rest/satser`, async () => {
-                    const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/satser');
-                    const json = await response.json();
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                     return HttpResponse.json(json);
                 }),
             ],
@@ -128,10 +102,7 @@ export const DefaultMockaStønadskontoerOgSatser: Story = {
     ...Default,
     parameters: {
         msw: {
-            handlers: [
-                http.post(`${import.meta.env.BASE_URL}/rest/konto`, () => HttpResponse.json(STØNADSKONTOER)),
-                http.get(`${import.meta.env.BASE_URL}/rest/satser`, () => HttpResponse.json(SATSER)),
-            ],
+            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(STØNADSKONTOER))],
         },
     },
 };

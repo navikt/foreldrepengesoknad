@@ -9,16 +9,16 @@ import { NæringFormValues } from '../types/NæringFormValues';
 
 const validateEgenNæringOrgnr =
     (intl: IntlShape, erValgfri: boolean) =>
-    (orgnr: string | undefined): string | undefined => {
-        const trimmedOrgNr = (orgnr || '').trim();
-
-        if (!erValgfri && !trimmedOrgNr) {
+    (orgnrValue = ''): string | undefined => {
+        if (!erValgfri && !orgnrValue) {
             return intl.formatMessage({ id: 'valideringsfeil.egenNæringOrgnr.påkrevd' });
         }
-        if (trimmedOrgNr.length > 0 && containsWhiteSpace(orgnr || '')) {
+
+        if (orgnrValue.length > 0 && containsWhiteSpace(orgnrValue)) {
             return intl.formatMessage({ id: 'valideringsfeil.egenNæringOrgnr.inneholderMellomrom' });
         }
-        if (trimmedOrgNr.length > 0 && !erGyldigNorskOrgnummer(trimmedOrgNr)) {
+
+        if (orgnrValue.length > 0 && !erGyldigNorskOrgnummer(orgnrValue)) {
             return intl.formatMessage({ id: 'valideringsfeil.egenNæringOrgnr.ugyldigFormat' });
         }
 

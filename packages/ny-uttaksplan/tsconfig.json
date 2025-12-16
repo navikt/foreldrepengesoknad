@@ -1,12 +1,10 @@
 {
     "extends": "@navikt/fp-config-typescript/tsconfig.json",
     "compilerOptions": {
-        "moduleResolution": "bundler",
         "baseUrl": "src",
         "jsx": "react-jsx",
-        "rootDir": "src",
         "types": ["vite/client", "@testing-library/jest-dom", "vitest/globals"]
     },
-    "include": ["src/**/*"],
+    "include": ["src", "vitest"],
     "exclude": ["node_modules"]
 }

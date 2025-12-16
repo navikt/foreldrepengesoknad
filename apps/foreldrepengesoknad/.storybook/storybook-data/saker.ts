@@ -1,4 +1,4 @@
-import { Saker } from '@navikt/fp-types';
+import { Saker_fpoversikt } from '@navikt/fp-types';
 
 export const saker = {
     foreldrepenger: [
@@ -7,6 +7,7 @@ export const saker = {
             sakAvsluttet: false,
             oppdatertTidspunkt: '2023-03-31',
             kanSøkeOmEndring: false,
+            forelder: 'MOR',
             sakTilhørerMor: false,
             gjelderAdopsjon: true,
             morUføretrygd: false,
@@ -45,4 +46,4 @@ export const saker = {
     ],
     engangsstønad: [],
     svangerskapspenger: [],
-} satisfies Saker;
+} satisfies Saker_fpoversikt;

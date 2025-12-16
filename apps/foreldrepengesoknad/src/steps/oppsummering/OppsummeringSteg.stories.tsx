@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { API_URLS } from 'api/queries';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
@@ -8,26 +9,18 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak';
-import { AndreInntektskilder } from 'types/AndreInntektskilder';
-import { AnnenInntektType } from 'types/AnnenInntekt';
+import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import { AnnenForelder, Barn, BarnType, Dekningsgrad, Periode } from '@navikt/fp-common';
-import {
-    AttachmentMetadataType,
-    AttachmentType,
-    ISO_DATE_FORMAT,
-    InnsendingsType,
-    SivilstandType,
-    Skjemanummer,
-} from '@navikt/fp-constants';
+import { AnnenForelder, Barn, BarnType, Periode, Periodetype } from '@navikt/fp-common';
+import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import {
     ArbeidsforholdOgInntektFp,
+    EksternArbeidsforholdDto_fpoversikt,
     Frilans,
     NæringDto,
-    PersonFrontend,
-    Sivilstand,
-    Søkerinfo,
+    PersonMedArbeidsforholdDto_fpoversikt,
+    Sivilstand_fpoversikt,
     SøkersituasjonFp,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
@@ -41,78 +34,70 @@ const promiseAction = () => () => {
 };
 
 const defaultSøkerinfoMor = {
-    søker: {
+    person: {
         fnr: '02520489226',
-        fornavn: 'MOR',
-        etternavn: 'MYGG',
+        navn: { fornavn: 'MOR', etternavn: 'MYGG' },
         kjønn: 'K',
         fødselsdato: '1978-04-19',
         barn: [
             {
                 fnr: '21091981146',
                 fødselsdato: '2021-03-15',
-                annenForelder: {
+                annenPart: {
                     fnr: '08099017784',
                     fødselsdato: '1985-03-12',
-                    fornavn: 'LEALAUS',
-                    etternavn: 'BÆREPOSE',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
                 },
-                fornavn: 'KLØKTIG',
-                etternavn: 'MIDTPUNKT',
+                navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
                 kjønn: 'M',
             },
         ],
         sivilstand: {
-            type: SivilstandType.GIFT,
+            type: 'GIFT',
         },
-    } as PersonFrontend,
+    },
     arbeidsforhold: [],
-};
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
 const defaultSøkerinfoFar = {
-    søker: {
+    person: {
         fnr: '08099017784',
-        fornavn: 'FAR',
-        etternavn: 'MYGG',
+        navn: { fornavn: 'FAR', etternavn: 'MYGG' },
         kjønn: 'M',
         fødselsdato: '1978-04-19',
         barn: [
             {
                 fnr: '19047815714',
                 fødselsdato: '2021-03-15',
-                annenForelder: {
+                annenPart: {
                     fnr: '12038517080',
                     fødselsdato: '1985-03-12',
-                    fornavn: 'LEALAUS',
-                    etternavn: 'BÆREPOSE',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
                 },
-                fornavn: 'KLØKTIG',
-                etternavn: 'MIDTPUNKT',
+                navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
                 kjønn: 'K',
             },
         ],
         sivilstand: {
-            type: SivilstandType.UGIFT,
+            type: 'UGIFT',
         },
-    } as PersonFrontend,
+    },
     arbeidsforhold: [],
-};
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
 
 const defaultBarn = {
     type: BarnType.FØDT,
     fødselsdatoer: ['2021-03-15'],
     antallBarn: 1,
-    datoForAleneomsorg: '2021-03-15',
-    dokumentasjonAvAleneomsorg: [],
-} as Barn;
+} satisfies Barn;
 
 const defaultSøkersituasjon = {
     situasjon: 'fødsel',
     rolle: 'mor',
-} as SøkersituasjonFp;
+} satisfies SøkersituasjonFp;
 
 const defaultAnnenForelder = {
     kanIkkeOppgis: true,
-};
+} as const;
 
 const defaultUtenlandsopphold = {
     harBoddUtenforNorgeSiste12Mnd: false,
@@ -122,7 +107,7 @@ const defaultUtenlandsopphold = {
 const defaultUttaksplan = [
     {
         id: '0',
-        type: 'uttak',
+        type: Periodetype.Uttak,
         forelder: 'MOR',
         konto: 'FORELDREPENGER_FØR_FØDSEL',
         tidsperiode: {
@@ -132,8 +117,10 @@ const defaultUttaksplan = [
     },
     {
         id: '1',
-        type: 'utsettelse',
+        type: Periodetype.Utsettelse,
         årsak: 'INSTITUSJONSOPPHOLD_SØKER',
+        forelder: 'MOR',
+        erArbeidstaker: true,
         tidsperiode: {
             fom: new Date('2021-12-14T23:00:00.000Z'),
             tom: new Date('2022-01-24T23:00:00.000Z'),
@@ -141,7 +128,7 @@ const defaultUttaksplan = [
     },
     {
         id: '2',
-        type: 'periodeUtenUttak',
+        type: Periodetype.PeriodeUtenUttak,
         tidsperiode: {
             fom: new Date('2022-01-25T23:00:00.000Z'),
             tom: new Date('2022-03-28T23:00:00.000Z'),
@@ -149,7 +136,7 @@ const defaultUttaksplan = [
     },
     {
         id: '3',
-        type: 'uttak',
+        type: Periodetype.Uttak,
         forelder: 'MOR',
         konto: 'FELLESPERIODE',
         tidsperiode: {
@@ -159,13 +146,13 @@ const defaultUttaksplan = [
         ønskerSamtidigUttak: false,
         gradert: false,
     },
-] as Periode[];
+] satisfies Periode[];
 
 const defaultArbeidsforholdOgInntekt = {
     harHattAndreInntektskilder: false,
     harJobbetSomFrilans: false,
     harJobbetSomSelvstendigNæringsdrivende: false,
-} as ArbeidsforholdOgInntektFp;
+} satisfies ArbeidsforholdOgInntektFp;
 
 const defaultVedlegg = {
     [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: [],
@@ -203,17 +190,17 @@ const arbeidsforholdMorJobber80Prosent = [
         stillingsprosent: 80,
         fom: dayjs().subtract(5, 'year').format('YYYY-MM-DD'),
     },
-];
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
 type StoryArgs = {
-    søkerinfo?: Søkerinfo;
+    søkerinfo?: PersonMedArbeidsforholdDto_fpoversikt;
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelder;
     utenlandsopphold?: Utenlandsopphold;
     utenlandsoppholdSenere?: UtenlandsoppholdPeriode[];
     utenlandsoppholdTidligere?: UtenlandsoppholdPeriode[];
     barn?: Barn;
-    sivilstand?: Sivilstand;
+    sivilstand?: Sivilstand_fpoversikt;
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
     frilans?: Frilans;
     egenNæring?: NæringDto;
@@ -228,14 +215,8 @@ const meta = {
     parameters: {
         msw: {
             handlers: [
-                http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`,
-                    () => new HttpResponse(null, { status: 200 }),
-                ),
-                http.post(
-                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`,
-                    () => new HttpResponse(null, { status: 200 }),
-                ),
+                http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
             ],
         },
     },
@@ -282,7 +263,7 @@ const meta = {
                             [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
-                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: Dekningsgrad.HUNDRE_PROSENT,
+                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100',
                             [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
                             [ContextDataType.VEDLEGG]: vedlegg,
                         }}
@@ -326,10 +307,10 @@ export const MorMedAnnenForelderUgift: Story = {
         },
         søkerInfo: {
             ...defaultSøkerinfoMor,
-            søker: {
-                ...defaultSøkerinfoMor.søker,
+            person: {
+                ...defaultSøkerinfoMor.person,
                 sivilstand: {
-                    type: SivilstandType.UGIFT,
+                    type: 'UGIFT',
                 },
             },
         },
@@ -394,10 +375,10 @@ export const FarMedUførMorUgift: Story = {
         },
         søkerInfo: {
             ...defaultSøkerinfoFar,
-            søker: {
-                ...defaultSøkerinfoFar.søker,
+            person: {
+                ...defaultSøkerinfoFar.person,
                 sivilstand: {
-                    type: SivilstandType.UGIFT,
+                    type: 'UGIFT',
                 },
             },
         },
@@ -472,13 +453,8 @@ export const FarMedMorSomHarVedtak: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`,
-                    () => new HttpResponse(null, { status: 200 }),
-                ),
-                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
-                    HttpResponse.json(annenPartVedtak),
-                ),
+                http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
             ],
         },
     },
@@ -496,9 +472,7 @@ export const MorMedAdoptertBarn: Story = {
             antallBarn: 1,
             adopsjonsdato: '2021-10-01',
             fødselsdatoer: ['2021-01-01'],
-            adoptertIUtlandet: false,
-            omsorgsovertakelse: [],
-        } as Barn,
+        } satisfies Barn,
     },
 };
 
@@ -541,10 +515,9 @@ export const MorMedArbeidsforholdOgAndreInntekter: Story = {
         },
         annenForelder: {
             ...defaultAnnenForelder,
-            erAleneOmOmsorg: false,
         },
         søkerInfo: {
-            søker: defaultSøkerinfoMor.søker,
+            person: defaultSøkerinfoMor.person,
             arbeidsforhold: [
                 {
                     arbeidsgiverId: '1',
@@ -587,7 +560,6 @@ export const MorMedSelvstendigNæringsdrivende: Story = {
         },
         annenForelder: {
             ...defaultAnnenForelder,
-            erAleneOmOmsorg: false,
         },
         søkerInfo: defaultSøkerinfoMor,
     },
@@ -613,7 +585,6 @@ export const MorMedSelvstendigNæringsdrivendeUtenDiverse: Story = {
         },
         annenForelder: {
             ...defaultAnnenForelder,
-            erAleneOmOmsorg: false,
         },
         søkerInfo: defaultSøkerinfoMor,
     },
@@ -649,7 +620,6 @@ export const MorMedAndreInntekterJobbIUtlandet: Story = {
         ],
         annenForelder: {
             ...defaultAnnenForelder,
-            erAleneOmOmsorg: false,
         },
         søkerInfo: defaultSøkerinfoMor,
     },
@@ -673,7 +643,6 @@ export const MorMedAndreInntekterMilitærtjeneste: Story = {
         ],
         annenForelder: {
             ...defaultAnnenForelder,
-            erAleneOmOmsorg: false,
         },
         søkerInfo: defaultSøkerinfoMor,
     },
@@ -686,12 +655,13 @@ const FIL_INFO = {
     file: new File(['abc'.repeat(100000)], 'Filnavn1.jpg'),
     pending: false,
     uploaded: true,
-};
+    innsendingsType: 'LASTET_OPP',
+} as const;
 
 const FIL_INFO_UTTAK_MED_PERIODE = {
     ...FIL_INFO,
     dokumenterer: {
-        type: AttachmentMetadataType.UTTAK,
+        type: 'UTTAK' as const,
         perioder: [
             {
                 fom: '2024-01-01',
@@ -712,8 +682,9 @@ export const VisAlleVedlegg: Story = {
                     filename: 'etterlønn.pdf',
                     type: AttachmentType.ANNEN_INNTEKT,
                     skjemanummer: Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG,
+                    innsendingsType: 'LASTET_OPP',
                     dokumenterer: {
-                        type: AttachmentMetadataType.OPPTJENING,
+                        type: 'OPPTJENING',
                         perioder: [
                             {
                                 fom: '2024-01-01',
@@ -726,6 +697,7 @@ export const VisAlleVedlegg: Story = {
                     ...FIL_INFO,
                     filename: 'etterlønn2.pdf',
                     type: AttachmentType.ANNEN_INNTEKT,
+                    innsendingsType: 'LASTET_OPP',
                     skjemanummer: Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG,
                 },
             ],
@@ -734,9 +706,10 @@ export const VisAlleVedlegg: Story = {
                     ...FIL_INFO,
                     filename: 'siviltjeneste.pdf',
                     type: AttachmentType.ANNEN_INNTEKT,
+                    innsendingsType: 'LASTET_OPP',
                     skjemanummer: Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE,
                     dokumenterer: {
-                        type: AttachmentMetadataType.OPPTJENING,
+                        type: 'OPPTJENING',
                         perioder: [
                             {
                                 fom: '2024-01-01',
@@ -856,7 +829,7 @@ export const VisSendInnSenereVedlegg: Story = {
                           ...result,
                           [entry[0]]: entry[1].map((value) => ({
                               ...value,
-                              innsendingsType: InnsendingsType.SEND_SENERE,
+                              innsendingsType: 'SEND_SENERE',
                           })),
                       }),
                       {},
@@ -889,7 +862,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeid: Story = {
                     filename: 'dok-arbeid-mor.pdf',
                     type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
                     skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
-                    innsendingsType: InnsendingsType.AUTOMATISK,
+                    innsendingsType: 'AUTOMATISK',
                 },
             ],
         },
@@ -903,7 +876,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeid: Story = {
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    API_URLS.trengerDokumentereMorsArbeid,
                     () => new HttpResponse(JSON.stringify(false), { status: 200 }),
                 ),
             ],
@@ -931,7 +904,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
                     filename: 'dok-arbeid-mor.pdf',
                     type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
                     skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
-                    innsendingsType: InnsendingsType.AUTOMATISK,
+                    innsendingsType: 'AUTOMATISK',
                 },
             ],
             [Skjemanummer.DOK_UTDANNING_MOR]: [
@@ -940,7 +913,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
                     filename: 'dok-utdanning-mor.pdf',
                     type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
                     skjemanummer: Skjemanummer.DOK_UTDANNING_MOR,
-                    innsendingsType: InnsendingsType.SEND_SENERE,
+                    innsendingsType: 'SEND_SENERE',
                 },
             ],
         },
@@ -954,7 +927,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    API_URLS.trengerDokumentereMorsArbeid,
                     () => new HttpResponse(JSON.stringify(false), { status: 200 }),
                 ),
             ],
@@ -973,7 +946,7 @@ export const FarSøkerMorMåDokumentereArbeid: Story = {
             ...defaultSøkerinfoFar,
             arbeidsforhold: [
                 {
-                    ...arbeidsforholdMorJobber80Prosent[0],
+                    ...arbeidsforholdMorJobber80Prosent[0]!,
                     stillingsprosent: 70,
                 },
             ],
@@ -987,7 +960,7 @@ export const FarSøkerMorMåDokumentereArbeid: Story = {
                     filename: 'dok-arbeid-mor.pdf',
                     type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
                     skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
-                    innsendingsType: InnsendingsType.SEND_SENERE,
+                    innsendingsType: 'SEND_SENERE',
                 },
             ],
         },
@@ -1001,7 +974,7 @@ export const FarSøkerMorMåDokumentereArbeid: Story = {
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/innsyn/v2/trengerDokumentereMorsArbeid`,
+                    API_URLS.trengerDokumentereMorsArbeid,
                     () => new HttpResponse(JSON.stringify(true), { status: 200 }),
                 ),
             ],
@@ -1029,7 +1002,7 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
                     filename: 'dok-arbeid-mor.pdf',
                     type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
                     skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
-                    innsendingsType: InnsendingsType.SEND_SENERE,
+                    innsendingsType: 'SEND_SENERE',
                 },
             ],
         },
@@ -1055,7 +1028,7 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
             ...defaultUttaksplan.slice(0, 3), // Behold de første periodene
             {
                 id: '3',
-                type: 'uttak',
+                type: Periodetype.Uttak,
                 forelder: 'MOR',
                 konto: 'FELLESPERIODE',
                 tidsperiode: {
@@ -1064,7 +1037,7 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
                 },
                 ønskerSamtidigUttak: true,
                 gradert: false,
-            } as Periode,
+            } satisfies Periode,
         ];
 
         return (
@@ -1088,7 +1061,7 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
                             [ContextDataType.UTENLANDSOPPHOLD]: args.utenlandsopphold || defaultUtenlandsopphold,
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: args.utenlandsoppholdSenere,
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: args.utenlandsoppholdTidligere,
-                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: Dekningsgrad.HUNDRE_PROSENT,
+                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100',
                             [ContextDataType.UTTAKSPLAN]: uttaksplanMedSamtidigUttak, // Bruk den nye uttaksplanen
                             [ContextDataType.VEDLEGG]: args.vedlegg,
                         }}

@@ -6,39 +6,39 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
-import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
-import { StønadskontoType } from '@navikt/fp-constants';
-import { HvemPlanleggerType } from '@navikt/fp-types';
+import { Dekningsgrad, HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
 
 import { FordelingSteg } from './FordelingSteg';
+
+// TODO: Benytt dayjs for å håndtere datoer i testene. Spesielt for å sørge for at fremtidige datoer alltid er fremtidige.
 
 const DEFAULT_STØNADSKONTO = {
     '100': {
         kontoer: [
-            { konto: StønadskontoType.Mødrekvote, dager: 75 },
-            { konto: StønadskontoType.Fedrekvote, dager: 75 },
-            { konto: StønadskontoType.Fellesperiode, dager: 80 },
-            { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+            { konto: 'MØDREKVOTE', dager: 75 },
+            { konto: 'FEDREKVOTE', dager: 75 },
+            { konto: 'FELLESPERIODE', dager: 80 },
+            { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
         ],
         minsteretter: {
             farRundtFødsel: 0,
             toTette: 0,
         },
-    },
+    } satisfies KontoBeregningDto,
     '80': {
         kontoer: [
-            { konto: StønadskontoType.Mødrekvote, dager: 95 },
-            { konto: StønadskontoType.Fedrekvote, dager: 95 },
-            { konto: StønadskontoType.Fellesperiode, dager: 101 },
-            { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+            { konto: 'MØDREKVOTE', dager: 95 },
+            { konto: 'FEDREKVOTE', dager: 95 },
+            { konto: 'FELLESPERIODE', dager: 101 },
+            { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
         ],
         minsteretter: {
             farRundtFødsel: 0,
             toTette: 0,
         },
-    },
+    } satisfies KontoBeregningDto,
 };
 
 type StoryArgs = {
@@ -56,7 +56,7 @@ const meta = {
         omBarnet,
         stønadskontoer,
         gåTilNesteSide = action('button-click'),
-        dekningsgrad = Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad = '100',
     }: StoryArgs) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.FORDELING]}>
@@ -112,7 +112,7 @@ export const FlereForsørgereEttBarn80ProsentDekningsgrad: Story = {
             termindato: '2024-01-01',
             antallBarn: '1',
         },
-        dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+        dekningsgrad: '80',
         stønadskontoer: DEFAULT_STØNADSKONTO,
     },
 };
@@ -130,7 +130,7 @@ export const FlereForsørgereToBarn: Story = {
             termindato: '2024-01-01',
             antallBarn: '2',
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         stønadskontoer: DEFAULT_STØNADSKONTO,
     },
 };
@@ -148,7 +148,7 @@ export const FarOgFar: Story = {
             antallBarn: '2',
             overtakelsesdato: '2024-01-01',
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         stønadskontoer: DEFAULT_STØNADSKONTO,
     },
 };

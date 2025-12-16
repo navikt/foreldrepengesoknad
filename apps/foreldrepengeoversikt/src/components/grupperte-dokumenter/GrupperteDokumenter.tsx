@@ -2,13 +2,13 @@ import { FolderIcon } from '@navikt/aksel-icons';
 
 import { Accordion, BodyShort, HStack } from '@navikt/ds-react';
 
-import { DokumentDto } from '@navikt/fp-types';
+import { DokumentDto_fpoversikt } from '@navikt/fp-types';
 
 import { guid } from '../../utils/guid';
 import { Dokument } from '../dokument/Dokument';
 
 interface Props {
-    dokumenter: DokumentDto[];
+    dokumenter: DokumentDto_fpoversikt[];
 }
 
 export const GrupperteDokumenter = ({ dokumenter }: Props) => {
@@ -16,14 +16,14 @@ export const GrupperteDokumenter = ({ dokumenter }: Props) => {
         <Accordion>
             <Accordion.Item>
                 <Accordion.Header
-                    className="flex-row-reverse justify-between p-4 pt-0"
+                    className="flex-row-reverse rounded-none p-4 pt-4"
                     // NOTE: tailwind støtter ikke box-shadows.
                     // Enten må det være et Aksel-token, eller så må det legges inn i custom config. Tar det derfor i style
                     style={{
                         boxShadow: 'inset 0 -2px 0 0 rgb(7 26 54 / 21%)',
                     }}
                 >
-                    <HStack gap="4">
+                    <HStack gap="space-16">
                         <FolderIcon aria-hidden={true} />
                         <BodyShort>{dokumenter.length} dokumenter</BodyShort>
                     </HStack>

@@ -9,18 +9,45 @@ import {
     Periode,
     PeriodeHull,
     Periodetype,
-    StønadskontoType,
     Uttaksperiode,
 } from '@navikt/fp-common';
-import { ArbeidsforholdOgInntektFp } from '@navikt/fp-types';
+import { ArbeidsforholdOgInntektFp, PersonMedArbeidsforholdDto_fpoversikt, Uttaksplanperiode } from '@navikt/fp-types';
 
 import {
-    UttaksplanPeriode,
     cleanEndringssøknad,
     cleanSøknad,
     getPeriodeVedTidspunkt,
     getUttaksplanMedFriUtsettelsesperiode,
 } from './apiUtils';
+
+const DEFAULT_SØKER_INFO = {
+    arbeidsforhold: [
+        {
+            arbeidsgiverId: '9903232324',
+            arbeidsgiverIdType: 'ikke-orgnr',
+            arbeidsgiverNavn: 'Sykehuset i Vestfold',
+            fom: '2018-06-25T00:00:00.000Z',
+            stillingsprosent: 80,
+        },
+        {
+            arbeidsgiverId: '990322244',
+            arbeidsgiverIdType: 'orgnr',
+            arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
+            fom: '2017-04-05T00:00:00.000Z',
+            stillingsprosent: 100,
+        },
+    ],
+    person: {
+        navn: {
+            etternavn: 'Oravakangas',
+            fornavn: 'Erlinga-Mask',
+        },
+        fnr: '02343434',
+        fødselsdato: '1989-08-30',
+        kjønn: 'K',
+        barn: [],
+    },
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
 
 const getAnnenForelderUførMock = (
     urUførInput: boolean | undefined,
@@ -28,13 +55,15 @@ const getAnnenForelderUførMock = (
     datoForAleneomsorgInput: string | undefined,
 ): AnnenForelder => {
     return {
+        fnr: '1',
+        erAleneOmOmsorg: false,
         fornavn: 'Mor',
         etternavn: 'Utvikler',
         erMorUfør: urUførInput,
         erForSyk: erForSykInput,
         kanIkkeOppgis: false,
         datoForAleneomsorg: datoForAleneomsorgInput,
-    } as AnnenForelder;
+    };
 };
 
 const getAnnenForelderMock = (): AnnenForelder => {
@@ -42,13 +71,17 @@ const getAnnenForelderMock = (): AnnenForelder => {
         fornavn: 'Mor',
         etternavn: 'UtenUførInfo',
         kanIkkeOppgis: false,
-    } as AnnenForelder;
+        fnr: '1',
+        erAleneOmOmsorg: false,
+        erMorUfør: false,
+        erForSyk: false,
+    };
 };
 
 const getAnnenForelderIkkeOppgittMock = (): AnnenForelder => {
     return {
         kanIkkeOppgis: true,
-    } as AnnenForelder;
+    };
 };
 
 const getBarnMock = () => {
@@ -57,7 +90,8 @@ const getBarnMock = () => {
         fødselsdatoer: ['2022-01-01'],
         termindato: '2022-02-01',
         fnr: ['01010111111'],
-    } as FødtBarn;
+        antallBarn: 1,
+    } satisfies FødtBarn;
 };
 
 // TODO (TOR) Dette er midlertidig logikk
@@ -89,7 +123,7 @@ const getStateMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaks
                 harHattAndreInntektskilder: false,
                 harJobbetSomFrilans: false,
                 harJobbetSomSelvstendigNæringsdrivende: false,
-            } as ArbeidsforholdOgInntektFp;
+            } satisfies ArbeidsforholdOgInntektFp;
         }
         if (type === ContextDataType.SØKERSITUASJON) {
             return {
@@ -104,10 +138,11 @@ const getStateMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaks
 
 describe('cleanUpSøknadsdataForInnsending', () => {
     const barnMock = getBarnMock();
-    const fødselsdato = barnMock.fødselsdatoer[0];
+    const fødselsdato = barnMock.fødselsdatoer[0]!;
     const annenForelderMock = getAnnenForelderUførMock(true, false, '2021-01-01');
     const dataFelles = getStateMock(annenForelderMock, barnMock, []);
-    const cleanedSøknad = cleanSøknad(dataFelles, fødselsdato);
+
+    const cleanedSøknad = cleanSøknad(dataFelles, fødselsdato, DEFAULT_SØKER_INFO);
 
     it('skal fjerne input om annenForelder.erForSyk fra søknad for innsending', () => {
         if (!cleanedSøknad.annenForelder) {
@@ -118,14 +153,16 @@ describe('cleanUpSøknadsdataForInnsending', () => {
 
     it('skal ikke feile for ikke oppgitt forelder', () => {
         const data = getStateMock(getAnnenForelderIkkeOppgittMock(), barnMock, []);
-        const cleanedSøknadUtenForelder = cleanSøknad(data, fødselsdato);
+
+        const cleanedSøknadUtenForelder = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);
         expect(cleanedSøknadUtenForelder.annenForelder).toBe(undefined);
     });
 
     it('skal ikke feile når ingen input om erUfør eller erForSyk på annenForelder', () => {
         const annenForelderUtenUførInfo = getAnnenForelderMock();
         const data = getStateMock(annenForelderUtenUførInfo, barnMock, []);
-        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato);
+
+        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);
         if (!cleanedSøknadUtenUførInfo.annenForelder) {
             throw new Error('Annen forelder finnes ikke i cleanedSøknadUtenUførInfo');
         }
@@ -135,7 +172,8 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     it('skal sende at annenforelder er informert for endringssøknad', () => {
         const annenForelder = { ...getAnnenForelderMock(), harRettPåForeldrepengerINorge: true };
         const data = getStateMock(annenForelder, barnMock, []);
-        const cleanedSøknadMedRett = cleanEndringssøknad(data, [], fødselsdato);
+
+        const cleanedSøknadMedRett = cleanEndringssøknad(data, [], fødselsdato, DEFAULT_SØKER_INFO);
         expect(cleanedSøknadMedRett.annenForelder).toBeDefined();
         expect(cleanedSøknadMedRett.annenForelder?.rettigheter.erInformertOmSøknaden).toBe(true);
     });
@@ -143,7 +181,8 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     it('skal sende undefined for om annenforelder er informert hvis annen part ikke har rett', () => {
         const annenForelder = { ...getAnnenForelderMock(), harRettPåForeldrepengerINorge: false };
         const data = getStateMock(annenForelder, barnMock, []);
-        const cleanedSøknadUtenRett = cleanSøknad(data, fødselsdato);
+
+        const cleanedSøknadUtenRett = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);
         expect(cleanedSøknadUtenRett.annenForelder).toBeDefined();
         expect(cleanedSøknadUtenRett.annenForelder?.rettigheter.erInformertOmSøknaden).toBe(undefined);
     });
@@ -153,19 +192,21 @@ describe('cleanUpSøknadsdataForInnsending', () => {
             id: '0',
             type: Periodetype.Uttak,
             erMorForSyk: true,
-            konto: StønadskontoType.Fellesperiode,
+            konto: 'FELLESPERIODE',
             samtidigUttakProsent: undefined,
             tidsperiode: { fom: new Date('2021-01-01'), tom: new Date('2021-01-03') },
-        } as Uttaksperiode;
+            forelder: 'FAR_MEDMOR',
+        } satisfies Uttaksperiode;
         const periodeHull = {
             id: '1',
             type: Periodetype.Hull,
             tidsperiode: { fom: new Date('2021-01-04'), tom: new Date('2021-01-11') },
-        } as PeriodeHull;
+        } satisfies PeriodeHull;
         const data = getStateMock(annenForelderMock, barnMock, [periodeUttak, periodeHull]);
-        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato);
+
+        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);
         expect(cleanedSøknadUtenUførInfo.uttaksplan.uttaksperioder.length).toBe(1);
-        const uttaksperiodeInnsending = cleanedSøknadUtenUførInfo.uttaksplan.uttaksperioder[0];
+        const uttaksperiodeInnsending = cleanedSøknadUtenUførInfo.uttaksplan.uttaksperioder[0]!;
         if (uttaksperiodeInnsending.type !== 'uttak') {
             throw new Error('type er ikke uttak');
         }
@@ -173,7 +214,7 @@ describe('cleanUpSøknadsdataForInnsending', () => {
         expect(uttaksperiodeInnsending.type).toBe(Periodetype.Uttak);
         expect(uttaksperiodeInnsending.fom).toBe(dateToISOString(periodeUttak.tidsperiode.fom));
         expect(uttaksperiodeInnsending.tom).toBe(dateToISOString(periodeUttak.tidsperiode.tom));
-        expect(uttaksperiodeInnsending.konto).toBe(StønadskontoType.Fellesperiode);
+        expect(uttaksperiodeInnsending.konto).toBe('FELLESPERIODE');
     });
     it('skal fjerne periode uten konto', () => {
         const periodeUttakUtenKonto = {
@@ -181,10 +222,15 @@ describe('cleanUpSøknadsdataForInnsending', () => {
             type: Periodetype.Uttak,
             erMorForSyk: true,
             tidsperiode: { fom: new Date('2021-01-01'), tom: new Date('2021-01-03') },
-        } as Uttaksperiode;
+            forelder: 'MOR',
+            // @ts-expect-error -- typene sier konto ikke kan være undefined. Men så har vi kode og test for det
+            konto: undefined,
+        } satisfies Periode;
 
+        // @ts-expect-error -- typene sier konto ikke kan være undefined. Men så har vi kode og test for det
         const data = getStateMock(annenForelderMock, barnMock, [periodeUttakUtenKonto]);
-        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato);
+
+        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);
         expect(cleanedSøknadUtenUførInfo.uttaksplan.uttaksperioder.length).toBe(0);
     });
 
@@ -212,74 +258,74 @@ describe('cleanUpSøknadsdataForInnsending', () => {
 //Periode 1:
 const fraDato_1 = '2022-01-25';
 const tilDato_1 = '2022-01-28';
-const periode_1: UttaksplanPeriode = {
+const periode_1 = {
     type: Periodetype.Uttak,
-    konto: StønadskontoType.Fellesperiode,
+    konto: 'FELLESPERIODE',
     fom: fraDato_1,
     tom: tilDato_1,
-};
+} satisfies Uttaksplanperiode;
 
 //Periode 2:
 const fraDato_2 = '2022-01-31';
 const tilDato_2 = '2022-02-07';
-const periode_2: UttaksplanPeriode = {
+const periode_2 = {
     type: Periodetype.Uttak,
-    konto: StønadskontoType.Fellesperiode,
+    konto: 'FELLESPERIODE',
     fom: fraDato_2,
     tom: tilDato_2,
-};
+} satisfies Uttaksplanperiode;
 
 //Periode 3: (1 dag)
 const fraDato_3 = '2022-02-11';
 const tilDato_3 = '2022-02-11';
-const periode_3: UttaksplanPeriode = {
+const periode_3 = {
     type: Periodetype.Uttak,
-    konto: StønadskontoType.Fellesperiode,
+    konto: 'FELLESPERIODE',
     fom: fraDato_3,
     tom: tilDato_3,
-};
+} satisfies Uttaksplanperiode;
 
 //Periode 4:
 const fraDato_4 = '2022-02-14';
 const tilDato_4 = '2022-02-24';
-const periode_4: UttaksplanPeriode = {
+const periode_4 = {
     type: Periodetype.Uttak,
-    konto: StønadskontoType.Fellesperiode,
+    konto: 'FELLESPERIODE',
     fom: fraDato_4,
     tom: tilDato_4,
-};
+} satisfies Uttaksplanperiode;
 
 //Periode 5: 28.02, 1 dag, ikke skuddår
 const fraDato_5 = '2022-02-28';
 const tilDato_5 = '2022-02-28';
-const periode_5: UttaksplanPeriode = {
+const periode_5 = {
     type: Periodetype.Uttak,
-    konto: StønadskontoType.Fellesperiode,
+    konto: 'FELLESPERIODE',
     fom: fraDato_5,
     tom: tilDato_5,
-};
+} satisfies Uttaksplanperiode;
 
 //Periode 6: 1.03, ikke skuddår
 const fraDato_6 = '2022-03-01';
 const tilDato_6 = '2022-03-07';
-const periode_6: UttaksplanPeriode = {
+const periode_6 = {
     type: Periodetype.Uttak,
-    konto: StønadskontoType.Fellesperiode,
+    konto: 'FELLESPERIODE',
     fom: fraDato_6,
     tom: tilDato_6,
-};
+} satisfies Uttaksplanperiode;
 
 //Periode 7: 1.03 i et skuddår
 const fraDato_7 = '2024-03-01';
 const tilDato_7 = '2024-03-07';
-const periode_7: UttaksplanPeriode = {
+const periode_7 = {
     type: Periodetype.Uttak,
-    konto: StønadskontoType.Fellesperiode,
+    konto: 'FELLESPERIODE',
     fom: fraDato_7,
     tom: tilDato_7,
-};
+} satisfies Uttaksplanperiode;
 
-const uttaksplanMedAllePerioder: UttaksplanPeriode[] = [
+const uttaksplanMedAllePerioder: Uttaksplanperiode[] = [
     periode_1,
     periode_2,
     periode_3,
@@ -287,9 +333,9 @@ const uttaksplanMedAllePerioder: UttaksplanPeriode[] = [
     periode_5,
     periode_6,
     periode_7,
-] as UttaksplanPeriode[];
+];
 
-const getUttaksplanUtenPeriode = (removePeriode: UttaksplanPeriode): UttaksplanPeriode[] => {
+const getUttaksplanUtenPeriode = (removePeriode: Uttaksplanperiode): Uttaksplanperiode[] => {
     return uttaksplanMedAllePerioder.filter((periode) => periode !== removePeriode);
 };
 
@@ -301,7 +347,7 @@ const uttaksplanUtenPeriode_5 = getUttaksplanUtenPeriode(periode_5);
 describe('getUttaksplanMedFriUtsettelsesperiode', () => {
     it('inserts correct fri utsettelsesperiode that ends on a Friday', () => {
         const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(uttaksplanUtenPeriode_1, new Date(fraDato_1));
-        const friUtsettelsePeriode = nyUttaksplan[0];
+        const friUtsettelsePeriode = nyUttaksplan[0]!;
         expect(nyUttaksplan.length).toEqual(uttaksplanMedAllePerioder.length);
         expect(friUtsettelsePeriode.type).toBe(Periodetype.Utsettelse);
         expect(friUtsettelsePeriode.fom).toEqual(fraDato_1);
@@ -309,14 +355,14 @@ describe('getUttaksplanMedFriUtsettelsesperiode', () => {
     });
     it('inserts correct fri utsettelsesperiode and fills out hole before next periode', () => {
         const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(uttaksplanUtenPeriode_2, new Date(fraDato_2));
-        const friUtsettelsePeriode = nyUttaksplan[1];
+        const friUtsettelsePeriode = nyUttaksplan[1]!;
         expect(nyUttaksplan.length).toEqual(uttaksplanMedAllePerioder.length);
         expect(friUtsettelsePeriode.fom).toEqual(fraDato_2);
         expect(friUtsettelsePeriode.tom).toEqual('2022-02-10');
     });
     it('inserts correct fri utsettelsesperiode that lasts 1 day', () => {
         const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(uttaksplanUtenPeriode_3, new Date(fraDato_3));
-        const friUtsettelsePeriode = nyUttaksplan[2];
+        const friUtsettelsePeriode = nyUttaksplan[2]!;
         expect(nyUttaksplan.length).toEqual(uttaksplanMedAllePerioder.length);
         expect(friUtsettelsePeriode.fom).toEqual(fraDato_3);
         expect(friUtsettelsePeriode.tom).toEqual(tilDato_3);
@@ -324,7 +370,7 @@ describe('getUttaksplanMedFriUtsettelsesperiode', () => {
 
     it('inserts correct fri utsettelsesperiode that ends last day of February in a non-leap year', () => {
         const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(uttaksplanUtenPeriode_5, new Date(fraDato_5));
-        const friUtsettelsePeriode = nyUttaksplan[4];
+        const friUtsettelsePeriode = nyUttaksplan[4]!;
         expect(nyUttaksplan.length).toEqual(uttaksplanMedAllePerioder.length);
         expect(friUtsettelsePeriode.fom).toEqual(fraDato_5);
         expect(friUtsettelsePeriode.tom).toEqual(tilDato_5);
@@ -336,7 +382,7 @@ describe('getUttaksplanMedFriUtsettelsesperiode', () => {
             new Date('2024-02-27'),
         );
         expect(nyUttaksplan.length).toEqual(uttaksplanMedAllePerioder.length + 1);
-        const friUtsettelsePeriode = nyUttaksplan[6];
+        const friUtsettelsePeriode = nyUttaksplan[6]!;
         expect(friUtsettelsePeriode.type).toBe(Periodetype.Utsettelse);
         expect(friUtsettelsePeriode.fom).toEqual('2024-02-27');
         expect(friUtsettelsePeriode.tom).toEqual('2024-02-29');
@@ -349,7 +395,7 @@ describe('getUttaksplanMedFriUtsettelsesperiode', () => {
             new Date(endringstidspunkt),
         );
         expect(nyUttaksplan.length).toEqual(uttaksplanMedAllePerioder.length + 1);
-        const friUtsettelsePeriode = nyUttaksplan[7];
+        const friUtsettelsePeriode = nyUttaksplan[7]!;
         expect(friUtsettelsePeriode.type).toBe(Periodetype.Utsettelse);
         expect(friUtsettelsePeriode.fom).toEqual(endringstidspunkt);
         expect(friUtsettelsePeriode.tom).toEqual(endringstidspunkt);

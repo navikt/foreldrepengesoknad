@@ -22,9 +22,8 @@ export const Default: Story = {
     args: {
         tittel: 'Tittel',
         minidialogInnslag: {
-            dialogId: '1',
             opprettet: '2024-01-01',
-            saksnr: '1',
+            saksnummer: '1',
         },
     },
 };

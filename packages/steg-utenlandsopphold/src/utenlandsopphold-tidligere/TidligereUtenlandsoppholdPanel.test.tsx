@@ -58,13 +58,13 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
 
         await userEvent.click(screen.getByText('Legg til flere opphold i utlandet'));
 
-        await userEvent.selectOptions(utils.getAllByLabelText('Hvilket land bodde du i?')[1], 'AS');
+        await userEvent.selectOptions(utils.getAllByLabelText('Hvilket land bodde du i?')[1]!, 'AS');
 
-        const fraOgMedP2 = utils.getAllByLabelText('Fra og med')[1];
+        const fraOgMedP2 = utils.getAllByLabelText('Fra og med')[1]!;
         await userEvent.type(fraOgMedP2, dayjs().subtract(22, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(fraOgMedP2);
 
-        const tilOgMedP2 = utils.getAllByLabelText('Til og med')[1];
+        const tilOgMedP2 = utils.getAllByLabelText('Til og med')[1]!;
         await userEvent.type(tilOgMedP2, dayjs().subtract(10, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(tilOgMedP2);
 
@@ -104,13 +104,13 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
 
         await userEvent.click(screen.getByText('Legg til flere opphold i utlandet'));
 
-        await userEvent.selectOptions(utils.getAllByLabelText('Hvilket land bodde du i?')[1], 'AS');
+        await userEvent.selectOptions(utils.getAllByLabelText('Hvilket land bodde du i?')[1]!, 'AS');
 
-        const fraOgMedP2 = utils.getAllByLabelText('Fra og med')[1];
+        const fraOgMedP2 = utils.getAllByLabelText('Fra og med')[1]!;
         await userEvent.type(fraOgMedP2, dayjs().subtract(25, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(fraOgMedP2);
 
-        const tilOgMedP2 = utils.getAllByLabelText('Til og med')[1];
+        const tilOgMedP2 = utils.getAllByLabelText('Til og med')[1]!;
         await userEvent.type(tilOgMedP2, dayjs().subtract(20, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(tilOgMedP2);
 
@@ -160,13 +160,14 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
     it('skal avslutte søknad', async () => {
         const onAvsluttOgSlett = vi.fn();
 
-        render(<Default onAvsluttOgSlett={onAvsluttOgSlett} />);
+        render(<Default onFortsettSenere={vi.fn()} onAvsluttOgSlett={onAvsluttOgSlett} />);
 
         expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
 
-        await userEvent.click(screen.getAllByText('Avslutt')[0]);
+        await userEvent.click(screen.getAllByText('Slett søknaden')[0]!);
+        await userEvent.click(screen.getAllByText('Slett søknaden')[1]!);
 
-        expect(screen.getByText('Slett søknaden')).toBeInTheDocument();
+        expect(onAvsluttOgSlett).toHaveBeenCalledTimes(1);
     });
 
     it('skal gå til et tidligere steg', async () => {

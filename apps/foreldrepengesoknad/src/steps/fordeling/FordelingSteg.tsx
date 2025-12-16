@@ -19,7 +19,7 @@ import { getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
 import { VStack } from '@navikt/ds-react';
 
 import { isFødtBarn } from '@navikt/fp-common';
-import { Arbeidsforhold, PersonFrontend } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, PersonDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Spinner, Step } from '@navikt/fp-ui';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -30,13 +30,13 @@ import { getFordelingFraKontoer, getSisteUttaksdagAnnenForelder } from './fordel
 import { MorsSisteDag } from './mors-siste-dag/MorsSisteDag';
 
 type Props = {
-    søker: PersonFrontend;
-    arbeidsforhold: Arbeidsforhold[];
+    person: PersonDto_fpoversikt;
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
-export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
+export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig(arbeidsforhold);
@@ -52,7 +52,7 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const førsteUttaksdagNesteBarnsSak = barnFraNesteSak?.startdatoFørsteStønadsperiode;
-    const navnPåForeldre = getNavnPåForeldre(søker, annenForelder, erFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl);
     const navnMor = navnPåForeldre.mor;
     const navnFarMedmor = navnPåForeldre.farMedmor;
     const deltUttak = getIsDeltUttak(annenForelder);
@@ -138,7 +138,7 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig}>
-                <VStack gap="5">
+                <VStack gap="space-20">
                     <FordelingOversikt
                         kontoer={valgtStønadskonto}
                         navnFarMedmor={navnFarMedmor}

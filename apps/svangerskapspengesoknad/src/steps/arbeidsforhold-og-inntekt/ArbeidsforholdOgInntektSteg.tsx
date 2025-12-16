@@ -10,9 +10,9 @@ import { getRuteVelgArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
 import { ArbeidsforholdOgInntektPanel } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import {
-    Arbeidsforhold,
     ArbeidsforholdOgInntekt,
     ArbeidsforholdOgInntektSvp,
+    EksternArbeidsforholdDto_fpoversikt,
     FRILANS_ID,
     isArbeidsforholdOgInntektSvp,
 } from '@navikt/fp-types';
@@ -21,8 +21,9 @@ import { notEmpty } from '@navikt/fp-validation';
 
 const getNextRoute = (
     termindato: string,
-    aktiveArbeidsforhold: Arbeidsforhold[],
+    aktiveArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     values: ArbeidsforholdOgInntektSvp,
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
 ): SøknadRoute | string => {
     if (values.harJobbetSomFrilans) {
         return SøknadRoute.FRILANS;
@@ -38,8 +39,8 @@ const getNextRoute = (
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    avbrytSøknad: () => Promise<void>;
-    arbeidsforhold: Arbeidsforhold[];
+    avbrytSøknad: () => void;
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 };
 
 export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
@@ -59,7 +60,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
 
     const onSubmit = (values: ArbeidsforholdOgInntekt) => {
         if (!isArbeidsforholdOgInntektSvp(values)) {
-            throw Error('values er på feil format');
+            throw new Error('values er på feil format');
         }
 
         oppdaterArbeidsforholdOgInntekt(values);

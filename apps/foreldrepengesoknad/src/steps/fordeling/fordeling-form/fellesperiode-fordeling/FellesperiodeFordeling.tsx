@@ -13,7 +13,6 @@ import { isValidInteger, isValidNumberForm } from '@navikt/fp-validation';
 import { isValidAntallDagerFellesperiode, isValidAntallUkerFellesperiode } from '../fordelingFormUtils';
 import { FellesperiodeValgVisning } from './FellesperiodeValgVisning';
 import { FordelingValg } from './FordelingValg';
-import styles from './fellesperiode-fordeling.module.css';
 
 const getInputErNullEllerHeltall = (input: number) => {
     if (input) {
@@ -50,7 +49,7 @@ const getInputForAntallDagerFellesperiode = (
     return kanViseValgtAntallDager ? totallAntallDager : undefined;
 };
 
-export const getFordelingDagerForVisning = (
+const getFordelingDagerForVisning = (
     erFarEllerMedmor: boolean,
     antallDagerFellesperiode: number,
     valgtFordeling: FellesperiodeFordelingValg | undefined,
@@ -121,25 +120,24 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
     );
     const harHeleUkerTilFordeling = dagerMedFellesperiode % 5 === 0;
     return (
-        <VStack gap="5">
+        <VStack gap="space-20">
             <FordelingValg dagerMedFellesperiode={dagerMedFellesperiode} />
             {valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE && (
-                <div className={styles.fellesperiodeFordeling}>
+                <div className="pb-4 pl-4">
                     <Heading size="xsmall">
                         <FormattedMessage
                             id="fordeling.antallUkerDager.spørsmål"
                             values={{ harHeleUkerTilFordeling }}
                         />
                     </Heading>
-                    <BodyLong className={styles.description}>
+                    <BodyLong className="text-ax-text-neutral-subtle">
                         <FormattedMessage
                             id="fordeling.antallUkerDager.spørsmål.description"
                             values={{ harHeleUkerTilFordeling, navnAnnenForelder }}
                         />
                     </BodyLong>
-                    <HStack gap="5" align="start">
+                    <HStack gap="space-20" align="start">
                         <RhfTextField
-                            className={styles.textInput}
                             control={control}
                             name="antallUkerFellesperiodeTilSøker"
                             label={<FormattedMessage id="fordeling.antallUker.spørsmål" />}
@@ -152,11 +150,10 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
                                     antallDagerFellesperiodeTilSøker,
                                 ),
                             ]}
-                            onChange={() => isSubmitted && trigger()}
+                            onChange={() => isSubmitted && void trigger()}
                         />
                         {!harHeleUkerTilFordeling && (
                             <RhfTextField
-                                className={styles.textInput}
                                 control={control}
                                 name="antallDagerFellesperiodeTilSøker"
                                 label={<FormattedMessage id="fordeling.antallDager.spørsmål" />}
@@ -171,7 +168,7 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
                                         antallUkerFellesperiodeTilSøker,
                                     ),
                                 ]}
-                                onChange={() => isSubmitted && trigger()}
+                                onChange={() => isSubmitted && void trigger()}
                             />
                         )}
                     </HStack>

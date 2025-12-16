@@ -3,8 +3,8 @@ import { getUkerOgDagerFromDager } from 'utils/dateUtils';
 
 import { FormSummary } from '@navikt/ds-react';
 
-import { AnnenForelder, Dekningsgrad, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { AnnenForelder, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
+import { Dekningsgrad, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { UttaksplanOppsummeringsliste } from './UttaksplanOppsummeringsliste';
 
@@ -12,7 +12,7 @@ interface Props {
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
-    registrerteArbeidsforhold: Arbeidsforhold[];
+    registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     dekningsgrad: Dekningsgrad;
     antallUkerUttaksplan: number;
     annenForelder: AnnenForelder;
@@ -41,7 +41,7 @@ export const UttaksplanOppsummering = ({
     let dekningsgradTekst = undefined;
 
     if (antallUkerOgDagerIUttaksplan.dager > 0) {
-        if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT) {
+        if (dekningsgrad === '100') {
             dekningsgradTekst = intl.formatMessage(
                 { id: 'oppsummering.uttak.dekningsgrad.verdi100.ukerOgDager' },
                 { antallUker: antallUkerOgDagerIUttaksplan.uker, antallDager: antallUkerOgDagerIUttaksplan.dager },
@@ -54,7 +54,7 @@ export const UttaksplanOppsummering = ({
         }
     } else {
         dekningsgradTekst =
-            dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            dekningsgrad === '100'
                 ? intl.formatMessage(
                       { id: 'oppsummering.uttak.dekningsgrad.verdi100.bareUker' },
                       {
@@ -77,9 +77,6 @@ export const UttaksplanOppsummering = ({
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="oppsummering.uttak" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="Oppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 <FormSummary.Answer>
@@ -105,6 +102,11 @@ export const UttaksplanOppsummering = ({
                     </FormSummary.Answer>
                 )}
             </FormSummary.Answers>
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="Oppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 };

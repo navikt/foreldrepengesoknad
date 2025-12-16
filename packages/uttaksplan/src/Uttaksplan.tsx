@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -6,12 +5,9 @@ import {
     AnnenForelder,
     Barn,
     BarnFraNesteSak,
-    Dekningsgrad,
     EksisterendeSak,
-    Forelder,
     ForeldreparSituasjon,
     NavnPåForeldre,
-    Arbeidsforhold as OldArbeidsforhold,
     Periode,
     Situasjon,
     Søkersituasjon,
@@ -21,9 +17,13 @@ import {
     isAnnenPartInfoPeriode,
     isUtsettelsesperiode,
 } from '@navikt/fp-common';
-import { StønadskontoType } from '@navikt/fp-constants';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { Arbeidsforhold, Periode as PeriodeType, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
+import {
+    Dekningsgrad,
+    EksternArbeidsforholdDto_fpoversikt,
+    KontoBeregningDto,
+    Periode as PeriodeType,
+} from '@navikt/fp-types';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender';
 
 import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
@@ -41,35 +41,16 @@ import { validerUttaksplan } from './validering/validerUttaksplan';
 import VeilederInfo from './validering/veilederInfo/VeilederInfo';
 import { getPeriodelisteMeldinger, getUttaksplanVeilederinfo } from './validering/veilederInfo/utils';
 
-//TODO (TOR) temp-mapping. Fjern
-const mapNewToOldArbeidsforhold = (arbeidsforhold: Arbeidsforhold[]): OldArbeidsforhold[] => {
-    if (!arbeidsforhold) {
-        return [];
-    }
-
-    return arbeidsforhold.map((arbforhold) => {
-        return {
-            arbeidsgiverId: arbforhold.arbeidsgiverId,
-            arbeidsgiverIdType: arbforhold.arbeidsgiverIdType,
-            arbeidsgiverNavn: arbforhold.arbeidsgiverNavn ?? '',
-            fom: dayjs.utc(arbforhold.fom).toDate(),
-            stillingsprosent: arbforhold.stillingsprosent,
-            tom: arbforhold.tom ? dayjs.utc(arbforhold.tom).toDate() : undefined,
-        };
-    });
-};
-
 interface Props {
     foreldreSituasjon: ForeldreparSituasjon;
-    forelderVedAleneomsorg: Forelder | undefined;
     erDeltUttak: boolean;
     uttaksplan: Periode[];
     familiehendelsesdato: string;
     handleOnPlanChange: (nyPlan: Periode[]) => void;
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
+    stønadskontoer: KontoBeregningDto;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     erEndringssøknad: boolean;
     erFarEllerMedmor: boolean;
     erFlerbarnssøknad: boolean;
@@ -90,14 +71,13 @@ interface Props {
     setUttaksplanErGyldig: (planErGyldig: boolean) => void;
     handleSlettUttaksplan: () => void;
     handleResetUttaksplan: () => void;
-    visAutomatiskJusteringForm: boolean;
     barnFraNesteSak: BarnFraNesteSak | undefined;
     familiehendelsesdatoNesteSak: Date | undefined;
     førsteUttaksdagNesteBarnsSak: Date | undefined;
     minsterettUkerToTette: number | undefined;
 }
 
-export interface PeriodeValidState {
+interface PeriodeValidState {
     id: string;
     isValid: boolean;
 }
@@ -155,8 +135,7 @@ const Uttaksplan = ({
     const annenForelderHarRettINorge =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge!;
     const toTetteReglerGjelder = getToTetteReglerGjelder(familiehendelsesdatoDate, familiehendelsesdatoNesteSak);
-    const harAktivitetsfriKvote =
-        stønadskontoer.kontoer.filter((st) => st.konto === StønadskontoType.AktivitetsfriKvote).length > 0;
+    const harAktivitetsfriKvote = stønadskontoer.kontoer.some((st) => st.konto === 'AKTIVITETSFRI_KVOTE');
 
     const builder = Uttaksplanbuilder(
         uttaksplanUtenAnnenPartsSamtidigUttak,
@@ -232,11 +211,10 @@ const Uttaksplan = ({
         }
     };
 
-    const oldFormatArbeidsforhold = mapNewToOldArbeidsforhold(arbeidsforhold);
-
+    // TODO: finn ut om det var riktig å slette oldArbeidsforhold mapping
     const uttaksplanValidering = validerUttaksplan({
         søkersituasjon: søkersituasjon,
-        arbeidsforhold: oldFormatArbeidsforhold,
+        arbeidsforhold,
         dekningsgrad: dekningsgrad,
         erEndringssøknad: erEndringssøknad,
         antallBarn: antallBarn,
@@ -276,7 +254,7 @@ const Uttaksplan = ({
 
     const handleSlettUttaksplanModalBekreft = () => {
         setSlettUttaksplanModalOpen(false);
-        loggAmplitudeEvent({
+        loggUmamiEvent({
             origin: 'foreldrepengesoknad',
             eventName: 'button klikk',
             eventData: { tittel: 'slettUttaksplan' },
@@ -311,7 +289,7 @@ const Uttaksplan = ({
                             stønadskontoer={stønadskontoer}
                             navnPåForeldre={navnPåForeldre}
                             annenForelder={annenForelder}
-                            arbeidsforhold={oldFormatArbeidsforhold}
+                            arbeidsforhold={arbeidsforhold}
                             handleDeletePeriode={handleDeletePeriode}
                             handleAddPeriode={handleAddPeriode}
                             erFarEllerMedmor={erFarEllerMedmor}

@@ -9,7 +9,7 @@ import { OversiktRoutes } from './../../routes/routes';
 
 const minSide = {
     title: 'Min side',
-    url: 'https://www.nav.no/minside',
+    url: 'https://www.nav.no/minside' as const,
     handleInApp: false,
 };
 
@@ -37,12 +37,6 @@ const ettersend = {
     handleInApp: true,
 };
 
-const tidslinjen = {
-    title: 'Hele prosessen',
-    url: OversiktRoutes.TIDSLINJEN,
-    handleInApp: true,
-};
-
 const dinPlan = {
     title: 'Søknaden din',
     url: OversiktRoutes.DIN_PLAN,
@@ -61,7 +55,7 @@ const inntektsmelding = {
     handleInApp: true,
 };
 
-export const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
+const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
     switch (selectedRoute) {
         case OversiktRoutes.HOVEDSIDE:
             return [minSide, hovedside];
@@ -71,8 +65,6 @@ export const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
             return [minSide, hovedside, saksoversikt, dokumenter];
         case OversiktRoutes.ETTERSEND:
             return [minSide, hovedside, saksoversikt, dokumenter, ettersend];
-        case OversiktRoutes.TIDSLINJEN:
-            return [minSide, hovedside, saksoversikt, tidslinjen];
         case OversiktRoutes.DIN_PLAN:
             return [minSide, hovedside, saksoversikt, dinPlan];
         case OversiktRoutes.OPPGAVER:
@@ -84,7 +76,7 @@ export const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
     }
 };
 
-const getRoute = (route: string, saksnummer: string | undefined): string => {
+const getRoute = (route: OversiktRoutes | 'https://www.nav.no/minside', saksnummer: string | undefined): string => {
     const sakRoute = `${OversiktRoutes.SAKSOVERSIKT}/${saksnummer}`;
 
     if (route === OversiktRoutes.SAKSOVERSIKT && saksnummer) {
@@ -102,10 +94,6 @@ const getRoute = (route: string, saksnummer: string | undefined): string => {
         return `${sakRoute}/${OversiktRoutes.INNTEKTSMELDING}`;
     }
 
-    if (route === OversiktRoutes.TIDSLINJEN) {
-        return `${sakRoute}/${OversiktRoutes.TIDSLINJEN}`;
-    }
-
     return route;
 };
 
@@ -116,11 +104,11 @@ export const Breadcrumb = () => {
     const sak = useGetSelectedSak();
 
     const mappedPaths = breadcrumbs.map((b) => ({ ...b, url: getRoute(b.url, sak?.saksnummer) }));
-    setBreadcrumbs(mappedPaths);
+    void setBreadcrumbs(mappedPaths);
 
     // Denne trigges for breadcrumbs der handleInApp: true
     onBreadcrumbClick((breadcrumb) => {
-        navigate(breadcrumb.url);
+        void navigate(breadcrumb.url);
     });
 
     return <Outlet />;

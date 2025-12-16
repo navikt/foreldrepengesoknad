@@ -1,4 +1,4 @@
-import { StønadskontoType, Søknadsinfo, isUttaksperiode } from '@navikt/fp-common';
+import { Søknadsinfo, isUttaksperiode } from '@navikt/fp-common';
 
 import { farMedmorBrukerForeldrepengerMedAktivitetskravRundtFødselOgMorIkkeErSyk } from '../../utils/uttaksskjema/aktivitetskravMorSkalBesvares';
 import { RegelTestresultat } from '../utils/types/regelTypes';
@@ -35,7 +35,7 @@ export const inneholderPerioderUtenAktivitetskrav = (grunnlag: Søknadsinfo): Re
                 p.tidsperiode,
                 søkersituasjon.situasjon,
             ) &&
-            (p.konto === StønadskontoType.Fellesperiode || p.konto === StønadskontoType.Foreldrepenger),
+            (p.konto === 'FELLESPERIODE' || p.konto === 'FORELDREPENGER'),
     );
 
     return {

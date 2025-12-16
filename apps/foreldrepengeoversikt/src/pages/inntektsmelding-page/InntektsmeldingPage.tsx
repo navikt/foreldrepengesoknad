@@ -6,10 +6,15 @@ import { Navigate, useParams } from 'react-router-dom';
 
 import { Alert, BodyShort, Detail, HGrid, Heading, List, Loader, VStack } from '@navikt/ds-react';
 
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
+import {
+    BortfaltNaturalytelse_fpoversikt,
+    FpOversiktInntektsmeldingDto_fpoversikt,
+    NaturalytelseType_fpoversikt,
+} from '@navikt/fp-types';
 import { formatCurrency, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
-import { hentInntektsmelding, hentSakerOptions, hentSatserOptions } from '../../api/api';
-import { InntektsmeldingDto, Naturalytelsetype } from '../../api/zodSchemas';
+import { hentInntektsmelding, hentSakerOptions } from '../../api/queries.ts';
 import { InntektsmeldingHeader } from '../../components/header/Header';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
@@ -34,8 +39,7 @@ export const InntektsmeldingPage = () => {
     useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.INNTEKTSMELDING);
     // Siden vi er opptatt av om du tjener over 6G så settes G til uendelig om den loader eller ikke er tilgjengelig.
-    const GRUNNBELØP =
-        useQuery({ ...hentSatserOptions(), select: (satser) => satser.grunnbeløp[0].verdi }).data ?? Infinity;
+    const GRUNNBELØP = DEFAULT_SATSER.grunnbeløp[0]!.verdi;
     const ytelseTekst = useGetYtelse() === 'SVANGERSKAPSPENGER' ? 'svangerskapspengene' : 'foreldrepengene';
 
     const params = useParams();
@@ -43,7 +47,7 @@ export const InntektsmeldingPage = () => {
     if (inntektsmeldingerQuery.isPending) {
         return (
             <PageRouteLayout header="">
-                <div className="flex flex-col gap-4 items-center justify-center">
+                <div className="flex flex-col items-center justify-center gap-4">
                     <Loader size="2xlarge" />
                     <BodyShort>Henter inntektsmelding…</BodyShort>
                 </div>
@@ -68,7 +72,7 @@ export const InntektsmeldingPage = () => {
 
     return (
         <PageRouteLayout header={<InntektsmeldingHeader inntektsmelding={inntektsmelding} />}>
-            <HGrid columns={2} gap="4">
+            <HGrid columns={2} gap="space-16">
                 <InntektsmeldingInfoBlokk
                     className="col-span-2"
                     size="large"
@@ -80,7 +84,7 @@ export const InntektsmeldingPage = () => {
                     }
                     Ikon={WalletIcon}
                 >
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <BodyShort>
                             Månedsinntekten din blir som regel beregnet ut fra gjennomsnittet av inntekten din de siste
                             tre månedene før du skal ut i permisjon
@@ -128,7 +132,7 @@ export const InntektsmeldingPage = () => {
     );
 };
 
-const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
+const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: FpOversiktInntektsmeldingDto_fpoversikt }) => {
     const { inntektPrMnd, refusjonsperioder, refusjonPrMnd, arbeidsgiverNavn } = inntektsmelding;
 
     return (
@@ -186,13 +190,13 @@ const HvordanUtbetalesPengeneTekst = ({
     return '';
 };
 
-const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
+const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: FpOversiktInntektsmeldingDto_fpoversikt }) => {
     if (inntektsmelding.bortfalteNaturalytelser.length === 0) {
         return 'Eventuelle naturalytelser eller “frynsegoder” som du får gjennom din arbeidsgiver vil du beholde under permisjonen.';
     }
 
     if (inntektsmelding.bortfalteNaturalytelser.length === 1) {
-        return <BortfaltNaturalytelseTekst bortfaltNaturalytelse={inntektsmelding.bortfalteNaturalytelser[0]} />;
+        return <BortfaltNaturalytelseTekst bortfaltNaturalytelse={inntektsmelding.bortfalteNaturalytelser[0]!} />;
     }
 
     return (
@@ -209,7 +213,7 @@ const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: Inntektsmeld
 const BortfaltNaturalytelseTekst = ({
     bortfaltNaturalytelse,
 }: {
-    bortfaltNaturalytelse: InntektsmeldingDto['bortfalteNaturalytelser'][0];
+    bortfaltNaturalytelse: BortfaltNaturalytelse_fpoversikt;
 }) => {
     if (bortfaltNaturalytelse.tomDato === '9999-12-31') {
         // eslint-disable-next-line max-len
@@ -236,12 +240,12 @@ const InntektsmeldingInfoBlokk = ({
     return (
         <div
             className={classNames(
-                'rounded-large p-6 bg-surface-alt-3-subtle flex gap-4 justify-between sm:justify-normal flex-row-reverse sm:flex-row',
+                'bg-ax-bg-brand-blue-soft ax-sm:justify-normal ax-sm:flex-row flex flex-row-reverse justify-between gap-4 rounded-lg p-6',
                 className,
             )}
         >
-            {Ikon && <Ikon className="text-icon-info flex-shrink-0" width={24} height={24} aria-hidden />}
-            <VStack gap="1">
+            {Ikon && <Ikon className="text-ax-text-info-decoration flex-shrink-0" width={24} height={24} aria-hidden />}
+            <VStack gap="space-4">
                 <Heading level="2" size={size}>
                     {heading}
                 </Heading>
@@ -253,7 +257,7 @@ const InntektsmeldingInfoBlokk = ({
 
 const InntektsmeldingSpørsmålOgSvar = () => {
     return (
-        <VStack gap="2" className="bg-surface-subtle rounded-large p-6 pb-8 col-span-2">
+        <VStack gap="space-8" className="bg-ax-bg-neutral-soft col-span-2 rounded-lg p-6 pb-8">
             <VStack>
                 <Heading level="2" spacing size="small">
                     Hva er en inntektsmelding?
@@ -298,4 +302,4 @@ const NaturalytelseType = {
     YRKEBIL_TJENESTLIGBEHOV_KILOMETER: 'Yrkesbil tjenesteligbehov kilometer',
     YRKEBIL_TJENESTLIGBEHOV_LISTEPRIS: 'Yrkesbil tjenesteligbehov listepris',
     INNBETALING_TIL_UTENLANDSK_PENSJONSORDNING: 'Innbetaling utenlandsk pensjonsordning',
-} satisfies Record<Naturalytelsetype, string>;
+} satisfies Record<NaturalytelseType_fpoversikt, string>;

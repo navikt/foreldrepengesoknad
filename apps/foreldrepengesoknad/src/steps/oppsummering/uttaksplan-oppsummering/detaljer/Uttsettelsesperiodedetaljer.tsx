@@ -1,7 +1,7 @@
 import { useIntl } from 'react-intl';
 
-import { AnnenForelder, PeriodeUtenUttakUtsettelse, Utsettelsesperiode, UtsettelseÅrsakType } from '@navikt/fp-common';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { AnnenForelder, PeriodeUtenUttakUtsettelse, Utsettelsesperiode } from '@navikt/fp-common';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { getÅrsakTekst } from '../OppsummeringUtils';
 import { Feltoppsummering } from './Feltoppsummering';
@@ -9,7 +9,7 @@ import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
 interface Props {
     periode: Utsettelsesperiode | PeriodeUtenUttakUtsettelse;
-    registrerteArbeidsforhold: Arbeidsforhold[];
+    registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     søkerErFarEllerMedmor: boolean;
     annenForelder: AnnenForelder;
     periodeErNyEllerEndret: boolean;
@@ -27,7 +27,7 @@ export const Utsettelsesperiodedetaljer = ({ periode }: Props) => {
                 feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.årsak' })}
                 verdi={getÅrsakTekst(intl, periode)}
             />
-            {årsak === UtsettelseÅrsakType.Arbeid && (
+            {årsak === 'ARBEID' && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.bekreft100ProsentIArbeid.label' })}
                     verdi={bekreftErIArbeidSvar}

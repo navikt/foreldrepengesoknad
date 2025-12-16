@@ -1,14 +1,9 @@
 import {
     AnnenForelder,
-    Forelder,
-    MorsAktivitet,
-    OverføringÅrsakType,
     Periode,
     Periodetype,
     Situasjon,
-    StønadskontoType,
     Utsettelsesperiode,
-    UtsettelseÅrsakType,
     Uttaksperiode,
     isPeriodeUtenUttak,
 } from '@navikt/fp-common';
@@ -21,7 +16,7 @@ import { uttaksdatoer } from '../../utils/uttaksdatoerUtils';
 
 const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 
-export interface InformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor {
+interface InformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor {
     antallUttaksdagerTapt: number;
     førsteRegistrerteUttaksdag: Date;
     sisteUttaksdagInnenforSeksUker: Date;
@@ -110,40 +105,36 @@ export const getUgyldigUttakMor = (
     if (value === 'mellomSyvOgÅtteUkerForMor') {
         ugyldigeUtsettelser = Periodene(ugyldigPeriode)
             .getUtsettelser()
-            .filter(
-                (p) =>
-                    p.forelder === Forelder.mor &&
-                    (p.årsak === UtsettelseÅrsakType.Ferie || p.årsak === UtsettelseÅrsakType.Arbeid),
-            );
+            .filter((p) => p.forelder === 'MOR' && (p.årsak === 'LOVBESTEMT_FERIE' || p.årsak === 'ARBEID'));
     } else if (value === 'førsteSeksUkerForMor') {
         ugyldigeUtsettelser = Periodene(ugyldigPeriode)
             .getUtsettelser()
             .filter(
                 (p) =>
-                    p.forelder === Forelder.mor &&
-                    p.årsak !== UtsettelseÅrsakType.InstitusjonSøker &&
-                    p.årsak !== UtsettelseÅrsakType.InstitusjonBarnet &&
-                    p.årsak !== UtsettelseÅrsakType.Sykdom,
+                    p.forelder === 'MOR' &&
+                    p.årsak !== 'INSTITUSJONSOPPHOLD_SØKER' &&
+                    p.årsak !== 'INSTITUSJONSOPPHOLD_BARNET' &&
+                    p.årsak !== 'SYKDOM',
             );
     }
     const gradertePerioder = Periodene(ugyldigPeriode)
         .getUttak()
-        .filter((p) => p.forelder === Forelder.mor && p.gradert === true);
+        .filter((p) => p.forelder === 'MOR' && p.gradert === true);
 
     const flernbarnsPerioder = Periodene(ugyldigPeriode)
         .getUttak()
-        .filter((p) => p.forelder === Forelder.mor && p.ønskerFlerbarnsdager === true);
+        .filter((p) => p.forelder === 'MOR' && p.ønskerFlerbarnsdager === true);
 
     const fellesPerioder = Periodene(ugyldigPeriode)
         .getUttak()
-        .filter((p) => p.forelder === Forelder.mor && p.konto === StønadskontoType.Fellesperiode);
+        .filter((p) => p.forelder === 'MOR' && p.konto === 'FELLESPERIODE');
 
     let samtidigUttaksperioder: Uttaksperiode[] = [];
 
     if (!flerbarnsFødsel && flerbarnsFødsel !== undefined && !andreAugust2022ReglerGjelder(familiehendelsesdato)) {
         samtidigUttaksperioder = Periodene(ugyldigPeriode)
             .getUttak()
-            .filter((p) => p.forelder === Forelder.mor && p.ønskerSamtidigUttak);
+            .filter((p) => p.forelder === 'MOR' && p.ønskerSamtidigUttak);
     }
 
     return [
@@ -155,21 +146,21 @@ export const getUgyldigUttakMor = (
     ];
 };
 
-export const unntakFarFørsteSeksUker = (periode: Uttaksperiode, harMidlertidigOmsorg: boolean) => ({
+const unntakFarFørsteSeksUker = (periode: Uttaksperiode, harMidlertidigOmsorg: boolean) => ({
     erMorForSykDeFørsteSeksUker: (): boolean => {
         if (harMidlertidigOmsorg) {
             return true;
         }
 
-        if (periode.konto === StønadskontoType.Fellesperiode || periode.konto === StønadskontoType.Foreldrepenger) {
+        if (periode.konto === 'FELLESPERIODE' || periode.konto === 'FORELDREPENGER') {
             return (
-                periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
-                periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp ||
+                periode.morsAktivitetIPerioden === 'INNLAGT' ||
+                periode.morsAktivitetIPerioden === 'TRENGER_HJELP' ||
                 periode.erMorForSyk === true
             );
         }
 
-        if (periode.konto === StønadskontoType.Fedrekvote || periode.konto === StønadskontoType.AktivitetsfriKvote) {
+        if (periode.konto === 'FEDREKVOTE' || periode.konto === 'AKTIVITETSFRI_KVOTE') {
             return periode.erMorForSyk === true;
         }
 
@@ -216,7 +207,7 @@ export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
     const farsPerioderInnenforSeksFørsteUker = Periodene(perioder)
         .getPerioderEtterFamiliehendelsesdato(familiehendelsesdato)
         .filter((p) => erPeriodeFørDato(p, førsteUttaksdagEtterSeksUker))
-        .filter((p) => p.type !== Periodetype.Hull && !isPeriodeUtenUttak(p) && p.forelder === Forelder.farMedmor);
+        .filter((p) => p.type !== Periodetype.Hull && !isPeriodeUtenUttak(p) && p.forelder === 'FAR_MEDMOR');
 
     const ugyldigeUttak = Periodene(farsPerioderInnenforSeksFørsteUker)
         .getUttak()
@@ -224,15 +215,11 @@ export const getUgyldigUttakFørsteSeksUkerForFarMedmor = (
 
     const ugyldigeOverføringer = Periodene(farsPerioderInnenforSeksFørsteUker)
         .getOverføringer()
-        .filter(
-            (p) =>
-                p.årsak !== OverføringÅrsakType.institusjonsoppholdAnnenForelder &&
-                p.årsak !== OverføringÅrsakType.sykdomAnnenForelder,
-        );
+        .filter((p) => p.årsak !== 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' && p.årsak !== 'SYKDOM_ANNEN_FORELDER');
 
     const ugyldigeUtsettelser = Periodene(farsPerioderInnenforSeksFørsteUker)
         .getUtsettelser()
-        .filter((utsettelse) => utsettelse.årsak !== UtsettelseÅrsakType.InstitusjonBarnet);
+        .filter((utsettelse) => utsettelse.årsak !== 'INSTITUSJONSOPPHOLD_BARNET');
 
     return [...ugyldigeUttak, ...ugyldigeOverføringer, ...ugyldigeUtsettelser];
 };

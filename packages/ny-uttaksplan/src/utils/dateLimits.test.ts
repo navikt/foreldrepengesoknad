@@ -1,14 +1,13 @@
 import dayjs from 'dayjs';
 
-import { ISO_DATE_FORMAT, StønadskontoType } from '@navikt/fp-constants';
-import { UtsettelseÅrsakType } from '@navikt/fp-types';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { getMaxDate, getMinDate } from './dateLimits';
 
 describe('Datobegrensninger', () => {
     it('Skal gi korrekte begrensninger for mødrekvoten', () => {
-        const kontoType = StønadskontoType.Mødrekvote;
+        const kontoType = 'MØDREKVOTE';
         const familiehendelsedato = '2025-03-26';
         const gjelderAdopsjon = false;
 
@@ -20,19 +19,19 @@ describe('Datobegrensninger', () => {
     });
 
     it('Skal gi korrekte begrensninger for fedrekvoten', () => {
-        const kontoType = StønadskontoType.Fedrekvote;
+        const kontoType = 'FEDREKVOTE';
         const familiehendelsedato = '2025-03-26';
         const gjelderAdopsjon = false;
 
         const minDate = getMinDate({ kontoType, familiehendelsedato, gjelderAdopsjon });
         const maxDate = getMaxDate({ kontoType, familiehendelsedato });
 
-        expect(minDate).toEqual(familiehendelsedato);
+        expect(minDate).toEqual(UttaksdagenString(familiehendelsedato).trekkFra(10));
         expect(maxDate).toEqual(dayjs(familiehendelsedato).add(3, 'years').format(ISO_DATE_FORMAT));
     });
 
     it('Skal gi korrekte begrensninger for fellesperioden', () => {
-        const kontoType = StønadskontoType.Fellesperiode;
+        const kontoType = 'FELLESPERIODE';
         const familiehendelsedato = '2025-03-26';
         const gjelderAdopsjon = false;
 
@@ -44,7 +43,7 @@ describe('Datobegrensninger', () => {
     });
 
     it('Skal gi korrekte begrensninger for foreldrepenger', () => {
-        const kontoType = StønadskontoType.Foreldrepenger;
+        const kontoType = 'FORELDREPENGER';
         const familiehendelsedato = '2025-03-26';
         const gjelderAdopsjon = false;
 
@@ -56,7 +55,7 @@ describe('Datobegrensninger', () => {
     });
 
     it('Skal gi korrekte begrensninger for foreldrepenger før fødsel', () => {
-        const kontoType = StønadskontoType.ForeldrepengerFørFødsel;
+        const kontoType = 'FORELDREPENGER_FØR_FØDSEL';
         const familiehendelsedato = '2025-03-26';
         const gjelderAdopsjon = false;
 
@@ -68,7 +67,7 @@ describe('Datobegrensninger', () => {
     });
 
     it('Skal gi korrekte begrensninger for ferie - ved fødsel', () => {
-        const årsak = UtsettelseÅrsakType.Ferie;
+        const årsak = 'LOVBESTEMT_FERIE';
         const familiehendelsedato = '2025-03-26';
         const gjelderAdopsjon = false;
 
@@ -80,7 +79,7 @@ describe('Datobegrensninger', () => {
     });
 
     it('Skal gi korrekte begrensninger for ferie - ved adopsjon', () => {
-        const årsak = UtsettelseÅrsakType.Ferie;
+        const årsak = 'LOVBESTEMT_FERIE';
         const familiehendelsedato = '2025-03-26';
         const gjelderAdopsjon = true;
 

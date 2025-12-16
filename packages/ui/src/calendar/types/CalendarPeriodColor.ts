@@ -1,0 +1,18 @@
+export type CalendarPeriodColor =
+    | 'NONE'
+    | 'PINK'
+    | 'PURPLE'
+    | 'LIGHTBLUE'
+    | 'BLUE'
+    | 'DARKBLUE'
+    | 'GREEN'
+    | 'LIGHTGREEN'
+    | 'GRAY'
+    | 'BLACK'
+    | 'BLACKOUTLINE'
+    | 'LIGHTBLUEGREEN'
+    | 'LIGHTGREENBLUE'
+    | 'GREENSTRIPED'
+    | 'BLUESTRIPED'
+    | 'GREENOUTLINE'
+    | 'BLUEOUTLINE';

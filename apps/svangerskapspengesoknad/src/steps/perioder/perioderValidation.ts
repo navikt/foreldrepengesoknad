@@ -99,8 +99,8 @@ export const validatePeriodeFom =
         sluttDatoArbeid: string | undefined,
     ) =>
     (fom: string) => {
-        const tom = allePerioder && allePerioder.length > 0 ? allePerioder[index].tom : undefined;
-        const tomType = allePerioder && allePerioder.length > 0 ? allePerioder[index].tomType : undefined;
+        const tom = allePerioder && allePerioder.length > 0 ? allePerioder[index]!.tom : undefined;
+        const tomType = allePerioder && allePerioder.length > 0 ? allePerioder[index]!.tomType : undefined;
         if (fom && behovForTilretteleggingFom && dayjs(fom).isBefore(dayjs(behovForTilretteleggingFom), 'd')) {
             return intl.formatMessage({ id: 'valideringsfeil.periode.fom.førBehovForTilretteleggingFom' });
         }
@@ -150,7 +150,7 @@ export const validatePeriodeTom =
         return undefined;
     };
 
-export const validateAtPeriodeIkkeOverlapper = (
+const validateAtPeriodeIkkeOverlapper = (
     fom: string | undefined,
     tom: string | undefined,
     tomType: TilOgMedDatoType | undefined,
@@ -171,20 +171,20 @@ export const validateAtPeriodeIkkeOverlapper = (
             }
             if (periodeTom) {
                 return overlapperTidsperioder(
-                    { fom: fom!, tom: tom || sisteDagForSvangerskapspenger },
+                    { fom: fom, tom: tom || sisteDagForSvangerskapspenger },
                     { fom: p.fom, tom: periodeTom },
                 );
             }
             return false;
         });
         if (overlappendePerioder.length > 0) {
-            const tilOgMedDato = overlappendePerioder[0].tom
-                ? overlappendePerioder[0].tom
+            const tilOgMedDato = overlappendePerioder[0]!.tom
+                ? overlappendePerioder[0]!.tom
                 : sisteDagForSvangerskapspenger;
             return intl.formatMessage(
                 { id: 'valideringsfeil.periode.overlapper' },
                 {
-                    fom: formatDate(overlappendePerioder[0].fom),
+                    fom: formatDate(overlappendePerioder[0]!.fom),
                     tom: formatDate(tilOgMedDato),
                 },
             );
@@ -193,7 +193,7 @@ export const validateAtPeriodeIkkeOverlapper = (
     return undefined;
 };
 
-export const validateSammenhengendePerioderFom = (
+const validateSammenhengendePerioderFom = (
     fom: string | undefined,
     allePerioder: PeriodeMedVariasjon[] | undefined,
     sisteDagForSvangerskapspenger: string,

@@ -5,8 +5,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { AppName, Arbeidsforhold, ArbeidsforholdOgInntekt } from '@navikt/fp-types';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { AppName, ArbeidsforholdOgInntekt, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
@@ -20,7 +20,7 @@ import { InfoTilFiskere } from './components/info-til-fiskere/InfoTilFiskere';
 
 interface Props<TYPE> {
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
-    aktiveArbeidsforhold: Arbeidsforhold[];
+    aktiveArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     saveOnNext: (formValues: ArbeidsforholdOgInntekt) => void;
     onAvsluttOgSlett: () => void;
     onFortsettSenere?: () => void;
@@ -66,12 +66,12 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                     saveOnNext(values);
                 }}
             >
-                <VStack gap="10">
+                <VStack gap="space-40">
                     <ErrorSummaryHookForm />
                     <BodyShort>
                         <FormattedMessage id="inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV" />
                     </BodyShort>
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <BodyShort style={{ fontWeight: 'bold' }}>
                             <FormattedMessage id="inntektsinformasjon.arbeidsforhold.label" />
                         </BodyShort>
@@ -90,7 +90,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                             />
                         </ReadMore>
                     </VStack>
-                    <VStack gap="1">
+                    <VStack gap="space-4">
                         <RhfRadioGroup
                             name="harJobbetSomFrilans"
                             control={formMethods.control}
@@ -112,7 +112,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                         </RhfRadioGroup>
                         <HvemKanVæreFrilanser appOrigin={appOrigin} />
                     </VStack>
-                    <VStack gap="1">
+                    <VStack gap="space-4">
                         <RhfRadioGroup
                             name="harJobbetSomSelvstendigNæringsdrivende"
                             control={formMethods.control}
@@ -144,7 +144,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                         <HvemKanDriveMedEgenNæring />
                     </VStack>
                     {erSvp && (
-                        <VStack gap="1">
+                        <VStack gap="space-4">
                             <RhfRadioGroup
                                 name="harHattArbeidIUtlandet"
                                 control={formMethods.control}
@@ -169,7 +169,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                         </VStack>
                     )}
                     {!erSvp && (
-                        <VStack gap="1">
+                        <VStack gap="space-4">
                             <RhfRadioGroup
                                 name="harHattAndreInntektskilder"
                                 control={formMethods.control}
@@ -189,7 +189,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                             </RhfRadioGroup>
                             <ReadMore
                                 onOpenChange={(open) =>
-                                    loggAmplitudeEvent({
+                                    loggUmamiEvent({
                                         origin: appOrigin,
                                         eventName: open ? 'readmore åpnet' : 'readmore lukket',
                                         eventData: {
@@ -207,7 +207,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                             </ReadMore>
                         </VStack>
                     )}
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         {erSvp && <InfoOmFørstegangstjeneste />}
                         <InfoTilFiskere />
                     </VStack>

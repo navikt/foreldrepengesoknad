@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { EsDataContext } from 'appData/EsDataContext';
-import { EsDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
+import { API_URLS, mellomlagretInfoOptions, personOptions } from 'appData/queries';
+import { VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
 import ky from 'ky';
 import isEqual from 'lodash/isEqual';
 import { useIntl } from 'react-intl';
 
-import { PersonFrontend } from '@navikt/fp-types';
 import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -14,7 +14,7 @@ import { ApiErrorHandler, EngangsstønadRoutes } from './EngangsstønadRoutes';
 
 export const slettMellomlagringOgLastSidePåNytt = async () => {
     try {
-        await ky.delete(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad`);
+        await ky.delete(API_URLS.mellomlagring);
     } catch {
         // Vi bryr oss ikke om feil her. Logges bare i backend
     }
@@ -26,17 +26,9 @@ export const Engangsstønad = () => {
     const intl = useIntl();
     useDocumentTitle(intl.formatMessage({ id: 'Søknad.Pagetitle' }));
 
-    const personinfo = useQuery({
-        queryKey: ['PERSONINFO'],
-        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/personinfo`).json<PersonFrontend>(),
-        staleTime: Infinity,
-    });
+    const personinfo = useQuery(personOptions());
 
-    const mellomlagretInfo = useQuery({
-        queryKey: ['MELLOMLAGRET_INFO'],
-        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad`).json<EsDataMapAndMetaData>(),
-        staleTime: Infinity,
-    });
+    const mellomlagretInfo = useQuery(mellomlagretInfoOptions());
 
     if (personinfo.error || mellomlagretInfo.error) {
         return <ApiErrorHandler error={notEmpty(personinfo.error ?? mellomlagretInfo.error)} />;

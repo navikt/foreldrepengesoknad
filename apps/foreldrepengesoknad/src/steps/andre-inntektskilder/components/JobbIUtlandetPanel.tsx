@@ -22,11 +22,11 @@ export const JobbIUtlandetPanel = ({ index, inntektskilde }: Props) => {
     const { control } = useFormContext<AndreInntekterFormValues>();
 
     if (inntektskilde.type !== AnnenInntektType.JOBB_I_UTLANDET) {
-        throw Error('Inntektskilde ikke av type JOBB_I_UTLANDET');
+        throw new Error('Inntektskilde ikke av type JOBB_I_UTLANDET');
     }
 
     return (
-        <VStack gap="10">
+        <VStack gap="space-40">
             <RhfSelect
                 name={`andreInntektskilder.${index}.land`}
                 control={control}
@@ -64,7 +64,7 @@ export const JobbIUtlandetPanel = ({ index, inntektskilde }: Props) => {
                     <FormattedMessage id="JobbIUtlandetPanel.RadioButton.Ja" />
                 </Radio>
             </RhfRadioGroup>
-            <HStack gap="6">
+            <HStack gap="space-24">
                 <RhfDatepicker
                     name={`andreInntektskilder.${index}.fom`}
                     control={control}

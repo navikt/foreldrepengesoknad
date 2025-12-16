@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
-import { PeriodeMedVariasjon, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
+import { PeriodeMedVariasjon, TilOgMedDatoType } from 'types/Tilrettelegging';
 import { getFloatFromString } from 'utils/numberUtils';
 import { hasValue } from 'utils/validationUtils';
 
@@ -53,7 +53,7 @@ export const getPeriodeInfoTekst = (
     varierendePerioder?: PeriodeMedVariasjon[],
 ) => {
     const erSisteDagMedSvpValgt =
-        varierendePerioder && varierendePerioder[index].tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP;
+        varierendePerioder && varierendePerioder[index]!.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP;
 
     if (varierendePerioder?.[index]?.fom && (erSisteDagMedSvpValgt || varierendePerioder[index].tom)) {
         const fomDato = varierendePerioder[index].fom;
@@ -112,6 +112,6 @@ export const getUferdigPeriodeInput = (
         tom: '',
         stillingsprosent: '',
         tomType: undefined,
-        type: Tilretteleggingstype.DELVIS,
+        type: 'delvis',
     };
 };

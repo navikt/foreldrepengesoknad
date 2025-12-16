@@ -2,6 +2,16 @@
     "app": "veiviser-fp-eller-es",
     "autentisering": false,
     "ingress": "https://www.nav.no/foreldrepenger/foreldrepenger-eller-engangsstonad",
+    "minReplicas": "2",
+    "maxReplicas": "2",
+    "limits": {
+        "cpu": "100m",
+        "mem": "256Mi"
+    },
+    "requests": {
+        "cpu": "15m",
+        "mem": "160Mi"
+    },
     "env": {
         "PUBLIC_PATH": "/foreldrepenger/foreldrepenger-eller-engangsstonad",
         "ENV": "prod"

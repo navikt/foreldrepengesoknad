@@ -5,14 +5,17 @@ import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
 import { Alert, Button } from '@navikt/ds-react';
 
-import { Forelder, PeriodeColor, PeriodeInfoType, Periodetype, UtsettelseÅrsakType } from '@navikt/fp-constants';
+import { PeriodeInfoType, Periodetype } from '@navikt/fp-constants';
 import {
     Barn,
+    BrukerRolleSak_fpoversikt,
     InfoPeriode,
+    KontoTypeUttak,
     Overføringsperiode,
     Periode,
     PeriodeUtenUttak,
     Utsettelsesperiode,
+    UtsettelsesÅrsak,
     Uttaksperiode,
     isAvslåttPeriode,
     isForeldrepengerFørFødselUttaksperiode,
@@ -22,20 +25,18 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '@navikt/fp-types';
-import { Calendar, Period } from '@navikt/fp-ui';
+import { Calendar, type CalendarPeriod, type CalendarPeriodColor } from '@navikt/fp-ui';
 import {
     Uttaksdagen,
+    dateToISOString,
     formatDateIso,
     getAnnenForelderSamtidigUttakPeriode,
     getFamiliehendelsedato,
-    getForelderFarge,
     getIndexOfSistePeriodeFørDato,
-    getUttaksperiodeFarge,
     isAvslåttPeriodeFørsteSeksUkerMor,
 } from '@navikt/fp-utils';
 
 import { UttaksplanLegend } from './UttaksplanLegend';
-import styles from './uttaksplanKalender.module.css';
 import { getKalenderSkjermlesertekstForPeriode } from './uttaksplanKalenderUtils';
 
 const getIndexOfFamiliehendelse = (uttaksplan: Periode[], familiehendelsesdato: string) => {
@@ -48,24 +49,27 @@ const getIndexOfFamiliehendelse = (uttaksplan: Periode[], familiehendelsesdato: 
     return getIndexOfSistePeriodeFørDato(uttaksplan, familiehendelsesdato) || 0;
 };
 
-const slåSammenPeriods = (periods: Period[]) => {
+const slåSammenPeriods = (periods: CalendarPeriod[]) => {
     if (periods.length <= 1) {
         return periods;
     }
 
     return periods.reduce((res, period, index) => {
+        const sisteRes = res.at(-1);
+
         if (
             index !== 0 &&
-            period.color === res[res.length - 1].color &&
-            dayjs(Uttaksdagen(new Date(res[res.length - 1].tom)).neste()).isSame(dayjs(period.fom), 'day')
+            sisteRes &&
+            period.color === sisteRes.color &&
+            dayjs(Uttaksdagen(new Date(sisteRes.tom)).neste()).isSame(dayjs(period.fom), 'day')
         ) {
-            res[res.length - 1].tom = period.tom;
+            sisteRes.tom = period.tom;
             return res;
         } else {
             res.push(period);
             return res;
         }
-    }, [] as Period[]);
+    }, [] as CalendarPeriod[]);
 };
 
 const getPerioderForKalendervisning = (
@@ -73,9 +77,9 @@ const getPerioderForKalendervisning = (
     erFarEllerMedmor: boolean,
     barn: Barn,
     navnAnnenPart: string,
-    unikeUtsettelseÅrsaker: UtsettelseÅrsakType[],
+    unikeUtsettelseÅrsaker: UtsettelsesÅrsak[],
     intl: IntlShape,
-): Period[] => {
+): CalendarPeriod[] => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const perioderForVisning = uttaksplan.filter(
         (p) =>
@@ -87,7 +91,7 @@ const getPerioderForKalendervisning = (
             p.tidsperiode.fom !== undefined &&
             p.tidsperiode.tom !== undefined,
     );
-    const periods = perioderForVisning.map((p) => {
+    const periods = perioderForVisning.map<CalendarPeriod>((p) => {
         const color = getKalenderFargeForPeriodeType(p, erFarEllerMedmor, uttaksplan, barn);
         return {
             fom: dayjs(p.tidsperiode.fom).isSame(dayjs(familiehendelsesdato), 'd')
@@ -95,6 +99,7 @@ const getPerioderForKalendervisning = (
                 : formatDateIso(p.tidsperiode.fom),
             tom: formatDateIso(p.tidsperiode.tom),
             color,
+            srText: '',
         };
     });
 
@@ -102,7 +107,8 @@ const getPerioderForKalendervisning = (
     periods.splice(indexOfFamiliehendelse, 0, {
         fom: familiehendelsesdato,
         tom: familiehendelsesdato,
-        color: PeriodeColor.PINK,
+        color: 'PINK',
+        srText: '',
     });
     const perioderSlåttSammen = slåSammenPeriods(periods);
     return perioderSlåttSammen.map((p) => ({
@@ -122,47 +128,51 @@ const getKalenderFargeForUttaksperiode = (
     periode: Uttaksperiode | Overføringsperiode,
     uttaksplan: Periode[],
     erFarEllerMedmor: boolean,
-): PeriodeColor => {
+): CalendarPeriodColor => {
     const annenForelderSamtidigUttaksperiode = isUttaksperiode(periode)
         ? getAnnenForelderSamtidigUttakPeriode(periode, uttaksplan)
         : undefined;
     const samtidigUttaksprosent = isUttaksperiode(periode) ? periode.samtidigUttakProsent : undefined;
-    if (annenForelderSamtidigUttaksperiode || (samtidigUttaksprosent && parseInt(samtidigUttaksprosent) > 0)) {
-        return erFarEllerMedmor ? PeriodeColor.LIGHTBLUEGREEN : PeriodeColor.LIGHTGREENBLUE;
+    if (annenForelderSamtidigUttaksperiode || (samtidigUttaksprosent && Number.parseInt(samtidigUttaksprosent) > 0)) {
+        return erFarEllerMedmor ? 'LIGHTBLUEGREEN' : 'LIGHTGREENBLUE';
     }
     if (!annenForelderSamtidigUttaksperiode && !samtidigUttaksprosent && isUttaksperiode(periode) && periode.gradert) {
-        return erFarEllerMedmor ? PeriodeColor.GREENSTRIPED : PeriodeColor.BLUESTRIPED;
+        return erFarEllerMedmor ? 'GREENSTRIPED' : 'BLUESTRIPED';
     }
     if (isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin) {
-        return PeriodeColor.NONE;
+        return 'NONE';
     }
 
     return getUttaksperiodeFarge(periode.konto, periode.forelder, erFarEllerMedmor);
 };
 
-const getKalenderFargeForPeriodeUtenUttak = (periode: PeriodeUtenUttak, barn: Barn): PeriodeColor => {
+const getKalenderFargeForPeriodeUtenUttak = (periode: PeriodeUtenUttak, barn: Barn): CalendarPeriodColor => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erFødsel = isFødtBarn(barn) || isUfødtBarn(barn);
     const treUkerFørFamhendelse = dayjs(familiehendelsesdato).subtract(3, 'weeks');
     if (erFødsel && dayjs(periode.tidsperiode.tom).isBetween(familiehendelsesdato, treUkerFørFamhendelse, 'd')) {
-        return PeriodeColor.BLACK;
+        return 'BLACK';
     }
-    return PeriodeColor.NONE;
+    return 'NONE';
 };
 
-const getKalenderFargeForInfoperiode = (periode: InfoPeriode, erFarEllerMedmor: boolean, barn: Barn): PeriodeColor => {
+const getKalenderFargeForInfoperiode = (
+    periode: InfoPeriode,
+    erFarEllerMedmor: boolean,
+    barn: Barn,
+): CalendarPeriodColor => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     switch (periode.infotype) {
         case PeriodeInfoType.utsettelseAnnenPart:
-            return erFarEllerMedmor ? PeriodeColor.BLUEOUTLINE : PeriodeColor.GREENOUTLINE;
+            return erFarEllerMedmor ? 'BLUEOUTLINE' : 'GREENOUTLINE';
         case PeriodeInfoType.uttakAnnenPart:
             return getForelderFarge(periode.forelder, erFarEllerMedmor);
         case PeriodeInfoType.avslåttPeriode:
             return !erFarEllerMedmor && isAvslåttPeriodeFørsteSeksUkerMor(periode, familiehendelsesdato)
-                ? PeriodeColor.BLACK
-                : PeriodeColor.NONE;
+                ? 'BLACK'
+                : 'NONE';
         default:
-            return PeriodeColor.NONE;
+            return 'NONE';
     }
 };
 
@@ -171,14 +181,14 @@ const getKalenderFargeForPeriodeType = (
     erFarEllerMedmor: boolean,
     uttaksplan: Periode[],
     barn: Barn,
-): PeriodeColor => {
+): CalendarPeriodColor => {
     switch (periode.type) {
         case Periodetype.Utsettelse:
-            return periode.forelder === Forelder.farMedmor ? PeriodeColor.GREENOUTLINE : PeriodeColor.BLUEOUTLINE;
+            return periode.forelder === 'FAR_MEDMOR' ? 'GREENOUTLINE' : 'BLUEOUTLINE';
         case Periodetype.PeriodeUtenUttak:
             return getKalenderFargeForPeriodeUtenUttak(periode, barn);
         case Periodetype.Hull:
-            return PeriodeColor.BLACK;
+            return 'BLACK';
         case Periodetype.Overføring:
         case Periodetype.Uttak:
             return getKalenderFargeForUttaksperiode(periode, uttaksplan, erFarEllerMedmor);
@@ -187,13 +197,13 @@ const getKalenderFargeForPeriodeType = (
         case Periodetype.Info:
             return getKalenderFargeForInfoperiode(periode, erFarEllerMedmor, barn);
         default:
-            return PeriodeColor.NONE;
+            return 'NONE';
     }
 };
 
-const getInneholderKalenderHelgedager = (periods: Period[]): boolean => {
-    const førsteDag = periods[0].fom;
-    const sisteDag = periods[periods.length - 1].tom;
+const getInneholderKalenderHelgedager = (periods: CalendarPeriod[]): boolean => {
+    const førsteDag = periods[0]!.fom;
+    const sisteDag = periods.at(-1)!.tom;
     if (dayjs(sisteDag).diff(dayjs(førsteDag), 'days') > 5) {
         return true;
     }
@@ -228,27 +238,27 @@ export const UttaksplanKalender = ({ uttaksplan, erFarEllerMedmor, barn, navnAnn
     );
     const inkludererHelg = getInneholderKalenderHelgedager(periods);
     if (inkludererHelg) {
-        unikePeriodColors.push(PeriodeColor.GRAY);
+        unikePeriodColors.push('GRAY');
     }
 
     const pdfOptions = {
         filename: 'Min foreldrepengeplan.pdf',
-        resolution: Resolution.HIGH,
+        resolution: Resolution.MEDIUM,
         page: {
             margin: Margin.MEDIUM,
         },
-    } as Options;
+    } satisfies Options;
     const { toPDF, targetRef } = usePDF(pdfOptions);
 
     return (
         <>
             {harAvslåttePerioderSomIkkeGirTapteDager && (
-                <Alert variant="info" style={{ margin: '1.5rem 0rem' }}>
+                <Alert variant="info" className="my-6">
                     <FormattedMessage id="kalender.avslåttePerioder" />
                 </Alert>
             )}
             <div ref={targetRef}>
-                <div className={styles.legend} style={{ display: 'flex', flexWrap: 'wrap' }} id="legend">
+                <div className="flex flex-wrap max-[768px]:pb-2" id="legend">
                     <UttaksplanLegend
                         uniqueColors={unikePeriodColors}
                         barn={barn}
@@ -257,11 +267,58 @@ export const UttaksplanKalender = ({ uttaksplan, erFarEllerMedmor, barn, navnAnn
                         erFarEllerMedmor={erFarEllerMedmor}
                     />
                 </div>
-                <Calendar periods={periods} />
+                <Calendar
+                    periods={periods}
+                    firstDateInCalendar={dateToISOString(dayjs(familiehendelsesdato).subtract(3, 'month').toDate())}
+                    lastDateInCalendar={periods.length > 0 ? periods.at(-1)!.tom : undefined}
+                />
             </div>
-            <Button className={styles.button} variant="tertiary" icon={<DownloadIcon />} onClick={() => toPDF()}>
+            <Button className="mt-8 print:hidden" variant="tertiary" icon={<DownloadIcon />} onClick={() => toPDF()}>
                 <FormattedMessage id="kalender.lastNed" />
             </Button>
         </>
     );
+};
+
+const getKontoFarge = (konto: KontoTypeUttak, erFarEllerMedmor: boolean): CalendarPeriodColor => {
+    switch (konto) {
+        case 'FEDREKVOTE':
+        case 'AKTIVITETSFRI_KVOTE':
+            return erFarEllerMedmor ? 'GREEN' : 'LIGHTGREEN';
+        case 'FORELDREPENGER_FØR_FØDSEL':
+        case 'MØDREKVOTE':
+            return erFarEllerMedmor ? 'LIGHTBLUE' : 'BLUE';
+        case 'FORELDREPENGER':
+            return erFarEllerMedmor ? 'GREEN' : 'BLUE';
+        case 'FELLESPERIODE':
+            return erFarEllerMedmor ? 'LIGHTBLUEGREEN' : 'LIGHTGREENBLUE';
+        default:
+            return 'NONE';
+    }
+};
+
+export const getUttaksperiodeFarge = (
+    konto: KontoTypeUttak,
+    forelder: BrukerRolleSak_fpoversikt | undefined,
+    erFarEllerMedmor: boolean,
+    harMidlertidigOmsorg?: boolean,
+): CalendarPeriodColor => {
+    if (harMidlertidigOmsorg) {
+        return erFarEllerMedmor ? 'GREEN' : 'BLUE';
+    }
+
+    if (forelder === undefined) {
+        return getKontoFarge(konto, erFarEllerMedmor);
+    }
+    return getForelderFarge(forelder, erFarEllerMedmor);
+};
+
+export const getForelderFarge = (
+    forelder: BrukerRolleSak_fpoversikt,
+    erFarEllerMedmor: boolean,
+): CalendarPeriodColor => {
+    if (forelder === 'MOR') {
+        return erFarEllerMedmor ? 'LIGHTBLUE' : 'BLUE';
+    }
+    return erFarEllerMedmor ? 'GREEN' : 'LIGHTGREEN';
 };

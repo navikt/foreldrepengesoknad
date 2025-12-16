@@ -11,27 +11,20 @@
         "prettier": "prettier --write src"
     },
     "dependencies": {
-        "@navikt/nav-dekoratoren-moduler": "3.2.3",
+        "@navikt/fp-config-eslint": "workspace:*",
+        "@navikt/nav-dekoratoren-moduler": "3.6.1",
         "@navikt/vite-mode": "0.13.6",
-        "express": "5.1.0"
+        "express": "5.2.1"
     },
     "devDependencies": {
         "@navikt/fp-config-typescript": "workspace:*",
-        "@types/express": "5.0.3",
+        "@types/express": "5.0.6",
         "@types/morgan": "1.9.10",
-        "@types/node": "22.15.18",
-        "@vercel/ncc": "0.38.3",
-        "eslint": "9.28.0",
-        "eslint-config-prettier": "10.1.5",
-        "eslint-plugin-import": "2.31.0",
-        "eslint-plugin-prettier": "5.4.1",
-        "eslint-plugin-react": "7.37.5",
-        "eslint-plugin-simple-import-sort": "12.1.1",
-        "eslint-plugin-unicorn": "59.0.1",
-        "morgan": "1.10.0",
-        "prettier": "3.5.3",
-        "typescript": "5.8.3",
-        "winston": "3.17.0"
+        "@types/node": "24.10.1",
+        "eslint": "9.39.1",
+        "morgan": "1.10.1",
+        "typescript": "5.9.3",
+        "winston": "3.19.0"
     },
-    "packageManager": "pnpm@9.1.4"
+    "packageManager": "pnpm@10.18.3"
 }

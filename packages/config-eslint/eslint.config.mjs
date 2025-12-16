@@ -1,10 +1,12 @@
 import pluginJs from '@eslint/js';
+import vitest from '@vitest/eslint-plugin';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import pluginReact from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactYouMightNotNeedAnEffect from 'eslint-plugin-react-you-might-not-need-an-effect';
 import storybook from 'eslint-plugin-storybook';
-import vitest from 'eslint-plugin-vitest';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -25,11 +27,21 @@ export default [
         languageOptions: { globals: globals.browser },
     },
     pluginJs.configs.recommended,
-    ...tseslint.configs.recommended,
+    ...tseslint.configs.recommendedTypeChecked,
+    {
+        languageOptions: {
+            parserOptions: {
+                projectService: '../config-typescript/tsconfig.json',
+                tsconfigRootDir: import.meta.dirname,
+            },
+        },
+    },
     ...storybook.configs['flat/recommended'],
     pluginReact.configs.flat.recommended,
     jsxA11y.flatConfigs.recommended,
     importPlugin.flatConfigs.recommended,
+    reactHooks.configs.flat.recommended,
+    reactYouMightNotNeedAnEffect.configs.recommended,
     eslintConfigPrettier,
     {
         rules: {
@@ -75,10 +87,16 @@ export default [
             'no-shadow': OFF,
             '@typescript-eslint/no-shadow': [ERROR],
             'no-unused-vars': OFF,
-            '@typescript-eslint/no-unused-vars': [ERROR],
+            '@typescript-eslint/no-unused-vars': [ERROR, { ignoreRestSiblings: true }],
             'no-duplicate-imports': ERROR,
             '@typescript-eslint/array-type': [ERROR, { default: 'array-simple' }],
             '@typescript-eslint/ban-ts-comment': ERROR,
+            'import/no-default-export': ERROR,
+            'react-hooks/rules-of-hooks': ERROR,
+            'react-hooks/set-state-in-effect': ERROR,
+            'react-hooks/incompatible-library': OFF,
+            'react-hooks/exhaustive-deps': OFF,
+            'react-hooks/refs': OFF,
 
             // TODO Bør ein ha med desse to?
             'react/function-component-definition': [
@@ -94,9 +112,20 @@ export default [
         },
     },
     {
-        ignores: ['**/*.stories.tsx', 'eslint.config.mjs'],
+        files: ['**/*.stories.tsx', 'eslint.config.mjs'],
         rules: {
-            'import/no-default-export': ERROR,
+            'import/no-default-export': OFF,
+            'react-hooks/rules-of-hooks': OFF,
+        },
+    },
+    {
+        files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
+        rules: {
+            '@typescript-eslint/no-unsafe-assignment': OFF,
+            '@typescript-eslint/no-unsafe-argument': OFF,
+            '@typescript-eslint/no-unsafe-member-access': OFF,
+            '@typescript-eslint/no-unsafe-call': OFF,
+            '@typescript-eslint/no-unsafe-return': OFF,
         },
     },
 ];

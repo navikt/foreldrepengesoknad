@@ -10,10 +10,6 @@ metadata:
 spec:
   image: {{image}}
   port: 8080
-  replicas:
-      min: 2
-      max: 2
-      disableAutoScaling: true
   liveness:
       path: /internal/health/isAlive
       initialDelay: 10
@@ -29,13 +25,17 @@ spec:
       runtime: nodejs
   ingresses:
     - {{ingress}}
+  replicas:
+    min: {{minReplicas}}
+    max: {{maxReplicas}}
+    disableAutoScaling: true
   resources:
     limits:
-      cpu: 500m
-      memory: 512Mi
+      cpu: "{{limits.cpu}}"
+      memory: "{{limits.mem}}"
     requests:
-      cpu: 200m
-      memory: 256Mi
+      cpu: "{{requests.cpu}}"
+      memory: "{{requests.mem}}"
   {{#if autentisering}}
   tokenx:
     enabled: true
@@ -50,7 +50,9 @@ spec:
   accessPolicy:
     outbound:
       rules:
-        - application: foreldrepengesoknad-api
+        - application: fpsoknad
+        - application: fpoversikt
+        - application: fpgrunndata
         - application: nav-dekoratoren
           namespace: personbruker
   env:
@@ -58,10 +60,16 @@ spec:
    - name: {{@key}}
      value: "{{this}}"
   {{/each}}
-   - name: FORELDREPENGER_API_URL
-     value: "http://foreldrepengesoknad-api/rest"
-   - name: FORELDREPENGER_API_SCOPE
-     value: "{{env.ENV}}-gcp:teamforeldrepenger:foreldrepengesoknad-api"
+   - name: FPSOKNAD_API_URL
+     value: "http://fpsoknad/fpsoknad"
+   - name: FPSOKNAD_API_SCOPE
+     value: "{{env.ENV}}-gcp:teamforeldrepenger:fpsoknad"
+   - name: FPOVERSIKT_API_URL
+     value: "http://fpoversikt/fpoversikt"
+   - name: FPOVERSIKT_API_SCOPE
+     value: "{{env.ENV}}-gcp:teamforeldrepenger:fpoversikt"
+   - name: FPGRUNNDATA_API_URL
+     value: "http://fpgrunndata/fpgrunndata"
    - name: APP_VERSION
      value: {{image}}
    - name: NODE_ENV

@@ -9,16 +9,16 @@ import {
     erFarDelAvSøknaden,
     erFarOgFar,
     erMorDelAvSøknaden,
-    finnSøker2Tekst,
     getFornavnPåSøker1,
 } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 
-import { BodyShort, VStack } from '@navikt/ds-react';
+import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { HvemPlanleggerType } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isLessThanThreeWeeksAgo, isRequired, isValidDate } from '@navikt/fp-validation';
 
 const TODAY = dayjs().startOf('day').toDate();
@@ -44,18 +44,27 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
     const formMethods = useFormContext<OmBarnet>();
     const termindato = formMethods.watch('termindato');
 
-    const datoSvangerskapsuke22 =
-        termindato !== undefined ? dayjs(termindato).subtract(18, 'weeks').subtract(3, 'days').toDate() : undefined;
+    const datoSvangerskapsuke22 = termindato
+        ? dayjs(termindato).subtract(18, 'weeks').subtract(3, 'days').toDate()
+        : undefined;
 
     // TODO: disse sjekker nå på dato, skal den sjekke på ukenummer?
 
     const erAlenesøker = erAlene(hvemPlanlegger);
     const erFarMedISøknaden = erFarDelAvSøknaden(hvemPlanlegger);
     const erFedre = erFarOgFar(hvemPlanlegger);
-    const erFar = hvemPlanlegger.type === HvemPlanleggerType.FAR;
+    const erFar = (() => {
+        switch (hvemPlanlegger.type) {
+            case HvemPlanleggerType.MOR:
+            case HvemPlanleggerType.MOR_OG_MEDMOR:
+                return false;
+            default:
+                return true;
+        }
+    })();
 
     return (
-        <VStack gap="5">
+        <VStack gap="space-20">
             <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
                 <RhfDatepicker
                     name="termindato"
@@ -73,19 +82,29 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
                             }),
                         ),
                     ]}
+                    showMonthAndYearDropdowns
                     customErrorFormatter={formatError}
-                    onChange={scrollToBottom}
+                    onSelect={scrollToBottom}
+                    onBlur={scrollToBottom}
                 />
             </BluePanel>
             {/* kan søke tilbake i tid */}
             {termindato !== undefined && dayjs(termindato).isBefore(TODAY) && (
                 <Infobox
                     header={<FormattedMessage id="ErFødtPanel.Født.InfoboksTittel" values={{ erAlenesøker }} />}
-                    icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
+                    icon={
+                        <TasklistStartIcon
+                            height={24}
+                            width={24}
+                            color="var(--ax-bg-success-strong)"
+                            fontSize="1.5rem"
+                            aria-hidden
+                        />
+                    }
                     shouldFadeIn
                     color="green"
                 >
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <BodyShort>
                             <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" />
                         </BodyShort>
@@ -98,17 +117,15 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
                                 }}
                             />
                         </BodyShort>
-                        {erFarDelAvSøknaden(hvemPlanlegger) && (
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
-                                    values={{
-                                        erFar: erFarMedISøknaden,
-                                        hvem: finnSøker2Tekst(intl, hvemPlanlegger),
-                                    }}
-                                />
-                            </BodyShort>
-                        )}
+                        <BodyShort>
+                            <FormattedMessage
+                                id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
+                                values={{
+                                    erAlenesøker,
+                                    erFar,
+                                }}
+                            />
+                        </BodyShort>
                     </VStack>
                 </Infobox>
             )}
@@ -122,31 +139,40 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
                             <FormattedMessage id="ErIkkeFødtPanel.UnderTreMndTilTerminInfo" values={{ erAlenesøker }} />
                         }
                         icon={
-                            <TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />
+                            <TasklistStartIcon
+                                height={24}
+                                width={24}
+                                color="var(--ax-bg-success-strong)"
+                                fontSize="1.5rem"
+                                aria-hidden
+                            />
                         }
                         shouldFadeIn
                         color="green"
                     >
-                        <VStack gap="2">
-                            <BodyShort>
-                                <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
-
-                                {erFedre || erFar ? (
-                                    <FormattedMessage
-                                        id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
-                                        values={{
-                                            erMorDelAvSøknaden: false,
-                                        }}
-                                    />
-                                ) : (
-                                    <FormattedMessage
-                                        id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
-                                        values={{
-                                            erMorDelAvSøknaden: true,
-                                        }}
-                                    />
-                                )}
-                            </BodyShort>
+                        <VStack gap="space-8">
+                            <HStack gap="space-2">
+                                <BodyShort>
+                                    <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
+                                </BodyShort>
+                                <BodyShort>
+                                    {erFedre || erFar ? (
+                                        <FormattedMessage
+                                            id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                            values={{
+                                                erMorDelAvSøknaden: false,
+                                            }}
+                                        />
+                                    ) : (
+                                        <FormattedMessage
+                                            id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                            values={{
+                                                erMorDelAvSøknaden: true,
+                                            }}
+                                        />
+                                    )}
+                                </BodyShort>
+                            </HStack>
                             {!erFedre && (
                                 <>
                                     <BodyShort>
@@ -163,7 +189,9 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
                                                 id="ErIkkeFødtPanel.UnderTreMndTilTermin"
                                                 values={{
                                                     erAlenesøker,
-                                                    navn: getFornavnPåSøker1(hvemPlanlegger, intl),
+                                                    navn: capitalizeFirstLetter(
+                                                        getFornavnPåSøker1(hvemPlanlegger, intl),
+                                                    ),
                                                 }}
                                             />
                                         </BodyShort>
@@ -200,31 +228,28 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
                             />
                         }
                         icon={
-                            <TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />
+                            <TasklistStartIcon
+                                height={24}
+                                width={24}
+                                color="var(--ax-bg-success-strong)"
+                                fontSize="1.5rem"
+                                aria-hidden
+                            />
                         }
                         shouldFadeIn
                         color="green"
                     >
-                        <VStack gap="2">
+                        <VStack gap="space-8">
                             <BodyShort>
                                 <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
                             </BodyShort>
                             <BodyShort>
-                                {!erFedre ? (
-                                    <FormattedMessage
-                                        id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
-                                        values={{
-                                            erMorDelAvSøknaden: true,
-                                        }}
-                                    />
-                                ) : (
-                                    <FormattedMessage
-                                        id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
-                                        values={{
-                                            erMorDelAvSøknaden: false,
-                                        }}
-                                    />
-                                )}
+                                <FormattedMessage
+                                    id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                    values={{
+                                        erMorDelAvSøknaden: !erFedre,
+                                    }}
+                                />
                             </BodyShort>
                             {erFarDelAvSøknaden(hvemPlanlegger) && !erFedre && (
                                 <BodyShort>

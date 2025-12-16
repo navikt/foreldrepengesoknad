@@ -1,3 +1,3 @@
 export const redirect = (url: string) => {
-    window.location.href = url;
+    globalThis.location.href = url;
 };

@@ -1,3 +1,4 @@
+import { API_URLS } from 'api/queries';
 import dayjs from 'dayjs';
 import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -7,15 +8,13 @@ import { addMetadata, lagSendSenereDokument } from 'utils/vedleggUtils';
 
 import { BodyLong } from '@navikt/ds-react';
 
-import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
-import { AttachmentMetadataType, AttachmentType } from '@navikt/fp-constants';
+import { AttachmentType } from '@navikt/fp-constants';
+import { FileUploader } from '@navikt/fp-filopplaster';
 import { Attachment } from '@navikt/fp-types';
-import { FileUploader } from '@navikt/fp-ui';
 import { PeriodelisteItemHeader } from '@navikt/fp-uttaksplan';
 
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
-import styles from './periode-attachment-uploader.module.css';
 
 interface Props {
     attachments: Attachment[];
@@ -51,7 +50,7 @@ export const UttakUploader = ({
         if (formAttachments.length === 0) {
             const init = lagSendSenereDokument(attachmentType, skjemanummer);
             const sendSenereVedlegg = addMetadata(init, {
-                type: AttachmentMetadataType.UTTAK,
+                type: 'UTTAK',
                 perioder: perioder.map((p) => ({
                     fom: dateToISOString(p.tidsperiode.fom),
                     tom: dateToISOString(p.tidsperiode.tom),
@@ -70,7 +69,7 @@ export const UttakUploader = ({
                     <BodyLong>{description}</BodyLong>
                     {perioder.map((p) => {
                         return (
-                            <div key={p.id} className={styles.periodeAttachmentUploader}>
+                            <div key={p.id} className="my-4">
                                 <PeriodelisteItemHeader
                                     periode={p}
                                     erAleneOmOmsorg={false}
@@ -92,7 +91,7 @@ export const UttakUploader = ({
             updateAttachments={(vedlegg) => {
                 const attachmentsMedMetadata = vedlegg.map((a) =>
                     addMetadata(a, {
-                        type: AttachmentMetadataType.UTTAK,
+                        type: 'UTTAK',
                         perioder: perioder.map((p) => ({
                             fom: dateToISOString(p.tidsperiode.fom),
                             tom: dateToISOString(p.tidsperiode.tom),
@@ -102,7 +101,7 @@ export const UttakUploader = ({
 
                 return updateAttachments(attachmentsMedMetadata);
             }}
-            saveAttachment={getSaveAttachmentFetch(import.meta.env.BASE_URL, 'foreldrepenger')}
+            uploadPath={API_URLS.sendVedlegg}
         />
     );
 };

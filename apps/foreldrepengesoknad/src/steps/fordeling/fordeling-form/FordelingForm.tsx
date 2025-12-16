@@ -20,8 +20,8 @@ type Props = {
     navnPåForeldre: NavnPåForeldre;
     dagerMedFellesperiode: number;
     førsteDagEtterAnnenForelder: Date | undefined;
-    goToPreviousDefaultStep: () => Promise<void>;
-    goToNextDefaultStep: () => Promise<void>;
+    goToPreviousDefaultStep: () => void;
+    goToNextDefaultStep: () => void;
     onAvsluttOgSlett?: () => void;
     onFortsettSenere?: () => void;
 };
@@ -81,7 +81,7 @@ export const FordelingForm = ({
     };
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-            <VStack gap="10">
+            <VStack gap="space-40">
                 <ErrorSummaryHookForm />
                 {søkerDeltUttakINorgeSomMorFørFar && (
                     <FellesperiodeFordeling

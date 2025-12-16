@@ -32,13 +32,13 @@ export const HarSaker = ({ grupperteSaker, harMinstEttArbeidsforhold }: Props) =
                 });
                 return (
                     <div key={gruppering.familiehendelsedato}>
-                        <HStack gap="2" align="baseline">
+                        <HStack gap="space-8" align="baseline">
                             <Heading size="small" level="2" spacing>
                                 {tittel}
                             </Heading>
                             <BodyShort>{capitalizeFirstLetter(undertittel)}</BodyShort>
                         </HStack>
-                        <VStack gap="2">
+                        <VStack gap="space-8">
                             {gruppering.saker.map((sak) => {
                                 return (
                                     <SakLink

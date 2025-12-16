@@ -1,40 +1,26 @@
 import { IntlShape } from 'react-intl';
 
-import { Forelder, NavnPåForeldre, StønadskontoType } from '@navikt/fp-common';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { Stønadskonto } from '@navikt/fp-types/src/TilgjengeligeStønadskontoer';
+import { NavnPåForeldre } from '@navikt/fp-common';
+import { KontoBeregningDto, KontoDto, KontoTypeUttak } from '@navikt/fp-types';
 import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
-
-const getForelderNavn = (forelder: Forelder, navnPåForeldre: NavnPåForeldre): string => {
-    let forelderNavn = '';
-    if (navnPåForeldre.farMedmor) {
-        forelderNavn = forelder === Forelder.mor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
-    } else {
-        forelderNavn = forelder === Forelder.mor ? navnPåForeldre.mor : forelder;
-    }
-    return capitalizeFirstLetter(forelderNavn);
-};
 
 export const getStønadskontoNavn = (
     intl: IntlShape,
-    konto: StønadskontoType,
+    konto: KontoTypeUttak,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
 ) => {
-    if (
-        (erFarEllerMedmor && konto === StønadskontoType.Fedrekvote) ||
-        (!erFarEllerMedmor && konto === StønadskontoType.Mødrekvote)
-    ) {
+    if ((erFarEllerMedmor && konto === 'FEDREKVOTE') || (!erFarEllerMedmor && konto === 'MØDREKVOTE')) {
         return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.dinKvote' });
     }
     let navn;
 
     switch (konto) {
-        case StønadskontoType.Mødrekvote:
+        case 'MØDREKVOTE':
             navn = navnPåForeldre.mor;
             break;
-        case StønadskontoType.Fedrekvote:
+        case 'FEDREKVOTE':
             navn = navnPåForeldre.farMedmor;
             break;
         default:
@@ -49,73 +35,42 @@ export const getStønadskontoNavn = (
     }
 
     if (erFarEllerMedmor === true && erAleneOmOmsorg === false) {
-        if (konto === StønadskontoType.AktivitetsfriKvote) {
+        if (konto === 'AKTIVITETSFRI_KVOTE') {
             return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE_BFHR' });
         }
-        if (konto === StønadskontoType.Foreldrepenger) {
+        if (konto === 'FORELDREPENGER') {
             return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSKRAV_KVOTE_BFHR' });
         }
     }
     return intl.formatMessage({ id: `uttaksplan.stønadskontotype.${konto}` });
 };
 
-export const getUttakAnnenPartStønadskontoNavn = (
-    intl: IntlShape,
-    konto: StønadskontoType,
-    periodeForelder: Forelder,
-    navnPåForeldre: NavnPåForeldre,
-    samtidigUttakProsent: string | undefined,
-    erFarEllerMedmor: boolean,
-    erAleneOmOmsorg?: boolean,
-) => {
-    const forelderNavn = getForelderNavn(periodeForelder, navnPåForeldre);
-    if (samtidigUttakProsent !== undefined) {
-        const navn = getNavnGenitivEierform(forelderNavn, intl.locale);
-        const intlTekst =
-            konto === StønadskontoType.Fellesperiode
-                ? 'uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttakFellesperiode'
-                : 'uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttak';
-        return intl.formatMessage(
-            { id: intlTekst },
-            {
-                navn: capitalizeFirstLetter(navn),
-                prosent: samtidigUttakProsent,
-            },
-        );
-    }
-    return getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
-};
-
-export const getAntallUkerFraStønadskontoer = (stønadskontoer: Stønadskonto[]): number => {
+export const getAntallUkerFraStønadskontoer = (stønadskontoer: KontoDto[]): number => {
     return Object.values(stønadskontoer).reduce((sum: number, konto) => sum + konto.dager / 5, 0);
 };
 
-const getDagerForKonto = (
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
-    stønadskontoType: StønadskontoType,
-) => {
+const getDagerForKonto = (stønadskontoer: KontoBeregningDto, stønadskontoType: KontoTypeUttak) => {
     const konto = stønadskontoer.kontoer.find((k) => k.konto === stønadskontoType);
     return konto ? konto.dager / 5 : 0;
 };
 
-export const getAntallUkerForeldrepengerFørFødsel = (
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
-): number => getDagerForKonto(stønadskontoer, StønadskontoType.ForeldrepengerFørFødsel);
+export const getAntallUkerForeldrepengerFørFødsel = (stønadskontoer: KontoBeregningDto): number =>
+    getDagerForKonto(stønadskontoer, 'FORELDREPENGER_FØR_FØDSEL');
 
-export const getAntallUkerMødrekvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
-    getDagerForKonto(stønadskontoer, StønadskontoType.Mødrekvote);
+export const getAntallUkerMødrekvote = (stønadskontoer: KontoBeregningDto): number =>
+    getDagerForKonto(stønadskontoer, 'MØDREKVOTE');
 
-export const getAntallUkerFedrekvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
-    getDagerForKonto(stønadskontoer, StønadskontoType.Fedrekvote);
+export const getAntallUkerFedrekvote = (stønadskontoer: KontoBeregningDto): number =>
+    getDagerForKonto(stønadskontoer, 'FEDREKVOTE');
 
-export const getAntallUkerFellesperiode = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
-    getDagerForKonto(stønadskontoer, StønadskontoType.Fellesperiode);
+export const getAntallUkerFellesperiode = (stønadskontoer: KontoBeregningDto): number =>
+    getDagerForKonto(stønadskontoer, 'FELLESPERIODE');
 
-export const getAntallUkerForeldrepenger = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
-    getDagerForKonto(stønadskontoer, StønadskontoType.Foreldrepenger);
+export const getAntallUkerForeldrepenger = (stønadskontoer: KontoBeregningDto): number =>
+    getDagerForKonto(stønadskontoer, 'FORELDREPENGER');
 
-export const getAntallUkerAktivitetsfriKvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
-    getDagerForKonto(stønadskontoer, StønadskontoType.AktivitetsfriKvote);
+export const getAntallUkerAktivitetsfriKvote = (stønadskontoer: KontoBeregningDto): number =>
+    getDagerForKonto(stønadskontoer, 'AKTIVITETSFRI_KVOTE');
 
 export const getAntallUkerMinsterett = (minsteRettDager: number | undefined): number | undefined => {
     if (minsteRettDager !== undefined) {

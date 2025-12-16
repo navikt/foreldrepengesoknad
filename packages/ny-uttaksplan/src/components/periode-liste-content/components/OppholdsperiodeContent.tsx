@@ -1,7 +1,7 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { IntlShape, useIntl } from 'react-intl';
 
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
@@ -17,14 +17,6 @@ interface Props {
     inneholderKunEnPeriode: boolean;
 }
 
-const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Planperiode) => {
-    if (inneholderKunEnPeriode) {
-        return intl.formatMessage({ id: 'uttaksplan.varighet.helePerioden' });
-    }
-
-    return `${formatDateExtended(periode.fom)} - ${formatDateExtended(periode.tom)}`;
-};
-
 export const OppholdsPeriodeContent = ({
     periode,
     inneholderKunEnPeriode,
@@ -36,12 +28,12 @@ export const OppholdsPeriodeContent = ({
     const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     return (
-        <div style={{ marginBottom: '1rem', display: 'flex' }}>
+        <HStack gap="space-8">
             <div>
                 <CalendarIcon width={24} height={24} />
             </div>
-            <div>
-                <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
+            <VStack gap="space-8">
+                <HStack gap="space-8">
                     <BodyShort weight="semibold">{getLengdePåPeriode(intl, inneholderKunEnPeriode, periode)}</BodyShort>
                     <BodyShort>
                         {getVarighetString(
@@ -49,13 +41,21 @@ export const OppholdsPeriodeContent = ({
                             intl,
                         )}
                     </BodyShort>
-                </div>
-                <div style={{ marginLeft: '1rem' }}>
+                </HStack>
+                {!periode.erAnnenPartEøs && (
                     <BodyShort>
                         {getOppholdskontoNavn(intl, periode.oppholdÅrsak!, navnPåAnnenForelder, !erFarEllerMedmor)}
                     </BodyShort>
-                </div>
-            </div>
-        </div>
+                )}
+            </VStack>
+        </HStack>
     );
+};
+
+const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Planperiode) => {
+    if (inneholderKunEnPeriode) {
+        return intl.formatMessage({ id: 'uttaksplan.varighet.helePerioden' });
+    }
+
+    return `${formatDateExtended(periode.fom)} - ${formatDateExtended(periode.tom)}`;
 };

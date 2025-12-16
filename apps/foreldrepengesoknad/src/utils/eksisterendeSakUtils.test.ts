@@ -1,5 +1,5 @@
-import { Arbeidsform, SaksperiodeDTO, UttakArbeidType } from '@navikt/fp-common';
-import { FpSak } from '@navikt/fp-types';
+import { Arbeidsform } from '@navikt/fp-common';
+import { FpSak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import {
     getArbeidsformFromUttakArbeidstype,
@@ -11,7 +11,6 @@ describe('eksisterendeSakUtils', () => {
     const eksisterendeSakMorTermin = {
         saksnummer: '352010329',
         sakAvsluttet: false,
-        sisteSøknadMottattDato: '2022-11-27',
         oppdatertTidspunkt: '2022-11-27',
         kanSøkeOmEndring: true,
         sakTilhørerMor: true,
@@ -54,7 +53,8 @@ describe('eksisterendeSakUtils', () => {
             ],
         },
         dekningsgrad: 'HUNDRE',
-    } as FpSak;
+        forelder: 'MOR',
+    } satisfies FpSak_fpoversikt;
 
     const forventetMappetEksisterendeSakMorTermin = {
         erAnnenPartsSak: false,
@@ -168,7 +168,6 @@ describe('eksisterendeSakUtils', () => {
 
     const eksisterendeSakMorAdopsjonBareMorHarRett = {
         saksnummer: '352010530',
-        sisteSøknadMottattDato: '2022-11-27',
         oppdatertTidspunkt: '2022-11-27',
         sakAvsluttet: false,
         kanSøkeOmEndring: true,
@@ -196,7 +195,8 @@ describe('eksisterendeSakUtils', () => {
             ],
         },
         dekningsgrad: 'ÅTTI',
-    } as FpSak;
+        forelder: 'MOR',
+    } satisfies FpSak_fpoversikt;
 
     const forventetMappetEksisterendeSakMorAdopsjonBareMorHarRett = {
         erAnnenPartsSak: false,
@@ -292,7 +292,7 @@ describe('eksisterendeSakUtils', () => {
                 },
             ],
         },
-    } as FpSak;
+    } satisfies FpSak_fpoversikt;
 
     const forventetResultatFar = {
         ...forventetMappetEksisterendeSakMorTermin,
@@ -369,7 +369,7 @@ describe('eksisterendeSakUtils', () => {
             ...eksisterendeSakMedØnsketJusteringFarFødsel.familiehendelse,
             fødselsdato: undefined,
         },
-    } as FpSak;
+    } satisfies FpSak_fpoversikt;
 
     const forventetResultatFarTermin = {
         ...forventetResultatFar,
@@ -389,19 +389,19 @@ describe('eksisterendeSakUtils', () => {
 
     describe('getArbeidsformFromUttakArbeidstype', () => {
         it('skal mappe Frilans uttakarbeidstype til arbeidstype', () => {
-            const arbeidsform = getArbeidsformFromUttakArbeidstype(UttakArbeidType.FRILANS);
+            const arbeidsform = getArbeidsformFromUttakArbeidstype('FRILANS');
             expect(arbeidsform).toBe(Arbeidsform.frilans);
         });
 
         it('skal mappe Selvstendig næringsdrivende uttakarbeidstype til arbeidstype', () => {
-            const arbeidsform = getArbeidsformFromUttakArbeidstype(UttakArbeidType.SELVSTENDIG_NÆRINGSDRIVENDE);
+            const arbeidsform = getArbeidsformFromUttakArbeidstype('SELVSTENDIG_NÆRINGSDRIVENDE');
             expect(arbeidsform).toBe(Arbeidsform.selvstendignæringsdrivende);
         });
 
         it('skal mappe arbeidstaker når det ikke er frilans eller selvstendig næringsdrivende', () => {
-            const arbeidsform = getArbeidsformFromUttakArbeidstype(UttakArbeidType.ORDINÆRT_ARBEID);
+            const arbeidsform = getArbeidsformFromUttakArbeidstype('ORDINÆRT_ARBEID');
             expect(arbeidsform).toBe(Arbeidsform.arbeidstaker);
-            const arbeidsformAnnet = getArbeidsformFromUttakArbeidstype(UttakArbeidType.ANNET);
+            const arbeidsformAnnet = getArbeidsformFromUttakArbeidstype('ANNET');
             expect(arbeidsformAnnet).toBe(Arbeidsform.arbeidstaker);
         });
     });
@@ -463,8 +463,8 @@ describe('eksisterendeSakUtils', () => {
             },
             samtidigUttak: 50,
             flerbarnsdager: true,
-        } as SaksperiodeDTO;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } satisfies UttakPeriode_fpoversikt;
+
         const { fom, tom, ...uttaksperiodeRest } = uttaksperiode;
 
         const forventetMappetPeriodeSøker = {
@@ -488,8 +488,8 @@ describe('eksisterendeSakUtils', () => {
                 årsak: 'ANNET',
             },
             utsettelseÅrsak: 'HV_ØVELSE',
-        } as SaksperiodeDTO;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } satisfies UttakPeriode_fpoversikt;
+
         const { fom: fomU, tom: tomU, ...utsettelsesperiodeRest } = utsettelsesperiode;
 
         const forventetMappetUtsettelseSøker = {
@@ -518,8 +518,8 @@ describe('eksisterendeSakUtils', () => {
                 årsak: 'ANNET',
             },
             overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
-        } as SaksperiodeDTO;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } satisfies UttakPeriode_fpoversikt;
+
         const { fom: fomO, tom: tomO, ...overføringsperiodeRest } = overføringsperiode;
         const forventetMappetOverføringSøker = {
             ...overføringsperiodeRest,
@@ -545,8 +545,8 @@ describe('eksisterendeSakUtils', () => {
                 årsak: 'ANNET',
             },
             oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER',
-        } as SaksperiodeDTO;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } satisfies UttakPeriode_fpoversikt;
+
         const { fom: fomOp, tom: tomOp, ...oppholdsperiodeRest } = oppholdsperiode;
 
         const forventetMappetOppholdSøker = {
@@ -579,9 +579,8 @@ describe('eksisterendeSakUtils', () => {
                 trekkerDager: true,
                 årsak: 'ANNET',
             },
-        } as SaksperiodeDTO;
+        } satisfies UttakPeriode_fpoversikt;
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { fom: fomAp, tom: tomAp, ...avslåttPeriodeRest } = avslåttPeriode;
 
         const forventetMappetAvslåttPeriodeSøker = {

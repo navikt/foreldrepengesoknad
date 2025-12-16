@@ -1,11 +1,10 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { Forelder } from '@navikt/fp-constants';
-import { OverføringÅrsakType } from '@navikt/fp-types';
+import { UttakOverføringÅrsak_fpoversikt } from '@navikt/fp-types';
 import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
 
 import { Planperiode } from '../../../types/Planperiode';
@@ -17,6 +16,50 @@ interface Props {
     inneholderKunEnPeriode: boolean;
     navnPåForeldre: NavnPåForeldre;
 }
+
+export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre }: Props) => {
+    const intl = useIntl();
+    const morsAktivitet = !periode.erAnnenPartEøs && periode.morsAktivitet ? periode.morsAktivitet : undefined;
+    const stønadskontoNavn = getStønadskontoNavn(
+        intl,
+        // TODO fiks bruk av !
+        periode.kontoType!,
+        navnPåForeldre,
+        !periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR',
+        morsAktivitet,
+    );
+    const navnPåAnnenForelder =
+        !periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+
+    return (
+        <HStack gap="space-8">
+            <div>
+                <CalendarIcon width={24} height={24} />
+            </div>
+            <VStack gap="space-8">
+                <HStack gap="space-8">
+                    <BodyShort weight="semibold">{getLengdePåPeriode(intl, inneholderKunEnPeriode, periode)}</BodyShort>
+                    <BodyShort>
+                        {getVarighetString(
+                            TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager(),
+                            intl,
+                        )}
+                    </BodyShort>
+                </HStack>
+                {!periode.erAnnenPartEøs && (
+                    <HStack gap="space-8">
+                        <BodyShort>
+                            {getOverføringsTekst(stønadskontoNavn, navnPåAnnenForelder, periode.overføringÅrsak)}
+                        </BodyShort>
+                        {!periode.erAnnenPartEøs && periode.gradering !== undefined && (
+                            <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>
+                        )}
+                    </HStack>
+                )}
+            </VStack>
+        </HStack>
+    );
+};
 
 const getArbeidsTekst = (arbeidstidprosent: number) => {
     const uttaksprosent = 100 - arbeidstidprosent;
@@ -37,31 +80,31 @@ const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, p
 const getOverføringsTekst = (
     stønadskontoNavn: string,
     navnPåAnnenForelder: string,
-    overføringsÅrsak: OverføringÅrsakType | undefined,
+    overføringsÅrsak: UttakOverføringÅrsak_fpoversikt | undefined,
 ) => {
     switch (overføringsÅrsak) {
-        case OverføringÅrsakType.sykdomAnnenForelder:
+        case 'SYKDOM_ANNEN_FORELDER':
             return (
                 <FormattedMessage
                     id="uttaksplan.periodeListeContent.overføring.sykdomAnnenForelder"
                     values={{ stønadskontoNavn, navnPåAnnenForelder }}
                 />
             );
-        case OverføringÅrsakType.aleneomsorg:
+        case 'ALENEOMSORG':
             return (
                 <FormattedMessage
                     id="uttaksplan.periodeListeContent.overføring.aleneomsorg"
                     values={{ stønadskontoNavn, navnPåAnnenForelder }}
                 />
             );
-        case OverføringÅrsakType.ikkeRettAnnenForelder:
+        case 'IKKE_RETT_ANNEN_FORELDER':
             return (
                 <FormattedMessage
                     id="uttaksplan.periodeListeContent.overføring.ikkeRettAnnenForelder"
                     values={{ stønadskontoNavn, navnPåAnnenForelder }}
                 />
             );
-        case OverføringÅrsakType.institusjonsoppholdAnnenForelder:
+        case 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER':
             return (
                 <FormattedMessage
                     id="uttaksplan.periodeListeContent.overføring.institusjonsoppholdAnnenForelder"
@@ -71,43 +114,4 @@ const getOverføringsTekst = (
         default:
             return 'Ingen overføringsårsak oppgitt';
     }
-};
-
-export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre }: Props) => {
-    const intl = useIntl();
-    const { forelder } = periode;
-    const stønadskontoNavn = getStønadskontoNavn(
-        intl,
-        periode.kontoType!,
-        navnPåForeldre,
-        forelder === Forelder.farMedmor,
-    );
-    const navnPåAnnenForelder = forelder === Forelder.farMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
-
-    return (
-        <div style={{ marginBottom: '1rem', display: 'flex' }}>
-            <div>
-                <CalendarIcon width={24} height={24} />
-            </div>
-            <div>
-                <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
-                    <BodyShort weight="semibold">{getLengdePåPeriode(intl, inneholderKunEnPeriode, periode)}</BodyShort>
-                    <BodyShort>
-                        {getVarighetString(
-                            TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager(),
-                            intl,
-                        )}
-                    </BodyShort>
-                </div>
-                <div style={{ marginLeft: '1rem', paddingTop: '0.25rem' }}>
-                    <BodyShort>
-                        {getOverføringsTekst(stønadskontoNavn, navnPåAnnenForelder, periode.overføringÅrsak)}
-                    </BodyShort>
-                    {periode.gradering !== undefined && (
-                        <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>
-                    )}
-                </div>
-            </div>
-        </div>
-    );
 };

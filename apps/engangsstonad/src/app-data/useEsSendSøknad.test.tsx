@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
+import { API_URLS } from 'appData/queries';
 import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
@@ -7,7 +8,7 @@ import { Dokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet } from 'types/OmBarnet';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { EngangsstønadDto, PersonDto_fpoversikt, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/messages/nb_NO.json';
@@ -38,8 +39,9 @@ const DOKUMENTASJON = {
             type: AttachmentType.TERMINBEKREFTELSE,
             uploaded: true,
             url: 'test.com',
+            innsendingsType: 'LASTET_OPP',
             uuid: 'uuid-test',
-        },
+        } as const,
     ],
 };
 
@@ -57,6 +59,21 @@ const SENERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
         landkode: 'SE',
     },
 ];
+
+const DEFAULT_PERSONINFO = {
+    fnr: '11111111111',
+    navn: {
+        fornavn: 'Henrikke',
+        etternavn: 'Ibsen',
+    },
+    kjønn: 'K',
+    fødselsdato: '1979-01-28',
+    bankkonto: {
+        kontonummer: '49875234987',
+        banknavn: 'Storebank',
+    },
+    barn: [],
+} satisfies PersonDto_fpoversikt;
 
 const getWrapper =
     (barnet: OmBarnet, dokumentasjon?: Dokumentasjon) =>
@@ -84,10 +101,10 @@ vi.mock('ky');
 describe('useEsSendSøknad', () => {
     afterEach(() => {
         vi.restoreAllMocks();
+        vi.clearAllMocks();
     });
 
     it('skal sende inn korrekt data ved adopsjon', async () => {
-        const setKvittering = vi.fn();
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
@@ -102,45 +119,45 @@ describe('useEsSendSøknad', () => {
             adopsjonAvEktefellesBarn: true,
         };
 
-        const { result } = renderHook(() => useEsSendSøknad(setKvittering), {
+        const { result } = renderHook(() => useEsSendSøknad(DEFAULT_PERSONINFO), {
             wrapper: getWrapper(omBarnetAdopsjon, DOKUMENTASJON),
         });
 
-        result.current.sendSøknad();
+        await result.current.sendSøknad();
 
-        await waitFor(() => expect(setKvittering).toHaveBeenCalledOnce());
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
-            `${import.meta.env.BASE_URL}/rest/soknad/engangsstonad`,
+            API_URLS.sendSøknad,
             expect.objectContaining({
                 json: {
+                    søkerinfo: {
+                        fnr: DEFAULT_PERSONINFO.fnr,
+                        navn: DEFAULT_PERSONINFO.navn,
+                    },
                     barn: {
                         type: 'adopsjon',
                         adopsjonAvEktefellesBarn: true,
                         adopsjonsdato: '2024-01-02',
                         antallBarn: 1,
                         fødselsdatoer: ['2024-01-01'],
-                        vedleggreferanser: ['1'],
                     },
-                    språkkode: 'nb',
-                    type: 'engangsstønad',
+                    språkkode: 'NB',
                     utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
                     vedlegg: [
                         {
-                            ...DOKUMENTASJON.vedlegg[0],
+                            ...DOKUMENTASJON.vedlegg[0]!,
                             dokumenterer: {
-                                type: 'barn',
+                                type: 'BARN',
                             },
                         },
                     ],
-                },
+                } satisfies EngangsstønadDto,
             }),
         );
     });
 
     it('skal sende inn korrekt data når barnet er født', async () => {
-        const setKvittering = vi.fn();
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
@@ -153,38 +170,37 @@ describe('useEsSendSøknad', () => {
             fødselsdato: '2024-01-01',
             termindato: '2024-01-01',
         };
-
-        const { result } = renderHook(() => useEsSendSøknad(setKvittering), {
+        const { result } = renderHook(() => useEsSendSøknad(DEFAULT_PERSONINFO), {
             wrapper: getWrapper(omBarnetErFødt),
         });
 
-        result.current.sendSøknad();
+        await result.current.sendSøknad();
 
-        await waitFor(() => expect(setKvittering).toHaveBeenCalledOnce());
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
-            `${import.meta.env.BASE_URL}/rest/soknad/engangsstonad`,
+            API_URLS.sendSøknad,
             expect.objectContaining({
                 json: {
+                    søkerinfo: {
+                        fnr: DEFAULT_PERSONINFO.fnr,
+                        navn: DEFAULT_PERSONINFO.navn,
+                    },
                     barn: {
                         type: 'fødsel',
                         fødselsdato: '2024-01-01',
                         termindato: '2024-01-01',
                         antallBarn: 1,
-                        vedleggreferanser: [],
                     },
-                    språkkode: 'nb',
-                    type: 'engangsstønad',
+                    språkkode: 'NB',
                     utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
                     vedlegg: [],
-                },
+                } satisfies EngangsstønadDto,
             }),
         );
     });
 
     it('skal sende inn korrekt data når en venter på fødsel', async () => {
-        const setKvittering = vi.fn();
         const postMock = vi.mocked(ky.post);
         postMock.mockReturnValue({
             json: () => Promise.resolve(),
@@ -198,38 +214,39 @@ describe('useEsSendSøknad', () => {
             termindato: '2024-01-01',
         };
 
-        const { result } = renderHook(() => useEsSendSøknad(setKvittering), {
+        const { result } = renderHook(() => useEsSendSøknad(DEFAULT_PERSONINFO), {
             wrapper: getWrapper(omBarnetVenterPåFødsel, { ...DOKUMENTASJON, terminbekreftelsedato: '2024-01-01' }),
         });
 
-        result.current.sendSøknad();
+        await result.current.sendSøknad();
 
-        await waitFor(() => expect(setKvittering).toHaveBeenCalledOnce());
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
-            `${import.meta.env.BASE_URL}/rest/soknad/engangsstonad`,
+            API_URLS.sendSøknad,
             expect.objectContaining({
                 json: {
+                    søkerinfo: {
+                        fnr: DEFAULT_PERSONINFO.fnr,
+                        navn: DEFAULT_PERSONINFO.navn,
+                    },
                     barn: {
                         type: 'termin',
                         antallBarn: 1,
                         terminbekreftelseDato: '2024-01-01',
                         termindato: '2024-01-01',
-                        vedleggreferanser: ['1'],
                     },
-                    språkkode: 'nb',
-                    type: 'engangsstønad',
+                    språkkode: 'NB',
                     utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
                     vedlegg: [
                         {
-                            ...DOKUMENTASJON.vedlegg[0],
+                            ...DOKUMENTASJON.vedlegg[0]!,
                             dokumenterer: {
-                                type: 'barn',
+                                type: 'BARN',
                             },
                         },
                     ],
-                },
+                } satisfies EngangsstønadDto,
             }),
         );
     });

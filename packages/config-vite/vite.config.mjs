@@ -1,6 +1,7 @@
 /// <reference types="vitest" />
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
+import { playwright } from '@vitest/browser-playwright';
 import { defineConfig, mergeConfig } from 'vite';
 
 export const createSharedConfigWithCrossorgin = (setupFileDirName) =>
@@ -25,7 +26,7 @@ export const createSharedAppConfig = (setupFileDirName) =>
             cors: {
                 origin: ['https://www.intern.dev.nav.no', new RegExp('^http://localhost:')],
             },
-            port: 8080,
+            port: 5173,
         },
         build: {
             sourcemap: true,
@@ -34,8 +35,13 @@ export const createSharedAppConfig = (setupFileDirName) =>
 
 export const createSharedPackagesConfig = (setupFileDirName) => createConfig(setupFileDirName);
 
-const createConfig = (setupFileDirName) =>
-    defineConfig({
+const createConfig = (setupFileDirName) => {
+    //eslint-disable-next-line no-undef
+    const args = process.argv.join(' ');
+    // Kjører browser-mode kun hvis --project=browser er satt. Dette for å unngå at både jsdom og browser-mode kjører i editorer, som ikke filtrerer på prosjekt.
+    const enableBrowser = /--project(?:=|\s+)browser\b/.test(args);
+
+    return defineConfig({
         plugins: [
             tailwindcss(),
             react({
@@ -70,7 +76,7 @@ const createConfig = (setupFileDirName) =>
                         },
                     },
                 },
-                {
+                enableBrowser && {
                     extends: true,
                     test: {
                         name: 'browser',
@@ -83,8 +89,9 @@ const createConfig = (setupFileDirName) =>
                         ],
                         setupFiles: setupFileDirName,
                         browser: {
+                            headless: false,
                             enabled: true,
-                            provider: 'playwright',
+                            provider: playwright(),
                             instances: [{ browser: 'chromium' }],
                         },
                         env: {
@@ -93,6 +100,7 @@ const createConfig = (setupFileDirName) =>
                         },
                     },
                 },
-            ],
+            ].filter(Boolean),
         },
     });
+};

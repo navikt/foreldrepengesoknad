@@ -11,7 +11,7 @@ import { getRelevantePerioder } from 'utils/uttaksplanInfoUtils';
 
 import { Alert, Heading, Link } from '@navikt/ds-react';
 
-import { AnnenForelder, SivilstandType, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
+import { AnnenForelder, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import {
     ArbeidsforholdOppsummering,
@@ -20,7 +20,7 @@ import {
     OppsummeringPanel,
     SelvstendigNæringsdrivendeOppsummering,
 } from '@navikt/fp-steg-oppsummering';
-import { PersonFrontend, Søkerinfo, Søkerrolle } from '@navikt/fp-types';
+import { PersonDto_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt, Søkerrolle } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
@@ -33,7 +33,7 @@ import { PeriodeMedForeldrepengerOppsummering } from './periode-med-foreldrepeng
 import { UttaksplanOppsummering } from './uttaksplan-oppsummering/UttaksplanOppsummering';
 
 const skalViseInfoOmFarskapsportal = (
-    søker: PersonFrontend,
+    person: PersonDto_fpoversikt,
     rolle: Søkerrolle,
     annenForelder: AnnenForelder,
     barnetErIkkeFødt?: boolean,
@@ -43,7 +43,7 @@ const skalViseInfoOmFarskapsportal = (
     const erAnnenForelderFar =
         !!erAnnenForelderOppgitt?.fnr && getKjønnFromFnrString(erAnnenForelderOppgitt.fnr) === 'M';
     const harAnnenForelderUtenlandskFnr = !!erAnnenForelderOppgitt?.utenlandskFnr;
-    const erSøkerIkkeGift = søker.sivilstand?.type !== SivilstandType.GIFT;
+    const erSøkerIkkeGift = person.sivilstand?.type !== 'GIFT';
 
     return (
         (rolle === 'far' ||
@@ -53,8 +53,8 @@ const skalViseInfoOmFarskapsportal = (
     );
 };
 
-export interface Props {
-    søkerInfo: Søkerinfo;
+interface Props {
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
     erEndringssøknad: boolean;
     sendSøknad: () => Promise<void>;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -87,7 +87,7 @@ export const OppsummeringSteg = (props: Props) => {
 
     const erAnnenForelderOppgitt = isAnnenForelderOppgitt(annenForelder);
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
-    const navnPåForeldre = getNavnPåForeldre(søkerInfo.søker, annenForelder, søkerErFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, søkerErFarEllerMedmor, intl);
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
     const termindato = getTermindato(barn);
     const erEndringssøknadOgAnnenForelderHarRett =
@@ -114,7 +114,7 @@ export const OppsummeringSteg = (props: Props) => {
     );
 
     const visInfoboksOmFarskapsportal = skalViseInfoOmFarskapsportal(
-        søkerInfo.søker,
+        søkerInfo.person,
         søkersituasjon.rolle,
         annenForelder,
         isUfødtBarn(barn),
@@ -157,6 +157,10 @@ export const OppsummeringSteg = (props: Props) => {
                     </>
                 )}
                 <ArbeidsforholdOppsummering
+                    // For FP ber vi alltid om IM hvis arbeidsforhold.
+                    // Men for SVP ber vi kun dersom det er tilrettelegging for et arbeidsforhold.
+                    // Derfor trengs denne prop'en selvom det kan se ut som den kan utledes i komponenten fra aktiveArbeidsforhold
+                    skalViseAlertOmIM={aktiveArbeidsforhold.length > 0}
                     arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                     arbeidsforhold={aktiveArbeidsforhold}
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ARBEID_OG_INNTEKT)}

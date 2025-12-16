@@ -1,17 +1,17 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
-import { Heading } from '@navikt/ds-react';
+import { Alert, BodyShort, Heading, VStack } from '@navikt/ds-react';
 
 import {
     ForeldreparSituasjon,
     NavnPåForeldre,
     Periode,
     Situasjon,
-    StønadskontoType,
     Søkerrolle,
+    isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
-import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { KontoBeregningDto, KontoDto } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import ForelderIkon from '../../common/foreldrepar/ForelderIkon';
@@ -29,10 +29,10 @@ import TilesList from './tilesList/TilesList';
 
 const bem = planBemUtils('oversiktKvoter');
 
-const filtrerBortAnnenPartsKonto = (uttakskontoer: Stønadskonto[], erFarEllerMedmor: boolean): Stønadskonto[] => {
+const filtrerBortAnnenPartsKonto = (uttakskontoer: KontoDto[], erFarEllerMedmor: boolean): KontoDto[] => {
     return erFarEllerMedmor
-        ? uttakskontoer.filter((uttak) => uttak.konto !== StønadskontoType.Mødrekvote)
-        : uttakskontoer.filter((uttak) => uttak.konto !== StønadskontoType.Fedrekvote);
+        ? uttakskontoer.filter((uttak) => uttak.konto !== 'MØDREKVOTE')
+        : uttakskontoer.filter((uttak) => uttak.konto !== 'FEDREKVOTE');
 };
 interface PropsPerForelder {
     brukteDagerPerForelder: BrukteDager;
@@ -136,7 +136,7 @@ const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
 };
 
 interface Props {
-    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
+    tilgjengeligeStønadskontoer: KontoBeregningDto;
     uttaksplan: Periode[];
     erDeltUttak: boolean;
     foreldreparSituasjon: ForeldreparSituasjon;
@@ -175,26 +175,54 @@ const OversiktKvoter: FunctionComponent<Props> = ({
         uttaksplan,
     });
     const brukteDagerPerForelder = getBrukteDager(tilgjengeligeStønadskontoer, uttaksplan, familiehendelsesdato);
+    const harAnnenpartPerioderIEøs = uttaksplan.some((p) => isUttaksperiodeAnnenpartEøs(p));
     const erDeltUttakINorge = erDeltUttak && annenForelderHarRettINorge;
     return (
-        <div className={bem.block}>
-            <OversiktPerForelder
-                brukteDagerPerForelder={brukteDagerPerForelder}
-                erDeltUttakINorge={erDeltUttakINorge}
-                foreldreparSituasjon={foreldreparSituasjon}
-                navnPåForeldre={navnPåForeldre}
-                søkerErFarEllerMedmor={søkerErFarEllerMedmor}
-            />
-            <OversiktPerKvote
-                erDeltUttakINorge={erDeltUttakINorge}
-                navnPåForeldre={navnPåForeldre}
-                erEndringssøknad={erEndringssøknad}
-                uttaksstatus={uttaksstatus}
-                erFarEllerMedmor={søkerErFarEllerMedmor}
-                situasjon={situasjon}
-                erAleneOmOmsorg={erAleneOmOmsorg}
-            />
-        </div>
+        <VStack>
+            <div className={bem.block}>
+                <OversiktPerForelder
+                    brukteDagerPerForelder={brukteDagerPerForelder}
+                    erDeltUttakINorge={erDeltUttakINorge}
+                    foreldreparSituasjon={foreldreparSituasjon}
+                    navnPåForeldre={navnPåForeldre}
+                    søkerErFarEllerMedmor={søkerErFarEllerMedmor}
+                />
+                <OversiktPerKvote
+                    erDeltUttakINorge={erDeltUttakINorge}
+                    navnPåForeldre={navnPåForeldre}
+                    erEndringssøknad={erEndringssøknad}
+                    uttaksstatus={uttaksstatus}
+                    erFarEllerMedmor={søkerErFarEllerMedmor}
+                    situasjon={situasjon}
+                    erAleneOmOmsorg={erAleneOmOmsorg}
+                />
+            </div>
+            {harAnnenpartPerioderIEøs && (
+                <Alert variant="info">
+                    <Heading size="xsmall" style={{ marginBottom: '1rem' }}>
+                        <FormattedMessage id="uttaksplan.oversiktKvoter.redusert.tittel" />
+                    </Heading>
+                    <VStack gap="4">
+                        <BodyShort>
+                            <FormattedMessage id="uttaksplan.oversiktKvoter.redusert.forbrukt.info"></FormattedMessage>
+                        </BodyShort>
+                        <BodyShort>
+                            <FormattedMessage
+                                id="uttaksplan.oversiktKvoter.redusert.forbrukt.dager"
+                                values={{
+                                    dagerEgneKvoter: søkerErFarEllerMedmor
+                                        ? brukteDagerPerForelder.mor.dagerEgneKvoter
+                                        : brukteDagerPerForelder.farMedmor.dagerEgneKvoter,
+                                    dagerFellesperiode: søkerErFarEllerMedmor
+                                        ? brukteDagerPerForelder.mor.dagerFellesperiode
+                                        : brukteDagerPerForelder.farMedmor.dagerFellesperiode,
+                                }}
+                            />
+                        </BodyShort>
+                    </VStack>
+                </Alert>
+            )}
+        </VStack>
     );
 };
 // eslint-disable-next-line import/no-default-export
