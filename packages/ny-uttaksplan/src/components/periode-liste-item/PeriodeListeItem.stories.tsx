@@ -95,6 +95,9 @@ const meta = {
     title: 'components/PeriodeListeItem',
     component: PeriodeListeItem,
     render: customRenderer,
+    args: {
+        isReadOnly: false,
+    },
 } satisfies Meta<StoryArgs>;
 export default meta;
 
@@ -102,6 +105,7 @@ type Story = StoryObj<typeof meta>;
 
 export const UttaksperiodeMor: Story = {
     args: {
+        isReadOnly: false,
         handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
         handleDeletePeriode: () => null,

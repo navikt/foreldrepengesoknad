@@ -56,7 +56,7 @@ export const PeriodeIkkeValgtPanel = ({ scrollToKvoteOppsummering, labels }: Pro
                             <FormattedMessage id="RedigeringKalenderIndex.VelgDatoerIKalender" />
                         </BodyShort>
                         <RødRamme>
-                            <KvoteOppsummeringsTittel visStatusIkoner={false} brukEnkelVisning />
+                            <KvoteOppsummeringsTittel visStatusIkoner={false} brukEnkelVisning erInnsyn={false} />
                         </RødRamme>
                     </VStack>
                 </Show>
@@ -70,7 +70,7 @@ export const PeriodeIkkeValgtPanel = ({ scrollToKvoteOppsummering, labels }: Pro
                     <VStack gap="space-16">
                         <Show above="md">
                             <RødRamme>
-                                <KvoteOppsummeringsTittel visStatusIkoner={false} brukEnkelVisning />
+                                <KvoteOppsummeringsTittel visStatusIkoner={false} brukEnkelVisning erInnsyn={false} />
                             </RødRamme>
                         </Show>
                         <Link as="button" onClick={scrollToKvoteOppsummering}>

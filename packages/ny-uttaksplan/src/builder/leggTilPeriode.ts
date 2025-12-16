@@ -5,7 +5,6 @@ import { TidsperiodenString, UttaksdagenString } from '@navikt/fp-utils';
 import { Planperiode } from '../types/Planperiode';
 import { Periodene, sorterPerioder } from '../utils/Periodene';
 import { normaliserPerioder } from '../utils/periodeUtils';
-import { guid } from './guid';
 import { getPeriodeHullEllerPeriodeUtenUttak, getTidsperiodeMellomPerioder } from './uttaksplanbuilderUtils';
 
 export const splittPeriodePåDato = (periode: Planperiode, dato: string): Planperiode[] => {
@@ -17,7 +16,6 @@ export const splittPeriodePåDato = (periode: Planperiode, dato: string): Planpe
 
     const periodeFraOgMedDato: Planperiode = {
         ...periode,
-        id: guid(),
         fom: UttaksdagenString(periodeFørDato.tom).neste(),
         tom: periode.tom,
     };
@@ -33,7 +31,6 @@ export const splittUttaksperiodePåFamiliehendelsesdato = (periode: Planperiode,
 
     const periodeFraOgMedFamDato: Planperiode = {
         ...periode,
-        id: guid(),
         fom: UttaksdagenString(periodeFørFamDato.tom).neste(),
     };
 

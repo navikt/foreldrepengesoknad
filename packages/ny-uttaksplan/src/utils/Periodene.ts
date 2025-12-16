@@ -11,7 +11,7 @@ import {
 import { Planperiode } from '../types/Planperiode';
 import { Perioden } from './Perioden';
 import {
-    genererPeriodeIdNy,
+    genererPeriodeId,
     getTidsperiodeFromPlanperiode,
     isForeldrepengerFørFødselPeriode,
     isHull,
@@ -98,7 +98,7 @@ function getOpphold(perioder: Planperiode[]) {
 function finnOverlappendePerioder(perioder: Planperiode[], periode: Planperiode): Planperiode[] {
     return perioder.filter((p) => {
         if (
-            genererPeriodeIdNy(p) === genererPeriodeIdNy(periode) ||
+            genererPeriodeId(p) === genererPeriodeId(periode) ||
             !isValidTidsperiodeString({ fom: periode.fom, tom: periode.tom })
         ) {
             return false;

@@ -11,7 +11,7 @@ import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import {
-    genererPeriodeIdNy,
+    genererPeriodeId,
     isHull,
     isOppholdsperiode,
     isOverføringsperiode,
@@ -113,7 +113,7 @@ const renderPeriode = (
     inneholderKunEnPeriode: boolean,
 ) => {
     // TODO (TOR) Treng ein key=id for komponentane under?
-    const id = genererPeriodeIdNy(periode);
+    const id = genererPeriodeId(periode);
 
     if (isOppholdsperiode(periode)) {
         return (

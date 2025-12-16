@@ -1,7 +1,7 @@
 import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
 
 import { Planperiode } from '../types/Planperiode';
-import { isAnnenPartsPeriode } from '../utils/periodeUtils';
+import { genererPeriodeId, isAnnenPartsPeriode } from '../utils/periodeUtils';
 import { leggTilPeriode } from './leggTilPeriode';
 import { oppdaterPeriode } from './oppdaterPeriode';
 import { slettPeriode } from './slettPeriode';
@@ -78,7 +78,7 @@ const oppdaterPeriodeOgBuild = (
     annenPartsUttak: Planperiode[] | undefined,
     førsteUttaksdagNesteBarnsSak: string | undefined,
 ) => {
-    const originalPeriode = perioder.find((p) => p.id === endretPeriode.id)!;
+    const originalPeriode = perioder.find((p) => genererPeriodeId(p) === genererPeriodeId(endretPeriode));
 
     let oppdatertePerioder = fjernUnødvendigeHull(
         oppdaterPeriode({
@@ -316,7 +316,6 @@ interface UttaksplanbuilderParams {
     erFarEllerMedmor: boolean;
     førsteUttaksdagNesteBarnsSak: string | undefined;
     opprinneligPlan?: Planperiode[];
-    erIPlanleggerModus?: boolean;
 }
 
 export const Uttaksplanbuilder = ({
@@ -328,7 +327,6 @@ export const Uttaksplanbuilder = ({
     erFarEllerMedmor,
     førsteUttaksdagNesteBarnsSak,
     opprinneligPlan,
-    erIPlanleggerModus = false,
 }: UttaksplanbuilderParams) => {
     const commonGetPerioderProps = {
         perioder,

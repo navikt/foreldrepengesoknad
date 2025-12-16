@@ -1,4 +1,5 @@
 import { Planperiode } from '../types/Planperiode';
+import { genererPeriodeId } from '../utils/periodeUtils';
 import { getPeriodeHullEllerPeriodeUtenUttak } from './uttaksplanbuilderUtils';
 
 interface SlettPeriodeParams {
@@ -23,11 +24,11 @@ export const slettPeriode = ({
     førsteUttaksdagNesteBarnsSak,
 }: SlettPeriodeParams): Planperiode[] => {
     const result: Planperiode[] = perioder.reduce((res, periode, index) => {
-        if (index === 0 && periode.id === slettetPeriode.id) {
+        if (index === 0 && genererPeriodeId(periode) === genererPeriodeId(slettetPeriode)) {
             return res;
         }
 
-        if (periode.id === slettetPeriode.id) {
+        if (genererPeriodeId(periode) === genererPeriodeId(slettetPeriode)) {
             const tidsperiode = { fom: slettetPeriode.fom, tom: slettetPeriode.tom };
 
             res.push(

@@ -140,8 +140,6 @@ export const EndrePeriodePanelStep = ({
 
             handleFunc({
                 erAnnenPartEøs: false,
-                id: valgtPeriode?.id ?? `${fomValue} - ${tomValue} - LOVBESTEMT_FERIE`,
-                readOnly: false,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: 'MOR',
@@ -150,8 +148,6 @@ export const EndrePeriodePanelStep = ({
         } else if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
             handleAddPeriode({
                 erAnnenPartEøs: false,
-                id: `${fomValue} - ${tomValue} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
-                readOnly: false,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: 'MOR',
@@ -162,8 +158,6 @@ export const EndrePeriodePanelStep = ({
 
             handleFunc({
                 erAnnenPartEøs: false,
-                id: valgtPeriode!.id,
-                readOnly: false,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: getForelderFromKontoType(values.kontoType, values.forelder),

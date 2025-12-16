@@ -268,21 +268,7 @@ export const getTidsperiodeFromPlanperiode = (periode: Planperiode): Tidsperiode
     };
 };
 
-export const genererPeriodeId = (
-    fom: string,
-    tom: string,
-    kontoType: any,
-    utsettelseÅrsak: UttakUtsettelseÅrsak_fpoversikt | undefined,
-    oppholdårsak: UttakOppholdÅrsak_fpoversikt | undefined,
-    erFarEllerMedmor: boolean,
-    gjelderAnnenPart: boolean,
-) => {
-    const forelder = getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, oppholdårsak);
-
-    return `${fom} - ${tom} - ${kontoType || oppholdårsak || utsettelseÅrsak} - ${forelder}`;
-};
-
-export const genererPeriodeIdNy = (periode: Planperiode) => {
+export const genererPeriodeId = (periode: Planperiode) => {
     if (periode.erAnnenPartEøs) {
         return `erAnnenPartEøs - ${periode.fom} - ${periode.tom} - ${periode.kontoType} - ${periode.periodeHullÅrsak} 
         - ${periode.skalIkkeHaUttakFørTermin} - ${periode.trekkdager}`;

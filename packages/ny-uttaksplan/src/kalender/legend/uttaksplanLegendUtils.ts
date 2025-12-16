@@ -95,8 +95,9 @@ export const getCalendarLabel = (
     harAktivitetsfriKvote: boolean,
     intl: IntlShape,
 ): string => {
-    const erSøkersPeriode =
-        (!erFarEllerMedmor && info.forelder === 'MOR') || (erFarEllerMedmor && info.forelder === 'FAR_MEDMOR');
+    const erSøkerMorOgHennesPeriode = !erFarEllerMedmor && info.forelder === 'MOR';
+    const erSøkerFarOgHansPeriode = erFarEllerMedmor && info.forelder === 'FAR_MEDMOR';
+    const erSøkersPeriode = erSøkerMorOgHennesPeriode || erSøkerFarOgHansPeriode;
     switch (info.label) {
         case 'HELG':
             return intl.formatMessage({ id: 'kalender.helg' });
@@ -117,14 +118,14 @@ export const getCalendarLabel = (
         case 'BARNEHAGEPLASS':
             return intl.formatMessage({ id: 'kalender.barnehageplass' });
         case 'MORS_DEL':
-            return getMorsDelLabel(navnAnnenPart, erFarEllerMedmor, erIPlanleggerModus, erDeltUttak, intl);
+            return getMorsDelLabel(navnAnnenPart, erFarEllerMedmor, erSøkerMorOgHennesPeriode, erDeltUttak, intl);
         case 'MORS_DEL_GRADERT':
-            return getMorsDelGradertLabel(navnAnnenPart, erFarEllerMedmor, erIPlanleggerModus, intl);
+            return getMorsDelGradertLabel(navnAnnenPart, erSøkerMorOgHennesPeriode, intl);
         case 'FARS_DEL':
             return getFarsDelLabel(
                 navnAnnenPart,
                 erFarEllerMedmor,
-                erIPlanleggerModus,
+                erSøkerFarOgHansPeriode,
                 erDeltUttak,
                 erMedmorDelAvSøknaden,
                 harAktivitetsfriKvote,
@@ -134,7 +135,7 @@ export const getCalendarLabel = (
             return getFarsDelGradertLabel(
                 navnAnnenPart,
                 erFarEllerMedmor,
-                erIPlanleggerModus,
+                erSøkerFarOgHansPeriode,
                 erDeltUttak,
                 erMedmorDelAvSøknaden,
                 harAktivitetsfriKvote,
@@ -159,11 +160,11 @@ export const getCalendarLabel = (
         case 'AVSLAG_FRATREKK_PLEIEPENGER':
             return intl.formatMessage({ id: 'kalender.avslagFratrekkPleiepenger' });
         case 'TAPTE_DAGER':
-            return erIPlanleggerModus
+            return erFarEllerMedmor
                 ? intl.formatMessage({ id: 'kalender.tapteDager.planlegger' })
                 : intl.formatMessage({ id: 'kalender.tapteDager' });
         case 'SAMTIDIG_UTTAK':
-            return erIPlanleggerModus
+            return erFarEllerMedmor
                 ? intl.formatMessage({ id: 'kalender.samtidigUttak.planlegger' })
                 : intl.formatMessage({ id: 'kalender.samtidigUttak' }, { navnAnnenPart });
         default:
@@ -190,19 +191,12 @@ const getMorsDelLabel = (
         : intl.formatMessage({ id: 'kalender.dinPeriode' });
 };
 
-const getMorsDelGradertLabel = (
-    navnAnnenPart: string,
-    erFarEllerMedmor: boolean,
-    erIPlanleggerModus: boolean,
-    intl: IntlShape,
-): string => {
-    if (erIPlanleggerModus) {
-        return intl.formatMessage({ id: 'kalender.morsPeriode.gradert' });
+const getMorsDelGradertLabel = (navnAnnenPart: string, erSøkerMorOgHennesPeriode: boolean, intl: IntlShape): string => {
+    if (erSøkerMorOgHennesPeriode) {
+        return intl.formatMessage({ id: 'kalender.dinPeriode.gradert' });
     }
 
-    return erFarEllerMedmor
-        ? intl.formatMessage({ id: 'kalender.annenPartPeriode.gradert' }, { navnAnnenPart })
-        : intl.formatMessage({ id: 'kalender.dinPeriode.gradert' });
+    return intl.formatMessage({ id: 'kalender.annenPartPeriode.gradert' }, { navnAnnenPart });
 };
 
 const getFarsDelLabel = (

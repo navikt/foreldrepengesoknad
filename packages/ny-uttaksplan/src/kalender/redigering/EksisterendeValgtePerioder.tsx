@@ -11,6 +11,7 @@ import { CalendarPeriod } from '@navikt/fp-ui';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import { genererPeriodeId } from '../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 
 export type PlanperiodeMedAntallDager = Planperiode & { valgteDagerIPeriode: number };
@@ -42,7 +43,7 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                 return (
                     <HStack
                         gap="space-8"
-                        key={p.id}
+                        key={genererPeriodeId(p)}
                         wrap={false}
                         data-testid={`eksisterende-periode-${p.fom}-${p.tom}`}
                     >
