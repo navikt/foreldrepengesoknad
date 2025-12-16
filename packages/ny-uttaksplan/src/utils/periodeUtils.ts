@@ -117,17 +117,42 @@ export const getOppholdskontoNavn = (
     const navn = capitalizeFirstLetter(foreldernavn);
 
     if (erMor) {
+        if (årsak === 'FELLESPERIODE_ANNEN_FORELDER') {
+            return intl.formatMessage(
+                { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.FELLESPERIODE_ANNEN_FORELDER` },
+                { foreldernavn: navn },
+            );
+        }
+        if (årsak === 'FEDREKVOTE_ANNEN_FORELDER') {
+            return intl.formatMessage(
+                { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.FEDREKVOTE_ANNEN_FORELDER` },
+                { foreldernavn: navn },
+            );
+        }
+
         return intl.formatMessage(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore Bør ikkje ha dynamiske testId'ar
-            { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}` },
+            { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.MØDREKVOTE_ANNEN_FORELDER` },
             { foreldernavn: navn },
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore Bør ikkje ha dynamiske testId'ar
-    return intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
+    if (årsak === 'FELLESPERIODE_ANNEN_FORELDER') {
+        return intl.formatMessage(
+            { id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.FELLESPERIODE_ANNEN_FORELDER` },
+            { foreldernavn: navn },
+        );
+    }
+    if (årsak === 'FEDREKVOTE_ANNEN_FORELDER') {
+        return intl.formatMessage(
+            { id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.FEDREKVOTE_ANNEN_FORELDER` },
+            { foreldernavn: navn },
+        );
+    }
+
+    return intl.formatMessage(
+        { id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.MØDREKVOTE_ANNEN_FORELDER` },
+        { foreldernavn: navn },
+    );
 };
 
 export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: UttakUtsettelseÅrsak_fpoversikt) => {

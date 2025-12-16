@@ -225,3 +225,14 @@ export const mapPerioderToPermisjonsperiode = (
 
     return permisjonsPerioder;
 };
+
+export const filtrerBortAnnenPartsIdentiskePerioder = (uttaksplan: Planperiode[], erFarEllerMedmor: boolean) =>
+    uttaksplan.reduce<Planperiode[]>((alle, periode) => {
+        const erSøkersPeriode = erPeriodeForSøker(periode, erFarEllerMedmor);
+        const filtrerte = uttaksplan.filter((p) => p.fom === periode.fom && p.tom === periode.tom);
+        return filtrerte.length > 1 && !erSøkersPeriode ? alle : alle.concat(periode);
+    }, []);
+
+export const erPeriodeForSøker = (periode: Planperiode, erFarEllerMedmor: boolean) =>
+    !periode.erAnnenPartEøs &&
+    ((periode.forelder === 'MOR' && !erFarEllerMedmor) || (periode.forelder === 'FAR_MEDMOR' && erFarEllerMedmor));

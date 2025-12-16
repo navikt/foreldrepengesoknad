@@ -167,7 +167,7 @@
     "perioder.alert.nySøknad.title": "Du må sende ny søknad viss du skal jobbe redusert etter ein periode du har vore tilbake i full stilling. ",
     "perioder.alert.nySøknad.del1": "Dette er fordi Nav må berekne inntekta di og kor mykje du skal ha utbetalt i svangerskapspengar på nytt. ",
     "perioder.alert.nySøknad.del2": "Viss det ikkje stemmer, må du justere periodane sånn at du ikkje har periode med redusert arbeid etter ein periode der du er tilbake i full stilling.",
-    "skjema.maks40Filer": "Du kan laste opp maksimalt 40 vedlegg i din søknad. Slett {antallVedlegg} vedlegg for å gå videre.",
+    "skjema.maks40Filer": "Du kan laste opp maksimalt 40 vedlegg i din søknad. Slett {antallVedlegg} vedlegg for å gå vidare.",
     "skjema.vedlegg.label.arbeidsgiver": "Last opp skjema for risiko og tilrettelegging i svangerskapet",
     "skjema.vedlegg.description.frilansSN": "Her skal du laste opp bekrefting n som er skriven av din lege eller jordmor.",
     "skjema.vedlegg.description.arbeidsgiver": "Her skal du laste opp <a>skjemaet for risiko og tilrettelegging i svangerskapet</a> som er fylt ut av din lege eller jordmor, og din arbeidsgivar.",

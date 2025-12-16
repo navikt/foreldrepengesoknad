@@ -1770,6 +1770,9 @@ importers:
         specifier: 5.9.3
         version: 5.9.3
     devDependencies:
+      '@formatjs/cli-lib':
+        specifier: 7.4.4
+        version: 7.4.4
       '@navikt/ds-tailwind':
         specifier: 7.35.1
         version: 7.35.1
@@ -1803,6 +1806,9 @@ importers:
       eslint:
         specifier: 9.39.1
         version: 9.39.1(jiti@2.6.1)
+      fast-glob:
+        specifier: 3.3.3
+        version: 3.3.3
       mockdate:
         specifier: 3.0.5
         version: 3.0.5
