@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
@@ -90,14 +89,14 @@ export const getCalendarLabel = (
     info: UttaksplanKalenderLegendInfo,
     navnAnnenPart: string,
     erFarEllerMedmor: boolean,
-    erIPlanleggerModus: boolean,
     erDeltUttak: boolean,
     erMedmorDelAvSøknaden: boolean,
     harAktivitetsfriKvote: boolean,
     intl: IntlShape,
 ): string => {
-    const erSøkersPeriode =
-        (!erFarEllerMedmor && info.forelder === 'MOR') || (erFarEllerMedmor && info.forelder === 'FAR_MEDMOR');
+    const erSøkerMorOgHennesPeriode = !erFarEllerMedmor && info.forelder === 'MOR';
+    const erSøkerFarOgHansPeriode = erFarEllerMedmor && info.forelder === 'FAR_MEDMOR';
+    const erSøkersPeriode = erSøkerMorOgHennesPeriode || erSøkerFarOgHansPeriode;
     switch (info.label) {
         case 'HELG':
             return intl.formatMessage({ id: 'kalender.helg' });
@@ -118,14 +117,14 @@ export const getCalendarLabel = (
         case 'BARNEHAGEPLASS':
             return intl.formatMessage({ id: 'kalender.barnehageplass' });
         case 'MORS_DEL':
-            return getMorsDelLabel(navnAnnenPart, erFarEllerMedmor, erIPlanleggerModus, erDeltUttak, intl);
+            return getMorsDelLabel(navnAnnenPart, erSøkersPeriode, intl);
         case 'MORS_DEL_GRADERT':
-            return getMorsDelGradertLabel(navnAnnenPart, erFarEllerMedmor, erIPlanleggerModus, intl);
+            return getMorsDelGradertLabel(navnAnnenPart, erSøkersPeriode, intl);
         case 'FARS_DEL':
             return getFarsDelLabel(
                 navnAnnenPart,
                 erFarEllerMedmor,
-                erIPlanleggerModus,
+                erSøkerFarOgHansPeriode,
                 erDeltUttak,
                 erMedmorDelAvSøknaden,
                 harAktivitetsfriKvote,
@@ -135,7 +134,7 @@ export const getCalendarLabel = (
             return getFarsDelGradertLabel(
                 navnAnnenPart,
                 erFarEllerMedmor,
-                erIPlanleggerModus,
+                erSøkerFarOgHansPeriode,
                 erDeltUttak,
                 erMedmorDelAvSøknaden,
                 harAktivitetsfriKvote,
@@ -160,11 +159,15 @@ export const getCalendarLabel = (
         case 'AVSLAG_FRATREKK_PLEIEPENGER':
             return intl.formatMessage({ id: 'kalender.avslagFratrekkPleiepenger' });
         case 'TAPTE_DAGER':
-            return erIPlanleggerModus
-                ? intl.formatMessage({ id: 'kalender.tapteDager.planlegger' })
-                : intl.formatMessage({ id: 'kalender.tapteDager' });
+            return intl.formatMessage(
+                { id: 'kalender.tapteDager' },
+                {
+                    erSokersPeriode: erSøkersPeriode,
+                    navnAnnenPart,
+                },
+            );
         case 'SAMTIDIG_UTTAK':
-            return erIPlanleggerModus
+            return erFarEllerMedmor
                 ? intl.formatMessage({ id: 'kalender.samtidigUttak.planlegger' })
                 : intl.formatMessage({ id: 'kalender.samtidigUttak' }, { navnAnnenPart });
         default:
@@ -172,50 +175,42 @@ export const getCalendarLabel = (
     }
 };
 
-const getMorsDelLabel = (
-    navnAnnenPart: string,
-    erFarEllerMedmor: boolean,
-    erIPlanleggerModus: boolean,
-    erDeltUttak: boolean,
-    intl: IntlShape,
-): string => {
-    if (erIPlanleggerModus && erDeltUttak) {
-        return intl.formatMessage({ id: 'kalender.morsPeriode' });
+const getMorsDelLabel = (navnAnnenPart: string, erSøkersPeriode: boolean, intl: IntlShape): string => {
+    if (erSøkersPeriode) {
+        return intl.formatMessage({ id: 'kalender.dinPeriode' });
     }
 
-    return erFarEllerMedmor
-        ? intl.formatMessage(
-              { id: 'kalender.annenPartPeriode' },
-              { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
-          )
-        : intl.formatMessage({ id: 'kalender.dinPeriode' });
+    return intl.formatMessage(
+        { id: 'kalender.annenPartPeriode' },
+        { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
+    );
 };
 
-const getMorsDelGradertLabel = (
-    navnAnnenPart: string,
-    erFarEllerMedmor: boolean,
-    erIPlanleggerModus: boolean,
-    intl: IntlShape,
-): string => {
-    if (erIPlanleggerModus) {
-        return intl.formatMessage({ id: 'kalender.morsPeriode.gradert' });
+const getMorsDelGradertLabel = (navnAnnenPart: string, erSøkersPeriode: boolean, intl: IntlShape): string => {
+    if (erSøkersPeriode) {
+        return intl.formatMessage({ id: 'kalender.dinPeriode.gradert' });
     }
 
-    return erFarEllerMedmor
-        ? intl.formatMessage({ id: 'kalender.annenPartPeriode.gradert' }, { navnAnnenPart })
-        : intl.formatMessage({ id: 'kalender.dinPeriode.gradert' });
+    return intl.formatMessage({ id: 'kalender.annenPartPeriode.gradert' }, { navnAnnenPart });
 };
 
 const getFarsDelLabel = (
     navnAnnenPart: string,
     erFarEllerMedmor: boolean,
-    erIPlanleggerModus: boolean,
+    erSøkerFarOgHansPeriode: boolean,
     erDeltUttak: boolean,
     erMedmorDelAvSøknaden: boolean,
     harAktivitetsfriKvote: boolean,
     intl: IntlShape,
 ): string => {
-    if (erIPlanleggerModus && erDeltUttak) {
+    if (erSøkerFarOgHansPeriode) {
+        if (harAktivitetsfriKvote) {
+            return intl.formatMessage({ id: 'kalender.dinPeriode.medAktivitetskrav' });
+        }
+        return intl.formatMessage({ id: 'kalender.dinPeriode' });
+    }
+
+    if (erFarEllerMedmor && erDeltUttak) {
         if (erMedmorDelAvSøknaden) {
             return intl.formatMessage({ id: 'kalender.medmorsPeriode' });
         }
@@ -223,28 +218,29 @@ const getFarsDelLabel = (
         return intl.formatMessage({ id: 'kalender.farsPeriode' });
     }
 
-    if (harAktivitetsfriKvote) {
-        return intl.formatMessage({ id: 'kalender.dinPeriode.medAktivitetskrav' });
-    }
-
-    return erFarEllerMedmor
-        ? intl.formatMessage({ id: 'kalender.dinPeriode' })
-        : intl.formatMessage(
-              { id: 'kalender.annenPartPeriode' },
-              { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
-          );
+    return intl.formatMessage(
+        { id: 'kalender.annenPartPeriode' },
+        { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
+    );
 };
 
 const getFarsDelGradertLabel = (
     navnAnnenPart: string,
     erFarEllerMedmor: boolean,
-    erIPlanleggerModus: boolean,
+    erSøkerFarOgHansPeriode: boolean,
     erDeltUttak: boolean,
     erMedmorDelAvSøknaden: boolean,
     harAktivitetsfriKvote: boolean,
     intl: IntlShape,
 ): string => {
-    if (erIPlanleggerModus && erDeltUttak) {
+    if (erSøkerFarOgHansPeriode) {
+        if (harAktivitetsfriKvote) {
+            return intl.formatMessage({ id: 'kalender.dinPeriode.medAktivitetskrav.gradert' });
+        }
+        return intl.formatMessage({ id: 'kalender.dinPeriode.gradert' });
+    }
+
+    if (erFarEllerMedmor && erDeltUttak) {
         if (erMedmorDelAvSøknaden) {
             return intl.formatMessage({ id: 'kalender.medmorsPeriode.gradert' });
         }
@@ -252,28 +248,9 @@ const getFarsDelGradertLabel = (
         return intl.formatMessage({ id: 'kalender.farsPeriode.gradert' });
     }
 
-    if (harAktivitetsfriKvote) {
-        return intl.formatMessage({ id: 'kalender.dinPeriode.medAktivitetskrav.gradert' });
-    }
-
     return erFarEllerMedmor
         ? intl.formatMessage({ id: 'kalender.dinPeriode.gradert' })
         : intl.formatMessage({ id: 'kalender.annenPartPeriode.gradert' }, { navnAnnenPart });
-};
-
-export const getInneholderKalenderHelgedager = (periods: CalendarPeriod[]): boolean => {
-    if (periods.length === 0) {
-        return false;
-    }
-
-    const førsteDag = periods[0]!.fom;
-    const sisteDag = periods.at(-1)!.tom;
-    if (dayjs(sisteDag).diff(dayjs(førsteDag), 'days') > 5) {
-        return true;
-    }
-    const førsteDagNr = dayjs(førsteDag).get('day');
-    const sisteDagNr = dayjs(sisteDag).get('day');
-    return sisteDagNr < førsteDagNr;
 };
 
 export const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel | undefined => {

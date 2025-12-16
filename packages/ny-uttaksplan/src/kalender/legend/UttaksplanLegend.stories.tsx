@@ -17,7 +17,6 @@ const meta = {
     component: UttaksplanLegend,
     args: {
         modus: 'søknad',
-
         valgtStønadskonto: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
