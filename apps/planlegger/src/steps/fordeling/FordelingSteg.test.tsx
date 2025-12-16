@@ -41,6 +41,16 @@ describe('<FordelingSteg>', () => {
         const navigateMock = vi.fn();
         useNavigateMock.mockReturnValue(navigateMock);
 
+        // Stub the global ResizeObserver
+        vi.stubGlobal(
+            'ResizeObserver',
+            vi.fn(function () {
+                this.observe = vi.fn();
+                this.unobserve = vi.fn();
+                this.disconnect = vi.fn();
+            }),
+        );
+
         const gåTilNesteSide = vi.fn();
 
         render(<FlereForsørgereEttBarn gåTilNesteSide={gåTilNesteSide} />);
@@ -69,6 +79,15 @@ describe('<FordelingSteg>', () => {
     it('Skal velge 16 uker til Mor, test av tekst i infoboks, barn ikke født', async () => {
         const navigateMock = vi.fn();
         useNavigateMock.mockReturnValue(navigateMock);
+
+        vi.stubGlobal(
+            'ResizeObserver',
+            vi.fn(function () {
+                this.observe = vi.fn();
+                this.unobserve = vi.fn();
+                this.disconnect = vi.fn();
+            }),
+        );
 
         const gåTilNesteSide = vi.fn();
 
@@ -150,6 +169,15 @@ describe('<FordelingSteg>', () => {
     it('Skal velge 16 uker til Mor, test av tekst i infoboks, omsorgsovertakelse', async () => {
         const navigateMock = vi.fn();
         useNavigateMock.mockReturnValue(navigateMock);
+
+        vi.stubGlobal(
+            'ResizeObserver',
+            vi.fn(function () {
+                this.observe = vi.fn();
+                this.unobserve = vi.fn();
+                this.disconnect = vi.fn();
+            }),
+        );
 
         const gåTilNesteSide = vi.fn();
 
