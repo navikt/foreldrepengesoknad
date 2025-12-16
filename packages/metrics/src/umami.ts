@@ -20,6 +20,7 @@ type EventNamesTaksonomi =
     | 'kopier'
     | 'skjema fortsett senere'
     | 'skjema avbrutt'
+    | 'tab klikk'
     | 'besøk';
 
 export const loggUmamiEvent = ({
