@@ -78,7 +78,12 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
         if (antallDagerSøker1 === undefined) {
             formMethods.setValue('antallDagerSøker1', halvpart, { shouldDirty: false, shouldValidate: false });
         }
-    }, [antallUkerOgDagerFellesperiode.uker, antallUkerOgDagerFellesperiode.dager]);
+    }, [
+        antallUkerOgDagerFellesperiode.uker,
+        antallUkerOgDagerFellesperiode.dager,
+        antallDagerSøker1,
+        formMethods.setValue,
+    ]);
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallDagerSøker1);
