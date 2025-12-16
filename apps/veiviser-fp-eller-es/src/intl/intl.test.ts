@@ -44,7 +44,7 @@ describe('intl messages', () => {
 
     it('Check that nynorsk og english language files contain the same keys', () => {
         const missingKeysNynorsk = Object.keys(nn).filter((key) => !Object.keys(en).includes(key));
-        const missingKeysEnglish = Object.keys(en).filter((key) => !Object.keys(nb).includes(key));
+        const missingKeysEnglish = Object.keys(en).filter((key) => !Object.keys(nn).includes(key));
 
         for (const key of missingKeysNynorsk) {
             // eslint-disable-next-line no-console

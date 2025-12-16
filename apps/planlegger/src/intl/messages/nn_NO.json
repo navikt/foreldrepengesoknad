@@ -224,7 +224,7 @@
     "HvaErMulig.SeksUkerEtterFødsel.OfteFårFedre": "Ofte får {erFar, select, true {fedrar} other {medmødrer}} permisjon dekte dei første to vekene etter fødsel frå arbeidsgivaren sin. Viss ein ikkje får dette {hvem} bruka foreldrepengar i desse to vekene.",
     "HvaErMulig.LeggeTilFerie": "Leggje til ferie",
     "HvaErMulig.HvisIngenSkalHa": "Viss {erAlenesøker, select, true {du ikkje} other {ingen av foreldra}} skal ha foreldrepengar kan {erAlenesøker, select, true {du} other {ein}} leggja til periodar utan foreldrepengar, der {erAlenesøker, select, true {du} other {ein}} til dømes får feriepengar frå arbeidsgivar.",
-    "HvaErMulig.HvisIngenSkalHa.Far": "Viss {hvem} ikkje skal ha foreldrepengar kan ein legge til perioder uten foreldrepenger, hvor ein for eksempel får feriepengar frå arbeidsgiver.",
+    "HvaErMulig.HvisIngenSkalHa.Far": "Viss {hvem} ikkje skal ha foreldrepengar kan ein legge til perioder uten foreldrepengar, kor ein for eksempel får feriepengar frå arbeidsgiver.",
     "HvaErMulig.FarFellesperiode": "Når {hvem} tek fellesperiode",
     "HvaErMulig.MorIAktivitet": "{hvem} må vera i aktivitet, som vil seia at {erMorHovedsøker, select, true {ho} other {han}} må til dømes jobba eller studera. Dette må dokumenterast i denne perioden.",
     "HvaErMulig.JobbeSamtidig": "Jobba samtidig",

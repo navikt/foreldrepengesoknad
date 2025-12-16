@@ -1,11 +1,12 @@
 import { extract } from '@formatjs/cli-lib/lib_esnext';
 import glob from 'fast-glob';
+import fs from 'node:fs';
 
 import en from './messages/en_US.json';
 import nb from './messages/nb_NO.json';
 import nn from './messages/nn_NO.json';
 
-describe('fp-utils intl messages', () => {
+describe('ny-uttaksplan intl messages', () => {
     it('Check that bokmål og nynorsk language files contain the same keys', () => {
         const missingKeysBokmål = Object.keys(nb).filter((key) => !Object.keys(nn).includes(key));
         const missingKeysNynorsk = Object.keys(nn).filter((key) => !Object.keys(nb).includes(key));
@@ -60,6 +61,14 @@ describe('fp-utils intl messages', () => {
         expect(missingKeysEnglish.length).toBe(0);
     });
 
+    const regex = /(?<=(i18n)\(')[^']*/gm;
+
+    const getAdditionalIntlString = (fileLoc: string) => {
+        const fileBuffer = fs.readFileSync(fileLoc);
+        const matches = fileBuffer.toString().match(regex);
+        return matches ?? [];
+    };
+
     it('Check that i18n strings in code exists in nb_NO language file', async () => {
         const files = await glob('src/**/*.{ts,tsx}', {
             ignore: ['**/vite.env.d.ts'],
@@ -68,10 +77,14 @@ describe('fp-utils intl messages', () => {
         const foundTranslations = await extract(files, {
             idInterpolationPattern: '[sha512:contenthash:base64:6]',
         });
-
-        const missingKeysBokmål = Object.keys(JSON.parse(foundTranslations)).filter(
-            (key) => !Object.keys(nb).includes(key),
+        const additionalTranslations = files.reduce(
+            (prev, fileLoc) => prev.concat(getAdditionalIntlString(fileLoc)),
+            [] as string[],
         );
+
+        const allTranslationsCodes = Object.keys(JSON.parse(foundTranslations)).concat(additionalTranslations);
+
+        const missingKeysBokmål = allTranslationsCodes.filter((key) => !Object.keys(nb).includes(key));
         if (missingKeysBokmål.length > 0) {
             // eslint-disable-next-line no-console
             console.log('Not found in nb_NO.json:');
@@ -89,16 +102,21 @@ describe('fp-utils intl messages', () => {
         const files = await glob('src/**/*.{ts,tsx}', {
             ignore: ['**/vite.env.d.ts'],
         });
-        const foundTranslations = Object.keys(
-            JSON.parse(
-                await extract(files, {
-                    idInterpolationPattern: '[sha512:contenthash:base64:6]',
-                }),
-            ),
+        const foundTranslations = await extract(files, {
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
+        });
+        const additionalTranslations = files.reduce(
+            (prev, fileLoc) => prev.concat(getAdditionalIntlString(fileLoc)),
+            [] as string[],
         );
+        const allTranslationsCode = Object.keys(JSON.parse(foundTranslations)).concat(additionalTranslations);
 
         const missingKeysCode = Object.keys(nb).filter((key) => {
-            return !foundTranslations.includes(key);
+            // Ikkje sjekk denne sidan den er dynamisk, og derfor litt styr å skriva anleis
+            if (key.includes('uttaksplan.stønadskontotype.')) {
+                return false;
+            }
+            return !allTranslationsCode.includes(key);
         });
         if (missingKeysCode.length > 0) {
             // eslint-disable-next-line no-console
