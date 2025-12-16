@@ -12,7 +12,7 @@ import {
 import { getFamiliehendelsedato, getFamiliesituasjon } from '@navikt/fp-utils';
 
 import { Planperiode } from '../types/Planperiode';
-import { utledKomplettPlan } from '../utils/periodeUtils';
+import { getAnnenpartsPerioder, getSøkersPerioder, utledKomplettPlan } from '../utils/periodeUtils';
 
 type Props = {
     barn: Barn;
@@ -82,30 +82,6 @@ export const useUttaksplanData = () => {
         throw new Error('UttaksplanDataContext.Provider er ikke satt opp');
     }
     return context;
-};
-
-const getSøkersPerioder = (
-    erDeltUttak: boolean,
-    gjeldendeUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    erFarEllerMedmor: boolean,
-): UttakPeriode_fpoversikt[] => {
-    return erDeltUttak
-        ? gjeldendeUttaksplan.filter(
-              (p) => !('trekkdager' in p) && (erFarEllerMedmor ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'),
-          )
-        : gjeldendeUttaksplan;
-};
-
-export const getAnnenpartsPerioder = (
-    erDeltUttak: boolean,
-    gjeldendeUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    erFarEllerMedmor: boolean,
-): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
-    return erDeltUttak
-        ? gjeldendeUttaksplan.filter(
-              (p) => 'trekkdager' in p || (erFarEllerMedmor ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'),
-          )
-        : [];
 };
 
 // TODO (TOR) Burde kunne senda rettighetstype inn som prop i staden for erDeltUttak og aleneOmOmsorg

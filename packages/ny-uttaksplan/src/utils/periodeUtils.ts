@@ -444,3 +444,27 @@ export const utledKomplettPlan = ({
         førsteUttaksdagNesteBarnsSak,
     );
 };
+
+export const getSøkersPerioder = (
+    erDeltUttak: boolean,
+    gjeldendeUttaksplan: Planperiode[],
+    erFarEllerMedmor: boolean,
+): Planperiode[] => {
+    return erDeltUttak
+        ? gjeldendeUttaksplan.filter(
+              (p) => !('trekkdager' in p) && (erFarEllerMedmor ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'),
+          )
+        : gjeldendeUttaksplan;
+};
+
+export const getAnnenpartsPerioder = (
+    erDeltUttak: boolean,
+    gjeldendeUttaksplan: Planperiode[],
+    erFarEllerMedmor: boolean,
+): Planperiode[] => {
+    return erDeltUttak
+        ? gjeldendeUttaksplan.filter(
+              (p) => 'trekkdager' in p || (erFarEllerMedmor ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'),
+          )
+        : [];
+};

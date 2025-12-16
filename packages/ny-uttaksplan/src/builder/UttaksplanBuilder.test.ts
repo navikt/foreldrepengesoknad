@@ -158,8 +158,9 @@ describe('Uttaksplanbuilder tester', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             gjelderAdopsjon: false,
             bareFarMedmorHarRett: false,
-            erFarEllerMedmor: false,
+            erSøkerFarEllerMedmor: false,
             førsteUttaksdagNesteBarnsSak: undefined,
+            erDeltUttak: true,
         }).leggTilPeriode(nyPeriode);
         expect(result.length).toBe(4);
         expect(result[2]!).toEqual(nyPeriode);
@@ -178,8 +179,9 @@ describe('Uttaksplanbuilder tester', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             gjelderAdopsjon: false,
             bareFarMedmorHarRett: false,
-            erFarEllerMedmor: false,
+            erSøkerFarEllerMedmor: false,
             førsteUttaksdagNesteBarnsSak: undefined,
+            erDeltUttak: true,
         }).leggTilPeriode(nyPeriode2);
 
         expect(result2.length).toBe(6);
@@ -203,8 +205,9 @@ describe('Uttaksplanbuilder tester', () => {
             harAktivitetskravIPeriodeUtenUttak: false,
             gjelderAdopsjon: false,
             bareFarMedmorHarRett: false,
-            erFarEllerMedmor: false,
+            erSøkerFarEllerMedmor: false,
             førsteUttaksdagNesteBarnsSak: undefined,
+            erDeltUttak: true,
         }).leggTilPeriode(nyPeriodeISluttenAvPlanen);
 
         expect(result.length).toEqual(8);
@@ -240,8 +243,9 @@ describe('Uttaksplanbuilder tester', () => {
                 harAktivitetskravIPeriodeUtenUttak: false,
                 gjelderAdopsjon: false,
                 bareFarMedmorHarRett: false,
-                erFarEllerMedmor: false,
+                erSøkerFarEllerMedmor: false,
                 førsteUttaksdagNesteBarnsSak: undefined,
+                erDeltUttak: true,
             }).leggTilPeriode(nyUtsettelseISluttenAvPlanen);
 
             expect(result.length).toEqual(11);
