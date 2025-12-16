@@ -201,7 +201,7 @@ const validateSammenhengendePerioderFom = (
     intl: IntlShape,
 ) => {
     const alleFom = allePerioder.filter((p) => p.fom).map((periode) => dayjs(periode.fom));
-    const minstAvAlleFom = alleFom ? dayjs.min(alleFom) : undefined;
+    const minstAvAlleFom = alleFom.length > 0 ? dayjs.min(alleFom) : undefined;
     if (minstAvAlleFom && dayjs(fom).isSameOrBefore(minstAvAlleFom, 'day')) {
         return undefined;
     }
