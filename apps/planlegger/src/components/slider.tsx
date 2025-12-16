@@ -41,7 +41,7 @@ export const SliderComponent = ({
             className="relative flex h-5 w-full touch-none items-center select-none"
         >
             <Slider.Track className="bg-ax-bg-default relative h-2 grow rounded-full">
-                <Slider.Range className="absolute h-full rounded-full" />
+                <Slider.Range className="absolute h-full rounded-full bg-ax-bg-default" />
             </Slider.Track>
             <Slider.Thumb
                 aria-label={ariaLabel}
