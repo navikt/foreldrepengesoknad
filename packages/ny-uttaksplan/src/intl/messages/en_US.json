@@ -173,8 +173,8 @@
     "kalender.avslåttePerioder": "Rejected periods are not displayed in the calendar.",
     "kalender.dinPeriode": "Your period",
     "kalender.dinPeriode.gradert": "You combine work and parental benefits",
-    "kalender.dinPeriode.aktivitetsfri": "Your period with no activity requirement",
-    "kalender.dinPeriode.aktivitetsfri.gradert": "You combine work and parental benefits with no activity requirement",
+    "kalender.dinPeriode.aktivitetsfri": "{erSokersPeriode, select, true {Your} other {{navnAnnenPart}}} period with no activity requirement",
+    "kalender.dinPeriode.aktivitetsfri.gradert": "{erSokersPeriode, select, true {You} other {{navnAnnenPart}}} combines work and parental benefits with no activity requirement",
     "kalender.dinPeriode.medAktivitetskrav": "Your period with activity requirement",
     "kalender.dinPeriode.medAktivitetskrav.gradert": "You combine work and parental benefits with activity requirement",
     "kalender.annenPartPeriode": "{navnAnnenPart} period",
@@ -262,5 +262,15 @@
     "UttaksplanLegend.ApneFargeForklaring": "Open color explanation",
     "UttaksplanLegend.LukkFargeForklaring": "Close color explanation",
     "UttaksplanKalender.StartRedigering": "Start editing",
-    "UttaksplanKalender.StopRedigering": "Stop editing"
+    "UttaksplanKalender.StopRedigering": "Stop editing",
+    "AktivitetskravSpørsmål.Påkrevd": "You must specify what mom will do during this period",
+    "AktivitetskravSpørsmål.Label": "What is mom's activity during this period?",
+    "AktivitetskravSpørsmål.Arbeid": "Work",
+    "AktivitetskravSpørsmål.Utdanning": "Education",
+    "AktivitetskravSpørsmål.Kvalprog": "Qualification program",
+    "AktivitetskravSpørsmål.Introprog": "Introduction program",
+    "AktivitetskravSpørsmål.Trenger_hjelp": "Needs help caring for the child",
+    "AktivitetskravSpørsmål.Innlagt": "Hospitalized",
+    "AktivitetskravSpørsmål.Arbeid_og_utdanning": "Work and education",
+    "AktivitetskravSpørsmål.Description": "In order to receive parental benefits during this period, mom must be active"
 }
