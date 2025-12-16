@@ -37,7 +37,7 @@ const endreFordelingMedSlider = async (ønsketAntallDager: number) => {
 };
 
 describe('<FordelingSteg>', () => {
-    it('skal velge å fordele 9 uker til mor og 7 uker til far', async () => {
+    it('Skal velge å fordele 9 uker til mor og 7 uker til far', async () => {
         const navigateMock = vi.fn();
         useNavigateMock.mockReturnValue(navigateMock);
 
@@ -76,12 +76,6 @@ describe('<FordelingSteg>', () => {
 
         expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Neste'));
-
-        expect(
-            screen.getByText('Du må svare på hvordan dere vil fordele fellesperioden før dere går videre.'),
-        ).toBeInTheDocument();
-
         await endreFordelingMedSlider(80);
 
         expect(
@@ -96,7 +90,7 @@ describe('<FordelingSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                antallDagerSøker1: '80',
+                antallDagerSøker1: 80,
             },
             key: ContextDataType.FORDELING,
             type: 'update',
@@ -129,12 +123,6 @@ describe('<FordelingSteg>', () => {
 
         expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Neste'));
-
-        expect(
-            screen.getByText('Du må svare på hvordan dere vil fordele fellesperioden før dere går videre.'),
-        ).toBeInTheDocument();
-
         await endreFordelingMedSlider(80);
 
         expect(
@@ -149,7 +137,7 @@ describe('<FordelingSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                antallDagerSøker1: '80',
+                antallDagerSøker1: 80,
             },
             key: ContextDataType.FORDELING,
             type: 'update',
@@ -181,12 +169,6 @@ describe('<FordelingSteg>', () => {
 
         expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Neste'));
-
-        expect(
-            screen.getByText('Du må svare på hvordan dere vil fordele fellesperioden før dere går videre.'),
-        ).toBeInTheDocument();
-
         await endreFordelingMedSlider(80);
 
         expect(screen.getByText('Perioden deres')).toBeInTheDocument();
@@ -203,7 +185,7 @@ describe('<FordelingSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                antallDagerSøker1: '80',
+                antallDagerSøker1: 80,
             },
             key: ContextDataType.FORDELING,
             type: 'update',
