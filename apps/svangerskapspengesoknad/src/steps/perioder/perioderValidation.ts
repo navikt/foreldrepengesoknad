@@ -212,9 +212,7 @@ const validateSammenhengendePerioderFom = (
                 ? dayjs(sisteDagForSvangerskapspenger)
                 : dayjs(periode.tom);
         });
-    const tomSomErDagenFørFom = alleTom
-        ? alleTom.find((tom) => dayjs(fom).subtract(1, 'd').isSame(dayjs(tom), 'day'))
-        : undefined;
+    const tomSomErDagenFørFom = alleTom.find((tom) => dayjs(fom).subtract(1, 'd').isSame(dayjs(tom), 'day'));
     if (!tomSomErDagenFørFom) {
         return intl.formatMessage({ id: 'valideringsfeil.periode.ikkeSammenhengende' });
     }
