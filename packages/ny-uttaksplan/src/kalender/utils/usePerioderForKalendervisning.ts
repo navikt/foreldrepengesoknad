@@ -165,11 +165,7 @@ const getKalenderFargeForPeriode = (
         return 'NONE';
     }
 
-    if (
-        !periode.erAnnenPartEøs &&
-        (periode.forelder === 'MOR' ||
-            (periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT'))
-    ) {
+    if (!periode.erAnnenPartEøs && periode.forelder === 'MOR') {
         if (periode.gradering && periode.gradering.arbeidstidprosent > 0) {
             return 'BLUESTRIPED';
         }
@@ -180,6 +176,9 @@ const getKalenderFargeForPeriode = (
     if (!periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR') {
         if (periode.gradering && periode.gradering.arbeidstidprosent > 0) {
             return 'GREENSTRIPED';
+        }
+        if (periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT') {
+            return 'GREENOUTLINE';
         }
 
         return 'GREEN';
