@@ -149,6 +149,10 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                                                 variant="tertiary"
                                                 size="small"
                                                 icon={<MinusIcon aria-hidden />}
+                                                aria-label={intl.formatMessage(
+                                                    { id: 'FordelingSteg.ReduserAntallUker' },
+                                                    { navn: fornavnSøker1 },
+                                                )}
                                                 onClick={() => {
                                                     const newValue = Math.max(0, antallDagerSøker1 - 5);
                                                     formMethods.setValue('antallDagerSøker1', newValue);
@@ -219,6 +223,10 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                                                 variant="tertiary"
                                                 size="small"
                                                 icon={<PlusIcon aria-hidden />}
+                                                aria-label={intl.formatMessage(
+                                                    { id: 'FordelingSteg.ØkAntallUker' },
+                                                    { navn: fornavnSøker2 },
+                                                )}
                                                 onClick={() => {
                                                     const maxDager =
                                                         antallUkerOgDagerFellesperiode.uker * 5 +
