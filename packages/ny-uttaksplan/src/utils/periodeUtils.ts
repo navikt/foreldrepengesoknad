@@ -447,24 +447,50 @@ export const utledKomplettPlan = ({
 
 export const getSøkersPerioder = (
     erDeltUttak: boolean,
-    gjeldendeUttaksplan: Planperiode[],
-    erFarEllerMedmor: boolean,
-): Planperiode[] => {
+    gjeldendeUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    erSøkerFarEllerMedmor: boolean,
+): UttakPeriode_fpoversikt[] => {
     return erDeltUttak
         ? gjeldendeUttaksplan.filter(
-              (p) => !('trekkdager' in p) && (erFarEllerMedmor ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'),
+              (p) =>
+                  !('trekkdager' in p) && (erSøkerFarEllerMedmor ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'),
           )
         : gjeldendeUttaksplan;
 };
 
 export const getAnnenpartsPerioder = (
     erDeltUttak: boolean,
+    gjeldendeUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    erSøkerFarEllerMedmor: boolean,
+): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
+    return erDeltUttak
+        ? gjeldendeUttaksplan.filter(
+              (p) => 'trekkdager' in p || (erSøkerFarEllerMedmor ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'),
+          )
+        : [];
+};
+
+export const getSøkersPlanperioder = (
+    erDeltUttak: boolean,
     gjeldendeUttaksplan: Planperiode[],
-    erFarEllerMedmor: boolean,
+    erSøkerFarEllerMedmor: boolean,
 ): Planperiode[] => {
     return erDeltUttak
         ? gjeldendeUttaksplan.filter(
-              (p) => 'trekkdager' in p || (erFarEllerMedmor ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'),
+              (p) =>
+                  !('trekkdager' in p) && (erSøkerFarEllerMedmor ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'),
+          )
+        : gjeldendeUttaksplan;
+};
+
+export const getAnnenpartsPlanperioder = (
+    erDeltUttak: boolean,
+    gjeldendeUttaksplan: Planperiode[],
+    erSøkerFarEllerMedmor: boolean,
+): Planperiode[] => {
+    return erDeltUttak
+        ? gjeldendeUttaksplan.filter(
+              (p) => 'trekkdager' in p || (erSøkerFarEllerMedmor ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'),
           )
         : [];
 };

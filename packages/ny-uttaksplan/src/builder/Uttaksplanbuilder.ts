@@ -1,5 +1,5 @@
 import { Planperiode } from '../types/Planperiode';
-import { genererPeriodeId, getAnnenpartsPerioder, getSøkersPerioder } from '../utils/periodeUtils';
+import { genererPeriodeId, getAnnenpartsPlanperioder, getSøkersPlanperioder } from '../utils/periodeUtils';
 import { leggTilPeriode } from './leggTilPeriode';
 import { oppdaterPeriode } from './oppdaterPeriode';
 import { slettPeriode } from './slettPeriode';
@@ -194,8 +194,8 @@ const getSøkerOgAnnenpartsPerioder = (
     bareFarMedmorHarRett: boolean,
     førsteUttaksdagNesteBarnsSak: string | undefined,
 ): SøkerOgAnnenpartsPerioder => {
-    const egnePerioder = getSøkersPerioder(erDeltUttak, perioder, erSøkerFarEllerMedmor);
-    const annenpartsPerioder = getAnnenpartsPerioder(erDeltUttak, perioder, erSøkerFarEllerMedmor);
+    const egnePerioder = getSøkersPlanperioder(erDeltUttak, perioder, erSøkerFarEllerMedmor);
+    const annenpartsPerioder = getAnnenpartsPlanperioder(erDeltUttak, perioder, erSøkerFarEllerMedmor);
 
     const søkerP = finnOgSettInnHull(
         egnePerioder ?? [],

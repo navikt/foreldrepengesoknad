@@ -242,7 +242,6 @@ export const OppsummeringHarRett = ({
                             barn={mapOmBarnetTilBarn(barnet)}
                             erFarEllerMedmor={erFarEllerMedmor}
                             navnPåForeldre={{ farMedmor: fornavnSøker2 || '', mor: fornavnSøker1 }}
-                            modus="planlegger"
                             valgtStønadskonto={valgtStønadskonto}
                             aleneOmOmsorg={erAleneOmOmsorg}
                             erMedmorDelAvSøknaden={false}
