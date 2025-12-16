@@ -77,11 +77,11 @@ export const validateStillingsprosentPåPerioder =
             );
         }
 
-        if (måSøkeSendeNySøknad && periodeDerTilbakeIFullJobb) {
+        if (måSøkeSendeNySøknad && periodeDerTilbakeIFullJobb?.fom) {
             return intl.formatMessage(
                 { id: 'valideringsfeil.periode.stillingsprosent.nySøknad' },
                 {
-                    fom: formatDate(periodeDerTilbakeIFullJobb.fom!), // TODO
+                    fom: formatDate(periodeDerTilbakeIFullJobb.fom),
                 },
             );
         }
