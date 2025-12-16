@@ -44,7 +44,7 @@ describe('<FordelingSteg>', () => {
         // Stub the global ResizeObserver
         vi.stubGlobal(
             'ResizeObserver',
-            vi.fn(function () {
+            vi.fn(function (this: ResizeObserver) {
                 this.observe = vi.fn();
                 this.unobserve = vi.fn();
                 this.disconnect = vi.fn();
@@ -82,7 +82,7 @@ describe('<FordelingSteg>', () => {
 
         vi.stubGlobal(
             'ResizeObserver',
-            vi.fn(function () {
+            vi.fn(function (this: ResizeObserver) {
                 this.observe = vi.fn();
                 this.unobserve = vi.fn();
                 this.disconnect = vi.fn();
@@ -172,7 +172,7 @@ describe('<FordelingSteg>', () => {
 
         vi.stubGlobal(
             'ResizeObserver',
-            vi.fn(function () {
+            vi.fn(function (this: ResizeObserver) {
                 this.observe = vi.fn();
                 this.unobserve = vi.fn();
                 this.disconnect = vi.fn();
