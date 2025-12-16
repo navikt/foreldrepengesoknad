@@ -41,23 +41,19 @@ describe('<FordelingSteg>', () => {
         const navigateMock = vi.fn();
         useNavigateMock.mockReturnValue(navigateMock);
 
-        // Stub the global ResizeObserver
-        vi.stubGlobal(
-            'ResizeObserver',
-            vi.fn(function (this: ResizeObserver) {
-                this.observe = vi.fn();
-                this.unobserve = vi.fn();
-                this.disconnect = vi.fn();
-            }),
-        );
-
         const gåTilNesteSide = vi.fn();
 
-        render(<FlereForsørgereEttBarn gåTilNesteSide={gåTilNesteSide} />);
+        const utils = render(<FlereForsørgereEttBarn gåTilNesteSide={gåTilNesteSide} />);
 
         expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
 
         await endreFordelingMedSlider(45);
+
+        // await userEvent.click(screen.getByText('Neste'));
+
+        // expect(
+        //     screen.getByText('Du må svare på hvordan dere vil fordele fellesperioden før dere går videre.'),
+        // ).toBeInTheDocument();
 
         expect(screen.getByText('Klara: 11. des. 2023 – 14. juni 2024')).toBeInTheDocument();
         expect(screen.getByText('Espen: 17. juni 2024 – 15. nov. 2024')).toBeInTheDocument();
@@ -80,20 +76,13 @@ describe('<FordelingSteg>', () => {
         const navigateMock = vi.fn();
         useNavigateMock.mockReturnValue(navigateMock);
 
-        vi.stubGlobal(
-            'ResizeObserver',
-            vi.fn(function (this: ResizeObserver) {
-                this.observe = vi.fn();
-                this.unobserve = vi.fn();
-                this.disconnect = vi.fn();
-            }),
-        );
-
         const gåTilNesteSide = vi.fn();
 
-        render(<FlereForsørgereEttBarn gåTilNesteSide={gåTilNesteSide} />);
+        const utils = render(<FlereForsørgereEttBarn gåTilNesteSide={gåTilNesteSide} />);
 
         expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
+
+        // await userEvent.click(screen.getByText('Neste'));
 
         await endreFordelingMedSlider(80);
 
@@ -126,7 +115,7 @@ describe('<FordelingSteg>', () => {
         const gåTilNesteSide = vi.fn();
 
         const originalArgs = FlereForsørgereEttBarn.args;
-        render(
+        const utils = render(
             <FlereForsørgereEttBarn
                 {...originalArgs}
                 omBarnet={{
@@ -141,8 +130,18 @@ describe('<FordelingSteg>', () => {
         );
 
         expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
-
         await endreFordelingMedSlider(80);
+
+        // await userEvent.click(screen.getByText('Neste'));
+
+        // expect(
+        //     screen.getByText('Du må svare på hvordan dere vil fordele fellesperioden før dere går videre.'),
+        // ).toBeInTheDocument();
+
+        // await userEvent.selectOptions(
+        //     utils.getByLabelText('Hvordan vil dere fordele 16 uker med fellesperiode?'),
+        //     '80',
+        // );
 
         expect(
             screen.getByText(
@@ -170,19 +169,10 @@ describe('<FordelingSteg>', () => {
         const navigateMock = vi.fn();
         useNavigateMock.mockReturnValue(navigateMock);
 
-        vi.stubGlobal(
-            'ResizeObserver',
-            vi.fn(function (this: ResizeObserver) {
-                this.observe = vi.fn();
-                this.unobserve = vi.fn();
-                this.disconnect = vi.fn();
-            }),
-        );
-
         const gåTilNesteSide = vi.fn();
 
         const originalArgs = FlereForsørgereEttBarn.args;
-        render(
+        const utils = render(
             <FlereForsørgereEttBarn
                 {...originalArgs}
                 omBarnet={{
@@ -196,9 +186,18 @@ describe('<FordelingSteg>', () => {
         );
 
         expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
-
         await endreFordelingMedSlider(80);
 
+        // await userEvent.click(screen.getByText('Neste'));
+
+        // expect(
+        //     screen.getByText('Du må svare på hvordan dere vil fordele fellesperioden før dere går videre.'),
+        // ).toBeInTheDocument();
+
+        // await userEvent.selectOptions(
+        //     utils.getByLabelText('Hvordan vil dere fordele 16 uker med fellesperiode?'),
+        //     '80',
+        // );
         expect(screen.getByText('Perioden deres')).toBeInTheDocument();
         expect(
             screen.getByText(
