@@ -13,15 +13,22 @@ import {
 import { getFamiliehendelsedato, getFamiliesituasjon } from '@navikt/fp-utils';
 
 import { Planperiode } from '../types/Planperiode';
+import { Søker } from '../types/Søker';
 import { utledKomplettPlan } from '../utils/periodeUtils';
+
+// TODO (TOR) Rydd i props her. Er nok mange som kan slåast i saman
 
 type Props = {
     barn: Barn;
     navnPåForeldre: NavnPåForeldre;
+    // TODO (TOR) Vurder om denne kan erstattes med søker
     erFarEllerMedmor: boolean;
+    søker: Søker;
+    //TODO (TOR) Fjern modus
     modus: UttaksplanModus;
     valgtStønadskonto: KontoBeregningDto;
     aleneOmOmsorg: boolean;
+    // TODO (TOR) Denne kan kanskje erstattes med utvida Søker?
     erMedmorDelAvSøknaden: boolean;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     bareFarMedmorHarRett: boolean;

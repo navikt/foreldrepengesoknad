@@ -60,6 +60,7 @@ const customRenderer = ({
     return (
         <UttaksplanDataProvider
             erFarEllerMedmor={erFarEllerMedmor}
+            søker={erFarEllerMedmor ? 'farEllerMedmor' : 'mor'}
             barn={barn}
             aleneOmOmsorg={erAleneOmOmsorg}
             modus="planlegger"
