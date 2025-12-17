@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
-import { PeriodeMedVariasjonForm, TilOgMedDatoType } from 'types/Tilrettelegging';
+import { PeriodeMedVariasjonFormValues, TilOgMedDatoType } from 'types/Tilrettelegging';
 import { getFloatFromString } from 'utils/numberUtils';
 import { getSlutteTekst } from 'utils/validationUtils';
 
@@ -20,8 +20,8 @@ export const validateStillingsprosentPåPerioder =
     (
         intl: IntlShape,
         måSøkeSendeNySøknad: boolean,
-        periodeDerTilbakeIFullJobb: PeriodeMedVariasjonForm | undefined,
-        allePerioder: PeriodeMedVariasjonForm[],
+        periodeDerTilbakeIFullJobb: PeriodeMedVariasjonFormValues | undefined,
+        allePerioder: PeriodeMedVariasjonFormValues[],
         opprinneligStillingsProsent: number,
     ) =>
     (value: string) => {
@@ -92,7 +92,7 @@ export const validatePeriodeFom =
     (
         intl: IntlShape,
         index: number,
-        allePerioder: PeriodeMedVariasjonForm[],
+        allePerioder: PeriodeMedVariasjonFormValues[],
         behovForTilretteleggingFom: string | undefined,
         sisteDagForSvangerskapspenger: string,
         arbeidNavn: string,
@@ -154,7 +154,7 @@ const validateAtPeriodeIkkeOverlapper = (
     fom: string | undefined,
     tom: string | undefined,
     tomType: TilOgMedDatoType | undefined,
-    allePerioder: PeriodeMedVariasjonForm[],
+    allePerioder: PeriodeMedVariasjonFormValues[],
     index: number,
     intl: IntlShape,
     sisteDagForSvangerskapspenger: string,
@@ -196,7 +196,7 @@ const validateAtPeriodeIkkeOverlapper = (
 
 const validateSammenhengendePerioderFom = (
     fom: string | undefined,
-    allePerioder: PeriodeMedVariasjonForm[],
+    allePerioder: PeriodeMedVariasjonFormValues[],
     sisteDagForSvangerskapspenger: string,
     intl: IntlShape,
 ) => {

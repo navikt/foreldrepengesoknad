@@ -5,7 +5,7 @@ import {
     DelvisTilrettelegging,
     IngenTilrettelegging,
     PeriodeMedVariasjon,
-    PeriodeMedVariasjonForm,
+    PeriodeMedVariasjonFormValues,
     Stilling,
     TilOgMedDatoType,
 } from 'types/Tilrettelegging';
@@ -52,7 +52,7 @@ const finnTilretteleggingstype = (stillingsprosent: number, opprinneligStillings
     return 'delvis';
 };
 
-const sorterTilretteleggingsperioder = (p1: PeriodeMedVariasjonForm, p2: PeriodeMedVariasjonForm) => {
+const sorterTilretteleggingsperioder = (p1: PeriodeMedVariasjonFormValues, p2: PeriodeMedVariasjonFormValues) => {
     if (dayjs(p1.fom).isBefore(p2.fom, 'day')) {
         return -1;
     }
@@ -164,7 +164,10 @@ export const mapFlereTilretteleggingPerioder = (
     return allePerioder;
 };
 
-export const getOpprinneligStillingsprosent = (allePerioder: PeriodeMedVariasjonForm[], stillinger: Stilling[]) => {
+export const getOpprinneligStillingsprosent = (
+    allePerioder: PeriodeMedVariasjonFormValues[],
+    stillinger: Stilling[],
+) => {
     const sorterePerioder = [...allePerioder].sort(sorterTilretteleggingsperioder);
     const førstePeriodeFom = sorterePerioder.length > 0 ? sorterePerioder[0]!.fom : undefined;
     return førstePeriodeFom ? getTotalStillingsprosentPåSkjæringstidspunktet(stillinger, førstePeriodeFom) : 100;

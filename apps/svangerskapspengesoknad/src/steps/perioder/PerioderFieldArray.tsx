@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Barn } from 'types/Barn';
-import { PeriodeMedVariasjonForm, TilOgMedDatoType } from 'types/Tilrettelegging';
+import { PeriodeMedVariasjonFormValues, TilOgMedDatoType } from 'types/Tilrettelegging';
 import { getDefaultMonth, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import {
     getArbeidsgiverNavnForTilrettelegging,
@@ -35,10 +35,10 @@ export const NEW_PERIODE = {
     tom: '',
     stillingsprosent: '',
     tomType: undefined,
-} satisfies PeriodeMedVariasjonForm;
+} satisfies PeriodeMedVariasjonFormValues;
 
 type PerioderFormValues = {
-    varierendePerioder: PeriodeMedVariasjonForm[];
+    varierendePerioder: PeriodeMedVariasjonFormValues[];
 };
 
 interface Props {

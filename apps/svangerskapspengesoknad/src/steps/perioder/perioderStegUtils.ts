@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
-import { PeriodeMedVariasjonForm, TilOgMedDatoType } from 'types/Tilrettelegging';
+import { PeriodeMedVariasjonFormValues, TilOgMedDatoType } from 'types/Tilrettelegging';
 import { getFloatFromString } from 'utils/numberUtils';
 import { hasValue } from 'utils/validationUtils';
 
@@ -8,8 +8,8 @@ import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { formatDate, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
 
 export const getMåSendeNySøknad = (
-    periodeDerSøkerErTilbakeIOpprinneligStilling: PeriodeMedVariasjonForm | undefined,
-    currentPeriode: PeriodeMedVariasjonForm,
+    periodeDerSøkerErTilbakeIOpprinneligStilling: PeriodeMedVariasjonFormValues | undefined,
+    currentPeriode: PeriodeMedVariasjonFormValues,
     opprinneligStillingsprosent: number,
 ): boolean => {
     return (
@@ -24,9 +24,9 @@ export const getMåSendeNySøknad = (
 };
 
 export const getPeriodeDerSøkerErTilbakeIFullStilling = (
-    varierendePerioder: PeriodeMedVariasjonForm[],
+    varierendePerioder: PeriodeMedVariasjonFormValues[],
     opprinneligStillingsprosent: number,
-): PeriodeMedVariasjonForm | undefined => {
+): PeriodeMedVariasjonFormValues | undefined => {
     return varierendePerioder.find((p) => {
         if (opprinneligStillingsprosent > 0) {
             return (
@@ -47,7 +47,7 @@ export const getPeriodeInfoTekst = (
     sisteDagForSvangerskapspenger: string,
     intl: IntlShape,
     kanHaSVPFremTilTreUkerFørTermin: boolean,
-    varierendePerioder: PeriodeMedVariasjonForm[],
+    varierendePerioder: PeriodeMedVariasjonFormValues[],
 ) => {
     const erSisteDagMedSvpValgt = varierendePerioder[index]!.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP;
 
@@ -76,7 +76,7 @@ export const getPeriodeInfoTekst = (
 
 export const getNesteDagEtterSistePeriode = (
     sisteDagForSvangerskapspenger: string,
-    alleVarierendePerioder: PeriodeMedVariasjonForm[],
+    alleVarierendePerioder: PeriodeMedVariasjonFormValues[],
 ): string => {
     if (alleVarierendePerioder.length === 0) {
         return '';
