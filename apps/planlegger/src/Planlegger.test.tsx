@@ -10,6 +10,20 @@ import * as stories from './Planlegger.stories';
 
 const { DefaultMockaStønadskontoerOgSatser, FarFarMockaStønadskontoerOgSatser } = composeStories(stories);
 
+const endreFordelingMedSlider = async (utils: ReturnType<typeof render>, ønsketAntallDager: number) => {
+    const slider = utils.getByRole('slider', {
+        name: /Hvordan vil dere fordele 16 uker med fellesperiode\?/i,
+    });
+    await userEvent.click(slider);
+    const nåverdi = Number(slider.getAttribute('aria-valuenow') ?? 0);
+    const diff = ønsketAntallDager - nåverdi;
+    const steg = Math.abs(diff) / 5;
+    const key = diff >= 0 ? '{ArrowRight}' : '{ArrowLeft}';
+    for (let i = 0; i < steg; i += 1) {
+        await userEvent.keyboard(key);
+    }
+};
+
 describe('<Planlegger>', () => {
     it(
         'skal gå rett til oppsummering når ingen av foreldrene har rett',
@@ -269,10 +283,7 @@ describe('<Planlegger>', () => {
 
             await waitFor(() => expect(screen.getAllByText('Fordeling')).toHaveLength(2));
             expect(screen.getByText('Steg 6 av 8')).toBeInTheDocument();
-            await userEvent.selectOptions(
-                utils.getByLabelText('Hvordan vil dere fordele 16 uker med fellesperiode?'),
-                '45',
-            );
+            await endreFordelingMedSlider(utils, 45);
             await userEvent.click(screen.getByText('Neste'));
 
             expect(await screen.findByText('Planen deres')).toBeInTheDocument();
