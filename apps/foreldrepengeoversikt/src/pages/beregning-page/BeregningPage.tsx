@@ -1,44 +1,31 @@
-import { useQuery } from '@tanstack/react-query';
 import { sumBy } from 'lodash';
-import { useParams } from 'react-router-dom';
 
-import { Accordion, Alert, BodyShort, ExpansionCard, HGrid, Label, Loader, VStack } from '@navikt/ds-react';
+import { Accordion, BodyShort, ExpansionCard, HGrid, Label, VStack } from '@navikt/ds-react';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { BeregningV1_fpoversikt, BeregningsAndel_fpoversikt } from '@navikt/fp-types';
+import { AktivitetStatus, BeregningsAndel_fpoversikt, Beregningsgrunnlag_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatCurrency, formatCurrencyWithKr } from '@navikt/fp-utils';
 
-import { hentBeregningOptions } from '../../api/queries.ts';
 import { BeregningHeader } from '../../components/header/Header.tsx';
+import { useGetSelectedSak } from '../../hooks/useSelectedSak.ts';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes.tsx';
 import { formaterDato } from '../../utils/dateUtils.ts';
 
 export const BeregningPage = () => {
-    const params = useParams();
+    const gjeldendeSak = useGetSelectedSak();
 
-    const beregningQuery = useQuery(hentBeregningOptions(params.saksnummer!));
+    if (gjeldendeSak?.ytelse !== 'FORELDREPENGER') {
+        return undefined;
+    }
+    const beregning = gjeldendeSak?.gjeldendeVedtak?.beregningsgrunnlag;
 
-    if (beregningQuery.isPending) {
-        return (
-            <PageRouteLayout header="">
-                <div className="flex flex-col items-center justify-center gap-4">
-                    <Loader size="2xlarge" />
-                    <BodyShort>Henter beregningen din…</BodyShort>
-                </div>
-            </PageRouteLayout>
-        );
+    if (beregning === undefined) {
+        return undefined;
     }
-    if (beregningQuery.isError) {
-        return (
-            <PageRouteLayout header="">
-                <Alert variant="error">Noe gikk galt. Prøv igjen senere</Alert>
-            </PageRouteLayout>
-        );
-    }
-    const beregning = beregningQuery.data;
-    const sumDagsats = sumBy(beregning.beregningsAndeler, (a) => (a.dagsatsBruker ?? 0) + (a.dagsatsArbeidsgiver ?? 0));
+
+    const sumDagsats = sumBy(beregning.beregningsAndeler, (a) => (a.dagsatsSøker ?? 0) + (a.dagsatsArbeidsgiver ?? 0));
     const finnesRefusjon = beregning.beregningsAndeler.some((a) => (a.dagsatsArbeidsgiver ?? 0) > 0);
-    const finnesDirekteutbetaling = beregning.beregningsAndeler.some((a) => (a.dagsatsBruker ?? 0) > 0);
+    const finnesDirekteutbetaling = beregning.beregningsAndeler.some((a) => (a.dagsatsSøker ?? 0) > 0);
     // TODO skrive om?
     const utbetalingsmetodeTekst = formatOppramsing(
         [finnesRefusjon && 'utbetales til arbeidsgiver', finnesDirekteutbetaling && 'ubetales til deg direkte'].filter(
@@ -107,18 +94,14 @@ const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
     return (
         <VStack gap="2">
             <BodyShort>
-                {harArbeidsgiver && (
-                    <Label>
-                        {andel.arbeidsforhold?.arbeidsgiverNavn} - {andel.arbeidsforhold?.arbeidsgiverIdent}
-                    </Label>
-                )}
+                {harArbeidsgiver && <Label>TODO Navn på bedrift - {andel.arbeidsforhold?.arbeidsgiverIdent}</Label>}
                 {!harArbeidsgiver && <Label>{capitalizeFirstLetter(finnStatus(andel.aktivitetStatus))}</Label>}
             </BodyShort>
             <HGrid gap="2" columns={{ xs: '1fr max-content' }}>
                 <BodyShort>Beregnet månedsinntekt {finnKildeForInntekt(andel)}</BodyShort>
-                <BodyShort>{formatCurrencyWithKr(andel.fastsattPrMnd ?? 0)}</BodyShort>
+                <BodyShort>{formatCurrencyWithKr((andel.fastsattPrÅr ?? 0) / 12)}</BodyShort>
                 <BodyShort>Omregnet til årsinntekt</BodyShort>
-                <BodyShort>{formatCurrencyWithKr((andel.fastsattPrMnd ?? 0) * 12)}</BodyShort>
+                <BodyShort>{formatCurrencyWithKr(andel.fastsattPrÅr ?? 0)}</BodyShort>
             </HGrid>
         </VStack>
     );
@@ -142,13 +125,13 @@ const finnKildeForInntekt = (andel: BeregningsAndel_fpoversikt) => {
 };
 
 // TODO enum
-const finnStatus = (status: string) => {
+const finnStatus = (status: AktivitetStatus) => {
     switch (status) {
-        case 'AT':
+        case 'ARBEIDSTAKER':
             return 'arbeidstaker';
-        case 'FL':
+        case 'FRILANSER':
             return 'frilans';
-        case 'AT_FL':
+        case 'KOMBINERT_AT_FL':
             return 'kombinert arbeidstaker og frilanser';
         default:
             return '';
@@ -156,7 +139,7 @@ const finnStatus = (status: string) => {
     }
 };
 
-const BeregningStatuser = ({ beregning }: { beregning: BeregningV1_fpoversikt }) => {
+const BeregningStatuser = ({ beregning }: { beregning: Beregningsgrunnlag_fpoversikt }) => {
     const statuser = beregning.beregningAktivitetStatuser.map((status) => {
         return finnStatus(status.aktivitetStatus);
     });
