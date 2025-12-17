@@ -38,6 +38,7 @@ const meta = {
             <UttaksplanDataProvider
                 barn={args.barn}
                 erFarEllerMedmor={args.erFarEllerMedmor}
+                søker={args.søker}
                 navnPåForeldre={args.navnPåForeldre}
                 modus={args.modus}
                 valgtStønadskonto={args.valgtStønadskonto}
@@ -178,6 +179,7 @@ export const VisAlleMedTekst: Story = {
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
         readOnly: false,
+        søker: 'mor',
     },
 };
 export const VisAlleUtenTekst: Story = {

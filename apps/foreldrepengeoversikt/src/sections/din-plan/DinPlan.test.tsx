@@ -67,7 +67,7 @@ describe('<Default>', () => {
 
             expect(screen.getByText('Helgas periode')).toBeInTheDocument();
             expect(screen.getByText('Fødsel')).toBeInTheDocument();
-            expect(screen.getByText('Dere har permisjon samtidig')).toBeInTheDocument();
+            expect(screen.getByText('Du og Helga har permisjon samtidig')).toBeInTheDocument();
             expect(screen.getByText('Din periode')).toBeInTheDocument();
             expect(screen.getByText('Helga kombinerer jobb og foreldrepenger')).toBeInTheDocument();
             expect(screen.getByText('Helg')).toBeInTheDocument();

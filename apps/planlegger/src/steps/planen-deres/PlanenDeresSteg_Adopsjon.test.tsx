@@ -34,8 +34,8 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
             screen.getByRole<HTMLOptionElement>('option', { name: 'Fellesperioden: 16 uker til far' }).selected,
         ).toBe(true);
 
-        expect(screen.getByText('Din periode')).toBeInTheDocument();
-        expect(screen.getByText('Espen Utviklers periode')).toBeInTheDocument();
+        expect(screen.getByText('Mors periode')).toBeInTheDocument();
+        expect(screen.getByText('Fars periode')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -144,8 +144,8 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
             screen.getByRole<HTMLOptionElement>('option', { name: 'Fellesperioden: 16 uker til medmor' }).selected,
         ).toBe(true);
 
-        expect(screen.getByText('Din periode')).toBeInTheDocument();
-        expect(screen.getByText('Helga Utviklers periode')).toBeInTheDocument();
+        expect(screen.getByText('Mors periode')).toBeInTheDocument();
+        expect(screen.getByText('Medmors periode')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -305,7 +305,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
                 .selected,
         ).toBe(true);
 
-        expect(screen.getByText('Din periode')).toBeInTheDocument();
+        expect(screen.getByText('Fars periode')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
