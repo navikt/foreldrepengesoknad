@@ -9,7 +9,7 @@ import {
     NæringDto,
     isArbeidsforholdOgInntektFp,
 } from '@navikt/fp-types';
-import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
+import { capitalizeFirstLetterInEveryWordOnly, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
 import { JaNeiTekst } from '../OppsummeringPanel';
 
@@ -248,12 +248,12 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                         <FormSummary.Value>{formatDate(egenNæring.tom)}</FormSummary.Value>
                     </FormSummary.Answer>
                 )}
-                {egenNæring.næringsinntekt && (
+                {egenNæring.næringsinntekt !== undefined && (
                     <FormSummary.Answer>
                         <FormSummary.Label>
                             <FormattedMessage id="ArbeidsforholdOppsummering.næringsinntekt" />
                         </FormSummary.Label>
-                        <FormSummary.Value>{egenNæring.næringsinntekt}</FormSummary.Value>
+                        <FormSummary.Value>{formatCurrencyWithKr(egenNæring.næringsinntekt)}</FormSummary.Value>
                     </FormSummary.Answer>
                 )}
                 {egenNæring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene !== undefined && (
@@ -275,38 +275,37 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                     </FormSummary.Answer>
                 )}
                 {egenNæring.hattVarigEndringAvNæringsinntektSiste4Kalenderår !== undefined && (
+                    <FormSummary.Answer>
+                        <FormSummary.Label>
+                            <FormattedMessage id="ArbeidsforholdOppsummering.egenNæringHattVarigEndringDeSiste4Årene" />
+                        </FormSummary.Label>
+                        <FormSummary.Value>
+                            <JaNeiTekst ja={egenNæring.hattVarigEndringAvNæringsinntektSiste4Kalenderår} />
+                        </FormSummary.Value>
+                    </FormSummary.Answer>
+                )}
+                {egenNæring.hattVarigEndringAvNæringsinntektSiste4Kalenderår && (
                     <>
                         <FormSummary.Answer>
                             <FormSummary.Label>
-                                <FormattedMessage id="ArbeidsforholdOppsummering.egenNæringHattVarigEndringDeSiste4Årene" />
+                                <FormattedMessage id="ArbeidsforholdOppsummering.egenNæringVarigEndringDato" />
+                            </FormSummary.Label>
+                            <FormSummary.Value>{formatDate(egenNæring.varigEndringDato!)}</FormSummary.Value>
+                        </FormSummary.Answer>
+                        <FormSummary.Answer>
+                            <FormSummary.Label>
+                                <FormattedMessage id="ArbeidsforholdOppsummering.egenNæringVarigEndringInntektEtterEndring" />
                             </FormSummary.Label>
                             <FormSummary.Value>
-                                {<JaNeiTekst ja={egenNæring.hattVarigEndringAvNæringsinntektSiste4Kalenderår} />}
+                                {formatCurrencyWithKr(egenNæring.varigEndringInntektEtterEndring!)}
                             </FormSummary.Value>
                         </FormSummary.Answer>
-                        {egenNæring.varigEndringDato && (
-                            <>
-                                <FormSummary.Answer>
-                                    <FormSummary.Label>
-                                        <FormattedMessage id="ArbeidsforholdOppsummering.egenNæringVarigEndringDato" />
-                                    </FormSummary.Label>
-                                    <FormSummary.Value>{formatDate(egenNæring.varigEndringDato)}</FormSummary.Value>
-                                </FormSummary.Answer>
-
-                                <FormSummary.Answer>
-                                    <FormSummary.Label>
-                                        <FormattedMessage id="ArbeidsforholdOppsummering.egenNæringVarigEndringInntektEtterEndring" />
-                                    </FormSummary.Label>
-                                    <FormSummary.Value>{egenNæring.varigEndringInntektEtterEndring}</FormSummary.Value>
-                                </FormSummary.Answer>
-                                <FormSummary.Answer>
-                                    <FormSummary.Label>
-                                        <FormattedMessage id="ArbeidsforholdOppsummering.varigEndringBeskrivelse.label" />
-                                    </FormSummary.Label>
-                                    <FormSummary.Value>{egenNæring.varigEndringBeskrivelse}</FormSummary.Value>
-                                </FormSummary.Answer>
-                            </>
-                        )}
+                        <FormSummary.Answer>
+                            <FormSummary.Label>
+                                <FormattedMessage id="ArbeidsforholdOppsummering.varigEndringBeskrivelse.label" />
+                            </FormSummary.Label>
+                            <FormSummary.Value>{egenNæring.varigEndringBeskrivelse}</FormSummary.Value>
+                        </FormSummary.Answer>
                     </>
                 )}
             </FormSummary.Answers>
