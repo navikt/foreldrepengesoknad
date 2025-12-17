@@ -136,6 +136,32 @@ describe('<PerioderSteg>', () => {
         expect(screen.getAllByText('Ny periode')[1]).toBeInTheDocument();
     });
 
+    it('ny periode skal fortsette der forrige slapp', async () => {
+        render(<Default />);
+
+        const fradatoInput = screen.getAllByText('Du skal jobbe fra:')[0]!;
+        await user.type(fradatoInput, dayjs('2024-01-13').format('DD.MM.YYYY'));
+        await user.click(screen.getAllByText('Frem til en dato')[0]!);
+        const tilDatoInput = screen.getAllByText('Til og med dato')[0]!;
+        await user.type(tilDatoInput, dayjs('2024-01-15').format('DD.MM.YYYY'));
+
+        await user.click(screen.getByText('Legg til ny periode'));
+        const fradatoInput1 = screen.getAllByLabelText('Du skal jobbe fra:')[1]!;
+        await user.click(screen.getAllByText('Frem til tre uker før termin')[1]!);
+        const stillingInput1 = screen.getAllByLabelText('Hvilken stillingsprosent skal du jobbe i denne perioden?')[1]!;
+        await user.type(stillingInput1, '45');
+
+        expect(fradatoInput1).toHaveValue('16.01.2024');
+        expect(stillingInput1).toHaveValue('45');
+        expect(screen.getAllByLabelText('Frem til tre uker før termin')[1]).toBeChecked();
+
+        await user.click(screen.getAllByText('Fjern perioden')[0]!);
+        await user.click(screen.getByText('Legg til ny periode'));
+        expect(fradatoInput1).toHaveValue('16.01.2024');
+        expect(screen.getAllByLabelText('Hvilken stillingsprosent skal du jobbe i denne perioden?')[1]).toHaveValue('');
+        expect(screen.getAllByLabelText('Frem til tre uker før termin')[1]).not.toBeChecked();
+    });
+
     it('fjern perioden hvis slett perioden er klikket på', async () => {
         render(<Default />);
 
