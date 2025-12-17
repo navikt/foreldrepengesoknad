@@ -90,7 +90,7 @@ export const OppsummeringHarRett = ({
         ? getAnnenpartsPerioder(erDeltUttak, uttaksplan, erFarEllerMedmor)
         : planforslag.søker2;
 
-    const erMorEllerFar = erFarEllerMedmor ? 'farEllerMedmor' : 'mor';
+    const erFarMedmorEllerMor = erFarEllerMedmor ? 'farEllerMedmor' : 'mor';
 
     return (
         <VStack gap="space-40">
@@ -245,7 +245,7 @@ export const OppsummeringHarRett = ({
                             erFarEllerMedmor={erFarEllerMedmor}
                             navnPåForeldre={{ farMedmor: fornavnSøker2 || '', mor: fornavnSøker1 }}
                             modus="planlegger"
-                            søker={erDeltUttak ? 'ikke_spesifisert' : erMorEllerFar}
+                            søker={erDeltUttak ? 'ikke_spesifisert' : erFarMedmorEllerMor}
                             valgtStønadskonto={valgtStønadskonto}
                             aleneOmOmsorg={erAleneOmOmsorg}
                             erMedmorDelAvSøknaden={false}
