@@ -6,23 +6,10 @@ import dayjs from 'dayjs';
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { mswWrapper } from '@navikt/fp-utils-test';
 
+import { endreFordelingMedSlider } from '../vitest/testHelpers';
 import * as stories from './Planlegger.stories';
 
 const { DefaultMockaStønadskontoerOgSatser, FarFarMockaStønadskontoerOgSatser } = composeStories(stories);
-
-const endreFordelingMedSlider = async (utils: ReturnType<typeof render>, ønsketAntallDager: number) => {
-    const slider = utils.getByRole('slider', {
-        name: /Hvordan vil dere fordele 16 uker med fellesperiode\?/i,
-    });
-    await userEvent.click(slider);
-    const nåverdi = Number(slider.getAttribute('aria-valuenow') ?? 0);
-    const diff = ønsketAntallDager - nåverdi;
-    const steg = Math.abs(diff) / 5;
-    const key = diff >= 0 ? '{ArrowRight}' : '{ArrowLeft}';
-    for (let i = 0; i < steg; i += 1) {
-        await userEvent.keyboard(key);
-    }
-};
 
 describe('<Planlegger>', () => {
     it(

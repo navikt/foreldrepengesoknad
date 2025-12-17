@@ -5,6 +5,7 @@ import { ContextDataType } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { useNavigate } from 'react-router-dom';
 
+import { endreFordelingMedSlider } from '../../../vitest/testHelpers';
 import { BarnetErAdoptert } from '../../types/Barnet';
 import * as stories from './FordelingSteg.stories';
 
@@ -21,20 +22,6 @@ vi.mock('react-router-dom', async () => {
 });
 
 const useNavigateMock = vi.mocked(useNavigate);
-
-const endreFordelingMedSlider = async (utils: ReturnType<typeof render>, ønsketAntallDager: number) => {
-    const slider = utils.getByRole('slider', {
-        name: /Hvordan vil dere fordele 16 uker med fellesperiode\?/i,
-    });
-    await userEvent.click(slider);
-    const nåverdi = Number(slider.getAttribute('aria-valuenow') ?? 0);
-    const diff = ønsketAntallDager - nåverdi;
-    const steg = Math.abs(diff) / 5;
-    const key = diff >= 0 ? '{ArrowRight}' : '{ArrowLeft}';
-    for (let i = 0; i < steg; i += 1) {
-        await userEvent.keyboard(key);
-    }
-};
 
 describe('<FordelingSteg>', () => {
     it('Skal velge å fordele 9 uker til mor og 7 uker til far', async () => {
