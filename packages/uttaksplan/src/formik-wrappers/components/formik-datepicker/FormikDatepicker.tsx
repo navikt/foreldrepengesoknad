@@ -19,8 +19,7 @@ export type DatepickerLimitations = {
 };
 
 export interface DatePickerBaseProps<FieldName, ErrorType>
-    extends TestProps,
-        TypedFormInputValidationProps<FieldName, ErrorType> {
+    extends TestProps, TypedFormInputValidationProps<FieldName, ErrorType> {
     name: FieldName;
     label: string;
     error?: FormError;

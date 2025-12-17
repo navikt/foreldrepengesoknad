@@ -106,7 +106,7 @@ export const MorOppstartInformasjon = ({ oppstartDato }: Props) => {
     return (
         <div
             className={
-                'bg-ax-accent-200 -ml-[13rem] mt-[3.2rem] flex h-[3.5rem] w-[20rem] flex-col justify-center p-2 max-[768px]:ml-0 max-[768px]:mt-0'
+                'bg-ax-accent-200 mt-[3.2rem] -ml-[13rem] flex h-[3.5rem] w-[20rem] flex-col justify-center p-2 max-[768px]:mt-0 max-[768px]:ml-0'
             }
         >
             {starterPåUttaksdagEtterFamiliehendelse && (

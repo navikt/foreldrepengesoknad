@@ -1,4 +1,4 @@
 @import 'tailwindcss';
 @import '@navikt/ds-css/darkside' layer(components);
-@config "@navikt/ds-tailwind/darkside-tw3";
-@source "../../../packages/*/src/**";
+@config '@navikt/ds-tailwind/darkside-tw3';
+@source '../../../packages/*/src/**';

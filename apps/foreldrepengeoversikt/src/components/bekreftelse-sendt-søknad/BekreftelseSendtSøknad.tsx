@@ -47,7 +47,7 @@ export const BekreftelseSendtSøknad = ({
     return (
         <VStack gap="space-24" className="bg-ax-bg-default rounded-lg p-6">
             <HStack gap="space-16">
-                <div className="bg-ax-success-200 h-[52px] w-[52px] rounded-[50%] pl-[14px] pt-[14px]">
+                <div className="bg-ax-success-200 h-[52px] w-[52px] rounded-[50%] pt-[14px] pl-[14px]">
                     <CheckmarkIcon fontSize={24} className="text-ax-success-900" aria-hidden={true} />
                 </div>
                 <VStack>

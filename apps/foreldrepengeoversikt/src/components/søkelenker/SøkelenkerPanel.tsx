@@ -12,7 +12,7 @@ const PanelBleed = ({ children, doBleed }: { children: ReactNode; doBleed: boole
     return doBleed ? (
         <div className="pt-12">
             <Bleed marginInline="full" className="bg-ax-bg-neutral-moderate">
-                <LayoutWrapper className="pb-1 pl-4 pr-4 pt-1">{children}</LayoutWrapper>
+                <LayoutWrapper className="pt-1 pr-4 pb-1 pl-4">{children}</LayoutWrapper>
             </Bleed>
         </div>
     ) : (
@@ -28,7 +28,7 @@ export const SøkelenkerPanel = ({ doBleed = false }: Props) => {
     const intl = useIntl();
     return (
         <PanelBleed doBleed={doBleed}>
-            <HGrid gap="space-16" columns={{ sm: 1, md: 2 }} className={doBleed ? 'mb-12 mt-12' : undefined}>
+            <HGrid gap="space-16" columns={{ sm: 1, md: 2 }} className={doBleed ? 'mt-12 mb-12' : undefined}>
                 <LenkePanel
                     tittel={intl.formatMessage({ id: 'SøkelenkerPanel.HarRett' })}
                     undertittel={intl.formatMessage({ id: 'SøkelenkerPanel.VenterBarn' })}
