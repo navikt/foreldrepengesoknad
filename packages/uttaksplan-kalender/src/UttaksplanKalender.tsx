@@ -99,6 +99,7 @@ const getPerioderForKalendervisning = (
                 : formatDateIso(p.tidsperiode.fom),
             tom: formatDateIso(p.tidsperiode.tom),
             color,
+            srText: '',
         };
     });
 
@@ -107,6 +108,7 @@ const getPerioderForKalendervisning = (
         fom: familiehendelsesdato,
         tom: familiehendelsesdato,
         color: 'PINK',
+        srText: '',
     });
     const perioderSlåttSammen = slåSammenPeriods(periods);
     return perioderSlåttSammen.map((p) => ({

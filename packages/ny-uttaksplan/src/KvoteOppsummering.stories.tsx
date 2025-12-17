@@ -79,6 +79,7 @@ export const BeggeRettMorIngenDagerBrukt: Story = {
         erDeltUttak: true,
         erFarEllerMedmor: false,
         erMedmorDelAvSøknaden: false,
+        søker: 'mor',
     },
 };
 
@@ -136,6 +137,7 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
         aleneOmOmsorg: false,
         erDeltUttak: true,
         erFarEllerMedmor: false,
+        søker: 'mor',
     },
 };
 
@@ -191,6 +193,7 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
         erDeltUttak: true,
         erFarEllerMedmor: false,
         erMedmorDelAvSøknaden: false,
+        søker: 'mor',
     },
 };
 
@@ -237,6 +240,7 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
         aleneOmOmsorg: false,
         erDeltUttak: true,
         erFarEllerMedmor: false,
+        søker: 'mor',
     },
 };
 
@@ -290,6 +294,7 @@ export const BeggeRettMorLedigeDager: Story = {
         aleneOmOmsorg: false,
         erDeltUttak: true,
         erFarEllerMedmor: false,
+        søker: 'mor',
     },
 };
 
@@ -348,6 +353,7 @@ export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
         aleneOmOmsorg: false,
         erDeltUttak: true,
         erFarEllerMedmor: false,
+        søker: 'mor',
     },
 };
 
@@ -396,6 +402,7 @@ export const EnRettFarAlleDagerBrukt: Story = {
         aleneOmOmsorg: false,
         erDeltUttak: false,
         erFarEllerMedmor: true,
+        søker: 'farEllerMedmor',
     },
 };
 
@@ -424,6 +431,7 @@ export const EnRettFarLedigeDager: Story = {
         aleneOmOmsorg: false,
         erDeltUttak: false,
         erFarEllerMedmor: true,
+        søker: 'farEllerMedmor',
     },
 };
 
@@ -470,6 +478,7 @@ export const EnRettMorAlleDagerBrukt: Story = {
         aleneOmOmsorg: false,
         erDeltUttak: false,
         erFarEllerMedmor: false,
+        søker: 'mor',
     },
 };
 
@@ -495,6 +504,7 @@ export const EnRettMorLedigeDager: Story = {
         aleneOmOmsorg: false,
         erDeltUttak: false,
         erFarEllerMedmor: false,
+        søker: 'mor',
     },
 };
 
@@ -520,6 +530,7 @@ export const AleneomsorgMorLedigeDager: Story = {
         aleneOmOmsorg: true,
         erDeltUttak: false,
         erFarEllerMedmor: false,
+        søker: 'mor',
     },
 };
 
@@ -560,6 +571,7 @@ export const AleneomsorgFarLedigeDager: Story = {
         aleneOmOmsorg: true,
         erDeltUttak: false,
         erFarEllerMedmor: true,
+        søker: 'farEllerMedmor',
     },
 };
 
@@ -600,6 +612,7 @@ export const AleneomsorgFarForMangeDager: Story = {
         aleneOmOmsorg: true,
         erDeltUttak: false,
         erFarEllerMedmor: true,
+        søker: 'farEllerMedmor',
     },
 };
 
@@ -677,5 +690,6 @@ export const MorHarPrematuruker: Story = {
         aleneOmOmsorg: false,
         erDeltUttak: true,
         erFarEllerMedmor: false,
+        søker: 'mor',
     },
 };

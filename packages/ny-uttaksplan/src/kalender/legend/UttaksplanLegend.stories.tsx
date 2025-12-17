@@ -17,7 +17,6 @@ const meta = {
     component: UttaksplanLegend,
     args: {
         modus: 'søknad',
-
         valgtStønadskonto: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
@@ -30,7 +29,6 @@ const meta = {
         aleneOmOmsorg: false,
         erMedmorDelAvSøknaden: false,
         navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
-        saksperioder: [],
         children: null,
         selectLegend: action('select-legend'),
         skjulTekstSomDefault: false,
@@ -40,6 +38,7 @@ const meta = {
             <UttaksplanDataProvider
                 barn={args.barn}
                 erFarEllerMedmor={args.erFarEllerMedmor}
+                søker={args.søker}
                 navnPåForeldre={args.navnPåForeldre}
                 modus={args.modus}
                 valgtStønadskonto={args.valgtStønadskonto}
@@ -71,49 +70,103 @@ export const VisAlleMedTekst: Story = {
                 fom: '2024-03-14',
                 tom: '2024-04-03',
                 color: 'PINK',
-                legendLabel: 'ADOPSJON',
+                srText: 'Termindato',
             },
             {
                 fom: '2024-04-04',
                 tom: '2024-04-18',
                 color: 'BLUE',
-                legendLabel: 'MORS_DEL',
+                srText: 'Mors del',
             },
             {
                 fom: '2024-05-17',
                 tom: '2024-05-23',
                 color: 'GREEN',
-                legendLabel: 'FARS_DEL',
+                srText: 'Fars del',
             },
             {
                 fom: '2024-05-31',
                 tom: '2024-06-13',
                 color: 'LIGHTGREENBLUE',
-                legendLabel: 'SAMTIDIG_UTTAK',
+                srText: 'Samtidig uttak',
+            },
+            {
+                fom: '2024-04-19',
+                tom: '2024-05-15',
+                color: 'BLACK',
+                srText: 'Tapte dager',
             },
             {
                 fom: '2024-06-14',
                 tom: '2024-06-27',
                 color: 'BLACK',
-                legendLabel: 'TAPTE_DAGER',
+                srText: 'Tapte dager',
             },
             {
                 fom: '2024-06-28',
                 tom: '2024-07-02',
                 color: 'GREENOUTLINE',
-                legendLabel: 'MORS_DEL_GRADERT',
+                srText: 'Mors del, gradert',
             },
             {
                 fom: '2024-06-28',
                 tom: '2024-07-02',
                 color: 'BLUEOUTLINE',
-                legendLabel: 'UTSETTELSE',
+                srText: 'Utsettelse',
             },
             {
                 fom: '2024-07-03',
                 tom: '2024-07-15',
                 color: 'GREENSTRIPED',
-                legendLabel: 'FARS_DEL_AKTIVITETSFRI',
+                srText: 'Fars del, aktivitetsfri',
+            },
+        ],
+        saksperioder: [
+            {
+                fom: '2024-04-04',
+                tom: '2024-04-18',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+            },
+            {
+                fom: '2024-05-17',
+                tom: '2024-05-23',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+            },
+            {
+                fom: '2024-05-31',
+                tom: '2024-06-13',
+                kontoType: 'FELLESPERIODE',
+                forelder: 'MOR',
+                samtidigUttak: 50,
+            },
+            {
+                fom: '2024-05-31',
+                tom: '2024-06-13',
+                kontoType: 'FELLESPERIODE',
+                forelder: 'FAR_MEDMOR',
+                samtidigUttak: 50,
+            },
+            {
+                fom: '2024-06-28',
+                tom: '2024-07-02',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                gradering: { arbeidstidprosent: 80, aktivitet: { type: 'ANNET' } },
+            },
+            {
+                fom: '2024-06-28',
+                tom: '2024-07-02',
+                forelder: 'FAR_MEDMOR',
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+            },
+            {
+                fom: '2024-07-03',
+                tom: '2024-07-15',
+                forelder: 'FAR_MEDMOR',
+                morsAktivitet: 'IKKE_OPPGITT',
+                kontoType: 'FORELDREPENGER',
             },
         ],
         barn: {
@@ -126,6 +179,7 @@ export const VisAlleMedTekst: Story = {
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
         readOnly: false,
+        søker: 'mor',
     },
 };
 export const VisAlleUtenTekst: Story = {

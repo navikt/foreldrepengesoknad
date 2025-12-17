@@ -1,9 +1,10 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { mswWrapper } from '@navikt/fp-utils-test';
 
-import * as stories from './TidslinjePage.stories';
+import * as stories from './Tidslinje.stories.tsx';
 
 const {
     FPAdopsjon,
@@ -20,14 +21,15 @@ const {
     ESUnderBehandling,
 } = composeStories(stories);
 
-describe('<TidslinjePage>', () => {
+describe('<Tidslinje>', () => {
     it(
         'FP - Adopsjon',
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(FPAdopsjon.parameters.msw);
             const { container } = render(<FPAdopsjon />);
 
-            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 4, completed: 2 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
@@ -48,9 +50,9 @@ describe('<TidslinjePage>', () => {
         'FP - Adopsjon - visHeleTidslinjen=false',
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(FPAdopsjon.parameters.msw);
-            const { container } = render(<FPAdopsjon visHeleTidslinjen={false} />);
+            const { container } = render(<FPAdopsjon />);
 
-            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            expect(await screen.findByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 3, completed: 2 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
@@ -66,7 +68,8 @@ describe('<TidslinjePage>', () => {
             setHandlers(FPTerminInnvilget.parameters.msw);
             const { container } = render(<FPTerminInnvilget />);
 
-            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 5, completed: 5 });
 
             const items = screen.getAllByRole('listitem');
@@ -86,7 +89,8 @@ describe('<TidslinjePage>', () => {
             setHandlers(FPMedTilbakekreving.parameters.msw);
             const { container } = render(<FPMedTilbakekreving />);
 
-            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 6, completed: 6 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
@@ -105,9 +109,10 @@ describe('<TidslinjePage>', () => {
         'FP - Med tilbakekreving - visHeleTidslinjen=false',
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(FPMedTilbakekreving.parameters.msw);
-            const { container } = render(<FPMedTilbakekreving visHeleTidslinjen={false} />);
+            const { container } = render(<FPMedTilbakekreving />);
 
-            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            expect(await screen.findByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
+
             verifiserHendelseStatus({ container, antall: 3, completed: 3 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
@@ -125,7 +130,8 @@ describe('<TidslinjePage>', () => {
             setHandlers(FPEtterlysIM.parameters.msw);
             const { container } = render(<FPEtterlysIM />);
 
-            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 5, completed: 2 });
 
             const items = screen.getAllByRole('listitem');
@@ -145,7 +151,8 @@ describe('<TidslinjePage>', () => {
             setHandlers(FPForTidligSøknad.parameters.msw);
             const { container } = render(<FPForTidligSøknad />);
 
-            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 4, completed: 1 });
 
             const items = screen.getAllByRole('listitem');
@@ -164,7 +171,8 @@ describe('<TidslinjePage>', () => {
             setHandlers(FPManglerDokumentasjon.parameters.msw);
             const { container } = render(<FPManglerDokumentasjon />);
 
-            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            const visHeleProsessenButton = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            await userEvent.click(visHeleProsessenButton);
             verifiserHendelseStatus({ container, antall: 4, completed: 1 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
@@ -193,9 +201,9 @@ describe('<TidslinjePage>', () => {
         'FP - Mangler dokumentasjon - visHeleTidslinjen=false',
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(FPManglerDokumentasjon.parameters.msw);
-            const { container } = render(<FPManglerDokumentasjon visHeleTidslinjen={false} />);
+            const { container } = render(<FPManglerDokumentasjon />);
 
-            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            expect(await screen.findByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 3, completed: 1 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
@@ -211,7 +219,9 @@ describe('<TidslinjePage>', () => {
             setHandlers(FPNySøknad.parameters.msw);
             const { container } = render(<FPNySøknad />);
 
-            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            await userEvent.click(button);
+
             verifiserHendelseStatus({ container, antall: 5, completed: 2 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
@@ -229,7 +239,8 @@ describe('<TidslinjePage>', () => {
             setHandlers(SVPInnvilget.parameters.msw);
             const { container } = render(<SVPInnvilget />);
 
-            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 5, completed: 4 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
@@ -247,7 +258,8 @@ describe('<TidslinjePage>', () => {
             setHandlers(SVPUnderBehandling.parameters.msw);
             const { container } = render(<SVPUnderBehandling />);
 
-            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 3, completed: 1 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
@@ -267,7 +279,8 @@ describe('<TidslinjePage>', () => {
             setHandlers(ESAdopsjonInnvilget.parameters.msw);
             const { container } = render(<ESAdopsjonInnvilget />);
 
-            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 3, completed: 2 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
@@ -283,7 +296,8 @@ describe('<TidslinjePage>', () => {
             setHandlers(ESAdopsjonInnvilget.parameters.msw);
             const { container } = render(<ESAdopsjonInnvilget mockDate={new Date('2025-12-31').getTime()} />);
 
-            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 3, completed: 3 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
@@ -299,7 +313,8 @@ describe('<TidslinjePage>', () => {
             setHandlers(ESAdopsjonAvslag.parameters.msw);
             const { container } = render(<ESAdopsjonAvslag />);
 
-            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 3, completed: 2 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
@@ -315,7 +330,8 @@ describe('<TidslinjePage>', () => {
             setHandlers(ESUnderBehandling.parameters.msw);
             const { container } = render(<ESUnderBehandling />);
 
-            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 3, completed: 2 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
@@ -329,9 +345,9 @@ describe('<TidslinjePage>', () => {
         'ES - under behandling - visHeleTidslinjen=false',
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(ESUnderBehandling.parameters.msw);
-            const { container } = render(<ESUnderBehandling visHeleTidslinjen={false} />);
+            const { container } = render(<ESUnderBehandling />);
 
-            expect(await screen.findByText('Dette skjer i saken')).toBeInTheDocument();
+            expect(await screen.findByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 3, completed: 2 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');

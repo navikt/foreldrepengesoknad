@@ -37,12 +37,6 @@ const ettersend = {
     handleInApp: true,
 };
 
-const tidslinjen = {
-    title: 'Hele prosessen',
-    url: OversiktRoutes.TIDSLINJEN,
-    handleInApp: true,
-};
-
 const dinPlan = {
     title: 'Søknaden din',
     url: OversiktRoutes.DIN_PLAN,
@@ -77,8 +71,6 @@ const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
             return [minSide, hovedside, saksoversikt, dokumenter];
         case OversiktRoutes.ETTERSEND:
             return [minSide, hovedside, saksoversikt, dokumenter, ettersend];
-        case OversiktRoutes.TIDSLINJEN:
-            return [minSide, hovedside, saksoversikt, tidslinjen];
         case OversiktRoutes.DIN_PLAN:
             return [minSide, hovedside, saksoversikt, dinPlan];
         case OversiktRoutes.OPPGAVER:
@@ -108,10 +100,6 @@ const getRoute = (route: OversiktRoutes | 'https://www.nav.no/minside', saksnumm
     }
     if (route === OversiktRoutes.INNTEKTSMELDING) {
         return `${sakRoute}/${OversiktRoutes.INNTEKTSMELDING}`;
-    }
-
-    if (route === OversiktRoutes.TIDSLINJEN) {
-        return `${sakRoute}/${OversiktRoutes.TIDSLINJEN}`;
     }
 
     return route;

@@ -9,7 +9,7 @@ import * as stories from './FileUploader.stories';
 const { Default, OpplastningTimeout } = composeStories(stories);
 
 describe('FileUploader', () => {
-    it.todo(
+    it(
         'skal laste opp en fil',
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(Default.parameters.msw);

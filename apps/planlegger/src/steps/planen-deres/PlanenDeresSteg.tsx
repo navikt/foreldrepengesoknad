@@ -30,6 +30,7 @@ import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, Heading, Select, Tabs, ToggleGroup, VStack } from '@navikt/ds-react';
 
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { Dekningsgrad, HvemPlanleggerType, KontoBeregningResultatDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { encodeToBase64, useMedia } from '@navikt/fp-utils';
@@ -115,6 +116,8 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
         hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR &&
         (hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett');
 
+    const søker = erFarEllerMedmor ? 'farEllerMedmor' : 'mor';
+
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
             <VStack gap="space-24">
@@ -127,6 +130,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     erFarEllerMedmor={erFarEllerMedmor}
                     navnPåForeldre={navnPåForeldre}
                     modus="planlegger"
+                    søker={erDeltUttak ? 'ikke_spesifisert' : søker}
                     valgtStønadskonto={valgtStønadskonto}
                     aleneOmOmsorg={erAleneOmOmsorg}
                     erMedmorDelAvSøknaden={isMedmorDelAvSøknaden}
@@ -163,7 +167,18 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     >
                         <FjernAltIUttaksplanModal />
 
-                        <Tabs defaultValue="kalender">
+                        <Tabs
+                            defaultValue="kalender"
+                            onChange={(value) => {
+                                loggUmamiEvent({
+                                    origin: 'planlegger',
+                                    eventName: 'tab klikk',
+                                    eventData: {
+                                        tittel: value,
+                                    },
+                                });
+                            }}
+                        >
                             <Tabs.List>
                                 <Tabs.Tab
                                     value="kalender"

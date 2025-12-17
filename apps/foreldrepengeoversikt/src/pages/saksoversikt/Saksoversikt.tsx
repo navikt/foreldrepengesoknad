@@ -133,13 +133,9 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                         sak={gjeldendeSak}
                         tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
                         manglendeVedlegg={manglendeVedleggQuery.data ?? []}
-                        visHeleTidslinjen={false}
                         søkersBarn={søkerinfo.person.barn ?? []}
                     />
                 </ContentSection>
-                <section className="mb-12">
-                    <LenkePanel tittel="Se hele prosessen" to={OversiktRoutes.TIDSLINJEN} />
-                </section>
                 <HGrid gap="space-16" columns={{ sm: 1, md: 2 }} className="mb-12">
                     <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
                     <LenkePanel tittel="Ettersend dokumenter" to={OversiktRoutes.ETTERSEND} Ikon={FilesIcon} />

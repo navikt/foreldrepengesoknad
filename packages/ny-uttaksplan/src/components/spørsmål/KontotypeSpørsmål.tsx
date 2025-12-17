@@ -30,7 +30,8 @@ export const KontotypeSpørsmål = ({
     const kontoTypeValue = watch('kontoType');
 
     return (
-        <VStack gap="space-16">
+        <VStack gap="space-16" className="inline-block">
+            {/* Inline-block over fiksar feil med mellomrom i safari */}
             {skalViseTittel && (
                 <Heading size="medium">
                     <FormattedMessage id="uttaksplan.velgKontotypeModal.tittel" />

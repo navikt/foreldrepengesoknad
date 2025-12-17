@@ -90,6 +90,8 @@ export const OppsummeringHarRett = ({
         ? getAnnenpartsPerioder(erDeltUttak, uttaksplan, erFarEllerMedmor)
         : planforslag.søker2;
 
+    const søker = erFarEllerMedmor ? 'farEllerMedmor' : 'mor';
+
     return (
         <VStack gap="space-40">
             <ExpansionCard aria-label="" onToggle={loggExpansionCardOpen('toggle-oppgitt-informasjon')} size="small">
@@ -243,6 +245,7 @@ export const OppsummeringHarRett = ({
                             erFarEllerMedmor={erFarEllerMedmor}
                             navnPåForeldre={{ farMedmor: fornavnSøker2 || '', mor: fornavnSøker1 }}
                             modus="planlegger"
+                            søker={erDeltUttak ? 'ikke_spesifisert' : søker}
                             valgtStønadskonto={valgtStønadskonto}
                             aleneOmOmsorg={erAleneOmOmsorg}
                             erMedmorDelAvSøknaden={false}

@@ -73,23 +73,23 @@ describe('<Default>', () => {
             expect(screen.getByText('Helg')).toBeInTheDocument();
 
             const september = screen.getByTestId('year:2024;month:8');
-            expect(within(september).getByTestId('day:10;dayColor:LIGHTBLUE')).toBeInTheDocument();
-            expect(within(september).getAllByTestId('dayColor:LIGHTBLUE', { exact: false })).toHaveLength(15);
+            expect(within(september).getByTestId('day:10;dayColor:BLUE')).toBeInTheDocument();
+            expect(within(september).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(15);
 
             const oktober = screen.getByTestId('year:2024;month:9');
             expect(within(oktober).getByTestId('day:1;dayColor:PINK')).toBeInTheDocument();
             expect(within(oktober).getByTestId('day:2;dayColor:LIGHTBLUEGREEN')).toBeInTheDocument();
             expect(within(oktober).getByTestId('day:14;dayColor:LIGHTBLUEGREEN')).toBeInTheDocument();
-            expect(within(oktober).getByTestId('day:15;dayColor:LIGHTBLUE')).toBeInTheDocument();
-            expect(within(oktober).getByTestId('day:31;dayColor:LIGHTBLUE')).toBeInTheDocument();
+            expect(within(oktober).getByTestId('day:15;dayColor:BLUE')).toBeInTheDocument();
+            expect(within(oktober).getByTestId('day:31;dayColor:BLUE')).toBeInTheDocument();
             expect(within(oktober).getAllByTestId('dayColor:LIGHTBLUEGREEN', { exact: false })).toHaveLength(9);
-            expect(within(oktober).getAllByTestId(/dayColor:LIGHTBLUE$/)).toHaveLength(13);
+            expect(within(oktober).getAllByTestId(/dayColor:BLUE$/)).toHaveLength(13);
 
             const november = screen.getByTestId('year:2024;month:10');
-            expect(within(november).getAllByTestId('dayColor:LIGHTBLUE', { exact: false })).toHaveLength(21);
+            expect(within(november).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(21);
 
             const desember = screen.getByTestId('year:2024;month:11');
-            expect(within(desember).getAllByTestId('dayColor:LIGHTBLUE', { exact: false })).toHaveLength(22);
+            expect(within(desember).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(22);
 
             const januar2025 = screen.getByTestId('year:2025;month:0');
             expect(within(januar2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(23);
@@ -104,15 +104,14 @@ describe('<Default>', () => {
             const mars2025 = screen.getByTestId('year:2025;month:2');
             expect(within(mars2025).getByTestId('day:3;dayColor:BLUESTRIPED')).toBeInTheDocument();
             expect(within(mars2025).getByTestId('day:11;dayColor:BLUESTRIPED')).toBeInTheDocument();
-            expect(within(mars2025).getByTestId('day:19;dayColor:LIGHTBLUE')).toBeInTheDocument();
-            expect(within(mars2025).getByTestId('day:31;dayColor:LIGHTBLUE')).toBeInTheDocument();
+            expect(within(mars2025).getByTestId('day:19;dayColor:BLUE')).toBeInTheDocument();
+            expect(within(mars2025).getByTestId('day:31;dayColor:BLUE')).toBeInTheDocument();
             expect(within(mars2025).getAllByTestId('dayColor:BLUESTRIPED', { exact: false })).toHaveLength(7);
-            expect(within(mars2025).getAllByTestId('dayColor:LIGHTBLUE', { exact: false })).toHaveLength(9);
 
             const april2025 = screen.getByTestId('year:2025;month:3');
-            expect(within(april2025).getByTestId('day:1;dayColor:LIGHTBLUE')).toBeInTheDocument();
-            expect(within(april2025).getByTestId('day:22;dayColor:LIGHTBLUE')).toBeInTheDocument();
-            expect(within(april2025).getAllByTestId('dayColor:LIGHTBLUE', { exact: false })).toHaveLength(16);
+            expect(within(april2025).getByTestId('day:1;dayColor:BLUE')).toBeInTheDocument();
+            expect(within(april2025).getByTestId('day:22;dayColor:BLUE')).toBeInTheDocument();
+            expect(within(april2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(16);
         }),
     );
 });

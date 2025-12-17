@@ -54,6 +54,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     args: {
         erFarEllerMedmor: false,
+        søker: 'mor',
         navnPåForeldre: {
             mor: 'Olga Utvikler',
             farMedmor: 'Espen Utvikler',

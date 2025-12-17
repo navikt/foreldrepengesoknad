@@ -118,9 +118,9 @@ export const getKalenderSkjermlesertekstForPeriode = (
     unikeUtsettelseÅrsaker: UtsettelsesÅrsak[],
     erFarEllerMedmor: boolean,
     intl: IntlShape,
-): string | undefined => {
+): string => {
     if (['NONE', 'GRAY'].includes(period.color)) {
-        return undefined;
+        return '';
     }
     if (period.color === 'PINK') {
         return getSkjermlesertekstForFamiliehendelse(barn, intl);

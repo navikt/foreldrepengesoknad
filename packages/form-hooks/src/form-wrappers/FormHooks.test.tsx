@@ -1,6 +1,7 @@
 import { composeStories } from '@storybook/react-vite';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import * as stories from './FormHooks.stories';
 
 const { VisFormkomponenter } = composeStories(stories);

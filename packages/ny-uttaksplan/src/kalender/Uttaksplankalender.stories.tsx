@@ -45,6 +45,7 @@ const meta = {
             <UttaksplanDataProvider
                 barn={args.barn}
                 erFarEllerMedmor={args.erFarEllerMedmor}
+                søker={args.søker}
                 navnPåForeldre={args.navnPåForeldre}
                 modus={args.modus}
                 valgtStønadskonto={args.valgtStønadskonto}
@@ -138,6 +139,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
+        søker: 'mor',
     },
 };
 
@@ -172,6 +174,7 @@ export const SkalHaPeriodeMedFratrekkForPleiepenger: Story = {
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
+        søker: 'mor',
     },
 };
 
@@ -200,6 +203,7 @@ export const FarSøkerMedTapteDagerOgUtsettelse: Story = {
         erDeltUttak: true,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
+        søker: 'farEllerMedmor',
     },
 };
 
@@ -228,6 +232,7 @@ export const MorSøkerMedFlereUtsettelser: Story = {
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
         erDeltUttak: true,
+        søker: 'mor',
     },
 };
 export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
@@ -298,6 +303,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
         erDeltUttak: true,
+        søker: 'farEllerMedmor',
     },
 };
 
@@ -326,6 +332,7 @@ export const UtsettelseMorFerieMedFarsUtsettelse: Story = {
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
+        søker: 'mor',
     },
 };
 
@@ -366,6 +373,7 @@ export const MorAvslåttPeriodeFørste6UkeneGirTapteDager: Story = {
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
         erDeltUttak: true,
+        søker: 'mor',
     },
 };
 
@@ -406,6 +414,7 @@ export const MorAvslåttPeriodeUtenTapteDager: Story = {
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
         erDeltUttak: true,
+        søker: 'mor',
     },
 };
 
@@ -429,6 +438,7 @@ export const KortPeriodeMedHelg: Story = {
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
         erDeltUttak: true,
+        søker: 'mor',
     },
 };
 
@@ -452,6 +462,7 @@ export const KortPeriodeUtenHelg: Story = {
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
         erDeltUttak: true,
+        søker: 'mor',
     },
 };
 
@@ -487,6 +498,7 @@ export const TreSammenhengendePerioderSlåttSammen: Story = {
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
         erDeltUttak: true,
+        søker: 'mor',
     },
 };
 
@@ -511,6 +523,7 @@ export const MorOppgirSamtidigUttakMedFar: Story = {
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
         erDeltUttak: true,
+        søker: 'mor',
     },
 };
 
@@ -535,10 +548,11 @@ export const FarOppgirSamtidigUttakMedMor: Story = {
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
         erDeltUttak: true,
+        søker: 'mor',
     },
 };
 
-export const FellesPeriodeForMorOgSaSamtidigUttakOgSa: Story = {
+export const FellesPeriodeForMorOgSamtidigUttak: Story = {
     args: {
         saksperioder: [
             {
@@ -589,5 +603,66 @@ export const FellesPeriodeForMorOgSaSamtidigUttakOgSa: Story = {
         erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarMedmorHarRett: false,
+        søker: 'mor',
+    },
+};
+
+export const HarPeriode11UkerFørFamiliehendelseDato: Story = {
+    args: {
+        ...MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering.args,
+        saksperioder: [
+            {
+                fom: '2024-01-18',
+                tom: '2024-02-23',
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+            },
+
+            ...MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering.args.saksperioder,
+        ] satisfies UttakPeriode_fpoversikt[],
+    },
+};
+
+export const VisFarsAktivitetsfriKvote: Story = {
+    args: {
+        saksperioder: [
+            {
+                fom: '2024-06-14',
+                tom: '2024-06-18',
+                kontoType: 'FORELDREPENGER',
+                forelder: 'FAR_MEDMOR',
+                morsAktivitet: 'IKKE_OPPGITT',
+                gradering: {
+                    aktivitet: {
+                        type: 'ORDINÆRT_ARBEID',
+                    },
+                    arbeidstidprosent: 50,
+                },
+            },
+            {
+                fom: '2024-06-19',
+                tom: '2024-07-15',
+                kontoType: 'FORELDREPENGER',
+                forelder: 'FAR_MEDMOR',
+                morsAktivitet: 'IKKE_OPPGITT',
+            },
+        ] satisfies UttakPeriode_fpoversikt[],
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2024-04-04'],
+            antallBarn: 1,
+        },
+        erDeltUttak: false,
+        erFarEllerMedmor: true,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarMedmorHarRett: true,
+        valgtStønadskonto: {
+            kontoer: [
+                { konto: 'AKTIVITETSFRI_KVOTE', dager: 75 },
+                { konto: 'FORELDREPENGER', dager: 125 },
+            ],
+            minsteretter: MINSTERETTER,
+        },
+        søker: 'farEllerMedmor',
     },
 };

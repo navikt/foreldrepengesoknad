@@ -4,13 +4,15 @@ import { formHookMessages } from '@navikt/fp-form-hooks';
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 
-import nbMessages from '../src/intl/nb_NO.json';
-import nnMessages from '../src/intl/nn_NO.json';
+import enMessages from '../src/intl/messages/en_US.json';
+import nbMessages from '../src/intl/messages/nb_NO.json';
+import nnMessages from '../src/intl/messages/nn_NO.json';
 import './index.css';
 
 const withIntlProvider = getIntlDecorator({
     nb: { ...nbMessages, ...formHookMessages.nb, ...uiMessages.nb },
     nn: { ...nnMessages, ...formHookMessages.nn, ...uiMessages.nn },
+    en: { ...enMessages, ...formHookMessages.en, ...uiMessages.en },
 });
 
 export const parameters = {
@@ -32,6 +34,7 @@ export const globalTypes = {
             items: [
                 { value: 'nb', title: 'Bokmål' },
                 { value: 'nn', title: 'Nynorsk' },
+                { value: 'en', title: 'Engelsk' },
             ],
             dynamicTitle: true,
         },

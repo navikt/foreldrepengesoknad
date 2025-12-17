@@ -12,5 +12,5 @@ export type LegendLabel =
     | 'FARS_DEL_AKTIVITETSFRI_GRADERT'
     | 'SAMTIDIG_UTTAK'
     | 'TAPTE_DAGER'
-    | 'UTSETTELSE'
-    | 'NO_LABEL';
+    | 'AVSLAG_FRATREKK_PLEIEPENGER'
+    | 'UTSETTELSE';
