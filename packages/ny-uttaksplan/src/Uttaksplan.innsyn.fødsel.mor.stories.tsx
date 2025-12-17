@@ -57,6 +57,7 @@ export const MorAleneOmOmsorg: Story = {
             mor: 'Iris',
         },
         erDeltUttak: false,
+        søker: 'mor',
         saksperioder: [
             {
                 fom: '2025-09-16',
@@ -118,6 +119,7 @@ export const PrematurUker: Story = {
         erDeltUttak: true,
         harAktivitetskravIPeriodeUtenUttak: false,
         modus: 'innsyn',
+        søker: 'mor',
         navnPåForeldre: {
             farMedmor: 'Annen forelder',
             mor: 'Avansert',

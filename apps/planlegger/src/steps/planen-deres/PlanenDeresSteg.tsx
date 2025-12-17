@@ -116,6 +116,8 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
         hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR &&
         (hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett');
 
+    const søker = erFarEllerMedmor ? 'farEllerMedmor' : 'mor';
+
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
             <VStack gap="space-24">
@@ -128,6 +130,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     erFarEllerMedmor={erFarEllerMedmor}
                     navnPåForeldre={navnPåForeldre}
                     modus="planlegger"
+                    søker={erDeltUttak ? 'ikke_spesifisert' : søker}
                     valgtStønadskonto={valgtStønadskonto}
                     aleneOmOmsorg={erAleneOmOmsorg}
                     erMedmorDelAvSøknaden={isMedmorDelAvSøknaden}

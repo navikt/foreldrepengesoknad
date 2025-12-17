@@ -119,6 +119,7 @@ const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { s
                     erFarEllerMedmor={søkerErFarEllerMedmor}
                     navnPåForeldre={navnPåForeldre}
                     modus="innsyn"
+                    søker={sakTilhørerMor ? 'mor' : 'farEllerMedmor'}
                     valgtStønadskonto={konto}
                     aleneOmOmsorg={søkerErAleneOmOmsorg}
                     erMedmorDelAvSøknaden={false}
