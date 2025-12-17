@@ -160,6 +160,9 @@ describe('<PerioderSteg>', () => {
         expect(fradatoInput1).toHaveValue('16.01.2024');
         expect(screen.getAllByLabelText('Hvilken stillingsprosent skal du jobbe i denne perioden?')[1]).toHaveValue('');
         expect(screen.getAllByLabelText('Frem til tre uker før termin')[1]).not.toBeChecked();
+
+        await user.click(screen.getAllByText('Frem til tre uker før termin')[1]!);
+        expect(screen.queryByText('Legg til ny periode')).not.toBeInTheDocument();
     });
 
     it('fjern perioden hvis slett perioden er klikket på', async () => {
