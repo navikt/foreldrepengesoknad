@@ -175,23 +175,13 @@ const LabelButtonMedEllerUtenToolip = ({
 }) => {
     const intl = useIntl();
 
-    const { modus, erDeltUttak, erFarEllerMedmor, navnPåForeldre, erMedmorDelAvSøknaden, valgtStønadskonto } =
-        useUttaksplanData();
+    const { erFarEllerMedmor, navnPåForeldre, erMedmorDelAvSøknaden, valgtStønadskonto, søker } = useUttaksplanData();
 
     const harAktivitetsfriKvote = valgtStønadskonto.kontoer.some((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
 
     const navnAnnenPart = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
-    const label = getCalendarLabel(
-        info,
-        navnAnnenPart,
-        erFarEllerMedmor,
-        modus === 'planlegger',
-        erDeltUttak,
-        erMedmorDelAvSøknaden,
-        harAktivitetsfriKvote,
-        intl,
-    );
+    const label = getCalendarLabel(info, navnAnnenPart, erMedmorDelAvSøknaden, harAktivitetsfriKvote, søker, intl);
 
     if (visTekst) {
         return (

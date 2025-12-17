@@ -30,6 +30,7 @@ const customRenderer = ({
             erFarEllerMedmor={erFarEllerMedmor}
             barn={barn}
             modus="planlegger"
+            søker={erFarEllerMedmor ? 'farEllerMedmor' : 'mor'}
             aleneOmOmsorg={erAleneOmOmsorg}
             navnPåForeldre={{
                 farMedmor: 'Far',
