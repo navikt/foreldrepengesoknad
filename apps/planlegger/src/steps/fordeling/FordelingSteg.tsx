@@ -55,7 +55,7 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
     const antallDagerSøker1 =
         antallDagerSøker1Temp === undefined || antallDagerSøker1Temp === null
             ? undefined
-            : Number.parseInt(antallDagerSøker1Temp.toString(), 10);
+            : Number(antallDagerSøker1Temp);
 
     const lagre = (formValues: Fordeling) => {
         oppdaterFordeling(formValues);
@@ -134,7 +134,7 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                                 </Heading>
                                 <div className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-4">
                                     <VStack gap="space-8" align="start">
-                                        <BodyShort style={{ fontWeight: 600 }}>{fornavnSøker1}</BodyShort>
+                                        <BodyShort weight="semibold">{fornavnSøker1}</BodyShort>
                                         {antallDagerSøker1 !== undefined && (
                                             <Heading size="small" level="4">
                                                 <FormattedMessage
