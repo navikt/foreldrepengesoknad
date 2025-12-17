@@ -40,7 +40,7 @@ export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
 function HeaderWrapper({ children }: { children: ReactNode }) {
     return (
         <div className={`bg-ax-bg-default border-ax-brand-blue-300 mb-8 border-b-2`}>
-            <LayoutWrapper className="pb-6 pl-4 pr-4 pt-1">{children}</LayoutWrapper>
+            <LayoutWrapper className="pt-1 pr-4 pb-6 pl-4">{children}</LayoutWrapper>
         </div>
     );
 }
@@ -48,7 +48,7 @@ function HeaderWrapper({ children }: { children: ReactNode }) {
 function SimpleHeaderWrapper({ children }: { children: ReactNode }) {
     return (
         <div className={`bg-ax-bg-default`}>
-            <LayoutWrapper className="pb-6 pl-4 pr-4 pt-1">{children}</LayoutWrapper>
+            <LayoutWrapper className="pt-1 pr-4 pb-6 pl-4">{children}</LayoutWrapper>
         </div>
     );
 }
@@ -73,12 +73,12 @@ function BabyIkon({ ytelse }: { ytelse: Ytelse | undefined }) {
     return (
         <>
             <Show above="md">
-                <div className="bg-ax-brand-blue-400 h-[60px] w-[60px] rounded-full pl-2 pt-2">
+                <div className="bg-ax-brand-blue-400 h-[60px] w-[60px] rounded-full pt-2 pl-2">
                     <YtelseIkon fontSize={44} className="text-ax-brand-blue-700" />
                 </div>
             </Show>
             <Show below="md">
-                <div className="bg-ax-brand-blue-400 h-[38px] w-[38px] rounded-full pl-2 pt-2">
+                <div className="bg-ax-brand-blue-400 h-[38px] w-[38px] rounded-full pt-2 pl-2">
                     <YtelseIkon fontSize={22} className="text-ax-brand-blue-700" />
                 </div>
             </Show>

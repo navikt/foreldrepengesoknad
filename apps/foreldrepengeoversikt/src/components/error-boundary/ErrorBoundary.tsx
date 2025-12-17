@@ -32,7 +32,7 @@ export class ErrorBoundary extends Component<Props, State> {
     render() {
         if (this.state.hasError) {
             return (
-                <Alert variant="info" className="m-8 ml-auto mr-auto w-[704px]">
+                <Alert variant="info" className="m-8 mr-auto ml-auto w-[704px]">
                     {this.state.error?.message}
                 </Alert>
             );
