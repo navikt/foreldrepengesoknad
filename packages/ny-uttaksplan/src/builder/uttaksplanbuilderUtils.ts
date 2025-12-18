@@ -213,7 +213,6 @@ const getPeriodeHull = (tidsperiode: Tidsperiode, erMor: boolean): Planperiode =
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
     periodeHullÅrsak: PeriodeHullType.TAPTE_DAGER,
-    readOnly: false,
     forelder: erMor ? 'MOR' : 'FAR_MEDMOR',
 });
 
@@ -223,7 +222,6 @@ const getNyPeriodeUtenUttak = (tidsperiode: Tidsperiode): Planperiode => ({
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
     periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-    readOnly: false,
 });
 
 export const getTidsperiodeMellomPerioder = (

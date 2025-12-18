@@ -23,7 +23,9 @@ interface Props {
 export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) => {
     const intl = useIntl();
 
-    const { erFarEllerMedmor } = useUttaksplanData();
+    const {
+        foreldreInfo: { søker },
+    } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, oppdaterUttaksplan, setValgtePerioder } = useKalenderRedigeringContext();
 
@@ -37,7 +39,7 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
         oppdaterUttaksplan(
             sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
                 erAnnenPartEøs: false,
-                forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
+                forelder: søker === 'FAR_ELLER_MEDMOR' ? 'FAR_MEDMOR' : 'MOR',
                 fom: p.fom,
                 tom: p.tom,
                 readOnly: false,

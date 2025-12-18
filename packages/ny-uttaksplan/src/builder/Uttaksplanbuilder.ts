@@ -1,3 +1,5 @@
+import { ForeldreInfo } from 'types/ForeldreInfo';
+
 import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
 
 import { Planperiode } from '../types/Planperiode';
@@ -312,11 +314,9 @@ interface UttaksplanbuilderParams {
     familiehendelsedato: string;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     gjelderAdopsjon: boolean;
-    bareFarMedmorHarRett: boolean;
-    erFarEllerMedmor: boolean;
+    foreldreInfo: ForeldreInfo;
     førsteUttaksdagNesteBarnsSak: string | undefined;
     opprinneligPlan?: Planperiode[];
-    erIPlanleggerModus?: boolean;
 }
 
 export const Uttaksplanbuilder = ({
@@ -324,11 +324,9 @@ export const Uttaksplanbuilder = ({
     familiehendelsedato,
     harAktivitetskravIPeriodeUtenUttak,
     gjelderAdopsjon,
-    bareFarMedmorHarRett,
-    erFarEllerMedmor,
+    foreldreInfo,
     førsteUttaksdagNesteBarnsSak,
     opprinneligPlan,
-    erIPlanleggerModus = false,
 }: UttaksplanbuilderParams) => {
     const commonGetPerioderProps = {
         perioder,

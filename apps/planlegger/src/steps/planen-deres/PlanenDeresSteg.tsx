@@ -23,7 +23,7 @@ import {
     getNavnPåForeldre,
 } from 'utils/HvemPlanleggerUtils';
 import { mapOmBarnetTilBarn } from 'utils/barnetUtils';
-import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
 import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
@@ -81,8 +81,6 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
 
     const erAleneOmOmsorg = erAlenesøker(hvemPlanlegger);
 
-    const bareFarMedmorHarRett =
-        harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
     const erDeltUttak = fordeling !== undefined;
 
@@ -116,7 +114,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
         hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR &&
         (hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett');
 
-    const søker = erFarEllerMedmor ? 'farEllerMedmor' : 'mor';
+    const søker = erFarEllerMedmor ? 'FAR_ELLER_MEDMOR' : 'MOR';
 
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
@@ -127,16 +125,14 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
 
                 <UttaksplanDataProvider
                     barn={mapOmBarnetTilBarn(omBarnet)}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                    navnPåForeldre={navnPåForeldre}
-                    modus="planlegger"
-                    søker={erDeltUttak ? 'ikke_spesifisert' : søker}
+                    foreldreInfo={{
+                        søker: erDeltUttak ? 'IKKE_SPESIFISERT' : søker,
+                        navnPåForeldre,
+                        rettighetType: uledRettighet(erAleneOmOmsorg, erDeltUttak),
+                        erMedmorDelAvSøknaden: isMedmorDelAvSøknaden,
+                    }}
                     valgtStønadskonto={valgtStønadskonto}
-                    aleneOmOmsorg={erAleneOmOmsorg}
-                    erMedmorDelAvSøknaden={isMedmorDelAvSøknaden}
-                    bareFarMedmorHarRett={bareFarMedmorHarRett}
                     harAktivitetskravIPeriodeUtenUttak={false}
-                    erDeltUttak={erDeltUttak}
                     saksperioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
                 >
                     <div ref={kvoteOppsummeringRef}>
@@ -199,7 +195,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                                 />
                             </Tabs.Panel>
                             <Tabs.Panel value="liste" className="pt-5">
-                                <UttaksplanNy />
+                                <UttaksplanNy isReadOnly={false} />
                             </Tabs.Panel>
                         </Tabs>
                     </UttaksplanRedigeringProvider>
@@ -363,4 +359,15 @@ const finnAntallDagerSøker1 = (
     );
 
     return Math.min(fordeling.antallDagerSøker1, ukerOgDagerFellesperiode.totaltAntallDager);
+};
+
+const uledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean) => {
+    if (erAleneOmOmsorg) {
+        return 'ALENEOMSORG';
+    }
+    if (erDeltUttak) {
+        return 'BEGGE_RETT';
+    }
+
+    return 'BARE_SØKER_RETT';
 };

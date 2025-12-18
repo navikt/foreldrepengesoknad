@@ -33,12 +33,14 @@ export const AktivitetskravSpørsmål = ({ autoFocus }: Props) => {
     const intl = useIntl();
 
     const { control, watch } = useFormContext<LeggTilPeriodePanelFormValues>();
-    const { aleneOmOmsorg } = useUttaksplanData();
+    const {
+        foreldreInfo: { rettighetType },
+    } = useUttaksplanData();
 
     const forelder = watch('forelder');
     const kontoType = watch('kontoType');
 
-    if (ikkeVisAktivitetskravSpørsmål(forelder, aleneOmOmsorg, kontoType)) {
+    if (ikkeVisAktivitetskravSpørsmål(forelder, rettighetType === 'ALENEOMSORG', kontoType)) {
         return null;
     }
 

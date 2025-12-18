@@ -46,9 +46,13 @@ export const UttaksplanLegend = ({
 
     const [visHorisontalt, setVisHorisontalt] = useState(true);
 
-    const { uttaksplan, erFarEllerMedmor, barn } = useUttaksplanData();
+    const {
+        uttaksplan,
+        foreldreInfo: { søker },
+        barn,
+    } = useUttaksplanData();
 
-    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(uttaksplan, erFarEllerMedmor);
+    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(uttaksplan, søker === 'FAR_ELLER_MEDMOR');
 
     const unikePeriodeLabelsMedFarge = unikePerioder.reduce<UttaksplanKalenderLegendInfo[]>((acc, periode) => {
         const label = getLegendLabelFromPeriode(periode);
@@ -175,10 +179,14 @@ const LabelButtonMedEllerUtenToolip = ({
 }) => {
     const intl = useIntl();
 
-    const { erFarEllerMedmor, navnPåForeldre, erMedmorDelAvSøknaden, valgtStønadskonto, søker } = useUttaksplanData();
+    const {
+        foreldreInfo: { søker, navnPåForeldre, erMedmorDelAvSøknaden },
+        valgtStønadskonto,
+    } = useUttaksplanData();
 
     const harAktivitetsfriKvote = valgtStønadskonto.kontoer.some((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
 
+    const erFarEllerMedmor = søker === 'FAR_ELLER_MEDMOR';
     const navnAnnenPart = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     const label = getCalendarLabel(info, navnAnnenPart, erMedmorDelAvSøknaden, harAktivitetsfriKvote, søker, intl);

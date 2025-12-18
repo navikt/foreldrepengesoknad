@@ -13,7 +13,7 @@ const meta = {
     component: UttaksplanNy,
     args: {
         children: null,
-        erMedmorDelAvSøknaden: false,
+        isReadOnly: false,
     },
     render: (args) => {
         const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[] | undefined>(args.saksperioder);
@@ -28,12 +28,12 @@ const meta = {
                     oppdaterUttaksplan={handleOnPlanChange}
                     harEndretPlan={perioder !== undefined}
                 >
-                    <UttaksplanNy />
+                    <UttaksplanNy isReadOnly={args.isReadOnly} />
                 </UttaksplanRedigeringProvider>
             </UttaksplanDataProvider>
         );
     },
-} satisfies Meta<ComponentProps<typeof UttaksplanDataProvider>>;
+} satisfies Meta<ComponentProps<typeof UttaksplanNy> & ComponentProps<typeof UttaksplanDataProvider>>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
@@ -41,23 +41,22 @@ type Story = StoryObj<typeof meta>;
 export const MorAleneOmOmsorg: Story = {
     name: 'Mor er alene om omsorg',
     args: {
-        bareFarMedmorHarRett: false,
+        foreldreInfo: {
+            rettighetType: 'ALENEOMSORG',
+            søker: 'MOR',
+            navnPåForeldre: {
+                farMedmor: 'Annen forelder',
+                mor: 'Iris',
+            },
+            erMedmorDelAvSøknaden: false,
+        },
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2025-09-30'],
             termindato: '2025-10-07',
             antallBarn: 1,
         },
-        aleneOmOmsorg: true,
-        erFarEllerMedmor: false,
         harAktivitetskravIPeriodeUtenUttak: false,
-        modus: 'innsyn',
-        navnPåForeldre: {
-            farMedmor: 'Annen forelder',
-            mor: 'Iris',
-        },
-        erDeltUttak: false,
-        søker: 'mor',
         saksperioder: [
             {
                 fom: '2025-09-16',
@@ -107,23 +106,22 @@ export const MorAleneOmOmsorg: Story = {
 export const PrematurUker: Story = {
     name: 'Mor har prematuruker',
     args: {
-        bareFarMedmorHarRett: false,
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: {
+                farMedmor: 'Annen forelder',
+                mor: 'Avansert',
+            },
+            erMedmorDelAvSøknaden: false,
+        },
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2025-08-13'],
             termindato: '2025-10-19',
             antallBarn: 1,
         },
-        aleneOmOmsorg: false,
-        erFarEllerMedmor: false,
-        erDeltUttak: true,
         harAktivitetskravIPeriodeUtenUttak: false,
-        modus: 'innsyn',
-        søker: 'mor',
-        navnPåForeldre: {
-            farMedmor: 'Annen forelder',
-            mor: 'Avansert',
-        },
         saksperioder: [
             {
                 fom: '2025-08-13',

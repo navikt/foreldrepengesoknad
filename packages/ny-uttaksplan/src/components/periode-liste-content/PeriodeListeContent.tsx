@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
 import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
-import { Barn, UttaksplanModus, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
+import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
@@ -31,6 +31,7 @@ import { UtsettelsesPeriodeContent } from './components/UtsettelsesPeriodeConten
 import { UttaksperiodeContent } from './components/UttaksperiodeContent';
 
 interface Props {
+    isReadOnly: boolean;
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse: boolean;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
@@ -40,6 +41,7 @@ interface Props {
 }
 
 export const PeriodeListeContent = ({
+    isReadOnly,
     permisjonsperiode,
     erFamiliehendelse,
     handleAddPeriode,
@@ -55,7 +57,10 @@ export const PeriodeListeContent = ({
         (p) => isHull(p) || isPeriodeUtenUttak(p) || isUtsettelsesperiode(p),
     );
 
-    const { navnPåForeldre, erFarEllerMedmor, barn, modus } = useUttaksplanData();
+    const {
+        foreldreInfo: { navnPåForeldre, søker },
+        barn,
+    } = useUttaksplanData();
 
     const familiehendelseType = getFamiliehendelseType(barn);
 
@@ -69,11 +74,16 @@ export const PeriodeListeContent = ({
                 <>
                     <VStack gap="space-16">
                         {permisjonsperiode.perioder.map((periode) => {
-                            return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode);
+                            return renderPeriode(
+                                periode,
+                                navnPåForeldre,
+                                søker === 'FAR_ELLER_MEDMOR',
+                                inneholderKunEnPeriode,
+                            );
                         })}
                         <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
                     </VStack>
-                    {renderKnapper(modus, erRedigerbar, setIsEndrePeriodePanelOpen, setIsSlettPeriodePanelOpen)}
+                    {renderKnapper(isReadOnly, erRedigerbar, setIsEndrePeriodePanelOpen, setIsSlettPeriodePanelOpen)}
                 </>
             )}
             {isEndrePeriodePanelOpen ? (
@@ -96,7 +106,7 @@ export const PeriodeListeContent = ({
                     handleDeletePerioder={handleDeletePerioder}
                     permisjonsperiode={permisjonsperiode}
                     navnPåForeldre={navnPåForeldre}
-                    erFarEllerMedmor={erFarEllerMedmor}
+                    erFarEllerMedmor={søker === 'FAR_ELLER_MEDMOR'}
                 />
             ) : null}
         </>
@@ -179,12 +189,12 @@ const getFamiliehendelseType = (barn: Barn) => {
 };
 
 const renderKnapper = (
-    modus: UttaksplanModus,
+    isReadOnly: boolean,
     erRedigerbar: boolean,
     setIsEndrePeriodePanelOpen: (open: boolean) => void,
     setIsSlettPeriodePanelOpen: (open: boolean) => void,
 ) => {
-    if (modus === 'innsyn') {
+    if (isReadOnly) {
         return null;
     }
 

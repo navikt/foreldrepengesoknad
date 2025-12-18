@@ -5,9 +5,9 @@ import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { getLocaleFromSessionStorage, getNavnGenitivEierform } from '@navikt/fp-utils';
 import { assertUnreachable } from '@navikt/fp-validation';
 
+import { Søker } from '../../types/ForeldreInfo';
 import { LegendLabel } from '../../types/LegendLabel';
 import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
-import { Søker } from '../../types/Søker';
 
 export type UttaksplanKalenderLegendInfo = {
     calendarPeriod: CalendarPeriod;
@@ -96,7 +96,8 @@ export const getCalendarLabel = (
     intl: IntlShape,
 ): string => {
     const erSøkersPeriode =
-        (søker === 'mor' && info.forelder === 'MOR') || (søker === 'farEllerMedmor' && info.forelder === 'FAR_MEDMOR');
+        (søker === 'MOR' && info.forelder === 'MOR') ||
+        (søker === 'FAR_ELLER_MEDMOR' && info.forelder === 'FAR_MEDMOR');
     switch (info.label) {
         case 'HELG':
             return intl.formatMessage({ id: 'kalender.helg' });
@@ -173,7 +174,7 @@ export const getCalendarLabel = (
 };
 
 const getSamtidigUttakLabel = (navnAnnenPart: string, søker: Søker, intl: IntlShape): string => {
-    if (søker === 'ikke_spesifisert') {
+    if (søker === 'IKKE_SPESIFISERT') {
         return intl.formatMessage({ id: 'kalender.samtidigUttak.planlegger' });
     }
     return intl.formatMessage({ id: 'kalender.samtidigUttak' }, { navnAnnenPart });
@@ -187,7 +188,7 @@ const getTapteDagerLabel = (
     erMedmorDelAvSøknaden: boolean,
     intl: IntlShape,
 ): string => {
-    if (søker === 'ikke_spesifisert' && !!forelder) {
+    if (søker === 'IKKE_SPESIFISERT' && !!forelder) {
         if (forelder === 'MOR') {
             return intl.formatMessage({ id: 'kalender.tapteDager.mor' });
         }
@@ -208,7 +209,7 @@ const getTapteDagerLabel = (
 };
 
 const getMorsDelLabel = (navnAnnenPart: string, søker: Søker, erSøkersPeriode: boolean, intl: IntlShape): string => {
-    if (søker === 'ikke_spesifisert') {
+    if (søker === 'IKKE_SPESIFISERT') {
         return intl.formatMessage({ id: 'kalender.morsPeriode' });
     }
 
@@ -228,7 +229,7 @@ const getMorsDelGradertLabel = (
     erSøkersPeriode: boolean,
     intl: IntlShape,
 ): string => {
-    if (søker === 'ikke_spesifisert') {
+    if (søker === 'IKKE_SPESIFISERT') {
         return intl.formatMessage({ id: 'kalender.morsPeriode.gradert' });
     }
 
@@ -247,7 +248,7 @@ const getFarsDelLabel = (
     harAktivitetsfriKvote: boolean,
     intl: IntlShape,
 ): string => {
-    if (søker === 'ikke_spesifisert') {
+    if (søker === 'IKKE_SPESIFISERT') {
         if (erMedmorDelAvSøknaden) {
             return intl.formatMessage({ id: 'kalender.medmorsPeriode' });
         }
@@ -277,7 +278,7 @@ const getFarsDelGradertLabel = (
     harAktivitetsfriKvote: boolean,
     intl: IntlShape,
 ): string => {
-    if (søker === 'ikke_spesifisert') {
+    if (søker === 'IKKE_SPESIFISERT') {
         if (erMedmorDelAvSøknaden) {
             return intl.formatMessage({ id: 'kalender.medmorsPeriode.gradert' });
         }

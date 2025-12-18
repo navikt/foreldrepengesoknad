@@ -9,6 +9,7 @@ import { PeriodeListeHeader } from '../periode-liste-header/PeriodeListeHeader';
 import { getBorderFarge } from '../periode-liste-header/PeriodeListeHeaderUtils';
 
 interface Props {
+    isReadOnly: boolean;
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse?: boolean;
     handleAddPeriode: (oppdatertPeriode: Planperiode) => void;
@@ -19,6 +20,7 @@ interface Props {
 }
 
 export const PeriodeListeItem = ({
+    isReadOnly,
     permisjonsperiode,
     erFamiliehendelse,
     handleUpdatePeriode,
@@ -69,6 +71,7 @@ export const PeriodeListeItem = ({
                     className={`border-l-8 pt-10 pr-10 pb-10 pl-10 has-[div[data-panel='endre-periode']]:pt-0 has-[div[data-panel='slett-periode']]:pt-0 ${borderFarge}`}
                 >
                     <PeriodeListeContent
+                        isReadOnly={isReadOnly}
                         handleUpdatePeriode={handleUpdatePeriode}
                         handleDeletePeriode={handleDeletePeriode}
                         handleDeletePerioder={handleDeletePerioder}
