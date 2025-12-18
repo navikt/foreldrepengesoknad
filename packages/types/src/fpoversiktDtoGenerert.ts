@@ -357,11 +357,13 @@ export type BehandlingTilstand_fpoversikt =
 export type Beregningsgrunnlag_fpoversikt = {
     beregningAktivitetStatuser: BeregningAktivitetStatus_fpoversikt[];
     beregningsAndeler: BeregningsAndel_fpoversikt[];
+    grunnbeløp?: number;
     skjæringsTidspunkt: string;
 };
 
 export type Arbeidsforhold_fpoversikt = {
     arbeidsgiverIdent: string;
+    arbeidsgiverNavn: string;
     refusjonPrMnd?: number;
 };
 

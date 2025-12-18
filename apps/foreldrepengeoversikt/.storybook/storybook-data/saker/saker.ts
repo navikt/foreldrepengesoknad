@@ -1021,6 +1021,7 @@ export const saker_beregning = {
                             fastsattPrÅr: 500000.0,
                             inntektsKilde: 'SKJØNNSFASTSATT',
                             arbeidsforhold: {
+                                arbeidsgiverNavn: 'Bedriften as',
                                 arbeidsgiverIdent: '992257822',
                                 refusjonPrMnd: 41666.0,
                             },

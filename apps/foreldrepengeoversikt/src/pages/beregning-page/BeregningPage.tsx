@@ -72,7 +72,7 @@ export const BeregningPage = () => {
                                 <BeregningAndel andel={andel} key={andel.aktivitetStatus} />
                             ))}
                         </VStack>
-                        <Forklaringer />
+                        <Forklaringer grunnbeløpPåBeregning={beregning.grunnbeløp} />
                     </ExpansionCard.Content>
                 </ExpansionCard>
             </VStack>
@@ -80,9 +80,9 @@ export const BeregningPage = () => {
     );
 };
 
-const Forklaringer = () => {
-    // TODO Legg på grunnbeløp felt i dto siden dette allerede er satt i backend
-    const grunnbeløp = DEFAULT_SATSER.grunnbeløp[0]!.verdi;
+const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: number }) => {
+    const grunnbeløp = grunnbeløpPåBeregning ?? DEFAULT_SATSER.grunnbeløp[0]!.verdi;
+
     return (
         <Accordion className="mt-4">
             <Accordion.Item>
@@ -112,19 +112,16 @@ const Forklaringer = () => {
 
 const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
     const intl = useIntl();
-    const harArbeidsgiver = andel.arbeidsforhold?.arbeidsgiverIdent !== undefined;
     return (
         <VStack gap="2">
             <BodyShort>
-                {harArbeidsgiver && (
+                {andel.arbeidsforhold !== undefined ? (
                     <Label>
-                        <FormattedMessage
-                            id="beregning.andel.arbeidsgiver"
-                            values={{ arbeidsgiverIdent: andel.arbeidsforhold?.arbeidsgiverIdent }}
-                        />
+                        {andel.arbeidsforhold.arbeidsgiverNavn} - {andel.arbeidsforhold.arbeidsgiverIdent}
                     </Label>
+                ) : (
+                    <Label>{capitalizeFirstLetter(finnStatus(andel.aktivitetStatus, intl))}</Label>
                 )}
-                {!harArbeidsgiver && <Label>{capitalizeFirstLetter(finnStatus(andel.aktivitetStatus, intl))}</Label>}
             </BodyShort>
             <HGrid gap="2" columns={{ xs: '1fr max-content' }}>
                 <BodyShort>

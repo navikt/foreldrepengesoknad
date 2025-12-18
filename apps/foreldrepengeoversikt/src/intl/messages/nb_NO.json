@@ -198,7 +198,6 @@
     "beregning.forklaringer.hvaErDagsatsen.innhold": "Foreldrepengene beregnes maksimalt opp til seks ganger grunnbeløpet (6G): {grunnbeløpSeksG}. Hvis du har en inntekt høyere enn dette og velger 80 %, vil du få 80 % av 6G.",
     "beregning.forklaringer.ytelserBareOppTil6G": "Ytelser beregnes bare opp til 6G",
     "beregning.forklaringer.ytelserBareOppTil6G.innhold": "Hvis du har en samlet inntekt over 6G og har flere arbeidsforhold, fordeler vi inntekten opptil denne grensen. Hvordan vi fordeler inntekten avhenger av hvilke kombinasjon av inntekter du har og om arbeidsgiver krever refusjon fra Nav.",
-    "beregning.andel.arbeidsgiver": "Bedrift - {arbeidsgiverIdent}",
     "beregning.andel.beregnetMånedsinntekt": "Beregnet månedsinntekt {kilde}",
     "beregning.andel.omregnetTilÅrsinntekt": "Omregnet til årsinntekt",
     "beregning.inntektsKilde.inntektsmelding": "(hentet fra inntektsmeldingen)",
