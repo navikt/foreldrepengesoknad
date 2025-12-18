@@ -42,7 +42,6 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
                 forelder: søker === 'FAR_ELLER_MEDMOR' ? 'FAR_MEDMOR' : 'MOR',
                 fom: p.fom,
                 tom: p.tom,
-                readOnly: false,
                 id: uniqueId(),
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             })),

@@ -15,7 +15,7 @@ const DEFAULT_FORELDRE_INFO = {
         farMedmor: 'Espen',
     },
     rettighetType: 'BARE_SØKER_RETT',
-    erMedmorDelAvSøknaden: true,
+    erMedmorDelAvSøknaden: false,
 } satisfies ForeldreInfo;
 
 const meta = {
@@ -435,6 +435,7 @@ export const EnRettFarLedigeDager: Story = {
             rettighetType: 'BARE_SØKER_RETT',
             søker: 'FAR_ELLER_MEDMOR',
         },
+        erInnsyn: false,
     },
 };
 

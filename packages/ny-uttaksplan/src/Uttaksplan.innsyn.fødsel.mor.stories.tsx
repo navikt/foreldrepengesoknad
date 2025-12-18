@@ -1,35 +1,22 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { ComponentProps, useState } from 'react';
+import { ComponentProps } from 'react';
 
 import { BarnType } from '@navikt/fp-constants';
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { UttaksplanNy } from './Uttaksplan';
 import { UttaksplanDataProvider } from './context/UttaksplanDataContext';
-import { UttaksplanRedigeringProvider } from './context/UttaksplanRedigeringContext';
 
 const meta = {
     title: 'Uttaksplan - Innsyn',
     component: UttaksplanNy,
     args: {
         children: null,
-        isReadOnly: false,
+        isReadOnly: true,
     },
     render: (args) => {
-        const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[] | undefined>(args.saksperioder);
-
-        const handleOnPlanChange = (oppdatertePerioder: UttakPeriode_fpoversikt[] | undefined) => {
-            setPerioder(oppdatertePerioder);
-        };
-
         return (
-            <UttaksplanDataProvider {...args} saksperioder={perioder ?? []}>
-                <UttaksplanRedigeringProvider
-                    oppdaterUttaksplan={handleOnPlanChange}
-                    harEndretPlan={perioder !== undefined}
-                >
-                    <UttaksplanNy isReadOnly={args.isReadOnly} />
-                </UttaksplanRedigeringProvider>
+            <UttaksplanDataProvider {...args} saksperioder={args.saksperioder ?? []}>
+                <UttaksplanNy isReadOnly={args.isReadOnly} />
             </UttaksplanDataProvider>
         );
     },

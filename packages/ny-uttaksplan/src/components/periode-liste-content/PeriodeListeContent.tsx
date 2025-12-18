@@ -68,6 +68,8 @@ export const PeriodeListeContent = ({
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
     }
 
+    const harPrematuruker = permisjonsperiode.perioder.some(isPrematuruker);
+
     return (
         <>
             {!isEndrePeriodePanelOpen && !isSlettPeriodePanelOpen && (
@@ -83,7 +85,12 @@ export const PeriodeListeContent = ({
                         })}
                         <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
                     </VStack>
-                    {renderKnapper(isReadOnly, erRedigerbar, setIsEndrePeriodePanelOpen, setIsSlettPeriodePanelOpen)}
+                    {renderKnapper(
+                        isReadOnly || harPrematuruker,
+                        erRedigerbar,
+                        setIsEndrePeriodePanelOpen,
+                        setIsSlettPeriodePanelOpen,
+                    )}
                 </>
             )}
             {isEndrePeriodePanelOpen ? (
@@ -210,7 +217,7 @@ const renderKnapper = (
                     }}
                     icon={<PencilIcon />}
                 >
-                    Endre
+                    <FormattedMessage id="uttaksplan.endre" />
                 </Button>
             </HStack>
         );

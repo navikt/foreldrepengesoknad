@@ -288,9 +288,10 @@ export const mapSaksperiodeTilPlanperiode = (
     saksperioder: UttakPeriode[],
     gjelderAnnenPart: boolean,
     familiehendelsedato: string,
-    foreldreInfo: ForeldreInfo,
+    erSøkerMor: boolean,
 ) => {
     const result: Planperiode[] = [];
+
     const saksperioderUtenAvslåttePerioder = saksperioder.filter((p) => {
         if (!('trekkdager' in p) && p.resultat) {
             if (p.resultat.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
@@ -309,11 +310,7 @@ export const mapSaksperiodeTilPlanperiode = (
 
         const oppholdårsak = 'oppholdÅrsak' in p ? p.oppholdÅrsak : undefined;
         const utsettelseårsak = 'utsettelseÅrsak' in p ? p.utsettelseÅrsak : undefined;
-        const forelder = getForelderForPeriode(
-            foreldreInfo.søker === 'FAR_ELLER_MEDMOR',
-            gjelderAnnenPart,
-            oppholdårsak,
-        );
+        const forelder = getForelderForPeriode(!erSøkerMor, gjelderAnnenPart, oppholdårsak);
 
         if (tidsperiodenKrysserFamdato) {
             const planperiodeFør: Planperiode = {
@@ -327,7 +324,7 @@ export const mapSaksperiodeTilPlanperiode = (
                     p.kontoType,
                     utsettelseårsak,
                     oppholdårsak,
-                    foreldreInfo.søker === 'FAR_ELLER_MEDMOR',
+                    !erSøkerMor,
                     gjelderAnnenPart,
                 ),
                 forelder,
@@ -344,7 +341,7 @@ export const mapSaksperiodeTilPlanperiode = (
                     p.kontoType,
                     utsettelseårsak,
                     oppholdårsak,
-                    foreldreInfo.søker === 'FAR_ELLER_MEDMOR',
+                    !erSøkerMor,
                     gjelderAnnenPart,
                 ),
                 forelder,
@@ -361,7 +358,7 @@ export const mapSaksperiodeTilPlanperiode = (
                     p.kontoType,
                     utsettelseårsak,
                     oppholdårsak,
-                    foreldreInfo.søker === 'FAR_ELLER_MEDMOR',
+                    !erSøkerMor,
                     gjelderAnnenPart,
                 ),
                 forelder,
@@ -441,8 +438,9 @@ export const utledKomplettPlan = ({
     harAktivitetskravIPeriodeUtenUttak,
     førsteUttaksdagNesteBarnsSak,
 }: UtledKomplettPlanParams) => {
+    const erSøkerMor = foreldreInfo.søker === 'MOR';
     const søkersPlanperioder = finnOgSettInnHull(
-        mapSaksperiodeTilPlanperiode(søkersPerioder, false, familiehendelsedato, foreldreInfo),
+        mapSaksperiodeTilPlanperiode(søkersPerioder, false, familiehendelsedato, erSøkerMor),
         harAktivitetskravIPeriodeUtenUttak,
         familiehendelsedato,
         gjelderAdopsjon,
@@ -451,12 +449,7 @@ export const utledKomplettPlan = ({
         førsteUttaksdagNesteBarnsSak,
     );
     const annenPartsPlanperioder = annenPartsPerioder
-        ? mapSaksperiodeTilPlanperiode(
-              annenPartsPerioder,
-              foreldreInfo.søker === 'FAR_ELLER_MEDMOR',
-              familiehendelsedato,
-              foreldreInfo,
-          )
+        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, true, familiehendelsedato, erSøkerMor)
         : undefined;
 
     const planMedLikePerioderSlåttSammen = slåSammenLikePerioder(
