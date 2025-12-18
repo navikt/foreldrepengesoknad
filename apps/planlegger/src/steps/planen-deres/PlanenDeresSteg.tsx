@@ -136,7 +136,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     saksperioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
                 >
                     <div ref={kvoteOppsummeringRef}>
-                        <KvoteOppsummering visStatusIkoner />
+                        <KvoteOppsummering erInnsyn={false} visStatusIkoner />
                     </div>
 
                     <DereKanTilpassePlanenInfoBox erAleneforsørger={erAleneOmOmsorg} />

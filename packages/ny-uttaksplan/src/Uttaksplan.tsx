@@ -39,6 +39,7 @@ export const UttaksplanNy = ({ isReadOnly }: Props) => {
         <VStack gap="space-16">
             {uttaksplan.length > 0 && (
                 <PeriodeListe
+                    isReadOnly={isReadOnly}
                     perioder={uttaksplan}
                     handleAddPeriode={(nyPeriode: Planperiode) => {
                         modifyPlan(

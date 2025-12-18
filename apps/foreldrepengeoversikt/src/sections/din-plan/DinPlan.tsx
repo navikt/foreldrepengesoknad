@@ -126,7 +126,7 @@ const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { s
                     {!visKalender && (
                         <>
                             <UttaksplanNy isReadOnly />
-                            <KvoteOppsummering visStatusIkoner={false} />
+                            <KvoteOppsummering erInnsyn visStatusIkoner={false} />
                         </>
                     )}
                     {visKalender && <UttaksplanKalender readOnly={true} />}

@@ -1,22 +1,9 @@
 import { Uttaksplanbuilder } from '../builder/Uttaksplanbuilder';
-import { mapSaksperiodeTilPlanperiode } from '../utils/periodeUtils';
-import { getAnnenpartsPerioder, useUttaksplanData } from './UttaksplanDataContext';
+import { useUttaksplanData } from './UttaksplanDataContext';
 
 export const useUttaksplanBuilder = () => {
-    const {
-        harAktivitetskravIPeriodeUtenUttak,
-        familiehendelsedato,
-        foreldreInfo,
-        familiesituasjon,
-        saksperioder,
-        uttaksplan,
-    } = useUttaksplanData();
-
-    const annenPartsPerioder = getAnnenpartsPerioder(foreldreInfo, saksperioder);
-
-    const annenPartsPlanperioder = annenPartsPerioder
-        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, true, familiehendelsedato, foreldreInfo)
-        : undefined;
+    const { harAktivitetskravIPeriodeUtenUttak, familiehendelsedato, foreldreInfo, familiesituasjon, uttaksplan } =
+        useUttaksplanData();
 
     return Uttaksplanbuilder({
         perioder: uttaksplan,
@@ -26,6 +13,5 @@ export const useUttaksplanBuilder = () => {
         foreldreInfo,
         //TODO (TOR) Trengs denne? Var alltid undefined før eg refaktorerte
         førsteUttaksdagNesteBarnsSak: undefined,
-        opprinneligPlan: annenPartsPlanperioder,
     });
 };
