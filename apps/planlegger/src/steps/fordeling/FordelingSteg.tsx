@@ -169,15 +169,24 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                                             antallUkerOgDagerFellesperiode.dager
                                         }
                                         step={5}
-                                        value={[antallDagerSøker1 ?? 0]}
+                                        value={[
+                                            antallDagerSøker1 === undefined
+                                                ? (antallUkerOgDagerFellesperiode.uker * 5 +
+                                                      antallUkerOgDagerFellesperiode.dager) /
+                                                  2
+                                                : antallUkerOgDagerFellesperiode.uker * 5 +
+                                                  antallUkerOgDagerFellesperiode.dager -
+                                                  antallDagerSøker1,
+                                        ]}
                                         ariaLabelledby="fordeling-slider-label"
-                                        getAriaValueText={(dager1) => {
+                                        getAriaValueText={(sliderValue) => {
                                             const total =
                                                 antallUkerOgDagerFellesperiode.uker * 5 +
                                                 antallUkerOgDagerFellesperiode.dager;
+                                            const dager1 = total - sliderValue;
                                             const uker1 = Math.floor(dager1 / 5);
                                             const dager1Rest = dager1 % 5;
-                                            const resterende = total - dager1;
+                                            const resterende = sliderValue;
                                             const uker2 = Math.floor(resterende / 5);
                                             const dager2Rest = resterende % 5;
 
@@ -195,7 +204,10 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                                         }}
                                         onValueChange={(value) => {
                                             if (value[0] !== undefined) {
-                                                formMethods.setValue('antallDagerSøker1', value[0]);
+                                                const total =
+                                                    antallUkerOgDagerFellesperiode.uker * 5 +
+                                                    antallUkerOgDagerFellesperiode.dager;
+                                                formMethods.setValue('antallDagerSøker1', total - value[0]);
                                                 scrollToBottom();
                                             }
                                         }}
