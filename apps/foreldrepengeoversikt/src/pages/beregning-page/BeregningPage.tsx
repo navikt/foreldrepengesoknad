@@ -1,19 +1,25 @@
 import { sumBy } from 'lodash';
+import { useIntl } from 'react-intl';
 
 import { Accordion, BodyShort, ExpansionCard, HGrid, Label, VStack } from '@navikt/ds-react';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { AktivitetStatus, BeregningsAndel_fpoversikt, Beregningsgrunnlag_fpoversikt } from '@navikt/fp-types';
-import { capitalizeFirstLetter, formatCurrency, formatCurrencyWithKr } from '@navikt/fp-utils';
+import { capitalizeFirstLetter, formatCurrency, formatCurrencyWithKr, formatOppramsing } from '@navikt/fp-utils';
 
 import { BeregningHeader } from '../../components/header/Header.tsx';
+import { useSetBackgroundColor } from '../../hooks/useBackgroundColor.ts';
+import { useSetSelectedRoute } from '../../hooks/useSelectedRoute.ts';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak.ts';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes.tsx';
+import { OversiktRoutes } from '../../routes/routes.ts';
 import { formaterDato } from '../../utils/dateUtils.ts';
 
 export const BeregningPage = () => {
     const gjeldendeSak = useGetSelectedSak();
-
+    useSetBackgroundColor('white');
+    useSetSelectedRoute(OversiktRoutes.BEREGNING);
+    const intl = useIntl();
     if (gjeldendeSak?.ytelse !== 'FORELDREPENGER') {
         return undefined;
     }
@@ -26,11 +32,11 @@ export const BeregningPage = () => {
     const sumDagsats = sumBy(beregning.beregningsAndeler, (a) => (a.dagsatsSøker ?? 0) + (a.dagsatsArbeidsgiver ?? 0));
     const finnesRefusjon = beregning.beregningsAndeler.some((a) => (a.dagsatsArbeidsgiver ?? 0) > 0);
     const finnesDirekteutbetaling = beregning.beregningsAndeler.some((a) => (a.dagsatsSøker ?? 0) > 0);
-    // TODO skrive om?
     const utbetalingsmetodeTekst = formatOppramsing(
         [finnesRefusjon && 'utbetales til arbeidsgiver', finnesDirekteutbetaling && 'ubetales til deg direkte'].filter(
             (a) => a !== false,
         ),
+        intl,
     );
     return (
         <PageRouteLayout header={<BeregningHeader />}>
@@ -43,7 +49,7 @@ export const BeregningPage = () => {
                     <Label>Dato for vurdering: </Label>
                     {formaterDato(beregning.skjæringsTidspunkt, 'D. MMMM YYYY')}
                 </BodyShort>
-                <ExpansionCard size="medium" aria-label="TODO">
+                <ExpansionCard size="medium" aria-label="Beregning av foreldrepenger">
                     <ExpansionCard.Header>
                         <ExpansionCard.Title>Beregning av foreldrepenger</ExpansionCard.Title>
                         <ExpansionCard.Description>
@@ -65,7 +71,7 @@ export const BeregningPage = () => {
 };
 
 const Forklaringer = () => {
-    // TODO hent grunnbeløp for skjæringstidspunkt på beregningen
+    // TODO Legg på grunnbeløp felt i dto siden dette allerede er satt i backend
     const grunnbeløp = DEFAULT_SATSER.grunnbeløp[0]!.verdi;
     return (
         <Accordion className="mt-4">
@@ -116,15 +122,14 @@ const finnKildeForInntekt = (andel: BeregningsAndel_fpoversikt) => {
         case 'SKJØNNSFASTSATT':
             return '(skjønnsfastsatt av saksbehandler)';
         case 'PGI':
-            return '(hentet fra skatteopplysninger)'; // TODO Hva skal vi fortelle her?
+            return '(hentet fra skatteopplysninger)';
         case 'VEDTAK_ANNEN_YTELSE':
             return '(hentet fra tidligere vedtak)';
-        default:
+        case undefined:
             return '';
     }
 };
 
-// TODO enum
 const finnStatus = (status: AktivitetStatus) => {
     switch (status) {
         case 'ARBEIDSTAKER':
@@ -133,38 +138,35 @@ const finnStatus = (status: AktivitetStatus) => {
             return 'frilans';
         case 'KOMBINERT_AT_FL':
             return 'kombinert arbeidstaker og frilanser';
-        default:
-            return '';
-        // TODO mere greier
+        case 'ARBEIDSAVKLARINGSPENGER':
+            return 'arbeidsavklaringspenger';
+        case 'VENTELØNN_VARTPENGER':
+            return 'ventelønn og vartpenger';
+        case 'DAGPENGER':
+            return 'dagpenger';
+        case 'BRUKERS_ANDEL':
+            return 'ytelse';
+        case 'KOMBINERT_AT_FL_SN':
+            return 'kombinert arbeidstaker, frilanser og selvstendig næringsdrivende';
+        case 'KOMBINERT_AT_SN':
+            return 'kombinert arbeidstaker og selvstendig næringsdrivende';
+        case 'KOMBINERT_FL_SN':
+            return 'kombinert frilanser og selvstendig næringsdrivende';
+        case 'KUN_YTELSE':
+            return 'ytelse';
+        case 'MILITÆR_ELLER_SIVIL':
+            return 'siviltjeneste eller førstegangstjeneste';
+        case 'SELVSTENDIG_NÆRINGSDRIVENDE':
+            return 'næringsdrivende';
+        case 'TTLSTØTENDE_YTELSE':
+            return 'ytelse';
     }
 };
 
 const BeregningStatuser = ({ beregning }: { beregning: Beregningsgrunnlag_fpoversikt }) => {
+    const intl = useIntl();
     const statuser = beregning.beregningAktivitetStatuser.map((status) => {
         return finnStatus(status.aktivitetStatus);
     });
-
-    /**
-     *
-    const hjemler = beregning.beregningAktivitetStatuser.map((status) => {
-        switch (status.hjemmel) {
-            case 'F_14_7_8_40':
-                return 'folketrygdloven kapittel 14 paragraf 7 og kapittel 8 paragraf 40';
-            default:
-                return 'regler';
-            // TODO mere greier
-        }
-    });
-    <BodyShort>Dette er hjemlet i {hjemler.join(', ')}</BodyShort>
-        */
-
-    return `Du er blitt beregnet som ${formatOppramsing(statuser)}`;
+    return `Du er blitt beregnet som ${formatOppramsing(statuser, intl)}`;
 };
-
-export function formatOppramsing(strenger: string[]) {
-    const formatterer = new Intl.ListFormat('no', {
-        style: 'long',
-        type: 'conjunction',
-    });
-    return formatterer.format(strenger);
-}

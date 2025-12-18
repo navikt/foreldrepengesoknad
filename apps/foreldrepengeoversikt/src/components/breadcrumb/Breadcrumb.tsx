@@ -101,6 +101,9 @@ const getRoute = (route: OversiktRoutes | 'https://www.nav.no/minside', saksnumm
     if (route === OversiktRoutes.INNTEKTSMELDING) {
         return `${sakRoute}/${OversiktRoutes.INNTEKTSMELDING}`;
     }
+    if (route === OversiktRoutes.BEREGNING) {
+        return `${sakRoute}/${OversiktRoutes.BEREGNING}`;
+    }
 
     return route;
 };
