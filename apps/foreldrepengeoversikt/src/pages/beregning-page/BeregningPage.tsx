@@ -1,5 +1,5 @@
 import { sumBy } from 'lodash';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Accordion, BodyShort, ExpansionCard, HGrid, Label, VStack } from '@navikt/ds-react';
 
@@ -33,25 +33,35 @@ export const BeregningPage = () => {
     const finnesRefusjon = beregning.beregningsAndeler.some((a) => (a.dagsatsArbeidsgiver ?? 0) > 0);
     const finnesDirekteutbetaling = beregning.beregningsAndeler.some((a) => (a.dagsatsSøker ?? 0) > 0);
     const utbetalingsmetodeTekst = formatOppramsing(
-        [finnesRefusjon && 'utbetales til arbeidsgiver', finnesDirekteutbetaling && 'ubetales til deg direkte'].filter(
-            (a) => a !== false,
-        ),
+        [
+            finnesRefusjon && intl.formatMessage({ id: 'beregning.utbetalingsTekst.arbeidsgiver' }),
+            finnesDirekteutbetaling && intl.formatMessage({ id: 'beregning.utbetalingsTekst.deg' }),
+        ].filter((a) => a !== false),
         intl,
     );
     return (
         <PageRouteLayout header={<BeregningHeader />}>
             <VStack gap="2">
                 <VStack>
-                    <Label>Dagsats: {formatCurrencyWithKr(sumDagsats)}</Label>
+                    <Label>
+                        <FormattedMessage
+                            id="beregning.dagsats"
+                            values={{ sumDagsats: formatCurrencyWithKr(sumDagsats) }}
+                        />
+                    </Label>
                     <BodyShort>{capitalizeFirstLetter(utbetalingsmetodeTekst)}</BodyShort>
                 </VStack>
                 <BodyShort>
-                    <Label>Dato for vurdering: </Label>
+                    <Label>
+                        <FormattedMessage id="beregning.datoForVurdering" />
+                    </Label>
                     {formaterDato(beregning.skjæringsTidspunkt, 'D. MMMM YYYY')}
                 </BodyShort>
-                <ExpansionCard size="medium" aria-label="Beregning av foreldrepenger">
+                <ExpansionCard size="medium" aria-label={intl.formatMessage({ id: 'beregning.tittel' })}>
                     <ExpansionCard.Header>
-                        <ExpansionCard.Title>Beregning av foreldrepenger</ExpansionCard.Title>
+                        <ExpansionCard.Title>
+                            <FormattedMessage id="beregning.tittel" />
+                        </ExpansionCard.Title>
                         <ExpansionCard.Description>
                             <BeregningStatuser beregning={beregning} />
                         </ExpansionCard.Description>
@@ -76,19 +86,24 @@ const Forklaringer = () => {
     return (
         <Accordion className="mt-4">
             <Accordion.Item>
-                <Accordion.Header>Hva er dagsatsen?</Accordion.Header>
+                <Accordion.Header>
+                    <FormattedMessage id="beregning.forklaringer.hvaErDagsatsen" />
+                </Accordion.Header>
                 <Accordion.Content>
-                    Foreldrepengene beregnes maksimalt opp til seks ganger grunnbeløpet (6G):{' '}
-                    {formatCurrency(grunnbeløp * 6)}. Hvis du har en inntekt høyere enn dette og velger 80 %, vil du få
-                    80 % av 6G.
+                    <FormattedMessage
+                        id="beregning.forklaringer.hvaErDagsatsen.innhold"
+                        values={{
+                            grunnbeløpSeksG: formatCurrency(grunnbeløp * 6),
+                        }}
+                    />
                 </Accordion.Content>
             </Accordion.Item>
             <Accordion.Item>
-                <Accordion.Header>Ytelser beregnes bare opp til 6G</Accordion.Header>
+                <Accordion.Header>
+                    <FormattedMessage id="beregning.forklaringer.ytelserBareOppTil6G" />
+                </Accordion.Header>
                 <Accordion.Content>
-                    Hvis du har en samlet inntekt over 6G og har flere arbeidsforhold, fordeler vi inntekten opptil
-                    denne grensen. Hvordan vi fordeler inntekten avhenger av hvilke kombinasjon av inntekter du har og
-                    om arbeidsgiver krever refusjon fra Nav.{' '}
+                    <FormattedMessage id="beregning.forklaringer.ytelserBareOppTil6G.innhold" />
                 </Accordion.Content>
             </Accordion.Item>
         </Accordion>
@@ -96,77 +111,94 @@ const Forklaringer = () => {
 };
 
 const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
+    const intl = useIntl();
     const harArbeidsgiver = andel.arbeidsforhold?.arbeidsgiverIdent !== undefined;
     return (
         <VStack gap="2">
             <BodyShort>
-                {harArbeidsgiver && <Label>TODO Navn på bedrift - {andel.arbeidsforhold?.arbeidsgiverIdent}</Label>}
-                {!harArbeidsgiver && <Label>{capitalizeFirstLetter(finnStatus(andel.aktivitetStatus))}</Label>}
+                {harArbeidsgiver && (
+                    <Label>
+                        <FormattedMessage
+                            id="beregning.andel.arbeidsgiver"
+                            values={{ arbeidsgiverIdent: andel.arbeidsforhold?.arbeidsgiverIdent }}
+                        />
+                    </Label>
+                )}
+                {!harArbeidsgiver && <Label>{capitalizeFirstLetter(finnStatus(andel.aktivitetStatus, intl))}</Label>}
             </BodyShort>
             <HGrid gap="2" columns={{ xs: '1fr max-content' }}>
-                <BodyShort>Beregnet månedsinntekt {finnKildeForInntekt(andel)}</BodyShort>
+                <BodyShort>
+                    <FormattedMessage
+                        id="beregning.andel.beregnetMånedsinntekt"
+                        values={{ kilde: finnKildeForInntekt(andel, intl) }}
+                    />
+                </BodyShort>
                 <BodyShort>{formatCurrencyWithKr((andel.fastsattPrÅr ?? 0) / 12)}</BodyShort>
-                <BodyShort>Omregnet til årsinntekt</BodyShort>
+                <BodyShort>
+                    <FormattedMessage id="beregning.andel.omregnetTilÅrsinntekt" />
+                </BodyShort>
                 <BodyShort>{formatCurrencyWithKr(andel.fastsattPrÅr ?? 0)}</BodyShort>
             </HGrid>
         </VStack>
     );
 };
 
-const finnKildeForInntekt = (andel: BeregningsAndel_fpoversikt) => {
+const finnKildeForInntekt = (andel: BeregningsAndel_fpoversikt, intl: ReturnType<typeof useIntl>) => {
     switch (andel.inntektsKilde) {
         case 'INNTEKTSMELDING':
-            return '(hentet fra inntektsmeldingen)';
+            return intl.formatMessage({ id: 'beregning.inntektsKilde.inntektsmelding' });
         case 'A_INNTEKT':
-            return '(hentet fra register)';
+            return intl.formatMessage({ id: 'beregning.inntektsKilde.register' });
         case 'SKJØNNSFASTSATT':
-            return '(skjønnsfastsatt av saksbehandler)';
+            return intl.formatMessage({ id: 'beregning.inntektsKilde.skjønnsfastsatt' });
         case 'PGI':
-            return '(hentet fra skatteopplysninger)';
+            return intl.formatMessage({ id: 'beregning.inntektsKilde.skatteopplysninger' });
         case 'VEDTAK_ANNEN_YTELSE':
-            return '(hentet fra tidligere vedtak)';
+            return intl.formatMessage({ id: 'beregning.inntektsKilde.tidligere_vedtak' });
         case undefined:
             return '';
     }
 };
 
-const finnStatus = (status: AktivitetStatus) => {
+const finnStatus = (status: AktivitetStatus, intl: ReturnType<typeof useIntl>) => {
     switch (status) {
         case 'ARBEIDSTAKER':
-            return 'arbeidstaker';
+            return intl.formatMessage({ id: 'beregning.aktivitetStatus.arbeidstaker' });
         case 'FRILANSER':
-            return 'frilans';
+            return intl.formatMessage({ id: 'beregning.aktivitetStatus.frilanser' });
         case 'KOMBINERT_AT_FL':
-            return 'kombinert arbeidstaker og frilanser';
+            return intl.formatMessage({ id: 'beregning.aktivitetStatus.kombinertAtFl' });
         case 'ARBEIDSAVKLARINGSPENGER':
-            return 'arbeidsavklaringspenger';
+            return intl.formatMessage({ id: 'beregning.aktivitetStatus.arbeidsavklaringspenger' });
         case 'VENTELØNN_VARTPENGER':
-            return 'ventelønn og vartpenger';
+            return intl.formatMessage({ id: 'beregning.aktivitetStatus.ventelonnVartpenger' });
         case 'DAGPENGER':
-            return 'dagpenger';
+            return intl.formatMessage({ id: 'beregning.aktivitetStatus.dagpenger' });
         case 'BRUKERS_ANDEL':
-            return 'ytelse';
+            return intl.formatMessage({ id: 'beregning.aktivitetStatus.ytelse' });
         case 'KOMBINERT_AT_FL_SN':
-            return 'kombinert arbeidstaker, frilanser og selvstendig næringsdrivende';
+            return intl.formatMessage({ id: 'beregning.aktivitetStatus.kombinertAtFlSn' });
         case 'KOMBINERT_AT_SN':
-            return 'kombinert arbeidstaker og selvstendig næringsdrivende';
+            return intl.formatMessage({ id: 'beregning.aktivitetStatus.kombinertAtSn' });
         case 'KOMBINERT_FL_SN':
-            return 'kombinert frilanser og selvstendig næringsdrivende';
+            return intl.formatMessage({ id: 'beregning.aktivitetStatus.kombinertFlSn' });
         case 'KUN_YTELSE':
-            return 'ytelse';
+            return intl.formatMessage({ id: 'beregning.aktivitetStatus.ytelse' });
         case 'MILITÆR_ELLER_SIVIL':
-            return 'siviltjeneste eller førstegangstjeneste';
+            return intl.formatMessage({ id: 'beregning.aktivitetStatus.militaerEllerSivil' });
         case 'SELVSTENDIG_NÆRINGSDRIVENDE':
-            return 'næringsdrivende';
+            return intl.formatMessage({ id: 'beregning.aktivitetStatus.selvstendigNaeringsdrivende' });
         case 'TTLSTØTENDE_YTELSE':
-            return 'ytelse';
+            return intl.formatMessage({ id: 'beregning.aktivitetStatus.ytelse' });
     }
 };
 
 const BeregningStatuser = ({ beregning }: { beregning: Beregningsgrunnlag_fpoversikt }) => {
     const intl = useIntl();
     const statuser = beregning.beregningAktivitetStatuser.map((status) => {
-        return finnStatus(status.aktivitetStatus);
+        return finnStatus(status.aktivitetStatus, intl);
     });
-    return `Du er blitt beregnet som ${formatOppramsing(statuser, intl)}`;
+    return (
+        <FormattedMessage id="beregning.beregningStatuser" values={{ statuser: formatOppramsing(statuser, intl) }} />
+    );
 };
