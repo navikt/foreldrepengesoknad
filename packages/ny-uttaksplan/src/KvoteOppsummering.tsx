@@ -14,12 +14,13 @@ import { getVarighetString } from './utils/dateUtils';
 
 interface Props {
     visStatusIkoner: boolean;
+    erInnsyn: boolean;
 }
 
-export const KvoteOppsummering = ({ visStatusIkoner }: Props) => {
+export const KvoteOppsummering = ({ visStatusIkoner, erInnsyn }: Props) => {
     return (
         <ExpansionCard aria-label="Kvoteoversikt" size="small">
-            <KvoteOppsummeringsTittel visStatusIkoner={visStatusIkoner} brukEnkelVisning={false} />
+            <KvoteOppsummeringsTittel erInnsyn={erInnsyn} visStatusIkoner={visStatusIkoner} brukEnkelVisning={false} />
             <ExpansionCard.Content>
                 <VStack gap="space-16">
                     <ForeldrepengerFørFødselKvoter visStatusIkoner={visStatusIkoner} />
@@ -37,28 +38,38 @@ export const KvoteOppsummering = ({ visStatusIkoner }: Props) => {
 export const KvoteOppsummeringsTittel = ({
     visStatusIkoner,
     brukEnkelVisning,
+    erInnsyn,
 }: {
     visStatusIkoner: boolean;
     brukEnkelVisning: boolean;
+    erInnsyn: boolean;
 }) => {
-    const { rettighetType } = useUttaksplanData();
+    const {
+        foreldreInfo: { rettighetType },
+    } = useUttaksplanData();
 
     if (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT') {
         return (
-            <KvoteTittelKunEnHarForeldrepenger visStatusIkoner={visStatusIkoner} brukEnkelVisning={brukEnkelVisning} />
+            <KvoteTittelKunEnHarForeldrepenger
+                erInnsyn={erInnsyn}
+                visStatusIkoner={visStatusIkoner}
+                brukEnkelVisning={brukEnkelVisning}
+            />
         );
     }
-    return <KvoteTittel visStatusIkoner={visStatusIkoner} brukEnkelVisning={brukEnkelVisning} />;
+    return <KvoteTittel erInnsyn={erInnsyn} visStatusIkoner={visStatusIkoner} brukEnkelVisning={brukEnkelVisning} />;
 };
 
 const KvoteTittelKunEnHarForeldrepenger = ({
     visStatusIkoner,
     brukEnkelVisning,
+    erInnsyn,
 }: {
     visStatusIkoner: boolean;
     brukEnkelVisning: boolean;
+    erInnsyn: boolean;
 }) => {
-    const { uttaksplan, familiesituasjon, valgtStønadskonto, modus } = useUttaksplanData();
+    const { uttaksplan, familiesituasjon, valgtStønadskonto } = useUttaksplanData();
 
     const intl = useIntl();
     const kvoter = ['FORELDREPENGER_FØR_FØDSEL', 'FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'].map((kontoType) => {
@@ -166,7 +177,7 @@ const KvoteTittelKunEnHarForeldrepenger = ({
                 />
             }
             visStatusIkoner={visStatusIkoner}
-            beskrivelse={modus === 'innsyn' ? <FormattedMessage id="kvote.beskrivelse.endre.du" /> : null}
+            beskrivelse={erInnsyn ? <FormattedMessage id="kvote.beskrivelse.endre.du" /> : null}
         />
     );
 };
@@ -174,12 +185,13 @@ const KvoteTittelKunEnHarForeldrepenger = ({
 const KvoteTittel = ({
     visStatusIkoner,
     brukEnkelVisning,
+    erInnsyn,
 }: {
     visStatusIkoner: boolean;
     brukEnkelVisning: boolean;
+    erInnsyn: boolean;
 }) => {
-    const { uttaksplan, familiesituasjon, valgtStønadskonto, navnPåForeldre, erFarEllerMedmor, modus } =
-        useUttaksplanData();
+    const { uttaksplan, familiesituasjon, valgtStønadskonto, foreldreInfo } = useUttaksplanData();
     const intl = useIntl();
 
     const dagerBruktAvMorFørFødsel = summerDagerIPerioder(
@@ -238,7 +250,10 @@ const KvoteTittel = ({
                       {
                           id: 'kvote.varighet.tilForelder',
                       },
-                      { varighet: getVarighetString(ubrukteDagerMor * -1, intl), forelder: navnPåForeldre.mor },
+                      {
+                          varighet: getVarighetString(ubrukteDagerMor * -1, intl),
+                          forelder: foreldreInfo.navnPåForeldre.mor,
+                      },
                   )
                 : '';
         const beskrivelseFelles =
@@ -256,7 +271,7 @@ const KvoteTittel = ({
                       },
                       {
                           varighet: getVarighetString(ubrukteDagerFar * -1, intl),
-                          forelder: navnPåForeldre.farMedmor,
+                          forelder: foreldreInfo.navnPåForeldre.farMedmor,
                       },
                   )
                 : '';
@@ -294,7 +309,7 @@ const KvoteTittel = ({
                       {
                           id: 'kvote.varighet.tilForelder',
                       },
-                      { varighet: getVarighetString(dagerBruktAvMor, intl), forelder: navnPåForeldre.mor },
+                      { varighet: getVarighetString(dagerBruktAvMor, intl), forelder: foreldreInfo.navnPåForeldre.mor },
                   )
                 : '';
         const beskrivelseFelles =
@@ -310,7 +325,10 @@ const KvoteTittel = ({
                       {
                           id: 'kvote.varighet.tilForelder',
                       },
-                      { varighet: getVarighetString(dagerBruktAvFar, intl), forelder: navnPåForeldre.farMedmor },
+                      {
+                          varighet: getVarighetString(dagerBruktAvFar, intl),
+                          forelder: foreldreInfo.navnPåForeldre.farMedmor,
+                      },
                   )
                 : '';
 
@@ -341,7 +359,7 @@ const KvoteTittel = ({
                   {
                       id: 'kvote.varighet.tilForelder',
                   },
-                  { varighet: getVarighetString(ubrukteDagerMor, intl), forelder: navnPåForeldre.mor },
+                  { varighet: getVarighetString(ubrukteDagerMor, intl), forelder: foreldreInfo.navnPåForeldre.mor },
               )
             : '';
     const beskrivelseFelles =
@@ -357,13 +375,17 @@ const KvoteTittel = ({
                   {
                       id: 'kvote.varighet.tilForelder',
                   },
-                  { varighet: getVarighetString(ubrukteDagerFar, intl), forelder: navnPåForeldre.farMedmor },
+                  {
+                      varighet: getVarighetString(ubrukteDagerFar, intl),
+                      forelder: foreldreInfo.navnPåForeldre.farMedmor,
+                  },
               )
             : '';
 
-    const visInformasjonOmHvordanEndre = modus === 'innsyn';
-
-    const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    const navnPåAnnenForelder =
+        foreldreInfo.søker === 'FAR_ELLER_MEDMOR'
+            ? foreldreInfo.navnPåForeldre.mor
+            : foreldreInfo.navnPåForeldre.farMedmor;
 
     return (
         <TittelKomponent
@@ -387,7 +409,7 @@ const KvoteTittel = ({
                             ),
                         }}
                     />{' '}
-                    {visInformasjonOmHvordanEndre && (
+                    {erInnsyn && (
                         <>
                             <FormattedMessage id="kvote.beskrivelse.endre.du" />{' '}
                             <FormattedMessage
@@ -495,9 +517,9 @@ const MødreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
 
 const FellesKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const intl = useIntl();
-    const { uttaksplan, valgtStønadskonto, navnPåForeldre, erFarEllerMedmor } = useUttaksplanData();
+    const { uttaksplan, valgtStønadskonto, foreldreInfo } = useUttaksplanData();
 
-    const forelder = erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
+    const forelder = foreldreInfo.søker === 'FAR_ELLER_MEDMOR' ? 'FAR_MEDMOR' : 'MOR';
     const fellesKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
 
     if (!fellesKonto) {
@@ -577,14 +599,20 @@ const FellesKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
                                 { id: 'kvote.varighet.fellesperiode.forelder' },
                                 {
                                     varighet: getVarighetString(dagerBruktAvDeg, intl),
-                                    forelder: forelder === 'MOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor,
+                                    forelder:
+                                        forelder === 'MOR'
+                                            ? foreldreInfo.navnPåForeldre.mor
+                                            : foreldreInfo.navnPåForeldre.farMedmor,
                                 },
                             ),
                             intl.formatMessage(
                                 { id: 'kvote.varighet.fellesperiode.forelder' },
                                 {
                                     varighet: getVarighetString(dagerBruktAvAnnenPart, intl),
-                                    forelder: forelder === 'MOR' ? navnPåForeldre.farMedmor : navnPåForeldre.mor,
+                                    forelder:
+                                        forelder === 'MOR'
+                                            ? foreldreInfo.navnPåForeldre.farMedmor
+                                            : foreldreInfo.navnPåForeldre.mor,
                                 },
                             ),
                             ubrukteDager > 0
@@ -612,7 +640,10 @@ const StandardVisning = ({
     visStatusIkoner: boolean;
 }) => {
     const intl = useIntl();
-    const { familiesituasjon, erMedmorDelAvSøknaden } = useUttaksplanData();
+    const {
+        familiesituasjon,
+        foreldreInfo: { erMedmorDelAvSøknaden },
+    } = useUttaksplanData();
 
     if (!konto) {
         return null;
@@ -765,7 +796,7 @@ const FordelingSegment = ({
     erOvertrukket = false,
     erUtløpt,
 }: FordelingSegmentProps) => {
-    const { erFarEllerMedmor } = useUttaksplanData();
+    const { foreldreInfo } = useUttaksplanData();
 
     if (prosent <= 0) {
         return null;
@@ -787,7 +818,7 @@ const FordelingSegment = ({
         );
     }
 
-    if (!erFarEllerMedmor) {
+    if (foreldreInfo.søker !== 'FAR_ELLER_MEDMOR') {
         if (
             kontoType === 'MØDREKVOTE' ||
             kontoType === 'FORELDREPENGER_FØR_FØDSEL' ||

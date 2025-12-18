@@ -16,10 +16,14 @@ import { useUttaksplanBuilder } from './context/useUttaksplanBuilder';
 import { Planperiode } from './types/Planperiode';
 import { isHull, isPeriodeUtenUttak } from './utils/periodeUtils';
 
-export const UttaksplanNy = () => {
+interface Props {
+    isReadOnly: boolean;
+}
+
+export const UttaksplanNy = ({ isReadOnly }: Props) => {
     const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
-    const { modus, uttaksplan } = useUttaksplanData();
+    const { uttaksplan } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
@@ -35,6 +39,7 @@ export const UttaksplanNy = () => {
         <VStack gap="space-16">
             {uttaksplan.length > 0 && (
                 <PeriodeListe
+                    isReadOnly={isReadOnly}
                     perioder={uttaksplan}
                     handleAddPeriode={(nyPeriode: Planperiode) => {
                         modifyPlan(
@@ -76,7 +81,7 @@ export const UttaksplanNy = () => {
                     </VStack>
                 </HStack>
             )}
-            {modus !== 'innsyn' && !isLeggTilPeriodePanelOpen && (
+            {!isReadOnly && !isLeggTilPeriodePanelOpen && (
                 <Button variant="secondary" onClick={() => setIsLeggTilPeriodePanelOpen(true)}>
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />
                 </Button>
@@ -126,7 +131,6 @@ const modifyPlan = (
                 omitMany(p, [
                     'id',
                     'periodeHullÅrsak',
-                    'readOnly',
                     'skalIkkeHaUttakFørTermin',
                     'erAnnenPartEøs',
                 ]) satisfies UttakPeriode_fpoversikt,

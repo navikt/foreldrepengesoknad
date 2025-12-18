@@ -72,8 +72,6 @@ const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { s
     const sakAvsluttet = sak.sakAvsluttet;
 
     const relevantePerioder = søkersPerioder ?? perioderSomErSøktOm ?? [];
-    const søkerErFarEllerMedmor = !sakTilhørerMor;
-    const bareFarMedmorHarRett = rettighetType === 'BARE_SØKER_RETT' && !sakTilhørerMor;
     const erDeltUttak = rettighetType === 'BEGGE_RETT';
     const morHarRett = sakTilhørerMor && (rettighetType === 'BEGGE_RETT' || rettighetType === 'BARE_SØKER_RETT');
     const søkerErAleneOmOmsorg = rettighetType === 'ALENEOMSORG';
@@ -116,21 +114,19 @@ const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { s
                 <UttaksplanDataProvider
                     saksperioder={relevantePerioder.concat(relevanteAnnenPartsPerioder)}
                     barn={barn}
-                    erFarEllerMedmor={søkerErFarEllerMedmor}
-                    navnPåForeldre={navnPåForeldre}
-                    modus="innsyn"
-                    søker={sakTilhørerMor ? 'mor' : 'farEllerMedmor'}
+                    foreldreInfo={{
+                        søker: sakTilhørerMor ? 'MOR' : 'FAR_ELLER_MEDMOR',
+                        navnPåForeldre: navnPåForeldre,
+                        erMedmorDelAvSøknaden: false,
+                        rettighetType,
+                    }}
                     valgtStønadskonto={konto}
-                    aleneOmOmsorg={søkerErAleneOmOmsorg}
-                    erMedmorDelAvSøknaden={false}
-                    bareFarMedmorHarRett={bareFarMedmorHarRett}
                     harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
-                    erDeltUttak={erDeltUttak}
                 >
                     {!visKalender && (
                         <>
-                            <UttaksplanNy />
-                            <KvoteOppsummering visStatusIkoner={false} />
+                            <UttaksplanNy isReadOnly />
+                            <KvoteOppsummering erInnsyn visStatusIkoner={false} />
                         </>
                     )}
                     {visKalender && <UttaksplanKalender readOnly={true} />}
