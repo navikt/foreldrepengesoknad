@@ -324,16 +324,18 @@ const AntallUkerVelger = ({
 
             {hvemHarRett === 'beggeHarRett' &&
                 (!omBarnet.erFødsel || hvemPlanlegger.type !== HvemPlanleggerType.FAR_OG_FAR) && (
-                    <FordelingSlider
-                        antallDagerSøker1={fordeling?.antallDagerSøker1}
-                        onAntallDagerSøker1Change={(value) => {
-                            lagreFordeling({ antallDagerSøker1: value });
-                            lagreUttaksplanOgOppdaterUrl(undefined);
-                        }}
-                        antallUkerOgDagerFellesperiode={getAntallUkerOgDagerFellesperiode(valgtStønadskonto)}
-                        fornavnSøker1={fornavnSøker1}
-                        fornavnSøker2={fornavnSøker2}
-                    />
+                    <VStack className="mt-0">
+                        <FordelingSlider
+                            antallDagerSøker1={fordeling?.antallDagerSøker1}
+                            onAntallDagerSøker1Change={(value) => {
+                                lagreFordeling({ antallDagerSøker1: value });
+                                lagreUttaksplanOgOppdaterUrl(undefined);
+                            }}
+                            antallUkerOgDagerFellesperiode={getAntallUkerOgDagerFellesperiode(valgtStønadskonto)}
+                            fornavnSøker1={fornavnSøker1}
+                            fornavnSøker2={fornavnSøker2}
+                        />
+                    </VStack>
                 )}
         </VStack>
     );
