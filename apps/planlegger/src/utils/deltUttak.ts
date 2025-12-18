@@ -27,16 +27,8 @@ export const deltUttak = ({
     const førsteUttaksdag = UttaksdagenString(startdato ?? famDato).denneEllerNeste();
     const morsPerioder: UttakPeriode_fpoversikt[] = [];
     const farsPerioder: UttakPeriode_fpoversikt[] = [];
-    const fellesperiode = tilgjengeligeStønadskontoer.find((k) => k.konto === 'FELLESPERIODE');
-
-    if (!fellesperiode) {
-        return {
-            søker1: [],
-            søker2: [],
-        };
-    }
-
-    const fellesperiodeDagerFarMedmor = fellesperiode.dager - fellesperiodeDagerMor;
+    const fellesperiodeDagerFarMedmor =
+        tilgjengeligeStønadskontoer.find((k) => k.konto === 'FELLESPERIODE')!.dager - fellesperiodeDagerMor;
     const foreldrepengerFørFødsel = tilgjengeligeStønadskontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
     const mødrekvote = tilgjengeligeStønadskontoer.find((k) => k.konto === 'MØDREKVOTE');
     const fedrekvote = tilgjengeligeStønadskontoer.find((k) => k.konto === 'FEDREKVOTE');

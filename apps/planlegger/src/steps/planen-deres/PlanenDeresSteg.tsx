@@ -287,15 +287,20 @@ const AntallUkerVelger = ({
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
 
     // Sett standardverdi: del likt (8 uker hver, eller halvparten av totalen)
+    // Kun for scenarioer der begge har rett og fordeling er relevant
     useEffect(() => {
-        if (fordeling === undefined) {
+        const skalHaFordeling =
+            hvemHarRett === 'beggeHarRett' &&
+            (!omBarnet.erFødsel || hvemPlanlegger.type !== HvemPlanleggerType.FAR_OG_FAR);
+
+        if (fordeling === undefined && skalHaFordeling) {
             const totalDager =
                 getAntallUkerOgDagerFellesperiode(valgtStønadskonto).uker * 5 +
                 getAntallUkerOgDagerFellesperiode(valgtStønadskonto).dager;
             const halvpart = Math.floor(totalDager / 2);
             lagreFordeling({ antallDagerSøker1: halvpart });
         }
-    }, [fordeling, valgtStønadskonto, lagreFordeling]);
+    }, [fordeling, valgtStønadskonto, lagreFordeling, hvemHarRett, omBarnet.erFødsel, hvemPlanlegger.type]);
 
     return (
         <VStack gap="space-24">
