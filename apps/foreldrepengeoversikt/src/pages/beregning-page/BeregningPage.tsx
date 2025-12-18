@@ -69,7 +69,10 @@ export const BeregningPage = () => {
                     <ExpansionCard.Content>
                         <VStack gap="4">
                             {beregning.beregningsAndeler.map((andel) => (
-                                <BeregningAndel andel={andel} key={andel.aktivitetStatus} />
+                                <BeregningAndel
+                                    andel={andel}
+                                    key={`${andel.aktivitetStatus}-${andel.arbeidsforhold?.arbeidsgiverIdent}`}
+                                />
                             ))}
                         </VStack>
                         <Forklaringer grunnbeløpPåBeregning={beregning.grunnbeløp} />
@@ -115,12 +118,12 @@ const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
     return (
         <VStack gap="2">
             <BodyShort>
-                {andel.arbeidsforhold !== undefined ? (
+                {andel.arbeidsforhold === undefined ? (
+                    <Label>{capitalizeFirstLetter(finnStatus(andel.aktivitetStatus, intl))}</Label>
+                ) : (
                     <Label>
                         {andel.arbeidsforhold.arbeidsgiverNavn} - {andel.arbeidsforhold.arbeidsgiverIdent}
                     </Label>
-                ) : (
-                    <Label>{capitalizeFirstLetter(finnStatus(andel.aktivitetStatus, intl))}</Label>
                 )}
             </BodyShort>
             <HGrid gap="2" columns={{ xs: '1fr max-content' }}>
