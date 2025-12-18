@@ -86,9 +86,9 @@ export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgte
     const oppdater = useCallback(
         (perioder: Planperiode[]) => {
             const planperioder = uttaksplanBuilder.leggTilPerioder(
-                perioder
-                    .map((p) => splittFeriePåFamiliehendelsesdatoOmNødvendig(p, familiehendelsedato, erFarEllerMedmor))
-                    .flat(),
+                perioder.flatMap((p) =>
+                    splittFeriePåFamiliehendelsesdatoOmNødvendig(p, familiehendelsedato, erFarEllerMedmor),
+                ),
             );
 
             const resultUtenHull = planperioder.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
