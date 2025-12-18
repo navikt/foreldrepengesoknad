@@ -1,7 +1,8 @@
-import { MinusIcon, PlusIcon, SectorChartIcon } from '@navikt/aksel-icons';
+import { SectorChartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
+import { FordelingSlider } from 'components/FordelingSlider';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -13,15 +14,14 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { UkerOgDager, getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { finnUttaksdata } from 'utils/uttakUtils';
 
-import { BodyShort, Button, Heading, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
-import { BluePanel, Infobox } from '@navikt/fp-ui';
+import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { SliderComponent } from '../../components/slider';
 import { FordelingsdetaljerPanel } from './FordelingsdetaljerPanel';
 
 type Fellesperiodefordeling = {
@@ -121,131 +121,29 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                                 />
                             </BodyShort>
                         </Infobox>
-                        <BluePanel isDarkBlue={fordeling === undefined}>
-                            <VStack gap="space-24">
-                                <Heading id="fordeling-slider-label" size="small" level="3">
-                                    <FormattedMessage
-                                        id="FordelingSteg.FordelingTittel"
-                                        values={{
-                                            uker: antallUkerOgDagerFellesperiode.uker,
-                                            dager: antallUkerOgDagerFellesperiode.dager,
-                                        }}
-                                    />
-                                </Heading>
-                                <div className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-4">
-                                    <VStack gap="space-8" align="start">
-                                        <BodyShort weight="semibold">{fornavnSøker1}</BodyShort>
-                                        {antallDagerSøker1 !== undefined && (
-                                            <Heading size="small" level="4">
-                                                <FormattedMessage
-                                                    id="FordelingSteg.Uker"
-                                                    values={{ uker: Math.floor(antallDagerSøker1 / 5) }}
-                                                />
-                                            </Heading>
-                                        )}
-                                        {antallDagerSøker1 !== undefined && (
-                                            <Button
-                                                type="button"
-                                                variant="tertiary"
-                                                size="small"
-                                                icon={<MinusIcon aria-hidden />}
-                                                aria-label={intl.formatMessage(
-                                                    { id: 'FordelingSteg.ReduserAntallUker' },
-                                                    { navn: fornavnSøker1 },
-                                                )}
-                                                onClick={() => {
-                                                    const newValue = Math.max(0, antallDagerSøker1 - 5);
-                                                    formMethods.setValue('antallDagerSøker1', newValue);
-                                                    scrollToBottom();
-                                                }}
-                                                disabled={antallDagerSøker1 <= 0}
-                                            />
-                                        )}
-                                    </VStack>
-                                    <SliderComponent
-                                        min={0}
-                                        max={
-                                            antallUkerOgDagerFellesperiode.uker * 5 +
-                                            antallUkerOgDagerFellesperiode.dager
-                                        }
-                                        step={5}
-                                        value={[antallDagerSøker1 ?? 0]}
-                                        ariaLabelledby="fordeling-slider-label"
-                                        getAriaValueText={(dager1) => {
-                                            const total =
-                                                antallUkerOgDagerFellesperiode.uker * 5 +
-                                                antallUkerOgDagerFellesperiode.dager;
-                                            const uker1 = Math.floor(dager1 / 5);
-                                            const dager1Rest = dager1 % 5;
-                                            const resterende = total - dager1;
-                                            const uker2 = Math.floor(resterende / 5);
-                                            const dager2Rest = resterende % 5;
-
-                                            return intl.formatMessage(
-                                                { id: 'FordelingSteg.Slider.AriaValueText' },
-                                                {
-                                                    uker1,
-                                                    dager1: dager1Rest,
-                                                    uker2,
-                                                    dager2: dager2Rest,
-                                                    fornavn1: fornavnSøker1,
-                                                    fornavn2: fornavnSøker2,
-                                                },
-                                            );
-                                        }}
-                                        onValueChange={(value) => {
-                                            if (value[0] !== undefined) {
-                                                formMethods.setValue('antallDagerSøker1', value[0]);
-                                                scrollToBottom();
-                                            }
-                                        }}
-                                    />
-                                    <VStack gap="space-8" align="end">
-                                        <BodyShort style={{ fontWeight: 600 }}>{fornavnSøker2}</BodyShort>
-                                        {antallDagerSøker1 !== undefined && (
-                                            <Heading size="small" level="4">
-                                                <FormattedMessage
-                                                    id="FordelingSteg.Uker"
-                                                    values={{
-                                                        uker: Math.floor(
-                                                            (antallUkerOgDagerFellesperiode.uker * 5 +
-                                                                antallUkerOgDagerFellesperiode.dager -
-                                                                antallDagerSøker1) /
-                                                                5,
-                                                        ),
-                                                    }}
-                                                />
-                                            </Heading>
-                                        )}
-                                        {antallDagerSøker1 !== undefined && (
-                                            <Button
-                                                type="button"
-                                                variant="tertiary"
-                                                size="small"
-                                                icon={<PlusIcon aria-hidden />}
-                                                aria-label={intl.formatMessage(
-                                                    { id: 'FordelingSteg.ØkAntallUker' },
-                                                    { navn: fornavnSøker2 },
-                                                )}
-                                                onClick={() => {
-                                                    const maxDager =
-                                                        antallUkerOgDagerFellesperiode.uker * 5 +
-                                                        antallUkerOgDagerFellesperiode.dager;
-                                                    const newValue = Math.min(maxDager, antallDagerSøker1 + 5);
-                                                    formMethods.setValue('antallDagerSøker1', newValue);
-                                                    scrollToBottom();
-                                                }}
-                                                disabled={
-                                                    antallDagerSøker1 >=
-                                                    antallUkerOgDagerFellesperiode.uker * 5 +
-                                                        antallUkerOgDagerFellesperiode.dager
-                                                }
-                                            />
-                                        )}
-                                    </VStack>
-                                </div>
-                            </VStack>
-                        </BluePanel>
+                        <VStack gap="space-4" className="bg-ax-bg-brand-blue-soft rounded-sm p-4">
+                            <Heading id="fordeling-slider-label" size="small" level="3">
+                                <FormattedMessage
+                                    id="FordelingSteg.FordelingTittel"
+                                    values={{
+                                        uker: antallUkerOgDagerFellesperiode.uker,
+                                        dager: antallUkerOgDagerFellesperiode.dager,
+                                    }}
+                                />
+                            </Heading>
+                            <FordelingSlider
+                                antallDagerSøker1={antallDagerSøker1}
+                                antallUkerOgDagerFellesperiode={antallUkerOgDagerFellesperiode}
+                                fornavnSøker1={fornavnSøker1}
+                                fornavnSøker2={fornavnSøker2}
+                                onValueChange={(value) => {
+                                    formMethods.setValue('antallDagerSøker1', value);
+                                    scrollToBottom();
+                                }}
+                                ariaLabelledby="fordeling-slider-label"
+                                gap="space-4"
+                            />
+                        </VStack>
                         {antallDagerSøker1 !== undefined && (
                             <FordelingsdetaljerPanel
                                 barnet={barnet}
