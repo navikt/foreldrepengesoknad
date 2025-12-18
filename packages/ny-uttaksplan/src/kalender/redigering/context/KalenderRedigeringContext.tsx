@@ -31,7 +31,7 @@ type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaks
 
 const KalenderRedigeringContext = createContext<ContextValues | null>(null);
 
-export const splttFeriePåFamiliehendelsesdatoOmNødvendig = (
+export const splittFeriePåFamiliehendelsesdatoOmNødvendig = (
     periode: Planperiode,
     famDato: string,
     erFarEllerMedmor: boolean,
@@ -64,7 +64,9 @@ export const splttFeriePåFamiliehendelsesdatoOmNødvendig = (
 };
 
 export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgtePerioder }: Props) => {
-    const { uttaksplan, familiehendelsedato, erFarEllerMedmor } = useUttaksplanData();
+    const { uttaksplan, familiehendelsedato, foreldreInfo } = useUttaksplanData();
+
+    const erFarEllerMedmor = foreldreInfo.søker === 'FAR_ELLER_MEDMOR';
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
@@ -84,17 +86,15 @@ export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgte
     const oppdater = useCallback(
         (perioder: Planperiode[]) => {
             const planperioder = uttaksplanBuilder.leggTilPerioder(
-                perioder
-                    .map((p) => splttFeriePåFamiliehendelsesdatoOmNødvendig(p, familiehendelsedato, erFarEllerMedmor))
-                    .flat(),
+                perioder.flatMap((p) =>
+                    splittFeriePåFamiliehendelsesdatoOmNødvendig(p, familiehendelsedato, erFarEllerMedmor),
+                ),
             );
 
             const resultUtenHull = planperioder.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
             uttaksplanRedigering?.oppdaterUttaksplan(
-                resultUtenHull.map((p) =>
-                    omitMany(p, ['id', 'periodeHullÅrsak', 'readOnly', 'skalIkkeHaUttakFørTermin']),
-                ),
+                resultUtenHull.map((p) => omitMany(p, ['id', 'periodeHullÅrsak', 'skalIkkeHaUttakFørTermin'])),
             );
         },
         [uttaksplanBuilder, uttaksplanRedigering, familiehendelsedato, erFarEllerMedmor],

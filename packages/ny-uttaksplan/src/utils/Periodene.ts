@@ -289,19 +289,13 @@ function getFørsteUttaksdagEtterSistePeriode(perioder: Planperiode[]): string |
     return UttaksdagenString(perioder.at(-1)!.tom).neste();
 }
 export const uttaksplanErBareOpphold = (perioder: Planperiode[]): boolean => {
-    const perioderUtenInfoPerioder = perioder.filter((p) => !p.readOnly);
-
-    if (perioderUtenInfoPerioder.length === 0) {
+    if (perioder.length === 0) {
         return false;
     }
 
-    return perioderUtenInfoPerioder.every((periode) => !periode.erAnnenPartEøs && periode.oppholdÅrsak !== undefined);
+    return perioder.every((periode) => !periode.erAnnenPartEøs && periode.oppholdÅrsak !== undefined);
 };
 
 export const uttaksplanStarterMedOpphold = (perioder: Planperiode[]): boolean => {
-    return (
-        perioder
-            .filter((p) => !p.readOnly)
-            .findIndex((periode) => !periode.erAnnenPartEøs && periode.oppholdÅrsak !== undefined) === 0
-    );
+    return perioder.findIndex((periode) => !periode.erAnnenPartEøs && periode.oppholdÅrsak !== undefined) === 0;
 };

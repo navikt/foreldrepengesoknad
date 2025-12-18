@@ -1,36 +1,17 @@
 import { Uttaksplanbuilder } from '../builder/Uttaksplanbuilder';
-import { mapSaksperiodeTilPlanperiode } from '../utils/periodeUtils';
-import { getAnnenpartsPerioder, useUttaksplanData } from './UttaksplanDataContext';
+import { useUttaksplanData } from './UttaksplanDataContext';
 
 export const useUttaksplanBuilder = () => {
-    const {
-        harAktivitetskravIPeriodeUtenUttak,
-        familiehendelsedato,
-        erFarEllerMedmor,
-        familiesituasjon,
-        modus,
-        bareFarMedmorHarRett,
-        erDeltUttak,
-        saksperioder,
-        uttaksplan,
-    } = useUttaksplanData();
-
-    const annenPartsPerioder = getAnnenpartsPerioder(erDeltUttak, saksperioder, erFarEllerMedmor);
-
-    const annenPartsPlanperioder = annenPartsPerioder
-        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato, modus)
-        : undefined;
+    const { harAktivitetskravIPeriodeUtenUttak, familiehendelsedato, foreldreInfo, familiesituasjon, uttaksplan } =
+        useUttaksplanData();
 
     return Uttaksplanbuilder({
         perioder: uttaksplan,
         familiehendelsedato,
         harAktivitetskravIPeriodeUtenUttak,
         gjelderAdopsjon: familiesituasjon === 'adopsjon',
-        bareFarMedmorHarRett,
-        erFarEllerMedmor,
+        foreldreInfo,
         //TODO (TOR) Trengs denne? Var alltid undefined før eg refaktorerte
         førsteUttaksdagNesteBarnsSak: undefined,
-        opprinneligPlan: annenPartsPlanperioder,
-        erIPlanleggerModus: modus === 'planlegger',
     });
 };

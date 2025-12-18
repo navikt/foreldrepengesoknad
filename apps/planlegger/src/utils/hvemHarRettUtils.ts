@@ -37,3 +37,14 @@ export const harMorRett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanleg
 
 export const harKunMorRett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
     erMorDelAvSøknaden(hvemPlanlegger) && hvemHarRett === 'kunSøker1HarRett';
+
+export const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean) => {
+    if (erAleneOmOmsorg) {
+        return 'ALENEOMSORG';
+    }
+    if (erDeltUttak) {
+        return 'BEGGE_RETT';
+    }
+
+    return 'BARE_SØKER_RETT';
+};

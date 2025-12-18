@@ -25,7 +25,10 @@ export const KontotypeSpørsmål = ({
 }: Props) => {
     const intl = useIntl();
     const { watch, control } = useFormContext<LeggTilPeriodePanelFormValues | EndrePeriodePanelStepFormValues>();
-    const { valgtStønadskonto, erMedmorDelAvSøknaden } = useUttaksplanData();
+    const {
+        valgtStønadskonto,
+        foreldreInfo: { erMedmorDelAvSøknaden },
+    } = useUttaksplanData();
 
     const kontoTypeValue = watch('kontoType');
 

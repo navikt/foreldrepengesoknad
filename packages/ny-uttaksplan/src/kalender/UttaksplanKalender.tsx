@@ -216,14 +216,14 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
 
 const AvslåttePerioder = () => {
-    const { saksperioder, erFarEllerMedmor, familiehendelsedato } = useUttaksplanData();
+    const { saksperioder, foreldreInfo, familiehendelsedato } = useUttaksplanData();
 
     const harAvslåttePerioderSomIkkeGirTapteDager = saksperioder.some(
         (p) =>
             isAvslåttPeriode(p) &&
             !('trekkdager' in p) &&
             p.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER' &&
-            (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
+            (foreldreInfo.søker === 'FAR_ELLER_MEDMOR' || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
     );
 
     return harAvslåttePerioderSomIkkeGirTapteDager ? (
