@@ -330,6 +330,22 @@ export type UttakUtsettelseÅrsak_fpoversikt =
     | 'HV_ØVELSE'
     | 'NAV_TILTAK';
 
+export type no_nav_foreldrepenger_kontrakter_felles_kodeverk_AktivitetStatus =
+    | 'ARBEIDSAVKLARINGSPENGER'
+    | 'ARBEIDSTAKER'
+    | 'DAGPENGER'
+    | 'FRILANSER'
+    | 'MILITÆR_ELLER_SIVIL'
+    | 'SELVSTENDIG_NÆRINGSDRIVENDE'
+    | 'KOMBINERT_AT_FL'
+    | 'KOMBINERT_AT_SN'
+    | 'KOMBINERT_FL_SN'
+    | 'KOMBINERT_AT_FL_SN'
+    | 'BRUKERS_ANDEL'
+    | 'KUN_YTELSE'
+    | 'TTLSTØTENDE_YTELSE'
+    | 'VENTELØNN_VARTPENGER';
+
 export type BehandlingTilstand_fpoversikt =
     | 'UNDER_BEHANDLING'
     | 'VENT_TIDLIG_SØKNAD'
@@ -337,6 +353,33 @@ export type BehandlingTilstand_fpoversikt =
     | 'VENT_DOKUMENTASJON'
     | 'VENT_INNTEKTSMELDING'
     | 'PROSESSERER';
+
+export type Beregningsgrunnlag_fpoversikt = {
+    beregningAktivitetStatuser: BeregningAktivitetStatus_fpoversikt[];
+    beregningsAndeler: BeregningsAndel_fpoversikt[];
+    grunnbeløp?: number;
+    skjæringsTidspunkt: string;
+};
+
+export type Arbeidsforhold_fpoversikt = {
+    arbeidsgiverIdent: string;
+    arbeidsgiverNavn: string;
+    refusjonPrMnd?: number;
+};
+
+export type BeregningAktivitetStatus_fpoversikt = {
+    aktivitetStatus: no_nav_foreldrepenger_kontrakter_felles_kodeverk_AktivitetStatus;
+    hjemmel?: string;
+};
+
+export type BeregningsAndel_fpoversikt = {
+    aktivitetStatus: no_nav_foreldrepenger_kontrakter_felles_kodeverk_AktivitetStatus;
+    arbeidsforhold?: Arbeidsforhold_fpoversikt;
+    dagsatsArbeidsgiver?: number;
+    dagsatsSøker?: number;
+    fastsattPrÅr?: number;
+    inntektsKilde?: Inntektskilde_fpoversikt;
+};
 
 export type EsSak_fpoversikt = {
     familiehendelse: Familiehendelse_fpoversikt;
@@ -379,6 +422,7 @@ export type FpSak_fpoversikt = {
 };
 
 export type FpVedtak_fpoversikt = {
+    beregningsgrunnlag?: Beregningsgrunnlag_fpoversikt;
     perioder: UttakPeriode_fpoversikt[];
     perioderAnnenpartEøs?: UttakPeriodeAnnenpartEøs_fpoversikt[];
 };
@@ -387,6 +431,13 @@ export type FpÅpenBehandling_fpoversikt = {
     søknadsperioder: UttakPeriode_fpoversikt[];
     tilstand: BehandlingTilstand_fpoversikt;
 };
+
+export type Inntektskilde_fpoversikt =
+    | 'INNTEKTSMELDING'
+    | 'A_INNTEKT'
+    | 'VEDTAK_ANNEN_YTELSE'
+    | 'SKJØNNSFASTSATT'
+    | 'PGI';
 
 export type Person_fpoversikt = {
     aktørId?: string;

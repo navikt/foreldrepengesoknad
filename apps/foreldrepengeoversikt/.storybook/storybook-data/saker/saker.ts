@@ -949,3 +949,110 @@ export const saker_FP_ny_søknad = {
     engangsstønad: [],
     svangerskapspenger: [],
 } satisfies Saker_fpoversikt;
+
+export const saker_beregning = {
+    foreldrepenger: [
+        {
+            saksnummer: '502',
+            sakAvsluttet: false,
+            kanSøkeOmEndring: true,
+            sakTilhørerMor: true,
+            gjelderAdopsjon: false,
+            morUføretrygd: false,
+            harAnnenForelderTilsvarendeRettEØS: false,
+            ønskerJustertUttakVedFødsel: false,
+            rettighetType: 'BEGGE_RETT',
+            annenPart: {
+                fnr: '09418027387',
+            },
+            familiehendelse: {
+                fødselsdato: '2025-12-18',
+                termindato: '2025-12-18',
+                antallBarn: 1,
+            },
+            gjeldendeVedtak: {
+                perioder: [
+                    {
+                        fom: '2025-11-27',
+                        tom: '2025-12-17',
+                        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                        resultat: {
+                            innvilget: true,
+                            trekkerMinsterett: true,
+                            trekkerDager: true,
+                            årsak: 'ANNET',
+                        },
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                    {
+                        fom: '2025-12-18',
+                        tom: '2026-04-01',
+                        kontoType: 'MØDREKVOTE',
+                        resultat: {
+                            innvilget: true,
+                            trekkerMinsterett: true,
+                            trekkerDager: true,
+                            årsak: 'ANNET',
+                        },
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                    {
+                        fom: '2026-04-02',
+                        tom: '2026-07-22',
+                        kontoType: 'FELLESPERIODE',
+                        resultat: {
+                            innvilget: true,
+                            trekkerMinsterett: true,
+                            trekkerDager: true,
+                            årsak: 'ANNET',
+                        },
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                ],
+                perioderAnnenpartEøs: [],
+                beregningsgrunnlag: {
+                    skjæringsTidspunkt: '2025-11-27',
+                    beregningsAndeler: [
+                        {
+                            aktivitetStatus: 'ARBEIDSTAKER',
+                            fastsattPrÅr: 500000.0,
+                            inntektsKilde: 'SKJØNNSFASTSATT',
+                            arbeidsforhold: {
+                                arbeidsgiverNavn: 'Bedriften as',
+                                arbeidsgiverIdent: '992257822',
+                                refusjonPrMnd: 41666.0,
+                            },
+                            dagsatsArbeidsgiver: 1923,
+                            dagsatsSøker: 0,
+                        },
+                        {
+                            aktivitetStatus: 'FRILANSER',
+                            fastsattPrÅr: 500000.0,
+                            inntektsKilde: 'SKJØNNSFASTSATT',
+                            dagsatsSøker: 1081,
+                        },
+                    ],
+                    beregningAktivitetStatuser: [
+                        {
+                            aktivitetStatus: 'KOMBINERT_AT_FL',
+                            hjemmel: 'F_14_7_8_40',
+                        },
+                    ],
+                },
+            },
+            barn: [
+                {
+                    fnr: '05482365304',
+                },
+            ],
+            dekningsgrad: 'HUNDRE',
+            oppdatertTidspunkt: '2025-12-18T11:05:06.295',
+            forelder: 'MOR',
+        },
+    ],
+    engangsstønad: [],
+    svangerskapspenger: [],
+} satisfies Saker_fpoversikt;

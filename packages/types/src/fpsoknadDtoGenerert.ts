@@ -465,6 +465,7 @@ export type UttaksPeriodeDto = {
     ønskerFlerbarnsdager?: boolean;
     ønskerGradering?: boolean;
     ønskerSamtidigUttak?: boolean;
+    samtidigUttakGyldig?: boolean;
 };
 
 export type GraderingDto = {
@@ -641,6 +642,7 @@ export type AnnenInntektDto = {
     land?: com_neovisionaries_i18n_CountryCode;
     tom?: string;
     type: AnnenOpptjeningType;
+    gyldigJobbIUtlandet?: boolean;
 };
 
 export type AnnenOpptjeningType =

@@ -33,6 +33,7 @@ import { Tidslinje } from '../../sections/tidslinje/Tidslinje.tsx';
 import { getNavnPåForeldre } from '../../utils/personUtils';
 import { getNavnAnnenForelder } from '../../utils/sakerUtils';
 import { getRelevantNyTidslinjehendelse } from '../../utils/tidslinjeUtils.ts';
+import { BeregningLenkePanel } from '../beregning-page/BeregningLenkePanel.tsx';
 import { InntektsmeldingLenkePanel } from '../inntektsmelding-page/InntektsmeldingLenkePanel';
 
 dayjs.extend(isSameOrBefore);
@@ -144,6 +145,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                         />
                     )}
                     <InntektsmeldingLenkePanel />
+                    <BeregningLenkePanel />
                 </HGrid>
 
                 {gjeldendeSak.ytelse === 'FORELDREPENGER' && (
