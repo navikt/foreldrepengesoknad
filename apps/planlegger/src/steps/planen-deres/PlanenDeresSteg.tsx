@@ -23,7 +23,7 @@ import {
     getNavnPåForeldre,
 } from 'utils/HvemPlanleggerUtils';
 import { mapOmBarnetTilBarn } from 'utils/barnetUtils';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
 import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
@@ -126,7 +126,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     foreldreInfo={{
                         søker: erFarEllerMedmor ? 'FAR_ELLER_MEDMOR' : 'MOR',
                         navnPåForeldre,
-                        rettighetType: uledRettighet(erAleneOmOmsorg, erDeltUttak),
+                        rettighetType: utledRettighet(erAleneOmOmsorg, erDeltUttak),
                         erMedmorDelAvSøknaden: isMedmorDelAvSøknaden,
                         erIkkeSøkerSpesifisert: erDeltUttak,
                     }}
@@ -358,15 +358,4 @@ const finnAntallDagerSøker1 = (
     );
 
     return Math.min(fordeling.antallDagerSøker1, ukerOgDagerFellesperiode.totaltAntallDager);
-};
-
-const uledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean) => {
-    if (erAleneOmOmsorg) {
-        return 'ALENEOMSORG';
-    }
-    if (erDeltUttak) {
-        return 'BEGGE_RETT';
-    }
-
-    return 'BARE_SØKER_RETT';
 };

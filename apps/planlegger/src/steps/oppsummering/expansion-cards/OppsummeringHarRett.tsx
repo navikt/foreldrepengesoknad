@@ -13,7 +13,7 @@ import {
     getFornavnPåSøker2,
     getNavnGenitivEierform,
 } from 'utils/HvemPlanleggerUtils';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
 import {
     getAntallUkerOgDager,
     getAntallUkerOgDagerAktivitetsfriKvote,
@@ -241,7 +241,7 @@ export const OppsummeringHarRett = ({
                             foreldreInfo={{
                                 søker: erFarEllerMedmor ? 'FAR_ELLER_MEDMOR' : 'MOR',
                                 navnPåForeldre: { mor: fornavnSøker1, farMedmor: fornavnSøker2 || '' },
-                                rettighetType: uledRettighet(erAleneOmOmsorg, erDeltUttak),
+                                rettighetType: utledRettighet(erAleneOmOmsorg, erDeltUttak),
                                 erMedmorDelAvSøknaden: hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR,
                                 erIkkeSøkerSpesifisert: erDeltUttak,
                             }}
@@ -256,15 +256,4 @@ export const OppsummeringHarRett = ({
             </ExpansionCard>
         </VStack>
     );
-};
-
-const uledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean) => {
-    if (erAleneOmOmsorg) {
-        return 'ALENEOMSORG';
-    }
-    if (erDeltUttak) {
-        return 'BEGGE_RETT';
-    }
-
-    return 'BARE_SØKER_RETT';
 };

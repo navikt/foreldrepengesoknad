@@ -247,6 +247,9 @@ export const Uttaksplanbuilder = ({
         førsteUttaksdagNesteBarnsSak,
     );
 
+    const bareFarMedmorHarRett =
+        foreldreInfo.rettighetType === 'BARE_SØKER_RETT' && foreldreInfo.søker === 'FAR_ELLER_MEDMOR';
+
     return {
         leggTilPeriode: (nyPeriode: Planperiode) => {
             return leggTilPeriodeOgBuild(
@@ -255,9 +258,8 @@ export const Uttaksplanbuilder = ({
                 familiehendelsedato,
                 harAktivitetskravIPeriodeUtenUttak,
                 gjelderAdopsjon,
-                foreldreInfo.rettighetType === 'BARE_SØKER_RETT',
+                bareFarMedmorHarRett,
                 foreldreInfo.søker === 'FAR_ELLER_MEDMOR',
-
                 annenpartsPerioder,
                 førsteUttaksdagNesteBarnsSak,
             );
@@ -285,9 +287,8 @@ export const Uttaksplanbuilder = ({
                         familiehendelsedato,
                         harAktivitetskravIPeriodeUtenUttak,
                         gjelderAdopsjon,
-                        foreldreInfo.rettighetType === 'BARE_SØKER_RETT',
+                        bareFarMedmorHarRett,
                         foreldreInfo.søker === 'FAR_ELLER_MEDMOR',
-
                         ap,
                         førsteUttaksdagNesteBarnsSak,
                     );
@@ -298,9 +299,8 @@ export const Uttaksplanbuilder = ({
                         familiehendelsedato,
                         harAktivitetskravIPeriodeUtenUttak,
                         gjelderAdopsjon,
-                        foreldreInfo.rettighetType === 'BARE_SØKER_RETT',
+                        bareFarMedmorHarRett,
                         foreldreInfo.søker === 'FAR_ELLER_MEDMOR',
-
                         annenpartsPerioder,
                         førsteUttaksdagNesteBarnsSak,
                     );
@@ -316,9 +316,8 @@ export const Uttaksplanbuilder = ({
                 familiehendelsedato,
                 harAktivitetskravIPeriodeUtenUttak,
                 gjelderAdopsjon,
-                foreldreInfo.rettighetType === 'BARE_SØKER_RETT',
+                bareFarMedmorHarRett,
                 foreldreInfo.søker === 'FAR_ELLER_MEDMOR',
-
                 annenpartsPerioder,
                 førsteUttaksdagNesteBarnsSak,
             );
@@ -333,9 +332,8 @@ export const Uttaksplanbuilder = ({
                         familiehendelsedato,
                         harAktivitetskravIPeriodeUtenUttak,
                         gjelderAdopsjon,
-                        foreldreInfo.rettighetType === 'BARE_SØKER_RETT',
+                        bareFarMedmorHarRett,
                         foreldreInfo.søker === 'FAR_ELLER_MEDMOR',
-
                         annenpartsPerioder,
                         førsteUttaksdagNesteBarnsSak,
                     );
@@ -355,7 +353,7 @@ export const Uttaksplanbuilder = ({
                         familiehendelsedato,
                         harAktivitetskravIPeriodeUtenUttak,
                         gjelderAdopsjon,
-                        foreldreInfo.rettighetType === 'BARE_SØKER_RETT',
+                        bareFarMedmorHarRett,
                         foreldreInfo.søker === 'FAR_ELLER_MEDMOR',
 
                         nyAnnenPartsUttak,
@@ -372,7 +370,7 @@ export const Uttaksplanbuilder = ({
                 familiehendelsedato,
                 harAktivitetskravIPeriodeUtenUttak,
                 gjelderAdopsjon,
-                foreldreInfo.rettighetType === 'BARE_SØKER_RETT',
+                bareFarMedmorHarRett,
                 foreldreInfo.søker === 'FAR_ELLER_MEDMOR',
                 annenpartsPerioder,
                 førsteUttaksdagNesteBarnsSak,
@@ -388,7 +386,7 @@ export const Uttaksplanbuilder = ({
                         familiehendelsedato,
                         harAktivitetskravIPeriodeUtenUttak,
                         gjelderAdopsjon,
-                        foreldreInfo.rettighetType === 'BARE_SØKER_RETT',
+                        bareFarMedmorHarRett,
                         foreldreInfo.søker === 'FAR_ELLER_MEDMOR',
                         annenpartsPerioder,
                         førsteUttaksdagNesteBarnsSak,
@@ -408,7 +406,7 @@ export const Uttaksplanbuilder = ({
                         familiehendelsedato,
                         harAktivitetskravIPeriodeUtenUttak,
                         gjelderAdopsjon,
-                        foreldreInfo.rettighetType === 'BARE_SØKER_RETT',
+                        bareFarMedmorHarRett,
                         foreldreInfo.søker === 'FAR_ELLER_MEDMOR',
                         nyAnnenPartsUttak,
                         førsteUttaksdagNesteBarnsSak,
