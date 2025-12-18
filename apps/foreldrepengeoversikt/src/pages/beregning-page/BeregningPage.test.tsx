@@ -19,7 +19,7 @@ describe('<BeregningPage>', () => {
 
             (await screen.findByText('Beregning av foreldrepenger')).click();
 
-            expect(await screen.findByText('Bedrift - 992257822')).toBeInTheDocument();
+            expect(await screen.findByText('Bedriften as - 992257822')).toBeInTheDocument();
             expect(await screen.findByText('Frilans')).toBeInTheDocument();
         }),
     );
