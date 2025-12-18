@@ -54,7 +54,7 @@ export const BeregningPage = () => {
                 <BodyShort>
                     <Label>
                         <FormattedMessage id="beregning.datoForVurdering" />
-                    </Label>
+                    </Label>{' '}
                     {formaterDato(beregning.skjæringsTidspunkt, 'D. MMMM YYYY')}
                 </BodyShort>
                 <ExpansionCard size="medium" aria-label={intl.formatMessage({ id: 'beregning.tittel' })}>
