@@ -54,7 +54,7 @@
         "fast-glob": "3.3.3",
         "mockdate": "3.0.5",
         "sass-embedded": "^1.93.2",
-        "storybook": "10.1.8",
+        "storybook": "10.1.10",
         "storybook-react-intl": "10.0.1",
         "vite": "7.2.7",
         "vitest": "4.0.15"

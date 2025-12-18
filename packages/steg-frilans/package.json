@@ -48,7 +48,7 @@
         "eslint": "9.39.2",
         "fast-glob": "3.3.3",
         "playwright": "1.57.0",
-        "storybook": "10.1.8",
+        "storybook": "10.1.10",
         "storybook-react-intl": "10.0.1",
         "tailwindcss": "4.1.18",
         "typescript": "5.9.3",
