@@ -128,6 +128,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                         navnPåForeldre,
                         rettighetType: uledRettighet(erAleneOmOmsorg, erDeltUttak),
                         erMedmorDelAvSøknaden: isMedmorDelAvSøknaden,
+                        erIkkeSøkerSpesifisert: erDeltUttak,
                     }}
                     valgtStønadskonto={valgtStønadskonto}
                     harAktivitetskravIPeriodeUtenUttak={false}

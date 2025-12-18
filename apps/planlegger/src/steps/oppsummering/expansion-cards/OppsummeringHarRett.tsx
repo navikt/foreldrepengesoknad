@@ -243,6 +243,7 @@ export const OppsummeringHarRett = ({
                                 navnPåForeldre: { mor: fornavnSøker1, farMedmor: fornavnSøker2 || '' },
                                 rettighetType: uledRettighet(erAleneOmOmsorg, erDeltUttak),
                                 erMedmorDelAvSøknaden: hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR,
+                                erIkkeSøkerSpesifisert: erDeltUttak,
                             }}
                             valgtStønadskonto={valgtStønadskonto}
                             harAktivitetskravIPeriodeUtenUttak={false}

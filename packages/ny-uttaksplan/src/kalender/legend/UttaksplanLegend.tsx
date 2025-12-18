@@ -180,7 +180,7 @@ const LabelButtonMedEllerUtenToolip = ({
     const intl = useIntl();
 
     const {
-        foreldreInfo: { søker, navnPåForeldre, erMedmorDelAvSøknaden },
+        foreldreInfo: { søker, navnPåForeldre, erMedmorDelAvSøknaden, erIkkeSøkerSpesifisert },
         valgtStønadskonto,
     } = useUttaksplanData();
 
@@ -189,7 +189,15 @@ const LabelButtonMedEllerUtenToolip = ({
     const erFarEllerMedmor = søker === 'FAR_ELLER_MEDMOR';
     const navnAnnenPart = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
-    const label = getCalendarLabel(info, navnAnnenPart, erMedmorDelAvSøknaden, harAktivitetsfriKvote, søker, intl);
+    const label = getCalendarLabel(
+        info,
+        navnAnnenPart,
+        erMedmorDelAvSøknaden,
+        harAktivitetsfriKvote,
+        søker,
+        erIkkeSøkerSpesifisert ?? false,
+        intl,
+    );
 
     if (visTekst) {
         return (
