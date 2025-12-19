@@ -28,7 +28,7 @@ export const FordelingSlider = ({
     const totalDager = antallUkerOgDagerFellesperiode.uker * 5 + antallUkerOgDagerFellesperiode.dager;
 
     return (
-        <div className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-4  rounded-sm">
+        <div className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-4 rounded-sm">
             <VStack gap="space-8" align="start">
                 <BodyShort weight="semibold">{fornavnSøker1}</BodyShort>
                 {antallDagerSøker1 !== undefined && (
