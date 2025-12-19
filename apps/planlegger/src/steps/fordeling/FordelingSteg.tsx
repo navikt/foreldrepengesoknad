@@ -122,27 +122,23 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                             </BodyShort>
                         </Infobox>
                         <BluePanel isDarkBlue={fordeling === undefined}>
-                            <VStack gap="space-24">
-                                <Heading id="fordeling-slider-label" size="small" level="3">
-                                    <FormattedMessage
-                                        id="FordelingSteg.FordelingTittel"
-                                        values={{
-                                            uker: antallUkerOgDagerFellesperiode.uker,
-                                            dager: antallUkerOgDagerFellesperiode.dager,
-                                        }}
-                                    />
-                                </Heading>
-                                <FordelingSlider
-                                    antallDagerSøker1={antallDagerSøker1}
-                                    onAntallDagerSøker1Change={(value) =>
-                                        formMethods.setValue('antallDagerSøker1', value)
-                                    }
-                                    antallUkerOgDagerFellesperiode={antallUkerOgDagerFellesperiode}
-                                    fornavnSøker1={fornavnSøker1}
-                                    fornavnSøker2={fornavnSøker2}
-                                    onScrollToBottom={scrollToBottom}
+                            <Heading id="fordeling-slider-label" size="small" level="3">
+                                <FormattedMessage
+                                    id="FordelingSteg.FordelingTittel"
+                                    values={{
+                                        uker: antallUkerOgDagerFellesperiode.uker,
+                                        dager: antallUkerOgDagerFellesperiode.dager,
+                                    }}
                                 />
-                            </VStack>
+                            </Heading>
+                            <FordelingSlider
+                                antallDagerSøker1={antallDagerSøker1}
+                                onAntallDagerSøker1Change={(value) => formMethods.setValue('antallDagerSøker1', value)}
+                                antallUkerOgDagerFellesperiode={antallUkerOgDagerFellesperiode}
+                                fornavnSøker1={fornavnSøker1}
+                                fornavnSøker2={fornavnSøker2}
+                                onScrollToBottom={scrollToBottom}
+                            />
                         </BluePanel>
                         {antallDagerSøker1 !== undefined && (
                             <FordelingsdetaljerPanel
