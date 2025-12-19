@@ -9,7 +9,11 @@ import { useKalenderRedigeringContext } from './context/KalenderRedigeringContex
 import { usePeriodeValidator } from './utils/usePeriodeValidator';
 
 export const PeriodeDetaljerOgInfoMeldinger = () => {
-    const { familiehendelsedato, familiesituasjon, bareFarMedmorHarRett } = useUttaksplanData();
+    const {
+        familiehendelsedato,
+        familiesituasjon,
+        foreldreInfo: { søker },
+    } = useUttaksplanData();
 
     const erAdopsjon = familiesituasjon === 'adopsjon';
 
@@ -53,7 +57,7 @@ export const PeriodeDetaljerOgInfoMeldinger = () => {
             )}
 
             {!erAdopsjon &&
-                !bareFarMedmorHarRett &&
+                søker !== 'FAR_ELLER_MEDMOR' &&
                 !erFerieValgbart &&
                 harPeriodeFørEllerEtter &&
                 !harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato && (

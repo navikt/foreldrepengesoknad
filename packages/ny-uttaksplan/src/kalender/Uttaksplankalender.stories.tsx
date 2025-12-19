@@ -18,7 +18,6 @@ const meta = {
     title: 'UttaksplanKalender',
     component: UttaksplanKalender,
     args: {
-        modus: 'søknad',
         readOnly: false,
         valgtStønadskonto: {
             kontoer: [
@@ -29,9 +28,6 @@ const meta = {
             ],
             minsteretter: MINSTERETTER,
         },
-        aleneOmOmsorg: false,
-        erMedmorDelAvSøknaden: false,
-        navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
         children: null,
     },
     render: (args) => {
@@ -44,16 +40,9 @@ const meta = {
         return (
             <UttaksplanDataProvider
                 barn={args.barn}
-                erFarEllerMedmor={args.erFarEllerMedmor}
-                søker={args.søker}
-                navnPåForeldre={args.navnPåForeldre}
-                modus={args.modus}
                 valgtStønadskonto={args.valgtStønadskonto}
-                aleneOmOmsorg={args.aleneOmOmsorg || false}
-                erMedmorDelAvSøknaden={args.erMedmorDelAvSøknaden || false}
-                bareFarMedmorHarRett={args.bareFarMedmorHarRett || false}
+                foreldreInfo={args.foreldreInfo}
                 harAktivitetskravIPeriodeUtenUttak={false}
-                erDeltUttak={args.erDeltUttak || false}
                 saksperioder={perioder ?? []}
             >
                 <UttaksplanRedigeringProvider
@@ -135,11 +124,13 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
             fødselsdatoer: ['2024-04-04'],
             antallBarn: 1,
         },
-        erDeltUttak: true,
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        søker: 'mor',
     },
 };
 
@@ -170,11 +161,13 @@ export const SkalHaPeriodeMedFratrekkForPleiepenger: Story = {
             fødselsdatoer: ['2024-04-04'],
             antallBarn: 1,
         },
-        erDeltUttak: true,
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        søker: 'mor',
     },
 };
 
@@ -199,11 +192,13 @@ export const FarSøkerMedTapteDagerOgUtsettelse: Story = {
             fødselsdatoer: ['2021-05-31'],
             antallBarn: 1,
         },
-        erFarEllerMedmor: true,
-        erDeltUttak: true,
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'FAR_ELLER_MEDMOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        søker: 'farEllerMedmor',
     },
 };
 
@@ -228,11 +223,13 @@ export const MorSøkerMedFlereUtsettelser: Story = {
             fødselsdatoer: ['2021-05-31'],
             antallBarn: 1,
         },
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        erDeltUttak: true,
-        søker: 'mor',
     },
 };
 export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
@@ -299,11 +296,13 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
             termindato: '2024-04-04',
             antallBarn: 1,
         },
-        erFarEllerMedmor: true,
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'FAR_ELLER_MEDMOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        erDeltUttak: true,
-        søker: 'farEllerMedmor',
     },
 };
 
@@ -328,11 +327,13 @@ export const UtsettelseMorFerieMedFarsUtsettelse: Story = {
             fødselsdatoer: ['2021-06-14'],
             antallBarn: 1,
         },
-        erDeltUttak: true,
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        søker: 'mor',
     },
 };
 
@@ -369,11 +370,13 @@ export const MorAvslåttPeriodeFørste6UkeneGirTapteDager: Story = {
             fødselsdatoer: ['2023-07-01'],
             antallBarn: 1,
         },
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        erDeltUttak: true,
-        søker: 'mor',
     },
 };
 
@@ -410,11 +413,13 @@ export const MorAvslåttPeriodeUtenTapteDager: Story = {
             fødselsdatoer: ['2023-07-01'],
             antallBarn: 1,
         },
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'FAR_ELLER_MEDMOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        erDeltUttak: true,
-        søker: 'mor',
     },
 };
 
@@ -434,11 +439,13 @@ export const KortPeriodeMedHelg: Story = {
             adopsjonsdato: '2024-05-23',
             antallBarn: 1,
         },
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        erDeltUttak: true,
-        søker: 'mor',
     },
 };
 
@@ -458,11 +465,13 @@ export const KortPeriodeUtenHelg: Story = {
             adopsjonsdato: '2024-05-21',
             antallBarn: 1,
         },
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'FAR_ELLER_MEDMOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        erDeltUttak: true,
-        søker: 'mor',
     },
 };
 
@@ -494,11 +503,13 @@ export const TreSammenhengendePerioderSlåttSammen: Story = {
             adopsjonsdato: '2024-05-21',
             antallBarn: 1,
         },
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        erDeltUttak: true,
-        søker: 'mor',
     },
 };
 
@@ -519,11 +530,13 @@ export const MorOppgirSamtidigUttakMedFar: Story = {
             adopsjonsdato: '2024-05-21',
             antallBarn: 1,
         },
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        erDeltUttak: true,
-        søker: 'mor',
     },
 };
 
@@ -544,11 +557,13 @@ export const FarOppgirSamtidigUttakMedMor: Story = {
             adopsjonsdato: '2025-05-21',
             antallBarn: 1,
         },
-        erFarEllerMedmor: true,
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'FAR_ELLER_MEDMOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        erDeltUttak: true,
-        søker: 'mor',
     },
 };
 
@@ -599,11 +614,13 @@ export const FellesPeriodeForMorOgSamtidigUttak: Story = {
             fødselsdatoer: ['2024-04-04'],
             antallBarn: 1,
         },
-        erDeltUttak: true,
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
-        søker: 'mor',
     },
 };
 
@@ -652,10 +669,13 @@ export const VisFarsAktivitetsfriKvote: Story = {
             fødselsdatoer: ['2024-04-04'],
             antallBarn: 1,
         },
-        erDeltUttak: false,
-        erFarEllerMedmor: true,
+        foreldreInfo: {
+            rettighetType: 'BARE_SØKER_RETT',
+            søker: 'FAR_ELLER_MEDMOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: true,
         valgtStønadskonto: {
             kontoer: [
                 { konto: 'AKTIVITETSFRI_KVOTE', dager: 75 },
@@ -663,6 +683,5 @@ export const VisFarsAktivitetsfriKvote: Story = {
             ],
             minsteretter: MINSTERETTER,
         },
-        søker: 'farEllerMedmor',
     },
 };

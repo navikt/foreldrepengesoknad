@@ -10,7 +10,6 @@ export interface PlanperiodeVanlig extends UttakPeriode_fpoversikt {
     periodeHullÅrsak?: PeriodeHullType;
     skalIkkeHaUttakFørTermin?: boolean;
     id: string;
-    readOnly: boolean;
 }
 
 interface PlanperiodeAnnenpartEøs extends UttakPeriodeAnnenpartEøs_fpoversikt {
@@ -18,7 +17,6 @@ interface PlanperiodeAnnenpartEøs extends UttakPeriodeAnnenpartEøs_fpoversikt 
     periodeHullÅrsak?: PeriodeHullType;
     skalIkkeHaUttakFørTermin?: boolean;
     id: string;
-    readOnly: boolean;
 }
 
 export type Planperiode = PlanperiodeVanlig | PlanperiodeAnnenpartEøs;

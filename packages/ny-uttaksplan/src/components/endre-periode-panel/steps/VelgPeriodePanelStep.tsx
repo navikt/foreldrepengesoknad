@@ -24,7 +24,9 @@ interface FormValues {
 
 export const VelgPeriodePanelStep = ({ perioder, panelData, setPanelData, closePanel }: Props) => {
     const intl = useIntl();
-    const { navnPåForeldre, erFarEllerMedmor } = useUttaksplanData();
+    const {
+        foreldreInfo: { søker, navnPåForeldre },
+    } = useUttaksplanData();
 
     const formMethods = useForm<FormValues>({
         defaultValues: {
@@ -66,7 +68,7 @@ export const VelgPeriodePanelStep = ({ perioder, panelData, setPanelData, closeP
                         return (
                             <Radio key={p.id} value={p.id} autoFocus={index === 0}>
                                 {`${formatDate(p.fom)} - ${formatDate(p.tom)} - ` +
-                                    `${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor, morsAktivitet)}`}
+                                    `${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, søker === 'FAR_ELLER_MEDMOR', morsAktivitet)}`}
                             </Radio>
                         );
                     })}

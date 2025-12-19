@@ -45,7 +45,11 @@ interface Props {
 export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: Props) => {
     const intl = useIntl();
 
-    const { uttaksplan, aleneOmOmsorg, familiehendelsedato } = useUttaksplanData();
+    const {
+        uttaksplan,
+        foreldreInfo: { rettighetType },
+        familiehendelsedato,
+    } = useUttaksplanData();
 
     const { erKunEnHelEksisterendePeriodeValgt, sammenslåtteValgtePerioder, oppdaterUttaksplan, setValgtePerioder } =
         useKalenderRedigeringContext();
@@ -232,9 +236,10 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
                                         }
                                     />
                                     <AktivitetskravSpørsmål />
-                                    {!aleneOmOmsorg && !harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato && (
-                                        <SamtidigUttakSpørsmål />
-                                    )}
+                                    {rettighetType !== 'ALENEOMSORG' &&
+                                        !harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato && (
+                                            <SamtidigUttakSpørsmål />
+                                        )}
                                     <GraderingSpørsmål />
                                     <PanelButtons
                                         onCancel={lukkRedigeringsmodus}

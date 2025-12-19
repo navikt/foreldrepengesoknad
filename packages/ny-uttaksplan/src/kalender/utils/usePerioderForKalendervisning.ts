@@ -20,9 +20,15 @@ import { filtrerBortAnnenPartsIdentiskePerioder } from '../../utils/permisjonspe
 export const usePerioderForKalendervisning = (barnehagestartdato?: string): CalendarPeriod[] => {
     const intl = useIntl();
 
-    const { uttaksplan, barn, erFarEllerMedmor, navnPåForeldre } = useUttaksplanData();
+    const {
+        uttaksplan,
+        barn,
+        foreldreInfo: { søker, navnPåForeldre },
+    } = useUttaksplanData();
 
     const familiehendelsesdato = getFamiliehendelsedato(barn);
+
+    const erFarEllerMedmor = søker === 'FAR_ELLER_MEDMOR';
 
     const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(uttaksplan, erFarEllerMedmor);
 

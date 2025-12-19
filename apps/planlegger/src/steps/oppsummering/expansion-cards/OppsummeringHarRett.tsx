@@ -13,7 +13,7 @@ import {
     getFornavnPåSøker2,
     getNavnGenitivEierform,
 } from 'utils/HvemPlanleggerUtils';
-import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
 import {
     getAntallUkerOgDager,
     getAntallUkerOgDagerAktivitetsfriKvote,
@@ -63,8 +63,6 @@ export const OppsummeringHarRett = ({
         ? getUkerOgDager(antallDagerFellesperiode - fordeling.antallDagerSøker1)
         : undefined;
     const antallUkerOgDagerAktivitetsfriKvote = getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskonto);
-    const bareFarMedmorHarRett =
-        harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
 
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
 
@@ -89,8 +87,6 @@ export const OppsummeringHarRett = ({
     const søker2Plan = uttaksplan
         ? getAnnenpartsPerioder(erDeltUttak, uttaksplan, erFarEllerMedmor)
         : planforslag.søker2;
-
-    const søker = erFarEllerMedmor ? 'farEllerMedmor' : 'mor';
 
     return (
         <VStack gap="space-40">
@@ -242,16 +238,15 @@ export const OppsummeringHarRett = ({
                         )}
                         <UttaksplanDataProvider
                             barn={mapOmBarnetTilBarn(barnet)}
-                            erFarEllerMedmor={erFarEllerMedmor}
-                            navnPåForeldre={{ farMedmor: fornavnSøker2 || '', mor: fornavnSøker1 }}
-                            modus="planlegger"
-                            søker={erDeltUttak ? 'ikke_spesifisert' : søker}
+                            foreldreInfo={{
+                                søker: erFarEllerMedmor ? 'FAR_ELLER_MEDMOR' : 'MOR',
+                                navnPåForeldre: { mor: fornavnSøker1, farMedmor: fornavnSøker2 || '' },
+                                rettighetType: utledRettighet(erAleneOmOmsorg, erDeltUttak),
+                                erMedmorDelAvSøknaden: hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR,
+                                erIkkeSøkerSpesifisert: erDeltUttak,
+                            }}
                             valgtStønadskonto={valgtStønadskonto}
-                            aleneOmOmsorg={erAleneOmOmsorg}
-                            erMedmorDelAvSøknaden={false}
-                            bareFarMedmorHarRett={bareFarMedmorHarRett}
                             harAktivitetskravIPeriodeUtenUttak={false}
-                            erDeltUttak={erDeltUttak}
                             saksperioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
                         >
                             <UttaksplanKalender barnehagestartdato={barnehagestartdato} readOnly />

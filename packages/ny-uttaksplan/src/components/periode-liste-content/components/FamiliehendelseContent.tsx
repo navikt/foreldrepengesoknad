@@ -11,14 +11,16 @@ interface Props {
 }
 
 export const FamiliehendelseContent = ({ familiehendelseType }: Props) => {
-    const { erFarEllerMedmor, navnPåForeldre } = useUttaksplanData();
+    const {
+        foreldreInfo: { navnPåForeldre, søker },
+    } = useUttaksplanData();
 
     if (familiehendelseType === FamiliehendelseType.TERM) {
         return (
             <BodyShort>
                 <FormattedMessage
                     id="uttaksplan.periodeListeContent.familiehendelse.termin"
-                    values={{ navnMor: navnPåForeldre.mor, erFarEllerMedmor }}
+                    values={{ navnMor: navnPåForeldre.mor, erFarEllerMedmor: søker === 'FAR_ELLER_MEDMOR' }}
                 />
             </BodyShort>
         );

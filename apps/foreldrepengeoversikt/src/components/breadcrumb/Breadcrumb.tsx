@@ -55,6 +55,12 @@ const inntektsmelding = {
     handleInApp: true,
 };
 
+const beregning = {
+    title: 'Beregning',
+    url: OversiktRoutes.BEREGNING,
+    handleInApp: true,
+};
+
 const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
     switch (selectedRoute) {
         case OversiktRoutes.HOVEDSIDE:
@@ -71,6 +77,8 @@ const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
             return [minSide, hovedside, saksoversikt, oppgaver];
         case OversiktRoutes.INNTEKTSMELDING:
             return [minSide, hovedside, saksoversikt, inntektsmelding];
+        case OversiktRoutes.BEREGNING:
+            return [minSide, hovedside, saksoversikt, beregning];
         default:
             return assertUnreachable('En rute mangler brødsmulesti');
     }
@@ -92,6 +100,9 @@ const getRoute = (route: OversiktRoutes | 'https://www.nav.no/minside', saksnumm
     }
     if (route === OversiktRoutes.INNTEKTSMELDING) {
         return `${sakRoute}/${OversiktRoutes.INNTEKTSMELDING}`;
+    }
+    if (route === OversiktRoutes.BEREGNING) {
+        return `${sakRoute}/${OversiktRoutes.BEREGNING}`;
     }
 
     return route;

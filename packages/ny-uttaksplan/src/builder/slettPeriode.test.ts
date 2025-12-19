@@ -11,7 +11,6 @@ const perioder: Planperiode[] = [
         tom: '2022-05-04',
         forelder: 'MOR',
         kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -20,7 +19,6 @@ const perioder: Planperiode[] = [
         tom: '2022-08-17',
         forelder: 'MOR',
         kontoType: 'MØDREKVOTE',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -29,7 +27,6 @@ const perioder: Planperiode[] = [
         tom: '2022-10-12',
         forelder: 'MOR',
         kontoType: 'FELLESPERIODE',
-        readOnly: false,
     },
 ];
 
@@ -41,7 +38,6 @@ const perioder2: Planperiode[] = [
         tom: '2022-05-31',
         forelder: 'MOR',
         kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -50,7 +46,6 @@ const perioder2: Planperiode[] = [
         tom: '2022-08-09',
         forelder: 'MOR',
         kontoType: 'MØDREKVOTE',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -59,7 +54,6 @@ const perioder2: Planperiode[] = [
         tom: '2022-08-23',
         forelder: 'MOR',
         kontoType: 'FELLESPERIODE',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -68,7 +62,6 @@ const perioder2: Planperiode[] = [
         tom: '2022-08-30',
         forelder: 'MOR',
         kontoType: 'MØDREKVOTE',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -77,7 +70,6 @@ const perioder2: Planperiode[] = [
         tom: '2022-10-12',
         forelder: 'MOR',
         kontoType: 'FELLESPERIODE',
-        readOnly: false,
     },
 ];
 
@@ -134,7 +126,6 @@ const perioderFar: Planperiode[] = [
         tom: '2022-08-01',
         forelder: 'FAR_MEDMOR',
         kontoType: 'FEDREKVOTE',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -143,7 +134,6 @@ const perioderFar: Planperiode[] = [
         tom: '2022-08-08',
         forelder: 'FAR_MEDMOR',
         kontoType: 'FEDREKVOTE',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -151,7 +141,6 @@ const perioderFar: Planperiode[] = [
         fom: '2022-08-11',
         tom: '2022-09-11',
         periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -160,7 +149,6 @@ const perioderFar: Planperiode[] = [
         tom: '2022-09-19',
         forelder: 'FAR_MEDMOR',
         kontoType: 'FEDREKVOTE',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -169,7 +157,6 @@ const perioderFar: Planperiode[] = [
         tom: '2022-10-25',
         forelder: 'FAR_MEDMOR',
         kontoType: 'FEDREKVOTE',
-        readOnly: false,
     },
 ];
 

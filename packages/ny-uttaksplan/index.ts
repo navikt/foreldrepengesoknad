@@ -37,6 +37,7 @@ export const nyUttaksplanMessages = {
 };
 
 export type { Planperiode } from './src/types/Planperiode';
+export type { ForeldreInfo } from './src/types/ForeldreInfo';
 export { PeriodeHullType } from './src/types/Planperiode';
 
 export { finnOgSettInnHull } from './src/builder/uttaksplanbuilderUtils';

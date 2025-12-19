@@ -18,11 +18,10 @@ const meta = {
     component: UttaksplanNy,
     args: {
         children: null,
-        erMedmorDelAvSøknaden: false,
-        modus: 'planlegger',
         harAktivitetskravIPeriodeUtenUttak: false,
         oppdaterUttaksplan: action('button-click'),
         harEndretPlan: false,
+        isReadOnly: false,
     },
     render: (args) => {
         const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[] | undefined>(args.saksperioder);
@@ -41,23 +40,30 @@ const meta = {
                     oppdaterUttaksplan={handleOnPlanChange}
                     harEndretPlan={perioder !== undefined}
                 >
-                    <UttaksplanNy />
+                    <UttaksplanNy isReadOnly={args.isReadOnly} />
                 </UttaksplanRedigeringProvider>
             </UttaksplanDataProvider>
         );
     },
-} satisfies Meta<ComponentProps<typeof UttaksplanDataProvider> & ComponentProps<typeof UttaksplanRedigeringProvider>>;
+} satisfies Meta<
+    ComponentProps<typeof UttaksplanNy> &
+        ComponentProps<typeof UttaksplanDataProvider> &
+        ComponentProps<typeof UttaksplanRedigeringProvider>
+>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        erFarEllerMedmor: false,
-        søker: 'mor',
-        navnPåForeldre: {
-            mor: 'Olga Utvikler',
-            farMedmor: 'Espen Utvikler',
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: {
+                mor: 'Olga Utvikler',
+                farMedmor: 'Espen Utvikler',
+            },
+            erMedmorDelAvSøknaden: false,
         },
         barn: {
             type: BarnType.FØDT,
@@ -91,10 +97,7 @@ export const Default: Story = {
                 tom: '2026-03-26',
             },
         ],
-        bareFarMedmorHarRett: false,
-        erDeltUttak: true,
         harAktivitetskravIPeriodeUtenUttak: false,
-        modus: 'planlegger',
         valgtStønadskonto: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
@@ -104,20 +107,21 @@ export const Default: Story = {
             ],
             minsteretter: MINSTERETTER,
         },
-        aleneOmOmsorg: false,
     },
 };
 
 export const MorOgMedmor: Story = {
     args: {
         ...Default.args,
-        erFarEllerMedmor: true,
-        erMedmorDelAvSøknaden: true,
-        navnPåForeldre: {
-            mor: 'Olga Utvikler',
-            farMedmor: 'Helga Utvikler',
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'FAR_ELLER_MEDMOR',
+            navnPåForeldre: {
+                mor: 'Olga Utvikler',
+                farMedmor: 'Helga Utvikler',
+            },
+            erMedmorDelAvSøknaden: true,
         },
-        erDeltUttak: true,
     },
 };
 
@@ -157,6 +161,14 @@ export const MorOgFarMedFerieopphold: Story = {
                 tom: '2026-03-30',
             },
         ],
-        erDeltUttak: true,
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: {
+                mor: 'Olga Utvikler',
+                farMedmor: 'Espen Utvikler',
+            },
+            erMedmorDelAvSøknaden: false,
+        },
     },
 };

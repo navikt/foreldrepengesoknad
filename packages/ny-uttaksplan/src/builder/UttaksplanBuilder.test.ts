@@ -9,7 +9,6 @@ const perioder: Planperiode[] = [
         tom: '2022-04-29',
         forelder: 'MOR',
         kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -18,7 +17,6 @@ const perioder: Planperiode[] = [
         tom: '2022-08-12',
         forelder: 'MOR',
         kontoType: 'MØDREKVOTE',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -27,7 +25,6 @@ const perioder: Planperiode[] = [
         tom: '2022-10-07',
         forelder: 'MOR',
         kontoType: 'FELLESPERIODE',
-        readOnly: false,
     },
 ];
 
@@ -39,7 +36,6 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         tom: '2021-12-15',
         forelder: 'MOR',
         kontoType: 'FELLESPERIODE',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -48,7 +44,6 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         tom: '2022-01-05',
         forelder: 'MOR',
         kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -57,7 +52,6 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         tom: '2022-05-18',
         forelder: 'MOR',
         kontoType: 'MØDREKVOTE',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -66,7 +60,6 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         tom: '2022-07-01',
         forelder: 'MOR',
         kontoType: 'FELLESPERIODE',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -74,7 +67,6 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         fom: '2022-07-04',
         tom: '2022-07-15',
         periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -83,7 +75,6 @@ const perioderMedToPerioderFørFødsel: Planperiode[] = [
         tom: '2022-09-23',
         forelder: 'MOR',
         kontoType: 'FELLESPERIODE',
-        readOnly: false,
     },
 ];
 
@@ -95,7 +86,6 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2021-09-03',
         forelder: 'MOR',
         kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -104,7 +94,6 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2021-09-10',
         forelder: 'MOR',
         utsettelseÅrsak: 'ARBEID',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -113,7 +102,6 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2021-12-10',
         forelder: 'MOR',
         kontoType: 'MØDREKVOTE',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -122,7 +110,6 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2021-12-31',
         forelder: 'MOR',
         utsettelseÅrsak: 'ARBEID',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -131,7 +118,6 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2022-01-07',
         forelder: 'MOR',
         kontoType: 'MØDREKVOTE',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -140,7 +126,6 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2022-04-29',
         forelder: 'MOR',
         kontoType: 'FELLESPERIODE',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -149,7 +134,6 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2022-05-10',
         forelder: 'FAR_MEDMOR',
         utsettelseÅrsak: 'ARBEID',
-        readOnly: true,
     },
     {
         erAnnenPartEøs: false,
@@ -158,7 +142,6 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2022-07-08',
         forelder: 'FAR_MEDMOR',
         kontoType: 'FEDREKVOTE',
-        readOnly: true,
     },
     {
         erAnnenPartEøs: false,
@@ -167,7 +150,6 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         tom: '2022-07-29',
         utsettelseÅrsak: 'ARBEID',
         forelder: 'FAR_MEDMOR',
-        readOnly: true,
     },
     {
         erAnnenPartEøs: false,
@@ -175,7 +157,6 @@ const perioderMedAnnenPartsUttakOgUtsettelserISlutten: Planperiode[] = [
         fom: '2022-08-01',
         tom: '2022-09-13',
         forelder: 'FAR_MEDMOR',
-        readOnly: true,
         kontoType: 'FEDREKVOTE',
     },
 ];
@@ -195,7 +176,6 @@ describe('Uttaksplanbuilder tester', () => {
             tom: '2022-08-26',
             forelder: 'MOR',
             utsettelseÅrsak: 'ARBEID',
-            readOnly: false,
         };
 
         const result = Uttaksplanbuilder({
@@ -203,10 +183,13 @@ describe('Uttaksplanbuilder tester', () => {
             familiehendelsedato: '2022-05-02',
             harAktivitetskravIPeriodeUtenUttak: false,
             gjelderAdopsjon: false,
-            bareFarMedmorHarRett: false,
-            erFarEllerMedmor: false,
+            foreldreInfo: {
+                søker: 'MOR',
+                navnPåForeldre: { mor: 'Mors navn', farMedmor: 'Fars navn' },
+                erMedmorDelAvSøknaden: false,
+                rettighetType: 'BEGGE_RETT',
+            },
             førsteUttaksdagNesteBarnsSak: undefined,
-            erIPlanleggerModus: true,
         }).leggTilPeriode(nyPeriode);
         expect(result.length).toBe(4);
         expect(omitIdForComparison(result[2]!)).toEqual(omitIdForComparison(nyPeriode));
@@ -217,7 +200,6 @@ describe('Uttaksplanbuilder tester', () => {
             fom: '2022-05-23',
             tom: '2022-05-27',
             forelder: 'MOR',
-            readOnly: false,
             utsettelseÅrsak: 'ARBEID',
         };
 
@@ -226,10 +208,13 @@ describe('Uttaksplanbuilder tester', () => {
             familiehendelsedato: '2022-05-02',
             harAktivitetskravIPeriodeUtenUttak: false,
             gjelderAdopsjon: false,
-            bareFarMedmorHarRett: false,
-            erFarEllerMedmor: false,
+            foreldreInfo: {
+                søker: 'MOR',
+                navnPåForeldre: { mor: 'Mors navn', farMedmor: 'Fars navn' },
+                erMedmorDelAvSøknaden: false,
+                rettighetType: 'BEGGE_RETT',
+            },
             førsteUttaksdagNesteBarnsSak: undefined,
-            erIPlanleggerModus: true,
         }).leggTilPeriode(nyPeriode2);
 
         expect(result2.length).toBe(6);
@@ -247,17 +232,19 @@ describe('Uttaksplanbuilder tester', () => {
             tom: '2022-11-11',
             forelder: 'MOR',
             kontoType: 'MØDREKVOTE',
-            readOnly: false,
         };
         const result = Uttaksplanbuilder({
             perioder: perioderMedToPerioderFørFødsel,
             familiehendelsedato: '2022-01-06',
             harAktivitetskravIPeriodeUtenUttak: false,
             gjelderAdopsjon: false,
-            bareFarMedmorHarRett: false,
-            erFarEllerMedmor: false,
+            foreldreInfo: {
+                søker: 'MOR',
+                navnPåForeldre: { mor: 'Mors navn', farMedmor: 'Fars navn' },
+                erMedmorDelAvSøknaden: false,
+                rettighetType: 'BEGGE_RETT',
+            },
             førsteUttaksdagNesteBarnsSak: undefined,
-            erIPlanleggerModus: true,
         }).leggTilPeriode(nyPeriodeISluttenAvPlanen);
 
         expect(result.length).toEqual(8);
@@ -287,17 +274,19 @@ describe('Uttaksplanbuilder tester', () => {
                 tom: '2022-09-16',
                 forelder: 'MOR',
                 utsettelseÅrsak: 'ARBEID',
-                readOnly: false,
             };
             const result = Uttaksplanbuilder({
                 perioder: perioderMedAnnenPartsUttakOgUtsettelserISlutten,
                 familiehendelsedato: '2021-09-04',
                 harAktivitetskravIPeriodeUtenUttak: false,
                 gjelderAdopsjon: false,
-                bareFarMedmorHarRett: false,
-                erFarEllerMedmor: false,
+                foreldreInfo: {
+                    søker: 'MOR',
+                    navnPåForeldre: { mor: 'Mors navn', farMedmor: 'Fars navn' },
+                    erMedmorDelAvSøknaden: false,
+                    rettighetType: 'BEGGE_RETT',
+                },
                 førsteUttaksdagNesteBarnsSak: undefined,
-                erIPlanleggerModus: true,
             }).leggTilPeriode(nyUtsettelseISluttenAvPlanen);
 
             expect(result.length).toEqual(11);

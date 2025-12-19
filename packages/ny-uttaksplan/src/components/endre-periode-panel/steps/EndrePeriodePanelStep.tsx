@@ -53,7 +53,9 @@ export const EndrePeriodePanelStep = ({
     const intl = useIntl();
     const { valgtPeriode } = panelData;
     const graderingsInfo = getGraderingsInfo(valgtPeriode);
-    const { erDeltUttak } = useUttaksplanData();
+    const {
+        foreldreInfo: { rettighetType },
+    } = useUttaksplanData();
 
     const getHvaVilDuGjøre = () => {
         if (valgtPeriode) {
@@ -141,7 +143,6 @@ export const EndrePeriodePanelStep = ({
             handleFunc({
                 erAnnenPartEøs: false,
                 id: valgtPeriode?.id ?? `${fomValue} - ${tomValue} - LOVBESTEMT_FERIE`,
-                readOnly: false,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: 'MOR',
@@ -151,7 +152,6 @@ export const EndrePeriodePanelStep = ({
             handleAddPeriode({
                 erAnnenPartEøs: false,
                 id: `${fomValue} - ${tomValue} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
-                readOnly: false,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: 'MOR',
@@ -163,7 +163,6 @@ export const EndrePeriodePanelStep = ({
             handleFunc({
                 erAnnenPartEøs: false,
                 id: valgtPeriode!.id,
-                readOnly: false,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: getForelderFromKontoType(values.kontoType, values.forelder),
@@ -186,7 +185,9 @@ export const EndrePeriodePanelStep = ({
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? <KontotypeSpørsmål /> : null}
                 <AktivitetskravSpørsmål />
                 <TidsperiodeSpørsmål hvaVilDuGjøre={hvaVilDuGjøre} />
-                {erDeltUttak && hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE && <SamtidigUttakSpørsmål />}
+                {rettighetType === 'BEGGE_RETT' && hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE && (
+                    <SamtidigUttakSpørsmål />
+                )}
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? <GraderingSpørsmål /> : null}
                 <PanelButtons
                     onCancel={closePanel}
