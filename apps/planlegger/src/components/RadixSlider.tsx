@@ -1,7 +1,7 @@
 // Unntak å hente inn komponenter fra slike 3.parts-biblioteker, men siden native er problematisk
 // å få til å se ut likt på tvers av nettlesere og @radix-ui/react-slider er brukt i flere prosjekter i NAV,
 // så benytter vi oss av denne
-import * as RadixSlider from '@radix-ui/react-slider';
+import * as Slider from '@radix-ui/react-slider';
 
 interface SliderComponentProps {
     value?: number[];
@@ -16,7 +16,7 @@ interface SliderComponentProps {
     getAriaValueText?: (value: number) => string;
 }
 
-export const Slider = ({
+export const RadixSlider = ({
     value,
     onValueChange,
     min = 0,
@@ -35,7 +35,7 @@ export const Slider = ({
     };
 
     return (
-        <RadixSlider.Root
+        <Slider.Root
             min={min}
             max={max}
             step={step}
@@ -43,10 +43,10 @@ export const Slider = ({
             {...rootProps}
             className="relative flex h-5 w-full touch-none items-center select-none"
         >
-            <RadixSlider.Track className="bg-ax-bg-default relative h-2 grow rounded-full">
-                <RadixSlider.Range className="absolute h-full rounded-full bg-ax-bg-default" />
-            </RadixSlider.Track>
-            <RadixSlider.Thumb
+            <Slider.Track className="bg-ax-bg-default relative h-2 grow rounded-full">
+                <Slider.Range className="absolute h-full rounded-full bg-ax-bg-default" />
+            </Slider.Track>
+            <Slider.Thumb
                 aria-label={ariaLabel}
                 aria-labelledby={ariaLabelledby}
                 aria-describedby={ariaDescribedby}
@@ -60,6 +60,6 @@ export const Slider = ({
                     'cursor-pointer outline outline-offset-2 outline-transparent'
                 }
             />
-        </RadixSlider.Root>
+        </Slider.Root>
     );
 };

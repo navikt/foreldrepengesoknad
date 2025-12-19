@@ -4,7 +4,7 @@ import { UkerOgDager } from 'utils/stønadskontoerUtils';
 
 import { BodyShort, Button, Heading, VStack } from '@navikt/ds-react';
 
-import { Slider } from './Slider';
+import { RadixSlider } from './RadixSlider';
 
 interface FordelingSliderProps {
     antallDagerSøker1: number | undefined;
@@ -57,7 +57,7 @@ export const FordelingSlider = ({
             </VStack>
             {/* Slideren er implementert omvendt: slider-verdien representerer antall dager til søker 2,
                 slik at det blir intuitivt at slideren beveger seg mot personen som får flere dager */}
-            <Slider
+            <RadixSlider
                 min={0}
                 max={totalDager}
                 step={5}
