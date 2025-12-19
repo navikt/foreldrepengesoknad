@@ -1,4 +1,4 @@
-// Unntak å hente inn komponenter fra slike 3.parts-bibliteker, men siden native er problematisk
+// Unntak å hente inn komponenter fra slike 3.parts-biblioteker, men siden native er problematisk
 // å få til å se ut likt på tvers av nettlesere og @radix-ui/react-slider er brukt i flere prosjekter i NAV,
 // så benytter vi oss av denne
 import * as Slider from '@radix-ui/react-slider';
