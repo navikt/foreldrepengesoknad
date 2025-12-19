@@ -1,9 +1,10 @@
 import { PlusIcon } from '@navikt/aksel-icons';
-import { Slider } from 'components/Slider';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { UkerOgDager } from 'utils/stønadskontoerUtils';
 
 import { BodyShort, Button, Heading, VStack } from '@navikt/ds-react';
+
+import { Slider } from './Slider';
 
 interface FordelingSliderProps {
     antallDagerSøker1: number | undefined;
