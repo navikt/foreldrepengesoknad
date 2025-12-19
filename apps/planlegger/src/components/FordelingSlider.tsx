@@ -55,7 +55,8 @@ export const FordelingSlider = ({
                     />
                 )}
             </VStack>
-
+            {/* Slideren er implementert omvendt: slider-verdien representerer antall dager til søker 2, 
+    slik at det blir intuitivt at slideren beveger seg mot personen som får flere dager */}{' '}
             <SliderComponent
                 min={0}
                 max={totalDager}
@@ -89,7 +90,6 @@ export const FordelingSlider = ({
                     }
                 }}
             />
-
             <VStack gap="space-8" align="end">
                 <BodyShort style={{ fontWeight: 600 }}>{fornavnSøker2}</BodyShort>
                 {antallDagerSøker1 !== undefined && (

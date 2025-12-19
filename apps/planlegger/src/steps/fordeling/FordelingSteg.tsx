@@ -169,7 +169,7 @@ export const getFellesperiodefordelingSelectOptions = (
     for (let i = 0; i <= antallUkerOgDagerFellesperiode.uker; i++) {
         const søker1SkalHaDager = antallUkerOgDagerFellesperiode.uker - i >= i;
         const dagerSøker1 = søker1SkalHaDager ? antallUkerOgDagerFellesperiode.dager : 0;
-        const dagerSøker2 = søker1SkalHaDager ? 0 : antallUkerOgDagerFellesperiode.dager;
+        const dagerSøker2 = !søker1SkalHaDager ? antallUkerOgDagerFellesperiode.dager : 0;
         values.push({
             antallUkerOgDagerSøker1: {
                 uker: antallUkerOgDagerFellesperiode.uker - i,
