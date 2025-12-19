@@ -1,10 +1,9 @@
 import { PlusIcon } from '@navikt/aksel-icons';
+import { Slider } from 'components/Slider';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { UkerOgDager } from 'utils/stønadskontoerUtils';
 
 import { BodyShort, Button, Heading, VStack } from '@navikt/ds-react';
-
-import { Slider } from './Slider';
 
 interface FordelingSliderProps {
     antallDagerSøker1: number | undefined;
@@ -63,7 +62,7 @@ export const FordelingSlider = ({
                 step={5}
                 value={[antallDagerSøker1 === undefined ? totalDager / 2 : totalDager - antallDagerSøker1]}
                 ariaLabelledby="fordeling-slider-label"
-                getAriaValueText={(sliderValue) => {
+                getAriaValueText={(sliderValue: number) => {
                     const dager1 = totalDager - sliderValue;
                     const uker1 = Math.floor(dager1 / 5);
                     const dager1Rest = dager1 % 5;
@@ -83,7 +82,7 @@ export const FordelingSlider = ({
                         },
                     );
                 }}
-                onValueChange={(value) => {
+                onValueChange={(value: number[]) => {
                     if (value[0] !== undefined) {
                         onAntallDagerSøker1Change(totalDager - value[0]);
                         onScrollToBottom?.();
