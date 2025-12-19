@@ -11,9 +11,7 @@ import userEvent from '@testing-library/user-event';
  * Slider til høyre = søker 2 får mange uker
  */
 export const endreFordelingMedSlider = async (utils: ReturnType<typeof render>, ønsketAntallDager: number) => {
-    const slider = utils.getByRole('slider', {
-        name: /Hvordan vil dere fordele 16 uker med fellesperiode\?/i,
-    });
+    const slider = utils.getByRole('slider');
     await userEvent.click(slider);
     const max = Number(slider.getAttribute('aria-valuemax') ?? 80);
     const nåSliderVerdi = Number(slider.getAttribute('aria-valuenow') ?? 0);

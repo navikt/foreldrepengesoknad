@@ -317,13 +317,6 @@ const AntallUkerVelger = ({
 
             {hvemHarRett === 'beggeHarRett' &&
                 (!omBarnet.erFødsel || hvemPlanlegger.type !== HvemPlanleggerType.FAR_OG_FAR) && (
-                    <Heading id="fordeling-slider-label" size="small" level="3" className="sr-only">
-                        Velg fordeling fellesperiode
-                    </Heading>
-                )}
-
-            {hvemHarRett === 'beggeHarRett' &&
-                (!omBarnet.erFødsel || hvemPlanlegger.type !== HvemPlanleggerType.FAR_OG_FAR) && (
                     <BluePanel>
                         <Heading id="fordeling-slider-label" size="small" level="3">
                             <FormattedMessage id="PlanenDeresSteg.FordelingTittel" />
