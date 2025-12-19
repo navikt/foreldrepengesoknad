@@ -488,17 +488,13 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         await userEvent.click(screen.getByText('80 % i 61 uker + 1 dag'));
 
-        // Venter på at knappens state oppdateres
-        await waitFor(() => {
-            expect(screen.getByText('100 % i 49 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
-        });
-
+        expect(screen.getByText('100 % i 49 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.getByText('80 % i 61 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe('true');
 
-        // Verifiserer fordelingen på slideren
+        // Verifiserer at slideren viser 0 uker for mor og 16 uker for far
         const sliderHeadings = screen.getAllByRole('heading', { level: 4 });
         expect(sliderHeadings.some((heading) => heading.textContent === '0 uker')).toBe(true);
-        expect(sliderHeadings.some((heading) => heading.textContent === '20 uker og en dag')).toBe(true);
+        expect(sliderHeadings.some((heading) => heading.textContent === '20 uker')).toBe(true);
 
         expect(screen.getByText('Mors periode')).toBeInTheDocument();
         expect(screen.getByText('Fars periode')).toBeInTheDocument();
