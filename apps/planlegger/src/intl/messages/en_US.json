@@ -203,6 +203,8 @@
     "OversiktSteg.Infoboks.Utkast": "You can adjust this plan",
     "OversiktSteg.Infoboks.Utkast.Tekst": "Here is a draft of what the leave of absence might look like. You can customize this plan according to your own needs, to test out what is possible.",
     "PlanenDeresSteg.Tittel": "Plan",
+    "PlanenDeresSteg.FordelingTittel": "Distribution of the shared period",
+    "PlanenDeresSteg.Undertekst": "You can change the distribution of the shared period by dragging the slider.",
     "UforutsetteEndringer.UforutsetteEndringer": "Unforeseen changes",
     "UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk": "If you become sick during their period with parental benefit",
     "UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Alene": "If one becomes sick when receiving parental benefit",

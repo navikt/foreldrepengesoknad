@@ -29,7 +29,7 @@ import { BodyLong, BodyShort, Heading, Tabs, ToggleGroup, VStack } from '@navikt
 
 import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { Dekningsgrad, HvemPlanleggerType, KontoBeregningResultatDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { Infobox, StepButtons } from '@navikt/fp-ui';
+import { BluePanel, Infobox, StepButtons } from '@navikt/fp-ui';
 import { encodeToBase64, useMedia } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import {
@@ -287,7 +287,7 @@ const AntallUkerVelger = ({
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
 
     return (
-        <VStack gap="space-8">
+        <VStack gap="space-24">
             <ToggleGroup
                 defaultValue={hvorLangPeriode?.dekningsgrad}
                 size={isDesktop ? 'medium' : 'small'}
@@ -324,7 +324,13 @@ const AntallUkerVelger = ({
 
             {hvemHarRett === 'beggeHarRett' &&
                 (!omBarnet.erFødsel || hvemPlanlegger.type !== HvemPlanleggerType.FAR_OG_FAR) && (
-                    <VStack className="mt-0">
+                    <BluePanel>
+                        <Heading id="fordeling-slider-label" size="small" level="3">
+                            <FormattedMessage id="PlanenDeresSteg.FordelingTittel" />
+                        </Heading>
+                        <BodyShort className="mb-4">
+                            <FormattedMessage id="PlanenDeresSteg.Undertekst" />
+                        </BodyShort>
                         <FordelingSlider
                             antallDagerSøker1={fordeling?.antallDagerSøker1}
                             onAntallDagerSøker1Change={(value) => {
@@ -335,7 +341,7 @@ const AntallUkerVelger = ({
                             fornavnSøker1={fornavnSøker1}
                             fornavnSøker2={fornavnSøker2}
                         />
-                    </VStack>
+                    </BluePanel>
                 )}
         </VStack>
     );
