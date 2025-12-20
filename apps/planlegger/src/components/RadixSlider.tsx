@@ -56,7 +56,7 @@ export const RadixSlider = ({
                 aria-valuenow={currentValue}
                 aria-valuetext={getAriaValueText ? getAriaValueText(currentValue ?? min) : undefined}
                 className={
-                    'bg-ax-bg-brand-blue-strong block h-5 w-5 rounded-full border-2 border-white shadow-md ' +
+                    'bg-ax-bg-brand-blue-strong block h-5 w-5 rounded-full border-2 border-ax-bg-brand-blue-strong shadow-md ' +
                     'cursor-pointer outline outline-offset-2 outline-transparent'
                 }
             />
