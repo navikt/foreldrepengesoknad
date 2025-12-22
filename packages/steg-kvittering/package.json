@@ -18,9 +18,9 @@
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "7.35.2",
-        "@navikt/ds-css": "7.35.2",
-        "@navikt/ds-react": "7.35.2",
+        "@navikt/aksel-icons": "7.36.0",
+        "@navikt/ds-css": "7.36.0",
+        "@navikt/ds-react": "7.36.0",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
@@ -33,26 +33,26 @@
     },
     "devDependencies": {
         "@formatjs/cli-lib": "7.4.4",
-        "@navikt/ds-tailwind": "7.35.2",
+        "@navikt/ds-tailwind": "7.36.0",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
-        "@storybook/addon-links": "10.1.8",
-        "@storybook/react-vite": "10.1.8",
+        "@storybook/addon-links": "10.1.10",
+        "@storybook/react-vite": "10.1.10",
         "@testing-library/jest-dom": "6.9.1",
-        "@testing-library/react": "16.3.0",
+        "@testing-library/react": "16.3.1",
         "@testing-library/user-event": "14.6.1",
         "@types/react": "19.2.7",
         "eslint": "9.39.2",
         "fast-glob": "3.3.3",
         "playwright": "1.57.0",
-        "storybook": "10.1.8",
+        "storybook": "10.1.10",
         "storybook-react-intl": "10.0.1",
         "tailwindcss": "4.1.18",
         "typescript": "5.9.3",
-        "vite": "7.2.7",
-        "vitest": "4.0.15"
+        "vite": "7.3.0",
+        "vitest": "4.0.16"
     },
     "packageManager": "pnpm@9.1.4"
 }
