@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, KontoTypeUttak, MorsAktivitet } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
@@ -12,6 +12,7 @@ import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getGradering, getGraderingsInfo } from '../../../utils/graderingUtils';
 import { HvaVilDuGjøre } from '../../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 import { PanelButtons } from '../../panel-buttons/PanelButtons';
+import { AktivitetskravSpørsmål } from '../../spørsmål/AktivitetskravSpørsmål';
 import { GraderingSpørsmål } from '../../spørsmål/GraderingSpørsmål';
 import { HvaVilDuGjøreSpørsmål } from '../../spørsmål/HvaVilDuGjøreSpørsmål';
 import { KontotypeSpørsmål } from '../../spørsmål/KontotypeSpørsmål';
@@ -38,6 +39,7 @@ export type EndrePeriodePanelStepFormValues = {
     samtidigUttak?: boolean;
     samtidigUttaksprosent?: string;
     hvaVilDuGjøre: HvaVilDuGjøre;
+    morsAktivitet?: MorsAktivitet | undefined;
 };
 
 export const EndrePeriodePanelStep = ({
@@ -51,7 +53,9 @@ export const EndrePeriodePanelStep = ({
     const intl = useIntl();
     const { valgtPeriode } = panelData;
     const graderingsInfo = getGraderingsInfo(valgtPeriode);
-    const { erDeltUttak } = useUttaksplanData();
+    const {
+        foreldreInfo: { rettighetType },
+    } = useUttaksplanData();
 
     const getHvaVilDuGjøre = () => {
         if (valgtPeriode) {
@@ -88,6 +92,7 @@ export const EndrePeriodePanelStep = ({
                       samtidigUttak: valgtPeriode.samtidigUttak !== undefined,
                       samtidigUttaksprosent: valgtPeriode.samtidigUttak?.toString(),
                       hvaVilDuGjøre: getHvaVilDuGjøre(),
+                      morsAktivitet: valgtPeriode.morsAktivitet,
                   },
     });
 
@@ -138,7 +143,6 @@ export const EndrePeriodePanelStep = ({
             handleFunc({
                 erAnnenPartEøs: false,
                 id: valgtPeriode?.id ?? `${fomValue} - ${tomValue} - LOVBESTEMT_FERIE`,
-                readOnly: false,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: 'MOR',
@@ -148,7 +152,6 @@ export const EndrePeriodePanelStep = ({
             handleAddPeriode({
                 erAnnenPartEøs: false,
                 id: `${fomValue} - ${tomValue} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
-                readOnly: false,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: 'MOR',
@@ -160,12 +163,11 @@ export const EndrePeriodePanelStep = ({
             handleFunc({
                 erAnnenPartEøs: false,
                 id: valgtPeriode!.id,
-                readOnly: false,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: getForelderFromKontoType(values.kontoType, values.forelder),
                 kontoType: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoType,
-                morsAktivitet: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : undefined,
+                morsAktivitet: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : values.morsAktivitet,
                 gradering: getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType),
                 samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
             });
@@ -181,8 +183,11 @@ export const EndrePeriodePanelStep = ({
                     erEndring={true}
                 />
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? <KontotypeSpørsmål /> : null}
+                <AktivitetskravSpørsmål />
                 <TidsperiodeSpørsmål hvaVilDuGjøre={hvaVilDuGjøre} />
-                {erDeltUttak && hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE && <SamtidigUttakSpørsmål />}
+                {rettighetType === 'BEGGE_RETT' && hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE && (
+                    <SamtidigUttakSpørsmål />
+                )}
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? <GraderingSpørsmål /> : null}
                 <PanelButtons
                     onCancel={closePanel}

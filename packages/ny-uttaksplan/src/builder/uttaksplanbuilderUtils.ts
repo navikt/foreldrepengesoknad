@@ -147,7 +147,7 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
                 (erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)));
 
         if (harAktivitetskravIPeriodeUtenUttak && !farMedmorBeholderDagerIkkeTattUtDeFørsteSeksUkene) {
-            return getSplittetPeriodeOmNødvendig(getPeriodeHull(tidsperiode), førsteUttaksdagNesteBarnsSak);
+            return getSplittetPeriodeOmNødvendig(getPeriodeHull(tidsperiode, false), førsteUttaksdagNesteBarnsSak);
         }
 
         if (dayjs(tidsperiode.fom).isBefore(familiehendelsesdato, 'day')) {
@@ -162,7 +162,7 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
                 ) {
                     return [getNyPeriodeUtenUttak(tidsperiode)];
                 }
-                return [getPeriodeHull(tidsperiode)];
+                return [getPeriodeHull(tidsperiode, true)];
             }
 
             const antallDagerFraFomTilFørsteUttaksdagSeksUker =
@@ -191,11 +191,11 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
                 }
 
                 const periodeUtenUttak = getNyPeriodeUtenUttak(førsteSeksUkerTidsperiode);
-                const periodeHull = getPeriodeHull(etterFørsteSeksUkerTidsperiode);
+                const periodeHull = getPeriodeHull(etterFørsteSeksUkerTidsperiode, false);
                 return [periodeUtenUttak, periodeHull];
             }
 
-            const periodeHull = getPeriodeHull(førsteSeksUkerTidsperiode);
+            const periodeHull = getPeriodeHull(førsteSeksUkerTidsperiode, true);
             const periodeUtenUttak = getNyPeriodeUtenUttak(etterFørsteSeksUkerTidsperiode);
 
             return [periodeHull, periodeUtenUttak];
@@ -204,16 +204,16 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
         return getSplittetPeriodeOmNødvendig(getNyPeriodeUtenUttak(tidsperiode), førsteUttaksdagNesteBarnsSak);
     }
 
-    return getSplittetPeriodeOmNødvendig(getPeriodeHull(tidsperiode), førsteUttaksdagNesteBarnsSak);
+    return getSplittetPeriodeOmNødvendig(getPeriodeHull(tidsperiode, !erFarEllerMedmor), førsteUttaksdagNesteBarnsSak);
 };
 
-const getPeriodeHull = (tidsperiode: Tidsperiode): Planperiode => ({
+const getPeriodeHull = (tidsperiode: Tidsperiode, erMor: boolean): Planperiode => ({
     erAnnenPartEøs: false,
     id: `${tidsperiode.fom} - ${tidsperiode.tom} - ${PeriodeHullType.TAPTE_DAGER}`,
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
     periodeHullÅrsak: PeriodeHullType.TAPTE_DAGER,
-    readOnly: false,
+    forelder: erMor ? 'MOR' : 'FAR_MEDMOR',
 });
 
 const getNyPeriodeUtenUttak = (tidsperiode: Tidsperiode): Planperiode => ({
@@ -222,7 +222,6 @@ const getNyPeriodeUtenUttak = (tidsperiode: Tidsperiode): Planperiode => ({
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
     periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-    readOnly: false,
 });
 
 export const getTidsperiodeMellomPerioder = (

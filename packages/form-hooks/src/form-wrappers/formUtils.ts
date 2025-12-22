@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 import { FieldErrors, FieldValues, Path } from 'react-hook-form';
 
 //TODO (TOR) Trur ein bør fjerna undefined her

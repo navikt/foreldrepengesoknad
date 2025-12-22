@@ -492,6 +492,7 @@ export const settInnAnnenPartsUttak = (
                 res.push({
                     ...p,
                     ønskerSamtidigUttak: false,
+                    samtidigUttakProsent: undefined,
                 });
 
                 return res;

@@ -12,7 +12,6 @@ const perioder: Planperiode[] = [
         forelder: 'FAR_MEDMOR',
         kontoType: 'FORELDREPENGER',
         morsAktivitet: 'IKKE_OPPGITT',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -22,7 +21,6 @@ const perioder: Planperiode[] = [
         forelder: 'FAR_MEDMOR',
         kontoType: 'FORELDREPENGER',
         morsAktivitet: 'IKKE_OPPGITT',
-        readOnly: false,
     },
 ];
 
@@ -87,7 +85,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 kontoType: 'FELLESPERIODE',
                 forelder: 'MOR',
                 samtidigUttak: 100,
-                readOnly: false,
             },
             {
                 erAnnenPartEøs: false,
@@ -97,7 +94,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 kontoType: 'MØDREKVOTE',
                 forelder: 'MOR',
                 samtidigUttak: 50,
-                readOnly: false,
             },
             {
                 erAnnenPartEøs: false,
@@ -107,7 +103,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 kontoType: 'MØDREKVOTE',
                 forelder: 'MOR',
                 samtidigUttak: 70,
-                readOnly: false,
             },
         ];
 
@@ -118,7 +113,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 fom: '2022-02-14',
                 tom: '2022-02-18',
                 forelder: 'FAR_MEDMOR',
-                readOnly: true,
                 samtidigUttak: 100,
                 oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
             },
@@ -174,7 +168,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 kontoType: 'FELLESPERIODE',
                 forelder: 'MOR',
                 samtidigUttak: 100,
-                readOnly: false,
             },
             {
                 erAnnenPartEøs: false,
@@ -184,7 +177,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 kontoType: 'MØDREKVOTE',
                 forelder: 'MOR',
                 samtidigUttak: 100,
-                readOnly: false,
             },
             {
                 erAnnenPartEøs: false,
@@ -194,7 +186,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 kontoType: 'MØDREKVOTE',
                 forelder: 'MOR',
                 samtidigUttak: 80,
-                readOnly: false,
             },
         ];
 
@@ -206,7 +197,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 tom: '2022-03-04',
                 forelder: 'FAR_MEDMOR',
                 samtidigUttak: 80,
-                readOnly: true,
                 oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
             },
         ];
@@ -282,7 +272,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 forelder: 'FAR_MEDMOR',
                 samtidigUttak: 100,
                 oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
-                readOnly: true,
             },
         ];
 
@@ -300,7 +289,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 fom: '2021-01-05',
                 tom: '2021-01-06',
                 forelder: 'FAR_MEDMOR',
-                readOnly: false,
             };
             const annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode: Planperiode[] = [
                 {
@@ -311,7 +299,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                     forelder: 'FAR_MEDMOR',
                     samtidigUttak: 100,
                     oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
-                    readOnly: true,
                 },
             ];
 
@@ -337,7 +324,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             fom: '2021-01-04',
             tom: '2021-01-07',
             forelder: 'FAR_MEDMOR',
-            readOnly: false,
         };
         const annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode: Planperiode[] = [
             {
@@ -348,7 +334,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 forelder: 'FAR_MEDMOR',
                 oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
                 samtidigUttak: 100,
-                readOnly: true,
             },
         ];
 
@@ -369,7 +354,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             fom: '2021-01-04',
             tom: '2021-01-07',
             forelder: 'MOR',
-            readOnly: false,
             utsettelseÅrsak: 'ARBEID',
         };
         const annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode: Planperiode[] = [
@@ -381,7 +365,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 forelder: 'FAR_MEDMOR',
                 oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
                 samtidigUttak: 100,
-                readOnly: true,
             },
         ];
 
@@ -407,7 +390,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 fom: '2021-01-04',
                 tom: '2021-01-07',
                 forelder: 'FAR_MEDMOR',
-                readOnly: false,
             };
             const annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode: Planperiode[] = [
                 {
@@ -417,7 +399,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                     tom: '2021-01-08',
                     forelder: 'FAR_MEDMOR',
                     oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
-                    readOnly: true,
                 },
             ];
 
@@ -431,7 +412,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             expect(omitOne(result[0]!, 'id')).toEqual(omitOne(utsettelseSomOverlapperMedMidtenTilAnnenPart, 'id'));
             expect(result[1]!.tom).toEqual(annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0]!.tom);
             expect(result[1]!.fom).toEqual('2021-01-08');
-            expect(result[1]!.readOnly).toEqual(true);
         },
     );
 
@@ -444,7 +424,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 tom: '2026-01-29',
                 erAnnenPartEøs: false,
                 id: '1',
-                readOnly: false,
             },
             {
                 forelder: 'MOR',
@@ -453,7 +432,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 tom: '2026-05-15',
                 erAnnenPartEøs: false,
                 id: '2',
-                readOnly: false,
             },
             {
                 forelder: 'MOR',
@@ -462,7 +440,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 tom: '2026-09-04',
                 erAnnenPartEøs: false,
                 id: '3',
-                readOnly: false,
             },
         ];
 

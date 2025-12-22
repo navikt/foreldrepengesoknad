@@ -62,6 +62,12 @@ export const Breadcrumb = () => {
         handleInApp: true,
     };
 
+    const beregning = {
+        title: 'Beregning',
+        url: OversiktRoutes.BEREGNING,
+        handleInApp: true,
+    };
+
     const getBreadcrumbs = (route: OversiktRoutes) => {
         switch (route) {
             case OversiktRoutes.HOVEDSIDE:
@@ -78,6 +84,8 @@ export const Breadcrumb = () => {
                 return [minSide, hovedside, saksoversikt, oppgaver];
             case OversiktRoutes.INNTEKTSMELDING:
                 return [minSide, hovedside, saksoversikt, inntektsmelding];
+            case OversiktRoutes.BEREGNING:
+                return [minSide, hovedside, saksoversikt, beregning];
             default:
                 return assertUnreachable('En rute mangler brødsmulesti');
         }
@@ -99,6 +107,9 @@ export const Breadcrumb = () => {
         }
         if (route === OversiktRoutes.INNTEKTSMELDING) {
             return `${sakRoute}/${OversiktRoutes.INNTEKTSMELDING}`;
+        }
+        if (route === OversiktRoutes.BEREGNING) {
+            return `${sakRoute}/${OversiktRoutes.BEREGNING}`;
         }
 
         return route;

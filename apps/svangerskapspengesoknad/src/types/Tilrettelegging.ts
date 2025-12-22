@@ -25,6 +25,8 @@ export type PeriodeMedVariasjon = {
     stillingsprosent: string;
 };
 
+export type PeriodeMedVariasjonFormValues = Partial<PeriodeMedVariasjon>;
+
 type Tilrettelegging = {
     behovForTilretteleggingFom: string;
     risikofaktorer?: string;

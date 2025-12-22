@@ -11,6 +11,7 @@ import { mapPerioderToPermisjonsperiode } from '../../utils/permisjonsperiodeUti
 import { PeriodeListeItem } from './../periode-liste-item/PeriodeListeItem';
 
 interface Props {
+    isReadOnly: boolean;
     perioder: Planperiode[];
     handleAddPeriode: (nyPeriode: Planperiode) => void;
     handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
@@ -20,6 +21,7 @@ interface Props {
 }
 
 export const PeriodeListe = ({
+    isReadOnly,
     perioder,
     handleUpdatePeriode,
     handleDeletePeriode,
@@ -40,6 +42,7 @@ export const PeriodeListe = ({
                     return (
                         <Fragment key={`${permisjonsperiode.tidsperiode.fom}-${permisjonsperiode.tidsperiode.tom}`}>
                             <PeriodeListeItem
+                                isReadOnly={isReadOnly}
                                 handleAddPeriode={handleAddPeriode}
                                 handleUpdatePeriode={handleUpdatePeriode}
                                 handleDeletePeriode={handleDeletePeriode}
@@ -49,6 +52,7 @@ export const PeriodeListe = ({
                             />
                             {permisjonsperioder.length - 1 === index && (
                                 <PeriodeListeItem
+                                    isReadOnly={isReadOnly}
                                     handleAddPeriode={handleAddPeriode}
                                     handleUpdatePeriode={handleUpdatePeriode}
                                     handleDeletePeriode={handleDeletePeriode}
@@ -65,6 +69,7 @@ export const PeriodeListe = ({
                         <Fragment key={`${permisjonsperiode.tidsperiode.fom}-${permisjonsperiode.tidsperiode.tom}`}>
                             {indexOfFørstePeriodeEtterFødsel === index && (
                                 <PeriodeListeItem
+                                    isReadOnly={isReadOnly}
                                     handleAddPeriode={handleAddPeriode}
                                     handleUpdatePeriode={handleUpdatePeriode}
                                     handleDeletePeriode={handleDeletePeriode}
@@ -75,6 +80,7 @@ export const PeriodeListe = ({
                                 />
                             )}
                             <PeriodeListeItem
+                                isReadOnly={isReadOnly}
                                 handleAddPeriode={handleAddPeriode}
                                 handleUpdatePeriode={handleUpdatePeriode}
                                 handleDeletePeriode={handleDeletePeriode}

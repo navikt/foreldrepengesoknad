@@ -6,32 +6,36 @@ import { KontoBeregningDto } from '@navikt/fp-types';
 
 import { KvoteOppsummering } from './KvoteOppsummering';
 import { UttaksplanDataProvider } from './context/UttaksplanDataContext';
+import { ForeldreInfo } from './types/ForeldreInfo';
+
+const DEFAULT_FORELDRE_INFO = {
+    søker: 'MOR',
+    navnPåForeldre: {
+        mor: 'Helga',
+        farMedmor: 'Espen',
+    },
+    rettighetType: 'BARE_SØKER_RETT',
+    erMedmorDelAvSøknaden: false,
+} satisfies ForeldreInfo;
 
 const meta = {
     component: KvoteOppsummering,
     args: {
-        navnPåForeldre: {
-            mor: 'Helga',
-            farMedmor: 'Espen',
-        },
+        foreldreInfo: DEFAULT_FORELDRE_INFO,
         barn: {
             type: BarnType.UFØDT,
             termindato: '2025-05-06',
             antallBarn: 1,
         },
         visStatusIkoner: true,
-        modus: 'innsyn',
-        aleneOmOmsorg: false,
-        erMedmorDelAvSøknaden: true,
         harAktivitetskravIPeriodeUtenUttak: true,
-        bareFarMedmorHarRett: false,
-        erDeltUttak: false,
+        erInnsyn: true,
     },
     render: (args) => {
-        const { visStatusIkoner, ...rest } = args;
+        const { visStatusIkoner, erInnsyn, ...rest } = args;
         return (
             <UttaksplanDataProvider {...rest}>
-                <KvoteOppsummering visStatusIkoner={visStatusIkoner} />
+                <KvoteOppsummering erInnsyn={erInnsyn} visStatusIkoner={visStatusIkoner} />
             </UttaksplanDataProvider>
         );
     },
@@ -74,11 +78,11 @@ const kontoNårBeggeHarRett = {
 export const BeggeRettMorIngenDagerBrukt: Story = {
     args: {
         valgtStønadskonto: kontoNårBeggeHarRett,
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'BEGGE_RETT',
+        },
         saksperioder: [],
-        aleneOmOmsorg: false,
-        erDeltUttak: true,
-        erFarEllerMedmor: false,
-        erMedmorDelAvSøknaden: false,
     },
 };
 
@@ -133,9 +137,10 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
                 forelder: 'FAR_MEDMOR',
             },
         ],
-        aleneOmOmsorg: false,
-        erDeltUttak: true,
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'BEGGE_RETT',
+        },
     },
 };
 
@@ -187,10 +192,10 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
                 forelder: 'MOR',
             },
         ],
-        aleneOmOmsorg: false,
-        erDeltUttak: true,
-        erFarEllerMedmor: false,
-        erMedmorDelAvSøknaden: false,
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'BEGGE_RETT',
+        },
     },
 };
 
@@ -234,9 +239,10 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
                 forelder: 'MOR',
             },
         ],
-        aleneOmOmsorg: false,
-        erDeltUttak: true,
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'BEGGE_RETT',
+        },
     },
 };
 
@@ -287,9 +293,10 @@ export const BeggeRettMorLedigeDager: Story = {
                 forelder: 'MOR',
             },
         ],
-        aleneOmOmsorg: false,
-        erDeltUttak: true,
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'BEGGE_RETT',
+        },
     },
 };
 
@@ -345,9 +352,10 @@ export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
                 forelder: 'MOR',
             },
         ],
-        aleneOmOmsorg: false,
-        erDeltUttak: true,
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'BEGGE_RETT',
+        },
     },
 };
 
@@ -393,15 +401,16 @@ export const EnRettFarAlleDagerBrukt: Story = {
                 forelder: 'FAR_MEDMOR',
             },
         ],
-        aleneOmOmsorg: false,
-        erDeltUttak: false,
-        erFarEllerMedmor: true,
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'BARE_SØKER_RETT',
+            søker: 'FAR_ELLER_MEDMOR',
+        },
     },
 };
 
 export const EnRettFarLedigeDager: Story = {
     args: {
-        modus: 'planlegger',
         valgtStønadskonto: kontoNårBareFarHarRett,
         saksperioder: [
             {
@@ -421,9 +430,12 @@ export const EnRettFarLedigeDager: Story = {
                 forelder: 'FAR_MEDMOR',
             },
         ],
-        aleneOmOmsorg: false,
-        erDeltUttak: false,
-        erFarEllerMedmor: true,
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'BARE_SØKER_RETT',
+            søker: 'FAR_ELLER_MEDMOR',
+        },
+        erInnsyn: false,
     },
 };
 
@@ -467,9 +479,11 @@ export const EnRettMorAlleDagerBrukt: Story = {
                 forelder: 'MOR',
             },
         ],
-        aleneOmOmsorg: false,
-        erDeltUttak: false,
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'BARE_SØKER_RETT',
+            søker: 'MOR',
+        },
     },
 };
 
@@ -492,9 +506,11 @@ export const EnRettMorLedigeDager: Story = {
                 forelder: 'MOR',
             },
         ],
-        aleneOmOmsorg: false,
-        erDeltUttak: false,
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'BARE_SØKER_RETT',
+            søker: 'MOR',
+        },
     },
 };
 
@@ -517,9 +533,11 @@ export const AleneomsorgMorLedigeDager: Story = {
                 forelder: 'MOR',
             },
         ],
-        aleneOmOmsorg: true,
-        erDeltUttak: false,
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'ALENEOMSORG',
+            søker: 'MOR',
+        },
     },
 };
 
@@ -557,9 +575,11 @@ export const AleneomsorgFarLedigeDager: Story = {
                 forelder: 'FAR_MEDMOR',
             },
         ],
-        aleneOmOmsorg: true,
-        erDeltUttak: false,
-        erFarEllerMedmor: true,
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'ALENEOMSORG',
+            søker: 'FAR_ELLER_MEDMOR',
+        },
     },
 };
 
@@ -597,19 +617,26 @@ export const AleneomsorgFarForMangeDager: Story = {
                 forelder: 'FAR_MEDMOR',
             },
         ],
-        aleneOmOmsorg: true,
-        erDeltUttak: false,
-        erFarEllerMedmor: true,
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'ALENEOMSORG',
+            søker: 'FAR_ELLER_MEDMOR',
+        },
     },
 };
 
 export const BeggeRettMorOgMedmorMorIngenDagerBrukt: Story = {
     args: {
         ...BeggeRettMorIngenDagerBrukt.args,
-        erMedmorDelAvSøknaden: true,
-        navnPåForeldre: {
-            mor: 'Helga',
-            farMedmor: 'Maria',
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            navnPåForeldre: {
+                mor: 'Helga',
+                farMedmor: 'Maria',
+            },
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            erMedmorDelAvSøknaden: true,
         },
     },
 };
@@ -674,8 +701,10 @@ export const MorHarPrematuruker: Story = {
                 forelder: 'MOR',
             },
         ],
-        aleneOmOmsorg: false,
-        erDeltUttak: true,
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+        },
     },
 };

@@ -9,7 +9,6 @@ const perioder1: Planperiode[] = [
         kontoType: 'FORELDREPENGER_FØR_FØDSEL',
         fom: '2024-04-12',
         tom: '2024-05-02',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -18,7 +17,6 @@ const perioder1: Planperiode[] = [
         kontoType: 'MØDREKVOTE',
         fom: '2024-05-03',
         tom: '2024-08-15',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
@@ -27,14 +25,12 @@ const perioder1: Planperiode[] = [
         kontoType: 'FELLESPERIODE',
         fom: '2024-08-16',
         tom: '2024-09-26',
-        readOnly: false,
     },
     {
         erAnnenPartEøs: false,
         id: '111936683-3265-22855-8575-1519220835469',
         fom: '2024-09-27',
         tom: '2024-10-10',
-        readOnly: false,
         periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
     },
     {
@@ -44,7 +40,6 @@ const perioder1: Planperiode[] = [
         kontoType: 'FELLESPERIODE',
         fom: '2024-10-11',
         tom: '2024-10-24',
-        readOnly: false,
     },
 ];
 

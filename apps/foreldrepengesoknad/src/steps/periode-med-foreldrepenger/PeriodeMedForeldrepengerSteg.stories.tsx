@@ -206,7 +206,7 @@ export const FarEllerMedmorFødselOgMorHarIkkeRett: Story = {
         annenForelder: {
             etternavn: 'dfg',
             fornavn: 'dfg',
-            fnr: '02068629902',
+            fnr: '1',
             utenlandskFnr: false,
             kanIkkeOppgis: false,
             harRettPåForeldrepengerINorge: false,
