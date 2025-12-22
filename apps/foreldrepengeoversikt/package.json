@@ -25,7 +25,7 @@
     "author": "NAV",
     "license": "MIT",
     "dependencies": {
-        "@formatjs/intl-pluralrules": "5.4.6",
+        "@formatjs/intl-pluralrules": "6.0.4",
         "@navikt/aksel-icons": "7.36.0",
         "@navikt/ds-css": "7.36.0",
         "@navikt/ds-react": "7.36.0",
@@ -52,11 +52,11 @@
         "lodash": "4.17.21",
         "react": "19.2.3",
         "react-dom": "19.2.3",
-        "react-intl": "7.1.14",
+        "react-intl": "8.0.6",
         "react-router-dom": "7.11.0"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "7.4.4",
+        "@formatjs/cli-lib": "8.0.4",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
