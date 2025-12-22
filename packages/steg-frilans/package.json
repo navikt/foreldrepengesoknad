@@ -29,10 +29,10 @@
         "react": "19.2.3",
         "react-dom": "19.2.3",
         "react-hook-form": "7.69.0",
-        "react-intl": "7.1.14"
+        "react-intl": "8.0.6"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "7.4.4",
+        "@formatjs/cli-lib": "8.0.4",
         "@navikt/ds-tailwind": "7.36.0",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
