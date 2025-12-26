@@ -29,11 +29,11 @@
         "husky": "9.1.7",
         "lint-staged": "16.2.7",
         "shelljs": "0.10.0",
-        "turbo": "2.6.3"
+        "turbo": "2.7.0"
     },
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "6.0.0",
-        "knip": "5.73.4",
+        "knip": "5.75.2",
         "msw": "2.12.4",
         "msw-storybook-addon": "2.0.6",
         "prettier": "3.7.4",
