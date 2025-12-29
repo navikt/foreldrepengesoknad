@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
 import { Sak } from 'types/Sak.ts';
 
@@ -12,6 +13,8 @@ import { BarnGruppering } from '../types/BarnGruppering.ts';
 import { Tidslinjehendelse2 } from '../types/Tidslinjehendelse.ts';
 import { UTTAKSDAGER_PER_UKE, Uttaksdagen } from './Uttaksdagen.ts';
 import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils.ts';
+
+dayjs.extend(minMax);
 
 type TidslinjeTittelForFamiliehendelseProps = {
     sak: Sak;
