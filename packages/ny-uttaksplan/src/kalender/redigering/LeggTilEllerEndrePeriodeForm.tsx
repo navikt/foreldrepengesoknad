@@ -1,4 +1,6 @@
 import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -9,7 +11,7 @@ import { RhfForm, RhfNumericField, RhfRadioGroup, RhfSelect } from '@navikt/fp-f
 import type { BrukerRolleSak_fpoversikt, KontoTypeUttak, MorsAktivitet } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { getFloatFromString } from '@navikt/fp-utils';
-import { isRequired } from '@navikt/fp-validation';
+import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { prosentValideringGradering, valideringSamtidigUttak } from '../../components/spørsmål/validators';
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
@@ -18,10 +20,13 @@ import { getGradering } from '../../utils/graderingUtils';
 import { getStønadskontoNavnSimple } from '../../utils/stønadskontoerUtils';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
+
 type FormValues = {
     forelder?: BrukerRolleSak_fpoversikt | 'BEGGE';
     kontoTypeMor?: KontoTypeUttak;
-    kontoTypeFarMedmor?: Exclude<KontoTypeUttak, 'FORELDREPENGER_FØR_FØDSEL'>;
+    kontoTypeFarMedmor?: KontoTypeUttak;
     samtidigUttaksprosentMor?: string;
     samtidigUttaksprosentFarMedmor?: string;
     skalDuKombinereArbeidOgUttakMor?: boolean;
@@ -46,17 +51,14 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
         valgtStønadskonto,
     } = useUttaksplanData();
 
-    const { erKunEnHelEksisterendePeriodeValgt, sammenslåtteValgtePerioder, oppdaterUttaksplan, setValgtePerioder } =
-        useKalenderRedigeringContext();
+    const { sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, setValgtePerioder } = useKalenderRedigeringContext();
 
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
 
     // const { finnKontotypeGyldigFeilmeldinger, finnPerioderGyldigeFeilmeldinger } =
     //     usePeriodeValidator(sammenslåtteValgtePerioder);
 
-    const defaultValues = erKunEnHelEksisterendePeriodeValgt
-        ? lagDefaultValues(uttaksplan, sammenslåtteValgtePerioder[0]!)
-        : undefined;
+    const defaultValues = lagDefaultValues(uttaksplan, sammenslåtteValgtePerioder[0]!);
 
     const formMethods = useForm<FormValues>({
         defaultValues,
@@ -77,7 +79,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
         }
         setFeilmelding(undefined);
 
-        oppdaterUttaksplan(
+        leggTilUttaksplanPerioder(
             sammenslåtteValgtePerioder.flatMap((periode) => {
                 const nye = new Array<Planperiode>();
 
@@ -88,9 +90,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
                         tom: periode.tom,
                         id: `${periode.fom} - ${periode.tom} - ${values.kontoTypeMor} - ${values.forelder}`,
                         kontoType:
-                            values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE'
-                                ? 'FORELDREPENGER'
-                                : values.kontoTypeFarMedmor,
+                            values.kontoTypeMor === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoTypeMor,
                         morsAktivitet: values.morsAktivitet,
                         forelder: 'MOR',
                         gradering: values.skalDuKombinereArbeidOgUttakMor
@@ -414,29 +414,86 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
 };
 
 const lagDefaultValues = (uttaksplan: Planperiode[], valgtPeriode: CalendarPeriod): FormValues | undefined => {
-    const eksisterendePeriode = uttaksplan.find(
+    const eksisterendePerioder = uttaksplan.filter(
         (periode) =>
-            dayjs(periode.fom).isSame(dayjs(valgtPeriode.fom), 'day') &&
-            dayjs(periode.tom).isSame(dayjs(valgtPeriode.tom), 'day'),
+            dayjs(valgtPeriode.fom).isSameOrAfter(dayjs(periode.fom), 'day') &&
+            dayjs(valgtPeriode.tom).isSameOrBefore(dayjs(periode.tom), 'day'),
     );
 
-    if (!eksisterendePeriode || eksisterendePeriode.erAnnenPartEøs) {
+    if (eksisterendePerioder.length === 0 || eksisterendePerioder.some((p) => p.erAnnenPartEøs)) {
         return undefined;
     }
-    //FIXME (TOR)
-    return undefined;
-    // return {
-    //     kontoType:
-    //         eksisterendePeriode.kontoType === 'FORELDREPENGER' &&
-    //         !eksisterendePeriode.erAnnenPartEøs &&
-    //         eksisterendePeriode.morsAktivitet === 'IKKE_OPPGITT'
-    //             ? 'AKTIVITETSFRI_KVOTE'
-    //             : eksisterendePeriode.kontoType,
-    //     forelder: eksisterendePeriode.forelder,
-    //     skalDuJobbe: !!eksisterendePeriode.gradering,
-    //     stillingsprosent: eksisterendePeriode.gradering?.arbeidstidprosent.toString(),
-    //     samtidigUttak: !!eksisterendePeriode.samtidigUttak,
-    //     samtidigUttaksprosent: eksisterendePeriode.samtidigUttak?.toString(),
-    //     morsAktivitet: eksisterendePeriode.morsAktivitet,
-    // };
+
+    if (eksisterendePerioder.length === 2) {
+        const erSamtidigUttak = eksisterendePerioder.every((p) => !p.erAnnenPartEøs && !!p.samtidigUttak);
+        if (!erSamtidigUttak) {
+            throw new Error('Forventer to perioder ved samtidig uttak.');
+        }
+        const morsPeriode = notEmpty(eksisterendePerioder.find((p) => !p.erAnnenPartEøs && p.forelder === 'MOR'));
+        const farMedmorPeriode = notEmpty(
+            eksisterendePerioder.find((p) => !p.erAnnenPartEøs && p.forelder === 'FAR_MEDMOR'),
+        );
+
+        return {
+            forelder: 'BEGGE',
+            kontoTypeMor:
+                morsPeriode.kontoType === 'FORELDREPENGER' &&
+                !morsPeriode.erAnnenPartEøs &&
+                morsPeriode.morsAktivitet === 'IKKE_OPPGITT'
+                    ? 'AKTIVITETSFRI_KVOTE'
+                    : morsPeriode.kontoType,
+            kontoTypeFarMedmor:
+                farMedmorPeriode.kontoType === 'FORELDREPENGER' &&
+                !farMedmorPeriode.erAnnenPartEøs &&
+                farMedmorPeriode.morsAktivitet === 'IKKE_OPPGITT'
+                    ? 'AKTIVITETSFRI_KVOTE'
+                    : farMedmorPeriode.kontoType,
+            samtidigUttaksprosentMor: !morsPeriode.erAnnenPartEøs ? morsPeriode.samtidigUttak?.toString() : undefined,
+            samtidigUttaksprosentFarMedmor: !farMedmorPeriode.erAnnenPartEøs
+                ? farMedmorPeriode.samtidigUttak?.toString()
+                : undefined,
+            skalDuKombinereArbeidOgUttakMor: !morsPeriode.erAnnenPartEøs && !!morsPeriode.gradering,
+            skalDuKombinereArbeidOgUttakFarMedmor: !farMedmorPeriode.erAnnenPartEøs && !!farMedmorPeriode.gradering,
+            stillingsprosentMor: !morsPeriode.erAnnenPartEøs
+                ? morsPeriode.gradering?.arbeidstidprosent.toString()
+                : undefined,
+            stillingsprosentFarMedmor: !farMedmorPeriode.erAnnenPartEøs
+                ? farMedmorPeriode.gradering?.arbeidstidprosent.toString()
+                : undefined,
+            morsAktivitet: !morsPeriode.erAnnenPartEøs ? morsPeriode.morsAktivitet : undefined,
+        };
+    }
+
+    const periode = eksisterendePerioder[0]!;
+    const erFarEllerMedmor = !periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR';
+
+    if (!periode.erAnnenPartEøs && erFarEllerMedmor) {
+        return {
+            forelder: 'FAR_MEDMOR',
+            kontoTypeFarMedmor:
+                periode.kontoType === 'FORELDREPENGER' &&
+                !periode.erAnnenPartEøs &&
+                periode.morsAktivitet === 'IKKE_OPPGITT'
+                    ? 'AKTIVITETSFRI_KVOTE'
+                    : periode.kontoType,
+            skalDuKombinereArbeidOgUttakFarMedmor: !periode.erAnnenPartEøs && !!periode.gradering,
+            stillingsprosentFarMedmor: !periode.erAnnenPartEøs
+                ? periode.gradering?.arbeidstidprosent.toString()
+                : undefined,
+        };
+    }
+
+    return {
+        forelder: 'MOR',
+        kontoTypeMor:
+            periode.kontoType === 'FORELDREPENGER' &&
+            !periode.erAnnenPartEøs &&
+            periode.morsAktivitet === 'IKKE_OPPGITT'
+                ? 'AKTIVITETSFRI_KVOTE'
+                : periode.kontoType,
+        samtidigUttaksprosentMor: !periode.erAnnenPartEøs ? periode.samtidigUttak?.toString() : undefined,
+        skalDuKombinereArbeidOgUttakMor: !periode.erAnnenPartEøs && !!periode.gradering,
+        stillingsprosentMor: !periode.erAnnenPartEøs ? periode.gradering?.arbeidstidprosent.toString() : undefined,
+        morsAktivitet: !periode.erAnnenPartEøs ? periode.morsAktivitet : undefined,
+    };
 };

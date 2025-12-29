@@ -27,7 +27,7 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
         foreldreInfo: { søker },
     } = useUttaksplanData();
 
-    const { sammenslåtteValgtePerioder, oppdaterUttaksplan, setValgtePerioder } = useKalenderRedigeringContext();
+    const { sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, setValgtePerioder } = useKalenderRedigeringContext();
 
     const erDesktop = useErDesktop();
 
@@ -36,7 +36,7 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
     useMediaResetMinimering(setErMinimert);
 
     const leggTilFerie = () => {
-        oppdaterUttaksplan(
+        leggTilUttaksplanPerioder(
             sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
                 erAnnenPartEøs: false,
                 forelder: søker === 'FAR_ELLER_MEDMOR' ? 'FAR_MEDMOR' : 'MOR',
