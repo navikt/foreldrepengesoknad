@@ -1,4 +1,9 @@
+import dayjs, { Dayjs } from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+
+dayjs.extend(utc);
 
 type Saksperiode = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
 
@@ -7,7 +12,7 @@ export class SaksperiodeBuilder {
     private shouldReplace: boolean = true;
 
     constructor(initial: Saksperiode[]) {
-        this.periods = [...initial].sort((a, b) => toDay(a.fom) - toDay(b.fom));
+        this.periods = [...initial].sort(sortPeriods);
     }
 
     withPushExisting(): SaksperiodeBuilder {
@@ -15,66 +20,71 @@ export class SaksperiodeBuilder {
         return this;
     }
 
-    addPeriods(incoming: Saksperiode[]): void {
-        if (!this.shouldReplace) {
-            for (const p of incoming) {
+    addPeriods(saksperioder: Saksperiode[]): void {
+        if (this.shouldReplace) {
+            // Grupper for å håndtera at ein legg til to periodar når ein har samtidig uttak.
+            // Bruk ein av dei nye periodane for å justera andre periodar, og legg så til den andre på slutten
+            const grupperPerFomTom = new Map<string, Saksperiode[]>();
+
+            for (const periode of saksperioder) {
+                const key = `${periode.fom}-${periode.tom}`;
+                grupperPerFomTom.set(key, [...(grupperPerFomTom.get(key) ?? []), periode]);
+            }
+
+            for (const [, gruppe] of grupperPerFomTom) {
+                this.periods = erstattEksisterendePerioder(this.periods, gruppe[0]!);
+
+                for (let i = 1; i < gruppe.length; i++) {
+                    this.periods.push(gruppe[i]!);
+                }
+            }
+        } else {
+            for (const p of saksperioder) {
                 this.periods = pushPeriods(this.periods, p);
             }
-            this.periods.sort((a, b) => toDay(a.fom) - toDay(b.fom));
-            return;
         }
 
-        const grouped = new Map<string, Saksperiode[]>();
-
-        for (const p of incoming) {
-            const key = `${p.fom}-${p.tom}`;
-            grouped.set(key, [...(grouped.get(key) ?? []), p]);
-        }
-
-        for (const [, group] of grouped) {
-            // Replace once
-            this.periods = replacePeriods(this.periods, group[0]!);
-
-            // Append remaining duplicates
-            for (let i = 1; i < group.length; i++) {
-                this.periods.push(group[i]!);
-            }
-        }
-
-        this.periods.sort((a, b) => toDay(a.fom) - toDay(b.fom));
+        this.periods.sort(sortPeriods);
     }
 
-    removePeriods(incoming: Array<{ fom: string; tom: string }>): void {
-        for (const period of incoming) {
-            const nFom = toDay(period.fom);
-            const nTom = toDay(period.tom);
+    removePeriods(saksperioderSomSkalFjernes: Saksperiode[]): void {
+        for (const saksperiodeSomSkalFjernes of saksperioderSomSkalFjernes) {
+            const nFom = toDay(saksperiodeSomSkalFjernes.fom);
+            const nTom = toDay(saksperiodeSomSkalFjernes.tom);
 
             const result: Saksperiode[] = [];
 
-            for (const p of this.periods) {
-                const pFom = toDay(p.fom);
-                const pTom = toDay(p.tom);
+            for (const eksisterendePeriode of this.periods) {
+                const eFom = toDay(eksisterendePeriode.fom);
+                const eTom = toDay(eksisterendePeriode.tom);
 
-                // No overlap → keep
-                if (pTom < nFom || pFom > nTom) {
-                    result.push({ ...p });
+                // Ingen overlapp, behold eksisterende periode
+                if (eTom.isBefore(nFom) || eFom.isAfter(nTom)) {
+                    result.push(eksisterendePeriode);
                     continue;
                 }
 
-                // Partial overlap at start → shorten tom
-                if (pFom < nFom) {
-                    result.push({ ...p, tom: fromDay(nFom - 1) });
+                // Behold del før slettet periode
+                if (eFom.isBefore(nFom)) {
+                    result.push({
+                        ...eksisterendePeriode,
+                        tom: fromDay(adjustEnd(nFom.subtract(1, 'day'))),
+                    });
                 }
 
-                // Partial overlap at end → shift fom
-                if (pTom > nTom) {
-                    result.push({ ...p, fom: fromDay(nTom + 1) });
+                // Behold del etter slettet periode
+                if (eTom.isAfter(nTom)) {
+                    result.push({
+                        ...eksisterendePeriode,
+                        fom: fromDay(adjustStart(nTom.add(1, 'day'))),
+                        tom: fromDay(eTom),
+                    });
                 }
 
-                // Fully inside removal → remove entirely (do nothing)
+                // Fully inside removal → do nothing (removed)
             }
 
-            this.periods = result.sort((a, b) => toDay(a.fom) - toDay(b.fom));
+            this.periods = result.sort(sortPeriods);
         }
     }
 
@@ -83,72 +93,146 @@ export class SaksperiodeBuilder {
     }
 }
 
-const pushPeriods = (existing: Saksperiode[], incoming: Saksperiode): Saksperiode[] => {
-    const nFom = toDay(incoming.fom);
-    const nTom = toDay(incoming.tom);
-    const shift = lengthInDays(nFom, nTom);
-
-    const shifted = existing.map((p) => {
-        const pFom = toDay(p.fom);
-        const pTom = toDay(p.tom);
-
-        if (pTom < nFom) {
-            return p;
-        }
-
-        return {
-            ...p,
-            fom: fromDay(pFom + shift),
-            tom: fromDay(pTom + shift),
-        };
-    });
-
-    return [...shifted, incoming];
-};
-
-const replacePeriods = (existing: Saksperiode[], incoming: Saksperiode): Saksperiode[] => {
-    const nFom = toDay(incoming.fom);
-    const nTom = toDay(incoming.tom);
+const pushPeriods = (eksisterendePerioder: Saksperiode[], nySaksperiode: Saksperiode): Saksperiode[] => {
+    const nFom = toDay(nySaksperiode.fom);
+    const nTom = toDay(nySaksperiode.tom);
+    const shift = lengthInWeekdays(nFom, nTom);
 
     const result: Saksperiode[] = [];
 
-    for (const p of existing) {
-        const pFom = toDay(p.fom);
-        const pTom = toDay(p.tom);
+    for (const p of eksisterendePerioder) {
+        const eFom = toDay(p.fom);
+        const eTom = toDay(p.tom);
 
-        if (!overlaps(pFom, pTom, nFom, nTom)) {
+        // Eksisterende periode ligg før ny periode
+        if (eTom.isBefore(nFom)) {
             result.push(p);
             continue;
         }
 
-        // Before overlap
-        if (pFom < nFom) {
+        // Eksisterende periode ligg etter ny periode eller ny periode begynner før og slutter inni
+        if (eFom.isAfter(nFom) && nTom.isBefore(eTom)) {
             result.push({
                 ...p,
-                tom: fromDay(nFom - 1),
+                fom: fromDay(addWeekdays(eFom, shift)),
+                tom: fromDay(addWeekdays(eTom, shift)),
+            });
+            continue;
+        }
+
+        // Legg til evt del av eksistrande periode som ligg før den nye
+        if (eFom.isBefore(nFom)) {
+            result.push({
+                ...p,
+                tom: fromDay(adjustEnd(nFom.subtract(1, 'day'))),
             });
         }
 
-        // After overlap
-        if (pTom > nTom) {
-            result.push({
-                ...p,
-                fom: fromDay(nTom + 1),
-            });
+        result.push({
+            ...p,
+            fom: fromDay(adjustStart(nTom.add(1, 'day'))),
+            tom: fromDay(addWeekdays(eTom, shift)),
+        });
+    }
+
+    result.push(nySaksperiode);
+
+    return result.sort(sortPeriods);
+};
+
+const erstattEksisterendePerioder = (
+    eksisterendeSaksperioder: Saksperiode[],
+    nySaksperiode: Saksperiode,
+): Saksperiode[] => {
+    const nFom = toDay(nySaksperiode.fom);
+    const nTom = toDay(nySaksperiode.tom);
+
+    const result: Saksperiode[] = [];
+
+    for (const eksisterendeSaksperiode of eksisterendeSaksperioder) {
+        const eFom = toDay(eksisterendeSaksperiode.fom);
+        const eTom = toDay(eksisterendeSaksperiode.tom);
+
+        if (overlaps(eFom, eTom, nFom, nTom)) {
+            // Starter eksisterende periode før overlappende ny periode
+            if (eFom.isBefore(nFom)) {
+                result.push({
+                    ...eksisterendeSaksperiode,
+                    tom: fromDay(adjustEnd(nFom.subtract(1, 'day'))),
+                });
+            }
+
+            // Starter eksisterende periode etter overlappende ny periode
+            if (eTom.isAfter(nTom)) {
+                result.push({
+                    ...eksisterendeSaksperiode,
+                    fom: fromDay(adjustStart(nTom.add(1, 'day'))),
+                });
+            }
+        } else {
+            result.push(eksisterendeSaksperiode);
         }
     }
 
-    result.push(incoming);
+    result.push(nySaksperiode);
 
     return result;
 };
 
-const DAY = 24 * 60 * 60 * 1000;
+const toDay = (iso: string): Dayjs => dayjs.utc(iso).startOf('day');
 
-const toDay = (iso: string): number => Math.floor(new Date(iso + 'T00:00:00Z').getTime() / DAY);
+const fromDay = (day: Dayjs): string => day.format('YYYY-MM-DD');
 
-const fromDay = (day: number): string => new Date(day * DAY).toISOString().slice(0, 10);
+const overlaps = (aFom: Dayjs, aTom: Dayjs, bFom: Dayjs, bTom: Dayjs): boolean =>
+    aFom.isSameOrBefore(bTom) && bFom.isSameOrBefore(aTom);
 
-const lengthInDays = (fom: number, tom: number): number => tom - fom + 1;
+const lengthInWeekdays = (fom: Dayjs, tom: Dayjs): number => {
+    let count = 0;
+    let d = fom;
+    while (!d.isAfter(tom)) {
+        if (d.day() !== 6 && d.day() !== 0) count++;
+        d = d.add(1, 'day');
+    }
+    return count;
+};
 
-const overlaps = (aFom: number, aTom: number, bFom: number, bTom: number): boolean => aFom <= bTom && bFom <= aTom;
+const sortPeriods = (a: Saksperiode, b: Saksperiode): number => {
+    const aFom = toDay(a.fom);
+    const bFom = toDay(b.fom);
+
+    if (aFom.isBefore(bFom)) {
+        return -1;
+    }
+    if (aFom.isAfter(bFom)) {
+        return 1;
+    }
+    return 0;
+};
+
+const adjustStart = (date: dayjs.Dayjs): dayjs.Dayjs => {
+    // Shift start date to Monday if it falls on weekend
+    if (date.day() === 6) return date.add(2, 'day'); // Saturday → Monday
+    if (date.day() === 0) return date.add(1, 'day'); // Sunday → Monday
+    return date;
+};
+
+const adjustEnd = (date: dayjs.Dayjs): dayjs.Dayjs => {
+    // Shift end date to Friday if it falls on weekend
+    if (date.day() === 6) return date.subtract(1, 'day'); // Saturday → Friday
+    if (date.day() === 0) return date.subtract(2, 'day'); // Sunday → Friday
+    return date;
+};
+
+const addWeekdays = (start: Dayjs, days: number): Dayjs => {
+    let current = start.clone();
+    let added = 0;
+
+    while (added < days) {
+        current = current.add(1, 'day');
+        if (current.day() !== 0 && current.day() !== 6) {
+            added += 1;
+        }
+    }
+
+    return current;
+};

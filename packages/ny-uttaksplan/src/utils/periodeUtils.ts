@@ -477,29 +477,3 @@ export const utledKomplettPlan = ({
         førsteUttaksdagNesteBarnsSak,
     );
 };
-
-export const getSøkersPlanperioder = (
-    gjeldendeUttaksplan: Planperiode[],
-    foreldreInfo: ForeldreInfo,
-): Planperiode[] => {
-    return foreldreInfo.rettighetType === 'BEGGE_RETT'
-        ? gjeldendeUttaksplan.filter(
-              (p) =>
-                  !('trekkdager' in p) &&
-                  (foreldreInfo.søker === 'FAR_ELLER_MEDMOR' ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'),
-          )
-        : gjeldendeUttaksplan;
-};
-
-export const getAnnenpartsPlanperioder = (
-    gjeldendeUttaksplan: Planperiode[],
-    foreldreInfo: ForeldreInfo,
-): Planperiode[] => {
-    return foreldreInfo.rettighetType === 'BEGGE_RETT'
-        ? gjeldendeUttaksplan.filter(
-              (p) =>
-                  'trekkdager' in p ||
-                  (foreldreInfo.søker === 'FAR_ELLER_MEDMOR' ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'),
-          )
-        : [];
-};

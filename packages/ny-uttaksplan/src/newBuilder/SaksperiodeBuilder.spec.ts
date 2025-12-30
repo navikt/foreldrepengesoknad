@@ -24,65 +24,77 @@ describe('SaksperiodeBuilder', () => {
     it('splits existing period when overlapping in the middle', () => {
         const builder = new SaksperiodeBuilder([p('2024-01-01', '2024-01-10')]);
 
-        builder.addPeriods([p('2024-01-04', '2024-01-06')]);
+        builder.addPeriods([p('2024-01-04', '2024-01-05')]);
 
         expect(builder.getSaksperioder()).toEqual([
             p('2024-01-01', '2024-01-03'),
-            p('2024-01-04', '2024-01-06'),
-            p('2024-01-07', '2024-01-10'),
+            p('2024-01-04', '2024-01-05'),
+            p('2024-01-08', '2024-01-10'),
         ]);
     });
 
     it('handles multiple overlapping existing periods', () => {
-        const builder = new SaksperiodeBuilder([p('2024-01-01', '2024-01-05'), p('2024-01-10', '2024-01-20')]);
+        const builder = new SaksperiodeBuilder([p('2024-01-01', '2024-01-05'), p('2024-01-10', '2024-01-19')]);
 
         builder.addPeriods([p('2024-01-04', '2024-01-12')]);
 
         expect(builder.getSaksperioder()).toEqual([
             p('2024-01-01', '2024-01-03'),
             p('2024-01-04', '2024-01-12'),
-            p('2024-01-13', '2024-01-20'),
+            p('2024-01-15', '2024-01-19'),
         ]);
     });
 
     it('applies multiple incoming periods sequentially', () => {
-        const builder = new SaksperiodeBuilder([p('2024-01-01', '2024-01-20')]);
+        const builder = new SaksperiodeBuilder([p('2024-01-01', '2024-01-19')]);
 
-        builder.addPeriods([p('2024-01-05', '2024-01-06'), p('2024-01-10', '2024-01-11')]);
+        builder.addPeriods([p('2024-01-05', '2024-01-05'), p('2024-01-10', '2024-01-11')]);
 
         expect(builder.getSaksperioder()).toEqual([
             p('2024-01-01', '2024-01-04'),
-            p('2024-01-05', '2024-01-06'),
-            p('2024-01-07', '2024-01-09'),
+            p('2024-01-05', '2024-01-05'),
+            p('2024-01-08', '2024-01-09'),
             p('2024-01-10', '2024-01-11'),
-            p('2024-01-12', '2024-01-20'),
+            p('2024-01-12', '2024-01-19'),
         ]);
     });
 
     it('skal håndtere å legge til flere perioder som er like', () => {
-        const builder = new SaksperiodeBuilder([p('2024-01-01', '2024-01-20')]);
+        const builder = new SaksperiodeBuilder([p('2024-01-01', '2024-01-19')]);
 
-        builder.addPeriods([p('2024-01-05', '2024-01-06'), p('2024-01-05', '2024-01-06')]);
+        builder.addPeriods([p('2024-01-05', '2024-01-08'), p('2024-01-05', '2024-01-08')]);
 
         expect(builder.getSaksperioder()).toEqual([
             p('2024-01-01', '2024-01-04'),
-            p('2024-01-05', '2024-01-06'),
-            p('2024-01-05', '2024-01-06'),
-            p('2024-01-07', '2024-01-20'),
+            p('2024-01-05', '2024-01-08'),
+            p('2024-01-05', '2024-01-08'),
+            p('2024-01-09', '2024-01-19'),
         ]);
     });
 
     it('skal håndtere å fjerne to perioder som er like', () => {
-        const builder = new SaksperiodeBuilder([p('2024-01-01', '2024-01-20'), p('2024-01-01', '2024-01-20')]);
+        const builder = new SaksperiodeBuilder([p('2024-01-01', '2024-01-19'), p('2024-01-01', '2024-01-19')]);
 
-        builder.addPeriods([p('2024-01-05', '2024-01-06')]);
+        builder.addPeriods([p('2024-01-05', '2024-01-08')]);
 
         expect(builder.getSaksperioder()).toEqual([
             p('2024-01-01', '2024-01-04'),
             p('2024-01-01', '2024-01-04'),
-            p('2024-01-05', '2024-01-06'),
-            p('2024-01-07', '2024-01-20'),
-            p('2024-01-07', '2024-01-20'),
+            p('2024-01-05', '2024-01-08'),
+            p('2024-01-09', '2024-01-19'),
+            p('2024-01-09', '2024-01-19'),
+        ]);
+    });
+
+    it('Skal ta hensyn til helgedager når en legger til periode', () => {
+        const builder = new SaksperiodeBuilder([p('2024-01-01', '2024-01-31')]);
+
+        builder.addPeriods([p('2024-01-08', '2024-01-12')]);
+
+        expect(builder.getSaksperioder()).toEqual([
+            p('2024-01-01', '2024-01-05'),
+            p('2024-01-08', '2024-01-12'),
+            p('2024-01-15', '2024-01-31'),
         ]);
     });
 });
@@ -91,9 +103,9 @@ describe('SaksperiodeBuilder – addPeriods (shouldReplace = false)', () => {
     it('pushes existing periods forward', () => {
         const builder = new SaksperiodeBuilder([p('2024-01-10', '2024-01-15')]).withPushExisting();
 
-        builder.addPeriods([p('2024-01-01', '2024-01-05')]); // 5 days
+        builder.addPeriods([p('2024-01-01', '2024-01-05')]);
 
-        expect(builder.getSaksperioder()).toEqual([p('2024-01-01', '2024-01-05'), p('2024-01-15', '2024-01-20')]);
+        expect(builder.getSaksperioder()).toEqual([p('2024-01-01', '2024-01-05'), p('2024-01-17', '2024-01-22')]);
     });
 
     it('pushes overlapping periods forward', () => {
@@ -101,21 +113,30 @@ describe('SaksperiodeBuilder – addPeriods (shouldReplace = false)', () => {
 
         builder.addPeriods([p('2024-01-01', '2024-01-05')]);
 
-        expect(builder.getSaksperioder()).toEqual([p('2024-01-01', '2024-01-05'), p('2024-01-08', '2024-01-15')]);
+        expect(builder.getSaksperioder()).toEqual([p('2024-01-01', '2024-01-05'), p('2024-01-10', '2024-01-17')]);
     });
 
     it('accumulates pushes from multiple additions', () => {
         const builder = new SaksperiodeBuilder([p('2024-01-10', '2024-01-10')]).withPushExisting();
 
-        builder.addPeriods([
-            p('2024-01-01', '2024-01-02'), // +2
-            p('2024-01-03', '2024-01-05'), // +3
-        ]);
+        builder.addPeriods([p('2024-01-01', '2024-01-02'), p('2024-01-03', '2024-01-05')]);
 
         expect(builder.getSaksperioder()).toEqual([
             p('2024-01-01', '2024-01-02'),
             p('2024-01-03', '2024-01-05'),
-            p('2024-01-15', '2024-01-15'),
+            p('2024-01-17', '2024-01-17'),
+        ]);
+    });
+
+    it('Skal ta hensyn til helgedager når en legger til periode', () => {
+        const builder = new SaksperiodeBuilder([p('2024-01-01', '2024-01-31')]).withPushExisting();
+
+        builder.addPeriods([p('2024-01-08', '2024-01-12')]);
+
+        expect(builder.getSaksperioder()).toEqual([
+            p('2024-01-01', '2024-01-05'),
+            p('2024-01-08', '2024-01-12'),
+            p('2024-01-15', '2024-02-07'),
         ]);
     });
 });
@@ -141,20 +162,20 @@ describe('SaksperiodeBuilder.removePeriod', () => {
     it('removes a period completely contained in an existing period', () => {
         const builder = new SaksperiodeBuilder([{ fom: '2024-01-01', tom: '2024-01-10' }]);
 
-        builder.removePeriods([{ fom: '2024-01-05', tom: '2024-01-06' }]);
+        builder.removePeriods([{ fom: '2024-01-05', tom: '2024-01-08' }]);
 
         expect(builder.getSaksperioder()).toEqual([
             { fom: '2024-01-01', tom: '2024-01-04' },
-            { fom: '2024-01-07', tom: '2024-01-10' },
+            { fom: '2024-01-09', tom: '2024-01-10' },
         ]);
     });
 
     it('removes a period overlapping start of existing period', () => {
         const builder = new SaksperiodeBuilder([{ fom: '2024-01-05', tom: '2024-01-10' }]);
 
-        builder.removePeriods([{ fom: '2024-01-01', tom: '2024-01-06' }]);
+        builder.removePeriods([{ fom: '2024-01-01', tom: '2024-01-08' }]);
 
-        expect(builder.getSaksperioder()).toEqual([{ fom: '2024-01-07', tom: '2024-01-10' }]);
+        expect(builder.getSaksperioder()).toEqual([{ fom: '2024-01-09', tom: '2024-01-10' }]);
     });
 
     it('removes a period overlapping end of existing period', () => {
@@ -162,7 +183,7 @@ describe('SaksperiodeBuilder.removePeriod', () => {
 
         builder.removePeriods([{ fom: '2024-01-08', tom: '2024-01-15' }]);
 
-        expect(builder.getSaksperioder()).toEqual([{ fom: '2024-01-05', tom: '2024-01-07' }]);
+        expect(builder.getSaksperioder()).toEqual([{ fom: '2024-01-05', tom: '2024-01-05' }]);
     });
 
     it('removes a period that fully overlaps existing period', () => {
@@ -183,15 +204,31 @@ describe('SaksperiodeBuilder.removePeriod', () => {
 
         expect(builder.getSaksperioder()).toEqual([
             { fom: '2024-01-01', tom: '2024-01-03' },
-            { fom: '2024-01-06', tom: '2024-01-10' },
+            { fom: '2024-01-08', tom: '2024-01-10' },
         ]);
     });
 
-    it('removes a period not overlapping anything', () => {
+    it('dont remove period when not overlapping anything', () => {
         const builder = new SaksperiodeBuilder([{ fom: '2024-01-05', tom: '2024-01-10' }]);
 
         builder.removePeriods([{ fom: '2024-01-11', tom: '2024-01-12' }]);
 
         expect(builder.getSaksperioder()).toEqual([{ fom: '2024-01-05', tom: '2024-01-10' }]);
+    });
+
+    it('Fjern periode som overlapper eksakt eksisterende', () => {
+        const builder = new SaksperiodeBuilder([{ fom: '2024-01-01', tom: '2024-01-10' }]);
+
+        builder.removePeriods([{ fom: '2024-01-01', tom: '2024-01-10' }]);
+
+        expect(builder.getSaksperioder()).toEqual([]);
+    });
+
+    it('Skal ta hensyn til helgedager når en fjerner periode', () => {
+        const builder = new SaksperiodeBuilder([p('2024-01-01', '2024-01-31')]).withPushExisting();
+
+        builder.removePeriods([p('2024-01-08', '2024-01-12')]);
+
+        expect(builder.getSaksperioder()).toEqual([p('2024-01-01', '2024-01-05'), p('2024-01-15', '2024-01-31')]);
     });
 });
