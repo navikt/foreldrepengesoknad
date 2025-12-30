@@ -126,11 +126,13 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                             </Heading>
                             <FordelingSlider
                                 antallDagerSøker1={antallDagerSøker1}
-                                onAntallDagerSøker1Change={(value) => formMethods.setValue('antallDagerSøker1', value)}
+                                onAntallDagerSøker1Change={(value) => {
+                                    formMethods.setValue('antallDagerSøker1', value);
+                                    scrollToBottom();
+                                }}
                                 antallUkerOgDagerFellesperiode={antallUkerOgDagerFellesperiode}
                                 fornavnSøker1={fornavnSøker1}
                                 fornavnSøker2={fornavnSøker2}
-                                onScrollToBottom={scrollToBottom}
                             />
                         </BluePanel>
                         {antallDagerSøker1 !== undefined && (

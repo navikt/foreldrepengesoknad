@@ -12,7 +12,6 @@ interface FordelingSliderProps {
     antallUkerOgDagerFellesperiode: UkerOgDager;
     fornavnSøker1?: string;
     fornavnSøker2?: string;
-    onScrollToBottom?: () => void;
 }
 
 export const FordelingSlider = ({
@@ -21,7 +20,6 @@ export const FordelingSlider = ({
     antallUkerOgDagerFellesperiode,
     fornavnSøker1,
     fornavnSøker2,
-    onScrollToBottom,
 }: FordelingSliderProps) => {
     const intl = useIntl();
 
@@ -49,7 +47,6 @@ export const FordelingSlider = ({
                         onClick={() => {
                             const newValue = Math.min(totalDager, antallDagerSøker1 + 5);
                             onAntallDagerSøker1Change(newValue);
-                            onScrollToBottom?.();
                         }}
                         disabled={antallDagerSøker1 >= totalDager}
                     />
@@ -86,7 +83,6 @@ export const FordelingSlider = ({
                 onValueChange={(value: number[]) => {
                     if (value[0] !== undefined) {
                         onAntallDagerSøker1Change(totalDager - value[0]);
-                        onScrollToBottom?.();
                     }
                 }}
             />
@@ -112,7 +108,6 @@ export const FordelingSlider = ({
                         onClick={() => {
                             const newValue = Math.max(0, antallDagerSøker1 - 5);
                             onAntallDagerSøker1Change(newValue);
-                            onScrollToBottom?.();
                         }}
                         disabled={antallDagerSøker1 <= 0}
                     />
