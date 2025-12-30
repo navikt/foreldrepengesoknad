@@ -3,7 +3,6 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Fordeling } from 'types/Fordeling';
@@ -47,8 +46,15 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
+    const valgtStønadskonto = stønadskontoer[dekningsgrad];
+    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
+
+    // Sett standardverdi: del likt (halvparten av totalen)
+    const totalDager = antallUkerOgDagerFellesperiode.uker * 5 + antallUkerOgDagerFellesperiode.dager;
+    const halvpart = Math.floor(totalDager / 2);
+
     const formMethods = useForm<Fordeling>({
-        defaultValues: fordeling,
+        defaultValues: fordeling ?? { antallDagerSøker1: halvpart },
     });
 
     const antallDagerSøker1Temp = formMethods.watch('antallDagerSøker1');
@@ -66,19 +72,6 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
 
         navigator.goToNextDefaultStep();
     };
-
-    const valgtStønadskonto = stønadskontoer[dekningsgrad];
-
-    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
-
-    // Sett standardverdi: del likt (8 uker hver, eller halvparten av totalen)
-    useEffect(() => {
-        const totalDager = antallUkerOgDagerFellesperiode.uker * 5 + antallUkerOgDagerFellesperiode.dager;
-        const halvpart = Math.floor(totalDager / 2);
-        if (antallDagerSøker1 === undefined) {
-            formMethods.setValue('antallDagerSøker1', halvpart, { shouldDirty: false, shouldValidate: false });
-        }
-    }, [antallUkerOgDagerFellesperiode.uker, antallUkerOgDagerFellesperiode.dager, antallDagerSøker1, formMethods]);
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallDagerSøker1);
