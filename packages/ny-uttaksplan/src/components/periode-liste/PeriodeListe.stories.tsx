@@ -22,7 +22,6 @@ const customRenderer = ({
     erAleneOmOmsorg,
     handleAddPeriode,
     handleUpdatePeriode,
-    handleDeletePeriode,
     handleDeletePerioder,
     isReadOnly,
 }: StoryArgs) => {
@@ -49,7 +48,6 @@ const customRenderer = ({
                     perioder={perioder}
                     handleAddPeriode={handleAddPeriode}
                     handleUpdatePeriode={handleUpdatePeriode}
-                    handleDeletePeriode={handleDeletePeriode}
                     handleDeletePerioder={handleDeletePerioder}
                 />
             </div>
@@ -74,7 +72,6 @@ export const UttaksperioderMor: Story = {
     args: {
         handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
-        handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-04-22',
@@ -154,7 +151,6 @@ export const UttaksperioderMorOgFar: Story = {
     args: {
         handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
-        handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-04-22',
@@ -226,7 +222,6 @@ export const UttaksperioderFarMorIkkeRett: Story = {
     args: {
         handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
-        handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
         erFarEllerMedmor: true,
         familiehendelsedato: '2024-05-01',
@@ -290,7 +285,6 @@ export const UttaksperioderMorOgFarFlerbarnsdager: Story = {
     args: {
         handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
-        handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-04-22',
@@ -340,7 +334,6 @@ export const UttaksperioderMorIkkeSøktFørsteSeksUker: Story = {
     args: {
         handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
-        handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-04-22',
@@ -385,7 +378,6 @@ export const UttaksperioderMorInnlagtFørsteSeksUker: Story = {
     args: {
         handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
-        handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-04-22',

@@ -17,7 +17,6 @@ const ARIA_LABEL_ID = 'slett-periode-panel-heading';
 
 interface Props {
     closePanel: () => void;
-    handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
     permisjonsperiode: Permisjonsperiode;
     navnPåForeldre: NavnPåForeldre;
@@ -30,7 +29,6 @@ interface FormValues {
 
 export const SlettPeriodePanel = ({
     closePanel,
-    handleDeletePeriode,
     handleDeletePerioder,
     permisjonsperiode,
     navnPåForeldre,
@@ -50,7 +48,7 @@ export const SlettPeriodePanel = ({
             const periode = perioder.find((p) => p.id === values.perioder[0]);
 
             if (periode) {
-                handleDeletePeriode(periode);
+                handleDeletePerioder([periode]);
             }
         } else {
             const slettedePerioder: Planperiode[] = [];

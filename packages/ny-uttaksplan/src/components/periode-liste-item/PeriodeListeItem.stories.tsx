@@ -53,7 +53,6 @@ const customRenderer = ({
     erAleneOmOmsorg,
     handleAddPeriode,
     handleUpdatePeriode,
-    handleDeletePeriode,
     handleDeletePerioder,
     barn,
     isReadOnly,
@@ -80,7 +79,6 @@ const customRenderer = ({
                         isReadOnly={isReadOnly}
                         handleAddPeriode={handleAddPeriode}
                         handleUpdatePeriode={handleUpdatePeriode}
-                        handleDeletePeriode={handleDeletePeriode}
                         handleDeletePerioder={handleDeletePerioder}
                         erFamiliehendelse={erFamiliehendelse}
                         permisjonsperiode={permisjonsperiode}
@@ -107,7 +105,6 @@ export const UttaksperiodeMor: Story = {
     args: {
         handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
-        handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
         barn: {
             antallBarn: 1,
@@ -142,7 +139,6 @@ export const UttaksperiodeMorFlerePerioder: Story = {
     args: {
         handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
-        handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
         barn: {
             antallBarn: 1,
@@ -185,7 +181,6 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
     args: {
         handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
-        handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
         barn: {
             antallBarn: 1,
@@ -245,7 +240,6 @@ export const UttaksperiodeFar: Story = {
     args: {
         handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
-        handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
         barn: {
             antallBarn: 1,
@@ -280,7 +274,6 @@ export const PeriodeUtenUttak: Story = {
     args: {
         handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
-        handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
         barn: {
             antallBarn: 1,

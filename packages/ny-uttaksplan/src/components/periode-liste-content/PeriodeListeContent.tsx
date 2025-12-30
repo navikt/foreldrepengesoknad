@@ -35,8 +35,7 @@ interface Props {
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse: boolean;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
-    handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
-    handleDeletePeriode: (slettetPeriode: Planperiode) => void;
+    handleUpdatePeriode: (oppdatertPeriode: Planperiode, gammelPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
 }
 
@@ -46,7 +45,6 @@ export const PeriodeListeContent = ({
     erFamiliehendelse,
     handleAddPeriode,
     handleUpdatePeriode,
-    handleDeletePeriode,
     handleDeletePerioder,
 }: Props) => {
     const [isEndrePeriodePanelOpen, setIsEndrePeriodePanelOpen] = useState(false);
@@ -109,7 +107,6 @@ export const PeriodeListeContent = ({
                     closePanel={() => {
                         setIsSlettPeriodePanelOpen(false);
                     }}
-                    handleDeletePeriode={handleDeletePeriode}
                     handleDeletePerioder={handleDeletePerioder}
                     permisjonsperiode={permisjonsperiode}
                     navnPåForeldre={navnPåForeldre}

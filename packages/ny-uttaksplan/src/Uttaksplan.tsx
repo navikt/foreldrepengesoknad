@@ -4,6 +4,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { omitMany } from '@navikt/fp-utils';
+
 import { UttaksplanHandlingKnapper } from './components/UttaksplanHandlingKnapper';
 import { LeggTilPeriodePanel } from './components/legg-til-periode-panel/LeggTilPeriodePanel';
 import { PeriodeListe } from './components/periode-liste/PeriodeListe';
@@ -42,12 +45,9 @@ export const UttaksplanNy = ({ isReadOnly }: Props) => {
                         saksperiodeBuilder.addPeriods(fjernHullOgUtenUttak([nyPeriode]));
                         uttaksplanRedigering?.oppdaterUttaksplan?.(saksperiodeBuilder.getSaksperioder());
                     }}
-                    handleUpdatePeriode={(oppdatertPeriode: Planperiode) => {
+                    handleUpdatePeriode={(oppdatertPeriode: Planperiode, gammelPeriode: Planperiode) => {
+                        saksperiodeBuilder.removePeriods([gammelPeriode]);
                         saksperiodeBuilder.addPeriods(fjernHullOgUtenUttak([oppdatertPeriode]));
-                        uttaksplanRedigering?.oppdaterUttaksplan?.(saksperiodeBuilder.getSaksperioder());
-                    }}
-                    handleDeletePeriode={(slettetPeriode: Planperiode) => {
-                        saksperiodeBuilder.removePeriods(fjernHullOgUtenUttak([slettetPeriode]));
                         uttaksplanRedigering?.oppdaterUttaksplan?.(saksperiodeBuilder.getSaksperioder());
                     }}
                     handleDeletePerioder={(slettedePerioder: Planperiode[]) => {
@@ -106,7 +106,17 @@ export const UttaksplanNy = ({ isReadOnly }: Props) => {
     );
 };
 
-// FIXME (TOR) Trengs denne?
 const fjernHullOgUtenUttak = (planperiode: Planperiode[]) => {
-    return planperiode.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
+    // FIXME (TOR) Trengs ein filtrere på dette?
+    const t = planperiode.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
+
+    return t.map(
+        (p) =>
+            omitMany(p, [
+                'id',
+                'periodeHullÅrsak',
+                'skalIkkeHaUttakFørTermin',
+                'erAnnenPartEøs',
+            ]) satisfies UttakPeriode_fpoversikt,
+    );
 };

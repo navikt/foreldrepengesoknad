@@ -8,7 +8,7 @@ import { BrukerRolleSak_fpoversikt, KontoTypeUttak, MorsAktivitet } from '@navik
 import { getFloatFromString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
-import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
+import { PeriodeHullType, Planperiode, PlanperiodeVanlig } from '../../../types/Planperiode';
 import { getGradering, getGraderingsInfo } from '../../../utils/graderingUtils';
 import { HvaVilDuGjøre } from '../../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 import { PanelButtons } from '../../panel-buttons/PanelButtons';
@@ -24,7 +24,7 @@ interface Props {
     panelData: PanelData;
     setPanelData: (data: PanelData) => void;
     closePanel: () => void;
-    handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
+    handleUpdatePeriode: (oppdatertPeriode: Planperiode, gammelPeriode: Planperiode) => void;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
     inneholderKunEnPeriode: boolean;
 }
@@ -113,41 +113,24 @@ export const EndrePeriodePanelStep = ({
         }
     };
 
-    const chooseUpdateOrAdd = (hvaVilDuGjøreValue: HvaVilDuGjøre) => {
-        if (hvaVilDuGjøreValue === HvaVilDuGjøre.LEGG_TIL_PERIODE) {
-            if (valgtPeriode && valgtPeriode.kontoType) {
-                return handleUpdatePeriode;
-            }
-
-            return handleAddPeriode;
-        }
-
-        if (hvaVilDuGjøreValue === HvaVilDuGjøre.LEGG_TIL_FERIE) {
-            if (!valgtPeriode?.erAnnenPartEøs && valgtPeriode?.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
-                return handleUpdatePeriode;
-            }
-
-            return handleAddPeriode;
-        }
-
-        return handleAddPeriode;
-    };
-
     const onSubmit = (values: EndrePeriodePanelStepFormValues) => {
         const fomValue = values.fom ?? valgtPeriode!.fom;
         const tomValue = values.tom ?? valgtPeriode!.tom;
 
         if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE) {
-            const handleFunc = chooseUpdateOrAdd(values.hvaVilDuGjøre);
-
-            handleFunc({
+            const feriePeriode = {
                 erAnnenPartEøs: false,
                 id: valgtPeriode?.id ?? `${fomValue} - ${tomValue} - LOVBESTEMT_FERIE`,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: 'MOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
-            });
+            } satisfies PlanperiodeVanlig;
+            if (!valgtPeriode?.erAnnenPartEøs && valgtPeriode?.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+                handleUpdatePeriode(feriePeriode, valgtPeriode);
+            } else {
+                handleAddPeriode(feriePeriode);
+            }
         } else if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
             handleAddPeriode({
                 erAnnenPartEøs: false,
@@ -158,9 +141,7 @@ export const EndrePeriodePanelStep = ({
                 periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
             });
         } else {
-            const handleFunc = chooseUpdateOrAdd(values.hvaVilDuGjøre);
-
-            handleFunc({
+            const periode = {
                 erAnnenPartEøs: false,
                 id: valgtPeriode!.id,
                 fom: fomValue,
@@ -170,7 +151,12 @@ export const EndrePeriodePanelStep = ({
                 morsAktivitet: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : values.morsAktivitet,
                 gradering: getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType),
                 samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
-            });
+            } satisfies PlanperiodeVanlig;
+            if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE && valgtPeriode && valgtPeriode.kontoType) {
+                handleUpdatePeriode(periode, valgtPeriode);
+            }
+
+            handleAddPeriode(periode);
         }
         closePanel();
     };
