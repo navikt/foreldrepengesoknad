@@ -19,9 +19,9 @@
         "test:browser:watch": "vitest --project=browser --watch=true"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "7.35.2",
-        "@navikt/ds-css": "7.35.2",
-        "@navikt/ds-react": "7.35.2",
+        "@navikt/aksel-icons": "7.36.0",
+        "@navikt/ds-css": "7.36.0",
+        "@navikt/ds-react": "7.36.0",
         "@navikt/fp-common": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
@@ -36,22 +36,22 @@
         "dayjs": "1.11.19",
         "lodash": "4.17.21",
         "react": "19.2.3",
-        "react-hook-form": "7.68.0",
-        "react-intl": "7.1.14",
+        "react-hook-form": "7.69.0",
+        "react-intl": "8.0.6",
         "react-to-pdf": "2.0.3",
         "typescript": "5.9.3"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "7.4.4",
-        "@navikt/ds-tailwind": "7.35.2",
+        "@formatjs/cli-lib": "8.0.4",
+        "@navikt/ds-tailwind": "7.36.0",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
-        "@storybook/addon-links": "10.1.8",
-        "@storybook/react-vite": "10.1.8",
+        "@storybook/addon-links": "10.1.10",
+        "@storybook/react-vite": "10.1.10",
         "@testing-library/jest-dom": "6.9.1",
-        "@testing-library/react": "16.3.0",
+        "@testing-library/react": "16.3.1",
         "@testing-library/user-event": "14.6.1",
         "@types/lodash": "4.17.21",
         "eslint": "9.39.2",
@@ -59,10 +59,10 @@
         "mockdate": "3.0.5",
         "playwright": "1.57.0",
         "react-dom": "19.2.3",
-        "storybook": "10.1.8",
+        "storybook": "10.1.10",
         "storybook-react-intl": "10.0.1",
         "tailwindcss": "4.1.18",
-        "vite": "7.2.7",
-        "vitest": "4.0.15"
+        "vite": "7.3.0",
+        "vitest": "4.0.16"
     }
 }
