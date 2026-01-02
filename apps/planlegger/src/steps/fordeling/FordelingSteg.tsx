@@ -8,19 +8,19 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { finnSøker1Tekst, finnSøker2Tekst, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
-import { formatError } from 'utils/customErrorFormatter';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { UkerOgDager, getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyShort, Heading, Spacer, VStack } from '@navikt/ds-react';
 
-import { RhfForm, RhfSelect, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
-import { isRequired, notEmpty } from '@navikt/fp-validation';
+import { notEmpty } from '@navikt/fp-validation';
 
+import { FordelingSlider } from '../../components/FordelingSlider';
 import { FordelingsdetaljerPanel } from './FordelingsdetaljerPanel';
 
 type Fellesperiodefordeling = {
@@ -46,13 +46,22 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
+    const valgtStønadskonto = stønadskontoer[dekningsgrad];
+    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
+
+    // Sett standardverdi: del likt (halvparten av totalen)
+    const totalDager = antallUkerOgDagerFellesperiode.uker * 5 + antallUkerOgDagerFellesperiode.dager;
+    const halvpart = Math.floor(totalDager / 2);
+
     const formMethods = useForm<Fordeling>({
-        defaultValues: fordeling,
+        defaultValues: fordeling ?? { antallDagerSøker1: halvpart },
     });
 
-    // TODO FIX string => number
     const antallDagerSøker1Temp = formMethods.watch('antallDagerSøker1');
-    const antallDagerSøker1 = antallDagerSøker1Temp ? Number.parseInt(antallDagerSøker1Temp.toString(), 10) : undefined;
+    const antallDagerSøker1 =
+        antallDagerSøker1Temp === undefined || antallDagerSøker1Temp === null
+            ? undefined
+            : Number(antallDagerSøker1Temp);
 
     const lagre = (formValues: Fordeling) => {
         oppdaterFordeling(formValues);
@@ -63,10 +72,6 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
 
         navigator.goToNextDefaultStep();
     };
-
-    const valgtStønadskonto = stønadskontoer[dekningsgrad];
-
-    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallDagerSøker1);
@@ -110,44 +115,28 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                             </BodyShort>
                         </Infobox>
                         <BluePanel isDarkBlue={fordeling === undefined}>
-                            <RhfSelect
-                                name="antallDagerSøker1"
-                                control={formMethods.control}
-                                label={
-                                    <FormattedMessage
-                                        id="FordelingSteg.FordelingTittel"
-                                        values={{
-                                            uker: antallUkerOgDagerFellesperiode.uker,
-                                            dager: antallUkerOgDagerFellesperiode.dager,
-                                        }}
-                                    />
-                                }
-                                autofocusWhenEmpty
-                                validate={[
-                                    isRequired(intl.formatMessage({ id: 'FordelingSteg.FordelingTittel.Required' })),
-                                ]}
-                                customErrorFormatter={formatError}
-                                onChange={scrollToBottom}
-                            >
-                                {getFellesperiodefordelingSelectOptions(antallUkerOgDagerFellesperiode).map((value) => (
-                                    <option
-                                        key={value.antallUkerOgDagerSøker1.totaltAntallDager}
-                                        value={value.antallUkerOgDagerSøker1.totaltAntallDager}
-                                    >
-                                        {finnFellesperiodeFordelingOptionTekst(
-                                            intl,
-                                            value,
-                                            hvemPlanlegger,
-                                            fornavnSøker1,
-                                            fornavnSøker2,
-                                        )}
-                                    </option>
-                                ))}
-                            </RhfSelect>
+                            <Heading id="fordeling-slider-label" size="small" level="3">
+                                <FormattedMessage
+                                    id="FordelingSteg.FordelingTittel"
+                                    values={{
+                                        uker: antallUkerOgDagerFellesperiode.uker,
+                                        dager: antallUkerOgDagerFellesperiode.dager,
+                                    }}
+                                />
+                            </Heading>
+                            <FordelingSlider
+                                antallDagerSøker1={antallDagerSøker1}
+                                onAntallDagerSøker1Change={(value) => {
+                                    formMethods.setValue('antallDagerSøker1', value);
+                                    scrollToBottom();
+                                }}
+                                antallUkerOgDagerFellesperiode={antallUkerOgDagerFellesperiode}
+                                fornavnSøker1={fornavnSøker1}
+                                fornavnSøker2={fornavnSøker2}
+                            />
                         </BluePanel>
                         {antallDagerSøker1 !== undefined && (
                             <FordelingsdetaljerPanel
-                                key={antallDagerSøker1}
                                 barnet={barnet}
                                 hvemPlanlegger={hvemPlanlegger}
                                 fornavnSøker1={fornavnSøker1}
