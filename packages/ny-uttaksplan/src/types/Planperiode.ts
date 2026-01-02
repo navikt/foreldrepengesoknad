@@ -7,7 +7,7 @@ export enum PeriodeHullType {
 
 export interface PlanperiodeVanlig extends UttakPeriode_fpoversikt {
     erAnnenPartEøs: false;
-    // TODO (TOR) Ein "hull-periode" er vel kun ein visningsperiode, og treng ikkje arva frå UttakPeriode_fpoversikt?
+    // TODO (TOR) Ein "hull-periode" er vel kun ein visningsperiode, og treng ikkje arva frå UttakPeriode_fpoversikt? Og kva er Permisjonsperiode?
     periodeHullÅrsak?: PeriodeHullType;
     // TODO (TO) Ser ut som denne kun blir brukt ein stad, i sortering. Kan ein heller utleda denne i sorteringsfunksjonen?
     skalIkkeHaUttakFørTermin?: boolean;
