@@ -252,7 +252,7 @@ export const finnOgSettInnHull = (
         return perioder;
     }
 
-    const result = perioder.reduce((res, periode, index) => {
+    const result = perioder.reduce<Planperiode[]>((res, periode, index) => {
         if (index === 0 && erFarEllerMedmor) {
             const førsteUttaksdagFamiliehendelsesdato = UttaksdagenString(familiehendelsesdato).denneEllerNeste();
             if (dayjs(førsteUttaksdagFamiliehendelsesdato).isBefore(periode.fom)) {
@@ -362,7 +362,7 @@ export const finnOgSettInnHull = (
         }
 
         return res;
-    }, [] as Planperiode[]);
+    }, []);
 
     return result;
 };
@@ -397,7 +397,7 @@ export const settInnAnnenPartsUttak = (
 
     const { normaliserteEgnePerioder, normaliserteAnnenPartsPerioder } = normaliserPerioder(perioder, annenPartsUttak);
 
-    const result = normaliserteEgnePerioder.reduce((res, p) => {
+    const result = normaliserteEgnePerioder.reduce<Planperiode[]>((res, p) => {
         const overlappendePerioderAnnenPart = Periodene(normaliserteAnnenPartsPerioder).finnOverlappendePerioder(p);
 
         if (overlappendePerioderAnnenPart.length === 0) {
@@ -442,7 +442,7 @@ export const settInnAnnenPartsUttak = (
             res.push(p);
             return res;
         }
-    }, [] as Planperiode[]);
+    }, []);
 
     result.sort(sorterPerioder);
 
