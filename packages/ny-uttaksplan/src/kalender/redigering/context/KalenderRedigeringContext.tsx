@@ -107,7 +107,7 @@ export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgte
     const slettUttaksplanPerioder = useCallback(
         (perioder: UttakPeriode_fpoversikt[]) => {
             const saksperiodeBuilder = new SaksperiodeBuilder(saksperioder);
-            saksperiodeBuilder.leggTilSaksperioder(perioder);
+            saksperiodeBuilder.fjernSaksperioder(perioder);
             notEmpty(uttaksplanRedigering).oppdaterUttaksplan(saksperiodeBuilder.getSaksperioder());
         },
         [uttaksplanRedigering, familiehendelsedato, erFarEllerMedmor, saksperioder],
