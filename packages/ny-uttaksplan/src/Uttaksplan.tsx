@@ -43,20 +43,20 @@ export const UttaksplanNy = ({ isReadOnly }: Props) => {
                     perioder={uttaksplan}
                     handleAddPeriode={(nyPeriode: Planperiode) => {
                         const nyeSaksperioder = saksperiodeBuilder
-                            .addPeriods(fjernHullOgUtenUttak([nyPeriode]))
+                            .leggTilSaksperioder(fjernHullOgUtenUttak([nyPeriode]))
                             .getSaksperioder();
                         uttaksplanRedigering?.oppdaterUttaksplan?.(nyeSaksperioder);
                     }}
                     handleUpdatePeriode={(oppdatertPeriode: Planperiode, gammelPeriode: Planperiode) => {
                         const nyeSaksperioder = saksperiodeBuilder
-                            .removePeriods([gammelPeriode])
-                            .addPeriods(fjernHullOgUtenUttak([oppdatertPeriode]))
+                            .fjernSaksperioder([gammelPeriode])
+                            .leggTilSaksperioder(fjernHullOgUtenUttak([oppdatertPeriode]))
                             .getSaksperioder();
                         uttaksplanRedigering?.oppdaterUttaksplan?.(nyeSaksperioder);
                     }}
                     handleDeletePerioder={(slettedePerioder: Planperiode[]) => {
                         const nyeSaksperioder = saksperiodeBuilder
-                            .removePeriods(fjernHullOgUtenUttak(slettedePerioder))
+                            .fjernSaksperioder(fjernHullOgUtenUttak(slettedePerioder))
                             .getSaksperioder();
                         uttaksplanRedigering?.oppdaterUttaksplan?.(nyeSaksperioder);
                     }}
@@ -85,7 +85,7 @@ export const UttaksplanNy = ({ isReadOnly }: Props) => {
                 <LeggTilPeriodePanel
                     onCancel={() => setIsLeggTilPeriodePanelOpen(false)}
                     handleAddPeriode={(nyPeriode: Planperiode) => {
-                        saksperiodeBuilder.addPeriods(fjernHullOgUtenUttak([nyPeriode]));
+                        saksperiodeBuilder.leggTilSaksperioder(fjernHullOgUtenUttak([nyPeriode]));
                         uttaksplanRedigering?.oppdaterUttaksplan?.(saksperiodeBuilder.getSaksperioder());
                         setIsLeggTilPeriodePanelOpen(false);
                     }}

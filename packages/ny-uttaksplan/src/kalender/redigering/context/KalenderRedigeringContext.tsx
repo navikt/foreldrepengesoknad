@@ -82,7 +82,9 @@ export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgte
 
     const leggTilUttaksplanPerioder = useCallback(
         (perioder: UttakPeriode_fpoversikt[]) => {
-            const nyeSaksperioder = new SaksperiodeBuilder(saksperioder).addPeriods(perioder).getSaksperioder();
+            const nyeSaksperioder = new SaksperiodeBuilder(saksperioder)
+                .leggTilSaksperioder(perioder)
+                .getSaksperioder();
 
             //FIXME (TOR) Kvifor blir denne splitta på familiehendelsedato? Er det kun for visningslogikk?
             // const planperioder = uttaksplanBuilder.leggTilPerioder(
@@ -105,7 +107,7 @@ export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgte
     const slettUttaksplanPerioder = useCallback(
         (perioder: UttakPeriode_fpoversikt[]) => {
             const saksperiodeBuilder = new SaksperiodeBuilder(saksperioder);
-            saksperiodeBuilder.addPeriods(perioder);
+            saksperiodeBuilder.leggTilSaksperioder(perioder);
             notEmpty(uttaksplanRedigering).oppdaterUttaksplan(saksperiodeBuilder.getSaksperioder());
         },
         [uttaksplanRedigering, familiehendelsedato, erFarEllerMedmor, saksperioder],
