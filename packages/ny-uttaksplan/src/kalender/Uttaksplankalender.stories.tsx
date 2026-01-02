@@ -540,6 +540,40 @@ export const MorOppgirSamtidigUttakMedFar: Story = {
     },
 };
 
+export const MorOppgirSamtidigUttakMedMedmor: Story = {
+    args: {
+        saksperioder: [
+            {
+                fom: '2024-05-21',
+                tom: '2024-05-27',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                samtidigUttak: 50,
+            },
+            {
+                fom: '2024-05-21',
+                tom: '2024-05-27',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'MØDREKVOTE',
+                samtidigUttak: 50,
+            },
+        ] satisfies UttakPeriode_fpoversikt[],
+        barn: {
+            type: BarnType.ADOPTERT_STEBARN,
+            fødselsdatoer: ['2024-05-21'],
+            adopsjonsdato: '2024-05-21',
+            antallBarn: 1,
+        },
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Grete' },
+            erMedmorDelAvSøknaden: true,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+    },
+};
+
 export const FarOppgirSamtidigUttakMedMor: Story = {
     args: {
         saksperioder: [

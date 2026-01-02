@@ -24,6 +24,7 @@ import { Planperiode } from '../../types/Planperiode';
 import { getGradering } from '../../utils/graderingUtils';
 import { getStønadskontoNavnSimple } from '../../utils/stønadskontoerUtils';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
+import { usePeriodeValidator } from './utils/usePeriodeValidator';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
@@ -60,8 +61,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
 
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
 
-    // const { finnKontotypeGyldigFeilmeldinger, finnPerioderGyldigeFeilmeldinger } =
-    //     usePeriodeValidator(sammenslåtteValgtePerioder);
+    const { finnPerioderGyldigeFeilmeldinger } = usePeriodeValidator(sammenslåtteValgtePerioder);
 
     const defaultValues = lagDefaultValues(uttaksplan, sammenslåtteValgtePerioder[0]!);
 
@@ -70,14 +70,29 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
     });
 
     const onSubmit = (values: FormValues) => {
-        // const valideringsfeil = finnKontotypeGyldigFeilmeldinger(values.kontoType, values.samtidigUttak).concat(
-        //     finnPerioderGyldigeFeilmeldinger(
-        //         values.kontoType,
-        //         values.samtidigUttak,
-        //         values.skalDuJobbe,
-        //         values.forelder,
-        //     ),
-        const valideringsfeil = new Array<string>();
+        const valideringsfeil: string[] = [];
+
+        if (values.forelder === 'MOR' || values.forelder === 'BEGGE') {
+            valideringsfeil.push(
+                ...finnPerioderGyldigeFeilmeldinger(
+                    values.kontoTypeMor,
+                    values.samtidigUttaksprosentMor !== undefined,
+                    values.skalDuKombinereArbeidOgUttakMor,
+                    'MOR',
+                ),
+            );
+        }
+        if (values.forelder === 'FAR_MEDMOR' || values.forelder === 'BEGGE') {
+            valideringsfeil.push(
+                ...finnPerioderGyldigeFeilmeldinger(
+                    values.kontoTypeFarMedmor,
+                    values.samtidigUttaksprosentFarMedmor !== undefined,
+                    values.skalDuKombinereArbeidOgUttakFarMedmor,
+                    'FAR_MEDMOR',
+                ),
+            );
+        }
+
         if (valideringsfeil.length > 0) {
             setFeilmelding(valideringsfeil.at(0));
             return;
