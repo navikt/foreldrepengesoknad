@@ -181,15 +181,6 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
 const PeriodeIkon = ({ periode }: { periode: PlanperiodeMedAntallDager }) => {
     const intl = useIntl();
 
-    const erFellesperiodeOgMor =
-        periode.kontoType === 'FELLESPERIODE' && !periode.erAnnenPartEøs && periode.forelder === 'MOR';
-    const erFellesperiodeOgFar =
-        periode.kontoType === 'FELLESPERIODE' && !periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR';
-    const erForeldrepengerOgMor =
-        periode.kontoType === 'FORELDREPENGER' && !periode.erAnnenPartEøs && periode.forelder === 'MOR';
-    const erForeldrepengerOgFar =
-        periode.kontoType === 'FORELDREPENGER' && !periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR';
-
     const erSamtidigUttak = !periode.erAnnenPartEøs && periode.samtidigUttak !== undefined && periode.samtidigUttak > 0;
 
     if (erSamtidigUttak) {
@@ -200,35 +191,6 @@ const PeriodeIkon = ({ periode }: { periode: PlanperiodeMedAntallDager }) => {
                 height="35px"
                 width="35px"
                 color="var(--ax-bg-meta-purple-strong)"
-            />
-        );
-    }
-
-    if (
-        periode.kontoType === 'FORELDREPENGER_FØR_FØDSEL' ||
-        periode.kontoType === 'MØDREKVOTE' ||
-        erForeldrepengerOgMor ||
-        erFellesperiodeOgMor
-    ) {
-        return (
-            <PersonPregnantFillIcon
-                title={intl.formatMessage({ id: 'RedigeringPanel.Mor' })}
-                fontSize="1.5rem"
-                height="35px"
-                width="35px"
-                color="var(--ax-bg-meta-purple-strong)"
-            />
-        );
-    }
-
-    if (periode.kontoType === 'FEDREKVOTE' || erFellesperiodeOgFar || erForeldrepengerOgFar) {
-        return (
-            <PersonSuitFillIcon
-                title={intl.formatMessage({ id: 'RedigeringPanel.Far' })}
-                fontSize="1.5rem"
-                height="35px"
-                width="35px"
-                color="var(--ax-bg-success-strong)"
             />
         );
     }
@@ -245,55 +207,46 @@ const PeriodeIkon = ({ periode }: { periode: PlanperiodeMedAntallDager }) => {
         );
     }
 
+    if (!periode.erAnnenPartEøs && periode.forelder === 'MOR') {
+        return (
+            <PersonPregnantFillIcon
+                title={intl.formatMessage({ id: 'RedigeringPanel.Mor' })}
+                fontSize="1.5rem"
+                height="35px"
+                width="35px"
+                color="var(--ax-bg-meta-purple-strong)"
+            />
+        );
+    }
+
+    if (!periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR') {
+        return (
+            <PersonSuitFillIcon
+                title={intl.formatMessage({ id: 'RedigeringPanel.Far' })}
+                fontSize="1.5rem"
+                height="35px"
+                width="35px"
+                color="var(--ax-bg-success-strong)"
+            />
+        );
+    }
+
     return null;
 };
 
 const PeriodeHeaderText = ({ periode }: { periode: PlanperiodeMedAntallDager }) => {
-    const erFellesperiodeOgMor =
-        periode.kontoType === 'FELLESPERIODE' && !periode.erAnnenPartEøs && periode.forelder === 'MOR';
-    const erFellesperiodeOgFar =
-        periode.kontoType === 'FELLESPERIODE' && !periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR';
-    const erForeldrepengerOgMor =
-        periode.kontoType === 'FORELDREPENGER' && !periode.erAnnenPartEøs && periode.forelder === 'MOR';
-    const erForeldrepengerOgFar =
-        periode.kontoType === 'FORELDREPENGER' && !periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR';
-
     if (!periode.erAnnenPartEøs && periode.samtidigUttak !== undefined) {
         return <FormattedMessage id="RedigeringPanel.Begge" />;
     }
 
-    //TODO (TOR) Kan ikkje ein her sjekke på kun forelder?
-
-    if (
-        periode.kontoType === 'FORELDREPENGER_FØR_FØDSEL' ||
-        periode.kontoType === 'MØDREKVOTE' ||
-        erFellesperiodeOgMor ||
-        erForeldrepengerOgMor
-    ) {
+    if (!periode.erAnnenPartEøs && periode.forelder === 'MOR') {
         return <FormattedMessage id="RedigeringPanel.Mor" />;
     }
 
-    if (periode.kontoType === 'FEDREKVOTE' || erFellesperiodeOgFar || erForeldrepengerOgFar) {
+    if (!periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR') {
         return <FormattedMessage id="RedigeringPanel.Far" />;
     }
 
-    if (
-        !periode.erAnnenPartEøs &&
-        periode.kontoType === undefined &&
-        periode.utsettelseÅrsak !== undefined &&
-        periode.forelder === 'MOR'
-    ) {
-        return <FormattedMessage id="RedigeringPanel.Mor" />;
-    }
-
-    if (
-        !periode.erAnnenPartEøs &&
-        periode.kontoType === undefined &&
-        periode.utsettelseÅrsak !== undefined &&
-        periode.forelder === 'FAR_MEDMOR'
-    ) {
-        return <FormattedMessage id="RedigeringPanel.Far" />;
-    }
     return null;
 };
 
