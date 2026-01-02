@@ -86,7 +86,6 @@ export const UttaksperioderMor: Story = {
         perioder: [
             {
                 erAnnenPartEøs: false,
-                id: '1',
                 fom: '2024-04-01',
                 tom: '2024-04-19',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
@@ -94,7 +93,6 @@ export const UttaksperioderMor: Story = {
             },
             {
                 erAnnenPartEøs: false,
-                id: '2',
                 fom: '2024-04-22',
                 tom: '2024-05-31',
                 kontoType: 'MØDREKVOTE',
@@ -102,14 +100,12 @@ export const UttaksperioderMor: Story = {
             },
             {
                 erAnnenPartEøs: false,
-                id: '3',
                 fom: '2024-06-03',
                 tom: '2024-06-10',
                 periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
             },
             {
                 erAnnenPartEøs: false,
-                id: '4',
                 fom: '2024-06-11',
                 tom: '2024-06-28',
                 kontoType: 'FELLESPERIODE',
@@ -118,7 +114,6 @@ export const UttaksperioderMor: Story = {
             },
             {
                 erAnnenPartEøs: false,
-                id: '5',
                 fom: '2024-07-01',
                 tom: '2024-07-02',
                 kontoType: 'FEDREKVOTE',
@@ -126,7 +121,6 @@ export const UttaksperioderMor: Story = {
             },
             {
                 erAnnenPartEøs: false,
-                id: '6',
                 fom: '2024-07-03',
                 tom: '2024-07-10',
                 kontoType: 'MØDREKVOTE',
@@ -165,7 +159,6 @@ export const UttaksperioderMorOgFar: Story = {
         perioder: [
             {
                 erAnnenPartEøs: false,
-                id: '1',
                 fom: '2024-04-01',
                 tom: '2024-04-19',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
@@ -173,7 +166,6 @@ export const UttaksperioderMorOgFar: Story = {
             },
             {
                 erAnnenPartEøs: false,
-                id: '2',
                 fom: '2024-04-22',
                 tom: '2024-05-03',
                 kontoType: 'MØDREKVOTE',
@@ -182,7 +174,6 @@ export const UttaksperioderMorOgFar: Story = {
             },
             {
                 erAnnenPartEøs: false,
-                id: '3',
                 fom: '2024-04-22',
                 tom: '2024-05-03',
                 kontoType: 'FEDREKVOTE',
@@ -191,7 +182,6 @@ export const UttaksperioderMorOgFar: Story = {
             },
             {
                 erAnnenPartEøs: false,
-                id: '4',
                 fom: '2024-05-06',
                 tom: '2024-05-31',
                 kontoType: 'MØDREKVOTE',
@@ -199,7 +189,6 @@ export const UttaksperioderMorOgFar: Story = {
             },
             {
                 erAnnenPartEøs: false,
-                id: '5',
                 fom: '2024-06-03',
                 tom: '2024-06-28',
                 kontoType: 'FEDREKVOTE',
@@ -207,7 +196,6 @@ export const UttaksperioderMorOgFar: Story = {
             },
             {
                 erAnnenPartEøs: false,
-                id: '6',
                 fom: '2024-07-01',
                 tom: '2024-07-08',
                 kontoType: 'FELLESPERIODE',
@@ -236,7 +224,6 @@ export const UttaksperioderFarMorIkkeRett: Story = {
         perioder: [
             {
                 erAnnenPartEøs: false,
-                id: '1',
                 fom: '2024-05-01',
                 tom: '2024-08-21',
                 kontoType: 'FORELDREPENGER',
@@ -244,7 +231,6 @@ export const UttaksperioderFarMorIkkeRett: Story = {
             },
             {
                 erAnnenPartEøs: false,
-                id: '2',
                 fom: '2024-08-22',
                 tom: '2024-08-29',
                 kontoType: 'FORELDREPENGER',
@@ -253,14 +239,12 @@ export const UttaksperioderFarMorIkkeRett: Story = {
             },
             {
                 erAnnenPartEøs: false,
-                id: '2',
                 fom: '2024-08-30',
                 tom: '2024-09-13',
                 periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
             },
             {
                 erAnnenPartEøs: false,
-                id: '2',
                 fom: '2024-09-16',
                 tom: '2024-09-23',
                 kontoType: 'FORELDREPENGER',
@@ -299,7 +283,6 @@ export const UttaksperioderMorOgFarFlerbarnsdager: Story = {
         perioder: [
             {
                 erAnnenPartEøs: false,
-                id: '1',
                 fom: '2024-04-01',
                 tom: '2024-04-19',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
@@ -307,7 +290,6 @@ export const UttaksperioderMorOgFarFlerbarnsdager: Story = {
             },
             {
                 erAnnenPartEøs: false,
-                id: '2',
                 fom: '2024-04-22',
                 tom: '2024-05-31',
                 kontoType: 'MØDREKVOTE',
@@ -317,7 +299,6 @@ export const UttaksperioderMorOgFarFlerbarnsdager: Story = {
             },
             {
                 erAnnenPartEøs: false,
-                id: '3',
                 fom: '2024-04-22',
                 tom: '2024-05-31',
                 kontoType: 'FEDREKVOTE',
@@ -348,7 +329,6 @@ export const UttaksperioderMorIkkeSøktFørsteSeksUker: Story = {
         perioder: [
             {
                 erAnnenPartEøs: false,
-                id: '1',
                 fom: '2024-04-01',
                 tom: '2024-04-19',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
@@ -356,14 +336,12 @@ export const UttaksperioderMorIkkeSøktFørsteSeksUker: Story = {
             },
             {
                 erAnnenPartEøs: false,
-                id: '2',
                 fom: '2024-04-22',
                 tom: '2024-05-31',
                 periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
             },
             {
                 erAnnenPartEøs: false,
-                id: '3',
                 fom: '2024-06-03',
                 tom: '2024-06-28',
                 kontoType: 'MØDREKVOTE',
@@ -392,7 +370,6 @@ export const UttaksperioderMorInnlagtFørsteSeksUker: Story = {
         perioder: [
             {
                 erAnnenPartEøs: false,
-                id: '1',
                 fom: '2024-04-01',
                 tom: '2024-04-19',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
@@ -400,7 +377,6 @@ export const UttaksperioderMorInnlagtFørsteSeksUker: Story = {
             },
             {
                 erAnnenPartEøs: false,
-                id: '2',
                 fom: '2024-04-22',
                 tom: '2024-05-31',
                 utsettelseÅrsak: 'SØKER_INNLAGT',
@@ -408,7 +384,6 @@ export const UttaksperioderMorInnlagtFørsteSeksUker: Story = {
             },
             {
                 erAnnenPartEøs: false,
-                id: '3',
                 fom: '2024-06-03',
                 tom: '2024-06-28',
                 kontoType: 'MØDREKVOTE',

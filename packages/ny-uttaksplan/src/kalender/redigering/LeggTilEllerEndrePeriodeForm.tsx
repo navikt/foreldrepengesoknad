@@ -8,7 +8,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, ErrorMessage, HStack, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfNumericField, RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
-import type { BrukerRolleSak_fpoversikt, KontoTypeUttak, MorsAktivitet } from '@navikt/fp-types';
+import type {
+    BrukerRolleSak_fpoversikt,
+    KontoTypeUttak,
+    MorsAktivitet,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { getFloatFromString } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -81,14 +86,12 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
 
         leggTilUttaksplanPerioder(
             sammenslåtteValgtePerioder.flatMap((periode) => {
-                const nye = new Array<Planperiode>();
+                const nye = new Array<UttakPeriode_fpoversikt>();
 
                 if (values.forelder === 'MOR' || values.forelder === 'BEGGE') {
                     nye.push({
-                        erAnnenPartEøs: false,
                         fom: periode.fom,
                         tom: periode.tom,
-                        id: `${periode.fom} - ${periode.tom} - ${values.kontoTypeMor} - ${values.forelder}`,
                         kontoType:
                             values.kontoTypeMor === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoTypeMor,
                         morsAktivitet: values.morsAktivitet,
@@ -108,10 +111,8 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
                 }
                 if (values.forelder === 'FAR_MEDMOR' || values.forelder === 'BEGGE') {
                     nye.push({
-                        erAnnenPartEøs: false,
                         fom: periode.fom,
                         tom: periode.tom,
-                        id: `${periode.fom} - ${periode.tom} - ${values.kontoTypeFarMedmor} - ${values.forelder}`,
                         kontoType:
                             values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE'
                                 ? 'FORELDREPENGER'

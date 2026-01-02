@@ -1,13 +1,13 @@
 import { ChevronDownIcon, ChevronUpIcon, PencilIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { uniqueId } from 'lodash';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Box, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { Planperiode } from '../../types/Planperiode';
 import { getVarighetString } from '../../utils/dateUtils';
 import { PeriodeDetaljerOgInfoMeldinger } from './PeriodeDetaljerOgInfoMeldinger';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
@@ -37,14 +37,15 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
 
     const leggTilFerie = () => {
         leggTilUttaksplanPerioder(
-            sammenslåtteValgtePerioder.map<Planperiode>((p) => ({
-                erAnnenPartEøs: false,
-                forelder: søker === 'FAR_ELLER_MEDMOR' ? 'FAR_MEDMOR' : 'MOR',
-                fom: p.fom,
-                tom: p.tom,
-                id: uniqueId(),
-                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
-            })),
+            sammenslåtteValgtePerioder.map(
+                (p) =>
+                    ({
+                        forelder: søker === 'FAR_ELLER_MEDMOR' ? 'FAR_MEDMOR' : 'MOR',
+                        fom: p.fom,
+                        tom: p.tom,
+                        utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+                    }) satisfies UttakPeriode_fpoversikt,
+            ),
         );
 
         setValgtePerioder([]);

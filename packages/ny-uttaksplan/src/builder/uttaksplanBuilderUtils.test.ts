@@ -1,12 +1,9 @@
-import { omitOne } from '@navikt/fp-utils';
-
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
 import { finnOgSettInnHull, settInnAnnenPartsUttak, slåSammenLikePerioder } from './uttaksplanbuilderUtils';
 
 const perioder: Planperiode[] = [
     {
         erAnnenPartEøs: false,
-        id: '1',
         fom: '2022-07-21',
         tom: '2022-08-31',
         forelder: 'FAR_MEDMOR',
@@ -15,7 +12,6 @@ const perioder: Planperiode[] = [
     },
     {
         erAnnenPartEøs: false,
-        id: '2',
         fom: '2022-09-01',
         tom: '2022-09-14',
         forelder: 'FAR_MEDMOR',
@@ -79,7 +75,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         const morsPerioder: Planperiode[] = [
             {
                 erAnnenPartEøs: false,
-                id: '0',
                 fom: '2022-01-21',
                 tom: '2022-01-28',
                 kontoType: 'FELLESPERIODE',
@@ -88,7 +83,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             },
             {
                 erAnnenPartEøs: false,
-                id: '1',
                 fom: '2022-01-31',
                 tom: '2022-02-25',
                 kontoType: 'MØDREKVOTE',
@@ -97,7 +91,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             },
             {
                 erAnnenPartEøs: false,
-                id: '2',
                 fom: '2022-02-28',
                 tom: '2022-04-22',
                 kontoType: 'MØDREKVOTE',
@@ -109,7 +102,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         const annenPartsUttakIMidten: Planperiode[] = [
             {
                 erAnnenPartEøs: false,
-                id: '4',
                 fom: '2022-02-14',
                 tom: '2022-02-18',
                 forelder: 'FAR_MEDMOR',
@@ -162,7 +154,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         const søkerensPerioder: Planperiode[] = [
             {
                 erAnnenPartEøs: false,
-                id: '0',
                 fom: '2022-01-21',
                 tom: '2022-01-28',
                 kontoType: 'FELLESPERIODE',
@@ -171,7 +162,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             },
             {
                 erAnnenPartEøs: false,
-                id: '1',
                 fom: '2022-01-31',
                 tom: '2022-02-25',
                 kontoType: 'MØDREKVOTE',
@@ -180,7 +170,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             },
             {
                 erAnnenPartEøs: false,
-                id: '2',
                 fom: '2022-02-28',
                 tom: '2022-04-22',
                 kontoType: 'MØDREKVOTE',
@@ -192,7 +181,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         const annenPartsUttak: Planperiode[] = [
             {
                 erAnnenPartEøs: false,
-                id: '4',
                 fom: '2022-01-24',
                 tom: '2022-03-04',
                 forelder: 'FAR_MEDMOR',
@@ -266,7 +254,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         const kunAnnenPartsUttak: Planperiode[] = [
             {
                 erAnnenPartEøs: false,
-                id: '0',
                 fom: '2022-01-01',
                 tom: '2022-02-04',
                 forelder: 'FAR_MEDMOR',
@@ -285,7 +272,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         () => {
             const utsettelseSomOverlapperMedMidtenTilAnnenPart: Planperiode = {
                 erAnnenPartEøs: false,
-                id: '0',
                 fom: '2021-01-05',
                 tom: '2021-01-06',
                 forelder: 'FAR_MEDMOR',
@@ -293,7 +279,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             const annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode: Planperiode[] = [
                 {
                     erAnnenPartEøs: false,
-                    id: '1',
                     fom: '2021-01-04',
                     tom: '2021-01-07',
                     forelder: 'FAR_MEDMOR',
@@ -320,7 +305,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
     it('Hvis en utsettelsesperiode (som ikke er fri utsettelse) overlapper annen parts uttak helt, returner kun utsettelsen', () => {
         const utsettelseSomOverlapperMedMidtenTilAnnenPart: Planperiode = {
             erAnnenPartEøs: false,
-            id: '0',
             fom: '2021-01-04',
             tom: '2021-01-07',
             forelder: 'FAR_MEDMOR',
@@ -328,7 +312,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         const annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode: Planperiode[] = [
             {
                 erAnnenPartEøs: false,
-                id: '1',
                 fom: '2021-01-05',
                 tom: '2021-01-05',
                 forelder: 'FAR_MEDMOR',
@@ -344,13 +327,12 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             førsteUttaksdagNesteBarnsSak,
         );
         expect(result.length).toBe(1);
-        expect(omitOne(result[0]!, 'id')).toEqual(omitOne(utsettelseSomOverlapperMedMidtenTilAnnenPart, 'id'));
+        expect(result[0]!).toEqual(utsettelseSomOverlapperMedMidtenTilAnnenPart);
     });
 
     it('Hvis annen parts uttak overlapper starten av utsettelsesperioden (som ikke er fri utsettelse) returner kun delen som ikke overlapper', () => {
         const utsettelseSomOverlapperMedMidtenTilAnnenPart: Planperiode = {
             erAnnenPartEøs: false,
-            id: '0',
             fom: '2021-01-04',
             tom: '2021-01-07',
             forelder: 'MOR',
@@ -359,7 +341,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         const annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode: Planperiode[] = [
             {
                 erAnnenPartEøs: false,
-                id: '1',
                 fom: '2021-01-01',
                 tom: '2021-01-04',
                 forelder: 'FAR_MEDMOR',
@@ -378,7 +359,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         expect(result.length).toBe(2);
         expect(result[0]!.fom).toEqual(annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0]!.fom);
         expect(result[0]!.tom).toEqual('2021-01-01');
-        expect(omitOne(result[1]!, 'id')).toEqual(omitOne(utsettelseSomOverlapperMedMidtenTilAnnenPart, 'id'));
+        expect(result[1]!).toEqual(utsettelseSomOverlapperMedMidtenTilAnnenPart);
     });
     it(
         'Hvis annen parts uttak overlapper slutten av utsettelsesperioden' +
@@ -386,7 +367,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
         () => {
             const utsettelseSomOverlapperMedMidtenTilAnnenPart: Planperiode = {
                 erAnnenPartEøs: false,
-                id: '0',
                 fom: '2021-01-04',
                 tom: '2021-01-07',
                 forelder: 'FAR_MEDMOR',
@@ -394,7 +374,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
             const annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode: Planperiode[] = [
                 {
                     erAnnenPartEøs: false,
-                    id: '1',
                     fom: '2021-01-07',
                     tom: '2021-01-08',
                     forelder: 'FAR_MEDMOR',
@@ -409,7 +388,7 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 førsteUttaksdagNesteBarnsSak,
             );
             expect(result.length).toBe(2);
-            expect(omitOne(result[0]!, 'id')).toEqual(omitOne(utsettelseSomOverlapperMedMidtenTilAnnenPart, 'id'));
+            expect(result[0]!).toEqual(utsettelseSomOverlapperMedMidtenTilAnnenPart);
             expect(result[1]!.tom).toEqual(annenPartsUttakSomStarterFørOgSlutterEtterSøkernsPeriode[0]!.tom);
             expect(result[1]!.fom).toEqual('2021-01-08');
         },
@@ -423,7 +402,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 fom: '2026-01-12',
                 tom: '2026-01-29',
                 erAnnenPartEøs: false,
-                id: '1',
             },
             {
                 forelder: 'MOR',
@@ -431,7 +409,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 fom: '2026-02-16',
                 tom: '2026-05-15',
                 erAnnenPartEøs: false,
-                id: '2',
             },
             {
                 forelder: 'MOR',
@@ -439,7 +416,6 @@ describe('uttaksplanbuilderUtils - settInnAnnenPartsUttakOmNødvendig', () => {
                 fom: '2026-05-18',
                 tom: '2026-09-04',
                 erAnnenPartEøs: false,
-                id: '3',
             },
         ];
 

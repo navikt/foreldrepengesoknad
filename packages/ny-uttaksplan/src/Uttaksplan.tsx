@@ -7,12 +7,12 @@ import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { omitMany } from '@navikt/fp-utils';
 
+import { SaksperiodeBuilder } from './builder/SaksperiodeBuilder';
 import { UttaksplanHandlingKnapper } from './components/UttaksplanHandlingKnapper';
 import { LeggTilPeriodePanel } from './components/legg-til-periode-panel/LeggTilPeriodePanel';
 import { PeriodeListe } from './components/periode-liste/PeriodeListe';
 import { useUttaksplanData } from './context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from './context/UttaksplanRedigeringContext';
-import { SaksperiodeBuilder } from './newBuilder/SaksperiodeBuilder';
 import { Planperiode } from './types/Planperiode';
 import { isHull, isPeriodeUtenUttak } from './utils/periodeUtils';
 
@@ -42,17 +42,23 @@ export const UttaksplanNy = ({ isReadOnly }: Props) => {
                     isReadOnly={isReadOnly}
                     perioder={uttaksplan}
                     handleAddPeriode={(nyPeriode: Planperiode) => {
-                        saksperiodeBuilder.addPeriods(fjernHullOgUtenUttak([nyPeriode]));
-                        uttaksplanRedigering?.oppdaterUttaksplan?.(saksperiodeBuilder.getSaksperioder());
+                        const nyeSaksperioder = saksperiodeBuilder
+                            .addPeriods(fjernHullOgUtenUttak([nyPeriode]))
+                            .getSaksperioder();
+                        uttaksplanRedigering?.oppdaterUttaksplan?.(nyeSaksperioder);
                     }}
                     handleUpdatePeriode={(oppdatertPeriode: Planperiode, gammelPeriode: Planperiode) => {
-                        saksperiodeBuilder.removePeriods([gammelPeriode]);
-                        saksperiodeBuilder.addPeriods(fjernHullOgUtenUttak([oppdatertPeriode]));
-                        uttaksplanRedigering?.oppdaterUttaksplan?.(saksperiodeBuilder.getSaksperioder());
+                        const nyeSaksperioder = saksperiodeBuilder
+                            .removePeriods([gammelPeriode])
+                            .addPeriods(fjernHullOgUtenUttak([oppdatertPeriode]))
+                            .getSaksperioder();
+                        uttaksplanRedigering?.oppdaterUttaksplan?.(nyeSaksperioder);
                     }}
                     handleDeletePerioder={(slettedePerioder: Planperiode[]) => {
-                        saksperiodeBuilder.removePeriods(fjernHullOgUtenUttak(slettedePerioder));
-                        uttaksplanRedigering?.oppdaterUttaksplan?.(saksperiodeBuilder.getSaksperioder());
+                        const nyeSaksperioder = saksperiodeBuilder
+                            .removePeriods(fjernHullOgUtenUttak(slettedePerioder))
+                            .getSaksperioder();
+                        uttaksplanRedigering?.oppdaterUttaksplan?.(nyeSaksperioder);
                     }}
                     isAllAccordionsOpen={isAllAccordionsOpen}
                 />
@@ -113,7 +119,6 @@ const fjernHullOgUtenUttak = (planperiode: Planperiode[]) => {
     return t.map(
         (p) =>
             omitMany(p, [
-                'id',
                 'periodeHullÅrsak',
                 'skalIkkeHaUttakFørTermin',
                 'erAnnenPartEøs',

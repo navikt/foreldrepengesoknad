@@ -18,9 +18,8 @@ import {
     isUttaksperiode,
     normaliserPerioder,
 } from '../utils/periodeUtils';
-import { guid } from './guid';
 
-// TODO (TOR) Flytt desse funksjonane til utils-pakka. Er ikkje relatert til builder
+// TODO (TOR) Flytt desse funksjonane til utils-folder, evt ei ny folder for massering av periodar før visning. Er ikkje relatert til builder
 
 const splittPeriodePåDato = (periode: Planperiode, dato: string): Planperiode[] => {
     const periodeFørDato: Planperiode = {
@@ -31,7 +30,6 @@ const splittPeriodePåDato = (periode: Planperiode, dato: string): Planperiode[]
 
     const periodeFraOgMedDato: Planperiode = {
         ...periode,
-        id: guid(),
         fom: UttaksdagenString(periodeFørDato.tom).neste(),
         tom: periode.tom,
     };
@@ -228,7 +226,6 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
 
 const getPeriodeHull = (tidsperiode: Tidsperiode, erMor: boolean): Planperiode => ({
     erAnnenPartEøs: false,
-    id: `${tidsperiode.fom} - ${tidsperiode.tom} - ${PeriodeHullType.TAPTE_DAGER}`,
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
     periodeHullÅrsak: PeriodeHullType.TAPTE_DAGER,
@@ -237,7 +234,6 @@ const getPeriodeHull = (tidsperiode: Tidsperiode, erMor: boolean): Planperiode =
 
 const getNyPeriodeUtenUttak = (tidsperiode: Tidsperiode): Planperiode => ({
     erAnnenPartEøs: false,
-    id: `${tidsperiode.fom} - ${tidsperiode.tom} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
     periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,

@@ -120,7 +120,6 @@ export const EndrePeriodePanelStep = ({
         if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE) {
             const feriePeriode = {
                 erAnnenPartEøs: false,
-                id: valgtPeriode?.id ?? `${fomValue} - ${tomValue} - LOVBESTEMT_FERIE`,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: 'MOR',
@@ -132,9 +131,9 @@ export const EndrePeriodePanelStep = ({
                 handleAddPeriode(feriePeriode);
             }
         } else if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
+            // TODO (TOR) Kan ein heller sletta periode her?
             handleAddPeriode({
                 erAnnenPartEøs: false,
-                id: `${fomValue} - ${tomValue} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: 'MOR',
@@ -143,7 +142,6 @@ export const EndrePeriodePanelStep = ({
         } else {
             const periode = {
                 erAnnenPartEøs: false,
-                id: valgtPeriode!.id,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: getForelderFromKontoType(values.kontoType, values.forelder),

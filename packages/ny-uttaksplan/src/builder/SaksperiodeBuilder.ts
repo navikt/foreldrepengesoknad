@@ -20,7 +20,7 @@ export class SaksperiodeBuilder {
         return this;
     }
 
-    addPeriods(saksperioder: Saksperiode[]): void {
+    addPeriods(saksperioder: Saksperiode[]): SaksperiodeBuilder {
         if (this.shouldReplace) {
             // Grupper for å håndtera at ein legg til to periodar når ein har samtidig uttak.
             // Bruk ein av dei nye periodane for å justera andre periodar, og legg så til den andre på slutten
@@ -45,9 +45,10 @@ export class SaksperiodeBuilder {
         }
 
         this.periods.sort(sortPeriods);
+        return this;
     }
 
-    removePeriods(saksperioderSomSkalFjernes: Saksperiode[]): void {
+    removePeriods(saksperioderSomSkalFjernes: Saksperiode[]): SaksperiodeBuilder {
         for (const saksperiodeSomSkalFjernes of saksperioderSomSkalFjernes) {
             const nFom = toDay(saksperiodeSomSkalFjernes.fom);
             const nTom = toDay(saksperiodeSomSkalFjernes.tom);
@@ -86,6 +87,7 @@ export class SaksperiodeBuilder {
 
             this.periods = result.sort(sortPeriods);
         }
+        return this;
     }
 
     getSaksperioder(): Saksperiode[] {

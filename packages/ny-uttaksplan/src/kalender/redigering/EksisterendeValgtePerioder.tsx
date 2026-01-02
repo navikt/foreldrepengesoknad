@@ -6,18 +6,17 @@ import {
     TrashIcon,
 } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { uniqueId } from 'lodash';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types/src/genererteTyper';
+import { BrukerRolleSak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types/src/genererteTyper';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import { Planperiode } from '../../types/Planperiode';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 
 export type PlanperiodeMedAntallDager = Planperiode & { valgteDagerIPeriode: number };
@@ -57,7 +56,7 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                 return (
                     <HStack
                         gap="space-8"
-                        key={p.id}
+                        key={`eksisterende-periode-${p.fom}-${p.tom}`}
                         wrap={false}
                         data-testid={`eksisterende-periode-${p.fom}-${p.tom}`}
                     >
@@ -339,17 +338,14 @@ const useSlettPeriodeFn = () => {
                 tomPeriodeSomSkalSlettes.isSameOrAfter(dayjs(p.fom), 'day'),
         );
 
-        //TODO (TOR) Kan muligens kun vera fom, tom her? Treng vel alt kun om ein skal pushe perioder tilbake
         slettUttaksplanPerioder(
-            perioder.map<Planperiode>((p) => ({
-                erAnnenPartEøs: false,
-                forelder: periodeSomSkalSlettes.forelder,
-                periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-                fom: dayjs(p.fom).isBefore(periodeSomSkalSlettes.fom) ? periodeSomSkalSlettes.fom : p.fom,
-                tom: dayjs(p.tom).isAfter(periodeSomSkalSlettes.tom) ? periodeSomSkalSlettes.tom : p.tom,
-                readOnly: false,
-                id: uniqueId(),
-            })),
+            perioder.map(
+                (p) =>
+                    ({
+                        fom: dayjs(p.fom).isBefore(periodeSomSkalSlettes.fom) ? periodeSomSkalSlettes.fom : p.fom,
+                        tom: dayjs(p.tom).isAfter(periodeSomSkalSlettes.tom) ? periodeSomSkalSlettes.tom : p.tom,
+                    }) satisfies UttakPeriode_fpoversikt,
+            ),
         );
 
         setValgtePerioder((oldPeriods) => justerValgteKalenderperioder(oldPeriods, periodeSomSkalSlettes));

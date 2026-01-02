@@ -1,12 +1,12 @@
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { SaksperiodeBuilder } from '../../../builder/SaksperiodeBuilder';
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
-import { SaksperiodeBuilder } from '../../../newBuilder/SaksperiodeBuilder';
-import { Planperiode } from '../../../types/Planperiode';
 import { PlanperiodeMedAntallDager } from '../EksisterendeValgtePerioder';
 import {
     erValgtPeriodeEnHelEksisterendePeriode,
@@ -24,8 +24,8 @@ type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaks
     eksisterendePerioderSomErValgt: PlanperiodeMedAntallDager[];
     erKunEnHelEksisterendePeriodeValgt: boolean;
     sammenslåtteValgtePerioder: CalendarPeriod[];
-    leggTilUttaksplanPerioder: (perioder: Planperiode[]) => void;
-    slettUttaksplanPerioder: (perioder: Planperiode[]) => void;
+    leggTilUttaksplanPerioder: (perioder: UttakPeriode_fpoversikt[]) => void;
+    slettUttaksplanPerioder: (perioder: UttakPeriode_fpoversikt[]) => void;
 };
 
 const KalenderRedigeringContext = createContext<ContextValues | null>(null);
@@ -81,9 +81,8 @@ export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgte
     );
 
     const leggTilUttaksplanPerioder = useCallback(
-        (perioder: Planperiode[]) => {
-            const saksperiodeBuilder = new SaksperiodeBuilder(saksperioder);
-            saksperiodeBuilder.addPeriods(perioder);
+        (perioder: UttakPeriode_fpoversikt[]) => {
+            const nyeSaksperioder = new SaksperiodeBuilder(saksperioder).addPeriods(perioder).getSaksperioder();
 
             //FIXME (TOR) Kvifor blir denne splitta på familiehendelsedato? Er det kun for visningslogikk?
             // const planperioder = uttaksplanBuilder.leggTilPerioder(
@@ -98,13 +97,13 @@ export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgte
             //     omitMany(p, ['id', 'periodeHullÅrsak', 'skalIkkeHaUttakFørTermin']),
             // );
 
-            notEmpty(uttaksplanRedigering).oppdaterUttaksplan(saksperiodeBuilder.getSaksperioder());
+            notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeSaksperioder);
         },
         [uttaksplanRedigering, familiehendelsedato, erFarEllerMedmor, saksperioder],
     );
 
     const slettUttaksplanPerioder = useCallback(
-        (perioder: Planperiode[]) => {
+        (perioder: UttakPeriode_fpoversikt[]) => {
             const saksperiodeBuilder = new SaksperiodeBuilder(saksperioder);
             saksperiodeBuilder.addPeriods(perioder);
             notEmpty(uttaksplanRedigering).oppdaterUttaksplan(saksperiodeBuilder.getSaksperioder());
