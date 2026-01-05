@@ -145,7 +145,11 @@ const EttersendingPageInner = ({ saker }: Props) => {
             <>
                 <ScrollToTop />
                 <VStack gap="space-16">
-                    {isSuccess && <Alert variant="success">Dokumentene er sendt</Alert>}
+                    {isSuccess && (
+                        <Alert variant="success">
+                            <FormattedMessage id="ettersending.dokumenterSendt" />
+                        </Alert>
+                    )}
                     {isError && (
                         <Alert variant="error">
                             Vi klarte ikke å sende inn dokumentasjonen din. Prøv igjen senere og hvis problemet vedvarer
@@ -167,13 +171,15 @@ const EttersendingPageInner = ({ saker }: Props) => {
                     Dokumentene du laster opp vil bli lagt ved søknaden din. Du må velge hva dokumentene inneholder for
                     at saksbehandlerene i Nav skal kunne behandle saken din.
                 </BodyLong>
-                <BodyShort>Du kan laste opp dokumenter i formatene pdf, png og jpg.</BodyShort>
+                <BodyShort>
+                    <FormattedMessage id="ettersending.formatInformasjon" />
+                </BodyShort>
                 <NAVLink target="_blank" href="https://www.nav.no/brukerstotte#sende-soknad-pa-nett">
-                    Les om hvordan du kan ta bilde av dokumenter med mobilen
+                    <FormattedMessage id="ettersending.bildeGuide" />
                 </NAVLink>
                 <Select
                     className="mb-4"
-                    label="Hva inneholder dokumentene dine?"
+                    label={intl.formatMessage({ id: 'ettersending.hva' })}
                     onChange={(event) => setType(konverterSelectVerdi(event.target.value))}
                     value={type}
                 >

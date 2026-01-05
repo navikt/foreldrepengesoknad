@@ -9,7 +9,7 @@ import { Alert, BodyShort, HGrid, HStack, Heading, VStack } from '@navikt/ds-rea
 
 import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
 import { PersonMedArbeidsforholdDto_fpoversikt, Satser, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
-import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
+import { formatCurrencyWithKr, useDocumentTitle } from '@navikt/fp-utils';
 
 import {
     hentDokumenterOptions,
@@ -83,7 +83,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
     const gjeldendeSak = useGetSelectedSak();
 
     useDocumentTitle(
-        `${getSaksoversiktHeading(gjeldendeSak?.ytelse)} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
+        `${getSaksoversiktHeading(gjeldendeSak?.ytelse, intl)} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
     );
 
     const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelserOptions(params.saksnummer!));
@@ -103,7 +103,11 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
     const harMinstEttArbeidsforhold = !!søkerinfo.arbeidsforhold && søkerinfo.arbeidsforhold.length > 0;
 
     if (!gjeldendeSak) {
-        return <Alert variant="warning">{`Vi finner ingen sak med saksnummer: ${params.saksnummer}.`}</Alert>;
+        return (
+            <Alert variant="warning">
+                <FormattedMessage id="saksoversikt.finner.ikkeNoen" values={{ saksnummer: params.saksnummer }} />
+            </Alert>
+        );
     }
 
     return (
@@ -135,11 +139,19 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                     />
                 </ContentSection>
                 <HGrid gap="space-16" columns={{ sm: 1, md: 2 }} className="mb-12">
-                    <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
-                    <LenkePanel tittel="Ettersend dokumenter" to={OversiktRoutes.ETTERSEND} Ikon={FilesIcon} />
+                    <LenkePanel
+                        tittel={intl.formatMessage({ id: 'saksoversikt.dokumenter' })}
+                        to={OversiktRoutes.DOKUMENTER}
+                        Ikon={FolderFileIcon}
+                    />
+                    <LenkePanel
+                        tittel={intl.formatMessage({ id: 'saksoversikt.ettersendDokumenter' })}
+                        to={OversiktRoutes.ETTERSEND}
+                        Ikon={FilesIcon}
+                    />
                     {gjeldendeSak.ytelse === 'FORELDREPENGER' && (
                         <LenkePanel
-                            tittel="Endre planen din"
+                            tittel={intl.formatMessage({ id: 'saksoversikt.endrePlanenDin' })}
                             to="https://nav.no/foreldrepenger/soknad"
                             Ikon={PencilIcon}
                         />
@@ -166,7 +178,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                                 navnPåForeldre={getNavnPåForeldre(
                                     gjeldendeSak,
                                     søkerinfo.person.navn.fornavn,
-                                    getNavnAnnenForelder(søkerinfo, gjeldendeSak),
+                                    getNavnAnnenForelder(søkerinfo, gjeldendeSak, intl),
                                 )}
                             />
                         </ContentSection>
@@ -193,7 +205,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                                         <Heading size="small">
                                             <FormattedMessage
                                                 id="saksoversikt.engangsstonad"
-                                                values={{ sum: formatCurrency(ENGANGSTØNAD) }}
+                                                values={{ sum: formatCurrencyWithKr(ENGANGSTØNAD) }}
                                             />
                                         </Heading>
                                     )}

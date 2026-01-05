@@ -29,7 +29,7 @@ export const tidslinjeTittelForFamiliehendelse = ({
         barnFraSak.fornavn === undefined || barnFraSak.fornavn.length === 0 || !barnFraSak.alleBarnaLever;
     const navn = brukGeneriskNavn
         ? getTidslinjetekstForAntallBarn(familiehendelse.antallBarn, intl, gjelderAdopsjon)
-        : getNavnPåBarna(barnFraSak.fornavn ?? []);
+        : getNavnPåBarna(barnFraSak.fornavn ?? [], intl);
 
     if (gjelderAdopsjon && familiehendelse.omsorgsovertakelse) {
         return getTidslinjeTittelForAdopsjon(navn, familiehendelse.omsorgsovertakelse, intl);
@@ -93,7 +93,7 @@ export const getTidslinjeTittelForBarnTreÅr = ({
     if (barnFraSak.fornavn === undefined || barnFraSak.fornavn.length === 0 || !barnFraSak.alleBarnaLever) {
         barnNavnTekst = getTidslinjetekstForAntallBarn(antallBarn, intl, false);
     } else {
-        barnNavnTekst = getNavnPåBarna(barnFraSak.fornavn);
+        barnNavnTekst = getNavnPåBarna(barnFraSak.fornavn, intl);
     }
     return intl.formatMessage(
         { id: 'tidslinje.tittel.BARNET_TRE_ÅR.fødsel' },

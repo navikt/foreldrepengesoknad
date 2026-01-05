@@ -1,4 +1,5 @@
 import { FolderIcon } from '@navikt/aksel-icons';
+import { FormattedMessage } from 'react-intl';
 
 import { Accordion, BodyShort, HStack } from '@navikt/ds-react';
 
@@ -25,7 +26,9 @@ export const GrupperteDokumenter = ({ dokumenter }: Props) => {
                 >
                     <HStack gap="space-16">
                         <FolderIcon aria-hidden={true} />
-                        <BodyShort>{dokumenter.length} dokumenter</BodyShort>
+                        <BodyShort>
+                            <FormattedMessage id="dokumenter.antall" values={{ count: dokumenter.length }} />
+                        </BodyShort>
                     </HStack>
                 </Accordion.Header>
                 <Accordion.Content className="ml-12 p-0">

@@ -9,6 +9,7 @@ import {
 import dayjs from 'dayjs';
 import { groupBy, sortBy } from 'lodash';
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
@@ -183,7 +184,9 @@ const DuHarFerie = () => {
             className="bg-ax-warning-200 rounded-3xl pt-2 pr-4 pb-2 pl-4"
             wrap={false}
         >
-            <BodyShort>Du har ferie</BodyShort>
+            <BodyShort>
+                <FormattedMessage id={'svangerskapspenger.ferie'} />
+            </BodyShort>
             <ParasollIkon />
         </HStack>
     );
@@ -198,7 +201,9 @@ const DuErSykemeldt = () => {
             className="bg-ax-warning-200 rounded-3xl pt-2 pr-4 pb-2 pl-4"
             wrap={false}
         >
-            <BodyShort>Du er sykmeldt</BodyShort>
+            <BodyShort>
+                <FormattedMessage id={'svangerskapspenger.sykmeldt'} />
+            </BodyShort>
             <BandasjeIkon />
         </HStack>
     );
@@ -213,7 +218,9 @@ const TreUkerFørTermin = () => {
             className="bg-ax-meta-purple-100 rounded-3xl pt-2 pr-4 pb-2 pl-4"
             wrap={false}
         >
-            <BodyShort>Du kan søke om foreldrepenger</BodyShort>
+            <BodyShort>
+                <FormattedMessage id={'svangerskapspenger.kanSokeForeldrepenger'} />
+            </BodyShort>
             <BarnevognIkon />
         </HStack>
     );
@@ -227,7 +234,9 @@ const Termin = () => {
             justify="space-between"
             className="bg-ax-danger-100 rounded-3xl pt-2 pr-4 pb-2 pl-4"
         >
-            <BodyShort>Termin</BodyShort>
+            <BodyShort>
+                <FormattedMessage id={'svangerskapspenger.termin'} />
+            </BodyShort>
             <HeartFillIcon fontSize="2.5rem" className="text-ax-text-danger-decoration p-05" aria-hidden />
         </HStack>
     );
