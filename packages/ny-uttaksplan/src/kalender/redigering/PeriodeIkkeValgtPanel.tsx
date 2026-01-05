@@ -90,6 +90,7 @@ export const PeriodeIkkeValgtPanel = ({ scrollToKvoteOppsummering, labels }: Pro
                                 : undefined
                         }
                         fjernAltIPlanen={() => uttaksplanRedigering?.setVisFjernAltModal(true)}
+                        visFjernAltModal={uttaksplanRedigering?.visFjernAltModal}
                     />
                 </VStack>
             )}

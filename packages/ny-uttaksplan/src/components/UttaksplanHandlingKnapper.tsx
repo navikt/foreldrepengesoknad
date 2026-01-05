@@ -10,7 +10,7 @@ interface Props {
     fjernAltIPlanen: () => void;
     toggleAllAccordions?: () => void;
     isAllAccordionsOpen?: boolean;
-    visFjernAltModal: boolean;
+    visFjernAltModal?: boolean;
 }
 
 export const UttaksplanHandlingKnapper = ({
