@@ -1,5 +1,5 @@
 import '@formatjs/intl-pluralrules/locale-data/nb';
-import '@formatjs/intl-pluralrules/polyfill';
+import '@formatjs/intl-pluralrules/polyfill.js';
 import * as Sentry from '@sentry/browser';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';

@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { mswWrapper } from '@navikt/fp-utils-test';
 
+import { endreFordelingMedSlider } from '../vitest/testHelpers';
 import * as stories from './Planlegger.stories';
 
 const { DefaultMockaStønadskontoerOgSatser, FarFarMockaStønadskontoerOgSatser } = composeStories(stories);
@@ -269,10 +270,7 @@ describe('<Planlegger>', () => {
 
             await waitFor(() => expect(screen.getAllByText('Fordeling')).toHaveLength(2));
             expect(screen.getByText('Steg 6 av 8')).toBeInTheDocument();
-            await userEvent.selectOptions(
-                utils.getByLabelText('Hvordan vil dere fordele 16 uker med fellesperiode?'),
-                '45',
-            );
+            await endreFordelingMedSlider(utils, 45);
             await userEvent.click(screen.getByText('Neste'));
 
             expect(await screen.findByText('Planen deres')).toBeInTheDocument();

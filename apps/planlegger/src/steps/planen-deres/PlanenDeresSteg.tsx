@@ -7,12 +7,9 @@ import {
 } from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
+import { FordelingSlider } from 'components/FordelingSlider';
 import { useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import {
-    finnFellesperiodeFordelingOptionTekst,
-    getFellesperiodefordelingSelectOptions,
-} from 'steps/fordeling/FordelingSteg';
 import { Fordeling } from 'types/Fordeling';
 import {
     erAlenesøker,
@@ -28,11 +25,11 @@ import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
 import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
 
-import { BodyLong, BodyShort, Heading, Select, Tabs, ToggleGroup, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Heading, Tabs, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { Dekningsgrad, HvemPlanleggerType, KontoBeregningResultatDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { Infobox, StepButtons } from '@navikt/fp-ui';
+import { BluePanel, Infobox, StepButtons } from '@navikt/fp-ui';
 import { encodeToBase64, useMedia } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import {
@@ -285,7 +282,7 @@ const AntallUkerVelger = ({
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
 
     return (
-        <VStack gap="space-8">
+        <VStack gap="space-24">
             <ToggleGroup
                 defaultValue={hvorLangPeriode?.dekningsgrad}
                 size={isDesktop ? 'medium' : 'small'}
@@ -315,34 +312,24 @@ const AntallUkerVelger = ({
 
             {hvemHarRett === 'beggeHarRett' &&
                 (!omBarnet.erFødsel || hvemPlanlegger.type !== HvemPlanleggerType.FAR_OG_FAR) && (
-                    <Select
-                        defaultValue={fordeling?.antallDagerSøker1}
-                        label="Velg fordeling fellesperiode"
-                        hideLabel
-                        name="antallDagerSøker1"
-                        onChange={(e) => {
-                            lagreFordeling({ antallDagerSøker1: Number.parseInt(e.target.value, 10) });
-                            lagreUttaksplanOgOppdaterUrl(undefined);
-                        }}
-                    >
-                        {getFellesperiodefordelingSelectOptions(
-                            getAntallUkerOgDagerFellesperiode(valgtStønadskonto),
-                        ).map((value) => (
-                            <option
-                                key={value.antallUkerOgDagerSøker1.totaltAntallDager}
-                                value={value.antallUkerOgDagerSøker1.totaltAntallDager}
-                            >
-                                {finnFellesperiodeFordelingOptionTekst(
-                                    intl,
-                                    value,
-                                    hvemPlanlegger,
-                                    fornavnSøker1,
-                                    fornavnSøker2,
-                                    true,
-                                )}
-                            </option>
-                        ))}
-                    </Select>
+                    <BluePanel>
+                        <Heading id="fordeling-slider-label" size="small" level="3">
+                            <FormattedMessage id="PlanenDeresSteg.FordelingTittel" />
+                        </Heading>
+                        <BodyShort className="mb-4">
+                            <FormattedMessage id="PlanenDeresSteg.Undertekst" />
+                        </BodyShort>
+                        <FordelingSlider
+                            antallDagerSøker1={fordeling?.antallDagerSøker1}
+                            onAntallDagerSøker1Change={(value) => {
+                                lagreFordeling({ antallDagerSøker1: value });
+                                lagreUttaksplanOgOppdaterUrl(undefined);
+                            }}
+                            antallUkerOgDagerFellesperiode={getAntallUkerOgDagerFellesperiode(valgtStønadskonto)}
+                            fornavnSøker1={fornavnSøker1}
+                            fornavnSøker2={fornavnSøker2}
+                        />
+                    </BluePanel>
                 )}
         </VStack>
     );
