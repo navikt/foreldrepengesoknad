@@ -113,6 +113,7 @@ export const UttaksplanNy = ({ isReadOnly }: Props) => {
                             : undefined
                     }
                     fjernAltIPlanen={() => uttaksplanRedigering.setVisFjernAltModal(true)}
+                    visFjernAltModal={uttaksplanRedigering.visFjernAltModal}
                 />
             )}
         </VStack>

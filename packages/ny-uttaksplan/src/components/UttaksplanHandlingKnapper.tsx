@@ -10,6 +10,7 @@ interface Props {
     fjernAltIPlanen: () => void;
     toggleAllAccordions?: () => void;
     isAllAccordionsOpen?: boolean;
+    visFjernAltModal: boolean;
 }
 
 export const UttaksplanHandlingKnapper = ({
@@ -19,6 +20,7 @@ export const UttaksplanHandlingKnapper = ({
     fjernAltIPlanen,
     toggleAllAccordions,
     isAllAccordionsOpen,
+    visFjernAltModal,
 }: Props) => {
     const erListevisning = !!toggleAllAccordions;
 
@@ -67,6 +69,9 @@ export const UttaksplanHandlingKnapper = ({
                 variant="secondary"
                 icon={visKnapper ? <TrashIcon aria-hidden height={24} width={24} /> : null}
                 onClick={fjernAltIPlanen}
+                aria-haspopup="dialog"
+                aria-expanded={visFjernAltModal}
+                aria-controls={visFjernAltModal ? 'fjern-alt-i-uttaksplan-modal' : undefined} // TODO: aria intl?
             >
                 <FormattedMessage id="UttaksplanHandlingKnapper.FjernAlt" />
             </Button>
