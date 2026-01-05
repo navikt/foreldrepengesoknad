@@ -1,32 +1,31 @@
 import { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
+import { BodyShort, Button, Dialog, Heading } from '@navikt/ds-react';
 
 import { shouldChangeBrowser } from '@navikt/fp-utils';
 
 export const ByttBrowserModal = () => {
     const [isOpen, setIsOpen] = useState(shouldChangeBrowser());
-    const intl = useIntl();
     return (
-        <Modal
-            aria-label={intl.formatMessage({ id: 'ByttBrowserModal.Tittel' })}
-            open={isOpen}
-            onClose={() => undefined}
-        >
-            <Modal.Body>
-                <Heading size="medium" level="2" className="blokk-m">
-                    <FormattedMessage id="ByttBrowserModal.Utdatert" />
-                </Heading>
-                <BodyShort className="blokk-m">
-                    <FormattedMessage id="ByttBrowserModal.Ingress" />
-                </BodyShort>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="primary" onClick={() => setIsOpen(false)}>
-                    <FormattedMessage id="ByttBrowserModal.Ok" />
-                </Button>
-            </Modal.Footer>
-        </Modal>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <Dialog.Popup>
+                <Dialog.Body>
+                    <Heading size="medium" level="2" className="blokk-m">
+                        <FormattedMessage id="ByttBrowserModal.Utdatert" />
+                    </Heading>
+                    <BodyShort className="blokk-m">
+                        <FormattedMessage id="ByttBrowserModal.Ingress" />
+                    </BodyShort>
+                </Dialog.Body>
+                <Dialog.Footer>
+                    <Dialog.CloseTrigger>
+                        <Button variant="primary">
+                            <FormattedMessage id="ByttBrowserModal.Ok" />
+                        </Button>
+                    </Dialog.CloseTrigger>
+                </Dialog.Footer>
+            </Dialog.Popup>
+        </Dialog>
     );
 };
