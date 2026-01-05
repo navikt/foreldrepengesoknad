@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
-import { Button, HStack, Modal, Radio, RadioGroup, VStack } from '@navikt/ds-react';
+import { Button, Dialog, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 import { Calendar, CalendarPeriod } from '@navikt/fp-ui';
 
@@ -18,7 +18,6 @@ interface Props {
 export const KalenderPdf = ({ perioderForKalendervisning, førsteDatoIKalender, sisteDatoIKalender }: Props) => {
     const intl = useIntl();
 
-    const [isOpen, setIsOpen] = useState(false);
     const [isCreatingPdf, setIsCreatingPdf] = useState(false);
     const [antallKolonner, setAntallKolonner] = useState<1 | 2 | 3>(2);
 
@@ -43,73 +42,71 @@ export const KalenderPdf = ({ perioderForKalendervisning, førsteDatoIKalender, 
     const { toPDF, targetRef } = usePDF(pdfOptions);
 
     return (
-        <>
-            <Button
-                variant="tertiary"
-                icon={<DownloadIcon aria-hidden />}
-                onClick={() => setIsOpen(true)}
-                type="button"
-            >
-                <FormattedMessage id="kalender.lastNedSomPdf" />
-            </Button>
-            {isOpen && (
-                <Modal
-                    open
-                    onClose={() => setIsOpen(false)}
-                    header={{ heading: intl.formatMessage({ id: 'kalender.lastNedSomPdf' }) }}
-                >
-                    <Modal.Body>
-                        <VStack gap="space-48">
-                            <VStack gap="space-16">
-                                <RadioGroup
-                                    legend={intl.formatMessage({ id: 'kalender.antallKolonner' })}
-                                    onChange={setAntallKolonner}
-                                    value={antallKolonner}
+        <Dialog>
+            <Dialog.Trigger>
+                <Button variant="tertiary" icon={<DownloadIcon aria-hidden />} type="button">
+                    <FormattedMessage id="kalender.lastNedSomPdf" />
+                </Button>
+            </Dialog.Trigger>
+            <Dialog.Popup>
+                <Dialog.Header>
+                    <Dialog.Title>
+                        <FormattedMessage id="kalender.lastNedSomPdf" />
+                    </Dialog.Title>
+                </Dialog.Header>
+                <Dialog.Body>
+                    <VStack gap="space-48">
+                        <VStack gap="space-16">
+                            <RadioGroup
+                                legend={intl.formatMessage({ id: 'kalender.antallKolonner' })}
+                                onChange={setAntallKolonner}
+                                value={antallKolonner}
+                            >
+                                <HStack gap="space-16">
+                                    <Radio value={1}>1</Radio>
+                                    <Radio value={2}>2</Radio>
+                                    <Radio value={3}>3</Radio>
+                                </HStack>
+                            </RadioGroup>
+
+                            <HStack gap="space-8">
+                                <Button
+                                    variant="primary"
+                                    icon={<DownloadIcon aria-hidden />}
+                                    loading={isCreatingPdf}
+                                    onClick={() => {
+                                        setIsCreatingPdf(true);
+
+                                        toPDF();
+
+                                        // Kun for visuell feedback til bruker
+                                        timeoutRef.current = setTimeout(() => {
+                                            setIsCreatingPdf(false);
+                                        }, 500);
+                                    }}
+                                    type="button"
                                 >
-                                    <HStack gap="space-16">
-                                        <Radio value={1}>1</Radio>
-                                        <Radio value={2}>2</Radio>
-                                        <Radio value={3}>3</Radio>
-                                    </HStack>
-                                </RadioGroup>
-
-                                <HStack gap="space-8">
-                                    <Button
-                                        variant="primary"
-                                        icon={<DownloadIcon aria-hidden />}
-                                        loading={isCreatingPdf}
-                                        onClick={() => {
-                                            setIsCreatingPdf(true);
-
-                                            toPDF();
-
-                                            // Kun for visuell feedback til bruker
-                                            timeoutRef.current = setTimeout(() => {
-                                                setIsCreatingPdf(false);
-                                            }, 500);
-                                        }}
-                                        type="button"
-                                    >
-                                        <FormattedMessage id="kalender.lastNed" />
-                                    </Button>
-                                    <Button variant="tertiary" onClick={() => setIsOpen(false)} type="button">
+                                    <FormattedMessage id="kalender.lastNed" />
+                                </Button>
+                                <Dialog.CloseTrigger>
+                                    <Button variant="tertiary" type="button">
                                         <FormattedMessage id="kalender.avbryt" />
                                     </Button>
-                                </HStack>
-                            </VStack>
-                            <VStack gap="space-24" ref={targetRef}>
-                                <UttaksplanLegend perioderForKalendervisning={perioderForKalendervisning} readOnly />
-                                <Calendar
-                                    periods={perioderForKalendervisning}
-                                    nrOfColumns={antallKolonner}
-                                    firstDateInCalendar={førsteDatoIKalender}
-                                    lastDateInCalendar={sisteDatoIKalender}
-                                />
-                            </VStack>
+                                </Dialog.CloseTrigger>
+                            </HStack>
                         </VStack>
-                    </Modal.Body>
-                </Modal>
-            )}
-        </>
+                        <VStack gap="space-24" ref={targetRef}>
+                            <UttaksplanLegend perioderForKalendervisning={perioderForKalendervisning} readOnly />
+                            <Calendar
+                                periods={perioderForKalendervisning}
+                                nrOfColumns={antallKolonner}
+                                firstDateInCalendar={førsteDatoIKalender}
+                                lastDateInCalendar={sisteDatoIKalender}
+                            />
+                        </VStack>
+                    </VStack>
+                </Dialog.Body>
+            </Dialog.Popup>
+        </Dialog>
     );
 };
