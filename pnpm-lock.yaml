@@ -2561,6 +2561,9 @@ importers:
       dayjs:
         specifier: 1.11.19
         version: 1.11.19
+      detect-browser:
+        specifier: 5.3.0
+        version: 5.3.0
       react:
         specifier: 19.2.3
         version: 19.2.3
@@ -2646,9 +2649,6 @@ importers:
       dayjs:
         specifier: 1.11.19
         version: 1.11.19
-      detect-browser:
-        specifier: 5.3.0
-        version: 5.3.0
       i18n-iso-countries:
         specifier: 7.14.0
         version: 7.14.0

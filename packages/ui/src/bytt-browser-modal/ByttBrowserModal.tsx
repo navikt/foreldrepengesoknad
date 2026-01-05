@@ -1,12 +1,15 @@
+import { detect } from 'detect-browser';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, Dialog, Heading } from '@navikt/ds-react';
 
-import { shouldChangeBrowser } from '@navikt/fp-utils';
-
 export const ByttBrowserModal = () => {
-    const [isOpen, setIsOpen] = useState(shouldChangeBrowser());
+    const [isOpen, setIsOpen] = useState(() => {
+        const browserInfo = detect();
+        return browserInfo ? browserInfo.name === 'ie' : false;
+    });
+
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <Dialog.Popup>
