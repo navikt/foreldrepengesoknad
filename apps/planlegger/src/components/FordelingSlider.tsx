@@ -5,6 +5,7 @@ import { UkerOgDager } from 'utils/stønadskontoerUtils';
 import { BodyShort, Button, Heading, VStack } from '@navikt/ds-react';
 
 import { Slider } from '@navikt/fp-ui';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 interface FordelingSliderProps {
     antallDagerSøker1: number | undefined;
@@ -28,7 +29,7 @@ export const FordelingSlider = ({
     return (
         <div className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-4 rounded-sm">
             <VStack gap="space-8" align="start">
-                <BodyShort weight="semibold">{fornavnSøker1}</BodyShort>
+                <BodyShort weight="semibold">{fornavnSøker1 && capitalizeFirstLetter(fornavnSøker1)}</BodyShort>
                 {antallDagerSøker1 !== undefined && (
                     <Heading size="small" level="4">
                         <FormattedMessage
@@ -87,7 +88,7 @@ export const FordelingSlider = ({
                 }}
             />
             <VStack gap="space-8" align="end">
-                <BodyShort weight="semibold">{fornavnSøker2}</BodyShort>
+                <BodyShort weight="semibold">{fornavnSøker2 && capitalizeFirstLetter(fornavnSøker2)}</BodyShort>
                 {antallDagerSøker1 !== undefined && (
                     <Heading size="small" level="4">
                         <FormattedMessage
