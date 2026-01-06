@@ -9,6 +9,18 @@ import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
+import {
+    DELT_UTTAK_80,
+    DELT_UTTAK_80_TO_BARN,
+    DELT_UTTAK_100,
+    DELT_UTTAK_100_TO_BARN,
+    IKKE_DELT_UTTAK_80_FARMEDMOR,
+    IKKE_DELT_UTTAK_80_FAR_OG_FAR,
+    IKKE_DELT_UTTAK_80_MOR,
+    IKKE_DELT_UTTAK_100_FARMEDMOR,
+    IKKE_DELT_UTTAK_100_FAR_OG_FAR,
+    IKKE_DELT_UTTAK_100_MOR,
+} from '@navikt/fp-utils-test';
 
 import { HvorLangPeriodeSteg } from './HvorLangPeriodeSteg';
 
@@ -75,23 +87,13 @@ export const FlereForsørgereEttBarnKunMorHarRett: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [
-                    { konto: 'MØDREKVOTE', dager: 95 },
-                    { konto: 'FEDREKVOTE', dager: 95 },
-                    { konto: 'FELLESPERIODE', dager: 101 },
-                    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-                ],
+                kontoer: DELT_UTTAK_80,
                 minsteretter: MINSTERETTER,
-            } satisfies KontoBeregningDto,
+            },
             '100': {
-                kontoer: [
-                    { konto: 'MØDREKVOTE', dager: 75 },
-                    { konto: 'FEDREKVOTE', dager: 75 },
-                    { konto: 'FELLESPERIODE', dager: 80 },
-                    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-                ],
+                kontoer: DELT_UTTAK_100,
                 minsteretter: MINSTERETTER,
-            } satisfies KontoBeregningDto,
+            },
         },
     },
 };
@@ -115,23 +117,13 @@ export const FlereForsørgereEttBarnBeggeHarRettAdopsjon: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [
-                    { konto: 'MØDREKVOTE', dager: 95 },
-                    { konto: 'FEDREKVOTE', dager: 95 },
-                    { konto: 'FELLESPERIODE', dager: 101 },
-                    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-                ],
+                kontoer: DELT_UTTAK_80,
                 minsteretter: MINSTERETTER,
-            } satisfies KontoBeregningDto,
+            },
             '100': {
-                kontoer: [
-                    { konto: 'MØDREKVOTE', dager: 75 },
-                    { konto: 'FEDREKVOTE', dager: 75 },
-                    { konto: 'FELLESPERIODE', dager: 80 },
-                    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-                ],
+                kontoer: DELT_UTTAK_100,
                 minsteretter: MINSTERETTER,
-            } satisfies KontoBeregningDto,
+            },
         },
     },
 };
@@ -154,23 +146,13 @@ export const FlereForsørgereToBarn: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [
-                    { konto: 'MØDREKVOTE', dager: 95 },
-                    { konto: 'FEDREKVOTE', dager: 95 },
-                    { konto: 'FELLESPERIODE', dager: 207 },
-                    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-                ],
+                kontoer: DELT_UTTAK_80_TO_BARN,
                 minsteretter: MINSTERETTER,
-            } satisfies KontoBeregningDto,
+            },
             '100': {
-                kontoer: [
-                    { konto: 'MØDREKVOTE', dager: 75 },
-                    { konto: 'FEDREKVOTE', dager: 75 },
-                    { konto: 'FELLESPERIODE', dager: 165 },
-                    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-                ],
+                kontoer: DELT_UTTAK_100_TO_BARN,
                 minsteretter: MINSTERETTER,
-            } satisfies KontoBeregningDto,
+            },
         },
     },
 };
@@ -192,19 +174,13 @@ export const AleneforsørgerMorEttBarn: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 291 },
-                    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-                ],
+                kontoer: IKKE_DELT_UTTAK_80_MOR,
                 minsteretter: MINSTERETTER,
-            } satisfies KontoBeregningDto,
+            },
             '100': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 230 },
-                    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-                ],
+                kontoer: IKKE_DELT_UTTAK_100_MOR,
                 minsteretter: MINSTERETTER,
-            } satisfies KontoBeregningDto,
+            },
         },
     },
 };
@@ -228,25 +204,13 @@ export const FlereForsørgereKunFarHarRett: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 211 },
-                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
-            } satisfies KontoBeregningDto,
+                kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR,
+                minsteretter: MINSTERETTER,
+            },
             '100': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 150 },
-                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
-            } satisfies KontoBeregningDto,
+                kontoer: IKKE_DELT_UTTAK_100_FARMEDMOR,
+                minsteretter: MINSTERETTER,
+            },
         },
     },
 };
@@ -270,25 +234,13 @@ export const FlereForsørgereFarOgFarKunFar1HarRettAdopsjon: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 211 },
-                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
-            } satisfies KontoBeregningDto,
+                kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR,
+                minsteretter: MINSTERETTER,
+            },
             '100': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 150 },
-                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
-            } satisfies KontoBeregningDto,
+                kontoer: IKKE_DELT_UTTAK_100_FARMEDMOR,
+                minsteretter: MINSTERETTER,
+            },
         },
     },
 };
@@ -312,19 +264,13 @@ export const FlereForsørgereFarOgFarKunFar1HarRettFødsel: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [{ konto: 'FORELDREPENGER', dager: 250 }],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
-            } satisfies KontoBeregningDto,
+                kontoer: IKKE_DELT_UTTAK_80_FAR_OG_FAR,
+                minsteretter: MINSTERETTER,
+            },
             '100': {
-                kontoer: [{ konto: 'FORELDREPENGER', dager: 200 }],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
-            } satisfies KontoBeregningDto,
+                kontoer: IKKE_DELT_UTTAK_100_FAR_OG_FAR,
+                minsteretter: MINSTERETTER,
+            },
         },
     },
 };

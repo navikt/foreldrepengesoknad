@@ -2723,6 +2723,9 @@ importers:
       '@navikt/fp-config-typescript':
         specifier: workspace:*
         version: link:../config-typescript
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../types
       '@testing-library/jest-dom':
         specifier: 6.9.1
         version: 6.9.1
@@ -3925,6 +3928,9 @@ packages:
       '@types/react': ^17.0.30 || ^18 || ^19
       react: ^17 || ^18 || ^19
       react-dom: ^17 || ^18 || ^19
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@navikt/ds-tailwind@7.35.1':
     resolution: {integrity: sha512-vQZzhttLTkmlN83unWX5Kn3fuMtjdZwPcCS8yJcYBrm71SnyraC/yVuoU5ypCV/vnHMxl9L4H2C9Ry9QH2z6HA==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/7.35.1/1515cc0ca030d9276ff21e755d83b032f5a07eb4}
@@ -9164,12 +9170,13 @@ snapshots:
       '@floating-ui/react-dom': 2.1.6(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@navikt/aksel-icons': 7.35.1
       '@navikt/ds-tokens': 7.35.1
-      '@types/react': 19.2.7
       clsx: 2.1.1
       date-fns: 4.1.0
       react: 19.2.1
       react-day-picker: 9.7.0(react@19.2.1)
       react-dom: 19.2.1(react@19.2.1)
+    optionalDependencies:
+      '@types/react': 19.2.7
 
   '@navikt/ds-tailwind@7.35.1': {}
 
