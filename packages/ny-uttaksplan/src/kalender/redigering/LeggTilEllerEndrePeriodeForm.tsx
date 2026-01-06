@@ -464,19 +464,19 @@ const lagDefaultValues = (uttaksplan: Planperiode[], valgtPeriode: CalendarPerio
                 farMedmorPeriode.morsAktivitet === 'IKKE_OPPGITT'
                     ? 'AKTIVITETSFRI_KVOTE'
                     : farMedmorPeriode.kontoType,
-            samtidigUttaksprosentMor: !morsPeriode.erAnnenPartEøs ? morsPeriode.samtidigUttak?.toString() : undefined,
-            samtidigUttaksprosentFarMedmor: !farMedmorPeriode.erAnnenPartEøs
-                ? farMedmorPeriode.samtidigUttak?.toString()
-                : undefined,
+            samtidigUttaksprosentMor: morsPeriode.erAnnenPartEøs ? undefined : morsPeriode.samtidigUttak?.toString(),
+            samtidigUttaksprosentFarMedmor: farMedmorPeriode.erAnnenPartEøs
+                ? undefined
+                : farMedmorPeriode.samtidigUttak?.toString(),
             skalDuKombinereArbeidOgUttakMor: !morsPeriode.erAnnenPartEøs && !!morsPeriode.gradering,
             skalDuKombinereArbeidOgUttakFarMedmor: !farMedmorPeriode.erAnnenPartEøs && !!farMedmorPeriode.gradering,
-            stillingsprosentMor: !morsPeriode.erAnnenPartEøs
-                ? morsPeriode.gradering?.arbeidstidprosent.toString()
-                : undefined,
-            stillingsprosentFarMedmor: !farMedmorPeriode.erAnnenPartEøs
-                ? farMedmorPeriode.gradering?.arbeidstidprosent.toString()
-                : undefined,
-            morsAktivitet: !morsPeriode.erAnnenPartEøs ? morsPeriode.morsAktivitet : undefined,
+            stillingsprosentMor: morsPeriode.erAnnenPartEøs
+                ? undefined
+                : morsPeriode.gradering?.arbeidstidprosent.toString(),
+            stillingsprosentFarMedmor: farMedmorPeriode.erAnnenPartEøs
+                ? undefined
+                : farMedmorPeriode.gradering?.arbeidstidprosent.toString(),
+            morsAktivitet: morsPeriode.erAnnenPartEøs ? undefined : morsPeriode.morsAktivitet,
         };
     }
 
@@ -493,9 +493,9 @@ const lagDefaultValues = (uttaksplan: Planperiode[], valgtPeriode: CalendarPerio
                     ? 'AKTIVITETSFRI_KVOTE'
                     : periode.kontoType,
             skalDuKombinereArbeidOgUttakFarMedmor: !periode.erAnnenPartEøs && !!periode.gradering,
-            stillingsprosentFarMedmor: !periode.erAnnenPartEøs
-                ? periode.gradering?.arbeidstidprosent.toString()
-                : undefined,
+            stillingsprosentFarMedmor: periode.erAnnenPartEøs
+                ? undefined
+                : periode.gradering?.arbeidstidprosent.toString(),
         };
     }
 
@@ -507,9 +507,9 @@ const lagDefaultValues = (uttaksplan: Planperiode[], valgtPeriode: CalendarPerio
             periode.morsAktivitet === 'IKKE_OPPGITT'
                 ? 'AKTIVITETSFRI_KVOTE'
                 : periode.kontoType,
-        samtidigUttaksprosentMor: !periode.erAnnenPartEøs ? periode.samtidigUttak?.toString() : undefined,
+        samtidigUttaksprosentMor: periode.erAnnenPartEøs ? undefined : periode.samtidigUttak?.toString(),
         skalDuKombinereArbeidOgUttakMor: !periode.erAnnenPartEøs && !!periode.gradering,
-        stillingsprosentMor: !periode.erAnnenPartEøs ? periode.gradering?.arbeidstidprosent.toString() : undefined,
-        morsAktivitet: !periode.erAnnenPartEøs ? periode.morsAktivitet : undefined,
+        stillingsprosentMor: periode.erAnnenPartEøs ? undefined : periode.gradering?.arbeidstidprosent.toString(),
+        morsAktivitet: periode.erAnnenPartEøs ? undefined : periode.morsAktivitet,
     };
 };

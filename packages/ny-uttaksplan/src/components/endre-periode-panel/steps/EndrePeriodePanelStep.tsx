@@ -150,7 +150,7 @@ export const EndrePeriodePanelStep = ({
                 gradering: getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType),
                 samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
             } satisfies PlanperiodeVanlig;
-            if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE && valgtPeriode && valgtPeriode.kontoType) {
+            if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE && valgtPeriode?.kontoType) {
                 handleUpdatePeriode(periode, valgtPeriode);
             }
 
