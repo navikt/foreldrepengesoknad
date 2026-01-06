@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { mswWrapper } from '@navikt/fp-utils-test';
 
+import { endreFordelingMedSlider } from '../vitest/testHelpers';
 import * as stories from './AppContainer.stories';
 
 const { DefaultMockaStønadskontoerOgSatser } = composeStories(stories);
@@ -81,10 +82,9 @@ describe('<AppContainer>', () => {
 
             await waitFor(() => expect(screen.getAllByText('Fordeling')).toHaveLength(2));
             expect(screen.getByText('Steg 7 av 9')).toBeInTheDocument();
-            await userEvent.selectOptions(
-                utils.getByLabelText('Hvordan vil dere fordele 16 uker med fellesperiode?'),
-                '5',
-            );
+
+            await endreFordelingMedSlider(utils, 5);
+
             await userEvent.click(screen.getByText('Neste'));
 
             // TODO (TOR) Dette feilar av ein eller annan grunn kun på github

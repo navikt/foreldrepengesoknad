@@ -170,14 +170,20 @@ export const MinidialogSkjema = ({
                     legend={intl.formatMessage({ id: 'miniDialog.tilbakekreving.radioPanelGruppe.legend' })}
                     onChange={setBrukerØnskerÅUttaleSeg}
                 >
-                    <Radio value={true}>Ja</Radio>
-                    <Radio value={false}>Nei</Radio>
+                    <Radio value={true}>
+                        <FormattedMessage id={'felles.ja'} />
+                    </Radio>
+                    <Radio value={false}>
+                        <FormattedMessage id={'felles.nei'} />
+                    </Radio>
                 </RadioGroup>
                 {brukerØnskerÅUttaleSeg === true && (
                     <>
                         <div>
                             <Textarea
-                                label={intl.formatMessage({ id: 'minidialog.tilbakekreving.tilbakekreving.label' })}
+                                label={intl.formatMessage({
+                                    id: 'minidialog.tilbakekreving.tilbakekreving.label',
+                                })}
                                 onChange={(e) => setTilbakemelding(e.target.value)}
                                 error={tilbakemeldingValideringsfeil}
                             />
@@ -208,7 +214,7 @@ export const MinidialogSkjema = ({
                     </HStack>
                 )}
                 {brukerØnskerÅUttaleSeg && tilbakemeldingValideringsfeil && (
-                    <ErrorSummary heading="Feil i skjema">
+                    <ErrorSummary heading={intl.formatMessage({ id: 'minidialog.feilISkjema' })}>
                         <ErrorSummary.Item href="#1">{tilbakemeldingValideringsfeil}</ErrorSummary.Item>
                     </ErrorSummary>
                 )}

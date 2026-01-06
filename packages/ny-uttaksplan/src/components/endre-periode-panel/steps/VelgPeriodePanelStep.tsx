@@ -8,6 +8,7 @@ import { formatDate } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { Planperiode } from '../../../types/Planperiode';
+import { genererPeriodeId } from '../../../utils/periodeUtils';
 import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
 import { PanelData } from '../EndrePeriodePanel';
 
@@ -24,16 +25,18 @@ interface FormValues {
 
 export const VelgPeriodePanelStep = ({ perioder, panelData, setPanelData, closePanel }: Props) => {
     const intl = useIntl();
-    const { navnPåForeldre, erFarEllerMedmor } = useUttaksplanData();
+    const {
+        foreldreInfo: { søker, navnPåForeldre },
+    } = useUttaksplanData();
 
     const formMethods = useForm<FormValues>({
         defaultValues: {
-            periodeId: panelData.valgtPeriode?.id,
+            periodeId: genererPeriodeId(panelData.valgtPeriode),
         },
     });
 
     const onSubmit = (values: FormValues) => {
-        const valgtPeriode = perioder.find((p) => p.id === values.periodeId);
+        const valgtPeriode = perioder.find((p) => genererPeriodeId(p) === values.periodeId);
 
         setPanelData({
             ...panelData,
@@ -63,10 +66,11 @@ export const VelgPeriodePanelStep = ({ perioder, panelData, setPanelData, closeP
                 >
                     {perioder.map((p, index) => {
                         const morsAktivitet = !p.erAnnenPartEøs && p.morsAktivitet ? p.morsAktivitet : undefined;
+                        const id = genererPeriodeId(p);
                         return (
-                            <Radio key={p.id} value={p.id} autoFocus={index === 0}>
+                            <Radio key={id} value={id} autoFocus={index === 0}>
                                 {`${formatDate(p.fom)} - ${formatDate(p.tom)} - ` +
-                                    `${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor, morsAktivitet)}`}
+                                    `${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, søker === 'FAR_ELLER_MEDMOR', morsAktivitet)}`}
                             </Radio>
                         );
                     })}

@@ -1,4 +1,5 @@
 import { FileIcon } from '@navikt/aksel-icons';
+import { useIntl } from 'react-intl';
 
 import { Detail, HGrid, HStack, Hide, Link, Show, Tag } from '@navikt/ds-react';
 
@@ -27,12 +28,13 @@ function DokumentLenke({ dokument }: { dokument: DokumentDto_fpoversikt }) {
 }
 
 function DokumentAvsender({ dokumentType }: { dokumentType: JournalpostType_fpoversikt }) {
+    const intl = useIntl();
     const text = (() => {
         switch (dokumentType) {
             case 'UTGÅENDE_DOKUMENT':
-                return 'Nav';
+                return intl.formatMessage({ id: 'dokument.avsender.nav' });
             case 'INNGÅENDE_DOKUMENT':
-                return 'Du';
+                return intl.formatMessage({ id: 'dokument.avsender.du' });
         }
     })();
 

@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
 import { Sak } from 'types/Sak.ts';
 
@@ -12,6 +13,8 @@ import { BarnGruppering } from '../types/BarnGruppering.ts';
 import { Tidslinjehendelse2 } from '../types/Tidslinjehendelse.ts';
 import { UTTAKSDAGER_PER_UKE, Uttaksdagen } from './Uttaksdagen.ts';
 import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils.ts';
+
+dayjs.extend(minMax);
 
 type TidslinjeTittelForFamiliehendelseProps = {
     sak: Sak;
@@ -29,7 +32,7 @@ export const tidslinjeTittelForFamiliehendelse = ({
         barnFraSak.fornavn === undefined || barnFraSak.fornavn.length === 0 || !barnFraSak.alleBarnaLever;
     const navn = brukGeneriskNavn
         ? getTidslinjetekstForAntallBarn(familiehendelse.antallBarn, intl, gjelderAdopsjon)
-        : getNavnPåBarna(barnFraSak.fornavn ?? []);
+        : getNavnPåBarna(barnFraSak.fornavn ?? [], intl);
 
     if (gjelderAdopsjon && familiehendelse.omsorgsovertakelse) {
         return getTidslinjeTittelForAdopsjon(navn, familiehendelse.omsorgsovertakelse, intl);
@@ -93,7 +96,7 @@ export const getTidslinjeTittelForBarnTreÅr = ({
     if (barnFraSak.fornavn === undefined || barnFraSak.fornavn.length === 0 || !barnFraSak.alleBarnaLever) {
         barnNavnTekst = getTidslinjetekstForAntallBarn(antallBarn, intl, false);
     } else {
-        barnNavnTekst = getNavnPåBarna(barnFraSak.fornavn);
+        barnNavnTekst = getNavnPåBarna(barnFraSak.fornavn, intl);
     }
     return intl.formatMessage(
         { id: 'tidslinje.tittel.BARNET_TRE_ÅR.fødsel' },

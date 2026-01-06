@@ -22,7 +22,9 @@ interface Props {
 
 export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
-    const { aleneOmOmsorg } = useUttaksplanData();
+    const {
+        foreldreInfo: { rettighetType },
+    } = useUttaksplanData();
     const morsAktivitet = !periode.erAnnenPartEøs && periode.morsAktivitet ? periode.morsAktivitet : undefined;
 
     const stønadskontoNavn = getStønadskontoNavn(
@@ -31,7 +33,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
         navnPåForeldre,
         erFarEllerMedmor,
         morsAktivitet,
-        aleneOmOmsorg,
+        rettighetType === 'ALENEOMSORG',
     );
 
     return (

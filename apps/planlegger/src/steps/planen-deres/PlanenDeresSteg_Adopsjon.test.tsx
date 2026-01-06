@@ -30,9 +30,11 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 58 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect(
-            screen.getByRole<HTMLOptionElement>('option', { name: 'Fellesperioden: 16 uker til far' }).selected,
-        ).toBe(true);
+
+        // Verifiserer fordelingen på slideren
+        const sliderHeadings = screen.getAllByRole('heading', { level: 4 });
+        expect(sliderHeadings.some((heading) => heading.textContent === '0 uker')).toBe(true);
+        expect(sliderHeadings.some((heading) => heading.textContent === '16 uker')).toBe(true);
 
         expect(screen.getByText('Mors periode')).toBeInTheDocument();
         expect(screen.getByText('Fars periode')).toBeInTheDocument();
@@ -63,7 +65,9 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 58 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+        // Verifiserer at slideren ikke vises når kun én har rett
+        expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
@@ -88,7 +92,9 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 52 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+        // Verifiserer at slideren ikke vises når kun én har rett
+        expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
@@ -114,7 +120,9 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 52 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+        // Verifiserer at slideren ikke vises når kun én har rett
+        expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
@@ -140,9 +148,11 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 58 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect(
-            screen.getByRole<HTMLOptionElement>('option', { name: 'Fellesperioden: 16 uker til medmor' }).selected,
-        ).toBe(true);
+
+        // Verifiserer fordelingen på slideren
+        const sliderHeadings = screen.getAllByRole('heading', { level: 4 });
+        expect(sliderHeadings.some((heading) => heading.textContent === '0 uker')).toBe(true);
+        expect(sliderHeadings.some((heading) => heading.textContent === '16 uker')).toBe(true);
 
         expect(screen.getByText('Mors periode')).toBeInTheDocument();
         expect(screen.getByText('Medmors periode')).toBeInTheDocument();
@@ -173,7 +183,9 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 58 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+        // Verifiserer at slideren ikke vises når kun én har rett
+        expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
@@ -198,7 +210,9 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 52 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+        // Verifiserer at slideren ikke vises når kun én har rett
+        expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
@@ -224,7 +238,9 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 52 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+        // Verifiserer at slideren ikke vises når kun én har rett
+        expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
@@ -250,7 +266,9 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 58 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+        // Verifiserer at slideren ikke vises når kun én søker
+        expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
@@ -275,7 +293,9 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 58 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+        // Verifiserer at slideren ikke vises når kun én søker
+        expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
@@ -300,10 +320,11 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 58 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect(
-            (screen.getAllByRole('option', { name: 'Fellesperioden: 16 uker til Anders' })[0] as HTMLOptionElement)
-                .selected,
-        ).toBe(true);
+
+        // Verifiserer fordelingen på slideren
+        const sliderHeadings = screen.getAllByRole('heading', { level: 4 });
+        expect(sliderHeadings.some((heading) => heading.textContent === '0 uker')).toBe(true);
+        expect(sliderHeadings.some((heading) => heading.textContent === '16 uker')).toBe(true);
 
         expect(screen.getByText('Fars periode')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
@@ -334,7 +355,9 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 52 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+        // Verifiserer at slideren ikke vises når kun én har rett
+        expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
 
@@ -360,7 +383,9 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 52 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+        // Verifiserer at slideren ikke vises når kun én har rett
+        expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
@@ -381,7 +406,9 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 58 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
-        expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+        // Verifiserer at slideren ikke vises når kun én har rett
+        expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();

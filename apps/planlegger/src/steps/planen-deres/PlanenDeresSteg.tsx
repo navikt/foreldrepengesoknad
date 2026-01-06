@@ -7,12 +7,9 @@ import {
 } from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
+import { FordelingSlider } from 'components/FordelingSlider';
 import { useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import {
-    finnFellesperiodeFordelingOptionTekst,
-    getFellesperiodefordelingSelectOptions,
-} from 'steps/fordeling/FordelingSteg';
 import { Fordeling } from 'types/Fordeling';
 import {
     erAlenesøker,
@@ -23,15 +20,16 @@ import {
     getNavnPåForeldre,
 } from 'utils/HvemPlanleggerUtils';
 import { mapOmBarnetTilBarn } from 'utils/barnetUtils';
-import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
 import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
 
-import { BodyLong, BodyShort, Heading, Select, Tabs, ToggleGroup, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Heading, Tabs, ToggleGroup, VStack } from '@navikt/ds-react';
 
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { Dekningsgrad, HvemPlanleggerType, KontoBeregningResultatDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { Infobox, StepButtons } from '@navikt/fp-ui';
+import { BluePanel, Infobox, StepButtons } from '@navikt/fp-ui';
 import { encodeToBase64, useMedia } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import {
@@ -80,8 +78,6 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
 
     const erAleneOmOmsorg = erAlenesøker(hvemPlanlegger);
 
-    const bareFarMedmorHarRett =
-        harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
     const erDeltUttak = fordeling !== undefined;
 
@@ -124,19 +120,19 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
 
                 <UttaksplanDataProvider
                     barn={mapOmBarnetTilBarn(omBarnet)}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                    navnPåForeldre={navnPåForeldre}
-                    modus="planlegger"
+                    foreldreInfo={{
+                        søker: erFarEllerMedmor ? 'FAR_ELLER_MEDMOR' : 'MOR',
+                        navnPåForeldre,
+                        rettighetType: utledRettighet(erAleneOmOmsorg, erDeltUttak),
+                        erMedmorDelAvSøknaden: isMedmorDelAvSøknaden,
+                        erIkkeSøkerSpesifisert: erDeltUttak,
+                    }}
                     valgtStønadskonto={valgtStønadskonto}
-                    aleneOmOmsorg={erAleneOmOmsorg}
-                    erMedmorDelAvSøknaden={isMedmorDelAvSøknaden}
-                    bareFarMedmorHarRett={bareFarMedmorHarRett}
                     harAktivitetskravIPeriodeUtenUttak={false}
-                    erDeltUttak={erDeltUttak}
                     saksperioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
                 >
                     <div ref={kvoteOppsummeringRef}>
-                        <KvoteOppsummering visStatusIkoner />
+                        <KvoteOppsummering erInnsyn={false} visStatusIkoner />
                     </div>
 
                     <DereKanTilpassePlanenInfoBox erAleneforsørger={erAleneOmOmsorg} />
@@ -163,7 +159,18 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     >
                         <FjernAltIUttaksplanModal />
 
-                        <Tabs defaultValue="kalender">
+                        <Tabs
+                            defaultValue="kalender"
+                            onChange={(value) => {
+                                loggUmamiEvent({
+                                    origin: 'planlegger',
+                                    eventName: 'tab klikk',
+                                    eventData: {
+                                        tittel: value,
+                                    },
+                                });
+                            }}
+                        >
                             <Tabs.List>
                                 <Tabs.Tab
                                     value="kalender"
@@ -184,7 +191,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                                 />
                             </Tabs.Panel>
                             <Tabs.Panel value="liste" className="pt-5">
-                                <UttaksplanNy />
+                                <UttaksplanNy isReadOnly={false} />
                             </Tabs.Panel>
                         </Tabs>
                     </UttaksplanRedigeringProvider>
@@ -275,7 +282,7 @@ const AntallUkerVelger = ({
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
 
     return (
-        <VStack gap="space-8">
+        <VStack gap="space-24">
             <ToggleGroup
                 defaultValue={hvorLangPeriode?.dekningsgrad}
                 size={isDesktop ? 'medium' : 'small'}
@@ -305,34 +312,24 @@ const AntallUkerVelger = ({
 
             {hvemHarRett === 'beggeHarRett' &&
                 (!omBarnet.erFødsel || hvemPlanlegger.type !== HvemPlanleggerType.FAR_OG_FAR) && (
-                    <Select
-                        defaultValue={fordeling?.antallDagerSøker1}
-                        label="Velg fordeling fellesperiode"
-                        hideLabel
-                        name="antallDagerSøker1"
-                        onChange={(e) => {
-                            lagreFordeling({ antallDagerSøker1: Number.parseInt(e.target.value, 10) });
-                            lagreUttaksplanOgOppdaterUrl(undefined);
-                        }}
-                    >
-                        {getFellesperiodefordelingSelectOptions(
-                            getAntallUkerOgDagerFellesperiode(valgtStønadskonto),
-                        ).map((value) => (
-                            <option
-                                key={value.antallUkerOgDagerSøker1.totaltAntallDager}
-                                value={value.antallUkerOgDagerSøker1.totaltAntallDager}
-                            >
-                                {finnFellesperiodeFordelingOptionTekst(
-                                    intl,
-                                    value,
-                                    hvemPlanlegger,
-                                    fornavnSøker1,
-                                    fornavnSøker2,
-                                    true,
-                                )}
-                            </option>
-                        ))}
-                    </Select>
+                    <BluePanel>
+                        <Heading id="fordeling-slider-label" size="small" level="3">
+                            <FormattedMessage id="PlanenDeresSteg.FordelingTittel" />
+                        </Heading>
+                        <BodyShort className="mb-4">
+                            <FormattedMessage id="PlanenDeresSteg.Undertekst" />
+                        </BodyShort>
+                        <FordelingSlider
+                            antallDagerSøker1={fordeling?.antallDagerSøker1}
+                            onAntallDagerSøker1Change={(value) => {
+                                lagreFordeling({ antallDagerSøker1: value });
+                                lagreUttaksplanOgOppdaterUrl(undefined);
+                            }}
+                            antallUkerOgDagerFellesperiode={getAntallUkerOgDagerFellesperiode(valgtStønadskonto)}
+                            fornavnSøker1={fornavnSøker1}
+                            fornavnSøker2={fornavnSøker2}
+                        />
+                    </BluePanel>
                 )}
         </VStack>
     );

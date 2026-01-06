@@ -31,7 +31,9 @@ export const MinidialogVenterPåSvar = ({ fetchCounter, allowedToFetch, saksnumm
             <>
                 <ScrollToTop />
                 <VStack gap="space-8">
-                    <Alert variant="success">Svaret ditt er registrert</Alert>
+                    <Alert variant="success">
+                        <FormattedMessage id={'minidialog.svarRegistrert'} />
+                    </Alert>
                     <Link as={RouterLink} to={`/sak/${saksnummer}`}>
                         <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
                     </Link>

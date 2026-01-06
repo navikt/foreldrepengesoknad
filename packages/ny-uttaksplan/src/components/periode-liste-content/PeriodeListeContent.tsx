@@ -5,12 +5,13 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
 import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
-import { Barn, UttaksplanModus, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
+import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import {
+    genererPeriodeId,
     isHull,
     isOppholdsperiode,
     isOverføringsperiode,
@@ -31,20 +32,20 @@ import { UtsettelsesPeriodeContent } from './components/UtsettelsesPeriodeConten
 import { UttaksperiodeContent } from './components/UttaksperiodeContent';
 
 interface Props {
+    isReadOnly: boolean;
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse: boolean;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
-    handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
-    handleDeletePeriode: (slettetPeriode: Planperiode) => void;
+    handleUpdatePeriode: (oppdatertPeriode: Planperiode, gammelPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
 }
 
 export const PeriodeListeContent = ({
+    isReadOnly,
     permisjonsperiode,
     erFamiliehendelse,
     handleAddPeriode,
     handleUpdatePeriode,
-    handleDeletePeriode,
     handleDeletePerioder,
 }: Props) => {
     const [isEndrePeriodePanelOpen, setIsEndrePeriodePanelOpen] = useState(false);
@@ -55,7 +56,10 @@ export const PeriodeListeContent = ({
         (p) => isHull(p) || isPeriodeUtenUttak(p) || isUtsettelsesperiode(p),
     );
 
-    const { navnPåForeldre, erFarEllerMedmor, barn, modus } = useUttaksplanData();
+    const {
+        foreldreInfo: { navnPåForeldre, søker },
+        barn,
+    } = useUttaksplanData();
 
     const familiehendelseType = getFamiliehendelseType(barn);
 
@@ -63,17 +67,29 @@ export const PeriodeListeContent = ({
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
     }
 
+    const harPrematuruker = permisjonsperiode.perioder.some(isPrematuruker);
+
     return (
         <>
             {!isEndrePeriodePanelOpen && !isSlettPeriodePanelOpen && (
                 <>
                     <VStack gap="space-16">
                         {permisjonsperiode.perioder.map((periode) => {
-                            return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode);
+                            return renderPeriode(
+                                periode,
+                                navnPåForeldre,
+                                søker === 'FAR_ELLER_MEDMOR',
+                                inneholderKunEnPeriode,
+                            );
                         })}
                         <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
                     </VStack>
-                    {renderKnapper(modus, erRedigerbar, setIsEndrePeriodePanelOpen, setIsSlettPeriodePanelOpen)}
+                    {renderKnapper(
+                        isReadOnly || harPrematuruker,
+                        erRedigerbar,
+                        setIsEndrePeriodePanelOpen,
+                        setIsSlettPeriodePanelOpen,
+                    )}
                 </>
             )}
             {isEndrePeriodePanelOpen ? (
@@ -92,11 +108,10 @@ export const PeriodeListeContent = ({
                     closePanel={() => {
                         setIsSlettPeriodePanelOpen(false);
                     }}
-                    handleDeletePeriode={handleDeletePeriode}
                     handleDeletePerioder={handleDeletePerioder}
                     permisjonsperiode={permisjonsperiode}
                     navnPåForeldre={navnPåForeldre}
-                    erFarEllerMedmor={erFarEllerMedmor}
+                    erFarEllerMedmor={søker === 'FAR_ELLER_MEDMOR'}
                 />
             ) : null}
         </>
@@ -112,7 +127,7 @@ const renderPeriode = (
     if (isOppholdsperiode(periode)) {
         return (
             <OppholdsPeriodeContent
-                key={periode.id}
+                key={genererPeriodeId(periode)}
                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                 navnPåForeldre={navnPåForeldre}
                 erFarEllerMedmor={erFarEllerMedmor}
@@ -124,7 +139,7 @@ const renderPeriode = (
     if (isOverføringsperiode(periode)) {
         return (
             <OverføringsperiodeContent
-                key={periode.id}
+                key={genererPeriodeId(periode)}
                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                 navnPåForeldre={navnPåForeldre}
                 periode={periode}
@@ -133,21 +148,21 @@ const renderPeriode = (
     }
 
     if (isPeriodeUtenUttak(periode) || isHull(periode)) {
-        return <PeriodeUtenUttakContent key={periode.id} periode={periode} isHull={isHull(periode)} />;
+        return <PeriodeUtenUttakContent key={genererPeriodeId(periode)} periode={periode} isHull={isHull(periode)} />;
     }
 
     if (isUtsettelsesperiode(periode)) {
-        return <UtsettelsesPeriodeContent key={periode.id} periode={periode} />;
+        return <UtsettelsesPeriodeContent key={genererPeriodeId(periode)} periode={periode} />;
     }
 
     if (isPrematuruker(periode)) {
-        return <PrematurukerContent key={periode.id} />;
+        return <PrematurukerContent key={genererPeriodeId(periode)} />;
     }
 
     if (isUttaksperiode(periode)) {
         return (
             <UttaksperiodeContent
-                key={periode.id}
+                key={genererPeriodeId(periode)}
                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                 periode={periode}
                 erFarEllerMedmor={erFarEllerMedmor}
@@ -179,12 +194,12 @@ const getFamiliehendelseType = (barn: Barn) => {
 };
 
 const renderKnapper = (
-    modus: UttaksplanModus,
+    isReadOnly: boolean,
     erRedigerbar: boolean,
     setIsEndrePeriodePanelOpen: (open: boolean) => void,
     setIsSlettPeriodePanelOpen: (open: boolean) => void,
 ) => {
-    if (modus === 'innsyn') {
+    if (isReadOnly) {
         return null;
     }
 
@@ -200,7 +215,7 @@ const renderKnapper = (
                     }}
                     icon={<PencilIcon />}
                 >
-                    Endre
+                    <FormattedMessage id="uttaksplan.endre" />
                 </Button>
             </HStack>
         );

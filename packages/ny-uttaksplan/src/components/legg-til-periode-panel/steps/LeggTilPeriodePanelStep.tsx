@@ -26,7 +26,9 @@ interface Props {
 
 export const LeggTilPeriodePanelStep = ({ closePanel, handleAddPeriode }: Props) => {
     const intl = useIntl();
-    const { erDeltUttak } = useUttaksplanData();
+    const {
+        foreldreInfo: { rettighetType },
+    } = useUttaksplanData();
 
     const formMethods = useForm<LeggTilPeriodePanelFormValues>();
 
@@ -56,18 +58,15 @@ export const LeggTilPeriodePanelStep = ({ closePanel, handleAddPeriode }: Props)
                 erAnnenPartEøs: false,
                 fom: fomValue,
                 tom: tomValue,
-                id: `${fomValue} - ${tomValue} - ${'LOVBESTEMT_FERIE'}`,
                 forelder: 'FAR_MEDMOR',
-                readOnly: false,
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             });
         } else if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
+            // TODO (TOR) Kan ein heller sletta periode her?
             handleAddPeriode({
                 erAnnenPartEøs: false,
                 fom: fomValue,
                 tom: tomValue,
-                id: `${fomValue} - ${tomValue} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
-                readOnly: false,
                 periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
             });
         } else {
@@ -75,10 +74,8 @@ export const LeggTilPeriodePanelStep = ({ closePanel, handleAddPeriode }: Props)
                 erAnnenPartEøs: false,
                 fom: fomValue,
                 tom: tomValue,
-                id: `${fomValue} - ${tomValue} - ${values.kontoType}`,
                 kontoType: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoType,
                 morsAktivitet: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : values.morsAktivitet,
-                readOnly: false,
                 forelder: getForelderFromKontoType(values.kontoType, values.forelder),
                 gradering: getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType),
                 samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
@@ -101,7 +98,7 @@ export const LeggTilPeriodePanelStep = ({ closePanel, handleAddPeriode }: Props)
                         <KontotypeSpørsmål />
                         <AktivitetskravSpørsmål />
                         <TidsperiodeSpørsmål hvaVilDuGjøre={hvaVilDuGjøre} />
-                        {erDeltUttak && <SamtidigUttakSpørsmål />}
+                        {rettighetType === 'BEGGE_RETT' && <SamtidigUttakSpørsmål />}
                         <GraderingSpørsmål />
                     </>
                 ) : null}

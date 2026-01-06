@@ -16,8 +16,6 @@ const meta = {
     title: 'UttaksplanLegend',
     component: UttaksplanLegend,
     args: {
-        modus: 'søknad',
-
         valgtStønadskonto: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
@@ -27,9 +25,6 @@ const meta = {
             ],
             minsteretter: MINSTERETTER,
         },
-        aleneOmOmsorg: false,
-        erMedmorDelAvSøknaden: false,
-        navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
         children: null,
         selectLegend: action('select-legend'),
         skjulTekstSomDefault: false,
@@ -37,16 +32,10 @@ const meta = {
     render: (args) => {
         return (
             <UttaksplanDataProvider
+                foreldreInfo={args.foreldreInfo}
                 barn={args.barn}
-                erFarEllerMedmor={args.erFarEllerMedmor}
-                navnPåForeldre={args.navnPåForeldre}
-                modus={args.modus}
                 valgtStønadskonto={args.valgtStønadskonto}
-                aleneOmOmsorg={args.aleneOmOmsorg || false}
-                erMedmorDelAvSøknaden={args.erMedmorDelAvSøknaden || false}
-                bareFarMedmorHarRett={args.bareFarMedmorHarRett || false}
                 harAktivitetskravIPeriodeUtenUttak={false}
-                erDeltUttak={args.erDeltUttak || false}
                 saksperioder={args.saksperioder}
             >
                 <UttaksplanLegend
@@ -174,10 +163,16 @@ export const VisAlleMedTekst: Story = {
             fødselsdatoer: ['2024-04-04'],
             antallBarn: 1,
         },
-        erDeltUttak: true,
-        erFarEllerMedmor: false,
+        foreldreInfo: {
+            søker: 'MOR',
+            navnPåForeldre: {
+                mor: 'Hanne',
+                farMedmor: 'Hans',
+            },
+            rettighetType: 'BEGGE_RETT',
+            erMedmorDelAvSøknaden: false,
+        },
         harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarMedmorHarRett: false,
         readOnly: false,
     },
 };

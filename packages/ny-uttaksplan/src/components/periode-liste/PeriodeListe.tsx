@@ -11,18 +11,18 @@ import { mapPerioderToPermisjonsperiode } from '../../utils/permisjonsperiodeUti
 import { PeriodeListeItem } from './../periode-liste-item/PeriodeListeItem';
 
 interface Props {
+    isReadOnly: boolean;
     perioder: Planperiode[];
     handleAddPeriode: (nyPeriode: Planperiode) => void;
-    handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
-    handleDeletePeriode: (slettetPeriode: Planperiode) => void;
+    handleUpdatePeriode: (oppdatertPeriode: Planperiode, gammelPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
     isAllAccordionsOpen?: boolean;
 }
 
 export const PeriodeListe = ({
+    isReadOnly,
     perioder,
     handleUpdatePeriode,
-    handleDeletePeriode,
     handleDeletePerioder,
     handleAddPeriode,
     isAllAccordionsOpen,
@@ -40,18 +40,18 @@ export const PeriodeListe = ({
                     return (
                         <Fragment key={`${permisjonsperiode.tidsperiode.fom}-${permisjonsperiode.tidsperiode.tom}`}>
                             <PeriodeListeItem
+                                isReadOnly={isReadOnly}
                                 handleAddPeriode={handleAddPeriode}
                                 handleUpdatePeriode={handleUpdatePeriode}
-                                handleDeletePeriode={handleDeletePeriode}
                                 handleDeletePerioder={handleDeletePerioder}
                                 permisjonsperiode={permisjonsperiode}
                                 isAllAccordionsOpen={isAllAccordionsOpen}
                             />
                             {permisjonsperioder.length - 1 === index && (
                                 <PeriodeListeItem
+                                    isReadOnly={isReadOnly}
                                     handleAddPeriode={handleAddPeriode}
                                     handleUpdatePeriode={handleUpdatePeriode}
-                                    handleDeletePeriode={handleDeletePeriode}
                                     handleDeletePerioder={handleDeletePerioder}
                                     permisjonsperiode={permisjonsperiode}
                                     erFamiliehendelse
@@ -65,9 +65,9 @@ export const PeriodeListe = ({
                         <Fragment key={`${permisjonsperiode.tidsperiode.fom}-${permisjonsperiode.tidsperiode.tom}`}>
                             {indexOfFørstePeriodeEtterFødsel === index && (
                                 <PeriodeListeItem
+                                    isReadOnly={isReadOnly}
                                     handleAddPeriode={handleAddPeriode}
                                     handleUpdatePeriode={handleUpdatePeriode}
-                                    handleDeletePeriode={handleDeletePeriode}
                                     handleDeletePerioder={handleDeletePerioder}
                                     permisjonsperiode={permisjonsperiode}
                                     erFamiliehendelse
@@ -75,9 +75,9 @@ export const PeriodeListe = ({
                                 />
                             )}
                             <PeriodeListeItem
+                                isReadOnly={isReadOnly}
                                 handleAddPeriode={handleAddPeriode}
                                 handleUpdatePeriode={handleUpdatePeriode}
-                                handleDeletePeriode={handleDeletePeriode}
                                 handleDeletePerioder={handleDeletePerioder}
                                 permisjonsperiode={permisjonsperiode}
                                 isAllAccordionsOpen={isAllAccordionsOpen}

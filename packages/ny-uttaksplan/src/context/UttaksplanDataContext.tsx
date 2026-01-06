@@ -4,28 +4,20 @@ import {
     Barn,
     Familiesituasjon,
     KontoBeregningDto,
-    NavnPåForeldre,
-    RettighetType_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
-    UttaksplanModus,
 } from '@navikt/fp-types';
 import { getFamiliehendelsedato, getFamiliesituasjon } from '@navikt/fp-utils';
 
+import { ForeldreInfo } from '../types/ForeldreInfo';
 import { Planperiode } from '../types/Planperiode';
 import { utledKomplettPlan } from '../utils/periodeUtils';
 
 type Props = {
     barn: Barn;
-    navnPåForeldre: NavnPåForeldre;
-    erFarEllerMedmor: boolean;
-    modus: UttaksplanModus;
+    foreldreInfo: ForeldreInfo;
     valgtStønadskonto: KontoBeregningDto;
-    aleneOmOmsorg: boolean;
-    erMedmorDelAvSøknaden: boolean;
     harAktivitetskravIPeriodeUtenUttak: boolean;
-    bareFarMedmorHarRett: boolean;
-    erDeltUttak: boolean;
     saksperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     children: React.ReactNode;
 };
@@ -33,7 +25,6 @@ type Props = {
 type ContextValues = Omit<Props, 'children'> & {
     familiesituasjon: Familiesituasjon;
     familiehendelsedato: string;
-    rettighetType: RettighetType_fpoversikt;
     uttaksplan: Planperiode[];
 };
 
@@ -45,33 +36,23 @@ export const UttaksplanDataProvider = (props: Props) => {
     const value = useMemo(() => {
         const familiehendelsedato = getFamiliehendelsedato(otherProps.barn);
         const familiesituasjon = getFamiliesituasjon(otherProps.barn);
-        const søkersPerioder = getSøkersPerioder(
-            otherProps.erDeltUttak,
-            otherProps.saksperioder,
-            otherProps.erFarEllerMedmor,
-        );
-        const annenPartsPerioder = getAnnenpartsPerioder(
-            otherProps.erDeltUttak,
-            otherProps.saksperioder,
-            otherProps.erFarEllerMedmor,
-        );
+        const søkersPerioder = getSøkersPerioder(otherProps.foreldreInfo, otherProps.saksperioder);
+        const annenPartsPerioder = getAnnenpartsPerioder(otherProps.foreldreInfo, otherProps.saksperioder);
 
         return {
             ...otherProps,
             familiehendelsedato,
             familiesituasjon,
-            rettighetType: utledRettighetType(otherProps.erDeltUttak, otherProps.aleneOmOmsorg),
+            // TODO (TOR) Vurder om ein heller burde utleda uttaksplan der den trengs... Trengs det forskjellige ting i kalender vs liste?
             uttaksplan: utledKomplettPlan({
                 familiehendelsedato,
-                erFarEllerMedmor: otherProps.erFarEllerMedmor,
+                foreldreInfo: otherProps.foreldreInfo,
                 søkersPerioder: søkersPerioder,
                 annenPartsPerioder: annenPartsPerioder,
                 gjelderAdopsjon: familiesituasjon === 'adopsjon',
-                bareFarMedmorHarRett: otherProps.bareFarMedmorHarRett,
                 harAktivitetskravIPeriodeUtenUttak: otherProps.harAktivitetskravIPeriodeUtenUttak,
                 //TODO (TOR) Trengs denne? Var alltid undefined før eg refaktorerte
                 førsteUttaksdagNesteBarnsSak: undefined,
-                modus: otherProps.modus,
             }),
         };
     }, [otherProps]);
@@ -88,37 +69,27 @@ export const useUttaksplanData = () => {
 };
 
 const getSøkersPerioder = (
-    erDeltUttak: boolean,
+    foreldreInfo: ForeldreInfo,
     gjeldendeUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    erFarEllerMedmor: boolean,
 ): UttakPeriode_fpoversikt[] => {
-    return erDeltUttak
+    return foreldreInfo.rettighetType === 'BEGGE_RETT'
         ? gjeldendeUttaksplan.filter(
-              (p) => !('trekkdager' in p) && (erFarEllerMedmor ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'),
+              (p) =>
+                  !('trekkdager' in p) &&
+                  (foreldreInfo.søker === 'FAR_ELLER_MEDMOR' ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'),
           )
         : gjeldendeUttaksplan;
 };
 
-export const getAnnenpartsPerioder = (
-    erDeltUttak: boolean,
+const getAnnenpartsPerioder = (
+    foreldreInfo: ForeldreInfo,
     gjeldendeUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    erFarEllerMedmor: boolean,
 ): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
-    return erDeltUttak
+    return foreldreInfo.rettighetType === 'BEGGE_RETT'
         ? gjeldendeUttaksplan.filter(
-              (p) => 'trekkdager' in p || (erFarEllerMedmor ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'),
+              (p) =>
+                  'trekkdager' in p ||
+                  (foreldreInfo.søker === 'FAR_ELLER_MEDMOR' ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'),
           )
         : [];
-};
-
-// TODO (TOR) Burde kunne senda rettighetstype inn som prop i staden for erDeltUttak og aleneOmOmsorg
-const utledRettighetType = (erDeltUttak: boolean, aleneOmOmsorg: boolean): RettighetType_fpoversikt => {
-    if (erDeltUttak) {
-        return 'BEGGE_RETT';
-    }
-    if (aleneOmOmsorg) {
-        return 'ALENEOMSORG';
-    }
-
-    return 'BARE_SØKER_RETT';
 };
