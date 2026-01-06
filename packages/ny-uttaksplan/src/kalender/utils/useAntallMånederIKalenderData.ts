@@ -1,14 +1,15 @@
 import dayjs from 'dayjs';
 
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { Planperiode } from '../../types/Planperiode';
 
 export const useAntallMånederIKalenderData = (
     antallMånederLagtTilKalender: number,
     skalViseFørsteMuligeDatoIKalender: boolean,
     barnehagestartdato?: string,
 ) => {
-    const { familiehendelsedato, uttaksplan, familiesituasjon } = useUttaksplanData();
+    const { familiehendelsedato, saksperioderInkludertHull, familiesituasjon } = useUttaksplanData();
 
     const førsteMuligeDato =
         familiesituasjon === 'adopsjon'
@@ -19,11 +20,11 @@ export const useAntallMånederIKalenderData = (
 
     const sisteDatoIKalenderFørManueltLagtTil = getSisteDatoIKalender(
         familiehendelsedato,
-        uttaksplan,
+        saksperioderInkludertHull,
         barnehagestartdato,
     );
 
-    const førsteDatoIKalenderFørManueltLagtTil = getFørsteDatoIKalender(familiehendelsedato, uttaksplan);
+    const førsteDatoIKalenderFørManueltLagtTil = getFørsteDatoIKalender(familiehendelsedato, saksperioderInkludertHull);
 
     const maksAntallEkstraMånederPåSlutten = monthDiff(
         dayjs(sisteDatoIKalenderFørManueltLagtTil),
@@ -47,17 +48,24 @@ export const useAntallMånederIKalenderData = (
     };
 };
 
-const getFørsteDatoIKalender = (familiehendelsedato: string, uttaksplan: Planperiode[]) => {
+const getFørsteDatoIKalender = (
+    familiehendelsedato: string,
+    saksperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+) => {
     const treUkerFørFamiliehendelse = dayjs(familiehendelsedato).subtract(3, 'weeks');
-    const førsteFomIUttaksplan = uttaksplan.at(0)?.fom;
+    const førsteFomIUttaksplan = saksperioder.at(0)?.fom;
 
     return førsteFomIUttaksplan && dayjs(førsteFomIUttaksplan).isBefore(treUkerFørFamiliehendelse)
         ? førsteFomIUttaksplan
         : treUkerFørFamiliehendelse.toISOString();
 };
 
-const getSisteDatoIKalender = (familiehendelsedato: string, uttaksplan: Planperiode[], barnehagestartdato?: string) => {
-    const sisteTom = uttaksplan.at(-1)?.tom;
+const getSisteDatoIKalender = (
+    familiehendelsedato: string,
+    saksperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    barnehagestartdato?: string,
+) => {
+    const sisteTom = saksperioder.at(-1)?.tom;
 
     if (barnehagestartdato && sisteTom) {
         return dayjs(barnehagestartdato).isSameOrAfter(dayjs(sisteTom)) ? barnehagestartdato : sisteTom;

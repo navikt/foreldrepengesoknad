@@ -11,18 +11,24 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { BrukerRolleSak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types/src/genererteTyper';
+import {
+    BrukerRolleSak_fpoversikt,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types/src/genererteTyper';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { Planperiode } from '../../types/Planperiode';
+import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 
-export type PlanperiodeMedAntallDager = Planperiode & { valgteDagerIPeriode: number };
+export type UttakPeriodeMedAntallDager = (UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) & {
+    valgteDagerIPeriode: number;
+};
 
 interface Props {
-    perioder: PlanperiodeMedAntallDager[];
+    perioder: UttakPeriodeMedAntallDager[];
 }
 
 export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
@@ -42,13 +48,13 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                     return null;
                 }
 
-                const erSamtidigUttak = !p.erAnnenPartEøs && p.samtidigUttak !== undefined;
+                const erSamtidigUttak = erVanligUttakPeriode(p) && p.samtidigUttak !== undefined;
                 const denAndrePerioden = erSamtidigUttak
                     ? perioder.find(
                           (per) =>
                               per.fom === p.fom &&
                               per.tom === p.tom &&
-                              !per.erAnnenPartEøs &&
+                              erVanligUttakPeriode(per) &&
                               per.forelder !== p.forelder,
                       )
                     : undefined;
@@ -63,7 +69,7 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                         <PeriodeIkon periode={p} />
 
                         <VStack gap="space-0">
-                            {(p.erAnnenPartEøs || p.utsettelseÅrsak !== 'LOVBESTEMT_FERIE') && (
+                            {(erEøsUttakPeriode(p) || p.utsettelseÅrsak !== 'LOVBESTEMT_FERIE') && (
                                 <Heading size="xsmall">
                                     <PeriodeHeaderText periode={p} />
                                 </Heading>
@@ -96,7 +102,7 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                                             }}
                                         />
                                     </BodyShort>
-                                    {denAndrePerioden && !denAndrePerioden.erAnnenPartEøs && (
+                                    {denAndrePerioden && erVanligUttakPeriode(denAndrePerioden) && (
                                         <BodyShort>
                                             <FormattedMessage
                                                 id="RedigeringPanel.SamtidigUttakForelder"
@@ -117,7 +123,7 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                                             />
                                         </BodyShort>
                                     )}
-                                    {!p.erAnnenPartEøs && p.gradering !== undefined && (
+                                    {erVanligUttakPeriode(p) && p.gradering !== undefined && (
                                         <BodyShort>
                                             <FormattedMessage
                                                 id="RedigeringPanel.GraderingForelder"
@@ -130,7 +136,7 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                                         </BodyShort>
                                     )}
                                     {denAndrePerioden &&
-                                        !denAndrePerioden.erAnnenPartEøs &&
+                                        erVanligUttakPeriode(denAndrePerioden) &&
                                         denAndrePerioden.gradering !== undefined && (
                                             <BodyShort>
                                                 <FormattedMessage
@@ -148,7 +154,7 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                                 </VStack>
                             )}
 
-                            {!erSamtidigUttak && !p.erAnnenPartEøs && p.gradering !== undefined && (
+                            {!erSamtidigUttak && erVanligUttakPeriode(p) && p.gradering !== undefined && (
                                 <BodyShort>
                                     <FormattedMessage
                                         id="RedigeringPanel.Gradering"
@@ -178,12 +184,14 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
     );
 };
 
-const PeriodeIkon = ({ periode }: { periode: PlanperiodeMedAntallDager }) => {
+const PeriodeIkon = ({ periode }: { periode: UttakPeriodeMedAntallDager }) => {
     const intl = useIntl();
 
-    const erSamtidigUttak = !periode.erAnnenPartEøs && periode.samtidigUttak !== undefined && periode.samtidigUttak > 0;
+    if (!erVanligUttakPeriode(periode)) {
+        return null;
+    }
 
-    if (erSamtidigUttak) {
+    if (periode.samtidigUttak !== undefined && periode.samtidigUttak > 0) {
         return (
             <PersonGroupIcon
                 title={intl.formatMessage({ id: 'RedigeringPanel.Mor' })}
@@ -195,7 +203,7 @@ const PeriodeIkon = ({ periode }: { periode: PlanperiodeMedAntallDager }) => {
         );
     }
 
-    if (!periode.erAnnenPartEøs && periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+    if (periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
         return (
             <ParasolBeachIcon
                 title={intl.formatMessage({ id: 'RedigeringPanel.Ferie' })}
@@ -207,7 +215,7 @@ const PeriodeIkon = ({ periode }: { periode: PlanperiodeMedAntallDager }) => {
         );
     }
 
-    if (!periode.erAnnenPartEøs && periode.forelder === 'MOR') {
+    if (periode.forelder === 'MOR') {
         return (
             <PersonPregnantFillIcon
                 title={intl.formatMessage({ id: 'RedigeringPanel.Mor' })}
@@ -219,7 +227,7 @@ const PeriodeIkon = ({ periode }: { periode: PlanperiodeMedAntallDager }) => {
         );
     }
 
-    if (!periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR') {
+    if (periode.forelder === 'FAR_MEDMOR') {
         return (
             <PersonSuitFillIcon
                 title={intl.formatMessage({ id: 'RedigeringPanel.Far' })}
@@ -234,25 +242,27 @@ const PeriodeIkon = ({ periode }: { periode: PlanperiodeMedAntallDager }) => {
     return null;
 };
 
-const PeriodeHeaderText = ({ periode }: { periode: PlanperiodeMedAntallDager }) => {
-    if (!periode.erAnnenPartEøs && periode.samtidigUttak !== undefined) {
+const PeriodeHeaderText = ({ periode }: { periode: UttakPeriodeMedAntallDager }) => {
+    if (erVanligUttakPeriode(periode) && periode.samtidigUttak !== undefined) {
         return <FormattedMessage id="RedigeringPanel.Begge" />;
     }
 
-    if (!periode.erAnnenPartEøs && periode.forelder === 'MOR') {
+    if (erVanligUttakPeriode(periode) && periode.forelder === 'MOR') {
         return <FormattedMessage id="RedigeringPanel.Mor" />;
     }
 
-    if (!periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR') {
+    if (erEøsUttakPeriode(periode) || periode.forelder === 'FAR_MEDMOR') {
         return <FormattedMessage id="RedigeringPanel.Far" />;
     }
 
     return null;
 };
 
-const PeriodeKvoteType = ({ periode }: { periode: PlanperiodeMedAntallDager }) => {
+const PeriodeKvoteType = ({ periode }: { periode: UttakPeriodeMedAntallDager }) => {
     const erAktivitetsfri =
-        periode.kontoType === 'FORELDREPENGER' && !periode.erAnnenPartEøs && periode.morsAktivitet === 'IKKE_OPPGITT';
+        periode.kontoType === 'FORELDREPENGER' &&
+        erVanligUttakPeriode(periode) &&
+        periode.morsAktivitet === 'IKKE_OPPGITT';
 
     if (periode.kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
         return <FormattedMessage id="RedigeringPanel.MorHarForeldrepengerFørFødsel" />;
@@ -272,7 +282,7 @@ const PeriodeKvoteType = ({ periode }: { periode: PlanperiodeMedAntallDager }) =
     if (periode.kontoType === 'FELLESPERIODE') {
         return <FormattedMessage id="RedigeringPanel.Fellesperiode" />;
     }
-    if (!periode.erAnnenPartEøs && periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+    if (erVanligUttakPeriode(periode) && periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
         return <FormattedMessage id="RedigeringPanel.Ferie" />;
     }
     return null;

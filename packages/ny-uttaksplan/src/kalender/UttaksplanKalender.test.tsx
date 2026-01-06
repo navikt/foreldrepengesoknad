@@ -90,7 +90,13 @@ describe('UttaksplanKalender', () => {
         const juni = screen.getByTestId('year:2021;month:5');
         expect(within(juni).getByTestId('day:15;dayColor:BLUEOUTLINE')).toBeInTheDocument();
         expect(within(juni).getAllByTestId('dayColor:BLUEOUTLINE', { exact: false })).toHaveLength(10);
-        expect(within(juni).getByTestId('day:29;dayColor:NONE')).toBeInTheDocument();
+        expect(within(juni).getByTestId('day:29;dayColor:BLACK')).toBeInTheDocument();
+        expect(within(juni).getByTestId('day:30;dayColor:BLACK')).toBeInTheDocument();
+
+        const juli = screen.getByTestId('year:2021;month:6');
+        expect(within(juli).getByTestId('day:1;dayColor:BLACK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:9;dayColor:BLACK')).toBeInTheDocument();
+        expect(within(juli).getAllByTestId('dayColor:BLACK', { exact: false })).toHaveLength(7);
     });
 
     it('skal markere en periode som ikke overlapper med eksisterende perioder', async () => {

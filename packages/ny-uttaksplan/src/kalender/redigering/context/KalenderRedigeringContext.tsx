@@ -7,12 +7,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import { SaksperiodeBuilder } from '../../../builder/SaksperiodeBuilder';
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
-import { PlanperiodeMedAntallDager } from '../EksisterendeValgtePerioder';
-import {
-    erValgtPeriodeEnHelEksisterendePeriode,
-    finnValgtePerioder,
-    slåSammenTilstøtendePerioder,
-} from '../utils/kalenderPeriodeUtils';
+import { slåSammenTilstøtendePerioder } from '../utils/kalenderPeriodeUtils';
 
 type Props = {
     valgtePerioder: CalendarPeriod[];
@@ -21,8 +16,6 @@ type Props = {
 };
 
 type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaksplan'> & {
-    eksisterendePerioderSomErValgt: PlanperiodeMedAntallDager[];
-    erKunEnHelEksisterendePeriodeValgt: boolean;
     sammenslåtteValgtePerioder: CalendarPeriod[];
     leggTilUttaksplanPerioder: (perioder: UttakPeriode_fpoversikt[]) => void;
     slettUttaksplanPerioder: (perioder: UttakPeriode_fpoversikt[]) => void;
@@ -31,22 +24,11 @@ type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaks
 const KalenderRedigeringContext = createContext<ContextValues | null>(null);
 
 export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgtePerioder }: Props) => {
-    const { uttaksplan, familiehendelsedato, foreldreInfo, saksperioder } = useUttaksplanData();
-
-    const erFarEllerMedmor = foreldreInfo.søker === 'FAR_ELLER_MEDMOR';
+    const { saksperioder } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
     const sammenslåtteValgtePerioder = useMemo(() => slåSammenTilstøtendePerioder(valgtePerioder), [valgtePerioder]);
-
-    const erKunEnHelEksisterendePeriodeValgt =
-        sammenslåtteValgtePerioder.length === 1 &&
-        erValgtPeriodeEnHelEksisterendePeriode(uttaksplan, sammenslåtteValgtePerioder[0]!);
-
-    const eksisterendePerioderSomErValgt = useMemo(
-        () => finnValgtePerioder(sammenslåtteValgtePerioder, uttaksplan),
-        [sammenslåtteValgtePerioder, uttaksplan],
-    );
 
     const leggTilUttaksplanPerioder = useCallback(
         (perioder: UttakPeriode_fpoversikt[]) => {
@@ -56,7 +38,7 @@ export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgte
 
             notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeSaksperioder);
         },
-        [uttaksplanRedigering, familiehendelsedato, erFarEllerMedmor, saksperioder],
+        [uttaksplanRedigering, saksperioder],
     );
 
     const slettUttaksplanPerioder = useCallback(
@@ -65,26 +47,17 @@ export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgte
             saksperiodeBuilder.fjernSaksperioder(perioder);
             notEmpty(uttaksplanRedigering).oppdaterUttaksplan(saksperiodeBuilder.getSaksperioder());
         },
-        [uttaksplanRedigering, familiehendelsedato, erFarEllerMedmor, saksperioder],
+        [uttaksplanRedigering, saksperioder],
     );
 
     const value = useMemo(() => {
         return {
             sammenslåtteValgtePerioder,
-            erKunEnHelEksisterendePeriodeValgt,
-            eksisterendePerioderSomErValgt,
             leggTilUttaksplanPerioder,
             slettUttaksplanPerioder,
             setValgtePerioder,
         };
-    }, [
-        sammenslåtteValgtePerioder,
-        erKunEnHelEksisterendePeriodeValgt,
-        eksisterendePerioderSomErValgt,
-        leggTilUttaksplanPerioder,
-        slettUttaksplanPerioder,
-        setValgtePerioder,
-    ]);
+    }, [sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, slettUttaksplanPerioder, setValgtePerioder]);
 
     return <KalenderRedigeringContext value={value}>{children}</KalenderRedigeringContext>;
 };

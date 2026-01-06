@@ -196,20 +196,6 @@ export const MorOgFarKunFarHarRett: Story = {
                 minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
             },
         },
-        uttaksplan: [
-            {
-                fom: '2024-09-04',
-                kontoType: 'FORELDREPENGER',
-                morsAktivitet: 'IKKE_OPPGITT',
-                tom: '2024-11-12',
-            },
-            {
-                fom: '2024-11-13',
-                kontoType: 'FORELDREPENGER',
-                morsAktivitet: 'IKKE_OPPGITT',
-                tom: '2025-06-10',
-            },
-        ],
     },
 };
 
@@ -261,14 +247,6 @@ export const FarOgFarFødsel: Story = {
                 },
             },
         },
-        uttaksplan: [
-            {
-                fom: '2024-11-25',
-                kontoType: 'FORELDREPENGER',
-                morsAktivitet: 'IKKE_OPPGITT',
-                tom: '2025-03-07',
-            },
-        ],
     },
 };
 
@@ -307,14 +285,6 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
                 minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
             },
         },
-        uttaksplan: [
-            {
-                fom: '2024-10-14',
-                kontoType: 'FORELDREPENGER',
-                morsAktivitet: 'IKKE_OPPGITT',
-                tom: '2025-07-18',
-            },
-        ],
     },
 };
 export const FarOgFarAdopsjonBeggeHarRett: Story = {
@@ -421,20 +391,6 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
                 minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
             },
         },
-        uttaksplan: [
-            {
-                fom: '2024-07-25',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                morsAktivitet: undefined,
-                tom: '2024-08-14',
-            },
-            {
-                fom: '2024-08-15',
-                kontoType: 'FORELDREPENGER',
-                morsAktivitet: undefined,
-                tom: '2026-02-20',
-            },
-        ],
     },
 };
 
@@ -471,14 +427,6 @@ export const AleneforsørgerFarÅttiProsentFødsel: Story = {
                 minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
             },
         },
-        uttaksplan: [
-            {
-                fom: '2024-08-12',
-                kontoType: 'FORELDREPENGER',
-                morsAktivitet: undefined,
-                tom: '2025-09-22',
-            },
-        ],
     },
 };
 
@@ -636,20 +584,6 @@ export const KunMorHarRett: Story = {
                 },
             },
         },
-        uttaksplan: [
-            {
-                fom: '2024-11-11',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                morsAktivitet: undefined,
-                tom: '2024-11-29',
-            },
-            {
-                fom: '2024-12-02',
-                kontoType: 'FORELDREPENGER',
-                morsAktivitet: undefined,
-                tom: '2025-10-17',
-            },
-        ],
     },
 };
 
@@ -717,13 +651,5 @@ export const OppsummeringFarOgFarKunFar2HarRett: Story = {
                 },
             },
         },
-        uttaksplan: [
-            {
-                fom: '2024-10-24',
-                kontoType: 'FORELDREPENGER',
-                morsAktivitet: 'IKKE_OPPGITT',
-                tom: '2025-09-10',
-            },
-        ],
     },
 };
