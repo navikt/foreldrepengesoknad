@@ -17,7 +17,6 @@ describe('<ByttBrowserModal>', () => {
     });
 
     it('skal vise modal for browser bytte', async () => {
-        // Use vi.mocked() to change the mock implementation for this test
         vi.mocked(detect).mockReturnValue({ name: 'ie' } as BrowserInfo);
 
         render(<Default />);
@@ -25,7 +24,6 @@ describe('<ByttBrowserModal>', () => {
     });
 
     it('skal ikke vise modal når ikke IE', () => {
-        // Change the mock implementation for this test
         vi.mocked(detect).mockReturnValue({ name: 'chrome' } as BrowserInfo);
 
         render(<Default />);
