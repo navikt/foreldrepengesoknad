@@ -11,10 +11,9 @@ export const FjernAltIUttaksplanModal = () => {
 
     const { fjernAltIUttaksplan, visFjernAltModal, setVisFjernAltModal } = notEmpty(uttaksplanRedigering);
 
-    // TODO: beste måte å samkjøre id'er?
     return (
         <Dialog open={visFjernAltModal} onOpenChange={setVisFjernAltModal}>
-            <Dialog.Popup id="fjern-alt-i-uttaksplan-modal">
+            <Dialog.Popup id="FjernAltIUttaksplanModal">
                 <Dialog.Header>
                     <Dialog.Title>
                         <FormattedMessage id="FjernAltIUttaksplanModal.FjernAlt.Modal.Tittel" />

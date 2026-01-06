@@ -12,7 +12,7 @@ interface Props {
 export const VilDuGåTilbakeModal = ({ isOpen, setIsOpen, goToPreviousStep }: Props) => {
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <Dialog.Popup id="vil-du-gå-tilbake-modal">
+            <Dialog.Popup id="VilDuGåTilbakeModal">
                 <Dialog.Header>
                     <Dialog.Title>
                         <FormattedMessage id="uttaksplan.vilDuGåTilbakeModal.tittel" />

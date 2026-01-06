@@ -668,7 +668,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                                             iconPosition="left"
                                             aria-haspopup="dialog"
                                             aria-expanded={gåTilbakeIsOpen}
-                                            aria-controls={gåTilbakeIsOpen ? 'vil-du-gå-tilbake-modal' : undefined}
+                                            aria-controls={gåTilbakeIsOpen ? 'VilDuGåTilbakeModal' : undefined}
                                             onClick={
                                                 harPlanBlittEndret
                                                     ? (event) => {

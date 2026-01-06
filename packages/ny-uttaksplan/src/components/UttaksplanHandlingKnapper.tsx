@@ -71,7 +71,7 @@ export const UttaksplanHandlingKnapper = ({
                 onClick={fjernAltIPlanen}
                 aria-haspopup="dialog"
                 aria-expanded={visFjernAltModal}
-                aria-controls={visFjernAltModal ? 'fjern-alt-i-uttaksplan-modal' : undefined} // TODO: aria intl?
+                aria-controls={visFjernAltModal ? 'FjernAltIUttaksplanModal' : undefined}
             >
                 <FormattedMessage id="UttaksplanHandlingKnapper.FjernAlt" />
             </Button>
