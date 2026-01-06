@@ -1,9 +1,9 @@
 import { Meta, ReactRenderer, StoryObj } from '@storybook/react-vite';
-import { UttaksplanDataProvider } from 'context/UttaksplanDataContext';
 import type { DecoratorFunction } from 'storybook/internal/types';
 
 import { KontoBeregningDto } from '@navikt/fp-types';
 
+import { UttaksplanDataProvider } from '../../context/UttaksplanDataContext';
 import { LeggTilPeriodePanel } from './LeggTilPeriodePanel';
 
 const withUttaksplanContextDecorator: DecoratorFunction<ReactRenderer> = (Story, { parameters }) => {
