@@ -1,10 +1,8 @@
 import dayjs from 'dayjs';
 import { createContext, useContext, useMemo } from 'react';
 
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
     Barn,
-    BrukerRolleSak_fpoversikt,
     Familiesituasjon,
     KontoBeregningDto,
     UttakPeriodeAnnenpartEøs_fpoversikt,
@@ -13,8 +11,9 @@ import {
 import { getFamiliehendelsedato, getFamiliesituasjon } from '@navikt/fp-utils';
 
 import { ForeldreInfo } from '../types/ForeldreInfo';
-import { PeriodeHullType, Planperiode } from '../types/Planperiode';
-import { UttaksplanHull, Uttaksplanperiode } from '../types/UttaksplanPeriode';
+import { Planperiode } from '../types/Planperiode';
+import { Uttaksplanperiode } from '../types/UttaksplanPeriode';
+import { lagHullPerioder } from '../utils/lagHullPerioder';
 import { utledKomplettPlan } from '../utils/periodeUtils';
 
 type Props = {
@@ -54,7 +53,7 @@ export const UttaksplanDataProvider = (props: Props) => {
             // TODO (TOR) Denne bør ikkje utledes her sidan det truleg er forskjellar i type hol for kalender vs liste. Utled der den trengs
             saksperioderInkludertHull: [
                 ...sortertePerioder,
-                ...leggTilHull(sortertePerioder, familiehendelsedato, familiesituasjon, otherProps.foreldreInfo),
+                ...lagHullPerioder(sortertePerioder, familiehendelsedato, familiesituasjon, otherProps.foreldreInfo),
             ].sort(sorterPerioder),
             // TODO (TOR) Slett denne når listevisning er refaktorert til å bruke saksperioderInkludertHull
             uttaksplan: utledKomplettPlan({
@@ -118,97 +117,4 @@ const sorterPerioder = (a: Uttaksplanperiode, b: Uttaksplanperiode): number => {
         return 1;
     }
     return 0;
-};
-
-// TODO (TOR) Flytt hull-logikk til eigen fil når listevisning er refaktorert
-export const leggTilHull = (
-    sortertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    familiehendelsedato: string,
-    familiesituasjon: Familiesituasjon,
-    foreldreInfo: ForeldreInfo,
-): UttaksplanHull[] => {
-    if (
-        foreldreInfo.søker === 'FAR_ELLER_MEDMOR' &&
-        (foreldreInfo.rettighetType === 'ALENEOMSORG' || foreldreInfo.rettighetType === 'BARE_SØKER_RETT')
-    ) {
-        const førstePeriode = sortertePerioder.at(0);
-        if (førstePeriode?.fom) {
-            const periodeSomSkalSjekkesForHull = {
-                fom: dayjs(familiehendelsedato).add(6, 'week').add(1, 'day').format(ISO_DATE_FORMAT),
-                tom: førstePeriode.fom,
-            };
-            return leggTilHullForPeriode(
-                sortertePerioder,
-                familiesituasjon,
-                'FAR_MEDMOR',
-                periodeSomSkalSjekkesForHull,
-            );
-        }
-    } else {
-        const periodeSomSkalSjekkesForHull = {
-            fom: familiehendelsedato,
-            tom: dayjs(familiehendelsedato).add(6, 'week').format(ISO_DATE_FORMAT),
-        };
-        const forelder = foreldreInfo.søker === 'MOR' ? 'MOR' : 'FAR_MEDMOR';
-        return leggTilHullForPeriode(sortertePerioder, familiesituasjon, forelder, periodeSomSkalSjekkesForHull);
-    }
-
-    return [];
-};
-
-export const leggTilHullForPeriode = (
-    sortertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    familiesituasjon: Familiesituasjon,
-    forelder: BrukerRolleSak_fpoversikt,
-    periodeSomSkalSjekkesForHull: { fom: string; tom: string },
-): UttaksplanHull[] => {
-    if (familiesituasjon === 'adopsjon') {
-        return [];
-    }
-
-    const start = dayjs(periodeSomSkalSjekkesForHull.fom);
-    const slutt = dayjs(periodeSomSkalSjekkesForHull.tom);
-
-    const hull: UttaksplanHull[] = [];
-
-    let pågåandeHullStart: dayjs.Dayjs | null = null;
-
-    for (let dato = start; dato.isBefore(slutt, 'day'); dato = dato.add(1, 'day')) {
-        if (erUkedag(dato)) {
-            const erDatoDekket = sortertePerioder.some(
-                (p) => dato.isSameOrAfter(p.fom, 'day') && dato.isSameOrBefore(p.tom, 'day'),
-            );
-
-            if (!erDatoDekket) {
-                if (!pågåandeHullStart) {
-                    pågåandeHullStart = dato;
-                }
-            } else if (pågåandeHullStart) {
-                hull.push({
-                    fom: pågåandeHullStart.format(ISO_DATE_FORMAT),
-                    tom: dato.subtract(1, 'day').format(ISO_DATE_FORMAT),
-                    hullType: PeriodeHullType.TAPTE_DAGER,
-                    forelder,
-                });
-                pågåandeHullStart = null;
-            }
-        }
-    }
-
-    // Avslutt hull som ikkje er avslutta av andre periodar
-    if (pågåandeHullStart) {
-        hull.push({
-            fom: pågåandeHullStart.format(ISO_DATE_FORMAT),
-            tom: slutt.subtract(1, 'day').format(ISO_DATE_FORMAT),
-            hullType: PeriodeHullType.TAPTE_DAGER,
-            forelder,
-        });
-    }
-
-    return hull;
-};
-
-const erUkedag = (dato: dayjs.Dayjs) => {
-    const dag = dato.day();
-    return dag !== 0 && dag !== 6;
 };
