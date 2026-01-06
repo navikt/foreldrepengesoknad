@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
@@ -14,6 +15,7 @@ import { PeriodeHullType } from '../types/Planperiode';
 import { UttaksplanHull } from '../types/UttaksplanPeriode';
 
 dayjs.extend(isSameOrAfter);
+dayjs.extend(isSameOrBefore);
 
 export const lagHullPerioder = (
     sortertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
@@ -25,9 +27,9 @@ export const lagHullPerioder = (
         foreldreInfo.søker === 'FAR_ELLER_MEDMOR' &&
         (foreldreInfo.rettighetType === 'ALENEOMSORG' || foreldreInfo.rettighetType === 'BARE_SØKER_RETT')
     ) {
-        const førstePeriodeSomStarterEtterFamiliehendelsedato = sortertePerioder
-            .filter((p) => dayjs(p.fom).isSameOrAfter(familiehendelsedato))
-            .at(0);
+        const førstePeriodeSomStarterEtterFamiliehendelsedato = sortertePerioder.find((p) =>
+            dayjs(p.fom).isSameOrAfter(familiehendelsedato),
+        );
 
         if (førstePeriodeSomStarterEtterFamiliehendelsedato?.fom) {
             const fom =
@@ -66,7 +68,7 @@ const lagHull = (
 
     let pågåandeHullStart: dayjs.Dayjs | null = null;
 
-    for (let dato = start; dato.isBefore(slutt, 'day'); dato = dato.add(1, 'day')) {
+    for (let dato = start; dato.isSameOrBefore(slutt, 'day'); dato = dato.add(1, 'day')) {
         if (erUkedag(dato)) {
             const erDatoDekket = sortertePerioder.some(
                 (p) => dato.isSameOrAfter(p.fom, 'day') && dato.isSameOrBefore(p.tom, 'day'),

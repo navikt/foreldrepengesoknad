@@ -12,9 +12,9 @@ import { CalendarLabel, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-u
 import { notEmpty } from '@navikt/fp-validation';
 
 import { LegendLabel } from '../../types/LegendLabel';
-import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode.ts';
-import { filtrerBortAnnenPartsIdentiskePerioder } from '../../utils/permisjonsperiodeUtils.ts';
-import { useUttaksplanData } from './../../context/UttaksplanDataContext.tsx';
+import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
+import { filtrerBortAnnenPartsIdentiskePerioder } from '../../utils/permisjonsperiodeUtils';
+import { useUttaksplanData } from './../../context/UttaksplanDataContext';
 import {
     UttaksplanKalenderLegendInfo,
     getCalendarLabel,
@@ -23,7 +23,7 @@ import {
     getSelectableStyle,
     getSelectedStyle,
     sortLegendInfoByLabel,
-} from './uttaksplanLegendUtils.ts';
+} from './uttaksplanLegendUtils';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
