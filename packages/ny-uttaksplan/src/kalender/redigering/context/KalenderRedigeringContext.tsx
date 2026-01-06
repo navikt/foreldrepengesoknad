@@ -30,38 +30,6 @@ type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaks
 
 const KalenderRedigeringContext = createContext<ContextValues | null>(null);
 
-// export const splittFeriePåFamiliehendelsesdatoOmNødvendig = (
-//     periode: Planperiode,
-//     famDato: string,
-//     erFarEllerMedmor: boolean,
-// ): Planperiode[] => {
-//     if (!('utsettelseÅrsak' in periode)) {
-//         return [periode];
-//     }
-
-//     const forelder = getForelderForPeriode(erFarEllerMedmor, false, undefined);
-
-//     if (dayjs(periode.fom).isBefore(famDato) && dayjs(periode.tom).isAfter(famDato)) {
-//         const periodeFørFamDato: Planperiode = {
-//             ...periode,
-//             fom: periode.fom,
-//             tom: UttaksdagenString(famDato).forrige(),
-//             id: `${periode.fom} - ${UttaksdagenString(famDato).forrige()} - ${periode.utsettelseÅrsak} - ${forelder}`,
-//         };
-
-//         const periodeFraOgMedFamDato: Planperiode = {
-//             ...periode,
-//             id: `${UttaksdagenString(periodeFørFamDato.tom).neste()} - ${periode.tom} - ${periode.utsettelseÅrsak} - ${forelder}`,
-//             fom: UttaksdagenString(periodeFørFamDato.tom).neste(),
-//             tom: periode.tom,
-//         };
-
-//         return [periodeFørFamDato, periodeFraOgMedFamDato];
-//     }
-
-//     return [periode];
-// };
-
 export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgtePerioder }: Props) => {
     const { uttaksplan, familiehendelsedato, foreldreInfo, saksperioder } = useUttaksplanData();
 
@@ -85,19 +53,6 @@ export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgte
             const nyeSaksperioder = new SaksperiodeBuilder(saksperioder)
                 .leggTilSaksperioder(perioder)
                 .getSaksperioder();
-
-            //FIXME (TOR) Kvifor blir denne splitta på familiehendelsedato? Er det kun for visningslogikk?
-            // const planperioder = uttaksplanBuilder.leggTilPerioder(
-            //     perioder.flatMap((p) =>
-            //         splittFeriePåFamiliehendelsesdatoOmNødvendig(p, familiehendelsedato, erFarEllerMedmor),
-            //     ),
-            // );
-
-            // const resultUtenHull = planperioder.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
-
-            // const utenHull = resultUtenHull.map((p) =>
-            //     omitMany(p, ['id', 'periodeHullÅrsak', 'skalIkkeHaUttakFørTermin']),
-            // );
 
             notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeSaksperioder);
         },
