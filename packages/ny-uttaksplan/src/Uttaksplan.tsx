@@ -113,7 +113,7 @@ export const UttaksplanNy = ({ isReadOnly }: Props) => {
 };
 
 const fjernHullOgUtenUttak = (planperiode: Planperiode[]) => {
-    // FIXME (TOR) Trengs ein filtrere på dette?
+    // TODO (TOR) Trengs ein filtrere på dette?
     const t = planperiode.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
 
     return t.map(

@@ -15,12 +15,12 @@ export class SaksperiodeBuilder {
         this.saksperioder = [...saksperioder].sort(sorterSaksperioder);
     }
 
-    medForskyvningAvEksisterendePerioder(): SaksperiodeBuilder {
+    medForskyvningAvEksisterendePerioder(): this {
         this.skalErstatteEksisterendePerioder = false;
         return this;
     }
 
-    leggTilSaksperioder(nyeSaksperioder: Saksperiode[]): SaksperiodeBuilder {
+    leggTilSaksperioder(nyeSaksperioder: Saksperiode[]): this {
         if (this.skalErstatteEksisterendePerioder) {
             // Grupper for å håndtera at ein legg til to periodar når ein har samtidig uttak.
             // Bruk ein av dei nye periodane for å justera andre periodar, og legg så til den andre på slutten
@@ -49,7 +49,7 @@ export class SaksperiodeBuilder {
         return this;
     }
 
-    fjernSaksperioder(saksperioderSomSkalFjernes: Saksperiode[]): SaksperiodeBuilder {
+    fjernSaksperioder(saksperioderSomSkalFjernes: Saksperiode[]): this {
         for (const saksperiodeSomSkalFjernes of saksperioderSomSkalFjernes) {
             const nFom = toDay(saksperiodeSomSkalFjernes.fom);
             const nTom = toDay(saksperiodeSomSkalFjernes.tom);
@@ -85,8 +85,10 @@ export class SaksperiodeBuilder {
                 }
             }
 
-            this.saksperioder = nyeSaksperioder.sort(sorterSaksperioder);
+            this.saksperioder = nyeSaksperioder;
         }
+
+        this.saksperioder.sort(sorterSaksperioder);
 
         return this;
     }
