@@ -43,6 +43,7 @@ export const UttaksplanDataProvider = (props: Props) => {
             ...otherProps,
             familiehendelsedato,
             familiesituasjon,
+            // TODO (TOR) Vurder om ein heller burde utleda uttaksplan der den trengs... Trengs det forskjellige ting i kalender vs liste?
             uttaksplan: utledKomplettPlan({
                 familiehendelsedato,
                 foreldreInfo: otherProps.foreldreInfo,
@@ -80,7 +81,7 @@ const getSøkersPerioder = (
         : gjeldendeUttaksplan;
 };
 
-export const getAnnenpartsPerioder = (
+const getAnnenpartsPerioder = (
     foreldreInfo: ForeldreInfo,
     gjeldendeUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
 ): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {

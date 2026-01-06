@@ -233,6 +233,6 @@ export const filtrerBortAnnenPartsIdentiskePerioder = (uttaksplan: Planperiode[]
         return filtrerte.length > 1 && !erSøkersPeriode ? alle : alle.concat(periode);
     }, []);
 
-export const erPeriodeForSøker = (periode: Planperiode, erFarEllerMedmor: boolean) =>
+const erPeriodeForSøker = (periode: Planperiode, erFarEllerMedmor: boolean) =>
     !periode.erAnnenPartEøs &&
     ((periode.forelder === 'MOR' && !erFarEllerMedmor) || (periode.forelder === 'FAR_MEDMOR' && erFarEllerMedmor));

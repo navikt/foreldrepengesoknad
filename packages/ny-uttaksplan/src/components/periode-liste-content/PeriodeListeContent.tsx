@@ -11,6 +11,7 @@ import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import {
+    genererPeriodeId,
     isHull,
     isOppholdsperiode,
     isOverføringsperiode,
@@ -35,8 +36,7 @@ interface Props {
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse: boolean;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
-    handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
-    handleDeletePeriode: (slettetPeriode: Planperiode) => void;
+    handleUpdatePeriode: (oppdatertPeriode: Planperiode, gammelPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
 }
 
@@ -46,7 +46,6 @@ export const PeriodeListeContent = ({
     erFamiliehendelse,
     handleAddPeriode,
     handleUpdatePeriode,
-    handleDeletePeriode,
     handleDeletePerioder,
 }: Props) => {
     const [isEndrePeriodePanelOpen, setIsEndrePeriodePanelOpen] = useState(false);
@@ -109,7 +108,6 @@ export const PeriodeListeContent = ({
                     closePanel={() => {
                         setIsSlettPeriodePanelOpen(false);
                     }}
-                    handleDeletePeriode={handleDeletePeriode}
                     handleDeletePerioder={handleDeletePerioder}
                     permisjonsperiode={permisjonsperiode}
                     navnPåForeldre={navnPåForeldre}
@@ -129,7 +127,7 @@ const renderPeriode = (
     if (isOppholdsperiode(periode)) {
         return (
             <OppholdsPeriodeContent
-                key={periode.id}
+                key={genererPeriodeId(periode)}
                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                 navnPåForeldre={navnPåForeldre}
                 erFarEllerMedmor={erFarEllerMedmor}
@@ -141,7 +139,7 @@ const renderPeriode = (
     if (isOverføringsperiode(periode)) {
         return (
             <OverføringsperiodeContent
-                key={periode.id}
+                key={genererPeriodeId(periode)}
                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                 navnPåForeldre={navnPåForeldre}
                 periode={periode}
@@ -150,21 +148,21 @@ const renderPeriode = (
     }
 
     if (isPeriodeUtenUttak(periode) || isHull(periode)) {
-        return <PeriodeUtenUttakContent key={periode.id} periode={periode} isHull={isHull(periode)} />;
+        return <PeriodeUtenUttakContent key={genererPeriodeId(periode)} periode={periode} isHull={isHull(periode)} />;
     }
 
     if (isUtsettelsesperiode(periode)) {
-        return <UtsettelsesPeriodeContent key={periode.id} periode={periode} />;
+        return <UtsettelsesPeriodeContent key={genererPeriodeId(periode)} periode={periode} />;
     }
 
     if (isPrematuruker(periode)) {
-        return <PrematurukerContent key={periode.id} />;
+        return <PrematurukerContent key={genererPeriodeId(periode)} />;
     }
 
     if (isUttaksperiode(periode)) {
         return (
             <UttaksperiodeContent
-                key={periode.id}
+                key={genererPeriodeId(periode)}
                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                 periode={periode}
                 erFarEllerMedmor={erFarEllerMedmor}
