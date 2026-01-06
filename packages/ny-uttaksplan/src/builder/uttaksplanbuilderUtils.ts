@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 import { Tidsperiode } from '@navikt/fp-types';
-import { TidsperiodenString, UttaksdagenString, isValidTidsperiodeString } from '@navikt/fp-utils';
+import { TidsperiodenString, UttaksdagenString } from '@navikt/fp-utils';
 
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
 import { Perioden } from '../utils/Perioden';
@@ -18,7 +18,24 @@ import {
     isUttaksperiode,
     normaliserPerioder,
 } from '../utils/periodeUtils';
-import { splittPeriodePåDato } from './leggTilPeriode';
+
+// TODO (TOR) Flytt desse funksjonane til utils-folder, evt ei ny folder for massering av periodar før visning. Er ikkje relatert til builder
+
+const splittPeriodePåDato = (periode: Planperiode, dato: string): Planperiode[] => {
+    const periodeFørDato: Planperiode = {
+        ...periode,
+        fom: periode.fom,
+        tom: UttaksdagenString(dato).forrige(),
+    };
+
+    const periodeFraOgMedDato: Planperiode = {
+        ...periode,
+        fom: UttaksdagenString(periodeFørDato.tom).neste(),
+        tom: periode.tom,
+    };
+
+    return [periodeFørDato, periodeFraOgMedDato];
+};
 
 export const slåSammenLikePerioder = (
     perioder: Planperiode[],
@@ -209,7 +226,6 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
 
 const getPeriodeHull = (tidsperiode: Tidsperiode, erMor: boolean): Planperiode => ({
     erAnnenPartEøs: false,
-    id: `${tidsperiode.fom} - ${tidsperiode.tom} - ${PeriodeHullType.TAPTE_DAGER}`,
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
     periodeHullÅrsak: PeriodeHullType.TAPTE_DAGER,
@@ -218,51 +234,10 @@ const getPeriodeHull = (tidsperiode: Tidsperiode, erMor: boolean): Planperiode =
 
 const getNyPeriodeUtenUttak = (tidsperiode: Tidsperiode): Planperiode => ({
     erAnnenPartEøs: false,
-    id: `${tidsperiode.fom} - ${tidsperiode.tom} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
     fom: tidsperiode.fom,
     tom: tidsperiode.tom,
     periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
 });
-
-export const getTidsperiodeMellomPerioder = (
-    tidsperiode1: Tidsperiode,
-    tidsperiode2: Tidsperiode,
-): Tidsperiode | undefined => {
-    const tidsperiodeMellomPerioder: Tidsperiode = {
-        fom: UttaksdagenString(tidsperiode1.tom).neste(),
-        tom: UttaksdagenString(tidsperiode2.fom).forrige(),
-    };
-
-    const antallDagerIMellomrom = TidsperiodenString(tidsperiodeMellomPerioder).getAntallUttaksdager();
-
-    if (isValidTidsperiodeString(tidsperiodeMellomPerioder) && antallDagerIMellomrom > 0) {
-        return tidsperiodeMellomPerioder;
-    }
-
-    return undefined;
-};
-
-export const fjernUnødvendigeHull = (perioder: Planperiode[]) => {
-    return perioder.reduce((res, periode, index) => {
-        if (index === 0) {
-            if (isPeriodeUtenUttak(periode)) {
-                return res;
-            }
-        }
-
-        if (index === perioder.length - 1) {
-            if (isHull(periode) || isPeriodeUtenUttak(periode)) {
-                return res;
-            }
-
-            res.push(periode);
-            return res;
-        }
-
-        res.push(periode);
-        return res;
-    }, [] as Planperiode[]);
-};
 
 export const finnOgSettInnHull = (
     perioder: Planperiode[],
@@ -277,7 +252,7 @@ export const finnOgSettInnHull = (
         return perioder;
     }
 
-    const result = perioder.reduce((res, periode, index) => {
+    const result = perioder.reduce<Planperiode[]>((res, periode, index) => {
         if (index === 0 && erFarEllerMedmor) {
             const førsteUttaksdagFamiliehendelsesdato = UttaksdagenString(familiehendelsesdato).denneEllerNeste();
             if (dayjs(førsteUttaksdagFamiliehendelsesdato).isBefore(periode.fom)) {
@@ -387,7 +362,7 @@ export const finnOgSettInnHull = (
         }
 
         return res;
-    }, [] as Planperiode[]);
+    }, []);
 
     return result;
 };
@@ -422,7 +397,7 @@ export const settInnAnnenPartsUttak = (
 
     const { normaliserteEgnePerioder, normaliserteAnnenPartsPerioder } = normaliserPerioder(perioder, annenPartsUttak);
 
-    const result = normaliserteEgnePerioder.reduce((res, p) => {
+    const result = normaliserteEgnePerioder.reduce<Planperiode[]>((res, p) => {
         const overlappendePerioderAnnenPart = Periodene(normaliserteAnnenPartsPerioder).finnOverlappendePerioder(p);
 
         if (overlappendePerioderAnnenPart.length === 0) {
@@ -467,7 +442,7 @@ export const settInnAnnenPartsUttak = (
             res.push(p);
             return res;
         }
-    }, [] as Planperiode[]);
+    }, []);
 
     result.sort(sorterPerioder);
 

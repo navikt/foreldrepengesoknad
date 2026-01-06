@@ -117,7 +117,7 @@ const slåSammenPerioder = (periods: CalendarPeriod[]) => {
         return periods;
     }
 
-    return periods.reduce((res, period, index) => {
+    return periods.reduce<CalendarPeriod[]>((res, period, index) => {
         const sisteRes = res.at(-1);
 
         if (
@@ -132,7 +132,7 @@ const slåSammenPerioder = (periods: CalendarPeriod[]) => {
             res.push(period);
             return res;
         }
-    }, [] as CalendarPeriod[]);
+    }, []);
 };
 
 const getKalenderFargeForPeriode = (

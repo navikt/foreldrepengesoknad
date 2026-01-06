@@ -14,8 +14,7 @@ interface Props {
     isReadOnly: boolean;
     perioder: Planperiode[];
     handleAddPeriode: (nyPeriode: Planperiode) => void;
-    handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
-    handleDeletePeriode: (slettetPeriode: Planperiode) => void;
+    handleUpdatePeriode: (oppdatertPeriode: Planperiode, gammelPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
     isAllAccordionsOpen?: boolean;
 }
@@ -24,7 +23,6 @@ export const PeriodeListe = ({
     isReadOnly,
     perioder,
     handleUpdatePeriode,
-    handleDeletePeriode,
     handleDeletePerioder,
     handleAddPeriode,
     isAllAccordionsOpen,
@@ -45,7 +43,6 @@ export const PeriodeListe = ({
                                 isReadOnly={isReadOnly}
                                 handleAddPeriode={handleAddPeriode}
                                 handleUpdatePeriode={handleUpdatePeriode}
-                                handleDeletePeriode={handleDeletePeriode}
                                 handleDeletePerioder={handleDeletePerioder}
                                 permisjonsperiode={permisjonsperiode}
                                 isAllAccordionsOpen={isAllAccordionsOpen}
@@ -55,7 +52,6 @@ export const PeriodeListe = ({
                                     isReadOnly={isReadOnly}
                                     handleAddPeriode={handleAddPeriode}
                                     handleUpdatePeriode={handleUpdatePeriode}
-                                    handleDeletePeriode={handleDeletePeriode}
                                     handleDeletePerioder={handleDeletePerioder}
                                     permisjonsperiode={permisjonsperiode}
                                     erFamiliehendelse
@@ -72,7 +68,6 @@ export const PeriodeListe = ({
                                     isReadOnly={isReadOnly}
                                     handleAddPeriode={handleAddPeriode}
                                     handleUpdatePeriode={handleUpdatePeriode}
-                                    handleDeletePeriode={handleDeletePeriode}
                                     handleDeletePerioder={handleDeletePerioder}
                                     permisjonsperiode={permisjonsperiode}
                                     erFamiliehendelse
@@ -83,7 +78,6 @@ export const PeriodeListe = ({
                                 isReadOnly={isReadOnly}
                                 handleAddPeriode={handleAddPeriode}
                                 handleUpdatePeriode={handleUpdatePeriode}
-                                handleDeletePeriode={handleDeletePeriode}
                                 handleDeletePerioder={handleDeletePerioder}
                                 permisjonsperiode={permisjonsperiode}
                                 isAllAccordionsOpen={isAllAccordionsOpen}
