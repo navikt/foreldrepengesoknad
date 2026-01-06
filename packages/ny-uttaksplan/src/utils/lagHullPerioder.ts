@@ -31,16 +31,18 @@ export const lagHullPerioder = (
 
         if (førstePeriodeSomStarterEtterFamiliehendelsedato?.fom) {
             const fom =
-                familiesituasjon === 'fødsel'
-                    ? dayjs(familiehendelsedato).add(6, 'week').add(1, 'day')
-                    : dayjs(familiehendelsedato);
+                familiesituasjon === 'adopsjon'
+                    ? dayjs(familiehendelsedato)
+                    : dayjs(familiehendelsedato).add(6, 'week').add(1, 'day');
+
             const periodeSomSkalSjekkesForHull = {
                 fom: fom.format(ISO_DATE_FORMAT),
                 tom: førstePeriodeSomStarterEtterFamiliehendelsedato.fom,
             };
+
             return lagHull(sortertePerioder, 'FAR_MEDMOR', periodeSomSkalSjekkesForHull);
         }
-    } else if (familiesituasjon === 'fødsel') {
+    } else if (familiesituasjon !== 'adopsjon') {
         const periodeSomSkalSjekkesForHull = {
             fom: familiehendelsedato,
             tom: dayjs(familiehendelsedato).add(6, 'week').format(ISO_DATE_FORMAT),
