@@ -203,7 +203,7 @@
     "OversiktSteg.Infoboks.Utkast.Tekst": "Her er et utkast til hvordan permisjonen kan se ut. {erAleneforsørger, select, true {Du} other {Dere}} kan tilpasse denne planen etter egne behov, for å teste ut hva som er mulig.",
     "PlanenDeresSteg.Tittel": "Planen",
     "PlanenDeresSteg.FordelingTittel": "Fordeling av fellesperioden",
-    "PlanenDeresSteg.Undertekst": "Du kan endre på fordelingen av fellesperioden ved å dra i slideren.",
+    "PlanenDeresSteg.Undertekst": "Du kan endre på fordelingen av fellesperioden ved å dra glidebryteren eller trykke på pluss-tegnene.",
     "UforutsetteEndringer.UforutsetteEndringer": "Uforutsette endringer",
     "UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk": "Hvis man blir syk i sin periode med foreldrepenger",
     "UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Alene": "Hvis man blir syk når man har foreldrepenger",
