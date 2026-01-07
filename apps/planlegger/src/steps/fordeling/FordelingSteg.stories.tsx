@@ -8,7 +8,8 @@ import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
-import { Dekningsgrad, HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
+import { Dekningsgrad, HvemPlanleggerType } from '@navikt/fp-types';
+import { DELT_UTTAK_80, DELT_UTTAK_100, MINSTERETTER } from '@navikt/fp-utils-test';
 
 import { FordelingSteg } from './FordelingSteg';
 
@@ -16,29 +17,13 @@ import { FordelingSteg } from './FordelingSteg';
 
 const DEFAULT_STØNADSKONTO = {
     '100': {
-        kontoer: [
-            { konto: 'MØDREKVOTE', dager: 75 },
-            { konto: 'FEDREKVOTE', dager: 75 },
-            { konto: 'FELLESPERIODE', dager: 80 },
-            { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-        ],
-        minsteretter: {
-            farRundtFødsel: 0,
-            toTette: 0,
-        },
-    } satisfies KontoBeregningDto,
+        kontoer: DELT_UTTAK_100,
+        minsteretter: MINSTERETTER,
+    },
     '80': {
-        kontoer: [
-            { konto: 'MØDREKVOTE', dager: 95 },
-            { konto: 'FEDREKVOTE', dager: 95 },
-            { konto: 'FELLESPERIODE', dager: 101 },
-            { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-        ],
-        minsteretter: {
-            farRundtFødsel: 0,
-            toTette: 0,
-        },
-    } satisfies KontoBeregningDto,
+        kontoer: DELT_UTTAK_80,
+        minsteretter: MINSTERETTER,
+    },
 };
 
 type StoryArgs = {

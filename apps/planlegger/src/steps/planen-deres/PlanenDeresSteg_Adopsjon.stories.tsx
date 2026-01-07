@@ -11,6 +11,18 @@ import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 
 import { HvemPlanleggerType } from '@navikt/fp-types';
+import {
+    DELT_UTTAK_80_ADOPSJON,
+    DELT_UTTAK_100_ADOPSJON,
+    IKKE_DELT_UTTAK_80_ADOPSJON_MOR,
+    IKKE_DELT_UTTAK_80_FARMEDMOR,
+    IKKE_DELT_UTTAK_80_FARMEDMOR_MOR_UFØR,
+    IKKE_DELT_UTTAK_80_FAR_OG_FAR_ADOPSJON,
+    IKKE_DELT_UTTAK_100_ADOPSJON_MOR,
+    IKKE_DELT_UTTAK_100_FARMEDMOR,
+    IKKE_DELT_UTTAK_100_FARMEDMOR_MOR_UFØR,
+    IKKE_DELT_UTTAK_100_FAR_OG_FAR_ADOPSJON,
+} from '@navikt/fp-utils-test';
 
 import { PlanenDeresSteg } from './PlanenDeresSteg';
 
@@ -87,19 +99,11 @@ export const MorOgFarBeggeHarRett: Story = {
         },
         stønadskontoer: {
             '100': {
-                kontoer: [
-                    { konto: 'MØDREKVOTE', dager: 75 },
-                    { konto: 'FEDREKVOTE', dager: 75 },
-                    { konto: 'FELLESPERIODE', dager: 80 },
-                ],
+                kontoer: DELT_UTTAK_100_ADOPSJON,
                 minsteretter: MINSTERETTER,
             },
             '80': {
-                kontoer: [
-                    { konto: 'MØDREKVOTE', dager: 95 },
-                    { konto: 'FEDREKVOTE', dager: 95 },
-                    { konto: 'FELLESPERIODE', dager: 101 },
-                ],
+                kontoer: DELT_UTTAK_80_ADOPSJON,
                 minsteretter: MINSTERETTER,
             },
         },
@@ -116,11 +120,11 @@ export const MorOgFarKunMorHarRett: Story = {
         },
         stønadskontoer: {
             '100': {
-                kontoer: [{ konto: 'FORELDREPENGER', dager: 230 }],
+                kontoer: IKKE_DELT_UTTAK_100_ADOPSJON_MOR,
                 minsteretter: MINSTERETTER,
             },
             '80': {
-                kontoer: [{ konto: 'FORELDREPENGER', dager: 291 }],
+                kontoer: IKKE_DELT_UTTAK_80_ADOPSJON_MOR,
                 minsteretter: MINSTERETTER,
             },
         },
@@ -137,24 +141,12 @@ export const MorOgFarKunFarHarRettMorErUfør: Story = {
         },
         stønadskontoer: {
             '100': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 125 },
-                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 75 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 0,
-                    toTette: 0,
-                },
+                kontoer: IKKE_DELT_UTTAK_100_FARMEDMOR_MOR_UFØR,
+                minsteretter: MINSTERETTER,
             },
             '80': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 166 },
-                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 95 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 0,
-                    toTette: 0,
-                },
+                kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR_MOR_UFØR,
+                minsteretter: MINSTERETTER,
             },
         },
     },
@@ -170,24 +162,12 @@ export const MorOgFarKunFarHarRettMorIngenAvDisse: Story = {
         },
         stønadskontoer: {
             '100': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 150 },
-                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 0,
-                    toTette: 0,
-                },
+                kontoer: IKKE_DELT_UTTAK_100_FARMEDMOR,
+                minsteretter: MINSTERETTER,
             },
             '80': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 211 },
-                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 0,
-                    toTette: 0,
-                },
+                kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR,
+                minsteretter: MINSTERETTER,
             },
         },
     },
@@ -253,7 +233,7 @@ export const BareMorSøkerOgHarRett: Story = {
     },
 };
 
-export const BareFarSøkerOgHarRett: Story = {
+export const BareFarSøkerAleneOmOmsorg: Story = {
     args: {
         ...MorOgFarBeggeHarRett.args,
         hvemPlanlegger: {
@@ -290,18 +270,12 @@ export const FarOgFarKunFarHarRett: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [{ konto: 'AKTIVITETSFRI_KVOTE', dager: 261 }],
-                minsteretter: {
-                    farRundtFødsel: 0,
-                    toTette: 0,
-                },
+                kontoer: IKKE_DELT_UTTAK_80_FAR_OG_FAR_ADOPSJON,
+                minsteretter: MINSTERETTER,
             },
             '100': {
-                kontoer: [{ konto: 'AKTIVITETSFRI_KVOTE', dager: 200 }],
-                minsteretter: {
-                    farRundtFødsel: 0,
-                    toTette: 0,
-                },
+                kontoer: IKKE_DELT_UTTAK_100_FAR_OG_FAR_ADOPSJON,
+                minsteretter: MINSTERETTER,
             },
         },
     },
@@ -312,29 +286,17 @@ export const FarOgFarKunMedfarHarRett: Story = {
         ...FarOgFarBeggeHarRett.args,
         fordeling: undefined,
         arbeidssituasjon: {
-            status: Arbeidsstatus.UFØR,
+            status: Arbeidsstatus.INGEN,
             jobberAnnenPart: true,
         },
         stønadskontoer: {
             '80': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 211 },
-                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 0,
-                    toTette: 0,
-                },
+                kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR,
+                minsteretter: MINSTERETTER,
             },
             '100': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 150 },
-                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 0,
-                    toTette: 0,
-                },
+                kontoer: IKKE_DELT_UTTAK_100_FARMEDMOR,
+                minsteretter: MINSTERETTER,
             },
         },
     },
