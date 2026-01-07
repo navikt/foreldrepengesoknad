@@ -18,7 +18,7 @@
         "react-intl": "8.0.6"
     },
     "devDependencies": {
-        "@navikt/ds-react": "7.36.0",
+        "@navikt/ds-react": "7.37.0",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-types": "workspace:*",

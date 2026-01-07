@@ -666,6 +666,9 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                                             variant="secondary"
                                             icon={<ArrowLeftIcon aria-hidden />}
                                             iconPosition="left"
+                                            aria-haspopup="dialog"
+                                            aria-expanded={gåTilbakeIsOpen}
+                                            aria-controls={gåTilbakeIsOpen ? 'VilDuGåTilbakeModal' : undefined}
                                             onClick={
                                                 harPlanBlittEndret
                                                     ? (event) => {

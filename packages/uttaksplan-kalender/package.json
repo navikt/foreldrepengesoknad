@@ -16,9 +16,9 @@
         "prettier": "prettier --write src"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "7.36.0",
-        "@navikt/ds-css": "7.36.0",
-        "@navikt/ds-react": "7.36.0",
+        "@navikt/aksel-icons": "7.37.0",
+        "@navikt/ds-css": "7.37.0",
+        "@navikt/ds-react": "7.37.0",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
@@ -33,7 +33,7 @@
     },
     "devDependencies": {
         "@formatjs/cli-lib": "8.0.4",
-        "@navikt/ds-tailwind": "7.36.0",
+        "@navikt/ds-tailwind": "7.37.0",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
