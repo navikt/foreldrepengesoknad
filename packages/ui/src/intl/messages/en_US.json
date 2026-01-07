@@ -42,7 +42,6 @@
     "SimpleErrorPage.ErrorHeader": "Sorry, it looks like something has gone wrong due to a technical error at Nav",
     "SimpleErrorPage.ErrorBody": "You can try planning again, and if you still get an error, you can wait a bit and come back later.",
     "SimpleErrorPage.TryAgain": "Try planning again",
-    "ByttBrowserModal.Tittel": "You are now logged out",
     "ByttBrowserModal.Utdatert": "You are using an outdated browser",
     "ByttBrowserModal.Ingress": "To get the best user experience, we recommend that you switch to a modern browser that supports modern web standards.",
     "ByttBrowserModal.Ok": "OK",

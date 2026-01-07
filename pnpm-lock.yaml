@@ -49,17 +49,17 @@ importers:
   apps/engangsstonad:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/ds-tailwind':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -236,17 +236,17 @@ importers:
         specifier: 6.0.4
         version: 6.0.4
       '@navikt/aksel-icons':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/ds-tailwind':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/fp-common':
         specifier: workspace:*
         version: link:../../packages/fp-common
@@ -432,17 +432,17 @@ importers:
         specifier: 6.0.4
         version: 6.0.4
       '@navikt/aksel-icons':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/ds-tailwind':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/fnrvalidator':
         specifier: 2.2.1
         version: 2.2.1
@@ -661,17 +661,17 @@ importers:
   apps/planlegger:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/ds-tailwind':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../../packages/config-eslint
@@ -848,17 +848,17 @@ importers:
         specifier: 6.0.4
         version: 6.0.4
       '@navikt/aksel-icons':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/ds-tailwind':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -1047,17 +1047,17 @@ importers:
   apps/veiviser-fp-eller-es:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/ds-tailwind':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../../packages/config-eslint
@@ -1216,17 +1216,17 @@ importers:
   apps/veiviser-hvor-mye:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/ds-tailwind':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../../packages/config-eslint
@@ -1469,14 +1469,14 @@ importers:
   packages/filopplaster:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -1563,11 +1563,11 @@ importers:
         specifier: 2.0.1
         version: 2.0.1(react-dom@19.2.3(react@19.2.3))(react-hook-form@7.69.0(react@19.2.3))(react@19.2.3)
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -1606,8 +1606,8 @@ importers:
         specifier: 8.0.4
         version: 8.0.4
       '@navikt/ds-tailwind':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -1704,14 +1704,14 @@ importers:
   packages/ny-uttaksplan:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/fp-common':
         specifier: workspace:*
         version: link:../fp-common
@@ -1771,8 +1771,8 @@ importers:
         specifier: 8.0.4
         version: 8.0.4
       '@navikt/ds-tailwind':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -1874,11 +1874,11 @@ importers:
   packages/steg-arbeidsforhold-og-inntekt:
     dependencies:
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -1920,8 +1920,8 @@ importers:
         specifier: 8.0.4
         version: 8.0.4
       '@navikt/ds-tailwind':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -1983,11 +1983,11 @@ importers:
   packages/steg-egen-næring:
     dependencies:
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -2032,8 +2032,8 @@ importers:
         specifier: 8.0.4
         version: 8.0.4
       '@navikt/ds-tailwind':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -2095,11 +2095,11 @@ importers:
   packages/steg-frilans:
     dependencies:
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -2135,8 +2135,8 @@ importers:
         specifier: 8.0.4
         version: 8.0.4
       '@navikt/ds-tailwind':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -2201,14 +2201,14 @@ importers:
   packages/steg-kvittering:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
@@ -2241,8 +2241,8 @@ importers:
         specifier: 8.0.4
         version: 8.0.4
       '@navikt/ds-tailwind':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -2304,11 +2304,11 @@ importers:
   packages/steg-oppsummering:
     dependencies:
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
@@ -2341,8 +2341,8 @@ importers:
         specifier: 8.0.4
         version: 8.0.4
       '@navikt/ds-tailwind':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -2404,14 +2404,14 @@ importers:
   packages/steg-utenlandsopphold:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -2453,8 +2453,8 @@ importers:
         specifier: 8.0.4
         version: 8.0.4
       '@navikt/ds-tailwind':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -2532,14 +2532,14 @@ importers:
   packages/ui:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -2561,6 +2561,9 @@ importers:
       dayjs:
         specifier: 1.11.19
         version: 1.11.19
+      detect-browser:
+        specifier: 5.3.0
+        version: 5.3.0
       react:
         specifier: 19.2.3
         version: 19.2.3
@@ -2575,8 +2578,8 @@ importers:
         specifier: 8.0.4
         version: 8.0.4
       '@navikt/ds-tailwind':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -2646,9 +2649,6 @@ importers:
       dayjs:
         specifier: 1.11.19
         version: 1.11.19
-      detect-browser:
-        specifier: 5.3.0
-        version: 5.3.0
       i18n-iso-countries:
         specifier: 7.14.0
         version: 7.14.0
@@ -2718,8 +2718,8 @@ importers:
         version: 8.0.6(@types/react@19.2.7)(react@19.2.3)(typescript@5.9.3)
     devDependencies:
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -2757,14 +2757,14 @@ importers:
   packages/uttaksplan:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/fp-common':
         specifier: workspace:*
         version: link:../fp-common
@@ -2887,14 +2887,14 @@ importers:
   packages/uttaksplan-kalender:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-css':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/ds-react':
-        specifier: 7.36.0
-        version: 7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 7.37.0
+        version: 7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -2933,8 +2933,8 @@ importers:
         specifier: 8.0.4
         version: 8.0.4
       '@navikt/ds-tailwind':
-        specifier: 7.36.0
-        version: 7.36.0
+        specifier: 7.37.0
+        version: 7.37.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -3760,14 +3760,14 @@ packages:
   '@napi-rs/wasm-runtime@1.1.0':
     resolution: {integrity: sha512-Fq6DJW+Bb5jaWE69/qOE0D1TUN9+6uWhCeZpdnSBk14pjLcCWR7Q8n49PTSPHazM37JqrsdpEthXy2xn6jWWiA==}
 
-  '@navikt/aksel-icons@7.36.0':
-    resolution: {integrity: sha512-zFLkhbaKFyXLWxXSnx3GW9tEGDz/fJ/Eug29tfgb6Lb934s3VEVUXQiYB8+BuUt6fTLz3ZGh3jv0NfWoGGtR1A==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/7.36.0/5d01680f20cd3ad3c447ea53fd4f71d9e40056e1}
+  '@navikt/aksel-icons@7.37.0':
+    resolution: {integrity: sha512-4FwjmO0m2z1390DUJBISTeR6VRmzJZsyrpp+UWxNBk3marIq5vM/11BF1dnIUOjxM3/n0D8DqXS/1q8YiJWPbA==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/7.37.0/69470b7e21c152f7705df217fd5e3566237c8bc4}
 
-  '@navikt/ds-css@7.36.0':
-    resolution: {integrity: sha512-MLWHW8jj0ypW2l0suDE+k6ZmqX15kKzvlM9qLacbyDBrOP5AQY/nRWFem5IRple6mjDNUcLfzk3Z7UVMozzqCA==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/7.36.0/d9e4574fe73a39a74ec442ac341d22ff61aab0d4}
+  '@navikt/ds-css@7.37.0':
+    resolution: {integrity: sha512-Fvt6Cou4APj2BR8/1oH98H945si4Nr+IfTMwJTG7mBdnlqltGoQocOSyF7yKFl78UfB6z1x2bWLjpzGM8sgyZQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/7.37.0/b0752aaf6a6ea970fedd2f6cdc0da93aa7b0c9fa}
 
-  '@navikt/ds-react@7.36.0':
-    resolution: {integrity: sha512-mDTLc31q35kkf5KwIKbKISTKW2KjEplXDAhk/mAaa/E1HfZciLwhkOfnqVF89ktb4XsAUORwGVzrHp9PqabTUw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/7.36.0/6deea33d6483ed91e7eee9a7dc57c0d10c9185c6}
+  '@navikt/ds-react@7.37.0':
+    resolution: {integrity: sha512-6dDTNA6Q/iJ3kiBPk9wzejvsNAHqO/ep+iWrWrMF/dR9u7/xVzc7h1gJG9yz1pTcP9U5pODSS94H8PbkhYmX8w==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/7.37.0/da57447763c409e4a99673de00cf52d33e3aa693}
     peerDependencies:
       '@types/react': ^17.0.30 || ^18 || ^19
       react: ^17 || ^18 || ^19
@@ -3776,11 +3776,11 @@ packages:
       '@types/react':
         optional: true
 
-  '@navikt/ds-tailwind@7.36.0':
-    resolution: {integrity: sha512-6llAbLco2Tfzy98hUfJ+mlsBmT4N4nFKcgWGbJG6mPuGFi3aE1vH31jg7kbW28AE9zVB/bsr+G2+fMaI+MFnJg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/7.36.0/f120f7679741c2be5b2a2d5eca88ff2981c5dec2}
+  '@navikt/ds-tailwind@7.37.0':
+    resolution: {integrity: sha512-NIFYS70HHgg5NHa6I9Yp92EKCWFLsVovOZk17VEWfEGl9DWVLnUfUWoMAdV0KcbcHlJPtfQXmxgATVRtPUifqQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/7.37.0/a30e689fa0f28e1c1176621317bae2a069793d1e}
 
-  '@navikt/ds-tokens@7.36.0':
-    resolution: {integrity: sha512-qGLDJfnqQJoSHz03lsxqXkbl4MqN/d9W532TKyGcXswsYSeTEj425weFUvPwTh2w29dM4ncGmomijZAUjFYH/w==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/7.36.0/ad3ab2a9f2179c5a4703738de33233af54336dc2}
+  '@navikt/ds-tokens@7.37.0':
+    resolution: {integrity: sha512-+ewS/zBXgDE6NgpCsgZe+szCHVc4L+9M2Hmz5oxwvLE79gc4aoBv05ZYzokE/rZWaHLZxZAtv41Omv4XRwrK8g==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/7.37.0/faec0475b4703e1ad10265855d1bca1393f1224b}
 
   '@navikt/fnrvalidator@2.2.1':
     resolution: {integrity: sha512-R6x3MBFC0E/B7oTs+P2jAP+ym7+d6cwSpDsLeMja9IwPpJq3HV/OClFBVWm9fJZPmXfumKRMGy6gqsQPj90ftg==, tarball: https://npm.pkg.github.com/download/@navikt/fnrvalidator/2.2.1/37ed0feb23a7525139ad5512684ff6b0977112c6}
@@ -7867,8 +7867,8 @@ packages:
     resolution: {integrity: sha512-GTt8rSKje5FilG+wEdfCkOcLL7LWqpMlr2c3LRuKt/YXxcJ52aGSbGBAdI4L3aaqfrBt6y711El53ItyH1NWzg==}
     engines: {node: '>=16.0.0'}
 
-  tabbable@6.3.0:
-    resolution: {integrity: sha512-EIHvdY5bPLuWForiR/AN2Bxngzpuwn1is4asboytXtpTgsArc+WmSJKVLlhdh71u7jFcryDqB2A8lQvj78MkyQ==}
+  tabbable@6.4.0:
+    resolution: {integrity: sha512-05PUHKSNE8ou2dwIxTngl4EzcnsCDZGJ/iCLtDflR/SHB/ny14rXc+qU5P4mG9JkusiV7EivzY9Mhm55AzAvCg==}
 
   tagged-tag@1.0.0:
     resolution: {integrity: sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng==}
@@ -8856,7 +8856,7 @@ snapshots:
       '@floating-ui/utils': 0.2.10
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
-      tabbable: 6.3.0
+      tabbable: 6.4.0
 
   '@floating-ui/utils@0.2.10': {}
 
@@ -9103,16 +9103,16 @@ snapshots:
       '@tybys/wasm-util': 0.10.1
     optional: true
 
-  '@navikt/aksel-icons@7.36.0': {}
+  '@navikt/aksel-icons@7.37.0': {}
 
-  '@navikt/ds-css@7.36.0': {}
+  '@navikt/ds-css@7.37.0': {}
 
-  '@navikt/ds-react@7.36.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@navikt/ds-react@7.37.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@floating-ui/react': 0.27.8(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@floating-ui/react-dom': 2.1.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@navikt/aksel-icons': 7.36.0
-      '@navikt/ds-tokens': 7.36.0
+      '@navikt/aksel-icons': 7.37.0
+      '@navikt/ds-tokens': 7.37.0
       clsx: 2.1.1
       date-fns: 4.1.0
       react: 19.2.3
@@ -9121,9 +9121,9 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.7
 
-  '@navikt/ds-tailwind@7.36.0': {}
+  '@navikt/ds-tailwind@7.37.0': {}
 
-  '@navikt/ds-tokens@7.36.0': {}
+  '@navikt/ds-tokens@7.37.0': {}
 
   '@navikt/fnrvalidator@2.2.1': {}
 
@@ -13606,7 +13606,7 @@ snapshots:
 
   sync-message-port@1.1.3: {}
 
-  tabbable@6.3.0: {}
+  tabbable@6.4.0: {}
 
   tagged-tag@1.0.0: {}
 
