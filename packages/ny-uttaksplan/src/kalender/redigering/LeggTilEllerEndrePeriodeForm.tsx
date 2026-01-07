@@ -12,6 +12,7 @@ import type {
     BrukerRolleSak_fpoversikt,
     KontoTypeUttak,
     MorsAktivitet,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
@@ -20,7 +21,7 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { prosentValideringGradering, valideringSamtidigUttak } from '../../components/spørsmål/validators';
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { Planperiode } from '../../types/Planperiode';
+import { erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { getGradering } from '../../utils/graderingUtils';
 import { getStønadskontoNavnSimple } from '../../utils/stønadskontoerUtils';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
@@ -51,7 +52,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
     const intl = useIntl();
 
     const {
-        uttaksplan,
+        saksperioder,
         foreldreInfo: { rettighetType, erMedmorDelAvSøknaden },
         familiehendelsedato,
         valgtStønadskonto,
@@ -63,7 +64,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
 
     const { finnPerioderGyldigeFeilmeldinger } = usePeriodeValidator(sammenslåtteValgtePerioder);
 
-    const defaultValues = lagDefaultValues(uttaksplan, sammenslåtteValgtePerioder[0]!);
+    const defaultValues = lagDefaultValues(saksperioder, sammenslåtteValgtePerioder[0]!);
 
     const formMethods = useForm<FormValues>({
         defaultValues,
@@ -429,87 +430,71 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
     );
 };
 
-const lagDefaultValues = (uttaksplan: Planperiode[], valgtPeriode: CalendarPeriod): FormValues | undefined => {
-    const eksisterendePerioder = uttaksplan.filter(
+const lagDefaultValues = (
+    saksperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    valgtPeriode: CalendarPeriod,
+): FormValues | undefined => {
+    const eksisterendePerioder = saksperioder.filter(
         (periode) =>
             dayjs(valgtPeriode.fom).isSameOrAfter(dayjs(periode.fom), 'day') &&
             dayjs(valgtPeriode.tom).isSameOrBefore(dayjs(periode.tom), 'day'),
     );
 
-    if (eksisterendePerioder.length === 0 || eksisterendePerioder.some((p) => p.erAnnenPartEøs)) {
+    if (eksisterendePerioder.length === 0 || !eksisterendePerioder.every(erVanligUttakPeriode)) {
         return undefined;
     }
 
     if (eksisterendePerioder.length === 2) {
-        const erSamtidigUttak = eksisterendePerioder.every((p) => !p.erAnnenPartEøs && !!p.samtidigUttak);
+        const erSamtidigUttak = eksisterendePerioder.every((p) => !!p.samtidigUttak);
         if (!erSamtidigUttak) {
             throw new Error('Forventer to perioder ved samtidig uttak.');
         }
-        const morsPeriode = notEmpty(eksisterendePerioder.find((p) => !p.erAnnenPartEøs && p.forelder === 'MOR'));
-        const farMedmorPeriode = notEmpty(
-            eksisterendePerioder.find((p) => !p.erAnnenPartEøs && p.forelder === 'FAR_MEDMOR'),
-        );
+        const morsPeriode = notEmpty(eksisterendePerioder.find((p) => p.forelder === 'MOR'));
+        const farMedmorPeriode = notEmpty(eksisterendePerioder.find((p) => p.forelder === 'FAR_MEDMOR'));
 
         return {
             forelder: 'BEGGE',
             kontoTypeMor:
-                morsPeriode.kontoType === 'FORELDREPENGER' &&
-                !morsPeriode.erAnnenPartEøs &&
-                morsPeriode.morsAktivitet === 'IKKE_OPPGITT'
+                morsPeriode.kontoType === 'FORELDREPENGER' && morsPeriode.morsAktivitet === 'IKKE_OPPGITT'
                     ? 'AKTIVITETSFRI_KVOTE'
                     : morsPeriode.kontoType,
             kontoTypeFarMedmor:
-                farMedmorPeriode.kontoType === 'FORELDREPENGER' &&
-                !farMedmorPeriode.erAnnenPartEøs &&
-                farMedmorPeriode.morsAktivitet === 'IKKE_OPPGITT'
+                farMedmorPeriode.kontoType === 'FORELDREPENGER' && farMedmorPeriode.morsAktivitet === 'IKKE_OPPGITT'
                     ? 'AKTIVITETSFRI_KVOTE'
                     : farMedmorPeriode.kontoType,
-            samtidigUttaksprosentMor: morsPeriode.erAnnenPartEøs ? undefined : morsPeriode.samtidigUttak?.toString(),
-            samtidigUttaksprosentFarMedmor: farMedmorPeriode.erAnnenPartEøs
-                ? undefined
-                : farMedmorPeriode.samtidigUttak?.toString(),
-            skalDuKombinereArbeidOgUttakMor: !morsPeriode.erAnnenPartEøs && !!morsPeriode.gradering,
-            skalDuKombinereArbeidOgUttakFarMedmor: !farMedmorPeriode.erAnnenPartEøs && !!farMedmorPeriode.gradering,
-            stillingsprosentMor: morsPeriode.erAnnenPartEøs
-                ? undefined
-                : morsPeriode.gradering?.arbeidstidprosent.toString(),
-            stillingsprosentFarMedmor: farMedmorPeriode.erAnnenPartEøs
-                ? undefined
-                : farMedmorPeriode.gradering?.arbeidstidprosent.toString(),
-            morsAktivitet: morsPeriode.erAnnenPartEøs ? undefined : morsPeriode.morsAktivitet,
+            samtidigUttaksprosentMor: morsPeriode.samtidigUttak?.toString(),
+            samtidigUttaksprosentFarMedmor: farMedmorPeriode.samtidigUttak?.toString(),
+            skalDuKombinereArbeidOgUttakMor: !!morsPeriode.gradering,
+            skalDuKombinereArbeidOgUttakFarMedmor: !!farMedmorPeriode.gradering,
+            stillingsprosentMor: morsPeriode.gradering?.arbeidstidprosent.toString(),
+            stillingsprosentFarMedmor: farMedmorPeriode.gradering?.arbeidstidprosent.toString(),
+            morsAktivitet: morsPeriode.morsAktivitet,
         };
     }
 
     const periode = eksisterendePerioder[0]!;
-    const erFarEllerMedmor = !periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR';
 
-    if (!periode.erAnnenPartEøs && erFarEllerMedmor) {
+    if (periode.forelder === 'FAR_MEDMOR') {
         return {
             forelder: 'FAR_MEDMOR',
             kontoTypeFarMedmor:
-                periode.kontoType === 'FORELDREPENGER' &&
-                !periode.erAnnenPartEøs &&
-                periode.morsAktivitet === 'IKKE_OPPGITT'
+                periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT'
                     ? 'AKTIVITETSFRI_KVOTE'
                     : periode.kontoType,
-            skalDuKombinereArbeidOgUttakFarMedmor: !periode.erAnnenPartEøs && !!periode.gradering,
-            stillingsprosentFarMedmor: periode.erAnnenPartEøs
-                ? undefined
-                : periode.gradering?.arbeidstidprosent.toString(),
+            skalDuKombinereArbeidOgUttakFarMedmor: !!periode.gradering,
+            stillingsprosentFarMedmor: periode.gradering?.arbeidstidprosent.toString(),
         };
     }
 
     return {
         forelder: 'MOR',
         kontoTypeMor:
-            periode.kontoType === 'FORELDREPENGER' &&
-            !periode.erAnnenPartEøs &&
-            periode.morsAktivitet === 'IKKE_OPPGITT'
+            periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT'
                 ? 'AKTIVITETSFRI_KVOTE'
                 : periode.kontoType,
-        samtidigUttaksprosentMor: periode.erAnnenPartEøs ? undefined : periode.samtidigUttak?.toString(),
-        skalDuKombinereArbeidOgUttakMor: !periode.erAnnenPartEøs && !!periode.gradering,
-        stillingsprosentMor: periode.erAnnenPartEøs ? undefined : periode.gradering?.arbeidstidprosent.toString(),
-        morsAktivitet: periode.erAnnenPartEøs ? undefined : periode.morsAktivitet,
+        samtidigUttaksprosentMor: periode.samtidigUttak?.toString(),
+        skalDuKombinereArbeidOgUttakMor: !!periode.gradering,
+        stillingsprosentMor: periode.gradering?.arbeidstidprosent.toString(),
+        morsAktivitet: periode.morsAktivitet,
     };
 };

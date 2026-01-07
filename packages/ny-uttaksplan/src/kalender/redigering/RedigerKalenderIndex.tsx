@@ -4,10 +4,12 @@ import { Box } from '@navikt/ds-react';
 
 import { CalendarPeriod } from '@navikt/fp-ui';
 
+import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { LeggTilEllerEndrePeriodePanel } from './LeggTilEllerEndrePeriodePanel';
 import { PeriodeIkkeValgtPanel } from './PeriodeIkkeValgtPanel';
 import { PeriodeOversiktPanel } from './PeriodeOversiktPanel';
 import { KalenderRedigeringProvider, useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
+import { harEnValgtPeriodeIKunEnEksisterendePeriode } from './utils/kalenderPeriodeUtils';
 
 type Props = {
     valgtePerioder: CalendarPeriod[];
@@ -34,7 +36,8 @@ const RedigerKalender = ({
     scrollToKvoteOppsummering: () => void;
     labels: React.ReactNode;
 }) => {
-    const { erKunEnHelEksisterendePeriodeValgt, sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
+    const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
+    const { saksperioderInkludertHull } = useUttaksplanData();
 
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
 
@@ -45,6 +48,10 @@ const RedigerKalender = ({
             setErIRedigeringsmodus(false);
         }
     }, [sammenslåtteValgtePerioder]);
+
+    const erKunEnHelEksisterendePeriodeValgt =
+        sammenslåtteValgtePerioder.length === 1 &&
+        harEnValgtPeriodeIKunEnEksisterendePeriode(saksperioderInkludertHull, sammenslåtteValgtePerioder[0]!);
 
     return (
         <Box.New

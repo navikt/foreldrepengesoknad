@@ -2,8 +2,8 @@ import dayjs from 'dayjs';
 
 import { CalendarPeriod } from '@navikt/fp-ui';
 
-import { Planperiode } from '../../../types/Planperiode';
-import { PlanperiodeMedAntallDager } from '../EksisterendeValgtePerioder';
+import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
+import { UttakPeriodeMedAntallDager } from '../EksisterendeValgtePerioder';
 
 export const slåSammenTilstøtendePerioder = (perioder: CalendarPeriod[]): CalendarPeriod[] => {
     if (perioder.length === 0) {
@@ -43,10 +43,10 @@ export const slåSammenTilstøtendePerioder = (perioder: CalendarPeriod[]): Cale
 //TODO (TOR) Bør skriva om denne, men avventar å sjå om det blir endringar i funksjonalitet
 export const finnValgtePerioder = (
     valgtePerioder: CalendarPeriod[],
-    uttaksplan: Planperiode[],
-): PlanperiodeMedAntallDager[] => {
+    uttaksplan: Uttaksplanperiode[],
+): UttakPeriodeMedAntallDager[] => {
     return uttaksplan
-        .filter((p) => !p.periodeHullÅrsak)
+        .filter((p) => !erUttaksplanHull(p))
         .map((p) => {
             const fom2 = dayjs(p.fom);
             const tom2 = dayjs(p.tom);
@@ -67,13 +67,13 @@ export const finnValgtePerioder = (
 
             return valgteDagerIPeriode > 0 ? { ...p, valgteDagerIPeriode } : null;
         })
-        .filter((p): p is PlanperiodeMedAntallDager => p !== null)
-        .reduce<PlanperiodeMedAntallDager[]>((acc, curr) => {
+        .filter((p): p is UttakPeriodeMedAntallDager => p !== null)
+        .reduce<UttakPeriodeMedAntallDager[]>((acc, curr) => {
             const duplikat = acc.find(
                 (p) =>
                     p.kontoType === curr.kontoType &&
-                    !p.erAnnenPartEøs &&
-                    !curr.erAnnenPartEøs &&
+                    erVanligUttakPeriode(p) &&
+                    erVanligUttakPeriode(curr) &&
                     p.forelder === curr.forelder &&
                     p.samtidigUttak === curr.samtidigUttak &&
                     p.gradering === curr.gradering &&
@@ -110,13 +110,14 @@ export const countWeekdaysBetween = (start: dayjs.Dayjs, end: dayjs.Dayjs) => {
     return count;
 };
 
-export const erValgtPeriodeEnHelEksisterendePeriode = (uttaksplan: Planperiode[], valgtPeriode: CalendarPeriod) =>
-    uttaksplan.some(
-        (p) =>
-            dayjs(p.fom).isSame(dayjs(valgtPeriode.fom), 'day') &&
-            dayjs(p.tom).isSame(dayjs(valgtPeriode.tom), 'day') &&
-            !p.periodeHullÅrsak &&
-            (p.erAnnenPartEøs || p.samtidigUttak === undefined),
+export const harEnValgtPeriodeIKunEnEksisterendePeriode = (
+    saksperioderInkludertHull: Uttaksplanperiode[],
+    valgtPeriode: CalendarPeriod,
+) =>
+    saksperioderInkludertHull.some(
+        (periode) =>
+            dayjs(valgtPeriode.fom).isSameOrAfter(dayjs(periode.fom), 'day') &&
+            dayjs(valgtPeriode.tom).isSameOrBefore(dayjs(periode.tom), 'day'),
     );
 
 export const finnAntallDager = (perioder: CalendarPeriod[]): number => {

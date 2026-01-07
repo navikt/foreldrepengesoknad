@@ -1,13 +1,16 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
+import { Barn } from '@navikt/fp-types';
 import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
-import { getLocaleFromSessionStorage, getNavnGenitivEierform } from '@navikt/fp-utils';
+import { getFamiliehendelsedato, getLocaleFromSessionStorage, getNavnGenitivEierform } from '@navikt/fp-utils';
 import { assertUnreachable } from '@navikt/fp-validation';
 
 import { Søker } from '../../types/ForeldreInfo';
 import { LegendLabel } from '../../types/LegendLabel';
-import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import { PeriodeHullType } from '../../types/Planperiode';
+import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
+import { isAvslåttPeriode, isAvslåttPeriodeFørsteSeksUkerMor } from '../../utils/periodeUtils';
 
 export type UttaksplanKalenderLegendInfo = {
     calendarPeriod: CalendarPeriod;
@@ -318,8 +321,20 @@ export const getInneholderKalenderHelgedager = (periods: CalendarPeriod[]): bool
     return sisteDagNr < førsteDagNr;
 };
 
-export const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel | undefined => {
-    if (p.kontoType) {
+export const getLegendLabelFromPeriode = (
+    p: Uttaksplanperiode,
+    barn: Barn,
+    erFarEllerMedmor: boolean,
+): LegendLabel | undefined => {
+    // TODO (TOR) Sjekk om dette blir korrekt? (Filtrar ikkje vekk avslåtte periodar lenger)
+    if (isAvslåttPeriode(p)) {
+        const familiehendelsesdato = getFamiliehendelsedato(barn);
+        if (!erFarEllerMedmor && isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsesdato)) {
+            return 'TAPTE_DAGER';
+        }
+    }
+
+    if (erVanligUttakPeriode(p) && p.kontoType) {
         switch (p.kontoType) {
             case 'FORELDREPENGER_FØR_FØDSEL':
                 return 'MORS_DEL';
@@ -327,11 +342,11 @@ export const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel | undefin
             case 'FEDREKVOTE':
             case 'FELLESPERIODE':
             case 'FORELDREPENGER':
-                if (!p.erAnnenPartEøs && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
+                if (p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
                     return 'AVSLAG_FRATREKK_PLEIEPENGER';
                 }
 
-                if (!p.erAnnenPartEøs && p.morsAktivitet === 'IKKE_OPPGITT') {
+                if (p.morsAktivitet === 'IKKE_OPPGITT') {
                     if (p.gradering?.arbeidstidprosent) {
                         return 'FARS_DEL_AKTIVITETSFRI_GRADERT';
                     }
@@ -339,7 +354,7 @@ export const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel | undefin
                     return 'FARS_DEL_AKTIVITETSFRI';
                 }
 
-                if (!p.erAnnenPartEøs && p.forelder === 'FAR_MEDMOR') {
+                if (p.forelder === 'FAR_MEDMOR') {
                     if (p.samtidigUttak && p.samtidigUttak > 0) {
                         return 'SAMTIDIG_UTTAK';
                     }
@@ -351,11 +366,11 @@ export const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel | undefin
                     return 'FARS_DEL';
                 }
 
-                if (!p.erAnnenPartEøs && p.samtidigUttak && p.samtidigUttak > 0) {
+                if (p.samtidigUttak && p.samtidigUttak > 0) {
                     return 'SAMTIDIG_UTTAK';
                 }
 
-                if (!p.erAnnenPartEøs && p.gradering?.arbeidstidprosent) {
+                if (p.gradering?.arbeidstidprosent) {
                     return 'MORS_DEL_GRADERT';
                 }
 
@@ -365,12 +380,12 @@ export const getLegendLabelFromPeriode = (p: Planperiode): LegendLabel | undefin
         }
     }
 
-    if (p.periodeHullÅrsak) {
-        if (p.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
+    if (erUttaksplanHull(p)) {
+        if (p.hullType === PeriodeHullType.PERIODE_UTEN_UTTAK) {
             return undefined;
         }
 
-        if (p.periodeHullÅrsak === PeriodeHullType.TAPTE_DAGER) {
+        if (p.hullType === PeriodeHullType.TAPTE_DAGER) {
             return 'TAPTE_DAGER';
         }
     }

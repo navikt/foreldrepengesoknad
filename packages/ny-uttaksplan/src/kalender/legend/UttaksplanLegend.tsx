@@ -12,8 +12,9 @@ import { CalendarLabel, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-u
 import { notEmpty } from '@navikt/fp-validation';
 
 import { LegendLabel } from '../../types/LegendLabel';
-import { filtrerBortAnnenPartsIdentiskePerioder } from '../../utils/permisjonsperiodeUtils.ts';
-import { useUttaksplanData } from './../../context/UttaksplanDataContext.tsx';
+import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
+import { filtrerBortAnnenPartsIdentiskePerioder } from '../../utils/permisjonsperiodeUtils';
+import { useUttaksplanData } from './../../context/UttaksplanDataContext';
 import {
     UttaksplanKalenderLegendInfo,
     getCalendarLabel,
@@ -22,7 +23,7 @@ import {
     getSelectableStyle,
     getSelectedStyle,
     sortLegendInfoByLabel,
-} from './uttaksplanLegendUtils.ts';
+} from './uttaksplanLegendUtils';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
@@ -47,15 +48,18 @@ export const UttaksplanLegend = ({
     const [visHorisontalt, setVisHorisontalt] = useState(true);
 
     const {
-        uttaksplan,
+        saksperioderInkludertHull,
         foreldreInfo: { søker },
         barn,
     } = useUttaksplanData();
 
-    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(uttaksplan, søker === 'FAR_ELLER_MEDMOR');
+    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(
+        saksperioderInkludertHull,
+        søker === 'FAR_ELLER_MEDMOR',
+    );
 
     const unikePeriodeLabelsMedFarge = unikePerioder.reduce<UttaksplanKalenderLegendInfo[]>((acc, periode) => {
-        const label = getLegendLabelFromPeriode(periode);
+        const label = getLegendLabelFromPeriode(periode, barn, søker === 'FAR_ELLER_MEDMOR');
 
         if (!label) {
             return acc;
@@ -81,7 +85,7 @@ export const UttaksplanLegend = ({
             ...acc,
             {
                 label,
-                forelder: periode.erAnnenPartEøs ? 'FAR_MEDMOR' : periode.forelder,
+                forelder: erEøsUttakPeriode(periode) ? 'FAR_MEDMOR' : periode.forelder,
                 calendarPeriod: periodeForKalendervisning,
             },
         ];

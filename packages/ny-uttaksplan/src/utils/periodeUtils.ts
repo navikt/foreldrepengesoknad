@@ -21,6 +21,7 @@ import {
 import { finnOgSettInnHull, settInnAnnenPartsUttak, slåSammenLikePerioder } from '../builder/uttaksplanbuilderUtils';
 import { ForeldreInfo } from '../types/ForeldreInfo';
 import { PeriodeHullType, Planperiode } from '../types/Planperiode';
+import { Uttaksplanperiode } from '../types/UttaksplanPeriode';
 
 dayjs.extend(isoWeekday);
 
@@ -367,7 +368,10 @@ export const isAvslåttPeriodeFørsteSeksUkerMor = (periode: UttakPeriode, famil
     );
 };
 
-export const getIndexOfSistePeriodeFørDato = (uttaksplan: UttakPeriode[] | Planperiode[], dato: string | undefined) => {
+export const getIndexOfSistePeriodeFørDato = (
+    uttaksplan: Uttaksplanperiode[] | Planperiode[],
+    dato: string | undefined,
+) => {
     if (dato !== undefined) {
         return Math.max(0, uttaksplan.filter((p) => dayjs(p.tom).isBefore(dato, 'day')).length);
     }

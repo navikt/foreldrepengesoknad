@@ -1,13 +1,26 @@
 import dayjs from 'dayjs';
 import { IntlShape, useIntl } from 'react-intl';
 
-import { Barn, NavnPåForeldre, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
+import {
+    Barn,
+    NavnPåForeldre,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+    isAdoptertBarn,
+    isFødtBarn,
+} from '@navikt/fp-types';
 import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { UttaksdagenString, formatDateIso, formaterDatoUtenDag, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { assertUnreachable } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import { PeriodeHullType } from '../../types/Planperiode';
+import {
+    Uttaksplanperiode,
+    erEøsUttakPeriode,
+    erUttaksplanHull,
+    erVanligUttakPeriode,
+} from '../../types/UttaksplanPeriode';
 import {
     getAnnenForelderSamtidigUttakPeriode,
     getIndexOfSistePeriodeFørDato,
@@ -21,7 +34,7 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
     const intl = useIntl();
 
     const {
-        uttaksplan,
+        saksperioderInkludertHull,
         barn,
         foreldreInfo: { søker, navnPåForeldre },
     } = useUttaksplanData();
@@ -30,10 +43,10 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
 
     const erFarEllerMedmor = søker === 'FAR_ELLER_MEDMOR';
 
-    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(uttaksplan, erFarEllerMedmor);
+    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(saksperioderInkludertHull, erFarEllerMedmor);
 
     const res = unikePerioder.reduce<CalendarPeriod[]>((acc, periode) => {
-        const color = getKalenderFargeForPeriode(periode, erFarEllerMedmor, uttaksplan, barn);
+        const color = getKalenderFargeForPeriode(periode, erFarEllerMedmor, saksperioderInkludertHull, barn);
 
         if (
             barnehagestartdato !== undefined &&
@@ -101,7 +114,7 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
                   } satisfies CalendarPeriod)
                   .sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)));
 
-    const indexOfFamiliehendelse = getIndexOfSistePeriodeFørDato(uttaksplan, familiehendelsesdato) ?? 0;
+    const indexOfFamiliehendelse = getIndexOfSistePeriodeFørDato(saksperioderInkludertHull, familiehendelsesdato) ?? 0;
     perioderForVisning.splice(indexOfFamiliehendelse, 0, {
         fom: familiehendelsesdato,
         tom: familiehendelsesdato,
@@ -136,13 +149,13 @@ const slåSammenPerioder = (periods: CalendarPeriod[]) => {
 };
 
 const getKalenderFargeForPeriode = (
-    periode: Planperiode,
+    periode: Uttaksplanperiode,
     erFarEllerMedmor: boolean,
-    allePerioder: Planperiode[],
+    allePerioder: Uttaksplanperiode[],
     barn: Barn,
 ): CalendarPeriodColor => {
     if (isAvslåttPeriode(periode)) {
-        if (!periode.erAnnenPartEøs && periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
+        if (erVanligUttakPeriode(periode) && periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
             return 'BLACKOUTLINE';
         }
         const familiehendelsesdato = getFamiliehendelsedato(barn);
@@ -154,24 +167,24 @@ const getKalenderFargeForPeriode = (
         : undefined;
 
     const samtidigUttaksprosent =
-        isUttaksperiode(periode) && !periode.erAnnenPartEøs ? periode.samtidigUttak : undefined;
+        isUttaksperiode(periode) && erVanligUttakPeriode(periode) ? periode.samtidigUttak : undefined;
     if (annenForelderSamtidigUttaksperiode || (samtidigUttaksprosent && samtidigUttaksprosent > 0)) {
         return erFarEllerMedmor ? 'LIGHTBLUEGREEN' : 'LIGHTGREENBLUE';
     }
 
-    if (!periode.erAnnenPartEøs && periode.utsettelseÅrsak) {
-        return 'BLUEOUTLINE';
+    if (erUttaksplanHull(periode)) {
+        return periode.hullType === PeriodeHullType.TAPTE_DAGER ? 'BLACK' : 'NONE';
     }
 
-    if (periode.periodeHullÅrsak === PeriodeHullType.TAPTE_DAGER) {
-        return 'BLACK';
-    }
-
-    if (periode.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
+    if (erEøsUttakPeriode(periode)) {
         return 'NONE';
     }
 
-    if (!periode.erAnnenPartEøs && periode.forelder === 'MOR') {
+    if (periode.utsettelseÅrsak) {
+        return 'BLUEOUTLINE';
+    }
+
+    if (periode.forelder === 'MOR') {
         if (periode.gradering && periode.gradering.arbeidstidprosent > 0) {
             return 'BLUESTRIPED';
         }
@@ -179,7 +192,7 @@ const getKalenderFargeForPeriode = (
         return 'BLUE';
     }
 
-    if (!periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR') {
+    if (periode.forelder === 'FAR_MEDMOR') {
         if (periode.gradering && periode.gradering.arbeidstidprosent > 0) {
             return 'GREENSTRIPED';
         }
@@ -212,7 +225,7 @@ const getSkjermlesertekstForFamiliehendelse = (barn: Barn, intl: IntlShape): str
 };
 
 const getKalenderSkjermlesertekstForPeriode = (
-    period: Planperiode,
+    period: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
     navnPåForeldre: NavnPåForeldre,
     intl: IntlShape,
 ): string => {
@@ -228,24 +241,23 @@ const getKalenderSkjermlesertekstForPeriode = (
 };
 
 const getKalenderSkjermleserPeriodetekst = (
-    period: Planperiode,
+    period: Uttaksplanperiode,
     navnPåForeldre: NavnPåForeldre,
     intl: IntlShape,
 ): string => {
     const navn =
-        period.erAnnenPartEøs || period.forelder === 'FAR_MEDMOR' ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
+        erEøsUttakPeriode(period) || period.forelder === 'FAR_MEDMOR' ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
 
     const periodenTilhører = intl.formatMessage({ id: 'kalender.srText.PeriodenTil' }, { navn });
 
-    if (period.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
-        return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.PeriodeUtenUttak' });
-    }
-
-    if (period.periodeHullÅrsak === PeriodeHullType.TAPTE_DAGER) {
+    if (erUttaksplanHull(period)) {
+        if (period.hullType === PeriodeHullType.PERIODE_UTEN_UTTAK) {
+            return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.PeriodeUtenUttak' });
+        }
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.TapteDager' });
     }
 
-    if (!period.erAnnenPartEøs && period.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
+    if (erVanligUttakPeriode(period) && period.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
         return periodenTilhører + intl.formatMessage({ id: 'kalender.avslagFratrekkPleiepenger' });
     }
 
@@ -270,11 +282,15 @@ const getKalenderSkjermleserPeriodetekst = (
 };
 
 const finnSkjermleserTekstForKvoteForeldrepenger = (
-    period: Planperiode,
+    period: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
     periodenTilhører: string,
     intl: IntlShape,
 ): string => {
-    if (!period.erAnnenPartEøs && period.morsAktivitet === 'IKKE_OPPGITT') {
+    if (erEøsUttakPeriode(period)) {
+        return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerIkkeGradert' });
+    }
+
+    if (period.morsAktivitet === 'IKKE_OPPGITT') {
         if (period.gradering?.arbeidstidprosent) {
             return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.AktivitetsfrieDelGradert' });
         }
@@ -282,11 +298,11 @@ const finnSkjermleserTekstForKvoteForeldrepenger = (
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.AktivitetsfrieIkkeGradert' });
     }
 
-    if (!period.erAnnenPartEøs && period.samtidigUttak && period.samtidigUttak > 0) {
+    if (period.samtidigUttak && period.samtidigUttak > 0) {
         return intl.formatMessage({ id: 'kalender.srText.SamtidigUttaksperiode' });
     }
 
-    if (!period.erAnnenPartEøs && period.gradering?.arbeidstidprosent) {
+    if (period.gradering?.arbeidstidprosent) {
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerGradert' });
     }
 
