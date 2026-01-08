@@ -1,5 +1,5 @@
 import { Uttaksplanperiode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
-import { mapUttaksplanperioderTilPeriodemap } from './permisjonsperiodeUtils';
+import { mapUttaksplanperioderTilRaderIListe } from './permisjonsperiodeUtils';
 
 const perioder1: Uttaksplanperiode[] = [
     {
@@ -35,21 +35,28 @@ const perioder1: Uttaksplanperiode[] = [
 
 describe('Skal gruppere perioder på søker og ikke kvote', () => {
     it('Skal gruppere mors perioder i tid hun er hjemme uavbrutt og ikke kvoter', () => {
-        const permisjonsperioder = mapUttaksplanperioderTilPeriodemap(perioder1, '2024-05-03');
+        const uttaksplanperioderPerRadIListe = mapUttaksplanperioderTilRaderIListe(perioder1, '2024-05-03');
 
-        const perioder = Array.from(permisjonsperioder.values());
-        expect(perioder.length).toBe(4);
+        expect(uttaksplanperioderPerRadIListe.length).toBe(4);
 
-        const periode1 = erVanligUttakPeriode(perioder[0]![0]!) ? perioder[0]![0] : undefined;
+        const periode1 = erVanligUttakPeriode(uttaksplanperioderPerRadIListe[0]![0]!)
+            ? uttaksplanperioderPerRadIListe[0]![0]
+            : undefined;
         expect(periode1?.forelder).toEqual('MOR');
 
-        const periode2 = erVanligUttakPeriode(perioder[1]![0]!) ? perioder[1]![0] : undefined;
+        const periode2 = erVanligUttakPeriode(uttaksplanperioderPerRadIListe[1]![0]!)
+            ? uttaksplanperioderPerRadIListe[1]![0]
+            : undefined;
         expect(periode2?.forelder).toEqual('MOR');
 
-        const periode3 = erVanligUttakPeriode(perioder[2]![0]!) ? perioder[2]![0] : undefined;
+        const periode3 = erVanligUttakPeriode(uttaksplanperioderPerRadIListe[2]![0]!)
+            ? uttaksplanperioderPerRadIListe[2]![0]
+            : undefined;
         expect(periode3?.forelder).toEqual(undefined);
 
-        const periode4 = erVanligUttakPeriode(perioder[3]![0]!) ? perioder[3]![0] : undefined;
+        const periode4 = erVanligUttakPeriode(uttaksplanperioderPerRadIListe[3]![0]!)
+            ? uttaksplanperioderPerRadIListe[3]![0]
+            : undefined;
         expect(periode4?.forelder).toEqual('MOR');
     });
 });

@@ -1,167 +1,76 @@
 import dayjs from 'dayjs';
 
-import { TidsperiodenString } from '@navikt/fp-utils';
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { UttaksplanHull, Uttaksplanperiode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
+import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import { isPrematuruker } from './periodeUtils';
 
-const periodeKey = (fom: string, tom: string) => `${fom}–${tom}`;
-
-const beggePerioderFørFamiliehendelsedato = (
-    permisjonsperiode: Uttaksplanperiode | undefined,
-    periode: Uttaksplanperiode | undefined,
-    famdato: string,
-) => {
-    if (!periode || !permisjonsperiode) {
-        return false;
-    }
-
-    if (dayjs(permisjonsperiode.tom).isBefore(famdato) && dayjs(periode.tom).isBefore(famdato)) {
-        return true;
-    }
-
-    return false;
-};
-
-const beggePerioderEtterFamiliehendelsedato = (
-    permisjonsperiode: Uttaksplanperiode | undefined,
-    periode: Uttaksplanperiode | undefined,
-    famdato: string,
-) => {
-    if (!periode || !permisjonsperiode) {
-        return false;
-    }
-
-    if (dayjs(permisjonsperiode.fom).isSameOrAfter(famdato) && dayjs(periode.fom).isSameOrAfter(famdato)) {
-        return true;
-    }
-
-    return false;
-};
-
-const beggePerioderFørEllerEtterFamiliehendelsedato = (
-    permisjonsperiode: Uttaksplanperiode | undefined,
-    periode: Uttaksplanperiode | undefined,
-    famdato: string,
-) => {
-    return (
-        beggePerioderEtterFamiliehendelsedato(permisjonsperiode, periode, famdato) ||
-        beggePerioderFørFamiliehendelsedato(permisjonsperiode, periode, famdato)
-    );
-};
-
-export const mapUttaksplanperioderTilPeriodemap = (
-    perioder: Uttaksplanperiode[],
+export const mapUttaksplanperioderTilRaderIListe = (
+    saksperioderInkludertHull: Uttaksplanperiode[],
     familiehendelsesdato: string,
-): Map<string, Uttaksplanperiode[]> => {
-    const grupper = new Map<string, Uttaksplanperiode[]>();
+): Uttaksplanperiode[][] => {
+    const radIListeMap = new Map<string, Uttaksplanperiode[]>();
+    let aktivRad: Uttaksplanperiode[] | undefined;
 
-    let aktivGruppe: Uttaksplanperiode[] | undefined;
-    let aktivFom: string | undefined;
-
-    const avsluttAktivGruppe = () => {
-        if (!aktivGruppe || !aktivFom) {
+    const avsluttAktivRad = () => {
+        if (!aktivRad) {
             return;
         }
 
-        const tom = aktivGruppe.at(-1)!.tom;
-        grupper.set(periodeKey(aktivFom, tom), aktivGruppe);
-
-        aktivGruppe = undefined;
-        aktivFom = undefined;
+        const fom = aktivRad[0]!.fom;
+        const tom = aktivRad.at(-1)!.tom;
+        radIListeMap.set(periodeKey(fom, tom), aktivRad);
+        aktivRad = undefined;
     };
 
-    for (let i = 0; i < perioder.length; i++) {
-        const periode = perioder[i]!;
-        const neste = perioder[i + 1];
+    let index = 0;
 
-        /**
-         * Hull → alltid egen gruppe
-         */
-        if (erHull(periode)) {
-            avsluttAktivGruppe();
-            grupper.set(periodeKey(periode.fom, periode.tom), [periode]);
+    while (index < saksperioderInkludertHull.length) {
+        const periode = saksperioderInkludertHull[index]!;
+
+        // Hull / Prematuruker / Utsettelse -> alltid egen rad
+        if (erUttaksplanHull(periode) || isPrematuruker(periode) || erUtsettelse(periode)) {
+            avsluttAktivRad();
+            radIListeMap.set(periodeKey(periode.fom, periode.tom), [periode]);
+            index += 1;
             continue;
         }
 
-        /**
-         * Prematuruker → alltid egen gruppe
-         */
-        if (erVanligUttakPeriode(periode) && isPrematuruker(periode)) {
-            avsluttAktivGruppe();
-            grupper.set(periodeKey(periode.fom, periode.tom), [periode]);
+        const nestePeriode = saksperioderInkludertHull[index + 1];
+
+        // Samtidig uttak -> En rad for to perioder
+        if (nestePeriode && erSamtidigUttak(periode, nestePeriode)) {
+            avsluttAktivRad();
+            radIListeMap.set(periodeKey(periode.fom, periode.tom), [periode, nestePeriode]);
+            index += 2; // Hopper over neste periode
             continue;
         }
 
-        /**
-         * Utsettelse - Alltid egen rad
-         */
-        if (erVanligUttakPeriode(periode) && !!periode.utsettelseÅrsak) {
-            avsluttAktivGruppe();
-            grupper.set(periodeKey(periode.fom, periode.tom), [periode]);
+        // Start ny rad
+        if (!aktivRad) {
+            aktivRad = [periode];
+            index += 1;
             continue;
         }
 
-        /**
-         * Samtidig uttak → to og to perioder
-         */
-        if (neste && erSamtidig(periode, neste)) {
-            avsluttAktivGruppe();
-            grupper.set(periodeKey(periode.fom, periode.tom), [periode, neste]);
-            i++; // konsumer neste periode eksplisitt
+        // Skal ligge på samme rad som forrige
+        const forrige = aktivRad.at(-1)!;
+        if (kanGrupperesPåSammeRad(forrige, periode, familiehendelsesdato)) {
+            aktivRad.push(periode);
+            index += 1;
             continue;
         }
 
-        /**
-         * Start ny gruppe
-         */
-        if (!aktivGruppe) {
-            aktivGruppe = [periode];
-            aktivFom = periode.fom;
-            continue;
-        }
-
-        /**
-         * Utvid aktiv gruppe
-         */
-        const forrige = aktivGruppe.at(-1)!;
-
-        if (kanGrupperes(forrige, periode, familiehendelsesdato)) {
-            aktivGruppe.push(periode);
-            continue;
-        }
-
-        /**
-         * Avslutt eksisterende gruppe og start ny
-         */
-        avsluttAktivGruppe();
-        aktivGruppe = [periode];
-        aktivFom = periode.fom;
+        // Avslutt aktiv rad og start ny
+        avsluttAktivRad();
+        aktivRad = [periode];
+        index += 1;
     }
 
-    avsluttAktivGruppe();
+    avsluttAktivRad();
 
-    return grupper;
+    return Array.from(radIListeMap.values());
 };
-
-const erHull = (p: Uttaksplanperiode): p is UttaksplanHull => 'hullType' in p;
-
-const erSamtidig = (a: Uttaksplanperiode, b: Uttaksplanperiode): boolean =>
-    !erHull(a) &&
-    !erHull(b) &&
-    TidsperiodenString({ fom: a.fom, tom: a.tom }).erLik({
-        fom: b.fom,
-        tom: b.tom,
-    });
-
-const harSammeForelder = (a: Uttaksplanperiode, b: Uttaksplanperiode): boolean =>
-    'forelder' in a && 'forelder' in b && a.forelder === b.forelder;
-
-const kanGrupperes = (forrige: Uttaksplanperiode, neste: Uttaksplanperiode, familiehendelsesdato: string): boolean =>
-    !erHull(forrige) &&
-    !erHull(neste) &&
-    harSammeForelder(forrige, neste) &&
-    beggePerioderFørEllerEtterFamiliehendelsedato(forrige, neste, familiehendelsesdato);
 
 export const filtrerBortAnnenPartsIdentiskePerioder = (
     uttaksplanperiode: Uttaksplanperiode[],
@@ -176,3 +85,67 @@ export const filtrerBortAnnenPartsIdentiskePerioder = (
 const erPeriodeForSøker = (periode: Uttaksplanperiode, erFarEllerMedmor: boolean) =>
     erVanligUttakPeriode(periode) &&
     ((periode.forelder === 'MOR' && !erFarEllerMedmor) || (periode.forelder === 'FAR_MEDMOR' && erFarEllerMedmor));
+
+const periodeKey = (fom: string, tom: string) => `${fom}–${tom}`;
+
+const erSamtidigUttak = (a: Uttaksplanperiode, b: Uttaksplanperiode): boolean =>
+    !erUttaksplanHull(a) && !erUttaksplanHull(b) && a.fom === b.fom && a.tom === b.tom;
+
+const harSammeForelder = (a: Uttaksplanperiode, b: Uttaksplanperiode): boolean =>
+    'forelder' in a && 'forelder' in b && a.forelder === b.forelder;
+
+const kanGrupperesPåSammeRad = (
+    forrige: Uttaksplanperiode,
+    nestePeriode: Uttaksplanperiode,
+    familiehendelsesdato: string,
+): boolean =>
+    !erUttaksplanHull(forrige) &&
+    !erUttaksplanHull(nestePeriode) &&
+    harSammeForelder(forrige, nestePeriode) &&
+    beggePerioderFørEllerEtterFamiliehendelsedato(forrige, nestePeriode, familiehendelsesdato);
+
+const beggePerioderFørEllerEtterFamiliehendelsedato = (
+    uttaksplanperiode: Uttaksplanperiode | undefined,
+    periode: Uttaksplanperiode | undefined,
+    famdato: string,
+) => {
+    return (
+        beggePerioderEtterFamiliehendelsedato(uttaksplanperiode, periode, famdato) ||
+        beggePerioderFørFamiliehendelsedato(uttaksplanperiode, periode, famdato)
+    );
+};
+const erUtsettelse = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
+    return erVanligUttakPeriode(periode) && !!periode.utsettelseÅrsak;
+};
+
+const beggePerioderFørFamiliehendelsedato = (
+    uttaksplanperiode: Uttaksplanperiode | undefined,
+    periode: Uttaksplanperiode | undefined,
+    famdato: string,
+) => {
+    if (!periode || !uttaksplanperiode) {
+        return false;
+    }
+
+    if (dayjs(uttaksplanperiode.tom).isBefore(famdato) && dayjs(periode.tom).isBefore(famdato)) {
+        return true;
+    }
+
+    return false;
+};
+
+const beggePerioderEtterFamiliehendelsedato = (
+    uttaksplanperiode: Uttaksplanperiode | undefined,
+    periode: Uttaksplanperiode | undefined,
+    famdato: string,
+) => {
+    if (!periode || !uttaksplanperiode) {
+        return false;
+    }
+
+    if (dayjs(uttaksplanperiode.fom).isSameOrAfter(famdato) && dayjs(periode.fom).isSameOrAfter(famdato)) {
+        return true;
+    }
+
+    return false;
+};
