@@ -5,11 +5,11 @@ import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { TidsperiodenString } from '@navikt/fp-utils';
 
-import { Planperiode } from '../../../types/Planperiode';
+import { Uttaksplanperiode } from '../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../utils/dateUtils';
 
 interface Props {
-    periode: Planperiode;
+    periode: Uttaksplanperiode;
     isHull: boolean;
 }
 

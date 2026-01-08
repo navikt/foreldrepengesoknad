@@ -1,27 +1,29 @@
 import dayjs from 'dayjs';
 import { Fragment } from 'react';
 
-import { isValidTidsperiodeString } from '@navikt/fp-utils';
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { Permisjonsperiode } from '../../types/Permisjonsperiode';
-import { Planperiode } from '../../types/Planperiode';
-import { Periodene } from '../../utils/Periodene';
-import { mapPerioderToPermisjonsperiode } from '../../utils/permisjonsperiodeUtils';
+import { Uttaksplanperiode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
+import { mapUttaksplanperioderTilPeriodemap } from '../../utils/permisjonsperiodeUtils';
+import { getFørsteUttaksplanperiodeFom, getSisteUttaksplanperiodeTom } from '../uttaksplanperiodeUtils';
 import { PeriodeListeItem } from './../periode-liste-item/PeriodeListeItem';
 
 interface Props {
+    saksperioderInkludertHull: Uttaksplanperiode[];
     isReadOnly: boolean;
-    perioder: Planperiode[];
-    handleAddPeriode: (nyPeriode: Planperiode) => void;
-    handleUpdatePeriode: (oppdatertPeriode: Planperiode, gammelPeriode: Planperiode) => void;
-    handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
+    handleAddPeriode: (nyPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => void;
+    handleUpdatePeriode: (
+        oppdatertPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+        gammelPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    ) => void;
+    handleDeletePerioder: (slettedePerioder: Array<{ fom: string; tom: string }>) => void;
     isAllAccordionsOpen?: boolean;
 }
 
 export const PeriodeListe = ({
+    saksperioderInkludertHull,
     isReadOnly,
-    perioder,
     handleUpdatePeriode,
     handleDeletePerioder,
     handleAddPeriode,
@@ -29,31 +31,43 @@ export const PeriodeListe = ({
 }: Props) => {
     const { familiehendelsedato } = useUttaksplanData();
 
-    const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder, familiehendelsedato);
+    const permisjonsperioder = mapUttaksplanperioderTilPeriodemap(saksperioderInkludertHull, familiehendelsedato);
     const indexOfFørstePeriodeEtterFødsel = getIndexOfFørstePeriodeEtterFødsel(permisjonsperioder, familiehendelsedato);
-    const perioderEtterFamdato = Periodene(perioder).getPerioderEtterFamiliehendelsesdato(familiehendelsedato);
+    const perioderEtterFamdato = saksperioderInkludertHull.filter(
+        (periode) =>
+            dayjs(periode.fom).isSameOrAfter(familiehendelsedato, 'day') &&
+            !(
+                erVanligUttakPeriode(periode) &&
+                periode.kontoType !== undefined &&
+                periode.kontoType === 'FORELDREPENGER_FØR_FØDSEL'
+            ),
+    );
+
+    const uttaksplanperioder = Array.from(permisjonsperioder.values());
 
     return (
         <div>
-            {permisjonsperioder.map((permisjonsperiode, index) => {
+            {uttaksplanperioder.map((permisjonsperiode, index) => {
                 if (perioderEtterFamdato.length === 0) {
                     return (
-                        <Fragment key={`${permisjonsperiode.tidsperiode.fom}-${permisjonsperiode.tidsperiode.tom}`}>
+                        <Fragment
+                            key={`${getFørsteUttaksplanperiodeFom(permisjonsperiode)}-${getSisteUttaksplanperiodeTom(permisjonsperiode)}`}
+                        >
                             <PeriodeListeItem
                                 isReadOnly={isReadOnly}
                                 handleAddPeriode={handleAddPeriode}
                                 handleUpdatePeriode={handleUpdatePeriode}
                                 handleDeletePerioder={handleDeletePerioder}
-                                permisjonsperiode={permisjonsperiode}
+                                uttaksplanperioder={permisjonsperiode}
                                 isAllAccordionsOpen={isAllAccordionsOpen}
                             />
-                            {permisjonsperioder.length - 1 === index && (
+                            {uttaksplanperioder.length - 1 === index && (
                                 <PeriodeListeItem
                                     isReadOnly={isReadOnly}
                                     handleAddPeriode={handleAddPeriode}
                                     handleUpdatePeriode={handleUpdatePeriode}
                                     handleDeletePerioder={handleDeletePerioder}
-                                    permisjonsperiode={permisjonsperiode}
+                                    uttaksplanperioder={permisjonsperiode}
                                     erFamiliehendelse
                                     isAllAccordionsOpen={isAllAccordionsOpen}
                                 />
@@ -62,14 +76,16 @@ export const PeriodeListe = ({
                     );
                 } else {
                     return (
-                        <Fragment key={`${permisjonsperiode.tidsperiode.fom}-${permisjonsperiode.tidsperiode.tom}`}>
+                        <Fragment
+                            key={`${getFørsteUttaksplanperiodeFom(permisjonsperiode)}-${getSisteUttaksplanperiodeTom(permisjonsperiode)}`}
+                        >
                             {indexOfFørstePeriodeEtterFødsel === index && (
                                 <PeriodeListeItem
                                     isReadOnly={isReadOnly}
                                     handleAddPeriode={handleAddPeriode}
                                     handleUpdatePeriode={handleUpdatePeriode}
                                     handleDeletePerioder={handleDeletePerioder}
-                                    permisjonsperiode={permisjonsperiode}
+                                    uttaksplanperioder={permisjonsperiode}
                                     erFamiliehendelse
                                     isAllAccordionsOpen={isAllAccordionsOpen}
                                 />
@@ -79,7 +95,7 @@ export const PeriodeListe = ({
                                 handleAddPeriode={handleAddPeriode}
                                 handleUpdatePeriode={handleUpdatePeriode}
                                 handleDeletePerioder={handleDeletePerioder}
-                                permisjonsperiode={permisjonsperiode}
+                                uttaksplanperioder={permisjonsperiode}
                                 isAllAccordionsOpen={isAllAccordionsOpen}
                             />
                         </Fragment>
@@ -90,10 +106,11 @@ export const PeriodeListe = ({
     );
 };
 
-const getIndexOfFørstePeriodeEtterFødsel = (permisjonsperioder: Permisjonsperiode[], familiehendelsesdato: string) => {
-    return permisjonsperioder.findIndex(
-        (p) =>
-            isValidTidsperiodeString(p.tidsperiode) &&
-            dayjs(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato, 'd'),
+const getIndexOfFørstePeriodeEtterFødsel = (
+    permisjonsperioder: Map<string, Uttaksplanperiode[]>,
+    familiehendelsesdato: string,
+) => {
+    return Array.from(permisjonsperioder.values()).findIndex((p) =>
+        dayjs(p.at(0)!.fom).isSameOrAfter(familiehendelsesdato, 'd'),
     );
 };

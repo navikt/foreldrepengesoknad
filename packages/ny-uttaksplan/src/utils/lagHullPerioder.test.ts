@@ -1,6 +1,5 @@
 import { ForeldreInfo } from '../types/ForeldreInfo';
-import { PeriodeHullType } from '../types/Planperiode';
-import { lagHullPerioder } from './lagHullPerioder';
+import { lagPerioderUtenUttak, lagTapteDagerPerioder } from './lagHullPerioder';
 
 const DEFAULT_FORELDRE_INFO = {
     søker: 'MOR',
@@ -23,14 +22,14 @@ describe('lagHullPerioder', () => {
             },
         ];
 
-        const perioderMedHull = lagHullPerioder(perioder, familiehendelsedato, 'fødsel', DEFAULT_FORELDRE_INFO);
+        const perioderMedHull = lagTapteDagerPerioder(perioder, familiehendelsedato, 'fødsel', DEFAULT_FORELDRE_INFO);
 
         expect(perioderMedHull).toEqual([
             {
                 fom: '2025-04-11',
                 tom: '2025-05-06',
                 forelder: 'MOR',
-                hullType: PeriodeHullType.TAPTE_DAGER,
+                hullType: 'TAPTE_DAGER',
             },
         ]);
     });
@@ -49,20 +48,20 @@ describe('lagHullPerioder', () => {
             },
         ];
 
-        const perioderMedHull = lagHullPerioder(perioder, familiehendelsedato, 'fødsel', DEFAULT_FORELDRE_INFO);
+        const perioderMedHull = lagTapteDagerPerioder(perioder, familiehendelsedato, 'fødsel', DEFAULT_FORELDRE_INFO);
 
         expect(perioderMedHull).toEqual([
             {
                 fom: '2025-04-11',
                 tom: '2025-04-13',
                 forelder: 'MOR',
-                hullType: PeriodeHullType.TAPTE_DAGER,
+                hullType: 'TAPTE_DAGER',
             },
             {
                 fom: '2025-04-21',
                 tom: '2025-05-06',
                 forelder: 'MOR',
-                hullType: PeriodeHullType.TAPTE_DAGER,
+                hullType: 'TAPTE_DAGER',
             },
         ]);
     });
@@ -77,7 +76,7 @@ describe('lagHullPerioder', () => {
             },
         ];
 
-        const perioderMedHull = lagHullPerioder(perioder, familiehendelsedato, 'adopsjon', DEFAULT_FORELDRE_INFO);
+        const perioderMedHull = lagTapteDagerPerioder(perioder, familiehendelsedato, 'adopsjon', DEFAULT_FORELDRE_INFO);
 
         expect(perioderMedHull).toEqual([]);
     });
@@ -92,7 +91,7 @@ describe('lagHullPerioder', () => {
             },
         ];
 
-        const perioderMedHull = lagHullPerioder(perioder, familiehendelsedato, 'fødsel', DEFAULT_FORELDRE_INFO);
+        const perioderMedHull = lagTapteDagerPerioder(perioder, familiehendelsedato, 'fødsel', DEFAULT_FORELDRE_INFO);
 
         expect(perioderMedHull).toEqual([]);
     });
@@ -113,14 +112,14 @@ describe('lagHullPerioder', () => {
             rettighetType: 'BARE_SØKER_RETT',
         } satisfies ForeldreInfo;
 
-        const perioderMedHull = lagHullPerioder(perioder, familiehendelsedato, 'fødsel', foreldreInfo);
+        const perioderMedHull = lagTapteDagerPerioder(perioder, familiehendelsedato, 'fødsel', foreldreInfo);
 
         expect(perioderMedHull).toEqual([
             {
                 fom: '2025-05-08',
                 tom: '2025-08-09',
                 forelder: 'FAR_MEDMOR',
-                hullType: PeriodeHullType.TAPTE_DAGER,
+                hullType: 'TAPTE_DAGER',
             },
         ]);
     });
@@ -141,14 +140,14 @@ describe('lagHullPerioder', () => {
             rettighetType: 'BARE_SØKER_RETT',
         } satisfies ForeldreInfo;
 
-        const perioderMedHull = lagHullPerioder(perioder, familiehendelsedato, 'adopsjon', foreldreInfo);
+        const perioderMedHull = lagTapteDagerPerioder(perioder, familiehendelsedato, 'adopsjon', foreldreInfo);
 
         expect(perioderMedHull).toEqual([
             {
                 fom: '2025-03-26',
                 tom: '2025-08-09',
                 forelder: 'FAR_MEDMOR',
-                hullType: PeriodeHullType.TAPTE_DAGER,
+                hullType: 'TAPTE_DAGER',
             },
         ]);
     });
@@ -173,14 +172,14 @@ describe('lagHullPerioder', () => {
             rettighetType: 'BARE_SØKER_RETT',
         } satisfies ForeldreInfo;
 
-        const perioderMedHull = lagHullPerioder(perioder, familiehendelsedato, 'adopsjon', foreldreInfo);
+        const perioderMedHull = lagTapteDagerPerioder(perioder, familiehendelsedato, 'adopsjon', foreldreInfo);
 
         expect(perioderMedHull).toEqual([
             {
                 fom: '2025-03-26',
                 tom: '2025-08-09',
                 forelder: 'FAR_MEDMOR',
-                hullType: PeriodeHullType.TAPTE_DAGER,
+                hullType: 'TAPTE_DAGER',
             },
         ]);
     });
@@ -205,14 +204,82 @@ describe('lagHullPerioder', () => {
             rettighetType: 'BARE_SØKER_RETT',
         } satisfies ForeldreInfo;
 
-        const perioderMedHull = lagHullPerioder(perioder, familiehendelsedato, 'adopsjon', foreldreInfo);
+        const perioderMedHull = lagTapteDagerPerioder(perioder, familiehendelsedato, 'adopsjon', foreldreInfo);
 
         expect(perioderMedHull).toEqual([
             {
                 fom: '2025-03-31',
                 tom: '2025-08-09',
                 forelder: 'FAR_MEDMOR',
-                hullType: PeriodeHullType.TAPTE_DAGER,
+                hullType: 'TAPTE_DAGER',
+            },
+        ]);
+    });
+
+    it('skal legge til perioder uten uttak i hullene mellom perioder', () => {
+        const familiehendelsedato = '2025-03-20';
+
+        const perioder = [
+            {
+                fom: '2025-03-26',
+                tom: '2025-04-10',
+            },
+            {
+                fom: '2025-04-20',
+                tom: '2025-04-30',
+            },
+            {
+                fom: '2025-07-26',
+                tom: '2025-08-10',
+            },
+        ];
+
+        const perioderUtenUttak = lagPerioderUtenUttak(perioder, familiehendelsedato);
+
+        expect(perioderUtenUttak).toEqual([
+            {
+                fom: '2025-04-11',
+                tom: '2025-04-19',
+                hullType: 'PERIODE_UTEN_UTTAK',
+                forelder: 'MOR',
+            },
+            {
+                fom: '2025-05-01',
+                tom: '2025-07-25',
+                hullType: 'PERIODE_UTEN_UTTAK',
+                forelder: 'MOR',
+            },
+        ]);
+    });
+
+    it('skal lage to perioder uten uttak om familiehendelsesdato er i hullet mellom ekisterende perioder', () => {
+        const familiehendelsedato = '2025-03-20';
+
+        const perioder = [
+            {
+                fom: '2025-03-01',
+                tom: '2025-03-10',
+            },
+            {
+                fom: '2025-04-20',
+                tom: '2025-04-30',
+            },
+        ];
+
+        const perioderUtenUttak = lagPerioderUtenUttak(perioder, familiehendelsedato);
+
+        expect(perioderUtenUttak).toEqual([
+            {
+                fom: '2025-03-11',
+                tom: '2025-03-19',
+                hullType: 'PERIODE_UTEN_UTTAK',
+                forelder: 'MOR',
+            },
+            {
+                fom: '2025-03-21',
+                tom: '2025-04-19',
+                hullType: 'PERIODE_UTEN_UTTAK',
+                forelder: 'MOR',
             },
         ]);
     });

@@ -4,8 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { omitMany } from '@navikt/fp-utils';
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { SaksperiodeBuilder } from './builder/SaksperiodeBuilder';
 import { UttaksplanHandlingKnapper } from './components/UttaksplanHandlingKnapper';
@@ -13,8 +12,7 @@ import { LeggTilPeriodePanel } from './components/legg-til-periode-panel/LeggTil
 import { PeriodeListe } from './components/periode-liste/PeriodeListe';
 import { useUttaksplanData } from './context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from './context/UttaksplanRedigeringContext';
-import { Planperiode } from './types/Planperiode';
-import { isHull, isPeriodeUtenUttak } from './utils/periodeUtils';
+import { useAlleSaksperioderInklTapteDagerOgPerioderUtenUttak } from './utils/lagHullPerioder';
 
 interface Props {
     isReadOnly: boolean;
@@ -23,9 +21,11 @@ interface Props {
 export const UttaksplanNy = ({ isReadOnly }: Props) => {
     const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
-    const { uttaksplan, saksperioder } = useUttaksplanData();
+    const { saksperioder } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
+
+    const saksperioderInkludertHull = useAlleSaksperioderInklTapteDagerOgPerioderUtenUttak();
 
     const saksperiodeBuilder = new SaksperiodeBuilder(saksperioder);
 
@@ -37,33 +37,34 @@ export const UttaksplanNy = ({ isReadOnly }: Props) => {
 
     return (
         <VStack gap="space-16">
-            {uttaksplan.length > 0 && (
+            {saksperioder.length > 0 && (
                 <PeriodeListe
+                    saksperioderInkludertHull={saksperioderInkludertHull}
                     isReadOnly={isReadOnly}
-                    perioder={uttaksplan}
-                    handleAddPeriode={(nyPeriode: Planperiode) => {
-                        const nyeSaksperioder = saksperiodeBuilder
-                            .leggTilSaksperioder(fjernHullOgUtenUttak([nyPeriode]))
-                            .getSaksperioder();
+                    handleAddPeriode={(nyPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
+                        const nyeSaksperioder = saksperiodeBuilder.leggTilSaksperioder([nyPeriode]).getSaksperioder();
                         uttaksplanRedigering?.oppdaterUttaksplan?.(nyeSaksperioder);
                     }}
-                    handleUpdatePeriode={(oppdatertPeriode: Planperiode, gammelPeriode: Planperiode) => {
+                    handleUpdatePeriode={(
+                        oppdatertPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+                        gammelPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+                    ) => {
                         const nyeSaksperioder = saksperiodeBuilder
                             .fjernSaksperioder([gammelPeriode])
-                            .leggTilSaksperioder(fjernHullOgUtenUttak([oppdatertPeriode]))
+                            .leggTilSaksperioder([oppdatertPeriode])
                             .getSaksperioder();
                         uttaksplanRedigering?.oppdaterUttaksplan?.(nyeSaksperioder);
                     }}
-                    handleDeletePerioder={(slettedePerioder: Planperiode[]) => {
+                    handleDeletePerioder={(slettedePerioder: Array<{ fom: string; tom: string }>) => {
                         const nyeSaksperioder = saksperiodeBuilder
-                            .fjernSaksperioder(fjernHullOgUtenUttak(slettedePerioder))
+                            .fjernSaksperioder(slettedePerioder)
                             .getSaksperioder();
                         uttaksplanRedigering?.oppdaterUttaksplan?.(nyeSaksperioder);
                     }}
                     isAllAccordionsOpen={isAllAccordionsOpen}
                 />
             )}
-            {uttaksplan.length === 0 && (
+            {saksperioder.length === 0 && (
                 <HStack gap="space-12">
                     <NotePencilDashIcon fontSize={24} />
                     <VStack gap="space-8">
@@ -84,10 +85,16 @@ export const UttaksplanNy = ({ isReadOnly }: Props) => {
             {isLeggTilPeriodePanelOpen && uttaksplanRedigering && (
                 <LeggTilPeriodePanel
                     onCancel={() => setIsLeggTilPeriodePanelOpen(false)}
-                    handleAddPeriode={(nyPeriode: Planperiode) => {
-                        saksperiodeBuilder.leggTilSaksperioder(fjernHullOgUtenUttak([nyPeriode]));
+                    handleAddPeriode={(nyPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
+                        saksperiodeBuilder.leggTilSaksperioder([nyPeriode]);
                         uttaksplanRedigering?.oppdaterUttaksplan?.(saksperiodeBuilder.getSaksperioder());
                         setIsLeggTilPeriodePanelOpen(false);
+                    }}
+                    handleDeletePerioder={(slettedePerioder: Array<{ fom: string; tom: string }>) => {
+                        const nyeSaksperioder = saksperiodeBuilder
+                            .fjernSaksperioder(slettedePerioder)
+                            .getSaksperioder();
+                        uttaksplanRedigering?.oppdaterUttaksplan?.(nyeSaksperioder);
                     }}
                 />
             )}
@@ -110,19 +117,5 @@ export const UttaksplanNy = ({ isReadOnly }: Props) => {
                 />
             )}
         </VStack>
-    );
-};
-
-const fjernHullOgUtenUttak = (planperiode: Planperiode[]) => {
-    // TODO (TOR) Trengs ein filtrere på dette?
-    const t = planperiode.filter((p) => !isHull(p) && !isPeriodeUtenUttak(p));
-
-    return t.map(
-        (p) =>
-            omitMany(p, [
-                'periodeHullÅrsak',
-                'skalIkkeHaUttakFørTermin',
-                'erAnnenPartEøs',
-            ]) satisfies UttakPeriode_fpoversikt,
     );
 };

@@ -4,7 +4,7 @@ import { Box } from '@navikt/ds-react';
 
 import { CalendarPeriod } from '@navikt/fp-ui';
 
-import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { useAlleSaksperioderInklTapteDager } from '../../utils/lagHullPerioder';
 import { LeggTilEllerEndrePeriodePanel } from './LeggTilEllerEndrePeriodePanel';
 import { PeriodeIkkeValgtPanel } from './PeriodeIkkeValgtPanel';
 import { PeriodeOversiktPanel } from './PeriodeOversiktPanel';
@@ -37,9 +37,10 @@ const RedigerKalender = ({
     labels: React.ReactNode;
 }) => {
     const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
-    const { saksperioderInkludertHull } = useUttaksplanData();
 
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
+
+    const saksperioderInkludertHull = useAlleSaksperioderInklTapteDager();
 
     useEffect(() => {
         // Reset redigeringmodus hvis alle perioder fjernes

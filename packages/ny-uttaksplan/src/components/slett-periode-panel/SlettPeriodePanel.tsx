@@ -9,8 +9,7 @@ import { NavnPåForeldre } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 import { isRequired } from '@navikt/fp-validation';
 
-import { Permisjonsperiode } from '../../types/Permisjonsperiode';
-import { Planperiode } from '../../types/Planperiode';
+import { Uttaksplanperiode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { genererPeriodeId } from '../../utils/periodeUtils';
 import { getStønadskontoNavn } from '../../utils/stønadskontoerUtils';
 
@@ -18,8 +17,8 @@ const ARIA_LABEL_ID = 'slett-periode-panel-heading';
 
 interface Props {
     closePanel: () => void;
-    handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
-    permisjonsperiode: Permisjonsperiode;
+    handleDeletePerioder: (slettedePerioder: Array<{ fom: string; tom: string }>) => void;
+    uttaksplanperioder: Uttaksplanperiode[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
 }
@@ -31,12 +30,11 @@ interface FormValues {
 export const SlettPeriodePanel = ({
     closePanel,
     handleDeletePerioder,
-    permisjonsperiode,
+    uttaksplanperioder,
     navnPåForeldre,
     erFarEllerMedmor,
 }: Props) => {
     const intl = useIntl();
-    const { perioder } = permisjonsperiode;
 
     const formMethods = useForm<FormValues>({
         defaultValues: {
@@ -46,16 +44,16 @@ export const SlettPeriodePanel = ({
 
     const onSubmit = (values: FormValues) => {
         if (values.perioder.length === 1) {
-            const periode = perioder.find((p) => genererPeriodeId(p) === values.perioder[0]);
+            const periode = uttaksplanperioder.find((p) => genererPeriodeId(p) === values.perioder[0]);
 
             if (periode) {
                 handleDeletePerioder([periode]);
             }
         } else {
-            const slettedePerioder: Planperiode[] = [];
+            const slettedePerioder: Uttaksplanperiode[] = [];
 
             values.perioder?.map((id) => {
-                const periode = perioder.find((p) => genererPeriodeId(p) === id);
+                const periode = uttaksplanperioder.find((p) => genererPeriodeId(p) === id);
 
                 if (periode) {
                     slettedePerioder.push(periode);
@@ -89,15 +87,21 @@ export const SlettPeriodePanel = ({
                             validate={[isRequired(intl.formatMessage({ id: 'uttaksplan.velgperiode' }))]}
                             label={intl.formatMessage({ id: 'uttaksplan.perioder' })}
                         >
-                            {perioder.map((p, index) => {
+                            {uttaksplanperioder.map((p, index) => {
                                 const morsAktivitet =
-                                    !p.erAnnenPartEøs && p.morsAktivitet ? p.morsAktivitet : undefined;
+                                    erVanligUttakPeriode(p) && p.morsAktivitet ? p.morsAktivitet : undefined;
 
                                 const id = genererPeriodeId(p);
                                 return (
                                     <Checkbox key={id} name={id} value={id} autoFocus={index === 0}>
                                         {`${formatDate(p.fom)} - ${formatDate(p.tom)} -
-                                        ${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor, morsAktivitet)}`}
+                                        ${getStønadskontoNavn(
+                                            intl,
+                                            navnPåForeldre,
+                                            erFarEllerMedmor,
+                                            morsAktivitet,
+                                            erVanligUttakPeriode(p) ? p.kontoType : undefined,
+                                        )}`}
                                     </Checkbox>
                                 );
                             })}

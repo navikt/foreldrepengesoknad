@@ -13,10 +13,10 @@ export const getStønadskontoNavnSimple = (intl: IntlShape, konto: KontoTypeUtta
 
 export const getStønadskontoNavn = (
     intl: IntlShape,
-    konto: KontoType,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
     morsAktivitet: MorsAktivitet | undefined,
+    konto?: KontoType,
     erAleneOmOmsorg?: boolean,
 ) => {
     let navn;

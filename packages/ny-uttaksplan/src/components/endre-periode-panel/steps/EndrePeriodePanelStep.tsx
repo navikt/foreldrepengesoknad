@@ -4,11 +4,17 @@ import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import { BrukerRolleSak_fpoversikt, KontoTypeUttak, MorsAktivitet } from '@navikt/fp-types';
+import {
+    BrukerRolleSak_fpoversikt,
+    KontoTypeUttak,
+    MorsAktivitet,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
-import { PeriodeHullType, Planperiode, PlanperiodeVanlig } from '../../../types/Planperiode';
+import { erUttaksplanHull, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
 import { getGradering, getGraderingsInfo } from '../../../utils/graderingUtils';
 import { HvaVilDuGjøre } from '../../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 import { PanelButtons } from '../../panel-buttons/PanelButtons';
@@ -24,8 +30,12 @@ interface Props {
     panelData: PanelData;
     setPanelData: (data: PanelData) => void;
     closePanel: () => void;
-    handleUpdatePeriode: (oppdatertPeriode: Planperiode, gammelPeriode: Planperiode) => void;
-    handleAddPeriode: (nyPeriode: Planperiode) => void;
+    handleUpdatePeriode: (
+        oppdatertPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+        gammelPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    ) => void;
+    handleAddPeriode: (nyPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => void;
+    handleDeletePerioder: (slettedePerioder: Array<{ fom: string; tom: string }>) => void;
     inneholderKunEnPeriode: boolean;
 }
 
@@ -48,6 +58,7 @@ export const EndrePeriodePanelStep = ({
     closePanel,
     handleUpdatePeriode,
     handleAddPeriode,
+    handleDeletePerioder,
     inneholderKunEnPeriode,
 }: Props) => {
     const intl = useIntl();
@@ -59,11 +70,11 @@ export const EndrePeriodePanelStep = ({
 
     const getHvaVilDuGjøre = () => {
         if (valgtPeriode) {
-            if (!valgtPeriode.erAnnenPartEøs && valgtPeriode.utsettelseÅrsak) {
+            if (erVanligUttakPeriode(valgtPeriode) && valgtPeriode.utsettelseÅrsak) {
                 return HvaVilDuGjøre.LEGG_TIL_FERIE;
             }
 
-            if (valgtPeriode.periodeHullÅrsak) {
+            if (erUttaksplanHull(valgtPeriode)) {
                 return HvaVilDuGjøre.LEGG_TIL_OPPHOLD;
             }
 
@@ -75,16 +86,14 @@ export const EndrePeriodePanelStep = ({
 
     const formMethods = useForm<EndrePeriodePanelStepFormValues>({
         defaultValues:
-            !valgtPeriode || valgtPeriode?.erAnnenPartEøs
+            !valgtPeriode || !erVanligUttakPeriode(valgtPeriode)
                 ? undefined
                 : {
                       fom: valgtPeriode.fom,
                       tom: valgtPeriode.tom,
                       forelder: valgtPeriode.forelder,
                       kontoType:
-                          valgtPeriode.kontoType === 'FORELDREPENGER' &&
-                          !valgtPeriode.erAnnenPartEøs &&
-                          valgtPeriode.morsAktivitet === 'IKKE_OPPGITT'
+                          valgtPeriode.kontoType === 'FORELDREPENGER' && valgtPeriode.morsAktivitet === 'IKKE_OPPGITT'
                               ? 'AKTIVITETSFRI_KVOTE'
                               : valgtPeriode.kontoType,
                       skalDuJobbe: graderingsInfo?.skalDuJobbe ?? false,
@@ -119,29 +128,29 @@ export const EndrePeriodePanelStep = ({
 
         if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE) {
             const feriePeriode = {
-                erAnnenPartEøs: false,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: 'MOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
-            } satisfies PlanperiodeVanlig;
-            if (!valgtPeriode?.erAnnenPartEøs && valgtPeriode?.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+            } satisfies UttakPeriode_fpoversikt;
+            if (
+                valgtPeriode &&
+                erVanligUttakPeriode(valgtPeriode) &&
+                valgtPeriode.utsettelseÅrsak === 'LOVBESTEMT_FERIE'
+            ) {
                 handleUpdatePeriode(feriePeriode, valgtPeriode);
             } else {
                 handleAddPeriode(feriePeriode);
             }
         } else if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
-            // TODO (TOR) Kan ein heller sletta periode her?
-            handleAddPeriode({
-                erAnnenPartEøs: false,
-                fom: fomValue,
-                tom: tomValue,
-                forelder: 'MOR',
-                periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-            });
+            handleDeletePerioder([
+                {
+                    fom: fomValue,
+                    tom: tomValue,
+                },
+            ]);
         } else {
             const periode = {
-                erAnnenPartEøs: false,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: getForelderFromKontoType(values.kontoType, values.forelder),
@@ -149,8 +158,13 @@ export const EndrePeriodePanelStep = ({
                 morsAktivitet: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : values.morsAktivitet,
                 gradering: getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType),
                 samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
-            } satisfies PlanperiodeVanlig;
-            if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE && valgtPeriode?.kontoType) {
+            } satisfies UttakPeriode_fpoversikt;
+            if (
+                values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE &&
+                valgtPeriode &&
+                erVanligUttakPeriode(valgtPeriode) &&
+                valgtPeriode.kontoType
+            ) {
                 handleUpdatePeriode(periode, valgtPeriode);
             }
 

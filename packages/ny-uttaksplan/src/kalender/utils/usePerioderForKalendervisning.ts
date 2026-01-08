@@ -14,13 +14,13 @@ import { UttaksdagenString, formatDateIso, formaterDatoUtenDag, getFamiliehendel
 import { assertUnreachable } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { PeriodeHullType } from '../../types/Planperiode';
 import {
     Uttaksplanperiode,
     erEøsUttakPeriode,
     erUttaksplanHull,
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
+import { useAlleSaksperioderInklTapteDager } from '../../utils/lagHullPerioder';
 import {
     getAnnenForelderSamtidigUttakPeriode,
     getIndexOfSistePeriodeFørDato,
@@ -34,10 +34,11 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
     const intl = useIntl();
 
     const {
-        saksperioderInkludertHull,
         barn,
         foreldreInfo: { søker, navnPåForeldre },
     } = useUttaksplanData();
+
+    const saksperioderInkludertHull = useAlleSaksperioderInklTapteDager();
 
     const familiehendelsesdato = getFamiliehendelsedato(barn);
 
@@ -173,7 +174,7 @@ const getKalenderFargeForPeriode = (
     }
 
     if (erUttaksplanHull(periode)) {
-        return periode.hullType === PeriodeHullType.TAPTE_DAGER ? 'BLACK' : 'NONE';
+        return periode.hullType === 'TAPTE_DAGER' ? 'BLACK' : 'NONE';
     }
 
     if (erEøsUttakPeriode(periode)) {
@@ -251,7 +252,7 @@ const getKalenderSkjermleserPeriodetekst = (
     const periodenTilhører = intl.formatMessage({ id: 'kalender.srText.PeriodenTil' }, { navn });
 
     if (erUttaksplanHull(period)) {
-        if (period.hullType === PeriodeHullType.PERIODE_UTEN_UTTAK) {
+        if (period.hullType === 'PERIODE_UTEN_UTTAK') {
             return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.PeriodeUtenUttak' });
         }
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.TapteDager' });

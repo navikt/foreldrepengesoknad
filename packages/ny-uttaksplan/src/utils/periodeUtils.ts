@@ -2,95 +2,56 @@ import dayjs from 'dayjs';
 import isoWeekday from 'dayjs/plugin/isoWeek';
 import { IntlShape } from 'react-intl';
 
-import {
-    BrukerRolleSak_fpoversikt,
-    Tidsperiode,
-    UttakOppholdÅrsak_fpoversikt,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
-    UttakUtsettelseÅrsak_fpoversikt,
-} from '@navikt/fp-types';
-import {
-    TidsperiodenString,
-    UttaksdagenString,
-    capitalizeFirstLetter,
-    isValidTidsperiodeString,
-    slutterTidsperiodeInnen6UkerEtterFødsel,
-} from '@navikt/fp-utils';
+import { UttakOppholdÅrsak_fpoversikt, UttakUtsettelseÅrsak_fpoversikt } from '@navikt/fp-types';
+import { capitalizeFirstLetter, slutterTidsperiodeInnen6UkerEtterFødsel } from '@navikt/fp-utils';
 
-import { finnOgSettInnHull, settInnAnnenPartsUttak, slåSammenLikePerioder } from '../builder/uttaksplanbuilderUtils';
-import { ForeldreInfo } from '../types/ForeldreInfo';
-import { PeriodeHullType, Planperiode } from '../types/Planperiode';
-import { Uttaksplanperiode } from '../types/UttaksplanPeriode';
+import {
+    Uttaksplanperiode,
+    erEøsUttakPeriode,
+    erUttaksplanHull,
+    erVanligUttakPeriode,
+} from '../types/UttaksplanPeriode';
 
 dayjs.extend(isoWeekday);
 
-type UttakPeriode = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
-
-export function sorterPerioder(p1: Planperiode | UttakPeriode, p2: Planperiode | UttakPeriode) {
-    const tidsperiode1 = { fom: p1.fom, tom: p1.tom };
-    const tidsperiode2 = { fom: p2.fom, tom: p2.tom };
-
-    if (isValidTidsperiodeString(tidsperiode1) === false || isValidTidsperiodeString(tidsperiode2) === false) {
-        return isValidTidsperiodeString(tidsperiode1) ? 1 : -1;
-    }
-    if (dayjs(tidsperiode1.fom).isSame(tidsperiode2.fom, 'day')) {
-        return 1;
-    }
-
-    if (TidsperiodenString(tidsperiode2).erOmsluttetAv(tidsperiode1)) {
-        return 1;
-    }
-
-    return dayjs(tidsperiode1.fom).isBefore(tidsperiode2.fom, 'day') ? -1 : 1;
-}
-
-export const isUttaksperiode = (periode: Planperiode | UttakPeriode) => {
-    return periode.kontoType !== undefined && ('trekkdager' in periode || periode.utsettelseÅrsak === undefined);
+export const isUttaksperiode = (periode: Uttaksplanperiode) => {
+    return erVanligUttakPeriode(periode) && periode.utsettelseÅrsak === undefined;
 };
 
-export const isPrematuruker = (periode: Planperiode) => {
+export const isPrematuruker = (periode: Uttaksplanperiode) => {
     return (
+        erVanligUttakPeriode(periode) &&
         periode.kontoType !== undefined &&
-        !periode.erAnnenPartEøs &&
         periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER'
     );
 };
 
-export const isForeldrepengerFørFødselPeriode = (periode: Planperiode) => {
-    return periode.kontoType !== undefined && periode.kontoType === 'FORELDREPENGER_FØR_FØDSEL';
-};
-
-export const isUtsettelsesperiode = (periode: Planperiode) => {
+export const isUtsettelsesperiode = (periode: Uttaksplanperiode) => {
     return (
-        !periode.erAnnenPartEøs &&
+        erVanligUttakPeriode(periode) &&
         periode.utsettelseÅrsak !== undefined &&
         periode.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER'
     );
 };
 
-export const isUtsettelsesperiodeAnnenPart = (periode: Planperiode) => {
-    return !periode.erAnnenPartEøs && periode.utsettelseÅrsak !== undefined;
+export const isOverføringsperiode = (periode: Uttaksplanperiode) => {
+    return erVanligUttakPeriode(periode) && periode.overføringÅrsak !== undefined;
 };
 
-export const isOverføringsperiode = (periode: Planperiode) => {
-    return !periode.erAnnenPartEøs && periode.overføringÅrsak !== undefined;
+export const isOppholdsperiode = (periode: Uttaksplanperiode) => {
+    return erVanligUttakPeriode(periode) && periode.oppholdÅrsak !== undefined;
 };
 
-export const isOppholdsperiode = (periode: Planperiode) => {
-    return !periode.erAnnenPartEøs && periode.oppholdÅrsak !== undefined;
-};
-
-export const isAvslåttPeriode = (periode: Planperiode | UttakPeriode) => {
+export const isAvslåttPeriode = (periode: Uttaksplanperiode) => {
     return 'resultat' in periode && periode.resultat && periode.resultat.innvilget !== true;
 };
 
-export const isHull = (periode: Planperiode) => {
-    return periode.periodeHullÅrsak !== undefined && periode.periodeHullÅrsak === PeriodeHullType.TAPTE_DAGER;
+export const isTapteDager = (periode: Uttaksplanperiode) => {
+    return erUttaksplanHull(periode) && periode.hullType === 'TAPTE_DAGER';
 };
 
-export const isPeriodeUtenUttak = (periode: Planperiode) => {
-    return periode.periodeHullÅrsak !== undefined && periode.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK;
+export const isPeriodeUtenUttak = (periode: Uttaksplanperiode) => {
+    return erUttaksplanHull(periode) && periode.hullType === 'PERIODE_UTEN_UTTAK';
 };
 
 export const getOppholdskontoNavn = (
@@ -161,204 +122,30 @@ export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: 
     }
 };
 
-interface SplittetDatoType {
-    dato: string;
-    erFom: boolean;
-}
-
-const splittPeriodePåDatoer = (periode: Planperiode, alleDatoer: SplittetDatoType[]) => {
-    const datoerIPerioden = alleDatoer.filter((datoWrapper) =>
-        TidsperiodenString({ fom: periode.fom, tom: periode.tom }).inneholderDato(datoWrapper.dato),
-    );
-    const oppsplittetPeriode: Planperiode[] = [];
-
-    if (datoerIPerioden.length === 2) {
-        return [periode];
-    }
-
-    datoerIPerioden.forEach((datoWrapper, index) => {
-        if (index === 0) {
-            oppsplittetPeriode.push({
-                ...periode,
-                fom: datoWrapper.dato,
-                tom: undefined!,
-            });
-            return;
-        }
-
-        const oppPeriode = oppsplittetPeriode[index - 1]!;
-        oppPeriode.tom = datoWrapper.erFom ? UttaksdagenString(datoWrapper.dato).forrige() : datoWrapper.dato;
-
-        if (index < datoerIPerioden.length - 1) {
-            const endretPeriode = {
-                ...periode,
-                fom: datoWrapper.erFom ? datoWrapper.dato : UttaksdagenString(datoWrapper.dato).neste(),
-                tom: undefined!,
-            };
-
-            if (endretPeriode.erAnnenPartEøs) {
-                oppsplittetPeriode.push({ ...endretPeriode, trekkdager: 0 });
-            } else {
-                oppsplittetPeriode.push(endretPeriode);
-            }
-        }
-    });
-
-    return oppsplittetPeriode.filter((p) => isValidTidsperiodeString({ fom: p.fom, tom: p.tom }));
-};
-
-export const normaliserPerioder = (søkersPerioder: Planperiode[], annenPartsPerioder: Planperiode[]) => {
-    const perioderTidsperioder: SplittetDatoType[] = søkersPerioder.reduce<SplittetDatoType[]>((res, p) => {
-        res.push({ dato: p.fom, erFom: true }, { dato: p.tom, erFom: false });
-        return res;
-    }, []);
-    const annenPartsUttakTidsperioder = annenPartsPerioder.reduce<SplittetDatoType[]>((res, p) => {
-        res.push({ dato: p.fom, erFom: true }, { dato: p.tom, erFom: false });
-        return res;
-    }, []);
-
-    const alleDatoer = perioderTidsperioder.concat(annenPartsUttakTidsperioder).sort((d1, d2) => {
-        if (new Date(d1.dato).getTime() - new Date(d2.dato).getTime() === 0) {
-            if (!d1.erFom) {
-                return 1;
-            }
-
-            if (!d2.erFom) {
-                return -1;
-            }
-        }
-        return new Date(d1.dato).getTime() - new Date(d2.dato).getTime();
-    });
-
-    const alleUnikeDatoer = alleDatoer.reduce<SplittetDatoType[]>((result, datoWrapper) => {
-        if (!result.some((d) => d.dato === datoWrapper.dato && d.erFom === datoWrapper.erFom)) {
-            result.push(datoWrapper);
-        }
-        return result;
-    }, []);
-    const normaliserteEgnePerioder: Planperiode[] = [];
-    const normaliserteAnnenPartsPerioder: Planperiode[] = [];
-
-    for (const p of søkersPerioder) {
-        const oppsplittetPeriode = splittPeriodePåDatoer(p, alleUnikeDatoer);
-        normaliserteEgnePerioder.push(...oppsplittetPeriode);
-    }
-
-    for (const p of annenPartsPerioder) {
-        const oppsplittetPeriode = splittPeriodePåDatoer(p, alleUnikeDatoer);
-        normaliserteAnnenPartsPerioder.push(...oppsplittetPeriode);
-    }
-
-    return {
-        normaliserteEgnePerioder,
-        normaliserteAnnenPartsPerioder,
-    };
-};
-
-export const getTidsperiodeFromPlanperiode = (periode: Planperiode): Tidsperiode => {
-    return {
-        fom: periode.fom,
-        tom: periode.tom,
-    };
-};
-
-export const genererPeriodeId = (saksperiode?: Planperiode): string | undefined => {
+export const genererPeriodeId = (saksperiode?: Uttaksplanperiode): string | undefined => {
     if (!saksperiode) {
         return undefined;
     }
 
-    if (saksperiode.erAnnenPartEøs) {
-        const { fom, tom, kontoType, trekkdager, periodeHullÅrsak, skalIkkeHaUttakFørTermin } = saksperiode;
-        return `erAnnenPartEøs - ${fom} - ${tom} - ${kontoType} - ${trekkdager} - ${periodeHullÅrsak} - ${skalIkkeHaUttakFørTermin}`;
+    if (erEøsUttakPeriode(saksperiode)) {
+        const { fom, tom, kontoType, trekkdager } = saksperiode;
+        return `erAnnenPartEøs - ${fom} - ${tom} - ${kontoType} - ${trekkdager} `;
     }
 
-    const {
-        fom,
-        tom,
-        kontoType,
-        flerbarnsdager,
-        utsettelseÅrsak,
-        forelder,
-        oppholdÅrsak,
-        overføringÅrsak,
-        periodeHullÅrsak,
-    } = saksperiode;
-    return `${fom} - ${tom} - ${kontoType} - ${flerbarnsdager} - ${utsettelseÅrsak} - ${forelder} - ${oppholdÅrsak} - ${overføringÅrsak} - ${periodeHullÅrsak}`;
-};
-
-export const mapSaksperiodeTilPlanperiode = (
-    saksperioder: UttakPeriode[],
-    gjelderAnnenPart: boolean,
-    familiehendelsedato: string,
-    erSøkerMor: boolean,
-) => {
-    const result: Planperiode[] = [];
-
-    const saksperioderUtenAvslåttePerioder = saksperioder.filter((p) => {
-        if (!('trekkdager' in p) && p.resultat) {
-            if (p.resultat.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
-                return true;
-            }
-
-            return p.resultat.innvilget;
-        }
-
-        return true;
-    });
-
-    for (const p of saksperioderUtenAvslåttePerioder) {
-        const tidsperiodenKrysserFamdato =
-            dayjs(p.fom).isBefore(familiehendelsedato) && dayjs(p.tom).isAfter(familiehendelsedato);
-
-        const oppholdårsak = 'oppholdÅrsak' in p ? p.oppholdÅrsak : undefined;
-        const forelder = getForelderForPeriode(!erSøkerMor, gjelderAnnenPart, oppholdårsak);
-
-        // TODO (TOR) Spørsmål: Kvifor denne splitten? Er det relatert til visning i lista?
-        if (tidsperiodenKrysserFamdato) {
-            const planperiodeFør: Planperiode = {
-                ...p,
-                erAnnenPartEøs: false,
-                fom: p.fom,
-                tom: UttaksdagenString(familiehendelsedato).forrige(),
-                forelder,
-            };
-
-            const planperiodeEtter: Planperiode = {
-                ...p,
-                erAnnenPartEøs: false,
-                fom: UttaksdagenString(familiehendelsedato).denneEllerNeste(),
-                tom: p.tom,
-                forelder,
-            };
-
-            result.push(planperiodeFør, planperiodeEtter);
-        } else {
-            const planperiode: Planperiode = {
-                ...p,
-                erAnnenPartEøs: false,
-                forelder,
-            };
-
-            result.push(planperiode);
-        }
+    if (erUttaksplanHull(saksperiode)) {
+        const { fom, tom, forelder, hullType } = saksperiode;
+        return `periodeMedHull - ${fom} - ${tom} - ${forelder} - ${hullType} `;
     }
 
-    return result;
+    const { fom, tom, kontoType, flerbarnsdager, utsettelseÅrsak, forelder, oppholdÅrsak, overføringÅrsak } =
+        saksperiode;
+    return `${fom} - ${tom} - ${kontoType} - ${flerbarnsdager} - ${utsettelseÅrsak} - ${forelder} - ${oppholdÅrsak} - ${overføringÅrsak}`;
 };
 
-export const getForelderForPeriode = (
-    søkerErFarEllerMedmor: boolean,
-    gjelderAnnenPart: boolean,
-    oppholdsårsak: UttakOppholdÅrsak_fpoversikt | undefined,
-): BrukerRolleSak_fpoversikt => {
-    if (oppholdsårsak || gjelderAnnenPart) {
-        return søkerErFarEllerMedmor ? 'MOR' : 'FAR_MEDMOR';
-    }
-
-    return søkerErFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
-};
-
-export const isAvslåttPeriodeFørsteSeksUkerMor = (periode: UttakPeriode, familiehendelsesdato: string): boolean => {
+export const isAvslåttPeriodeFørsteSeksUkerMor = (
+    periode: Uttaksplanperiode,
+    familiehendelsesdato: string,
+): boolean => {
     return (
         !!isAvslåttPeriode(periode) &&
         'forelder' in periode &&
@@ -368,19 +155,16 @@ export const isAvslåttPeriodeFørsteSeksUkerMor = (periode: UttakPeriode, famil
     );
 };
 
-export const getIndexOfSistePeriodeFørDato = (
-    uttaksplan: Uttaksplanperiode[] | Planperiode[],
-    dato: string | undefined,
-) => {
+export const getIndexOfSistePeriodeFørDato = (uttaksplan: Uttaksplanperiode[], dato: string | undefined) => {
     if (dato !== undefined) {
         return Math.max(0, uttaksplan.filter((p) => dayjs(p.tom).isBefore(dato, 'day')).length);
     }
     return undefined;
 };
 export const getAnnenForelderSamtidigUttakPeriode = (
-    periode: UttakPeriode,
-    perioder: UttakPeriode[],
-): UttakPeriode | undefined => {
+    periode: Uttaksplanperiode,
+    perioder: Uttaksplanperiode[],
+): Uttaksplanperiode | undefined => {
     if (isUttaksperiode(periode)) {
         const samtidigUttak = perioder
             .filter(
@@ -396,62 +180,4 @@ export const getAnnenForelderSamtidigUttakPeriode = (
     }
 
     return undefined;
-};
-
-type UtledKomplettPlanParams = {
-    familiehendelsedato: string;
-    foreldreInfo: ForeldreInfo;
-    søkersPerioder: UttakPeriode_fpoversikt[];
-    annenPartsPerioder?: UttakPeriode[];
-    gjelderAdopsjon: boolean;
-    harAktivitetskravIPeriodeUtenUttak: boolean;
-    førsteUttaksdagNesteBarnsSak: string | undefined;
-};
-export const utledKomplettPlan = ({
-    familiehendelsedato,
-    foreldreInfo,
-    søkersPerioder,
-    annenPartsPerioder,
-    gjelderAdopsjon,
-    harAktivitetskravIPeriodeUtenUttak,
-    førsteUttaksdagNesteBarnsSak,
-}: UtledKomplettPlanParams) => {
-    const erSøkerMor = foreldreInfo.søker === 'MOR';
-    const søkersPlanperioder = finnOgSettInnHull(
-        mapSaksperiodeTilPlanperiode(søkersPerioder, false, familiehendelsedato, erSøkerMor),
-        harAktivitetskravIPeriodeUtenUttak,
-        familiehendelsedato,
-        gjelderAdopsjon,
-        foreldreInfo.rettighetType === 'BARE_SØKER_RETT',
-        foreldreInfo.søker === 'FAR_ELLER_MEDMOR',
-        førsteUttaksdagNesteBarnsSak,
-    );
-    const annenPartsPlanperioder = annenPartsPerioder
-        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, true, familiehendelsedato, erSøkerMor)
-        : undefined;
-
-    const planMedLikePerioderSlåttSammen = slåSammenLikePerioder(
-        søkersPlanperioder,
-        familiehendelsedato,
-        førsteUttaksdagNesteBarnsSak,
-        annenPartsPlanperioder,
-    );
-
-    return finnOgSettInnHull(
-        annenPartsPlanperioder
-            ? settInnAnnenPartsUttak(
-                  søkersPlanperioder,
-                  annenPartsPlanperioder,
-                  familiehendelsedato,
-                  førsteUttaksdagNesteBarnsSak,
-                  true,
-              )
-            : planMedLikePerioderSlåttSammen,
-        harAktivitetskravIPeriodeUtenUttak,
-        familiehendelsedato,
-        gjelderAdopsjon,
-        foreldreInfo.rettighetType === 'BARE_SØKER_RETT',
-        foreldreInfo.søker === 'FAR_ELLER_MEDMOR',
-        førsteUttaksdagNesteBarnsSak,
-    );
 };

@@ -172,3 +172,87 @@ export const MorOgFarMedFerieopphold: Story = {
         },
     },
 };
+
+export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
+    args: {
+        saksperioder: [
+            {
+                fom: '2024-03-14',
+                tom: '2024-04-03',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                forelder: 'MOR',
+            },
+            {
+                fom: '2024-04-04',
+                tom: '2024-04-18',
+                kontoType: 'MØDREKVOTE',
+                forelder: 'MOR',
+            },
+            {
+                fom: '2024-05-17',
+                tom: '2024-05-23',
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+                forelder: 'MOR',
+            },
+            {
+                fom: '2024-05-31',
+                tom: '2024-06-13',
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+            },
+            {
+                fom: '2024-06-14',
+                tom: '2024-06-27',
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                gradering: {
+                    aktivitet: {
+                        type: 'ANNET',
+                    },
+                    arbeidstidprosent: 50,
+                },
+            },
+            {
+                fom: '2024-06-28',
+                tom: '2024-07-02',
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                samtidigUttak: 50,
+            },
+            {
+                fom: '2024-06-28',
+                tom: '2024-07-02',
+                kontoType: 'FEDREKVOTE',
+                forelder: 'FAR_MEDMOR',
+                samtidigUttak: 50,
+            },
+            {
+                fom: '2024-07-03',
+                tom: '2024-07-15',
+                kontoType: 'FEDREKVOTE',
+                forelder: 'FAR_MEDMOR',
+            },
+        ] satisfies UttakPeriode_fpoversikt[],
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2024-04-04'],
+            antallBarn: 1,
+        },
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+        valgtStønadskonto: {
+            kontoer: [
+                { konto: 'MØDREKVOTE', dager: 95 },
+                { konto: 'FEDREKVOTE', dager: 95 },
+                { konto: 'FELLESPERIODE', dager: 101 },
+                { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+            ],
+            minsteretter: MINSTERETTER,
+        },
+    },
+};

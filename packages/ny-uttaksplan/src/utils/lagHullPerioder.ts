@@ -10,14 +10,34 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 
+import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { ForeldreInfo } from '../types/ForeldreInfo';
-import { PeriodeHullType } from '../types/Planperiode';
-import { UttaksplanHull } from '../types/UttaksplanPeriode';
+import { UttaksplanHull, Uttaksplanperiode } from '../types/UttaksplanPeriode';
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
-export const lagHullPerioder = (
+export const useAlleSaksperioderInklTapteDager = (): Uttaksplanperiode[] => {
+    const { saksperioder, familiehendelsedato, familiesituasjon, foreldreInfo } = useUttaksplanData();
+
+    return [
+        ...saksperioder,
+        ...lagTapteDagerPerioder(saksperioder, familiehendelsedato, familiesituasjon, foreldreInfo),
+    ].sort(sorterPerioder);
+};
+
+export const useAlleSaksperioderInklTapteDagerOgPerioderUtenUttak = (): Uttaksplanperiode[] => {
+    const { saksperioder, familiehendelsedato, familiesituasjon, foreldreInfo } = useUttaksplanData();
+
+    const perioder = [
+        ...saksperioder,
+        ...lagTapteDagerPerioder(saksperioder, familiehendelsedato, familiesituasjon, foreldreInfo),
+    ].sort(sorterPerioder);
+
+    return [...perioder, ...lagPerioderUtenUttak(perioder, familiehendelsedato)].sort(sorterPerioder);
+};
+
+export const lagTapteDagerPerioder = (
     sortertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     familiehendelsedato: string,
     familiesituasjon: Familiesituasjon,
@@ -42,7 +62,7 @@ export const lagHullPerioder = (
                 tom: førstePeriodeSomStarterEtterFamiliehendelsedato.fom,
             };
 
-            return lagHull(sortertePerioder, 'FAR_MEDMOR', periodeSomSkalSjekkesForHull);
+            return lagTapteDagerHull(sortertePerioder, 'FAR_MEDMOR', periodeSomSkalSjekkesForHull);
         }
     } else if (familiesituasjon !== 'adopsjon') {
         const periodeSomSkalSjekkesForHull = {
@@ -50,13 +70,13 @@ export const lagHullPerioder = (
             tom: dayjs(familiehendelsedato).add(6, 'week').format(ISO_DATE_FORMAT),
         };
         const forelder = foreldreInfo.søker === 'MOR' ? 'MOR' : 'FAR_MEDMOR';
-        return lagHull(sortertePerioder, forelder, periodeSomSkalSjekkesForHull);
+        return lagTapteDagerHull(sortertePerioder, forelder, periodeSomSkalSjekkesForHull);
     }
 
     return [];
 };
 
-const lagHull = (
+const lagTapteDagerHull = (
     sortertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     forelder: BrukerRolleSak_fpoversikt,
     periodeSomSkalSjekkesForHull: { fom: string; tom: string },
@@ -82,7 +102,7 @@ const lagHull = (
                 hull.push({
                     fom: pågåandeHullStart.format(ISO_DATE_FORMAT),
                     tom: dato.subtract(1, 'day').format(ISO_DATE_FORMAT),
-                    hullType: PeriodeHullType.TAPTE_DAGER,
+                    hullType: 'TAPTE_DAGER',
                     forelder,
                 });
                 pågåandeHullStart = null;
@@ -95,7 +115,7 @@ const lagHull = (
         hull.push({
             fom: pågåandeHullStart.format(ISO_DATE_FORMAT),
             tom: slutt.subtract(1, 'day').format(ISO_DATE_FORMAT),
-            hullType: PeriodeHullType.TAPTE_DAGER,
+            hullType: 'TAPTE_DAGER',
             forelder,
         });
     }
@@ -103,7 +123,66 @@ const lagHull = (
     return hull;
 };
 
+export const lagPerioderUtenUttak = (
+    sortertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    familiehendelsedato: string,
+): UttaksplanHull[] => {
+    const perioderUtenUttak: UttaksplanHull[] = [];
+
+    let gjeldendeDato = sortertePerioder.at(0)!.fom;
+
+    for (const periode of sortertePerioder) {
+        if (dayjs(gjeldendeDato).isBefore(periode.fom)) {
+            const hullFom = gjeldendeDato;
+            const hullTom = forrigeDag(periode.fom);
+
+            const fhDato = dayjs(familiehendelsedato);
+
+            if (fhDato.isAfter(hullFom) && fhDato.isBefore(hullTom)) {
+                // Del hullet i to
+                perioderUtenUttak.push(
+                    {
+                        fom: hullFom,
+                        tom: forrigeDag(familiehendelsedato),
+                        hullType: 'PERIODE_UTEN_UTTAK',
+                        forelder: 'MOR',
+                    },
+                    {
+                        fom: nesteDag(familiehendelsedato),
+                        tom: hullTom,
+                        hullType: 'PERIODE_UTEN_UTTAK',
+                        forelder: 'MOR',
+                    },
+                );
+            } else {
+                perioderUtenUttak.push({ fom: hullFom, tom: hullTom, hullType: 'PERIODE_UTEN_UTTAK', forelder: 'MOR' });
+            }
+        }
+
+        gjeldendeDato = nesteDag(periode.tom);
+    }
+
+    return perioderUtenUttak;
+};
+
+const nesteDag = (dato: string): string => dayjs(dato).add(1, 'day').format('YYYY-MM-DD');
+
+const forrigeDag = (dato: string): string => dayjs(dato).subtract(1, 'day').format('YYYY-MM-DD');
+
 const erUkedag = (dato: dayjs.Dayjs) => {
     const dag = dato.day();
     return dag !== 0 && dag !== 6;
+};
+
+export const sorterPerioder = (a: Uttaksplanperiode, b: Uttaksplanperiode): number => {
+    const aFom = dayjs(a.fom);
+    const bFom = dayjs(b.fom);
+
+    if (aFom.isBefore(bFom)) {
+        return -1;
+    }
+    if (aFom.isAfter(bFom)) {
+        return 1;
+    }
+    return 0;
 };

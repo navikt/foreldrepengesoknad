@@ -6,12 +6,12 @@ import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
 
-import { Planperiode } from '../../../types/Planperiode';
+import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../utils/dateUtils';
 import { getOppholdskontoNavn } from '../../../utils/periodeUtils';
 
 interface Props {
-    periode: Planperiode;
+    periode: Uttaksplanperiode;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
     inneholderKunEnPeriode: boolean;
@@ -42,9 +42,9 @@ export const OppholdsPeriodeContent = ({
                         )}
                     </BodyShort>
                 </HStack>
-                {!periode.erAnnenPartEøs && (
+                {erVanligUttakPeriode(periode) && periode.oppholdÅrsak && (
                     <BodyShort>
-                        {getOppholdskontoNavn(intl, periode.oppholdÅrsak!, navnPåAnnenForelder, !erFarEllerMedmor)}
+                        {getOppholdskontoNavn(intl, periode.oppholdÅrsak, navnPåAnnenForelder, !erFarEllerMedmor)}
                     </BodyShort>
                 )}
             </VStack>
@@ -52,7 +52,7 @@ export const OppholdsPeriodeContent = ({
     );
 };
 
-const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Planperiode) => {
+const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Uttaksplanperiode) => {
     if (inneholderKunEnPeriode) {
         return intl.formatMessage({ id: 'uttaksplan.varighet.helePerioden' });
     }

@@ -49,7 +49,7 @@ export class SaksperiodeBuilder {
         return this;
     }
 
-    fjernSaksperioder(saksperioderSomSkalFjernes: Saksperiode[]): this {
+    fjernSaksperioder(saksperioderSomSkalFjernes: Array<{ fom: string; tom: string }>): this {
         for (const saksperiodeSomSkalFjernes of saksperioderSomSkalFjernes) {
             const nFom = toDay(saksperiodeSomSkalFjernes.fom);
             const nTom = toDay(saksperiodeSomSkalFjernes.tom);

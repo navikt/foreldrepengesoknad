@@ -7,7 +7,7 @@ import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { isBeforeOrSame, isRequired, isValidDate, isWeekday } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import {
     getFomDiverseValidators,
     getFomKontoTypeValidators,
@@ -26,7 +26,7 @@ import {
 } from '../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 
 type Props = {
-    valgtPeriode?: Planperiode;
+    valgtPeriode?: Uttaksplanperiode;
     hvaVilDuGjøre: HvaVilDuGjøre;
 };
 
@@ -46,13 +46,16 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, hvaVilDuGjøre }: Props) =
 
     const årsak = getÅrsak(hvaVilDuGjøre, valgtPeriode);
 
+    const valgtPeriodeKontoType =
+        valgtPeriode && erVanligUttakPeriode(valgtPeriode) ? valgtPeriode.kontoType : undefined;
+
     const minDate = getMinDate({
         årsak,
-        kontoType: kontoType ?? valgtPeriode?.kontoType,
+        kontoType: kontoType ?? valgtPeriodeKontoType,
         familiehendelsedato,
         gjelderAdopsjon: familiesituasjon === 'adopsjon',
     });
-    const maxDate = getMaxDate({ familiehendelsedato, kontoType: kontoType ?? valgtPeriode?.kontoType, årsak });
+    const maxDate = getMaxDate({ familiehendelsedato, kontoType: kontoType ?? valgtPeriodeKontoType, årsak });
 
     return (
         <>
@@ -133,17 +136,17 @@ export const TidsperiodeSpørsmål = ({ valgtPeriode, hvaVilDuGjøre }: Props) =
     );
 };
 
-const getÅrsak = (hvaVilDuGjøre: HvaVilDuGjøre, valgtPeriode: Planperiode | undefined) => {
+const getÅrsak = (hvaVilDuGjøre: HvaVilDuGjøre, valgtPeriode: Uttaksplanperiode | undefined) => {
     if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
-        return PeriodeHullType.PERIODE_UTEN_UTTAK;
+        return 'PERIODE_UTEN_UTTAK';
     }
 
-    if (!valgtPeriode?.erAnnenPartEøs && valgtPeriode?.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+    if (valgtPeriode && erVanligUttakPeriode(valgtPeriode) && valgtPeriode?.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
         return valgtPeriode.utsettelseÅrsak;
     }
 
-    if (valgtPeriode?.periodeHullÅrsak && valgtPeriode.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
-        return valgtPeriode.periodeHullÅrsak;
+    if (valgtPeriode && erUttaksplanHull(valgtPeriode) && valgtPeriode.hullType === 'PERIODE_UTEN_UTTAK') {
+        return valgtPeriode.hullType;
     }
 
     return undefined;

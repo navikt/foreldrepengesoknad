@@ -13,6 +13,7 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { LegendLabel } from '../../types/LegendLabel';
 import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
+import { useAlleSaksperioderInklTapteDager } from '../../utils/lagHullPerioder';
 import { filtrerBortAnnenPartsIdentiskePerioder } from '../../utils/permisjonsperiodeUtils';
 import { useUttaksplanData } from './../../context/UttaksplanDataContext';
 import {
@@ -48,10 +49,11 @@ export const UttaksplanLegend = ({
     const [visHorisontalt, setVisHorisontalt] = useState(true);
 
     const {
-        saksperioderInkludertHull,
         foreldreInfo: { søker },
         barn,
     } = useUttaksplanData();
+
+    const saksperioderInkludertHull = useAlleSaksperioderInklTapteDager();
 
     const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(
         saksperioderInkludertHull,

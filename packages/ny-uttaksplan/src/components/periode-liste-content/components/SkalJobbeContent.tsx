@@ -3,22 +3,30 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, HStack } from '@navikt/ds-react';
 
-import { Permisjonsperiode } from '../../../types/Permisjonsperiode';
-import { isHull, isOppholdsperiode, isPrematuruker, isUttaksperiode } from '../../../utils/periodeUtils';
+import {
+    erUttaksplanperiodeSamtidigUttak,
+    erUttaksplanperiodeTapteDager,
+    erUttaksplanperiodeUtenUttak,
+    erUttaksplanperiodeUtsettelse,
+    erUttaksplanperiodeUtsettelseOpphold,
+    harUttaksplanperiodePrematuruker,
+} from '../../../components/uttaksplanperiodeUtils';
+import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
+import { isUttaksperiode } from '../../../utils/periodeUtils';
 
 interface Props {
-    permisjonsperiode: Permisjonsperiode;
+    uttaksplanperioder: Uttaksplanperiode[];
 }
 
-export const SkalJobbeContent = ({ permisjonsperiode }: Props) => {
-    const erUtsettelse = !!permisjonsperiode.erUtsettelse;
-    const erPeriodeUtenUttak = !!permisjonsperiode.erPeriodeUtenUttak;
-    const samtidigUttak = !!permisjonsperiode.samtidigUttak;
-    const erOpphold = permisjonsperiode.perioder.some(isOppholdsperiode);
-    const erHull = permisjonsperiode.perioder.some(isHull);
-    const erPrematuruker = permisjonsperiode.perioder.some(isPrematuruker);
-    const skalJobbeIPermisjonsperioden = permisjonsperiode.perioder.some(
-        (p) => isUttaksperiode(p) && !p.erAnnenPartEøs && p.gradering !== undefined,
+export const SkalJobbeContent = ({ uttaksplanperioder }: Props) => {
+    const erUtsettelse = erUttaksplanperiodeUtsettelse(uttaksplanperioder);
+    const erPeriodeUtenUttak = erUttaksplanperiodeUtenUttak(uttaksplanperioder);
+    const samtidigUttak = erUttaksplanperiodeSamtidigUttak(uttaksplanperioder);
+    const erOpphold = erUttaksplanperiodeUtsettelseOpphold(uttaksplanperioder);
+    const erHull = erUttaksplanperiodeTapteDager(uttaksplanperioder);
+    const erPrematuruker = harUttaksplanperiodePrematuruker(uttaksplanperioder);
+    const skalJobbeIPermisjonsperioden = uttaksplanperioder.some(
+        (p) => isUttaksperiode(p) && erVanligUttakPeriode(p) && p.gradering !== undefined,
     );
 
     if (

@@ -9,12 +9,12 @@ import { TidsperiodenString, capitalizeFirstLetter, formatDateExtended } from '@
 import { assertUnreachable } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
-import { Planperiode } from '../../../types/Planperiode';
+import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../utils/dateUtils';
 import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
 
 interface Props {
-    periode: Planperiode;
+    periode: Uttaksplanperiode;
     inneholderKunEnPeriode: boolean;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
@@ -25,14 +25,14 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
     const {
         foreldreInfo: { rettighetType },
     } = useUttaksplanData();
-    const morsAktivitet = !periode.erAnnenPartEøs && periode.morsAktivitet ? periode.morsAktivitet : undefined;
+    const morsAktivitet = erVanligUttakPeriode(periode) && periode.morsAktivitet ? periode.morsAktivitet : undefined;
 
     const stønadskontoNavn = getStønadskontoNavn(
         intl,
-        periode.kontoType!,
         navnPåForeldre,
         erFarEllerMedmor,
         morsAktivitet,
+        erVanligUttakPeriode(periode) ? periode.kontoType : undefined,
         rettighetType === 'ALENEOMSORG',
     );
 
@@ -54,7 +54,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
                 <VStack gap="space-8">
                     <BodyShort>{stønadskontoNavn}</BodyShort>
                     {morsAktivitet !== undefined && <BodyShort>{getMorsAktivitetTekst(intl, morsAktivitet)}</BodyShort>}
-                    {periode.erAnnenPartEøs && periode.trekkdager !== undefined ? (
+                    {erEøsUttakPeriode(periode) && periode.trekkdager !== undefined ? (
                         <BodyShort>
                             <FormattedMessage id="uttaksplan.periodeListeContent.eøs" />
                         </BodyShort>
@@ -69,7 +69,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
     );
 };
 
-const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Planperiode) => {
+const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Uttaksplanperiode) => {
     if (inneholderKunEnPeriode) {
         return intl.formatMessage({ id: 'uttaksplan.varighet.helePerioden' });
     }
@@ -103,11 +103,11 @@ export const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet)
 };
 
 const getTekstForArbeidOgSamtidigUttak = (
-    periode: Planperiode,
+    periode: Uttaksplanperiode,
     erFarEllerMedmor: boolean,
     navnPåForeldre: NavnPåForeldre,
 ) => {
-    if (!periode.erAnnenPartEøs) {
+    if (erVanligUttakPeriode(periode)) {
         if (
             (periode.gradering !== undefined && periode.samtidigUttak !== undefined) ||
             periode.gradering !== undefined

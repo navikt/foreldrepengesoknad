@@ -4,10 +4,14 @@ import { FormattedMessage } from 'react-intl';
 
 import { HStack, Heading } from '@navikt/ds-react';
 
-import { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
+import {
+    BrukerRolleSak_fpoversikt,
+    KontoTypeUttak,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 
-import { Permisjonsperiode } from '../../types/Permisjonsperiode';
-import { PeriodeHullType, Planperiode } from '../../types/Planperiode';
+import { Uttaksplanperiode } from '../../types/UttaksplanPeriode';
 import { HvaVilDuGjøre } from '../legg-til-periode-panel/types/LeggTilPeriodePanelFormValues';
 import { EndrePeriodePanelStep } from './steps/EndrePeriodePanelStep';
 import { VelgPeriodePanelStep } from './steps/VelgPeriodePanelStep';
@@ -16,38 +20,43 @@ const ARIA_LABEL_ID = 'endre-periode-panel-heading';
 
 interface Props {
     closePanel: () => void;
-    handleUpdatePeriode: (oppdatertPeriode: Planperiode, gammelPeriode: Planperiode) => void;
-    handleAddPeriode: (nyPeriode: Planperiode) => void;
-    permisjonsperiode: Permisjonsperiode;
+    handleUpdatePeriode: (
+        oppdatertPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+        gammelPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    ) => void;
+    handleAddPeriode: (nyPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => void;
+    handleDeletePerioder: (slettedePerioder: Array<{ fom: string; tom: string }>) => void;
+    uttaksplanperioder: Uttaksplanperiode[];
     inneholderKunEnPeriode: boolean;
 }
 
 type PanelStep = 'step1' | 'step2';
 
 export interface PanelData {
-    valgtPeriode: Planperiode | undefined;
+    valgtPeriode: Uttaksplanperiode | undefined;
     hvaVilDuGjøre: HvaVilDuGjøre | undefined;
     currentStep: PanelStep;
     fom?: string;
     tom?: string;
     forelder?: BrukerRolleSak_fpoversikt;
     kontoType: KontoTypeUttak | undefined;
-    årsak?: 'LOVBESTEMT_FERIE' | PeriodeHullType.PERIODE_UTEN_UTTAK;
+    årsak?: 'LOVBESTEMT_FERIE' | 'PERIODE_UTEN_UTTAK';
     stillingsprosent?: string;
     skalDuJobbe?: boolean;
 }
 
 export const EndrePeriodePanel = ({
     closePanel,
-    permisjonsperiode,
+    uttaksplanperioder,
     handleUpdatePeriode,
     handleAddPeriode,
+    handleDeletePerioder,
     inneholderKunEnPeriode,
 }: Props) => {
-    const kunEnPeriode = permisjonsperiode.perioder.length === 1;
+    const kunEnPeriode = uttaksplanperioder.length === 1;
 
     const initialPanelState: PanelData = {
-        valgtPeriode: kunEnPeriode ? permisjonsperiode.perioder[0] : undefined,
+        valgtPeriode: kunEnPeriode ? uttaksplanperioder[0] : undefined,
         hvaVilDuGjøre: undefined,
         fom: undefined,
         tom: undefined,
@@ -79,7 +88,7 @@ export const EndrePeriodePanel = ({
             <div>
                 {currentStep === 'step1' && (
                     <VelgPeriodePanelStep
-                        perioder={permisjonsperiode.perioder}
+                        perioder={uttaksplanperioder}
                         panelData={panelData}
                         setPanelData={setPanelData}
                         closePanel={closePanelWrapper}
@@ -93,6 +102,7 @@ export const EndrePeriodePanel = ({
                         handleUpdatePeriode={handleUpdatePeriode}
                         inneholderKunEnPeriode={inneholderKunEnPeriode}
                         handleAddPeriode={handleAddPeriode}
+                        handleDeletePerioder={handleDeletePerioder}
                     />
                 )}
             </div>
