@@ -52,6 +52,7 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
     // Sett standardverdi: del likt (halvparten av totalen)
     const totalDager = antallUkerOgDagerFellesperiode.uker * 5 + antallUkerOgDagerFellesperiode.dager;
     const halvpart = Math.floor(totalDager / 2);
+    const ekstraDager = antallUkerOgDagerFellesperiode.dager;
 
     const formMethods = useForm<Fordeling>({
         defaultValues: fordeling ?? { antallDagerSøker1: halvpart },
@@ -134,6 +135,17 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                                 fornavnSøker1={fornavnSøker1}
                                 fornavnSøker2={fornavnSøker2}
                             />
+                            {ekstraDager > 0 && (
+                                <BodyShort size="small" className="text-text-subtle">
+                                    <FormattedMessage
+                                        id={
+                                            ekstraDager === 1
+                                                ? 'FordelingSteg.EkstraDagInfo.EnDag'
+                                                : 'FordelingSteg.EkstraDagInfo.FlereDager'
+                                        }
+                                    />
+                                </BodyShort>
+                            )}
                         </BluePanel>
                         {antallDagerSøker1 !== undefined && (
                             <FordelingsdetaljerPanel
