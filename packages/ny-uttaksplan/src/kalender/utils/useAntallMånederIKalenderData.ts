@@ -11,7 +11,7 @@ export const useAntallMånederIKalenderData = (
     barnehagestartdato?: string,
 ) => {
     const { familiehendelsedato, familiesituasjon } = useUttaksplanData();
-    const saksperioderInkludertHull = useAlleSaksperioderInklTapteDager();
+    const saksperioderInkludertTapteDager = useAlleSaksperioderInklTapteDager();
 
     const førsteMuligeDato =
         familiesituasjon === 'adopsjon'
@@ -22,11 +22,14 @@ export const useAntallMånederIKalenderData = (
 
     const sisteDatoIKalenderFørManueltLagtTil = getSisteDatoIKalender(
         familiehendelsedato,
-        saksperioderInkludertHull,
+        saksperioderInkludertTapteDager,
         barnehagestartdato,
     );
 
-    const førsteDatoIKalenderFørManueltLagtTil = getFørsteDatoIKalender(familiehendelsedato, saksperioderInkludertHull);
+    const førsteDatoIKalenderFørManueltLagtTil = getFørsteDatoIKalender(
+        familiehendelsedato,
+        saksperioderInkludertTapteDager,
+    );
 
     const maksAntallEkstraMånederPåSlutten = monthDiff(
         dayjs(sisteDatoIKalenderFørManueltLagtTil),

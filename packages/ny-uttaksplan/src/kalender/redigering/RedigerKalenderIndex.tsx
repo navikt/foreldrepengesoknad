@@ -40,7 +40,7 @@ const RedigerKalender = ({
 
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
 
-    const saksperioderInkludertHull = useAlleSaksperioderInklTapteDager();
+    const saksperioderInkludertTapteDager = useAlleSaksperioderInklTapteDager();
 
     useEffect(() => {
         // Reset redigeringmodus hvis alle perioder fjernes
@@ -52,7 +52,7 @@ const RedigerKalender = ({
 
     const erKunEnHelEksisterendePeriodeValgt =
         sammenslåtteValgtePerioder.length === 1 &&
-        harEnValgtPeriodeIKunEnEksisterendePeriode(saksperioderInkludertHull, sammenslåtteValgtePerioder[0]!);
+        harEnValgtPeriodeIKunEnEksisterendePeriode(saksperioderInkludertTapteDager, sammenslåtteValgtePerioder[0]!);
 
     return (
         <Box.New

@@ -38,16 +38,16 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
         foreldreInfo: { søker, navnPåForeldre },
     } = useUttaksplanData();
 
-    const saksperioderInkludertHull = useAlleSaksperioderInklTapteDager();
+    const saksperioderInkludertTapteDager = useAlleSaksperioderInklTapteDager();
 
     const familiehendelsesdato = getFamiliehendelsedato(barn);
 
     const erFarEllerMedmor = søker === 'FAR_ELLER_MEDMOR';
 
-    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(saksperioderInkludertHull, erFarEllerMedmor);
+    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(saksperioderInkludertTapteDager, erFarEllerMedmor);
 
     const res = unikePerioder.reduce<CalendarPeriod[]>((acc, periode) => {
-        const color = getKalenderFargeForPeriode(periode, erFarEllerMedmor, saksperioderInkludertHull, barn);
+        const color = getKalenderFargeForPeriode(periode, erFarEllerMedmor, saksperioderInkludertTapteDager, barn);
 
         if (
             barnehagestartdato !== undefined &&
@@ -115,7 +115,8 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
                   } satisfies CalendarPeriod)
                   .sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)));
 
-    const indexOfFamiliehendelse = getIndexOfSistePeriodeFørDato(saksperioderInkludertHull, familiehendelsesdato) ?? 0;
+    const indexOfFamiliehendelse =
+        getIndexOfSistePeriodeFørDato(saksperioderInkludertTapteDager, familiehendelsesdato) ?? 0;
     perioderForVisning.splice(indexOfFamiliehendelse, 0, {
         fom: familiehendelsesdato,
         tom: familiehendelsesdato,

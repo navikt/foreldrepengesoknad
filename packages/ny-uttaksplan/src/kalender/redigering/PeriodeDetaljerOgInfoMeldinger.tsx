@@ -32,9 +32,12 @@ export const PeriodeDetaljerOgInfoMeldinger = () => {
     const { erFeriePerioderGyldige } = usePeriodeValidator(sammenslåtteValgtePerioder);
     const erFerieValgbart = erFeriePerioderGyldige();
 
-    const saksperioderInkludertHull = useAlleSaksperioderInklTapteDager();
+    const saksperioderInkludertTapteDager = useAlleSaksperioderInklTapteDager();
 
-    const eksisterendePerioderSomErValgt = finnValgtePerioder(sammenslåtteValgtePerioder, saksperioderInkludertHull);
+    const eksisterendePerioderSomErValgt = finnValgtePerioder(
+        sammenslåtteValgtePerioder,
+        saksperioderInkludertTapteDager,
+    );
 
     return (
         <VStack gap="space-16">

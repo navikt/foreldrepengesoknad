@@ -156,23 +156,23 @@ export const getTekst = (
 };
 
 export const getIkon = (
-    uttaksplanperiode: Uttaksplanperiode[],
+    uttaksplanperioder: Uttaksplanperiode[],
     familiehendelsedato: string,
     erFamiliehendelse?: boolean,
 ) => {
-    const periodeFørTermindato = dayjs(familiehendelsedato).isAfter(getSisteUttaksplanperiodeTom(uttaksplanperiode));
+    const periodeFørTermindato = dayjs(familiehendelsedato).isAfter(getSisteUttaksplanperiodeTom(uttaksplanperioder));
 
-    const ikonfarge = getIkonFarge(uttaksplanperiode, erFamiliehendelse);
+    const ikonfarge = getIkonFarge(uttaksplanperioder, erFamiliehendelse);
 
     if (erFamiliehendelse) {
         return <HeartFillIcon className={ikonfarge} width={24} height={24} />;
     }
 
-    if (erUttaksplanperiodeTapteDager(uttaksplanperiode) || harUttaksplanperiodePrematuruker(uttaksplanperiode)) {
+    if (erUttaksplanperiodeTapteDager(uttaksplanperioder) || harUttaksplanperiodePrematuruker(uttaksplanperioder)) {
         return <InformationSquareFillIcon className={ikonfarge} width={24} height={24} />;
     }
 
-    const utsettelseÅrsak = getUttaksplanperiodeUtsettelseÅrsak(uttaksplanperiode);
+    const utsettelseÅrsak = getUttaksplanperiodeUtsettelseÅrsak(uttaksplanperioder);
     if (utsettelseÅrsak !== undefined) {
         if (utsettelseÅrsak === 'ARBEID' || utsettelseÅrsak === 'FRI') {
             return <BriefcaseFillIcon className={ikonfarge} width={24} height={24} />;
@@ -189,7 +189,7 @@ export const getIkon = (
         return <PersonPregnantFillIcon className={ikonfarge} width={24} height={24} />;
     }
 
-    if (erUttaksplanperiodeUtenUttak(uttaksplanperiode)) {
+    if (erUttaksplanperiodeUtenUttak(uttaksplanperioder)) {
         return <CloudFillIcon className={ikonfarge} width={24} height={24} />;
     }
 
