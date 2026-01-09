@@ -12,7 +12,7 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { UkerOgDager, getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { finnUttaksdata } from 'utils/uttakUtils';
 
-import { BodyShort, Heading, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Heading, InlineMessage, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
@@ -135,18 +135,22 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                                 fornavnSøker1={fornavnSøker1}
                                 fornavnSøker2={fornavnSøker2}
                             />
-                            {ekstraDager > 0 && (
-                                <BodyShort size="small" className="text-text-subtle">
-                                    <FormattedMessage
-                                        id={
-                                            ekstraDager === 1
-                                                ? 'FordelingSteg.EkstraDagInfo.EnDag'
-                                                : 'FordelingSteg.EkstraDagInfo.FlereDager'
-                                        }
-                                    />
-                                </BodyShort>
-                            )}
                         </BluePanel>
+                        {ekstraDager > 0 && (
+                            <Box paddingInline="space-16">
+                                <InlineMessage status="info">
+                                    <BodyShort size="small" className="text-text-subtle">
+                                        <FormattedMessage
+                                            id={
+                                                ekstraDager === 1
+                                                    ? 'FordelingSteg.EkstraDagInfo.EnDag'
+                                                    : 'FordelingSteg.EkstraDagInfo.FlereDager'
+                                            }
+                                        />
+                                    </BodyShort>
+                                </InlineMessage>
+                            </Box>
+                        )}
                         {antallDagerSøker1 !== undefined && (
                             <FordelingsdetaljerPanel
                                 barnet={barnet}
