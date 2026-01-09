@@ -225,12 +225,12 @@ describe('lagHullPerioder', () => {
                 tom: '2025-04-10',
             },
             {
-                fom: '2025-04-20',
+                fom: '2025-04-21',
                 tom: '2025-04-30',
             },
             {
-                fom: '2025-07-26',
-                tom: '2025-08-10',
+                fom: '2025-07-25',
+                tom: '2025-08-11',
             },
         ];
 
@@ -238,14 +238,20 @@ describe('lagHullPerioder', () => {
 
         expect(perioderUtenUttak).toEqual([
             {
+                fom: '2025-03-21',
+                tom: '2025-03-25',
+                hullType: 'PERIODE_UTEN_UTTAK',
+                forelder: 'MOR',
+            },
+            {
                 fom: '2025-04-11',
-                tom: '2025-04-19',
+                tom: '2025-04-18',
                 hullType: 'PERIODE_UTEN_UTTAK',
                 forelder: 'MOR',
             },
             {
                 fom: '2025-05-01',
-                tom: '2025-07-25',
+                tom: '2025-07-24',
                 hullType: 'PERIODE_UTEN_UTTAK',
                 forelder: 'MOR',
             },
@@ -258,10 +264,10 @@ describe('lagHullPerioder', () => {
         const perioder = [
             {
                 fom: '2025-03-01',
-                tom: '2025-03-10',
+                tom: '2025-03-11',
             },
             {
-                fom: '2025-04-20',
+                fom: '2025-04-19',
                 tom: '2025-04-30',
             },
         ];
@@ -270,17 +276,36 @@ describe('lagHullPerioder', () => {
 
         expect(perioderUtenUttak).toEqual([
             {
-                fom: '2025-03-11',
+                fom: '2025-03-12',
                 tom: '2025-03-19',
                 hullType: 'PERIODE_UTEN_UTTAK',
                 forelder: 'MOR',
             },
             {
                 fom: '2025-03-21',
-                tom: '2025-04-19',
+                tom: '2025-04-18',
                 hullType: 'PERIODE_UTEN_UTTAK',
                 forelder: 'MOR',
             },
         ]);
+    });
+
+    it('skal ikke lage perioder uten uttak i helg', () => {
+        const familiehendelsedato = '2025-03-21';
+
+        const perioder = [
+            {
+                fom: '2025-03-24',
+                tom: '2025-03-28',
+            },
+            {
+                fom: '2025-03-31',
+                tom: '2025-04-02',
+            },
+        ];
+
+        const perioderUtenUttak = lagPerioderUtenUttak(perioder, familiehendelsedato);
+
+        expect(perioderUtenUttak).toEqual([]);
     });
 });

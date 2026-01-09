@@ -88,7 +88,7 @@ const lagTapteDagerHull = (
 
     let pågåandeHullStart: dayjs.Dayjs | null = null;
 
-    for (let dato = start; dato.isSameOrBefore(slutt, 'day'); dato = dato.add(1, 'day')) {
+    for (let dato = start; dato.isBefore(slutt, 'day'); dato = dato.add(1, 'day')) {
         if (erUkedag(dato)) {
             const erDatoDekket = sortertePerioder.some(
                 (p) => dato.isSameOrAfter(p.fom, 'day') && dato.isSameOrBefore(p.tom, 'day'),
@@ -127,47 +127,54 @@ export const lagPerioderUtenUttak = (
     sortertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     familiehendelsedato: string,
 ): UttaksplanHull[] => {
+    const sortertePerioderMedFamiliehendelse = [...sortertePerioder]
+        .concat({
+            fom: familiehendelsedato,
+            tom: familiehendelsedato,
+        })
+        .sort(sorterPerioder);
+
     const perioderUtenUttak: UttaksplanHull[] = [];
 
-    let gjeldendeDato = sortertePerioder.at(0)!.fom;
+    let forrigePeriode = sortertePerioderMedFamiliehendelse[0]!;
 
-    for (const periode of sortertePerioder) {
-        if (dayjs(gjeldendeDato).isBefore(periode.fom)) {
-            const hullFom = gjeldendeDato;
-            const hullTom = forrigeDag(periode.fom);
+    const perioderEkslFørstePeriode = sortertePerioderMedFamiliehendelse.slice(1);
 
-            const fhDato = dayjs(familiehendelsedato);
+    for (const periode of perioderEkslFørstePeriode) {
+        const hullFom = nesteUkedag(forrigePeriode.tom);
+        const hullTom = forrigeUkedag(periode.fom);
 
-            if (fhDato.isAfter(hullFom) && fhDato.isBefore(hullTom)) {
-                // Del hullet i to
-                perioderUtenUttak.push(
-                    {
-                        fom: hullFom,
-                        tom: forrigeDag(familiehendelsedato),
-                        hullType: 'PERIODE_UTEN_UTTAK',
-                        forelder: 'MOR',
-                    },
-                    {
-                        fom: nesteDag(familiehendelsedato),
-                        tom: hullTom,
-                        hullType: 'PERIODE_UTEN_UTTAK',
-                        forelder: 'MOR',
-                    },
-                );
-            } else {
-                perioderUtenUttak.push({ fom: hullFom, tom: hullTom, hullType: 'PERIODE_UTEN_UTTAK', forelder: 'MOR' });
-            }
+        if (dayjs(hullTom).isSameOrAfter(hullFom, 'day')) {
+            perioderUtenUttak.push({
+                fom: hullFom,
+                tom: hullTom,
+                hullType: 'PERIODE_UTEN_UTTAK',
+                // (TOR) Lag eigen type for perioder uten uttak sånn at ein får vekk forelder
+                forelder: 'MOR',
+            });
         }
 
-        gjeldendeDato = nesteDag(periode.tom);
+        forrigePeriode = periode;
     }
 
     return perioderUtenUttak;
 };
 
-const nesteDag = (dato: string): string => dayjs(dato).add(1, 'day').format('YYYY-MM-DD');
+const nesteUkedag = (dato: string): string => {
+    let nDato = dayjs(dato).add(1, 'day');
+    while (!erUkedag(nDato)) {
+        nDato = nDato.add(1, 'day');
+    }
+    return nDato.format(ISO_DATE_FORMAT);
+};
 
-const forrigeDag = (dato: string): string => dayjs(dato).subtract(1, 'day').format('YYYY-MM-DD');
+const forrigeUkedag = (dato: string): string => {
+    let fDato = dayjs(dato).subtract(1, 'day');
+    while (!erUkedag(fDato)) {
+        fDato = fDato.subtract(1, 'day');
+    }
+    return fDato.format(ISO_DATE_FORMAT);
+};
 
 const erUkedag = (dato: dayjs.Dayjs) => {
     const dag = dato.day();
@@ -184,5 +191,16 @@ export const sorterPerioder = (a: Uttaksplanperiode, b: Uttaksplanperiode): numb
     if (aFom.isAfter(bFom)) {
         return 1;
     }
+
+    const aTom = dayjs(a.tom);
+    const bTom = dayjs(b.tom);
+
+    if (aTom.isBefore(bTom)) {
+        return -1;
+    }
+    if (aTom.isAfter(bTom)) {
+        return 1;
+    }
+
     return 0;
 };
