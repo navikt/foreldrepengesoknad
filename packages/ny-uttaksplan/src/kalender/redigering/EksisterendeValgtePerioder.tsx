@@ -260,26 +260,43 @@ const PeriodeHeaderText = ({ periode }: { periode: UttakPeriodeMedAntallDager })
 
 const PeriodeKvoteType = ({ periode }: { periode: UttakPeriodeMedAntallDager }) => {
     const erAktivitetsfri =
-        periode.kontoType === 'FORELDREPENGER' &&
         erVanligUttakPeriode(periode) &&
+        (periode.kontoType === 'FORELDREPENGER' || periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER') &&
         periode.morsAktivitet === 'IKKE_OPPGITT';
 
     if (periode.kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
         return <FormattedMessage id="RedigeringPanel.MorHarForeldrepengerFørFødsel" />;
     }
-    if (periode.kontoType === 'MØDREKVOTE') {
+    if (
+        periode.kontoType === 'MØDREKVOTE' ||
+        (erVanligUttakPeriode(periode) && periode.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER')
+    ) {
         return <FormattedMessage id="RedigeringPanel.MorKvote" />;
     }
-    if (periode.kontoType === 'FEDREKVOTE') {
+    if (
+        periode.kontoType === 'FEDREKVOTE' ||
+        (erVanligUttakPeriode(periode) && periode.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER')
+    ) {
         return <FormattedMessage id="RedigeringPanel.FarKvote" />;
     }
-    if (periode.kontoType === 'FORELDREPENGER' && !erAktivitetsfri) {
+    if (
+        (periode.kontoType === 'FORELDREPENGER' ||
+            (erVanligUttakPeriode(periode) && periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER')) &&
+        !erAktivitetsfri
+    ) {
         return <FormattedMessage id="RedigeringPanel.Foreldrepenger" />;
     }
-    if (periode.kontoType === 'FORELDREPENGER' && erAktivitetsfri) {
+    if (
+        (periode.kontoType === 'FORELDREPENGER' ||
+            (erVanligUttakPeriode(periode) && periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER')) &&
+        erAktivitetsfri
+    ) {
         return <FormattedMessage id="RedigeringPanel.UtenAktivitetskrav" />;
     }
-    if (periode.kontoType === 'FELLESPERIODE') {
+    if (
+        periode.kontoType === 'FELLESPERIODE' ||
+        (erVanligUttakPeriode(periode) && periode.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER')
+    ) {
         return <FormattedMessage id="RedigeringPanel.Fellesperiode" />;
     }
     if (erVanligUttakPeriode(periode) && periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {

@@ -314,7 +314,7 @@ export const VisPerioderMedOppholdsårsakKorrekt: Story = {
             },
             {
                 fom: '2024-12-09',
-                tom: '2025-12-13',
+                tom: '2024-12-13',
                 kontoType: 'MØDREKVOTE',
                 flerbarnsdager: false,
                 forelder: 'MOR',
