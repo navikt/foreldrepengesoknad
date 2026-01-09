@@ -81,46 +81,64 @@ const lagTapteDagerHull = (
     forelder: BrukerRolleSak_fpoversikt,
     periodeSomSkalSjekkesForHull: { fom: string; tom: string },
 ): UttaksplanHull[] => {
-    const start = dayjs(periodeSomSkalSjekkesForHull.fom);
-    const slutt = dayjs(periodeSomSkalSjekkesForHull.tom);
+    const { fom, tom } = periodeSomSkalSjekkesForHull;
 
-    const hull: UttaksplanHull[] = [];
+    const perioderForIntervalletSomSkalSjekkes = sortertePerioder.filter(
+        (p) => dayjs(p.fom).isSameOrBefore(tom) && dayjs(p.tom).isSameOrAfter(fom),
+    );
 
-    let pågåandeHullStart: dayjs.Dayjs | null = null;
+    perioderForIntervalletSomSkalSjekkes.push(
+        ...lagPerioderVedStartOgSluttOmDetMangler(perioderForIntervalletSomSkalSjekkes, periodeSomSkalSjekkesForHull),
+    );
 
-    for (let dato = start; dato.isBefore(slutt, 'day'); dato = dato.add(1, 'day')) {
-        if (erUkedag(dato)) {
-            const erDatoDekket = sortertePerioder.some(
-                (p) => dato.isSameOrAfter(p.fom, 'day') && dato.isSameOrBefore(p.tom, 'day'),
-            );
+    perioderForIntervalletSomSkalSjekkes.sort(sorterPerioder);
 
-            if (!erDatoDekket) {
-                if (!pågåandeHullStart) {
-                    pågåandeHullStart = dato;
-                }
-            } else if (pågåandeHullStart) {
-                hull.push({
-                    fom: pågåandeHullStart.format(ISO_DATE_FORMAT),
-                    tom: dato.subtract(1, 'day').format(ISO_DATE_FORMAT),
-                    hullType: 'TAPTE_DAGER',
-                    forelder,
-                });
-                pågåandeHullStart = null;
-            }
+    const perioderMedTapteDager: UttaksplanHull[] = [];
+
+    let forrigePeriode = perioderForIntervalletSomSkalSjekkes[0]!;
+
+    const perioderEkslFørstePeriode = perioderForIntervalletSomSkalSjekkes.slice(1);
+
+    for (const periode of perioderEkslFørstePeriode) {
+        const hullFom = nesteUkedag(forrigePeriode.tom);
+        const hullTom = forrigeUkedag(periode.fom);
+
+        if (dayjs(hullTom).isSameOrAfter(hullFom, 'day')) {
+            perioderMedTapteDager.push({
+                fom: hullFom,
+                tom: hullTom,
+                hullType: 'TAPTE_DAGER',
+                forelder,
+            });
         }
+
+        forrigePeriode = periode;
     }
 
-    // Avslutt hull som ikkje er avslutta av andre periodar
-    if (pågåandeHullStart) {
-        hull.push({
-            fom: pågåandeHullStart.format(ISO_DATE_FORMAT),
-            tom: slutt.subtract(1, 'day').format(ISO_DATE_FORMAT),
-            hullType: 'TAPTE_DAGER',
-            forelder,
+    return perioderMedTapteDager;
+};
+
+const lagPerioderVedStartOgSluttOmDetMangler = (
+    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    periodeSomSkalSjekkesForHull: { fom: string; tom: string },
+) => {
+    const nyePerioder = [];
+    const { fom, tom } = periodeSomSkalSjekkesForHull;
+
+    if (!perioder.some((p) => dayjs(p.fom).isSameOrBefore(fom))) {
+        nyePerioder.push({
+            fom: forrigeUkedag(fom),
+            tom: forrigeUkedag(fom),
+        });
+    }
+    if (!perioder.some((p) => dayjs(p.tom).isSameOrAfter(tom))) {
+        nyePerioder.push({
+            fom: tom,
+            tom: tom,
         });
     }
 
-    return hull;
+    return nyePerioder;
 };
 
 export const lagPerioderUtenUttak = (

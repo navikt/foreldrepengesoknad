@@ -53,7 +53,7 @@ describe('lagHullPerioder', () => {
         expect(perioderMedHull).toEqual([
             {
                 fom: '2025-04-11',
-                tom: '2025-04-13',
+                tom: '2025-04-11',
                 forelder: 'MOR',
                 hullType: 'TAPTE_DAGER',
             },
@@ -101,7 +101,7 @@ describe('lagHullPerioder', () => {
 
         const perioder = [
             {
-                fom: '2025-08-10',
+                fom: '2025-08-11',
                 tom: '2025-08-20',
             },
         ];
@@ -117,19 +117,19 @@ describe('lagHullPerioder', () => {
         expect(perioderMedHull).toEqual([
             {
                 fom: '2025-05-08',
-                tom: '2025-08-09',
+                tom: '2025-08-08',
                 forelder: 'FAR_MEDMOR',
                 hullType: 'TAPTE_DAGER',
             },
         ]);
     });
 
-    it('skal legge til hull fra omsorgsovertakelse og før første periode for kun far har rett ved adopsjon', () => {
+    it('skal legge til hull fra omsorgsovertakelse og til første periode for kun far har rett ved adopsjon', () => {
         const familiehendelsedato = '2025-03-26';
 
         const perioder = [
             {
-                fom: '2025-08-10',
+                fom: '2025-08-11',
                 tom: '2025-08-20',
             },
         ];
@@ -145,7 +145,7 @@ describe('lagHullPerioder', () => {
         expect(perioderMedHull).toEqual([
             {
                 fom: '2025-03-26',
-                tom: '2025-08-09',
+                tom: '2025-08-08',
                 forelder: 'FAR_MEDMOR',
                 hullType: 'TAPTE_DAGER',
             },
@@ -161,7 +161,7 @@ describe('lagHullPerioder', () => {
                 tom: '2025-03-25',
             },
             {
-                fom: '2025-08-10',
+                fom: '2025-08-11',
                 tom: '2025-08-20',
             },
         ];
@@ -177,7 +177,7 @@ describe('lagHullPerioder', () => {
         expect(perioderMedHull).toEqual([
             {
                 fom: '2025-03-26',
-                tom: '2025-08-09',
+                tom: '2025-08-08',
                 forelder: 'FAR_MEDMOR',
                 hullType: 'TAPTE_DAGER',
             },
@@ -193,7 +193,7 @@ describe('lagHullPerioder', () => {
                 tom: '2025-03-28',
             },
             {
-                fom: '2025-08-10',
+                fom: '2025-08-11',
                 tom: '2025-08-20',
             },
         ];
@@ -209,7 +209,7 @@ describe('lagHullPerioder', () => {
         expect(perioderMedHull).toEqual([
             {
                 fom: '2025-03-31',
-                tom: '2025-08-09',
+                tom: '2025-08-08',
                 forelder: 'FAR_MEDMOR',
                 hullType: 'TAPTE_DAGER',
             },
