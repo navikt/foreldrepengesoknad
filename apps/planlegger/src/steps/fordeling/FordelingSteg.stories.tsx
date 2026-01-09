@@ -122,6 +122,24 @@ export const FlereForsørgereToBarn: Story = {
             antallBarn: '2',
         },
         dekningsgrad: '80',
+        stønadskontoer: DEFAULT_STØNADSKONTO,
+    },
+};
+
+export const FlereForsørgereToBarn80ProsentDekningsgrad: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåMedmor: 'Esther Utvikler',
+            navnPåMor: 'Klara Utvikler',
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
+        },
+        omBarnet: {
+            erBarnetFødt: false,
+            erFødsel: true,
+            termindato: '2024-01-01',
+            antallBarn: '2',
+        },
+        dekningsgrad: '80',
         stønadskontoer: {
             '80': {
                 kontoer: DELT_UTTAK_80_TO_BARN,

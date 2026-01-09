@@ -179,4 +179,106 @@ describe('<FordelingSteg>', () => {
         expect(navigateMock).toHaveBeenCalledTimes(1);
         expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.PLANEN_DERES));
     });
+
+    it('Skal ikke vise ekstra dag info når det ikke er restdager', async () => {
+        const navigateMock = vi.fn();
+        useNavigateMock.mockReturnValue(navigateMock);
+
+        const gåTilNesteSide = vi.fn();
+
+        render(<FlereForsørgereEttBarn gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
+
+        // Med 1 barn og 100% dekningsgrad er det 16 uker = 80 dager, ingen restdager
+        expect(
+            screen.queryByText(/ekstra dag.*med fellesperiode vil legge seg inn i planen automatisk/i),
+        ).not.toBeInTheDocument();
+    });
+
+    it('Skal vise melding om én ekstra dag når det er 1 restdag', async () => {
+        const navigateMock = vi.fn();
+        useNavigateMock.mockReturnValue(navigateMock);
+
+        const gåTilNesteSide = vi.fn();
+
+        const originalArgs = FlereForsørgereEttBarn.args;
+        const utils = render(
+            <FlereForsørgereEttBarn
+                {...originalArgs}
+                stønadskontoer={{
+                    '100': {
+                        kontoer: [
+                            { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+                            { konto: 'MØDREKVOTE', dager: 75 },
+                            { konto: 'FEDREKVOTE', dager: 75 },
+                            { konto: 'FELLESPERIODE', dager: 81 }, // 16 uker + 1 dag
+                        ],
+                        minsteretter: { farRundtFødsel: 10, toTette: 0 },
+                    },
+                    '80': {
+                        kontoer: [
+                            { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+                            { konto: 'MØDREKVOTE', dager: 95 },
+                            { konto: 'FEDREKVOTE', dager: 95 },
+                            { konto: 'FELLESPERIODE', dager: 90 },
+                        ],
+                        minsteretter: { farRundtFødsel: 10, toTette: 0 },
+                    },
+                }}
+                gåTilNesteSide={gåTilNesteSide}
+            />,
+        );
+
+        expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
+
+        expect(
+            screen.getByText(
+                'Den ene ekstra dagen med fellesperiode vil legge seg inn i planen automatisk. Hvis du ønsker en annen fordeling, kan du endre dette i planen senere.',
+            ),
+        ).toBeInTheDocument();
+    });
+
+    it('Skal vise melding om flere ekstra dager når det er 2+ restdager', async () => {
+        const navigateMock = vi.fn();
+        useNavigateMock.mockReturnValue(navigateMock);
+
+        const gåTilNesteSide = vi.fn();
+
+        const originalArgs = FlereForsørgereEttBarn.args;
+        const utils = render(
+            <FlereForsørgereEttBarn
+                {...originalArgs}
+                stønadskontoer={{
+                    '100': {
+                        kontoer: [
+                            { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+                            { konto: 'MØDREKVOTE', dager: 75 },
+                            { konto: 'FEDREKVOTE', dager: 75 },
+                            { konto: 'FELLESPERIODE', dager: 82 }, // 16 uker + 2 dager
+                        ],
+                        minsteretter: { farRundtFødsel: 10, toTette: 0 },
+                    },
+                    '80': {
+                        kontoer: [
+                            { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+                            { konto: 'MØDREKVOTE', dager: 95 },
+                            { konto: 'FEDREKVOTE', dager: 95 },
+                            { konto: 'FELLESPERIODE', dager: 90 },
+                        ],
+                        minsteretter: { farRundtFødsel: 10, toTette: 0 },
+                    },
+                }}
+                gåTilNesteSide={gåTilNesteSide}
+            />,
+        );
+
+        expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
+
+        expect(
+            screen.getByText(
+                'De ekstra dagene med fellesperiode vil legge seg inn i planen automatisk. Hvis du ønsker en annen fordeling, kan du endre dette i planen senere.',
+            ),
+        ).toBeInTheDocument();
+    });
 });
