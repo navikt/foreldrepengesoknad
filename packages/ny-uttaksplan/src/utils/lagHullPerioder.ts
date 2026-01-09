@@ -9,6 +9,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
+import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { ForeldreInfo } from '../types/ForeldreInfo';
@@ -43,6 +44,8 @@ export const lagTapteDagerPerioder = (
     familiesituasjon: Familiesituasjon,
     foreldreInfo: ForeldreInfo,
 ): UttaksplanHull[] => {
+    const justertFamiliehendelsedato = UttaksdagenString(familiehendelsedato).denneEllerNeste();
+
     if (
         foreldreInfo.søker === 'FAR_ELLER_MEDMOR' &&
         (foreldreInfo.rettighetType === 'ALENEOMSORG' || foreldreInfo.rettighetType === 'BARE_SØKER_RETT')
@@ -54,8 +57,8 @@ export const lagTapteDagerPerioder = (
         if (førstePeriodeSomStarterEtterFamiliehendelsedato?.fom) {
             const fom =
                 familiesituasjon === 'adopsjon'
-                    ? dayjs(familiehendelsedato)
-                    : dayjs(familiehendelsedato).add(6, 'week').add(1, 'day');
+                    ? dayjs(justertFamiliehendelsedato)
+                    : dayjs(justertFamiliehendelsedato).add(6, 'week').add(1, 'day');
 
             const periodeSomSkalSjekkesForHull = {
                 fom: fom.format(ISO_DATE_FORMAT),
@@ -66,8 +69,8 @@ export const lagTapteDagerPerioder = (
         }
     } else if (familiesituasjon !== 'adopsjon') {
         const periodeSomSkalSjekkesForHull = {
-            fom: familiehendelsedato,
-            tom: dayjs(familiehendelsedato).add(6, 'week').format(ISO_DATE_FORMAT),
+            fom: justertFamiliehendelsedato,
+            tom: dayjs(justertFamiliehendelsedato).add(6, 'week').format(ISO_DATE_FORMAT),
         };
         const forelder = foreldreInfo.søker === 'MOR' ? 'MOR' : 'FAR_MEDMOR';
         return lagTapteDagerHull(sortertePerioder, forelder, periodeSomSkalSjekkesForHull);
@@ -100,8 +103,8 @@ const lagTapteDagerHull = (
     const perioderEkslFørstePeriode = perioderForIntervalletSomSkalSjekkes.slice(1);
 
     for (const periode of perioderEkslFørstePeriode) {
-        const hullFom = nesteUkedag(forrigePeriode.tom);
-        const hullTom = forrigeUkedag(periode.fom);
+        const hullFom = UttaksdagenString(forrigePeriode.tom).neste();
+        const hullTom = UttaksdagenString(periode.fom).forrige();
 
         if (dayjs(hullTom).isSameOrAfter(hullFom, 'day')) {
             perioderMedTapteDager.push({
@@ -127,8 +130,8 @@ const lagPerioderVedStartOgSluttOmDetMangler = (
 
     if (!perioder.some((p) => dayjs(p.fom).isSameOrBefore(fom))) {
         nyePerioder.push({
-            fom: forrigeUkedag(fom),
-            tom: forrigeUkedag(fom),
+            fom: UttaksdagenString(fom).forrige(),
+            tom: UttaksdagenString(fom).forrige(),
         });
     }
     if (!perioder.some((p) => dayjs(p.tom).isSameOrAfter(tom))) {
@@ -159,8 +162,8 @@ export const lagPerioderUtenUttak = (
     const perioderEkslFørstePeriode = sortertePerioderMedFamiliehendelse.slice(1);
 
     for (const periode of perioderEkslFørstePeriode) {
-        const hullFom = nesteUkedag(forrigePeriode.tom);
-        const hullTom = forrigeUkedag(periode.fom);
+        const hullFom = UttaksdagenString(forrigePeriode.tom).neste();
+        const hullTom = UttaksdagenString(periode.fom).forrige();
 
         if (dayjs(hullTom).isSameOrAfter(hullFom, 'day')) {
             perioderUtenUttak.push({
@@ -176,27 +179,6 @@ export const lagPerioderUtenUttak = (
     }
 
     return perioderUtenUttak;
-};
-
-const nesteUkedag = (dato: string): string => {
-    let nDato = dayjs(dato).add(1, 'day');
-    while (!erUkedag(nDato)) {
-        nDato = nDato.add(1, 'day');
-    }
-    return nDato.format(ISO_DATE_FORMAT);
-};
-
-const forrigeUkedag = (dato: string): string => {
-    let fDato = dayjs(dato).subtract(1, 'day');
-    while (!erUkedag(fDato)) {
-        fDato = fDato.subtract(1, 'day');
-    }
-    return fDato.format(ISO_DATE_FORMAT);
-};
-
-const erUkedag = (dato: dayjs.Dayjs) => {
-    const dag = dato.day();
-    return dag !== 0 && dag !== 6;
 };
 
 export const sorterPerioder = (a: Uttaksplanperiode, b: Uttaksplanperiode): number => {
