@@ -11,7 +11,12 @@ import * as stories from './FordelingSteg.stories';
 
 // TODO: Benytt dayjs for å håndtere datoer i testene. Spesielt for å sørge for at fremtidige datoer alltid er fremtidige.
 
-const { FlereForsørgereEttBarn } = composeStories(stories);
+const {
+    FlereForsørgereEttBarn,
+    FlereForsørgereEttBarn80ProsentDekningsgrad,
+    FlereForsørgereToBarn,
+    FlereForsørgereToBarn80ProsentDekningsgrad,
+} = composeStories(stories);
 
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
@@ -202,39 +207,15 @@ describe('<FordelingSteg>', () => {
 
         const gåTilNesteSide = vi.fn();
 
-        const originalArgs = FlereForsørgereEttBarn.args;
-        const utils = render(
-            <FlereForsørgereEttBarn
-                {...originalArgs}
-                stønadskontoer={{
-                    '100': {
-                        kontoer: [
-                            { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-                            { konto: 'MØDREKVOTE', dager: 75 },
-                            { konto: 'FEDREKVOTE', dager: 75 },
-                            { konto: 'FELLESPERIODE', dager: 81 }, // 16 uker + 1 dag
-                        ],
-                        minsteretter: { farRundtFødsel: 10, toTette: 0 },
-                    },
-                    '80': {
-                        kontoer: [
-                            { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-                            { konto: 'MØDREKVOTE', dager: 95 },
-                            { konto: 'FEDREKVOTE', dager: 95 },
-                            { konto: 'FELLESPERIODE', dager: 90 },
-                        ],
-                        minsteretter: { farRundtFødsel: 10, toTette: 0 },
-                    },
-                }}
-                gåTilNesteSide={gåTilNesteSide}
-            />,
-        );
+        // 80% med 1 barn har 101 dager fellesperiode = 20 uker + 1 dag
+        render(<FlereForsørgereEttBarn80ProsentDekningsgrad gåTilNesteSide={gåTilNesteSide} />);
 
         expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
 
         expect(
             screen.getByText(
-                'Den ene ekstra dagen med fellesperiode vil legge seg inn i planen automatisk. Hvis du ønsker en annen fordeling, kan du endre dette i planen senere.',
+                'Den ene ekstra dagen med fellesperiode vil legge seg inn i planen automatisk. ' +
+                    'Hvis du ønsker en annen fordeling, kan du endre dette i planen senere.',
             ),
         ).toBeInTheDocument();
     });
@@ -245,39 +226,15 @@ describe('<FordelingSteg>', () => {
 
         const gåTilNesteSide = vi.fn();
 
-        const originalArgs = FlereForsørgereEttBarn.args;
-        const utils = render(
-            <FlereForsørgereEttBarn
-                {...originalArgs}
-                stønadskontoer={{
-                    '100': {
-                        kontoer: [
-                            { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-                            { konto: 'MØDREKVOTE', dager: 75 },
-                            { konto: 'FEDREKVOTE', dager: 75 },
-                            { konto: 'FELLESPERIODE', dager: 82 }, // 16 uker + 2 dager
-                        ],
-                        minsteretter: { farRundtFødsel: 10, toTette: 0 },
-                    },
-                    '80': {
-                        kontoer: [
-                            { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
-                            { konto: 'MØDREKVOTE', dager: 95 },
-                            { konto: 'FEDREKVOTE', dager: 95 },
-                            { konto: 'FELLESPERIODE', dager: 90 },
-                        ],
-                        minsteretter: { farRundtFødsel: 10, toTette: 0 },
-                    },
-                }}
-                gåTilNesteSide={gåTilNesteSide}
-            />,
-        );
+        // 80% med 2 barn har 207 dager fellesperiode = 41 uker + 2 dager
+        render(<FlereForsørgereToBarn80ProsentDekningsgrad gåTilNesteSide={gåTilNesteSide} />);
 
         expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
 
         expect(
             screen.getByText(
-                'De ekstra dagene med fellesperiode vil legge seg inn i planen automatisk. Hvis du ønsker en annen fordeling, kan du endre dette i planen senere.',
+                'De ekstra dagene med fellesperiode vil legge seg inn i planen automatisk. ' +
+                    'Hvis du ønsker en annen fordeling, kan du endre dette i planen senere.',
             ),
         ).toBeInTheDocument();
     });

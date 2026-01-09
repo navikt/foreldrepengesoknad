@@ -8,7 +8,7 @@ import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
-import { Dekningsgrad, HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
+import { Dekningsgrad, HvemPlanleggerType } from '@navikt/fp-types';
 import {
     DELT_UTTAK_80,
     DELT_UTTAK_80_TO_BARN,
@@ -121,8 +121,17 @@ export const FlereForsørgereToBarn: Story = {
             termindato: '2024-01-01',
             antallBarn: '2',
         },
-        dekningsgrad: '80',
-        stønadskontoer: DEFAULT_STØNADSKONTO,
+        dekningsgrad: '100',
+        stønadskontoer: {
+            '80': {
+                kontoer: DELT_UTTAK_80_TO_BARN,
+                minsteretter: MINSTERETTER,
+            },
+            '100': {
+                kontoer: DELT_UTTAK_100_TO_BARN,
+                minsteretter: MINSTERETTER,
+            },
+        },
     },
 };
 
