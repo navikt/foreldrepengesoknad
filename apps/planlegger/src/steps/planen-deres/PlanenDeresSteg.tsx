@@ -25,7 +25,7 @@ import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
 import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
 
-import { BodyLong, BodyShort, Heading, Tabs, ToggleGroup, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Box, Heading, InlineMessage, Tabs, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { Dekningsgrad, HvemPlanleggerType, KontoBeregningResultatDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
@@ -312,24 +312,39 @@ const AntallUkerVelger = ({
 
             {hvemHarRett === 'beggeHarRett' &&
                 (!omBarnet.erFødsel || hvemPlanlegger.type !== HvemPlanleggerType.FAR_OG_FAR) && (
-                    <BluePanel>
-                        <Heading id="fordeling-slider-label" size="small" level="3">
-                            <FormattedMessage id="PlanenDeresSteg.FordelingTittel" />
-                        </Heading>
-                        <BodyShort className="mb-4">
-                            <FormattedMessage id="PlanenDeresSteg.Undertekst" />
-                        </BodyShort>
-                        <FordelingSlider
-                            antallDagerSøker1={fordeling?.antallDagerSøker1}
-                            onAntallDagerSøker1Change={(value) => {
-                                lagreFordeling({ antallDagerSøker1: value });
-                                lagreUttaksplanOgOppdaterUrl(undefined);
-                            }}
-                            antallUkerOgDagerFellesperiode={getAntallUkerOgDagerFellesperiode(valgtStønadskonto)}
-                            fornavnSøker1={fornavnSøker1}
-                            fornavnSøker2={fornavnSøker2}
-                        />
-                    </BluePanel>
+                    <>
+                        <BluePanel>
+                            <Heading id="fordeling-slider-label" size="small" level="3">
+                                <FormattedMessage id="PlanenDeresSteg.FordelingTittel" />
+                            </Heading>
+                            <BodyShort className="mb-4">
+                                <FormattedMessage id="PlanenDeresSteg.Undertekst" />
+                            </BodyShort>
+                            <FordelingSlider
+                                antallDagerSøker1={fordeling?.antallDagerSøker1}
+                                onAntallDagerSøker1Change={(value) => {
+                                    lagreFordeling({ antallDagerSøker1: value });
+                                    lagreUttaksplanOgOppdaterUrl(undefined);
+                                }}
+                                antallUkerOgDagerFellesperiode={getAntallUkerOgDagerFellesperiode(valgtStønadskonto)}
+                                fornavnSøker1={fornavnSøker1}
+                                fornavnSøker2={fornavnSøker2}
+                            />
+                        </BluePanel>
+                        {getAntallUkerOgDagerFellesperiode(valgtStønadskonto).dager > 0 && (
+                            <Box paddingInline="space-16">
+                                <InlineMessage status="info">
+                                    <BodyShort size="small" className="text-text-subtle">
+                                        {getAntallUkerOgDagerFellesperiode(valgtStønadskonto).dager === 1 ? (
+                                            <FormattedMessage id="PlanenDeresSteg.EkstraDagInfo.EnDag" />
+                                        ) : (
+                                            <FormattedMessage id="PlanenDeresSteg.EkstraDagInfo.FlereDager" />
+                                        )}
+                                    </BodyShort>
+                                </InlineMessage>
+                            </Box>
+                        )}
+                    </>
                 )}
         </VStack>
     );
