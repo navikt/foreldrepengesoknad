@@ -2,7 +2,6 @@ import { PlanForslag } from 'types/PlanForslag';
 
 import { KontoDto, Situasjon, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { UttaksdagenString, getTidsperiodeString } from '@navikt/fp-utils';
-import { andreAugust2022ReglerGjelder } from '@navikt/fp-uttaksplan-ny';
 
 import { sorterPerioder } from './uttakUtils';
 
@@ -47,7 +46,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
         perioder.push(periode);
     } else {
         let startDatoNestePeriode = førsteUttaksdag;
-        if (andreAugust2022ReglerGjelder(famDato) && !!bareFarMedmorHarRett && aktivitetsfriKvote) {
+        if (!!bareFarMedmorHarRett && aktivitetsfriKvote) {
             const aktivitetsFriPeriode: UttakPeriode_fpoversikt = {
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FORELDREPENGER',
@@ -209,12 +208,7 @@ const ikkeDeltUttakFødselFarMedmor = (
             perioder.push(periode);
         } else {
             let startDatoNestePeriode = startDato;
-            if (
-                andreAugust2022ReglerGjelder(famDato) &&
-                bareFarMedmorHarRett &&
-                !erAleneOmOmsorg &&
-                aktivitetsfriKvote
-            ) {
+            if (bareFarMedmorHarRett && !erAleneOmOmsorg && aktivitetsfriKvote) {
                 const aktivitetsFriPeriode: UttakPeriode_fpoversikt = {
                     forelder: 'FAR_MEDMOR',
                     kontoType: 'FORELDREPENGER',
