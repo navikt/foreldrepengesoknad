@@ -280,6 +280,7 @@ const AntallUkerVelger = ({
 
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
+    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
 
     return (
         <VStack gap="space-24">
@@ -326,16 +327,16 @@ const AntallUkerVelger = ({
                                     lagreFordeling({ antallDagerSøker1: value });
                                     lagreUttaksplanOgOppdaterUrl(undefined);
                                 }}
-                                antallUkerOgDagerFellesperiode={getAntallUkerOgDagerFellesperiode(valgtStønadskonto)}
+                                antallUkerOgDagerFellesperiode={antallUkerOgDagerFellesperiode}
                                 fornavnSøker1={fornavnSøker1}
                                 fornavnSøker2={fornavnSøker2}
                             />
                         </BluePanel>
-                        {getAntallUkerOgDagerFellesperiode(valgtStønadskonto).dager > 0 && (
+                        {antallUkerOgDagerFellesperiode.dager > 0 && (
                             <Box paddingInline="space-16">
                                 <InlineMessage status="info">
                                     <BodyShort size="small" className="text-text-subtle">
-                                        {getAntallUkerOgDagerFellesperiode(valgtStønadskonto).dager === 1 ? (
+                                        {antallUkerOgDagerFellesperiode.dager === 1 ? (
                                             <FormattedMessage id="PlanenDeresSteg.EkstraDagInfo.EnDag" />
                                         ) : (
                                             <FormattedMessage id="PlanenDeresSteg.EkstraDagInfo.FlereDager" />
