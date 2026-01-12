@@ -12,7 +12,7 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { UkerOgDager, getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { finnUttaksdata } from 'utils/uttakUtils';
 
-import { BodyShort, Heading, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Heading, InlineMessage, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
@@ -52,6 +52,7 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
     // Sett standardverdi: del likt (halvparten av totalen)
     const totalDager = antallUkerOgDagerFellesperiode.uker * 5 + antallUkerOgDagerFellesperiode.dager;
     const halvpart = Math.floor(totalDager / 2);
+    const restdager = antallUkerOgDagerFellesperiode.dager;
 
     const formMethods = useForm<Fordeling>({
         defaultValues: fordeling ?? { antallDagerSøker1: halvpart },
@@ -135,6 +136,19 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                                 fornavnSøker2={fornavnSøker2}
                             />
                         </BluePanel>
+                        {restdager > 0 && (
+                            <Box paddingInline="space-16">
+                                <InlineMessage status="info">
+                                    <BodyShort size="small" className="text-text-subtle">
+                                        {restdager === 1 ? (
+                                            <FormattedMessage id="FordelingSteg.EkstraDagInfo.EnDag" />
+                                        ) : (
+                                            <FormattedMessage id="FordelingSteg.EkstraDagInfo.FlereDager" />
+                                        )}
+                                    </BodyShort>
+                                </InlineMessage>
+                            </Box>
+                        )}
                         {antallDagerSøker1 !== undefined && (
                             <FordelingsdetaljerPanel
                                 barnet={barnet}

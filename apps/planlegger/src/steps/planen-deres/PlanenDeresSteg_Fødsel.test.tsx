@@ -2,6 +2,8 @@ import { composeStories } from '@storybook/react-vite';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { DELT_UTTAK_80_TO_BARN, DELT_UTTAK_100_TO_BARN } from '@navikt/fp-utils-test';
+
 import { endreFordelingMedSlider } from '../../../vitest/testHelpers';
 import * as stories from './PlanenDeresSteg_Fødsel.stories';
 
@@ -541,5 +543,76 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const mai2025 = screen.getByTestId('year:2025;month:4');
         expect(within(mai2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(12);
+    });
+
+    it('Skal ikke vise ekstra dag info når det ikke er restdager', async () => {
+        // Med 1 barn og 100% dekningsgrad er det 16 uker = 80 dager, ingen restdager
+        render(<MorOgFarBeggeHarRett />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        expect(
+            screen.queryByText(/ekstra dag.*med fellesperiode vil legge seg inn i planen automatisk/i),
+        ).not.toBeInTheDocument();
+    });
+
+    it('Skal vise melding om én ekstra dag når det er 1 restdag', async () => {
+        // 80% med 1 barn har 101 dager fellesperiode = 20 uker + 1 dag
+        const originalArgs = MorOgFarBeggeHarRett.args;
+        render(
+            <MorOgFarBeggeHarRett
+                {...originalArgs}
+                hvorLangPeriode={{
+                    dekningsgrad: '80',
+                }}
+            />,
+        );
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        expect(
+            screen.getByText(
+                'Den ene ekstra dagen med fellesperiode vil legge seg inn i planen automatisk. ' +
+                    'Hvis du ønsker en annen fordeling, kan du endre dette nedenfor.',
+            ),
+        ).toBeInTheDocument();
+    });
+
+    it('Skal vise melding om flere ekstra dager når det er 2+ restdager', async () => {
+        // 80% med 2 barn har 207 dager fellesperiode = 41 uker + 2 dager
+        const originalArgs = MorOgFarBeggeHarRett.args;
+        render(
+            <MorOgFarBeggeHarRett
+                {...originalArgs}
+                omBarnet={{
+                    erFødsel: true,
+                    erBarnetFødt: false,
+                    termindato: '2024-07-01',
+                    antallBarn: '2',
+                }}
+                hvorLangPeriode={{
+                    dekningsgrad: '80',
+                }}
+                stønadskontoer={{
+                    '80': {
+                        kontoer: DELT_UTTAK_80_TO_BARN,
+                        minsteretter: { farRundtFødsel: 10, toTette: 0 },
+                    },
+                    '100': {
+                        kontoer: DELT_UTTAK_100_TO_BARN,
+                        minsteretter: { farRundtFødsel: 10, toTette: 0 },
+                    },
+                }}
+            />,
+        );
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        expect(
+            screen.getByText(
+                'De ekstra dagene med fellesperiode vil legge seg inn i planen automatisk. ' +
+                    'Hvis du ønsker en annen fordeling, kan du endre dette nedenfor.',
+            ),
+        ).toBeInTheDocument();
     });
 });

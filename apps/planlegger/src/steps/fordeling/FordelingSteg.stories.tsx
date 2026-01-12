@@ -9,7 +9,13 @@ import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 import { Dekningsgrad, HvemPlanleggerType } from '@navikt/fp-types';
-import { DELT_UTTAK_80, DELT_UTTAK_100, MINSTERETTER } from '@navikt/fp-utils-test';
+import {
+    DELT_UTTAK_80,
+    DELT_UTTAK_80_TO_BARN,
+    DELT_UTTAK_100,
+    DELT_UTTAK_100_TO_BARN,
+    MINSTERETTER,
+} from '@navikt/fp-utils-test';
 
 import { FordelingSteg } from './FordelingSteg';
 
@@ -116,7 +122,43 @@ export const FlereForsørgereToBarn: Story = {
             antallBarn: '2',
         },
         dekningsgrad: '100',
-        stønadskontoer: DEFAULT_STØNADSKONTO,
+        stønadskontoer: {
+            '80': {
+                kontoer: DELT_UTTAK_80_TO_BARN,
+                minsteretter: MINSTERETTER,
+            },
+            '100': {
+                kontoer: DELT_UTTAK_100_TO_BARN,
+                minsteretter: MINSTERETTER,
+            },
+        },
+    },
+};
+
+export const FlereForsørgereToBarn80ProsentDekningsgrad: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåMedmor: 'Esther Utvikler',
+            navnPåMor: 'Klara Utvikler',
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
+        },
+        omBarnet: {
+            erBarnetFødt: false,
+            erFødsel: true,
+            termindato: '2024-01-01',
+            antallBarn: '2',
+        },
+        dekningsgrad: '80',
+        stønadskontoer: {
+            '80': {
+                kontoer: DELT_UTTAK_80_TO_BARN,
+                minsteretter: MINSTERETTER,
+            },
+            '100': {
+                kontoer: DELT_UTTAK_100_TO_BARN,
+                minsteretter: MINSTERETTER,
+            },
+        },
     },
 };
 
