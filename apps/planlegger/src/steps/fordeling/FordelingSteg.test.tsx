@@ -14,7 +14,6 @@ import * as stories from './FordelingSteg.stories';
 const {
     FlereForsørgereEttBarn,
     FlereForsørgereEttBarn80ProsentDekningsgrad,
-    FlereForsørgereToBarn,
     FlereForsørgereToBarn80ProsentDekningsgrad,
 } = composeStories(stories);
 
