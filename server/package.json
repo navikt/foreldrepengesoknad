@@ -25,5 +25,5 @@
         "typescript": "5.9.3",
         "winston": "3.19.0"
     },
-    "packageManager": "pnpm@10.18.3"
+    "packageManager": "pnpm@10.28.0"
 }

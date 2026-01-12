@@ -20,5 +20,5 @@
         "@hey-api/openapi-ts": "0.89.2",
         "eslint": "9.39.2"
     },
-    "packageManager": "pnpm@10.18.3"
+    "packageManager": "pnpm@10.28.0"
 }

@@ -31,7 +31,7 @@ RUN apk fix \
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 
-RUN npm install -g pnpm@10.18.3
+RUN npm install -g pnpm@10.28.0
 COPY --from=prepare /usr/src/app ./
 
 RUN --mount=type=secret,id=PACKAGES_AUTH_TOKEN \
