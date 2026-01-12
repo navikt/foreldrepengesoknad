@@ -92,7 +92,7 @@
         "vite": "7.3.0",
         "vitest": "4.0.16"
     },
-    "packageManager": "pnpm@10.18.3",
+    "packageManager": "pnpm@10.28.0",
     "msw": {
         "workerDirectory": [
             "mock-service-worker"
