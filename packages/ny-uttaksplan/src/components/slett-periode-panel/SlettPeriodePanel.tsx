@@ -11,13 +11,13 @@ import { isRequired } from '@navikt/fp-validation';
 
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
+import { genererPeriodeId } from '../../utils/periodeUtils';
 import { getStønadskontoNavn } from '../../utils/stønadskontoerUtils';
 
 const ARIA_LABEL_ID = 'slett-periode-panel-heading';
 
 interface Props {
     closePanel: () => void;
-    handleDeletePeriode: (slettetPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
     permisjonsperiode: Permisjonsperiode;
     navnPåForeldre: NavnPåForeldre;
@@ -30,7 +30,6 @@ interface FormValues {
 
 export const SlettPeriodePanel = ({
     closePanel,
-    handleDeletePeriode,
     handleDeletePerioder,
     permisjonsperiode,
     navnPåForeldre,
@@ -47,16 +46,16 @@ export const SlettPeriodePanel = ({
 
     const onSubmit = (values: FormValues) => {
         if (values.perioder.length === 1) {
-            const periode = perioder.find((p) => p.id === values.perioder[0]);
+            const periode = perioder.find((p) => genererPeriodeId(p) === values.perioder[0]);
 
             if (periode) {
-                handleDeletePeriode(periode);
+                handleDeletePerioder([periode]);
             }
         } else {
             const slettedePerioder: Planperiode[] = [];
 
             values.perioder?.map((id) => {
-                const periode = perioder.find((p) => p.id === id);
+                const periode = perioder.find((p) => genererPeriodeId(p) === id);
 
                 if (periode) {
                     slettedePerioder.push(periode);
@@ -94,8 +93,9 @@ export const SlettPeriodePanel = ({
                                 const morsAktivitet =
                                     !p.erAnnenPartEøs && p.morsAktivitet ? p.morsAktivitet : undefined;
 
+                                const id = genererPeriodeId(p);
                                 return (
-                                    <Checkbox key={p.id} name={p.id} value={p.id} autoFocus={index === 0}>
+                                    <Checkbox key={id} name={id} value={id} autoFocus={index === 0}>
                                         {`${formatDate(p.fom)} - ${formatDate(p.tom)} -
                                         ${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, erFarEllerMedmor, morsAktivitet)}`}
                                     </Checkbox>

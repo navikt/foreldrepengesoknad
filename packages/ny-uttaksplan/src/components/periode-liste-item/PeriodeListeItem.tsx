@@ -13,8 +13,7 @@ interface Props {
     permisjonsperiode: Permisjonsperiode;
     erFamiliehendelse?: boolean;
     handleAddPeriode: (oppdatertPeriode: Planperiode) => void;
-    handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
-    handleDeletePeriode: (slettetPeriode: Planperiode) => void;
+    handleUpdatePeriode: (oppdatertPeriode: Planperiode, gammelPeriode: Planperiode) => void;
     handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
     isAllAccordionsOpen?: boolean;
 }
@@ -24,7 +23,6 @@ export const PeriodeListeItem = ({
     permisjonsperiode,
     erFamiliehendelse,
     handleUpdatePeriode,
-    handleDeletePeriode,
     handleDeletePerioder,
     handleAddPeriode,
     isAllAccordionsOpen,
@@ -73,7 +71,6 @@ export const PeriodeListeItem = ({
                     <PeriodeListeContent
                         isReadOnly={isReadOnly}
                         handleUpdatePeriode={handleUpdatePeriode}
-                        handleDeletePeriode={handleDeletePeriode}
                         handleDeletePerioder={handleDeletePerioder}
                         handleAddPeriode={handleAddPeriode}
                         erFamiliehendelse={!!erFamiliehendelse}

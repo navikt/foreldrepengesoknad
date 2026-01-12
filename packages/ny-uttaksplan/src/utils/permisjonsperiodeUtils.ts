@@ -5,6 +5,7 @@ import { TidsperiodenString, formatDateIso } from '@navikt/fp-utils';
 
 import { Permisjonsperiode } from '../types/Permisjonsperiode';
 import { Planperiode } from '../types/Planperiode';
+import { Uttaksplanperiode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import {
     isHull,
     isOppholdsperiode,
@@ -226,13 +227,16 @@ export const mapPerioderToPermisjonsperiode = (
     return permisjonsPerioder;
 };
 
-export const filtrerBortAnnenPartsIdentiskePerioder = (uttaksplan: Planperiode[], erFarEllerMedmor: boolean) =>
-    uttaksplan.reduce<Planperiode[]>((alle, periode) => {
+export const filtrerBortAnnenPartsIdentiskePerioder = (
+    uttaksplanperiode: Uttaksplanperiode[],
+    erFarEllerMedmor: boolean,
+) =>
+    uttaksplanperiode.reduce<Uttaksplanperiode[]>((alle, periode) => {
         const erSøkersPeriode = erPeriodeForSøker(periode, erFarEllerMedmor);
-        const filtrerte = uttaksplan.filter((p) => p.fom === periode.fom && p.tom === periode.tom);
+        const filtrerte = uttaksplanperiode.filter((p) => p.fom === periode.fom && p.tom === periode.tom);
         return filtrerte.length > 1 && !erSøkersPeriode ? alle : alle.concat(periode);
     }, []);
 
-export const erPeriodeForSøker = (periode: Planperiode, erFarEllerMedmor: boolean) =>
-    !periode.erAnnenPartEøs &&
+const erPeriodeForSøker = (periode: Uttaksplanperiode, erFarEllerMedmor: boolean) =>
+    erVanligUttakPeriode(periode) &&
     ((periode.forelder === 'MOR' && !erFarEllerMedmor) || (periode.forelder === 'FAR_MEDMOR' && erFarEllerMedmor));

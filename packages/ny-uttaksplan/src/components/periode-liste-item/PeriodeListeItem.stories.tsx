@@ -53,7 +53,6 @@ const customRenderer = ({
     erAleneOmOmsorg,
     handleAddPeriode,
     handleUpdatePeriode,
-    handleDeletePeriode,
     handleDeletePerioder,
     barn,
     isReadOnly,
@@ -80,7 +79,6 @@ const customRenderer = ({
                         isReadOnly={isReadOnly}
                         handleAddPeriode={handleAddPeriode}
                         handleUpdatePeriode={handleUpdatePeriode}
-                        handleDeletePeriode={handleDeletePeriode}
                         handleDeletePerioder={handleDeletePerioder}
                         erFamiliehendelse={erFamiliehendelse}
                         permisjonsperiode={permisjonsperiode}
@@ -107,7 +105,6 @@ export const UttaksperiodeMor: Story = {
     args: {
         handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
-        handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
         barn: {
             antallBarn: 1,
@@ -127,7 +124,6 @@ export const UttaksperiodeMor: Story = {
             perioder: [
                 {
                     erAnnenPartEøs: false,
-                    id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-30',
                     forelder: 'MOR',
@@ -142,7 +138,6 @@ export const UttaksperiodeMorFlerePerioder: Story = {
     args: {
         handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
-        handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
         barn: {
             antallBarn: 1,
@@ -162,7 +157,6 @@ export const UttaksperiodeMorFlerePerioder: Story = {
             perioder: [
                 {
                     erAnnenPartEøs: false,
-                    id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-28',
                     forelder: 'MOR',
@@ -170,7 +164,6 @@ export const UttaksperiodeMorFlerePerioder: Story = {
                 },
                 {
                     erAnnenPartEøs: false,
-                    id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-07-01',
                     tom: '2024-07-26',
                     forelder: 'MOR',
@@ -185,7 +178,6 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
     args: {
         handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
-        handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
         barn: {
             antallBarn: 1,
@@ -205,14 +197,12 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
             perioder: [
                 {
                     erAnnenPartEøs: false,
-                    id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-28',
                     kontoType: 'MØDREKVOTE',
                 },
                 {
                     erAnnenPartEøs: false,
-                    id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-07-01',
                     tom: '2024-07-26',
                     forelder: 'MOR',
@@ -220,7 +210,6 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
                 },
                 {
                     erAnnenPartEøs: false,
-                    id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-07-29',
                     tom: '2024-08-23',
                     forelder: 'MOR',
@@ -245,7 +234,6 @@ export const UttaksperiodeFar: Story = {
     args: {
         handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
-        handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
         barn: {
             antallBarn: 1,
@@ -265,7 +253,6 @@ export const UttaksperiodeFar: Story = {
             perioder: [
                 {
                     erAnnenPartEøs: false,
-                    id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-06-01',
                     tom: '2024-06-28',
                     forelder: 'FAR_MEDMOR',
@@ -280,7 +267,6 @@ export const PeriodeUtenUttak: Story = {
     args: {
         handleAddPeriode: () => null,
         handleUpdatePeriode: () => null,
-        handleDeletePeriode: () => null,
         handleDeletePerioder: () => null,
         barn: {
             antallBarn: 1,
@@ -300,7 +286,6 @@ export const PeriodeUtenUttak: Story = {
             perioder: [
                 {
                     erAnnenPartEøs: false,
-                    id: '88638814-3912-1440-03308-2381934996836',
                     fom: '2024-08-01',
                     tom: '2024-08-31',
                     periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,

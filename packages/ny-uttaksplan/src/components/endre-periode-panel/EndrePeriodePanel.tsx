@@ -16,7 +16,7 @@ const ARIA_LABEL_ID = 'endre-periode-panel-heading';
 
 interface Props {
     closePanel: () => void;
-    handleUpdatePeriode: (oppdatertPeriode: Planperiode) => void;
+    handleUpdatePeriode: (oppdatertPeriode: Planperiode, gammelPeriode: Planperiode) => void;
     handleAddPeriode: (nyPeriode: Planperiode) => void;
     permisjonsperiode: Permisjonsperiode;
     inneholderKunEnPeriode: boolean;

@@ -58,16 +58,15 @@ export const LeggTilPeriodePanelStep = ({ closePanel, handleAddPeriode }: Props)
                 erAnnenPartEøs: false,
                 fom: fomValue,
                 tom: tomValue,
-                id: `${fomValue} - ${tomValue} - ${'LOVBESTEMT_FERIE'}`,
                 forelder: 'FAR_MEDMOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             });
         } else if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
+            // TODO (TOR) Kan ein heller sletta periode her?
             handleAddPeriode({
                 erAnnenPartEøs: false,
                 fom: fomValue,
                 tom: tomValue,
-                id: `${fomValue} - ${tomValue} - ${PeriodeHullType.PERIODE_UTEN_UTTAK}`,
                 periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
             });
         } else {
@@ -75,7 +74,6 @@ export const LeggTilPeriodePanelStep = ({ closePanel, handleAddPeriode }: Props)
                 erAnnenPartEøs: false,
                 fom: fomValue,
                 tom: tomValue,
-                id: `${fomValue} - ${tomValue} - ${values.kontoType}`,
                 kontoType: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoType,
                 morsAktivitet: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : values.morsAktivitet,
                 forelder: getForelderFromKontoType(values.kontoType, values.forelder),

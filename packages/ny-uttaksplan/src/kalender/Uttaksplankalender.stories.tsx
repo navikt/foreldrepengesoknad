@@ -449,6 +449,31 @@ export const KortPeriodeMedHelg: Story = {
     },
 };
 
+export const KortPeriodeMedHelgFødsel: Story = {
+    args: {
+        saksperioder: [
+            {
+                fom: '2024-05-24',
+                tom: '2024-05-27',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+            },
+        ] satisfies UttakPeriode_fpoversikt[],
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2024-05-23'],
+            antallBarn: 1,
+        },
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+    },
+};
+
 export const KortPeriodeUtenHelg: Story = {
     args: {
         saksperioder: [
@@ -535,6 +560,40 @@ export const MorOppgirSamtidigUttakMedFar: Story = {
             søker: 'MOR',
             navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
             erMedmorDelAvSøknaden: false,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+    },
+};
+
+export const MorOppgirSamtidigUttakMedMedmor: Story = {
+    args: {
+        saksperioder: [
+            {
+                fom: '2024-05-21',
+                tom: '2024-05-27',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                samtidigUttak: 50,
+            },
+            {
+                fom: '2024-05-21',
+                tom: '2024-05-27',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'MØDREKVOTE',
+                samtidigUttak: 50,
+            },
+        ] satisfies UttakPeriode_fpoversikt[],
+        barn: {
+            type: BarnType.ADOPTERT_STEBARN,
+            fødselsdatoer: ['2024-05-21'],
+            adopsjonsdato: '2024-05-21',
+            antallBarn: 1,
+        },
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Grete' },
+            erMedmorDelAvSøknaden: true,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
     },

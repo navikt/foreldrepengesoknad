@@ -4,11 +4,11 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort, HGrid, HStack, Heading, Hide, Show } from '@navikt/ds-react';
 
-import { Tidsperioden, formatDateShortMonth } from '@navikt/fp-utils';
+import { TidsperiodenString, formatDateShortMonth } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Permisjonsperiode } from '../../types/Permisjonsperiode';
-import { ISOStringToDate, getVarighetString } from '../../utils/dateUtils';
+import { getVarighetString } from '../../utils/dateUtils';
 import { finnBakgrunnsfarge, getIkon, getTekst } from './PeriodeListeHeaderUtils';
 
 interface Props {
@@ -24,14 +24,14 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpe
 
     const { tidsperiode } = permisjonsperiode;
 
-    const antallDager = Tidsperioden({
-        fom: ISOStringToDate(tidsperiode.fom)!,
-        tom: ISOStringToDate(tidsperiode.tom)!,
+    const antallDager = TidsperiodenString({
+        fom: tidsperiode.fom,
+        tom: tidsperiode.tom,
     }).getAntallUttaksdager();
 
     const erPermisjonsperiodeTilbakeITid = dayjs(
         erFamiliehendelse ? permisjonsperiode.tidsperiode.fom : permisjonsperiode.tidsperiode.tom,
-    ).isBefore(new Date());
+    ).isBefore(dayjs().startOf('day'));
 
     const tekst = getTekst(
         intl,

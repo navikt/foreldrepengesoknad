@@ -6,7 +6,12 @@ import { Foreldrepengesak } from 'types/Sak';
 
 import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import {
+    BrukerRolleSak_fpoversikt,
+    NavnPåForeldre,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
 import { KvoteOppsummering, UttaksplanDataProvider, UttaksplanKalender, UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 
@@ -53,16 +58,6 @@ const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { s
         return null;
     }
 
-    const getAnnenPartsPerioder = () => {
-        const perioderAnnenPartEØS = sak.gjeldendeVedtak?.perioderAnnenpartEøs;
-
-        if (perioderAnnenPartEØS && perioderAnnenPartEØS.length > 0) {
-            return perioderAnnenPartEØS;
-        }
-
-        return annenPartsPerioder;
-    };
-
     const søkersPerioder = sak.gjeldendeVedtak?.perioder;
     const perioderSomErSøktOm = sak.åpenBehandling?.søknadsperioder;
     const familiehendelse = sak.familiehendelse;
@@ -77,7 +72,10 @@ const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { s
     const søkerErAleneOmOmsorg = rettighetType === 'ALENEOMSORG';
     const harAktivitetskravIPeriodeUtenUttak = !erDeltUttak && !morHarRett && !søkerErAleneOmOmsorg;
     const barn = getBarnFraSak(familiehendelse, gjelderAdopsjon);
-    const relevanteAnnenPartsPerioder = getAnnenPartsPerioder();
+
+    const perioderAnnenPartEØS = sak.gjeldendeVedtak?.perioderAnnenpartEøs;
+    const relevanteAnnenPartsPerioder =
+        perioderAnnenPartEØS && perioderAnnenPartEØS.length > 0 ? perioderAnnenPartEØS : annenPartsPerioder;
 
     return (
         <VStack gap="space-40">
@@ -112,7 +110,11 @@ const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { s
                     />
                 </ToggleGroup>
                 <UttaksplanDataProvider
-                    saksperioder={relevantePerioder.concat(relevanteAnnenPartsPerioder)}
+                    saksperioder={leggTilForelderIPerioder(
+                        relevantePerioder,
+                        relevanteAnnenPartsPerioder,
+                        sakTilhørerMor,
+                    )}
                     barn={barn}
                     foreldreInfo={{
                         søker: sakTilhørerMor ? 'MOR' : 'FAR_ELLER_MEDMOR',
@@ -134,4 +136,30 @@ const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { s
             </VStack>
         </VStack>
     );
+};
+
+// TODO (TOR) Burde kunne setta forelder backend og så fjerna denne koden
+const leggTilForelderIPerioder = (
+    søkersPerioder: UttakPeriode_fpoversikt[],
+    annenPartsPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    sakTilhørerMor: boolean,
+): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
+    return leggTilForelderOmMangler(søkersPerioder, sakTilhørerMor ? 'MOR' : 'FAR_MEDMOR').concat(
+        leggTilForelderOmMangler(annenPartsPerioder, sakTilhørerMor ? 'FAR_MEDMOR' : 'MOR'),
+    );
+};
+
+const leggTilForelderOmMangler = (
+    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    forelder: BrukerRolleSak_fpoversikt,
+) => {
+    return perioder.map((periode) => {
+        if ('trekkdager' in periode || periode.forelder !== undefined) {
+            return periode;
+        }
+        return {
+            ...periode,
+            forelder,
+        };
+    });
 };

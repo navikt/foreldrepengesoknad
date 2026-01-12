@@ -2,6 +2,8 @@ import { composeStories } from '@storybook/react-vite';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { DELT_UTTAK_80_TO_BARN, DELT_UTTAK_100_TO_BARN } from '@navikt/fp-utils-test';
+
 import { endreFordelingMedSlider } from '../../../vitest/testHelpers';
 import * as stories from './PlanenDeresSteg_Fødsel.stories';
 
@@ -15,7 +17,7 @@ const {
     MorOgMedmorKunMedmorHarRettMorUfør,
     MorOgMedmorKunMedmorHarRettMorIngenAvDisse,
     BareMorSøkerOgHarRett,
-    BareFarSøkerOgHarRett,
+    BareFarSøkerAleneOmOmsorg,
     FarOgFarBeggeHarRett,
     FarOgFarKunFarHarRett,
     FarOgFarKunMedfarHarRett,
@@ -337,7 +339,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
     });
 
     it('skal vise korrekt data for fødsel - far søker og har rett', async () => {
-        render(<BareFarSøkerOgHarRett />);
+        render(<BareFarSøkerAleneOmOmsorg />);
 
         expect(await screen.findByText('Planen din')).toBeInTheDocument();
 
@@ -366,8 +368,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
-        expect(screen.getByText('100 % i 46 uker').closest('button')?.getAttribute('aria-checked')).toBe('true');
-        expect(screen.getByText('80 % i 58 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('100 % i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe('true');
+        expect(screen.getByText('80 % i 52 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
 
@@ -381,9 +383,6 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(within(juli).getByTestId('day:1;dayColor:PINK')).toBeInTheDocument();
         expect(within(juli).getByTestId('day:2;dayColor:GREENOUTLINE')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(22);
-
-        const mai2025 = screen.getByTestId('year:2025;month:4');
-        expect(within(mai2025).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(12);
     });
 
     it('skal vise korrekt data for fødsel - far og far søker - kun biologisk far har rett', async () => {
@@ -392,8 +391,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
         expect(screen.getByText('Dere har oppgitt at kun én av dere har rett til foreldrepenger')).toBeInTheDocument();
 
-        expect(screen.getByText('100 % i 46 uker').closest('button')?.getAttribute('aria-checked')).toBe('true');
-        expect(screen.getByText('80 % i 58 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('100 % i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe('true');
+        expect(screen.getByText('80 % i 52 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
 
@@ -407,10 +406,6 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(within(juli).getByTestId('day:1;dayColor:PINK')).toBeInTheDocument();
         expect(within(juli).getByTestId('day:2;dayColor:GREENOUTLINE')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(22);
-
-        const mai2025 = screen.getByTestId('year:2025;month:4');
-        expect(within(mai2025).getByTestId('day:16;dayColor:GREENOUTLINE')).toBeInTheDocument();
-        expect(within(mai2025).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(12);
     });
 
     it('skal vise korrekt data for fødsel - far og far søker - kun medfar har rett', async () => {
@@ -419,8 +414,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
         expect(screen.getByText('Dere har oppgitt at kun én av dere har rett til foreldrepenger')).toBeInTheDocument();
 
-        expect(screen.getByText('100 % i 46 uker').closest('button')?.getAttribute('aria-checked')).toBe('true');
-        expect(screen.getByText('80 % i 58 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
+        expect(screen.getByText('100 % i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe('true');
+        expect(screen.getByText('80 % i 52 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
             'false',
         );
 
@@ -435,9 +430,6 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(within(juli).getByTestId('day:1;dayColor:PINK')).toBeInTheDocument();
         expect(within(juli).getByTestId('day:2;dayColor:GREENOUTLINE')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(22);
-
-        const mai2005 = screen.getByTestId('year:2025;month:4');
-        expect(within(mai2005).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(12);
     });
 
     it('skal vise korrekt data for fødsel - barnet er født dagen etter termindato', async () => {
@@ -551,5 +543,76 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const mai2025 = screen.getByTestId('year:2025;month:4');
         expect(within(mai2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(12);
+    });
+
+    it('Skal ikke vise ekstra dag info når det ikke er restdager', async () => {
+        // Med 1 barn og 100% dekningsgrad er det 16 uker = 80 dager, ingen restdager
+        render(<MorOgFarBeggeHarRett />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        expect(
+            screen.queryByText(/ekstra dag.*med fellesperiode vil legge seg inn i planen automatisk/i),
+        ).not.toBeInTheDocument();
+    });
+
+    it('Skal vise melding om én ekstra dag når det er 1 restdag', async () => {
+        // 80% med 1 barn har 101 dager fellesperiode = 20 uker + 1 dag
+        const originalArgs = MorOgFarBeggeHarRett.args;
+        render(
+            <MorOgFarBeggeHarRett
+                {...originalArgs}
+                hvorLangPeriode={{
+                    dekningsgrad: '80',
+                }}
+            />,
+        );
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        expect(
+            screen.getByText(
+                'Den ene ekstra dagen med fellesperiode vil legge seg inn i planen automatisk. ' +
+                    'Hvis du ønsker en annen fordeling, kan du endre dette nedenfor.',
+            ),
+        ).toBeInTheDocument();
+    });
+
+    it('Skal vise melding om flere ekstra dager når det er 2+ restdager', async () => {
+        // 80% med 2 barn har 207 dager fellesperiode = 41 uker + 2 dager
+        const originalArgs = MorOgFarBeggeHarRett.args;
+        render(
+            <MorOgFarBeggeHarRett
+                {...originalArgs}
+                omBarnet={{
+                    erFødsel: true,
+                    erBarnetFødt: false,
+                    termindato: '2024-07-01',
+                    antallBarn: '2',
+                }}
+                hvorLangPeriode={{
+                    dekningsgrad: '80',
+                }}
+                stønadskontoer={{
+                    '80': {
+                        kontoer: DELT_UTTAK_80_TO_BARN,
+                        minsteretter: { farRundtFødsel: 10, toTette: 0 },
+                    },
+                    '100': {
+                        kontoer: DELT_UTTAK_100_TO_BARN,
+                        minsteretter: { farRundtFødsel: 10, toTette: 0 },
+                    },
+                }}
+            />,
+        );
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        expect(
+            screen.getByText(
+                'De ekstra dagene med fellesperiode vil legge seg inn i planen automatisk. ' +
+                    'Hvis du ønsker en annen fordeling, kan du endre dette nedenfor.',
+            ),
+        ).toBeInTheDocument();
     });
 });

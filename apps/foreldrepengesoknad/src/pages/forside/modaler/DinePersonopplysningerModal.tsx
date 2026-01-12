@@ -1,32 +1,24 @@
-import { useRef } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
-import { BodyLong, BodyShort, HStack, Heading, Link, List, Modal, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Dialog, HStack, Link, List, VStack } from '@navikt/ds-react';
 
 export const DinePersonopplysningerModal = () => {
-    const intl = useIntl();
-    const ref = useRef<HTMLDialogElement>(null);
-
     return (
-        <>
-            <HStack justify="center">
-                <Link
-                    href="#"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        ref.current?.showModal();
-                    }}
-                >
-                    <FormattedMessage id="velkommen.lesMerOmPersonopplysninger" />
-                </Link>
-            </HStack>
-            <Modal ref={ref} aria-label={intl.formatMessage({ id: 'velkommen.dinePersonopplysninger.sectionheading' })}>
-                <Modal.Header>
-                    <Heading size="medium" level="1">
+        <Dialog>
+            <Dialog.Trigger>
+                <HStack justify="center">
+                    <Link href="#">
+                        <FormattedMessage id="velkommen.lesMerOmPersonopplysninger" />
+                    </Link>
+                </HStack>
+            </Dialog.Trigger>
+            <Dialog.Popup>
+                <Dialog.Header>
+                    <Dialog.Title>
                         <FormattedMessage id="velkommen.dinePersonopplysninger.sectionheading" />
-                    </Heading>
-                </Modal.Header>
-                <Modal.Body>
+                    </Dialog.Title>
+                </Dialog.Header>
+                <Dialog.Body>
                     <article>
                         <VStack gap="space-8">
                             <BodyShort>
@@ -164,8 +156,8 @@ export const DinePersonopplysningerModal = () => {
                             </div>
                         </VStack>
                     </article>
-                </Modal.Body>
-            </Modal>
-        </>
+                </Dialog.Body>
+            </Dialog.Popup>
+        </Dialog>
     );
 };
