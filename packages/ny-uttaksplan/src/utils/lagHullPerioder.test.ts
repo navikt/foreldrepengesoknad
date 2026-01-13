@@ -29,7 +29,7 @@ describe('lagHullPerioder', () => {
                 fom: '2025-04-11',
                 tom: '2025-05-06',
                 forelder: 'MOR',
-                hullType: 'TAPTE_DAGER',
+                type: 'TAPTE_DAGER',
             },
         ]);
     });
@@ -55,13 +55,13 @@ describe('lagHullPerioder', () => {
                 fom: '2025-04-11',
                 tom: '2025-04-11',
                 forelder: 'MOR',
-                hullType: 'TAPTE_DAGER',
+                type: 'TAPTE_DAGER',
             },
             {
                 fom: '2025-04-21',
                 tom: '2025-05-06',
                 forelder: 'MOR',
-                hullType: 'TAPTE_DAGER',
+                type: 'TAPTE_DAGER',
             },
         ]);
     });
@@ -119,7 +119,7 @@ describe('lagHullPerioder', () => {
                 fom: '2025-05-08',
                 tom: '2025-08-08',
                 forelder: 'FAR_MEDMOR',
-                hullType: 'TAPTE_DAGER',
+                type: 'TAPTE_DAGER',
             },
         ]);
     });
@@ -147,7 +147,7 @@ describe('lagHullPerioder', () => {
                 fom: '2025-03-26',
                 tom: '2025-08-08',
                 forelder: 'FAR_MEDMOR',
-                hullType: 'TAPTE_DAGER',
+                type: 'TAPTE_DAGER',
             },
         ]);
     });
@@ -179,7 +179,7 @@ describe('lagHullPerioder', () => {
                 fom: '2025-03-26',
                 tom: '2025-08-08',
                 forelder: 'FAR_MEDMOR',
-                hullType: 'TAPTE_DAGER',
+                type: 'TAPTE_DAGER',
             },
         ]);
     });
@@ -211,7 +211,7 @@ describe('lagHullPerioder', () => {
                 fom: '2025-03-31',
                 tom: '2025-08-08',
                 forelder: 'FAR_MEDMOR',
-                hullType: 'TAPTE_DAGER',
+                type: 'TAPTE_DAGER',
             },
         ]);
     });
@@ -240,20 +240,17 @@ describe('lagHullPerioder', () => {
             {
                 fom: '2025-03-21',
                 tom: '2025-03-25',
-                hullType: 'PERIODE_UTEN_UTTAK',
-                forelder: 'MOR',
+                type: 'PERIODE_UTEN_UTTAK',
             },
             {
                 fom: '2025-04-11',
                 tom: '2025-04-18',
-                hullType: 'PERIODE_UTEN_UTTAK',
-                forelder: 'MOR',
+                type: 'PERIODE_UTEN_UTTAK',
             },
             {
                 fom: '2025-05-01',
                 tom: '2025-07-24',
-                hullType: 'PERIODE_UTEN_UTTAK',
-                forelder: 'MOR',
+                type: 'PERIODE_UTEN_UTTAK',
             },
         ]);
     });
@@ -278,14 +275,12 @@ describe('lagHullPerioder', () => {
             {
                 fom: '2025-03-12',
                 tom: '2025-03-19',
-                hullType: 'PERIODE_UTEN_UTTAK',
-                forelder: 'MOR',
+                type: 'PERIODE_UTEN_UTTAK',
             },
             {
                 fom: '2025-03-21',
                 tom: '2025-04-18',
-                hullType: 'PERIODE_UTEN_UTTAK',
-                forelder: 'MOR',
+                type: 'PERIODE_UTEN_UTTAK',
             },
         ]);
     });

@@ -4,9 +4,9 @@ import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { SaksperiodeBuilder } from '../../../builder/SaksperiodeBuilder';
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
+import { UttakPeriodeBuilder } from '../../../utils/UttakPeriodeBuilder';
 import { slåSammenTilstøtendePerioder } from '../utils/kalenderPeriodeUtils';
 
 type Props = {
@@ -24,7 +24,7 @@ type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaks
 const KalenderRedigeringContext = createContext<ContextValues | null>(null);
 
 export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgtePerioder }: Props) => {
-    const { saksperioder } = useUttaksplanData();
+    const { uttakPerioder } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
@@ -32,22 +32,22 @@ export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgte
 
     const leggTilUttaksplanPerioder = useCallback(
         (perioder: UttakPeriode_fpoversikt[]) => {
-            const nyeSaksperioder = new SaksperiodeBuilder(saksperioder)
-                .leggTilSaksperioder(perioder)
-                .getSaksperioder();
+            const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder)
+                .leggTilUttakPerioder(perioder)
+                .getUttakPerioder();
 
-            notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeSaksperioder);
+            notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeUttakPerioder);
         },
-        [uttaksplanRedigering, saksperioder],
+        [uttaksplanRedigering, uttakPerioder],
     );
 
     const slettUttaksplanPerioder = useCallback(
         (perioder: UttakPeriode_fpoversikt[]) => {
-            const saksperiodeBuilder = new SaksperiodeBuilder(saksperioder);
-            saksperiodeBuilder.fjernSaksperioder(perioder);
-            notEmpty(uttaksplanRedigering).oppdaterUttaksplan(saksperiodeBuilder.getSaksperioder());
+            const uttakPeriodeBuilder = new UttakPeriodeBuilder(uttakPerioder);
+            uttakPeriodeBuilder.fjernUttakPerioder(perioder);
+            notEmpty(uttaksplanRedigering).oppdaterUttaksplan(uttakPeriodeBuilder.getUttakPerioder());
         },
-        [uttaksplanRedigering, saksperioder],
+        [uttaksplanRedigering, uttakPerioder],
     );
 
     const value = useMemo(() => {

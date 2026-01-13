@@ -8,7 +8,11 @@ import { assertUnreachable } from '@navikt/fp-validation';
 
 import { Søker } from '../../types/ForeldreInfo';
 import { LegendLabel } from '../../types/LegendLabel';
-import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
+import {
+    UttaksplanperiodeMedKunTapteDager,
+    erTapteDagerHull,
+    erVanligUttakPeriode,
+} from '../../types/UttaksplanPeriode';
 import { isAvslåttPeriode, isAvslåttPeriodeFørsteSeksUkerMor } from '../../utils/periodeUtils';
 
 export type UttaksplanKalenderLegendInfo = {
@@ -321,7 +325,7 @@ export const getInneholderKalenderHelgedager = (periods: CalendarPeriod[]): bool
 };
 
 export const getLegendLabelFromPeriode = (
-    p: Uttaksplanperiode,
+    p: UttaksplanperiodeMedKunTapteDager,
     barn: Barn,
     erFarEllerMedmor: boolean,
 ): LegendLabel | undefined => {
@@ -378,14 +382,8 @@ export const getLegendLabelFromPeriode = (
         }
     }
 
-    if (erUttaksplanHull(p)) {
-        if (p.hullType === 'PERIODE_UTEN_UTTAK') {
-            return undefined;
-        }
-
-        if (p.hullType === 'TAPTE_DAGER') {
-            return 'TAPTE_DAGER';
-        }
+    if (erTapteDagerHull(p)) {
+        return 'TAPTE_DAGER';
     }
 
     return 'UTSETTELSE';

@@ -2,7 +2,11 @@ import dayjs from 'dayjs';
 
 import { CalendarPeriod } from '@navikt/fp-ui';
 
-import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
+import {
+    UttaksplanperiodeMedKunTapteDager,
+    erTapteDagerHull,
+    erVanligUttakPeriode,
+} from '../../../types/UttaksplanPeriode';
 import { UttakPeriodeMedAntallDager } from '../EksisterendeValgtePerioder';
 
 export const slåSammenTilstøtendePerioder = (perioder: CalendarPeriod[]): CalendarPeriod[] => {
@@ -43,10 +47,10 @@ export const slåSammenTilstøtendePerioder = (perioder: CalendarPeriod[]): Cale
 //TODO (TOR) Bør skriva om denne, men avventar å sjå om det blir endringar i funksjonalitet
 export const finnValgtePerioder = (
     valgtePerioder: CalendarPeriod[],
-    uttaksplan: Uttaksplanperiode[],
+    uttaksplan: UttaksplanperiodeMedKunTapteDager[],
 ): UttakPeriodeMedAntallDager[] => {
     return uttaksplan
-        .filter((p) => !erUttaksplanHull(p))
+        .filter((p) => !erTapteDagerHull(p))
         .map((p) => {
             const fom2 = dayjs(p.fom);
             const tom2 = dayjs(p.tom);
@@ -111,7 +115,7 @@ export const countWeekdaysBetween = (start: dayjs.Dayjs, end: dayjs.Dayjs) => {
 };
 
 export const harEnValgtPeriodeIKunEnEksisterendePeriode = (
-    saksperioderInkludertHull: Uttaksplanperiode[],
+    saksperioderInkludertHull: UttaksplanperiodeMedKunTapteDager[],
     valgtPeriode: CalendarPeriod,
 ) =>
     saksperioderInkludertHull.some(

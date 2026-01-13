@@ -82,14 +82,14 @@ export const BeggeRettMorIngenDagerBrukt: Story = {
             ...DEFAULT_FORELDRE_INFO,
             rettighetType: 'BEGGE_RETT',
         },
-        saksperioder: [],
+        uttakPerioder: [],
     },
 };
 
 export const BeggeRettMorAlleDagerBrukt: Story = {
     args: {
         valgtStønadskonto: kontoNårBeggeHarRett,
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2025-05-06',
                 tom: '2025-05-26',
@@ -147,7 +147,7 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
 export const BeggeRettMorForMangeDagerBrukt: Story = {
     args: {
         valgtStønadskonto: kontoNårBeggeHarRett,
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-11-18',
                 tom: '2024-12-08',
@@ -201,7 +201,7 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
 export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
     args: {
         valgtStønadskonto: kontoNårBeggeHarRett,
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-11-18',
                 tom: '2024-12-06',
@@ -248,7 +248,7 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
 export const BeggeRettMorLedigeDager: Story = {
     args: {
         valgtStønadskonto: kontoNårBeggeHarRett,
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-11-18',
                 tom: '2024-12-02',
@@ -307,7 +307,7 @@ export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
             antallBarn: 1,
         },
         valgtStønadskonto: kontoNårBeggeHarRett,
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-11-18',
                 tom: '2024-12-02',
@@ -382,7 +382,7 @@ const kontoNårBareFarHarRett = {
 export const EnRettFarAlleDagerBrukt: Story = {
     args: {
         valgtStønadskonto: kontoNårBareFarHarRett,
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-12-06',
                 tom: '2025-02-13',
@@ -411,7 +411,7 @@ export const EnRettFarAlleDagerBrukt: Story = {
 export const EnRettFarLedigeDager: Story = {
     args: {
         valgtStønadskonto: kontoNårBareFarHarRett,
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-12-06',
                 tom: '2025-02-06',
@@ -462,7 +462,7 @@ const kontoNårBareMorHarRett = {
 export const EnRettMorAlleDagerBrukt: Story = {
     args: {
         valgtStønadskonto: kontoNårBareMorHarRett,
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-11-19',
                 tom: '2024-12-09',
@@ -489,7 +489,7 @@ export const EnRettMorAlleDagerBrukt: Story = {
 export const EnRettMorLedigeDager: Story = {
     args: {
         valgtStønadskonto: kontoNårBareMorHarRett,
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-11-19',
                 tom: '2024-12-01',
@@ -516,7 +516,7 @@ export const EnRettMorLedigeDager: Story = {
 export const AleneomsorgMorLedigeDager: Story = {
     args: {
         valgtStønadskonto: kontoNårBareMorHarRett,
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-11-19',
                 tom: '2024-12-01',
@@ -558,7 +558,7 @@ export const AleneomsorgFarLedigeDager: Story = {
                 prematur: 0,
             },
         },
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-11-01',
                 tom: '2025-07-04',
@@ -600,7 +600,7 @@ export const AleneomsorgFarForMangeDager: Story = {
                 prematur: 0,
             },
         },
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-11-01',
                 tom: '2025-07-04',
@@ -671,7 +671,7 @@ export const MorHarPrematuruker: Story = {
                 prematur: 48,
             },
         },
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2025-08-13',
                 tom: '2025-10-10',

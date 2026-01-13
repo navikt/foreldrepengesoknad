@@ -11,8 +11,8 @@ export const nyUttaksplanMessages = {
 export { UttaksplanDataProvider } from './src/context/UttaksplanDataContext';
 export { UttaksplanRedigeringProvider } from './src/context/UttaksplanRedigeringContext';
 
-export { UttaksplanNy } from './src/Uttaksplan';
+export { UttaksplanListe } from './src/liste/UttaksplanListe';
 export { KvoteOppsummering } from './src/KvoteOppsummering';
 export { UttaksplanKalender } from './src/kalender/UttaksplanKalender';
 
-export { FjernAltIUttaksplanModal } from './src/components/FjernAltIUttaksplanModal';
+export { FjernAltIUttaksplanModal } from './src/FjernAltIUttaksplanModal';

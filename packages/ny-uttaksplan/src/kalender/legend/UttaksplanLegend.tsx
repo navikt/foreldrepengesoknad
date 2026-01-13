@@ -13,8 +13,8 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { LegendLabel } from '../../types/LegendLabel';
 import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
-import { useAlleSaksperioderInklTapteDager } from '../../utils/lagHullPerioder';
-import { filtrerBortAnnenPartsIdentiskePerioder } from '../../utils/permisjonsperiodeUtils';
+import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
+import { filtrerBortAnnenPartsIdentiskePerioder } from '../utils/uttaksplanKalenderUtils';
 import { useUttaksplanData } from './../../context/UttaksplanDataContext';
 import {
     UttaksplanKalenderLegendInfo,
@@ -53,7 +53,7 @@ export const UttaksplanLegend = ({
         barn,
     } = useUttaksplanData();
 
-    const saksperioderInkludertHull = useAlleSaksperioderInklTapteDager();
+    const saksperioderInkludertHull = useAlleUttakPerioderInklTapteDager();
 
     const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(
         saksperioderInkludertHull,

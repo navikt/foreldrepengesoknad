@@ -247,7 +247,7 @@ export const OppsummeringHarRett = ({
                             }}
                             valgtStønadskonto={valgtStønadskonto}
                             harAktivitetskravIPeriodeUtenUttak={false}
-                            saksperioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
+                            uttakPerioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
                         >
                             <UttaksplanKalender barnehagestartdato={barnehagestartdato} readOnly />
                         </UttaksplanDataProvider>

@@ -37,7 +37,7 @@ import {
     KvoteOppsummering,
     UttaksplanDataProvider,
     UttaksplanKalender,
-    UttaksplanNy,
+    UttaksplanListe,
     UttaksplanRedigeringProvider,
 } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
@@ -129,7 +129,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     }}
                     valgtStønadskonto={valgtStønadskonto}
                     harAktivitetskravIPeriodeUtenUttak={false}
-                    saksperioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
+                    uttakPerioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
                 >
                     <div ref={kvoteOppsummeringRef}>
                         <KvoteOppsummering erInnsyn={false} visStatusIkoner />
@@ -191,7 +191,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                                 />
                             </Tabs.Panel>
                             <Tabs.Panel value="liste" className="pt-5">
-                                <UttaksplanNy isReadOnly={false} />
+                                <UttaksplanListe isReadOnly={false} />
                             </Tabs.Panel>
                         </Tabs>
                     </UttaksplanRedigeringProvider>

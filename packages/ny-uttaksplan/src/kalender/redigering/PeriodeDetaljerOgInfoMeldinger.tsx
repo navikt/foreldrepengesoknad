@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Alert, BodyShort, VStack } from '@navikt/ds-react';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { useAlleSaksperioderInklTapteDager } from '../../utils/lagHullPerioder';
+import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import { EksisterendeValgtePerioder } from './EksisterendeValgtePerioder';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 import { finnValgtePerioder } from './utils/kalenderPeriodeUtils';
@@ -32,11 +32,11 @@ export const PeriodeDetaljerOgInfoMeldinger = () => {
     const { erFeriePerioderGyldige } = usePeriodeValidator(sammenslåtteValgtePerioder);
     const erFerieValgbart = erFeriePerioderGyldige();
 
-    const saksperioderInkludertTapteDager = useAlleSaksperioderInklTapteDager();
+    const uttakPerioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
 
     const eksisterendePerioderSomErValgt = finnValgtePerioder(
         sammenslåtteValgtePerioder,
-        saksperioderInkludertTapteDager,
+        uttakPerioderInkludertTapteDager,
     );
 
     return (

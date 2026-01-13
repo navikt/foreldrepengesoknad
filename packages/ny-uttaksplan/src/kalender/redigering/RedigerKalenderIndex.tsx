@@ -4,7 +4,7 @@ import { Box } from '@navikt/ds-react';
 
 import { CalendarPeriod } from '@navikt/fp-ui';
 
-import { useAlleSaksperioderInklTapteDager } from '../../utils/lagHullPerioder';
+import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import { LeggTilEllerEndrePeriodePanel } from './LeggTilEllerEndrePeriodePanel';
 import { PeriodeIkkeValgtPanel } from './PeriodeIkkeValgtPanel';
 import { PeriodeOversiktPanel } from './PeriodeOversiktPanel';
@@ -40,7 +40,7 @@ const RedigerKalender = ({
 
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
 
-    const saksperioderInkludertTapteDager = useAlleSaksperioderInklTapteDager();
+    const uttakPerioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
 
     useEffect(() => {
         // Reset redigeringmodus hvis alle perioder fjernes
@@ -52,7 +52,7 @@ const RedigerKalender = ({
 
     const erKunEnHelEksisterendePeriodeValgt =
         sammenslåtteValgtePerioder.length === 1 &&
-        harEnValgtPeriodeIKunEnEksisterendePeriode(saksperioderInkludertTapteDager, sammenslåtteValgtePerioder[0]!);
+        harEnValgtPeriodeIKunEnEksisterendePeriode(uttakPerioderInkludertTapteDager, sammenslåtteValgtePerioder[0]!);
 
     return (
         <Box.New

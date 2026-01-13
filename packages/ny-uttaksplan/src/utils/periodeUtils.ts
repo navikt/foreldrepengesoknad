@@ -1,14 +1,12 @@
 import dayjs from 'dayjs';
 import isoWeekday from 'dayjs/plugin/isoWeek';
-import { IntlShape } from 'react-intl';
 
-import { UttakOppholdÅrsak_fpoversikt, UttakUtsettelseÅrsak_fpoversikt } from '@navikt/fp-types';
-import { capitalizeFirstLetter, slutterTidsperiodeInnen6UkerEtterFødsel } from '@navikt/fp-utils';
+import { slutterTidsperiodeInnen6UkerEtterFødsel } from '@navikt/fp-utils';
 
 import {
     Uttaksplanperiode,
-    erEøsUttakPeriode,
-    erUttaksplanHull,
+    erPeriodeUtenUttakHull,
+    erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../types/UttaksplanPeriode';
 
@@ -47,99 +45,11 @@ export const isAvslåttPeriode = (periode: Uttaksplanperiode) => {
 };
 
 export const isTapteDager = (periode: Uttaksplanperiode) => {
-    return erUttaksplanHull(periode) && periode.hullType === 'TAPTE_DAGER';
+    return erTapteDagerHull(periode);
 };
 
 export const isPeriodeUtenUttak = (periode: Uttaksplanperiode) => {
-    return erUttaksplanHull(periode) && periode.hullType === 'PERIODE_UTEN_UTTAK';
-};
-
-export const getOppholdskontoNavn = (
-    intl: IntlShape,
-    årsak: UttakOppholdÅrsak_fpoversikt,
-    foreldernavn: string,
-    erMor: boolean,
-) => {
-    const navn = capitalizeFirstLetter(foreldernavn);
-
-    if (erMor) {
-        if (årsak === 'FELLESPERIODE_ANNEN_FORELDER') {
-            return intl.formatMessage(
-                { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.FELLESPERIODE_ANNEN_FORELDER` },
-                { foreldernavn: navn },
-            );
-        }
-        if (årsak === 'FEDREKVOTE_ANNEN_FORELDER') {
-            return intl.formatMessage(
-                { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.FEDREKVOTE_ANNEN_FORELDER` },
-                { foreldernavn: navn },
-            );
-        }
-
-        return intl.formatMessage(
-            { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.MØDREKVOTE_ANNEN_FORELDER` },
-            { foreldernavn: navn },
-        );
-    }
-
-    if (årsak === 'FELLESPERIODE_ANNEN_FORELDER') {
-        return intl.formatMessage(
-            { id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.FELLESPERIODE_ANNEN_FORELDER` },
-            { foreldernavn: navn },
-        );
-    }
-    if (årsak === 'FEDREKVOTE_ANNEN_FORELDER') {
-        return intl.formatMessage(
-            { id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.FEDREKVOTE_ANNEN_FORELDER` },
-            { foreldernavn: navn },
-        );
-    }
-
-    return intl.formatMessage(
-        { id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.MØDREKVOTE_ANNEN_FORELDER` },
-        { foreldernavn: navn },
-    );
-};
-
-export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: UttakUtsettelseÅrsak_fpoversikt) => {
-    switch (utsettelseÅrsak) {
-        case 'ARBEID':
-            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.ARBEID' });
-        case 'LOVBESTEMT_FERIE':
-            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.LOVBESTEMT_FERIE' });
-        case 'FRI':
-            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.FRI' });
-        case 'HV_ØVELSE':
-            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.HV_ØVELSE' });
-        case 'BARN_INNLAGT':
-            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.BARN_INNLAGT' });
-        case 'SØKER_INNLAGT':
-            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.SØKER_INNLAGT' });
-        case 'NAV_TILTAK':
-            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.NAV_TILTAK' });
-        case 'SØKER_SYKDOM':
-            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.SØKER_SYKDOM' });
-    }
-};
-
-export const genererPeriodeId = (saksperiode?: Uttaksplanperiode): string | undefined => {
-    if (!saksperiode) {
-        return undefined;
-    }
-
-    if (erEøsUttakPeriode(saksperiode)) {
-        const { fom, tom, kontoType, trekkdager } = saksperiode;
-        return `erAnnenPartEøs - ${fom} - ${tom} - ${kontoType} - ${trekkdager} `;
-    }
-
-    if (erUttaksplanHull(saksperiode)) {
-        const { fom, tom, forelder, hullType } = saksperiode;
-        return `periodeMedHull - ${fom} - ${tom} - ${forelder} - ${hullType} `;
-    }
-
-    const { fom, tom, kontoType, flerbarnsdager, utsettelseÅrsak, forelder, oppholdÅrsak, overføringÅrsak } =
-        saksperiode;
-    return `${fom} - ${tom} - ${kontoType} - ${flerbarnsdager} - ${utsettelseÅrsak} - ${forelder} - ${oppholdÅrsak} - ${overføringÅrsak}`;
+    return erPeriodeUtenUttakHull(periode);
 };
 
 export const isAvslåttPeriodeFørsteSeksUkerMor = (
@@ -155,29 +65,26 @@ export const isAvslåttPeriodeFørsteSeksUkerMor = (
     );
 };
 
-export const getIndexOfSistePeriodeFørDato = (uttaksplan: Uttaksplanperiode[], dato: string | undefined) => {
-    if (dato !== undefined) {
-        return Math.max(0, uttaksplan.filter((p) => dayjs(p.tom).isBefore(dato, 'day')).length);
-    }
-    return undefined;
-};
-export const getAnnenForelderSamtidigUttakPeriode = (
-    periode: Uttaksplanperiode,
-    perioder: Uttaksplanperiode[],
-): Uttaksplanperiode | undefined => {
-    if (isUttaksperiode(periode)) {
-        const samtidigUttak = perioder
-            .filter(
-                (p) =>
-                    'forelder' in p &&
-                    'forelder' in periode &&
-                    p.forelder !== periode.forelder &&
-                    isUttaksperiode(periode),
-            )
-            .find((p) => dayjs(periode.fom).isSame(p.fom));
+export const sorterPerioder = (a: Uttaksplanperiode, b: Uttaksplanperiode): number => {
+    const aFom = dayjs(a.fom);
+    const bFom = dayjs(b.fom);
 
-        return samtidigUttak;
+    if (aFom.isBefore(bFom)) {
+        return -1;
+    }
+    if (aFom.isAfter(bFom)) {
+        return 1;
     }
 
-    return undefined;
+    const aTom = dayjs(a.tom);
+    const bTom = dayjs(b.tom);
+
+    if (aTom.isBefore(bTom)) {
+        return -1;
+    }
+    if (aTom.isAfter(bTom)) {
+        return 1;
+    }
+
+    return 0;
 };

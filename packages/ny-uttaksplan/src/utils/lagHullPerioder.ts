@@ -13,26 +13,32 @@ import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { ForeldreInfo } from '../types/ForeldreInfo';
-import { UttaksplanHull, Uttaksplanperiode } from '../types/UttaksplanPeriode';
+import {
+    PerioderUtenUttakHull,
+    TapteDagerHull,
+    Uttaksplanperiode,
+    UttaksplanperiodeMedKunTapteDager,
+} from '../types/UttaksplanPeriode';
+import { sorterPerioder } from './periodeUtils';
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
-export const useAlleSaksperioderInklTapteDager = (): Uttaksplanperiode[] => {
-    const { saksperioder, familiehendelsedato, familiesituasjon, foreldreInfo } = useUttaksplanData();
+export const useAlleUttakPerioderInklTapteDager = (): UttaksplanperiodeMedKunTapteDager[] => {
+    const { uttakPerioder, familiehendelsedato, familiesituasjon, foreldreInfo } = useUttaksplanData();
 
     return [
-        ...saksperioder,
-        ...lagTapteDagerPerioder(saksperioder, familiehendelsedato, familiesituasjon, foreldreInfo),
+        ...uttakPerioder,
+        ...lagTapteDagerPerioder(uttakPerioder, familiehendelsedato, familiesituasjon, foreldreInfo),
     ].sort(sorterPerioder);
 };
 
-export const useAlleSaksperioderInklTapteDagerOgPerioderUtenUttak = (): Uttaksplanperiode[] => {
-    const { saksperioder, familiehendelsedato, familiesituasjon, foreldreInfo } = useUttaksplanData();
+export const useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak = (): Uttaksplanperiode[] => {
+    const { uttakPerioder, familiehendelsedato, familiesituasjon, foreldreInfo } = useUttaksplanData();
 
     const perioder = [
-        ...saksperioder,
-        ...lagTapteDagerPerioder(saksperioder, familiehendelsedato, familiesituasjon, foreldreInfo),
+        ...uttakPerioder,
+        ...lagTapteDagerPerioder(uttakPerioder, familiehendelsedato, familiesituasjon, foreldreInfo),
     ].sort(sorterPerioder);
 
     return [...perioder, ...lagPerioderUtenUttak(perioder, familiehendelsedato)].sort(sorterPerioder);
@@ -43,7 +49,7 @@ export const lagTapteDagerPerioder = (
     familiehendelsedato: string,
     familiesituasjon: Familiesituasjon,
     foreldreInfo: ForeldreInfo,
-): UttaksplanHull[] => {
+): TapteDagerHull[] => {
     const justertFamiliehendelsedato = UttaksdagenString(familiehendelsedato).denneEllerNeste();
 
     if (
@@ -83,7 +89,7 @@ const lagTapteDagerHull = (
     sortertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     forelder: BrukerRolleSak_fpoversikt,
     periodeSomSkalSjekkesForHull: { fom: string; tom: string },
-): UttaksplanHull[] => {
+): TapteDagerHull[] => {
     const { fom, tom } = periodeSomSkalSjekkesForHull;
 
     const perioderForIntervalletSomSkalSjekkes = sortertePerioder.filter(
@@ -96,7 +102,7 @@ const lagTapteDagerHull = (
 
     perioderForIntervalletSomSkalSjekkes.sort(sorterPerioder);
 
-    const perioderMedTapteDager: UttaksplanHull[] = [];
+    const perioderMedTapteDager: TapteDagerHull[] = [];
 
     let forrigePeriode = perioderForIntervalletSomSkalSjekkes[0]!;
 
@@ -110,8 +116,8 @@ const lagTapteDagerHull = (
             perioderMedTapteDager.push({
                 fom: hullFom,
                 tom: hullTom,
-                hullType: 'TAPTE_DAGER',
                 forelder,
+                type: 'TAPTE_DAGER',
             });
         }
 
@@ -147,7 +153,7 @@ const lagPerioderVedStartOgSluttOmDetMangler = (
 export const lagPerioderUtenUttak = (
     sortertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     familiehendelsedato: string,
-): UttaksplanHull[] => {
+): PerioderUtenUttakHull[] => {
     const sortertePerioderMedFamiliehendelse = [...sortertePerioder]
         .concat({
             fom: familiehendelsedato,
@@ -155,7 +161,7 @@ export const lagPerioderUtenUttak = (
         })
         .sort(sorterPerioder);
 
-    const perioderUtenUttak: UttaksplanHull[] = [];
+    const perioderUtenUttak: PerioderUtenUttakHull[] = [];
 
     let forrigePeriode = sortertePerioderMedFamiliehendelse[0]!;
 
@@ -167,11 +173,9 @@ export const lagPerioderUtenUttak = (
 
         if (dayjs(hullTom).isSameOrAfter(hullFom, 'day')) {
             perioderUtenUttak.push({
+                type: 'PERIODE_UTEN_UTTAK',
                 fom: hullFom,
                 tom: hullTom,
-                hullType: 'PERIODE_UTEN_UTTAK',
-                // (TOR) Lag eigen type for perioder uten uttak sånn at ein får vekk forelder
-                forelder: 'MOR',
             });
         }
 
@@ -179,28 +183,4 @@ export const lagPerioderUtenUttak = (
     }
 
     return perioderUtenUttak;
-};
-
-export const sorterPerioder = (a: Uttaksplanperiode, b: Uttaksplanperiode): number => {
-    const aFom = dayjs(a.fom);
-    const bFom = dayjs(b.fom);
-
-    if (aFom.isBefore(bFom)) {
-        return -1;
-    }
-    if (aFom.isAfter(bFom)) {
-        return 1;
-    }
-
-    const aTom = dayjs(a.tom);
-    const bTom = dayjs(b.tom);
-
-    if (aTom.isBefore(bTom)) {
-        return -1;
-    }
-    if (aTom.isAfter(bTom)) {
-        return 1;
-    }
-
-    return 0;
 };

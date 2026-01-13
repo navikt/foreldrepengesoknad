@@ -5,8 +5,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Box, Link, Show, VStack } from '@navikt/ds-react';
 
 import { KvoteOppsummeringsTittel } from '../../KvoteOppsummering';
-import { UttaksplanHandlingKnapper } from '../../components/UttaksplanHandlingKnapper';
 import { useUttaksplanRedigering } from '../../context/UttaksplanRedigeringContext';
+import { UttaksplanHandlingKnapper } from '../../liste/UttaksplanHandlingKnapper';
 import { RødRamme } from './utils/RødRamme';
 import { useErDesktop, useMediaResetMinimering } from './utils/useMediaActions';
 

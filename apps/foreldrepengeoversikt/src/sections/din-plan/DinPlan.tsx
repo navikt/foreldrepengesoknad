@@ -13,7 +13,12 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
-import { KvoteOppsummering, UttaksplanDataProvider, UttaksplanKalender, UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
+import {
+    KvoteOppsummering,
+    UttaksplanDataProvider,
+    UttaksplanKalender,
+    UttaksplanListe,
+} from '@navikt/fp-uttaksplan-ny';
 
 import { hentUttaksKontoOptions } from '../../api/queries';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
@@ -110,7 +115,7 @@ const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { s
                     />
                 </ToggleGroup>
                 <UttaksplanDataProvider
-                    saksperioder={leggTilForelderIPerioder(
+                    uttakPerioder={leggTilForelderIPerioder(
                         relevantePerioder,
                         relevanteAnnenPartsPerioder,
                         sakTilhørerMor,
@@ -127,7 +132,7 @@ const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { s
                 >
                     {!visKalender && (
                         <>
-                            <UttaksplanNy isReadOnly />
+                            <UttaksplanListe isReadOnly />
                             <KvoteOppsummering erInnsyn visStatusIkoner={false} />
                         </>
                     )}
