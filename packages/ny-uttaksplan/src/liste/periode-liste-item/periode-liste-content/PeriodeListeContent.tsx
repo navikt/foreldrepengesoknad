@@ -23,7 +23,6 @@ import {
     erUttaksplanperiodeFamiliehendelseDato,
     erUttaksplanperiodeTapteDager,
     erUttaksplanperiodeUtenUttak,
-    erUttaksplanperiodeUtsettelse,
     harUttaksplanperiodePrematuruker,
 } from '../../utils/uttaksplanperiodeUtils';
 import { EndrePeriodePanel } from '../endre-periode-panel/EndrePeriodePanel';
@@ -50,7 +49,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
     const erRedigerbar =
         !erUttaksplanperiodeTapteDager(uttaksplanperioder) &&
         !erUttaksplanperiodeUtenUttak(uttaksplanperioder) &&
-        !(erUttaksplanperiodeUtsettelse(uttaksplanperioder) && !harUttaksplanperiodePrematuruker(uttaksplanperioder));
+        !harUttaksplanperiodePrematuruker(uttaksplanperioder);
 
     const {
         foreldreInfo: { navnPåForeldre, søker },

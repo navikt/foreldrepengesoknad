@@ -11,10 +11,11 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../../context/UttaksplanRedigeringContext';
-import { erUttaksplanHull, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../../utils/UttakPeriodeBuilder';
 import { getGradering, getGraderingsInfo } from '../../../../utils/graderingUtils';
 import { PanelButtons } from '../../../panel-buttons/PanelButtons';
@@ -46,41 +47,8 @@ export const EndrePeriodePanelStep = ({ panelData, setPanelData, closePanel, inn
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
-    const getHvaVilDuGjøre = () => {
-        if (valgtPeriode) {
-            if (erVanligUttakPeriode(valgtPeriode) && valgtPeriode.utsettelseÅrsak) {
-                return HvaVilDuGjøre.LEGG_TIL_FERIE;
-            }
-
-            if (erUttaksplanHull(valgtPeriode)) {
-                return HvaVilDuGjøre.LEGG_TIL_OPPHOLD;
-            }
-
-            return HvaVilDuGjøre.LEGG_TIL_PERIODE;
-        }
-
-        return undefined;
-    };
-
     const formMethods = useForm<EndrePeriodePanelStepFormValues>({
-        defaultValues:
-            !valgtPeriode || !erVanligUttakPeriode(valgtPeriode)
-                ? undefined
-                : {
-                      fom: valgtPeriode.fom,
-                      tom: valgtPeriode.tom,
-                      forelder: valgtPeriode.forelder,
-                      kontoType:
-                          valgtPeriode.kontoType === 'FORELDREPENGER' && valgtPeriode.morsAktivitet === 'IKKE_OPPGITT'
-                              ? 'AKTIVITETSFRI_KVOTE'
-                              : valgtPeriode.kontoType,
-                      skalDuJobbe: graderingsInfo?.skalDuJobbe ?? false,
-                      stillingsprosent: graderingsInfo?.stillingsprosent,
-                      samtidigUttak: valgtPeriode.samtidigUttak !== undefined,
-                      samtidigUttaksprosent: valgtPeriode.samtidigUttak?.toString(),
-                      hvaVilDuGjøre: getHvaVilDuGjøre(),
-                      morsAktivitet: valgtPeriode.morsAktivitet,
-                  },
+        defaultValues: lagDefaultValues(valgtPeriode, graderingsInfo),
     });
 
     const hvaVilDuGjøre = formMethods.watch('hvaVilDuGjøre');
@@ -153,10 +121,10 @@ export const EndrePeriodePanelStep = ({ panelData, setPanelData, closePanel, inn
             const periode = {
                 fom: fomValue,
                 tom: tomValue,
-                forelder: getForelderFromKontoType(values.kontoType, values.forelder),
+                forelder: getForelderFromKontoType(notEmpty(values.kontoType), values.forelder),
                 kontoType: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoType,
                 morsAktivitet: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : values.morsAktivitet,
-                gradering: getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType),
+                gradering: getGradering(notEmpty(values.skalDuJobbe), values.stillingsprosent, values.kontoType),
                 samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
             } satisfies UttakPeriode_fpoversikt;
             if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE && erVanligPeriode && valgtPeriode.kontoType) {
@@ -177,7 +145,7 @@ export const EndrePeriodePanelStep = ({ panelData, setPanelData, closePanel, inn
                 />
                 {hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE ? <KontotypeSpørsmål /> : null}
                 <AktivitetskravSpørsmål />
-                <TidsperiodeSpørsmål hvaVilDuGjøre={hvaVilDuGjøre} />
+                {hvaVilDuGjøre !== undefined && <TidsperiodeSpørsmål hvaVilDuGjøre={hvaVilDuGjøre} />}
                 {rettighetType === 'BEGGE_RETT' && hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE && (
                     <SamtidigUttakSpørsmål />
                 )}
@@ -196,4 +164,54 @@ export const EndrePeriodePanelStep = ({ panelData, setPanelData, closePanel, inn
             </VStack>
         </RhfForm>
     );
+};
+
+const lagDefaultValues = (
+    valgtPeriode: Uttaksplanperiode | undefined,
+    graderingsInfo: { skalDuJobbe: boolean; stillingsprosent: string } | undefined,
+): EndrePeriodePanelStepFormValues | undefined => {
+    if (!valgtPeriode) {
+        return undefined;
+    }
+
+    if (erUttaksplanHull(valgtPeriode)) {
+        return {
+            fom: valgtPeriode.fom,
+            tom: valgtPeriode.tom,
+        };
+    }
+
+    return !erVanligUttakPeriode(valgtPeriode)
+        ? undefined
+        : {
+              fom: valgtPeriode.fom,
+              tom: valgtPeriode.tom,
+              forelder: valgtPeriode.forelder,
+              kontoType:
+                  valgtPeriode.kontoType === 'FORELDREPENGER' && valgtPeriode.morsAktivitet === 'IKKE_OPPGITT'
+                      ? 'AKTIVITETSFRI_KVOTE'
+                      : valgtPeriode.kontoType,
+              skalDuJobbe: graderingsInfo?.skalDuJobbe ?? false,
+              stillingsprosent: graderingsInfo?.stillingsprosent,
+              samtidigUttak: valgtPeriode.samtidigUttak !== undefined,
+              samtidigUttaksprosent: valgtPeriode.samtidigUttak?.toString(),
+              hvaVilDuGjøre: getHvaVilDuGjøre(valgtPeriode),
+              morsAktivitet: valgtPeriode.morsAktivitet,
+          };
+};
+
+const getHvaVilDuGjøre = (valgtPeriode: Uttaksplanperiode | undefined) => {
+    if (valgtPeriode) {
+        if (erVanligUttakPeriode(valgtPeriode) && valgtPeriode.utsettelseÅrsak) {
+            return HvaVilDuGjøre.LEGG_TIL_FERIE;
+        }
+
+        if (erUttaksplanHull(valgtPeriode)) {
+            return HvaVilDuGjøre.LEGG_TIL_OPPHOLD;
+        }
+
+        return HvaVilDuGjøre.LEGG_TIL_PERIODE;
+    }
+
+    return undefined;
 };
