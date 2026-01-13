@@ -12,5 +12,5 @@ export type EndrePeriodePanelStepFormValues = {
     samtidigUttak?: boolean;
     samtidigUttaksprosent?: string;
     hvaVilDuGjøre: HvaVilDuGjøre;
-    morsAktivitet?: MorsAktivitet | undefined;
+    morsAktivitet: MorsAktivitet | undefined;
 };

@@ -8,8 +8,7 @@ import { formatDate } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
-import { genererPeriodeId } from '../../../../utils/periodeUtils';
-import { getStønadskontoNavn } from '../../../../utils/stønadskontoerUtils';
+import { genererPeriodeId, getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
 import { PanelData } from '../EndrePeriodePanel';
 
 interface Props {

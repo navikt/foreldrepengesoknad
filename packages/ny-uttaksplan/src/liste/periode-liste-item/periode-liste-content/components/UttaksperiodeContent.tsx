@@ -11,7 +11,7 @@ import { assertUnreachable } from '@navikt/fp-validation';
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
-import { getStønadskontoNavn } from '../../../../utils/stønadskontoerUtils';
+import { getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
 
 interface Props {
     periode: Uttaksplanperiode;

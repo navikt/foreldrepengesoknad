@@ -21,14 +21,8 @@ import {
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
-import {
-    filtrerBortAnnenPartsIdentiskePerioder,
-    getAnnenForelderSamtidigUttakPeriode,
-    getIndexOfSistePeriodeFørDato,
-    isAvslåttPeriode,
-    isAvslåttPeriodeFørsteSeksUkerMor,
-    isUttaksperiode,
-} from '../../utils/periodeUtils';
+import { isAvslåttPeriode, isAvslåttPeriodeFørsteSeksUkerMor, isUttaksperiode } from '../../utils/periodeUtils';
+import { filtrerBortAnnenPartsIdentiskePerioder } from './uttaksplanKalenderUtils';
 
 export const usePerioderForKalendervisning = (barnehagestartdato?: string): CalendarPeriod[] => {
     const intl = useIntl();
@@ -306,4 +300,32 @@ const finnSkjermleserTekstForKvoteForeldrepenger = (
     }
 
     return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerIkkeGradert' });
+};
+
+const getIndexOfSistePeriodeFørDato = (uttaksplan: UttaksplanperiodeMedKunTapteDager[], dato: string | undefined) => {
+    if (dato !== undefined) {
+        return Math.max(0, uttaksplan.filter((p) => dayjs(p.tom).isBefore(dato, 'day')).length);
+    }
+    return undefined;
+};
+
+const getAnnenForelderSamtidigUttakPeriode = (
+    periode: UttaksplanperiodeMedKunTapteDager,
+    perioder: UttaksplanperiodeMedKunTapteDager[],
+): UttaksplanperiodeMedKunTapteDager | undefined => {
+    if (isUttaksperiode(periode)) {
+        const samtidigUttak = perioder
+            .filter(
+                (p) =>
+                    'forelder' in p &&
+                    'forelder' in periode &&
+                    p.forelder !== periode.forelder &&
+                    isUttaksperiode(periode),
+            )
+            .find((p) => dayjs(periode.fom).isSame(p.fom));
+
+        return samtidigUttak;
+    }
+
+    return undefined;
 };

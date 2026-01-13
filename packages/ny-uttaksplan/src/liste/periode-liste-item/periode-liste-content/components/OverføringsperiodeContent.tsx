@@ -9,7 +9,7 @@ import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
 
 import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
-import { getStønadskontoNavn } from '../../../../utils/stønadskontoerUtils';
+import { getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
 
 interface Props {
     periode: Uttaksplanperiode;

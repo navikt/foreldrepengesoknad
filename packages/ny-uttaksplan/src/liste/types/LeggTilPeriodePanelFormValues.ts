@@ -16,5 +16,5 @@ export type LeggTilPeriodePanelFormValues = {
     samtidigUttak?: boolean;
     samtidigUttaksprosent?: string;
     hvaVilDuGjøre: HvaVilDuGjøre | undefined;
-    morsAktivitet?: MorsAktivitet | undefined;
+    morsAktivitet: MorsAktivitet | undefined;
 };

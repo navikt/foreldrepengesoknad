@@ -13,8 +13,7 @@ import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../../context/UttaksplanRedigeringContext';
 import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../../utils/UttakPeriodeBuilder';
-import { genererPeriodeId } from '../../../../utils/periodeUtils';
-import { getStønadskontoNavn } from '../../../../utils/stønadskontoerUtils';
+import { genererPeriodeId, getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
 
 const ARIA_LABEL_ID = 'slett-periode-panel-heading';
 

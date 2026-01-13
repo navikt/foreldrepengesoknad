@@ -19,6 +19,7 @@ import {
     Uttaksplanperiode,
     UttaksplanperiodeMedKunTapteDager,
 } from '../types/UttaksplanPeriode';
+import { sorterPerioder } from './periodeUtils';
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -182,28 +183,4 @@ export const lagPerioderUtenUttak = (
     }
 
     return perioderUtenUttak;
-};
-
-export const sorterPerioder = (a: Uttaksplanperiode, b: Uttaksplanperiode): number => {
-    const aFom = dayjs(a.fom);
-    const bFom = dayjs(b.fom);
-
-    if (aFom.isBefore(bFom)) {
-        return -1;
-    }
-    if (aFom.isAfter(bFom)) {
-        return 1;
-    }
-
-    const aTom = dayjs(a.tom);
-    const bTom = dayjs(b.tom);
-
-    if (aTom.isBefore(bTom)) {
-        return -1;
-    }
-    if (aTom.isAfter(bTom)) {
-        return 1;
-    }
-
-    return 0;
 };

@@ -10,7 +10,6 @@ import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { Uttaksplanperiode } from '../../../types/UttaksplanPeriode';
 import {
-    genererPeriodeId,
     isOppholdsperiode,
     isOverføringsperiode,
     isPeriodeUtenUttak,
@@ -19,6 +18,7 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '../../../utils/periodeUtils';
+import { genererPeriodeId } from '../../utils/uttaksplanListeUtils';
 import {
     erUttaksplanperiodeFamiliehendelseDato,
     erUttaksplanperiodeTapteDager,

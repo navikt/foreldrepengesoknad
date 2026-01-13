@@ -8,7 +8,7 @@ import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
 
 import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
-import { getOppholdskontoNavn } from '../../../../utils/periodeUtils';
+import { getOppholdskontoNavn } from '../../../utils/uttaksplanListeUtils';
 
 interface Props {
     periode: Uttaksplanperiode;

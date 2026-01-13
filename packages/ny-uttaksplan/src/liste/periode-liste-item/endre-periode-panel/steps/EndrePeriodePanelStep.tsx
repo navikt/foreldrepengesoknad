@@ -128,6 +128,8 @@ export const EndrePeriodePanelStep = ({ panelData, setPanelData, closePanel, inn
         const fomValue = values.fom ?? valgtPeriode!.fom;
         const tomValue = values.tom ?? valgtPeriode!.tom;
 
+        const erVanligPeriode = valgtPeriode && erVanligUttakPeriode(valgtPeriode);
+
         if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE) {
             const feriePeriode = {
                 fom: fomValue,
@@ -135,11 +137,7 @@ export const EndrePeriodePanelStep = ({ panelData, setPanelData, closePanel, inn
                 forelder: 'MOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             } satisfies UttakPeriode_fpoversikt;
-            if (
-                valgtPeriode &&
-                erVanligUttakPeriode(valgtPeriode) &&
-                valgtPeriode.utsettelseÅrsak === 'LOVBESTEMT_FERIE'
-            ) {
+            if (erVanligPeriode && valgtPeriode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
                 handleUpdatePeriode(feriePeriode, valgtPeriode);
             } else {
                 handleAddPeriode(feriePeriode);
@@ -161,12 +159,7 @@ export const EndrePeriodePanelStep = ({ panelData, setPanelData, closePanel, inn
                 gradering: getGradering(values.skalDuJobbe, values.stillingsprosent, values.kontoType),
                 samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
             } satisfies UttakPeriode_fpoversikt;
-            if (
-                values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE &&
-                valgtPeriode &&
-                erVanligUttakPeriode(valgtPeriode) &&
-                valgtPeriode.kontoType
-            ) {
+            if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE && erVanligPeriode && valgtPeriode.kontoType) {
                 handleUpdatePeriode(periode, valgtPeriode);
             }
 

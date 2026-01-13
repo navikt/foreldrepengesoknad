@@ -1,4 +1,5 @@
 import { NotePencilDashIcon } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -119,17 +120,23 @@ const leggTilPeriodeForFamiliehendelsedato = (
             const a = gruppeA[0]!;
             const b = gruppeB[0]!;
 
-            if (a.fom < b.fom) {
+            const aFom = dayjs(a.fom);
+            const bFom = dayjs(b.fom);
+
+            if (aFom.isBefore(bFom)) {
                 return -1;
             }
-            if (a.fom > b.fom) {
+            if (aFom.isAfter(bFom)) {
                 return 1;
             }
 
-            if (a.tom < b.tom) {
+            const aTom = dayjs(a.tom);
+            const bTom = dayjs(b.tom);
+
+            if (aTom.isBefore(bTom)) {
                 return -1;
             }
-            if (a.tom > b.tom) {
+            if (aTom.isAfter(bTom)) {
                 return 1;
             }
 

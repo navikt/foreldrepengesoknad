@@ -14,7 +14,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import { LegendLabel } from '../../types/LegendLabel';
 import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
-import { filtrerBortAnnenPartsIdentiskePerioder } from '../../utils/periodeUtils';
+import { filtrerBortAnnenPartsIdentiskePerioder } from '../utils/uttaksplanKalenderUtils';
 import { useUttaksplanData } from './../../context/UttaksplanDataContext';
 import {
     UttaksplanKalenderLegendInfo,

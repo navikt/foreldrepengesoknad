@@ -21,9 +21,9 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { prosentValideringGradering, valideringSamtidigUttak } from '../../liste/spørsmål/validators';
+import { getStønadskontoNavnSimple } from '../../liste/utils/uttaksplanListeUtils';
 import { erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { getGradering } from '../../utils/graderingUtils';
-import { getStønadskontoNavnSimple } from '../../utils/stønadskontoerUtils';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 import { usePeriodeValidator } from './utils/usePeriodeValidator';
 

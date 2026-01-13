@@ -8,9 +8,9 @@ import { KontoTypeUttak } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { getStønadskontoNavnSimple } from '../../utils/stønadskontoerUtils';
 import { EndrePeriodePanelStepFormValues } from '../types/EndrePeriodePanelStepFormValues';
 import { LeggTilPeriodePanelFormValues } from '../types/LeggTilPeriodePanelFormValues';
+import { getStønadskontoNavnSimple } from '../utils/uttaksplanListeUtils';
 
 interface Props {
     gyldigeKontotyper?: KontoTypeUttak[];

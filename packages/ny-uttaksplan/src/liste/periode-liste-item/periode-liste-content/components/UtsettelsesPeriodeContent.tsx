@@ -7,7 +7,7 @@ import { TidsperiodenString } from '@navikt/fp-utils';
 
 import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
-import { finnTekstForUtsettelseÅrsak } from '../../../../utils/periodeUtils';
+import { finnTekstForUtsettelseÅrsak } from '../../../utils/uttaksplanListeUtils';
 import { getMorsAktivitetTekst } from './UttaksperiodeContent';
 
 interface Props {

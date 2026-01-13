@@ -10,7 +10,7 @@ import {
 import { getFamiliehendelsedato, getFamiliesituasjon } from '@navikt/fp-utils';
 
 import { ForeldreInfo } from '../types/ForeldreInfo';
-import { sorterPerioder } from '../utils/lagHullPerioder';
+import { sorterPerioder } from '../utils/periodeUtils';
 
 type Props = {
     barn: Barn;

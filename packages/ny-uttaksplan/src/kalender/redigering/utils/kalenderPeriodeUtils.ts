@@ -4,7 +4,7 @@ import { CalendarPeriod } from '@navikt/fp-ui';
 
 import {
     UttaksplanperiodeMedKunTapteDager,
-    erUttaksplanHull,
+    erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../../../types/UttaksplanPeriode';
 import { UttakPeriodeMedAntallDager } from '../EksisterendeValgtePerioder';
@@ -50,7 +50,7 @@ export const finnValgtePerioder = (
     uttaksplan: UttaksplanperiodeMedKunTapteDager[],
 ): UttakPeriodeMedAntallDager[] => {
     return uttaksplan
-        .filter((p) => !erUttaksplanHull(p))
+        .filter((p) => !erTapteDagerHull(p))
         .map((p) => {
             const fom2 = dayjs(p.fom);
             const tom2 = dayjs(p.tom);
