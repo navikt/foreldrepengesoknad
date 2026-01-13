@@ -8,40 +8,29 @@ import { formatDate } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
-import { genererPeriodeId, getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
-import { PanelData } from '../EndrePeriodePanel';
+import { genererPeriodeKey, getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
 
 interface Props {
     perioder: Uttaksplanperiode[];
-    panelData: PanelData;
-    setPanelData: (data: PanelData) => void;
+    setValgtPeriodeIndex: (valgtPeriodeIndex: number | undefined) => void;
     closePanel: () => void;
 }
 
 interface FormValues {
-    periodeId: string | undefined;
+    periodeIndex: number | undefined;
 }
 
-export const VelgPeriodePanelStep = ({ perioder, panelData, setPanelData, closePanel }: Props) => {
+export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePanel }: Props) => {
     const intl = useIntl();
+
     const {
         foreldreInfo: { søker, navnPåForeldre },
     } = useUttaksplanData();
 
-    const formMethods = useForm<FormValues>({
-        defaultValues: {
-            periodeId: genererPeriodeId(panelData.valgtPeriode),
-        },
-    });
+    const formMethods = useForm<FormValues>();
 
     const onSubmit = (values: FormValues) => {
-        const valgtPeriode = perioder.find((p) => genererPeriodeId(p) === values.periodeId);
-
-        setPanelData({
-            ...panelData,
-            valgtPeriode,
-            currentStep: 'step2',
-        });
+        setValgtPeriodeIndex(values.periodeIndex);
     };
 
     return (
@@ -51,23 +40,20 @@ export const VelgPeriodePanelStep = ({ perioder, panelData, setPanelData, closeP
                     <FormattedMessage id="uttaksplan.hvilkeperiode" />
                 </Heading>
                 <RhfRadioGroup
-                    name="periodeId"
+                    name="periodeIndex"
                     control={formMethods.control}
                     validate={[
                         (value) => {
-                            if (!value) {
-                                return 'Du må velge hvilken periode du vil endre';
-                            }
-
-                            return undefined;
+                            return value === undefined
+                                ? intl.formatMessage({ id: 'VelgPeriodePanelStep.VelgPeriode' })
+                                : undefined;
                         },
                     ]}
                 >
                     {perioder.map((p, index) => {
                         const morsAktivitet = erVanligUttakPeriode(p) && p.morsAktivitet ? p.morsAktivitet : undefined;
-                        const id = genererPeriodeId(p);
                         return (
-                            <Radio key={id} value={id} autoFocus={index === 0}>
+                            <Radio key={genererPeriodeKey(p)} value={index} autoFocus={index === 0}>
                                 {`${formatDate(p.fom)} - ${formatDate(p.tom)} - ` +
                                     `${getStønadskontoNavn(
                                         intl,

@@ -18,7 +18,7 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '../../../utils/periodeUtils';
-import { genererPeriodeId } from '../../utils/uttaksplanListeUtils';
+import { genererPeriodeKey } from '../../utils/uttaksplanListeUtils';
 import {
     erUttaksplanperiodeFamiliehendelseDato,
     erUttaksplanperiodeTapteDager,
@@ -69,34 +69,34 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
             {!isEndrePeriodePanelOpen && !isSlettPeriodePanelOpen && (
                 <>
                     <VStack gap="space-16">
-                        {uttaksplanperioder.map((periode) => {
-                            return renderPeriode(
-                                periode,
-                                navnPåForeldre,
-                                søker === 'FAR_ELLER_MEDMOR',
-                                inneholderKunEnPeriode,
-                            );
-                        })}
+                        {uttaksplanperioder.map((periode) => (
+                            <Periode
+                                key={genererPeriodeKey(periode)}
+                                periode={periode}
+                                navnPåForeldre={navnPåForeldre}
+                                erFarEllerMedmor={søker === 'FAR_ELLER_MEDMOR'}
+                                inneholderKunEnPeriode={inneholderKunEnPeriode}
+                            />
+                        ))}
                         <SkalJobbeContent uttaksplanperioder={uttaksplanperioder} />
                     </VStack>
-                    {renderKnapper(
-                        isReadOnly || harUttaksplanperiodePrematuruker(uttaksplanperioder),
-                        erRedigerbar,
-                        setIsEndrePeriodePanelOpen,
-                        setIsSlettPeriodePanelOpen,
-                    )}
+                    <EndreOgSlettKnapper
+                        isReadOnly={isReadOnly || harUttaksplanperiodePrematuruker(uttaksplanperioder)}
+                        erRedigerbar={erRedigerbar}
+                        setIsEndrePeriodePanelOpen={setIsEndrePeriodePanelOpen}
+                        setIsSlettPeriodePanelOpen={setIsSlettPeriodePanelOpen}
+                    />
                 </>
             )}
-            {isEndrePeriodePanelOpen ? (
+            {isEndrePeriodePanelOpen && (
                 <EndrePeriodePanel
                     closePanel={() => {
                         setIsEndrePeriodePanelOpen(false);
                     }}
                     uttaksplanperioder={uttaksplanperioder}
-                    inneholderKunEnPeriode={inneholderKunEnPeriode}
                 />
-            ) : null}
-            {isSlettPeriodePanelOpen ? (
+            )}
+            {isSlettPeriodePanelOpen && (
                 <SlettPeriodePanel
                     closePanel={() => {
                         setIsSlettPeriodePanelOpen(false);
@@ -105,21 +105,26 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
                     navnPåForeldre={navnPåForeldre}
                     erFarEllerMedmor={søker === 'FAR_ELLER_MEDMOR'}
                 />
-            ) : null}
+            )}
         </>
     );
 };
 
-const renderPeriode = (
-    periode: Uttaksplanperiode,
-    navnPåForeldre: NavnPåForeldre,
-    erFarEllerMedmor: boolean,
-    inneholderKunEnPeriode: boolean,
-) => {
+const Periode = ({
+    periode,
+    navnPåForeldre,
+    erFarEllerMedmor,
+    inneholderKunEnPeriode,
+}: {
+    periode: Uttaksplanperiode;
+    navnPåForeldre: NavnPåForeldre;
+    erFarEllerMedmor: boolean;
+    inneholderKunEnPeriode: boolean;
+}) => {
     if (isOppholdsperiode(periode)) {
         return (
             <OppholdsPeriodeContent
-                key={genererPeriodeId(periode)}
+                key={genererPeriodeKey(periode)}
                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                 navnPåForeldre={navnPåForeldre}
                 erFarEllerMedmor={erFarEllerMedmor}
@@ -131,7 +136,7 @@ const renderPeriode = (
     if (isOverføringsperiode(periode)) {
         return (
             <OverføringsperiodeContent
-                key={genererPeriodeId(periode)}
+                key={genererPeriodeKey(periode)}
                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                 navnPåForeldre={navnPåForeldre}
                 periode={periode}
@@ -141,22 +146,26 @@ const renderPeriode = (
 
     if (isPeriodeUtenUttak(periode) || isTapteDager(periode)) {
         return (
-            <PeriodeUtenUttakContent key={genererPeriodeId(periode)} periode={periode} isHull={isTapteDager(periode)} />
+            <PeriodeUtenUttakContent
+                key={genererPeriodeKey(periode)}
+                periode={periode}
+                isHull={isTapteDager(periode)}
+            />
         );
     }
 
     if (isUtsettelsesperiode(periode)) {
-        return <UtsettelsesPeriodeContent key={genererPeriodeId(periode)} periode={periode} />;
+        return <UtsettelsesPeriodeContent key={genererPeriodeKey(periode)} periode={periode} />;
     }
 
     if (isPrematuruker(periode)) {
-        return <PrematurukerContent key={genererPeriodeId(periode)} />;
+        return <PrematurukerContent key={genererPeriodeKey(periode)} />;
     }
 
     if (isUttaksperiode(periode)) {
         return (
             <UttaksperiodeContent
-                key={genererPeriodeId(periode)}
+                key={genererPeriodeKey(periode)}
                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                 periode={periode}
                 erFarEllerMedmor={erFarEllerMedmor}
@@ -187,12 +196,17 @@ const getFamiliehendelseType = (barn: Barn) => {
     return FamiliehendelseType.FØDSEL;
 };
 
-const renderKnapper = (
-    isReadOnly: boolean,
-    erRedigerbar: boolean,
-    setIsEndrePeriodePanelOpen: (open: boolean) => void,
-    setIsSlettPeriodePanelOpen: (open: boolean) => void,
-) => {
+const EndreOgSlettKnapper = ({
+    isReadOnly,
+    erRedigerbar,
+    setIsEndrePeriodePanelOpen,
+    setIsSlettPeriodePanelOpen,
+}: {
+    isReadOnly: boolean;
+    erRedigerbar: boolean;
+    setIsEndrePeriodePanelOpen: (open: boolean) => void;
+    setIsSlettPeriodePanelOpen: (open: boolean) => void;
+}) => {
     if (isReadOnly) {
         return null;
     }

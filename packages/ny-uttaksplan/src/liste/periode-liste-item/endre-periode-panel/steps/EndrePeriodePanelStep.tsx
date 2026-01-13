@@ -27,19 +27,24 @@ import { SamtidigUttakSpørsmål } from '../../../spørsmål/SamtidigUttakSpørs
 import { TidsperiodeSpørsmål } from '../../../spørsmål/TidsperiodeSpørsmål';
 import { EndrePeriodePanelStepFormValues } from '../../../types/EndrePeriodePanelStepFormValues';
 import { HvaVilDuGjøre } from '../../../types/LeggTilPeriodePanelFormValues';
-import { PanelData } from '../EndrePeriodePanel';
 
 interface Props {
-    panelData: PanelData;
-    setPanelData: (data: PanelData) => void;
     closePanel: () => void;
+    uttaksplanperiode: Uttaksplanperiode;
+    setValgtPeriodeIndex: (valgtPeriodeIndex: number | undefined) => void;
     inneholderKunEnPeriode: boolean;
 }
 
-export const EndrePeriodePanelStep = ({ panelData, setPanelData, closePanel, inneholderKunEnPeriode }: Props) => {
+export const EndrePeriodePanelStep = ({
+    uttaksplanperiode,
+    closePanel,
+    inneholderKunEnPeriode,
+    setValgtPeriodeIndex,
+}: Props) => {
     const intl = useIntl();
-    const { valgtPeriode } = panelData;
-    const graderingsInfo = getGraderingsInfo(valgtPeriode);
+
+    const graderingsInfo = getGraderingsInfo(uttaksplanperiode);
+
     const {
         uttakPerioder,
         foreldreInfo: { rettighetType },
@@ -48,7 +53,7 @@ export const EndrePeriodePanelStep = ({ panelData, setPanelData, closePanel, inn
     const uttaksplanRedigering = useUttaksplanRedigering();
 
     const formMethods = useForm<EndrePeriodePanelStepFormValues>({
-        defaultValues: lagDefaultValues(valgtPeriode, graderingsInfo),
+        defaultValues: lagDefaultValues(uttaksplanperiode, graderingsInfo),
     });
 
     const hvaVilDuGjøre = formMethods.watch('hvaVilDuGjøre');
@@ -93,10 +98,10 @@ export const EndrePeriodePanelStep = ({ panelData, setPanelData, closePanel, inn
     };
 
     const onSubmit = (values: EndrePeriodePanelStepFormValues) => {
-        const fomValue = values.fom ?? valgtPeriode!.fom;
-        const tomValue = values.tom ?? valgtPeriode!.tom;
+        const fomValue = values.fom ?? uttaksplanperiode.fom;
+        const tomValue = values.tom ?? uttaksplanperiode.tom;
 
-        const erVanligPeriode = valgtPeriode && erVanligUttakPeriode(valgtPeriode);
+        const erVanligPeriode = uttaksplanperiode && erVanligUttakPeriode(uttaksplanperiode);
 
         if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE) {
             const feriePeriode = {
@@ -105,8 +110,8 @@ export const EndrePeriodePanelStep = ({ panelData, setPanelData, closePanel, inn
                 forelder: 'MOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             } satisfies UttakPeriode_fpoversikt;
-            if (erVanligPeriode && valgtPeriode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
-                handleUpdatePeriode(feriePeriode, valgtPeriode);
+            if (erVanligPeriode && uttaksplanperiode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+                handleUpdatePeriode(feriePeriode, uttaksplanperiode);
             } else {
                 handleAddPeriode(feriePeriode);
             }
@@ -127,8 +132,12 @@ export const EndrePeriodePanelStep = ({ panelData, setPanelData, closePanel, inn
                 gradering: getGradering(notEmpty(values.skalDuJobbe), values.stillingsprosent, values.kontoType),
                 samtidigUttak: values.samtidigUttak ? getFloatFromString(values.samtidigUttaksprosent) : undefined,
             } satisfies UttakPeriode_fpoversikt;
-            if (values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE && erVanligPeriode && valgtPeriode.kontoType) {
-                handleUpdatePeriode(periode, valgtPeriode);
+            if (
+                values.hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_PERIODE &&
+                erVanligPeriode &&
+                uttaksplanperiode.kontoType
+            ) {
+                handleUpdatePeriode(periode, uttaksplanperiode);
             }
 
             handleAddPeriode(periode);
@@ -156,7 +165,7 @@ export const EndrePeriodePanelStep = ({ panelData, setPanelData, closePanel, inn
                         inneholderKunEnPeriode
                             ? undefined
                             : () => {
-                                  setPanelData({ ...panelData, currentStep: 'step1' });
+                                  setValgtPeriodeIndex(undefined);
                               }
                     }
                     isFinalStep={true}

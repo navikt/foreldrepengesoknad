@@ -131,7 +131,7 @@ export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: 
     }
 };
 
-export const genererPeriodeId = (saksperiode?: Uttaksplanperiode): string | undefined => {
+export const genererPeriodeKey = (saksperiode?: Uttaksplanperiode): string | undefined => {
     if (!saksperiode) {
         return undefined;
     }

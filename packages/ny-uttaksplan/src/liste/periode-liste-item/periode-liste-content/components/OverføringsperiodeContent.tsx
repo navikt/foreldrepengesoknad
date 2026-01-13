@@ -1,5 +1,5 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
@@ -41,7 +41,13 @@ export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, na
             </div>
             <VStack gap="space-8">
                 <HStack gap="space-8">
-                    <BodyShort weight="semibold">{getLengdePåPeriode(intl, inneholderKunEnPeriode, periode)}</BodyShort>
+                    <BodyShort weight="semibold">
+                        {inneholderKunEnPeriode ? (
+                            <FormattedMessage id="uttaksplan.varighet.helePerioden" />
+                        ) : (
+                            `${formatDateExtended(periode.fom)} - ${formatDateExtended(periode.tom)}`
+                        )}
+                    </BodyShort>
                     <BodyShort>
                         {getVarighetString(
                             TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager(),
@@ -54,28 +60,20 @@ export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, na
                         {getOverføringsTekst(stønadskontoNavn, navnPåAnnenForelder, periode.overføringÅrsak)}
                     </BodyShort>
                     {periode.gradering !== undefined && (
-                        <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>
+                        <BodyShort>
+                            <FormattedMessage
+                                id="uttaksplan.periodeListeContent.arbeid"
+                                values={{
+                                    arbeidstidprosent: periode.gradering.arbeidstidprosent,
+                                    uttaksprosent: 100 - periode.gradering.arbeidstidprosent,
+                                }}
+                            />
+                        </BodyShort>
                     )}
                 </HStack>
             </VStack>
         </HStack>
     );
-};
-
-const getArbeidsTekst = (arbeidstidprosent: number) => {
-    const uttaksprosent = 100 - arbeidstidprosent;
-
-    return (
-        <FormattedMessage id="uttaksplan.periodeListeContent.arbeid" values={{ arbeidstidprosent, uttaksprosent }} />
-    );
-};
-
-const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Uttaksplanperiode) => {
-    if (inneholderKunEnPeriode) {
-        return intl.formatMessage({ id: 'uttaksplan.varighet.helePerioden' });
-    }
-
-    return `${formatDateExtended(periode.fom)} - ${formatDateExtended(periode.tom)}`;
 };
 
 const getOverføringsTekst = (

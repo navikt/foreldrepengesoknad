@@ -112,7 +112,13 @@ const getTekstForArbeidOgSamtidigUttak = (
             (periode.gradering !== undefined && periode.samtidigUttak !== undefined) ||
             periode.gradering !== undefined
         ) {
-            return getArbeidsTekst(periode.gradering.arbeidstidprosent);
+            const uttaksprosent = Math.round((100 - periode.gradering.arbeidstidprosent) * 100) / 100;
+            return (
+                <FormattedMessage
+                    id="uttaksplan.periodeListeContent.arbeid"
+                    values={{ arbeidstidprosent: periode.gradering.arbeidstidprosent, uttaksprosent }}
+                />
+            );
         }
 
         if (periode.samtidigUttak !== undefined) {
@@ -121,14 +127,6 @@ const getTekstForArbeidOgSamtidigUttak = (
     }
 
     return undefined;
-};
-
-const getArbeidsTekst = (arbeidstidprosent: number) => {
-    const uttaksprosent = Math.round((100 - arbeidstidprosent) * 100) / 100;
-
-    return (
-        <FormattedMessage id="uttaksplan.periodeListeContent.arbeid" values={{ arbeidstidprosent, uttaksprosent }} />
-    );
 };
 
 const getSamtidigUttakTekst = (

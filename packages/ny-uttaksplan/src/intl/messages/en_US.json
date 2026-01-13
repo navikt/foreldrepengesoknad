@@ -297,5 +297,6 @@
     "LeggTilEllerEndrePeriodeForm.Ja": "Yes",
     "LeggTilEllerEndrePeriodeForm.Nei": "No",
     "LeggTilEllerEndrePeriodeForm.Stillingsprosent.Mor": "How many percent should mother work?",
-    "LeggTilEllerEndrePeriodeForm.Stillingsprosent.FarMedmor": "How many percent should {erMedmor, select, true {co-mother} other {father}} work?"
+    "LeggTilEllerEndrePeriodeForm.Stillingsprosent.FarMedmor": "How many percent should {erMedmor, select, true {co-mother} other {father}} work?",
+    "VelgPeriodePanelStep.VelgPeriode": "You must select which period you want to change"
 }

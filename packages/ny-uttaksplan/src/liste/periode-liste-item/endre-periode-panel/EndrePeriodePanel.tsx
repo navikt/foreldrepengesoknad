@@ -4,10 +4,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { HStack, Heading } from '@navikt/ds-react';
 
-import { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { Uttaksplanperiode } from '../../../types/UttaksplanPeriode';
-import { HvaVilDuGjøre } from '../../types/LeggTilPeriodePanelFormValues';
 import { EndrePeriodePanelStep } from './steps/EndrePeriodePanelStep';
 import { VelgPeriodePanelStep } from './steps/VelgPeriodePanelStep';
 
@@ -16,39 +15,14 @@ const ARIA_LABEL_ID = 'endre-periode-panel-heading';
 interface Props {
     closePanel: () => void;
     uttaksplanperioder: Uttaksplanperiode[];
-    inneholderKunEnPeriode: boolean;
 }
 
-type PanelStep = 'step1' | 'step2';
+export const EndrePeriodePanel = ({ closePanel, uttaksplanperioder }: Props) => {
+    const inneholderKunEnPeriode = uttaksplanperioder.length === 1;
 
-export type PanelData = {
-    valgtPeriode?: Uttaksplanperiode;
-    hvaVilDuGjøre?: HvaVilDuGjøre;
-    currentStep: PanelStep;
-    fom?: string;
-    tom?: string;
-    forelder?: BrukerRolleSak_fpoversikt;
-    kontoType?: KontoTypeUttak;
-    årsak?: 'LOVBESTEMT_FERIE' | 'PERIODE_UTEN_UTTAK';
-    stillingsprosent?: string;
-    skalDuJobbe?: boolean;
-};
-
-export const EndrePeriodePanel = ({ closePanel, uttaksplanperioder, inneholderKunEnPeriode }: Props) => {
-    const kunEnPeriode = uttaksplanperioder.length === 1;
-
-    const initialPanelState: PanelData = {
-        valgtPeriode: kunEnPeriode ? uttaksplanperioder[0] : undefined,
-        currentStep: kunEnPeriode ? 'step2' : 'step1',
-    };
-
-    const [panelData, setPanelData] = useState<PanelData>(initialPanelState);
-    const { currentStep } = panelData;
-
-    const closePanelWrapper = () => {
-        setPanelData(initialPanelState);
-        closePanel();
-    };
+    const [valgtPeriodeIndex, setValgtPeriodeIndex] = useState<number | undefined>(
+        inneholderKunEnPeriode ? 0 : undefined,
+    );
 
     return (
         <div aria-labelledby={ARIA_LABEL_ID} data-panel="endre-periode">
@@ -61,19 +35,18 @@ export const EndrePeriodePanel = ({ closePanel, uttaksplanperioder, inneholderKu
                 </HStack>
             </div>
             <div>
-                {currentStep === 'step1' && (
+                {valgtPeriodeIndex === undefined && (
                     <VelgPeriodePanelStep
                         perioder={uttaksplanperioder}
-                        panelData={panelData}
-                        setPanelData={setPanelData}
-                        closePanel={closePanelWrapper}
+                        setValgtPeriodeIndex={setValgtPeriodeIndex}
+                        closePanel={closePanel}
                     />
                 )}
-                {currentStep === 'step2' && (
+                {valgtPeriodeIndex !== undefined && (
                     <EndrePeriodePanelStep
-                        panelData={panelData}
-                        setPanelData={setPanelData}
-                        closePanel={closePanelWrapper}
+                        uttaksplanperiode={notEmpty(uttaksplanperioder[valgtPeriodeIndex])}
+                        setValgtPeriodeIndex={setValgtPeriodeIndex}
+                        closePanel={closePanel}
                         inneholderKunEnPeriode={inneholderKunEnPeriode}
                     />
                 )}

@@ -1,4 +1,5 @@
 import { TrashIcon } from '@navikt/aksel-icons';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -13,7 +14,7 @@ import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../../context/UttaksplanRedigeringContext';
 import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../../utils/UttakPeriodeBuilder';
-import { genererPeriodeId, getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
+import { genererPeriodeKey, getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
 
 const ARIA_LABEL_ID = 'slett-periode-panel-heading';
 
@@ -25,7 +26,7 @@ interface Props {
 }
 
 interface FormValues {
-    perioder: string[];
+    periodeIndexer: number[];
 }
 
 export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForeldre, erFarEllerMedmor }: Props) => {
@@ -35,36 +36,40 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
-    const formMethods = useForm<FormValues>({
-        defaultValues: {
-            perioder: [],
-        },
-    });
+    useEffect(() => {
+        // Slett på direkten når det kun er en periode
+        if (uttaksplanperioder.length === 1) {
+            const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder)
+                .fjernUttakPerioder(uttaksplanperioder)
+                .getUttakPerioder();
+            uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
+
+            closePanel();
+        }
+    }, []);
+
+    const formMethods = useForm<FormValues>();
+
+    if (uttaksplanperioder.length === 1) {
+        return null;
+    }
 
     const onSubmit = (values: FormValues) => {
-        if (values.perioder.length === 1) {
-            const periode = uttaksplanperioder.find((p) => genererPeriodeId(p) === values.perioder[0]);
+        const slettedePerioder: Uttaksplanperiode[] = [];
+
+        values.periodeIndexer?.map((periodeIndex) => {
+            const periode = uttaksplanperioder.at(periodeIndex);
 
             if (periode) {
-                const uttakPeriodeBuilder = new UttakPeriodeBuilder(uttakPerioder);
-                const nyeUttakPerioder = uttakPeriodeBuilder.fjernUttakPerioder([periode]).getUttakPerioder();
-                uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
+                slettedePerioder.push(periode);
             }
-        } else {
-            const slettedePerioder: Uttaksplanperiode[] = [];
+        });
 
-            values.perioder?.map((id) => {
-                const periode = uttaksplanperioder.find((p) => genererPeriodeId(p) === id);
+        const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder)
+            .fjernUttakPerioder(slettedePerioder)
+            .getUttakPerioder();
+        uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
 
-                if (periode) {
-                    slettedePerioder.push(periode);
-                }
-            });
-
-            const uttakPeriodeBuilder = new UttakPeriodeBuilder(uttakPerioder);
-            const nyeUttakPerioder = uttakPeriodeBuilder.fjernUttakPerioder(slettedePerioder).getUttakPerioder();
-            uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
-        }
         closePanel();
     };
 
@@ -85,7 +90,7 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
                             <FormattedMessage id="uttaksplan.slettPeriode.hvilkePerioder" />
                         </Heading>
                         <RhfCheckboxGroup
-                            name="perioder"
+                            name="periodeIndexer"
                             control={formMethods.control}
                             validate={[isRequired(intl.formatMessage({ id: 'uttaksplan.velgperiode' }))]}
                             label={intl.formatMessage({ id: 'uttaksplan.perioder' })}
@@ -94,9 +99,8 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
                                 const morsAktivitet =
                                     erVanligUttakPeriode(p) && p.morsAktivitet ? p.morsAktivitet : undefined;
 
-                                const id = genererPeriodeId(p);
                                 return (
-                                    <Checkbox key={id} name={id} value={id} autoFocus={index === 0}>
+                                    <Checkbox key={genererPeriodeKey(p)} value={index} autoFocus={index === 0}>
                                         {`${formatDate(p.fom)} - ${formatDate(p.tom)} -
                                         ${getStønadskontoNavn(
                                             intl,
