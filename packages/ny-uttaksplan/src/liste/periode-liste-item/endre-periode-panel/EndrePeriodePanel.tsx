@@ -21,32 +21,25 @@ interface Props {
 
 type PanelStep = 'step1' | 'step2';
 
-export interface PanelData {
-    valgtPeriode: Uttaksplanperiode | undefined;
-    hvaVilDuGjøre: HvaVilDuGjøre | undefined;
+export type PanelData = {
+    valgtPeriode?: Uttaksplanperiode;
+    hvaVilDuGjøre?: HvaVilDuGjøre;
     currentStep: PanelStep;
     fom?: string;
     tom?: string;
     forelder?: BrukerRolleSak_fpoversikt;
-    kontoType: KontoTypeUttak | undefined;
+    kontoType?: KontoTypeUttak;
     årsak?: 'LOVBESTEMT_FERIE' | 'PERIODE_UTEN_UTTAK';
     stillingsprosent?: string;
     skalDuJobbe?: boolean;
-}
+};
 
 export const EndrePeriodePanel = ({ closePanel, uttaksplanperioder, inneholderKunEnPeriode }: Props) => {
     const kunEnPeriode = uttaksplanperioder.length === 1;
 
     const initialPanelState: PanelData = {
         valgtPeriode: kunEnPeriode ? uttaksplanperioder[0] : undefined,
-        hvaVilDuGjøre: undefined,
-        fom: undefined,
-        tom: undefined,
         currentStep: kunEnPeriode ? 'step2' : 'step1',
-        forelder: undefined,
-        kontoType: undefined,
-        skalDuJobbe: undefined,
-        stillingsprosent: undefined,
     };
 
     const [panelData, setPanelData] = useState<PanelData>(initialPanelState);

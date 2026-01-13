@@ -161,6 +161,12 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
         dayjs(periode.tom).isAfter(dayjs(familiehendelsedato).subtract(22, 'days')),
     );
 
+    const harValgtDagIPeriodenTreUkerFørFamiliehendelsedato = sammenslåtteValgtePerioder.some(
+        (periode) =>
+            dayjs(periode.fom).isBefore(dayjs(familiehendelsedato)) &&
+            dayjs(periode.tom).isAfter(dayjs(familiehendelsedato).subtract(22, 'days')),
+    );
+
     const {
         forelder,
         kontoTypeFarMedmor,
@@ -195,23 +201,29 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
                     <Radio value="MOR">
                         <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />
                     </Radio>
-                    <Radio value="FAR_MEDMOR">
-                        {erMedmorDelAvSøknaden ? (
-                            <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />
-                        ) : (
-                            <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Far" />
-                        )}
-                    </Radio>
                     <>
-                        {rettighetType !== 'ALENEOMSORG' && !harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato && (
-                            <Radio value="BEGGE">
-                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Begge" />
+                        {!harValgtDagIPeriodenTreUkerFørFamiliehendelsedato && (
+                            <Radio value="FAR_MEDMOR">
+                                {erMedmorDelAvSøknaden ? (
+                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />
+                                ) : (
+                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Far" />
+                                )}
                             </Radio>
                         )}
                     </>
+                    <>
+                        {rettighetType !== 'ALENEOMSORG' &&
+                            !harKunValgtPerioderMerEnnTreUkerFørFamiliehendelsedato &&
+                            !harValgtDagIPeriodenTreUkerFørFamiliehendelsedato && (
+                                <Radio value="BEGGE">
+                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Begge" />
+                                </Radio>
+                            )}
+                    </>
                 </RhfRadioGroup>
 
-                <hr className="text-ax-border-neutral-subtle" />
+                {forelder !== undefined && <hr className="text-ax-border-neutral-subtle" />}
 
                 {(forelder === 'MOR' || forelder === 'BEGGE') && (
                     <RhfRadioGroup
@@ -331,41 +343,46 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
                     </>
                 )}
 
-                <hr className="text-ax-border-neutral-subtle" />
-
-                {kontoTypeMor !== 'FORELDREPENGER_FØR_FØDSEL' && (forelder === 'MOR' || forelder === 'BEGGE') && (
-                    <VStack gap="space-16">
-                        <RhfRadioGroup
-                            name="skalDuKombinereArbeidOgUttakMor"
-                            control={formMethods.control}
-                            label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor' })}
-                            validate={[
-                                isRequired(
-                                    intl.formatMessage({
-                                        id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor.Påkrevd',
-                                    }),
-                                ),
-                            ]}
-                        >
-                            <Radio value={true}>
-                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Ja" />
-                            </Radio>
-                            <Radio value={false}>
-                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Nei" />
-                            </Radio>
-                        </RhfRadioGroup>
-                        {skalDuKombinereArbeidOgUttakMor && (
-                            <RhfNumericField
-                                name="stillingsprosentMor"
-                                control={formMethods.control}
-                                className="max-w-xs"
-                                label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Stillingsprosent.Mor' })}
-                                validate={[prosentValideringGradering(intl, samtidigUttaksprosentMor)]}
-                                maxLength={5}
-                            />
-                        )}
-                    </VStack>
-                )}
+                {kontoTypeMor !== undefined &&
+                    kontoTypeMor !== 'FORELDREPENGER_FØR_FØDSEL' &&
+                    (forelder === 'MOR' || forelder === 'BEGGE') && (
+                        <>
+                            <hr className="text-ax-border-neutral-subtle" />
+                            <VStack gap="space-16">
+                                <RhfRadioGroup
+                                    name="skalDuKombinereArbeidOgUttakMor"
+                                    control={formMethods.control}
+                                    label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor' })}
+                                    validate={[
+                                        isRequired(
+                                            intl.formatMessage({
+                                                id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor.Påkrevd',
+                                            }),
+                                        ),
+                                    ]}
+                                >
+                                    <Radio value={true}>
+                                        <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Ja" />
+                                    </Radio>
+                                    <Radio value={false}>
+                                        <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Nei" />
+                                    </Radio>
+                                </RhfRadioGroup>
+                                {skalDuKombinereArbeidOgUttakMor && (
+                                    <RhfNumericField
+                                        name="stillingsprosentMor"
+                                        control={formMethods.control}
+                                        className="max-w-xs"
+                                        label={intl.formatMessage({
+                                            id: 'LeggTilEllerEndrePeriodeForm.Stillingsprosent.Mor',
+                                        })}
+                                        validate={[prosentValideringGradering(intl, samtidigUttaksprosentMor)]}
+                                        maxLength={5}
+                                    />
+                                )}
+                            </VStack>
+                        </>
+                    )}
 
                 {(forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && (
                     <>
@@ -420,7 +437,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
                         <FormattedMessage id="uttaksplan.avbryt" />
                     </Button>
                     <HStack gap="space-8">
-                        <Button>
+                        <Button type="submit" variant="primary" disabled={!formMethods.formState.isDirty}>
                             <FormattedMessage id="LeggTilPeriodePanel.LeggTil" />
                         </Button>
                     </HStack>
@@ -440,7 +457,12 @@ const lagDefaultValues = (
             dayjs(valgtPeriode.tom).isSameOrBefore(dayjs(periode.tom), 'day'),
     );
 
-    if (eksisterendePerioder.length === 0 || !eksisterendePerioder.every(erVanligUttakPeriode)) {
+    if (
+        eksisterendePerioder.length === 0 ||
+        eksisterendePerioder.length > 2 ||
+        !eksisterendePerioder.every(erVanligUttakPeriode) ||
+        eksisterendePerioder.some((p) => p.utsettelseÅrsak === 'LOVBESTEMT_FERIE')
+    ) {
         return undefined;
     }
 
