@@ -7,7 +7,6 @@ import { BarnType } from '@navikt/fp-constants';
 import { Barn, KontoBeregningDto } from '@navikt/fp-types';
 
 import { UttaksplanDataProvider } from '../../context/UttaksplanDataContext';
-import { PeriodeHullType } from '../../types/Planperiode';
 import { PeriodeListeItem } from './PeriodeListeItem';
 
 const kontoNårBeggeHarRett = {
@@ -49,7 +48,7 @@ type StoryArgs = {
 const customRenderer = ({
     erFarEllerMedmor,
     erFamiliehendelse,
-    permisjonsperiode,
+    uttaksplanperioder,
     erAleneOmOmsorg,
     handleAddPeriode,
     handleUpdatePeriode,
@@ -81,7 +80,7 @@ const customRenderer = ({
                         handleUpdatePeriode={handleUpdatePeriode}
                         handleDeletePerioder={handleDeletePerioder}
                         erFamiliehendelse={erFamiliehendelse}
-                        permisjonsperiode={permisjonsperiode}
+                        uttaksplanperioder={uttaksplanperioder}
                     />
                 </Accordion>
             </div>
@@ -115,22 +114,14 @@ export const UttaksperiodeMor: Story = {
         erAleneOmOmsorg: false,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-06-01',
-        permisjonsperiode: {
-            tidsperiode: {
+        uttaksplanperioder: [
+            {
                 fom: '2024-06-01',
                 tom: '2024-06-30',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
             },
-            forelder: 'MOR',
-            perioder: [
-                {
-                    erAnnenPartEøs: false,
-                    fom: '2024-06-01',
-                    tom: '2024-06-30',
-                    forelder: 'MOR',
-                    kontoType: 'MØDREKVOTE',
-                },
-            ],
-        },
+        ],
     },
 };
 
@@ -148,29 +139,20 @@ export const UttaksperiodeMorFlerePerioder: Story = {
         erAleneOmOmsorg: false,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-06-01',
-        permisjonsperiode: {
-            tidsperiode: {
+        uttaksplanperioder: [
+            {
                 fom: '2024-06-01',
-                tom: '2024-07-26',
+                tom: '2024-06-28',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
             },
-            forelder: 'MOR',
-            perioder: [
-                {
-                    erAnnenPartEøs: false,
-                    fom: '2024-06-01',
-                    tom: '2024-06-28',
-                    forelder: 'MOR',
-                    kontoType: 'MØDREKVOTE',
-                },
-                {
-                    erAnnenPartEøs: false,
-                    fom: '2024-07-01',
-                    tom: '2024-07-26',
-                    forelder: 'MOR',
-                    kontoType: 'FELLESPERIODE',
-                },
-            ],
-        },
+            {
+                fom: '2024-07-01',
+                tom: '2024-07-26',
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+            },
+        ],
     },
 };
 
@@ -188,45 +170,36 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
         erAleneOmOmsorg: false,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-06-01',
-        permisjonsperiode: {
-            tidsperiode: {
+        uttaksplanperioder: [
+            {
                 fom: '2024-06-01',
-                tom: '2024-07-26',
+                tom: '2024-06-28',
+                kontoType: 'MØDREKVOTE',
+                forelder: 'MOR',
             },
-            forelder: 'MOR',
-            perioder: [
-                {
-                    erAnnenPartEøs: false,
-                    fom: '2024-06-01',
-                    tom: '2024-06-28',
-                    kontoType: 'MØDREKVOTE',
-                },
-                {
-                    erAnnenPartEøs: false,
-                    fom: '2024-07-01',
-                    tom: '2024-07-26',
-                    forelder: 'MOR',
-                    kontoType: 'FELLESPERIODE',
-                },
-                {
-                    erAnnenPartEøs: false,
-                    fom: '2024-07-29',
-                    tom: '2024-08-23',
-                    forelder: 'MOR',
-                    kontoType: 'FELLESPERIODE',
-                    gradering: {
-                        aktivitet: {
-                            type: 'ORDINÆRT_ARBEID',
-                            arbeidsgiver: {
-                                id: '1',
-                                type: 'ORGANISASJON',
-                            },
+            {
+                fom: '2024-07-01',
+                tom: '2024-07-26',
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+            },
+            {
+                fom: '2024-07-29',
+                tom: '2024-08-23',
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                gradering: {
+                    aktivitet: {
+                        type: 'ORDINÆRT_ARBEID',
+                        arbeidsgiver: {
+                            id: '1',
+                            type: 'ORGANISASJON',
                         },
-                        arbeidstidprosent: 50,
                     },
+                    arbeidstidprosent: 50,
                 },
-            ],
-        },
+            },
+        ],
     },
 };
 
@@ -244,22 +217,14 @@ export const UttaksperiodeFar: Story = {
         erAleneOmOmsorg: false,
         erFarEllerMedmor: true,
         familiehendelsedato: '2024-06-01',
-        permisjonsperiode: {
-            tidsperiode: {
+        uttaksplanperioder: [
+            {
                 fom: '2024-06-01',
                 tom: '2024-06-28',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
             },
-            forelder: 'FAR_MEDMOR',
-            perioder: [
-                {
-                    erAnnenPartEøs: false,
-                    fom: '2024-06-01',
-                    tom: '2024-06-28',
-                    forelder: 'FAR_MEDMOR',
-                    kontoType: 'FEDREKVOTE',
-                },
-            ],
-        },
+        ],
     },
 };
 
@@ -277,20 +242,12 @@ export const PeriodeUtenUttak: Story = {
         erAleneOmOmsorg: false,
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-08-01',
-        permisjonsperiode: {
-            erPeriodeUtenUttak: true,
-            tidsperiode: {
+        uttaksplanperioder: [
+            {
                 fom: '2024-08-01',
                 tom: '2024-08-31',
+                hullType: 'PERIODE_UTEN_UTTAK',
             },
-            perioder: [
-                {
-                    erAnnenPartEøs: false,
-                    fom: '2024-08-01',
-                    tom: '2024-08-31',
-                    periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-                },
-            ],
-        },
+        ],
     },
 };

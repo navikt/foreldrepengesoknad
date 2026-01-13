@@ -7,35 +7,37 @@ import { BodyShort, HGrid, HStack, Heading, Hide, Show } from '@navikt/ds-react'
 import { TidsperiodenString, formatDateShortMonth } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { Permisjonsperiode } from '../../types/Permisjonsperiode';
+import { Uttaksplanperiode } from '../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../utils/dateUtils';
+import { getFørsteUttaksplanperiodeFom, getSisteUttaksplanperiodeTom } from '../uttaksplanperiodeUtils';
 import { finnBakgrunnsfarge, getIkon, getTekst } from './PeriodeListeHeaderUtils';
 
 interface Props {
-    permisjonsperiode: Permisjonsperiode;
+    uttaksplanperioder: Uttaksplanperiode[];
     erFamiliehendelse?: boolean;
     isOpen: boolean;
 }
 
-export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpen }: Props) => {
+export const PeriodeListeHeader = ({ uttaksplanperioder, erFamiliehendelse, isOpen }: Props) => {
     const intl = useIntl();
 
     const { familiehendelsedato, foreldreInfo, familiesituasjon } = useUttaksplanData();
 
-    const { tidsperiode } = permisjonsperiode;
+    const førsteFom = getFørsteUttaksplanperiodeFom(uttaksplanperioder);
+    const sisteTom = getSisteUttaksplanperiodeTom(uttaksplanperioder);
 
     const antallDager = TidsperiodenString({
-        fom: tidsperiode.fom,
-        tom: tidsperiode.tom,
+        fom: førsteFom,
+        tom: sisteTom,
     }).getAntallUttaksdager();
 
-    const erPermisjonsperiodeTilbakeITid = dayjs(
-        erFamiliehendelse ? permisjonsperiode.tidsperiode.fom : permisjonsperiode.tidsperiode.tom,
-    ).isBefore(dayjs().startOf('day'));
+    const erPermisjonsperiodeTilbakeITid = dayjs(erFamiliehendelse ? førsteFom : sisteTom).isBefore(
+        dayjs().startOf('day'),
+    );
 
     const tekst = getTekst(
         intl,
-        permisjonsperiode,
+        uttaksplanperioder,
         foreldreInfo.søker === 'FAR_ELLER_MEDMOR',
         foreldreInfo.navnPåForeldre,
         familiesituasjon,
@@ -44,12 +46,17 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpe
     );
 
     return (
-        <HGrid columns={{ xs: '4fr 4fr 1fr 1fr', md: '3fr 3fr 3fr 1fr' }}>
+        <HGrid
+            columns={{ xs: '4fr 4fr 1fr 1fr', md: '3fr 3fr 3fr 1fr' }}
+            data-testid={
+                erFamiliehendelse ? `${familiehendelsedato} - ${familiehendelsedato}` : `${førsteFom} - ${sisteTom}`
+            }
+        >
             <div className={`px-4 py-2 ${erPermisjonsperiodeTilbakeITid ? 'opacity-75' : 'opacity-100'}`}>
                 <Heading size="xsmall" as="p">
                     {erFamiliehendelse
                         ? formatDateShortMonth(familiehendelsedato)
-                        : `${formatDateShortMonth(permisjonsperiode.tidsperiode.fom)} - ${formatDateShortMonth(permisjonsperiode.tidsperiode.tom)}`}
+                        : `${formatDateShortMonth(førsteFom)} - ${formatDateShortMonth(sisteTom)}`}
                 </Heading>
                 <Hide above="md">
                     <BodyShort>{tekst}</BodyShort>
@@ -63,7 +70,7 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpe
                     className={
                         `ax-md:m-0 ax-md:h-auto ax-md:w-full ax-md:rounded-xl ax-md:px-4 ax-md:py-2` +
                         ` m-2 flex h-12 w-12 justify-between rounded-2xl ${finnBakgrunnsfarge(
-                            permisjonsperiode,
+                            uttaksplanperioder,
                             erFamiliehendelse,
                         )}`
                     }
@@ -73,7 +80,7 @@ export const PeriodeListeHeader = ({ permisjonsperiode, erFamiliehendelse, isOpe
                             <BodyShort>{tekst}</BodyShort>
                         </Show>
                         <div className="flex items-center">
-                            {getIkon(permisjonsperiode, familiehendelsedato, erFamiliehendelse)}
+                            {getIkon(uttaksplanperioder, familiehendelsedato, erFamiliehendelse)}
                         </div>
                     </HStack>
                 </div>

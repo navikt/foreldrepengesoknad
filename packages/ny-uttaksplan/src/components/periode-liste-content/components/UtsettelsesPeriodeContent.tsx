@@ -5,19 +5,19 @@ import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { TidsperiodenString } from '@navikt/fp-utils';
 
-import { Planperiode } from '../../../types/Planperiode';
+import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../utils/dateUtils';
 import { finnTekstForUtsettelseÅrsak } from '../../../utils/periodeUtils';
 import { getMorsAktivitetTekst } from './UttaksperiodeContent';
 
 interface Props {
-    periode: Planperiode;
+    periode: Uttaksplanperiode;
 }
 
 export const UtsettelsesPeriodeContent = ({ periode }: Props) => {
     const intl = useIntl();
 
-    if (periode.erAnnenPartEøs || !periode.utsettelseÅrsak) {
+    if (!erVanligUttakPeriode(periode) || !periode.utsettelseÅrsak) {
         return null;
     }
 

@@ -8,7 +8,6 @@ import { assertUnreachable } from '@navikt/fp-validation';
 
 import { Søker } from '../../types/ForeldreInfo';
 import { LegendLabel } from '../../types/LegendLabel';
-import { PeriodeHullType } from '../../types/Planperiode';
 import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { isAvslåttPeriode, isAvslåttPeriodeFørsteSeksUkerMor } from '../../utils/periodeUtils';
 
@@ -326,7 +325,6 @@ export const getLegendLabelFromPeriode = (
     barn: Barn,
     erFarEllerMedmor: boolean,
 ): LegendLabel | undefined => {
-    // TODO (TOR) Sjekk om dette blir korrekt? (Filtrar ikkje vekk avslåtte periodar lenger)
     if (isAvslåttPeriode(p)) {
         const familiehendelsesdato = getFamiliehendelsedato(barn);
         if (!erFarEllerMedmor && isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsesdato)) {
@@ -381,11 +379,11 @@ export const getLegendLabelFromPeriode = (
     }
 
     if (erUttaksplanHull(p)) {
-        if (p.hullType === PeriodeHullType.PERIODE_UTEN_UTTAK) {
+        if (p.hullType === 'PERIODE_UTEN_UTTAK') {
             return undefined;
         }
 
-        if (p.hullType === PeriodeHullType.TAPTE_DAGER) {
+        if (p.hullType === 'TAPTE_DAGER') {
             return 'TAPTE_DAGER';
         }
     }

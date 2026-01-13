@@ -49,21 +49,3 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
 export const tidperiodeOverlapperDato = (tidsperiode: Tidsperiode, dato: string): boolean => {
     return dayjs(tidsperiode.fom).isBefore(dato, 'day') && dayjs(tidsperiode.tom).isSameOrAfter(dato, 'day');
 };
-
-export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: string): boolean => {
-    const førsteOktober2021 = new Date('2021-10-01');
-
-    return (
-        dayjs(familiehendelsesdato).isSameOrAfter(førsteOktober2021, 'day') &&
-        dayjs().startOf('day').isSameOrAfter(førsteOktober2021, 'day')
-    );
-};
-
-export const andreAugust2022ReglerGjelder = (familiehendelsesdato: string): boolean => {
-    const andreAugust2022 = new Date('2022-08-02');
-
-    return (
-        dayjs(familiehendelsesdato).isSameOrAfter(andreAugust2022, 'day') &&
-        dayjs().startOf('day').isSameOrAfter(andreAugust2022, 'day')
-    );
-};

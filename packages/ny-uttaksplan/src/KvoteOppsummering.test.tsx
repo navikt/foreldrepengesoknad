@@ -22,10 +22,10 @@ describe('<KvoteOppsummering >', () => {
     it('<BeggeRettMorLedigeDager >', () => {
         render(<BeggeRettMorLedigeDager />);
 
-        expect(screen.getByText('Det er 32 uker og 3 dager igjen som kan legges til i planen')).toBeInTheDocument();
+        expect(screen.getByText('Det er 17 uker og 1 dag igjen som kan legges til i planen')).toBeInTheDocument();
         expect(
             screen.getByText(
-                '12 uker og 2 dager av fellesperioden, 5 uker og 1 dag til Helga og 15 uker til Espen ligger ikke i planen.',
+                '10 uker av fellesperioden, 5 uker og 1 dag til Helga og 2 uker til Espen ligger ikke i planen.',
                 { exact: false },
             ),
         ).toBeInTheDocument();
@@ -95,7 +95,7 @@ describe('<KvoteOppsummering >', () => {
     it('<BeggeRettMorForMangeDagerBrukt >', () => {
         render(<BeggeRettMorForMangeDagerBrukt />);
 
-        expect(screen.getByText('Det er lagt til 1 uke og 1 dag for mye')).toBeInTheDocument();
+        expect(screen.getByText('Det er lagt til 2 uker og 2 dager for mye')).toBeInTheDocument();
     });
 
     it('<MorOgMedmorBeggeRettMorIngenDagerBrukt - Medmors kvote skal være "Medmorkvote" >', async () => {

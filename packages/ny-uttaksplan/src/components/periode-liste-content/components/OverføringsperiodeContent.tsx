@@ -7,29 +7,37 @@ import { NavnPåForeldre } from '@navikt/fp-common';
 import { UttakOverføringÅrsak_fpoversikt } from '@navikt/fp-types';
 import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
 
-import { Planperiode } from '../../../types/Planperiode';
+import {
+    Uttaksplanperiode,
+    erEøsUttakPeriode,
+    erUttaksplanHull,
+    erVanligUttakPeriode,
+} from '../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../utils/dateUtils';
 import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
 
 interface Props {
-    periode: Planperiode;
+    periode: Uttaksplanperiode;
     inneholderKunEnPeriode: boolean;
     navnPåForeldre: NavnPåForeldre;
 }
 
 export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre }: Props) => {
     const intl = useIntl();
-    const morsAktivitet = !periode.erAnnenPartEøs && periode.morsAktivitet ? periode.morsAktivitet : undefined;
+
+    if (erEøsUttakPeriode(periode) || erUttaksplanHull(periode)) {
+        throw new Error('Her er perioden feilaktig eøs-uttak eller ett hull');
+    }
+
+    const morsAktivitet = erVanligUttakPeriode(periode) && periode.morsAktivitet ? periode.morsAktivitet : undefined;
     const stønadskontoNavn = getStønadskontoNavn(
         intl,
-        // TODO fiks bruk av !
-        periode.kontoType!,
         navnPåForeldre,
-        !periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR',
+        periode.forelder === 'FAR_MEDMOR',
         morsAktivitet,
+        periode.kontoType,
     );
-    const navnPåAnnenForelder =
-        !periode.erAnnenPartEøs && periode.forelder === 'FAR_MEDMOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    const navnPåAnnenForelder = periode.forelder === 'FAR_MEDMOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     return (
         <HStack gap="space-8">
@@ -46,16 +54,14 @@ export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, na
                         )}
                     </BodyShort>
                 </HStack>
-                {!periode.erAnnenPartEøs && (
-                    <HStack gap="space-8">
-                        <BodyShort>
-                            {getOverføringsTekst(stønadskontoNavn, navnPåAnnenForelder, periode.overføringÅrsak)}
-                        </BodyShort>
-                        {!periode.erAnnenPartEøs && periode.gradering !== undefined && (
-                            <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>
-                        )}
-                    </HStack>
-                )}
+                <HStack gap="space-8">
+                    <BodyShort>
+                        {getOverføringsTekst(stønadskontoNavn, navnPåAnnenForelder, periode.overføringÅrsak)}
+                    </BodyShort>
+                    {periode.gradering !== undefined && (
+                        <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>
+                    )}
+                </HStack>
             </VStack>
         </HStack>
     );
@@ -69,7 +75,7 @@ const getArbeidsTekst = (arbeidstidprosent: number) => {
     );
 };
 
-const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Planperiode) => {
+const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Uttaksplanperiode) => {
     if (inneholderKunEnPeriode) {
         return intl.formatMessage({ id: 'uttaksplan.varighet.helePerioden' });
     }

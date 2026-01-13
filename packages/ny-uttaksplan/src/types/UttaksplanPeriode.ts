@@ -4,13 +4,13 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 
-import { PeriodeHullType } from './Planperiode';
+export type PeriodeHullType = 'PERIODE_UTEN_UTTAK' | 'TAPTE_DAGER';
 
 export type UttaksplanHull = {
     fom: string;
     tom: string;
     hullType: PeriodeHullType;
-    forelder?: BrukerRolleSak_fpoversikt;
+    forelder: BrukerRolleSak_fpoversikt;
 };
 
 export type Uttaksplanperiode = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt | UttaksplanHull;

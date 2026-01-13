@@ -3,13 +3,15 @@ import dayjs from 'dayjs';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { useAlleSaksperioderInklTapteDager } from '../../utils/lagHullPerioder';
 
 export const useAntallMånederIKalenderData = (
     antallMånederLagtTilKalender: number,
     skalViseFørsteMuligeDatoIKalender: boolean,
     barnehagestartdato?: string,
 ) => {
-    const { familiehendelsedato, saksperioderInkludertHull, familiesituasjon } = useUttaksplanData();
+    const { familiehendelsedato, familiesituasjon } = useUttaksplanData();
+    const saksperioderInkludertTapteDager = useAlleSaksperioderInklTapteDager();
 
     const førsteMuligeDato =
         familiesituasjon === 'adopsjon'
@@ -20,11 +22,14 @@ export const useAntallMånederIKalenderData = (
 
     const sisteDatoIKalenderFørManueltLagtTil = getSisteDatoIKalender(
         familiehendelsedato,
-        saksperioderInkludertHull,
+        saksperioderInkludertTapteDager,
         barnehagestartdato,
     );
 
-    const førsteDatoIKalenderFørManueltLagtTil = getFørsteDatoIKalender(familiehendelsedato, saksperioderInkludertHull);
+    const førsteDatoIKalenderFørManueltLagtTil = getFørsteDatoIKalender(
+        familiehendelsedato,
+        saksperioderInkludertTapteDager,
+    );
 
     const maksAntallEkstraMånederPåSlutten = monthDiff(
         dayjs(sisteDatoIKalenderFørManueltLagtTil),

@@ -2,25 +2,29 @@ import { useEffect, useState } from 'react';
 
 import { VStack } from '@navikt/ds-react';
 
-import { Permisjonsperiode } from '../../types/Permisjonsperiode';
-import { Planperiode } from '../../types/Planperiode';
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+
+import { Uttaksplanperiode } from '../../types/UttaksplanPeriode';
 import { PeriodeListeContent } from '../periode-liste-content/PeriodeListeContent';
 import { PeriodeListeHeader } from '../periode-liste-header/PeriodeListeHeader';
 import { getBorderFarge } from '../periode-liste-header/PeriodeListeHeaderUtils';
 
 interface Props {
     isReadOnly: boolean;
-    permisjonsperiode: Permisjonsperiode;
+    uttaksplanperioder: Uttaksplanperiode[];
     erFamiliehendelse?: boolean;
-    handleAddPeriode: (oppdatertPeriode: Planperiode) => void;
-    handleUpdatePeriode: (oppdatertPeriode: Planperiode, gammelPeriode: Planperiode) => void;
-    handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
+    handleAddPeriode: (oppdatertPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => void;
+    handleUpdatePeriode: (
+        oppdatertPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+        gammelPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    ) => void;
+    handleDeletePerioder: (slettedePerioder: Array<{ fom: string; tom: string }>) => void;
     isAllAccordionsOpen?: boolean;
 }
 
 export const PeriodeListeItem = ({
     isReadOnly,
-    permisjonsperiode,
+    uttaksplanperioder,
     erFamiliehendelse,
     handleUpdatePeriode,
     handleDeletePerioder,
@@ -29,7 +33,7 @@ export const PeriodeListeItem = ({
 }: Props) => {
     const [erPeriodeInnholdÅpen, setErPeriodeInnholdÅpen] = useState(false);
 
-    const borderFarge = getBorderFarge(permisjonsperiode, erFamiliehendelse);
+    const borderFarge = getBorderFarge(uttaksplanperioder, erFamiliehendelse);
 
     // Sync local state with global accordion state
     useEffect(() => {
@@ -55,7 +59,7 @@ export const PeriodeListeItem = ({
             >
                 <PeriodeListeHeader
                     isOpen={erPeriodeInnholdÅpen}
-                    permisjonsperiode={permisjonsperiode}
+                    uttaksplanperioder={uttaksplanperioder}
                     erFamiliehendelse={erFamiliehendelse}
                 />
             </div>
@@ -74,7 +78,7 @@ export const PeriodeListeItem = ({
                         handleDeletePerioder={handleDeletePerioder}
                         handleAddPeriode={handleAddPeriode}
                         erFamiliehendelse={!!erFamiliehendelse}
-                        permisjonsperiode={permisjonsperiode}
+                        uttaksplanperioder={uttaksplanperioder}
                     />
                 </div>
             </div>

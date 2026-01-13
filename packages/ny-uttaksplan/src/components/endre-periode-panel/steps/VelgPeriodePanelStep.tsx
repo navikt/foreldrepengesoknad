@@ -7,13 +7,13 @@ import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { formatDate } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
-import { Planperiode } from '../../../types/Planperiode';
+import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
 import { genererPeriodeId } from '../../../utils/periodeUtils';
 import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
 import { PanelData } from '../EndrePeriodePanel';
 
 interface Props {
-    perioder: Planperiode[];
+    perioder: Uttaksplanperiode[];
     panelData: PanelData;
     setPanelData: (data: PanelData) => void;
     closePanel: () => void;
@@ -65,12 +65,18 @@ export const VelgPeriodePanelStep = ({ perioder, panelData, setPanelData, closeP
                     ]}
                 >
                     {perioder.map((p, index) => {
-                        const morsAktivitet = !p.erAnnenPartEøs && p.morsAktivitet ? p.morsAktivitet : undefined;
+                        const morsAktivitet = erVanligUttakPeriode(p) && p.morsAktivitet ? p.morsAktivitet : undefined;
                         const id = genererPeriodeId(p);
                         return (
                             <Radio key={id} value={id} autoFocus={index === 0}>
                                 {`${formatDate(p.fom)} - ${formatDate(p.tom)} - ` +
-                                    `${getStønadskontoNavn(intl, p.kontoType!, navnPåForeldre, søker === 'FAR_ELLER_MEDMOR', morsAktivitet)}`}
+                                    `${getStønadskontoNavn(
+                                        intl,
+                                        navnPåForeldre,
+                                        søker === 'FAR_ELLER_MEDMOR',
+                                        morsAktivitet,
+                                        erVanligUttakPeriode(p) ? p.kontoType : undefined,
+                                    )}`}
                             </Radio>
                         );
                     })}

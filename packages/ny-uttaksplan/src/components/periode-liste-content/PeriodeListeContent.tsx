@@ -5,23 +5,34 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
 import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
-import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
+import {
+    Barn,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+    isAdoptertBarn,
+    isUfødtBarn,
+} from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { Permisjonsperiode } from '../../types/Permisjonsperiode';
-import { Planperiode } from '../../types/Planperiode';
+import { Uttaksplanperiode } from '../../types/UttaksplanPeriode';
 import {
     genererPeriodeId,
-    isHull,
     isOppholdsperiode,
     isOverføringsperiode,
     isPeriodeUtenUttak,
     isPrematuruker,
+    isTapteDager,
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '../../utils/periodeUtils';
 import { EndrePeriodePanel } from '../endre-periode-panel/EndrePeriodePanel';
 import { SlettPeriodePanel } from '../slett-periode-panel/SlettPeriodePanel';
+import {
+    erUttaksplanperiodeTapteDager,
+    erUttaksplanperiodeUtenUttak,
+    erUttaksplanperiodeUtsettelse,
+    harUttaksplanperiodePrematuruker,
+} from '../uttaksplanperiodeUtils';
 import { FamiliehendelseContent } from './components/FamiliehendelseContent';
 import { OppholdsPeriodeContent } from './components/OppholdsperiodeContent';
 import { OverføringsperiodeContent } from './components/OverføringsperiodeContent';
@@ -33,16 +44,19 @@ import { UttaksperiodeContent } from './components/UttaksperiodeContent';
 
 interface Props {
     isReadOnly: boolean;
-    permisjonsperiode: Permisjonsperiode;
+    uttaksplanperioder: Uttaksplanperiode[];
     erFamiliehendelse: boolean;
-    handleAddPeriode: (nyPeriode: Planperiode) => void;
-    handleUpdatePeriode: (oppdatertPeriode: Planperiode, gammelPeriode: Planperiode) => void;
-    handleDeletePerioder: (slettedePerioder: Planperiode[]) => void;
+    handleAddPeriode: (nyPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => void;
+    handleUpdatePeriode: (
+        oppdatertPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+        gammelPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    ) => void;
+    handleDeletePerioder: (slettedePerioder: Array<{ fom: string; tom: string }>) => void;
 }
 
 export const PeriodeListeContent = ({
     isReadOnly,
-    permisjonsperiode,
+    uttaksplanperioder,
     erFamiliehendelse,
     handleAddPeriode,
     handleUpdatePeriode,
@@ -51,10 +65,11 @@ export const PeriodeListeContent = ({
     const [isEndrePeriodePanelOpen, setIsEndrePeriodePanelOpen] = useState(false);
     const [isSlettPeriodePanelOpen, setIsSlettPeriodePanelOpen] = useState(false);
 
-    const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
-    const erRedigerbar = !permisjonsperiode.perioder.some(
-        (p) => isHull(p) || isPeriodeUtenUttak(p) || isUtsettelsesperiode(p),
-    );
+    const inneholderKunEnPeriode = uttaksplanperioder.length === 1;
+    const erRedigerbar =
+        !erUttaksplanperiodeTapteDager(uttaksplanperioder) &&
+        !erUttaksplanperiodeUtenUttak(uttaksplanperioder) &&
+        !(erUttaksplanperiodeUtsettelse(uttaksplanperioder) && !harUttaksplanperiodePrematuruker(uttaksplanperioder));
 
     const {
         foreldreInfo: { navnPåForeldre, søker },
@@ -67,14 +82,12 @@ export const PeriodeListeContent = ({
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
     }
 
-    const harPrematuruker = permisjonsperiode.perioder.some(isPrematuruker);
-
     return (
         <>
             {!isEndrePeriodePanelOpen && !isSlettPeriodePanelOpen && (
                 <>
                     <VStack gap="space-16">
-                        {permisjonsperiode.perioder.map((periode) => {
+                        {uttaksplanperioder.map((periode) => {
                             return renderPeriode(
                                 periode,
                                 navnPåForeldre,
@@ -82,10 +95,10 @@ export const PeriodeListeContent = ({
                                 inneholderKunEnPeriode,
                             );
                         })}
-                        <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
+                        <SkalJobbeContent uttaksplanperioder={uttaksplanperioder} />
                     </VStack>
                     {renderKnapper(
-                        isReadOnly || harPrematuruker,
+                        isReadOnly || harUttaksplanperiodePrematuruker(uttaksplanperioder),
                         erRedigerbar,
                         setIsEndrePeriodePanelOpen,
                         setIsSlettPeriodePanelOpen,
@@ -99,7 +112,8 @@ export const PeriodeListeContent = ({
                     }}
                     handleUpdatePeriode={handleUpdatePeriode}
                     handleAddPeriode={handleAddPeriode}
-                    permisjonsperiode={permisjonsperiode}
+                    handleDeletePerioder={handleDeletePerioder}
+                    uttaksplanperioder={uttaksplanperioder}
                     inneholderKunEnPeriode={inneholderKunEnPeriode}
                 />
             ) : null}
@@ -109,7 +123,7 @@ export const PeriodeListeContent = ({
                         setIsSlettPeriodePanelOpen(false);
                     }}
                     handleDeletePerioder={handleDeletePerioder}
-                    permisjonsperiode={permisjonsperiode}
+                    uttaksplanperioder={uttaksplanperioder}
                     navnPåForeldre={navnPåForeldre}
                     erFarEllerMedmor={søker === 'FAR_ELLER_MEDMOR'}
                 />
@@ -119,7 +133,7 @@ export const PeriodeListeContent = ({
 };
 
 const renderPeriode = (
-    periode: Planperiode,
+    periode: Uttaksplanperiode,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
     inneholderKunEnPeriode: boolean,
@@ -147,8 +161,10 @@ const renderPeriode = (
         );
     }
 
-    if (isPeriodeUtenUttak(periode) || isHull(periode)) {
-        return <PeriodeUtenUttakContent key={genererPeriodeId(periode)} periode={periode} isHull={isHull(periode)} />;
+    if (isPeriodeUtenUttak(periode) || isTapteDager(periode)) {
+        return (
+            <PeriodeUtenUttakContent key={genererPeriodeId(periode)} periode={periode} isHull={isTapteDager(periode)} />
+        );
     }
 
     if (isUtsettelsesperiode(periode)) {

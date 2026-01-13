@@ -1,230 +1,75 @@
 import dayjs from 'dayjs';
 
-import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
-import { TidsperiodenString, formatDateIso } from '@navikt/fp-utils';
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { Permisjonsperiode } from '../types/Permisjonsperiode';
-import { Planperiode } from '../types/Planperiode';
-import { Uttaksplanperiode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
-import {
-    isHull,
-    isOppholdsperiode,
-    isOverføringsperiode,
-    isPeriodeUtenUttak,
-    isPrematuruker,
-    isUtsettelsesperiode,
-    isUttaksperiode,
-} from './periodeUtils';
+import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
+import { isPrematuruker } from './periodeUtils';
 
-const beggePerioderFørFamiliehendelsedato = (
-    permisjonsperiode: Permisjonsperiode | undefined,
-    periode: Planperiode | undefined,
-    famdato: string,
-) => {
-    if (!periode || !permisjonsperiode) {
-        return false;
-    }
-
-    if (dayjs(permisjonsperiode.tidsperiode.tom).isBefore(famdato) && dayjs(periode.tom).isBefore(famdato)) {
-        return true;
-    }
-
-    return false;
-};
-
-const beggePerioderEtterFamiliehendelsedato = (
-    permisjonsperiode: Permisjonsperiode | undefined,
-    periode: Planperiode | undefined,
-    famdato: string,
-) => {
-    if (!periode || !permisjonsperiode) {
-        return false;
-    }
-
-    if (dayjs(permisjonsperiode.tidsperiode.fom).isSameOrAfter(famdato) && dayjs(periode.fom).isSameOrAfter(famdato)) {
-        return true;
-    }
-
-    return false;
-};
-
-const beggePerioderFørEllerEtterFamiliehendelsedato = (
-    permisjonsperiode: Permisjonsperiode | undefined,
-    periode: Planperiode | undefined,
-    famdato: string,
-) => {
-    return (
-        beggePerioderEtterFamiliehendelsedato(permisjonsperiode, periode, famdato) ||
-        beggePerioderFørFamiliehendelsedato(permisjonsperiode, periode, famdato)
-    );
-};
-
-export const mapPerioderToPermisjonsperiode = (
-    perioder: Planperiode[],
+export const mapUttaksplanperioderTilRaderIListe = (
+    saksperioderInkludertHull: Uttaksplanperiode[],
     familiehendelsesdato: string,
-): Permisjonsperiode[] => {
-    const permisjonsPerioder: Permisjonsperiode[] = [];
+): Uttaksplanperiode[][] => {
+    const radIListeMap = new Map<string, Uttaksplanperiode[]>();
+    let aktivRad: Uttaksplanperiode[] | undefined;
 
-    if (perioder.length === 0) {
-        return permisjonsPerioder;
+    const avsluttAktivRad = () => {
+        if (!aktivRad) {
+            return;
+        }
+
+        const fom = aktivRad[0]!.fom;
+        const tom = aktivRad.at(-1)!.tom;
+        radIListeMap.set(periodeKey(fom, tom), aktivRad);
+        aktivRad = undefined;
+    };
+
+    let index = 0;
+
+    while (index < saksperioderInkludertHull.length) {
+        const periode = saksperioderInkludertHull[index]!;
+
+        // Hull / Prematuruker / Utsettelse -> alltid egen rad
+        if (erUttaksplanHull(periode) || isPrematuruker(periode) || erUtsettelse(periode)) {
+            avsluttAktivRad();
+            radIListeMap.set(periodeKey(periode.fom, periode.tom), [periode]);
+            index += 1;
+            continue;
+        }
+
+        const nestePeriode = saksperioderInkludertHull[index + 1];
+
+        // Samtidig uttak -> En rad for to perioder
+        if (nestePeriode && erSamtidigUttak(periode, nestePeriode)) {
+            avsluttAktivRad();
+            radIListeMap.set(periodeKey(periode.fom, periode.tom), [periode, nestePeriode]);
+            index += 2; // Hopper over neste periode
+            continue;
+        }
+
+        // Start ny rad
+        if (!aktivRad) {
+            aktivRad = [periode];
+            index += 1;
+            continue;
+        }
+
+        // Skal ligge på samme rad som forrige
+        const forrige = aktivRad.at(-1)!;
+        if (kanGrupperesPåSammeRad(forrige, periode, familiehendelsesdato)) {
+            aktivRad.push(periode);
+            index += 1;
+            continue;
+        }
+
+        // Avslutt aktiv rad og start ny
+        avsluttAktivRad();
+        aktivRad = [periode];
+        index += 1;
     }
 
-    let nyPermisjonsperiode: Permisjonsperiode | undefined = undefined;
-    let forelderForrigePeriode: BrukerRolleSak_fpoversikt | undefined = undefined;
-    let erSamtidigUttak = false;
+    avsluttAktivRad();
 
-    perioder.forEach((periode, index) => {
-        const nestePeriodeIndex = index + 1;
-        let nestePeriode = undefined;
-
-        if (erSamtidigUttak) {
-            // Forrige periode var samtidig uttak. Skip
-            erSamtidigUttak = false;
-            return;
-        }
-
-        if (nestePeriodeIndex < perioder.length) {
-            nestePeriode = perioder[nestePeriodeIndex];
-        } else {
-            nestePeriode = undefined;
-        }
-
-        const beggePerioderErPåSammeSideAvFamdato = beggePerioderFørEllerEtterFamiliehendelsedato(
-            nyPermisjonsperiode,
-            periode,
-            familiehendelsesdato,
-        );
-
-        if (nestePeriode !== undefined) {
-            erSamtidigUttak = TidsperiodenString({ fom: periode.fom, tom: periode.tom }).erLik({
-                fom: nestePeriode.fom,
-                tom: nestePeriode.tom,
-            });
-        }
-
-        if (erSamtidigUttak && nestePeriode !== undefined) {
-            nyPermisjonsperiode = {
-                perioder: [{ ...periode }, { ...nestePeriode }],
-                tidsperiode: {
-                    fom: formatDateIso(periode.fom),
-                    tom: formatDateIso(periode.tom),
-                },
-                samtidigUttak: true,
-            };
-
-            permisjonsPerioder.push(nyPermisjonsperiode);
-            nyPermisjonsperiode = undefined;
-            forelderForrigePeriode = undefined;
-            erSamtidigUttak = true;
-            return;
-        }
-
-        if (
-            !periode.erAnnenPartEøs &&
-            (isUttaksperiode(periode) || isOverføringsperiode(periode) || isOppholdsperiode(periode))
-        ) {
-            const forelderType = periode.forelder;
-
-            if (nyPermisjonsperiode) {
-                if (forelderForrigePeriode === periode.forelder && beggePerioderErPåSammeSideAvFamdato) {
-                    nyPermisjonsperiode.perioder = [...nyPermisjonsperiode.perioder, { ...periode }];
-                    nyPermisjonsperiode.tidsperiode.tom = formatDateIso(periode.tom);
-                } else {
-                    nyPermisjonsperiode = {
-                        forelder: forelderType,
-                        perioder: [{ ...periode }],
-                        tidsperiode: {
-                            fom: formatDateIso(periode.fom),
-                            tom: formatDateIso(periode.tom),
-                        },
-                    };
-                }
-            } else {
-                nyPermisjonsperiode = {
-                    forelder: forelderType,
-                    perioder: [{ ...periode }],
-                    tidsperiode: {
-                        fom: formatDateIso(periode.fom),
-                        tom: formatDateIso(periode.tom),
-                    },
-                    samtidigUttak: !!periode.samtidigUttak,
-                };
-            }
-
-            if (!permisjonsPerioder.includes(nyPermisjonsperiode)) {
-                permisjonsPerioder.push(nyPermisjonsperiode);
-            }
-
-            forelderForrigePeriode = periode.forelder;
-            return;
-        }
-
-        if (isPeriodeUtenUttak(periode)) {
-            nyPermisjonsperiode = {
-                perioder: [{ ...periode }],
-                tidsperiode: {
-                    fom: formatDateIso(periode.fom),
-                    tom: formatDateIso(periode.tom),
-                },
-                erPeriodeUtenUttak: true,
-            };
-
-            permisjonsPerioder.push(nyPermisjonsperiode);
-
-            forelderForrigePeriode = undefined;
-            nyPermisjonsperiode = undefined;
-        }
-
-        if (isUtsettelsesperiode(periode)) {
-            nyPermisjonsperiode = {
-                perioder: [{ ...periode }],
-                tidsperiode: {
-                    fom: formatDateIso(periode.fom),
-                    tom: formatDateIso(periode.tom),
-                },
-                erUtsettelse: true,
-            };
-
-            permisjonsPerioder.push(nyPermisjonsperiode);
-            forelderForrigePeriode = undefined;
-            nyPermisjonsperiode = undefined;
-        }
-
-        if (!periode.erAnnenPartEøs && isPrematuruker(periode)) {
-            const forelderType = periode.forelder;
-
-            nyPermisjonsperiode = {
-                forelder: forelderType,
-                perioder: [{ ...periode }],
-                tidsperiode: {
-                    fom: formatDateIso(periode.fom),
-                    tom: formatDateIso(periode.tom),
-                },
-                erUtsettelse: false,
-            };
-
-            permisjonsPerioder.push(nyPermisjonsperiode);
-            forelderForrigePeriode = undefined;
-            nyPermisjonsperiode = undefined;
-        }
-
-        if (isHull(periode)) {
-            nyPermisjonsperiode = {
-                perioder: [{ ...periode }],
-                tidsperiode: {
-                    fom: formatDateIso(periode.fom),
-                    tom: formatDateIso(periode.tom),
-                },
-                erHull: true,
-            };
-
-            permisjonsPerioder.push(nyPermisjonsperiode);
-            forelderForrigePeriode = undefined;
-            nyPermisjonsperiode = undefined;
-        }
-    });
-
-    return permisjonsPerioder;
+    return Array.from(radIListeMap.values());
 };
 
 export const filtrerBortAnnenPartsIdentiskePerioder = (
@@ -240,3 +85,67 @@ export const filtrerBortAnnenPartsIdentiskePerioder = (
 const erPeriodeForSøker = (periode: Uttaksplanperiode, erFarEllerMedmor: boolean) =>
     erVanligUttakPeriode(periode) &&
     ((periode.forelder === 'MOR' && !erFarEllerMedmor) || (periode.forelder === 'FAR_MEDMOR' && erFarEllerMedmor));
+
+const periodeKey = (fom: string, tom: string) => `${fom}–${tom}`;
+
+const erSamtidigUttak = (a: Uttaksplanperiode, b: Uttaksplanperiode): boolean =>
+    !erUttaksplanHull(a) && !erUttaksplanHull(b) && a.fom === b.fom && a.tom === b.tom;
+
+const harSammeForelder = (a: Uttaksplanperiode, b: Uttaksplanperiode): boolean =>
+    'forelder' in a && 'forelder' in b && a.forelder === b.forelder;
+
+const kanGrupperesPåSammeRad = (
+    forrige: Uttaksplanperiode,
+    nestePeriode: Uttaksplanperiode,
+    familiehendelsesdato: string,
+): boolean =>
+    !erUttaksplanHull(forrige) &&
+    !erUttaksplanHull(nestePeriode) &&
+    harSammeForelder(forrige, nestePeriode) &&
+    beggePerioderFørEllerEtterFamiliehendelsedato(forrige, nestePeriode, familiehendelsesdato);
+
+const beggePerioderFørEllerEtterFamiliehendelsedato = (
+    uttaksplanperiode: Uttaksplanperiode | undefined,
+    periode: Uttaksplanperiode | undefined,
+    famdato: string,
+) => {
+    return (
+        beggePerioderEtterFamiliehendelsedato(uttaksplanperiode, periode, famdato) ||
+        beggePerioderFørFamiliehendelsedato(uttaksplanperiode, periode, famdato)
+    );
+};
+const erUtsettelse = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
+    return erVanligUttakPeriode(periode) && !!periode.utsettelseÅrsak;
+};
+
+const beggePerioderFørFamiliehendelsedato = (
+    uttaksplanperiode: Uttaksplanperiode | undefined,
+    periode: Uttaksplanperiode | undefined,
+    famdato: string,
+) => {
+    if (!periode || !uttaksplanperiode) {
+        return false;
+    }
+
+    if (dayjs(uttaksplanperiode.tom).isBefore(famdato) && dayjs(periode.tom).isBefore(famdato)) {
+        return true;
+    }
+
+    return false;
+};
+
+const beggePerioderEtterFamiliehendelsedato = (
+    uttaksplanperiode: Uttaksplanperiode | undefined,
+    periode: Uttaksplanperiode | undefined,
+    famdato: string,
+) => {
+    if (!periode || !uttaksplanperiode) {
+        return false;
+    }
+
+    if (dayjs(uttaksplanperiode.fom).isSameOrAfter(famdato) && dayjs(periode.fom).isSameOrAfter(famdato)) {
+        return true;
+    }
+
+    return false;
+};

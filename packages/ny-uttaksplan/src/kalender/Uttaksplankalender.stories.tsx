@@ -744,3 +744,71 @@ export const VisFarsAktivitetsfriKvote: Story = {
         },
     },
 };
+
+export const VisPerioderMedOppholdsårsakKorrekt: Story = {
+    args: {
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2024-12-09'],
+            antallBarn: 1,
+        },
+        saksperioder: [
+            {
+                fom: '2024-11-18',
+                tom: '2024-12-08',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            {
+                fom: '2024-12-09',
+                tom: '2024-12-13',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            {
+                fom: '2024-12-16',
+                tom: '2025-03-21',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            {
+                fom: '2025-03-24',
+                tom: '2025-05-16',
+                kontoType: 'FELLESPERIODE',
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            {
+                fom: '2025-05-19',
+                tom: '2025-07-25',
+                oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+            {
+                fom: '2025-07-28',
+                tom: '2025-09-29',
+                oppholdÅrsak: 'FELLESPERIODE_ANNEN_FORELDER',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+            {
+                fom: '2025-09-30',
+                tom: '2025-10-15',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+        ],
+    },
+};

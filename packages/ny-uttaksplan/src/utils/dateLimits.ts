@@ -4,10 +4,8 @@ import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { KontoTypeUttak } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
-import { PeriodeHullType } from '../types/Planperiode';
-
 interface MinDateProps {
-    årsak?: 'LOVBESTEMT_FERIE' | PeriodeHullType.PERIODE_UTEN_UTTAK;
+    årsak?: 'LOVBESTEMT_FERIE' | 'PERIODE_UTEN_UTTAK';
     kontoType?: KontoTypeUttak;
     familiehendelsedato: string;
     gjelderAdopsjon: boolean;
@@ -40,7 +38,7 @@ export const getMinDate = ({ årsak, kontoType, familiehendelsedato, gjelderAdop
 };
 
 interface MaxDateProps {
-    årsak?: 'LOVBESTEMT_FERIE' | PeriodeHullType.PERIODE_UTEN_UTTAK;
+    årsak?: 'LOVBESTEMT_FERIE' | 'PERIODE_UTEN_UTTAK';
     kontoType?: KontoTypeUttak;
     familiehendelsedato: string;
 }

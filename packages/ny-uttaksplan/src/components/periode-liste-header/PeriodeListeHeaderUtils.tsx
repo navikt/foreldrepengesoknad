@@ -15,74 +15,65 @@ import { NavnPåForeldre } from '@navikt/fp-common';
 import { Familiesituasjon } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
-import { Permisjonsperiode } from '../../types/Permisjonsperiode';
+import { Uttaksplanperiode } from '../../types/UttaksplanPeriode';
+import {
+    erUttaksplanperiodeErForelderMor,
+    erUttaksplanperiodeSamtidigUttak,
+    erUttaksplanperiodeTapteDager,
+    erUttaksplanperiodeUtenUttak,
+    erUttaksplanperiodeUtsettelse,
+    getSisteUttaksplanperiodeTom,
+    getUttaksplanperiodeForelder,
+    getUttaksplanperiodeUtsettelseÅrsak,
+    harUttaksplanperiodePrematuruker,
+} from '../uttaksplanperiodeUtils';
 
-export const finnBakgrunnsfarge = (permisjonsperiode: Permisjonsperiode, erFamiliehendelse?: boolean) => {
-    const { erUtsettelse, erHull, forelder } = permisjonsperiode;
-    const erPeriodeUtenUttak =
-        permisjonsperiode.forelder === undefined &&
-        !!permisjonsperiode.samtidigUttak === false &&
-        !!permisjonsperiode.erUtsettelse === false;
-    const erSamtidigUttak = !!permisjonsperiode.samtidigUttak;
-    const erMor = forelder === 'MOR';
-
+export const finnBakgrunnsfarge = (uttaksplanperioder: Uttaksplanperiode[], erFamiliehendelse?: boolean) => {
     if (erFamiliehendelse) {
         return 'bg-ax-danger-100';
     }
 
-    if (erHull) {
+    if (erUttaksplanperiodeTapteDager(uttaksplanperioder)) {
         return 'bg-ax-bg-neutral-moderate-hoverA';
     }
 
-    if (erPeriodeUtenUttak) {
+    if (erUttaksplanperiodeUtenUttak(uttaksplanperioder)) {
         return 'bg-ax-warning-200';
     }
 
-    if (erSamtidigUttak) {
+    if (erUttaksplanperiodeSamtidigUttak(uttaksplanperioder)) {
         return 'bg-[linear-gradient(135deg,var(--ax-success-200)_0%,var(--ax-success-200)_50%,var(--ax-accent-100)_50%,var(--ax-accent-100)_100%)]';
     }
 
-    if (erUtsettelse) {
+    if (erUttaksplanperiodeUtsettelse(uttaksplanperioder)) {
         return 'bg-ax-bg-default shadow-[inset_0_0_0_2px_var(--ax-accent-500)]';
     }
 
-    if (erMor) {
+    if (erUttaksplanperiodeErForelderMor(uttaksplanperioder)) {
         return 'bg-ax-accent-100';
     }
 
     return 'bg-ax-success-200';
 };
 
-const getIkonFarge = (permisjonsperiode: Permisjonsperiode, erFamiliehendelse?: boolean) => {
-    const { forelder, erUtsettelse, erHull } = permisjonsperiode;
-    const erMor = forelder === 'MOR';
-    const erPeriodeUtenUttak =
-        permisjonsperiode.forelder === undefined &&
-        !!permisjonsperiode.samtidigUttak === false &&
-        !!permisjonsperiode.erUtsettelse === false;
-
-    const utsettelseÅrsak =
-        erUtsettelse && !permisjonsperiode.perioder[0]!.erAnnenPartEøs
-            ? permisjonsperiode.perioder[0]!.utsettelseÅrsak
-            : undefined;
-
+const getIkonFarge = (uttaksplanperiode: Uttaksplanperiode[], erFamiliehendelse?: boolean) => {
     if (erFamiliehendelse) {
         return 'text-ax-danger-600';
     }
 
-    if (erHull) {
+    if (erUttaksplanperiodeTapteDager(uttaksplanperiode)) {
         return 'text-ax-neutral-800';
     }
 
-    if (erPeriodeUtenUttak) {
+    if (erUttaksplanperiodeUtenUttak(uttaksplanperiode)) {
         return 'text-ax-warning-400';
     }
 
-    if (utsettelseÅrsak !== undefined) {
+    if (erUttaksplanperiodeUtsettelse(uttaksplanperiode)) {
         return 'text-ax-accent-500';
     }
 
-    if (erMor) {
+    if (erUttaksplanperiodeErForelderMor(uttaksplanperiode)) {
         return 'text-ax-accent-500';
     }
 
@@ -91,30 +82,16 @@ const getIkonFarge = (permisjonsperiode: Permisjonsperiode, erFamiliehendelse?: 
 
 export const getTekst = (
     intl: IntlShape,
-    permisjonsperiode: Permisjonsperiode,
+    uttaksplanperioder: Uttaksplanperiode[],
     erFarEllerMedmor: boolean,
     navnPåForeldre: NavnPåForeldre,
     familiesituasjon: Familiesituasjon,
     erDeltUttak: boolean,
     erFamiliehendelse?: boolean,
 ) => {
-    const { erUtsettelse, erHull, forelder } = permisjonsperiode;
-    const erPeriodeUtenUttak =
-        permisjonsperiode.forelder === undefined &&
-        !!permisjonsperiode.samtidigUttak === false &&
-        !!permisjonsperiode.erUtsettelse === false;
-
-    const erSamtidigUttak = !!permisjonsperiode.samtidigUttak;
-    const utsettelseÅrsak =
-        erUtsettelse && !permisjonsperiode.perioder[0]!.erAnnenPartEøs
-            ? permisjonsperiode.perioder[0]!.utsettelseÅrsak
-            : undefined;
-    const erPrematuruker =
-        !permisjonsperiode.perioder[0]!.erAnnenPartEøs &&
-        permisjonsperiode.perioder[0]!.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
-
     const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const navnPåForelder = erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
+    const forelder = getUttaksplanperiodeForelder(uttaksplanperioder);
     const erEgenPeriode = erFarEllerMedmor ? forelder === 'FAR_MEDMOR' : forelder == 'MOR';
 
     if (erFamiliehendelse) {
@@ -128,6 +105,11 @@ export const getTekst = (
         }
     }
 
+    if (harUttaksplanperiodePrematuruker(uttaksplanperioder)) {
+        return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.pleiepenger' });
+    }
+
+    const utsettelseÅrsak = getUttaksplanperiodeUtsettelseÅrsak(uttaksplanperioder);
     if (utsettelseÅrsak !== undefined) {
         switch (utsettelseÅrsak) {
             case 'SØKER_INNLAGT':
@@ -149,19 +131,15 @@ export const getTekst = (
         }
     }
 
-    if (erPrematuruker) {
-        return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.pleiepenger' });
-    }
-
-    if (erHull) {
+    if (erUttaksplanperiodeTapteDager(uttaksplanperioder)) {
         return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.dagerDuKanTape' });
     }
 
-    if (erPeriodeUtenUttak) {
+    if (erUttaksplanperiodeUtenUttak(uttaksplanperioder)) {
         return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.periodeUtenUttak' });
     }
 
-    if (erSamtidigUttak) {
+    if (erUttaksplanperiodeSamtidigUttak(uttaksplanperioder)) {
         return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.samtidigUttak' });
     }
 
@@ -178,34 +156,23 @@ export const getTekst = (
 };
 
 export const getIkon = (
-    permisjonsperiode: Permisjonsperiode,
+    uttaksplanperioder: Uttaksplanperiode[],
     familiehendelsedato: string,
     erFamiliehendelse?: boolean,
 ) => {
-    const { erUtsettelse, erHull } = permisjonsperiode;
-    const periodeFørTermindato = dayjs(familiehendelsedato).isAfter(permisjonsperiode.tidsperiode.tom);
-    const utsettelseÅrsak =
-        erUtsettelse && !permisjonsperiode.perioder[0]!.erAnnenPartEøs
-            ? permisjonsperiode.perioder[0]!.utsettelseÅrsak
-            : undefined;
-    const isPrematuruker =
-        !permisjonsperiode.perioder[0]!.erAnnenPartEøs &&
-        permisjonsperiode.perioder[0]!.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
-    const erPeriodeUtenUttak =
-        permisjonsperiode.forelder === undefined &&
-        !!permisjonsperiode.samtidigUttak === false &&
-        !!permisjonsperiode.erUtsettelse === false;
+    const periodeFørTermindato = dayjs(familiehendelsedato).isAfter(getSisteUttaksplanperiodeTom(uttaksplanperioder));
 
-    const ikonfarge = getIkonFarge(permisjonsperiode, erFamiliehendelse);
+    const ikonfarge = getIkonFarge(uttaksplanperioder, erFamiliehendelse);
 
     if (erFamiliehendelse) {
         return <HeartFillIcon className={ikonfarge} width={24} height={24} />;
     }
 
-    if (erHull || isPrematuruker) {
+    if (erUttaksplanperiodeTapteDager(uttaksplanperioder) || harUttaksplanperiodePrematuruker(uttaksplanperioder)) {
         return <InformationSquareFillIcon className={ikonfarge} width={24} height={24} />;
     }
 
+    const utsettelseÅrsak = getUttaksplanperiodeUtsettelseÅrsak(uttaksplanperioder);
     if (utsettelseÅrsak !== undefined) {
         if (utsettelseÅrsak === 'ARBEID' || utsettelseÅrsak === 'FRI') {
             return <BriefcaseFillIcon className={ikonfarge} width={24} height={24} />;
@@ -222,43 +189,35 @@ export const getIkon = (
         return <PersonPregnantFillIcon className={ikonfarge} width={24} height={24} />;
     }
 
-    if (erPeriodeUtenUttak) {
+    if (erUttaksplanperiodeUtenUttak(uttaksplanperioder)) {
         return <CloudFillIcon className={ikonfarge} width={24} height={24} />;
     }
 
     return <BabyWrappedFillIcon className={ikonfarge} width={24} height={24} />;
 };
 
-export const getBorderFarge = (permisjonsperiode: Permisjonsperiode, erFamiliehendelse?: boolean) => {
-    const { erUtsettelse, erHull, forelder } = permisjonsperiode;
-    const erPeriodeUtenUttak =
-        permisjonsperiode.forelder === undefined &&
-        !!permisjonsperiode.samtidigUttak === false &&
-        !!permisjonsperiode.erUtsettelse === false;
-    const erSamtidigUttak = !!permisjonsperiode.samtidigUttak;
-    const erMor = forelder === 'MOR';
-
+export const getBorderFarge = (uttaksplanperioder: Uttaksplanperiode[], erFamiliehendelse?: boolean) => {
     if (erFamiliehendelse) {
         return 'border-ax-danger-100';
     }
 
-    if (erHull) {
+    if (erUttaksplanperiodeTapteDager(uttaksplanperioder)) {
         return 'border-ax-bg-neutral-moderate-hoverA';
     }
 
-    if (erPeriodeUtenUttak) {
+    if (erUttaksplanperiodeUtenUttak(uttaksplanperioder)) {
         return 'border-ax-warning-200';
     }
 
-    if (erSamtidigUttak) {
+    if (erUttaksplanperiodeSamtidigUttak(uttaksplanperioder)) {
         return 'border-ax-success-200 border-double';
     }
 
-    if (erUtsettelse) {
+    if (erUttaksplanperiodeUtsettelse(uttaksplanperioder)) {
         return 'border-ax-accent-500';
     }
 
-    if (erMor) {
+    if (erUttaksplanperiodeErForelderMor(uttaksplanperioder)) {
         return 'border-ax-accent-100';
     }
 

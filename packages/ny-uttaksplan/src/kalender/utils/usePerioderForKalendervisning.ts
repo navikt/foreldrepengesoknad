@@ -14,13 +14,13 @@ import { UttaksdagenString, formatDateIso, formaterDatoUtenDag, getFamiliehendel
 import { assertUnreachable } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { PeriodeHullType } from '../../types/Planperiode';
 import {
     Uttaksplanperiode,
     erEøsUttakPeriode,
     erUttaksplanHull,
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
+import { useAlleSaksperioderInklTapteDager } from '../../utils/lagHullPerioder';
 import {
     getAnnenForelderSamtidigUttakPeriode,
     getIndexOfSistePeriodeFørDato,
@@ -34,19 +34,20 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
     const intl = useIntl();
 
     const {
-        saksperioderInkludertHull,
         barn,
         foreldreInfo: { søker, navnPåForeldre },
     } = useUttaksplanData();
+
+    const saksperioderInkludertTapteDager = useAlleSaksperioderInklTapteDager();
 
     const familiehendelsesdato = getFamiliehendelsedato(barn);
 
     const erFarEllerMedmor = søker === 'FAR_ELLER_MEDMOR';
 
-    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(saksperioderInkludertHull, erFarEllerMedmor);
+    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(saksperioderInkludertTapteDager, erFarEllerMedmor);
 
     const res = unikePerioder.reduce<CalendarPeriod[]>((acc, periode) => {
-        const color = getKalenderFargeForPeriode(periode, erFarEllerMedmor, saksperioderInkludertHull, barn);
+        const color = getKalenderFargeForPeriode(periode, erFarEllerMedmor, saksperioderInkludertTapteDager, barn);
 
         if (
             barnehagestartdato !== undefined &&
@@ -114,7 +115,8 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
                   } satisfies CalendarPeriod)
                   .sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)));
 
-    const indexOfFamiliehendelse = getIndexOfSistePeriodeFørDato(saksperioderInkludertHull, familiehendelsesdato) ?? 0;
+    const indexOfFamiliehendelse =
+        getIndexOfSistePeriodeFørDato(saksperioderInkludertTapteDager, familiehendelsesdato) ?? 0;
     perioderForVisning.splice(indexOfFamiliehendelse, 0, {
         fom: familiehendelsesdato,
         tom: familiehendelsesdato,
@@ -173,7 +175,7 @@ const getKalenderFargeForPeriode = (
     }
 
     if (erUttaksplanHull(periode)) {
-        return periode.hullType === PeriodeHullType.TAPTE_DAGER ? 'BLACK' : 'NONE';
+        return periode.hullType === 'TAPTE_DAGER' ? 'BLACK' : 'NONE';
     }
 
     if (erEøsUttakPeriode(periode)) {
@@ -251,7 +253,7 @@ const getKalenderSkjermleserPeriodetekst = (
     const periodenTilhører = intl.formatMessage({ id: 'kalender.srText.PeriodenTil' }, { navn });
 
     if (erUttaksplanHull(period)) {
-        if (period.hullType === PeriodeHullType.PERIODE_UTEN_UTTAK) {
+        if (period.hullType === 'PERIODE_UTEN_UTTAK') {
             return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.PeriodeUtenUttak' });
         }
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.TapteDager' });

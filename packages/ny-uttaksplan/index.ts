@@ -8,10 +8,6 @@ export const nyUttaksplanMessages = {
     en: enMessages,
 };
 
-// TODO (TOR) Desse to burde truleg ikkje bli eksportert
-export { andreAugust2022ReglerGjelder } from './src/utils/dateUtils';
-export { sorterPerioder } from './src/utils/periodeUtils';
-
 export { UttaksplanDataProvider } from './src/context/UttaksplanDataContext';
 export { UttaksplanRedigeringProvider } from './src/context/UttaksplanRedigeringContext';
 

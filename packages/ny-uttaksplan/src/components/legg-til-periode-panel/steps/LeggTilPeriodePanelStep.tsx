@@ -4,11 +4,15 @@ import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
+import {
+    BrukerRolleSak_fpoversikt,
+    KontoTypeUttak,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
-import { PeriodeHullType, Planperiode } from '../../../types/Planperiode';
 import { getGradering } from '../../../utils/graderingUtils';
 import { PanelButtons } from '../../panel-buttons/PanelButtons';
 import { AktivitetskravSpørsmål } from '../../spørsmål/AktivitetskravSpørsmål';
@@ -21,10 +25,11 @@ import { HvaVilDuGjøre, LeggTilPeriodePanelFormValues } from '../types/LeggTilP
 
 interface Props {
     closePanel: () => void;
-    handleAddPeriode: (nyPeriode: Planperiode) => void;
+    handleAddPeriode: (nyPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => void;
+    handleDeletePerioder: (slettedePerioder: Array<{ fom: string; tom: string }>) => void;
 }
 
-export const LeggTilPeriodePanelStep = ({ closePanel, handleAddPeriode }: Props) => {
+export const LeggTilPeriodePanelStep = ({ closePanel, handleAddPeriode, handleDeletePerioder }: Props) => {
     const intl = useIntl();
     const {
         foreldreInfo: { rettighetType },
@@ -55,23 +60,20 @@ export const LeggTilPeriodePanelStep = ({ closePanel, handleAddPeriode }: Props)
 
         if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_FERIE) {
             handleAddPeriode({
-                erAnnenPartEøs: false,
                 fom: fomValue,
                 tom: tomValue,
                 forelder: 'FAR_MEDMOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             });
         } else if (hvaVilDuGjøre === HvaVilDuGjøre.LEGG_TIL_OPPHOLD) {
-            // TODO (TOR) Kan ein heller sletta periode her?
-            handleAddPeriode({
-                erAnnenPartEøs: false,
-                fom: fomValue,
-                tom: tomValue,
-                periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
-            });
+            handleDeletePerioder([
+                {
+                    fom: fomValue,
+                    tom: tomValue,
+                },
+            ]);
         } else {
             handleAddPeriode({
-                erAnnenPartEøs: false,
                 fom: fomValue,
                 tom: tomValue,
                 kontoType: values.kontoType === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoType,

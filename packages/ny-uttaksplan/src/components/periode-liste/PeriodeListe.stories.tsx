@@ -5,7 +5,6 @@ import { BarnType } from '@navikt/fp-constants';
 import { Barn } from '@navikt/fp-types';
 
 import { UttaksplanDataProvider } from '../../context/UttaksplanDataContext';
-import { PeriodeHullType } from '../../types/Planperiode';
 import { PeriodeListe } from './PeriodeListe';
 
 type StoryArgs = {
@@ -16,7 +15,7 @@ type StoryArgs = {
 } & ComponentProps<typeof PeriodeListe>;
 
 const customRenderer = ({
-    perioder,
+    saksperioderInkludertHull,
     barn,
     erFarEllerMedmor,
     erAleneOmOmsorg,
@@ -45,10 +44,10 @@ const customRenderer = ({
             <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
                 <PeriodeListe
                     isReadOnly={isReadOnly}
-                    perioder={perioder}
                     handleAddPeriode={handleAddPeriode}
                     handleUpdatePeriode={handleUpdatePeriode}
                     handleDeletePerioder={handleDeletePerioder}
+                    saksperioderInkludertHull={saksperioderInkludertHull}
                 />
             </div>
         </UttaksplanDataProvider>
@@ -79,33 +78,33 @@ export const UttaksperioderMor: Story = {
         barn: {
             type: BarnType.FØDT,
             antallBarn: 1,
-            fødselsdatoer: ['2023-08-19'],
-            termindato: '2023-08-15',
+            fødselsdatoer: ['2024-04-20'],
             fnr: ['19482356071'],
         },
-        perioder: [
+        saksperioderInkludertHull: [
             {
-                erAnnenPartEøs: false,
                 fom: '2024-04-01',
                 tom: '2024-04-19',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 forelder: 'MOR',
             },
             {
-                erAnnenPartEøs: false,
+                fom: '2024-04-20',
+                tom: '2024-04-21',
+                hullType: 'TAPTE_DAGER',
+            },
+            {
                 fom: '2024-04-22',
                 tom: '2024-05-31',
                 kontoType: 'MØDREKVOTE',
                 forelder: 'MOR',
             },
             {
-                erAnnenPartEøs: false,
                 fom: '2024-06-03',
                 tom: '2024-06-10',
-                periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
+                hullType: 'PERIODE_UTEN_UTTAK',
             },
             {
-                erAnnenPartEøs: false,
                 fom: '2024-06-11',
                 tom: '2024-06-28',
                 kontoType: 'FELLESPERIODE',
@@ -113,14 +112,12 @@ export const UttaksperioderMor: Story = {
                 samtidigUttak: 50,
             },
             {
-                erAnnenPartEøs: false,
                 fom: '2024-07-01',
                 tom: '2024-07-02',
                 kontoType: 'FEDREKVOTE',
-                forelder: 'MOR',
+                forelder: 'FAR_MEDMOR',
             },
             {
-                erAnnenPartEøs: false,
                 fom: '2024-07-03',
                 tom: '2024-07-10',
                 kontoType: 'MØDREKVOTE',
@@ -156,16 +153,14 @@ export const UttaksperioderMorOgFar: Story = {
             termindato: '2023-08-15',
             fnr: ['19482356071'],
         },
-        perioder: [
+        saksperioderInkludertHull: [
             {
-                erAnnenPartEøs: false,
                 fom: '2024-04-01',
                 tom: '2024-04-19',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 forelder: 'MOR',
             },
             {
-                erAnnenPartEøs: false,
                 fom: '2024-04-22',
                 tom: '2024-05-03',
                 kontoType: 'MØDREKVOTE',
@@ -173,7 +168,6 @@ export const UttaksperioderMorOgFar: Story = {
                 samtidigUttak: 100,
             },
             {
-                erAnnenPartEøs: false,
                 fom: '2024-04-22',
                 tom: '2024-05-03',
                 kontoType: 'FEDREKVOTE',
@@ -181,21 +175,18 @@ export const UttaksperioderMorOgFar: Story = {
                 samtidigUttak: 100,
             },
             {
-                erAnnenPartEøs: false,
                 fom: '2024-05-06',
                 tom: '2024-05-31',
                 kontoType: 'MØDREKVOTE',
                 forelder: 'MOR',
             },
             {
-                erAnnenPartEøs: false,
                 fom: '2024-06-03',
                 tom: '2024-06-28',
                 kontoType: 'FEDREKVOTE',
                 forelder: 'FAR_MEDMOR',
             },
             {
-                erAnnenPartEøs: false,
                 fom: '2024-07-01',
                 tom: '2024-07-08',
                 kontoType: 'FELLESPERIODE',
@@ -221,16 +212,14 @@ export const UttaksperioderFarMorIkkeRett: Story = {
             termindato: '2023-08-15',
             fnr: ['19482356071'],
         },
-        perioder: [
+        saksperioderInkludertHull: [
             {
-                erAnnenPartEøs: false,
                 fom: '2024-05-01',
                 tom: '2024-08-21',
                 kontoType: 'FORELDREPENGER',
                 forelder: 'FAR_MEDMOR',
             },
             {
-                erAnnenPartEøs: false,
                 fom: '2024-08-22',
                 tom: '2024-08-29',
                 kontoType: 'FORELDREPENGER',
@@ -238,13 +227,11 @@ export const UttaksperioderFarMorIkkeRett: Story = {
                 forelder: 'FAR_MEDMOR',
             },
             {
-                erAnnenPartEøs: false,
                 fom: '2024-08-30',
                 tom: '2024-09-13',
-                periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
+                hullType: 'PERIODE_UTEN_UTTAK',
             },
             {
-                erAnnenPartEøs: false,
                 fom: '2024-09-16',
                 tom: '2024-09-23',
                 kontoType: 'FORELDREPENGER',
@@ -280,16 +267,14 @@ export const UttaksperioderMorOgFarFlerbarnsdager: Story = {
             termindato: '2023-08-15',
             fnr: ['19482356071'],
         },
-        perioder: [
+        saksperioderInkludertHull: [
             {
-                erAnnenPartEøs: false,
                 fom: '2024-04-01',
                 tom: '2024-04-19',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 forelder: 'MOR',
             },
             {
-                erAnnenPartEøs: false,
                 fom: '2024-04-22',
                 tom: '2024-05-31',
                 kontoType: 'MØDREKVOTE',
@@ -298,7 +283,6 @@ export const UttaksperioderMorOgFarFlerbarnsdager: Story = {
                 samtidigUttak: 100,
             },
             {
-                erAnnenPartEøs: false,
                 fom: '2024-04-22',
                 tom: '2024-05-31',
                 kontoType: 'FEDREKVOTE',
@@ -326,22 +310,19 @@ export const UttaksperioderMorIkkeSøktFørsteSeksUker: Story = {
             termindato: '2023-08-15',
             fnr: ['19482356071'],
         },
-        perioder: [
+        saksperioderInkludertHull: [
             {
-                erAnnenPartEøs: false,
                 fom: '2024-04-01',
                 tom: '2024-04-19',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 forelder: 'MOR',
             },
             {
-                erAnnenPartEøs: false,
                 fom: '2024-04-22',
                 tom: '2024-05-31',
-                periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
+                hullType: 'PERIODE_UTEN_UTTAK',
             },
             {
-                erAnnenPartEøs: false,
                 fom: '2024-06-03',
                 tom: '2024-06-28',
                 kontoType: 'MØDREKVOTE',
@@ -367,23 +348,20 @@ export const UttaksperioderMorInnlagtFørsteSeksUker: Story = {
             termindato: '2023-08-15',
             fnr: ['19482356071'],
         },
-        perioder: [
+        saksperioderInkludertHull: [
             {
-                erAnnenPartEøs: false,
                 fom: '2024-04-01',
                 tom: '2024-04-19',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 forelder: 'MOR',
             },
             {
-                erAnnenPartEøs: false,
                 fom: '2024-04-22',
                 tom: '2024-05-31',
                 utsettelseÅrsak: 'SØKER_INNLAGT',
                 forelder: 'MOR',
             },
             {
-                erAnnenPartEøs: false,
                 fom: '2024-06-03',
                 tom: '2024-06-28',
                 kontoType: 'MØDREKVOTE',

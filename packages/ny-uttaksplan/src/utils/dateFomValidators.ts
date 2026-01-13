@@ -5,8 +5,6 @@ import { BrukerRolleSak_fpoversikt, Familiesituasjon, KontoTypeUttak } from '@na
 import { UttaksdagenString, formatDateMedUkedag } from '@navikt/fp-utils';
 import { isAfterOrSame, isBeforeOrSame, isDateWithinRange } from '@navikt/fp-validation';
 
-import { PeriodeHullType } from '../types/Planperiode';
-
 export const getFomKontoTypeValidators = (
     intl: IntlShape,
     familiehendelsedato: string,
@@ -157,12 +155,12 @@ export const getFomÅrsakValidators = (
     intl: IntlShape,
     familiehendelsedato: string,
     familiesituasjon: Familiesituasjon,
-    årsak?: 'LOVBESTEMT_FERIE' | PeriodeHullType.PERIODE_UTEN_UTTAK,
+    årsak?: 'LOVBESTEMT_FERIE' | 'PERIODE_UTEN_UTTAK',
 ) => {
     switch (årsak) {
         case 'LOVBESTEMT_FERIE':
             return getFomFerieValidators(intl, familiehendelsedato, familiesituasjon);
-        case PeriodeHullType.PERIODE_UTEN_UTTAK:
+        case 'PERIODE_UTEN_UTTAK':
             return [getFomPeriodeUtenUttakValidator(intl, familiehendelsedato, familiesituasjon)];
         default:
             return [];

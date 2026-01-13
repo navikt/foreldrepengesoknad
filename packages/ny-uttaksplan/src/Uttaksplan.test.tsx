@@ -5,7 +5,13 @@ import dayjs from 'dayjs';
 
 import * as stories from './Uttaksplan.stories';
 
-const { Default, MorOgMedmor, MorOgFarMedFerieopphold } = composeStories(stories);
+const {
+    Default,
+    MorOgMedmor,
+    MorOgFarMedFerieopphold,
+    HullperiodeOverFamiliehendelsesdato,
+    VisPerioderMedOppholdsårsakKorrekt,
+} = composeStories(stories);
 
 describe('Uttaksplan', () => {
     it('skal legge til ny periode - ferie', async () => {
@@ -287,5 +293,68 @@ describe('Uttaksplan', () => {
 
         expect(screen.getByText('Medmors kvote')).toBeInTheDocument();
         expect(screen.queryByText('Fars kvote')).not.toBeInTheDocument();
+    });
+
+    it('Skal vise periode uten foreldrepenger og to perioder for tapte dager', async () => {
+        render(<HullperiodeOverFamiliehendelsesdato />);
+
+        expect(await screen.findByText('14. Mar - 01. Apr')).toBeInTheDocument();
+
+        const førsteRad = within(screen.getByTestId('2024-03-14 - 2024-04-01'));
+        expect(førsteRad.getByText('14. Mar - 01. Apr')).toBeInTheDocument();
+        expect(førsteRad.getByText('2 uker og 3 dager')).toBeInTheDocument();
+        expect(førsteRad.getAllByText('Hanne har foreldrepenger')).toHaveLength(2);
+
+        const andreRad = within(screen.getByTestId('2024-04-02 - 2024-04-03'));
+        expect(andreRad.getByText('02. Apr - 03. Apr')).toBeInTheDocument();
+        expect(andreRad.getByText('2 dager')).toBeInTheDocument();
+        expect(andreRad.getAllByText('Uten foreldrepenger')).toHaveLength(2);
+
+        const tredjeRad = within(screen.getByTestId('2024-04-04 - 2024-04-04'));
+        expect(tredjeRad.getByText('04. Apr')).toBeInTheDocument();
+        expect(tredjeRad.getAllByText('Fødsel')).toHaveLength(2);
+
+        const fjerdeRad = within(screen.getByTestId('2024-04-04 - 2024-05-02'));
+        expect(fjerdeRad.getByText('04. Apr - 02. May')).toBeInTheDocument();
+        expect(fjerdeRad.getByText('4 uker og 1 dag')).toBeInTheDocument();
+        expect(fjerdeRad.getAllByText('Dager du kan tape')).toHaveLength(2);
+
+        const femteRad = within(screen.getByTestId('2024-05-03 - 2024-05-15'));
+        expect(femteRad.getByText('03. May - 15. May')).toBeInTheDocument();
+        expect(femteRad.getByText('1 uke og 4 dager')).toBeInTheDocument();
+        expect(femteRad.getAllByText('Hans har foreldrepenger')).toHaveLength(2);
+    });
+
+    it('Skal vise perioder med oppholdsårsak korrekt', async () => {
+        render(<VisPerioderMedOppholdsårsakKorrekt />);
+
+        expect(await screen.findByText('18. Nov - 08. Dec')).toBeInTheDocument();
+
+        const førsteRad = within(screen.getByTestId('2024-11-18 - 2024-12-08'));
+        expect(førsteRad.getByText('18. Nov - 08. Dec')).toBeInTheDocument();
+        expect(førsteRad.getByText('3 uker')).toBeInTheDocument();
+        expect(førsteRad.getAllByText('Hanne har foreldrepenger')).toHaveLength(2);
+
+        const andreRad = within(screen.getByTestId('2024-12-09 - 2024-12-09'));
+        expect(andreRad.getByText('09. Dec')).toBeInTheDocument();
+        expect(andreRad.getAllByText('Fødsel')).toHaveLength(2);
+
+        const fjerdeRad = within(screen.getByTestId('2024-12-09 - 2025-05-16'));
+        expect(fjerdeRad.getByText('09. Dec - 16. May')).toBeInTheDocument();
+        expect(fjerdeRad.getByText('23 uker')).toBeInTheDocument();
+        expect(fjerdeRad.getAllByText('Hanne har foreldrepenger')).toHaveLength(2);
+
+        const femteRad = within(screen.getByTestId('2025-05-19 - 2025-09-29'));
+        expect(femteRad.getByText('19. May - 29. Sep')).toBeInTheDocument();
+        expect(femteRad.getByText('19 uker og 1 dag')).toBeInTheDocument();
+        expect(femteRad.getAllByText('Hans har foreldrepenger')).toHaveLength(2);
+
+        const sjetteRad = within(screen.getByTestId('2025-09-30 - 2025-10-15'));
+        expect(sjetteRad.getByText('30. Sep - 15. Oct')).toBeInTheDocument();
+        expect(sjetteRad.getByText('2 uker og 2 dager')).toBeInTheDocument();
+        expect(sjetteRad.getAllByText('Hanne har foreldrepenger')).toHaveLength(2);
+
+        expect(screen.queryByText('Uten Foreldrepenger')).not.toBeInTheDocument();
+        expect(screen.queryByText('Dager du kan tape')).not.toBeInTheDocument();
     });
 });

@@ -1,15 +1,15 @@
 import { Gradering_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 
-import { Planperiode } from '../types/Planperiode';
+import { Uttaksplanperiode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 
 type GraderingsType = {
     skalDuJobbe: boolean;
     stillingsprosent: string;
 };
 
-export const getGraderingsInfo = (periode: Planperiode | undefined): GraderingsType | undefined => {
-    if (periode && !periode.erAnnenPartEøs && periode.gradering) {
+export const getGraderingsInfo = (periode: Uttaksplanperiode | undefined): GraderingsType | undefined => {
+    if (periode && erVanligUttakPeriode(periode) && periode.gradering) {
         return {
             skalDuJobbe: true,
             stillingsprosent: periode.gradering.arbeidstidprosent.toString(),
