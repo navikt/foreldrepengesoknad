@@ -19,8 +19,8 @@ import { CalendarPeriod } from '@navikt/fp-ui';
 import { getFloatFromString } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
-import { prosentValideringGradering, valideringSamtidigUttak } from '../../components/spørsmål/validators';
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { prosentValideringGradering, valideringSamtidigUttak } from '../../liste/spørsmål/validators';
 import { erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { getGradering } from '../../utils/graderingUtils';
 import { getStønadskontoNavnSimple } from '../../utils/stønadskontoerUtils';
@@ -52,7 +52,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
     const intl = useIntl();
 
     const {
-        saksperioder,
+        uttakPerioder,
         foreldreInfo: { rettighetType, erMedmorDelAvSøknaden },
         familiehendelsedato,
         valgtStønadskonto,
@@ -64,7 +64,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
 
     const { finnPerioderGyldigeFeilmeldinger } = usePeriodeValidator(sammenslåtteValgtePerioder);
 
-    const defaultValues = lagDefaultValues(saksperioder, sammenslåtteValgtePerioder[0]!);
+    const defaultValues = lagDefaultValues(uttakPerioder, sammenslåtteValgtePerioder[0]!);
 
     const formMethods = useForm<FormValues>({
         defaultValues,

@@ -15,20 +15,20 @@ import { assertUnreachable } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import {
-    Uttaksplanperiode,
+    UttaksplanperiodeMedKunTapteDager,
     erEøsUttakPeriode,
-    erUttaksplanHull,
+    erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
-import { useAlleSaksperioderInklTapteDager } from '../../utils/lagHullPerioder';
+import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import {
+    filtrerBortAnnenPartsIdentiskePerioder,
     getAnnenForelderSamtidigUttakPeriode,
     getIndexOfSistePeriodeFørDato,
     isAvslåttPeriode,
     isAvslåttPeriodeFørsteSeksUkerMor,
     isUttaksperiode,
 } from '../../utils/periodeUtils';
-import { filtrerBortAnnenPartsIdentiskePerioder } from '../../utils/permisjonsperiodeUtils';
 
 export const usePerioderForKalendervisning = (barnehagestartdato?: string): CalendarPeriod[] => {
     const intl = useIntl();
@@ -38,7 +38,7 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
         foreldreInfo: { søker, navnPåForeldre },
     } = useUttaksplanData();
 
-    const saksperioderInkludertTapteDager = useAlleSaksperioderInklTapteDager();
+    const saksperioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
 
     const familiehendelsesdato = getFamiliehendelsedato(barn);
 
@@ -151,9 +151,9 @@ const slåSammenPerioder = (periods: CalendarPeriod[]) => {
 };
 
 const getKalenderFargeForPeriode = (
-    periode: Uttaksplanperiode,
+    periode: UttaksplanperiodeMedKunTapteDager,
     erFarEllerMedmor: boolean,
-    allePerioder: Uttaksplanperiode[],
+    allePerioder: UttaksplanperiodeMedKunTapteDager[],
     barn: Barn,
 ): CalendarPeriodColor => {
     if (isAvslåttPeriode(periode)) {
@@ -174,8 +174,8 @@ const getKalenderFargeForPeriode = (
         return erFarEllerMedmor ? 'LIGHTBLUEGREEN' : 'LIGHTGREENBLUE';
     }
 
-    if (erUttaksplanHull(periode)) {
-        return periode.hullType === 'TAPTE_DAGER' ? 'BLACK' : 'NONE';
+    if (erTapteDagerHull(periode)) {
+        return 'BLACK';
     }
 
     if (erEøsUttakPeriode(periode)) {
@@ -243,7 +243,7 @@ const getKalenderSkjermlesertekstForPeriode = (
 };
 
 const getKalenderSkjermleserPeriodetekst = (
-    period: Uttaksplanperiode,
+    period: UttaksplanperiodeMedKunTapteDager,
     navnPåForeldre: NavnPåForeldre,
     intl: IntlShape,
 ): string => {
@@ -252,10 +252,7 @@ const getKalenderSkjermleserPeriodetekst = (
 
     const periodenTilhører = intl.formatMessage({ id: 'kalender.srText.PeriodenTil' }, { navn });
 
-    if (erUttaksplanHull(period)) {
-        if (period.hullType === 'PERIODE_UTEN_UTTAK') {
-            return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.PeriodeUtenUttak' });
-        }
+    if (erTapteDagerHull(period)) {
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.TapteDager' });
     }
 

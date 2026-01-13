@@ -217,9 +217,9 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
 
 const AvslåttePerioder = () => {
-    const { saksperioder, foreldreInfo, familiehendelsedato } = useUttaksplanData();
+    const { uttakPerioder, foreldreInfo, familiehendelsedato } = useUttaksplanData();
 
-    const harAvslåttePerioderSomIkkeGirTapteDager = saksperioder.some(
+    const harAvslåttePerioderSomIkkeGirTapteDager = uttakPerioder.some(
         (p) =>
             isAvslåttPeriode(p) &&
             erVanligUttakPeriode(p) &&

@@ -36,7 +36,7 @@ const meta = {
                 barn={args.barn}
                 valgtStønadskonto={args.valgtStønadskonto}
                 harAktivitetskravIPeriodeUtenUttak={false}
-                saksperioder={args.saksperioder}
+                uttakPerioder={args.uttakPerioder}
             >
                 <UttaksplanLegend
                     perioderForKalendervisning={args.perioderForKalendervisning}
@@ -110,7 +110,7 @@ export const VisAlleMedTekst: Story = {
                 srText: 'Fars del, aktivitetsfri',
             },
         ],
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-04-04',
                 tom: '2024-04-18',

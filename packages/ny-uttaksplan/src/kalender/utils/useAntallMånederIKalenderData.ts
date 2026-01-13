@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { useAlleSaksperioderInklTapteDager } from '../../utils/lagHullPerioder';
+import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 
 export const useAntallMånederIKalenderData = (
     antallMånederLagtTilKalender: number,
@@ -11,7 +11,7 @@ export const useAntallMånederIKalenderData = (
     barnehagestartdato?: string,
 ) => {
     const { familiehendelsedato, familiesituasjon } = useUttaksplanData();
-    const saksperioderInkludertTapteDager = useAlleSaksperioderInklTapteDager();
+    const saksperioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
 
     const førsteMuligeDato =
         familiesituasjon === 'adopsjon'

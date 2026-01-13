@@ -31,7 +31,7 @@ const meta = {
         children: null,
     },
     render: (args) => {
-        const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[] | undefined>(args.saksperioder);
+        const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[] | undefined>(args.uttakPerioder);
 
         const handleOnPlanChange = (oppdatertePerioder: UttakPeriode_fpoversikt[] | undefined) => {
             setPerioder(oppdatertePerioder);
@@ -43,7 +43,7 @@ const meta = {
                 valgtStønadskonto={args.valgtStønadskonto}
                 foreldreInfo={args.foreldreInfo}
                 harAktivitetskravIPeriodeUtenUttak={false}
-                saksperioder={perioder ?? []}
+                uttakPerioder={perioder ?? []}
             >
                 <UttaksplanRedigeringProvider
                     oppdaterUttaksplan={handleOnPlanChange}
@@ -61,7 +61,7 @@ type Story = StoryObj<typeof meta>;
 
 export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
     args: {
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-03-14',
                 tom: '2024-04-03',
@@ -136,7 +136,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
 
 export const SkalHaPeriodeMedFratrekkForPleiepenger: Story = {
     args: {
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-03-15',
                 tom: '2024-04-03',
@@ -173,7 +173,7 @@ export const SkalHaPeriodeMedFratrekkForPleiepenger: Story = {
 
 export const FarSøkerMedTapteDagerOgUtsettelse: Story = {
     args: {
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2021-05-31',
                 tom: '2021-06-14',
@@ -204,7 +204,7 @@ export const FarSøkerMedTapteDagerOgUtsettelse: Story = {
 
 export const MorSøkerMedFlereUtsettelser: Story = {
     args: {
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2021-05-31',
                 tom: '2021-06-14',
@@ -234,7 +234,7 @@ export const MorSøkerMedFlereUtsettelser: Story = {
 };
 export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
     args: {
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-04-04',
                 tom: '2024-04-18',
@@ -308,7 +308,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
 
 export const UtsettelseMorFerieMedFarsUtsettelse: Story = {
     args: {
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2021-06-15',
                 tom: '2021-06-28',
@@ -339,7 +339,7 @@ export const UtsettelseMorFerieMedFarsUtsettelse: Story = {
 
 export const MorAvslåttPeriodeFørste6UkeneGirTapteDager: Story = {
     args: {
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2023-06-12',
                 tom: '2023-06-30',
@@ -382,7 +382,7 @@ export const MorAvslåttPeriodeFørste6UkeneGirTapteDager: Story = {
 
 export const MorAvslåttPeriodeUtenTapteDager: Story = {
     args: {
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2023-06-12',
                 tom: '2023-06-30',
@@ -425,7 +425,7 @@ export const MorAvslåttPeriodeUtenTapteDager: Story = {
 
 export const KortPeriodeMedHelg: Story = {
     args: {
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-05-24',
                 tom: '2024-05-27',
@@ -451,7 +451,7 @@ export const KortPeriodeMedHelg: Story = {
 
 export const KortPeriodeMedHelgFødsel: Story = {
     args: {
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-05-24',
                 tom: '2024-05-27',
@@ -476,7 +476,7 @@ export const KortPeriodeMedHelgFødsel: Story = {
 
 export const KortPeriodeUtenHelg: Story = {
     args: {
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-05-22',
                 tom: '2024-05-24',
@@ -502,7 +502,7 @@ export const KortPeriodeUtenHelg: Story = {
 
 export const TreSammenhengendePerioderSlåttSammen: Story = {
     args: {
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-05-21',
                 tom: '2024-05-27',
@@ -540,7 +540,7 @@ export const TreSammenhengendePerioderSlåttSammen: Story = {
 
 export const MorOppgirSamtidigUttakMedFar: Story = {
     args: {
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-05-21',
                 tom: '2024-05-27',
@@ -567,7 +567,7 @@ export const MorOppgirSamtidigUttakMedFar: Story = {
 
 export const MorOppgirSamtidigUttakMedMedmor: Story = {
     args: {
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-05-21',
                 tom: '2024-05-27',
@@ -601,7 +601,7 @@ export const MorOppgirSamtidigUttakMedMedmor: Story = {
 
 export const FarOppgirSamtidigUttakMedMor: Story = {
     args: {
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2025-05-21',
                 tom: '2025-05-27',
@@ -628,7 +628,7 @@ export const FarOppgirSamtidigUttakMedMor: Story = {
 
 export const FellesPeriodeForMorOgSamtidigUttak: Story = {
     args: {
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-03-15',
                 tom: '2024-04-03',
@@ -686,7 +686,7 @@ export const FellesPeriodeForMorOgSamtidigUttak: Story = {
 export const HarPeriode11UkerFørFamiliehendelseDato: Story = {
     args: {
         ...MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering.args,
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-01-18',
                 tom: '2024-02-23',
@@ -694,14 +694,14 @@ export const HarPeriode11UkerFørFamiliehendelseDato: Story = {
                 kontoType: 'FELLESPERIODE',
             },
 
-            ...MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering.args.saksperioder,
+            ...MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering.args.uttakPerioder,
         ] satisfies UttakPeriode_fpoversikt[],
     },
 };
 
 export const VisFarsAktivitetsfriKvote: Story = {
     args: {
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-06-14',
                 tom: '2024-06-18',
@@ -759,7 +759,7 @@ export const VisPerioderMedOppholdsårsakKorrekt: Story = {
             fødselsdatoer: ['2024-12-09'],
             antallBarn: 1,
         },
-        saksperioder: [
+        uttakPerioder: [
             {
                 fom: '2024-11-18',
                 tom: '2024-12-08',

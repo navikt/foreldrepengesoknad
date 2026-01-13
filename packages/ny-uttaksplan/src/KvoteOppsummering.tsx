@@ -75,7 +75,7 @@ const KvoteTittelKunEnHarForeldrepenger = ({
     brukEnkelVisning: boolean;
     erInnsyn: boolean;
 }) => {
-    const { saksperioder, familiesituasjon, valgtStønadskonto } = useUttaksplanData();
+    const { uttakPerioder, familiesituasjon, valgtStønadskonto } = useUttaksplanData();
 
     const intl = useIntl();
     const kvoter = ['FORELDREPENGER_FØR_FØDSEL', 'FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'].map((kontoType) => {
@@ -86,7 +86,7 @@ const KvoteTittelKunEnHarForeldrepenger = ({
 
         const ubrukteDagerSkalTrekkes = kontoType === 'FORELDREPENGER_FØR_FØDSEL' && familiesituasjon === 'fødsel';
         const brukteDager = summerDagerIPerioder(
-            saksperioder.filter((p) => {
+            uttakPerioder.filter((p) => {
                 const harMatchendePeriode =
                     erVanligUttakPeriode(p) &&
                     getUttaksKontoType(p) === 'FORELDREPENGER' &&
@@ -197,15 +197,15 @@ const KvoteTittel = ({
     brukEnkelVisning: boolean;
     erInnsyn: boolean;
 }) => {
-    const { saksperioder, familiesituasjon, valgtStønadskonto, foreldreInfo } = useUttaksplanData();
+    const { uttakPerioder, familiesituasjon, valgtStønadskonto, foreldreInfo } = useUttaksplanData();
     const intl = useIntl();
 
     const dagerBruktAvMorFørFødsel = summerDagerIPerioder(
-        saksperioder.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL'),
+        uttakPerioder.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL'),
         valgtStønadskonto.kontoer,
     );
     const dagerBruktAvMor = summerDagerIPerioder(
-        saksperioder.filter(
+        uttakPerioder.filter(
             (p) =>
                 getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL' ||
                 getUttaksKontoType(p) === 'MØDREKVOTE' ||
@@ -214,7 +214,7 @@ const KvoteTittel = ({
         valgtStønadskonto.kontoer,
     );
     const dagerBruktAvFar = summerDagerIPerioder(
-        saksperioder.filter(
+        uttakPerioder.filter(
             (p) =>
                 getUttaksKontoType(p) === 'FEDREKVOTE' ||
                 (erVanligUttakPeriode(p) && p.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'),
@@ -222,7 +222,7 @@ const KvoteTittel = ({
         valgtStønadskonto.kontoer,
     );
     const dagerFellesBrukt = summerDagerIPerioder(
-        saksperioder.filter(
+        uttakPerioder.filter(
             (p) =>
                 getUttaksKontoType(p) === 'FELLESPERIODE' ||
                 (erVanligUttakPeriode(p) && p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER'),
@@ -460,18 +460,18 @@ const TittelKomponent = ({
 };
 
 const ForeldrepengerFørFødselKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
-    const { saksperioder, valgtStønadskonto } = useUttaksplanData();
+    const { uttakPerioder, valgtStønadskonto } = useUttaksplanData();
 
-    const relevantePerioder = saksperioder.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL');
+    const relevantePerioder = uttakPerioder.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL');
     const relevantKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
     return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
 };
 
 const KunEnHarForeldrepengeKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
-    const { saksperioder, valgtStønadskonto } = useUttaksplanData();
+    const { uttakPerioder, valgtStønadskonto } = useUttaksplanData();
 
     const relevantKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FORELDREPENGER');
-    const relevantePerioder = saksperioder.filter(
+    const relevantePerioder = uttakPerioder.filter(
         (p) =>
             getUttaksKontoType(p) === 'FORELDREPENGER' && erVanligUttakPeriode(p) && p.morsAktivitet !== 'IKKE_OPPGITT',
     );
@@ -480,10 +480,10 @@ const KunEnHarForeldrepengeKvoter = ({ visStatusIkoner }: { visStatusIkoner: boo
 };
 
 const FedreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
-    const { saksperioder, valgtStønadskonto } = useUttaksplanData();
+    const { uttakPerioder, valgtStønadskonto } = useUttaksplanData();
 
     const relevantKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FEDREKVOTE');
-    const relevantePerioder = saksperioder.filter(
+    const relevantePerioder = uttakPerioder.filter(
         (p) =>
             getUttaksKontoType(p) === 'FEDREKVOTE' ||
             (erVanligUttakPeriode(p) && p.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'),
@@ -493,11 +493,11 @@ const FedreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
 };
 
 const AktivitetsfriKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
-    const { saksperioder, valgtStønadskonto } = useUttaksplanData();
+    const { uttakPerioder, valgtStønadskonto } = useUttaksplanData();
 
     const relevantKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
 
-    const relevantePerioder = saksperioder.filter((p) => {
+    const relevantePerioder = uttakPerioder.filter((p) => {
         // I planlegger og søknad brukes denne kontoen på periodene.
         const harMatchendeKonto = getUttaksKontoType(p) === 'AKTIVITETSFRI_KVOTE';
 
@@ -511,10 +511,10 @@ const AktivitetsfriKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) 
 };
 
 const MødreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
-    const { saksperioder, valgtStønadskonto } = useUttaksplanData();
+    const { uttakPerioder, valgtStønadskonto } = useUttaksplanData();
 
     const relevantKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'MØDREKVOTE');
-    const relevantePerioder = saksperioder.filter(
+    const relevantePerioder = uttakPerioder.filter(
         (p) =>
             getUttaksKontoType(p) === 'MØDREKVOTE' ||
             (erVanligUttakPeriode(p) && p.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER'),
@@ -524,7 +524,7 @@ const MødreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
 
 const FellesKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const intl = useIntl();
-    const { saksperioder, valgtStønadskonto, foreldreInfo } = useUttaksplanData();
+    const { uttakPerioder, valgtStønadskonto, foreldreInfo } = useUttaksplanData();
 
     const forelder = foreldreInfo.søker === 'FAR_ELLER_MEDMOR' ? 'FAR_MEDMOR' : 'MOR';
     const fellesKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
@@ -533,13 +533,13 @@ const FellesKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
         return null;
     }
     const dagerBruktAvDeg = summerDagerIPerioder(
-        saksperioder.filter(
+        uttakPerioder.filter(
             (p) => getUttaksKontoType(p) === 'FELLESPERIODE' && erVanligUttakPeriode(p) && p.forelder === forelder,
         ),
         valgtStønadskonto.kontoer,
     );
     const dagerBruktAvAnnenPart = summerDagerIPerioder(
-        saksperioder.filter(
+        uttakPerioder.filter(
             (p) =>
                 erVanligUttakPeriode(p) &&
                 (getUttaksKontoType(p) === 'FELLESPERIODE' || p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER') &&

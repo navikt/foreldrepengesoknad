@@ -17,7 +17,7 @@ type Props = {
     foreldreInfo: ForeldreInfo;
     valgtStønadskonto: KontoBeregningDto;
     harAktivitetskravIPeriodeUtenUttak: boolean;
-    saksperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     children: React.ReactNode;
 };
 
@@ -35,13 +35,13 @@ export const UttaksplanDataProvider = (props: Props) => {
         const familiehendelsedato = getFamiliehendelsedato(otherProps.barn);
         const familiesituasjon = getFamiliesituasjon(otherProps.barn);
 
-        const sortertePerioder = [...otherProps.saksperioder].sort(sorterPerioder);
+        const sortertePerioder = [...otherProps.uttakPerioder].sort(sorterPerioder);
 
         return {
             ...otherProps,
             familiehendelsedato,
             familiesituasjon,
-            saksperioder: sortertePerioder,
+            uttakPerioder: sortertePerioder,
         };
     }, [otherProps]);
 

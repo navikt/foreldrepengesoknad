@@ -7,8 +7,11 @@ import { capitalizeFirstLetter, slutterTidsperiodeInnen6UkerEtterFødsel } from 
 
 import {
     Uttaksplanperiode,
+    UttaksplanperiodeMedKunTapteDager,
     erEøsUttakPeriode,
-    erUttaksplanHull,
+    erFamiliehendelseDato,
+    erPeriodeUtenUttakHull,
+    erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../types/UttaksplanPeriode';
 
@@ -47,11 +50,11 @@ export const isAvslåttPeriode = (periode: Uttaksplanperiode) => {
 };
 
 export const isTapteDager = (periode: Uttaksplanperiode) => {
-    return erUttaksplanHull(periode) && periode.hullType === 'TAPTE_DAGER';
+    return erTapteDagerHull(periode);
 };
 
 export const isPeriodeUtenUttak = (periode: Uttaksplanperiode) => {
-    return erUttaksplanHull(periode) && periode.hullType === 'PERIODE_UTEN_UTTAK';
+    return erPeriodeUtenUttakHull(periode);
 };
 
 export const getOppholdskontoNavn = (
@@ -131,10 +134,17 @@ export const genererPeriodeId = (saksperiode?: Uttaksplanperiode): string | unde
         const { fom, tom, kontoType, trekkdager } = saksperiode;
         return `erAnnenPartEøs - ${fom} - ${tom} - ${kontoType} - ${trekkdager} `;
     }
-
-    if (erUttaksplanHull(saksperiode)) {
-        const { fom, tom, forelder, hullType } = saksperiode;
-        return `periodeMedHull - ${fom} - ${tom} - ${forelder} - ${hullType} `;
+    if (erTapteDagerHull(saksperiode)) {
+        const { fom, tom, forelder } = saksperiode;
+        return `tapteDagerHull - ${fom} - ${tom} - ${forelder}`;
+    }
+    if (erPeriodeUtenUttakHull(saksperiode)) {
+        const { fom, tom } = saksperiode;
+        return `periodeUtenUttakHull - ${fom} - ${tom}`;
+    }
+    if (erFamiliehendelseDato(saksperiode)) {
+        const { fom, tom } = saksperiode;
+        return `familiehendelseDato - ${fom} - ${tom}`;
     }
 
     const { fom, tom, kontoType, flerbarnsdager, utsettelseÅrsak, forelder, oppholdÅrsak, overføringÅrsak } =
@@ -181,3 +191,17 @@ export const getAnnenForelderSamtidigUttakPeriode = (
 
     return undefined;
 };
+
+export const filtrerBortAnnenPartsIdentiskePerioder = (
+    uttaksplanperiode: UttaksplanperiodeMedKunTapteDager[],
+    erFarEllerMedmor: boolean,
+) =>
+    uttaksplanperiode.reduce<UttaksplanperiodeMedKunTapteDager[]>((alle, periode) => {
+        const erSøkersPeriode = erPeriodeForSøker(periode, erFarEllerMedmor);
+        const filtrerte = uttaksplanperiode.filter((p) => p.fom === periode.fom && p.tom === periode.tom);
+        return filtrerte.length > 1 && !erSøkersPeriode ? alle : alle.concat(periode);
+    }, []);
+
+const erPeriodeForSøker = (periode: Uttaksplanperiode, erFarEllerMedmor: boolean) =>
+    erVanligUttakPeriode(periode) &&
+    ((periode.forelder === 'MOR' && !erFarEllerMedmor) || (periode.forelder === 'FAR_MEDMOR' && erFarEllerMedmor));

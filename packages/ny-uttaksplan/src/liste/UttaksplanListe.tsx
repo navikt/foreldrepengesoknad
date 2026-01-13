@@ -1,0 +1,138 @@
+import { NotePencilDashIcon } from '@navikt/aksel-icons';
+import { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
+
+import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
+
+import { useUttaksplanData } from '../context/UttaksplanDataContext';
+import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
+import { Uttaksplanperiode } from '../types/UttaksplanPeriode';
+import { useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak } from '../utils/lagHullPerioder';
+import { UttaksplanHandlingKnapper } from './UttaksplanHandlingKnapper';
+import { LeggTilPeriodePanel } from './legg-til-periode-panel/LeggTilPeriodePanel';
+import { PeriodeListeItem } from './periode-liste-item/PeriodeListeItem';
+import { mapUttaksplanperioderTilRaderIListe } from './utils/mapUttaksplanperioderTilRaderIListe';
+import { getFørsteUttaksplanperiodeFom, getSisteUttaksplanperiodeTom } from './utils/uttaksplanperiodeUtils';
+
+interface Props {
+    isReadOnly: boolean;
+}
+
+export const UttaksplanListe = ({ isReadOnly }: Props) => {
+    const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
+
+    const { uttakPerioder } = useUttaksplanData();
+
+    const uttaksplanRedigering = useUttaksplanRedigering();
+
+    const uttakPerioderInkludertHull = useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak();
+
+    const [isAllAccordionsOpen, setIsAllAccordionsOpen] = useState(false);
+
+    const toggleAllAccordions = () => {
+        setIsAllAccordionsOpen(!isAllAccordionsOpen);
+    };
+
+    const { familiehendelsedato } = useUttaksplanData();
+
+    const uttaksplanperioderPerRadIListe = mapUttaksplanperioderTilRaderIListe(
+        uttakPerioderInkludertHull,
+        familiehendelsedato,
+    );
+
+    const alleRader = leggTilPeriodeForFamiliehendelsedato(uttaksplanperioderPerRadIListe, familiehendelsedato);
+
+    return (
+        <VStack gap="space-16">
+            {uttakPerioder.length > 0 && (
+                <div>
+                    {alleRader.map((uttaksplanperioderForRad) => {
+                        return (
+                            <PeriodeListeItem
+                                key={`${getFørsteUttaksplanperiodeFom(uttaksplanperioderForRad)}-${getSisteUttaksplanperiodeTom(uttaksplanperioderForRad)}`}
+                                isReadOnly={isReadOnly}
+                                uttaksplanperioder={uttaksplanperioderForRad}
+                                isAllAccordionsOpen={isAllAccordionsOpen}
+                            />
+                        );
+                    })}
+                </div>
+            )}
+            {uttakPerioder.length === 0 && (
+                <HStack gap="space-12">
+                    <NotePencilDashIcon fontSize={24} />
+                    <VStack gap="space-8">
+                        <BodyShort weight="semibold" size="large">
+                            <FormattedMessage id="uttaksplan.ingenPerioder.tittel" />
+                        </BodyShort>
+                        <BodyShort>
+                            <FormattedMessage id="uttaksplan.ingenPerioder.body" />
+                        </BodyShort>
+                    </VStack>
+                </HStack>
+            )}
+            {!isReadOnly && !isLeggTilPeriodePanelOpen && (
+                <Button variant="secondary" onClick={() => setIsLeggTilPeriodePanelOpen(true)}>
+                    <FormattedMessage id="uttaksplan.leggTilPeriode" />
+                </Button>
+            )}
+            {isLeggTilPeriodePanelOpen && uttaksplanRedigering && (
+                <LeggTilPeriodePanel setIsLeggTilPeriodePanelOpen={setIsLeggTilPeriodePanelOpen} />
+            )}
+            {uttaksplanRedigering && (
+                <UttaksplanHandlingKnapper
+                    toggleAllAccordions={toggleAllAccordions}
+                    visKnapper
+                    tilbakestillPlan={
+                        uttaksplanRedigering.harEndretPlan
+                            ? () => uttaksplanRedigering.tilbakestillUttaksplan()
+                            : undefined
+                    }
+                    angreEndring={
+                        uttaksplanRedigering.uttaksplanVersjoner.length > 0
+                            ? () => uttaksplanRedigering.angreSisteEndring()
+                            : undefined
+                    }
+                    fjernAltIPlanen={() => uttaksplanRedigering.setVisFjernAltModal(true)}
+                    visFjernAltModal={uttaksplanRedigering.visFjernAltModal}
+                />
+            )}
+        </VStack>
+    );
+};
+
+const leggTilPeriodeForFamiliehendelsedato = (
+    uttaksplanperioderPerRadIListe: Uttaksplanperiode[][],
+    familiehendelsedato: string,
+): Uttaksplanperiode[][] => {
+    return uttaksplanperioderPerRadIListe
+        .concat([
+            [
+                {
+                    fom: familiehendelsedato,
+                    tom: familiehendelsedato,
+                    type: 'FAMILIEHENDELSE',
+                },
+            ],
+        ])
+        .sort((gruppeA, gruppeB) => {
+            const a = gruppeA[0]!;
+            const b = gruppeB[0]!;
+
+            if (a.fom < b.fom) {
+                return -1;
+            }
+            if (a.fom > b.fom) {
+                return 1;
+            }
+
+            if (a.tom < b.tom) {
+                return -1;
+            }
+            if (a.tom > b.tom) {
+                return 1;
+            }
+
+            return 0;
+        });
+};
