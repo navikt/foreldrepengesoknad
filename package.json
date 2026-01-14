@@ -15,7 +15,7 @@
         "fp-prod": "pnpm --filter foreldrepengesoknad run start",
         "storybook-common": "pnpm --filter @navikt/fp-common run storybook",
         "build:storybook": "turbo run build-storybook && pnpm run storybook-create-deploy-folder",
-        "storybook-create-deploy-folder": "node scripts/create-storybook-index.cjs",
+        "storybook-create-deploy-folder": "node scripts/create-storybook-index.js",
         "prepare": "husky install",
         "generate:local": "pnpm --filter @navikt/fp-types run generate:local",
         "generate": "pnpm --filter @navikt/fp-types run generate"
