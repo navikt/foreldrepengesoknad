@@ -4,10 +4,9 @@ on:
   push:
     branches: ['master']
     paths-ignore:
-      - '.github/workflows/build-redirect.yml'
       - 'server/**'
       - 'server-uinnlogget/**'
-      - '.github/workflows/build-server.yml'
+  workflow_dispatch:
 
 jobs:
   deploy-storybook:
