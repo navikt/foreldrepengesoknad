@@ -1,11 +1,11 @@
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { ForeldreInfo } from 'types/ForeldreInfo';
 
 import { Familiesituasjon, KontoTypeUttak } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
+import { ForeldreInfo } from '../types/ForeldreInfo';
 
 dayjs.extend(isSameOrBefore);
 
