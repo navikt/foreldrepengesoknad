@@ -32,6 +32,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
     const [erRedigeringAktiv, setErRedigeringAktiv] = useState(false);
     const [isRangeSelection, setIsRangeSelection] = useState(true);
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
+    const [perioderSomErNyligLagtTil, setPerioderSomErNyligLagtTil] = useState<Array<{ fom: string; tom: string }>>([]);
 
     const setRedigeringAktivOgValgtePerioder = useCallback<React.Dispatch<React.SetStateAction<CalendarPeriod[]>>>(
         (periode) => {
@@ -155,6 +156,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                         )}
                         <Calendar
                             periods={perioderForKalendervisning.concat(valgtePerioder).sort(sortPeriods)}
+                            perioderSomErNyligLagtTil={perioderSomErNyligLagtTil}
                             setSelectedPeriods={readOnly ? undefined : setRedigeringAktivOgValgtePerioder}
                             getSrTextForSelectedPeriod={readOnly ? undefined : getSrTextForSelectedPeriod}
                             nrOfColumns={erRedigeringInaktiv ? 2 : 1}
@@ -190,6 +192,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                             <RedigerKalenderIndex
                                 valgtePerioder={valgtePerioder}
                                 setValgtePerioder={setRedigeringAktivOgValgtePerioder}
+                                setPerioderSomErNyligLagtTil={setPerioderSomErNyligLagtTil}
                                 scrollToKvoteOppsummering={scrollToKvoteOppsummering}
                                 labels={
                                     <UttaksplanLegend

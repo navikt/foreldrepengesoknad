@@ -18,6 +18,7 @@ interface Props {
     isRangeSelection?: boolean;
     firstDateInCalendar: string;
     lastDateInCalendar?: string;
+    perioderSomErNyligLagtTil: Array<{ fom: string; tom: string }>;
     dateTooltipCallback?: (date: string) => React.ReactElement | string;
     setSelectedPeriods?: (value: React.SetStateAction<CalendarPeriod[]>) => void;
     getSrTextForSelectedPeriod?: (period: { fom: string; tom: string }) => string;
@@ -33,6 +34,7 @@ export const Calendar = ({
     dateTooltipCallback,
     setSelectedPeriods,
     getSrTextForSelectedPeriod,
+    perioderSomErNyligLagtTil,
 }: Props) => {
     const [focusedDate, setFocusedDate] = useState<dayjs.Dayjs | undefined>();
 
@@ -66,6 +68,7 @@ export const Calendar = ({
                         dateClickCallback={setSelectedPeriods ? dateClickCallback : undefined}
                         focusedDate={isMonthInFocus ? focusedDate : undefined}
                         setFocusedDate={setFocusedDate}
+                        perioderSomErNyligLagtTil={perioderSomErNyligLagtTil}
                     />
                 );
             })}

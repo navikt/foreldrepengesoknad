@@ -15,6 +15,7 @@ type Props = {
     valgtePerioder: CalendarPeriod[];
     labels: React.ReactNode;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
+    setPerioderSomErNyligLagtTil: React.Dispatch<React.SetStateAction<Array<{ fom: string; tom: string }>>>;
     scrollToKvoteOppsummering: () => void;
 };
 
@@ -22,9 +23,14 @@ export const RedigerKalenderIndex = ({
     valgtePerioder,
     labels,
     setValgtePerioder,
+    setPerioderSomErNyligLagtTil,
     scrollToKvoteOppsummering,
 }: Props) => (
-    <KalenderRedigeringProvider valgtePerioder={valgtePerioder} setValgtePerioder={setValgtePerioder}>
+    <KalenderRedigeringProvider
+        valgtePerioder={valgtePerioder}
+        setValgtePerioder={setValgtePerioder}
+        setPerioderSomErNyligLagtTil={setPerioderSomErNyligLagtTil}
+    >
         <RedigerKalender scrollToKvoteOppsummering={scrollToKvoteOppsummering} labels={labels} />
     </KalenderRedigeringProvider>
 );
@@ -72,7 +78,9 @@ const RedigerKalender = ({
                     {erIRedigeringsmodus && (
                         <LeggTilEllerEndrePeriodePanel
                             key={erKunEnHelEksisterendePeriodeValgt ? 1 : 0} // Reset av form når en går fra endre til legg til og omvendt
-                            lukkRedigeringsmodus={() => setErIRedigeringsmodus(false)}
+                            lukkRedigeringsmodus={() => {
+                                setErIRedigeringsmodus(false);
+                            }}
                             labels={labels}
                         />
                     )}

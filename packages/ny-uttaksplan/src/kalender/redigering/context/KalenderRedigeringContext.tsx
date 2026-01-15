@@ -13,9 +13,10 @@ type Props = {
     valgtePerioder: CalendarPeriod[];
     children: React.ReactNode;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
+    setPerioderSomErNyligLagtTil: React.Dispatch<React.SetStateAction<Array<{ fom: string; tom: string }>>>;
 };
 
-type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaksplan'> & {
+type ContextValues = Omit<Props, 'children' | 'oppdaterUttaksplan'> & {
     sammenslåtteValgtePerioder: CalendarPeriod[];
     leggTilUttaksplanPerioder: (perioder: UttakPeriode_fpoversikt[]) => void;
     slettUttaksplanPerioder: (perioder: UttakPeriode_fpoversikt[]) => void;
@@ -23,7 +24,12 @@ type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaks
 
 const KalenderRedigeringContext = createContext<ContextValues | null>(null);
 
-export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgtePerioder }: Props) => {
+export const KalenderRedigeringProvider = ({
+    valgtePerioder,
+    children,
+    setValgtePerioder,
+    setPerioderSomErNyligLagtTil,
+}: Props) => {
     const { uttakPerioder } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
@@ -53,11 +59,20 @@ export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgte
     const value = useMemo(() => {
         return {
             sammenslåtteValgtePerioder,
+            valgtePerioder,
             leggTilUttaksplanPerioder,
             slettUttaksplanPerioder,
             setValgtePerioder,
+            setPerioderSomErNyligLagtTil,
         };
-    }, [sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, slettUttaksplanPerioder, setValgtePerioder]);
+    }, [
+        sammenslåtteValgtePerioder,
+        valgtePerioder,
+        leggTilUttaksplanPerioder,
+        slettUttaksplanPerioder,
+        setValgtePerioder,
+        setPerioderSomErNyligLagtTil,
+    ]);
 
     return <KalenderRedigeringContext value={value}>{children}</KalenderRedigeringContext>;
 };

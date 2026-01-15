@@ -37,14 +37,39 @@ type Props = {
     dateTooltipCallback?: (date: string) => React.ReactNode | string;
     dateClickCallback?: (date: string) => void;
     setFocusedDate: (date: Dayjs) => void;
+    erNyligLagtTil: boolean;
 };
 
 export const Day = React.memo(
-    ({ isoDate, periodeColor, isFocused, srText, dateTooltipCallback, dateClickCallback, setFocusedDate }: Props) => {
+    ({
+        isoDate,
+        periodeColor,
+        isFocused,
+        srText,
+        dateTooltipCallback,
+        dateClickCallback,
+        setFocusedDate,
+        erNyligLagtTil,
+    }: Props) => {
         const date = dayjs(isoDate);
         const day = date.date();
 
-        logOnLocalhost(`Rendering Day: ${day}, Color: ${periodeColor}`);
+        // logOnLocalhost(`Rendering Day: ${day}, Color: ${periodeColor}`);
+
+        const [animate, setAnimate] = React.useState(false);
+
+        useEffect(() => {
+            if (erNyligLagtTil && !isWeekend(date)) {
+                setAnimate(true);
+            }
+        }, [erNyligLagtTil]);
+
+        React.useEffect(() => {
+            if (!animate) return;
+
+            const id = setTimeout(() => setAnimate(false), 500);
+            return () => clearTimeout(id);
+        }, [animate]);
 
         const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -64,7 +89,7 @@ export const Day = React.memo(
                 type="button"
                 data-testid={`day:${day};dayColor:${periodeColor}`}
                 tabIndex={isFocused ? 0 : -1}
-                className={`${styles.days} ${DAY_STYLE[periodeColor]} ${isClickable && styles.cursorAndHoover}`}
+                className={`${styles.days} ${DAY_STYLE[periodeColor]} ${isClickable && styles.cursorAndHoover} ${animate && styles.fadeIn}`}
                 onFocus={isClickable ? () => setFocusedDate(date) : undefined}
                 onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
                 onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
