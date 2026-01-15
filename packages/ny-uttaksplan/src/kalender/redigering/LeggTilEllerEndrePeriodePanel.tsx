@@ -2,11 +2,8 @@ import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, Box, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
+import { Box, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
-import { CalendarPeriod } from '@navikt/fp-ui';
-
-import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { getVarighetString } from '../../utils/dateUtils';
 import { LeggTilEllerEndrePeriodeForm } from './LeggTilEllerEndrePeriodeForm';
 import { PeriodeDetaljerOgInfoMeldinger } from './PeriodeDetaljerOgInfoMeldinger';
@@ -14,7 +11,6 @@ import { useKalenderRedigeringContext } from './context/KalenderRedigeringContex
 import { RødRamme } from './utils/RødRamme';
 import { finnAntallDager } from './utils/kalenderPeriodeUtils';
 import { useMediaRemoveScrollingOnMobile, useMediaResetMinimering } from './utils/useMediaActions';
-import { usePeriodeValidator } from './utils/usePeriodeValidator';
 
 interface Props {
     lukkRedigeringsmodus: () => void;
@@ -32,8 +28,6 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
 
     useMediaResetMinimering(setErMinimert);
     useMediaRemoveScrollingOnMobile(erMinimert);
-
-    const gyldigeKontotyper = useGyldigeKontotyper(sammenslåtteValgtePerioder);
 
     return (
         <VStack
@@ -132,35 +126,10 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
             <div className={erMinimert ? 'hidden' : 'block px-4 pb-4'}>
                 <div className={erMinimert ? 'hidden' : 'block'}>
                     <div className="px-4 pt-4 pb-4">
-                        {gyldigeKontotyper.length === 0 && (
-                            <VStack gap="space-16">
-                                <Alert variant="info" role="alert">
-                                    <FormattedMessage id="LeggTilPeriodePanel.IngenGyldigeKontotyper" />
-                                </Alert>
-                                <div>
-                                    <Button type="button" variant="secondary" onClick={lukkRedigeringsmodus}>
-                                        <FormattedMessage id="uttaksplan.gåTilbake" />
-                                    </Button>
-                                </div>
-                            </VStack>
-                        )}
-                        {gyldigeKontotyper.length > 0 && (
-                            <LeggTilEllerEndrePeriodeForm
-                                lukkRedigeringsmodus={lukkRedigeringsmodus}
-                                gyldigeKontotyper={gyldigeKontotyper}
-                            />
-                        )}
+                        <LeggTilEllerEndrePeriodeForm lukkRedigeringsmodus={lukkRedigeringsmodus} />
                     </div>
                 </div>
             </div>
         </VStack>
     );
-};
-
-const useGyldigeKontotyper = (valgtePerioder: CalendarPeriod[]) => {
-    const { valgtStønadskonto } = useUttaksplanData();
-
-    const { erKontotypeGyldigForPerioder } = usePeriodeValidator(valgtePerioder);
-
-    return valgtStønadskonto.kontoer.map((k) => k.konto).filter((kt) => erKontotypeGyldigForPerioder(kt));
 };

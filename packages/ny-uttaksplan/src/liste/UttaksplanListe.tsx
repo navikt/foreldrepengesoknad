@@ -10,7 +10,7 @@ import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext'
 import { Uttaksplanperiode } from '../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak } from '../utils/lagHullPerioder';
 import { UttaksplanHandlingKnapper } from './UttaksplanHandlingKnapper';
-import { LeggTilPeriodePanel } from './legg-til-periode-panel/LeggTilPeriodePanel';
+import { LeggTilEllerEndrePeriodeListPanel } from './legg-til-endre-periode-panel/LeggTilEllerEndrePeriodeListPanel';
 import { PeriodeListeItem } from './periode-liste-item/PeriodeListeItem';
 import { mapUttaksplanperioderTilRaderIListe } from './utils/mapUttaksplanperioderTilRaderIListe';
 import { getFørsteUttaksplanperiodeFom, getSisteUttaksplanperiodeTom } from './utils/uttaksplanperiodeUtils';
@@ -78,7 +78,7 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
                 </Button>
             )}
             {isLeggTilPeriodePanelOpen && uttaksplanRedigering && (
-                <LeggTilPeriodePanel setIsLeggTilPeriodePanelOpen={setIsLeggTilPeriodePanelOpen} />
+                <LeggTilEllerEndrePeriodeListPanel setIsLeggTilPeriodePanelOpen={setIsLeggTilPeriodePanelOpen} />
             )}
             {uttaksplanRedigering && (
                 <UttaksplanHandlingKnapper

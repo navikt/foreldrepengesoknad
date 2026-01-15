@@ -1,94 +1,9 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-import { BrukerRolleSak_fpoversikt, Familiesituasjon, KontoTypeUttak } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, Familiesituasjon } from '@navikt/fp-types';
 import { UttaksdagenString, formatDateMedUkedag } from '@navikt/fp-utils';
-import { isAfterOrSame, isBeforeOrSame, isDateWithinRange } from '@navikt/fp-validation';
-
-export const getTomKontoTypeValidators = (
-    intl: IntlShape,
-    familiehendelsedato: string,
-    familiesituasjon: Familiesituasjon,
-    fomValue?: string,
-    samtidigUttak?: boolean,
-    kontoType?: KontoTypeUttak,
-) => {
-    const erBarnetFødt = familiesituasjon === 'fødsel';
-
-    const validators = [];
-
-    const ukedagFamiliehendelsedato = UttaksdagenString(familiehendelsedato).denneEllerNeste();
-    const minDateFPFF = UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(15);
-    const maxDateFPFF = UttaksdagenString(ukedagFamiliehendelsedato).forrige();
-    const minDateSamtidigUttak = UttaksdagenString(ukedagFamiliehendelsedato).trekkFra(10);
-
-    switch (kontoType) {
-        case 'AKTIVITETSFRI_KVOTE':
-        case 'MØDREKVOTE':
-        case 'FORELDREPENGER':
-            validators.push(
-                isAfterOrSame(
-                    erBarnetFødt
-                        ? intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel' })
-                        : intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.termin' }),
-                    UttaksdagenString(familiehendelsedato).denneEllerForrige(),
-                ),
-            );
-            break;
-        case 'FEDREKVOTE':
-            if (samtidigUttak) {
-                validators.push(
-                    isAfterOrSame(
-                        erBarnetFødt
-                            ? intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel' })
-                            : intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.termin' }),
-                        minDateSamtidigUttak,
-                    ),
-                );
-            } else {
-                validators.push(
-                    isAfterOrSame(
-                        erBarnetFødt
-                            ? intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel' })
-                            : intl.formatMessage({ id: 'endreTidsPeriodeModal.riktigKvoteFørFødsel.termin' }),
-                        UttaksdagenString(familiehendelsedato).denneEllerForrige(),
-                    ),
-                );
-            }
-            break;
-        case 'FORELDREPENGER_FØR_FØDSEL':
-            validators.push(
-                isDateWithinRange(
-                    intl.formatMessage({ id: 'endreTidsPeriodeModal.foreldrepengerFørFødsel' }),
-                    dayjs(minDateFPFF).toDate(),
-                    dayjs(maxDateFPFF).toDate(),
-                ),
-            );
-            break;
-        case 'FELLESPERIODE':
-            validators.push(
-                (tomValue: string) => {
-                    if (dayjs(tomValue).isBetween(minDateFPFF, maxDateFPFF, 'day', '[]')) {
-                        return intl.formatMessage({
-                            id: 'endreTidsPeriodeModal.foreldrepengerFørFødsel.fellesperiode',
-                        });
-                    }
-
-                    return null;
-                },
-                (tomValue: string) => {
-                    if (dayjs(minDateFPFF).isBetween(fomValue, tomValue, 'day', '[]')) {
-                        return intl.formatMessage({ id: 'endreTidsPeriodeModal.fellesperiodeOverFPFF' });
-                    }
-
-                    return null;
-                },
-            );
-            break;
-    }
-
-    return validators;
-};
+import { isAfterOrSame, isBeforeOrSame } from '@navikt/fp-validation';
 
 export const getTomDiverseValidators = (
     intl: IntlShape,

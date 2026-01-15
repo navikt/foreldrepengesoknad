@@ -298,5 +298,6 @@
     "LeggTilEllerEndrePeriodeForm.Nei": "Nei",
     "LeggTilEllerEndrePeriodeForm.Stillingsprosent.Mor": "Kor mange prosent skal mor jobbe?",
     "LeggTilEllerEndrePeriodeForm.Stillingsprosent.FarMedmor": "Kor mange prosent skal {erMedmor, select, true {medmor} other {far}} jobbe?",
-    "VelgPeriodePanelStep.VelgPeriode": "Du må velga kva for periode du vil endra på"
+    "VelgPeriodePanelStep.VelgPeriode": "Du må velga kva for periode du vil endra på",
+    "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "Du har valgt ein kombinasjon av dagar som ikkje er gyldige for nokon foreldre."
 }
