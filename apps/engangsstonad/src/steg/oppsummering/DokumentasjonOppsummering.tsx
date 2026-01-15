@@ -20,7 +20,7 @@ function TerminDokumentasjonSummary({ dokumentasjon }: { readonly dokumentasjon:
                     <FormattedMessage id="DokumentasjonOppsummering.TerminbekreftelseDokument" />
                 </FormSummary.Label>
                 <FormSummary.Answer>
-                    <VStack gap="2">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
+                    <VStack gap="space-8">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
                 </FormSummary.Answer>
             </FormSummary.Answer>
         </>
@@ -35,7 +35,7 @@ function AdopsjonDokumentasjon({ dokumentasjon }: { readonly dokumentasjon: Vedl
             </FormSummary.Label>
             <FormSummary.Answer>
                 {/*TODO: klikke på lenke*/}
-                <VStack gap="2">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
+                <VStack gap="space-8">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
             </FormSummary.Answer>
         </FormSummary.Answer>
     );
@@ -46,7 +46,7 @@ export function DokumentasjonOppsummering({
     onVilEndreSvar,
 }: {
     readonly dokumentasjon?: Dokumentasjon;
-    readonly onVilEndreSvar: (path: Path) => Promise<void>;
+    readonly onVilEndreSvar: (path: Path) => void;
 }) {
     if (!dokumentasjon || dokumentasjon.vedlegg.length === 0) {
         return null;
@@ -58,6 +58,15 @@ export function DokumentasjonOppsummering({
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="DokumentasjonOppsummering.tittel" />
                 </FormSummary.Heading>
+            </FormSummary.Header>
+            <FormSummary.Answers>
+                {erTerminDokumentasjon(dokumentasjon) ? (
+                    <TerminDokumentasjonSummary dokumentasjon={dokumentasjon} />
+                ) : (
+                    <AdopsjonDokumentasjon dokumentasjon={dokumentasjon} />
+                )}
+            </FormSummary.Answers>
+            <FormSummary.Footer>
                 <FormSummary.EditLink
                     onClick={() =>
                         onVilEndreSvar(
@@ -67,14 +76,7 @@ export function DokumentasjonOppsummering({
                 >
                     <FormattedMessage id="Oppsummering.EndreSvar" />
                 </FormSummary.EditLink>
-            </FormSummary.Header>
-            <FormSummary.Answers>
-                {erTerminDokumentasjon(dokumentasjon) ? (
-                    <TerminDokumentasjonSummary dokumentasjon={dokumentasjon} />
-                ) : (
-                    <AdopsjonDokumentasjon dokumentasjon={dokumentasjon} />
-                )}
-            </FormSummary.Answers>
+            </FormSummary.Footer>
         </FormSummary>
     );
 }

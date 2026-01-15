@@ -4,17 +4,19 @@ on:
   push:
     branches: ['master']
     paths-ignore:
-      - '.github/workflows/build-redirect.yml'
       - 'server/**'
       - 'server-uinnlogget/**'
-      - '.github/workflows/build-server.yml'
+  workflow_dispatch:
 
 jobs:
   deploy-storybook:
     permissions:
       contents: write
       pages: write
+      id-token: write
     uses: navikt/fp-gha-workflows/.github/workflows/deploy-storybook.yml@main
     with:
       package-manager: pnpm
-    secrets: inherit
+      cache: turbo
+    secrets:
+      READER_TOKEN: ${{ secrets.READER_TOKEN }}

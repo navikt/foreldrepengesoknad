@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return,@typescript-eslint/restrict-template-expressions,@typescript-eslint/no-unsafe-assignment */
 import { FastField, Field, FieldProps } from 'formik';
 import React from 'react';
 
@@ -7,7 +8,7 @@ import { TestProps, TypedFormInputValidationProps, UseFastFieldProps } from './.
 import { getErrorPropForFormikInput } from './../../utils/typedFormErrorUtils';
 import { TypedFormikFormContext } from './../typed-formik-form/TypedFormikForm';
 
-export type FormikCheckboxGroupCheckboxProp = Omit<CheckboxProps, 'children' | 'name' | 'checked'> & {
+type FormikCheckboxGroupCheckboxProp = Omit<CheckboxProps, 'children' | 'name' | 'checked'> & {
     label: React.ReactNode;
 } & TestProps;
 
@@ -55,7 +56,7 @@ function FormikCheckboxGroup<FieldName, ErrorType>({
                         className="focusableFieldset"
                         error={getErrorPropForFormikInput({ field, form, context, error })}
                         onChange={(value) => {
-                            form.setFieldValue(field.name, value);
+                            void form.setFieldValue(field.name, value);
                             if (afterOnChange) {
                                 afterOnChange(value);
                             }

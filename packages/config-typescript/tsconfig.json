@@ -1,0 +1,35 @@
+{
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "display": "Default",
+    "compilerOptions": {
+        "target": "ESNext",
+        "useDefineForClassFields": true,
+        "module": "ESNext",
+        "lib": ["ESNext", "DOM"],
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "noEmit": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "composite": false,
+        "declaration": false,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "noUncheckedIndexedAccess": true,
+        "noFallthroughCasesInSwitch": true,
+        "inlineSources": false,
+        "isolatedModules": true,
+        "moduleResolution": "bundler",
+        "preserveWatchOutput": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "allowImportingTsExtensions": true
+    },
+    "references": [
+        {
+            "path": "./ts-config-ref.json"
+        }
+    ],
+    "exclude": ["node_modules"]
+}

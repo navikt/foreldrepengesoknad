@@ -1,7 +1,5 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
-
-import { Næringstype } from '@navikt/fp-types';
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { action } from 'storybook/actions';
 
 import { OppsummeringPanel } from './OppsummeringPanel';
 import {
@@ -11,12 +9,10 @@ import {
 } from './arbeidsforhold/ArbeidsforholdOppsummering';
 import { BoIUtlandetOppsummering } from './utenlandsopphold/BoIUtlandetOppsummering';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const meta = {
     component: OppsummeringPanel,
@@ -29,8 +25,8 @@ export const HarBoddIUtlandetOgFødt: Story = {
     args: {
         appName: 'Engangsstønad',
         sendSøknad: promiseAction(),
-        cancelApplication: action('button-click'),
-        onContinueLater: action('button-click'),
+        onAvsluttOgSlett: action('button-click'),
+        onFortsettSenere: action('button-click'),
         goToPreviousStep: action('button-click'),
         onStepChange: action('button-click'),
         stepConfig: [
@@ -72,8 +68,8 @@ export const ArbeidsforholdOgInntektOppsummering: Story = {
     args: {
         appName: 'Foreldrepenger',
         sendSøknad: promiseAction(),
-        cancelApplication: action('button-click'),
-        onContinueLater: action('button-click'),
+        onAvsluttOgSlett: action('button-click'),
+        onFortsettSenere: action('button-click'),
         goToPreviousStep: action('button-click'),
         onStepChange: action('button-click'),
         stepConfig: [
@@ -88,6 +84,7 @@ export const ArbeidsforholdOgInntektOppsummering: Story = {
             <>
                 <ArbeidsforholdOppsummering
                     arbeidsforhold={[]}
+                    skalViseAlertOmIM={false}
                     arbeidsforholdOgInntekt={{
                         harJobbetSomFrilans: true,
                         harJobbetSomSelvstendigNæringsdrivende: true,
@@ -98,17 +95,16 @@ export const ArbeidsforholdOgInntektOppsummering: Story = {
                 <SelvstendigNæringsdrivendeOppsummering
                     egenNæring={{
                         navnPåNæringen: 'Fiske',
-                        pågående: false,
                         fom: '2018-01-01',
                         tom: '2021-01-01',
-                        næringstype: Næringstype.FISKER,
+                        næringstype: 'FISKE',
                         registrertILand: 'SE',
                         registrertINorge: false,
                         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
                         hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
                         varigEndringBeskrivelse: 'Beskrivelse av varig endring',
                         varigEndringDato: '2021-01-01',
-                        varigEndringInntektEtterEndring: '10000',
+                        varigEndringInntektEtterEndring: 10000,
                     }}
                     onVilEndreSvar={() => {}}
                 />

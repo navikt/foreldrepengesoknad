@@ -1,4 +1,5 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
+import { API_URLS } from 'appData/queries';
 import { RouteParams } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
@@ -10,11 +11,12 @@ import { getArbeidsgiverNavnForTilrettelegging, getTypeArbeidForTilrettelegging 
 
 import { Link, VStack } from '@navikt/ds-react';
 
-import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer, links } from '@navikt/fp-constants';
+import { FileUploader } from '@navikt/fp-filopplaster';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold, Attachment, EGEN_NÆRING_ID, FRILANS_ID } from '@navikt/fp-types';
-import { FileUploader, Step } from '@navikt/fp-ui';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { Attachment, EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { Bedriftsbanner } from '../Bedriftsbanner';
@@ -37,8 +39,8 @@ type SkjemaFormData = {
 
 interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    avbrytSøknad: () => Promise<void>;
-    arbeidsforhold: Arbeidsforhold[];
+    avbrytSøknad: () => void;
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     maxAntallVedlegg?: number;
 }
 
@@ -73,7 +75,7 @@ export const SkjemaSteg = ({
         const antallVedleggAndreTilrettelegginger = tilretteleggingerVedlegg
             ? Object.keys(tilretteleggingerVedlegg)
                   .filter((id) => id !== tilretteleggingId)
-                  .reduce((total, id) => total + tilretteleggingerVedlegg[id].length, 0)
+                  .reduce((total, id) => total + tilretteleggingerVedlegg[id]!.length, 0)
             : 0;
         const antallNyeVedlegg = values.vedlegg ? values.vedlegg.length : 0;
         const antallVedlegg = antallVedleggAndreTilrettelegginger + antallNyeVedlegg;
@@ -111,56 +113,56 @@ export const SkjemaSteg = ({
     const navnArbeidsgiver = getArbeidsgiverNavnForTilrettelegging(intl, tilretteleggingId, arbeidsforhold);
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            steps={stepConfig}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            onStepChange={navigator.goToStep}
-            noFieldsRequired
-        >
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    {valgteArbeidsforhold && valgteArbeidsforhold.length > 1 && (
-                        <Bedriftsbanner arbeidsforholdType={typeArbeidsgiver} arbeidsforholdNavn={navnArbeidsgiver} />
-                    )}
-                    <VStack gap="4">
-                        <FileUploader
-                            label={finnFileUploaderLabel(intl, tilretteleggingId)}
-                            description={
-                                tilretteleggingId === FRILANS_ID || tilretteleggingId === EGEN_NÆRING_ID ? (
-                                    <FormattedMessage id="skjema.vedlegg.description.frilansSN" />
-                                ) : (
-                                    <FormattedMessage
-                                        id={'skjema.vedlegg.description.arbeidsgiver'}
-                                        values={{
-                                            a: (msg: any) => (
-                                                <Link
-                                                    rel="noopener noreferrer"
-                                                    href={links.arbeidstilsynetSkjema}
-                                                    target="_blank"
-                                                >
-                                                    {msg}
-                                                </Link>
-                                            ),
-                                        }}
-                                    />
-                                )
-                            }
-                            attachmentType={AttachmentType.TILRETTELEGGING}
-                            skjemanummer={Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING}
-                            existingAttachments={defaultValues?.vedlegg}
-                            updateAttachments={updateAttachments}
-                            saveAttachment={getSaveAttachmentFetch(import.meta.env.BASE_URL, 'svangerskapspenger')}
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step steps={stepConfig} onStepChange={navigator.goToStep} noFieldsRequired>
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="space-40">
+                        <ErrorSummaryHookForm />
+                        {valgteArbeidsforhold && valgteArbeidsforhold.length > 1 && (
+                            <Bedriftsbanner
+                                arbeidsforholdType={typeArbeidsgiver}
+                                arbeidsforholdNavn={navnArbeidsgiver}
+                            />
+                        )}
+                        <VStack gap="space-16">
+                            <FileUploader
+                                label={finnFileUploaderLabel(intl, tilretteleggingId)}
+                                description={
+                                    tilretteleggingId === FRILANS_ID || tilretteleggingId === EGEN_NÆRING_ID ? (
+                                        <FormattedMessage id="skjema.vedlegg.description.frilansSN" />
+                                    ) : (
+                                        <FormattedMessage
+                                            id={'skjema.vedlegg.description.arbeidsgiver'}
+                                            values={{
+                                                a: (msg) => (
+                                                    <Link
+                                                        rel="noopener noreferrer"
+                                                        href={links.arbeidstilsynetSkjema}
+                                                        target="_blank"
+                                                    >
+                                                        {msg}
+                                                    </Link>
+                                                ),
+                                            }}
+                                        />
+                                    )
+                                }
+                                attachmentType={AttachmentType.TILRETTELEGGING}
+                                skjemanummer={Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING}
+                                existingAttachments={defaultValues?.vedlegg}
+                                updateAttachments={updateAttachments}
+                                uploadPath={API_URLS.sendVedlegg}
+                            />
+                        </VStack>
+                        <StepButtonsHookForm
+                            onAvsluttOgSlett={avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            isDisabledAndLoading={avventerVedlegg}
                         />
                     </VStack>
-                    <StepButtonsHookForm
-                        goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        isDisabledAndLoading={avventerVedlegg}
-                    />
-                </VStack>
-            </RhfForm>
-        </Step>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 };

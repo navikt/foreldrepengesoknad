@@ -1,7 +1,7 @@
-import { isAxiosError } from 'axios';
 import type { NextFunction, Request, Response } from 'express';
 
-// TODO: Legg til mer avansert feilhåndtering
+import logger from './logger';
+
 export function errorHandling(
     error: Error,
     _request: Request,
@@ -9,10 +9,7 @@ export function errorHandling(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _next: NextFunction,
 ) {
-    if (isAxiosError(error)) {
-        // eslint-disable-next-line no-console
-        console.error(error.response?.data);
-    }
+    logger.error('Serverfeil', error);
     response.status(500).json({
         error: 'Internal server error',
     });

@@ -1,5 +1,5 @@
 {
-    "extends": "tsconfig/vite.json",
+    "extends": "@navikt/fp-config-typescript/tsconfig.json",
     "compilerOptions": {
         "jsx": "react-jsx",
         "baseUrl": "./src",
@@ -9,11 +9,6 @@
         },
         "types": ["@testing-library/jest-dom", "vitest/globals", "vite/client"]
     },
-    "include": ["src"],
-    "exclude": ["node_modules"],
-    "references": [
-        {
-            "path": "./tsconfig.node.json"
-        }
-    ]
+    "include": ["src", "mock-api", "vitest", "../../@types/vite.env.d.ts"],
+    "exclude": ["node_modules"]
 }

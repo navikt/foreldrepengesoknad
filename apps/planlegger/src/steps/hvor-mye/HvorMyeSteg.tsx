@@ -13,21 +13,21 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { BodyShort, Heading, Link, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { RhfForm, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { LocaleAll, Satser } from '@navikt/fp-types';
+import { RhfForm, RhfFormattertTallTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
+import { useScrollBehaviour } from '@navikt/fp-utils';
 import { isValidNumberForm, notEmpty } from '@navikt/fp-validation';
 
 import { Utbetaling } from './infoboks/Utbetaling';
 
 interface Props {
-    locale: LocaleAll;
     satser: Satser;
 }
 
-export const HvorMyeSteg = ({ locale, satser }: Props) => {
+export const HvorMyeSteg = ({ satser }: Props) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator(locale);
+    const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
     const hvorMye = useContextGetData(ContextDataType.HVOR_MYE);
@@ -48,7 +48,7 @@ export const HvorMyeSteg = ({ locale, satser }: Props) => {
     const lønnSøker1 = formMethods.watch('lønnSøker1');
     const lønnSøker2 = formMethods.watch('lønnSøker2');
 
-    const erValidLønn = (verdi: any): boolean => {
+    const erValidLønn = (verdi: number | undefined): boolean => {
         if (!verdi) return false;
         const strVerdi = String(verdi);
         return strVerdi.length >= 3 && /^\d+$/.test(strVerdi);
@@ -62,35 +62,28 @@ export const HvorMyeSteg = ({ locale, satser }: Props) => {
         navigator.goToNextStep(PlanleggerRoutes.HVOR_LANG_PERIODE);
     };
 
+    const { ref } = useScrollBehaviour();
+
     return (
-        <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
+        <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
-                <VStack gap="10" style={{ flex: 1 }}>
-                    <VStack gap="6">
+                <VStack gap="space-40" style={{ flex: 1 }}>
+                    <VStack gap="space-24">
                         <Heading size="medium" spacing level="2">
                             <FormattedMessage id="HvorMyeSteg.Tittel" />
                         </Heading>
-                        <VStack gap="2">
+                        <VStack gap="space-8">
                             <BluePanel isDarkBlue={true}>
-                                <RhfTextField
+                                <RhfFormattertTallTextField
+                                    name={hvemHarRett === 'kunSøker2HarRett' ? 'lønnSøker2' : 'lønnSøker1'}
+                                    control={formMethods.control}
                                     label={
                                         hvemHarRett === 'kunSøker2HarRett' ? (
-                                            <FormattedMessage
-                                                id="HvorMyeSteg.Lønn"
-                                                values={{
-                                                    hvem: fornavnSøker2,
-                                                }}
-                                            />
+                                            <FormattedMessage id="HvorMyeSteg.Lønn" values={{ hvem: fornavnSøker2 }} />
                                         ) : (
-                                            <FormattedMessage
-                                                id="HvorMyeSteg.Lønn"
-                                                values={{
-                                                    hvem: fornavnSøker1,
-                                                }}
-                                            />
+                                            <FormattedMessage id="HvorMyeSteg.Lønn" values={{ hvem: fornavnSøker1 }} />
                                         )
                                     }
-                                    name="lønnSøker1"
                                     validate={[isValidNumberForm(intl.formatMessage({ id: 'Validering.ValidNumber' }))]}
                                     description={intl.formatMessage({ id: 'HvorMyeSteg.LønnBeskrivelse' })}
                                 />
@@ -108,16 +101,17 @@ export const HvorMyeSteg = ({ locale, satser }: Props) => {
                             )}
                         </VStack>
                         {!kunEnAvSøkereneHarRett && fornavnSøker2 && (
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <BluePanel isDarkBlue={true}>
-                                    <RhfTextField
+                                    <RhfFormattertTallTextField
+                                        name="lønnSøker2"
+                                        control={formMethods.control}
                                         label={
                                             <FormattedMessage
                                                 id="HvorMyeSteg.Lønn"
                                                 values={{ hvem: getFornavnPåSøker2(hvemPlanlegger, intl) }}
                                             />
                                         }
-                                        name="lønnSøker2"
                                         validate={[
                                             isValidNumberForm(intl.formatMessage({ id: 'Validering.ValidNumber' })),
                                         ]}
@@ -133,14 +127,14 @@ export const HvorMyeSteg = ({ locale, satser }: Props) => {
                                 )}
                             </VStack>
                         )}
-                        <VStack gap="2">
+                        <VStack gap="space-8">
                             <Infobox
                                 header={<FormattedMessage id="HvorMyeSteg.ViteMer" values={{ erAleneforsørger }} />}
                                 icon={
                                     <SackKronerIcon
                                         height={24}
                                         width={24}
-                                        color="#020C1CAD"
+                                        color="var(--ax-bg-neutral-strong)"
                                         fontSize="1.5rem"
                                         aria-hidden
                                     />
@@ -151,7 +145,7 @@ export const HvorMyeSteg = ({ locale, satser }: Props) => {
                                     <FormattedMessage
                                         id="HvorMyeSteg.MerDetaljert"
                                         values={{
-                                            a: (msg: any) => (
+                                            a: (msg) => (
                                                 <Link href={links.hvorMye} target="_blank" rel="noreferrer" inlineText>
                                                     {msg}
                                                 </Link>

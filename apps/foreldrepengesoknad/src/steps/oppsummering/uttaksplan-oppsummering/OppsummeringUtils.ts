@@ -7,11 +7,11 @@ import {
     Periodetype,
     Utsettelsesperiode,
 } from '@navikt/fp-common';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 type MessageValue = string | number | boolean | Date | null | undefined;
 
-const getValgtArbeidsgiverNavn = (arbeidsforhold: Arbeidsforhold[], orgnr?: string) => {
+const getValgtArbeidsgiverNavn = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[], orgnr?: string) => {
     if (orgnr) {
         const valgtArbeidsgiver = arbeidsforhold.find(
             ({ arbeidsgiverId, arbeidsgiverIdType }) => arbeidsgiverIdType === 'orgnr' && arbeidsgiverId === orgnr,
@@ -27,7 +27,7 @@ export const getArbeidsformTekst = (
     intl: IntlShape,
     arbeidsformer: Arbeidsform[],
     orgnumre?: string[],
-    arbeidsforhold?: Arbeidsforhold[],
+    arbeidsforhold?: EksternArbeidsforholdDto_fpoversikt[],
 ) => {
     let arbeidstakerTekster: string[] = [];
     let arbeidsformerTekster: string[] = [];
@@ -59,6 +59,6 @@ export const getÅrsakTekst = (
     messageValues?: { [key: string]: MessageValue },
 ) => {
     const intlKeyPrefix = type === Periodetype.Utsettelse ? 'utsettelsesårsak.' : 'overføringsårsaktype.';
-    //@ts-ignore Fiks dynamisk id
+    //@ts-expect-error Fiks dynamisk id
     return intl.formatMessage({ id: `uttaksplan.${intlKeyPrefix + årsak}` }, messageValues);
 };

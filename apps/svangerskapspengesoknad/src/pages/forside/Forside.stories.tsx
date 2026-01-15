@@ -1,18 +1,21 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, SvpDataContext } from 'appData/SvpDataContext';
+import { API_URLS } from 'appData/queries';
+import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
+import { action } from 'storybook/actions';
+import { ingenSaker, saker } from 'storybookData/saker/saker';
+
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { Forside } from './Forside';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
@@ -39,7 +42,23 @@ export const Default: Story = {
         setHarGodkjentVilkår: action('button-click'),
         mellomlagreSøknadOgNaviger: promiseAction(),
         harGodkjentVilkår: false,
-        onChangeLocale: action('button-click'),
-        locale: 'nb',
+    },
+    parameters: {
+        msw: {
+            handlers: [http.get(API_URLS.saker, () => HttpResponse.json(ingenSaker))],
+        },
+    },
+};
+
+export const MedEksisterendeSøknad: Story = {
+    args: {
+        setHarGodkjentVilkår: action('button-click'),
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        harGodkjentVilkår: false,
+    },
+    parameters: {
+        msw: {
+            handlers: [http.get(API_URLS.saker, () => HttpResponse.json(saker))],
+        },
     },
 };

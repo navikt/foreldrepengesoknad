@@ -1,1 +1,1 @@
-export { loggAmplitudeEvent } from './src/amplitude';
+export { loggUmamiEvent } from './src/umami';

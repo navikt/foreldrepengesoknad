@@ -21,3 +21,5 @@ akseptansetest/20*/
 index-decorated.html
 *.bak
 mellomlagretdata.json
+fpoversikt-swagger.json
+fpsoknad-swagger.json

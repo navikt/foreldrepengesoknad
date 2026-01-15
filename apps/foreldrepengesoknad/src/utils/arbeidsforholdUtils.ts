@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { dateToISOString, formatDate } from '@navikt/fp-utils';
 
 /*
@@ -61,7 +61,7 @@ const getFørsteUttaksdag2UkerFørFødsel = (familiehendelsesdato: string, termi
         termindato !== undefined
             ? dayjs(termindato).subtract(ANTALL_DAGER_TO_UKER, 'day')
             : dayjs(familiehendelsesdato).subtract(ANTALL_DAGER_TO_UKER, 'day');
-    const datoÅRegneFra = dayjs.min(terminEllerFamHendelsesdatoMinusToUker, dayjs(familiehendelsesdato))!;
+    const datoÅRegneFra = dayjs.min(terminEllerFamHendelsesdatoMinusToUker, dayjs(familiehendelsesdato));
     return UttaksdagenString(datoÅRegneFra.format(ISO_DATE_FORMAT)).denneEllerNeste();
 };
 
@@ -99,11 +99,11 @@ const getFraDatoForAktiveArbeidsforhold = (
 };
 
 export const getAktiveArbeidsforhold = (
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     erAdopsjon: boolean,
     erFarEllerMedmor: boolean,
     familiehendelsesdato?: string,
-): Arbeidsforhold[] => {
+): EksternArbeidsforholdDto_fpoversikt[] => {
     const fraDato = getFraDatoForAktiveArbeidsforhold(erAdopsjon, erFarEllerMedmor, familiehendelsesdato);
     return arbeidsforhold.filter(
         (a) =>

@@ -3,7 +3,7 @@ import minMax from 'dayjs/plugin/minMax';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
-import { Alert, BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Radio, ReadMore, VStack, omit } from '@navikt/ds-react';
 
 import { DATE_4_YEARS_AGO, DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO } from '@navikt/fp-constants';
 import {
@@ -14,8 +14,8 @@ import {
     RhfTextField,
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { AppName, EgenNæring, Næringstype } from '@navikt/fp-types';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { AppName, NæringDto } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
 import { femMånederSiden, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
 import {
@@ -32,10 +32,11 @@ import {
 
 import { OrgnummerEllerLand } from './components/OrgnummerEllerLand';
 import { VarigEndringSpørsmål } from './components/VarigEndringSpørsmål';
+import { NæringFormValues } from './types/NæringFormValues';
 
 dayjs.extend(minMax);
 
-const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
+const hasValue = (v: string | undefined | null) => v !== '' && v !== undefined && v !== null;
 const getMinInputTilOgMedValue = (fom: string | undefined, otherMinDate: Date) => {
     let min = otherMinDate;
     if (fom && hasValue(fom)) {
@@ -64,23 +65,25 @@ const validateEgenNæringNavn = (intl: IntlShape, erValgfri: boolean) => (value:
 };
 
 interface Props<TYPE> {
-    egenNæring?: EgenNæring;
-    saveOnNext: (formValues: EgenNæring) => void;
-    saveOnPrevious: (formValues: EgenNæring | undefined) => void;
-    cancelApplication: () => void;
-    onContinueLater?: () => void;
+    egenNæring?: NæringDto;
+    saveOnNext: (formValues: NæringDto) => void;
+    saveOnPrevious: (formValues: NæringDto | undefined) => void;
+    onAvsluttOgSlett: () => void;
+    onFortsettSenere?: () => void;
     onStepChange?: (id: TYPE) => void;
     goToPreviousStep: () => void;
     stepConfig: Array<ProgressStep<TYPE>>;
     appOrigin: AppName;
 }
 
+export const EGEN_NÆRING_ID = 'naering';
+
 export const EgenNæringPanel = <TYPE extends string>({
     egenNæring,
     saveOnNext,
     saveOnPrevious,
-    cancelApplication,
-    onContinueLater,
+    onAvsluttOgSlett,
+    onFortsettSenere,
     onStepChange,
     goToPreviousStep,
     stepConfig,
@@ -88,9 +91,15 @@ export const EgenNæringPanel = <TYPE extends string>({
 }: Props<TYPE>) => {
     const intl = useIntl();
 
-    const formMethods = useForm<EgenNæring>({
+    /**
+     * Poenget her er at når egenNæring ikke er oppgit har man et helt blankt skjema. Da vil vi "pågående" skal være undefined for å tvinge et valg.
+     * Hvis egenNæring finnes har bruker gjort et valg, og da vil vi velge false/true for radioknappen
+     */
+    const egenNæringDefaultValue = egenNæring === undefined ? undefined : !egenNæring.tom;
+
+    const formMethods = useForm<NæringFormValues>({
         shouldUnregister: true,
-        defaultValues: egenNæring,
+        defaultValues: { ...egenNæring, pågående: egenNæringDefaultValue },
     });
 
     const navnPåNæringSpm = intl.formatMessage({ id: 'egenNæring.navnPåNæring' });
@@ -105,46 +114,45 @@ export const EgenNæringPanel = <TYPE extends string>({
     const yrkesaktivSiste3År = formMethods.watch('harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene');
 
     const navnPåNæringLabel =
-        næringsType === Næringstype.FISKER
-            ? `${navnPåNæringSpm} ${intl.formatMessage({ id: 'valgfritt' })}`
-            : navnPåNæringSpm;
+        næringsType === 'FISKE' ? `${navnPåNæringSpm} ${intl.formatMessage({ id: 'valgfritt' })}` : navnPåNæringSpm;
 
     const erNyoppstartet = erVirksomhetRegnetSomNyoppstartet(næringFom);
 
+    const onSubmit = (values: NæringFormValues) => {
+        const valuesUtenPågående = omit(values, ['pågående']);
+        saveOnNext(valuesUtenPågående);
+    };
+
     return (
-        <Step
-            onCancel={cancelApplication}
-            steps={stepConfig}
-            onContinueLater={onContinueLater}
-            onStepChange={onStepChange}
-            someFieldsOptional
-        >
-            <RhfForm formMethods={formMethods} onSubmit={saveOnNext}>
-                <VStack gap="10">
+        <Step steps={stepConfig} onStepChange={onStepChange} someFieldsOptional>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                <VStack gap="space-40">
                     <ErrorSummaryHookForm />
                     <RhfRadioGroup
                         name="næringstype"
+                        control={formMethods.control}
                         label={intl.formatMessage({ id: 'egenNæring.næringstype' })}
                         validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringType.påkrevd' }))]}
                     >
-                        <Radio value={Næringstype.DAGMAMMA}>
+                        <Radio value="DAGMAMMA">
                             <FormattedMessage id="egenNæring.næringstype.dagmamma" />
                         </Radio>
-                        <Radio value={Næringstype.FISKER}>
+                        <Radio value="FISKE">
                             <FormattedMessage id="egenNæring.næringstype.fiske" />
                         </Radio>
-                        <Radio value={Næringstype.JORDBRUK}>
+                        <Radio value="JORDBRUK_SKOGBRUK">
                             <FormattedMessage id="egenNæring.næringstype.jordbrukSkogbruk" />
                         </Radio>
-                        <Radio value={Næringstype.ANNET}>
+                        <Radio value="ANNEN">
                             <FormattedMessage id="egenNæring.næringstype.annen" />
                         </Radio>
                     </RhfRadioGroup>
                     <RhfTextField
                         name="navnPåNæringen"
+                        control={formMethods.control}
                         label={navnPåNæringLabel}
                         validate={[
-                            validateEgenNæringNavn(intl, næringsType === Næringstype.FISKER),
+                            validateEgenNæringNavn(intl, næringsType === 'FISKE'),
                             hasLegalChars((ugyldigeTegn: string) =>
                                 intl.formatMessage(
                                     { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
@@ -168,6 +176,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                     />
                     <RhfRadioGroup
                         name="registrertINorge"
+                        control={formMethods.control}
                         label={intl.formatMessage(
                             { id: 'egenNæring.erNæringenRegistrertINorge' },
                             {
@@ -188,11 +197,12 @@ export const EgenNæringPanel = <TYPE extends string>({
                         </Radio>
                     </RhfRadioGroup>
                     <OrgnummerEllerLand
-                        orgNummerErValgfritt={næringsType === Næringstype.FISKER}
+                        orgNummerErValgfritt={næringsType === 'FISKE'}
                         registrertINorge={registrertINorge}
                     />
                     <RhfDatepicker
                         name="fom"
+                        control={formMethods.control}
                         label={intl.formatMessage(
                             { id: 'egenNæring.næring.fom' },
                             {
@@ -217,6 +227,7 @@ export const EgenNæringPanel = <TYPE extends string>({
 
                     <RhfRadioGroup
                         name="pågående"
+                        control={formMethods.control}
                         label={intl.formatMessage(
                             { id: 'egenNæring.næring.pågående' },
                             {
@@ -238,6 +249,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                     {pågående === false && (
                         <RhfDatepicker
                             name="tom"
+                            control={formMethods.control}
                             label={intl.formatMessage(
                                 { id: 'egenNæring.næring.tom' },
                                 {
@@ -284,6 +296,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                         <>
                             <RhfTextField
                                 name="næringsinntekt"
+                                control={formMethods.control}
                                 label={intl.formatMessage({ id: 'egenNæring.næringsinntekt' })}
                                 description={intl.formatMessage({ id: 'egenNæring.næringsinntekt.description' })}
                                 validate={[
@@ -303,7 +316,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                             />
                             <ReadMore
                                 onOpenChange={(open) =>
-                                    loggAmplitudeEvent({
+                                    loggUmamiEvent({
                                         origin: appOrigin,
                                         eventName: open ? 'readmore åpnet' : 'readmore lukket',
                                         eventData: { tittel: 'egenNæring.næringsinntekt.info.apneLabel' },
@@ -317,6 +330,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                             </ReadMore>
                             <RhfRadioGroup
                                 name="harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene"
+                                control={formMethods.control}
                                 label={intl.formatMessage({ id: 'egenNæring.blittYrkesaktivSiste3År' })}
                                 validate={[
                                     isRequired(
@@ -336,6 +350,7 @@ export const EgenNæringPanel = <TYPE extends string>({
                             {yrkesaktivSiste3År === true && (
                                 <RhfDatepicker
                                     name="oppstartsdato"
+                                    control={formMethods.control}
                                     label={intl.formatMessage({ id: 'egenNæring.yrkesaktivDato' })}
                                     validate={[
                                         isRequired(intl.formatMessage({ id: 'valideringsfeil.yrkesaktiv.påkrevd' })),
@@ -352,7 +367,9 @@ export const EgenNæringPanel = <TYPE extends string>({
                         </>
                     )}
                     <Alert variant="info">{intl.formatMessage({ id: 'egenNæring.veileder' })}</Alert>
-                    <StepButtonsHookForm<EgenNæring>
+                    <StepButtonsHookForm<NæringFormValues>
+                        onAvsluttOgSlett={onAvsluttOgSlett}
+                        onFortsettSenere={onFortsettSenere}
                         goToPreviousStep={goToPreviousStep}
                         saveDataOnPreviousClick={saveOnPrevious}
                     />

@@ -1,49 +1,49 @@
+import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
+import { Path } from 'appData/paths';
+import { API_URLS } from 'appData/queries';
 import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
 
-import { useAbortSignal } from '@navikt/fp-api';
-import { Kvittering, LocaleAll } from '@navikt/fp-types';
+import { EngangsstønadDto, Målform, PersonDto_fpoversikt } from '@navikt/fp-types';
+import { getDecoratorLanguageCookie, useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './EsDataContext';
 
 // TODO Vurder om ein heller bør mappa fram og tilbake i barn-komponenten. Er nok bedre å gjera det
 const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
-    const vedleggreferanser = dokumentasjon?.vedlegg.map((v) => v.id) || [];
     if (erAdopsjon(omBarnet)) {
         return {
-            type: 'adopsjon',
+            type: 'adopsjon' as const,
             antallBarn: omBarnet.antallBarn,
             fødselsdatoer: omBarnet.fødselsdatoer.map((f) => f.dato),
             adopsjonsdato: omBarnet.adopsjonsdato,
             adopsjonAvEktefellesBarn: omBarnet.adopsjonAvEktefellesBarn,
-            vedleggreferanser,
         };
     }
     if (erBarnetFødt(omBarnet)) {
         return {
-            type: 'fødsel',
+            type: 'fødsel' as const,
             antallBarn: omBarnet.antallBarn,
             fødselsdato: omBarnet.fødselsdato,
             termindato: omBarnet.termindato,
-            vedleggreferanser: [],
         };
     }
 
     if (harBarnetTermindato(omBarnet) && dokumentasjon && erTerminDokumentasjon(dokumentasjon)) {
         return {
-            type: 'termin',
+            type: 'termin' as const,
             antallBarn: omBarnet.antallBarn,
             termindato: omBarnet.termindato,
             terminbekreftelseDato: dokumentasjon.terminbekreftelsedato,
-            vedleggreferanser,
         };
     }
 
-    throw Error('Det er feil i data om barnet');
+    throw new Error('Det er feil i data om barnet');
 };
 
 // TODO (TOR) Fiks lokalisering
@@ -51,13 +51,10 @@ const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: Kvittering) => void) => {
+export const useEsSendSøknad = (personinfo: PersonDto_fpoversikt) => {
+    const navigate = useNavigate();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
-
-    const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad`),
-    });
 
     const send = async () => {
         const omBarnet = notEmpty(hentData(ContextDataType.OM_BARNET));
@@ -66,39 +63,42 @@ export const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: 
         const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
         const søknad = {
-            type: 'engangsstønad',
-            språkkode: locale,
+            søkerinfo: {
+                fnr: personinfo.fnr,
+                navn: personinfo.navn,
+            },
+            språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform,
             barn: mapBarn(omBarnet, dokumentasjon),
             utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
             vedlegg:
                 dokumentasjon?.vedlegg.map((vedlegg) => ({
                     ...vedlegg,
                     dokumenterer: {
-                        type: 'barn',
+                        type: 'BARN',
                     },
                 })) ?? [],
-        };
+        } satisfies EngangsstønadDto;
 
         const signal = initAbortSignal();
 
         try {
-            const response = await ky.post(`${import.meta.env.BASE_URL}/rest/soknad/engangsstonad`, {
+            await ky.post(API_URLS.sendSøknad, {
                 json: søknad,
                 signal,
             });
 
-            slettMellomlagring();
-
-            setKvittering((await response.json()) as Kvittering);
+            void ky.delete(API_URLS.mellomlagring);
+            void navigate(Path.KVITTERING);
         } catch (error: unknown) {
             if (error instanceof HTTPError) {
                 if (signal.aborted || error.response.status === 401 || error.response.status === 403) {
                     throw error;
                 }
 
-                const jsonResponse = await error.response.json();
-                const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
-                throw Error(FEIL_VED_INNSENDING + callIdForBruker);
+                const jsonResponse = await error.response.json<{ uuid?: string }>();
+                Sentry.captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
+                const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
+                throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
             }
             if (error instanceof Error) {
                 throw error;

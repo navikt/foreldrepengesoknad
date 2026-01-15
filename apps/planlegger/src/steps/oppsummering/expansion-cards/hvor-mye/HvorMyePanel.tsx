@@ -1,6 +1,6 @@
 import { WalletIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
@@ -19,7 +19,6 @@ interface Props {
 }
 
 export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
-    const locale = useIntl().locale;
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const erAlenesøker = erAlene(hvemPlanlegger);
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
@@ -34,9 +33,9 @@ export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
         Math.round(Math.min((lønn * 12) / 260, dailyMax) * decimal);
 
     return (
-        <VStack gap="10">
+        <VStack gap="space-40">
             <BluePanel>
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <HStack justify="space-between" wrap={false}>
                         <Heading size="xsmall" level="4" spacing>
                             <FormattedMessage
@@ -44,13 +43,19 @@ export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
                                 values={{
                                     hvem: capitalizeFirstLetter(fornavn),
                                     erAlenesøker,
-                                    utbetaling100: formatCurrencyWithKr(getDailyPayment(lønnSøker, 1), locale),
-                                    utbetaling80: formatCurrencyWithKr(getDailyPayment(lønnSøker, decimal80), locale),
+                                    utbetaling100: formatCurrencyWithKr(getDailyPayment(lønnSøker, 1)),
+                                    utbetaling80: formatCurrencyWithKr(getDailyPayment(lønnSøker, decimal80)),
                                 }}
                             />
                         </Heading>
                         <IconCircleWrapper size="medium" color="blue">
-                            <WalletIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />
+                            <WalletIcon
+                                height={24}
+                                width={24}
+                                color="var(--ax-bg-accent-strong)"
+                                fontSize="1.5rem"
+                                aria-hidden
+                            />
                         </IconCircleWrapper>
                     </HStack>
 
@@ -58,8 +63,8 @@ export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
                         <FormattedMessage
                             id="HvorMyeOppsummering.DetteBlir"
                             values={{
-                                utbetaling100: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, 1), locale),
-                                utbetaling80: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, decimal80), locale),
+                                utbetaling100: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, 1)),
+                                utbetaling80: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, decimal80)),
                             }}
                         />
                     </BodyLong>
@@ -69,8 +74,8 @@ export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
                                 <FormattedMessage
                                     id="HvorMyeOppsummering.NAVDekker"
                                     values={{
-                                        maksInntekt: formatCurrencyWithKr(annualMax, locale),
-                                        a: (msg: any) => (
+                                        maksInntekt: formatCurrencyWithKr(annualMax),
+                                        a: (msg) => (
                                             <Link href={links.grunnbeløpet} target="_blank" rel="noreferrer">
                                                 {msg}
                                             </Link>
@@ -96,7 +101,7 @@ export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
                             values={{
                                 erAlenesøker,
                                 hvem: fornavn,
-                                inntekt: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, 1), locale),
+                                inntekt: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, 1)),
                             }}
                         />
                     </BodyLong>

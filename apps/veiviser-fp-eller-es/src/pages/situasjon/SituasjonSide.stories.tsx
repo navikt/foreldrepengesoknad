@@ -1,23 +1,10 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { FpEllerEsRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 
-import { SituasjonSide } from './SituasjonSide';
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
 
-const DEFAULT_SATSER = {
-    engangstønad: [
-        {
-            fom: '01.01.2023',
-            verdi: 92648,
-        },
-    ],
-    grunnbeløp: [
-        {
-            fom: '01.05.2024',
-            verdi: 124028,
-        },
-    ],
-};
+import { SituasjonSide } from './SituasjonSide';
 
 const meta = {
     title: 'fpEllerEs/SituasjonSide',

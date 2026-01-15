@@ -10,9 +10,7 @@ import { IconCircleWrapper } from '@navikt/fp-ui';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import styles from './info-om-neste-barn.module.css';
-
-export interface Props {
+interface Props {
     minsterettUkerToTette?: number;
 }
 
@@ -20,20 +18,19 @@ export const InfoOmNesteBarn = ({ minsterettUkerToTette }: Props) => {
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
-    const startStønadsperiodeNyttBarn =
-        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
-    const familiehendelsedatoNesteBarn =
-        barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
+    const startStønadsperiodeNyttBarn = barnFraNesteSak ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+    const familiehendelsedatoNesteBarn = barnFraNesteSak ? barnFraNesteSak.familiehendelsesdato : undefined;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erToTette = getToTetteReglerGjelder(familiehendelsesdato, familiehendelsedatoNesteBarn);
     const minsterettToTetteAntallUkerTekst = [minsterettUkerToTette, intl.formatMessage({ id: 'uker' })].join(' ');
-    const sisteUttaksdagDetteBarnet =
-        startStønadsperiodeNyttBarn !== undefined ? Uttaksdagen(startStønadsperiodeNyttBarn).forrige() : undefined;
+    const sisteUttaksdagDetteBarnet = startStønadsperiodeNyttBarn
+        ? Uttaksdagen(startStønadsperiodeNyttBarn).forrige()
+        : undefined;
 
     return (
-        <Box padding="4" background="surface-alt-3-subtle" className={styles.infoOmNesteBarn}>
+        <Box.New padding="4" background="brand-blue-moderate" className="mb-6 p-4">
             <HStack justify="space-between" align="start">
-                <VStack gap="2" style={{ width: '85%' }}>
+                <VStack gap="space-8" style={{ width: '85%' }}>
                     <Heading size="xsmall">
                         {erToTette ? (
                             <FormattedMessage
@@ -68,9 +65,9 @@ export const InfoOmNesteBarn = ({ minsterettUkerToTette }: Props) => {
                     </BodyShort>
                 </VStack>
                 <IconCircleWrapper size="medium" color="lightBlue">
-                    <BabyWrappedIcon height={24} width={24} color="#005B82" />
+                    <BabyWrappedIcon height={24} width={24} color="var(--ax-brand-blue-800)" />
                 </IconCircleWrapper>
             </HStack>
-        </Box>
+        </Box.New>
     );
 };

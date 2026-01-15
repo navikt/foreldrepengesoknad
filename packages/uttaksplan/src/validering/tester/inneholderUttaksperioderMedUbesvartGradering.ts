@@ -1,17 +1,21 @@
-import { RegelTestresultat } from '../utils/types/regelTypes';
 import dayjs from 'dayjs';
-import { Periode, Søknadsinfo, Uttaksperiode, isUttaksperiode } from '@navikt/fp-common';
+
+import { Periode, Søknadsinfo, isUttaksperiode } from '@navikt/fp-common';
+
 import { graderingSkalBesvares } from '../../utils/uttaksskjema/graderingSkalBesvares';
+import { RegelTestresultat } from '../utils/types/regelTypes';
 
 export const inneholderUttaksperioderMedUbesvartGradering = (grunnlag: Søknadsinfo): RegelTestresultat => {
-    const uttaksperioder = grunnlag.perioder.filter((p: Periode) => isUttaksperiode(p)) as Uttaksperiode[];
+    const uttaksperioder = grunnlag.perioder.filter((p: Periode) => isUttaksperiode(p));
     const perioderMedUbesvartGradering = uttaksperioder
         .filter((p) =>
             graderingSkalBesvares(
                 p.type,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 p.konto,
                 grunnlag.familiehendelsesdato,
                 grunnlag.søkerErFarEllerMedmor,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 p.erMorForSyk,
                 p.tidsperiode,
             ),

@@ -3,7 +3,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, GuidePanel } from '@navikt/ds-react';
 
-import { UtsettelseÅrsakType } from '@navikt/fp-common';
+import { UtsettelsesÅrsak } from '@navikt/fp-types';
 
 import Block from '../../../../common/block/Block';
 import { FormikRadioProp } from '../../../../formik-wrappers/components/formik-radio-group/FormikRadioGroup';
@@ -30,45 +30,45 @@ const getUtsettelseÅrsakOptions = (
     erMorUfør: boolean,
     søkerErFarEllerMedmorOgKunDeHarRett: boolean,
 ) => {
-    const allRadios: FormikRadioProp[] = [
+    const allRadios: Array<Omit<FormikRadioProp, 'value'> & { value: UtsettelsesÅrsak }> = [
         {
             label: intl.formatMessage({ id: 'uttaksplan.utsettelseårsak.jegskalhaferie' }),
-            value: UtsettelseÅrsakType.Ferie,
+            value: 'LOVBESTEMT_FERIE',
             disabled: periodenErKunHelligdager === true,
         },
         {
             label: intl.formatMessage({ id: 'uttaksplan.utsettelseårsak.jegskaljobbeheltid' }),
-            value: UtsettelseÅrsakType.Arbeid,
+            value: 'ARBEID',
         },
         {
             label: intl.formatMessage({ id: 'uttaksplan.utsettelseårsak.pgasykdom' }),
-            value: UtsettelseÅrsakType.Sykdom,
+            value: 'SYKDOM',
         },
         {
             label: intl.formatMessage({ id: 'uttaksplan.utsettelseårsak.institusjonBarn' }),
-            value: UtsettelseÅrsakType.InstitusjonBarnet,
+            value: 'INSTITUSJONSOPPHOLD_BARNET',
         },
         {
             label: intl.formatMessage({ id: 'uttaksplan.utsettelseårsak.institusjonSøker' }),
-            value: UtsettelseÅrsakType.InstitusjonSøker,
+            value: 'INSTITUSJONSOPPHOLD_SØKER',
         },
         {
             label: intl.formatMessage({ id: 'uttaksplan.utsettelseårsak.hv_øvelse' }),
-            value: UtsettelseÅrsakType.HvØvelse,
+            value: 'HV_OVELSE',
         },
         {
             label: intl.formatMessage({ id: 'uttaksplan.utsettelseårsak.navtiltak' }),
-            value: UtsettelseÅrsakType.NavTiltak,
+            value: 'NAV_TILTAK',
         },
         {
             label: intl.formatMessage({ id: 'uttaksplan.utsettelseårsak.fri' }),
-            value: UtsettelseÅrsakType.Fri,
+            value: 'FRI',
         },
     ];
 
     const defaultRadios = allRadios.filter((option) => {
         if (skalViseGamleUtsettelseÅrsaker) {
-            if (option.value === UtsettelseÅrsakType.Fri) {
+            if (option.value === 'FRI') {
                 return false;
             }
 
@@ -78,9 +78,9 @@ const getUtsettelseÅrsakOptions = (
         if (!skalViseGamleUtsettelseÅrsaker && !erFarEllerMedmor) {
             if (tidsperiodenErInnenforFørsteSeksUker) {
                 return (
-                    option.value === UtsettelseÅrsakType.Sykdom ||
-                    option.value === UtsettelseÅrsakType.InstitusjonBarnet ||
-                    option.value === UtsettelseÅrsakType.InstitusjonSøker
+                    option.value === 'SYKDOM' ||
+                    option.value === 'INSTITUSJONSOPPHOLD_BARNET' ||
+                    option.value === 'INSTITUSJONSOPPHOLD_SØKER'
                 );
             }
 
@@ -89,7 +89,7 @@ const getUtsettelseÅrsakOptions = (
 
         if (!skalViseGamleUtsettelseÅrsaker && erFarEllerMedmor) {
             if (!erMorUfør) {
-                if (option.value === UtsettelseÅrsakType.Fri && søkerErFarEllerMedmorOgKunDeHarRett) {
+                if (option.value === 'FRI' && søkerErFarEllerMedmorOgKunDeHarRett) {
                     return true;
                 }
 
@@ -98,16 +98,16 @@ const getUtsettelseÅrsakOptions = (
 
             if (tidsperiodenErInnenforFørsteSeksUker) {
                 return (
-                    option.value === UtsettelseÅrsakType.Sykdom ||
-                    option.value === UtsettelseÅrsakType.InstitusjonBarnet ||
-                    option.value === UtsettelseÅrsakType.InstitusjonSøker
+                    option.value === 'SYKDOM' ||
+                    option.value === 'INSTITUSJONSOPPHOLD_BARNET' ||
+                    option.value === 'INSTITUSJONSOPPHOLD_SØKER'
                 );
             }
 
-            return option.value === UtsettelseÅrsakType.Fri;
+            return option.value === 'FRI';
         }
 
-        return option.value === UtsettelseÅrsakType.Sykdom || option.value === UtsettelseÅrsakType.Fri;
+        return option.value === 'SYKDOM' || option.value === 'FRI';
     });
 
     return defaultRadios;

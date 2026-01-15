@@ -2,7 +2,7 @@ import { getToken, requestTokenxOboToken } from '@navikt/oasis';
 import { NextFunction, Request, Response, Router } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
-import { serverConfig } from '@navikt/fp-server-utils';
+import { logger, serverConfig } from '@navikt/fp-server-utils';
 
 type ProxyOptions = {
     ingoingUrl: string;
@@ -10,18 +10,38 @@ type ProxyOptions = {
     scope: string;
 };
 
+const proxy = {
+    FPSOKNAD_API_SCOPE: serverConfig.påkrevMiljøVariabel('FPSOKNAD_API_SCOPE'),
+    FPSOKNAD_API_URL: serverConfig.påkrevMiljøVariabel('FPSOKNAD_API_URL'),
+    FPOVERSIKT_API_URL: serverConfig.påkrevMiljøVariabel('FPOVERSIKT_API_URL'),
+    FPOVERSIKT_API_SCOPE: serverConfig.påkrevMiljøVariabel('FPOVERSIKT_API_SCOPE'),
+    FPGRUNNDATA_API_URL: serverConfig.påkrevMiljøVariabel('FPGRUNNDATA_API_URL'),
+} as const;
+
 export function configureReverseProxyApi(router: Router) {
-    if (!serverConfig.proxy.apiUrl || !serverConfig.proxy.apiScope) {
-        throw new Error('Påkrevd miljøvariable SCOPE og URL ikke satt mot API');
-    }
     addProxyHandler(router, {
-        ingoingUrl: '/rest',
-        outgoingUrl: serverConfig.proxy.apiUrl,
-        scope: serverConfig.proxy.apiScope,
+        ingoingUrl: '/fpsoknad',
+        outgoingUrl: proxy.FPSOKNAD_API_URL,
+        scope: proxy.FPSOKNAD_API_SCOPE,
     });
+
+    addProxyHandler(router, {
+        ingoingUrl: '/fpoversikt',
+        outgoingUrl: proxy.FPOVERSIKT_API_URL,
+        scope: proxy.FPOVERSIKT_API_SCOPE,
+    });
+
+    router.use(
+        '/fpgrunndata',
+        createProxyMiddleware({
+            target: proxy.FPGRUNNDATA_API_URL,
+            changeOrigin: true,
+            logger: console,
+        }),
+    );
 }
 
-export function addProxyHandler(router: Router, { ingoingUrl, outgoingUrl, scope }: ProxyOptions) {
+function addProxyHandler(router: Router, { ingoingUrl, outgoingUrl, scope }: ProxyOptions) {
     router.use(
         ingoingUrl,
         async (request: Request, response: Response, next: NextFunction) => {
@@ -35,14 +55,14 @@ export function addProxyHandler(router: Router, { ingoingUrl, outgoingUrl, scope
                 request.headers['obo-token'] = obo.token;
                 return next();
             } else {
-                console.log('OBO-exchange failed', obo.error);
+                logger.error('Veksling av OBO-token feilet', obo.error);
                 response.status(403).send();
             }
         },
         createProxyMiddleware({
             target: outgoingUrl,
             changeOrigin: true,
-            logger: console,
+            logger: logger,
             on: {
                 proxyReq: (proxyRequest, request) => {
                     const obo = request.headers['obo-token'];
@@ -51,7 +71,7 @@ export function addProxyHandler(router: Router, { ingoingUrl, outgoingUrl, scope
                         proxyRequest.removeHeader('cookie');
                         proxyRequest.setHeader('Authorization', `Bearer ${obo}`);
                     } else {
-                        console.log(`Access token var not present in session for scope ${scope}`);
+                        logger.warning(`Access token ligger ikke i sesjon for scope ${scope}`);
                     }
                 },
             },

@@ -13,7 +13,7 @@ import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { HvemPlanleggerType, LocaleAll, Satser } from '@navikt/fp-types';
+import { HvemPlanleggerType, Satser } from '@navikt/fp-types';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -24,12 +24,11 @@ import { UførInfoboks } from './info/UførInfoboks';
 
 interface Props {
     satser: Satser;
-    locale: LocaleAll;
 }
 
-export const ArbeidssituasjonSteg = ({ satser, locale }: Props) => {
+export const ArbeidssituasjonSteg = ({ satser }: Props) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator(locale);
+    const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
@@ -39,6 +38,7 @@ export const ArbeidssituasjonSteg = ({ satser, locale }: Props) => {
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
     const oppdaterHvorLangPeriode = useContextSaveData(ContextDataType.HVOR_LANG_PERIODE);
     const oppdaterHvorMye = useContextSaveData(ContextDataType.HVOR_MYE);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const formMethods = useForm<Arbeidssituasjon>({
         defaultValues: arbeidssituasjon,
@@ -54,6 +54,13 @@ export const ArbeidssituasjonSteg = ({ satser, locale }: Props) => {
 
     const onSubmit = (formValues: Arbeidssituasjon) => {
         oppdaterArbeidssituasjon(formValues);
+        if (
+            arbeidssituasjon &&
+            (arbeidssituasjon.jobberAnnenPart !== formValues.jobberAnnenPart ||
+                arbeidssituasjon.status !== formValues.status)
+        ) {
+            oppdaterUttaksplan(undefined);
+        }
 
         const minstEnJobber = formValues.status === Arbeidsstatus.JOBBER || formValues.jobberAnnenPart;
 
@@ -71,25 +78,26 @@ export const ArbeidssituasjonSteg = ({ satser, locale }: Props) => {
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
-    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2, locale);
+    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2);
 
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
-                <VStack gap="10" style={{ flex: 1 }}>
-                    <VStack gap="8">
+                <VStack gap="space-40" style={{ flex: 1 }}>
+                    <VStack gap="space-32">
                         <Heading level="2" size="medium">
                             <FormattedMessage id="ArbeidssituasjonSteg.Tittel" />
                         </Heading>
                         {(erAlenesøker || erFarOgFar) && (
                             <BlueRadioGroup
+                                name="status"
+                                control={formMethods.control}
                                 label={
                                     <FormattedMessage
                                         id="Arbeidssituasjon.Forelder"
                                         values={{ fornavnSøker1, minsteInntekt }}
                                     />
                                 }
-                                name="status"
                                 validate={[
                                     isRequired(
                                         intl.formatMessage(
@@ -112,13 +120,14 @@ export const ArbeidssituasjonSteg = ({ satser, locale }: Props) => {
                         )}
                         {!erAlenesøker && !erFarOgFar && (
                             <BlueRadioGroup
+                                name="status"
+                                control={formMethods.control}
                                 label={
                                     <FormattedMessage
                                         id="ArbeidssituasjonSteg.HvaGjelder"
                                         values={{ erAlenesøker, navn: fornavnSøker1 }}
                                     />
                                 }
-                                name="status"
                                 validate={[
                                     isRequired(
                                         intl.formatMessage(
@@ -165,6 +174,7 @@ export const ArbeidssituasjonSteg = ({ satser, locale }: Props) => {
                             <>
                                 <BlueRadioGroup
                                     name="jobberAnnenPart"
+                                    control={formMethods.control}
                                     label={
                                         <FormattedMessage
                                             id="Arbeidssituasjon.AndreForelder"

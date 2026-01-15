@@ -2,23 +2,13 @@ export { links } from './src/links';
 export { Arbeidsform } from './src/arbeidsform';
 export { Skjemanummer } from './src/skjemanummer';
 export { AttachmentType } from './src/attachmentType';
-export { PeriodeColor } from './src/colors';
-export { Forelder } from './src/forelder';
 export { PeriodeInfoType } from './src/periodeInfoType';
-export { UtsettelseÅrsakType } from './src/utsettelseÅrsakType';
 export { PeriodeHullÅrsak } from './src/periodeHullÅrsak';
-export { OverføringÅrsakType } from './src/overføringÅrsakType';
-export { OppholdÅrsakType } from './src/oppholdÅrsakType';
-export { MorsAktivitet } from './src/morsAktivitet';
 export { Periodetype } from './src/periodetype';
+export { Environment } from './src/Environment';
 export { BarnType } from './src/barnType';
-export { StønadskontoType } from './src/stønadskontoType';
-export { MinsterettType } from './src/minsterettType';
-export { KontoTilleggType } from './src/kontoTilleggType';
-export { InnsendingsType } from './src/innsendingsType';
-export { AttachmentMetadataType } from './src/attachmentMetadataType';
 export { OpprinneligSøkt } from './src/opprinneligSøkt';
-export { SivilstandType } from './src/sivilstandType';
+export { DEFAULT_SATSER } from './src/grunnbeløp';
 export {
     DATE_4_YEARS_AGO,
     ISO_DATE_REGEX,

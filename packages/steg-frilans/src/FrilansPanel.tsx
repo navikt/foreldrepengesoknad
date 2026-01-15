@@ -19,8 +19,8 @@ interface Props<TYPE> {
     frilans?: Frilans;
     saveOnNext: (formValues: Frilans) => void;
     saveOnPrevious: (formValues: Frilans | undefined) => void;
-    cancelApplication: () => void;
-    onContinueLater?: () => void;
+    onAvsluttOgSlett: () => void;
+    onFortsettSenere?: () => void;
     onStepChange?: (id: TYPE) => void;
     goToPreviousStep: () => void;
     stepConfig: Array<ProgressStep<TYPE>>;
@@ -30,8 +30,8 @@ export const FrilansPanel = <TYPE extends string>({
     frilans,
     saveOnNext,
     saveOnPrevious,
-    cancelApplication,
-    onContinueLater,
+    onAvsluttOgSlett,
+    onFortsettSenere,
     onStepChange,
     goToPreviousStep,
     stepConfig,
@@ -43,17 +43,13 @@ export const FrilansPanel = <TYPE extends string>({
     });
 
     return (
-        <Step
-            onCancel={cancelApplication}
-            steps={stepConfig}
-            onContinueLater={onContinueLater}
-            onStepChange={onStepChange}
-        >
+        <Step steps={stepConfig} onStepChange={onStepChange}>
             <RhfForm formMethods={formMethods} onSubmit={saveOnNext}>
-                <VStack gap="10">
+                <VStack gap="space-40">
                     <ErrorSummaryHookForm />
                     <RhfDatepicker
                         name="oppstart"
+                        control={formMethods.control}
                         label={intl.formatMessage({ id: 'FrilansPanel.Oppstart' })}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'FrilansPanel.Valideringsfeil.FraOgMedDato.Påkrevd' })),
@@ -70,6 +66,7 @@ export const FrilansPanel = <TYPE extends string>({
                     />
                     <RhfRadioGroup
                         name="jobberFremdelesSomFrilans"
+                        control={formMethods.control}
                         label={intl.formatMessage({ id: 'FrilansPanel.JobberFremdelesSomFrilans' })}
                         validate={[
                             isRequired(
@@ -87,6 +84,8 @@ export const FrilansPanel = <TYPE extends string>({
                         </Radio>
                     </RhfRadioGroup>
                     <StepButtonsHookForm<Frilans>
+                        onAvsluttOgSlett={onAvsluttOgSlett}
+                        onFortsettSenere={onFortsettSenere}
                         goToPreviousStep={goToPreviousStep}
                         saveDataOnPreviousClick={saveOnPrevious}
                     />

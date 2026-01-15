@@ -1,8 +1,7 @@
 import { useIntl } from 'react-intl';
 
-import { AnnenForelder, StønadskontoType, UttaksperiodeBase, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { MorsAktivitet } from '@navikt/fp-constants';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { AnnenForelder, UttaksperiodeBase, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { getArbeidsformTekst } from '../OppsummeringUtils';
 import { Feltoppsummering } from './Feltoppsummering';
@@ -10,7 +9,7 @@ import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
 interface Props {
     periode: UttaksperiodeBase;
-    registrerteArbeidsforhold: Arbeidsforhold[] | undefined;
+    registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[] | undefined;
     periodeErNyEllerEndret: boolean;
     søkerErFarEllerMedmor: boolean;
     annenForelder: AnnenForelder;
@@ -50,7 +49,7 @@ export const Uttaksperiodedetaljer = ({ periode, registrerteArbeidsforhold, anne
                     verdi={ønskerSamtidigUttak ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
-            {konto !== StønadskontoType.ForeldrepengerFørFødsel && ønskerSamtidigUttak !== true && (
+            {konto !== 'FORELDREPENGER_FØR_FØDSEL' && ønskerSamtidigUttak !== true && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.kombineresMedarbeid' })}
                     verdi={gradert ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
@@ -70,7 +69,7 @@ export const Uttaksperiodedetaljer = ({ periode, registrerteArbeidsforhold, anne
                     verdi={arbeidsformTekst}
                 />
             )}
-            {morsAktivitetIPerioden && morsAktivitetIPerioden !== MorsAktivitet.IkkeOppgitt && (
+            {morsAktivitetIPerioden && morsAktivitetIPerioden !== 'IKKE_OPPGITT' && (
                 <MorsAktivitetDetaljer morsAktivitet={morsAktivitetIPerioden} />
             )}
         </>

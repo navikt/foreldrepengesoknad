@@ -1,32 +1,38 @@
 import { FileIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
+import { FormattedMessage } from 'react-intl';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 
-import { Link } from '@navikt/ds-react';
+import { HStack, Link } from '@navikt/ds-react';
 
-import { TidslinjeHendelseDto } from '@navikt/fp-types';
+import { Dokument_fpoversikt } from '@navikt/fp-types';
 
-import { hentInntektsmelding } from '../../api/api';
+import { API_URLS, hentInntektsmelding } from '../../api/queries.ts';
 import { OversiktRoutes } from '../../routes/routes';
-import { lagUrl } from '../../utils/dokumenterUtils';
-import styles from './dokumentHendelse.module.css';
 
 interface Props {
-    dokument: TidslinjeHendelseDto['dokumenter'][0];
+    dokument: Dokument_fpoversikt;
     visesITidslinjen: boolean;
 }
 
 export const DokumentHendelse = ({ dokument, visesITidslinjen }: Props) => {
-    const { tittel } = dokument;
-    const url = lagUrl(dokument);
-
     return (
-        <li className={visesITidslinjen ? styles.dokumentHendelseMedium : styles.dokumentHendelseLarge}>
-            <FileIcon className={styles.ikon} aria-hidden={true} />
-            <Link href={url} className={styles.ikon} target="_blank">
-                {tittel}
+        <HStack
+            className={
+                visesITidslinjen
+                    ? 'text-ax-font-size-medium flex items-center'
+                    : 'text-ax-font-size-large flex items-center'
+            }
+        >
+            <FileIcon className="min-w-[24px]" aria-hidden={true} />
+            <Link
+                href={API_URLS.hentDokument(dokument.journalpostId, dokument.dokumentId ?? 'ukjent')}
+                className="min-w-[24px]"
+                target="_blank"
+            >
+                {dokument.tittel}
             </Link>
-        </li>
+        </HStack>
     );
 };
 
@@ -39,16 +45,27 @@ export const InntektsmeldingDokumentHendelse = ({ dokument, visesITidslinjen }: 
     )?.arbeidsgiverNavn;
 
     return (
-        <li className={visesITidslinjen ? styles.dokumentHendelseMedium : styles.dokumentHendelseLarge}>
-            <FileIcon className={styles.ikon} aria-hidden={true} />
+        <HStack
+            className={
+                visesITidslinjen
+                    ? 'text-ax-font-size-medium flex items-center'
+                    : 'text-ax-font-size-large flex items-center'
+            }
+        >
+            <FileIcon className="min-w-[24px]" aria-hidden={true} />
             <Link
                 as={RouterLink}
                 to={`${OversiktRoutes.SAKSOVERSIKT}/${saksnummer}/${OversiktRoutes.INNTEKTSMELDING}/${dokument.journalpostId}`}
-                className={styles.ikon}
+                className="min-w-[24px]"
             >
                 {tittel}
-                {arbeidsgiverNavn ? ` for ${arbeidsgiverNavn}` : ''}
+                {arbeidsgiverNavn && (
+                    <>
+                        {' '}
+                        <FormattedMessage id="inntektsmelding.for" values={{ arbeidsgiverNavn }} />
+                    </>
+                )}
             </Link>
-        </li>
+        </HStack>
     );
 };

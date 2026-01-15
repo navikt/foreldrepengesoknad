@@ -15,8 +15,8 @@ interface Props<TYPE> {
     utenlandsopphold?: Utenlandsopphold;
     saveOnNext: (formValues: Utenlandsopphold) => void;
     saveOnPrevious: (formValues: Utenlandsopphold | undefined) => void;
-    cancelApplication: () => void;
-    onContinueLater?: () => void;
+    onAvsluttOgSlett: () => void;
+    onFortsettSenere?: () => void;
     onStepChange?: (id: TYPE) => void;
     goToPreviousStep: () => void;
     stepConfig: Array<ProgressStep<TYPE>>;
@@ -27,8 +27,8 @@ export const UtenlandsoppholdPanel = <TYPE extends string>({
     utenlandsopphold,
     saveOnNext,
     saveOnPrevious,
-    cancelApplication,
-    onContinueLater,
+    onAvsluttOgSlett,
+    onFortsettSenere,
     onStepChange,
     goToPreviousStep,
     stepConfig,
@@ -41,17 +41,13 @@ export const UtenlandsoppholdPanel = <TYPE extends string>({
     });
 
     return (
-        <Step
-            steps={stepConfig}
-            onCancel={cancelApplication}
-            onContinueLater={onContinueLater}
-            onStepChange={onStepChange}
-        >
+        <Step steps={stepConfig} onStepChange={onStepChange}>
             <RhfForm formMethods={formMethods} onSubmit={saveOnNext}>
-                <VStack gap="10">
+                <VStack gap="space-40">
                     <ErrorSummaryHookForm />
                     <RhfRadioGroup
                         name="harBoddUtenforNorgeSiste12Mnd"
+                        control={formMethods.control}
                         label={<FormattedMessage id="UtenlandsoppholdSteg.Siste12Måneder.Spørsmål" />}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'UtenlandsoppholdSteg.Siste12Måneder.IsRequired' })),
@@ -66,6 +62,7 @@ export const UtenlandsoppholdPanel = <TYPE extends string>({
                     </RhfRadioGroup>
                     <RhfRadioGroup
                         name="skalBoUtenforNorgeNeste12Mnd"
+                        control={formMethods.control}
                         label={<FormattedMessage id="UtenlandsoppholdSteg.Neste12Måneder.Spørsmål" />}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'UtenlandsoppholdSteg.Neste12Måneder.IsRequired' })),
@@ -84,6 +81,8 @@ export const UtenlandsoppholdPanel = <TYPE extends string>({
                         <HjelpeTekstFelles stonadstype={stønadstype} />
                     )}
                     <StepButtonsHookForm<Utenlandsopphold>
+                        onAvsluttOgSlett={onAvsluttOgSlett}
+                        onFortsettSenere={onFortsettSenere}
                         goToPreviousStep={goToPreviousStep}
                         saveDataOnPreviousClick={saveOnPrevious}
                     />

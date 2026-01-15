@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Barn } from 'types/Barn';
-import { PeriodeMedVariasjon, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
+import { PeriodeMedVariasjonFormValues, TilOgMedDatoType } from 'types/Tilrettelegging';
 import { getDefaultMonth, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import {
     getArbeidsgiverNavnForTilrettelegging,
@@ -16,35 +16,29 @@ import {
 import { Alert, BodyShort, Button, HStack, Heading, Radio, ReadMore, Tag, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfRadioGroup, RhfTextField } from '@navikt/fp-form-hooks';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { Arbeidsforhold, EgenNæring, Frilans } from '@navikt/fp-types';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { EksternArbeidsforholdDto_fpoversikt, Frilans, NæringDto } from '@navikt/fp-types';
 import { HorizontalLine } from '@navikt/fp-ui';
 import { isAfterOrSame, isBeforeOrSame, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
 import {
     getMinDatoTom,
     getMåSendeNySøknad,
+    getNesteDagEtterSistePeriode,
     getPeriodeDerSøkerErTilbakeIFullStilling,
     getPeriodeInfoTekst,
-    getUferdigPeriodeInput,
 } from './perioderStegUtils';
-import {
-    validatePeriodeFom,
-    validatePeriodeTom,
-    validatePeriodeTomType,
-    validateStillingsprosentPåPerioder,
-} from './perioderValidation';
+import { validatePeriodeFom, validatePeriodeTom, validateStillingsprosentPåPerioder } from './perioderValidation';
 
 export const NEW_PERIODE = {
-    type: Tilretteleggingstype.DELVIS,
     fom: '',
     tom: '',
     stillingsprosent: '',
-    tomType: undefined!,
-} as PeriodeMedVariasjon;
+    tomType: undefined,
+} satisfies PeriodeMedVariasjonFormValues;
 
 type PerioderFormValues = {
-    varierendePerioder: PeriodeMedVariasjon[];
+    varierendePerioder: PeriodeMedVariasjonFormValues[];
 };
 
 interface Props {
@@ -52,8 +46,8 @@ interface Props {
     valgtTilretteleggingId: string;
     kanHaSVPFremTilTreUkerFørTermin: boolean;
     behovForTilretteleggingFom: string;
-    arbeidsforhold: Arbeidsforhold[];
-    egenNæring?: EgenNæring;
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    egenNæring?: NæringDto;
     frilans?: Frilans;
 }
 
@@ -104,25 +98,25 @@ export const PerioderFieldArray = ({
         opprinneligStillingsprosent,
     );
 
-    const uferdigDelvisTilretteleggingInput = getUferdigPeriodeInput(
-        sisteDagForSvangerskapspenger,
-        alleVarierendePerioder,
-    );
+    // Skal hindre ny periode dersom siste periode slutter på 3 uker før termin. Det kan enten gjøres ved å velge med radio, eller sette manuelt
+    const sistePeriodeEnderMedTreUkerFørTermin =
+        alleVarierendePerioder.at(-1)?.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP ||
+        dayjs(alleVarierendePerioder.at(-1)?.tom).isSame(sisteDagForSvangerskapspenger);
 
     return (
         <>
             {fields.map((field, index) => {
                 const måSendeNySøknad = getMåSendeNySøknad(
                     periodeDerSøkerErTilbakeIOpprinneligStilling,
-                    alleVarierendePerioder[index],
+                    alleVarierendePerioder[index]!,
                     opprinneligStillingsprosent,
                 );
-                const minDatoTom = getMinDatoTom(alleVarierendePerioder[index].fom, behovForTilretteleggingFom);
+                const minDatoTom = getMinDatoTom(alleVarierendePerioder[index]!.fom, behovForTilretteleggingFom);
                 const defaultMonthTom = getDefaultMonth(minDatoTom, maxDato);
 
                 return (
                     <Fragment key={field.id}>
-                        <VStack gap="1">
+                        <VStack gap="space-4">
                             <HorizontalLine />
                             <HStack justify="space-between" align="center">
                                 <Tag variant="info-moderate">
@@ -148,6 +142,7 @@ export const PerioderFieldArray = ({
                         </VStack>
                         <RhfDatepicker
                             name={`varierendePerioder.${index}.fom`}
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'perioder.varierende.fom.label' })}
                             minDate={behovForTilretteleggingFom}
                             maxDate={maxDato}
@@ -156,7 +151,7 @@ export const PerioderFieldArray = ({
                                 isValidDate(intl.formatMessage({ id: 'valideringsfeil.periode.fom.gyldigDato' })),
                                 isBeforeOrSame(
                                     intl.formatMessage({ id: 'valideringsfeil.periode.fom.førTilDato' }),
-                                    alleVarierendePerioder[index].tom,
+                                    alleVarierendePerioder[index]!.tom,
                                 ),
                                 isBeforeOrSame(
                                     kanHaSVPFremTilTreUkerFørTermin
@@ -180,18 +175,13 @@ export const PerioderFieldArray = ({
                         />
                         <RhfRadioGroup
                             name={`varierendePerioder.${index}.tomType`}
+                            control={formMethods.control}
                             label={<FormattedMessage id="perioder.varierende.tomType.label" />}
                             validate={[
                                 isRequired(
                                     kanHaSVPFremTilTreUkerFørTermin
                                         ? intl.formatMessage({ id: 'valideringsfeil.periode.tomType.påkrevd.termin' })
                                         : intl.formatMessage({ id: 'valideringsfeil.periode.tomType.påkrevd.fødsel' }),
-                                ),
-                                validatePeriodeTomType(
-                                    intl,
-                                    sisteDagForSvangerskapspenger,
-                                    navnArbeidsgiver || '',
-                                    periode.tom,
                                 ),
                             ]}
                         >
@@ -206,16 +196,17 @@ export const PerioderFieldArray = ({
                                 )}
                             </Radio>
                         </RhfRadioGroup>
-                        {alleVarierendePerioder[index].tomType === TilOgMedDatoType.VALGFRI_DATO && (
+                        {alleVarierendePerioder[index]!.tomType === TilOgMedDatoType.VALGFRI_DATO && (
                             <RhfDatepicker
                                 name={`varierendePerioder.${index}.tom`}
+                                control={formMethods.control}
                                 label={intl.formatMessage({ id: 'perioder.varierende.tom.label' })}
                                 validate={[
                                     isRequired(intl.formatMessage({ id: 'valideringsfeil.periode.tom.påkrevd' })),
                                     isValidDate(intl.formatMessage({ id: 'valideringsfeil.periode.tom.gyldigDato' })),
                                     isAfterOrSame(
                                         intl.formatMessage({ id: 'valideringsfeil.periode.tom.etterTilDato' }),
-                                        alleVarierendePerioder[index].fom,
+                                        alleVarierendePerioder[index]!.fom,
                                     ),
                                     isBeforeOrSame(
                                         kanHaSVPFremTilTreUkerFørTermin
@@ -235,6 +226,7 @@ export const PerioderFieldArray = ({
                         <div>
                             <RhfTextField
                                 name={`varierendePerioder.${index}.stillingsprosent`}
+                                control={formMethods.control}
                                 label={intl.formatMessage({ id: 'perioder.varierende.stillingsprosent.label' })}
                                 style={{ maxWidth: '450px' }}
                                 description={intl.formatMessage({
@@ -252,7 +244,7 @@ export const PerioderFieldArray = ({
                             />
                             <ReadMore
                                 onOpenChange={(open) =>
-                                    loggAmplitudeEvent({
+                                    loggUmamiEvent({
                                         origin: 'svangerskapspengesoknad',
                                         eventName: open ? 'readmore åpnet' : 'readmore lukket',
                                         eventData: {
@@ -265,7 +257,7 @@ export const PerioderFieldArray = ({
                                     id: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',
                                 })}
                             >
-                                <VStack gap="2">
+                                <VStack gap="space-8">
                                     <BodyShort>
                                         <FormattedMessage id="tilrettelegging.varierendePerioderStillingsprosent.info.tekst.del1"></FormattedMessage>
                                     </BodyShort>
@@ -277,7 +269,7 @@ export const PerioderFieldArray = ({
                         </div>
                         {måSendeNySøknad && (
                             <Alert variant="warning">
-                                <VStack gap="4">
+                                <VStack gap="space-16">
                                     <Heading size="small">
                                         <FormattedMessage id="perioder.alert.nySøknad.title" />
                                     </Heading>
@@ -288,13 +280,21 @@ export const PerioderFieldArray = ({
                                 </VStack>
                             </Alert>
                         )}
-                        {alleVarierendePerioder && index === alleVarierendePerioder.length - 1 && (
+                        {!sistePeriodeEnderMedTreUkerFørTermin && index === alleVarierendePerioder.length - 1 && (
                             <HStack>
                                 <Button
                                     icon={<PlusIcon aria-hidden />}
                                     type="button"
                                     variant="secondary"
-                                    onClick={() => append(uferdigDelvisTilretteleggingInput)}
+                                    onClick={() => {
+                                        append({
+                                            ...NEW_PERIODE,
+                                            fom: getNesteDagEtterSistePeriode(
+                                                sisteDagForSvangerskapspenger,
+                                                alleVarierendePerioder,
+                                            ),
+                                        });
+                                    }}
                                 >
                                     <FormattedMessage id="perioder.varierende.leggTil" />
                                 </Button>

@@ -16,8 +16,8 @@ import {
 import { BodyShort, Heading, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { Bedriftsbanner } from '../Bedriftsbanner';
@@ -27,10 +27,10 @@ type TilretteleggingPerioderFormValues = {
     varierendePerioder: PeriodeMedVariasjon[];
 };
 
-export interface Props {
+interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    avbrytSøknad: () => Promise<void>;
-    arbeidsforhold: Arbeidsforhold[];
+    avbrytSøknad: () => void;
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }
 
 export const PerioderSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
@@ -54,7 +54,7 @@ export const PerioderSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbei
 
     const typeArbeidsgiver = getTypeArbeidForTilrettelegging(valgtTilretteleggingId, arbeidsforhold);
     const navnArbeidsgiver = getArbeidsgiverNavnForTilrettelegging(intl, valgtTilretteleggingId, arbeidsforhold);
-    const valgtTilrettelegging = tilrettelegginger[valgtTilretteleggingId];
+    const valgtTilrettelegging = tilrettelegginger[valgtTilretteleggingId]!;
 
     const onSubmit = (values: TilretteleggingPerioderFormValues) => {
         oppdaterTilretteleggingerPerioder({
@@ -77,48 +77,50 @@ export const PerioderSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbei
     };
 
     const formMethods = useForm<TilretteleggingPerioderFormValues>({
-        shouldUnregister: true,
         defaultValues: { varierendePerioder: tilretteleggingerPerioder?.[valgtTilretteleggingId] ?? [NEW_PERIODE] },
     });
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            steps={stepConfig}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            onStepChange={navigator.goToStep}
-        >
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    {!!valgteArbeidsforhold && valgteArbeidsforhold.length > 1 && (
-                        <Bedriftsbanner arbeidsforholdType={typeArbeidsgiver} arbeidsforholdNavn={navnArbeidsgiver} />
-                    )}
-                    <div>
-                        <Heading size="small">
-                            <FormattedMessage id="perioder.varierende.heading"></FormattedMessage>
-                        </Heading>
-                        <BodyShort>
-                            {kanHaSVPFremTilTreUkerFørTermin ? (
-                                <FormattedMessage id="perioder.varierende.description.termin" />
-                            ) : (
-                                <FormattedMessage id="perioder.varierende.description.fødsel" />
-                            )}
-                        </BodyShort>
-                    </div>
-                    <PerioderFieldArray
-                        valgtTilretteleggingId={valgtTilretteleggingId}
-                        barn={barnet}
-                        kanHaSVPFremTilTreUkerFørTermin={kanHaSVPFremTilTreUkerFørTermin}
-                        arbeidsforhold={arbeidsforhold}
-                        egenNæring={egenNæring}
-                        frilans={frilans}
-                        behovForTilretteleggingFom={valgtTilrettelegging.behovForTilretteleggingFom}
-                    />
-                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
-                </VStack>
-            </RhfForm>
-        </Step>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step steps={stepConfig} onStepChange={navigator.goToStep}>
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="space-40">
+                        <ErrorSummaryHookForm />
+                        {!!valgteArbeidsforhold && valgteArbeidsforhold.length > 1 && (
+                            <Bedriftsbanner
+                                arbeidsforholdType={typeArbeidsgiver}
+                                arbeidsforholdNavn={navnArbeidsgiver}
+                            />
+                        )}
+                        <div>
+                            <Heading size="small">
+                                <FormattedMessage id="perioder.varierende.heading"></FormattedMessage>
+                            </Heading>
+                            <BodyShort>
+                                {kanHaSVPFremTilTreUkerFørTermin ? (
+                                    <FormattedMessage id="perioder.varierende.description.termin" />
+                                ) : (
+                                    <FormattedMessage id="perioder.varierende.description.fødsel" />
+                                )}
+                            </BodyShort>
+                        </div>
+                        <PerioderFieldArray
+                            valgtTilretteleggingId={valgtTilretteleggingId}
+                            barn={barnet}
+                            kanHaSVPFremTilTreUkerFørTermin={kanHaSVPFremTilTreUkerFørTermin}
+                            arbeidsforhold={arbeidsforhold}
+                            egenNæring={egenNæring}
+                            frilans={frilans}
+                            behovForTilretteleggingFom={valgtTilrettelegging.behovForTilretteleggingFom}
+                        />
+                        <StepButtonsHookForm
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            onAvsluttOgSlett={avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
+                        />
+                    </VStack>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 };

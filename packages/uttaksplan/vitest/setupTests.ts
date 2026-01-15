@@ -7,4 +7,6 @@ dayjs.extend(isSameOrAfter);
 
 expect.extend(matchers);
 
-window.scrollTo = () => undefined;
+if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
+    globalThis.scrollTo = () => undefined;
+}

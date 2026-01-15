@@ -1,6 +1,7 @@
 import { IntlShape, useIntl } from 'react-intl';
 
-import { NavnPåForeldre, Overføringsperiode, StønadskontoType } from '@navikt/fp-common';
+import { NavnPåForeldre, Overføringsperiode } from '@navikt/fp-common';
+import { KontoTypeUttak } from '@navikt/fp-types';
 
 import { getÅrsakTekst } from '../OppsummeringUtils';
 import { Feltoppsummering } from './Feltoppsummering';
@@ -10,10 +11,10 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
 }
 
-const getNavnPåAnnenForelder = (navnPåForeldre: NavnPåForeldre, konto: StønadskontoType, intl: IntlShape) => {
-    if (konto === StønadskontoType.Fedrekvote) {
+const getNavnPåAnnenForelder = (navnPåForeldre: NavnPåForeldre, konto: KontoTypeUttak, intl: IntlShape) => {
+    if (konto === 'FEDREKVOTE') {
         return navnPåForeldre.farMedmor;
-    } else if (konto === StønadskontoType.Mødrekvote) {
+    } else if (konto === 'MØDREKVOTE') {
         return navnPåForeldre.mor;
     }
     return intl.formatMessage({ id: 'annen.forelder' });

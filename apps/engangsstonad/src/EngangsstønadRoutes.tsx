@@ -1,4 +1,3 @@
-import Environment from 'appData/Environment';
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import { EsDataMapAndMetaData, useEsMellomlagring } from 'appData/useEsMellomlagring';
@@ -6,12 +5,10 @@ import { useEsSendSøknad } from 'appData/useEsSendSøknad';
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
-import { Loader } from '@navikt/ds-react';
-
-import { Kvittering, LocaleAll, PersonFrontend } from '@navikt/fp-types';
+import { PersonDto_fpoversikt } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
-import { redirect } from '@navikt/fp-utils';
 
+import { KvitteringPage } from './kvittering/KvitteringPage';
 import { DokumentasjonSteg } from './steg/dokumentasjon/DokumentasjonSteg';
 import { OmBarnetSteg } from './steg/om-barnet/OmBarnetSteg';
 import { OppsummeringSteg } from './steg/oppsummering/OppsummeringSteg';
@@ -21,53 +18,30 @@ import { TidligereUtenlandsoppholdSteg } from './steg/utenlandsopphold-tidligere
 import { UtenlandsoppholdSteg } from './steg/utenlandsopphold/UtenlandsoppholdSteg';
 import { Velkommen } from './velkommen/Velkommen';
 
-export const Spinner = () => (
-    <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-        <Loader size="2xlarge" />
-    </div>
-);
-
 export const ApiErrorHandler = ({ error }: { error: Error }) => {
     return <ErrorPage appName="engangsstonad" errorMessage={error.message} retryCallback={() => location.reload()} />;
 };
 
 interface Props {
-    locale: LocaleAll;
-    onChangeLocale: (locale: LocaleAll) => void;
-    personinfo: PersonFrontend;
+    personinfo: PersonDto_fpoversikt;
     mellomlagretData?: EsDataMapAndMetaData;
 }
 
-export const EngangsstønadRoutes = ({ locale, onChangeLocale, personinfo, mellomlagretData }: Props) => {
+export const EngangsstønadRoutes = ({ personinfo, mellomlagretData }: Props) => {
     const navigate = useNavigate();
 
     const [erVelkommen, setErVelkommen] = useState(false);
-    const [kvittering, setKvittering] = useState<Kvittering>();
 
-    const { sendSøknad, errorSendSøknad } = useEsSendSøknad(locale, setKvittering);
-    const mellomlagreOgNaviger = useEsMellomlagring(locale, personinfo, setErVelkommen);
+    const { sendSøknad, errorSendSøknad } = useEsSendSøknad(personinfo);
+    const mellomlagreOgNaviger = useEsMellomlagring(personinfo, setErVelkommen);
 
     useEffect(() => {
         if (mellomlagretData?.[ContextDataType.CURRENT_PATH]) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- OK, skjer kun ved ekstern endring
             setErVelkommen(true);
-            if (mellomlagretData.locale) {
-                onChangeLocale(mellomlagretData.locale);
-            }
-            navigate(mellomlagretData[ContextDataType.CURRENT_PATH]);
+            void navigate(mellomlagretData[ContextDataType.CURRENT_PATH]);
         }
     }, [mellomlagretData]);
-
-    if (kvittering) {
-        if (Environment.INNSYN) {
-            redirect(
-                kvittering.saksNr
-                    ? `${Environment.INNSYN}/sak/${kvittering.saksNr}/redirectFromSoknad`
-                    : `${Environment.INNSYN}/redirectFromSoknad`,
-            );
-            return <Spinner />;
-        }
-        return <div>Redirected to Innsyn</div>;
-    }
 
     if (errorSendSøknad) {
         return <ApiErrorHandler error={errorSendSøknad} />;
@@ -80,8 +54,6 @@ export const EngangsstønadRoutes = ({ locale, onChangeLocale, personinfo, mello
                 path={Path.VELKOMMEN}
                 element={
                     <Velkommen
-                        locale={locale}
-                        onChangeLocale={onChangeLocale}
                         startSøknad={setErVelkommen}
                         erVelkommen={erVelkommen}
                         mellomlagreOgNaviger={mellomlagreOgNaviger}
@@ -124,6 +96,7 @@ export const EngangsstønadRoutes = ({ locale, onChangeLocale, personinfo, mello
                             <OppsummeringSteg sendSøknad={sendSøknad} mellomlagreOgNaviger={mellomlagreOgNaviger} />
                         }
                     />
+                    <Route path={Path.KVITTERING} element={<KvitteringPage />} />
                 </>
             )}
         </Routes>

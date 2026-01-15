@@ -26,14 +26,16 @@ export const BarnOppsummering = ({ barn, onVilEndreSvar }: Props) => {
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="BarnOppsummering.tittel" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="Oppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 {!erBarnetAdoptert && <BarnFødselOppsummering barn={barn} />}
                 {erBarnetAdoptert && <BarnAdoptertOppsummering barn={barn} />}
             </FormSummary.Answers>
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="Oppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 };

@@ -1,5 +1,5 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { IconCircleWrapper } from './IconCircleWrapper';
 
@@ -27,7 +27,7 @@ export const BlueMediumSizedIcon: Story = {
     },
 };
 
-export const grayLargeSizedIcon: Story = {
+export const GrayLargeSizedIcon: Story = {
     args: {
         children: <CalendarIcon width="24" height="25" aria-label="icon-label" />,
         color: 'gray',

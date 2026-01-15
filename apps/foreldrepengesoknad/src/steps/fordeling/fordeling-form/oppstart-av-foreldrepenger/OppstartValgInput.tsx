@@ -1,8 +1,9 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { OppstartValg } from 'types/Fordeling';
+import { Fordeling, OppstartValg } from 'types/Fordeling';
 import { getDatoForAleneomsorg, getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'utils/barnUtils';
 import { ISOStringToDate } from 'utils/dateUtils';
@@ -46,7 +47,7 @@ const getOppstartsvalgFarAleneomsorg = () => {
     return [OppstartValg.DATO_FOR_ALENEOMSORG, OppstartValg.ANNEN_DATO];
 };
 
-export const getErBarnetFødtMerEnnTolvUkerFørTermin = (
+const getErBarnetFødtMerEnnTolvUkerFørTermin = (
     erBarnetFødt: boolean,
     termindato: string | undefined,
     fødselsdato: string | undefined,
@@ -64,7 +65,7 @@ export const getErBarnetFødtInnenTreUkerFørTermin = (
     return erBarnetFødt && termindato && dayjs(fødselsdato).isSameOrAfter(treUkerFørTermin, 'd');
 };
 
-export const getErBarnetFødtMerEnnTreUkerFørTermin = (
+const getErBarnetFødtMerEnnTreUkerFørTermin = (
     erBarnetFødt: boolean,
     termindato: string | undefined,
     fødselsdato: string | undefined,
@@ -335,7 +336,7 @@ const getRadioOptionForAnnenDato = (
     return getRadioOptionAnnenDato();
 };
 
-export const mapOppstartValgToRadioOption = (
+const mapOppstartValgToRadioOption = (
     valg: OppstartValg,
     barn: Barn,
     erFødsel: boolean,
@@ -397,6 +398,8 @@ export const OppstartValgInput = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
 
+    const { control } = useFormContext<Fordeling>();
+
     if (!oppstartsvalg || oppstartsvalg.length <= 1) {
         return null;
     }
@@ -410,6 +413,7 @@ export const OppstartValgInput = ({
     return (
         <RhfRadioGroup
             name="oppstartAvForeldrepengerValg"
+            control={control}
             label={<FormattedMessage id="fordeling.oppstartValg.spørsmål" />}
             description={
                 erFarEllerMedmor &&

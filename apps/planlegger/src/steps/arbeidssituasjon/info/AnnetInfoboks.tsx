@@ -1,7 +1,7 @@
 import { CircleSlashIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
@@ -22,8 +22,6 @@ interface Props {
 }
 
 export const AnnetInfoboks = ({ erAlenesøker, fornavn, erSøker2 = false, erFarOgFar, satser }: Props) => {
-    const locale = useIntl().locale;
-
     return (
         <Infobox
             header={
@@ -33,14 +31,22 @@ export const AnnetInfoboks = ({ erAlenesøker, fornavn, erSøker2 = false, erFar
                 />
             }
             color="green"
-            icon={<CircleSlashIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
+            icon={
+                <CircleSlashIcon
+                    height={24}
+                    width={24}
+                    color="var(--ax-bg-neutral-strong)"
+                    fontSize="1.5rem"
+                    aria-hidden
+                />
+            }
             shouldFadeIn
         >
-            <VStack gap="2">
+            <VStack gap="space-8">
                 <BodyShort>
                     <FormattedMessage
                         id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRett"
-                        values={{ minsteInntekt: formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2, locale) }}
+                        values={{ minsteInntekt: formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2) }}
                     />
                 </BodyShort>
                 {!erSøker2 && !erFarOgFar && (
@@ -48,7 +54,7 @@ export const AnnetInfoboks = ({ erAlenesøker, fornavn, erSøker2 = false, erFar
                         <FormattedMessage
                             id="Arbeidssituasjon.Ingen.Infoboks.Engangsstønad"
                             values={{
-                                a: (msg: any) => (
+                                a: (msg) => (
                                     <Link inlineText href={links.veiviser} rel="noreferrer" target="_blank">
                                         {msg}
                                     </Link>
@@ -63,7 +69,7 @@ export const AnnetInfoboks = ({ erAlenesøker, fornavn, erSøker2 = false, erFar
                     <FormattedMessage
                         id="Arbeidssituasjon.Ingen.Infoboks.NoenUtbetalinger"
                         values={{
-                            a: (msg: any) => (
+                            a: (msg) => (
                                 <Link inlineText href={links.foreldrepengerOpptjening} target="_blank" rel="noreferrer">
                                     {msg}
                                 </Link>

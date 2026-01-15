@@ -43,11 +43,13 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBa
     return (
         <>
             <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
-                <VStack gap="8">
+                <VStack gap="space-32">
                     <RhfDatepicker
-                        label={<FormattedMessage id="Adopsjon.Overtakelsesdato" values={{ erAlenesøker, flereBarn }} />}
                         name="overtakelsesdato"
+                        control={formMethods.control}
+                        label={<FormattedMessage id="Adopsjon.Overtakelsesdato" values={{ erAlenesøker, flereBarn }} />}
                         minDate={dayjs().subtract(6, 'month').toDate()}
+                        showMonthAndYearDropdowns
                         validate={[
                             isRequired(
                                 intl.formatMessage({ id: 'Overtakelsesdato.Required' }, { erAlenesøker, flereBarn }),
@@ -71,10 +73,12 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBa
                         ]}
                     />
                     <RhfDatepicker
-                        label={<FormattedMessage id="Adopsjon.Fødselsdato" values={{ flereBarn }} />}
                         name="fødselsdato"
+                        control={formMethods.control}
+                        label={<FormattedMessage id="Adopsjon.Fødselsdato" values={{ flereBarn }} />}
                         minDate={dayjs().subtract(15, 'years').toDate()}
                         maxDate={dayjs().toDate()}
+                        showMonthAndYearDropdowns
                         validate={[
                             isRequired(intl.formatMessage({ id: 'Fødselsdato.Required' })),
                             isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
@@ -92,11 +96,19 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBa
                     header={
                         <FormattedMessage id="OmBarnetSteg.Adopsjon.ForeldrepengerInfo" values={{ erAlenesøker }} />
                     }
-                    icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
+                    icon={
+                        <TasklistStartIcon
+                            height={24}
+                            width={24}
+                            color="var(--ax-bg-success-strong)"
+                            fontSize="1.5rem"
+                            aria-hidden
+                        />
+                    }
                     shouldFadeIn
                     color="green"
                 >
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <BodyLong>
                             <FormattedMessage id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekst" />
                         </BodyLong>

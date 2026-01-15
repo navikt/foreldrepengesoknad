@@ -1,8 +1,9 @@
-import Environment from '../Environment';
+import { Environment } from '@navikt/fp-constants';
+
 import { FeatureToggle } from '../FeatureToggle';
 
 const isFeatureEnabled = (feature: FeatureToggle): boolean => {
-    if (Environment[feature] && Environment[feature].toLowerCase() === 'on') {
+    if (Environment[feature]?.toLowerCase() === 'on') {
         return true;
     }
     return false;

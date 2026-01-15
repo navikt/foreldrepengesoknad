@@ -1,5 +1,5 @@
 import { QuestionmarkIcon } from '@navikt/aksel-icons';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HStack, Link, VStack } from '@navikt/ds-react';
 
@@ -17,7 +17,6 @@ interface Props {
 }
 
 export const HvorforHarJegIkkeRettPanel = ({ fpEllerEsSituasjon, grunnbeløpet }: Props) => {
-    const locale = useIntl().locale;
     const { borDuINorge, jobberDuINorge, lønnPerMåned, harHattInntekt } = fpEllerEsSituasjon;
 
     const minstelønn = grunnbeløpet / 2;
@@ -26,7 +25,7 @@ export const HvorforHarJegIkkeRettPanel = ({ fpEllerEsSituasjon, grunnbeløpet }
     return (
         <ExpansionCard aria-label="" size="small">
             <ExpansionCard.Header>
-                <HStack gap="6" align="center" wrap={false}>
+                <HStack gap="space-24" align="center" wrap={false}>
                     <IconCircleWrapper size="medium" color="lightBlue">
                         <QuestionmarkIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                     </IconCircleWrapper>
@@ -36,11 +35,11 @@ export const HvorforHarJegIkkeRettPanel = ({ fpEllerEsSituasjon, grunnbeløpet }
                 </HStack>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-                <VStack gap="5">
+                <VStack gap="space-20">
                     <BodyShort>
                         <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKrav" values={{ erFlereKrav: true }} />
                     </BodyShort>
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <KravinfoBoks
                             testId="harIkkeRettFp"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåHaInntekt" />}
@@ -58,7 +57,7 @@ export const HvorforHarJegIkkeRettPanel = ({ fpEllerEsSituasjon, grunnbeløpet }
                             headerText={
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.DuMåTeneOver"
-                                    values={{ minstelønn: formatCurrencyWithKr(minstelønn, locale) }}
+                                    values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
                                 />
                             }
                             headerLevel="3"
@@ -66,8 +65,8 @@ export const HvorforHarJegIkkeRettPanel = ({ fpEllerEsSituasjon, grunnbeløpet }
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.DuHarOppgittMånedslønn"
                                     values={{
-                                        månedslønn: formatCurrencyWithKr(lønnPerMåned, locale),
-                                        minstelønn: formatCurrencyWithKr(minstelønn, locale),
+                                        månedslønn: formatCurrencyWithKr(lønnPerMåned),
+                                        minstelønn: formatCurrencyWithKr(minstelønn),
                                         hvorMye: årslønn > minstelønn,
                                     }}
                                 />
@@ -84,7 +83,7 @@ export const HvorforHarJegIkkeRettPanel = ({ fpEllerEsSituasjon, grunnbeløpet }
                                         <FormattedMessage
                                             id="HvorforHarJegRettPanel.IkkeMedlem"
                                             values={{
-                                                a: (msg: any) => (
+                                                a: (msg) => (
                                                     <Link href={links.folketrygden} target="_blank" rel="noreferrer">
                                                         {msg}
                                                     </Link>

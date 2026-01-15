@@ -12,7 +12,6 @@ import {
     RegelStatus,
     RegelTestresultatInfo,
     RegelTestresultatInfoObject,
-    UttaksplanRegelTestresultat,
 } from './types/regelTypes';
 import { Validator } from './types/validatorTypes';
 
@@ -73,7 +72,9 @@ export const regelHarAvvik = (
     });
     const regelAvvik: RegelAvvik[] = [];
     if (isArray(info)) {
-        info.forEach((i) => regelAvvik.push(mapInfoToRegelAvvik(i)));
+        for (const i of info) {
+            regelAvvik.push(mapInfoToRegelAvvik(i));
+        }
     } else {
         regelAvvik.push(mapInfoToRegelAvvik(info));
     }
@@ -88,11 +89,6 @@ export const regelPasserer = (regel: Regel): RegelStatus => ({
     key: regel.key,
     passerer: true,
 });
-
-export const getRegelAvvikForPeriode = (resultat: UttaksplanRegelTestresultat, periodeId: string): RegelAvvik[] => {
-    return resultat.avvikPerPeriode[periodeId] ?? [];
-};
-
 export const getRegelAvvik = (resultat: RegelStatus[]): RegelAvvik[] => {
     if (resultat) {
         return flatten(
@@ -102,7 +98,7 @@ export const getRegelAvvik = (resultat: RegelStatus[]): RegelAvvik[] => {
     return [];
 };
 
-export const isRegelFeil = (regelAvvik: RegelAvvik): boolean => regelAvvik.regel.alvorlighet === RegelAlvorlighet.FEIL;
+const isRegelFeil = (regelAvvik: RegelAvvik): boolean => regelAvvik.regel.alvorlighet === RegelAlvorlighet.FEIL;
 
 export const hasRegelFeil = (avvik: RegelAvvik[] = []) => avvik.some((a) => isRegelFeil(a));
 
@@ -123,12 +119,13 @@ export const getRegelIntlValues = (
         return undefined;
     }
     const newValues: { [key: string]: string } = {};
-    Object.keys(values).forEach((key) => {
+    for (const key of Object.keys(values)) {
         const valueOrFunc = values[key];
         if (valueOrFunc) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/restrict-template-expressions
             newValues[key] = typeof valueOrFunc === 'function' ? valueOrFunc(intl) : `${valueOrFunc}`;
         }
-    });
+    }
     return newValues;
 };
 

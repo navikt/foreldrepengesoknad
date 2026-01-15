@@ -2,16 +2,11 @@ import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { PlanForslag } from 'types/PlanForslag';
 
-import { Forelder, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import {
-    HvemPlanleggerType,
-    PlanForslag,
-    SaksperiodeNy,
-    Stønadskonto,
-    TilgjengeligeStønadskontoerForDekningsgrad,
-} from '@navikt/fp-types';
-import { Uttaksdagen, treUkerSiden } from '@navikt/fp-utils';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { HvemPlanleggerType, KontoBeregningDto, KontoDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { TidsperiodenString, Uttaksdagen, isValidTidsperiodeString, treUkerSiden } from '@navikt/fp-utils';
 
 import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from './barnetUtils';
@@ -44,7 +39,7 @@ const erUttaksdag = (dato: string): boolean => {
  * Sjekker om dato er en ukedag, dersom ikke finner den nærmeste påfølgende mandag
  * @param dato
  */
-export const getUttaksdagFraOgMedDato = (dato: string): string => {
+const getUttaksdagFraOgMedDato = (dato: string): string => {
     const d = dayjs(dato).toDate();
     const newDate = dato ? new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12) : dato;
     switch (getUkedag(dato)) {
@@ -119,7 +114,7 @@ const getFørsteUttaksdagForeldrepengerFørFødsel = (barnet: OmBarnet): string 
         barnet.termindato &&
         dayjs(familiehendelsedato).isBefore(dayjs(treUkerSiden(barnet.termindato)))
     ) {
-        return familiehendelsedato;
+        return getUttaksdagFraOgMedDato(familiehendelsedato);
     }
 
     return trekkUttaksdagerFraDato(
@@ -138,12 +133,12 @@ export type Uttaksdata = {
 
 const finnDeltUttaksdata = (
     hvemPlanlegger: HvemPlanlegger,
-    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
+    valgtStønadskonto: KontoBeregningDto,
     barnet: OmBarnet,
     tempAantallDagerFellesperiodeSøker1: number = 0,
 ): Uttaksdata => {
     //TODO Fjern denne når ein får lagra number i context
-    const antallDagerFellesperiodeSøker1 = parseInt(tempAantallDagerFellesperiodeSøker1.toString(), 10);
+    const antallDagerFellesperiodeSøker1 = Number.parseInt(tempAantallDagerFellesperiodeSøker1.toString(), 10);
 
     const totaltAntallDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto).totaltAntallDager;
     const antallUkerOgDagerFellesperiodeForSøker1 = getUkerOgDager(antallDagerFellesperiodeSøker1);
@@ -201,7 +196,7 @@ const finnDeltUttaksdata = (
 
 const finnEnsligUttaksdata = (
     hvemPlanlegger: HvemPlanlegger,
-    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
+    valgtStønadskonto: KontoBeregningDto,
     barnet: OmBarnet,
     hvemHarRett: HvemHarRett,
 ): Uttaksdata => {
@@ -280,7 +275,7 @@ const finnEnsligUttaksdata = (
 export const finnUttaksdata = (
     hvemHarRett: HvemHarRett,
     hvemPlanlegger: HvemPlanlegger,
-    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
+    valgtStønadskonto: KontoBeregningDto,
     barnet: OmBarnet,
     antallDagerFellesperiodeSøker1?: number,
 ): Uttaksdata => {
@@ -292,59 +287,18 @@ export const finnUttaksdata = (
         ? finnDeltUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, antallDagerFellesperiodeSøker1)
         : finnEnsligUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, hvemHarRett);
 };
-
-export type UttakUker = {
-    uker: number;
-};
 export type UttakUkerOgDager = {
     uker: number;
     dager: number;
 };
-export type UttakMånederOgUkerOgDager = {
-    måneder: number;
-    uker: number;
-    dager: number;
-};
 
-//Funksjon henta fra https://stackoverflow.com/questions/37069186/calculate-working-days-between-two-dates-in-javascript-excepts-holidays
-const calcBusinessDays = (startDate: Date, endDate: Date) => {
-    let count = 0;
-    const curDate = new Date(startDate.getTime());
-    while (curDate <= endDate) {
-        const dayOfWeek = curDate.getDay();
-        if (dayOfWeek !== 0 && dayOfWeek !== 6) count++;
-        curDate.setDate(curDate.getDate() + 1);
-    }
-    return count;
-};
-
-export const findWeeksBetween = (startDate: string, endDate: string): UttakUker => {
-    const totalDays = calcBusinessDays(dayjs(startDate).toDate(), dayjs(endDate).toDate());
-    const weeks = Math.floor(totalDays / 5);
-    return { uker: weeks };
-};
-export const findDaysAndWeeksBetween = (startDate: string, endDate: string): UttakUkerOgDager => {
-    const totalDays = calcBusinessDays(dayjs(startDate).toDate(), dayjs(endDate).toDate());
-    const weeks = Math.floor(totalDays / 5);
-    return { uker: weeks, dager: totalDays - weeks * 5 };
-};
-
-export const findMonthsAndWeeksAndDaysBetween = (startDate: string, endDate: string): UttakMånederOgUkerOgDager => {
-    const totalDays = calcBusinessDays(dayjs(startDate).toDate(), dayjs(endDate).toDate());
-    const weeks = Math.floor(totalDays / 5);
-    const months = Math.floor(weeks / 4);
-    return { måneder: months, uker: weeks - months * 4, dager: totalDays };
-};
-
-export const finnAntallUkerOgDagerMedForeldrepenger = (
-    stønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
-): UttakUkerOgDager => {
+export const finnAntallUkerOgDagerMedForeldrepenger = (stønadskonto: KontoBeregningDto): UttakUkerOgDager => {
     const { kontoer } = stønadskonto;
     return {
-        uker: kontoer.reduce((prev: number, current: Stønadskonto) => {
+        uker: kontoer.reduce((prev: number, current: KontoDto) => {
             return Math.round(current.dager / 5) + prev;
         }, 0),
-        dager: kontoer.reduce((prev: number, current: Stønadskonto, index: number) => {
+        dager: kontoer.reduce((prev: number, current: KontoDto, index: number) => {
             const result = current.dager + prev;
 
             if (index === kontoer.length - 1) {
@@ -359,7 +313,7 @@ export const finnAntallUkerOgDagerMedForeldrepenger = (
 interface LagForslagProps {
     erDeltUttak: boolean;
     famDato: string;
-    tilgjengeligeStønadskontoer: Stønadskonto[];
+    tilgjengeligeStønadskontoer: KontoDto[];
     fellesperiodeDagerMor: number | undefined;
     erAdopsjon: boolean;
     erFarEllerMedmor: boolean;
@@ -402,24 +356,38 @@ export const lagForslagTilPlan = ({
 
 export const getSøkersPerioder = (
     erDeltUttak: boolean,
-    gjeldendeUttaksplan: SaksperiodeNy[],
+    gjeldendeUttaksplan: UttakPeriode_fpoversikt[],
     erFarEllerMedmor: boolean,
 ) => {
     return erDeltUttak
-        ? gjeldendeUttaksplan.filter((p) =>
-              erFarEllerMedmor ? p.forelder === Forelder.farMedmor : p.forelder === Forelder.mor,
-          )
+        ? gjeldendeUttaksplan.filter((p) => (erFarEllerMedmor ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'))
         : gjeldendeUttaksplan;
 };
 
 export const getAnnenpartsPerioder = (
     erDeltUttak: boolean,
-    gjeldendeUttaksplan: SaksperiodeNy[],
+    gjeldendeUttaksplan: UttakPeriode_fpoversikt[],
     erFarEllerMedmor: boolean,
 ) => {
     return erDeltUttak
-        ? gjeldendeUttaksplan.filter((p) =>
-              erFarEllerMedmor ? p.forelder === Forelder.mor : p.forelder === Forelder.farMedmor,
-          )
+        ? gjeldendeUttaksplan.filter((p) => (erFarEllerMedmor ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'))
         : [];
+};
+
+export const sorterPerioder = (p1: UttakPeriode_fpoversikt, p2: UttakPeriode_fpoversikt) => {
+    const tidsperiode1 = { fom: p1.fom, tom: p1.tom };
+    const tidsperiode2 = { fom: p2.fom, tom: p2.tom };
+
+    if (isValidTidsperiodeString(tidsperiode1) === false || isValidTidsperiodeString(tidsperiode2) === false) {
+        return isValidTidsperiodeString(tidsperiode1) ? 1 : -1;
+    }
+    if (dayjs(tidsperiode1.fom).isSame(tidsperiode2.fom, 'day')) {
+        return 1;
+    }
+
+    if (TidsperiodenString(tidsperiode2).erOmsluttetAv(tidsperiode1)) {
+        return 1;
+    }
+
+    return dayjs(tidsperiode1.fom).isBefore(tidsperiode2.fom, 'day') ? -1 : 1;
 };

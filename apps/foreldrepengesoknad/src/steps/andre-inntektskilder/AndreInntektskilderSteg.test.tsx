@@ -1,4 +1,4 @@
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
@@ -445,7 +445,7 @@ describe('<AndreInntektskilderSteg>', () => {
 
         await userEvent.click(screen.getByText('Legg til en ny inntektskilde'));
 
-        await userEvent.click(screen.getAllByText('Etterlønn eller sluttvederlag')[1]);
+        await userEvent.click(screen.getAllByText('Etterlønn eller sluttvederlag')[1]!);
 
         const periodenfraDato = screen.getByLabelText('Perioden den gjelder fra');
         await userEvent.type(periodenfraDato, dayjs('2023-04-30').format('DD.MM.YYYY'));

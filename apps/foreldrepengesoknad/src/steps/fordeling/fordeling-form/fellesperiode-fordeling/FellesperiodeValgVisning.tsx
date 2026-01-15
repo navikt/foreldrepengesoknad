@@ -6,7 +6,6 @@ import { guid } from 'utils/guid';
 import { Heading, VStack } from '@navikt/ds-react';
 
 import { DelGraf } from '../../fordeling-oversikt/grafer/del-graf/DelGraf';
-import styles from './fellesperiodeValgVisning.module.css';
 
 interface Props {
     fordelingsdager: FordelingDager[];
@@ -20,7 +19,7 @@ export const FellesperiodeValgVisning = ({ fordelingsdager, dagerMedFellesperiod
     const fordelingErValgt =
         fordelingsdager.length > 0 && !fordelingsdager.every((f) => f.fargekode === FordelingFargekode.IKKE_TILDELT);
     return (
-        <VStack gap="1" aria-hidden={true}>
+        <VStack gap="space-4" aria-hidden={true}>
             <Heading size="xsmall">
                 <FormattedMessage
                     id="fordeling.fellesperiodeVisning.sumUker"
@@ -29,12 +28,7 @@ export const FellesperiodeValgVisning = ({ fordelingsdager, dagerMedFellesperiod
             </Heading>
             <DelGraf fordelingsdager={fordelingsdager} sumDager={dagerMedFellesperiode} />
             {fordelingErValgt && (
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                    }}
-                >
+                <div className="flex">
                     {fordelingsdager.map((fordeling) => {
                         const width = (fordeling.antallDager / dagerMedFellesperiode) * 100;
                         const varighetString = getVarighetString(fordeling.antallDager, intl);
@@ -52,7 +46,7 @@ export const FellesperiodeValgVisning = ({ fordelingsdager, dagerMedFellesperiod
                         return (
                             <div
                                 key={guid()}
-                                className={styles.textElement}
+                                className="flex"
                                 style={{
                                     width: `${width}%`,
                                 }}

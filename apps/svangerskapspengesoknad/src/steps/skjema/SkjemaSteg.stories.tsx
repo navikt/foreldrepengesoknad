@@ -1,13 +1,20 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
+import { API_URLS } from 'appData/queries';
 import { SøknadRoute, TILRETTELEGGING_PARAM, addTilretteleggingIdToRoute } from 'appData/routes';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { action } from 'storybook/actions';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { ArbeidsforholdOgInntektSvp, Attachment, EGEN_NÆRING_ID, FRILANS_ID } from '@navikt/fp-types';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import {
+    ArbeidsforholdOgInntektSvp,
+    Attachment,
+    EksternArbeidsforholdDto_fpoversikt,
+    FRILANS_ID,
+} from '@navikt/fp-types';
 
 import { SkjemaSteg } from './SkjemaSteg';
 
@@ -33,14 +40,12 @@ const DEFAULT_ARBEIDSFORHOLD = [
         fom: '2017-04-05T00:00:00.000Z',
         stillingsprosent: 100,
     },
-];
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
@@ -96,15 +101,18 @@ export const SkalIkkeFeileOpplasting: Story = {
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger/vedlegg`,
-                    () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
+                    API_URLS.sendVedlegg,
+                    () =>
+                        new HttpResponse(JSON.stringify('uuid-test'), {
+                            status: 200,
+                        }),
                 ),
             ],
         },
     },
     args: {
         mellomlagreSøknadOgNaviger: promiseAction(),
-        avbrytSøknad: promiseAction(),
+        avbrytSøknad: () => action('button-click'),
         arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
         maxAntallVedlegg: 40,
         valgtTilretteleggingId: ARBEIDSGIVER_ID,
@@ -119,12 +127,7 @@ export const SkalIkkeFeileOpplasting: Story = {
 export const SkalFeileOpplasting: Story = {
     parameters: {
         msw: {
-            handlers: [
-                http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger/vedlegg`,
-                    () => new HttpResponse(null, { status: 400 }),
-                ),
-            ],
+            handlers: [http.post(API_URLS.sendVedlegg, () => new HttpResponse(null, { status: 400 }))],
         },
     },
     args: SkalIkkeFeileOpplasting.args,
@@ -141,11 +144,11 @@ export const MedVedlegg: Story = {
                     filename: file1.name,
                     filesize: file1.size,
                     file: file1,
+                    innsendingsType: 'LASTET_OPP',
                     uploaded: true,
                     pending: false,
                     type: AttachmentType.TILRETTELEGGING,
                     skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
-                    url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
                     uuid: 'Created',
                 },
             ],
@@ -205,8 +208,8 @@ export const KanMaxHaToVedlegg: Story = {
                     pending: false,
                     type: AttachmentType.TILRETTELEGGING,
                     skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
-                    url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
                     uuid: 'Created',
+                    innsendingsType: 'LASTET_OPP',
                 },
                 {
                     id: 'V134300149934973076055420920289127101',
@@ -217,8 +220,8 @@ export const KanMaxHaToVedlegg: Story = {
                     pending: false,
                     type: AttachmentType.TILRETTELEGGING,
                     skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
-                    url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
                     uuid: 'Created',
+                    innsendingsType: 'LASTET_OPP',
                 },
             ],
         },

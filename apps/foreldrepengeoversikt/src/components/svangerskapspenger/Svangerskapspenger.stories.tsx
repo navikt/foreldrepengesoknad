@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { MemoryRouter } from 'react-router-dom';
 import { SAK_1, SAK_2, SAK_3, SAK_4 } from 'storybookData/saker/svpsaker';
 
@@ -12,7 +12,7 @@ const meta = {
     render: (props) => {
         return (
             <MemoryRouter>
-                <LayoutWrapper className="pt-1 pb-1 pl-4 pr-4 bg-deepblue-50">
+                <LayoutWrapper className="bg-ax-brand-blue-100 pt-1 pr-4 pb-1 pl-4">
                     <Svangerskapspenger {...props} />
                 </LayoutWrapper>
             </MemoryRouter>
@@ -75,24 +75,29 @@ export const SøknadUtenVedtak: Story = {
                                     fom: '2025-04-19',
                                     tom: '2025-04-25',
                                     type: 'DELVIS',
-                                    arbeidstidprosent: 50.0,
+                                    arbeidstidprosent: 50,
                                 },
                                 {
                                     fom: '2025-04-26',
-                                    tom: '2025-07-07',
+                                    tom: '2025-07-04',
                                     type: 'HEL',
+                                },
+                                {
+                                    fom: '2025-07-05',
+                                    tom: '2025-07-07',
+                                    type: 'INGEN',
                                 },
                                 {
                                     fom: '2025-03-15',
                                     tom: '2025-04-13',
                                     type: 'DELVIS',
-                                    arbeidstidprosent: 50.0,
+                                    arbeidstidprosent: 50,
                                 },
                                 {
                                     fom: '2025-02-17',
                                     tom: '2025-03-14',
                                     type: 'DELVIS',
-                                    arbeidstidprosent: 89.0,
+                                    arbeidstidprosent: 89,
                                 },
                             ],
                             oppholdsperioder: [
@@ -139,20 +144,20 @@ export const SøknadMedFlereDeltidsArbeidsforhold: Story = {
                                 fom: '2025-06-05',
                                 tom: '2025-07-10',
                                 type: 'DELVIS',
-                                arbeidstidprosent: 30.0,
+                                arbeidstidprosent: 30,
                                 resultat: {
                                     resultatType: 'INNVILGET',
-                                    utbetalingsgrad: 25.0,
+                                    utbetalingsgrad: 25,
                                 },
                             },
                             {
                                 fom: '2025-03-18',
                                 tom: '2025-06-04',
                                 type: 'DELVIS',
-                                arbeidstidprosent: 40.0,
+                                arbeidstidprosent: 40,
                                 resultat: {
                                     resultatType: 'INNVILGET',
-                                    utbetalingsgrad: 10.0,
+                                    utbetalingsgrad: 10,
                                 },
                             },
                         ],
@@ -174,20 +179,20 @@ export const SøknadMedFlereDeltidsArbeidsforhold: Story = {
                                 fom: '2025-05-15',
                                 tom: '2025-07-10',
                                 type: 'DELVIS',
-                                arbeidstidprosent: 15.0,
+                                arbeidstidprosent: 15,
                                 resultat: {
                                     resultatType: 'INNVILGET',
-                                    utbetalingsgrad: 25.0,
+                                    utbetalingsgrad: 25,
                                 },
                             },
                             {
                                 fom: '2025-03-18',
                                 tom: '2025-05-14',
                                 type: 'DELVIS',
-                                arbeidstidprosent: 10.0,
+                                arbeidstidprosent: 10,
                                 resultat: {
                                     resultatType: 'INNVILGET',
-                                    utbetalingsgrad: 50.0,
+                                    utbetalingsgrad: 50,
                                 },
                             },
                         ],
@@ -209,17 +214,17 @@ export const SøknadMedFlereDeltidsArbeidsforhold: Story = {
                                 fom: '2025-06-05',
                                 tom: '2025-07-10',
                                 type: 'DELVIS',
-                                arbeidstidprosent: 30.0,
+                                arbeidstidprosent: 30,
                                 resultat: {
                                     resultatType: 'INNVILGET',
-                                    utbetalingsgrad: 50.0,
+                                    utbetalingsgrad: 50,
                                 },
                             },
                             {
                                 fom: '2025-03-18',
                                 tom: '2025-06-04',
                                 type: 'DELVIS',
-                                arbeidstidprosent: 40.0,
+                                arbeidstidprosent: 40,
                                 resultat: {
                                     resultatType: 'INNVILGET',
                                     utbetalingsgrad: 33.33,

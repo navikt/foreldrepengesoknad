@@ -1,9 +1,10 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
 
+import { API_URLS } from '../../api/queries.ts';
 import { Oppgaver } from './Oppgaver';
 
 const meta = {
@@ -26,12 +27,11 @@ export const Default: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/minidialog`, () =>
+                http.get(API_URLS.minidialog, () =>
                     HttpResponse.json([
                         {
                             saksnr: '352011079',
                             opprettet: '2023-02-09',
-                            dialogId: '1111111112',
                         },
                     ]),
                 ),
@@ -46,9 +46,7 @@ export const Default: Story = {
 export const FeilIMinidialogApiKall: Story = {
     parameters: {
         msw: {
-            handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/minidialog`, () => new HttpResponse(null, { status: 400 })),
-            ],
+            handlers: [http.get(API_URLS.minidialog, () => new HttpResponse(null, { status: 400 }))],
         },
     },
     args: {

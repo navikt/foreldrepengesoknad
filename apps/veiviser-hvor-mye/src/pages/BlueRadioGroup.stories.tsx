@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { useForm } from 'react-hook-form';
 
 import { Radio } from '@navikt/ds-react';
@@ -20,7 +20,7 @@ const FormWithGreenRadioGroup = (args: Story) => {
     const formMethods = useForm();
     return (
         <RhfForm formMethods={formMethods}>
-            <BlueRadioGroup name="test" {...args}>
+            <BlueRadioGroup name="test" control={formMethods.control} {...args}>
                 <Radio value="1">test 1</Radio>
                 <Radio value="2">test 2</Radio>
             </BlueRadioGroup>

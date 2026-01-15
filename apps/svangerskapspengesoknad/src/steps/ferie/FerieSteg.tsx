@@ -7,7 +7,6 @@ import dayjs from 'dayjs';
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import { AvtaltFerieDto } from 'types/AvtaltFerie';
 import { getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import { getNesteTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
@@ -20,8 +19,8 @@ import {
     RhfRadioGroup,
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold } from '@navikt/fp-types';
-import { HorizontalLine, Step } from '@navikt/fp-ui';
+import { AvtaltFerieDto, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { HorizontalLine, SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import {
     isAfterOrSame,
     isBeforeOrSame,
@@ -31,12 +30,10 @@ import {
     notEmpty,
 } from '@navikt/fp-validation';
 
-import styles from './feriesteg.module.css';
-
 type Props = {
-    readonly mellomlagreSøknadOgNaviger: () => Promise<void>;
-    readonly avbrytSøknad: () => Promise<void>;
-    readonly arbeidsforhold: Arbeidsforhold[];
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    avbrytSøknad: () => void;
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 };
 
 const DEFAULT_FERIE_VALUES = {
@@ -72,7 +69,7 @@ export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
             arbeidsforhold: {
                 id: arbeidsgiverId,
                 type: getTypeArbeidForTilrettelegging(arbeidsgiverId, arbeidsforhold),
-            },
+            } as const,
         }));
         const nyeFerieVerdier = {
             ...ferie,
@@ -93,47 +90,50 @@ export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
     };
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            steps={stepConfig}
-            onStepChange={navigator.goToStep}
-            onContinueLater={navigator.fortsettSøknadSenere}
-        >
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    <VStack gap="4">
-                        <RhfRadioGroup
-                            name="skalHaFerie"
-                            onChange={(checked) => {
-                                if (checked) {
-                                    formMethods.setValue('feriePerioder', DEFAULT_FERIE_VALUES.feriePerioder);
-                                } else {
-                                    formMethods.setValue('feriePerioder', []);
-                                }
-                            }}
-                            label={intl.formatMessage({ id: 'ferie.harDuPlanlagtFerie.label' })}
-                            validate={[isRequired(intl.formatMessage({ id: 'ferie.harDuPlanlagtFerie.validering' }))]}
-                        >
-                            <Radio value={true}>
-                                <FormattedMessage id="ja" />
-                            </Radio>
-                            <Radio value={false}>
-                                <FormattedMessage id="nei" />
-                            </Radio>
-                        </RhfRadioGroup>
-                        <ReadMore header={intl.formatMessage({ id: 'ferie.readmore.hvordanPlanlegge.header' })}>
-                            <BodyShort>
-                                <FormattedMessage id="ferie.readmore.hvordanPlanlegge.body" />
-                            </BodyShort>
-                        </ReadMore>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step steps={stepConfig} onStepChange={navigator.goToStep}>
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="space-40">
+                        <ErrorSummaryHookForm />
+                        <VStack gap="space-16">
+                            <RhfRadioGroup
+                                name="skalHaFerie"
+                                control={formMethods.control}
+                                onChange={(checked) => {
+                                    if (checked) {
+                                        formMethods.setValue('feriePerioder', DEFAULT_FERIE_VALUES.feriePerioder);
+                                    } else {
+                                        formMethods.setValue('feriePerioder', []);
+                                    }
+                                }}
+                                label={intl.formatMessage({ id: 'ferie.harDuPlanlagtFerie.label' })}
+                                validate={[
+                                    isRequired(intl.formatMessage({ id: 'ferie.harDuPlanlagtFerie.validering' })),
+                                ]}
+                            >
+                                <Radio value={true}>
+                                    <FormattedMessage id="ja" />
+                                </Radio>
+                                <Radio value={false}>
+                                    <FormattedMessage id="nei" />
+                                </Radio>
+                            </RhfRadioGroup>
+                            <ReadMore header={intl.formatMessage({ id: 'ferie.readmore.hvordanPlanlegge.header' })}>
+                                <BodyShort>
+                                    <FormattedMessage id="ferie.readmore.hvordanPlanlegge.body" />
+                                </BodyShort>
+                            </ReadMore>
+                        </VStack>
+                        <FeriePerioder />
+                        <StepButtonsHookForm
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            onAvsluttOgSlett={avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
+                        />
                     </VStack>
-                    <FeriePerioder />
-                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
-                </VStack>
-            </RhfForm>
-        </Step>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 }
 
@@ -142,9 +142,9 @@ function FeriePerioder() {
     const params = useParams<RouteParams>();
     const arbeidsgiverId = notEmpty(params.tilretteleggingId);
     const tilrettelegginer = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
-    const startDatoSvp = tilrettelegginer[arbeidsgiverId].behovForTilretteleggingFom;
+    const startDatoSvp = tilrettelegginer[arbeidsgiverId]!.behovForTilretteleggingFom;
 
-    const { watch } = useFormContext();
+    const { watch } = useFormContext<FerieFormData>();
     const skalHaFerie = watch('skalHaFerie');
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
@@ -158,10 +158,10 @@ function FeriePerioder() {
     }
 
     return (
-        <VStack gap="4">
-            <VStack gap="6">
+        <VStack gap="space-16">
+            <VStack gap="space-24">
                 {fields.map((field, index) => (
-                    <VStack gap="4" key={field.id} className="feriePeriode">
+                    <VStack gap="space-16" key={field.id} className="feriePeriode">
                         <HStack justify="space-between" align="center">
                             <Tag variant="info-moderate">
                                 <FormattedMessage id="ferie.heading" />
@@ -222,8 +222,9 @@ function FeriePerioder() {
                                         },
                                         { periode: index },
                                     ),
-                                    { date: watch(`feriePerioder.${index}.tom`), isStartDate: false },
-                                    [watch('feriePerioder')[index - 1] ?? []].flat(),
+                                    { date: watch(`feriePerioder.${index}.tom`)!, isStartDate: false },
+                                    // NOTE: tillater å caste til AvtaltFerieDto ettersom required allerede er validert
+                                    [(watch('feriePerioder')[index - 1] as AvtaltFerieDto) ?? []].flat(),
                                 ),
                             ]}
                             validateTo={[
@@ -258,7 +259,7 @@ function FeriePerioder() {
             <Button
                 onClick={() => append({ fom: undefined, tom: undefined })}
                 size="small"
-                className={styles.leggTilFerieperiodeButton}
+                className="mt-[var(--ax-space-16)] w-fit"
                 type="button"
                 variant="secondary"
                 icon={<PlusIcon />}

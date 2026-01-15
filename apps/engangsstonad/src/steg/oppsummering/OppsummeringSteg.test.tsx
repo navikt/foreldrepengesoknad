@@ -1,4 +1,4 @@
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
@@ -24,6 +24,8 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getAllByText('Barnet')).toHaveLength(2);
         expect(screen.getByText('Søknaden gjelder')).toBeInTheDocument();
         expect(screen.getByText('ett barn')).toBeInTheDocument();
+        expect(screen.getByText('Termindato')).toBeInTheDocument();
+        expect(screen.getByText(dayjs().subtract(9, 'day').format(DDMMYYYY_DATE_FORMAT))).toBeInTheDocument();
         expect(screen.getByText('Fødselsdato')).toBeInTheDocument();
         expect(screen.getByText(dayjs().subtract(10, 'day').format(DDMMYYYY_DATE_FORMAT))).toBeInTheDocument();
 

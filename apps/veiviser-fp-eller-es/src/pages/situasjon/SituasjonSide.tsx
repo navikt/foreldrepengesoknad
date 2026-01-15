@@ -1,6 +1,7 @@
 import { BabyWrappedIcon, PaperplaneIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { FpEllerEsRoutes } from 'appData/routes';
 import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
+import { useState } from 'react';
 import { UseFormReturn, useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
@@ -17,12 +18,7 @@ import { formatValue } from '@navikt/fp-validation/src/form/numberFormValidation
 
 import { BlueRadioGroup } from '../BlueRadioGroup';
 
-export enum Situasjon {
-    MOR = 'mor',
-    FAR = 'far',
-    MEDMOR = 'medmor',
-}
-
+export type Situasjon = 'mor' | 'far' | 'medmor';
 export type FpEllerEsSituasjon = {
     situasjon: Situasjon;
     erIArbeid: boolean;
@@ -73,7 +69,7 @@ interface Props {
 
 export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjon }: Props) => {
     const intl = useIntl();
-    const locale = intl.locale;
+    const [visUnder6GMelding, setVisUnder6GMelding] = useState(false);
     const { goToRoute } = useVeiviserNavigator();
 
     const formMethods = useForm<FpEllerEsSituasjon>({
@@ -90,7 +86,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
 
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const minstelønn = grunnbeløpet / 2;
-    const lønnPerMånedNummer = formatValue(lønnPerMåned);
+    const lønnPerMånedNummer = formatValue(lønnPerMåned) ?? 0;
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
@@ -106,27 +102,29 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
             icon={<StrollerIcon height={36} width={36} fontSize="1.5rem" aria-hidden />}
         >
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
-                <VStack gap="6" style={{ flex: 1 }}>
+                <VStack gap="space-24" style={{ flex: 1 }}>
                     <BlueRadioGroup
-                        label={<FormattedMessage id="SituasjonSide.HvemErDu" />}
                         name="situasjon"
+                        control={formMethods.control}
+                        label={<FormattedMessage id="SituasjonSide.HvemErDu" />}
                         onChange={resetFieldsAndScroll('situasjon')}
                     >
-                        <Radio value={Situasjon.MOR} autoFocus>
+                        <Radio value={'mor' satisfies Situasjon} autoFocus>
                             <FormattedMessage id="SituasjonSide.Mor" />
                         </Radio>
-                        <Radio value={Situasjon.FAR}>
+                        <Radio value={'far' satisfies Situasjon}>
                             <FormattedMessage id="SituasjonSide.Far" />
                         </Radio>
-                        <Radio value={Situasjon.MEDMOR}>
+                        <Radio value={'medmor' satisfies Situasjon}>
                             <FormattedMessage id="SituasjonSide.Medmor" />
                         </Radio>
                     </BlueRadioGroup>
                     {situasjon && (
-                        <VStack gap="4">
+                        <VStack gap="space-16">
                             <BlueRadioGroup
-                                label={<FormattedMessage id="SituasjonSide.ArbeidEllerNav" />}
                                 name="erIArbeid"
+                                control={formMethods.control}
+                                label={<FormattedMessage id="SituasjonSide.ArbeidEllerNav" />}
                                 onChange={resetFieldsAndScroll('erIArbeid')}
                             >
                                 <Radio value={true} autoFocus>
@@ -166,8 +164,9 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                     {erIArbeid === false && (
                         <VStack gap="3">
                             <BlueRadioGroup
-                                label={<FormattedMessage id="SituasjonSide.HarDuHattAndeInntektskilder" />}
                                 name="harHattAndreInntekter"
+                                control={formMethods.control}
+                                label={<FormattedMessage id="SituasjonSide.HarDuHattAndeInntektskilder" />}
                                 onChange={resetFieldsAndScroll('harHattAndreInntekter')}
                             >
                                 <Radio value={true} autoFocus>
@@ -200,8 +199,9 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                     {(erIArbeid || harHattAndreInntekter) && (
                         <VStack gap="3">
                             <BlueRadioGroup
-                                label={<FormattedMessage id="SituasjonSide.HarDuHattInntekt" />}
                                 name="harHattInntekt"
+                                control={formMethods.control}
+                                label={<FormattedMessage id="SituasjonSide.HarDuHattInntekt" />}
                                 onChange={resetFieldsAndScroll('harHattInntekt')}
                             >
                                 <Radio value={true} autoFocus>
@@ -228,15 +228,28 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
 
                     {harHattInntekt && (
                         <VStack gap="3">
-                            <VStack gap="4">
+                            <VStack gap="space-16">
                                 <BluePanel
                                     isDarkBlue={lønnPerMåned === undefined || lønnPerMåned === null}
                                     shouldFadeIn
                                 >
-                                    <VStack gap="2">
+                                    <VStack gap="space-8">
                                         <RhfNumericField
                                             name="lønnPerMåned"
-                                            onChange={scrollToBottom}
+                                            control={formMethods.control}
+                                            onChange={(beløp) => {
+                                                scrollToBottom();
+                                                const skalSkjule6GMelding =
+                                                    (formatValue(beløp) ?? 0) * 12 >= minstelønn;
+                                                if (skalSkjule6GMelding) {
+                                                    setVisUnder6GMelding(false);
+                                                }
+                                            }}
+                                            onBlur={(beløp) => {
+                                                const skalViseUnder6Melding =
+                                                    (formatValue(beløp) ?? 0) * 12 < minstelønn;
+                                                setVisUnder6GMelding(skalViseUnder6Melding);
+                                            }}
                                             label={<FormattedMessage id="SituasjonSide.LønnFørSkatt" />}
                                             validate={[
                                                 isValidNumberForm(
@@ -247,13 +260,13 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                                 ),
                                             ]}
                                         />
-                                        <VStack gap="2">
+                                        <VStack gap="space-8">
                                             <Label>
                                                 <FormattedMessage id="SituasjonSide.Årsinntekt" />
                                             </Label>
                                             <Heading size="large" as="p">
                                                 {lønnPerMånedNummer ? (
-                                                    formatCurrencyWithKr(lønnPerMånedNummer * 12, locale)
+                                                    formatCurrencyWithKr(lønnPerMånedNummer * 12)
                                                 ) : (
                                                     <FormattedMessage id="SituasjonSide.IngenKr" />
                                                 )}
@@ -265,17 +278,17 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                     <BodyShort>
                                         <FormattedMessage
                                             id="SituasjonSide.HvorMyeMåHaTjentDetaljer"
-                                            values={{ minstelønn: formatCurrencyWithKr(minstelønn, locale) }}
+                                            values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
                                         />
                                     </BodyShort>
                                 </ReadMore>
                             </VStack>
-                            {lønnPerMånedNummer !== undefined && lønnPerMånedNummer * 12 < minstelønn && (
+                            {visUnder6GMelding && (
                                 <Infobox
                                     header={
                                         <FormattedMessage
                                             id="SituasjonSide.MåTjeneMinst"
-                                            values={{ minstelønn: formatCurrencyWithKr(minstelønn, locale) }}
+                                            values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
                                         />
                                     }
                                     headingLevel="2"
@@ -286,8 +299,8 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                         <FormattedMessage
                                             id="SituasjonSide.OppgittLønnIkkeRett"
                                             values={{
-                                                årslønn: formatCurrencyWithKr(lønnPerMånedNummer * 12, locale),
-                                                minstelønn: formatCurrencyWithKr(minstelønn, locale),
+                                                årslønn: formatCurrencyWithKr(lønnPerMånedNummer * 12),
+                                                minstelønn: formatCurrencyWithKr(minstelønn),
                                             }}
                                         />
                                     </BodyShort>
@@ -299,8 +312,9 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                     {(lønnPerMåned || harHattInntekt === false || harHattAndreInntekter === false) && (
                         <VStack gap="3">
                             <BlueRadioGroup
-                                label={<FormattedMessage id="SituasjonSide.BorDuINorge" />}
                                 name="borDuINorge"
+                                control={formMethods.control}
+                                label={<FormattedMessage id="SituasjonSide.BorDuINorge" />}
                                 onChange={resetFieldsAndScroll('borDuINorge')}
                             >
                                 <Radio value={true}>
@@ -317,8 +331,9 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                     {borDuINorge === false && (
                         <VStack gap="3">
                             <BlueRadioGroup
-                                label={<FormattedMessage id="SituasjonSide.JobberDuINorge" />}
                                 name="jobberDuINorge"
+                                control={formMethods.control}
+                                label={<FormattedMessage id="SituasjonSide.JobberDuINorge" />}
                                 onChange={scrollToBottom}
                             >
                                 <Radio value={true}>
@@ -339,7 +354,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                         <FormattedMessage
                                             id="SituasjonSide.IkkeMedlem"
                                             values={{
-                                                a: (msg: any) => (
+                                                a: (msg) => (
                                                     <Link href={links.folketrygden} target="_blank" rel="noreferrer">
                                                         {msg}
                                                     </Link>

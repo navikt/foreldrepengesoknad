@@ -1,48 +1,36 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
-import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { HvorMye } from 'types/HvorMye';
 
-import { StønadskontoType } from '@navikt/fp-constants';
-import { HvemPlanleggerType } from '@navikt/fp-types';
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
+import { HvemPlanleggerType, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import {
+    ALENE_OM_OMSORG_80_FARMEDMOR,
+    ALENE_OM_OMSORG_100_FARMEDMOR,
+    DELT_UTTAK_80,
+    DELT_UTTAK_100,
+    IKKE_DELT_UTTAK_80_FARMEDMOR,
+    IKKE_DELT_UTTAK_80_FAR_OG_FAR_ADOPSJON,
+    IKKE_DELT_UTTAK_80_FAR_OG_FAR_FØDSEL,
+    IKKE_DELT_UTTAK_80_MOR,
+    IKKE_DELT_UTTAK_100_FARMEDMOR,
+    IKKE_DELT_UTTAK_100_FAR_OG_FAR_ADOPSJON,
+    IKKE_DELT_UTTAK_100_FAR_OG_FAR_FØDSEL,
+    IKKE_DELT_UTTAK_100_MOR,
+    IKKE_DELT_UTTAK_TO_BARN_80,
+    IKKE_DELT_UTTAK_TO_BARN_100,
+    MINSTERETTER,
+} from '@navikt/fp-utils-test';
 
 import { OppsummeringSteg } from './OppsummeringSteg';
-
-const MINSTERETTER_FAR_RUNDT_FØDSEL_10 = {
-    farRundtFødsel: 10,
-    toTette: 0,
-};
-
-const DEFAULT_SATSER = {
-    engangstønad: [
-        {
-            fom: '01.01.2023',
-            verdi: 92648,
-        },
-        {
-            fom: '01.01.2021',
-            verdi: 90300,
-        },
-    ],
-    grunnbeløp: [
-        {
-            fom: '01.05.2024',
-            verdi: 124028,
-        },
-        {
-            fom: '01.05.2023',
-            verdi: 118620,
-        },
-    ],
-};
 
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
@@ -51,7 +39,7 @@ type StoryArgs = {
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
     hvorMye?: HvorMye;
-    tilpassPlan?: boolean;
+    uttaksplan?: UttakPeriode_fpoversikt[];
 } & ComponentProps<typeof OppsummeringSteg>;
 
 const meta = {
@@ -65,9 +53,8 @@ const meta = {
         arbeidssituasjon,
         stønadskontoer,
         satser,
-        locale,
         hvorMye,
-        tilpassPlan = false,
+        uttaksplan,
     }) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.OPPSUMMERING]}>
@@ -79,10 +66,10 @@ const meta = {
                         [ContextDataType.OM_BARNET]: omBarnet,
                         [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
                         [ContextDataType.HVOR_MYE]: hvorMye,
-                        [ContextDataType.TILPASS_PLAN]: tilpassPlan,
+                        [ContextDataType.UTTAKSPLAN]: uttaksplan,
                     }}
                 >
-                    <OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} locale={locale} />
+                    <OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -94,7 +81,6 @@ type Story = StoryObj<typeof meta>;
 
 export const FlereForsørgereHundreProsentTermin: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
@@ -109,7 +95,7 @@ export const FlereForsørgereHundreProsentTermin: Story = {
             lønnSøker2: 70000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         omBarnet: {
             erFødsel: true,
@@ -123,36 +109,51 @@ export const FlereForsørgereHundreProsentTermin: Story = {
         },
         stønadskontoer: {
             '100': {
-                kontoer: [
-                    { konto: StønadskontoType.Mødrekvote, dager: 75 },
-                    { konto: StønadskontoType.Fedrekvote, dager: 75 },
-                    { konto: StønadskontoType.Fellesperiode, dager: 80 },
-                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 0,
-                    toTette: 0,
-                },
+                kontoer: DELT_UTTAK_100,
+                minsteretter: MINSTERETTER,
             },
             '80': {
-                kontoer: [
-                    { konto: StønadskontoType.Mødrekvote, dager: 95 },
-                    { konto: StønadskontoType.Fedrekvote, dager: 95 },
-                    { konto: StønadskontoType.Fellesperiode, dager: 101 },
-                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 0,
-                    toTette: 0,
-                },
+                kontoer: DELT_UTTAK_80,
+                minsteretter: MINSTERETTER,
             },
         },
+        uttaksplan: [
+            {
+                fom: '2025-07-03',
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                tom: '2025-07-23',
+            },
+            {
+                fom: '2025-07-24',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                tom: '2025-11-05',
+            },
+            {
+                fom: '2025-11-06',
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                tom: '2025-12-10',
+            },
+            {
+                fom: '2025-12-11',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FELLESPERIODE',
+                tom: '2026-02-25',
+            },
+            {
+                fom: '2026-02-26',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                tom: '2026-06-10',
+            },
+        ],
     },
 };
 
 export const MorOgFarKunFarHarRett: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
@@ -160,10 +161,10 @@ export const MorOgFarKunFarHarRett: Story = {
             type: HvemPlanleggerType.MOR_OG_FAR,
         },
         hvorMye: {
-            lønnSøker1: 1000,
+            lønnSøker2: 1000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         omBarnet: {
             erFødsel: true,
@@ -177,18 +178,12 @@ export const MorOgFarKunFarHarRett: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 211 },
-                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 50 },
-                ],
-                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
+                kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR,
+                minsteretter: MINSTERETTER,
             },
             '100': {
-                kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 150 },
-                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 50 },
-                ],
-                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
+                kontoer: IKKE_DELT_UTTAK_100_FARMEDMOR,
+                minsteretter: MINSTERETTER,
             },
         },
     },
@@ -196,7 +191,6 @@ export const MorOgFarKunFarHarRett: Story = {
 
 export const FarOgFarFødsel: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
@@ -209,7 +203,7 @@ export const FarOgFarFødsel: Story = {
             lønnSøker2: 70000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         omBarnet: {
             erFødsel: true,
@@ -223,24 +217,12 @@ export const FarOgFarFødsel: Story = {
         },
         stønadskontoer: {
             '100': {
-                kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 125 },
-                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 75 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 0,
-                    toTette: 0,
-                },
+                kontoer: IKKE_DELT_UTTAK_100_FARMEDMOR,
+                minsteretter: MINSTERETTER,
             },
             '80': {
-                kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 166 },
-                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 95 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 0,
-                    toTette: 0,
-                },
+                kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR,
+                minsteretter: MINSTERETTER,
             },
         },
     },
@@ -248,7 +230,6 @@ export const FarOgFarFødsel: Story = {
 
 export const FarOgFarAdopsjonKunFar1HarRett: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             type: HvemPlanleggerType.FAR_OG_FAR,
@@ -259,7 +240,7 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
             lønnSøker2: 70000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         omBarnet: {
             erFødsel: false,
@@ -274,19 +255,18 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 261 }],
-                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
+                kontoer: IKKE_DELT_UTTAK_80_FAR_OG_FAR_ADOPSJON,
+                minsteretter: MINSTERETTER,
             },
             '100': {
-                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 200 }],
-                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
+                kontoer: IKKE_DELT_UTTAK_100_FAR_OG_FAR_ADOPSJON,
+                minsteretter: MINSTERETTER,
             },
         },
     },
 };
 export const FarOgFarAdopsjonBeggeHarRett: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
@@ -301,7 +281,7 @@ export const FarOgFarAdopsjonBeggeHarRett: Story = {
             lønnSøker2: 70000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         omBarnet: {
             erFødsel: false,
@@ -315,25 +295,53 @@ export const FarOgFarAdopsjonBeggeHarRett: Story = {
             jobberAnnenPart: true,
         },
         stønadskontoer: FlereForsørgereHundreProsentTermin.args?.stønadskontoer,
+        uttaksplan: [
+            {
+                fom: '2024-09-23',
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                tom: '2024-10-11',
+            },
+            {
+                fom: '2024-10-14',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                tom: '2025-01-24',
+            },
+            {
+                fom: '2025-01-27',
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                tom: '2025-02-28',
+            },
+            {
+                fom: '2025-03-03',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FELLESPERIODE',
+                tom: '2025-05-16',
+            },
+            {
+                fom: '2025-05-19',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                tom: '2025-08-29',
+            },
+        ],
     },
 };
 
 export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             type: HvemPlanleggerType.MOR,
         },
-        fordeling: {
-            antallDagerSøker1: 25,
-        },
         hvorMye: {
             lønnSøker1: 70000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+            dekningsgrad: '80',
         },
         omBarnet: {
             erFødsel: true,
@@ -347,25 +355,19 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 397 },
-                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
-                ],
-                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
+                kontoer: IKKE_DELT_UTTAK_TO_BARN_80,
+                minsteretter: MINSTERETTER,
             },
             '100': {
-                kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 315 },
-                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
-                ],
-                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
+                kontoer: IKKE_DELT_UTTAK_TO_BARN_100,
+                minsteretter: MINSTERETTER,
             },
         },
     },
 };
+
 export const AleneforsørgerFarÅttiProsentFødsel: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
@@ -375,7 +377,7 @@ export const AleneforsørgerFarÅttiProsentFødsel: Story = {
             lønnSøker1: 1000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+            dekningsgrad: '80',
         },
         omBarnet: {
             erFødsel: true,
@@ -389,12 +391,12 @@ export const AleneforsørgerFarÅttiProsentFødsel: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 291 }],
-                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
+                kontoer: ALENE_OM_OMSORG_80_FARMEDMOR,
+                minsteretter: MINSTERETTER,
             },
             '100': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 230 }],
-                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
+                kontoer: ALENE_OM_OMSORG_100_FARMEDMOR,
+                minsteretter: MINSTERETTER,
             },
         },
     },
@@ -402,7 +404,6 @@ export const AleneforsørgerFarÅttiProsentFødsel: Story = {
 
 export const FlereForsørgereHundreProsentAdopsjon: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
@@ -417,7 +418,7 @@ export const FlereForsørgereHundreProsentAdopsjon: Story = {
             lønnSøker2: 70000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         omBarnet: {
             erFødsel: false,
@@ -431,12 +432,43 @@ export const FlereForsørgereHundreProsentAdopsjon: Story = {
             jobberAnnenPart: true,
         },
         stønadskontoer: FlereForsørgereHundreProsentTermin.args?.stønadskontoer,
+        uttaksplan: [
+            {
+                fom: '2024-09-19',
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                tom: '2024-10-09',
+            },
+            {
+                fom: '2024-10-10',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                tom: '2025-01-22',
+            },
+            {
+                fom: '2025-01-23',
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                tom: '2025-02-26',
+            },
+            {
+                fom: '2025-02-27',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FELLESPERIODE',
+                tom: '2025-05-14',
+            },
+            {
+                fom: '2025-05-15',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                tom: '2025-08-27',
+            },
+        ],
     },
 };
 
 export const HarIkkeRett: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
@@ -459,7 +491,6 @@ export const HarIkkeRett: Story = {
 
 export const KunMorHarRett: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
@@ -477,7 +508,7 @@ export const KunMorHarRett: Story = {
             lønnSøker1: 1000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
@@ -485,40 +516,16 @@ export const KunMorHarRett: Story = {
         },
         stønadskontoer: {
             '100': {
-                kontoer: [
-                    {
-                        konto: StønadskontoType.Foreldrepenger,
-                        dager: 230,
-                    },
-                    {
-                        konto: StønadskontoType.ForeldrepengerFørFødsel,
-                        dager: 15,
-                    },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 0,
-                    toTette: 0,
-                },
+                kontoer: IKKE_DELT_UTTAK_100_MOR,
+                minsteretter: MINSTERETTER,
                 tillegg: {
                     flerbarn: 0,
                     prematur: 0,
                 },
             },
             '80': {
-                kontoer: [
-                    {
-                        konto: StønadskontoType.Foreldrepenger,
-                        dager: 291,
-                    },
-                    {
-                        konto: StønadskontoType.ForeldrepengerFørFødsel,
-                        dager: 15,
-                    },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 0,
-                    toTette: 0,
-                },
+                kontoer: IKKE_DELT_UTTAK_80_MOR,
+                minsteretter: MINSTERETTER,
                 tillegg: {
                     flerbarn: 0,
                     prematur: 0,
@@ -530,7 +537,6 @@ export const KunMorHarRett: Story = {
 
 export const AleneforsørgerMorErUfør: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
@@ -546,7 +552,7 @@ export const AleneforsørgerMorErUfør: Story = {
             lønnSøker1: 1000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.UFØR,
@@ -555,7 +561,6 @@ export const AleneforsørgerMorErUfør: Story = {
 };
 export const OppsummeringFarOgFarKunFar2HarRett: Story = {
     args: {
-        locale: 'nb',
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
@@ -572,7 +577,7 @@ export const OppsummeringFarOgFarKunFar2HarRett: Story = {
             lønnSøker1: 1000,
         },
         hvorLangPeriode: {
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+            dekningsgrad: '100',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.INGEN,
@@ -580,18 +585,12 @@ export const OppsummeringFarOgFarKunFar2HarRett: Story = {
         },
         stønadskontoer: {
             '80': {
-                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 291 }],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
+                kontoer: IKKE_DELT_UTTAK_80_FAR_OG_FAR_FØDSEL,
+                minsteretter: MINSTERETTER,
             },
             '100': {
-                kontoer: [{ konto: StønadskontoType.AktivitetsfriKvote, dager: 230 }],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
+                kontoer: IKKE_DELT_UTTAK_100_FAR_OG_FAR_FØDSEL,
+                minsteretter: MINSTERETTER,
             },
         },
     },

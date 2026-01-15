@@ -1,7 +1,7 @@
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
-import { NavnPåForeldre, Periode, Periodetype, Situasjon, StønadskontoType } from '@navikt/fp-common';
+import { NavnPåForeldre, Periode, Periodetype, Situasjon } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
@@ -34,14 +34,13 @@ export const MorInnlagtDokumentasjon = ({
         return null;
     }
 
-    const morErForSykEllerInnlagtFørsteSeksUker =
-        perioder.find((p) => {
-            if (p.type === Periodetype.Uttak && p.erMorForSyk === true && p.konto === StønadskontoType.Fedrekvote) {
-                return true;
-            }
+    const morErForSykEllerInnlagtFørsteSeksUker = perioder.some((p) => {
+        if (p.type === Periodetype.Uttak && p.erMorForSyk === true && p.konto === 'FEDREKVOTE') {
+            return true;
+        }
 
-            return false;
-        }) !== undefined;
+        return false;
+    });
 
     return (
         <UttakUploader

@@ -1,4 +1,4 @@
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
@@ -38,7 +38,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         await userEvent.type(virksomhetsnavnInput, 'Virksomhetsnavn AS');
 
         expect(screen.getByText('Er virksomheten registrert i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[0]);
+        await userEvent.click(screen.getAllByText('Ja')[0]!);
 
         const orgnummerInput = screen.getByLabelText('Hva er organisasjonsnummeret?');
         await userEvent.type(orgnummerInput, '997519485');
@@ -48,7 +48,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         await userEvent.tab();
 
         expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]);
+        await userEvent.click(screen.getAllByText('Ja')[1]!);
 
         const næringsresultatInput = screen.getByLabelText(
             'Hva har du hatt i næringsresultat før skatt de siste 12 månedene?',
@@ -58,7 +58,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         expect(
             screen.getByText('Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?'),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[2]);
+        await userEvent.click(screen.getAllByText('Nei')[2]!);
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -73,7 +73,6 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
             næringsinntekt: '1000',
             næringstype: 'JORDBRUK_SKOGBRUK',
             organisasjonsnummer: '997519485',
-            pågående: true,
             registrertINorge: true,
         });
     });
@@ -85,14 +84,14 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         await userEvent.click(screen.getByText('Fiske'));
 
         expect(screen.getByText('Er virksomheten registrert i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[0]);
+        await userEvent.click(screen.getAllByText('Ja')[0]!);
 
         const startdatoInput = screen.getByLabelText('Når startet du virksomheten?');
         await userEvent.type(startdatoInput, dayjs('2023-04-30').format('DD.MM.YYYY'));
         await userEvent.tab();
 
         expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]);
+        await userEvent.click(screen.getAllByText('Ja')[1]!);
 
         expect(
             screen.getByText('Hva har du hatt i næringsresultat før skatt de siste 12 månedene?'),
@@ -106,7 +105,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         expect(
             screen.getByText('Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?'),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[0]);
+        await userEvent.click(screen.getAllByText('Nei')[0]!);
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -123,7 +122,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         await userEvent.tab();
 
         expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[1]);
+        await userEvent.click(screen.getAllByText('Nei')[1]!);
 
         expect(screen.getByText('Når avsluttet du virksomheten?')).toBeInTheDocument();
         const sluttdatoInput = screen.getByLabelText('Når avsluttet du virksomheten?');
@@ -133,7 +132,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         expect(
             screen.getByText('Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?'),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[2]);
+        await userEvent.click(screen.getAllByText('Ja')[2]!);
 
         expect(screen.getByText('Når ble du yrkesaktiv?')).toBeInTheDocument();
         const yrkesaktidDatoInput = screen.getByLabelText('Når ble du yrkesaktiv?');
@@ -154,7 +153,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         render(<Default />);
 
         expect(await screen.findByText('Er virksomheten registrert i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[0]);
+        await userEvent.click(screen.getAllByText('Nei')[0]!);
 
         expect(screen.getByText('I hvilket land er virksomheten din registrert i?')).toBeInTheDocument();
 
@@ -164,15 +163,16 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
     });
 
     it('skal avslutte søknad', async () => {
-        const cancelApplication = vi.fn();
+        const onAvsluttOgSlett = vi.fn();
 
-        render(<Default cancelApplication={cancelApplication} />);
+        render(<Default onFortsettSenere={vi.fn()} onAvsluttOgSlett={onAvsluttOgSlett} />);
 
         expect(await screen.findByText('Er virksomheten registrert i Norge?')).toBeInTheDocument();
 
-        await userEvent.click(screen.getAllByText('Avslutt')[0]);
+        await userEvent.click(screen.getAllByText('Slett søknaden')[0]!);
+        await userEvent.click(screen.getAllByText('Slett søknaden')[1]!);
 
-        expect(screen.getAllByText('Fortsett senere')[0]).toBeInTheDocument();
+        expect(onAvsluttOgSlett).toHaveBeenCalledTimes(1);
     });
 
     it('skal gå til et tidligere steg', async () => {

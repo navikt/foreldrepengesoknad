@@ -38,4 +38,3 @@ jobs:
       cluster: ${{ inputs.environment }}-gcp
       image_suffix: '/${{ inputs.app }}'
       deploy_context: '/${{ inputs.app }}'
-    secrets: inherit

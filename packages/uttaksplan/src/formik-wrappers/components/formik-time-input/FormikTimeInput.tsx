@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment */
 import classNames from 'classnames';
 import { FastField, Field, FieldProps } from 'formik';
 import React, { useRef } from 'react';
@@ -27,9 +28,6 @@ export type FormikTimeInputProps<FieldName, ErrorType> = OwnProps<FieldName> &
     TestProps;
 
 const bem = planBemUtils('formikTimeInput');
-
-export const Div = (props: any) => <div {...props} />;
-
 function FormikTimeInput<FieldName, ErrorType>({
     label,
     name,
@@ -72,7 +70,7 @@ function FormikTimeInput<FieldName, ErrorType>({
                         className={skjemagruppeClassName}
                         ref={ref}
                         error={getErrorPropForFormikInput({ field, form, context, error })}
-                        id={field.name as any}
+                        id={field.name}
                         onFocus={(evt) => {
                             if (evt.target.id === ref.current.props?.id) {
                                 focusFirstElement(evt.target);
@@ -88,7 +86,7 @@ function FormikTimeInput<FieldName, ErrorType>({
                             justifyContent="left"
                             time={field.value || undefined}
                             onChange={(time: Partial<InputTime> | undefined) => {
-                                form.setFieldValue(field.name, time);
+                                void form.setFieldValue(field.name, time);
                                 if (context) {
                                     context.onAfterFieldValueSet();
                                 }

@@ -1,6 +1,6 @@
 import MockDate from 'mockdate';
 
-import { Periodetype, StønadskontoType } from '@navikt/fp-constants';
+import { Periodetype } from '@navikt/fp-constants';
 
 import { aktivitetskravMorSkalBesvares } from './aktivitetskravMorSkalBesvares';
 
@@ -19,7 +19,7 @@ describe('aktivitetskravMorSkalBesvares - når WLB gjelder', () => {
             true, //samtidigUttak
             false, //erMorForSyk
             Periodetype.Uttak,
-            StønadskontoType.Fedrekvote,
+            'FEDREKVOTE',
             false, // søkerErMor
             false, // erAleneOmOmsorg
             false, //  annenForelderKanIkkeOppgis
@@ -28,7 +28,7 @@ describe('aktivitetskravMorSkalBesvares - når WLB gjelder', () => {
             new Date('2022-08-08T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-08T00:00:00.000Z'), //termindato
             'fødsel',
-            [{ konto: StønadskontoType.Fedrekvote, dager: 50 }], //stønadskontoer
+            [{ konto: 'FEDREKVOTE', dager: 50 }], //stønadskontoer
             false, //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);
@@ -39,7 +39,7 @@ describe('aktivitetskravMorSkalBesvares - når WLB gjelder', () => {
             false, //samtidigUttak
             false, //erMorForSyk
             Periodetype.Uttak,
-            StønadskontoType.Fellesperiode,
+            'FELLESPERIODE',
             false, // søkerErMor
             false, // erAleneOmOmsorg
             false, //  annenForelderKanIkkeOppgis
@@ -48,7 +48,7 @@ describe('aktivitetskravMorSkalBesvares - når WLB gjelder', () => {
             new Date('2022-08-01T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-01T00:00:00.000Z'), //termindato
             'fødsel',
-            [{ konto: StønadskontoType.Fedrekvote, dager: 50 }], //stønadskontoer
+            [{ konto: 'FEDREKVOTE', dager: 50 }], //stønadskontoer
             false, //bareFarMedmorHarRett
         );
         expect(result).toEqual(true);
@@ -59,7 +59,7 @@ describe('aktivitetskravMorSkalBesvares - når WLB gjelder', () => {
             false, //samtidigUttak
             false, //erMorForSyk
             Periodetype.Uttak,
-            StønadskontoType.Fellesperiode,
+            'FELLESPERIODE',
             false, // søkerErMor
             false, // erAleneOmOmsorg
             false, //  annenForelderKanIkkeOppgis
@@ -68,7 +68,7 @@ describe('aktivitetskravMorSkalBesvares - når WLB gjelder', () => {
             new Date('2022-08-02T00:00:00.000Z'), //familiehendelsesdato
             new Date('2022-08-02T00:00:00.000Z'), //termindato
             'fødsel',
-            [{ konto: StønadskontoType.Fedrekvote, dager: 50 }], //stønadskontoer
+            [{ konto: 'FEDREKVOTE', dager: 50 }], //stønadskontoer
             false, //bareFarMedmorHarRett
         );
         expect(result).toEqual(false);

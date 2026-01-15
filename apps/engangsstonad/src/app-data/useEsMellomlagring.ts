@@ -1,27 +1,24 @@
 import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
+import { API_URLS } from 'appData/queries';
 import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { LocaleAll, PersonFrontend } from '@navikt/fp-types';
+import { PersonDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './EsDataContext';
 
-export const VERSJON_MELLOMLAGRING = 3;
+export const VERSJON_MELLOMLAGRING = 4;
 
-export type EsDataMapAndMetaData = { version: number; locale: LocaleAll; personinfo: PersonFrontend } & ContextDataMap;
+export type EsDataMapAndMetaData = { version: number; personinfo: PersonDto_fpoversikt } & ContextDataMap;
 
 // TODO (TOR) Fiks lokalisering
 const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export const useEsMellomlagring = (
-    locale: LocaleAll,
-    personinfo: PersonFrontend,
-    setVelkommen: (erVelkommen: boolean) => void,
-) => {
+export const useEsMellomlagring = (personinfo: PersonDto_fpoversikt, setVelkommen: (erVelkommen: boolean) => void) => {
     const navigate = useNavigate();
     const state = useContextComplete();
     const resetState = useContextReset();
@@ -31,7 +28,7 @@ export const useEsMellomlagring = (
     const promiseRef = useRef<() => void>(null);
 
     const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad`),
+        mutationFn: () => ky.delete(API_URLS.mellomlagring),
     });
 
     useEffect(() => {
@@ -41,25 +38,25 @@ export const useEsMellomlagring = (
 
                 const currentPath = state[ContextDataType.CURRENT_PATH];
                 if (currentPath) {
-                    navigate(currentPath);
+                    void navigate(currentPath);
 
                     try {
                         const data = {
                             version: VERSJON_MELLOMLAGRING,
-                            locale,
                             personinfo,
                             ...state,
                         } satisfies EsDataMapAndMetaData;
-                        await ky.post(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad`, { json: data });
+                        await ky.post(API_URLS.mellomlagring, { json: data });
                     } catch (error: unknown) {
                         if (error instanceof HTTPError) {
                             if (error.response.status === 401 || error.response.status === 403) {
                                 throw error;
                             }
 
-                            const jsonResponse = await error.response.json();
-                            const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
-                            throw Error(FEIL_VED_INNSENDING + callIdForBruker);
+                            const jsonResponse = await error.response.json<{ uuid?: string }>();
+                            const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
+                            Sentry.captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
+                            throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
                         }
                         if (error instanceof Error) {
                             throw error;
@@ -72,7 +69,7 @@ export const useEsMellomlagring = (
 
                     setVelkommen(false);
                     resetState();
-                    navigate('/');
+                    void navigate('/');
                 }
 
                 if (promiseRef.current) {
@@ -94,11 +91,9 @@ export const useEsMellomlagring = (
         //Må gå via state change sidan ein må få oppdatert context før ein mellomlagrar
         setSkalMellomlagre(true);
 
-        const promise = new Promise<void>((resolve) => {
+        return new Promise<void>((resolve) => {
             promiseRef.current = resolve;
         });
-
-        return promise;
     }, []);
 
     return mellomlagreOgNaviger;

@@ -1,3 +1,5 @@
+import { CountryCode } from '@navikt/fp-types';
+
 export enum AnnenInntektType {
     SLUTTPAKKE = 'ETTERLØNN_SLUTTPAKKE',
     MILITÆRTJENESTE = 'MILITÆR_ELLER_SIVILTJENESTE',
@@ -14,16 +16,16 @@ export interface SluttpakkeInntekt extends AnnenInntektBase {
     tom: string;
 }
 
-export interface MilitærtjenesteInntekt extends AnnenInntektBase {
+interface MilitærtjenesteInntekt extends AnnenInntektBase {
     type: AnnenInntektType.MILITÆRTJENESTE;
     pågående: boolean;
     tom?: string;
 }
 
-export interface JobbIUtlandetInntekt extends AnnenInntektBase {
+interface JobbIUtlandetInntekt extends AnnenInntektBase {
     type: AnnenInntektType.JOBB_I_UTLANDET;
     arbeidsgiverNavn: string;
-    land: string;
+    land: CountryCode;
     pågående: boolean;
     tom?: string;
 }

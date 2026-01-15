@@ -19,7 +19,7 @@ export type TimeInputLabels = {
     minutes?: string;
 };
 
-export type TimeInputLayout = 'vertical' | 'horizontal';
+type TimeInputLayout = 'vertical' | 'horizontal';
 export interface TimeInputRefProps {
     refs?: {
         hours?: RefObject<HTMLInputElement>;
@@ -37,6 +37,7 @@ export interface TimeInputLayoutProps {
 }
 
 interface TimeInputProps extends TimeInputLayoutProps, TestProps, TimeInputRefProps {
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     time?: InputTime | Partial<InputTime> | undefined;
     maxHours?: number;
     maxMinutes?: number;
@@ -49,7 +50,7 @@ interface TimeInputProps extends TimeInputLayoutProps, TestProps, TimeInputRefPr
 
 const bem = planBemUtils('timeInput');
 
-export const isValidTime = (time: Partial<InputTime>): time is InputTime => {
+const isValidTime = (time: Partial<InputTime>): time is InputTime => {
     const hours = getNumberFromNumberInputValue(time.hours || '0');
     const minutes = getNumberFromNumberInputValue(time.minutes || '0');
     return hours !== undefined && minutes !== undefined;

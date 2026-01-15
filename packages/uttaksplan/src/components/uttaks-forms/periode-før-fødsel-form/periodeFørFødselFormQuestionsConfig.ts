@@ -23,5 +23,6 @@ const PeriodeFørFødselFormConfig: QuestionConfig<PeriodeFørFødselFormData, P
 };
 
 export const periodeFørFødselFormQuestionsConfig = Questions<PeriodeFørFødselFormData, PeriodeFørFødselFormField>(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     PeriodeFørFødselFormConfig,
 );

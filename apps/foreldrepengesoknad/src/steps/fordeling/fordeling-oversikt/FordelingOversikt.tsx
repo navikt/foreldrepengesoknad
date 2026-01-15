@@ -6,12 +6,12 @@ import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { ISOStringToDate, førsteOktober2021ReglerGjelder } from 'utils/dateUtils';
 import { guid } from 'utils/guid';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
-import { getAntallUker } from 'utils/stønadskontoerUtils';
+import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 
 import { VStack } from '@navikt/ds-react';
 
 import { isAnnenForelderOppgitt, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { KontoBeregningDto } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { FlerbarnsdagerInformasjon } from './Flerbarnsdagerinformasjon';
@@ -22,7 +22,7 @@ import { getFarTekst, getMorTekst } from './fordelingOversiktUtils';
 import { BeggeHarRettGraf } from './grafer/begge-har-rett-graf/BeggeHarRettGraf';
 
 interface Props {
-    kontoer: TilgjengeligeStønadskontoerForDekningsgrad;
+    kontoer: KontoBeregningDto;
     navnFarMedmor: string;
     navnMor: string;
     deltUttak: boolean;
@@ -50,11 +50,11 @@ export const FordelingOversikt = ({ kontoer, navnFarMedmor, navnMor, deltUttak, 
 
     const [currentUthevet, setCurrentUthevet] = useState<FordelingEier | undefined>(undefined);
     const antallFlerbarnsdager = kontoer.tillegg?.flerbarn;
-    const sumDager = getAntallUker(kontoer) * 5;
+    const sumDager = getAntallUkerFraStønadskontoer(kontoer.kontoer) * 5;
     const visBeggeHarRettGraf = deltUttak && !annenForelderHarKunRettIEØS;
     const visFlerbarnsdagerInformasjon = deltUttak && !!antallFlerbarnsdager && antallFlerbarnsdager > 0;
     return (
-        <VStack gap="1">
+        <VStack gap="space-4">
             {visBeggeHarRettGraf && (
                 <BeggeHarRettGraf
                     kontoer={kontoer}

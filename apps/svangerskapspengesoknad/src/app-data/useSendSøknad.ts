@@ -1,44 +1,43 @@
 import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
+import { API_URLS } from 'appData/queries';
+import { SøknadRoute } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { useAbortSignal } from '@navikt/fp-api';
-import { Arbeidsforhold, Kvittering, LocaleNo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { useAbortSignal } from '@navikt/fp-utils';
 
 import { useContextGetAnyData } from './SvpDataContext';
 import { getSøknadForInnsending } from './getSøknadForInnsending';
 
 const UKJENT_UUID = 'ukjent uuid';
-export const FEIL_VED_INNSENDING =
+const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export const useSendSøknad = (
-    setKvittering: (kvittering: Kvittering) => void,
-    locale: LocaleNo,
-    arbeidsforhold: Arbeidsforhold[],
-) => {
+export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt) => {
+    const navigate = useNavigate();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 
     const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`),
+        mutationFn: () => ky.delete(API_URLS.mellomlagring),
     });
 
     const send = async () => {
-        const søknadForInnsending = getSøknadForInnsending(arbeidsforhold, hentData, locale);
+        const søknadForInnsending = getSøknadForInnsending(søkerinfo, hentData);
 
         const signal = initAbortSignal();
 
         try {
-            const response = await ky.post(`${import.meta.env.BASE_URL}/rest/soknad/svangerskapspenger`, {
+            await ky.post(API_URLS.sendSøknad, {
                 json: søknadForInnsending,
                 signal,
             });
 
             slettMellomlagring();
-
-            setKvittering((await response.json()) as Kvittering);
+            void navigate(SøknadRoute.KVITTERING);
         } catch (error: unknown) {
             if (error instanceof HTTPError) {
                 Sentry.captureMessage(error.message);
@@ -47,9 +46,10 @@ export const useSendSøknad = (
                     throw error;
                 }
 
-                const jsonResponse = await error.response.json();
-                const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
-                throw Error(FEIL_VED_INNSENDING + callIdForBruker);
+                const jsonResponse = await error.response.json<{ uuid?: string }>();
+                Sentry.captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
+                const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
+                throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
             }
             if (error instanceof Error) {
                 throw error;

@@ -1,24 +1,27 @@
 import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
+import { API_URLS } from 'appData/queries';
 import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
-export const VERSJON_MELLOMLAGRING = 7;
+export const VERSJON_MELLOMLAGRING = 8;
 
 const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export type SvpDataMapAndMetaData = { version: number; locale: LocaleNo; søkerInfo: Søkerinfo } & ContextDataMap;
+export type SvpDataMapAndMetaData = {
+    version: number;
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+} & ContextDataMap;
 
 export const useMellomlagreSøknad = (
-    locale: LocaleNo,
-    søkerInfo: Søkerinfo,
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt,
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void,
 ) => {
     const navigate = useNavigate();
@@ -30,7 +33,7 @@ export const useMellomlagreSøknad = (
     const promiseRef = useRef<() => void>(null);
 
     const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`),
+        mutationFn: () => ky.delete(API_URLS.mellomlagring),
     });
 
     useEffect(() => {
@@ -40,25 +43,25 @@ export const useMellomlagreSøknad = (
 
                 const currentPath = state[ContextDataType.APP_ROUTE];
                 if (currentPath) {
-                    navigate(currentPath);
+                    void navigate(currentPath);
 
                     try {
                         const data = {
                             version: VERSJON_MELLOMLAGRING,
-                            locale,
                             søkerInfo,
                             ...state,
                         } satisfies SvpDataMapAndMetaData;
-                        await ky.post(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`, { json: data });
+                        await ky.post(API_URLS.mellomlagring, { json: data });
                     } catch (error: unknown) {
                         if (error instanceof HTTPError) {
                             if (error.response.status === 401 || error.response.status === 403) {
                                 throw error;
                             }
 
-                            const jsonResponse = await error.response.json();
-                            const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
-                            throw Error(FEIL_VED_INNSENDING + callIdForBruker);
+                            const jsonResponse = await error.response.json<{ uuid?: string }>();
+                            const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
+                            Sentry.captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
+                            throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
                         }
                         if (error instanceof Error) {
                             throw error;
@@ -68,7 +71,7 @@ export const useMellomlagreSøknad = (
                 } else {
                     setHarGodkjentVilkår(false);
                     resetState();
-                    navigate('/');
+                    void navigate('/');
 
                     // Ved avbryt så set ein Path = undefined og må så rydda opp i data her
                     slettMellomlagring();

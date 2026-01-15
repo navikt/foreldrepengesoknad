@@ -72,7 +72,7 @@ export const OppsummeringFpEllerEsSide = ({ fpEllerEsSituasjon, satser }: Props)
     return (
         <>
             <VeiviserPage ref={ref} label={intl.formatMessage({ id: 'OppsummeringFpEllerEsSide.Oppsummering' })}>
-                <VStack gap="8">
+                <VStack gap="space-32">
                     {(hvemHarRett === 'morTjener200000EllerMerOgHarRett' ||
                         hvemHarRett === 'farEllerMedmorKanHaRettFp') && (
                         <HarRett fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />

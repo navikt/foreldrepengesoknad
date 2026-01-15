@@ -9,8 +9,8 @@ import { useIntl } from 'react-intl';
 import { Checkbox, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfCheckboxGroup, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { FlereArbeidsforholdGuidePanel } from './FlereArbeidsforholdGuidePanel';
@@ -22,8 +22,8 @@ type VelgArbeidForm = {
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    avbrytSøknad: () => Promise<void>;
-    arbeidsforhold: Arbeidsforhold[];
+    avbrytSøknad: () => void;
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 };
 
 export const VelgArbeidSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
@@ -74,31 +74,34 @@ export const VelgArbeidSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arb
     const visInfo = arbeidMedTilrettelegging && arbeidMedTilrettelegging.length > 1;
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            steps={stepConfig}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            onStepChange={navigator.goToStep}
-        >
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    <RhfCheckboxGroup
-                        name="arbeidMedTilrettelegging"
-                        label={intl.formatMessage({ id: 'velgArbeid.hvor' })}
-                        validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.tilrettelegging.påkrevd' }))]}
-                    >
-                        {arbeidsforholdOptions.map((option) => (
-                            <Checkbox key={option.id} value={option.id}>
-                                {getOptionNavn(option.arbeidsforholdType, intl, option.arbeidsforholdNavn)}
-                            </Checkbox>
-                        ))}
-                    </RhfCheckboxGroup>
-                    {visInfo && <FlereArbeidsforholdGuidePanel />}
-                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
-                </VStack>
-            </RhfForm>
-        </Step>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step steps={stepConfig} onStepChange={navigator.goToStep}>
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="space-40">
+                        <ErrorSummaryHookForm />
+                        <RhfCheckboxGroup
+                            name="arbeidMedTilrettelegging"
+                            control={formMethods.control}
+                            label={intl.formatMessage({ id: 'velgArbeid.hvor' })}
+                            validate={[
+                                isRequired(intl.formatMessage({ id: 'valideringsfeil.tilrettelegging.påkrevd' })),
+                            ]}
+                        >
+                            {arbeidsforholdOptions.map((option) => (
+                                <Checkbox key={option.id} value={option.id}>
+                                    {getOptionNavn(option.arbeidsforholdType, intl, option.arbeidsforholdNavn)}
+                                </Checkbox>
+                            ))}
+                        </RhfCheckboxGroup>
+                        {visInfo && <FlereArbeidsforholdGuidePanel />}
+                        <StepButtonsHookForm
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            onAvsluttOgSlett={avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
+                        />
+                    </VStack>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 };

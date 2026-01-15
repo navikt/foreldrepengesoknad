@@ -3,27 +3,28 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, FormSummary } from '@navikt/ds-react';
 
 import {
-    Arbeidsforhold,
     ArbeidsforholdOgInntekt,
-    EgenNæring,
+    EksternArbeidsforholdDto_fpoversikt,
     Frilans,
-    Næringstype,
+    NæringDto,
     isArbeidsforholdOgInntektFp,
 } from '@navikt/fp-types';
-import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
+import { capitalizeFirstLetterInEveryWordOnly, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
 import { JaNeiTekst } from '../OppsummeringPanel';
 
 interface ArbeidsforholdOppsummeringProps {
-    readonly arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
-    readonly arbeidsforhold: Arbeidsforhold[];
-    readonly onVilEndreSvar: () => void;
+    arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    onVilEndreSvar: () => void;
+    skalViseAlertOmIM: boolean;
 }
 
 export const ArbeidsforholdOppsummering = ({
     arbeidsforholdOgInntekt,
     arbeidsforhold,
     onVilEndreSvar,
+    skalViseAlertOmIM,
 }: ArbeidsforholdOppsummeringProps) => {
     if (!arbeidsforholdOgInntekt) {
         return null;
@@ -37,9 +38,6 @@ export const ArbeidsforholdOppsummering = ({
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="ArbeidsforholdOppsummering.Arbeid" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="ArbeidsforholdOppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 <FormSummary.Answer>
@@ -61,8 +59,8 @@ export const ArbeidsforholdOppsummering = ({
                             </FormSummary.Answers>
                         )}
                     </FormSummary.Value>
-                    {arbeidsforhold.length > 0 && (
-                        <Alert variant="info" style={{ marginTop: 'var(--a-spacing-2)' }}>
+                    {skalViseAlertOmIM && (
+                        <Alert variant="info" style={{ marginTop: 'var(--ax-space-8)' }}>
                             <FormattedMessage
                                 id="ArbeidsforholdOppsummering.inntektsmelding"
                                 values={{ antall: arbeidsforhold.length }}
@@ -118,11 +116,20 @@ export const ArbeidsforholdOppsummering = ({
                     </FormSummary.Answer>
                 )}
             </FormSummary.Answers>
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="ArbeidsforholdOppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 };
 
-const ArbeidsforholdFormSummaryValue = ({ arbeidsforhold }: { readonly arbeidsforhold: Arbeidsforhold }) => {
+const ArbeidsforholdFormSummaryValue = ({
+    arbeidsforhold,
+}: {
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt;
+}) => {
     const intl = useIntl();
 
     return (
@@ -147,10 +154,10 @@ const ArbeidsforholdFormSummaryValue = ({ arbeidsforhold }: { readonly arbeidsfo
     );
 };
 
-interface SelvstendigNæringsdrivendeOppsummeringProps {
-    readonly onVilEndreSvar: () => void;
-    readonly egenNæring?: EgenNæring;
-}
+type SelvstendigNæringsdrivendeOppsummeringProps = {
+    onVilEndreSvar: () => void;
+    egenNæring?: NæringDto;
+};
 
 export const SelvstendigNæringsdrivendeOppsummering = ({
     onVilEndreSvar,
@@ -160,15 +167,16 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
         return null;
     }
 
+    // Pågående ligger i formet, men vi utleder det heller fra tom.
+    // Dette fordi type NæringFormValues ligger i en annen pakke, og vi ønsker ikke at pakker avhenger av andre pakker.
+    const pågående = !egenNæring.tom;
+
     return (
         <FormSummary>
             <FormSummary.Header>
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="ArbeidsforholdOppsummering.Næring" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="ArbeidsforholdOppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 <FormSummary.Answer>
@@ -178,15 +186,15 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                     <FormSummary.Value>
                         {(() => {
                             switch (egenNæring?.næringstype) {
-                                case Næringstype.FISKER:
+                                case 'FISKE':
                                     return <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.fiske" />;
-                                case Næringstype.DAGMAMMA:
+                                case 'DAGMAMMA':
                                     return <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.dagmamma" />;
-                                case Næringstype.JORDBRUK:
+                                case 'JORDBRUK_SKOGBRUK':
                                     return (
                                         <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.jordbrukSkogbruk" />
                                     );
-                                case Næringstype.ANNET:
+                                case 'ANNEN':
                                     return <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.annen" />;
                                 default:
                                     return null;
@@ -194,7 +202,6 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                         })()}
                     </FormSummary.Value>
                 </FormSummary.Answer>
-
                 {egenNæring.navnPåNæringen && (
                     <FormSummary.Answer>
                         <FormSummary.Label>
@@ -203,7 +210,6 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                         <FormSummary.Value>{egenNæring.navnPåNæringen}</FormSummary.Value>
                     </FormSummary.Answer>
                 )}
-
                 <FormSummary.Answer>
                     <FormSummary.Label>
                         <FormattedMessage id="ArbeidsforholdOppsummering.erNæringenRegistrertINorge" />
@@ -212,7 +218,6 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                         <JaNeiTekst ja={egenNæring.registrertINorge} />
                     </FormSummary.Value>
                 </FormSummary.Answer>
-
                 {egenNæring.organisasjonsnummer && (
                     <FormSummary.Answer>
                         <FormSummary.Label>
@@ -221,24 +226,21 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                         <FormSummary.Value>{egenNæring.organisasjonsnummer}</FormSummary.Value>
                     </FormSummary.Answer>
                 )}
-
                 <FormSummary.Answer>
                     <FormSummary.Label>
                         <FormattedMessage id="ArbeidsforholdOppsummering.næring.fom" />
                     </FormSummary.Label>
                     <FormSummary.Value>{formatDate(egenNæring.fom)}</FormSummary.Value>
                 </FormSummary.Answer>
-
                 <FormSummary.Answer>
                     <FormSummary.Label>
                         <FormattedMessage id="ArbeidsforholdOppsummering.næring.pågående" />
                     </FormSummary.Label>
                     <FormSummary.Value>
-                        <JaNeiTekst ja={egenNæring.pågående} />
+                        <JaNeiTekst ja={pågående} />
                     </FormSummary.Value>
                 </FormSummary.Answer>
-
-                {!egenNæring.pågående && (
+                {!pågående && egenNæring.tom && (
                     <FormSummary.Answer>
                         <FormSummary.Label>
                             <FormattedMessage id="ArbeidsforholdOppsummering.næring.tom" />
@@ -246,23 +248,24 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                         <FormSummary.Value>{formatDate(egenNæring.tom)}</FormSummary.Value>
                     </FormSummary.Answer>
                 )}
-
-                <FormSummary.Answer>
-                    <FormSummary.Label>
-                        <FormattedMessage id="ArbeidsforholdOppsummering.næringsinntekt" />
-                    </FormSummary.Label>
-                    <FormSummary.Value>{egenNæring.næringsinntekt || '-'}</FormSummary.Value>
-                </FormSummary.Answer>
-
-                <FormSummary.Answer>
-                    <FormSummary.Label>
-                        <FormattedMessage id="ArbeidsforholdOppsummering.blittYrkesaktivSiste3År" />
-                    </FormSummary.Label>
-                    <FormSummary.Value>
-                        <JaNeiTekst ja={!!egenNæring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene} />
-                    </FormSummary.Value>
-                </FormSummary.Answer>
-
+                {egenNæring.næringsinntekt !== undefined && (
+                    <FormSummary.Answer>
+                        <FormSummary.Label>
+                            <FormattedMessage id="ArbeidsforholdOppsummering.næringsinntekt" />
+                        </FormSummary.Label>
+                        <FormSummary.Value>{formatCurrencyWithKr(egenNæring.næringsinntekt)}</FormSummary.Value>
+                    </FormSummary.Answer>
+                )}
+                {egenNæring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene !== undefined && (
+                    <FormSummary.Answer>
+                        <FormSummary.Label>
+                            <FormattedMessage id="ArbeidsforholdOppsummering.blittYrkesaktivSiste3År" />
+                        </FormSummary.Label>
+                        <FormSummary.Value>
+                            <JaNeiTekst ja={egenNæring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene} />
+                        </FormSummary.Value>
+                    </FormSummary.Answer>
+                )}
                 {egenNæring.oppstartsdato && (
                     <FormSummary.Answer>
                         <FormSummary.Label>
@@ -271,30 +274,31 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                         <FormSummary.Value>{formatDate(egenNæring.oppstartsdato)}</FormSummary.Value>
                     </FormSummary.Answer>
                 )}
-
-                <FormSummary.Answer>
-                    <FormSummary.Label>
-                        <FormattedMessage id="ArbeidsforholdOppsummering.egenNæringHattVarigEndringDeSiste4Årene" />
-                    </FormSummary.Label>
-                    <FormSummary.Value>
-                        {<JaNeiTekst ja={egenNæring.hattVarigEndringAvNæringsinntektSiste4Kalenderår || false} />}
-                    </FormSummary.Value>
-                </FormSummary.Answer>
-
-                {egenNæring.hattVarigEndringAvNæringsinntektSiste4Kalenderår && egenNæring.varigEndringDato && (
+                {egenNæring.hattVarigEndringAvNæringsinntektSiste4Kalenderår !== undefined && (
+                    <FormSummary.Answer>
+                        <FormSummary.Label>
+                            <FormattedMessage id="ArbeidsforholdOppsummering.egenNæringHattVarigEndringDeSiste4Årene" />
+                        </FormSummary.Label>
+                        <FormSummary.Value>
+                            <JaNeiTekst ja={egenNæring.hattVarigEndringAvNæringsinntektSiste4Kalenderår} />
+                        </FormSummary.Value>
+                    </FormSummary.Answer>
+                )}
+                {egenNæring.hattVarigEndringAvNæringsinntektSiste4Kalenderår && (
                     <>
                         <FormSummary.Answer>
                             <FormSummary.Label>
                                 <FormattedMessage id="ArbeidsforholdOppsummering.egenNæringVarigEndringDato" />
                             </FormSummary.Label>
-                            <FormSummary.Value>{formatDate(egenNæring.varigEndringDato)}</FormSummary.Value>
+                            <FormSummary.Value>{formatDate(egenNæring.varigEndringDato!)}</FormSummary.Value>
                         </FormSummary.Answer>
-
                         <FormSummary.Answer>
                             <FormSummary.Label>
                                 <FormattedMessage id="ArbeidsforholdOppsummering.egenNæringVarigEndringInntektEtterEndring" />
                             </FormSummary.Label>
-                            <FormSummary.Value>{egenNæring.varigEndringInntektEtterEndring}</FormSummary.Value>
+                            <FormSummary.Value>
+                                {formatCurrencyWithKr(egenNæring.varigEndringInntektEtterEndring!)}
+                            </FormSummary.Value>
                         </FormSummary.Answer>
                         <FormSummary.Answer>
                             <FormSummary.Label>
@@ -305,6 +309,11 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                     </>
                 )}
             </FormSummary.Answers>
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="ArbeidsforholdOppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 };
@@ -325,9 +334,6 @@ export const FrilansOppsummering = ({ onVilEndreSvar, frilans }: FrilansOppsumme
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="ArbeidsforholdOppsummering.Frilans" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="ArbeidsforholdOppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 <FormSummary.Answer>
@@ -345,6 +351,11 @@ export const FrilansOppsummering = ({ onVilEndreSvar, frilans }: FrilansOppsumme
                     </FormSummary.Value>
                 </FormSummary.Answer>
             </FormSummary.Answers>
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="ArbeidsforholdOppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 };

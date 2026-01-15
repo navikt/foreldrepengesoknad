@@ -22,10 +22,18 @@ export const UførInfoboks = ({ erAlenesøker, fornavn }: Props) => {
                 />
             }
             color="green"
-            icon={<CircleSlashIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
+            icon={
+                <CircleSlashIcon
+                    height={24}
+                    width={24}
+                    color="var(--ax-bg-neutral-strong)"
+                    fontSize="1.5rem"
+                    aria-hidden
+                />
+            }
             shouldFadeIn
         >
-            <VStack gap="2">
+            <VStack gap="space-8">
                 <BodyShort>
                     <FormattedMessage
                         id="Arbeidssituasjon.Ufør.Infoboks.ErUfør"
@@ -36,7 +44,7 @@ export const UførInfoboks = ({ erAlenesøker, fornavn }: Props) => {
                     <FormattedMessage
                         id="Arbeidssituasjon.Ufør.Infoboks.LesMer"
                         values={{
-                            a: (msg: any) => (
+                            a: (msg) => (
                                 <Link inlineText href={links.hvorLenge} rel="noreferrer" target="_blank">
                                     {msg}
                                 </Link>

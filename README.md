@@ -18,7 +18,7 @@ Dette monorepoet bruker følgende verktøy:
 3. Velg en utløpsdato og trykk på "Generate token".
 4. Kopier tokenet ditt og lagre et trygt sted.
 5. På https://github.com/settings/tokens siden, velg "Configure SSO" for tokenet ditt og autoriser for navikt.
-6. Bruk tokenet ditt lokalt som `export PACKAGES_AUTH_TOKEN=<token her>`. Dette må du gjøre hver gang du åpner terminalen på nytt eller lagre det mer permanent på lokal maskin.
+6. Bruk tokenet ditt lokalt som `export PACKAGES_AUTH_TOKEN=<token her>`. Dette må du gjøre hver gang du åpner terminalen på nytt eller lagre det mer permanent på lokal maskin
 
 ### Installere dependencies og teste at alt bygger
 
@@ -43,7 +43,7 @@ Den gjør at du kan bruke server som er deployet til dev som utgangspunkt.
 Fordelen er at du får brukt helt "ekte" dev data, men med frontend servert fra din localhost.
 
 1. cd til appen du ønsker å kjøre tester på, f.eks `cd apps/foreldrepengeoversikt`
-2. Kjør `pnpm run dev-vite`. Nå har du lokal vite-server kjørende på `localhost:8080/foreldrepenger/oversikt`
+2. Kjør `pnpm run dev-vite`. Nå har du lokal vite-server kjørende på `localhost:5173/foreldrepenger/oversikt`
 3. Gå til ingress i dev. f.eks https://foreldrepenger.intern.dev.nav.no/. Logg inn med en testbruker.
 4. **Identifiser appens wonderwall port**:
    Sjekk i Docker hvilken port din app bruker. F.eks. kjører `wonderwall-foreldrepengeoversikt` vanligvis på port `9100`.
@@ -67,6 +67,22 @@ Fordelen er at du får brukt helt "ekte" dev data, men med frontend servert fra 
 3. Kjør `pnpm run dev-api`
 4. Kjør `pnpm run dev`
 
+### Autogenere Typescript typer fra backend
+
+Vi autogenerer typer fra backend sin openApi spec. For å synkronisere typene så kjører du:
+
+```bash
+   ./generate-api-types.sh
+```
+
+Du må ha verdikjeden kjørende i autotest.
+
+### Oppgradere avhengigheter
+
+Avhengigheter kan enkelt oppgraderes på tvers av alle workspaces med
+```bash
+pnpm -r up --interactive --latest
+```
 ### Tester
 
 For å kjøre tester for en app:
@@ -77,6 +93,12 @@ For å kjøre tester for en app:
 # Henvendelser
 
 Spørsmål knyttet til koden eller prosjektet kan rettes mot nav.team.foreldrepenger@nav.no.
+
+## Bidrag
+
+Vi tar gjerne imot Pull Requests og gode forslag til forbedringer! 🧦
+
+Gode bidrag som blir merget inn kan bli belønnet med eksklusive Nav-sokker som takk for innsatsen. Vi setter stor pris på alle som bidrar til å gjøre våre løsninger bedre for brukerne.
 
 ## For NAV-ansatte
 

@@ -9,6 +9,7 @@ import { Button, HStack, Radio, VStack } from '@navikt/ds-react';
 
 import { DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfRadioGroup, RhfSelect, RhfTextField } from '@navikt/fp-form-hooks';
+import { CountryCode } from '@navikt/fp-types';
 import { HorizontalLine } from '@navikt/fp-ui';
 import { createCountryOptions } from '@navikt/fp-utils';
 import { femMånederSiden } from '@navikt/fp-utils/src/dateUtils';
@@ -28,7 +29,7 @@ export const NEW_ARBEID_I_UTLANDET = {
     tom: '',
     pågående: undefined!,
     arbeidsgiverNavn: '',
-    land: '',
+    land: '' as CountryCode,
 };
 
 export const ArbeidIUtlandetFieldArray = () => {
@@ -47,17 +48,18 @@ export const ArbeidIUtlandetFieldArray = () => {
     return (
         <>
             {fields.map((field, index) => (
-                <VStack key={field.id} gap="10">
+                <VStack key={field.id} gap="space-40">
                     <HStack justify="space-between">
                         <RhfSelect
                             name={`arbeidIUtlandet.${index}.land`}
+                            control={formMethods.control}
                             style={{ width: 'var(--app-text-input-width)' }}
                             label={intl.formatMessage({ id: 'arbeidIUtlandet.land' })}
                             validate={[
                                 isRequired(intl.formatMessage({ id: 'valideringsfeil.arbeidIUtlandetLand.påkrevd' })),
                             ]}
                         >
-                            {createCountryOptions().map((o: Record<string, any>) => (
+                            {createCountryOptions().map((o) => (
                                 <option key={o[0]} value={o[0]}>
                                     {o[1]}
                                 </option>
@@ -76,6 +78,7 @@ export const ArbeidIUtlandetFieldArray = () => {
                     </HStack>
                     <RhfTextField
                         name={`arbeidIUtlandet.${index}.arbeidsgiverNavn`}
+                        control={formMethods.control}
                         style={{ width: 'var(--app-text-input-width)' }}
                         label={navnPåArbeidsgiverLabel}
                         validate={[
@@ -97,6 +100,7 @@ export const ArbeidIUtlandetFieldArray = () => {
                     />
                     <RhfDatepicker
                         name={`arbeidIUtlandet.${index}.fom`}
+                        control={formMethods.control}
                         label={intl.formatMessage({ id: 'arbeidIUtlandet.fom' })}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.påkrevd' })),
@@ -105,10 +109,10 @@ export const ArbeidIUtlandetFieldArray = () => {
                                 intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.erIFremtiden' }),
                             ),
                             (fom) => {
-                                if (alleArbeidIUtlandet[index].tom) {
+                                if (alleArbeidIUtlandet[index]!.tom) {
                                     return isBeforeDate(
                                         intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.førTilDato' }),
-                                        alleArbeidIUtlandet[index].tom,
+                                        alleArbeidIUtlandet[index]!.tom,
                                     )(fom);
                                 }
                                 return null;
@@ -119,6 +123,7 @@ export const ArbeidIUtlandetFieldArray = () => {
                     />
                     <RhfRadioGroup
                         name={`arbeidIUtlandet.${index}.pågående`}
+                        control={formMethods.control}
                         label={<FormattedMessage id="ArbeidIUtlandetFieldArray.næring.pågående" />}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.arbeidIUtlandetPågående.påkrevd' })),
@@ -127,9 +132,10 @@ export const ArbeidIUtlandetFieldArray = () => {
                         <Radio value={true}>Ja</Radio>
                         <Radio value={false}>Nei</Radio>
                     </RhfRadioGroup>
-                    {alleArbeidIUtlandet![index].pågående === false && (
+                    {alleArbeidIUtlandet[index]!.pågående === false && (
                         <RhfDatepicker
                             name={`arbeidIUtlandet.${index}.tom`}
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'arbeidIUtlandet.tom' })}
                             description={intl.formatMessage({
                                 id: 'ArbeidIUtlandetFieldArray.arbeid.tom.description',
@@ -149,11 +155,11 @@ export const ArbeidIUtlandetFieldArray = () => {
                                 ),
                                 isAfterDate(
                                     intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.etterFraDato' }),
-                                    alleArbeidIUtlandet[index].fom,
+                                    alleArbeidIUtlandet[index]!.fom,
                                 ),
                             ]}
                             maxDate={dayjs().add(9, 'month').toDate()}
-                            minDate={getMinInputTilOgMedValue(alleArbeidIUtlandet[index].fom, DATE_5_MONTHS_AGO)}
+                            minDate={getMinInputTilOgMedValue(alleArbeidIUtlandet[index]!.fom, DATE_5_MONTHS_AGO)}
                         />
                     )}
                     {index < fields.length - 1 && <HorizontalLine />}

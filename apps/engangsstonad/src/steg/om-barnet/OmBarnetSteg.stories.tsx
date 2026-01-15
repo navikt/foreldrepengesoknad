@@ -1,20 +1,18 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, EsDataContext } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { action } from 'storybook/actions';
 
 import { Situasjon } from '@navikt/fp-types';
 
 import { OmBarnetSteg } from './OmBarnetSteg';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => (): Promise<void> => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 type StoryArgs = {
     søkersituasjon: Situasjon;

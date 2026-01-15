@@ -5,21 +5,23 @@ import { BodyLong, Button, GuidePanel } from '@navikt/ds-react';
 
 import {
     AnnenForelder,
-    Arbeidsforhold,
     NavnPåForeldre,
     OpprinneligSøkt,
     Periode,
     PeriodeValidState,
     Periodetype,
     Situasjon,
-    StønadskontoType,
     TidsperiodeDate,
     Utsettelsesperiode,
     isAnnenForelderOppgitt,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { Forelder } from '@navikt/fp-constants';
-import { Stønadskonto } from '@navikt/fp-types';
+import {
+    BrukerRolleSak_fpoversikt,
+    EksternArbeidsforholdDto_fpoversikt,
+    KontoDto,
+    KontoTypeUttak,
+} from '@navikt/fp-types';
 import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import ActionLink from '../../../common/action-link/ActionLink';
@@ -68,10 +70,10 @@ interface Props {
     periode: Periode;
     erEndringssøknad: boolean;
     familiehendelsesdato: Date;
-    stønadskontoer: Stønadskonto[];
+    stønadskontoer: KontoDto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     erFarEllerMedmor: boolean;
     erFlerbarnssøknad: boolean;
     erAleneOmOmsorg: boolean;
@@ -93,21 +95,21 @@ interface Props {
     isOpen: boolean;
 }
 
-const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
-    return !((erFarEllerMedmor && forelder === Forelder.farMedmor) || (!erFarEllerMedmor && forelder === Forelder.mor));
+const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: BrukerRolleSak_fpoversikt): boolean => {
+    return !((erFarEllerMedmor && forelder === 'FAR_MEDMOR') || (!erFarEllerMedmor && forelder === 'MOR'));
 };
 
-const erUttakAvAnnenForeldersKvote = (konto: StønadskontoType | '', søkerErFarEllerMedmor: boolean): boolean => {
+const erUttakAvAnnenForeldersKvote = (konto: KontoTypeUttak | '', søkerErFarEllerMedmor: boolean): boolean => {
     return (
-        (konto === StønadskontoType.Mødrekvote && søkerErFarEllerMedmor === true) ||
-        (konto === StønadskontoType.Fedrekvote && søkerErFarEllerMedmor === false)
+        (konto === 'MØDREKVOTE' && søkerErFarEllerMedmor === true) ||
+        (konto === 'FEDREKVOTE' && søkerErFarEllerMedmor === false)
     );
 };
 
 const getPeriodeType = (
-    periodenGjelder: Forelder | '',
+    periodenGjelder: BrukerRolleSak_fpoversikt | '',
     erFarEllerMedmor: boolean,
-    konto: StønadskontoType | '',
+    konto: KontoTypeUttak | '',
     familiehendelsedato: Date,
     termindato: Date | undefined,
     tidsperiode: TidsperiodeDate,
@@ -169,7 +171,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     const toggleVisTidsperiode = () => {
         setTidsperiodeIsOpen(!tidsperiodeIsOpen);
     };
-    const forelder = erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
+    const forelder = erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
     const annenForelderHarRettIEØS =
         isAnnenForelderOppgitt(annenForelder) && !!annenForelder.harRettPåForeldrepengerIEØS;
 
@@ -200,8 +202,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
         isAnnenForelderOppgitt(annenForelder) && annenForelder.fornavn !== undefined && annenForelder.fornavn !== ''
             ? annenForelder.fornavn
             : intl.formatMessage({ id: 'annen.forelder' });
-    const harAktivitetsfriKvote =
-        stønadskontoer.filter((st) => st.konto === StønadskontoType.AktivitetsfriKvote).length > 0;
+    const harAktivitetsfriKvote = stønadskontoer.some((st) => st.konto === 'AKTIVITETSFRI_KVOTE');
 
     const startDatoPeriodeRundtFødselFarMedmor =
         erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)
@@ -338,8 +339,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 familiehendelsesdato={familiehendelsesdato}
                                 periode={periode}
                                 onBekreft={(currentValues) => {
-                                    setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(currentValues.fom));
-                                    setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(currentValues.tom));
+                                    void setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(currentValues.fom));
+                                    void setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(currentValues.tom));
                                 }}
                                 ugyldigeTidsperioder={undefined}
                                 utsettelserIPlan={utsettelserIPlan}
@@ -372,13 +373,19 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     utsettelserIPlan={utsettelserIPlan}
                                     onBekreft={(currentValues) => {
                                         setTidsperiodeIsOpen(false);
-                                        setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(currentValues.fom));
-                                        setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(currentValues.tom));
+                                        void setFieldValue(
+                                            PeriodeUttakFormField.fom,
+                                            ISOStringToDate(currentValues.fom),
+                                        );
+                                        void setFieldValue(
+                                            PeriodeUttakFormField.tom,
+                                            ISOStringToDate(currentValues.tom),
+                                        );
                                     }}
                                     changeTidsperiode={(currentValues) => {
                                         setTimeout(() => {
-                                            setFieldValue(PeriodeUttakFormField.fom, currentValues.fom);
-                                            setFieldValue(PeriodeUttakFormField.tom, currentValues.tom);
+                                            void setFieldValue(PeriodeUttakFormField.fom, currentValues.fom);
+                                            void setFieldValue(PeriodeUttakFormField.tom, currentValues.tom);
                                         }, 0);
                                     }}
                                     tidsperiode={{ fom: values.fom!, tom: values.tom! }}
@@ -502,6 +509,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                             onClick={() => handleDeletePeriode!(periode.id)}
                                             className={bem.element('slettPeriode')}
                                         >
+                                            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                                             {/* @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart */}
                                             <FormattedMessage id={getSlettPeriodeTekst(periode.type)} />
                                         </ActionLink>

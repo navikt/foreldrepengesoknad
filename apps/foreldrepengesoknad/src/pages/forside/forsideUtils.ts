@@ -2,43 +2,26 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { ValgtBarn, ValgtBarnType } from 'types/ValgtBarn';
-import {
-    getAndreBarnFødtSammenMedBarnet,
-    getDødeBarnetForMerEnn3MånederSiden,
-    getLeverBarnet,
-    sorterRegistrerteBarnEtterEldstOgNavn,
-} from 'utils/barnUtils';
+import { getAndreBarnFødtSammenMedBarnet, getDødeBarnetForMerEnn3MånederSiden, getLeverBarnet } from 'utils/barnUtils';
 import { ISOStringToDate, getErDatoInnenEnDagFraAnnenDato, getRelevantFamiliehendelseDato } from 'utils/dateUtils';
 import { guid } from 'utils/guid';
 import { erEldreEnn3ÅrOg3Måneder } from 'utils/personUtils';
 
 import { BarnFraNesteSak } from '@navikt/fp-common';
-import { AnnenForelderFrontend, BarnFrontend, Familiehendelse, FpSak } from '@navikt/fp-types';
-import { Uttaksdagen, isISODateString } from '@navikt/fp-utils';
+import {
+    AnnenForelderDto_fpoversikt,
+    BarnDto_fpoversikt,
+    Familiehendelse_fpoversikt,
+    FpSak_fpoversikt,
+} from '@navikt/fp-types';
+import { Uttaksdagen, isISODateString, sorterPersonEtterEldstOgNavn } from '@navikt/fp-utils';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-
-export const getSortableBarnDato = (
-    fødselsdatoer: Date[],
-    termindato: Date | undefined,
-    omsorgsovertagelse: Date | undefined,
-): Date => {
-    //Dato som skal kun brukes til å sortere barna i visningen
-    if (fødselsdatoer.length > 0) {
-        return fødselsdatoer[0];
-    }
-    if (termindato !== undefined) {
-        return termindato;
-    }
-
-    return omsorgsovertagelse!;
-};
-
 const getSelectableBarnType = (
     gjelderAdopsjon: boolean,
-    familiehendelse: Familiehendelse,
-    pdlBarn: BarnFrontend[] | undefined,
+    familiehendelse: Familiehendelse_fpoversikt,
+    pdlBarn: BarnDto_fpoversikt[] | undefined,
 ): ValgtBarnType => {
     if (gjelderAdopsjon) {
         return ValgtBarnType.ADOPTERT;
@@ -49,7 +32,10 @@ const getSelectableBarnType = (
     return ValgtBarnType.UFØDT;
 };
 
-const getPDLBarnForSakMedUfødtBarn = (sak: FpSak, registrerteBarn: BarnFrontend[]): BarnFrontend[] => {
+const getPDLBarnForSakMedUfødtBarn = (
+    sak: FpSak_fpoversikt,
+    registrerteBarn: BarnDto_fpoversikt[],
+): BarnDto_fpoversikt[] => {
     const termindato = sak.familiehendelse.termindato;
     if (isISODateString(termindato)) {
         const terminMinus17Uker = dayjs(termindato).subtract(17, 'week');
@@ -61,25 +47,27 @@ const getPDLBarnForSakMedUfødtBarn = (sak: FpSak, registrerteBarn: BarnFrontend
     return [];
 };
 
-const getPDLBarnForSakMedFødteBarn = (sak: FpSak, registrerteBarn: BarnFrontend[]): BarnFrontend[] => {
+const getPDLBarnForSakMedFødteBarn = (
+    sak: FpSak_fpoversikt,
+    registrerteBarn: BarnDto_fpoversikt[],
+): BarnDto_fpoversikt[] => {
     const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse.fødselsdato);
-    const barnFnrFraSaken = sak.barn !== undefined ? sak.barn.map((b) => b.fnr).flat() : [];
+    const barnFnrFraSaken = sak.barn ? sak.barn.flatMap((b) => b.fnr) : [];
     const pdlBarnMedSammeFnr = registrerteBarn.filter((b) => barnFnrFraSaken.includes(b.fnr));
 
     //Noen saker sendes uten barn, derfor må sjekke PDL mot fødselsdato også
-    const pdlBarnMedSammeFødselsdato =
-        fødselsdatoFraSak !== undefined
-            ? registrerteBarn.filter(
-                  (barn) =>
-                      getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, fødselsdatoFraSak) &&
-                      !pdlBarnMedSammeFnr.find((pdlBarn) => pdlBarn.fnr === barn.fnr),
-              )
-            : [];
+    const pdlBarnMedSammeFødselsdato = fødselsdatoFraSak
+        ? registrerteBarn.filter(
+              (barn) =>
+                  getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, fødselsdatoFraSak) &&
+                  !pdlBarnMedSammeFnr.some((pdlBarn) => pdlBarn.fnr === barn.fnr),
+          )
+        : [];
 
     return pdlBarnMedSammeFnr.concat(pdlBarnMedSammeFødselsdato);
 };
 
-const getSelectableBarnFraSak = (sak: FpSak, registrerteBarn: BarnFrontend[]): ValgtBarn => {
+const getSelectableBarnFraSak = (sak: FpSak_fpoversikt, registrerteBarn: BarnDto_fpoversikt[]): ValgtBarn => {
     let pdlBarn;
     if (sak.barn || sak.familiehendelse.fødselsdato) {
         pdlBarn = getPDLBarnForSakMedFødteBarn(sak, registrerteBarn);
@@ -104,7 +92,7 @@ const getSelectableBarnFraSak = (sak: FpSak, registrerteBarn: BarnFrontend[]): V
     if (pdlBarn && pdlBarn.length > 0) {
         fødselsdatoer = pdlBarn.map((barn) => dayjs.utc(barn.fødselsdato).toDate());
     } else if (fødselsdatoFraSak !== undefined) {
-        fødselsdatoer = Array(sak.familiehendelse.antallBarn).fill(fødselsdatoFraSak);
+        fødselsdatoer = new Array(sak.familiehendelse.antallBarn).fill(fødselsdatoFraSak);
     }
     return {
         id: guid(),
@@ -119,13 +107,13 @@ const getSelectableBarnFraSak = (sak: FpSak, registrerteBarn: BarnFrontend[]): V
         sortableDato: ISOStringToDate(sak.familiehendelse.termindato)!,
         startdatoFørsteStønadsperiode:
             sak.gjeldendeVedtak !== undefined && sak.gjeldendeVedtak.perioder.length > 0
-                ? Uttaksdagen(ISOStringToDate(sak.gjeldendeVedtak.perioder[0].fom)!).denneEllerNeste()
+                ? Uttaksdagen(ISOStringToDate(sak.gjeldendeVedtak.perioder[0]!.fom)!).denneEllerNeste()
                 : undefined,
         fornavn:
             pdlBarn !== undefined && pdlBarn.length > 0
                 ? pdlBarn
-                      .filter((b) => b.fornavn !== undefined && b.fornavn.trim() !== '')
-                      .map((b) => [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' '))
+                      .filter((b) => b.navn?.fornavn !== undefined && b.navn.fornavn.trim() !== '')
+                      .map((b) => [b.navn?.fornavn, b.navn?.mellomnavn ?? ''].join(' '))
                 : undefined,
         fnr:
             pdlBarn !== undefined && pdlBarn.length > 0
@@ -137,19 +125,18 @@ const getSelectableBarnFraSak = (sak: FpSak, registrerteBarn: BarnFrontend[]): V
 };
 
 const getSelectableBarnFraPDL = (
-    registrertBarn: BarnFrontend,
-    annenForelder: AnnenForelderFrontend | undefined,
+    registrertBarn: BarnDto_fpoversikt,
+    annenForelder: AnnenForelderDto_fpoversikt | undefined,
 ): ValgtBarn => {
-    const navn =
-        registrertBarn.mellomnavn !== undefined
-            ? [registrertBarn.fornavn, registrertBarn.mellomnavn].join(' ')
-            : registrertBarn.fornavn;
+    const navn = registrertBarn.navn?.mellomnavn
+        ? [registrertBarn.navn.fornavn, registrertBarn.navn.mellomnavn].join(' ')
+        : registrertBarn.navn?.fornavn;
     return {
         id: guid(),
         type: ValgtBarnType.IKKE_UTFYLT,
         antallBarn: 1,
         fødselsdatoer: [dayjs.utc(registrertBarn.fødselsdato).toDate()],
-        fornavn: navn !== undefined ? [navn] : undefined,
+        fornavn: navn ? [navn] : undefined,
         fnr: [registrertBarn.fnr],
         sortableDato: dayjs.utc(registrertBarn.fødselsdato).toDate(),
         alleBarnaLever: getLeverBarnet(registrertBarn),
@@ -158,12 +145,12 @@ const getSelectableBarnFraPDL = (
 };
 
 const getSelectableFlerlingerFraPDL = (
-    registrertBarn: BarnFrontend,
-    barnFødtISammePeriode: BarnFrontend[],
-    annenForelder: AnnenForelderFrontend | undefined,
+    registrertBarn: BarnDto_fpoversikt,
+    barnFødtISammePeriode: BarnDto_fpoversikt[],
+    annenForelder: AnnenForelderDto_fpoversikt | undefined,
 ): ValgtBarn | undefined => {
-    const alleBarna = [registrertBarn].concat(barnFødtISammePeriode).sort(sorterRegistrerteBarnEtterEldstOgNavn);
-    const minstEttBarnDødeForMerEnn3MndSiden = !!alleBarna.find(
+    const alleBarna = [registrertBarn].concat(barnFødtISammePeriode).sort(sorterPersonEtterEldstOgNavn);
+    const minstEttBarnDødeForMerEnn3MndSiden = alleBarna.some(
         (b) => !getLeverBarnet(b) && getDødeBarnetForMerEnn3MånederSiden(b),
     );
     if (minstEttBarnDødeForMerEnn3MndSiden || alleBarna.length == 0) {
@@ -175,15 +162,15 @@ const getSelectableFlerlingerFraPDL = (
         type: ValgtBarnType.IKKE_UTFYLT,
         antallBarn: alleBarna.length,
         fødselsdatoer: alleBarna.map((b) => dayjs.utc(b.fødselsdato).toDate()),
-        fornavn: alleBarna.map((b) => [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' ')),
+        fornavn: alleBarna.map((b) => [b.navn?.fornavn ?? '', b.navn?.mellomnavn ?? ''].join(' ')),
         fnr: alleBarna.map((b) => b.fnr),
-        sortableDato: dayjs.utc(alleBarna[0].fødselsdato).toDate(),
+        sortableDato: dayjs.utc(alleBarna[0]!.fødselsdato).toDate(),
         alleBarnaLever: alleBarna.every((b) => getLeverBarnet(b)),
         annenForelder,
     };
 };
 
-const getSelectableBarnOptionsFromSaker = (saker: FpSak[], registrerteBarn: BarnFrontend[]) => {
+const getSelectableBarnOptionsFromSaker = (saker: FpSak_fpoversikt[], registrerteBarn: BarnDto_fpoversikt[]) => {
     return saker
         .filter(
             (sak) =>
@@ -196,14 +183,14 @@ const getSelectableBarnOptionsFromSaker = (saker: FpSak[], registrerteBarn: Barn
 };
 
 const getSelectableBarnOptionsFraPDL = (
-    registrerteBarn: BarnFrontend[],
+    registrerteBarn: BarnDto_fpoversikt[],
     barnFraSaker: ValgtBarn[],
-    avsluttedeSaker: FpSak[],
+    avsluttedeSaker: FpSak_fpoversikt[],
 ): ValgtBarn[] => {
     //Vi ønsker ikke å vise barn som har avsluttet sak
     const registrerteBarnUtenAvsluttedeSaker = registrerteBarn.filter(
         (regBarn) =>
-            !avsluttedeSaker.find((sak) =>
+            !avsluttedeSaker.some((sak) =>
                 getErDatoInnenEnDagFraAnnenDato(regBarn.fødselsdato, ISOStringToDate(sak.familiehendelse.fødselsdato)),
             ),
     );
@@ -215,58 +202,53 @@ const getSelectableBarnOptionsFraPDL = (
     );
 
     //Dødfødte barn har ikke fnr og må filtreres bort senere
-    const fnrPåBarnSomErLagtTil = barnFraSaker.map((b) => b.fnr).flat();
+    const fnrPåBarnSomErLagtTil = barnFraSaker.flatMap((b) => b.fnr);
     const fødselsdatoPåBarnFraSaker = barnFraSaker
         .filter((barn) => barn.fødselsdatoer !== undefined && barn.fødselsdatoer.length > 0)
-        .map((b) => b.fødselsdatoer)
-        .flat();
-    const selectableBarnFraPDL = [] as ValgtBarn[];
+        .flatMap((b) => b.fødselsdatoer);
+    const selectableBarnFraPDL: ValgtBarn[] = [];
 
     //Fjerner dødfødte barn som har en sak
     const registrerteBarnUtenDødeBarnMedSak = registrerteBarnMedFnr.filter(
         (b) =>
             !(
                 b.dødsdato !== undefined &&
-                !!fødselsdatoPåBarnFraSaker.find((dato) => dayjs(dato).isSame(dayjs.utc(b.fødselsdato), 'day'))
+                fødselsdatoPåBarnFraSaker.some((dato) => dayjs(dato).isSame(dayjs.utc(b.fødselsdato), 'day'))
             ),
     );
-    registrerteBarnUtenDødeBarnMedSak.forEach((regBarn) => {
+
+    for (const regBarn of registrerteBarnUtenDødeBarnMedSak) {
         if (!fnrPåBarnSomErLagtTil.includes(regBarn.fnr) && !erEldreEnn3ÅrOg3Måneder(regBarn.fødselsdato)) {
             const barnFødtISammePeriode = getAndreBarnFødtSammenMedBarnet(
                 regBarn.fnr,
                 regBarn.fødselsdato,
                 registrerteBarnMedFnr,
             );
-            const annenForelder =
-                regBarn.annenForelder !== undefined
-                    ? {
-                          fnr: regBarn.annenForelder.fnr,
-                          fornavn: regBarn.annenForelder.fornavn,
-                          mellomnavn: regBarn.annenForelder.mellomnavn,
-                          etternavn: regBarn.annenForelder.etternavn,
-                      }
-                    : undefined;
+
             fnrPåBarnSomErLagtTil.push(regBarn.fnr);
             if (barnFødtISammePeriode.length === 0) {
                 if (!getDødeBarnetForMerEnn3MånederSiden(regBarn)) {
-                    const selectableBarn = getSelectableBarnFraPDL(regBarn, annenForelder);
+                    const selectableBarn = getSelectableBarnFraPDL(regBarn, regBarn.annenPart);
                     selectableBarnFraPDL.push(selectableBarn);
                 }
             } else {
                 const selectableFlerlinger = getSelectableFlerlingerFraPDL(
                     regBarn,
                     barnFødtISammePeriode,
-                    annenForelder,
+                    regBarn.annenPart,
                 );
-                barnFødtISammePeriode.forEach((b) => {
+
+                for (const b of barnFødtISammePeriode) {
                     fnrPåBarnSomErLagtTil.push(b.fnr);
-                });
+                }
+
                 if (selectableFlerlinger !== undefined) {
                     selectableBarnFraPDL.push(selectableFlerlinger);
                 }
             }
         }
-    });
+    }
+
     //Fjerner temp fnr fra barna som skal vises på forsiden
     const selectableBarn = selectableBarnFraPDL.map((b) =>
         b.fnr && b.fnr.length > 0 ? { ...b, fnr: b.fnr.filter((nr) => nr && !nr.startsWith(tempString)) } : b,
@@ -274,7 +256,7 @@ const getSelectableBarnOptionsFraPDL = (
     return selectableBarn;
 };
 
-export const getSelectableBarnOptions = (saker: FpSak[], registrerteBarn: BarnFrontend[]) => {
+export const getSelectableBarnOptions = (saker: FpSak_fpoversikt[], registrerteBarn: BarnDto_fpoversikt[]) => {
     const åpneSaker = saker.filter((sak) => !sak.sakAvsluttet);
     const avsluttedeSaker = saker.filter((sak) => sak.sakAvsluttet);
     const barnFraSaker = getSelectableBarnOptionsFromSaker(åpneSaker, registrerteBarn);
@@ -288,10 +270,10 @@ export const getBarnFraNesteSak = (valgteBarn: ValgtBarn, selectableBarn: ValgtB
             barn.sak !== undefined &&
             barn.id !== valgteBarn.id &&
             barn.familiehendelsesdato !== undefined &&
-            dayjs(barn.familiehendelsesdato).isAfter(valgteBarn.familiehendelsesdato!, 'day'),
+            dayjs(barn.familiehendelsesdato).isAfter(valgteBarn.familiehendelsesdato, 'day'),
     );
     allePåfølgendeBarn.sort(sorterSelectableBarnEtterYngst);
-    const nesteBarn = allePåfølgendeBarn[allePåfølgendeBarn.length - 1];
+    const nesteBarn = allePåfølgendeBarn.at(-1);
     if (nesteBarn === undefined) {
         return undefined;
     }

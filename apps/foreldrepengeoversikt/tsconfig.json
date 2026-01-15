@@ -1,5 +1,5 @@
 {
-    "extends": "tsconfig/vite.json",
+    "extends": "@navikt/fp-config-typescript/tsconfig.json",
     "compilerOptions": {
         "moduleResolution": "bundler",
         "baseUrl": "src",
@@ -8,13 +8,8 @@
         "paths": {
             "storybookData/*": ["./../.storybook/storybook-data/*"]
         },
-        "types": ["@testing-library/jest-dom", "vite/client", "node", "vitest/globals"]
+        "types": ["vite/client", "@testing-library/jest-dom", "vitest/globals"]
     },
-    "include": ["src"],
-    "exclude": ["node_modules"],
-    "references": [
-        {
-            "path": "./tsconfig.node.json"
-        }
-    ]
+    "include": ["src", "mock-api", "vitest", "../../@types/vite.env.d.ts"],
+    "exclude": ["node_modules"]
 }

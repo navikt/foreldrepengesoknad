@@ -24,8 +24,8 @@ const getSamtykkeTekst = (
 
 interface Props<TYPE> {
     sendSøknad: () => Promise<void>;
-    cancelApplication: () => void;
-    onContinueLater: () => void;
+    onAvsluttOgSlett: () => void;
+    onFortsettSenere: () => void;
     goToPreviousStep: () => void;
     onStepChange?: (id: TYPE) => void;
     stepConfig: Array<ProgressStep<TYPE>>;
@@ -36,8 +36,8 @@ interface Props<TYPE> {
 
 export const OppsummeringPanel = <TYPE extends string>({
     sendSøknad,
-    cancelApplication,
-    onContinueLater,
+    onAvsluttOgSlett,
+    onFortsettSenere,
     goToPreviousStep,
     onStepChange,
     stepConfig,
@@ -52,24 +52,18 @@ export const OppsummeringPanel = <TYPE extends string>({
     const [isError, setIsError] = useState(false);
 
     const send = () => {
-        if (!isChecked) {
-            setIsError(true);
-        } else {
+        if (isChecked) {
             setIsSubmitting(true);
-            sendSøknad();
+            void sendSøknad();
+        } else {
+            setIsError(true);
         }
     };
 
     return (
-        <Step
-            onCancel={cancelApplication}
-            onContinueLater={onContinueLater}
-            steps={stepConfig}
-            onStepChange={onStepChange}
-            noFieldsRequired
-        >
-            <VStack gap="10">
-                <VStack gap="3">{children}</VStack>
+        <Step steps={stepConfig} onStepChange={onStepChange} noFieldsRequired>
+            <VStack gap="space-40">
+                <VStack gap="space-12">{children}</VStack>
                 <ConfirmationPanel
                     label={getSamtykkeTekst(intl, appName, ekstraSamtykketekst)}
                     onChange={() => setIsChecked((state) => !state)}
@@ -81,6 +75,8 @@ export const OppsummeringPanel = <TYPE extends string>({
                     }
                 />
                 <StepButtons
+                    onAvsluttOgSlett={onAvsluttOgSlett}
+                    onFortsettSenere={onFortsettSenere}
                     goToPreviousStep={goToPreviousStep}
                     nextButtonOnClick={send}
                     isDisabledAndLoading={isSubmitting}

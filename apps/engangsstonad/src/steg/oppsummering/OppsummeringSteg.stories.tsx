@@ -1,10 +1,10 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { ContextDataType, EsDataContext } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import dayjs from 'dayjs';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { action } from 'storybook/actions';
 import { Dokumentasjon } from 'types/Dokumentasjon';
 import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
 
@@ -13,18 +13,17 @@ import { Utenlandsopphold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
 import { OppsummeringSteg } from './OppsummeringSteg';
 
-const promiseAction =
-    () =>
-    (...args: any[]) => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const barnetDefault = {
     erBarnetFødt: true,
     antallBarn: 1,
-    fødselsdato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
-} as BarnetErFødt;
+    fødselsdato: dayjs().subtract(9, 'day').format(ISO_DATE_FORMAT),
+    termindato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
+} satisfies BarnetErFødt;
 
 const utenlandsoppholdDefault = {
     harBoddUtenforNorgeSiste12Mnd: false,
@@ -100,8 +99,9 @@ export const AdopsjonAvEktefellesBarn: Story = {
                     id: '1',
                     filename: 'filnavn.pdf',
                     filesize: 2323,
-                    file: {} as any,
+                    file: {} as File,
                     pending: false,
+                    innsendingsType: 'LASTET_OPP',
                     uploaded: true,
                     type: AttachmentType.OMSORGSOVERTAKELSE,
                     skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
@@ -126,8 +126,9 @@ export const AdopsjonAvEktefellesFlereBarn: Story = {
                 {
                     id: '1',
                     filename: 'filnavn.pdf',
+                    innsendingsType: 'LASTET_OPP',
                     filesize: 2323,
-                    file: {} as any,
+                    file: {} as File,
                     pending: false,
                     uploaded: true,
                     type: AttachmentType.OMSORGSOVERTAKELSE,
@@ -154,8 +155,9 @@ export const BarnetErIkkeFodt: Story = {
                     id: '1',
                     filename: 'filnavn.pdf',
                     filesize: 2323,
-                    file: {} as any,
+                    file: {} as File,
                     pending: false,
+                    innsendingsType: 'LASTET_OPP',
                     uploaded: true,
                     type: AttachmentType.TERMINBEKREFTELSE,
                     skjemanummer: Skjemanummer.TERMINBEKREFTELSE,

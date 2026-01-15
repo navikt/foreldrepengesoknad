@@ -1,16 +1,12 @@
 import {
     AnnenForelder,
     MissingAttachment,
-    MorsAktivitet,
     Overføringsperiode,
-    OverføringÅrsakType,
     Periode,
     PeriodeUtenUttakUtsettelse,
     Periodetype,
-    StønadskontoType,
     Søknadsinfo,
     Utsettelsesperiode,
-    UtsettelseÅrsakType,
     Uttaksperiode,
     isOverføringsperiode,
     isUtsettelsesperiode,
@@ -89,7 +85,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                 );
             } else {
                 if (isUtsettelsesperiode(periode)) {
-                    if (periode.årsak === UtsettelseÅrsakType.HvØvelse) {
+                    if (periode.årsak === 'HV_OVELSE') {
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
@@ -101,7 +97,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                     }
 
                     if (
-                        periode.årsak === UtsettelseÅrsakType.Fri &&
+                        periode.årsak === 'FRI' &&
                         søknadsinfo.søkerErFarEllerMedmor &&
                         !søknadsinfo.morErUfør &&
                         !søknadsinfo.morHarRett
@@ -116,7 +112,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                         );
                     }
 
-                    if (periode.årsak === UtsettelseÅrsakType.NavTiltak) {
+                    if (periode.årsak === 'NAV_TILTAK') {
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
@@ -127,7 +123,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                         );
                     }
 
-                    if (periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet) {
+                    if (periode.årsak === 'INSTITUSJONSOPPHOLD_BARNET') {
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
@@ -138,7 +134,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                         );
                     }
 
-                    if (periode.årsak === UtsettelseÅrsakType.InstitusjonSøker) {
+                    if (periode.årsak === 'INSTITUSJONSOPPHOLD_SØKER') {
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
@@ -149,7 +145,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                         );
                     }
 
-                    if (periode.årsak === UtsettelseÅrsakType.Sykdom) {
+                    if (periode.årsak === 'SYKDOM') {
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
@@ -163,8 +159,8 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
 
                 if (isOverføringsperiode(periode)) {
                     if (
-                        periode.årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder ||
-                        periode.årsak === OverføringÅrsakType.sykdomAnnenForelder
+                        periode.årsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' ||
+                        periode.årsak === 'SYKDOM_ANNEN_FORELDER'
                     ) {
                         missingAttachments.push(
                             createMissingAttachment(
@@ -178,7 +174,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                 }
 
                 if (isUttaksperiode(periode)) {
-                    if (periode.konto === StønadskontoType.Fedrekvote && periode.erMorForSyk === true) {
+                    if (periode.konto === 'FEDREKVOTE' && periode.erMorForSyk === true) {
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
@@ -201,8 +197,8 @@ const dokumentasjonBehøvesForUttaksperiode = (periode: Uttaksperiode): boolean 
     }
 
     return (
-        (periode.morsAktivitetIPerioden !== undefined && periode.morsAktivitetIPerioden !== MorsAktivitet.Uføre) ||
-        (periode.konto === StønadskontoType.Fedrekvote && periode.erMorForSyk === true)
+        (periode.morsAktivitetIPerioden !== undefined && periode.morsAktivitetIPerioden !== 'UFØRE') ||
+        (periode.konto === 'FEDREKVOTE' && periode.erMorForSyk === true)
     );
 };
 
@@ -213,17 +209,15 @@ const dokumentasjonBehøvesForUtsettelsesperiode = (
     return (
         harMorAktivitetskrav ||
         erÅrsakSykdomEllerInstitusjonsopphold(årsak) ||
-        årsak === UtsettelseÅrsakType.HvØvelse ||
-        årsak === UtsettelseÅrsakType.NavTiltak
+        årsak === 'HV_OVELSE' ||
+        årsak === 'NAV_TILTAK'
     );
 };
 
 export const dokumentasjonBehøvesForOverføringsperiode = (
     erFarEllerMedmor: boolean,
     periode: Overføringsperiode,
-): boolean =>
-    (erFarEllerMedmor || periode.årsak !== OverføringÅrsakType.aleneomsorg) &&
-    periode.årsak !== OverføringÅrsakType.ikkeRettAnnenForelder;
+): boolean => (erFarEllerMedmor || periode.årsak !== 'ALENEOMSORG') && periode.årsak !== 'IKKE_RETT_ANNEN_FORELDER';
 
 const missingAttachmentForAktivitetskrav = (
     periode: Utsettelsesperiode | Uttaksperiode,

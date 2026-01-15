@@ -1,13 +1,14 @@
 import dayjs from 'dayjs';
 
-import { Periodetype, Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
+import { Periodetype, Situasjon, TidsperiodeDate } from '@navikt/fp-common';
+import { KontoTypeUttak } from '@navikt/fp-types';
 
 import { andreAugust2022ReglerGjelder } from '../../utils/dateUtils';
 import { erFarMedmorSinWLBTidsperiodeRundtFødsel } from '../../utils/wlbUtils';
 
 export const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
     periodetype: Periodetype,
-    konto: StønadskontoType,
+    konto: KontoTypeUttak,
     tidsperiode: TidsperiodeDate,
     søkerErFarEllerMedmor: boolean,
     erAleneOmOmsorg: boolean,
@@ -49,5 +50,3 @@ export const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
     }
     return false;
 };
-// eslint-disable-next-line import/no-default-export
-export default uttakRundtFødselÅrsakSpørsmålSkalBesvares;

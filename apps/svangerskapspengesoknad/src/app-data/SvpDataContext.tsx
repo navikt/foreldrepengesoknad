@@ -7,8 +7,8 @@ import { DelvisTilrettelegging, IngenTilrettelegging, PeriodeMedVariasjon } from
 import {
     ArbeidsforholdOgInntektSvp,
     Attachment,
-    EgenNæring,
     Frilans,
+    NæringDto,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
@@ -33,6 +33,7 @@ export enum ContextDataType {
 }
 
 export type ContextDataMap = {
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     [ContextDataType.APP_ROUTE]?: SøknadRoute | string;
     [ContextDataType.OM_BARNET]?: Barn;
     [ContextDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;
@@ -41,7 +42,7 @@ export type ContextDataMap = {
     [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]?: ArbeidsforholdOgInntektSvp;
     [ContextDataType.FRILANS]?: Frilans;
     [ContextDataType.ARBEID_I_UTLANDET]?: ArbeidIUtlandet;
-    [ContextDataType.EGEN_NÆRING]?: EgenNæring;
+    [ContextDataType.EGEN_NÆRING]?: NæringDto;
     [ContextDataType.VALGTE_ARBEIDSFORHOLD]?: string[];
     [ContextDataType.TILRETTELEGGINGER_VEDLEGG]?: Record<string, Attachment[]>;
     [ContextDataType.TILRETTELEGGINGER]?: Record<string, DelvisTilrettelegging | IngenTilrettelegging>;
@@ -51,7 +52,9 @@ export type ContextDataMap = {
 
 const defaultInitialState = {} satisfies ContextDataMap;
 
-export type Action = { type: 'update'; key: ContextDataType; data: any } | { type: 'reset' };
+export type Action =
+    | { type: 'update'; key: ContextDataType; data: ContextDataMap[keyof ContextDataMap] }
+    | { type: 'reset' };
 type Dispatch = (action: Action) => void;
 
 const SvpStateContext = createContext<ContextDataMap>(defaultInitialState);
@@ -111,16 +114,6 @@ export const useContextGetAnyData = () => {
 export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((data: ContextDataMap[TYPE]) => void) => {
     const dispatch = useContext(SvpDispatchContext);
     return (data: ContextDataMap[TYPE]) => {
-        if (dispatch) {
-            dispatch({ type: 'update', key, data });
-        }
-    };
-};
-
-/** Hook returns save function usable with all data types  */
-export const useContextSaveAnyData = () => {
-    const dispatch = useContext(SvpDispatchContext);
-    return <TYPE extends ContextDataType>(key: TYPE, data: ContextDataMap[TYPE]) => {
         if (dispatch) {
             dispatch({ type: 'update', key, data });
         }

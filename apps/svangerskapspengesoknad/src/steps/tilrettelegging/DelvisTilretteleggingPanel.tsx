@@ -9,14 +9,13 @@ import {
     IngenTilrettelegging,
     Stilling,
     TilOgMedDatoType,
-    Tilretteleggingstype,
 } from 'types/Tilrettelegging';
 import { getDefaultMonth, getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 
 import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfRadioGroup, RhfTextField } from '@navikt/fp-form-hooks';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { tiMånederSidenDato } from '@navikt/fp-utils';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -27,7 +26,7 @@ import {
     validerTilretteleggingTomType,
 } from './tilretteleggingValidation';
 
-export interface Props {
+interface Props {
     barnet: Barn;
     arbeidsforholdType: Arbeidsforholdstype;
     sluttdatoArbeid?: string;
@@ -48,12 +47,11 @@ export const DelvisTilretteleggingPanel = ({
 
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
 
-    const harSkjema =
-        arbeidsforholdType === Arbeidsforholdstype.VIRKSOMHET || arbeidsforholdType === Arbeidsforholdstype.PRIVAT;
+    const harSkjema = arbeidsforholdType === 'virksomhet' || arbeidsforholdType === 'privat';
     const minDatoBehovFom =
         dayjs.max(dayjs(tiMånederSidenDato(barnet.termindato)), dayjs(startdatoArbeid)) || undefined;
     const maxDatoBehovFom = sluttdatoArbeid
-        ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttdatoArbeid))!.toDate()
+        ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttdatoArbeid)).toDate()
         : sisteDagForSvangerskapspenger;
     const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barnet);
 
@@ -72,6 +70,7 @@ export const DelvisTilretteleggingPanel = ({
         <>
             <RhfRadioGroup
                 name="delvisTilretteleggingPeriodeType"
+                control={formMethods.control}
                 label={intl.formatMessage({ id: 'tilrettelegging.tilretteleggingPeriodetype.label' })}
                 description={
                     harSkjema ? intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidType.description' }) : ''
@@ -91,6 +90,7 @@ export const DelvisTilretteleggingPanel = ({
                 <div>
                     <RhfTextField
                         name="enPeriodeMedTilretteleggingStillingsprosent"
+                        control={formMethods.control}
                         label={intl.formatMessage({ id: 'tilrettelegging.stillingsprosent.label' })}
                         description={
                             harSkjema
@@ -105,7 +105,7 @@ export const DelvisTilretteleggingPanel = ({
                     />
                     <ReadMore
                         onOpenChange={(open) =>
-                            loggAmplitudeEvent({
+                            loggUmamiEvent({
                                 origin: 'svangerskapspengesoknad',
                                 eventName: open ? 'readmore åpnet' : 'readmore lukket',
                                 eventData: { tittel: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel' },
@@ -115,7 +115,7 @@ export const DelvisTilretteleggingPanel = ({
                             id: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',
                         })}
                     >
-                        <VStack gap="2">
+                        <VStack gap="space-8">
                             <BodyShort>
                                 <FormattedMessage id="tilrettelegging.varierendePerioderStillingsprosent.info.tekst.del1"></FormattedMessage>
                             </BodyShort>
@@ -129,6 +129,7 @@ export const DelvisTilretteleggingPanel = ({
             {delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN && (
                 <RhfDatepicker
                     name="enPeriodeMedTilretteleggingFom"
+                    control={formMethods.control}
                     label={intl.formatMessage({
                         id: 'tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis',
                     })}
@@ -154,7 +155,7 @@ export const DelvisTilretteleggingPanel = ({
                             intl,
                             behovForTilretteleggingFom,
                             sisteDagForSvangerskapspenger,
-                            Tilretteleggingstype.DELVIS,
+                            'delvis',
                             arbeidsforholdNavn || '',
                             sluttdatoArbeid,
                             kanHaSVPFremTilTreUkerFørTermin,
@@ -166,20 +167,11 @@ export const DelvisTilretteleggingPanel = ({
             {delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN && (
                 <RhfRadioGroup
                     name="enPeriodeMedTilretteleggingTomType"
+                    control={formMethods.control}
                     label={intl.formatMessage({
                         id: 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.delvis',
                     })}
-                    validate={[
-                        validerTilretteleggingTomType(
-                            intl,
-                            Tilretteleggingstype.DELVIS,
-                            behovForTilretteleggingFom,
-                            sisteDagForSvangerskapspenger,
-                            arbeidsforholdNavn || '',
-                            sluttdatoArbeid,
-                            kanHaSVPFremTilTreUkerFørTermin,
-                        ),
-                    ]}
+                    validate={[validerTilretteleggingTomType(intl, 'delvis', kanHaSVPFremTilTreUkerFørTermin)]}
                 >
                     <Radio value={TilOgMedDatoType.VALGFRI_DATO}>
                         <FormattedMessage id="perioder.varierende.tomType.valgfriDato" />
@@ -197,6 +189,7 @@ export const DelvisTilretteleggingPanel = ({
                 enPeriodeMedTilretteleggingTomType === TilOgMedDatoType.VALGFRI_DATO && (
                     <RhfDatepicker
                         name="enPeriodeMedTilretteleggingTilbakeIJobbDato"
+                        control={formMethods.control}
                         label={intl.formatMessage({
                             id: 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.delvis',
                         })}
@@ -218,7 +211,7 @@ export const DelvisTilretteleggingPanel = ({
                                 behovForTilretteleggingFom,
                                 sisteDagForSvangerskapspenger,
                                 enPeriodeMedTilretteleggingFom,
-                                Tilretteleggingstype.DELVIS,
+                                'delvis',
                                 arbeidsforholdNavn || '',
                                 sluttdatoArbeid,
                                 kanHaSVPFremTilTreUkerFørTermin,

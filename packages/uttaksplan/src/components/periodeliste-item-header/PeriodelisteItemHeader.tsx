@@ -1,3 +1,4 @@
+import { StarsEuIcon } from '@navikt/aksel-icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { FunctionComponent, JSX } from 'react';
@@ -6,17 +7,16 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { BodyShort, Label } from '@navikt/ds-react';
 
 import {
-    Forelder,
     NavnPåForeldre,
     OpprinneligSøkt,
     Periode,
     PeriodeInfoType,
     Periodetype,
     Situasjon,
-    StønadskontoType,
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
     isUtsettelseAnnenPart,
     isUttakAnnenPart,
+    isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
 import { Tidsperioden, getValidTidsperiode } from '@navikt/fp-utils';
 
@@ -45,7 +45,7 @@ interface Props {
 
 const bem = planBemUtils('periodelisteItemHeader');
 
-export const getPeriodeIkon = (
+const getPeriodeIkon = (
     periode: Periode,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
@@ -85,13 +85,16 @@ export const getPeriodeIkon = (
         case Periodetype.Opphold:
             return (
                 <StønadskontoIkon
-                    konto={StønadskontoType.Foreldrepenger}
+                    konto={'FORELDREPENGER'}
                     forelder={periode.forelder}
                     navnPåForeldre={navnPåForeldre}
                     erFarEllerMedmor={erFarEllerMedmor}
                 />
             );
         case Periodetype.Info:
+            if (isUttaksperiodeAnnenpartEøs(periode)) {
+                return <StarsEuIcon title="a11y-title" fontSize="2rem" />;
+            }
             if (isUtsettelseAnnenPart(periode)) {
                 return <UtsettelseIkon årsak={periode.årsak} forelder={periode.forelder} />;
             } else {
@@ -105,7 +108,7 @@ export const getPeriodeIkon = (
 
                 return (
                     <StønadskontoIkon
-                        konto={StønadskontoType.Foreldrepenger}
+                        konto={'FORELDREPENGER'}
                         forelder={periode.forelder}
                         navnPåForeldre={navnPåForeldre}
                         erFarEllerMedmor={erFarEllerMedmor}
@@ -198,7 +201,7 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
     let annenForelderNavn;
     let beskrivelseSamtidigUttak;
     if (annenForelderSamtidigUttakPeriode && isUttakAnnenPart(annenForelderSamtidigUttakPeriode)) {
-        annenForelderIsMor = annenForelderSamtidigUttakPeriode.forelder === Forelder.mor;
+        annenForelderIsMor = annenForelderSamtidigUttakPeriode.forelder === 'MOR';
         annenForelderNavn = getForelderNavn(annenForelderSamtidigUttakPeriode.forelder, navnPåForeldre);
         beskrivelseSamtidigUttak = getVarighetString(
             getValidTidsperiode(annenForelderSamtidigUttakPeriode.tidsperiode)

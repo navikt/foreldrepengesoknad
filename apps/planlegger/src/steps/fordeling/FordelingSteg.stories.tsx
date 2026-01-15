@@ -1,43 +1,34 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { action } from 'storybook/actions';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
-import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
-import { StønadskontoType } from '@navikt/fp-constants';
-import { HvemPlanleggerType } from '@navikt/fp-types';
+import { Dekningsgrad, HvemPlanleggerType } from '@navikt/fp-types';
+import {
+    DELT_UTTAK_80,
+    DELT_UTTAK_80_TO_BARN,
+    DELT_UTTAK_100,
+    DELT_UTTAK_100_TO_BARN,
+    MINSTERETTER,
+} from '@navikt/fp-utils-test';
 
 import { FordelingSteg } from './FordelingSteg';
 
+// TODO: Benytt dayjs for å håndtere datoer i testene. Spesielt for å sørge for at fremtidige datoer alltid er fremtidige.
+
 const DEFAULT_STØNADSKONTO = {
     '100': {
-        kontoer: [
-            { konto: StønadskontoType.Mødrekvote, dager: 75 },
-            { konto: StønadskontoType.Fedrekvote, dager: 75 },
-            { konto: StønadskontoType.Fellesperiode, dager: 80 },
-            { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
-        ],
-        minsteretter: {
-            farRundtFødsel: 0,
-            toTette: 0,
-        },
+        kontoer: DELT_UTTAK_100,
+        minsteretter: MINSTERETTER,
     },
     '80': {
-        kontoer: [
-            { konto: StønadskontoType.Mødrekvote, dager: 95 },
-            { konto: StønadskontoType.Fedrekvote, dager: 95 },
-            { konto: StønadskontoType.Fellesperiode, dager: 101 },
-            { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
-        ],
-        minsteretter: {
-            farRundtFødsel: 0,
-            toTette: 0,
-        },
+        kontoer: DELT_UTTAK_80,
+        minsteretter: MINSTERETTER,
     },
 };
 
@@ -56,8 +47,7 @@ const meta = {
         omBarnet,
         stønadskontoer,
         gåTilNesteSide = action('button-click'),
-        dekningsgrad = Dekningsgrad.HUNDRE_PROSENT,
-        locale,
+        dekningsgrad = '100',
     }: StoryArgs) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.FORDELING]}>
@@ -73,7 +63,7 @@ const meta = {
                     }}
                     onDispatch={gåTilNesteSide}
                 >
-                    <FordelingSteg stønadskontoer={stønadskontoer} locale={locale} />
+                    <FordelingSteg stønadskontoer={stønadskontoer} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -83,7 +73,6 @@ export default meta;
 
 export const FlereForsørgereEttBarn: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
@@ -103,7 +92,6 @@ type Story = StoryObj<typeof meta>;
 
 export const FlereForsørgereEttBarn80ProsentDekningsgrad: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
@@ -115,14 +103,13 @@ export const FlereForsørgereEttBarn80ProsentDekningsgrad: Story = {
             termindato: '2024-01-01',
             antallBarn: '1',
         },
-        dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+        dekningsgrad: '80',
         stønadskontoer: DEFAULT_STØNADSKONTO,
     },
 };
 
 export const FlereForsørgereToBarn: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåMedmor: 'Esther Utvikler',
             navnPåMor: 'Klara Utvikler',
@@ -134,14 +121,49 @@ export const FlereForsørgereToBarn: Story = {
             termindato: '2024-01-01',
             antallBarn: '2',
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-        stønadskontoer: DEFAULT_STØNADSKONTO,
+        dekningsgrad: '100',
+        stønadskontoer: {
+            '80': {
+                kontoer: DELT_UTTAK_80_TO_BARN,
+                minsteretter: MINSTERETTER,
+            },
+            '100': {
+                kontoer: DELT_UTTAK_100_TO_BARN,
+                minsteretter: MINSTERETTER,
+            },
+        },
+    },
+};
+
+export const FlereForsørgereToBarn80ProsentDekningsgrad: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåMedmor: 'Esther Utvikler',
+            navnPåMor: 'Klara Utvikler',
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
+        },
+        omBarnet: {
+            erBarnetFødt: false,
+            erFødsel: true,
+            termindato: '2024-01-01',
+            antallBarn: '2',
+        },
+        dekningsgrad: '80',
+        stønadskontoer: {
+            '80': {
+                kontoer: DELT_UTTAK_80_TO_BARN,
+                minsteretter: MINSTERETTER,
+            },
+            '100': {
+                kontoer: DELT_UTTAK_100_TO_BARN,
+                minsteretter: MINSTERETTER,
+            },
+        },
     },
 };
 
 export const FarOgFar: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Petter Pjokk',
             navnPåMedfar: 'Espen Utvikler',
@@ -153,7 +175,7 @@ export const FarOgFar: Story = {
             antallBarn: '2',
             overtakelsesdato: '2024-01-01',
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        dekningsgrad: '100',
         stønadskontoer: DEFAULT_STØNADSKONTO,
     },
 };

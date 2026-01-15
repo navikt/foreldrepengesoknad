@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { saker } from 'storybookData/saker/saker';
 
 import { StatusTag } from './StatusTag';
@@ -13,17 +13,19 @@ type Story = StoryObj<typeof meta>;
 
 export const AktivSak: Story = {
     args: {
-        //@ts-expect-error fiks
-        sak: saker.foreldrepenger[0],
+        sak: {
+            ...saker.foreldrepenger[0]!,
+            ytelse: 'FORELDREPENGER',
+        },
         harMinstEttArbeidsforhold: true,
     },
 };
 
 export const AvsluttetSak: Story = {
     args: {
-        //@ts-expect-error fiks
         sak: {
-            ...saker.foreldrepenger[0],
+            ...saker.foreldrepenger[0]!,
+            ytelse: 'FORELDREPENGER',
             sakAvsluttet: true,
         },
         harMinstEttArbeidsforhold: true,
@@ -32,10 +34,11 @@ export const AvsluttetSak: Story = {
 
 export const UnderBehandling: Story = {
     args: {
-        //@ts-expect-error fiks
         sak: {
-            ...saker.foreldrepenger[0],
+            ...saker.foreldrepenger[0]!,
+            ytelse: 'FORELDREPENGER',
             åpenBehandling: {
+                søknadsperioder: [],
                 tilstand: 'UNDER_BEHANDLING',
             },
         },
@@ -45,10 +48,11 @@ export const UnderBehandling: Story = {
 
 export const VenterPåInntektsmelding: Story = {
     args: {
-        //@ts-expect-error fiks
         sak: {
-            ...saker.foreldrepenger[0],
+            ...saker.foreldrepenger[0]!,
+            ytelse: 'FORELDREPENGER',
             åpenBehandling: {
+                søknadsperioder: [],
                 tilstand: 'VENT_INNTEKTSMELDING',
             },
         },
@@ -58,10 +62,11 @@ export const VenterPåInntektsmelding: Story = {
 
 export const VenterPåBehandling: Story = {
     args: {
-        //@ts-expect-error fiks
         sak: {
-            ...saker.foreldrepenger[0],
+            ...saker.foreldrepenger[0]!,
+            ytelse: 'FORELDREPENGER',
             åpenBehandling: {
+                søknadsperioder: [],
                 tilstand: 'VENT_INNTEKTSMELDING',
             },
         },
@@ -71,10 +76,11 @@ export const VenterPåBehandling: Story = {
 
 export const TidligSøknad: Story = {
     args: {
-        //@ts-expect-error fiks
         sak: {
-            ...saker.foreldrepenger[0],
+            ...saker.foreldrepenger[0]!,
+            ytelse: 'FORELDREPENGER',
             åpenBehandling: {
+                søknadsperioder: [],
                 tilstand: 'VENT_TIDLIG_SØKNAD',
             },
         },
@@ -84,10 +90,11 @@ export const TidligSøknad: Story = {
 
 export const VenterPåMeldekort: Story = {
     args: {
-        //@ts-expect-error fiks
         sak: {
-            ...saker.foreldrepenger[0],
+            ...saker.foreldrepenger[0]!,
+            ytelse: 'FORELDREPENGER',
             åpenBehandling: {
+                søknadsperioder: [],
                 tilstand: 'VENT_MELDEKORT',
             },
         },

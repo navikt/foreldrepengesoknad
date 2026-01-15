@@ -1,4 +1,4 @@
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
@@ -63,13 +63,14 @@ describe('<Arbeid som frilanser>', () => {
     });
 
     it('skal avslutte søknad', async () => {
-        const cancelApplication = vi.fn();
+        const onAvsluttOgSlett = vi.fn();
 
-        render(<Default cancelApplication={cancelApplication} />);
+        render(<Default onFortsettSenere={vi.fn()} onAvsluttOgSlett={onAvsluttOgSlett} />);
 
         expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
 
-        await userEvent.click(screen.getAllByText('Avslutt')[0]);
+        await userEvent.click(screen.getAllByText('Slett søknaden')[0]!);
+        await userEvent.click(screen.getAllByText('Slett søknaden')[1]!);
 
         expect(screen.getAllByText('Fortsett senere')[0]).toBeInTheDocument();
     });

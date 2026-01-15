@@ -7,13 +7,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Radio, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
 type Props = {
-    arbeidsforhold: Arbeidsforhold[];
-    kjønn: 'M' | 'K';
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    kjønn: 'M' | 'K' | 'U';
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
@@ -45,54 +45,57 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
     };
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            steps={stepConfig}
-        >
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    <RhfRadioGroup
-                        name="situasjon"
-                        label={<FormattedMessage id="søkersituasjon.text.situasjon" />}
-                        validate={[
-                            isRequired(
-                                intl.formatMessage({ id: 'søkersituasjon.validering.oppgiFodselEllerAdopsjon' }),
-                            ),
-                        ]}
-                    >
-                        <Radio value="fødsel">
-                            <FormattedMessage id="søkersituasjon.radioButton.fødsel" />
-                        </Radio>
-                        <Radio value="adopsjon">
-                            <FormattedMessage id="søkersituasjon.radioButton.adopsjon" />
-                        </Radio>
-                    </RhfRadioGroup>
-                    {kjønn === 'K' && (
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step steps={stepConfig}>
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="space-40">
+                        <ErrorSummaryHookForm />
                         <RhfRadioGroup
-                            name="rolle"
-                            label={<FormattedMessage id="søkersituasjon.text.rolle" />}
+                            name="situasjon"
+                            control={formMethods.control}
+                            label={<FormattedMessage id="søkersituasjon.text.situasjon" />}
                             validate={[
                                 isRequired(
-                                    intl.formatMessage({
-                                        id: 'søkersituasjon.validering.oppgiHvaDuSokerSom',
-                                    }),
+                                    intl.formatMessage({ id: 'søkersituasjon.validering.oppgiFodselEllerAdopsjon' }),
                                 ),
                             ]}
                         >
-                            <Radio value="mor">
-                                <FormattedMessage id="søkersituasjon.radioButton.mor" />
+                            <Radio value="fødsel">
+                                <FormattedMessage id="søkersituasjon.radioButton.fødsel" />
                             </Radio>
-                            <Radio value="medmor">
-                                <FormattedMessage id="søkersituasjon.radioButton.medmor" />
+                            <Radio value="adopsjon">
+                                <FormattedMessage id="søkersituasjon.radioButton.adopsjon" />
                             </Radio>
                         </RhfRadioGroup>
-                    )}
-                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
-                </VStack>
-            </RhfForm>
-        </Step>
+                        {kjønn === 'K' && (
+                            <RhfRadioGroup
+                                name="rolle"
+                                control={formMethods.control}
+                                label={<FormattedMessage id="søkersituasjon.text.rolle" />}
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage({
+                                            id: 'søkersituasjon.validering.oppgiHvaDuSokerSom',
+                                        }),
+                                    ),
+                                ]}
+                            >
+                                <Radio value="mor">
+                                    <FormattedMessage id="søkersituasjon.radioButton.mor" />
+                                </Radio>
+                                <Radio value="medmor">
+                                    <FormattedMessage id="søkersituasjon.radioButton.medmor" />
+                                </Radio>
+                            </RhfRadioGroup>
+                        )}
+                        <StepButtonsHookForm
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            onAvsluttOgSlett={avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
+                        />
+                    </VStack>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 };

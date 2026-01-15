@@ -136,8 +136,14 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                 tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                 familiehendelsesdato={familiehendelsesdato}
                                 onBekreft={(currentValues) => {
-                                    setFieldValue(PeriodeUtsettelseFormField.fom, ISOStringToDate(currentValues.fom));
-                                    setFieldValue(PeriodeUtsettelseFormField.tom, ISOStringToDate(currentValues.tom));
+                                    void setFieldValue(
+                                        PeriodeUtsettelseFormField.fom,
+                                        ISOStringToDate(currentValues.fom),
+                                    );
+                                    void setFieldValue(
+                                        PeriodeUtsettelseFormField.tom,
+                                        ISOStringToDate(currentValues.tom),
+                                    );
                                 }}
                                 ugyldigeTidsperioder={undefined}
                                 utsettelserIPlan={utsettelserIPlan}
@@ -171,19 +177,19 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     utsettelserIPlan={utsettelserIPlan}
                                     onBekreft={(currentValues) => {
                                         setTidsperiodeIsOpen(false);
-                                        setFieldValue(
+                                        void setFieldValue(
                                             PeriodeUtsettelseFormField.fom,
                                             ISOStringToDate(currentValues.fom),
                                         );
-                                        setFieldValue(
+                                        void setFieldValue(
                                             PeriodeUtsettelseFormField.tom,
                                             ISOStringToDate(currentValues.tom),
                                         );
                                     }}
                                     changeTidsperiode={(currentValues) => {
                                         setTimeout(() => {
-                                            setFieldValue(PeriodeUtsettelseFormField.fom, currentValues.fom);
-                                            setFieldValue(PeriodeUtsettelseFormField.tom, currentValues.tom);
+                                            void setFieldValue(PeriodeUtsettelseFormField.fom, currentValues.fom);
+                                            void setFieldValue(PeriodeUtsettelseFormField.tom, currentValues.tom);
                                         }, 0);
                                     }}
                                     tidsperiode={{ fom: values.fom!, tom: values.tom! }}
@@ -250,6 +256,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                             onClick={() => handleDeletePeriode!(periode.id)}
                                             className={bem.element('slettPeriode')}
                                         >
+                                            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                                             {/* @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart */}
                                             <FormattedMessage id={getSlettPeriodeTekst(periode.type)} />
                                         </ActionLink>

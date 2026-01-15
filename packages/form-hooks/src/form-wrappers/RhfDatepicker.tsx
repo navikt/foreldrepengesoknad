@@ -1,43 +1,24 @@
 import dayjs, { Dayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import React, { JSX, ReactNode, useCallback, useMemo, useState } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
+import React, { ComponentProps, JSX, ReactNode, useCallback, useMemo, useState } from 'react';
+import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
 import { DatePicker, useDatepicker } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT, TIDENES_ENDE, TIDENES_MORGEN } from '@navikt/fp-constants';
 
-import { getError, getValidationRules } from './formUtils';
+import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 dayjs.extend(customParseFormat);
 
-const INVALID_DATE = 'Invalid Date';
-const isValidDateString = (date: string): boolean => date !== INVALID_DATE;
-
-const findDisabledDays = (minDate?: Date, maxDate?: Date): Array<{ from: Date; to?: Date }> => {
-    const disabledDays = [];
-    if (minDate) {
-        disabledDays.push({
-            from: dayjs(TIDENES_MORGEN).toDate(),
-            to: dayjs(minDate).subtract(1, 'day').toDate(),
-        });
-    }
-    if (maxDate) {
-        disabledDays.push({
-            from: dayjs(maxDate).add(1, 'day').toDate(),
-            to: dayjs(TIDENES_ENDE).toDate(),
-        });
-    }
-    return disabledDays;
-};
-
-interface Props {
-    name: string;
+type Props<T extends FieldValues> = {
     label?: string | ReactNode;
     description?: string;
-    validate?: Array<(value: string) => any>;
-    onChange?: (value: any) => void;
+    validate?: Array<(value: string) => ValidationReturnType>;
+    onChange?: (value: string) => void;
+    onSelect?: (val?: ComponentProps<typeof DatePicker>['selected']) => void;
+    onBlur?: () => void;
     minDate?: Date | Dayjs | string;
     maxDate?: Date | Dayjs | string;
     defaultMonth?: Date | Dayjs | string;
@@ -46,14 +27,16 @@ interface Props {
     autofocusWhenEmpty?: boolean;
     customErrorFormatter?: (error: string | undefined) => ReactNode;
     useStrategyAbsolute?: boolean;
-}
+    control: UseControllerProps<T>['control'];
+} & Omit<UseControllerProps<T>, 'control'>;
 
-export const RhfDatepicker = ({
-    name,
+export const RhfDatepicker = <T extends FieldValues>({
     label,
     description,
     validate = [],
     onChange,
+    onSelect,
+    onBlur,
     minDate,
     maxDate,
     defaultMonth,
@@ -62,7 +45,10 @@ export const RhfDatepicker = ({
     autofocusWhenEmpty,
     customErrorFormatter,
     useStrategyAbsolute = false,
-}: Props): JSX.Element => {
+    ...controllerProps
+}: Props<T>): JSX.Element => {
+    const { name, control } = controllerProps;
+
     const intl = useIntl();
     const {
         formState: { errors },
@@ -70,6 +56,7 @@ export const RhfDatepicker = ({
 
     const { field } = useController({
         name,
+        control,
         rules: {
             validate: useMemo(() => getValidationRules(validate), [validate]),
         },
@@ -98,16 +85,15 @@ export const RhfDatepicker = ({
 
     const onChangeInput = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
-            const verdi = dayjs(event.target.value, DDMMYYYY_DATE_FORMAT, true).format(ISO_DATE_FORMAT);
-            const isValidDate = isValidDateString(verdi);
+            const { inputVerdi, dato } = formatDateInput({ nyVerdi: event.target.value, forrigeVerdi: fieldValue });
 
-            setFieldValue(event.target.value);
+            setFieldValue(inputVerdi);
             if (onChange) {
-                onChange(isValidDate ? verdi : event.target.value);
+                onChange(dato);
             }
-            field.onChange(isValidDate ? verdi : event.target.value);
+            field.onChange(dato);
         },
-        [setFieldValue, onChange, field],
+        [setFieldValue, onChange, field, fieldValue],
     );
 
     const fromDate = minDate ? dayjs(minDate).toDate() : undefined;
@@ -126,6 +112,8 @@ export const RhfDatepicker = ({
             fromDate={fromDate}
             toDate={toDate}
             disableWeekends={disableWeekends}
+            onSelect={onSelect}
+            onBlur={onBlur}
         >
             <DatePicker.Input
                 {...inputProps}
@@ -140,4 +128,45 @@ export const RhfDatepicker = ({
             />
         </DatePicker>
     );
+};
+
+const INVALID_DATE = 'Invalid Date';
+const isValidDateString = (date: string): boolean => date !== INVALID_DATE;
+
+const findDisabledDays = (minDate?: Date, maxDate?: Date): Array<{ from: Date; to?: Date }> => {
+    const disabledDays = [];
+    if (minDate) {
+        disabledDays.push({
+            from: dayjs(TIDENES_MORGEN).toDate(),
+            to: dayjs(minDate).subtract(1, 'day').toDate(),
+        });
+    }
+    if (maxDate) {
+        disabledDays.push({
+            from: dayjs(maxDate).add(1, 'day').toDate(),
+            to: dayjs(TIDENES_ENDE).toDate(),
+        });
+    }
+    return disabledDays;
+};
+
+const formatDateInput = ({ nyVerdi, forrigeVerdi }: { nyVerdi: string; forrigeVerdi: string }) => {
+    const tall = nyVerdi.replaceAll(/\D/g, '');
+    const forrigeTall = forrigeVerdi.replaceAll(/\D/g, '');
+
+    // Formaterer 8-sifret input: "22102022" → "22.10.2022"
+    const formatert =
+        tall !== forrigeTall && tall.length === 8
+            ? `${tall.slice(0, 2)}.${tall.slice(2, 4)}.${tall.slice(4, 8)}`
+            : nyVerdi;
+
+    const dato = dayjs(formatert, DDMMYYYY_DATE_FORMAT, true).format(ISO_DATE_FORMAT);
+    const erGyldig = isValidDateString(dato);
+
+    // Hvis gyldig dato, returner formatert verdi. Ellers returner originalverdi
+    if (erGyldig) {
+        return { inputVerdi: formatert, dato };
+    }
+
+    return { inputVerdi: nyVerdi, dato: nyVerdi };
 };

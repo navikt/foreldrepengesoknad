@@ -32,12 +32,14 @@ const SlettUttaksplanModal: FunctionComponent<Props> = ({
                 </Heading>
             </Modal.Header>
             <Modal.Body>
-                <HStack gap="4">
+                <HStack gap="space-16">
                     <BodyShort>
+                        {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                         {/* @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart */}
                         <FormattedMessage id={innhold1Id} />
                     </BodyShort>
                     <BodyShort>
+                        {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                         {/* @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart */}
                         <FormattedMessage id={innhold2Id} />
                     </BodyShort>

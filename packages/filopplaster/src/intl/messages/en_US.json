@@ -1,0 +1,15 @@
+{
+    "FileInput.Vedlegg.Lovlige": "You can upload documents of types PDF, JPEG, JPG and PNG. The files can be up to {maxStørrelse} MB",
+    "FileInput.Vedlegg.Header": "Attachment ({length})",
+    "FileInput.Vedlegg.HeaderWithName": "Uploaded ({length}) - {name}",
+    "FileInput.Vedlegg.Uploading": "Uploading...",
+    "FileInput.Vedlegg.Slett": "Remove attachment",
+    "FileInput.Vedlegg.WithErrors": "Attachments with errors",
+    "FailedAttachment.Vedlegg.Feilmelding.NO_DATA": "The file has no content",
+    "FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET": "The document is password protected and cannot be processed by Nav",
+    "FailedAttachment.Vedlegg.Feilmelding.DUPLIKAT_FORSENDELSE": "Duplicate submission",
+    "FailedAttachment.Vedlegg.Feilmelding.TIMEOUT": "Your document took too long to upload. Check your network or try uploading fewer documents at once",
+    "FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR": "Something went wrong. Try again.",
+    "FailedAttachment.Vedlegg.Feilmelding.fileSize": "The attachment must be less than {maxStørrelse} MB.",
+    "FailedAttachment.Vedlegg.Feilmelding.fileType": "Attachment type is not valid"
+}

@@ -1,9 +1,10 @@
 import { ContextDataType, useContextGetData } from 'appData/SvpDataContext';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { TilretteleggingPeriode, Tilretteleggingstype } from 'types/Tilrettelegging';
+import { Tilretteleggingstype } from 'types/Tilrettelegging';
 import { getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import {
+    UtvidetTilrettelegging,
     getArbeidsgiverStillingerForTilrettelegging,
     mapEnTilretteleggingPeriode,
     mapFlereTilretteleggingPerioder,
@@ -11,7 +12,8 @@ import {
 
 import { FormSummary, List } from '@navikt/ds-react';
 
-import { Arbeidsforhold, EGEN_NÆRING_ID, FRILANS_ID } from '@navikt/fp-types';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -19,8 +21,8 @@ export function PerioderOppsummering({
     onVilEndreSvar,
     alleArbeidsforhold,
 }: {
-    readonly onVilEndreSvar: () => void;
-    readonly alleArbeidsforhold: Arbeidsforhold[];
+    onVilEndreSvar: () => void;
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }) {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
@@ -31,9 +33,6 @@ export function PerioderOppsummering({
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="oppsummering.periode.tittel" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="oppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 <VirksomhetSummary
@@ -44,6 +43,11 @@ export function PerioderOppsummering({
                 <FrilansSummary sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger} />
                 <SelvstendigNæringsdrivendeSummary sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger} />
             </FormSummary.Answers>
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="oppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 }
@@ -53,9 +57,9 @@ function VirksomhetSummary({
     sisteDagForSvangerskapspenger,
     termindato,
 }: {
-    readonly alleArbeidsforhold: Arbeidsforhold[];
-    readonly sisteDagForSvangerskapspenger: string;
-    readonly termindato: string;
+    alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    sisteDagForSvangerskapspenger: string;
+    termindato: string;
 }) {
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const tilretteleggingerPerioder = useContextGetData(ContextDataType.TILRETTELEGGINGER_PERIODER);
@@ -69,7 +73,7 @@ function VirksomhetSummary({
     }
 
     return tilretteleggingIder.map((tilretteleggingId) => {
-        const tilrettelegging = tilrettelegginger[tilretteleggingId];
+        const tilrettelegging = tilrettelegginger[tilretteleggingId]!;
         const perioder = tilretteleggingerPerioder?.[tilretteleggingId];
 
         const arbeidsforhold = alleArbeidsforhold.find((a) => a.arbeidsgiverId === tilretteleggingId);
@@ -91,7 +95,7 @@ function VirksomhetSummary({
                 <FormSummary.Value>
                     <FormSummary.Answers>
                         {mappedPerioder.length === 1 ? (
-                            <KunEnPeriode periode={mappedPerioder[0]} />
+                            <KunEnPeriode periode={mappedPerioder[0]!} />
                         ) : (
                             <FlerePerioder perioder={mappedPerioder} />
                         )}
@@ -102,20 +106,18 @@ function VirksomhetSummary({
     });
 }
 
-function FrilansSummary({ sisteDagForSvangerskapspenger }: { readonly sisteDagForSvangerskapspenger: string }) {
+function FrilansSummary({ sisteDagForSvangerskapspenger }: { sisteDagForSvangerskapspenger: string }) {
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const tilretteleggingerPerioder = useContextGetData(ContextDataType.TILRETTELEGGINGER_PERIODER);
     const frilans = useContextGetData(ContextDataType.FRILANS);
 
-    const harFrilansTilrettelegging = Object.keys(tilrettelegginger).some(
-        (tilretteleggingId) => tilretteleggingId === FRILANS_ID,
-    );
+    const harFrilansTilrettelegging = Object.keys(tilrettelegginger).includes(FRILANS_ID);
 
     if (!harFrilansTilrettelegging || !frilans) {
         return null;
     }
 
-    const frilansTilrettelegging = tilrettelegginger[FRILANS_ID];
+    const frilansTilrettelegging = tilrettelegginger[FRILANS_ID]!;
     const perioder = tilretteleggingerPerioder?.[FRILANS_ID];
 
     const stillinger = [{ fom: frilans.oppstart, stillingsprosent: 100 }];
@@ -151,7 +153,7 @@ function FrilansSummary({ sisteDagForSvangerskapspenger }: { readonly sisteDagFo
                         </FormSummary.Value>
                     </FormSummary.Answer>
                     {mappedPerioder.length === 1 ? (
-                        <KunEnPeriode periode={mappedPerioder[0]} />
+                        <KunEnPeriode periode={mappedPerioder[0]!} />
                     ) : (
                         <FlerePerioder perioder={mappedPerioder} />
                     )}
@@ -164,7 +166,7 @@ function FrilansSummary({ sisteDagForSvangerskapspenger }: { readonly sisteDagFo
 function SelvstendigNæringsdrivendeSummary({
     sisteDagForSvangerskapspenger,
 }: {
-    readonly sisteDagForSvangerskapspenger: string;
+    sisteDagForSvangerskapspenger: string;
 }) {
     const intl = useIntl();
 
@@ -172,15 +174,13 @@ function SelvstendigNæringsdrivendeSummary({
     const tilretteleggingerPerioder = useContextGetData(ContextDataType.TILRETTELEGGINGER_PERIODER);
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
 
-    const harEgenNæringTilrettelegging = Object.keys(tilrettelegginger).some(
-        (tilretteleggingId) => tilretteleggingId === EGEN_NÆRING_ID,
-    );
+    const harEgenNæringTilrettelegging = Object.keys(tilrettelegginger).includes(EGEN_NÆRING_ID);
 
     if (!harEgenNæringTilrettelegging || !egenNæring) {
         return null;
     }
 
-    const tilretteleggingMedSN = tilrettelegginger[EGEN_NÆRING_ID];
+    const tilretteleggingMedSN = tilrettelegginger[EGEN_NÆRING_ID]!;
     const perioder = tilretteleggingerPerioder?.[EGEN_NÆRING_ID];
 
     const stillinger = [{ fom: egenNæring.fom, tom: egenNæring.tom, stillingsprosent: 100 }];
@@ -224,7 +224,7 @@ function SelvstendigNæringsdrivendeSummary({
                         </FormSummary.Value>
                     </FormSummary.Answer>
                     {mappedPerioder.length === 1 ? (
-                        <KunEnPeriode periode={mappedPerioder[0]} />
+                        <KunEnPeriode periode={mappedPerioder[0]!} />
                     ) : (
                         <FlerePerioder perioder={mappedPerioder} />
                     )}
@@ -234,7 +234,7 @@ function SelvstendigNæringsdrivendeSummary({
     );
 }
 
-function KunEnPeriode({ periode }: { readonly periode: TilretteleggingPeriode }) {
+function KunEnPeriode({ periode }: { periode: UtvidetTilrettelegging }) {
     return (
         <>
             <FormSummary.Answer>
@@ -243,17 +243,17 @@ function KunEnPeriode({ periode }: { readonly periode: TilretteleggingPeriode })
                 </FormSummary.Label>
                 <FormSummary.Value>
                     <StillingProsentTekst
-                        stillingsprosent={periode.stillingsprosent}
+                        stillingsprosent={periode.type === 'delvis' ? periode.stillingsprosent : undefined}
                         tilretteleggingstype={periode.type}
                     />
                 </FormSummary.Value>
             </FormSummary.Answer>
             <FormSummary.Answer>
                 <FormSummary.Label>
-                    {periode.type === Tilretteleggingstype.INGEN && (
+                    {periode.type === 'ingen' && (
                         <FormattedMessage id="tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen" />
                     )}
-                    {periode.type === Tilretteleggingstype.DELVIS && (
+                    {periode.type === 'delvis' && (
                         <FormattedMessage id="tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis" />
                     )}
                 </FormSummary.Label>
@@ -265,7 +265,7 @@ function KunEnPeriode({ periode }: { readonly periode: TilretteleggingPeriode })
     );
 }
 
-function FlerePerioder({ perioder }: { readonly perioder: TilretteleggingPeriode[] }) {
+function FlerePerioder({ perioder }: { perioder: UtvidetTilrettelegging[] }) {
     return (
         <FormSummary.Answer>
             <FormSummary.Label>
@@ -277,7 +277,7 @@ function FlerePerioder({ perioder }: { readonly perioder: TilretteleggingPeriode
                         <List.Item key={periode.fom}>
                             <SvpPeriodeDatoTekst periode={periode} />:{' '}
                             <StillingProsentTekst
-                                stillingsprosent={periode.stillingsprosent}
+                                stillingsprosent={periode.type === 'delvis' ? periode.stillingsprosent : undefined}
                                 tilretteleggingstype={periode.type}
                             />
                         </List.Item>
@@ -288,10 +288,11 @@ function FlerePerioder({ perioder }: { readonly perioder: TilretteleggingPeriode
     );
 }
 
-function SvpPeriodeDatoTekst({ periode }: { readonly periode: TilretteleggingPeriode }) {
+function SvpPeriodeDatoTekst({ periode }: { periode: UtvidetTilrettelegging }) {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
     const kanHaSvpFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);
+
     const varerTilSisteDagMedSvp = dayjs(periode.tom).isSame(sisteDagForSvangerskapspenger, 'd');
 
     if (!varerTilSisteDagMedSvp) {
@@ -328,17 +329,17 @@ function StillingProsentTekst({
     tilretteleggingstype,
     stillingsprosent,
 }: {
-    readonly stillingsprosent?: number;
-    readonly tilretteleggingstype: Tilretteleggingstype;
+    stillingsprosent?: number;
+    tilretteleggingstype: Tilretteleggingstype;
 }) {
-    if (tilretteleggingstype === Tilretteleggingstype.HEL) {
+    if (tilretteleggingstype === 'hel') {
         return <FormattedMessage id="oppsummering.periode.tilbakeIFullJobb" />;
     }
-    if (tilretteleggingstype === Tilretteleggingstype.INGEN) {
+    if (tilretteleggingstype === 'ingen') {
         return <FormattedMessage id="oppsummering.periode.ikkeJobbe" />;
     }
 
-    if (tilretteleggingstype === Tilretteleggingstype.DELVIS && stillingsprosent === undefined) {
+    if (tilretteleggingstype === 'delvis' && stillingsprosent === undefined) {
         throw new Error('Stillingsprosent ikke satt for delvis tilrettelegging');
     }
 

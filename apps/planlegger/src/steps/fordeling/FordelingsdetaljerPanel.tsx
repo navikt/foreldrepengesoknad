@@ -2,7 +2,7 @@ import { CalendarIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker, erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
 import { Uttaksdata } from 'utils/uttakUtils';
 
@@ -38,34 +38,64 @@ export const FordelingsdetaljerPanel = ({
     return (
         <Infobox
             header={<FormattedMessage id="FordelingsdetaljerPanel.InfoboksTittel" />}
-            icon={<CalendarIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
+            icon={
+                <CalendarIcon
+                    height={24}
+                    width={24}
+                    color="var(--ax-bg-neutral-strong)"
+                    fontSize="1.5rem"
+                    aria-hidden
+                />
+            }
             shouldFadeIn
             color="green"
         >
-            <VStack gap="2">
-                <BodyShort>
-                    {erFødsel && (
-                        <FormattedMessage
-                            id="FordelingsdetaljerPanel.Infoboks.HvisBarnet"
-                            values={{
-                                erFødt,
-                                dato: dato,
-                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                                erFlereBarn: antallBarn !== '1',
-                            }}
-                        />
-                    )}
-                    {!erFødsel && (
-                        <FormattedMessage
-                            id="FordelingsdetaljerPanel.Infoboks.HvisAdopsjon"
-                            values={{
-                                antallBarn,
-                                dato: dato,
-                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                            }}
-                        />
-                    )}
-                </BodyShort>
+            <VStack gap="space-8">
+                {erFødsel && (
+                    <>
+                        <BodyShort>
+                            <FormattedMessage
+                                id="FordelingsdetaljerPanel.Infoboks.HvisBarnet"
+                                values={{
+                                    erFødt,
+                                    dato: dato,
+                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
+                                    erFlereBarn: antallBarn !== '1',
+                                }}
+                            />
+                        </BodyShort>
+                        <BodyShort>
+                            <FormattedMessage
+                                id="FordelingsdetaljerPanel.Infoboks.HvisBarnetDel2"
+                                values={{
+                                    erAlenesøker: erAlenesøker(hvemPlanlegger),
+                                }}
+                            />
+                        </BodyShort>
+                    </>
+                )}
+                {!erFødsel && (
+                    <>
+                        <BodyShort>
+                            <FormattedMessage
+                                id="FordelingsdetaljerPanel.Infoboks.HvisAdopsjon"
+                                values={{
+                                    antallBarn,
+                                    dato: dato,
+                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
+                                }}
+                            />
+                        </BodyShort>
+                        <BodyShort>
+                            <FormattedMessage
+                                id="FordelingsdetaljerPanel.Infoboks.HvisAdopsjonDel2"
+                                values={{
+                                    dato: dato,
+                                }}
+                            />
+                        </BodyShort>
+                    </>
+                )}
                 <BodyShort>
                     <FormattedMessage
                         id="FordelingsdetaljerPanel.Infoboks.Periode"

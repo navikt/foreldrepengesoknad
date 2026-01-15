@@ -1,13 +1,14 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { action } from 'storybook/actions';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorMye } from 'types/HvorMye';
 
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { HvorMyeSteg } from './HvorMyeSteg';
@@ -19,28 +20,6 @@ type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof HvorMyeSteg>;
 
-const DEFAULT_SATSER = {
-    grunnbeløp: [
-        {
-            fom: '01.05.2024',
-            verdi: 124028,
-        },
-        {
-            fom: '01.05.2023',
-            verdi: 118620,
-        },
-    ],
-    engangstønad: [
-        {
-            fom: '01.01.2023',
-            verdi: 92648,
-        },
-        {
-            fom: '01.01.2021',
-            verdi: 90300,
-        },
-    ],
-};
 const meta = {
     title: 'steg/HvorMyeSteg',
     component: HvorMyeSteg,
@@ -49,7 +28,6 @@ const meta = {
         hvemPlanlegger,
         arbeidssituasjon,
         gåTilNesteSide = action('button-click'),
-        locale,
         satser,
     }: StoryArgs) => {
         return (
@@ -62,7 +40,7 @@ const meta = {
                     }}
                     onDispatch={gåTilNesteSide}
                 >
-                    <HvorMyeSteg locale={locale} satser={satser} />
+                    <HvorMyeSteg satser={satser} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -74,7 +52,6 @@ type Story = StoryObj<typeof meta>;
 
 export const FlereForsørgere: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
@@ -94,7 +71,6 @@ export const FlereForsørgere: Story = {
 
 export const AleneforsørgerMor: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             type: HvemPlanleggerType.MOR,

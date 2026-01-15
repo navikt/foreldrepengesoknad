@@ -9,7 +9,7 @@ import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 import { BodyShort, Button, Heading, Label, Link, List, ReadMore, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { RhfCheckbox, RhfForm, RhfTextField } from '@navikt/fp-form-hooks';
+import { RhfCheckbox, RhfForm, RhfFormattertTallTextField } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox, VeiviserPage } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr, useScrollBehaviour } from '@navikt/fp-utils';
@@ -17,7 +17,6 @@ import { isValidNumber, isValidNumberForm } from '@navikt/fp-validation';
 
 import { HarIkkeRettTilFpInfobox } from '../felles/HarIkkeRettTilFpInfobox';
 import { HøyInntektInfobox } from '../felles/HøyInntektInfobox';
-import styles from './arbeidssituasjonSide.module.css';
 
 export type Arbeidssituasjon = {
     erArbeidstakerEllerFrilanser: boolean;
@@ -43,9 +42,9 @@ const isNumber = (value?: string) => {
 export const finnGjennomsnittsMånedslønn = (formValues: Arbeidssituasjon): string | undefined => {
     const { lønnMåned1, lønnMåned2, lønnMåned3 } = formValues;
 
-    const m1 = isNumber(lønnMåned1) ? parseFloat(lønnMåned1) : 0;
-    const m2 = isNumber(lønnMåned2) ? parseFloat(lønnMåned2) : 0;
-    const m3 = isNumber(lønnMåned3) ? parseFloat(lønnMåned3) : 0;
+    const m1 = isNumber(lønnMåned1) ? Number.parseFloat(lønnMåned1) : 0;
+    const m2 = isNumber(lønnMåned2) ? Number.parseFloat(lønnMåned2) : 0;
+    const m3 = isNumber(lønnMåned3) ? Number.parseFloat(lønnMåned3) : 0;
 
     const gjennomsnittslønn = (m1 + m2 + m3) / 3;
     return gjennomsnittslønn > 0 ? gjennomsnittslønn.toFixed(0) : undefined;
@@ -59,7 +58,6 @@ interface Props {
 
 export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, satser }: Props) => {
     const intl = useIntl();
-    const locale = intl.locale;
     const { goToRoute } = useVeiviserNavigator();
 
     const formMethods = useForm<Arbeidssituasjon>({
@@ -76,7 +74,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
     const forrigeMåned = dayjs().subtract(1, 'month');
 
     const gjennomsnittslønnPerMåned = finnGjennomsnittsMånedslønn(formValues);
-    const antattÅrslønn = gjennomsnittslønnPerMåned ? parseFloat(gjennomsnittslønnPerMåned) * 12 : undefined;
+    const antattÅrslønn = gjennomsnittslønnPerMåned ? Number.parseFloat(gjennomsnittslønnPerMåned) * 12 : undefined;
 
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const minÅrslønn = grunnbeløpet / 2;
@@ -91,24 +89,27 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
             icon={<WalletIcon height={28} width={28} fontSize="1.5rem" aria-hidden />}
         >
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
-                <VStack gap="10" style={{ flex: 1 }}>
+                <VStack gap="space-40" style={{ flex: 1 }}>
                     <BluePanel isDarkBlue={!isCheckboxValgt(formValues)} shouldFadeIn>
                         <Label>
                             <FormattedMessage id="ArbeidssituasjonSide.Arbeidssituasjon" />
                         </Label>
-                        <BodyShort className={styles.description}>
+                        <BodyShort className="text-ax-text-neutral-subtle">
                             <FormattedMessage id="ArbeidssituasjonSide.VelgAlternativ" />
                         </BodyShort>
                         <RhfCheckbox
                             name="erArbeidstakerEllerFrilanser"
+                            control={formMethods.control}
                             label={<FormattedMessage id="ArbeidssituasjonSide.ArbeidEllerFrilans" />}
                         />
                         <RhfCheckbox
                             name="harUtbetalingFraNav"
+                            control={formMethods.control}
                             label={<FormattedMessage id="ArbeidssituasjonSide.UtbetalingNav" />}
                         />
                         <RhfCheckbox
                             name="erSelvstendigNæringsdrivende"
+                            control={formMethods.control}
                             label={<FormattedMessage id="ArbeidssituasjonSide.SelvstendigNæringsdrivende" />}
                         />
                     </BluePanel>
@@ -118,14 +119,14 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                 <InformationIcon
                                     height={24}
                                     width={24}
-                                    color="#020C1CAD"
+                                    color="var(--ax-bg-neutral-strong)"
                                     fontSize="1.5rem"
                                     aria-hidden
                                 />
                             }
                             color="gray"
                         >
-                            <VStack gap="6">
+                            <VStack gap="space-24">
                                 <BodyShort>
                                     <FormattedMessage id="ArbeidssituasjonSide.SNKanIkkeBruke" />
                                 </BodyShort>
@@ -140,15 +141,15 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                     )}
                     {!formValues.erSelvstendigNæringsdrivende &&
                         (formValues.erArbeidstakerEllerFrilanser || formValues.harUtbetalingFraNav) && (
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <BluePanel isDarkBlue={gjennomsnittslønnPerMåned === undefined} shouldFadeIn>
-                                    <VStack gap="6">
+                                    <VStack gap="space-24">
                                         {formValues.erArbeidstakerEllerFrilanser && !formValues.harUtbetalingFraNav && (
                                             <div>
                                                 <Label>
                                                     <FormattedMessage id="ArbeidssituasjonSide.TreSisteMåneder" />
                                                 </Label>
-                                                <BodyShort className={styles.description}>
+                                                <BodyShort className="text-ax-text-neutral-subtle">
                                                     <FormattedMessage id="ArbeidssituasjonSide.LønnFørSkatt" />
                                                 </BodyShort>
                                             </div>
@@ -163,41 +164,44 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                                 <Label>
                                                     <FormattedMessage id="ArbeidssituasjonSide.UtbetaltTreSiste" />
                                                 </Label>
-                                                <BodyShort className={styles.description}>
+                                                <BodyShort className="text-ax-text-neutral-subtle">
                                                     <FormattedMessage id="ArbeidssituasjonSide.LønnOgUtbetaling" />
                                                 </BodyShort>
                                             </div>
                                         )}
 
-                                        <VStack gap="4">
-                                            <RhfTextField
+                                        <VStack gap="space-16">
+                                            <RhfFormattertTallTextField
                                                 name="lønnMåned1"
+                                                control={formMethods.control}
                                                 label={capitalizeFirstLetter(
                                                     forrigeMåned.subtract(2, 'month').format('MMMM YYYY'),
                                                 )}
-                                                className={styles.widthTextInput}
+                                                className="w-[300px]"
                                                 validate={[
                                                     isValidNumberForm(
                                                         intl.formatMessage({ id: 'ArbeidssituasjonSide.ValidNumber' }),
                                                     ),
                                                 ]}
                                             />
-                                            <RhfTextField
+                                            <RhfFormattertTallTextField
                                                 name="lønnMåned2"
+                                                control={formMethods.control}
                                                 label={capitalizeFirstLetter(
                                                     forrigeMåned.subtract(1, 'month').format('MMMM YYYY'),
                                                 )}
-                                                className={styles.widthTextInput}
+                                                className="w-[300px]"
                                                 validate={[
                                                     isValidNumberForm(
                                                         intl.formatMessage({ id: 'ArbeidssituasjonSide.ValidNumber' }),
                                                     ),
                                                 ]}
                                             />
-                                            <RhfTextField
+                                            <RhfFormattertTallTextField
                                                 name="lønnMåned3"
+                                                control={formMethods.control}
                                                 label={capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
-                                                className={styles.widthTextInput}
+                                                className="w-[300px]"
                                                 validate={[
                                                     isValidNumberForm(
                                                         intl.formatMessage({ id: 'ArbeidssituasjonSide.ValidNumber' }),
@@ -211,7 +215,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                             </Label>
                                             <Heading size="large" as="p">
                                                 {gjennomsnittslønnPerMåned
-                                                    ? formatCurrencyWithKr(gjennomsnittslønnPerMåned, locale)
+                                                    ? formatCurrencyWithKr(gjennomsnittslønnPerMåned)
                                                     : '-'}
                                             </Heading>
                                         </div>
@@ -222,8 +226,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                             <Heading size="large" as="p">
                                                 {gjennomsnittslønnPerMåned
                                                     ? formatCurrencyWithKr(
-                                                          parseInt(gjennomsnittslønnPerMåned, 10) * 12,
-                                                          locale,
+                                                          Number.parseInt(gjennomsnittslønnPerMåned, 10) * 12,
                                                       )
                                                     : '-'}
                                             </Heading>

@@ -1,161 +1,171 @@
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import isoWeek from 'dayjs/plugin/isoWeek';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import { HGrid } from '@navikt/ds-react';
 
-import { PeriodeColor } from '@navikt/fp-constants';
-
-import { Day, DayType } from './Day';
 import { Month } from './Month';
-import styles from './calendar.module.css';
+import { CalendarPeriod } from './types/CalendarPeriod';
 
 dayjs.extend(isoWeek);
 dayjs.extend(isBetween);
 
-export type Period = {
-    fom: string;
-    tom: string;
-    color: PeriodeColor;
-    srText?: string;
-};
-
-const findDayColor = (year: number, month: number, day: number, periods: Period[]) => {
-    const date = dayjs().year(year).month(month).date(day);
-
-    const fomFirstPeriod = periods[0].fom;
-    const tomLastPeriod = periods[periods.length - 1].tom;
-
-    if (date.isBefore(fomFirstPeriod, 'day') || date.isAfter(tomLastPeriod, 'day')) {
-        return PeriodeColor.NONE;
-    }
-
-    const period = periods.find((p) => date.isBetween(p.fom, p.tom, 'day', '[]'));
-
-    if (period?.color === PeriodeColor.PINK) {
-        return PeriodeColor.PINK;
-    }
-
-    if (period?.color === PeriodeColor.PURPLE) {
-        return PeriodeColor.PURPLE;
-    }
-
-    if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
-        return PeriodeColor.GRAY;
-    }
-
-    return period?.color ?? PeriodeColor.NONE;
-};
-
-const isFirstDay = (date: Dayjs, day: number, periods: Period[]) => {
-    const pinkPeriod = periods.find((p) => p.color === PeriodeColor.PINK);
-    return (
-        date.isoWeekday() === 6 ||
-        date.isoWeekday() === 1 ||
-        day === 1 ||
-        periods.some((period) => date.isSame(period.fom, 'day')) ||
-        (pinkPeriod && dayjs(pinkPeriod.fom).isSame(date.subtract(1, 'day'), 'day'))
-    );
-};
-
-const isLastDay = (date: Dayjs, day: number, periods: Period[]) => {
-    const pinkPeriod = periods.find((p) => p.color === PeriodeColor.PINK);
-    return (
-        date.isoWeekday() === 7 ||
-        date.isoWeekday() === 5 ||
-        day === date.daysInMonth() ||
-        periods.some((period) => date.isSame(period.tom, 'day')) ||
-        (pinkPeriod && dayjs(pinkPeriod.fom).isSame(date.add(1, 'day'), 'day'))
-    );
-};
-
-const findDayType = (year: number, month: number, day: number, periods: Period[]) => {
-    const date = dayjs().year(year).month(month).date(day);
-    const firstDay = isFirstDay(date, day, periods);
-    const lastDay = isLastDay(date, day, periods);
-
-    if (firstDay && lastDay) {
-        return DayType.FIRST_AND_LAST_DAY;
-    }
-    if (firstDay) {
-        return DayType.FIRST_DAY;
-    }
-    if (lastDay) {
-        return DayType.LAST_DAY;
-    }
-    return DayType.BETWEEN_DAY;
-};
-
-const monthDiff = (d1: Date, d2: Date) => {
-    let months;
-    months = (d2.getFullYear() - d1.getFullYear()) * 12;
-    months -= d1.getMonth();
-    months += d2.getMonth();
-    return months <= 0 ? 0 : months;
-};
-
-const findMonths = (firstDate: string, lastDate: string): Array<{ month: number; year: number }> => {
-    const numberOfMonthsToAddStart = dayjs(firstDate).month() % 3;
-    const numberOfMonthsToAddEnd = 3 - (dayjs(lastDate).month() % 3);
-
-    const firstDateInCalendar = dayjs(firstDate).subtract(numberOfMonthsToAddStart, 'month');
-    const lastDateInCalendar = dayjs(lastDate).add(numberOfMonthsToAddEnd, 'month');
-
-    const numberOfMonthsBetween = monthDiff(firstDateInCalendar.toDate(), lastDateInCalendar.toDate());
-
-    return [...new Array(numberOfMonthsBetween)].map((_, index) => ({
-        month: firstDateInCalendar.add(index, 'month').month(),
-        year: firstDateInCalendar.add(index, 'month').year(),
-    }));
-};
-
 interface Props {
-    periods: Period[];
-    useSmallerWidth?: boolean;
+    periods: CalendarPeriod[];
+    showWeekNumbers?: boolean;
+    nrOfColumns?: 1 | 2 | 3;
+    isRangeSelection?: boolean;
+    firstDateInCalendar: string;
+    lastDateInCalendar?: string;
+    dateTooltipCallback?: (date: string) => React.ReactElement | string;
+    setSelectedPeriods?: (value: React.SetStateAction<CalendarPeriod[]>) => void;
+    getSrTextForSelectedPeriod?: (period: { fom: string; tom: string }) => string;
 }
 
-export const Calendar = ({ periods, useSmallerWidth = false }: Props) => {
-    const months = findMonths(periods[0].fom, periods[periods.length - 1].tom);
+export const Calendar = ({
+    periods,
+    showWeekNumbers = true,
+    nrOfColumns = 2,
+    isRangeSelection = false,
+    firstDateInCalendar,
+    lastDateInCalendar,
+    dateTooltipCallback,
+    setSelectedPeriods,
+    getSrTextForSelectedPeriod,
+}: Props) => {
+    const [focusedDate, setFocusedDate] = useState<dayjs.Dayjs | undefined>();
+
+    const allMonths = useMemo(
+        () => findMonths(firstDateInCalendar, lastDateInCalendar),
+        [periods, firstDateInCalendar, lastDateInCalendar],
+    );
+    const periodsByMonth = useMemo(() => groupPeriodsByMonth(allMonths, periods), [allMonths, periods]);
+
+    const dateClickCallback = useCallback(
+        (selectedDate: string) =>
+            getDateClickCallback(isRangeSelection, getSrTextForSelectedPeriod, setSelectedPeriods)(selectedDate),
+        [isRangeSelection, getSrTextForSelectedPeriod, setSelectedPeriods],
+    );
 
     return (
-        <>
-            {periods.some((period) => period.srText) && (
-                <div className={styles.srOnly}>
-                    {periods
-                        .filter((periode) => periode.srText)
-                        .map((period) => period.srText)
-                        .toString()}
-                </div>
-            )}
-            <HGrid
-                gap={{ xs: '2', sm: '4', md: '8' }}
-                columns={
-                    useSmallerWidth
-                        ? { xs: 'repeat(1, 1fr)', sm: 'repeat(3, 1fr)' }
-                        : { xs: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)' }
-                }
-            >
-                {months.map((monthData, index) => (
+        <HGrid gap="space-12" columns={{ sm: 1, md: nrOfColumns }}>
+            {allMonths.map(({ month, year }, index) => {
+                const monthPeriods = periodsByMonth.get(getMonthKey(year, month)) ?? [];
+                const isMonthInFocus = focusedDate?.year() === year && focusedDate?.month() === month;
+
+                return (
                     <Month
-                        key={monthData.year + '-' + monthData.month}
-                        year={monthData.year}
-                        month={monthData.month}
-                        showYear={index > 0 && months[index - 1].year !== monthData.year}
-                        headerLevel={useSmallerWidth ? '5' : '4'}
-                    >
-                        {[...Array(dayjs().year(monthData.year).month(monthData.month).daysInMonth()).keys()].map(
-                            (day) => (
-                                <Day
-                                    key={monthData.year + monthData.month + day}
-                                    day={day + 1}
-                                    periodeColor={findDayColor(monthData.year, monthData.month, day + 1, periods)}
-                                    dayType={findDayType(monthData.year, monthData.month, day + 1, periods)}
-                                />
-                            ),
-                        )}
-                    </Month>
-                ))}
-            </HGrid>
-        </>
+                        key={`${year}-${month}`}
+                        isFirstMonth={index === 0}
+                        year={year}
+                        month={month}
+                        periods={monthPeriods}
+                        showWeekNumbers={showWeekNumbers}
+                        dateTooltipCallback={dateTooltipCallback}
+                        dateClickCallback={setSelectedPeriods ? dateClickCallback : undefined}
+                        focusedDate={isMonthInFocus ? focusedDate : undefined}
+                        setFocusedDate={setFocusedDate}
+                    />
+                );
+            })}
+        </HGrid>
     );
 };
+
+const findMonths = (
+    firstDateInCalendar: string,
+    lastDateInCalendar?: string,
+): Array<{ month: number; year: number }> => {
+    const firstDate = dayjs(firstDateInCalendar);
+    const lastDate = lastDateInCalendar ? dayjs(lastDateInCalendar) : dayjs(firstDateInCalendar).add(6, 'month');
+
+    const numberOfMonthsBetween = monthDiff(firstDate, lastDate);
+
+    return Array.from({ length: numberOfMonthsBetween + 1 }, (_, i) => {
+        const date = firstDate.add(i, 'month');
+        return { month: date.month(), year: date.year() };
+    });
+};
+
+const monthDiff = (d1: dayjs.Dayjs, d2: dayjs.Dayjs): number => {
+    let months = (d2.year() - d1.year()) * 12;
+    months += d2.month() - d1.month();
+    return Math.max(months, 0);
+};
+
+const getMonthKey = (year: number, month: number): string => `${year}-${month}`;
+
+const groupPeriodsByMonth = (
+    months: Array<{ month: number; year: number }>,
+    periods: CalendarPeriod[],
+): Map<string, CalendarPeriod[]> => {
+    const result = new Map<string, CalendarPeriod[]>();
+    for (const { year, month } of months) {
+        const monthStart = dayjs().year(year).month(month).startOf('month');
+        const monthEnd = monthStart.endOf('month');
+        const periodsForMonth = periods.filter(
+            (p) => dayjs(p.tom).isSameOrAfter(monthStart, 'day') && dayjs(p.fom).isSameOrBefore(monthEnd, 'day'),
+        );
+        result.set(getMonthKey(year, month), periodsForMonth);
+    }
+    return result;
+};
+
+const findFomDate = (selectedDate: string, period: CalendarPeriod) =>
+    dayjs(period.fom).isBefore(dayjs(selectedDate)) ? period.fom : selectedDate;
+
+const findTomDate = (selectedDate: string, period: CalendarPeriod) => {
+    const parsedSelectedDate = dayjs(selectedDate);
+    if (dayjs(period.tom).isAfter(parsedSelectedDate) && dayjs(period.fom).isBefore(parsedSelectedDate)) {
+        return selectedDate;
+    }
+    return dayjs(period.tom).isBefore(parsedSelectedDate) ? selectedDate : period.tom;
+};
+
+const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
+
+const getDateClickCallback =
+    (
+        isRangeSelection: boolean,
+        getSrTextForSelectedPeriod?: (period: { fom: string; tom: string }) => string,
+        setSelectedPeriods?: (value: React.SetStateAction<CalendarPeriod[]>) => void,
+    ) =>
+    (selectedDate: string) => {
+        if (!setSelectedPeriods || !getSrTextForSelectedPeriod) {
+            return;
+        }
+
+        if (isRangeSelection) {
+            setSelectedPeriods((old) => {
+                const fom = old.length === 0 ? selectedDate : findFomDate(selectedDate, old[0]!);
+                const tom = old.length === 0 ? selectedDate : findTomDate(selectedDate, old[0]!);
+                return old.some((p) => p.fom === selectedDate || p.tom === selectedDate)
+                    ? []
+                    : [
+                          {
+                              color: 'DARKBLUE',
+                              fom,
+                              tom,
+                              isSelected: true,
+                              srText: getSrTextForSelectedPeriod({ fom, tom }),
+                          },
+                      ];
+            });
+        } else {
+            setSelectedPeriods((old) =>
+                old.some((p) => p.fom === selectedDate)
+                    ? old.filter((p) => p.fom !== selectedDate)
+                    : [
+                          ...old,
+                          {
+                              color: 'DARKBLUE',
+                              fom: selectedDate,
+                              tom: selectedDate,
+                              isSelected: true,
+                              srText: getSrTextForSelectedPeriod({ fom: selectedDate, tom: selectedDate }),
+                          } satisfies CalendarPeriod,
+                      ].sort(sortPeriods),
+            );
+        }
+    };

@@ -1,6 +1,6 @@
 import { ValidationResult, ValidationTestVerdict, Validator } from './types/validatorTypes';
 
-export const runValidators = (validators: Validator[] | undefined, inputName: string): ValidationResult => {
+const runValidators = (validators: Validator[] | undefined, inputName: string): ValidationResult => {
     if (validators === undefined) {
         return {
             name: inputName,
@@ -13,7 +13,7 @@ export const runValidators = (validators: Validator[] | undefined, inputName: st
     });
 
     const valid = results.length === 0;
-    const tests: ValidationTestVerdict[] = valid === false ? [{ verdict: false, failText: results[0].failText }] : [];
+    const tests: ValidationTestVerdict[] = valid === false ? [{ verdict: false, failText: results[0]!.failText }] : [];
 
     return {
         name: inputName,

@@ -1,10 +1,11 @@
 {
-    "extends": "tsconfig/vite.json",
+    "extends": "@navikt/fp-config-typescript/tsconfig.json",
     "compilerOptions": {
         "baseUrl": "src",
         "jsx": "react-jsx",
         "rootDir": "src",
-        "types": ["node"]
+        "types": ["node"],
+        "allowImportingTsExtensions": false
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules"]

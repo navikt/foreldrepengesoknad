@@ -9,7 +9,6 @@ import { createCountryOptions } from '@navikt/fp-utils';
 import { isRequired } from '@navikt/fp-validation';
 
 import { AnnenForelderFormData } from './AnnenForelderFormData';
-import styles from './oppgiPersonalia.module.css';
 
 const isValidText = (intl: IntlShape, label: string) => (fornavn: string) => {
     return validateTextInputField(fornavn, label, intl);
@@ -41,6 +40,7 @@ export const OppgiPersonalia = ({ søkersFødselsnummer, rolle, barn }: Props) =
             {isAnnenForelderKanIkkeOppgisIncluded(rolle, isAdoptertStebarn(barn)) && (
                 <RhfCheckbox
                     name="kanIkkeOppgis"
+                    control={formMethods.control}
                     label={intl.formatMessage({ id: 'annenForelder.spørsmål.kanOppgis' })}
                 />
             )}
@@ -48,21 +48,23 @@ export const OppgiPersonalia = ({ søkersFødselsnummer, rolle, barn }: Props) =
                 <>
                     <RhfTextField
                         name="fornavn"
+                        control={formMethods.control}
                         label={<FormattedMessage id="annenForelder.spørsmål.fornavn" />}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.fornavnPåkrevd' })),
                             isValidText(intl, 'annenForelder.spørsmål.fornavn'),
                         ]}
-                        className={styles.width}
+                        className="w-[70%] min-w-[200px]"
                     />
                     <RhfTextField
                         name="etternavn"
+                        control={formMethods.control}
                         label={<FormattedMessage id="annenForelder.spørsmål.etternavn" />}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.etternavnPåkrevd' })),
                             isValidText(intl, 'annenForelder.spørsmål.etternavn'),
                         ]}
-                        className={styles.width}
+                        className="w-[70%] min-w-[200px]"
                     />
                 </>
             )}
@@ -71,6 +73,7 @@ export const OppgiPersonalia = ({ søkersFødselsnummer, rolle, barn }: Props) =
                     <div>
                         <RhfTextField
                             name="fnr"
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'annenForelder.spørsmål.fnr' }, { navn: fornavn })}
                             validate={[
                                 isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.fnrPåkrevd' })),
@@ -81,16 +84,18 @@ export const OppgiPersonalia = ({ søkersFødselsnummer, rolle, barn }: Props) =
                                     utenlandskFnr,
                                 ),
                             ]}
-                            className={styles.width}
+                            className="w-[70%] min-w-[200px]"
                         />
                         <RhfCheckbox
                             name="utenlandskFnr"
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'annenForelder.spørsmål.utenlandskFnr' })}
                         />
                     </div>
                     {utenlandskFnr && (
                         <RhfSelect
                             name="bostedsland"
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'annenForelder.bostedsland' })}
                             validate={[
                                 isRequired(
@@ -98,7 +103,7 @@ export const OppgiPersonalia = ({ søkersFødselsnummer, rolle, barn }: Props) =
                                 ),
                             ]}
                         >
-                            {createCountryOptions().map((o: Record<string, any>) => (
+                            {createCountryOptions().map((o) => (
                                 <option key={o[0]} value={o[0]}>
                                     {o[1]}
                                 </option>

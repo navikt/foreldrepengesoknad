@@ -1,13 +1,13 @@
 import classnames from 'classnames';
 
 import { guid } from '../../utils/guid';
-import preventDoubleTapZoom from '../../utils/preventDoubleTapZoom';
+import { preventDoubleTapZoom } from '../../utils/preventDoubleTapZoom';
 import AriaText from '../aria-text/AriaText';
 import './sirkelknapp.less';
 
-export type Stil = 'hvit' | 'bla' | 'info';
+type Stil = 'hvit' | 'bla' | 'info';
 
-export interface SirkelknappProps {
+interface SirkelknappProps {
     /** Tekst som blir lest opp og satt som tittel på knappen */
     ariaLabel: string;
     /** Ikon som brukes inne i knappen */

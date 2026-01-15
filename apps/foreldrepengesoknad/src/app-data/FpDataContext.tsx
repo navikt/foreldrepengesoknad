@@ -1,6 +1,7 @@
 import { SøknadRoutes } from 'appData/routes';
 import { JSX, ReactNode, createContext, useContext, useReducer } from 'react';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
+import { Fordeling } from 'types/Fordeling';
 import { UttaksplanMetaData } from 'types/UttaksplanMetaData';
 import { VedleggDataType } from 'types/VedleggDataType';
 
@@ -8,14 +9,12 @@ import { AnnenForelder, Barn, BarnFraNesteSak, EksisterendeSak, Periode } from '
 import {
     ArbeidsforholdOgInntektFp,
     Dekningsgrad,
-    EgenNæring,
     Frilans,
+    NæringDto,
     SøkersituasjonFp,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
-
-import { Fordeling } from '../types/Fordeling';
 
 export enum ContextDataType {
     APP_ROUTE = 'APP_ROUTE',
@@ -46,7 +45,7 @@ export type ContextDataMap = {
     [ContextDataType.OM_BARNET]?: Barn;
     [ContextDataType.ANNEN_FORELDER]?: AnnenForelder;
     [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]?: ArbeidsforholdOgInntektFp;
-    [ContextDataType.EGEN_NÆRING]?: EgenNæring;
+    [ContextDataType.EGEN_NÆRING]?: NæringDto;
     [ContextDataType.FRILANS]?: Frilans;
     [ContextDataType.ANDRE_INNTEKTSKILDER]?: AndreInntektskilder[];
     [ContextDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;
@@ -61,7 +60,9 @@ export type ContextDataMap = {
 
 const defaultInitialState = {} as ContextDataMap;
 
-export type Action = { type: 'update'; key: ContextDataType; data: any } | { type: 'reset' };
+export type Action =
+    | { type: 'update'; key: ContextDataType; data: ContextDataMap[keyof ContextDataMap] }
+    | { type: 'reset' };
 type Dispatch = (action: Action) => void;
 
 const FpStateContext = createContext<ContextDataMap>(defaultInitialState);

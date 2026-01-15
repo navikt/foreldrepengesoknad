@@ -1,11 +1,11 @@
-import { InntektsmeldingDto } from '../../../src/api/zodSchemas';
+import { FpOversiktInntektsmeldingDto_fpoversikt } from '@navikt/fp-types';
 
 export const utenRefusjon = [
     {
         versjon: 2,
         erAktiv: true,
-        stillingsprosent: 100.0,
-        inntektPrMnd: 140000.0,
+        stillingsprosent: 100,
+        inntektPrMnd: 140000,
         arbeidsgiverNavn: 'Laksinor',
         arbeidsgiverIdent: '123',
         journalpostId: '1017115920',
@@ -14,4 +14,4 @@ export const utenRefusjon = [
         bortfalteNaturalytelser: [],
         refusjonsperioder: [],
     },
-] satisfies InntektsmeldingDto[];
+] satisfies FpOversiktInntektsmeldingDto_fpoversikt[];

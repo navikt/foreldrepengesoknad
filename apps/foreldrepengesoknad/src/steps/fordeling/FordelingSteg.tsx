@@ -1,32 +1,26 @@
 import { useQuery } from '@tanstack/react-query';
 import {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
-    getStønadskontoParams,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'api/getStønadskontoParams';
+import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import { annenPartVedtakOptions, tilgjengeligeStønadskontoerOptions } from 'appData/api';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
-import {
-    getAnnenPartVedtakParam,
-    getIsDeltUttak,
-    shouldSuspendAnnenPartVedtakApiRequest,
-} from 'utils/annenForelderUtils';
+import { getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'utils/eksisterendeSakUtils';
-import { getDekningsgradFromString } from 'utils/getDekningsgradFromString';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getNavnPåForeldre } from 'utils/personUtils';
 import { getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
 
-import { Loader, VStack } from '@navikt/ds-react';
+import { VStack } from '@navikt/ds-react';
 
 import { isFødtBarn } from '@navikt/fp-common';
-import { Arbeidsforhold, PersonFrontend } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { EksternArbeidsforholdDto_fpoversikt, PersonDto_fpoversikt } from '@navikt/fp-types';
+import { SkjemaRotLayout, Spinner, Step } from '@navikt/fp-ui';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -36,13 +30,13 @@ import { getFordelingFraKontoer, getSisteUttaksdagAnnenForelder } from './fordel
 import { MorsSisteDag } from './mors-siste-dag/MorsSisteDag';
 
 type Props = {
-    søker: PersonFrontend;
-    arbeidsforhold: Arbeidsforhold[];
+    person: PersonDto_fpoversikt;
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
-export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
+export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig(arbeidsforhold);
@@ -51,58 +45,42 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
-    const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const oppdaterBarn = notEmpty(useContextSaveData(ContextDataType.OM_BARNET));
 
     const termindato = getTermindato(barn);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const suspendAnnenPartVedtakApiRequest = shouldSuspendAnnenPartVedtakApiRequest(annenForelder);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const førsteUttaksdagNesteBarnsSak = barnFraNesteSak?.startdatoFørsteStønadsperiode;
-    const navnPåForeldre = getNavnPåForeldre(søker, annenForelder, erFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl);
     const navnMor = navnPåForeldre.mor;
     const navnFarMedmor = navnPåForeldre.farMedmor;
     const deltUttak = getIsDeltUttak(annenForelder);
 
-    const annenPartVedtakParams = getAnnenPartVedtakParam(annenForelder, barn);
-    const annenPartsVedtakQuery = useQuery(
-        annenPartVedtakOptions(annenPartVedtakParams, !suspendAnnenPartVedtakApiRequest),
-    );
-
-    const suspendStønadskontoApiRequests = suspendAnnenPartVedtakApiRequest ? false : annenPartsVedtakQuery.isPending;
-
-    const stønadskontoParams = getStønadskontoParams(
-        barn,
-        annenForelder,
-        søkersituasjon,
-        barnFraNesteSak,
-        annenPartsVedtakQuery.data,
-        eksisterendeSak,
-    );
-    const tilgjengeligeStønadskontoerQuery = useQuery(
-        tilgjengeligeStønadskontoerOptions(stønadskontoParams, !suspendStønadskontoApiRequests),
-    );
-
-    const eksisterendeVedtakAnnenPart = useMemo(
-        () =>
-            mapAnnenPartsEksisterendeSakFromDTO(
-                annenPartsVedtakQuery.data,
+    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
+    const annenPartsVedtakQuery = useQuery({
+        ...annenPartVedtakOptions,
+        select: (data) => {
+            return mapAnnenPartsEksisterendeSakFromDTO(
+                data ?? undefined,
                 barn,
                 erFarEllerMedmor,
                 familiehendelsesdato,
                 førsteUttaksdagNesteBarnsSak,
-            ),
-        [annenPartsVedtakQuery.data, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak],
-    );
+            );
+        },
+    });
+    const eksisterendeVedtakAnnenPart = annenPartsVedtakQuery.data;
 
-    const minsterett = tilgjengeligeStønadskontoerQuery.data
-        ? tilgjengeligeStønadskontoerQuery.data[dekningsgrad].minsteretter
-        : undefined;
+    const kontoerOptions = useStønadsKontoerOptions();
+    const valgtStønadskonto = useQuery({
+        ...kontoerOptions,
+        select: (kontoer) => {
+            return kontoer[dekningsgrad];
+        },
+    }).data;
 
-    const valgtStønadskonto = tilgjengeligeStønadskontoerQuery.data
-        ? tilgjengeligeStønadskontoerQuery.data[getDekningsgradFromString(dekningsgrad)]
-        : undefined;
+    const minsterett = valgtStønadskonto?.minsteretter;
 
     const fordelingScenario =
         valgtStønadskonto && minsterett
@@ -153,39 +131,34 @@ export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNavi
         }
     }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn, saksgrunnlagsTermindato]);
 
-    if (!valgtStønadskonto || (annenPartsVedtakQuery.isPending && !suspendAnnenPartVedtakApiRequest)) {
-        return (
-            <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-                <Loader size="2xlarge" />
-            </div>
-        );
+    if (!valgtStønadskonto || annenPartsVedtakQuery.isLoading) {
+        return <Spinner />;
     }
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            steps={stepConfig}
-        >
-            <VStack gap="5">
-                <FordelingOversikt
-                    kontoer={valgtStønadskonto}
-                    navnFarMedmor={navnFarMedmor}
-                    navnMor={navnMor}
-                    deltUttak={deltUttak}
-                    fordelingScenario={fordelingScenario}
-                ></FordelingOversikt>
-                {visMorsSisteDag && <MorsSisteDag morsSisteDag={sisteDagAnnenForelder} navnMor={navnMor} />}
-                <FordelingForm
-                    erDeltUttak={deltUttak}
-                    navnPåForeldre={navnPåForeldre}
-                    dagerMedFellesperiode={dagerMedFellesperiode}
-                    goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
-                    goToNextDefaultStep={navigator.goToNextDefaultStep}
-                    førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
-                ></FordelingForm>
-            </VStack>
-        </Step>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step steps={stepConfig}>
+                <VStack gap="space-20">
+                    <FordelingOversikt
+                        kontoer={valgtStønadskonto}
+                        navnFarMedmor={navnFarMedmor}
+                        navnMor={navnMor}
+                        deltUttak={deltUttak}
+                        fordelingScenario={fordelingScenario}
+                    />
+                    {visMorsSisteDag && <MorsSisteDag morsSisteDag={sisteDagAnnenForelder} navnMor={navnMor} />}
+                    <FordelingForm
+                        erDeltUttak={deltUttak}
+                        navnPåForeldre={navnPåForeldre}
+                        dagerMedFellesperiode={dagerMedFellesperiode}
+                        goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
+                        goToNextDefaultStep={navigator.goToNextDefaultStep}
+                        onAvsluttOgSlett={avbrytSøknad}
+                        onFortsettSenere={navigator.fortsettSøknadSenere}
+                        førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
+                    />
+                </VStack>
+            </Step>
+        </SkjemaRotLayout>
     );
 };

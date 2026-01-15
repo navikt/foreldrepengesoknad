@@ -1,20 +1,19 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, EsDataContext } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
+import { API_URLS } from 'appData/queries';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { action } from 'storybook/actions';
 import { OmBarnet } from 'types/OmBarnet';
 
 import { DokumentasjonSteg } from './DokumentasjonSteg';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => (): Promise<void> => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
@@ -49,8 +48,11 @@ export const Terminbekreftelse: Story = {
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/engangsstonad/vedlegg`,
-                    () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
+                    API_URLS.sendVedlegg,
+                    () =>
+                        new HttpResponse(JSON.stringify('uuid-test'), {
+                            status: 200,
+                        }),
                 ),
             ],
         },
@@ -71,8 +73,11 @@ export const Adopsjonsbekreftelse: Story = {
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/engangsstonad/vedlegg`,
-                    () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
+                    API_URLS.sendVedlegg,
+                    () =>
+                        new HttpResponse(JSON.stringify('uuid-test'), {
+                            status: 200,
+                        }),
                 ),
             ],
         },
@@ -92,12 +97,7 @@ export const Adopsjonsbekreftelse: Story = {
 export const FeilerOpplastinger: Story = {
     parameters: {
         msw: {
-            handlers: [
-                http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/engangsstonad/vedlegg`,
-                    () => new HttpResponse(null, { status: 400 }),
-                ),
-            ],
+            handlers: [http.post(API_URLS.sendVedlegg, () => new HttpResponse(null, { status: 400 }))],
         },
     },
     args: {

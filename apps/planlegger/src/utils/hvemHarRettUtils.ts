@@ -28,11 +28,6 @@ export const harKunMedmorEllerFarSøker2Rett = (hvemHarRett: HvemHarRett, hvemPl
     (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR ||
         hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR ||
         hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR);
-
-export const harFarSøker1Rett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
-    (hvemPlanlegger.type === HvemPlanleggerType.FAR || hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) &&
-    (hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunSøker1HarRett');
-
 export const harKunFarSøker1Rett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
     (hvemPlanlegger.type === HvemPlanleggerType.FAR || hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) &&
     hvemHarRett === 'kunSøker1HarRett';
@@ -42,3 +37,14 @@ export const harMorRett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanleg
 
 export const harKunMorRett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
     erMorDelAvSøknaden(hvemPlanlegger) && hvemHarRett === 'kunSøker1HarRett';
+
+export const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean) => {
+    if (erAleneOmOmsorg) {
+        return 'ALENEOMSORG';
+    }
+    if (erDeltUttak) {
+        return 'BEGGE_RETT';
+    }
+
+    return 'BARE_SØKER_RETT';
+};

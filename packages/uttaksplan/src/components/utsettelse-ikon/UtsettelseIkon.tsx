@@ -1,28 +1,28 @@
 import { useIntl } from 'react-intl';
 
-import { Forelder, UtsettelseÅrsakType } from '@navikt/fp-common';
-import { getUtsettelseFarge } from '@navikt/fp-utils';
+import { BrukerRolleSak_fpoversikt, UtsettelsesÅrsak } from '@navikt/fp-types';
 
 import IconBox from '../icon-box/IconBox';
+import { getUtsettelseFarge } from '../stønadskonto-ikon/StønadskontoIkon';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
 
-export interface Props {
-    årsak: UtsettelseÅrsakType;
-    forelder: Forelder;
+interface Props {
+    årsak: UtsettelsesÅrsak;
+    forelder: BrukerRolleSak_fpoversikt;
 }
 
-const getIkonForÅrsak = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
+const getIkonForÅrsak = (årsak: UtsettelsesÅrsak): UttaksplanIkonKeys => {
     switch (årsak) {
-        case UtsettelseÅrsakType.Ferie:
+        case 'LOVBESTEMT_FERIE':
             return UttaksplanIkonKeys.ferie;
-        case UtsettelseÅrsakType.Arbeid:
-        case UtsettelseÅrsakType.HvØvelse:
-        case UtsettelseÅrsakType.NavTiltak:
-        case UtsettelseÅrsakType.Fri:
+        case 'ARBEID':
+        case 'HV_OVELSE':
+        case 'NAV_TILTAK':
+        case 'FRI':
             return UttaksplanIkonKeys.arbeid;
-        case UtsettelseÅrsakType.InstitusjonBarnet:
-        case UtsettelseÅrsakType.InstitusjonSøker:
-        case UtsettelseÅrsakType.Sykdom:
+        case 'INSTITUSJONSOPPHOLD_BARNET':
+        case 'INSTITUSJONSOPPHOLD_SØKER':
+        case 'SYKDOM':
             return UttaksplanIkonKeys.sykdom;
     }
 };
@@ -34,11 +34,11 @@ const UtsettelseIkon: React.FunctionComponent<Props> = ({ årsak, forelder }) =>
         <IconBox color={getUtsettelseFarge(forelder)}>
             <UttaksplanIkon
                 ikon={getIkonForÅrsak(årsak)}
-                // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
                 title={intl.formatMessage({ id: `uttaksplan.utsettelsesårsak.${årsak ?? 'ukjent'}` })}
             />
         </IconBox>
     );
 };
+
 // eslint-disable-next-line import/no-default-export
 export default UtsettelseIkon;

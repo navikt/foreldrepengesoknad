@@ -6,21 +6,21 @@ import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { erAlenesøker as erAlene, erFarOgFar, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
-import { loggExpansionCardOpen } from 'utils/amplitudeUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 import { getAntallUkerOgDagerFellesperiode, getUkerOgDager } from 'utils/stønadskontoerUtils';
+import { loggExpansionCardOpen } from 'utils/umamiUtils';
 import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { HvemPlanleggerType, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { HvemPlanleggerType, KontoBeregningDto, Satser } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 
 interface Props {
-    stønadskontoer: TilgjengeligeStønadskontoer;
+    stønadskontoer: { '100': KontoBeregningDto; '80': KontoBeregningDto };
     barnet: OmBarnet;
     hvemPlanlegger: HvemPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
@@ -39,7 +39,6 @@ export const OppgittInformasjon = ({
     satser,
 }: Props) => {
     const intl = useIntl();
-    const locale = intl.locale;
 
     const erFødt = erBarnetFødt(barnet);
     const erAdoptert = erBarnetAdoptert(barnet);
@@ -80,13 +79,13 @@ export const OppgittInformasjon = ({
 
     const erFarOgFarFødsel = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && !erAdoptert;
 
-    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2, locale);
+    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2);
 
     return (
-        <VStack gap="10">
+        <VStack gap="space-40">
             <ExpansionCard aria-label="" onToggle={loggExpansionCardOpen('toggle-oppgitt-informasjon')} size="small">
                 <ExpansionCard.Header>
-                    <HStack gap="6" align="center" wrap={false}>
+                    <HStack gap="space-24" align="center" wrap={false}>
                         <IconCircleWrapper size="medium" color="lightBlue">
                             <ChatElipsisIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
@@ -96,9 +95,9 @@ export const OppgittInformasjon = ({
                     </HStack>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <BluePanel>
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <Heading size="xsmall" level="4">
                                     <FormattedMessage id="OppgittInformasjon.Barnet.Tittel" values={{ antallBarn }} />
                                 </Heading>
@@ -163,7 +162,7 @@ export const OppgittInformasjon = ({
                             </VStack>
                         </BluePanel>
                         <BluePanel>
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <Heading size="xsmall" level="4">
                                     <FormattedMessage id="OppgittInformasjon.Arbeid.Tittel" />
                                 </Heading>
@@ -247,7 +246,7 @@ export const OppgittInformasjon = ({
                             </VStack>
                         </BluePanel>
                         <BluePanel>
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <Heading size="xsmall" level="4">
                                     <FormattedMessage
                                         id="OppgittInformasjon.LengdeOgFordeling"

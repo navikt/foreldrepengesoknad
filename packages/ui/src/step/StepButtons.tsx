@@ -1,11 +1,15 @@
-import { PaperplaneIcon } from '@navikt/aksel-icons';
+import { ArrowLeftIcon, ArrowRightIcon, PaperplaneIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
-import { Button, HStack } from '@navikt/ds-react';
+import { Button, HGrid } from '@navikt/ds-react';
+
+import { StepFooter } from './page-step/step-footer/StepFooter';
 
 interface Props {
     goToPreviousStep: () => void;
     nextButtonOnClick?: () => void;
+    onFortsettSenere?: () => void;
+    onAvsluttOgSlett?: () => void;
     isDisabledAndLoading?: boolean;
     isDisabled?: boolean;
     isLoading?: boolean;
@@ -18,6 +22,8 @@ interface Props {
 export const StepButtons = ({
     goToPreviousStep,
     nextButtonOnClick,
+    onFortsettSenere,
+    onAvsluttOgSlett,
     isDisabledAndLoading = false,
     isDisabled = false,
     isLoading = false,
@@ -27,12 +33,14 @@ export const StepButtons = ({
     isJumpToEndButton = false,
 }: Props) => {
     return (
-        <HStack gap="2">
+        <HGrid gap={{ xs: '4', sm: '8 4' }} columns={{ xs: 1, sm: 2 }} width={{ sm: 'fit-content' }}>
             <Button
                 type="button"
                 variant="secondary"
                 onClick={goToPreviousStep}
-                style={{ flex: 1, maxWidth: isSendButton ? 'fit-content' : undefined }}
+                icon={<ArrowLeftIcon aria-hidden />}
+                iconPosition="left"
+                className="ax-sm:order-1 order-2"
             >
                 {useSimplifiedTexts ? (
                     <FormattedMessage id="StepButtons.ForrigeSimple" />
@@ -40,15 +48,15 @@ export const StepButtons = ({
                     <FormattedMessage id="StepButtons.Forrige" />
                 )}
             </Button>
-            {isNextButtonVisible && (
+            {isNextButtonVisible ? (
                 <Button
-                    icon={isSendButton ? <PaperplaneIcon aria-hidden /> : undefined}
+                    icon={isSendButton ? <PaperplaneIcon aria-hidden /> : <ArrowRightIcon aria-hidden />}
                     iconPosition="right"
                     type={nextButtonOnClick ? 'button' : 'submit'}
                     onClick={nextButtonOnClick}
                     disabled={isDisabled || isDisabledAndLoading}
                     loading={isLoading || isDisabledAndLoading}
-                    style={{ flex: 1 }}
+                    className="ax-sm:order-2 order-1"
                 >
                     {isSendButton && <FormattedMessage id={'StepButtons.Send'} />}
                     {!isSendButton && !useSimplifiedTexts && !isJumpToEndButton && (
@@ -64,7 +72,10 @@ export const StepButtons = ({
                         <FormattedMessage id={'StepButtons.GåTilOppsummeringSimple'} />
                     )}
                 </Button>
+            ) : (
+                <div />
             )}
-        </HStack>
+            <StepFooter onFortsettSenere={onFortsettSenere} onAvsluttOgSlett={onAvsluttOgSlett} />
+        </HGrid>
     );
 };

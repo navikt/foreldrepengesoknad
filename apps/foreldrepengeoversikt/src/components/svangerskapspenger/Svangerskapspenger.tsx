@@ -9,6 +9,7 @@ import {
 import dayjs from 'dayjs';
 import { groupBy, sortBy } from 'lodash';
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
@@ -41,22 +42,22 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
             <Heading level="2" size="medium" spacing>
                 {erSøknad ? 'Dette har du søkt om' : 'Dette har du fått vedtatt'}
             </Heading>
-            <VStack gap="4" className="bg-white p-4">
+            <VStack gap="space-16" className="bg-ax-bg-default p-4">
                 {Object.values(groupBy(perioder, 'fom')).map((gruppertePerioder) => (
-                    <React.Fragment key={gruppertePerioder[0].fom}>
+                    <React.Fragment key={gruppertePerioder[0]!.fom}>
                         <GruppertePerioder perioder={gruppertePerioder} />
-                        <hr className="text-border-divider" />
+                        <hr className="text-ax-border-neutral-subtle" />
                     </React.Fragment>
                 ))}
-                <HGrid gap="2" columns={{ md: '1fr 1fr 300px' }} align="center">
+                <HGrid gap="space-8" columns={{ md: '1fr 1fr 300px' }} align="center">
                     <BodyShort>
                         {formatDateShortMonth(treUkerSiden(terminDato))} - {formatDateShortMonth(terminDato)}
                     </BodyShort>
                     <BodyShort> </BodyShort>
                     <TreUkerFørTermin />
                 </HGrid>
-                <hr className="text-border-divider" />
-                <HGrid gap="2" columns={{ md: '1fr 1fr 300px' }} align="center">
+                <hr className="text-ax-border-neutral-subtle" />
+                <HGrid gap="space-8" columns={{ md: '1fr 1fr 300px' }} align="center">
                     <BodyShort>{capitalizeFirstLetter(formatDateMedUkedag(terminDato))}</BodyShort>
                     <BodyShort> </BodyShort>
                     <Termin />
@@ -68,7 +69,7 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
 
 const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronologiskeSvpPerioder> }) => {
     return (
-        <HGrid gap="2" columns={{ xs: '1fr 40px', md: '1fr 1fr 300px' }} align="center">
+        <HGrid gap="space-8" columns={{ xs: '1fr 40px', md: '1fr 1fr 300px' }} align="center">
             {sortBy(perioder, (p) => p.aktivitet.arbeidsgiverNavn).map((p, index) => {
                 const arbeidsgiverNavn =
                     capitalizeFirstLetterInEveryWordOnly(p.aktivitet.arbeidsgiverNavn) ??
@@ -84,7 +85,11 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                 const prosentSvangerskapspengerHvisInnvilget = Math.round(p.resultat?.utbetalingsgrad ?? 0);
 
                 const skalViseSomSvp = prosentSvangerskapspengerHvisInnvilget > 0;
-                const skalViseSomJobb = prosentSvangerskapspengerHvisInnvilget <= 0 && prosentJobb > 0;
+
+                /*
+                 Vi ønsker kun å vise %-svangerskapspenger når det er fattet et vedtak. Prosenten som kan utledes fra søknaden er ikke nødvendigvis reell.
+                 Derfor vil vi vise oppgitt arbeidstidprosent når det er en åpenBehandling
+                */
 
                 return (
                     <React.Fragment key={p.aktivitet.arbeidsgiverNavn}>
@@ -98,7 +103,9 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                                         prosentSvangerskapspenger={prosentSvangerskapspengerHvisInnvilget}
                                     />
                                 )}
-                                {skalViseSomJobb && <DuHarArbeid prosentArbeid={prosentJobb} />}
+                                {p.årsak === undefined && !skalViseSomSvp && (
+                                    <DuHarArbeid prosentArbeid={prosentJobb} />
+                                )}
                                 {p.årsak === 'FERIE' && <DuHarFerie />}
                                 {p.årsak === 'SYKEPENGER' && <DuErSykemeldt />}
                             </div>
@@ -117,7 +124,7 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                                     <BodyShort>{`${prosentJobb} % jobb`}</BodyShort>
                                 </VStack>
                                 {skalViseSomSvp && <GravidIkon />}
-                                {skalViseSomJobb && <JobbIkon />}
+                                {p.årsak === undefined && !skalViseSomSvp && <JobbIkon />}
                                 {p.årsak === 'FERIE' && <ParasollIkon />}
                                 {p.årsak === 'SYKEPENGER' && <BandasjeIkon />}
                             </div>
@@ -133,10 +140,10 @@ const DuHarArbeid = ({ prosentArbeid }: { prosentArbeid: number }) => {
     return (
         <HStack
             wrap={false}
-            gap="4"
+            gap="space-16"
             align="center"
             justify="space-between"
-            className="pt-2 pb-2 pl-4 pr-4 bg-deepblue-50 rounded-3xl"
+            className="bg-ax-brand-blue-100 rounded-3xl pt-2 pr-4 pb-2 pl-4"
         >
             <BodyShort>{prosentArbeid} % i jobb</BodyShort>
             <JobbIkon />
@@ -154,10 +161,10 @@ const DuHarSvangerskapspenger = ({
     return (
         <HStack
             wrap={false}
-            gap="4"
+            gap="space-16"
             align="center"
             justify="space-between"
-            className="pt-2 pb-2 pl-4 pr-4 bg-green-100 rounded-3xl"
+            className="bg-ax-success-200 rounded-3xl pt-2 pr-4 pb-2 pl-4"
         >
             <VStack>
                 <BodyShort>{prosentSvangerskapspenger} % svangerskapspenger</BodyShort>
@@ -171,13 +178,15 @@ const DuHarSvangerskapspenger = ({
 const DuHarFerie = () => {
     return (
         <HStack
-            gap="4"
+            gap="space-16"
             align="center"
             justify="space-between"
-            className="pt-2 pb-2 pl-4 pr-4 bg-orange-100 rounded-3xl"
+            className="bg-ax-warning-200 rounded-3xl pt-2 pr-4 pb-2 pl-4"
             wrap={false}
         >
-            <BodyShort>Du har ferie</BodyShort>
+            <BodyShort>
+                <FormattedMessage id={'svangerskapspenger.ferie'} />
+            </BodyShort>
             <ParasollIkon />
         </HStack>
     );
@@ -186,13 +195,15 @@ const DuHarFerie = () => {
 const DuErSykemeldt = () => {
     return (
         <HStack
-            gap="4"
+            gap="space-16"
             align="center"
             justify="space-between"
-            className="pt-2 pb-2 pl-4 pr-4 bg-orange-100 rounded-3xl"
+            className="bg-ax-warning-200 rounded-3xl pt-2 pr-4 pb-2 pl-4"
             wrap={false}
         >
-            <BodyShort>Du er sykmeldt</BodyShort>
+            <BodyShort>
+                <FormattedMessage id={'svangerskapspenger.sykmeldt'} />
+            </BodyShort>
             <BandasjeIkon />
         </HStack>
     );
@@ -201,13 +212,15 @@ const DuErSykemeldt = () => {
 const TreUkerFørTermin = () => {
     return (
         <HStack
-            gap="4"
+            gap="space-16"
             align="center"
             justify="space-between"
-            className="pt-2 pb-2 pl-4 pr-4 bg-purple-50 rounded-3xl"
+            className="bg-ax-meta-purple-100 rounded-3xl pt-2 pr-4 pb-2 pl-4"
             wrap={false}
         >
-            <BodyShort>Du kan søke om foreldrepenger</BodyShort>
+            <BodyShort>
+                <FormattedMessage id={'svangerskapspenger.kanSokeForeldrepenger'} />
+            </BodyShort>
             <BarnevognIkon />
         </HStack>
     );
@@ -215,47 +228,54 @@ const TreUkerFørTermin = () => {
 
 const Termin = () => {
     return (
-        <HStack gap="4" align="center" justify="space-between" className="pt-2 pb-2 pl-4 pr-4 bg-red-50 rounded-3xl">
-            <BodyShort>Termin</BodyShort>
-            <HeartFillIcon fontSize="2.5rem" className="text-icon-danger p-05" aria-hidden />
+        <HStack
+            gap="space-16"
+            align="center"
+            justify="space-between"
+            className="bg-ax-danger-100 rounded-3xl pt-2 pr-4 pb-2 pl-4"
+        >
+            <BodyShort>
+                <FormattedMessage id={'svangerskapspenger.termin'} />
+            </BodyShort>
+            <HeartFillIcon fontSize="2.5rem" className="text-ax-text-danger-decoration p-05" aria-hidden />
         </HStack>
     );
 };
 
 const BandasjeIkon = () => (
-    <div className="rounded-3xl bg-orange-200 justify-self-end">
-        <BandageFillIcon fontSize={'2.5rem'} className=" text-orange-500 p-05" aria-hidden />
+    <div className="bg-ax-warning-300 justify-self-end rounded-3xl">
+        <BandageFillIcon fontSize={'2.5rem'} className="text-ax-warning-600 p-05" aria-hidden />
     </div>
 );
 
 const ParasollIkon = () => (
-    <div className="rounded-3xl bg-orange-200 justify-self-end">
-        <ParasolBeachFillIcon fontSize={'2.5rem'} className=" text-orange-500 p-05" aria-hidden />
+    <div className="bg-ax-warning-300 justify-self-end rounded-3xl">
+        <ParasolBeachFillIcon fontSize={'2.5rem'} className="text-ax-warning-600 p-05" aria-hidden />
     </div>
 );
 
 const GravidIkon = () => (
-    <div className="rounded-3xl bg-green-200 justify-self-end">
-        <PersonPregnantFillIcon fontSize={'2.5rem'} className=" text-surface-success p-05" aria-hidden />
+    <div className="bg-ax-success-300 justify-self-end rounded-3xl">
+        <PersonPregnantFillIcon fontSize={'2.5rem'} className="text-ax-bg-success-strong p-05" aria-hidden />
     </div>
 );
 
 const JobbIkon = () => (
-    <div className="rounded-3xl bg-deepblue-100 justify-self-end">
-        <BriefcaseClockFillIcon fontSize={'2.5rem'} className=" text-deepblue-500 p-05" aria-hidden />
+    <div className="bg-ax-brand-blue-200 justify-self-end rounded-3xl">
+        <BriefcaseClockFillIcon fontSize={'2.5rem'} className="text-ax-brand-blue-600 p-05" aria-hidden />
     </div>
 );
 
 const BarnevognIkon = () => (
-    <div className="rounded-3xl bg-purple-100 justify-self-end">
-        <StrollerFillIcon fontSize={'2.5rem'} className=" text-purple-500 p-05" aria-hidden />
+    <div className="bg-ax-meta-purple-200 justify-self-end rounded-3xl">
+        <StrollerFillIcon fontSize={'2.5rem'} className="text-ax-meta-purple-600 p-05" aria-hidden />
     </div>
 );
 
 export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
     const arbeidsforhold = svpSak.åpenBehandling?.søknad.arbeidsforhold ?? svpSak.gjeldendeVedtak?.arbeidsforhold;
     const perioder = (arbeidsforhold ?? [])
-        .map((af) =>
+        .flatMap((af) =>
             [...af.tilrettelegginger, ...af.oppholdsperioder].map((p) => ({
                 ...p,
                 arbeidstidprosent: 'arbeidstidprosent' in p ? p.arbeidstidprosent : undefined,
@@ -269,7 +289,6 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
                 avslutningÅrsak: af.avslutningÅrsak,
             })),
         )
-        .flat()
         .sort((a, b) => a.fom.localeCompare(b.fom));
 
     const endeligePerioder = [];
@@ -341,6 +360,7 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
 
         // failsafe under utvikling
         if (++i > 500) {
+            // eslint-disable-next-line no-console
             console.error('lagKronologiskeSvpPerioder er tilsynelatende stuck i en evig loop');
             break;
         }

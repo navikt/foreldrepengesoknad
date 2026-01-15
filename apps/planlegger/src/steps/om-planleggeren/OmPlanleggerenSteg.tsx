@@ -2,24 +2,17 @@ import { ArrowRightIcon, CalendarIcon, QuestionmarkIcon } from '@navikt/aksel-ic
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { LocaleAll } from '@navikt/fp-types';
-import { IconCircleWrapper, LanguageToggleNew } from '@navikt/fp-ui';
+import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { PlanleggerForside } from './PlanleggerForside';
-import styles from './omPlanleggerenSteg.module.css';
 
-interface Props {
-    locale: LocaleAll;
-    changeLocale: (locale: LocaleAll) => void;
-}
-
-export const OmPlanleggerenSteg = ({ locale, changeLocale }: Props) => {
-    const navigator = usePlanleggerNavigator(locale);
+export const OmPlanleggerenSteg = () => {
+    const navigator = usePlanleggerNavigator();
 
     return (
-        <PlanleggerForside locale={locale} changeLocale={changeLocale}>
+        <PlanleggerForside>
             <VStack gap={{ xs: '3', sm: '10' }}>
                 <BodyShort size="large">
                     <FormattedMessage id="OmPlanleggerenSteg.Ingress" />
@@ -29,7 +22,7 @@ export const OmPlanleggerenSteg = ({ locale, changeLocale }: Props) => {
                         <Heading level="2" size="xsmall">
                             <FormattedMessage id="OmPlanleggerenSteg.Underoverskrift" />
                         </Heading>
-                        <HStack gap="4" align="center" wrap={false}>
+                        <HStack gap="space-16" align="center" wrap={false}>
                             <IconCircleWrapper color="lightBlue" size="medium">
                                 <QuestionmarkIcon width="24" height="25" aria-hidden />
                             </IconCircleWrapper>
@@ -37,7 +30,7 @@ export const OmPlanleggerenSteg = ({ locale, changeLocale }: Props) => {
                                 <FormattedMessage id="OmPlanleggerenSteg.Trinn1" />
                             </BodyShort>
                         </HStack>
-                        <HStack gap="4" align="center" wrap={false}>
+                        <HStack gap="space-16" align="center" wrap={false}>
                             <IconCircleWrapper color="lightBlue" size="medium">
                                 <CalendarIcon width="24" height="25" aria-hidden />
                             </IconCircleWrapper>
@@ -51,20 +44,13 @@ export const OmPlanleggerenSteg = ({ locale, changeLocale }: Props) => {
                             onClick={navigator.goToNextDefaultStep}
                             icon={<ArrowRightIcon aria-hidden height={24} width={24} />}
                             iconPosition="right"
-                            className={styles.button}
+                            className="w-full md:w-[100px]"
                             autoFocus
                         >
                             <FormattedMessage id="OmPlanleggerenSteg.Start.Planlegger" />
                         </Button>
                     </HStack>
                 </VStack>
-                <Show above="md" asChild>
-                    <HStack justify="center">
-                        <div className={styles.languageToggle}>
-                            <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
-                        </div>
-                    </HStack>
-                </Show>
             </VStack>
         </PlanleggerForside>
     );

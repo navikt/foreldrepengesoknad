@@ -44,6 +44,7 @@ function FormikNumberInput<FieldName, ErrorType>({
                         inputMode={integerValue ? 'numeric' : 'text'}
                         pattern={integerValue ? '[0-9]*' : undefined}
                         error={getErrorPropForFormikInput({ field, form, context, error })}
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         value={field.value === undefined ? '' : field.value}
                     />
                 );

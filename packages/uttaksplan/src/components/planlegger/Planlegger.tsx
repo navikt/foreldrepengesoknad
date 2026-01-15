@@ -5,7 +5,6 @@ import { Button, Heading } from '@navikt/ds-react';
 
 import {
     AnnenForelder,
-    Arbeidsforhold,
     Barn,
     BarnFraNesteSak,
     NavnPåForeldre,
@@ -15,8 +14,8 @@ import {
     Utsettelsesperiode,
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { EksternArbeidsforholdDto_fpoversikt, KontoBeregningDto } from '@navikt/fp-types';
 
 import ActionLink from '../../common/action-link/ActionLink';
 import Block from '../../common/block/Block';
@@ -32,10 +31,10 @@ interface Props {
     uttaksplan: Periode[];
     familiehendelsesdato: Date;
     handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
+    stønadskontoer: KontoBeregningDto;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     handleDeletePeriode: (periodeId: string) => void;
     handleAddPeriode: (nyPeriode: Periode, familiehendelsedato: Date) => void;
     erFarEllerMedmor: boolean;
@@ -154,7 +153,16 @@ const Planlegger: FunctionComponent<Props> = ({
                         </section>
                     </Block>
                     {nyPeriodeFormIsVisible && (
-                        <div style={{ backgroundColor: 'white', padding: '1rem' }}>
+                        <div
+                            style={{
+                                backgroundColor: 'white',
+                                padding: '1rem',
+                                borderWidth: '1px',
+                                borderStyle: 'solid',
+                                borderColor: 'var(--ax-border-neutral-subtleA)',
+                                borderRadius: '10px',
+                            }}
+                        >
                             <NyPeriode
                                 setNyPeriodeFormIsVisible={setNyPeriodeFormIsVisible}
                                 annenForelder={annenForelder}
@@ -190,7 +198,7 @@ const Planlegger: FunctionComponent<Props> = ({
                             type="button"
                             variant="secondary"
                             onClick={() => {
-                                loggAmplitudeEvent({
+                                loggUmamiEvent({
                                     origin: 'foreldrepengesoknad',
                                     eventName: 'button klikk',
                                     eventData: { tittel: 'leggTilPeriodeKlikk' },
@@ -205,7 +213,7 @@ const Planlegger: FunctionComponent<Props> = ({
                             type="button"
                             variant="secondary"
                             onClick={() => {
-                                loggAmplitudeEvent({
+                                loggUmamiEvent({
                                     origin: 'foreldrepengesoknad',
                                     eventName: 'button klikk',
                                     eventData: { tittel: 'leggTilUtsettelseKlikk' },

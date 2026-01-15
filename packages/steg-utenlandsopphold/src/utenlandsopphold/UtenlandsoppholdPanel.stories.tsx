@@ -1,5 +1,5 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { action } from 'storybook/actions';
 
 import { UtenlandsoppholdPanel } from './UtenlandsoppholdPanel';
 
@@ -8,7 +8,7 @@ const meta = {
     args: {
         saveOnNext: action('saveOnNext'),
         saveOnPrevious: action('saveOnPrevious'),
-        cancelApplication: action('cancelApplication'),
+        onAvsluttOgSlett: action('onAvsluttOgSlett'),
         goToPreviousStep: action('goToPreviousStep'),
         onStepChange: action('onStepChange'),
     },

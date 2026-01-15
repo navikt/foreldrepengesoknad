@@ -1,5 +1,5 @@
 import '@formatjs/intl-pluralrules/locale-data/nb';
-import '@formatjs/intl-pluralrules/polyfill';
+import '@formatjs/intl-pluralrules/polyfill.js';
 import * as Sentry from '@sentry/browser';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';
@@ -22,8 +22,8 @@ dayjs.locale('nb');
 
 Sentry.init({
     dsn: 'https://8e90481464a4442db8c86bc31b9e41ad@sentry.gc.nav.no/11',
-    release: (window as any).APP_VERSION,
-    environment: window.location.hostname,
+    release: import.meta.env.VITE_SENTRY_RELEASE,
+    environment: globalThis.location.hostname,
     integrations: [Sentry.breadcrumbsIntegration({ console: false })],
 });
 

@@ -1,13 +1,14 @@
 import dayjs from 'dayjs';
 
-import { Periodetype, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
+import { Periodetype, TidsperiodeDate } from '@navikt/fp-common';
+import { KontoTypeUttak } from '@navikt/fp-types';
 
 import { andreAugust2022ReglerGjelder } from '../../utils/dateUtils';
 import { getSisteUttaksdag6UkerEtterFødsel } from '../../utils/wlbUtils';
 
 export const graderingSkalBesvares = (
     periodetype: Periodetype,
-    konto: StønadskontoType,
+    konto: KontoTypeUttak,
     familiehendelsesdato: Date,
     erFarMedmor: boolean,
     morErForSyk: boolean | undefined,
@@ -18,12 +19,12 @@ export const graderingSkalBesvares = (
     const sisteUttaksdagInnenSeksUkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
     const bareFarHarRettSøkerAktivitetsKravKontoDeFørsteSeksUkeneOgMorErIkkeSyk =
         erFarMedmor &&
-        konto === StønadskontoType.Foreldrepenger &&
+        konto === 'FORELDREPENGER' &&
         morErForSyk === false &&
         dayjs(tidsperiode.fom).isSameOrBefore(sisteUttaksdagInnenSeksUkerEtterFødsel, 'day');
     if (
         periodetype === Periodetype.Uttak &&
-        konto !== StønadskontoType.ForeldrepengerFørFødsel &&
+        konto !== 'FORELDREPENGER_FØR_FØDSEL' &&
         !farMedmorSøkerDeFørsteSeksUkeneFørWLBOgMorErIkkeSyk &&
         !bareFarHarRettSøkerAktivitetsKravKontoDeFørsteSeksUkeneOgMorErIkkeSyk
     ) {

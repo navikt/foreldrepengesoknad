@@ -2,7 +2,7 @@ import { IntlShape } from 'react-intl';
 
 import { getFloatFromString } from '@navikt/fp-utils';
 
-const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
+const hasValue = (v: string | undefined | null) => v !== '' && v !== undefined && v !== null;
 
 export const prosentValideringSamtidigUttak = (intl: IntlShape) => (value: string) => {
     const samtidigUttakProsent = getFloatFromString(value);
@@ -41,7 +41,7 @@ export const prosentValideringGradering = (intl: IntlShape) => (value: string) =
         return intl.formatMessage({ id: 'uttaksplan.validering.stillingsprosent.måVæreStørreEnn0' });
     }
 
-    if (stillingsprosent > 100) {
+    if (stillingsprosent >= 100) {
         return intl.formatMessage({ id: 'uttaksplan.validering.stillingsprosent.måVæreMindreEnn100' });
     }
 

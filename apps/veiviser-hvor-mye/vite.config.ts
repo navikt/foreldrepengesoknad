@@ -1,50 +1,32 @@
-import tailwindcss from '@tailwindcss/vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
-import { defineConfig } from 'vite';
+/// <reference types="vitest" />
+import { sentryVitePlugin } from '@sentry/vite-plugin';
+import path from 'node:path';
+import { mergeConfig } from 'vite';
 
-export default defineConfig({
+import { createSharedAppConfig } from '@navikt/fp-config-vite';
+
+const setupFileDirName = path.resolve(__dirname, './vitest/setupTests.ts');
+
+// eslint-disable-next-line import/no-default-export
+export default mergeConfig(createSharedAppConfig(setupFileDirName), {
+    base: '/foreldrepenger/hvor-mye',
     plugins: [
-        tailwindcss(),
-        react({
-            include: '**/*.{jsx,tsx}',
+        // Put the Sentry vite plugin after all other plugins
+        sentryVitePlugin({
+            authToken: process.env.SENTRY_AUTH_TOKEN, // Kommer fra Github organization secrets
+            disable: !process.env.SENTRY_AUTH_TOKEN, // Ikke last opp source maps hvis token ikke er satt. Token er bare satt når det bygges fra master branch
+            org: 'nav',
+            project: 'veiviser-hvor-mye',
+            url: 'https://sentry.gc.nav.no',
+            release: {
+                name: process.env.VITE_SENTRY_RELEASE, // Lages av "generate-build-version" i build workflow
+            },
         }),
     ],
-    base: '/foreldrepenger/hvor-mye',
-    build: {
-        sourcemap: true,
-    },
-    css: {
-        preprocessorOptions: {
-            scss: {
-                api: 'modern-compiler',
-            },
-        },
-    },
     resolve: {
         alias: {
             appData: path.resolve(__dirname, './src/app-data'),
             utils: path.resolve(__dirname, './src/utils'),
         },
-    },
-    server: {
-        // Whitelist dev.nav.no for bruk med "vite-mode"
-        cors: {
-            origin: ['https://www.intern.dev.nav.no', new RegExp('^http://localhost:')],
-        },
-        port: 8080,
-    },
-    test: {
-        globals: true,
-        environment: 'jsdom',
-        setupFiles: './vitest/setupTests.ts',
-        deps: {
-            inline: ['@navikt/ds-react'],
-        },
-        coverage: {
-            include: ['src/**/*'],
-            exclude: [],
-        },
-        testTimeout: 15000,
     },
 });

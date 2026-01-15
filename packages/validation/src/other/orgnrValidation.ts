@@ -1,11 +1,11 @@
 const onlyNumbersRegExp = /^[0-9]*$/;
 
-export const getMod11 = (strValue: string): number => {
+const getMod11 = (strValue: string): number => {
     let checkNbr = 2;
     let mod = 0;
 
     for (let i = strValue.length - 2; i >= 0; --i) {
-        mod += parseInt(strValue.charAt(i), 10) * checkNbr;
+        mod += Number.parseInt(strValue.charAt(i), 10) * checkNbr;
         if (++checkNbr > 7) {
             checkNbr = 2;
         }
@@ -26,5 +26,5 @@ export const erGyldigNorskOrgnummer = (orgnr: string): boolean => {
     if (!orgnr || er9Tall(orgnr) === false || starterPå8Eller9(orgnr) === false || orgnr === '999999999') {
         return false;
     }
-    return getMod11(orgnr) === parseInt(orgnr.charAt(8), 10);
+    return getMod11(orgnr) === Number.parseInt(orgnr.charAt(8), 10);
 };

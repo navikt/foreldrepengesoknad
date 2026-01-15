@@ -24,18 +24,6 @@ export const erBarnetAdoptert = (omBarnet: OmBarnet): omBarnet is BarnetErAdopte
     return false;
 };
 
-export const erEttBarn = (omBarnet: OmBarnet): boolean => {
-    return omBarnet.antallBarn === '1';
-};
-
-export const erToBarn = (omBarnet: OmBarnet): boolean => {
-    return omBarnet.antallBarn === '2';
-};
-
-export const erFlereEnnToBarn = (omBarnet: OmBarnet): boolean => {
-    return omBarnet.antallBarn === '3';
-};
-
 export const getFamiliesituasjon = (omBarnet: OmBarnet): Familiesituasjon => {
     if (erBarnetUFødt(omBarnet)) {
         return 'termin';
@@ -49,7 +37,7 @@ export const getFamiliesituasjon = (omBarnet: OmBarnet): Familiesituasjon => {
 };
 
 export const mapOmBarnetTilBarn = (omBarnet: OmBarnet): Barn => {
-    const antallBarn = parseInt(omBarnet.antallBarn);
+    const antallBarn = Number.parseInt(omBarnet.antallBarn);
 
     if (erBarnetUFødt(omBarnet)) {
         return {

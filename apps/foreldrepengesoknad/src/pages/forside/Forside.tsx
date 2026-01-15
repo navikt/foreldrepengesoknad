@@ -12,29 +12,23 @@ import {
     mapSøkerensEksisterendeSakFromDTO,
 } from 'utils/eksisterendeSakUtils';
 
-import { Alert, BodyShort, Button, GuidePanel, HStack, Heading, Link, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, GuidePanel, HStack, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { RhfConfirmationPanel, RhfForm } from '@navikt/fp-form-hooks';
-import { FpSak, LocaleNo, Søkerinfo } from '@navikt/fp-types';
-import { ContentWrapper, LanguageToggle } from '@navikt/fp-ui';
+import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 import { BarnVelger } from './BarnVelger';
 import { DinePlikter } from './dine-plikter/DinePlikter';
 import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './forsideUtils';
 import { DinePersonopplysningerModal } from './modaler/DinePersonopplysningerModal';
-
-type VelkommenFormData = {
-    harForståttRettigheterOgPlikter: boolean;
-    valgteBarn: string | undefined;
-};
+import { ForsideFormValues } from './types/ForsideFormValues';
 
 interface Props {
-    onChangeLocale: (locale: LocaleNo) => void;
-    locale: LocaleNo;
-    saker: FpSak[];
+    saker: FpSak_fpoversikt[];
     harGodkjentVilkår: boolean;
-    søkerInfo: Søkerinfo;
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void;
     setErEndringssøknad: (erEndringssøknad: boolean) => void;
     setSøknadGjelderNyttBarn: (søknadGjelderNyttBarn: boolean) => void;
@@ -42,9 +36,7 @@ interface Props {
 }
 
 export const Forside = ({
-    locale,
     saker,
-    onChangeLocale,
     harGodkjentVilkår,
     søkerInfo,
     setHarGodkjentVilkår,
@@ -60,13 +52,14 @@ export const Forside = ({
 
     // Denne må memoriserast, ellers får barna ulik id for kvar render => trøbbel
     const selectableBarn = useMemo(
-        () => [...getSelectableBarnOptions(saker, søkerInfo.søker.barn)].sort(sorterSelectableBarnEtterYngst),
-        [saker, søkerInfo.søker.barn],
+        () => [...getSelectableBarnOptions(saker, søkerInfo.person.barn)].sort(sorterSelectableBarnEtterYngst),
+        [saker, søkerInfo.person.barn],
     );
 
-    const onSubmit = (values: VelkommenFormData) => {
+    const onSubmit = (values: ForsideFormValues) => {
         // Skal i utgangspunktet ikke få submitte hvis denne ikke er true
         if (!values.harForståttRettigheterOgPlikter) {
+            // eslint-disable-next-line no-console
             console.error(
                 'harForståttRettigheterOgPlikter er falsy til tross for at formet skal ha validert den',
                 values.harForståttRettigheterOgPlikter,
@@ -101,7 +94,7 @@ export const Forside = ({
             );
 
             const søknad = lagEndringsSøknad(
-                søkerInfo.søker,
+                søkerInfo.person,
                 eksisterendeSak,
                 intl,
                 valgtEksisterendeSak.annenPart,
@@ -119,8 +112,8 @@ export const Forside = ({
             const søknad = lagSøknadFraValgteBarnMedSak(
                 { ...valgteBarn, sak: valgteBarn.sak }, // Gjør dette slik at funksjonen slipper deale med undefined sak
                 intl,
-                søkerInfo.søker.barn,
-                søkerInfo.søker.fnr,
+                søkerInfo.person.barn,
+                søkerInfo.person.fnr,
             );
             oppdaterSøknadIState(søknad);
         }
@@ -136,7 +129,7 @@ export const Forside = ({
         return navigator.goToNextStep(SøknadRoutes.SØKERSITUASJON);
     };
 
-    const formMethods = useForm<VelkommenFormData>({
+    const formMethods = useForm<ForsideFormValues>({
         defaultValues: {
             harForståttRettigheterOgPlikter: harGodkjentVilkår,
         },
@@ -150,65 +143,58 @@ export const Forside = ({
             : intl.formatMessage({ id: 'velkommen.begynnMedSøknad' });
 
     return (
-        <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-            <VStack gap="10">
-                <LanguageToggle locale={locale} availableLocales={['nb', 'nn']} toggleLanguage={onChangeLocale} />
-                <ContentWrapper>
-                    <VStack gap="8">
-                        <HStack justify="center">
-                            <Heading size="xlarge">
-                                <FormattedMessage id="velkommen.tittel" />
-                            </Heading>
-                        </HStack>
-                        <GuidePanel poster>
-                            <VStack gap="2">
-                                <FormattedMessage id="velkommen.guidepanel.del1" />
-                                <FormattedMessage
-                                    id="velkommen.guidepanel.del2"
-                                    values={{
-                                        a: (msg: any) => (
-                                            <Link rel="noopener noreferrer" href={links.foreldrepenger}>
-                                                {msg}
-                                            </Link>
-                                        ),
-                                    }}
-                                />
-                            </VStack>
-                        </GuidePanel>
-                        <BarnVelger selectableBarn={selectableBarn} />
-                        <Alert variant="info">
-                            <FormattedMessage id="velkommen.lagring.info" />
-                        </Alert>
-                        <RhfConfirmationPanel
-                            name="harForståttRettigheterOgPlikter"
-                            label={intl.formatMessage({ id: 'velkommen.samtykke' })}
-                            validate={[
-                                (value: boolean) =>
-                                    value !== true
-                                        ? intl.formatMessage({
-                                              id: 'valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd',
-                                          })
-                                        : null,
-                            ]}
-                        >
-                            <VStack gap="5">
-                                <HStack gap="1">
-                                    <BodyShort>
-                                        <FormattedMessage id="velkommen.samtykkeIntro.del1" />
-                                    </BodyShort>
-                                    <DinePlikter />
-                                </HStack>
-                            </VStack>
-                        </RhfConfirmationPanel>
-                        <HStack justify="center">
-                            <Button type="submit" variant="primary">
-                                {knapptekst}
-                            </Button>
-                        </HStack>
-                        <DinePersonopplysningerModal />
-                    </VStack>
-                </ContentWrapper>
-            </VStack>
-        </RhfForm>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                <VStack gap="space-32">
+                    <GuidePanel poster>
+                        <VStack gap="space-8">
+                            <FormattedMessage id="velkommen.guidepanel.del1" />
+                            <FormattedMessage
+                                id="velkommen.guidepanel.del2"
+                                values={{
+                                    a: (msg) => (
+                                        <Link rel="noopener noreferrer" href={links.foreldrepenger}>
+                                            {msg}
+                                        </Link>
+                                    ),
+                                }}
+                            />
+                        </VStack>
+                    </GuidePanel>
+                    <BarnVelger selectableBarn={selectableBarn} />
+                    <Alert variant="info">
+                        <FormattedMessage id="velkommen.lagring.info" />
+                    </Alert>
+                    <RhfConfirmationPanel
+                        name="harForståttRettigheterOgPlikter"
+                        control={formMethods.control}
+                        label={intl.formatMessage({ id: 'velkommen.samtykke' })}
+                        validate={[
+                            (value: boolean) =>
+                                value
+                                    ? null
+                                    : intl.formatMessage({
+                                          id: 'valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd',
+                                      }),
+                        ]}
+                    >
+                        <VStack gap="space-20">
+                            <HStack gap="space-4">
+                                <BodyShort>
+                                    <FormattedMessage id="velkommen.samtykkeIntro.del1" />
+                                </BodyShort>
+                                <DinePlikter />
+                            </HStack>
+                        </VStack>
+                    </RhfConfirmationPanel>
+                    <HStack justify="center">
+                        <Button type="submit" variant="primary">
+                            {knapptekst}
+                        </Button>
+                    </HStack>
+                    <DinePersonopplysningerModal />
+                </VStack>
+            </RhfForm>
+        </SkjemaRotLayout>
     );
 };

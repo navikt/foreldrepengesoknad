@@ -20,12 +20,13 @@ export const ErFødtPanel = () => {
 
     const intlIdFødsel = antallBarn > 1 ? 'omBarnet.fødselsdato.flereBarn' : 'omBarnet.fødselsdato';
 
-    const fødselsdato = fødselsdatoer ? fødselsdatoer[0].dato : undefined;
+    const fødselsdato = fødselsdatoer ? fødselsdatoer[0]!.dato : undefined;
 
     return (
         <>
             <RhfDatepicker
                 name="termindato"
+                control={formMethods.control}
                 minDate={fødselsdato ? dayjs(fødselsdato).subtract(1, 'months').toDate() : undefined}
                 maxDate={fødselsdato ? dayjs(fødselsdato).add(6, 'months').toDate() : undefined}
                 label={intl.formatMessage({ id: 'omBarnet.termindato.født' })}
@@ -52,6 +53,7 @@ export const ErFødtPanel = () => {
             {erBarnetFødt && (
                 <RhfDatepicker
                     name="fødselsdatoer.0.dato"
+                    control={formMethods.control}
                     label={intl.formatMessage({ id: intlIdFødsel })}
                     minDate={dayjs().subtract(3, 'years').toDate()}
                     maxDate={dayjs().toDate()}

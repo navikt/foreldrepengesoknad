@@ -1,21 +1,20 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { API_URLS } from 'api/queries';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { action } from 'storybook/actions';
 
 import { Utenlandsopphold } from '@navikt/fp-types';
 
 import { SenereUtenlandsoppholdSteg } from './SenereUtenlandsoppholdSteg';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const defaultUtenlandsopphold = {
     skalBoUtenforNorgeNeste12Mnd: true,
@@ -34,7 +33,8 @@ const meta = {
         msw: {
             handlers: [
                 http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`,
+                    API_URLS.mellomlagring,
+
                     () => new HttpResponse(null, { status: 200 }),
                 ),
             ],

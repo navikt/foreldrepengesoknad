@@ -3,35 +3,34 @@ import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { PeriodeColor, UtsettelseÅrsakType } from '@navikt/fp-constants';
-import { Barn } from '@navikt/fp-types';
-import { CalendarLabel } from '@navikt/fp-ui';
+import { Barn, UtsettelsesÅrsak } from '@navikt/fp-types';
+import { CalendarLabel, type CalendarPeriodColor } from '@navikt/fp-ui';
 
 import { getFamiliehendelseKalendarLabel, getKalenderPeriodenavn } from './uttaksplanKalenderUtils';
 
 const getCalendarLabel = (
-    color: PeriodeColor,
+    color: CalendarPeriodColor,
     barn: Barn,
     navnAnnenPart: string,
-    unikeUtsettelseÅrsaker: UtsettelseÅrsakType[],
+    unikeUtsettelseÅrsaker: UtsettelsesÅrsak[],
     erFarEllerMedmor: boolean,
     intl: IntlShape,
 ): ReactNode => {
     switch (color) {
-        case PeriodeColor.PINK:
+        case 'PINK':
             return <BodyShort>{getFamiliehendelseKalendarLabel(barn, intl)}</BodyShort>;
-        case PeriodeColor.BLUE:
-        case PeriodeColor.GREEN:
-        case PeriodeColor.BLUESTRIPED:
-        case PeriodeColor.GREENSTRIPED:
-        case PeriodeColor.LIGHTBLUE:
-        case PeriodeColor.LIGHTGREEN:
-        case PeriodeColor.LIGHTBLUEGREEN:
-        case PeriodeColor.LIGHTGREENBLUE:
-        case PeriodeColor.GREENOUTLINE:
-        case PeriodeColor.BLUEOUTLINE:
-        case PeriodeColor.BLACK:
-        case PeriodeColor.GRAY:
+        case 'BLUE':
+        case 'GREEN':
+        case 'BLUESTRIPED':
+        case 'GREENSTRIPED':
+        case 'LIGHTBLUE':
+        case 'LIGHTGREEN':
+        case 'LIGHTBLUEGREEN':
+        case 'LIGHTGREENBLUE':
+        case 'GREENOUTLINE':
+        case 'BLUEOUTLINE':
+        case 'BLACK':
+        case 'GRAY':
             return (
                 <BodyShort>
                     {getKalenderPeriodenavn(color, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl)}
@@ -43,10 +42,10 @@ const getCalendarLabel = (
 };
 
 interface Props {
-    uniqueColors: PeriodeColor[];
+    uniqueColors: CalendarPeriodColor[];
     barn: Barn;
     navnAnnenPart: string;
-    unikeUtsettelseÅrsaker: UtsettelseÅrsakType[];
+    unikeUtsettelseÅrsaker: UtsettelsesÅrsak[];
     erFarEllerMedmor: boolean;
 }
 
@@ -59,10 +58,10 @@ export const UttaksplanLegend = ({
 }: Props) => {
     const intl = useIntl();
     return uniqueColors
-        .filter((c) => c !== PeriodeColor.NONE)
+        .filter((c) => c !== 'NONE')
         .map((color) => (
             <div key={color} style={{ paddingRight: '0.5rem', paddingBottom: '0.46rem', width: 'fit-content' }}>
-                <CalendarLabel iconType={color}>
+                <CalendarLabel color={color}>
                     <BodyShort style={{ whiteSpace: 'nowrap' }}>
                         {getCalendarLabel(color, barn, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl)}
                     </BodyShort>

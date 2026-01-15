@@ -34,11 +34,19 @@ export const NårBareEnPartHarRettInfoboks = ({ hvemPlanlegger, arbeidssituasjon
                     }}
                 />
             }
-            icon={<PersonGroupIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
+            icon={
+                <PersonGroupIcon
+                    height={24}
+                    width={24}
+                    color="var(--ax-bg-neutral-strong)"
+                    fontSize="1.5rem"
+                    aria-hidden
+                />
+            }
             color="gray"
         >
             {søker2HarIkkeRett && (
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <BodyShort>
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.NårBareMorHarRett.FårHelePerioden"
@@ -57,7 +65,7 @@ export const NårBareEnPartHarRettInfoboks = ({ hvemPlanlegger, arbeidssituasjon
                 </VStack>
             )}
             {søker1HarIkkeRett && (
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <BodyShort>
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.KanFåhelePerioden"
@@ -71,7 +79,7 @@ export const NårBareEnPartHarRettInfoboks = ({ hvemPlanlegger, arbeidssituasjon
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.NårBareFarHarRett.IngenKravTilMor"
                             values={{
-                                a: (msg: any) => (
+                                a: (msg) => (
                                     <Link inlineText href={links.godkjentAktivitet} rel="noreferrer" target="_blank">
                                         {msg}
                                     </Link>

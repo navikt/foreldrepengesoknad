@@ -5,13 +5,13 @@ interface Props {
 }
 
 export const BlueHeading = ({ children }: Props) => (
-    <Box
-        background="surface-alt-3-subtle"
+    <Box.New
+        background="brand-blue-moderate"
         borderRadius="medium medium 0 0"
         padding="6"
         borderWidth="0 0 2"
-        style={{ borderStyle: 'solid', borderColor: 'var(--a-deepblue-200)' }}
+        style={{ borderStyle: 'solid', borderColor: 'var(--ax-brand-blue-300)' }}
     >
         {children}
-    </Box>
+    </Box.New>
 );

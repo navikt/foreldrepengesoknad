@@ -13,7 +13,7 @@ export const dateToday = dayjs().toDate();
 export const date21DaysAgo = dayjs().subtract(21, 'days').startOf('day').toDate();
 export const attenUkerTreDager = dayjs().add(18, 'week').add(3, 'day').startOf('day').toDate();
 
-export const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
+export const hasValue = (v: string | number | boolean | undefined | null) => v !== '' && v !== undefined && v !== null;
 
 export const validateFødselsnummer =
     (intl: IntlShape, søkersFødselsnummer: string, label: string, erUtenlandskFnr?: boolean) =>
@@ -45,13 +45,6 @@ export const validateFødselsnummer =
             : intl.formatMessage({ id: 'valideringsfeil.fødselsnummer.ugyldigFødselsnummer' });
     };
 
-export const validateRequiredField = (value: any, label: string, intl: IntlShape): SkjemaelementFeil => {
-    if (!hasValue(value) || (typeof value === 'string' && value.trim() === '')) {
-        return intl.formatMessage({ id: 'valideringsfeil.inputfelt.required' }, { inputFeltLabel: label });
-    }
-    return undefined;
-};
-
 export const erMindreEnn3UkerSiden = (dato: string) => {
     const terminDato = dayjs(dato);
     const datoFor3UkerSiden = dayjs().startOf('day').subtract(21, 'days');
@@ -65,16 +58,16 @@ const dagerForTerminbekreftelse = ukerAaTrekkeFraTerminDato * 7 + ekstraDagerAaT
 export const erIUke22Pluss3 = (dato: string) => {
     const terminDato = dayjs(dato);
     const uke22Pluss3 = terminDato.subtract(dagerForTerminbekreftelse, 'days');
-    return dayjs.max(dayjs().startOf('day'), uke22Pluss3.startOf('day'))!.isSame(dayjs().startOf('day'));
+    return dayjs.max(dayjs().startOf('day'), uke22Pluss3.startOf('day')).isSame(dayjs().startOf('day'));
 };
 
-export const getIllegalChars = (value: any): string => {
+export const getIllegalChars = (value: string): string => {
     const kunUgyldigeTegn = value.replace(textGyldigRegex, '');
     const ugyldigStringSet = new Set(kunUgyldigeTegn.split(''));
     return Array.from(ugyldigStringSet).join('');
 };
 
-export const getIllegalCharsErrorMessage = (value: any, feltNavn: string, intl: IntlShape): string => {
+const getIllegalCharsErrorMessage = (value: string, feltNavn: string, intl: IntlShape): string => {
     const ugyldigeTegn = getIllegalChars(value).replace(/[\t]/g, 'Tabulatortegn');
     return intl.formatMessage(
         { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
@@ -85,9 +78,9 @@ export const getIllegalCharsErrorMessage = (value: any, feltNavn: string, intl: 
     );
 };
 
-const validateTextHasLegalChars = (value: any): boolean => textRegex.test(value);
+const validateTextHasLegalChars = (value: string): boolean => textRegex.test(value);
 
-export const validateTextInputField = (value: any, feltNavn: string, intl: IntlShape): SkjemaelementFeil => {
+export const validateTextInputField = (value: string, feltNavn: string, intl: IntlShape): SkjemaelementFeil => {
     if (!validateTextHasLegalChars(value)) {
         return getIllegalCharsErrorMessage(value, feltNavn, intl);
     }

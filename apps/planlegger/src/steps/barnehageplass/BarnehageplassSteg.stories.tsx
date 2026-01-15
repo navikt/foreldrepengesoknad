@@ -1,9 +1,9 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { action } from 'storybook/actions';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
@@ -20,7 +20,7 @@ type StoryArgs = {
 const meta = {
     title: 'steg/BarnehageplassSteg',
     component: BarnehageplassSteg,
-    render: ({ hvemPlanlegger, omBarnet, gåTilNesteSide = action('button-click'), locale }: StoryArgs) => {
+    render: ({ hvemPlanlegger, omBarnet, gåTilNesteSide = action('button-click') }: StoryArgs) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.ARBEIDSSITUASJON]}>
                 <PlanleggerDataContext
@@ -30,7 +30,7 @@ const meta = {
                     }}
                     onDispatch={gåTilNesteSide}
                 >
-                    <BarnehageplassSteg locale={locale} />
+                    <BarnehageplassSteg />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -42,7 +42,6 @@ type Story = StoryObj<typeof meta>;
 
 export const FlereForsørgereBarnTerminDesemberStartAugustOmToÅr: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             navnPåFar: 'Espen Utvikler',
@@ -59,7 +58,6 @@ export const FlereForsørgereBarnTerminDesemberStartAugustOmToÅr: Story = {
 
 export const FlereForsørgereBarnFødtSeptemberStartSeptember: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
@@ -77,7 +75,6 @@ export const FlereForsørgereBarnFødtSeptemberStartSeptember: Story = {
 
 export const AleneforsørgerToBarnFødtJanuarStartAugust: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             type: HvemPlanleggerType.MOR,
@@ -94,7 +91,6 @@ export const AleneforsørgerToBarnFødtJanuarStartAugust: Story = {
 
 export const FlereForsørgereAdoptertBarnFødtJanuarStartJuni2027: Story = {
     args: {
-        locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             navnPåFar: 'Espen Utvikler',

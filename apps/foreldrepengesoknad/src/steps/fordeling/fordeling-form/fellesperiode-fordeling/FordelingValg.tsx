@@ -1,5 +1,6 @@
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { FellesperiodeFordelingValg } from 'types/Fordeling';
+import { FellesperiodeFordelingValg, Fordeling } from 'types/Fordeling';
 import { getVarighetString } from 'utils/dateUtils';
 
 import { Radio } from '@navikt/ds-react';
@@ -13,9 +14,12 @@ interface Props {
 
 export const FordelingValg = ({ dagerMedFellesperiode }: Props) => {
     const intl = useIntl();
+    const { control } = useFormContext<Fordeling>();
+
     return (
         <RhfRadioGroup
             name="fordelingValg"
+            control={control}
             label={<FormattedMessage id="fordeling.fordelingvalg.spørsmål" />}
             description={<FormattedMessage id="fordeling.description.kanEndresSenere" />}
             validate={[isRequired(intl.formatMessage({ id: 'fordeling.fordelingsvalg.måOppgis' }))]}

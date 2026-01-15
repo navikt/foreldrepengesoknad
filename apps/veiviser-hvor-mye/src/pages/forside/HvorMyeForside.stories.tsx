@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { HvorMyeRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ export const Default: Story = {
     render: () => {
         return (
             <MemoryRouter initialEntries={[HvorMyeRoutes.ARBEIDSSITUASJON]}>
-                <HvorMyeForside locale="nb" changeLocale={() => undefined} />
+                <HvorMyeForside />
             </MemoryRouter>
         );
     },

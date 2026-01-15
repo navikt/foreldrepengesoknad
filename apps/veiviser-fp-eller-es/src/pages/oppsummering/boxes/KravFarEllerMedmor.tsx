@@ -12,10 +12,18 @@ export const KravFarEllerMedmor = () => {
                 <FormattedMessage id="HvorforHarJegRettPanel.FarEllerMedmor" />
             </Heading>
             <Infobox
-                icon={<QuestionmarkIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
+                icon={
+                    <QuestionmarkIcon
+                        height={24}
+                        width={24}
+                        color="var(--ax-bg-neutral-strong)"
+                        fontSize="1.5rem"
+                        aria-hidden
+                    />
+                }
                 color="gray"
             >
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <BodyShort>
                         <FormattedMessage id="HvorforHarJegRettPanel.HvisDuErFarEllerMedmor" />
                     </BodyShort>
@@ -27,7 +35,7 @@ export const KravFarEllerMedmor = () => {
                             <FormattedMessage
                                 id="HvorforHarJegRettPanel.OvertarOmsorgMorDød"
                                 values={{
-                                    a: (msg: any) => (
+                                    a: (msg) => (
                                         <Link
                                             href="https://lovdata.no/dokument/NL/lov/1981-04-08-7"
                                             target="_blank"

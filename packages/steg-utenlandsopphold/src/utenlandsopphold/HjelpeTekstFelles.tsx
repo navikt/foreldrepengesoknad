@@ -21,8 +21,8 @@ export const HjelpeTekstFelles = ({ stonadstype }: Props) => {
                 </ExpansionCard.Title>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-                <VStack gap="10">
-                    <VStack gap="5">
+                <VStack gap="space-40">
+                    <VStack gap="space-20">
                         <BodyLong>
                             <FormattedMessage id="UtenlandsoppholdSteg.HjelpeTekstFelles.Del1.1" />
                         </BodyLong>
@@ -36,7 +36,7 @@ export const HjelpeTekstFelles = ({ stonadstype }: Props) => {
                             <FormattedMessage id="UtenlandsoppholdSteg.HjelpeTekstFelles.Del1.4" />
                         </BodyLong>
                     </VStack>
-                    <VStack gap="5">
+                    <VStack gap="space-20">
                         <Heading size="small" level="4">
                             <FormattedMessage id="UtenlandsoppholdSteg.HjelpeTekstFelles.Del2.Undertittel" />
                         </Heading>

@@ -1,9 +1,12 @@
+import { useQuery } from '@tanstack/react-query';
+import { useAnnenPartVedtakOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { SøknadRoutes, isRouteAvailable } from 'appData/routes';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
 import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSendSøknad } from 'appData/useSendSøknad';
 import { Forside } from 'pages/forside/Forside';
+import { KvitteringPage } from 'pages/kvittering/KvitteringPage';
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { AndreInntektskilderSteg } from 'steps/andre-inntektskilder/AndreInntektskilderSteg';
@@ -14,23 +17,22 @@ import { FordelingSteg } from 'steps/fordeling/FordelingSteg';
 import { FrilansSteg } from 'steps/frilans/FrilansSteg';
 import { ManglendeVedlegg } from 'steps/manglende-vedlegg/ManglendeVedlegg';
 import { OmBarnetSteg } from 'steps/om-barnet/OmBarnetSteg';
-import { Oppsummering } from 'steps/oppsummering/Oppsummering';
+import { OppsummeringSteg } from 'steps/oppsummering/OppsummeringSteg';
 import { PeriodeMedForeldrepengerSteg } from 'steps/periode-med-foreldrepenger/PeriodeMedForeldrepengerSteg';
 import { SøkersituasjonSteg } from 'steps/søkersituasjon/SøkersituasjonSteg';
 import { SenereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
 import { TidligereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
 import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSteg';
 import { UttaksplanStep } from 'steps/uttaksplan/UttaksplanStep';
-import { Kvittering } from 'types/Kvittering';
 
-import { FpSak, LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
 
 const renderSøknadRoutes = (
     harGodkjentVilkår: boolean,
     erEndringssøknad: boolean,
-    søkerInfo: Søkerinfo,
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt,
     mellomlagreSøknadOgNaviger: () => Promise<void>,
     sendSøknad: () => Promise<void>,
     avbrytSøknad: () => void,
@@ -40,7 +42,7 @@ const renderSøknadRoutes = (
         return <Route path="*" element={<Navigate to={SøknadRoutes.VELKOMMEN} />} />;
     }
 
-    if (!erMyndig(søkerInfo.søker.fødselsdato)) {
+    if (!erMyndig(søkerInfo.person.fødselsdato)) {
         return <Route path="*" element={<Navigate to={SøknadRoutes.IKKE_MYNDIG} />} />;
     }
 
@@ -72,7 +74,7 @@ const renderSøknadRoutes = (
                 <Route
                     path={SøknadRoutes.OPPSUMMERING}
                     element={
-                        <Oppsummering
+                        <OppsummeringSteg
                             erEndringssøknad={erEndringssøknad}
                             søkerInfo={søkerInfo}
                             sendSøknad={sendSøknad}
@@ -81,6 +83,7 @@ const renderSøknadRoutes = (
                         />
                     }
                 />
+                <Route path={SøknadRoutes.KVITTERING} element={<KvitteringPage />} />
             </>
         );
     }
@@ -92,7 +95,7 @@ const renderSøknadRoutes = (
                 element={
                     <SøkersituasjonSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        kjønn={søkerInfo.søker.kjønn}
+                        kjønn={søkerInfo.person.kjønn}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -133,7 +136,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.FORDELING}
                 element={
                     <FordelingSteg
-                        søker={søkerInfo.søker}
+                        person={søkerInfo.person}
                         arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
@@ -235,7 +238,7 @@ const renderSøknadRoutes = (
             <Route
                 path={SøknadRoutes.OPPSUMMERING}
                 element={
-                    <Oppsummering
+                    <OppsummeringSteg
                         erEndringssøknad={erEndringssøknad}
                         søkerInfo={søkerInfo}
                         sendSøknad={sendSøknad}
@@ -244,32 +247,27 @@ const renderSøknadRoutes = (
                     />
                 }
             />
+            <Route path={SøknadRoutes.KVITTERING} element={<KvitteringPage />} />
         </>
     );
 };
 
 interface Props {
-    locale: LocaleNo;
-    onChangeLocale: (locale: LocaleNo) => void;
     currentRoute: SøknadRoutes;
-    søkerInfo: Søkerinfo;
-    foreldrepengerSaker: FpSak[];
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    foreldrepengerSaker: FpSak_fpoversikt[];
     lagretErEndringssøknad?: boolean;
     lagretHarGodkjentVilkår?: boolean;
     lagretSøknadGjelderNyttBarn?: boolean;
-    setKvittering: (kvittering: Kvittering) => void;
 }
 
 export const ForeldrepengesøknadRoutes = ({
-    locale,
-    onChangeLocale,
     currentRoute,
     søkerInfo,
     foreldrepengerSaker,
     lagretErEndringssøknad,
     lagretHarGodkjentVilkår,
     lagretSøknadGjelderNyttBarn,
-    setKvittering,
 }: Props) => {
     const navigate = useNavigate();
     const routerLocation = useLocation();
@@ -279,10 +277,9 @@ export const ForeldrepengesøknadRoutes = ({
     const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad || false);
     const [søknadGjelderNyttBarn, setSøknadGjelderNyttBarn] = useState(lagretSøknadGjelderNyttBarn);
 
-    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo.søker.fnr, erEndringssøknad, setKvittering, locale);
+    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo, erEndringssøknad);
 
     const mellomlagreSøknadOgNaviger = useMellomlagreSøknad(
-        locale,
         foreldrepengerSaker,
         søkerInfo,
         erEndringssøknad,
@@ -290,27 +287,33 @@ export const ForeldrepengesøknadRoutes = ({
         søknadGjelderNyttBarn,
     );
 
-    const avbrytSøknad = useAvbrytSøknad(
-        søkerInfo.søker.fnr,
-        setErEndringssøknad,
-        setHarGodkjentVilkår,
-        setSøknadGjelderNyttBarn,
-    );
+    const avbrytSøknad = useAvbrytSøknad(setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn);
 
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
 
+    // Hvis valgt barn kan vi forsøke hente termindato fra annenpartsvedtak.
+    // Dette trengs ikke før i OmBarnet. Men om vi legger et query på rot for å prefetche så tidlig som mulig.
+    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
+    useQuery(annenPartVedtakOptions);
+
     useEffect(() => {
-        if (currentRoute && erMyndig(søkerInfo.søker.fødselsdato) && lagretHarGodkjentVilkår && isFirstTimeLoadingApp) {
+        if (
+            currentRoute &&
+            erMyndig(søkerInfo.person.fødselsdato) &&
+            lagretHarGodkjentVilkår &&
+            isFirstTimeLoadingApp
+        ) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- TODO (TOR) - Vurder om denne kan fjennast
             setIsFirstTimeLoadingApp(false);
             if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
-                navigate(currentRoute);
-            } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING) {
-                navigate(SøknadRoutes.UTTAKSPLAN);
+                void navigate(currentRoute);
+            } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING.toString()) {
+                void navigate(SøknadRoutes.UTTAKSPLAN);
             }
         }
     }, [
         currentRoute,
-        søkerInfo.søker.fødselsdato,
+        søkerInfo.person.fødselsdato,
         lagretHarGodkjentVilkår,
         navigate,
         isFirstTimeLoadingApp,
@@ -334,9 +337,7 @@ export const ForeldrepengesøknadRoutes = ({
                 path={SøknadRoutes.VELKOMMEN}
                 element={
                     <Forside
-                        locale={locale}
                         saker={foreldrepengerSaker}
-                        onChangeLocale={onChangeLocale}
                         harGodkjentVilkår={harGodkjentVilkår}
                         søkerInfo={søkerInfo}
                         setHarGodkjentVilkår={setHarGodkjentVilkår}

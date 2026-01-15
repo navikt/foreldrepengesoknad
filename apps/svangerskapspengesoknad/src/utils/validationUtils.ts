@@ -7,7 +7,7 @@ dayjs.extend(minMax);
 export const TEXT_INPUT_MIN_LENGTH = 10;
 export const TEXT_INPUT_MAX_LENGTH = 1000;
 
-export const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
+export const hasValue = (v: string | number | boolean | undefined | null) => v !== '' && v !== undefined && v !== null;
 
 export const getMinInputTilOgMedValue = (fom: string | undefined, otherMinDate: Date) => {
     let min = otherMinDate;

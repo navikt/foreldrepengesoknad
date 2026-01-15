@@ -8,11 +8,11 @@
 }
 
 .darkBlue {
-    background-color: var(--a-deepblue-100);
+    background-color: var(--ax-brand-blue-200);
 }
 
 .blue {
-    background-color: var(--a-deepblue-50);
+    background-color: var(--ax-brand-blue-100);
 }
 
 @keyframes fade-in {

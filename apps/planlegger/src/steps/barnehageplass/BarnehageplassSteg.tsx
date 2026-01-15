@@ -14,7 +14,6 @@ import { Uttaksdata, getUttaksdagTilOgMedDato } from 'utils/uttakUtils';
 import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT, links } from '@navikt/fp-constants';
-import { LocaleAll } from '@navikt/fp-types';
 import { IconCircleWrapper, Infobox, StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
@@ -45,13 +44,12 @@ export const barnehagestartDato = (barnet: OmBarnet) => {
 };
 
 interface Props {
-    locale: LocaleAll;
     uttaksdata?: Uttaksdata;
 }
 
-export const BarnehageplassSteg = ({ locale, uttaksdata }: Props) => {
+export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator(locale);
+    const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
     useScrollBehaviour();
@@ -64,11 +62,11 @@ export const BarnehageplassSteg = ({ locale, uttaksdata }: Props) => {
 
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
-            <VStack gap="8">
+            <VStack gap="space-32">
                 <Heading size="medium" level="2">
                     <FormattedMessage id="BarnehageplassSteg.Tittel" />
                 </Heading>
-                <VStack gap="5">
+                <VStack gap="space-20">
                     <BodyLong>
                         <FormattedMessage id="Barnehageplass.KommuneTekstDeg" values={{ erAlenesøker, antallBarn }} />
                     </BodyLong>
@@ -101,7 +99,13 @@ export const BarnehageplassSteg = ({ locale, uttaksdata }: Props) => {
                         color="blue"
                         icon={
                             <IconCircleWrapper color="lightBlue" size="medium">
-                                <BabyWrappedIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />
+                                <BabyWrappedIcon
+                                    height={24}
+                                    width={24}
+                                    color="var(--ax-brand-blue-700)"
+                                    fontSize="1.5rem"
+                                    aria-hidden
+                                />
                             </IconCircleWrapper>
                         }
                     >
@@ -130,7 +134,13 @@ export const BarnehageplassSteg = ({ locale, uttaksdata }: Props) => {
                     <Infobox
                         header={<FormattedMessage id="Barnehageplass.BarnehageTittel" />}
                         icon={
-                            <InformationIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />
+                            <InformationIcon
+                                height={24}
+                                width={24}
+                                color="var(--ax-bg-neutral-strong)"
+                                fontSize="1.5rem"
+                                aria-hidden
+                            />
                         }
                         color="gray"
                     >

@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+import { useAnnenPartVedtakOptions } from 'api/queries';
 import { FormattedMessage } from 'react-intl';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
@@ -15,15 +17,19 @@ interface Props {
 export const AnnenForelderOppsummering = ({ annenForelder, søkerrolle, onVilEndreSvar }: Props) => {
     const erFarEllerMedmor = isFarEllerMedmor(søkerrolle);
 
+    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
+    const annenPartHarVedtak =
+        useQuery({
+            ...annenPartVedtakOptions,
+            select: (vedtak) => vedtak?.perioder.some((p) => p.resultat?.innvilget),
+        }).data ?? false;
+
     return (
         <FormSummary>
             <FormSummary.Header>
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="AnnenForelderOppsummering.tittel" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar}>
-                    <FormattedMessage id="Oppsummering.EndreSvar" />
-                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 {isAnnenForelderIkkeOppgitt(annenForelder) && (
@@ -63,7 +69,7 @@ export const AnnenForelderOppsummering = ({ annenForelder, søkerrolle, onVilEnd
                                 <FormSummary.Value>{formatDate(annenForelder.datoForAleneomsorg)}</FormSummary.Value>
                             </FormSummary.Answer>
                         )}
-                        {!annenForelder.erAleneOmOmsorg && (
+                        {!annenPartHarVedtak && !annenForelder.erAleneOmOmsorg && (
                             <FormSummary.Answer>
                                 <FormSummary.Label>
                                     <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge" />
@@ -140,6 +146,11 @@ export const AnnenForelderOppsummering = ({ annenForelder, søkerrolle, onVilEnd
                     </>
                 )}
             </FormSummary.Answers>
+            <FormSummary.Footer>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="Oppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Footer>
         </FormSummary>
     );
 };

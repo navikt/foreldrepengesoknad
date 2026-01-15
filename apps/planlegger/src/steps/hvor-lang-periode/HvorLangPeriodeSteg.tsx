@@ -8,7 +8,6 @@ import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { erAlenesøker as erAlene, getTekstForDeSomHarRett } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
@@ -19,7 +18,7 @@ import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-reac
 
 import { links } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { HvemPlanleggerType, LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -28,13 +27,12 @@ import { NårBareEnPartHarRettInfoboks } from './infoboks/NårBareEnPartHarRettI
 import { ValgtDekningsgradInfoboks } from './infoboks/ValgtDekningsgradInfoboks';
 
 interface Props {
-    stønadskontoer: TilgjengeligeStønadskontoer;
-    locale: LocaleAll;
+    stønadskontoer: { '100': KontoBeregningDto; '80': KontoBeregningDto };
 }
 
-export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
+export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator(locale);
+    const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
     const periode = useContextGetData(ContextDataType.HVOR_LANG_PERIODE);
@@ -44,6 +42,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
 
     const oppdaterPeriode = useContextSaveData(ContextDataType.HVOR_LANG_PERIODE);
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const formMethods = useForm<HvorLangPeriode>({ defaultValues: periode });
 
@@ -52,6 +51,11 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
 
     const onSubmit = (formValues: HvorLangPeriode) => {
         oppdaterPeriode(formValues);
+
+        if (periode && periode.dekningsgrad !== formValues.dekningsgrad) {
+            oppdaterUttaksplan(undefined);
+        }
+
         const erFarOgFar = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
         const beggeHarRett = arbeidssituasjon.status === Arbeidsstatus.JOBBER && !!arbeidssituasjon.jobberAnnenPart;
         const nextRoute =
@@ -73,10 +77,10 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
 
     const deSomHarRett = getTekstForDeSomHarRett(hvemPlanlegger, hvemHarRett, intl);
 
-    const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
-    const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
+    const stønadskonto100 = stønadskontoer['100'];
+    const stønadskonto80 = stønadskontoer['80'];
 
-    const stønadskonto = valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
+    const stønadskonto = valgtDekningsgrad === '100' ? stønadskonto100 : stønadskonto80;
     const valgtStønadskonto = valgtDekningsgrad ? stønadskonto : undefined;
 
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, barnet);
@@ -84,8 +88,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
 
     const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(stønadskonto100);
     const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(stønadskonto80);
-    const antallUkerOgDager =
-        valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? antallUkerOgDager100 : antallUkerOgDager80;
+    const antallUkerOgDager = valgtDekningsgrad === '100' ? antallUkerOgDager100 : antallUkerOgDager80;
 
     const kunEnAvSøkereneHarRett = hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett';
 
@@ -94,15 +97,21 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
-                <VStack gap="10" style={{ flex: 1 }}>
-                    <VStack gap="8">
+                <VStack gap="space-40" style={{ flex: 1 }}>
+                    <VStack gap="space-32">
                         <Heading size="medium" spacing level="2">
                             <FormattedMessage id="HvorLangPeriodeSteg.Tittel" />
                         </Heading>
                         <Infobox
                             header={<FormattedMessage id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTittel" />}
                             icon={
-                                <CalendarIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />
+                                <CalendarIcon
+                                    height={24}
+                                    width={24}
+                                    color="var(--ax-bg-neutral-strong)"
+                                    fontSize="1.5rem"
+                                    aria-hidden
+                                />
                             }
                             color="gray"
                         >
@@ -136,7 +145,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
                                     }
                                     color="gray"
                                 >
-                                    <VStack gap="2">
+                                    <VStack gap="space-8">
                                         <BodyShort>
                                             <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.NårBareEnHarRett" />
                                         </BodyShort>
@@ -144,7 +153,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
                                             <FormattedMessage
                                                 id="HvorLangPeriodeSteg.Infoboks.ManFårEnDel"
                                                 values={{
-                                                    a: (msg: any) => (
+                                                    a: (msg) => (
                                                         <Link
                                                             inlineText
                                                             href={links.godkjentAktivitet}
@@ -161,10 +170,11 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
                                 </Infobox>
                             )}
                         <BlueRadioGroup
+                            name="dekningsgrad"
+                            control={formMethods.control}
                             label={
                                 <FormattedMessage id="HvorLangPeriodeSteg.HvorLangPeriode" values={{ deSomHarRett }} />
                             }
-                            name="dekningsgrad"
                             validate={[
                                 isRequired(
                                     intl.formatMessage(
@@ -177,7 +187,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
                             ]}
                             onChange={scrollToBottom}
                         >
-                            <Radio value={Dekningsgrad.HUNDRE_PROSENT} autoFocus>
+                            <Radio value={'100'} autoFocus>
                                 <FormattedMessage
                                     id="HvorLangPeriodeSteg.100"
                                     values={{
@@ -186,7 +196,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
                                     }}
                                 />
                             </Radio>
-                            <Radio value={Dekningsgrad.ÅTTI_PROSENT}>
+                            <Radio value={'80'}>
                                 <FormattedMessage
                                     id="HvorLangPeriodeSteg.80"
                                     values={{ uker80: antallUkerOgDager80.uker, dager80: antallUkerOgDager80.dager }}
@@ -194,7 +204,7 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
                             </Radio>
                         </BlueRadioGroup>
                         {valgtStønadskonto && (
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <ValgtDekningsgradInfoboks
                                     key={valgtDekningsgrad}
                                     barnet={barnet}

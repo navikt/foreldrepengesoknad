@@ -1,22 +1,17 @@
 import dayjs from 'dayjs';
 
-import {
-    AnnenForelder,
-    Periodetype,
-    Situasjon,
-    StønadskontoType,
-    TidsperiodeDate,
-    UttakRundtFødselÅrsak,
-} from '@navikt/fp-common';
+import { AnnenForelder, Periodetype, Situasjon, TidsperiodeDate, UttakRundtFødselÅrsak } from '@navikt/fp-common';
+import { KontoTypeUttak } from '@navikt/fp-types';
 import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { QuestionConfig, Questions, YesOrNo } from '../../../formik-wrappers';
 import { harAnnenForelderRettIEØS } from '../../../utils/annenForelderUtils';
 import { andreAugust2022ReglerGjelder } from '../../../utils/dateUtils';
 import hvemSkalTaUttakSkalBesvares from '../../../utils/uttaksskjema/hvemSkalTaUttakSkalBesvares';
-import getUttakSkjemaregler, {
+import {
     UttakSkjemaReglerProps,
     UttakSkjemaregler,
+    getUttakSkjemaregler,
 } from '../../../utils/uttaksskjema/uttakSkjemaregler';
 import { erFarMedmorSinWLBTidsperiodeRundtFødsel, getSisteUttaksdag6UkerEtterFødsel } from '../../../utils/wlbUtils';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
@@ -140,7 +135,7 @@ const skalViseSamtidigUttak = (regler: UttakSkjemaregler, values: PeriodeUttakFo
         return false;
     }
 
-    if (values.konto === StønadskontoType.Foreldrepenger) {
+    if (values.konto === 'FORELDREPENGER') {
         return false;
     }
 
@@ -164,7 +159,7 @@ const skalViseFlerbarnsdager = (
     tidsperiode: TidsperiodeDate,
     familiehendelsesdato: Date,
     periodetype: Periodetype,
-    kontoValue: StønadskontoType | '',
+    kontoValue: KontoTypeUttak | '',
     erFarEllerMedmor: boolean,
     termindato: Date | undefined,
     situasjon: Situasjon,
@@ -188,11 +183,7 @@ const skalViseFlerbarnsdager = (
         return false;
     }
 
-    return (
-        values.konto === StønadskontoType.Fellesperiode ||
-        values.konto === StønadskontoType.Fedrekvote ||
-        values.konto === StønadskontoType.Foreldrepenger
-    );
+    return values.konto === 'FELLESPERIODE' || values.konto === 'FEDREKVOTE' || values.konto === 'FORELDREPENGER';
 };
 
 const skalViseKonto = (
@@ -322,5 +313,6 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
 };
 
 export const periodeUttakFormQuestionsConfig = Questions<PeriodeUttakFormQuestionsPayload, PeriodeUttakFormField>(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     PeriodeUttakFormConfig,
 );

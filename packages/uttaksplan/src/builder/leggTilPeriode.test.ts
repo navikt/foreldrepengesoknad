@@ -1,14 +1,4 @@
-import {
-    Forelder,
-    MorsAktivitet,
-    OppholdÅrsakType,
-    Periode,
-    PeriodeInfoType,
-    Periodetype,
-    StønadskontoType,
-    UtsettelseÅrsakType,
-    Uttaksperiode,
-} from '@navikt/fp-common';
+import { Periode, PeriodeInfoType, Periodetype, Uttaksperiode } from '@navikt/fp-common';
 
 import { leggTilPeriode, splittUttaksperiodePåFamiliehendelsesdato } from './leggTilPeriode';
 
@@ -20,8 +10,8 @@ const perioder: Periode[] = [
             fom: new Date('2022-04-14'),
             tom: new Date('2022-05-04'),
         },
-        forelder: Forelder.mor,
-        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        forelder: 'MOR',
+        konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
         id: '2',
@@ -30,8 +20,8 @@ const perioder: Periode[] = [
             fom: new Date('2022-05-05'),
             tom: new Date('2022-08-17'),
         },
-        forelder: Forelder.mor,
-        konto: StønadskontoType.Mødrekvote,
+        forelder: 'MOR',
+        konto: 'MØDREKVOTE',
     },
     {
         id: '3',
@@ -40,8 +30,8 @@ const perioder: Periode[] = [
             fom: new Date('2022-08-18'),
             tom: new Date('2022-10-12'),
         },
-        forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        forelder: 'MOR',
+        konto: 'FELLESPERIODE',
     },
 ];
 
@@ -53,8 +43,8 @@ const perioderMedHull: Periode[] = [
             fom: new Date('2022-04-14'),
             tom: new Date('2022-05-04'),
         },
-        forelder: Forelder.mor,
-        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        forelder: 'MOR',
+        konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
         id: '2',
@@ -63,8 +53,8 @@ const perioderMedHull: Periode[] = [
             fom: new Date('2022-05-05'),
             tom: new Date('2022-08-03'),
         },
-        forelder: Forelder.mor,
-        konto: StønadskontoType.Mødrekvote,
+        forelder: 'MOR',
+        konto: 'MØDREKVOTE',
     },
     {
         id: '3',
@@ -81,8 +71,8 @@ const perioderMedHull: Periode[] = [
             fom: new Date('2022-08-18'),
             tom: new Date('2022-10-12'),
         },
-        forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        forelder: 'MOR',
+        konto: 'FELLESPERIODE',
     },
 ];
 
@@ -94,8 +84,8 @@ const periodeMedPeriodeUtenUttak: Periode[] = [
             fom: new Date('2022-04-14'),
             tom: new Date('2022-05-04'),
         },
-        forelder: Forelder.mor,
-        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        forelder: 'MOR',
+        konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
         id: '2',
@@ -104,8 +94,8 @@ const periodeMedPeriodeUtenUttak: Periode[] = [
             fom: new Date('2022-05-05'),
             tom: new Date('2022-08-03'),
         },
-        forelder: Forelder.mor,
-        konto: StønadskontoType.Mødrekvote,
+        forelder: 'MOR',
+        konto: 'MØDREKVOTE',
     },
     {
         id: '3',
@@ -122,8 +112,8 @@ const periodeMedPeriodeUtenUttak: Periode[] = [
             fom: new Date('2022-08-18'),
             tom: new Date('2022-10-12'),
         },
-        forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        forelder: 'MOR',
+        konto: 'FELLESPERIODE',
     },
 ];
 
@@ -135,8 +125,8 @@ const periodeMedAnnenPartsUttak: Periode[] = [
             fom: new Date('2022-04-14'),
             tom: new Date('2022-05-04'),
         },
-        forelder: Forelder.mor,
-        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        forelder: 'MOR',
+        konto: 'FORELDREPENGER_FØR_FØDSEL',
     },
     {
         id: '2',
@@ -145,8 +135,8 @@ const periodeMedAnnenPartsUttak: Periode[] = [
             fom: new Date('2022-05-05'),
             tom: new Date('2022-08-03'),
         },
-        forelder: Forelder.mor,
-        konto: StønadskontoType.Mødrekvote,
+        forelder: 'MOR',
+        konto: 'MØDREKVOTE',
     },
     {
         id: '3',
@@ -155,11 +145,11 @@ const periodeMedAnnenPartsUttak: Periode[] = [
             fom: new Date('2022-08-04'),
             tom: new Date('2022-08-17'),
         },
-        forelder: Forelder.farMedmor,
+        forelder: 'FAR_MEDMOR',
         infotype: PeriodeInfoType.uttakAnnenPart,
         overskrives: true,
         visPeriodeIPlan: true,
-        årsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
+        årsak: 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
     },
     {
         id: '4',
@@ -168,8 +158,8 @@ const periodeMedAnnenPartsUttak: Periode[] = [
             fom: new Date('2022-08-18'),
             tom: new Date('2022-10-12'),
         },
-        forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        forelder: 'MOR',
+        konto: 'FELLESPERIODE',
     },
 ];
 
@@ -181,8 +171,8 @@ const perioderMedFarsUttak: Periode[] = [
             fom: new Date('2022-10-04'),
             tom: new Date('2022-12-12'),
         },
-        forelder: Forelder.farMedmor,
-        konto: StønadskontoType.Fedrekvote,
+        forelder: 'FAR_MEDMOR',
+        konto: 'FEDREKVOTE',
     },
 ];
 
@@ -194,11 +184,11 @@ const perioderKunAnnenPartsUttak: Periode[] = [
             fom: new Date('2022-10-04'),
             tom: new Date('2022-12-12'),
         },
-        forelder: Forelder.mor,
+        forelder: 'MOR',
         infotype: PeriodeInfoType.uttakAnnenPart,
         overskrives: true,
         visPeriodeIPlan: true,
-        årsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+        årsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
     },
 ];
 
@@ -211,8 +201,8 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-07-11'),
                 tom: new Date('2022-07-22'),
             },
-            forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            forelder: 'MOR',
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -238,8 +228,8 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-07-11'),
                 tom: new Date('2022-07-22'),
             },
-            forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            forelder: 'MOR',
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -263,8 +253,8 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-07-18'),
                 tom: new Date('2022-07-22'),
             },
-            forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            forelder: 'MOR',
+            konto: 'FELLESPERIODE',
         };
 
         const result2 = leggTilPeriode({
@@ -290,8 +280,8 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-07-11'),
                 tom: new Date('2022-07-22'),
             },
-            forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            forelder: 'MOR',
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -315,8 +305,8 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-07-18'),
                 tom: new Date('2022-07-22'),
             },
-            forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            forelder: 'MOR',
+            konto: 'FELLESPERIODE',
         };
 
         const result2 = leggTilPeriode({
@@ -342,8 +332,8 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-07-11'),
                 tom: new Date('2022-07-22'),
             },
-            forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            forelder: 'MOR',
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -367,8 +357,8 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-07-18'),
                 tom: new Date('2022-07-22'),
             },
-            forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            forelder: 'MOR',
+            konto: 'FELLESPERIODE',
         };
 
         const result2 = leggTilPeriode({
@@ -394,8 +384,8 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-07-11'),
                 tom: new Date('2022-07-22'),
             },
-            forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            forelder: 'MOR',
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -421,8 +411,8 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-03-31'),
                 tom: new Date('2022-04-13'),
             },
-            forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            forelder: 'MOR',
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -448,8 +438,8 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-03-31'),
                 tom: new Date('2022-04-07'),
             },
-            forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            forelder: 'MOR',
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -465,7 +455,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
         expect(result.length).toEqual(5);
         expect(result[0]).toEqual(nyPeriode);
-        expect(result[1].type).toEqual(Periodetype.PeriodeUtenUttak);
+        expect(result[1]!.type).toEqual(Periodetype.PeriodeUtenUttak);
     });
 
     it('Burde legge til periode etter siste periode korrekt', () => {
@@ -476,8 +466,8 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-10-13'),
                 tom: new Date('2022-10-26'),
             },
-            forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            forelder: 'MOR',
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -503,8 +493,8 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-10-26'),
                 tom: new Date('2022-11-08'),
             },
-            forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            forelder: 'MOR',
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -520,7 +510,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
         expect(result.length).toEqual(5);
         expect(result[4]).toEqual(nyPeriode);
-        expect(result[3].type).toEqual(Periodetype.PeriodeUtenUttak);
+        expect(result[3]!.type).toEqual(Periodetype.PeriodeUtenUttak);
     });
 
     it('Skal legge til utsettelse korrekt', () => {
@@ -531,9 +521,9 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-05-05'),
                 tom: new Date('2022-05-18'),
             },
-            forelder: Forelder.mor,
+            forelder: 'MOR',
             erArbeidstaker: true,
-            årsak: UtsettelseÅrsakType.Arbeid,
+            årsak: 'ARBEID',
         };
 
         const result = leggTilPeriode({
@@ -549,8 +539,8 @@ describe('Test av legg til periode i uttaksplan', () => {
 
         expect(result.length).toEqual(4);
         expect(result[1]).toEqual(nyPeriode);
-        expect(result[2].tidsperiode.fom).toEqual(new Date('2022-05-19'));
-        expect(result[2].tidsperiode.tom).toEqual(new Date('2022-08-31'));
+        expect(result[2]!.tidsperiode.fom).toEqual(new Date('2022-05-19'));
+        expect(result[2]!.tidsperiode.tom).toEqual(new Date('2022-08-31'));
     });
 
     it('Skal ignorere perioder hvis tidsperiode starter før famdato og ender etter', () => {
@@ -561,8 +551,8 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-05-03'),
                 tom: new Date('2022-05-06'),
             },
-            forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
+            forelder: 'MOR',
+            konto: 'FELLESPERIODE',
         };
 
         const result = leggTilPeriode({
@@ -587,8 +577,8 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-09-12'),
                 tom: new Date('2022-10-14'),
             },
-            forelder: Forelder.mor,
-            konto: StønadskontoType.Fedrekvote,
+            forelder: 'MOR',
+            konto: 'FEDREKVOTE',
         };
 
         const result = leggTilPeriode({
@@ -603,10 +593,10 @@ describe('Test av legg til periode i uttaksplan', () => {
         });
 
         expect(result.length).toEqual(2);
-        expect(result[0].tidsperiode.fom).toEqual(nyPeriode.tidsperiode.fom);
-        expect(result[0].tidsperiode.tom).toEqual(nyPeriode.tidsperiode.tom);
-        expect(result[1].tidsperiode.fom).toEqual(new Date('2022-10-17'));
-        expect(result[1].tidsperiode.tom).toEqual(new Date('2022-12-23'));
+        expect(result[0]!.tidsperiode.fom).toEqual(nyPeriode.tidsperiode.fom);
+        expect(result[0]!.tidsperiode.tom).toEqual(nyPeriode.tidsperiode.tom);
+        expect(result[1]!.tidsperiode.fom).toEqual(new Date('2022-10-17'));
+        expect(result[1]!.tidsperiode.tom).toEqual(new Date('2022-12-23'));
     });
 
     it(
@@ -620,8 +610,8 @@ describe('Test av legg til periode i uttaksplan', () => {
                     fom: new Date('2022-09-12'),
                     tom: new Date('2022-10-14'),
                 },
-                forelder: Forelder.mor,
-                konto: StønadskontoType.Fedrekvote,
+                forelder: 'MOR',
+                konto: 'FEDREKVOTE',
             };
 
             const result = leggTilPeriode({
@@ -636,10 +626,10 @@ describe('Test av legg til periode i uttaksplan', () => {
             });
 
             expect(result.length).toEqual(2);
-            expect(result[0].tidsperiode.fom).toEqual(nyPeriode.tidsperiode.fom);
-            expect(result[0].tidsperiode.tom).toEqual(nyPeriode.tidsperiode.tom);
-            expect(result[1].tidsperiode.fom).toEqual(new Date('2022-10-17'));
-            expect(result[1].tidsperiode.tom).toEqual(new Date('2022-12-23'));
+            expect(result[0]!.tidsperiode.fom).toEqual(nyPeriode.tidsperiode.fom);
+            expect(result[0]!.tidsperiode.tom).toEqual(nyPeriode.tidsperiode.tom);
+            expect(result[1]!.tidsperiode.fom).toEqual(new Date('2022-10-17'));
+            expect(result[1]!.tidsperiode.tom).toEqual(new Date('2022-12-23'));
         },
     );
 
@@ -651,8 +641,8 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-09-12'),
                 tom: new Date('2022-10-14'),
             },
-            forelder: Forelder.mor,
-            konto: StønadskontoType.Fedrekvote,
+            forelder: 'MOR',
+            konto: 'FEDREKVOTE',
         };
 
         const result = leggTilPeriode({
@@ -667,10 +657,10 @@ describe('Test av legg til periode i uttaksplan', () => {
         });
 
         expect(result.length).toEqual(2);
-        expect(result[0].tidsperiode.fom).toEqual(nyPeriode.tidsperiode.fom);
-        expect(result[0].tidsperiode.tom).toEqual(nyPeriode.tidsperiode.tom);
-        expect(result[1].tidsperiode.fom).toEqual(new Date('2022-10-17'));
-        expect(result[1].tidsperiode.tom).toEqual(new Date('2022-12-12'));
+        expect(result[0]!.tidsperiode.fom).toEqual(nyPeriode.tidsperiode.fom);
+        expect(result[0]!.tidsperiode.tom).toEqual(nyPeriode.tidsperiode.tom);
+        expect(result[1]!.tidsperiode.fom).toEqual(new Date('2022-10-17'));
+        expect(result[1]!.tidsperiode.tom).toEqual(new Date('2022-12-12'));
     });
 
     it('Skal overskrive og ikke forskyve annen parts uttak hvis ny periode legger seg over annen parts uttak', () => {
@@ -681,8 +671,8 @@ describe('Test av legg til periode i uttaksplan', () => {
                 fom: new Date('2022-08-05'),
                 tom: new Date('2022-08-10'),
             },
-            forelder: Forelder.farMedmor,
-            konto: StønadskontoType.Fedrekvote,
+            forelder: 'FAR_MEDMOR',
+            konto: 'FEDREKVOTE',
         };
 
         const result = leggTilPeriode({
@@ -698,7 +688,7 @@ describe('Test av legg til periode i uttaksplan', () => {
 
         expect(result.length).toEqual(6);
         expect(result[3]).toEqual(nyPeriode);
-        expect(result[4].tidsperiode).toEqual({ fom: new Date('2022-08-11'), tom: new Date('2022-08-17') });
+        expect(result[4]!.tidsperiode).toEqual({ fom: new Date('2022-08-11'), tom: new Date('2022-08-17') });
     });
 
     it(
@@ -712,8 +702,8 @@ describe('Test av legg til periode i uttaksplan', () => {
                     fom: new Date('2023-05-12'),
                     tom: new Date('2023-09-19'),
                 },
-                forelder: Forelder.mor,
-                konto: StønadskontoType.Fellesperiode,
+                forelder: 'MOR',
+                konto: 'FELLESPERIODE',
             };
 
             const result = leggTilPeriode({
@@ -728,10 +718,10 @@ describe('Test av legg til periode i uttaksplan', () => {
             });
 
             expect(result.length).toEqual(6);
-            expect(result[3].tidsperiode).toEqual({ fom: new Date('2022-10-13'), tom: new Date('2023-03-20') });
-            expect(result[3].type).toEqual(Periodetype.PeriodeUtenUttak);
-            expect(result[4].tidsperiode).toEqual({ fom: new Date('2023-03-21'), tom: new Date('2023-05-11') });
-            expect(result[4].type).toEqual(Periodetype.PeriodeUtenUttak);
+            expect(result[3]!.tidsperiode).toEqual({ fom: new Date('2022-10-13'), tom: new Date('2023-03-20') });
+            expect(result[3]!.type).toEqual(Periodetype.PeriodeUtenUttak);
+            expect(result[4]!.tidsperiode).toEqual({ fom: new Date('2023-03-21'), tom: new Date('2023-05-11') });
+            expect(result[4]!.type).toEqual(Periodetype.PeriodeUtenUttak);
             expect(result[5]).toEqual(nyPeriode);
         },
     );
@@ -745,8 +735,8 @@ describe('Test av split periode i uttaksplan', () => {
             fom: new Date('2022-04-14'),
             tom: new Date('2022-05-02'),
         },
-        forelder: Forelder.farMedmor,
-        konto: StønadskontoType.Fedrekvote,
+        forelder: 'FAR_MEDMOR',
+        konto: 'FEDREKVOTE',
     } as Uttaksperiode;
     const splitPeriodeBFHRMedAktivitetskrav = {
         id: '157',
@@ -755,36 +745,36 @@ describe('Test av split periode i uttaksplan', () => {
             fom: new Date('2022-04-14'),
             tom: new Date('2022-05-02'),
         },
-        forelder: Forelder.farMedmor,
-        konto: StønadskontoType.Foreldrepenger,
-        morsAktivitetIPerioden: MorsAktivitet.Arbeid,
+        forelder: 'FAR_MEDMOR',
+        konto: 'FORELDREPENGER',
+        morsAktivitetIPerioden: 'ARBEID',
         erMorForSyk: false,
     } as Uttaksperiode;
     it('Skal splitte periode med fedrekvote med familiehendelsesdato på en virkedag i to perioder der den andre periode skal starte på splittedato', () => {
         const splitteDato = new Date('2022-05-02');
         const splittedePerioder = splittUttaksperiodePåFamiliehendelsesdato(splitPeriodeFedrekvote, splitteDato);
         expect(splittedePerioder.length).toEqual(2);
-        expect(splittedePerioder[0].id).toEqual(splitPeriodeFedrekvote.id);
-        expect(splittedePerioder[0].type).toEqual(splitPeriodeFedrekvote.type);
-        expect(splittedePerioder[0].forelder).toEqual(splitPeriodeFedrekvote.forelder);
-        expect(splittedePerioder[0].konto).toEqual(splitPeriodeFedrekvote.konto);
-        expect(splittedePerioder[0].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.fom);
-        expect(splittedePerioder[0].tidsperiode.tom).toEqual(new Date('2022-04-29'));
-        expect(splittedePerioder[1].id).not.toEqual(splitPeriodeFedrekvote.id);
-        expect(splittedePerioder[1].type).toEqual(splitPeriodeFedrekvote.type);
-        expect(splittedePerioder[1].forelder).toEqual(splitPeriodeFedrekvote.forelder);
-        expect(splittedePerioder[1].konto).toEqual(splitPeriodeFedrekvote.konto);
-        expect(splittedePerioder[1].tidsperiode.fom).toEqual(splitteDato);
-        expect(splittedePerioder[1].tidsperiode.tom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
+        expect(splittedePerioder[0]!.id).toEqual(splitPeriodeFedrekvote.id);
+        expect(splittedePerioder[0]!.type).toEqual(splitPeriodeFedrekvote.type);
+        expect(splittedePerioder[0]!.forelder).toEqual(splitPeriodeFedrekvote.forelder);
+        expect(splittedePerioder[0]!.konto).toEqual(splitPeriodeFedrekvote.konto);
+        expect(splittedePerioder[0]!.tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.fom);
+        expect(splittedePerioder[0]!.tidsperiode.tom).toEqual(new Date('2022-04-29'));
+        expect(splittedePerioder[1]!.id).not.toEqual(splitPeriodeFedrekvote.id);
+        expect(splittedePerioder[1]!.type).toEqual(splitPeriodeFedrekvote.type);
+        expect(splittedePerioder[1]!.forelder).toEqual(splitPeriodeFedrekvote.forelder);
+        expect(splittedePerioder[1]!.konto).toEqual(splitPeriodeFedrekvote.konto);
+        expect(splittedePerioder[1]!.tidsperiode.fom).toEqual(splitteDato);
+        expect(splittedePerioder[1]!.tidsperiode.tom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
     });
     it('Skal spitte periodeperiode med fedrekvote med familiehendelsesdato på en helgedag i to perioder med riktige datoer', () => {
         const splitteDato = new Date('2022-05-01');
         const splittedePerioder = splittUttaksperiodePåFamiliehendelsesdato(splitPeriodeFedrekvote, splitteDato);
         expect(splittedePerioder.length).toEqual(2);
-        expect(splittedePerioder[0].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.fom);
-        expect(splittedePerioder[0].tidsperiode.tom).toEqual(new Date('2022-04-29'));
-        expect(splittedePerioder[1].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
-        expect(splittedePerioder[1].tidsperiode.tom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
+        expect(splittedePerioder[0]!.tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.fom);
+        expect(splittedePerioder[0]!.tidsperiode.tom).toEqual(new Date('2022-04-29'));
+        expect(splittedePerioder[1]!.tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
+        expect(splittedePerioder[1]!.tidsperiode.tom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
     });
     it('Skal spitte periode med aktivitetskrav der BFHR slik at perioden før familiehendelsesdato blir automatisk satt til uten aktivitetskrav', () => {
         const splitteDato = new Date('2022-05-02');
@@ -793,15 +783,15 @@ describe('Test av split periode i uttaksplan', () => {
             splitteDato,
         );
         expect(splittedePerioder.length).toEqual(2);
-        expect(splittedePerioder[0].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.fom);
-        expect(splittedePerioder[0].tidsperiode.tom).toEqual(new Date('2022-04-29'));
-        expect(splittedePerioder[0].morsAktivitetIPerioden).toBeUndefined();
-        expect(splittedePerioder[0].erMorForSyk).toBeUndefined();
-        expect(splittedePerioder[1].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
-        expect(splittedePerioder[1].tidsperiode.tom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
-        expect(splittedePerioder[1].morsAktivitetIPerioden).toEqual(
+        expect(splittedePerioder[0]!.tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.fom);
+        expect(splittedePerioder[0]!.tidsperiode.tom).toEqual(new Date('2022-04-29'));
+        expect(splittedePerioder[0]!.morsAktivitetIPerioden).toBeUndefined();
+        expect(splittedePerioder[0]!.erMorForSyk).toBeUndefined();
+        expect(splittedePerioder[1]!.tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
+        expect(splittedePerioder[1]!.tidsperiode.tom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
+        expect(splittedePerioder[1]!.morsAktivitetIPerioden).toEqual(
             splitPeriodeBFHRMedAktivitetskrav.morsAktivitetIPerioden,
         );
-        expect(splittedePerioder[1].erMorForSyk).toEqual(splitPeriodeBFHRMedAktivitetskrav.erMorForSyk);
+        expect(splittedePerioder[1]!.erMorForSyk).toEqual(splitPeriodeBFHRMedAktivitetskrav.erMorForSyk);
     });
 });

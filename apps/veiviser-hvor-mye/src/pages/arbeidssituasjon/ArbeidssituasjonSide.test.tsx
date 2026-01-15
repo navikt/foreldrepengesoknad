@@ -1,4 +1,4 @@
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
@@ -180,9 +180,9 @@ describe('<ArbeidssituasjonSide>', () => {
         expect(screen.getByText('Gjennomsnittlig årslønn')).toBeInTheDocument();
         expect(screen.getByText('12 000 kr')).toBeInTheDocument();
 
-        expect(screen.getByText('Med årslønn under 62 014 kr har du ikke rett til foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Med årslønn under 65 080 kr har du ikke rett til foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText(/12 000 kr i året/)).toBeInTheDocument();
-        expect(screen.getByText(/62 014 kr i året/)).toBeInTheDocument();
+        expect(screen.getByText(/65 080 kr i året/)).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Se resultatet'));
 
@@ -224,7 +224,7 @@ describe('<ArbeidssituasjonSide>', () => {
         expect(screen.getByText('Gjennomsnittlig årslønn')).toBeInTheDocument();
         expect(screen.getByText('1 200 000 kr')).toBeInTheDocument();
 
-        expect(screen.getByText('Du får dekket opptil 744 168 kr av din inntekt')).toBeInTheDocument();
+        expect(screen.getByText('Du får dekket opptil 780 960 kr av din inntekt')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Se resultatet'));
 

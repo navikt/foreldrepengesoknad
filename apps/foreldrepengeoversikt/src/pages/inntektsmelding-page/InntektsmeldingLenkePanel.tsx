@@ -1,13 +1,15 @@
 import { SackKronerIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
+import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { hentInntektsmelding } from '../../api/api';
+import { hentInntektsmelding } from '../../api/queries.ts';
 import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
 import { OversiktRoutes } from '../../routes/routes';
 
 export const InntektsmeldingLenkePanel = () => {
     const params = useParams();
+    const intl = useIntl();
 
     const inntektsmeldinger = useQuery(hentInntektsmelding(params.saksnummer!)).data ?? [];
     const aktiveInntektsmeldinger = inntektsmeldinger.filter((im) => im.erAktiv);
@@ -16,5 +18,21 @@ export const InntektsmeldingLenkePanel = () => {
         return null;
     }
 
-    return <LenkePanel tittel="Rapportert inntekt" to={OversiktRoutes.INNTEKTSMELDING} Ikon={SackKronerIcon} />;
+    if (aktiveInntektsmeldinger.length === 1) {
+        return (
+            <LenkePanel
+                tittel={intl.formatMessage({ id: 'lenkePanel.rapportertInntekt' })}
+                to={`${OversiktRoutes.INNTEKTSMELDING}/${aktiveInntektsmeldinger[0]!.journalpostId}`}
+                Ikon={SackKronerIcon}
+            />
+        );
+    }
+
+    return (
+        <LenkePanel
+            tittel={intl.formatMessage({ id: 'lenkePanel.rapportertInntekt' })}
+            to={OversiktRoutes.INNTEKTSMELDING}
+            Ikon={SackKronerIcon}
+        />
+    );
 };

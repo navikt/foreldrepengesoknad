@@ -3,18 +3,9 @@ export enum DelivisTilretteleggingPeriodeType {
     'VARIERTE_PERIODER' = 'VARIERTE_PERIODER',
 }
 
-export enum Tilretteleggingstype {
-    'INGEN' = 'ingen',
-    'DELVIS' = 'delvis',
-    'HEL' = 'hel',
-}
+export type Tilretteleggingstype = 'ingen' | 'delvis' | 'hel';
 
-export enum Arbeidsforholdstype {
-    'VIRKSOMHET' = 'virksomhet',
-    'SELVSTENDIG' = 'selvstendig',
-    'FRILANSER' = 'frilanser',
-    'PRIVAT' = 'privat',
-}
+export type Arbeidsforholdstype = 'virksomhet' | 'selvstendig' | 'frilanser' | 'privat';
 
 export interface Stilling {
     fom: string;
@@ -27,19 +18,14 @@ export enum TilOgMedDatoType {
     SISTE_DAG_MED_SVP = 'SISTE_DAG_MED_SVP',
 }
 
-export type TilretteleggingPeriode = {
-    type: Tilretteleggingstype;
-    fom: string;
-    tom: string;
-    stillingsprosent?: number;
-};
-
 export type PeriodeMedVariasjon = {
     tomType: TilOgMedDatoType;
     fom: string;
     tom?: string;
     stillingsprosent: string;
 };
+
+export type PeriodeMedVariasjonFormValues = Partial<PeriodeMedVariasjon>;
 
 type Tilrettelegging = {
     behovForTilretteleggingFom: string;
@@ -49,7 +35,7 @@ type Tilrettelegging = {
 };
 
 export type DelvisTilrettelegging = {
-    type: Tilretteleggingstype.DELVIS;
+    type: 'delvis';
     delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType;
     enPeriodeMedTilretteleggingStillingsprosent?: string;
     enPeriodeMedTilretteleggingTomType?: TilOgMedDatoType;
@@ -57,7 +43,7 @@ export type DelvisTilrettelegging = {
 } & Tilrettelegging;
 
 export type IngenTilrettelegging = {
-    type: Tilretteleggingstype.INGEN;
+    type: 'ingen';
     enPeriodeMedTilretteleggingTomType: TilOgMedDatoType;
     enPeriodeMedTilretteleggingFom: string;
 } & Tilrettelegging;

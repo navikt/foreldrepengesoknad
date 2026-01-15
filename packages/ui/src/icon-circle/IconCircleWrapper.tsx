@@ -1,34 +1,31 @@
 import { ReactNode } from 'react';
 
-import styles from './iconCircleWrapper.module.css';
-
 export type CircleColor = 'darkGreen' | 'mediumGreen' | 'green' | 'gray' | 'blue' | 'lightBlue' | 'darkBlue';
 type CircleSize = 'medium' | 'large' | 'xl';
 
 const getColor = (color: CircleColor): string => {
     if (color === 'green') {
-        return styles.green;
+        return 'bg-ax-meta-lime-300';
     }
     if (color === 'gray') {
-        return styles.gray;
+        return 'bg-ax-neutral-400';
     }
-    if (color === 'blue') {
-        return styles.blue;
-    }
-    if (color === 'lightBlue') {
-        return styles.lightBlue;
+    if (color === 'blue' || color === 'lightBlue') {
+        return 'bg-ax-brand-blue-400';
     }
     if (color === 'darkBlue') {
-        return styles.darkBlue;
+        return 'bg-ax-brand-blue-600';
     }
-    return color === 'mediumGreen' ? styles.mediumGreen : styles.darkGreen;
+    return 'bg-ax-meta-lime-400';
 };
 const getSize = (size: CircleSize): string => {
     if (size === 'medium') {
-        return styles.mediumCircle;
+        return 'rounded-full flex justify-center items-center h-8 w-8';
     }
 
-    return size === 'large' ? styles.largeCircle : styles.xlCircle;
+    return size === 'large'
+        ? 'rounded-full flex justify-center items-center h-10 w-10'
+        : 'rounded-full flex justify-center items-center h-16 w-16';
 };
 
 interface Props {

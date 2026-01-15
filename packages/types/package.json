@@ -3,11 +3,22 @@
     "main": "index.ts",
     "type": "module",
     "types": "index.ts",
+    "scripts": {
+        "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
+        "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
+        "prettier": "prettier --write src",
+        "update-swagger": "node scripts/hent-openapi-spec.js",
+        "generate:local": "pnpm run update-swagger lokal && openapi-ts",
+        "generate": "pnpm run update-swagger && openapi-ts",
+        "openapi-ts": "openapi-ts"
+    },
     "dependencies": {
+        "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-constants": "workspace:*"
     },
     "devDependencies": {
-        "@navikt/eslint-config-fp-selvbetjening": "workspace:*"
+        "@hey-api/openapi-ts": "0.89.2",
+        "eslint": "9.39.2"
     },
-    "packageManager": "pnpm@9.1.4"
+    "packageManager": "pnpm@10.28.0"
 }

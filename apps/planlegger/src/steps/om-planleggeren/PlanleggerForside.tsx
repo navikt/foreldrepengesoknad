@@ -3,35 +3,27 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
-import { LocaleAll } from '@navikt/fp-types';
-import { BlueHeading, IconCircleWrapper, LanguageToggleNew, Page } from '@navikt/fp-ui';
-
-import styles from './planleggerForside.module.css';
+import { BlueHeading, IconCircleWrapper, Page } from '@navikt/fp-ui';
 
 interface Props {
-    locale: LocaleAll;
-    changeLocale: (locale: LocaleAll) => void;
     children: React.ReactElement | React.ReactElement[];
 }
 
-export const PlanleggerForside = ({ locale, changeLocale, children }: Props) => (
+export const PlanleggerForside = ({ children }: Props) => (
     <Page
         header={
             <>
                 <Show below="md">
                     <BlueHeading>
-                        <VStack gap="4" align="center">
-                            <div className={styles.languageToggle}>
-                                <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
-                            </div>
+                        <VStack gap="space-16" align="center">
                             <IconCircleWrapper color="lightBlue" size="xl">
                                 <CalendarIcon height={44} width={44} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
-                            <VStack gap="1" align="center">
+                            <VStack gap="space-4" align="center">
                                 <Heading size="large">
                                     <FormattedMessage id="PlanleggerForside.Tittel" />
                                 </Heading>
-                                <HStack gap="2" align="center">
+                                <HStack gap="space-8" align="center">
                                     <ClockIcon aria-hidden />
                                     <BodyShort>
                                         <FormattedMessage id="PlanleggerForside.Label" />
@@ -43,15 +35,15 @@ export const PlanleggerForside = ({ locale, changeLocale, children }: Props) => 
                 </Show>
                 <Show above="md">
                     <BlueHeading>
-                        <VStack gap="4">
+                        <VStack gap="space-16">
                             <IconCircleWrapper color="lightBlue" size="large">
                                 <CalendarIcon height={30} width={30} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
-                            <VStack gap="1">
+                            <VStack gap="space-4">
                                 <Heading size="large">
                                     <FormattedMessage id="PlanleggerForside.Tittel" />
                                 </Heading>
-                                <HStack gap="2" align="center">
+                                <HStack gap="space-8" align="center">
                                     <ClockIcon aria-hidden />
                                     <BodyShort>
                                         <FormattedMessage id="PlanleggerForside.Label" />

@@ -1,12 +1,12 @@
 import dayjs from 'dayjs';
 
-import { Barn, Forelder, Periode, Situasjon, StønadskontoType, isUfødtBarn, isUttaksperiode } from '@navikt/fp-common';
+import { Barn, Periode, Situasjon, isUfødtBarn, isUttaksperiode } from '@navikt/fp-common';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import { andreAugust2022ReglerGjelder } from '@navikt/fp-uttaksplan';
 
 type DateType = Date | string | undefined;
 
-export const getKanPeriodenRundtFødselJusteres = (periodeRundtFødsel: Periode, termindato: DateType): boolean => {
+const getKanPeriodenRundtFødselJusteres = (periodeRundtFødsel: Periode, termindato: DateType): boolean => {
     return (
         termindato !== undefined &&
         isUttaksperiode(periodeRundtFødsel) &&
@@ -14,8 +14,8 @@ export const getKanPeriodenRundtFødselJusteres = (periodeRundtFødsel: Periode,
             Uttaksdagen(dayjs(termindato).toDate()).denneEllerNeste(),
             'day',
         ) &&
-        periodeRundtFødsel.forelder === Forelder.farMedmor &&
-        periodeRundtFødsel.konto === StønadskontoType.Fedrekvote &&
+        periodeRundtFødsel.forelder === 'FAR_MEDMOR' &&
+        periodeRundtFødsel.konto === 'FEDREKVOTE' &&
         periodeRundtFødsel.ønskerSamtidigUttak === true &&
         periodeRundtFødsel.ønskerFlerbarnsdager !== true
     );
@@ -29,7 +29,7 @@ export const getKanPerioderRundtFødselAutomatiskJusteres = (
     return (
         kanSøkersituasjonAutomatiskJustereRundtFødsel &&
         perioderMedUttakRundtFødsel.length === 1 &&
-        getKanPeriodenRundtFødselJusteres(perioderMedUttakRundtFødsel[0], termindato)
+        getKanPeriodenRundtFødselJusteres(perioderMedUttakRundtFødsel[0]!, termindato)
     );
 };
 

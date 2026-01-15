@@ -4,24 +4,21 @@ import { FormattedMessage } from 'react-intl';
 import { Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 export const IkkeKvinne = () => {
-    loggAmplitudeEvent({
+    loggUmamiEvent({
         origin: 'svangerskapspengesoknad',
         eventName: 'besøk',
         eventData: { tittel: 'ikkeKvinne' },
     });
 
     return (
-        <ContentWrapper>
-            <Heading level="1" size="xlarge">
-                <FormattedMessage id="søknad.pageheading" />
-            </Heading>
-            <VStack gap="10">
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
+            <VStack gap="space-40">
                 <GuidePanel poster>
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <Heading level="2" size="small">
                             <FormattedMessage id="ikkeKvinne.tittel" />
                         </Heading>
@@ -35,6 +32,6 @@ export const IkkeKvinne = () => {
                     </Button>
                 </HStack>
             </VStack>
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

@@ -1,40 +1,34 @@
-import dayjs from 'dayjs';
-
-import { AnnenForelder, MorsAktivitet, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { AnnenForelder, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
+import { MorsAktivitet } from '@navikt/fp-types';
 
-const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
+const hasValue = (v: string | undefined | null) => v !== '' && v !== undefined && v !== null;
 
 export const aktivitetskravMorUtil = {
     skalBesvaresVedUtsettelse(søkerErFarEllerMedmor: boolean, annenForelder: AnnenForelder): boolean {
-        const reglerFørFørsteOkt2021 = dayjs(new Date()).isBefore(new Date('2021-10-01'), 'day');
-        const annenForelderErUfør = isAnnenForelderOppgitt(annenForelder) ? annenForelder.erMorUfør : undefined;
         const annenForelderHarRett = isAnnenForelderOppgitt(annenForelder)
             ? annenForelder.harRettPåForeldrepengerINorge || annenForelder.harRettPåForeldrepengerIEØS
             : undefined;
 
-        return !søkerErFarEllerMedmor ||
-            (annenForelderHarRett === false && annenForelderErUfør === true && !reglerFørFørsteOkt2021)
-            ? false
-            : annenForelderHarRett === false;
+        return søkerErFarEllerMedmor && annenForelderHarRett === false;
     },
 };
 
 export const getMorsAktivitetSkjemanummer = (morsAktivitet?: MorsAktivitet): Skjemanummer => {
     switch (morsAktivitet) {
-        case MorsAktivitet.Innlagt:
+        case 'INNLAGT':
             return Skjemanummer.DOK_INNLEGGELSE_MOR;
-        case MorsAktivitet.Kvalifiseringsprogrammet:
+        case 'KVALPROG':
             return Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM;
-        case MorsAktivitet.Introduksjonsprogrammet:
+        case 'INTROPROG':
             return Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET;
-        case MorsAktivitet.ArbeidOgUtdanning:
+        case 'ARBEID_OG_UTDANNING':
             return Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR;
-        case MorsAktivitet.Arbeid:
+        case 'ARBEID':
             return Skjemanummer.DOK_ARBEID_MOR;
-        case MorsAktivitet.TrengerHjelp:
+        case 'TRENGER_HJELP':
             return Skjemanummer.DOK_SYKDOM_MOR;
-        case MorsAktivitet.Utdanning:
+        case 'UTDANNING':
             return Skjemanummer.DOK_UTDANNING_MOR;
         default:
             return Skjemanummer.ANNET;
@@ -49,7 +43,7 @@ export const getMorsAktivitet = (
         return aktivitetskravMorValue as MorsAktivitet;
     }
     if (erMorForSykValue) {
-        return MorsAktivitet.TrengerHjelp;
+        return 'TRENGER_HJELP';
     }
     return undefined;
 };

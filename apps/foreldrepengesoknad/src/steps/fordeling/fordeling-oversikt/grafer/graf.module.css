@@ -51,53 +51,53 @@
 }
 
 .søkerMor {
-    background-color: var(--a-data-surface-1);
-    border-color: var(--a-data-surface-1);
+    background-color: var(--ax-brand-blue-500);
+    border-color: var(--ax-brand-blue-500);
 }
 
 .annenPartMor {
-    background-color: var(--a-data-surface-2-subtle);
-    border-color: var(--a-data-surface-2-subtle);
+    background-color: var(--ax-brand-blue-400);
+    border-color: var(--ax-brand-blue-400);
 }
 
 .søkerFar {
-    background-color: var(--a-data-surface-5);
-    border-color: var(--a-data-surface-5);
+    background-color: var(--ax-success-500);
+    border-color: var(--ax-success-500);
 }
 
 .annenPartFar {
-    background-color: var(--a-data-surface-5-subtle);
-    border-color: var(--a-data-surface-5-subtle);
+    background-color: var(--ax-success-400);
+    border-color: var(--ax-success-400);
 }
 
 .fellesperiode {
-    background-color: var(--a-bg-subtle);
-    border-color: var(--a-border-default);
+    background-color: var(--ax-bg-neutral-soft);
+    border-color: var(--ax-border-neutral);
 }
 
 .fellesperiodeBruktAvFar {
-    background-color: var(--a-data-surface-5-subtle);
-    border-color: var(--a-border-default);
+    background-color: var(--ax-success-400);
+    border-color: var(--ax-border-neutral);
 }
 
 .fellesperiodeBruktAvMor {
-    background-color: var(--a-data-surface-2-subtle);
-    border-color: var(--a-deepblue-500);
+    background-color: var(--ax-brand-blue-400);
+    border-color: var(--ax-brand-blue-600);
 }
 
 .fedrekvoteBruktAvMor {
-    background-color: var(--a-data-surface-2-subtle);
-    border-color: var(--a-green-500);
+    background-color: var(--ax-brand-blue-400);
+    border-color: var(--ax-success-600);
 }
 
 .mødrekvoteBruktAvFar {
-    background-color: var(--a-data-surface-5-subtle);
-    border-color: var(--a-data-surface-1);
+    background-color: var(--ax-success-400);
+    border-color: var(--ax-brand-blue-500);
 }
 
 .ikkeTildelt {
-    background-color: #eceef0;
-    border: 2px solid var(--Surface-Neutral, #525962);
+    background-color: var(--ax-bg-neutral-moderate);
+    border: 2px solid var(--ax-bg-neutral-strong);
 }
 
 .delGrafBox {

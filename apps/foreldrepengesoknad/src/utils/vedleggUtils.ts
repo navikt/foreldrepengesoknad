@@ -1,5 +1,5 @@
-import { AttachmentType, InnsendingsType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, AttachmentMetadata } from '@navikt/fp-types';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment, Dokumenterer, InnsendingType } from '@navikt/fp-types';
 
 import { guid } from './guid';
 
@@ -9,8 +9,8 @@ export const mapFilTilVedlegg = (
     file: File,
     type: AttachmentType,
     skjemanummer: Skjemanummer,
-    innsendingsType?: InnsendingsType,
-    dokumenterer?: AttachmentMetadata,
+    innsendingsType: InnsendingType,
+    dokumenterer?: Dokumenterer,
 ): Attachment => ({
     id: generateAttachmentId(),
     file,
@@ -30,17 +30,19 @@ export const isAttachmentWithError = ({ pending, uploaded, filesize }: Attachmen
 export const lagSendSenereDokument = (
     type: AttachmentType,
     skjemanummer: Skjemanummer,
-    dokumenterer?: AttachmentMetadata,
+    dokumenterer?: Dokumenterer,
 ) => {
-    return mapFilTilVedlegg(
-        { name: '', size: '' } as any,
-        type,
-        skjemanummer,
-        InnsendingsType.SEND_SENERE,
-        dokumenterer,
-    );
+    return mapFilTilVedlegg({ name: '' } as File, type, skjemanummer, 'SEND_SENERE', dokumenterer);
 };
 
-export const addMetadata = (attachment: Attachment, metadata: AttachmentMetadata): Attachment => {
+export const lagAutomatiskDokument = (
+    type: AttachmentType,
+    skjemanummer: Skjemanummer,
+    dokumenterer?: Dokumenterer,
+) => {
+    return mapFilTilVedlegg({ name: '' } as File, type, skjemanummer, 'AUTOMATISK', dokumenterer);
+};
+
+export const addMetadata = (attachment: Attachment, metadata: Dokumenterer): Attachment => {
     return { ...attachment, dokumenterer: metadata };
 };

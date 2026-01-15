@@ -13,7 +13,9 @@ export const links = {
     papirsøknadSvp: 'https://www.nav.no/start/soknad-svangerskapspenger?stegvalg=1',
     personvernerklæring:
         'https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten',
+    arbeidsforholdMineSider: 'https://www.nav.no/person/personopplysninger/nb/#arbeidsforhold',
     personvernerklæringOm: 'https://www.nav.no/personvernerklaering#om',
+    forelderpengerHvorLenge: 'https://www.nav.no/foreldrepenger#hvor-lenge',
     plikter: 'https://www.nav.no/endringer',
     søknadsveileder: 'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad',
     veiviser: 'https://www.nav.no/foreldrepenger/foreldrepenger-eller-engangsstonad',
@@ -28,7 +30,7 @@ export const links = {
     søknadsfrister: 'https://www.nav.no/foreldrepenger#for-soknad',
     opphold: 'https://www.nav.no/foreldrepenger#opphold',
     hvorLenge: 'https://www.nav.no/foreldrepenger#hvor-lenge',
-    hvorMye: 'https://familie.nav.no/hvor-mye',
+    hvorMye: 'https://www.nav.no/foreldrepenger/hvor-mye',
     svangerskapspenger: 'https://familie.nav.no/om-svangerskapspenger',
     tilretteleggingsskjema:
         'https://www.arbeidstilsynet.no/tema/graviditet-og-arbeidsmiljo/skjema-for-tilrettelegging-for-gravide/',
@@ -54,14 +56,14 @@ export const links = {
     graderingInfo: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#arbeid',
     aktivitetsfriUttakInfo: 'https://www.nav.no/foreldrepenger#hvor-lenge',
     farskapsportal: 'https://farskapsportal.nav.no/',
-    barnehageloven: 'https://lovdata.no/pro/#document/NL/lov/2005-06-17-64/§16',
+    barnehageloven: 'https://lovdata.no/nav/lov/2005-06-17-64/kapIV/%C2%A716',
     godkjentAktivitet: 'https://www.nav.no/foreldrepenger#hvor-lenge',
     søknadForeldrepenger: 'https://www.nav.no/start/soknad-foreldrepenger',
     søknadEngangsstønad: 'https://www.nav.no/start/soknad-engangsstonad',
-    hvaSkjerNår: 'https://familie.nav.no/soke-om-foreldrepenger',
     grunnbeløpet: 'https://www.nav.no/grunnbelopet',
     folketrygden:
         'https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden',
     omForeldrepenger: 'https://www.nav.no/foreldrepenger',
     utbetalingsoversikt: 'https://www.nav.no/utbetalingsoversikt/',
+    foreldrepengerPlanlegger: 'https://www.nav.no/foreldrepenger/planlegger/',
 };

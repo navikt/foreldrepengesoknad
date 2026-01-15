@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import { Button, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { CountryCode, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { HorizontalLine, ProgressStep, Step } from '@navikt/fp-ui';
 
 import { SenereUtenlandsoppholdPeriode } from './SenereUtenlandsoppholdPeriode';
@@ -15,19 +15,19 @@ type FormType = {
     utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[];
 };
 
-const DEFAULT_PERIODE = {
+const DEFAULT_PERIODE: UtenlandsoppholdPeriode = {
     fom: '',
     tom: '',
-    landkode: '',
-} satisfies UtenlandsoppholdPeriode;
+    landkode: '' as CountryCode,
+};
 
 interface Props<TYPE> {
     senereUtenlandsopphold: UtenlandsoppholdPeriode[];
     saveOnNext: (formValues: UtenlandsoppholdPeriode[]) => void;
     saveOnPrevious: (formValues: UtenlandsoppholdPeriode[]) => void;
     onStepChange?: (id: TYPE) => void;
-    cancelApplication: () => void;
-    onContinueLater?: () => void;
+    onAvsluttOgSlett: () => void;
+    onFortsettSenere?: () => void;
     goToPreviousStep: () => void;
     stepConfig: Array<ProgressStep<TYPE>>;
 }
@@ -36,8 +36,8 @@ export const SenereUtenlandsoppholdPanel = <TYPE extends string>({
     saveOnNext,
     saveOnPrevious,
     onStepChange,
-    cancelApplication,
-    onContinueLater,
+    onAvsluttOgSlett,
+    onFortsettSenere,
     goToPreviousStep,
     senereUtenlandsopphold,
     stepConfig,
@@ -58,16 +58,11 @@ export const SenereUtenlandsoppholdPanel = <TYPE extends string>({
     }, [append]);
 
     return (
-        <Step
-            onCancel={cancelApplication}
-            onContinueLater={onContinueLater}
-            steps={stepConfig}
-            onStepChange={onStepChange}
-        >
+        <Step steps={stepConfig} onStepChange={onStepChange}>
             <RhfForm formMethods={formMethods} onSubmit={(values) => saveOnNext(values.utenlandsoppholdNeste12Mnd)}>
-                <VStack gap="10">
+                <VStack gap="space-40">
                     <ErrorSummaryHookForm />
-                    <VStack gap="10" align="start">
+                    <VStack gap="space-40" align="start">
                         {fields.map((field, index) => (
                             <Fragment key={field.id}>
                                 <SenereUtenlandsoppholdPeriode index={index} fjernOpphold={remove} />
@@ -85,6 +80,8 @@ export const SenereUtenlandsoppholdPanel = <TYPE extends string>({
                         </Button>
                     </VStack>
                     <StepButtonsHookForm<FormType>
+                        onAvsluttOgSlett={onAvsluttOgSlett}
+                        onFortsettSenere={onFortsettSenere}
                         goToPreviousStep={goToPreviousStep}
                         saveDataOnPreviousClick={(values) => saveOnPrevious(values.utenlandsoppholdNeste12Mnd)}
                     />

@@ -3,24 +3,25 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getVarighetString, getVis1Juli2024Info } from 'utils/dateUtils';
-import { getAntallUker } from 'utils/stønadskontoerUtils';
+import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad } from '@navikt/fp-common';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { Dekningsgrad, KontoBeregningDto } from '@navikt/fp-types';
 import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { InfoOmUtvidet80ProsentPeriode } from './InfoOmUtvidet80ProsentPeriode';
 
 type Props = {
-    goToPreviousDefaultStep: () => Promise<void>;
-    goToNextDefaultStep: () => Promise<void>;
+    goToPreviousDefaultStep: () => void;
+    goToNextDefaultStep: () => void;
+    onAvsluttOgSlett?: () => void;
+    onFortsettSenere?: () => void;
     fornavnAnnenForelder: string;
-    kjønnAnnenForelder?: 'M' | 'K';
+    kjønnAnnenForelder?: 'M' | 'K' | 'U';
     dekningsgrad: Dekningsgrad;
-    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
+    valgtStønadskonto: KontoBeregningDto;
 };
 
 export const DekningsgradValgtAvAnnenPartPanel = ({
@@ -30,6 +31,8 @@ export const DekningsgradValgtAvAnnenPartPanel = ({
     kjønnAnnenForelder,
     dekningsgrad,
     valgtStønadskonto,
+    onFortsettSenere,
+    onAvsluttOgSlett,
 }: Props) => {
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -46,10 +49,10 @@ export const DekningsgradValgtAvAnnenPartPanel = ({
         return goToNextDefaultStep();
     };
 
-    const uker = getAntallUker(valgtStønadskonto);
-    const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && dekningsgrad === Dekningsgrad.ÅTTI_PROSENT;
+    const uker = getAntallUkerFraStønadskontoer(valgtStønadskonto.kontoer);
+    const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && dekningsgrad === '80';
     return (
-        <VStack gap="10">
+        <VStack gap="space-40">
             <Infobox
                 color="blue"
                 header={
@@ -87,6 +90,8 @@ export const DekningsgradValgtAvAnnenPartPanel = ({
                 )}
             </Infobox>
             <StepButtons
+                onFortsettSenere={onFortsettSenere}
+                onAvsluttOgSlett={onAvsluttOgSlett}
                 isDisabledAndLoading={isSubmitting}
                 nextButtonOnClick={lagre}
                 goToPreviousStep={goToPreviousDefaultStep}

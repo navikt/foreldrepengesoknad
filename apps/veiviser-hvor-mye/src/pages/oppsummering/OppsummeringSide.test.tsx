@@ -1,4 +1,4 @@
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 
 import * as stories from './OppsummeringSide.stories';
@@ -42,20 +42,20 @@ describe('<OppsummeringSide>', () => {
 
         expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
 
-        expect(screen.getByText('Du får dekket opptil 744 168 kr av din inntekt')).toBeInTheDocument();
+        expect(screen.getByText('Du får dekket opptil 780 960 kr av din inntekt')).toBeInTheDocument();
 
         expect(screen.getByText('Gjennomsnittlig utbetaling med 100 % foreldrepenger i 49 uker')).toBeInTheDocument();
         expect(screen.getByText('Gjennomsnittlig utbetaling med 80 % foreldrepenger i 59 uker')).toBeInTheDocument();
         expect(screen.getAllByText('Månedlig før skatt')).toHaveLength(2);
-        expect(screen.getByText('62 014 kr')).toBeInTheDocument();
-        expect(screen.getByText('49 611 kr')).toBeInTheDocument();
+        expect(screen.getByText('65 080 kr')).toBeInTheDocument();
+        expect(screen.getByText('52 064 kr')).toBeInTheDocument();
         expect(screen.getAllByText('Daglig før skatt')).toHaveLength(2);
-        expect(screen.getByText('2 862 kr')).toBeInTheDocument();
-        expect(screen.getByText('2 290 kr')).toBeInTheDocument();
+        expect(screen.getByText('3 004 kr')).toBeInTheDocument();
+        expect(screen.getByText('2 403 kr')).toBeInTheDocument();
         expect(screen.getByText('Totalt for 25 uker før skatt')).toBeInTheDocument();
-        expect(screen.getByText('357 750 kr')).toBeInTheDocument();
+        expect(screen.getByText('375 500 kr')).toBeInTheDocument();
         expect(screen.getByText('Totalt for 30 uker før skatt')).toBeInTheDocument();
-        expect(screen.getByText('343 500 kr')).toBeInTheDocument();
+        expect(screen.getByText('360 450 kr')).toBeInTheDocument();
 
         expect(
             screen.getByText('Mange får lønn utbetalt som vanlig fra arbeidsgiveren sin mens man har permisjon'),
@@ -72,9 +72,9 @@ describe('<OppsummeringSide>', () => {
 
         expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
 
-        expect(screen.getByText('Med årslønn under 62 014 kr har du ikke rett til foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Med årslønn under 65 080 kr har du ikke rett til foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText(/12 000 kr i året/)).toBeInTheDocument();
-        expect(screen.getByText(/62 014 kr i året/)).toBeInTheDocument();
+        expect(screen.getByText(/65 080 kr i året/)).toBeInTheDocument();
         expect(screen.getByText('Hva er engangsstønad?')).toBeInTheDocument();
     });
 
@@ -83,7 +83,7 @@ describe('<OppsummeringSide>', () => {
 
         expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
 
-        expect(screen.queryByText('Du får dekket opptil 744 168 kr av din inntekt')).not.toBeInTheDocument();
+        expect(screen.queryByText('Du får dekket opptil 780 960 kr av din inntekt')).not.toBeInTheDocument();
 
         expect(screen.getByText('Gjennomsnittlig utbetaling med 100 % foreldrepenger i 49 uker')).toBeInTheDocument();
         expect(screen.getByText('Gjennomsnittlig utbetaling med 80 % foreldrepenger i 59 uker')).toBeInTheDocument();

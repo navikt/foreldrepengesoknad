@@ -1,22 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
 import { SvpDataContext } from 'appData/SvpDataContext';
-import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useMellomlagreSøknad';
+import { API_URLS, mellomlagretInfoOptions, søkerinfoOptions } from 'appData/queries';
+import { VERSJON_MELLOMLAGRING } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 import isEqual from 'lodash/isEqual';
 import { useIntl } from 'react-intl';
 
-import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
-import { RegisterdataUtdatert, Umyndig } from '@navikt/fp-ui';
+import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ApiErrorHandler, Spinner, SvangerskapspengesøknadRoutes } from './SvangerskapspengesøknadRoutes';
+import { ApiErrorHandler, SvangerskapspengesøknadRoutes } from './SvangerskapspengesøknadRoutes';
 import { hentSakerOptions } from './api/queries';
 import { IkkeKvinne } from './pages/ikke-kvinne/IkkeKvinne';
 
 export const slettMellomlagringOgLastSidePåNytt = async () => {
     try {
-        await ky.delete(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`);
+        await ky.delete(API_URLS.mellomlagring);
     } catch {
         // Vi bryr oss ikke om feil her. Logges bare i backend
     }
@@ -24,25 +24,13 @@ export const slettMellomlagringOgLastSidePåNytt = async () => {
     location.reload();
 };
 
-interface Props {
-    locale: LocaleNo;
-    onChangeLocale: any;
-}
-
-export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
+export const Svangerskapspengesøknad = () => {
     const intl = useIntl();
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
 
-    const søkerinfo = useQuery({
-        queryKey: ['SOKERINFO'],
-        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`).json<Søkerinfo>(),
-    });
+    const søkerinfo = useQuery(søkerinfoOptions());
 
-    const mellomlagretInfo = useQuery({
-        queryKey: ['MELLOMLAGRET_INFO'],
-        queryFn: () =>
-            ky.get(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`).json<SvpDataMapAndMetaData>(),
-    });
+    const mellomlagretInfo = useQuery(mellomlagretInfoOptions());
 
     const sak = useQuery(hentSakerOptions());
     console.log(sak);
@@ -55,13 +43,13 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
         return <Spinner />;
     }
 
-    const erPersonKvinne = søkerinfo.data.søker.kjønn === 'K';
+    const erPersonKvinne = søkerinfo.data.person.kjønn === 'K';
 
     if (!erPersonKvinne) {
         return <IkkeKvinne />;
     }
 
-    const erPersonMyndig = erMyndig(søkerinfo.data.søker.fødselsdato);
+    const erPersonMyndig = erMyndig(søkerinfo.data.person.fødselsdato);
 
     const mellomlagretState =
         mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING ? mellomlagretInfo.data : undefined;
@@ -84,17 +72,12 @@ export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
 
     return (
         <div>
-            {!erPersonMyndig ? (
-                <Umyndig appName="svangerskapspengesoknad" />
-            ) : (
+            {erPersonMyndig ? (
                 <SvpDataContext initialState={m}>
-                    <SvangerskapspengesøknadRoutes
-                        locale={locale}
-                        onChangeLocale={onChangeLocale}
-                        søkerInfo={søkerinfo.data}
-                        mellomlagretData={m}
-                    />
+                    <SvangerskapspengesøknadRoutes søkerInfo={søkerinfo.data} mellomlagretData={m} />
                 </SvpDataContext>
+            ) : (
+                <Umyndig appName="svangerskapspengesoknad" />
             )}
         </div>
     );

@@ -1,31 +1,10 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { HvorMyeRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 
-import { ArbeidssituasjonSide } from './ArbeidssituasjonSide';
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
 
-const satser = {
-    engangstønad: [
-        {
-            fom: '01.01.2023',
-            verdi: 92648,
-        },
-        {
-            fom: '01.01.2021',
-            verdi: 90300,
-        },
-    ],
-    grunnbeløp: [
-        {
-            fom: '01.05.2024',
-            verdi: 124028,
-        },
-        {
-            fom: '01.05.2023',
-            verdi: 118620,
-        },
-    ],
-};
+import { ArbeidssituasjonSide } from './ArbeidssituasjonSide';
 
 const meta = {
     title: 'hvorMye/ArbeidssituasjonSide',
@@ -46,6 +25,6 @@ export const Default: Story = {
     args: {
         setArbeidssituasjon: () => undefined,
         arbeidssituasjon: undefined,
-        satser,
+        satser: DEFAULT_SATSER,
     },
 };

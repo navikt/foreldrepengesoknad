@@ -1,5 +1,5 @@
 import { WalletIcon } from '@navikt/aksel-icons';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
@@ -16,7 +16,6 @@ interface Props {
 }
 
 export const Utbetaling = ({ satser, lønnSøker, fornavn }: Props) => {
-    const locale = useIntl().locale;
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const annualMax = 6 * grunnbeløpet;
     const monthlyMax = annualMax / 12;
@@ -25,17 +24,17 @@ export const Utbetaling = ({ satser, lønnSøker, fornavn }: Props) => {
     const decimal80 = 80 / 100;
 
     const getMonthlyPayment = (lønn: number, decimal: number) => {
-        if (isNaN(lønn)) return 0;
+        if (Number.isNaN(lønn)) return 0;
         return Math.round(Math.min(lønn, monthlyMax) * decimal);
     };
 
     const getDailyPayment = (lønn: number, decimal: number) => {
-        if (isNaN(lønn)) return 0;
+        if (Number.isNaN(lønn)) return 0;
         return Math.round(Math.min((lønn * 12) / 260, dailyMax) * decimal);
     };
 
     return (
-        <VStack gap="4">
+        <VStack gap="space-16">
             <Infobox
                 header={
                     lønnSøker <= monthlyMax ? (
@@ -43,8 +42,8 @@ export const Utbetaling = ({ satser, lønnSøker, fornavn }: Props) => {
                             id="HvorMyeSteg.VilFå"
                             values={{
                                 hvem: capitalizeFirstLetter(fornavn),
-                                utregning100: formatCurrencyWithKr(getDailyPayment(lønnSøker, 1), locale),
-                                utregning80: formatCurrencyWithKr(getDailyPayment(lønnSøker, decimal80), locale),
+                                utregning100: formatCurrencyWithKr(getDailyPayment(lønnSøker, 1)),
+                                utregning80: formatCurrencyWithKr(getDailyPayment(lønnSøker, decimal80)),
                             }}
                         />
                     ) : (
@@ -52,22 +51,30 @@ export const Utbetaling = ({ satser, lønnSøker, fornavn }: Props) => {
                             id="HvorMyeSteg.KanFå"
                             values={{
                                 hvem: capitalizeFirstLetter(fornavn),
-                                utregning100: formatCurrencyWithKr(getDailyPayment(lønnSøker, 1), locale),
-                                utregning80: formatCurrencyWithKr(getDailyPayment(lønnSøker, decimal80), locale),
+                                utregning100: formatCurrencyWithKr(getDailyPayment(lønnSøker, 1)),
+                                utregning80: formatCurrencyWithKr(getDailyPayment(lønnSøker, decimal80)),
                             }}
                         />
                     )
                 }
                 color="green"
-                icon={<WalletIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
+                icon={
+                    <WalletIcon
+                        height={24}
+                        width={24}
+                        color="var(--ax-bg-success-strong)"
+                        fontSize="1.5rem"
+                        aria-hidden
+                    />
+                }
             >
-                <VStack gap="2">
+                <VStack gap="space-8">
                     <BodyShort>
                         <FormattedMessage
                             id="HvorMyeSteg.Utregning"
                             values={{
-                                utregning100: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, 1), locale),
-                                utregning80: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, decimal80), locale),
+                                utregning100: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, 1)),
+                                utregning80: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, decimal80)),
                             }}
                         />
                     </BodyShort>
@@ -77,8 +84,8 @@ export const Utbetaling = ({ satser, lønnSøker, fornavn }: Props) => {
                                 <FormattedMessage
                                     id="HvorMyeSteg.NAVDekker"
                                     values={{
-                                        grunnbeløpet: formatCurrencyWithKr(grunnbeløpet * 6, locale),
-                                        a: (msg: any) => (
+                                        grunnbeløpet: formatCurrencyWithKr(grunnbeløpet * 6),
+                                        a: (msg) => (
                                             <Link href={links.grunnbeløpet} target="_blank" rel="noreferrer" inlineText>
                                                 {msg}
                                             </Link>

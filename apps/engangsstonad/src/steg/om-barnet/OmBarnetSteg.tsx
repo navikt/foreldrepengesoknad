@@ -9,8 +9,8 @@ import { OmBarnet } from 'types/OmBarnet';
 import { VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { PersonFrontend, Søkersituasjon } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { Kjønn_fpoversikt, Søkersituasjon } from '@navikt/fp-types';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { omitOne } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -43,8 +43,8 @@ const mapOmBarnetFraStateTilForm = (omBarnet: OmBarnet) => ({
     antallBarnDropDown: omBarnet.antallBarn > 2 ? omBarnet.antallBarn.toString() : undefined,
 });
 
-export interface Props {
-    kjønn: PersonFrontend['kjønn'];
+interface Props {
+    kjønn: Kjønn_fpoversikt;
     mellomlagreOgNaviger: () => Promise<void>;
 }
 
@@ -74,24 +74,22 @@ export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
     });
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
-            onCancel={navigator.avbrytSøknad}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            onStepChange={navigator.goToNextStep}
-            steps={stepConfig}
-        >
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    {søkersituasjon?.situasjon === 'adopsjon' && <AdopsjonPanel kjønn={kjønn} />}
-                    {søkersituasjon?.situasjon === 'fødsel' && <FødselPanel />}
-                    <StepButtonsHookForm<FormValues>
-                        goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        saveDataOnPreviousClick={mapOgLagreOmBarnet}
-                    />
-                </VStack>
-            </RhfForm>
-        </Step>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}>
+            <Step onStepChange={navigator.goToNextStep} steps={stepConfig}>
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="space-40">
+                        <ErrorSummaryHookForm />
+                        {søkersituasjon?.situasjon === 'adopsjon' && <AdopsjonPanel kjønn={kjønn} />}
+                        {søkersituasjon?.situasjon === 'fødsel' && <FødselPanel />}
+                        <StepButtonsHookForm<FormValues>
+                            onAvsluttOgSlett={navigator.avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            saveDataOnPreviousClick={mapOgLagreOmBarnet}
+                        />
+                    </VStack>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 };

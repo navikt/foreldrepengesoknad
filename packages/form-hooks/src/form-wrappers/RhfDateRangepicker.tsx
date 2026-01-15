@@ -7,7 +7,7 @@ import { DatePicker, HStack, VStack, useRangeDatepicker } from '@navikt/ds-react
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT, TIDENES_ENDE, TIDENES_MORGEN } from '@navikt/fp-constants';
 
-import { getError, getValidationRules } from './formUtils';
+import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 dayjs.extend(customParseFormat);
 
@@ -34,7 +34,7 @@ const findDisabledDays = (minDate?: Date, maxDate?: Date): Array<{ from: Date; t
 const getDefaultSelected = (fieldValue: string, defaultDate: string) =>
     fieldValue && isValidDateString(defaultDate) ? dayjs(fieldValue, ISO_DATE_FORMAT, true).toDate() : undefined;
 
-const onFieldChange = (value: string, onChange: (...event: any[]) => void) => {
+const onFieldChange = (value: string, onChange: (...event: string[]) => void) => {
     const verdi = dayjs(value, DDMMYYYY_DATE_FORMAT, true).format(ISO_DATE_FORMAT);
     const isValidDate = isValidDateString(verdi);
     onChange(isValidDate ? verdi : value);
@@ -45,8 +45,8 @@ interface Props {
     nameTo: string;
     labelFrom?: string | ReactNode;
     labelTo?: string | ReactNode;
-    validateFrom?: Array<(value: string) => any>;
-    validateTo?: Array<(value: string) => any>;
+    validateFrom?: Array<(value: string) => ValidationReturnType>;
+    validateTo?: Array<(value: string) => ValidationReturnType>;
     minDate?: Date | Dayjs | string;
     maxDate?: Date | Dayjs | string;
     defaultMonth?: Date | Dayjs | string;
@@ -86,12 +86,14 @@ export const RhfDateRangepicker = ({
     });
 
     const fromDefaultDate = fromField.value
-        ? dayjs(fromField.value, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT)
+        ? // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          dayjs(fromField.value, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT)
         : '';
     const [fromFieldValue, setFromFieldValue] = useState<string>(
         isValidDateString(fromDefaultDate) ? fromDefaultDate : '',
     );
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const toDefaultDate = toField.value ? dayjs(toField.value, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT) : '';
     const [toFieldValue, setToFieldValue] = useState<string>(isValidDateString(toDefaultDate) ? toDefaultDate : '');
 
@@ -109,7 +111,9 @@ export const RhfDateRangepicker = ({
             }
         },
         defaultSelected: {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             from: getDefaultSelected(fromField.value, fromDefaultDate),
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             to: getDefaultSelected(toField.value, toDefaultDate),
         },
         defaultMonth: defaultMonth ? dayjs(defaultMonth).toDate() : undefined,
@@ -141,8 +145,8 @@ export const RhfDateRangepicker = ({
             toDate={toDate}
             disableWeekends={disableWeekends}
         >
-            <VStack gap="2">
-                <HStack wrap={false} gap="4" align="start">
+            <VStack gap="space-8">
+                <HStack wrap={false} gap="space-16" align="start">
                     <DatePicker.Input
                         {...fromInputProps}
                         ref={fromField.ref}

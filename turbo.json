@@ -1,51 +1,33 @@
 {
     "$schema": "https://turbo.build/schema.json",
+    "globalPassThroughEnv": ["PACKAGES_AUTH_TOKEN", "SENTRY_AUTH_TOKEN"],
     "tasks": {
         "test": {
-            "dependsOn": [
-                "build",
-                "lint"
-            ],
-            "inputs": [
-                "src/**/*.tsx",
-                "src/**/*.ts"
-            ]
+            "dependsOn": ["build", "lint", "^test"],
+            "inputs": ["src/**/*.tsx", "src/**/*.ts"]
         },
         "build": {
-            "dependsOn": [
-                "^build"
-            ],
-            "outputs": [
-                "dist/**",
-                "lib/**"
-            ]
+            "dependsOn": ["^build", "lint"],
+            "outputs": ["dist/**", "lib/**"]
         },
         "dev": {
             "persistent": true
         },
         "lint": {
-            "dependsOn": [
-                "lint:eslint",
-                "lint:tsc"
-            ]
+            "dependsOn": ["lint:eslint", "lint:tsc"]
         },
         "lint:eslint": {},
         "lint:tsc": {},
+        "lint:fix": {},
         "build-storybook": {
-            "dependsOn": [
-                "build"
-            ]
+            "dependsOn": ["build"]
         },
         "prettier": {
-            "dependsOn": [
-                "build"
-            ]
+            "dependsOn": ["build"]
         }
     },
     "globalEnv": [
         "APPRES_CMS_URL",
-        "FORELDREPENGER_API_URL",
-        "FORELDREPENGER_API_SCOPE",
         "APP_VERSION",
         "FEATURE_TEST_1JULI2024_REGLER",
         "LOG_VALIDATION",

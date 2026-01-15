@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+import { useAnnenPartVedtakOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
@@ -17,8 +19,8 @@ import { VStack } from '@navikt/ds-react';
 
 import { Barn, Situasjon, Søkerrolle, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { BarnFrontend, Søkerinfo } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { BarnDto_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { SkjemaRotLayout, Spinner, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { BarnetFormValues } from './OmBarnetFormValues';
@@ -32,7 +34,7 @@ const erDatoInnenforDeSiste12Ukene = (dato: string | Date) => {
     return dayjs(twelveWeeksAfterBirthday).isAfter(new Date(), 'day');
 };
 
-const findBarnetIRegistrerteBarn = (regBarn: BarnFrontend, barnet: Barn) => {
+const findBarnetIRegistrerteBarn = (regBarn: BarnDto_fpoversikt, barnet: Barn) => {
     if (barnet && !isUfødtBarn(barnet) && barnet.fnr !== undefined && barnet.fnr.length > 0) {
         return barnet.fnr.includes(regBarn.fnr);
     }
@@ -42,7 +44,7 @@ const findBarnetIRegistrerteBarn = (regBarn: BarnFrontend, barnet: Barn) => {
 const skalViseTermindato = (
     rolle: Søkerrolle,
     fødselsdato: string | undefined,
-    valgteRegistrerteBarn: BarnFrontend[] | undefined,
+    valgteRegistrerteBarn: BarnDto_fpoversikt[] | undefined,
     situasjon: Situasjon,
 ): boolean => {
     if (situasjon === 'adopsjon') {
@@ -73,13 +75,33 @@ const skalViseTermindato = (
 };
 
 type Props = {
-    søkerInfo: Søkerinfo;
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
     søknadGjelderNyttBarn: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
-export const OmBarnetSteg = ({ søkerInfo, søknadGjelderNyttBarn, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
+export const OmBarnetSteg = (props: Props) => {
+    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
+    const terminDatoQuery = useQuery({
+        ...annenPartVedtakOptions,
+        select: (vedtak) => vedtak?.termindato,
+    });
+
+    if (terminDatoQuery.isLoading) {
+        return <Spinner />;
+    }
+
+    return <OmBarnetStegInner {...props} termindato={terminDatoQuery.data} />;
+};
+
+const OmBarnetStegInner = ({
+    søkerInfo,
+    søknadGjelderNyttBarn,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    termindato,
+}: Props & { termindato?: string }) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold);
@@ -90,14 +112,14 @@ export const OmBarnetSteg = ({ søkerInfo, søknadGjelderNyttBarn, mellomlagreS�
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
 
-    const { arbeidsforhold, søker } = søkerInfo;
+    const { arbeidsforhold, person } = søkerInfo;
 
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = omBarnet ? getFamiliehendelsedato(omBarnet) : undefined;
 
     const dødfødteUtenFnrMedSammeFødselsdato =
         omBarnet && isFødtBarn(omBarnet)
-            ? søker.barn.filter(
+            ? person.barn.filter(
                   (barn) =>
                       barn.fnr === undefined && getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, familiehendelsesdato),
               )
@@ -105,7 +127,7 @@ export const OmBarnetSteg = ({ søkerInfo, søknadGjelderNyttBarn, mellomlagreS�
 
     const valgteRegistrerteBarn =
         !søknadGjelderNyttBarn && omBarnet && !isUfødtBarn(omBarnet)
-            ? søker.barn
+            ? person.barn
                   .filter((b) => findBarnetIRegistrerteBarn(b, omBarnet))
                   .concat(dødfødteUtenFnrMedSammeFødselsdato)
             : undefined;
@@ -131,8 +153,8 @@ export const OmBarnetSteg = ({ søkerInfo, søknadGjelderNyttBarn, mellomlagreS�
     };
 
     const defaultValues = useMemo(
-        () => getOmBarnetInitialValues(arbeidsforhold, søkersituasjon, omBarnet),
-        [arbeidsforhold, omBarnet],
+        () => getOmBarnetInitialValues(arbeidsforhold, søkersituasjon, omBarnet, termindato),
+        [arbeidsforhold, omBarnet, termindato],
     );
     const formMethods = useForm<BarnetFormValues>({
         shouldUnregister: true,
@@ -142,43 +164,44 @@ export const OmBarnetSteg = ({ søkerInfo, søknadGjelderNyttBarn, mellomlagreS�
     const fødselsdatoer = formMethods.watch('fødselsdatoer');
     const skalInkludereTermindato = skalViseTermindato(
         søkersituasjon.rolle,
-        fødselsdatoer ? fødselsdatoer[0].dato : undefined,
+        fødselsdatoer ? fødselsdatoer[0]!.dato : undefined,
         valgteRegistrerteBarn,
         søkersituasjon.situasjon,
     );
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            steps={stepConfig}
-        >
-            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    {valgteRegistrerteBarn && valgteRegistrerteBarn.length > 0 && (
-                        <ValgteRegistrerteBarn
-                            valgteRegistrerteBarn={valgteRegistrerteBarn}
-                            skalInkludereTermindato={skalInkludereTermindato}
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step steps={stepConfig}>
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="space-40">
+                        <ErrorSummaryHookForm />
+                        {valgteRegistrerteBarn && valgteRegistrerteBarn.length > 0 && (
+                            <ValgteRegistrerteBarn
+                                valgteRegistrerteBarn={valgteRegistrerteBarn}
+                                skalInkludereTermindato={skalInkludereTermindato}
+                            />
+                        )}
+                        {søkersituasjon.situasjon === 'fødsel' && (
+                            <FødselPanel
+                                erFarEllerMedmor={erFarEllerMedmor}
+                                søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn}
+                                søkersituasjon={søkersituasjon}
+                                arbeidsforhold={arbeidsforhold}
+                            />
+                        )}
+                        {søkersituasjon.situasjon === 'adopsjon' && (
+                            <AdopsjonPanel
+                                søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn}
+                            />
+                        )}
+                        <StepButtonsHookForm
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            onAvsluttOgSlett={avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
                         />
-                    )}
-                    {søkersituasjon.situasjon === 'fødsel' && (
-                        <FødselPanel
-                            erFarEllerMedmor={erFarEllerMedmor}
-                            søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn}
-                            søkersituasjon={søkersituasjon}
-                            arbeidsforhold={arbeidsforhold}
-                        />
-                    )}
-                    {søkersituasjon.situasjon === 'adopsjon' && (
-                        <AdopsjonPanel
-                            søknadGjelderEtNyttBarn={barnSøktOmFørMenIkkeRegistrert || søknadGjelderNyttBarn}
-                        />
-                    )}
-                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
-                </VStack>
-            </RhfForm>
-        </Step>
+                    </VStack>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 };

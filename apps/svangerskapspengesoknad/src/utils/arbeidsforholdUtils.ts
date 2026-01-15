@@ -7,13 +7,16 @@ import { UnikArbeidsforhold } from 'types/Arbeidsforhold';
 import { Stilling } from 'types/Tilrettelegging';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isBetween);
 dayjs.extend(minMax);
 
-export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: string): Arbeidsforhold[] => {
+export const getAktiveArbeidsforhold = (
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+    termindato?: string,
+): EksternArbeidsforholdDto_fpoversikt[] => {
     if (termindato === undefined) {
         return arbeidsforhold;
     }
@@ -23,7 +26,7 @@ export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termin
     );
 };
 
-const getArbeidsgiverId = (arbeidsforhold: Arbeidsforhold): string => {
+const getArbeidsgiverId = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt): string => {
     return arbeidsforhold.arbeidsgiverId ?? '';
 };
 
@@ -33,10 +36,10 @@ export const getTotalStillingsprosentPåSkjæringstidspunktet = (
 ): number => {
     if (skjæringstidspunkt) {
         const perioderISkjæringstidspunktet = stillinger.filter((p) => {
-            if (!p.tom) {
-                return dayjs(skjæringstidspunkt).isSameOrAfter(dayjs(p.fom), 'd');
-            } else {
+            if (p.tom) {
                 return dayjs(skjæringstidspunkt).isBetween(dayjs(p.fom), dayjs(p.tom), 'day', '[]');
+            } else {
+                return dayjs(skjæringstidspunkt).isSameOrAfter(dayjs(p.fom), 'd');
             }
         });
 
@@ -54,7 +57,7 @@ export const getTotalStillingsprosentPåSkjæringstidspunktet = (
     return 100;
 };
 
-const getStillingerForLikeArbeidsforhold = (likeArbeidsforhold: Arbeidsforhold[]): Stilling[] => {
+const getStillingerForLikeArbeidsforhold = (likeArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[]): Stilling[] => {
     const perioderMedStillingsprosent = likeArbeidsforhold.map((p) => {
         return {
             fom: p.fom,
@@ -66,7 +69,7 @@ const getStillingerForLikeArbeidsforhold = (likeArbeidsforhold: Arbeidsforhold[]
 };
 
 export const getUnikeArbeidsforhold = (
-    arbeidsforhold: Arbeidsforhold[] | undefined,
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[] | undefined,
     termindato: string,
 ): UnikArbeidsforhold[] => {
     if (arbeidsforhold !== undefined && arbeidsforhold.length > 0) {
@@ -107,7 +110,7 @@ export const getUnikeArbeidsforhold = (
 
 export const søkerHarKunEtAktivtArbeid = (
     termindato: string,
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     erFrilanser: boolean,
     harEgenNæring: boolean,
 ) => {

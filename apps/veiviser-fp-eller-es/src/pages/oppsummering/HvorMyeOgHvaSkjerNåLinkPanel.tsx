@@ -1,38 +1,42 @@
-import { BabyWrappedIcon, MagnifyingGlassIcon } from '@navikt/aksel-icons';
+import { CalendarIcon, WalletIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
-import { HStack, Heading } from '@navikt/ds-react';
+import { Box, Heading, LinkCard, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { AndreVeivisereLinkPanel } from '@navikt/fp-ui';
 
 export const HvorMyeOgHvaSkjerNåLinkPanel = () => {
     return (
-        <AndreVeivisereLinkPanel
-            links={[
-                {
-                    url: links.hvorMye,
-                    content: (
-                        <HStack gap="5" align="center" wrap={false}>
-                            <BabyWrappedIcon aria-hidden height={45} width={45} />
-                            <Heading level="3" size="small">
-                                <FormattedMessage id="HvorMyeOgHvaSkjerNåLinkPanel.HvorMye" />
-                            </Heading>
-                        </HStack>
-                    ),
-                },
-                {
-                    url: links.hvaSkjerNår,
-                    content: (
-                        <HStack gap="5" align="center" wrap={false}>
-                            <MagnifyingGlassIcon aria-hidden height={45} width={45} />
-                            <Heading level="3" size="small">
-                                <FormattedMessage id="HvorMyeOgHvaSkjerNåLinkPanel.HvaSkjer" />
-                            </Heading>
-                        </HStack>
-                    ),
-                },
-            ]}
-        />
+        <div className="bg-ax-neutral-200 p-4">
+            <VStack gap="space-8" className="mx-auto max-w-[560px]">
+                <Heading size="small" level="2">
+                    <FormattedMessage id="HvorMyeOgHvaSkjerNåLinkPanel.AndreVeivisere" />
+                </Heading>
+                <LinkCard>
+                    <Box asChild style={{ backgroundColor: 'var(--ax-bg-moderateA)' }}>
+                        <LinkCard.Icon>
+                            <WalletIcon aria-hidden height={45} width={45} />
+                        </LinkCard.Icon>
+                    </Box>
+                    <LinkCard.Title>
+                        <LinkCard.Anchor href={links.hvorMye} target="_blank" rel="noreferrer">
+                            <FormattedMessage id="HvorMyeOgHvaSkjerNåLinkPanel.HvorMye" />
+                        </LinkCard.Anchor>
+                    </LinkCard.Title>
+                </LinkCard>
+                <LinkCard>
+                    <Box asChild style={{ backgroundColor: 'var(--ax-bg-moderateA)' }}>
+                        <LinkCard.Icon>
+                            <CalendarIcon aria-hidden height={45} width={45} />
+                        </LinkCard.Icon>
+                    </Box>
+                    <LinkCard.Title>
+                        <LinkCard.Anchor href={links.foreldrepengerPlanlegger} target="_blank" rel="noreferrer">
+                            <FormattedMessage id="HvorMyeOgHvaSkjerNåLinkPanel.PlanleggForeldrepenger" />
+                        </LinkCard.Anchor>
+                    </LinkCard.Title>
+                </LinkCard>
+            </VStack>
+        </div>
     );
 };

@@ -23,12 +23,12 @@ const vekslendeArbeidOgUttakTest = (kunSøkersPerioder: Periode[]): boolean => {
             // Hvis vi har en serie perioder av formatet:
             // Arbeid -> Uttak -> Arbeid -> Uttak -> Arbeid -> Uttak => foreslå gradering
             if (
-                isUtsettelsePgaArbeid(kunSøkersPerioder[firstArbeidsperiodeIndex]) &&
-                isUttaksperiode(kunSøkersPerioder[firstArbeidsperiodeIndex + 1]) &&
-                isUtsettelsePgaArbeid(kunSøkersPerioder[firstArbeidsperiodeIndex + 2]) &&
-                isUttaksperiode(kunSøkersPerioder[firstArbeidsperiodeIndex + 3]) &&
-                isUtsettelsePgaArbeid(kunSøkersPerioder[firstArbeidsperiodeIndex + 4]) &&
-                isUttaksperiode(kunSøkersPerioder[firstArbeidsperiodeIndex + 5])
+                isUtsettelsePgaArbeid(kunSøkersPerioder[firstArbeidsperiodeIndex]!) &&
+                isUttaksperiode(kunSøkersPerioder[firstArbeidsperiodeIndex + 1]!) &&
+                isUtsettelsePgaArbeid(kunSøkersPerioder[firstArbeidsperiodeIndex + 2]!) &&
+                isUttaksperiode(kunSøkersPerioder[firstArbeidsperiodeIndex + 3]!) &&
+                isUtsettelsePgaArbeid(kunSøkersPerioder[firstArbeidsperiodeIndex + 4]!) &&
+                isUttaksperiode(kunSøkersPerioder[firstArbeidsperiodeIndex + 5]!)
             ) {
                 return false;
             }
@@ -38,12 +38,12 @@ const vekslendeArbeidOgUttakTest = (kunSøkersPerioder: Periode[]): boolean => {
             // Uttak -> Arbeid -> Uttak -> Arbeid -> Uttak -> Arbeid => foreslå gradering
             if (
                 firstArbeidsperiodeIndex > 0 &&
-                isUttaksperiode(kunSøkersPerioder[firstArbeidsperiodeIndex - 1]) &&
-                isUtsettelsePgaArbeid(kunSøkersPerioder[firstArbeidsperiodeIndex]) &&
-                isUttaksperiode(kunSøkersPerioder[firstArbeidsperiodeIndex + 1]) &&
-                isUtsettelsePgaArbeid(kunSøkersPerioder[firstArbeidsperiodeIndex + 2]) &&
-                isUttaksperiode(kunSøkersPerioder[firstArbeidsperiodeIndex + 3]) &&
-                isUtsettelsePgaArbeid(kunSøkersPerioder[firstArbeidsperiodeIndex + 4])
+                isUttaksperiode(kunSøkersPerioder[firstArbeidsperiodeIndex - 1]!) &&
+                isUtsettelsePgaArbeid(kunSøkersPerioder[firstArbeidsperiodeIndex]!) &&
+                isUttaksperiode(kunSøkersPerioder[firstArbeidsperiodeIndex + 1]!) &&
+                isUtsettelsePgaArbeid(kunSøkersPerioder[firstArbeidsperiodeIndex + 2]!) &&
+                isUttaksperiode(kunSøkersPerioder[firstArbeidsperiodeIndex + 3]!) &&
+                isUtsettelsePgaArbeid(kunSøkersPerioder[firstArbeidsperiodeIndex + 4]!)
             ) {
                 return false;
             }
@@ -63,12 +63,12 @@ const vekslendePeriodeUtenUttakOgUttakTest = (kunSøkersPerioder: Periode[]): bo
             // Hvis vi har en serie perioder av formatet:
             // Uten Uttak -> Uttak ->  Uten Uttak -> Uttak ->  Uten Uttak -> Uttak => foreslå gradering
             if (
-                isPeriodeUtenUttak(kunSøkersPerioder[firstPeriodeUtenUttakIndex]) &&
-                isUttaksperiode(kunSøkersPerioder[firstPeriodeUtenUttakIndex + 1]) &&
-                isPeriodeUtenUttak(kunSøkersPerioder[firstPeriodeUtenUttakIndex + 2]) &&
-                isUttaksperiode(kunSøkersPerioder[firstPeriodeUtenUttakIndex + 3]) &&
-                isPeriodeUtenUttak(kunSøkersPerioder[firstPeriodeUtenUttakIndex + 4]) &&
-                isUttaksperiode(kunSøkersPerioder[firstPeriodeUtenUttakIndex + 5])
+                isPeriodeUtenUttak(kunSøkersPerioder[firstPeriodeUtenUttakIndex]!) &&
+                isUttaksperiode(kunSøkersPerioder[firstPeriodeUtenUttakIndex + 1]!) &&
+                isPeriodeUtenUttak(kunSøkersPerioder[firstPeriodeUtenUttakIndex + 2]!) &&
+                isUttaksperiode(kunSøkersPerioder[firstPeriodeUtenUttakIndex + 3]!) &&
+                isPeriodeUtenUttak(kunSøkersPerioder[firstPeriodeUtenUttakIndex + 4]!) &&
+                isUttaksperiode(kunSøkersPerioder[firstPeriodeUtenUttakIndex + 5]!)
             ) {
                 return false;
             }
@@ -78,12 +78,12 @@ const vekslendePeriodeUtenUttakOgUttakTest = (kunSøkersPerioder: Periode[]): bo
             // Uttak ->  Uten Uttak -> Uttak ->  Uten Uttak -> Uttak ->  Uten Uttak => foreslå gradering
             if (
                 firstPeriodeUtenUttakIndex > 0 &&
-                isUttaksperiode(kunSøkersPerioder[firstPeriodeUtenUttakIndex - 1]) &&
-                isPeriodeUtenUttak(kunSøkersPerioder[firstPeriodeUtenUttakIndex]) &&
-                isUttaksperiode(kunSøkersPerioder[firstPeriodeUtenUttakIndex + 1]) &&
-                isPeriodeUtenUttak(kunSøkersPerioder[firstPeriodeUtenUttakIndex + 2]) &&
-                isUttaksperiode(kunSøkersPerioder[firstPeriodeUtenUttakIndex + 3]) &&
-                isPeriodeUtenUttak(kunSøkersPerioder[firstPeriodeUtenUttakIndex + 4])
+                isUttaksperiode(kunSøkersPerioder[firstPeriodeUtenUttakIndex - 1]!) &&
+                isPeriodeUtenUttak(kunSøkersPerioder[firstPeriodeUtenUttakIndex]!) &&
+                isUttaksperiode(kunSøkersPerioder[firstPeriodeUtenUttakIndex + 1]!) &&
+                isPeriodeUtenUttak(kunSøkersPerioder[firstPeriodeUtenUttakIndex + 2]!) &&
+                isUttaksperiode(kunSøkersPerioder[firstPeriodeUtenUttakIndex + 3]!) &&
+                isPeriodeUtenUttak(kunSøkersPerioder[firstPeriodeUtenUttakIndex + 4]!)
             ) {
                 return false;
             }
@@ -117,7 +117,7 @@ export const burdeKanskjeSøkeGraderingTest: RegelTest = (grunnlag: Søknadsinfo
                 intlKey: infoTekstKey,
                 renderAsHtml: true,
                 values: {
-                    a: () => (msg: any) => (
+                    a: () => (msg: string) => (
                         <Link href={links.graderingInfo} rel="noreferrer" target="_blank">
                             {msg}
                         </Link>

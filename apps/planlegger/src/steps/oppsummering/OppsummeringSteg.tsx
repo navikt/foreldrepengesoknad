@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, TasklistStartIcon } from '@navikt/aksel-icons';
+import { ArrowLeftIcon, TasklistStartIcon, WalletIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import dayjs from 'dayjs';
@@ -7,11 +7,11 @@ import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
-import { BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Button, HStack, Heading, Link, LinkCard, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
-import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { KontoBeregningResultatDto, Satser } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
@@ -23,17 +23,14 @@ import { BarnehageplassOppsummering, getFamiliehendelsedato } from './expansion-
 import { OppgittInformasjon } from './expansion-cards/OppgittInformasjon';
 import { OppsummeringHarRett } from './expansion-cards/OppsummeringHarRett';
 import { HvorMyeOppsummering } from './expansion-cards/hvor-mye/HvorMyeOppsummering';
-import { HvorMyeIkon } from './ikoner/HvorMyeIkon';
-import styles from './oppsummeringSteg.module.css';
 
 interface Props {
-    stønadskontoer?: TilgjengeligeStønadskontoer;
+    stønadskontoer?: KontoBeregningResultatDto;
     satser: Satser;
-    locale: LocaleAll;
 }
 
-export const OppsummeringSteg = ({ stønadskontoer, satser, locale }: Props) => {
-    const navigator = usePlanleggerNavigator(locale);
+export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
+    const navigator = usePlanleggerNavigator();
 
     useScrollBehaviour();
 
@@ -62,10 +59,10 @@ export const OppsummeringSteg = ({ stønadskontoer, satser, locale }: Props) => 
     return (
         <>
             <OppsummeringHeader>
-                <VStack gap="10">
-                    <VStack gap="5">
+                <VStack gap="space-40">
+                    <VStack gap="space-20">
                         {!harRettTilForeldrepenger && (
-                            <VStack gap="5">
+                            <VStack gap="space-20">
                                 <Infobox
                                     header={
                                         erAleneforsørger ? (
@@ -74,7 +71,14 @@ export const OppsummeringSteg = ({ stønadskontoer, satser, locale }: Props) => 
                                             <FormattedMessage id="OppsummeringSteg.Infoboks.IngenHarRett" />
                                         )
                                     }
-                                    icon={<TasklistStartIcon height={24} width={24} color="#7F8900" aria-hidden />}
+                                    icon={
+                                        <TasklistStartIcon
+                                            height={24}
+                                            width={24}
+                                            color="var(--ax-bg-success-strong)"
+                                            aria-hidden
+                                        />
+                                    }
                                     color="green"
                                 >
                                     <BodyShort>
@@ -94,7 +98,7 @@ export const OppsummeringSteg = ({ stønadskontoer, satser, locale }: Props) => 
                             </VStack>
                         )}
                         {stønadskontoer && valgtStønadskonto && hvorLangPeriode && arbeidssituasjon && (
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 {harRettTilForeldrepenger && (
                                     <OppsummeringHarRett
                                         valgtStønadskonto={valgtStønadskonto}
@@ -128,7 +132,7 @@ export const OppsummeringSteg = ({ stønadskontoer, satser, locale }: Props) => 
                         )}
                     </VStack>
 
-                    <VStack gap="10">
+                    <VStack gap="space-40">
                         <HStack>
                             <Button
                                 variant="secondary"
@@ -141,33 +145,35 @@ export const OppsummeringSteg = ({ stønadskontoer, satser, locale }: Props) => 
                     </VStack>
                 </VStack>
             </OppsummeringHeader>
-            <div className={styles.background}>
-                <VStack gap="4" className={styles.content}>
+            <div className="bg-ax-neutral-200 pb-4">
+                <VStack gap="space-16" className="mx-auto max-w-[560px] px-8 py-4">
                     <Heading level="2" size="medium">
-                        <FormattedMessage id="OppsummeringSteg.AnnenVeiviser" />
+                        <FormattedMessage id="OppsummeringSteg.AndreVeivisere" />
                     </Heading>
-                    <Link
-                        inlineText
-                        href={links.veiviser}
-                        target="_blank"
-                        rel="noreferrer"
-                        className={styles.lenkepanel}
-                    >
-                        <Box
-                            padding="4"
-                            background="surface-default"
-                            borderRadius="xlarge"
-                            shadow="medium"
-                            className={styles.panel}
-                        >
-                            <HStack gap="5" align="center">
-                                <HvorMyeIkon />
-                                <Heading level="3" size="small">
-                                    <FormattedMessage id="OppsummeringSteg.VeiviserHvorMye" />
-                                </Heading>
-                            </HStack>
+                    <LinkCard size="small">
+                        <Box asChild style={{ backgroundColor: 'var(--ax-bg-moderateA)' }}>
+                            <LinkCard.Icon>
+                                <WalletIcon height={43} width={43} />
+                            </LinkCard.Icon>
                         </Box>
-                    </Link>
+                        <LinkCard.Title>
+                            <LinkCard.Anchor href={links.hvorMye} target="_blank" rel="noreferrer">
+                                <FormattedMessage id="OppsummeringSteg.VeiviserHvorMye" />
+                            </LinkCard.Anchor>
+                        </LinkCard.Title>
+                    </LinkCard>
+                    <LinkCard size="small">
+                        <Box asChild style={{ backgroundColor: 'var(--ax-bg-moderateA)' }}>
+                            <LinkCard.Icon>
+                                <WalletIcon height={43} width={43} />
+                            </LinkCard.Icon>
+                        </Box>
+                        <LinkCard.Title>
+                            <LinkCard.Anchor href={links.veiviser} target="_blank" rel="noreferrer">
+                                <FormattedMessage id="OppsummeringSteg.VeiviserFpEllerEs" />
+                            </LinkCard.Anchor>
+                        </LinkCard.Title>
+                    </LinkCard>
                 </VStack>
             </div>
         </>

@@ -1,11 +1,14 @@
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataType, useContextSaveData } from './SvpDataContext';
 import { SøknadRoute } from './routes';
 import { useStepConfig } from './useStepConfig';
 
-export const useSvpNavigator = (mellomlagreOgNaviger: () => Promise<void>, arbeidsforhold: Arbeidsforhold[]) => {
+export const useSvpNavigator = (
+    mellomlagreOgNaviger: () => Promise<void>,
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+) => {
     const stepConfig = useStepConfig(arbeidsforhold);
     const oppdaterPath = useContextSaveData(ContextDataType.APP_ROUTE);
 
@@ -13,24 +16,25 @@ export const useSvpNavigator = (mellomlagreOgNaviger: () => Promise<void>, arbei
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
         const previousPath = stepConfig[index]?.id ?? SøknadRoute.FORSIDE;
         oppdaterPath(previousPath);
-        return mellomlagreOgNaviger();
+        void mellomlagreOgNaviger();
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     const goToStep = (path: SøknadRoute | string) => {
         oppdaterPath(path);
-        return mellomlagreOgNaviger();
+        void mellomlagreOgNaviger();
     };
 
     const goToNextDefaultStep = () => {
         const index = stepConfig.findIndex((s) => s.isSelected) + 1;
         const nextPath = stepConfig[index]?.id;
         oppdaterPath(nextPath);
-        return mellomlagreOgNaviger();
+        void mellomlagreOgNaviger();
     };
 
     const fortsettSøknadSenere = () => {
-        loggAmplitudeEvent({ origin: 'svangerskapspengesoknad', eventName: 'skjema fortsett senere' });
-        (window as any).location = 'https://nav.no';
+        loggUmamiEvent({ origin: 'svangerskapspengesoknad', eventName: 'skjema fortsett senere' });
+        globalThis.location.href = 'https://nav.no';
     };
 
     return {

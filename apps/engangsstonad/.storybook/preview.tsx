@@ -1,11 +1,13 @@
-import { Preview } from '@storybook/react';
+import { Preview } from '@storybook/react-vite';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 import 'styles/globals.css';
 
+import { filopplasterMessages } from '@navikt/fp-filopplaster';
+import { formHookMessages } from '@navikt/fp-form-hooks';
 import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { uiMessages } from '@navikt/fp-ui';
-import { getIntlDecorator } from '@navikt/fp-utils-test';
+import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 
 import '../src/index.css';
 import enMessages from '../src/intl/messages/en_US.json';
@@ -22,9 +24,30 @@ scriptTag.innerHTML = JSON.stringify({
 document.head.appendChild(scriptTag);
 
 const withIntlProvider = getIntlDecorator({
-    nb: { ...nbMessages, ...uiMessages.nb, ...utenlandsoppholdMessages.nb, ...oppsummeringMessages.nb },
-    nn: { ...nnMessages, ...uiMessages.nn, ...utenlandsoppholdMessages.nn, ...oppsummeringMessages.nn },
-    en: { ...enMessages, ...uiMessages.en, ...utenlandsoppholdMessages.en, ...oppsummeringMessages.en },
+    nb: {
+        ...nbMessages,
+        ...uiMessages.nb,
+        ...utenlandsoppholdMessages.nb,
+        ...oppsummeringMessages.nb,
+        ...formHookMessages.nb,
+        ...filopplasterMessages.nb,
+    },
+    nn: {
+        ...nnMessages,
+        ...uiMessages.nn,
+        ...utenlandsoppholdMessages.nn,
+        ...oppsummeringMessages.nn,
+        ...formHookMessages.nn,
+        ...filopplasterMessages.nn,
+    },
+    en: {
+        ...enMessages,
+        ...uiMessages.en,
+        ...utenlandsoppholdMessages.en,
+        ...oppsummeringMessages.en,
+        ...formHookMessages.en,
+        ...filopplasterMessages.en,
+    },
 });
 
 export const globalTypes = {
@@ -41,20 +64,31 @@ export const globalTypes = {
             dynamicTitle: true,
         },
     },
+    theme: {
+        name: 'Tema',
+        description: 'Aksel tema',
+        defaultValue: 'light',
+        toolbar: {
+            icon: 'circlehollow',
+            items: [
+                { value: 'light', icon: 'circlehollow', title: 'Lys' },
+                { value: 'dark', icon: 'circle', title: 'Mørk' },
+            ],
+            showName: true,
+        },
+    },
 };
 
-const preview: Preview = {
-    decorators: [withIntlProvider],
-    // beforeAll is available in Storybook 8.2. Else the call would happen outside of the preview object
-    beforeAll: async () => {
-        initialize({
-            onUnhandledRequest: 'bypass',
-            serviceWorker: {
-                url: './mockServiceWorker.js',
-            },
-        });
+initialize({
+    onUnhandledRequest: 'bypass',
+    serviceWorker: {
+        url: './mockServiceWorker.js',
     },
+});
+const preview: Preview = {
+    decorators: [withIntlProvider, withThemeDecorator],
     loaders: [mswLoader],
 };
 
+//eslint-disable-next-line import/no-default-export
 export default preview;

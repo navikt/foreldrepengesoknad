@@ -1,5 +1,5 @@
-import { AnnenForelder, Periodetype, Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
-import { Stønadskonto } from '@navikt/fp-types';
+import { AnnenForelder, Periodetype, Situasjon, TidsperiodeDate } from '@navikt/fp-common';
+import { KontoDto, KontoTypeUttak } from '@navikt/fp-types';
 import { Tidsperioden } from '@navikt/fp-utils';
 
 import { PeriodeUttakFormData } from '../../components/uttaks-forms/periode-uttak-form/periodeUttakFormConfig';
@@ -13,7 +13,7 @@ import hvemSkalTaUttakSkalBesvares from './hvemSkalTaUttakSkalBesvares';
 import kontoSkalBesvares from './kontoSkalBesvarer';
 import overføringsårsakSkalBesvares from './overføringsårsakSkalBesvares';
 import samtidigUttakSkalBesvares from './samtidigUttakSkalBesvares';
-import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
+import { uttakRundtFødselÅrsakSpørsmålSkalBesvares } from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 import { ønskerFlerbarnsdagerSkalBesvares } from './ønskerFlerbarnsdagerSkalBesvares';
 
 export interface UttakSkjemaregler {
@@ -40,7 +40,7 @@ export interface UttakSkjemaReglerProps {
     periodetype: Periodetype;
     termindato: Date | undefined;
     morHarRett: boolean;
-    stønadskontoer: Stønadskonto[];
+    stønadskontoer: KontoDto[];
     antallBarn: number;
 }
 
@@ -75,7 +75,7 @@ export const getUttakSkjemaregler = (
                 convertYesOrNoOrUndefinedToBoolean(formValues.samtidigUttak),
                 convertYesOrNoOrUndefinedToBoolean(formValues.erMorForSyk),
                 periodetype,
-                konto as StønadskontoType,
+                konto as KontoTypeUttak,
                 !erFarEllerMedmor,
                 erAleneOmOmsorg,
                 annenForelder.kanIkkeOppgis,
@@ -90,7 +90,7 @@ export const getUttakSkjemaregler = (
         erMorForSykSkalBesvares: (): boolean =>
             erMorForForSykSkalBesvares(
                 periodetype,
-                konto as StønadskontoType,
+                konto as KontoTypeUttak,
                 tidsperiode,
                 situasjon,
                 erFarEllerMedmor,
@@ -107,9 +107,9 @@ export const getUttakSkjemaregler = (
         samtidigUttakSkalBesvares: (): boolean =>
             samtidigUttakSkalBesvares(
                 periodetype,
-                konto as StønadskontoType,
+                konto as KontoTypeUttak,
                 Tidsperioden(tidsperiode).erInnenforFørsteSeksUker(familiehendelsesdato) && situasjon === 'fødsel',
-                periodetype === Periodetype.Uttak && konto === StønadskontoType.ForeldrepengerFørFødsel,
+                periodetype === Periodetype.Uttak && konto === 'FORELDREPENGER_FØR_FØDSEL',
                 erAleneOmOmsorg,
                 erDeltUttakINorge,
                 false, // TODO Midlertidig omsorg,
@@ -132,7 +132,7 @@ export const getUttakSkjemaregler = (
                 erFarEllerMedmor,
                 familiehendelsesdato,
                 tidsperiode,
-                konto as StønadskontoType,
+                konto as KontoTypeUttak,
                 !morHarRett,
                 antallBarn,
                 erAleneOmOmsorg,
@@ -151,7 +151,7 @@ export const getUttakSkjemaregler = (
         graderingSkalBesvares: (): boolean => {
             return graderingSkalBesvares(
                 periodetype,
-                konto as StønadskontoType,
+                konto as KontoTypeUttak,
                 familiehendelsesdato,
                 erFarEllerMedmor,
                 convertYesOrNoOrUndefinedToBoolean(formValues.erMorForSyk),
@@ -162,7 +162,7 @@ export const getUttakSkjemaregler = (
             return graderingSkalBesvaresPgaWLBUttakRundtFødsel(
                 tidsperiode,
                 periodetype,
-                konto as StønadskontoType,
+                konto as KontoTypeUttak,
                 erFarEllerMedmor,
                 familiehendelsesdato,
                 termindato,
@@ -170,17 +170,12 @@ export const getUttakSkjemaregler = (
             );
         },
         overføringsårsakSkalBesvares: (): boolean => {
-            return overføringsårsakSkalBesvares(
-                periodetype,
-                erFarEllerMedmor,
-                konto as StønadskontoType,
-                annenForelder,
-            );
+            return overføringsårsakSkalBesvares(periodetype, erFarEllerMedmor, konto as KontoTypeUttak, annenForelder);
         },
         uttakRundtFødselÅrsakSpørsmålSkalBesvares: () => {
             return uttakRundtFødselÅrsakSpørsmålSkalBesvares(
                 periodetype,
-                konto as StønadskontoType,
+                konto as KontoTypeUttak,
                 tidsperiode,
                 erFarEllerMedmor,
                 erAleneOmOmsorg,
@@ -194,5 +189,3 @@ export const getUttakSkjemaregler = (
         },
     };
 };
-// eslint-disable-next-line import/no-default-export
-export default getUttakSkjemaregler;

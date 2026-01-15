@@ -1,35 +1,23 @@
 import { BankNoteIcon } from '@navikt/aksel-icons';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 
-import { StønadskontoType } from '@navikt/fp-constants';
-import {
-    Dekningsgrad,
-    Satser,
-    TilgjengeligeStønadskontoer,
-    TilgjengeligeStønadskontoerForDekningsgrad,
-} from '@navikt/fp-types';
+import { Dekningsgrad, KontoBeregningDto, KontoBeregningResultatDto, KontoTypeUttak, Satser } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
-const getDagerForKonto = (
-    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
-    stønadskontoType: StønadskontoType,
-) => {
+const getDagerForKonto = (stønadskontoer: KontoBeregningDto, stønadskontoType: KontoTypeUttak) => {
     const konto = stønadskontoer.kontoer.find((k) => k.konto === stønadskontoType);
     return konto ? konto.dager : 0;
 };
 
-const finnAntallUkerOgDager = (valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad) => {
-    const totaltAntallDagerFellesperiode = getDagerForKonto(valgtStønadskonto, StønadskontoType.Fellesperiode);
-    const antallDagerForeldrepengerFørFødsel = getDagerForKonto(
-        valgtStønadskonto,
-        StønadskontoType.ForeldrepengerFørFødsel,
-    );
-    const antallUkerMødrekvote = getDagerForKonto(valgtStønadskonto, StønadskontoType.Mødrekvote);
-    const antallUkerFedrekvote = getDagerForKonto(valgtStønadskonto, StønadskontoType.Fedrekvote);
+const finnAntallUkerOgDager = (valgtStønadskonto: KontoBeregningDto) => {
+    const totaltAntallDagerFellesperiode = getDagerForKonto(valgtStønadskonto, 'FELLESPERIODE');
+    const antallDagerForeldrepengerFørFødsel = getDagerForKonto(valgtStønadskonto, 'FORELDREPENGER_FØR_FØDSEL');
+    const antallUkerMødrekvote = getDagerForKonto(valgtStønadskonto, 'MØDREKVOTE');
+    const antallUkerFedrekvote = getDagerForKonto(valgtStønadskonto, 'FEDREKVOTE');
 
     const totaltAntallDager =
         totaltAntallDagerFellesperiode +
@@ -43,20 +31,19 @@ const finnAntallUkerOgDager = (valgtStønadskonto: TilgjengeligeStønadskontoerF
     };
 };
 
-export const getDailyPayment = (monthlyWage: number) => (monthlyWage * 12) / 260;
+const getDailyPayment = (monthlyWage: number) => (monthlyWage * 12) / 260;
 
 interface Props {
     dekningsgrad: Dekningsgrad;
     gjennomsnittslønn: number;
-    stønadskontoer: TilgjengeligeStønadskontoer;
+    stønadskontoer: KontoBeregningResultatDto;
     satser: Satser;
 }
 
 export const Utbetalingspanel = ({ dekningsgrad, gjennomsnittslønn, stønadskontoer, satser }: Props) => {
-    const locale = useIntl().locale;
     const antallUkerOgDagerMedUttak = finnAntallUkerOgDager(stønadskontoer[dekningsgrad]);
 
-    const erDekningsgrad100 = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT;
+    const erDekningsgrad100 = dekningsgrad === '100';
 
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const annualMax = 6 * grunnbeløpet;
@@ -85,13 +72,13 @@ export const Utbetalingspanel = ({ dekningsgrad, gjennomsnittslønn, stønadskon
             useHorizontalDivider
             color="blue"
         >
-            <VStack gap="4">
+            <VStack gap="space-16">
                 <div>
                     <BodyShort size="small">
                         <FormattedMessage id="OppsummeringSide.MånedligFørSkatt" />
                     </BodyShort>
                     <Heading size="medium" as="p">
-                        {formatCurrencyWithKr(monthlyPayment, locale)}
+                        {formatCurrencyWithKr(monthlyPayment)}
                     </Heading>
                 </div>
                 <div>
@@ -99,7 +86,7 @@ export const Utbetalingspanel = ({ dekningsgrad, gjennomsnittslønn, stønadskon
                         <FormattedMessage id="OppsummeringSide.DagligFørSkatt" />
                     </BodyShort>
                     <Heading size="medium" as="p">
-                        {formatCurrencyWithKr(dailyPayment, locale)}
+                        {formatCurrencyWithKr(dailyPayment)}
                     </Heading>
                 </div>
                 <div>
@@ -107,7 +94,7 @@ export const Utbetalingspanel = ({ dekningsgrad, gjennomsnittslønn, stønadskon
                         <FormattedMessage id="OppsummeringSide.Totalt" values={{ erDekningsgrad100 }} />
                     </BodyShort>
                     <Heading size="medium" as="p">
-                        {formatCurrencyWithKr(totalt, locale)}
+                        {formatCurrencyWithKr(totalt)}
                     </Heading>
                     <ReadMore
                         header={

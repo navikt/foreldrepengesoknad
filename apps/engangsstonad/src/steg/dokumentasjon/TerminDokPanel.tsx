@@ -1,13 +1,15 @@
+import { API_URLS } from 'appData/queries';
 import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { Dokumentasjon } from 'types/Dokumentasjon';
 import { BarnetErIkkeFødt } from 'types/OmBarnet';
 
-import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { FileUploader } from '@navikt/fp-filopplaster';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { Attachment } from '@navikt/fp-types';
-import { FileUploader } from '@navikt/fp-ui';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 dayjs.extend(minMax);
@@ -20,7 +22,7 @@ const isUtstedtDatoIUke22 = (termindato: string, intl: IntlShape) => (terminBekr
     const utstedtDato = dayjs(terminBekreftelseDato).startOf('day');
     const terminDato = dayjs(termindato).startOf('day');
     const uke22 = terminDato.subtract(dagerForTerminbekreftelse, 'days');
-    const erUtstedtDataIUke22 = dayjs.max(uke22, utstedtDato)!.isSame(utstedtDato);
+    const erUtstedtDataIUke22 = dayjs.max(uke22, utstedtDato).isSame(utstedtDato);
 
     return erUtstedtDataIUke22
         ? null
@@ -36,10 +38,13 @@ interface Props {
 export const TerminDokPanel = ({ attachments, updateAttachments, omBarnet }: Props) => {
     const intl = useIntl();
 
+    const { control } = useFormContext<Dokumentasjon>();
+
     return (
         <>
             <RhfDatepicker
-                name={`terminbekreftelsedato`}
+                name="terminbekreftelsedato"
+                control={control}
                 label={<FormattedMessage id="TerminDokPanel.Terminbekreftelsesdato" />}
                 minDate={dayjs(omBarnet.termindato).subtract(18, 'week').subtract(3, 'day').toDate()}
                 maxDate={dayjs().toDate()}
@@ -61,7 +66,7 @@ export const TerminDokPanel = ({ attachments, updateAttachments, omBarnet }: Pro
                 skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
                 existingAttachments={attachments}
                 updateAttachments={updateAttachments}
-                saveAttachment={getSaveAttachmentFetch(import.meta.env.BASE_URL, 'engangsstonad')}
+                uploadPath={API_URLS.sendVedlegg}
             />
         </>
     );

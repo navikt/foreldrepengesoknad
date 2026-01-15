@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 
 import {
     Periode,
-    StønadskontoType,
     Uttaksperiode,
     isForeldrepengerFørFødselUttaksperiode,
     isOverskrivbarPeriode,
@@ -83,13 +82,9 @@ export const splittUttaksperiodePåFamiliehendelsesdato = (
 ): Uttaksperiode[] => {
     const periodeFørFamDato: Periode = {
         ...periode,
-        konto:
-            periode.konto == StønadskontoType.Foreldrepenger && harAktivitetsfriKvote
-                ? StønadskontoType.AktivitetsfriKvote
-                : periode.konto,
-        morsAktivitetIPerioden:
-            periode.konto == StønadskontoType.Foreldrepenger ? undefined : periode.morsAktivitetIPerioden,
-        erMorForSyk: periode.konto == StønadskontoType.Foreldrepenger ? undefined : periode.erMorForSyk,
+        konto: periode.konto == 'FORELDREPENGER' && harAktivitetsfriKvote ? 'AKTIVITETSFRI_KVOTE' : periode.konto,
+        morsAktivitetIPerioden: periode.konto == 'FORELDREPENGER' ? undefined : periode.morsAktivitetIPerioden,
+        erMorForSyk: periode.konto == 'FORELDREPENGER' ? undefined : periode.erMorForSyk,
         tidsperiode: {
             fom: periode.tidsperiode.fom,
             tom: Uttaksdagen(famDato).forrige(),
@@ -192,9 +187,9 @@ export const leggTilPeriode = ({
             // Hvis berørt periode er overskrivbar, la forskyvPerioder ta seg av logikk for overskriving
             return [
                 ...foregåendePerioder,
-                berørtPeriodeSplittetPåNyPeriode[0],
-                berørtPeriodeSplittetPåNyPeriode[1],
-                ...Periodene([berørtPeriodeSplittetPåNyPeriode[2], ...påfølgendePerioder]).forskyvPerioder(
+                berørtPeriodeSplittetPåNyPeriode[0]!,
+                berørtPeriodeSplittetPåNyPeriode[1]!,
+                ...Periodene([berørtPeriodeSplittetPåNyPeriode[2]!, ...påfølgendePerioder]).forskyvPerioder(
                     antallDagerINyPeriode,
                 ),
             ];
@@ -206,8 +201,8 @@ export const leggTilPeriode = ({
             ...Periodene(påfølgendePerioder).forskyvPerioder(antallDagerINyPeriode),
         ];
     } else {
-        const førstePeriode = perioder[0];
-        const sistePeriode = perioder[perioder.length - 1];
+        const førstePeriode = perioder[0]!;
+        const sistePeriode = perioder.at(-1)!;
         const nyPeriodeFom = dayjs(nyPeriode.tidsperiode.fom);
         const nyPeriodeTom = dayjs(nyPeriode.tidsperiode.tom);
 

@@ -28,21 +28,21 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
 
     return (
         <>
-            <Box background="surface-alt-3-subtle" padding="8" borderRadius="large">
-                <VStack gap="6">
-                    <VStack gap="8" align="center">
-                        <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden color="#66A3C4" />
+            <Box.New background="brand-blue-moderate" padding="8" borderRadius="large">
+                <VStack gap="space-24">
+                    <VStack gap="space-32" align="center">
+                        <StrollerIcon
+                            height={48}
+                            width={48}
+                            fontSize="1.5rem"
+                            aria-hidden
+                            color="var(--ax-accent-500)"
+                        />
                         <Heading size="medium" align="center" className="m-6">
                             <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRettFpEllerEs" />
                         </Heading>
                     </VStack>
-                    <Box
-                        background="surface-alt-3-subtle"
-                        borderColor="border-info"
-                        borderWidth="2"
-                        padding="4"
-                        borderRadius="large"
-                    >
+                    <Box.New background="brand-blue-moderate" borderWidth="2" padding="4" borderRadius="large">
                         <VStack gap="3">
                             <HStack justify="space-between">
                                 <Heading size="small">
@@ -52,14 +52,14 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                                     <BabyWrappedIcon
                                         height={24}
                                         width={24}
-                                        color="#236B7D"
+                                        color="var(--ax-accent-800)"
                                         fontSize="1.5rem"
                                         aria-hidden
                                     />
                                 </IconCircleWrapper>
                             </HStack>
 
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <Heading size="xsmall">
                                     <FormattedMessage id="FpEllerEsForside.Engangsstønad" />
                                 </Heading>
@@ -70,7 +70,7 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                                     />
                                 </BodyShort>
                             </VStack>
-                            <VStack gap="2">
+                            <VStack gap="space-8">
                                 <Heading size="xsmall">
                                     <FormattedMessage id="FpEllerEsForside.Foreldrepenger" />
                                 </Heading>
@@ -82,10 +82,10 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                                 </BodyShort>
                             </VStack>
                         </VStack>
-                    </Box>
-                    <VStack gap="2">
-                        <Box background="bg-default" padding="4" borderRadius="large">
-                            <VStack gap="2">
+                    </Box.New>
+                    <VStack gap="space-8">
+                        <Box.New background="default" padding="4" borderRadius="large">
+                            <VStack gap="space-8">
                                 <Heading size="xsmall">
                                     <FormattedMessage id="OppsummeringFpEllerEsSide.HvaErFp" />
                                 </Heading>
@@ -93,13 +93,13 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                                     <FormattedMessage id="FpEllerEsForside.FpErstatte" />{' '}
                                     <FormattedMessage
                                         id="OppsummeringFpEllerEsSide.HvaErFp.KanVelgeMellom"
-                                        values={{ b: (msg: any) => <b>{msg}</b> }}
+                                        values={{ b: (msg) => <b>{msg}</b> }}
                                     />
                                 </BodyShort>
                             </VStack>
-                        </Box>
-                        <Box background="bg-default" padding="4" borderRadius="large">
-                            <VStack gap="2">
+                        </Box.New>
+                        <Box.New background="default" padding="4" borderRadius="large">
+                            <VStack gap="space-8">
                                 <Heading size="xsmall">
                                     <FormattedMessage id="OppsummeringSide.HvaErEs" />
                                 </Heading>
@@ -108,17 +108,25 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                                         id="OppsummeringFpEllerEsSide.EsSkalBidra"
                                         values={{
                                             engangsstønad: formatCurrency(engangsstønad),
-                                            b: (msg: any) => <b>{msg}</b>,
+                                            b: (msg) => <b>{msg}</b>,
                                         }}
                                     />
                                 </BodyShort>
                             </VStack>
-                        </Box>
+                        </Box.New>
                     </VStack>
                 </VStack>
-            </Box>
+            </Box.New>
             <Infobox
-                icon={<InformationIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
+                icon={
+                    <InformationIcon
+                        height={24}
+                        width={24}
+                        color="var(--ax-bg-neutral-strong)"
+                        fontSize="1.5rem"
+                        aria-hidden
+                    />
+                }
                 color="gray"
             >
                 <BodyShort>
@@ -137,7 +145,7 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                     </Button>
                 </Link>
             </HStack>
-            <VStack gap="4">
+            <VStack gap="space-16">
                 <HvorforHarJegRettPanel fpEllerEsSituasjon={fpEllerEsSituasjon} grunnbeløpet={grunnbeløpet} />
                 <HvorforHarJegRettEsPanel fpEllerEsSituasjon={fpEllerEsSituasjon} />
             </VStack>

@@ -1,17 +1,19 @@
+import { onLanguageSelect, setAvailableLanguages } from '@navikt/nav-dekoratoren-moduler';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
-import { Provider } from '@navikt/ds-react';
+import { Provider, Theme } from '@navikt/ds-react';
 import { en, nb, nn } from '@navikt/ds-react/locales';
 
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
-import { utilsMessages } from '@navikt/fp-utils';
+import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
 
-import { FpEllerEsVeiviser } from './FpEllerEsVeiviser';
+import { FpEllerEsRouter } from './FpEllerEsRouter';
 import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
@@ -30,7 +32,7 @@ declare global {
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            retry: process.env.NODE_ENV === 'test' ? false : 3,
+            retry: false,
         },
     },
 });
@@ -41,34 +43,37 @@ const MESSAGES_GROUPED_BY_LOCALE = {
     en: { ...enMessages, ...uiMessages.en, ...utilsMessages.en, ...formHookMessages.en },
 };
 
-const initLocale = (): LocaleAll => {
-    const defaultLocale = 'nb';
-    dayjs.locale(defaultLocale);
-    return defaultLocale;
-};
+dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
 
 export const AppContainer = () => {
-    const [locale, setLocale] = useState<LocaleAll>(initLocale());
+    const [locale, setLocale] = useState<LocaleAll>(getDecoratorLanguageCookie('decorator-language') as LocaleAll);
 
-    const changeLocale = useCallback((activeLocale: LocaleAll) => {
-        setLocale(activeLocale);
-        dayjs.locale(activeLocale);
-        document.documentElement.setAttribute('lang', activeLocale);
-    }, []);
+    void setAvailableLanguages([
+        { locale: 'nb', handleInApp: true },
+        { locale: 'nn', handleInApp: true },
+        { locale: 'en', handleInApp: true },
+    ]);
+
+    onLanguageSelect((lang) => {
+        setLocale(lang.locale as LocaleAll);
+        document.documentElement.setAttribute('lang', lang.locale);
+    });
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary
-                appName="veiviser-fp-eller-es"
-                customErrorPage={<SimpleErrorPage retryCallback={() => location.reload()} />}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <ReactQueryDevtools />
-                    <Provider locale={getDsProviderLocale(locale)}>
-                        <FpEllerEsVeiviser locale={locale} changeLocale={changeLocale} />
-                    </Provider>
-                </QueryClientProvider>
-            </ErrorBoundary>
+            <Theme theme="light">
+                <ErrorBoundary
+                    appName="veiviser-fp-eller-es"
+                    customErrorPage={<SimpleErrorPage retryCallback={() => location.reload()} />}
+                >
+                    <QueryClientProvider client={queryClient}>
+                        <ReactQueryDevtools />
+                        <Provider locale={getDsProviderLocale(locale)}>
+                            <FpEllerEsRouter satser={DEFAULT_SATSER} />
+                        </Provider>
+                    </QueryClientProvider>
+                </ErrorBoundary>
+            </Theme>
         </IntlProvider>
     );
 };

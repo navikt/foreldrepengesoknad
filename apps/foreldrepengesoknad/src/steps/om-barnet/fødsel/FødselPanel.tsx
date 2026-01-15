@@ -6,7 +6,7 @@ import { Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { Søkersituasjon } from '@navikt/fp-common';
 import { RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
 
 import { BarnetFormValues } from '../OmBarnetFormValues';
@@ -35,7 +35,7 @@ interface Props {
     søkersituasjon: Søkersituasjon;
     erFarEllerMedmor: boolean;
     søknadGjelderEtNyttBarn: boolean;
-    arbeidsforhold: Arbeidsforhold[];
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 }
 
 export const FødselPanel = ({ søkersituasjon, erFarEllerMedmor, søknadGjelderEtNyttBarn, arbeidsforhold }: Props) => {
@@ -54,6 +54,7 @@ export const FødselPanel = ({ søkersituasjon, erFarEllerMedmor, søknadGjelder
                     <div>
                         <RhfRadioGroup
                             name="erBarnetFødt"
+                            control={formMethods.control}
                             label={intl.formatMessage({ id: 'omBarnet.erBarnetFødt' })}
                             validate={[
                                 isRequired(
@@ -68,7 +69,7 @@ export const FødselPanel = ({ søkersituasjon, erFarEllerMedmor, søknadGjelder
                         </RhfRadioGroup>
                         {!erFarEllerMedmor && (
                             <ReadMore header={intl.formatMessage({ id: 'omBarnet.erBarnetFødt.readMore.header' })}>
-                                <VStack gap="4">
+                                <VStack gap="space-16">
                                     <div>
                                         <FormattedMessage id="omBarnet.erBarnetFødt.readMore.innhold.del1" />
                                     </div>
@@ -79,6 +80,7 @@ export const FødselPanel = ({ søkersituasjon, erFarEllerMedmor, søknadGjelder
                     </div>
                     <RhfRadioGroup
                         name="antallBarn"
+                        control={formMethods.control}
                         label={finnAntallBarnLabel(intl, søkerErFarMedmor, erBarnetFødt)}
                         validate={[isRequired(finnAntallBarnIsRequired(intl, søkerErFarMedmor, erBarnetFødt))]}
                     >
@@ -93,7 +95,7 @@ export const FødselPanel = ({ søkersituasjon, erFarEllerMedmor, søknadGjelder
                         </Radio>
                     </RhfRadioGroup>
                     {antallBarn !== undefined && antallBarn === 3 && (
-                        <RhfSelect name="antallBarnSelect" label="Antall barn">
+                        <RhfSelect name="antallBarnSelect" control={formMethods.control} label="Antall barn">
                             <option value="3">3</option>
                             <option value="4">4</option>
                             <option value="5">5</option>

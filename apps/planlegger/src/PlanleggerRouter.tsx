@@ -13,60 +13,37 @@ import { PlanenDeresSteg } from 'steps/planen-deres/PlanenDeresSteg';
 
 import { Loader } from '@navikt/ds-react';
 
-import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
-
-import { TilpassPlanenSteg } from './steps/tilpass-planen/TilpassPlanenSteg';
+import { KontoBeregningDto, Satser } from '@navikt/fp-types';
 
 interface Props {
-    locale: LocaleAll;
-    changeLocale: (locale: LocaleAll) => void;
-    stønadskontoer?: TilgjengeligeStønadskontoer;
+    stønadskontoer?: { '100': KontoBeregningDto; '80': KontoBeregningDto };
     satser: Satser;
 }
 
-export const PlanleggerRouter = ({ locale, changeLocale, stønadskontoer, satser }: Props) => {
+export const PlanleggerRouter = ({ stønadskontoer, satser }: Props) => {
     return (
         <Routes>
-            <Route path="/" element={<OmPlanleggerenSteg locale={locale} changeLocale={changeLocale} />} />
-            <Route path={PlanleggerRoutes.HVEM_PLANLEGGER} element={<HvemPlanleggerSteg locale={locale} />} />
-            <Route path={PlanleggerRoutes.OM_BARNET} element={<OmBarnetSteg locale={locale} />} />
-            <Route path={PlanleggerRoutes.BARNEHAGEPLASS} element={<BarnehageplassSteg locale={locale} />} />
-            <Route
-                path={PlanleggerRoutes.ARBEIDSSITUASJON}
-                element={<ArbeidssituasjonSteg satser={satser} locale={locale} />}
-            />
-            <Route path={PlanleggerRoutes.HVOR_MYE} element={<HvorMyeSteg locale={locale} satser={satser} />} />
+            <Route path="/" element={<OmPlanleggerenSteg />} />
+            <Route path={PlanleggerRoutes.HVEM_PLANLEGGER} element={<HvemPlanleggerSteg />} />
+            <Route path={PlanleggerRoutes.OM_BARNET} element={<OmBarnetSteg />} />
+            <Route path={PlanleggerRoutes.BARNEHAGEPLASS} element={<BarnehageplassSteg />} />
+            <Route path={PlanleggerRoutes.ARBEIDSSITUASJON} element={<ArbeidssituasjonSteg satser={satser} />} />
+            <Route path={PlanleggerRoutes.HVOR_MYE} element={<HvorMyeSteg satser={satser} />} />
             <Route
                 path={PlanleggerRoutes.HVOR_LANG_PERIODE}
-                element={
-                    stønadskontoer ? (
-                        <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} locale={locale} />
-                    ) : (
-                        <Loader />
-                    )
-                }
+                element={stønadskontoer ? <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} /> : <Loader />}
             />
             <Route
                 path={PlanleggerRoutes.FORDELING}
-                element={
-                    stønadskontoer ? <FordelingSteg stønadskontoer={stønadskontoer} locale={locale} /> : <Loader />
-                }
+                element={stønadskontoer ? <FordelingSteg stønadskontoer={stønadskontoer} /> : <Loader />}
             />
             <Route
                 path={PlanleggerRoutes.PLANEN_DERES}
-                element={
-                    stønadskontoer ? <PlanenDeresSteg stønadskontoer={stønadskontoer} locale={locale} /> : <Loader />
-                }
-            />
-            <Route
-                path={PlanleggerRoutes.TILPASS_PLANEN}
-                element={
-                    stønadskontoer ? <TilpassPlanenSteg stønadskontoer={stønadskontoer} locale={locale} /> : <Loader />
-                }
+                element={stønadskontoer ? <PlanenDeresSteg stønadskontoer={stønadskontoer} /> : <Loader />}
             />
             <Route
                 path={PlanleggerRoutes.OPPSUMMERING}
-                element={<OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} locale={locale} />}
+                element={<OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} />}
             />
             <Route path="*" element={<Navigate to="/" />} />
         </Routes>

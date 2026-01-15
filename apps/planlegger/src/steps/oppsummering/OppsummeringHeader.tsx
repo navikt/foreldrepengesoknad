@@ -15,7 +15,7 @@ export const OppsummeringHeader = ({ children }: Props) => (
             <>
                 <Show below="md">
                     <BlueHeading>
-                        <HStack gap="4" align="center">
+                        <HStack gap="space-16" align="center">
                             <IconCircleWrapper color="lightBlue" size="large">
                                 <CheckmarkIcon height={34} width={34} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
@@ -27,7 +27,7 @@ export const OppsummeringHeader = ({ children }: Props) => (
                 </Show>
                 <Show above="md">
                     <BlueHeading>
-                        <HStack gap="4" align="center">
+                        <HStack gap="space-16" align="center">
                             <IconCircleWrapper color="lightBlue" size="large">
                                 <CheckmarkIcon height={30} width={30} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>

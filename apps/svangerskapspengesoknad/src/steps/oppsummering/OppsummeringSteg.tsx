@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { getTilretteleggingId } from 'utils/tilretteleggingUtils';
 
-import { FormSummary, Heading } from '@navikt/ds-react';
+import { FormSummary } from '@navikt/ds-react';
 
 import {
     ArbeidsforholdOppsummering,
@@ -15,8 +15,8 @@ import {
     OppsummeringPanel,
     SelvstendigNæringsdrivendeOppsummering,
 } from '@navikt/fp-steg-oppsummering';
-import { Søkerinfo } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -28,8 +28,8 @@ import { PerioderOppsummering } from './PerioderOppsummering';
 type Props = {
     sendSøknad: () => Promise<void>;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    avbrytSøknad: () => Promise<void>;
-    søkerInfo: Søkerinfo;
+    avbrytSøknad: () => void;
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
 };
 
 export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }: Props) => {
@@ -46,26 +46,26 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
     const frilans = useContextGetData(ContextDataType.FRILANS);
 
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(søkerInfo.arbeidsforhold, barn.termindato);
+    const skalViseAlertOmIM = aktiveArbeidsforhold.some((arbeidsforhold) =>
+        valgteArbeidsforhold?.includes(arbeidsforhold.arbeidsgiverId),
+    );
 
     const førsteTilretteleggingId = getTilretteleggingId(
         søkerInfo.arbeidsforhold,
         barn.termindato,
         arbeidsforholdOgInntekt,
         valgteArbeidsforhold,
-    );
+    )!;
 
     return (
-        <ContentWrapper>
-            <Heading size="large">
-                <FormattedMessage id="søknad.pageheading" />
-            </Heading>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <OppsummeringPanel
                 appName="Svangerskapspenger"
                 stepConfig={stepConfig}
                 sendSøknad={sendSøknad}
-                cancelApplication={avbrytSøknad}
+                onAvsluttOgSlett={avbrytSøknad}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
-                onContinueLater={navigator.fortsettSøknadSenere}
+                onFortsettSenere={navigator.fortsettSøknadSenere}
                 onStepChange={navigator.goToStep}
             >
                 <FormSummary>
@@ -73,9 +73,6 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                         <FormSummary.Heading level="2">
                             <FormattedMessage id="oppsummering.omBarnet" />
                         </FormSummary.Heading>
-                        <FormSummary.EditLink onClick={() => navigator.goToStep(SøknadRoute.BARNET)}>
-                            <FormattedMessage id="oppsummering.EndreSvar" />
-                        </FormSummary.EditLink>
                     </FormSummary.Header>
                     <FormSummary.Answers>
                         <FormSummary.Answer>
@@ -93,6 +90,11 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                             </FormSummary.Answer>
                         )}
                     </FormSummary.Answers>
+                    <FormSummary.Footer>
+                        <FormSummary.EditLink onClick={() => navigator.goToStep(SøknadRoute.BARNET)}>
+                            <FormattedMessage id="oppsummering.EndreSvar" />
+                        </FormSummary.EditLink>
+                    </FormSummary.Footer>
                 </FormSummary>
                 <BoIUtlandetOppsummering
                     onVilEndreSvar={() => navigator.goToStep(SøknadRoute.UTENLANDSOPPHOLD)}
@@ -100,6 +102,7 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                     senereUtenlandsopphold={utenlandsoppholdSenere ?? []}
                 />
                 <ArbeidsforholdOppsummering
+                    skalViseAlertOmIM={skalViseAlertOmIM}
                     arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                     arbeidsforhold={aktiveArbeidsforhold}
                     onVilEndreSvar={() => navigator.goToStep(SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT)}
@@ -132,6 +135,6 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                     }
                 />
             </OppsummeringPanel>
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

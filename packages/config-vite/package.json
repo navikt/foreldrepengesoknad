@@ -1,0 +1,14 @@
+{
+    "name": "@navikt/fp-config-vite",
+    "main": "vite.config.mjs",
+    "type": "module",
+    "version": "1.0.0",
+    "dependencies": {
+        "@tailwindcss/vite": "4.1.18",
+        "@vitejs/plugin-react": "5.1.2",
+        "@vitest/browser-playwright": "4.0.16",
+        "vite": "7.3.0",
+        "vitest": "4.0.16"
+    },
+    "packageManager": "pnpm@10.28.0"
+}

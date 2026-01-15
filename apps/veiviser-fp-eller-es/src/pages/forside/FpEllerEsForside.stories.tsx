@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { FpEllerEsRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ export const Default: StoryObj = {
     render: () => {
         return (
             <MemoryRouter initialEntries={[FpEllerEsRoutes.SITUASJON]}>
-                <FpEllerEsForside locale="nb" changeLocale={() => undefined} />
+                <FpEllerEsForside />
             </MemoryRouter>
         );
     },

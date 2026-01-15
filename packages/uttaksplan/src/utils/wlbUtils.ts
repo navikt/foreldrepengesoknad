@@ -2,16 +2,15 @@ import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 import {
-    Forelder,
     Periode,
     Periodetype,
     Situasjon,
-    StønadskontoType,
     TidsperiodeDate,
     Uttaksperiode,
     isOverføringsperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
+import { KontoTypeUttak } from '@navikt/fp-types';
 import { Uttaksdagen, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { andreAugust2022ReglerGjelder, tidperiodeOverlapperDato } from './dateUtils';
@@ -34,8 +33,8 @@ export const gjelderWLBReglerFarMedmorRundtFødsel = (
 export const isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel = (periode: Periode): boolean => {
     return (
         isUttaksperiode(periode) &&
-        periode.forelder === Forelder.farMedmor &&
-        periode.konto === StønadskontoType.Fedrekvote &&
+        periode.forelder === 'FAR_MEDMOR' &&
+        periode.konto === 'FEDREKVOTE' &&
         !!periode.erMorForSyk === false &&
         periode.morsAktivitetIPerioden === undefined &&
         !!periode.ønskerFlerbarnsdager === false &&
@@ -59,7 +58,7 @@ export const isUttaksperiodeFarMedmorPgaFødsel = (
 };
 
 export const isUttaksperiodeBareFarMedmorHarRett = (periode: Periode, morHarRett: boolean): boolean => {
-    return isUttaksperiode(periode) && periode.forelder === Forelder.farMedmor && !morHarRett;
+    return isUttaksperiode(periode) && periode.forelder === 'FAR_MEDMOR' && !morHarRett;
 };
 
 export const getFørsteUttaksdag2UkerFørFødsel = (familiehendelsesdato: Date, termindato: Date | undefined): Date => {
@@ -67,7 +66,7 @@ export const getFørsteUttaksdag2UkerFørFødsel = (familiehendelsesdato: Date, 
         termindato !== undefined
             ? dayjs(termindato).subtract(ANTALL_DAGER_TO_UKER, 'day')
             : dayjs(familiehendelsesdato).subtract(ANTALL_DAGER_TO_UKER, 'day');
-    const datoÅRegneFra = dayjs.min(terminEllerFamHendelsesdatoMinusToUker, dayjs(familiehendelsesdato))!;
+    const datoÅRegneFra = dayjs.min(terminEllerFamHendelsesdatoMinusToUker, dayjs(familiehendelsesdato));
     return Uttaksdagen(datoÅRegneFra.toDate()).denneEllerNeste();
 };
 
@@ -79,7 +78,7 @@ export const getSisteUttaksdag6UkerEtterFødsel = (familiehendelsesdato: Date): 
 };
 
 export const starterTidsperiodeEtter2UkerFørFødsel = (
-    tidsperiode: any,
+    tidsperiode: TidsperiodeDate,
     familiehendelsesdato: Date,
     termindato: Date | undefined,
 ): boolean => {
@@ -91,7 +90,10 @@ export const starterUttaksperiodeFørFødsel = (periode: Periode, familiehendels
     return isUttaksperiode(periode) && dayjs(periode.tidsperiode.fom).isBefore(familiehendelsesdato, 'day');
 };
 
-export const slutterTidsperiodeInnen6UkerEtterFødsel = (tidsperiode: any, familiehendelsesdato: Date): boolean => {
+export const slutterTidsperiodeInnen6UkerEtterFødsel = (
+    tidsperiode: TidsperiodeDate,
+    familiehendelsesdato: Date,
+): boolean => {
     const sisteUttaksdag6UkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
     return dayjs(tidsperiode.tom).isSameOrBefore(sisteUttaksdag6UkerEtterFødsel, 'day');
 };
@@ -119,7 +121,7 @@ export const erFarMedmorSinWLBTidsperiodeRundtFødsel = (
     tidsperiode: TidsperiodeDate,
     familiehendelsesdato: Date,
     periodetype: Periodetype,
-    konto: StønadskontoType,
+    konto: KontoTypeUttak,
     erFarEllerMedmor: boolean,
     termindato: Date | undefined,
     situasjon: Situasjon,
@@ -131,9 +133,7 @@ export const erFarMedmorSinWLBTidsperiodeRundtFødsel = (
         situasjon === 'fødsel' &&
         andreAugust2022ReglerGjelder(familiehendelsesdato) &&
         periodetype === Periodetype.Uttak &&
-        (konto === StønadskontoType.Fedrekvote ||
-            konto === StønadskontoType.Foreldrepenger ||
-            konto === StønadskontoType.AktivitetsfriKvote) &&
+        (konto === 'FEDREKVOTE' || konto === 'FORELDREPENGER' || konto === 'AKTIVITETSFRI_KVOTE') &&
         starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(tidsperiode, familiehendelsesdato, termindato)
     );
 };

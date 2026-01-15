@@ -10,12 +10,11 @@ import {
     Periode,
     Periodetype,
     Situasjon,
-    StønadskontoType,
     TidsperiodeDate,
     Uttaksperiode,
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
 } from '@navikt/fp-common';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatDateMedUkedagShortMonth } from '@navikt/fp-utils';
 import {
     appendPeriodeNavnHvisUttakRundtFødselFarMedmor,
@@ -32,7 +31,7 @@ interface Props {
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
-    registrerteArbeidsforhold: Arbeidsforhold[];
+    registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     annenForelder: AnnenForelder;
     eksisterendeUttaksplan?: Periode[];
     familiehendelsesdato: Date;
@@ -57,7 +56,7 @@ export const UttaksplanOppsummeringsliste = ({
 }: Props) => {
     const intl = useIntl();
 
-    const getStønadskontoNavnFromKonto = (konto: StønadskontoType) => {
+    const getStønadskontoNavnFromKonto = (konto: KontoTypeUttak) => {
         return getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
     };
 
@@ -122,7 +121,7 @@ export const UttaksplanOppsummeringsliste = ({
                         }
                         if (periode.type === Periodetype.Utsettelse) {
                             return (
-                                <FormSummary.Answer key={periode.type + periode.tidsperiode}>
+                                <FormSummary.Answer key={lagKeyFraPeriode(periode)}>
                                     <FormSummary.Label>{formatTidsperiode(periode.tidsperiode)}</FormSummary.Label>
                                     <FormSummary.Value>
                                         <FormattedMessage id="oppsummering.utsettelse.pga" />
@@ -139,7 +138,7 @@ export const UttaksplanOppsummeringsliste = ({
                         }
                         if (periode.type === Periodetype.Overføring) {
                             return (
-                                <FormSummary.Answer key={periode.type + periode.tidsperiode}>
+                                <FormSummary.Answer key={lagKeyFraPeriode(periode)}>
                                     <FormSummary.Label>{formatTidsperiode(periode.tidsperiode)}</FormSummary.Label>
                                     <FormSummary.Value>
                                         <FormattedMessage
@@ -153,7 +152,7 @@ export const UttaksplanOppsummeringsliste = ({
                         }
                         if (periode.type === Periodetype.Opphold) {
                             return (
-                                <FormSummary.Answer key={periode.type + periode.tidsperiode}>
+                                <FormSummary.Answer key={lagKeyFraPeriode(periode)}>
                                     <FormSummary.Label>{formatTidsperiode(periode.tidsperiode)}</FormSummary.Label>
                                     <FormSummary.Value>
                                         {getPeriodeTittel(
@@ -176,3 +175,6 @@ export const UttaksplanOppsummeringsliste = ({
         </>
     );
 };
+
+const lagKeyFraPeriode = (periode: Periode) =>
+    periode.type + periode.tidsperiode.fom.toString() + periode.tidsperiode.tom.toString();

@@ -1,18 +1,18 @@
-import { ønskerFlerbarnsdagerSkalBesvares } from '../../utils/uttaksskjema/ønskerFlerbarnsdagerSkalBesvares';
-import { RegelTestresultat } from '../utils/types/regelTypes';
 import {
     Periode,
     Søknadsinfo,
     UttakRundtFødselÅrsak,
-    Uttaksperiode,
     isAnnenForelderOppgitt,
     isUttaksperiode,
 } from '@navikt/fp-common';
 
+import { ønskerFlerbarnsdagerSkalBesvares } from '../../utils/uttaksskjema/ønskerFlerbarnsdagerSkalBesvares';
+import { RegelTestresultat } from '../utils/types/regelTypes';
+
 export const inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest = (
     grunnlag: Søknadsinfo,
 ): RegelTestresultat => {
-    const uttaksperioder = grunnlag.perioder.filter((p: Periode) => isUttaksperiode(p)) as Uttaksperiode[];
+    const uttaksperioder = grunnlag.perioder.filter((p: Periode) => isUttaksperiode(p));
     const erFlerbarnssøknad = grunnlag.antallBarn > 1;
     const bareFarMedmorHarRett = grunnlag.søkerErFarEllerMedmor && !grunnlag.erDeltUttak;
     const erDeltUttakINorge =
@@ -27,6 +27,7 @@ export const inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest = (
                 grunnlag.søkerErFarEllerMedmor,
                 grunnlag.familiehendelsesdato,
                 p.tidsperiode,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 p.konto,
                 bareFarMedmorHarRett,
                 grunnlag.antallBarn,

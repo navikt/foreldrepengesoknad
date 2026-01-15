@@ -1,15 +1,9 @@
-import {
-    Forelder,
-    Periode,
-    Periodetype,
-    UtsettelseÅrsakType,
-    isUtsettelsePgaArbeid,
-    isUtsettelsesperiode,
-} from '@navikt/fp-common';
+import { Periode, Periodetype, isUtsettelsePgaArbeid, isUtsettelsesperiode } from '@navikt/fp-common';
+import { UtsettelsesÅrsak } from '@navikt/fp-types';
 
 import { PeriodeUtsettelseFormData, PeriodeUtsettelseFormField } from './periodeUtsettelseFormConfig';
 
-export const initialValues: PeriodeUtsettelseFormData = {
+const initialValues: PeriodeUtsettelseFormData = {
     [PeriodeUtsettelseFormField.fom]: undefined,
     [PeriodeUtsettelseFormField.tom]: undefined,
     [PeriodeUtsettelseFormField.årsak]: '',
@@ -40,9 +34,9 @@ export const mapPeriodeUtsettelseFormToPeriode = (
     return {
         id,
         type: Periodetype.Utsettelse,
-        årsak: values.årsak as UtsettelseÅrsakType,
+        årsak: values.årsak as UtsettelsesÅrsak,
         morsAktivitetIPerioden: values.morsAktivitetIPerioden ? values.morsAktivitetIPerioden : undefined,
-        forelder: erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor,
+        forelder: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
         tidsperiode: {
             fom: values.fom!,
             tom: values.tom!,
@@ -53,7 +47,7 @@ export const mapPeriodeUtsettelseFormToPeriode = (
 };
 
 export const cleanupPeriodeUtsettelseFormData = (values: PeriodeUtsettelseFormData): PeriodeUtsettelseFormData => {
-    if (values.årsak !== UtsettelseÅrsakType.Arbeid) {
+    if (values.årsak !== 'ARBEID') {
         return {
             ...values,
             bekrefterArbeidIPerioden: undefined,

@@ -1,25 +1,23 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
 import { SøknadRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { action } from 'storybook/actions';
 
 import { Utenlandsopphold } from '@navikt/fp-types';
 
 import { SenereUtenlandsoppholdSteg } from './SenereUtenlandsoppholdSteg';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const defaultUtenlandsopphold = {
     harBoddUtenforNorgeSiste12Mnd: false,
     skalBoUtenforNorgeNeste12Mnd: true,
-} as Utenlandsopphold;
+} satisfies Utenlandsopphold;
 
 type StoryArgs = {
     utenlandsforhold?: Utenlandsopphold;

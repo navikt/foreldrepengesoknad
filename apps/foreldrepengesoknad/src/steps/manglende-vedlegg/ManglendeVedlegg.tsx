@@ -14,8 +14,8 @@ import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 import { isUtsettelseBarnInnlagt } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Attachment, Søkerinfo } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { Attachment, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -63,7 +63,7 @@ import {
 } from './util';
 
 type Props = {
-    søkerInfo: Søkerinfo;
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
     erEndringssøknad: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
@@ -114,11 +114,12 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
     const morForSykPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorForSyk);
     const morIntroPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorIntroprogram);
     const morJobberPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorJobber);
+
     const morJobberOgStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorJobberOgStuderer);
     const morKvalPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorKvalprogram);
     const morStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorStuderer);
 
-    const navnPåForeldre = getNavnPåForeldre(søkerInfo.søker, annenForelder, erFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const termindato = getTermindato(barn);
 
@@ -180,151 +181,169 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
         formMethods.clearErrors(skjemanummer);
     };
 
-    return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            steps={stepConfig}
-            noFieldsRequired
-        >
-            <RhfForm formMethods={formMethods} onSubmit={lagre}>
-                <VStack gap="10">
-                    <MorInnlagtDokumentasjon
-                        attachments={morInnlagtVedlegg}
-                        familiehendelsesdato={familiehendelsesdato}
-                        navnPåForeldre={navnPåForeldre}
-                        perioder={morInnlagtPerioder}
-                        situasjon={søkersituasjon.situasjon}
-                        termindato={termindato}
-                        updateAttachments={updateAttachments}
-                        erFarEllerMedmor={erFarEllerMedmor}
-                    />
-                    <MorForSykDokumentasjon
-                        attachments={morForSykVedlegg}
-                        familiehendelsesdato={familiehendelsesdato}
-                        navnPåForeldre={navnPåForeldre}
-                        perioder={morForSykPerioder}
-                        situasjon={søkersituasjon.situasjon}
-                        termindato={termindato}
-                        updateAttachments={updateAttachments}
-                        erFarEllerMedmor={erFarEllerMedmor}
-                    />
-                    <FarInnlagtDokumentasjon
-                        attachments={farInnlagtVedlegg}
-                        familiehendelsesdato={familiehendelsesdato}
-                        navnPåForeldre={navnPåForeldre}
-                        perioder={farInnlagtPerioder}
-                        situasjon={søkersituasjon.situasjon}
-                        termindato={termindato}
-                        updateAttachments={updateAttachments}
-                        erFarEllerMedmor={erFarEllerMedmor}
-                    />
-                    <FarForSykDokumentasjon
-                        attachments={farForSykvedlegg}
-                        familiehendelsesdato={familiehendelsesdato}
-                        navnPåForeldre={navnPåForeldre}
-                        perioder={farForSykPerioder}
-                        situasjon={søkersituasjon.situasjon}
-                        termindato={termindato}
-                        updateAttachments={updateAttachments}
-                        erFarEllerMedmor={erFarEllerMedmor}
-                    />
-                    <BarnInnlagtDokumentasjon
-                        attachments={barnInnlagtVedlegg}
-                        familiehendelsesdato={familiehendelsesdato}
-                        navnPåForeldre={navnPåForeldre}
-                        perioder={barnInnlagtPerioder}
-                        situasjon={søkersituasjon.situasjon}
-                        termindato={termindato}
-                        updateAttachments={updateAttachments}
-                    />
-                    <MorStudererDokumentasjon
-                        attachments={morStudererVedlegg}
-                        familiehendelsesdato={familiehendelsesdato}
-                        navnPåForeldre={navnPåForeldre}
-                        perioder={morStudererPerioder}
-                        situasjon={søkersituasjon.situasjon}
-                        termindato={termindato}
-                        updateAttachments={updateAttachments}
-                    />
-                    <MorJobberDokumentasjon
-                        attachments={morJobberVedlegg}
-                        familiehendelsesdato={familiehendelsesdato}
-                        navnPåForeldre={navnPåForeldre}
-                        perioder={morJobberPerioder}
-                        situasjon={søkersituasjon.situasjon}
-                        termindato={termindato}
-                        updateAttachments={updateAttachments}
-                    />
-                    <MorJobberOgStudererDokumentasjon
-                        attachments={morJobberOgStudererVedlegg}
-                        familiehendelsesdato={familiehendelsesdato}
-                        navnPåForeldre={navnPåForeldre}
-                        perioder={morJobberOgStudererPerioder}
-                        situasjon={søkersituasjon.situasjon}
-                        termindato={termindato}
-                        updateAttachments={updateAttachments}
-                    />
-                    <MorIntroduksjonsprogrammetDokumentasjon
-                        attachments={morIntroprogramVedlegg}
-                        familiehendelsesdato={familiehendelsesdato}
-                        navnPåForeldre={navnPåForeldre}
-                        perioder={morIntroPerioder}
-                        situasjon={søkersituasjon.situasjon}
-                        termindato={termindato}
-                        updateAttachments={updateAttachments}
-                    />
-                    <MorKvalifiseringsprogrammetDokumentasjon
-                        attachments={morKvalprogramVedlegg}
-                        familiehendelsesdato={familiehendelsesdato}
-                        navnPåForeldre={navnPåForeldre}
-                        perioder={morKvalPerioder}
-                        situasjon={søkersituasjon.situasjon}
-                        termindato={termindato}
-                        updateAttachments={updateAttachments}
-                    />
-                    <AleneomsorgDokumentasjon
-                        attachments={aleneomsorgVedlegg}
-                        updateAttachments={updateAttachments}
-                        annenForelder={annenForelder}
-                    />
-                    <TerminbekreftelseDokumentasjon
-                        attachments={terminbekreftelseVedlegg}
-                        updateAttachments={updateAttachments}
-                        barn={barn}
-                        arbeidsforhold={søkerInfo.arbeidsforhold}
-                        erFarEllerMedmor={erFarEllerMedmor}
-                    />
-                    <OmsorgsovertakelseDokumentasjon
-                        attachments={adopsjonVedlegg}
-                        updateAttachments={updateAttachments}
-                        søkersituasjon={søkersituasjon}
-                    />
-                    <EtterlønnEllerSluttvederlagDokumentasjon
-                        attachments={etterlønnEllerSluttvederlagVedlegg}
-                        updateAttachments={updateAttachments}
-                        arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
-                        andreInntektskilder={andreInntektskilder}
-                    />
-                    <MilitærEllerSiviltjenesteDokumentasjon
-                        attachments={militærEllerSiviltjenesteVedlegg}
-                        updateAttachments={updateAttachments}
-                        arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
-                        andreInntektskilder={andreInntektskilder}
-                    />
+    const kreverIngenDokumentasjon =
+        [
+            morInnlagtPerioder,
+            barnInnlagtPerioder,
+            farForSykPerioder,
+            farInnlagtPerioder,
+            morForSykPerioder,
+            morIntroPerioder,
+            morJobberOgStudererPerioder,
+            morKvalPerioder,
+            morStudererPerioder,
+        ].flat().length === 0;
 
-                    <Alert size="small" variant="info">
-                        <Heading level="2" size="small">
-                            <FormattedMessage id="manglendeVedlegg.duKanSende.tittel" />
-                        </Heading>
-                        <BodyLong>
-                            <FormattedMessage id="manglendeVedlegg.duKanSende.innhold" />
-                        </BodyLong>
-                    </Alert>
-                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
-                </VStack>
-            </RhfForm>
-        </Step>
+    return (
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
+            <Step steps={stepConfig} noFieldsRequired>
+                <RhfForm formMethods={formMethods} onSubmit={lagre}>
+                    <VStack gap="space-40">
+                        <MorInnlagtDokumentasjon
+                            attachments={morInnlagtVedlegg}
+                            familiehendelsesdato={familiehendelsesdato}
+                            navnPåForeldre={navnPåForeldre}
+                            perioder={morInnlagtPerioder}
+                            situasjon={søkersituasjon.situasjon}
+                            termindato={termindato}
+                            updateAttachments={updateAttachments}
+                            erFarEllerMedmor={erFarEllerMedmor}
+                        />
+                        <MorForSykDokumentasjon
+                            attachments={morForSykVedlegg}
+                            familiehendelsesdato={familiehendelsesdato}
+                            navnPåForeldre={navnPåForeldre}
+                            perioder={morForSykPerioder}
+                            situasjon={søkersituasjon.situasjon}
+                            termindato={termindato}
+                            updateAttachments={updateAttachments}
+                            erFarEllerMedmor={erFarEllerMedmor}
+                        />
+                        <FarInnlagtDokumentasjon
+                            attachments={farInnlagtVedlegg}
+                            familiehendelsesdato={familiehendelsesdato}
+                            navnPåForeldre={navnPåForeldre}
+                            perioder={farInnlagtPerioder}
+                            situasjon={søkersituasjon.situasjon}
+                            termindato={termindato}
+                            updateAttachments={updateAttachments}
+                            erFarEllerMedmor={erFarEllerMedmor}
+                        />
+                        <FarForSykDokumentasjon
+                            attachments={farForSykvedlegg}
+                            familiehendelsesdato={familiehendelsesdato}
+                            navnPåForeldre={navnPåForeldre}
+                            perioder={farForSykPerioder}
+                            situasjon={søkersituasjon.situasjon}
+                            termindato={termindato}
+                            updateAttachments={updateAttachments}
+                            erFarEllerMedmor={erFarEllerMedmor}
+                        />
+                        <BarnInnlagtDokumentasjon
+                            attachments={barnInnlagtVedlegg}
+                            familiehendelsesdato={familiehendelsesdato}
+                            navnPåForeldre={navnPåForeldre}
+                            perioder={barnInnlagtPerioder}
+                            situasjon={søkersituasjon.situasjon}
+                            termindato={termindato}
+                            updateAttachments={updateAttachments}
+                        />
+                        <MorStudererDokumentasjon
+                            attachments={morStudererVedlegg}
+                            familiehendelsesdato={familiehendelsesdato}
+                            navnPåForeldre={navnPåForeldre}
+                            perioder={morStudererPerioder}
+                            situasjon={søkersituasjon.situasjon}
+                            termindato={termindato}
+                            updateAttachments={updateAttachments}
+                        />
+                        <MorJobberDokumentasjon
+                            attachments={morJobberVedlegg}
+                            familiehendelsesdato={familiehendelsesdato}
+                            navnPåForeldre={navnPåForeldre}
+                            perioder={morJobberPerioder}
+                            situasjon={søkersituasjon.situasjon}
+                            erFarEllerMedmor={erFarEllerMedmor}
+                            termindato={termindato}
+                            updateAttachments={updateAttachments}
+                        />
+                        <MorJobberOgStudererDokumentasjon
+                            attachments={morJobberOgStudererVedlegg}
+                            familiehendelsesdato={familiehendelsesdato}
+                            navnPåForeldre={navnPåForeldre}
+                            perioder={morJobberOgStudererPerioder}
+                            situasjon={søkersituasjon.situasjon}
+                            termindato={termindato}
+                            updateAttachments={updateAttachments}
+                        />
+                        <MorIntroduksjonsprogrammetDokumentasjon
+                            attachments={morIntroprogramVedlegg}
+                            familiehendelsesdato={familiehendelsesdato}
+                            navnPåForeldre={navnPåForeldre}
+                            perioder={morIntroPerioder}
+                            situasjon={søkersituasjon.situasjon}
+                            termindato={termindato}
+                            updateAttachments={updateAttachments}
+                        />
+                        <MorKvalifiseringsprogrammetDokumentasjon
+                            attachments={morKvalprogramVedlegg}
+                            familiehendelsesdato={familiehendelsesdato}
+                            navnPåForeldre={navnPåForeldre}
+                            perioder={morKvalPerioder}
+                            situasjon={søkersituasjon.situasjon}
+                            termindato={termindato}
+                            updateAttachments={updateAttachments}
+                        />
+                        <AleneomsorgDokumentasjon
+                            attachments={aleneomsorgVedlegg}
+                            updateAttachments={updateAttachments}
+                            annenForelder={annenForelder}
+                        />
+                        <TerminbekreftelseDokumentasjon
+                            attachments={terminbekreftelseVedlegg}
+                            updateAttachments={updateAttachments}
+                            barn={barn}
+                            annenForelder={annenForelder}
+                            søkersituasjon={søkersituasjon}
+                            arbeidsforhold={søkerInfo.arbeidsforhold}
+                            erFarEllerMedmor={erFarEllerMedmor}
+                        />
+                        <OmsorgsovertakelseDokumentasjon
+                            attachments={adopsjonVedlegg}
+                            updateAttachments={updateAttachments}
+                            søkersituasjon={søkersituasjon}
+                        />
+                        <EtterlønnEllerSluttvederlagDokumentasjon
+                            attachments={etterlønnEllerSluttvederlagVedlegg}
+                            updateAttachments={updateAttachments}
+                            arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
+                            andreInntektskilder={andreInntektskilder}
+                        />
+                        <MilitærEllerSiviltjenesteDokumentasjon
+                            attachments={militærEllerSiviltjenesteVedlegg}
+                            updateAttachments={updateAttachments}
+                            arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
+                            andreInntektskilder={andreInntektskilder}
+                        />
+
+                        {!kreverIngenDokumentasjon && (
+                            <Alert size="small" variant="info">
+                                <Heading level="2" size="small">
+                                    <FormattedMessage id="manglendeVedlegg.duKanSende.tittel" />
+                                </Heading>
+                                <BodyLong>
+                                    <FormattedMessage id="manglendeVedlegg.duKanSende.innhold" />
+                                </BodyLong>
+                            </Alert>
+                        )}
+                        <StepButtonsHookForm
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            onAvsluttOgSlett={avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
+                        />
+                    </VStack>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 };

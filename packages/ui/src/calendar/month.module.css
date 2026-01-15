@@ -1,19 +1,19 @@
-.box {
-    padding-top: 20px;
-    width: 170px;
-    break-inside: avoid;
+.weeknr {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--ax-text-neutral-subtle);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 300;
+    cursor: default;
 }
 
-@media (max-width: 630px) {
-    .box {
-        padding-top: 2px;
-        width: 120px;
-    }
-}
-
-@media (max-width: 400px) {
-    .box {
-        padding-top: 2px;
-        width: 95px;
-    }
+.weekday {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: default;
 }

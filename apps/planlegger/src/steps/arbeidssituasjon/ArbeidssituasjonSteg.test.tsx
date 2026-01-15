@@ -1,19 +1,22 @@
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/PlanleggerDataContext';
-// import { PlanleggerRoutes } from 'appData/routes';
 import { useNavigate } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 
 import * as stories from './ArbeidssituasjonSteg.stories';
 
-const { ArbeidssituasjonMorOgFar, ArbeidssituasjonFarOgFar, ArbeidssituasjonAleneforsørger } = composeStories(stories);
+const {
+    ArbeidssituasjonMorOgFar,
+    ArbeidssituasjonFarOgFar,
+    ArbeidssituasjonAleneforsørger,
+    ArbeidssituasjonMorOgMedmorUtenNavn,
+} = composeStories(stories);
 
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
     return {
-        // @ts-ignore
         ...actual,
         useNavigate: vi.fn(),
     };
@@ -34,7 +37,9 @@ describe('<ArbeidssituasjonSteg>', () => {
         expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
 
         await userEvent.click(
-            screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 62 014 kr det siste året'),
+            screen.getByText(
+                `Har jobbet minst 6 av de siste 10 månedene og har tjent 65 080 kr eller mer det siste året`,
+            ),
         );
 
         expect(screen.getByText('Klara vil ha rett til foreldrepenger')).toBeInTheDocument();
@@ -65,7 +70,9 @@ describe('<ArbeidssituasjonSteg>', () => {
         expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
 
         await userEvent.click(
-            screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 62 014 kr det siste året'),
+            screen.getByText(
+                'Har jobbet minst 6 av de siste 10 månedene og har tjent 65 080 kr eller mer det siste året',
+            ),
         );
 
         await userEvent.click(screen.getByText('Nei'));
@@ -139,7 +146,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         await userEvent.click(screen.getByText('Nei'));
 
-        await userEvent.click(screen.getAllByText('Ja')[1]);
+        await userEvent.click(screen.getAllByText('Ja')[1]!);
 
         await userEvent.click(screen.getByText('Neste'));
 
@@ -195,5 +202,18 @@ describe('<ArbeidssituasjonSteg>', () => {
             key: ContextDataType.ARBEIDSSITUASJON,
             type: 'update',
         });
+    });
+
+    it('skal omtale medmor som medmor hvis navn ikke er oppgit', async () => {
+        render(<ArbeidssituasjonMorOgMedmorUtenNavn />);
+
+        expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
+        await userEvent.click(screen.getByText('Ingen av disse'));
+
+        expect(
+            screen.getByText('Har medmor jobbet minst 6 av de siste 10 månedene', { exact: false }),
+        ).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ja'));
+        expect(screen.getByText('Medmor vil ha rett til foreldrepenger')).toBeInTheDocument();
     });
 });

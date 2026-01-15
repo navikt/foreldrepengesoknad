@@ -71,18 +71,17 @@ export const Snarveier = () => {
     const intl = useIntl();
     const currentSak = useGetSelectedSak();
     const ytelse = currentSak ? currentSak.ytelse : undefined;
-    const ytelseTekst =
-        currentSak !== undefined
-            ? currentSak.ytelse.toLowerCase()
-            : intl.formatMessage({ id: 'snarveier.pengestøtter' });
+    const ytelseTekst = currentSak
+        ? currentSak.ytelse.toLowerCase()
+        : intl.formatMessage({ id: 'snarveier.pengestøtter' });
     const lesMerLink = getLesMerLink(ytelse);
     return (
-        <div className="bg-white p-8">
-            <div className="w-full md:w-[704px] m-auto">
+        <div className="bg-ax-bg-default p-8">
+            <div className="ax-md:w-[704px] m-auto w-full">
                 <Heading spacing size="medium">
                     {intl.formatMessage({ id: 'saksoversikt.snarveier' })}
                 </Heading>
-                <HGrid gap="4" columns={{ sm: 1, md: 2 }}>
+                <HGrid gap="space-16" columns={{ sm: 1, md: 2 }}>
                     <LenkePanel
                         tittel={intl.formatMessage({ id: 'snarveier.lesMerOm' }, { ytelse: ytelseTekst })}
                         to={lesMerLink}
@@ -95,7 +94,7 @@ export const Snarveier = () => {
                         to={NavRoutes.MELD_FRA_OM_ENDRINGER}
                         tittel={intl.formatMessage({ id: 'snarveier.endringerIDinSituasjon' })}
                     />
-                    {currentSak !== undefined ? (
+                    {currentSak ? (
                         <LenkePanel
                             to={getKlageLinkMedSak(ytelse, currentSak)}
                             tittel={intl.formatMessage({ id: 'snarveier.jegVilKlage' })}

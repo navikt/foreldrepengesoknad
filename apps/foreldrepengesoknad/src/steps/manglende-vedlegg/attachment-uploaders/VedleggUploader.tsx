@@ -1,13 +1,13 @@
+import { API_URLS } from 'api/queries';
 import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { IntlShape } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { addMetadata, lagSendSenereDokument } from 'utils/vedleggUtils';
 
-import { getSaveAttachmentFetch } from '@navikt/fp-api';
-import { AttachmentMetadataType, AttachmentType } from '@navikt/fp-constants';
-import { Attachment } from '@navikt/fp-types';
-import { FileUploader } from '@navikt/fp-ui';
+import { AttachmentType } from '@navikt/fp-constants';
+import { FileUploader } from '@navikt/fp-filopplaster';
+import { Attachment, DokumentererType } from '@navikt/fp-types';
 import { formatDateShortYear } from '@navikt/fp-utils';
 
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
@@ -43,7 +43,7 @@ interface Props {
     labelText: string;
     description?: string | React.ReactNode;
     attachmentType: AttachmentType;
-    metadataType: AttachmentMetadataType;
+    metadataType: DokumentererType;
     perioder?: Perioder;
 }
 
@@ -89,7 +89,7 @@ export const VedleggUploader = ({
 
                 updateAttachments(attachmentsMedMetadata);
             }}
-            saveAttachment={getSaveAttachmentFetch(import.meta.env.BASE_URL, 'foreldrepenger')}
+            uploadPath={API_URLS.sendVedlegg}
         />
     );
 };

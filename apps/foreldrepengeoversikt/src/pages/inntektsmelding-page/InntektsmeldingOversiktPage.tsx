@@ -6,7 +6,7 @@ import { Tag, VStack } from '@navikt/ds-react';
 
 import { formaterDatoUtenDag } from '@navikt/fp-utils';
 
-import { hentInntektsmelding } from '../../api/api';
+import { hentInntektsmelding } from '../../api/queries.ts';
 import { InntektsmeldingOversiktHeader } from '../../components/header/Header';
 import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
@@ -25,13 +25,10 @@ export const InntektsmeldingOversiktPage = () => {
     if (aktiveInntektsmeldinger.length === 0) {
         return <Navigate replace to={'..'} />;
     }
-    if (aktiveInntektsmeldinger.length === 1) {
-        return <Navigate replace to={`${aktiveInntektsmeldinger[0].journalpostId}`} />;
-    }
 
     return (
         <PageRouteLayout header={<InntektsmeldingOversiktHeader />}>
-            <VStack gap="4">
+            <VStack gap="space-16">
                 {aktiveInntektsmeldinger.map((im) => (
                     <LenkePanel
                         key={im.journalpostId}

@@ -1,9 +1,11 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
+import { action } from 'storybook/actions';
+import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo.ts';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
 
+import { API_URLS } from '../../api/queries.ts';
 import { MinidialogSkjema } from './MinidialogSkjema';
 
 const meta = {
@@ -26,10 +28,8 @@ export const SkalIkkeFeileOpplasting: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(
-                    `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger/vedlegg`,
-                    () => new HttpResponse(null, { status: 200 }),
-                ),
+                http.post(API_URLS.lastOppFPVedlegg, () => new HttpResponse(null, { status: 200 })),
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
             ],
         },
     },
@@ -38,9 +38,8 @@ export const SkalIkkeFeileOpplasting: Story = {
         ettersendelseErSendt: false,
         isSendingEttersendelse: false,
         minidialog: {
-            dialogId: '1',
             opprettet: '2020-01-01',
-            saksnr: '1',
+            saksnummer: '1',
         },
         sakstype: 'FORELDREPENGER',
         ettersendelseError: undefined,
@@ -51,10 +50,8 @@ export const SkalFeileOpplasting: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(
-                    `${import.meta.env.BASE_URL}/storage/foreldrepenger/vedlegg`,
-                    () => new HttpResponse(null, { status: 400 }),
-                ),
+                http.post(API_URLS.lastOppFPVedlegg, () => new HttpResponse(null, { status: 400 })),
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
             ],
         },
     },

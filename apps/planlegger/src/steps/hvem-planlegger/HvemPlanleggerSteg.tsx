@@ -10,7 +10,7 @@ import { formatError } from 'utils/customErrorFormatter';
 import { BodyShort, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { HvemPlanleggerType, LocaleAll } from '@navikt/fp-types';
+import { HvemPlanleggerType } from '@navikt/fp-types';
 import { BluePanel } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired } from '@navikt/fp-validation';
@@ -33,20 +33,21 @@ const erFarDelAvSøknadenGittType = (type: HvemPlanleggerType) => {
     );
 };
 
-interface Props {
-    locale: LocaleAll;
-}
-
-export const HvemPlanleggerSteg = ({ locale }: Props) => {
+export const HvemPlanleggerSteg = () => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator(locale);
+    const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
     const hvemPlanlegger = useContextGetData(ContextDataType.HVEM_PLANLEGGER);
     const oppdaterHvemPlanlegger = useContextSaveData(ContextDataType.HVEM_PLANLEGGER);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const lagre = (formValues: HvemPlanlegger) => {
         oppdaterHvemPlanlegger(formValues);
+        if (hvemPlanlegger && hvemPlanlegger.type !== formValues.type) {
+            oppdaterUttaksplan(undefined);
+        }
+
         navigator.goToNextDefaultStep();
     };
 
@@ -61,13 +62,14 @@ export const HvemPlanleggerSteg = ({ locale }: Props) => {
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
             <RhfForm formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
-                <VStack gap="10" style={{ flex: 1 }}>
-                    <VStack gap="8">
+                <VStack gap="space-40" style={{ flex: 1 }}>
+                    <VStack gap="space-32">
                         <BodyShort>
                             <FormattedMessage id="HarValgfrieFelt" />
                         </BodyShort>
                         <BlueRadioGroup
                             name="type"
+                            control={formMethods.control}
                             label={intl.formatMessage({
                                 id: 'HvemPlanleggerSteg.HvemPlanlegger',
                             })}
@@ -98,32 +100,36 @@ export const HvemPlanleggerSteg = ({ locale }: Props) => {
                         </BlueRadioGroup>
                         {type && (
                             <BluePanel isDarkBlue={erHvemPlanleggerIkkeOppgittFraFør} shouldFadeIn>
-                                <VStack gap="10">
+                                <VStack gap="space-40">
                                     {erMorDelAvSøknadenGittType(type) && (
                                         <RhfTextField
-                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Mor' })}
                                             name="navnPåMor"
+                                            control={formMethods.control}
+                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Mor' })}
                                             customErrorFormatter={formatError}
                                         />
                                     )}
                                     {erFarDelAvSøknadenGittType(type) && (
                                         <RhfTextField
-                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Far' })}
                                             name="navnPåFar"
+                                            control={formMethods.control}
+                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Far' })}
                                             customErrorFormatter={formatError}
                                         />
                                     )}
                                     {type === HvemPlanleggerType.MOR_OG_MEDMOR && (
                                         <RhfTextField
-                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Medmor' })}
                                             name="navnPåMedmor"
+                                            control={formMethods.control}
+                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Medmor' })}
                                             customErrorFormatter={formatError}
                                         />
                                     )}
                                     {type === HvemPlanleggerType.FAR_OG_FAR && (
                                         <RhfTextField
-                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Far' })}
                                             name="navnPåMedfar"
+                                            control={formMethods.control}
+                                            label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Far' })}
                                             customErrorFormatter={formatError}
                                         />
                                     )}

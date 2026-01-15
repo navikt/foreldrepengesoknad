@@ -6,6 +6,10 @@ import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { HvemHarRett } from './hvemHarRettUtils';
 
+const erGyldigNavn = (navn: string | undefined): navn is string => {
+    return Boolean(navn && navn.trim().length > 0);
+};
+
 export const erFlereSøkere = (hvemPlanlegger: HvemPlanlegger) =>
     hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR ||
     hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR ||
@@ -33,41 +37,87 @@ export const erFarSøker2 = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is 
     hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR;
 
 export const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR) {
+        return hvemPlanlegger.navnPåFar || intl.formatMessage({ id: 'Du' });
+    }
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR) {
+        return hvemPlanlegger.navnPåMor || intl.formatMessage({ id: 'Du' });
+    }
     if (erMorDelAvSøknaden(hvemPlanlegger)) {
-        return (
-            hvemPlanlegger.navnPåMor ??
-            capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }))
-        );
+        return hvemPlanlegger.navnPåMor || intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' });
     }
     if (erFarDelAvSøknaden(hvemPlanlegger)) {
-        return (
-            hvemPlanlegger.navnPåFar ??
-            capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }))
-        );
+        return hvemPlanlegger.navnPåFar || intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
     }
     throw new Error('Feil i kode: Ugyldig hvemPlanlegger');
 };
 
-export const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string | undefined => {
-    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
-        return (
-            hvemPlanlegger.navnPåMedmor ??
-            capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' }))
-        );
-    }
-    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR) {
-        return (
-            hvemPlanlegger.navnPåFar ??
-            capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }))
-        );
+export const getNavnPåForeldre = (
+    hvemPlanlegger: HvemPlanlegger,
+    intl: IntlShape,
+): {
+    mor: string;
+    farMedmor: string;
+} => {
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR) {
+        return {
+            farMedmor: erGyldigNavn(hvemPlanlegger.navnPåFar)
+                ? hvemPlanlegger.navnPåFar
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+            mor: intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+        };
     }
     if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
-        return (
-            hvemPlanlegger.navnPåMedfar ??
-            capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }))
-        );
+        return {
+            farMedmor: erGyldigNavn(hvemPlanlegger.navnPåFar)
+                ? hvemPlanlegger.navnPåFar
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+            mor: erGyldigNavn(hvemPlanlegger.navnPåMedfar)
+                ? hvemPlanlegger.navnPåMedfar
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+        };
     }
-    return undefined;
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR) {
+        return {
+            farMedmor: intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+            mor: erGyldigNavn(hvemPlanlegger.navnPåMor)
+                ? hvemPlanlegger.navnPåMor
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+        };
+    }
+
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
+        return {
+            farMedmor: erGyldigNavn(hvemPlanlegger.navnPåMedmor)
+                ? hvemPlanlegger.navnPåMedmor
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+            mor: erGyldigNavn(hvemPlanlegger.navnPåMor)
+                ? hvemPlanlegger.navnPåMor
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+        };
+    }
+
+    return {
+        farMedmor: erGyldigNavn(hvemPlanlegger.navnPåFar)
+            ? hvemPlanlegger.navnPåFar
+            : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+        mor: erGyldigNavn(hvemPlanlegger.navnPåMor)
+            ? hvemPlanlegger.navnPåMor
+            : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+    };
+};
+
+export const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
+        return hvemPlanlegger.navnPåMedmor || intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' });
+    }
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR) {
+        return hvemPlanlegger.navnPåFar || intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
+    }
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
+        return hvemPlanlegger.navnPåMedfar || intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
+    }
+    return intl.formatMessage({ id: 'HvemPlanlegger.DefaultAnnenForelderNavn' });
 };
 
 export const getDefaultNavnSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
@@ -94,11 +144,15 @@ export const getDefaultNavnSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: Intl
 };
 
 export const getFornavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
-    return getNavnPåSøker1(hvemPlanlegger, intl).split(' ')[0];
+    return getNavnPåSøker1(hvemPlanlegger, intl).split(' ')[0]!;
 };
 
 export const getFornavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string | undefined => {
     const navn = getNavnPåSøker2(hvemPlanlegger, intl);
+    // For at ikke "Annen forelder" skal bli "Annen"
+    if (navn === intl.formatMessage({ id: 'HvemPlanlegger.DefaultAnnenForelderNavn' })) {
+        return navn;
+    }
     return navn ? navn.split(' ')[0] : undefined;
 };
 
@@ -127,10 +181,10 @@ export const getTekstForDeSomHarRett = (
     }
 
     if (hvemHarRett === 'kunSøker1HarRett') {
-        return getNavnPåSøker1(hvemPlanlegger, intl);
+        return capitalizeFirstLetter(getNavnPåSøker1(hvemPlanlegger, intl));
     }
     if (hvemHarRett === 'kunSøker2HarRett') {
-        return getNavnPåSøker2(hvemPlanlegger, intl);
+        return capitalizeFirstLetter(getNavnPåSøker2(hvemPlanlegger, intl));
     }
     if (hvemHarRett === 'beggeHarRett') {
         return intl.formatMessage({ id: 'Dere' });
@@ -140,7 +194,7 @@ export const getTekstForDeSomHarRett = (
 };
 
 const navnSlutterPåSLyd = (navn: string): boolean => {
-    const sisteBokstav = navn.charAt(navn.length - 1).toLowerCase();
+    const sisteBokstav = (navn.at(-1) ?? '').toLowerCase();
     return sisteBokstav === 's' || sisteBokstav === 'x' || sisteBokstav === 'z';
 };
 

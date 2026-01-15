@@ -1,7 +1,10 @@
+import { createIntl, createIntlCache } from 'react-intl';
+
 import { AnnenForelder } from '@navikt/fp-common';
-import { PersonFrontend } from '@navikt/fp-types';
+import { PersonDto_fpoversikt } from '@navikt/fp-types';
 import { getNavnGenitivEierform } from '@navikt/fp-utils';
 
+import messages from '../intl/nb_NO.json';
 import {
     formaterNavn,
     getErSøkerFarEllerMedmor,
@@ -9,6 +12,20 @@ import {
     getMorErAleneOmOmsorg,
     getNavnPåForeldre,
 } from './personUtils';
+
+const cache = createIntlCache();
+
+const getIntlMock = () => {
+    return createIntl(
+        {
+            locale: 'nb',
+            defaultLocale: 'nb',
+            //@ts-expect-error fiks
+            messages,
+        },
+        cache,
+    );
+};
 
 describe('personUtils', () => {
     it('skal formatere navn med mellomnavn', () => {
@@ -37,7 +54,7 @@ describe('personUtils', () => {
     it('skal finne kjønn kvinne fra annen foreldres fnr', () => {
         const annenForelder = {
             kanIkkeOppgis: false,
-            fnr: '08088620241',
+            fnr: '05510552883',
         } as AnnenForelder;
 
         const kjønn = getKjønnFromFnr(annenForelder);
@@ -100,33 +117,37 @@ describe('personUtils', () => {
         expect(kjønn).toBe(false);
     });
 
-    it.skip('skal returnere navn på foreldre der far er søker', () => {
+    it('skal returnere navn på foreldre der far er søker', () => {
         const person = {
-            fornavn: 'Espen',
-        } as PersonFrontend;
+            navn: {
+                fornavn: 'Espen',
+            },
+        } as PersonDto_fpoversikt;
         const annenForelder = {
             kanIkkeOppgis: false,
             fornavn: 'Olga',
         } as AnnenForelder;
         const erFarEllerMedmor = true;
 
-        const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, 'intlMock' as any);
+        const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, getIntlMock());
 
         expect(navnPåForeldre.mor).toBe('Olga');
         expect(navnPåForeldre.farMedmor).toBe('Espen');
     });
 
-    it.skip('skal returnere navn på foreldre der mor er søker', () => {
+    it('skal returnere navn på foreldre der mor er søker', () => {
         const person = {
-            fornavn: 'Olga',
-        } as PersonFrontend;
+            navn: {
+                fornavn: 'Olga',
+            },
+        } as PersonDto_fpoversikt;
         const annenForelder = {
             kanIkkeOppgis: false,
             fornavn: 'Espen',
         } as AnnenForelder;
         const erFarEllerMedmor = false;
 
-        const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, 'intlMock' as any);
+        const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, getIntlMock());
 
         expect(navnPåForeldre.mor).toBe('Olga');
         expect(navnPåForeldre.farMedmor).toBe('Espen');

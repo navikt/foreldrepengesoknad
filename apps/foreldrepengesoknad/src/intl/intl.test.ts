@@ -8,10 +8,16 @@ describe('intl tests', () => {
     it('Bokmål and nynorsk files should have exactly the same keys', () => {
         const missingKeysBokmål = Object.keys(nb).filter((key) => !Object.keys(nn).includes(key));
         const missingKeysNynorsk = Object.keys(nn).filter((key) => !Object.keys(nb).includes(key));
-        // eslint-disable-next-line no-console
-        missingKeysBokmål.forEach((key) => console.error('key ' + key + ' not found in nn_NO.json.'));
-        // eslint-disable-next-line no-console
-        missingKeysNynorsk.forEach((key) => console.error('key ' + key + ' not found in nb_NO.json'));
+
+        for (const key of missingKeysBokmål) {
+            // eslint-disable-next-line no-console
+            console.log('key ' + key + ' not found in nn_NO.json.');
+        }
+
+        for (const key of missingKeysNynorsk) {
+            // eslint-disable-next-line no-console
+            console.log('key ' + key + ' not found in nb_NO.json.');
+        }
 
         expect(missingKeysBokmål.length).toBe(0);
         expect(missingKeysNynorsk.length).toBe(0);
@@ -19,7 +25,9 @@ describe('intl tests', () => {
     });
 
     it('Check that i18n strings in code exists in nb_NO language file', async () => {
-        const files = await glob('src/**/*.{ts,tsx}');
+        const files = await glob('src/**/*.{ts,tsx}', {
+            ignore: ['**/vite.env.d.ts'],
+        });
 
         const foundTranslations = await extract(files, {
             idInterpolationPattern: '[sha512:contenthash:base64:6]',
@@ -32,13 +40,19 @@ describe('intl tests', () => {
             // eslint-disable-next-line no-console
             console.log('Not found in nb_NO.json:');
         }
-        // eslint-disable-next-line no-console
-        missingKeysBokmål.forEach((key) => console.log('key ' + key));
+
+        for (const key of missingKeysBokmål) {
+            // eslint-disable-next-line no-console
+            console.log('key ' + key);
+        }
+
         expect(missingKeysBokmål.length).toBe(0);
     });
 
     it('Check that all i18n strings nb_NO language file exists in code', async () => {
-        const files = await glob('src/**/*.{ts,tsx}');
+        const files = await glob('src/**/*.{ts,tsx}', {
+            ignore: ['**/vite.env.d.ts'],
+        });
         const foundTranslations = await extract(files, {
             idInterpolationPattern: '[sha512:contenthash:base64:6]',
         });
@@ -51,8 +65,12 @@ describe('intl tests', () => {
             // eslint-disable-next-line no-console
             console.log('Not found in code:');
         }
-        // eslint-disable-next-line no-console
-        missingKeysCode.forEach((key) => console.log('key ' + key));
+
+        for (const key of missingKeysCode) {
+            // eslint-disable-next-line no-console
+            console.log('key ' + key);
+        }
+
         expect(missingKeysCode.length).toBe(0);
     });
 });

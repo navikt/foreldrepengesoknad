@@ -1,13 +1,12 @@
-interface Common {
-    kanIkkeOppgis: boolean;
-}
+import { CountryCode } from '@navikt/fp-types';
 
-export interface AnnenForelderOppgitt extends Common {
+export interface AnnenForelderOppgitt {
+    kanIkkeOppgis: false;
     fornavn: string;
     etternavn: string;
     fnr: string;
     utenlandskFnr?: boolean;
-    bostedsland?: string;
+    bostedsland?: CountryCode;
     harRettPåForeldrepengerINorge?: boolean;
     harOppholdtSegIEØS?: boolean;
     harRettPåForeldrepengerIEØS?: boolean;
@@ -18,7 +17,9 @@ export interface AnnenForelderOppgitt extends Common {
     datoForAleneomsorg?: string;
 }
 
-export type AnnenForelderIkkeOppgitt = Common;
+export type AnnenForelderIkkeOppgitt = {
+    kanIkkeOppgis: true;
+};
 
 export type AnnenForelder = AnnenForelderIkkeOppgitt | AnnenForelderOppgitt;
 
@@ -28,4 +29,12 @@ export const isAnnenForelderOppgitt = (annenForelder: AnnenForelder): annenForel
 
 export const isAnnenForelderIkkeOppgitt = (annenForelder: AnnenForelder): annenForelder is AnnenForelderIkkeOppgitt => {
     return annenForelder.kanIkkeOppgis === true;
+};
+
+export const isAnnenForelderOppgittNorsk = (annenForelder: AnnenForelder): annenForelder is AnnenForelderOppgitt => {
+    return isAnnenForelderOppgitt(annenForelder) && !annenForelder.utenlandskFnr;
+};
+
+export const isAnnenforelderOppholdtSegIEØS = (annenForelder: AnnenForelder): annenForelder is AnnenForelderOppgitt => {
+    return isAnnenForelderOppgitt(annenForelder) && annenForelder.harOppholdtSegIEØS === true;
 };

@@ -15,7 +15,7 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 
 import {
     BarnetFormValues,
@@ -63,7 +63,7 @@ const mapOmDetValgteBarnetFormDataToState = (
 
 export const mapOmBarnetFormDataToState = (
     values: BarnetFormValues,
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     søkersituasjon: SøkersituasjonFp,
     valgtRegistrertBarn: Barn | undefined,
     situasjon: Situasjon,
@@ -82,7 +82,7 @@ export const mapOmBarnetFormDataToState = (
         return {
             type: BarnType.FØDT,
             fødselsdatoer: values.fødselsdatoer.map((f) => f.dato),
-            antallBarn: values.antallBarn < 3 ? values.antallBarn : parseInt(values.antallBarnSelect!, 10),
+            antallBarn: values.antallBarn < 3 ? values.antallBarn : Number.parseInt(values.antallBarnSelect!, 10),
             termindato: hasValue(values.termindato) ? values.termindato : undefined,
         };
     }
@@ -98,13 +98,13 @@ export const mapOmBarnetFormDataToState = (
             return {
                 type: BarnType.UFØDT,
                 terminbekreftelsedato: values.terminbekreftelsedato,
-                antallBarn: values.antallBarn < 3 ? values.antallBarn : parseInt(values.antallBarnSelect!, 10),
+                antallBarn: values.antallBarn < 3 ? values.antallBarn : Number.parseInt(values.antallBarnSelect!, 10),
                 termindato: values.termindato,
             };
         }
         return {
             type: BarnType.UFØDT,
-            antallBarn: values.antallBarn < 3 ? values.antallBarn : parseInt(values.antallBarnSelect!, 10),
+            antallBarn: values.antallBarn < 3 ? values.antallBarn : Number.parseInt(values.antallBarnSelect!, 10),
             termindato: values.termindato,
         };
     }
@@ -113,7 +113,7 @@ export const mapOmBarnetFormDataToState = (
         return {
             type: BarnType.ADOPTERT_STEBARN,
             adopsjonsdato: values.adopsjonsdato,
-            antallBarn: values.antallBarn < 3 ? values.antallBarn : parseInt(values.antallBarnSelect!, 10),
+            antallBarn: values.antallBarn < 3 ? values.antallBarn : Number.parseInt(values.antallBarnSelect!, 10),
             fødselsdatoer: values.fødselsdatoer.map((f) => f.dato),
         };
     }
@@ -123,7 +123,7 @@ export const mapOmBarnetFormDataToState = (
             type: BarnType.ADOPTERT_ANNET_BARN,
             fødselsdatoer: values.fødselsdatoer.map((f) => f.dato),
             adopsjonsdato: values.adopsjonsdato,
-            antallBarn: values.antallBarn < 3 ? values.antallBarn : parseInt(values.antallBarnSelect!, 10),
+            antallBarn: values.antallBarn < 3 ? values.antallBarn : Number.parseInt(values.antallBarnSelect!, 10),
             adoptertIUtlandet: values.adoptertIUtlandet,
             ankomstdato: values.adoptertIUtlandet === true ? values.ankomstdato : undefined,
         };
@@ -137,9 +137,10 @@ const getAntallBarnSelect = (erFlereEnnToBarn: boolean, barn: Barn): string | un
     erFlereEnnToBarn ? barn.antallBarn.toString() : undefined;
 
 export const getOmBarnetInitialValues = (
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     søkersituasjon: SøkersituasjonFp,
     barn?: Barn,
+    termindatoFraVedtak?: string,
 ): BarnetFormValues => {
     if (!barn) {
         return { fødselsdatoer: [{ dato: undefined }] };
@@ -155,7 +156,7 @@ export const getOmBarnetInitialValues = (
             fødselsdatoer: barn.fødselsdatoer.map((f) => ({
                 dato: f,
             })),
-            termindato: barn.termindato,
+            termindato: termindatoFraVedtak || barn.termindato,
         };
     }
 
@@ -164,7 +165,7 @@ export const getOmBarnetInitialValues = (
             arbeidsforhold,
             søkersituasjon.situasjon === 'adopsjon',
             isFarEllerMedmor(søkersituasjon.rolle),
-            barn.termindato,
+            termindatoFraVedtak || barn.termindato,
         );
         if (aktiveArbeidsforhold.length === 0) {
             return {
@@ -172,7 +173,7 @@ export const getOmBarnetInitialValues = (
                 antallBarn: getAntallBarn(erFlereEnnToBarn, barn),
                 antallBarnSelect: getAntallBarnSelect(erFlereEnnToBarn, barn),
                 terminbekreftelsedato: barn.terminbekreftelsedato,
-                termindato: barn.termindato,
+                termindato: termindatoFraVedtak || barn.termindato,
             };
         }
 
@@ -180,7 +181,7 @@ export const getOmBarnetInitialValues = (
             erBarnetFødt: false,
             antallBarn: getAntallBarn(erFlereEnnToBarn, barn),
             antallBarnSelect: getAntallBarnSelect(erFlereEnnToBarn, barn),
-            termindato: barn.termindato,
+            termindato: termindatoFraVedtak || barn.termindato,
         };
     }
 

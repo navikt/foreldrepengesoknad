@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect } from 'react';
 
 import { DatePicker, DatePickerProps, useDatepicker } from '@navikt/ds-react';
@@ -23,7 +22,7 @@ type Props = Omit<DatePickerProps, 'onChange' | 'fromDate' | 'toDate'> &
         inputDisabled?: boolean;
         description?: React.ReactNode;
         value?: string;
-        onChange: (date: ISODateString | string) => void;
+        onChange: (date: ISODateString) => void;
     };
 // eslint-disable-next-line @typescript-eslint/no-restricted-types
 const DateInputAndPicker: React.FunctionComponent<Props> = ({
@@ -54,6 +53,7 @@ const DateInputAndPicker: React.FunctionComponent<Props> = ({
     const onInputBlur = (evt: any) => {
         setInputHasFocus(false);
         if (inputProps.onBlur) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             inputProps.onBlur(evt);
         }
         if (selectedDay === undefined && typeof inputProps.value === 'string') {
@@ -62,7 +62,7 @@ const DateInputAndPicker: React.FunctionComponent<Props> = ({
                 return;
             }
             const isoDateString = InputDateStringToISODateString(inputProps.value);
-            onChange(isoDateString !== INVALID_DATE_VALUE ? isoDateString : inputProps.value);
+            onChange(isoDateString === INVALID_DATE_VALUE ? inputProps.value : isoDateString);
             setListenForInputValueChange(true);
             return;
         }
@@ -73,6 +73,7 @@ const DateInputAndPicker: React.FunctionComponent<Props> = ({
 
     const onInputFocus = (evt: any) => {
         if (inputProps.onFocus) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             inputProps.onFocus(evt);
         }
         setInputHasFocus(true);
@@ -110,7 +111,7 @@ const DateInputAndPicker: React.FunctionComponent<Props> = ({
     useEffect(() => {
         if (listenForInputValueChange && typeof inputValue === 'string') {
             const isoDateString = InputDateStringToISODateString(inputValue);
-            onChange(isoDateString !== INVALID_DATE_VALUE ? isoDateString : inputValue);
+            onChange(isoDateString === INVALID_DATE_VALUE ? inputValue : isoDateString);
             setListenForInputValueChange(false);
         }
     }, [inputValue, listenForInputValueChange, onChange]);

@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 import { AnnenForelder, NavnPåForeldre, Søkerrolle, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { PersonFrontend } from '@navikt/fp-types';
+import { Kjønn_fpoversikt, PersonDto_fpoversikt } from '@navikt/fp-types';
 
 export const formaterNavn = (fornavn: string, etternavn: string, visEtternavn: boolean, mellomnavn?: string) => {
     if (visEtternavn) {
@@ -11,24 +11,24 @@ export const formaterNavn = (fornavn: string, etternavn: string, visEtternavn: b
     return mellomnavn ? `${fornavn} ${mellomnavn}` : `${fornavn}`;
 };
 
-export const getKjønnFromFnr = (annenForelder: AnnenForelder): PersonFrontend['kjønn'] | undefined => {
+export const getKjønnFromFnr = (annenForelder: AnnenForelder): Kjønn_fpoversikt | undefined => {
     if (isAnnenForelderOppgitt(annenForelder)) {
         const { fnr } = annenForelder;
 
         if (fnr === undefined || fnr.length !== 11) {
             return undefined;
         }
-        return parseInt(fnr.charAt(8), 10) % 2 === 0 ? 'K' : 'M';
+        return Number.parseInt(fnr.charAt(8), 10) % 2 === 0 ? 'K' : 'M';
     }
 
     return undefined;
 };
 
-export const getKjønnFromFnrString = (fnr: string): PersonFrontend['kjønn'] | undefined => {
+export const getKjønnFromFnrString = (fnr: string): Kjønn_fpoversikt | undefined => {
     if (fnr.length !== 11) {
         return undefined;
     }
-    return parseInt(fnr.charAt(8), 10) % 2 === 0 ? 'K' : 'M';
+    return Number.parseInt(fnr.charAt(8), 10) % 2 === 0 ? 'K' : 'M';
 };
 
 export const getKunFarHarRett = (
@@ -75,12 +75,12 @@ export const getFarMedmorErAleneOmOmsorg = (
 };
 
 export const getNavnPåForeldre = (
-    søker: PersonFrontend,
+    person: PersonDto_fpoversikt,
     annenForelder: AnnenForelder,
     erFarEllerMedmor: boolean,
     intl: IntlShape,
 ): NavnPåForeldre => {
-    const navnSøker = søker.fornavn;
+    const navnSøker = person.navn.fornavn;
     const navnAnnenForelder =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.fornavn !== undefined && annenForelder.fornavn !== ''
             ? annenForelder.fornavn

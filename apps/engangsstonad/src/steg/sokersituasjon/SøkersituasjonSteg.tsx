@@ -8,7 +8,7 @@ import { Radio, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Søkersituasjon } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
 type Props = {
@@ -38,38 +38,39 @@ export const SøkersituasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
     };
 
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
-            onCancel={navigator.avbrytSøknad}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            onStepChange={navigator.goToNextStep}
-            steps={stepConfig}
-        >
-            <RhfForm formMethods={formMethods} onSubmit={lagre}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    <RhfRadioGroup
-                        name="situasjon"
-                        label={<FormattedMessage id="SøkersituasjonSteg.Situasjon" />}
-                        validate={[
-                            isRequired(
-                                intl.formatMessage({ id: 'SøkersituasjonSteg.Validering.OppgiFodselEllerAdopsjon' }),
-                            ),
-                        ]}
-                    >
-                        <Radio value="fødsel">
-                            <FormattedMessage id="SøkersituasjonSteg.Fødsel" />
-                        </Radio>
-                        <Radio value="adopsjon">
-                            <FormattedMessage id="SøkersituasjonSteg.Adopsjon" />
-                        </Radio>
-                    </RhfRadioGroup>
-                    <StepButtonsHookForm
-                        goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        saveDataOnPreviousClick={oppdaterSøkersituasjon}
-                    />
-                </VStack>
-            </RhfForm>
-        </Step>
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}>
+            <Step onStepChange={navigator.goToNextStep} steps={stepConfig}>
+                <RhfForm formMethods={formMethods} onSubmit={lagre}>
+                    <VStack gap="space-40">
+                        <ErrorSummaryHookForm />
+                        <RhfRadioGroup
+                            name="situasjon"
+                            control={formMethods.control}
+                            label={<FormattedMessage id="SøkersituasjonSteg.Situasjon" />}
+                            validate={[
+                                isRequired(
+                                    intl.formatMessage({
+                                        id: 'SøkersituasjonSteg.Validering.OppgiFodselEllerAdopsjon',
+                                    }),
+                                ),
+                            ]}
+                        >
+                            <Radio value="fødsel">
+                                <FormattedMessage id="SøkersituasjonSteg.Fødsel" />
+                            </Radio>
+                            <Radio value="adopsjon">
+                                <FormattedMessage id="SøkersituasjonSteg.Adopsjon" />
+                            </Radio>
+                        </RhfRadioGroup>
+                        <StepButtonsHookForm
+                            onAvsluttOgSlett={navigator.avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            saveDataOnPreviousClick={oppdaterSøkersituasjon}
+                        />
+                    </VStack>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
     );
 };

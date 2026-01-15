@@ -2,7 +2,7 @@ import { SackKronerIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
-import { loggExpansionCardOpen } from 'utils/amplitudeUtils';
+import { loggExpansionCardOpen } from 'utils/umamiUtils';
 
 import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
@@ -25,15 +25,15 @@ export const HvorMyeOppsummering = ({ satser }: Props) => {
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
     return (
-        <VStack gap="10">
-            {hvorMye.lønnSøker1 && (
+        <VStack gap="space-40">
+            {(hvorMye.lønnSøker1 !== undefined || hvorMye.lønnSøker2 !== undefined) && (
                 <ExpansionCard
                     aria-label=""
                     onToggle={loggExpansionCardOpen('toggle-oppgitt-informasjon')}
                     size="small"
                 >
                     <ExpansionCard.Header>
-                        <HStack gap="6" align="center" wrap={false}>
+                        <HStack gap="space-24" align="center" wrap={false}>
                             <IconCircleWrapper size="medium" color="lightBlue">
                                 <SackKronerIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
@@ -43,9 +43,11 @@ export const HvorMyeOppsummering = ({ satser }: Props) => {
                         </HStack>
                     </ExpansionCard.Header>
                     <ExpansionCard.Content>
-                        <VStack gap="2">
-                            <HvorMyePanel satser={satser} fornavn={fornavnSøker1} lønnSøker={hvorMye.lønnSøker1} />
-                            {hvorMye?.lønnSøker2 && hvorMye.lønnSøker2 !== undefined && fornavnSøker2 && (
+                        <VStack gap="space-8">
+                            {hvorMye.lønnSøker1 !== undefined && fornavnSøker1 && (
+                                <HvorMyePanel satser={satser} fornavn={fornavnSøker1} lønnSøker={hvorMye.lønnSøker1} />
+                            )}
+                            {hvorMye.lønnSøker2 !== undefined && fornavnSøker2 && (
                                 <HvorMyePanel satser={satser} fornavn={fornavnSøker2} lønnSøker={hvorMye.lønnSøker2} />
                             )}
                         </VStack>

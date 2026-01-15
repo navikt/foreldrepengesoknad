@@ -1,5 +1,5 @@
 import { InformationIcon, KronerIcon } from '@navikt/aksel-icons';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, HStack, Link, VStack } from '@navikt/ds-react';
 
@@ -14,13 +14,12 @@ interface Props {
 }
 
 export const HøyInntektInfobox = ({ maxÅrslønnDekket, isGray = false, showKrIcon = false }: Props) => {
-    const locale = useIntl().locale;
     return (
         <Infobox
             header={
                 <FormattedMessage
                     id="HøyInntektInfobox.DelvisDekning"
-                    values={{ maxÅrslønn: formatCurrencyWithKr(maxÅrslønnDekket, locale) }}
+                    values={{ maxÅrslønn: formatCurrencyWithKr(maxÅrslønnDekket) }}
                 />
             }
             headingLevel="2"
@@ -29,19 +28,25 @@ export const HøyInntektInfobox = ({ maxÅrslønnDekket, isGray = false, showKrI
                 showKrIcon ? (
                     <KronerIcon title="a11y-title" fontSize="1.5rem" aria-hidden />
                 ) : (
-                    <InformationIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />
+                    <InformationIcon
+                        height={24}
+                        width={24}
+                        color="var(--ax-bg-neutral-strong)"
+                        fontSize="1.5rem"
+                        aria-hidden
+                    />
                 )
             }
         >
-            <HStack gap="2">
-                <VStack gap="4">
+            <HStack gap="space-8">
+                <VStack gap="space-16">
                     <BodyShort>
                         <FormattedMessage id="HøyInntektInfobox.OppgittHøyereInntekt" />
                     </BodyShort>
                     <BodyShort>
                         <FormattedMessage
                             id="HøyInntektInfobox.HøyereLenke1"
-                            values={{ maxÅrslønn: formatCurrencyWithKr(maxÅrslønnDekket, locale) }}
+                            values={{ maxÅrslønn: formatCurrencyWithKr(maxÅrslønnDekket) }}
                         />
                         <Link inlineText href={links.grunnbeløpet} rel="noreferrer" target="_blank">
                             <FormattedMessage id="HøyInntektInfobox.HøyereLenke2" />

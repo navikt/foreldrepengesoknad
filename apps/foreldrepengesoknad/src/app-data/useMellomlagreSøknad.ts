@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/browser';
+import { API_URLS } from 'api/queries';
 import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +8,7 @@ import { Søknad } from 'types/Søknad';
 import { MELLOMLAGRET_VERSJON } from 'utils/mellomlagringUtils';
 
 import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
-import { FpSak, LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
@@ -15,9 +16,8 @@ import { SøknadRoutes } from './routes';
 
 export interface FpMellomlagretData {
     version: number;
-    locale: LocaleNo;
-    søkerInfo: Søkerinfo;
-    foreldrepengerSaker: FpSak[];
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    foreldrepengerSaker: FpSak_fpoversikt[];
     currentRoute: SøknadRoutes;
     søknad?: Partial<Søknad>;
     antallUkerIUttaksplan?: number;
@@ -36,9 +36,8 @@ const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
 const getDataForMellomlagring = (
-    locale: LocaleNo,
-    foreldrepengerSaker: FpSak[],
-    søkerInfo: Søkerinfo,
+    foreldrepengerSaker: FpSak_fpoversikt[],
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt,
     getDataFromState: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     erEndringssøknad: boolean,
     harGodkjentVilkår: boolean,
@@ -67,7 +66,6 @@ const getDataForMellomlagring = (
     // TODO (TOR) Dropp mapping her og lagre context rått
     const dataSomSkalMellomlagres = {
         version: MELLOMLAGRET_VERSJON,
-        locale,
         foreldrepengerSaker,
         søkerInfo,
         currentRoute,
@@ -104,9 +102,8 @@ const getDataForMellomlagring = (
 };
 
 export const useMellomlagreSøknad = (
-    locale: LocaleNo,
-    foreldrepengerSaker: FpSak[],
-    søkerInfo: Søkerinfo,
+    foreldrepengerSaker: FpSak_fpoversikt[],
+    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt,
     erEndringssøknad: boolean,
     harGodkjentVilkår: boolean,
     søknadGjelderEtNyttBarn?: boolean,
@@ -125,10 +122,9 @@ export const useMellomlagreSøknad = (
             const lagre = async () => {
                 setSkalMellomlagre(false);
 
-                navigate(currentRoute);
+                void navigate(currentRoute);
 
                 const data = getDataForMellomlagring(
-                    locale,
                     foreldrepengerSaker,
                     søkerInfo,
                     getDataFromState,
@@ -138,10 +134,10 @@ export const useMellomlagreSøknad = (
                 );
 
                 try {
-                    await ky.post(`${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`, {
+                    await ky.post(API_URLS.mellomlagring, {
                         json: data,
                         headers: {
-                            fnr: søkerInfo.søker.fnr,
+                            fnr: søkerInfo.person.fnr,
                         },
                     });
                 } catch (error: unknown) {
@@ -150,9 +146,10 @@ export const useMellomlagreSøknad = (
                             throw error;
                         }
 
-                        const jsonResponse = await error.response.json();
-                        const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
-                        throw Error(FEIL_VED_INNSENDING + callIdForBruker);
+                        const jsonResponse = await error.response.json<{ uuid?: string }>();
+                        const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
+                        Sentry.captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
+                        throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
                     }
                     if (error instanceof Error) {
                         throw error;
@@ -167,6 +164,7 @@ export const useMellomlagreSøknad = (
 
             lagre().catch((error) => {
                 //Logg feil, men ikkje vis feilmelding til brukar
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
                 Sentry.captureMessage(error.message);
 
                 if (promiseRef.current) {

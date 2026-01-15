@@ -1,13 +1,13 @@
 import { SøknadRoutes } from 'appData/routes';
 
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataType, useContextSaveData } from './FpDataContext';
 import { useStepConfig } from './useStepConfig';
 
 export const useFpNavigator = (
-    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     mellomlagreOgNaviger: () => Promise<void>,
     erEndringssøknad = false,
 ) => {
@@ -18,12 +18,12 @@ export const useFpNavigator = (
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
         const previousPath = stepConfig[index]?.id ?? SøknadRoutes.VELKOMMEN;
         oppdaterPath(previousPath);
-        return mellomlagreOgNaviger();
+        void mellomlagreOgNaviger();
     };
 
     const goToNextStep = (path: SøknadRoutes) => {
         oppdaterPath(path);
-        return mellomlagreOgNaviger();
+        void mellomlagreOgNaviger();
     };
 
     const goToNextDefaultStep = () => {
@@ -31,12 +31,12 @@ export const useFpNavigator = (
         const nextPath = stepConfig[index]?.id;
 
         oppdaterPath(nextPath);
-        return mellomlagreOgNaviger();
+        void mellomlagreOgNaviger();
     };
 
     const fortsettSøknadSenere = () => {
-        loggAmplitudeEvent({ origin: 'foreldrepengesoknad', eventName: 'skjema fortsett senere' });
-        (window as any).location = 'https://nav.no';
+        loggUmamiEvent({ origin: 'foreldrepengesoknad', eventName: 'skjema fortsett senere' });
+        globalThis.location.href = 'https://nav.no';
     };
 
     return {

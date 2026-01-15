@@ -13,7 +13,7 @@ export const InfoTilFiskere = () => {
                 </ExpansionCard.Title>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-                <VStack gap="4">
+                <VStack gap="space-16">
                     <BodyLong>
                         <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del1" />
                     </BodyLong>
@@ -29,7 +29,7 @@ export const InfoTilFiskere = () => {
                         <FormattedMessage
                             id="inntektsinformasjon.infoTilFiskere.del3"
                             values={{
-                                a: (msg: any) => (
+                                a: (msg) => (
                                     <Link href={links.hvordanSendeInntektsmelding} target="_blank" rel="noreferrer">
                                         {msg}
                                     </Link>
@@ -49,7 +49,7 @@ export const InfoTilFiskere = () => {
                         <FormattedMessage
                             id="inntektsinformasjon.infoTilFiskere.del5"
                             values={{
-                                a: (msg: any) => (
+                                a: (msg) => (
                                     <Link href={links.omLottOgHyre} target="_blank" rel="noreferrer">
                                         {msg}
                                     </Link>
@@ -83,7 +83,7 @@ export const InfoTilFiskere = () => {
                         <FormattedMessage
                             id="inntektsinformasjon.infoTilFiskere.del10"
                             values={{
-                                a: (msg: any) => (
+                                a: (msg) => (
                                     <Link href={links.omLottOgHyre} target="_blank" rel="noreferrer">
                                         {msg}
                                     </Link>

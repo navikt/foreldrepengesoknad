@@ -11,7 +11,7 @@ interface Props {
 export const HvorforSpørNAVOmDette = ({ text }: Props) => (
     <ExpansionCard aria-label="">
         <ExpansionCard.Header>
-            <HStack gap="10" align="center">
+            <HStack gap="space-40" align="center">
                 <IconCircleWrapper size="xl" color="green">
                     <InformationIcon height={25} width={25} aria-hidden />
                 </IconCircleWrapper>

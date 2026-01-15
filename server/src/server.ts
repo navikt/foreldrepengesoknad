@@ -7,6 +7,7 @@ import {
     setupActuators,
     setupAndServeHtml,
     setupServerDefaults,
+    setupSkjermleserCssTilgang,
 } from '@navikt/fp-server-utils';
 
 import { configureReverseProxyApi } from './reverseProxy.js';
@@ -22,6 +23,8 @@ const publicRouter = express.Router();
 
 // Logging i json format
 server.use(logger.morganMiddleware);
+
+setupSkjermleserCssTilgang(publicRouter);
 
 // Skjermdeling krever tilgang til CSS uten å være innlogget!
 publicRouter.use(express.static('./public', { index: false }));

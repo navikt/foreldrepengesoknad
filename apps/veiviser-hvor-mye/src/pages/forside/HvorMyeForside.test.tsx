@@ -1,4 +1,4 @@
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { HvorMyeRoutes } from 'appData/routes';
@@ -11,7 +11,6 @@ const { Default } = composeStories(stories);
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
     return {
-        // @ts-ignore
         ...actual,
         useNavigate: vi.fn(),
     };

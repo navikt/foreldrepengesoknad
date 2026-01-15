@@ -2,6 +2,16 @@
     "app": "planlegger",
     "autentisering": false,
     "ingress": "https://www.nav.no/foreldrepenger/planlegger",
+    "minReplicas": "2",
+    "maxReplicas": "2",
+    "limits": {
+        "cpu": "200m",
+        "mem": "256Mi"
+    },
+    "requests": {
+        "cpu": "15m",
+        "mem": "160Mi"
+    },
     "env": {
         "PUBLIC_PATH": "/foreldrepenger/planlegger",
         "ENV": "prod"

@@ -1,16 +1,16 @@
+import { onLanguageSelect, setAvailableLanguages } from '@navikt/nav-dekoratoren-moduler';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
-import { useCallback, useMemo, useState } from 'react';
+import { useState } from 'react';
 
-import { Provider } from '@navikt/ds-react';
+import { Provider, Theme } from '@navikt/ds-react';
 import { en, nb, nn } from '@navikt/ds-react/locales';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
-import { utilsMessages } from '@navikt/fp-utils';
-import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
+import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
 import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 
 import { PlanleggerDataInit } from './Planlegger';
@@ -23,7 +23,6 @@ const allNbMessages = {
     ...uiMessages.nb,
     ...utilsMessages.nb,
     ...nyUttaksplanMessages.nb,
-    ...uttaksplanKalenderMessages.nb,
     ...formHookMessages.nb,
 };
 
@@ -39,7 +38,7 @@ declare global {
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            retry: process.env.NODE_ENV === 'test' ? false : 3,
+            retry: false,
         },
     },
 });
@@ -51,7 +50,6 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...uiMessages.nn,
         ...utilsMessages.nn,
         ...nyUttaksplanMessages.nn,
-        ...uttaksplanKalenderMessages.nn,
         ...formHookMessages.nn,
     },
     en: {
@@ -59,48 +57,41 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...uiMessages.en,
         ...utilsMessages.en,
         ...nyUttaksplanMessages.en,
-        ...uttaksplanKalenderMessages.en,
         ...formHookMessages.en,
     },
 };
 
-const initLocale = (): LocaleAll => {
-    const queryString = window.location.search;
-    const languageParam = new URLSearchParams(queryString).get('language');
-    const locale =
-        languageParam === 'nb' || languageParam === 'nn' || languageParam === 'en'
-            ? (languageParam as LocaleAll)
-            : 'nb';
-
-    dayjs.locale(locale);
-    document.documentElement.setAttribute('lang', locale);
-
-    return locale;
-};
+dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
 
 export const AppContainer = () => {
-    const origLocale = useMemo(() => initLocale(), []);
-    const [locale, setLocale] = useState<LocaleAll>(origLocale);
+    const [locale, setLocale] = useState<LocaleAll>(getDecoratorLanguageCookie('decorator-language') as LocaleAll);
 
-    const changeLocale = useCallback((activeLocale: LocaleAll) => {
-        setLocale(activeLocale);
-        dayjs.locale(activeLocale);
-        document.documentElement.setAttribute('lang', activeLocale);
-    }, []);
+    void setAvailableLanguages([
+        { locale: 'nb', handleInApp: true },
+        { locale: 'nn', handleInApp: true },
+        { locale: 'en', handleInApp: true },
+    ]);
+
+    onLanguageSelect((lang) => {
+        setLocale(lang.locale as LocaleAll);
+        document.documentElement.setAttribute('lang', lang.locale);
+    });
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary
-                appName="planlegger"
-                customErrorPage={<SimpleErrorPage retryCallback={() => location.reload()} />}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <ReactQueryDevtools />
-                    <Provider locale={getDsProviderLocale(locale)}>
-                        <PlanleggerDataInit locale={locale} changeLocale={changeLocale} />
-                    </Provider>
-                </QueryClientProvider>
-            </ErrorBoundary>
+            <Theme theme="light">
+                <ErrorBoundary
+                    appName="planlegger"
+                    customErrorPage={<SimpleErrorPage retryCallback={() => location.reload()} />}
+                >
+                    <QueryClientProvider client={queryClient}>
+                        <ReactQueryDevtools />
+                        <Provider locale={getDsProviderLocale(locale)}>
+                            <PlanleggerDataInit />
+                        </Provider>
+                    </QueryClientProvider>
+                </ErrorBoundary>
+            </Theme>
         </IntlProvider>
     );
 };

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
-import { Arbeidsforholdstype, Stilling, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
+import { Arbeidsforholdstype, Stilling, Tilretteleggingstype } from 'types/Tilrettelegging';
 import { getTotalStillingsprosentPåSkjæringstidspunktet } from 'utils/arbeidsforholdUtils';
 import { getFloatFromString } from 'utils/numberUtils';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, getSlutteTekst, hasValue } from 'utils/validationUtils';
@@ -77,7 +77,7 @@ export const validateSammePeriodeFremTilTerminFom =
         kanHaSVPFremTilTreUkerFørTermin: boolean,
     ) =>
     (value: string) => {
-        const erDelvis = tilretteleggingstype === Tilretteleggingstype.DELVIS;
+        const erDelvis = tilretteleggingstype === 'delvis';
         if (
             hasValue(value) &&
             hasValue(behovForTilretteleggingFom) &&
@@ -146,7 +146,7 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
         kanHaSVPFremTilTreUkerFørTermin: boolean,
     ) =>
     (value: string) => {
-        const erDelvis = type === Tilretteleggingstype.DELVIS;
+        const erDelvis = type === 'delvis';
         if (
             hasValue(value) &&
             hasValue(behovForTilretteleggingFom) &&
@@ -247,17 +247,9 @@ export const validateBehovForTilretteleggingFom =
     };
 
 export const validerTilretteleggingTomType =
-    (
-        intl: IntlShape,
-        tilretteleggingType: Tilretteleggingstype,
-        behovForTilretteleggingFom: string | undefined,
-        sisteDagForSvangerskapspenger: string,
-        arbeidNavn: string,
-        sluttDatoArbeid: string | undefined,
-        kanHaSVPFremTilTreUkerFørTermin: boolean,
-    ) =>
+    (intl: IntlShape, tilretteleggingType: Tilretteleggingstype, kanHaSVPFremTilTreUkerFørTermin: boolean) =>
     (value: string | number | boolean): string | undefined => {
-        const erDelvis = tilretteleggingType === Tilretteleggingstype.DELVIS;
+        const erDelvis = tilretteleggingType === 'delvis';
         if (!hasValue(value)) {
             if (erDelvis) {
                 return kanHaSVPFremTilTreUkerFørTermin
@@ -269,64 +261,41 @@ export const validerTilretteleggingTomType =
                     : intl.formatMessage({ id: 'valideringsfeil.tomType.påkrevd.ingen.tilFødsel' });
             }
         }
-        if (
-            sluttDatoArbeid &&
-            hasValue(behovForTilretteleggingFom) &&
-            value === TilOgMedDatoType.SISTE_DAG_MED_SVP &&
-            dayjs(behovForTilretteleggingFom).isSameOrBefore(dayjs(sluttDatoArbeid), 'd') &&
-            dayjs(sisteDagForSvangerskapspenger).isAfter(dayjs(sluttDatoArbeid), 'd')
-        ) {
-            const slutteTekst = getSlutteTekst(sluttDatoArbeid, intl);
-            return erDelvis
-                ? intl.formatMessage(
-                      { id: 'valideringsfeil.tomType.etterSluttDatoArbeid.delvis' },
-                      {
-                          slutteTekst,
-                          navn: arbeidNavn,
-                      },
-                  )
-                : intl.formatMessage(
-                      { id: 'valideringsfeil.tomType.etterSluttDatoArbeid.ingen' },
-                      {
-                          slutteTekst,
-                          navn: arbeidNavn,
-                      },
-                  );
-        }
+
         return undefined;
     };
 
 const finnFeilmeldingForPåkrevd = (intl: IntlShape, type: Arbeidsforholdstype) => {
-    if (type === Arbeidsforholdstype.FRILANSER) {
+    if (type === 'frilanser') {
         return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.frilanser.påkrevd' });
     }
-    if (type === Arbeidsforholdstype.SELVSTENDIG) {
+    if (type === 'selvstendig') {
         return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.selvstendig.påkrevd' });
     }
-    if (type === Arbeidsforholdstype.VIRKSOMHET) {
+    if (type === 'virksomhet') {
         return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.virksomhet.påkrevd' });
     }
-    throw Error('Ingen påkrevd-tekst for type: ' + type);
+    throw new Error('Ingen påkrevd-tekst for type: ' + type);
 };
 
 const finnFeilmeldingForOverMakslengde = (intl: IntlShape, type: Arbeidsforholdstype) => {
-    if (type === Arbeidsforholdstype.FRILANSER) {
+    if (type === 'frilanser') {
         return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.frilanser.forLang' });
     }
-    if (type === Arbeidsforholdstype.SELVSTENDIG) {
+    if (type === 'selvstendig') {
         return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.selvstendig.forLang' });
     }
-    throw Error('Ingen makslengde-tekst for type: ' + type);
+    throw new Error('Ingen makslengde-tekst for type: ' + type);
 };
 
 const finnFeilmeldingForUnderMinLengde = (intl: IntlShape, type: Arbeidsforholdstype) => {
-    if (type === Arbeidsforholdstype.FRILANSER) {
+    if (type === 'frilanser') {
         return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.frilanser.forKort' });
     }
-    if (type === Arbeidsforholdstype.SELVSTENDIG) {
+    if (type === 'selvstendig') {
         return intl.formatMessage({ id: 'valideringsfeil.risikofaktorer.selvstendig.forKort' });
     }
-    throw Error('Ingen tekst for type: ' + type);
+    throw new Error('Ingen tekst for type: ' + type);
 };
 
 export const validateRisikofaktorer = (intl: IntlShape, type: Arbeidsforholdstype) => (value: string) => {

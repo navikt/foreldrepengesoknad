@@ -1,14 +1,18 @@
-import { Preview } from '@storybook/react';
+import { Preview } from '@storybook/react-vite';
 
-import { getIntlDecorator } from '@navikt/fp-utils-test';
+import { formHookMessages } from '@navikt/fp-form-hooks';
+import { uiMessages } from '@navikt/fp-ui';
+import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 
-import nbMessages from '../src/intl/nb_NO.json';
-import nnMessages from '../src/intl/nn_NO.json';
+import enMessages from '../src/intl/messages/en_US.json';
+import nbMessages from '../src/intl/messages/nb_NO.json';
+import nnMessages from '../src/intl/messages/nn_NO.json';
 import './index.css';
 
 const withIntlProvider = getIntlDecorator({
-    nb: nbMessages,
-    nn: nnMessages,
+    nb: { ...nbMessages, ...formHookMessages.nb, ...uiMessages.nb },
+    nn: { ...nnMessages, ...formHookMessages.nn, ...uiMessages.nn },
+    en: { ...enMessages, ...formHookMessages.en, ...uiMessages.en },
 });
 
 export const parameters = {
@@ -30,14 +34,29 @@ export const globalTypes = {
             items: [
                 { value: 'nb', title: 'Bokmål' },
                 { value: 'nn', title: 'Nynorsk' },
+                { value: 'en', title: 'Engelsk' },
             ],
             dynamicTitle: true,
+        },
+    },
+    theme: {
+        name: 'Tema',
+        description: 'Aksel tema',
+        defaultValue: 'light',
+        toolbar: {
+            icon: 'circlehollow',
+            items: [
+                { value: 'light', icon: 'circlehollow', title: 'Lys' },
+                { value: 'dark', icon: 'circle', title: 'Mørk' },
+            ],
+            showName: true,
         },
     },
 };
 
 const preview: Preview = {
-    decorators: [withIntlProvider],
+    decorators: [withIntlProvider, withThemeDecorator],
 };
 
+//eslint-disable-next-line import/no-default-export
 export default preview;

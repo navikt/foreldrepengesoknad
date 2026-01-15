@@ -7,24 +7,23 @@ import { FormattedMessage } from 'react-intl';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { getRuteVelgArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
 
-import { Heading } from '@navikt/ds-react';
-
 import { ArbeidsforholdOgInntektPanel } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import {
-    Arbeidsforhold,
     ArbeidsforholdOgInntekt,
     ArbeidsforholdOgInntektSvp,
-    EGEN_NÆRING_ID,
+    EksternArbeidsforholdDto_fpoversikt,
     FRILANS_ID,
     isArbeidsforholdOgInntektSvp,
 } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 const getNextRoute = (
     termindato: string,
-    aktiveArbeidsforhold: Arbeidsforhold[],
+    aktiveArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     values: ArbeidsforholdOgInntektSvp,
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
 ): SøknadRoute | string => {
     if (values.harJobbetSomFrilans) {
         return SøknadRoute.FRILANS;
@@ -40,8 +39,8 @@ const getNextRoute = (
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    avbrytSøknad: () => Promise<void>;
-    arbeidsforhold: Arbeidsforhold[];
+    avbrytSøknad: () => void;
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 };
 
 export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
@@ -61,7 +60,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
 
     const onSubmit = (values: ArbeidsforholdOgInntekt) => {
         if (!isArbeidsforholdOgInntektSvp(values)) {
-            throw Error('values er på feil format');
+            throw new Error('values er på feil format');
         }
 
         oppdaterArbeidsforholdOgInntekt(values);
@@ -88,21 +87,18 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     };
 
     return (
-        <ContentWrapper>
-            <Heading size="large">
-                <FormattedMessage id="søknad.pageheading" />
-            </Heading>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <ArbeidsforholdOgInntektPanel
                 aktiveArbeidsforhold={aktiveArbeidsforhold}
                 arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                 saveOnNext={onSubmit}
-                cancelApplication={avbrytSøknad}
-                onContinueLater={navigator.fortsettSøknadSenere}
+                onAvsluttOgSlett={avbrytSøknad}
+                onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
                 onStepChange={navigator.goToStep}
                 appOrigin="svangerskapspengesoknad"
             />
-        </ContentWrapper>
+        </SkjemaRotLayout>
     );
 };

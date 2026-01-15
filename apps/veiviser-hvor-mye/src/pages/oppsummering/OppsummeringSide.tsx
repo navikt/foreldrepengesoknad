@@ -9,8 +9,8 @@ import { finnSisteEngangsstønad, finnSisteGrunnbeløp } from 'utils/satserUtils
 import { BodyShort, Button, ExpansionCard, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { Dekningsgrad, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { KontoBeregningDto, Satser } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper, Infobox, VeiviserPage } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr, useScrollBehaviour } from '@navikt/fp-utils';
 import { isValidNumber, notEmpty } from '@navikt/fp-validation';
@@ -20,8 +20,6 @@ import { HarIkkeRettTilFpInfobox } from '../felles/HarIkkeRettTilFpInfobox';
 import { HøyInntektInfobox } from '../felles/HøyInntektInfobox';
 import { FpEllerEsOgHvaSkjerNåLinkPanel } from './FpEllerEsOgHvaSkjerNåLinkPanel';
 import { Utbetalingspanel } from './Utbetalingspanel';
-
-export const getDailyPayment = (monthlyWage: number) => (monthlyWage * 12) / 260;
 
 const isNumber = (value?: string) => {
     return value && isValidNumber(value);
@@ -43,17 +41,18 @@ const finnHendelse = (
 
 interface Props {
     arbeidssituasjon: Arbeidssituasjon;
-    stønadskontoer: TilgjengeligeStønadskontoer;
+    stønadskontoer: { '100': KontoBeregningDto; '80': KontoBeregningDto };
     satser: Satser;
 }
 
 export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: Props) => {
     const intl = useIntl();
-    const locale = intl.locale;
     const { goToRoute } = useVeiviserNavigator();
     const { ref } = useScrollBehaviour();
 
-    const gjennomsnittslønnPerMåned = parseFloat(notEmpty(finnGjennomsnittsMånedslønn(notEmpty(arbeidssituasjon))));
+    const gjennomsnittslønnPerMåned = Number.parseFloat(
+        notEmpty(finnGjennomsnittsMånedslønn(notEmpty(arbeidssituasjon))),
+    );
     const årslønn = gjennomsnittslønnPerMåned * 12;
 
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
@@ -68,7 +67,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
     const forrigeMåned = dayjs().subtract(1, 'month');
 
     useEffect(() => {
-        loggAmplitudeEvent({
+        loggUmamiEvent({
             origin: 'veiviser-hvor-mye',
             eventName: 'besøk',
             eventData: {
@@ -85,7 +84,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                 description={intl.formatMessage({ id: 'Tittel' })}
                 icon={<CheckmarkIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
             >
-                <VStack gap="5">
+                <VStack gap="space-20">
                     {årslønn > grunnbeløpetGanger6 && (
                         <HøyInntektInfobox maxÅrslønnDekket={grunnbeløpetGanger6} isGray />
                     )}
@@ -99,7 +98,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                     <InformationIcon
                                         height={24}
                                         width={24}
-                                        color="#020C1CAD"
+                                        color="var(--ax-bg-neutral-strong)"
                                         fontSize="1.5rem"
                                         aria-hidden
                                     />
@@ -109,7 +108,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                 <BodyShort>
                                     <FormattedMessage
                                         id="OppsummeringSide.EsSkalBidra"
-                                        values={{ engangsstønad: formatCurrencyWithKr(engangsstønad, locale) }}
+                                        values={{ engangsstønad: formatCurrencyWithKr(engangsstønad) }}
                                     />
                                 </BodyShort>
                             </Infobox>
@@ -118,13 +117,13 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                     {!harIkkeRettTilFp && (
                         <>
                             <Utbetalingspanel
-                                dekningsgrad={Dekningsgrad.HUNDRE_PROSENT}
+                                dekningsgrad={'100'}
                                 gjennomsnittslønn={gjennomsnittslønnPerMåned}
                                 stønadskontoer={stønadskontoer}
                                 satser={satser}
                             />
                             <Utbetalingspanel
-                                dekningsgrad={Dekningsgrad.ÅTTI_PROSENT}
+                                dekningsgrad={'80'}
                                 gjennomsnittslønn={gjennomsnittslønnPerMåned}
                                 stønadskontoer={stønadskontoer}
                                 satser={satser}
@@ -137,18 +136,18 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                         <WalletIcon
                                             height={24}
                                             width={24}
-                                            color="#020C1CAD"
+                                            color="var(--ax-bg-neutral-strong)"
                                             fontSize="1.5rem"
                                             aria-hidden
                                         />
                                     }
                                     color="gray"
                                 >
-                                    <VStack gap="4">
+                                    <VStack gap="space-16">
                                         <BodyShort>
                                             <FormattedMessage
                                                 id="OppsummeringSide.SammenlignFpOgEsInfoPart1"
-                                                values={{ engangsstønad: formatCurrencyWithKr(engangsstønad, locale) }}
+                                                values={{ engangsstønad: formatCurrencyWithKr(engangsstønad) }}
                                             />
                                         </BodyShort>
                                         <BodyShort>
@@ -168,7 +167,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                     <InformationIcon
                                         height={24}
                                         width={24}
-                                        color="#020C1CAD"
+                                        color="var(--ax-bg-neutral-strong)"
                                         fontSize="1.5rem"
                                         aria-hidden
                                     />
@@ -183,7 +182,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                     )}
                     <ExpansionCard aria-label="" size="small">
                         <ExpansionCard.Header>
-                            <HStack gap="6" align="center" wrap={false}>
+                            <HStack gap="space-24" align="center" wrap={false}>
                                 <IconCircleWrapper size="medium" color="lightBlue">
                                     <ChatElipsisIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                                 </IconCircleWrapper>
@@ -197,7 +196,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                 arbeidssituasjon.harUtbetalingFraNav) && (
                                 <VStack gap="3">
                                     <BluePanel>
-                                        <VStack gap="1">
+                                        <VStack gap="space-4">
                                             <Heading size="small" level="4">
                                                 <FormattedMessage id="OppsummeringSide.NæverendeArbeidssitasjon" />
                                             </Heading>
@@ -214,8 +213,8 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                         </VStack>
                                     </BluePanel>
                                     <BluePanel>
-                                        <VStack gap="4">
-                                            <VStack gap="1">
+                                        <VStack gap="space-16">
+                                            <VStack gap="space-4">
                                                 <Heading size="small" level="4">
                                                     <FormattedMessage id="OppsummeringSide.Lønn" />
                                                 </Heading>
@@ -227,9 +226,8 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                                 <BodyShort>
                                                     {formatCurrencyWithKr(
                                                         isNumber(arbeidssituasjon.lønnMåned1)
-                                                            ? parseInt(arbeidssituasjon.lønnMåned1, 10)
+                                                            ? Number.parseInt(arbeidssituasjon.lønnMåned1, 10)
                                                             : 0,
-                                                        locale,
                                                     )}
                                                 </BodyShort>
                                             </VStack>
@@ -242,9 +240,8 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                                 <BodyShort>
                                                     {formatCurrencyWithKr(
                                                         isNumber(arbeidssituasjon.lønnMåned2)
-                                                            ? parseInt(arbeidssituasjon.lønnMåned2, 10)
+                                                            ? Number.parseInt(arbeidssituasjon.lønnMåned2, 10)
                                                             : 0,
-                                                        locale,
                                                     )}
                                                 </BodyShort>
                                             </div>
@@ -255,9 +252,8 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                                                 <BodyShort>
                                                     {formatCurrencyWithKr(
                                                         isNumber(arbeidssituasjon.lønnMåned3)
-                                                            ? parseInt(arbeidssituasjon.lønnMåned3, 10)
+                                                            ? Number.parseInt(arbeidssituasjon.lønnMåned3, 10)
                                                             : 0,
-                                                        locale,
                                                     )}
                                                 </BodyShort>
                                             </div>

@@ -20,8 +20,10 @@ type Props = {
     navnPåForeldre: NavnPåForeldre;
     dagerMedFellesperiode: number;
     førsteDagEtterAnnenForelder: Date | undefined;
-    goToPreviousDefaultStep: () => Promise<void>;
-    goToNextDefaultStep: () => Promise<void>;
+    goToPreviousDefaultStep: () => void;
+    goToNextDefaultStep: () => void;
+    onAvsluttOgSlett?: () => void;
+    onFortsettSenere?: () => void;
 };
 
 export const FordelingForm = ({
@@ -31,6 +33,8 @@ export const FordelingForm = ({
     førsteDagEtterAnnenForelder,
     goToPreviousDefaultStep,
     goToNextDefaultStep,
+    onAvsluttOgSlett,
+    onFortsettSenere,
 }: Props) => {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
@@ -77,7 +81,7 @@ export const FordelingForm = ({
     };
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-            <VStack gap="10">
+            <VStack gap="space-40">
                 <ErrorSummaryHookForm />
                 {søkerDeltUttakINorgeSomMorFørFar && (
                     <FellesperiodeFordeling
@@ -93,7 +97,11 @@ export const FordelingForm = ({
                     oppstartsvalg={oppstartsValgOptions}
                 />
 
-                <StepButtonsHookForm goToPreviousStep={goToPreviousDefaultStep} />
+                <StepButtonsHookForm
+                    goToPreviousStep={goToPreviousDefaultStep}
+                    onAvsluttOgSlett={onAvsluttOgSlett}
+                    onFortsettSenere={onFortsettSenere}
+                />
             </VStack>
         </RhfForm>
     );

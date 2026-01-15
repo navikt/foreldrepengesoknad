@@ -1,12 +1,12 @@
-import { InntektsmeldingDto } from '../../../src/api/zodSchemas';
+import { FpOversiktInntektsmeldingDto_fpoversikt } from '@navikt/fp-types';
 
 export const enBortfaltNaturalytelse = [
     {
         versjon: 2,
         erAktiv: true,
-        stillingsprosent: 100.0,
+        stillingsprosent: 100,
         inntektPrMnd: 40000.78,
-        refusjonPrMnd: 4000.0,
+        refusjonPrMnd: 4000,
         arbeidsgiverNavn: 'Laksinor',
         arbeidsgiverIdent: '123',
         journalpostId: '1017115920',
@@ -16,10 +16,10 @@ export const enBortfaltNaturalytelse = [
             {
                 fomDato: '2024-09-10',
                 tomDato: '9999-12-31',
-                beløpPerMnd: 998.0,
+                beløpPerMnd: 998,
                 type: 'FRI_TRANSPORT',
             },
         ],
         refusjonsperioder: [],
     },
-] satisfies InntektsmeldingDto[];
+] satisfies FpOversiktInntektsmeldingDto_fpoversikt[];

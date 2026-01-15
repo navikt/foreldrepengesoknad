@@ -1,5 +1,5 @@
 import { StrollerIcon } from '@navikt/aksel-icons';
-import { StoryObj } from '@storybook/react';
+import { StoryObj } from '@storybook/react-vite';
 import { MemoryRouter } from 'react-router-dom';
 
 import { Tag, VStack } from '@navikt/ds-react';
@@ -13,7 +13,7 @@ const meta = {
     render: () => {
         return (
             <MemoryRouter>
-                <VStack gap="2" className="w-[704px]">
+                <VStack gap="space-8" className="w-[704px]">
                     <LenkePanel tittel="Bare tittel" to="#" />
                     <LenkePanel tittel="Tittel" to="#" undertittel="Undertittel" />
                     <LenkePanel tittel="Tittel" to="#" undertittel="Undertittel" Ikon={StrollerIcon} />
@@ -30,7 +30,7 @@ const meta = {
                     />
                 </VStack>
                 <br />
-                <VStack gap="2" className="w-[390px]">
+                <VStack gap="space-8" className="w-[390px]">
                     <LenkePanel tittel="Litt lengre tittel for mobil" to="#" />
                     <LenkePanel tittel="Litt lengre tittel for mobil" to="#" undertittel="Undertittel" />
                     <LenkePanel

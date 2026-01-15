@@ -1,281 +1,425 @@
-import { composeStories } from '@storybook/react';
-import { fireEvent, render } from '@testing-library/react';
+import { composeStories } from '@storybook/react-vite';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
-import { applyRequestHandlers } from 'msw-storybook-addon';
+import { expect } from 'vitest';
 
-import { Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
+import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './ManglendeVedlegg.stories';
 
-const { Termindatodokumentasjon, Omsorgsovertakelsedokumentasjon, Aleneomsorgdokumentasjon } = composeStories(stories);
+const {
+    Termindatodokumentasjon,
+    Omsorgsovertakelsedokumentasjon,
+    Aleneomsorgdokumentasjon,
+    FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid,
+    FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid,
+    BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid,
+} = composeStories(stories);
 
 describe('<ManglendeVedlegg>', () => {
-    it.skip('skal lage "send inn senere" vedlegg for terminbekreftelse', async () => {
-        // TODO Fiks test
-        const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknadOgNaviger = vi.fn();
+    it(
+        'skal lage "send inn senere" vedlegg for terminbekreftelse',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
 
-        await applyRequestHandlers(Termindatodokumentasjon.parameters.msw);
-        const screen = render(
-            <Termindatodokumentasjon
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+            setHandlers(Termindatodokumentasjon.parameters.msw);
+            const screen = render(
+                <Termindatodokumentasjon
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
 
-        await userEvent.click(screen.getByText('Neste steg'));
+            expect(await screen.findByText('Dokumentasjon av termindato')).toBeInTheDocument();
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: expect.objectContaining({
-                [Skjemanummer.TERMINBEKREFTELSE]: [
-                    expect.objectContaining({
-                        dokumenterer: {
-                            type: 'BARN',
-                        },
-                        filename: '',
-                        filesize: '',
-                        innsendingsType: 'SEND_SENERE',
-                        pending: false,
-                        skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
-                        type: 'terminbekreftelse',
-                        uploaded: false,
-                    }),
-                ],
-            }),
-            key: ContextDataType.VEDLEGG,
-            type: 'update',
-        });
+            await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.OPPSUMMERING,
-            key: ContextDataType.APP_ROUTE,
-            type: 'update',
-        });
-    });
+            expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+                data: expect.objectContaining({
+                    [Skjemanummer.TERMINBEKREFTELSE]: [
+                        expect.objectContaining({
+                            dokumenterer: {
+                                type: 'BARN',
+                            },
+                            filename: '',
+                            innsendingsType: 'SEND_SENERE',
+                            pending: false,
+                            skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
+                            type: AttachmentType.TERMINBEKREFTELSE,
+                            uploaded: false,
+                            id: expect.any(String),
+                            //@ts-expect-error -- filesize er undefined i testen, men den virkelige typen krever verdi
+                            filesize: undefined,
+                            file: expect.any(Object),
+                        } satisfies Attachment),
+                    ],
+                }),
+                key: ContextDataType.VEDLEGG,
+                type: 'update',
+            });
 
-    it.skip('skal laste opp vedlegg for terminbekreftelse', async () => {
-        // TODO Fiks test
-        const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknadOgNaviger = vi.fn();
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+                data: SøknadRoutes.OPPSUMMERING,
+                key: ContextDataType.APP_ROUTE,
+                type: 'update',
+            });
+        }),
+    );
 
-        await applyRequestHandlers(Termindatodokumentasjon.parameters.msw);
-        const screen = render(
-            <Termindatodokumentasjon
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+    it(
+        'skal laste opp vedlegg for terminbekreftelse',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
 
-        const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByLabelText('Dokumentasjon av termindato');
-        await fireEvent.change(fileInput, {
-            target: { files: [file] },
-        });
+            setHandlers(Termindatodokumentasjon.parameters.msw);
+            const screen = render(
+                <Termindatodokumentasjon
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
 
-        await userEvent.click(screen.getByText('Neste steg'));
+            expect(await screen.findByText('Dokumentasjon av termindato')).toBeInTheDocument();
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: expect.objectContaining({
-                [Skjemanummer.TERMINBEKREFTELSE]: [
-                    expect.objectContaining({
-                        dokumenterer: {
-                            type: 'BARN',
-                        },
-                        filename: 'hello.png',
-                        filesize: 5,
-                        pending: false,
-                        skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
-                        type: 'terminbekreftelse',
-                        uploaded: true,
-                        url: 'test.com',
-                        uuid: 'uuid-test',
-                    }),
-                ],
-            }),
-            key: ContextDataType.VEDLEGG,
-            type: 'update',
-        });
-    });
+            const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+            const fileInput = screen.getByLabelText('Dokumentasjon av termindato');
+            await userEvent.upload(fileInput, file);
 
-    it.skip('skal lage "send inn senere" vedlegg for omsorgsovertakelse', async () => {
-        // TODO Fiks test
-        const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknadOgNaviger = vi.fn();
+            await userEvent.click(screen.getByText('Neste steg'));
 
-        await applyRequestHandlers(Omsorgsovertakelsedokumentasjon.parameters.msw);
-        const screen = render(
-            <Omsorgsovertakelsedokumentasjon
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+            expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+                data: expect.objectContaining({
+                    [Skjemanummer.TERMINBEKREFTELSE]: [
+                        expect.objectContaining({
+                            dokumenterer: {
+                                type: 'BARN',
+                            },
+                            filename: 'hello.png',
+                            filesize: 5,
+                            pending: false,
+                            skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
+                            type: AttachmentType.TERMINBEKREFTELSE,
+                            uploaded: true,
+                            uuid: 'uuid-test',
+                            innsendingsType: 'LASTET_OPP',
+                            id: expect.any(String),
+                            file: expect.any(Object),
+                        } satisfies Attachment),
+                    ],
+                }),
+                key: ContextDataType.VEDLEGG,
+                type: 'update',
+            });
+        }),
+    );
 
-        await userEvent.click(screen.getByText('Neste steg'));
+    it(
+        'skal lage "send inn senere" vedlegg for omsorgsovertakelse',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: expect.objectContaining({
-                [Skjemanummer.OMSORGSOVERTAKELSE]: [
-                    expect.objectContaining({
-                        dokumenterer: {
-                            type: 'BARN',
-                        },
-                        filename: '',
-                        filesize: '',
-                        innsendingsType: 'SEND_SENERE',
-                        pending: false,
-                        skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
-                        type: 'omsorgsovertakelse',
-                        uploaded: false,
-                    }),
-                ],
-            }),
-            key: ContextDataType.VEDLEGG,
-            type: 'update',
-        });
+            setHandlers(Omsorgsovertakelsedokumentasjon.parameters.msw);
+            const screen = render(
+                <Omsorgsovertakelsedokumentasjon
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
 
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.OPPSUMMERING,
-            key: ContextDataType.APP_ROUTE,
-            type: 'update',
-        });
-    });
+            expect(await screen.findByText('Dokumentasjon om omsorgsovertakelse')).toBeInTheDocument();
 
-    it.skip('skal laste opp vedlegg for omsorgsovertakelse', async () => {
-        // TODO Fiks test
-        const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknadOgNaviger = vi.fn();
+            await userEvent.click(screen.getByText('Neste steg'));
 
-        await applyRequestHandlers(Omsorgsovertakelsedokumentasjon.parameters.msw);
-        const screen = render(
-            <Omsorgsovertakelsedokumentasjon
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+            expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+                data: expect.objectContaining({
+                    [Skjemanummer.OMSORGSOVERTAKELSE]: [
+                        expect.objectContaining({
+                            dokumenterer: {
+                                type: 'BARN',
+                            },
+                            filename: '',
+                            innsendingsType: 'SEND_SENERE',
+                            pending: false,
+                            skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
+                            type: AttachmentType.OMSORGSOVERTAKELSE,
+                            uploaded: false,
+                            id: expect.any(String),
+                            //@ts-expect-error -- filesize er undefined i testen, men den virkelige typen krever verdi
+                            filesize: undefined,
+                            file: expect.any(Object),
+                        } satisfies Attachment),
+                    ],
+                }),
+                key: ContextDataType.VEDLEGG,
+                type: 'update',
+            });
 
-        const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByLabelText('Dokumentasjon om omsorgsovertakelse');
-        await fireEvent.change(fileInput, {
-            target: { files: [file] },
-        });
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+                data: SøknadRoutes.OPPSUMMERING,
+                key: ContextDataType.APP_ROUTE,
+                type: 'update',
+            });
+        }),
+    );
 
-        await userEvent.click(screen.getByText('Neste steg'));
+    it(
+        'skal laste opp vedlegg for omsorgsovertakelse',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: expect.objectContaining({
-                [Skjemanummer.OMSORGSOVERTAKELSE]: [
-                    expect.objectContaining({
-                        dokumenterer: {
-                            type: 'BARN',
-                        },
-                        filename: 'hello.png',
-                        filesize: 5,
-                        pending: false,
-                        skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
-                        type: 'omsorgsovertakelse',
-                        uploaded: true,
-                        url: 'test.com',
-                        uuid: 'uuid-test',
-                    }),
-                ],
-            }),
-            key: ContextDataType.VEDLEGG,
-            type: 'update',
-        });
-    });
+            setHandlers(Omsorgsovertakelsedokumentasjon.parameters.msw);
+            const screen = render(
+                <Omsorgsovertakelsedokumentasjon
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
 
-    it.skip('skal lage "send inn senere" vedlegg for aleneomsorg', async () => {
-        // TODO Fiks test
-        const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknadOgNaviger = vi.fn();
+            expect(await screen.findByText('Dokumentasjon om omsorgsovertakelse')).toBeInTheDocument();
 
-        await applyRequestHandlers(Aleneomsorgdokumentasjon.parameters.msw);
-        const screen = render(
-            <Aleneomsorgdokumentasjon
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+            const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+            const fileInput = screen.getByLabelText('Dokumentasjon om omsorgsovertakelse');
+            await userEvent.upload(fileInput, file);
 
-        await userEvent.click(screen.getByText('Neste steg'));
+            await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: expect.objectContaining({
-                [Skjemanummer.DOK_AV_ALENEOMSORG]: [
-                    expect.objectContaining({
-                        dokumenterer: {
-                            type: 'BARN',
-                        },
-                        filename: '',
-                        filesize: '',
-                        innsendingsType: 'SEND_SENERE',
-                        pending: false,
-                        skjemanummer: Skjemanummer.DOK_AV_ALENEOMSORG,
-                        type: 'dokumentasjonAvAleneomsorg',
-                        uploaded: false,
-                    }),
-                ],
-            }),
-            key: ContextDataType.VEDLEGG,
-            type: 'update',
-        });
+            expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+                data: expect.objectContaining({
+                    [Skjemanummer.OMSORGSOVERTAKELSE]: [
+                        expect.objectContaining({
+                            dokumenterer: {
+                                type: 'BARN',
+                            },
+                            filename: 'hello.png',
+                            filesize: 5,
+                            pending: false,
+                            skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
+                            type: AttachmentType.OMSORGSOVERTAKELSE,
+                            uploaded: true,
+                            uuid: 'uuid-test',
+                            innsendingsType: 'LASTET_OPP',
+                            id: expect.any(String),
+                            file: expect.any(Object),
+                        } satisfies Attachment),
+                    ],
+                }),
+                key: ContextDataType.VEDLEGG,
+                type: 'update',
+            });
+        }),
+    );
 
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.OPPSUMMERING,
-            key: ContextDataType.APP_ROUTE,
-            type: 'update',
-        });
-    });
+    it(
+        'skal lage "send inn senere" vedlegg for aleneomsorg',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
 
-    it.skip('skal laste opp vedlegg for aleneomsorg', async () => {
-        // TODO Fiks test
-        const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknadOgNaviger = vi.fn();
+            setHandlers(Aleneomsorgdokumentasjon.parameters.msw);
+            const screen = render(
+                <Aleneomsorgdokumentasjon
+                    {...Aleneomsorgdokumentasjon.args}
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
 
-        await applyRequestHandlers(Aleneomsorgdokumentasjon.parameters.msw);
-        const screen = render(
-            <Aleneomsorgdokumentasjon
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+            expect(await screen.findByText('Dokumentasjon av aleneomsorg')).toBeInTheDocument();
 
-        const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByLabelText('Dokumentasjon av aleneomsorg');
-        await fireEvent.change(fileInput, {
-            target: { files: [file] },
-        });
+            await userEvent.click(screen.getByText('Neste steg'));
 
-        await userEvent.click(screen.getByText('Neste steg'));
+            expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+                data: expect.objectContaining({
+                    [Skjemanummer.DOK_AV_ALENEOMSORG]: [
+                        expect.objectContaining({
+                            dokumenterer: {
+                                type: 'BARN',
+                            },
+                            filename: '',
+                            innsendingsType: 'SEND_SENERE',
+                            pending: false,
+                            skjemanummer: Skjemanummer.DOK_AV_ALENEOMSORG,
+                            type: AttachmentType.ALENEOMSORG,
+                            uploaded: false,
+                            id: expect.any(String),
+                            //@ts-expect-error -- filesize er undefined i testen, men den virkelige typen krever verdi
+                            filesize: undefined,
+                            file: expect.any(Object),
+                        } satisfies Attachment),
+                    ],
+                }),
+                key: ContextDataType.VEDLEGG,
+                type: 'update',
+            });
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: expect.objectContaining({
-                [Skjemanummer.DOK_AV_ALENEOMSORG]: [
-                    expect.objectContaining({
-                        dokumenterer: {
-                            type: 'BARN',
-                        },
-                        filename: 'hello.png',
-                        filesize: 5,
-                        pending: false,
-                        skjemanummer: Skjemanummer.DOK_AV_ALENEOMSORG,
-                        type: 'dokumentasjonAvAleneomsorg',
-                        uploaded: true,
-                        url: 'test.com',
-                        uuid: 'uuid-test',
-                    }),
-                ],
-            }),
-            key: ContextDataType.VEDLEGG,
-            type: 'update',
-        });
-    });
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+                data: SøknadRoutes.OPPSUMMERING,
+                key: ContextDataType.APP_ROUTE,
+                type: 'update',
+            });
+        }),
+    );
+
+    it(
+        'skal laste opp vedlegg for aleneomsorg',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
+
+            setHandlers(Aleneomsorgdokumentasjon.parameters.msw);
+            const screen = render(
+                <Aleneomsorgdokumentasjon
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
+
+            expect(await screen.findByText('Dokumentasjon av aleneomsorg')).toBeInTheDocument();
+
+            const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+            const fileInput = screen.getByLabelText('Dokumentasjon av aleneomsorg');
+            await userEvent.upload(fileInput, file);
+
+            await userEvent.click(screen.getByText('Neste steg'));
+
+            expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+                data: expect.objectContaining({
+                    [Skjemanummer.DOK_AV_ALENEOMSORG]: [
+                        expect.objectContaining({
+                            dokumenterer: {
+                                type: 'BARN',
+                            },
+                            filename: 'hello.png',
+                            filesize: 5,
+                            pending: false,
+                            skjemanummer: Skjemanummer.DOK_AV_ALENEOMSORG,
+                            type: AttachmentType.ALENEOMSORG,
+                            uploaded: true,
+                            uuid: 'uuid-test',
+                            innsendingsType: 'LASTET_OPP',
+                            id: expect.any(String),
+                            file: expect.any(Object),
+                        } satisfies Attachment),
+                    ],
+                }),
+                key: ContextDataType.VEDLEGG,
+                type: 'update',
+            });
+        }),
+    );
+
+    it(
+        'skal håndtere automatisk dokumentasjon når mor jobber mer enn 75% og vi ikke trenger dokumentere arbeid',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
+
+            setHandlers(FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid.parameters.msw);
+            const screen = render(
+                <FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
+
+            // Verifiser at "Ingen dokumentasjon påkrevd" melding vises
+            expect(await screen.findByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
+            expect(
+                await screen.findByText(
+                    'Du trenger ikke sende inn dokumentasjon. Vi innhenter opplysninger om mors arbeid ' +
+                        'fra Arbeidsgiver- og arbeidstakerregisteret. Mor vil bli informert når søknaden blir sendt.',
+                    { exact: false },
+                ),
+            ).toBeInTheDocument();
+
+            await userEvent.click(screen.getByText('Neste steg'));
+
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+                data: SøknadRoutes.OPPSUMMERING,
+                key: ContextDataType.APP_ROUTE,
+                type: 'update',
+            });
+        }),
+    );
+
+    it(
+        'skal vise krav om dokumentasjon for mors arbeid når stillingsprosenten er < 75%',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
+
+            setHandlers(FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid.parameters.msw);
+            const screen = render(
+                <FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
+
+            expect(await screen.findByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
+            expect(
+                await screen.findByText(
+                    'Du må legge ved bekreftelse fra Eline sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.' +
+                        ' Dersom Eline er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.',
+                    { exact: false },
+                ),
+            ).toBeInTheDocument();
+
+            await userEvent.click(screen.getByText('Neste steg'));
+
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+                data: SøknadRoutes.OPPSUMMERING,
+                key: ContextDataType.APP_ROUTE,
+                type: 'update',
+            });
+        }),
+    );
+
+    it(
+        'skal håndtere automatisk dokumentasjon når bfhr og mor jobber mer enn 75% og vi ikke trenger dokumentere arbeid',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
+
+            setHandlers(BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid.parameters.msw);
+            const screen = render(
+                <BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
+
+            // Verifiser at "Ingen dokumentasjon påkrevd" melding vises
+            expect(await screen.findByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
+            expect(
+                await screen.findByText(
+                    'Du trenger ikke sende inn dokumentasjon. Vi innhenter opplysninger om mors arbeid ' +
+                        'fra Arbeidsgiver- og arbeidstakerregisteret. Mor vil bli informert når søknaden blir sendt.',
+                    { exact: false },
+                ),
+            ).toBeInTheDocument();
+
+            await userEvent.click(screen.getByText('Neste steg'));
+
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+                data: SøknadRoutes.OPPSUMMERING,
+                key: ContextDataType.APP_ROUTE,
+                type: 'update',
+            });
+        }),
+    );
 });

@@ -1,14 +1,14 @@
-import { AttachmentType, InnsendingsType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
 import { isAttachmentWithError, mapFilTilVedlegg } from './vedleggUtils';
 
 describe('vedleggUtils', () => {
     it('skal mappe fil til vedlegg', () => {
-        const file = { name: 'filnavn', size: 1234 } as any;
+        const file = { name: 'filnavn', size: 1234 } as File;
         const type = AttachmentType.ALENEOMSORG;
         const skjemanummer = Skjemanummer.DOK_AV_ALENEOMSORG;
-        const innsendingsType = InnsendingsType.SEND_SENERE;
+        const innsendingsType = 'SEND_SENERE';
 
         const vedlegg = mapFilTilVedlegg(file, type, skjemanummer, innsendingsType);
 

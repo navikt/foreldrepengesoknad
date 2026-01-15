@@ -1,18 +1,14 @@
-import { setProjectAnnotations } from '@storybook/react';
+import { setProjectAnnotations } from '@storybook/react-vite';
 import * as matchers from '@testing-library/jest-dom/matchers';
-import { beforeAll, expect } from 'vitest';
-
-import { addBaseUrlToJsdom } from '@navikt/fp-utils-test';
+import { expect } from 'vitest';
 
 import * as globalStorybookConfig from '../.storybook/preview';
 
-addBaseUrlToJsdom();
-const annotations = setProjectAnnotations(globalStorybookConfig);
-
-// Run Storybook's beforeAll hook
-beforeAll(annotations.beforeAll);
+setProjectAnnotations(globalStorybookConfig);
 
 expect.extend(matchers);
 
-window.scrollTo = () => undefined;
-window.HTMLElement.prototype.scrollIntoView = function () {};
+if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
+    globalThis.scrollTo = () => undefined;
+    globalThis.HTMLElement.prototype.scrollIntoView = function () {};
+}

@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import { Dispatch, SetStateAction } from 'react';
 import { useIntl } from 'react-intl';
-import { FordelingEier, FordelingFargekode, FordelingGrafInfo } from 'types/FordelingOversikt';
+import { FordelingEier, FordelingFargekode } from 'types/FordelingOversikt';
 import { getFamiliehendelseNavn } from 'utils/familiehendelseUtils';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { KontoBeregningDto } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { getBeggeHarRettGrafFordeling } from '../../fordelingOversiktUtils';
@@ -23,28 +23,28 @@ const getRowClass = (antallPerioder: number, periodeIndex: number) => {
 export const getFargeClass = (fargekode: FordelingFargekode): string => {
     switch (fargekode) {
         case FordelingFargekode.ANNEN_PART_FAR:
-            return styles.annenPartFar;
+            return styles.annenPartFar!;
         case FordelingFargekode.ANNEN_PART_MOR:
-            return styles.annenPartMor;
+            return styles.annenPartMor!;
         case FordelingFargekode.FEDREKVOTE_BRUKT_AV_MOR:
-            return styles.fedrekvoteBruktAvMor;
+            return styles.fedrekvoteBruktAvMor!;
         case FordelingFargekode.FELLESPERIODE_BRUKT_AV_FAR:
-            return styles.fellesperiodeBruktAvFar;
+            return styles.fellesperiodeBruktAvFar!;
         case FordelingFargekode.FELLESPERIODE_BRUKT_AV_MOR:
-            return styles.fellesperiodeBruktAvMor;
+            return styles.fellesperiodeBruktAvMor!;
         case FordelingFargekode.IKKE_TILDELT:
-            return styles.ikkeTildelt;
+            return styles.ikkeTildelt!;
         case FordelingFargekode.MØDREKVOTE_BRUKT_AV_FAR:
-            return styles.mødrekvoteBruktAvFar;
+            return styles.mødrekvoteBruktAvFar!;
         case FordelingFargekode.SØKER_FAR:
-            return styles.søkerFar;
+            return styles.søkerFar!;
         case FordelingFargekode.SØKER_MOR:
-            return styles.søkerMor;
+            return styles.søkerMor!;
     }
 };
 
 interface Props {
-    kontoer: TilgjengeligeStønadskontoerForDekningsgrad;
+    kontoer: KontoBeregningDto;
     erFarEllerMedmor: boolean;
     erAdopsjon: boolean;
     erBarnetFødt: boolean;
@@ -87,7 +87,7 @@ export const BeggeHarRettGraf = ({
     const famiHendelseFieldWidth = (widthFamiliehendelse / sumBredde) * 100;
     return (
         <div className={styles.graf} aria-hidden={true}>
-            {fordelingList.map((fordeling: FordelingGrafInfo, index) => {
+            {fordelingList.map((fordeling, index) => {
                 const width = (fordeling.antallDager / sumBredde) * 100;
                 const indexForFamiliehendelse = erAdopsjon ? 0 : 1;
                 const finalWidth = index === indexForFamiliehendelse ? width + famiHendelseFieldWidth : width;

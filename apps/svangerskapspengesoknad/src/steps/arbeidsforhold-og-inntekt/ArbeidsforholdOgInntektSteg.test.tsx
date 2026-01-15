@@ -1,4 +1,4 @@
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
@@ -17,11 +17,11 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
 
-        await userEvent.click(screen.getAllByText('Nei')[0]);
+        await userEvent.click(screen.getAllByText('Nei')[0]!);
 
-        await userEvent.click(screen.getAllByText('Nei')[1]);
+        await userEvent.click(screen.getAllByText('Nei')[1]!);
 
-        await userEvent.click(screen.getAllByText('Ja')[2]);
+        await userEvent.click(screen.getAllByText('Ja')[2]!);
         expect(screen.getByText('Neste steg')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));

@@ -1,55 +1,34 @@
 /// <reference types="vitest" />
-import tailwindcss from '@tailwindcss/vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
-import { defineConfig } from 'vite';
+import { sentryVitePlugin } from '@sentry/vite-plugin';
+import path from 'node:path';
+import { mergeConfig } from 'vite';
 
-export default defineConfig({
+import { createSharedConfigWithCrossorgin } from '@navikt/fp-config-vite';
+
+const setupFileDirName = path.resolve(__dirname, './vitest/setupTests.ts');
+
+// eslint-disable-next-line import/no-default-export
+export default mergeConfig(createSharedConfigWithCrossorgin(setupFileDirName), {
+    base: '/svangerskapspenger/soknad',
     plugins: [
-        tailwindcss(),
-        react({
-            include: '**/*.{jsx,tsx}',
+        // Put the Sentry vite plugin after all other plugins
+        sentryVitePlugin({
+            authToken: process.env.SENTRY_AUTH_TOKEN, // Kommer fra Github organization secrets
+            disable: !process.env.SENTRY_AUTH_TOKEN, // Ikke last opp source maps hvis token ikke er satt. Token er bare satt når det bygges fra master branch
+            org: 'nav',
+            project: 'svangerskapspengesoknad',
+            url: 'https://sentry.gc.nav.no',
+            release: {
+                name: process.env.VITE_SENTRY_RELEASE, // Lages av "generate-build-version" i build workflow
+            },
         }),
-        {
-            name: 'crossorigin',
-            transformIndexHtml(html) {
-                return html.replace(/<link rel="stylesheet" crossorigin/g, '<link rel="stylesheet" type="text/css"');
-            },
-        },
     ],
-    css: {
-        preprocessorOptions: {
-            scss: {
-                api: 'modern-compiler',
-            },
-        },
-    },
     resolve: {
         alias: {
             appData: path.resolve(__dirname, './src/app-data'),
             types: path.resolve(__dirname, './src/types/'),
             utils: path.resolve(__dirname, './src/utils/'),
+            storybookData: path.resolve(__dirname, '.storybook/storybook-data'),
         },
-    },
-    base: '/svangerskapspenger/soknad',
-    build: {
-        sourcemap: true,
-    },
-    server: {
-        // Whitelist dev.nav.no for bruk med "vite-mode"
-        cors: {
-            origin: ['https://www.intern.dev.nav.no', 'http://localhost:9102'],
-        },
-        port: 8080,
-    },
-    test: {
-        globals: true,
-        environment: 'jsdom',
-        setupFiles: './vitest/setupTests.ts',
-        coverage: {
-            include: ['src/**/*'],
-            exclude: [],
-        },
-        testTimeout: 10000,
     },
 });

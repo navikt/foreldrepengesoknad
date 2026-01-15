@@ -3,11 +3,12 @@ import { mergeConfig } from 'vite';
 
 const config: StorybookConfig = {
     stories: ['../src/**/*.stories.@(ts|tsx)'],
-    addons: ['@storybook/addon-essentials', '@storybook/addon-interactions'],
+
     framework: {
         name: '@storybook/react-vite',
         options: {},
     },
+
     /**
      * Når vi kjører lokalt trenger vi samme "base" som i Vite config for mocking endepunktene.
      * Det trenger vi ikke i deployed versjon da /foreldrepenger/oversikt allerede er i URL.
@@ -18,10 +19,8 @@ const config: StorybookConfig = {
             base: configType === 'DEVELOPMENT' ? '/foreldrepenger/oversikt' : './',
         });
     },
+
     staticDirs: ['../../../scripts/mock-service-worker'],
-    docs: {
-        autodocs: false,
-    },
 };
 
 export default config;

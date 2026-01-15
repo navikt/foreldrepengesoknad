@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyLong } from '@navikt/ds-react';
 
 import { InfoPeriode, OpprinneligSøkt, isAvslåttPeriode } from '@navikt/fp-common';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 
 import ActionLink from '../../common/action-link/ActionLink';
 import { getSlettPeriodeTekst } from '../../utils/periodeUtils';
@@ -20,7 +20,7 @@ interface Props {
 const SlettbarAvslåttPeriode: FunctionComponent<Props> = ({ periode, handleDeletePeriode }) => {
     const bem = planBemUtils('slettbarAvslåttPeriode');
     const onSlettPeriode = () => {
-        loggAmplitudeEvent({
+        loggUmamiEvent({
             origin: 'foreldrepengesoknad',
             eventName: 'button klikk',
             eventData: { tittel: 'slettPeriodeKlikk' },
@@ -47,6 +47,7 @@ const SlettbarAvslåttPeriode: FunctionComponent<Props> = ({ periode, handleDele
             {bodyTekst ? <BodyLong>{bodyTekst}</BodyLong> : null}
             <div className={bem.element('wrapper')}>
                 <ActionLink onClick={onSlettPeriode}>
+                    {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                     {/* @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart */}
                     <FormattedMessage id={getSlettPeriodeTekst(periode.type)} />
                 </ActionLink>

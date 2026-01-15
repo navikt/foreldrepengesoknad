@@ -77,8 +77,8 @@ const getMeldingOmOverlappendeUtsettelser = (
         return intl.formatMessage(
             { id: 'valideringsfeil.overlapperEnUtsettelse' },
             {
-                fom: formatDate(overlappendeUtsettelsesPerioder[0].tidsperiode.fom),
-                tom: formatDate(overlappendeUtsettelsesPerioder[0].tidsperiode.tom),
+                fom: formatDate(overlappendeUtsettelsesPerioder[0]!.tidsperiode.fom),
+                tom: formatDate(overlappendeUtsettelsesPerioder[0]!.tidsperiode.tom),
             },
         );
     }
@@ -166,26 +166,6 @@ export const getToTetteReglerGjelder = (
     );
 };
 
-export const isDateToday = (date: string): boolean => {
-    if (dayjs().isSame(date, 'day')) {
-        return true;
-    }
-
-    return false;
-};
-
-export const isDateTodayOrInTheFuture = (date: string): boolean => {
-    return isDateInTheFuture(date) || isDateToday(date);
-};
-
-export const isDateInTheFuture = (date: string): boolean => {
-    if (dayjs().isBefore(date, 'day')) {
-        return true;
-    }
-
-    return false;
-};
-
 const validateFromDateInRange = ({
     intl,
     date,
@@ -208,6 +188,7 @@ const validateFromDateInRange = ({
     toDate?: Date;
 }): SkjemaelementFeil => {
     if (toDate && date && dayjs(date).isAfter(toDate, 'day')) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
         return intl.formatMessage({ id: errorKey });
     }
@@ -247,6 +228,7 @@ const validateToDateInRange = ({
     fromDate?: Date;
 }): SkjemaelementFeil => {
     if (fromDate && date && dayjs(date).isBefore(fromDate, 'day')) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
         return intl.formatMessage({ id: errorKey });
     }

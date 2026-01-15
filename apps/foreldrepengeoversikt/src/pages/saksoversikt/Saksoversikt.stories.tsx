@@ -1,24 +1,23 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
-import { useRef } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak/annenPartVedtak';
 import { dokumenter } from 'storybookData/dokumenter/dokumenter';
-import { satser } from 'storybookData/inntektsmeldinger/satser';
 import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
 import { saker } from 'storybookData/saker/saker';
 import { SAK_1 } from 'storybookData/saker/svpsaker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
-import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
+import { tidslinjeHendelserFP } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
 
-import { Saker, Søkerinfo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt, Saker_fpoversikt } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
+import { API_URLS } from '../../api/queries.ts';
 import { OversiktRoutes } from '../../routes/routes';
 import { Saksoversikt } from './Saksoversikt';
 
 type StoryArgs = {
-    søkerinfo: Søkerinfo;
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt;
     saksnummer: string;
 };
 
@@ -26,15 +25,11 @@ const meta = {
     title: 'Saksoversikt',
     decorators: [withQueryClient],
     render: ({ saksnummer, ...props }) => {
-        const isFirstRender = useRef(false);
         return (
-            <div className="bg-deepblue-50">
+            <div className="bg-ax-brand-blue-100">
                 <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/${saksnummer}`]}>
                     <Routes>
-                        <Route
-                            element={<Saksoversikt {...props} isFirstRender={isFirstRender} />}
-                            path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer`}
-                        />
+                        <Route element={<Saksoversikt {...props} />} path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer`} />
                     </Routes>
                 </MemoryRouter>
             </div>
@@ -49,24 +44,17 @@ export const Foreldrepenger: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/dokument/alle`, () => HttpResponse.json(dokumenter)),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker)),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/tidslinje`, () =>
-                    HttpResponse.json(tidslinjeHendelser),
-                ),
-                http.get(`${import.meta.env.BASE_URL}/rest/historikk/vedlegg`, () =>
-                    HttpResponse.json(manglendeVedlegg),
-                ),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker/oppdatert`, () => HttpResponse.json(true)),
-                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
-                    HttpResponse.json(annenPartVedtak),
-                ),
+                http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
             ],
         },
     },
     args: {
         søkerinfo: søkerinfo,
-        saksnummer: '352011079',
+        saksnummer: '1',
     },
 };
 
@@ -74,7 +62,7 @@ export const Engangsstønad: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () =>
+                http.get(API_URLS.saker, () =>
                     HttpResponse.json({
                         foreldrepenger: [],
                         engangsstønad: [
@@ -94,9 +82,9 @@ export const Engangsstønad: Story = {
                             },
                         ],
                         svangerskapspenger: [],
-                    } satisfies Saker),
+                    } satisfies Saker_fpoversikt),
                 ),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/tidslinje`, () =>
+                http.get(API_URLS.tidslinje, () =>
                     HttpResponse.json([
                         {
                             type: 'søknad',
@@ -117,9 +105,7 @@ export const Engangsstønad: Story = {
                         },
                     ]),
                 ),
-                http.get(`${import.meta.env.BASE_URL}/rest/historikk/vedlegg`, () => HttpResponse.json()),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker/oppdatert`, () => HttpResponse.json(true)),
-                http.get(`${import.meta.env.BASE_URL}/rest/satser`, () => HttpResponse.json(satser)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json()),
             ],
         },
     },
@@ -133,24 +119,17 @@ export const Svangerskapspenger: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(`${import.meta.env.BASE_URL}/rest/dokument/alle`, () => HttpResponse.json(dokumenter)),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () =>
+                http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+                http.get(API_URLS.saker, () =>
                     HttpResponse.json({
                         foreldrepenger: [],
                         engangsstønad: [],
                         svangerskapspenger: [SAK_1],
                     }),
                 ),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/tidslinje`, () =>
-                    HttpResponse.json(tidslinjeHendelser),
-                ),
-                http.get(`${import.meta.env.BASE_URL}/rest/historikk/vedlegg`, () =>
-                    HttpResponse.json(manglendeVedlegg),
-                ),
-                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker/oppdatert`, () => HttpResponse.json(true)),
-                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
-                    HttpResponse.json(annenPartVedtak),
-                ),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
             ],
         },
     },

@@ -1,16 +1,17 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
 import { SøknadRoute, TILRETTELEGGING_PARAM, addTilretteleggingIdToRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
+import { action } from 'storybook/actions';
+import { TilOgMedDatoType } from 'types/Tilrettelegging';
+
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { FerieSteg } from './FerieSteg';
 
 const arbeidsforhold = [
     {
-        id: '896929119',
         arbeidsgiverId: '896929119',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Sykehuset i Vestfold',
@@ -18,7 +19,7 @@ const arbeidsforhold = [
         stillingsprosent: 32.63,
         tom: '2019-05-31T00:00:00.000Z',
     },
-];
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
 const meta = {
     title: 'steps/FerieSteg',
@@ -43,7 +44,7 @@ const meta = {
                         [ContextDataType.TILRETTELEGGINGER]: {
                             '896929119': {
                                 behovForTilretteleggingFom: '2024-10-01',
-                                type: Tilretteleggingstype.INGEN,
+                                type: 'ingen',
                                 enPeriodeMedTilretteleggingFom: '2024-10-01',
                                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                             },
@@ -63,12 +64,10 @@ const meta = {
 } satisfies Meta<StoryArgs>;
 export default meta;
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => (): Promise<void> => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
@@ -80,6 +79,6 @@ export const Default: Story = {
     args: {
         arbeidsforhold,
         mellomlagreSøknadOgNaviger: promiseAction(),
-        avbrytSøknad: promiseAction(),
+        avbrytSøknad: () => action('button-click'),
     },
 };

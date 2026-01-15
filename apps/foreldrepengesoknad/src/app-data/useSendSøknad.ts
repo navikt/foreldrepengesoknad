@@ -1,27 +1,25 @@
 import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
 import { FEIL_VED_INNSENDING, UKJENT_UUID, getSøknadsdataForInnsending } from 'api/apiUtils';
+import { API_URLS } from 'api/queries';
+import { SøknadRoutes } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
-import { Kvittering } from 'types/Kvittering';
+import { useNavigate } from 'react-router-dom';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 
-import { useAbortSignal } from '@navikt/fp-api';
-import { LocaleNo } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './FpDataContext';
 
-export const useSendSøknad = (
-    fødselsnr: string,
-    erEndringssøknad: boolean,
-    setKvittering: (kvittering: Kvittering) => void,
-    locale: LocaleNo,
-) => {
+export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt, erEndringssøknad: boolean) => {
+    const navigate = useNavigate();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 
     const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`),
+        mutationFn: () => ky.delete(API_URLS.mellomlagring),
     });
 
     const send = async () => {
@@ -33,41 +31,43 @@ export const useSendSøknad = (
             hentData,
             uttaksplanMetadata.perioderSomSkalSendesInn!,
             getFamiliehendelsedato(barn),
-            locale,
+            søkerinfo,
             uttaksplanMetadata.endringstidspunkt,
         );
 
         //TODO (TOR) Denne må håndterast i uttaksplan-steget
-        if (cleanedSøknad.uttaksplan.length === 0 && cleanedSøknad.erEndringssøknad) {
+        if (cleanedSøknad.uttaksplan.uttaksperioder.length === 0 && erEndringssøknad) {
             throw new Error('Søknaden din inneholder ingen nye perioder.');
         }
 
         const abortSignal = initAbortSignal();
 
         try {
-            const url = cleanedSøknad.erEndringssøknad ? '/rest/soknad/endre' : '/rest/soknad';
-            const response = await ky.post(`${import.meta.env.BASE_URL}${url}`, {
+            const url = erEndringssøknad ? API_URLS.endreSøknad : API_URLS.sendSøknad;
+            await ky.post(url, {
                 json: cleanedSøknad,
                 signal: abortSignal,
                 timeout: 120 * 1000,
-                headers: {
-                    fnr: fødselsnr,
-                },
             });
-
             slettMellomlagring();
-
-            setKvittering((await response.json()) as Kvittering);
+            void navigate(SøknadRoutes.KVITTERING);
         } catch (error: unknown) {
             if (error instanceof HTTPError) {
                 if (abortSignal.aborted || error.response.status === 401 || error.response.status === 403) {
                     throw error;
                 }
 
-                const jsonResponse = await error.response.json();
-                const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
-                Sentry.captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
-                throw Error(FEIL_VED_INNSENDING + callIdForBruker);
+                // Hvis man får 409 har man sendt inn nøyaktig samme søknad.
+                // Da ønsker vi at de skal følge samme løp som om de fikk 200 og havne på kvitteringssiden slik at de kan se søknad i innsyn.
+                if (error.response.status === 409) {
+                    slettMellomlagring();
+                    return navigate(SøknadRoutes.KVITTERING);
+                }
+
+                const jsonResponse = await error.response.json<{ uuid?: string }>();
+                Sentry.captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
+                const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
+                throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
             }
             if (error instanceof Error) {
                 throw error;

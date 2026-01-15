@@ -1,21 +1,12 @@
-import {
-    Forelder,
-    OppholdÅrsakType,
-    Periode,
-    PeriodeInfoType,
-    StønadskontoType,
-    Søknadsinfo,
-    isInfoPeriodeAnnenPart,
-    isUttaksperiode,
-} from '@navikt/fp-common';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { Periode, PeriodeInfoType, Søknadsinfo, isInfoPeriodeAnnenPart, isUttaksperiode } from '@navikt/fp-common';
+import { KontoBeregningDto } from '@navikt/fp-types';
 
 import { beregnGjenståendeUttaksdager } from '../../utils/uttaksPlanStatus';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 
 const harSøktOmFellesperiode = (periode: Periode) => {
     if (isUttaksperiode(periode)) {
-        if (periode.forelder === Forelder.farMedmor && periode.konto === StønadskontoType.Fellesperiode) {
+        if (periode.forelder === 'FAR_MEDMOR' && periode.konto === 'FELLESPERIODE') {
             return true;
         }
     }
@@ -25,10 +16,10 @@ const harSøktOmFellesperiode = (periode: Periode) => {
 
 const erUttaksmengdeForFarMedmorForHøy = (
     uttaksplan: Periode[],
-    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+    tilgjengeligeStønadskontoer: KontoBeregningDto,
     farEllerMedmor: boolean,
 ): boolean => {
-    const harFarMedmorSøktOmFellesperiode = uttaksplan.find((p) => harSøktOmFellesperiode(p)) !== undefined;
+    const harFarMedmorSøktOmFellesperiode = uttaksplan.some((p) => harSøktOmFellesperiode(p));
 
     const perioderSomSkalBrukes = uttaksplan.filter((p) => {
         if (harFarMedmorSøktOmFellesperiode) {
@@ -38,7 +29,7 @@ const erUttaksmengdeForFarMedmorForHøy = (
         if (
             isInfoPeriodeAnnenPart(p) &&
             p.infotype === PeriodeInfoType.uttakAnnenPart &&
-            p.årsak === OppholdÅrsakType.UttakFellesperiodeAnnenForelder
+            p.årsak === 'UTTAK_FELLESP_ANNEN_FORELDER'
         ) {
             return false;
         }

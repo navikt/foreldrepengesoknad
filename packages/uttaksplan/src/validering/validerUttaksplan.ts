@@ -8,7 +8,7 @@ import { RegelStatus, UttaksplanRegelTestresultat } from './utils/types/regelTyp
 
 const REGEL_INTL_PREFIX = 'uttaksplan.validering';
 
-export const sjekkUttaksplanOppMotRegler = (valideringsgrunnlag: Søknadsinfo): RegelStatus[] => {
+const sjekkUttaksplanOppMotRegler = (valideringsgrunnlag: Søknadsinfo): RegelStatus[] => {
     return uttaksplanRegler(valideringsgrunnlag.familiehendelsesdato).map((regel) => {
         const resultat = regel.test(valideringsgrunnlag);
         return resultat.passerer

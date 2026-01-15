@@ -1,4 +1,4 @@
-import { composeStories } from '@storybook/react';
+import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
@@ -121,36 +121,36 @@ describe('<FerieSteg>', () => {
 
         await user.click(screen.getByText('Ja'));
 
-        await user.type(screen.getAllByText('Første feriedag')[0], dayjs('2024-11-01').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText('Første feriedag')[0]!, dayjs('2024-11-01').format('DD.MM.YYYY'));
         await user.tab();
-        await user.type(screen.getAllByText('Siste feriedag')[0], dayjs('2024-11-05').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText('Siste feriedag')[0]!, dayjs('2024-11-05').format('DD.MM.YYYY'));
         await user.tab();
 
         await user.click(screen.getByText('Legg til flere ferier'));
-        await user.type(screen.getAllByText('Første feriedag')[1], dayjs('2024-11-03').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText('Første feriedag')[1]!, dayjs('2024-11-03').format('DD.MM.YYYY'));
         await user.tab();
-        await user.type(screen.getAllByText('Siste feriedag')[1], dayjs('2024-11-08').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText('Siste feriedag')[1]!, dayjs('2024-11-08').format('DD.MM.YYYY'));
         await user.tab();
         await user.click(screen.getByText('Neste steg'));
         expect(screen.getAllByText('Overlapper med 1. periode')).toHaveLength(2);
 
         await user.click(screen.getByText('Legg til flere ferier'));
-        await user.type(screen.getAllByText('Første feriedag')[2], dayjs('2024-11-06').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText('Første feriedag')[2]!, dayjs('2024-11-06').format('DD.MM.YYYY'));
         await user.tab();
-        await user.type(screen.getAllByText('Siste feriedag')[2], dayjs('2024-11-12').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText('Siste feriedag')[2]!, dayjs('2024-11-12').format('DD.MM.YYYY'));
         await user.tab();
         await user.click(screen.getByText('Neste steg'));
         expect(screen.getAllByText('Overlapper med 2. periode')).toHaveLength(1);
 
-        await user.clear(screen.getAllByLabelText('Første feriedag')[1]);
-        await user.type(screen.getAllByText('Første feriedag')[1], dayjs('2024-11-06').format('DD.MM.YYYY'));
+        await user.clear(screen.getAllByLabelText('Første feriedag')[1]!);
+        await user.type(screen.getAllByText('Første feriedag')[1]!, dayjs('2024-11-06').format('DD.MM.YYYY'));
         await user.tab();
         expect(screen.queryAllByText('Overlapper med 1. periode')).toHaveLength(0);
         await user.click(screen.getByText('Neste steg'));
         expect(screen.getAllByText('Overlapper med 2. periode')).toHaveLength(2);
 
-        await user.clear(screen.getAllByLabelText('Første feriedag')[2]);
-        await user.type(screen.getAllByText('Første feriedag')[2], dayjs('2024-11-09').format('DD.MM.YYYY'));
+        await user.clear(screen.getAllByLabelText('Første feriedag')[2]!);
+        await user.type(screen.getAllByText('Første feriedag')[2]!, dayjs('2024-11-09').format('DD.MM.YYYY'));
         await user.tab();
         expect(screen.queryAllByText('Overlapper med 2. periode')).toHaveLength(0);
 
@@ -187,9 +187,9 @@ describe('<FerieSteg>', () => {
 
         await user.click(screen.getByText('Ja'));
 
-        await user.type(screen.getAllByText('Første feriedag')[0], dayjs('2024-10-30').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText('Første feriedag')[0]!, dayjs('2024-10-30').format('DD.MM.YYYY'));
         await user.tab();
-        await user.type(screen.getAllByText('Siste feriedag')[0], dayjs('2024-10-31').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText('Siste feriedag')[0]!, dayjs('2024-10-31').format('DD.MM.YYYY'));
         await user.tab();
 
         await user.click(screen.getByText('Legg til flere ferier'));
@@ -197,14 +197,14 @@ describe('<FerieSteg>', () => {
 
         expect(screen.getAllByText('Fjern perioden')).toHaveLength(2);
 
-        await user.type(screen.getAllByText('Første feriedag')[1], dayjs('2024-11-01').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText('Første feriedag')[1]!, dayjs('2024-11-01').format('DD.MM.YYYY'));
         await user.tab();
-        await user.type(screen.getAllByText('Siste feriedag')[1], dayjs('2024-11-04').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText('Siste feriedag')[1]!, dayjs('2024-11-04').format('DD.MM.YYYY'));
         await user.tab();
 
-        await user.type(screen.getAllByText('Første feriedag')[2], dayjs('2024-11-06').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText('Første feriedag')[2]!, dayjs('2024-11-06').format('DD.MM.YYYY'));
         await user.tab();
-        await user.type(screen.getAllByText('Siste feriedag')[2], dayjs('2024-11-08').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText('Siste feriedag')[2]!, dayjs('2024-11-08').format('DD.MM.YYYY'));
         await user.tab();
 
         await user.click(screen.getByLabelText('Fjern 3. periode'));

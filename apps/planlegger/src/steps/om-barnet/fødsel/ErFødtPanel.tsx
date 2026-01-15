@@ -4,12 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import {
-    erAlenesøker as erAlene,
-    erFarDelAvSøknaden,
-    erMorDelAvSøknaden,
-    finnSøker2Tekst,
-} from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker as erAlene, erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
@@ -36,15 +31,24 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
     const fødselsdato = formMethods.watch('fødselsdato');
 
     const erAlenesøker = erAlene(hvemPlanlegger);
-    const erFar = hvemPlanlegger.type !== HvemPlanleggerType.MOR;
+    const erFar = (() => {
+        switch (hvemPlanlegger.type) {
+            case HvemPlanleggerType.MOR:
+            case HvemPlanleggerType.MOR_OG_MEDMOR:
+                return false;
+            default:
+                return true;
+        }
+    })();
 
     return (
-        <VStack gap="5">
+        <VStack gap="space-20">
             <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
-                <VStack gap="8">
+                <VStack gap="space-32">
                     <RhfDatepicker
-                        label={<FormattedMessage id="ErFødtPanel.Fødselsdato" values={{ antallBarn }} />}
                         name="fødselsdato"
+                        control={formMethods.control}
+                        label={<FormattedMessage id="ErFødtPanel.Fødselsdato" values={{ antallBarn }} />}
                         maxDate={dayjs().toDate()}
                         useStrategyAbsolute
                         validate={[
@@ -56,12 +60,15 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
                                 }),
                             ),
                         ]}
+                        showMonthAndYearDropdowns
                         customErrorFormatter={formatError}
-                        onChange={scrollToBottom}
+                        onSelect={scrollToBottom}
+                        onBlur={scrollToBottom}
                     />
                     <RhfDatepicker
-                        label={<FormattedMessage id="ErFødtPanel.NårVarTermin" />}
                         name="termindato"
+                        control={formMethods.control}
+                        label={<FormattedMessage id="ErFødtPanel.NårVarTermin" />}
                         maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'Termindato.Required' })),
@@ -72,20 +79,30 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
                                 }),
                             ),
                         ]}
+                        showMonthAndYearDropdowns
                         customErrorFormatter={formatError}
                         useStrategyAbsolute
-                        onChange={scrollToBottom}
+                        onSelect={scrollToBottom}
+                        onBlur={scrollToBottom}
                     />
                 </VStack>
             </BluePanel>
             {fødselsdato !== undefined && erDatoGyldig(fødselsdato) && dayjs(fødselsdato).isAfter(DATE_3_YEARS_AGO) && (
                 <Infobox
                     header={<FormattedMessage id="ErFødtPanel.Født.InfoboksTittel" values={{ erAlenesøker }} />}
-                    icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
+                    icon={
+                        <TasklistStartIcon
+                            height={24}
+                            width={24}
+                            color="var(--ax-bg-success-strong)"
+                            fontSize="1.5rem"
+                            aria-hidden
+                        />
+                    }
                     shouldFadeIn
                     color="green"
                 >
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <BodyShort>
                             <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" />
                         </BodyShort>
@@ -98,17 +115,16 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
                                 }}
                             />
                         </BodyShort>
-                        {erFarDelAvSøknaden(hvemPlanlegger) && (
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
-                                    values={{
-                                        erFar,
-                                        hvem: finnSøker2Tekst(intl, hvemPlanlegger),
-                                    }}
-                                />
-                            </BodyShort>
-                        )}
+
+                        <BodyShort>
+                            <FormattedMessage
+                                id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
+                                values={{
+                                    erAlenesøker,
+                                    erFar,
+                                }}
+                            />
+                        </BodyShort>
                     </VStack>
                 </Infobox>
             )}
@@ -122,11 +138,18 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
                                 values={{ erAlenesøker, antallBarn }}
                             />
                         }
-                        icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" />}
+                        icon={
+                            <TasklistStartIcon
+                                height={24}
+                                width={24}
+                                color="var(--ax-bg-success-strong)"
+                                fontSize="1.5rem"
+                            />
+                        }
                         shouldFadeIn
                         color="green"
                     >
-                        <VStack gap="2">
+                        <VStack gap="space-8">
                             <BodyShort>
                                 <FormattedMessage
                                     id="ErFødtPanel.Født.InfoboksTekst.EldreEnnTreÅr"

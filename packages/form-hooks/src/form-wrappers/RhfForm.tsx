@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { FieldValues, FormProvider, SubmitHandler, UseFormReturn } from 'react-hook-form';
 
-interface OwnProps<FormValues extends FieldValues> {
+interface Props<FormValues extends FieldValues> {
     formMethods: UseFormReturn<FormValues>;
     children: ReactNode;
     onSubmit?: SubmitHandler<FormValues>;
@@ -17,7 +17,7 @@ export const RhfForm = <FormValues extends FieldValues>({
     className,
     shouldUseFlexbox = false,
     id,
-}: OwnProps<FormValues>) => {
+}: Props<FormValues>) => {
     const { handleSubmit } = formMethods;
 
     return (
@@ -25,6 +25,7 @@ export const RhfForm = <FormValues extends FieldValues>({
             <form
                 style={shouldUseFlexbox ? { display: 'flex', flexDirection: 'column', flex: '1' } : undefined}
                 className={className}
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
                 onSubmit={onSubmit ? handleSubmit((values) => onSubmit(values)) : undefined}
                 id={id}
             >

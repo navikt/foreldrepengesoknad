@@ -1,13 +1,14 @@
 import dayjs from 'dayjs';
 
-import { Periodetype, Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
+import { Periodetype, Situasjon, TidsperiodeDate } from '@navikt/fp-common';
+import { KontoTypeUttak } from '@navikt/fp-types';
 
 import { Uttaksdatoer, erInnenFørsteSeksUkerFødselFarMedmor } from '../uttaksdatoerUtils';
-import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
+import { uttakRundtFødselÅrsakSpørsmålSkalBesvares } from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 
 const erMorForForSykSkalBesvares = (
     periodetype: Periodetype,
-    konto: StønadskontoType,
+    konto: KontoTypeUttak,
     tidsperiode: TidsperiodeDate,
     situasjon: Situasjon,
     søkerErFarEllerMedmor: boolean,
@@ -23,7 +24,7 @@ const erMorForForSykSkalBesvares = (
 ): boolean => {
     const årsakTilUttakRundtFødselSkalBesvares = uttakRundtFødselÅrsakSpørsmålSkalBesvares(
         periodetype,
-        konto as StønadskontoType,
+        konto,
         tidsperiode,
         søkerErFarEllerMedmor,
         erAleneOmOmsorg,
@@ -41,14 +42,14 @@ const erMorForForSykSkalBesvares = (
         søkerHarMidlertidigOmsorg ||
         årsakTilUttakRundtFødselSkalBesvares ||
         dayjs(tidsperiode.fom).isBefore(familiehendelsesdato, 'day') ||
-        konto === StønadskontoType.AktivitetsfriKvote
+        konto === 'AKTIVITETSFRI_KVOTE'
     ) {
         return false;
     }
 
     if (periodetype === Periodetype.Uttak && søkerErFarEllerMedmor) {
         if (
-            (konto === StønadskontoType.Fedrekvote || konto === StønadskontoType.Foreldrepenger) &&
+            (konto === 'FEDREKVOTE' || konto === 'FORELDREPENGER') &&
             erInnenFørsteSeksUkerFødselFarMedmor(
                 tidsperiode,
                 situasjon,

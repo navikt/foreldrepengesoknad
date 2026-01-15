@@ -7,7 +7,7 @@ export const useVeiviserNavigator = () => {
 
     const goToRoute = useCallback(
         (path: HvorMyeRoutes) => {
-            navigate(path);
+            void navigate(path);
         },
         [navigate],
     );

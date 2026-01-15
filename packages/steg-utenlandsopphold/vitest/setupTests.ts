@@ -1,4 +1,4 @@
-import { setProjectAnnotations } from '@storybook/react';
+import { setProjectAnnotations } from '@storybook/react-vite';
 import * as matchers from '@testing-library/jest-dom/matchers';
 import { expect } from 'vitest';
 
@@ -8,4 +8,6 @@ setProjectAnnotations(globalStorybookConfig);
 
 expect.extend(matchers);
 
-window.scrollTo = () => undefined;
+if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
+    globalThis.scrollTo = () => undefined;
+}

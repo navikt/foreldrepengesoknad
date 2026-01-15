@@ -28,6 +28,7 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
     const intl = useIntl();
 
     const {
+        control,
         watch,
         trigger,
         formState: { isSubmitted },
@@ -47,9 +48,10 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
     const maxDateTom = dayjs(DATE_TODAY).toDate();
 
     return (
-        <VStack gap="5" align="start">
+        <VStack gap="space-20" align="start">
             <RhfSelect
                 name={`utenlandsoppholdSiste12Mnd.${index}.landkode`}
+                control={control}
                 label={<FormattedMessage id="TidligereUtenlandsoppholdSteg.Spørsmål.HvilketLandHarDuBoddI" />}
                 validate={[
                     isRequired(
@@ -59,7 +61,7 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
                     ),
                 ]}
             >
-                {createCountryOptions().map((o: Record<string, any>) => (
+                {createCountryOptions().map((o) => (
                     <option key={o[0]} value={o[0]}>
                         {o[1]}
                     </option>
@@ -67,6 +69,7 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
             </RhfSelect>
             <RhfDatepicker
                 name={`utenlandsoppholdSiste12Mnd.${index}.fom`}
+                control={control}
                 label={<FormattedMessage id="TidligereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Fraogmed" />}
                 minDate={minDateFom}
                 maxDate={maxDateFom}
@@ -101,11 +104,12 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
                         alleAndreUtenlandsopphold,
                     ),
                 ]}
-                onChange={() => isSubmitted && trigger()}
+                onChange={() => isSubmitted && void trigger()}
                 defaultMonth={tom ? dayjs(tom).toDate() : undefined}
             />
             <RhfDatepicker
                 name={`utenlandsoppholdSiste12Mnd.${index}.tom`}
+                control={control}
                 label={<FormattedMessage id="TidligereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Tilogmed" />}
                 minDate={minDateTom}
                 maxDate={maxDateTom}
@@ -140,7 +144,7 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
                         alleAndreUtenlandsopphold,
                     ),
                 ]}
-                onChange={() => isSubmitted && trigger()}
+                onChange={() => isSubmitted && void trigger()}
             />
             {index > 0 && (
                 <Button

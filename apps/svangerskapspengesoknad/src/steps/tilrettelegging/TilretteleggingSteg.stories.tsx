@@ -1,22 +1,21 @@
-import { action } from '@storybook/addon-actions';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
 import { SøknadRoute, TILRETTELEGGING_PARAM, addTilretteleggingIdToRoute } from 'appData/routes';
 import dayjs from 'dayjs';
 import { ComponentProps } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { action } from 'storybook/actions';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { EGEN_NÆRING_ID, EgenNæring, FRILANS_ID, Frilans, Næringstype } from '@navikt/fp-types';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { EksternArbeidsforholdDto_fpoversikt, FRILANS_ID, Frilans, NæringDto } from '@navikt/fp-types';
 
 import { TilretteleggingSteg } from './TilretteleggingSteg';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
 
 const VALGT_TILRETTELEGGING_ID = '990322244';
 const ANNEN_TILRETTELEGGING_ID = '975326209';
@@ -38,12 +37,12 @@ const DEFAULT_ARBEIDSFORHOLD = [
         fom: '2017-04-05T00:00:00.000Z',
         stillingsprosent: 100,
     },
-];
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
     frilans?: Frilans;
-    egenNæring?: EgenNæring;
+    egenNæring?: NæringDto;
     valgteArbeidsforhold?: string[];
     valgtTilretteleggingId: string;
 } & ComponentProps<typeof TilretteleggingSteg>;
@@ -99,7 +98,7 @@ type Story = StoryObj<typeof meta>;
 export const ForArbeidsforhold: Story = {
     args: {
         mellomlagreSøknadOgNaviger: promiseAction(),
-        avbrytSøknad: promiseAction(),
+        avbrytSøknad: () => action('button-click'),
         arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
         valgtTilretteleggingId: VALGT_TILRETTELEGGING_ID,
     },
@@ -139,9 +138,8 @@ export const SelvstendigNæring: Story = {
         egenNæring: {
             fom: '2024-01-01',
             tom: '2024-10-01',
-            pågående: false,
             registrertINorge: true,
-            næringstype: Næringstype.FISKER,
+            næringstype: 'FISKE',
         },
     },
 };

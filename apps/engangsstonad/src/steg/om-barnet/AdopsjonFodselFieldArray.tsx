@@ -8,7 +8,7 @@ import { VStack } from '@navikt/ds-react';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
-export type FormValues = {
+type FormValues = {
     fødselsdatoer?: Array<{
         dato?: string;
     }>;
@@ -35,30 +35,31 @@ export const AdopsjonFodselFieldArray = ({ adopsjonsdato, antallBarn, antallBarn
         const antall = antallBarn < 3 || !antallBarnDropDown ? antallBarn : Number.parseInt(antallBarnDropDown, 10);
         const diff = fields.length - antall;
         if (diff > 0) {
-            [...new Array(diff)].forEach((_unused, index) => {
+            Array.from({ length: diff }).forEach((_unused, index) => {
                 remove(fields.length - index - 1);
             });
         }
         if (diff < 0) {
-            [...new Array(antall - fields.length)].forEach(() => {
+            Array.from({ length: antall - fields.length }).forEach(() => {
                 append({ dato: undefined });
             });
         }
     }, [antallBarn, antallBarnDropDown, append, fields.length, remove]);
 
     return (
-        <VStack gap="10">
+        <VStack gap="space-40">
             {fields.map((field, index) => (
                 <RhfDatepicker
                     key={field.id}
                     name={`fødselsdatoer.${index}.dato`}
+                    control={control}
                     minDate={dayjs().subtract(15, 'year').toDate()}
                     maxDate={dayjs().toDate()}
                     useStrategyAbsolute
                     label={
                         fields.length === 1
                             ? intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fødselsdato' })
-                            : // @ts-ignore Bør ikkje bruka dynamiske tekstId'ar
+                            : // @ts-expect-error Bør ikkje bruka dynamiske tekstId'ar
                               intl.formatMessage({ id: `AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.${index + 1}` })
                     }
                     validate={[
@@ -66,7 +67,7 @@ export const AdopsjonFodselFieldArray = ({ adopsjonsdato, antallBarn, antallBarn
                         isValidDate(intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fødselsdato.Gyldig' })),
                         (fødselsdato) => {
                             return !fødselsdato || !adopsjonsdato
-                                ? undefined
+                                ? null
                                 : isBeforeTodayOrToday(
                                       intl.formatMessage({
                                           id: 'AdopsjonFodselFieldArray.fodselsdato.MåVæreIdagEllerTidligere',

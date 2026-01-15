@@ -2,17 +2,13 @@ export const getNumberFromNumberInputValue = (inputValue: string | undefined): n
     if (inputValue === undefined || inputValue === '' || Array.isArray(inputValue)) {
         return undefined;
     }
-    if (typeof inputValue === 'number' && isNaN(inputValue)) {
+    if (typeof inputValue === 'number' && Number.isNaN(inputValue)) {
         return undefined;
     }
     const value = `${inputValue}`.replace(/,/g, '.').trim();
     const numValue = Number(value);
-    if (isNaN(numValue)) {
+    if (Number.isNaN(numValue)) {
         return undefined;
     }
     return numValue;
-};
-
-export const getStringForNumberInputValue = (value?: number): string => {
-    return value === undefined ? '' : `${value}`.replace(/\./g, ',');
 };

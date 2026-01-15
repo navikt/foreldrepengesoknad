@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
-import { minidialogOptions } from '../../api/api';
+import { minidialogOptions } from '../../api/queries.ts';
 import { ContentSection } from '../../components/content-section/ContentSection';
 import { guid } from '../../utils/guid';
 import { OppgaveLenkepanel } from '../oppgave-lenkepanel/OppgaveLenkepanel';
@@ -14,7 +14,7 @@ interface Props {
 export const Oppgaver = ({ saksnummer }: Props) => {
     const aktiveMinidialogerForSakenQuery = useQuery({
         ...minidialogOptions(),
-        select: (data) => data.filter(({ saksnr }) => saksnr === saksnummer),
+        select: (data) => data.filter((d) => d.saksnummer === saksnummer),
     });
 
     const intl = useIntl();
@@ -22,7 +22,7 @@ export const Oppgaver = ({ saksnummer }: Props) => {
         return (
             <ContentSection
                 heading={intl.formatMessage({ id: 'saksoversikt.oppgaver' })}
-                className="bg-orange-100 border-orange-500 border-2"
+                className="bg-ax-warning-200 border-ax-warning-600 border-2"
             >
                 <BodyShort>{intl.formatMessage({ id: 'oppgaver.feilVedHentingAvOppgaver' })}</BodyShort>
             </ContentSection>
@@ -35,7 +35,7 @@ export const Oppgaver = ({ saksnummer }: Props) => {
     }
 
     return (
-        <VStack gap="2">
+        <VStack gap="space-8">
             {aktiveMinidialogerForSaken.map((minidialog) => (
                 <OppgaveLenkepanel
                     key={guid()}

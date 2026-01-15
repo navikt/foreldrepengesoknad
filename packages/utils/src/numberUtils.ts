@@ -11,7 +11,7 @@ export const getFloatFromString = (value: string | undefined): number | undefine
         if (numberOfPoints > 1) {
             return undefined;
         }
-        return parseFloat(trimmedValue);
+        return Number.parseFloat(trimmedValue);
     }
     return undefined;
 };
@@ -20,12 +20,12 @@ export const getNumberFromNumberInputValue = (inputValue: string | undefined): n
     if (inputValue === undefined || inputValue === '' || Array.isArray(inputValue)) {
         return undefined;
     }
-    if (typeof inputValue === 'number' && isNaN(inputValue)) {
+    if (typeof inputValue === 'number' && Number.isNaN(inputValue)) {
         return undefined;
     }
     const value = `${inputValue}`.replace(/,/g, '.').trim();
     const numValue = Number(value);
-    if (isNaN(numValue)) {
+    if (Number.isNaN(numValue)) {
         return undefined;
     }
     return numValue;
