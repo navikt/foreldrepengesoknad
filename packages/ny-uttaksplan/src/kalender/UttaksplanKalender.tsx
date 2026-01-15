@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, Button, HStack, InlineMessage, Radio, RadioGroup, VStack } from '@navikt/ds-react';
@@ -33,6 +33,14 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
     const [isRangeSelection, setIsRangeSelection] = useState(true);
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
     const [perioderSomErNyligLagtTil, setPerioderSomErNyligLagtTil] = useState<Array<{ fom: string; tom: string }>>([]);
+
+    useEffect(() => {
+        // eslint-disable-next-line react-you-might-not-need-an-effect/no-event-handler
+        if (perioderSomErNyligLagtTil.length > 0) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect, react-you-might-not-need-an-effect/no-chain-state-updates
+            setPerioderSomErNyligLagtTil([]);
+        }
+    }, [perioderSomErNyligLagtTil]);
 
     const setRedigeringAktivOgValgtePerioder = useCallback<React.Dispatch<React.SetStateAction<CalendarPeriod[]>>>(
         (periode) => {

@@ -54,7 +54,7 @@ export const Day = React.memo(
         const date = dayjs(isoDate);
         const day = date.date();
 
-        // logOnLocalhost(`Rendering Day: ${day}, Color: ${periodeColor}`);
+        logOnLocalhost(`Rendering Day: ${day}, Color: ${periodeColor}`);
 
         const [animate, setAnimate] = React.useState(false);
 
