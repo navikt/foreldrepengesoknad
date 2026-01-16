@@ -55,6 +55,7 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
     const familiehendelsedato = getFamiliehendelsedato(barnet);
     const svangerskapsuke22EllerSenere = dayjs().add(18, 'weeks').add(3, 'days').toDate();
     const erAdoptert = erBarnetAdoptert(barnet);
+    const harOppgittLønn = hvorMye?.lønnSøker1 !== undefined || hvorMye?.lønnSøker2 !== undefined;
 
     return (
         <>
@@ -109,7 +110,7 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
                                         fordeling={fordeling}
                                     />
                                 )}
-                                {hvorMye && <HvorMyeOppsummering satser={satser} />}
+                                {harOppgittLønn && <HvorMyeOppsummering satser={satser} />}
                                 {!erAdoptert && (
                                     <BarnehageplassOppsummering hvemPlanlegger={hvemPlanlegger} barnet={barnet} />
                                 )}
