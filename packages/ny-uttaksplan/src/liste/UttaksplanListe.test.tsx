@@ -168,7 +168,7 @@ describe('UttaksplanListe', () => {
         await userEvent.click(screen.getAllByText('Endre')[2]!);
 
         expect(await screen.findByText('Endre periode')).toBeInTheDocument();
-        expect(screen.getByText('Hva vil du endre til?')).toBeInTheDocument();
+        expect(screen.getByText('Hva vil du gjøre?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Ferie'));
 

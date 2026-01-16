@@ -53,6 +53,7 @@ export const EndrePeriodePanel = ({ closePanel, uttaksplanperioder }: Props) => 
                         setValgtPeriodeIndex={
                             !erSamtidigUttak && uttaksplanperioder.length !== 1 ? setValgtPeriodeIndex : undefined
                         }
+                        erNyPeriodeModus={false}
                     />
                 )}
             </div>

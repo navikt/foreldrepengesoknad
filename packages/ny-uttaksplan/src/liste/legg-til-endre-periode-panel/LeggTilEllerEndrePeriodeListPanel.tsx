@@ -31,12 +31,14 @@ export type FormValues = {
 } & LeggTilEllerEndrePeriodeFormFormValues;
 
 interface Props {
+    erNyPeriodeModus: boolean;
     uttaksplanperiode?: Uttaksplanperiode;
     setIsLeggTilPeriodePanelOpen: (isOpen: boolean) => void;
     setValgtPeriodeIndex?: (valgtPeriodeIndex: number | undefined) => void;
 }
 
 export const LeggTilEllerEndrePeriodeListPanel = ({
+    erNyPeriodeModus,
     uttaksplanperiode,
     setIsLeggTilPeriodePanelOpen,
     setValgtPeriodeIndex,
@@ -56,8 +58,6 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const formMethods = useForm<FormValues>({
         defaultValues,
     });
-
-    const erNyPeriodeModus = setValgtPeriodeIndex === undefined;
 
     const handleAddPeriode = (nyPeriode: UttakPeriode_fpoversikt[]) => {
         const nyePerioder = new UttakPeriodeBuilder(uttakPerioder).leggTilUttakPerioder(nyPeriode).getUttakPerioder();

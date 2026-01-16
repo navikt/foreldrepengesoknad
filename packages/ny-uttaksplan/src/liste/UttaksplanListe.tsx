@@ -78,7 +78,10 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
                 </Button>
             )}
             {isLeggTilPeriodePanelOpen && uttaksplanRedigering && (
-                <LeggTilEllerEndrePeriodeListPanel setIsLeggTilPeriodePanelOpen={setIsLeggTilPeriodePanelOpen} />
+                <LeggTilEllerEndrePeriodeListPanel
+                    setIsLeggTilPeriodePanelOpen={setIsLeggTilPeriodePanelOpen}
+                    erNyPeriodeModus
+                />
             )}
             {uttaksplanRedigering && (
                 <UttaksplanHandlingKnapper
