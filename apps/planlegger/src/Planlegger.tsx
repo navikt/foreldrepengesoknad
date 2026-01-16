@@ -120,7 +120,7 @@ export const PlanleggerDataInit = () => {
     // Denne useEffecten kjøres for at skyra-undersøkelsen skal trigges på tilpass-planen siden
     // og kan fjernes når skyra-undersøkelsen heller skal kjøres fra start-siden.
     useEffect(() => {
-        if (locations.pathname.includes('tilpass-planen')) {
+        if (locations.pathname.includes('oppsummering')) {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             if (typeof (globalThis as any).skyra?.reload === 'function') {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
