@@ -17,6 +17,6 @@ jobs:
     uses: navikt/fp-gha-workflows/.github/workflows/deploy-storybook.yml@main
     with:
       package-manager: pnpm
-      cache: no-cache
+      cache: turbo
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
