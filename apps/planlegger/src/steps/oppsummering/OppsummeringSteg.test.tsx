@@ -172,6 +172,17 @@ describe('<OppsummeringSteg>', () => {
             ),
         ).toBeInTheDocument();
     });
+
+    it('skal ikke vise info om hvor mye-steget lønn ikke er oppgitt for noen av foreldrene', async () => {
+        render(<FlereForsørgereHundreProsentTermin hvorMye={{}} />);
+
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+
+        // Sjekk at ExpansionCard med "Hvor mye?" ikke finnes
+        const hvorMyeExpansionCard = screen.queryByRole('heading', { name: 'Hvor mye?' });
+        expect(hvorMyeExpansionCard).not.toBeInTheDocument();
+    });
+
     it('skal vise info om barnehage - fødsel', async () => {
         render(<FlereForsørgereHundreProsentTermin />);
 
