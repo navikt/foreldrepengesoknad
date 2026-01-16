@@ -52,7 +52,9 @@ const DEPLOY_FOLDER = '../.storybook-static-build';
 const copyFiles = (subPackage) => {
     console.log('copy', subPackage);
     shell.cd(subPackage);
+    console.log(shell.ls());
     if (!fs.existsSync('package.json') || !fs.existsSync('.storybook-static-build')) {
+        console.log('null');
         return null;
     }
 
