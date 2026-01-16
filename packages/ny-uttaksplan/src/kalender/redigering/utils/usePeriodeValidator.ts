@@ -4,17 +4,9 @@ import { useIntl } from 'react-intl';
 import { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
-import {
-    getFomDiverseValidators,
-    getFomFerieValidators,
-    getFomKontoTypeValidators,
-} from '../../../utils/dateFomValidators';
+import { getFomDiverseValidators, getFomFerieValidators } from '../../../utils/dateFomValidators';
 import { getMaxDate, getMinDate } from '../../../utils/dateLimits';
-import {
-    getTomDiverseValidators,
-    getTomFerieValidators,
-    getTomKontoTypeValidators,
-} from '../../../utils/dateTomValidators';
+import { getTomDiverseValidators, getTomFerieValidators } from '../../../utils/dateTomValidators';
 
 type Periode = {
     fom: string;
@@ -24,30 +16,6 @@ type Periode = {
 export const usePeriodeValidator = (perioder: Periode[]) => {
     const intl = useIntl();
     const { familiehendelsedato, familiesituasjon } = useUttaksplanData();
-
-    const finnKontotypeGyldigFeilmeldinger = useCallback(
-        (kontoType?: KontoTypeUttak, samtidigUttak?: boolean) =>
-            perioder.flatMap((p) => {
-                const fomFeilmeldinger = getFomKontoTypeValidators(
-                    intl,
-                    familiehendelsedato,
-                    familiesituasjon,
-                    p.tom,
-                    samtidigUttak,
-                    kontoType,
-                ).map((validator) => validator(p.fom));
-                const tomFeilmeldinger = getTomKontoTypeValidators(
-                    intl,
-                    familiehendelsedato,
-                    familiesituasjon,
-                    p.fom,
-                    samtidigUttak,
-                    kontoType,
-                ).map((validator) => validator(p.tom));
-                return fomFeilmeldinger.concat(tomFeilmeldinger).filter((v) => v !== null);
-            }),
-        [intl, familiehendelsedato, familiesituasjon, perioder],
-    );
 
     const finnPerioderGyldigeFeilmeldinger = useCallback(
         (
@@ -108,9 +76,6 @@ export const usePeriodeValidator = (perioder: Periode[]) => {
     }, [familiehendelsedato, familiesituasjon, intl, perioder]);
 
     return {
-        finnKontotypeGyldigFeilmeldinger,
-        erKontotypeGyldigForPerioder: (kontoType?: KontoTypeUttak, samtidigUttak?: boolean) =>
-            finnKontotypeGyldigFeilmeldinger(kontoType, samtidigUttak).length === 0,
         finnPerioderGyldigeFeilmeldinger,
         erPerioderGyldige: (kontoType?: KontoTypeUttak, samtidigUttak?: boolean) =>
             finnPerioderGyldigeFeilmeldinger(kontoType, samtidigUttak).length === 0,

@@ -6,9 +6,9 @@ import { Button, HStack, Heading, Radio, VStack } from '@navikt/ds-react';
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { formatDate } from '@navikt/fp-utils';
 
-import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
-import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
-import { genererPeriodeKey, getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
+import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
+import { genererPeriodeKey, getStønadskontoNavn } from '../../../liste/utils/uttaksplanListeUtils';
+import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
 
 interface Props {
     perioder: Uttaksplanperiode[];

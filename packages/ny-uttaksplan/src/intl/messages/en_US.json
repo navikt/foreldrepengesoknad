@@ -298,5 +298,6 @@
     "LeggTilEllerEndrePeriodeForm.Nei": "No",
     "LeggTilEllerEndrePeriodeForm.Stillingsprosent.Mor": "How many percent should mother work?",
     "LeggTilEllerEndrePeriodeForm.Stillingsprosent.FarMedmor": "How many percent should {erMedmor, select, true {co-mother} other {father}} work?",
-    "VelgPeriodePanelStep.VelgPeriode": "You must select which period you want to change"
+    "VelgPeriodePanelStep.VelgPeriode": "You must select which period you want to change",
+    "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "You have selected a combination of days that is not valid for any parent."
 }

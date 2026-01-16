@@ -7,8 +7,9 @@ import { HStack, Heading } from '@navikt/ds-react';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { Uttaksplanperiode } from '../../../types/UttaksplanPeriode';
-import { EndrePeriodePanelStep } from './steps/EndrePeriodePanelStep';
-import { VelgPeriodePanelStep } from './steps/VelgPeriodePanelStep';
+import { LeggTilEllerEndrePeriodeListPanel } from '../../legg-til-endre-periode-panel/LeggTilEllerEndrePeriodeListPanel';
+import { erUttaksplanperiodeSamtidigUttak } from '../../utils/uttaksplanperiodeUtils';
+import { VelgPeriodePanelStep } from './VelgPeriodePanelStep';
 
 const ARIA_LABEL_ID = 'endre-periode-panel-heading';
 
@@ -18,10 +19,11 @@ interface Props {
 }
 
 export const EndrePeriodePanel = ({ closePanel, uttaksplanperioder }: Props) => {
-    const inneholderKunEnPeriode = uttaksplanperioder.length === 1;
+    const erSamtidigUttak = erUttaksplanperiodeSamtidigUttak(uttaksplanperioder);
+    const erKunEnPeriodeEllerSamtidigUttak = uttaksplanperioder.length === 1 || erSamtidigUttak;
 
     const [valgtPeriodeIndex, setValgtPeriodeIndex] = useState<number | undefined>(
-        inneholderKunEnPeriode ? 0 : undefined,
+        erKunEnPeriodeEllerSamtidigUttak ? 0 : undefined,
     );
 
     return (
@@ -43,11 +45,15 @@ export const EndrePeriodePanel = ({ closePanel, uttaksplanperioder }: Props) => 
                     />
                 )}
                 {valgtPeriodeIndex !== undefined && (
-                    <EndrePeriodePanelStep
-                        uttaksplanperiode={notEmpty(uttaksplanperioder[valgtPeriodeIndex])}
-                        setValgtPeriodeIndex={setValgtPeriodeIndex}
-                        closePanel={closePanel}
-                        inneholderKunEnPeriode={inneholderKunEnPeriode}
+                    <LeggTilEllerEndrePeriodeListPanel
+                        uttaksplanperiode={
+                            erSamtidigUttak ? uttaksplanperioder.at(0) : notEmpty(uttaksplanperioder[valgtPeriodeIndex])
+                        }
+                        setIsLeggTilPeriodePanelOpen={closePanel}
+                        setValgtPeriodeIndex={
+                            !erSamtidigUttak && uttaksplanperioder.length !== 1 ? setValgtPeriodeIndex : undefined
+                        }
+                        erNyPeriodeModus={false}
                     />
                 )}
             </div>
