@@ -24,6 +24,16 @@ import { OppgittInformasjon } from './expansion-cards/OppgittInformasjon';
 import { OppsummeringHarRett } from './expansion-cards/OppsummeringHarRett';
 import { HvorMyeOppsummering } from './expansion-cards/hvor-mye/HvorMyeOppsummering';
 
+// Declare custom element to avoid TypeScript errors
+declare global {
+    // eslint-disable-next-line @typescript-eslint/no-namespace
+    namespace JSX {
+        interface IntrinsicElements {
+            'skyra-survey': { slug: string };
+        }
+    }
+}
+
 interface Props {
     stønadskontoer?: KontoBeregningResultatDto;
     satser: Satser;
@@ -59,6 +69,8 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
     return (
         <>
             <OppsummeringHeader>
+                {/* @ts-expect-error - skyra-survey er et custom element */}
+                <skyra-survey slug="arbeids-og-velferdsetaten-nav/planlegg-foreldrepenger-inline"></skyra-survey>
                 <VStack gap="space-40">
                     <VStack gap="space-20">
                         {!harRettTilForeldrepenger && (
