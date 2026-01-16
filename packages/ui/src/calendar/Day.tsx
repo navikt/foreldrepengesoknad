@@ -73,21 +73,18 @@ export const Day = React.memo(
 
         const isClickable = !!dateClickCallback && !isWeekend(date);
 
-        const shouldAnimate = isUpdated && !isWeekend(date);
-
-        const animationClass = isUpdated ? styles.fadeInA : styles.fadeInB;
-
         return (
             <button
                 ref={setButtonRef}
                 type="button"
                 data-testid={`day:${day};dayColor:${periodeColor}`}
                 tabIndex={isFocused ? 0 : -1}
-                className={`${styles.days} ${DAY_STYLE[periodeColor]} ${isClickable && styles.cursorAndHoover} ${shouldAnimate && animationClass}`}
+                className={`${styles.days} ${DAY_STYLE[periodeColor]} ${isClickable && styles.cursorAndHoover} ${isUpdated && styles.fadeIn}`}
                 onFocus={isClickable ? () => setFocusedDate(date) : undefined}
                 onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
                 onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
                 onClick={isClickable ? () => dateClickCallback(isoDate) : undefined}
+                onAnimationEnd={() => buttonRef.current?.classList.remove(styles.fadeIn!)}
                 onKeyDown={
                     dateClickCallback
                         ? (e) => handleKeyNavigationAndSelection(e, date, dateClickCallback, setFocusedDate)
