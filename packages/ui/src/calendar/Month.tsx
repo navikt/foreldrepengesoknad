@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Box, HGrid, Heading, VStack } from '@navikt/ds-react';
 
@@ -39,7 +39,7 @@ export const Month = React.memo(
     }: Props) => {
         logOnLocalhost(`Rendering Month: ${month}-${year}`);
 
-        const periodMap = buildPeriodMap(periods);
+        const periodMap = useMemo(() => buildPeriodMap(periods), [periods]);
 
         const firstDayOfMonth = dayjs().year(year).month(month).startOf('month');
         const daysInMonth = firstDayOfMonth.daysInMonth();
