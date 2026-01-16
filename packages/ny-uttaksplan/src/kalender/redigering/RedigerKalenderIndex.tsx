@@ -15,7 +15,7 @@ type Props = {
     valgtePerioder: CalendarPeriod[];
     labels: React.ReactNode;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
-    setPerioderSomErNyligLagtTil: React.Dispatch<React.SetStateAction<Array<{ fom: string; tom: string }>>>;
+    setEndredePerioder: React.Dispatch<React.SetStateAction<Array<{ fom: string; tom: string }>>>;
     scrollToKvoteOppsummering: () => void;
 };
 
@@ -23,13 +23,13 @@ export const RedigerKalenderIndex = ({
     valgtePerioder,
     labels,
     setValgtePerioder,
-    setPerioderSomErNyligLagtTil,
+    setEndredePerioder,
     scrollToKvoteOppsummering,
 }: Props) => (
     <KalenderRedigeringProvider
         valgtePerioder={valgtePerioder}
         setValgtePerioder={setValgtePerioder}
-        setPerioderSomErNyligLagtTil={setPerioderSomErNyligLagtTil}
+        setEndredePerioder={setEndredePerioder}
     >
         <RedigerKalender scrollToKvoteOppsummering={scrollToKvoteOppsummering} labels={labels} />
     </KalenderRedigeringProvider>

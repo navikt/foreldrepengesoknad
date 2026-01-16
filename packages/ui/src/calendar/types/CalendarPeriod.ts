@@ -6,4 +6,5 @@ export type CalendarPeriod = {
     color: CalendarPeriodColor;
     srText: string;
     isSelected?: boolean;
+    isUpdated?: boolean;
 };

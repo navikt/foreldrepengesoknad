@@ -58,13 +58,8 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
         valgtStønadskonto,
     } = useUttaksplanData();
 
-    const {
-        sammenslåtteValgtePerioder,
-        leggTilUttaksplanPerioder,
-        setValgtePerioder,
-        valgtePerioder,
-        setPerioderSomErNyligLagtTil,
-    } = useKalenderRedigeringContext();
+    const { sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, setValgtePerioder, setEndredePerioder } =
+        useKalenderRedigeringContext();
 
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
 
@@ -159,12 +154,8 @@ export const LeggTilEllerEndrePeriodeForm = ({ gyldigeKontotyper, lukkRedigering
             }),
         );
 
-        const nyligLagtTilPerioder = valgtePerioder.map((periode) => {
-            return { fom: periode.fom, tom: periode.tom };
-        });
-
         setValgtePerioder([]);
-        setPerioderSomErNyligLagtTil(nyligLagtTilPerioder);
+        setEndredePerioder(sammenslåtteValgtePerioder);
 
         lukkRedigeringsmodus();
     };

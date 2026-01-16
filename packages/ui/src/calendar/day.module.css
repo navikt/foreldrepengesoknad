@@ -56,7 +56,11 @@
     border: 0;
 }
 
-.fadeIn {
+.fadeInA {
+    animation: fadeIn 0.5s ease-in forwards;
+}
+
+.fadeInB {
     animation: fadeIn 0.5s ease-in forwards;
 }
 

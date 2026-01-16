@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { Box, HGrid, Heading, VStack } from '@navikt/ds-react';
 
@@ -23,7 +23,6 @@ interface Props {
     dateTooltipCallback?: (date: string) => React.ReactElement | string;
     dateClickCallback?: (date: string) => void;
     setFocusedDate: (date: Dayjs) => void;
-    perioderSomErNyligLagtTil: Array<{ fom: string; tom: string }>;
 }
 
 export const Month = React.memo(
@@ -37,11 +36,10 @@ export const Month = React.memo(
         dateTooltipCallback,
         dateClickCallback,
         setFocusedDate,
-        perioderSomErNyligLagtTil,
     }: Props) => {
         logOnLocalhost(`Rendering Month: ${month}-${year}`);
 
-        const periodMap = useMemo(() => buildPeriodMap(periods), [periods]);
+        const periodMap = buildPeriodMap(periods);
 
         const firstDayOfMonth = dayjs().year(year).month(month).startOf('month');
         const daysInMonth = firstDayOfMonth.daysInMonth();
@@ -99,11 +97,6 @@ export const Month = React.memo(
                                         const date = firstDayOfMonth.add(cellIndex - (startWeekDay - 1), 'day');
 
                                         const period = periodMap.get(formatDateIso(date));
-                                        const erNyligLagtTil = perioderSomErNyligLagtTil.some((periode) => {
-                                            const fom = dayjs(periode.fom);
-                                            const tom = dayjs(periode.tom);
-                                            return date.isSameOrAfter(fom, 'day') && date.isSameOrBefore(tom, 'day');
-                                        });
 
                                         return (
                                             <Day
@@ -111,6 +104,7 @@ export const Month = React.memo(
                                                 isoDate={formatDateIso(date)}
                                                 periodeColor={findDayColor(date, period)}
                                                 srText={period?.srText}
+                                                isUpdated={period?.isUpdated}
                                                 dateTooltipCallback={dateTooltipCallback}
                                                 dateClickCallback={dateClickCallback}
                                                 isFocused={
@@ -119,7 +113,6 @@ export const Month = React.memo(
                                                     false
                                                 }
                                                 setFocusedDate={setFocusedDate}
-                                                erNyligLagtTil={erNyligLagtTil}
                                             />
                                         );
                                     })}

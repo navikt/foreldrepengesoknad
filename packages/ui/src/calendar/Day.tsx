@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { Popover } from '@navikt/ds-react';
 
@@ -34,10 +34,10 @@ type Props = {
     periodeColor: CalendarPeriodColor;
     isFocused: boolean;
     srText?: string;
+    isUpdated?: boolean;
     dateTooltipCallback?: (date: string) => React.ReactNode | string;
     dateClickCallback?: (date: string) => void;
     setFocusedDate: (date: Dayjs) => void;
-    erNyligLagtTil: boolean;
 };
 
 export const Day = React.memo(
@@ -46,50 +46,44 @@ export const Day = React.memo(
         periodeColor,
         isFocused,
         srText,
+        isUpdated,
         dateTooltipCallback,
         dateClickCallback,
         setFocusedDate,
-        erNyligLagtTil,
     }: Props) => {
         const date = dayjs(isoDate);
         const day = date.date();
 
         logOnLocalhost(`Rendering Day: ${day}, Color: ${periodeColor}`);
 
-        const [animate, setAnimate] = React.useState(false);
-
-        useEffect(() => {
-            if (erNyligLagtTil && !isWeekend(date)) {
-                setAnimate(true);
-            }
-        }, [erNyligLagtTil]);
-
-        React.useEffect(() => {
-            if (!animate) return;
-
-            const id = setTimeout(() => setAnimate(false), 500);
-            return () => clearTimeout(id);
-        }, [animate]);
+        const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
         const buttonRef = useRef<HTMLButtonElement>(null);
 
-        const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+        const setButtonRef = React.useCallback(
+            (el: HTMLButtonElement | null) => {
+                buttonRef.current = el;
 
-        useEffect(() => {
-            if (isFocused) {
-                buttonRef.current?.focus();
-            }
-        }, [isFocused]);
+                if (el && isFocused) {
+                    el.focus();
+                }
+            },
+            [isFocused],
+        );
 
         const isClickable = !!dateClickCallback && !isWeekend(date);
 
+        const shouldAnimate = isUpdated && !isWeekend(date);
+
+        const animationClass = isUpdated ? styles.fadeInA : styles.fadeInB;
+
         return (
             <button
-                ref={buttonRef}
+                ref={setButtonRef}
                 type="button"
                 data-testid={`day:${day};dayColor:${periodeColor}`}
                 tabIndex={isFocused ? 0 : -1}
-                className={`${styles.days} ${DAY_STYLE[periodeColor]} ${isClickable && styles.cursorAndHoover} ${animate && styles.fadeIn}`}
+                className={`${styles.days} ${DAY_STYLE[periodeColor]} ${isClickable && styles.cursorAndHoover} ${shouldAnimate && animationClass}`}
                 onFocus={isClickable ? () => setFocusedDate(date) : undefined}
                 onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
                 onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
