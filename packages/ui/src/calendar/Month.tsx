@@ -96,7 +96,7 @@ export const Month = React.memo(
 
                                         const date = firstDayOfMonth.add(cellIndex - (startWeekDay - 1), 'day');
 
-                                        const period = periodMap.get(date.format('YYYY-MM-DD'));
+                                        const period = periodMap.get(formatDateIso(date));
 
                                         return (
                                             <Day
@@ -104,6 +104,7 @@ export const Month = React.memo(
                                                 isoDate={formatDateIso(date)}
                                                 periodeColor={findDayColor(date, period)}
                                                 srText={period?.srText}
+                                                isUpdated={period?.isUpdated}
                                                 dateTooltipCallback={dateTooltipCallback}
                                                 dateClickCallback={dateClickCallback}
                                                 isFocused={
