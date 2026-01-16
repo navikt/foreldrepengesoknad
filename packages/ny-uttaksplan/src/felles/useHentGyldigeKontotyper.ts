@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
 import { Familiesituasjon, KontoTypeUttak } from '@navikt/fp-types';
@@ -8,8 +9,9 @@ import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { ForeldreInfo } from '../types/ForeldreInfo';
 
 dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
 
-export const useFeltutlederKontotype = (valgtePerioder: Array<{ fom: string; tom: string }>) => {
+export const useHentGyldigeKontotyper = (valgtePerioder: Array<{ fom: string; tom: string }>) => {
     const { foreldreInfo, familiehendelsedato, familiesituasjon, valgtStønadskonto } = useUttaksplanData();
 
     return {
@@ -44,6 +46,10 @@ const erGyldigForMor = (
     }
 
     if (konto === 'AKTIVITETSFRI_KVOTE') {
+        return false;
+    }
+
+    if (erNoenPerioderFørOgNoenLikEllerEtterFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
         return false;
     }
 
@@ -139,6 +145,18 @@ const erNoenPerioderFørFamiliehendelsesdato = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     familiehendelsedato: string,
 ) => valgtePerioder.some((p) => dayjs(p.fom).isBefore(familiehendelsedato));
+
+const erNoenPerioderLikEllerEtterFamiliehendelsesdato = (
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    familiehendelsedato: string,
+) => valgtePerioder.some((p) => dayjs(p.tom).isSameOrAfter(familiehendelsedato));
+
+const erNoenPerioderFørOgNoenLikEllerEtterFamiliehendelsesdato = (
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    familiehendelsedato: string,
+) =>
+    erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato) &&
+    erNoenPerioderLikEllerEtterFamiliehendelsesdato(valgtePerioder, familiehendelsedato);
 
 const erNoenPerioderFørTreUkerFørFamDatoEllerEtterLikFamDato = (
     valgtePerioder: Array<{ fom: string; tom: string }>,

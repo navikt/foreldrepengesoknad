@@ -21,7 +21,7 @@ import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskontoNavnSimple } from '../liste/utils/uttaksplanListeUtils';
 import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import { getGradering } from '../utils/graderingUtils';
-import { useFeltutlederKontotype } from './useFeltutlederKontotype';
+import { useHentGyldigeKontotyper } from './useHentGyldigeKontotyper';
 import { prosentValideringGradering, valideringSamtidigUttak } from './validators';
 
 dayjs.extend(isSameOrBefore);
@@ -71,7 +71,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValues, valgtePeri
         rettighetType !== 'ALENEOMSORG' &&
         (kontoTypeFarMedmor === 'FORELDREPENGER' || kontoTypeFarMedmor === 'FELLESPERIODE');
 
-    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useFeltutlederKontotype(valgtePerioder);
+    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(valgtePerioder);
 
     const erMorGyldigForelder = gyldigeStønadskontoerForMor.length > 0;
     const erFarMedmorGyldigForelder = gyldigeStønadskontoerForFarMedmor.length > 0;
