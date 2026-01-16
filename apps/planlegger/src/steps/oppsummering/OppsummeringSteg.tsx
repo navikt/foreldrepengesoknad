@@ -18,6 +18,7 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { ShareDataInfobox } from '../../components/boxes/ShareDataInfobox';
 import { OppsummeringHeader } from './OppsummeringHeader';
+import './OppsummeringSteg.Module.css';
 import { SøkOmForeldrepenger } from './SøkOmForeldrepenger';
 import { BarnehageplassOppsummering, getFamiliehendelsedato } from './expansion-cards/BarnehageplassOppsummering';
 import { OppgittInformasjon } from './expansion-cards/OppgittInformasjon';
@@ -71,7 +72,10 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
         <>
             <OppsummeringHeader>
                 {/* @ts-expect-error - skyra-survey er et custom element */}
-                <skyra-survey slug="arbeids-og-velferdsetaten-nav/planlegg-foreldrepenger-inline"></skyra-survey>
+                <skyra-survey
+                    className=""
+                    slug="arbeids-og-velferdsetaten-nav/planlegg-foreldrepenger-inline"
+                ></skyra-survey>
                 <VStack gap="space-40">
                     <VStack gap="space-20">
                         {!harRettTilForeldrepenger && (
