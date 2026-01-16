@@ -50,6 +50,7 @@ const generateHTML = (packages) => `
 const DEPLOY_FOLDER = '../.storybook-static-build';
 
 const copyFiles = (subPackage) => {
+    console.log('copy', subPackage);
     shell.cd(subPackage);
     if (!fs.existsSync('package.json') || !fs.existsSync('.storybook-static-build')) {
         return null;
@@ -82,6 +83,8 @@ const creatIndexHtml = () => {
         .map(path.dirname)
         .map(copyFiles)
         .filter((subPackage) => subPackage);
+
+    console.log(packagesApps.map((a) => a.name));
 
     // Lag index-fil
     const index = generateHTML(packagesApps.concat(packagesPackages));
