@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { Popover } from '@navikt/ds-react';
 
@@ -34,41 +34,57 @@ type Props = {
     periodeColor: CalendarPeriodColor;
     isFocused: boolean;
     srText?: string;
+    isUpdated?: boolean;
     dateTooltipCallback?: (date: string) => React.ReactNode | string;
     dateClickCallback?: (date: string) => void;
     setFocusedDate: (date: Dayjs) => void;
 };
 
 export const Day = React.memo(
-    ({ isoDate, periodeColor, isFocused, srText, dateTooltipCallback, dateClickCallback, setFocusedDate }: Props) => {
+    ({
+        isoDate,
+        periodeColor,
+        isFocused,
+        srText,
+        isUpdated,
+        dateTooltipCallback,
+        dateClickCallback,
+        setFocusedDate,
+    }: Props) => {
         const date = dayjs(isoDate);
         const day = date.date();
 
         logOnLocalhost(`Rendering Day: ${day}, Color: ${periodeColor}`);
 
-        const buttonRef = useRef<HTMLButtonElement>(null);
-
         const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
-        useEffect(() => {
-            if (isFocused) {
-                buttonRef.current?.focus();
-            }
-        }, [isFocused]);
+        const buttonRef = useRef<HTMLButtonElement>(null);
+
+        const setButtonRef = React.useCallback(
+            (el: HTMLButtonElement | null) => {
+                buttonRef.current = el;
+
+                if (el && isFocused) {
+                    el.focus();
+                }
+            },
+            [isFocused],
+        );
 
         const isClickable = !!dateClickCallback && !isWeekend(date);
 
         return (
             <button
-                ref={buttonRef}
+                ref={setButtonRef}
                 type="button"
                 data-testid={`day:${day};dayColor:${periodeColor}`}
                 tabIndex={isFocused ? 0 : -1}
-                className={`${styles.days} ${DAY_STYLE[periodeColor]} ${isClickable && styles.cursorAndHoover}`}
+                className={`${styles.days} ${DAY_STYLE[periodeColor]} ${isClickable && styles.cursorAndHoover} ${isUpdated && styles.fadeIn}`}
                 onFocus={isClickable ? () => setFocusedDate(date) : undefined}
                 onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
                 onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
                 onClick={isClickable ? () => dateClickCallback(isoDate) : undefined}
+                onAnimationEnd={() => buttonRef.current?.classList.remove(styles.fadeIn!)}
                 onKeyDown={
                     dateClickCallback
                         ? (e) => handleKeyNavigationAndSelection(e, date, dateClickCallback, setFocusedDate)

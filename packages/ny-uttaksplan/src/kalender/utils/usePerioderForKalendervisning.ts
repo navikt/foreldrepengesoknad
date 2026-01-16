@@ -24,7 +24,10 @@ import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder'
 import { isAvslåttPeriode, isAvslåttPeriodeFørsteSeksUkerMor, isUttaksperiode } from '../../utils/periodeUtils';
 import { filtrerBortAnnenPartsIdentiskePerioder } from './uttaksplanKalenderUtils';
 
-export const usePerioderForKalendervisning = (barnehagestartdato?: string): CalendarPeriod[] => {
+export const usePerioderForKalendervisning = (
+    endredePerioder: Array<{ fom: string; tom: string }>,
+    barnehagestartdato?: string,
+): CalendarPeriod[] => {
     const intl = useIntl();
 
     const {
@@ -42,6 +45,7 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
 
     const res = unikePerioder.reduce<CalendarPeriod[]>((acc, periode) => {
         const color = getKalenderFargeForPeriode(periode, erFarEllerMedmor, saksperioderInkludertTapteDager, barn);
+        const isUpdated = endredePerioder.some((p) => p.fom === periode.fom && p.tom === periode.tom);
 
         if (
             barnehagestartdato !== undefined &&
@@ -62,6 +66,7 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
                         navnPåForeldre,
                         intl,
                     ),
+                    isUpdated,
                 },
                 {
                     fom: dayjs(barnehagestartdato).add(1, 'day').format('YYYY-MM-DD'),
@@ -76,6 +81,7 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
                         navnPåForeldre,
                         intl,
                     ),
+                    isUpdated,
                 },
             ];
         }
@@ -93,6 +99,7 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
                 tom,
                 color,
                 srText: getKalenderSkjermlesertekstForPeriode({ ...periode, fom, tom }, navnPåForeldre, intl),
+                isUpdated,
             },
         ];
     }, []);
@@ -118,30 +125,7 @@ export const usePerioderForKalendervisning = (barnehagestartdato?: string): Cale
         srText: getSkjermlesertekstForFamiliehendelse(barn, intl),
     });
 
-    return slåSammenPerioder(perioderForVisning);
-};
-
-const slåSammenPerioder = (periods: CalendarPeriod[]) => {
-    if (periods.length <= 1) {
-        return periods;
-    }
-
-    return periods.reduce<CalendarPeriod[]>((res, period, index) => {
-        const sisteRes = res.at(-1);
-
-        if (
-            index !== 0 &&
-            sisteRes &&
-            period.color === sisteRes.color &&
-            dayjs(UttaksdagenString(sisteRes.tom).neste()).isSame(dayjs(period.fom), 'day')
-        ) {
-            sisteRes.tom = period.tom;
-            return res;
-        } else {
-            res.push(period);
-            return res;
-        }
-    }, []);
+    return perioderForVisning;
 };
 
 const getKalenderFargeForPeriode = (

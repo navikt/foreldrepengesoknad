@@ -27,7 +27,8 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
         foreldreInfo: { søker },
     } = useUttaksplanData();
 
-    const { sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, setValgtePerioder } = useKalenderRedigeringContext();
+    const { sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, setValgtePerioder, setEndredePerioder } =
+        useKalenderRedigeringContext();
 
     const erDesktop = useErDesktop();
 
@@ -49,6 +50,7 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
         );
 
         setValgtePerioder([]);
+        setEndredePerioder(sammenslåtteValgtePerioder);
     };
 
     return (
