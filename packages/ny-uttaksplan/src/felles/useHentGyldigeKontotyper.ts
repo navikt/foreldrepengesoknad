@@ -16,15 +16,13 @@ export const useHentGyldigeKontotyper = (valgtePerioder: Array<{ fom: string; to
 
     return {
         gyldigeStønadskontoerForMor: valgtStønadskonto.kontoer
-            .filter((kt) =>
-                erGyldigForMor(kt.konto, foreldreInfo, familiehendelsedato, familiesituasjon, valgtePerioder),
-            )
-            .map((kt) => kt.konto),
+            .map((kt) => kt.konto)
+            .filter((kt) => erGyldigForMor(kt, foreldreInfo, familiehendelsedato, familiesituasjon, valgtePerioder)),
         gyldigeStønadskontoerForFarMedmor: valgtStønadskonto.kontoer
+            .map((kt) => kt.konto)
             .filter((kt) =>
-                erGyldigForFarMedmor(kt.konto, foreldreInfo, familiehendelsedato, familiesituasjon, valgtePerioder),
-            )
-            .map((kt) => kt.konto),
+                erGyldigForFarMedmor(kt, foreldreInfo, familiehendelsedato, familiesituasjon, valgtePerioder),
+            ),
     };
 };
 
@@ -105,8 +103,6 @@ const erGyldigForFarMedmor = (
     if (konto === 'FORELDREPENGER_FØR_FØDSEL') {
         return false;
     }
-
-    //FIXME (TOR) Sjekk på max to veker i to-vekers perioden før og seks veker etter. Usikker på om ein bør legga den her, eller vise feilmelding for den
 
     if (konto === 'MØDREKVOTE') {
         if (erNoenPerioderFørToUkerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
