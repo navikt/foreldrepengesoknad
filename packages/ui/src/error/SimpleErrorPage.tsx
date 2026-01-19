@@ -15,7 +15,7 @@ interface Props {
 
 export const SimpleErrorPage = ({ retryCallback }: Props) => (
     <SkjemaRotLayout pageTitle="">
-        <Box background="brand-blue-moderate" borderRadius="large" padding="space-24">
+        <Box background="brand-blue-moderate" borderRadius="8" padding="space-24">
             <VStack gap="space-64">
                 <VStack gap="space-24">
                     <LaptopTriangleIcon aria-hidden height={44} width={44} />

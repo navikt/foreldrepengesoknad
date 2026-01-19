@@ -25,7 +25,7 @@ export const KravinfoBoks = ({
         <Heading size="small" level={headerLevel}>
             {headerText}
         </Heading>
-        <Box background="brand-blue-moderate" padding="space-16" borderRadius="large">
+        <Box background="brand-blue-moderate" padding="space-16" borderRadius="8">
             <HStack gap="space-8" wrap={false}>
                 <div>
                     {erOppfylt && (

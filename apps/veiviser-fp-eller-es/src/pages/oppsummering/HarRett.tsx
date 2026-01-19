@@ -26,7 +26,7 @@ export const HarRett = ({ fpEllerEsSituasjon, satser }: Props) => {
 
     return (
         <>
-            <Box background="brand-blue-moderate" padding="space-32" borderRadius="large">
+            <Box background="brand-blue-moderate" padding="space-32" borderRadius="8">
                 <VStack gap="space-32">
                     <VStack gap="space-32" align="center">
                         <StrollerIcon
@@ -44,7 +44,7 @@ export const HarRett = ({ fpEllerEsSituasjon, satser }: Props) => {
                             )}
                         </Heading>
                     </VStack>
-                    <Box background="default" padding="space-16" borderRadius="large">
+                    <Box background="default" padding="space-16" borderRadius="8">
                         <VStack gap="space-8">
                             <Heading size="xsmall" level="3">
                                 <FormattedMessage id="OppsummeringFpEllerEsSide.HvaErFp" />

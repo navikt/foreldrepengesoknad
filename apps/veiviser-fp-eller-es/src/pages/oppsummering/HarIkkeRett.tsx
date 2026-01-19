@@ -26,7 +26,7 @@ export const HarIkkeRett = ({ fpEllerEsSituasjon, satser }: Props) => {
 
     return (
         <>
-            <Box background="neutral-moderate" borderColor="brand-blue" padding="space-32" borderRadius="large">
+            <Box background="neutral-moderate" borderColor="brand-blue" padding="space-32" borderRadius="8">
                 <VStack gap="space-32">
                     <VStack gap="space-32" align="center">
                         <StrollerIcon
@@ -44,7 +44,7 @@ export const HarIkkeRett = ({ fpEllerEsSituasjon, satser }: Props) => {
                             )}
                         </Heading>
                     </VStack>
-                    <Box background="neutral-moderate" borderWidth="2" padding="space-16" borderRadius="large">
+                    <Box background="neutral-moderate" borderWidth="2" padding="space-16" borderRadius="8">
                         <VStack gap="space-16">
                             <HStack gap="space-32" justify="space-between" wrap={false}>
                                 <BodyShort>

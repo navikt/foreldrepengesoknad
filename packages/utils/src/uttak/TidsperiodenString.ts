@@ -56,10 +56,11 @@ function inneholderTidsperiodeDato(tidsperiode: Tidsperiode, dato: string): bool
 export function isValidTidsperiodeString(tidsperiode: unknown): tidsperiode is Tidsperiode {
     return (
         // @ts-expect-error -- gidder ikke fikse gammel kode
+        // @ts-expect-error -- gidder ikke fikse gammel kode
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         tidsperiode.fom !== undefined &&
         // @ts-expect-error -- gidder ikke fikse gammel kode
-        tidsperiode.tom !== undefined && // @ts-expect-error -- gidder ikke fikse gammel kode
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        tidsperiode.tom !== undefined &&
         dayjs(tidsperiode.fom).isSameOrBefore(tidsperiode.tom, 'day')
     );
 }

@@ -24,7 +24,7 @@ export const HarArbeidsforhold = ({ arbeidsforhold, harArbeidsforhold }: Props) 
                     key={arbforhold.arbeidsgiverId + arbforhold.fom + arbforhold.fom}
                     padding="space-16"
                     background="brand-blue-moderate"
-                    borderRadius="medium"
+                    borderRadius="4"
                 >
                     <VStack gap="space-16">
                         <HStack justify="space-between">

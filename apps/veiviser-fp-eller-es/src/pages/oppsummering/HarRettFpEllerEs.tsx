@@ -28,7 +28,7 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
 
     return (
         <>
-            <Box background="brand-blue-moderate" padding="space-32" borderRadius="large">
+            <Box background="brand-blue-moderate" padding="space-32" borderRadius="8">
                 <VStack gap="space-24">
                     <VStack gap="space-32" align="center">
                         <StrollerIcon
@@ -42,7 +42,7 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                             <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRettFpEllerEs" />
                         </Heading>
                     </VStack>
-                    <Box background="brand-blue-moderate" borderWidth="2" padding="space-16" borderRadius="large">
+                    <Box background="brand-blue-moderate" borderWidth="2" padding="space-16" borderRadius="8">
                         <VStack gap="space-12">
                             <HStack justify="space-between">
                                 <Heading size="small">
@@ -84,7 +84,7 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                         </VStack>
                     </Box>
                     <VStack gap="space-8">
-                        <Box background="default" padding="space-16" borderRadius="large">
+                        <Box background="default" padding="space-16" borderRadius="8">
                             <VStack gap="space-8">
                                 <Heading size="xsmall">
                                     <FormattedMessage id="OppsummeringFpEllerEsSide.HvaErFp" />
@@ -98,7 +98,7 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                                 </BodyShort>
                             </VStack>
                         </Box>
-                        <Box background="default" padding="space-16" borderRadius="large">
+                        <Box background="default" padding="space-16" borderRadius="8">
                             <VStack gap="space-8">
                                 <Heading size="xsmall">
                                     <FormattedMessage id="OppsummeringSide.HvaErEs" />

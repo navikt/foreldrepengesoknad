@@ -64,7 +64,7 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
                         ),
                     ]}
                 />
-                <Box padding="space-16" background="brand-blue-moderate" borderRadius="medium">
+                <Box padding="space-16" background="brand-blue-moderate" borderRadius="4">
                     <HStack gap="space-8">
                         <FileIcon height={24} width={24} color="#005B82" />
                         <VStack gap="space-8" style={{ width: '85%' }}>
