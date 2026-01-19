@@ -1,8 +1,9 @@
 import { PencilIcon } from '@navikt/aksel-icons';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { HStack, Heading, Radio, VStack } from '@navikt/ds-react';
+import { Alert, ErrorMessage, HStack, Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { BrukerRolleSak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
@@ -17,6 +18,7 @@ import {
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilUttakPeriode,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
+import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/validators';
 import { PanelButtons } from '../../liste/panel-buttons/PanelButtons';
 import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
@@ -44,7 +46,14 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     setValgtPeriodeIndex,
 }: Props) => {
     const intl = useIntl();
-    const { uttakPerioder } = useUttaksplanData();
+    const {
+        uttakPerioder,
+        foreldreInfo: { søker },
+        familiesituasjon,
+        familiehendelsedato,
+    } = useUttaksplanData();
+
+    const [feilmelding, setFeilmelding] = useState<string | undefined>();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
@@ -65,9 +74,13 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         setIsLeggTilPeriodePanelOpen(false);
     };
 
+    const formSubmitValidator = useFormSubmitValidator<FormValues>();
+
     const onSubmit = (values: FormValues) => {
         const fomValue = values.fom;
         const tomValue = values.tom;
+
+        setFeilmelding(undefined);
 
         if (hvaVilDuGjøre === 'LEGG_TIL_FERIE') {
             handleAddPeriode([
@@ -90,6 +103,12 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
             uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
         } else {
+            const submitFeilmelding = formSubmitValidator([{ fom: fomValue, tom: tomValue }], values);
+
+            if (submitFeilmelding) {
+                setFeilmelding(submitFeilmelding);
+                return;
+            }
             const mapped = omitMany(values, ['fom', 'tom', 'hvaVilDuGjøre']);
             handleAddPeriode(mapFraFormValuesTilUttakPeriode(mapped, { fom: fomValue, tom: tomValue }));
         }
@@ -111,6 +130,8 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         });
     };
 
+    const erAdopsjon = familiesituasjon === 'adopsjon';
+
     return (
         <VStack
             gap="space-8"
@@ -126,6 +147,16 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                     </Heading>
                 </HStack>
             )}
+            {fomValue &&
+                tomValue &&
+                søker === 'MOR' &&
+                !erAdopsjon &&
+                kanMisteDagerVedEndringTilFerie([{ fom: fomValue, tom: tomValue }], familiehendelsedato) && (
+                    <Alert variant="info" size="small">
+                        <FormattedMessage id="RedigeringPanel.KanMisteDager" />
+                    </Alert>
+                )}
+            {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="space-32">
                     <RhfRadioGroup
@@ -156,7 +187,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                             )}
                         </Radio>
                     </RhfRadioGroup>
-                    <TidsperiodeSpørsmål valgtPeriode={uttaksplanperiode} />
+                    <TidsperiodeSpørsmål />
                     {hvaVilDuGjøre === 'LEGG_TIL_PERIODE' && (
                         <LeggTilEllerEndrePeriodeFellesForm
                             valgtePerioder={[{ fom: fomValue, tom: tomValue }]}

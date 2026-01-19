@@ -134,6 +134,16 @@ describe('useHentGyldigeKontotyper - mors kvoter', () => {
 
         expect(result.gyldigeStønadskontoerForMor).toEqual([]);
     });
+
+    it('skal ikke ha noen gyldige kontotyper for mor når en har valgt dag mer enn 60 dager før fødsel', () => {
+        setUttaksplanData({
+            foreldreInfo: { søker: 'MOR', rettighetType: 'BEGGE_RETT' },
+        });
+
+        const result = useHentGyldigeKontotyper([{ fom: '2024-03-24', tom: '2024-06-17' }]);
+
+        expect(result.gyldigeStønadskontoerForMor).toEqual([]);
+    });
 });
 
 describe('useHentGyldigeKontotyper - fars kvoter', () => {
@@ -218,5 +228,15 @@ describe('useHentGyldigeKontotyper - fars kvoter', () => {
             'FORELDREPENGER',
             'AKTIVITETSFRI_KVOTE',
         ]);
+    });
+
+    it('skal ikke ha noen gyldige kontotyper for far når en har valgt dag mer enn 60 dager før fødsel', () => {
+        setUttaksplanData({
+            foreldreInfo: { søker: 'MOR', rettighetType: 'BEGGE_RETT' },
+        });
+
+        const result = useHentGyldigeKontotyper([{ fom: '2024-03-24', tom: '2024-06-17' }]);
+
+        expect(result.gyldigeStønadskontoerForFarMedmor).toEqual([]);
     });
 });

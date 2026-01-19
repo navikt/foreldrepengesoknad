@@ -17,8 +17,8 @@ import {
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilUttakPeriode,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
+import { useFormSubmitValidator } from '../../felles/validators';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
-import { usePeriodeValidator } from './utils/usePeriodeValidator';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
@@ -35,8 +35,6 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
 
-    const { finnPerioderGyldigeFeilmeldinger } = usePeriodeValidator(sammenslåtteValgtePerioder);
-
     const defaultValues = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
         uttakPerioder,
         sammenslåtteValgtePerioder[0]!,
@@ -46,32 +44,13 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         defaultValues,
     });
 
+    const formSubmitValidator = useFormSubmitValidator<LeggTilEllerEndrePeriodeFormFormValues>();
+
     const onSubmit = (values: LeggTilEllerEndrePeriodeFormFormValues) => {
-        const valideringsfeil: string[] = [];
+        const submitFeilmelding = formSubmitValidator(sammenslåtteValgtePerioder, values);
 
-        if (values.forelder === 'MOR' || values.forelder === 'BEGGE') {
-            valideringsfeil.push(
-                ...finnPerioderGyldigeFeilmeldinger(
-                    values.kontoTypeMor,
-                    values.samtidigUttaksprosentMor !== undefined,
-                    values.skalDuKombinereArbeidOgUttakMor,
-                    'MOR',
-                ),
-            );
-        }
-        if (values.forelder === 'FAR_MEDMOR' || values.forelder === 'BEGGE') {
-            valideringsfeil.push(
-                ...finnPerioderGyldigeFeilmeldinger(
-                    values.kontoTypeFarMedmor,
-                    values.samtidigUttaksprosentFarMedmor !== undefined,
-                    values.skalDuKombinereArbeidOgUttakFarMedmor,
-                    'FAR_MEDMOR',
-                ),
-            );
-        }
-
-        if (valideringsfeil.length > 0) {
-            setFeilmelding(valideringsfeil.at(0));
+        if (submitFeilmelding) {
+            setFeilmelding(submitFeilmelding);
             return;
         }
         setFeilmelding(undefined);
