@@ -1,0 +1,62 @@
+/* Konfigmuligheter til skyra per nå:
+
+skyra-survey::part(wrapper) { }         
+skyra-survey::part(heading) { }         
+skyra-survey::part(description) { }     
+skyra-survey::part(bodyHtml) { }        
+skyra-survey::part(button-primary) { }  
+skyra-survey::part(button-secondary) { } 
+skyra-survey::part(button-link) { }     
+skyra-survey::part(button-chip) { }     
+skyra-survey::part(list-item) { }       
+
+Eksempel:
+
+skyra-survey {
+  --skyra-bg-color: #1a1a2e;
+  --skyra-text-color: #eaeaea;
+  --skyra-action-color: #4f8cff;
+  --skyra-font-heading: 'Arial', sans-serif;
+}
+
+skyra-survey::part(heading) {
+  font-size: 24px;
+  font-weight: 700;
+}
+*/
+
+:global(skyra-survey) {
+    --skyra-bg-color: var(--ax-bg-accent-strong);
+    /* --skyra-text-color: var(--ax-text-contrast); */
+    --skyra-z-index: <ønsket z-index-verdi for widgeten>;
+    --skyra-interface-color: #000;
+    --skyra-action-color: blue;
+    --skyra-action-text-color: #000;
+    --skyra-secondary-color: #000;
+    --skyra-link-color: #000;
+    --skyra-error-color: #000;
+    --skyra-font-size: 20px;
+    --skyra-font-body: 'Source Sans Pro', Arial;
+    --skyra-font-weight-normal: 800;
+    --skyra-font-heading: 'Source Sans Pro', Arial;
+}
+
+skyra-survey::part(heading) {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 32px;
+    color: var(--ax-text-neutral);
+}
+
+skyra-survey::part(bodyHtml) {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--ax-text-neutral);
+}
+
+skyra-survey::part(button-primary) {
+    background-color: var(--ax-bg-info-strong);
+    color: var(--ax-text-info-contrast);
+}
+skyra-survey::part(button-secondary) {
+}

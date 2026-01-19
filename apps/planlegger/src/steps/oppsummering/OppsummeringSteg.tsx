@@ -16,24 +16,14 @@ import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { InlineSkyraSurvey } from '../../components/InlineSkyraSurvey';
 import { ShareDataInfobox } from '../../components/boxes/ShareDataInfobox';
 import { OppsummeringHeader } from './OppsummeringHeader';
-import './OppsummeringSteg.Module.css';
 import { SøkOmForeldrepenger } from './SøkOmForeldrepenger';
 import { BarnehageplassOppsummering, getFamiliehendelsedato } from './expansion-cards/BarnehageplassOppsummering';
 import { OppgittInformasjon } from './expansion-cards/OppgittInformasjon';
 import { OppsummeringHarRett } from './expansion-cards/OppsummeringHarRett';
 import { HvorMyeOppsummering } from './expansion-cards/hvor-mye/HvorMyeOppsummering';
-
-// Declare custom element to avoid TypeScript errors
-declare global {
-    // eslint-disable-next-line @typescript-eslint/no-namespace
-    namespace JSX {
-        interface IntrinsicElements {
-            'skyra-survey': { slug: string };
-        }
-    }
-}
 
 interface Props {
     stønadskontoer?: KontoBeregningResultatDto;
@@ -71,11 +61,7 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
     return (
         <>
             <OppsummeringHeader>
-                {/* @ts-expect-error - skyra-survey er et custom element */}
-                <skyra-survey
-                    className=""
-                    slug="arbeids-og-velferdsetaten-nav/planlegg-foreldrepenger-inline"
-                ></skyra-survey>
+                <InlineSkyraSurvey />
                 <VStack gap="space-40">
                     <VStack gap="space-20">
                         {!harRettTilForeldrepenger && (
