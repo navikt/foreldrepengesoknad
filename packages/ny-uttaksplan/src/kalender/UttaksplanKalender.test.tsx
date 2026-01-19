@@ -266,17 +266,15 @@ describe('UttaksplanKalender', () => {
         const mars = screen.getByTestId('year:2024;month:2');
         const april = screen.getByTestId('year:2024;month:3');
 
-        await userEvent.click(within(mars).getByText('28', { exact: false }));
-        await userEvent.click(within(april).getByText('12', { exact: false }));
+        await userEvent.click(within(mars).getByTestId('day:13;dayColor:NONE'));
+        await userEvent.click(within(april).getByTestId('day:12;dayColor:BLUE'));
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
 
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
         expect(
-            await screen.findByText(
-                'Du har valgt en kombinasjon av dager som ikke tillater noen kvoter, og du kan derfor ikke legge til en periode.',
-            ),
+            await screen.findByText('Du har valgt en kombinasjon av dager som ikke er gyldig for noen foreldre.'),
         ).toBeInTheDocument();
     });
 
