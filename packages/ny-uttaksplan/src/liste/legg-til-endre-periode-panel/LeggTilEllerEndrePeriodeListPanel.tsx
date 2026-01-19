@@ -74,7 +74,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                 {
                     fom: fomValue,
                     tom: tomValue,
-                    forelder: 'FAR_MEDMOR',
+                    forelder: 'MOR',
                     utsettelseÅrsak: 'LOVBESTEMT_FERIE',
                 },
             ]);

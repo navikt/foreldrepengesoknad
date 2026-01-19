@@ -93,31 +93,29 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValues, valgtePeri
                 label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Forelder.HvemGjelder' })}
                 onChange={resetFormValues}
             >
-                <>
-                    {erMorGyldigForelder && (
-                        <Radio value="MOR">
-                            <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />
-                        </Radio>
-                    )}
-                </>
-                <>
-                    {erFarMedmorGyldigForelder && (
-                        <Radio value="FAR_MEDMOR">
-                            {erMedmorDelAvSøknaden ? (
-                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />
-                            ) : (
-                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Far" />
-                            )}
-                        </Radio>
-                    )}
-                </>
-                <>
-                    {erMorGyldigForelder && erFarMedmorGyldigForelder && (
-                        <Radio value="BEGGE">
-                            <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Begge" />
-                        </Radio>
-                    )}
-                </>
+                {
+                    [
+                        erMorGyldigForelder && (
+                            <Radio key="mor" value="MOR">
+                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />
+                            </Radio>
+                        ),
+                        erFarMedmorGyldigForelder && (
+                            <Radio key="far" value="FAR_MEDMOR">
+                                {erMedmorDelAvSøknaden ? (
+                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />
+                                ) : (
+                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Far" />
+                                )}
+                            </Radio>
+                        ),
+                        erMorGyldigForelder && erFarMedmorGyldigForelder && (
+                            <Radio key="begge" value="BEGGE">
+                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Begge" />
+                            </Radio>
+                        ),
+                    ].filter(Boolean) as React.ReactElement[]
+                }
             </RhfRadioGroup>
 
             {forelder !== undefined && <hr className="text-ax-border-neutral-subtle" />}

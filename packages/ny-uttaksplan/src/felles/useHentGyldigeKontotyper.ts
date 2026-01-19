@@ -176,9 +176,10 @@ const erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato = (
     const førsteDag = UttaksdagenString(familiehendelsedato).trekkFra(15);
     const sisteDag = UttaksdagenString(familiehendelsedato).forrige();
 
-    return valgtePerioder.some(
-        (periode) =>
-            dayjs(periode.fom).isBetween(førsteDag, sisteDag, 'day', '[]') ||
-            dayjs(periode.tom).isBetween(førsteDag, sisteDag, 'day', '[]'),
-    );
+    return valgtePerioder.some((periode) => {
+        const fom = dayjs(periode.fom);
+        const tom = dayjs(periode.tom);
+
+        return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
+    });
 };
