@@ -10,7 +10,7 @@ import {
     mapFlereTilretteleggingPerioder,
 } from 'utils/tilretteleggingUtils';
 
-import { FormSummary, List } from '@navikt/ds-react';
+import { Box, FormSummary, List } from '@navikt/ds-react';
 
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import { EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
@@ -272,17 +272,19 @@ function FlerePerioder({ perioder }: { perioder: UtvidetTilrettelegging[] }) {
                 <FormattedMessage id="oppsummering.periode.tittel" />
             </FormSummary.Label>
             <FormSummary.Value>
-                <List>
-                    {perioder.map((periode) => (
-                        <List.Item key={periode.fom}>
-                            <SvpPeriodeDatoTekst periode={periode} />:{' '}
-                            <StillingProsentTekst
-                                stillingsprosent={periode.type === 'delvis' ? periode.stillingsprosent : undefined}
-                                tilretteleggingstype={periode.type}
-                            />
-                        </List.Item>
-                    ))}
-                </List>
+                <Box marginBlock="space-16" asChild>
+                    <List data-aksel-migrated-v8>
+                        {perioder.map((periode) => (
+                            <List.Item key={periode.fom}>
+                                <SvpPeriodeDatoTekst periode={periode} />:{' '}
+                                <StillingProsentTekst
+                                    stillingsprosent={periode.type === 'delvis' ? periode.stillingsprosent : undefined}
+                                    tilretteleggingstype={periode.type}
+                                />
+                            </List.Item>
+                        ))}
+                    </List>
+                </Box>
             </FormSummary.Value>
         </FormSummary.Answer>
     );

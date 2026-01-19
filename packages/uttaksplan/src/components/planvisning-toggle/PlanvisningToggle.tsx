@@ -29,9 +29,9 @@ const PlanvisningToggle: FunctionComponent<Props> = ({ setVisningsmodus }) => {
     };
     return (
         <ToggleGroup
+            data-color="neutral"
             className={bem.block}
             defaultValue="liste"
-            variant="neutral"
             onChange={(value) => onChangeHandler(value as Visningsmodus)}
         >
             <ToggleGroup.Item value="liste">

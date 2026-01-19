@@ -54,10 +54,10 @@ export const Month = React.memo(
         const weekdayHeaders = Array.from({ length: 7 }, (_, i) => firstDayOfMonth.isoWeekday(i + 1).format('dd'));
 
         return (
-            <Box.New
+            <Box
                 borderWidth="1"
                 maxWidth="400px"
-                padding="3"
+                padding="space-12"
                 borderRadius="4"
                 borderColor="neutral-subtle"
                 data-testid={`year:${year};month:${month}`}
@@ -121,7 +121,7 @@ export const Month = React.memo(
                         })}
                     </div>
                 </VStack>
-            </Box.New>
+            </Box>
         );
     },
     (prev, next) => {

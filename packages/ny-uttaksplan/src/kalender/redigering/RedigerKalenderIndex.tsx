@@ -61,7 +61,7 @@ const RedigerKalender = ({
         harEnValgtPeriodeIKunEnEksisterendePeriode(uttakPerioderInkludertTapteDager, sammenslåtteValgtePerioder[0]!);
 
     return (
-        <Box.New
+        <Box
             borderWidth="1"
             borderRadius="4"
             borderColor="neutral-subtle"
@@ -90,6 +90,6 @@ const RedigerKalender = ({
                     )}
                 </>
             )}
-        </Box.New>
+        </Box>
     );
 };

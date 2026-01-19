@@ -194,7 +194,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                         <ExpansionCard.Content>
                             {(arbeidssituasjon.erArbeidstakerEllerFrilanser ||
                                 arbeidssituasjon.harUtbetalingFraNav) && (
-                                <VStack gap="3">
+                                <VStack gap="space-12">
                                     <BluePanel>
                                         <VStack gap="space-4">
                                             <Heading size="small" level="4">

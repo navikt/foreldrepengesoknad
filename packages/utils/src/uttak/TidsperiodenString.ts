@@ -58,8 +58,7 @@ export function isValidTidsperiodeString(tidsperiode: unknown): tidsperiode is T
         // @ts-expect-error -- gidder ikke fikse gammel kode
         tidsperiode.fom !== undefined &&
         // @ts-expect-error -- gidder ikke fikse gammel kode
-        tidsperiode.tom !== undefined &&
-        // @ts-expect-error -- gidder ikke fikse gammel kode
+        tidsperiode.tom !== undefined && // @ts-expect-error -- gidder ikke fikse gammel kode
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         dayjs(tidsperiode.fom).isSameOrBefore(tidsperiode.tom, 'day')
     );

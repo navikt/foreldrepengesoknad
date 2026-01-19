@@ -40,7 +40,7 @@ export const OppstartDatoMorFødsel = ({ oppstartValg }: Props) => {
         : intl.formatMessage({ id: 'termindato' });
     return (
         <div>
-            <VStack gap="3">
+            <VStack gap="space-12">
                 <HStack gap="space-4">
                     <OppstartDatoInput oppstartValg={oppstartValg} />
                     {visInformasjon && <MorOppstartInformasjon oppstartDato={oppstartDato} />}

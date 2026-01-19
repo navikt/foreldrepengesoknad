@@ -64,7 +64,7 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
                         ),
                     ]}
                 />
-                <Box.New padding="4" background="brand-blue-moderate" borderRadius="medium">
+                <Box padding="space-16" background="brand-blue-moderate" borderRadius="medium">
                     <HStack gap="space-8">
                         <FileIcon height={24} width={24} color="#005B82" />
                         <VStack gap="space-8" style={{ width: '85%' }}>
@@ -73,7 +73,7 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
                             </BodyLong>
                         </VStack>
                     </HStack>
-                </Box.New>
+                </Box>
             </VStack>
             {søknadGjelderEtNyttBarn && (
                 <>

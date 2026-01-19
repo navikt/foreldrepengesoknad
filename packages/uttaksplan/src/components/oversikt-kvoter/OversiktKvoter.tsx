@@ -202,7 +202,7 @@ const OversiktKvoter: FunctionComponent<Props> = ({
                     <Heading size="xsmall" style={{ marginBottom: '1rem' }}>
                         <FormattedMessage id="uttaksplan.oversiktKvoter.redusert.tittel" />
                     </Heading>
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <BodyShort>
                             <FormattedMessage id="uttaksplan.oversiktKvoter.redusert.forbrukt.info"></FormattedMessage>
                         </BodyShort>

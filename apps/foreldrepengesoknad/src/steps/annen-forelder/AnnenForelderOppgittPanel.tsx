@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
-import { Alert, BodyLong, BodyShort, List, Radio, ReadMore, VStack } from '@navikt/ds-react';
+import { Alert, BodyLong, BodyShort, Box, List, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { Barn } from '@navikt/fp-common';
 import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
@@ -131,21 +131,22 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                         })}
                     >
                         <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder"></FormattedMessage>
-                        <List>
-                            <List.Item>
-                                <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt1" />
-                            </List.Item>
-                            <List.Item>
-                                <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt2" />
-                            </List.Item>
-                            <List.Item>
-                                <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt3" />
-                            </List.Item>
-                        </List>
+                        <Box marginBlock="space-16" asChild>
+                            <List data-aksel-migrated-v8>
+                                <List.Item>
+                                    <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt1" />
+                                </List.Item>
+                                <List.Item>
+                                    <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt2" />
+                                </List.Item>
+                                <List.Item>
+                                    <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt3" />
+                                </List.Item>
+                            </List>
+                        </Box>
                     </ReadMore>
                 </div>
             )}
-
             {formValues.erAleneOmOmsorg === false && formValues.harRettPåForeldrepengerINorge === false && (
                 <div>
                     <RhfRadioGroup
@@ -239,7 +240,6 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                     )}
                 </>
             )}
-
             {formValues.erAleneOmOmsorg === false &&
                 formValues.harRettPåForeldrepengerINorge === false &&
                 (formValues.harOppholdtSegIEØS === false || formValues.harRettPåForeldrepengerIEØS === false) &&

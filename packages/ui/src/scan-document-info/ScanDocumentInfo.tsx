@@ -1,6 +1,6 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyLong, ExpansionCard, Link, List, VStack } from '@navikt/ds-react';
+import { BodyLong, Box, ExpansionCard, Link, List, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 
@@ -16,23 +16,25 @@ export const ScanDocumentInfo = () => (
                 <BodyLong>
                     <FormattedMessage id="ScanDocumentInfo.Del1" />
                 </BodyLong>
-                <List>
-                    <List.Item>
-                        <FormattedMessage id="ScanDocumentInfo.Liste.Punkt1" />
-                    </List.Item>
-                    <List.Item>
-                        <FormattedMessage id="ScanDocumentInfo.Liste.Punkt2" />
-                    </List.Item>
-                    <List.Item>
-                        <FormattedMessage id="ScanDocumentInfo.Liste.Punkt3" />
-                    </List.Item>
-                    <List.Item>
-                        <FormattedMessage id="ScanDocumentInfo.Liste.Punkt4" />
-                    </List.Item>
-                    <List.Item>
-                        <FormattedMessage id="ScanDocumentInfo.Liste.Punkt5" />
-                    </List.Item>
-                </List>
+                <Box marginBlock="space-16" asChild>
+                    <List data-aksel-migrated-v8>
+                        <List.Item>
+                            <FormattedMessage id="ScanDocumentInfo.Liste.Punkt1" />
+                        </List.Item>
+                        <List.Item>
+                            <FormattedMessage id="ScanDocumentInfo.Liste.Punkt2" />
+                        </List.Item>
+                        <List.Item>
+                            <FormattedMessage id="ScanDocumentInfo.Liste.Punkt3" />
+                        </List.Item>
+                        <List.Item>
+                            <FormattedMessage id="ScanDocumentInfo.Liste.Punkt4" />
+                        </List.Item>
+                        <List.Item>
+                            <FormattedMessage id="ScanDocumentInfo.Liste.Punkt5" />
+                        </List.Item>
+                    </List>
+                </Box>
                 <BodyLong>
                     <FormattedMessage id="ScanDocumentInfo.Del2" />
                 </BodyLong>

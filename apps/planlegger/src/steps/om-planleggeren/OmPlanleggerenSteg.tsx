@@ -13,12 +13,12 @@ export const OmPlanleggerenSteg = () => {
 
     return (
         <PlanleggerForside>
-            <VStack gap={{ xs: '3', sm: '10' }}>
+            <VStack gap={{ xs: 'space-12', sm: 'space-40' }}>
                 <BodyShort size="large">
                     <FormattedMessage id="OmPlanleggerenSteg.Ingress" />
                 </BodyShort>
-                <VStack gap={{ xs: '8', sm: '20' }}>
-                    <VStack gap={{ xs: '2', sm: '5' }}>
+                <VStack gap={{ xs: 'space-32', sm: 'space-80' }}>
+                    <VStack gap={{ xs: 'space-8', sm: 'space-20' }}>
                         <Heading level="2" size="xsmall">
                             <FormattedMessage id="OmPlanleggerenSteg.Underoverskrift" />
                         </Heading>

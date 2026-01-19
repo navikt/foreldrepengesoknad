@@ -47,7 +47,7 @@ export const FlerbarnsdagerInformasjon = ({
         : getNavnGenitivEierform(farTekst, intl.locale);
     return (
         <Alert variant="info" style={{ paddingBottom: '2rem', marginTop: '1.5rem' }}>
-            <VStack gap="3">
+            <VStack gap="space-12">
                 <div>
                     <FormattedMessage
                         id="fordeling.flerbarnsuker.info.del1"

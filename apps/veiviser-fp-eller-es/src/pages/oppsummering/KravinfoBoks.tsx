@@ -25,7 +25,7 @@ export const KravinfoBoks = ({
         <Heading size="small" level={headerLevel}>
             {headerText}
         </Heading>
-        <Box.New background="brand-blue-moderate" padding="4" borderRadius="large">
+        <Box background="brand-blue-moderate" padding="space-16" borderRadius="large">
             <HStack gap="space-8" wrap={false}>
                 <div>
                     {erOppfylt && (
@@ -55,6 +55,6 @@ export const KravinfoBoks = ({
                     <BodyShort>{boxBodyText}</BodyShort>
                 </VStack>
             </HStack>
-        </Box.New>
+        </Box>
     </VStack>
 );

@@ -28,7 +28,7 @@ export const HarRettEs = ({ fpEllerEsSituasjon, satser }: Props) => {
 
     return (
         <>
-            <Box.New background="brand-blue-moderate" padding="8" borderRadius="large">
+            <Box background="brand-blue-moderate" padding="space-32" borderRadius="large">
                 <VStack gap="space-32">
                     <VStack gap="space-32" align="center">
                         <StrollerIcon
@@ -46,7 +46,7 @@ export const HarRettEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                             )}
                         </Heading>
                     </VStack>
-                    <Box.New background="default" padding="4" borderRadius="large">
+                    <Box background="default" padding="space-16" borderRadius="large">
                         <VStack gap="space-8">
                             <Heading size="xsmall" level="2">
                                 <FormattedMessage id="OppsummeringSide.HvaErEs" />
@@ -61,10 +61,9 @@ export const HarRettEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                                 />
                             </BodyShort>
                         </VStack>
-                    </Box.New>
+                    </Box>
                 </VStack>
-            </Box.New>
-
+            </Box>
             <HStack justify="space-around">
                 <Link href={links.søknadEngangsstønad} target="_blank" rel="norefferer">
                     <Button>

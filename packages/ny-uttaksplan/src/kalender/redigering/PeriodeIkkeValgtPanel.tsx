@@ -28,7 +28,7 @@ export const PeriodeIkkeValgtPanel = ({ scrollToKvoteOppsummering, labels }: Pro
 
     return (
         <VStack gap="space-16">
-            <Box.New
+            <Box
                 padding="space-12"
                 onClick={erDesktop ? undefined : () => setErMinimert(!erMinimert)}
                 className={
@@ -63,7 +63,7 @@ export const PeriodeIkkeValgtPanel = ({ scrollToKvoteOppsummering, labels }: Pro
                 <Show above="md">
                     <FormattedMessage id="RedigeringKalenderIndex.VelgDatoerIKalender" />
                 </Show>
-            </Box.New>
+            </Box>
             {!erMinimert && (
                 <VStack gap="space-16" className="px-4 pb-4">
                     {labels}

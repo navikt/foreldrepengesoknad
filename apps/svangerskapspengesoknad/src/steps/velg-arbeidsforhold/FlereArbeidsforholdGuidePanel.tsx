@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 
-import { BodyLong, GuidePanel, List } from '@navikt/ds-react';
+import { BodyLong, Box, GuidePanel, List } from '@navikt/ds-react';
 
 import { loggUmamiEvent } from '@navikt/fp-metrics';
 
@@ -12,18 +12,20 @@ export const FlereArbeidsforholdGuidePanel = () => {
             <BodyLong>
                 <FormattedMessage id="velgArbeid.guidepanel.tekst" />
             </BodyLong>
-            <List>
-                <List.Item>
-                    <BodyLong>
-                        <FormattedMessage id="velgArbeid.guidepanel.liste.del1" />
-                    </BodyLong>
-                </List.Item>
-                <List.Item>
-                    <BodyLong>
-                        <FormattedMessage id="velgArbeid.guidepanel.liste.del2" />
-                    </BodyLong>
-                </List.Item>
-            </List>
+            <Box marginBlock="space-16" asChild>
+                <List data-aksel-migrated-v8>
+                    <List.Item>
+                        <BodyLong>
+                            <FormattedMessage id="velgArbeid.guidepanel.liste.del1" />
+                        </BodyLong>
+                    </List.Item>
+                    <List.Item>
+                        <BodyLong>
+                            <FormattedMessage id="velgArbeid.guidepanel.liste.del2" />
+                        </BodyLong>
+                    </List.Item>
+                </List>
+            </Box>
         </GuidePanel>
     );
 };

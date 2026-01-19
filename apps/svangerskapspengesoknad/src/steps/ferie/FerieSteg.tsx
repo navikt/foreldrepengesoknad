@@ -163,7 +163,7 @@ function FeriePerioder() {
                 {fields.map((field, index) => (
                     <VStack gap="space-16" key={field.id} className="feriePeriode">
                         <HStack justify="space-between" align="center">
-                            <Tag variant="info-moderate">
+                            <Tag data-color="info" variant="moderate">
                                 <FormattedMessage id="ferie.heading" />
                             </Tag>
                             {index > 0 && (

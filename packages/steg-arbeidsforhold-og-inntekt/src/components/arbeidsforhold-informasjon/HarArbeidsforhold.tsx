@@ -20,9 +20,9 @@ export const HarArbeidsforhold = ({ arbeidsforhold, harArbeidsforhold }: Props) 
     return (
         <VStack gap="space-8">
             {arbeidsforhold.map((arbforhold) => (
-                <Box.New
+                <Box
                     key={arbforhold.arbeidsgiverId + arbforhold.fom + arbforhold.fom}
-                    padding="4"
+                    padding="space-16"
                     background="brand-blue-moderate"
                     borderRadius="medium"
                 >
@@ -66,7 +66,7 @@ export const HarArbeidsforhold = ({ arbeidsforhold, harArbeidsforhold }: Props) 
                             />
                         </BodyShort>
                     </VStack>
-                </Box.New>
+                </Box>
             ))}
         </VStack>
     );

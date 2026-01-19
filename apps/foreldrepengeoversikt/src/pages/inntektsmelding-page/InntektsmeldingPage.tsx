@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Navigate, useParams } from 'react-router-dom';
 
-import { Alert, BodyShort, Detail, HGrid, Heading, List, Loader, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Box, Detail, HGrid, Heading, List, Loader, VStack } from '@navikt/ds-react';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import {
@@ -233,13 +233,15 @@ const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: FpOversiktIn
     }
 
     return (
-        <List>
-            {inntektsmelding.bortfalteNaturalytelser.map((n) => (
-                <List.Item key={Object.values(n).join('-')}>
-                    <BortfaltNaturalytelseTekst bortfaltNaturalytelse={n} />
-                </List.Item>
-            ))}
-        </List>
+        <Box marginBlock="space-16" asChild>
+            <List data-aksel-migrated-v8>
+                {inntektsmelding.bortfalteNaturalytelser.map((n) => (
+                    <List.Item key={Object.values(n).join('-')}>
+                        <BortfaltNaturalytelseTekst bortfaltNaturalytelse={n} />
+                    </List.Item>
+                ))}
+            </List>
+        </Box>
     );
 };
 

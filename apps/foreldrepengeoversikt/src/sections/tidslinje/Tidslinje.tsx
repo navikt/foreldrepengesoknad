@@ -17,7 +17,7 @@ import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link as LinkInternal } from 'react-router-dom';
 
-import { BodyShort, Button, Link, List, Process, ReadMore, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Button, Link, List, Process, ReadMore, VStack } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 import { BarnDto_fpoversikt, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
@@ -70,7 +70,7 @@ export const Tidslinje = ({ sak, søkersBarn, tidslinjeHendelser, manglendeVedle
     });
 
     return (
-        <VStack gap="4">
+        <VStack gap="space-16">
             <Process isTruncated={isTruncated}>
                 {hendelser.map((hendelse, index) => {
                     const erUtført = aktivtStegIndexISnitt >= index;
@@ -222,21 +222,23 @@ const Hendelse = ({
                     title={intl.formatMessage({ id: 'tidslinje.tittel.VENT_DOKUMENTASJON' })}
                     bullet={<PaperplaneIcon />}
                 >
-                    <VStack gap="2">
+                    <VStack gap="space-8">
                         <BodyShort>
                             {intl.formatMessage({
                                 id: 'tidslinje.VENT_DOKUMENTASJON.flereVedlegg.tittel',
                             })}
                         </BodyShort>
-                        <List>
-                            {manglendeVedlegg.map((skjemaId) => {
-                                return (
-                                    <List.Item key={guid()}>
-                                        {intl.formatMessage({ id: `ettersendelse.${skjemaId}` })}
-                                    </List.Item>
-                                );
-                            })}
-                        </List>
+                        <Box marginBlock="space-16" asChild>
+                            <List data-aksel-migrated-v8>
+                                {manglendeVedlegg.map((skjemaId) => {
+                                    return (
+                                        <List.Item key={guid()}>
+                                            {intl.formatMessage({ id: `ettersendelse.${skjemaId}` })}
+                                        </List.Item>
+                                    );
+                                })}
+                            </List>
+                        </Box>
                         <BodyShort size="small">
                             {intl.formatMessage({ id: 'tidslinje.VENT_DOKUMENTASJON.informasjon' })}
                         </BodyShort>

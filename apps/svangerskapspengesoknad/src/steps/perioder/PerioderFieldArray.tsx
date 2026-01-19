@@ -119,7 +119,7 @@ export const PerioderFieldArray = ({
                         <VStack gap="space-4">
                             <HorizontalLine />
                             <HStack justify="space-between" align="center">
-                                <Tag variant="info-moderate">
+                                <Tag data-color="info" variant="moderate">
                                     {getPeriodeInfoTekst(
                                         index,
                                         sisteDagForSvangerskapspenger,
