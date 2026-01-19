@@ -151,6 +151,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                 tomValue &&
                 søker === 'MOR' &&
                 !erAdopsjon &&
+                (hvaVilDuGjøre === 'LEGG_TIL_FERIE' || hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') &&
                 kanMisteDagerVedEndringTilFerie([{ fom: fomValue, tom: tomValue }], familiehendelsedato) && (
                     <Alert variant="info" size="small">
                         <FormattedMessage id="RedigeringPanel.KanMisteDager" />
