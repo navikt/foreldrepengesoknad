@@ -290,9 +290,9 @@ const AntallUkerVelger = ({
     return (
         <VStack gap="space-24">
             <ToggleGroup
+                data-color="neutral"
                 defaultValue={hvorLangPeriode?.dekningsgrad}
                 size={isDesktop ? 'medium' : 'small'}
-                variant="neutral"
                 onChange={(value) => oppdaterPeriodeOgFordeling(value as Dekningsgrad)}
                 style={{ width: '100%' }}
             >
@@ -315,7 +315,6 @@ const AntallUkerVelger = ({
                     />
                 </ToggleGroup.Item>
             </ToggleGroup>
-
             {hvemHarRett === 'beggeHarRett' &&
                 (!omBarnet.erFødsel || hvemPlanlegger.type !== HvemPlanleggerType.FAR_OG_FAR) && (
                     <>

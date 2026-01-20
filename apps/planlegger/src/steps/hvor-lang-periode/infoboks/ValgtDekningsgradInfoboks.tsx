@@ -97,7 +97,7 @@ export const ValgtDekningsgradInfoboks = ({
             shouldFadeIn
             color="green"
         >
-            <VStack paddingBlock="0 2">
+            <VStack paddingBlock="space-0 space-8">
                 <BodyShort>
                     {erAdopsjon && (
                         <FormattedMessage

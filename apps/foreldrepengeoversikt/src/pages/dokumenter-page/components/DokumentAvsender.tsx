@@ -9,7 +9,7 @@ const labelMap: Record<JournalpostType_fpoversikt, string> = {
 
 export const DokumentAvsender = ({ dokumentType }: { dokumentType: JournalpostType_fpoversikt }) => {
     return (
-        <Tag size="small" className="min-w-12 justify-self-end" variant="neutral">
+        <Tag data-color="neutral" size="small" className="min-w-12 justify-self-end" variant="outline">
             {labelMap[dokumentType]}
         </Tag>
     );

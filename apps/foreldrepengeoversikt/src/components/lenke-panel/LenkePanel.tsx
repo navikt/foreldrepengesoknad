@@ -28,7 +28,7 @@ export const LenkePanel = ({ to, tittel, undertittel, Ikon, className, tag }: Pr
                             aria-hidden
                         />
                     )}
-                    <VStack gap="0" className="flex-1">
+                    <VStack gap="space-0" className="flex-1">
                         <BodyShort size="medium" weight="semibold">
                             {tittel}
                         </BodyShort>

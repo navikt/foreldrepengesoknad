@@ -4,7 +4,7 @@ import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 
-import '@navikt/ds-css/darkside';
+import '@navikt/ds-css';
 
 import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 

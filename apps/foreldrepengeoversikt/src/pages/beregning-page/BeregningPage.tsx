@@ -36,7 +36,7 @@ export const BeregningPage = () => {
 
     return (
         <PageRouteLayout header={<BeregningHeader />}>
-            <VStack gap="2">
+            <VStack gap="space-8">
                 <BeregningOppsummering sak={gjeldendeSak} />
 
                 <ExpansionCard size="medium" aria-label={intl.formatMessage({ id: 'beregning.tittel' })}>
@@ -49,7 +49,7 @@ export const BeregningPage = () => {
                         </ExpansionCard.Description>
                     </ExpansionCard.Header>
                     <ExpansionCard.Content>
-                        <VStack gap="4">
+                        <VStack gap="space-16">
                             {beregning.beregningsAndeler.map((andel) => (
                                 <BeregningAndel
                                     andel={andel}
@@ -163,7 +163,7 @@ const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: n
 const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
     const intl = useIntl();
     return (
-        <VStack gap="2">
+        <VStack gap="space-8">
             <BodyShort>
                 {andel.arbeidsforhold === undefined ? (
                     <Label>{capitalizeFirstLetter(finnStatus(andel.aktivitetStatus, intl))}</Label>
@@ -173,7 +173,7 @@ const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
                     </Label>
                 )}
             </BodyShort>
-            <HGrid gap="2" columns={{ xs: '1fr max-content' }}>
+            <HGrid gap="space-8" columns={{ xs: '1fr max-content' }}>
                 <BodyShort>
                     <FormattedMessage
                         id="beregning.andel.beregnetMånedsinntekt"

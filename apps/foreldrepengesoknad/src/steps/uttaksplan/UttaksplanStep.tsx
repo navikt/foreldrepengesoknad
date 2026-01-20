@@ -655,7 +655,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                                 )}
                                 {/*Siden knappene her har mye unik logikk gjør vi en liten duplisering av "StepButtons" istedenfor å innføre knotete logikk*/}
                                 <HGrid
-                                    gap={{ xs: '4', sm: '8 4' }}
+                                    gap={{ xs: 'space-16', sm: 'space-32 space-16' }}
                                     columns={{ xs: 1, sm: 2 }}
                                     width={{ sm: 'fit-content' }}
                                 >

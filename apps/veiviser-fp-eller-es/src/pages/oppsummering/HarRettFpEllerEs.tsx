@@ -28,7 +28,7 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
 
     return (
         <>
-            <Box.New background="brand-blue-moderate" padding="8" borderRadius="large">
+            <Box background="brand-blue-moderate" padding="space-32" borderRadius="8">
                 <VStack gap="space-24">
                     <VStack gap="space-32" align="center">
                         <StrollerIcon
@@ -42,8 +42,8 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                             <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRettFpEllerEs" />
                         </Heading>
                     </VStack>
-                    <Box.New background="brand-blue-moderate" borderWidth="2" padding="4" borderRadius="large">
-                        <VStack gap="3">
+                    <Box background="brand-blue-moderate" borderWidth="2" padding="space-16" borderRadius="8">
+                        <VStack gap="space-12">
                             <HStack justify="space-between">
                                 <Heading size="small">
                                     <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRettFpEllerEs.KanVelgeMellom" />
@@ -82,9 +82,9 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                                 </BodyShort>
                             </VStack>
                         </VStack>
-                    </Box.New>
+                    </Box>
                     <VStack gap="space-8">
-                        <Box.New background="default" padding="4" borderRadius="large">
+                        <Box background="default" padding="space-16" borderRadius="8">
                             <VStack gap="space-8">
                                 <Heading size="xsmall">
                                     <FormattedMessage id="OppsummeringFpEllerEsSide.HvaErFp" />
@@ -97,8 +97,8 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                                     />
                                 </BodyShort>
                             </VStack>
-                        </Box.New>
-                        <Box.New background="default" padding="4" borderRadius="large">
+                        </Box>
+                        <Box background="default" padding="space-16" borderRadius="8">
                             <VStack gap="space-8">
                                 <Heading size="xsmall">
                                     <FormattedMessage id="OppsummeringSide.HvaErEs" />
@@ -113,10 +113,10 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                                     />
                                 </BodyShort>
                             </VStack>
-                        </Box.New>
+                        </Box>
                     </VStack>
                 </VStack>
-            </Box.New>
+            </Box>
             <Infobox
                 icon={
                     <InformationIcon

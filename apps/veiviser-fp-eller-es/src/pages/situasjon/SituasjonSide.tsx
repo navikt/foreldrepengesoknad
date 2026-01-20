@@ -6,7 +6,7 @@ import { UseFormReturn, useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
-import { BodyShort, Button, Heading, Label, Link, List, Radio, ReadMore, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Button, Heading, Label, Link, List, Radio, ReadMore, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { RhfForm, RhfNumericField } from '@navikt/fp-form-hooks';
@@ -138,31 +138,33 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                 <BodyShort>
                                     <FormattedMessage id="SituasjonSide.HvaGirRett.EnAvDisse" />
                                 </BodyShort>
-                                <List>
-                                    <List.Item>
-                                        <FormattedMessage id="SituasjonSide.HvaGirRett.Sykepenger" />
-                                    </List.Item>
-                                    <List.Item>
-                                        <FormattedMessage id="SituasjonSide.HvaGirRett.Fp" />
-                                    </List.Item>
-                                    <List.Item>
-                                        <FormattedMessage id="SituasjonSide.HvaGirRett.Svp" />
-                                    </List.Item>
-                                    <List.Item>
-                                        <FormattedMessage id="SituasjonSide.HvaGirRett.Ap" />
-                                    </List.Item>
-                                    <List.Item>
-                                        <FormattedMessage id="SituasjonSide.HvaGirRett.Dagpenger" />
-                                    </List.Item>
-                                    <List.Item>
-                                        <FormattedMessage id="SituasjonSide.HvaGirRett.Omsorgspenger" />
-                                    </List.Item>
-                                </List>
+                                <Box marginBlock="space-16" asChild>
+                                    <List>
+                                        <List.Item>
+                                            <FormattedMessage id="SituasjonSide.HvaGirRett.Sykepenger" />
+                                        </List.Item>
+                                        <List.Item>
+                                            <FormattedMessage id="SituasjonSide.HvaGirRett.Fp" />
+                                        </List.Item>
+                                        <List.Item>
+                                            <FormattedMessage id="SituasjonSide.HvaGirRett.Svp" />
+                                        </List.Item>
+                                        <List.Item>
+                                            <FormattedMessage id="SituasjonSide.HvaGirRett.Ap" />
+                                        </List.Item>
+                                        <List.Item>
+                                            <FormattedMessage id="SituasjonSide.HvaGirRett.Dagpenger" />
+                                        </List.Item>
+                                        <List.Item>
+                                            <FormattedMessage id="SituasjonSide.HvaGirRett.Omsorgspenger" />
+                                        </List.Item>
+                                    </List>
+                                </Box>
                             </ReadMore>
                         </VStack>
                     )}
                     {erIArbeid === false && (
-                        <VStack gap="3">
+                        <VStack gap="space-12">
                             <BlueRadioGroup
                                 name="harHattAndreInntekter"
                                 control={formMethods.control}
@@ -197,7 +199,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                     )}
 
                     {(erIArbeid || harHattAndreInntekter) && (
-                        <VStack gap="3">
+                        <VStack gap="space-12">
                             <BlueRadioGroup
                                 name="harHattInntekt"
                                 control={formMethods.control}
@@ -227,7 +229,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                     )}
 
                     {harHattInntekt && (
-                        <VStack gap="3">
+                        <VStack gap="space-12">
                             <VStack gap="space-16">
                                 <BluePanel
                                     isDarkBlue={lønnPerMåned === undefined || lønnPerMåned === null}
@@ -310,7 +312,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                     )}
 
                     {(lønnPerMåned || harHattInntekt === false || harHattAndreInntekter === false) && (
-                        <VStack gap="3">
+                        <VStack gap="space-12">
                             <BlueRadioGroup
                                 name="borDuINorge"
                                 control={formMethods.control}
@@ -329,7 +331,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                     <Spacer />
 
                     {borDuINorge === false && (
-                        <VStack gap="3">
+                        <VStack gap="space-12">
                             <BlueRadioGroup
                                 name="jobberDuINorge"
                                 control={formMethods.control}
