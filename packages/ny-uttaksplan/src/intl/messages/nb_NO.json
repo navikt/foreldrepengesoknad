@@ -132,6 +132,7 @@
     "leggTilPeriodePanel.samtidiguttaksprosent.måVæreStørreEnn0": "Prosenten må være et tall større enn 0",
     "leggTilPeriodePanel.samtidiguttaksprosent.måVæreMindreEnn100": "Prosenten må være et tall mindre eller lik 100",
     "LeggTilPeriodePanel.LeggTil": "Legg til",
+    "LeggTilPeriodePanel.Avbryt": "Avbryt",
     "endrePeriodePanel.tittel": "Endre periode",
     "endreTidsPeriodeModal.fom.påkrevd": "Du må oppgi en startdato",
     "endreTidsPeriodeModal.fom.gyldigDato": "Startdatoen må være en gyldig dato på formatet dd.mm.åååå",

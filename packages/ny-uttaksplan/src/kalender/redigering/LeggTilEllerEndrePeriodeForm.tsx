@@ -105,6 +105,9 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
                     <Button type="submit" variant="primary" disabled={!formMethods.formState.isDirty}>
                         <FormattedMessage id="LeggTilPeriodePanel.LeggTil" />
                     </Button>
+                    <Button type="button" variant="primary" onClick={lukkRedigeringsmodus}>
+                        <FormattedMessage id="LeggTilPeriodePanel.Avbryt" />
+                    </Button>
                 </HStack>
             </VStack>
         </RhfForm>
