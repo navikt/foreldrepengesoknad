@@ -94,7 +94,7 @@ export const BekreftelseSendtSøknad = ({
                                 </BodyLong>
                                 <div>
                                     <BodyShort>
-                                        {intl.formatMessage({ id: 'BekreftelseSendtSøknad.DokSomMangler' })}
+                                        <FormattedMessage id="BekreftelseSendtSøknad.DokSomMangler" />
                                     </BodyShort>
                                     <Box marginBlock="space-16" asChild>
                                         <List>
