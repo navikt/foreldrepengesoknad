@@ -1,4 +1,6 @@
 import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import minMax from 'dayjs/plugin/minMax';
 import { IntlShape, useIntl } from 'react-intl';
 
@@ -11,6 +13,8 @@ import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../utils/UttakPeriodeBuilder';
 import { LeggTilEllerEndrePeriodeFormFormValues } from './LeggTilEllerEndrePeriodeFellesForm';
 
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
 dayjs.extend(minMax);
 
 const hasValue = (v: string | number | boolean | undefined | null) => v !== '' && v !== undefined && v !== null;
