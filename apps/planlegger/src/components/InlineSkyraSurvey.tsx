@@ -14,7 +14,7 @@ declare global {
 
 export const InlineSkyraSurvey = () => {
     return (
-        <Box padding="space-16">
+        <Box padding="space-16" className="border-ax-neutral-500 border mb-2 ax-border-default rounded-xl">
             {/* @ts-expect-error - skyra-survey er et custom element */}
             <skyra-survey
                 className=""

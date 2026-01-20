@@ -55,7 +55,7 @@ skyra-survey::part(bodyHtml) {
 }
 
 skyra-survey::part(button-primary) {
-    background-color: var(--ax-bg-info-strong);
+    background-color: var(--ax-bg-info-soft);
     color: var(--ax-text-info-contrast);
 }
 skyra-survey::part(button-secondary) {
