@@ -17,7 +17,7 @@ import {
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilUttakPeriode,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
-import { useFormSubmitValidator } from '../../felles/validators';
+import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 
 dayjs.extend(isSameOrBefore);

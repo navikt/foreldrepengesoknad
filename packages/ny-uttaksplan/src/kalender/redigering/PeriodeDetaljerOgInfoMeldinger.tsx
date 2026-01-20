@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Alert, BodyShort, VStack } from '@navikt/ds-react';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { kanMisteDagerVedEndringTilFerie } from '../../felles/validators';
+import { kanMisteDagerVedEndringTilFerie } from '../../felles/uttaksplanValidatorer';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import { EksisterendeValgtePerioder } from './EksisterendeValgtePerioder';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';

@@ -18,7 +18,7 @@ import {
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilUttakPeriode,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
-import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/validators';
+import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
 import { PanelButtons } from '../../liste/panel-buttons/PanelButtons';
 import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';

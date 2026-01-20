@@ -127,6 +127,7 @@
     "leggTilPeriodePanel.stillingsprosent.måVæreEtTall": "Stillingsprosenten må vere eit tal",
     "leggTilPeriodePanel.stillingsprosent.måVæreStørreEnn0": "Stillingsprosenten må vere eit tal større enn 0",
     "leggTilPeriodePanel.stillingsprosent.måVæreMindreEnn100": "Stillingsprosenten må vere eit tal mindre enn 100",
+    "leggTilPeriodePanel.stillingsprosent.samtidigUttak": "Stillingsprosent og samtidig uttak kan ikkje vere meir enn 100 % samanlagt",
     "leggTilPeriodePanel.samtidiguttaksprosent.påkrevd": "Du må oppgi prosenten med samtidig uttak",
     "leggTilPeriodePanel.samtidiguttaksprosent.måVæreEtTall": "Prosenten må vere eit tal",
     "leggTilPeriodePanel.samtidiguttaksprosent.måVæreStørreEnn0": "Prosenten må vere eit tal større enn 0",
@@ -272,5 +273,6 @@
     "LeggTilEllerEndrePeriodeForm.Stillingsprosent.Mor": "Kor mange prosent skal mor jobbe?",
     "LeggTilEllerEndrePeriodeForm.Stillingsprosent.FarMedmor": "Kor mange prosent skal {erMedmor, select, true {medmor} other {far}} jobbe?",
     "VelgPeriodePanelStep.VelgPeriode": "Du må velga kva for periode du vil endra på",
-    "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "Du har valgt ein kombinasjon av dagar som ikkje er gyldige for nokon foreldre."
+    "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "Du har valgt ein kombinasjon av dagar som ikkje er gyldige for nokon foreldre.",
+    "LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse": "Du kan ikkje velga meir enn to veker totalt i perioden to veker før og seks veker etter fødsel/termin"
 }

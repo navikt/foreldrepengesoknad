@@ -22,7 +22,7 @@ import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskontoNavnSimple } from '../liste/utils/uttaksplanListeUtils';
 import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import { useHentGyldigeKontotyper } from './useHentGyldigeKontotyper';
-import { prosentValideringGradering, valideringSamtidigUttak } from './validators';
+import { prosentValideringGradering, valideringSamtidigUttak } from './uttaksplanValidatorer';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);

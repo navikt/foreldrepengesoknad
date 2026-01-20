@@ -127,6 +127,7 @@
     "leggTilPeriodePanel.stillingsprosent.måVæreEtTall": "The percentage must be a number",
     "leggTilPeriodePanel.stillingsprosent.måVæreStørreEnn0": "The percentage must be a number greater than 0",
     "leggTilPeriodePanel.stillingsprosent.måVæreMindreEnn100": "The percentage must be a number smaller than 100",
+    "leggTilPeriodePanel.stillingsprosent.samtidigUttak": "The percentage and simultaneous withdrawal cannot amount to more than 100% combined",
     "leggTilPeriodePanel.samtidiguttaksprosent.påkrevd": "You must specify what percentage you will be staying at home together",
     "leggTilPeriodePanel.samtidiguttaksprosent.måVæreEtTall": "The percentage must be a number",
     "leggTilPeriodePanel.samtidiguttaksprosent.måVæreStørreEnn0": "The percentage must be a number greater than 0",
@@ -272,5 +273,6 @@
     "LeggTilEllerEndrePeriodeForm.Stillingsprosent.Mor": "How many percent should mother work?",
     "LeggTilEllerEndrePeriodeForm.Stillingsprosent.FarMedmor": "How many percent should {erMedmor, select, true {co-mother} other {father}} work?",
     "VelgPeriodePanelStep.VelgPeriode": "You must select which period you want to change",
-    "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "You have selected a combination of days that is not valid for any parent."
+    "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "You have selected a combination of days that is not valid for any parent.",
+    "LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse": "You cannot choose more than two weeks in total in the period two weeks before and six weeks after birth/due date."
 }
