@@ -279,6 +279,12 @@
     "LeggTilEllerEndrePeriodeForm.Nei": "No",
     "LeggTilEllerEndrePeriodeForm.Stillingsprosent.Mor": "How many percent should mother work?",
     "LeggTilEllerEndrePeriodeForm.Stillingsprosent.FarMedmor": "How many percent should {erMedmor, select, true {co-mother} other {father}} work?",
+    "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Mor": "What is the reason for the transfer of the {erMedmor, select, true {co-mother's} other {father's}} quota?",
+    "LeggTilEllerEndrePeriodeForm.Overføringsårsak.FarMedmor": "What is the reason for the transfer of the mother's quota?",
+    "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Innlagt.Mor": "The {erMedmor, select, true {co-mother} other {father}} is hospitalized",
+    "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Innlagt.FarMedmor": "The mother is hospitalized",
+    "LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.Mor": "The {erMedmor, select, true {co-mother} other {father}} is too sick to care for the child",
+    "LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.FarMedmor": "The mother is too sick to care for the child",
     "VelgPeriodePanelStep.VelgPeriode": "You must select which period you want to change",
     "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "You have selected a combination of days that is not valid for any parent."
 }

@@ -4,13 +4,14 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, Radio, VStack } from '@navikt/ds-react';
+import { Alert, InlineMessage, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfNumericField, RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
 import type {
     BrukerRolleSak_fpoversikt,
     KontoTypeUttak,
     MorsAktivitet,
+    UttakOverføringÅrsak_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
@@ -38,6 +39,7 @@ export type LeggTilEllerEndrePeriodeFormFormValues = {
     stillingsprosentMor?: string;
     stillingsprosentFarMedmor?: string;
     morsAktivitet?: MorsAktivitet;
+    overføringsårsak?: UttakOverføringÅrsak_fpoversikt;
 };
 
 interface Props {
@@ -75,6 +77,8 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValues, valgtePeri
 
     const erMorGyldigForelder = gyldigeStønadskontoerForMor.length > 0;
     const erFarMedmorGyldigForelder = gyldigeStønadskontoerForFarMedmor.length > 0;
+    const morSøkerOmOverføring = kontoTypeMor === 'FEDREKVOTE' && forelder === 'MOR';
+    const farMedmorSøkerOmOverføring = kontoTypeFarMedmor === 'MØDREKVOTE' && forelder === 'FAR_MEDMOR';
 
     if (!erMorGyldigForelder && !erFarMedmorGyldigForelder) {
         return (
@@ -170,6 +174,97 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValues, valgtePeri
                     })}
                 </RhfRadioGroup>
             )}
+
+            {morSøkerOmOverføring ? (
+                <VStack gap="space-16">
+                    <hr className="text-ax-border-neutral-subtle" />
+                    <InlineMessage status="info">
+                        <VStack gap="space-8">
+                            <div>Fars kvote er vanligvis kun for far.</div>
+                            <div>
+                                I noen tilfeller kan du søke om å overta den andre forelderens kvote. I søknaden vil Nav
+                                be om dokumentasjon.
+                            </div>
+                        </VStack>
+                    </InlineMessage>
+                    <RhfRadioGroup
+                        name="overføringsårsak"
+                        control={formMethods.control}
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({
+                                    id: 'LeggTilEllerEndrePeriodeForm.Overføringsårsak.Påkrevd',
+                                }),
+                            ),
+                        ]}
+                        label={
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.Mor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        }
+                    >
+                        <Radio value="INSTITUSJONSOPPHOLD_ANNEN_FORELDER">
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.Innlagt.Mor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        </Radio>
+                        <Radio value="SYKDOM_ANNEN_FORELDER">
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.Mor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        </Radio>
+                    </RhfRadioGroup>
+                </VStack>
+            ) : null}
+
+            {farMedmorSøkerOmOverføring ? (
+                <VStack gap="space-16">
+                    <hr className="text-ax-border-neutral-subtle" />
+                    <InlineMessage status="info">
+                        <VStack gap="space-8">
+                            <div>Fars kvote er vanligvis kun for far.</div>
+                            <div>
+                                I noen tilfeller kan du søke om å overta den andre forelderens kvote. I søknaden vil Nav
+                                be om dokumentasjon.
+                            </div>
+                        </VStack>
+                    </InlineMessage>
+                    <RhfRadioGroup
+                        name="overføringsårsak"
+                        control={formMethods.control}
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({
+                                    id: 'LeggTilEllerEndrePeriodeForm.Overføringsårsak.Påkrevd',
+                                }),
+                            ),
+                        ]}
+                        label={
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.FarMedmor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        }
+                    >
+                        <Radio value="INSTITUSJONSOPPHOLD_ANNEN_FORELDER">
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.Innlagt.FarMedmor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        </Radio>
+                        <Radio value="SYKDOM_ANNEN_FORELDER">
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.FarMedmor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        </Radio>
+                    </RhfRadioGroup>
+                </VStack>
+            ) : null}
+
             {erFarMedmorUtenAleneomsorg && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
@@ -232,7 +327,8 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValues, valgtePeri
             )}
             {kontoTypeMor !== undefined &&
                 kontoTypeMor !== 'FORELDREPENGER_FØR_FØDSEL' &&
-                (forelder === 'MOR' || forelder === 'BEGGE') && (
+                (forelder === 'MOR' || forelder === 'BEGGE') &&
+                !morSøkerOmOverføring && (
                     <>
                         <hr className="text-ax-border-neutral-subtle" />
                         <VStack gap="space-16">
@@ -270,7 +366,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValues, valgtePeri
                         </VStack>
                     </>
                 )}
-            {(forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && (
+            {(forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && !farMedmorSøkerOmOverføring && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
                     <VStack gap="space-16">
@@ -339,6 +435,7 @@ export const mapFraFormValuesTilUttakPeriode = (
                 : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentMor) : undefined,
+            overføringÅrsak: values.overføringsårsak,
         });
     }
     if (values.forelder === 'FAR_MEDMOR' || values.forelder === 'BEGGE') {
@@ -358,6 +455,7 @@ export const mapFraFormValuesTilUttakPeriode = (
                 : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentFarMedmor) : undefined,
+            overføringÅrsak: values.overføringsårsak,
         });
     }
     return nye;
@@ -421,18 +519,17 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
                     : periode.kontoType,
             skalDuKombinereArbeidOgUttakFarMedmor: !!periode.gradering,
             stillingsprosentFarMedmor: periode.gradering?.arbeidstidprosent.toString(),
+            morsAktivitet: periode.morsAktivitet ? periode.morsAktivitet : undefined,
+            overføringsårsak: periode.overføringÅrsak ? periode.overføringÅrsak : undefined,
         };
     }
 
     return {
         forelder: 'MOR',
-        kontoTypeMor:
-            periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT'
-                ? 'AKTIVITETSFRI_KVOTE'
-                : periode.kontoType,
+        kontoTypeMor: periode.kontoType,
         samtidigUttaksprosentMor: periode.samtidigUttak?.toString(),
         skalDuKombinereArbeidOgUttakMor: !!periode.gradering,
         stillingsprosentMor: periode.gradering?.arbeidstidprosent.toString(),
-        morsAktivitet: periode.morsAktivitet,
+        overføringsårsak: periode.overføringÅrsak ? periode.overføringÅrsak : undefined,
     };
 };

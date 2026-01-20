@@ -279,6 +279,12 @@
     "LeggTilEllerEndrePeriodeForm.Nei": "Nei",
     "LeggTilEllerEndrePeriodeForm.Stillingsprosent.Mor": "Hvor mange prosent skal mor jobbe?",
     "LeggTilEllerEndrePeriodeForm.Stillingsprosent.FarMedmor": "Hvor mange prosent skal {erMedmor, select, true {medmor} other {far}} jobbe?",
+    "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Mor": "Hvorfor skal du overta {erMedmor, select, true {medmors} other {fars}} kvote?",
+    "LeggTilEllerEndrePeriodeForm.Overføringsårsak.FarMedmor": "Hvorfor skal du overta mors kvote?",
+    "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Innlagt.Mor": "{erMedmor, select, true {Medmor} other {Far}} er innlagt på sykehus",
+    "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Innlagt.FarMedmor": "Mor er innlagt på sykehus",
+    "LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.Mor": "{erMedmor, select, true {Medmor} other {Far}} er for syk til å ta seg av barnet",
+    "LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.FarMedmor": "Mor er for syk til å ta seg av barnet",
     "VelgPeriodePanelStep.VelgPeriode": "Du må velge hvilken periode du vil endre",
     "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "Du har valgt en kombinasjon av dager som ikke er gyldig for noen foreldre."
 }
