@@ -4,7 +4,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Accordion, BodyShort, ExpansionCard, HGrid, Label, VStack } from '@navikt/ds-react';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { AktivitetStatus, BeregningsAndel_fpoversikt, Beregningsgrunnlag_fpoversikt } from '@navikt/fp-types';
+import {
+    AktivitetStatus,
+    BeregningsAndel_fpoversikt,
+    Beregningsgrunnlag_fpoversikt,
+    FpSak_fpoversikt,
+} from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatCurrency, formatCurrencyWithKr, formatOppramsing } from '@navikt/fp-utils';
 
 import { BeregningHeader } from '../../components/header/Header.tsx';
@@ -29,34 +34,11 @@ export const BeregningPage = () => {
         return undefined;
     }
 
-    const sumDagsats = sumBy(beregning.beregningsAndeler, (a) => (a.dagsatsSøker ?? 0) + (a.dagsatsArbeidsgiver ?? 0));
-    const finnesRefusjon = beregning.beregningsAndeler.some((a) => (a.dagsatsArbeidsgiver ?? 0) > 0);
-    const finnesDirekteutbetaling = beregning.beregningsAndeler.some((a) => (a.dagsatsSøker ?? 0) > 0);
-    const utbetalingsmetodeTekst = formatOppramsing(
-        [
-            finnesRefusjon && intl.formatMessage({ id: 'beregning.utbetalingsTekst.arbeidsgiver' }),
-            finnesDirekteutbetaling && intl.formatMessage({ id: 'beregning.utbetalingsTekst.deg' }),
-        ].filter((a) => a !== false),
-        intl,
-    );
     return (
         <PageRouteLayout header={<BeregningHeader />}>
             <VStack gap="space-8">
-                <VStack>
-                    <Label>
-                        <FormattedMessage
-                            id="beregning.dagsats"
-                            values={{ sumDagsats: formatCurrencyWithKr(sumDagsats) }}
-                        />
-                    </Label>
-                    <BodyShort>{capitalizeFirstLetter(utbetalingsmetodeTekst)}</BodyShort>
-                </VStack>
-                <BodyShort>
-                    <Label>
-                        <FormattedMessage id="beregning.datoForVurdering" />
-                    </Label>{' '}
-                    {formaterDato(beregning.skjæringsTidspunkt, 'D. MMMM YYYY')}
-                </BodyShort>
+                <BeregningOppsummering sak={gjeldendeSak} />
+
                 <ExpansionCard size="medium" aria-label={intl.formatMessage({ id: 'beregning.tittel' })}>
                     <ExpansionCard.Header>
                         <ExpansionCard.Title>
@@ -80,6 +62,71 @@ export const BeregningPage = () => {
                 </ExpansionCard>
             </VStack>
         </PageRouteLayout>
+    );
+};
+
+const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
+    const intl = useIntl();
+
+    const beregning = sak.gjeldendeVedtak?.beregningsgrunnlag;
+    if (!beregning) {
+        return null;
+    }
+    const samletÅrsinntekt = sumBy(beregning.beregningsAndeler, (andel) => andel.fastsattPrÅr ?? 0);
+    const grunnbeløp = beregning.grunnbeløp ?? DEFAULT_SATSER.grunnbeløp[0]!.verdi;
+    const seksG = grunnbeløp * 6;
+    const vis6GVarsel = samletÅrsinntekt > seksG;
+    const åttiProsentReduksjon = samletÅrsinntekt * 0.8;
+    const visÅttiProsentReduksjon = sak.dekningsgrad === 'ÅTTI';
+
+    const sumDagsats = sumBy(beregning.beregningsAndeler, (a) => (a.dagsatsSøker ?? 0) + (a.dagsatsArbeidsgiver ?? 0));
+    const finnesRefusjon = beregning.beregningsAndeler.some((a) => (a.dagsatsArbeidsgiver ?? 0) > 0);
+    const finnesDirekteutbetaling = beregning.beregningsAndeler.some((a) => (a.dagsatsSøker ?? 0) > 0);
+    const utbetalingsmetodeTekst = formatOppramsing(
+        [
+            finnesRefusjon && intl.formatMessage({ id: 'beregning.utbetalingsTekst.arbeidsgiver' }),
+            finnesDirekteutbetaling && intl.formatMessage({ id: 'beregning.utbetalingsTekst.deg' }),
+        ].filter((a) => a !== false),
+        intl,
+    );
+
+    return (
+        <VStack>
+            <Label>
+                <FormattedMessage
+                    id="beregning.årsinntekt"
+                    values={{ årsinntekt: formatCurrencyWithKr(samletÅrsinntekt) }}
+                />
+            </Label>
+            <BodyShort>
+                <FormattedMessage
+                    id="beregning.datoForVurdering"
+                    values={{ dato: formaterDato(beregning.skjæringsTidspunkt, 'D. MMMM YYYY') }}
+                />
+            </BodyShort>
+            <BodyShort spacing>{capitalizeFirstLetter(utbetalingsmetodeTekst)}</BodyShort>
+
+            {vis6GVarsel && (
+                <BodyShort>
+                    <FormattedMessage
+                        id="beregning.6GVarsel"
+                        values={{ grunnbeløpSeksG: formatCurrencyWithKr(seksG) }}
+                    />
+                </BodyShort>
+            )}
+            {visÅttiProsentReduksjon && (
+                <BodyShort>
+                    <FormattedMessage
+                        id="beregning.visÅttiProsentReduksjon"
+                        values={{ value: formatCurrencyWithKr(åttiProsentReduksjon) }}
+                    />
+                </BodyShort>
+            )}
+
+            <Label>
+                <FormattedMessage id="beregning.dagsats" values={{ sumDagsats: formatCurrencyWithKr(sumDagsats) }} />
+            </Label>
+        </VStack>
     );
 };
 
