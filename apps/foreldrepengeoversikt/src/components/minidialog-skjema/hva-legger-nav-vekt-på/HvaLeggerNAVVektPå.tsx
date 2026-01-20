@@ -17,7 +17,7 @@ export const HvaLeggerNAVVektPå = () => {
     return (
         <ReadMore header={intl.formatMessage({ id: 'minidialog.hvaLeggerNAVVektPå.tilbakekreving.tittel' })}>
             <Box marginBlock="space-16" asChild>
-                <List data-aksel-migrated-v8>
+                <List>
                     {getPunktTekster(intl).map((punktTekst) => (
                         <List.Item key={`${punktTekst}`}>{punktTekst}</List.Item>
                     ))}

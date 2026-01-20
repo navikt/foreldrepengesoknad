@@ -13,7 +13,7 @@ export const FlereArbeidsforholdGuidePanel = () => {
                 <FormattedMessage id="velgArbeid.guidepanel.tekst" />
             </BodyLong>
             <Box marginBlock="space-16" asChild>
-                <List data-aksel-migrated-v8>
+                <List>
                     <List.Item>
                         <BodyLong>
                             <FormattedMessage id="velgArbeid.guidepanel.liste.del1" />

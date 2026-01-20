@@ -54,7 +54,7 @@ export const MorJobberOgStudererDokumentasjon = ({
                         />
                     </BodyShort>
                     <Box marginBlock="space-16" asChild>
-                        <List data-aksel-migrated-v8>
+                        <List>
                             <List.Item>
                                 <BodyShort>
                                     <FormattedMessage id="manglendeVedlegg.studerer.description.punkt1" />

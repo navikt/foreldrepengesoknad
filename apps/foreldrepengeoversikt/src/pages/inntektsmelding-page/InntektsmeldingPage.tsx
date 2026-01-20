@@ -234,7 +234,7 @@ const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: FpOversiktIn
 
     return (
         <Box marginBlock="space-16" asChild>
-            <List data-aksel-migrated-v8>
+            <List>
                 {inntektsmelding.bortfalteNaturalytelser.map((n) => (
                     <List.Item key={Object.values(n).join('-')}>
                         <BortfaltNaturalytelseTekst bortfaltNaturalytelse={n} />

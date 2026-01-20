@@ -58,7 +58,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                         <FormattedMessage id="forside.guidepanel" />
                     </BodyShort>
                     <Box marginBlock="space-16" asChild>
-                        <List data-aksel-migrated-v8>
+                        <List>
                             <List.Item>
                                 <FormattedMessage id="forside.guidepanel.punkt1" />
                             </List.Item>
@@ -125,7 +125,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                 >
                     <BodyShort size="medium">{intl.formatMessage({ id: 'forside.samtykkeIntro' })}</BodyShort>
                     <Box marginBlock="space-16" asChild>
-                        <List data-aksel-migrated-v8>
+                        <List>
                             <List.Item>
                                 <FormattedMessage id="forside.samtykkeIntro.punkt1" />
                             </List.Item>

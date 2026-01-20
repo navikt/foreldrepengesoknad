@@ -7,7 +7,7 @@ import { links } from '@navikt/fp-constants';
 export const DinePlikter = () => {
     return (
         <Box marginBlock="space-16" asChild>
-            <List data-aksel-migrated-v8>
+            <List>
                 <List.Item>
                     <BodyLong>
                         <FormattedMessage

@@ -72,7 +72,7 @@ const FeriePeriodeOppsummering = ({ avtaltFerie }: { avtaltFerie: AvtaltFerieDto
                         </FormSummary.Label>
                         <FormSummary.Value>
                             <Box marginBlock="space-16" asChild>
-                                <List data-aksel-migrated-v8>
+                                <List>
                                     {avtaltFerie.map((feriePeriode) => (
                                         <List.Item key={`${feriePeriode.fom}-${feriePeriode.tom}`}>
                                             {formatDate(feriePeriode.fom)} - {formatDate(feriePeriode.tom)}

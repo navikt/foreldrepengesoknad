@@ -132,7 +132,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                     >
                         <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder"></FormattedMessage>
                         <Box marginBlock="space-16" asChild>
-                            <List data-aksel-migrated-v8>
+                            <List>
                                 <List.Item>
                                     <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge.veileder.punkt1" />
                                 </List.Item>

@@ -273,7 +273,7 @@ function FlerePerioder({ perioder }: { perioder: UtvidetTilrettelegging[] }) {
             </FormSummary.Label>
             <FormSummary.Value>
                 <Box marginBlock="space-16" asChild>
-                    <List data-aksel-migrated-v8>
+                    <List>
                         {perioder.map((periode) => (
                             <List.Item key={periode.fom}>
                                 <SvpPeriodeDatoTekst periode={periode} />:{' '}

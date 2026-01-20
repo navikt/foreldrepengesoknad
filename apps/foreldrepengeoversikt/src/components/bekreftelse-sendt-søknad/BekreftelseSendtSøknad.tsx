@@ -97,7 +97,7 @@ export const BekreftelseSendtSøknad = ({
                                         {intl.formatMessage({ id: 'BekreftelseSendtSøknad.DokSomMangler' })}
                                     </BodyShort>
                                     <Box marginBlock="space-16" asChild>
-                                        <List data-aksel-migrated-v8>
+                                        <List>
                                             {manglendeVedlegg.map((skjemanummer) => (
                                                 <List.Item key={skjemanummer}>
                                                     <FormattedMessage id={`ettersendelse.${skjemanummer}`} />

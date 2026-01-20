@@ -45,7 +45,7 @@ export const DinePersonopplysningerModal = () => {
                                     <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.del1" />
                                 </BodyShort>
                                 <Box marginBlock="space-16" asChild>
-                                    <List data-aksel-migrated-v8>
+                                    <List>
                                         <List.Item>
                                             <BodyShort>
                                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt1" />
@@ -80,7 +80,7 @@ export const DinePersonopplysningerModal = () => {
                                     <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.del1" />
                                 </BodyShort>
                                 <Box marginBlock="space-16" asChild>
-                                    <List data-aksel-migrated-v8>
+                                    <List>
                                         <List.Item>
                                             <BodyShort>
                                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt1" />
@@ -117,7 +117,7 @@ export const DinePersonopplysningerModal = () => {
                                     <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.del1" />
                                 </BodyShort>
                                 <Box marginBlock="space-16" asChild>
-                                    <List data-aksel-migrated-v8>
+                                    <List>
                                         <List.Item>
                                             <BodyShort>
                                                 <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt1" />

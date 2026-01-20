@@ -28,7 +28,7 @@ export const KravFarEllerMedmor = () => {
                         <FormattedMessage id="HvorforHarJegRettPanel.HvisDuErFarEllerMedmor" />
                     </BodyShort>
                     <Box marginBlock="space-16" asChild>
-                        <List data-aksel-migrated-v8 as="ul">
+                        <List as="ul">
                             <List.Item>
                                 <FormattedMessage id="HvorforHarJegRettPanel.AdoptererAlene" />
                             </List.Item>

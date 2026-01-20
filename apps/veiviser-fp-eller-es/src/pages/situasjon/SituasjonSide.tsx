@@ -139,7 +139,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                     <FormattedMessage id="SituasjonSide.HvaGirRett.EnAvDisse" />
                                 </BodyShort>
                                 <Box marginBlock="space-16" asChild>
-                                    <List data-aksel-migrated-v8>
+                                    <List>
                                         <List.Item>
                                             <FormattedMessage id="SituasjonSide.HvaGirRett.Sykepenger" />
                                         </List.Item>

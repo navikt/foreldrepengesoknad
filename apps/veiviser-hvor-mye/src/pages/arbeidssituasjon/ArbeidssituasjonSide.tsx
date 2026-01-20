@@ -236,7 +236,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                 <ReadMore header={<FormattedMessage id="ArbeidssituasjonSide.GirRett" />}>
                                     <FormattedMessage id="ArbeidssituasjonSide.EnAvDisse" />
                                     <Box marginBlock="space-16" asChild>
-                                        <List data-aksel-migrated-v8>
+                                        <List>
                                             <List.Item>
                                                 <FormattedMessage id="ArbeidssituasjonSide.Sykepenger" />
                                             </List.Item>

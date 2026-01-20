@@ -17,7 +17,7 @@ export const ScanDocumentInfo = () => (
                     <FormattedMessage id="ScanDocumentInfo.Del1" />
                 </BodyLong>
                 <Box marginBlock="space-16" asChild>
-                    <List data-aksel-migrated-v8>
+                    <List>
                         <List.Item>
                             <FormattedMessage id="ScanDocumentInfo.Liste.Punkt1" />
                         </List.Item>

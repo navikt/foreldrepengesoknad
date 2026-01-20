@@ -229,7 +229,7 @@ const Hendelse = ({
                             })}
                         </BodyShort>
                         <Box marginBlock="space-16" asChild>
-                            <List data-aksel-migrated-v8>
+                            <List>
                                 {manglendeVedlegg.map((skjemaId) => {
                                     return (
                                         <List.Item key={guid()}>

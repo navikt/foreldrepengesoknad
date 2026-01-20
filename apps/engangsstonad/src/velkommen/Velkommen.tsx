@@ -57,7 +57,7 @@ export const Velkommen = ({ startSøknad, erVelkommen, mellomlagreOgNaviger }: P
                         </BodyShort>
                     </VStack>
                     <Box marginBlock="space-16" asChild>
-                        <List data-aksel-migrated-v8>
+                        <List>
                             <List.Item>
                                 <FormattedMessage id={'Velkommen.Bobletekst.Del1'} />
                             </List.Item>
