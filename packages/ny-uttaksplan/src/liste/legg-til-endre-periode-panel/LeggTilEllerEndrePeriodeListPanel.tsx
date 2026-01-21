@@ -125,15 +125,15 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             fom: fomValue,
             tom: tomValue,
             hvaVilDuGjøre,
-            forelder: value as BrukerRolleSak_fpoversikt | 'BEGGE',
         });
+        formMethods.setValue('forelder', value as BrukerRolleSak_fpoversikt | 'BEGGE', { shouldDirty: true });
     };
     const resetFormValuesVedEndringAvHvaVilDuGjøre = (value: string | number | boolean) => {
         formMethods.reset({
             fom: fomValue,
             tom: tomValue,
-            hvaVilDuGjøre: value as HvaVilDuGjøre,
         });
+        formMethods.setValue('hvaVilDuGjøre', value as HvaVilDuGjøre, { shouldDirty: true });
     };
 
     const erAdopsjon = familiesituasjon === 'adopsjon';
