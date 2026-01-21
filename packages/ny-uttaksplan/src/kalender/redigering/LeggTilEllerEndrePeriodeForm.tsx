@@ -102,11 +102,11 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
                     resetFormValues={resetFormValues}
                 />
                 <HStack gap="space-8">
+                    <Button type="button" variant="secondary" onClick={lukkRedigeringsmodus}>
+                        <FormattedMessage id="LeggTilPeriodePanel.Avbryt" />
+                    </Button>
                     <Button type="submit" variant="primary" disabled={!formMethods.formState.isDirty}>
                         <FormattedMessage id="LeggTilPeriodePanel.LeggTil" />
-                    </Button>
-                    <Button type="button" variant="primary" onClick={lukkRedigeringsmodus}>
-                        <FormattedMessage id="LeggTilPeriodePanel.Avbryt" />
                     </Button>
                 </HStack>
             </VStack>

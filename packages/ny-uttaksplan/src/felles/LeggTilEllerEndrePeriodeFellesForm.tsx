@@ -180,10 +180,11 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValues, valgtePeri
                     <hr className="text-ax-border-neutral-subtle" />
                     <InlineMessage status="info">
                         <VStack gap="space-8">
-                            <div>Fars kvote er vanligvis kun for far.</div>
                             <div>
-                                I noen tilfeller kan du søke om å overta den andre forelderens kvote. I søknaden vil Nav
-                                be om dokumentasjon.
+                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Overføring.Info1.Mor" />
+                            </div>
+                            <div>
+                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Overføring.Info2.Mor" />
                             </div>
                         </VStack>
                     </InlineMessage>
@@ -225,11 +226,14 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValues, valgtePeri
                     <hr className="text-ax-border-neutral-subtle" />
                     <InlineMessage status="info">
                         <VStack gap="space-8">
-                            <div>Fars kvote er vanligvis kun for far.</div>
-                            <div>
-                                I noen tilfeller kan du søke om å overta den andre forelderens kvote. I søknaden vil Nav
-                                be om dokumentasjon.
-                            </div>
+                            <VStack gap="space-8">
+                                <div>
+                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Overføring.Info1.Mor" />
+                                </div>
+                                <div>
+                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Overføring.Info2.Mor" />
+                                </div>
+                            </VStack>
                         </VStack>
                     </InlineMessage>
                     <RhfRadioGroup
