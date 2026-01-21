@@ -283,6 +283,7 @@
     "LeggTilEllerEndrePeriodeForm.Overføring.Info2.Mor": "However, in some cases, you can apply to take over the {erMedmor, select, true {co-mother's} other {father's}} quota. In the application, Nav will request documentation.",
     "LeggTilEllerEndrePeriodeForm.Overføring.Info1.FarMedmor": "The mother's quota is ordinarily reserved for the mother.",
     "LeggTilEllerEndrePeriodeForm.Overføring.Info2.FarMedmor": "In some cases, you can apply to take over the other parent's quota. In the application, Nav will request documentation.",
+    "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Påkrevd": "You must select a reason for taking over the quota",
     "VelgPeriodePanelStep.VelgPeriode": "You must select which period you want to change",
     "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "You have selected a combination of days that is not valid for any parent.",
     "LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse": "You cannot choose more than two weeks in total in the period two weeks before and six weeks after birth/due date."
