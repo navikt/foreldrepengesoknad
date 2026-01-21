@@ -279,7 +279,6 @@
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Innlagt.FarMedmor": "Mor er innlagt på sykehus",
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.Mor": "{erMedmor, select, true {Medmor} other {Far}} er for syk til å ta seg av barnet",
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.FarMedmor": "Mor er for syk til å ta seg av barnet",
-    "LeggTilEllerEndrePeriodeForm.Overføring.ForSyk.FarMedmor": "Mor er for syk til å ta seg av barnet",
     "LeggTilEllerEndrePeriodeForm.Overføring.Info1.Mor": "{erMedmor, select, true {Medmors} other {Fars}} kvote er vanligvis kun for {erMedmor, select, true {medmor} other {far}}.",
     "LeggTilEllerEndrePeriodeForm.Overføring.Info2.Mor": "I noen tilfeller kan du søke om å overta den andre forelderens kvote. I søknaden vil Nav be om dokumentasjon.",
     "LeggTilEllerEndrePeriodeForm.Overføring.Info1.FarMedmor": "Mors kvote er vanligvis kun for mor.",
