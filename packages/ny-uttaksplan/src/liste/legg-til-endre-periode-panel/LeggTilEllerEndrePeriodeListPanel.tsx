@@ -120,13 +120,19 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const tomValue = formMethods.watch('tom');
     const hvaVilDuGjøre = formMethods.watch('hvaVilDuGjøre');
 
-    const resetFormValues = (value: string | number | boolean) => {
+    const resetFormValuesVedEndringAvForelder = (value: string | number | boolean) => {
         formMethods.reset({
-            ...defaultValues,
             fom: fomValue,
             tom: tomValue,
             hvaVilDuGjøre,
             forelder: value as BrukerRolleSak_fpoversikt | 'BEGGE',
+        });
+    };
+    const resetFormValuesVedEndringAvHvaVilDuGjøre = (value: string | number | boolean) => {
+        formMethods.reset({
+            fom: fomValue,
+            tom: tomValue,
+            hvaVilDuGjøre: value as HvaVilDuGjøre,
         });
     };
 
@@ -173,6 +179,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                         label={intl.formatMessage({ id: 'uttaksplan.valgPanel.label' })}
                         control={formMethods.control}
                         validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.hvaVilDuGjøre.påkrevd' }))]}
+                        onChange={resetFormValuesVedEndringAvHvaVilDuGjøre}
                     >
                         <Radio value={'LEGG_TIL_FERIE' satisfies HvaVilDuGjøre} autoFocus>
                             {erNyPeriodeModus ? (
@@ -200,7 +207,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                     {hvaVilDuGjøre === 'LEGG_TIL_PERIODE' && (
                         <LeggTilEllerEndrePeriodeFellesForm
                             valgtePerioder={[{ fom: fomValue, tom: tomValue }]}
-                            resetFormValues={resetFormValues}
+                            resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}
                         />
                     )}
                     <HStack gap="space-8" justify="space-between">

@@ -67,8 +67,8 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         lukkRedigeringsmodus();
     };
 
-    const resetFormValues = (value: string | number | boolean) => {
-        formMethods.reset({ ...defaultValues, forelder: value as BrukerRolleSak_fpoversikt | 'BEGGE' });
+    const resetFormValuesVedEndringAvForelder = (value: string | number | boolean) => {
+        formMethods.reset({ forelder: value as BrukerRolleSak_fpoversikt | 'BEGGE' });
     };
 
     return (
@@ -78,7 +78,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
                 <LeggTilEllerEndrePeriodeFellesForm
                     valgtePerioder={sammenslåtteValgtePerioder}
-                    resetFormValues={resetFormValues}
+                    resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}
                 />
                 <HStack gap="space-8">
                     <Button type="submit" variant="primary" disabled={!formMethods.formState.isDirty}>
