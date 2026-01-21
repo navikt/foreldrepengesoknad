@@ -75,7 +75,7 @@ describe('valideringSamtidigUttak', () => {
         expect(validator('0')).toBe('Prosenten må være et tall større enn 0');
     });
 
-    it('sskal returnere feilmelding når tallet er større enn 100', () => {
+    it('skal returnere feilmelding når tallet er større enn 100', () => {
         const validator = valideringSamtidigUttak(intlMock, undefined);
         expect(validator('101')).toBe('Prosenten må være et tall mindre eller lik 100');
     });

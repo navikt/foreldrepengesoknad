@@ -5,6 +5,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
+import { UttaksdagenString } from '@navikt/fp-utils';
+
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
 import { Uttaksplanperiode } from '../types/UttaksplanPeriode';
@@ -22,19 +24,23 @@ interface Props {
 export const UttaksplanListe = ({ isReadOnly }: Props) => {
     const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
-    const { uttakPerioder } = useUttaksplanData();
+    const { uttakPerioder, familiehendelsedato } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
-    const uttakPerioderInkludertHull = useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak();
+    const uttakPerioderJustertForFamiliehendelsesdato = uttakPerioder.flatMap((periode) =>
+        splitterPeriodePåFamiliehendelsesdato(periode, familiehendelsedato),
+    );
+
+    const uttakPerioderInkludertHull = useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak(
+        uttakPerioderJustertForFamiliehendelsesdato,
+    );
 
     const [isAllAccordionsOpen, setIsAllAccordionsOpen] = useState(false);
 
     const toggleAllAccordions = () => {
         setIsAllAccordionsOpen(!isAllAccordionsOpen);
     };
-
-    const { familiehendelsedato } = useUttaksplanData();
 
     const uttaksplanperioderPerRadIListe = mapUttaksplanperioderTilRaderIListe(
         uttakPerioderInkludertHull,
@@ -145,4 +151,38 @@ const leggTilPeriodeForFamiliehendelsedato = (
 
             return 0;
         });
+};
+
+const splitterPeriodePåFamiliehendelsesdato = (
+    periode: Uttaksplanperiode,
+    familiehendelsesdato: string,
+): Uttaksplanperiode[] => {
+    const fom = dayjs(periode.fom);
+    const tom = dayjs(periode.tom);
+    const famdato = dayjs(familiehendelsesdato);
+
+    // Perioden inkluderer ikke familiehendelsesdato
+    if (famdato.isBefore(fom) || famdato.isAfter(tom)) {
+        return [periode];
+    }
+
+    const resultat: Uttaksplanperiode[] = [];
+
+    if (fom.isBefore(famdato)) {
+        resultat.push({
+            ...periode,
+            fom: periode.fom,
+            tom: UttaksdagenString(familiehendelsesdato).trekkFra(1),
+        });
+    }
+
+    if (tom.isAfter(famdato)) {
+        resultat.push({
+            ...periode,
+            fom: familiehendelsesdato,
+            tom: periode.tom,
+        });
+    }
+
+    return resultat;
 };

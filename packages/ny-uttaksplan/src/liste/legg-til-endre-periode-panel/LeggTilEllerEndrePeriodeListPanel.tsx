@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, ErrorMessage, HStack, Heading, Radio, VStack } from '@navikt/ds-react';
+import { Alert, Button, ErrorMessage, HStack, Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { BrukerRolleSak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
@@ -18,8 +18,8 @@ import {
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilUttakPeriode,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
+import { useHentGyldigeKontotyper } from '../../felles/useHentGyldigeKontotyper';
 import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
-import { PanelButtons } from '../../liste/panel-buttons/PanelButtons';
 import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
 import { TidsperiodeSpørsmål } from './/TidsperiodeSpørsmål';
@@ -132,6 +132,11 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
     const erAdopsjon = familiesituasjon === 'adopsjon';
 
+    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper([
+        { fom: fomValue, tom: tomValue },
+    ]);
+    const isSubmitDisabled = gyldigeStønadskontoerForMor.length === 0 && gyldigeStønadskontoerForFarMedmor.length === 0;
+
     return (
         <VStack
             gap="space-8"
@@ -195,10 +200,25 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                             resetFormValues={resetFormValues}
                         />
                     )}
-                    <PanelButtons
-                        onCancel={() => setIsLeggTilPeriodePanelOpen(false)}
-                        onGoPreviousStep={setValgtPeriodeIndex ? () => setValgtPeriodeIndex(undefined) : undefined}
-                    />
+                    <HStack gap="space-8" justify="space-between">
+                        <Button type="button" variant="secondary" onClick={() => setIsLeggTilPeriodePanelOpen(false)}>
+                            <FormattedMessage id="uttaksplan.avbryt" />
+                        </Button>
+                        <HStack gap="space-8">
+                            {setValgtPeriodeIndex && (
+                                <Button
+                                    type="button"
+                                    variant="secondary"
+                                    onClick={() => setValgtPeriodeIndex(undefined)}
+                                >
+                                    <FormattedMessage id="uttaksplan.gåTilbake" />
+                                </Button>
+                            )}
+                            <Button type="submit" disabled={!formMethods.formState.isDirty || isSubmitDisabled}>
+                                <FormattedMessage id="uttaksplan.ferdig" />
+                            </Button>
+                        </HStack>
+                    </HStack>
                 </VStack>
             </RhfForm>
         </VStack>
