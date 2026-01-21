@@ -127,6 +127,7 @@
     "leggTilPeriodePanel.stillingsprosent.måVæreEtTall": "Stillingsprosenten må vere eit tal",
     "leggTilPeriodePanel.stillingsprosent.måVæreStørreEnn0": "Stillingsprosenten må vere eit tal større enn 0",
     "leggTilPeriodePanel.stillingsprosent.måVæreMindreEnn100": "Stillingsprosenten må vere eit tal mindre enn 100",
+    "leggTilPeriodePanel.stillingsprosent.samtidigUttak": "Stillingsprosent og samtidig uttak kan ikkje vere meir enn 100 % samanlagt",
     "leggTilPeriodePanel.samtidiguttaksprosent.påkrevd": "Du må oppgi prosenten med samtidig uttak",
     "leggTilPeriodePanel.samtidiguttaksprosent.måVæreEtTall": "Prosenten må vere eit tal",
     "leggTilPeriodePanel.samtidiguttaksprosent.måVæreStørreEnn0": "Prosenten må vere eit tal større enn 0",
@@ -141,14 +142,7 @@
     "endreTidsPeriodeModal.tom.påkrevd": "Du må oppgi ein sluttdato",
     "endreTidsPeriodeModal.tom.gyldigDato": "Sluttdatoen må vere ein gyldig dato på formatet dd.mm.åååå",
     "endreTidsPeriodeModal.tom.måVæreUkedag": "Sluttdatoen kan ikkje vere ein helgedag.",
-    "endreTidsPeriodeModal.riktigKvoteFørFødsel.termin": "Berre fellesperiode og foreldrepengar før fødsel kan brukast før termin",
-    "endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel": "Berre fellesperiode og foreldrepengar før fødsel kan brukast før fødsel",
-    "endreTidsPeriodeModal.ferieFørsteSeksUker.fødsel": "Ferie kan ikkje legges inn de første seks vekene etter fødsel.",
-    "endreTidsPeriodeModal.ferieFørsteSeksUker.termin": "Ferie kan ikkje legges inn de første seks vekene etter termin.",
-    "endreTidsPeriodeModal.minDato": "Første mulige dato for perioden er {minDate}.",
-    "endreTidsPeriodeModal.maksDato": "Siste mulige dato for perioden er {maxDate}",
     "endreTidsPeriodeModal.kanIkkeKombinere": "Mor kan ikkje kombinera foreldrepengar med arbeid dei første seks vekene",
-    "endreTidsPeriodeModal.duKanIkkeKombinere": "Du kan ikkje kombinera foreldrepengar med arbeid dei første seks vekene",
     "TidsperiodeSpørsmål.fom": "Frå og med dato",
     "TidsperiodeSpørsmål.tom": "Til og med dato",
     "kalender.fødsel": "Fødsel",
@@ -280,5 +274,6 @@
     "LeggTilEllerEndrePeriodeForm.Stillingsprosent.Mor": "Kor mange prosent skal mor jobbe?",
     "LeggTilEllerEndrePeriodeForm.Stillingsprosent.FarMedmor": "Kor mange prosent skal {erMedmor, select, true {medmor} other {far}} jobbe?",
     "VelgPeriodePanelStep.VelgPeriode": "Du må velga kva for periode du vil endra på",
-    "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "Du har valgt ein kombinasjon av dagar som ikkje er gyldige for nokon foreldre."
+    "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "Du har valgt ein kombinasjon av dagar som ikkje er gyldige for nokon foreldre.",
+    "LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse": "Du kan ikkje velga meir enn to veker totalt i perioden to veker før og seks veker etter fødsel/termin"
 }
