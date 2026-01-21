@@ -10,6 +10,7 @@ const {
     MorSøkerMedFlereUtsettelser,
     HarPeriode11UkerFørFamiliehendelseDato,
     VisFarsAktivitetsfriKvote,
+    MorOverførerFarsKvote,
 } = composeStories(stories);
 
 describe('UttaksplanKalender', () => {
@@ -548,5 +549,45 @@ describe('UttaksplanKalender', () => {
         expect(within(juni).getByTestId('day:11;dayColor:NONE')).toBeInTheDocument();
         expect(within(juni).getByTestId('day:12;dayColor:NONE')).toBeInTheDocument();
         expect(within(juni).getByTestId('day:13;dayColor:NONE')).toBeInTheDocument();
+    });
+
+    it('mor vil overføre fars kvote', async () => {
+        render(<MorOverførerFarsKvote />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        const september = screen.getByTestId('year:2026;month:8');
+
+        await userEvent.click(within(september).getByText('7', { exact: true }));
+        await userEvent.click(within(september).getByText('18', { exact: false }));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(screen.getAllByText('Endre')[0]!);
+
+        expect(screen.getByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Mor'));
+
+        expect(screen.getByText('Mor skal ha?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Fars kvote')[1]!);
+
+        expect(screen.getByText('Hvorfor skal du overta fars kvote?')).toBeInTheDocument();
+        expect(screen.getByText('Far er innlagt på sykehus')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'I noen tilfeller kan du søke om å overta den andre forelderens kvote. I søknaden vil Nav be om dokumentasjon.',
+            ),
+        ).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Far er innlagt på sykehus'));
+
+        await userEvent.click(screen.getByText('Legg til'));
+
+        expect(within(september).getByTestId('day:7;dayColor:BLUE')).toBeInTheDocument();
+        expect(within(september).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(10);
     });
 });
