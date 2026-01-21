@@ -179,8 +179,8 @@ const harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamili
     const harBeggeRett = foreldreInfo.rettighetType === 'BEGGE_RETT';
 
     if (harBeggeRett && (formValues.forelder === 'BEGGE' || formValues.forelder === 'FAR_MEDMOR')) {
-        const førsteDag = UttaksdagenString(familiehendelsedato).trekkFra(10);
-        const sisteDag = UttaksdagenString(familiehendelsedato).leggTil(30);
+        const førsteDag = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).trekkFra(10);
+        const sisteDag = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).leggTil(30);
 
         const nyePerioderInnenforIntervallet = nyePerioder.filter((periode) => {
             const fom = dayjs(periode.fom);
