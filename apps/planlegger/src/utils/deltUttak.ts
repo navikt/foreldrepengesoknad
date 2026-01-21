@@ -25,7 +25,7 @@ export const deltUttak = ({
         };
     }
 
-    const førsteUttaksdag = UttaksdagenString(startdato ?? famDato).denneEllerNeste();
+    const førsteUttaksdag = UttaksdagenString.forDenneEllerNeste(startdato ?? famDato).getDato();
     const morsPerioder: UttakPeriode_fpoversikt[] = [];
     const farsPerioder: UttakPeriode_fpoversikt[] = [];
     const fellesperiodeDagerFarMedmor =
@@ -37,7 +37,7 @@ export const deltUttak = ({
 
     if (foreldrepengerFørFødsel !== undefined) {
         const tidsperiode = getTidsperiodeString(
-            UttaksdagenString(currentTomDate).trekkFra(15),
+            UttaksdagenString.forArbeidsdagen(currentTomDate).getDatoAntallUttaksdagerTidligere(15),
             foreldrepengerFørFødsel.dager,
         );
         const periodeFPFF: UttakPeriode_fpoversikt = {
@@ -49,7 +49,7 @@ export const deltUttak = ({
 
         morsPerioder.push(periodeFPFF);
 
-        currentTomDate = UttaksdagenString(periodeFPFF.tom).neste();
+        currentTomDate = UttaksdagenString.forNeste(periodeFPFF.tom).getDato();
     }
 
     if (mødrekvote !== undefined) {
@@ -63,7 +63,7 @@ export const deltUttak = ({
 
         morsPerioder.push(periodeMødrekvote);
 
-        currentTomDate = UttaksdagenString(periodeMødrekvote.tom).neste();
+        currentTomDate = UttaksdagenString.forNeste(periodeMødrekvote.tom).getDato();
     }
 
     if (fellesperiodeDagerMor !== undefined && fellesperiodeDagerMor > 0) {
@@ -77,7 +77,7 @@ export const deltUttak = ({
 
         morsPerioder.push(periodeFellesperiode);
 
-        currentTomDate = UttaksdagenString(periodeFellesperiode.tom).neste();
+        currentTomDate = UttaksdagenString.forNeste(periodeFellesperiode.tom).getDato();
     }
 
     if (fellesperiodeDagerFarMedmor !== undefined && fellesperiodeDagerFarMedmor > 0) {
@@ -91,7 +91,7 @@ export const deltUttak = ({
 
         farsPerioder.push(periodeFellesperiode);
 
-        currentTomDate = UttaksdagenString(periodeFellesperiode.tom).neste();
+        currentTomDate = UttaksdagenString.forNeste(periodeFellesperiode.tom).getDato();
     }
 
     if (fedrekvote !== undefined) {
