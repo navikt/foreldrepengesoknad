@@ -9,6 +9,7 @@ import { Alert, InlineMessage, Radio, VStack } from '@navikt/ds-react';
 import { RhfNumericField, RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
 import type {
     BrukerRolleSak_fpoversikt,
+    Gradering_fpoversikt,
     KontoTypeUttak,
     MorsAktivitet,
     UttakOverføringÅrsak_fpoversikt,
@@ -21,9 +22,8 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskontoNavnSimple } from '../liste/utils/uttaksplanListeUtils';
 import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
-import { getGradering } from '../utils/graderingUtils';
 import { useHentGyldigeKontotyper } from './useHentGyldigeKontotyper';
-import { prosentValideringGradering, valideringSamtidigUttak } from './validators';
+import { prosentValideringGradering, valideringSamtidigUttak } from './uttaksplanValidatorer';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
@@ -542,4 +542,25 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
         stillingsprosentMor: periode.gradering?.arbeidstidprosent.toString(),
         overføringsårsak: periode.overføringÅrsak ? periode.overføringÅrsak : undefined,
     };
+};
+
+const getGradering = (
+    skalDuJobbe: boolean,
+    stillingsprosent: string | undefined,
+    kontoType: KontoTypeUttak | undefined,
+): Gradering_fpoversikt | undefined => {
+    if (kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
+        return undefined;
+    }
+
+    if (skalDuJobbe) {
+        return {
+            aktivitet: {
+                type: 'ORDINÆRT_ARBEID',
+            },
+            arbeidstidprosent: getFloatFromString(stillingsprosent) ?? 100,
+        };
+    }
+
+    return undefined;
 };

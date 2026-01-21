@@ -79,6 +79,9 @@ const erGyldigForMor = (
         if (erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(valgtePerioder, familiehendelsedato)) {
             return false;
         }
+        if (erNoenPerioderMerEnn60DagerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+            return false;
+        }
     }
 
     return true;
@@ -132,6 +135,9 @@ const erGyldigForFarMedmor = (
         if (erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(valgtePerioder, familiehendelsedato)) {
             return false;
         }
+        if (erNoenPerioderMerEnn60DagerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+            return false;
+        }
     }
 
     return true;
@@ -168,6 +174,11 @@ const erNoenPerioderFørToUkerFørFamiliehendelsesdato = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     familiehendelsedato: string,
 ) => valgtePerioder.some((periode) => dayjs(periode.fom).isBefore(UttaksdagenString(familiehendelsedato).trekkFra(10)));
+
+const erNoenPerioderMerEnn60DagerFørFamiliehendelsesdato = (
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    familiehendelsedato: string,
+) => valgtePerioder.some((periode) => dayjs(periode.fom).isBefore(UttaksdagenString(familiehendelsedato).trekkFra(60)));
 
 const erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato = (
     valgtePerioder: Array<{ fom: string; tom: string }>,

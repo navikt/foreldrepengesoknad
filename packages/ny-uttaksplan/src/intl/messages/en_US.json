@@ -127,6 +127,7 @@
     "leggTilPeriodePanel.stillingsprosent.måVæreEtTall": "The percentage must be a number",
     "leggTilPeriodePanel.stillingsprosent.måVæreStørreEnn0": "The percentage must be a number greater than 0",
     "leggTilPeriodePanel.stillingsprosent.måVæreMindreEnn100": "The percentage must be a number smaller than 100",
+    "leggTilPeriodePanel.stillingsprosent.samtidigUttak": "The percentage and simultaneous withdrawal cannot amount to more than 100% combined",
     "leggTilPeriodePanel.samtidiguttaksprosent.påkrevd": "You must specify what percentage you will be staying at home together",
     "leggTilPeriodePanel.samtidiguttaksprosent.måVæreEtTall": "The percentage must be a number",
     "leggTilPeriodePanel.samtidiguttaksprosent.måVæreStørreEnn0": "The percentage must be a number greater than 0",
@@ -141,14 +142,7 @@
     "endreTidsPeriodeModal.tom.påkrevd": "You must specify an end date",
     "endreTidsPeriodeModal.tom.gyldigDato": "The end date must be a valid date in dd.mm.yyyy format",
     "endreTidsPeriodeModal.tom.måVæreUkedag": "The end date cannot be a weekend.",
-    "endreTidsPeriodeModal.riktigKvoteFørFødsel.termin": "Only the shared period and parental benefits before birth can be used before the due date",
-    "endreTidsPeriodeModal.riktigKvoteFørFødsel.fødsel": "Only the shared period and parental benefits before birth can be used before birth",
-    "endreTidsPeriodeModal.ferieFørsteSeksUker.fødsel": "Vacation cannot be scheduled during the first six weeks after birth.",
-    "endreTidsPeriodeModal.ferieFørsteSeksUker.termin": "Vacation cannot be scheduled during the first six weeks after the due date.",
-    "endreTidsPeriodeModal.minDato": "The first possible date for the period is {minDate}",
-    "endreTidsPeriodeModal.maksDato": "The latest possible date for the period is {maxDate}",
     "endreTidsPeriodeModal.kanIkkeKombinere": "Mother can not combine parental benefits with work the first six weeks",
-    "endreTidsPeriodeModal.duKanIkkeKombinere": "You can not combine parental benefits with work the first six weeks",
     "TidsperiodeSpørsmål.fom": "From date",
     "TidsperiodeSpørsmål.tom": "To date",
     "kalender.fødsel": "Birth",
@@ -290,5 +284,6 @@
     "LeggTilEllerEndrePeriodeForm.Overføring.Info1.FarMedmor": "The mother's quota is ordinarily reserved for the mother.",
     "LeggTilEllerEndrePeriodeForm.Overføring.Info2.FarMedmor": "In some cases, you can apply to take over the other parent's quota. In the application, Nav will request documentation.",
     "VelgPeriodePanelStep.VelgPeriode": "You must select which period you want to change",
-    "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "You have selected a combination of days that is not valid for any parent."
+    "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "You have selected a combination of days that is not valid for any parent.",
+    "LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse": "You cannot choose more than two weeks in total in the period two weeks before and six weeks after birth/due date."
 }
