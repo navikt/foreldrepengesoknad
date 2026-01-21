@@ -259,7 +259,7 @@ const erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato = (
     familiehendelsedato: string,
 ) => {
     const førsteDag = UttaksdagenString(familiehendelsedato).denneEllerNeste();
-    const sisteDag = UttaksdagenString(familiehendelsedato).leggTil(30);
+    const sisteDag = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).leggTil(30);
 
     return valgtePerioder.some((periode) => {
         const fom = dayjs(periode.fom);
@@ -272,8 +272,8 @@ const erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     familiehendelsedato: string,
 ) => {
-    const førsteDag = UttaksdagenString(familiehendelsedato).trekkFra(15);
-    const sisteDag = UttaksdagenString(familiehendelsedato).forrige();
+    const førsteDag = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).trekkFra(15);
+    const sisteDag = UttaksdagenString(UttaksdagenString(familiehendelsedato).denneEllerNeste()).forrige();
 
     return valgtePerioder.some((periode) => {
         const fom = dayjs(periode.fom);
