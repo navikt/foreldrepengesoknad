@@ -34,8 +34,8 @@ export const useAlleUttakPerioderInklTapteDager = (): UttaksplanperiodeMedKunTap
 };
 
 export const useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak = (
-    uttakPerioderJustertForFamiliehendelsesdato: Uttaksplanperiode[],
-): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
+    uttakPerioderJustertForFamiliehendelsesdato: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+): Uttaksplanperiode[] => {
     const { familiehendelsedato, familiesituasjon, foreldreInfo } = useUttaksplanData();
 
     const perioder = [

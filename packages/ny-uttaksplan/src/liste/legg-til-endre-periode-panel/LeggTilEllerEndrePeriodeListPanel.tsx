@@ -135,7 +135,10 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper([
         { fom: fomValue, tom: tomValue },
     ]);
-    const isSubmitDisabled = gyldigeStønadskontoerForMor.length === 0 && gyldigeStønadskontoerForFarMedmor.length === 0;
+    const isSubmitDisabled =
+        hvaVilDuGjøre === 'LEGG_TIL_PERIODE' &&
+        gyldigeStønadskontoerForMor.length === 0 &&
+        gyldigeStønadskontoerForFarMedmor.length === 0;
 
     return (
         <VStack

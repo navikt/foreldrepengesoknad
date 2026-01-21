@@ -5,6 +5,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
@@ -154,9 +155,9 @@ const leggTilPeriodeForFamiliehendelsedato = (
 };
 
 const splittPeriodePåFamiliehendelsesdato = (
-    periode: Uttaksplanperiode,
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
     familiehendelsesdato: string,
-): Uttaksplanperiode[] => {
+): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
     const fom = dayjs(periode.fom);
     const tom = dayjs(periode.tom);
     const famdato = dayjs(familiehendelsesdato);
