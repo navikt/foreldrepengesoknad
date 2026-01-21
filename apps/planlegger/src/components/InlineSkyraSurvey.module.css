@@ -26,15 +26,15 @@ skyra-survey::part(heading) {
 */
 
 :global(skyra-survey) {
-    --skyra-bg-color: var(--ax-bg-accent-strong);
+    /* --skyra-bg-color: var(--ax-bg-accent-strong); */
     /* --skyra-text-color: var(--ax-text-contrast); */
-    --skyra-z-index: <ønsket z-index-verdi for widgeten>;
-    --skyra-interface-color: #000;
+    /* --skyra-z-index: <ønsket z-index-verdi for widgeten>; */
+    /* --skyra-interface-color: #000;
     --skyra-action-color: blue;
     --skyra-action-text-color: #000;
     --skyra-secondary-color: #000;
     --skyra-link-color: #000;
-    --skyra-error-color: #000;
+    --skyra-error-color: #000; */
     --skyra-font-size: 20px;
     --skyra-font-body: 'Source Sans Pro', Arial;
     --skyra-font-weight-normal: 800;
@@ -54,9 +54,47 @@ skyra-survey::part(bodyHtml) {
     color: var(--ax-text-neutral);
 }
 
+skyra-survey::part(wrapper) {
+    gap: 0;
+    /* background-color: var(--ax-bg-info-soft);
+    color: var(--ax-text-info-contrast); */
+}
+
+/* Overstyr gap i survey-innholdet */
+skyra-survey::part(wrapper) .survey-content-enter {
+    gap: 0rem; /* Endre denne verdien etter behov */
+}
+
+/* Overstyr gap i form-elementet */
+skyra-survey::part(wrapper) form {
+    gap: 0rem; /* Endre denne verdien etter behov */
+}
+
+/* Overstyr gap for medium skjerm og større (md:gap-4) */
+
+/* Overstyr gap i fieldset scroll-area */
+skyra-survey::part(wrapper) .scroll-area > div {
+    gap: 0.5rem; /* Endre denne verdien etter behov */
+}
 skyra-survey::part(button-primary) {
-    background-color: var(--ax-bg-info-soft);
-    color: var(--ax-text-info-contrast);
+    /* padding-right: 30px; */
+}
+
+skyra-survey::part(button-secondary) {
+    /* padding: 30px; */
+}
+
+skyra-survey::part(button-primary) {
+    /* padding-right: 15px;
+    padding-left: 15px; */
+    padding: 10px 25px;
 }
 skyra-survey::part(button-secondary) {
+        /* padding: 10px 25px; */
+}
+skyra-survey::part(button-link) {
+        /* padding: 10px 25px; */
+}
+skyra-survey::part(button-chip) {
+        padding: 5px 20px;
 }
