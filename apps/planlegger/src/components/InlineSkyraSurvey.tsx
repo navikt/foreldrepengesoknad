@@ -19,6 +19,7 @@ export const InlineSkyraSurvey = () => {
     const intl = useIntl();
     const [isLoaded, setIsLoaded] = useState(false);
     const [hasFailed, setHasFailed] = useState(false);
+    const [isSurveyEmpty, setIsSurveyEmpty] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -27,6 +28,8 @@ export const InlineSkyraSurvey = () => {
         const surveyElement = containerRef.current.querySelector('skyra-survey');
         if (!surveyElement) return;
 
+        let hasLoadedOnce = false;
+
         // Sjekk med intervall om surveyen har fått innhold
         const intervalId = setInterval(() => {
             const hasContent =
@@ -34,15 +37,21 @@ export const InlineSkyraSurvey = () => {
                 surveyElement.children.length > 0 ||
                 surveyElement.childNodes.length > 0;
 
-            if (hasContent) {
+            if (hasContent && !hasLoadedOnce) {
                 setIsLoaded(true);
+                hasLoadedOnce = true;
+            }
+
+            // Hvis surveyen har lastet men nå er tom igjen, er undersøkelsen over
+            if (hasLoadedOnce && !hasContent) {
+                setIsSurveyEmpty(true);
                 clearInterval(intervalId);
             }
         }, 100);
 
-        // Timeout på 30 sekunder - hvis ikke lastet, vis feilmelding
+        // Timeout på 30 sekunder - hvis ikke lastet, skjul komponenten
         const timeout = setTimeout(() => {
-            if (!isLoaded) {
+            if (!hasLoadedOnce) {
                 setHasFailed(true);
             }
             clearInterval(intervalId);
@@ -52,10 +61,15 @@ export const InlineSkyraSurvey = () => {
             clearInterval(intervalId);
             clearTimeout(timeout);
         };
-    }, [isLoaded]);
+    }, []);
 
     // Vis kun surveyen for norsk bokmål og nynorsk
     if (intl.locale !== 'nb' && intl.locale !== 'nn') {
+        return null;
+    }
+
+    // Skjul hvis undersøkelsen er over (tom)
+    if (isSurveyEmpty) {
         return null;
     }
 
@@ -64,7 +78,11 @@ export const InlineSkyraSurvey = () => {
     }
 
     return (
-        <Box padding="space-16" className="border-ax-neutral-500 border mb-6 ax-border-default rounded-xl">
+        <Box.New
+            padding="space-16"
+            className="border-ax-neutral-500 border mb-6 ax-border-default rounded-xl"
+            shadow="dialog"
+        >
             <div ref={containerRef}>
                 {!isLoaded && (
                     <VStack gap="space-8">
@@ -89,6 +107,6 @@ export const InlineSkyraSurvey = () => {
                     {/* @ts-expect-error - skyra-survey er et custom element */}
                 </skyra-survey>
             </div>
-        </Box>
+        </Box.New>
     );
 };
