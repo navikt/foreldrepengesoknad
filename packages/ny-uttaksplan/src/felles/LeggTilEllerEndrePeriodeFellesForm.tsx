@@ -181,10 +181,16 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValues, valgtePeri
                     <InlineMessage status="info">
                         <VStack gap="space-8">
                             <div>
-                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Overføring.Info1.Mor" />
+                                <FormattedMessage
+                                    id="LeggTilEllerEndrePeriodeForm.Overføring.Info1.Mor"
+                                    values={{ erMedmor: erMedmorDelAvSøknaden }}
+                                />
                             </div>
                             <div>
-                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Overføring.Info2.Mor" />
+                                <FormattedMessage
+                                    id="LeggTilEllerEndrePeriodeForm.Overføring.Info2.Mor"
+                                    values={{ erMedmor: erMedmorDelAvSøknaden }}
+                                />
                             </div>
                         </VStack>
                     </InlineMessage>
@@ -228,10 +234,10 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValues, valgtePeri
                         <VStack gap="space-8">
                             <VStack gap="space-8">
                                 <div>
-                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Overføring.Info1.Mor" />
+                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Overføring.Info1.FarMedmor" />
                                 </div>
                                 <div>
-                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Overføring.Info2.Mor" />
+                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Overføring.Info2.FarMedmor" />
                                 </div>
                             </VStack>
                         </VStack>

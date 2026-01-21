@@ -285,6 +285,10 @@
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Innlagt.FarMedmor": "The mother is hospitalized",
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.Mor": "The {erMedmor, select, true {co-mother} other {father}} is too sick to care for the child",
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.FarMedmor": "The mother is too sick to care for the child",
+    "LeggTilEllerEndrePeriodeForm.Overføring.Info1.Mor": "The {erMedmor, select, true {co-mother's} other {father's}} quota is ordinarily reserved for the {erMedmor, select, true {co-mother} other {father}}.",
+    "LeggTilEllerEndrePeriodeForm.Overføring.Info2.Mor": "However, in some cases, you can apply to take over the {erMedmor, select, true {co-mother's} other {father's}} quota. In the application, Nav will request documentation.",
+    "LeggTilEllerEndrePeriodeForm.Overføring.Info1.FarMedmor": "The mother's quota is ordinarily reserved for the mother.",
+    "LeggTilEllerEndrePeriodeForm.Overføring.Info2.FarMedmor": "In some cases, you can apply to take over the other parent's quota. In the application, Nav will request documentation.",
     "VelgPeriodePanelStep.VelgPeriode": "You must select which period you want to change",
     "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "You have selected a combination of days that is not valid for any parent."
 }
