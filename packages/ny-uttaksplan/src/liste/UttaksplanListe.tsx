@@ -29,7 +29,7 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
     const uttaksplanRedigering = useUttaksplanRedigering();
 
     const uttakPerioderJustertForFamiliehendelsesdato = uttakPerioder.flatMap((periode) =>
-        splitterPeriodePåFamiliehendelsesdato(periode, familiehendelsedato),
+        splittPeriodePåFamiliehendelsesdato(periode, familiehendelsedato),
     );
 
     const uttakPerioderInkludertHull = useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak(
@@ -153,7 +153,7 @@ const leggTilPeriodeForFamiliehendelsedato = (
         });
 };
 
-const splitterPeriodePåFamiliehendelsesdato = (
+const splittPeriodePåFamiliehendelsesdato = (
     periode: Uttaksplanperiode,
     familiehendelsesdato: string,
 ): Uttaksplanperiode[] => {
@@ -161,7 +161,6 @@ const splitterPeriodePåFamiliehendelsesdato = (
     const tom = dayjs(periode.tom);
     const famdato = dayjs(familiehendelsesdato);
 
-    // Perioden inkluderer ikke familiehendelsesdato
     if (famdato.isBefore(fom) || famdato.isAfter(tom)) {
         return [periode];
     }
