@@ -7,11 +7,11 @@ import { links } from '@navikt/fp-constants';
 import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
-export const IkkeKvinne = () => {
+export const IkkeGravid = () => {
     loggUmamiEvent({
         origin: 'svangerskapspengesoknad',
         eventName: 'besøk',
-        eventData: { tittel: 'ikkeKvinne' },
+        eventData: { tittel: 'ikkeGravid' },
     });
 
     return (
@@ -35,3 +35,4 @@ export const IkkeKvinne = () => {
         </SkjemaRotLayout>
     );
 };
+

@@ -13,7 +13,7 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { ApiErrorHandler, SvangerskapspengesøknadRoutes } from './SvangerskapspengesøknadRoutes';
 import { ErDuGravidSteg } from './pages/er-du-gravid/ErDuGravidSteg';
-import { IkkeKvinne } from './pages/ikke-kvinne/IkkeKvinne';
+import { IkkeGravid } from './pages/ikke-gravid/IkkeGravid';
 import './styles/app.css';
 
 export const slettMellomlagringOgLastSidePåNytt = async () => {
@@ -99,7 +99,7 @@ export const Svangerskapspengesøknad = () => {
 
     // Show "not eligible" message if they answered no
     if (erGravidBekreftet === false) {
-        return <IkkeKvinne />;
+        return <IkkeGravid />;
     }
 
     // Continue with normal flow if they answered yes
