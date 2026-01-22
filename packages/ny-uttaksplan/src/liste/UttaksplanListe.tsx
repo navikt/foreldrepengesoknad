@@ -5,6 +5,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttaksdagenString } from '@navikt/fp-utils';
+
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
 import { Uttaksplanperiode } from '../types/UttaksplanPeriode';
@@ -22,19 +25,23 @@ interface Props {
 export const UttaksplanListe = ({ isReadOnly }: Props) => {
     const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
-    const { uttakPerioder } = useUttaksplanData();
+    const { uttakPerioder, familiehendelsedato } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
-    const uttakPerioderInkludertHull = useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak();
+    const uttakPerioderJustertForFamiliehendelsesdato = uttakPerioder.flatMap((periode) =>
+        splittPeriodePåFamiliehendelsesdato(periode, familiehendelsedato),
+    );
+
+    const uttakPerioderInkludertHull = useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak(
+        uttakPerioderJustertForFamiliehendelsesdato,
+    );
 
     const [isAllAccordionsOpen, setIsAllAccordionsOpen] = useState(false);
 
     const toggleAllAccordions = () => {
         setIsAllAccordionsOpen(!isAllAccordionsOpen);
     };
-
-    const { familiehendelsedato } = useUttaksplanData();
 
     const uttaksplanperioderPerRadIListe = mapUttaksplanperioderTilRaderIListe(
         uttakPerioderInkludertHull,
@@ -145,4 +152,39 @@ const leggTilPeriodeForFamiliehendelsedato = (
 
             return 0;
         });
+};
+
+const splittPeriodePåFamiliehendelsesdato = (
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    familiehendelsesdato: string,
+): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
+    const fom = dayjs(periode.fom);
+    const tom = dayjs(periode.tom);
+    const famdato = dayjs(familiehendelsesdato);
+
+    const erPeriodeLikFamiliehendelsesdato = famdato.isSame(fom) && famdato.isSame(tom);
+
+    if (famdato.isBefore(fom) || famdato.isAfter(tom) || erPeriodeLikFamiliehendelsesdato) {
+        return [periode];
+    }
+
+    const resultat: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> = [];
+
+    if (fom.isBefore(famdato)) {
+        resultat.push({
+            ...periode,
+            fom: periode.fom,
+            tom: UttaksdagenString.forrige(familiehendelsesdato).getDato(),
+        });
+    }
+
+    if (tom.isAfter(famdato)) {
+        resultat.push({
+            ...periode,
+            fom: UttaksdagenString.denneEllerNeste(familiehendelsesdato).getDato(),
+            tom: periode.tom,
+        });
+    }
+
+    return resultat;
 };

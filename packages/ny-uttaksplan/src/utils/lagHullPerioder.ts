@@ -33,12 +33,19 @@ export const useAlleUttakPerioderInklTapteDager = (): UttaksplanperiodeMedKunTap
     ].sort(sorterPerioder);
 };
 
-export const useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak = (): Uttaksplanperiode[] => {
-    const { uttakPerioder, familiehendelsedato, familiesituasjon, foreldreInfo } = useUttaksplanData();
+export const useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak = (
+    uttakPerioderJustertForFamiliehendelsesdato: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+): Uttaksplanperiode[] => {
+    const { familiehendelsedato, familiesituasjon, foreldreInfo } = useUttaksplanData();
 
     const perioder = [
-        ...uttakPerioder,
-        ...lagTapteDagerPerioder(uttakPerioder, familiehendelsedato, familiesituasjon, foreldreInfo),
+        ...uttakPerioderJustertForFamiliehendelsesdato,
+        ...lagTapteDagerPerioder(
+            uttakPerioderJustertForFamiliehendelsesdato,
+            familiehendelsedato,
+            familiesituasjon,
+            foreldreInfo,
+        ),
     ].sort(sorterPerioder);
 
     return [...perioder, ...lagPerioderUtenUttak(perioder, familiehendelsedato)].sort(sorterPerioder);

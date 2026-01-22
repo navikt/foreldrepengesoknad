@@ -44,10 +44,10 @@ export type LeggTilEllerEndrePeriodeFormFormValues = {
 
 interface Props {
     valgtePerioder: Array<{ fom: string; tom: string }>;
-    resetFormValues: (forelder: string | number | boolean) => void;
+    resetFormValuesVedEndringAvForelder: (forelder: string | number | boolean) => void;
 }
 
-export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValues, valgtePerioder }: Props) => {
+export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAvForelder, valgtePerioder }: Props) => {
     const intl = useIntl();
 
     const {
@@ -95,7 +95,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValues, valgtePeri
                 control={formMethods.control}
                 validate={[isRequired(intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Forelder.Påkrevd' }))]}
                 label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Forelder.HvemGjelder' })}
-                onChange={resetFormValues}
+                onChange={resetFormValuesVedEndringAvForelder}
             >
                 {
                     [

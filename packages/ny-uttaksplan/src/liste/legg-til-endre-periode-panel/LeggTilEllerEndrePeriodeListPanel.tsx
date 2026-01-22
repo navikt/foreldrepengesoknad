@@ -3,12 +3,12 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, ErrorMessage, HStack, Heading, Radio, VStack } from '@navikt/ds-react';
+import { Alert, Button, ErrorMessage, HStack, Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { BrukerRolleSak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { omitMany } from '@navikt/fp-utils';
-import { isRequired } from '@navikt/fp-validation';
+import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../context/UttaksplanRedigeringContext';
@@ -18,8 +18,8 @@ import {
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilUttakPeriode,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
+import { useHentGyldigeKontotyper } from '../../felles/useHentGyldigeKontotyper';
 import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
-import { PanelButtons } from '../../liste/panel-buttons/PanelButtons';
 import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
 import { TidsperiodeSpørsmål } from './/TidsperiodeSpørsmål';
@@ -27,9 +27,9 @@ import { TidsperiodeSpørsmål } from './/TidsperiodeSpørsmål';
 export type HvaVilDuGjøre = 'LEGG_TIL_FERIE' | 'LEGG_TIL_OPPHOLD' | 'LEGG_TIL_PERIODE';
 
 export type FormValues = {
-    fom: string;
-    tom: string;
-    hvaVilDuGjøre: HvaVilDuGjøre;
+    fom?: string;
+    tom?: string;
+    hvaVilDuGjøre?: HvaVilDuGjøre;
 } & LeggTilEllerEndrePeriodeFormFormValues;
 
 interface Props {
@@ -77,8 +77,8 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const formSubmitValidator = useFormSubmitValidator<FormValues>();
 
     const onSubmit = (values: FormValues) => {
-        const fomValue = values.fom;
-        const tomValue = values.tom;
+        const fomValue = notEmpty(values.fom);
+        const tomValue = notEmpty(values.tom);
 
         setFeilmelding(undefined);
 
@@ -120,17 +120,30 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const tomValue = formMethods.watch('tom');
     const hvaVilDuGjøre = formMethods.watch('hvaVilDuGjøre');
 
-    const resetFormValues = (value: string | number | boolean) => {
+    const resetFormValuesVedEndringAvForelder = (value: string | number | boolean) => {
         formMethods.reset({
-            ...defaultValues,
             fom: fomValue,
             tom: tomValue,
             hvaVilDuGjøre,
-            forelder: value as BrukerRolleSak_fpoversikt | 'BEGGE',
         });
+        formMethods.setValue('forelder', value as BrukerRolleSak_fpoversikt | 'BEGGE', { shouldDirty: true });
+    };
+    const resetFormValuesVedEndringAvHvaVilDuGjøre = (value: string | number | boolean) => {
+        formMethods.reset({
+            fom: fomValue,
+            tom: tomValue,
+        });
+        formMethods.setValue('hvaVilDuGjøre', value as HvaVilDuGjøre, { shouldDirty: true });
     };
 
     const erAdopsjon = familiesituasjon === 'adopsjon';
+
+    const perioder = fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [];
+    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(perioder);
+    const isSubmitDisabled =
+        hvaVilDuGjøre === 'LEGG_TIL_PERIODE' &&
+        gyldigeStønadskontoerForMor.length === 0 &&
+        gyldigeStønadskontoerForFarMedmor.length === 0;
 
     return (
         <VStack
@@ -165,6 +178,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                         label={intl.formatMessage({ id: 'uttaksplan.valgPanel.label' })}
                         control={formMethods.control}
                         validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.hvaVilDuGjøre.påkrevd' }))]}
+                        onChange={resetFormValuesVedEndringAvHvaVilDuGjøre}
                     >
                         <Radio value={'LEGG_TIL_FERIE' satisfies HvaVilDuGjøre} autoFocus>
                             {erNyPeriodeModus ? (
@@ -189,16 +203,31 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                         </Radio>
                     </RhfRadioGroup>
                     <TidsperiodeSpørsmål />
-                    {hvaVilDuGjøre === 'LEGG_TIL_PERIODE' && (
+                    {hvaVilDuGjøre === 'LEGG_TIL_PERIODE' && fomValue && tomValue && (
                         <LeggTilEllerEndrePeriodeFellesForm
                             valgtePerioder={[{ fom: fomValue, tom: tomValue }]}
-                            resetFormValues={resetFormValues}
+                            resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}
                         />
                     )}
-                    <PanelButtons
-                        onCancel={() => setIsLeggTilPeriodePanelOpen(false)}
-                        onGoPreviousStep={setValgtPeriodeIndex ? () => setValgtPeriodeIndex(undefined) : undefined}
-                    />
+                    <HStack gap="space-8" justify="space-between">
+                        <Button type="button" variant="secondary" onClick={() => setIsLeggTilPeriodePanelOpen(false)}>
+                            <FormattedMessage id="uttaksplan.avbryt" />
+                        </Button>
+                        <HStack gap="space-8">
+                            {setValgtPeriodeIndex && (
+                                <Button
+                                    type="button"
+                                    variant="secondary"
+                                    onClick={() => setValgtPeriodeIndex(undefined)}
+                                >
+                                    <FormattedMessage id="uttaksplan.gåTilbake" />
+                                </Button>
+                            )}
+                            <Button type="submit" disabled={!formMethods.formState.isDirty || isSubmitDisabled}>
+                                <FormattedMessage id="uttaksplan.ferdig" />
+                            </Button>
+                        </HStack>
+                    </HStack>
                 </VStack>
             </RhfForm>
         </VStack>
