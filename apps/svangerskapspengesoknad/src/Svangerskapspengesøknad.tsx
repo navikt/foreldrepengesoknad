@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { SvpDataContext } from 'appData/SvpDataContext';
 import { API_URLS, mellomlagretInfoOptions, søkerinfoOptions } from 'appData/queries';
-import { VERSJON_MELLOMLAGRING } from 'appData/useMellomlagreSøknad';
+import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 import isEqual from 'lodash/isEqual';
+import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
@@ -11,6 +12,7 @@ import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ApiErrorHandler, SvangerskapspengesøknadRoutes } from './SvangerskapspengesøknadRoutes';
+import { ErDuGravidSteg } from './pages/er-du-gravid/ErDuGravidSteg';
 import { IkkeKvinne } from './pages/ikke-kvinne/IkkeKvinne';
 import './styles/app.css';
 
@@ -32,6 +34,20 @@ export const Svangerskapspengesøknad = () => {
 
     const mellomlagretInfo = useQuery(mellomlagretInfoOptions());
 
+    const [erGravidBekreftet, setErGravidBekreftet] = useState<boolean | undefined>(undefined);
+
+    // Check if answer is stored in mellomlagret data
+    useEffect(() => {
+        const mellomlagretState =
+            mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING
+                ? (mellomlagretInfo.data as SvpDataMapAndMetaData)
+                : undefined;
+
+        if (mellomlagretState?.erGravidBekreftet !== undefined) {
+            setErGravidBekreftet(mellomlagretState.erGravidBekreftet);
+        }
+    }, [mellomlagretInfo.data]);
+
     if (søkerinfo.error || mellomlagretInfo.error) {
         return <ApiErrorHandler error={notEmpty(søkerinfo.error ?? mellomlagretInfo.error)} />;
     }
@@ -40,12 +56,23 @@ export const Svangerskapspengesøknad = () => {
         return <Spinner />;
     }
 
-    const erPersonKvinne = søkerinfo.data.person.kjønn === 'K';
+    // Show pregnancy confirmation question if not yet answered
+    if (erGravidBekreftet === undefined) {
+        return (
+            <ErDuGravidSteg
+                onBekreft={(erGravid) => {
+                    setErGravidBekreftet(erGravid);
+                }}
+            />
+        );
+    }
 
-    if (!erPersonKvinne) {
+    // Show "not eligible" message if they answered no
+    if (erGravidBekreftet === false) {
         return <IkkeKvinne />;
     }
 
+    // Continue with normal flow if they answered yes
     const erPersonMyndig = erMyndig(søkerinfo.data.person.fødselsdato);
 
     const mellomlagretState =
