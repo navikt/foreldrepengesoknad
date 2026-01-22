@@ -65,7 +65,7 @@ const queryClient = new QueryClient({
     queryCache: new QueryCache({
         onError: (error) => {
             if (error instanceof HTTPError) {
-                if (error.response?.status === 401 || error.response?.status === 403) {
+                if (error.response?.status === 401) {
                     location.reload();
                 }
             }
