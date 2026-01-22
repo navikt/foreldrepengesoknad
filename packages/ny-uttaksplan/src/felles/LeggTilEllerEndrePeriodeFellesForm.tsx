@@ -529,8 +529,8 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
                     : periode.kontoType,
             skalDuKombinereArbeidOgUttakFarMedmor: !!periode.gradering,
             stillingsprosentFarMedmor: periode.gradering?.arbeidstidprosent.toString(),
-            morsAktivitet: periode.morsAktivitet ? periode.morsAktivitet : undefined,
-            overføringsårsak: periode.overføringÅrsak ? periode.overføringÅrsak : undefined,
+            morsAktivitet: periode.morsAktivitet,
+            overføringsårsak: periode.overføringÅrsak,
         };
     }
 
@@ -540,7 +540,7 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
         samtidigUttaksprosentMor: periode.samtidigUttak?.toString(),
         skalDuKombinereArbeidOgUttakMor: !!periode.gradering,
         stillingsprosentMor: periode.gradering?.arbeidstidprosent.toString(),
-        overføringsårsak: periode.overføringÅrsak ? periode.overføringÅrsak : undefined,
+        overføringsårsak: periode.overføringÅrsak,
     };
 };
 
