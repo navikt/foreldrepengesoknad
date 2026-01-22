@@ -27,7 +27,10 @@ skyra-survey::part(button-chip) {
 }
 
 skyra-survey::part(options) {
-    display: flex;
+    
+    /* display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 10px; 
+    Avventer endringer fra Skyra-teamet på denne. 
+    */
 }

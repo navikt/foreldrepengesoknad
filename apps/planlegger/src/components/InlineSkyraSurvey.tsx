@@ -1,8 +1,8 @@
 import { TasklistIcon } from '@navikt/aksel-icons';
 import { useEffect, useRef, useState } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
-import { ExpansionCard, HStack, Heading, Skeleton, VStack } from '@navikt/ds-react';
+import { BodyShort, ExpansionCard, HStack, Heading, Skeleton, VStack } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
@@ -86,7 +86,7 @@ export const InlineSkyraSurvey = () => {
     return (
         <ExpansionCard
             data-color="brand-beige"
-            aria-label="Frivillig spørreundersøkelse"
+            aria-label={intl.formatMessage({ id: 'InlineSkyraSurvey.Tittel' })}
             size="small"
             open={isOpen}
             onToggle={setIsOpen}
@@ -96,17 +96,21 @@ export const InlineSkyraSurvey = () => {
                     <IconCircleWrapper size="medium" color="lightBlue">
                         <TasklistIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                     </IconCircleWrapper>
-                    <ExpansionCard.Title size="small">Frivillig spørreundersøkelse</ExpansionCard.Title>
+                    <ExpansionCard.Title size="small">
+                        <FormattedMessage id="InlineSkyraSurvey.Tittel" />
+                    </ExpansionCard.Title>
                 </HStack>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
                 <div ref={containerRef}>
                     {isSurveyEmpty ? (
-                        <p>Takk for at du svarte på undersøkelsen</p>
+                        <BodyShort>
+                            <FormattedMessage id="InlineSkyraSurvey.Takk" />
+                        </BodyShort>
                     ) : !isLoaded ? (
                         <VStack gap="space-8">
                             <Heading as={Skeleton} size="large">
-                                Vi ønsker din tilbakemelding
+                                <FormattedMessage id="InlineSkyraSurvey.Heading" />
                             </Heading>
                             <Skeleton variant="rounded" width="100%" height={30} />
                             <HStack justify={'end'}>

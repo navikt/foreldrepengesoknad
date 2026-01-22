@@ -242,5 +242,8 @@
     "Validering.ValidNumber": "You have written something that is not a number. Letters, spaces, periods, and commas are not allowed.",
     "SøkOmForeldrepenger.Tittel": "Apply for parental benefit!",
     "SøkOmForeldrepenger.BasertPå": "Estimated on the {erAdopsjon, select, true {date for taking over the care} other {{erFødt, select, true {date of birth} other {due date}}}} you can now apply for parental benefit.",
-    "SøkOmForeldrepenger.Søk": "Apply for parental benefit"
+    "SøkOmForeldrepenger.Søk": "Apply for parental benefit",
+    "InlineSkyraSurvey.Tittel": "Optional survey",
+    "InlineSkyraSurvey.Heading": "We would like your feedback",
+    "InlineSkyraSurvey.Takk": "Thank you for answering the survey"
 }
