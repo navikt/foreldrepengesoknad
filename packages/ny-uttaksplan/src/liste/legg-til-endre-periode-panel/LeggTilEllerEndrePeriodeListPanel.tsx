@@ -119,6 +119,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const fomValue = formMethods.watch('fom');
     const tomValue = formMethods.watch('tom');
     const hvaVilDuGjøre = formMethods.watch('hvaVilDuGjøre');
+    const forelder = formMethods.watch('forelder');
 
     const resetFormValuesVedEndringAvForelder = (value: string | number | boolean) => {
         formMethods.reset({
@@ -139,7 +140,10 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const erAdopsjon = familiesituasjon === 'adopsjon';
 
     const perioder = fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [];
-    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(perioder);
+    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(
+        perioder,
+        forelder === 'BEGGE',
+    );
     const isSubmitDisabled =
         hvaVilDuGjøre === 'LEGG_TIL_PERIODE' &&
         gyldigeStønadskontoerForMor.length === 0 &&
