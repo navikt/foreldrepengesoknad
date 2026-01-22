@@ -290,7 +290,6 @@ describe('useHentGyldigeKontotyper - fars kvoter', () => {
         expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual([
             'MØDREKVOTE',
             'FEDREKVOTE',
-            'FORELDREPENGER',
             'AKTIVITETSFRI_KVOTE',
         ]);
     });

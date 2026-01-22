@@ -357,3 +357,41 @@ export const VisPerioderMedOppholdsårsakKorrekt: Story = {
         ],
     },
 };
+
+export const FarSøkerOmsorgsovertakelse: Story = {
+    args: {
+        foreldreInfo: {
+            rettighetType: 'BARE_SØKER_RETT',
+            søker: 'FAR_ELLER_MEDMOR',
+            navnPåForeldre: {
+                mor: 'Olga Utvikler',
+                farMedmor: 'Espen Utvikler',
+            },
+            erMedmorDelAvSøknaden: false,
+        },
+        barn: {
+            type: BarnType.ADOPTERT_ANNET_BARN,
+            fødselsdatoer: ['2022-05-09'],
+            antallBarn: 1,
+            adopsjonsdato: '2025-05-09',
+        },
+        uttakPerioder: [
+            {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'MØDREKVOTE',
+                fom: '2025-05-09',
+                tom: '2025-08-21',
+            },
+        ],
+        harAktivitetskravIPeriodeUtenUttak: false,
+        valgtStønadskonto: {
+            kontoer: [
+                { konto: 'MØDREKVOTE', dager: 95 },
+                { konto: 'FEDREKVOTE', dager: 95 },
+                { konto: 'FELLESPERIODE', dager: 101 },
+                { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+            ],
+            minsteretter: MINSTERETTER,
+        },
+    },
+};

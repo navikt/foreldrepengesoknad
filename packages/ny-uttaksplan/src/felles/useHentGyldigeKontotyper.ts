@@ -126,7 +126,7 @@ const erGyldigForFarMedmor = (
     }
 
     if (konto === 'FORELDREPENGER') {
-        if (erNoenPerioderFørToUkerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+        if (erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
             return false;
         }
     }
