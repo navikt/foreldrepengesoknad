@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { API_URLS } from 'appData/queries';
+import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useMellomlagreSøknad';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -103,7 +104,11 @@ type Story = StoryObj<typeof meta>;
 export const VisAppKvinneMedArbeid: Story = {
     parameters: {
         msw: {
-            handlers: HANDLERS.concat([http.get(API_URLS.søkerInfo, () => HttpResponse.json(defaultSøkerinfo))]),
+            handlers: HANDLERS.concat([
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(defaultSøkerinfo)),
+                // Returner tom mellomlagring slik at graviditetsspørsmålet vises
+                http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+            ]),
         },
     },
 };
@@ -132,6 +137,60 @@ export const VisAppMann: Story = {
                         ...defaultSøkerinfo,
                         person: { ...defaultSøkerinfo.person, kjønn: 'M' },
                     }),
+                ),
+                // Returner tom mellomlagring slik at graviditetsspørsmålet vises
+                http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+            ]),
+        },
+    },
+};
+
+export const VisAppMannGravid: Story = {
+    parameters: {
+        msw: {
+            handlers: HANDLERS.concat([
+                http.get(API_URLS.søkerInfo, () =>
+                    HttpResponse.json({
+                        ...defaultSøkerinfo,
+                        person: { ...defaultSøkerinfo.person, kjønn: 'M' },
+                    }),
+                ),
+                // Returner mellomlagring med graviditet bekreftet slik at bruker kan fortsette
+                http.get(API_URLS.mellomlagring, () =>
+                    HttpResponse.json({
+                        version: VERSJON_MELLOMLAGRING,
+                        søkerInfo: {
+                            ...defaultSøkerinfo,
+                            person: { ...defaultSøkerinfo.person, kjønn: 'M' },
+                        },
+                        erGravidBekreftet: true,
+                    } satisfies SvpDataMapAndMetaData),
+                ),
+            ]),
+        },
+    },
+};
+
+export const VisAppMannIkkeGravid: Story = {
+    parameters: {
+        msw: {
+            handlers: HANDLERS.concat([
+                http.get(API_URLS.søkerInfo, () =>
+                    HttpResponse.json({
+                        ...defaultSøkerinfo,
+                        person: { ...defaultSøkerinfo.person, kjønn: 'M' },
+                    }),
+                ),
+                // Returner mellomlagring med graviditet ikke bekreftet
+                http.get(API_URLS.mellomlagring, () =>
+                    HttpResponse.json({
+                        version: VERSJON_MELLOMLAGRING,
+                        søkerInfo: {
+                            ...defaultSøkerinfo,
+                            person: { ...defaultSøkerinfo.person, kjønn: 'M' },
+                        },
+                        erGravidBekreftet: false,
+                    } satisfies SvpDataMapAndMetaData),
                 ),
             ]),
         },

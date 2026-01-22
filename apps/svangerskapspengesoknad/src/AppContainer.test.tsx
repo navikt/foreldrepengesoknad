@@ -8,7 +8,7 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './AppContainer.stories';
 
-const { VisAppKvinneMedArbeid } = composeStories(stories);
+const { VisAppKvinneMedArbeid, VisAppMann, VisAppMannIkkeGravid } = composeStories(stories);
 
 describe('<AppContainer>', () => {
     beforeEach(() => {
@@ -23,6 +23,11 @@ describe('<AppContainer>', () => {
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(VisAppKvinneMedArbeid.parameters.msw);
             const utils = render(<VisAppKvinneMedArbeid />);
+
+            // Svar på graviditetsspørsmålet først
+            expect(await screen.findByText('Er du gravid?')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Ja'));
+            await userEvent.click(screen.getByText('Fortsett'));
 
             expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Ja, jeg har forstått mine plikter.'));
@@ -117,6 +122,51 @@ describe('<AppContainer>', () => {
 
             await userEvent.click(screen.getByText('Forrige steg'));
             expect(screen.getAllByText('Barnet')).toHaveLength(2);
+        }),
+    );
+
+    it(
+        'skal vise graviditetsspørsmål for bruker med mannlig personnummer',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(VisAppMann.parameters.msw);
+            render(<VisAppMann />);
+
+            expect(await screen.findByText('Er du gravid?')).toBeInTheDocument();
+            expect(screen.getByText('For å søke om svangerskapspenger må du være gravid.')).toBeInTheDocument();
+        }),
+    );
+
+    it(
+        'skal vise IkkeGravid når bruker med mannlig personnummer svarer nei på graviditetsspørsmålet',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(VisAppMann.parameters.msw);
+            render(<VisAppMann />);
+
+            expect(await screen.findByText('Er du gravid?')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Nei'));
+            await userEvent.click(screen.getByText('Fortsett'));
+
+            expect(await screen.findByText('Du kan ikke søke om svangerskapspenger')).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    /Du har dessverre ikke rett på svangerskapspenger. Svangerskapspenger er for deg som er gravid/,
+                ),
+            ).toBeInTheDocument();
+        }),
+    );
+
+    it(
+        'skal vise IkkeGravid når mellomlagret data har erGravidBekreftet: false',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(VisAppMannIkkeGravid.parameters.msw);
+            render(<VisAppMannIkkeGravid />);
+
+            expect(await screen.findByText('Du kan ikke søke om svangerskapspenger')).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    /Du har dessverre ikke rett på svangerskapspenger. Svangerskapspenger er for deg som er gravid/,
+                ),
+            ).toBeInTheDocument();
         }),
     );
 });

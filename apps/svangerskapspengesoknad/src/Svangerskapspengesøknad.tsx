@@ -37,7 +37,7 @@ export const Svangerskapspengesøknad = () => {
 
     const [erGravidBekreftet, setErGravidBekreftet] = useState<boolean | undefined>(undefined);
 
-    // Check if answer is stored in mellomlagret data
+    // Sjekk om svaret er lagret i mellomlagret data
     useEffect(() => {
         const mellomlagretState =
             mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING
@@ -49,7 +49,7 @@ export const Svangerskapspengesøknad = () => {
         }
     }, [mellomlagretInfo.data]);
 
-    // Save pregnancy confirmation to mellomlagring
+    // Lagre gravidbekreftelse til mellomlagring
     const lagreGravidBekreftelse = useCallback(
         async (erGravid: boolean) => {
             try {
@@ -60,16 +60,16 @@ export const Svangerskapspengesøknad = () => {
                     ...(eksisterendeData && eksisterendeData.version === VERSJON_MELLOMLAGRING
                         ? eksisterendeData
                         : {}),
-                    erGravidBekreftet: erGravid, // Set after spread to ensure it's not overwritten
+                    erGravidBekreftet: erGravid, // Sett etter spread for å sikre at det ikke overskrives
                 };
 
                 await ky.post(API_URLS.mellomlagring, { json: data });
 
-                // Invalidate and refetch mellomlagret data to update the cache
+                // Invalider og hent mellomlagret data på nytt for å oppdatere cache
                 await queryClient.invalidateQueries({ queryKey: ['MELLOMLAGRET_INFO'] });
             } catch (error) {
-                // Log error but don't block the user flow
-                // The answer is still stored in local state
+                // Logg feil men blokker ikke brukerflyten
+                // Svaret er fortsatt lagret i lokal state
                 console.error('Kunne ikke lagre gravidbekreftelse:', error);
             }
         },
@@ -84,25 +84,25 @@ export const Svangerskapspengesøknad = () => {
         return <Spinner />;
     }
 
-    // Show pregnancy confirmation question if not yet answered
+    // Vis gravidbekreftelsesspørsmål hvis ikke enda besvart
     if (erGravidBekreftet === undefined) {
         return (
             <ErDuGravidSteg
                 onBekreft={async (erGravid) => {
                     setErGravidBekreftet(erGravid);
-                    // Save to mellomlagring so it persists across sessions
+                    // Lagre til mellomlagring slik at det persisterer på tvers av sesjoner
                     await lagreGravidBekreftelse(erGravid);
                 }}
             />
         );
     }
 
-    // Show "not eligible" message if they answered no
+    // Vis "ikke kvalifisert"-melding hvis de svarte nei
     if (erGravidBekreftet === false) {
         return <IkkeGravid />;
     }
 
-    // Continue with normal flow if they answered yes
+    // Fortsett med normal flyt hvis de svarte ja
     const erPersonMyndig = erMyndig(søkerinfo.data.person.fødselsdato);
 
     const mellomlagretState =

@@ -20,15 +20,15 @@ export const IkkeGravid = () => {
                 <GuidePanel poster>
                     <VStack gap="space-16">
                         <Heading level="2" size="small">
-                            <FormattedMessage id="ikkeKvinne.tittel" />
+                            <FormattedMessage id="ikkeGravid.tittel" />
                         </Heading>
-                        <FormattedMessage id="ikkeKvinne.tekst" />
+                        <FormattedMessage id="ikkeGravid.tekst" />
                     </VStack>
                 </GuidePanel>
 
                 <HStack justify="center">
                     <Button as="a" icon={<ArrowRightIcon aria-hidden />} iconPosition="right" href={links.nav}>
-                        <FormattedMessage id="ikkeKvinne.knappetekst" />
+                        <FormattedMessage id="ikkeGravid.knappetekst" />
                     </Button>
                 </HStack>
             </VStack>
