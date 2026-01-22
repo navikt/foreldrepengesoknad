@@ -4,7 +4,7 @@ import { IntlShape } from 'react-intl';
 import { Tidsperiode } from '@navikt/fp-types';
 
 import { dateStringIsSameOrAfter, dateStringIsSameOrBefore, formaterDatoUtenDag } from '../dateUtils';
-import { Uttaksdagen, erUttaksdag } from './UttaksdagenString';
+import { UttaksdagenString, erUttaksdag } from './UttaksdagenString';
 
 const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 const isoStringFormat = 'YYYY-MM-DD';
@@ -38,8 +38,8 @@ const overlapperTidsperioder = (t1: Tidsperiode, t2: Tidsperiode) => {
 };
 
 const erTidsperiodeInnenforFørsteSeksUker = (tidsperiode: Tidsperiode, familiehendelsesdato: string) => {
-    const førsteUttaksdagFamiliehendelsesdato = Uttaksdagen.forDenneEllerNeste(familiehendelsesdato).getDato();
-    const førsteUttaksdagEtterSeksUker = Uttaksdagen.forArbeidsdagen(
+    const førsteUttaksdagFamiliehendelsesdato = UttaksdagenString.denneEllerNeste(familiehendelsesdato).getDato();
+    const førsteUttaksdagEtterSeksUker = UttaksdagenString.denne(
         førsteUttaksdagFamiliehendelsesdato,
     ).getDatoAntallUttaksdagerSenere(ANTALL_UTTAKSDAGER_SEKS_UKER);
     return erTidsperiodeFomEllerEtterDato(tidsperiode, førsteUttaksdagEtterSeksUker) === false;
@@ -91,7 +91,7 @@ export function getTidsperiodeString(fom: string, uttaksdager: number): Tidsperi
     }
     return {
         fom,
-        tom: Uttaksdagen.forArbeidsdagen(fom).getDatoAntallUttaksdagerSenere(uttaksdager - 1),
+        tom: UttaksdagenString.denne(fom).getDatoAntallUttaksdagerSenere(uttaksdager - 1),
     };
 }
 

@@ -23,99 +23,99 @@ describe('UttaksdagenString', () => {
         });
     });
 
-    describe('UttaksdagenString.forArbeidsdagen', () => {
+    describe('UttaksdagenString.denne', () => {
         it('skal lage uttaksdag for en ukedag', () => {
-            const u = UttaksdagenString.forArbeidsdagen(FREDAG);
+            const u = UttaksdagenString.denne(FREDAG);
             expect(u.getDato()).toBe(FREDAG);
         });
 
         it('skal kaste feil for helgedag', () => {
-            expect(() => UttaksdagenString.forArbeidsdagen(LØRDAG)).toThrow();
-            expect(() => UttaksdagenString.forArbeidsdagen(SØNDAG)).toThrow();
+            expect(() => UttaksdagenString.denne(LØRDAG)).toThrow();
+            expect(() => UttaksdagenString.denne(SØNDAG)).toThrow();
         });
     });
 
-    describe('UttaksdagenString.forDenneEllerForrige', () => {
+    describe('UttaksdagenString.denneEllerForrige', () => {
         it('skal beholde ukedag uendret', () => {
-            const u = UttaksdagenString.forDenneEllerForrige(FREDAG);
+            const u = UttaksdagenString.denneEllerForrige(FREDAG);
             expect(u.getDato()).toBe(FREDAG);
         });
 
         it('skal flytte lørdag til fredag', () => {
-            const u = UttaksdagenString.forDenneEllerForrige(LØRDAG);
+            const u = UttaksdagenString.denneEllerForrige(LØRDAG);
             expect(u.getDato()).toBe(FREDAG);
         });
 
         it('skal flytte søndag til fredag', () => {
-            const u = UttaksdagenString.forDenneEllerForrige(SØNDAG);
+            const u = UttaksdagenString.denneEllerForrige(SØNDAG);
             expect(u.getDato()).toBe(FREDAG);
         });
     });
 
-    describe('UttaksdagenString.forDenneEllerNeste', () => {
+    describe('UttaksdagenString.denneEllerNeste', () => {
         it('skal beholde ukedag uendret', () => {
-            const u = UttaksdagenString.forDenneEllerNeste(FREDAG);
+            const u = UttaksdagenString.denneEllerNeste(FREDAG);
             expect(u.getDato()).toBe(FREDAG);
         });
 
         it('skal flytte lørdag til mandag', () => {
-            const u = UttaksdagenString.forDenneEllerNeste(LØRDAG);
+            const u = UttaksdagenString.denneEllerNeste(LØRDAG);
             expect(u.getDato()).toBe(MANDAG);
         });
 
         it('skal flytte søndag til mandag', () => {
-            const u = UttaksdagenString.forDenneEllerNeste(SØNDAG);
+            const u = UttaksdagenString.denneEllerNeste(SØNDAG);
             expect(u.getDato()).toBe(MANDAG);
         });
     });
 
-    describe('UttaksdagenString.forForrige / forNeste', () => {
+    describe('UttaksdagenString.forrige / forNeste', () => {
         it('skal gå til forrige uttaktsdag', () => {
-            const u = UttaksdagenString.forForrige(MANDAG);
+            const u = UttaksdagenString.forrige(MANDAG);
             expect(u.getDato()).toBe(FREDAG);
         });
 
         it('skal gå til neste uttaktsdag', () => {
-            const u = UttaksdagenString.forNeste(FREDAG);
+            const u = UttaksdagenString.neste(FREDAG);
             expect(u.getDato()).toBe(MANDAG);
         });
     });
 
     describe('Legg til og trekk fra uttaksdager', () => {
         it('skal legge 0 uttaksdager -> samme dato', () => {
-            const u = UttaksdagenString.forArbeidsdagen(FREDAG);
+            const u = UttaksdagenString.denne(FREDAG);
             expect(u.getDatoAntallUttaksdagerSenere(0)).toBe(FREDAG);
         });
 
         it('skal legge 1 uttaksdag fra fredag -> mandag', () => {
-            const u = UttaksdagenString.forArbeidsdagen(FREDAG);
+            const u = UttaksdagenString.denne(FREDAG);
             expect(u.getDatoAntallUttaksdagerSenere(1)).toBe(MANDAG);
         });
 
         it('skal legge til 5 uttaksdager fra fredag -> neste fredag', () => {
-            const u = UttaksdagenString.forArbeidsdagen(FREDAG);
+            const u = UttaksdagenString.denne(FREDAG);
             expect(u.getDatoAntallUttaksdagerSenere(5)).toBe('2026-01-23');
         });
 
         it('skal trekke 1 uttaksdag fra mandag -> fredag', () => {
-            const u = UttaksdagenString.forArbeidsdagen(MANDAG);
+            const u = UttaksdagenString.denne(MANDAG);
             expect(u.getDatoAntallUttaksdagerTidligere(1)).toBe(FREDAG);
         });
 
         it('skal trekke 5 uttaksdager fra fredag -> forrige fredag', () => {
-            const u = UttaksdagenString.forArbeidsdagen(FREDAG);
+            const u = UttaksdagenString.denne(FREDAG);
             expect(u.getDatoAntallUttaksdagerTidligere(5)).toBe('2026-01-09');
         });
     });
 
     describe('getUttaksdagerFremTilDato', () => {
         it('skal vøre 0 dager mellom fredag og fredag', () => {
-            const u = UttaksdagenString.forArbeidsdagen(FREDAG);
+            const u = UttaksdagenString.denne(FREDAG);
             expect(u.getUttaksdagerFremTilDato(FREDAG)).toBe(0);
         });
 
         it('skal være en uttaksdag fra fredag til mandag', () => {
-            const u = UttaksdagenString.forArbeidsdagen(FREDAG);
+            const u = UttaksdagenString.denne(FREDAG);
             expect(u.getUttaksdagerFremTilDato(MANDAG)).toBe(1);
         });
     });

@@ -17,26 +17,26 @@ export class UttaksdagenString {
         this.uttaksdagenDato = uttaksdagenDato;
     }
 
-    static forArbeidsdagen(dato: string): UttaksdagenString {
+    static denne(dato: string): UttaksdagenString {
         if (erUttaksdag(dato) === false) {
             throw new Error(`Dato ${formatDate(dato)} må være uttaksdag`);
         }
         return new UttaksdagenString(dato);
     }
 
-    static forDenneEllerForrige(dato: string): UttaksdagenString {
+    static denneEllerForrige(dato: string): UttaksdagenString {
         return new UttaksdagenString(getUttaksdagTilOgMedDato(dato));
     }
 
-    static forDenneEllerNeste(dato: string): UttaksdagenString {
+    static denneEllerNeste(dato: string): UttaksdagenString {
         return new UttaksdagenString(getUttaksdagFraOgMedDato(dato));
     }
 
-    static forForrige(dato: string): UttaksdagenString {
+    static forrige(dato: string): UttaksdagenString {
         return new UttaksdagenString(getUttaksdagFørDato(dato));
     }
 
-    static forNeste(dato: string): UttaksdagenString {
+    static neste(dato: string): UttaksdagenString {
         return new UttaksdagenString(getUttaksdagEtterDato(dato));
     }
 

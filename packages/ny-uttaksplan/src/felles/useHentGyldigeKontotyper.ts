@@ -164,8 +164,8 @@ const erNoenPerioderFørTreUkerFørFamDatoEllerEtterLikFamDato = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     familiehendelsedato: string,
 ) => {
-    const førsteDag = UttaksdagenString.forDenneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(15);
-    const sisteDag = UttaksdagenString.forForrige(familiehendelsedato).getDato();
+    const førsteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(15);
+    const sisteDag = UttaksdagenString.forrige(familiehendelsedato).getDato();
 
     return valgtePerioder.some((p) => dayjs(p.tom).isAfter(sisteDag) || dayjs(p.fom).isBefore(førsteDag));
 };
@@ -176,7 +176,7 @@ const erNoenPerioderFørToUkerFørFamiliehendelsesdato = (
 ) =>
     valgtePerioder.some((periode) =>
         dayjs(periode.fom).isBefore(
-            UttaksdagenString.forDenneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(10),
+            UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(10),
         ),
     );
 const erNoenPerioderMerEnn60DagerFørFamiliehendelsesdato = (
@@ -185,7 +185,7 @@ const erNoenPerioderMerEnn60DagerFørFamiliehendelsesdato = (
 ) =>
     valgtePerioder.some((periode) =>
         dayjs(periode.fom).isBefore(
-            UttaksdagenString.forDenneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(60),
+            UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(60),
         ),
     );
 
@@ -193,8 +193,8 @@ const erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     familiehendelsedato: string,
 ) => {
-    const førsteDag = UttaksdagenString.forDenneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(15);
-    const sisteDag = UttaksdagenString.forForrige(familiehendelsedato).getDato();
+    const førsteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(15);
+    const sisteDag = UttaksdagenString.forrige(familiehendelsedato).getDato();
 
     return valgtePerioder.some((periode) => {
         const fom = dayjs(periode.fom);

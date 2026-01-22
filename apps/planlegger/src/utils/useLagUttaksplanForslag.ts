@@ -24,7 +24,7 @@ export const useLagUttaksplanForslag = (valgtStønadskonto: KontoBeregningDto) =
         (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR ||
             hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR) &&
         hvemHarRett === 'kunSøker2HarRett'
-            ? UttaksdagenString.forDenneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30)
+            ? UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30)
             : undefined;
 
     const bareFarMedmorHarRett =

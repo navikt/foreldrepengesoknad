@@ -33,9 +33,9 @@ export const TidsperiodeSpørsmål = () => {
                     name="fom"
                     control={control}
                     showMonthAndYearDropdowns
-                    minDate={UttaksdagenString.forDenneEllerNeste(
-                        familiehendelsedato,
-                    ).getDatoAntallUttaksdagerTidligere(60)}
+                    minDate={UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(
+                        60,
+                    )}
                     maxDate={maxDate}
                     label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.fom' })}
                     disableWeekends={true}
