@@ -1,10 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { SvpDataContext } from 'appData/SvpDataContext';
 import { API_URLS, mellomlagretInfoOptions, søkerinfoOptions } from 'appData/queries';
 import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 import isEqual from 'lodash/isEqual';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
@@ -33,6 +33,7 @@ export const Svangerskapspengesøknad = () => {
     const søkerinfo = useQuery(søkerinfoOptions());
 
     const mellomlagretInfo = useQuery(mellomlagretInfoOptions());
+    const queryClient = useQueryClient();
 
     const [erGravidBekreftet, setErGravidBekreftet] = useState<boolean | undefined>(undefined);
 
@@ -48,6 +49,33 @@ export const Svangerskapspengesøknad = () => {
         }
     }, [mellomlagretInfo.data]);
 
+    // Save pregnancy confirmation to mellomlagring
+    const lagreGravidBekreftelse = useCallback(
+        async (erGravid: boolean) => {
+            try {
+                const eksisterendeData = mellomlagretInfo.data;
+                const data: SvpDataMapAndMetaData = {
+                    version: VERSJON_MELLOMLAGRING,
+                    søkerInfo: søkerinfo.data!,
+                    ...(eksisterendeData && eksisterendeData.version === VERSJON_MELLOMLAGRING
+                        ? eksisterendeData
+                        : {}),
+                    erGravidBekreftet: erGravid, // Set after spread to ensure it's not overwritten
+                };
+
+                await ky.post(API_URLS.mellomlagring, { json: data });
+
+                // Invalidate and refetch mellomlagret data to update the cache
+                await queryClient.invalidateQueries({ queryKey: ['MELLOMLAGRET_INFO'] });
+            } catch (error) {
+                // Log error but don't block the user flow
+                // The answer is still stored in local state
+                console.error('Kunne ikke lagre gravidbekreftelse:', error);
+            }
+        },
+        [mellomlagretInfo.data, søkerinfo.data, queryClient],
+    );
+
     if (søkerinfo.error || mellomlagretInfo.error) {
         return <ApiErrorHandler error={notEmpty(søkerinfo.error ?? mellomlagretInfo.error)} />;
     }
@@ -60,8 +88,10 @@ export const Svangerskapspengesøknad = () => {
     if (erGravidBekreftet === undefined) {
         return (
             <ErDuGravidSteg
-                onBekreft={(erGravid) => {
+                onBekreft={async (erGravid) => {
                     setErGravidBekreftet(erGravid);
+                    // Save to mellomlagring so it persists across sessions
+                    await lagreGravidBekreftelse(erGravid);
                 }}
             />
         );
