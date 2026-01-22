@@ -1,7 +1,9 @@
-import { sumBy } from 'lodash';
+import dayjs from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import { groupBy, sumBy } from 'lodash';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Accordion, BodyShort, ExpansionCard, HGrid, Label, VStack } from '@navikt/ds-react';
+import { Accordion, BodyShort, ExpansionCard, HGrid, HStack, Heading, Label, Table, VStack } from '@navikt/ds-react';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import {
@@ -9,8 +11,17 @@ import {
     BeregningsAndel_fpoversikt,
     Beregningsgrunnlag_fpoversikt,
     FpSak_fpoversikt,
+    UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { capitalizeFirstLetter, formatCurrency, formatCurrencyWithKr, formatOppramsing } from '@navikt/fp-utils';
+import {
+    capitalizeFirstLetter,
+    erUttaksdag,
+    formatCurrency,
+    formatCurrencyWithKr,
+    formatDate,
+    formatOppramsing,
+} from '@navikt/fp-utils';
+import { sorterPerioder } from '@navikt/fp-uttaksplan-ny/src/utils/periodeUtils.ts';
 
 import { BeregningHeader } from '../../components/header/Header.tsx';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor.ts';
@@ -20,8 +31,11 @@ import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes.tsx';
 import { OversiktRoutes } from '../../routes/routes.ts';
 import { formaterDato } from '../../utils/dateUtils.ts';
 
+dayjs.extend(isSameOrBefore);
+
 export const BeregningPage = () => {
     const gjeldendeSak = useGetSelectedSak();
+    console.log(gjeldendeSak);
     useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.BEREGNING);
     const intl = useIntl();
@@ -57,6 +71,7 @@ export const BeregningPage = () => {
                                 />
                             ))}
                         </VStack>
+                        <UtbetalingsVisning sak={gjeldendeSak} />
                         <Forklaringer grunnbeløpPåBeregning={beregning.grunnbeløp} />
                     </ExpansionCard.Content>
                 </ExpansionCard>
@@ -187,6 +202,85 @@ const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
                 <BodyShort>{formatCurrencyWithKr(andel.fastsattPrÅr ?? 0)}</BodyShort>
             </HGrid>
         </VStack>
+    );
+};
+
+type DagMedPeriode = {
+    dato: string;
+    gradering: number;
+};
+
+const periodeTilDager = (perioder: UttakPeriode_fpoversikt[]): DagMedPeriode[] => {
+    const dager: DagMedPeriode[] = [];
+
+    for (const periode of perioder) {
+        let current = dayjs(periode.fom);
+        const end = dayjs(periode.tom);
+
+        while (current.isSameOrBefore(end, 'day')) {
+            dager.push({
+                dato: current.format('YYYY-MM-DD'),
+                gradering: periode.gradering?.arbeidstidprosent ?? 100,
+            });
+            current = current.add(1, 'day');
+        }
+    }
+
+    return dager.filter((d) => erUttaksdag(new Date(d.dato)));
+};
+
+const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
+    const vedtattePerioder = [
+        ...(sak.gjeldendeVedtak?.perioder ?? []).filter((p) => p.resultat?.innvilget === true),
+    ].sort(sorterPerioder);
+
+    const b = periodeTilDager(vedtattePerioder);
+
+    const a = groupBy(b, (d) => dayjs(d.dato).month());
+    console.log(a);
+    const sumDagsats = sumBy(
+        sak.gjeldendeVedtak?.beregningsgrunnlag?.beregningsAndeler ?? [],
+        (ba) => (ba.dagsatsSøker ?? 0) + (ba.dagsatsArbeidsgiver ?? 0),
+    );
+
+    return (
+        <Accordion>
+            {Object.values(a).map((dager, index) => {
+                const totalGradering = sumBy(dager, (d) => d.gradering);
+                return (
+                    <Accordion.Item key={index}>
+                        <Accordion.Header>
+                            <HStack gap="space-4" justify="space-between">
+                                <Label>{formaterDato(dager[0]!.dato, 'MMMM-YYYY')}</Label>
+                                <span>{formatCurrencyWithKr(sumDagsats * (totalGradering * 0.01))}</span>
+                            </HStack>
+                        </Accordion.Header>
+                        <Accordion.Content>
+                            <Table>
+                                <Table.Header>
+                                    <Table.Row>
+                                        <Table.HeaderCell scope="col">Dato</Table.HeaderCell>
+                                        <Table.HeaderCell scope="col">Beløp</Table.HeaderCell>
+                                        <Table.HeaderCell scope="col">Gradering</Table.HeaderCell>
+                                    </Table.Row>
+                                </Table.Header>
+                                <Table.Body>
+                                    {dager.map((dag) => (
+                                        <Table.Row key={dag.dato}>
+                                            <Table.HeaderCell scope="row">
+                                                {formaterDato(dag.dato, 'DD. MMM')}
+                                            </Table.HeaderCell>
+                                            <Table.DataCell>{sumDagsats * (dag.gradering * 0.01)}</Table.DataCell>
+                                            <Table.DataCell>{dag.gradering} %</Table.DataCell>
+                                        </Table.Row>
+                                    ))}
+                                </Table.Body>
+                            </Table>
+                        </Accordion.Content>
+                    </Accordion.Item>
+                );
+            })}
+        </Accordion>
     );
 };
 
