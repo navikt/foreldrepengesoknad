@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { groupBy, sumBy } from 'lodash';
+import { groupBy, sortBy, sumBy } from 'lodash';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Accordion, BodyShort, ExpansionCard, HGrid, HStack, Heading, Label, Table, VStack } from '@navikt/ds-react';
+import { Accordion, BodyShort, ExpansionCard, HGrid, HStack, Label, Table, VStack } from '@navikt/ds-react';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import {
@@ -18,7 +18,6 @@ import {
     erUttaksdag,
     formatCurrency,
     formatCurrencyWithKr,
-    formatDate,
     formatOppramsing,
 } from '@navikt/fp-utils';
 import { sorterPerioder } from '@navikt/fp-uttaksplan-ny/src/utils/periodeUtils.ts';
@@ -237,7 +236,6 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
     const b = periodeTilDager(vedtattePerioder);
 
     const a = groupBy(b, (d) => dayjs(d.dato).month());
-    console.log(a);
     const sumDagsats = sumBy(
         sak.gjeldendeVedtak?.beregningsgrunnlag?.beregningsAndeler ?? [],
         (ba) => (ba.dagsatsSøker ?? 0) + (ba.dagsatsArbeidsgiver ?? 0),
@@ -245,23 +243,27 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
 
     return (
         <Accordion>
-            {Object.values(a).map((dager, index) => {
+            {sortBy(Object.values(a), (dager) => dayjs(dager[0]!.dato).unix()).map((dager, index) => {
                 const totalGradering = sumBy(dager, (d) => d.gradering);
                 return (
                     <Accordion.Item key={index}>
                         <Accordion.Header>
-                            <HStack gap="space-4" justify="space-between">
+                            <HStack gap="space-16">
                                 <Label>{formaterDato(dager[0]!.dato, 'MMMM-YYYY')}</Label>
-                                <span>{formatCurrencyWithKr(sumDagsats * (totalGradering * 0.01))}</span>
+                                <span>(Sum: {formatCurrencyWithKr(sumDagsats * (totalGradering * 0.01))})</span>
                             </HStack>
                         </Accordion.Header>
                         <Accordion.Content>
-                            <Table>
+                            <Table size="small">
                                 <Table.Header>
                                     <Table.Row>
                                         <Table.HeaderCell scope="col">Dato</Table.HeaderCell>
-                                        <Table.HeaderCell scope="col">Beløp</Table.HeaderCell>
-                                        <Table.HeaderCell scope="col">Gradering</Table.HeaderCell>
+                                        <Table.HeaderCell align="right" scope="col">
+                                            Beløp
+                                        </Table.HeaderCell>
+                                        <Table.HeaderCell align="right" scope="col">
+                                            Gradering
+                                        </Table.HeaderCell>
                                     </Table.Row>
                                 </Table.Header>
                                 <Table.Body>
@@ -270,8 +272,10 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                             <Table.HeaderCell scope="row">
                                                 {formaterDato(dag.dato, 'DD. MMM')}
                                             </Table.HeaderCell>
-                                            <Table.DataCell>{sumDagsats * (dag.gradering * 0.01)}</Table.DataCell>
-                                            <Table.DataCell>{dag.gradering} %</Table.DataCell>
+                                            <Table.DataCell align="right">
+                                                {sumDagsats * (dag.gradering * 0.01)}
+                                            </Table.DataCell>
+                                            <Table.DataCell align="right">{dag.gradering} %</Table.DataCell>
                                         </Table.Row>
                                     ))}
                                 </Table.Body>
