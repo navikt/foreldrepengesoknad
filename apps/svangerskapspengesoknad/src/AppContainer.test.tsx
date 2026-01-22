@@ -25,7 +25,7 @@ describe('<AppContainer>', () => {
             const utils = render(<VisAppKvinneMedArbeid />);
 
             // Svar på graviditetsspørsmålet først
-            expect(await screen.findByText('Er du gravid?')).toBeInTheDocument();
+            expect(await screen.findByText('Er du gravid eller har du nylig vært gravid?')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Ja'));
             await userEvent.click(screen.getByText('Fortsett'));
 
@@ -131,8 +131,8 @@ describe('<AppContainer>', () => {
             setHandlers(VisAppMann.parameters.msw);
             render(<VisAppMann />);
 
-            expect(await screen.findByText('Er du gravid?')).toBeInTheDocument();
-            expect(screen.getByText('For å søke om svangerskapspenger må du være gravid.')).toBeInTheDocument();
+            expect(await screen.findByText('Er du gravid eller har du nylig vært gravid?')).toBeInTheDocument();
+            expect(screen.getByText('For å søke om svangerskapspenger må du være gravid eller ha nylig vært gravid.')).toBeInTheDocument();
         }),
     );
 
@@ -142,7 +142,7 @@ describe('<AppContainer>', () => {
             setHandlers(VisAppMann.parameters.msw);
             render(<VisAppMann />);
 
-            expect(await screen.findByText('Er du gravid?')).toBeInTheDocument();
+            expect(await screen.findByText('Er du gravid eller har du nylig vært gravid?')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Nei'));
             await userEvent.click(screen.getByText('Fortsett'));
 

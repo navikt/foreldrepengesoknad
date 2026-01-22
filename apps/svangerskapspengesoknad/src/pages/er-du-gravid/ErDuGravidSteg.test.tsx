@@ -7,13 +7,13 @@ import * as stories from './ErDuGravidSteg.stories';
 const { Default } = composeStories(stories);
 
 describe('<ErDuGravidSteg>', () => {
-    it('skal vise spørsmålet om graviditet', async () => {
+    it('skal vise spørsmålet om graviditet eller nylig fødsel', async () => {
         const onBekreft = vi.fn();
 
         render(<Default onBekreft={onBekreft} />);
 
-        expect(await screen.findByText('Er du gravid?')).toBeInTheDocument();
-        expect(screen.getByText('For å søke om svangerskapspenger må du være gravid.')).toBeInTheDocument();
+        expect(await screen.findByText('Er du gravid eller har du nylig vært gravid?')).toBeInTheDocument();
+        expect(screen.getByText('For å søke om svangerskapspenger må du være gravid eller ha nylig vært gravid.')).toBeInTheDocument();
         expect(screen.getByText('Ja')).toBeInTheDocument();
         expect(screen.getByText('Nei')).toBeInTheDocument();
         expect(screen.getByText('Fortsett')).toBeInTheDocument();
@@ -24,11 +24,11 @@ describe('<ErDuGravidSteg>', () => {
 
         render(<Default onBekreft={onBekreft} />);
 
-        expect(await screen.findByText('Er du gravid?')).toBeInTheDocument();
+        expect(await screen.findByText('Er du gravid eller har du nylig vært gravid?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Fortsett'));
 
-        expect(screen.getByText('Du må svare på om du er gravid')).toBeInTheDocument();
+        expect(screen.getByText('Du må svare på om du er gravid eller har nylig vært gravid')).toBeInTheDocument();
         expect(onBekreft).not.toHaveBeenCalled();
     });
 
@@ -37,13 +37,13 @@ describe('<ErDuGravidSteg>', () => {
 
         render(<Default onBekreft={onBekreft} />);
 
-        expect(await screen.findByText('Er du gravid?')).toBeInTheDocument();
+        expect(await screen.findByText('Er du gravid eller har du nylig vært gravid?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Ja'));
         await userEvent.click(screen.getByText('Fortsett'));
 
         expect(onBekreft).toHaveBeenCalledWith(true);
-        expect(screen.queryByText('Du må svare på om du er gravid')).not.toBeInTheDocument();
+        expect(screen.queryByText('Du må svare på om du er gravid eller har nylig vært gravid')).not.toBeInTheDocument();
     });
 
     it('skal kalle onBekreft med false når bruker velger Nei', async () => {
@@ -51,13 +51,13 @@ describe('<ErDuGravidSteg>', () => {
 
         render(<Default onBekreft={onBekreft} />);
 
-        expect(await screen.findByText('Er du gravid?')).toBeInTheDocument();
+        expect(await screen.findByText('Er du gravid eller har du nylig vært gravid?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Nei'));
         await userEvent.click(screen.getByText('Fortsett'));
 
         expect(onBekreft).toHaveBeenCalledWith(false);
-        expect(screen.queryByText('Du må svare på om du er gravid')).not.toBeInTheDocument();
+        expect(screen.queryByText('Du må svare på om du er gravid eller har nylig vært gravid')).not.toBeInTheDocument();
     });
 });
 
