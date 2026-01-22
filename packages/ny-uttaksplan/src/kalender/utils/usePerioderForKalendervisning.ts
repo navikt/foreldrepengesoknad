@@ -87,10 +87,10 @@ export const usePerioderForKalendervisning = (
         }
 
         const fom = dayjs(periode.fom).isSame(dayjs(familiehendelsesdato), 'd')
-            ? formatDateIso(UttaksdagenString(periode.fom).neste())
+            ? formatDateIso(UttaksdagenString.neste(periode.fom).getDato())
             : formatDateIso(periode.fom);
         const tom = dayjs(periode.tom).isSame(dayjs(familiehendelsesdato), 'd')
-            ? formatDateIso(UttaksdagenString(periode.tom).forrige())
+            ? formatDateIso(UttaksdagenString.forrige(periode.tom).getDato())
             : formatDateIso(periode.tom);
         return [
             ...acc,

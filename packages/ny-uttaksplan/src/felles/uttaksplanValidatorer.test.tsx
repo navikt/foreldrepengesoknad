@@ -171,7 +171,12 @@ describe('useFormSubmitValidator', () => {
             wrapper: getWrapper(),
         });
 
-        const nyePerioder = [{ fom: FAMILIEHENDELSESDATO, tom: UttaksdagenString(FAMILIEHENDELSESDATO).leggTil(5) }];
+        const nyePerioder = [
+            {
+                fom: FAMILIEHENDELSESDATO,
+                tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(5),
+            },
+        ];
 
         const formValues = {
             skalDuKombinereArbeidOgUttakMor: true,
@@ -198,7 +203,12 @@ describe('useFormSubmitValidator', () => {
             }),
         });
 
-        const nyePerioder = [{ fom: FAMILIEHENDELSESDATO, tom: UttaksdagenString(FAMILIEHENDELSESDATO).leggTil(5) }];
+        const nyePerioder = [
+            {
+                fom: FAMILIEHENDELSESDATO,
+                tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(5),
+            },
+        ];
 
         const formValues = {
             skalDuKombinereArbeidOgUttakMor: false,
@@ -225,7 +235,12 @@ describe('useFormSubmitValidator', () => {
             }),
         });
 
-        const perioder = [{ fom: FAMILIEHENDELSESDATO, tom: UttaksdagenString(FAMILIEHENDELSESDATO).leggTil(15) }];
+        const perioder = [
+            {
+                fom: FAMILIEHENDELSESDATO,
+                tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(15),
+            },
+        ];
 
         const formValues = {
             skalDuKombinereArbeidOgUttakMor: false,
@@ -254,7 +269,7 @@ describe('useFormSubmitValidator', () => {
                 uttakPerioder: [
                     {
                         fom: FAMILIEHENDELSESDATO,
-                        tom: UttaksdagenString(FAMILIEHENDELSESDATO).leggTil(4),
+                        tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
                         forelder: 'FAR_MEDMOR',
                     },
                 ],
@@ -263,8 +278,8 @@ describe('useFormSubmitValidator', () => {
 
         const perioder = [
             {
-                fom: UttaksdagenString(FAMILIEHENDELSESDATO).leggTil(5),
-                tom: UttaksdagenString(FAMILIEHENDELSESDATO).leggTil(15),
+                fom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(5),
+                tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(15),
             },
         ];
 
@@ -295,7 +310,7 @@ describe('useFormSubmitValidator', () => {
                 uttakPerioder: [
                     {
                         fom: FAMILIEHENDELSESDATO,
-                        tom: UttaksdagenString(FAMILIEHENDELSESDATO).leggTil(4),
+                        tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
                         forelder: 'FAR_MEDMOR',
                     },
                 ],
@@ -304,8 +319,8 @@ describe('useFormSubmitValidator', () => {
 
         const perioder = [
             {
-                fom: UttaksdagenString(FAMILIEHENDELSESDATO).leggTil(5),
-                tom: UttaksdagenString(FAMILIEHENDELSESDATO).leggTil(9),
+                fom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(5),
+                tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(9),
             },
         ];
 
@@ -334,7 +349,7 @@ describe('useFormSubmitValidator', () => {
                 uttakPerioder: [
                     {
                         fom: FAMILIEHENDELSESDATO,
-                        tom: UttaksdagenString(FAMILIEHENDELSESDATO).leggTil(4),
+                        tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
                         forelder: 'FAR_MEDMOR',
                         gradering: {
                             aktivitet: {
@@ -353,8 +368,8 @@ describe('useFormSubmitValidator', () => {
 
         const perioder = [
             {
-                fom: UttaksdagenString(FAMILIEHENDELSESDATO).leggTil(5),
-                tom: UttaksdagenString(FAMILIEHENDELSESDATO).leggTil(20),
+                fom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(5),
+                tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(20),
             },
         ];
 
@@ -384,7 +399,7 @@ describe('useFormSubmitValidator', () => {
                 uttakPerioder: [
                     {
                         fom: FAMILIEHENDELSESDATO,
-                        tom: UttaksdagenString(FAMILIEHENDELSESDATO).leggTil(4),
+                        tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
                         forelder: 'FAR_MEDMOR',
                         gradering: {
                             aktivitet: {
@@ -403,8 +418,8 @@ describe('useFormSubmitValidator', () => {
 
         const perioder = [
             {
-                fom: UttaksdagenString(FAMILIEHENDELSESDATO).leggTil(5),
-                tom: UttaksdagenString(FAMILIEHENDELSESDATO).leggTil(23),
+                fom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(5),
+                tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(23),
             },
         ];
 
@@ -431,8 +446,8 @@ describe('useFormSubmitValidator', () => {
 
         const perioder = [
             {
-                fom: UttaksdagenString(FAMILIEHENDELSESDATO).leggTil(10),
-                tom: UttaksdagenString(FAMILIEHENDELSESDATO).leggTil(15),
+                fom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(10),
+                tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(15),
             },
         ];
 

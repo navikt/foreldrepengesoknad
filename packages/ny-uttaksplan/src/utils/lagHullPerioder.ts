@@ -50,7 +50,7 @@ export const lagTapteDagerPerioder = (
     familiesituasjon: Familiesituasjon,
     foreldreInfo: ForeldreInfo,
 ): TapteDagerHull[] => {
-    const justertFamiliehendelsedato = UttaksdagenString(familiehendelsedato).denneEllerNeste();
+    const justertFamiliehendelsedato = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato();
 
     if (
         foreldreInfo.søker === 'FAR_ELLER_MEDMOR' &&
@@ -109,8 +109,8 @@ const lagTapteDagerHull = (
     const perioderEkslFørstePeriode = perioderForIntervalletSomSkalSjekkes.slice(1);
 
     for (const periode of perioderEkslFørstePeriode) {
-        const hullFom = UttaksdagenString(forrigePeriode.tom).neste();
-        const hullTom = UttaksdagenString(periode.fom).forrige();
+        const hullFom = UttaksdagenString.neste(forrigePeriode.tom).getDato();
+        const hullTom = UttaksdagenString.forrige(periode.fom).getDato();
 
         if (dayjs(hullTom).isSameOrAfter(hullFom, 'day')) {
             perioderMedTapteDager.push({
@@ -136,8 +136,8 @@ const lagPerioderVedStartOgSluttOmDetMangler = (
 
     if (!perioder.some((p) => dayjs(p.fom).isSameOrBefore(fom))) {
         nyePerioder.push({
-            fom: UttaksdagenString(fom).forrige(),
-            tom: UttaksdagenString(fom).forrige(),
+            fom: UttaksdagenString.forrige(fom).getDato(),
+            tom: UttaksdagenString.forrige(fom).getDato(),
         });
     }
     if (!perioder.some((p) => dayjs(p.tom).isSameOrAfter(tom))) {
@@ -168,8 +168,8 @@ export const lagPerioderUtenUttak = (
     const perioderEkslFørstePeriode = sortertePerioderMedFamiliehendelse.slice(1);
 
     for (const periode of perioderEkslFørstePeriode) {
-        const hullFom = UttaksdagenString(forrigePeriode.tom).neste();
-        const hullTom = UttaksdagenString(periode.fom).forrige();
+        const hullFom = UttaksdagenString.neste(forrigePeriode.tom).getDato();
+        const hullTom = UttaksdagenString.forrige(periode.fom).getDato();
 
         if (dayjs(hullTom).isSameOrAfter(hullFom, 'day')) {
             perioderUtenUttak.push({

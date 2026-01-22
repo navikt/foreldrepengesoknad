@@ -355,7 +355,7 @@ const justerValgteKalenderperioder = (
             nyePerioder.push({
                 ...periode,
                 fom: periode.fom,
-                tom: UttaksdagenString(fomSlett.subtract(1, 'day').format(ISO_DATE_FORMAT)).denneEllerForrige(),
+                tom: UttaksdagenString.denneEllerForrige(fomSlett.subtract(1, 'day').format(ISO_DATE_FORMAT)).getDato(),
             });
         }
 
@@ -363,7 +363,7 @@ const justerValgteKalenderperioder = (
         if (tom.isAfter(tomSlett, 'day')) {
             nyePerioder.push({
                 ...periode,
-                fom: UttaksdagenString(tomSlett.add(1, 'day').format(ISO_DATE_FORMAT)).denneEllerNeste(),
+                fom: UttaksdagenString.denneEllerNeste(tomSlett.add(1, 'day').format(ISO_DATE_FORMAT)).getDato(),
                 tom: periode.tom,
             });
         }

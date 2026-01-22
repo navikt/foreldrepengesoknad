@@ -216,6 +216,39 @@ describe('lagHullPerioder', () => {
         ]);
     });
 
+    it('skal lage et hull der familiehendelse er en helgedag', () => {
+        const familiehendelsedatoLørdag = '2026-01-24';
+
+        const perioder = [
+            {
+                fom: '2026-01-30',
+                tom: '2026-02-02',
+            },
+        ];
+
+        const perioderUtenUttak = lagTapteDagerPerioder(
+            perioder,
+            familiehendelsedatoLørdag,
+            'fødsel',
+            DEFAULT_FORELDRE_INFO,
+        );
+
+        expect(perioderUtenUttak).toEqual([
+            {
+                fom: '2026-01-26',
+                forelder: 'MOR',
+                tom: '2026-01-29',
+                type: 'TAPTE_DAGER',
+            },
+            {
+                fom: '2026-02-03',
+                forelder: 'MOR',
+                tom: '2026-03-06',
+                type: 'TAPTE_DAGER',
+            },
+        ]);
+    });
+
     it('skal legge til perioder uten uttak i hullene mellom perioder', () => {
         const familiehendelsedato = '2025-03-20';
 
@@ -302,5 +335,30 @@ describe('lagHullPerioder', () => {
         const perioderUtenUttak = lagPerioderUtenUttak(perioder, familiehendelsedato);
 
         expect(perioderUtenUttak).toEqual([]);
+    });
+
+    it('skal lage periode uten uttak der familiehendelse er en helgedag', () => {
+        const familiehendelsedatoLørdag = '2026-01-24';
+
+        const perioder = [
+            {
+                fom: '2026-01-24',
+                tom: '2026-01-25',
+            },
+            {
+                fom: '2026-01-30',
+                tom: '2026-02-02',
+            },
+        ];
+
+        const perioderUtenUttak = lagPerioderUtenUttak(perioder, familiehendelsedatoLørdag);
+
+        expect(perioderUtenUttak).toEqual([
+            {
+                fom: '2026-01-26',
+                tom: '2026-01-29',
+                type: 'PERIODE_UTEN_UTTAK',
+            },
+        ]);
     });
 });
