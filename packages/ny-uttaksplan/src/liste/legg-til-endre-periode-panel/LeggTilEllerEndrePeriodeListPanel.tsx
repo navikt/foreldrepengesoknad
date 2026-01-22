@@ -8,7 +8,7 @@ import { Alert, Button, ErrorMessage, HStack, Heading, Radio, VStack } from '@na
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { BrukerRolleSak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { omitMany } from '@navikt/fp-utils';
-import { isRequired } from '@navikt/fp-validation';
+import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../context/UttaksplanRedigeringContext';
@@ -27,9 +27,9 @@ import { TidsperiodeSpørsmål } from './/TidsperiodeSpørsmål';
 export type HvaVilDuGjøre = 'LEGG_TIL_FERIE' | 'LEGG_TIL_OPPHOLD' | 'LEGG_TIL_PERIODE';
 
 export type FormValues = {
-    fom: string;
-    tom: string;
-    hvaVilDuGjøre: HvaVilDuGjøre;
+    fom?: string;
+    tom?: string;
+    hvaVilDuGjøre?: HvaVilDuGjøre;
 } & LeggTilEllerEndrePeriodeFormFormValues;
 
 interface Props {
@@ -77,8 +77,8 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const formSubmitValidator = useFormSubmitValidator<FormValues>();
 
     const onSubmit = (values: FormValues) => {
-        const fomValue = values.fom;
-        const tomValue = values.tom;
+        const fomValue = notEmpty(values.fom);
+        const tomValue = notEmpty(values.tom);
 
         setFeilmelding(undefined);
 
@@ -138,9 +138,8 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
     const erAdopsjon = familiesituasjon === 'adopsjon';
 
-    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper([
-        { fom: fomValue, tom: tomValue },
-    ]);
+    const perioder = fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [];
+    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(perioder);
     const isSubmitDisabled =
         hvaVilDuGjøre === 'LEGG_TIL_PERIODE' &&
         gyldigeStønadskontoerForMor.length === 0 &&
@@ -204,7 +203,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                         </Radio>
                     </RhfRadioGroup>
                     <TidsperiodeSpørsmål />
-                    {hvaVilDuGjøre === 'LEGG_TIL_PERIODE' && (
+                    {hvaVilDuGjøre === 'LEGG_TIL_PERIODE' && fomValue && tomValue && (
                         <LeggTilEllerEndrePeriodeFellesForm
                             valgtePerioder={[{ fom: fomValue, tom: tomValue }]}
                             resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}

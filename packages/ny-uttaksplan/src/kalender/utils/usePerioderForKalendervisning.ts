@@ -46,15 +46,15 @@ export const usePerioderForKalendervisning = (
         const color = getKalenderFargeForPeriode(periode, erFarEllerMedmor, saksperioderInkludertTapteDager, barn);
         const isUpdated = endredePerioder.some((p) => p.fom === periode.fom && p.tom === periode.tom);
 
+        if (dayjs(familiehendelsedato).isBetween(periode.fom, periode.tom, 'day', '[]')) {
+            return [...acc, ...splittPeriodeITo(periode, familiehendelsedato, color, navnPåForeldre, intl, isUpdated)];
+        }
+
         if (
             barnehagestartdato !== undefined &&
             dayjs(barnehagestartdato).isBetween(periode.fom, periode.tom, 'day', '[]')
         ) {
             return [...acc, ...splittPeriodeITo(periode, barnehagestartdato, color, navnPåForeldre, intl, isUpdated)];
-        }
-
-        if (dayjs(familiehendelsedato).isBetween(periode.fom, periode.tom, 'day', '[]')) {
-            return [...acc, ...splittPeriodeITo(periode, familiehendelsedato, color, navnPåForeldre, intl, isUpdated)];
         }
 
         return [

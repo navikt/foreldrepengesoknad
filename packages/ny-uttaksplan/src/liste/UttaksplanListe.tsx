@@ -162,11 +162,13 @@ const splittPeriodePåFamiliehendelsesdato = (
     const tom = dayjs(periode.tom);
     const famdato = dayjs(familiehendelsesdato);
 
-    if (famdato.isBefore(fom) || famdato.isAfter(tom)) {
+    const erPeriodeLikFamiliehendelsesdato = famdato.isSame(fom) && famdato.isSame(tom);
+
+    if (famdato.isBefore(fom) || famdato.isAfter(tom) || erPeriodeLikFamiliehendelsesdato) {
         return [periode];
     }
 
-    const resultat: Uttaksplanperiode[] = [];
+    const resultat: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> = [];
 
     if (fom.isBefore(famdato)) {
         resultat.push({
