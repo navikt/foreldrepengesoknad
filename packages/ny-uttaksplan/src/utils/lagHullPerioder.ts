@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
     BrukerRolleSak_fpoversikt,
     Familiesituasjon,
@@ -57,8 +56,6 @@ export const lagTapteDagerPerioder = (
     familiesituasjon: Familiesituasjon,
     foreldreInfo: ForeldreInfo,
 ): TapteDagerHull[] => {
-    const justertFamiliehendelsedato = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato();
-
     if (
         foreldreInfo.søker === 'FAR_ELLER_MEDMOR' &&
         (foreldreInfo.rettighetType === 'ALENEOMSORG' || foreldreInfo.rettighetType === 'BARE_SØKER_RETT')
@@ -68,13 +65,11 @@ export const lagTapteDagerPerioder = (
         );
 
         if (førstePeriodeSomStarterEtterFamiliehendelsedato?.fom) {
-            const fom =
-                familiesituasjon === 'adopsjon'
-                    ? dayjs(justertFamiliehendelsedato)
-                    : dayjs(justertFamiliehendelsedato).add(6, 'week').add(1, 'day');
-
             const periodeSomSkalSjekkesForHull = {
-                fom: fom.format(ISO_DATE_FORMAT),
+                fom:
+                    familiesituasjon === 'adopsjon'
+                        ? UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato()
+                        : UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(31),
                 tom: førstePeriodeSomStarterEtterFamiliehendelsedato.fom,
             };
 
@@ -82,8 +77,8 @@ export const lagTapteDagerPerioder = (
         }
     } else if (familiesituasjon !== 'adopsjon') {
         const periodeSomSkalSjekkesForHull = {
-            fom: justertFamiliehendelsedato,
-            tom: dayjs(justertFamiliehendelsedato).add(6, 'week').format(ISO_DATE_FORMAT),
+            fom: UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato(),
+            tom: UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
         };
         const forelder = foreldreInfo.søker === 'MOR' ? 'MOR' : 'FAR_MEDMOR';
         return lagTapteDagerHull(sortertePerioder, forelder, periodeSomSkalSjekkesForHull);
