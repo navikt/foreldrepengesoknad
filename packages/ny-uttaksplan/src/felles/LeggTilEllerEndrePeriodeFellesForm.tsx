@@ -4,7 +4,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, InlineMessage, Radio, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, InlineMessage, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfNumericField, RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
 import type {
@@ -175,23 +175,23 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValues, valgtePeri
                 </RhfRadioGroup>
             )}
 
-            {morSøkerOmOverføring ? (
+            {morSøkerOmOverføring && (
                 <VStack gap="space-16">
                     <hr className="text-ax-border-neutral-subtle" />
                     <InlineMessage status="info">
                         <VStack gap="space-8">
-                            <div>
+                            <BodyShort>
                                 <FormattedMessage
                                     id="LeggTilEllerEndrePeriodeForm.Overføring.Info1.Mor"
                                     values={{ erMedmor: erMedmorDelAvSøknaden }}
                                 />
-                            </div>
-                            <div>
+                            </BodyShort>
+                            <BodyShort>
                                 <FormattedMessage
                                     id="LeggTilEllerEndrePeriodeForm.Overføring.Info2.Mor"
                                     values={{ erMedmor: erMedmorDelAvSøknaden }}
                                 />
-                            </div>
+                            </BodyShort>
                         </VStack>
                     </InlineMessage>
                     <RhfRadioGroup
@@ -225,20 +225,20 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValues, valgtePeri
                         </Radio>
                     </RhfRadioGroup>
                 </VStack>
-            ) : null}
+            )}
 
-            {farMedmorSøkerOmOverføring ? (
+            {farMedmorSøkerOmOverføring && (
                 <VStack gap="space-16">
                     <hr className="text-ax-border-neutral-subtle" />
                     <InlineMessage status="info">
                         <VStack gap="space-8">
                             <VStack gap="space-8">
-                                <div>
+                                <BodyShort>
                                     <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Overføring.Info1.FarMedmor" />
-                                </div>
-                                <div>
+                                </BodyShort>
+                                <BodyShort>
                                     <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Overføring.Info2.FarMedmor" />
-                                </div>
+                                </BodyShort>
                             </VStack>
                         </VStack>
                     </InlineMessage>
@@ -273,7 +273,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValues, valgtePeri
                         </Radio>
                     </RhfRadioGroup>
                 </VStack>
-            ) : null}
+            )}
 
             {erFarMedmorUtenAleneomsorg && (
                 <>
