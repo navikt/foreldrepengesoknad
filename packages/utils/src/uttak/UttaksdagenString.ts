@@ -10,34 +10,34 @@ dayjs.extend(isoWeek);
 
 const isoStringFormat = 'YYYY-MM-DD';
 
-export class Uttaksdagen {
-    private uttaksdagenDato: string;
+export class UttaksdagenString {
+    private readonly uttaksdagenDato: string;
 
     private constructor(uttaksdagenDato: string) {
         this.uttaksdagenDato = uttaksdagenDato;
     }
 
-    static forArbeidsdagen(dato: string): Uttaksdagen {
+    static forArbeidsdagen(dato: string): UttaksdagenString {
         if (erUttaksdag(dato) === false) {
             throw new Error(`Dato ${formatDate(dato)} må være uttaksdag`);
         }
-        return new Uttaksdagen(dato);
+        return new UttaksdagenString(dato);
     }
 
-    static forDenneEllerForrige(dato: string): Uttaksdagen {
-        return new Uttaksdagen(getUttaksdagTilOgMedDato(dato));
+    static forDenneEllerForrige(dato: string): UttaksdagenString {
+        return new UttaksdagenString(getUttaksdagTilOgMedDato(dato));
     }
 
-    static forDenneEllerNeste(dato: string): Uttaksdagen {
-        return new Uttaksdagen(getUttaksdagFraOgMedDato(dato));
+    static forDenneEllerNeste(dato: string): UttaksdagenString {
+        return new UttaksdagenString(getUttaksdagFraOgMedDato(dato));
     }
 
-    static forForrige(dato: string): Uttaksdagen {
-        return new Uttaksdagen(getUttaksdagFørDato(dato));
+    static forForrige(dato: string): UttaksdagenString {
+        return new UttaksdagenString(getUttaksdagFørDato(dato));
     }
 
-    static forNeste(dato: string): Uttaksdagen {
-        return new Uttaksdagen(getUttaksdagEtterDato(dato));
+    static forNeste(dato: string): UttaksdagenString {
+        return new UttaksdagenString(getUttaksdagEtterDato(dato));
     }
 
     getDatoAntallUttaksdagerSenere(uttaksdager: number): string {
