@@ -25,3 +25,9 @@ skyra-survey::part(button-primary) {
 skyra-survey::part(button-chip) {
     padding: 5px 20px;
 }
+
+skyra-survey::part(options) {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}

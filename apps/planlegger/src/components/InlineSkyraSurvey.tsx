@@ -1,7 +1,10 @@
+import { TasklistIcon } from '@navikt/aksel-icons';
 import { useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import { Box, HStack, Heading, Skeleton, VStack } from '@navikt/ds-react';
+import { ExpansionCard, HStack, Heading, Skeleton, VStack } from '@navikt/ds-react';
+
+import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import './InlineSkyraSurvey.module.css';
 
@@ -20,6 +23,7 @@ export const InlineSkyraSurvey = () => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [hasFailed, setHasFailed] = useState(false);
     const [isSurveyEmpty, setIsSurveyEmpty] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -30,21 +34,28 @@ export const InlineSkyraSurvey = () => {
 
         let hasLoadedOnce = false;
 
-        // Sjekk med intervall om surveyen har fått innhold
+        // Sjekk med intervall om surveyen har fått innhold eller er lukket
         const intervalId = setInterval(() => {
             const hasContent =
                 surveyElement.shadowRoot?.childNodes.length ||
                 surveyElement.children.length > 0 ||
                 surveyElement.childNodes.length > 0;
 
+            // Sjekk om surveyen er skjult (display: none) eller har blitt fjernet
+            const isHidden =
+                window.getComputedStyle(surveyElement).display === 'none' ||
+                surveyElement.getAttribute('hidden') !== null ||
+                surveyElement.style.display === 'none';
+
             if (hasContent && !hasLoadedOnce) {
                 setIsLoaded(true);
                 hasLoadedOnce = true;
             }
 
-            // Hvis surveyen har lastet men nå er tom igjen, er undersøkelsen over
-            if (hasLoadedOnce && !hasContent) {
+            // Hvis surveyen har lastet men nå er tom eller skjult, er undersøkelsen over
+            if (hasLoadedOnce && (!hasContent || isHidden)) {
                 setIsSurveyEmpty(true);
+                setIsOpen(false);
                 clearInterval(intervalId);
             }
         }, 100);
@@ -68,45 +79,54 @@ export const InlineSkyraSurvey = () => {
         return null;
     }
 
-    // Skjul hvis undersøkelsen er over (tom)
-    if (isSurveyEmpty) {
-        return null;
-    }
-
     if (hasFailed) {
         return null;
     }
 
     return (
-        <Box.New
-            padding="space-16"
-            className="border-ax-neutral-500 border mb-6 ax-border-default rounded-xl"
-            shadow="dialog"
+        <ExpansionCard
+            data-color="brand-beige"
+            aria-label="Frivillig spørreundersøkelse"
+            size="small"
+            open={isOpen}
+            onToggle={setIsOpen}
         >
-            <div ref={containerRef}>
-                {!isLoaded && (
-                    <VStack gap="space-8">
-                        <Heading as={Skeleton} size="large">
-                            Vi ønsker din tilbakemelding
-                        </Heading>
-                        <Skeleton variant="rounded" width="100%" height={30} />
-                        <HStack justify={'end'}>
-                            <Skeleton variant="rounded" width="30%" height={50} />
-                        </HStack>
-                    </VStack>
-                )}
-                {/* @ts-expect-error - skyra-survey er et custom element */}
-                <skyra-survey
-                    style={{
-                        opacity: isLoaded ? 1 : 0,
-                        position: isLoaded ? 'relative' : 'absolute',
-                        pointerEvents: isLoaded ? 'auto' : 'none',
-                    }}
-                    slug="arbeids-og-velferdsetaten-nav/planlegg-foreldrepenger-inline"
-                >
+            <ExpansionCard.Header>
+                <HStack gap="space-24" align="center" wrap={false}>
+                    <IconCircleWrapper size="medium" color="lightBlue">
+                        <TasklistIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
+                    </IconCircleWrapper>
+                    <ExpansionCard.Title size="small">Frivillig spørreundersøkelse</ExpansionCard.Title>
+                </HStack>
+            </ExpansionCard.Header>
+            <ExpansionCard.Content>
+                <div ref={containerRef}>
+                    {isSurveyEmpty ? (
+                        <p>Takk for at du svarte på undersøkelsen</p>
+                    ) : !isLoaded ? (
+                        <VStack gap="space-8">
+                            <Heading as={Skeleton} size="large">
+                                Vi ønsker din tilbakemelding
+                            </Heading>
+                            <Skeleton variant="rounded" width="100%" height={30} />
+                            <HStack justify={'end'}>
+                                <Skeleton variant="rounded" width="30%" height={50} />
+                            </HStack>
+                        </VStack>
+                    ) : null}
                     {/* @ts-expect-error - skyra-survey er et custom element */}
-                </skyra-survey>
-            </div>
-        </Box.New>
+                    <skyra-survey
+                        style={{
+                            opacity: isLoaded && !isSurveyEmpty ? 1 : 0,
+                            position: isLoaded && !isSurveyEmpty ? 'relative' : 'absolute',
+                            pointerEvents: isLoaded && !isSurveyEmpty ? 'auto' : 'none',
+                        }}
+                        slug="arbeids-og-velferdsetaten-nav/planlegg-foreldrepenger-inline"
+                    >
+                        {/* @ts-expect-error - skyra-survey er et custom element */}
+                    </skyra-survey>
+                </div>
+            </ExpansionCard.Content>
+        </ExpansionCard>
     );
 };

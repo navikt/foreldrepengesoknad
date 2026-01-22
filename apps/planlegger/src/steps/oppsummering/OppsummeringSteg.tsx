@@ -61,7 +61,6 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
     return (
         <>
             <OppsummeringHeader>
-                <InlineSkyraSurvey />
                 <VStack gap="space-40">
                     <VStack gap="space-20">
                         {!harRettTilForeldrepenger && (
@@ -102,6 +101,8 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
                         )}
                         {stønadskontoer && valgtStønadskonto && hvorLangPeriode && arbeidssituasjon && (
                             <VStack gap="space-8">
+                                <InlineSkyraSurvey />
+
                                 {harRettTilForeldrepenger && (
                                     <OppsummeringHarRett
                                         valgtStønadskonto={valgtStønadskonto}
