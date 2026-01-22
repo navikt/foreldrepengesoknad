@@ -172,14 +172,14 @@ const splittPeriodePåFamiliehendelsesdato = (
         resultat.push({
             ...periode,
             fom: periode.fom,
-            tom: UttaksdagenString(familiehendelsesdato).trekkFra(1),
+            tom: UttaksdagenString.forrige(familiehendelsesdato).getDato(),
         });
     }
 
     if (tom.isAfter(famdato)) {
         resultat.push({
             ...periode,
-            fom: UttaksdagenString(familiehendelsesdato).denneEllerNeste(),
+            fom: UttaksdagenString.denneEllerNeste(familiehendelsesdato).getDato(),
             tom: periode.tom,
         });
     }
