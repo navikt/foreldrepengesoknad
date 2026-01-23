@@ -1,9 +1,10 @@
+import { CalendarIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { groupBy, sortBy, sumBy } from 'lodash';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Accordion, BodyShort, ExpansionCard, HGrid, HStack, Label, Table, VStack } from '@navikt/ds-react';
+import { Accordion, BodyShort, ExpansionCard, HGrid, HStack, Heading, Label, Table, VStack } from '@navikt/ds-react';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import {
@@ -20,7 +21,6 @@ import {
     formatCurrencyWithKr,
     formatOppramsing,
 } from '@navikt/fp-utils';
-import { sorterPerioder } from '@navikt/fp-uttaksplan-ny/src/utils/periodeUtils.ts';
 
 import { BeregningHeader } from '../../components/header/Header.tsx';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor.ts';
@@ -34,8 +34,7 @@ dayjs.extend(isSameOrBefore);
 
 export const BeregningPage = () => {
     const gjeldendeSak = useGetSelectedSak();
-    console.log(gjeldendeSak);
-    useSetBackgroundColor('white');
+    useSetBackgroundColor('blue');
     useSetSelectedRoute(OversiktRoutes.BEREGNING);
     const intl = useIntl();
     if (gjeldendeSak?.ytelse !== 'FORELDREPENGER') {
@@ -70,10 +69,11 @@ export const BeregningPage = () => {
                                 />
                             ))}
                         </VStack>
-                        <UtbetalingsVisning sak={gjeldendeSak} />
                         <Forklaringer grunnbeløpPåBeregning={beregning.grunnbeløp} />
                     </ExpansionCard.Content>
                 </ExpansionCard>
+
+                <UtbetalingsVisning sak={gjeldendeSak} />
             </VStack>
         </PageRouteLayout>
     );
@@ -225,13 +225,11 @@ const periodeTilDager = (perioder: UttakPeriode_fpoversikt[]): DagMedPeriode[] =
         }
     }
 
-    return dager.filter((d) => erUttaksdag(new Date(d.dato)));
+    return dager;
 };
 
 const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
-    const vedtattePerioder = [
-        ...(sak.gjeldendeVedtak?.perioder ?? []).filter((p) => p.resultat?.innvilget === true),
-    ].sort(sorterPerioder);
+    const vedtattePerioder = [...(sak.gjeldendeVedtak?.perioder ?? []).filter((p) => p.resultat?.innvilget === true)];
 
     const b = periodeTilDager(vedtattePerioder);
 
@@ -242,49 +240,72 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
     );
 
     return (
-        <Accordion>
-            {sortBy(Object.values(a), (dager) => dayjs(dager[0]!.dato).unix()).map((dager, index) => {
-                const totalGradering = sumBy(dager, (d) => d.gradering);
-                return (
-                    <Accordion.Item key={index}>
-                        <Accordion.Header>
-                            <HStack gap="space-16">
-                                <Label>{formaterDato(dager[0]!.dato, 'MMMM-YYYY')}</Label>
-                                <span>(Sum: {formatCurrencyWithKr(sumDagsats * (totalGradering * 0.01))})</span>
-                            </HStack>
-                        </Accordion.Header>
-                        <Accordion.Content>
-                            <Table size="small">
-                                <Table.Header>
-                                    <Table.Row>
-                                        <Table.HeaderCell scope="col">Dato</Table.HeaderCell>
-                                        <Table.HeaderCell align="right" scope="col">
-                                            Beløp
-                                        </Table.HeaderCell>
-                                        <Table.HeaderCell align="right" scope="col">
-                                            Gradering
-                                        </Table.HeaderCell>
-                                    </Table.Row>
-                                </Table.Header>
-                                <Table.Body>
-                                    {dager.map((dag) => (
-                                        <Table.Row key={dag.dato}>
-                                            <Table.HeaderCell scope="row">
-                                                {formaterDato(dag.dato, 'DD. MMM')}
+        <VStack gap="space-4">
+            <Heading size="small" as="h2">
+                Utbetalingsplan
+            </Heading>
+            <BodyShort>Gjøre det tydelig at vårt summerte beløp ikke er hva du vil få på konto.</BodyShort>
+            <VStack gap="space-16">
+                {sortBy(Object.values(a), (dager) => dayjs(dager[0]!.dato).unix()).map((dager, index) => {
+                    const utbetalingsdager = dager.filter((d) => erUttaksdag(new Date(d.dato)));
+                    const totalGradering = sumBy(utbetalingsdager, (d) => d.gradering);
+
+                    const måned = capitalizeFirstLetter(formaterDato(dager[0]!.dato, 'MMMM'));
+
+                    return (
+                        <ExpansionCard key={index} aria-label={måned}>
+                            <ExpansionCard.Header>
+                                <HStack wrap={false} gap="space-16" align="center">
+                                    <div>
+                                        <CalendarIcon className="text-ax-border-accent" aria-hidden fontSize="2rem" />
+                                    </div>
+                                    <div>
+                                        <ExpansionCard.Title size="medium">{måned}</ExpansionCard.Title>
+                                        <ExpansionCard.Description>
+                                            Sum: {formatCurrencyWithKr(sumDagsats * (totalGradering * 0.01))}
+                                        </ExpansionCard.Description>
+                                    </div>
+                                </HStack>
+                            </ExpansionCard.Header>
+
+                            <ExpansionCard.Content>
+                                <Table size="small">
+                                    <Table.Header>
+                                        <Table.Row>
+                                            <Table.HeaderCell scope="col">Dato</Table.HeaderCell>
+                                            <Table.HeaderCell align="right" scope="col">
+                                                Beløp
                                             </Table.HeaderCell>
-                                            <Table.DataCell align="right">
-                                                {sumDagsats * (dag.gradering * 0.01)}
-                                            </Table.DataCell>
-                                            <Table.DataCell align="right">{dag.gradering} %</Table.DataCell>
+                                            <Table.HeaderCell align="right" scope="col">
+                                                Gradering
+                                            </Table.HeaderCell>
                                         </Table.Row>
-                                    ))}
-                                </Table.Body>
-                            </Table>
-                        </Accordion.Content>
-                    </Accordion.Item>
-                );
-            })}
-        </Accordion>
+                                    </Table.Header>
+                                    <Table.Body>
+                                        {dager.map((dag) => {
+                                            const erUtbetalingsdag = erUttaksdag(new Date(dag.dato));
+                                            const beløp = sumDagsats * (dag.gradering * 0.01);
+                                            const beløpTekst = erUtbetalingsdag ? formatCurrencyWithKr(beløp) : '-';
+                                            const graderingtekst = erUtbetalingsdag ? `${dag.gradering} %` : '-';
+
+                                            return (
+                                                <Table.Row key={dag.dato}>
+                                                    <Table.HeaderCell scope="row">
+                                                        {formaterDato(dag.dato, 'DD. MMM')}
+                                                    </Table.HeaderCell>
+                                                    <Table.DataCell align="right">{beløpTekst}</Table.DataCell>
+                                                    <Table.DataCell align="right">{graderingtekst}</Table.DataCell>
+                                                </Table.Row>
+                                            );
+                                        })}
+                                    </Table.Body>
+                                </Table>
+                            </ExpansionCard.Content>
+                        </ExpansionCard>
+                    );
+                })}
+            </VStack>
+        </VStack>
     );
 };
 
