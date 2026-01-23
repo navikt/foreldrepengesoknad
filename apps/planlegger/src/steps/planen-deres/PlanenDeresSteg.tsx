@@ -20,17 +20,17 @@ import {
     getNavnPåForeldre,
 } from 'utils/HvemPlanleggerUtils';
 import { mapOmBarnetTilBarn } from 'utils/barnetUtils';
-import { utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
+import { HvemHarRett, utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
-import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
+import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, Box, Heading, InlineMessage, Tabs, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { Dekningsgrad, HvemPlanleggerType, KontoBeregningResultatDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { BluePanel, Infobox, StepButtons } from '@navikt/fp-ui';
-import { encodeToBase64, useMedia } from '@navikt/fp-utils';
+import { capitalizeFirstLetter, encodeToBase64, useMedia } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import {
     FjernAltIUttaksplanModal,
@@ -250,7 +250,7 @@ const AntallUkerVelger = ({
     lagreUttaksplanOgOppdaterUrl,
 }: {
     stønadskontoer: KontoBeregningResultatDto;
-    hvemHarRett: string;
+    hvemHarRett: HvemHarRett;
     lagreUttaksplanOgOppdaterUrl: (oppdatertUttaksplan: UttakPeriode_fpoversikt[] | undefined) => void;
 }) => {
     const intl = useIntl();
@@ -286,6 +286,14 @@ const AntallUkerVelger = ({
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
     const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
+
+    const uttaksdata = finnUttaksdata(
+        hvemHarRett,
+        hvemPlanlegger,
+        valgtStønadskonto,
+        omBarnet,
+        fordeling?.antallDagerSøker1,
+    );
 
     return (
         <VStack gap="space-24">
@@ -348,6 +356,50 @@ const AntallUkerVelger = ({
                                     </BodyShort>
                                 </InlineMessage>
                             </Box>
+                        )}
+                        {fordeling?.antallDagerSøker1 !== undefined && (
+                            <VStack gap="space-2">
+                                <BodyShort size="small" className="text-text-subtle">
+                                    <FormattedMessage
+                                        id="FordelingsdetaljerPanel.Infoboks.Periode"
+                                        values={{
+                                            hvem: capitalizeFirstLetter(fornavnSøker1),
+                                            fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
+                                                day: 'numeric',
+                                                month: 'short',
+                                                year: 'numeric',
+                                            }),
+                                            tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
+                                                day: 'numeric',
+                                                month: 'short',
+                                                year: 'numeric',
+                                            }),
+                                            b: (b) => <b>{b}</b>,
+                                        }}
+                                    />
+                                </BodyShort>
+                                {fornavnSøker2 && uttaksdata.sluttdatoPeriode2 && (
+                                    <BodyShort size="small" className="text-text-subtle">
+                                        <FormattedMessage
+                                            id="FordelingsdetaljerPanel.Infoboks.Periode"
+                                            values={{
+                                                hvem: capitalizeFirstLetter(fornavnSøker2),
+                                                fom: intl.formatDate(uttaksdata.startdatoPeriode2, {
+                                                    day: 'numeric',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                }),
+                                                tom: intl.formatDate(uttaksdata.sluttdatoPeriode2, {
+                                                    day: 'numeric',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                }),
+                                                b: (b) => <b>{b}</b>,
+                                            }}
+                                        />
+                                    </BodyShort>
+                                )}
+                            </VStack>
                         )}
                     </>
                 )}
