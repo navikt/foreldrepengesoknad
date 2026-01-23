@@ -455,7 +455,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             morsAktivitet: values.morsAktivitet,
             forelder: 'MOR',
             gradering: values.skalDuKombinereArbeidOgUttakMor
-                ? getGradering(values.skalDuKombinereArbeidOgUttakMor, values.stillingsprosentMor, values.kontoTypeMor)
+                ? getGradering(values.skalDuKombinereArbeidOgUttakMor, values.stillingsprosentMor)
                 : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentMor) : undefined,
@@ -471,11 +471,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             morsAktivitet: values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : values.morsAktivitet,
             forelder: 'FAR_MEDMOR',
             gradering: values.skalDuKombinereArbeidOgUttakFarMedmor
-                ? getGradering(
-                      values.skalDuKombinereArbeidOgUttakFarMedmor,
-                      values.stillingsprosentFarMedmor,
-                      values.kontoTypeFarMedmor,
-                  )
+                ? getGradering(values.skalDuKombinereArbeidOgUttakFarMedmor, values.stillingsprosentFarMedmor)
                 : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentFarMedmor) : undefined,
@@ -558,15 +554,7 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
     };
 };
 
-const getGradering = (
-    skalDuJobbe: boolean,
-    stillingsprosent: string | undefined,
-    kontoType: KontoTypeUttak | undefined,
-): Gradering_fpoversikt | undefined => {
-    if (kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
-        return undefined;
-    }
-
+const getGradering = (skalDuJobbe: boolean, stillingsprosent: string | undefined): Gradering_fpoversikt | undefined => {
     if (skalDuJobbe) {
         return {
             aktivitet: {
