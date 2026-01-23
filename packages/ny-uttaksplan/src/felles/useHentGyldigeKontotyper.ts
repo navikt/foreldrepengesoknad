@@ -269,3 +269,13 @@ const erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato = (
         return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
     });
 };
+
+export const erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgSeksUkerEtterFamDato = (
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    familiehendelsedato: string,
+) => {
+    return (
+        erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(valgtePerioder, familiehendelsedato) ||
+        erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(valgtePerioder, familiehendelsedato)
+    );
+};
