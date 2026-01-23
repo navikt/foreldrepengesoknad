@@ -22,7 +22,10 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskontoNavnSimple } from '../liste/utils/uttaksplanListeUtils';
 import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
-import { useHentGyldigeKontotyper } from './useHentGyldigeKontotyper';
+import {
+    erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgSeksUkerEtterFamDato,
+    useHentGyldigeKontotyper,
+} from './useHentGyldigeKontotyper';
 import { prosentValideringGradering, valideringSamtidigUttak } from './uttaksplanValidatorer';
 
 dayjs.extend(isSameOrBefore);
@@ -52,6 +55,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
 
     const {
         foreldreInfo: { rettighetType, erMedmorDelAvSøknaden },
+        familiehendelsedato,
     } = useUttaksplanData();
 
     const formMethods = useFormContext<LeggTilEllerEndrePeriodeFormFormValues>();
@@ -338,33 +342,39 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                     />
                 </>
             )}
-            {kontoTypeMor !== undefined &&
-                kontoTypeMor !== 'FORELDREPENGER_FØR_FØDSEL' &&
-                (forelder === 'MOR' || forelder === 'BEGGE') &&
-                !morSøkerOmOverføring && (
-                    <>
-                        <hr className="text-ax-border-neutral-subtle" />
-                        <VStack gap="space-16">
-                            <RhfRadioGroup
-                                name="skalDuKombinereArbeidOgUttakMor"
-                                control={formMethods.control}
-                                label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor' })}
-                                validate={[
-                                    isRequired(
-                                        intl.formatMessage({
-                                            id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor.Påkrevd',
-                                        }),
-                                    ),
-                                ]}
-                            >
-                                <Radio value={true}>
-                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Ja" />
-                                </Radio>
-                                <Radio value={false}>
-                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Nei" />
-                                </Radio>
-                            </RhfRadioGroup>
-                            {skalDuKombinereArbeidOgUttakMor && (
+            {kontoTypeMor !== undefined && (forelder === 'MOR' || forelder === 'BEGGE') && !morSøkerOmOverføring && (
+                <>
+                    <hr className="text-ax-border-neutral-subtle" />
+                    <VStack gap="space-16">
+                        <RhfRadioGroup
+                            name="skalDuKombinereArbeidOgUttakMor"
+                            control={formMethods.control}
+                            label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor' })}
+                            validate={[
+                                isRequired(
+                                    intl.formatMessage({
+                                        id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor.Påkrevd',
+                                    }),
+                                ),
+                            ]}
+                        >
+                            <Radio value={true}>
+                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Ja" />
+                            </Radio>
+                            <Radio value={false}>
+                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Nei" />
+                            </Radio>
+                        </RhfRadioGroup>
+                        {skalDuKombinereArbeidOgUttakMor && (
+                            <>
+                                {erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgSeksUkerEtterFamDato(
+                                    valgtePerioder,
+                                    familiehendelsedato,
+                                ) && (
+                                    <Alert variant="info">
+                                        <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.DagerReduseres" />
+                                    </Alert>
+                                )}
                                 <RhfNumericField
                                     name="stillingsprosentMor"
                                     control={formMethods.control}
@@ -375,10 +385,11 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                                     validate={[prosentValideringGradering(intl, samtidigUttaksprosentMor)]}
                                     maxLength={5}
                                 />
-                            )}
-                        </VStack>
-                    </>
-                )}
+                            </>
+                        )}
+                    </VStack>
+                </>
+            )}
             {(forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && !farMedmorSøkerOmOverføring && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
