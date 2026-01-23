@@ -221,7 +221,7 @@
     "PlanvisningToggle.kalender": "Kalender",
     "PlanvisningToggle.liste": "Liste",
     "SøkOmForeldrepenger.BasertPå": "Basert på {erAdopsjon, select, true {overtakelsesdatoen} other {{erFødt, select, true {fødselsdatoen} other {terminen}}}} kan {erAlenesøker, select, true {du} other {dere}} søke om foreldrepenger nå.",
-    "SøkOmForeldrepenger.Søk": "Søk om foreldrepenger"
+    "SøkOmForeldrepenger.Søk": "Søk om foreldrepenger",
     "SøkOmForeldrepenger.Tittel": "Søk om foreldrepenger!",
     "Termindato.Required": "Du må oppgi termindato før du går videre",
     "UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Alene": "Hvis man blir syk når man har foreldrepenger",
@@ -242,5 +242,5 @@
     "ValidationMessage.OlderThan6months": "Datoen du valgte er eldre enn 6 måneder.",
     "ValidationMessage.OmsorgsovertakelseKanIkkeVæreLengerEnn15ÅrEtterFødsel": "Datoen kan ikke være senere enn 15 år etter at barnet ble født.",
     "ValidationMessage.ValidDate": "Du har skrevet inn noe som ikke er en dato. Datoen må skrives på formatet dd.mm.åååå.",
-    "Validering.ValidNumber": "Du har skrevet inn noe som ikke er et tall. Bokstaver, mellomrom, punktum og komma er ikke tillatt.",
+    "Validering.ValidNumber": "Du har skrevet inn noe som ikke er et tall. Bokstaver, mellomrom, punktum og komma er ikke tillatt."
 }

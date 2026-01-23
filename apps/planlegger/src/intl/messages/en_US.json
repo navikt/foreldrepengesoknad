@@ -221,7 +221,7 @@
     "PlanvisningToggle.kalender": "Calendar",
     "PlanvisningToggle.liste": "List",
     "SøkOmForeldrepenger.BasertPå": "Estimated on the {erAdopsjon, select, true {date for taking over the care} other {{erFødt, select, true {date of birth} other {due date}}}} you can now apply for parental benefit.",
-    "SøkOmForeldrepenger.Søk": "Apply for parental benefit"
+    "SøkOmForeldrepenger.Søk": "Apply for parental benefit",
     "SøkOmForeldrepenger.Tittel": "Apply for parental benefit!",
     "Termindato.Required": "You must answer what the due date is before proceeding.",
     "UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Alene": "If one becomes sick when receiving parental benefit",
@@ -242,5 +242,5 @@
     "ValidationMessage.OlderThan6months": "The date you chose is older than 6 months.",
     "ValidationMessage.OmsorgsovertakelseKanIkkeVæreLengerEnn15ÅrEtterFødsel": "The date cannot be later than 15 years after the child was born.",
     "ValidationMessage.ValidDate": "You have filled in a text that is not a date. The date must be written in the format dd.mm.yyyy",
-    "Validering.ValidNumber": "You have written something that is not a number. Letters, spaces, periods, and commas are not allowed.",
+    "Validering.ValidNumber": "You have written something that is not a number. Letters, spaces, periods, and commas are not allowed."
 }
