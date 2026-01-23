@@ -101,7 +101,7 @@ describe('UttaksplanListe', () => {
         await userEvent.click(screen.getAllByText('Fellesperiode')[1]!);
 
         expect(await screen.findByText('Far skal ha?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Fars kvote')[1]!);
+        await userEvent.click(screen.getAllByText('Fars kvote')[0]!);
 
         expect(await screen.findByText('Hvor mange prosent for mor?')).toBeInTheDocument();
         await userEvent.type(screen.getByLabelText('Hvor mange prosent for mor?'), '50');

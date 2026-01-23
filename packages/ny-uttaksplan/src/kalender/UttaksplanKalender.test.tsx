@@ -511,7 +511,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getAllByText('Mors kvote')[0]!);
 
         expect(screen.getByText('Far skal ha?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Fars kvote')[1]!);
+        await userEvent.click(screen.getAllByText('Fars kvote')[0]!);
 
         const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent for mor?');
         await userEvent.type(samtidigprosentMor, '60');

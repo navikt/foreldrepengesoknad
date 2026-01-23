@@ -73,7 +73,10 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
         rettighetType !== 'ALENEOMSORG' &&
         (kontoTypeFarMedmor === 'FORELDREPENGER' || kontoTypeFarMedmor === 'FELLESPERIODE');
 
-    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(valgtePerioder);
+    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(
+        valgtePerioder,
+        forelder === 'BEGGE',
+    );
 
     const erMorGyldigForelder = gyldigeStønadskontoerForMor.length > 0;
     const erFarMedmorGyldigForelder = gyldigeStønadskontoerForFarMedmor.length > 0;
