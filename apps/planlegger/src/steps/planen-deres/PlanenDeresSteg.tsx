@@ -358,7 +358,7 @@ const AntallUkerVelger = ({
                             </Box>
                         )}
                         {fordeling?.antallDagerSøker1 !== undefined && (
-                            <Box background="brand-beige-moderate" padding="space-8">
+                            <Box background="brand-beige-moderate" padding="space-8" borderRadius="8">
                                 <List>
                                     <List.Item>
                                         <FormattedMessage
@@ -375,7 +375,6 @@ const AntallUkerVelger = ({
                                                     month: 'short',
                                                     year: 'numeric',
                                                 }),
-                                                b: (b) => <b>{b}</b>,
                                             }}
                                         />
                                     </List.Item>
@@ -395,7 +394,6 @@ const AntallUkerVelger = ({
                                                         month: 'short',
                                                         year: 'numeric',
                                                     }),
-                                                    b: (b) => <b>{b}</b>,
                                                 }}
                                             />
                                         </List.Item>

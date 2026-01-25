@@ -52,7 +52,7 @@
     "FordelingsdetaljerPanel.Infoboks.HvisAdopsjonDel2": "Permisjonen kan se sånn ut med fordelingen dere valgte:",
     "FordelingsdetaljerPanel.Infoboks.HvisBarnet": "Dette er regnet ut fra at {erFlereBarn, select, true {barna} other {barnet}} {erFødt, select, true {ble født {dato}} other {blir født på termin}} og om dere tar sammenhengende permisjon fra {erMorDelAvSøknaden, select, true {tre uker før} other {}} {erFødt, select, true {fødsel} other {termin}}.",
     "FordelingsdetaljerPanel.Infoboks.HvisBarnetDel2": "Permisjonen kan se sånn ut med fordelingen {erAlenesøker, select, true {du} other {dere}} valgte:",
-    "FordelingsdetaljerPanel.Infoboks.Periode": "<b>{hvem}: {fom} – {tom}</b>",
+    "FordelingsdetaljerPanel.Infoboks.Periode": "{hvem}: {fom} – {tom}",
     "FordelingsdetaljerPanel.InfoboksTittel": "Perioden deres",
     "FordelingSteg.EkstraDagInfo.EnDag": "Den ene ekstra dagen med fellesperiode vil legge seg inn i planen automatisk. Hvis du ønsker en annen fordeling, kan du endre dette i planen senere.",
     "FordelingSteg.EkstraDagInfo.FlereDager": "De ekstra dagene med fellesperiode vil legge seg inn i planen automatisk. Hvis du ønsker en annen fordeling, kan du endre dette i planen senere.",
