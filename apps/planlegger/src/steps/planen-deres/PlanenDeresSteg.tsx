@@ -30,7 +30,7 @@ import { BodyLong, BodyShort, Box, Heading, InlineMessage, List, Tabs, ToggleGro
 import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { Dekningsgrad, HvemPlanleggerType, KontoBeregningResultatDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { BluePanel, Infobox, StepButtons } from '@navikt/fp-ui';
-import { capitalizeFirstLetter, encodeToBase64, useMedia } from '@navikt/fp-utils';
+import { encodeToBase64, useMedia } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import {
     FjernAltIUttaksplanModal,
