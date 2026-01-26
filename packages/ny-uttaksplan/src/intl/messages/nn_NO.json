@@ -286,5 +286,6 @@
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Påkrevd": "Du må velje ei årsak for overføring av kvote",
     "VelgPeriodePanelStep.VelgPeriode": "Du må velga kva for periode du vil endra på",
     "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "Du har valgt ein kombinasjon av dagar som ikkje er gyldige for nokon foreldre.",
-    "LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse": "Du kan ikkje velga meir enn to veker totalt i perioden to veker før og seks veker etter fødsel/termin"
+    "LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse": "Du kan ikkje velga meir enn to veker totalt i perioden to veker før og seks veker etter fødsel/termin",
+    "LeggTilEllerEndrePeriodeFellesForm.DagerReduseres": "Arbeid i tidsrommet 3 veker før termin og 6 veker etter fødsel, betyr at foreldrepengane vil reduseres det du jobbar utan at du får dagane til gode til seinere."
 }
