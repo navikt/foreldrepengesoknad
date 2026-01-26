@@ -626,14 +626,14 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         const sliderContainer = slider.closest('.aksel-vstack') as HTMLElement;
 
         // Sjekker initielle datoer (0 uker til søker 1) innenfor slider-containeren
-        expect(within(sliderContainer).getByText(/10\. juni 2024.*–.*11\. okt\. 2024/)).toBeInTheDocument();
-        expect(within(sliderContainer).getByText(/14\. okt\. 2024.*–.*16\. mai 2025/)).toBeInTheDocument();
+        expect(within(sliderContainer).getByText(/10\.\s+juni\s+2024\s*–\s*11\.\s+okt\.\s+2024/)).toBeInTheDocument();
+        expect(within(sliderContainer).getByText(/14\.\s+okt\.\s+2024\s*–\s*16\.\s+mai\s+2025/)).toBeInTheDocument();
 
         // Endrer fordeling til 8 uker til søker 1
         await endreFordelingMedSlider(utils, 40);
 
         // Verifiserer at datoene er oppdatert innenfor slider-containeren
-        expect(within(sliderContainer).getByText(/10\. juni 2024.*–.*6\. des\. 2024/)).toBeInTheDocument();
-        expect(within(sliderContainer).getByText(/9\. des\. 2024.*–.*16\. mai 2025/)).toBeInTheDocument();
+        expect(within(sliderContainer).getByText(/10\.\s+juni\s+2024\s*–\s*6\.\s+des\.\s+2024/)).toBeInTheDocument();
+        expect(within(sliderContainer).getByText(/9\.\s+des\.\s+2024\s*–\s*16\.\s+mai\s+2025/)).toBeInTheDocument();
     });
 });
