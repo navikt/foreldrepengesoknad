@@ -342,6 +342,7 @@ const AntallUkerVelger = ({
                                 antallUkerOgDagerFellesperiode={antallUkerOgDagerFellesperiode}
                                 fornavnSøker1={fornavnSøker1}
                                 fornavnSøker2={fornavnSøker2}
+                                uttaksdata={uttaksdata}
                             />
                         </BluePanel>
                         {antallUkerOgDagerFellesperiode.dager > 0 && (
@@ -355,50 +356,6 @@ const AntallUkerVelger = ({
                                         )}
                                     </BodyShort>
                                 </InlineMessage>
-                            </Box>
-                        )}
-                        {fordeling?.antallDagerSøker1 !== undefined && (
-                            <Box background="brand-beige-moderate" padding="space-8" borderRadius="8">
-                                <List>
-                                    <List.Item>
-                                        <FormattedMessage
-                                            id="FordelingsdetaljerPanel.Infoboks.Periode"
-                                            values={{
-                                                hvem: capitalizeFirstLetter(fornavnSøker1),
-                                                fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
-                                                    day: 'numeric',
-                                                    month: 'short',
-                                                    year: 'numeric',
-                                                }),
-                                                tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
-                                                    day: 'numeric',
-                                                    month: 'short',
-                                                    year: 'numeric',
-                                                }),
-                                            }}
-                                        />
-                                    </List.Item>
-                                    {fornavnSøker2 && uttaksdata.sluttdatoPeriode2 && (
-                                        <List.Item>
-                                            <FormattedMessage
-                                                id="FordelingsdetaljerPanel.Infoboks.Periode"
-                                                values={{
-                                                    hvem: capitalizeFirstLetter(fornavnSøker2),
-                                                    fom: intl.formatDate(uttaksdata.startdatoPeriode2, {
-                                                        day: 'numeric',
-                                                        month: 'short',
-                                                        year: 'numeric',
-                                                    }),
-                                                    tom: intl.formatDate(uttaksdata.sluttdatoPeriode2, {
-                                                        day: 'numeric',
-                                                        month: 'short',
-                                                        year: 'numeric',
-                                                    }),
-                                                }}
-                                            />
-                                        </List.Item>
-                                    )}
-                                </List>
                             </Box>
                         )}
                     </>
