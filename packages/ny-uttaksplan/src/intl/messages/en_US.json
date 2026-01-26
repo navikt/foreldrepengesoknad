@@ -286,5 +286,6 @@
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Påkrevd": "You must select a reason for taking over the quota",
     "VelgPeriodePanelStep.VelgPeriode": "You must select which period you want to change",
     "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "You have selected a combination of days that is not valid for any parent.",
-    "LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse": "You cannot choose more than two weeks in total in the period two weeks before and six weeks after birth/due date."
+    "LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse": "You cannot choose more than two weeks in total in the period two weeks before and six weeks after birth/due date.",
+    "LeggTilEllerEndrePeriodeFellesForm.DagerReduseres": "Working in the period 3 weeks before the due date and 6 weeks after birth means that parental benefits will be reduced for the days you work without being able to take those days later."
 }
