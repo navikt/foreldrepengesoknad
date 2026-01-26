@@ -25,7 +25,7 @@ import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
 import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
-import { BodyLong, BodyShort, Box, Heading, InlineMessage, List, Tabs, ToggleGroup, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Box, Heading, InlineMessage, Tabs, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { Dekningsgrad, HvemPlanleggerType, KontoBeregningResultatDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
