@@ -231,9 +231,9 @@ const periodeTilDager = (perioder: TilkjentYtelsePeriode_fpoversikt[]): DagMedPe
 const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
     const tilkjentYtelse = sak.gjeldendeVedtak?.tilkjentYtelse ?? [];
 
-    const b = periodeTilDager(tilkjentYtelse);
+    const andelerPerDag = periodeTilDager(tilkjentYtelse);
 
-    const a = groupBy(b, (d) => dayjs(d.dato).month());
+    const andelerPerDagGruppertPåMåned = groupBy(andelerPerDag, (d) => dayjs(d.dato).month());
 
     return (
         <VStack gap="space-4">
@@ -242,69 +242,75 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
             </Heading>
             <BodyShort>Gjøre det tydelig at vårt summerte beløp ikke er hva du vil få på konto.</BodyShort>
             <VStack gap="space-16">
-                {sortBy(Object.values(a), (dager) => dayjs(dager[0]!.dato).unix()).map((dager, index) => {
-                    const utbetalingsdager = dager.filter((d) => erUttaksdag(new Date(d.dato)));
-                    const totalGradering = sumBy(utbetalingsdager, (d) =>
-                        sumBy(d.andeler, (andel) => andel.dagsats * andel.utbetalingsgrad * 0.01),
-                    );
+                {sortBy(Object.values(andelerPerDagGruppertPåMåned), (dager) => dayjs(dager[0]!.dato).unix()).map(
+                    (dager, index) => {
+                        const utbetalingsdager = dager.filter((d) => erUttaksdag(new Date(d.dato)));
+                        const totalGradering = sumBy(utbetalingsdager, (d) =>
+                            sumBy(d.andeler, (andel) => andel.dagsats * andel.utbetalingsgrad * 0.01),
+                        );
 
-                    const måned = capitalizeFirstLetter(formaterDato(dager[0]!.dato, 'MMMM'));
+                        const måned = capitalizeFirstLetter(formaterDato(dager[0]!.dato, 'MMMM'));
 
-                    return (
-                        <ExpansionCard key={index} aria-label={måned}>
-                            <ExpansionCard.Header>
-                                <HStack wrap={false} gap="space-16" align="center">
-                                    <div>
-                                        <CalendarIcon className="text-ax-border-accent" aria-hidden fontSize="2rem" />
-                                    </div>
-                                    <div>
-                                        <ExpansionCard.Title size="medium">{måned}</ExpansionCard.Title>
-                                        <ExpansionCard.Description>
-                                            Sum: {formatCurrencyWithKr(totalGradering)}
-                                        </ExpansionCard.Description>
-                                    </div>
-                                </HStack>
-                            </ExpansionCard.Header>
+                        return (
+                            <ExpansionCard key={index} aria-label={måned}>
+                                <ExpansionCard.Header>
+                                    <HStack wrap={false} gap="space-16" align="center">
+                                        <div>
+                                            <CalendarIcon
+                                                className="text-ax-border-accent"
+                                                aria-hidden
+                                                fontSize="2rem"
+                                            />
+                                        </div>
+                                        <div>
+                                            <ExpansionCard.Title size="medium">{måned}</ExpansionCard.Title>
+                                            <ExpansionCard.Description>
+                                                Sum: {formatCurrencyWithKr(totalGradering)}
+                                            </ExpansionCard.Description>
+                                        </div>
+                                    </HStack>
+                                </ExpansionCard.Header>
 
-                            <ExpansionCard.Content>
-                                <Table size="small">
-                                    <Table.Header>
-                                        <Table.Row>
-                                            <Table.HeaderCell scope="col">Dato</Table.HeaderCell>
-                                            <Table.HeaderCell align="right" scope="col">
-                                                Beløp
-                                            </Table.HeaderCell>
-                                            <Table.HeaderCell align="right" scope="col">
-                                                Gradering
-                                            </Table.HeaderCell>
-                                        </Table.Row>
-                                    </Table.Header>
-                                    <Table.Body>
-                                        {dager.map((dag) => {
-                                            const erUtbetalingsdag = erUttaksdag(new Date(dag.dato));
-                                            const beløp = sumBy(
-                                                dag.andeler,
-                                                (andel) => andel.dagsats * andel.utbetalingsgrad * 0.01,
-                                            );
-                                            const beløpTekst = erUtbetalingsdag ? formatCurrencyWithKr(beløp) : '-';
-                                            const graderingtekst = erUtbetalingsdag ? `%` : '-';
+                                <ExpansionCard.Content>
+                                    <Table size="small">
+                                        <Table.Header>
+                                            <Table.Row>
+                                                <Table.HeaderCell scope="col">Dato</Table.HeaderCell>
+                                                <Table.HeaderCell align="right" scope="col">
+                                                    Beløp
+                                                </Table.HeaderCell>
+                                                <Table.HeaderCell align="right" scope="col">
+                                                    Gradering
+                                                </Table.HeaderCell>
+                                            </Table.Row>
+                                        </Table.Header>
+                                        <Table.Body>
+                                            {dager.map((dag) => {
+                                                const erUtbetalingsdag = erUttaksdag(new Date(dag.dato));
+                                                const beløp = sumBy(
+                                                    dag.andeler,
+                                                    (andel) => andel.dagsats * andel.utbetalingsgrad * 0.01,
+                                                );
+                                                const beløpTekst = erUtbetalingsdag ? formatCurrencyWithKr(beløp) : '-';
+                                                const graderingtekst = erUtbetalingsdag ? `%` : '-';
 
-                                            return (
-                                                <Table.Row key={dag.dato}>
-                                                    <Table.HeaderCell scope="row">
-                                                        {formaterDato(dag.dato, 'DD. MMM')}
-                                                    </Table.HeaderCell>
-                                                    <Table.DataCell align="right">{beløpTekst}</Table.DataCell>
-                                                    <Table.DataCell align="right">{graderingtekst}</Table.DataCell>
-                                                </Table.Row>
-                                            );
-                                        })}
-                                    </Table.Body>
-                                </Table>
-                            </ExpansionCard.Content>
-                        </ExpansionCard>
-                    );
-                })}
+                                                return (
+                                                    <Table.Row key={dag.dato}>
+                                                        <Table.HeaderCell scope="row">
+                                                            {formaterDato(dag.dato, 'DD. MMM')}
+                                                        </Table.HeaderCell>
+                                                        <Table.DataCell align="right">{beløpTekst}</Table.DataCell>
+                                                        <Table.DataCell align="right">{graderingtekst}</Table.DataCell>
+                                                    </Table.Row>
+                                                );
+                                            })}
+                                        </Table.Body>
+                                    </Table>
+                                </ExpansionCard.Content>
+                            </ExpansionCard>
+                        );
+                    },
+                )}
             </VStack>
         </VStack>
     );
