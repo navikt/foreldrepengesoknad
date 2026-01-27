@@ -343,7 +343,7 @@ export type no_nav_foreldrepenger_kontrakter_felles_kodeverk_AktivitetStatus =
     | 'KOMBINERT_AT_FL_SN'
     | 'BRUKERS_ANDEL'
     | 'KUN_YTELSE'
-    | 'TTLSTØTENDE_YTELSE'
+    | 'TILSTØTENDE_YTELSE'
     | 'VENTELØNN_VARTPENGER';
 
 export type BehandlingTilstand_fpoversikt =
@@ -425,6 +425,7 @@ export type FpVedtak_fpoversikt = {
     beregningsgrunnlag?: Beregningsgrunnlag_fpoversikt;
     perioder: UttakPeriode_fpoversikt[];
     perioderAnnenpartEøs?: UttakPeriodeAnnenpartEøs_fpoversikt[];
+    tilkjentYtelse: TilkjentYtelsePeriode_fpoversikt[];
 };
 
 export type FpÅpenBehandling_fpoversikt = {
@@ -450,6 +451,21 @@ export type Saker_fpoversikt = {
     engangsstønad: EsSak_fpoversikt[];
     foreldrepenger: FpSak_fpoversikt[];
     svangerskapspenger: SvpSak_fpoversikt[];
+};
+
+export type TilkjentYtelsePeriode_fpoversikt = {
+    andeler: Andel_fpoversikt[];
+    fom: string;
+    tom: string;
+};
+
+export type Andel_fpoversikt = {
+    aktivitetStatus?: no_nav_foreldrepenger_kontrakter_felles_kodeverk_AktivitetStatus;
+    arbeidsgiverIdent: string;
+    arbeidsgivernavn: string;
+    dagsats: number;
+    tilBruker: boolean;
+    utbetalingsgrad: number;
 };
 
 export type UttakPeriodeAnnenpartEøs_fpoversikt = {

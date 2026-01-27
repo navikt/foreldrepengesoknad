@@ -22,6 +22,7 @@ export const saker = {
                 antallBarn: 1,
             },
             gjeldendeVedtak: {
+                tilkjentYtelse: [],
                 perioder: [
                     {
                         fom: '2022-06-10',
@@ -107,6 +108,7 @@ export const saker = {
                 antallBarn: 1,
             },
             gjeldendeVedtak: {
+                tilkjentYtelse: [],
                 perioder: [
                     {
                         fom: '2022-12-20',
@@ -482,6 +484,7 @@ export const saker_FP_fødsel_tilbakekreving = {
                 antallBarn: 1,
             },
             gjeldendeVedtak: {
+                tilkjentYtelse: [],
                 perioder: [
                     {
                         fom: '2025-10-06',
@@ -971,6 +974,7 @@ export const saker_beregning = {
                 antallBarn: 1,
             },
             gjeldendeVedtak: {
+                tilkjentYtelse: [],
                 perioder: [
                     {
                         fom: '2025-11-27',

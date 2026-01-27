@@ -12,7 +12,7 @@ import {
     BeregningsAndel_fpoversikt,
     Beregningsgrunnlag_fpoversikt,
     FpSak_fpoversikt,
-    UttakPeriode_fpoversikt,
+    TilkjentYtelsePeriode_fpoversikt,
 } from '@navikt/fp-types';
 import {
     capitalizeFirstLetter,
@@ -206,10 +206,10 @@ const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
 
 type DagMedPeriode = {
     dato: string;
-    gradering: number;
+    andeler: TilkjentYtelsePeriode_fpoversikt['andeler'];
 };
 
-const periodeTilDager = (perioder: UttakPeriode_fpoversikt[]): DagMedPeriode[] => {
+const periodeTilDager = (perioder: TilkjentYtelsePeriode_fpoversikt[]): DagMedPeriode[] => {
     const dager: DagMedPeriode[] = [];
 
     for (const periode of perioder) {
@@ -219,7 +219,7 @@ const periodeTilDager = (perioder: UttakPeriode_fpoversikt[]): DagMedPeriode[] =
         while (current.isSameOrBefore(end, 'day')) {
             dager.push({
                 dato: current.format('YYYY-MM-DD'),
-                gradering: periode.gradering?.arbeidstidprosent ?? 100,
+                andeler: periode.andeler,
             });
             current = current.add(1, 'day');
         }
@@ -229,15 +229,11 @@ const periodeTilDager = (perioder: UttakPeriode_fpoversikt[]): DagMedPeriode[] =
 };
 
 const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
-    const vedtattePerioder = [...(sak.gjeldendeVedtak?.perioder ?? []).filter((p) => p.resultat?.innvilget === true)];
+    const tilkjentYtelse = sak.gjeldendeVedtak?.tilkjentYtelse ?? [];
 
-    const b = periodeTilDager(vedtattePerioder);
+    const b = periodeTilDager(tilkjentYtelse);
 
     const a = groupBy(b, (d) => dayjs(d.dato).month());
-    const sumDagsats = sumBy(
-        sak.gjeldendeVedtak?.beregningsgrunnlag?.beregningsAndeler ?? [],
-        (ba) => (ba.dagsatsSøker ?? 0) + (ba.dagsatsArbeidsgiver ?? 0),
-    );
 
     return (
         <VStack gap="space-4">
@@ -248,7 +244,9 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
             <VStack gap="space-16">
                 {sortBy(Object.values(a), (dager) => dayjs(dager[0]!.dato).unix()).map((dager, index) => {
                     const utbetalingsdager = dager.filter((d) => erUttaksdag(new Date(d.dato)));
-                    const totalGradering = sumBy(utbetalingsdager, (d) => d.gradering);
+                    const totalGradering = sumBy(utbetalingsdager, (d) =>
+                        sumBy(d.andeler, (andel) => andel.dagsats * andel.utbetalingsgrad * 0.01),
+                    );
 
                     const måned = capitalizeFirstLetter(formaterDato(dager[0]!.dato, 'MMMM'));
 
@@ -262,7 +260,7 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                     <div>
                                         <ExpansionCard.Title size="medium">{måned}</ExpansionCard.Title>
                                         <ExpansionCard.Description>
-                                            Sum: {formatCurrencyWithKr(sumDagsats * (totalGradering * 0.01))}
+                                            Sum: {formatCurrencyWithKr(totalGradering)}
                                         </ExpansionCard.Description>
                                     </div>
                                 </HStack>
@@ -284,9 +282,12 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                     <Table.Body>
                                         {dager.map((dag) => {
                                             const erUtbetalingsdag = erUttaksdag(new Date(dag.dato));
-                                            const beløp = sumDagsats * (dag.gradering * 0.01);
+                                            const beløp = sumBy(
+                                                dag.andeler,
+                                                (andel) => andel.dagsats * andel.utbetalingsgrad * 0.01,
+                                            );
                                             const beløpTekst = erUtbetalingsdag ? formatCurrencyWithKr(beløp) : '-';
-                                            const graderingtekst = erUtbetalingsdag ? `${dag.gradering} %` : '-';
+                                            const graderingtekst = erUtbetalingsdag ? `%` : '-';
 
                                             return (
                                                 <Table.Row key={dag.dato}>
@@ -354,7 +355,7 @@ const finnStatus = (status: AktivitetStatus, intl: ReturnType<typeof useIntl>) =
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.militaerEllerSivil' });
         case 'SELVSTENDIG_NÆRINGSDRIVENDE':
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.selvstendigNaeringsdrivende' });
-        case 'TTLSTØTENDE_YTELSE':
+        case 'TILSTØTENDE_YTELSE':
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.ytelse' });
     }
 };
