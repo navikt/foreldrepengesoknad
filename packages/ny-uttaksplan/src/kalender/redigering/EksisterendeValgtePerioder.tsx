@@ -266,7 +266,7 @@ const PeriodeHeaderText = ({
     if (erEøsUttakPeriode(periode) || (!erMedmorDelAvSøknaden && periode.forelder === 'FAR_MEDMOR')) {
         return <FormattedMessage id="RedigeringPanel.Far" />;
     }
-    if (erEøsUttakPeriode(periode) || (erMedmorDelAvSøknaden && periode.forelder === 'FAR_MEDMOR')) {
+    if (erMedmorDelAvSøknaden && periode.forelder === 'FAR_MEDMOR') {
         return <FormattedMessage id="RedigeringPanel.Medmor" />;
     }
 

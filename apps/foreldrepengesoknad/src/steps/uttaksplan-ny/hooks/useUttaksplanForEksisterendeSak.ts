@@ -4,6 +4,8 @@ import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
+import { sorterPerioder } from './forslag/deltUttak';
+
 export const useUttaksplanForEksisterendeSak = (
     perioderAnnenPart: UttakPeriode_fpoversikt[] | undefined,
 ): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined => {
@@ -11,7 +13,7 @@ export const useUttaksplanForEksisterendeSak = (
 
     const sakerQuery = useQuery({ ...sakerOptions(), enabled: !!valgtEksisterendeSaksnr });
 
-    if (!sakerQuery?.data || !!valgtEksisterendeSaksnr) {
+    if (!sakerQuery?.data || !valgtEksisterendeSaksnr) {
         return undefined;
     }
 
@@ -37,7 +39,7 @@ export const useUttaksplanForEksisterendeSak = (
     //           ).getDato()
     //         : undefined;
 
-    const uttaksplan = valgtSak.gjeldendeVedtak.perioder;
+    const uttaksplan = [...valgtSak.gjeldendeVedtak.perioder];
 
     if (valgtSak.gjeldendeVedtak?.perioderAnnenpartEøs) {
         uttaksplan.push(...valgtSak.gjeldendeVedtak.perioderAnnenpartEøs);
@@ -46,7 +48,7 @@ export const useUttaksplanForEksisterendeSak = (
         uttaksplan.push(...perioderAnnenPart);
     }
 
-    return uttaksplan;
+    return uttaksplan.sort(sorterPerioder);
 };
 
 // const getRelevantFamiliehendelseDato = (sak: FpSak_fpoversikt): string => {

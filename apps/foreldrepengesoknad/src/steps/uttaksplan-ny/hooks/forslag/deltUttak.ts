@@ -59,7 +59,7 @@ export const deltUttak = (
         currentTomDate = UttaksdagenString.neste(periodeMødrekvote.tom).getDato();
     }
 
-    if (fellesperiodeDagerMor !== undefined && fellesperiodeDagerMor > 0) {
+    if (fellesperiodeDagerMor > 0) {
         const tidsperiode = getTidsperiodeString(currentTomDate, fellesperiodeDagerMor);
         const periodeFellesperiode: UttakPeriode_fpoversikt = {
             forelder: 'MOR',
@@ -73,7 +73,7 @@ export const deltUttak = (
         currentTomDate = UttaksdagenString.neste(periodeFellesperiode.tom).getDato();
     }
 
-    if (fellesperiodeDagerFarMedmor !== undefined && fellesperiodeDagerFarMedmor > 0) {
+    if (fellesperiodeDagerFarMedmor > 0) {
         const tidsperiode = getTidsperiodeString(currentTomDate, fellesperiodeDagerFarMedmor);
         const periodeFellesperiode: UttakPeriode_fpoversikt = {
             forelder: 'FAR_MEDMOR',
