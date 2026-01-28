@@ -117,8 +117,7 @@ export const PlanleggerDataInit = () => {
     const dataParam = new URLSearchParams(locations.search).get('data');
     const data = dataParam ? (JSON.parse(decodeBase64(dataParam)) as ContextDataMap) : undefined;
 
-    // Denne useEffecten kjøres for at skyra-undersøkelsen skal trigges på tilpass-planen siden
-    // og kan fjernes når skyra-undersøkelsen heller skal kjøres fra start-siden.
+    // Denne useEffecten kjøres for at skyra-undersøkelsen skal trigges inline på oppsummering-siden
     useEffect(() => {
         if (locations.pathname.includes('oppsummering')) {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access

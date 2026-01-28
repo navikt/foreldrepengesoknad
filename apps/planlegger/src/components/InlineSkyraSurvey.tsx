@@ -8,16 +8,6 @@ import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import './InlineSkyraSurvey.module.css';
 
-// Declare custom element to avoid TypeScript errors
-declare global {
-    // eslint-disable-next-line @typescript-eslint/no-namespace
-    namespace JSX {
-        interface IntrinsicElements {
-            'skyra-survey': { slug: string; className?: string };
-        }
-    }
-}
-
 export const InlineSkyraSurvey = () => {
     const intl = useIntl();
     const [isLoaded, setIsLoaded] = useState(false);
@@ -57,6 +47,7 @@ export const InlineSkyraSurvey = () => {
                 setIsSurveyEmpty(true);
                 setIsOpen(false);
                 clearInterval(intervalId);
+                clearTimeout(timeout);
             }
         }, 100);
 
@@ -128,19 +119,15 @@ export const InlineSkyraSurvey = () => {
                 <div ref={containerRef}>
                     {surveyContent}
                     {!isSurveyEmpty && (
-                        <>
-                            {/* @ts-expect-error - skyra-survey er et custom element */}
-                            <skyra-survey
-                                style={{
-                                    opacity: isLoaded ? 1 : 0,
-                                    position: isLoaded ? 'relative' : 'absolute',
-                                    pointerEvents: isLoaded ? 'auto' : 'none',
-                                }}
-                                slug="arbeids-og-velferdsetaten-nav/planlegg-foreldrepenger-inline"
-                            >
-                                {/* @ts-expect-error - skyra-survey er et custom element */}
-                            </skyra-survey>
-                        </>
+                        // @ts-expect-error skyra-survey er et custom element
+                        <skyra-survey
+                            style={{
+                                opacity: isLoaded ? 1 : 0,
+                                position: isLoaded ? 'relative' : 'absolute',
+                                pointerEvents: isLoaded ? 'auto' : 'none',
+                            }}
+                            slug="arbeids-og-velferdsetaten-nav/planlegg-foreldrepenger-inline"
+                        />
                     )}
                 </div>
             </ExpansionCard.Content>
