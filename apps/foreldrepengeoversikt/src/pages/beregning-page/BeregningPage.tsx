@@ -48,7 +48,7 @@ export const BeregningPage = () => {
 
     return (
         <PageRouteLayout header={<BeregningHeader />}>
-            <VStack gap="space-8">
+            <VStack gap="space-40">
                 <BeregningOppsummering sak={gjeldendeSak} />
 
                 <ExpansionCard size="medium" aria-label={intl.formatMessage({ id: 'beregning.tittel' })}>
@@ -245,8 +245,12 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                 {sortBy(Object.values(andelerPerDagGruppertPåMåned), (dager) => dayjs(dager[0]!.dato).unix()).map(
                     (dager, index) => {
                         const utbetalingsdager = dager.filter((d) => erUttaksdag(new Date(d.dato)));
-                        const totalGradering = sumBy(utbetalingsdager, (d) =>
-                            sumBy(d.andeler, (andel) => andel.dagsats * andel.utbetalingsgrad * 0.01),
+                        const totaltForMånedenTilDeg = sumBy(utbetalingsdager, (d) =>
+                            sumBy(d.andeler, (andel) => (andel.tilBruker ? andel.dagsats : 0)),
+                        );
+
+                        const totaltForMånedenTilAG = sumBy(utbetalingsdager, (d) =>
+                            sumBy(d.andeler, (andel) => (andel.tilBruker ? 0 : andel.dagsats)),
                         );
 
                         const måned = capitalizeFirstLetter(formaterDato(dager[0]!.dato, 'MMMM'));
@@ -265,7 +269,20 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                         <div>
                                             <ExpansionCard.Title size="medium">{måned}</ExpansionCard.Title>
                                             <ExpansionCard.Description>
-                                                Sum: {formatCurrencyWithKr(totalGradering)}
+                                                <VStack gap="space-4">
+                                                    {totaltForMånedenTilDeg > 0 && (
+                                                        <BodyShort>
+                                                            Utbetales direkte til deg:{' '}
+                                                            {formatCurrencyWithKr(totaltForMånedenTilDeg)}
+                                                        </BodyShort>
+                                                    )}
+                                                    {totaltForMånedenTilAG > 0 && (
+                                                        <BodyShort>
+                                                            Utbetales til arbeidsgiver:{' '}
+                                                            {formatCurrencyWithKr(totaltForMånedenTilAG)}
+                                                        </BodyShort>
+                                                    )}
+                                                </VStack>
                                             </ExpansionCard.Description>
                                         </div>
                                     </HStack>
@@ -279,20 +296,13 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                                 <Table.HeaderCell align="right" scope="col">
                                                     Beløp
                                                 </Table.HeaderCell>
-                                                <Table.HeaderCell align="right" scope="col">
-                                                    Gradering
-                                                </Table.HeaderCell>
                                             </Table.Row>
                                         </Table.Header>
                                         <Table.Body>
                                             {dager.map((dag) => {
                                                 const erUtbetalingsdag = erUttaksdag(new Date(dag.dato));
-                                                const beløp = sumBy(
-                                                    dag.andeler,
-                                                    (andel) => andel.dagsats * andel.utbetalingsgrad * 0.01,
-                                                );
+                                                const beløp = sumBy(dag.andeler, (andel) => andel.dagsats);
                                                 const beløpTekst = erUtbetalingsdag ? formatCurrencyWithKr(beløp) : '-';
-                                                const graderingtekst = erUtbetalingsdag ? `%` : '-';
 
                                                 return (
                                                     <Table.Row key={dag.dato}>
@@ -300,7 +310,6 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                                             {formaterDato(dag.dato, 'DD. MMM')}
                                                         </Table.HeaderCell>
                                                         <Table.DataCell align="right">{beløpTekst}</Table.DataCell>
-                                                        <Table.DataCell align="right">{graderingtekst}</Table.DataCell>
                                                     </Table.Row>
                                                 );
                                             })}
