@@ -1,3 +1,6 @@
+/* TODO: Vurder å snu på singel choice -skala-spørsmålet, slik at det er topp til bunn. 
+Avvent om skyra-teamet gjør det mulig å justere hvert enkelt kort for dette. */
+
 :global(skyra-survey) {
     --skyra-font-size: 20px;
     --skyra-font-body: 'Source Sans Pro', Arial;
@@ -26,11 +29,7 @@ skyra-survey::part(button-chip) {
     padding: 5px 20px;
 }
 
-skyra-survey::part(options) {
-    
-    /* display: flex;
-    flex-direction: row;
-    gap: 10px; 
-    Avventer endringer fra Skyra-teamet på denne. 
-    */
-}
+/* Vurder å justere dette dersom det ikke blir bra på mobil */
+/* skyra-survey::part(list-item) {
+    margin-bottom: 15px;
+} */

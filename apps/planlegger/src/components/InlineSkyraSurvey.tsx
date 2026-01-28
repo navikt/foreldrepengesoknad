@@ -43,9 +43,9 @@ export const InlineSkyraSurvey = () => {
 
             // Sjekk om surveyen er skjult (display: none) eller har blitt fjernet
             const isHidden =
-                window.getComputedStyle(surveyElement).display === 'none' ||
+                globalThis.getComputedStyle(surveyElement).display === 'none' ||
                 surveyElement.getAttribute('hidden') !== null ||
-                surveyElement.style.display === 'none';
+                (surveyElement as HTMLElement).style.display === 'none';
 
             if (hasContent && !hasLoadedOnce) {
                 setIsLoaded(true);
@@ -83,6 +83,29 @@ export const InlineSkyraSurvey = () => {
         return null;
     }
 
+    let surveyContent;
+    if (isSurveyEmpty) {
+        surveyContent = (
+            <BodyShort>
+                <FormattedMessage id="InlineSkyraSurvey.Takk" />
+            </BodyShort>
+        );
+    } else if (isLoaded) {
+        surveyContent = null;
+    } else {
+        surveyContent = (
+            <VStack gap="space-8">
+                <Heading as={Skeleton} size="large">
+                    <FormattedMessage id="InlineSkyraSurvey.Heading" />
+                </Heading>
+                <Skeleton variant="rounded" width="100%" height={30} />
+                <HStack justify={'end'}>
+                    <Skeleton variant="rounded" width="30%" height={50} />
+                </HStack>
+            </VStack>
+        );
+    }
+
     return (
         <ExpansionCard
             data-color="brand-beige"
@@ -103,21 +126,7 @@ export const InlineSkyraSurvey = () => {
             </ExpansionCard.Header>
             <ExpansionCard.Content>
                 <div ref={containerRef}>
-                    {isSurveyEmpty ? (
-                        <BodyShort>
-                            <FormattedMessage id="InlineSkyraSurvey.Takk" />
-                        </BodyShort>
-                    ) : !isLoaded ? (
-                        <VStack gap="space-8">
-                            <Heading as={Skeleton} size="large">
-                                <FormattedMessage id="InlineSkyraSurvey.Heading" />
-                            </Heading>
-                            <Skeleton variant="rounded" width="100%" height={30} />
-                            <HStack justify={'end'}>
-                                <Skeleton variant="rounded" width="30%" height={50} />
-                            </HStack>
-                        </VStack>
-                    ) : null}
+                    {surveyContent}
                     {/* @ts-expect-error - skyra-survey er et custom element */}
                     <skyra-survey
                         style={{
