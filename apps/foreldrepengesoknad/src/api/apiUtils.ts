@@ -32,10 +32,20 @@ import {
     Målform,
     PersonMedArbeidsforholdDto_fpoversikt,
     SøkerDto,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
     UttaksplanDto,
     Uttaksplanperiode,
     isUfødtBarn,
 } from '@navikt/fp-types';
+import {
+    AnnenInntektDto,
+    Dekningsgrad,
+    FrilansDto,
+    NæringDto,
+    UtenlandsoppholdsperiodeDto,
+    VedleggDto,
+} from '@navikt/fp-types/src/fpsoknadDtoGenerert';
 import {
     Uttaksdagen,
     dateToISOString,
@@ -350,6 +360,18 @@ export const getSøknadsdataForInnsending = (
     }
 };
 
+export const getSøknadsdataForInnsendingNy = (
+    erEndringssøknad: boolean,
+    hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+): ForeldrepengesøknadDtoNy | EndringssøknadForeldrepengerDtoNy => {
+    if (erEndringssøknad) {
+        return cleanEndringssøknadNy(hentData, søkerinfo);
+    } else {
+        return cleanSøknadNy(hentData, søkerinfo);
+    }
+};
+
 export const cleanSøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     familiehendelsesdato: string,
@@ -387,6 +409,38 @@ export const cleanSøknad = (
         annenForelder: cleanAnnenforelder(annenForelder),
         dekningsgrad,
         uttaksplan: uttaksplanInnsending,
+        utenlandsopphold: (utenlandsoppholdSiste12Mnd ?? []).concat(utenlandsoppholdNeste12Mnd ?? []),
+        vedlegg: convertAttachmentsMapToArray(vedlegg),
+    };
+};
+
+export const cleanSøknadNy = (
+    hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+): ForeldrepengesøknadDtoNy => {
+    const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
+    const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
+    const frilans = hentData(ContextDataType.FRILANS);
+    const egenNæring = hentData(ContextDataType.EGEN_NÆRING);
+    const andreInntektskilder = hentData(ContextDataType.ANDRE_INNTEKTSKILDER);
+    const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
+    const utenlandsoppholdNeste12Mnd = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+    const utenlandsoppholdSiste12Mnd = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+    const dekningsgrad = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
+    const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN_NY));
+    const vedlegg = hentData(ContextDataType.VEDLEGG);
+
+    return {
+        søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
+        rolle: konverterRolle(søkersituasjon.rolle),
+        språkkode: hentValgtSpråk(),
+        frilans: frilans,
+        egenNæring: egenNæring,
+        andreInntekterSiste10Mnd: andreInntektskilder,
+        barn: cleanBarn(barn),
+        annenForelder: cleanAnnenforelder(annenForelder),
+        dekningsgrad,
+        uttaksplan,
         utenlandsopphold: (utenlandsoppholdSiste12Mnd ?? []).concat(utenlandsoppholdNeste12Mnd ?? []),
         vedlegg: convertAttachmentsMapToArray(vedlegg),
     };
@@ -438,4 +492,56 @@ export const cleanEndringssøknad = (
         ),
         vedlegg: convertAttachmentsMapToArray(vedlegg),
     };
+};
+
+export const cleanEndringssøknadNy = (
+    hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+): EndringssøknadForeldrepengerDtoNy => {
+    const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
+    const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
+    const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
+    const valgtEksisterendeSaksnr = notEmpty(hentData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR));
+    const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN_NY));
+    const vedlegg = hentData(ContextDataType.VEDLEGG);
+    return {
+        søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
+        saksnummer: valgtEksisterendeSaksnr,
+        rolle: konverterRolle(søkersituasjon.rolle),
+        språkkode: hentValgtSpråk(),
+        barn: cleanBarn(barn),
+        annenForelder: cleanAnnenforelder(annenForelder),
+        vedlegg: convertAttachmentsMapToArray(vedlegg),
+        uttaksplan,
+    };
+};
+
+//TODO (TOR) Skal genererast fra backend
+type EndringssøknadForeldrepengerDtoNy = {
+    annenForelder?: AnnenForelderDto;
+    barn: BarnDto;
+    mottattdato?: string;
+    rolle?: BrukerRolle;
+    saksnummer: string;
+    språkkode?: Målform;
+    søkerinfo: SøkerDto;
+    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    vedlegg?: VedleggDto[];
+};
+
+//TODO (TOR) Skal genererast fra backend
+type ForeldrepengesøknadDtoNy = {
+    andreInntekterSiste10Mnd?: AnnenInntektDto[];
+    annenForelder?: AnnenForelderDto;
+    barn: BarnDto;
+    dekningsgrad: Dekningsgrad;
+    egenNæring?: NæringDto;
+    frilans?: FrilansDto;
+    mottattdato?: string;
+    rolle?: BrukerRolle;
+    språkkode?: Målform;
+    søkerinfo: SøkerDto;
+    utenlandsopphold?: UtenlandsoppholdsperiodeDto[];
+    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    vedlegg?: VedleggDto[];
 };
