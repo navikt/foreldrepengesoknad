@@ -127,17 +127,21 @@ export const InlineSkyraSurvey = () => {
             <ExpansionCard.Content>
                 <div ref={containerRef}>
                     {surveyContent}
-                    {/* @ts-expect-error - skyra-survey er et custom element */}
-                    <skyra-survey
-                        style={{
-                            opacity: isLoaded && !isSurveyEmpty ? 1 : 0,
-                            position: isLoaded && !isSurveyEmpty ? 'relative' : 'absolute',
-                            pointerEvents: isLoaded && !isSurveyEmpty ? 'auto' : 'none',
-                        }}
-                        slug="arbeids-og-velferdsetaten-nav/planlegg-foreldrepenger-inline"
-                    >
-                        {/* @ts-expect-error - skyra-survey er et custom element */}
-                    </skyra-survey>
+                    {!isSurveyEmpty && (
+                        <>
+                            {/* @ts-expect-error - skyra-survey er et custom element */}
+                            <skyra-survey
+                                style={{
+                                    opacity: isLoaded ? 1 : 0,
+                                    position: isLoaded ? 'relative' : 'absolute',
+                                    pointerEvents: isLoaded ? 'auto' : 'none',
+                                }}
+                                slug="arbeids-og-velferdsetaten-nav/planlegg-foreldrepenger-inline"
+                            >
+                                {/* @ts-expect-error - skyra-survey er et custom element */}
+                            </skyra-survey>
+                        </>
+                    )}
                 </div>
             </ExpansionCard.Content>
         </ExpansionCard>
