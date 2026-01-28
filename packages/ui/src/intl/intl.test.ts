@@ -116,6 +116,11 @@ describe('fp-ui intl messages', () => {
             if (key.includes('AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.')) {
                 return false;
             }
+            // Denne er veldig spesiell. Vi sender den til Aksel komponenten som selv gjør string interpolation.
+            // Men react-intl klager dersom vi ikke oppgir variablene til formatMessage. Bruker derfor messages objekte. Men det oppdages ikke av extract()
+            if (key.includes('ProgressStepper.StepCounter')) {
+                return false;
+            }
             return !allTranslationsCode.includes(key);
         });
         if (missingKeysCode.length > 0) {
