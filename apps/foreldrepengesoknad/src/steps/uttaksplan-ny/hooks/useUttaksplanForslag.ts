@@ -1,6 +1,5 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { getErMorUfør } from 'utils/annenForelderUtils';
-import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnr } from 'utils/personUtils';
 
 import { isAnnenForelderOppgitt } from '@navikt/fp-common';
@@ -22,6 +21,7 @@ export const useUttaksplanForslag = (
     const fordeling = notEmpty(useContextGetData(ContextDataType.FORDELING));
     const familiehendelsedato = getFamiliehendelsedato(barn);
 
+    // TODO (TOR) Burde denne sjekka mot erMorUfør og erAleneomsorg òg?
     const erDeltUttak =
         isAnnenForelderOppgitt(annenForelder) &&
         (annenForelder.harRettPåForeldrepengerINorge === true || annenForelder.harRettPåForeldrepengerIEØS === true);
@@ -30,8 +30,17 @@ export const useUttaksplanForslag = (
         return [];
     }
 
-    // FIXME (TOR) Sjekk kva dette blir brukt til og evt endre sånn som i planelegger
-    const startdato = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30);
+    const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
+
+    const erMorUfør = getErMorUfør(annenForelder, erSøkerFarEllerMedmor);
+
+    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
+    const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
+
+    const startdato =
+        erSøkerFarEllerMedmor && (!erDeltUttak || erMorUfør || erAleneOmOmsorg)
+            ? UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30)
+            : undefined;
 
     if (erDeltUttak) {
         const antallDager = fordeling.antallDagerFellesperiodeTilSøker
@@ -39,14 +48,6 @@ export const useUttaksplanForslag = (
             : undefined;
         return deltUttak(familiehendelsedato, valgtStønadskonto.kontoer, antallDager, startdato);
     }
-
-    const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
-
-    const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
-
-    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
-    const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
 
     const erFarOgFar = getKjønnFromFnr(annenForelder) === 'M' && søkersituasjon.rolle === 'far';
 

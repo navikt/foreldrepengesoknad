@@ -105,8 +105,8 @@ const meta = {
                         [ContextDataType.ANNEN_FORELDER]: annenForelder,
                         [ContextDataType.FORDELING]: {
                             fordelingValg: FellesperiodeFordelingValg.ALT,
-                            antallDagerFellesperiodeTilSøker: '100',
-                            antallUkerFellesperiodeTilSøker: '40',
+                            antallDagerFellesperiodeTilSøker: '0',
+                            antallUkerFellesperiodeTilSøker: '0',
                             oppstartAvForeldrepengerValg: OppstartValg.ANKOMSTDATO_NORGE,
                         },
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: dekningsgrad,
