@@ -55,7 +55,7 @@ describe('UttaksplanListe', () => {
             {
                 fom: '2025-06-30',
                 tom: '2025-08-28',
-                forelder: 'FAR_MEDMOR',
+                forelder: 'MOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
             },
             {
@@ -86,12 +86,6 @@ describe('UttaksplanListe', () => {
         expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
 
-        expect(await screen.findByText('Hvilken del av foreldrepengene vil du bruke?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Fellesperiode')[1]!);
-
-        expect(await screen.findByText('Hvem gjelder fellesperioden?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Mor'));
-
         expect(await screen.findByText('Hvilke datoer skal perioden være?')).toBeInTheDocument();
         const fraOgMedDato = screen.getByLabelText('Fra og med dato');
         await userEvent.type(fraOgMedDato, dayjs('2025-06-30').format('DD.MM.YYYY'));
@@ -100,17 +94,32 @@ describe('UttaksplanListe', () => {
         await userEvent.type(tilOgMedDato, dayjs('2025-08-28').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        expect(await screen.findByText('Skal dere ha foreldrepenger samtidig?')).toBeInTheDocument();
+        expect(await screen.findByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Begge'));
+
+        expect(await screen.findByText('Mor skal ha?')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Fellesperiode')[1]!);
+
+        expect(await screen.findByText('Far skal ha?')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Fars kvote')[0]!);
+
+        expect(await screen.findByText('Hvor mange prosent for mor?')).toBeInTheDocument();
+        await userEvent.type(screen.getByLabelText('Hvor mange prosent for mor?'), '50');
+
+        expect(await screen.findByText('Hvor mange prosent for far?')).toBeInTheDocument();
+        await userEvent.type(screen.getByLabelText('Hvor mange prosent for far?'), '50');
+
+        expect(await screen.findByText('Skal mor kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[0]!);
 
-        expect(await screen.findByText('Hvor mange prosent?')).toBeInTheDocument();
-        await userEvent.type(screen.getByLabelText('Hvor mange prosent?'), '50');
+        expect(await screen.findByText('Hvor mange prosent skal mor jobbe?')).toBeInTheDocument();
+        await userEvent.type(screen.getByLabelText('Hvor mange prosent skal mor jobbe?'), '50');
 
-        expect(await screen.findByText('Skal du kombinere foreldrepengene med arbeid?')).toBeInTheDocument();
+        expect(await screen.findByText('Skal far kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[1]!);
 
-        expect(await screen.findByText('Hvor mange prosent skal du jobbe?')).toBeInTheDocument();
-        await userEvent.type(screen.getByLabelText('Hvor mange prosent skal du jobbe?'), '50');
+        expect(await screen.findByText('Hvor mange prosent skal far jobbe?')).toBeInTheDocument();
+        await userEvent.type(screen.getByLabelText('Hvor mange prosent skal far jobbe?'), '50');
 
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
 
@@ -142,6 +151,20 @@ describe('UttaksplanListe', () => {
                 tom: '2025-08-28',
             },
             {
+                fom: '2025-06-30',
+                forelder: 'FAR_MEDMOR',
+                gradering: {
+                    aktivitet: {
+                        type: 'ORDINÆRT_ARBEID',
+                    },
+                    arbeidstidprosent: 50,
+                },
+                kontoType: 'FEDREKVOTE',
+                morsAktivitet: undefined,
+                samtidigUttak: 50,
+                tom: '2025-08-28',
+            },
+            {
                 fom: '2025-08-29',
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
@@ -168,7 +191,7 @@ describe('UttaksplanListe', () => {
         await userEvent.click(screen.getAllByText('Endre')[2]!);
 
         expect(await screen.findByText('Endre periode')).toBeInTheDocument();
-        expect(screen.getByText('Hva vil du endre til?')).toBeInTheDocument();
+        expect(screen.getByText('Hva vil du gjøre?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Ferie'));
 

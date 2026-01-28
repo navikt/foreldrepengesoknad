@@ -97,7 +97,7 @@ const DokumenterPageInner = () => {
             {!dokumenterQuery.isError && (
                 <>
                     <div className="mb-10">
-                        <VStack gap="4">
+                        <VStack gap="space-16">
                             <Table
                                 size="medium"
                                 sort={sort}

@@ -246,7 +246,7 @@ export function DinSakHeader({ sak }: { sak?: Sak }) {
                         <StatusTag sak={sak} harMinstEttArbeidsforhold={harMinstEttArbeidsforhold} />
                     </HStack>
                     <Show above="md">
-                        <HStack gap="3" align="center">
+                        <HStack gap="space-12" align="center">
                             <Detail uppercase>{ytelseSomTekst(sak.ytelse, intl)}</Detail>
                             <BlueDot />
                             <SaksnummerDetail />

@@ -2,11 +2,8 @@ import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, Box, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
+import { Box, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
-import { CalendarPeriod } from '@navikt/fp-ui';
-
-import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { getVarighetString } from '../../utils/dateUtils';
 import { LeggTilEllerEndrePeriodeForm } from './LeggTilEllerEndrePeriodeForm';
 import { PeriodeDetaljerOgInfoMeldinger } from './PeriodeDetaljerOgInfoMeldinger';
@@ -14,7 +11,6 @@ import { useKalenderRedigeringContext } from './context/KalenderRedigeringContex
 import { RødRamme } from './utils/RødRamme';
 import { finnAntallDager } from './utils/kalenderPeriodeUtils';
 import { useMediaRemoveScrollingOnMobile, useMediaResetMinimering } from './utils/useMediaActions';
-import { usePeriodeValidator } from './utils/usePeriodeValidator';
 
 interface Props {
     lukkRedigeringsmodus: () => void;
@@ -33,8 +29,6 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
     useMediaResetMinimering(setErMinimert);
     useMediaRemoveScrollingOnMobile(erMinimert);
 
-    const gyldigeKontotyper = useGyldigeKontotyper(sammenslåtteValgtePerioder);
-
     return (
         <VStack
             gap="space-2"
@@ -45,7 +39,7 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
             }
         >
             <Show above="md">
-                <Box.New background="accent-soft" padding="4">
+                <Box background="accent-soft" padding="space-16">
                     <VStack gap="space-16">
                         <HStack justify="space-between" align="center" wrap={false}>
                             <RødRamme>
@@ -78,12 +72,11 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
                         {labels}
                         {visPeriodeDetaljer && <PeriodeDetaljerOgInfoMeldinger />}
                     </VStack>
-                </Box.New>
+                </Box>
             </Show>
-
             <Show below="md">
                 <VStack gap="space-12">
-                    <Box.New
+                    <Box
                         padding="space-12"
                         onClick={() => setErMinimert(!erMinimert)}
                         className="bg-ax-bg-accent-soft hover:bg-ax-bg-accent-moderate cursor-pointer"
@@ -119,7 +112,7 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
                                 </RødRamme>
                             </HStack>
                         </VStack>
-                    </Box.New>
+                    </Box>
                     {!erMinimert && (
                         <VStack gap="space-16" className="px-4 pb-4">
                             {labels}
@@ -128,39 +121,13 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
                     )}
                 </VStack>
             </Show>
-
             <div className={erMinimert ? 'hidden' : 'block px-4 pb-4'}>
                 <div className={erMinimert ? 'hidden' : 'block'}>
                     <div className="px-4 pt-4 pb-4">
-                        {gyldigeKontotyper.length === 0 && (
-                            <VStack gap="space-16">
-                                <Alert variant="info" role="alert">
-                                    <FormattedMessage id="LeggTilPeriodePanel.IngenGyldigeKontotyper" />
-                                </Alert>
-                                <div>
-                                    <Button type="button" variant="secondary" onClick={lukkRedigeringsmodus}>
-                                        <FormattedMessage id="uttaksplan.gåTilbake" />
-                                    </Button>
-                                </div>
-                            </VStack>
-                        )}
-                        {gyldigeKontotyper.length > 0 && (
-                            <LeggTilEllerEndrePeriodeForm
-                                lukkRedigeringsmodus={lukkRedigeringsmodus}
-                                gyldigeKontotyper={gyldigeKontotyper}
-                            />
-                        )}
+                        <LeggTilEllerEndrePeriodeForm lukkRedigeringsmodus={lukkRedigeringsmodus} />
                     </div>
                 </div>
             </div>
         </VStack>
     );
-};
-
-const useGyldigeKontotyper = (valgtePerioder: CalendarPeriod[]) => {
-    const { valgtStønadskonto } = useUttaksplanData();
-
-    const { erKontotypeGyldigForPerioder } = usePeriodeValidator(valgtePerioder);
-
-    return valgtStønadskonto.kontoer.map((k) => k.konto).filter((kt) => erKontotypeGyldigForPerioder(kt));
 };

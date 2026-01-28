@@ -67,10 +67,15 @@ export const FrontPage = ({
             </>
         }
     >
-        <VStack gap={{ xs: '3', sm: '10' }}>
+        <VStack gap={{ xs: 'space-12', sm: 'space-40' }}>
             <BodyShort size="large">{innholdLabel}</BodyShort>
-            <VStack gap={{ xs: childrenBelowStartButton ? '6' : '8', sm: childrenBelowStartButton ? '10' : '20' }}>
-                {!childrenBelowStartButton && <VStack gap={{ xs: '2', sm: '5' }}>{children}</VStack>}
+            <VStack
+                gap={{
+                    xs: childrenBelowStartButton ? 'space-24' : 'space-36',
+                    sm: childrenBelowStartButton ? 'space-40' : 'space-80',
+                }}
+            >
+                {!childrenBelowStartButton && <VStack gap={{ xs: 'space-8', sm: 'space-20' }}>{children}</VStack>}
                 <HStack justify="center">
                     <Button
                         onClick={goToNextDefaultStep}
@@ -82,7 +87,7 @@ export const FrontPage = ({
                         <FormattedMessage id="FrontPage.Start" />
                     </Button>
                 </HStack>
-                {childrenBelowStartButton && <VStack gap={{ xs: '2', sm: '5' }}>{children}</VStack>}
+                {childrenBelowStartButton && <VStack gap={{ xs: 'space-8', sm: 'space-20' }}>{children}</VStack>}
             </VStack>
         </VStack>
     </Page>

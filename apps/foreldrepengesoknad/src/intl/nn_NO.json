@@ -539,5 +539,7 @@
     "uttaksplan.vilDuGåTilbakeModal.intro": "Dersom du går tilbake til førre steget, blir planen din sletta, og du må lage han på nytt.",
     "uttaksplan.vilDuGåTilbakeModal.okLabel": "Ja",
     "uttaksplan.vilDuGåTilbakeModal.spørsmål": "Ønsker du å gå tilbake?",
-    "uttaksplan.vilDuGåTilbakeModal.tittel": "Planen din blir sletta."
+    "uttaksplan.vilDuGåTilbakeModal.tittel": "Planen din blir sletta.",
+    "UttaksplanSteg.kalender": "Kalender",
+    "UttaksplanSteg.liste": "Liste"
 }

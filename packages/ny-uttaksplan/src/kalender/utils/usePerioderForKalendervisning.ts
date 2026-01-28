@@ -10,7 +10,7 @@ import {
     isFødtBarn,
 } from '@navikt/fp-types';
 import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
-import { UttaksdagenString, formatDateIso, formaterDatoUtenDag, getFamiliehendelsedato } from '@navikt/fp-utils';
+import { UttaksdagenString, formaterDatoUtenDag, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { assertUnreachable } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
@@ -33,99 +33,61 @@ export const usePerioderForKalendervisning = (
     const {
         barn,
         foreldreInfo: { søker, navnPåForeldre },
+        familiehendelsedato,
     } = useUttaksplanData();
 
     const saksperioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
-
-    const familiehendelsesdato = getFamiliehendelsedato(barn);
 
     const erFarEllerMedmor = søker === 'FAR_ELLER_MEDMOR';
 
     const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(saksperioderInkludertTapteDager, erFarEllerMedmor);
 
-    const res = unikePerioder.reduce<CalendarPeriod[]>((acc, periode) => {
+    const kalenderPerioder = unikePerioder.reduce<CalendarPeriod[]>((acc, periode) => {
         const color = getKalenderFargeForPeriode(periode, erFarEllerMedmor, saksperioderInkludertTapteDager, barn);
         const isUpdated = endredePerioder.some((p) => p.fom === periode.fom && p.tom === periode.tom);
+
+        if (dayjs(familiehendelsedato).isBetween(periode.fom, periode.tom, 'day', '[]')) {
+            return [...acc, ...splittPeriodeITo(periode, familiehendelsedato, color, navnPåForeldre, intl, isUpdated)];
+        }
 
         if (
             barnehagestartdato !== undefined &&
             dayjs(barnehagestartdato).isBetween(periode.fom, periode.tom, 'day', '[]')
         ) {
-            return [
-                ...acc,
-                {
-                    fom: periode.fom,
-                    tom: dayjs(barnehagestartdato).subtract(1, 'day').format('YYYY-MM-DD'),
-                    color,
-                    srText: getKalenderSkjermlesertekstForPeriode(
-                        {
-                            ...periode,
-                            fom: periode.fom,
-                            tom: dayjs(barnehagestartdato).subtract(1, 'day').format('YYYY-MM-DD'),
-                        },
-                        navnPåForeldre,
-                        intl,
-                    ),
-                    isUpdated,
-                },
-                {
-                    fom: dayjs(barnehagestartdato).add(1, 'day').format('YYYY-MM-DD'),
-                    tom: periode.tom,
-                    color,
-                    srText: getKalenderSkjermlesertekstForPeriode(
-                        {
-                            ...periode,
-                            fom: dayjs(barnehagestartdato).add(1, 'day').format('YYYY-MM-DD'),
-                            tom: periode.tom,
-                        },
-                        navnPåForeldre,
-                        intl,
-                    ),
-                    isUpdated,
-                },
-            ];
+            return [...acc, ...splittPeriodeITo(periode, barnehagestartdato, color, navnPåForeldre, intl, isUpdated)];
         }
 
-        const fom = dayjs(periode.fom).isSame(dayjs(familiehendelsesdato), 'd')
-            ? formatDateIso(UttaksdagenString(periode.fom).neste())
-            : formatDateIso(periode.fom);
-        const tom = dayjs(periode.tom).isSame(dayjs(familiehendelsesdato), 'd')
-            ? formatDateIso(UttaksdagenString(periode.tom).forrige())
-            : formatDateIso(periode.tom);
         return [
             ...acc,
             {
-                fom,
-                tom,
+                fom: periode.fom,
+                tom: periode.tom,
                 color,
-                srText: getKalenderSkjermlesertekstForPeriode({ ...periode, fom, tom }, navnPåForeldre, intl),
+                srText: getKalenderSkjermlesertekstForPeriode(periode, navnPåForeldre, intl),
                 isUpdated,
             },
         ];
     }, []);
 
-    const perioderForVisning =
-        barnehagestartdato === undefined
-            ? res
-            : res
-                  .concat({
-                      fom: barnehagestartdato,
-                      tom: barnehagestartdato,
-                      color: 'PURPLE',
-                      srText: intl.formatMessage({ id: 'kalender.barnehageplass' }),
-                  } satisfies CalendarPeriod)
-                  .sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)));
+    if (barnehagestartdato !== undefined) {
+        kalenderPerioder.push({
+            fom: barnehagestartdato,
+            tom: barnehagestartdato,
+            color: 'PURPLE',
+            srText: intl.formatMessage({ id: 'kalender.barnehageplass' }),
+        });
+    }
 
-    const indexOfFamiliehendelse =
-        getIndexOfSistePeriodeFørDato(saksperioderInkludertTapteDager, familiehendelsesdato) ?? 0;
-    perioderForVisning.splice(indexOfFamiliehendelse, 0, {
-        fom: familiehendelsesdato,
-        tom: familiehendelsesdato,
+    kalenderPerioder.push({
+        fom: familiehendelsedato,
+        tom: familiehendelsedato,
         color: 'PINK',
         srText: getSkjermlesertekstForFamiliehendelse(barn, intl),
     });
 
-    return perioderForVisning;
+    kalenderPerioder.sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)));
+
+    return kalenderPerioder;
 };
 
 const getKalenderFargeForPeriode = (
@@ -286,13 +248,6 @@ const finnSkjermleserTekstForKvoteForeldrepenger = (
     return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerIkkeGradert' });
 };
 
-const getIndexOfSistePeriodeFørDato = (uttaksplan: UttaksplanperiodeMedKunTapteDager[], dato: string | undefined) => {
-    if (dato !== undefined) {
-        return Math.max(0, uttaksplan.filter((p) => dayjs(p.tom).isBefore(dato, 'day')).length);
-    }
-    return undefined;
-};
-
 const getAnnenForelderSamtidigUttakPeriode = (
     periode: UttaksplanperiodeMedKunTapteDager,
     perioder: UttaksplanperiodeMedKunTapteDager[],
@@ -312,4 +267,46 @@ const getAnnenForelderSamtidigUttakPeriode = (
     }
 
     return undefined;
+};
+
+const splittPeriodeITo = (
+    periode: UttaksplanperiodeMedKunTapteDager,
+    dato: string,
+    color: CalendarPeriodColor,
+    navnPåForeldre: NavnPåForeldre,
+    intl: IntlShape,
+    isUpdated: boolean,
+): CalendarPeriod[] => {
+    return [
+        {
+            fom: periode.fom,
+            tom: UttaksdagenString.forrige(dato).getDato(),
+            color,
+            srText: getKalenderSkjermlesertekstForPeriode(
+                {
+                    ...periode,
+                    fom: periode.fom,
+                    tom: UttaksdagenString.forrige(dato).getDato(),
+                },
+                navnPåForeldre,
+                intl,
+            ),
+            isUpdated,
+        },
+        {
+            fom: UttaksdagenString.neste(dato).getDato(),
+            tom: periode.tom,
+            color,
+            srText: getKalenderSkjermlesertekstForPeriode(
+                {
+                    ...periode,
+                    fom: UttaksdagenString.neste(dato).getDato(),
+                    tom: periode.tom,
+                },
+                navnPåForeldre,
+                intl,
+            ),
+            isUpdated,
+        },
+    ];
 };

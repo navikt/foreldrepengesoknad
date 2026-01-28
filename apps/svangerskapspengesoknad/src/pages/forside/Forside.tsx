@@ -5,7 +5,18 @@ import { SøknadRoute } from 'appData/routes';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, BodyShort, Button, ConfirmationPanel, GuidePanel, HStack, Link, List, VStack } from '@navikt/ds-react';
+import {
+    Alert,
+    BodyShort,
+    Box,
+    Button,
+    ConfirmationPanel,
+    GuidePanel,
+    HStack,
+    Link,
+    List,
+    VStack,
+} from '@navikt/ds-react';
 
 import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
@@ -46,20 +57,22 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                     <BodyShort size="medium">
                         <FormattedMessage id="forside.guidepanel" />
                     </BodyShort>
-                    <List>
-                        <List.Item>
-                            <FormattedMessage id="forside.guidepanel.punkt1" />
-                        </List.Item>
-                        <List.Item>
-                            <FormattedMessage
-                                id="forside.guidepanel.punkt2"
-                                values={{ beløp: formatCurrencyWithKr(minimumOpptjening) }}
-                            />
-                        </List.Item>
-                        <List.Item>
-                            <FormattedMessage id="forside.guidepanel.punkt3" />
-                        </List.Item>
-                    </List>
+                    <Box marginBlock="space-16" asChild>
+                        <List>
+                            <List.Item>
+                                <FormattedMessage id="forside.guidepanel.punkt1" />
+                            </List.Item>
+                            <List.Item>
+                                <FormattedMessage
+                                    id="forside.guidepanel.punkt2"
+                                    values={{ beløp: formatCurrencyWithKr(minimumOpptjening) }}
+                                />
+                            </List.Item>
+                            <List.Item>
+                                <FormattedMessage id="forside.guidepanel.punkt3" />
+                            </List.Item>
+                        </List>
+                    </Box>
                     <FormattedMessage
                         id="forside.guidepanel.lesMer"
                         values={{
@@ -111,23 +124,25 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                     }
                 >
                     <BodyShort size="medium">{intl.formatMessage({ id: 'forside.samtykkeIntro' })}</BodyShort>
-                    <List>
-                        <List.Item>
-                            <FormattedMessage id="forside.samtykkeIntro.punkt1" />
-                        </List.Item>
-                        <List.Item>
-                            <FormattedMessage
-                                id="forside.samtykkeIntro.punkt2"
-                                values={{
-                                    a: (msg) => (
-                                        <Link rel="noopener noreferrer" href={links.rettOgPlikt}>
-                                            {msg}
-                                        </Link>
-                                    ),
-                                }}
-                            />
-                        </List.Item>
-                    </List>
+                    <Box marginBlock="space-16" asChild>
+                        <List>
+                            <List.Item>
+                                <FormattedMessage id="forside.samtykkeIntro.punkt1" />
+                            </List.Item>
+                            <List.Item>
+                                <FormattedMessage
+                                    id="forside.samtykkeIntro.punkt2"
+                                    values={{
+                                        a: (msg) => (
+                                            <Link rel="noopener noreferrer" href={links.rettOgPlikt}>
+                                                {msg}
+                                            </Link>
+                                        ),
+                                    }}
+                                />
+                            </List.Item>
+                        </List>
+                    </Box>
                 </ConfirmationPanel>
                 <HStack justify="center">
                     <Button type="button" onClick={bekreft}>

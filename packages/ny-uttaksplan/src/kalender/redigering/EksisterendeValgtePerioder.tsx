@@ -66,19 +66,19 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                         wrap={false}
                         data-testid={`eksisterende-periode-${p.fom}-${p.tom}`}
                     >
-                        <PeriodeIkon periode={p} />
+                        <PeriodeIkon periode={p} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
 
                         <VStack gap="space-0">
                             {(erEøsUttakPeriode(p) || p.utsettelseÅrsak !== 'LOVBESTEMT_FERIE') && (
                                 <Heading size="xsmall">
-                                    <PeriodeHeaderText periode={p} />
+                                    <PeriodeHeaderText periode={p} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
                                 </Heading>
                             )}
 
                             {!erSamtidigUttak && (
                                 <HStack gap="space-4">
                                     <BodyShort>
-                                        <PeriodeKvoteType periode={p} />
+                                        <PeriodeKvoteType periode={p} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
                                     </BodyShort>
                                 </HStack>
                             )}
@@ -184,7 +184,13 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
     );
 };
 
-const PeriodeIkon = ({ periode }: { periode: UttakPeriodeMedAntallDager }) => {
+const PeriodeIkon = ({
+    periode,
+    erMedmorDelAvSøknaden,
+}: {
+    periode: UttakPeriodeMedAntallDager;
+    erMedmorDelAvSøknaden: boolean;
+}) => {
     const intl = useIntl();
 
     if (!erVanligUttakPeriode(periode)) {
@@ -215,7 +221,7 @@ const PeriodeIkon = ({ periode }: { periode: UttakPeriodeMedAntallDager }) => {
         );
     }
 
-    if (periode.forelder === 'MOR') {
+    if (periode.forelder === 'MOR' || (periode.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden)) {
         return (
             <PersonPregnantFillIcon
                 title={intl.formatMessage({ id: 'RedigeringPanel.Mor' })}
@@ -227,7 +233,7 @@ const PeriodeIkon = ({ periode }: { periode: UttakPeriodeMedAntallDager }) => {
         );
     }
 
-    if (periode.forelder === 'FAR_MEDMOR') {
+    if (periode.forelder === 'FAR_MEDMOR' && !erMedmorDelAvSøknaden) {
         return (
             <PersonSuitFillIcon
                 title={intl.formatMessage({ id: 'RedigeringPanel.Far' })}
@@ -242,7 +248,13 @@ const PeriodeIkon = ({ periode }: { periode: UttakPeriodeMedAntallDager }) => {
     return null;
 };
 
-const PeriodeHeaderText = ({ periode }: { periode: UttakPeriodeMedAntallDager }) => {
+const PeriodeHeaderText = ({
+    periode,
+    erMedmorDelAvSøknaden,
+}: {
+    periode: UttakPeriodeMedAntallDager;
+    erMedmorDelAvSøknaden: boolean;
+}) => {
     if (erVanligUttakPeriode(periode) && periode.samtidigUttak !== undefined) {
         return <FormattedMessage id="RedigeringPanel.Begge" />;
     }
@@ -251,14 +263,23 @@ const PeriodeHeaderText = ({ periode }: { periode: UttakPeriodeMedAntallDager })
         return <FormattedMessage id="RedigeringPanel.Mor" />;
     }
 
-    if (erEøsUttakPeriode(periode) || periode.forelder === 'FAR_MEDMOR') {
+    if (erEøsUttakPeriode(periode) || (!erMedmorDelAvSøknaden && periode.forelder === 'FAR_MEDMOR')) {
         return <FormattedMessage id="RedigeringPanel.Far" />;
+    }
+    if (erMedmorDelAvSøknaden && periode.forelder === 'FAR_MEDMOR') {
+        return <FormattedMessage id="RedigeringPanel.Medmor" />;
     }
 
     return null;
 };
 
-const PeriodeKvoteType = ({ periode }: { periode: UttakPeriodeMedAntallDager }) => {
+const PeriodeKvoteType = ({
+    periode,
+    erMedmorDelAvSøknaden,
+}: {
+    periode: UttakPeriodeMedAntallDager;
+    erMedmorDelAvSøknaden: boolean;
+}) => {
     const erAktivitetsfri =
         erVanligUttakPeriode(periode) &&
         (periode.kontoType === 'FORELDREPENGER' || periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER') &&
@@ -274,10 +295,18 @@ const PeriodeKvoteType = ({ periode }: { periode: UttakPeriodeMedAntallDager }) 
         return <FormattedMessage id="RedigeringPanel.MorKvote" />;
     }
     if (
-        periode.kontoType === 'FEDREKVOTE' ||
-        (erVanligUttakPeriode(periode) && periode.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER')
+        !erMedmorDelAvSøknaden &&
+        (periode.kontoType === 'FEDREKVOTE' ||
+            (erVanligUttakPeriode(periode) && periode.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'))
     ) {
         return <FormattedMessage id="RedigeringPanel.FarKvote" />;
+    }
+    if (
+        erMedmorDelAvSøknaden &&
+        (periode.kontoType === 'FEDREKVOTE' ||
+            (erVanligUttakPeriode(periode) && periode.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'))
+    ) {
+        return <FormattedMessage id="RedigeringPanel.MedmorKvote" />;
     }
     if (
         (periode.kontoType === 'FORELDREPENGER' ||
@@ -355,7 +384,7 @@ const justerValgteKalenderperioder = (
             nyePerioder.push({
                 ...periode,
                 fom: periode.fom,
-                tom: UttaksdagenString(fomSlett.subtract(1, 'day').format(ISO_DATE_FORMAT)).denneEllerForrige(),
+                tom: UttaksdagenString.denneEllerForrige(fomSlett.subtract(1, 'day').format(ISO_DATE_FORMAT)).getDato(),
             });
         }
 
@@ -363,7 +392,7 @@ const justerValgteKalenderperioder = (
         if (tom.isAfter(tomSlett, 'day')) {
             nyePerioder.push({
                 ...periode,
-                fom: UttaksdagenString(tomSlett.add(1, 'day').format(ISO_DATE_FORMAT)).denneEllerNeste(),
+                fom: UttaksdagenString.denneEllerNeste(tomSlett.add(1, 'day').format(ISO_DATE_FORMAT)).getDato(),
                 tom: periode.tom,
             });
         }

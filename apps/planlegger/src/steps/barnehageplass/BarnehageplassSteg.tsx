@@ -149,7 +149,7 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
                         </BodyLong>
                     </Infobox>
                 </VStack>
-                <VStack gap="20">
+                <VStack gap="space-80">
                     <VStack>
                         <StepButtons
                             nextButtonOnClick={navigator.goToNextDefaultStep}

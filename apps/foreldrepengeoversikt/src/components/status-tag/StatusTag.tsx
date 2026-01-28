@@ -14,7 +14,7 @@ export const StatusTag = ({ sak, harMinstEttArbeidsforhold }: Props) => {
         if (!sak.sakAvsluttet) {
             if (sak.åpenBehandling.tilstand === 'UNDER_BEHANDLING') {
                 return (
-                    <Tag variant="warning-moderate" size="xsmall">
+                    <Tag data-color="warning" variant="moderate" size="xsmall">
                         <FormattedMessage id="status.underBehandling" />
                     </Tag>
                 );
@@ -22,11 +22,11 @@ export const StatusTag = ({ sak, harMinstEttArbeidsforhold }: Props) => {
 
             if (sak.åpenBehandling.tilstand === 'VENT_INNTEKTSMELDING') {
                 return harMinstEttArbeidsforhold ? (
-                    <Tag variant="warning-moderate" size="xsmall">
+                    <Tag data-color="warning" variant="moderate" size="xsmall">
                         <FormattedMessage id="status.venterPåInntektsmelding" />
                     </Tag>
                 ) : (
-                    <Tag variant="info-filled" size="xsmall">
+                    <Tag data-color="info" variant="strong" size="xsmall">
                         <FormattedMessage id="status.venterPåBehandling" />
                     </Tag>
                 );
@@ -34,7 +34,7 @@ export const StatusTag = ({ sak, harMinstEttArbeidsforhold }: Props) => {
 
             if (sak.åpenBehandling.tilstand === 'VENT_DOKUMENTASJON') {
                 return (
-                    <Tag variant="warning-moderate" size="xsmall">
+                    <Tag data-color="warning" variant="moderate" size="xsmall">
                         <FormattedMessage id="status.duMåSendeDokumentasjon" />
                     </Tag>
                 );
@@ -42,7 +42,7 @@ export const StatusTag = ({ sak, harMinstEttArbeidsforhold }: Props) => {
 
             if (sak.åpenBehandling.tilstand === 'VENT_TIDLIG_SØKNAD') {
                 return (
-                    <Tag variant="warning-moderate" size="xsmall">
+                    <Tag data-color="warning" variant="moderate" size="xsmall">
                         <FormattedMessage id="status.søknaden" />
                     </Tag>
                 );
@@ -50,7 +50,7 @@ export const StatusTag = ({ sak, harMinstEttArbeidsforhold }: Props) => {
 
             if (sak.åpenBehandling.tilstand === 'VENT_MELDEKORT') {
                 return (
-                    <Tag variant="warning-moderate" size="xsmall">
+                    <Tag data-color="warning" variant="moderate" size="xsmall">
                         <FormattedMessage id="status.duMåSendeMeldekort" />
                     </Tag>
                 );
@@ -60,14 +60,14 @@ export const StatusTag = ({ sak, harMinstEttArbeidsforhold }: Props) => {
 
     if (sak.sakAvsluttet) {
         return (
-            <Tag variant="neutral-moderate" size="xsmall">
+            <Tag data-color="neutral" variant="moderate" size="xsmall">
                 <FormattedMessage id="status.avsluttet" />
             </Tag>
         );
     }
 
     return (
-        <Tag variant="success-moderate" size="xsmall">
+        <Tag data-color="success" variant="moderate" size="xsmall">
             <FormattedMessage id="status.aktiv" />
         </Tag>
     );

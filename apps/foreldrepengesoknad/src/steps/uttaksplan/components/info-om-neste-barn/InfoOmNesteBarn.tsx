@@ -28,7 +28,7 @@ export const InfoOmNesteBarn = ({ minsterettUkerToTette }: Props) => {
         : undefined;
 
     return (
-        <Box.New padding="4" background="brand-blue-moderate" className="mb-6 p-4">
+        <Box padding="space-16" background="brand-blue-moderate" className="mb-6 p-4">
             <HStack justify="space-between" align="start">
                 <VStack gap="space-8" style={{ width: '85%' }}>
                     <Heading size="xsmall">
@@ -68,6 +68,6 @@ export const InfoOmNesteBarn = ({ minsterettUkerToTette }: Props) => {
                     <BabyWrappedIcon height={24} width={24} color="var(--ax-brand-blue-800)" />
                 </IconCircleWrapper>
             </HStack>
-        </Box.New>
+        </Box>
     );
 };

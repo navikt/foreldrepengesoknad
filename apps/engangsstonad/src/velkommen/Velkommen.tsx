@@ -4,6 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import {
     BodyShort,
+    Box,
     Button,
     ConfirmationPanel,
     ExpansionCard,
@@ -55,14 +56,16 @@ export const Velkommen = ({ startSøknad, erVelkommen, mellomlagreOgNaviger }: P
                             </Link>
                         </BodyShort>
                     </VStack>
-                    <List>
-                        <List.Item>
-                            <FormattedMessage id={'Velkommen.Bobletekst.Del1'} />
-                        </List.Item>
-                        <List.Item>
-                            <FormattedMessage id={'Velkommen.Bobletekst.Del2'} />
-                        </List.Item>
-                    </List>
+                    <Box marginBlock="space-16" asChild>
+                        <List>
+                            <List.Item>
+                                <FormattedMessage id={'Velkommen.Bobletekst.Del1'} />
+                            </List.Item>
+                            <List.Item>
+                                <FormattedMessage id={'Velkommen.Bobletekst.Del2'} />
+                            </List.Item>
+                        </List>
+                    </Box>
                     <VStack gap="space-20">
                         <BodyShort>
                             <FormattedMessage id="Velkommen.Ingress.Del3" />

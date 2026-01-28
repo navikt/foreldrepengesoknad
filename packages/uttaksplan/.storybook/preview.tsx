@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
 
-import '@navikt/ds-css/darkside';
+import '@navikt/ds-css';
 
 import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 

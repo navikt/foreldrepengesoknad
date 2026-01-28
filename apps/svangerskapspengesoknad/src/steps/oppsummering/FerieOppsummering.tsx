@@ -1,7 +1,7 @@
 import { ContextDataType, useContextGetData } from 'appData/SvpDataContext';
 import { FormattedMessage } from 'react-intl';
 
-import { FormSummary, List } from '@navikt/ds-react';
+import { Box, FormSummary, List } from '@navikt/ds-react';
 
 import { JaNeiTekst } from '@navikt/fp-steg-oppsummering';
 import { ArbeidsforholdDto, AvtaltFerieDto, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
@@ -57,7 +57,6 @@ const FeriePeriodeOppsummering = ({ avtaltFerie }: { avtaltFerie: AvtaltFerieDto
                 </FormSummary.Label>
                 <JaNeiTekst ja={avtaltFerie.length > 0} />
             </FormSummary.Answer>
-
             {avtaltFerie.length > 0 && (
                 <>
                     <FormSummary.Answer>
@@ -72,13 +71,15 @@ const FeriePeriodeOppsummering = ({ avtaltFerie }: { avtaltFerie: AvtaltFerieDto
                             <FormattedMessage id="oppsummering.ferie.perioder" />
                         </FormSummary.Label>
                         <FormSummary.Value>
-                            <List>
-                                {avtaltFerie.map((feriePeriode) => (
-                                    <List.Item key={`${feriePeriode.fom}-${feriePeriode.tom}`}>
-                                        {formatDate(feriePeriode.fom)} - {formatDate(feriePeriode.tom)}
-                                    </List.Item>
-                                ))}
-                            </List>
+                            <Box marginBlock="space-16" asChild>
+                                <List>
+                                    {avtaltFerie.map((feriePeriode) => (
+                                        <List.Item key={`${feriePeriode.fom}-${feriePeriode.tom}`}>
+                                            {formatDate(feriePeriode.fom)} - {formatDate(feriePeriode.tom)}
+                                        </List.Item>
+                                    ))}
+                                </List>
+                            </Box>
                         </FormSummary.Value>
                     </FormSummary.Answer>
                 </>
