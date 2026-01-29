@@ -19,8 +19,8 @@
         "@navikt/fp-types": "workspace:*",
         "dayjs": "1.11.19",
         "i18n-iso-countries": "7.14.0",
-        "react": "19.2.3",
-        "react-intl": "8.0.6"
+        "react": "19.2.4",
+        "react-intl": "8.1.1"
     },
     "devDependencies": {
         "@formatjs/cli-lib": "8.0.4",
@@ -28,13 +28,13 @@
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
         "@testing-library/jest-dom": "6.9.1",
-        "@types/react": "19.2.7",
+        "@types/react": "19.2.9",
         "eslint": "9.39.2",
         "fast-glob": "3.3.3",
-        "playwright": "1.57.0",
+        "playwright": "1.58.0",
         "typescript": "5.9.3",
-        "vite": "7.3.0",
-        "vitest": "4.0.16"
+        "vite": "7.3.1",
+        "vitest": "4.0.18"
     },
     "packageManager": "pnpm@10.28.0"
 }

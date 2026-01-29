@@ -511,7 +511,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getAllByText('Mors kvote')[0]!);
 
         expect(screen.getByText('Far skal ha?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Fars kvote')[1]!);
+        await userEvent.click(screen.getAllByText('Fars kvote')[0]!);
 
         const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent for mor?');
         await userEvent.type(samtidigprosentMor, '60');
@@ -589,5 +589,79 @@ describe('UttaksplanKalender', () => {
 
         expect(within(september).getByTestId('day:7;dayColor:BLUE')).toBeInTheDocument();
         expect(within(september).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(10);
+    });
+
+    it('skal vise advarsel om at en mister dager om en velger å gradere i treukersperioden før fødsel som mor', async () => {
+        render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        const mars = screen.getByTestId('year:2024;month:2');
+
+        await userEvent.click(within(mars).getByText('14', { exact: true }));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getAllByText('Endre')[0]!);
+
+        expect(screen.getByText('Skal mor kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ja'));
+
+        expect(
+            screen.getByText(
+                'Arbeid i tidsrommet 3 uker før termin og 6 uker etter fødsel,' +
+                    ' betyr at foreldrepengene vil reduseres det du jobber uten at du får dagene til gode til senere.',
+            ),
+        ).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Nei'));
+
+        expect(
+            screen.queryByText(
+                'Arbeid i tidsrommet 3 uker før termin og 6 uker etter fødsel,' +
+                    ' betyr at foreldrepengene vil reduseres det du jobber uten at du får dagene til gode til senere.',
+            ),
+        ).not.toBeInTheDocument();
+    });
+
+    it('skal vise advarsel om at en mister dager om en velger å gradere i seksukersperioden etter fødsel som mor', async () => {
+        render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        const mai = screen.getByTestId('year:2024;month:4');
+
+        await userEvent.click(within(mai).getByText('15', { exact: true }));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getAllByText('Endre')[0]!);
+
+        expect(screen.getByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Mor'));
+
+        expect(screen.getByText('Mor skal ha?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Mors kvote'));
+
+        expect(screen.getByText('Skal mor kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ja'));
+
+        expect(
+            screen.getByText(
+                'Arbeid i tidsrommet 3 uker før termin og 6 uker etter fødsel,' +
+                    ' betyr at foreldrepengene vil reduseres det du jobber uten at du får dagene til gode til senere.',
+            ),
+        ).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Nei'));
+
+        expect(
+            screen.queryByText(
+                'Arbeid i tidsrommet 3 uker før termin og 6 uker etter fødsel,' +
+                    ' betyr at foreldrepengene vil reduseres det du jobber uten at du får dagene til gode til senere.',
+            ),
+        ).not.toBeInTheDocument();
     });
 });

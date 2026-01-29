@@ -22,7 +22,10 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskontoNavnSimple } from '../liste/utils/uttaksplanListeUtils';
 import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
-import { useHentGyldigeKontotyper } from './useHentGyldigeKontotyper';
+import {
+    erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgSeksUkerEtterFamDato,
+    useHentGyldigeKontotyper,
+} from './useHentGyldigeKontotyper';
 import { prosentValideringGradering, valideringSamtidigUttak } from './uttaksplanValidatorer';
 
 dayjs.extend(isSameOrBefore);
@@ -52,6 +55,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
 
     const {
         foreldreInfo: { rettighetType, erMedmorDelAvSøknaden },
+        familiehendelsedato,
     } = useUttaksplanData();
 
     const formMethods = useFormContext<LeggTilEllerEndrePeriodeFormFormValues>();
@@ -73,7 +77,10 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
         rettighetType !== 'ALENEOMSORG' &&
         (kontoTypeFarMedmor === 'FORELDREPENGER' || kontoTypeFarMedmor === 'FELLESPERIODE');
 
-    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(valgtePerioder);
+    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(
+        valgtePerioder,
+        forelder === 'BEGGE',
+    );
 
     const erMorGyldigForelder = gyldigeStønadskontoerForMor.length > 0;
     const erFarMedmorGyldigForelder = gyldigeStønadskontoerForFarMedmor.length > 0;
@@ -335,33 +342,39 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                     />
                 </>
             )}
-            {kontoTypeMor !== undefined &&
-                kontoTypeMor !== 'FORELDREPENGER_FØR_FØDSEL' &&
-                (forelder === 'MOR' || forelder === 'BEGGE') &&
-                !morSøkerOmOverføring && (
-                    <>
-                        <hr className="text-ax-border-neutral-subtle" />
-                        <VStack gap="space-16">
-                            <RhfRadioGroup
-                                name="skalDuKombinereArbeidOgUttakMor"
-                                control={formMethods.control}
-                                label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor' })}
-                                validate={[
-                                    isRequired(
-                                        intl.formatMessage({
-                                            id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor.Påkrevd',
-                                        }),
-                                    ),
-                                ]}
-                            >
-                                <Radio value={true}>
-                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Ja" />
-                                </Radio>
-                                <Radio value={false}>
-                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Nei" />
-                                </Radio>
-                            </RhfRadioGroup>
-                            {skalDuKombinereArbeidOgUttakMor && (
+            {kontoTypeMor !== undefined && (forelder === 'MOR' || forelder === 'BEGGE') && !morSøkerOmOverføring && (
+                <>
+                    <hr className="text-ax-border-neutral-subtle" />
+                    <VStack gap="space-16">
+                        <RhfRadioGroup
+                            name="skalDuKombinereArbeidOgUttakMor"
+                            control={formMethods.control}
+                            label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor' })}
+                            validate={[
+                                isRequired(
+                                    intl.formatMessage({
+                                        id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor.Påkrevd',
+                                    }),
+                                ),
+                            ]}
+                        >
+                            <Radio value={true}>
+                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Ja" />
+                            </Radio>
+                            <Radio value={false}>
+                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Nei" />
+                            </Radio>
+                        </RhfRadioGroup>
+                        {skalDuKombinereArbeidOgUttakMor && (
+                            <>
+                                {erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgSeksUkerEtterFamDato(
+                                    valgtePerioder,
+                                    familiehendelsedato,
+                                ) && (
+                                    <Alert variant="info">
+                                        <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.DagerReduseres" />
+                                    </Alert>
+                                )}
                                 <RhfNumericField
                                     name="stillingsprosentMor"
                                     control={formMethods.control}
@@ -372,10 +385,11 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                                     validate={[prosentValideringGradering(intl, samtidigUttaksprosentMor)]}
                                     maxLength={5}
                                 />
-                            )}
-                        </VStack>
-                    </>
-                )}
+                            </>
+                        )}
+                    </VStack>
+                </>
+            )}
             {(forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && !farMedmorSøkerOmOverføring && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
@@ -441,7 +455,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             morsAktivitet: values.morsAktivitet,
             forelder: 'MOR',
             gradering: values.skalDuKombinereArbeidOgUttakMor
-                ? getGradering(values.skalDuKombinereArbeidOgUttakMor, values.stillingsprosentMor, values.kontoTypeMor)
+                ? getGradering(values.skalDuKombinereArbeidOgUttakMor, values.stillingsprosentMor)
                 : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentMor) : undefined,
@@ -457,11 +471,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             morsAktivitet: values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : values.morsAktivitet,
             forelder: 'FAR_MEDMOR',
             gradering: values.skalDuKombinereArbeidOgUttakFarMedmor
-                ? getGradering(
-                      values.skalDuKombinereArbeidOgUttakFarMedmor,
-                      values.stillingsprosentFarMedmor,
-                      values.kontoTypeFarMedmor,
-                  )
+                ? getGradering(values.skalDuKombinereArbeidOgUttakFarMedmor, values.stillingsprosentFarMedmor)
                 : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentFarMedmor) : undefined,
@@ -544,15 +554,7 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
     };
 };
 
-const getGradering = (
-    skalDuJobbe: boolean,
-    stillingsprosent: string | undefined,
-    kontoType: KontoTypeUttak | undefined,
-): Gradering_fpoversikt | undefined => {
-    if (kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
-        return undefined;
-    }
-
+const getGradering = (skalDuJobbe: boolean, stillingsprosent: string | undefined): Gradering_fpoversikt | undefined => {
     if (skalDuJobbe) {
         return {
             aktivitet: {

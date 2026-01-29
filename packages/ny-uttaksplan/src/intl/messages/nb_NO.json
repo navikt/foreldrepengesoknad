@@ -203,12 +203,14 @@
     "RedigeringPanel.Fellesperiode": "Fellesperiode",
     "RedigeringPanel.MorKvote": "Mors kvote",
     "RedigeringPanel.FarKvote": "Fars kvote",
+    "RedigeringPanel.MedmorKvote": "Medmors kvote",
     "RedigeringPanel.SlettPeriode": "Slett dager fra periode",
     "RedigeringPanel.Ferie": "Ferie",
     "RedigeringPanel.SamtidigUttakForelder": "{forelder, select, MOR {Mor} other {{erMedmor, select, true {Medmor} other {Far}}}}",
     "RedigeringPanel.SamtidigUttak": " har {prosent} % {kvote, select, FELLESPERIODE {fellesperiode} MØDREKVOTE {mødrekvote} other {{erMedmor, select, true {medmorkvote} other {fedrekvote}}}}",
     "RedigeringPanel.Far": "Far",
     "RedigeringPanel.Mor": "Mor",
+    "RedigeringPanel.Medmor": "Medmor",
     "RedigeringPanel.Begge": "Begge",
     "RedigeringPanel.Dager": "{antall} {antall, select, 1 {dag} other {dager}} valgt i perioden",
     "RedigeringPanel.KanMisteDager": "Du mister dager hvis du ikke har foreldrepenger før termin eller i de seks første ukene etter fødsel.",
@@ -286,5 +288,6 @@
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Påkrevd": "Du må velge en årsak for overtakelse av kvote",
     "VelgPeriodePanelStep.VelgPeriode": "Du må velge hvilken periode du vil endre",
     "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "Du har valgt en kombinasjon av dager som ikke er gyldig for noen foreldre.",
-    "LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse": "Du kan ikke velge mer enn to uker totalt i perioden to uker før og seks uker etter fødsel/termin"
+    "LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse": "Du kan ikke velge mer enn to uker totalt i perioden to uker før og seks uker etter fødsel/termin",
+    "LeggTilEllerEndrePeriodeFellesForm.DagerReduseres": "Arbeid i tidsrommet 3 uker før termin og 6 uker etter fødsel, betyr at foreldrepengene vil reduseres det du jobber uten at du får dagene til gode til senere."
 }

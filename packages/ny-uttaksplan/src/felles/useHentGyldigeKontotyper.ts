@@ -11,17 +11,36 @@ import { ForeldreInfo } from '../types/ForeldreInfo';
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
-export const useHentGyldigeKontotyper = (valgtePerioder: Array<{ fom: string; tom: string }>) => {
+export const useHentGyldigeKontotyper = (
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    harValgtSamtidigUttak: boolean,
+) => {
     const { foreldreInfo, familiehendelsedato, familiesituasjon, valgtStønadskonto } = useUttaksplanData();
 
     return {
         gyldigeStønadskontoerForMor: valgtStønadskonto.kontoer
             .map((kt) => kt.konto)
-            .filter((kt) => erGyldigForMor(kt, foreldreInfo, familiehendelsedato, familiesituasjon, valgtePerioder)),
+            .filter((kt) =>
+                erGyldigForMor(
+                    kt,
+                    foreldreInfo,
+                    familiehendelsedato,
+                    familiesituasjon,
+                    valgtePerioder,
+                    harValgtSamtidigUttak,
+                ),
+            ),
         gyldigeStønadskontoerForFarMedmor: valgtStønadskonto.kontoer
             .map((kt) => kt.konto)
             .filter((kt) =>
-                erGyldigForFarMedmor(kt, foreldreInfo, familiehendelsedato, familiesituasjon, valgtePerioder),
+                erGyldigForFarMedmor(
+                    kt,
+                    foreldreInfo,
+                    familiehendelsedato,
+                    familiesituasjon,
+                    valgtePerioder,
+                    harValgtSamtidigUttak,
+                ),
             ),
     };
 };
@@ -32,10 +51,14 @@ const erGyldigForMor = (
     familiehendelsedato: string,
     familiesituasjon: Familiesituasjon,
     valgtePerioder: Array<{ fom: string; tom: string }>,
+    harValgtSamtidigUttak: boolean,
 ) => {
     const { søker, rettighetType } = foreldreInfo;
 
-    if (søker === 'FAR_ELLER_MEDMOR' && (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT')) {
+    const harKunEnPartRett = rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT';
+    const erAdopsjon = familiesituasjon === 'adopsjon';
+
+    if (søker === 'FAR_ELLER_MEDMOR' && harKunEnPartRett) {
         return false;
     }
 
@@ -58,13 +81,24 @@ const erGyldigForMor = (
     }
 
     if (konto === 'FEDREKVOTE') {
-        if (erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+        if (harValgtSamtidigUttak) {
+            return false;
+        }
+
+        if (!erAdopsjon && erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
             return false;
         }
     }
 
-    if (konto === 'FORELDREPENGER') {
-        if (erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+    if (konto === 'FORELDREPENGER' && !erAdopsjon) {
+        if (
+            !harKunEnPartRett &&
+            erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(valgtePerioder, familiehendelsedato)
+        ) {
+            return false;
+        }
+
+        if (harKunEnPartRett && erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
             return false;
         }
     }
@@ -75,7 +109,10 @@ const erGyldigForMor = (
         }
     }
 
-    if (konto === 'FELLESPERIODE') {
+    if (konto === 'FELLESPERIODE' && !erAdopsjon) {
+        if (erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(valgtePerioder, familiehendelsedato)) {
+            return false;
+        }
         if (erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(valgtePerioder, familiehendelsedato)) {
             return false;
         }
@@ -93,6 +130,7 @@ const erGyldigForFarMedmor = (
     familiehendelsedato: string,
     familiesituasjon: Familiesituasjon,
     valgtePerioder: Array<{ fom: string; tom: string }>,
+    harValgtSamtidigUttak: boolean,
 ) => {
     const { søker, rettighetType } = foreldreInfo;
     if (søker === 'MOR' && (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT')) {
@@ -108,6 +146,9 @@ const erGyldigForFarMedmor = (
     }
 
     if (konto === 'MØDREKVOTE') {
+        if (harValgtSamtidigUttak) {
+            return false;
+        }
         if (erNoenPerioderFørToUkerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
             return false;
         }
@@ -126,7 +167,7 @@ const erGyldigForFarMedmor = (
     }
 
     if (konto === 'FORELDREPENGER') {
-        if (erNoenPerioderFørToUkerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+        if (erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
             return false;
         }
     }
@@ -147,6 +188,16 @@ const erNoenPerioderFørFamiliehendelsesdato = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     familiehendelsedato: string,
 ) => valgtePerioder.some((p) => dayjs(p.fom).isBefore(familiehendelsedato));
+
+const erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato = (
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    familiehendelsedato: string,
+) =>
+    valgtePerioder.some((p) =>
+        dayjs(p.fom).isBefore(
+            UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
+        ),
+    );
 
 const erNoenPerioderLikEllerEtterFamiliehendelsesdato = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
@@ -202,4 +253,29 @@ const erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato = (
 
         return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
     });
+};
+
+const erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato = (
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    familiehendelsedato: string,
+) => {
+    const førsteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato();
+    const sisteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30);
+
+    return valgtePerioder.some((periode) => {
+        const fom = dayjs(periode.fom);
+        const tom = dayjs(periode.tom);
+
+        return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
+    });
+};
+
+export const erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgSeksUkerEtterFamDato = (
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    familiehendelsedato: string,
+) => {
+    return (
+        erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(valgtePerioder, familiehendelsedato) ||
+        erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(valgtePerioder, familiehendelsedato)
+    );
 };

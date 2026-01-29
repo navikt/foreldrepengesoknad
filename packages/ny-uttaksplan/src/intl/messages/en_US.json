@@ -200,11 +200,13 @@
     "RedigeringPanel.MorHarForeldrepengerFørFødsel": "Parental benefits before birth",
     "RedigeringPanel.Far": "Father",
     "RedigeringPanel.Mor": "Mother",
+    "RedigeringPanel.Medmor": "Co-mother",
     "RedigeringPanel.Begge": "Both",
     "RedigeringPanel.SlettPeriode": "Remove days from period",
     "RedigeringPanel.Fellesperiode": "Shared period",
     "RedigeringPanel.MorKvote": "Mother's quota",
     "RedigeringPanel.FarKvote": "Father's quota",
+    "RedigeringPanel.MedmorKvote": "Co-mother's quota",
     "RedigeringPanel.Ferie": "Vacation",
     "RedigeringPanel.SamtidigUttakForelder": "{forelder, select, MOR {Mother} other {{erMedmor, select, true {Co-mother} other {Father}}}}",
     "RedigeringPanel.SamtidigUttak": " has {prosent} % {kvote, select, FELLESPERIODE {shared period} MØDREKVOTE {mother's quota} other {{erMedmor, select, true {co-mother's quota} other {father's quota}}}}",
@@ -286,5 +288,6 @@
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Påkrevd": "You must select a reason for taking over the quota",
     "VelgPeriodePanelStep.VelgPeriode": "You must select which period you want to change",
     "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "You have selected a combination of days that is not valid for any parent.",
-    "LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse": "You cannot choose more than two weeks in total in the period two weeks before and six weeks after birth/due date."
+    "LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse": "You cannot choose more than two weeks in total in the period two weeks before and six weeks after birth/due date.",
+    "LeggTilEllerEndrePeriodeFellesForm.DagerReduseres": "Working in the period 3 weeks before the due date and 6 weeks after birth means that parental benefits will be reduced for the days you work without being able to take those days later."
 }
