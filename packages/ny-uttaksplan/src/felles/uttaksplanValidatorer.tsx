@@ -124,6 +124,12 @@ export const useFormSubmitValidator = <T extends LeggTilEllerEndrePeriodeFormFor
             return feilmeldingPåSamtidigUttak;
         }
 
+        const feilmeldingGyldigUttakForFarMedmorRundtFødsel = erGyldigUttakForFarMedmorRundtFødsel<T>();
+
+        if (feilmeldingGyldigUttakForFarMedmorRundtFødsel) {
+            return feilmeldingGyldigUttakForFarMedmorRundtFødsel;
+        }
+
         return harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamiliehendelsedato<T>(
             intl,
             uttakPerioder,
@@ -212,7 +218,6 @@ const erUgyldigSamtidigUttak = <T extends LeggTilEllerEndrePeriodeFormFormValues
         }
     }
 
-    // 101 - 150
     if (kombinertUttaksprosent > 100 && kombinertUttaksprosent <= 150) {
         if (farMedmorsFellesperiodeErStørreEnn50 || morsFellesperiodeErStørreEnn50) {
             return intl.formatMessage({
@@ -235,6 +240,13 @@ const erUgyldigSamtidigUttak = <T extends LeggTilEllerEndrePeriodeFormFormValues
         }
     }
 
+    return null;
+};
+
+const erGyldigUttakForFarMedmorRundtFødsel = <T extends LeggTilEllerEndrePeriodeFormFormValues>(
+    intl: IntlShape,
+    formValues: T,
+): string | null => {
     return null;
 };
 

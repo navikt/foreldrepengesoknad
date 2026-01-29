@@ -174,7 +174,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                         <FormattedMessage id="RedigeringPanel.KanMisteDager" />
                     </Alert>
                 )}
-            {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
+
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="space-32">
                     <RhfRadioGroup
@@ -213,6 +213,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                             resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}
                         />
                     )}
+                    {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
                     <HStack gap="space-8" justify="space-between">
                         <Button type="button" variant="secondary" onClick={() => setIsLeggTilPeriodePanelOpen(false)}>
                             <FormattedMessage id="uttaksplan.avbryt" />
