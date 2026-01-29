@@ -4,33 +4,30 @@ import { getUkerOgDagerFromDager } from 'utils/dateUtils';
 
 import { FormSummary } from '@navikt/ds-react';
 
-import { AnnenForelder, NavnPåForeldre, Situasjon } from '@navikt/fp-common';
-import { Dekningsgrad, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { NavnPåForeldre, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { UttaksplanOppsummeringsliste } from './UttaksplanOppsummeringsliste';
+import { UttaksplanOppsummeringslisteNy } from './UttaksplanOppsummeringslisteNy';
 
 interface Props {
     navnPåForeldre: NavnPåForeldre;
-    erFarEllerMedmor: boolean;
     registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
-    dekningsgrad: Dekningsgrad;
-    annenForelder: AnnenForelder;
-    familiehendelsesdato: Date;
-    termindato: string | undefined;
-    situasjon: Situasjon;
-    erAleneOmOmsorg: boolean;
-    antallBarn: number;
     onVilEndreSvar: () => void;
 }
 
-export const UttaksplanOppsummering = ({ dekningsgrad, antallBarn, onVilEndreSvar, ...rest }: Props) => {
+export const UttaksplanOppsummeringNy = ({ navnPåForeldre, registrerteArbeidsforhold, onVilEndreSvar }: Props) => {
     const intl = useIntl();
 
-    const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
-    const antallUkerUttaksplan = notEmpty(uttaksplanMetadata.antallUkerIUttaksplan);
+    const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
 
-    const ønskerJustertUttakVedFødsel = notEmpty(uttaksplanMetadata).ønskerJustertUttakVedFødsel;
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+
+    const { antallBarn } = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+
+    const erAnnenForelderOppgitt = isAnnenForelderOppgitt(annenForelder);
 
     const antallUkerOgDagerIUttaksplan = getUkerOgDagerFromDager(antallUkerUttaksplan * 5);
 
@@ -82,7 +79,10 @@ export const UttaksplanOppsummering = ({ dekningsgrad, antallBarn, onVilEndreSva
                     <FormSummary.Value>{dekningsgradTekst}</FormSummary.Value>
                 </FormSummary.Answer>
                 <FormSummary.Answer>
-                    <UttaksplanOppsummeringsliste ønskerJustertUttakVedFødsel={ønskerJustertUttakVedFødsel} {...rest} />
+                    <UttaksplanOppsummeringslisteNy
+                        navnPåForeldre={navnPåForeldre}
+                        registrerteArbeidsforhold={registrerteArbeidsforhold}
+                    />
                 </FormSummary.Answer>
                 {ønskerJustertUttakVedFødsel !== undefined && (
                     <FormSummary.Answer>

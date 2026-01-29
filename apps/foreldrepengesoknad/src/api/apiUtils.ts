@@ -428,6 +428,8 @@ export const cleanSøknadNy = (
     const utenlandsoppholdSiste12Mnd = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const dekningsgrad = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN_NY));
+    const { ønskerJustertUttakVedFødsel } = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA_NY));
+
     const vedlegg = hentData(ContextDataType.VEDLEGG);
 
     return {
@@ -440,7 +442,10 @@ export const cleanSøknadNy = (
         barn: cleanBarn(barn),
         annenForelder: cleanAnnenforelder(annenForelder),
         dekningsgrad,
-        uttaksplan,
+        uttaksplan: {
+            uttaksperioder: uttaksplan,
+            ønskerJustertUttakVedFødsel,
+        },
         utenlandsopphold: (utenlandsoppholdSiste12Mnd ?? []).concat(utenlandsoppholdNeste12Mnd ?? []),
         vedlegg: convertAttachmentsMapToArray(vedlegg),
     };
@@ -503,6 +508,7 @@ export const cleanEndringssøknadNy = (
     const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
     const valgtEksisterendeSaksnr = notEmpty(hentData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR));
     const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN_NY));
+    const { ønskerJustertUttakVedFødsel } = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA_NY));
     const vedlegg = hentData(ContextDataType.VEDLEGG);
     return {
         søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
@@ -512,7 +518,10 @@ export const cleanEndringssøknadNy = (
         barn: cleanBarn(barn),
         annenForelder: cleanAnnenforelder(annenForelder),
         vedlegg: convertAttachmentsMapToArray(vedlegg),
-        uttaksplan,
+        uttaksplan: {
+            uttaksperioder: uttaksplan,
+            ønskerJustertUttakVedFødsel,
+        },
     };
 };
 
@@ -525,7 +534,7 @@ type EndringssøknadForeldrepengerDtoNy = {
     saksnummer: string;
     språkkode?: Målform;
     søkerinfo: SøkerDto;
-    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    uttaksplan: UttaksplanDtoNy;
     vedlegg?: VedleggDto[];
 };
 
@@ -542,6 +551,12 @@ type ForeldrepengesøknadDtoNy = {
     språkkode?: Målform;
     søkerinfo: SøkerDto;
     utenlandsopphold?: UtenlandsoppholdsperiodeDto[];
-    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    uttaksplan: UttaksplanDtoNy;
     vedlegg?: VedleggDto[];
+};
+
+//TODO (TOR) Skal genererast fra backend
+type UttaksplanDtoNy = {
+    uttaksperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    ønskerJustertUttakVedFødsel?: boolean;
 };

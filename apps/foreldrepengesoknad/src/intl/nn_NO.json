@@ -542,5 +542,9 @@
     "uttaksplan.vilDuGåTilbakeModal.tittel": "Planen din blir sletta.",
     "UttaksplanSteg.kalender": "Kalender",
     "UttaksplanSteg.liste": "Liste",
-    "UttaksplanSteg.OvertrukketDager": "Du har lagt til for mange dagar i planen"
+    "UttaksplanSteg.OvertrukketDager": "Du har lagt til for mange dagar i planen",
+    "UttaksplanSteg.AutomatiskJustering.Spørsmål": "Planen din inneheld én periode med din egen kvote rundt fødsel. Sidan denne perioden startar på termin, ønsker du at vi endrer den til å starte frå fødselsdato når {antallBarn, plural, one {barnet} other {barna}} blir født?",
+    "UttaksplanSteg.AutomatiskJustering.Svar.Påkrevd": "Du må svare på spørsmålet om automatisk justering av perioden når barnet blir født.",
+    "UttaksplanSteg.AutomatiskJustering.Ja": "Ja",
+    "UttaksplanSteg.AutomatiskJustering.Nei": "Nei"
 }
