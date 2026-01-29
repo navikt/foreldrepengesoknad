@@ -269,20 +269,21 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                         <div>
                                             <ExpansionCard.Title size="medium">{måned}</ExpansionCard.Title>
                                             <ExpansionCard.Description>
-                                                <VStack gap="space-4">
-                                                    {totaltForMånedenTilDeg > 0 && (
-                                                        <BodyShort>
+                                                {totaltForMånedenTilDeg > 0 && (
+                                                    <>
+                                                        <BodyShort as="span">
                                                             Utbetales direkte til deg:{' '}
                                                             {formatCurrencyWithKr(totaltForMånedenTilDeg)}
                                                         </BodyShort>
-                                                    )}
-                                                    {totaltForMånedenTilAG > 0 && (
-                                                        <BodyShort>
-                                                            Utbetales til arbeidsgiver:{' '}
-                                                            {formatCurrencyWithKr(totaltForMånedenTilAG)}
-                                                        </BodyShort>
-                                                    )}
-                                                </VStack>
+                                                        <br />
+                                                    </>
+                                                )}
+                                                {totaltForMånedenTilAG > 0 && (
+                                                    <BodyShort as="span">
+                                                        Utbetales til arbeidsgiver:{' '}
+                                                        {formatCurrencyWithKr(totaltForMånedenTilAG)}
+                                                    </BodyShort>
+                                                )}
                                             </ExpansionCard.Description>
                                         </div>
                                     </HStack>
