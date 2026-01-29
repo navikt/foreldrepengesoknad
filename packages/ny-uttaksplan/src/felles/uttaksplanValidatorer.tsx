@@ -113,8 +113,15 @@ export const useFormSubmitValidator = <T extends LeggTilEllerEndrePeriodeFormFor
             familiesituasjon,
             formValues,
         );
+
         if (feilmeldingArbeidDeFørste6Ukene) {
             return feilmeldingArbeidDeFørste6Ukene;
+        }
+
+        const feilmeldingPåSamtidigUttak = erUgyldigSamtidigUttak<T>(intl, formValues);
+
+        if (feilmeldingPåSamtidigUttak) {
+            return feilmeldingPåSamtidigUttak;
         }
 
         return harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamiliehendelsedato<T>(
@@ -127,6 +134,108 @@ export const useFormSubmitValidator = <T extends LeggTilEllerEndrePeriodeFormFor
             formValues,
         );
     };
+};
+
+const skalValidereSamtidigUttak = (
+    values: LeggTilEllerEndrePeriodeFormFormValues,
+): values is Required<
+    Pick<
+        LeggTilEllerEndrePeriodeFormFormValues,
+        | 'samtidigUttaksprosentMor'
+        | 'samtidigUttaksprosentFarMedmor'
+        | 'skalDuKombinereArbeidOgUttakMor'
+        | 'skalDuKombinereArbeidOgUttakFarMedmor'
+        | 'kontoTypeFarMedmor'
+        | 'kontoTypeMor'
+    >
+> => {
+    return (
+        values.forelder === 'BEGGE' &&
+        values.samtidigUttaksprosentMor !== undefined &&
+        values.samtidigUttaksprosentFarMedmor !== undefined &&
+        values.skalDuKombinereArbeidOgUttakMor !== undefined &&
+        values.skalDuKombinereArbeidOgUttakFarMedmor !== undefined &&
+        values.kontoTypeFarMedmor !== undefined &&
+        values.kontoTypeMor !== undefined &&
+        (!values.skalDuKombinereArbeidOgUttakMor || values.stillingsprosentMor !== undefined) &&
+        (!values.skalDuKombinereArbeidOgUttakFarMedmor || values.stillingsprosentFarMedmor !== undefined)
+    );
+};
+
+const erUgyldigSamtidigUttak = <T extends LeggTilEllerEndrePeriodeFormFormValues>(
+    intl: IntlShape,
+    formValues: T,
+): string | null => {
+    if (!skalValidereSamtidigUttak(formValues)) {
+        return null;
+    }
+
+    const {
+        samtidigUttaksprosentMor,
+        samtidigUttaksprosentFarMedmor,
+        stillingsprosentFarMedmor,
+        stillingsprosentMor,
+        kontoTypeMor,
+        kontoTypeFarMedmor,
+        morsAktivitet,
+    } = formValues;
+
+    const samtidigUttaksprosentMorTrimmed = samtidigUttaksprosentMor.trim();
+    const samtidigUttaksprosentFarMedmorTrimmed = samtidigUttaksprosentFarMedmor.trim();
+    const samtidigUttaksprosentMorFloat = getFloatFromString(samtidigUttaksprosentMorTrimmed)!;
+    const samtidigUttaksprosentFarMedmorFloat = getFloatFromString(samtidigUttaksprosentFarMedmorTrimmed)!;
+    const kombinertUttaksprosent = samtidigUttaksprosentMorFloat + samtidigUttaksprosentFarMedmorFloat;
+    const farMedmorsFellesperiodeErStørreEnn50 =
+        kontoTypeFarMedmor === 'FELLESPERIODE' && samtidigUttaksprosentFarMedmorFloat > 50;
+    const morsFellesperiodeErStørreEnn50 = kontoTypeMor === 'FELLESPERIODE' && samtidigUttaksprosentMorFloat > 50;
+    const totalProsentMor = samtidigUttaksprosentMorFloat + (getFloatFromString(stillingsprosentMor) ?? 0);
+    const totalProsentFarMedmor =
+        samtidigUttaksprosentFarMedmorFloat + (getFloatFromString(stillingsprosentFarMedmor) ?? 0);
+
+    if (kombinertUttaksprosent < 100) {
+        if (totalProsentMor !== 100 || totalProsentFarMedmor !== 100) {
+            return intl.formatMessage({
+                id:
+                    'Dersom dere skal ha mindre enn 100 % samtidig uttak til sammen så må dere også jobbe' +
+                    ' slik at summen av arbeid og samtidig uttak blir nøyaktig 100 % per forelder',
+            });
+        }
+    }
+
+    if (kombinertUttaksprosent === 100) {
+        if (kontoTypeFarMedmor === 'FELLESPERIODE') {
+            if (totalProsentMor !== 100 && !morsAktivitet) {
+                return intl.formatMessage({
+                    id: 'Mor må enten være 100 % i arbeid eller i annen aktivitet',
+                });
+            }
+        }
+    }
+
+    // 101 - 150
+    if (kombinertUttaksprosent > 100 && kombinertUttaksprosent <= 150) {
+        if (farMedmorsFellesperiodeErStørreEnn50 || morsFellesperiodeErStørreEnn50) {
+            return intl.formatMessage({
+                id: 'Du kan maksimalt ha 50 % samtidig uttak fra fellesperiode',
+            });
+        }
+
+        if (kontoTypeFarMedmor === 'FEDREKVOTE' && kontoTypeMor === 'MØDREKVOTE') {
+            return intl.formatMessage({
+                id: 'Fedrekvoten og mødrekvoten kan ikke ha samtidig uttak over 100 % til sammen',
+            });
+        }
+
+        if (totalProsentMor < 100 || totalProsentFarMedmor < 100) {
+            return intl.formatMessage({
+                id:
+                    'Dersom dere skal ha mindre enn 100 % uttak så må dere også jobbe i perioden dere ikke er hjemme' +
+                    ' slik at summen av arbeid og samtidig uttak blir nøyaktig 100 % per forelder',
+            });
+        }
+    }
+
+    return null;
 };
 
 const erKombinasjonAvArbeidOgForeldrepengerDe6FørsteUkene = <T extends LeggTilEllerEndrePeriodeFormFormValues>(

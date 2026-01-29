@@ -50,6 +50,31 @@ interface Props {
     resetFormValuesVedEndringAvForelder: (forelder: string | number | boolean) => void;
 }
 
+const getSkalViseMorsAktivitetskravVedSamtidigUttak = (
+    forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined,
+    samtidigUttaksprosentMor?: string,
+    stillingsprosentMor?: string,
+    samtidigUttaksprosentFarMedmor?: string,
+    kontoTypeFarMedmor?: KontoTypeUttak,
+) => {
+    const morsSamtidigUttakprosent = forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentMor) ?? 0) : 0;
+    const morsStillingProsent = forelder === 'BEGGE' ? (getFloatFromString(stillingsprosentMor) ?? 0) : 0;
+    const morsTotaleProsent = morsSamtidigUttakprosent + morsStillingProsent;
+
+    const farMedmorsSamtidigUttakprosent =
+        forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentFarMedmor) ?? 0) : 0;
+    const kombinertUttaksprosent = morsSamtidigUttakprosent + farMedmorsSamtidigUttakprosent;
+
+    if (kombinertUttaksprosent !== 100) {
+        return false;
+    }
+
+    const skalViseMorsAktivitetskravVedSamtidigUttak =
+        forelder === 'BEGGE' && kontoTypeFarMedmor === 'FELLESPERIODE' && morsTotaleProsent < 100;
+
+    return skalViseMorsAktivitetskravVedSamtidigUttak;
+};
+
 export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAvForelder, valgtePerioder }: Props) => {
     const intl = useIntl();
 
@@ -76,6 +101,43 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
         forelder === 'FAR_MEDMOR' &&
         rettighetType !== 'ALENEOMSORG' &&
         (kontoTypeFarMedmor === 'FORELDREPENGER' || kontoTypeFarMedmor === 'FELLESPERIODE');
+
+    const skalViseMorsAktivitetskravVedSamtidigUttak = getSkalViseMorsAktivitetskravVedSamtidigUttak(
+        forelder,
+        samtidigUttaksprosentMor,
+        stillingsprosentMor,
+        samtidigUttaksprosentFarMedmor,
+        kontoTypeFarMedmor,
+    );
+
+    const getAktivitetskravOptions = () => {
+        if (skalViseMorsAktivitetskravVedSamtidigUttak) {
+            return ['ARBEID', 'UTDANNING', 'KVALPROG', 'INTROPROG', 'ARBEID_OG_UTDANNING'];
+        }
+
+        return ['ARBEID', 'UTDANNING', 'KVALPROG', 'INTROPROG', 'TRENGER_HJELP', 'INNLAGT', 'ARBEID_OG_UTDANNING'];
+    };
+
+    const getAktivitetskravIntlKey = (value: string) => {
+        switch (value) {
+            case 'ARBEID':
+                return 'AktivitetskravSpørsmål.Arbeid';
+            case 'UTDANNING':
+                return 'AktivitetskravSpørsmål.Utdanning';
+            case 'KVALPROG':
+                return 'AktivitetskravSpørsmål.Kvalprog';
+            case 'INTROPROG':
+                return 'AktivitetskravSpørsmål.Introprog';
+            case 'TRENGER_HJELP':
+                return 'AktivitetskravSpørsmål.Trenger_hjelp';
+            case 'INNLAGT':
+                return 'AktivitetskravSpørsmål.Innlagt';
+            case 'ARBEID_OG_UTDANNING':
+                return 'AktivitetskravSpørsmål.Arbeid_og_utdanning';
+            default:
+                return '';
+        }
+    };
 
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(
         valgtePerioder,
@@ -282,7 +344,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                 </VStack>
             )}
 
-            {erFarMedmorUtenAleneomsorg && (
+            {(erFarMedmorUtenAleneomsorg || skalViseMorsAktivitetskravVedSamtidigUttak) && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
                     <RhfSelect
@@ -292,27 +354,13 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                         validate={[isRequired(intl.formatMessage({ id: 'AktivitetskravSpørsmål.Påkrevd' }))]}
                         description={intl.formatMessage({ id: 'AktivitetskravSpørsmål.Description' })}
                     >
-                        <option value="ARBEID">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Arbeid'} />
-                        </option>
-                        <option value="UTDANNING">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Utdanning'} />
-                        </option>
-                        <option value="KVALPROG">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Kvalprog'} />
-                        </option>
-                        <option value="INTROPROG">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Introprog'} />
-                        </option>
-                        <option value="TRENGER_HJELP">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Trenger_hjelp'} />
-                        </option>
-                        <option value="INNLAGT">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Innlagt'} />
-                        </option>
-                        <option value="ARBEID_OG_UTDANNING">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Arbeid_og_utdanning'} />
-                        </option>
+                        {getAktivitetskravOptions().map((value) => {
+                            return (
+                                <option key={value} value={value}>
+                                    <FormattedMessage id={getAktivitetskravIntlKey(value)} />
+                                </option>
+                            );
+                        })}
                     </RhfSelect>
                 </>
             )}

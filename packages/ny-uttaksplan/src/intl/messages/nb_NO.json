@@ -220,7 +220,7 @@
     "RedigeringPanel.LukkRedigeringsmodus": "Avbryt",
     "RedigeringPanel.AdopsjonPeriodeFørFamiliehendelsedato": "Du kan ikke ha foreldrepenger før du overtar omsorgen for barnet",
     "RedigeringPanel.Gradering": "Gradering: {prosent} %",
-    "RedigeringPanel.GraderingForelder": "{forelder, select, MOR {Mor} other {{erMedmor, select, true {Medmor} other {Far}}}} har {prosent} % gradering",
+    "RedigeringPanel.GraderingForelder": "{forelder, select, MOR {Mor} other {{erMedmor, select, true {Medmor} other {Far}}}} er i {prosent} % arbeid",
     "UttaksplanKalender.VelgEnkeltDager": "Enkeltdager",
     "UttaksplanKalender.VelgPeriode": "Periode (fra - til)",
     "UttaksplanKalender.VelgDagEllerPeriode": "Velg dager eller periode",
