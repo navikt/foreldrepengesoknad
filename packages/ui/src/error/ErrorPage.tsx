@@ -44,14 +44,14 @@ export const ErrorPage = ({ appName, errorMessage, retryCallback }: Props) => (
                     <FormattedMessage id="ErrorPage.TryAgain" />
                 </Button>
             </HStack>
-            <Box.New background="neutral-moderate" padding="4">
+            <Box background="neutral-moderate" padding="space-16">
                 <VStack gap="space-8">
                     <Label>
                         <FormattedMessage id="ErrorPage.ErrorMessage" />
                     </Label>
                     <BodyShort>Error: {errorMessage}</BodyShort>
                 </VStack>
-            </Box.New>
+            </Box>
         </VStack>
     </SkjemaRotLayout>
 );

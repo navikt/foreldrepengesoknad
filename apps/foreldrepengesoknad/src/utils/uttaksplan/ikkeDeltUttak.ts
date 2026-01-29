@@ -15,7 +15,7 @@ import { andreAugust2022ReglerGjelder } from '../dateUtils';
 import { guid } from '../guid';
 
 const ikkeDeltUttakAdopsjonFarMedmor = (
-    famDato: Date,
+    familiehendelsesdato: Date,
     foreldrepengerKonto: KontoDto,
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
@@ -23,12 +23,12 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
     bareFarMedmorHarRett: boolean,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ) => {
-    const førsteUttaksdag = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
+    const førsteUttaksdag = Uttaksdagen(startdatoPermisjon || familiehendelsesdato).denneEllerNeste();
     const perioder: Uttaksperiode[] = [];
 
     if (erMorUfør !== true) {
         let startDatoNestePeriode = førsteUttaksdag;
-        if (andreAugust2022ReglerGjelder(famDato) && !!bareFarMedmorHarRett) {
+        if (andreAugust2022ReglerGjelder(familiehendelsesdato) && !!bareFarMedmorHarRett) {
             const aktivitetsFriPeriode: Uttaksperiode = {
                 id: guid(),
                 type: Periodetype.Uttak,
@@ -139,12 +139,12 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
 };
 
 const ikkeDeltUttakAdopsjonMor = (
-    famDato: Date,
+    familiehendelsesdato: Date,
     foreldrepengerKonto: KontoDto,
     startdatoPermisjon: Date | undefined,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ) => {
-    const førsteUttaksdag = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
+    const førsteUttaksdag = Uttaksdagen(startdatoPermisjon || familiehendelsesdato).denneEllerNeste();
     const periode: Uttaksperiode = {
         id: guid(),
         type: Periodetype.Uttak,
@@ -164,7 +164,7 @@ const ikkeDeltUttakAdopsjonMor = (
 };
 
 const ikkeDeltUttakAdopsjon = (
-    famDato: Date,
+    familiehendelsesdato: Date,
     erFarEllerMedmor: boolean,
     foreldrepengerKonto: KontoDto,
     startdatoPermisjon: Date | undefined,
@@ -174,10 +174,15 @@ const ikkeDeltUttakAdopsjon = (
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ) => {
     if (!erFarEllerMedmor) {
-        return ikkeDeltUttakAdopsjonMor(famDato, foreldrepengerKonto, startdatoPermisjon, førsteUttaksdagNesteBarnsSak);
+        return ikkeDeltUttakAdopsjonMor(
+            familiehendelsesdato,
+            foreldrepengerKonto,
+            startdatoPermisjon,
+            førsteUttaksdagNesteBarnsSak,
+        );
     } else {
         return ikkeDeltUttakAdopsjonFarMedmor(
-            famDato,
+            familiehendelsesdato,
             foreldrepengerKonto,
             startdatoPermisjon,
             erMorUfør,
@@ -189,14 +194,14 @@ const ikkeDeltUttakAdopsjon = (
 };
 
 const ikkeDeltUttakFødselMor = (
-    famDato: Date,
+    familiehendelsesdato: Date,
     foreldrepengerKonto: KontoDto,
     startdatoPermisjon: Date | undefined,
     foreldrePengerFørFødselKonto: KontoDto,
 ) => {
-    const førsteUttaksdag = Uttaksdagen(famDato).denneEllerNeste();
+    const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
     const perioder: Periode[] = [];
-    const skalHaForeldrePengerFørFødsel = dayjs(startdatoPermisjon).isBefore(dayjs(famDato), 'd');
+    const skalHaForeldrePengerFørFødsel = dayjs(startdatoPermisjon).isBefore(dayjs(familiehendelsesdato), 'd');
 
     if (foreldrePengerFørFødselKonto !== undefined && skalHaForeldrePengerFørFødsel && startdatoPermisjon) {
         const dagerFørFødsel = Uttaksdagen(startdatoPermisjon).getUttaksdagerFremTilDato(førsteUttaksdag);
@@ -273,7 +278,7 @@ const ikkeDeltUttakFødselMor = (
 };
 
 const ikkeDeltUttakFødselFarMedmor = (
-    famDato: Date,
+    familiehendelsesdato: Date,
     foreldrepengerKonto: KontoDto,
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
@@ -282,13 +287,13 @@ const ikkeDeltUttakFødselFarMedmor = (
     termindato: Date | undefined,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ) => {
-    const startDato = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
+    const startDato = Uttaksdagen(startdatoPermisjon || familiehendelsesdato).denneEllerNeste();
     const morHarRett = false;
     const perioder: Periode[] = [];
 
     if (erMorUfør !== true) {
         let startDatoNestePeriode = startDato;
-        if (andreAugust2022ReglerGjelder(famDato) && !!bareFarMedmorHarRett) {
+        if (andreAugust2022ReglerGjelder(familiehendelsesdato) && !!bareFarMedmorHarRett) {
             const aktivitetsFriPeriode: Uttaksperiode = {
                 id: guid(),
                 type: Periodetype.Uttak,
@@ -301,12 +306,15 @@ const ikkeDeltUttakFødselFarMedmor = (
             if (
                 farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
                     aktivitetsFriPeriode,
-                    famDato,
+                    familiehendelsesdato,
                     morHarRett,
                     termindato,
                 )
             ) {
-                const aktivitetsFriePerioder = splittUttaksperiodePåFamiliehendelsesdato(aktivitetsFriPeriode, famDato);
+                const aktivitetsFriePerioder = splittUttaksperiodePåFamiliehendelsesdato(
+                    aktivitetsFriPeriode,
+                    familiehendelsesdato,
+                );
 
                 for (const p of aktivitetsFriePerioder) {
                     perioder.push(p);
@@ -352,12 +360,15 @@ const ikkeDeltUttakFødselFarMedmor = (
         if (
             farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
                 aktivitetsFriPeriode,
-                famDato,
+                familiehendelsesdato,
                 morHarRett,
                 termindato,
             )
         ) {
-            const aktivitetsFriePerioder = splittUttaksperiodePåFamiliehendelsesdato(aktivitetsFriPeriode, famDato);
+            const aktivitetsFriePerioder = splittUttaksperiodePåFamiliehendelsesdato(
+                aktivitetsFriPeriode,
+                familiehendelsesdato,
+            );
 
             for (const p of aktivitetsFriePerioder) {
                 perioder.push(p);
@@ -385,7 +396,7 @@ const ikkeDeltUttakFødselFarMedmor = (
 };
 
 const ikkeDeltUttakFødsel = (
-    famDato: Date,
+    familiehendelsesdato: Date,
     erFarEllerMedmor: boolean,
     foreldrepengerKonto: KontoDto,
     startdatoPermisjon: Date | undefined,
@@ -397,10 +408,15 @@ const ikkeDeltUttakFødsel = (
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ) => {
     if (!erFarEllerMedmor) {
-        return ikkeDeltUttakFødselMor(famDato, foreldrepengerKonto, startdatoPermisjon, foreldrePengerFørFødselKonto!);
+        return ikkeDeltUttakFødselMor(
+            familiehendelsesdato,
+            foreldrepengerKonto,
+            startdatoPermisjon,
+            foreldrePengerFørFødselKonto!,
+        );
     } else {
         return ikkeDeltUttakFødselFarMedmor(
-            famDato,
+            familiehendelsesdato,
             foreldrepengerKonto,
             startdatoPermisjon,
             erMorUfør,
@@ -414,7 +430,7 @@ const ikkeDeltUttakFødsel = (
 
 export const ikkeDeltUttak = (
     situasjon: Situasjon,
-    famDato: Date,
+    familiehendelsesdato: Date,
     erFarEllerMedmor: boolean,
     tilgjengeligeStønadskontoer: KontoDto[],
     startdatoPermisjon: Date | undefined,
@@ -431,7 +447,7 @@ export const ikkeDeltUttak = (
 
     if (situasjon === 'adopsjon') {
         return ikkeDeltUttakAdopsjon(
-            famDato,
+            familiehendelsesdato,
             erFarEllerMedmor,
             foreldrepengerKonto!,
             startdatoPermisjon,
@@ -444,7 +460,7 @@ export const ikkeDeltUttak = (
 
     if (situasjon === 'fødsel') {
         return ikkeDeltUttakFødsel(
-            famDato,
+            familiehendelsesdato,
             erFarEllerMedmor,
             foreldrepengerKonto!,
             startdatoPermisjon,

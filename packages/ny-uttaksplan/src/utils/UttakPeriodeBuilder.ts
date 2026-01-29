@@ -2,6 +2,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttaksdagenString } from '@navikt/fp-utils';
 
 dayjs.extend(utc);
 
@@ -67,7 +68,7 @@ export class UttakPeriodeBuilder {
                     if (eFom.isBefore(nFom)) {
                         nyeUttakPerioder.push({
                             ...eksisterendePeriode,
-                            tom: fromDay(justerSluttdato(nFom.subtract(1, 'day'))),
+                            tom: UttaksdagenString.forrige(periodeSomSkalFjernes.fom).getDato(),
                         });
                     }
 
@@ -75,8 +76,8 @@ export class UttakPeriodeBuilder {
                     if (eTom.isAfter(nTom)) {
                         nyeUttakPerioder.push({
                             ...eksisterendePeriode,
-                            fom: fromDay(justerStartdato(nTom.add(1, 'day'))),
-                            tom: fromDay(eTom),
+                            fom: UttaksdagenString.neste(periodeSomSkalFjernes.tom).getDato(),
+                            tom: eksisterendePeriode.tom,
                         });
                     }
                 } else {
@@ -116,7 +117,7 @@ const erstattEksisterendeUttakPerioder = (
             if (eFom.isBefore(nFom)) {
                 nyeUttakPerioder.push({
                     ...eksisterendeUttakPeriode,
-                    tom: fromDay(justerSluttdato(nFom.subtract(1, 'day'))),
+                    tom: UttaksdagenString.forrige(nyUttakPeriode.fom).getDato(),
                 });
             }
 
@@ -124,7 +125,7 @@ const erstattEksisterendeUttakPerioder = (
             if (eTom.isAfter(nTom)) {
                 nyeUttakPerioder.push({
                     ...eksisterendeUttakPeriode,
-                    fom: fromDay(justerStartdato(nTom.add(1, 'day'))),
+                    fom: UttaksdagenString.neste(nyUttakPeriode.tom).getDato(),
                 });
             }
         } else {
@@ -161,8 +162,8 @@ const forskyvEksisterendePerioder = (
         if (eFom.isAfter(nFom) && nTom.isBefore(eTom)) {
             nyeUttakPerioder.push({
                 ...eksisterendePeriode,
-                fom: fromDay(leggTilUkedager(eFom, antallUkedager)),
-                tom: fromDay(leggTilUkedager(eTom, antallUkedager)),
+                fom: UttaksdagenString.denne(eksisterendePeriode.fom).getDatoAntallUttaksdagerSenere(antallUkedager),
+                tom: UttaksdagenString.denne(eksisterendePeriode.tom).getDatoAntallUttaksdagerSenere(antallUkedager),
             });
             continue;
         }
@@ -171,14 +172,14 @@ const forskyvEksisterendePerioder = (
         if (eFom.isBefore(nFom)) {
             nyeUttakPerioder.push({
                 ...eksisterendePeriode,
-                tom: fromDay(justerSluttdato(nFom.subtract(1, 'day'))),
+                tom: UttaksdagenString.forrige(nyUttakPeriode.fom).getDato(),
             });
         }
 
         nyeUttakPerioder.push({
             ...eksisterendePeriode,
-            fom: fromDay(justerStartdato(nTom.add(1, 'day'))),
-            tom: fromDay(leggTilUkedager(eTom, antallUkedager)),
+            fom: UttaksdagenString.neste(nyUttakPeriode.tom).getDato(),
+            tom: UttaksdagenString.denne(eksisterendePeriode.tom).getDatoAntallUttaksdagerSenere(antallUkedager),
         });
     }
 
@@ -188,8 +189,6 @@ const forskyvEksisterendePerioder = (
 };
 
 const toDay = (iso: string): Dayjs => dayjs.utc(iso).startOf('day');
-
-const fromDay = (day: Dayjs): string => day.format('YYYY-MM-DD');
 
 const erOverlappende = (aFom: Dayjs, aTom: Dayjs, bFom: Dayjs, bTom: Dayjs): boolean =>
     aFom.isSameOrBefore(bTom) && bFom.isSameOrBefore(aTom);
@@ -217,40 +216,4 @@ const sorterUttakPerioder = (a: AlleUttakPerioder, b: AlleUttakPerioder): number
         return 1;
     }
     return 0;
-};
-
-const justerStartdato = (dato: dayjs.Dayjs): dayjs.Dayjs => {
-    // Om dato er helgedag, endre til mandag
-    if (dato.day() === 6) {
-        return dato.add(2, 'day');
-    }
-    if (dato.day() === 0) {
-        return dato.add(1, 'day');
-    }
-    return dato;
-};
-
-const justerSluttdato = (dato: dayjs.Dayjs): dayjs.Dayjs => {
-    // Om dato er helgedag, endre til fredag
-    if (dato.day() === 6) {
-        return dato.subtract(1, 'day');
-    }
-    if (dato.day() === 0) {
-        return dato.subtract(2, 'day');
-    }
-    return dato;
-};
-
-const leggTilUkedager = (startdato: Dayjs, antallDager: number): Dayjs => {
-    let currentDato = startdato.clone();
-    let dagerLagtTil = 0;
-
-    while (dagerLagtTil < antallDager) {
-        currentDato = currentDato.add(1, 'day');
-        if (currentDato.day() !== 0 && currentDato.day() !== 6) {
-            dagerLagtTil += 1;
-        }
-    }
-
-    return currentDato;
 };

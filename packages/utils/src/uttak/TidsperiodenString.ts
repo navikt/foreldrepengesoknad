@@ -4,7 +4,7 @@ import { IntlShape } from 'react-intl';
 import { Tidsperiode } from '@navikt/fp-types';
 
 import { dateStringIsSameOrAfter, dateStringIsSameOrBefore, formaterDatoUtenDag } from '../dateUtils';
-import { UttaksdagenString } from './UttaksdagenString';
+import { UttaksdagenString, erUttaksdag } from './UttaksdagenString';
 
 const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 const isoStringFormat = 'YYYY-MM-DD';
@@ -38,10 +38,10 @@ const overlapperTidsperioder = (t1: Tidsperiode, t2: Tidsperiode) => {
 };
 
 const erTidsperiodeInnenforFørsteSeksUker = (tidsperiode: Tidsperiode, familiehendelsesdato: string) => {
-    const førsteUttaksdagFamiliehendelsesdato = UttaksdagenString(familiehendelsesdato).denneEllerNeste();
-    const førsteUttaksdagEtterSeksUker = UttaksdagenString(førsteUttaksdagFamiliehendelsesdato).leggTil(
-        ANTALL_UTTAKSDAGER_SEKS_UKER,
-    );
+    const førsteUttaksdagFamiliehendelsesdato = UttaksdagenString.denneEllerNeste(familiehendelsesdato).getDato();
+    const førsteUttaksdagEtterSeksUker = UttaksdagenString.denne(
+        førsteUttaksdagFamiliehendelsesdato,
+    ).getDatoAntallUttaksdagerSenere(ANTALL_UTTAKSDAGER_SEKS_UKER);
     return erTidsperiodeFomEllerEtterDato(tidsperiode, førsteUttaksdagEtterSeksUker) === false;
 };
 
@@ -86,12 +86,12 @@ export function getValidTidsperiodeString(tidsperiode: Tidsperiode | undefined):
 }
 
 export function getTidsperiodeString(fom: string, uttaksdager: number): Tidsperiode {
-    if (!UttaksdagenString(fom).erUttaksdag()) {
+    if (!erUttaksdag(fom)) {
         throw new Error('FOM er ikke en uttaksdag');
     }
     return {
         fom,
-        tom: UttaksdagenString(fom).leggTil(uttaksdager - 1),
+        tom: UttaksdagenString.denne(fom).getDatoAntallUttaksdagerSenere(uttaksdager - 1),
     };
 }
 
@@ -111,7 +111,7 @@ function getAntallUttaksdagerITidsperiode(tidsperiode: Tidsperiode): number {
     const tom = dayjs(tidsperiode.tom);
     let antall = 0;
     while (fom.isSameOrBefore(tom, 'day')) {
-        if (UttaksdagenString(fom.format(isoStringFormat)).erUttaksdag()) {
+        if (erUttaksdag(fom.format(isoStringFormat))) {
             antall++;
         }
         fom = fom.add(24, 'hours');

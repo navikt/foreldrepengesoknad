@@ -11,7 +11,7 @@ export const FortsettSenereModal = ({ onFortsettSenere }: Props) => {
     return (
         <Dialog>
             <Dialog.Trigger>
-                <Box.New asChild marginBlock={{ xs: '4 0', sm: '0' }}>
+                <Box asChild marginBlock={{ xs: 'space-16 space-0', sm: 'space-0' }}>
                     <Button
                         className="order-3"
                         variant="tertiary"
@@ -21,7 +21,7 @@ export const FortsettSenereModal = ({ onFortsettSenere }: Props) => {
                     >
                         <FormattedMessage id="StepFooter.ContinueLater" />
                     </Button>
-                </Box.New>
+                </Box>
             </Dialog.Trigger>
             <Dialog.Popup>
                 <Dialog.Header>

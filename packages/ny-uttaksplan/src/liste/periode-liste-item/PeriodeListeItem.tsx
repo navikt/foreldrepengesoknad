@@ -27,7 +27,7 @@ export const PeriodeListeItem = ({ isReadOnly, uttaksplanperioder, isAllAccordio
     }, [isAllAccordionsOpen]);
 
     return (
-        <VStack gap="0" className="border-ax-neutral-100 cursor-pointer border-t-1 border-b-1">
+        <VStack gap="space-0" className="border-ax-neutral-100 cursor-pointer border-t-1 border-b-1">
             <div
                 className={`hover:bg-ax-accent-300 border-l-8 pt-4 pb-4 select-none ${borderFarge}`}
                 onClick={() => setErPeriodeInnholdÅpen(!erPeriodeInnholdÅpen)}

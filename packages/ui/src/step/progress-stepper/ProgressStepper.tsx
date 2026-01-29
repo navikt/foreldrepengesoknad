@@ -49,7 +49,7 @@ export const ProgressStepper = <TYPE extends string>({
                 translations={{
                     hideAllSteps: intl.formatMessage({ id: 'ProgressStepper.HideSteps' }),
                     showAllSteps: intl.formatMessage({ id: 'ProgressStepper.ShowSteps' }),
-                    step: intl.formatMessage({ id: 'ProgressStepper.StepCounter' }),
+                    step: intl.messages['ProgressStepper.StepCounter'] as string,
                 }}
             >
                 {steps.map((step, index) => (

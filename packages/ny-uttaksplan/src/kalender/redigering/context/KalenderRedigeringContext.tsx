@@ -13,6 +13,7 @@ type Props = {
     valgtePerioder: CalendarPeriod[];
     children: React.ReactNode;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
+    setEndredePerioder: React.Dispatch<React.SetStateAction<Array<{ fom: string; tom: string }>>>;
 };
 
 type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaksplan'> & {
@@ -23,7 +24,12 @@ type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaks
 
 const KalenderRedigeringContext = createContext<ContextValues | null>(null);
 
-export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgtePerioder }: Props) => {
+export const KalenderRedigeringProvider = ({
+    valgtePerioder,
+    children,
+    setValgtePerioder,
+    setEndredePerioder,
+}: Props) => {
     const { uttakPerioder } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
@@ -56,8 +62,15 @@ export const KalenderRedigeringProvider = ({ valgtePerioder, children, setValgte
             leggTilUttaksplanPerioder,
             slettUttaksplanPerioder,
             setValgtePerioder,
+            setEndredePerioder,
         };
-    }, [sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, slettUttaksplanPerioder, setValgtePerioder]);
+    }, [
+        sammenslåtteValgtePerioder,
+        leggTilUttaksplanPerioder,
+        slettUttaksplanPerioder,
+        setValgtePerioder,
+        setEndredePerioder,
+    ]);
 
     return <KalenderRedigeringContext value={value}>{children}</KalenderRedigeringContext>;
 };

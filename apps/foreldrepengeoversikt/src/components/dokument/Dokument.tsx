@@ -39,7 +39,7 @@ function DokumentAvsender({ dokumentType }: { dokumentType: JournalpostType_fpov
     })();
 
     return (
-        <Tag size="small" className="w-max justify-self-end" variant="neutral">
+        <Tag data-color="neutral" size="small" className="w-max justify-self-end" variant="outline">
             {text}
         </Tag>
     );

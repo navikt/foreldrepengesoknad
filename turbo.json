@@ -20,7 +20,8 @@
         "lint:tsc": {},
         "lint:fix": {},
         "build-storybook": {
-            "dependsOn": ["build"]
+            "dependsOn": ["build"],
+            "outputs": [".storybook-static-build/**"]
         },
         "prettier": {
             "dependsOn": ["build"]

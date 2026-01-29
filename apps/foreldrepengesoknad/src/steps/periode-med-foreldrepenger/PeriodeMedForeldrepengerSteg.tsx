@@ -53,14 +53,14 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
                 {tilgjengeligeStønadskontoerQuery.data && (
                     <>
                         {vis1Juli2024Info && (
-                            <Box.New padding="4" background="brand-blue-moderate" style={{ marginBottom: '2rem' }}>
+                            <Box padding="space-16" background="brand-blue-moderate" style={{ marginBottom: '2rem' }}>
                                 <HStack justify="space-between" align="start">
                                     <InfoOmUtvidet80ProsentPeriode />
                                     <IconCircleWrapper color="lightBlue" size="medium">
                                         <CalendarIcon height={24} width={24} />
                                     </IconCircleWrapper>
                                 </HStack>
-                            </Box.New>
+                            </Box>
                         )}
                         {visAnnenPartsValg && isAnnenForelderOppgitt(annenForelder) && (
                             <DekningsgradValgtAvAnnenPartPanel

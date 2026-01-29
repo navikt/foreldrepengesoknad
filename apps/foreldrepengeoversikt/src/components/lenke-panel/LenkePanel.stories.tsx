@@ -23,7 +23,7 @@ const meta = {
                         undertittel="Undertittel"
                         Ikon={StrollerIcon}
                         tag={
-                            <Tag size="small" variant="warning">
+                            <Tag data-color="warning" size="small" variant="outline">
                                 Ekstra tag info
                             </Tag>
                         }
@@ -45,7 +45,7 @@ const meta = {
                         undertittel="Undertittel"
                         Ikon={StrollerIcon}
                         tag={
-                            <Tag size="small" variant="warning">
+                            <Tag data-color="warning" size="small" variant="outline">
                                 Ekstra tag info
                             </Tag>
                         }
@@ -56,7 +56,7 @@ const meta = {
                         undertittel="Undertittel"
                         Ikon={StrollerIcon}
                         tag={
-                            <Tag size="small" variant="warning">
+                            <Tag data-color="warning" size="small" variant="outline">
                                 Ekstra tag info
                             </Tag>
                         }

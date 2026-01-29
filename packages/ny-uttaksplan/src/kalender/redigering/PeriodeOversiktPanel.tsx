@@ -27,7 +27,8 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
         foreldreInfo: { søker },
     } = useUttaksplanData();
 
-    const { sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, setValgtePerioder } = useKalenderRedigeringContext();
+    const { sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, setValgtePerioder, setEndredePerioder } =
+        useKalenderRedigeringContext();
 
     const erDesktop = useErDesktop();
 
@@ -49,6 +50,7 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
         );
 
         setValgtePerioder([]);
+        setEndredePerioder(sammenslåtteValgtePerioder);
     };
 
     return (
@@ -57,7 +59,7 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
             className={!erMinimert ? 'max-h-[calc(100vh-100px)] overflow-y-auto md:max-h-full' : undefined}
         >
             <Show above="md">
-                <Box.New background="accent-soft" padding="2" style={{ cursor: 'pointer' }}>
+                <Box background="accent-soft" padding="space-8" style={{ cursor: 'pointer' }}>
                     <VStack gap="space-8">
                         <HStack gap="space-8" align="center" wrap={false}>
                             <PencilIcon
@@ -84,11 +86,10 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
                             </RødRamme>
                         </HStack>
                     </VStack>
-                </Box.New>
+                </Box>
             </Show>
-
             <Show below="md">
-                <Box.New
+                <Box
                     padding="space-12"
                     onClick={() => setErMinimert(!erMinimert)}
                     className="bg-ax-bg-accent-soft hover:bg-ax-bg-accent-moderate cursor-pointer"
@@ -132,9 +133,8 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
                             </RødRamme>
                         )}
                     </VStack>
-                </Box.New>
+                </Box>
             </Show>
-
             {!erMinimert && (
                 <div className="block px-4 pb-4">
                     <VStack gap="space-12">

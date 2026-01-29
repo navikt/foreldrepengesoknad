@@ -4,7 +4,19 @@ import dayjs from 'dayjs';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Link as LinkInternal } from 'react-router-dom';
 
-import { Accordion, BodyLong, BodyShort, Button, Detail, HStack, Heading, Link, List, VStack } from '@navikt/ds-react';
+import {
+    Accordion,
+    BodyLong,
+    BodyShort,
+    Box,
+    Button,
+    Detail,
+    HStack,
+    Heading,
+    Link,
+    List,
+    VStack,
+} from '@navikt/ds-react';
 
 import { Skjemanummer, links } from '@navikt/fp-constants';
 import { Bankkonto_fpoversikt, TidslinjeHendelseDto_fpoversikt, Ytelse } from '@navikt/fp-types';
@@ -80,13 +92,20 @@ export const BekreftelseSendtSøknad = ({
                                 <BodyLong>
                                     <FormattedMessage id="BekreftelseSendtSøknad.ManglendeDokumentasjonDetaljer" />
                                 </BodyLong>
-                                <List description={intl.formatMessage({ id: 'BekreftelseSendtSøknad.DokSomMangler' })}>
-                                    {manglendeVedlegg.map((skjemanummer) => (
-                                        <List.Item key={skjemanummer}>
-                                            <FormattedMessage id={`ettersendelse.${skjemanummer}`} />
-                                        </List.Item>
-                                    ))}
-                                </List>
+                                <div>
+                                    <BodyShort>
+                                        <FormattedMessage id="BekreftelseSendtSøknad.DokSomMangler" />
+                                    </BodyShort>
+                                    <Box marginBlock="space-16" asChild>
+                                        <List>
+                                            {manglendeVedlegg.map((skjemanummer) => (
+                                                <List.Item key={skjemanummer}>
+                                                    <FormattedMessage id={`ettersendelse.${skjemanummer}`} />
+                                                </List.Item>
+                                            ))}
+                                        </List>
+                                    </Box>
+                                </div>
                                 {saksnummer && (
                                     <LinkInternal to={`/sak/${saksnummer}/${OversiktRoutes.ETTERSEND}`}>
                                         <Button variant="secondary" size="small">

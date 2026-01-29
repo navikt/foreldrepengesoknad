@@ -15,6 +15,7 @@ type Props = {
     valgtePerioder: CalendarPeriod[];
     labels: React.ReactNode;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
+    setEndredePerioder: React.Dispatch<React.SetStateAction<Array<{ fom: string; tom: string }>>>;
     scrollToKvoteOppsummering: () => void;
 };
 
@@ -22,9 +23,14 @@ export const RedigerKalenderIndex = ({
     valgtePerioder,
     labels,
     setValgtePerioder,
+    setEndredePerioder,
     scrollToKvoteOppsummering,
 }: Props) => (
-    <KalenderRedigeringProvider valgtePerioder={valgtePerioder} setValgtePerioder={setValgtePerioder}>
+    <KalenderRedigeringProvider
+        valgtePerioder={valgtePerioder}
+        setValgtePerioder={setValgtePerioder}
+        setEndredePerioder={setEndredePerioder}
+    >
         <RedigerKalender scrollToKvoteOppsummering={scrollToKvoteOppsummering} labels={labels} />
     </KalenderRedigeringProvider>
 );
@@ -55,7 +61,7 @@ const RedigerKalender = ({
         harEnValgtPeriodeIKunEnEksisterendePeriode(uttakPerioderInkludertTapteDager, sammenslåtteValgtePerioder[0]!);
 
     return (
-        <Box.New
+        <Box
             borderWidth="1"
             borderRadius="4"
             borderColor="neutral-subtle"
@@ -84,6 +90,6 @@ const RedigerKalender = ({
                     )}
                 </>
             )}
-        </Box.New>
+        </Box>
     );
 };

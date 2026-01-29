@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 
-import { BodyLong, BodyShort, Dialog, HStack, Link, List, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Box, Dialog, HStack, Link, List, VStack } from '@navikt/ds-react';
 
 export const DinePersonopplysningerModal = () => {
     return (
@@ -44,28 +44,30 @@ export const DinePersonopplysningerModal = () => {
                                 <BodyShort>
                                     <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.del1" />
                                 </BodyShort>
-                                <List>
-                                    <List.Item>
-                                        <BodyShort>
-                                            <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt1" />
-                                        </BodyShort>
-                                    </List.Item>
-                                    <List.Item>
-                                        <BodyShort>
-                                            <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt2" />
-                                        </BodyShort>
-                                    </List.Item>
-                                    <List.Item>
-                                        <BodyShort>
-                                            <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt3" />
-                                        </BodyShort>
-                                    </List.Item>
-                                    <List.Item>
-                                        <BodyShort>
-                                            <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt4" />
-                                        </BodyShort>
-                                    </List.Item>
-                                </List>
+                                <Box marginBlock="space-16" asChild>
+                                    <List>
+                                        <List.Item>
+                                            <BodyShort>
+                                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt1" />
+                                            </BodyShort>
+                                        </List.Item>
+                                        <List.Item>
+                                            <BodyShort>
+                                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt2" />
+                                            </BodyShort>
+                                        </List.Item>
+                                        <List.Item>
+                                            <BodyShort>
+                                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt3" />
+                                            </BodyShort>
+                                        </List.Item>
+                                        <List.Item>
+                                            <BodyShort>
+                                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.punkt4" />
+                                            </BodyShort>
+                                        </List.Item>
+                                    </List>
+                                </Box>
                                 <BodyShort>
                                     <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.innhenting.del2" />
                                 </BodyShort>
@@ -77,33 +79,35 @@ export const DinePersonopplysningerModal = () => {
                                 <BodyShort>
                                     <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.del1" />
                                 </BodyShort>
-                                <List>
-                                    <List.Item>
-                                        <BodyShort>
-                                            <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt1" />
-                                        </BodyShort>
-                                    </List.Item>
-                                    <List.Item>
-                                        <BodyShort>
-                                            <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt2" />
-                                        </BodyShort>
-                                    </List.Item>
-                                    <List.Item>
-                                        <BodyShort>
-                                            <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt3" />
-                                        </BodyShort>
-                                    </List.Item>
-                                    <List.Item>
-                                        <BodyShort>
-                                            <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt4" />
-                                        </BodyShort>
-                                    </List.Item>
-                                    <List.Item>
-                                        <BodyShort>
-                                            <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt5" />
-                                        </BodyShort>
-                                    </List.Item>
-                                </List>
+                                <Box marginBlock="space-16" asChild>
+                                    <List>
+                                        <List.Item>
+                                            <BodyShort>
+                                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt1" />
+                                            </BodyShort>
+                                        </List.Item>
+                                        <List.Item>
+                                            <BodyShort>
+                                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt2" />
+                                            </BodyShort>
+                                        </List.Item>
+                                        <List.Item>
+                                            <BodyShort>
+                                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt3" />
+                                            </BodyShort>
+                                        </List.Item>
+                                        <List.Item>
+                                            <BodyShort>
+                                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt4" />
+                                            </BodyShort>
+                                        </List.Item>
+                                        <List.Item>
+                                            <BodyShort>
+                                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.punkt5" />
+                                            </BodyShort>
+                                        </List.Item>
+                                    </List>
+                                </Box>
                             </div>
                             <div>
                                 <BodyLong size="large">
@@ -112,23 +116,25 @@ export const DinePersonopplysningerModal = () => {
                                 <BodyShort>
                                     <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.del1" />
                                 </BodyShort>
-                                <List>
-                                    <List.Item>
-                                        <BodyShort>
-                                            <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt1" />
-                                        </BodyShort>
-                                    </List.Item>
-                                    <List.Item>
-                                        <BodyShort>
-                                            <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt2" />
-                                        </BodyShort>
-                                    </List.Item>
-                                    <List.Item>
-                                        <BodyShort>
-                                            <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt3" />
-                                        </BodyShort>
-                                    </List.Item>
-                                </List>
+                                <Box marginBlock="space-16" asChild>
+                                    <List>
+                                        <List.Item>
+                                            <BodyShort>
+                                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt1" />
+                                            </BodyShort>
+                                        </List.Item>
+                                        <List.Item>
+                                            <BodyShort>
+                                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt2" />
+                                            </BodyShort>
+                                        </List.Item>
+                                        <List.Item>
+                                            <BodyShort>
+                                                <FormattedMessage id="velkommen.dinePersonopplysninger.avsnitt.svarPaSoknaden.punkt3" />
+                                            </BodyShort>
+                                        </List.Item>
+                                    </List>
+                                </Box>
                             </div>
                             <div>
                                 <BodyLong size="large">

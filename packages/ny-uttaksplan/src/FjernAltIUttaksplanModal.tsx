@@ -26,8 +26,9 @@ export const FjernAltIUttaksplanModal = () => {
                 </Dialog.Body>
                 <Dialog.Footer>
                     <Button
+                        data-color="danger"
                         type="button"
-                        variant="danger"
+                        variant="primary"
                         onClick={() => {
                             fjernAltIUttaksplan();
                             setVisFjernAltModal(false);

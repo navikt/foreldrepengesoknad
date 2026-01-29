@@ -1,4 +1,4 @@
-@keyframes slideUp {
+@keyframes fadeIn {
     from {
         opacity: 0.25;
     }
@@ -56,10 +56,13 @@
     border: 0;
 }
 
+.fadeIn {
+    animation: fadeIn 0.5s ease-in forwards;
+}
+
 .blueDay {
     background-color: var(--ax-accent-400) !important;
     print-color-adjust: exact;
-    animation: slideUp 0.5s ease-in forwards;
 }
 
 .darkblueDay {
@@ -72,7 +75,6 @@
     background-color: var(--ax-accent-300) !important;
     border: 2px solid var(--ax-accent-500);
     print-color-adjust: exact;
-    animation: slideUp 0.5s ease-in forwards;
 }
 
 .lightblueDay.firstDay {
@@ -92,7 +94,6 @@
     background-color: var(--ax-success-400) !important;
     border: 2px solid var(--ax-success-400);
     print-color-adjust: exact;
-    animation: slideUp 0.5s ease-in forwards;
 }
 
 .lightgreenDay.firstDay {
@@ -111,7 +112,6 @@
 .greenDay {
     background-color: var(--ax-success-400) !important;
     print-color-adjust: exact;
-    animation: slideUp 0.5s ease-in forwards;
 }
 
 .greenStripedDay {
@@ -133,7 +133,6 @@
     ) !important;
     border: 2px solid var(--ax-success-500);
     print-color-adjust: exact;
-    animation: slideUp 0.5s ease-in forwards;
 }
 
 .greenStripedDay.firstDay {
@@ -168,7 +167,6 @@
     ) !important;
     border: 2px solid var(--ax-accent-500);
     print-color-adjust: exact;
-    animation: slideUp 0.5s ease-in forwards;
 }
 
 .blueStripedDay.firstDay {
@@ -188,26 +186,22 @@
     background-color: var(--ax-neutral-100);
     print-color-adjust: exact;
     cursor: default;
-    animation: slideUp 0.5s ease-in forwards;
 }
 
 .blackDay {
     background-color: var(--ax-bg-neutral-strong) !important;
     color: var(--ax-bg-default);
     print-color-adjust: exact;
-    animation: slideUp 0.5s ease-in forwards;
 }
 
 .blackOutlineDay {
     border: 2px solid var(--ax-bg-neutral-strong);
     print-color-adjust: exact;
-    animation: slideUp 0.5s ease-in forwards;
 }
 
 .blueOutlineDay {
     border: 2px solid var(--ax-accent-500);
     print-color-adjust: exact;
-    animation: slideUp 0.5s ease-in forwards;
 }
 
 .blueOutlineDay.firstDay {
@@ -226,7 +220,6 @@
 .greenOutlineDay {
     border: 2px solid var(--ax-success-400);
     print-color-adjust: exact;
-    animation: slideUp 0.5s ease-in forwards;
 }
 
 .greenOutlineDay.firstDay {
@@ -253,7 +246,6 @@
     ) !important;
     border: 2px solid var(--ax-accent-400);
     print-color-adjust: exact;
-    animation: slideUp 0.5s ease-in forwards;
 }
 
 .lightgreenBlueDay.firstDay {
@@ -279,7 +271,6 @@
     ) !important;
     border: 2px solid var(--ax-success-400);
     print-color-adjust: exact;
-    animation: slideUp 0.5s ease-in forwards;
 }
 
 .lightblueGreenDay.firstDay {

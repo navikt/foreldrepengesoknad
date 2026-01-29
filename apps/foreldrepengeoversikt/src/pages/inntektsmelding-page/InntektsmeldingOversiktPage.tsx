@@ -36,7 +36,7 @@ export const InntektsmeldingOversiktPage = () => {
                         undertittel={`Sendt ${formaterDatoUtenDag(im.mottattTidspunkt)}`}
                         tag={
                             im.stillingsprosent ? (
-                                <Tag size="small" variant="success">
+                                <Tag data-color="success" size="small" variant="outline">
                                     {im.stillingsprosent}% stilling
                                 </Tag>
                             ) : null

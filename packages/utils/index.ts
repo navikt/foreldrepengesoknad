@@ -82,7 +82,7 @@ export {
 } from './src/dateUtils';
 
 export * from './src/uttak/Uttaksdagen';
-export * from './src/uttak/UttaksdagenString';
+export { UttaksdagenString } from './src/uttak/UttaksdagenString';
 export * from './src/uttak/Tidsperioden';
 export * from './src/uttak/TidsperiodenString';
 export * from './src/uttak/uttakUtils';
