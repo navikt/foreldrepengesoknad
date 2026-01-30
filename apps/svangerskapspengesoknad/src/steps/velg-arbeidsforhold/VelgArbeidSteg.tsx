@@ -84,6 +84,7 @@ export const VelgArbeidSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arb
                             control={formMethods.control}
                             label={intl.formatMessage({ id: 'velgArbeid.hvor' })}
                             validate={[
+                                // @ts-expect-error Funkar denne?
                                 isRequired(intl.formatMessage({ id: 'valideringsfeil.tilrettelegging.påkrevd' })),
                             ]}
                         >
