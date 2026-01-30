@@ -224,7 +224,10 @@ describe('<OppsummeringSteg>', () => {
     });
 
     it('skal vise Skyra-undersøkelse for norsk bokmål', async () => {
-        render(<FlereForsørgereHundreProsentTermin />);
+        const StoryWithNorsk = composeStory({ ...stories.FlereForsørgereHundreProsentTermin }, stories.default, {
+            globals: { locale: 'nb' },
+        });
+        render(<StoryWithNorsk />);
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
         // Sjekk at surveyen rendres med norsk tittel
