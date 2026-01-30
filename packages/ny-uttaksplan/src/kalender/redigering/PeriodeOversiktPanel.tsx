@@ -56,7 +56,7 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
     return (
         <VStack
             gap="space-16"
-            className={!erMinimert ? 'max-h-[calc(100vh-100px)] overflow-y-auto md:max-h-full' : undefined}
+            className={erMinimert ? undefined : 'max-h-[calc(100vh-100px)] overflow-y-auto md:max-h-full'}
         >
             <Show above="md">
                 <Box background="accent-soft" padding="space-8" style={{ cursor: 'pointer' }}>

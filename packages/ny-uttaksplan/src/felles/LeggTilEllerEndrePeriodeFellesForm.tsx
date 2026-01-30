@@ -47,7 +47,7 @@ export type LeggTilEllerEndrePeriodeFormFormValues = {
 
 interface Props {
     valgtePerioder: Array<{ fom: string; tom: string }>;
-    resetFormValuesVedEndringAvForelder: (forelder: string | number | boolean) => void;
+    resetFormValuesVedEndringAvForelder: (forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => void;
 }
 
 export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAvForelder, valgtePerioder }: Props) => {
