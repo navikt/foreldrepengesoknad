@@ -225,7 +225,7 @@ describe('<OppsummeringSteg>', () => {
 
     it('skal vise Skyra-undersøkelse for norsk bokmål', async () => {
         const StoryWithNorsk = composeStory({ ...stories.FlereForsørgereHundreProsentTermin }, stories.default, {
-            globals: { locale: 'nb' },
+            initialGlobals: { locale: 'nb' },
         });
         render(<StoryWithNorsk />);
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
@@ -236,7 +236,7 @@ describe('<OppsummeringSteg>', () => {
 
     it('skal vise Skyra-undersøkelse for nynorsk', async () => {
         const StoryWithNynorsk = composeStory({ ...stories.FlereForsørgereHundreProsentTermin }, stories.default, {
-            globals: { locale: 'nn' },
+            initialGlobals: { locale: 'nn' },
         });
         render(<StoryWithNynorsk />);
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
@@ -247,10 +247,10 @@ describe('<OppsummeringSteg>', () => {
 
     it('skal ikke vise Skyra-undersøkelse for engelsk', async () => {
         const StoryWithEnglish = composeStory({ ...stories.FlereForsørgereHundreProsentTermin }, stories.default, {
-            globals: { locale: 'en' },
+            initialGlobals: { locale: 'en' },
         });
         render(<StoryWithEnglish />);
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText('Summary')).toHaveLength(2);
 
         // Sjekk at surveyen ikke rendres (ingen norsk/nynorsk tittel)
         expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();

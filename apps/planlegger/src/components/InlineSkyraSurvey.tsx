@@ -28,7 +28,7 @@ export const InlineSkyraSurvey = () => {
 
         if (!containerRef.current) return;
 
-        const surveyElement = containerRef.current.querySelector('skyra-survey') as HTMLElement | null;
+        const surveyElement = containerRef.current.querySelector('skyra-survey');
         if (!surveyElement) return;
 
         let hasLoadedOnce = false;
@@ -51,7 +51,7 @@ export const InlineSkyraSurvey = () => {
             }
 
             if (hasLoadedOnce && (!hasContent || isHidden)) {
-                setIsSurveyEmpty(true);
+                setHasCompletedSurvey(true);
                 setIsOpen(false);
                 sessionStorage.setItem(SURVEY_COMPLETED_KEY, 'true');
                 if (observer) {
