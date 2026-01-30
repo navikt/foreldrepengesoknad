@@ -65,8 +65,8 @@ export const InlineSkyraSurvey = () => {
         const timeout = setTimeout(() => {
             if (!hasLoadedOnce) {
                 setHasFailed(true);
+                clearInterval(intervalId);
             }
-            clearInterval(intervalId);
         }, 30000);
 
         return () => {
