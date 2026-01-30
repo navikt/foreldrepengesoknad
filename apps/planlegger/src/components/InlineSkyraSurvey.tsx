@@ -28,49 +28,74 @@ export const InlineSkyraSurvey = () => {
 
         if (!containerRef.current) return;
 
-        const surveyElement = containerRef.current.querySelector('skyra-survey');
+        const surveyElement = containerRef.current.querySelector('skyra-survey') as HTMLElement | null;
         if (!surveyElement) return;
 
         let hasLoadedOnce = false;
+        let observer: MutationObserver | null = null;
 
-        // Sjekk med intervall om surveyen har fått innhold eller er lukket
-        const intervalId = setInterval(() => {
+        const checkSurveyState = () => {
             const hasContent =
-                surveyElement.shadowRoot?.childNodes.length ||
+                (surveyElement.shadowRoot?.childNodes.length ?? 0) > 0 ||
                 surveyElement.children.length > 0 ||
                 surveyElement.childNodes.length > 0;
 
-            // Sjekk om surveyen er skjult (display: none) eller har blitt fjernet
             const isHidden =
                 globalThis.getComputedStyle(surveyElement).display === 'none' ||
                 surveyElement.getAttribute('hidden') !== null ||
-                (surveyElement as HTMLElement).style.display === 'none';
+                surveyElement.style.display === 'none';
 
             if (hasContent && !hasLoadedOnce) {
                 setIsLoaded(true);
                 hasLoadedOnce = true;
             }
 
-            // Hvis surveyen har lastet men nå er tom eller skjult, er undersøkelsen over
             if (hasLoadedOnce && (!hasContent || isHidden)) {
-                setHasCompletedSurvey(true);
+                setIsSurveyEmpty(true);
                 setIsOpen(false);
                 sessionStorage.setItem(SURVEY_COMPLETED_KEY, 'true');
-                clearInterval(intervalId);
+                if (observer) {
+                    observer.disconnect();
+                }
                 clearTimeout(timeout);
             }
-        }, 100);
+        };
+
+        observer = new MutationObserver(() => {
+            checkSurveyState();
+        });
+
+        observer.observe(surveyElement, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['hidden', 'style', 'class'],
+        });
+
+        if (surveyElement.shadowRoot) {
+            observer.observe(surveyElement.shadowRoot, {
+                childList: true,
+                subtree: true,
+            });
+        }
+
+        // Initial sjekk i tilfelle surveyen allerede er lastet
+        checkSurveyState();
 
         // Timeout på 30 sekunder - hvis ikke lastet, skjul komponenten
         const timeout = setTimeout(() => {
             if (!hasLoadedOnce) {
                 setHasFailed(true);
-                clearInterval(intervalId);
+            }
+            if (observer) {
+                observer.disconnect();
             }
         }, 30000);
 
         return () => {
-            clearInterval(intervalId);
+            if (observer) {
+                observer.disconnect();
+            }
             clearTimeout(timeout);
         };
     }, []);
