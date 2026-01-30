@@ -1,17 +1,19 @@
 import { ComponentProps, useEffect } from 'react';
-import { FieldValues, useFormContext } from 'react-hook-form';
+import { FieldPath, FieldValues, useFormContext } from 'react-hook-form';
 import { formatError } from 'utils/customErrorFormatter';
 
 import { RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { BluePanel } from '@navikt/fp-ui';
 
-type Props<T extends FieldValues> = {
+type Props<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>> = {
     shouldFadeIn?: boolean;
     shouldAutofocus?: boolean;
-} & ComponentProps<typeof RhfRadioGroup<T>>;
+} & ComponentProps<typeof RhfRadioGroup<TFieldValues, TName>>;
 
-export const BlueRadioGroup = <T extends FieldValues>(props: Props<T>) => {
-    const formMethods = useFormContext<T>();
+export const BlueRadioGroup = <TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>>(
+    props: Props<TFieldValues, TName>,
+) => {
+    const formMethods = useFormContext<TFieldValues>();
 
     const value = formMethods.watch(props.name);
 
