@@ -90,7 +90,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
-    const resetFieldsAndScroll = (fieldName: string) => (newFieldValue: string | number | boolean) => {
+    const resetFieldsAndScroll = (fieldName: string) => (newFieldValue: Situasjon | boolean) => {
         resetFields(formMethods, fieldName, newFieldValue);
         scrollToBottom();
     };
