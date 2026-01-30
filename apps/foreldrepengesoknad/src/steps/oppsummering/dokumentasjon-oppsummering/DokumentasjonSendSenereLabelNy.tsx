@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Box, Label, List, VStack } from '@navikt/ds-react';
 
-import { Periodetype, Skjemanummer } from '@navikt/fp-constants';
+import { Skjemanummer } from '@navikt/fp-constants';
 import {
     Attachment,
     AttachmentMetadataTidsperiode,
@@ -45,13 +45,14 @@ const isPeriodeMedMorInnleggelse = (periode: UttakPeriode_fpoversikt | UttakPeri
         return true;
     }
 
-    if (periode.type === Periodetype.Uttak && periode.erMorForSyk === true && periode.kontoType === 'FEDREKVOTE') {
+    // FIXME (TOR) Her må me legga til meir info i form rundt morsaktivitet
+    if (erUttaksperiode(periode) && periode.morsAktivitet === 'INNLAGT' && periode.kontoType === 'FEDREKVOTE') {
         return true;
     }
 
     if (
         (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER') &&
-        periode.morsAktivitetIPerioden === 'INNLAGT'
+        periode.morsAktivitet === 'INNLAGT'
     ) {
         return true;
     }
@@ -61,6 +62,10 @@ const isPeriodeMedMorInnleggelse = (periode: UttakPeriode_fpoversikt | UttakPeri
     }
 
     return false;
+};
+
+const erUttaksperiode = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt): boolean => {
+    return !('trekkdager' in periode) && !periode.oppholdÅrsak && !periode.overføringÅrsak && !periode.utsettelseÅrsak;
 };
 
 interface Props {
@@ -81,7 +86,13 @@ export const DokumentasjonSendSenereLabelNy = ({
     const morErForSykEllerInnlagtFørsteSeksUker = uttaksperioderSomManglerVedlegg
         .filter(isPeriodeMedMorInnleggelse)
         .some((p) => {
-            if (p.type === Periodetype.Uttak && p.erMorForSyk === true && p.konto === 'FEDREKVOTE') {
+            if (
+                erUttaksperiode(p) &&
+                'morsAktivitet' in p &&
+                // TODO (TOR)
+                p.morsAktivitet === 'INNLAGT' &&
+                p.kontoType === 'FEDREKVOTE'
+            ) {
                 return true;
             }
 
