@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
-import { Arbeidsforholdstype, Stilling, Tilretteleggingstype } from 'types/Tilrettelegging';
+import { Arbeidsforholdstype, Stilling, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 import { getTotalStillingsprosentPåSkjæringstidspunktet } from 'utils/arbeidsforholdUtils';
 import { getFloatFromString } from 'utils/numberUtils';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, getSlutteTekst, hasValue } from 'utils/validationUtils';
@@ -248,7 +248,7 @@ export const validateBehovForTilretteleggingFom =
 
 export const validerTilretteleggingTomType =
     (intl: IntlShape, tilretteleggingType: Tilretteleggingstype, kanHaSVPFremTilTreUkerFørTermin: boolean) =>
-    (value: string | number | boolean): string | undefined => {
+    (value: TilOgMedDatoType | undefined): string | undefined => {
         const erDelvis = tilretteleggingType === 'delvis';
         if (!hasValue(value)) {
             if (erDelvis) {

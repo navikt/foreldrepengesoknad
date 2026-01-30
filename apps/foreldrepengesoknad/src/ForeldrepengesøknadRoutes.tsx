@@ -23,7 +23,9 @@ import { SøkersituasjonSteg } from 'steps/søkersituasjon/SøkersituasjonSteg';
 import { SenereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
 import { TidligereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
 import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSteg';
+import { UttaksplanStegNy } from 'steps/uttaksplan-ny/UttaksplanStegNy';
 import { UttaksplanStep } from 'steps/uttaksplan/UttaksplanStep';
+import { isLocalhost } from 'utils/tempSystemUtils';
 
 import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
@@ -49,17 +51,31 @@ const renderSøknadRoutes = (
     if (erEndringssøknad) {
         return (
             <>
-                <Route
-                    path={SøknadRoutes.UTTAKSPLAN}
-                    element={
-                        <UttaksplanStep
-                            søkerInfo={søkerInfo}
-                            erEndringssøknad={erEndringssøknad}
-                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                            avbrytSøknad={avbrytSøknad}
-                        />
-                    }
-                />
+                {isLocalhost() && (
+                    <Route
+                        path={SøknadRoutes.UTTAKSPLAN}
+                        element={
+                            <UttaksplanStegNy
+                                søkerInfo={søkerInfo}
+                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                avbrytSøknad={avbrytSøknad}
+                            />
+                        }
+                    />
+                )}
+                {!isLocalhost() && (
+                    <Route
+                        path={SøknadRoutes.UTTAKSPLAN}
+                        element={
+                            <UttaksplanStep
+                                søkerInfo={søkerInfo}
+                                erEndringssøknad={erEndringssøknad}
+                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                avbrytSøknad={avbrytSøknad}
+                            />
+                        }
+                    />
+                )}
                 <Route
                     path={SøknadRoutes.DOKUMENTASJON}
                     element={
@@ -143,17 +159,31 @@ const renderSøknadRoutes = (
                     />
                 }
             />
-            <Route
-                path={SøknadRoutes.UTTAKSPLAN}
-                element={
-                    <UttaksplanStep
-                        søkerInfo={søkerInfo}
-                        erEndringssøknad={erEndringssøknad}
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                        avbrytSøknad={avbrytSøknad}
-                    />
-                }
-            />
+            {isLocalhost() && (
+                <Route
+                    path={SøknadRoutes.UTTAKSPLAN}
+                    element={
+                        <UttaksplanStegNy
+                            søkerInfo={søkerInfo}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            avbrytSøknad={avbrytSøknad}
+                        />
+                    }
+                />
+            )}
+            {!isLocalhost() && (
+                <Route
+                    path={SøknadRoutes.UTTAKSPLAN}
+                    element={
+                        <UttaksplanStep
+                            søkerInfo={søkerInfo}
+                            erEndringssøknad={erEndringssøknad}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            avbrytSøknad={avbrytSøknad}
+                        />
+                    }
+                />
+            )}
             <Route
                 path={SøknadRoutes.DOKUMENTASJON}
                 element={

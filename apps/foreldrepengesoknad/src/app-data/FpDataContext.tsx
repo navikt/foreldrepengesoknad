@@ -14,10 +14,13 @@ import {
     SøkersituasjonFp,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 
 export enum ContextDataType {
     APP_ROUTE = 'APP_ROUTE',
+    VALGT_EKSISTERENDE_SAKSNR = 'VALGT_EKSISTERENDE_SAKSNR',
     EKSISTERENDE_SAK = 'EKSISTERENDE_SAK',
     BARN_FRA_NESTE_SAK = 'BARN_FRA_NESTE_SAK',
     SØKERSITUASJON = 'SØKERSITUASJON',
@@ -33,12 +36,14 @@ export enum ContextDataType {
     PERIODE_MED_FORELDREPENGER = 'PERIODE_MED_FORELDREPENGER',
     FORDELING = 'FORDELING',
     UTTAKSPLAN = 'UTTAKSPLAN',
+    UTTAKSPLAN_NY = 'UTTAKSPLAN_NY',
     UTTAKSPLAN_METADATA = 'UTTAKSPLAN_METADATA',
     VEDLEGG = 'VEDLEGG',
 }
 
 export type ContextDataMap = {
     [ContextDataType.APP_ROUTE]?: SøknadRoutes;
+    [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]?: string;
     [ContextDataType.EKSISTERENDE_SAK]?: EksisterendeSak;
     [ContextDataType.BARN_FRA_NESTE_SAK]?: BarnFraNesteSak;
     [ContextDataType.SØKERSITUASJON]?: SøkersituasjonFp;
@@ -54,6 +59,7 @@ export type ContextDataMap = {
     [ContextDataType.PERIODE_MED_FORELDREPENGER]?: Dekningsgrad;
     [ContextDataType.FORDELING]?: Fordeling;
     [ContextDataType.UTTAKSPLAN]?: Periode[];
+    [ContextDataType.UTTAKSPLAN_NY]?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     [ContextDataType.UTTAKSPLAN_METADATA]?: UttaksplanMetaData;
     [ContextDataType.VEDLEGG]?: VedleggDataType;
 };

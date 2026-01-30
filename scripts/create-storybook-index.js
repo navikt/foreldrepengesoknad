@@ -5,7 +5,7 @@ const fs = require('node:fs');
 
 const generateRow = (packageJson) => `
   <div class="box">
-    <a href="${path.join(packageJson.name, 'index.html')}" class="package-row" target="blank">
+    <a href="${packageJson.name}" class="package-row" target="blank">
       <div class="title">
         ${packageJson.name}
       </div>
