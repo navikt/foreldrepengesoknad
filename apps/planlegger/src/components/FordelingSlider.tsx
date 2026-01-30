@@ -1,12 +1,14 @@
 import { PlusIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { UkerOgDager } from 'utils/stønadskontoerUtils';
-import { Uttaksdata } from 'utils/uttakUtils';
 
 import { BodyShort, Button, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { Slider } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
+import { periodFormat } from '@navikt/fp-utils/src/periodUtils';
+
+import { UkerOgDager } from '../utils/stønadskontoerUtils';
+import { Uttaksdata } from '../utils/uttakUtils';
 
 interface FordelingSliderProps {
     antallDagerSøker1: number | undefined;
@@ -39,30 +41,14 @@ export const FordelingSlider = ({
             {uttaksdata && (
                 <HStack width="full" justify="space-between" paddingBlock="space-0 space-16">
                     <BodyShort className="w-1/2 wrap-break-word">
-                        {intl.formatDate(uttaksdata.startdatoPeriode1, {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric',
-                        })}{' '}
-                        –<wbr />{' '}
-                        {intl.formatDate(uttaksdata.sluttdatoPeriode1, {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric',
+                        {periodFormat(uttaksdata.startdatoPeriode1, uttaksdata.sluttdatoPeriode1, intl, {
+                            separator: '–',
                         })}
                     </BodyShort>
                     {uttaksdata.startdatoPeriode2 && uttaksdata.sluttdatoPeriode2 && (
                         <BodyShort className="w-1/2 wrap-break-word text-right">
-                            {intl.formatDate(uttaksdata.startdatoPeriode2, {
-                                day: 'numeric',
-                                month: 'short',
-                                year: 'numeric',
-                            })}{' '}
-                            –<wbr />{' '}
-                            {intl.formatDate(uttaksdata.sluttdatoPeriode2, {
-                                day: 'numeric',
-                                month: 'short',
-                                year: 'numeric',
+                            {periodFormat(uttaksdata.startdatoPeriode2, uttaksdata.sluttdatoPeriode2, intl, {
+                                separator: '–',
                             })}
                         </BodyShort>
                     )}
