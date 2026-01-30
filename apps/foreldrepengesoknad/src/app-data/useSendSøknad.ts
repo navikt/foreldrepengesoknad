@@ -1,11 +1,17 @@
 import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
-import { FEIL_VED_INNSENDING, UKJENT_UUID, getSøknadsdataForInnsending } from 'api/apiUtils';
+import {
+    FEIL_VED_INNSENDING,
+    UKJENT_UUID,
+    getSøknadsdataForInnsending,
+    getSøknadsdataForInnsendingNy,
+} from 'api/apiUtils';
 import { API_URLS } from 'api/queries';
 import { SøknadRoutes } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
 import { useNavigate } from 'react-router-dom';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
+import { isLocalhost } from 'utils/tempSystemUtils';
 
 import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
@@ -26,17 +32,20 @@ export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt
         const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
         const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
 
-        const cleanedSøknad = getSøknadsdataForInnsending(
-            erEndringssøknad,
-            hentData,
-            uttaksplanMetadata.perioderSomSkalSendesInn!,
-            getFamiliehendelsedato(barn),
-            søkerinfo,
-            uttaksplanMetadata.endringstidspunkt,
-        );
+        const cleanedSøknad = isLocalhost()
+            ? getSøknadsdataForInnsendingNy(erEndringssøknad, hentData, søkerinfo)
+            : getSøknadsdataForInnsending(
+                  erEndringssøknad,
+                  hentData,
+                  uttaksplanMetadata.perioderSomSkalSendesInn!,
+                  getFamiliehendelsedato(barn),
+                  søkerinfo,
+                  uttaksplanMetadata.endringstidspunkt,
+              );
 
-        //TODO (TOR) Denne må håndterast i uttaksplan-steget
-        if (cleanedSøknad.uttaksplan.uttaksperioder.length === 0 && erEndringssøknad) {
+        //@ts-expect-error Denne blir fjerna når ein tek i bruk ny uttaksplan
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        if (!isLocalhost() && cleanedSøknad.uttaksplan.uttaksperioder.length === 0 && erEndringssøknad) {
             throw new Error('Søknaden din inneholder ingen nye perioder.');
         }
 

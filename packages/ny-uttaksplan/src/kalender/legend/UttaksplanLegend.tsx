@@ -29,7 +29,7 @@ import {
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
-const UNSELECTABLE_COLORS: readonly CalendarPeriodColor[] = ['PINK', 'PURPLE', 'BLACKOUTLINE', 'GRAY'];
+const UNSELECTABLE_COLORS = new Set<CalendarPeriodColor>(['PINK', 'PURPLE', 'BLACKOUTLINE', 'GRAY']);
 
 interface Props {
     perioderForKalendervisning: CalendarPeriod[];
@@ -248,7 +248,7 @@ const LabelButton = ({
 }) => {
     const [selectedLabel, setSelectedLabel] = useState<LegendLabel | undefined>(undefined);
 
-    const erKlikkbar = !!selectLegend && !UNSELECTABLE_COLORS.includes(info.calendarPeriod.color) && !readOnly;
+    const erKlikkbar = !!selectLegend && !UNSELECTABLE_COLORS.has(info.calendarPeriod.color) && !readOnly;
 
     return (
         <button
@@ -263,10 +263,10 @@ const LabelButton = ({
                     : undefined
             }
             className={
-                `rounded-sm ${getSelectableStyle(!UNSELECTABLE_COLORS.includes(info.calendarPeriod.color) && !readOnly)}` +
+                `rounded-sm ${getSelectableStyle(!UNSELECTABLE_COLORS.has(info.calendarPeriod.color) && !readOnly)}` +
                 ` ${getFocusStyle(info.calendarPeriod.color)} ${getSelectedStyle(selectedLabel === info.label, info.calendarPeriod.color)} `
             }
-            tabIndex={!UNSELECTABLE_COLORS.includes(info.calendarPeriod.color) && !readOnly ? 0 : -1}
+            tabIndex={!UNSELECTABLE_COLORS.has(info.calendarPeriod.color) && !readOnly ? 0 : -1}
             disabled={!erKlikkbar}
         >
             <CalendarLabel color={info.calendarPeriod.color}>

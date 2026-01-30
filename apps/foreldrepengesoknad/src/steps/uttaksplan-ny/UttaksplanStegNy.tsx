@@ -5,12 +5,12 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import dayjs from 'dayjs';
-import { useRef } from 'react';
+import { ComponentProps, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnr, getNavnPåForeldre } from 'utils/personUtils';
 
-import { Tabs } from '@navikt/ds-react';
+import { Alert, Tabs } from '@navikt/ds-react';
 
 import { isAnnenForelderOppgitt, isIkkeUtfyltTypeBarn } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
@@ -30,6 +30,7 @@ import {
     UttaksplanKalender,
     UttaksplanListe,
     UttaksplanRedigeringProvider,
+    useErAntallDagerOvertrukketIUttaksplan,
 } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -52,6 +53,8 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN_NY);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN_NY);
+
+    const [feilmelding, setFeilmelding] = useState<string | undefined>();
 
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
 
@@ -98,9 +101,18 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
 
     const uttaksplanForslag = useUttaksplanForslag(valgteStønadskontoer);
 
-    if (!valgteStønadskontoer || annenPartVedtakQuery.isPending) {
+    if (!valgteStønadskontoer || annenPartVedtakQuery.isLoading) {
         return null;
     }
+
+    const gåTilNesteSide = (erAntallDagerOvertrukket: boolean) => {
+        if (erAntallDagerOvertrukket) {
+            setFeilmelding(intl.formatMessage({ id: 'UttaksplanSteg.OvertrukketDager' }));
+            scrollToKvoteOppsummering();
+        } else {
+            return navigator.goToNextDefaultStep();
+        }
+    };
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
@@ -125,6 +137,7 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
                         uttaksplanForslag
                     }
                 >
+                    {feilmelding && <Alert variant="error">{feilmelding}</Alert>}
                     <div ref={kvoteOppsummeringRef}>
                         <KvoteOppsummering erInnsyn={false} visStatusIkoner />
                     </div>
@@ -171,15 +184,30 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
                             </Tabs.Panel>
                         </Tabs>
                     </UttaksplanRedigeringProvider>
+                    <UttaksplanStepButtons
+                        nextButtonOnClick={gåTilNesteSide}
+                        onFortsettSenere={navigator.fortsettSøknadSenere}
+                        onAvsluttOgSlett={avbrytSøknad}
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
+                    />
                 </UttaksplanDataProvider>
-                <StepButtons
-                    onFortsettSenere={navigator.fortsettSøknadSenere}
-                    onAvsluttOgSlett={avbrytSøknad}
-                    goToPreviousStep={navigator.goToPreviousDefaultStep}
-                />
             </Step>
         </SkjemaRotLayout>
     );
+};
+
+const UttaksplanStepButtons = (
+    props: Omit<ComponentProps<typeof StepButtons>, 'nextButtonOnClick'> & {
+        nextButtonOnClick: (erAntallDagerOvertrukket: boolean) => void;
+    },
+) => {
+    const erAntallDagerOvertrukket = useErAntallDagerOvertrukketIUttaksplan();
+
+    const handleNextClick = () => {
+        props.nextButtonOnClick(erAntallDagerOvertrukket);
+    };
+
+    return <StepButtons {...props} nextButtonOnClick={handleNextClick} />;
 };
 
 const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean): RettighetType_fpoversikt => {

@@ -33,9 +33,9 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
         <VStack
             gap="space-2"
             className={
-                !erMinimert
-                    ? 'bg-ax-bg-default fixed inset-0 z-50 overflow-y-auto md:static md:max-h-[calc(100vh-100px)] md:overflow-visible'
-                    : undefined
+                erMinimert
+                    ? undefined
+                    : 'bg-ax-bg-default fixed inset-0 z-50 overflow-y-auto md:static md:max-h-[calc(100vh-100px)] md:overflow-visible'
             }
         >
             <Show above="md">
