@@ -29,7 +29,9 @@ export const InlineSkyraSurvey = () => {
         if (!containerRef.current) return;
 
         const surveyElement = containerRef.current.querySelector('skyra-survey');
-        if (!surveyElement) return;
+        if (!(surveyElement instanceof HTMLElement)) {
+            return;
+        }
 
         let hasLoadedOnce = false;
         let observer: MutationObserver | null = null;
