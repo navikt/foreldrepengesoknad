@@ -14,7 +14,7 @@ export const InlineSkyraSurvey = () => {
     const intl = useIntl();
     const [isLoaded, setIsLoaded] = useState(false);
     const [hasFailed, setHasFailed] = useState(false);
-    const [isSurveyEmpty, setIsSurveyEmpty] = useState(() => {
+    const [hasCompletedSurvey, setHasCompletedSurvey] = useState(() => {
         return sessionStorage.getItem(SURVEY_COMPLETED_KEY) === 'true';
     });
     const [isOpen, setIsOpen] = useState(true);
@@ -53,7 +53,7 @@ export const InlineSkyraSurvey = () => {
 
             // Hvis surveyen har lastet men nå er tom eller skjult, er undersøkelsen over
             if (hasLoadedOnce && (!hasContent || isHidden)) {
-                setIsSurveyEmpty(true);
+                setHasCompletedSurvey(true);
                 setIsOpen(false);
                 sessionStorage.setItem(SURVEY_COMPLETED_KEY, 'true');
                 clearInterval(intervalId);
@@ -85,7 +85,7 @@ export const InlineSkyraSurvey = () => {
     }
 
     let surveyContent;
-    if (isSurveyEmpty) {
+    if (hasCompletedSurvey) {
         surveyContent = (
             <BodyShort>
                 <FormattedMessage id="InlineSkyraSurvey.Takk" />
@@ -128,7 +128,7 @@ export const InlineSkyraSurvey = () => {
             <ExpansionCard.Content>
                 <div ref={containerRef}>
                     {surveyContent}
-                    {!isSurveyEmpty && (
+                    {!hasCompletedSurvey && (
                         // @ts-expect-error skyra-survey er et custom element
                         <skyra-survey
                             style={{
