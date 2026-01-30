@@ -92,7 +92,6 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
                         <RhfCheckboxGroup
                             name="periodeIndexer"
                             control={formMethods.control}
-                            // @ts-expect-error Funkar dette?
                             validate={[isRequired(intl.formatMessage({ id: 'uttaksplan.velgperiode' }))]}
                             label={intl.formatMessage({ id: 'uttaksplan.perioder' })}
                         >
