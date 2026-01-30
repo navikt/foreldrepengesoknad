@@ -8,15 +8,24 @@ import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import './InlineSkyraSurvey.module.css';
 
+const SURVEY_COMPLETED_KEY = 'skyra-survey-planlegger-completed';
+
 export const InlineSkyraSurvey = () => {
     const intl = useIntl();
     const [isLoaded, setIsLoaded] = useState(false);
     const [hasFailed, setHasFailed] = useState(false);
-    const [isSurveyEmpty, setIsSurveyEmpty] = useState(false);
+    const [isSurveyEmpty, setIsSurveyEmpty] = useState(() => {
+        return sessionStorage.getItem(SURVEY_COMPLETED_KEY) === 'true';
+    });
     const [isOpen, setIsOpen] = useState(true);
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        // Hvis undersøkelsen allerede er fullført, ikke last den på nytt
+        if (sessionStorage.getItem(SURVEY_COMPLETED_KEY) === 'true') {
+            return;
+        }
+
         if (!containerRef.current) return;
 
         const surveyElement = containerRef.current.querySelector('skyra-survey');
@@ -46,6 +55,7 @@ export const InlineSkyraSurvey = () => {
             if (hasLoadedOnce && (!hasContent || isHidden)) {
                 setIsSurveyEmpty(true);
                 setIsOpen(false);
+                sessionStorage.setItem(SURVEY_COMPLETED_KEY, 'true');
                 clearInterval(intervalId);
                 clearTimeout(timeout);
             }
