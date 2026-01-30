@@ -1,13 +1,37 @@
+import { useQuery } from '@tanstack/react-query';
+import { sakerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getTermindato } from 'utils/barnUtils';
+import { erPeriodeIOpprinneligPlan } from 'utils/eksisterendeSakUtils';
+import { getErSøkerFarEllerMedmor, getNavnPåForeldre } from 'utils/personUtils';
 import { getStønadskontoNavn } from 'utils/stønadskontoerUtils';
 
 import { FormSummary } from '@navikt/ds-react';
 
-import { EksternArbeidsforholdDto_fpoversikt, KontoTypeUttak, NavnPåForeldre } from '@navikt/fp-types';
-import { capitalizeFirstLetter, formatDateMedUkedagShortMonth, getFamiliehendelsedato } from '@navikt/fp-utils';
+import { isAnnenForelderOppgitt, isSkalIkkeHaForeldrepengerFørFødselPeriode } from '@navikt/fp-common';
+import { Periodetype } from '@navikt/fp-constants';
+import {
+    EksternArbeidsforholdDto_fpoversikt,
+    KontoTypeUttak,
+    NavnPåForeldre,
+    Periode,
+    TidsperiodeDate,
+    Uttaksperiode,
+} from '@navikt/fp-types';
+import {
+    ISOStringToDate,
+    capitalizeFirstLetter,
+    formatDateMedUkedagShortMonth,
+    getFamiliehendelsedato,
+} from '@navikt/fp-utils';
+import {
+    finnesPeriodeIOpprinneligPlan,
+    getPeriodeTittel,
+    uttaksperiodeKanJusteresVedFødsel,
+} from '@navikt/fp-uttaksplan';
+import { isUttaksperiodeFarMedmorPgaFødsel } from '@navikt/fp-uttaksplan/src/utils/wlbUtils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { Overføringsperiodedetaljer } from './detaljer/Overføringsperiodedetaljer';
@@ -17,32 +41,33 @@ import { Utsettelsesperiodedetaljer } from './detaljer/Uttsettelsesperiodedetalj
 interface Props {
     navnPåForeldre: NavnPåForeldre;
     registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
-    ønskerJustertUttakVedFødsel: boolean | undefined;
 }
 
-export const UttaksplanOppsummeringslisteNy = ({
-    navnPåForeldre,
-    registrerteArbeidsforhold,
-    eksisterendeUttaksplan,
-    ønskerJustertUttakVedFødsel,
-}: Props) => {
+export const UttaksplanOppsummeringslisteNy = ({ navnPåForeldre, registrerteArbeidsforhold }: Props) => {
     const intl = useIntl();
 
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_NY));
+    const valgtEksisterendeSaksnr = notEmpty(useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR));
+    const { ønskerJustertUttakVedFødsel } = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA_NY));
 
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
 
-    const perioder = useContextGetData(ContextDataType.UTTAKSPLAN_NY);
+    const sakerQuery = useQuery({ ...sakerOptions(), enabled: !!valgtEksisterendeSaksnr });
+
+    const sak = sakerQuery.data?.foreldrepenger.find((s) => s.saksnummer === valgtEksisterendeSaksnr);
 
     const familiehendelsesdato = notEmpty(getFamiliehendelsedato(barn));
+
+    const erAnnenForelderOppgitt = isAnnenForelderOppgitt(annenForelder);
 
     const erAleneOmOmsorg = erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false;
 
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
 
     const getStønadskontoNavnFromKonto = (konto: KontoTypeUttak) => {
-        return getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
+        return getStønadskontoNavn(intl, konto, navnPåForeldre, søkerErFarEllerMedmor, erAleneOmOmsorg);
     };
 
     const getUttaksperiodeNavn = (periode: Uttaksperiode) => {
@@ -76,10 +101,8 @@ export const UttaksplanOppsummeringslisteNy = ({
             </FormSummary.Label>
             <FormSummary.Value>
                 <FormSummary.Answers>
-                    {perioder.map((periode) => {
-                        const periodeErNyEllerEndret = eksisterendeUttaksplan
-                            ? finnesPeriodeIOpprinneligPlan(periode, eksisterendeUttaksplan) === false
-                            : true;
+                    {uttaksplan.map((periode) => {
+                        const periodeErNyEllerEndret = sak ? erPeriodeIOpprinneligPlan(sak, periode) === false : true;
 
                         if (periode.type === Periodetype.Uttak) {
                             const tidsperiode = isSkalIkkeHaForeldrepengerFørFødselPeriode(periode)

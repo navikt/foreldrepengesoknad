@@ -32,6 +32,7 @@ import {
     PersonDto_fpoversikt,
     Person_fpoversikt,
     UttakOppholdÅrsak_fpoversikt,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { Tidsperioden } from '@navikt/fp-utils';
@@ -594,4 +595,56 @@ export const lagEndringsSøknad = (
         saksnummer: eksisterendeSak.saksnummer,
         ønskerJustertUttakVedFødsel: ønskerJustertUttakVedFødsel,
     };
+};
+
+export const erPeriodeIOpprinneligPlan = (
+    sak: FpSak_fpoversikt,
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+): boolean => {
+    const eksisterendePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> = [];
+    if (sak.gjeldendeVedtak?.perioder !== undefined) {
+        eksisterendePerioder.push(...sak.gjeldendeVedtak.perioder);
+    }
+    if (sak.gjeldendeVedtak?.perioderAnnenpartEøs !== undefined) {
+        eksisterendePerioder.push(...sak.gjeldendeVedtak.perioderAnnenpartEøs);
+    }
+
+    return eksisterendePerioder.some((p) => {
+        if ((erEøsPeriode(periode) && !erEøsPeriode(p)) || (!erEøsPeriode(periode) && erEøsPeriode(p))) {
+            return false;
+        }
+        if (erEøsPeriode(periode) && erEøsPeriode(p)) {
+            return (
+                periode.trekkdager === p.trekkdager &&
+                periode.fom === p.fom &&
+                periode.tom === p.tom &&
+                periode.kontoType === p.kontoType
+            );
+        }
+
+        if (erEøsPeriode(periode) || erEøsPeriode(p)) {
+            throw new Error('Ingen perioder bør vœre eøs-perioder her');
+        }
+
+        return (
+            periode.fom === p.fom &&
+            periode.tom === p.tom &&
+            periode.kontoType === p.kontoType &&
+            periode.flerbarnsdager === p.flerbarnsdager &&
+            periode.forelder === p.forelder &&
+            periode.gradering === p.gradering &&
+            periode.kontoType === p.kontoType &&
+            periode.utsettelseÅrsak === p.utsettelseÅrsak &&
+            periode.samtidigUttak === p.samtidigUttak &&
+            periode.resultat === p.resultat &&
+            periode.oppholdÅrsak === p.oppholdÅrsak &&
+            periode.overføringÅrsak === p.overføringÅrsak
+        );
+    });
+};
+
+const erEøsPeriode = (
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+): periode is UttakPeriodeAnnenpartEøs_fpoversikt => {
+    return 'trekkdager' in periode;
 };

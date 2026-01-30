@@ -1,6 +1,9 @@
+import { useQuery } from '@tanstack/react-query';
+import { useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getUkerOgDagerFromDager } from 'utils/dateUtils';
+import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 
 import { FormSummary } from '@navikt/ds-react';
 
@@ -25,7 +28,18 @@ export const UttaksplanOppsummeringNy = ({ navnPåForeldre, registrerteArbeidsfo
 
     const { antallBarn } = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
-    const antallUkerOgDagerIUttaksplan = getUkerOgDagerFromDager(antallUkerUttaksplan * 5);
+    const kontoerOptions = useStønadsKontoerOptions();
+    const tilgjengeligeStønadskontoerQuery = useQuery({
+        ...kontoerOptions,
+        select: (kontoer) => {
+            return kontoer[dekningsgrad];
+        },
+    });
+    const valgteStønadskontoer = tilgjengeligeStønadskontoerQuery.data;
+
+    const antallUkerIUttaksplan = getAntallUkerFraStønadskontoer(valgteStønadskontoer?.kontoer ?? []);
+
+    const antallUkerOgDagerIUttaksplan = getUkerOgDagerFromDager(antallUkerIUttaksplan * 5);
 
     let dekningsgradTekst = undefined;
 
