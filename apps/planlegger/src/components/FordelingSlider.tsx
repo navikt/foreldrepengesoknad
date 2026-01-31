@@ -1,7 +1,7 @@
 import { PlusIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Button, HStack, Heading, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Button, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { Slider } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
@@ -40,23 +40,27 @@ export const FordelingSlider = ({
 
             {uttaksdata && (
                 <HStack width="full" justify="space-between" paddingBlock="space-0 space-16">
-                    <BodyShort className="w-1/2 wrap-break-word">
-                        {periodFormat(uttaksdata.startdatoPeriode1, uttaksdata.sluttdatoPeriode1, intl, {
-                            separator: '–',
-                        })}
-                    </BodyShort>
-                    {uttaksdata.startdatoPeriode2 && uttaksdata.sluttdatoPeriode2 && (
-                        <BodyShort className="w-1/2 wrap-break-word text-right">
-                            {periodFormat(uttaksdata.startdatoPeriode2, uttaksdata.sluttdatoPeriode2, intl, {
+                    <Box style={{ width: '50%', wordWrap: 'break-word' }}>
+                        <BodyShort>
+                            {periodFormat(uttaksdata.startdatoPeriode1, uttaksdata.sluttdatoPeriode1, intl, {
                                 separator: '–',
                             })}
                         </BodyShort>
+                    </Box>
+                    {uttaksdata.startdatoPeriode2 && uttaksdata.sluttdatoPeriode2 && (
+                        <Box style={{ width: '50%', wordWrap: 'break-word', textAlign: 'right' }}>
+                            <BodyShort>
+                                {periodFormat(uttaksdata.startdatoPeriode2, uttaksdata.sluttdatoPeriode2, intl, {
+                                    separator: '–',
+                                })}
+                            </BodyShort>
+                        </Box>
                     )}
                 </HStack>
             )}
 
-            <div className="flex w-full items-center gap-4">
-                <VStack gap="space-2" align="start" className="shrink-0">
+            <HStack gap="space-4" align="center">
+                <VStack gap="space-2" align="start" style={{ flexShrink: 0 }}>
                     {antallDagerSøker1 !== undefined && (
                         <Heading size="small" level="4">
                             <FormattedMessage
@@ -86,7 +90,7 @@ export const FordelingSlider = ({
 
                 {/* Slideren er implementert omvendt: slider-verdien representerer antall dager til søker 2,
                     slik at det blir intuitivt at slideren beveger seg mot personen som får flere dager */}
-                <div className="min-w-0 flex-1">
+                <Box style={{ flexGrow: 1, minWidth: 0 }}>
                     <Slider
                         min={0}
                         max={totalDager}
@@ -119,9 +123,9 @@ export const FordelingSlider = ({
                             }
                         }}
                     />
-                </div>
+                </Box>
 
-                <VStack gap="space-2" align="end" className="shrink-0">
+                <VStack gap="space-2" align="end" style={{ flexShrink: 0 }}>
                     {antallDagerSøker1 !== undefined && (
                         <Heading size="small" level="4">
                             <FormattedMessage
@@ -150,7 +154,7 @@ export const FordelingSlider = ({
                         />
                     )}
                 </VStack>
-            </div>
+            </HStack>
         </VStack>
     );
 };
