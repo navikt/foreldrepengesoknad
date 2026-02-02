@@ -759,21 +759,14 @@ export type EttersendelseDto = {
 
 export type YtelseType = 'FORELDREPENGER' | 'SVANGERSKAPSPENGER' | 'ENGANGSSTØNAD';
 
-export type no_nav_foreldrepenger_soknad_innsending_StatusInnsendingTjeneste_ForsendelseStatus = {
+export type ForsendelseStatus = {
     saksnummer?: string;
-    status: no_nav_foreldrepenger_soknad_innsending_StatusInnsendingTjeneste_ForsendelseStatus_Status;
+    status: Status;
 };
 
-export type no_nav_foreldrepenger_soknad_innsending_StatusInnsendingTjeneste_ForsendelseStatus_Status =
-    | 'PENDING'
-    | 'MIDLERTIDIG'
-    | 'ENDELIG'
-    | 'FORSENDELSE_FINNES_IKKE';
+export type Status = 'PENDING' | 'MIDLERTIDIG' | 'ENDELIG' | 'FORSENDELSE_FINNES_IKKE';
 
-export type no_nav_foreldrepenger_soknad_mellomlagring_YtelseMellomlagringType =
-    | 'FORELDREPENGER'
-    | 'SVANGERSKAPSPENGER'
-    | 'ENGANGSSTONAD';
+export type YtelseMellomlagringType = 'FORELDREPENGER' | 'SVANGERSKAPSPENGER' | 'ENGANGSSTONAD';
 
 export type org_glassfish_jersey_media_multipart_FormDataContentDisposition = {
     creationDate?: string;
