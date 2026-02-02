@@ -52,7 +52,7 @@
     "FordelingsdetaljerPanel.Infoboks.HvisAdopsjonDel2": "Your leave might look like this, based on the distribution you choose:",
     "FordelingsdetaljerPanel.Infoboks.HvisBarnet": "This is calculated based on the child being born on {dato} and if you take continuous leave from three weeks before birth.",
     "FordelingsdetaljerPanel.Infoboks.HvisBarnetDel2": "Your leave might look like this, based on the distribution you choose:",
-    "FordelingsdetaljerPanel.Infoboks.Periode": "<b>{hvem}: {fom} – {tom}</b>",
+    "FordelingsdetaljerPanel.Infoboks.Periode": "{hvem}: {periode}",
     "FordelingsdetaljerPanel.InfoboksTittel": "Your period",
     "FordelingSteg.EkstraDagInfo.EnDag": "The extra day of shared parental leave will be automatically added to the plan. If you would like a different distribution, you can change this in the plan later.",
     "FordelingSteg.EkstraDagInfo.FlereDager": "The extra days of shared parental leave will be automatically added to the plan. If you would like a different distribution, you can change this in the plan later.",
