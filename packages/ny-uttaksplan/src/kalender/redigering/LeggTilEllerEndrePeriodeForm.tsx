@@ -67,8 +67,8 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         lukkRedigeringsmodus();
     };
 
-    const resetFormValuesVedEndringAvForelder = (value: string | number | boolean) => {
-        formMethods.reset({ forelder: value as BrukerRolleSak_fpoversikt });
+    const resetFormValuesVedEndringAvForelder = (forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {
+        formMethods.reset({ forelder });
     };
 
     return (

@@ -1,22 +1,30 @@
 import React, { ReactElement, ReactNode } from 'react';
-import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
+import {
+    FieldPath,
+    FieldPathValue,
+    FieldValues,
+    PathValue,
+    UseControllerProps,
+    useController,
+    useFormContext,
+} from 'react-hook-form';
 
 import { RadioGroup } from '@navikt/ds-react';
 
 import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
-type Props<T extends FieldValues> = {
+type Props<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>> = {
     description?: string | ReactNode;
     label?: string | ReactNode;
-    validate?: Array<(value: string | number | boolean) => ValidationReturnType>;
-    onChange?: (value: string | boolean | number) => void;
+    validate?: Array<(value: FieldPathValue<TFieldValues, TName>) => ValidationReturnType>;
+    onChange?: (value: FieldPathValue<TFieldValues, TName>) => void;
     children: ReactElement[];
     className?: string;
     customErrorFormatter?: (error: string | undefined) => ReactNode;
-    control: UseControllerProps<T>['control'];
-} & Omit<UseControllerProps<T>, 'control'>;
+    control: UseControllerProps<TFieldValues, TName>['control'];
+} & Omit<UseControllerProps<TFieldValues, TName>, 'control'>;
 
-export const RhfRadioGroup = <T extends FieldValues>({
+export const RhfRadioGroup = <TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>>({
     label,
     description,
     validate = [],
@@ -25,7 +33,7 @@ export const RhfRadioGroup = <T extends FieldValues>({
     className,
     customErrorFormatter,
     ...controllerProps
-}: Props<T>) => {
+}: Props<TFieldValues, TName>) => {
     const { name, control } = controllerProps;
 
     const {
@@ -48,8 +56,7 @@ export const RhfRadioGroup = <T extends FieldValues>({
             error={customErrorFormatter ? customErrorFormatter(getError(errors, name)) : getError(errors, name)}
             onChange={(value) => {
                 if (onChange) {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                    onChange(value);
+                    onChange(value as PathValue<TFieldValues, TName>);
                 }
                 field.onChange(value);
             }}

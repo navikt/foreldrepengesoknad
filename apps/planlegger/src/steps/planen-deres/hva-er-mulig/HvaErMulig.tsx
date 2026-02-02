@@ -68,7 +68,7 @@ export const HvaErMulig = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) 
                     </BodyLong>
                     {!erBarnetAdoptert(barnet) && (
                         <>
-                            {!erFarAlene && (
+                            {!(erFarAlene || erFedre || kunFarSøker2EllerMedmorHarRett) && (
                                 <DetteKanIkkeEndres
                                     hvemPlanlegger={hvemPlanlegger}
                                     arbeidssituasjon={arbeidssituasjon}

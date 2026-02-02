@@ -1,4 +1,5 @@
 {
     "tidsperiode": "From {fom} until {tom}",
-    "tidsperiode.kort": "{fom} - {tom}"
+    "tidsperiode.kort": "{fom} - {tom}",
+    "periodLabel.dateToday": "today"
 }
