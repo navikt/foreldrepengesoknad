@@ -340,7 +340,7 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
 const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
     const feriepenger = sak.gjeldendeVedtak?.tilkjentYtelse.feriepenger ?? [];
 
-    if (feriepenger.length > 0) {
+    if (feriepenger.length === 0) {
         return (
             <VStack>
                 <Heading as="h2" size="medium" spacing>
@@ -350,7 +350,7 @@ const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
                     Du har ikke rett på feriepenger av foreldrepengene dine. Her kan du lese mer om hvem som har rett på
                     feriepenger.
                 </BodyShort>
-                <Link href="nav.no/feriepenger#foreldrepenger">
+                <Link href="https://www.nav.no/feriepenger#foreldrepenger">
                     Her kan du lese mer om feriepenger av foreldrepenger.
                 </Link>
             </VStack>
@@ -367,7 +367,7 @@ const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
             <BodyShort>
                 Du har rett på feriepenger av foreldrepengene dine. Feriepengene er 10,2&nbsp;% av det som er utbetalt
                 de første 12 eller 15 ukene av den totale perioden med foreldrepenger.
-                <Link href="nav.no/feriepenger#foreldrepenger">
+                <Link href="https://www.nav.no/feriepenger#foreldrepenger">
                     Her kan du lese mer om feriepenger av foreldrepenger.
                 </Link>
             </BodyShort>
