@@ -58,12 +58,13 @@ const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UttakUtsettelseÅrsak_fp
     årsak === 'SØKER_SYKDOM' || årsak === 'SØKER_INNLAGT';
 
 const dokumentasjonBehøvesForUttaksperiode = (periode: UttakPeriode_fpoversikt): boolean => {
-    if (periodek.harIkkeAktivitetskrav) {
+    const harIkkeAktivitetskrav = periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT';
+    if (harIkkeAktivitetskrav) {
         return false;
     }
 
     return (
-        (periode.morsAktivitetIPerioden !== undefined && periode.morsAktivitetIPerioden !== 'UFØRE') ||
-        (periode.kontoType === 'FEDREKVOTE' && periode.erMorForSyk === true)
+        periode.morsAktivitet !== undefined && periode.morsAktivitet !== 'UFØRE'
+        // FIXME (TOR) TFP-6577  || (periode.kontoType === 'FEDREKVOTE' && periode.erMorForSyk === true)
     );
 };

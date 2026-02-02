@@ -43,8 +43,6 @@ export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt
                   uttaksplanMetadata.endringstidspunkt,
               );
 
-        //@ts-expect-error Denne blir fjerna når ein tek i bruk ny uttaksplan
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         if (!isLocalhost() && cleanedSøknad.uttaksplan.uttaksperioder.length === 0 && erEndringssøknad) {
             throw new Error('Søknaden din inneholder ingen nye perioder.');
         }

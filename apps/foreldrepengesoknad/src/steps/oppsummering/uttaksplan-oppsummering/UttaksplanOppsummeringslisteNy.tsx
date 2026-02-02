@@ -1,42 +1,34 @@
 import { useQuery } from '@tanstack/react-query';
 import { sakerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
-import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getTermindato } from 'utils/barnUtils';
 import { erPeriodeIOpprinneligPlan } from 'utils/eksisterendeSakUtils';
-import { getErSøkerFarEllerMedmor, getNavnPåForeldre } from 'utils/personUtils';
+import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 import { getStønadskontoNavn } from 'utils/stønadskontoerUtils';
 
 import { FormSummary } from '@navikt/ds-react';
 
-import { isAnnenForelderOppgitt, isSkalIkkeHaForeldrepengerFørFødselPeriode } from '@navikt/fp-common';
-import { Periodetype } from '@navikt/fp-constants';
+import { isAnnenForelderOppgitt } from '@navikt/fp-common';
 import {
     EksternArbeidsforholdDto_fpoversikt,
     KontoTypeUttak,
     NavnPåForeldre,
-    Periode,
-    TidsperiodeDate,
-    Uttaksperiode,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import {
-    ISOStringToDate,
-    capitalizeFirstLetter,
-    formatDateMedUkedagShortMonth,
-    getFamiliehendelsedato,
-} from '@navikt/fp-utils';
-import {
-    finnesPeriodeIOpprinneligPlan,
-    getPeriodeTittel,
-    uttaksperiodeKanJusteresVedFødsel,
-} from '@navikt/fp-uttaksplan';
-import { isUttaksperiodeFarMedmorPgaFødsel } from '@navikt/fp-uttaksplan/src/utils/wlbUtils';
+import { capitalizeFirstLetter, formatDateMedUkedagShortMonth, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { Overføringsperiodedetaljer } from './detaljer/Overføringsperiodedetaljer';
-import { Uttaksperiodedetaljer } from './detaljer/Uttaksperiodedetaljer';
-import { Utsettelsesperiodedetaljer } from './detaljer/Uttsettelsesperiodedetaljer';
+import {
+    erUttaksperiode,
+    getPeriodeTittel,
+    isUttaksperiodeFarMedmorPgaFødsel,
+    uttaksperiodeKanJusteresVedFødsel,
+} from './OppsummeringUtils';
+import { OverføringsperiodedetaljerNy } from './detaljer/OverføringsperiodedetaljerNy';
+import { UttaksperiodedetaljerNy } from './detaljer/UttaksperiodedetaljerNy';
+import { UtsettelsesperiodedetaljerNy } from './detaljer/UttsettelsesperiodedetaljerNy';
 
 interface Props {
     navnPåForeldre: NavnPåForeldre;
@@ -66,28 +58,30 @@ export const UttaksplanOppsummeringslisteNy = ({ navnPåForeldre, registrerteArb
 
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
 
-    const getStønadskontoNavnFromKonto = (konto: KontoTypeUttak) => {
-        return getStønadskontoNavn(intl, konto, navnPåForeldre, søkerErFarEllerMedmor, erAleneOmOmsorg);
+    const getStønadskontoNavnFromKonto = (konto: KontoTypeUttak | undefined) => {
+        return konto === undefined
+            ? ''
+            : getStønadskontoNavn(intl, konto, navnPåForeldre, søkerErFarEllerMedmor, erAleneOmOmsorg);
     };
 
-    const getUttaksperiodeNavn = (periode: Uttaksperiode) => {
-        const tittel = getStønadskontoNavnFromKonto(periode.konto);
-        const termindato = getTermindato(barn) ? dayjs(getTermindato(barn)).toDate() : undefined;
+    const getUttaksperiodeNavn = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
+        const tittel = getStønadskontoNavnFromKonto(periode.kontoType);
+        const termindato = getTermindato(barn) ? getTermindato(barn) : undefined;
         return søkersituasjon.situasjon === 'fødsel' &&
             isUttaksperiodeFarMedmorPgaFødsel(periode, familiehendelsesdato, termindato)
             ? tittel + intl.formatMessage({ id: 'rundtFødsel' })
             : tittel;
     };
 
-    const formatTidsperiode = (tidsperiode: TidsperiodeDate): string => {
+    const formatTidsperiode = (fom: string, tom: string): string => {
         const formatertTidsperiode = intl.formatMessage(
             { id: 'tidsintervall' },
             {
-                fom: capitalizeFirstLetter(formatDateMedUkedagShortMonth(tidsperiode.fom)),
-                tom: formatDateMedUkedagShortMonth(tidsperiode.tom),
+                fom: capitalizeFirstLetter(formatDateMedUkedagShortMonth(fom)),
+                tom: formatDateMedUkedagShortMonth(tom),
             },
         );
-        if (uttaksperiodeKanJusteresVedFødsel(ønskerJustertUttakVedFødsel, getTermindato(barn), tidsperiode.fom)) {
+        if (uttaksperiodeKanJusteresVedFødsel(ønskerJustertUttakVedFødsel, getTermindato(barn), fom)) {
             const justeringTekst = intl.formatMessage({ id: 'oppsummering.uttak.periodenBlirAutomatiskJustert' });
             return justeringTekst.concat(formatertTidsperiode);
         }
@@ -104,36 +98,34 @@ export const UttaksplanOppsummeringslisteNy = ({ navnPåForeldre, registrerteArb
                     {uttaksplan.map((periode) => {
                         const periodeErNyEllerEndret = sak ? erPeriodeIOpprinneligPlan(sak, periode) === false : true;
 
-                        if (periode.type === Periodetype.Uttak) {
-                            const tidsperiode = isSkalIkkeHaForeldrepengerFørFødselPeriode(periode)
-                                ? intl.formatMessage({ id: 'uttaksplan.periodeliste.header.skalIkkeHaUttakFørTermin' })
-                                : formatTidsperiode(periode.tidsperiode);
+                        if (erUttaksperiode(periode)) {
+                            const tidsperiode = formatTidsperiode(periode.fom, periode.tom);
                             return (
-                                <FormSummary.Answer key={periode.type + tidsperiode}>
+                                <FormSummary.Answer key={periode.kontoType + tidsperiode}>
                                     <FormSummary.Label>{tidsperiode}</FormSummary.Label>
                                     <FormSummary.Value>
                                         {getUttaksperiodeNavn(periode)}
-                                        <Uttaksperiodedetaljer
+                                        <UttaksperiodedetaljerNy
                                             periode={periode}
                                             registrerteArbeidsforhold={registrerteArbeidsforhold}
                                             periodeErNyEllerEndret={periodeErNyEllerEndret}
-                                            søkerErFarEllerMedmor={erFarEllerMedmor}
+                                            søkerErFarEllerMedmor={søkerErFarEllerMedmor}
                                             annenForelder={annenForelder}
                                         />
                                     </FormSummary.Value>
                                 </FormSummary.Answer>
                             );
                         }
-                        if (periode.type === Periodetype.Utsettelse) {
+                        if (!('trekkdager' in periode) && periode.utsettelseÅrsak !== undefined) {
                             return (
                                 <FormSummary.Answer key={lagKeyFraPeriode(periode)}>
-                                    <FormSummary.Label>{formatTidsperiode(periode.tidsperiode)}</FormSummary.Label>
+                                    <FormSummary.Label>{formatTidsperiode(periode.fom, periode.tom)}</FormSummary.Label>
                                     <FormSummary.Value>
                                         <FormattedMessage id="oppsummering.utsettelse.pga" />
-                                        <Utsettelsesperiodedetaljer
+                                        <UtsettelsesperiodedetaljerNy
                                             periode={periode}
                                             registrerteArbeidsforhold={registrerteArbeidsforhold}
-                                            søkerErFarEllerMedmor={erFarEllerMedmor}
+                                            søkerErFarEllerMedmor={søkerErFarEllerMedmor}
                                             annenForelder={annenForelder}
                                             periodeErNyEllerEndret={periodeErNyEllerEndret}
                                         />
@@ -141,33 +133,36 @@ export const UttaksplanOppsummeringslisteNy = ({ navnPåForeldre, registrerteArb
                                 </FormSummary.Answer>
                             );
                         }
-                        if (periode.type === Periodetype.Overføring) {
+                        if (!('trekkdager' in periode) && periode.overføringÅrsak !== undefined) {
                             return (
                                 <FormSummary.Answer key={lagKeyFraPeriode(periode)}>
-                                    <FormSummary.Label>{formatTidsperiode(periode.tidsperiode)}</FormSummary.Label>
+                                    <FormSummary.Label>{formatTidsperiode(periode.fom, periode.tom)}</FormSummary.Label>
                                     <FormSummary.Value>
                                         <FormattedMessage
                                             id="oppsummering.overtakelse.pga"
-                                            values={{ konto: getStønadskontoNavnFromKonto(periode.konto) }}
+                                            values={{ konto: getStønadskontoNavnFromKonto(periode.kontoType) }}
                                         />
-                                        <Overføringsperiodedetaljer periode={periode} navnPåForeldre={navnPåForeldre} />
+                                        <OverføringsperiodedetaljerNy
+                                            periode={periode}
+                                            navnPåForeldre={navnPåForeldre}
+                                        />
                                     </FormSummary.Value>
                                 </FormSummary.Answer>
                             );
                         }
-                        if (periode.type === Periodetype.Opphold) {
+                        if (!('trekkdager' in periode) && periode.oppholdÅrsak !== undefined) {
                             return (
                                 <FormSummary.Answer key={lagKeyFraPeriode(periode)}>
-                                    <FormSummary.Label>{formatTidsperiode(periode.tidsperiode)}</FormSummary.Label>
+                                    <FormSummary.Label>{formatTidsperiode(periode.fom, periode.tom)}</FormSummary.Label>
                                     <FormSummary.Value>
                                         {getPeriodeTittel(
                                             intl,
                                             periode,
                                             navnPåForeldre,
                                             familiehendelsesdato,
-                                            getTermindato(barn) ? dayjs(getTermindato(barn)).toDate() : undefined,
+                                            getTermindato(barn) ? getTermindato(barn) : undefined,
                                             søkersituasjon.situasjon,
-                                            erFarEllerMedmor,
+                                            søkerErFarEllerMedmor,
                                         )}
                                     </FormSummary.Value>
                                 </FormSummary.Answer>
@@ -181,5 +176,5 @@ export const UttaksplanOppsummeringslisteNy = ({ navnPåForeldre, registrerteArb
     );
 };
 
-const lagKeyFraPeriode = (periode: Periode) =>
-    periode.type + periode.tidsperiode.fom.toString() + periode.tidsperiode.tom.toString();
+const lagKeyFraPeriode = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) =>
+    periode.kontoType + periode.fom + periode.tom;
