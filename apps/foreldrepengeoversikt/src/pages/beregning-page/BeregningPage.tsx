@@ -235,7 +235,7 @@ const finnStatus = (status: AktivitetStatus, intl: ReturnType<typeof useIntl>) =
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.militaerEllerSivil' });
         case 'SELVSTENDIG_NÆRINGSDRIVENDE':
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.selvstendigNaeringsdrivende' });
-        case 'TTLSTØTENDE_YTELSE':
+        case 'TILSTØTENDE_YTELSE':
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.ytelse' });
     }
 };
