@@ -44,6 +44,7 @@ export const FordelingSlider = ({
                         <BodyShort>
                             {periodFormat(uttaksdata.startdatoPeriode1, uttaksdata.sluttdatoPeriode1, intl, {
                                 separator: '–',
+                                useShortMonth: true,
                             })}
                         </BodyShort>
                     </Box>
@@ -52,6 +53,7 @@ export const FordelingSlider = ({
                             <BodyShort>
                                 {periodFormat(uttaksdata.startdatoPeriode2, uttaksdata.sluttdatoPeriode2, intl, {
                                     separator: '–',
+                                    useShortMonth: true,
                                 })}
                             </BodyShort>
                         </Box>

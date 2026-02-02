@@ -626,14 +626,14 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         const sliderContainer = slider.closest('.aksel-vstack') as HTMLElement;
 
         // Sjekker initielle datoer (0 uker til søker 1) innenfor slider-containeren
-        expect(within(sliderContainer).getByText('10.06.2024 – 11.10.2024')).toBeInTheDocument();
-        expect(within(sliderContainer).getByText('14.10.2024 – 16.05.2025')).toBeInTheDocument();
+        expect(within(sliderContainer).getByText('10. juni 2024 – 11. okt. 2024')).toBeInTheDocument();
+        expect(within(sliderContainer).getByText('14. okt. 2024 – 16. mai 2025')).toBeInTheDocument();
 
         // Endrer fordeling til 8 uker til søker 1
         await endreFordelingMedSlider(utils, 40);
 
         // Verifiserer at datoene er oppdatert innenfor slider-containeren
-        expect(within(sliderContainer).getByText('10.06.2024 – 06.12.2024')).toBeInTheDocument();
-        expect(within(sliderContainer).getByText('09.12.2024 – 16.05.2025')).toBeInTheDocument();
+        expect(within(sliderContainer).getByText('10. juni 2024 – 6. des. 2024')).toBeInTheDocument();
+        expect(within(sliderContainer).getByText('9. des. 2024 – 16. mai 2025')).toBeInTheDocument();
     });
 });
