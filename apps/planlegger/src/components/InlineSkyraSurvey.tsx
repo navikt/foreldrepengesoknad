@@ -6,7 +6,7 @@ import { BodyShort, ExpansionCard, HStack, Heading, Skeleton, VStack } from '@na
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
-import './InlineSkyraSurvey.css';
+import '../styles/InlineSkyraSurvey.css';
 
 const SURVEY_COMPLETED_KEY = 'skyra-survey-planlegger-completed';
 
