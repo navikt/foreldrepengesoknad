@@ -81,6 +81,9 @@ export const Forside = ({
         oppdaterDataIState(ContextDataType.BARN_FRA_NESTE_SAK, barnFraNesteSak);
         const vilSøkeOmEndring = !!valgteBarn.kanSøkeOmEndring;
 
+        // TODO (TOR) Denne skal erstatta bruken av BARN_FRA_NESTE_SAK og EKSISTERENDE_SAK i ny uttaksplan
+        oppdaterDataIState(ContextDataType.VALGT_EKSISTERENDE_SAKSNR, valgtBarn?.sak?.saksnummer);
+
         // Uklarhet: hvorfor lete etter sak her. Er ikke sak allerede satt på "valgteBarn"
         const valgtEksisterendeSak = vilSøkeOmEndring
             ? saker.find((sak) => sak.saksnummer === valgteBarn.sak?.saksnummer)

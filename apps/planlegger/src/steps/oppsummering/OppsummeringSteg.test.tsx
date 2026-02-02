@@ -1,4 +1,4 @@
-import { composeStories } from '@storybook/react-vite';
+import { composeStories, composeStory } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -221,5 +221,40 @@ describe('<OppsummeringSteg>', () => {
             ),
         ).toBeInTheDocument();
         expect(screen.queryByText('Klara vil få rundt')).not.toBeInTheDocument();
+    });
+
+    it('skal vise Skyra-undersøkelse for norsk bokmål', async () => {
+        const StoryWithNorsk = composeStory({ ...stories.FlereForsørgereHundreProsentTermin }, stories.default, {
+            initialGlobals: { locale: 'nb' },
+        });
+        render(<StoryWithNorsk />);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+
+        // Sjekk at surveyen rendres med norsk tittel
+        expect(screen.getByText('Frivillig spørreundersøkelse')).toBeInTheDocument();
+    });
+
+    it('skal vise Skyra-undersøkelse for nynorsk', async () => {
+        const StoryWithNynorsk = composeStory({ ...stories.FlereForsørgereHundreProsentTermin }, stories.default, {
+            initialGlobals: { locale: 'nn' },
+        });
+        render(<StoryWithNynorsk />);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+
+        // Sjekk at surveyen rendres med nynorsk tittel
+        expect(screen.getByText('Frivillig spørjeundersøking')).toBeInTheDocument();
+    });
+
+    it('skal ikke vise Skyra-undersøkelse for engelsk', async () => {
+        const StoryWithEnglish = composeStory({ ...stories.FlereForsørgereHundreProsentTermin }, stories.default, {
+            initialGlobals: { locale: 'en' },
+        });
+        render(<StoryWithEnglish />);
+        expect(await screen.findAllByText('Summary')).toHaveLength(2);
+
+        // Sjekk at surveyen ikke rendres (ingen norsk/nynorsk tittel)
+        expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
+        expect(screen.queryByText('Frivillig spørjeundersøking')).not.toBeInTheDocument();
+        expect(screen.queryByText('Optional survey')).not.toBeInTheDocument();
     });
 });

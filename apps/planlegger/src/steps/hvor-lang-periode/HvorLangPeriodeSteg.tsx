@@ -53,6 +53,9 @@ export const HvorLangPeriodeSteg = ({ stønadskontoer }: Props) => {
         oppdaterPeriode(formValues);
 
         if (periode && periode.dekningsgrad !== formValues.dekningsgrad) {
+            // Dersom dekningsgrad endres, og den er tidligere valgt, må vi tilbakestille fordeling og uttaksplan.
+            // Bruker kan ha gjort endringer i fordeling og uttaksplan basert på en annen dekningsgrad som ikke lenger stemmer.
+            oppdaterFordeling(undefined);
             oppdaterUttaksplan(undefined);
         }
 

@@ -387,9 +387,9 @@ const harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamili
 
         if (nyePerioderInnenforIntervallet.length > 0) {
             const stillingsprosentFaktor =
-                formValues.stillingsprosentFarMedmor !== undefined
-                    ? Number.parseFloat(formValues.stillingsprosentFarMedmor) / 100
-                    : 1;
+                formValues.stillingsprosentFarMedmor === undefined
+                    ? 1
+                    : Number.parseFloat(formValues.stillingsprosentFarMedmor) / 100;
 
             const dagerNyePerioder =
                 nyePerioderInnenforIntervallet.reduce((sum, periode) => {

@@ -121,20 +121,20 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const hvaVilDuGjøre = formMethods.watch('hvaVilDuGjøre');
     const forelder = formMethods.watch('forelder');
 
-    const resetFormValuesVedEndringAvForelder = (value: string | number | boolean) => {
+    const resetFormValuesVedEndringAvForelder = (forelderVerdi: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {
         formMethods.reset({
             fom: fomValue,
             tom: tomValue,
             hvaVilDuGjøre,
         });
-        formMethods.setValue('forelder', value as BrukerRolleSak_fpoversikt | 'BEGGE', { shouldDirty: true });
+        formMethods.setValue('forelder', forelderVerdi, { shouldDirty: true });
     };
-    const resetFormValuesVedEndringAvHvaVilDuGjøre = (value: string | number | boolean) => {
+    const resetFormValuesVedEndringAvHvaVilDuGjøre = (value: HvaVilDuGjøre | undefined) => {
         formMethods.reset({
             fom: fomValue,
             tom: tomValue,
         });
-        formMethods.setValue('hvaVilDuGjøre', value as HvaVilDuGjøre, { shouldDirty: true });
+        formMethods.setValue('hvaVilDuGjøre', value, { shouldDirty: true });
     };
 
     const erAdopsjon = familiesituasjon === 'adopsjon';
