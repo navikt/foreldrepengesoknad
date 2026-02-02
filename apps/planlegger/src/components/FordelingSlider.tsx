@@ -4,8 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Box, Button, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { Slider } from '@navikt/fp-ui';
-import { capitalizeFirstLetter } from '@navikt/fp-utils';
-import { periodFormat } from '@navikt/fp-utils/src/periodUtils';
+import { capitalizeFirstLetter, periodFormat } from '@navikt/fp-utils';
 
 import { UkerOgDager } from '../utils/stønadskontoerUtils';
 import { Uttaksdata } from '../utils/uttakUtils';
