@@ -623,7 +623,7 @@ export const erPeriodeIOpprinneligPlan = (
         }
 
         if (erEøsPeriode(periode) || erEøsPeriode(p)) {
-            throw new Error('Ingen perioder bør vœre eøs-perioder her');
+            throw new Error('Ingen perioder bør være eøs-perioder her');
         }
 
         return (
@@ -633,7 +633,6 @@ export const erPeriodeIOpprinneligPlan = (
             periode.flerbarnsdager === p.flerbarnsdager &&
             periode.forelder === p.forelder &&
             periode.gradering === p.gradering &&
-            periode.kontoType === p.kontoType &&
             periode.utsettelseÅrsak === p.utsettelseÅrsak &&
             periode.samtidigUttak === p.samtidigUttak &&
             periode.resultat === p.resultat &&
