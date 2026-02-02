@@ -102,7 +102,10 @@ export const FordelingsdetaljerPanel = ({
                         id="FordelingsdetaljerPanel.Infoboks.Periode"
                         values={{
                             hvem: capitalizeFirstLetter(fornavnSøker1),
-                            periode: periodFormat(startdatoPeriode1, sluttdatoPeriode1, intl, { separator: '–' }),
+                            periode: periodFormat(startdatoPeriode1, sluttdatoPeriode1, intl, {
+                                separator: '–',
+                                useShortMonth: true,
+                            }),
                         }}
                     />
                 </BodyShort>
@@ -112,7 +115,10 @@ export const FordelingsdetaljerPanel = ({
                             id="FordelingsdetaljerPanel.Infoboks.Periode"
                             values={{
                                 hvem: capitalizeFirstLetter(fornavnSøker2),
-                                periode: periodFormat(startdatoPeriode2, sluttdatoPeriode2, intl, { separator: '–' }),
+                                periode: periodFormat(startdatoPeriode2, sluttdatoPeriode2, intl, {
+                                    separator: '–',
+                                    useShortMonth: true,
+                                }),
                             }}
                         />
                     </BodyShort>
