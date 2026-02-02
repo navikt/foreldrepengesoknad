@@ -16,6 +16,7 @@ import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { InlineSkyraSurvey } from '../../components/InlineSkyraSurvey';
 import { ShareDataInfobox } from '../../components/boxes/ShareDataInfobox';
 import { OppsummeringHeader } from './OppsummeringHeader';
 import { SøkOmForeldrepenger } from './SøkOmForeldrepenger';
@@ -100,6 +101,8 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
                         )}
                         {stønadskontoer && valgtStønadskonto && hvorLangPeriode && arbeidssituasjon && (
                             <VStack gap="space-8">
+                                <InlineSkyraSurvey />
+
                                 {harRettTilForeldrepenger && (
                                     <OppsummeringHarRett
                                         valgtStønadskonto={valgtStønadskonto}
