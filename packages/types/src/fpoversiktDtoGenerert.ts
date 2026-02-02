@@ -343,7 +343,7 @@ export type no_nav_foreldrepenger_kontrakter_felles_kodeverk_AktivitetStatus =
     | 'KOMBINERT_AT_FL_SN'
     | 'BRUKERS_ANDEL'
     | 'KUN_YTELSE'
-    | 'TTLSTØTENDE_YTELSE'
+    | 'TILSTØTENDE_YTELSE'
     | 'VENTELØNN_VARTPENGER';
 
 export type BehandlingTilstand_fpoversikt =
@@ -364,7 +364,7 @@ export type Beregningsgrunnlag_fpoversikt = {
 export type Arbeidsforhold_fpoversikt = {
     arbeidsgiverIdent: string;
     arbeidsgiverNavn: string;
-    refusjonPrMnd?: number;
+    refusjonPrMnd: number;
 };
 
 export type BeregningAktivitetStatus_fpoversikt = {
@@ -375,8 +375,8 @@ export type BeregningAktivitetStatus_fpoversikt = {
 export type BeregningsAndel_fpoversikt = {
     aktivitetStatus: no_nav_foreldrepenger_kontrakter_felles_kodeverk_AktivitetStatus;
     arbeidsforhold?: Arbeidsforhold_fpoversikt;
-    dagsatsArbeidsgiver?: number;
-    dagsatsSøker?: number;
+    dagsatsArbeidsgiver: number;
+    dagsatsSøker: number;
     fastsattPrÅr?: number;
     inntektsKilde?: Inntektskilde_fpoversikt;
 };
