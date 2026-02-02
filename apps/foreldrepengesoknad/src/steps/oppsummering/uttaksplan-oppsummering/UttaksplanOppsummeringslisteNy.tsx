@@ -40,7 +40,7 @@ export const UttaksplanOppsummeringslisteNy = ({ navnPåForeldre, registrerteArb
 
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_NY));
-    const valgtEksisterendeSaksnr = notEmpty(useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR));
+    const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const { ønskerJustertUttakVedFødsel } = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA_NY));
 
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
