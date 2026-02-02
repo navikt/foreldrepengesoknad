@@ -1,10 +1,21 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { groupBy, sortBy, sumBy } from 'lodash';
+import { groupBy, partition, sortBy, sumBy } from 'lodash';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Accordion, BodyShort, ExpansionCard, HGrid, HStack, Heading, Label, Table, VStack } from '@navikt/ds-react';
+import {
+    Accordion,
+    BodyShort,
+    ExpansionCard,
+    HGrid,
+    HStack,
+    Heading,
+    Label,
+    Link,
+    Table,
+    VStack,
+} from '@navikt/ds-react';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import {
@@ -74,6 +85,7 @@ export const BeregningPage = () => {
                 </ExpansionCard>
 
                 <UtbetalingsVisning sak={gjeldendeSak} />
+                <Feriepenger sak={gjeldendeSak} />
             </VStack>
         </PageRouteLayout>
     );
@@ -229,8 +241,7 @@ const periodeTilDager = (perioder: TilkjentYtelsePeriode_fpoversikt[]): DagMedPe
 };
 
 const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
-    const tilkjentYtelse = sak.gjeldendeVedtak?.tilkjentYtelse ?? [];
-
+    const tilkjentYtelse = sak.gjeldendeVedtak?.tilkjentYtelse?.utbetalingsPerioder ?? [];
     const andelerPerDag = periodeTilDager(tilkjentYtelse);
 
     const andelerPerDagGruppertPåMåned = groupBy(andelerPerDag, (d) => dayjs(d.dato).month());
@@ -322,6 +333,67 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                     },
                 )}
             </VStack>
+        </VStack>
+    );
+};
+
+const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
+    const feriepenger = sak.gjeldendeVedtak?.tilkjentYtelse.feriepenger ?? [];
+
+    if (feriepenger.length > 0) {
+        return (
+            <VStack>
+                <Heading as="h2" size="medium" spacing>
+                    Feriepenger
+                </Heading>
+                <BodyShort>
+                    Du har ikke rett på feriepenger av foreldrepengene dine. Her kan du lese mer om hvem som har rett på
+                    feriepenger.
+                </BodyShort>
+                <Link href="nav.no/feriepenger#foreldrepenger">
+                    Her kan du lese mer om feriepenger av foreldrepenger.
+                </Link>
+            </VStack>
+        );
+    }
+
+    const feriepengerEtterÅr = groupBy(feriepenger, (andel) => dayjs(andel.opptjeningsår).year());
+
+    return (
+        <VStack>
+            <Heading as="h2" size="medium" spacing>
+                Feriepenger
+            </Heading>
+            <BodyShort>
+                Du har rett på feriepenger av foreldrepengene dine. Feriepengene er 10,2&nbsp;% av det som er utbetalt
+                de første 12 eller 15 ukene av den totale perioden med foreldrepenger.
+                <Link href="nav.no/feriepenger#foreldrepenger">
+                    Her kan du lese mer om feriepenger av foreldrepenger.
+                </Link>
+            </BodyShort>
+            {Object.entries(feriepengerEtterÅr).map(([år, andeler]) => {
+                const [feriepengerTilBruker, feriepengerTilAG] = partition(andeler, (andel) => andel.tilBruker);
+                const totalUtbetaltTilBruker = sumBy(feriepengerTilBruker, (d) => d.årsbeløp);
+                const totalUtbetaltTilAG = sumBy(feriepengerTilAG, (d) => d.årsbeløp);
+
+                return (
+                    <VStack key={år} className="mt-4">
+                        <Label>Opptjent i {år}</Label>
+                        {totalUtbetaltTilBruker > 0 && (
+                            <BodyShort>{formatCurrencyWithKr(totalUtbetaltTilBruker)} som vi betaler til deg</BodyShort>
+                        )}
+                        {totalUtbetaltTilAG > 0 && (
+                            <BodyShort>
+                                {formatCurrencyWithKr(totalUtbetaltTilAG)} som vi betaler til arbeidsgiveren din
+                            </BodyShort>
+                        )}
+
+                        <BodyShort>
+                            Vi utbetaler innen utgangen av mai {Number(år) + 1} og litt senere til arbeidsgiver
+                        </BodyShort>
+                    </VStack>
+                );
+            })}
         </VStack>
     );
 };
