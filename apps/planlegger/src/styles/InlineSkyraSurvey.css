@@ -1,7 +1,9 @@
 /* TODO: Vurder å snu på singel choice -skala-spørsmålet, slik at det er topp til bunn. 
 Avvent om skyra-teamet gjør det mulig å justere hvert enkelt kort for dette. */
+/* Det er bevisst valg at dette er en .css-fil og ikke .module.css, slik at man unngår 
+three shaking som vet css.modules. Må også ligge i denne mappen, for å ikke blir borte under build */
 
-:global(skyra-survey) {
+skyra-survey {
     --skyra-font-size: 20px;
     --skyra-font-body: 'Source Sans Pro', Arial;
     --skyra-font-weight-normal: 800;
