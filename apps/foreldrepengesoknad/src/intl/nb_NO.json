@@ -546,5 +546,9 @@
     "UttaksplanSteg.AutomatiskJustering.Spørsmål": "Planen din inneholder én periode med din egen kvote rundt fødsel. Siden denne perioden starter på termin, ønsker du at vi endrer den til å starte fra fødselsdato når {antallBarn, plural, one {barnet} other {barna}} blir født?",
     "UttaksplanSteg.AutomatiskJustering.Svar.Påkrevd": "Du må svare på spørsmålet om automatisk justering av perioden når barnet blir født.",
     "UttaksplanSteg.AutomatiskJustering.Ja": "Ja",
-    "UttaksplanSteg.AutomatiskJustering.Nei": "Nei"
+    "UttaksplanSteg.AutomatiskJustering.Nei": "Nei",
+    "gradering.prosent": "{stillingsprosent}%",
+    "rundtFødsel": " rundt fødsel",
+    "uttaksplan.periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
+    "uttaksplan.periodeliste.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt"
 }

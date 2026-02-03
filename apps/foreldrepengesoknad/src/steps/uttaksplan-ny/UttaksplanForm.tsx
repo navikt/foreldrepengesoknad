@@ -115,7 +115,9 @@ export const UttaksplanForm = ({
                             control={formMethods.control}
                             label={<FormattedMessage id="UttaksplanSteg.AutomatiskJustering.Spørsmål" />}
                             validate={[
-                                isRequired(intl.formatMessage({ id: 'uttaksplan.automatiskJustering.svar.påkrevd' })),
+                                isRequired(
+                                    intl.formatMessage({ id: 'UttaksplanSteg.AutomatiskJustering.Svar.Påkrevd' }),
+                                ),
                             ]}
                         >
                             <Radio value={true}>
