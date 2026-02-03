@@ -352,7 +352,6 @@ describe('useHentGyldigeKontotyper - fars kvoter', () => {
 
         expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual([
             'FEDREKVOTE',
-            'FELLESPERIODE',
             'FORELDREPENGER',
             'AKTIVITETSFRI_KVOTE',
         ]);
@@ -405,11 +404,7 @@ describe('useHentGyldigeKontotyper - fars kvoter', () => {
             },
         );
 
-        expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual([
-            'MØDREKVOTE',
-            'FEDREKVOTE',
-            'AKTIVITETSFRI_KVOTE',
-        ]);
+        expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual(['FEDREKVOTE', 'AKTIVITETSFRI_KVOTE']);
     });
 
     it('skal ikke ha noen gyldige kontotyper for far når en har valgt dag mer enn 60 dager før fødsel', () => {

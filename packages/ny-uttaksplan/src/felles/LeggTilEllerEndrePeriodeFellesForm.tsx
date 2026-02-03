@@ -117,22 +117,22 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder }: Props) =>
         return ['ARBEID', 'UTDANNING', 'KVALPROG', 'INTROPROG', 'TRENGER_HJELP', 'INNLAGT', 'ARBEID_OG_UTDANNING'];
     };
 
-    const getAktivitetskravIntlKey = (value: string) => {
+    const getAktivitetskravTekst = (value: string) => {
         switch (value) {
             case 'ARBEID':
-                return 'AktivitetskravSpørsmål.Arbeid';
+                return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Arbeid' });
             case 'UTDANNING':
-                return 'AktivitetskravSpørsmål.Utdanning';
+                return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Utdanning' });
             case 'KVALPROG':
-                return 'AktivitetskravSpørsmål.Kvalprog';
+                return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Kvalprog' });
             case 'INTROPROG':
-                return 'AktivitetskravSpørsmål.Introprog';
+                return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Introprog' });
             case 'TRENGER_HJELP':
-                return 'AktivitetskravSpørsmål.Trenger_hjelp';
+                return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Trenger_hjelp' });
             case 'INNLAGT':
-                return 'AktivitetskravSpørsmål.Innlagt';
+                return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Innlagt' });
             case 'ARBEID_OG_UTDANNING':
-                return 'AktivitetskravSpørsmål.Arbeid_og_utdanning';
+                return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Arbeid_og_utdanning' });
             default:
                 return '';
         }
@@ -376,7 +376,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder }: Props) =>
                         {getAktivitetskravOptions().map((value) => {
                             return (
                                 <option key={value} value={value}>
-                                    <FormattedMessage id={getAktivitetskravIntlKey(value)} />
+                                    {getAktivitetskravTekst(value)}
                                 </option>
                             );
                         })}

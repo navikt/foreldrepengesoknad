@@ -11,6 +11,7 @@ const {
     HarPeriode11UkerFørFamiliehendelseDato,
     VisFarsAktivitetsfriKvote,
     MorOverførerFarsKvote,
+    SamtidigUttak,
 } = composeStories(stories);
 
 describe('UttaksplanKalender', () => {
@@ -483,7 +484,7 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Gradering: 50 %')).toBeInTheDocument();
     });
 
-    it('skal legg til samtidig uttak, så fjerne det igjen', async () => {
+    it('skal legge til samtidig uttak, så fjerne det igjen', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
         expect(await screen.findByText('Start redigering')).toBeInTheDocument();
@@ -508,10 +509,10 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getByText('Begge'));
 
         expect(screen.getByText('Mor skal ha?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Mors kvote')[0]!);
+        await userEvent.click(screen.getByText('Mors kvote'));
 
         expect(screen.getByText('Far skal ha?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Fars kvote')[0]!);
+        await userEvent.click(screen.getByText('Fars kvote'));
 
         const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent for mor?');
         await userEvent.type(samtidigprosentMor, '60');
@@ -663,5 +664,54 @@ describe('UttaksplanKalender', () => {
                     ' betyr at foreldrepengene vil reduseres det du jobber uten at du får dagene til gode til senere.',
             ),
         ).not.toBeInTheDocument();
+    });
+
+    it('mor og far tar samtidig uttak - far fellesperiode med 100% samtidig uttak skal trigge aktivitetskrav', async () => {
+        render(<SamtidigUttak />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        const september = screen.getByTestId('year:2026;month:8');
+
+        await userEvent.click(within(september).getByText('7', { exact: true }));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getAllByText('Endre')[0]!);
+
+        expect(screen.getByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Begge'));
+
+        expect(screen.getByText('Mor skal ha?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Mors kvote'));
+
+        expect(screen.getByText('Far skal ha?')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Fellesperiode')[1]!);
+
+        const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent for mor?');
+        await userEvent.type(samtidigprosentMor, '50');
+
+        const samtidigprosentFar = screen.getByLabelText('Hvor mange prosent for far?');
+        await userEvent.type(samtidigprosentFar, '50');
+
+        expect(screen.getByText('Hva skal mor gjøre i denne perioden?')).toBeInTheDocument();
+
+        expect(screen.getByText('Skal mor kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Nei')[0]!);
+
+        expect(screen.getByText('Skal far kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Nei')[1]!);
+
+        await userEvent.click(screen.getByText('Legg til'));
+
+        expect(screen.getByText('Du må oppgi hva mor skal gjøre i denne perioden')).toBeInTheDocument();
+
+        const aktivitetskravSelect = screen.getByLabelText('Hva skal mor gjøre i denne perioden?');
+        await userEvent.selectOptions(aktivitetskravSelect, 'Arbeid');
+
+        await userEvent.click(screen.getByText('Legg til'));
+
+        expect(within(september).getByTestId('day:7;dayColor:LIGHTGREENBLUE')).toBeInTheDocument();
     });
 });

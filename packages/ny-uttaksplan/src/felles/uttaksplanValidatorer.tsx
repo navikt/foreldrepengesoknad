@@ -180,7 +180,7 @@ const erUgyldigSamtidigUttak = <T extends LeggTilEllerEndrePeriodeFormFormValues
     familiehendelsedato: string,
 ): string | null => {
     const inneholderPerioderRundtFødsel =
-        erNoenPerioderFørToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato(
+        erNoenPerioderIMellomToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato(
             perioder,
             familiehendelsedato,
         );
@@ -289,7 +289,7 @@ const erGyldigUttakForFarMedmorRundtFødsel = <T extends LeggTilEllerEndrePeriod
     perioder: Array<{ fom: string; tom: string }>,
 ): string | null => {
     const inneholderPerioderRundtFødsel =
-        erNoenPerioderFørToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato(
+        erNoenPerioderIMellomToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato(
             perioder,
             familiehendelsedato,
         );
@@ -479,16 +479,19 @@ const erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato = (
     });
 };
 
-const erNoenPerioderFørToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato = (
+const erNoenPerioderIMellomToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     familiehendelsedato: string,
-) =>
-    valgtePerioder.some(
-        (periode) =>
-            dayjs(periode.fom).isSameOrAfter(
-                UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(10),
-            ) ||
-            dayjs(periode.tom).isSameOrBefore(
-                UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
-            ),
-    );
+) => {
+    const familiehendelse = UttaksdagenString.denneEllerNeste(familiehendelsedato);
+
+    const toUkerFør = familiehendelse.getDatoAntallUttaksdagerTidligere(10);
+    const seksUkerEtter = familiehendelse.getDatoAntallUttaksdagerSenere(30);
+
+    return valgtePerioder.some((periode) => {
+        const fom = dayjs(periode.fom);
+        const tom = dayjs(periode.tom);
+
+        return fom.isSameOrBefore(seksUkerEtter) && tom.isSameOrAfter(toUkerFør);
+    });
+};
