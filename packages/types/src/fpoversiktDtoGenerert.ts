@@ -454,8 +454,8 @@ export type Saker_fpoversikt = {
 };
 
 export type TilkjentYtelse_fpoversikt = {
-    feriepenger?: FeriepengeAndel_fpoversikt[];
-    utbetalingsPerioder?: TilkjentYtelsePeriode_fpoversikt[];
+    feriepenger: FeriepengeAndel_fpoversikt[];
+    utbetalingsPerioder: TilkjentYtelsePeriode_fpoversikt[];
 };
 
 export type FeriepengeAndel_fpoversikt = {
@@ -473,8 +473,8 @@ export type TilkjentYtelsePeriode_fpoversikt = {
 
 export type Andel_fpoversikt = {
     aktivitetStatus?: no_nav_foreldrepenger_kontrakter_felles_kodeverk_AktivitetStatus;
-    arbeidsgiverIdent: string;
-    arbeidsgivernavn: string;
+    arbeidsgiverIdent?: string;
+    arbeidsgivernavn?: string;
     dagsats: number;
     tilBruker: boolean;
     utbetalingsgrad: number;
