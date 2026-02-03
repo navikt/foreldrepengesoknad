@@ -297,16 +297,26 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                                     {totaltForMånedenTilDeg > 0 && (
                                                         <>
                                                             <BodyShort as="span">
-                                                                <FormattedMessage id="beregning.utbetalingsvisning.direkte" />{' '}
-                                                                {formatCurrencyWithKr(totaltForMånedenTilDeg)}
+                                                                <FormattedMessage
+                                                                    id="beregning.utbetalingsvisning.direkte"
+                                                                    values={{
+                                                                        beløp: formatCurrencyWithKr(
+                                                                            totaltForMånedenTilDeg,
+                                                                        ),
+                                                                    }}
+                                                                />
                                                             </BodyShort>
                                                             <br />
                                                         </>
                                                     )}
                                                     {totaltForMånedenTilAG > 0 && (
                                                         <BodyShort as="span">
-                                                            <FormattedMessage id="beregning.utbetalingsvisning.arbeidsgiver" />{' '}
-                                                            {formatCurrencyWithKr(totaltForMånedenTilAG)}
+                                                            <FormattedMessage
+                                                                id="beregning.utbetalingsvisning.arbeidsgiver"
+                                                                values={{
+                                                                    beløp: formatCurrencyWithKr(totaltForMånedenTilAG),
+                                                                }}
+                                                            />
                                                         </BodyShort>
                                                     )}
                                                 </ExpansionCard.Description>
@@ -358,7 +368,6 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
 
 const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
     const feriepenger = sak.gjeldendeVedtak?.tilkjentYtelse.feriepenger ?? [];
-    const intl = useIntl();
 
     if (feriepenger.length === 0) {
         return (
@@ -405,14 +414,18 @@ const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
                         </Label>
                         {totalUtbetaltTilBruker > 0 && (
                             <BodyShort>
-                                {formatCurrencyWithKr(totalUtbetaltTilBruker)}{' '}
-                                <FormattedMessage id="beregning.feriepenger.utbetaltTilDeg" />
+                                <FormattedMessage
+                                    id="beregning.feriepenger.utbetaltTilDeg"
+                                    values={{ beløp: formatCurrencyWithKr(totalUtbetaltTilBruker) }}
+                                />
                             </BodyShort>
                         )}
                         {totalUtbetaltTilAG > 0 && (
                             <BodyShort>
-                                {formatCurrencyWithKr(totalUtbetaltTilAG)}{' '}
-                                <FormattedMessage id="beregning.feriepenger.utbetaltTilAG" />
+                                <FormattedMessage
+                                    id="beregning.feriepenger.utbetaltTilAG"
+                                    values={{ beløp: formatCurrencyWithKr(totalUtbetaltTilAG) }}
+                                />
                             </BodyShort>
                         )}
 
