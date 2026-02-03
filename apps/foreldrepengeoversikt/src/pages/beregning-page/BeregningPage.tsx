@@ -62,7 +62,7 @@ export const BeregningPage = () => {
     return (
         <PageRouteLayout header={<DinSakHeader sak={gjeldendeSak} />}>
             <Heading size="large" as="h2" spacing>
-                Beregning av din ytelse
+                <FormattedMessage id="beregning.page.heading" />
             </Heading>
             <VStack gap="space-40">
                 <BeregningOppsummering sak={gjeldendeSak} />
@@ -379,11 +379,15 @@ const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
                     <FormattedMessage id="beregning.feriepenger.tittel" />
                 </Heading>
                 <BodyShort>
-                    <FormattedMessage id="beregning.feriepenger.ikkeRett" />
+                    <FormattedMessage
+                        id="beregning.feriepenger.ikkeRett"
+                        values={{
+                            link: (chunks) => (
+                                <Link href="https://www.nav.no/feriepenger#foreldrepenger">{chunks}</Link>
+                            ),
+                        }}
+                    />
                 </BodyShort>
-                <Link href="https://www.nav.no/feriepenger#foreldrepenger">
-                    <FormattedMessage id="beregning.feriepenger.lenkeTekst" />
-                </Link>
             </VStack>
         );
     }
@@ -396,10 +400,12 @@ const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
                 <FormattedMessage id="beregning.feriepenger.tittel" />
             </Heading>
             <BodyShort>
-                <FormattedMessage id="beregning.feriepenger.harRett" />{' '}
-                <Link href="https://www.nav.no/feriepenger#foreldrepenger">
-                    <FormattedMessage id="beregning.feriepenger.lenkeTekst" />
-                </Link>
+                <FormattedMessage
+                    id="beregning.feriepenger.harRett"
+                    values={{
+                        link: (chunks) => <Link href="https://www.nav.no/feriepenger#foreldrepenger">{chunks}</Link>,
+                    }}
+                />
             </BodyShort>
             {Object.entries(feriepengerEtterÅr).map(([år, andeler]) => {
                 const [feriepengerTilBruker, feriepengerTilAG] = partition(andeler, (andel) => andel.tilBruker);
