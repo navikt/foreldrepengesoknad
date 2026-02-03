@@ -33,7 +33,7 @@ import {
     formatOppramsing,
 } from '@navikt/fp-utils';
 
-import { BeregningHeader } from '../../components/header/Header.tsx';
+import { DinSakHeader } from '../../components/header/Header.tsx';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor.ts';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute.ts';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak.ts';
@@ -58,7 +58,10 @@ export const BeregningPage = () => {
     }
 
     return (
-        <PageRouteLayout header={<BeregningHeader />}>
+        <PageRouteLayout header={<DinSakHeader sak={gjeldendeSak} />}>
+            <Heading size="large" as="h2" spacing>
+                Beregning av din ytelse
+            </Heading>
             <VStack gap="space-40">
                 <BeregningOppsummering sak={gjeldendeSak} />
 
@@ -124,13 +127,12 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
                     values={{ årsinntekt: formatCurrencyWithKr(samletÅrsinntekt) }}
                 />
             </Label>
-            <BodyShort>
+            <Label>
                 <FormattedMessage
                     id="beregning.datoForVurdering"
                     values={{ dato: formaterDato(beregning.skjæringsTidspunkt, 'D. MMMM YYYY') }}
                 />
-            </BodyShort>
-            <BodyShort spacing>{capitalizeFirstLetter(utbetalingsmetodeTekst)}</BodyShort>
+            </Label>
 
             {vis6GVarsel && (
                 <BodyShort>
@@ -148,6 +150,8 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
                     />
                 </BodyShort>
             )}
+
+            <BodyShort spacing>{capitalizeFirstLetter(utbetalingsmetodeTekst)}</BodyShort>
 
             <Label>
                 <FormattedMessage id="beregning.dagsats" values={{ sumDagsats: formatCurrencyWithKr(sumDagsats) }} />
@@ -248,10 +252,17 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
 
     return (
         <VStack gap="space-4">
-            <Heading size="small" as="h2">
+            <Heading size="medium" as="h2">
                 Utbetalingsplan
             </Heading>
-            <BodyShort>Gjøre det tydelig at vårt summerte beløp ikke er hva du vil få på konto.</BodyShort>
+            <BodyShort spacing>
+                Utbetalingene som vises her er beregnet ut fra det siste vedtaket. Hvis du gjør endringer i
+                foreldrepengene dine, vil dette kunne endre utbetalingene. Beregningene er før skatt og eventuelle
+                trekk. Hvis vi betaler foreldrepenger til deg, vil du se hva vi trekker deg i skatt i
+                <Link href="https://www.nav.no/utbetalingsoversikt">utbetalingsoversikten din.</Link> På{' '}
+                <Link href="https://www.nav.no/utbetalinger">nav.no/utbetalinger</Link> finner du våre
+                utbetalingsdatoer.
+            </BodyShort>
             <VStack gap="space-16">
                 {sortBy(Object.values(andelerPerDagGruppertPåMåned), (dager) => dayjs(dager[0]!.dato).unix()).map(
                     (dager, index) => {
@@ -376,6 +387,10 @@ const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
                 const totalUtbetaltTilBruker = sumBy(feriepengerTilBruker, (d) => d.årsbeløp);
                 const totalUtbetaltTilAG = sumBy(feriepengerTilAG, (d) => d.årsbeløp);
 
+                const betalerBareTilbruker = totalUtbetaltTilBruker > 0 && totalUtbetaltTilAG === 0;
+                const betalerBareTilAG = totalUtbetaltTilAG > 0 && totalUtbetaltTilBruker === 0;
+                const betalerTilBegge = totalUtbetaltTilAG > 0 && totalUtbetaltTilBruker > 0;
+
                 return (
                     <VStack key={år} className="mt-4">
                         <Label>Opptjent i {år}</Label>
@@ -388,9 +403,16 @@ const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
                             </BodyShort>
                         )}
 
-                        <BodyShort>
-                            Vi utbetaler innen utgangen av mai {Number(år) + 1} og litt senere til arbeidsgiver
-                        </BodyShort>
+                        {betalerBareTilbruker && (
+                            <BodyShort>Vi utbetaler direkte til deg innen utgangen av mai {Number(år) + 1}.</BodyShort>
+                        )}
+                        {betalerBareTilAG && <BodyShort>Vi utbetaler til din arbeidsgiver.</BodyShort>}
+                        {betalerTilBegge && (
+                            <BodyShort>
+                                Vi utbetaler direkte til deg innen utgangen av mai {Number(år) + 1} og litt senere til
+                                arbeidsgiveren din
+                            </BodyShort>
+                        )}
                     </VStack>
                 );
             })}

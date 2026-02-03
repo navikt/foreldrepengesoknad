@@ -173,16 +173,6 @@ export const InntektsmeldingOversiktHeader = () => {
     );
 };
 
-export const BeregningHeader = () => {
-    return (
-        <HeaderWrapper>
-            <Heading level="1" size="medium">
-                Beregning av din ytelse
-            </Heading>
-        </HeaderWrapper>
-    );
-};
-
 function FamiliehendelseDescription({
     sak,
     søkerinfo,
