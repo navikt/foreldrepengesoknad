@@ -1,38 +1,45 @@
+import { useQuery } from '@tanstack/react-query';
+import { useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getUkerOgDagerFromDager } from 'utils/dateUtils';
+import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 
 import { FormSummary } from '@navikt/ds-react';
 
-import { AnnenForelder, NavnPåForeldre, Situasjon } from '@navikt/fp-common';
-import { Dekningsgrad, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { NavnPåForeldre } from '@navikt/fp-common';
+import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { UttaksplanOppsummeringsliste } from './UttaksplanOppsummeringsliste';
+import { UttaksplanOppsummeringslisteNy } from './UttaksplanOppsummeringslisteNy';
 
 interface Props {
     navnPåForeldre: NavnPåForeldre;
-    erFarEllerMedmor: boolean;
     registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
-    dekningsgrad: Dekningsgrad;
-    annenForelder: AnnenForelder;
-    familiehendelsesdato: Date;
-    termindato: string | undefined;
-    situasjon: Situasjon;
-    erAleneOmOmsorg: boolean;
-    antallBarn: number;
     onVilEndreSvar: () => void;
 }
 
-export const UttaksplanOppsummering = ({ dekningsgrad, antallBarn, onVilEndreSvar, ...rest }: Props) => {
+export const UttaksplanOppsummeringNy = ({ navnPåForeldre, registrerteArbeidsforhold, onVilEndreSvar }: Props) => {
     const intl = useIntl();
 
-    const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
-    const antallUkerUttaksplan = notEmpty(uttaksplanMetadata.antallUkerIUttaksplan);
+    const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
 
-    const ønskerJustertUttakVedFødsel = notEmpty(uttaksplanMetadata).ønskerJustertUttakVedFødsel;
+    const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA_NY));
 
-    const antallUkerOgDagerIUttaksplan = getUkerOgDagerFromDager(antallUkerUttaksplan * 5);
+    const { antallBarn } = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+
+    const kontoerOptions = useStønadsKontoerOptions();
+    const tilgjengeligeStønadskontoerQuery = useQuery({
+        ...kontoerOptions,
+        select: (kontoer) => {
+            return kontoer[dekningsgrad];
+        },
+    });
+    const valgteStønadskontoer = tilgjengeligeStønadskontoerQuery.data;
+
+    const antallUkerIUttaksplan = getAntallUkerFraStønadskontoer(valgteStønadskontoer?.kontoer ?? []);
+
+    const antallUkerOgDagerIUttaksplan = getUkerOgDagerFromDager(antallUkerIUttaksplan * 5);
 
     let dekningsgradTekst = undefined;
 
@@ -82,9 +89,12 @@ export const UttaksplanOppsummering = ({ dekningsgrad, antallBarn, onVilEndreSva
                     <FormSummary.Value>{dekningsgradTekst}</FormSummary.Value>
                 </FormSummary.Answer>
                 <FormSummary.Answer>
-                    <UttaksplanOppsummeringsliste ønskerJustertUttakVedFødsel={ønskerJustertUttakVedFødsel} {...rest} />
+                    <UttaksplanOppsummeringslisteNy
+                        navnPåForeldre={navnPåForeldre}
+                        registrerteArbeidsforhold={registrerteArbeidsforhold}
+                    />
                 </FormSummary.Answer>
-                {ønskerJustertUttakVedFødsel !== undefined && (
+                {uttaksplanMetadata.ønskerJustertUttakVedFødsel !== undefined && (
                     <FormSummary.Answer>
                         <FormSummary.Label>
                             <FormattedMessage
@@ -93,7 +103,11 @@ export const UttaksplanOppsummering = ({ dekningsgrad, antallBarn, onVilEndreSva
                             />
                         </FormSummary.Label>
                         <FormSummary.Value>
-                            {ønskerJustertUttakVedFødsel ? <FormattedMessage id="ja" /> : <FormattedMessage id="nei" />}
+                            {uttaksplanMetadata.ønskerJustertUttakVedFødsel ? (
+                                <FormattedMessage id="ja" />
+                            ) : (
+                                <FormattedMessage id="nei" />
+                            )}
                         </FormSummary.Value>
                     </FormSummary.Answer>
                 )}
