@@ -541,5 +541,6 @@
     "uttaksplan.vilDuGåTilbakeModal.spørsmål": "Ønsker du å gå tilbake?",
     "uttaksplan.vilDuGåTilbakeModal.tittel": "Planen din blir slettet.",
     "UttaksplanSteg.kalender": "Kalender",
-    "UttaksplanSteg.liste": "Liste"
+    "UttaksplanSteg.liste": "Liste",
+    "UttaksplanSteg.OvertrukketDager": "Du har lagt til for mange dager i planen"
 }

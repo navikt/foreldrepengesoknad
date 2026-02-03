@@ -8,6 +8,7 @@ import {
 import { API_URLS } from 'appData/queries';
 import ky from 'ky';
 import { useEffect } from 'react';
+import { useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
@@ -113,14 +114,17 @@ export const PlanleggerDataFetcher = () => {
 
 export const PlanleggerDataInit = () => {
     const locations = useLocation();
+    const intl = useIntl();
 
     const dataParam = new URLSearchParams(locations.search).get('data');
     const data = dataParam ? (JSON.parse(decodeBase64(dataParam)) as ContextDataMap) : undefined;
 
-    // Denne useEffecten kjøres for at skyra-undersøkelsen skal trigges på tilpass-planen siden
-    // og kan fjernes når skyra-undersøkelsen heller skal kjøres fra start-siden.
+    // Denne useEffecten kjøres for at skyra-undersøkelsen skal trigges inline på oppsummering-siden
     useEffect(() => {
-        if (locations.pathname.includes('tilpass-planen')) {
+        // Skyra støtter kun nb og nn
+        const isSupportedLocale = intl.locale === 'nb' || intl.locale === 'nn';
+
+        if (locations.pathname.includes('oppsummering') && isSupportedLocale) {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             if (typeof (globalThis as any).skyra?.reload === 'function') {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
@@ -132,7 +136,7 @@ export const PlanleggerDataInit = () => {
                 console.warn('skyra.reload() ikke tilgjengelig');
             }
         }
-    }, [locations.pathname]);
+    }, [locations.pathname, intl.locale]);
 
     return (
         <PlanleggerDataContext initialState={data}>

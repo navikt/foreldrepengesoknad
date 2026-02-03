@@ -20,10 +20,10 @@ import {
     getNavnPåForeldre,
 } from 'utils/HvemPlanleggerUtils';
 import { mapOmBarnetTilBarn } from 'utils/barnetUtils';
-import { utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
+import { HvemHarRett, utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
-import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
+import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, Box, Heading, InlineMessage, Tabs, ToggleGroup, VStack } from '@navikt/ds-react';
 
@@ -250,7 +250,7 @@ const AntallUkerVelger = ({
     lagreUttaksplanOgOppdaterUrl,
 }: {
     stønadskontoer: KontoBeregningResultatDto;
-    hvemHarRett: string;
+    hvemHarRett: HvemHarRett;
     lagreUttaksplanOgOppdaterUrl: (oppdatertUttaksplan: UttakPeriode_fpoversikt[] | undefined) => void;
 }) => {
     const intl = useIntl();
@@ -286,6 +286,14 @@ const AntallUkerVelger = ({
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
     const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
+
+    const uttaksdata = finnUttaksdata(
+        hvemHarRett,
+        hvemPlanlegger,
+        valgtStønadskonto,
+        omBarnet,
+        fordeling?.antallDagerSøker1,
+    );
 
     return (
         <VStack gap="space-24">
@@ -334,6 +342,7 @@ const AntallUkerVelger = ({
                                 antallUkerOgDagerFellesperiode={antallUkerOgDagerFellesperiode}
                                 fornavnSøker1={fornavnSøker1}
                                 fornavnSøker2={fornavnSøker2}
+                                uttaksdata={uttaksdata}
                             />
                         </BluePanel>
                         {antallUkerOgDagerFellesperiode.dager > 0 && (

@@ -10,6 +10,7 @@ import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
+import { periodFormat } from '@navikt/fp-utils/src/periodUtils';
 
 interface Props {
     barnet: OmBarnet;
@@ -42,7 +43,7 @@ export const FordelingsdetaljerPanel = ({
                 <CalendarIcon
                     height={24}
                     width={24}
-                    color="var(--ax-bg-neutral-strong)"
+                    color="var(--ax-text-neutral-strong)"
                     fontSize="1.5rem"
                     aria-hidden
                 />
@@ -96,47 +97,33 @@ export const FordelingsdetaljerPanel = ({
                         </BodyShort>
                     </>
                 )}
-                <BodyShort>
+                <BodyShort weight="semibold">
                     <FormattedMessage
                         id="FordelingsdetaljerPanel.Infoboks.Periode"
                         values={{
                             hvem: capitalizeFirstLetter(fornavnSøker1),
-                            fom: intl.formatDate(startdatoPeriode1, {
-                                day: 'numeric',
-                                month: 'short',
-                                year: 'numeric',
+                            periode: periodFormat(startdatoPeriode1, sluttdatoPeriode1, intl, {
+                                separator: '–',
+                                useShortMonth: true,
                             }),
-                            tom: intl.formatDate(sluttdatoPeriode1, {
-                                day: 'numeric',
-                                month: 'short',
-                                year: 'numeric',
-                            }),
-                            b: (b) => <b>{b}</b>,
                         }}
                     />
                 </BodyShort>
+                {fornavnSøker2 && sluttdatoPeriode2 && startdatoPeriode2 && (
+                    <BodyShort weight="semibold">
+                        <FormattedMessage
+                            id="FordelingsdetaljerPanel.Infoboks.Periode"
+                            values={{
+                                hvem: capitalizeFirstLetter(fornavnSøker2),
+                                periode: periodFormat(startdatoPeriode2, sluttdatoPeriode2, intl, {
+                                    separator: '–',
+                                    useShortMonth: true,
+                                }),
+                            }}
+                        />
+                    </BodyShort>
+                )}
             </VStack>
-            {fornavnSøker2 && sluttdatoPeriode2 && (
-                <BodyShort>
-                    <FormattedMessage
-                        id="FordelingsdetaljerPanel.Infoboks.Periode"
-                        values={{
-                            hvem: capitalizeFirstLetter(fornavnSøker2),
-                            fom: intl.formatDate(startdatoPeriode2, {
-                                day: 'numeric',
-                                month: 'short',
-                                year: 'numeric',
-                            }),
-                            tom: intl.formatDate(sluttdatoPeriode2, {
-                                day: 'numeric',
-                                month: 'short',
-                                year: 'numeric',
-                            }),
-                            b: (b) => <b>{b}</b>,
-                        }}
-                    />
-                </BodyShort>
-            )}
         </Infobox>
     );
 };

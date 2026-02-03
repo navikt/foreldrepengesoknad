@@ -1,0 +1,37 @@
+/* TODO: Vurder å snu på singel choice -skala-spørsmålet, slik at det er topp til bunn. 
+Avvent om skyra-teamet gjør det mulig å justere hvert enkelt kort for dette. */
+/* Det er bevisst valg at dette er en .css-fil og ikke .module.css, slik at man unngår 
+three shaking som vet css.modules. Må også ligge i denne mappen, for å ikke blir borte under build */
+
+skyra-survey {
+    --skyra-font-size: 20px;
+    --skyra-font-body: 'Source Sans Pro', Arial;
+    --skyra-font-weight-normal: 800;
+    --skyra-font-heading: 'Source Sans Pro', Arial;
+}
+
+skyra-survey::part(heading) {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 32px;
+    color: var(--ax-text-neutral);
+}
+
+skyra-survey::part(bodyHtml) {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--ax-text-neutral);
+}
+
+skyra-survey::part(button-primary) {
+    padding: 10px 25px;
+}
+
+skyra-survey::part(button-chip) {
+    padding: 5px 20px;
+}
+
+/* Vurder å justere dette dersom det ikke blir bra på mobil */
+/* skyra-survey::part(list-item) {
+    margin-bottom: 15px;
+} */

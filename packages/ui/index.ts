@@ -38,3 +38,4 @@ export { FrontPage } from './src/veivisere/frontpage/FrontPage';
 export { RegisterdataUtdatert } from './src/registerdata-utdatert/RegisterdataUtdatert';
 export { Spinner } from './src/loaders/Spinner';
 export { Slider } from './src/slider/Slider';
+export { PeriodLabel } from './src/period-label/PeriodLabel';
