@@ -8,7 +8,6 @@ import { FormattedMessage } from 'react-intl';
 import { Button, ErrorMessage, HStack, VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import type { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import {
@@ -67,17 +66,10 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         lukkRedigeringsmodus();
     };
 
-    const resetFormValuesVedEndringAvForelder = (forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {
-        formMethods.reset({ forelder });
-    };
-
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             <VStack gap="space-16">
-                <LeggTilEllerEndrePeriodeFellesForm
-                    valgtePerioder={sammenslåtteValgtePerioder}
-                    resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}
-                />
+                <LeggTilEllerEndrePeriodeFellesForm valgtePerioder={sammenslåtteValgtePerioder} />
                 {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
                 <HStack gap="space-8">
                     <Button type="button" variant="secondary" onClick={lukkRedigeringsmodus}>

@@ -47,7 +47,6 @@ export type LeggTilEllerEndrePeriodeFormFormValues = {
 
 interface Props {
     valgtePerioder: Array<{ fom: string; tom: string }>;
-    resetFormValuesVedEndringAvForelder: (forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => void;
 }
 
 const getSkalViseMorsAktivitetskravVedSamtidigUttak = (
@@ -75,7 +74,7 @@ const getSkalViseMorsAktivitetskravVedSamtidigUttak = (
     return skalViseMorsAktivitetskravVedSamtidigUttak;
 };
 
-export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAvForelder, valgtePerioder }: Props) => {
+export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder }: Props) => {
     const intl = useIntl();
 
     const {
@@ -156,6 +155,26 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
             </Alert>
         );
     }
+
+    const resetFormValuesVedEndringAvForelder = (forelderValue: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {
+        formMethods.reset({ forelder: forelderValue });
+    };
+
+    const resetStillingsprosentMor = () => {
+        if (forelder === 'MOR' || forelder === 'BEGGE') {
+            if (skalDuKombinereArbeidOgUttakMor === false) {
+                formMethods.resetField('stillingsprosentMor', undefined);
+            }
+        }
+    };
+
+    const resetStillingsprosentFarMedmor = () => {
+        if (forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') {
+            if (skalDuKombinereArbeidOgUttakFarMedmor === false) {
+                formMethods.resetField('stillingsprosentFarMedmor', undefined);
+            }
+        }
+    };
 
     return (
         <>
@@ -405,6 +424,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                                     }),
                                 ),
                             ]}
+                            onChange={resetStillingsprosentMor}
                         >
                             <Radio value={true}>
                                 <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Ja" />
@@ -459,6 +479,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                                     ),
                                 ),
                             ]}
+                            onChange={resetStillingsprosentFarMedmor}
                         >
                             <Radio value={true}>
                                 <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Ja" />
