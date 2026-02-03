@@ -2,6 +2,7 @@ import { CalendarIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { groupBy, partition, sortBy, sumBy } from 'lodash';
+import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import {
@@ -282,9 +283,9 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                         const måned = capitalizeFirstLetter(formaterDato(førsteDato, 'MMMM'));
                         const skalViseÅr = index === 0 || dayjs(førsteDato).month() === 0;
                         return (
-                            <>
+                            <React.Fragment key={førsteDato}>
                                 {skalViseÅr && <Label className="mt-4">{dayjs(førsteDato).year()}</Label>}
-                                <ExpansionCard key={index} aria-label={måned}>
+                                <ExpansionCard aria-label={måned} data-testid={`expansioncard-${måned}`}>
                                     <ExpansionCard.Header>
                                         <HStack wrap={false} gap="space-16" align="center">
                                             <div>
@@ -360,7 +361,7 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                         </Table>
                                     </ExpansionCard.Content>
                                 </ExpansionCard>
-                            </>
+                            </React.Fragment>
                         );
                     },
                 )}
