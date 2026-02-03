@@ -255,10 +255,9 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
             <Heading size="medium" as="h2">
                 Utbetalingsplan
             </Heading>
-            <BodyShort spacing>
-                Utbetalingene som vises her er beregnet ut fra det siste vedtaket. Hvis du gjør endringer i
-                foreldrepengene dine, vil dette kunne endre utbetalingene. Beregningene er før skatt og eventuelle
-                trekk. Hvis vi betaler foreldrepenger til deg, vil du se hva vi trekker deg i skatt i
+            <BodyShort>
+                Beregningene er før skatt og eventuelle trekk. Hvis vi betaler foreldrepenger til deg, vil du se hva vi
+                trekker deg i skatt i{' '}
                 <Link href="https://www.nav.no/utbetalingsoversikt">utbetalingsoversikten din.</Link> På{' '}
                 <Link href="https://www.nav.no/utbetalinger">nav.no/utbetalinger</Link> finner du våre
                 utbetalingsdatoer.
@@ -275,71 +274,77 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                             sumBy(d.andeler, (andel) => (andel.tilBruker ? 0 : andel.dagsats)),
                         );
 
-                        const måned = capitalizeFirstLetter(formaterDato(dager[0]!.dato, 'MMMM'));
-
+                        const førsteDato = dager[0]!.dato;
+                        const måned = capitalizeFirstLetter(formaterDato(førsteDato, 'MMMM'));
+                        const skalViseÅr = index === 0 || dayjs(førsteDato).month() === 0;
                         return (
-                            <ExpansionCard key={index} aria-label={måned}>
-                                <ExpansionCard.Header>
-                                    <HStack wrap={false} gap="space-16" align="center">
-                                        <div>
-                                            <CalendarIcon
-                                                className="text-ax-border-accent"
-                                                aria-hidden
-                                                fontSize="2rem"
-                                            />
-                                        </div>
-                                        <div>
-                                            <ExpansionCard.Title size="medium">{måned}</ExpansionCard.Title>
-                                            <ExpansionCard.Description>
-                                                {totaltForMånedenTilDeg > 0 && (
-                                                    <>
+                            <>
+                                {skalViseÅr && <Label className="mt-4">{dayjs(førsteDato).year()}</Label>}
+                                <ExpansionCard key={index} aria-label={måned}>
+                                    <ExpansionCard.Header>
+                                        <HStack wrap={false} gap="space-16" align="center">
+                                            <div>
+                                                <CalendarIcon
+                                                    className="text-ax-border-accent"
+                                                    aria-hidden
+                                                    fontSize="2rem"
+                                                />
+                                            </div>
+                                            <div>
+                                                <ExpansionCard.Title size="medium">{måned}</ExpansionCard.Title>
+                                                <ExpansionCard.Description>
+                                                    {totaltForMånedenTilDeg > 0 && (
+                                                        <>
+                                                            <BodyShort as="span">
+                                                                Utbetales direkte til deg:{' '}
+                                                                {formatCurrencyWithKr(totaltForMånedenTilDeg)}
+                                                            </BodyShort>
+                                                            <br />
+                                                        </>
+                                                    )}
+                                                    {totaltForMånedenTilAG > 0 && (
                                                         <BodyShort as="span">
-                                                            Utbetales direkte til deg:{' '}
-                                                            {formatCurrencyWithKr(totaltForMånedenTilDeg)}
+                                                            Utbetales til arbeidsgiver:{' '}
+                                                            {formatCurrencyWithKr(totaltForMånedenTilAG)}
                                                         </BodyShort>
-                                                        <br />
-                                                    </>
-                                                )}
-                                                {totaltForMånedenTilAG > 0 && (
-                                                    <BodyShort as="span">
-                                                        Utbetales til arbeidsgiver:{' '}
-                                                        {formatCurrencyWithKr(totaltForMånedenTilAG)}
-                                                    </BodyShort>
-                                                )}
-                                            </ExpansionCard.Description>
-                                        </div>
-                                    </HStack>
-                                </ExpansionCard.Header>
+                                                    )}
+                                                </ExpansionCard.Description>
+                                            </div>
+                                        </HStack>
+                                    </ExpansionCard.Header>
 
-                                <ExpansionCard.Content>
-                                    <Table size="small">
-                                        <Table.Header>
-                                            <Table.Row>
-                                                <Table.HeaderCell scope="col">Dato</Table.HeaderCell>
-                                                <Table.HeaderCell align="right" scope="col">
-                                                    Beløp
-                                                </Table.HeaderCell>
-                                            </Table.Row>
-                                        </Table.Header>
-                                        <Table.Body>
-                                            {dager.map((dag) => {
-                                                const erUtbetalingsdag = erUttaksdag(new Date(dag.dato));
-                                                const beløp = sumBy(dag.andeler, (andel) => andel.dagsats);
-                                                const beløpTekst = erUtbetalingsdag ? formatCurrencyWithKr(beløp) : '-';
+                                    <ExpansionCard.Content>
+                                        <Table size="small">
+                                            <Table.Header>
+                                                <Table.Row>
+                                                    <Table.HeaderCell scope="col">Dato</Table.HeaderCell>
+                                                    <Table.HeaderCell align="right" scope="col">
+                                                        Beløp
+                                                    </Table.HeaderCell>
+                                                </Table.Row>
+                                            </Table.Header>
+                                            <Table.Body>
+                                                {dager.map((dag) => {
+                                                    const erUtbetalingsdag = erUttaksdag(new Date(dag.dato));
+                                                    const beløp = sumBy(dag.andeler, (andel) => andel.dagsats);
+                                                    const beløpTekst = erUtbetalingsdag
+                                                        ? formatCurrencyWithKr(beløp)
+                                                        : '-';
 
-                                                return (
-                                                    <Table.Row key={dag.dato}>
-                                                        <Table.HeaderCell scope="row">
-                                                            {formaterDato(dag.dato, 'DD. MMM')}
-                                                        </Table.HeaderCell>
-                                                        <Table.DataCell align="right">{beløpTekst}</Table.DataCell>
-                                                    </Table.Row>
-                                                );
-                                            })}
-                                        </Table.Body>
-                                    </Table>
-                                </ExpansionCard.Content>
-                            </ExpansionCard>
+                                                    return (
+                                                        <Table.Row key={dag.dato}>
+                                                            <Table.HeaderCell scope="row">
+                                                                {formaterDato(dag.dato, 'DD. MMM')}
+                                                            </Table.HeaderCell>
+                                                            <Table.DataCell align="right">{beløpTekst}</Table.DataCell>
+                                                        </Table.Row>
+                                                    );
+                                                })}
+                                            </Table.Body>
+                                        </Table>
+                                    </ExpansionCard.Content>
+                                </ExpansionCard>
+                            </>
                         );
                     },
                 )}
