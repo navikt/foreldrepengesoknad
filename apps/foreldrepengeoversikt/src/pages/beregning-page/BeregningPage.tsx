@@ -253,14 +253,15 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
     return (
         <VStack gap="space-4">
             <Heading size="medium" as="h2">
-                Utbetalingsplan
+                <FormattedMessage id="beregning.utbetalingsvisning.tittel" />
             </Heading>
             <BodyShort>
-                Beregningene er før skatt og eventuelle trekk. Hvis vi betaler foreldrepenger til deg, vil du se hva vi
-                trekker deg i skatt i{' '}
-                <Link href="https://www.nav.no/utbetalingsoversikt">utbetalingsoversikten din.</Link> På{' '}
-                <Link href="https://www.nav.no/utbetalinger">nav.no/utbetalinger</Link> finner du våre
-                utbetalingsdatoer.
+                <FormattedMessage id="beregning.utbetalingsvisning.beskrivelse" />{' '}
+                <Link href="https://www.nav.no/utbetalingsoversikt">
+                    <FormattedMessage id="beregning.utbetalingsvisning.utbetalingsoversikt" />
+                </Link>{' '}
+                <FormattedMessage id="beregning.utbetalingsvisning.utbetalingsdatoer" />{' '}
+                <Link href="https://www.nav.no/utbetalinger">nav.no/utbetalinger</Link>
             </BodyShort>
             <VStack gap="space-16">
                 {sortBy(Object.values(andelerPerDagGruppertPåMåned), (dager) => dayjs(dager[0]!.dato).unix()).map(
@@ -296,7 +297,7 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                                     {totaltForMånedenTilDeg > 0 && (
                                                         <>
                                                             <BodyShort as="span">
-                                                                Utbetales direkte til deg:{' '}
+                                                                <FormattedMessage id="beregning.utbetalingsvisning.direkte" />{' '}
                                                                 {formatCurrencyWithKr(totaltForMånedenTilDeg)}
                                                             </BodyShort>
                                                             <br />
@@ -304,7 +305,7 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                                     )}
                                                     {totaltForMånedenTilAG > 0 && (
                                                         <BodyShort as="span">
-                                                            Utbetales til arbeidsgiver:{' '}
+                                                            <FormattedMessage id="beregning.utbetalingsvisning.arbeidsgiver" />{' '}
                                                             {formatCurrencyWithKr(totaltForMånedenTilAG)}
                                                         </BodyShort>
                                                     )}
@@ -317,9 +318,11 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                         <Table size="small">
                                             <Table.Header>
                                                 <Table.Row>
-                                                    <Table.HeaderCell scope="col">Dato</Table.HeaderCell>
+                                                    <Table.HeaderCell scope="col">
+                                                        <FormattedMessage id="beregning.utbetalingsvisning.tabell.dato" />
+                                                    </Table.HeaderCell>
                                                     <Table.HeaderCell align="right" scope="col">
-                                                        Beløp
+                                                        <FormattedMessage id="beregning.utbetalingsvisning.tabell.beløp" />
                                                     </Table.HeaderCell>
                                                 </Table.Row>
                                             </Table.Header>
@@ -355,19 +358,19 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
 
 const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
     const feriepenger = sak.gjeldendeVedtak?.tilkjentYtelse.feriepenger ?? [];
+    const intl = useIntl();
 
     if (feriepenger.length === 0) {
         return (
             <VStack>
                 <Heading as="h2" size="medium" spacing>
-                    Feriepenger
+                    <FormattedMessage id="beregning.feriepenger.tittel" />
                 </Heading>
                 <BodyShort>
-                    Du har ikke rett på feriepenger av foreldrepengene dine. Her kan du lese mer om hvem som har rett på
-                    feriepenger.
+                    <FormattedMessage id="beregning.feriepenger.ikkeRett" />
                 </BodyShort>
                 <Link href="https://www.nav.no/feriepenger#foreldrepenger">
-                    Her kan du lese mer om feriepenger av foreldrepenger.
+                    <FormattedMessage id="beregning.feriepenger.lenkeTekst" />
                 </Link>
             </VStack>
         );
@@ -378,13 +381,12 @@ const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
     return (
         <VStack>
             <Heading as="h2" size="medium" spacing>
-                Feriepenger
+                <FormattedMessage id="beregning.feriepenger.tittel" />
             </Heading>
             <BodyShort>
-                Du har rett på feriepenger av foreldrepengene dine. Feriepengene er 10,2&nbsp;% av det som er utbetalt
-                de første 12 eller 15 ukene av den totale perioden med foreldrepenger.
+                <FormattedMessage id="beregning.feriepenger.harRett" />{' '}
                 <Link href="https://www.nav.no/feriepenger#foreldrepenger">
-                    Her kan du lese mer om feriepenger av foreldrepenger.
+                    <FormattedMessage id="beregning.feriepenger.lenkeTekst" />
                 </Link>
             </BodyShort>
             {Object.entries(feriepengerEtterÅr).map(([år, andeler]) => {
@@ -398,24 +400,41 @@ const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
 
                 return (
                     <VStack key={år} className="mt-4">
-                        <Label>Opptjent i {år}</Label>
+                        <Label>
+                            <FormattedMessage id="beregning.feriepenger.opptjentI" values={{ år: år }} />
+                        </Label>
                         {totalUtbetaltTilBruker > 0 && (
-                            <BodyShort>{formatCurrencyWithKr(totalUtbetaltTilBruker)} som vi betaler til deg</BodyShort>
+                            <BodyShort>
+                                {formatCurrencyWithKr(totalUtbetaltTilBruker)}{' '}
+                                <FormattedMessage id="beregning.feriepenger.utbetaltTilDeg" />
+                            </BodyShort>
                         )}
                         {totalUtbetaltTilAG > 0 && (
                             <BodyShort>
-                                {formatCurrencyWithKr(totalUtbetaltTilAG)} som vi betaler til arbeidsgiveren din
+                                {formatCurrencyWithKr(totalUtbetaltTilAG)}{' '}
+                                <FormattedMessage id="beregning.feriepenger.utbetaltTilAG" />
                             </BodyShort>
                         )}
 
                         {betalerBareTilbruker && (
-                            <BodyShort>Vi utbetaler direkte til deg innen utgangen av mai {Number(år) + 1}.</BodyShort>
+                            <BodyShort>
+                                <FormattedMessage
+                                    id="beregning.feriepenger.utbetalingDato.bareTilDeg"
+                                    values={{ år: Number(år) + 1 }}
+                                />
+                            </BodyShort>
                         )}
-                        {betalerBareTilAG && <BodyShort>Vi utbetaler til din arbeidsgiver.</BodyShort>}
+                        {betalerBareTilAG && (
+                            <BodyShort>
+                                <FormattedMessage id="beregning.feriepenger.utbetalingDato.bareAG" />
+                            </BodyShort>
+                        )}
                         {betalerTilBegge && (
                             <BodyShort>
-                                Vi utbetaler direkte til deg innen utgangen av mai {Number(år) + 1} og litt senere til
-                                arbeidsgiveren din
+                                <FormattedMessage
+                                    id="beregning.feriepenger.utbetalingDato.begge"
+                                    values={{ år: Number(år) + 1 }}
+                                />
                             </BodyShort>
                         )}
                     </VStack>
