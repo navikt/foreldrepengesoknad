@@ -321,7 +321,7 @@
     "beregning.aktivitetStatus.militaerEllerSivil": "siviltjeneste eller førstegangstjeneste",
     "beregning.aktivitetStatus.selvstendigNaeringsdrivende": "næringsdrivende",
     "beregning.utbetalingsvisning.tittel": "Utbetalingsplan",
-    "beregning.utbetalingsvisning.fullBeskrivelse": "Beregningene er før skatt og eventuelle trekk. Hvis vi betaler foreldrepenger til deg, vil du se hva vi trekker deg i skatt i <link1>{link1Tekst}</link1>. På <link2>{link2Tekst}</link2> finner du våre utbetalingsdatoer.",
+    "beregning.utbetalingsvisning.fullBeskrivelse": "Beregningene er før skatt og eventuelle trekk. Hvis vi betaler foreldrepenger til deg, vil du se hva vi trekker deg i skatt i <link1>utbetalingsoversikten din.</link1> På <link2>nav.no/utbetalinger</link2> finner du våre utbetalingsdatoer.",
     "beregning.utbetalingsvisning.tabell.dato": "Dato",
     "beregning.utbetalingsvisning.tabell.beløp": "Beløp",
     "beregning.utbetalingsvisning.direkte": "Utbetales direkte til deg: {beløp}",

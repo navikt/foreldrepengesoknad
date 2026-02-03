@@ -31,6 +31,7 @@ import {
     formatCurrency,
     formatCurrencyWithKr,
     formatOppramsing,
+    getDecoratorLanguageCookie,
 } from '@navikt/fp-utils';
 
 import { DinSakHeader } from '../../components/header/Header.tsx';
@@ -42,6 +43,7 @@ import { OversiktRoutes } from '../../routes/routes.ts';
 import { formaterDato } from '../../utils/dateUtils.ts';
 
 dayjs.extend(isSameOrBefore);
+dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
 
 export const BeregningPage = () => {
     const gjeldendeSak = useGetSelectedSak();
@@ -256,12 +258,13 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                 <FormattedMessage id="beregning.utbetalingsvisning.tittel" />
             </Heading>
             <BodyShort>
-                <FormattedMessage id="beregning.utbetalingsvisning.beskrivelse" />{' '}
-                <Link href="https://www.nav.no/utbetalingsoversikt">
-                    <FormattedMessage id="beregning.utbetalingsvisning.utbetalingsoversikt" />
-                </Link>{' '}
-                <FormattedMessage id="beregning.utbetalingsvisning.utbetalingsdatoer" />{' '}
-                <Link href="https://www.nav.no/utbetalinger">nav.no/utbetalinger</Link>
+                <FormattedMessage
+                    id="beregning.utbetalingsvisning.fullBeskrivelse"
+                    values={{
+                        link1: (chunks) => <Link href="https://www.nav.no/utbetalingsoversikt">{chunks}</Link>,
+                        link2: (chunks) => <Link href="https://www.nav.no/utbetalinger">{chunks}</Link>,
+                    }}
+                />
             </BodyShort>
             <VStack gap="space-16">
                 {sortBy(Object.values(andelerPerDagGruppertPåMåned), (dager) => dayjs(dager[0]!.dato).unix()).map(
