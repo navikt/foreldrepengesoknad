@@ -50,12 +50,12 @@ export const UforutsetteEndringer = ({ hvemPlanlegger, barnet, arbeidssituasjon 
                                 arbeidssituasjon={arbeidssituasjon}
                             />
 
-                            <NyttBarnFørTreÅr />
+                            <NyttBarnFørTreÅr arbeidssituasjon={arbeidssituasjon} hvemPlanlegger={hvemPlanlegger} />
                         </>
                     ) : (
                         <>
                             <HvisManBlirSyk arbeidssituasjon={arbeidssituasjon} />
-                            <NyttBarnFørTreÅr />
+                            <NyttBarnFørTreÅr arbeidssituasjon={arbeidssituasjon} hvemPlanlegger={hvemPlanlegger} />
                         </>
                     )}
                 </VStack>
