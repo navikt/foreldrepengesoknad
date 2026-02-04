@@ -45,6 +45,11 @@ describe('<BeregningPage>', () => {
             setHandlers(BeregningDirekteUtbetaling.parameters.msw);
             render(<BeregningDirekteUtbetaling />);
 
+            expect(await screen.findByText('Nav har fastsatt årsinntekten din til: 960 000 kr')).toBeInTheDocument();
+            expect(
+                await screen.findByText('Nav kompenserer deg ikke for inntekt over: 780 960 kr (6G)'),
+            ).toBeInTheDocument();
+
             expect(await screen.findByText('Utbetalingsplan')).toBeInTheDocument();
             const januarExpansionCard = await screen.findByTestId('expansioncard-November');
             expect(within(januarExpansionCard).getByText('Utbetales direkte til deg: 39 052 kr')).toBeInTheDocument();
