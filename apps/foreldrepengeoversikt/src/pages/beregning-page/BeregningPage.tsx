@@ -30,7 +30,6 @@ import {
     erUttaksdag,
     formatCurrency,
     formatCurrencyWithKr,
-    formatOppramsing,
     getDecoratorLanguageCookie,
 } from '@navikt/fp-utils';
 
@@ -94,8 +93,6 @@ export const BeregningPage = () => {
 };
 
 const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
-    const intl = useIntl();
-
     const beregning = sak.gjeldendeVedtak?.beregningsgrunnlag;
     if (!beregning) {
         return null;
@@ -110,13 +107,6 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
     const sumDagsats = sumBy(beregning.beregningsAndeler, (a) => (a.dagsatsSøker ?? 0) + (a.dagsatsArbeidsgiver ?? 0));
     const finnesRefusjon = beregning.beregningsAndeler.some((a) => (a.dagsatsArbeidsgiver ?? 0) > 0);
     const finnesDirekteutbetaling = beregning.beregningsAndeler.some((a) => (a.dagsatsSøker ?? 0) > 0);
-    const utbetalingsmetodeTekst = formatOppramsing(
-        [
-            finnesRefusjon && intl.formatMessage({ id: 'beregning.utbetalingsTekst.arbeidsgiver' }),
-            finnesDirekteutbetaling && intl.formatMessage({ id: 'beregning.utbetalingsTekst.deg' }),
-        ].filter((a) => a !== false),
-        intl,
-    );
 
     return (
         <VStack>
@@ -131,6 +121,8 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
                     id="beregning.datoForVurdering"
                     values={{ dato: formaterDato(beregning.skjæringsTidspunkt, 'D. MMMM YYYY') }}
                 />
+                <br />
+                <FormattedMessage id="beregning.datoForVurdering.fortsettelse" />
             </Label>
 
             {vis6GVarsel && (
@@ -150,7 +142,23 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
                 </BodyShort>
             )}
 
-            <BodyShort spacing>{capitalizeFirstLetter(utbetalingsmetodeTekst)}</BodyShort>
+            {finnesRefusjon && !finnesDirekteutbetaling && (
+                <BodyShort>
+                    <FormattedMessage id="beregning.utbetalingsTekst.arbeidsgiver" />
+                </BodyShort>
+            )}
+            {!finnesRefusjon && finnesDirekteutbetaling && (
+                <BodyShort>
+                    <FormattedMessage id="beregning.utbetalingsTekst.deg" />
+                </BodyShort>
+            )}
+            {finnesRefusjon && finnesDirekteutbetaling && (
+                <BodyShort>
+                    <BodyShort>
+                        <FormattedMessage id="beregning.utbetalingsTekst.degOgArbeidsgiver" />
+                    </BodyShort>
+                </BodyShort>
+            )}
 
             <Label>
                 <FormattedMessage id="beregning.dagsats" values={{ sumDagsats: formatCurrencyWithKr(sumDagsats) }} />
@@ -168,6 +176,12 @@ const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: n
                 <Accordion.Header>
                     <FormattedMessage id="beregning.forklaringer.hvaErDagsatsen" />
                 </Accordion.Header>
+                <Accordion.Content>TODO</Accordion.Content>
+            </Accordion.Item>
+            <Accordion.Item>
+                <Accordion.Header>
+                    <FormattedMessage id="beregning.forklaringer.ytelserBareOppTil6G" />
+                </Accordion.Header>
                 <Accordion.Content>
                     <FormattedMessage
                         id="beregning.forklaringer.hvaErDagsatsen.innhold"
@@ -175,13 +189,7 @@ const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: n
                             grunnbeløpSeksG: formatCurrency(grunnbeløp * 6),
                         }}
                     />
-                </Accordion.Content>
-            </Accordion.Item>
-            <Accordion.Item>
-                <Accordion.Header>
-                    <FormattedMessage id="beregning.forklaringer.ytelserBareOppTil6G" />
-                </Accordion.Header>
-                <Accordion.Content>
+                    <br />
                     <FormattedMessage id="beregning.forklaringer.ytelserBareOppTil6G.innhold" />
                 </Accordion.Content>
             </Accordion.Item>
