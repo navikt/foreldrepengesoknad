@@ -22,7 +22,6 @@ import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import {
     AktivitetStatus,
     BeregningsAndel_fpoversikt,
-    Beregningsgrunnlag_fpoversikt,
     FpSak_fpoversikt,
     TilkjentYtelsePeriode_fpoversikt,
 } from '@navikt/fp-types';
@@ -73,9 +72,6 @@ export const BeregningPage = () => {
                         <ExpansionCard.Title>
                             <FormattedMessage id="beregning.tittel" />
                         </ExpansionCard.Title>
-                        <ExpansionCard.Description>
-                            <BeregningStatuser beregning={beregning} />
-                        </ExpansionCard.Description>
                     </ExpansionCard.Header>
                     <ExpansionCard.Content>
                         <VStack gap="space-16">
@@ -515,14 +511,4 @@ const finnStatus = (status: AktivitetStatus, intl: ReturnType<typeof useIntl>) =
         case 'TILSTØTENDE_YTELSE':
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.ytelse' });
     }
-};
-
-const BeregningStatuser = ({ beregning }: { beregning: Beregningsgrunnlag_fpoversikt }) => {
-    const intl = useIntl();
-    const statuser = beregning.beregningAktivitetStatuser.map((status) => {
-        return finnStatus(status.aktivitetStatus, intl);
-    });
-    return (
-        <FormattedMessage id="beregning.beregningStatuser" values={{ statuser: formatOppramsing(statuser, intl) }} />
-    );
 };
