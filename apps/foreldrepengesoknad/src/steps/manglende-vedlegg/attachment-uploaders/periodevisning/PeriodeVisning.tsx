@@ -54,20 +54,19 @@ export const PeriodeVisning = ({
 
     return (
         <HStack gap="space-24" align="center">
-            {getPeriodeIkon(periode, navnPåForeldre, erFarEllerMedmor)}
+            <PeriodeIkon periode={periode} navnPåForeldre={navnPåForeldre} erFarEllerMedmor={erFarEllerMedmor} />
             <HStack justify="space-between" className="w-110">
                 <VStack gap="space-4">
                     <Label as="h4">
-                        {getPeriodeTittel(
-                            intl,
-                            periode,
-                            navnPåForeldre,
-                            familiehendelsesdato,
-                            termindato,
-                            situasjon,
-                            erFarEllerMedmor,
-                            erAleneOmOmsorg,
-                        )}
+                        <PeriodeTittel
+                            periode={periode}
+                            navnPåForeldre={navnPåForeldre}
+                            familiehendelsesdato={familiehendelsesdato}
+                            termindato={termindato}
+                            situasjon={situasjon}
+                            erFarEllerMedmor={erFarEllerMedmor}
+                            erAleneOmOmsorg={erAleneOmOmsorg}
+                        />
                     </Label>
                     <BodyShort>{varighetString}</BodyShort>
                 </VStack>
@@ -80,14 +79,15 @@ export const PeriodeVisning = ({
     );
 };
 
-const getPeriodeIkon = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-    navnPåForeldre: NavnPåForeldre,
-    erFarEllerMedmor: boolean,
-    harMidlertidigOmsorg?: boolean,
-    situasjon?: Situasjon,
-    erAleneOmOmsorg?: boolean,
-): React.ReactNode | undefined => {
+const PeriodeIkon = ({
+    periode,
+    navnPåForeldre,
+    erFarEllerMedmor,
+}: {
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
+    navnPåForeldre: NavnPåForeldre;
+    erFarEllerMedmor: boolean;
+}): React.ReactNode | null => {
     const erUttak = erIkkeEøsPeriode(periode) && erUttaksperiode(periode);
     if (erUttak) {
         if (periode.resultat?.årsak === 'INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID') {
@@ -100,10 +100,7 @@ const getPeriodeIkon = (
                 forelder={periode.forelder}
                 gradert={!!periode.gradering}
                 navnPåForeldre={navnPåForeldre}
-                harMidlertidigOmsorg={harMidlertidigOmsorg}
                 erFarEllerMedmor={erFarEllerMedmor}
-                situasjon={situasjon}
-                erAleneOmOmsorg={erAleneOmOmsorg}
             />
         );
     }
@@ -134,7 +131,7 @@ const getPeriodeIkon = (
         );
     }
 
-    return undefined;
+    return null;
 };
 
 type VarighetFormat = 'full' | 'normal';
@@ -189,16 +186,25 @@ const renderDagMnd = (dato: string, visÅr = true): JSX.Element => {
     );
 };
 
-const getPeriodeTittel = (
-    intl: IntlShape,
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-    navnPåForeldre: NavnPåForeldre,
-    familiehendelsesdato: string,
-    termindato: string | undefined,
-    situasjon: Situasjon,
-    erFarEllerMedmor: boolean,
-    erAleneOmOmsorg?: boolean,
-): string => {
+const PeriodeTittel = ({
+    periode,
+    navnPåForeldre,
+    familiehendelsesdato,
+    termindato,
+    situasjon,
+    erFarEllerMedmor,
+    erAleneOmOmsorg,
+}: {
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
+    navnPåForeldre: NavnPåForeldre;
+    familiehendelsesdato: string;
+    termindato: string | undefined;
+    situasjon: Situasjon;
+    erFarEllerMedmor: boolean;
+    erAleneOmOmsorg?: boolean;
+}) => {
+    const intl = useIntl();
+
     const erUttak = erIkkeEøsPeriode(periode) && erUttaksperiode(periode);
     if (erUttak) {
         return getPeriodeTittelUttaksPeriode(

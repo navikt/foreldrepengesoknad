@@ -109,8 +109,8 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
 
     const erPlanenEndret =
         uttaksplan !== undefined &&
-        uttaksplan.length !== defaultUttaksperioder.length &&
-        defaultUttaksperioder.some((defaultPeriode) => !erPeriodeIOpprinneligPlan(uttaksplan, defaultPeriode));
+        (uttaksplan.length !== defaultUttaksperioder.length ||
+            defaultUttaksperioder.some((defaultPeriode) => !erPeriodeIOpprinneligPlan(uttaksplan, defaultPeriode)));
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>

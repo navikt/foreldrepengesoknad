@@ -3,7 +3,7 @@ import { IntlShape, useIntl } from 'react-intl';
 
 import { Box } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Situasjon } from '@navikt/fp-common';
+import { NavnPåForeldre } from '@navikt/fp-common';
 import { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
 import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
@@ -15,24 +15,13 @@ interface Props {
     gradert?: boolean;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
-    situasjon?: Situasjon;
-    erAleneOmOmsorg?: boolean;
-    harMidlertidigOmsorg?: boolean;
 }
 
-export const StønadskontoIkon = ({
-    konto,
-    forelder,
-    gradert,
-    navnPåForeldre,
-    harMidlertidigOmsorg,
-    erFarEllerMedmor,
-    erAleneOmOmsorg,
-}: Props) => {
+export const StønadskontoIkon = ({ konto, forelder, gradert, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
     return (
         <Box
-            background={getUttaksperiodeFarge(konto, forelder, erFarEllerMedmor, harMidlertidigOmsorg)}
+            background={getUttaksperiodeFarge(konto, forelder, erFarEllerMedmor)}
             borderColor={gradert ? 'accent-strong' : undefined}
             borderRadius="full"
             padding="space-4"
@@ -40,7 +29,7 @@ export const StønadskontoIkon = ({
         >
             <UttaksplanIkon
                 ikon={UttaksplanIkonKeys.uttak}
-                title={getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg)}
+                title={getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor)}
             />
         </Box>
     );
@@ -70,12 +59,7 @@ const getUttaksperiodeFarge = (
     konto: KontoTypeUttak | undefined,
     forelder: BrukerRolleSak_fpoversikt | undefined,
     erFarEllerMedmor: boolean,
-    harMidlertidigOmsorg?: boolean,
 ): ComponentProps<typeof Box>['background'] => {
-    if (harMidlertidigOmsorg) {
-        return erFarEllerMedmor ? 'success-strong' : 'accent-strong';
-    }
-
     if (forelder === undefined) {
         return getKontoFarge(konto, erFarEllerMedmor);
     }

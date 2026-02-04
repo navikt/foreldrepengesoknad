@@ -371,7 +371,7 @@ export const getSøknadsdataForInnsendingNy = (
     if (erEndringssøknad) {
         return cleanEndringssøknadNy(hentData, søkerinfo, eksisterendeSak);
     } else {
-        return cleanSøknadNy(hentData, søkerinfo, eksisterendeSak);
+        return cleanSøknadNy(hentData, søkerinfo);
     }
 };
 
@@ -420,7 +420,6 @@ export const cleanSøknad = (
 export const cleanSøknadNy = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
-    eksisterendeSak?: FpSak_fpoversikt,
 ): ForeldrepengesøknadDto => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
@@ -447,7 +446,7 @@ export const cleanSøknadNy = (
         annenForelder: cleanAnnenforelder(annenForelder),
         dekningsgrad,
         uttaksplan: {
-            uttaksperioder: midlertidigMappingAvUttaksplan(filtrerUtUendredePeriode(uttaksplan, eksisterendeSak)),
+            uttaksperioder: midlertidigMappingAvUttaksplan(uttaksplan),
             ønskerJustertUttakVedFødsel,
         },
         utenlandsopphold: (utenlandsoppholdSiste12Mnd ?? []).concat(utenlandsoppholdNeste12Mnd ?? []),

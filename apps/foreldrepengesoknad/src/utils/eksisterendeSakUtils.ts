@@ -601,7 +601,7 @@ export const erPeriodeIOpprinneligSak = (
     eksisterendeSak: FpSak_fpoversikt,
     nyPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
 ): boolean => {
-    const eksisterendePerioder = [];
+    const eksisterendePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> = [];
     if (eksisterendeSak?.gjeldendeVedtak?.perioder !== undefined) {
         eksisterendePerioder.push(...eksisterendeSak.gjeldendeVedtak.perioder);
     }
