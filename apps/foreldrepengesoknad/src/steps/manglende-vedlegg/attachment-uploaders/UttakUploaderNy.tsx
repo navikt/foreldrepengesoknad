@@ -59,12 +59,14 @@ export const UttakUploaderNy = ({
         }
     }, [updateAttachments, perioder, formAttachments, attachmentType, skjemanummer]);
 
+    const renderedDescription = typeof description === 'string' ? <BodyLong>{description}</BodyLong> : description;
+
     return (
         <FileUploader
             label={labelText}
             description={
                 <>
-                    <BodyLong>{description}</BodyLong>
+                    {renderedDescription}
                     {perioder.map((p) => {
                         return (
                             <div key={p.fom + p.tom + p.kontoType} className="my-4">

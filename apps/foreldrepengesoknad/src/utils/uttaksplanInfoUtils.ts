@@ -54,10 +54,10 @@ export const getUttaksprosentFromStillingsprosent = (
     stillingsPst: number | undefined,
     samtidigUttakPst: number | undefined,
 ): number | undefined => {
-    if (samtidigUttakPst) {
+    if (samtidigUttakPst !== undefined) {
         return samtidigUttakPst;
     }
-    if (stillingsPst) {
+    if (stillingsPst !== undefined) {
         let prosent = (100 - stillingsPst) * 100;
         prosent = Math.round(prosent) / 100;
 
