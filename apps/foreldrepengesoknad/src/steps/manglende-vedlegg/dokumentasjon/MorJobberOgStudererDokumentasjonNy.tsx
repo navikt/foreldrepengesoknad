@@ -3,7 +3,7 @@ import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
 import { BodyShort, Box, List } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Situasjon } from '@navikt/fp-common';
+import { NavnPåForeldre } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
@@ -14,9 +14,6 @@ interface Props {
     updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
     perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     navnPåForeldre: NavnPåForeldre;
-    familiehendelsesdato: string;
-    termindato: string | undefined;
-    situasjon: Situasjon;
 }
 
 export const MorJobberOgStudererDokumentasjonNy = ({
@@ -24,9 +21,6 @@ export const MorJobberOgStudererDokumentasjonNy = ({
     updateAttachments,
     perioder,
     navnPåForeldre,
-    familiehendelsesdato,
-    situasjon,
-    termindato,
 }: Props) => {
     const intl = useIntl();
 
@@ -40,9 +34,6 @@ export const MorJobberOgStudererDokumentasjonNy = ({
             updateAttachments={updateAttachments(Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR)}
             perioder={perioder}
             navnPåForeldre={navnPåForeldre}
-            familiehendelsesdato={familiehendelsesdato}
-            termindato={termindato}
-            situasjon={situasjon}
             skjemanummer={Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR}
             labelText={intl.formatMessage({ id: 'manglendeVedlegg.studererOgJobber.label' })}
             description={

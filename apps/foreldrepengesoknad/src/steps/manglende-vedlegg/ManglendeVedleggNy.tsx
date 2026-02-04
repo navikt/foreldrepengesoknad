@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'types/VedleggDataType';
-import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import { perioderSomKreverVedleggNy } from 'utils/manglendeVedleggUtils';
 import { getErSøkerFarEllerMedmor, getNavnPåForeldre } from 'utils/personUtils';
 
@@ -118,8 +117,6 @@ export const ManglendeVedleggNy = ({
     const morStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorStudererNy);
 
     const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, erFarEllerMedmor, intl);
-    const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const termindato = getTermindato(barn);
 
     const lagre = (formValues: ManglendeVedleggFormData) => {
         const alleVedlegg = {
@@ -199,97 +196,67 @@ export const ManglendeVedleggNy = ({
                     <VStack gap="space-40">
                         <MorInnlagtDokumentasjonNy
                             attachments={morInnlagtVedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morInnlagtPerioder}
-                            situasjon={søkersituasjon.situasjon}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                             erFarEllerMedmor={erFarEllerMedmor}
                         />
                         <MorForSykDokumentasjonNy
                             attachments={morForSykVedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morForSykPerioder}
-                            situasjon={søkersituasjon.situasjon}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                             erFarEllerMedmor={erFarEllerMedmor}
                         />
                         <FarInnlagtDokumentasjonNy
                             attachments={farInnlagtVedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={farInnlagtPerioder}
-                            situasjon={søkersituasjon.situasjon}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                             erFarEllerMedmor={erFarEllerMedmor}
                         />
                         <FarForSykDokumentasjonNy
                             attachments={farForSykvedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={farForSykPerioder}
-                            situasjon={søkersituasjon.situasjon}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                             erFarEllerMedmor={erFarEllerMedmor}
                         />
                         <BarnInnlagtDokumentasjonNy
                             attachments={barnInnlagtVedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={barnInnlagtPerioder}
-                            situasjon={søkersituasjon.situasjon}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                         />
                         <MorStudererDokumentasjonNy
                             attachments={morStudererVedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morStudererPerioder}
-                            situasjon={søkersituasjon.situasjon}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                         />
                         <MorJobberDokumentasjonNy
                             attachments={morJobberVedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morJobberPerioder}
-                            situasjon={søkersituasjon.situasjon}
                             erFarEllerMedmor={erFarEllerMedmor}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                         />
                         <MorJobberOgStudererDokumentasjonNy
                             attachments={morJobberOgStudererVedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morJobberOgStudererPerioder}
-                            situasjon={søkersituasjon.situasjon}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                         />
                         <MorIntroduksjonsprogrammetDokumentasjonNy
                             attachments={morIntroprogramVedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morIntroPerioder}
-                            situasjon={søkersituasjon.situasjon}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                         />
                         <MorKvalifiseringsprogrammetDokumentasjonNy
                             attachments={morKvalprogramVedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morKvalPerioder}
-                            situasjon={søkersituasjon.situasjon}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                         />
                         <AleneomsorgDokumentasjon

@@ -1,15 +1,20 @@
 import { API_URLS } from 'api/queries';
+import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
+import { getTermindato } from 'utils/barnUtils';
+import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 import { addMetadata, lagSendSenereDokument } from 'utils/vedleggUtils';
 
 import { BodyLong } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Situasjon } from '@navikt/fp-common';
+import { NavnPåForeldre } from '@navikt/fp-common';
 import { AttachmentType } from '@navikt/fp-constants';
 import { FileUploader } from '@navikt/fp-filopplaster';
 import { Attachment, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { getFamiliehendelsedato } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
 import { PeriodeVisning } from './periodevisning/PeriodeVisning';
@@ -19,9 +24,6 @@ interface Props {
     updateAttachments: (attachments: Attachment[]) => void;
     perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     navnPåForeldre: NavnPåForeldre;
-    familiehendelsesdato: string;
-    termindato: string | undefined;
-    situasjon: Situasjon;
     skjemanummer: GyldigeSkjemanummer;
     labelText: string;
     description: string | React.ReactNode;
@@ -33,14 +35,21 @@ export const UttakUploaderNy = ({
     updateAttachments,
     perioder,
     navnPåForeldre,
-    familiehendelsesdato,
-    termindato,
-    situasjon,
     skjemanummer,
     labelText,
     description,
     attachmentType,
 }: Props) => {
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const termindato = getTermindato(barn);
+
+    const erFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
+    const erAleneomsorg = !annenForelder.kanIkkeOppgis && !!annenForelder.erAleneOmOmsorg;
+
     const { watch } = useFormContext<ManglendeVedleggFormData>();
     const formAttachments = watch(skjemanummer);
 
@@ -72,12 +81,12 @@ export const UttakUploaderNy = ({
                             <div key={p.fom + p.tom + p.kontoType} className="my-4">
                                 <PeriodeVisning
                                     periode={p}
-                                    erAleneOmOmsorg={false}
-                                    erFarEllerMedmor={true}
+                                    erAleneOmOmsorg={erAleneomsorg}
+                                    erFarEllerMedmor={erFarEllerMedmor}
                                     navnPåForeldre={navnPåForeldre}
                                     familiehendelsesdato={familiehendelsesdato}
                                     termindato={termindato}
-                                    situasjon={situasjon}
+                                    situasjon={søkersituasjon.situasjon}
                                 />
                             </div>
                         );

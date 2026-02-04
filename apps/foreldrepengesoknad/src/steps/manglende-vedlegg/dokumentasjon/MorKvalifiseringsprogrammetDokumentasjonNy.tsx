@@ -1,7 +1,7 @@
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
-import { NavnPåForeldre, Situasjon } from '@navikt/fp-common';
+import { NavnPåForeldre } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
@@ -12,9 +12,6 @@ interface Props {
     updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
     perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     navnPåForeldre: NavnPåForeldre;
-    familiehendelsesdato: string;
-    termindato: string | undefined;
-    situasjon: Situasjon;
 }
 
 export const MorKvalifiseringsprogrammetDokumentasjonNy = ({
@@ -22,9 +19,6 @@ export const MorKvalifiseringsprogrammetDokumentasjonNy = ({
     updateAttachments,
     perioder,
     navnPåForeldre,
-    familiehendelsesdato,
-    situasjon,
-    termindato,
 }: Props) => {
     const intl = useIntl();
 
@@ -38,9 +32,6 @@ export const MorKvalifiseringsprogrammetDokumentasjonNy = ({
             updateAttachments={updateAttachments(Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM)}
             perioder={perioder}
             navnPåForeldre={navnPåForeldre}
-            familiehendelsesdato={familiehendelsesdato}
-            termindato={termindato}
-            situasjon={situasjon}
             skjemanummer={Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM}
             labelText={intl.formatMessage({ id: 'manglendeVedlegg.kvalifiseringsprogram.tittel' })}
             description={intl.formatMessage(

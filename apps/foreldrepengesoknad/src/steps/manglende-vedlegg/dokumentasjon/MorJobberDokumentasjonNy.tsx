@@ -9,12 +9,7 @@ import { addMetadata, lagAutomatiskDokument } from 'utils/vedleggUtils';
 
 import { Loader } from '@navikt/ds-react';
 
-import {
-    NavnPåForeldre,
-    Situasjon,
-    isAnnenForelderOppgittNorsk,
-    isAnnenforelderOppholdtSegIEØS,
-} from '@navikt/fp-common';
+import { NavnPåForeldre, isAnnenForelderOppgittNorsk, isAnnenforelderOppholdtSegIEØS } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import {
     Attachment,
@@ -35,9 +30,6 @@ interface Props {
     updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
     perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     navnPåForeldre: NavnPåForeldre;
-    familiehendelsesdato: string;
-    termindato: string | undefined;
-    situasjon: Situasjon;
     erFarEllerMedmor: boolean;
 }
 
@@ -46,10 +38,7 @@ export const MorJobberDokumentasjonNy = ({
     updateAttachments,
     perioder,
     navnPåForeldre,
-    familiehendelsesdato,
-    situasjon,
     erFarEllerMedmor,
-    termindato,
 }: Props) => {
     const intl = useIntl();
 
@@ -104,9 +93,6 @@ export const MorJobberDokumentasjonNy = ({
             updateAttachments={updateDokArbeidMorAttachment}
             perioder={perioder}
             navnPåForeldre={navnPåForeldre}
-            familiehendelsesdato={familiehendelsesdato}
-            termindato={termindato}
-            situasjon={situasjon}
             skjemanummer={Skjemanummer.DOK_ARBEID_MOR}
             labelText={intl.formatMessage({ id: 'manglendeVedlegg.morJobber.label' })}
             description={intl.formatMessage(
