@@ -1,16 +1,14 @@
 import dayjs from 'dayjs';
 
-import { AnnenForelder, Periode, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { AnnenForelder, Periode } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import {
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
-    UttakUtsettelseÅrsak_fpoversikt,
-} from '@navikt/fp-types';
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
+import { perioderSomKreverVedleggNy } from './manglendeVedleggUtils';
+
 export const erUttaksperiode = (periode: UttakPeriode_fpoversikt) => {
-    return !periode.overføringÅrsak && !periode.overføringÅrsak && !periode.utsettelseÅrsak;
+    return !periode.overføringÅrsak && !periode.oppholdÅrsak && !periode.utsettelseÅrsak;
 };
 
 export const erIkkeEøsPeriode = (
@@ -133,87 +131,7 @@ export const kreverUttaksplanVedleggNy = (
     erFarEllerMedmor: boolean,
     annenForelder: AnnenForelder,
 ) => {
-    const periodeSomManglerVedlegg = perioderSomKreverVedlegg(uttaksplan, erFarEllerMedmor, annenForelder);
+    const periodeSomManglerVedlegg = perioderSomKreverVedleggNy(uttaksplan, erFarEllerMedmor, annenForelder);
 
     return periodeSomManglerVedlegg.length > 0;
-};
-
-export const perioderSomKreverVedlegg = (
-    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    erFarEllerMedmor: boolean,
-    annenForelder: AnnenForelder,
-) => {
-    const perioderSomManglerVedlegg = uttaksplan.filter((p) =>
-        shouldPeriodeHaveAttachment(p, erFarEllerMedmor, annenForelder),
-    );
-
-    return perioderSomManglerVedlegg;
-};
-
-const shouldPeriodeHaveAttachment = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-    søkerErFarEllerMedmor: boolean,
-    annenForelder: AnnenForelder,
-): boolean => {
-    if (erIkkeEøsPeriode(periode) && periode.overføringÅrsak) {
-        return dokumentasjonBehøvesForOverføringsperiode(søkerErFarEllerMedmor, periode);
-    }
-    if (erIkkeEøsPeriode(periode) && periode.utsettelseÅrsak) {
-        return dokumentasjonBehøvesForUtsettelsesperiode(
-            periode,
-            skalBesvaresVedUtsettelse(søkerErFarEllerMedmor, annenForelder),
-        );
-    }
-    if (erIkkeEøsPeriode(periode) && erUttaksperiode(periode)) {
-        return dokumentasjonBehøvesForUttaksperiode(periode);
-    }
-
-    return false;
-};
-
-const skalBesvaresVedUtsettelse = (søkerErFarEllerMedmor: boolean, annenForelder: AnnenForelder): boolean => {
-    const annenForelderHarRett = isAnnenForelderOppgitt(annenForelder)
-        ? annenForelder.harRettPåForeldrepengerINorge || annenForelder.harRettPåForeldrepengerIEØS
-        : undefined;
-
-    return søkerErFarEllerMedmor && annenForelderHarRett === false;
-};
-
-export const dokumentasjonBehøvesForOverføringsperiode = (
-    erFarEllerMedmor: boolean,
-    periode: UttakPeriode_fpoversikt,
-): boolean =>
-    (erFarEllerMedmor || periode.overføringÅrsak !== 'ALENEOMSORG') &&
-    periode.overføringÅrsak !== 'IKKE_RETT_ANNEN_FORELDER';
-
-const dokumentasjonBehøvesForUtsettelsesperiode = (
-    periode: UttakPeriode_fpoversikt,
-    harMorAktivitetskrav: boolean,
-): boolean => {
-    return (
-        harMorAktivitetskrav ||
-        erÅrsakSykdomEllerInstitusjonsopphold(periode.utsettelseÅrsak) ||
-        periode.utsettelseÅrsak === 'HV_ØVELSE' ||
-        periode.utsettelseÅrsak === 'NAV_TILTAK'
-    );
-};
-
-const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UttakUtsettelseÅrsak_fpoversikt | undefined) =>
-    årsak === 'SØKER_SYKDOM' || årsak === 'BARN_INNLAGT' || årsak === 'SØKER_INNLAGT';
-// FIXME (TOR) Kor finn ein desse to?
-// ||
-// årsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' ||
-// årsak === 'SYKDOM_ANNEN_FORELDER';
-
-const dokumentasjonBehøvesForUttaksperiode = (periode: UttakPeriode_fpoversikt): boolean => {
-    // FIXME (TOR) Treng ein denne?
-    // if (periode.harIkkeAktivitetskrav) {
-    //     return false;
-    // }
-
-    return (
-        (periode.morsAktivitet !== undefined && periode.morsAktivitet !== 'UFØRE') || periode.kontoType === 'FEDREKVOTE'
-        // FIXME (TOR) Fiks felt for erMorForSyk
-        /// && periode.erMorForSyk === true)
-    );
 };
