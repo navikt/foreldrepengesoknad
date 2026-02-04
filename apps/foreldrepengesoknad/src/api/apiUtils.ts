@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { toNumber } from 'lodash';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'types/VedleggDataType';
+import { erPeriodeIOpprinneligSak } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import {
@@ -28,6 +29,7 @@ import {
     BrukerRolle,
     EndringssøknadForeldrepengerDto,
     ForeldrepengesøknadDto,
+    FpSak_fpoversikt,
     KontoType,
     Målform,
     Oppholdsårsak,
@@ -360,11 +362,16 @@ export const getSøknadsdataForInnsendingNy = (
     erEndringssøknad: boolean,
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+    foreldrepengerSaker: FpSak_fpoversikt[],
 ): ForeldrepengesøknadDto | EndringssøknadForeldrepengerDto => {
+    const valgtEksisterendeSaksnr = hentData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
+
+    const eksisterendeSak = foreldrepengerSaker.find((sak) => sak.saksnummer === valgtEksisterendeSaksnr);
+
     if (erEndringssøknad) {
-        return cleanEndringssøknadNy(hentData, søkerinfo);
+        return cleanEndringssøknadNy(hentData, søkerinfo, eksisterendeSak);
     } else {
-        return cleanSøknadNy(hentData, søkerinfo);
+        return cleanSøknadNy(hentData, søkerinfo, eksisterendeSak);
     }
 };
 
@@ -413,6 +420,7 @@ export const cleanSøknad = (
 export const cleanSøknadNy = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+    eksisterendeSak?: FpSak_fpoversikt,
 ): ForeldrepengesøknadDto => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
@@ -439,7 +447,7 @@ export const cleanSøknadNy = (
         annenForelder: cleanAnnenforelder(annenForelder),
         dekningsgrad,
         uttaksplan: {
-            uttaksperioder: midlertidigMappingAvUttaksplan(uttaksplan),
+            uttaksperioder: midlertidigMappingAvUttaksplan(filtrerUtUendredePeriode(uttaksplan, eksisterendeSak)),
             ønskerJustertUttakVedFødsel,
         },
         utenlandsopphold: (utenlandsoppholdSiste12Mnd ?? []).concat(utenlandsoppholdNeste12Mnd ?? []),
@@ -498,6 +506,7 @@ export const cleanEndringssøknad = (
 export const cleanEndringssøknadNy = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+    eksisterendeSak?: FpSak_fpoversikt,
 ): EndringssøknadForeldrepengerDto => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
@@ -515,71 +524,76 @@ export const cleanEndringssøknadNy = (
         annenForelder: cleanAnnenforelder(annenForelder),
         vedlegg: convertAttachmentsMapToArray(vedlegg),
         uttaksplan: {
-            uttaksperioder: midlertidigMappingAvUttaksplan(uttaksplan),
+            uttaksperioder: midlertidigMappingAvUttaksplan(filtrerUtUendredePeriode(uttaksplan, eksisterendeSak)),
             ønskerJustertUttakVedFødsel,
         },
     };
 };
 
-const midlertidigMappingAvUttaksplan = (
+const filtrerUtUendredePeriode = (
     uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-): Uttaksplanperiode[] => {
-    return uttaksplan
-        .filter((periode) => !('trekkdager' in periode))
-        .map((periode) => {
-            if ('trekkdager' in periode) {
-                throw new Error('Uttaksplan inneholder trekkdager');
-            }
-            if (periode.oppholdÅrsak) {
-                return {
-                    type: 'opphold',
-                    fom: periode.fom,
-                    tom: periode.tom,
-                    årsak: midlertidigMappingAvOppholdÅrsak(periode.oppholdÅrsak),
-                };
-            }
-            if (periode.overføringÅrsak) {
-                return {
-                    type: 'overføring',
-                    fom: periode.fom,
-                    tom: periode.tom,
-                    konto: notEmpty(periode.kontoType),
-                    årsak: periode.overføringÅrsak,
-                };
-            }
-            if (periode.utsettelseÅrsak) {
-                return {
-                    type: 'utsettelse',
-                    fom: periode.fom,
-                    tom: periode.tom,
-                    erArbeidstaker: false,
-                    morsAktivitetIPerioden: periode.morsAktivitet,
-                    årsak: midlertidigMappingAvUtsettelseÅrsak(periode.utsettelseÅrsak),
-                };
-            }
+    eksisterendeSak?: FpSak_fpoversikt,
+): UttakPeriode_fpoversikt[] => {
+    return uttaksplan.filter((periode) => {
+        if ('trekkdager' in periode) {
+            return false;
+        }
+        return eksisterendeSak ? !erPeriodeIOpprinneligSak(eksisterendeSak, periode) : true;
+    });
+};
+
+const midlertidigMappingAvUttaksplan = (uttaksplan: UttakPeriode_fpoversikt[]): Uttaksplanperiode[] => {
+    return uttaksplan.map((periode) => {
+        if (periode.oppholdÅrsak) {
             return {
-                type: 'uttak',
+                type: 'opphold',
                 fom: periode.fom,
                 tom: periode.tom,
-                gradering: periode.gradering
-                    ? {
-                          erArbeidstaker: periode.gradering.aktivitet.type === 'ORDINÆRT_ARBEID',
-                          erFrilanser: periode.gradering.aktivitet.type === 'FRILANS',
-                          erSelvstendig: periode.gradering.aktivitet.type === 'SELVSTENDIG_NÆRINGSDRIVENDE',
-                          orgnumre: periode.gradering.aktivitet.arbeidsgiver?.id
-                              ? [periode.gradering.aktivitet.arbeidsgiver.id]
-                              : [],
-                          stillingsprosent: periode.gradering?.arbeidstidprosent,
-                      }
-                    : undefined,
-                konto: notEmpty(periode.kontoType),
-                morsAktivitetIPerioden: periode.morsAktivitet,
-                samtidigUttakProsent: periode.samtidigUttak,
-                ønskerFlerbarnsdager: periode.flerbarnsdager,
-                ønskerGradering: periode.gradering !== undefined,
-                ønskerSamtidigUttak: periode.samtidigUttak !== undefined,
+                årsak: midlertidigMappingAvOppholdÅrsak(periode.oppholdÅrsak),
             };
-        });
+        }
+        if (periode.overføringÅrsak) {
+            return {
+                type: 'overføring',
+                fom: periode.fom,
+                tom: periode.tom,
+                konto: notEmpty(periode.kontoType),
+                årsak: periode.overføringÅrsak,
+            };
+        }
+        if (periode.utsettelseÅrsak) {
+            return {
+                type: 'utsettelse',
+                fom: periode.fom,
+                tom: periode.tom,
+                erArbeidstaker: false,
+                morsAktivitetIPerioden: periode.morsAktivitet,
+                årsak: midlertidigMappingAvUtsettelseÅrsak(periode.utsettelseÅrsak),
+            };
+        }
+        return {
+            type: 'uttak',
+            fom: periode.fom,
+            tom: periode.tom,
+            gradering: periode.gradering
+                ? {
+                      erArbeidstaker: periode.gradering.aktivitet.type === 'ORDINÆRT_ARBEID',
+                      erFrilanser: periode.gradering.aktivitet.type === 'FRILANS',
+                      erSelvstendig: periode.gradering.aktivitet.type === 'SELVSTENDIG_NÆRINGSDRIVENDE',
+                      orgnumre: periode.gradering.aktivitet.arbeidsgiver?.id
+                          ? [periode.gradering.aktivitet.arbeidsgiver.id]
+                          : [],
+                      stillingsprosent: periode.gradering?.arbeidstidprosent,
+                  }
+                : undefined,
+            konto: notEmpty(periode.kontoType),
+            morsAktivitetIPerioden: periode.morsAktivitet,
+            samtidigUttakProsent: periode.samtidigUttak,
+            ønskerFlerbarnsdager: periode.flerbarnsdager,
+            ønskerGradering: periode.gradering !== undefined,
+            ønskerSamtidigUttak: periode.samtidigUttak !== undefined,
+        };
+    });
 };
 
 const midlertidigMappingAvOppholdÅrsak = (årsak: UttakOppholdÅrsak_fpoversikt): Oppholdsårsak => {

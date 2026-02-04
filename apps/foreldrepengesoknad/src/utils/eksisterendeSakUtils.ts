@@ -597,47 +597,54 @@ export const lagEndringsSøknad = (
     };
 };
 
-export const erPeriodeIOpprinneligPlan = (
-    sak: FpSak_fpoversikt,
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+export const erPeriodeIOpprinneligSak = (
+    eksisterendeSak: FpSak_fpoversikt,
+    nyPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
 ): boolean => {
-    const eksisterendePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> = [];
-    if (sak.gjeldendeVedtak?.perioder !== undefined) {
-        eksisterendePerioder.push(...sak.gjeldendeVedtak.perioder);
+    const eksisterendePerioder = [];
+    if (eksisterendeSak?.gjeldendeVedtak?.perioder !== undefined) {
+        eksisterendePerioder.push(...eksisterendeSak.gjeldendeVedtak.perioder);
     }
-    if (sak.gjeldendeVedtak?.perioderAnnenpartEøs !== undefined) {
-        eksisterendePerioder.push(...sak.gjeldendeVedtak.perioderAnnenpartEøs);
+    if (eksisterendeSak?.gjeldendeVedtak?.perioderAnnenpartEøs !== undefined) {
+        eksisterendePerioder.push(...eksisterendeSak.gjeldendeVedtak.perioderAnnenpartEøs);
     }
 
+    return erPeriodeIOpprinneligPlan(eksisterendePerioder, nyPeriode);
+};
+
+export const erPeriodeIOpprinneligPlan = (
+    eksisterendePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    nyPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+): boolean => {
     return eksisterendePerioder.some((p) => {
-        if ((erEøsPeriode(periode) && !erEøsPeriode(p)) || (!erEøsPeriode(periode) && erEøsPeriode(p))) {
+        if ((erEøsPeriode(nyPeriode) && !erEøsPeriode(p)) || (!erEøsPeriode(nyPeriode) && erEøsPeriode(p))) {
             return false;
         }
-        if (erEøsPeriode(periode) && erEøsPeriode(p)) {
+        if (erEøsPeriode(nyPeriode) && erEøsPeriode(p)) {
             return (
-                periode.trekkdager === p.trekkdager &&
-                periode.fom === p.fom &&
-                periode.tom === p.tom &&
-                periode.kontoType === p.kontoType
+                nyPeriode.trekkdager === p.trekkdager &&
+                nyPeriode.fom === p.fom &&
+                nyPeriode.tom === p.tom &&
+                nyPeriode.kontoType === p.kontoType
             );
         }
 
-        if (erEøsPeriode(periode) || erEøsPeriode(p)) {
+        if (erEøsPeriode(nyPeriode) || erEøsPeriode(p)) {
             throw new Error('Ingen perioder bør være eøs-perioder her');
         }
 
         return (
-            periode.fom === p.fom &&
-            periode.tom === p.tom &&
-            periode.kontoType === p.kontoType &&
-            periode.flerbarnsdager === p.flerbarnsdager &&
-            periode.forelder === p.forelder &&
-            periode.gradering === p.gradering &&
-            periode.utsettelseÅrsak === p.utsettelseÅrsak &&
-            periode.samtidigUttak === p.samtidigUttak &&
-            periode.resultat === p.resultat &&
-            periode.oppholdÅrsak === p.oppholdÅrsak &&
-            periode.overføringÅrsak === p.overføringÅrsak
+            nyPeriode.fom === p.fom &&
+            nyPeriode.tom === p.tom &&
+            nyPeriode.kontoType === p.kontoType &&
+            nyPeriode.flerbarnsdager === p.flerbarnsdager &&
+            nyPeriode.forelder === p.forelder &&
+            nyPeriode.gradering === p.gradering &&
+            nyPeriode.utsettelseÅrsak === p.utsettelseÅrsak &&
+            nyPeriode.samtidigUttak === p.samtidigUttak &&
+            nyPeriode.resultat === p.resultat &&
+            nyPeriode.oppholdÅrsak === p.oppholdÅrsak &&
+            nyPeriode.overføringÅrsak === p.overføringÅrsak
         );
     });
 };
