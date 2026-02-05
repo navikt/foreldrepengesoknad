@@ -295,7 +295,7 @@
     "beregning.datoForVurdering.fortsettelse": "The parental benefit is <label>only calculated once</label>",
     "beregning.visÅttiProsentReduksjon": "Since you have an <label>80%</label> parental benefit, your base amount is reduced to <labelvalue>{value}</labelvalue>",
     "beregning.6GVarsel": "Nav does not compensate you for income exceeding: {grunnbeløpSeksG} (6G)",
-    "beregning.tittel": "Calculation of parental benefits",
+    "beregning.tittel": "More about the calculation",
     "beregning.utbetalingsTekst.arbeidsgiver": "We pay to employer",
     "beregning.utbetalingsTekst.deg": "We pay to you directly",
     "beregning.utbetalingsTekst.degOgArbeidsgiver": "We pay both to employer and to you",

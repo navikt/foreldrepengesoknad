@@ -295,7 +295,7 @@
     "beregning.datoForVurdering.fortsettelse": "Foreldrepengene beregnes <label>kun én gang</label>",
     "beregning.visÅttiProsentReduksjon": "Siden du har <label>80%</label> foreldrepenger reduseres grunnlaget ditt til <labelvalue>{value}</labelvalue>",
     "beregning.6GVarsel": "Nav kompenserer deg ikke for inntekt over: {grunnbeløpSeksG} (6G)",
-    "beregning.tittel": "Beregning av foreldrepenger",
+    "beregning.tittel": "Mer om beregningen",
     "beregning.utbetalingsTekst.arbeidsgiver": "Vi utbetaler til arbeidsgiver",
     "beregning.utbetalingsTekst.deg": "Vi utbetaler til deg direkte",
     "beregning.utbetalingsTekst.degOgArbeidsgiver": "Vi utbetaler både til arbeidsgiver og direkte til deg",
