@@ -11,12 +11,14 @@
     "dependencies": {
         "@navikt/nav-dekoratoren-moduler": "3.6.2",
         "@navikt/oasis": "4.1.2",
+        "compression": "1.8.1",
         "express": "5.2.1",
         "http-proxy-middleware": "3.0.5"
     },
     "devDependencies": {
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-server-utils": "workspace:*",
+        "@types/compression": "1.8.1",
         "@types/express": "5.0.6",
         "@types/morgan": "1.9.10",
         "@types/node": "24.10.1",

@@ -1,3 +1,4 @@
+import compression from 'compression';
 import express from 'express';
 
 import {
@@ -27,6 +28,7 @@ server.use(logger.morganMiddleware);
 setupSkjermleserCssTilgang(publicRouter);
 
 // Skjermdeling krever tilgang til CSS uten å være innlogget!
+publicRouter.use(compression());
 publicRouter.use(express.static('./public', { index: false }));
 server.use(serverConfig.app.publicPath, publicRouter);
 
