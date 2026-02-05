@@ -18,6 +18,7 @@ import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import { Uttaksplanperiode } from '../../../types/UttaksplanPeriode';
 import {
     erUttaksplanperiodeErForelderMor,
+    erUttaksplanperiodeEøs,
     erUttaksplanperiodeFamiliehendelseDato,
     erUttaksplanperiodeSamtidigUttak,
     erUttaksplanperiodeTapteDager,
@@ -32,6 +33,10 @@ import {
 export const finnBakgrunnsfarge = (uttaksplanperioder: Uttaksplanperiode[], erFamiliehendelse?: boolean) => {
     if (erFamiliehendelse) {
         return 'bg-ax-danger-100';
+    }
+
+    if (erUttaksplanperiodeEøs(uttaksplanperioder)) {
+        return 'bg-ax-success-400';
     }
 
     if (erUttaksplanperiodeTapteDager(uttaksplanperioder)) {
@@ -93,6 +98,17 @@ export const getTekst = (
     const navnPåForelder = erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
     const forelder = getUttaksplanperiodeForelder(uttaksplanperioder);
     const erEgenPeriode = erFarEllerMedmor ? forelder === 'FAR_MEDMOR' : forelder == 'MOR';
+
+    if (erUttaksplanperiodeEøs(uttaksplanperioder)) {
+        return intl.formatMessage(
+            { id: 'uttaksplan.periodeListeHeader.HarEøsForeldrepenger' },
+            {
+                navn: erEgenPeriode
+                    ? capitalizeFirstLetter(navnPåForelder)
+                    : capitalizeFirstLetter(navnPåAnnenForelder),
+            },
+        );
+    }
 
     if (erUttaksplanperiodeFamiliehendelseDato(uttaksplanperioder)) {
         switch (familiesituasjon) {
@@ -194,6 +210,10 @@ export const getIkon = (uttaksplanperioder: Uttaksplanperiode[], familiehendelse
 };
 
 export const getBorderFarge = (uttaksplanperioder: Uttaksplanperiode[]) => {
+    if (erUttaksplanperiodeEøs(uttaksplanperioder)) {
+        return 'border-ax-success-400';
+    }
+
     if (erUttaksplanperiodeFamiliehendelseDato(uttaksplanperioder)) {
         return 'border-ax-danger-100';
     }

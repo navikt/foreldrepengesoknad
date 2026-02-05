@@ -8,11 +8,13 @@ import { BodyShort, Box, Button, HStack, Heading, Show, VStack } from '@navikt/d
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../utils/dateUtils';
+import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import { PeriodeDetaljerOgInfoMeldinger } from './PeriodeDetaljerOgInfoMeldinger';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 import { RødRamme } from './utils/RødRamme';
-import { finnAntallDager } from './utils/kalenderPeriodeUtils';
+import { finnAntallDager, finnValgtePerioder } from './utils/kalenderPeriodeUtils';
 import { useErDesktop, useMediaResetMinimering } from './utils/useMediaActions';
 
 interface Props {
@@ -52,6 +54,15 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
         setValgtePerioder([]);
         setEndredePerioder(sammenslåtteValgtePerioder);
     };
+
+    const uttakPerioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
+
+    const eksisterendePerioderSomErValgt = finnValgtePerioder(
+        sammenslåtteValgtePerioder,
+        uttakPerioderInkludertTapteDager,
+    );
+
+    const harValgtEøsPeriode = eksisterendePerioderSomErValgt.some((p) => erEøsUttakPeriode(p));
 
     return (
         <VStack
@@ -140,17 +151,8 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
                     <VStack gap="space-12">
                         {labels}
                         <PeriodeDetaljerOgInfoMeldinger />
-                        <VStack gap="space-12">
-                            <Show above="md">
-                                <LeggTilOgEndreKnapp åpneRedigeringsmodus={åpneRedigeringsmodus} />
-                            </Show>
-                            <HStack gap="space-12" justify="space-between" className="w-full">
-                                <Show below="md" className="flex-1">
-                                    <LeggTilOgEndreKnapp åpneRedigeringsmodus={åpneRedigeringsmodus} />
-                                </Show>
-                                <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
-                                    <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
-                                </Button>
+                        {harValgtEøsPeriode && (
+                            <HStack justify="end">
                                 <Button
                                     type="button"
                                     variant="tertiary"
@@ -160,7 +162,30 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
                                     <FormattedMessage id="RedigeringPanel.LukkRedigeringsmodus" />
                                 </Button>
                             </HStack>
-                        </VStack>
+                        )}
+                        {!harValgtEøsPeriode && (
+                            <VStack gap="space-12">
+                                <Show above="md">
+                                    <LeggTilOgEndreKnapp åpneRedigeringsmodus={åpneRedigeringsmodus} />
+                                </Show>
+                                <HStack gap="space-12" justify="space-between" className="w-full">
+                                    <Show below="md" className="flex-1">
+                                        <LeggTilOgEndreKnapp åpneRedigeringsmodus={åpneRedigeringsmodus} />
+                                    </Show>
+                                    <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
+                                        <FormattedMessage id="RedigeringPanel.LeggInnFerie" />
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        variant="tertiary"
+                                        size="small"
+                                        onClick={() => setValgtePerioder([])}
+                                    >
+                                        <FormattedMessage id="RedigeringPanel.LukkRedigeringsmodus" />
+                                    </Button>
+                                </HStack>
+                            </VStack>
+                        )}
                     </VStack>
                 </div>
             )}

@@ -50,6 +50,8 @@ const getRect = (color: CalendarPeriodColor) => {
             return <div className={styles.purpleRect} />;
         case 'PINK':
             return <div className={styles.pinkRect} />;
+        case 'GREEN_WITH_BLACK_OUTLINE':
+            return <div className={styles.greenWithBlackOutlineDayRect} />;
         default:
             return null;
     }
