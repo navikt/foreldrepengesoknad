@@ -543,6 +543,7 @@
     "UttaksplanSteg.kalender": "Kalender",
     "UttaksplanSteg.liste": "Liste",
     "UttaksplanSteg.OvertrukketDager": "Du har lagt til for mange dager i planen",
+    "UttaksplanSteg.IngenPerioder": "Du har ikke lagt til noen perioder i planen",
     "UttaksplanSteg.AutomatiskJustering.Spørsmål": "Planen din inneholder én periode med din egen kvote rundt fødsel. Siden denne perioden starter på termin, ønsker du at vi endrer den til å starte fra fødselsdato når {antallBarn, plural, one {barnet} other {barna}} blir født?",
     "UttaksplanSteg.AutomatiskJustering.Svar.Påkrevd": "Du må svare på spørsmålet om automatisk justering av perioden når barnet blir født.",
     "UttaksplanSteg.AutomatiskJustering.Ja": "Ja",
@@ -550,5 +551,11 @@
     "gradering.prosent": "{stillingsprosent}%",
     "rundtFødsel": " rundt fødsel",
     "uttaksplan.periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
-    "uttaksplan.periodeliste.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt"
+    "uttaksplan.periodeliste.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
+    "uttaksplan.oppholdsårsaktype.foreldernavn.mor.FELLESPERIODE_ANNEN_FORELDER": "{foreldernavn} tar ut fellesperiode",
+    "uttaksplan.oppholdsårsaktype.foreldernavn.mor.FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten din",
+    "uttaksplan.oppholdsårsaktype.foreldernavn.mor.MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten sin",
+    "uttaksplan.oppholdsårsaktype.foreldernavn.far.FELLESPERIODE_ANNEN_FORELDER": "{foreldernavn} tar ut fellesperiode",
+    "uttaksplan.oppholdsårsaktype.foreldernavn.far.FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten sin",
+    "uttaksplan.oppholdsårsaktype.foreldernavn.far.MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten din"
 }

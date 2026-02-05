@@ -3,9 +3,10 @@ import { sakerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getTermindato } from 'utils/barnUtils';
-import { erPeriodeIOpprinneligPlan } from 'utils/eksisterendeSakUtils';
+import { erPeriodeIOpprinneligSak } from 'utils/eksisterendeSakUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 import { getStønadskontoNavn } from 'utils/stønadskontoerUtils';
+import { isUttaksperiodeFarMedmorPgaFødsel } from 'utils/uttaksplanInfoUtils';
 
 import { FormSummary } from '@navikt/ds-react';
 
@@ -20,12 +21,7 @@ import {
 import { capitalizeFirstLetter, formatDateMedUkedagShortMonth, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import {
-    erUttaksperiode,
-    getPeriodeTittel,
-    isUttaksperiodeFarMedmorPgaFødsel,
-    uttaksperiodeKanJusteresVedFødsel,
-} from './OppsummeringUtils';
+import { erUttaksperiode, getPeriodeTittel, uttaksperiodeKanJusteresVedFødsel } from './OppsummeringUtils';
 import { OverføringsperiodedetaljerNy } from './detaljer/OverføringsperiodedetaljerNy';
 import { UttaksperiodedetaljerNy } from './detaljer/UttaksperiodedetaljerNy';
 import { UtsettelsesperiodedetaljerNy } from './detaljer/UttsettelsesperiodedetaljerNy';
@@ -96,7 +92,7 @@ export const UttaksplanOppsummeringslisteNy = ({ navnPåForeldre, registrerteArb
             <FormSummary.Value>
                 <FormSummary.Answers>
                     {uttaksplan.map((periode) => {
-                        const periodeErNyEllerEndret = sak ? erPeriodeIOpprinneligPlan(sak, periode) === false : true;
+                        const periodeErNyEllerEndret = sak ? erPeriodeIOpprinneligSak(sak, periode) === false : true;
 
                         if (erUttaksperiode(periode)) {
                             const tidsperiode = formatTidsperiode(periode.fom, periode.tom);
