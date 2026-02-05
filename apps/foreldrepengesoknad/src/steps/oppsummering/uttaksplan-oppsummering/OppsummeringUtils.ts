@@ -1,6 +1,12 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
+import { getForelderNavn } from 'utils/isFarEllerMedmor';
 import { getStønadskontoNavn } from 'utils/stønadskontoerUtils';
+import {
+    getUttaksprosentFromStillingsprosent,
+    isUttaksperiodeFarMedmorPgaFødsel,
+    prettifyProsent,
+} from 'utils/uttaksplanInfoUtils';
 
 import {
     Arbeidsform,
@@ -9,9 +15,7 @@ import {
     Periodetype,
     Utsettelsesperiode,
 } from '@navikt/fp-common';
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
-    BrukerRolleSak_fpoversikt,
     EksternArbeidsforholdDto_fpoversikt,
     NavnPåForeldre,
     Situasjon,
@@ -19,7 +23,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { UttaksdagenString, capitalizeFirstLetter } from '@navikt/fp-utils';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 type MessageValue = string | number | boolean | Date | null | undefined;
 
@@ -73,66 +77,6 @@ export const getÅrsakTekst = (
     const intlKeyPrefix = type === Periodetype.Utsettelse ? 'utsettelsesårsak.' : 'overføringsårsaktype.';
     //@ts-expect-error Fiks dynamisk id
     return intl.formatMessage({ id: `uttaksplan.${intlKeyPrefix + årsak}` }, messageValues);
-};
-
-export const isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-): boolean => {
-    return (
-        erUttaksperiode(periode) &&
-        !('trekkdager' in periode) &&
-        periode.forelder === 'FAR_MEDMOR' &&
-        periode.kontoType === 'FEDREKVOTE' &&
-        // FIXME (TOR) Kva skal ein erstatta dette med?
-        // !!periode.erMorForSyk === false &&
-        periode.morsAktivitet === undefined &&
-        !!periode.flerbarnsdager === false &&
-        !!periode.samtidigUttak
-    );
-};
-
-export const isUttaksperiodeFarMedmorPgaFødsel = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-    familiehendelsesdato: string,
-    termindato: string | undefined,
-): boolean => {
-    return (
-        isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel(periode) &&
-        starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(periode.fom, familiehendelsesdato, termindato)
-    );
-};
-
-const starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel = (
-    fom: string,
-    familiehendelsesdato: string,
-    termindato: string | undefined,
-) => {
-    return (
-        starterTidsperiodeEtter2UkerFørFødsel(fom, familiehendelsesdato, termindato) &&
-        dayjs(fom).isSameOrBefore(getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato), 'day')
-    );
-};
-
-const getSisteUttaksdag6UkerEtterFødsel = (familiehendelsesdato: string): string => {
-    return UttaksdagenString.denneEllerNeste(familiehendelsesdato).getDatoAntallUttaksdagerSenere(30);
-};
-
-const starterTidsperiodeEtter2UkerFørFødsel = (
-    fom: string,
-    familiehendelsesdato: string,
-    termindato: string | undefined,
-): boolean => {
-    const førsteUttaksdagToUkerFørFødsel = getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato);
-    return dayjs(fom).isSameOrAfter(førsteUttaksdagToUkerFørFødsel, 'day');
-};
-
-const getFørsteUttaksdag2UkerFørFødsel = (familiehendelsesdato: string, termindato: string | undefined): string => {
-    const terminEllerFamHendelsesdatoMinusToUker =
-        termindato !== undefined
-            ? dayjs(termindato).subtract(14, 'day')
-            : dayjs(familiehendelsesdato).subtract(14, 'day');
-    const datoÅRegneFra = dayjs.min(terminEllerFamHendelsesdatoMinusToUker, dayjs(familiehendelsesdato));
-    return UttaksdagenString.denneEllerNeste(datoÅRegneFra.format(ISO_DATE_FORMAT)).getDato();
 };
 
 export const erUttaksperiode = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt): boolean => {
@@ -256,16 +200,6 @@ const getOppholdskontoNavn = (
     return intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
 };
 
-const getForelderNavn = (forelder: BrukerRolleSak_fpoversikt | undefined, navnPåForeldre: NavnPåForeldre): string => {
-    let forelderNavn = '';
-    if (navnPåForeldre.farMedmor) {
-        forelderNavn = forelder === 'MOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
-    } else {
-        forelderNavn = forelder === 'MOR' ? navnPåForeldre.mor : '';
-    }
-    return capitalizeFirstLetter(forelderNavn);
-};
-
 const appendPeriodeNavnHvisUttakRundtFødselFarMedmor = (
     intl: IntlShape,
     periodeNavn: string,
@@ -277,34 +211,4 @@ const appendPeriodeNavnHvisUttakRundtFødselFarMedmor = (
     return situasjon === 'fødsel' && isUttaksperiodeFarMedmorPgaFødsel(periode, familiehendelsesdato, termindato)
         ? periodeNavn + intl.formatMessage({ id: 'rundtFødsel' })
         : periodeNavn;
-};
-
-const prettifyProsent = (nbr: number | undefined): number | undefined => {
-    if (nbr === undefined) {
-        return undefined;
-    }
-
-    if (Number.isNaN(nbr)) {
-        return undefined;
-    }
-    if (Math.round(nbr) === nbr) {
-        return Math.round(nbr);
-    }
-    return nbr;
-};
-
-const getUttaksprosentFromStillingsprosent = (
-    stillingsPst: number | undefined,
-    samtidigUttakPst: number | undefined,
-): number | undefined => {
-    if (samtidigUttakPst) {
-        return samtidigUttakPst;
-    }
-    if (stillingsPst) {
-        let prosent = (100 - stillingsPst) * 100;
-        prosent = Math.round(prosent) / 100;
-
-        return prosent;
-    }
-    return undefined;
 };
