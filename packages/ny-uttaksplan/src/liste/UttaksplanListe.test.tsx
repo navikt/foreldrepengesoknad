@@ -389,7 +389,7 @@ describe('UttaksplanListe', () => {
         const eøsRad = within(screen.getByTestId('2024-07-03 - 2024-07-15'));
         expect(eøsRad.getByText('03. Jul - 15. Jul')).toBeInTheDocument();
         expect(eøsRad.getByText('1 uke og 4 dager')).toBeInTheDocument();
-        expect(eøsRad.getAllByText('Hans har foreldrepenger (EØS)')).toHaveLength(2);
+        expect(eøsRad.getAllByText('Hans har foreldrepenger (EU/EØS)')).toHaveLength(2);
 
         const ekspandertEøsRad = within(
             screen.getByText('Den andre forelderen mottar pengestøtte i et annet EU/EØS-land'),

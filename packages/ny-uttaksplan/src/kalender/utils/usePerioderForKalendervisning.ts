@@ -119,7 +119,7 @@ const getKalenderFargeForPeriode = (
     }
 
     if (erEøsUttakPeriode(periode)) {
-        return 'GREEN_WITH_BLACK_OUTLINE';
+        return erFarEllerMedmor ? 'BLUE_WITH_BLACK_OUTLINE' : 'GREEN_WITH_BLACK_OUTLINE';
     }
 
     if (periode.utsettelseÅrsak) {

@@ -679,7 +679,8 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
 
-        expect(screen.getByText('Fars EØS periode')).toBeInTheDocument();
+        expect(screen.getByText('Fars kvote')).toBeInTheDocument();
+        expect(screen.getByText('EU/EØS-periode')).toBeInTheDocument();
         expect(
             screen.getByText(
                 'Perioder der den andre forelderen mottar pengestøtte i et annet EU/EØS-land kan ikke slettes eller endres',

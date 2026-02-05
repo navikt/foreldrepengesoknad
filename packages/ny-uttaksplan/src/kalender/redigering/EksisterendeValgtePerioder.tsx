@@ -1,5 +1,6 @@
 import {
     ParasolBeachIcon,
+    PersonCircleFillIcon,
     PersonGroupIcon,
     PersonPregnantFillIcon,
     PersonSuitFillIcon,
@@ -20,6 +21,7 @@ import { CalendarPeriod } from '@navikt/fp-ui';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { Søker } from '../../types/ForeldreInfo';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 
@@ -37,7 +39,7 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
     const slettPeriode = useSlettPeriodeFn();
 
     const {
-        foreldreInfo: { erMedmorDelAvSøknaden },
+        foreldreInfo: { erMedmorDelAvSøknaden, søker },
     } = useUttaksplanData();
 
     return (
@@ -66,12 +68,16 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                         wrap={false}
                         data-testid={`eksisterende-periode-${p.fom}-${p.tom}`}
                     >
-                        <PeriodeIkon periode={p} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
+                        <PeriodeIkon periode={p} søker={søker} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
 
                         <VStack gap="space-0">
                             {(erEøsUttakPeriode(p) || p.utsettelseÅrsak !== 'LOVBESTEMT_FERIE') && (
                                 <Heading size="xsmall">
-                                    <PeriodeHeaderText periode={p} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
+                                    <PeriodeHeaderText
+                                        periode={p}
+                                        erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
+                                        søker={søker}
+                                    />
                                 </Heading>
                             )}
 
@@ -81,6 +87,11 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                                         <PeriodeKvoteType periode={p} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
                                     </BodyShort>
                                 </HStack>
+                            )}
+                            {erEøsUttakPeriode(p) && (
+                                <BodyShort>
+                                    <FormattedMessage id="RedigeringPanel.EøsPeriode" />
+                                </BodyShort>
                             )}
 
                             {erSamtidigUttak && (
@@ -189,9 +200,11 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
 const PeriodeIkon = ({
     periode,
     erMedmorDelAvSøknaden,
+    søker,
 }: {
     periode: UttakPeriodeMedAntallDager;
     erMedmorDelAvSøknaden: boolean;
+    søker: Søker;
 }) => {
     const intl = useIntl();
 
@@ -219,10 +232,29 @@ const PeriodeIkon = ({
         );
     }
 
-    if (
-        erVanligUttakPeriode(periode) &&
-        (periode.forelder === 'MOR' || (periode.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden))
-    ) {
+    if (erEøsUttakPeriode(periode)) {
+        if (søker === 'MOR') {
+            if (erMedmorDelAvSøknaden) {
+                return (
+                    <PersonCircleFillIcon
+                        title={intl.formatMessage({ id: 'RedigeringPanel.Medmor' })}
+                        fontSize="1.5rem"
+                        height="35px"
+                        width="35px"
+                        color="var(--ax-bg-success-strong)"
+                    />
+                );
+            }
+            return (
+                <PersonSuitFillIcon
+                    title={intl.formatMessage({ id: 'RedigeringPanel.Far' })}
+                    fontSize="1.5rem"
+                    height="35px"
+                    width="35px"
+                    color="var(--ax-bg-success-strong)"
+                />
+            );
+        }
         return (
             <PersonPregnantFillIcon
                 title={intl.formatMessage({ id: 'RedigeringPanel.Mor' })}
@@ -234,7 +266,19 @@ const PeriodeIkon = ({
         );
     }
 
-    if (erEøsUttakPeriode(periode) || (periode.forelder === 'FAR_MEDMOR' && !erMedmorDelAvSøknaden)) {
+    if (periode.forelder === 'MOR' || (periode.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden)) {
+        return (
+            <PersonPregnantFillIcon
+                title={intl.formatMessage({ id: 'RedigeringPanel.Mor' })}
+                fontSize="1.5rem"
+                height="35px"
+                width="35px"
+                color="var(--ax-bg-meta-purple-strong)"
+            />
+        );
+    }
+
+    if (periode.forelder === 'FAR_MEDMOR' && !erMedmorDelAvSøknaden) {
         return (
             <PersonSuitFillIcon
                 title={intl.formatMessage({ id: 'RedigeringPanel.Far' })}
@@ -252,10 +296,23 @@ const PeriodeIkon = ({
 const PeriodeHeaderText = ({
     periode,
     erMedmorDelAvSøknaden,
+    søker,
 }: {
     periode: UttakPeriodeMedAntallDager;
     erMedmorDelAvSøknaden: boolean;
+    søker: Søker;
 }) => {
+    if (erEøsUttakPeriode(periode)) {
+        if (søker === 'FAR_ELLER_MEDMOR') {
+            return <FormattedMessage id="RedigeringPanel.Mor" />;
+        }
+        return erMedmorDelAvSøknaden ? (
+            <FormattedMessage id="RedigeringPanel.Medmor" />
+        ) : (
+            <FormattedMessage id="RedigeringPanel.Far" />
+        );
+    }
+
     if (erVanligUttakPeriode(periode) && periode.samtidigUttak !== undefined) {
         return <FormattedMessage id="RedigeringPanel.Begge" />;
     }
@@ -264,7 +321,7 @@ const PeriodeHeaderText = ({
         return <FormattedMessage id="RedigeringPanel.Mor" />;
     }
 
-    if (erEøsUttakPeriode(periode) || (!erMedmorDelAvSøknaden && periode.forelder === 'FAR_MEDMOR')) {
+    if (!erMedmorDelAvSøknaden && periode.forelder === 'FAR_MEDMOR') {
         return <FormattedMessage id="RedigeringPanel.Far" />;
     }
     if (erMedmorDelAvSøknaden && periode.forelder === 'FAR_MEDMOR') {
@@ -281,48 +338,57 @@ const PeriodeKvoteType = ({
     periode: UttakPeriodeMedAntallDager;
     erMedmorDelAvSøknaden: boolean;
 }) => {
-    if (erEøsUttakPeriode(periode)) {
-        return <FormattedMessage id="RedigeringPanel.FarEøs" />;
-    }
+    const erIkkeEøsUttakPeriode = erVanligUttakPeriode(periode);
 
     const erAktivitetsfri =
+        erIkkeEøsUttakPeriode &&
         (periode.kontoType === 'FORELDREPENGER' || periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER') &&
         periode.morsAktivitet === 'IKKE_OPPGITT';
 
     if (periode.kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
         return <FormattedMessage id="RedigeringPanel.MorHarForeldrepengerFørFødsel" />;
     }
-    if (periode.kontoType === 'MØDREKVOTE' || periode.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER') {
+    if (
+        periode.kontoType === 'MØDREKVOTE' ||
+        (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER')
+    ) {
         return <FormattedMessage id="RedigeringPanel.MorKvote" />;
     }
     if (
         !erMedmorDelAvSøknaden &&
-        (periode.kontoType === 'FEDREKVOTE' || periode.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER')
+        (periode.kontoType === 'FEDREKVOTE' ||
+            (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'))
     ) {
         return <FormattedMessage id="RedigeringPanel.FarKvote" />;
     }
     if (
         erMedmorDelAvSøknaden &&
-        (periode.kontoType === 'FEDREKVOTE' || periode.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER')
+        (periode.kontoType === 'FEDREKVOTE' ||
+            (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'))
     ) {
         return <FormattedMessage id="RedigeringPanel.MedmorKvote" />;
     }
     if (
-        (periode.kontoType === 'FORELDREPENGER' || periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER') &&
+        (periode.kontoType === 'FORELDREPENGER' ||
+            (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER')) &&
         !erAktivitetsfri
     ) {
         return <FormattedMessage id="RedigeringPanel.Foreldrepenger" />;
     }
     if (
-        (periode.kontoType === 'FORELDREPENGER' || periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER') &&
+        (periode.kontoType === 'FORELDREPENGER' ||
+            (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER')) &&
         erAktivitetsfri
     ) {
         return <FormattedMessage id="RedigeringPanel.UtenAktivitetskrav" />;
     }
-    if (periode.kontoType === 'FELLESPERIODE' || periode.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER') {
+    if (
+        periode.kontoType === 'FELLESPERIODE' ||
+        (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER')
+    ) {
         return <FormattedMessage id="RedigeringPanel.Fellesperiode" />;
     }
-    if (periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+    if (erIkkeEøsUttakPeriode && periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
         return <FormattedMessage id="RedigeringPanel.Ferie" />;
     }
     return null;
