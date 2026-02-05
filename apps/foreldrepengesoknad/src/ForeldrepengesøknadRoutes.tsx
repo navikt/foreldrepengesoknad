@@ -16,6 +16,7 @@ import { EgenNæringSteg } from 'steps/egen-næring/EgenNæringSteg';
 import { FordelingSteg } from 'steps/fordeling/FordelingSteg';
 import { FrilansSteg } from 'steps/frilans/FrilansSteg';
 import { ManglendeVedlegg } from 'steps/manglende-vedlegg/ManglendeVedlegg';
+import { ManglendeVedleggNy } from 'steps/manglende-vedlegg/ManglendeVedleggNy';
 import { OmBarnetSteg } from 'steps/om-barnet/OmBarnetSteg';
 import { OppsummeringSteg } from 'steps/oppsummering/OppsummeringSteg';
 import { PeriodeMedForeldrepengerSteg } from 'steps/periode-med-foreldrepenger/PeriodeMedForeldrepengerSteg';
@@ -52,41 +53,56 @@ const renderSøknadRoutes = (
         return (
             <>
                 {isLocalhost() && (
-                    <Route
-                        path={SøknadRoutes.UTTAKSPLAN}
-                        element={
-                            <UttaksplanStegNy
-                                søkerInfo={søkerInfo}
-                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                avbrytSøknad={avbrytSøknad}
-                            />
-                        }
-                    />
+                    <>
+                        <Route
+                            path={SøknadRoutes.UTTAKSPLAN}
+                            element={
+                                <UttaksplanStegNy
+                                    søkerInfo={søkerInfo}
+                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                    avbrytSøknad={avbrytSøknad}
+                                />
+                            }
+                        />
+                        <Route
+                            path={SøknadRoutes.DOKUMENTASJON}
+                            element={
+                                <ManglendeVedleggNy
+                                    søkerInfo={søkerInfo}
+                                    erEndringssøknad={erEndringssøknad}
+                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                    avbrytSøknad={avbrytSøknad}
+                                />
+                            }
+                        />
+                    </>
                 )}
                 {!isLocalhost() && (
-                    <Route
-                        path={SøknadRoutes.UTTAKSPLAN}
-                        element={
-                            <UttaksplanStep
-                                søkerInfo={søkerInfo}
-                                erEndringssøknad={erEndringssøknad}
-                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                avbrytSøknad={avbrytSøknad}
-                            />
-                        }
-                    />
-                )}
-                <Route
-                    path={SøknadRoutes.DOKUMENTASJON}
-                    element={
-                        <ManglendeVedlegg
-                            søkerInfo={søkerInfo}
-                            erEndringssøknad={erEndringssøknad}
-                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                            avbrytSøknad={avbrytSøknad}
+                    <>
+                        <Route
+                            path={SøknadRoutes.UTTAKSPLAN}
+                            element={
+                                <UttaksplanStep
+                                    søkerInfo={søkerInfo}
+                                    erEndringssøknad={erEndringssøknad}
+                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                    avbrytSøknad={avbrytSøknad}
+                                />
+                            }
                         />
-                    }
-                />
+                        <Route
+                            path={SøknadRoutes.DOKUMENTASJON}
+                            element={
+                                <ManglendeVedlegg
+                                    søkerInfo={søkerInfo}
+                                    erEndringssøknad={erEndringssøknad}
+                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                    avbrytSøknad={avbrytSøknad}
+                                />
+                            }
+                        />
+                    </>
+                )}
                 <Route
                     path={SøknadRoutes.OPPSUMMERING}
                     element={
@@ -307,7 +323,7 @@ export const ForeldrepengesøknadRoutes = ({
     const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad || false);
     const [søknadGjelderNyttBarn, setSøknadGjelderNyttBarn] = useState(lagretSøknadGjelderNyttBarn);
 
-    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo, erEndringssøknad);
+    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo, erEndringssøknad, foreldrepengerSaker);
 
     const mellomlagreSøknadOgNaviger = useMellomlagreSøknad(
         foreldrepengerSaker,
@@ -335,6 +351,7 @@ export const ForeldrepengesøknadRoutes = ({
         ) {
             // eslint-disable-next-line react-hooks/set-state-in-effect -- TODO (TOR) - Vurder om denne kan fjennast
             setIsFirstTimeLoadingApp(false);
+            // TODO (TOR) Kan ta vekk innsending av uttaksplan til denne funksjonen når ein tek i bruk ny uttaksplan
             if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
                 void navigate(currentRoute);
             } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING.toString()) {

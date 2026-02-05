@@ -359,6 +359,6 @@ export const DokumentasjonSendSenereLabelNy = ({
                 </VStack>
             );
         default:
-            throw new Error();
+            throw new Error('Ingen skjemaverdi for ' + attachment.skjemanummer);
     }
 };
