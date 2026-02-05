@@ -288,7 +288,7 @@
     "felles.ja": "Yes",
     "felles.nei": "No",
     "beregning.lenke": "Your calculation",
-    "beregning.page.heading": "Calculation of your benefit",
+    "beregning.page.heading": "Calculation of parental benefit",
     "beregning.dagsats": "Daily rate: {sumDagsats}",
     "beregning.årsinntekt": "Nav has determined your annual income to be: {årsinntekt}",
     "beregning.datoForVurdering": "The calculation date is {dato}.",

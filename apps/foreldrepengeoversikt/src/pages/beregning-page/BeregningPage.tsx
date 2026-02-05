@@ -8,12 +8,14 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import {
     Accordion,
     BodyShort,
+    Box,
     ExpansionCard,
     HGrid,
     HStack,
     Heading,
     Label,
     Link,
+    List,
     Table,
     VStack,
 } from '@navikt/ds-react';
@@ -60,9 +62,6 @@ export const BeregningPage = () => {
 
     return (
         <PageRouteLayout header={<DinSakHeader sak={gjeldendeSak} />}>
-            <Heading size="large" as="h2" spacing>
-                <FormattedMessage id="beregning.page.heading" />
-            </Heading>
             <VStack gap="space-40">
                 <BeregningOppsummering sak={gjeldendeSak} />
 
@@ -109,61 +108,66 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
     const finnesDirekteutbetaling = beregning.beregningsAndeler.some((a) => (a.dagsatsSøker ?? 0) > 0);
 
     return (
-        <VStack>
-            <Label>
-                <FormattedMessage
-                    id="beregning.årsinntekt"
-                    values={{ årsinntekt: formatCurrencyWithKr(samletÅrsinntekt) }}
-                />
-            </Label>
-            <Label>
-                <FormattedMessage
-                    id="beregning.datoForVurdering"
-                    values={{ dato: formaterDato(beregning.skjæringsTidspunkt, 'D. MMMM YYYY') }}
-                />
-                <br />
-                <FormattedMessage id="beregning.datoForVurdering.fortsettelse" />
-            </Label>
-
-            {vis6GVarsel && (
-                <BodyShort>
+        <Box background="default" padding="space-16" shadow="dialog" borderRadius="8">
+            <Heading size="medium" as="h2" spacing>
+                <FormattedMessage id="beregning.page.heading" />
+            </Heading>
+            <List>
+                <List.Item>
                     <FormattedMessage
-                        id="beregning.6GVarsel"
-                        values={{ grunnbeløpSeksG: formatCurrencyWithKr(seksG) }}
+                        id="beregning.årsinntekt"
+                        values={{ årsinntekt: formatCurrencyWithKr(samletÅrsinntekt) }}
                     />
-                </BodyShort>
-            )}
-            {visÅttiProsentReduksjon && (
-                <BodyShort>
+                </List.Item>
+                <List.Item>
                     <FormattedMessage
-                        id="beregning.visÅttiProsentReduksjon"
-                        values={{ value: formatCurrencyWithKr(åttiProsentReduksjon) }}
+                        id="beregning.datoForVurdering"
+                        values={{ dato: formaterDato(beregning.skjæringsTidspunkt, 'D. MMMM YYYY') }}
                     />
-                </BodyShort>
-            )}
-
-            {finnesRefusjon && !finnesDirekteutbetaling && (
-                <BodyShort>
-                    <FormattedMessage id="beregning.utbetalingsTekst.arbeidsgiver" />
-                </BodyShort>
-            )}
-            {!finnesRefusjon && finnesDirekteutbetaling && (
-                <BodyShort>
-                    <FormattedMessage id="beregning.utbetalingsTekst.deg" />
-                </BodyShort>
-            )}
-            {finnesRefusjon && finnesDirekteutbetaling && (
-                <BodyShort>
-                    <BodyShort>
+                    <br />
+                    <FormattedMessage id="beregning.datoForVurdering.fortsettelse" />
+                </List.Item>
+                {vis6GVarsel && (
+                    <List.Item>
+                        <FormattedMessage
+                            id="beregning.6GVarsel"
+                            values={{ grunnbeløpSeksG: formatCurrencyWithKr(seksG) }}
+                        />
+                    </List.Item>
+                )}
+                {visÅttiProsentReduksjon && (
+                    <List.Item>
+                        <FormattedMessage
+                            id="beregning.visÅttiProsentReduksjon"
+                            values={{ value: formatCurrencyWithKr(åttiProsentReduksjon) }}
+                        />
+                    </List.Item>
+                )}
+                {finnesRefusjon && !finnesDirekteutbetaling && (
+                    <List.Item>
+                        <FormattedMessage id="beregning.utbetalingsTekst.arbeidsgiver" />
+                    </List.Item>
+                )}
+                {!finnesRefusjon && finnesDirekteutbetaling && (
+                    <List.Item>
+                        <FormattedMessage id="beregning.utbetalingsTekst.deg" />
+                    </List.Item>
+                )}
+                {finnesRefusjon && finnesDirekteutbetaling && (
+                    <List.Item>
                         <FormattedMessage id="beregning.utbetalingsTekst.degOgArbeidsgiver" />
-                    </BodyShort>
-                </BodyShort>
-            )}
-
-            <Label>
-                <FormattedMessage id="beregning.dagsats" values={{ sumDagsats: formatCurrencyWithKr(sumDagsats) }} />
-            </Label>
-        </VStack>
+                    </List.Item>
+                )}
+            </List>
+            <Box className="mt-8" background="accent-moderate" padding="space-12" borderRadius="8">
+                <Label>
+                    <FormattedMessage
+                        id="beregning.dagsats"
+                        values={{ sumDagsats: formatCurrencyWithKr(sumDagsats) }}
+                    />
+                </Label>
+            </Box>
+        </Box>
     );
 };
 
