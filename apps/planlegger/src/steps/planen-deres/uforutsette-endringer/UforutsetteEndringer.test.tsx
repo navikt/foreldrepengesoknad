@@ -1,8 +1,6 @@
 import { composeStories } from '@storybook/react-vite';
-import { skipToken } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
 
-import { FødselAleneforsørgerMor } from '../hva-er-mulig/HvaErMulig.stories';
 import * as stories from './UforutsetteEndringer.stories';
 
 const {
