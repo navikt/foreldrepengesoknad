@@ -67,7 +67,7 @@ export const BeregningPage = () => {
 
                 <ExpansionCard size="medium" aria-label={intl.formatMessage({ id: 'beregning.tittel' })}>
                     <ExpansionCard.Header>
-                        <ExpansionCard.Title>
+                        <ExpansionCard.Title size="small">
                             <FormattedMessage id="beregning.tittel" />
                         </ExpansionCard.Title>
                     </ExpansionCard.Header>
@@ -108,7 +108,7 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
     const finnesDirekteutbetaling = beregning.beregningsAndeler.some((a) => (a.dagsatsSøker ?? 0) > 0);
 
     return (
-        <Box background="default" padding="space-16" shadow="dialog" borderRadius="8">
+        <Box background="default" padding="space-24" shadow="dialog" borderRadius="8">
             <Heading size="medium" as="h2" spacing>
                 <FormattedMessage id="beregning.page.heading" />
             </Heading>
@@ -116,16 +116,27 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
                 <List.Item>
                     <FormattedMessage
                         id="beregning.årsinntekt"
-                        values={{ årsinntekt: formatCurrencyWithKr(samletÅrsinntekt) }}
+                        values={{
+                            label: (chunks) => <Label>{chunks}</Label>,
+                            årsinntekt: formatCurrencyWithKr(samletÅrsinntekt),
+                        }}
                     />
                 </List.Item>
                 <List.Item>
                     <FormattedMessage
                         id="beregning.datoForVurdering"
-                        values={{ dato: formaterDato(beregning.skjæringsTidspunkt, 'D. MMMM YYYY') }}
+                        values={{
+                            label: (chunks) => <Label>{chunks}</Label>,
+                            dato: formaterDato(beregning.skjæringsTidspunkt, 'D. MMMM YYYY'),
+                        }}
                     />
                     <br />
-                    <FormattedMessage id="beregning.datoForVurdering.fortsettelse" />
+                    <FormattedMessage
+                        id="beregning.datoForVurdering.fortsettelse"
+                        values={{
+                            label: (chunks) => <Label>{chunks}</Label>,
+                        }}
+                    />
                 </List.Item>
                 {vis6GVarsel && (
                     <List.Item>
@@ -139,7 +150,11 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
                     <List.Item>
                         <FormattedMessage
                             id="beregning.visÅttiProsentReduksjon"
-                            values={{ value: formatCurrencyWithKr(åttiProsentReduksjon) }}
+                            values={{
+                                label: (chunks) => <Label>{chunks}</Label>,
+                                labelvalue: (chunks) => <Label>{chunks}</Label>,
+                                value: formatCurrencyWithKr(åttiProsentReduksjon),
+                            }}
                         />
                     </List.Item>
                 )}
