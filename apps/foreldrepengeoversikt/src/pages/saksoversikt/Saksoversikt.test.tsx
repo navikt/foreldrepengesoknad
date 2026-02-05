@@ -54,7 +54,6 @@ describe('<Saksoversikt>', () => {
 
             // Sjekk at tittel er på plass sånn at vi vet siden har lastet ...
             expect(await screen.findByText('Din sak')).toBeInTheDocument();
-            screen.logTestingPlaygroundURL();
             expect((await screen.findAllByText('Engangsstønad')).length).toBeGreaterThan(0);
 
             // ... når vi senere skal sjekke for at noe ikke eksisterer.
