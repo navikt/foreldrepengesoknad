@@ -8,7 +8,6 @@ import {
 } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Søker } from 'types/ForeldreInfo';
 
 import { BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
@@ -23,6 +22,7 @@ import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
+import { Søker } from '../types/ForeldreInfo';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 
 export type UttakPeriodeMedAntallDager = (UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) & {
