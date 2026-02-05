@@ -210,6 +210,12 @@
     print-color-adjust: exact;
 }
 
+.blueWithBlackOutlineDay {
+    background-color: var(--ax-accent-400) !important;
+    border: 2px solid var(--ax-bg-neutral-strong);
+    print-color-adjust: exact;
+}
+
 .blueOutlineDay.firstDay {
     border-left: 2px solid var(--ax-accent-500);
 }

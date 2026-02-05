@@ -14,4 +14,5 @@ export type LegendLabel =
     | 'TAPTE_DAGER'
     | 'AVSLAG_FRATREKK_PLEIEPENGER'
     | 'UTSETTELSE'
-    | 'FARS_DEL_EØS';
+    | 'FARS_DEL_EØS'
+    | 'MORS_DEL_EØS';

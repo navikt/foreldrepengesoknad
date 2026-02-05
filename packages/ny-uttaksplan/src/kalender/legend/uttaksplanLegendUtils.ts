@@ -125,16 +125,10 @@ export const getCalendarLabel = (
             return intl.formatMessage({ id: 'kalender.adopsjon' });
         case 'BARNEHAGEPLASS':
             return intl.formatMessage({ id: 'kalender.barnehageplass' });
-        case 'FARS_DEL_EØS':
-            return getFarsDelEøsLabel(
-                navnAnnenPart,
-                erIkkeSøkerSpesifisert,
-                erSøkersPeriode,
-                erMedmorDelAvSøknaden,
-                intl,
-            );
         case 'MORS_DEL':
             return getMorsDelLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, intl);
+        case 'MORS_DEL_EØS':
+            return getMorsDelEøsLabel(navnAnnenPart, erIkkeSøkerSpesifisert, intl);
         case 'MORS_DEL_GRADERT':
             return getMorsDelGradertLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, intl);
         case 'FARS_DEL':
@@ -146,6 +140,8 @@ export const getCalendarLabel = (
                 harAktivitetsfriKvote,
                 intl,
             );
+        case 'FARS_DEL_EØS':
+            return getFarsDelEøsLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erMedmorDelAvSøknaden, intl);
         case 'FARS_DEL_GRADERT':
             return getFarsDelGradertLabel(
                 navnAnnenPart,
@@ -244,6 +240,17 @@ const getMorsDelLabel = (
     );
 };
 
+const getMorsDelEøsLabel = (navnAnnenPart: string, erIkkeSøkerSpesifisert: boolean, intl: IntlShape): string => {
+    if (erIkkeSøkerSpesifisert) {
+        return intl.formatMessage({ id: 'kalender.morsEøsPeriode' });
+    }
+
+    return intl.formatMessage(
+        { id: 'kalender.annenPartEøsPeriode' },
+        { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
+    );
+};
+
 const getMorsDelGradertLabel = (
     navnAnnenPart: string,
     erIkkeSøkerSpesifisert: boolean,
@@ -294,7 +301,6 @@ const getFarsDelLabel = (
 const getFarsDelEøsLabel = (
     navnAnnenPart: string,
     erIkkeSøkerSpesifisert: boolean,
-    erSøkersPeriode: boolean,
     erMedmorDelAvSøknaden: boolean,
     intl: IntlShape,
 ): string => {
@@ -303,10 +309,6 @@ const getFarsDelEøsLabel = (
             return intl.formatMessage({ id: 'kalender.medmorsEøsPeriode' });
         }
         return intl.formatMessage({ id: 'kalender.farsEøsPeriode' });
-    }
-
-    if (erSøkersPeriode) {
-        return intl.formatMessage({ id: 'kalender.dinEøsPeriode' });
     }
 
     return intl.formatMessage(
@@ -378,7 +380,7 @@ export const getLegendLabelFromPeriode = (
             case 'FELLESPERIODE':
             case 'FORELDREPENGER':
                 if (erEøsUttakPeriode(p)) {
-                    return 'FARS_DEL_EØS';
+                    return erFarEllerMedmor ? 'MORS_DEL_EØS' : 'FARS_DEL_EØS';
                 }
 
                 if (p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
