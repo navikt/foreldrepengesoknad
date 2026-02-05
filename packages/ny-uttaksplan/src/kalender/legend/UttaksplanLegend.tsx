@@ -11,8 +11,9 @@ import { Barn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { CalendarLabel, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { Søker } from '../../types/ForeldreInfo';
 import { LegendLabel } from '../../types/LegendLabel';
-import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
+import { UttaksplanperiodeMedKunTapteDager, erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import { filtrerBortAnnenPartsIdentiskePerioder } from '../utils/uttaksplanKalenderUtils';
 import { useUttaksplanData } from './../../context/UttaksplanDataContext';
@@ -87,7 +88,7 @@ export const UttaksplanLegend = ({
             ...acc,
             {
                 label,
-                forelder: erEøsUttakPeriode(periode) ? 'FAR_MEDMOR' : periode.forelder,
+                forelder: utledForelder(periode, søker),
                 calendarPeriod: periodeForKalendervisning,
             },
         ];
@@ -153,6 +154,13 @@ export const UttaksplanLegend = ({
             )}
         </HStackEllerVStack>
     );
+};
+
+const utledForelder = (periode: UttaksplanperiodeMedKunTapteDager, søker: Søker) => {
+    if (erEøsUttakPeriode(periode)) {
+        return søker === 'FAR_ELLER_MEDMOR' ? 'FAR_MEDMOR' : 'MOR';
+    }
+    return periode.forelder;
 };
 
 const HStackEllerVStack = ({
