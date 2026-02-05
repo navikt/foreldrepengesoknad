@@ -21,8 +21,8 @@ import { CalendarPeriod } from '@navikt/fp-ui';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { Søker } from '../../types/ForeldreInfo';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
-import { Søker } from '../types/ForeldreInfo';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 
 export type UttakPeriodeMedAntallDager = (UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) & {
