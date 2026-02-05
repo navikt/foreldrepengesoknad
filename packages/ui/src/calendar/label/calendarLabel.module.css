@@ -88,6 +88,15 @@
     print-color-adjust: exact;
 }
 
+.greenWithBlackOutlineDayRect {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    background-color: var(--ax-success-400);
+    border: 2px solid var(--ax-bg-neutral-strong) !important;
+    print-color-adjust: exact;
+}
+
 .greenOutlineRect {
     width: 20px;
     height: 20px;

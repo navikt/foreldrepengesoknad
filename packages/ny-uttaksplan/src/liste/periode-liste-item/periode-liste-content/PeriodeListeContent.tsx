@@ -8,7 +8,7 @@ import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
 import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
-import { Uttaksplanperiode } from '../../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, erEøsUttakPeriode } from '../../../types/UttaksplanPeriode';
 import {
     isOppholdsperiode,
     isOverføringsperiode,
@@ -20,6 +20,7 @@ import {
 } from '../../../utils/periodeUtils';
 import { genererPeriodeKey } from '../../utils/uttaksplanListeUtils';
 import {
+    erUttaksplanperiodeEøs,
     erUttaksplanperiodeFamiliehendelseDato,
     erUttaksplanperiodeTapteDager,
     erUttaksplanperiodeUtenUttak,
@@ -81,7 +82,11 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
                         <SkalJobbeContent uttaksplanperioder={uttaksplanperioder} />
                     </VStack>
                     <EndreOgSlettKnapper
-                        isReadOnly={isReadOnly || harUttaksplanperiodePrematuruker(uttaksplanperioder)}
+                        isReadOnly={
+                            isReadOnly ||
+                            harUttaksplanperiodePrematuruker(uttaksplanperioder) ||
+                            erUttaksplanperiodeEøs(uttaksplanperioder)
+                        }
                         erRedigerbar={erRedigerbar}
                         setIsEndrePeriodePanelOpen={setIsEndrePeriodePanelOpen}
                         setIsSlettPeriodePanelOpen={setIsSlettPeriodePanelOpen}
@@ -162,7 +167,7 @@ const Periode = ({
         return <PrematurukerContent key={genererPeriodeKey(periode)} />;
     }
 
-    if (isUttaksperiode(periode)) {
+    if (isUttaksperiode(periode) || erEøsUttakPeriode(periode)) {
         return (
             <UttaksperiodeContent
                 key={genererPeriodeKey(periode)}

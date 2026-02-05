@@ -1,5 +1,6 @@
 import {
     Uttaksplanperiode,
+    erEøsUttakPeriode,
     erFamiliehendelseDato,
     erPeriodeUtenUttakHull,
     erTapteDagerHull,
@@ -87,4 +88,12 @@ export const getUttaksplanperiodeForelder = (uttaksplanperioder: Uttaksplanperio
 export const erUttaksplanperiodeErForelderMor = (uttaksplanperioder: Uttaksplanperiode[]) => {
     const forelder = getUttaksplanperiodeForelder(uttaksplanperioder);
     return forelder === 'MOR';
+};
+
+export const erUttaksplanperiodeEøs = (uttaksplanperioder: Uttaksplanperiode[]) => {
+    if (uttaksplanperioder.length !== 1) {
+        return false;
+    }
+    const periode = uttaksplanperioder.at(0)!;
+    return erEøsUttakPeriode(periode);
 };

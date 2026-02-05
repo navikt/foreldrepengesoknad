@@ -11,6 +11,7 @@ const {
     MorOgFarMedFerieopphold,
     HullperiodeOverFamiliehendelsesdato,
     VisPerioderMedOppholdsårsakKorrekt,
+    MorSøkerOgFarHarEøsPeriode,
 } = composeStories(stories);
 
 describe('UttaksplanListe', () => {
@@ -379,5 +380,24 @@ describe('UttaksplanListe', () => {
 
         expect(screen.queryByText('Uten Foreldrepenger')).not.toBeInTheDocument();
         expect(screen.queryByText('Dager du kan tape')).not.toBeInTheDocument();
+    });
+    it('Skal ikke kunne redigere en EØS-periode', async () => {
+        render(<MorSøkerOgFarHarEøsPeriode />);
+
+        expect(await screen.findByText('03. Jul - 15. Jul')).toBeInTheDocument();
+
+        const eøsRad = within(screen.getByTestId('2024-07-03 - 2024-07-15'));
+        expect(eøsRad.getByText('03. Jul - 15. Jul')).toBeInTheDocument();
+        expect(eøsRad.getByText('1 uke og 4 dager')).toBeInTheDocument();
+        expect(eøsRad.getAllByText('Hans har foreldrepenger (EØS)')).toHaveLength(2);
+
+        const ekspandertEøsRad = within(
+            screen.getByText('Den andre forelderen mottar pengestøtte i et annet EU/EØS-land'),
+        );
+        expect(
+            ekspandertEøsRad.getByText('Den andre forelderen mottar pengestøtte i et annet EU/EØS-land'),
+        ).toBeInTheDocument();
+        expect(ekspandertEøsRad.queryByText('Endre')).not.toBeInTheDocument();
+        expect(ekspandertEøsRad.queryByText('Slett')).not.toBeInTheDocument();
     });
 });

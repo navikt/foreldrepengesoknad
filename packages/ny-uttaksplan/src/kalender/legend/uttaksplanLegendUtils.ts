@@ -10,6 +10,7 @@ import { Søker } from '../../types/ForeldreInfo';
 import { LegendLabel } from '../../types/LegendLabel';
 import {
     UttaksplanperiodeMedKunTapteDager,
+    erEøsUttakPeriode,
     erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
@@ -124,6 +125,14 @@ export const getCalendarLabel = (
             return intl.formatMessage({ id: 'kalender.adopsjon' });
         case 'BARNEHAGEPLASS':
             return intl.formatMessage({ id: 'kalender.barnehageplass' });
+        case 'FARS_DEL_EØS':
+            return getFarsDelEøsLabel(
+                navnAnnenPart,
+                erIkkeSøkerSpesifisert,
+                erSøkersPeriode,
+                erMedmorDelAvSøknaden,
+                intl,
+            );
         case 'MORS_DEL':
             return getMorsDelLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, intl);
         case 'MORS_DEL_GRADERT':
@@ -282,6 +291,30 @@ const getFarsDelLabel = (
     );
 };
 
+const getFarsDelEøsLabel = (
+    navnAnnenPart: string,
+    erIkkeSøkerSpesifisert: boolean,
+    erSøkersPeriode: boolean,
+    erMedmorDelAvSøknaden: boolean,
+    intl: IntlShape,
+): string => {
+    if (erIkkeSøkerSpesifisert) {
+        if (erMedmorDelAvSøknaden) {
+            return intl.formatMessage({ id: 'kalender.medmorsEøsPeriode' });
+        }
+        return intl.formatMessage({ id: 'kalender.farsEøsPeriode' });
+    }
+
+    if (erSøkersPeriode) {
+        return intl.formatMessage({ id: 'kalender.dinEøsPeriode' });
+    }
+
+    return intl.formatMessage(
+        { id: 'kalender.annenPartEøsPeriode' },
+        { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
+    );
+};
+
 const getFarsDelGradertLabel = (
     navnAnnenPart: string,
     erIkkeSøkerSpesifisert: boolean,
@@ -336,7 +369,7 @@ export const getLegendLabelFromPeriode = (
         }
     }
 
-    if (erVanligUttakPeriode(p) && p.kontoType) {
+    if ((erVanligUttakPeriode(p) || erEøsUttakPeriode(p)) && p.kontoType) {
         switch (p.kontoType) {
             case 'FORELDREPENGER_FØR_FØDSEL':
                 return 'MORS_DEL';
@@ -344,6 +377,10 @@ export const getLegendLabelFromPeriode = (
             case 'FEDREKVOTE':
             case 'FELLESPERIODE':
             case 'FORELDREPENGER':
+                if (erEøsUttakPeriode(p)) {
+                    return 'FARS_DEL_EØS';
+                }
+
                 if (p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
                     return 'AVSLAG_FRATREKK_PLEIEPENGER';
                 }
