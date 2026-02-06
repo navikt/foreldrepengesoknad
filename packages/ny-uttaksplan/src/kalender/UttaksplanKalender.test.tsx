@@ -12,6 +12,7 @@ const {
     VisFarsAktivitetsfriKvote,
     MorOverførerFarsKvote,
     SamtidigUttak,
+    MorSøkerOgFarHarEøsPeriode,
 } = composeStories(stories);
 
 describe('UttaksplanKalender', () => {
@@ -664,6 +665,31 @@ describe('UttaksplanKalender', () => {
                     ' betyr at foreldrepengene vil reduseres det du jobber uten at du får dagene til gode til senere.',
             ),
         ).not.toBeInTheDocument();
+    });
+
+    it('skal ikke kunne endre eller slette en EØS-periode', async () => {
+        render(<MorSøkerOgFarHarEøsPeriode />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        const juli = screen.getByTestId('year:2024;month:6');
+
+        await userEvent.click(within(juli).getByText('15', { exact: true }));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        expect(screen.getByText('Fars kvote')).toBeInTheDocument();
+        expect(screen.getByText('EU/EØS-periode')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Perioder der den andre forelderen mottar pengestøtte i et annet EU/EØS-land kan ikke slettes eller endres',
+            ),
+        ).toBeInTheDocument();
+        expect(screen.getByText('Avbryt')).toBeInTheDocument();
+        expect(screen.queryByText('Endre')).not.toBeInTheDocument();
+        expect(screen.queryByText('Endre til ferie')).not.toBeInTheDocument();
     });
 
     it('mor og far tar samtidig uttak - far fellesperiode med 100% samtidig uttak skal trigge aktivitetskrav', async () => {

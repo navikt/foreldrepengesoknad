@@ -19,6 +19,10 @@ export const useSetSøknadsdata = () => {
         oppdaterData(ContextDataType.UTENLANDSOPPHOLD_SENERE, søknad.utenlandsoppholdNeste12Mnd);
         oppdaterData(ContextDataType.PERIODE_MED_FORELDREPENGER, søknad.dekningsgrad);
         oppdaterData(ContextDataType.UTTAKSPLAN, søknad.uttaksplan);
+        oppdaterData(ContextDataType.UTTAKSPLAN_NY, søknad.uttaksplanNy);
+        oppdaterData(ContextDataType.UTTAKSPLAN_METADATA_NY, {
+            ønskerJustertUttakVedFødsel: søknad.ønskerJustertUttakVedFødsel,
+        });
         oppdaterData(ContextDataType.UTTAKSPLAN_METADATA, {
             ønskerJustertUttakVedFødsel: søknad.ønskerJustertUttakVedFødsel,
         });

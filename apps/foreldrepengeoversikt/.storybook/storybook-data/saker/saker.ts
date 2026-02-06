@@ -1033,6 +1033,7 @@ export const saker_beregning = {
                             fastsattPrÅr: 500000.0,
                             inntektsKilde: 'SKJØNNSFASTSATT',
                             dagsatsSøker: 1081,
+                            dagsatsArbeidsgiver: 0,
                         },
                     ],
                     beregningAktivitetStatuser: [

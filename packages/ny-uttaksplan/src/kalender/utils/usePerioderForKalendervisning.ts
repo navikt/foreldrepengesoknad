@@ -119,7 +119,7 @@ const getKalenderFargeForPeriode = (
     }
 
     if (erEøsUttakPeriode(periode)) {
-        return 'NONE';
+        return erFarEllerMedmor ? 'BLUE_WITH_BLACK_OUTLINE' : 'GREEN_WITH_BLACK_OUTLINE';
     }
 
     if (periode.utsettelseÅrsak) {
@@ -167,7 +167,7 @@ const getSkjermlesertekstForFamiliehendelse = (barn: Barn, intl: IntlShape): str
 };
 
 const getKalenderSkjermlesertekstForPeriode = (
-    period: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    period: UttaksplanperiodeMedKunTapteDager,
     navnPåForeldre: NavnPåForeldre,
     intl: IntlShape,
 ): string => {

@@ -3,21 +3,21 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { TidsperiodenString } from '@navikt/fp-utils';
 
-import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { finnTekstForUtsettelseÅrsak } from '../../../utils/uttaksplanListeUtils';
 import { getMorsAktivitetTekst } from './UttaksperiodeContent';
 
 interface Props {
-    periode: Uttaksplanperiode;
+    periode: UttakPeriode_fpoversikt;
 }
 
 export const UtsettelsesPeriodeContent = ({ periode }: Props) => {
     const intl = useIntl();
 
-    if (!erVanligUttakPeriode(periode) || !periode.utsettelseÅrsak) {
+    if (!periode.utsettelseÅrsak) {
         return null;
     }
 

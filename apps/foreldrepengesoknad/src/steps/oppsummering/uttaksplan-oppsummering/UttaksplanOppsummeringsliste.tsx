@@ -1,3 +1,4 @@
+import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getStønadskontoNavn } from 'utils/stønadskontoerUtils';
@@ -22,18 +23,17 @@ import {
     getPeriodeTittel,
     uttaksperiodeKanJusteresVedFødsel,
 } from '@navikt/fp-uttaksplan';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { Overføringsperiodedetaljer } from './detaljer/Overføringsperiodedetaljer';
 import { Uttaksperiodedetaljer } from './detaljer/Uttaksperiodedetaljer';
 import { Utsettelsesperiodedetaljer } from './detaljer/Uttsettelsesperiodedetaljer';
 
 interface Props {
-    perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
     registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     annenForelder: AnnenForelder;
-    eksisterendeUttaksplan?: Periode[];
     familiehendelsesdato: Date;
     termindato: string | undefined;
     situasjon: Situasjon;
@@ -42,12 +42,10 @@ interface Props {
 }
 
 export const UttaksplanOppsummeringsliste = ({
-    perioder,
     navnPåForeldre,
     erFarEllerMedmor,
     registrerteArbeidsforhold,
     annenForelder,
-    eksisterendeUttaksplan,
     familiehendelsesdato,
     termindato,
     situasjon,
@@ -55,6 +53,9 @@ export const UttaksplanOppsummeringsliste = ({
     ønskerJustertUttakVedFødsel,
 }: Props) => {
     const intl = useIntl();
+
+    const perioder = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
+    const eksisterendeUttaksplan = useContextGetData(ContextDataType.EKSISTERENDE_SAK)?.uttaksplan;
 
     const getStønadskontoNavnFromKonto = (konto: KontoTypeUttak) => {
         return getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);

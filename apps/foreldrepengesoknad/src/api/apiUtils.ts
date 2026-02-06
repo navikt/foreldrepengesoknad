@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { toNumber } from 'lodash';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'types/VedleggDataType';
+import { erPeriodeIOpprinneligSak } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import {
@@ -28,24 +29,21 @@ import {
     BrukerRolle,
     EndringssøknadForeldrepengerDto,
     ForeldrepengesøknadDto,
+    FpSak_fpoversikt,
     KontoType,
     Målform,
+    Oppholdsårsak,
     PersonMedArbeidsforholdDto_fpoversikt,
     SøkerDto,
+    UtsettelsesÅrsak,
+    UttakOppholdÅrsak_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
+    UttakUtsettelseÅrsak_fpoversikt,
     UttaksplanDto,
     Uttaksplanperiode,
     isUfødtBarn,
 } from '@navikt/fp-types';
-import {
-    AnnenInntektDto,
-    Dekningsgrad,
-    FrilansDto,
-    NæringDto,
-    UtenlandsoppholdsperiodeDto,
-    VedleggDto,
-} from '@navikt/fp-types/src/fpsoknadDtoGenerert';
 import {
     Uttaksdagen,
     dateToISOString,
@@ -364,9 +362,14 @@ export const getSøknadsdataForInnsendingNy = (
     erEndringssøknad: boolean,
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
-): ForeldrepengesøknadDtoNy | EndringssøknadForeldrepengerDtoNy => {
+    foreldrepengerSaker: FpSak_fpoversikt[],
+): ForeldrepengesøknadDto | EndringssøknadForeldrepengerDto => {
+    const valgtEksisterendeSaksnr = hentData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
+
+    const eksisterendeSak = foreldrepengerSaker.find((sak) => sak.saksnummer === valgtEksisterendeSaksnr);
+
     if (erEndringssøknad) {
-        return cleanEndringssøknadNy(hentData, søkerinfo);
+        return cleanEndringssøknadNy(hentData, søkerinfo, eksisterendeSak);
     } else {
         return cleanSøknadNy(hentData, søkerinfo);
     }
@@ -417,7 +420,7 @@ export const cleanSøknad = (
 export const cleanSøknadNy = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
-): ForeldrepengesøknadDtoNy => {
+): ForeldrepengesøknadDto => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
     const frilans = hentData(ContextDataType.FRILANS);
@@ -428,6 +431,8 @@ export const cleanSøknadNy = (
     const utenlandsoppholdSiste12Mnd = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const dekningsgrad = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN_NY));
+    const { ønskerJustertUttakVedFødsel } = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA_NY));
+
     const vedlegg = hentData(ContextDataType.VEDLEGG);
 
     return {
@@ -440,7 +445,10 @@ export const cleanSøknadNy = (
         barn: cleanBarn(barn),
         annenForelder: cleanAnnenforelder(annenForelder),
         dekningsgrad,
-        uttaksplan,
+        uttaksplan: {
+            uttaksperioder: midlertidigMappingAvUttaksplan(uttaksplan),
+            ønskerJustertUttakVedFødsel,
+        },
         utenlandsopphold: (utenlandsoppholdSiste12Mnd ?? []).concat(utenlandsoppholdNeste12Mnd ?? []),
         vedlegg: convertAttachmentsMapToArray(vedlegg),
     };
@@ -497,12 +505,14 @@ export const cleanEndringssøknad = (
 export const cleanEndringssøknadNy = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
-): EndringssøknadForeldrepengerDtoNy => {
+    eksisterendeSak?: FpSak_fpoversikt,
+): EndringssøknadForeldrepengerDto => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
     const valgtEksisterendeSaksnr = notEmpty(hentData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR));
     const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN_NY));
+    const { ønskerJustertUttakVedFødsel } = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA_NY));
     const vedlegg = hentData(ContextDataType.VEDLEGG);
     return {
         søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
@@ -512,36 +522,113 @@ export const cleanEndringssøknadNy = (
         barn: cleanBarn(barn),
         annenForelder: cleanAnnenforelder(annenForelder),
         vedlegg: convertAttachmentsMapToArray(vedlegg),
-        uttaksplan,
+        uttaksplan: {
+            uttaksperioder: midlertidigMappingAvUttaksplan(filtrerUtUendredePeriode(uttaksplan, eksisterendeSak)),
+            ønskerJustertUttakVedFødsel,
+        },
     };
 };
 
-//TODO (TOR) Skal genererast fra backend
-type EndringssøknadForeldrepengerDtoNy = {
-    annenForelder?: AnnenForelderDto;
-    barn: BarnDto;
-    mottattdato?: string;
-    rolle?: BrukerRolle;
-    saksnummer: string;
-    språkkode?: Målform;
-    søkerinfo: SøkerDto;
-    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
-    vedlegg?: VedleggDto[];
+const filtrerUtUendredePeriode = (
+    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    eksisterendeSak?: FpSak_fpoversikt,
+): UttakPeriode_fpoversikt[] => {
+    return uttaksplan.filter((periode) => {
+        if ('trekkdager' in periode) {
+            return false;
+        }
+        return eksisterendeSak ? !erPeriodeIOpprinneligSak(eksisterendeSak, periode) : true;
+    });
 };
 
-//TODO (TOR) Skal genererast fra backend
-type ForeldrepengesøknadDtoNy = {
-    andreInntekterSiste10Mnd?: AnnenInntektDto[];
-    annenForelder?: AnnenForelderDto;
-    barn: BarnDto;
-    dekningsgrad: Dekningsgrad;
-    egenNæring?: NæringDto;
-    frilans?: FrilansDto;
-    mottattdato?: string;
-    rolle?: BrukerRolle;
-    språkkode?: Målform;
-    søkerinfo: SøkerDto;
-    utenlandsopphold?: UtenlandsoppholdsperiodeDto[];
-    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
-    vedlegg?: VedleggDto[];
+const midlertidigMappingAvUttaksplan = (uttaksplan: UttakPeriode_fpoversikt[]): Uttaksplanperiode[] => {
+    return uttaksplan.map((periode) => {
+        if (periode.oppholdÅrsak) {
+            return {
+                type: 'opphold',
+                fom: periode.fom,
+                tom: periode.tom,
+                årsak: midlertidigMappingAvOppholdÅrsak(periode.oppholdÅrsak),
+            };
+        }
+        if (periode.overføringÅrsak) {
+            return {
+                type: 'overføring',
+                fom: periode.fom,
+                tom: periode.tom,
+                konto: notEmpty(periode.kontoType),
+                årsak: periode.overføringÅrsak,
+            };
+        }
+        if (periode.utsettelseÅrsak) {
+            return {
+                type: 'utsettelse',
+                fom: periode.fom,
+                tom: periode.tom,
+                erArbeidstaker: false,
+                morsAktivitetIPerioden: periode.morsAktivitet,
+                årsak: midlertidigMappingAvUtsettelseÅrsak(periode.utsettelseÅrsak),
+            };
+        }
+        return {
+            type: 'uttak',
+            fom: periode.fom,
+            tom: periode.tom,
+            gradering: periode.gradering
+                ? {
+                      erArbeidstaker: periode.gradering.aktivitet.type === 'ORDINÆRT_ARBEID',
+                      erFrilanser: periode.gradering.aktivitet.type === 'FRILANS',
+                      erSelvstendig: periode.gradering.aktivitet.type === 'SELVSTENDIG_NÆRINGSDRIVENDE',
+                      orgnumre: periode.gradering.aktivitet.arbeidsgiver?.id
+                          ? [periode.gradering.aktivitet.arbeidsgiver.id]
+                          : [],
+                      stillingsprosent: periode.gradering?.arbeidstidprosent,
+                  }
+                : undefined,
+            konto: notEmpty(periode.kontoType),
+            morsAktivitetIPerioden: periode.morsAktivitet,
+            samtidigUttakProsent: periode.samtidigUttak,
+            ønskerFlerbarnsdager: periode.flerbarnsdager,
+            ønskerGradering: periode.gradering !== undefined,
+            ønskerSamtidigUttak: periode.samtidigUttak !== undefined,
+        };
+    });
+};
+
+const midlertidigMappingAvOppholdÅrsak = (årsak: UttakOppholdÅrsak_fpoversikt): Oppholdsårsak => {
+    switch (årsak) {
+        case 'FEDREKVOTE_ANNEN_FORELDER':
+            return 'UTTAK_FEDREKVOTE_ANNEN_FORELDER';
+        case 'FELLESPERIODE_ANNEN_FORELDER':
+            return 'UTTAK_FELLESP_ANNEN_FORELDER';
+        case 'FORELDREPENGER_ANNEN_FORELDER':
+            return 'UTTAK_FORELDREPENGER_ANNEN_FORELDER';
+        case 'MØDREKVOTE_ANNEN_FORELDER':
+            return 'UTTAK_MØDREKVOTE_ANNEN_FORELDER';
+        default:
+            throw new Error('Ukjent oppholdsårsak');
+    }
+};
+
+const midlertidigMappingAvUtsettelseÅrsak = (årsak: UttakUtsettelseÅrsak_fpoversikt): UtsettelsesÅrsak => {
+    switch (årsak) {
+        case 'ARBEID':
+            return 'ARBEID';
+        case 'BARN_INNLAGT':
+            return 'INSTITUSJONSOPPHOLD_BARNET';
+        case 'FRI':
+            return 'FRI';
+        case 'HV_ØVELSE':
+            return 'HV_OVELSE';
+        case 'LOVBESTEMT_FERIE':
+            return 'LOVBESTEMT_FERIE';
+        case 'NAV_TILTAK':
+            return 'NAV_TILTAK';
+        case 'SØKER_INNLAGT':
+            return 'INSTITUSJONSOPPHOLD_SØKER';
+        case 'SØKER_SYKDOM':
+            return 'SYKDOM';
+        default:
+            throw new Error('Ukjent utsettelsesårsak');
+    }
 };

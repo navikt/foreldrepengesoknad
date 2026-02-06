@@ -13,13 +13,17 @@ import { useNavigate } from 'react-router-dom';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { isLocalhost } from 'utils/tempSystemUtils';
 
-import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './FpDataContext';
 
-export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt, erEndringssøknad: boolean) => {
+export const useSendSøknad = (
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+    erEndringssøknad: boolean,
+    foreldrepengerSaker: FpSak_fpoversikt[],
+) => {
     const navigate = useNavigate();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
@@ -33,7 +37,7 @@ export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt
         const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
 
         const cleanedSøknad = isLocalhost()
-            ? getSøknadsdataForInnsendingNy(erEndringssøknad, hentData, søkerinfo)
+            ? getSøknadsdataForInnsendingNy(erEndringssøknad, hentData, søkerinfo, foreldrepengerSaker)
             : getSøknadsdataForInnsending(
                   erEndringssøknad,
                   hentData,
@@ -43,8 +47,6 @@ export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt
                   uttaksplanMetadata.endringstidspunkt,
               );
 
-        //@ts-expect-error Denne blir fjerna når ein tek i bruk ny uttaksplan
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         if (!isLocalhost() && cleanedSøknad.uttaksplan.uttaksperioder.length === 0 && erEndringssøknad) {
             throw new Error('Søknaden din inneholder ingen nye perioder.');
         }

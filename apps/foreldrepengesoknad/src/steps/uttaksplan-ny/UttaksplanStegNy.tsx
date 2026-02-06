@@ -2,11 +2,11 @@ import { BulletListIcon, CalendarIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import dayjs from 'dayjs';
-import { ComponentProps, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { erPeriodeIOpprinneligPlan } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnr, getNavnPåForeldre } from 'utils/personUtils';
 
@@ -22,7 +22,7 @@ import {
     isAdoptertBarn,
     isFødtBarn,
 } from '@navikt/fp-types';
-import { SkjemaRotLayout, Step, StepButtons } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import {
     FjernAltIUttaksplanModal,
     KvoteOppsummering,
@@ -30,18 +30,18 @@ import {
     UttaksplanKalender,
     UttaksplanListe,
     UttaksplanRedigeringProvider,
-    useErAntallDagerOvertrukketIUttaksplan,
 } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { UttaksplanForm } from './UttaksplanForm';
 import { useUttaksplanForEksisterendeSak } from './hooks/useUttaksplanForEksisterendeSak';
 import { useUttaksplanForslag } from './hooks/useUttaksplanForslag';
 
-type Props = {
+interface Props {
     søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
-};
+}
 
 export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
     const intl = useIntl();
@@ -59,7 +59,6 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad);
-    const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad);
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
@@ -105,14 +104,13 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
         return null;
     }
 
-    const gåTilNesteSide = (erAntallDagerOvertrukket: boolean) => {
-        if (erAntallDagerOvertrukket) {
-            setFeilmelding(intl.formatMessage({ id: 'UttaksplanSteg.OvertrukketDager' }));
-            scrollToKvoteOppsummering();
-        } else {
-            return navigator.goToNextDefaultStep();
-        }
-    };
+    const defaultUttaksperioder =
+        uttaksplanForEksisterendeSak || annenPartVedtakQuery.data?.perioder || uttaksplanForslag;
+
+    const erPlanenEndret =
+        uttaksplan !== undefined &&
+        (uttaksplan.length !== defaultUttaksperioder.length ||
+            defaultUttaksperioder.some((defaultPeriode) => !erPeriodeIOpprinneligPlan(uttaksplan, defaultPeriode)));
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
@@ -130,12 +128,7 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
                     }}
                     valgtStønadskonto={valgteStønadskontoer}
                     harAktivitetskravIPeriodeUtenUttak={false}
-                    uttakPerioder={
-                        uttaksplan ||
-                        uttaksplanForEksisterendeSak ||
-                        annenPartVedtakQuery.data?.perioder ||
-                        uttaksplanForslag
-                    }
+                    uttakPerioder={uttaksplan || defaultUttaksperioder}
                 >
                     {feilmelding && <Alert variant="error">{feilmelding}</Alert>}
                     <div ref={kvoteOppsummeringRef}>
@@ -144,7 +137,7 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
 
                     <UttaksplanRedigeringProvider
                         oppdaterUttaksplan={oppdaterUttaksplan}
-                        harEndretPlan={uttaksplan !== undefined}
+                        harEndretPlan={erPlanenEndret}
                     >
                         <FjernAltIUttaksplanModal />
 
@@ -184,30 +177,18 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
                             </Tabs.Panel>
                         </Tabs>
                     </UttaksplanRedigeringProvider>
-                    <UttaksplanStepButtons
-                        nextButtonOnClick={gåTilNesteSide}
-                        onFortsettSenere={navigator.fortsettSøknadSenere}
-                        onAvsluttOgSlett={avbrytSøknad}
-                        goToPreviousStep={navigator.goToPreviousDefaultStep}
+                    <UttaksplanForm
+                        søkerInfo={søkerInfo}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                        setFeilmelding={setFeilmelding}
+                        scrollToKvoteOppsummering={scrollToKvoteOppsummering}
+                        defaultUttaksperioder={defaultUttaksperioder}
                     />
                 </UttaksplanDataProvider>
             </Step>
         </SkjemaRotLayout>
     );
-};
-
-const UttaksplanStepButtons = (
-    props: Omit<ComponentProps<typeof StepButtons>, 'nextButtonOnClick'> & {
-        nextButtonOnClick: (erAntallDagerOvertrukket: boolean) => void;
-    },
-) => {
-    const erAntallDagerOvertrukket = useErAntallDagerOvertrukketIUttaksplan();
-
-    const handleNextClick = () => {
-        props.nextButtonOnClick(erAntallDagerOvertrukket);
-    };
-
-    return <StepButtons {...props} nextButtonOnClick={handleNextClick} />;
 };
 
 const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean): RettighetType_fpoversikt => {
@@ -251,7 +232,7 @@ const barnehagestartDato = (barnet: Barn) => {
  * Tar hensyn til stilling av klokken ved å gjøre om klokka til kl 12 før antall timer trekkes fra.
  * @param dato
  */
-export const getUttaksdagTilOgMedDato = (dato: string): string => {
+const getUttaksdagTilOgMedDato = (dato: string): string => {
     const d = dayjs(dato).toDate();
     const newDate = dato ? new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12) : dato;
     switch (getUkedag(dato)) {

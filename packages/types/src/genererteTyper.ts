@@ -128,9 +128,9 @@ export type { Ingen } from './fpsoknadDtoGenerert';
 export type { BrukerTekstDto } from './fpsoknadDtoGenerert';
 export type { EttersendelseDto } from './fpsoknadDtoGenerert';
 export type { YtelseType } from './fpsoknadDtoGenerert';
-export type { no_nav_foreldrepenger_soknad_mellomlagring_YtelseMellomlagringType } from './fpsoknadDtoGenerert';
+export type { YtelseMellomlagringType } from './fpsoknadDtoGenerert';
 export type { org_glassfish_jersey_media_multipart_FormDataContentDisposition } from './fpsoknadDtoGenerert';
-export type { no_nav_foreldrepenger_soknad_innsending_StatusInnsendingTjeneste_ForsendelseStatus as ForsendelseStatus } from './fpsoknadDtoGenerert';
+export type { ForsendelseStatus } from './fpsoknadDtoGenerert';
 
 // Types from fpgrunndataDtoGenerert
 export type { KontoBeregningDto } from './fpgrunndataDtoGenerert';

@@ -32,6 +32,7 @@ import {
     PersonDto_fpoversikt,
     Person_fpoversikt,
     UttakOppholdÅrsak_fpoversikt,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { Tidsperioden } from '@navikt/fp-utils';
@@ -283,6 +284,7 @@ export const mapSøkerensEksisterendeSakFromDTO = (
         grunnlag,
         saksperioder,
         uttaksplan,
+        uttaksplanNy: perioder.concat(eksisterendeSak.gjeldendeVedtak?.perioderAnnenpartEøs ?? []),
     };
 };
 
@@ -563,7 +565,7 @@ export const lagEndringsSøknad = (
     annenPartFraSak: Person_fpoversikt | undefined,
     valgteBarn: ValgtBarn,
 ): Partial<Søknad> => {
-    const { grunnlag, uttaksplan } = eksisterendeSak;
+    const { grunnlag, uttaksplan, uttaksplanNy } = eksisterendeSak;
     const { dekningsgrad, familiehendelseType, søkerErFarEllerMedmor, ønskerJustertUttakVedFødsel } = grunnlag;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(familiehendelseType);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag, valgteBarn);
@@ -591,7 +593,66 @@ export const lagEndringsSøknad = (
         erEndringssøknad: true,
         dekningsgrad,
         uttaksplan,
+        uttaksplanNy,
         saksnummer: eksisterendeSak.saksnummer,
         ønskerJustertUttakVedFødsel: ønskerJustertUttakVedFødsel,
     };
+};
+
+export const erPeriodeIOpprinneligSak = (
+    eksisterendeSak: FpSak_fpoversikt,
+    nyPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+): boolean => {
+    const eksisterendePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> = [];
+    if (eksisterendeSak?.gjeldendeVedtak?.perioder !== undefined) {
+        eksisterendePerioder.push(...eksisterendeSak.gjeldendeVedtak.perioder);
+    }
+    if (eksisterendeSak?.gjeldendeVedtak?.perioderAnnenpartEøs !== undefined) {
+        eksisterendePerioder.push(...eksisterendeSak.gjeldendeVedtak.perioderAnnenpartEøs);
+    }
+
+    return erPeriodeIOpprinneligPlan(eksisterendePerioder, nyPeriode);
+};
+
+export const erPeriodeIOpprinneligPlan = (
+    eksisterendePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    nyPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+): boolean => {
+    return eksisterendePerioder.some((p) => {
+        if ((erEøsPeriode(nyPeriode) && !erEøsPeriode(p)) || (!erEøsPeriode(nyPeriode) && erEøsPeriode(p))) {
+            return false;
+        }
+        if (erEøsPeriode(nyPeriode) && erEøsPeriode(p)) {
+            return (
+                nyPeriode.trekkdager === p.trekkdager &&
+                nyPeriode.fom === p.fom &&
+                nyPeriode.tom === p.tom &&
+                nyPeriode.kontoType === p.kontoType
+            );
+        }
+
+        if (erEøsPeriode(nyPeriode) || erEøsPeriode(p)) {
+            throw new Error('Ingen perioder bør være eøs-perioder her');
+        }
+
+        return (
+            nyPeriode.fom === p.fom &&
+            nyPeriode.tom === p.tom &&
+            nyPeriode.kontoType === p.kontoType &&
+            nyPeriode.flerbarnsdager === p.flerbarnsdager &&
+            nyPeriode.forelder === p.forelder &&
+            nyPeriode.gradering === p.gradering &&
+            nyPeriode.utsettelseÅrsak === p.utsettelseÅrsak &&
+            nyPeriode.samtidigUttak === p.samtidigUttak &&
+            nyPeriode.resultat === p.resultat &&
+            nyPeriode.oppholdÅrsak === p.oppholdÅrsak &&
+            nyPeriode.overføringÅrsak === p.overføringÅrsak
+        );
+    });
+};
+
+const erEøsPeriode = (
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+): periode is UttakPeriodeAnnenpartEøs_fpoversikt => {
+    return 'trekkdager' in periode;
 };

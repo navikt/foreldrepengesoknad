@@ -10,6 +10,7 @@ import { Søker } from '../../types/ForeldreInfo';
 import { LegendLabel } from '../../types/LegendLabel';
 import {
     UttaksplanperiodeMedKunTapteDager,
+    erEøsUttakPeriode,
     erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
@@ -126,6 +127,8 @@ export const getCalendarLabel = (
             return intl.formatMessage({ id: 'kalender.barnehageplass' });
         case 'MORS_DEL':
             return getMorsDelLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, intl);
+        case 'MORS_DEL_EØS':
+            return getMorsDelEøsLabel(navnAnnenPart, erIkkeSøkerSpesifisert, intl);
         case 'MORS_DEL_GRADERT':
             return getMorsDelGradertLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, intl);
         case 'FARS_DEL':
@@ -137,6 +140,8 @@ export const getCalendarLabel = (
                 harAktivitetsfriKvote,
                 intl,
             );
+        case 'FARS_DEL_EØS':
+            return getFarsDelEøsLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erMedmorDelAvSøknaden, intl);
         case 'FARS_DEL_GRADERT':
             return getFarsDelGradertLabel(
                 navnAnnenPart,
@@ -235,6 +240,17 @@ const getMorsDelLabel = (
     );
 };
 
+const getMorsDelEøsLabel = (navnAnnenPart: string, erIkkeSøkerSpesifisert: boolean, intl: IntlShape): string => {
+    if (erIkkeSøkerSpesifisert) {
+        return intl.formatMessage({ id: 'kalender.morsEøsPeriode' });
+    }
+
+    return intl.formatMessage(
+        { id: 'kalender.annenPartEøsPeriode' },
+        { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
+    );
+};
+
 const getMorsDelGradertLabel = (
     navnAnnenPart: string,
     erIkkeSøkerSpesifisert: boolean,
@@ -278,6 +294,25 @@ const getFarsDelLabel = (
 
     return intl.formatMessage(
         { id: 'kalender.annenPartPeriode' },
+        { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
+    );
+};
+
+const getFarsDelEøsLabel = (
+    navnAnnenPart: string,
+    erIkkeSøkerSpesifisert: boolean,
+    erMedmorDelAvSøknaden: boolean,
+    intl: IntlShape,
+): string => {
+    if (erIkkeSøkerSpesifisert) {
+        if (erMedmorDelAvSøknaden) {
+            return intl.formatMessage({ id: 'kalender.medmorsEøsPeriode' });
+        }
+        return intl.formatMessage({ id: 'kalender.farsEøsPeriode' });
+    }
+
+    return intl.formatMessage(
+        { id: 'kalender.annenPartEøsPeriode' },
         { navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, getLocaleFromSessionStorage()) },
     );
 };
@@ -336,7 +371,7 @@ export const getLegendLabelFromPeriode = (
         }
     }
 
-    if (erVanligUttakPeriode(p) && p.kontoType) {
+    if ((erVanligUttakPeriode(p) || erEøsUttakPeriode(p)) && p.kontoType) {
         switch (p.kontoType) {
             case 'FORELDREPENGER_FØR_FØDSEL':
                 return 'MORS_DEL';
@@ -344,6 +379,10 @@ export const getLegendLabelFromPeriode = (
             case 'FEDREKVOTE':
             case 'FELLESPERIODE':
             case 'FORELDREPENGER':
+                if (erEøsUttakPeriode(p)) {
+                    return erFarEllerMedmor ? 'MORS_DEL_EØS' : 'FARS_DEL_EØS';
+                }
+
                 if (p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
                     return 'AVSLAG_FRATREKK_PLEIEPENGER';
                 }
