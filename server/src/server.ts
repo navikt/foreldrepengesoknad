@@ -1,4 +1,3 @@
-import compression from 'compression';
 import express from 'express';
 
 import {
@@ -28,11 +27,21 @@ server.use(logger.morganMiddleware);
 // Skjermdeling krever tilgang til CSS uten å være innlogget!
 setupSkjermleserCssTilgang(publicRouter);
 
-publicRouter.use(
-    compression({
-        brotli: undefined,
-    }),
-);
+// Serve pre-compressed gzip files for JS and CSS
+publicRouter.use((req, res, next) => {
+    logger.info('i middleware');
+    if (req.path.endsWith('.js')) {
+        req.url = req.url + '.gz';
+        res.set('Content-Encoding', 'gzip');
+        res.set('Content-Type', 'text/javascript');
+    } else if (req.path.endsWith('.css')) {
+        req.url = req.url + '.gz';
+        res.set('Content-Encoding', 'gzip');
+        res.set('Content-Type', 'text/css');
+    }
+    next();
+});
+
 publicRouter.use(express.static('./public', { index: false }));
 server.use(serverConfig.app.publicPath, publicRouter);
 
