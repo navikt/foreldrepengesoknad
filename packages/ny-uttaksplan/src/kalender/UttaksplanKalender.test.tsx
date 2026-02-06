@@ -754,8 +754,8 @@ describe('UttaksplanKalender', () => {
 
         expect(
             screen.getByText(
-                'Dersom dere skal ha mindre enn 100 % samtidig uttak til sammen så må dere ' +
-                    'også jobbe slik at summen av arbeid og samtidig uttak blir nøyaktig 100 % per forelder',
+                'Når dere har mindre enn 100 % foreldrepenger til sammen, ' +
+                    'må dere også jobbe slik at summen av arbeid og foreldrepenger blir 100 % per forelder',
             ),
         ).toBeInTheDocument();
 
@@ -813,7 +813,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getByText('Legg til'));
 
-        expect(screen.getByText('Du kan maksimalt ha 50 % samtidig uttak fra fellesperiode')).toBeInTheDocument();
+        expect(screen.getByText('Du kan maksimalt ha 50 % fellesperiode')).toBeInTheDocument();
 
         await userEvent.clear(samtidigprosentFar);
         await userEvent.type(samtidigprosentFar, '50');
@@ -822,8 +822,8 @@ describe('UttaksplanKalender', () => {
 
         expect(
             screen.getByText(
-                'Dersom dere skal ha mindre enn 100 % uttak så må dere også jobbe i perioden dere ikke er hjemme' +
-                    ' slik at summen av arbeid og samtidig uttak blir nøyaktig 100 % per forelder',
+                'Når dere har mindre enn 100 % foreldrepenger til sammen, må dere også jobbe' +
+                    ' slik at summen av arbeid og foreldrepenger blir 100 % per forelder',
             ),
         ).toBeInTheDocument();
 
@@ -882,7 +882,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getByText('Legg til'));
 
         expect(
-            screen.getByText('Fedrekvoten og mødrekvoten kan ikke ha samtidig uttak over 100 % til sammen'),
+            screen.getByText('Bare en kan ha kvote når dere skal ha mer enn 100 % foreldrepenger til sammen'),
         ).toBeInTheDocument();
 
         await userEvent.clear(samtidigprosentFar);

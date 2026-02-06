@@ -214,9 +214,7 @@ const erUgyldigSamtidigUttak = <T extends LeggTilEllerEndrePeriodeFormFormValues
     if (kombinertUttaksprosent < 100) {
         if (totalProsentMor !== 100 || totalProsentFarMedmor !== 100) {
             return intl.formatMessage({
-                id:
-                    'Dersom dere skal ha mindre enn 100 % samtidig uttak til sammen så må dere også jobbe' +
-                    ' slik at summen av arbeid og samtidig uttak blir nøyaktig 100 % per forelder',
+                id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.MindreEnn100Prosent',
             });
         }
     }
@@ -225,7 +223,7 @@ const erUgyldigSamtidigUttak = <T extends LeggTilEllerEndrePeriodeFormFormValues
         if (kontoTypeFarMedmor === 'FELLESPERIODE') {
             if (totalProsentMor !== 100 && !morsAktivitet) {
                 return intl.formatMessage({
-                    id: 'Mor må enten være 100 % i arbeid eller i annen aktivitet',
+                    id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.Nøyaktig100ProsentMorsAktivitet',
                 });
             }
         }
@@ -234,21 +232,19 @@ const erUgyldigSamtidigUttak = <T extends LeggTilEllerEndrePeriodeFormFormValues
     if (kombinertUttaksprosent > 100 && kombinertUttaksprosent <= 150) {
         if (farMedmorsFellesperiodeErStørreEnn50 || morsFellesperiodeErStørreEnn50) {
             return intl.formatMessage({
-                id: 'Du kan maksimalt ha 50 % samtidig uttak fra fellesperiode',
+                id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.Maks50ProsentFelles',
             });
         }
 
         if (kontoTypeFarMedmor === 'FEDREKVOTE' && kontoTypeMor === 'MØDREKVOTE') {
             return intl.formatMessage({
-                id: 'Fedrekvoten og mødrekvoten kan ikke ha samtidig uttak over 100 % til sammen',
+                id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.ToKvoterMerEnn100Prosent',
             });
         }
 
         if (totalProsentMor < 100 || totalProsentFarMedmor < 100) {
             return intl.formatMessage({
-                id:
-                    'Dersom dere skal ha mindre enn 100 % uttak så må dere også jobbe i perioden dere ikke er hjemme' +
-                    ' slik at summen av arbeid og samtidig uttak blir nøyaktig 100 % per forelder',
+                id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.MåHa100Prosent',
             });
         }
     }
@@ -311,15 +307,21 @@ const erGyldigUttakForFarMedmorRundtFødsel = <T extends LeggTilEllerEndrePeriod
         samtidigUttaksprosentFarMedmorFloat + (getFloatFromString(stillingsprosentFarMedmor) ?? 0);
 
     if (kombinertUttaksprosent < 100) {
-        return intl.formatMessage({ id: 'Dette er ikke lov' });
+        return intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.Må100ProsentUttak',
+        });
     }
 
     if (totalProsentFarMedmor !== 100) {
-        return intl.formatMessage({ id: 'Far/medmor må være 100 % i arbeid og uttak til sammen' });
+        return intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.FarMedmorMåHa100ProsentUttakJobb',
+        });
     }
 
     if (totalProsentMor !== 100) {
-        return intl.formatMessage({ id: 'Mor må være 100 % i arbeid og uttak til sammen' });
+        return intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.MorMåHa100ProsentUttakJobb',
+        });
     }
 
     return null;

@@ -289,5 +289,13 @@
     "VelgPeriodePanelStep.VelgPeriode": "Du må velga kva for periode du vil endra på",
     "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "Du har valgt ein kombinasjon av dagar som ikkje er gyldige for nokon foreldre.",
     "LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse": "Du kan ikkje velga meir enn to veker totalt i perioden to veker før og seks veker etter fødsel/termin",
+    "LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.MindreEnn100Prosent": "Når de har mindre enn 100 % foreldrepengar til saman, må de òg jobbe slik at summen av arbeid og foreldrepengar blir 100 % per forelder",
+    "LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.Nøyaktig100ProsentMorsAktivitet": "Mor må arbeide og ha foreldrepengar til saman 100 %, eller vere i annan godkjend aktivitet",
+    "LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.Maks50ProsentFelles": "Du kan maksimalt ha 50 % fellesperiode",
+    "LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.ToKvoterMerEnn100Prosent": "Berre ein kan ha kvote når de skal ha meir enn 100 % foreldrepengar til saman",
+    "LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.MåHa100Prosent": "Når de har mindre enn 100 % foreldrepengar til saman, må de òg jobbe slik at summen av arbeid og foreldrepengar blir 100 % per forelder",
+    "LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.Må100ProsentUttak": "Her kan du ikkje leggje inn foreldrepengar som er mindre enn 100 % til saman",
+    "LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.FarMedmorMåHa100ProsentUttakJobb": "Far/medmor må arbeide og ha foreldrepengar til saman 100 %",
+    "LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.MorMåHa100ProsentUttakJobb": "Mor må arbeide og ha foreldrepengar til saman 100 %. Ho vil miste dagar når ho ikkje har 100 % foreldrepengar",
     "LeggTilEllerEndrePeriodeFellesForm.DagerReduseres": "Arbeid i tidsrommet 3 veker før termin og 6 veker etter fødsel, betyr at foreldrepengane vil reduseres det du jobbar utan at du får dagane til gode til seinere."
 }
