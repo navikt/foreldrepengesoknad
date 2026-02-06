@@ -2,12 +2,11 @@ import { PersonPregnantIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { erAlenesøker, getErFarEllerMedmor } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
-import { HvemPlanleggerType } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 interface Props {
@@ -19,16 +18,7 @@ export const NyttBarnFørTreÅr = ({ arbeidssituasjon, hvemPlanlegger }: Props) 
     const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
 
     const erAleneOmOmsorg = erAlenesøker(hvemPlanlegger);
-    const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
-    const erFar = (() => {
-        switch (hvemPlanlegger.type) {
-            case HvemPlanleggerType.MOR:
-            case HvemPlanleggerType.MOR_OG_MEDMOR:
-                return false;
-            default:
-                return true;
-        }
-    })();
+
     return (
         <HStack gap="space-20" wrap={false}>
             <div>
@@ -45,20 +35,16 @@ export const NyttBarnFørTreÅr = ({ arbeidssituasjon, hvemPlanlegger }: Props) 
 
             <div>
                 <Heading size="small" level="4">
-                    <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManFårNyttBarnFørTreÅr" />
+                    <FormattedMessage
+                        id="UforutsetteEndringer.UforutsetteEndringer.HvisManFårNyttBarnFørTreÅr"
+                        values={{ erAleneforsørger: erAleneOmOmsorg }}
+                    />
                 </Heading>
                 <BodyLong>
-                    {!erAleneOmOmsorg && erFarEllerMedmor ? (
-                        <FormattedMessage
-                            id="UforutsetteEndringer.UforutsetteEndringer.HvisManFårNyttBarnFørTreÅr.TekstKunFarEllerMedmor"
-                            values={{ erFar }}
-                        />
-                    ) : (
-                        <FormattedMessage
-                            id="UforutsetteEndringer.UforutsetteEndringer.HvisManFårNyttBarnFørTreÅr.Tekst"
-                            values={{ erAleneforsørger: kunEnPartSkalHa }}
-                        />
-                    )}
+                    <FormattedMessage
+                        id="UforutsetteEndringer.UforutsetteEndringer.HvisManFårNyttBarnFørTreÅr.Tekst"
+                        values={{ erAleneforsørger: kunEnPartSkalHa }}
+                    />
                 </BodyLong>
             </div>
         </HStack>

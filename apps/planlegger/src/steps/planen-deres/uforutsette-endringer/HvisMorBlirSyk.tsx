@@ -1,25 +1,24 @@
 import { StethoscopeIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
+import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
+import { HvemPlanleggerType } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 interface Props {
     arbeidssituasjon: Arbeidssituasjon;
     hvemPlanlegger: HvemPlanlegger;
-    barnet: OmBarnet;
 }
 
-export const HvisMorBlirSyk = ({ arbeidssituasjon, barnet, hvemPlanlegger }: Props) => {
+export const HvisMorBlirSyk = ({ arbeidssituasjon, hvemPlanlegger }: Props) => {
     const intl = useIntl();
 
-    const antallBarn = barnet.antallBarn;
+    const erMedmor = hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
@@ -39,18 +38,24 @@ export const HvisMorBlirSyk = ({ arbeidssituasjon, barnet, hvemPlanlegger }: Pro
             </div>
             <div>
                 <Heading size="small" level="4">
-                    <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk" />
+                    <FormattedMessage
+                        id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk"
+                        values={{ erAlene: hvemHarRett === 'kunSøker1HarRett' }}
+                    />
                 </Heading>
                 <BodyLong>
-                    {kunEnPartSkalHa ? (
+                    {arbeidssituasjon.status === Arbeidsstatus.INGEN ||
+                    arbeidssituasjon.status === Arbeidsstatus.UFØR ? (
                         <FormattedMessage
-                            id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.TekstAlene"
-                            values={{ antallBarn }}
+                            id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.TekstKunFarEllerMedmor"
+                            values={{ hvem: finnSøker2Tekst(intl, hvemPlanlegger), erMedmor }}
                         />
+                    ) : kunEnPartSkalHa ? (
+                        <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.TekstAlene" />
                     ) : (
                         <FormattedMessage
                             id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.Tekst"
-                            values={{ antallBarn, hvem: finnSøker2Tekst(intl, hvemPlanlegger) }}
+                            values={{ hvem: finnSøker2Tekst(intl, hvemPlanlegger), erMedmor }}
                         />
                     )}
                 </BodyLong>

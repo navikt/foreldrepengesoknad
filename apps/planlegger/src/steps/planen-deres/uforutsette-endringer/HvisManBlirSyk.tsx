@@ -14,6 +14,7 @@ interface Props {
 export const HvisManBlirSyk = ({ arbeidssituasjon }: Props) => {
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
+
     return (
         <HStack gap="space-20" wrap={false}>
             <div>
@@ -29,18 +30,14 @@ export const HvisManBlirSyk = ({ arbeidssituasjon }: Props) => {
             </div>
             <div>
                 <Heading size="small" level="4">
-                    {kunEnPartSkalHa ? (
-                        <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Alene" />
-                    ) : (
-                        <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk" />
-                    )}
+                    <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk" />
                 </Heading>
 
                 <BodyLong>
-                    {kunEnPartSkalHa ? (
-                        <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.TekstAlene" />
-                    ) : (
+                    {!kunEnPartSkalHa ? (
                         <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Tekst" />
+                    ) : (
+                        <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.TekstAlene" />
                     )}
                 </BodyLong>
             </div>
