@@ -29,7 +29,7 @@ setupSkjermleserCssTilgang(publicRouter);
 
 // Skjermdeling krever tilgang til CSS uten å være innlogget!
 publicRouter.use((req, _res, next) => {
-    req.headers['content-encoding'] = 'gzip';
+    req.headers['Accept-Encoding'] = 'gzip';
     next();
 });
 publicRouter.use(compression());
