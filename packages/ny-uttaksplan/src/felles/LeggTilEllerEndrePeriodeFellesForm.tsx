@@ -47,6 +47,7 @@ export type LeggTilEllerEndrePeriodeFormFormValues = {
 
 interface Props {
     valgtePerioder: Array<{ fom: string; tom: string }>;
+    resetFormValuesVedEndringAvForelder: (forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => void;
 }
 
 const getSkalViseMorsAktivitetskravVedSamtidigUttak = (
@@ -74,7 +75,7 @@ const getSkalViseMorsAktivitetskravVedSamtidigUttak = (
     return skalViseMorsAktivitetskravVedSamtidigUttak;
 };
 
-export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder }: Props) => {
+export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormValuesVedEndringAvForelder }: Props) => {
     const intl = useIntl();
 
     const {
@@ -155,10 +156,6 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder }: Props) =>
             </Alert>
         );
     }
-
-    const resetFormValuesVedEndringAvForelder = (forelderValue: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {
-        formMethods.reset({ forelder: forelderValue });
-    };
 
     const resetStillingsprosentMor = () => {
         if (forelder === 'MOR' || forelder === 'BEGGE') {
