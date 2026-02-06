@@ -28,6 +28,10 @@ server.use(logger.morganMiddleware);
 setupSkjermleserCssTilgang(publicRouter);
 
 // Skjermdeling krever tilgang til CSS uten å være innlogget!
+publicRouter.use((req, _res, next) => {
+    req.headers['content-encoding'] = 'gzip';
+    next();
+});
 publicRouter.use(compression());
 publicRouter.use(express.static('./public', { index: false }));
 server.use(serverConfig.app.publicPath, publicRouter);
