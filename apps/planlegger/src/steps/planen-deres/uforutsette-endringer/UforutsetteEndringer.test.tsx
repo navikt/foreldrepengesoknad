@@ -35,7 +35,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(
             screen.queryByText('Hvis barnet er innlagt på sykehuset i de første seks ukene'),
         ).not.toBeInTheDocument();
-        expect(screen.queryByText('Barnet blir født før uke 33')).not.toBeInTheDocument();
+        expect(screen.queryByText('Barnet blir født før 33. svangerskapsuke')).not.toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
     it.skip('skal vise info for mor og far adopsjon hvor kun mor har rett', async () => {
@@ -51,7 +51,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(
             screen.queryByText('Hvis barnet er innlagt på sykehuset i de første seks ukene'),
         ).not.toBeInTheDocument();
-        expect(screen.queryByText('Barnet blir født før uke 33')).toBeInTheDocument();
+        expect(screen.queryByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
     it('mor og far fødsel hvor begge har rett', async () => {
@@ -64,7 +64,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.queryByText('Hvis barnet er sykt eller innlagt på sykehuset')).not.toBeInTheDocument();
         expect(screen.getByText('Hvis barnet er sykt etter de første seks ukene')).toBeInTheDocument();
         expect(screen.getByText('Hvis barnet er innlagt på sykehuset i de første seks ukene')).toBeInTheDocument();
-        expect(screen.getByText('Barnet blir født før uke 33')).toBeInTheDocument();
+        expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
     it('mor og far fødsel hvor kun mor har rett', async () => {
@@ -77,7 +77,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.queryByText('Hvis barnet er sykt eller innlagt på sykehuset')).not.toBeInTheDocument();
         expect(screen.getByText('Hvis barnet er sykt etter de første seks ukene')).toBeInTheDocument();
         expect(screen.getByText('Hvis barnet er innlagt på sykehuset i de første seks ukene')).toBeInTheDocument();
-        expect(screen.getByText('Barnet blir født før uke 33')).toBeInTheDocument();
+        expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
     it('mor og far fødsel hvor kun far har rett', async () => {
@@ -92,7 +92,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(
             screen.queryByText('Hvis barnet er innlagt på sykehuset i de første seks ukene'),
         ).not.toBeInTheDocument();
-        expect(screen.getByText('Barnet blir født før uke 33')).toBeInTheDocument();
+        expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
     // Mor og medmor
@@ -106,7 +106,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.queryByText('Hvis barnet er sykt eller innlagt på sykehuset')).not.toBeInTheDocument();
         expect(screen.getByText('Hvis barnet er sykt etter de første seks ukene')).toBeInTheDocument();
         expect(screen.getByText('Hvis barnet er innlagt på sykehuset i de første seks ukene')).toBeInTheDocument();
-        expect(screen.getByText('Barnet blir født før uke 33')).toBeInTheDocument();
+        expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
     it('mor og medmor fødsel hvor kun mor har rett', async () => {
@@ -119,7 +119,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.queryByText('Hvis barnet er sykt eller innlagt på sykehuset')).not.toBeInTheDocument();
         expect(screen.getByText('Hvis barnet er sykt etter de første seks ukene')).toBeInTheDocument();
         expect(screen.getByText('Hvis barnet er innlagt på sykehuset i de første seks ukene')).toBeInTheDocument();
-        expect(screen.getByText('Barnet blir født før uke 33')).toBeInTheDocument();
+        expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
     it('mor og medmor fødsel hvor kun medmor har rett', async () => {
@@ -134,7 +134,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(
             screen.queryByText('Hvis barnet er innlagt på sykehuset i de første seks ukene'),
         ).not.toBeInTheDocument();
-        expect(screen.getByText('Barnet blir født før uke 33')).toBeInTheDocument();
+        expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
     // Far og far
@@ -152,7 +152,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(
             screen.queryByText('Hvis barnet er innlagt på sykehuset i de første seks ukene'),
         ).not.toBeInTheDocument();
-        expect(screen.getByText('Barnet blir født før uke 33')).toBeInTheDocument();
+        expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
     it('far og far fødsel hvor kun far har rett', async () => {
@@ -169,7 +169,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(
             screen.queryByText('Hvis barnet er innlagt på sykehuset i de første seks ukene'),
         ).not.toBeInTheDocument();
-        expect(screen.getByText('Barnet blir født før uke 33')).toBeInTheDocument();
+        expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
     it('far og far fødsel hvor kun medfar har rett', async () => {
@@ -186,7 +186,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(
             screen.queryByText('Hvis barnet er innlagt på sykehuset i de første seks ukene'),
         ).not.toBeInTheDocument();
-        expect(screen.queryByText('Barnet blir født før uke 33')).not.toBeInTheDocument();
+        expect(screen.queryByText('Barnet blir født før 33. svangerskapsuke')).not.toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
     // Aleneomsorg
@@ -200,7 +200,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.queryByText('Hvis barnet er sykt eller innlagt på sykehuset')).not.toBeInTheDocument();
         expect(screen.getByText('Hvis barnet er sykt etter de første seks ukene')).toBeInTheDocument();
         expect(screen.getByText('Hvis barnet er innlagt på sykehuset i de første seks ukene')).toBeInTheDocument();
-        expect(screen.getByText('Barnet blir født før uke 33')).toBeInTheDocument();
+        expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis du får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
     it('alenefar fødsel', async () => {
@@ -217,7 +217,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(
             screen.queryByText('Hvis barnet er innlagt på sykehuset i de første seks ukene'),
         ).not.toBeInTheDocument();
-        expect(screen.getByText('Barnet blir født før uke 33')).toBeInTheDocument();
+        expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis du får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
 });

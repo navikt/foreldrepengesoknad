@@ -15,7 +15,7 @@ import { FødtFørUke33 } from './FødtFørUke33';
 import { HvisBarnetErInnlagt } from './HvisBarnetErInnlagt';
 import { HvisBarnetErSykt } from './HvisBarnetErSykt';
 import { HvisBarnetErSyktEllerInnlagt } from './HvisBarnetErSyktEllerInnlagt';
-import { HvisManBlirSyk } from './HvisManBlirSyk';
+import { HvisDuBlirSyk } from './HvisDuBlirSyk';
 import { HvisMorBlirSyk } from './HvisMorBlirSyk';
 import { NyttBarnFørTreÅr } from './NyttBarnFørTreÅr';
 
@@ -55,7 +55,7 @@ export const UforutsetteEndringer = ({ hvemPlanlegger, arbeidssituasjon }: Props
             <ExpansionCard.Content>
                 <VStack gap="space-20">
                     <>
-                        <HvisManBlirSyk arbeidssituasjon={arbeidssituasjon} />
+                        <HvisDuBlirSyk arbeidssituasjon={arbeidssituasjon} />
 
                         {erMorDelAvSøknaden(hvemPlanlegger) && (
                             <HvisMorBlirSyk hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} />
