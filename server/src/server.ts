@@ -25,14 +25,14 @@ const publicRouter = express.Router();
 // Logging i json format
 server.use(logger.morganMiddleware);
 
+// Skjermdeling krever tilgang til CSS uten å være innlogget!
 setupSkjermleserCssTilgang(publicRouter);
 
-// Skjermdeling krever tilgang til CSS uten å være innlogget!
-publicRouter.use((req, _res, next) => {
-    req.headers['Accept-Encoding'] = 'gzip';
-    next();
-});
-publicRouter.use(compression());
+publicRouter.use(
+    compression({
+        brotli: undefined,
+    }),
+);
 publicRouter.use(express.static('./public', { index: false }));
 server.use(serverConfig.app.publicPath, publicRouter);
 
