@@ -2,7 +2,6 @@
 import { sentryVitePlugin } from '@sentry/vite-plugin';
 import path from 'node:path';
 import { mergeConfig } from 'vite';
-import { compression } from 'vite-plugin-compression2';
 
 import { createSharedConfigWithCrossorgin } from '@navikt/fp-config-vite';
 
@@ -12,7 +11,6 @@ const setupFileDirName = path.resolve(__dirname, './vitest/setupTests.ts');
 export default mergeConfig(createSharedConfigWithCrossorgin(setupFileDirName), {
     base: '/engangsstonad/soknad',
     plugins: [
-        compression(),
         // Put the Sentry vite plugin after all other plugins
         sentryVitePlugin({
             authToken: process.env.SENTRY_AUTH_TOKEN, // Kommer fra Github organization secrets

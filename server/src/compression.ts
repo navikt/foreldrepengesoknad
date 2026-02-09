@@ -1,5 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 
+/**
+ * Primært relevant for js og css filer.
+ * Har lagt til html støtte men vil ikke påvirke den første requesten som server selve appen (index.html) siden den ikke spesifikt spør etter .html fila, men den serves som en fallback
+ */
 const MIME_TYPES: Record<string, string> = {
     '.js': 'application/javascript',
     '.html': 'text/html',
