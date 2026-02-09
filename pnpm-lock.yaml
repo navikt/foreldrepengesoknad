@@ -108,9 +108,6 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: 5.91.3
         version: 5.91.3(@tanstack/react-query@5.90.20(react@19.2.4))(react@19.2.4)
-      compression:
-        specifier: 1.8.1
-        version: 1.8.1
       dayjs:
         specifier: 1.11.19
         version: 1.11.19
@@ -377,9 +374,6 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.10)
-      compression:
-        specifier: 1.8.1
-        version: 1.8.1
       dotenv:
         specifier: 17.2.3
         version: 17.2.3
@@ -521,9 +515,6 @@ importers:
       classnames:
         specifier: 2.5.1
         version: 2.5.1
-      compression:
-        specifier: 1.8.1
-        version: 1.8.1
       dayjs:
         specifier: 1.11.19
         version: 1.11.19
@@ -720,9 +711,6 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: 5.91.3
         version: 5.91.3(@tanstack/react-query@5.90.20(react@19.2.4))(react@19.2.4)
-      compression:
-        specifier: 1.8.1
-        version: 1.8.1
       dayjs:
         specifier: 1.11.19
         version: 1.11.19
@@ -919,9 +907,6 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: 5.91.3
         version: 5.91.3(@tanstack/react-query@5.90.20(react@19.2.4))(react@19.2.4)
-      compression:
-        specifier: 1.8.1
-        version: 1.8.1
       dayjs:
         specifier: 1.11.19
         version: 1.11.19
@@ -1103,9 +1088,6 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: 5.91.3
         version: 5.91.3(@tanstack/react-query@5.90.20(react@19.2.4))(react@19.2.4)
-      compression:
-        specifier: 1.8.1
-        version: 1.8.1
       dayjs:
         specifier: 1.11.19
         version: 1.11.19
@@ -1275,9 +1257,6 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: 5.91.3
         version: 5.91.3(@tanstack/react-query@5.90.20(react@19.2.4))(react@19.2.4)
-      compression:
-        specifier: 1.8.1
-        version: 1.8.1
       dayjs:
         specifier: 1.11.19
         version: 1.11.19
@@ -3032,9 +3011,6 @@ importers:
       '@navikt/oasis':
         specifier: 4.1.2
         version: 4.1.2
-      compression:
-        specifier: 1.8.1
-        version: 1.8.1
       express:
         specifier: 5.2.1
         version: 5.2.1
@@ -5397,14 +5373,6 @@ packages:
   commondir@1.0.1:
     resolution: {integrity: sha512-W9pAhw0ja1Edb5GVdIF1mjZw/ASI0AlShXM83UUGe2DVr5TdAPEA1OA8m/g8zWp9x6On7gqufY+FatDbC3MDQg==}
 
-  compressible@2.0.18:
-    resolution: {integrity: sha512-AF3r7P5dWxL8MxyITRMlORQNaOA2IkAFaTr4k7BUumjPtRpGDTZpl0Pb1XCO6JeDCBdp126Cgs9sMxqSjgYyRg==}
-    engines: {node: '>= 0.6'}
-
-  compression@1.8.1:
-    resolution: {integrity: sha512-9mAqGPHLakhCLeNyxPkK4xVo746zQ/czLH1Ky+vkitMnWfWZps8r0qXuwhwizagCRttsL4lfG4pIOvaWLpAP0w==}
-    engines: {node: '>= 0.8.0'}
-
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
@@ -6969,10 +6937,6 @@ packages:
     resolution: {integrity: sha512-6k0YULvhpw+RoLNiQCRKOl09Rv1dPLr8hHnVjHqdolKwDrdNyk+Hmrthi4lIGPPz3r39dLx0hsF5s40sZ3Us4Q==}
     engines: {node: '>= 4.4.x'}
     hasBin: true
-
-  negotiator@0.6.4:
-    resolution: {integrity: sha512-myRT3DiWPHqho5PrJaIRyaMv2kgYf0mUVgBNOYMuCH5Ki1yEiQaf/ZJuQ62nvpc44wL5WDbTX7yGJi1Neevw8w==}
-    engines: {node: '>= 0.6'}
 
   negotiator@1.0.0:
     resolution: {integrity: sha512-8Ofs/AUQh8MaEcrlq5xOX0CQ9ypTF5dl78mjlMNfOK08fzpgTHQRQPBxcPlEtIw0yRpws+Zo/3r+5WRby7u3Gg==}
@@ -11028,22 +10992,6 @@ snapshots:
 
   commondir@1.0.1: {}
 
-  compressible@2.0.18:
-    dependencies:
-      mime-db: 1.54.0
-
-  compression@1.8.1:
-    dependencies:
-      bytes: 3.1.2
-      compressible: 2.0.18
-      debug: 2.6.9
-      negotiator: 0.6.4
-      on-headers: 1.1.0
-      safe-buffer: 5.2.1
-      vary: 1.1.2
-    transitivePeerDependencies:
-      - supports-color
-
   concat-map@0.0.1: {}
 
   confbox@0.2.2: {}
@@ -12859,8 +12807,6 @@ snapshots:
       iconv-lite: 0.6.3
       sax: 1.4.4
     optional: true
-
-  negotiator@0.6.4: {}
 
   negotiator@1.0.0: {}
 

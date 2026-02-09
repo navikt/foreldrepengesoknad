@@ -11,7 +11,6 @@
     "dependencies": {
         "@navikt/nav-dekoratoren-moduler": "3.6.2",
         "@navikt/oasis": "4.1.2",
-        "compression": "1.8.1",
         "express": "5.2.1",
         "http-proxy-middleware": "3.0.5"
     },
