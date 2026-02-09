@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { useFormContext } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, InlineMessage, Radio, VStack } from '@navikt/ds-react';
 
@@ -50,31 +50,6 @@ interface Props {
     resetFormValuesVedEndringAvForelder: (forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => void;
 }
 
-const getSkalViseMorsAktivitetskravVedSamtidigUttak = (
-    forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined,
-    samtidigUttaksprosentMor?: string,
-    stillingsprosentMor?: string,
-    samtidigUttaksprosentFarMedmor?: string,
-    kontoTypeFarMedmor?: KontoTypeUttak,
-) => {
-    const morsSamtidigUttakprosent = forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentMor) ?? 0) : 0;
-    const morsStillingProsent = forelder === 'BEGGE' ? (getFloatFromString(stillingsprosentMor) ?? 0) : 0;
-    const morsTotaleProsent = morsSamtidigUttakprosent + morsStillingProsent;
-
-    const farMedmorsSamtidigUttakprosent =
-        forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentFarMedmor) ?? 0) : 0;
-    const kombinertUttaksprosent = morsSamtidigUttakprosent + farMedmorsSamtidigUttakprosent;
-
-    if (kombinertUttaksprosent !== 100) {
-        return false;
-    }
-
-    const skalViseMorsAktivitetskravVedSamtidigUttak =
-        forelder === 'BEGGE' && kontoTypeFarMedmor === 'FELLESPERIODE' && morsTotaleProsent < 100;
-
-    return skalViseMorsAktivitetskravVedSamtidigUttak;
-};
-
 export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormValuesVedEndringAvForelder }: Props) => {
     const intl = useIntl();
 
@@ -110,35 +85,6 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         kontoTypeFarMedmor,
     );
 
-    const getAktivitetskravOptions = () => {
-        if (skalViseMorsAktivitetskravVedSamtidigUttak) {
-            return ['ARBEID', 'UTDANNING', 'KVALPROG', 'INTROPROG', 'ARBEID_OG_UTDANNING'];
-        }
-
-        return ['ARBEID', 'UTDANNING', 'KVALPROG', 'INTROPROG', 'TRENGER_HJELP', 'INNLAGT', 'ARBEID_OG_UTDANNING'];
-    };
-
-    const getAktivitetskravTekst = (value: string) => {
-        switch (value) {
-            case 'ARBEID':
-                return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Arbeid' });
-            case 'UTDANNING':
-                return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Utdanning' });
-            case 'KVALPROG':
-                return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Kvalprog' });
-            case 'INTROPROG':
-                return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Introprog' });
-            case 'TRENGER_HJELP':
-                return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Trenger_hjelp' });
-            case 'INNLAGT':
-                return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Innlagt' });
-            case 'ARBEID_OG_UTDANNING':
-                return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Arbeid_og_utdanning' });
-            default:
-                return '';
-        }
-    };
-
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(
         valgtePerioder,
         forelder === 'BEGGE',
@@ -158,18 +104,14 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     }
 
     const resetStillingsprosentMor = () => {
-        if (forelder === 'MOR' || forelder === 'BEGGE') {
-            if (skalDuKombinereArbeidOgUttakMor === false) {
-                formMethods.resetField('stillingsprosentMor', undefined);
-            }
+        if ((forelder === 'MOR' || forelder === 'BEGGE') && skalDuKombinereArbeidOgUttakMor === false) {
+            formMethods.resetField('stillingsprosentMor', undefined);
         }
     };
 
     const resetStillingsprosentFarMedmor = () => {
-        if (forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') {
-            if (skalDuKombinereArbeidOgUttakFarMedmor === false) {
-                formMethods.resetField('stillingsprosentFarMedmor', undefined);
-            }
+        if ((forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && skalDuKombinereArbeidOgUttakFarMedmor === false) {
+            formMethods.resetField('stillingsprosentFarMedmor', undefined);
         }
     };
 
@@ -370,10 +312,10 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         validate={[isRequired(intl.formatMessage({ id: 'AktivitetskravSpørsmål.Påkrevd' }))]}
                         description={intl.formatMessage({ id: 'AktivitetskravSpørsmål.Description' })}
                     >
-                        {getAktivitetskravOptions().map((value) => {
+                        {getAktivitetskravOptions(skalViseMorsAktivitetskravVedSamtidigUttak).map((value) => {
                             return (
                                 <option key={value} value={value}>
-                                    {getAktivitetskravTekst(value)}
+                                    {getAktivitetskravTekst(value, intl)}
                                 </option>
                             );
                         })}
@@ -505,6 +447,72 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
             )}
         </>
     );
+};
+
+const getAktivitetskravOptions = (skalViseMorsAktivitetskravVedSamtidigUttak: boolean) => {
+    const aktivitetsKrav = [
+        'ARBEID',
+        'UTDANNING',
+        'KVALPROG',
+        'INTROPROG',
+        'TRENGER_HJELP',
+        'INNLAGT',
+        'ARBEID_OG_UTDANNING',
+    ];
+
+    if (skalViseMorsAktivitetskravVedSamtidigUttak) {
+        return ['ARBEID', 'UTDANNING', 'KVALPROG', 'INTROPROG', 'ARBEID_OG_UTDANNING'];
+    }
+
+    return skalViseMorsAktivitetskravVedSamtidigUttak
+        ? aktivitetsKrav.filter((k) => k !== 'INNLAGT' && k !== 'TRENGER_HJELP')
+        : aktivitetsKrav;
+};
+
+const getAktivitetskravTekst = (value: string, intl: IntlShape) => {
+    switch (value) {
+        case 'ARBEID':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Arbeid' });
+        case 'UTDANNING':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Utdanning' });
+        case 'KVALPROG':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Kvalprog' });
+        case 'INTROPROG':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Introprog' });
+        case 'TRENGER_HJELP':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Trenger_hjelp' });
+        case 'INNLAGT':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Innlagt' });
+        case 'ARBEID_OG_UTDANNING':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Arbeid_og_utdanning' });
+        default:
+            return '';
+    }
+};
+
+const getSkalViseMorsAktivitetskravVedSamtidigUttak = (
+    forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined,
+    samtidigUttaksprosentMor?: string,
+    stillingsprosentMor?: string,
+    samtidigUttaksprosentFarMedmor?: string,
+    kontoTypeFarMedmor?: KontoTypeUttak,
+) => {
+    const morsSamtidigUttakprosent = forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentMor) ?? 0) : 0;
+    const morsStillingProsent = forelder === 'BEGGE' ? (getFloatFromString(stillingsprosentMor) ?? 0) : 0;
+    const morsTotaleProsent = morsSamtidigUttakprosent + morsStillingProsent;
+
+    const farMedmorsSamtidigUttakprosent =
+        forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentFarMedmor) ?? 0) : 0;
+    const kombinertUttaksprosent = morsSamtidigUttakprosent + farMedmorsSamtidigUttakprosent;
+
+    if (kombinertUttaksprosent !== 100) {
+        return false;
+    }
+
+    const skalViseMorsAktivitetskravVedSamtidigUttak =
+        forelder === 'BEGGE' && kontoTypeFarMedmor === 'FELLESPERIODE' && morsTotaleProsent < 100;
+
+    return skalViseMorsAktivitetskravVedSamtidigUttak;
 };
 
 export const mapFraFormValuesTilUttakPeriode = (

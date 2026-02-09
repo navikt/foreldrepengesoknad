@@ -219,14 +219,15 @@ const erUgyldigSamtidigUttak = <T extends LeggTilEllerEndrePeriodeFormFormValues
         }
     }
 
-    if (kombinertUttaksprosent === 100) {
-        if (kontoTypeFarMedmor === 'FELLESPERIODE') {
-            if (totalProsentMor !== 100 && !morsAktivitet) {
-                return intl.formatMessage({
-                    id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.Nøyaktig100ProsentMorsAktivitet',
-                });
-            }
-        }
+    if (
+        kombinertUttaksprosent === 100 &&
+        kontoTypeFarMedmor === 'FELLESPERIODE' &&
+        totalProsentMor !== 100 &&
+        !morsAktivitet
+    ) {
+        return intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.Nøyaktig100ProsentMorsAktivitet',
+        });
     }
 
     if (kombinertUttaksprosent > 100 && kombinertUttaksprosent <= 150) {
