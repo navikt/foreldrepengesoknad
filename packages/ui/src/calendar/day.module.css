@@ -8,6 +8,7 @@
 }
 
 .days {
+    position: relative;
     height: 30px;
     display: flex;
     justify-content: center;
@@ -312,4 +313,14 @@
 .purpleDay {
     background-color: var(--ax-meta-purple-400) !important;
     print-color-adjust: exact;
+}
+
+.star {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    font-size: 8px;
+    line-height: 1;
+    color: var(--ax-danger-800);
+    pointer-events: none;
 }

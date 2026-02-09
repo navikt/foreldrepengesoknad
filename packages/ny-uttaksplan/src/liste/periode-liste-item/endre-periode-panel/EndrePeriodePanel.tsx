@@ -7,6 +7,7 @@ import { HStack, Heading } from '@navikt/ds-react';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { Uttaksplanperiode } from '../../../types/UttaksplanPeriode';
+import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../../utils/periodeUtils';
 import { LeggTilEllerEndrePeriodeListPanel } from '../../legg-til-endre-periode-panel/LeggTilEllerEndrePeriodeListPanel';
 import { erUttaksplanperiodeSamtidigUttak } from '../../utils/uttaksplanperiodeUtils';
 import { VelgPeriodePanelStep } from './VelgPeriodePanelStep';
@@ -46,17 +47,26 @@ export const EndrePeriodePanel = ({ closePanel, uttaksplanperioder }: Props) => 
                 )}
                 {valgtPeriodeIndex !== undefined && (
                     <LeggTilEllerEndrePeriodeListPanel
-                        uttaksplanperiode={
-                            erSamtidigUttak ? uttaksplanperioder.at(0) : notEmpty(uttaksplanperioder[valgtPeriodeIndex])
-                        }
+                        uttaksplanperiode={finnUttakplanperiode(erSamtidigUttak, uttaksplanperioder, valgtPeriodeIndex)}
                         setIsLeggTilPeriodePanelOpen={closePanel}
                         setValgtPeriodeIndex={
                             !erSamtidigUttak && uttaksplanperioder.length !== 1 ? setValgtPeriodeIndex : undefined
                         }
                         erNyPeriodeModus={false}
+                        harPeriodeDerMorsAktivitetIkkeErValgt={harPeriodeDerMorsAktivitetIkkeErValgt([
+                            finnUttakplanperiode(erSamtidigUttak, uttaksplanperioder, valgtPeriodeIndex),
+                        ])}
                     />
                 )}
             </div>
         </div>
     );
+};
+
+const finnUttakplanperiode = (
+    erSamtidigUttak: boolean,
+    uttaksplanperioder: Uttaksplanperiode[],
+    valgtPeriodeIndex: number,
+): Uttaksplanperiode => {
+    return erSamtidigUttak ? uttaksplanperioder.at(0)! : notEmpty(uttaksplanperioder[valgtPeriodeIndex]);
 };

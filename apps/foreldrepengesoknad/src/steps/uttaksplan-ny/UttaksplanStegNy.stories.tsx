@@ -91,7 +91,7 @@ const meta = {
         dekningsgrad,
     }) => {
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.FORDELING]}>
+            <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN]}>
                 <FpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{

@@ -1,6 +1,6 @@
-import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
+import { ChevronDownIcon, ChevronUpIcon, ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HGrid, HStack, Heading, Hide, Show } from '@navikt/ds-react';
 
@@ -9,6 +9,7 @@ import { TidsperiodenString, formatDateShortMonth } from '@navikt/fp-utils';
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { Uttaksplanperiode } from '../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../utils/dateUtils';
+import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../../utils/periodeUtils';
 import {
     erUttaksplanperiodeFamiliehendelseDato,
     getFørsteUttaksplanperiodeFom,
@@ -49,6 +50,8 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
         foreldreInfo.rettighetType === 'BEGGE_RETT',
     );
 
+    const harMorsAktivitetIkkeErValgt = harPeriodeDerMorsAktivitetIkkeErValgt(uttaksplanperioder);
+
     return (
         <HGrid
             columns={{ xs: '4fr 4fr 1fr 1fr', md: '3fr 3fr 3fr 1fr' }}
@@ -69,24 +72,51 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
             <div className="ax-md:px-4 px-1 py-2">
                 {!erFamiliehendelse && <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>}
             </div>
+
             <div className="ax-md:grow flex w-full flex-col justify-center">
                 <div
                     className={
                         `ax-md:m-0 ax-md:h-auto ax-md:w-full ax-md:rounded-xl ax-md:px-4 ax-md:py-2` +
                         ` m-2 flex h-12 w-12 justify-between rounded-2xl ${finnBakgrunnsfarge(
                             uttaksplanperioder,
+                            harMorsAktivitetIkkeErValgt,
                             erFamiliehendelse,
                         )}`
                     }
                 >
-                    <HStack flexGrow="1" justify={{ xs: 'center', md: 'space-between' }} wrap={false} gap="space-4">
-                        <Show above="md">
-                            <BodyShort>{tekst}</BodyShort>
-                        </Show>
-                        <div className="flex items-center">{getIkon(uttaksplanperioder, familiehendelsedato)}</div>
+                    <HStack
+                        flexGrow="1"
+                        align="center"
+                        justify={{ xs: 'center', md: 'space-between' }}
+                        wrap={false}
+                        gap="space-4"
+                    >
+                        {!harMorsAktivitetIkkeErValgt && (
+                            <>
+                                <Show above="md">
+                                    <BodyShort>{tekst}</BodyShort>
+                                </Show>
+                                <div>{getIkon(uttaksplanperioder, familiehendelsedato)}</div>
+                            </>
+                        )}
+                        {harMorsAktivitetIkkeErValgt && (
+                            <>
+                                <ExclamationmarkTriangleFillIcon
+                                    title={intl.formatMessage({ id: 'PeriodeListeHeader.MorsAktivitetIkkeValgt' })}
+                                    fontSize="1.5rem"
+                                    className="text-ax-danger-800"
+                                />
+                                <Show above="md">
+                                    <BodyShort className="text-ax-danger-800">
+                                        <FormattedMessage id="PeriodeListeHeader.MorsAktivitetIkkeValgt" />
+                                    </BodyShort>
+                                </Show>
+                            </>
+                        )}
                     </HStack>
                 </div>
             </div>
+
             <div className="ax-md:px-4 ax-md:py-2 flex items-center justify-center p-3">
                 <div className="bg-ax-bg-accent-moderate flex h-6 w-6 items-center justify-center rounded-2xl">
                     {isOpen ? (

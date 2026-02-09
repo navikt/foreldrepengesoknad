@@ -30,9 +30,17 @@ import {
     harUttaksplanperiodePrematuruker,
 } from '../../utils/uttaksplanperiodeUtils';
 
-export const finnBakgrunnsfarge = (uttaksplanperioder: Uttaksplanperiode[], erFamiliehendelse?: boolean) => {
+export const finnBakgrunnsfarge = (
+    uttaksplanperioder: Uttaksplanperiode[],
+    harMorsAktivitetIkkeErValgt: boolean,
+    erFamiliehendelse?: boolean,
+) => {
     if (erFamiliehendelse) {
         return 'bg-ax-danger-100';
+    }
+
+    if (harMorsAktivitetIkkeErValgt) {
+        return 'bg-ax-danger-200';
     }
 
     if (erUttaksplanperiodeEøs(uttaksplanperioder)) {

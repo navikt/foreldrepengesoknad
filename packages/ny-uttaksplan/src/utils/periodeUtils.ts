@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import isoWeekday from 'dayjs/plugin/isoWeek';
 
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { slutterTidsperiodeInnen6UkerEtterFødsel } from '@navikt/fp-utils';
 
 import {
@@ -87,4 +88,20 @@ export const sorterPerioder = (a: Uttaksplanperiode, b: Uttaksplanperiode): numb
     }
 
     return 0;
+};
+
+export const harPeriodeDerMorsAktivitetIkkeErValgt = (
+    perioder?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+) => {
+    return (
+        !!perioder &&
+        perioder.some(
+            (periode) =>
+                erVanligUttakPeriode(periode) &&
+                periode.forelder === 'FAR_MEDMOR' &&
+                periode.kontoType === 'FELLESPERIODE' &&
+                periode.flerbarnsdager === undefined &&
+                periode.morsAktivitet === undefined,
+        )
+    );
 };
