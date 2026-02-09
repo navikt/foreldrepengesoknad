@@ -96,6 +96,7 @@
     "uttaksplan.ingenPerioder.tittel": "All periods have been removed from the plan.",
     "uttaksplan.ingenPerioder.body": "You have no periods in the plan. Add a new period to start planning.",
     "uttaksplan.tidsperiodeSpørsmål.heading": "What dates should the period be?",
+    "PeriodeListeHeader.MorsAktivitetIkkeValgt": "Mothers activity is missing",
     "varighet.uker": "{uker, plural, one {# week} other {# weeks}}",
     "varighet.dager": "{dager, plural, one {# day} other {# days}}",
     "varighet.separator--full": " and ",
@@ -197,6 +198,7 @@
     "kalender.srText.ForeldrepengerIkkeGradert": "Parental benefits - not graded",
     "kalender.srText.TapteDager": "Days mother can lose",
     "kalender.srText.Utsettelse": "Postponement",
+    "LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt": "You must select mother's activity before you can proceed.",
     "RedigeringPanel.LeggInnFerie": "Change to vacation",
     "RedigeringPanel.RedigerUttaksplan": "Change",
     "RedigeringPanel.EndreTil": "What do you want to change to?",
@@ -239,6 +241,7 @@
     "UttaksplanHandlingKnapper.EndrePlanen": "Edit the plan",
     "UttaksplanHandlingKnapper.LukkPerioder": "Close periods",
     "UttaksplanHandlingKnapper.Angre": "Undo",
+    "UttaksplanKalender.MarkertePerioder": "Star marked periods in the calendar are missing selections",
     "RedigeringKalenderIndex.VelgDatoerIKalender": "You can select dates in the calendar",
     "RedigeringKalenderIndex.SeDetaljer": "See details about the plan at the top of the page",
     "UttaksplanKalender.LeggTilMåneder": "Show more months",
@@ -296,5 +299,6 @@
     "VelgPeriodePanelStep.VelgPeriode": "You must select which period you want to change",
     "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "You have selected a combination of days that is not valid for any parent.",
     "LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse": "You cannot choose more than two weeks in total in the period two weeks before and six weeks after birth/due date.",
-    "LeggTilEllerEndrePeriodeFellesForm.DagerReduseres": "Working in the period 3 weeks before the due date and 6 weeks after birth means that parental benefits will be reduced for the days you work without being able to take those days later."
+    "LeggTilEllerEndrePeriodeFellesForm.DagerReduseres": "Working in the period 3 weeks before the due date and 6 weeks after birth means that parental benefits will be reduced for the days you work without being able to take those days later.",
+    "UttaksplanListe.ManglerMorsAktivitet": "You must select mother's activity before proceeding."
 }

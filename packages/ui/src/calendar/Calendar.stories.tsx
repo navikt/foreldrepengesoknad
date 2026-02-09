@@ -214,3 +214,38 @@ export const MedTreKolonner: Story = {
         nrOfColumns: 3,
     },
 };
+
+export const MarkertMedStjerne: Story = {
+    args: {
+        firstDateInCalendar: '2024-01-31',
+        lastDateInCalendar: '2024-08-30',
+        periods: [
+            {
+                fom: '2024-01-31',
+                tom: '2024-02-20',
+                color: 'BLUE',
+                srText: 'Mors periode',
+            },
+            {
+                fom: '2024-02-21',
+                tom: '2024-02-21',
+                color: 'PINK',
+                srText: 'Termindato',
+            },
+            {
+                fom: '2024-02-22',
+                tom: '2024-05-05',
+                color: 'BLUE',
+                srText: 'Mors periode',
+                isMarked: true,
+            },
+            {
+                fom: '2024-05-06',
+                tom: '2024-08-30',
+                color: 'LIGHTGREEN',
+                srText: 'Fars periode',
+                isMarked: true,
+            },
+        ],
+    },
+};

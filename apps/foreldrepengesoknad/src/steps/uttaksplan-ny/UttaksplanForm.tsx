@@ -8,6 +8,7 @@ import { VedleggDataType } from 'types/VedleggDataType';
 import { getErMorUfør } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
+import { erIkkeEøsPeriode } from 'utils/uttaksplanInfoUtils';
 
 import { Alert, Radio, VStack } from '@navikt/ds-react';
 
@@ -119,6 +120,9 @@ export const UttaksplanForm = ({
             scrollToKvoteOppsummering();
         } else if (erAntallDagerOvertrukket) {
             setFeilmelding(intl.formatMessage({ id: 'UttaksplanSteg.OvertrukketDager' }));
+            scrollToKvoteOppsummering();
+        } else if (harPeriodeDerMorsAktivitetIkkeErValgt(uttaksplan || defaultUttaksperioder)) {
+            setFeilmelding(intl.formatMessage({ id: 'UttaksplanSteg.MorsAktivitetIkkeValgt' }));
             scrollToKvoteOppsummering();
         } else {
             oppdaterUttaksplanMetadata({
@@ -322,4 +326,20 @@ const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
         const tom = dayjs(periode.tom);
         return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
     });
+};
+
+const harPeriodeDerMorsAktivitetIkkeErValgt = (
+    perioder?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+) => {
+    return (
+        perioder &&
+        perioder.some(
+            (periode) =>
+                erIkkeEøsPeriode(periode) &&
+                periode.forelder === 'FAR_MEDMOR' &&
+                periode.kontoType === 'FELLESPERIODE' &&
+                periode.flerbarnsdager === undefined &&
+                periode.morsAktivitet === undefined,
+        )
+    );
 };

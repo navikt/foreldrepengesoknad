@@ -12,6 +12,7 @@ const {
     VisFarsAktivitetsfriKvote,
     MorOverførerFarsKvote,
     MorSøkerOgFarHarEøsPeriode,
+    StjernemarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt,
 } = composeStories(stories);
 
 describe('UttaksplanKalender', () => {
@@ -689,5 +690,32 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Avbryt')).toBeInTheDocument();
         expect(screen.queryByText('Endre')).not.toBeInTheDocument();
         expect(screen.queryByText('Endre til ferie')).not.toBeInTheDocument();
+    });
+
+    it('skal vise meldinger om at en må fylle ut mors aktivitet når en har stjernemerkede perioder', async () => {
+        render(<StjernemarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt />);
+
+        expect(await screen.findByText('Stjernemerkede perioder i kalenderen mangler valg')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        const juli = screen.getByTestId('year:2024;month:6');
+
+        await userEvent.click(within(juli).getByTestId('day:3;dayColor:GREEN'));
+        await userEvent.click(within(juli).getByTestId('day:15;dayColor:GREEN'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(screen.getAllByText('Endre')[0]!);
+
+        expect(screen.getByText('Du må velge mors aktivitet før du kan gå videre.')).toBeInTheDocument();
+
+        await userEvent.selectOptions(screen.getByLabelText('Hva skal mor gjøre i denne perioden?'), 'ARBEID');
+
+        await userEvent.click(screen.getByText('Legg til'));
+
+        expect(screen.getByText('Det er 52 uker og 1 dag igjen som kan legges til i planen')).toBeInTheDocument();
+
+        expect(screen.queryByText('Stjernemerkede perioder i kalenderen mangler valg')).not.toBeInTheDocument();
     });
 });

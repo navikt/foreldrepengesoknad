@@ -96,6 +96,7 @@
     "uttaksplan.ingenPerioder.tittel": "Alle perioder er fjernet fra planen.",
     "uttaksplan.ingenPerioder.body": "Du har ingen perioder i planen. Legg til en ny periode for å starte planleggingen.",
     "uttaksplan.tidsperiodeSpørsmål.heading": "Hvilke datoer skal perioden være?",
+    "PeriodeListeHeader.MorsAktivitetIkkeValgt": "Mangler mors aktivitet",
     "varighet.uker": "{uker, plural, one {# uke} other {# uker}}",
     "varighet.dager": "{dager, plural, one {# dag} other {# dager}}",
     "varighet.separator--full": " og ",
@@ -198,6 +199,7 @@
     "kalender.srText.TapteDager": "Dager mor kan tape",
     "kalender.srText.Utsettelse": "Utsettelse",
     "RedigeringPanel.LeggInnFerie": "Endre til ferie",
+    "LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt": "Du må velge mors aktivitet før du kan gå videre.",
     "RedigeringPanel.RedigerUttaksplan": "Endre",
     "RedigeringPanel.EndreTil": "Hva vil du endre til?",
     "RedigeringPanel.ValgteDager": "{varighet} valgt",
@@ -252,6 +254,7 @@
     "UttaksplanLegend.LukkFargeForklaring": "Lukk fargeforklaring",
     "UttaksplanKalender.StartRedigering": "Start redigering",
     "UttaksplanKalender.StopRedigering": "Stopp redigering",
+    "UttaksplanKalender.MarkertePerioder": "Stjernemerkede perioder i kalenderen mangler valg",
     "AktivitetskravSpørsmål.Påkrevd": "Du må oppgi hva mor skal gjøre i denne perioden",
     "AktivitetskravSpørsmål.Label": "Hva skal mor gjøre i denne perioden?",
     "AktivitetskravSpørsmål.Arbeid": "Arbeid",
@@ -296,5 +299,6 @@
     "VelgPeriodePanelStep.VelgPeriode": "Du må velge hvilken periode du vil endre",
     "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "Du har valgt en kombinasjon av dager som ikke er gyldig for noen foreldre.",
     "LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse": "Du kan ikke velge mer enn to uker totalt i perioden to uker før og seks uker etter fødsel/termin",
-    "LeggTilEllerEndrePeriodeFellesForm.DagerReduseres": "Arbeid i tidsrommet 3 uker før termin og 6 uker etter fødsel, betyr at foreldrepengene vil reduseres det du jobber uten at du får dagene til gode til senere."
+    "LeggTilEllerEndrePeriodeFellesForm.DagerReduseres": "Arbeid i tidsrommet 3 uker før termin og 6 uker etter fødsel, betyr at foreldrepengene vil reduseres det du jobber uten at du får dagene til gode til senere.",
+    "UttaksplanListe.ManglerMorsAktivitet": "Du må velge mors aktivitet før du går videre"
 }
