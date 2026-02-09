@@ -19,6 +19,7 @@ export const serveKomprimerteFilerHvisMulig = (request: Request, response: Respo
         request.url = `${request.url}.${komprimering}`;
         response.set('Content-Encoding', komprimering);
         response.set('Content-Type', MIME_TYPES[filendelse]);
+        response.set('Vary', 'Accept-Encoding');
     }
 
     return next();
