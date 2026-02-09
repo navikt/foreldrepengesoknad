@@ -21,7 +21,12 @@ import {
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
-import { isAvslåttPeriode, isAvslåttPeriodeFørsteSeksUkerMor, isUttaksperiode } from '../../utils/periodeUtils';
+import {
+    harPeriodeDerMorsAktivitetIkkeErValgt,
+    isAvslåttPeriode,
+    isAvslåttPeriodeFørsteSeksUkerMor,
+    isUttaksperiode,
+} from '../../utils/periodeUtils';
 import { filtrerBortAnnenPartsIdentiskePerioder } from './uttaksplanKalenderUtils';
 
 export const usePerioderForKalendervisning = (
@@ -65,6 +70,7 @@ export const usePerioderForKalendervisning = (
                 color,
                 srText: getKalenderSkjermlesertekstForPeriode(periode, navnPåForeldre, intl),
                 isUpdated,
+                isMarked: harPeriodeDerMorsAktivitetIkkeErValgt([periode]),
             },
         ];
     }, []);
@@ -292,6 +298,7 @@ const splittPeriodeITo = (
                 intl,
             ),
             isUpdated,
+            isMarked: harPeriodeDerMorsAktivitetIkkeErValgt([periode]),
         },
         {
             fom: UttaksdagenString.neste(dato).getDato(),
@@ -307,6 +314,7 @@ const splittPeriodeITo = (
                 intl,
             ),
             isUpdated,
+            isMarked: harPeriodeDerMorsAktivitetIkkeErValgt([periode]),
         },
     ];
 };

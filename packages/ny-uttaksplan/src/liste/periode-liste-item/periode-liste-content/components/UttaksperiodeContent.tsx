@@ -1,4 +1,4 @@
-import { CalendarIcon } from '@navikt/aksel-icons';
+import { CalendarIcon, ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
@@ -16,6 +16,7 @@ import { assertUnreachable } from '@navikt/fp-validation';
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
+import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../../../utils/periodeUtils';
 import { getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
 
 interface Props {
@@ -43,6 +44,13 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
 
     return (
         <HStack gap="space-8">
+            {harPeriodeDerMorsAktivitetIkkeErValgt([periode]) && (
+                <ExclamationmarkTriangleFillIcon
+                    title={intl.formatMessage({ id: 'PeriodeListeHeader.MorsAktivitetIkkeValgt' })}
+                    fontSize="1.5rem"
+                    className="text-ax-danger-800"
+                />
+            )}
             <div>
                 <CalendarIcon width={24} height={24} />
             </div>

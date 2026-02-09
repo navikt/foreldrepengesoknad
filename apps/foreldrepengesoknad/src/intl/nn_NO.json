@@ -548,6 +548,7 @@
     "UttaksplanSteg.AutomatiskJustering.Svar.Påkrevd": "Du må svare på spørsmålet om automatisk justering av perioden når barnet blir født.",
     "UttaksplanSteg.AutomatiskJustering.Ja": "Ja",
     "UttaksplanSteg.AutomatiskJustering.Nei": "Nei",
+    "UttaksplanSteg.MorsAktivitetIkkeValgt": "Stjernemerka periodar i kalenderen manglar valg. Klikk på ein stjernemerka periode for å fylle ut.",
     "gradering.prosent": "{stillingsprosent}%",
     "rundtFødsel": " rundt fødsel",
     "uttaksplan.periodeliste.utsettelsesårsak": "Utsetjing - {årsak}",

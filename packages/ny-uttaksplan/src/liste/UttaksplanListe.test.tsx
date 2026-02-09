@@ -12,6 +12,7 @@ const {
     HullperiodeOverFamiliehendelsesdato,
     VisPerioderMedOppholdsårsakKorrekt,
     MorSøkerOgFarHarEøsPeriode,
+    MarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt,
 } = composeStories(stories);
 
 describe('UttaksplanListe', () => {
@@ -399,5 +400,28 @@ describe('UttaksplanListe', () => {
         ).toBeInTheDocument();
         expect(ekspandertEøsRad.queryByText('Endre')).not.toBeInTheDocument();
         expect(ekspandertEøsRad.queryByText('Slett')).not.toBeInTheDocument();
+    });
+
+    it('Skal få advarsel om at en må velge mors aktivitet', async () => {
+        render(<MarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt />);
+
+        expect(await screen.findByText('Du må velge mors aktivitet før du går videre')).toBeInTheDocument();
+
+        expect(screen.getAllByText('Mangler mors aktivitet')).toHaveLength(3);
+
+        await userEvent.click(screen.getAllByText('Mangler mors aktivitet')[0]!);
+
+        const alleEndringsknapper = screen.getAllByText('Endre');
+        await userEvent.click(alleEndringsknapper.at(-1)!);
+
+        expect(await screen.findByText('Du må velge mors aktivitet før du kan gå videre.')).toBeInTheDocument();
+
+        await userEvent.selectOptions(screen.getByLabelText('Hva skal mor gjøre i denne perioden?'), 'ARBEID');
+
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+
+        expect(screen.getByText('Mor er i arbeid')).toBeInTheDocument();
+
+        expect(screen.queryByText('Du må velge mors aktivitet før du går videre')).not.toBeInTheDocument();
     });
 });
