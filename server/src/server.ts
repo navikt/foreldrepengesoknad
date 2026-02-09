@@ -31,12 +31,12 @@ setupSkjermleserCssTilgang(publicRouter);
 publicRouter.use((req, res, next) => {
     logger.info('i middleware');
     if (req.path.endsWith('.js')) {
-        req.url = req.url + '.gz';
-        res.set('Content-Encoding', 'gzip');
+        req.url = req.url + '.br';
+        res.set('Content-Encoding', 'br');
         res.set('Content-Type', 'text/javascript');
     } else if (req.path.endsWith('.css')) {
-        req.url = req.url + '.gz';
-        res.set('Content-Encoding', 'gzip');
+        req.url = req.url + '.br';
+        res.set('Content-Encoding', 'br');
         res.set('Content-Type', 'text/css');
     }
     next();
