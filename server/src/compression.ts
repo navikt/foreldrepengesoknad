@@ -1,15 +1,24 @@
 import { NextFunction, Request, Response } from 'express';
 
-const FILENDELSER_VI_KOMPRIMERER = ['.js', '.html', '.css'];
+const MIME_TYPES: Record<string, string> = {
+    '.js': 'application/javascript',
+    '.html': 'text/html',
+    '.css': 'text/css',
+};
+
+const FILENDELSER_VI_KOMPRIMERER = Object.keys(MIME_TYPES);
 
 export const serveKomprimerteFilerHvisMulig = (request: Request, response: Response, next: NextFunction) => {
     const komprimering = utledKomprimeringsAlgoritme(request);
     if (komprimering === undefined) {
         return next();
     }
-    if (FILENDELSER_VI_KOMPRIMERER.some((filendelse) => request.path.endsWith(filendelse))) {
+
+    const filendelse = FILENDELSER_VI_KOMPRIMERER.find((ext) => request.path.endsWith(ext));
+    if (filendelse) {
         request.url = `${request.url}.${komprimering}`;
         response.set('Content-Encoding', komprimering);
+        response.set('Content-Type', MIME_TYPES[filendelse]);
     }
 
     return next();
