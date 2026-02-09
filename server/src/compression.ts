@@ -19,6 +19,7 @@ export const serveKomprimerteFilerHvisMulig = (request: Request, response: Respo
         request.url = `${request.url}.${komprimering.extension}`;
         response.set('Content-Encoding', komprimering.encoding);
         response.set('Content-Type', MIME_TYPES[filendelse]);
+        // Det er viktig å sette denne. Hvis ikke vil "br" og "gzip" requests kunne få samme E-tag og vi kan få caching issues med at feil type serves.
         response.set('Vary', 'Accept-Encoding');
     }
 
