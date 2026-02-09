@@ -16,8 +16,8 @@ export const serveKomprimerteFilerHvisMulig = (request: Request, response: Respo
 
     const filendelse = FILENDELSER_VI_KOMPRIMERER.find((ext) => request.path.endsWith(ext));
     if (filendelse) {
-        request.url = `${request.url}.${komprimering}`;
-        response.set('Content-Encoding', komprimering);
+        request.url = `${request.url}.${komprimering.extension}`;
+        response.set('Content-Encoding', komprimering.encoding);
         response.set('Content-Type', MIME_TYPES[filendelse]);
         response.set('Vary', 'Accept-Encoding');
     }
@@ -25,15 +25,17 @@ export const serveKomprimerteFilerHvisMulig = (request: Request, response: Respo
     return next();
 };
 
-const utledKomprimeringsAlgoritme = (request: Request): 'br' | 'gzip' | undefined => {
+type Komprimering = { extension: string; encoding: string };
+
+const utledKomprimeringsAlgoritme = (request: Request): Komprimering | undefined => {
     const acceptEncoding = request.headers['accept-encoding'];
     const encodings = Array.isArray(acceptEncoding) ? acceptEncoding.join(',') : acceptEncoding;
 
     if (encodings?.includes('br')) {
-        return 'br';
+        return { extension: 'br', encoding: 'br' };
     }
     if (encodings?.includes('gzip')) {
-        return 'gzip';
+        return { extension: 'gz', encoding: 'gzip' };
     }
 
     return undefined;
