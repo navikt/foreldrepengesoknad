@@ -14,6 +14,7 @@ const {
     SamtidigUttak,
     MorSøkerOgFarHarEøsPeriode,
     StjernemarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt,
+    FarSøkerEtterAtMorHarSøkt,
 } = composeStories(stories);
 
 describe('UttaksplanKalender', () => {
@@ -640,7 +641,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(mai).getByText('15', { exact: true }));
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
-        await userEvent.click(screen.getAllByText('Endre')[0]!);
+        await userEvent.click(screen.getAllByText('Legg til')[0]!);
 
         expect(screen.getByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Mor'));
@@ -945,5 +946,65 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Det er 52 uker og 1 dag igjen som kan legges til i planen')).toBeInTheDocument();
 
         expect(screen.queryByText('Stjernemerkede perioder i kalenderen mangler valg')).not.toBeInTheDocument();
+    });
+
+    it('skal ikke som far kunne overskrive en dag i perioden to->tre uker før fødselsdato', async () => {
+        render(<FarSøkerEtterAtMorHarSøkt />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        const mars = screen.getByTestId('year:2024;month:2');
+
+        await userEvent.click(within(mars).getByTestId('day:14;dayColor:BLUE'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(screen.getAllByText('Legg til')[0]!);
+
+        expect(
+            screen.getByText(
+                'Du har valgt en kombinasjon av dager som inkluderer en periode som kun annen part kan endre.',
+            ),
+        ).toBeInTheDocument();
+    });
+
+    it('skal kunne legge til sin egen periode over perioden til annen part', async () => {
+        render(<FarSøkerEtterAtMorHarSøkt />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        const mars = screen.getByTestId('year:2024;month:2');
+
+        await userEvent.click(within(mars).getByTestId('day:28;dayColor:BLUE'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(screen.getAllByText('Legg til')[0]!);
+
+        expect(screen.queryByRole('radio', { name: 'Mor' })).not.toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'Far' })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'Begge' })).toBeInTheDocument();
+    });
+
+    it('skal ikke kunne slette periodene til annen part', async () => {
+        render(<FarSøkerEtterAtMorHarSøkt />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        const mars = screen.getByTestId('year:2024;month:2');
+
+        await userEvent.click(within(mars).getByTestId('day:28;dayColor:BLUE'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        const foreldrepengerFørFødsel = within(screen.getByTestId(`eksisterende-periode-2024-03-14-2024-04-03`));
+
+        expect(foreldrepengerFørFødsel.queryByTitle('Slett dager fra periode')).not.toBeInTheDocument();
     });
 });
