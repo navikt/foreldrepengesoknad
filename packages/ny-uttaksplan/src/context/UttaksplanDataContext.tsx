@@ -17,6 +17,7 @@ type Props = {
     foreldreInfo: ForeldreInfo;
     valgtStønadskonto: KontoBeregningDto;
     harAktivitetskravIPeriodeUtenUttak: boolean;
+    erPeriodeneTilAnnenPartLåst: boolean;
     uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     children: React.ReactNode;
 };

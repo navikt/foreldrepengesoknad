@@ -75,7 +75,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
                                 key={genererPeriodeKey(periode)}
                                 periode={periode}
                                 navnPåForeldre={navnPåForeldre}
-                                erFarEllerMedmor={søker === 'FAR_ELLER_MEDMOR'}
+                                erFarEllerMedmor={søker === 'FAR_MEDMOR'}
                                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                             />
                         ))}
@@ -108,7 +108,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
                     }}
                     uttaksplanperioder={uttaksplanperioder}
                     navnPåForeldre={navnPåForeldre}
-                    erFarEllerMedmor={søker === 'FAR_ELLER_MEDMOR'}
+                    erFarEllerMedmor={søker === 'FAR_MEDMOR'}
                 />
             )}
         </>

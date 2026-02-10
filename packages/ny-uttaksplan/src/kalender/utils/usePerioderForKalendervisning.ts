@@ -43,7 +43,7 @@ export const usePerioderForKalendervisning = (
 
     const saksperioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
 
-    const erFarEllerMedmor = søker === 'FAR_ELLER_MEDMOR';
+    const erFarEllerMedmor = søker === 'FAR_MEDMOR';
 
     const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(saksperioderInkludertTapteDager, erFarEllerMedmor);
 

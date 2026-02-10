@@ -58,7 +58,7 @@ const erGyldigForMor = (
     const harKunEnPartRett = rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT';
     const erAdopsjon = familiesituasjon === 'adopsjon';
 
-    if (søker === 'FAR_ELLER_MEDMOR' && harKunEnPartRett) {
+    if (søker === 'FAR_MEDMOR' && harKunEnPartRett) {
         return false;
     }
 

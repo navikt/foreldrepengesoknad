@@ -87,6 +87,7 @@ export const MorAleneOmOmsorg: Story = {
         ],
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         valgtStønadskonto: {} as any,
+        erPeriodeneTilAnnenPartLåst: false,
     },
 };
 
@@ -140,5 +141,6 @@ export const PrematurUker: Story = {
         ],
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         valgtStønadskonto: {} as any,
+        erPeriodeneTilAnnenPartLåst: false,
     },
 };

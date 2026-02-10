@@ -21,7 +21,6 @@ import { CalendarPeriod } from '@navikt/fp-ui';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { Søker } from '../../types/ForeldreInfo';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 
@@ -40,6 +39,7 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
 
     const {
         foreldreInfo: { erMedmorDelAvSøknaden, søker },
+        erPeriodeneTilAnnenPartLåst,
     } = useUttaksplanData();
 
     return (
@@ -60,6 +60,9 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                               per.forelder !== p.forelder,
                       )
                     : undefined;
+
+                const erAnnenPartsPeriodeLåst =
+                    erPeriodeneTilAnnenPartLåst && erVanligUttakPeriode(p) && p.forelder !== søker;
 
                 return (
                     <HStack
@@ -182,7 +185,7 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                             </BodyShort>
                         </VStack>
                         <Spacer />
-                        {!erEøsUttakPeriode(p) && (
+                        {!erEøsUttakPeriode(p) && !erAnnenPartsPeriodeLåst && (
                             <TrashIcon
                                 title={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}
                                 fontSize="1.5rem"
@@ -204,7 +207,7 @@ const PeriodeIkon = ({
 }: {
     periode: UttakPeriodeMedAntallDager;
     erMedmorDelAvSøknaden: boolean;
-    søker: Søker;
+    søker: BrukerRolleSak_fpoversikt;
 }) => {
     const intl = useIntl();
 
@@ -300,10 +303,10 @@ const PeriodeHeaderText = ({
 }: {
     periode: UttakPeriodeMedAntallDager;
     erMedmorDelAvSøknaden: boolean;
-    søker: Søker;
+    søker: BrukerRolleSak_fpoversikt;
 }) => {
     if (erEøsUttakPeriode(periode)) {
-        if (søker === 'FAR_ELLER_MEDMOR') {
+        if (søker === 'FAR_MEDMOR') {
             return <FormattedMessage id="RedigeringPanel.Mor" />;
         }
         return erMedmorDelAvSøknaden ? (

@@ -22,6 +22,7 @@ const meta = {
         oppdaterUttaksplan: action('button-click'),
         harEndretPlan: false,
         isReadOnly: false,
+        erPeriodeneTilAnnenPartLåst: false,
     },
     render: (args) => {
         const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[] | undefined>(args.uttakPerioder);
@@ -115,7 +116,7 @@ export const MorOgMedmor: Story = {
         ...Default.args,
         foreldreInfo: {
             rettighetType: 'BEGGE_RETT',
-            søker: 'FAR_ELLER_MEDMOR',
+            søker: 'FAR_MEDMOR',
             navnPåForeldre: {
                 mor: 'Olga Utvikler',
                 farMedmor: 'Helga Utvikler',
@@ -362,7 +363,7 @@ export const FarSøkerOmsorgsovertakelse: Story = {
     args: {
         foreldreInfo: {
             rettighetType: 'BARE_SØKER_RETT',
-            søker: 'FAR_ELLER_MEDMOR',
+            søker: 'FAR_MEDMOR',
             navnPåForeldre: {
                 mor: 'Olga Utvikler',
                 farMedmor: 'Espen Utvikler',
@@ -495,7 +496,7 @@ export const FarSøkerOgMorHarEøsPeriode: Story = {
         },
         foreldreInfo: {
             rettighetType: 'BEGGE_RETT',
-            søker: 'FAR_ELLER_MEDMOR',
+            søker: 'FAR_MEDMOR',
             navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
             erMedmorDelAvSøknaden: false,
         },

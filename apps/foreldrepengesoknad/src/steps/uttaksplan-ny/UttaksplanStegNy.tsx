@@ -98,14 +98,14 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
 
     const valgteStønadskontoer = tilgjengeligeStønadskontoerQuery.data;
 
-    const uttaksplanForslag = useUttaksplanForslag(valgteStønadskontoer);
+    const nyttUttaksplanForslag = useUttaksplanForslag(valgteStønadskontoer);
 
     if (!valgteStønadskontoer || annenPartVedtakQuery.isLoading) {
         return null;
     }
 
-    const defaultUttaksperioder =
-        uttaksplanForEksisterendeSak || annenPartVedtakQuery.data?.perioder || uttaksplanForslag;
+    const tidligereUttaksperioder = uttaksplanForEksisterendeSak || annenPartVedtakQuery.data?.perioder;
+    const defaultUttaksperioder = tidligereUttaksperioder || nyttUttaksplanForslag;
 
     const erPlanenEndret =
         uttaksplan !== undefined &&
@@ -118,7 +118,7 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
                 <UttaksplanDataProvider
                     barn={barn}
                     foreldreInfo={{
-                        søker: isFarEllerMedmor(søkersituasjon.rolle) ? 'FAR_ELLER_MEDMOR' : 'MOR',
+                        søker: isFarEllerMedmor(søkersituasjon.rolle) ? 'FAR_MEDMOR' : 'MOR',
                         navnPåForeldre: getNavnPåForeldre(søkerInfo.person, annenForelder, erSøkerFarEllerMedmor, intl),
                         rettighetType: utledRettighet(erAleneOmOmsorg, erDeltUttak),
                         erMedmorDelAvSøknaden:
@@ -129,6 +129,7 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
                     valgtStønadskonto={valgteStønadskontoer}
                     harAktivitetskravIPeriodeUtenUttak={false}
                     uttakPerioder={uttaksplan || defaultUttaksperioder}
+                    erPeriodeneTilAnnenPartLåst={!!tidligereUttaksperioder}
                 >
                     {feilmelding && <Alert variant="error">{feilmelding}</Alert>}
                     <div ref={kvoteOppsummeringRef}>

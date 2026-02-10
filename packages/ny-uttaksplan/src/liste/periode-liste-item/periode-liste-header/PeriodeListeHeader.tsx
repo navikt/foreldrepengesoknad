@@ -44,7 +44,7 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
     const tekst = getTekst(
         intl,
         uttaksplanperioder,
-        foreldreInfo.søker === 'FAR_ELLER_MEDMOR',
+        foreldreInfo.søker === 'FAR_MEDMOR',
         foreldreInfo.navnPåForeldre,
         familiesituasjon,
         foreldreInfo.rettighetType === 'BEGGE_RETT',

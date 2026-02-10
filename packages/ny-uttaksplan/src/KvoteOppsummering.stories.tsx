@@ -30,6 +30,7 @@ const meta = {
         visStatusIkoner: true,
         harAktivitetskravIPeriodeUtenUttak: true,
         erInnsyn: true,
+        erPeriodeneTilAnnenPartLåst: false,
     },
     render: (args) => {
         const { visStatusIkoner, erInnsyn, ...rest } = args;
@@ -403,7 +404,7 @@ export const EnRettFarAlleDagerBrukt: Story = {
         foreldreInfo: {
             ...DEFAULT_FORELDRE_INFO,
             rettighetType: 'BARE_SØKER_RETT',
-            søker: 'FAR_ELLER_MEDMOR',
+            søker: 'FAR_MEDMOR',
         },
     },
 };
@@ -432,7 +433,7 @@ export const EnRettFarLedigeDager: Story = {
         foreldreInfo: {
             ...DEFAULT_FORELDRE_INFO,
             rettighetType: 'BARE_SØKER_RETT',
-            søker: 'FAR_ELLER_MEDMOR',
+            søker: 'FAR_MEDMOR',
         },
         erInnsyn: false,
     },
@@ -577,7 +578,7 @@ export const AleneomsorgFarLedigeDager: Story = {
         foreldreInfo: {
             ...DEFAULT_FORELDRE_INFO,
             rettighetType: 'ALENEOMSORG',
-            søker: 'FAR_ELLER_MEDMOR',
+            søker: 'FAR_MEDMOR',
         },
     },
 };
@@ -619,7 +620,7 @@ export const AleneomsorgFarForMangeDager: Story = {
         foreldreInfo: {
             ...DEFAULT_FORELDRE_INFO,
             rettighetType: 'ALENEOMSORG',
-            søker: 'FAR_ELLER_MEDMOR',
+            søker: 'FAR_MEDMOR',
         },
     },
 };
