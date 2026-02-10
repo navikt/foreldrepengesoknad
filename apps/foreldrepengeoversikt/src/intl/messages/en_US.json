@@ -300,6 +300,7 @@
     "beregning.utbetalingsTekst.deg": "We pay to you directly",
     "beregning.utbetalingsTekst.degOgArbeidsgiver": "We pay both to employer and to you",
     "beregning.forklaringer.hvaErDagsatsen": "What is the daily rate?",
+    "beregning.forklaringer.hvaErDagsatsen.forklaring": "The daily rate is the parental benefits base amount divided by 260, which is all days in the year minus Saturdays and Sundays. This gives you the daily rate, which is the amount you receive each day. If you have partial parental benefits, you receive the daily rate at the percentage you should have parental benefits.",
     "beregning.forklaringer.hvaErDagsatsen.innhold": "Parental benefits are calculated at a maximum of up to six times the basic amount (6G): {grunnbeløpSeksG}. If you have an income higher than this and choose 80%, you will receive 80% of 6G.",
     "beregning.forklaringer.ytelserBareOppTil6G": "Benefits are only calculated up to 6G",
     "beregning.forklaringer.ytelserBareOppTil6G.innhold": "If you have a combined income over 6G and have multiple employment relationships, we distribute the income up to this limit. How we distribute the income depends on which combination of incomes you have and whether the employer requires reimbursement from Nav.",

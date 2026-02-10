@@ -300,6 +300,7 @@
     "beregning.utbetalingsTekst.deg": "Vi utbetalar til deg direkte",
     "beregning.utbetalingsTekst.degOgArbeidsgiver": "Vi utbetalar både til arbeidsgiver og direkte til deg",
     "beregning.forklaringer.hvaErDagsatsen": "Kva er dagsatsen?",
+    "beregning.forklaringer.hvaErDagsatsen.forklaring": "Dagsatsen er foreldrepengargrunnlaget delt på 260, som er alle dagar i året minus laurdag og søndag. Då får du dagsatsen, som er beløpet du får kvar dag. Har du graderte foreldrepengar, får du dagsatsen i den prosenten du skal ha foreldrepengar.",
     "beregning.forklaringer.hvaErDagsatsen.innhold": "Foreldrepengar blir rekna ut maksimalt opp til seks gonger grunnbeløpet (6G): {grunnbeløpSeksG}. Viss du har ei inntekt høgare enn dette og vel 80 %, vil du få 80 % av 6G.",
     "beregning.forklaringer.ytelserBareOppTil6G": "Ytingar blir berre rekna ut opp til 6G",
     "beregning.forklaringer.ytelserBareOppTil6G.innhold": "Viss du har ei samla inntekt over 6G og har fleire arbeidsforhold, fordeler vi inntekta opp til denne grensa. Korleis vi fordeler inntekta avhenger av kva kombinasjon av inntekter du har og om arbeidsgjevar krev refusjon frå Nav.",

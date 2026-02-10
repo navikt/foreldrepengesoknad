@@ -195,7 +195,9 @@ const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: n
                 <Accordion.Header>
                     <FormattedMessage id="beregning.forklaringer.hvaErDagsatsen" />
                 </Accordion.Header>
-                <Accordion.Content>TODO</Accordion.Content>
+                <Accordion.Content>
+                    <FormattedMessage id="beregning.forklaringer.hvaErDagsatsen.forklaring" />
+                </Accordion.Content>
             </Accordion.Item>
             <Accordion.Item>
                 <Accordion.Header>

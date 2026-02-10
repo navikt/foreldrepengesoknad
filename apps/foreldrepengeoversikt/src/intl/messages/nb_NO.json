@@ -300,6 +300,7 @@
     "beregning.utbetalingsTekst.deg": "Vi utbetaler til deg direkte",
     "beregning.utbetalingsTekst.degOgArbeidsgiver": "Vi utbetaler både til arbeidsgiver og direkte til deg",
     "beregning.forklaringer.hvaErDagsatsen": "Hva er dagsatsen?",
+    "beregning.forklaringer.hvaErDagsatsen.forklaring": "Dagsats er foreldrepengegrunnlaget delt på 260, som er alle dager i året minus lørdager og søndager. Da får du dagsatsen, som er det beløpet du får hver dag. Har du gradert foreldrepengene, får du dagsatsen i den prosenten du skal ha foreldrepenger.",
     "beregning.forklaringer.hvaErDagsatsen.innhold": "Foreldrepengene beregnes maksimalt opp til seks ganger grunnbeløpet (6G): {grunnbeløpSeksG}. Hvis du har en inntekt høyere enn dette og velger 80 %, vil du få 80 % av 6G.",
     "beregning.forklaringer.ytelserBareOppTil6G": "Ytelser beregnes bare opp til 6G",
     "beregning.forklaringer.ytelserBareOppTil6G.innhold": "Hvis du har en samlet inntekt over 6G og har flere arbeidsforhold, fordeler vi inntekten opptil denne grensen. Hvordan vi fordeler inntekten avhenger av hvilke kombinasjon av inntekter du har og om arbeidsgiver krever refusjon fra Nav.",
