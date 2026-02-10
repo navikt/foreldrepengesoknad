@@ -300,7 +300,7 @@
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Påkrevd": "Du må velje ei årsak for overføring av kvote",
     "VelgPeriodePanelStep.VelgPeriode": "Du må velga kva for periode du vil endra på",
     "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "Du har valgt ein kombinasjon av dagar som ikkje er gyldige for nokon foreldre.",
-    "LeggTilEllerEndrePeriodeForm.Forelder.AnnenPartLåst": "Du har valgt ein kombinasjon av dagar som inkluderer ein periode som kun annan part kan endre.",
+    "LeggTilEllerEndrePeriodeForm.Forelder.AnnenPartLåst": "Du har valgt ein kombinasjon av dagar som inkluderer ein periode som berre den andre part kan endra.",
     "LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse": "Du kan ikkje velga meir enn to veker totalt i perioden to veker før og seks veker etter fødsel/termin",
     "LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.MindreEnn100Prosent": "Når de har mindre enn 100 % foreldrepengar til saman, må de òg jobbe slik at summen av arbeid og foreldrepengar blir 100 % per forelder",
     "LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.Nøyaktig100ProsentMorsAktivitet": "Mor må arbeide og ha foreldrepengar til saman 100 %, eller vere i annan godkjend aktivitet",
