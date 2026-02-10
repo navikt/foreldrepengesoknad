@@ -113,8 +113,26 @@ export const useFormSubmitValidator = <T extends LeggTilEllerEndrePeriodeFormFor
             familiesituasjon,
             formValues,
         );
+
         if (feilmeldingArbeidDeFørste6Ukene) {
             return feilmeldingArbeidDeFørste6Ukene;
+        }
+
+        const feilmeldingPåSamtidigUttak = erUgyldigSamtidigUttak<T>(intl, formValues, perioder, familiehendelsedato);
+
+        if (feilmeldingPåSamtidigUttak) {
+            return feilmeldingPåSamtidigUttak;
+        }
+
+        const feilmeldingGyldigUttakForFarMedmorRundtFødsel = erGyldigUttakForFarMedmorRundtFødsel<T>(
+            intl,
+            formValues,
+            familiehendelsedato,
+            perioder,
+        );
+
+        if (feilmeldingGyldigUttakForFarMedmorRundtFødsel) {
+            return feilmeldingGyldigUttakForFarMedmorRundtFødsel;
         }
 
         return harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamiliehendelsedato<T>(
@@ -127,6 +145,187 @@ export const useFormSubmitValidator = <T extends LeggTilEllerEndrePeriodeFormFor
             formValues,
         );
     };
+};
+
+const skalValidereSamtidigUttak = (
+    values: LeggTilEllerEndrePeriodeFormFormValues,
+): values is Required<
+    Pick<
+        LeggTilEllerEndrePeriodeFormFormValues,
+        | 'samtidigUttaksprosentMor'
+        | 'samtidigUttaksprosentFarMedmor'
+        | 'skalDuKombinereArbeidOgUttakMor'
+        | 'skalDuKombinereArbeidOgUttakFarMedmor'
+        | 'kontoTypeFarMedmor'
+        | 'kontoTypeMor'
+    >
+> => {
+    return (
+        values.forelder === 'BEGGE' &&
+        values.samtidigUttaksprosentMor !== undefined &&
+        values.samtidigUttaksprosentFarMedmor !== undefined &&
+        values.skalDuKombinereArbeidOgUttakMor !== undefined &&
+        values.skalDuKombinereArbeidOgUttakFarMedmor !== undefined &&
+        values.kontoTypeFarMedmor !== undefined &&
+        values.kontoTypeMor !== undefined &&
+        (!values.skalDuKombinereArbeidOgUttakMor || values.stillingsprosentMor !== undefined) &&
+        (!values.skalDuKombinereArbeidOgUttakFarMedmor || values.stillingsprosentFarMedmor !== undefined)
+    );
+};
+
+const erUgyldigSamtidigUttak = <T extends LeggTilEllerEndrePeriodeFormFormValues>(
+    intl: IntlShape,
+    formValues: T,
+    perioder: Array<{ fom: string; tom: string }>,
+    familiehendelsedato: string,
+): string | null => {
+    const inneholderPerioderRundtFødsel =
+        erNoenPerioderIMellomToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato(
+            perioder,
+            familiehendelsedato,
+        );
+
+    if (!skalValidereSamtidigUttak(formValues) || inneholderPerioderRundtFødsel) {
+        return null;
+    }
+
+    const {
+        samtidigUttaksprosentMor,
+        samtidigUttaksprosentFarMedmor,
+        stillingsprosentFarMedmor,
+        stillingsprosentMor,
+        kontoTypeMor,
+        kontoTypeFarMedmor,
+        morsAktivitet,
+    } = formValues;
+
+    const samtidigUttaksprosentMorTrimmed = samtidigUttaksprosentMor.trim();
+    const samtidigUttaksprosentFarMedmorTrimmed = samtidigUttaksprosentFarMedmor.trim();
+    const samtidigUttaksprosentMorFloat = getFloatFromString(samtidigUttaksprosentMorTrimmed)!;
+    const samtidigUttaksprosentFarMedmorFloat = getFloatFromString(samtidigUttaksprosentFarMedmorTrimmed)!;
+    const kombinertUttaksprosent = samtidigUttaksprosentMorFloat + samtidigUttaksprosentFarMedmorFloat;
+    const farMedmorsFellesperiodeErStørreEnn50 =
+        kontoTypeFarMedmor === 'FELLESPERIODE' && samtidigUttaksprosentFarMedmorFloat > 50;
+    const morsFellesperiodeErStørreEnn50 = kontoTypeMor === 'FELLESPERIODE' && samtidigUttaksprosentMorFloat > 50;
+    const totalProsentMor = samtidigUttaksprosentMorFloat + (getFloatFromString(stillingsprosentMor) ?? 0);
+    const totalProsentFarMedmor =
+        samtidigUttaksprosentFarMedmorFloat + (getFloatFromString(stillingsprosentFarMedmor) ?? 0);
+
+    if (kombinertUttaksprosent < 100) {
+        if (totalProsentMor !== 100 || totalProsentFarMedmor !== 100) {
+            return intl.formatMessage({
+                id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.MindreEnn100Prosent',
+            });
+        }
+    }
+
+    if (
+        kombinertUttaksprosent === 100 &&
+        kontoTypeFarMedmor === 'FELLESPERIODE' &&
+        totalProsentMor !== 100 &&
+        !morsAktivitet
+    ) {
+        return intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.Nøyaktig100ProsentMorsAktivitet',
+        });
+    }
+
+    if (kombinertUttaksprosent > 100 && kombinertUttaksprosent <= 150) {
+        if (farMedmorsFellesperiodeErStørreEnn50 || morsFellesperiodeErStørreEnn50) {
+            return intl.formatMessage({
+                id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.Maks50ProsentFelles',
+            });
+        }
+
+        if (kontoTypeFarMedmor === 'FEDREKVOTE' && kontoTypeMor === 'MØDREKVOTE') {
+            return intl.formatMessage({
+                id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.ToKvoterMerEnn100Prosent',
+            });
+        }
+
+        if (totalProsentMor < 100 || totalProsentFarMedmor < 100) {
+            return intl.formatMessage({
+                id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.MåHa100Prosent',
+            });
+        }
+    }
+
+    return null;
+};
+
+const skalValidereUttakForFarMedmorRundtFødsel = (
+    values: LeggTilEllerEndrePeriodeFormFormValues,
+): values is Required<
+    Pick<
+        LeggTilEllerEndrePeriodeFormFormValues,
+        | 'samtidigUttaksprosentMor'
+        | 'samtidigUttaksprosentFarMedmor'
+        | 'skalDuKombinereArbeidOgUttakMor'
+        | 'skalDuKombinereArbeidOgUttakFarMedmor'
+        | 'kontoTypeFarMedmor'
+        | 'kontoTypeMor'
+    >
+> => {
+    return (
+        values.forelder === 'BEGGE' &&
+        values.samtidigUttaksprosentMor !== undefined &&
+        values.samtidigUttaksprosentFarMedmor !== undefined &&
+        values.skalDuKombinereArbeidOgUttakMor !== undefined &&
+        values.skalDuKombinereArbeidOgUttakFarMedmor !== undefined &&
+        values.kontoTypeFarMedmor !== undefined &&
+        values.kontoTypeMor !== undefined &&
+        (!values.skalDuKombinereArbeidOgUttakMor || values.stillingsprosentMor !== undefined) &&
+        (!values.skalDuKombinereArbeidOgUttakFarMedmor || values.stillingsprosentFarMedmor !== undefined)
+    );
+};
+
+const erGyldigUttakForFarMedmorRundtFødsel = <T extends LeggTilEllerEndrePeriodeFormFormValues>(
+    intl: IntlShape,
+    formValues: T,
+    familiehendelsedato: string,
+    perioder: Array<{ fom: string; tom: string }>,
+): string | null => {
+    const inneholderPerioderRundtFødsel =
+        erNoenPerioderIMellomToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato(
+            perioder,
+            familiehendelsedato,
+        );
+
+    if (!skalValidereUttakForFarMedmorRundtFødsel(formValues) || !inneholderPerioderRundtFødsel) {
+        return null;
+    }
+
+    const { samtidigUttaksprosentMor, samtidigUttaksprosentFarMedmor, stillingsprosentFarMedmor, stillingsprosentMor } =
+        formValues;
+
+    const samtidigUttaksprosentMorTrimmed = samtidigUttaksprosentMor.trim();
+    const samtidigUttaksprosentFarMedmorTrimmed = samtidigUttaksprosentFarMedmor.trim();
+    const samtidigUttaksprosentMorFloat = getFloatFromString(samtidigUttaksprosentMorTrimmed)!;
+    const samtidigUttaksprosentFarMedmorFloat = getFloatFromString(samtidigUttaksprosentFarMedmorTrimmed)!;
+    const kombinertUttaksprosent = samtidigUttaksprosentMorFloat + samtidigUttaksprosentFarMedmorFloat;
+    const totalProsentMor = samtidigUttaksprosentMorFloat + (getFloatFromString(stillingsprosentMor) ?? 0);
+    const totalProsentFarMedmor =
+        samtidigUttaksprosentFarMedmorFloat + (getFloatFromString(stillingsprosentFarMedmor) ?? 0);
+
+    if (kombinertUttaksprosent < 100) {
+        return intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.Må100ProsentUttak',
+        });
+    }
+
+    if (totalProsentFarMedmor !== 100) {
+        return intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.FarMedmorMåHa100ProsentUttakJobb',
+        });
+    }
+
+    if (totalProsentMor !== 100) {
+        return intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.MorMåHa100ProsentUttakJobb',
+        });
+    }
+
+    return null;
 };
 
 const erKombinasjonAvArbeidOgForeldrepengerDe6FørsteUkene = <T extends LeggTilEllerEndrePeriodeFormFormValues>(
@@ -280,5 +479,22 @@ const erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato = (
         const tom = dayjs(periode.tom);
 
         return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
+    });
+};
+
+const erNoenPerioderIMellomToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato = (
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    familiehendelsedato: string,
+) => {
+    const familiehendelse = UttaksdagenString.denneEllerNeste(familiehendelsedato);
+
+    const toUkerFør = familiehendelse.getDatoAntallUttaksdagerTidligere(10);
+    const seksUkerEtter = familiehendelse.getDatoAntallUttaksdagerSenere(30);
+
+    return valgtePerioder.some((periode) => {
+        const fom = dayjs(periode.fom);
+        const tom = dayjs(periode.tom);
+
+        return fom.isSameOrBefore(seksUkerEtter) && tom.isSameOrAfter(toUkerFør);
     });
 };

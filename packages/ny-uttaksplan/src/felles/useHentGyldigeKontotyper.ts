@@ -149,6 +149,9 @@ const erGyldigForFarMedmor = (
         if (harValgtSamtidigUttak) {
             return false;
         }
+        if (erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(valgtePerioder, familiehendelsedato)) {
+            return false;
+        }
         if (erNoenPerioderFørToUkerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
             return false;
         }
@@ -177,6 +180,17 @@ const erGyldigForFarMedmor = (
             return false;
         }
         if (erNoenPerioderMerEnn60DagerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+            return false;
+        }
+
+        if (
+            erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(valgtePerioder, familiehendelsedato) &&
+            harValgtSamtidigUttak
+        ) {
+            return false;
+        }
+
+        if (erNoenPerioderFørToUkerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
             return false;
         }
     }
