@@ -40,6 +40,7 @@ export const FarFellesperiode = ({ hvemPlanlegger }: Props) => {
                         values={{
                             hvem: capitalizeFirstLetter(finnSøker1Tekst(intl, hvemPlanlegger)),
                             erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
+                            erFar: finnSøker2Tekst(intl, hvemPlanlegger),
                         }}
                     />
                 </BodyLong>

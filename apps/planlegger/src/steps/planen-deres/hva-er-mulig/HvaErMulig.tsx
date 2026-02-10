@@ -8,17 +8,18 @@ import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { loggExpansionCardOpen } from 'utils/umamiUtils';
 
-import { BodyLong, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
+import { ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { HvemPlanleggerType } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
+import { AktivitetskravFar } from './AktivitetskravFar';
 import { Barnehageplass } from './Barnehageplass';
 import { DetteKanIkkeEndres } from './DetteKanIkkeEndres';
 import { FarFellesperiode } from './FarFellesperiode';
+import { ForeldrepengerSamtidig } from './ForeldrepengerSamtidig';
 import { JobbeSamtidig } from './JobbeSamtidig';
 import { LeggeTilFerie } from './LeggeTilFerie';
-import { PermisjonSamtidig } from './PermisjonSamtidig';
 import { ToUkerRundtFødsel } from './ToUkerRundtFødsel';
 
 interface Props {
@@ -46,6 +47,7 @@ export const HvaErMulig = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) 
             aria-label="Expansion card"
             onToggle={loggExpansionCardOpen('toggle-tilpasse-planen')}
             size="small"
+            defaultOpen={true}
         >
             <ExpansionCard.Header>
                 <HStack gap="space-24" align="center" wrap={false}>
@@ -63,9 +65,9 @@ export const HvaErMulig = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) 
             </ExpansionCard.Header>
             <ExpansionCard.Content>
                 <VStack gap="space-20">
-                    <BodyLong>
-                        <FormattedMessage id="HvaErMulig.MyeManKanEndre" />
-                    </BodyLong>
+                    <Heading size="small">
+                        <FormattedMessage id="HvaErMulig.MyeDuKanEndre" />
+                    </Heading>
                     {!erBarnetAdoptert(barnet) && (
                         <>
                             {!(erFarAlene || erFedre || kunFarSøker2EllerMedmorHarRett) && (
@@ -77,15 +79,22 @@ export const HvaErMulig = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) 
 
                             <Barnehageplass />
 
-                            {kunFarSøker2EllerMedmorHarRett && <ToUkerRundtFødsel hvemPlanlegger={hvemPlanlegger} />}
+                            {kunFarSøker2EllerMedmorHarRett ||
+                                (erFedre && <ToUkerRundtFødsel hvemPlanlegger={hvemPlanlegger} />)}
+                            {erFedre && !kunEnPartSkalHa && <AktivitetskravFar />}
 
                             <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} />
 
-                            {!kunEnPartSkalHa && <FarFellesperiode hvemPlanlegger={hvemPlanlegger} />}
+                            {!kunEnPartSkalHa && !erFedre && <FarFellesperiode hvemPlanlegger={hvemPlanlegger} />}
 
                             {!kunSøker2SkalHa && <JobbeSamtidig />}
 
-                            {(!erAlene || !erFedre) && !kunEnPartSkalHa && <PermisjonSamtidig />}
+                            {!erAlene && !kunEnPartSkalHa && (
+                                <ForeldrepengerSamtidig
+                                    hvemPlanlegger={hvemPlanlegger}
+                                    arbeidssituasjon={arbeidssituasjon}
+                                />
+                            )}
                         </>
                     )}
                     {erBarnetAdoptert(barnet) && (
@@ -98,7 +107,13 @@ export const HvaErMulig = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) 
 
                             <JobbeSamtidig />
 
-                            {(!erAlene || !erFedre) && !kunEnPartSkalHa && <PermisjonSamtidig erAdopsjon />}
+                            {(!erAlene || !erFedre) && !kunEnPartSkalHa && (
+                                <ForeldrepengerSamtidig
+                                    erAdopsjon
+                                    hvemPlanlegger={hvemPlanlegger}
+                                    arbeidssituasjon={arbeidssituasjon}
+                                />
+                            )}
                         </>
                     )}
                 </VStack>

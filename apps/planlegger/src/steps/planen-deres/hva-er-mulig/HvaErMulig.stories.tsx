@@ -215,3 +215,23 @@ export const FødselAleneforsørgerFar: Story = {
         },
     },
 };
+export const AdopsjonMorOgFarBeggeHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            type: HvemPlanleggerType.MOR_OG_FAR,
+            navnPåMor: 'Mor',
+            navnPåFar: 'Far',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: true,
+        },
+        barnet: {
+            antallBarn: '2',
+            overtakelsesdato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: false,
+            erBarnetFødt: true,
+        },
+    },
+};

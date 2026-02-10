@@ -21,10 +21,10 @@ export const Barnehageplass = () => {
             </div>
             <div>
                 <Heading size="small" level="4">
-                    <FormattedMessage id="OmÅTilpassePlanen.Barnehageplass" />
+                    <FormattedMessage id="HvaErMulig.Barnehageplass" />
                 </Heading>
                 <BodyLong>
-                    <FormattedMessage id="OmÅTilpassePlanen.Barnehageplass.Tekst" />
+                    <FormattedMessage id="HvaErMulig.Barnehageplass.Tekst" />
                 </BodyLong>
             </div>
         </HStack>
