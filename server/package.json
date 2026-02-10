@@ -17,7 +17,6 @@
     "devDependencies": {
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-server-utils": "workspace:*",
-        "@types/compression": "1.8.1",
         "@types/express": "5.0.6",
         "@types/morgan": "1.9.10",
         "@types/node": "24.10.1",
