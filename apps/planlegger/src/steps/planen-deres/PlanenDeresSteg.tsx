@@ -217,7 +217,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
 
 const FarOgFarKunEnPartHarRettInfoBox = () => (
     <Infobox
-        header={<FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.DuHarOppgitt" />}
+        header={<FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.DereHarOppgitt" />}
         icon={
             <PersonGroupIcon height={24} width={24} fontSize="1.5rem" color="var(--ax-bg-accent-strong)" aria-hidden />
         }
@@ -235,7 +235,7 @@ const FarOgFarKunEnPartHarRettInfoBox = () => (
 );
 const FarOgFarBeggeHarRettInfoBox = () => (
     <Infobox
-        header={<FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.BeggeHarRett.DuHarOppgitt" />}
+        header={<FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.BeggeHarRett.DereHarOppgitt" />}
         icon={
             <PersonGroupIcon height={24} width={24} fontSize="1.5rem" color="var(--ax-bg-accent-strong)" aria-hidden />
         }

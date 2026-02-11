@@ -5,6 +5,7 @@ import { erMorDelAvSøknaden, finnSøker1Tekst, finnSøker2Tekst } from 'utils/H
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
+import { HvemPlanleggerType } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
@@ -41,6 +42,7 @@ export const FarFellesperiode = ({ hvemPlanlegger }: Props) => {
                             hvem: capitalizeFirstLetter(finnSøker1Tekst(intl, hvemPlanlegger)),
                             erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
                             erFar: finnSøker2Tekst(intl, hvemPlanlegger),
+                            erMedmor: hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR,
                         }}
                     />
                 </BodyLong>

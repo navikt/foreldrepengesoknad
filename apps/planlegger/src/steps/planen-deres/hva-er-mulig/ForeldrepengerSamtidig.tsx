@@ -2,6 +2,7 @@ import { PersonGroupIcon } from '@navikt/aksel-icons';
 import { ReactNode } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
+import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -16,9 +17,10 @@ interface Props {
     erAdopsjon?: boolean;
     hvemPlanlegger: HvemPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
+    barnet: OmBarnet;
 }
 
-export const ForeldrepengerSamtidig = ({ erAdopsjon = false, hvemPlanlegger, arbeidssituasjon }: Props) => {
+export const ForeldrepengerSamtidig = ({ erAdopsjon = false, hvemPlanlegger, arbeidssituasjon, barnet }: Props) => {
     const intl = useIntl();
     const bTag = (msg: ReactNode[]) => <b>{msg}</b>;
 
@@ -53,7 +55,7 @@ export const ForeldrepengerSamtidig = ({ erAdopsjon = false, hvemPlanlegger, arb
 
                         <BodyLong>
                             <FormattedMessage
-                                id="HvaErMulig.ForeldrepengerSamtidig.ToUker.Tekst"
+                                id="HvaErMulig.ForeldrepengerSamtidig.ToUker"
                                 values={{
                                     erAdopsjon,
                                     hvem: finnSøker2Tekst(intl, hvemPlanlegger),
@@ -62,23 +64,33 @@ export const ForeldrepengerSamtidig = ({ erAdopsjon = false, hvemPlanlegger, arb
                                 }}
                             />
                         </BodyLong>
+                        {barnet.antallBarn !== '1' && (
+                            <>
+                                <BodyLong>
+                                    <FormattedMessage
+                                        id="HvaErMulig.ForeldrepengerSamtidig.Flerbarnsdager"
+                                        values={{ b: bTag }}
+                                    />
+                                </BodyLong>
+                            </>
+                        )}
                         <BodyLong>
                             <FormattedMessage
-                                id="HvaErMulig.ForeldrepengerSamtidig.Opptil100.Tekst"
+                                id="HvaErMulig.ForeldrepengerSamtidig.Opptil100"
                                 values={{ erAdopsjon, b: bTag }}
                             />
                         </BodyLong>
 
                         <BodyLong>
                             <FormattedMessage
-                                id="HvaErMulig.ForeldrepengerSamtidig.TilSammen100.Tekst"
+                                id="HvaErMulig.ForeldrepengerSamtidig.TilSammen100"
                                 values={{ erAdopsjon, erFar, b: bTag }}
                             />
                         </BodyLong>
 
                         <BodyLong>
                             <FormattedMessage
-                                id="HvaErMulig.ForeldrepengerSamtidig.Opptil150.Tekst"
+                                id="HvaErMulig.ForeldrepengerSamtidig.Opptil150"
                                 values={{ erAdopsjon, b: bTag }}
                             />
                         </BodyLong>

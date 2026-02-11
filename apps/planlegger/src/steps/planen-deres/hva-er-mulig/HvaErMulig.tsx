@@ -18,6 +18,8 @@ import { Barnehageplass } from './Barnehageplass';
 import { DetteKanIkkeEndres } from './DetteKanIkkeEndres';
 import { FarFellesperiode } from './FarFellesperiode';
 import { ForeldrepengerSamtidig } from './ForeldrepengerSamtidig';
+import { FpMedKrav } from './FpMedKrav';
+import { FpUtenKrav } from './FpUtenKrav';
 import { JobbeSamtidig } from './JobbeSamtidig';
 import { LeggeTilFerie } from './LeggeTilFerie';
 import { ToUkerRundtFødsel } from './ToUkerRundtFødsel';
@@ -79,8 +81,9 @@ export const HvaErMulig = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) 
 
                             <Barnehageplass />
 
-                            {kunFarSøker2EllerMedmorHarRett ||
-                                (erFedre && <ToUkerRundtFødsel hvemPlanlegger={hvemPlanlegger} />)}
+                            {(kunFarSøker2EllerMedmorHarRett || erFedre) && (
+                                <ToUkerRundtFødsel hvemPlanlegger={hvemPlanlegger} />
+                            )}
                             {erFedre && !kunEnPartSkalHa && <AktivitetskravFar />}
 
                             <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} />
@@ -93,7 +96,14 @@ export const HvaErMulig = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) 
                                 <ForeldrepengerSamtidig
                                     hvemPlanlegger={hvemPlanlegger}
                                     arbeidssituasjon={arbeidssituasjon}
+                                    barnet={barnet}
                                 />
+                            )}
+                            {kunFarSøker2EllerMedmorHarRett && (
+                                <>
+                                    <FpUtenKrav hvemPlanlegger={hvemPlanlegger} />
+                                    <FpMedKrav hvemPlanlegger={hvemPlanlegger} />
+                                </>
                             )}
                         </>
                     )}
@@ -112,6 +122,7 @@ export const HvaErMulig = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) 
                                     erAdopsjon
                                     hvemPlanlegger={hvemPlanlegger}
                                     arbeidssituasjon={arbeidssituasjon}
+                                    barnet={barnet}
                                 />
                             )}
                         </>
