@@ -1,4 +1,4 @@
-import { BriefcaseIcon } from '@navikt/aksel-icons';
+import { BriefcaseIcon, Buildings3Icon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
@@ -10,7 +10,7 @@ export const JobbeSamtidig = () => {
         <HStack gap="space-20" wrap={false}>
             <div>
                 <IconCircleWrapper color="lightBlue" size="medium">
-                    <BriefcaseIcon
+                    <Buildings3Icon
                         height={22}
                         width={22}
                         fontSize="1.5rem"

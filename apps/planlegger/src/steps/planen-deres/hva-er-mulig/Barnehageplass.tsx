@@ -1,4 +1,4 @@
-import { BabyWrappedIcon } from '@navikt/aksel-icons';
+import { CalendarIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
@@ -10,7 +10,7 @@ export const Barnehageplass = () => {
         <HStack gap="space-20" wrap={false}>
             <div>
                 <IconCircleWrapper color="lightBlue" size="medium">
-                    <BabyWrappedIcon
+                    <CalendarIcon
                         height={22}
                         width={22}
                         fontSize="1.5rem"

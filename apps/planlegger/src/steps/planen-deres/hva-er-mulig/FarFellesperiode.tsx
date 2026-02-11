@@ -1,4 +1,4 @@
-import { BabyWrappedIcon } from '@navikt/aksel-icons';
+import { PersonGroupIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erMorDelAvSøknaden, finnSøker1Tekst, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
@@ -19,7 +19,7 @@ export const FarFellesperiode = ({ hvemPlanlegger }: Props) => {
         <HStack gap="space-20" wrap={false}>
             <div>
                 <IconCircleWrapper color="lightBlue" size="medium">
-                    <BabyWrappedIcon
+                    <PersonGroupIcon
                         height={22}
                         width={22}
                         fontSize="1.5rem"
