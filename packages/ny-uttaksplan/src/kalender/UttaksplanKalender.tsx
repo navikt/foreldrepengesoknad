@@ -233,7 +233,7 @@ const AvslåttePerioder = () => {
             isAvslåttPeriode(p) &&
             erVanligUttakPeriode(p) &&
             p.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER' &&
-            (foreldreInfo.søker === 'FAR_ELLER_MEDMOR' || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
+            (foreldreInfo.søker === 'FAR_MEDMOR' || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
     );
 
     return harAvslåttePerioderSomIkkeGirTapteDager ? (
