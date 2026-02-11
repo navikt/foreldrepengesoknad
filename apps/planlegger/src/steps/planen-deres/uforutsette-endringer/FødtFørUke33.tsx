@@ -1,4 +1,4 @@
-import { StethoscopeIcon } from '@navikt/aksel-icons';
+import { BabyWrappedIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
@@ -24,7 +24,7 @@ export const FødtFørUke33 = ({ arbeidssituasjon, hvemPlanlegger }: Props) => {
         <HStack gap="space-20" wrap={false}>
             <div>
                 <IconCircleWrapper color="lightBlue" size="medium">
-                    <StethoscopeIcon
+                    <BabyWrappedIcon
                         height={22}
                         width={22}
                         fontSize="1.5rem"
