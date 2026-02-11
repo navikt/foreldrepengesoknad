@@ -5,12 +5,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Box, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
-
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
+import { ForskyvEllerErstattPeriode } from './ForskyvEllerErstattPeriode';
 import { PeriodeDetaljerOgInfoMeldinger } from './PeriodeDetaljerOgInfoMeldinger';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 import { RødRamme } from './utils/RødRamme';
@@ -24,37 +23,20 @@ interface Props {
 
 export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) => {
     const intl = useIntl();
+    const [visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel] = useState(false);
 
     const {
         foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
     } = useUttaksplanData();
 
-    const { sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, setValgtePerioder, setEndredePerioder } =
-        useKalenderRedigeringContext();
+    const { sammenslåtteValgtePerioder, setValgtePerioder } = useKalenderRedigeringContext();
 
     const erDesktop = useErDesktop();
 
     const [erMinimert, setErMinimert] = useState(!erDesktop);
 
     useMediaResetMinimering(setErMinimert);
-
-    const leggTilFerie = () => {
-        leggTilUttaksplanPerioder(
-            sammenslåtteValgtePerioder.map(
-                (p) =>
-                    ({
-                        forelder: søker,
-                        fom: p.fom,
-                        tom: p.tom,
-                        utsettelseÅrsak: 'LOVBESTEMT_FERIE',
-                    }) satisfies UttakPeriode_fpoversikt,
-            ),
-        );
-
-        setValgtePerioder([]);
-        setEndredePerioder(sammenslåtteValgtePerioder);
-    };
 
     const uttakPerioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
 
@@ -69,6 +51,10 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
         eksisterendePerioderSomErValgt.length === 0 ||
         (erPeriodeneTilAnnenPartLåst &&
             eksisterendePerioderSomErValgt.some((p) => erVanligUttakPeriode(p) && p.forelder !== søker));
+
+    if (visEndreEllerForskyvPanel) {
+        return <ForskyvEllerErstattPeriode setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel} />;
+    }
 
     return (
         <VStack
@@ -184,7 +170,12 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
                                             skalViseLeggTilKnappetekst={skalViseLeggTilKnappetekst}
                                         />
                                     </Show>
-                                    <Button variant="secondary" size="small" onClick={leggTilFerie} type="button">
+                                    <Button
+                                        variant="secondary"
+                                        size="small"
+                                        onClick={() => setVisEndreEllerForskyvPanel(true)}
+                                        type="button"
+                                    >
                                         {skalViseLeggTilKnappetekst ? (
                                             <FormattedMessage id="RedigeringPanel.LeggTilFerie" />
                                         ) : (

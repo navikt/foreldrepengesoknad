@@ -42,6 +42,8 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
 
+    const [visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel] = useState(false);
+
     const defaultValues = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
         uttakPerioder,
         sammenslåtteValgtePerioder[0]!,
@@ -68,6 +70,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
             sammenslåtteValgtePerioder.flatMap((periode) => {
                 return mapFraFormValuesTilUttakPeriode(values, periode);
             }),
+            false,
         );
 
         setValgtePerioder([]);

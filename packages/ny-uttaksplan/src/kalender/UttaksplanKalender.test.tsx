@@ -1042,4 +1042,63 @@ describe('UttaksplanKalender', () => {
             ),
         ).toBeInTheDocument();
     });
+
+    it('skal kunne velge å forskyve periodene ved innlegging av ferie', async () => {
+        render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        const april = screen.getByTestId('year:2024;month:3');
+
+        await userEvent.click(within(april).getByTestId('day:16;dayColor:BLUE'));
+
+        expect(within(april).getByTestId('day:19;dayColor:BLACK')).toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(screen.getByText('Endre til ferie'));
+
+        expect(await screen.findByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Endre og flytt resten av planen'));
+
+        await userEvent.click(screen.getByText('Fortsett'));
+
+        expect(within(april).getByTestId('day:16;dayColor:BLUEOUTLINE')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:19;dayColor:BLUE')).toBeInTheDocument();
+    });
+
+    it('skal ikke kunne forskyve perioder når en har valgt dager før familiehendelsesdato', async () => {
+        render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        const april = screen.getByTestId('year:2024;month:3');
+
+        await userEvent.click(within(april).getByTestId('day:1;dayColor:BLUE'));
+        await userEvent.click(within(april).getByTestId('day:16;dayColor:BLUE'));
+
+        expect(within(april).getByTestId('day:19;dayColor:BLACK')).toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(screen.getByText('Endre til ferie'));
+
+        expect(await screen.findByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
+        expect(
+            screen.getByText('Du kan ikke forskyve perioder når du har valgt minst en dag før fødsel/termin'),
+        ).toBeInTheDocument();
+        expect(screen.getByLabelText('Endre og flytt resten av planen')).toBeDisabled();
+
+        await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
+
+        await userEvent.click(screen.getByText('Fortsett'));
+
+        expect(within(april).getByTestId('day:16;dayColor:BLUEOUTLINE')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:19;dayColor:BLACK')).toBeInTheDocument();
+    });
 });

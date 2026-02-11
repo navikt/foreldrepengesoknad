@@ -130,7 +130,7 @@ describe('UttakPeriodeBuilder.leggTilUttakPerioder (skalErstatteEksisterendePeri
     it('skal dytte eksisterende perioder frem', () => {
         const builder = new UttakPeriodeBuilder([
             lagPeriode('2024-01-10', '2024-01-15'),
-        ]).medForskyvningAvEksisterendePerioder();
+        ]).medForskyvningAvEksisterendePerioder(true);
 
         builder.leggTilUttakPerioder([lagNyPeriode('2024-01-01', '2024-01-05')]);
 
@@ -143,7 +143,7 @@ describe('UttakPeriodeBuilder.leggTilUttakPerioder (skalErstatteEksisterendePeri
     it('skal dytte overlappende perioder frem', () => {
         const builder = new UttakPeriodeBuilder([
             lagPeriode('2024-01-03', '2024-01-10'),
-        ]).medForskyvningAvEksisterendePerioder();
+        ]).medForskyvningAvEksisterendePerioder(true);
 
         builder.leggTilUttakPerioder([lagNyPeriode('2024-01-01', '2024-01-05')]);
 
@@ -156,7 +156,7 @@ describe('UttakPeriodeBuilder.leggTilUttakPerioder (skalErstatteEksisterendePeri
     it('skal dytte eksisterende perioder frem når det er flere nye perioder', () => {
         const builder = new UttakPeriodeBuilder([
             lagPeriode('2024-01-10', '2024-01-10'),
-        ]).medForskyvningAvEksisterendePerioder();
+        ]).medForskyvningAvEksisterendePerioder(true);
 
         builder.leggTilUttakPerioder([
             lagNyPeriode('2024-01-01', '2024-01-02'),
@@ -173,7 +173,7 @@ describe('UttakPeriodeBuilder.leggTilUttakPerioder (skalErstatteEksisterendePeri
     it('Skal ta hensyn til helgedager når en legger til lagPeriode', () => {
         const builder = new UttakPeriodeBuilder([
             lagPeriode('2024-01-01', '2024-01-31'),
-        ]).medForskyvningAvEksisterendePerioder();
+        ]).medForskyvningAvEksisterendePerioder(true);
 
         builder.leggTilUttakPerioder([lagNyPeriode('2024-01-08', '2024-01-12')]);
 
@@ -277,7 +277,7 @@ describe('UttakPeriodeBuilder.fjernUttakPerioder', () => {
     it('skal ta hensyn til helgedager når en fjerner lagPeriode', () => {
         const builder = new UttakPeriodeBuilder([
             lagPeriode('2024-01-01', '2024-01-31'),
-        ]).medForskyvningAvEksisterendePerioder();
+        ]).medForskyvningAvEksisterendePerioder(true);
 
         builder.fjernUttakPerioder([lagPeriode('2024-01-08', '2024-01-12')]);
 

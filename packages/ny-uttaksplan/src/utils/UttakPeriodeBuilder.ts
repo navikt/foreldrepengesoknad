@@ -16,8 +16,8 @@ export class UttakPeriodeBuilder {
         this.alleUttakPerioder = [...alleUttakPerioder].sort(sorterUttakPerioder);
     }
 
-    medForskyvningAvEksisterendePerioder(): this {
-        this.skalErstatteEksisterendePerioder = false;
+    medForskyvningAvEksisterendePerioder(skalforskyve: boolean): this {
+        this.skalErstatteEksisterendePerioder = !skalforskyve;
         return this;
     }
 
