@@ -20,7 +20,7 @@ export const FamiliehendelseContent = ({ familiehendelseType }: Props) => {
             <BodyShort>
                 <FormattedMessage
                     id="uttaksplan.periodeListeContent.familiehendelse.termin"
-                    values={{ navnMor: navnPåForeldre.mor, erFarEllerMedmor: søker === 'FAR_ELLER_MEDMOR' }}
+                    values={{ navnMor: navnPåForeldre.mor, erFarEllerMedmor: søker === 'FAR_MEDMOR' }}
                 />
             </BodyShort>
         );

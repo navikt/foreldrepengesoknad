@@ -108,7 +108,7 @@ describe('lagHullPerioder', () => {
 
         const foreldreInfo = {
             ...DEFAULT_FORELDRE_INFO,
-            søker: 'FAR_ELLER_MEDMOR',
+            søker: 'FAR_MEDMOR',
             rettighetType: 'BARE_SØKER_RETT',
         } satisfies ForeldreInfo;
 
@@ -136,7 +136,7 @@ describe('lagHullPerioder', () => {
 
         const foreldreInfo = {
             ...DEFAULT_FORELDRE_INFO,
-            søker: 'FAR_ELLER_MEDMOR',
+            søker: 'FAR_MEDMOR',
             rettighetType: 'BARE_SØKER_RETT',
         } satisfies ForeldreInfo;
 
@@ -168,7 +168,7 @@ describe('lagHullPerioder', () => {
 
         const foreldreInfo = {
             ...DEFAULT_FORELDRE_INFO,
-            søker: 'FAR_ELLER_MEDMOR',
+            søker: 'FAR_MEDMOR',
             rettighetType: 'BARE_SØKER_RETT',
         } satisfies ForeldreInfo;
 
@@ -200,7 +200,7 @@ describe('lagHullPerioder', () => {
 
         const foreldreInfo = {
             ...DEFAULT_FORELDRE_INFO,
-            søker: 'FAR_ELLER_MEDMOR',
+            søker: 'FAR_MEDMOR',
             rettighetType: 'BARE_SØKER_RETT',
         } satisfies ForeldreInfo;
 

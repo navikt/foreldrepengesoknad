@@ -152,6 +152,7 @@ const DEFAULT_DATA = {
     },
     harAktivitetskravIPeriodeUtenUttak: false,
     uttakPerioder: [],
+    erPeriodeneTilAnnenPartLåst: false,
     children: [],
 } satisfies ComponentProps<typeof UttaksplanDataProvider>;
 
@@ -195,7 +196,7 @@ describe('useFormSubmitValidator', () => {
         const { result } = renderHook(() => useFormSubmitValidator(), {
             wrapper: getWrapper({
                 foreldreInfo: {
-                    søker: 'FAR_ELLER_MEDMOR',
+                    søker: 'FAR_MEDMOR',
                     rettighetType: 'BEGGE_RETT',
                     erMedmorDelAvSøknaden: false,
                     navnPåForeldre: { farMedmor: 'Far Medmor', mor: 'Mor' },
@@ -227,7 +228,7 @@ describe('useFormSubmitValidator', () => {
         const { result } = renderHook(() => useFormSubmitValidator(), {
             wrapper: getWrapper({
                 foreldreInfo: {
-                    søker: 'FAR_ELLER_MEDMOR',
+                    søker: 'FAR_MEDMOR',
                     rettighetType: 'BEGGE_RETT',
                     erMedmorDelAvSøknaden: false,
                     navnPåForeldre: { farMedmor: 'Far Medmor', mor: 'Mor' },
@@ -261,7 +262,7 @@ describe('useFormSubmitValidator', () => {
         const { result } = renderHook(() => useFormSubmitValidator(), {
             wrapper: getWrapper({
                 foreldreInfo: {
-                    søker: 'FAR_ELLER_MEDMOR',
+                    søker: 'FAR_MEDMOR',
                     rettighetType: 'BEGGE_RETT',
                     erMedmorDelAvSøknaden: false,
                     navnPåForeldre: { farMedmor: 'Far Medmor', mor: 'Mor' },
@@ -302,7 +303,7 @@ describe('useFormSubmitValidator', () => {
         const { result } = renderHook(() => useFormSubmitValidator(), {
             wrapper: getWrapper({
                 foreldreInfo: {
-                    søker: 'FAR_ELLER_MEDMOR',
+                    søker: 'FAR_MEDMOR',
                     rettighetType: 'BEGGE_RETT',
                     erMedmorDelAvSøknaden: false,
                     navnPåForeldre: { farMedmor: 'Far Medmor', mor: 'Mor' },
@@ -341,7 +342,7 @@ describe('useFormSubmitValidator', () => {
         const { result } = renderHook(() => useFormSubmitValidator(), {
             wrapper: getWrapper({
                 foreldreInfo: {
-                    søker: 'FAR_ELLER_MEDMOR',
+                    søker: 'FAR_MEDMOR',
                     rettighetType: 'BEGGE_RETT',
                     erMedmorDelAvSøknaden: false,
                     navnPåForeldre: { farMedmor: 'Far Medmor', mor: 'Mor' },
@@ -391,7 +392,7 @@ describe('useFormSubmitValidator', () => {
         const { result } = renderHook(() => useFormSubmitValidator(), {
             wrapper: getWrapper({
                 foreldreInfo: {
-                    søker: 'FAR_ELLER_MEDMOR',
+                    søker: 'FAR_MEDMOR',
                     rettighetType: 'BEGGE_RETT',
                     erMedmorDelAvSøknaden: false,
                     navnPåForeldre: { farMedmor: 'Far Medmor', mor: 'Mor' },

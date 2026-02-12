@@ -115,7 +115,7 @@ export const UttaksplanForm = ({
         !bareFarHarRett;
 
     const onSubmit = (formValues: FormValues) => {
-        if (uttaksplan && uttaksplan.length === 0) {
+        if (uttaksplan?.length === 0) {
             setFeilmelding(intl.formatMessage({ id: 'UttaksplanSteg.IngenPerioder' }));
             scrollToKvoteOppsummering();
         } else if (erAntallDagerOvertrukket) {
@@ -331,15 +331,12 @@ const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
 const harPeriodeDerMorsAktivitetIkkeErValgt = (
     perioder?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
 ) => {
-    return (
-        perioder &&
-        perioder.some(
-            (periode) =>
-                erIkkeEøsPeriode(periode) &&
-                periode.forelder === 'FAR_MEDMOR' &&
-                periode.kontoType === 'FELLESPERIODE' &&
-                periode.flerbarnsdager === undefined &&
-                periode.morsAktivitet === undefined,
-        )
+    return perioder?.some(
+        (periode) =>
+            erIkkeEøsPeriode(periode) &&
+            periode.forelder === 'FAR_MEDMOR' &&
+            periode.kontoType === 'FELLESPERIODE' &&
+            periode.flerbarnsdager === undefined &&
+            periode.morsAktivitet === undefined,
     );
 };
