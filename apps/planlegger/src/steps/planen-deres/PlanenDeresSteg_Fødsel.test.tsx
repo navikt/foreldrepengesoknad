@@ -367,6 +367,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         render(<FarOgFarBeggeHarRett />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+        expect(screen.getByText('Dere har oppgitt at dere begge har rett til foreldrepenger')).toBeInTheDocument();
 
         expect(screen.getByText('100 % i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe('true');
         expect(screen.getByText('80 % i 52 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
