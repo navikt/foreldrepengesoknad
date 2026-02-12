@@ -5,7 +5,7 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './Saksoversikt.stories';
 
-const { Engangsstønad, Foreldrepenger, Svangerskapspenger } = composeStories(stories);
+const { Engangsstønad, Foreldrepenger, Svangerskapspenger, YngreMannEndringssøknad } = composeStories(stories);
 
 describe('<Saksoversikt>', () => {
     it(
@@ -58,6 +58,34 @@ describe('<Saksoversikt>', () => {
 
             // ... når vi senere skal sjekke for at noe ikke eksisterer.
             expect(screen.queryByText('Endre planen din')).not.toBeInTheDocument();
+        }),
+    );
+
+    it(
+        'skal vise melding for yngre mann ved endringssøknad',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(YngreMannEndringssøknad.parameters.msw);
+            render(<YngreMannEndringssøknad />);
+
+            expect(
+                await screen.findByText(/som ung mann under 25 år som endrer søknaden om foreldrepenger/i),
+            ).toBeInTheDocument();
+        }),
+    );
+
+    it(
+        'skal IKKE vise melding for yngre kvinne ved endringssøknad',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(Foreldrepenger.parameters.msw);
+            render(<Foreldrepenger />);
+
+            // Sjekk at siden har lastet
+            expect(await screen.findByText('Din sak')).toBeInTheDocument();
+
+            // Melding skal ikke vises
+            expect(
+                screen.queryByText(/som ung mann under 25 år som endrer søknaden om foreldrepenger/i),
+            ).not.toBeInTheDocument();
         }),
     );
 });
