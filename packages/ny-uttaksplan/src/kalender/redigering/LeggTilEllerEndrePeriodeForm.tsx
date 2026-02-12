@@ -20,6 +20,7 @@ import {
 import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../utils/periodeUtils';
+import { ForskyvEllerErstattPeriode } from './ForskyvEllerErstattPeriode';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 import { finnValgtePerioder } from './utils/kalenderPeriodeUtils';
 
@@ -66,11 +67,15 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         }
         setFeilmelding(undefined);
 
+        setVisEndreEllerForskyvPanel(true);
+    };
+
+    const leggIKalender = (skalForskyve: boolean) => {
         leggTilUttaksplanPerioder(
             sammenslåtteValgtePerioder.flatMap((periode) => {
-                return mapFraFormValuesTilUttakPeriode(values, periode);
+                return mapFraFormValuesTilUttakPeriode(formMethods.getValues(), periode);
             }),
-            false,
+            skalForskyve,
         );
 
         setValgtePerioder([]);
@@ -91,29 +96,37 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-            <VStack gap="space-16">
-                {harPeriodeDerMorsAktivitetIkkeErValgt(eksisterendePerioderSomErValgt) && (
-                    <Alert variant="warning" size="small">
-                        <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt" />
-                    </Alert>
-                )}
-
-                <LeggTilEllerEndrePeriodeFellesForm
-                    valgtePerioder={sammenslåtteValgtePerioder}
-                    resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}
+            {visEndreEllerForskyvPanel && (
+                <ForskyvEllerErstattPeriode
+                    setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
+                    leggTilEllerForskyvPeriode={leggIKalender}
                 />
+            )}
+            {!visEndreEllerForskyvPanel && (
+                <VStack gap="space-16">
+                    {harPeriodeDerMorsAktivitetIkkeErValgt(eksisterendePerioderSomErValgt) && (
+                        <Alert variant="warning" size="small">
+                            <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt" />
+                        </Alert>
+                    )}
 
-                {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
+                    <LeggTilEllerEndrePeriodeFellesForm
+                        valgtePerioder={sammenslåtteValgtePerioder}
+                        resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}
+                    />
 
-                <HStack gap="space-8">
-                    <Button type="button" variant="secondary" onClick={lukkRedigeringsmodus}>
-                        <FormattedMessage id="LeggTilPeriodePanel.Avbryt" />
-                    </Button>
-                    <Button type="submit" variant="primary" disabled={!formMethods.formState.isDirty}>
-                        <FormattedMessage id="LeggTilPeriodePanel.LeggTil" />
-                    </Button>
-                </HStack>
-            </VStack>
+                    {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
+
+                    <HStack gap="space-8">
+                        <Button type="button" variant="secondary" onClick={lukkRedigeringsmodus}>
+                            <FormattedMessage id="LeggTilPeriodePanel.Avbryt" />
+                        </Button>
+                        <Button type="submit" variant="primary" disabled={!formMethods.formState.isDirty}>
+                            <FormattedMessage id="LeggTilPeriodePanel.LeggTil" />
+                        </Button>
+                    </HStack>
+                </VStack>
+            )}
         </RhfForm>
     );
 };

@@ -5,6 +5,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Box, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../utils/dateUtils';
@@ -30,7 +32,8 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
         erPeriodeneTilAnnenPartLåst,
     } = useUttaksplanData();
 
-    const { sammenslåtteValgtePerioder, setValgtePerioder } = useKalenderRedigeringContext();
+    const { sammenslåtteValgtePerioder, setValgtePerioder, leggTilUttaksplanPerioder, setEndredePerioder } =
+        useKalenderRedigeringContext();
 
     const erDesktop = useErDesktop();
 
@@ -52,8 +55,33 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
         (erPeriodeneTilAnnenPartLåst &&
             eksisterendePerioderSomErValgt.some((p) => erVanligUttakPeriode(p) && p.forelder !== søker));
 
+    const leggTilEllerForskyvPeriode = (skalForskyve: boolean) => {
+        leggTilUttaksplanPerioder(
+            sammenslåtteValgtePerioder.map(
+                (p) =>
+                    ({
+                        forelder: søker,
+                        fom: p.fom,
+                        tom: p.tom,
+                        utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+                    }) satisfies UttakPeriode_fpoversikt,
+            ),
+            skalForskyve,
+        );
+
+        setValgtePerioder([]);
+        setEndredePerioder(sammenslåtteValgtePerioder);
+    };
+
     if (visEndreEllerForskyvPanel) {
-        return <ForskyvEllerErstattPeriode setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel} />;
+        return (
+            <Box padding="space-24">
+                <ForskyvEllerErstattPeriode
+                    setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
+                    leggTilEllerForskyvPeriode={leggTilEllerForskyvPeriode}
+                />
+            </Box>
+        );
     }
 
     return (

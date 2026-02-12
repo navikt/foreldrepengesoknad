@@ -974,11 +974,6 @@ export const MorSøkerOgMedmorHarEøsPeriode: Story = {
             {
                 fom: '2024-04-04',
                 tom: '2024-04-18',
-                forelder: 'MOR',
-            },
-            {
-                fom: '2024-04-04',
-                tom: '2024-04-18',
                 kontoType: 'MØDREKVOTE',
                 forelder: 'MOR',
             },
@@ -1023,11 +1018,6 @@ export const StjernemarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt: 
                 fom: '2024-03-14',
                 tom: '2024-04-03',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                forelder: 'MOR',
-            },
-            {
-                fom: '2024-04-04',
-                tom: '2024-04-18',
                 forelder: 'MOR',
             },
             {
