@@ -1,4 +1,4 @@
-import { BriefcaseIcon, Buildings3Icon } from '@navikt/aksel-icons';
+import { Buildings3Icon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
