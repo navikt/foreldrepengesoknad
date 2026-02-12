@@ -6,6 +6,7 @@ import { useStepConfig } from 'appData/useStepConfig';
 import dayjs from 'dayjs';
 import { useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { erPeriodeIOpprinneligPlan } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnr, getNavnPåForeldre } from 'utils/personUtils';
 
@@ -97,11 +98,19 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
 
     const valgteStønadskontoer = tilgjengeligeStønadskontoerQuery.data;
 
-    const uttaksplanForslag = useUttaksplanForslag(valgteStønadskontoer);
+    const nyttUttaksplanForslag = useUttaksplanForslag(valgteStønadskontoer);
 
     if (!valgteStønadskontoer || annenPartVedtakQuery.isLoading) {
         return null;
     }
+
+    const tidligereUttaksperioder = uttaksplanForEksisterendeSak || annenPartVedtakQuery.data?.perioder;
+    const defaultUttaksperioder = tidligereUttaksperioder || nyttUttaksplanForslag;
+
+    const erPlanenEndret =
+        uttaksplan !== undefined &&
+        (uttaksplan.length !== defaultUttaksperioder.length ||
+            defaultUttaksperioder.some((defaultPeriode) => !erPeriodeIOpprinneligPlan(uttaksplan, defaultPeriode)));
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
@@ -109,7 +118,7 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
                 <UttaksplanDataProvider
                     barn={barn}
                     foreldreInfo={{
-                        søker: isFarEllerMedmor(søkersituasjon.rolle) ? 'FAR_ELLER_MEDMOR' : 'MOR',
+                        søker: isFarEllerMedmor(søkersituasjon.rolle) ? 'FAR_MEDMOR' : 'MOR',
                         navnPåForeldre: getNavnPåForeldre(søkerInfo.person, annenForelder, erSøkerFarEllerMedmor, intl),
                         rettighetType: utledRettighet(erAleneOmOmsorg, erDeltUttak),
                         erMedmorDelAvSøknaden:
@@ -119,12 +128,8 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
                     }}
                     valgtStønadskonto={valgteStønadskontoer}
                     harAktivitetskravIPeriodeUtenUttak={false}
-                    uttakPerioder={
-                        uttaksplan ||
-                        uttaksplanForEksisterendeSak ||
-                        annenPartVedtakQuery.data?.perioder ||
-                        uttaksplanForslag
-                    }
+                    uttakPerioder={uttaksplan || defaultUttaksperioder}
+                    erPeriodeneTilAnnenPartLåst={!!tidligereUttaksperioder}
                 >
                     {feilmelding && <Alert variant="error">{feilmelding}</Alert>}
                     <div ref={kvoteOppsummeringRef}>
@@ -133,7 +138,7 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
 
                     <UttaksplanRedigeringProvider
                         oppdaterUttaksplan={oppdaterUttaksplan}
-                        harEndretPlan={uttaksplan !== undefined}
+                        harEndretPlan={erPlanenEndret}
                     >
                         <FjernAltIUttaksplanModal />
 
@@ -179,6 +184,7 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
                         avbrytSøknad={avbrytSøknad}
                         setFeilmelding={setFeilmelding}
                         scrollToKvoteOppsummering={scrollToKvoteOppsummering}
+                        defaultUttaksperioder={defaultUttaksperioder}
                     />
                 </UttaksplanDataProvider>
             </Step>

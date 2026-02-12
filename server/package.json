@@ -9,8 +9,8 @@
         "build": "ncc build ./src/index.ts -o dist -t --no-cache"
     },
     "dependencies": {
-        "@navikt/nav-dekoratoren-moduler": "3.6.1",
-        "@navikt/oasis": "4.1.1",
+        "@navikt/nav-dekoratoren-moduler": "3.6.2",
+        "@navikt/oasis": "4.1.2",
         "express": "5.2.1",
         "http-proxy-middleware": "3.0.5"
     },

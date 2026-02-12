@@ -5,6 +5,8 @@ import {
     UttakUtsettelseÅrsak_fpoversikt,
 } from '@navikt/fp-types';
 
+import { erUttaksperiode } from './uttaksplanInfoUtils';
+
 export const perioderSomKreverVedleggNy = (
     uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     erFarEllerMedmor: boolean,
@@ -38,7 +40,7 @@ const shouldPeriodeHaveAttachment = (
         );
     }
 
-    if (!('trekkdager' in periode) && periode.utsettelseÅrsak === undefined) {
+    if (!('trekkdager' in periode) && erUttaksperiode(periode)) {
         return dokumentasjonBehøvesForUttaksperiode(periode);
     }
 
@@ -53,9 +55,9 @@ const skalBesvaresVedUtsettelse = (søkerErFarEllerMedmor: boolean, annenForelde
     return søkerErFarEllerMedmor && annenForelderHarRett === false;
 };
 
-//FIXME (TOR) Er dette korrekt? Den gamle koden sjekkar fleire ting her
+//FIXME (TOR) Er dette korrekt? Den gamle koden sjekkar fleire ting her INSTITUSJONSOPPHOLD_ANNEN_FORELDER og SYKDOM_ANNEN_FORELDER
 const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UttakUtsettelseÅrsak_fpoversikt) =>
-    årsak === 'SØKER_SYKDOM' || årsak === 'SØKER_INNLAGT';
+    årsak === 'SØKER_SYKDOM' || årsak === 'SØKER_INNLAGT' || årsak === 'BARN_INNLAGT';
 
 const dokumentasjonBehøvesForUttaksperiode = (periode: UttakPeriode_fpoversikt): boolean => {
     const harIkkeAktivitetskrav = periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT';

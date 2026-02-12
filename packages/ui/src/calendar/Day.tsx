@@ -27,6 +27,8 @@ const DAY_STYLE: Record<CalendarPeriodColor, string> = {
     ['LIGHTGREENBLUE']: styles.lightgreenBlueDay!,
     ['GREENSTRIPED']: styles.greenStripedDay!,
     ['BLUESTRIPED']: styles.blueStripedDay!,
+    ['GREEN_WITH_BLACK_OUTLINE']: styles.greenWithBlackOutlineDay!,
+    ['BLUE_WITH_BLACK_OUTLINE']: styles.blueWithBlackOutlineDay!,
 };
 
 type Props = {
@@ -35,6 +37,7 @@ type Props = {
     isFocused: boolean;
     srText?: string;
     isUpdated?: boolean;
+    isMarked?: boolean;
     dateTooltipCallback?: (date: string) => React.ReactNode | string;
     dateClickCallback?: (date: string) => void;
     setFocusedDate: (date: Dayjs) => void;
@@ -47,6 +50,7 @@ export const Day = React.memo(
         isFocused,
         srText,
         isUpdated,
+        isMarked,
         dateTooltipCallback,
         dateClickCallback,
         setFocusedDate,
@@ -93,6 +97,7 @@ export const Day = React.memo(
                 aria-label={formatDate(date) + (srText ? `, ${srText}` : '')}
             >
                 {day}
+                {isMarked && periodeColor !== 'GRAY' && <span className={styles.star}>★</span>}
                 {dateTooltipCallback && isPeriodDifferentFromNoneOrGray(periodeColor) && (
                     <Popover open={isTooltipOpen} onClose={() => setIsTooltipOpen(false)} anchorEl={buttonRef.current}>
                         <Popover.Content>{dateTooltipCallback(isoDate)}</Popover.Content>

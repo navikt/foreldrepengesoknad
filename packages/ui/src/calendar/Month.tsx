@@ -105,6 +105,7 @@ export const Month = React.memo(
                                                 periodeColor={findDayColor(date, period)}
                                                 srText={period?.srText}
                                                 isUpdated={period?.isUpdated}
+                                                isMarked={period?.isMarked}
                                                 dateTooltipCallback={dateTooltipCallback}
                                                 dateClickCallback={dateClickCallback}
                                                 isFocused={

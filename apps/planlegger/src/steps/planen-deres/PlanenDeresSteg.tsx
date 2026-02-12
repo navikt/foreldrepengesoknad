@@ -126,7 +126,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                 <UttaksplanDataProvider
                     barn={mapOmBarnetTilBarn(omBarnet)}
                     foreldreInfo={{
-                        søker: erFarEllerMedmor ? 'FAR_ELLER_MEDMOR' : 'MOR',
+                        søker: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
                         navnPåForeldre,
                         rettighetType: utledRettighet(erAleneOmOmsorg, erDeltUttak),
                         erMedmorDelAvSøknaden: isMedmorDelAvSøknaden,
@@ -135,6 +135,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     valgtStønadskonto={valgtStønadskonto}
                     harAktivitetskravIPeriodeUtenUttak={false}
                     uttakPerioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
+                    erPeriodeneTilAnnenPartLåst={false}
                 >
                     <div ref={kvoteOppsummeringRef}>
                         <KvoteOppsummering erInnsyn={false} visStatusIkoner />

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-import { Button, ErrorMessage, HStack, VStack } from '@navikt/ds-react';
+import { Alert, Button, ErrorMessage, HStack, VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
 import type { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
@@ -18,7 +18,10 @@ import {
     mapFraFormValuesTilUttakPeriode,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
+import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
+import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
+import { finnValgtePerioder } from './utils/kalenderPeriodeUtils';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
@@ -28,7 +31,11 @@ interface Props {
 }
 
 export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) => {
-    const { uttakPerioder } = useUttaksplanData();
+    const {
+        uttakPerioder,
+        foreldreInfo: { søker },
+        erPeriodeneTilAnnenPartLåst,
+    } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, setValgtePerioder, setEndredePerioder } =
         useKalenderRedigeringContext();
@@ -38,6 +45,8 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     const defaultValues = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
         uttakPerioder,
         sammenslåtteValgtePerioder[0]!,
+        erPeriodeneTilAnnenPartLåst,
+        søker,
     );
 
     const formMethods = useForm<LeggTilEllerEndrePeriodeFormFormValues>({
@@ -71,10 +80,22 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         formMethods.reset({ forelder });
     };
 
+    const uttakPerioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
+    const eksisterendePerioderSomErValgt = finnValgtePerioder(
+        sammenslåtteValgtePerioder,
+        uttakPerioderInkludertTapteDager,
+    );
+
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             <VStack gap="space-16">
                 {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
+
+                {harPeriodeDerMorsAktivitetIkkeErValgt(eksisterendePerioderSomErValgt) && (
+                    <Alert variant="warning" size="small">
+                        <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt" />
+                    </Alert>
+                )}
 
                 <LeggTilEllerEndrePeriodeFellesForm
                     valgtePerioder={sammenslåtteValgtePerioder}

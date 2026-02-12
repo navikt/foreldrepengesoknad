@@ -35,6 +35,7 @@ export type FormValues = {
 interface Props {
     erNyPeriodeModus: boolean;
     uttaksplanperiode?: Uttaksplanperiode;
+    harPeriodeDerMorsAktivitetIkkeErValgt: boolean;
     setIsLeggTilPeriodePanelOpen: (isOpen: boolean) => void;
     setValgtPeriodeIndex?: (valgtPeriodeIndex: number | undefined) => void;
 }
@@ -42,6 +43,7 @@ interface Props {
 export const LeggTilEllerEndrePeriodeListPanel = ({
     erNyPeriodeModus,
     uttaksplanperiode,
+    harPeriodeDerMorsAktivitetIkkeErValgt,
     setIsLeggTilPeriodePanelOpen,
     setValgtPeriodeIndex,
 }: Props) => {
@@ -51,6 +53,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         foreldreInfo: { søker },
         familiesituasjon,
         familiehendelsedato,
+        erPeriodeneTilAnnenPartLåst,
     } = useUttaksplanData();
 
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
@@ -60,7 +63,12 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const defaultValues = uttaksplanperiode
         ? leggTilDatoOgHvaVilDuGjøre(
               uttaksplanperiode,
-              lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(uttakPerioder, uttaksplanperiode),
+              lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
+                  uttakPerioder,
+                  uttaksplanperiode,
+                  erPeriodeneTilAnnenPartLåst,
+                  søker,
+              ),
           )
         : undefined;
 
@@ -174,7 +182,13 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                         <FormattedMessage id="RedigeringPanel.KanMisteDager" />
                     </Alert>
                 )}
-            {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
+
+            {harPeriodeDerMorsAktivitetIkkeErValgt && (
+                <Alert variant="warning" size="small">
+                    <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt" />
+                </Alert>
+            )}
+
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="space-32">
                     <RhfRadioGroup
@@ -213,6 +227,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                             resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}
                         />
                     )}
+                    {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
                     <HStack gap="space-8" justify="space-between">
                         <Button type="button" variant="secondary" onClick={() => setIsLeggTilPeriodePanelOpen(false)}>
                             <FormattedMessage id="uttaksplan.avbryt" />

@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { useFormContext } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, InlineMessage, Radio, VStack } from '@navikt/ds-react';
 
@@ -50,12 +50,13 @@ interface Props {
     resetFormValuesVedEndringAvForelder: (forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => void;
 }
 
-export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAvForelder, valgtePerioder }: Props) => {
+export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormValuesVedEndringAvForelder }: Props) => {
     const intl = useIntl();
 
     const {
-        foreldreInfo: { rettighetType, erMedmorDelAvSøknaden },
+        foreldreInfo: { rettighetType, erMedmorDelAvSøknaden, søker },
         familiehendelsedato,
+        erPeriodeneTilAnnenPartLåst,
     } = useUttaksplanData();
 
     const formMethods = useFormContext<LeggTilEllerEndrePeriodeFormFormValues>();
@@ -77,6 +78,14 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
         rettighetType !== 'ALENEOMSORG' &&
         (kontoTypeFarMedmor === 'FORELDREPENGER' || kontoTypeFarMedmor === 'FELLESPERIODE');
 
+    const skalViseMorsAktivitetskravVedSamtidigUttak = getSkalViseMorsAktivitetskravVedSamtidigUttak(
+        forelder,
+        samtidigUttaksprosentMor,
+        stillingsprosentMor,
+        samtidigUttaksprosentFarMedmor,
+        kontoTypeFarMedmor,
+    );
+
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(
         valgtePerioder,
         forelder === 'BEGGE',
@@ -95,6 +104,29 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
         );
     }
 
+    const resetStillingsprosentMor = () => {
+        if ((forelder === 'MOR' || forelder === 'BEGGE') && skalDuKombinereArbeidOgUttakMor === false) {
+            formMethods.resetField('stillingsprosentMor', undefined);
+        }
+    };
+
+    const resetStillingsprosentFarMedmor = () => {
+        if ((forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && skalDuKombinereArbeidOgUttakFarMedmor === false) {
+            formMethods.resetField('stillingsprosentFarMedmor', undefined);
+        }
+    };
+
+    const erFarMedmorLåst = erPeriodeneTilAnnenPartLåst && søker === 'MOR';
+    const erMorLåst = erPeriodeneTilAnnenPartLåst && søker === 'FAR_MEDMOR';
+
+    if ((erMorLåst && !erFarMedmorGyldigForelder) || (erFarMedmorLåst && !erMorGyldigForelder)) {
+        return (
+            <Alert variant="info">
+                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Forelder.AnnenPartLåst" />
+            </Alert>
+        );
+    }
+
     return (
         <>
             <RhfRadioGroup
@@ -106,12 +138,12 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
             >
                 {
                     [
-                        erMorGyldigForelder && (
+                        erMorGyldigForelder && !erMorLåst && (
                             <Radio key="mor" value="MOR">
                                 <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />
                             </Radio>
                         ),
-                        erFarMedmorGyldigForelder && (
+                        erFarMedmorGyldigForelder && !erFarMedmorLåst && (
                             <Radio key="far" value="FAR_MEDMOR">
                                 {erMedmorDelAvSøknaden ? (
                                     <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />
@@ -282,7 +314,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                 </VStack>
             )}
 
-            {erFarMedmorUtenAleneomsorg && (
+            {(erFarMedmorUtenAleneomsorg || skalViseMorsAktivitetskravVedSamtidigUttak) && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
                     <RhfSelect
@@ -292,27 +324,13 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                         validate={[isRequired(intl.formatMessage({ id: 'AktivitetskravSpørsmål.Påkrevd' }))]}
                         description={intl.formatMessage({ id: 'AktivitetskravSpørsmål.Description' })}
                     >
-                        <option value="ARBEID">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Arbeid'} />
-                        </option>
-                        <option value="UTDANNING">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Utdanning'} />
-                        </option>
-                        <option value="KVALPROG">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Kvalprog'} />
-                        </option>
-                        <option value="INTROPROG">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Introprog'} />
-                        </option>
-                        <option value="TRENGER_HJELP">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Trenger_hjelp'} />
-                        </option>
-                        <option value="INNLAGT">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Innlagt'} />
-                        </option>
-                        <option value="ARBEID_OG_UTDANNING">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Arbeid_og_utdanning'} />
-                        </option>
+                        {getAktivitetskravOptions(skalViseMorsAktivitetskravVedSamtidigUttak).map((value) => {
+                            return (
+                                <option key={value} value={value}>
+                                    {getAktivitetskravTekst(value, intl)}
+                                </option>
+                            );
+                        })}
                     </RhfSelect>
                 </>
             )}
@@ -357,6 +375,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                                     }),
                                 ),
                             ]}
+                            onChange={resetStillingsprosentMor}
                         >
                             <Radio value={true}>
                                 <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Ja" />
@@ -411,6 +430,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                                     ),
                                 ),
                             ]}
+                            onChange={resetStillingsprosentFarMedmor}
                         >
                             <Radio value={true}>
                                 <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Ja" />
@@ -439,6 +459,72 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
             )}
         </>
     );
+};
+
+const getAktivitetskravOptions = (skalViseMorsAktivitetskravVedSamtidigUttak: boolean) => {
+    const aktivitetsKrav = [
+        'ARBEID',
+        'UTDANNING',
+        'KVALPROG',
+        'INTROPROG',
+        'TRENGER_HJELP',
+        'INNLAGT',
+        'ARBEID_OG_UTDANNING',
+    ];
+
+    if (skalViseMorsAktivitetskravVedSamtidigUttak) {
+        return ['ARBEID', 'UTDANNING', 'KVALPROG', 'INTROPROG', 'ARBEID_OG_UTDANNING'];
+    }
+
+    return skalViseMorsAktivitetskravVedSamtidigUttak
+        ? aktivitetsKrav.filter((k) => k !== 'INNLAGT' && k !== 'TRENGER_HJELP')
+        : aktivitetsKrav;
+};
+
+const getAktivitetskravTekst = (value: string, intl: IntlShape) => {
+    switch (value) {
+        case 'ARBEID':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Arbeid' });
+        case 'UTDANNING':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Utdanning' });
+        case 'KVALPROG':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Kvalprog' });
+        case 'INTROPROG':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Introprog' });
+        case 'TRENGER_HJELP':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Trenger_hjelp' });
+        case 'INNLAGT':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Innlagt' });
+        case 'ARBEID_OG_UTDANNING':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Arbeid_og_utdanning' });
+        default:
+            return '';
+    }
+};
+
+const getSkalViseMorsAktivitetskravVedSamtidigUttak = (
+    forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined,
+    samtidigUttaksprosentMor?: string,
+    stillingsprosentMor?: string,
+    samtidigUttaksprosentFarMedmor?: string,
+    kontoTypeFarMedmor?: KontoTypeUttak,
+) => {
+    const morsSamtidigUttakprosent = forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentMor) ?? 0) : 0;
+    const morsStillingProsent = forelder === 'BEGGE' ? (getFloatFromString(stillingsprosentMor) ?? 0) : 0;
+    const morsTotaleProsent = morsSamtidigUttakprosent + morsStillingProsent;
+
+    const farMedmorsSamtidigUttakprosent =
+        forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentFarMedmor) ?? 0) : 0;
+    const kombinertUttaksprosent = morsSamtidigUttakprosent + farMedmorsSamtidigUttakprosent;
+
+    if (kombinertUttaksprosent !== 100) {
+        return false;
+    }
+
+    const skalViseMorsAktivitetskravVedSamtidigUttak =
+        forelder === 'BEGGE' && kontoTypeFarMedmor === 'FELLESPERIODE' && morsTotaleProsent < 100;
+
+    return skalViseMorsAktivitetskravVedSamtidigUttak;
 };
 
 export const mapFraFormValuesTilUttakPeriode = (
@@ -484,6 +570,8 @@ export const mapFraFormValuesTilUttakPeriode = (
 export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
     uttaksplanperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     valgtPeriode: { fom: string; tom: string },
+    erPeriodeneTilAnnenPartLåst: boolean,
+    søker: BrukerRolleSak_fpoversikt,
 ): LeggTilEllerEndrePeriodeFormFormValues | undefined => {
     const eksisterendePerioder = uttaksplanperioder.filter(
         (periode) =>
@@ -495,7 +583,8 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
         eksisterendePerioder.length === 0 ||
         eksisterendePerioder.length > 2 ||
         !eksisterendePerioder.every(erVanligUttakPeriode) ||
-        eksisterendePerioder.some((p) => p.utsettelseÅrsak === 'LOVBESTEMT_FERIE')
+        eksisterendePerioder.some((p) => p.utsettelseÅrsak === 'LOVBESTEMT_FERIE') ||
+        eksisterendePerioder.some((p) => erPeriodeneTilAnnenPartLåst && p.forelder !== søker)
     ) {
         return undefined;
     }

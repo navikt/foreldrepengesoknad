@@ -4,25 +4,21 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { UttakOverføringÅrsak_fpoversikt } from '@navikt/fp-types';
+import { UttakOverføringÅrsak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
 
-import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
+import { erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
 
 interface Props {
-    periode: Uttaksplanperiode;
+    periode: UttakPeriode_fpoversikt;
     inneholderKunEnPeriode: boolean;
     navnPåForeldre: NavnPåForeldre;
 }
 
 export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre }: Props) => {
     const intl = useIntl();
-
-    if (!erVanligUttakPeriode(periode)) {
-        throw new Error('Her er perioden feilaktig eøs-uttak eller ett hull');
-    }
 
     const morsAktivitet = erVanligUttakPeriode(periode) && periode.morsAktivitet ? periode.morsAktivitet : undefined;
     const stønadskontoNavn = getStønadskontoNavn(

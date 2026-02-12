@@ -306,9 +306,7 @@ const KvoteTittel = ({
             : '';
 
     const navnPåAnnenForelder =
-        foreldreInfo.søker === 'FAR_ELLER_MEDMOR'
-            ? foreldreInfo.navnPåForeldre.mor
-            : foreldreInfo.navnPåForeldre.farMedmor;
+        foreldreInfo.søker === 'FAR_MEDMOR' ? foreldreInfo.navnPåForeldre.mor : foreldreInfo.navnPåForeldre.farMedmor;
 
     return (
         <TittelKomponent
@@ -443,7 +441,7 @@ const FellesKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const intl = useIntl();
     const { uttakPerioder, valgtStønadskonto, foreldreInfo } = useUttaksplanData();
 
-    const forelder = foreldreInfo.søker === 'FAR_ELLER_MEDMOR' ? 'FAR_MEDMOR' : 'MOR';
+    const forelder = foreldreInfo.søker;
     const fellesKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
 
     if (!fellesKonto) {
@@ -745,7 +743,7 @@ const FordelingSegment = ({
         );
     }
 
-    if (foreldreInfo.søker !== 'FAR_ELLER_MEDMOR') {
+    if (foreldreInfo.søker !== 'FAR_MEDMOR') {
         if (
             kontoType === 'MØDREKVOTE' ||
             kontoType === 'FORELDREPENGER_FØR_FØDSEL' ||

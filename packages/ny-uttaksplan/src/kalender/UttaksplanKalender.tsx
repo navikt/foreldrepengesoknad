@@ -132,6 +132,12 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                     </VStack>
                 )}
 
+                {perioderForKalendervisning.some((p) => p.isMarked) && (
+                    <Alert variant="warning">
+                        <FormattedMessage id="UttaksplanKalender.MarkertePerioder" />
+                    </Alert>
+                )}
+
                 {erRedigeringInaktiv && (
                     <div className="ax-md:pb-2 mb-4 flex flex-wrap" id="legend">
                         <UttaksplanLegend
@@ -227,7 +233,7 @@ const AvslåttePerioder = () => {
             isAvslåttPeriode(p) &&
             erVanligUttakPeriode(p) &&
             p.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER' &&
-            (foreldreInfo.søker === 'FAR_ELLER_MEDMOR' || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
+            (foreldreInfo.søker === 'FAR_MEDMOR' || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
     );
 
     return harAvslåttePerioderSomIkkeGirTapteDager ? (

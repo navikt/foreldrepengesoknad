@@ -1,15 +1,19 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import dayjs from 'dayjs';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { VedleggDataType } from 'types/VedleggDataType';
 import { getErMorUfør } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
+import { erIkkeEøsPeriode } from 'utils/uttaksplanInfoUtils';
 
 import { Alert, Radio, VStack } from '@navikt/ds-react';
 
 import { isAnnenForelderOppgitt, isIkkeUtfyltTypeBarn } from '@navikt/fp-common';
+import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import {
     Barn,
@@ -24,12 +28,28 @@ import { UttaksdagenString } from '@navikt/fp-utils';
 import { useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan-ny';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
+import { VilDuGåTilbakeModal } from './VilDuGåTilbakeModal';
+
+const NULLSTILTE_PERIODE_VEDLEGG: VedleggDataType = {
+    [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: [],
+    [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: [],
+    [Skjemanummer.DOK_SYKDOM_MOR]: [],
+    [Skjemanummer.DOK_SYKDOM_FAR]: [],
+    [Skjemanummer.DOK_INNLEGGELSE_BARN]: [],
+    [Skjemanummer.DOK_INNLEGGELSE_MOR]: [],
+    [Skjemanummer.DOK_INNLEGGELSE_FAR]: [],
+    [Skjemanummer.DOK_ARBEID_MOR]: [],
+    [Skjemanummer.DOK_UTDANNING_MOR]: [],
+    [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: [],
+};
+
 type FormValues = {
     ønskerJustertUttakVedFødsel?: boolean;
 };
 
 interface UttaksplanFormProps {
     søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    defaultUttaksperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
     setFeilmelding: (melding: string) => void;
@@ -38,6 +58,7 @@ interface UttaksplanFormProps {
 
 export const UttaksplanForm = ({
     søkerInfo,
+    defaultUttaksperioder,
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     setFeilmelding,
@@ -50,10 +71,13 @@ export const UttaksplanForm = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA_NY);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN_NY);
+    const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
 
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
     const oppdaterUttaksplanMetadata = useContextSaveData(ContextDataType.UTTAKSPLAN_METADATA_NY);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN_NY);
+    const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
 
@@ -91,8 +115,14 @@ export const UttaksplanForm = ({
         !bareFarHarRett;
 
     const onSubmit = (formValues: FormValues) => {
-        if (erAntallDagerOvertrukket) {
+        if (uttaksplan?.length === 0) {
+            setFeilmelding(intl.formatMessage({ id: 'UttaksplanSteg.IngenPerioder' }));
+            scrollToKvoteOppsummering();
+        } else if (erAntallDagerOvertrukket) {
             setFeilmelding(intl.formatMessage({ id: 'UttaksplanSteg.OvertrukketDager' }));
+            scrollToKvoteOppsummering();
+        } else if (harPeriodeDerMorsAktivitetIkkeErValgt(uttaksplan || defaultUttaksperioder)) {
+            setFeilmelding(intl.formatMessage({ id: 'UttaksplanSteg.MorsAktivitetIkkeValgt' }));
             scrollToKvoteOppsummering();
         } else {
             oppdaterUttaksplanMetadata({
@@ -100,13 +130,36 @@ export const UttaksplanForm = ({
                     ? formValues.ønskerJustertUttakVedFødsel
                     : undefined,
             });
+
+            if (!uttaksplan) {
+                oppdaterUttaksplan(defaultUttaksperioder);
+            }
+
             return navigator.goToNextDefaultStep();
         }
+    };
+
+    //TODO (TOR) TFP-6583 Fjern bruk av VilDuGåTilbakeModal og resett context i andre steg
+    const [gåTilbakeIsOpen, setGåTilbakeIsOpen] = useState(false);
+
+    const gåTilForrigeSteg = () => {
+        setGåTilbakeIsOpen(false);
+
+        oppdaterUttaksplanMetadata(undefined);
+        oppdaterUttaksplan(undefined);
+        oppdaterVedlegg({ ...vedlegg, ...NULLSTILTE_PERIODE_VEDLEGG });
+
+        navigator.goToPreviousDefaultStep();
     };
 
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             <VStack gap="space-24">
+                <VilDuGåTilbakeModal
+                    isOpen={gåTilbakeIsOpen}
+                    setIsOpen={setGåTilbakeIsOpen}
+                    goToPreviousStep={gåTilForrigeSteg}
+                />
                 {visAutomatiskJustering && (
                     <VStack gap="space-16">
                         <AutomatiskJusteringInfotekst harSvartJaPåAutoJustering={harSvartJaPåAutoJustering} />
@@ -130,7 +183,13 @@ export const UttaksplanForm = ({
                     </VStack>
                 )}
                 <StepButtonsHookForm
-                    goToPreviousStep={navigator.goToPreviousDefaultStep}
+                    goToPreviousStep={
+                        uttaksplan
+                            ? () => {
+                                  setGåTilbakeIsOpen(true);
+                              }
+                            : navigator.goToPreviousDefaultStep
+                    }
                     onAvsluttOgSlett={avbrytSøknad}
                     onFortsettSenere={navigator.fortsettSøknadSenere}
                 />
@@ -267,4 +326,17 @@ const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
         const tom = dayjs(periode.tom);
         return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
     });
+};
+
+const harPeriodeDerMorsAktivitetIkkeErValgt = (
+    perioder?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+) => {
+    return perioder?.some(
+        (periode) =>
+            erIkkeEøsPeriode(periode) &&
+            periode.forelder === 'FAR_MEDMOR' &&
+            periode.kontoType === 'FELLESPERIODE' &&
+            periode.flerbarnsdager === undefined &&
+            periode.morsAktivitet === undefined,
+    );
 };
