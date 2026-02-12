@@ -8,6 +8,7 @@ import * as stories from './UttaksplanListe.stories';
 const {
     Default,
     MorOgMedmor,
+    FarSøkerEtterAtMorHarSøkt,
     MorOgFarMedFerieopphold,
     HullperiodeOverFamiliehendelsesdato,
     VisPerioderMedOppholdsårsakKorrekt,
@@ -423,5 +424,36 @@ describe('UttaksplanListe', () => {
         expect(screen.getByText('Mor er i arbeid')).toBeInTheDocument();
 
         expect(screen.queryByText('Du må velge mors aktivitet før du går videre')).not.toBeInTheDocument();
+    });
+
+    it('Skal kunne slette og endre alle perioder bortsett fra periodene til annen part', async () => {
+        render(<FarSøkerEtterAtMorHarSøkt />);
+        expect(await screen.findAllByText('Hanne har foreldrepenger')).toHaveLength(6);
+        expect(screen.getAllByText('Endre')).toHaveLength(3);
+        expect(screen.queryByText('Slett')).not.toBeInTheDocument();
+    });
+
+    it('Skal ikke kunne legge til annen part som forelder når en legger til ny periode', async () => {
+        render(<FarSøkerEtterAtMorHarSøkt />);
+
+        expect(await screen.findByText('14. Mar - 03. Apr')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Legg til periode'));
+
+        expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
+
+        expect(await screen.findByText('Hvilke datoer skal perioden være?')).toBeInTheDocument();
+        const fraOgMedDato = screen.getByLabelText('Fra og med dato');
+        await userEvent.type(fraOgMedDato, dayjs('2025-06-30').format('DD.MM.YYYY'));
+        await userEvent.tab();
+        const tilOgMedDato = screen.getByLabelText('Til og med dato');
+        await userEvent.type(tilOgMedDato, dayjs('2025-08-28').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        expect(screen.getByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
+        expect(screen.queryByText('Mor')).not.toBeInTheDocument();
+        expect(screen.getByText('Far')).toBeInTheDocument();
+        expect(screen.getByText('Begge')).toBeInTheDocument();
     });
 });

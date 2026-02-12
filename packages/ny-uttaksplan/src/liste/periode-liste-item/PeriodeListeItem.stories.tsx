@@ -50,7 +50,7 @@ const customRenderer = ({ erFarEllerMedmor, uttaksplanperioder, erAleneOmOmsorg,
         <UttaksplanDataProvider
             foreldreInfo={{
                 rettighetType: erAleneOmOmsorg ? 'ALENEOMSORG' : 'BEGGE_RETT',
-                søker: erFarEllerMedmor ? 'FAR_ELLER_MEDMOR' : 'MOR',
+                søker: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
                 navnPåForeldre: {
                     farMedmor: 'Far',
                     mor: 'Mor',
@@ -61,6 +61,7 @@ const customRenderer = ({ erFarEllerMedmor, uttaksplanperioder, erAleneOmOmsorg,
             valgtStønadskonto={kontoNårBeggeHarRett}
             harAktivitetskravIPeriodeUtenUttak={false}
             uttakPerioder={[]}
+            erPeriodeneTilAnnenPartLåst={false}
         >
             <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
                 <Accordion>

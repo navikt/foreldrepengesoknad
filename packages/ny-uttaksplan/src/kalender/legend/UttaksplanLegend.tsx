@@ -7,11 +7,10 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, Tooltip, VStack } from '@navikt/ds-react';
 
-import { Barn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
+import { Barn, BrukerRolleSak_fpoversikt, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { CalendarLabel, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { Søker } from '../../types/ForeldreInfo';
 import { LegendLabel } from '../../types/LegendLabel';
 import { UttaksplanperiodeMedKunTapteDager, erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
@@ -56,13 +55,10 @@ export const UttaksplanLegend = ({
 
     const saksperioderInkludertHull = useAlleUttakPerioderInklTapteDager();
 
-    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(
-        saksperioderInkludertHull,
-        søker === 'FAR_ELLER_MEDMOR',
-    );
+    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(saksperioderInkludertHull, søker === 'FAR_MEDMOR');
 
     const unikePeriodeLabelsMedFarge = unikePerioder.reduce<UttaksplanKalenderLegendInfo[]>((acc, periode) => {
-        const label = getLegendLabelFromPeriode(periode, barn, søker === 'FAR_ELLER_MEDMOR');
+        const label = getLegendLabelFromPeriode(periode, barn, søker === 'FAR_MEDMOR');
 
         if (!label) {
             return acc;
@@ -156,9 +152,9 @@ export const UttaksplanLegend = ({
     );
 };
 
-const utledForelder = (periode: UttaksplanperiodeMedKunTapteDager, søker: Søker) => {
+const utledForelder = (periode: UttaksplanperiodeMedKunTapteDager, søker: BrukerRolleSak_fpoversikt) => {
     if (erEøsUttakPeriode(periode)) {
-        return søker === 'FAR_ELLER_MEDMOR' ? 'FAR_MEDMOR' : 'MOR';
+        return søker;
     }
     return periode.forelder;
 };
@@ -200,7 +196,7 @@ const LabelButtonMedEllerUtenToolip = ({
 
     const harAktivitetsfriKvote = valgtStønadskonto.kontoer.some((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
 
-    const erFarEllerMedmor = søker === 'FAR_ELLER_MEDMOR';
+    const erFarEllerMedmor = søker === 'FAR_MEDMOR';
     const navnAnnenPart = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     const label = getCalendarLabel(

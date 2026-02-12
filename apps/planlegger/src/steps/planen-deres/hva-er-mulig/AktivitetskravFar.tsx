@@ -1,16 +1,16 @@
-import { Buildings3Icon } from '@navikt/aksel-icons';
+import { BabyWrappedIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
-export const JobbeSamtidig = () => {
+export const AktivitetskravFar = () => {
     return (
         <HStack gap="space-20" wrap={false}>
             <div>
                 <IconCircleWrapper color="lightBlue" size="medium">
-                    <Buildings3Icon
+                    <BabyWrappedIcon
                         height={22}
                         width={22}
                         fontSize="1.5rem"
@@ -20,11 +20,11 @@ export const JobbeSamtidig = () => {
                 </IconCircleWrapper>
             </div>
             <div>
-                <Heading size="small">
-                    <FormattedMessage id="HvaErMulig.JobbeSamtidig" />
+                <Heading size="small" level="4">
+                    <FormattedMessage id="HvaErMulig.AktivitetskravTilFar" />
                 </Heading>
                 <BodyLong>
-                    <FormattedMessage id="HvaErMulig.ManKanJobbeSamtidig" />
+                    <FormattedMessage id="HvaErMulig.AktivitetskravTilFar.Tekst" />
                 </BodyLong>
             </div>
         </HStack>

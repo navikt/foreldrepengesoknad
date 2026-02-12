@@ -58,7 +58,7 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                                     `${getStønadskontoNavn(
                                         intl,
                                         navnPåForeldre,
-                                        søker === 'FAR_ELLER_MEDMOR',
+                                        søker === 'FAR_MEDMOR',
                                         morsAktivitet,
                                         erVanligUttakPeriode(p) ? p.kontoType : undefined,
                                     )}`}

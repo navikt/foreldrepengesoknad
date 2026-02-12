@@ -1,12 +1,11 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-import { Barn } from '@navikt/fp-types';
+import { Barn, BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { getFamiliehendelsedato, getLocaleFromSessionStorage, getNavnGenitivEierform } from '@navikt/fp-utils';
 import { assertUnreachable } from '@navikt/fp-validation';
 
-import { Søker } from '../../types/ForeldreInfo';
 import { LegendLabel } from '../../types/LegendLabel';
 import {
     UttaksplanperiodeMedKunTapteDager,
@@ -99,13 +98,12 @@ export const getCalendarLabel = (
     navnAnnenPart: string,
     erMedmorDelAvSøknaden: boolean,
     harAktivitetsfriKvote: boolean,
-    søker: Søker,
+    søker: BrukerRolleSak_fpoversikt,
     erIkkeSøkerSpesifisert: boolean,
     intl: IntlShape,
 ): string => {
     const erSøkersPeriode =
-        (søker === 'MOR' && info.forelder === 'MOR') ||
-        (søker === 'FAR_ELLER_MEDMOR' && info.forelder === 'FAR_MEDMOR');
+        (søker === 'MOR' && info.forelder === 'MOR') || (søker === 'FAR_MEDMOR' && info.forelder === 'FAR_MEDMOR');
     switch (info.label) {
         case 'HELG':
             return intl.formatMessage({ id: 'kalender.helg' });

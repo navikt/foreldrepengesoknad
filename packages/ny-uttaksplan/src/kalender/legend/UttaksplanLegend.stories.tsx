@@ -37,6 +37,7 @@ const meta = {
                 valgtStønadskonto={args.valgtStønadskonto}
                 harAktivitetskravIPeriodeUtenUttak={false}
                 uttakPerioder={args.uttakPerioder}
+                erPeriodeneTilAnnenPartLåst={false}
             >
                 <UttaksplanLegend
                     perioderForKalendervisning={args.perioderForKalendervisning}
@@ -174,6 +175,7 @@ export const VisAlleMedTekst: Story = {
         },
         harAktivitetskravIPeriodeUtenUttak: false,
         readOnly: false,
+        erPeriodeneTilAnnenPartLåst: false,
     },
 };
 export const VisAlleUtenTekst: Story = {

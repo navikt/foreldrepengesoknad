@@ -115,7 +115,8 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
     const farOgFarKunEnPartHarRett =
         hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR &&
         (hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett');
-
+    const farOgFarBeggeHarRett =
+        hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && hvemHarRett === 'beggeHarRett';
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
             <VStack gap="space-24">
@@ -126,7 +127,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                 <UttaksplanDataProvider
                     barn={mapOmBarnetTilBarn(omBarnet)}
                     foreldreInfo={{
-                        søker: erFarEllerMedmor ? 'FAR_ELLER_MEDMOR' : 'MOR',
+                        søker: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
                         navnPåForeldre,
                         rettighetType: utledRettighet(erAleneOmOmsorg, erDeltUttak),
                         erMedmorDelAvSøknaden: isMedmorDelAvSøknaden,
@@ -135,6 +136,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     valgtStønadskonto={valgtStønadskonto}
                     harAktivitetskravIPeriodeUtenUttak={false}
                     uttakPerioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
+                    erPeriodeneTilAnnenPartLåst={false}
                 >
                     <div ref={kvoteOppsummeringRef}>
                         <KvoteOppsummering erInnsyn={false} visStatusIkoner />
@@ -143,6 +145,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     <DereKanTilpassePlanenInfoBox erAleneforsørger={erAleneOmOmsorg} />
 
                     {farOgFarKunEnPartHarRett && omBarnet.erFødsel && <FarOgFarKunEnPartHarRettInfoBox />}
+                    {farOgFarBeggeHarRett && omBarnet.erFødsel && <FarOgFarBeggeHarRettInfoBox />}
 
                     <HvaErMulig hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} barnet={omBarnet} />
 
@@ -227,6 +230,24 @@ const FarOgFarKunEnPartHarRettInfoBox = () => (
             </BodyShort>
             <BodyShort>
                 <FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.HvisDetErStebarnsadopsjon" />
+            </BodyShort>
+        </div>
+    </Infobox>
+);
+const FarOgFarBeggeHarRettInfoBox = () => (
+    <Infobox
+        header={<FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.BeggeHarRett.DereHarOppgitt" />}
+        icon={
+            <PersonGroupIcon height={24} width={24} fontSize="1.5rem" color="var(--ax-bg-accent-strong)" aria-hidden />
+        }
+        color="green"
+    >
+        <div>
+            <BodyShort>
+                <FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.DenSomErBiologisk" />
+            </BodyShort>
+            <BodyShort>
+                <FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.BeggeHarRett.BiologiskFar" />
             </BodyShort>
         </div>
     </Infobox>

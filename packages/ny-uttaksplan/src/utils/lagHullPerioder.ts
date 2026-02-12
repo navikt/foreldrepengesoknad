@@ -57,7 +57,7 @@ export const lagTapteDagerPerioder = (
     foreldreInfo: ForeldreInfo,
 ): TapteDagerHull[] => {
     if (
-        foreldreInfo.søker === 'FAR_ELLER_MEDMOR' &&
+        foreldreInfo.søker === 'FAR_MEDMOR' &&
         (foreldreInfo.rettighetType === 'ALENEOMSORG' || foreldreInfo.rettighetType === 'BARE_SØKER_RETT')
     ) {
         const førstePeriodeSomStarterEtterFamiliehendelsedato = sortertePerioder.find((p) =>

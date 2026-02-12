@@ -55,8 +55,9 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     const intl = useIntl();
 
     const {
-        foreldreInfo: { rettighetType, erMedmorDelAvSøknaden },
+        foreldreInfo: { rettighetType, erMedmorDelAvSøknaden, søker },
         familiehendelsedato,
+        erPeriodeneTilAnnenPartLåst,
         uttakPerioder,
     } = useUttaksplanData();
 
@@ -125,6 +126,17 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         }
     };
 
+    const erFarMedmorLåst = erPeriodeneTilAnnenPartLåst && søker === 'MOR';
+    const erMorLåst = erPeriodeneTilAnnenPartLåst && søker === 'FAR_MEDMOR';
+
+    if ((erMorLåst && !erFarMedmorGyldigForelder) || (erFarMedmorLåst && !erMorGyldigForelder)) {
+        return (
+            <Alert variant="info">
+                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Forelder.AnnenPartLåst" />
+            </Alert>
+        );
+    }
+
     return (
         <>
             <RhfRadioGroup
@@ -136,12 +148,12 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
             >
                 {
                     [
-                        erMorGyldigForelder && (
+                        erMorGyldigForelder && !erMorLåst && (
                             <Radio key="mor" value="MOR">
                                 <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />
                             </Radio>
                         ),
-                        erFarMedmorGyldigForelder && (
+                        erFarMedmorGyldigForelder && !erFarMedmorLåst && (
                             <Radio key="far" value="FAR_MEDMOR">
                                 {erMedmorDelAvSøknaden ? (
                                     <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />
@@ -574,6 +586,8 @@ export const mapFraFormValuesTilUttakPeriode = (
 export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
     uttaksplanperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     valgtPeriode: { fom: string; tom: string },
+    erPeriodeneTilAnnenPartLåst: boolean,
+    søker: BrukerRolleSak_fpoversikt,
 ): LeggTilEllerEndrePeriodeFormFormValues | undefined => {
     const eksisterendePerioder = uttaksplanperioder.filter(
         (periode) =>
@@ -585,7 +599,8 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
         eksisterendePerioder.length === 0 ||
         eksisterendePerioder.length > 2 ||
         !eksisterendePerioder.every(erVanligUttakPeriode) ||
-        eksisterendePerioder.some((p) => p.utsettelseÅrsak === 'LOVBESTEMT_FERIE')
+        eksisterendePerioder.some((p) => p.utsettelseÅrsak === 'LOVBESTEMT_FERIE') ||
+        eksisterendePerioder.some((p) => erPeriodeneTilAnnenPartLåst && p.forelder !== søker)
     ) {
         return undefined;
     }

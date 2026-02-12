@@ -3,13 +3,7 @@ import { ReactNode } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import {
-    erAlenesøker,
-    erFarDelAvSøknaden,
-    erFarOgFar,
-    erMorDelAvSøknaden,
-    finnSøker2Tekst,
-} from 'utils/HvemPlanleggerUtils';
+import { erFarDelAvSøknaden, erFarOgFar, erMorDelAvSøknaden, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 import { harKunFarSøker1Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, HStack, Heading, VStack } from '@navikt/ds-react';
@@ -24,6 +18,8 @@ interface Props {
 
 export const DetteKanIkkeEndres = ({ hvemPlanlegger, arbeidssituasjon }: Props) => {
     const intl = useIntl();
+    const erAleneforsørger = utledHvemSomHarRett(arbeidssituasjon) !== 'beggeHarRett';
+    const erMedmor = hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
     const erFar = erFarDelAvSøknaden(hvemPlanlegger);
     const erFedre = erFarOgFar(hvemPlanlegger);
     const hvem = finnSøker2Tekst(intl, hvemPlanlegger);
@@ -53,33 +49,34 @@ export const DetteKanIkkeEndres = ({ hvemPlanlegger, arbeidssituasjon }: Props) 
                     {!erFedre &&
                         hvemHarRett !== 'kunSøker2HarRett' &&
                         hvemPlanlegger.type !== HvemPlanleggerType.FAR && (
-                            <>
-                                {erAlenesøker(hvemPlanlegger) && erMorDelAvSøknaden(hvemPlanlegger) ? (
-                                    <BodyLong>
-                                        <FormattedMessage
-                                            id="HvaErMulig.TreUkerFørTermin.Alenemor"
-                                            values={{ b: bTag }}
-                                        />
-                                    </BodyLong>
-                                ) : (
-                                    <BodyLong>
-                                        <FormattedMessage id="HvaErMulig.TreUkerFørTermin" values={{ b: bTag }} />
-                                    </BodyLong>
-                                )}
-                            </>
+                            <BodyLong>
+                                <FormattedMessage
+                                    id="HvaErMulig.TreUkerFørTermin"
+                                    values={{ b: bTag, erAleneforsørger }}
+                                />
+                            </BodyLong>
                         )}
                     {(hvemHarRett === 'beggeHarRett' ||
                         harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger) ||
+                        (erAleneforsørger && erMorDelAvSøknaden(hvemPlanlegger)) ||
                         hvemHarRett === 'kunSøker2HarRett') && (
                         <BodyLong>
-                            <FormattedMessage id="HvaErMulig.SeksUkerEtterFødsel" values={{ b: bTag }} />
                             {morHarRett && !erFedre && (
-                                <FormattedMessage id="HvaErMulig.SeksUkerEtterFødsel.DeFørsteUkene" />
+                                <>
+                                    <FormattedMessage id="HvaErMulig.SeksUkerEtterFødsel" values={{ b: bTag }} />
+
+                                    <FormattedMessage
+                                        id="HvaErMulig.SeksUkerEtterFødsel.DeFørsteUkene"
+                                        values={{ erAleneforsørger, erMedmor }}
+                                    />
+                                </>
                             )}
-                            <FormattedMessage
-                                id="HvaErMulig.SeksUkerEtterFødsel.OfteFårFedre"
-                                values={{ erFar, hvem }}
-                            />
+                            {!erAleneforsørger && (
+                                <FormattedMessage
+                                    id="HvaErMulig.SeksUkerEtterFødsel.OfteFårFedre"
+                                    values={{ erFar, hvem }}
+                                />
+                            )}
                         </BodyLong>
                     )}
                 </VStack>

@@ -53,6 +53,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         foreldreInfo: { søker },
         familiesituasjon,
         familiehendelsedato,
+        erPeriodeneTilAnnenPartLåst,
     } = useUttaksplanData();
 
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
@@ -62,7 +63,12 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const defaultValues = uttaksplanperiode
         ? leggTilDatoOgHvaVilDuGjøre(
               uttaksplanperiode,
-              lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(uttakPerioder, uttaksplanperiode),
+              lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
+                  uttakPerioder,
+                  uttaksplanperiode,
+                  erPeriodeneTilAnnenPartLåst,
+                  søker,
+              ),
           )
         : undefined;
 

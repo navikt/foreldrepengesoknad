@@ -31,7 +31,11 @@ interface Props {
 }
 
 export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) => {
-    const { uttakPerioder } = useUttaksplanData();
+    const {
+        uttakPerioder,
+        foreldreInfo: { søker },
+        erPeriodeneTilAnnenPartLåst,
+    } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, setValgtePerioder, setEndredePerioder } =
         useKalenderRedigeringContext();
@@ -41,6 +45,8 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     const defaultValues = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
         uttakPerioder,
         sammenslåtteValgtePerioder[0]!,
+        erPeriodeneTilAnnenPartLåst,
+        søker,
     );
 
     const formMethods = useForm<LeggTilEllerEndrePeriodeFormFormValues>({
