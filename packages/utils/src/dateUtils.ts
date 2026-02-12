@@ -111,6 +111,10 @@ export const erMyndig = (fødselsdato: DateTypes): boolean => {
     return now.diff(momentDate, 'years') >= 18;
 };
 
+export const erUnder25År = (fødselsdato: DateTypes): boolean => {
+    return dayjs().diff(dayjs(fødselsdato), 'year') < 25;
+};
+
 export const dateIsSameOrBefore = (date: Date | undefined, otherDate: Date | undefined): boolean => {
     if (date && otherDate) {
         return dayjs(date).isSameOrBefore(otherDate, 'day');

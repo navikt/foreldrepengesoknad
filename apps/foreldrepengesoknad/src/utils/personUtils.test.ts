@@ -2,11 +2,11 @@ import { createIntl, createIntlCache } from 'react-intl';
 
 import { AnnenForelder } from '@navikt/fp-common';
 import { PersonDto_fpoversikt } from '@navikt/fp-types';
+import { erUnder25År } from '@navikt/fp-utils';
 import { getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import messages from '../intl/nb_NO.json';
 import {
-    erUnder25År,
     formaterNavn,
     getErSøkerFarEllerMedmor,
     getKjønnFromFnr,
@@ -164,20 +164,14 @@ describe('personUtils', () => {
     });
 
     it('skal returnere true når person er under 25 år', () => {
-        const currentYear = new Date().getFullYear();
-        const fødselsdato = `${currentYear - 24}-01-01`;
-        expect(erUnder25År(fødselsdato)).toBe(true);
+        expect(erUnder25År('2010-01-01')).toBe(true);
     });
 
     it('skal returnere false når person er 25 år eller eldre', () => {
-        const currentYear = new Date().getFullYear();
-        const fødselsdato = `${currentYear - 25}-01-01`;
-        expect(erUnder25År(fødselsdato)).toBe(false);
+        expect(erUnder25År('1999-01-01')).toBe(false);
     });
 
     it('skal returnere false når person er over 25 år', () => {
-        const currentYear = new Date().getFullYear();
-        const fødselsdato = `${currentYear - 30}-01-01`;
-        expect(erUnder25År(fødselsdato)).toBe(false);
+        expect(erUnder25År('1990-01-01')).toBe(false);
     });
 });

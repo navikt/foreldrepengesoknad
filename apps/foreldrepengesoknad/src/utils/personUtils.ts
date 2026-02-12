@@ -100,7 +100,3 @@ export const getErSøkerFarEllerMedmor = (søkerRolle: Søkerrolle): boolean =>
 export const erEldreEnn3ÅrOg3Måneder = (fødselsdato: string) => {
     return dayjs(fødselsdato).add(3, 'year').add(3, 'month').isBefore(dayjs(), 'day');
 };
-
-export const erUnder25År = (fødselsdato: string) => {
-    return dayjs().diff(dayjs(fødselsdato), 'year') < 25;
-};

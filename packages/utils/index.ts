@@ -68,6 +68,7 @@ export {
     isDateAAfterDateB,
     isDateASameOrBeforeDateB,
     erMyndig,
+    erUnder25År,
     halvannetÅrSiden,
     etÅrSiden,
     enMånedSiden,

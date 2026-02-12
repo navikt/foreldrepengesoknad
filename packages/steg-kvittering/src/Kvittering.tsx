@@ -1,15 +1,11 @@
 import { CheckmarkCircleFillIcon, ChevronRightIcon } from '@navikt/aksel-icons';
-import dayjs from 'dayjs';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, HStack, Heading, Loader, VStack } from '@navikt/ds-react';
 
 import { ForsendelseStatus, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
-
-const erUnder25År = (fødselsdato: string) => {
-    return dayjs().diff(dayjs(fødselsdato), 'year') < 25;
-};
+import { erUnder25År } from '@navikt/fp-utils';
 
 const skalViseYngreMannMelding = (søkerinfo?: PersonMedArbeidsforholdDto_fpoversikt, erEndringssøknad?: boolean) => {
     if (!søkerinfo || !erEndringssøknad) {
