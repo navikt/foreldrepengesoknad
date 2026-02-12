@@ -14,7 +14,7 @@ describe('<BeregningPage>', () => {
             setHandlers(BeregningDelvisRefusjon.parameters.msw);
             render(<BeregningDelvisRefusjon />);
 
-            expect(await screen.findByText('Beregning av din ytelse')).toBeInTheDocument();
+            expect(await screen.findByText('Beregning av foreldrepenger')).toBeInTheDocument();
             expect(await screen.findByText('Dagsats: 3 004 kr')).toBeInTheDocument();
 
             (await screen.findByText('Beregning av foreldrepenger')).click();
@@ -24,13 +24,17 @@ describe('<BeregningPage>', () => {
 
             expect(await screen.findByText('Utbetalingsplan')).toBeInTheDocument();
             const januarExpansionCard = await screen.findByTestId('expansioncard-Januar');
-            expect(within(januarExpansionCard).getByText('Utbetales direkte til deg: 39 368 kr')).toBeInTheDocument();
-            expect(within(januarExpansionCard).getByText('Utbetales til arbeidsgiver: 2 688 kr')).toBeInTheDocument();
+            expect(
+                within(januarExpansionCard).getByText('Vi utbetaler direkte til deg: 39 368 kr'),
+            ).toBeInTheDocument();
+            expect(
+                within(januarExpansionCard).getByText('Vi utbetaler til arbeidsgiver: 2 688 kr'),
+            ).toBeInTheDocument();
 
             expect(await screen.findByText('Feriepenger')).toBeInTheDocument();
             expect(await screen.findByText('Opptjent i 2026')).toBeInTheDocument();
-            expect(await screen.findByText('10 594 kr som vi betaler til deg')).toBeInTheDocument();
-            expect(await screen.findByText('1 175 kr som vi betaler til arbeidsgiveren din')).toBeInTheDocument();
+            expect(await screen.findByText('10 594 kr som vi betaler til deg.')).toBeInTheDocument();
+            expect(await screen.findByText('1 175 kr som vi betaler til arbeidsgiveren din.')).toBeInTheDocument();
             expect(
                 await screen.findByText(
                     'Vi utbetaler direkte til deg innen utgangen av mai 2027 og litt senere til arbeidsgiveren din',
@@ -45,24 +49,30 @@ describe('<BeregningPage>', () => {
             setHandlers(BeregningDirekteUtbetaling.parameters.msw);
             render(<BeregningDirekteUtbetaling />);
 
-            expect(await screen.findByText('Nav har fastsatt årsinntekten din til: 960 000 kr')).toBeInTheDocument();
+            expect(
+                await screen.findByText('Nav har fastsatt årsinntekten din til', { exact: false }),
+            ).toBeInTheDocument();
+            expect(await screen.findByText('960 000 kr', { exact: false })).toBeInTheDocument();
+
             expect(
                 await screen.findByText('Nav kompenserer deg ikke for inntekt over: 780 960 kr (6G)'),
             ).toBeInTheDocument();
 
             expect(await screen.findByText('Utbetalingsplan')).toBeInTheDocument();
             const januarExpansionCard = await screen.findByTestId('expansioncard-November');
-            expect(within(januarExpansionCard).getByText('Utbetales direkte til deg: 39 052 kr')).toBeInTheDocument();
+            expect(
+                within(januarExpansionCard).getByText('Vi utbetaler direkte til deg: 39 052 kr'),
+            ).toBeInTheDocument();
 
             expect(await screen.findByText('Feriepenger')).toBeInTheDocument();
             expect(await screen.findByText('Opptjent i 2025')).toBeInTheDocument();
-            expect(await screen.findByText('11 030 kr som vi betaler til deg')).toBeInTheDocument();
+            expect(await screen.findByText('11 030 kr som vi betaler til deg.')).toBeInTheDocument();
             expect(
                 await screen.findByText('Vi utbetaler direkte til deg innen utgangen av mai 2026.'),
             ).toBeInTheDocument();
 
             expect(await screen.findByText('Opptjent i 2025')).toBeInTheDocument();
-            expect(await screen.findByText('7 354 kr som vi betaler til deg')).toBeInTheDocument();
+            expect(await screen.findByText('7 354 kr som vi betaler til deg.')).toBeInTheDocument();
             expect(
                 await screen.findByText('Vi utbetaler direkte til deg innen utgangen av mai 2027.'),
             ).toBeInTheDocument();
