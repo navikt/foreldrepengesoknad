@@ -36,13 +36,13 @@ export const NyttBarnFørTreÅr = ({ arbeidssituasjon, hvemPlanlegger }: Props) 
             <div>
                 <Heading size="small" level="4">
                     <FormattedMessage
-                        id="UforutsetteEndringer.UforutsetteEndringer.HvisManFårNyttBarnFørTreÅr"
+                        id="UforutsetteEndringer.UforutsetteEndringer.HvisDuFårNyttBarnFørTreÅr"
                         values={{ erAleneforsørger: erAleneOmOmsorg }}
                     />
                 </Heading>
                 <BodyLong>
                     <FormattedMessage
-                        id="UforutsetteEndringer.UforutsetteEndringer.HvisManFårNyttBarnFørTreÅr.Tekst"
+                        id="UforutsetteEndringer.UforutsetteEndringer.HvisDuFårNyttBarnFørTreÅr.Tekst"
                         values={{ erAleneforsørger: kunEnPartSkalHa }}
                     />
                 </BodyLong>

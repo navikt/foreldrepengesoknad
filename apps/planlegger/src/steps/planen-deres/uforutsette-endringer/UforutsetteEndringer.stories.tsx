@@ -11,8 +11,10 @@ type StoryArgs = ComponentProps<typeof UforutsetteEndringer>;
 const meta = {
     title: 'steg/PlanenDeresSteg/components/UforutsetteEndringer',
     component: UforutsetteEndringer,
-    render: ({ hvemPlanlegger, arbeidssituasjon }) => {
-        return <UforutsetteEndringer arbeidssituasjon={arbeidssituasjon} hvemPlanlegger={hvemPlanlegger} />;
+    render: ({ hvemPlanlegger, arbeidssituasjon, barnet }) => {
+        return (
+            <UforutsetteEndringer arbeidssituasjon={arbeidssituasjon} hvemPlanlegger={hvemPlanlegger} barnet={barnet} />
+        );
     },
 } satisfies Meta<StoryArgs>;
 export default meta;
@@ -30,6 +32,33 @@ export const AdopsjonMorOgFarBeggeHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
+        barnet: {
+            antallBarn: '1',
+            overtakelsesdato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: false,
+            erBarnetFødt: true,
+        },
+    },
+};
+export const AdopsjonMorOgFarKunMorHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            type: HvemPlanleggerType.MOR_OG_FAR,
+            navnPåMor: 'Mor',
+            navnPåFar: 'Far',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: false,
+        },
+        barnet: {
+            antallBarn: '1',
+            overtakelsesdato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: false,
+            erBarnetFødt: true,
+        },
     },
 };
 export const FødselMorOgFarBeggeHarRett: Story = {
@@ -42,6 +71,13 @@ export const FødselMorOgFarBeggeHarRett: Story = {
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
+        },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
         },
     },
 };
@@ -56,6 +92,13 @@ export const FødselMorOgFarKunMorHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
+        },
     },
 };
 export const FødselMorOgFarKunFarHarRett: Story = {
@@ -68,6 +111,13 @@ export const FødselMorOgFarKunFarHarRett: Story = {
         arbeidssituasjon: {
             status: Arbeidsstatus.INGEN,
             jobberAnnenPart: true,
+        },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
         },
     },
 };
@@ -82,6 +132,13 @@ export const FødselMorOgMedmorBeggeHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
+        },
     },
 };
 export const FødselMorOgMedmorKunMorHarRett: Story = {
@@ -94,6 +151,13 @@ export const FødselMorOgMedmorKunMorHarRett: Story = {
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
+        },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
         },
     },
 };
@@ -108,6 +172,13 @@ export const FødselMorOgMedmorKunMedmorHarRett: Story = {
             status: Arbeidsstatus.INGEN,
             jobberAnnenPart: true,
         },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
+        },
     },
 };
 export const FødselFarOgFarBeggeHarRett: Story = {
@@ -120,6 +191,13 @@ export const FødselFarOgFarBeggeHarRett: Story = {
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
+        },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
         },
     },
 };
@@ -134,6 +212,13 @@ export const FødselFarOgFarKunFarHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
+        },
     },
 };
 export const FødselFarOgFarKunMedfarHarRett: Story = {
@@ -147,6 +232,13 @@ export const FødselFarOgFarKunMedfarHarRett: Story = {
             status: Arbeidsstatus.INGEN,
             jobberAnnenPart: true,
         },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
+        },
     },
 };
 export const FødselMorAleneomsorg: Story = {
@@ -158,6 +250,13 @@ export const FødselMorAleneomsorg: Story = {
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
         },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
+        },
     },
 };
 export const FødselFarAleneomsorg: Story = {
@@ -168,6 +267,13 @@ export const FødselFarAleneomsorg: Story = {
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
+        },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
         },
     },
 };
