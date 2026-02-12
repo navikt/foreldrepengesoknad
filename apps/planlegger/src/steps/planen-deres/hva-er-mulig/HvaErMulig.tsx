@@ -49,7 +49,6 @@ export const HvaErMulig = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) 
             aria-label="Expansion card"
             onToggle={loggExpansionCardOpen('toggle-tilpasse-planen')}
             size="small"
-            defaultOpen={true}
         >
             <ExpansionCard.Header>
                 <HStack gap="space-24" align="center" wrap={false}>
