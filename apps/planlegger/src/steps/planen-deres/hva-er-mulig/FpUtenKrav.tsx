@@ -1,15 +1,19 @@
 import { PersonGroupIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
+import { HvemPlanleggerType } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 interface Props {
-    erAdopsjon?: boolean;
+    hvemPlanlegger: HvemPlanlegger;
 }
 
-export const PermisjonSamtidig = ({ erAdopsjon = false }: Props) => {
+export const FpUtenKrav = ({ hvemPlanlegger }: Props) => {
+    const erMedmor = hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
+
     return (
         <HStack gap="space-20" wrap={false}>
             <div>
@@ -25,10 +29,11 @@ export const PermisjonSamtidig = ({ erAdopsjon = false }: Props) => {
             </div>
             <div>
                 <Heading size="small">
-                    <FormattedMessage id="HvaErMulig.PermisjonSamtidig" />
+                    <FormattedMessage id="HvaErMulig.ForeldrepengerUtenAktivitetskrav" />
                 </Heading>
+
                 <BodyLong>
-                    <FormattedMessage id="HvaErMulig.ManKanVæreHjemmeSamtidig" values={{ erAdopsjon }} />
+                    <FormattedMessage id="HvaErMulig.ForeldrepengerUtenAktivitetskrav.Tekst" values={{ erMedmor }} />
                 </BodyLong>
             </div>
         </HStack>
