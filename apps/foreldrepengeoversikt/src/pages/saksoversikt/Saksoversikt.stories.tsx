@@ -138,3 +138,53 @@ export const Svangerskapspenger: Story = {
         søkerinfo: søkerinfo,
     },
 };
+
+export const YngreMannEndringssøknad: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+                http.get(API_URLS.tidslinje, () =>
+                    HttpResponse.json([
+                        ...tidslinjeHendelserFP,
+                        {
+                            opprettet: new Date().toISOString(),
+                            aktørType: 'BRUKER' as const,
+                            tidslinjeHendelseType: 'ENDRINGSSØKNAD' as const,
+                            dokumenter: [
+                                {
+                                    tittel: 'Søknad om endring av foreldrepenger',
+                                    journalpostId: '598115999',
+                                    dokumentId: '624862999',
+                                },
+                            ],
+                        },
+                    ]),
+                ),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+            ],
+        },
+    },
+    args: {
+        søkerinfo: {
+            person: {
+                fnr: '26430359419',
+                navn: {
+                    fornavn: 'Yngre',
+                    etternavn: 'Mann',
+                },
+                kjønn: 'M',
+                fødselsdato: '2002-01-15',
+                bankkonto: {
+                    kontonummer: '23232323',
+                    banknavn: '',
+                },
+                barn: [],
+            },
+            arbeidsforhold: [],
+        },
+        saksnummer: '1',
+    },
+};

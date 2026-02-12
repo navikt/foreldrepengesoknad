@@ -319,5 +319,6 @@
     "beregning.aktivitetStatus.kombinertAtSn": "kombinert arbeidstaker og selvstendig næringsdrivende",
     "beregning.aktivitetStatus.kombinertFlSn": "kombinert frilanser og selvstendig næringsdrivende",
     "beregning.aktivitetStatus.militaerEllerSivil": "siviltjeneste eller førstegangstjeneste",
-    "beregning.aktivitetStatus.selvstendigNaeringsdrivende": "næringsdrivende"
+    "beregning.aktivitetStatus.selvstendigNaeringsdrivende": "næringsdrivende",
+    "yngreMannEndringssøknad.info": "Som ung mann under 25 år som endrer søknaden om foreldrepenger, kan du ha krav på supplerende stønad. Les mer om dette på nav.no."
 }

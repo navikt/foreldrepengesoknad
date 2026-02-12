@@ -9,7 +9,7 @@ import { Alert, BodyShort, HGrid, HStack, Heading, VStack } from '@navikt/ds-rea
 
 import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
 import { PersonMedArbeidsforholdDto_fpoversikt, Satser, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
-import { formatCurrencyWithKr, useDocumentTitle } from '@navikt/fp-utils';
+import { erUnder25År, formatCurrencyWithKr, useDocumentTitle } from '@navikt/fp-utils';
 
 import {
     hentDokumenterOptions,
@@ -37,6 +37,20 @@ import { BeregningLenkePanel } from '../beregning-page/BeregningLenkePanel.tsx';
 import { InntektsmeldingLenkePanel } from '../inntektsmelding-page/InntektsmeldingLenkePanel';
 
 dayjs.extend(isSameOrBefore);
+
+const erEndringssøknad = (tidslinjehendelser: TidslinjeHendelseDto_fpoversikt[]): boolean => {
+    return tidslinjehendelser.some((hendelse) => hendelse.tidslinjeHendelseType === 'ENDRINGSSØKNAD');
+};
+
+const skalViseYngreMannMelding = (
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+    tidslinjehendelser: TidslinjeHendelseDto_fpoversikt[],
+): boolean => {
+    const erMann = søkerinfo.person.kjønn === 'M';
+    const erUnder25 = erUnder25År(søkerinfo.person.fødselsdato);
+    const erEndring = erEndringssøknad(tidslinjehendelser);
+    return erMann && erUnder25 && erEndring;
+};
 
 interface Props {
     søkerinfo: PersonMedArbeidsforholdDto_fpoversikt;
@@ -122,6 +136,8 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                     saksnummer={params.saksnummer}
                 />
             )}
+
+            {skalViseYngreMannMelding(søkerinfo, tidslinjeHendelserQuery.data ?? []) && <YngreMannMelding />}
 
             <Oppgaver saksnummer={gjeldendeSak.saksnummer} />
             <VStack gap="space-4">
@@ -228,5 +244,13 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                 )}
             </VStack>
         </VStack>
+    );
+};
+
+const YngreMannMelding = () => {
+    return (
+        <BodyShort spacing className="font-semibold">
+            <FormattedMessage id="yngreMannEndringssøknad.info" />
+        </BodyShort>
     );
 };
