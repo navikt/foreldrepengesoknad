@@ -74,6 +74,14 @@ const finnEngangstønadForSøknadstidspunkt = (satser: Satser, søknadstidspunkt
     return engangstønad.find((es) => dayjs(es.fom).isSameOrBefore(søknadstidspunkt))?.verdi;
 };
 
+const YngreMannMelding = () => {
+    return (
+        <BodyShort spacing className="font-semibold">
+            <FormattedMessage id="yngreMannEndringssøknad.info" />
+        </BodyShort>
+    );
+};
+
 export const Saksoversikt = ({ søkerinfo }: Props) => {
     const gjeldendeSak = useGetSelectedSak();
 
@@ -244,13 +252,5 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                 )}
             </VStack>
         </VStack>
-    );
-};
-
-const YngreMannMelding = () => {
-    return (
-        <BodyShort spacing className="font-semibold">
-            <FormattedMessage id="yngreMannEndringssøknad.info" />
-        </BodyShort>
     );
 };
