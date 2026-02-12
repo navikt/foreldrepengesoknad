@@ -160,8 +160,7 @@ describe('UttakPeriodeBuilder.leggTilUttakPerioder (skalErstatteEksisterendePeri
         );
 
         expect(builder.getUttakPerioder()).toEqual([
-            lagNyPeriode('2024-01-01', '2024-01-02'),
-            lagNyPeriode('2024-01-03', '2024-01-05'),
+            lagNyPeriode('2024-01-01', '2024-01-05'),
             lagPeriode('2024-01-17', '2024-01-17'),
         ]);
     });
@@ -184,12 +183,11 @@ describe('UttakPeriodeBuilder.leggTilUttakPerioder (skalErstatteEksisterendePeri
             lagPeriode('2025-05-22', '2025-06-11'),
         ]);
 
-        builder.leggTilUttakPerioder([lagPeriode('2025-05-09', '2025-05-22')], SKAL_FORSKYVE);
+        builder.leggTilUttakPerioder([lagNyPeriode('2025-05-09', '2025-05-22')], SKAL_FORSKYVE);
 
         expect(builder.getUttakPerioder()).toEqual([
-            lagPeriode('2025-05-09', '2025-05-22'), // ny periode
-            lagPeriode('2025-05-23', '2025-06-04'), // Eksisterende periode 1 forskyvd
-            lagPeriode('2025-06-05', '2025-06-25'), // Eksisterende periode 2 forskyvd
+            lagNyPeriode('2025-05-09', '2025-05-22'), // ny periode
+            lagPeriode('2025-05-23', '2025-06-25'), // Eksisterende periode 1 og 2 slått sammen og forskyvd
         ]);
     });
 });

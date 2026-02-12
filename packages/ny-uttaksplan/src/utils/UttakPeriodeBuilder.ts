@@ -4,6 +4,8 @@ import utc from 'dayjs/plugin/utc';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
+import { erPerioderEkslFomTomLike } from './periodeUtils';
+
 dayjs.extend(utc);
 
 type AlleUttakPerioder = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
@@ -89,7 +91,7 @@ export class UttakPeriodeBuilder {
     }
 
     getUttakPerioder(): AlleUttakPerioder[] {
-        return [...this.alleUttakPerioder];
+        return slåSammenLikeTilstøtendePerioder(this.alleUttakPerioder);
     }
 }
 
@@ -181,6 +183,34 @@ const forskyvEksisterendePerioder = (
     nyeUttakPerioder.push(nyUttakPeriode);
 
     return nyeUttakPerioder.sort(sorterUttakPerioder);
+};
+
+const slåSammenLikeTilstøtendePerioder = (sortertePerioder: AlleUttakPerioder[]): AlleUttakPerioder[] => {
+    if (sortertePerioder.length === 0) {
+        return [];
+    }
+
+    return sortertePerioder.reduce<AlleUttakPerioder[]>((acc, periode) => {
+        if (acc.length === 0) {
+            return acc.concat(periode);
+        }
+
+        const forrigePeriode = acc.at(-1)!;
+
+        const erTilstøtende = dayjs(forrigePeriode.tom).add(1, 'day').isSame(dayjs(periode.fom), 'day');
+
+        if (erTilstøtende && erPerioderEkslFomTomLike(forrigePeriode, periode)) {
+            return [
+                ...acc.slice(0, -1),
+                {
+                    ...forrigePeriode,
+                    tom: periode.tom,
+                },
+            ];
+        }
+
+        return acc.concat(periode);
+    }, []);
 };
 
 const toDay = (iso: string): Dayjs => dayjs.utc(iso).startOf('day');

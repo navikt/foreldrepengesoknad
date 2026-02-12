@@ -6,6 +6,7 @@ import { UttaksdagenString, slutterTidsperiodeInnen6UkerEtterFødsel } from '@na
 
 import {
     Uttaksplanperiode,
+    erEøsUttakPeriode,
     erPeriodeUtenUttakHull,
     erTapteDagerHull,
     erVanligUttakPeriode,
@@ -119,4 +120,37 @@ export const erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter = (
     const tom = dayjs(periode.tom);
 
     return fom.isBefore(seksUkerEtter) && tom.isSameOrAfter(toUkerFør);
+};
+
+export const erPerioderEkslFomTomLike = (
+    periode1: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    periode2: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+) => {
+    if (
+        (erEøsUttakPeriode(periode1) && !erEøsUttakPeriode(periode2)) ||
+        (!erEøsUttakPeriode(periode1) && erEøsUttakPeriode(periode2))
+    ) {
+        return false;
+    }
+
+    if (erEøsUttakPeriode(periode1) && erEøsUttakPeriode(periode2)) {
+        return periode1.kontoType === periode2.kontoType && periode1.trekkdager === periode2.trekkdager;
+    }
+
+    if (erVanligUttakPeriode(periode1) && erVanligUttakPeriode(periode2)) {
+        return (
+            periode1.flerbarnsdager === periode2.flerbarnsdager &&
+            periode1.kontoType === periode2.kontoType &&
+            periode1.forelder === periode2.forelder &&
+            periode1.gradering === periode2.gradering &&
+            periode1.morsAktivitet === periode2.morsAktivitet &&
+            periode1.oppholdÅrsak === periode2.oppholdÅrsak &&
+            periode1.utsettelseÅrsak === periode2.utsettelseÅrsak &&
+            periode1.overføringÅrsak === periode2.overføringÅrsak &&
+            periode1.resultat === periode2.resultat &&
+            periode1.samtidigUttak === periode2.samtidigUttak
+        );
+    }
+
+    return false;
 };
