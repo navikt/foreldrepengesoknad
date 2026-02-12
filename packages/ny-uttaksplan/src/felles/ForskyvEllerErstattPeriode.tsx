@@ -1,26 +1,19 @@
-import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Alert, BodyShort, Button, Detail, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
-import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
-
 interface Props {
+    harPeriodeFørFamiliehendelsedato: boolean;
     setVisEndreEllerForskyvPanel: React.Dispatch<React.SetStateAction<boolean>>;
     leggTilEllerForskyvPeriode: (skalForskyve: boolean) => void;
 }
 
-export const ForskyvEllerErstattPeriode = ({ setVisEndreEllerForskyvPanel, leggTilEllerForskyvPeriode }: Props) => {
-    const { familiehendelsedato } = useUttaksplanData();
-
-    const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
-
-    const harPeriodeFørFamiliehendelsedato = sammenslåtteValgtePerioder.some((p) =>
-        dayjs(p.fom).isBefore(familiehendelsedato),
-    );
-
+export const ForskyvEllerErstattPeriode = ({
+    harPeriodeFørFamiliehendelsedato,
+    setVisEndreEllerForskyvPanel,
+    leggTilEllerForskyvPeriode,
+}: Props) => {
     const [skalForskyvePeriode, setSkalForskyvePeriode] = useState<boolean | undefined>(undefined);
 
     const skalForskyve =

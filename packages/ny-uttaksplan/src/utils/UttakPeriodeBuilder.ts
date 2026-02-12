@@ -152,14 +152,15 @@ const forskyvEksisterendePerioder = (
         const eFom = toDay(eksisterendePeriode.fom);
         const eTom = toDay(eksisterendePeriode.tom);
 
-        // Eksisterende periode ligg før ny periode
+        // Eksisterende periode ligg før ny periode => Ta vare på hele perioden
         if (eTom.isBefore(nFom)) {
             nyeUttakPerioder.push(eksisterendePeriode);
             continue;
         }
 
-        // Eksisterende periode ligg etter ny periode eller ny periode begynner før og slutter inni
-        if (eFom.isAfter(nFom) && nTom.isBefore(eTom)) {
+        const nyPeriodeStarterFørOgSlutterFørEksisterende = eFom.isAfter(nFom) && nTom.isBefore(eTom);
+        const nyPeriodeStarterSamtidigOgSlutterEtterEksisterende = nFom.isSame(eFom) && nTom.isAfter(eTom);
+        if (nyPeriodeStarterFørOgSlutterFørEksisterende || nyPeriodeStarterSamtidigOgSlutterEtterEksisterende) {
             nyeUttakPerioder.push({
                 ...eksisterendePeriode,
                 fom: UttaksdagenString.denne(eksisterendePeriode.fom).getDatoAntallUttaksdagerSenere(antallUkedager),

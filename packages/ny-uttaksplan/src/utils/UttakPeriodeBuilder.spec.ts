@@ -183,6 +183,21 @@ describe('UttakPeriodeBuilder.leggTilUttakPerioder (skalErstatteEksisterendePeri
             lagPeriode('2024-01-15', '2024-02-07'),
         ]);
     });
+
+    it('Skal velge samme periode som før pluss en dag og så forskyve', () => {
+        const builder = new UttakPeriodeBuilder([
+            lagPeriode('2025-05-09', '2025-05-21'),
+            lagPeriode('2025-05-22', '2025-06-11'),
+        ]).medForskyvningAvEksisterendePerioder(true);
+
+        builder.leggTilUttakPerioder([lagPeriode('2025-05-09', '2025-05-22')]);
+
+        expect(builder.getUttakPerioder()).toEqual([
+            lagPeriode('2025-05-09', '2025-05-22'), // ny periode
+            lagPeriode('2025-05-23', '2025-06-04'), // Eksisterende periode 1 forskyvd
+            lagPeriode('2025-06-05', '2025-06-25'), // Eksisterende periode 2 forskyvd
+        ]);
+    });
 });
 
 describe('UttakPeriodeBuilder – sortering og mutasjon', () => {

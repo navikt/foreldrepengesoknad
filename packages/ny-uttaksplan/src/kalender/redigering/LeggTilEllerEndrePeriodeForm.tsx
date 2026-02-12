@@ -11,6 +11,7 @@ import { RhfForm } from '@navikt/fp-form-hooks';
 import type { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { ForskyvEllerErstattPeriode } from '../../felles/ForskyvEllerErstattPeriode';
 import {
     LeggTilEllerEndrePeriodeFellesForm,
     LeggTilEllerEndrePeriodeFormFormValues,
@@ -20,7 +21,6 @@ import {
 import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../utils/periodeUtils';
-import { ForskyvEllerErstattPeriode } from './ForskyvEllerErstattPeriode';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 import { finnValgtePerioder } from './utils/kalenderPeriodeUtils';
 
@@ -36,6 +36,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         uttakPerioder,
         foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
+        familiehendelsedato,
     } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, setValgtePerioder, setEndredePerioder } =
@@ -94,10 +95,15 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         uttakPerioderInkludertTapteDager,
     );
 
+    const harPeriodeFørFamiliehendelsedato = sammenslåtteValgtePerioder.some((p) =>
+        dayjs(p.fom).isBefore(familiehendelsedato),
+    );
+
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             {visEndreEllerForskyvPanel && (
                 <ForskyvEllerErstattPeriode
+                    harPeriodeFørFamiliehendelsedato={harPeriodeFørFamiliehendelsedato}
                     setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
                     leggTilEllerForskyvPeriode={leggIKalender}
                 />

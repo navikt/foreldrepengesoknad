@@ -8,10 +8,10 @@ import { BodyShort, Box, Button, HStack, Heading, Show, VStack } from '@navikt/d
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { ForskyvEllerErstattPeriode } from '../../felles/ForskyvEllerErstattPeriode';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
-import { ForskyvEllerErstattPeriode } from './ForskyvEllerErstattPeriode';
 import { PeriodeDetaljerOgInfoMeldinger } from './PeriodeDetaljerOgInfoMeldinger';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 import { RødRamme } from './utils/RødRamme';
@@ -30,6 +30,7 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
     const {
         foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
+        familiehendelsedato,
     } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, setValgtePerioder, leggTilUttaksplanPerioder, setEndredePerioder } =
@@ -73,10 +74,15 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
         setEndredePerioder(sammenslåtteValgtePerioder);
     };
 
+    const harPeriodeFørFamiliehendelsedato = sammenslåtteValgtePerioder.some((p) =>
+        dayjs(p.fom).isBefore(familiehendelsedato),
+    );
+
     if (visEndreEllerForskyvPanel) {
         return (
             <Box padding="space-24">
                 <ForskyvEllerErstattPeriode
+                    harPeriodeFørFamiliehendelsedato={harPeriodeFørFamiliehendelsedato}
                     setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
                     leggTilEllerForskyvPeriode={leggTilEllerForskyvPeriode}
                 />
