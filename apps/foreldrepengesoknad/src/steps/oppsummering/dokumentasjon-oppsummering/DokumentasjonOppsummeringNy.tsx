@@ -11,6 +11,7 @@ import { AttachmentType } from '@navikt/fp-constants';
 import { NavnPåForeldre } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { getFamiliehendelsedato } from '../../../utils/barnUtils';
 import { DokumentasjonLastetOppLabel } from './DokumentasjonLastetOppLabel';
 import { DokumentasjonSendSenereLabelNy } from './DokumentasjonSendSenereLabelNy';
 
@@ -24,12 +25,14 @@ export const DokumentasjonOppsummeringNy = ({ onVilEndreSvar, navnPåForeldre }:
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const alleVedlegg = useContextGetData(ContextDataType.VEDLEGG);
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const uttaksperioderSomManglerVedlegg = perioderSomKreverVedleggNy(
         uttaksplan || [],
         erSøkerFarEllerMedmor,
         annenForelder,
+        getFamiliehendelsedato(barn),
     );
 
     const harVedlegg = alleVedlegg && Object.values(alleVedlegg).some((v) => v.length > 0);

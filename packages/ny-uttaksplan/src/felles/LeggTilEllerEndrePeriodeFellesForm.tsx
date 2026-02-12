@@ -16,12 +16,13 @@ import type {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { TidsperiodenString, UttaksdagenString, getFloatFromString } from '@navikt/fp-utils';
+import { UttaksdagenString, getFloatFromString } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskontoNavnSimple } from '../liste/utils/uttaksplanListeUtils';
 import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
+import { erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from '../utils/periodeUtils';
 import {
     erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgSeksUkerEtterFamDato,
     useHentGyldigeKontotyper,
@@ -78,8 +79,6 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         valgtePerioder,
         kontoTypeFarMedmor,
         familiehendelsedato,
-        erMedmorDelAvSøknaden,
-        stillingsprosentFarMedmor,
     );
 
     const erFarMedmorUtenAleneomsorg =
@@ -210,6 +209,12 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         );
                     })}
                 </RhfRadioGroup>
+            )}
+
+            {infotekstOmFedrekvoteBrukRundtFødsel && (
+                <InlineMessage status="info">
+                    <BodyShort>{infotekstOmFedrekvoteBrukRundtFødsel}</BodyShort>
+                </InlineMessage>
             )}
 
             {morSøkerOmOverføring && (
@@ -455,9 +460,6 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     </VStack>
                 </>
             )}
-            {infotekstOmFedrekvoteBrukRundtFødsel && (
-                <Alert variant="info">{infotekstOmFedrekvoteBrukRundtFødsel}</Alert>
-            )}
         </>
     );
 };
@@ -659,66 +661,23 @@ const getInfotekstOmFedrekvoteBrukRundtFødsel = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     kontoTypeFarMedmor: KontoTypeUttak | undefined,
     familiehendelsedato: string,
-    erMedmorDelAvSøknaden: boolean,
-    stillingsprosentFarMedmor: string | undefined,
 ) => {
     const familiehendelse = UttaksdagenString.denneEllerNeste(familiehendelsedato);
 
     const toUkerFør = familiehendelse.getDatoAntallUttaksdagerTidligere(10);
     const seksUkerEtter = familiehendelse.getDatoAntallUttaksdagerSenere(30);
 
-    // Hjelpefunksjon for å finne overlappende dager mellom to perioder
-    const getOverlappendePeriode = (
-        periode1: { fom: string; tom: string },
-        periode2: { fom: string; tom: string },
-    ): { fom: string; tom: string } | null => {
-        const fom1 = dayjs(periode1.fom);
-        const tom1 = dayjs(periode1.tom);
-        const fom2 = dayjs(periode2.fom);
-        const tom2 = dayjs(periode2.tom);
+    const perioderRundtFødsel = uttakPerioder.filter((periode) =>
+        erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(periode, familiehendelsedato),
+    );
 
-        if (fom1.isAfter(tom2, 'day') || tom1.isBefore(fom2, 'day')) {
-            return null; // Ingen overlapp
-        }
-
-        const overlappFom = fom1.isAfter(fom2, 'day') ? fom1 : fom2;
-        const overlappTom = tom1.isBefore(tom2, 'day') ? tom1 : tom2;
-
-        return {
-            fom: overlappFom.format('YYYY-MM-DD'),
-            tom: overlappTom.format('YYYY-MM-DD'),
-        };
-    };
-
-    const perioderRundtFødsel = uttakPerioder.filter((periode) => {
-        const fom = dayjs(periode.fom);
-        const tom = dayjs(periode.tom);
-
-        return fom.isBefore(seksUkerEtter) && tom.isSameOrAfter(toUkerFør);
+    const perioderInneholderFedrekvoteRundtFødsel = perioderRundtFødsel.some((periode) => {
+        return (
+            erVanligUttakPeriode(periode) &&
+            (periode.kontoType === 'FEDREKVOTE' ||
+                (periode.kontoType === 'FELLESPERIODE' && periode.forelder === 'FAR_MEDMOR'))
+        );
     });
-
-    const antallDagerMedFedrekvoteIPlan = perioderRundtFødsel.reduce((acc, periode) => {
-        if (periode.kontoType !== 'FEDREKVOTE') {
-            return acc;
-        }
-
-        const uttaksfaktor =
-            1 - (erVanligUttakPeriode(periode) ? (periode.gradering?.arbeidstidprosent ?? 0) : 0) / 100;
-
-        const totaleDager = TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager();
-
-        // Finn alle overlappende dager med valgtePerioder
-        const overlappendeAntallDager = valgtePerioder.reduce((sum, valgtPeriode) => {
-            const overlapp = getOverlappendePeriode(periode, valgtPeriode);
-            if (overlapp) {
-                return sum + TidsperiodenString({ fom: overlapp.fom, tom: overlapp.tom }).getAntallUttaksdager();
-            }
-            return sum;
-        }, 0);
-
-        // Legg til kun de dagene som ikke overlapper
-        return acc + (totaleDager - overlappendeAntallDager) * uttaksfaktor;
-    }, 0);
 
     const valgteDagerRundtFødsel = valgtePerioder.filter((periode) => {
         const fom = dayjs(periode.fom);
@@ -727,23 +686,15 @@ const getInfotekstOmFedrekvoteBrukRundtFødsel = (
         return fom.isBefore(seksUkerEtter) && tom.isSameOrAfter(toUkerFør);
     });
 
-    const antallDagerMedFedreKvoteValgtIKalender = valgteDagerRundtFødsel.reduce((acc, periode) => {
-        const uttaksfaktor = 1 - (stillingsprosentFarMedmor ? parseInt(stillingsprosentFarMedmor, 10) : 0) / 100;
-        const dager = TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager() * uttaksfaktor;
-
-        if (kontoTypeFarMedmor === 'FEDREKVOTE') {
-            acc += dager;
-        }
-
-        return acc;
-    }, 0);
+    const valgteDagerInneholderFedrekvoteRundtFødsel =
+        valgteDagerRundtFødsel.length > 0 && kontoTypeFarMedmor === 'FEDREKVOTE';
 
     let infotekstOmFedrekvoteBrukRundtFødsel = undefined;
 
-    if (antallDagerMedFedreKvoteValgtIKalender + antallDagerMedFedrekvoteIPlan > 10) {
+    if (perioderInneholderFedrekvoteRundtFødsel || valgteDagerInneholderFedrekvoteRundtFødsel) {
         infotekstOmFedrekvoteBrukRundtFødsel =
-            `Du kan ikke ha mer enn 10 dager ${erMedmorDelAvSøknaden ? 'medmorkvote' : 'fedrekvote'} samtidig med mor i forbindelse med fødsel. ` +
-            'For å kunne ta ut mer enn 10 dager med fedrekvote må mor være for syk i denne perioden';
+            'De første seks ukene er vanligvis kun for mor. ' +
+            'I noen tilfeller kan du søke om å overta den andre forelderens kvote.';
     }
 
     return infotekstOmFedrekvoteBrukRundtFødsel;

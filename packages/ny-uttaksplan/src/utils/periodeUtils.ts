@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import isoWeekday from 'dayjs/plugin/isoWeek';
 
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { slutterTidsperiodeInnen6UkerEtterFødsel } from '@navikt/fp-utils';
+import { UttaksdagenString, slutterTidsperiodeInnen6UkerEtterFødsel } from '@navikt/fp-utils';
 
 import {
     Uttaksplanperiode,
@@ -104,4 +104,19 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
                 periode.morsAktivitet === undefined,
         )
     );
+};
+
+export const erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter = (
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    familiehendelsedato: string,
+) => {
+    const familiehendelse = UttaksdagenString.denneEllerNeste(familiehendelsedato);
+
+    const toUkerFør = familiehendelse.getDatoAntallUttaksdagerTidligere(10);
+    const seksUkerEtter = familiehendelse.getDatoAntallUttaksdagerSenere(30);
+
+    const fom = dayjs(periode.fom);
+    const tom = dayjs(periode.tom);
+
+    return fom.isBefore(seksUkerEtter) && tom.isSameOrAfter(toUkerFør);
 };

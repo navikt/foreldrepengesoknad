@@ -4,6 +4,7 @@ import {
     UttakPeriode_fpoversikt,
     UttakUtsettelseÅrsak_fpoversikt,
 } from '@navikt/fp-types';
+import { erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from '@navikt/fp-uttaksplan-ny/src/utils/periodeUtils';
 
 import { erUttaksperiode } from './uttaksplanInfoUtils';
 
@@ -11,9 +12,10 @@ export const perioderSomKreverVedleggNy = (
     uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     erFarEllerMedmor: boolean,
     annenForelder: AnnenForelder,
+    familiehendelsedato: string,
 ) => {
     const perioderSomManglerVedlegg = uttaksplan.filter((p) =>
-        shouldPeriodeHaveAttachment(p, erFarEllerMedmor, annenForelder),
+        shouldPeriodeHaveAttachment(p, erFarEllerMedmor, annenForelder, familiehendelsedato),
     );
 
     return perioderSomManglerVedlegg;
@@ -23,6 +25,7 @@ const shouldPeriodeHaveAttachment = (
     periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
     søkerErFarEllerMedmor: boolean,
     annenForelder: AnnenForelder,
+    familiehendelsedato: string,
 ): boolean => {
     if ('utsettelseÅrsak' in periode && !!periode.utsettelseÅrsak) {
         const årsak = periode.utsettelseÅrsak;
@@ -41,7 +44,7 @@ const shouldPeriodeHaveAttachment = (
     }
 
     if (!('trekkdager' in periode) && erUttaksperiode(periode)) {
-        return dokumentasjonBehøvesForUttaksperiode(periode);
+        return dokumentasjonBehøvesForUttaksperiode(periode, familiehendelsedato);
     }
 
     return false;
@@ -59,14 +62,21 @@ const skalBesvaresVedUtsettelse = (søkerErFarEllerMedmor: boolean, annenForelde
 const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UttakUtsettelseÅrsak_fpoversikt) =>
     årsak === 'SØKER_SYKDOM' || årsak === 'SØKER_INNLAGT' || årsak === 'BARN_INNLAGT';
 
-const dokumentasjonBehøvesForUttaksperiode = (periode: UttakPeriode_fpoversikt): boolean => {
+const dokumentasjonBehøvesForUttaksperiode = (
+    periode: UttakPeriode_fpoversikt,
+    familiehendelsedato: string,
+): boolean => {
     const harIkkeAktivitetskrav = periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT';
+    const erPeriodeFedkvoteIFødselspermTidsrommet =
+        erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(periode, familiehendelsedato) &&
+        periode.kontoType === 'FEDREKVOTE';
+
     if (harIkkeAktivitetskrav) {
         return false;
     }
 
     return (
-        periode.morsAktivitet !== undefined && periode.morsAktivitet !== 'UFØRE'
-        // FIXME (TOR) TFP-6577  || (periode.kontoType === 'FEDREKVOTE' && periode.erMorForSyk === true)
+        (periode.morsAktivitet !== undefined && periode.morsAktivitet !== 'UFØRE') ||
+        erPeriodeFedkvoteIFødselspermTidsrommet
     );
 };

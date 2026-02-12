@@ -130,8 +130,14 @@ export const kreverUttaksplanVedleggNy = (
     uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     erFarEllerMedmor: boolean,
     annenForelder: AnnenForelder,
+    familiehendelsedato: string,
 ) => {
-    const periodeSomManglerVedlegg = perioderSomKreverVedleggNy(uttaksplan, erFarEllerMedmor, annenForelder);
+    const periodeSomManglerVedlegg = perioderSomKreverVedleggNy(
+        uttaksplan,
+        erFarEllerMedmor,
+        annenForelder,
+        familiehendelsedato,
+    );
 
     return periodeSomManglerVedlegg.length > 0;
 };
