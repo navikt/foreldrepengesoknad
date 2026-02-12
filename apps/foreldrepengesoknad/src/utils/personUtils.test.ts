@@ -6,6 +6,7 @@ import { getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import messages from '../intl/nb_NO.json';
 import {
+    erUnder25År,
     formaterNavn,
     getErSøkerFarEllerMedmor,
     getKjønnFromFnr,
@@ -160,5 +161,23 @@ describe('personUtils', () => {
 
     it('should return false if SøkerRolle is neither FAR, nor MEDMOR', () => {
         expect(getErSøkerFarEllerMedmor('mor')).toBe(false);
+    });
+
+    it('skal returnere true når person er under 25 år', () => {
+        const currentYear = new Date().getFullYear();
+        const fødselsdato = `${currentYear - 24}-01-01`;
+        expect(erUnder25År(fødselsdato)).toBe(true);
+    });
+
+    it('skal returnere false når person er 25 år eller eldre', () => {
+        const currentYear = new Date().getFullYear();
+        const fødselsdato = `${currentYear - 25}-01-01`;
+        expect(erUnder25År(fødselsdato)).toBe(false);
+    });
+
+    it('skal returnere false når person er over 25 år', () => {
+        const currentYear = new Date().getFullYear();
+        const fødselsdato = `${currentYear - 30}-01-01`;
+        expect(erUnder25År(fødselsdato)).toBe(false);
     });
 });
