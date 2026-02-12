@@ -39,8 +39,7 @@ export const KalenderRedigeringProvider = ({
     const leggTilUttaksplanPerioder = useCallback(
         (perioder: UttakPeriode_fpoversikt[], skalForskyvePeriode: boolean) => {
             const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder)
-                .medForskyvningAvEksisterendePerioder(skalForskyvePeriode)
-                .leggTilUttakPerioder(perioder)
+                .leggTilUttakPerioder(perioder, skalForskyvePeriode)
                 .getUttakPerioder();
 
             notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeUttakPerioder);

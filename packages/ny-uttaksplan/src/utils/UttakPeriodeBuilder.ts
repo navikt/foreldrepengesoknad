@@ -10,19 +10,17 @@ type AlleUttakPerioder = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpo
 
 export class UttakPeriodeBuilder {
     private alleUttakPerioder: AlleUttakPerioder[];
-    private skalErstatteEksisterendePerioder: boolean = true;
 
     constructor(alleUttakPerioder: AlleUttakPerioder[]) {
         this.alleUttakPerioder = [...alleUttakPerioder].sort(sorterUttakPerioder);
     }
 
-    medForskyvningAvEksisterendePerioder(skalforskyve: boolean): this {
-        this.skalErstatteEksisterendePerioder = !skalforskyve;
-        return this;
-    }
-
-    leggTilUttakPerioder(nyeUttakPerioder: AlleUttakPerioder[]): this {
-        if (this.skalErstatteEksisterendePerioder) {
+    leggTilUttakPerioder(nyeUttakPerioder: AlleUttakPerioder[], forskyvPerioder: boolean): this {
+        if (forskyvPerioder) {
+            for (const nyUttakPeriode of nyeUttakPerioder) {
+                this.alleUttakPerioder = forskyvEksisterendePerioder(this.alleUttakPerioder, nyUttakPeriode);
+            }
+        } else {
             // Grupper for å håndtera at ein legg til to periodar når ein har samtidig uttak.
             // Bruk ein av dei nye periodane for å justera andre periodar, og legg så til den andre på slutten
             const grupperPerFomTom = new Map<string, AlleUttakPerioder[]>();
@@ -38,10 +36,6 @@ export class UttakPeriodeBuilder {
                 for (let i = 1; i < gruppe.length; i++) {
                     this.alleUttakPerioder.push(gruppe[i]!);
                 }
-            }
-        } else {
-            for (const nyUttakPeriode of nyeUttakPerioder) {
-                this.alleUttakPerioder = forskyvEksisterendePerioder(this.alleUttakPerioder, nyUttakPeriode);
             }
         }
 

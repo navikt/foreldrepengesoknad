@@ -57,7 +57,12 @@ export const ForskyvEllerErstattPeriode = ({
                 </Alert>
             )}
             <HStack justify="space-between">
-                <Button variant="primary" size="small" onClick={() => leggTilEllerForskyvPeriode(skalForskyve)}>
+                <Button
+                    type="button"
+                    variant="primary"
+                    size="small"
+                    onClick={() => leggTilEllerForskyvPeriode(skalForskyve)}
+                >
                     <FormattedMessage id="RedigeringPanel.Fortsett" />
                 </Button>
                 <Button

@@ -82,8 +82,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
     const handleAddPeriode = (nyPeriode: UttakPeriode_fpoversikt[], skalForskyve: boolean) => {
         const nyePerioder = new UttakPeriodeBuilder(uttakPerioder)
-            .medForskyvningAvEksisterendePerioder(skalForskyve)
-            .leggTilUttakPerioder(nyPeriode)
+            .leggTilUttakPerioder(nyPeriode, skalForskyve)
             .getUttakPerioder();
         uttaksplanRedigering?.oppdaterUttaksplan?.(nyePerioder);
         setIsLeggTilPeriodePanelOpen(false);
@@ -127,7 +126,6 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             );
         } else if (hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') {
             const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder)
-                .medForskyvningAvEksisterendePerioder(skalForskyve)
                 .fjernUttakPerioder([
                     {
                         fom: fomValue,
