@@ -79,6 +79,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         valgtePerioder,
         kontoTypeFarMedmor,
         familiehendelsedato,
+        intl,
     );
 
     const erFarMedmorUtenAleneomsorg =
@@ -661,6 +662,7 @@ const getInfotekstOmFedrekvoteBrukRundtFødsel = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     kontoTypeFarMedmor: KontoTypeUttak | undefined,
     familiehendelsedato: string,
+    intl: IntlShape,
 ) => {
     const familiehendelse = UttaksdagenString.denneEllerNeste(familiehendelsedato);
 
@@ -691,10 +693,13 @@ const getInfotekstOmFedrekvoteBrukRundtFødsel = (
 
     let infotekstOmFedrekvoteBrukRundtFødsel = undefined;
 
-    if (perioderInneholderFedrekvoteRundtFødsel || valgteDagerInneholderFedrekvoteRundtFødsel) {
-        infotekstOmFedrekvoteBrukRundtFødsel =
-            'De første seks ukene er vanligvis kun for mor. ' +
-            'I noen tilfeller kan du søke om å overta den andre forelderens kvote.';
+    if (
+        (perioderInneholderFedrekvoteRundtFødsel || valgteDagerInneholderFedrekvoteRundtFødsel) &&
+        kontoTypeFarMedmor === 'FEDREKVOTE'
+    ) {
+        infotekstOmFedrekvoteBrukRundtFødsel = intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel',
+        });
     }
 
     return infotekstOmFedrekvoteBrukRundtFødsel;
