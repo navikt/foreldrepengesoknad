@@ -23,7 +23,7 @@ interface Props {
 export const ForeldrepengerSamtidig = ({ erAdopsjon = false, hvemPlanlegger, arbeidssituasjon, barnet }: Props) => {
     const intl = useIntl();
     const bTag = (msg: ReactNode[]) => <b>{msg}</b>;
-
+    const erFødsel = barnet.erFødsel === true;
     const erFar =
         hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR;
     const erFedre = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
@@ -52,18 +52,20 @@ export const ForeldrepengerSamtidig = ({ erAdopsjon = false, hvemPlanlegger, arb
                         <BodyLong>
                             <FormattedMessage id="HvaErMulig.ForeldrepengerSamtidig.ForskjelligeMåter" />
                         </BodyLong>
+                        {erFødsel && (
+                            <BodyLong>
+                                <FormattedMessage
+                                    id="HvaErMulig.ForeldrepengerSamtidig.ToUker"
+                                    values={{
+                                        erAdopsjon,
+                                        hvem: finnSøker2Tekst(intl, hvemPlanlegger),
+                                        erFar,
+                                        b: bTag,
+                                    }}
+                                />
+                            </BodyLong>
+                        )}
 
-                        <BodyLong>
-                            <FormattedMessage
-                                id="HvaErMulig.ForeldrepengerSamtidig.ToUker"
-                                values={{
-                                    erAdopsjon,
-                                    hvem: finnSøker2Tekst(intl, hvemPlanlegger),
-                                    erFar,
-                                    b: bTag,
-                                }}
-                            />
-                        </BodyLong>
                         {barnet.antallBarn !== '1' && (
                             <>
                                 <BodyLong>

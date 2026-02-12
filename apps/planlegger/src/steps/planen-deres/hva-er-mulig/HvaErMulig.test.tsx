@@ -11,7 +11,6 @@ const {
     FødselFarOgFarKunFar1HarRett,
     FødselFarOgFarBeggeHarRett,
     FødselAleneforsørgerMor,
-    FødselAleneforsørgerFar,
     FødselMorOgMedmorKunMedmorHarRett,
     FødselMorOgMedmorKunMorHarRett,
     AdopsjonMorOgFarBeggeHarRett,
@@ -119,19 +118,22 @@ describe('<HvaErMulig>', () => {
         expect(screen.getByText('Til sammen 100 %:')).toBeInTheDocument();
         expect(screen.getByText('Opptil 150 %:')).toBeInTheDocument();
     });
-    it.skip('skal vise info for mor og medmor fødsel hvor kun mor har rett', async () => {
+    it('skal vise info for mor og medmor fødsel hvor kun mor har rett', async () => {
         render(<FødselMorOgMedmorKunMorHarRett />);
         expect(await screen.findByText('Hva er mulig når du tilpasser?')).toBeInTheDocument();
 
         expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
         expect(screen.getByText('Dette kan du ikke endre:')).toBeInTheDocument();
         expect(screen.getByText('Tre uker før termin:')).toBeInTheDocument();
+        expect(screen.getByText('Seks uker etter fødsel:')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
         expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
-
-        expect(screen.queryByText('Seks uker etter fødsel:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
+        expect(screen.queryByText('2 uker rundt fødsel:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Opptil 100 %:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Til sammen 100 %:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Opptil 150 %:')).not.toBeInTheDocument();
         expect(screen.queryByText('Når medmor tar fellesperiode')).not.toBeInTheDocument();
-        expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
     });
     it('skal vise info for mor og medmor fødsel hvor kun medmor har rett', async () => {
         render(<FødselMorOgMedmorKunMedmorHarRett />);
@@ -225,23 +227,11 @@ describe('<HvaErMulig>', () => {
         expect(screen.queryByText('Opptil 150 %:')).not.toBeInTheDocument();
         expect(screen.queryByText('Når far tar fellesperiode')).not.toBeInTheDocument();
     });
-    // har denne riktig info?
-    it.skip('skal vise info for aleneforsørger far fødsel', async () => {
-        render(<FødselAleneforsørgerFar />);
-        expect(await screen.findByText('Hva er mulig når du tilpasser?')).toBeInTheDocument();
-
-        expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
-        expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
-        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
-
-        expect(screen.queryByText('Tre uker før termin:')).not.toBeInTheDocument();
-        expect(screen.queryByText('Når far tar fellesperiode')).not.toBeInTheDocument();
-        expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
-    });
+    // Aleneomsorg far
 
     //Adopsjon
     //Mor og far
-    it.skip('skal vise info for mor og far adopsjon hvor begge har rett', async () => {
+    it('skal vise info for mor og far adopsjon hvor begge har rett', async () => {
         render(<AdopsjonMorOgFarBeggeHarRett />);
         expect(await screen.findByText('Hva er mulig når du tilpasser?')).toBeInTheDocument();
 

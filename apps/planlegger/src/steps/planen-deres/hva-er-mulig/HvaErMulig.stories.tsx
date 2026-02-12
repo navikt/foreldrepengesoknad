@@ -247,7 +247,7 @@ export const AdopsjonMorOgFarBeggeHarRett: Story = {
             jobberAnnenPart: true,
         },
         barnet: {
-            antallBarn: '2',
+            antallBarn: '1',
             overtakelsesdato: '2022-01-01',
             fødselsdato: '2022-01-01',
             erFødsel: false,
