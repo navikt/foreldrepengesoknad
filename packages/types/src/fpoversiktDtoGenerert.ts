@@ -356,7 +356,7 @@ export type BehandlingTilstand_fpoversikt =
 
 export type Beregningsgrunnlag_fpoversikt = {
     beregningAktivitetStatuser: BeregningAktivitetStatus_fpoversikt[];
-    beregningsAndeler: BeregningsAndel_fpoversikt[];
+    beregningsandeler: BeregningsAndel_fpoversikt[];
     grunnbeløp?: number;
     skjæringsTidspunkt: string;
 };
@@ -455,11 +455,11 @@ export type Saker_fpoversikt = {
 
 export type TilkjentYtelse_fpoversikt = {
     feriepenger: FeriepengeAndel_fpoversikt[];
-    utbetalingsPerioder: TilkjentYtelsePeriode_fpoversikt[];
+    utbetalingsperioder: TilkjentYtelsePeriode_fpoversikt[];
 };
 
 export type FeriepengeAndel_fpoversikt = {
-    arbeidsgiverIdent: string;
+    arbeidsgiverIdent?: string;
     opptjeningsår: string;
     tilBruker: boolean;
     årsbeløp: number;
@@ -472,7 +472,7 @@ export type TilkjentYtelsePeriode_fpoversikt = {
 };
 
 export type Andel_fpoversikt = {
-    aktivitetStatus?: no_nav_foreldrepenger_kontrakter_felles_kodeverk_AktivitetStatus;
+    aktivitetStatus: no_nav_foreldrepenger_kontrakter_felles_kodeverk_AktivitetStatus;
     arbeidsgiverIdent?: string;
     arbeidsgivernavn?: string;
     dagsats: number;

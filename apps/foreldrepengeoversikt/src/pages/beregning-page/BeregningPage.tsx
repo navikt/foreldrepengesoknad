@@ -73,7 +73,7 @@ export const BeregningPage = () => {
                     </ExpansionCard.Header>
                     <ExpansionCard.Content>
                         <VStack gap="space-16">
-                            {beregning.beregningsAndeler.map((andel) => (
+                            {beregning.beregningsandeler.map((andel) => (
                                 <BeregningAndel
                                     andel={andel}
                                     key={`${andel.aktivitetStatus}-${andel.arbeidsforhold?.arbeidsgiverIdent}`}
@@ -96,16 +96,16 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
     if (!beregning) {
         return null;
     }
-    const samletÅrsinntekt = sumBy(beregning.beregningsAndeler, (andel) => andel.fastsattPrÅr ?? 0);
+    const samletÅrsinntekt = sumBy(beregning.beregningsandeler, (andel) => andel.fastsattPrÅr ?? 0);
     const grunnbeløp = beregning.grunnbeløp ?? DEFAULT_SATSER.grunnbeløp[0]!.verdi;
     const seksG = grunnbeløp * 6;
     const vis6GVarsel = samletÅrsinntekt > seksG;
     const åttiProsentReduksjon = samletÅrsinntekt * 0.8;
     const visÅttiProsentReduksjon = sak.dekningsgrad === 'ÅTTI';
 
-    const sumDagsats = sumBy(beregning.beregningsAndeler, (a) => (a.dagsatsSøker ?? 0) + (a.dagsatsArbeidsgiver ?? 0));
-    const finnesRefusjon = beregning.beregningsAndeler.some((a) => (a.dagsatsArbeidsgiver ?? 0) > 0);
-    const finnesDirekteutbetaling = beregning.beregningsAndeler.some((a) => (a.dagsatsSøker ?? 0) > 0);
+    const sumDagsats = sumBy(beregning.beregningsandeler, (a) => (a.dagsatsSøker ?? 0) + (a.dagsatsArbeidsgiver ?? 0));
+    const finnesRefusjon = beregning.beregningsandeler.some((a) => (a.dagsatsArbeidsgiver ?? 0) > 0);
+    const finnesDirekteutbetaling = beregning.beregningsandeler.some((a) => (a.dagsatsSøker ?? 0) > 0);
 
     return (
         <Box background="default" padding="space-24" shadow="dialog" borderRadius="8">
@@ -273,7 +273,7 @@ const periodeTilDager = (perioder: TilkjentYtelsePeriode_fpoversikt[]): DagMedPe
 };
 
 const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
-    const tilkjentYtelse = sak.gjeldendeVedtak?.tilkjentYtelse?.utbetalingsPerioder ?? [];
+    const tilkjentYtelse = sak.gjeldendeVedtak?.tilkjentYtelse?.utbetalingsperioder ?? [];
     const andelerPerDag = periodeTilDager(tilkjentYtelse);
 
     const andelerPerDagGruppertPåMåned = groupBy(andelerPerDag, (d) => dayjs(d.dato).month());
