@@ -38,6 +38,7 @@ export enum ContextDataType {
     UTTAKSPLAN = 'UTTAKSPLAN',
     UTTAKSPLAN_NY = 'UTTAKSPLAN_NY',
     UTTAKSPLAN_METADATA = 'UTTAKSPLAN_METADATA',
+    UTTAKSPLAN_METADATA_NY = 'UTTAKSPLAN_METADATA_NY',
     VEDLEGG = 'VEDLEGG',
 }
 
@@ -61,6 +62,10 @@ export type ContextDataMap = {
     [ContextDataType.UTTAKSPLAN]?: Periode[];
     [ContextDataType.UTTAKSPLAN_NY]?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     [ContextDataType.UTTAKSPLAN_METADATA]?: UttaksplanMetaData;
+    // TODO (TOR) Vurder etterkvart om denne trengs. Om det er kun ønskerJustertUttakVedFødsel så vurder å legg denne til UTTAKSPLAN_NY
+    [ContextDataType.UTTAKSPLAN_METADATA_NY]?: {
+        ønskerJustertUttakVedFødsel?: boolean;
+    };
     [ContextDataType.VEDLEGG]?: VedleggDataType;
 };
 

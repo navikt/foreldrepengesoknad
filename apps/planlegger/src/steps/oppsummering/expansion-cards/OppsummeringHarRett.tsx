@@ -239,7 +239,7 @@ export const OppsummeringHarRett = ({
                         <UttaksplanDataProvider
                             barn={mapOmBarnetTilBarn(barnet)}
                             foreldreInfo={{
-                                søker: erFarEllerMedmor ? 'FAR_ELLER_MEDMOR' : 'MOR',
+                                søker: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
                                 navnPåForeldre: { mor: fornavnSøker1, farMedmor: fornavnSøker2 || '' },
                                 rettighetType: utledRettighet(erAleneOmOmsorg, erDeltUttak),
                                 erMedmorDelAvSøknaden: hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR,
@@ -248,6 +248,7 @@ export const OppsummeringHarRett = ({
                             valgtStønadskonto={valgtStønadskonto}
                             harAktivitetskravIPeriodeUtenUttak={false}
                             uttakPerioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
+                            erPeriodeneTilAnnenPartLåst={false}
                         >
                             <UttaksplanKalender barnehagestartdato={barnehagestartdato} readOnly />
                         </UttaksplanDataProvider>

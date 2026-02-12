@@ -7,4 +7,5 @@ export type CalendarPeriod = {
     srText: string;
     isSelected?: boolean;
     isUpdated?: boolean;
+    isMarked?: boolean;
 };

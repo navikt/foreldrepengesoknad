@@ -1,40 +1,36 @@
+import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getUkerOgDagerFromDager } from 'utils/dateUtils';
 
 import { FormSummary } from '@navikt/ds-react';
 
-import { AnnenForelder, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
+import { AnnenForelder, NavnPåForeldre, Situasjon } from '@navikt/fp-common';
 import { Dekningsgrad, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanOppsummeringsliste } from './UttaksplanOppsummeringsliste';
 
 interface Props {
-    perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
     registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     dekningsgrad: Dekningsgrad;
-    antallUkerUttaksplan: number;
     annenForelder: AnnenForelder;
     familiehendelsesdato: Date;
     termindato: string | undefined;
     situasjon: Situasjon;
     erAleneOmOmsorg: boolean;
     antallBarn: number;
-    ønskerJustertUttakVedFødsel: boolean | undefined;
-    eksisterendeUttaksplan?: Periode[];
     onVilEndreSvar: () => void;
 }
 
-export const UttaksplanOppsummering = ({
-    dekningsgrad,
-    antallUkerUttaksplan,
-    ønskerJustertUttakVedFødsel,
-    antallBarn,
-    onVilEndreSvar,
-    ...rest
-}: Props) => {
+export const UttaksplanOppsummering = ({ dekningsgrad, antallBarn, onVilEndreSvar, ...rest }: Props) => {
     const intl = useIntl();
+
+    const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
+    const antallUkerUttaksplan = notEmpty(uttaksplanMetadata.antallUkerIUttaksplan);
+
+    const ønskerJustertUttakVedFødsel = notEmpty(uttaksplanMetadata).ønskerJustertUttakVedFødsel;
 
     const antallUkerOgDagerIUttaksplan = getUkerOgDagerFromDager(antallUkerUttaksplan * 5);
 

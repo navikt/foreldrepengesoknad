@@ -4,14 +4,15 @@ import { IntlShape, useIntl } from 'react-intl';
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
 
-import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
+import { erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { getOppholdskontoNavn } from '../../../utils/uttaksplanListeUtils';
 
 interface Props {
-    periode: Uttaksplanperiode;
+    periode: UttakPeriode_fpoversikt;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
     inneholderKunEnPeriode: boolean;
@@ -52,7 +53,7 @@ export const OppholdsPeriodeContent = ({
     );
 };
 
-const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Uttaksplanperiode) => {
+const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: UttakPeriode_fpoversikt) => {
     if (inneholderKunEnPeriode) {
         return intl.formatMessage({ id: 'uttaksplan.varighet.helePerioden' });
     }

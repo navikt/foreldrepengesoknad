@@ -122,13 +122,14 @@ const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { s
                     )}
                     barn={barn}
                     foreldreInfo={{
-                        søker: sakTilhørerMor ? 'MOR' : 'FAR_ELLER_MEDMOR',
+                        søker: sakTilhørerMor ? 'MOR' : 'FAR_MEDMOR',
                         navnPåForeldre: navnPåForeldre,
                         erMedmorDelAvSøknaden: false,
                         rettighetType,
                     }}
                     valgtStønadskonto={konto}
                     harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
+                    erPeriodeneTilAnnenPartLåst={false}
                 >
                     {!visKalender && (
                         <>

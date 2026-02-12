@@ -8,7 +8,7 @@ import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
 import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
-import { Uttaksplanperiode } from '../../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
 import {
     isOppholdsperiode,
     isOverføringsperiode,
@@ -20,6 +20,7 @@ import {
 } from '../../../utils/periodeUtils';
 import { genererPeriodeKey } from '../../utils/uttaksplanListeUtils';
 import {
+    erUttaksplanperiodeEøs,
     erUttaksplanperiodeFamiliehendelseDato,
     erUttaksplanperiodeTapteDager,
     erUttaksplanperiodeUtenUttak,
@@ -45,16 +46,20 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
     const [isEndrePeriodePanelOpen, setIsEndrePeriodePanelOpen] = useState(false);
     const [isSlettPeriodePanelOpen, setIsSlettPeriodePanelOpen] = useState(false);
 
+    const {
+        foreldreInfo: { navnPåForeldre, søker },
+        barn,
+        erPeriodeneTilAnnenPartLåst,
+    } = useUttaksplanData();
+
+    const erPeriodeForAnnenPartSomErLåst =
+        erPeriodeneTilAnnenPartLåst && uttaksplanperioder.some((p) => erVanligUttakPeriode(p) && p.forelder !== søker);
+
     const inneholderKunEnPeriode = uttaksplanperioder.length === 1;
     const erRedigerbar =
         !erUttaksplanperiodeTapteDager(uttaksplanperioder) &&
         !erUttaksplanperiodeUtenUttak(uttaksplanperioder) &&
         !harUttaksplanperiodePrematuruker(uttaksplanperioder);
-
-    const {
-        foreldreInfo: { navnPåForeldre, søker },
-        barn,
-    } = useUttaksplanData();
 
     const familiehendelseType = getFamiliehendelseType(barn);
 
@@ -74,14 +79,19 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
                                 key={genererPeriodeKey(periode)}
                                 periode={periode}
                                 navnPåForeldre={navnPåForeldre}
-                                erFarEllerMedmor={søker === 'FAR_ELLER_MEDMOR'}
+                                erFarEllerMedmor={søker === 'FAR_MEDMOR'}
                                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                             />
                         ))}
                         <SkalJobbeContent uttaksplanperioder={uttaksplanperioder} />
                     </VStack>
                     <EndreOgSlettKnapper
-                        isReadOnly={isReadOnly || harUttaksplanperiodePrematuruker(uttaksplanperioder)}
+                        isReadOnly={
+                            isReadOnly ||
+                            harUttaksplanperiodePrematuruker(uttaksplanperioder) ||
+                            erUttaksplanperiodeEøs(uttaksplanperioder) ||
+                            erPeriodeForAnnenPartSomErLåst
+                        }
                         erRedigerbar={erRedigerbar}
                         setIsEndrePeriodePanelOpen={setIsEndrePeriodePanelOpen}
                         setIsSlettPeriodePanelOpen={setIsSlettPeriodePanelOpen}
@@ -103,7 +113,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
                     }}
                     uttaksplanperioder={uttaksplanperioder}
                     navnPåForeldre={navnPåForeldre}
-                    erFarEllerMedmor={søker === 'FAR_ELLER_MEDMOR'}
+                    erFarEllerMedmor={søker === 'FAR_MEDMOR'}
                 />
             )}
         </>
@@ -162,7 +172,7 @@ const Periode = ({
         return <PrematurukerContent key={genererPeriodeKey(periode)} />;
     }
 
-    if (isUttaksperiode(periode)) {
+    if (isUttaksperiode(periode) || erEøsUttakPeriode(periode)) {
         return (
             <UttaksperiodeContent
                 key={genererPeriodeKey(periode)}
