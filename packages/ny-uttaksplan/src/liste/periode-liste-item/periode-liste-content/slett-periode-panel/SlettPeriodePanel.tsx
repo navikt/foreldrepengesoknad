@@ -12,7 +12,7 @@ import { isRequired } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../../context/UttaksplanRedigeringContext';
-import { SlettPeriodeForskyvEllerErstatt } from '../../../../felles/SlettPeriodeForskyvEllerErstatt';
+import { SlettPeriodeForskyvEllerErstatt } from '../../../../felles/forskyvEllerErstatt/SlettPeriodeForskyvEllerErstatt';
 import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../../utils/UttakPeriodeBuilder';
 import { erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato } from '../../../../utils/periodeUtils';

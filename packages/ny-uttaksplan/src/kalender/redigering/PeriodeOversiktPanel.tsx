@@ -8,7 +8,7 @@ import { BodyShort, Box, Button, HStack, Heading, Show, VStack } from '@navikt/d
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { ForskyvEllerErstattPeriode } from '../../felles/ForskyvEllerErstattPeriode';
+import { LeggTilPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstatt';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
@@ -82,7 +82,7 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
     if (visEndreEllerForskyvPanel) {
         return (
             <Box padding="space-24">
-                <ForskyvEllerErstattPeriode
+                <LeggTilPeriodeForskyvEllerErstatt
                     harPeriodeFørFamiliehendelsedato={harPeriodeFørFamiliehendelsedato}
                     setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
                     leggTilEllerForskyvPeriode={leggTilEllerForskyvPeriode}

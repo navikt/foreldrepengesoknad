@@ -13,13 +13,13 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../context/UttaksplanRedigeringContext';
-import { ForskyvEllerErstattPeriode } from '../../felles/ForskyvEllerErstattPeriode';
 import {
     LeggTilEllerEndrePeriodeFellesForm,
     LeggTilEllerEndrePeriodeFormFormValues,
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilUttakPeriode,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
+import { LeggTilPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstatt';
 import { useHentGyldigeKontotyper } from '../../felles/useHentGyldigeKontotyper';
 import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
 import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
@@ -225,7 +225,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 {visEndreEllerForskyvPanel && (
-                    <ForskyvEllerErstattPeriode
+                    <LeggTilPeriodeForskyvEllerErstatt
                         harPeriodeFørFamiliehendelsedato={harPeriodeFørFamiliehendelsedato}
                         setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
                         leggTilEllerForskyvPeriode={leggIListe}

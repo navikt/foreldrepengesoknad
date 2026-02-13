@@ -9,7 +9,7 @@ interface Props {
     leggTilEllerForskyvPeriode: (skalForskyve: boolean) => void;
 }
 
-export const ForskyvEllerErstattPeriode = ({
+export const LeggTilPeriodeForskyvEllerErstatt = ({
     harPeriodeFørFamiliehendelsedato,
     setVisEndreEllerForskyvPanel,
     leggTilEllerForskyvPeriode,
