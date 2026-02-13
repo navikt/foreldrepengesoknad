@@ -81,9 +81,11 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     });
 
     const handleAddPeriode = (nyPeriode: UttakPeriode_fpoversikt[], skalForskyve: boolean) => {
-        const nyePerioder = new UttakPeriodeBuilder(uttakPerioder)
-            .leggTilUttakPerioder(nyPeriode, skalForskyve)
-            .getUttakPerioder();
+        const builder = new UttakPeriodeBuilder(uttakPerioder);
+        if (uttaksplanperiode) {
+            builder.fjernUttakPerioder([uttaksplanperiode], false);
+        }
+        const nyePerioder = builder.leggTilUttakPerioder(nyPeriode, skalForskyve).getUttakPerioder();
         uttaksplanRedigering?.oppdaterUttaksplan?.(nyePerioder);
         setIsLeggTilPeriodePanelOpen(false);
     };
