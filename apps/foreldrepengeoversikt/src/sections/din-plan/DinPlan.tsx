@@ -63,7 +63,7 @@ const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { s
         return null;
     }
 
-    const søkersPerioder = sak.gjeldendeVedtak?.perioder.filter((p) => p.resultat?.innvilget);
+    const søkersPerioder = sak.gjeldendeVedtak?.perioder.filter((p) => p.resultat?.innvilget ?? true);
     const perioderSomErSøktOm = sak.åpenBehandling?.søknadsperioder;
     const familiehendelse = sak.familiehendelse;
     const sakTilhørerMor = sak.sakTilhørerMor;
