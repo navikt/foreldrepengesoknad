@@ -425,7 +425,7 @@ export type FpVedtak_fpoversikt = {
     beregningsgrunnlag?: Beregningsgrunnlag_fpoversikt;
     perioder: UttakPeriode_fpoversikt[];
     perioderAnnenpartEøs?: UttakPeriodeAnnenpartEøs_fpoversikt[];
-    tilkjentYtelse: TilkjentYtelse_fpoversikt;
+    tilkjentYtelse?: TilkjentYtelse_fpoversikt;
 };
 
 export type FpÅpenBehandling_fpoversikt = {
