@@ -397,7 +397,7 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
 };
 
 const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
-    const feriepenger = sak.gjeldendeVedtak?.tilkjentYtelse.feriepenger ?? [];
+    const feriepenger = sak.gjeldendeVedtak?.tilkjentYtelse?.feriepenger ?? [];
 
     if (feriepenger.length === 0) {
         return (
