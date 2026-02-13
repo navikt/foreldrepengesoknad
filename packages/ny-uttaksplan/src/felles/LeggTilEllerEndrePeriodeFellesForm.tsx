@@ -16,7 +16,7 @@ import type {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { UttaksdagenString, getFloatFromString } from '@navikt/fp-utils';
+import { getFloatFromString } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
@@ -679,29 +679,15 @@ const getInfotekstOmFedrekvoteBrukRundtFødsel = (
     familiehendelsedato: string,
     intl: IntlShape,
 ) => {
-    const familiehendelse = UttaksdagenString.denneEllerNeste(familiehendelsedato);
+    const perioderInneholderFedrekvoteRundtFødsel = uttakPerioder
+        .filter((periode) => erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(periode, familiehendelsedato))
+        .some((periode) => {
+            return erVanligUttakPeriode(periode) && periode.kontoType === 'FEDREKVOTE' && !periode.samtidigUttak;
+        });
 
-    const toUkerFør = familiehendelse.getDatoAntallUttaksdagerTidligere(10);
-    const seksUkerEtter = familiehendelse.getDatoAntallUttaksdagerSenere(30);
-
-    const perioderRundtFødsel = uttakPerioder.filter((periode) =>
-        erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(periode, familiehendelsedato),
+    const valgteDagerRundtFødsel = valgtePerioder.filter((p) =>
+        erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(p, familiehendelsedato),
     );
-
-    const perioderInneholderFedrekvoteRundtFødsel = perioderRundtFødsel.some((periode) => {
-        return (
-            erVanligUttakPeriode(periode) &&
-            (periode.kontoType === 'FEDREKVOTE' ||
-                (periode.kontoType === 'FELLESPERIODE' && periode.forelder === 'FAR_MEDMOR'))
-        );
-    });
-
-    const valgteDagerRundtFødsel = valgtePerioder.filter((periode) => {
-        const fom = dayjs(periode.fom);
-        const tom = dayjs(periode.tom);
-
-        return fom.isBefore(seksUkerEtter) && tom.isSameOrAfter(toUkerFør);
-    });
 
     const valgteDagerInneholderFedrekvoteRundtFødsel =
         valgteDagerRundtFødsel.length > 0 && kontoTypeFarMedmor === 'FEDREKVOTE';
