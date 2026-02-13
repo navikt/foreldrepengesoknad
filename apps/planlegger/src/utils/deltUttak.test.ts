@@ -40,12 +40,12 @@ describe('Delt uttak - Fødsel Far/Medmor', () => {
 
         expect(forslag.søker2.length).toEqual(2);
         expect(forslag.søker2[0]!.fom).toEqual('2022-11-07');
-        expect(forslag.søker2[0]!.tom).toEqual('2022-12-30');
+        expect(forslag.søker2[0]!.tom).toEqual('2022-12-09');
         expect(forslag.søker2[0]!.forelder).toEqual('FAR_MEDMOR');
-        expect(forslag.søker2[0]!.kontoType).toEqual('FELLESPERIODE');
-        expect(forslag.søker2[1]!.fom).toEqual('2023-01-02');
+        expect(forslag.søker2[0]!.kontoType).toEqual('FEDREKVOTE');
+        expect(forslag.søker2[1]!.fom).toEqual('2022-12-12');
         expect(forslag.søker2[1]!.tom).toEqual('2023-02-03');
         expect(forslag.søker2[1]!.forelder).toEqual('FAR_MEDMOR');
-        expect(forslag.søker2[1]!.kontoType).toEqual('FEDREKVOTE');
+        expect(forslag.søker2[1]!.kontoType).toEqual('FELLESPERIODE');
     });
 });
