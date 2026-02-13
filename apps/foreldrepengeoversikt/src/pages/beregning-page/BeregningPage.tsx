@@ -1,7 +1,7 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { groupBy, partition, sortBy, sumBy } from 'lodash';
+import { groupBy, min, partition, sortBy, sumBy } from 'lodash';
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -100,7 +100,8 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
     const grunnbeløp = beregning.grunnbeløp ?? DEFAULT_SATSER.grunnbeløp[0]!.verdi;
     const seksG = grunnbeløp * 6;
     const vis6GVarsel = samletÅrsinntekt > seksG;
-    const åttiProsentReduksjon = samletÅrsinntekt * 0.8;
+    const åttiProsentReduksjon = min([samletÅrsinntekt, seksG]) * 0.8;
+
     const visÅttiProsentReduksjon = sak.dekningsgrad === 'ÅTTI';
 
     const sumDagsats = sumBy(beregning.beregningsandeler, (a) => (a.dagsatsSøker ?? 0) + (a.dagsatsArbeidsgiver ?? 0));
