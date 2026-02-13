@@ -331,7 +331,6 @@
     "beregning.utbetalingsvisning.arbeidsgiver": "Vi utbetaler til arbeidsgiver: {beløp}",
     "beregning.feriepenger.tittel": "Feriepenger",
     "beregning.feriepenger.ikkeRett": "Du har ikke rett på feriepenger av foreldrepengene dine. <link>Her kan du lese mer om hvem som har rett på feriepenger.</link>",
-    "beregning.feriepenger.lenkeTekst": "Her kan du lese mer om feriepenger av foreldrepenger.",
     "beregning.feriepenger.harRett": "Du har rett på feriepenger av foreldrepengene dine. Feriepengene er 10,2 % av det som er utbetalt de første 12 eller 15 ukene av den totale perioden med foreldrepenger. <link>Her kan du lese mer om feriepenger av foreldrepenger.</link>",
     "beregning.feriepenger.opptjentI": "Opptjent i {år}",
     "beregning.feriepenger.utbetaltTilDeg": "{beløp} som vi betaler til deg.",
