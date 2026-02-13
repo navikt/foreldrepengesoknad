@@ -1,8 +1,7 @@
-import { StethoscopeIcon } from '@navikt/aksel-icons';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { BabyWrappedIcon } from '@navikt/aksel-icons';
+import { FormattedMessage } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
@@ -15,19 +14,17 @@ interface Props {
     hvemPlanlegger: HvemPlanlegger;
 }
 
-export const HvisMorBlirSyk = ({ arbeidssituasjon, hvemPlanlegger }: Props) => {
-    const intl = useIntl();
-
-    const erMedmor = hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
-
+export const FødtFørUke33 = ({ arbeidssituasjon, hvemPlanlegger }: Props) => {
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
+    const morHarIkkeRett =
+        arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
 
     return (
         <HStack gap="space-20" wrap={false}>
             <div>
                 <IconCircleWrapper color="lightBlue" size="medium">
-                    <StethoscopeIcon
+                    <BabyWrappedIcon
                         height={22}
                         width={22}
                         fontSize="1.5rem"
@@ -38,24 +35,21 @@ export const HvisMorBlirSyk = ({ arbeidssituasjon, hvemPlanlegger }: Props) => {
             </div>
             <div>
                 <Heading size="small" level="4">
-                    <FormattedMessage
-                        id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk"
-                        values={{ erAlene: hvemHarRett === 'kunSøker1HarRett' }}
-                    />
+                    <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.FødtFørUke33" />
                 </Heading>
                 <BodyLong>
-                    {arbeidssituasjon.status === Arbeidsstatus.INGEN ||
-                    arbeidssituasjon.status === Arbeidsstatus.UFØR ? (
+                    {morHarIkkeRett ? (
                         <FormattedMessage
-                            id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.TekstKunFarEllerMedmor"
-                            values={{ hvem: finnSøker2Tekst(intl, hvemPlanlegger), erMedmor }}
+                            id="UforutsetteEndringer.UforutsetteEndringer.FødtFørUke33.TekstMorIkkeRett"
+                            values={{
+                                erAleneforsørger: kunEnPartSkalHa,
+                                erMedmor: hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR,
+                            }}
                         />
-                    ) : kunEnPartSkalHa ? (
-                        <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.TekstAlene" />
                     ) : (
                         <FormattedMessage
-                            id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.Tekst"
-                            values={{ hvem: finnSøker2Tekst(intl, hvemPlanlegger), erMedmor }}
+                            id="UforutsetteEndringer.UforutsetteEndringer.FødtFørUke33.Tekst"
+                            values={{ erAleneforsørger: kunEnPartSkalHa }}
                         />
                     )}
                 </BodyLong>
