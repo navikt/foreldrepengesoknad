@@ -70,6 +70,7 @@ export type { TidslinjeHendelseType_fpoversikt } from './fpoversiktDtoGenerert';
 export type { Beregningsgrunnlag_fpoversikt } from './fpoversiktDtoGenerert';
 export type { BeregningsAndel_fpoversikt } from './fpoversiktDtoGenerert';
 export type { no_nav_foreldrepenger_kontrakter_felles_kodeverk_AktivitetStatus as AktivitetStatus } from './fpoversiktDtoGenerert';
+export type { TilkjentYtelsePeriode_fpoversikt } from './fpoversiktDtoGenerert';
 
 // Types from fpsoknadDtoGenerert
 export type { com_neovisionaries_i18n_CountryCode as CountryCode } from './fpsoknadDtoGenerert';

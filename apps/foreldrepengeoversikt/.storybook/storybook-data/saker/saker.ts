@@ -22,6 +22,7 @@ export const saker = {
                 antallBarn: 1,
             },
             gjeldendeVedtak: {
+                tilkjentYtelse: { feriepenger: [], utbetalingsperioder: [] },
                 perioder: [
                     {
                         fom: '2022-06-10',
@@ -107,6 +108,7 @@ export const saker = {
                 antallBarn: 1,
             },
             gjeldendeVedtak: {
+                tilkjentYtelse: { feriepenger: [], utbetalingsperioder: [] },
                 perioder: [
                     {
                         fom: '2022-12-20',
@@ -482,6 +484,7 @@ export const saker_FP_fødsel_tilbakekreving = {
                 antallBarn: 1,
             },
             gjeldendeVedtak: {
+                tilkjentYtelse: { feriepenger: [], utbetalingsperioder: [] },
                 perioder: [
                     {
                         fom: '2025-10-06',
@@ -950,10 +953,10 @@ export const saker_FP_ny_søknad = {
     svangerskapspenger: [],
 } satisfies Saker_fpoversikt;
 
-export const saker_beregning = {
+export const saker_beregning_direkte_utbetaling = {
     foreldrepenger: [
         {
-            saksnummer: '502',
+            saksnummer: '611',
             sakAvsluttet: false,
             kanSøkeOmEndring: true,
             sakTilhørerMor: true,
@@ -963,18 +966,18 @@ export const saker_beregning = {
             ønskerJustertUttakVedFødsel: false,
             rettighetType: 'BEGGE_RETT',
             annenPart: {
-                fnr: '09418027387',
+                fnr: '08517932311',
             },
             familiehendelse: {
-                fødselsdato: '2025-12-18',
-                termindato: '2025-12-18',
+                fødselsdato: '2025-12-03',
+                termindato: '2025-12-03',
                 antallBarn: 1,
             },
             gjeldendeVedtak: {
                 perioder: [
                     {
-                        fom: '2025-11-27',
-                        tom: '2025-12-17',
+                        fom: '2025-11-12',
+                        tom: '2025-12-02',
                         kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                         resultat: {
                             innvilget: true,
@@ -986,8 +989,8 @@ export const saker_beregning = {
                         forelder: 'MOR',
                     },
                     {
-                        fom: '2025-12-18',
-                        tom: '2026-04-01',
+                        fom: '2025-12-03',
+                        tom: '2026-02-11',
                         kontoType: 'MØDREKVOTE',
                         resultat: {
                             innvilget: true,
@@ -999,8 +1002,250 @@ export const saker_beregning = {
                         forelder: 'MOR',
                     },
                     {
-                        fom: '2026-04-02',
-                        tom: '2026-07-22',
+                        fom: '2026-02-12',
+                        tom: '2026-02-25',
+                        kontoType: 'FELLESPERIODE',
+                        resultat: {
+                            innvilget: true,
+                            trekkerMinsterett: true,
+                            trekkerDager: true,
+                            årsak: 'ANNET',
+                        },
+                        gradering: {
+                            arbeidstidprosent: 10.0,
+                            aktivitet: {
+                                type: 'ORDINÆRT_ARBEID',
+                                arbeidsgiver: {
+                                    id: '992260432',
+                                    type: 'ORGANISASJON',
+                                },
+                            },
+                        },
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                ],
+                perioderAnnenpartEøs: [],
+                beregningsgrunnlag: {
+                    skjæringsTidspunkt: '2025-11-12',
+                    beregningsandeler: [
+                        {
+                            aktivitetStatus: 'ARBEIDSTAKER',
+                            fastsattPrÅr: 480000.0,
+                            inntektsKilde: 'INNTEKTSMELDING',
+                            arbeidsforhold: {
+                                arbeidsgiverIdent: '992260475',
+                                arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER STORD',
+                                refusjonPrMnd: 0.0,
+                            },
+                            dagsatsArbeidsgiver: 0,
+                            dagsatsSøker: 1502,
+                        },
+                        {
+                            aktivitetStatus: 'ARBEIDSTAKER',
+                            fastsattPrÅr: 480000.0,
+                            inntektsKilde: 'INNTEKTSMELDING',
+                            arbeidsforhold: {
+                                arbeidsgiverIdent: '992260432',
+                                arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER BERGEN',
+                                refusjonPrMnd: 0.0,
+                            },
+                            dagsatsArbeidsgiver: 0,
+                            dagsatsSøker: 1502,
+                        },
+                    ],
+                    beregningAktivitetStatuser: [
+                        {
+                            aktivitetStatus: 'ARBEIDSTAKER',
+                            hjemmel: 'F_14_7_8_30',
+                        },
+                    ],
+                    grunnbeløp: 130160.0,
+                },
+                tilkjentYtelse: {
+                    utbetalingsperioder: [
+                        {
+                            fom: '2025-11-12',
+                            tom: '2025-12-02',
+                            andeler: [
+                                {
+                                    arbeidsgiverIdent: '992260432',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER BERGEN',
+                                    dagsats: 1502,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                                {
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    arbeidsgiverIdent: '992260475',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER STORD',
+                                    dagsats: 1502,
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                            ],
+                        },
+                        {
+                            fom: '2025-12-03',
+                            tom: '2026-01-13',
+                            andeler: [
+                                {
+                                    arbeidsgiverIdent: '992260432',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER BERGEN',
+                                    dagsats: 1502,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                                {
+                                    arbeidsgiverIdent: '992260475',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER STORD',
+                                    dagsats: 1502,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                            ],
+                        },
+                        {
+                            fom: '2026-01-14',
+                            tom: '2026-02-11',
+                            andeler: [
+                                {
+                                    arbeidsgiverIdent: '992260432',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER BERGEN',
+                                    dagsats: 1502,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                                {
+                                    arbeidsgiverIdent: '992260475',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER STORD',
+                                    dagsats: 1502,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                            ],
+                        },
+                        {
+                            fom: '2026-02-12',
+                            tom: '2026-02-25',
+                            andeler: [
+                                {
+                                    arbeidsgiverIdent: '992260432',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER BERGEN',
+                                    dagsats: 1352,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 90.0,
+                                },
+                                {
+                                    arbeidsgiverIdent: '992260475',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER STORD',
+                                    dagsats: 1502,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                            ],
+                        },
+                    ],
+                    feriepenger: [
+                        {
+                            opptjeningsår: '2026-12-31',
+                            årsbeløp: 3677,
+                            arbeidsgiverIdent: '992260475',
+                            tilBruker: true,
+                        },
+                        {
+                            opptjeningsår: '2026-12-31',
+                            årsbeløp: 3677,
+                            arbeidsgiverIdent: '992260432',
+                            tilBruker: true,
+                        },
+                        {
+                            opptjeningsår: '2025-12-31',
+                            årsbeløp: 5515,
+                            arbeidsgiverIdent: '992260432',
+                            tilBruker: true,
+                        },
+                        {
+                            opptjeningsår: '2025-12-31',
+                            årsbeløp: 5515,
+                            arbeidsgiverIdent: '992260475',
+                            tilBruker: true,
+                        },
+                    ],
+                },
+            },
+            barn: [
+                {
+                    fnr: '19442385397',
+                },
+            ],
+            dekningsgrad: 'HUNDRE',
+            oppdatertTidspunkt: '2026-02-03T10:18:45.782',
+            forelder: 'MOR',
+        },
+    ],
+    engangsstønad: [],
+    svangerskapspenger: [],
+} satisfies Saker_fpoversikt;
+
+export const saker_beregning_delvis_refusjon = {
+    foreldrepenger: [
+        {
+            saksnummer: '613',
+            sakAvsluttet: false,
+            kanSøkeOmEndring: true,
+            sakTilhørerMor: true,
+            gjelderAdopsjon: false,
+            morUføretrygd: false,
+            harAnnenForelderTilsvarendeRettEØS: false,
+            ønskerJustertUttakVedFødsel: false,
+            rettighetType: 'BEGGE_RETT',
+            annenPart: {
+                fnr: '29418911725',
+            },
+            familiehendelse: {
+                fødselsdato: '2026-02-03',
+                termindato: '2026-02-03',
+                antallBarn: 1,
+            },
+            gjeldendeVedtak: {
+                perioder: [
+                    {
+                        fom: '2026-01-13',
+                        tom: '2026-02-02',
+                        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                        resultat: {
+                            innvilget: true,
+                            trekkerMinsterett: true,
+                            trekkerDager: true,
+                            årsak: 'ANNET',
+                        },
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                    {
+                        fom: '2026-02-03',
+                        tom: '2026-05-18',
+                        kontoType: 'MØDREKVOTE',
+                        resultat: {
+                            innvilget: true,
+                            trekkerMinsterett: true,
+                            trekkerDager: true,
+                            årsak: 'ANNET',
+                        },
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                    {
+                        fom: '2027-05-19',
+                        tom: '2027-09-07',
                         kontoType: 'FELLESPERIODE',
                         resultat: {
                             innvilget: true,
@@ -1014,19 +1259,19 @@ export const saker_beregning = {
                 ],
                 perioderAnnenpartEøs: [],
                 beregningsgrunnlag: {
-                    skjæringsTidspunkt: '2025-11-27',
-                    beregningsAndeler: [
+                    skjæringsTidspunkt: '2026-01-13',
+                    beregningsandeler: [
                         {
                             aktivitetStatus: 'ARBEIDSTAKER',
                             fastsattPrÅr: 500000.0,
                             inntektsKilde: 'SKJØNNSFASTSATT',
                             arbeidsforhold: {
-                                arbeidsgiverNavn: 'Bedriften as',
                                 arbeidsgiverIdent: '992257822',
-                                refusjonPrMnd: 41666.0,
+                                arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                                refusjonPrMnd: 4166.0,
                             },
-                            dagsatsArbeidsgiver: 1923,
-                            dagsatsSøker: 0,
+                            dagsatsArbeidsgiver: 192,
+                            dagsatsSøker: 1731,
                         },
                         {
                             aktivitetStatus: 'FRILANSER',
@@ -1042,15 +1287,348 @@ export const saker_beregning = {
                             hjemmel: 'F_14_7_8_40',
                         },
                     ],
+                    grunnbeløp: 130160.0,
+                },
+                tilkjentYtelse: {
+                    utbetalingsperioder: [
+                        {
+                            fom: '2026-01-13',
+                            tom: '2026-02-02',
+                            andeler: [
+                                {
+                                    dagsats: 1081,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                                {
+                                    arbeidsgiverIdent: '992257822',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                                    dagsats: 1731,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                                {
+                                    arbeidsgiverIdent: '992257822',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                                    dagsats: 192,
+                                    tilBruker: false,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    utbetalingsgrad: 100.0,
+                                },
+                            ],
+                        },
+                        {
+                            fom: '2026-02-03',
+                            tom: '2026-03-16',
+                            andeler: [
+                                {
+                                    dagsats: 1081,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                                {
+                                    arbeidsgiverIdent: '992257822',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                                    dagsats: 1731,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                                {
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    arbeidsgiverIdent: '992257822',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                                    dagsats: 192,
+                                    tilBruker: false,
+                                    utbetalingsgrad: 100.0,
+                                },
+                            ],
+                        },
+                        {
+                            fom: '2026-03-17',
+                            tom: '2026-05-18',
+                            andeler: [
+                                {
+                                    dagsats: 1081,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                                {
+                                    arbeidsgiverIdent: '992257822',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                                    dagsats: 1731,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                                {
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    arbeidsgiverIdent: '992257822',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                                    dagsats: 192,
+                                    tilBruker: false,
+                                    utbetalingsgrad: 100.0,
+                                },
+                            ],
+                        },
+                        {
+                            fom: '2027-05-19',
+                            tom: '2027-09-07',
+                            andeler: [
+                                {
+                                    dagsats: 1081,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                                {
+                                    arbeidsgiverIdent: '992257822',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                                    dagsats: 1731,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                                {
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    arbeidsgiverIdent: '992257822',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                                    dagsats: 192,
+                                    tilBruker: false,
+                                    utbetalingsgrad: 100.0,
+                                },
+                            ],
+                        },
+                    ],
+                    feriepenger: [
+                        {
+                            opptjeningsår: '2026-12-31',
+                            årsbeløp: 10594,
+                            arbeidsgiverIdent: '992257822',
+                            tilBruker: true,
+                        },
+                        {
+                            opptjeningsår: '2026-12-31',
+                            årsbeløp: 1175,
+                            arbeidsgiverIdent: '992257822',
+                            tilBruker: false,
+                        },
+                    ],
                 },
             },
             barn: [
                 {
-                    fnr: '05482365304',
+                    fnr: '26522557292',
                 },
             ],
             dekningsgrad: 'HUNDRE',
-            oppdatertTidspunkt: '2025-12-18T11:05:06.295',
+            oppdatertTidspunkt: '2026-02-03T13:22:53.599',
+            forelder: 'MOR',
+        },
+    ],
+    engangsstønad: [],
+    svangerskapspenger: [],
+} satisfies Saker_fpoversikt;
+
+export const saker_beregning_full_refusjon = {
+    foreldrepenger: [
+        {
+            saksnummer: '616',
+            sakAvsluttet: false,
+            kanSøkeOmEndring: true,
+            sakTilhørerMor: true,
+            gjelderAdopsjon: false,
+            morUføretrygd: false,
+            harAnnenForelderTilsvarendeRettEØS: false,
+            ønskerJustertUttakVedFødsel: false,
+            rettighetType: 'BEGGE_RETT',
+            annenPart: {
+                fnr: '10467413509',
+            },
+            familiehendelse: {
+                fødselsdato: '2026-02-03',
+                termindato: '2026-02-03',
+                antallBarn: 1,
+            },
+            gjeldendeVedtak: {
+                perioder: [
+                    {
+                        fom: '2026-01-13',
+                        tom: '2026-02-02',
+                        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                        resultat: {
+                            innvilget: true,
+                            trekkerMinsterett: true,
+                            trekkerDager: true,
+                            årsak: 'ANNET',
+                        },
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                    {
+                        fom: '2026-02-03',
+                        tom: '2026-05-18',
+                        kontoType: 'MØDREKVOTE',
+                        resultat: {
+                            innvilget: true,
+                            trekkerMinsterett: true,
+                            trekkerDager: true,
+                            årsak: 'ANNET',
+                        },
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                    {
+                        fom: '2027-05-19',
+                        tom: '2027-09-07',
+                        kontoType: 'FELLESPERIODE',
+                        resultat: {
+                            innvilget: true,
+                            trekkerMinsterett: true,
+                            trekkerDager: true,
+                            årsak: 'ANNET',
+                        },
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                ],
+                perioderAnnenpartEøs: [],
+                beregningsgrunnlag: {
+                    skjæringsTidspunkt: '2026-01-13',
+                    beregningsandeler: [
+                        {
+                            aktivitetStatus: 'ARBEIDSTAKER',
+                            fastsattPrÅr: 480000.0,
+                            inntektsKilde: 'INNTEKTSMELDING',
+                            arbeidsforhold: {
+                                arbeidsgiverIdent: '992257822',
+                                arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                                refusjonPrMnd: 500000.0,
+                            },
+                            dagsatsArbeidsgiver: 1846,
+                            dagsatsSøker: 0,
+                        },
+                    ],
+                    beregningAktivitetStatuser: [
+                        {
+                            aktivitetStatus: 'ARBEIDSTAKER',
+                            hjemmel: 'F_14_7_8_30',
+                        },
+                    ],
+                    grunnbeløp: 130160.0,
+                },
+                tilkjentYtelse: {
+                    utbetalingsperioder: [
+                        {
+                            fom: '2026-01-13',
+                            tom: '2026-02-02',
+                            andeler: [
+                                {
+                                    arbeidsgiverIdent: '992257822',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                                    dagsats: 0,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                                {
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    arbeidsgiverIdent: '992257822',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                                    dagsats: 1846,
+                                    tilBruker: false,
+                                    utbetalingsgrad: 100.0,
+                                },
+                            ],
+                        },
+                        {
+                            fom: '2026-02-03',
+                            tom: '2026-03-16',
+                            andeler: [
+                                {
+                                    arbeidsgiverIdent: '992257822',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                                    dagsats: 0,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                                {
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    arbeidsgiverIdent: '992257822',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                                    dagsats: 1846,
+                                    tilBruker: false,
+                                    utbetalingsgrad: 100.0,
+                                },
+                            ],
+                        },
+                        {
+                            fom: '2026-03-17',
+                            tom: '2026-05-18',
+                            andeler: [
+                                {
+                                    arbeidsgiverIdent: '992257822',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                                    dagsats: 0,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                                {
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    arbeidsgiverIdent: '992257822',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                                    dagsats: 1846,
+                                    tilBruker: false,
+                                    utbetalingsgrad: 100.0,
+                                },
+                            ],
+                        },
+                        {
+                            fom: '2027-05-19',
+                            tom: '2027-09-07',
+                            andeler: [
+                                {
+                                    arbeidsgiverIdent: '992257822',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                                    dagsats: 0,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                                {
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    arbeidsgiverIdent: '992257822',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
+                                    dagsats: 1846,
+                                    tilBruker: false,
+                                    utbetalingsgrad: 100.0,
+                                },
+                            ],
+                        },
+                    ],
+                    feriepenger: [
+                        {
+                            opptjeningsår: '2026-12-31',
+                            årsbeløp: 11298,
+                            arbeidsgiverIdent: '992257822',
+                            tilBruker: false,
+                        },
+                    ],
+                },
+            },
+            barn: [
+                {
+                    fnr: '25422477058',
+                },
+            ],
+            dekningsgrad: 'HUNDRE',
+            oppdatertTidspunkt: '2026-02-03T13:31:28.184',
             forelder: 'MOR',
         },
     ],
