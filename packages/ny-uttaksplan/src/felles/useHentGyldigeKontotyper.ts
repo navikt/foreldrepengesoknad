@@ -198,6 +198,8 @@ const erGyldigForFarMedmor = (
     return true;
 };
 
+// TODO (TOR) Vurder å flytta funksjonane under til periodeUtils
+
 const erNoenPerioderFørFamiliehendelsesdato = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     familiehendelsedato: string,

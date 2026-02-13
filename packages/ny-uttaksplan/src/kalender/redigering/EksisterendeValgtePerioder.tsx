@@ -7,6 +7,7 @@ import {
     TrashIcon,
 } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
+import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
@@ -21,7 +22,9 @@ import { CalendarPeriod } from '@navikt/fp-ui';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { SlettPeriodeForskyvEllerErstatt } from '../../felles/SlettPeriodeForskyvEllerErstatt';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
+import { erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato } from '../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 
 export type UttakPeriodeMedAntallDager = (UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) & {
@@ -30,172 +33,212 @@ export type UttakPeriodeMedAntallDager = (UttakPeriode_fpoversikt | UttakPeriode
 
 interface Props {
     perioder: UttakPeriodeMedAntallDager[];
+    setSkalViseKnapper: (skalViseKnapper: boolean) => void;
 }
 
-export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
+export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Props) => {
     const intl = useIntl();
+
+    const [valgtPeriodeSomSkalSlettes, setValgtPeriodeSomSkalSlettes] = useState<
+        UttakPeriodeMedAntallDager | undefined
+    >(undefined);
 
     const slettPeriode = useSlettPeriodeFn();
 
     const {
         foreldreInfo: { erMedmorDelAvSøknaden, søker },
         erPeriodeneTilAnnenPartLåst,
+        familiehendelsedato,
     } = useUttaksplanData();
 
     return (
         <VStack gap="space-12">
-            {perioder.map((p, index) => {
-                const harHåndtertAllerede = perioder.findIndex((per) => per.fom === p.fom && per.tom === p.tom) < index;
-                if (harHåndtertAllerede) {
-                    return null;
-                }
+            {valgtPeriodeSomSkalSlettes && (
+                <SlettPeriodeForskyvEllerErstatt
+                    harPeriodeFørSeksUkserEtterFamiliehendelsedato={erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
+                        [valgtPeriodeSomSkalSlettes],
+                        familiehendelsedato,
+                    )}
+                    avbryt={() => {
+                        setValgtPeriodeSomSkalSlettes(undefined);
+                        setSkalViseKnapper(true);
+                    }}
+                    fjernPeriode={(skalForskyveBakover: boolean) =>
+                        slettPeriode(valgtPeriodeSomSkalSlettes, skalForskyveBakover)
+                    }
+                />
+            )}
+            {!valgtPeriodeSomSkalSlettes && (
+                <>
+                    <BodyShort>
+                        <FormattedMessage
+                            id="RedigeringPanel.EksisterendePerioder"
+                            values={{ antall: perioder.length }}
+                        />
+                    </BodyShort>
+                    {perioder.map((p, index) => {
+                        const harHåndtertAllerede =
+                            perioder.findIndex((per) => per.fom === p.fom && per.tom === p.tom) < index;
+                        if (harHåndtertAllerede) {
+                            return null;
+                        }
 
-                const erSamtidigUttak = erVanligUttakPeriode(p) && p.samtidigUttak !== undefined;
-                const denAndrePerioden = erSamtidigUttak
-                    ? perioder.find(
-                          (per) =>
-                              per.fom === p.fom &&
-                              per.tom === p.tom &&
-                              erVanligUttakPeriode(per) &&
-                              per.forelder !== p.forelder,
-                      )
-                    : undefined;
+                        const erSamtidigUttak = erVanligUttakPeriode(p) && p.samtidigUttak !== undefined;
+                        const denAndrePerioden = erSamtidigUttak
+                            ? perioder.find(
+                                  (per) =>
+                                      per.fom === p.fom &&
+                                      per.tom === p.tom &&
+                                      erVanligUttakPeriode(per) &&
+                                      per.forelder !== p.forelder,
+                              )
+                            : undefined;
 
-                const erAnnenPartsPeriodeLåst =
-                    erPeriodeneTilAnnenPartLåst && erVanligUttakPeriode(p) && p.forelder !== søker;
+                        const erAnnenPartsPeriodeLåst =
+                            erPeriodeneTilAnnenPartLåst && erVanligUttakPeriode(p) && p.forelder !== søker;
 
-                return (
-                    <HStack
-                        gap="space-8"
-                        key={`eksisterende-periode-${p.fom}-${p.tom}`}
-                        wrap={false}
-                        data-testid={`eksisterende-periode-${p.fom}-${p.tom}`}
-                    >
-                        <PeriodeIkon periode={p} søker={søker} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
+                        return (
+                            <HStack
+                                gap="space-8"
+                                key={`eksisterende-periode-${p.fom}-${p.tom}`}
+                                wrap={false}
+                                data-testid={`eksisterende-periode-${p.fom}-${p.tom}`}
+                            >
+                                <PeriodeIkon periode={p} søker={søker} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
 
-                        <VStack gap="space-0">
-                            {(erEøsUttakPeriode(p) || p.utsettelseÅrsak !== 'LOVBESTEMT_FERIE') && (
-                                <Heading size="xsmall">
-                                    <PeriodeHeaderText
-                                        periode={p}
-                                        erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
-                                        søker={søker}
-                                    />
-                                </Heading>
-                            )}
-
-                            {!erSamtidigUttak && (
-                                <HStack gap="space-4">
-                                    <BodyShort>
-                                        <PeriodeKvoteType periode={p} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
-                                    </BodyShort>
-                                </HStack>
-                            )}
-                            {erEøsUttakPeriode(p) && (
-                                <BodyShort>
-                                    <FormattedMessage id="RedigeringPanel.EøsPeriode" />
-                                </BodyShort>
-                            )}
-
-                            {erSamtidigUttak && (
                                 <VStack gap="space-0">
-                                    <BodyShort>
-                                        <FormattedMessage
-                                            id="RedigeringPanel.SamtidigUttakForelder"
-                                            values={{
-                                                forelder: p.forelder,
-                                                erMedmor: p.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
-                                            }}
-                                        />
-                                        <FormattedMessage
-                                            id="RedigeringPanel.SamtidigUttak"
-                                            values={{
-                                                kvote: p.kontoType,
-                                                prosent: p.samtidigUttak,
-                                                erMedmor: p.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
-                                            }}
-                                        />
-                                    </BodyShort>
-                                    {denAndrePerioden && erVanligUttakPeriode(denAndrePerioden) && (
+                                    {(erEøsUttakPeriode(p) || p.utsettelseÅrsak !== 'LOVBESTEMT_FERIE') && (
+                                        <Heading size="xsmall">
+                                            <PeriodeHeaderText
+                                                periode={p}
+                                                erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
+                                                søker={søker}
+                                            />
+                                        </Heading>
+                                    )}
+
+                                    {!erSamtidigUttak && (
+                                        <HStack gap="space-4">
+                                            <BodyShort>
+                                                <PeriodeKvoteType
+                                                    periode={p}
+                                                    erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
+                                                />
+                                            </BodyShort>
+                                        </HStack>
+                                    )}
+                                    {erEøsUttakPeriode(p) && (
                                         <BodyShort>
-                                            <FormattedMessage
-                                                id="RedigeringPanel.SamtidigUttakForelder"
-                                                values={{
-                                                    forelder: denAndrePerioden.forelder,
-                                                    erMedmor:
-                                                        denAndrePerioden.forelder === 'FAR_MEDMOR' &&
-                                                        erMedmorDelAvSøknaden,
-                                                }}
-                                            />
-                                            <FormattedMessage
-                                                id="RedigeringPanel.SamtidigUttak"
-                                                values={{
-                                                    kvote: denAndrePerioden.kontoType,
-                                                    prosent: denAndrePerioden.samtidigUttak,
-                                                    erMedmor: p.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
-                                                }}
-                                            />
+                                            <FormattedMessage id="RedigeringPanel.EøsPeriode" />
                                         </BodyShort>
                                     )}
-                                    {erVanligUttakPeriode(p) && p.gradering !== undefined && (
-                                        <BodyShort>
-                                            <FormattedMessage
-                                                id="RedigeringPanel.GraderingForelder"
-                                                values={{
-                                                    prosent: p.gradering.arbeidstidprosent,
-                                                    forelder: p.forelder,
-                                                    erMedmor: p.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
-                                                }}
-                                            />
-                                        </BodyShort>
-                                    )}
-                                    {denAndrePerioden &&
-                                        erVanligUttakPeriode(denAndrePerioden) &&
-                                        denAndrePerioden.gradering !== undefined && (
+
+                                    {erSamtidigUttak && (
+                                        <VStack gap="space-0">
                                             <BodyShort>
                                                 <FormattedMessage
-                                                    id="RedigeringPanel.GraderingForelder"
+                                                    id="RedigeringPanel.SamtidigUttakForelder"
                                                     values={{
-                                                        prosent: denAndrePerioden.gradering.arbeidstidprosent,
-                                                        forelder: denAndrePerioden.forelder,
-                                                        erMedmor:
-                                                            denAndrePerioden.forelder === 'FAR_MEDMOR' &&
-                                                            erMedmorDelAvSøknaden,
+                                                        forelder: p.forelder,
+                                                        erMedmor: p.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
+                                                    }}
+                                                />
+                                                <FormattedMessage
+                                                    id="RedigeringPanel.SamtidigUttak"
+                                                    values={{
+                                                        kvote: p.kontoType,
+                                                        prosent: p.samtidigUttak,
+                                                        erMedmor: p.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
                                                     }}
                                                 />
                                             </BodyShort>
-                                        )}
+                                            {denAndrePerioden && erVanligUttakPeriode(denAndrePerioden) && (
+                                                <BodyShort>
+                                                    <FormattedMessage
+                                                        id="RedigeringPanel.SamtidigUttakForelder"
+                                                        values={{
+                                                            forelder: denAndrePerioden.forelder,
+                                                            erMedmor:
+                                                                denAndrePerioden.forelder === 'FAR_MEDMOR' &&
+                                                                erMedmorDelAvSøknaden,
+                                                        }}
+                                                    />
+                                                    <FormattedMessage
+                                                        id="RedigeringPanel.SamtidigUttak"
+                                                        values={{
+                                                            kvote: denAndrePerioden.kontoType,
+                                                            prosent: denAndrePerioden.samtidigUttak,
+                                                            erMedmor:
+                                                                p.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
+                                                        }}
+                                                    />
+                                                </BodyShort>
+                                            )}
+                                            {erVanligUttakPeriode(p) && p.gradering !== undefined && (
+                                                <BodyShort>
+                                                    <FormattedMessage
+                                                        id="RedigeringPanel.GraderingForelder"
+                                                        values={{
+                                                            prosent: p.gradering.arbeidstidprosent,
+                                                            forelder: p.forelder,
+                                                            erMedmor:
+                                                                p.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
+                                                        }}
+                                                    />
+                                                </BodyShort>
+                                            )}
+                                            {denAndrePerioden &&
+                                                erVanligUttakPeriode(denAndrePerioden) &&
+                                                denAndrePerioden.gradering !== undefined && (
+                                                    <BodyShort>
+                                                        <FormattedMessage
+                                                            id="RedigeringPanel.GraderingForelder"
+                                                            values={{
+                                                                prosent: denAndrePerioden.gradering.arbeidstidprosent,
+                                                                forelder: denAndrePerioden.forelder,
+                                                                erMedmor:
+                                                                    denAndrePerioden.forelder === 'FAR_MEDMOR' &&
+                                                                    erMedmorDelAvSøknaden,
+                                                            }}
+                                                        />
+                                                    </BodyShort>
+                                                )}
+                                        </VStack>
+                                    )}
+
+                                    {!erSamtidigUttak && erVanligUttakPeriode(p) && p.gradering !== undefined && (
+                                        <BodyShort>
+                                            <FormattedMessage
+                                                id="RedigeringPanel.Gradering"
+                                                values={{ prosent: p.gradering.arbeidstidprosent }}
+                                            />
+                                        </BodyShort>
+                                    )}
+
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="RedigeringPanel.Dager"
+                                            values={{ antall: p.valgteDagerIPeriode }}
+                                        />
+                                    </BodyShort>
                                 </VStack>
-                            )}
-
-                            {!erSamtidigUttak && erVanligUttakPeriode(p) && p.gradering !== undefined && (
-                                <BodyShort>
-                                    <FormattedMessage
-                                        id="RedigeringPanel.Gradering"
-                                        values={{ prosent: p.gradering.arbeidstidprosent }}
+                                <Spacer />
+                                {!erEøsUttakPeriode(p) && !erAnnenPartsPeriodeLåst && (
+                                    <TrashIcon
+                                        title={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}
+                                        fontSize="1.5rem"
+                                        className="cursor-pointer hover:opacity-70"
+                                        onClick={() => {
+                                            setValgtPeriodeSomSkalSlettes(p);
+                                            setSkalViseKnapper(false);
+                                        }}
                                     />
-                                </BodyShort>
-                            )}
-
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="RedigeringPanel.Dager"
-                                    values={{ antall: p.valgteDagerIPeriode }}
-                                />
-                            </BodyShort>
-                        </VStack>
-                        <Spacer />
-                        {!erEøsUttakPeriode(p) && !erAnnenPartsPeriodeLåst && (
-                            <TrashIcon
-                                title={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}
-                                fontSize="1.5rem"
-                                className="cursor-pointer hover:opacity-70"
-                                onClick={() => slettPeriode(p)}
-                            />
-                        )}
-                    </HStack>
-                );
-            })}
+                                )}
+                            </HStack>
+                        );
+                    })}
+                </>
+            )}
         </VStack>
     );
 };
@@ -400,7 +443,10 @@ const PeriodeKvoteType = ({
 const useSlettPeriodeFn = () => {
     const { sammenslåtteValgtePerioder, slettUttaksplanPerioder, setValgtePerioder } = useKalenderRedigeringContext();
 
-    return (periodeSomSkalSlettes: { fom: string; tom: string; forelder?: BrukerRolleSak_fpoversikt }) => {
+    return (
+        periodeSomSkalSlettes: { fom: string; tom: string; forelder?: BrukerRolleSak_fpoversikt },
+        skalForskyveBakover: boolean,
+    ) => {
         const fomPeriodeSomSkalSlettes = dayjs(periodeSomSkalSlettes.fom);
         const tomPeriodeSomSkalSlettes = dayjs(periodeSomSkalSlettes.tom);
 
@@ -418,6 +464,7 @@ const useSlettPeriodeFn = () => {
                         tom: dayjs(p.tom).isAfter(periodeSomSkalSlettes.tom) ? periodeSomSkalSlettes.tom : p.tom,
                     }) satisfies UttakPeriode_fpoversikt,
             ),
+            skalForskyveBakover,
         );
 
         setValgtePerioder((oldPeriods) => justerValgteKalenderperioder(oldPeriods, periodeSomSkalSlettes));

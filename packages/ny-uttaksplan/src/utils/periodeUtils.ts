@@ -154,3 +154,13 @@ export const erPerioderEkslFomTomLike = (
 
     return false;
 };
+
+export const erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato = (
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    familiehendelsedato: string,
+) =>
+    valgtePerioder.some((p) =>
+        dayjs(p.fom).isBefore(
+            UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
+        ),
+    );

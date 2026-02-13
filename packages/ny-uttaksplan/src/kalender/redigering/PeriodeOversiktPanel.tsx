@@ -26,6 +26,7 @@ interface Props {
 export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) => {
     const intl = useIntl();
     const [visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel] = useState(false);
+    const [skalViseKnapper, setSkalViseKnapper] = useState(true);
 
     const {
         foreldreInfo: { søker },
@@ -176,8 +177,8 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
                 <div className="block px-4 pb-4">
                     <VStack gap="space-12">
                         {labels}
-                        <PeriodeDetaljerOgInfoMeldinger />
-                        {harValgtEøsPeriode && (
+                        <PeriodeDetaljerOgInfoMeldinger setSkalViseKnapper={setSkalViseKnapper} />
+                        {harValgtEøsPeriode && skalViseKnapper && (
                             <HStack justify="end">
                                 <Button
                                     type="button"
@@ -189,7 +190,7 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
                                 </Button>
                             </HStack>
                         )}
-                        {!harValgtEøsPeriode && (
+                        {!harValgtEøsPeriode && skalViseKnapper && (
                             <VStack gap="space-12">
                                 <Show above="md">
                                     <LeggTilOgEndreKnapp

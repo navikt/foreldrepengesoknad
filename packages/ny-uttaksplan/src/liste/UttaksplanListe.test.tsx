@@ -298,6 +298,15 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Slett valgte perioder'));
 
+        expect(
+            await screen.findByText(
+                'Du kan ikke forskyve perioder når du har valgt dager før seks uker etter fødsel/termin',
+            ),
+        ).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('La resten av planen være som den er'));
+        await userEvent.click(screen.getByText('Fortsett'));
+
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
             {

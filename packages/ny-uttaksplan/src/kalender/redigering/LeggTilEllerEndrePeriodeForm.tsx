@@ -123,12 +123,12 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
                     {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
 
-                    <HStack gap="space-8">
-                        <Button type="button" variant="secondary" onClick={lukkRedigeringsmodus}>
-                            <FormattedMessage id="LeggTilPeriodePanel.Avbryt" />
-                        </Button>
-                        <Button type="submit" variant="primary" disabled={!formMethods.formState.isDirty}>
+                    <HStack justify="space-between">
+                        <Button type="submit" variant="primary" size="small" disabled={!formMethods.formState.isDirty}>
                             <FormattedMessage id="LeggTilPeriodePanel.LeggTil" />
+                        </Button>
+                        <Button type="button" variant="secondary" size="small" onClick={lukkRedigeringsmodus}>
+                            <FormattedMessage id="LeggTilPeriodePanel.Avbryt" />
                         </Button>
                     </HStack>
                 </VStack>

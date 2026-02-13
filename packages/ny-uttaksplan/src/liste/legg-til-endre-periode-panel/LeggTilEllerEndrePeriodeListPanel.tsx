@@ -102,6 +102,9 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                 setFeilmelding(submitFeilmelding);
                 return;
             }
+        } else if (hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') {
+            leggIListe(false);
+            return;
         }
 
         setVisEndreEllerForskyvPanel(true);
@@ -126,12 +129,15 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             );
         } else if (hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') {
             const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder)
-                .fjernUttakPerioder([
-                    {
-                        fom: fomValue,
-                        tom: tomValue,
-                    },
-                ])
+                .fjernUttakPerioder(
+                    [
+                        {
+                            fom: fomValue,
+                            tom: tomValue,
+                        },
+                    ],
+                    false,
+                )
                 .getUttakPerioder();
 
             uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
