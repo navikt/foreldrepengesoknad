@@ -14,6 +14,7 @@ import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { kreverUttaksplanVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { getFamiliehendelsedato } from '../utils/barnUtils';
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
 
 const getPathToLabelMap = (intl: IntlShape) =>
@@ -165,6 +166,7 @@ const showManglendeDokumentasjonStegNy = (
         const barn = getData(ContextDataType.OM_BARNET);
         const uttaksplan = getData(ContextDataType.UTTAKSPLAN_NY);
         const andreInntektskilder = getData(ContextDataType.ANDRE_INNTEKTSKILDER);
+        const familiehendelsedato = barn ? getFamiliehendelsedato(barn) : undefined;
 
         const skalHaAleneomsorgDok =
             !!annenForelder && isAnnenForelderOppgitt(annenForelder) && annenForelder.erAleneOmOmsorg;
@@ -180,8 +182,8 @@ const showManglendeDokumentasjonStegNy = (
         const skalHaAdopsjonDokumentasjon = skalViseOmsorgsovertakelseDokumentasjon(søkersituasjon);
 
         const skalHaUttakDok =
-            annenForelder && uttaksplan
-                ? kreverUttaksplanVedleggNy(uttaksplan, erFarEllerMedmor, annenForelder)
+            annenForelder && uttaksplan && familiehendelsedato
+                ? kreverUttaksplanVedleggNy(uttaksplan, erFarEllerMedmor, annenForelder, familiehendelsedato)
                 : false;
 
         const skalHaAndreInntekterDok = andreInntektskilder?.some(

@@ -5,6 +5,7 @@ import { erIkkeEøsPeriode, erUttaksperiode } from 'utils/uttaksplanInfoUtils';
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from '@navikt/fp-uttaksplan-ny/src/utils/periodeUtils';
 
 import { UttakUploaderNy } from '../attachment-uploaders/UttakUploaderNy';
 
@@ -14,6 +15,7 @@ interface Props {
     perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
+    familiehendelsedato: string;
 }
 
 export const MorInnlagtDokumentasjonNy = ({
@@ -22,6 +24,7 @@ export const MorInnlagtDokumentasjonNy = ({
     perioder,
     navnPåForeldre,
     erFarEllerMedmor,
+    familiehendelsedato,
 }: Props) => {
     const intl = useIntl();
 
@@ -29,9 +32,12 @@ export const MorInnlagtDokumentasjonNy = ({
         return null;
     }
 
-    const morErForSykEllerInnlagtFørsteSeksUker = perioder.some((p) => {
-        // FIXME (TOR) erMorForSyk må inn som eige felt
-        if (erIkkeEøsPeriode(p) && erUttaksperiode(p) /*&& p.erMorForSyk === true*/ && p.kontoType === 'FEDREKVOTE') {
+    const perioderRundtFødsel = perioder.filter((p) =>
+        erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(p, familiehendelsedato),
+    );
+
+    const morErForSykEllerInnlagtFørsteSeksUker = perioderRundtFødsel.some((p) => {
+        if (erIkkeEøsPeriode(p) && erUttaksperiode(p) && p.kontoType === 'FEDREKVOTE' && !p.samtidigUttak) {
             return true;
         }
 

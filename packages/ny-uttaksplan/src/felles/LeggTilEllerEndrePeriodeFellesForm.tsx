@@ -22,6 +22,7 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskontoNavnSimple } from '../liste/utils/uttaksplanListeUtils';
 import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
+import { erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from '../utils/periodeUtils';
 import {
     erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgSeksUkerEtterFamDato,
     useHentGyldigeKontotyper,
@@ -57,6 +58,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         foreldreInfo: { rettighetType, erMedmorDelAvSøknaden, søker },
         familiehendelsedato,
         erPeriodeneTilAnnenPartLåst,
+        uttakPerioder,
     } = useUttaksplanData();
 
     const formMethods = useFormContext<LeggTilEllerEndrePeriodeFormFormValues>();
@@ -72,6 +74,14 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         stillingsprosentFarMedmor,
         skalDuKombinereArbeidOgUttakFarMedmor,
     } = formMethods.watch();
+
+    const infotekstOmFedrekvoteBrukRundtFødsel = getInfotekstOmFedrekvoteBrukRundtFødsel(
+        uttakPerioder,
+        valgtePerioder,
+        kontoTypeFarMedmor,
+        familiehendelsedato,
+        intl,
+    );
 
     const erFarMedmorUtenAleneomsorg =
         forelder === 'FAR_MEDMOR' &&
@@ -212,6 +222,12 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         );
                     })}
                 </RhfRadioGroup>
+            )}
+
+            {infotekstOmFedrekvoteBrukRundtFødsel && (
+                <InlineMessage status="info">
+                    <BodyShort>{infotekstOmFedrekvoteBrukRundtFødsel}</BodyShort>
+                </InlineMessage>
             )}
 
             {morSøkerOmOverføring && (
@@ -654,4 +670,38 @@ const getGradering = (skalDuJobbe: boolean, stillingsprosent: string | undefined
     }
 
     return undefined;
+};
+
+const getInfotekstOmFedrekvoteBrukRundtFødsel = (
+    uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    kontoTypeFarMedmor: KontoTypeUttak | undefined,
+    familiehendelsedato: string,
+    intl: IntlShape,
+) => {
+    const perioderInneholderFedrekvoteRundtFødsel = uttakPerioder
+        .filter((periode) => erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(periode, familiehendelsedato))
+        .some((periode) => {
+            return erVanligUttakPeriode(periode) && periode.kontoType === 'FEDREKVOTE' && !periode.samtidigUttak;
+        });
+
+    const valgteDagerRundtFødsel = valgtePerioder.filter((p) =>
+        erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(p, familiehendelsedato),
+    );
+
+    const valgteDagerInneholderFedrekvoteRundtFødsel =
+        valgteDagerRundtFødsel.length > 0 && kontoTypeFarMedmor === 'FEDREKVOTE';
+
+    let infotekstOmFedrekvoteBrukRundtFødsel = undefined;
+
+    if (
+        (perioderInneholderFedrekvoteRundtFødsel || valgteDagerInneholderFedrekvoteRundtFødsel) &&
+        kontoTypeFarMedmor === 'FEDREKVOTE'
+    ) {
+        infotekstOmFedrekvoteBrukRundtFødsel = intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel',
+        });
+    }
+
+    return infotekstOmFedrekvoteBrukRundtFødsel;
 };

@@ -466,3 +466,39 @@ export const BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbei
         },
     },
 };
+
+export const FarTarUtFedrekvoteFørsteSeksUkerUtenSamtidigMåDokumenterMorsSykdomEllerInnleggelse: Story = {
+    args: {
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+        },
+        rolle: 'far',
+        barn: {
+            antallBarn: 1,
+            type: BarnType.FØDT,
+            termindato: '2026-01-21',
+            fødselsdatoer: ['2026-01-21'],
+        },
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+        uttaksplan: [
+            {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                fom: '2026-01-28',
+                tom: '2026-01-28',
+            },
+        ],
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    API_URLS.trengerDokumentereMorsArbeid,
+                    () => new HttpResponse(JSON.stringify(false), { status: 200 }),
+                ),
+            ],
+        },
+    },
+};

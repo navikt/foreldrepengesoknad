@@ -89,8 +89,6 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             <VStack gap="space-16">
-                {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
-
                 {harPeriodeDerMorsAktivitetIkkeErValgt(eksisterendePerioderSomErValgt) && (
                     <Alert variant="warning" size="small">
                         <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt" />
@@ -101,6 +99,9 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
                     valgtePerioder={sammenslåtteValgtePerioder}
                     resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}
                 />
+
+                {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
+
                 <HStack gap="space-8">
                     <Button type="button" variant="secondary" onClick={lukkRedigeringsmodus}>
                         <FormattedMessage id="LeggTilPeriodePanel.Avbryt" />

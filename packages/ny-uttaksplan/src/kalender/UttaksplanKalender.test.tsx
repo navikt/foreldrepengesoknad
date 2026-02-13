@@ -14,6 +14,7 @@ const {
     SamtidigUttak,
     MorSøkerOgFarHarEøsPeriode,
     StjernemarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt,
+    FarsUttakMorForSyk,
     FarSøkerEtterAtMorHarSøkt,
 } = composeStories(stories);
 
@@ -582,9 +583,7 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Hvorfor skal du overta fars kvote?')).toBeInTheDocument();
         expect(screen.getByText('Far er innlagt på sykehus')).toBeInTheDocument();
         expect(
-            screen.getByText(
-                'I noen tilfeller kan du søke om å overta den andre forelderens kvote. I søknaden vil Nav be om dokumentasjon.',
-            ),
+            screen.getByText('I noen tilfeller kan du søke om å overta den andre forelderens kvote.'),
         ).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Far er innlagt på sykehus'));
@@ -1006,5 +1005,41 @@ describe('UttaksplanKalender', () => {
         const foreldrepengerFørFødsel = within(screen.getByTestId(`eksisterende-periode-2024-03-14-2024-04-03`));
 
         expect(foreldrepengerFørFødsel.queryByTitle('Slett dager fra periode')).not.toBeInTheDocument();
+    });
+
+    it('dersom far/medmor tar ut fedrekvoten i perioden rundt fødsel forbeholdt mor må han laste opp dokumentasjon', async () => {
+        render(<FarsUttakMorForSyk />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        const februar = screen.getByTestId('year:2026;month:1');
+
+        await userEvent.click(within(februar).getAllByText('9', { exact: true })[0]!);
+
+        expect(
+            screen.queryByText(
+                'De første seks ukene er vanligvis kun for mor.' +
+                    ' I noen tilfeller kan du få foreldrepenger i stedet for mor.',
+            ),
+        ).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(screen.getAllByText('Endre')[0]!);
+
+        expect(screen.getByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Far'));
+
+        expect(screen.getByText('Far skal ha?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Fars kvote'));
+
+        expect(
+            screen.queryByText(
+                'De første seks ukene er vanligvis kun for mor.' +
+                    ' I noen tilfeller kan du få foreldrepenger i stedet for mor.',
+            ),
+        ).toBeInTheDocument();
     });
 });

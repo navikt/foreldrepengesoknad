@@ -176,41 +176,57 @@ const renderSøknadRoutes = (
                 }
             />
             {isLocalhost() && (
-                <Route
-                    path={SøknadRoutes.UTTAKSPLAN}
-                    element={
-                        <UttaksplanStegNy
-                            søkerInfo={søkerInfo}
-                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                            avbrytSøknad={avbrytSøknad}
-                        />
-                    }
-                />
+                <>
+                    <Route
+                        path={SøknadRoutes.UTTAKSPLAN}
+                        element={
+                            <UttaksplanStegNy
+                                søkerInfo={søkerInfo}
+                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                avbrytSøknad={avbrytSøknad}
+                            />
+                        }
+                    />
+                    <Route
+                        path={SøknadRoutes.DOKUMENTASJON}
+                        element={
+                            <ManglendeVedleggNy
+                                søkerInfo={søkerInfo}
+                                erEndringssøknad={erEndringssøknad}
+                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                avbrytSøknad={avbrytSøknad}
+                            />
+                        }
+                    />
+                </>
             )}
             {!isLocalhost() && (
-                <Route
-                    path={SøknadRoutes.UTTAKSPLAN}
-                    element={
-                        <UttaksplanStep
-                            søkerInfo={søkerInfo}
-                            erEndringssøknad={erEndringssøknad}
-                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                            avbrytSøknad={avbrytSøknad}
-                        />
-                    }
-                />
-            )}
-            <Route
-                path={SøknadRoutes.DOKUMENTASJON}
-                element={
-                    <ManglendeVedlegg
-                        søkerInfo={søkerInfo}
-                        erEndringssøknad={erEndringssøknad}
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                        avbrytSøknad={avbrytSøknad}
+                <>
+                    <Route
+                        path={SøknadRoutes.UTTAKSPLAN}
+                        element={
+                            <UttaksplanStep
+                                søkerInfo={søkerInfo}
+                                erEndringssøknad={erEndringssøknad}
+                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                avbrytSøknad={avbrytSøknad}
+                            />
+                        }
                     />
-                }
-            />
+                    <Route
+                        path={SøknadRoutes.DOKUMENTASJON}
+                        element={
+                            <ManglendeVedlegg
+                                søkerInfo={søkerInfo}
+                                erEndringssøknad={erEndringssøknad}
+                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                avbrytSøknad={avbrytSøknad}
+                            />
+                        }
+                    />
+                </>
+            )}
+
             <Route
                 path={SøknadRoutes.UTENLANDSOPPHOLD}
                 element={

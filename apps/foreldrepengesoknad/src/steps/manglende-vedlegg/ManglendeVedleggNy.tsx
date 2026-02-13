@@ -14,6 +14,7 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Attachment, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
+import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ManglendeVedleggFormData } from './ManglendeVedleggFormData';
@@ -85,9 +86,15 @@ export const ManglendeVedleggNy = ({
     const arbeidsforholdOgInntekt = useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER);
     const saveVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
+    const familiehendelsedato = getFamiliehendelsedato(barn);
 
     const erFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
-    const perioderSomManglerVedlegg = perioderSomKreverVedleggNy(uttaksplan || [], erFarEllerMedmor, annenForelder);
+    const perioderSomManglerVedlegg = perioderSomKreverVedleggNy(
+        uttaksplan || [],
+        erFarEllerMedmor,
+        annenForelder,
+        familiehendelsedato,
+    );
     const morInnlagtVedlegg = getMorInnlagtVedlegg(vedlegg);
     const morForSykVedlegg = getMorForSykVedlegg(vedlegg);
     const farInnlagtVedlegg = getFarInnlagtVedlegg(vedlegg);
@@ -200,6 +207,7 @@ export const ManglendeVedleggNy = ({
                             perioder={morInnlagtPerioder}
                             updateAttachments={updateAttachments}
                             erFarEllerMedmor={erFarEllerMedmor}
+                            familiehendelsedato={familiehendelsedato}
                         />
                         <MorForSykDokumentasjonNy
                             attachments={morForSykVedlegg}
