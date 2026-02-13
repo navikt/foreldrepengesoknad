@@ -188,8 +188,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         gyldigeStønadskontoerForMor.length === 0 &&
         gyldigeStønadskontoerForFarMedmor.length === 0;
 
-    const harPeriodeFørFamiliehendelsedato =
-        !!uttaksplanperiode && dayjs(uttaksplanperiode.fom).isBefore(familiehendelsedato);
+    const harPeriodeFørFamiliehendelsedato = dayjs(fomValue).isBefore(familiehendelsedato);
 
     return (
         <VStack

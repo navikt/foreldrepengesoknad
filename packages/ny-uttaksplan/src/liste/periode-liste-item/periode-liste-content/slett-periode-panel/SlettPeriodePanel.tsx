@@ -47,13 +47,13 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
     const onSubmit = (values: FormValues) => {
         const slettedePerioder: Uttaksplanperiode[] = [];
 
-        values.periodeIndexer?.map((periodeIndex) => {
+        for (const periodeIndex of values.periodeIndexer || []) {
             const periode = uttaksplanperioder.at(periodeIndex);
 
             if (periode) {
                 slettedePerioder.push(periode);
             }
-        });
+        }
 
         setValgtePerioderSomSkalSlettes(slettedePerioder);
     };

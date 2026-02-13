@@ -81,7 +81,6 @@ export class UttakPeriodeBuilder {
                             nyeUttakPerioder.push({
                                 ...eksisterendePeriode,
                                 fom: UttaksdagenString.neste(periodeSomSkalFjernes.tom).getDato(),
-                                tom: eksisterendePeriode.tom,
                             });
                         }
                     } else {
@@ -267,7 +266,10 @@ const slåSammenLikeTilstøtendePerioder = (sortertePerioder: AlleUttakPerioder[
 
         const forrigePeriode = acc.at(-1)!;
 
-        const erTilstøtende = dayjs(forrigePeriode.tom).add(1, 'day').isSame(dayjs(periode.fom), 'day');
+        const erTilstøtende = dayjs(UttaksdagenString.neste(forrigePeriode.tom).getDato()).isSame(
+            dayjs(periode.fom),
+            'day',
+        );
 
         if (erTilstøtende && erPerioderEkslFomTomLike(forrigePeriode, periode)) {
             return [

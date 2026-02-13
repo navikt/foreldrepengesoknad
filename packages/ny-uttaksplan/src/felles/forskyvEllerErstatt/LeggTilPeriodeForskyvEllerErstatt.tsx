@@ -24,7 +24,7 @@ export const LeggTilPeriodeForskyvEllerErstatt = ({
             <RadioGroup
                 legend={<FormattedMessage id="RedigeringPanel.HvaSkalSkje" />}
                 description={<FormattedMessage id="RedigeringPanel.HvaSkalSkjeBeskrivelse" />}
-                onChange={(value) => setSkalForskyvePeriode(!!value)}
+                onChange={(value: boolean) => setSkalForskyvePeriode(value)}
             >
                 <Radio value={true} disabled={harPeriodeFørFamiliehendelsedato}>
                     <VStack gap="space-4">

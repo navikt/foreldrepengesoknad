@@ -142,12 +142,16 @@ export const erPerioderEkslFomTomLike = (
             periode1.flerbarnsdager === periode2.flerbarnsdager &&
             periode1.kontoType === periode2.kontoType &&
             periode1.forelder === periode2.forelder &&
-            periode1.gradering === periode2.gradering &&
+            periode1.gradering?.arbeidstidprosent === periode2.gradering?.arbeidstidprosent &&
+            periode1.gradering?.aktivitet === periode2.gradering?.aktivitet &&
             periode1.morsAktivitet === periode2.morsAktivitet &&
             periode1.oppholdÅrsak === periode2.oppholdÅrsak &&
             periode1.utsettelseÅrsak === periode2.utsettelseÅrsak &&
             periode1.overføringÅrsak === periode2.overføringÅrsak &&
-            periode1.resultat === periode2.resultat &&
+            periode1.resultat?.innvilget === periode2.resultat?.innvilget &&
+            periode1.resultat?.trekkerDager === periode2.resultat?.trekkerDager &&
+            periode1.resultat?.trekkerMinsterett === periode2.resultat?.trekkerMinsterett &&
+            periode1.resultat?.årsak === periode2.resultat?.årsak &&
             periode1.samtidigUttak === periode2.samtidigUttak
         );
     }
@@ -155,6 +159,7 @@ export const erPerioderEkslFomTomLike = (
     return false;
 };
 
+// TODO (TOR) DEtte er en duplikat - rydd
 export const erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     familiehendelsedato: string,
