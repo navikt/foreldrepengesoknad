@@ -80,20 +80,6 @@ export const deltUttak = ({
         currentTomDate = UttaksdagenString.neste(periodeFellesperiode.tom).getDato();
     }
 
-    if (fellesperiodeDagerFarMedmor !== undefined && fellesperiodeDagerFarMedmor > 0) {
-        const tidsperiode = getTidsperiodeString(currentTomDate, fellesperiodeDagerFarMedmor);
-        const periodeFellesperiode: UttakPeriode_fpoversikt = {
-            forelder: 'FAR_MEDMOR',
-            kontoType: 'FELLESPERIODE',
-            fom: tidsperiode.fom,
-            tom: tidsperiode.tom,
-        };
-
-        farsPerioder.push(periodeFellesperiode);
-
-        currentTomDate = UttaksdagenString.neste(periodeFellesperiode.tom).getDato();
-    }
-
     if (fedrekvote !== undefined) {
         const tidsperiode = getTidsperiodeString(currentTomDate, fedrekvote.dager);
         const periodeFedrekvote: UttakPeriode_fpoversikt = {
@@ -104,6 +90,20 @@ export const deltUttak = ({
         };
 
         farsPerioder.push(periodeFedrekvote);
+
+        currentTomDate = UttaksdagenString.neste(periodeFedrekvote.tom).getDato();
+    }
+
+    if (fellesperiodeDagerFarMedmor !== undefined && fellesperiodeDagerFarMedmor > 0) {
+        const tidsperiode = getTidsperiodeString(currentTomDate, fellesperiodeDagerFarMedmor);
+        const periodeFellesperiode: UttakPeriode_fpoversikt = {
+            forelder: 'FAR_MEDMOR',
+            kontoType: 'FELLESPERIODE',
+            fom: tidsperiode.fom,
+            tom: tidsperiode.tom,
+        };
+
+        farsPerioder.push(periodeFellesperiode);
     }
 
     return {
