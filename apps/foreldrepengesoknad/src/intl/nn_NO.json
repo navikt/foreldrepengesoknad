@@ -558,5 +558,6 @@
     "uttaksplan.oppholdsårsaktype.foreldernavn.mor.MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut sin kvote",
     "uttaksplan.oppholdsårsaktype.foreldernavn.far.FELLESPERIODE_ANNEN_FORELDER": "{foreldernavn} tar ut fellesperiode",
     "uttaksplan.oppholdsårsaktype.foreldernavn.far.FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut sin kvote",
-    "uttaksplan.oppholdsårsaktype.foreldernavn.far.MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut din kvote"
+    "uttaksplan.oppholdsårsaktype.foreldernavn.far.MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut din kvote",
+    "uttaksplan.AnnenPartPerioderInfomelding": "I denne søknaden søkjer du kun for deg sjølv. Du kan legge inn foreldrepengar for den andre forelderen, men informasjonen vil ikkje bli sendt inn. Den andre forelderen må sjølv hukse å senda oss ein søknad"
 }
