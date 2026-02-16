@@ -63,9 +63,10 @@ export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Pro
                         setValgtPeriodeSomSkalSlettes(undefined);
                         setSkalViseKnapper(true);
                     }}
-                    fjernPeriode={(skalForskyveBakover: boolean) =>
-                        slettPeriode(valgtPeriodeSomSkalSlettes, skalForskyveBakover)
-                    }
+                    fjernPeriode={(skalForskyveBakover: boolean) => {
+                        setValgtPeriodeSomSkalSlettes(undefined);
+                        slettPeriode(valgtPeriodeSomSkalSlettes, skalForskyveBakover);
+                    }}
                 />
             )}
             {!valgtPeriodeSomSkalSlettes && (
