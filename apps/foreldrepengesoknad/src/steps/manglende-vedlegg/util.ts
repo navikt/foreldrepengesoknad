@@ -29,8 +29,7 @@ import {
 } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { erEøsUttakPeriode } from '@navikt/fp-uttaksplan-ny/src/types/UttaksplanPeriode';
-import { erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from '@navikt/fp-uttaksplan-ny/src/utils/periodeUtils';
+import { erEøsUttakPeriode, erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from '@navikt/fp-uttaksplan-ny';
 
 export const isPeriodeMedMorInnleggelse = (periode: Periode) => {
     return (
