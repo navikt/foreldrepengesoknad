@@ -29,6 +29,8 @@ import {
 } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { erEøsUttakPeriode } from '@navikt/fp-uttaksplan-ny/src/types/UttaksplanPeriode';
+import { erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from '@navikt/fp-uttaksplan-ny/src/utils/periodeUtils';
 
 export const isPeriodeMedMorInnleggelse = (periode: Periode) => {
     return (
@@ -43,10 +45,11 @@ export const isPeriodeMedMorInnleggelse = (periode: Periode) => {
 
 export const isPeriodeMedMorInnleggelseNy = (
     periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    familiehendelsedato: string,
 ) => {
     return (
         isOverføringMorInnlagtNy(periode) ||
-        isUttakAvFedrekvoteMorForSykNy(periode) ||
+        isUttakAvFedrekvoteMorForSykNy(periode, familiehendelsedato) ||
         isFellesperiodeMorInnlagtNy(periode) ||
         isForeldrepengerMedAktivitetskravMorInnlagtNy(periode) ||
         isUtsettelseMorInnlagtNy(periode) ||
@@ -113,13 +116,14 @@ export const isOverføringFarForSykNy = (periode: UttakPeriode_fpoversikt | Utta
 
 const isUttakAvFedrekvoteMorForSykNy = (
     periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    familiehendelsedato: string,
 ): boolean => {
     return (
-        erIkkeEøsPeriode(periode) &&
+        !erEøsUttakPeriode(periode) &&
         erUttaksperiode(periode) &&
-        //FIXME (TOR) Denne må fiksast etter at felt er lagt til
-        //periode.erMorForSyk === true &&
-        periode.kontoType === 'FEDREKVOTE'
+        periode.kontoType === 'FEDREKVOTE' &&
+        !periode.samtidigUttak &&
+        erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(periode, familiehendelsedato)
     );
 };
 
