@@ -127,7 +127,6 @@ export const MorOgMedmor: Story = {
 };
 
 export const MorOgFarMedFerieopphold: Story = {
-    name: 'Mor og far, uten felles med ferieopphold',
     args: {
         ...Default.args,
         uttakPerioder: [
