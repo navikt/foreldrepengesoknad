@@ -67,14 +67,12 @@ export const ForeldrepengerSamtidig = ({ erAdopsjon = false, hvemPlanlegger, arb
                         )}
 
                         {barnet.antallBarn !== '1' && (
-                            <>
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="HvaErMulig.ForeldrepengerSamtidig.Flerbarnsdager"
-                                        values={{ b: bTag }}
-                                    />
-                                </BodyLong>
-                            </>
+                            <BodyLong>
+                                <FormattedMessage
+                                    id="HvaErMulig.ForeldrepengerSamtidig.Flerbarnsdager"
+                                    values={{ b: bTag }}
+                                />
+                            </BodyLong>
                         )}
                         <BodyLong>
                             <FormattedMessage

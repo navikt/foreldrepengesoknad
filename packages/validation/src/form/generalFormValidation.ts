@@ -11,7 +11,7 @@ export const isEmpty = (value?: EmptyCheckValue): boolean => {
     }
 
     if (Array.isArray(value)) {
-        return value.length === 0 || value.every(isEmpty);
+        return value.every(isEmpty);
     }
 
     return value.toString().trim().length === 0;
