@@ -9,7 +9,7 @@ import { ISOStringToDate } from 'utils/dateUtils';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnrString, getNavnPåForeldre } from 'utils/personUtils';
 import { isLocalhost } from 'utils/tempSystemUtils';
 
-import { Alert, Heading, Link } from '@navikt/ds-react';
+import { Alert, BodyLong, Heading, Link } from '@navikt/ds-react';
 
 import { AnnenForelder, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
@@ -105,6 +105,13 @@ export const OppsummeringSteg = (props: Props) => {
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 ekstraSamtykketekst={ekstraSamtykketekst}
             >
+                {isLocalhost() && (
+                    <Alert variant="warning">
+                        <BodyLong>
+                            <FormattedMessage id="uttaksplan.AnnenPartPerioderInfomelding" />
+                        </BodyLong>
+                    </Alert>
+                )}
                 {!erEndringssøknad && (
                     <>
                         <BarnOppsummering

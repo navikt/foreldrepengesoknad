@@ -9,8 +9,9 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { erPeriodeIOpprinneligPlan } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnr, getNavnPåForeldre } from 'utils/personUtils';
+import { isLocalhost } from 'utils/tempSystemUtils';
 
-import { Alert, Tabs } from '@navikt/ds-react';
+import { Alert, BodyLong, Tabs } from '@navikt/ds-react';
 
 import { isAnnenForelderOppgitt, isIkkeUtfyltTypeBarn } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
@@ -115,6 +116,13 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig}>
+                {isLocalhost() && (
+                    <Alert variant="warning">
+                        <BodyLong>
+                            <FormattedMessage id="uttaksplan.AnnenPartPerioderInfomelding" />
+                        </BodyLong>
+                    </Alert>
+                )}
                 <UttaksplanDataProvider
                     barn={barn}
                     foreldreInfo={{
