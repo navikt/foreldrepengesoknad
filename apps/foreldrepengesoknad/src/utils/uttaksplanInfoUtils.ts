@@ -74,8 +74,6 @@ export const isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel = (
         !('trekkdager' in periode) &&
         periode.forelder === 'FAR_MEDMOR' &&
         periode.kontoType === 'FEDREKVOTE' &&
-        // FIXME (TOR) Kva skal ein erstatta dette med?
-        // !!periode.erMorForSyk === false &&
         periode.morsAktivitet === undefined &&
         !!periode.flerbarnsdager === false &&
         !!periode.samtidigUttak

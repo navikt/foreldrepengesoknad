@@ -11,6 +11,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
+import { erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { getTidsperiodeString } from './DokumentasjonLastetOppLabel';
@@ -36,7 +37,10 @@ const ManglerDokumentasjon = ({ headerLabel, bodyLabel }: ManglerDokumentasjonPr
     </VStack>
 );
 
-const isPeriodeMedMorInnleggelse = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
+const isPeriodeMedMorInnleggelse = (
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    familiehendelsedato: string,
+) => {
     if ('trekkdager' in periode) {
         return false;
     }
@@ -45,8 +49,12 @@ const isPeriodeMedMorInnleggelse = (periode: UttakPeriode_fpoversikt | UttakPeri
         return true;
     }
 
-    // FIXME (TOR) Her må me legga til meir info i form rundt morsaktivitet
-    if (erUttaksperiode(periode) && periode.morsAktivitet === 'INNLAGT' && periode.kontoType === 'FEDREKVOTE') {
+    if (
+        erUttaksperiode(periode) &&
+        periode.kontoType === 'FEDREKVOTE' &&
+        !periode.samtidigUttak &&
+        erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(periode, familiehendelsedato)
+    ) {
         return true;
     }
 
@@ -73,6 +81,7 @@ interface Props {
     erFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
     uttaksperioderSomManglerVedlegg: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    familiehendelsedato: string;
 }
 
 export const DokumentasjonSendSenereLabelNy = ({
@@ -80,11 +89,12 @@ export const DokumentasjonSendSenereLabelNy = ({
     erFarEllerMedmor,
     navnPåForeldre,
     uttaksperioderSomManglerVedlegg,
+    familiehendelsedato,
 }: Props) => {
     const tidsperioder = attachment.dokumenterer?.perioder;
 
     const morErForSykEllerInnlagtFørsteSeksUker = uttaksperioderSomManglerVedlegg
-        .filter(isPeriodeMedMorInnleggelse)
+        .filter((p) => isPeriodeMedMorInnleggelse(p, familiehendelsedato))
         .some((p) => {
             if (
                 erUttaksperiode(p) &&
