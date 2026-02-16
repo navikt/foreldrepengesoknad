@@ -55,7 +55,7 @@ export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Pro
         <VStack gap="space-12">
             {valgtPeriodeSomSkalSlettes && (
                 <SlettPeriodeForskyvEllerErstatt
-                    harPeriodeFørSeksUkserEtterFamiliehendelsedato={erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
+                    harPeriodeFørSeksUkerEtterFamiliehendelsedato={erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
                         [valgtPeriodeSomSkalSlettes],
                         familiehendelsedato,
                     )}

@@ -80,7 +80,7 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
             <div>
                 {valgtePerioderSomSkalSlettes.length > 0 && (
                     <SlettPeriodeForskyvEllerErstatt
-                        harPeriodeFørSeksUkserEtterFamiliehendelsedato={erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
+                        harPeriodeFørSeksUkerEtterFamiliehendelsedato={erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
                             valgtePerioderSomSkalSlettes,
                             familiehendelsedato,
                         )}

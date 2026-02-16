@@ -4,20 +4,20 @@ import { FormattedMessage } from 'react-intl';
 import { Alert, BodyShort, Button, Detail, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 interface Props {
-    harPeriodeFørSeksUkserEtterFamiliehendelsedato: boolean;
+    harPeriodeFørSeksUkerEtterFamiliehendelsedato: boolean;
     avbryt: () => void;
     fjernPeriode: (skalForskyveBakover: boolean) => void;
 }
 
 export const SlettPeriodeForskyvEllerErstatt = ({
-    harPeriodeFørSeksUkserEtterFamiliehendelsedato,
+    harPeriodeFørSeksUkerEtterFamiliehendelsedato,
     avbryt,
     fjernPeriode,
 }: Props) => {
     const [skalForskyvePeriode, setSkalForskyvePeriode] = useState<boolean | undefined>(undefined);
 
     const skalForskyve =
-        harPeriodeFørSeksUkserEtterFamiliehendelsedato || skalForskyvePeriode === undefined
+        harPeriodeFørSeksUkerEtterFamiliehendelsedato || skalForskyvePeriode === undefined
             ? false
             : skalForskyvePeriode;
 
@@ -28,7 +28,7 @@ export const SlettPeriodeForskyvEllerErstatt = ({
                 description={<FormattedMessage id="RedigeringPanel.HvaSkalSkjeSletteBeskrivelse" />}
                 onChange={(value: boolean) => setSkalForskyvePeriode(value)}
             >
-                <Radio value={true} disabled={harPeriodeFørSeksUkserEtterFamiliehendelsedato}>
+                <Radio value={true} disabled={harPeriodeFørSeksUkerEtterFamiliehendelsedato}>
                     <VStack gap="space-4">
                         <BodyShort>
                             <FormattedMessage id="RedigeringPanel.SlettFlyttPlanen" />
@@ -53,7 +53,7 @@ export const SlettPeriodeForskyvEllerErstatt = ({
                     </VStack>
                 </Radio>
             </RadioGroup>
-            {harPeriodeFørSeksUkserEtterFamiliehendelsedato && (
+            {harPeriodeFørSeksUkerEtterFamiliehendelsedato && (
                 <Alert variant="info">
                     <FormattedMessage id="RedigeringPanel.ValgtDagerFørSeksUkerEtterFamDato" />
                 </Alert>
