@@ -74,7 +74,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     const leggIKalender = (skalForskyve: boolean) => {
         leggTilUttaksplanPerioder(
             sammenslåtteValgtePerioder.flatMap((periode) => {
-                return mapFraFormValuesTilUttakPeriode(formMethods.getValues(), periode);
+                return mapFraFormValuesTilUttakPeriode(formMethods.getValues(), periode, søker);
             }),
             skalForskyve,
         );

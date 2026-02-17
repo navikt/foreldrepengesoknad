@@ -6,6 +6,7 @@ import { useStepConfig } from 'appData/useStepConfig';
 import dayjs from 'dayjs';
 import { ReactNode, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { erPeriodeIOpprinneligPlan } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnr, getNavnPåForeldre } from 'utils/personUtils';
@@ -24,6 +25,7 @@ import {
     isFødtBarn,
 } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
+import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import {
     FjernAltIUttaksplanModal,
     KvoteOppsummering,
@@ -113,6 +115,13 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
         (uttaksplan.length !== defaultUttaksperioder.length ||
             defaultUttaksperioder.some((defaultPeriode) => !erPeriodeIOpprinneligPlan(uttaksplan, defaultPeriode)));
 
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(
+        søkerInfo.arbeidsforhold,
+        søkersituasjon.situasjon === 'adopsjon',
+        erSøkerFarEllerMedmor,
+        getFamiliehendelsedato(barn),
+    );
+
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig}>
@@ -138,6 +147,7 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
                     harAktivitetskravIPeriodeUtenUttak={false}
                     uttakPerioder={uttaksplan || defaultUttaksperioder}
                     erPeriodeneTilAnnenPartLåst={!!tidligereUttaksperioder}
+                    aktiveArbeidsforhold={aktiveArbeidsforhold}
                 >
                     {feilmelding && <Alert variant="error">{feilmelding}</Alert>}
                     <div ref={kvoteOppsummeringRef}>

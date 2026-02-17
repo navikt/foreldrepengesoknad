@@ -16,6 +16,7 @@ const {
     StjernemarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt,
     FarsUttakMorForSyk,
     FarSøkerEtterAtMorHarSøkt,
+    MedArbeidsforhold,
 } = composeStories(stories);
 
 describe('UttaksplanKalender', () => {
@@ -1231,5 +1232,50 @@ describe('UttaksplanKalender', () => {
         expect(within(mai).getByTestId('day:23;dayColor:NONE')).toBeInTheDocument();
         expect(within(mai).getByTestId('day:28;dayColor:NONE')).toBeInTheDocument();
         expect(within(mai).getByTestId('day:29;dayColor:BLUE')).toBeInTheDocument();
+    });
+
+    it('skal måtte oppgi arbeidsforhold når en graderer', async () => {
+        render(<MedArbeidsforhold />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
+
+        const juni = screen.getByTestId('year:2024;month:5');
+
+        await userEvent.click(within(juni).getByTestId('day:3;dayColor:BLUE'));
+        await userEvent.click(within(juni).getByTestId('day:13;dayColor:BLUE'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(screen.getAllByText('Endre')[0]!);
+
+        expect(screen.getByText('Skal mor kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ja'));
+
+        const arbeidsprosentMor = screen.getByText('Hvor mange prosent skal mor jobbe?');
+        await userEvent.type(arbeidsprosentMor, '60');
+
+        expect(screen.getByText('Hvor skal du jobbe?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Bedrift AS'));
+
+        await userEvent.click(screen.getByText('Legg til'));
+
+        expect(screen.getByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
+
+        await userEvent.click(screen.getByText('Fortsett'));
+
+        await userEvent.click(within(juni).getByTestId('day:3;dayColor:BLUESTRIPED'));
+        await userEvent.click(within(juni).getByTestId('day:13;dayColor:BLUESTRIPED'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(screen.getAllByText('Endre')[0]!);
+
+        expect(screen.getByRole('radio', { name: /Bedrift AS/i })).toBeChecked();
     });
 });
