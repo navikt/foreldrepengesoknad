@@ -78,13 +78,16 @@ export const getAktivitetTekst = (
     const type = aktivitet.type;
     const orgnummer = aktivitet.arbeidsgiver?.id;
 
-    if (orgnummer !== undefined && arbeidsforhold && arbeidsforhold.length > 0) {
+    if (type === 'ORDINÆRT_ARBEID' && orgnummer !== undefined && arbeidsforhold && arbeidsforhold.length > 0) {
         const arbeidsgiverNavn = getValgtArbeidsgiverNavn(arbeidsforhold, orgnummer);
         return intl.formatMessage({ id: `oppsummering.uttak.arbeidstaker` }, { orgnr: orgnummer, arbeidsgiverNavn });
     } else if (type === 'SELVSTENDIG_NÆRINGSDRIVENDE') {
         return intl.formatMessage({ id: 'oppsummering.uttak.selvstendig_næringsdrivende' });
+    } else if (type === 'FRILANS') {
+        return intl.formatMessage({ id: 'oppsummering.uttak.frilans' });
     }
-    return intl.formatMessage({ id: 'oppsummering.uttak.frilans' });
+
+    throw new Error(`Ikke håndtert aktivitetstype: ${type}`);
 };
 
 export const getÅrsakTekst = (
