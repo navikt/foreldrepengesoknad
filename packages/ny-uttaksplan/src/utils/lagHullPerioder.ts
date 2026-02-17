@@ -69,7 +69,7 @@ export const lagTapteDagerPerioder = (
                 fom:
                     familiesituasjon === 'adopsjon'
                         ? UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato()
-                        : UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(31),
+                        : UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
                 tom: førstePeriodeSomStarterEtterFamiliehendelsedato.fom,
             };
 
