@@ -17,6 +17,7 @@ import {
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilUttakPeriode,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
+import { LeggTilPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstatt';
 import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../utils/periodeUtils';
@@ -35,12 +36,15 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         uttakPerioder,
         foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
+        familiehendelsedato,
     } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, setValgtePerioder, setEndredePerioder } =
         useKalenderRedigeringContext();
 
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
+
+    const [visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel] = useState(false);
 
     const defaultValues = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
         uttakPerioder,
@@ -64,10 +68,15 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         }
         setFeilmelding(undefined);
 
+        setVisEndreEllerForskyvPanel(true);
+    };
+
+    const leggIKalender = (skalForskyve: boolean) => {
         leggTilUttaksplanPerioder(
             sammenslåtteValgtePerioder.flatMap((periode) => {
-                return mapFraFormValuesTilUttakPeriode(values, periode);
+                return mapFraFormValuesTilUttakPeriode(formMethods.getValues(), periode);
             }),
+            skalForskyve,
         );
 
         setValgtePerioder([]);
@@ -86,31 +95,44 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         uttakPerioderInkludertTapteDager,
     );
 
+    const harPeriodeFørFamiliehendelsedato = sammenslåtteValgtePerioder.some((p) =>
+        dayjs(p.fom).isBefore(familiehendelsedato),
+    );
+
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-            <VStack gap="space-16">
-                {harPeriodeDerMorsAktivitetIkkeErValgt(eksisterendePerioderSomErValgt) && (
-                    <Alert variant="warning" size="small">
-                        <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt" />
-                    </Alert>
-                )}
-
-                <LeggTilEllerEndrePeriodeFellesForm
-                    valgtePerioder={sammenslåtteValgtePerioder}
-                    resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}
+            {visEndreEllerForskyvPanel && (
+                <LeggTilPeriodeForskyvEllerErstatt
+                    harPeriodeFørFamiliehendelsedato={harPeriodeFørFamiliehendelsedato}
+                    setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
+                    leggTilEllerForskyvPeriode={leggIKalender}
                 />
+            )}
+            {!visEndreEllerForskyvPanel && (
+                <VStack gap="space-16">
+                    {harPeriodeDerMorsAktivitetIkkeErValgt(eksisterendePerioderSomErValgt) && (
+                        <Alert variant="warning" size="small">
+                            <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt" />
+                        </Alert>
+                    )}
 
-                {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
+                    <LeggTilEllerEndrePeriodeFellesForm
+                        valgtePerioder={sammenslåtteValgtePerioder}
+                        resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}
+                    />
 
-                <HStack gap="space-8">
-                    <Button type="button" variant="secondary" onClick={lukkRedigeringsmodus}>
-                        <FormattedMessage id="LeggTilPeriodePanel.Avbryt" />
-                    </Button>
-                    <Button type="submit" variant="primary" disabled={!formMethods.formState.isDirty}>
-                        <FormattedMessage id="LeggTilPeriodePanel.LeggTil" />
-                    </Button>
-                </HStack>
-            </VStack>
+                    {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
+
+                    <HStack justify="space-between">
+                        <Button type="submit" variant="primary" size="small" disabled={!formMethods.formState.isDirty}>
+                            <FormattedMessage id="LeggTilPeriodePanel.LeggTil" />
+                        </Button>
+                        <Button type="button" variant="secondary" size="small" onClick={lukkRedigeringsmodus}>
+                            <FormattedMessage id="LeggTilPeriodePanel.Avbryt" />
+                        </Button>
+                    </HStack>
+                </VStack>
+            )}
         </RhfForm>
     );
 };

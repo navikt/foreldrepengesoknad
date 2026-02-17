@@ -111,7 +111,9 @@ export const ManglendeVedleggNy = ({
     const militærEllerSiviltjenesteVedlegg = getMilitærEllerSiviltjenesteVedlegg(vedlegg);
     const etterlønnEllerSluttvederlagVedlegg = getEtterlønnEllerSluttvederlagVedlegg(vedlegg);
 
-    const morInnlagtPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorInnleggelseNy);
+    const morInnlagtPerioder = perioderSomManglerVedlegg.filter((periode) =>
+        isPeriodeMedMorInnleggelseNy(periode, familiehendelsedato),
+    );
     const barnInnlagtPerioder = perioderSomManglerVedlegg.filter(isUtsettelseBarnInnlagtNy);
     const farForSykPerioder = perioderSomManglerVedlegg.filter(isOverføringFarForSykNy);
     const farInnlagtPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedFarInnleggelseNy);

@@ -4,13 +4,14 @@ import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/querie
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useStepConfig } from 'appData/useStepConfig';
 import dayjs from 'dayjs';
-import { useRef, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { erPeriodeIOpprinneligPlan } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnr, getNavnPåForeldre } from 'utils/personUtils';
+import { isLocalhost } from 'utils/tempSystemUtils';
 
-import { Alert, Tabs } from '@navikt/ds-react';
+import { Alert, BodyLong, Tabs } from '@navikt/ds-react';
 
 import { isAnnenForelderOppgitt, isIkkeUtfyltTypeBarn } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
@@ -54,7 +55,7 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN_NY);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN_NY);
 
-    const [feilmelding, setFeilmelding] = useState<string | undefined>();
+    const [feilmelding, setFeilmelding] = useState<ReactNode | undefined>();
 
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
 
@@ -115,6 +116,13 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig}>
+                {isLocalhost() && (
+                    <Alert variant="warning">
+                        <BodyLong>
+                            <FormattedMessage id="uttaksplan.AnnenPartPerioderInfomelding" />
+                        </BodyLong>
+                    </Alert>
+                )}
                 <UttaksplanDataProvider
                     barn={barn}
                     foreldreInfo={{

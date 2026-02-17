@@ -28,11 +28,12 @@ export const DokumentasjonOppsummeringNy = ({ onVilEndreSvar, navnPåForeldre }:
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
+    const familiehendelsedato = getFamiliehendelsedato(barn);
     const uttaksperioderSomManglerVedlegg = perioderSomKreverVedleggNy(
         uttaksplan || [],
         erSøkerFarEllerMedmor,
         annenForelder,
-        getFamiliehendelsedato(barn),
+        familiehendelsedato,
     );
 
     const harVedlegg = alleVedlegg && Object.values(alleVedlegg).some((v) => v.length > 0);
@@ -85,6 +86,7 @@ export const DokumentasjonOppsummeringNy = ({ onVilEndreSvar, navnPåForeldre }:
                                                 erFarEllerMedmor={erSøkerFarEllerMedmor}
                                                 navnPåForeldre={navnPåForeldre}
                                                 uttaksperioderSomManglerVedlegg={uttaksperioderSomManglerVedlegg}
+                                                familiehendelsedato={familiehendelsedato}
                                             />
                                         ) : (
                                             <DokumentasjonLastetOppLabel attachment={idOgVedlegg[1][0]!} />

@@ -74,8 +74,6 @@ export const isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel = (
         !('trekkdager' in periode) &&
         periode.forelder === 'FAR_MEDMOR' &&
         periode.kontoType === 'FEDREKVOTE' &&
-        // FIXME (TOR) Kva skal ein erstatta dette med?
-        // !!periode.erMorForSyk === false &&
         periode.morsAktivitet === undefined &&
         !!periode.flerbarnsdager === false &&
         !!periode.samtidigUttak
@@ -119,9 +117,9 @@ const starterTidsperiodeEtter2UkerFørFødsel = (
 
 const getFørsteUttaksdag2UkerFørFødsel = (familiehendelsesdato: string, termindato: string | undefined): string => {
     const terminEllerFamHendelsesdatoMinusToUker =
-        termindato !== undefined
-            ? dayjs(termindato).subtract(14, 'day')
-            : dayjs(familiehendelsesdato).subtract(14, 'day');
+        termindato === undefined
+            ? dayjs(familiehendelsesdato).subtract(14, 'day')
+            : dayjs(termindato).subtract(14, 'day');
     const datoÅRegneFra = dayjs.min(terminEllerFamHendelsesdatoMinusToUker, dayjs(familiehendelsesdato));
     return UttaksdagenString.denneEllerNeste(datoÅRegneFra.format(ISO_DATE_FORMAT)).getDato();
 };
