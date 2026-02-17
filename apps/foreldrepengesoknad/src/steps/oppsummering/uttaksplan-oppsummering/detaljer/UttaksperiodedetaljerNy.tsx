@@ -3,26 +3,18 @@ import { useIntl } from 'react-intl';
 import { AnnenForelder, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { EksternArbeidsforholdDto_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-// import { getArbeidsformTekst } from '../OppsummeringUtils';
+import { getAktivitetTekst } from '../OppsummeringUtils';
 import { Feltoppsummering } from './Feltoppsummering';
 import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
 interface Props {
     periode: UttakPeriode_fpoversikt;
     registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[] | undefined;
-    periodeErNyEllerEndret: boolean;
-    søkerErFarEllerMedmor: boolean;
     annenForelder: AnnenForelder;
 }
 
-export const UttaksperiodedetaljerNy = ({ periode, annenForelder }: Props) => {
+export const UttaksperiodedetaljerNy = ({ periode, annenForelder, registrerteArbeidsforhold }: Props) => {
     const intl = useIntl();
-
-    // FIXME (TOR) Få inn arbeidsformer
-    // let arbeidsformTekst = '';
-    // if (arbeidsformer) {
-    //     arbeidsformTekst = getArbeidsformTekst(intl, arbeidsformer, orgnumre, registrerteArbeidsforhold).join('\r\n');
-    // }
 
     const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
 
@@ -56,12 +48,12 @@ export const UttaksperiodedetaljerNy = ({ periode, annenForelder }: Props) => {
                 />
             )}
 
-            {/* {arbeidsformer && (
+            {periode.gradering?.aktivitet && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.arbeidstaker.label' })}
-                    verdi={arbeidsformTekst}
+                    verdi={getAktivitetTekst(intl, periode.gradering?.aktivitet, registrerteArbeidsforhold)}
                 />
-            )} */}
+            )}
             {periode.morsAktivitet && periode.morsAktivitet !== 'IKKE_OPPGITT' && (
                 <MorsAktivitetDetaljer morsAktivitet={periode.morsAktivitet} />
             )}

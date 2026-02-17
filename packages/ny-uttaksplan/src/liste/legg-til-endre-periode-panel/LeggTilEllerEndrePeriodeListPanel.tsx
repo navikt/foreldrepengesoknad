@@ -150,7 +150,10 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                 return;
             }
             const mapped = omitMany(values, ['fom', 'tom', 'hvaVilDuGjøre']);
-            handleAddPeriode(mapFraFormValuesTilUttakPeriode(mapped, { fom: fomValue, tom: tomValue }), skalForskyve);
+            handleAddPeriode(
+                mapFraFormValuesTilUttakPeriode(mapped, { fom: fomValue, tom: tomValue }, søker),
+                skalForskyve,
+            );
         }
 
         setIsLeggTilPeriodePanelOpen(false);

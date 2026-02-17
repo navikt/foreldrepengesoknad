@@ -46,6 +46,7 @@ const meta = {
                 harAktivitetskravIPeriodeUtenUttak={false}
                 uttakPerioder={perioder ?? []}
                 erPeriodeneTilAnnenPartLåst={args.erPeriodeneTilAnnenPartLåst}
+                aktiveArbeidsforhold={args.aktiveArbeidsforhold}
             >
                 <UttaksplanRedigeringProvider
                     oppdaterUttaksplan={handleOnPlanChange}
@@ -1206,6 +1207,28 @@ export const FarsUttakMorForSyk: Story = {
                 kontoType: 'FEDREKVOTE',
                 fom: '2026-08-26',
                 tom: '2026-12-08',
+            },
+        ],
+    },
+};
+
+export const MedArbeidsforhold: Story = {
+    args: {
+        ...MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering.args,
+        aktiveArbeidsforhold: [
+            {
+                arbeidsgiverId: '1',
+                arbeidsgiverIdType: '1',
+                stillingsprosent: 100,
+                arbeidsgiverNavn: 'NAV',
+                fom: '2024-01-01',
+            },
+            {
+                arbeidsgiverId: '2',
+                arbeidsgiverIdType: '2',
+                stillingsprosent: 80,
+                arbeidsgiverNavn: 'Bedrift AS',
+                fom: '2024-01-01',
             },
         ],
     },
