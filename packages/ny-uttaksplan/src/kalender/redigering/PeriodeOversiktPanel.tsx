@@ -31,7 +31,6 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
     const {
         foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
-        familiehendelsedato,
     } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, setValgtePerioder, leggTilUttaksplanPerioder, setEndredePerioder } =
@@ -75,15 +74,12 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
         setEndredePerioder(sammenslåtteValgtePerioder);
     };
 
-    const harPeriodeFørFamiliehendelsedato = sammenslåtteValgtePerioder.some((p) =>
-        dayjs(p.fom).isBefore(familiehendelsedato),
-    );
-
     if (visEndreEllerForskyvPanel) {
         return (
             <Box padding="space-24">
                 <LeggTilPeriodeForskyvEllerErstatt
-                    harPeriodeFørFamiliehendelsedato={harPeriodeFørFamiliehendelsedato}
+                    valgtePerioder={sammenslåtteValgtePerioder}
+                    erFerie
                     setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
                     leggTilEllerForskyvPeriode={leggTilEllerForskyvPeriode}
                 />

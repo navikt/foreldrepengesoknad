@@ -1102,11 +1102,11 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getByText('Start redigering'));
 
-        const april = screen.getByTestId('year:2024;month:3');
+        const juni = screen.getByTestId('year:2024;month:5');
 
-        await userEvent.click(within(april).getByTestId('day:16;dayColor:BLUE'));
+        await userEvent.click(within(juni).getByTestId('day:3;dayColor:BLUE'));
 
-        expect(within(april).getByTestId('day:19;dayColor:BLACK')).toBeInTheDocument();
+        expect(within(juni).getByTestId('day:14;dayColor:BLUESTRIPED')).toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
 
@@ -1118,8 +1118,9 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getByText('Fortsett'));
 
-        expect(within(april).getByTestId('day:16;dayColor:BLUEOUTLINE')).toBeInTheDocument();
-        expect(within(april).getByTestId('day:19;dayColor:BLUE')).toBeInTheDocument();
+        expect(within(juni).getByTestId('day:3;dayColor:BLUEOUTLINE')).toBeInTheDocument();
+        expect(within(juni).getByTestId('day:14;dayColor:BLUE')).toBeInTheDocument();
+        expect(within(juni).getByTestId('day:17;dayColor:BLUESTRIPED')).toBeInTheDocument();
     });
 
     it('skal ikke kunne forskyve perioder når en har valgt dager før familiehendelsesdato', async () => {
@@ -1142,7 +1143,7 @@ describe('UttaksplanKalender', () => {
 
         expect(await screen.findByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
         expect(
-            screen.getByText('Du kan ikke forskyve perioder når du har valgt minst en dag før fødsel/termin'),
+            screen.getByText('Du kan ikke forskyve perioder når du har valgt dager før seks uker etter fødsel/termin'),
         ).toBeInTheDocument();
         expect(screen.getByLabelText('Endre og flytt resten av planen')).toBeDisabled();
 

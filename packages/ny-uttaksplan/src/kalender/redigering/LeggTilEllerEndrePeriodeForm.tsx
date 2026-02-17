@@ -95,15 +95,12 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         uttakPerioderInkludertTapteDager,
     );
 
-    const harPeriodeFørFamiliehendelsedato = sammenslåtteValgtePerioder.some((p) =>
-        dayjs(p.fom).isBefore(familiehendelsedato),
-    );
-
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             {visEndreEllerForskyvPanel && (
                 <LeggTilPeriodeForskyvEllerErstatt
-                    harPeriodeFørFamiliehendelsedato={harPeriodeFørFamiliehendelsedato}
+                    valgtePerioder={sammenslåtteValgtePerioder}
+                    erFerie={false}
                     setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
                     leggTilEllerForskyvPeriode={leggIKalender}
                 />
