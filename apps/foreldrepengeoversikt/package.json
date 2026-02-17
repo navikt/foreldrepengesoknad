@@ -74,7 +74,6 @@
         "@types/node": "24.10.1",
         "@types/react": "19.2.10",
         "@types/react-dom": "19.2.3",
-        "compression": "1.8.1",
         "dotenv": "17.2.3",
         "eslint": "9.39.2",
         "express": "5.2.1",
