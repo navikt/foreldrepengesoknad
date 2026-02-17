@@ -36,7 +36,6 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         uttakPerioder,
         foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
-        familiehendelsedato,
     } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, setValgtePerioder, setEndredePerioder } =
