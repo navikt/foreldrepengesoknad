@@ -4,7 +4,7 @@ import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/querie
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useStepConfig } from 'appData/useStepConfig';
 import dayjs from 'dayjs';
-import { useRef, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { erPeriodeIOpprinneligPlan } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
@@ -55,7 +55,7 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN_NY);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN_NY);
 
-    const [feilmelding, setFeilmelding] = useState<string | undefined>();
+    const [feilmelding, setFeilmelding] = useState<ReactNode | undefined>();
 
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
 

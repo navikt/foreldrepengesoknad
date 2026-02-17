@@ -967,7 +967,9 @@ describe('UttaksplanKalender', () => {
     it('skal vise meldinger om at en må fylle ut mors aktivitet når en har stjernemerkede perioder', async () => {
         render(<StjernemarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt />);
 
-        expect(await screen.findByText('Stjernemerkede perioder i kalenderen mangler valg')).toBeInTheDocument();
+        expect(
+            await screen.findByText('Du må gi oss mer informasjon for dagene som er merket med'),
+        ).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Start redigering'));
 

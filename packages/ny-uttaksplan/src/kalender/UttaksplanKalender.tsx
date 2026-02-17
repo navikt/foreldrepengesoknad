@@ -1,3 +1,4 @@
+import { StarFillIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -134,7 +135,13 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 
                 {perioderForKalendervisning.some((p) => p.isMarked) && (
                     <Alert variant="warning">
-                        <FormattedMessage id="UttaksplanKalender.MarkertePerioder" />
+                        <HStack gap="space-4" align="center">
+                            <FormattedMessage id="UttaksplanKalender.MarkertePerioder" />
+                            <StarFillIcon
+                                title={intl.formatMessage({ id: 'UttaksplanKalender.MarkertePerioderStjerne' })}
+                                color="var(--ax-bg-danger-strong)"
+                            />
+                        </HStack>
                     </Alert>
                 )}
 
