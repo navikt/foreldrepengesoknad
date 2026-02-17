@@ -67,7 +67,6 @@ describe('<HvaErMulig>', () => {
         expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
 
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
-        expect(screen.getByText(/mulig fra uke 7/)).toBeInTheDocument();
 
         expect(screen.getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.queryByText(/mor som føder er i aktivitet/)).not.toBeInTheDocument();
@@ -148,7 +147,6 @@ describe('<HvaErMulig>', () => {
         expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
 
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
-        expect(screen.getByText(/mulig fra uke 7/)).toBeInTheDocument();
         expect(screen.getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText(/mor som føder er i aktivitet/)).toBeInTheDocument();
         expect(screen.getByText('Foreldrepenger med aktivitetskrav')).toBeInTheDocument();

@@ -40,7 +40,7 @@ export const LeggeTilFerie = ({ hvemPlanlegger, arbeidssituasjon }: Props) => {
                 </Heading>
                 <BodyLong>
                     <FormattedMessage
-                        id="HvaErMulig.HvisIngenSkalHa"
+                        id="HvaErMulig.LeggeTilFerie.Tekst"
                         values={{
                             hvem: finnSøker2Tekst(intl, hvemPlanlegger),
                             erAlenesøker,
