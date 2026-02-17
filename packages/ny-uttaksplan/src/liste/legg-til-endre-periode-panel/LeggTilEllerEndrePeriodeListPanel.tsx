@@ -1,5 +1,4 @@
 import { PencilIcon } from '@navikt/aksel-icons';
-import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -190,8 +189,6 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         gyldigeStønadskontoerForMor.length === 0 &&
         gyldigeStønadskontoerForFarMedmor.length === 0;
 
-    const harPeriodeFørFamiliehendelsedato = dayjs(fomValue).isBefore(familiehendelsedato);
-
     return (
         <VStack
             gap="space-8"
@@ -225,9 +222,10 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             )}
 
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                {visEndreEllerForskyvPanel && (
+                {visEndreEllerForskyvPanel && fomValue && tomValue && (
                     <LeggTilPeriodeForskyvEllerErstatt
-                        harPeriodeFørFamiliehendelsedato={harPeriodeFørFamiliehendelsedato}
+                        valgtePerioder={[{ fom: fomValue, tom: tomValue }]}
+                        erFerie={hvaVilDuGjøre === 'LEGG_TIL_FERIE'}
                         setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
                         leggTilEllerForskyvPeriode={leggIListe}
                     />

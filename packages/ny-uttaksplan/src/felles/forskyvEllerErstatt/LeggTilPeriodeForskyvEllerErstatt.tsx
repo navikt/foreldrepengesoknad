@@ -1,23 +1,33 @@
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Alert, BodyShort, Button, Detail, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
+import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato } from '../../utils/periodeUtils';
+
 interface Props {
-    harPeriodeFørFamiliehendelsedato: boolean;
+    valgtePerioder: Array<{ fom: string; tom: string }>;
+    erFerie: boolean;
     setVisEndreEllerForskyvPanel: React.Dispatch<React.SetStateAction<boolean>>;
     leggTilEllerForskyvPeriode: (skalForskyve: boolean) => void;
 }
 
 export const LeggTilPeriodeForskyvEllerErstatt = ({
-    harPeriodeFørFamiliehendelsedato,
+    valgtePerioder,
+    erFerie,
     setVisEndreEllerForskyvPanel,
     leggTilEllerForskyvPeriode,
 }: Props) => {
+    const { familiesituasjon, familiehendelsedato } = useUttaksplanData();
+
     const [skalForskyvePeriode, setSkalForskyvePeriode] = useState<boolean | undefined>(undefined);
 
-    const skalForskyve =
-        harPeriodeFørFamiliehendelsedato || skalForskyvePeriode === undefined ? false : skalForskyvePeriode;
+    const harPeriodeFørFamiliehendelsedato = valgtePerioder.some((p) => dayjs(p.fom).isBefore(familiehendelsedato));
+    const harPeriodeFørSeksUkerEtterFamiliehendelsedato = erFerie
+        ? erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(valgtePerioder, familiehendelsedato)
+        : false;
 
     return (
         <VStack gap="space-16">
@@ -26,7 +36,13 @@ export const LeggTilPeriodeForskyvEllerErstatt = ({
                 description={<FormattedMessage id="RedigeringPanel.HvaSkalSkjeBeskrivelse" />}
                 onChange={(value: boolean) => setSkalForskyvePeriode(value)}
             >
-                <Radio value={true} disabled={harPeriodeFørFamiliehendelsedato}>
+                <Radio
+                    value={true}
+                    disabled={
+                        familiesituasjon !== 'adopsjon' &&
+                        (harPeriodeFørSeksUkerEtterFamiliehendelsedato || harPeriodeFørFamiliehendelsedato)
+                    }
+                >
                     <VStack gap="space-4">
                         <BodyShort>
                             <FormattedMessage id="RedigeringPanel.FlyttPlanen" />
@@ -51,17 +67,25 @@ export const LeggTilPeriodeForskyvEllerErstatt = ({
                     </VStack>
                 </Radio>
             </RadioGroup>
-            {harPeriodeFørFamiliehendelsedato && (
+            {familiesituasjon !== 'adopsjon' && harPeriodeFørSeksUkerEtterFamiliehendelsedato && (
                 <Alert variant="info">
-                    <FormattedMessage id="RedigeringPanel.ValgtDagerFørFamiliehendelsesdato" />
+                    <FormattedMessage id="RedigeringPanel.ValgtDagerFørSeksUkerEtterFamDato" />
                 </Alert>
             )}
+            {familiesituasjon !== 'adopsjon' &&
+                !harPeriodeFørSeksUkerEtterFamiliehendelsedato &&
+                harPeriodeFørFamiliehendelsedato && (
+                    <Alert variant="info">
+                        <FormattedMessage id="RedigeringPanel.ValgtDagerFørFamiliehendelsesdato" />
+                    </Alert>
+                )}
             <HStack justify="space-between">
                 <Button
                     type="button"
                     variant="primary"
                     size="small"
-                    onClick={() => leggTilEllerForskyvPeriode(skalForskyve)}
+                    onClick={() => leggTilEllerForskyvPeriode(skalForskyvePeriode ?? false)}
+                    disabled={skalForskyvePeriode === undefined}
                 >
                     <FormattedMessage id="RedigeringPanel.Fortsett" />
                 </Button>
