@@ -1,16 +1,16 @@
-import { CalendarIcon } from '@navikt/aksel-icons';
+import { BabyWrappedIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
-export const Barnehageplass = () => {
+export const Omsorgspermisjon = () => {
     return (
         <HStack gap="space-20" wrap={false}>
             <div>
                 <IconCircleWrapper color="lightBlue" size="medium">
-                    <CalendarIcon
+                    <BabyWrappedIcon
                         height={22}
                         width={22}
                         fontSize="1.5rem"
@@ -21,10 +21,10 @@ export const Barnehageplass = () => {
             </div>
             <div>
                 <Heading size="small" level="4">
-                    <FormattedMessage id="HvaErMulig.Barnehageplass" />
+                    <FormattedMessage id="HvaErMulig.Omsorgspermisjon" />
                 </Heading>
                 <BodyLong>
-                    <FormattedMessage id="HvaErMulig.Barnehageplass.Tekst" />
+                    <FormattedMessage id="HvaErMulig.Omsorgspermisjon.Tekst" />
                 </BodyLong>
             </div>
         </HStack>
