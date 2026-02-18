@@ -8,9 +8,6 @@ import dayjs from 'dayjs';
 import isEqual from 'lodash/isEqual';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OmBarnet } from 'types/Barnet';
-import { erAlenesøker as erAlene, erFarOgFar } from 'utils/HvemPlanleggerUtils';
-import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
 import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
@@ -19,6 +16,13 @@ import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
+import {
+    OmBarnet,
+    erAlenesøker as erAlene,
+    erBarnetAdoptert,
+    erBarnetFødt,
+    erFarOgFar,
+} from '@navikt/fp-uttaksplan-ny';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { BlueRadioGroup } from '../../components/form-wrappers/BlueRadioGroup';

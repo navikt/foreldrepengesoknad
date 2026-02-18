@@ -1,9 +1,9 @@
 import { IntlShape } from 'react-intl';
-import { Far, FarOgFar, HvemPlanlegger, Mor, MorOgFar, MorOgMedmor } from 'types/HvemPlanlegger';
 
 import { HvemPlanleggerType } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
+import { Far, FarOgFar, HvemPlanlegger, Mor, MorOgFar, MorOgMedmor } from './../types/HvemPlanlegger';
 import { HvemHarRett } from './hvemHarRettUtils';
 
 const erGyldigNavn = (navn: string | undefined): navn is string => {

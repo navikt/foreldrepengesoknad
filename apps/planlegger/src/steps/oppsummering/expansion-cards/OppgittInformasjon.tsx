@@ -1,16 +1,7 @@
 import { ChatElipsisIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
-import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { HvorLangPeriode } from 'types/HvorLangPeriode';
-import { erAlenesøker as erAlene, erFarOgFar, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
-import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 import { getAntallUkerOgDagerFellesperiode, getUkerOgDager } from 'utils/stønadskontoerUtils';
-import { loggExpansionCardOpen } from 'utils/umamiUtils';
 import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
@@ -18,6 +9,21 @@ import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-rea
 import { HvemPlanleggerType, KontoBeregningDto, Satser } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
+import {
+    Arbeidssituasjon,
+    Fordeling,
+    HvemPlanlegger,
+    HvorLangPeriode,
+    OmBarnet,
+    erAlenesøker as erAlene,
+    erBarnetAdoptert,
+    erBarnetFødt,
+    erFarOgFar,
+    getFornavnPåSøker1,
+    getFornavnPåSøker2,
+    loggExpansionCardOpen,
+    utledHvemSomHarRett,
+} from '@navikt/fp-uttaksplan-ny';
 
 interface Props {
     stønadskontoer: { '100': KontoBeregningDto; '80': KontoBeregningDto };

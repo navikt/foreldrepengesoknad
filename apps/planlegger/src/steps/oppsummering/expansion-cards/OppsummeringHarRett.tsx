@@ -1,26 +1,12 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
-import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
-import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { HvorLangPeriode } from 'types/HvorLangPeriode';
-import {
-    erAlenesøker,
-    getErFarEllerMedmor,
-    getFornavnPåSøker1,
-    getFornavnPåSøker2,
-    getNavnGenitivEierform,
-} from 'utils/HvemPlanleggerUtils';
-import { utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
 import {
     getAntallUkerOgDager,
     getAntallUkerOgDagerAktivitetsfriKvote,
     getAntallUkerOgDagerFellesperiode,
     getUkerOgDager,
 } from 'utils/stønadskontoerUtils';
-import { loggExpansionCardOpen } from 'utils/umamiUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
 import { finnAntallUkerOgDagerMedForeldrepenger, getAnnenpartsPerioder, getSøkersPerioder } from 'utils/uttakUtils';
 
@@ -30,9 +16,23 @@ import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import { UttaksplanDataProvider, UttaksplanKalender } from '@navikt/fp-uttaksplan-ny';
+import { Arbeidssituasjon } from '@navikt/fp-uttaksplan-ny/src/types/Arbeidssituasjon';
+import { OmBarnet } from '@navikt/fp-uttaksplan-ny/src/types/Barnet';
+import { Fordeling } from '@navikt/fp-uttaksplan-ny/src/types/Fordeling';
+import { HvemPlanlegger } from '@navikt/fp-uttaksplan-ny/src/types/HvemPlanlegger';
+import { HvorLangPeriode } from '@navikt/fp-uttaksplan-ny/src/types/HvorLangPeriode';
+import {
+    erAlenesøker,
+    getErFarEllerMedmor,
+    getFornavnPåSøker1,
+    getFornavnPåSøker2,
+    getNavnGenitivEierform,
+} from '@navikt/fp-uttaksplan-ny/src/utils/HvemPlanleggerUtils';
+import { mapOmBarnetTilBarn } from '@navikt/fp-uttaksplan-ny/src/utils/barnetUtils';
+import { utledHvemSomHarRett, utledRettighet } from '@navikt/fp-uttaksplan-ny/src/utils/hvemHarRettUtils';
+import { loggExpansionCardOpen } from '@navikt/fp-uttaksplan-ny/src/utils/umamiUtils';
 
 import { ContextDataType, useContextGetData } from '../../../app-data/PlanleggerDataContext';
-import { mapOmBarnetTilBarn } from '../../../utils/barnetUtils';
 
 interface Props {
     valgtStønadskonto: KontoBeregningDto;

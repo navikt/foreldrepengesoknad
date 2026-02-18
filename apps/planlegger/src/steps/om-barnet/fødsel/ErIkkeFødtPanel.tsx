@@ -2,15 +2,6 @@ import { TasklistStartIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import {
-    erAlenesøker as erAlene,
-    erFarDelAvSøknaden,
-    erFarOgFar,
-    erMorDelAvSøknaden,
-    getFornavnPåSøker1,
-} from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
@@ -19,6 +10,15 @@ import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { HvemPlanleggerType } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
+import {
+    HvemPlanlegger,
+    OmBarnet,
+    erAlenesøker as erAlene,
+    erFarDelAvSøknaden,
+    erFarOgFar,
+    erMorDelAvSøknaden,
+} from '@navikt/fp-uttaksplan-ny';
+import { getFornavnPåSøker1 } from '@navikt/fp-uttaksplan-ny/src/utils/HvemPlanleggerUtils';
 import { isLessThanThreeWeeksAgo, isRequired, isValidDate } from '@navikt/fp-validation';
 
 const TODAY = dayjs().startOf('day').toDate();

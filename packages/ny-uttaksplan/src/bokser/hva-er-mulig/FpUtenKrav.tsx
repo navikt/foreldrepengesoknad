@@ -1,11 +1,12 @@
 import { PersonGroupIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
 import { HvemPlanleggerType } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
+
+import { HvemPlanlegger } from '../../types/HvemPlanlegger';
 
 interface Props {
     hvemPlanlegger: HvemPlanlegger;

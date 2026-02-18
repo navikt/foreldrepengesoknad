@@ -1,12 +1,13 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ContextDataType } from 'appData/PlanleggerDataContext';
-import { PlanleggerRoutes } from 'appData/routes';
 import { useNavigate } from 'react-router-dom';
 
+import { BarnetErAdoptert } from '@navikt/fp-uttaksplan-ny';
+
 import { endreFordelingMedSlider } from '../../../vitest/testHelpers';
-import { BarnetErAdoptert } from '../../types/Barnet';
+import { ContextDataType } from '../../app-data/PlanleggerDataContext';
+import { PlanleggerRoutes } from '../../app-data/routes';
 import * as stories from './FordelingSteg.stories';
 
 // TODO: Benytt dayjs for å håndtere datoer i testene. Spesielt for å sørge for at fremtidige datoer alltid er fremtidige.

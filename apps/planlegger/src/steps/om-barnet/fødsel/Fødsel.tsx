@@ -1,11 +1,10 @@
 import { BlueRadioGroup } from 'components/form-wrappers/BlueRadioGroup';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
+import { HvemPlanlegger, OmBarnet } from '@navikt/fp-uttaksplan-ny';
 import { isRequired } from '@navikt/fp-validation';
 
 import { ErFødtPanel } from './ErFødtPanel';

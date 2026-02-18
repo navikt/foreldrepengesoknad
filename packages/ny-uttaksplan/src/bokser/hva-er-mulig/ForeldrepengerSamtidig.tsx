@@ -1,17 +1,18 @@
 import { PersonGroupIcon } from '@navikt/aksel-icons';
 import { ReactNode } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, HStack, Heading, Link } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { HvemPlanleggerType } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
+
+import { Arbeidssituasjon } from '../../types/Arbeidssituasjon';
+import { OmBarnet } from '../../types/Barnet';
+import { HvemPlanlegger } from '../../types/HvemPlanlegger';
+import { finnSøker2Tekst } from '../../utils/HvemPlanleggerUtils';
+import { utledHvemSomHarRett } from '../../utils/hvemHarRettUtils';
 
 interface Props {
     erAdopsjon?: boolean;

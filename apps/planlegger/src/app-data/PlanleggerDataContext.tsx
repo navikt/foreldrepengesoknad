@@ -1,12 +1,14 @@
 import { JSX, ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
-import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
-import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { HvorLangPeriode } from 'types/HvorLangPeriode';
-import { HvorMye } from 'types/HvorMye';
 
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import {
+    Arbeidssituasjon,
+    Fordeling,
+    HvemPlanlegger,
+    HvorLangPeriode,
+    HvorMye,
+    OmBarnet,
+} from '@navikt/fp-uttaksplan-ny';
 
 export enum ContextDataType {
     HVEM_PLANLEGGER = 'HVEM_PLANLEGGER',

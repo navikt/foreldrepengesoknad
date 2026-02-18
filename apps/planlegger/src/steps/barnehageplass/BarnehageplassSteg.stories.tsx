@@ -1,14 +1,13 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
-import { PlanleggerRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
-import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 import { HvemPlanleggerType } from '@navikt/fp-types';
+import { HvemPlanlegger, OmBarnet } from '@navikt/fp-uttaksplan-ny';
 
+import { Action, ContextDataType, PlanleggerDataContext } from '../../app-data/PlanleggerDataContext';
+import { PlanleggerRoutes } from '../../app-data/routes';
 import { BarnehageplassSteg } from './BarnehageplassSteg';
 
 type StoryArgs = {

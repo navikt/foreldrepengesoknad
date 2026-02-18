@@ -3,9 +3,6 @@ import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContex
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import dayjs from 'dayjs';
 import { FormattedMessage } from 'react-intl';
-import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
-import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyShort, Box, Button, HStack, Heading, Link, LinkCard, VStack } from '@navikt/ds-react';
 
@@ -14,6 +11,9 @@ import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { KontoBeregningResultatDto, Satser } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
+import { erBarnetAdoptert, erBarnetFødt } from '@navikt/fp-uttaksplan-ny';
+import { erAlenesøker } from '@navikt/fp-uttaksplan-ny/src/utils/HvemPlanleggerUtils';
+import { utledHvemSomHarRett } from '@navikt/fp-uttaksplan-ny/src/utils/hvemHarRettUtils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { InlineSkyraSurvey } from '../../components/InlineSkyraSurvey';

@@ -1,27 +1,34 @@
 import { useQuery } from '@tanstack/react-query';
-import {
-    ContextDataMap,
-    ContextDataType,
-    PlanleggerDataContext,
-    useContextGetData,
-} from 'appData/PlanleggerDataContext';
-import { API_URLS } from 'appData/queries';
 import ky from 'ky';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
-import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
-import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { HvemPlanleggerType, KontoBeregningResultatDto } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
 import { decodeBase64 } from '@navikt/fp-utils';
+import {
+    Arbeidssituasjon,
+    Arbeidsstatus,
+    HvemHarRett,
+    HvemPlanlegger,
+    OmBarnet,
+    erBarnetAdoptert,
+    erBarnetFødt,
+    erBarnetUFødt,
+    harMorRett,
+    utledHvemSomHarRett,
+} from '@navikt/fp-uttaksplan-ny';
 
 import { PlanleggerRouter } from './PlanleggerRouter';
+import {
+    ContextDataMap,
+    ContextDataType,
+    PlanleggerDataContext,
+    useContextGetData,
+} from './app-data/PlanleggerDataContext';
+import { API_URLS } from './app-data/queries';
 
 const finnBrukerRolle = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
     return harMorRett(hvemHarRett, hvemPlanlegger) ? 'MOR' : 'FAR';

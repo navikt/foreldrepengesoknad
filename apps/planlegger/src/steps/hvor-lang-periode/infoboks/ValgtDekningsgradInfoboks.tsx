@@ -1,19 +1,6 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import {
-    erAlenesøker,
-    erFarDelAvSøknaden,
-    erFarOgFar,
-    erMorDelAvSøknaden,
-    getFornavnPåSøker1,
-    getFornavnPåSøker2,
-} from 'utils/HvemPlanleggerUtils';
-import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerAktivitetsfriKvote, getAntallUkerOgDagerForeldrepenger } from 'utils/stønadskontoerUtils';
 import { UttakUkerOgDager, Uttaksdata, getFamiliehendelsedato } from 'utils/uttakUtils';
 
@@ -22,6 +9,20 @@ import { BodyShort, Link, VStack } from '@navikt/ds-react';
 import { links } from '@navikt/fp-constants';
 import { Dekningsgrad, HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
+import {
+    Arbeidssituasjon,
+    HvemPlanlegger,
+    OmBarnet,
+    erAlenesøker,
+    erBarnetAdoptert,
+    erBarnetFødt,
+    erFarDelAvSøknaden,
+    erFarOgFar,
+    erMorDelAvSøknaden,
+    getFornavnPåSøker1,
+    getFornavnPåSøker2,
+    utledHvemSomHarRett,
+} from '@navikt/fp-uttaksplan-ny';
 
 interface Props {
     barnet: OmBarnet;

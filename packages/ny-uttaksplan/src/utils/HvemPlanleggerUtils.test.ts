@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { HvemPlanleggerType } from '@navikt/fp-types';
 
-import messages from '../intl/messages/nb_NO.json';
+import messages from '../../../../apps/planlegger/src/intl/messages/nb_NO.json';
 import { HvemPlanlegger } from '../types/HvemPlanlegger';
 import { getNavnPåForeldre } from './HvemPlanleggerUtils';
 

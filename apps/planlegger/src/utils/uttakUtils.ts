@@ -1,17 +1,22 @@
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
-import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { PlanForslag } from 'types/PlanForslag';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { HvemPlanleggerType, KontoBeregningDto, KontoDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { TidsperiodenString, Uttaksdagen, isValidTidsperiodeString, treUkerSiden } from '@navikt/fp-utils';
+import {
+    HvemPlanlegger,
+    OmBarnet,
+    PlanForslag,
+    erBarnetAdoptert,
+    erBarnetFødt,
+    erBarnetUFødt,
+    erFarSøker2,
+    erMedmorDelAvSøknaden,
+} from '@navikt/fp-uttaksplan-ny';
+import { HvemHarRett } from '@navikt/fp-uttaksplan-ny/src/utils/hvemHarRettUtils';
 
-import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
-import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from './barnetUtils';
 import { deltUttak } from './deltUttak';
-import { HvemHarRett } from './hvemHarRettUtils';
 import { ikkeDeltUttak } from './ikkeDeltUttak';
 import {
     getAntallDagerAktivitetsfriKvote,

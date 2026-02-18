@@ -1,11 +1,12 @@
 import { StethoscopeIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
-import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
+
+import { Arbeidssituasjon } from '../../types/Arbeidssituasjon';
+import { utledHvemSomHarRett } from '../../utils/hvemHarRettUtils';
 
 interface Props {
     arbeidssituasjon: Arbeidssituasjon;

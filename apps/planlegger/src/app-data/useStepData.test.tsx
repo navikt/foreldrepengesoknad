@@ -2,13 +2,11 @@ import { renderHook, waitFor } from '@testing-library/react';
 import dayjs from 'dayjs';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { HvemPlanleggerType } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
+import { Arbeidssituasjon, Arbeidsstatus, HvemPlanlegger, OmBarnet } from '@navikt/fp-uttaksplan-ny';
 
 import nbMessages from '../intl/messages/nb_NO.json';
 import { ContextDataType, PlanleggerDataContext } from './PlanleggerDataContext';

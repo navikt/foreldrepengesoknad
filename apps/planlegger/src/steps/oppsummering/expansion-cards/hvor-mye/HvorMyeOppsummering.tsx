@@ -1,13 +1,12 @@
 import { SackKronerIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
-import { loggExpansionCardOpen } from 'utils/umamiUtils';
 
 import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
 import { Satser } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
+import { getFornavnPåSøker1, getFornavnPåSøker2, loggExpansionCardOpen } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { HvorMyePanel } from './HvorMyePanel';

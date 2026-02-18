@@ -1,7 +1,6 @@
 import { WalletIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import { FormattedMessage } from 'react-intl';
-import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyLong, HStack, Heading, Link, VStack } from '@navikt/ds-react';
@@ -10,6 +9,7 @@ import { links } from '@navikt/fp-constants';
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
+import { erAlenesøker as erAlene } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 interface Props {

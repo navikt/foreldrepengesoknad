@@ -10,17 +10,6 @@ import { useStepData } from 'appData/useStepData';
 import { FordelingSlider } from 'components/FordelingSlider';
 import { useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Fordeling } from 'types/Fordeling';
-import {
-    erAlenesøker,
-    erMedmorDelAvSøknaden,
-    getErFarEllerMedmor,
-    getFornavnPåSøker1,
-    getFornavnPåSøker2,
-    getNavnPåForeldre,
-} from 'utils/HvemPlanleggerUtils';
-import { mapOmBarnetTilBarn } from 'utils/barnetUtils';
-import { HvemHarRett, utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
 import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
@@ -34,18 +23,31 @@ import { encodeToBase64, useMedia } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import {
     FjernAltIUttaksplanModal,
+    Fordeling,
+    HvaErMulig,
     KvoteOppsummering,
+    UforutsetteEndringer,
     UttaksplanDataProvider,
     UttaksplanKalender,
     UttaksplanListe,
     UttaksplanRedigeringProvider,
+    erAlenesøker,
+    getNavnPåForeldre,
+    utledHvemSomHarRett,
+    utledRettighet,
 } from '@navikt/fp-uttaksplan-ny';
+import {
+    erMedmorDelAvSøknaden,
+    getErFarEllerMedmor,
+    getFornavnPåSøker1,
+    getFornavnPåSøker2,
+} from '@navikt/fp-uttaksplan-ny/src/utils/HvemPlanleggerUtils';
+import { mapOmBarnetTilBarn } from '@navikt/fp-uttaksplan-ny/src/utils/barnetUtils';
+import { HvemHarRett } from '@navikt/fp-uttaksplan-ny/src/utils/hvemHarRettUtils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { PlanleggerStepPage } from '../../components/page/PlanleggerStepPage';
 import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
-import { HvaErMulig } from './hva-er-mulig/HvaErMulig';
-import { UforutsetteEndringer } from './uforutsette-endringer/UforutsetteEndringer';
 
 interface Props {
     stønadskontoer: KontoBeregningResultatDto;

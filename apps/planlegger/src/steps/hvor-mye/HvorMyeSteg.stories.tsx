@@ -1,16 +1,14 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
-import { PlanleggerRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
-import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { HvorMye } from 'types/HvorMye';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { HvemPlanleggerType } from '@navikt/fp-types';
+import { Arbeidssituasjon, Arbeidsstatus, HvemPlanlegger, HvorMye } from '@navikt/fp-uttaksplan-ny';
 
+import { Action, ContextDataType, PlanleggerDataContext } from '../../app-data/PlanleggerDataContext';
+import { PlanleggerRoutes } from '../../app-data/routes';
 import { HvorMyeSteg } from './HvorMyeSteg';
 
 type StoryArgs = {

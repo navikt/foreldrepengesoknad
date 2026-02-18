@@ -1,13 +1,12 @@
 import { PersonGroupIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { erMorDelAvSøknaden, finnSøker1Tekst, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Infobox } from '@navikt/fp-ui';
+import { Arbeidssituasjon, Arbeidsstatus, HvemPlanlegger, erMorDelAvSøknaden } from '@navikt/fp-uttaksplan-ny';
+import { finnSøker1Tekst, finnSøker2Tekst } from '@navikt/fp-uttaksplan-ny/src/utils/HvemPlanleggerUtils';
 
 interface Props {
     hvemPlanlegger: HvemPlanlegger;

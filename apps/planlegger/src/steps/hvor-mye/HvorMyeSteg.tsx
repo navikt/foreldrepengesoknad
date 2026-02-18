@@ -6,9 +6,6 @@ import { useStepData } from 'appData/useStepData';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { HvorMye } from 'types/HvorMye';
-import { erAlenesøker, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyShort, Heading, Link, Spacer, VStack } from '@navikt/ds-react';
 
@@ -17,6 +14,13 @@ import { RhfForm, RhfFormattertTallTextField, StepButtonsHookForm } from '@navik
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils';
+import {
+    HvorMye,
+    erAlenesøker,
+    getFornavnPåSøker1,
+    getFornavnPåSøker2,
+    utledHvemSomHarRett,
+} from '@navikt/fp-uttaksplan-ny';
 import { isValidNumberForm, notEmpty } from '@navikt/fp-validation';
 
 import { Utbetaling } from './infoboks/Utbetaling';

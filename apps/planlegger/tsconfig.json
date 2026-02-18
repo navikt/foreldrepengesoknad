@@ -12,6 +12,16 @@
         },
         "types": ["@testing-library/jest-dom", "vitest/globals", "vite/client"]
     },
-    "include": ["src", "mock-api", "vitest", "../../@types/vite.env.d.ts"],
+    "include": [
+        "src",
+        "mock-api",
+        "vitest",
+        "../../@types/vite.env.d.ts",
+        "../../packages/ny-uttaksplan/src/utils/HvemPlanleggerUtils.ts",
+        "../../packages/ny-uttaksplan/src/utils/HvemPlanleggerUtils.test.ts",
+        "../../packages/ny-uttaksplan/src/utils/hvemHarRettUtils.ts",
+        "../../packages/ny-uttaksplan/src/utils/barnetUtils.ts",
+        "../../packages/ny-uttaksplan/src/utils/umamiUtils.ts"
+    ],
     "exclude": ["node_modules"]
 }

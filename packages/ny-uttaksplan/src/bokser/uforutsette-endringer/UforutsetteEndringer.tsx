@@ -1,17 +1,17 @@
 import { ExclamationmarkIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
-import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { loggExpansionCardOpen } from 'utils/umamiUtils';
 
 import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
 import { HvemPlanleggerType } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
+import { Arbeidssituasjon } from '../../types/Arbeidssituasjon';
+import { OmBarnet } from '../../types/Barnet';
+import { HvemPlanlegger } from '../../types/HvemPlanlegger';
+import { erMorDelAvSøknaden } from '../../utils/HvemPlanleggerUtils';
+import { utledHvemSomHarRett } from '../../utils/hvemHarRettUtils';
+import { loggExpansionCardOpen } from '../../utils/umamiUtils';
 import { FødtFørUke33 } from './FødtFørUke33';
 import { HvisBarnetErInnlagt } from './HvisBarnetErInnlagt';
 import { HvisBarnetErSykt } from './HvisBarnetErSykt';

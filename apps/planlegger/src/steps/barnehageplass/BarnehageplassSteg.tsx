@@ -6,9 +6,6 @@ import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getFamiliehendelsedato } from 'steps/oppsummering/expansion-cards/BarnehageplassOppsummering';
-import { OmBarnet } from 'types/Barnet';
-import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
-import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { Uttaksdata, getUttaksdagTilOgMedDato } from 'utils/uttakUtils';
 
 import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
@@ -16,6 +13,7 @@ import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
 import { ISO_DATE_FORMAT, links } from '@navikt/fp-constants';
 import { IconCircleWrapper, Infobox, StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
+import { OmBarnet, erAlenesøker as erAlene, erBarnetAdoptert, erBarnetFødt } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 export const barnehagestartDato = (barnet: OmBarnet) => {
@@ -23,7 +21,7 @@ export const barnehagestartDato = (barnet: OmBarnet) => {
         return undefined;
     }
 
-    const dato = erBarnetFødt(barnet) ? barnet.fødselsdato : barnet.termindato;
+    const dato = getFamiliehendelsedato(barnet);
 
     if (dayjs(dato).month() < 8) {
         const newLocal = dayjs(dato).month(7).add(1, 'year').endOf('month').format(ISO_DATE_FORMAT);

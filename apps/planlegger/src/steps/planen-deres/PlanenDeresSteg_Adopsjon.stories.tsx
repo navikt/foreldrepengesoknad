@@ -1,14 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
-import { PlanleggerRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
-import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
-import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { HvorLangPeriode } from 'types/HvorLangPeriode';
 
 import { HvemPlanleggerType } from '@navikt/fp-types';
 import {
@@ -23,7 +16,17 @@ import {
     IKKE_DELT_UTTAK_100_FARMEDMOR_MOR_UFØR,
     IKKE_DELT_UTTAK_100_FAR_OG_FAR_ADOPSJON,
 } from '@navikt/fp-utils-test';
+import {
+    Arbeidssituasjon,
+    Arbeidsstatus,
+    Fordeling,
+    HvemPlanlegger,
+    HvorLangPeriode,
+    OmBarnet,
+} from '@navikt/fp-uttaksplan-ny';
 
+import { Action, ContextDataType, PlanleggerDataContext } from '../../app-data/PlanleggerDataContext';
+import { PlanleggerRoutes } from '../../app-data/routes';
 import { PlanenDeresSteg } from './PlanenDeresSteg';
 
 const MINSTERETTER = {

@@ -1,18 +1,22 @@
-import { PATH_ORDER, PlanleggerRoutes, REQUIRED_APP_STEPS } from 'appData/routes';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
-import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
-import { erFlereSøkere } from 'utils/HvemPlanleggerUtils';
-import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { HvemPlanleggerType } from '@navikt/fp-types';
 import { ProgressStep } from '@navikt/fp-ui';
+import {
+    Arbeidssituasjon,
+    Arbeidsstatus,
+    OmBarnet,
+    erBarnetAdoptert,
+    erBarnetFødt,
+    erFlereSøkere,
+} from '@navikt/fp-uttaksplan-ny';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './PlanleggerDataContext';
+import { PATH_ORDER, PlanleggerRoutes, REQUIRED_APP_STEPS } from './routes';
 
 const getLabelConfig = (intl: IntlShape): Record<PlanleggerRoutes, string> => ({
     [PlanleggerRoutes.ARBEIDSSITUASJON]: intl.formatMessage({ id: 'ArbeidssituasjonSteg.Tittel' }),

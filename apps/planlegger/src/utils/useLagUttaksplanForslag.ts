@@ -1,13 +1,16 @@
-import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-
 import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils';
+import {
+    Arbeidsstatus,
+    erBarnetAdoptert,
+    getErFarEllerMedmor,
+    harKunFarSøker1Rett,
+    harKunMedmorEllerFarSøker2Rett,
+    utledHvemSomHarRett,
+} from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { getErFarEllerMedmor } from './HvemPlanleggerUtils';
-import { erBarnetAdoptert } from './barnetUtils';
-import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from './hvemHarRettUtils';
+import { ContextDataType, useContextGetData } from '../app-data/PlanleggerDataContext';
 import { getFamiliehendelsedato, lagForslagTilPlan } from './uttakUtils';
 
 export const useLagUttaksplanForslag = (valgtStønadskonto: KontoBeregningDto) => {

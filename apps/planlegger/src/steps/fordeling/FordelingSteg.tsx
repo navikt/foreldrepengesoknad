@@ -1,26 +1,31 @@
 import { SectorChartIcon } from '@navikt/aksel-icons';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
-import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
-import { useStepData } from 'appData/useStepData';
-import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { finnSøker1Tekst, finnSøker2Tekst, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { UkerOgDager, getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
-import { finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyShort, Box, Heading, InlineMessage, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
-import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
+import { useScrollBehaviour } from '@navikt/fp-utils';
+import {
+    Fordeling,
+    HvemPlanlegger,
+    finnSøker1Tekst,
+    finnSøker2Tekst,
+    getFornavnPåSøker1,
+    getFornavnPåSøker2,
+    utledHvemSomHarRett,
+} from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { ContextDataType, useContextGetData, useContextSaveData } from '../../app-data/PlanleggerDataContext';
+import { usePlanleggerNavigator } from '../../app-data/usePlanleggerNavigator';
+import { useStepData } from '../../app-data/useStepData';
 import { FordelingSlider } from '../../components/FordelingSlider';
+import { PlanleggerStepPage } from '../../components/page/PlanleggerStepPage';
+import { UkerOgDager, getAntallUkerOgDagerFellesperiode } from '../../utils/stønadskontoerUtils';
+import { finnUttaksdata } from '../../utils/uttakUtils';
 import { FordelingsdetaljerPanel } from './FordelingsdetaljerPanel';
 
 type Fellesperiodefordeling = {

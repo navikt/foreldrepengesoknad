@@ -1,17 +1,18 @@
 import { StethoscopeIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
-import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
+import { Arbeidssituasjon } from '../../types/Arbeidssituasjon';
+import { utledHvemSomHarRett } from '../../utils/hvemHarRettUtils';
+
 interface Props {
     arbeidssituasjon: Arbeidssituasjon;
 }
 
-export const HvisBarnetErSyktEllerInnlagt = ({ arbeidssituasjon }: Props) => {
+export const HvisDuBlirSyk = ({ arbeidssituasjon }: Props) => {
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
 
@@ -30,13 +31,15 @@ export const HvisBarnetErSyktEllerInnlagt = ({ arbeidssituasjon }: Props) => {
             </div>
             <div>
                 <Heading size="small" level="4">
-                    <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErSyktEllerInnlagt" />
+                    <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisDuBlirSyk" />
                 </Heading>
+
                 <BodyLong>
-                    <FormattedMessage
-                        id="UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErSyktEllerInnlagt.Tekst"
-                        values={{ erAleneforsørger: kunEnPartSkalHa }}
-                    />
+                    {!kunEnPartSkalHa ? (
+                        <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisDuBlirSyk.Tekst" />
+                    ) : (
+                        <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisDuBlirSyk.TekstAlene" />
+                    )}
                 </BodyLong>
             </div>
         </HStack>

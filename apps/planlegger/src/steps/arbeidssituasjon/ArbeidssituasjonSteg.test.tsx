@@ -3,7 +3,8 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/PlanleggerDataContext';
 import { useNavigate } from 'react-router-dom';
-import { Arbeidsstatus } from 'types/Arbeidssituasjon';
+
+import { Arbeidsstatus } from '@navikt/fp-uttaksplan-ny';
 
 import * as stories from './ArbeidssituasjonSteg.stories';
 

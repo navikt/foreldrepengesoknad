@@ -1,12 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
-import { PlanleggerRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
-import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 import { Dekningsgrad, HvemPlanleggerType } from '@navikt/fp-types';
 import {
@@ -16,7 +11,10 @@ import {
     DELT_UTTAK_100_TO_BARN,
     MINSTERETTER,
 } from '@navikt/fp-utils-test';
+import { Arbeidsstatus, HvemPlanlegger, OmBarnet } from '@navikt/fp-uttaksplan-ny';
 
+import { Action, ContextDataType, PlanleggerDataContext } from '../../app-data/PlanleggerDataContext';
+import { PlanleggerRoutes } from '../../app-data/routes';
 import { FordelingSteg } from './FordelingSteg';
 
 // TODO: Benytt dayjs for å håndtere datoer i testene. Spesielt for å sørge for at fremtidige datoer alltid er fremtidige.

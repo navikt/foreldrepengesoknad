@@ -6,8 +6,6 @@ import { BlueRadioGroup } from 'components/form-wrappers/BlueRadioGroup';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { erAlenesøker as erAlene, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
@@ -16,6 +14,13 @@ import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { HvemPlanleggerType, Satser } from '@navikt/fp-types';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
+import {
+    Arbeidssituasjon,
+    Arbeidsstatus,
+    erAlenesøker as erAlene,
+    getFornavnPåSøker1,
+    getFornavnPåSøker2,
+} from '@navikt/fp-uttaksplan-ny';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { AnnetInfoboks } from './info/AnnetInfoboks';

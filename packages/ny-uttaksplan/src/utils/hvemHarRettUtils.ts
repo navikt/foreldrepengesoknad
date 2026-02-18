@@ -1,8 +1,7 @@
-import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-
 import { HvemPlanleggerType } from '@navikt/fp-types';
 
+import { Arbeidssituasjon, Arbeidsstatus } from '../types/Arbeidssituasjon';
+import { HvemPlanlegger } from '../types/HvemPlanlegger';
 import { erMorDelAvSøknaden } from './HvemPlanleggerUtils';
 
 export type HvemHarRett = 'beggeHarRett' | 'kunSøker1HarRett' | 'kunSøker2HarRett' | 'ingenHarRett';

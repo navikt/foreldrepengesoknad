@@ -2,15 +2,14 @@ import { TasklistStartIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 
 import { BodyLong, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { HvemPlanleggerType } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
+import { HvemPlanlegger, OmBarnet } from '@navikt/fp-uttaksplan-ny';
+import { finnSøker2Tekst } from '@navikt/fp-uttaksplan-ny/src/utils/HvemPlanleggerUtils';
 import {
     isAfterOrSame,
     isAfterOrSameAsSixMonthsAgo,

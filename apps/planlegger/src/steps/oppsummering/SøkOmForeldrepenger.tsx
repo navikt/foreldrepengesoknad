@@ -1,12 +1,11 @@
 import { TasklistStartIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
-import { OmBarnet } from 'types/Barnet';
-import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
 import { BodyShort, Button, HStack, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Infobox } from '@navikt/fp-ui';
+import { OmBarnet, erBarnetAdoptert, erBarnetFødt } from '@navikt/fp-uttaksplan-ny';
 
 interface Props {
     erAlenesøker: boolean;
