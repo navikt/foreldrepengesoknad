@@ -7,7 +7,7 @@ import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import { ISOStringToDate } from 'utils/dateUtils';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnrString, getNavnPåForeldre } from 'utils/personUtils';
-import { isLocalhost } from 'utils/tempSystemUtils';
+import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 
 import { Alert, BodyLong, Heading, Link } from '@navikt/ds-react';
 
@@ -105,7 +105,7 @@ export const OppsummeringSteg = (props: Props) => {
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 ekstraSamtykketekst={ekstraSamtykketekst}
             >
-                {isLocalhost() && (
+                {isLocalhostOrDev() && (
                     <Alert variant="warning">
                         <BodyLong>
                             <FormattedMessage id="uttaksplan.AnnenPartPerioderInfomelding" />
@@ -156,7 +156,7 @@ export const OppsummeringSteg = (props: Props) => {
                         onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.PERIODE_MED_FORELDREPENGER)}
                     />
                 )}
-                {!isLocalhost() && (
+                {!isLocalhostOrDev() && (
                     <>
                         <UttaksplanOppsummering
                             navnPåForeldre={navnPåForeldre}
@@ -180,7 +180,7 @@ export const OppsummeringSteg = (props: Props) => {
                         />
                     </>
                 )}
-                {isLocalhost() && (
+                {isLocalhostOrDev() && (
                     <>
                         <UttaksplanOppsummeringNy
                             navnPåForeldre={navnPåForeldre}
