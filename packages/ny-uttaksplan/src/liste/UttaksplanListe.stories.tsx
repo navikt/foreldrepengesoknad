@@ -676,7 +676,6 @@ export const HarAvslåttePerioder: Story = {
                     trekkerDager: true,
                     årsak: 'AVSLAG_FRATREKK_PLEIEPENGER',
                 },
-                utsettelseÅrsak: 'BARN_INNLAGT',
                 flerbarnsdager: false,
                 forelder: 'MOR',
             },

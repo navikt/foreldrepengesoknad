@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isoWeekday from 'dayjs/plugin/isoWeek';
+import minMax from 'dayjs/plugin/minMax';
 
 import {
     BrukerRolleSak_fpoversikt,
@@ -18,7 +19,7 @@ import {
 } from '../types/UttaksplanPeriode';
 
 dayjs.extend(isSameOrAfter);
-
+dayjs.extend(minMax);
 dayjs.extend(isoWeekday);
 
 export const isUttaksperiode = (periode: Uttaksplanperiode) => {

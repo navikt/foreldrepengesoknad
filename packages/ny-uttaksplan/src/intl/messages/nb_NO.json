@@ -229,7 +229,7 @@
     "RedigeringPanel.Medmor": "Medmor",
     "RedigeringPanel.Begge": "Begge",
     "RedigeringPanel.Dager": "{antall} {antall, select, 1 {dag} other {dager}} valgt i perioden",
-    "RedigeringPanel.Pleiepenger": "Denne perioden er avslått grunnet pleiepengar",
+    "RedigeringPanel.Pleiepenger": "Denne perioden er avslått grunnet pleiepenger",
     "RedigeringPanel.KanMisteDager": "Du mister dager hvis du ikke har foreldrepenger før termin eller i de seks første ukene etter fødsel.",
     "RedigeringPanel.NyeDagerForklaring": "Du har markert dager som ikke er lagt til i planen ennå. Velg 'Legg til' for å opprette en ny periode.",
     "RedigeringPanel.Maksimer": "Utvid panel",
