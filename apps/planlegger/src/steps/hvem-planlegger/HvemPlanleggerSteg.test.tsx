@@ -99,7 +99,7 @@ describe('<HvemPlanleggerSteg>', () => {
 
         expect(await screen.findAllByText('Hvem planlegger?')).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Bare mor, aleneomsorg'));
+        await userEvent.click(screen.getByText('Bare mor med aleneomsorg'));
 
         const morNavn = utils.getByLabelText('Hva heter mor? (valgfritt)');
         await userEvent.type(morNavn, 'Olga');
@@ -123,7 +123,7 @@ describe('<HvemPlanleggerSteg>', () => {
 
         expect(await screen.findAllByText('Hvem planlegger?')).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Bare far, aleneomsorg'));
+        await userEvent.click(screen.getByText('Bare far med aleneomsorg'));
 
         const farNavn = utils.getByLabelText('Hva heter far? (valgfritt)');
         await userEvent.type(farNavn, 'Espen');
@@ -138,5 +138,15 @@ describe('<HvemPlanleggerSteg>', () => {
             key: ContextDataType.HVEM_PLANLEGGER,
             type: 'update',
         });
+    });
+    it('skal vise infoboks for mor med aleneomsorg', async () => {
+        render(<Default />);
+
+        expect(await screen.findByText('Bare mor med aleneomsorg')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Bare mor med aleneomsorg'));
+
+        expect(await screen.findByText('Aleneomsorg')).toBeInTheDocument();
+        expect(screen.getByText(/Å ha aleneomsorg betyr/)).toBeInTheDocument();
     });
 });
