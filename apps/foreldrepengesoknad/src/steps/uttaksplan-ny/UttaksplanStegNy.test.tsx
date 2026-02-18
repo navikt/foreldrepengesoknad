@@ -60,10 +60,8 @@ describe('<UttaksplanStegNy>', () => {
             await userEvent.click(screen.getByText('Neste steg'));
 
             expect(
-                await screen.findByText(
-                    'Stjernemerkede perioder i kalenderen mangler valg. Klikk på en stjernemerket periode for å fylle ut.',
-                ),
-            ).toBeInTheDocument();
+                await screen.findAllByText('Du må gi oss mer informasjon for dagene som er merket med'),
+            ).toHaveLength(2);
         }),
     );
 });

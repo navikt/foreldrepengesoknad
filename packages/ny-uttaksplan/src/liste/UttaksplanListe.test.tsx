@@ -41,6 +41,12 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
 
+        expect(screen.getByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
+
+        await userEvent.click(screen.getByText('Fortsett'));
+
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
             {
@@ -126,6 +132,12 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
 
+        expect(screen.getByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
+
+        await userEvent.click(screen.getByText('Fortsett'));
+
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
             {
@@ -200,6 +212,12 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
 
+        expect(screen.getByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
+
+        await userEvent.click(screen.getByText('Fortsett'));
+
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
             {
@@ -254,6 +272,13 @@ describe('UttaksplanListe', () => {
         await userEvent.tab();
 
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+
+        expect(screen.getByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
+
+        await userEvent.click(screen.getByText('Fortsett'));
+
         expect(await screen.findByText('15. Dec - 17. Dec')).toBeInTheDocument();
         expect(screen.queryByText('12. Dec - 15. Dec')).not.toBeInTheDocument();
     });
@@ -272,6 +297,15 @@ describe('UttaksplanListe', () => {
         await userEvent.click(screen.getByText('09.05.2025 - 21.08.2025 - Olga Utviklers kvote'));
 
         await userEvent.click(screen.getByText('Slett valgte perioder'));
+
+        expect(
+            await screen.findByText(
+                'Du kan ikke forskyve perioder når du har valgt dager før seks uker etter fødsel/termin',
+            ),
+        ).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('La resten av planen være som den er'));
+        await userEvent.click(screen.getByText('Fortsett'));
 
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
@@ -420,6 +454,12 @@ describe('UttaksplanListe', () => {
         await userEvent.selectOptions(screen.getByLabelText('Hva skal mor gjøre i denne perioden?'), 'ARBEID');
 
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+
+        expect(screen.getByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
+
+        await userEvent.click(screen.getByText('Fortsett'));
 
         expect(screen.getByText('Mor er i arbeid')).toBeInTheDocument();
 

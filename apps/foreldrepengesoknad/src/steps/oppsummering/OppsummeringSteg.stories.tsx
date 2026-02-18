@@ -58,7 +58,15 @@ const defaultSøkerinfoMor = {
             type: 'GIFT',
         },
     },
-    arbeidsforhold: [],
+    arbeidsforhold: [
+        {
+            arbeidsgiverId: '1',
+            arbeidsgiverNavn: 'Arbeidsgiver AS',
+            arbeidsgiverIdType: 'orgnr',
+            fom: '2021-01-01',
+            stillingsprosent: 50,
+        },
+    ],
 } satisfies PersonMedArbeidsforholdDto_fpoversikt;
 
 const defaultSøkerinfoFar = {
@@ -161,8 +169,6 @@ const defaultUttaksplanNy = [
     {
         utsettelseÅrsak: 'SØKER_INNLAGT',
         forelder: 'MOR',
-        // FIXME (TOR) Trengs denne?
-        // erArbeidstaker: true,
         fom: '2021-12-15',
         tom: '2022-01-25',
     },
@@ -282,6 +288,7 @@ type StoryArgs = {
     egenNæring?: NæringDto;
     andreInntekter?: AndreInntektskilder[];
     vedlegg?: VedleggDataType;
+    uttaksplan?: UttakPeriode_fpoversikt[];
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof OppsummeringSteg>;
 
@@ -315,6 +322,7 @@ const meta = {
         andreInntekter,
         gåTilNesteSide,
         vedlegg = defaultVedlegg,
+        uttaksplan = defaultUttaksplanNy,
         ...rest
     }) => {
         const freshQueryClient = new QueryClient({
@@ -350,7 +358,7 @@ const meta = {
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
                             [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100',
                             [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
-                            [ContextDataType.UTTAKSPLAN_NY]: defaultUttaksplanNy,
+                            [ContextDataType.UTTAKSPLAN_NY]: uttaksplan,
                             [ContextDataType.VEDLEGG]: vedlegg,
                         }}
                     >
@@ -1188,5 +1196,42 @@ export const ErEndringssøknad: Story = {
             kanIkkeOppgis: false,
             erAleneOmOmsorg: false,
         },
+    },
+};
+
+export const VisGradertPeriode: Story = {
+    args: {
+        ...Default.args,
+        annenForelder: {
+            fornavn: 'Espen',
+            etternavn: 'Utvikler',
+            fnr: '1212121313',
+            harRettPåForeldrepengerINorge: true,
+            kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
+        },
+        uttaksplan: [
+            {
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                fom: '2021-11-24',
+                tom: '2021-12-14',
+            },
+            {
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                gradering: {
+                    aktivitet: {
+                        type: 'ORDINÆRT_ARBEID',
+                        arbeidsgiver: {
+                            id: '1',
+                        },
+                    },
+                    arbeidstidprosent: 50,
+                },
+                fom: '2021-12-15',
+                tom: '2022-01-25',
+            },
+        ] satisfies UttakPeriode_fpoversikt[],
     },
 };

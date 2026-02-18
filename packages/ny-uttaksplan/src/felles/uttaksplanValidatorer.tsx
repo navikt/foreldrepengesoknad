@@ -400,7 +400,7 @@ const harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamili
                 }, 0) * stillingsprosentFaktor;
 
             const uttaksperioderUtenomBortsettFraEndredePerioder = new UttakPeriodeBuilder(uttakPerioder)
-                .fjernUttakPerioder(nyePerioder)
+                .fjernUttakPerioder(nyePerioder, false)
                 .getUttakPerioder();
 
             const dagerEksisterendePerioder = uttaksperioderUtenomBortsettFraEndredePerioder

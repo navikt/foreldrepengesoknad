@@ -116,7 +116,7 @@ describe('lagHullPerioder', () => {
 
         expect(perioderMedHull).toEqual([
             {
-                fom: '2025-05-08',
+                fom: '2025-05-07',
                 tom: '2025-08-08',
                 forelder: 'FAR_MEDMOR',
                 type: 'TAPTE_DAGER',

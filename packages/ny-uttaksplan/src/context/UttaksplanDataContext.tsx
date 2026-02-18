@@ -2,6 +2,7 @@ import { createContext, useContext, useMemo } from 'react';
 
 import {
     Barn,
+    EksternArbeidsforholdDto_fpoversikt,
     Familiesituasjon,
     KontoBeregningDto,
     UttakPeriodeAnnenpartEøs_fpoversikt,
@@ -19,6 +20,7 @@ type Props = {
     harAktivitetskravIPeriodeUtenUttak: boolean;
     erPeriodeneTilAnnenPartLåst: boolean;
     uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    aktiveArbeidsforhold?: EksternArbeidsforholdDto_fpoversikt[];
     children: React.ReactNode;
 };
 

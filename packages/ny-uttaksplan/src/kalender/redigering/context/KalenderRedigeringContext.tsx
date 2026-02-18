@@ -18,8 +18,8 @@ type Props = {
 
 type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaksplan'> & {
     sammenslåtteValgtePerioder: CalendarPeriod[];
-    leggTilUttaksplanPerioder: (perioder: UttakPeriode_fpoversikt[]) => void;
-    slettUttaksplanPerioder: (perioder: UttakPeriode_fpoversikt[]) => void;
+    leggTilUttaksplanPerioder: (perioder: UttakPeriode_fpoversikt[], skalForskyvePeriode: boolean) => void;
+    slettUttaksplanPerioder: (perioder: UttakPeriode_fpoversikt[], skalForskyveBakover: boolean) => void;
 };
 
 const KalenderRedigeringContext = createContext<ContextValues | null>(null);
@@ -37,9 +37,9 @@ export const KalenderRedigeringProvider = ({
     const sammenslåtteValgtePerioder = useMemo(() => slåSammenTilstøtendePerioder(valgtePerioder), [valgtePerioder]);
 
     const leggTilUttaksplanPerioder = useCallback(
-        (perioder: UttakPeriode_fpoversikt[]) => {
+        (perioder: UttakPeriode_fpoversikt[], skalForskyvePeriode: boolean) => {
             const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder)
-                .leggTilUttakPerioder(perioder)
+                .leggTilUttakPerioder(perioder, skalForskyvePeriode)
                 .getUttakPerioder();
 
             notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeUttakPerioder);
@@ -48,9 +48,9 @@ export const KalenderRedigeringProvider = ({
     );
 
     const slettUttaksplanPerioder = useCallback(
-        (perioder: UttakPeriode_fpoversikt[]) => {
+        (perioder: UttakPeriode_fpoversikt[], skalForskyveBakover: boolean) => {
             const uttakPeriodeBuilder = new UttakPeriodeBuilder(uttakPerioder);
-            uttakPeriodeBuilder.fjernUttakPerioder(perioder);
+            uttakPeriodeBuilder.fjernUttakPerioder(perioder, skalForskyveBakover);
             notEmpty(uttaksplanRedigering).oppdaterUttaksplan(uttakPeriodeBuilder.getUttakPerioder());
         },
         [uttaksplanRedigering, uttakPerioder],

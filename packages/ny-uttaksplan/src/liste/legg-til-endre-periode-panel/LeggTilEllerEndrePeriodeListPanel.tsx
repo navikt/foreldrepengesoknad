@@ -18,6 +18,7 @@ import {
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilUttakPeriode,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
+import { LeggTilPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstatt';
 import { useHentGyldigeKontotyper } from '../../felles/useHentGyldigeKontotyper';
 import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
 import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
@@ -56,6 +57,8 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         erPeriodeneTilAnnenPartLåst,
     } = useUttaksplanData();
 
+    const [visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel] = useState(false);
+
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
@@ -76,8 +79,12 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         defaultValues,
     });
 
-    const handleAddPeriode = (nyPeriode: UttakPeriode_fpoversikt[]) => {
-        const nyePerioder = new UttakPeriodeBuilder(uttakPerioder).leggTilUttakPerioder(nyPeriode).getUttakPerioder();
+    const handleAddPeriode = (nyPeriode: UttakPeriode_fpoversikt[], skalForskyve: boolean) => {
+        const builder = new UttakPeriodeBuilder(uttakPerioder);
+        if (uttaksplanperiode) {
+            builder.fjernUttakPerioder([uttaksplanperiode], false);
+        }
+        const nyePerioder = builder.leggTilUttakPerioder(nyPeriode, skalForskyve).getUttakPerioder();
         uttaksplanRedigering?.oppdaterUttaksplan?.(nyePerioder);
         setIsLeggTilPeriodePanelOpen(false);
     };
@@ -85,28 +92,53 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const formSubmitValidator = useFormSubmitValidator<FormValues>();
 
     const onSubmit = (values: FormValues) => {
+        setFeilmelding(undefined);
+
+        if (hvaVilDuGjøre === 'LEGG_TIL_PERIODE') {
+            const fomValue = notEmpty(values.fom);
+            const tomValue = notEmpty(values.tom);
+            const submitFeilmelding = formSubmitValidator([{ fom: fomValue, tom: tomValue }], values);
+
+            if (submitFeilmelding) {
+                setFeilmelding(submitFeilmelding);
+                return;
+            }
+        } else if (hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') {
+            leggIListe(false);
+            return;
+        }
+
+        setVisEndreEllerForskyvPanel(true);
+    };
+
+    const leggIListe = (skalForskyve: boolean) => {
+        const values = formMethods.getValues();
         const fomValue = notEmpty(values.fom);
         const tomValue = notEmpty(values.tom);
 
-        setFeilmelding(undefined);
-
         if (hvaVilDuGjøre === 'LEGG_TIL_FERIE') {
-            handleAddPeriode([
-                {
-                    fom: fomValue,
-                    tom: tomValue,
-                    forelder: 'MOR',
-                    utsettelseÅrsak: 'LOVBESTEMT_FERIE',
-                },
-            ]);
-        } else if (hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') {
-            const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder)
-                .fjernUttakPerioder([
+            handleAddPeriode(
+                [
                     {
                         fom: fomValue,
                         tom: tomValue,
+                        forelder: 'MOR',
+                        utsettelseÅrsak: 'LOVBESTEMT_FERIE',
                     },
-                ])
+                ],
+                skalForskyve,
+            );
+        } else if (hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') {
+            const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder)
+                .fjernUttakPerioder(
+                    [
+                        {
+                            fom: fomValue,
+                            tom: tomValue,
+                        },
+                    ],
+                    false,
+                )
                 .getUttakPerioder();
 
             uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
@@ -118,7 +150,10 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                 return;
             }
             const mapped = omitMany(values, ['fom', 'tom', 'hvaVilDuGjøre']);
-            handleAddPeriode(mapFraFormValuesTilUttakPeriode(mapped, { fom: fomValue, tom: tomValue }));
+            handleAddPeriode(
+                mapFraFormValuesTilUttakPeriode(mapped, { fom: fomValue, tom: tomValue }, søker),
+                skalForskyve,
+            );
         }
 
         setIsLeggTilPeriodePanelOpen(false);
@@ -190,64 +225,80 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             )}
 
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="space-32">
-                    <RhfRadioGroup
-                        name="hvaVilDuGjøre"
-                        label={intl.formatMessage({ id: 'uttaksplan.valgPanel.label' })}
-                        control={formMethods.control}
-                        validate={[isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.hvaVilDuGjøre.påkrevd' }))]}
-                        onChange={resetFormValuesVedEndringAvHvaVilDuGjøre}
-                    >
-                        <Radio value={'LEGG_TIL_FERIE' satisfies HvaVilDuGjøre} autoFocus>
-                            {erNyPeriodeModus ? (
-                                <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie" />
-                            ) : (
-                                <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie.endre" />
-                            )}
-                        </Radio>
-                        <Radio value={'LEGG_TIL_OPPHOLD' satisfies HvaVilDuGjøre}>
-                            {erNyPeriodeModus ? (
-                                <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold" />
-                            ) : (
-                                <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold.endre" />
-                            )}
-                        </Radio>
-                        <Radio value={'LEGG_TIL_PERIODE' satisfies HvaVilDuGjøre}>
-                            {erNyPeriodeModus ? (
-                                <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode" />
-                            ) : (
-                                <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode.endre" />
-                            )}
-                        </Radio>
-                    </RhfRadioGroup>
-                    <TidsperiodeSpørsmål />
-                    {hvaVilDuGjøre === 'LEGG_TIL_PERIODE' && fomValue && tomValue && (
-                        <LeggTilEllerEndrePeriodeFellesForm
-                            valgtePerioder={[{ fom: fomValue, tom: tomValue }]}
-                            resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}
-                        />
-                    )}
-                    {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
-                    <HStack gap="space-8" justify="space-between">
-                        <Button type="button" variant="secondary" onClick={() => setIsLeggTilPeriodePanelOpen(false)}>
-                            <FormattedMessage id="uttaksplan.avbryt" />
-                        </Button>
-                        <HStack gap="space-8">
-                            {setValgtPeriodeIndex && (
-                                <Button
-                                    type="button"
-                                    variant="secondary"
-                                    onClick={() => setValgtPeriodeIndex(undefined)}
-                                >
-                                    <FormattedMessage id="uttaksplan.gåTilbake" />
-                                </Button>
-                            )}
-                            <Button type="submit" disabled={!formMethods.formState.isDirty || isSubmitDisabled}>
-                                <FormattedMessage id="uttaksplan.ferdig" />
+                {visEndreEllerForskyvPanel && fomValue && tomValue && (
+                    <LeggTilPeriodeForskyvEllerErstatt
+                        valgtePerioder={[{ fom: fomValue, tom: tomValue }]}
+                        erFerie={hvaVilDuGjøre === 'LEGG_TIL_FERIE'}
+                        setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
+                        leggTilEllerForskyvPeriode={leggIListe}
+                    />
+                )}
+                {!visEndreEllerForskyvPanel && (
+                    <VStack gap="space-32">
+                        <RhfRadioGroup
+                            name="hvaVilDuGjøre"
+                            label={intl.formatMessage({ id: 'uttaksplan.valgPanel.label' })}
+                            control={formMethods.control}
+                            validate={[
+                                isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.hvaVilDuGjøre.påkrevd' })),
+                            ]}
+                            onChange={resetFormValuesVedEndringAvHvaVilDuGjøre}
+                        >
+                            <Radio value={'LEGG_TIL_FERIE' satisfies HvaVilDuGjøre} autoFocus>
+                                {erNyPeriodeModus ? (
+                                    <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie" />
+                                ) : (
+                                    <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie.endre" />
+                                )}
+                            </Radio>
+                            <Radio value={'LEGG_TIL_OPPHOLD' satisfies HvaVilDuGjøre}>
+                                {erNyPeriodeModus ? (
+                                    <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold" />
+                                ) : (
+                                    <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold.endre" />
+                                )}
+                            </Radio>
+                            <Radio value={'LEGG_TIL_PERIODE' satisfies HvaVilDuGjøre}>
+                                {erNyPeriodeModus ? (
+                                    <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode" />
+                                ) : (
+                                    <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode.endre" />
+                                )}
+                            </Radio>
+                        </RhfRadioGroup>
+                        <TidsperiodeSpørsmål />
+                        {hvaVilDuGjøre === 'LEGG_TIL_PERIODE' && fomValue && tomValue && (
+                            <LeggTilEllerEndrePeriodeFellesForm
+                                valgtePerioder={[{ fom: fomValue, tom: tomValue }]}
+                                resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}
+                            />
+                        )}
+                        {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
+                        <HStack gap="space-8" justify="space-between">
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                onClick={() => setIsLeggTilPeriodePanelOpen(false)}
+                            >
+                                <FormattedMessage id="uttaksplan.avbryt" />
                             </Button>
+                            <HStack gap="space-8">
+                                {setValgtPeriodeIndex && (
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        onClick={() => setValgtPeriodeIndex(undefined)}
+                                    >
+                                        <FormattedMessage id="uttaksplan.gåTilbake" />
+                                    </Button>
+                                )}
+                                <Button type="submit" disabled={!formMethods.formState.isDirty || isSubmitDisabled}>
+                                    <FormattedMessage id="uttaksplan.ferdig" />
+                                </Button>
+                            </HStack>
                         </HStack>
-                    </HStack>
-                </VStack>
+                    </VStack>
+                )}
             </RhfForm>
         </VStack>
     );

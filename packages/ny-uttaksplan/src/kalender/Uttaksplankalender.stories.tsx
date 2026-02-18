@@ -46,6 +46,7 @@ const meta = {
                 harAktivitetskravIPeriodeUtenUttak={false}
                 uttakPerioder={perioder ?? []}
                 erPeriodeneTilAnnenPartLåst={args.erPeriodeneTilAnnenPartLåst}
+                aktiveArbeidsforhold={args.aktiveArbeidsforhold}
             >
                 <UttaksplanRedigeringProvider
                     oppdaterUttaksplan={handleOnPlanChange}
@@ -974,11 +975,6 @@ export const MorSøkerOgMedmorHarEøsPeriode: Story = {
             {
                 fom: '2024-04-04',
                 tom: '2024-04-18',
-                forelder: 'MOR',
-            },
-            {
-                fom: '2024-04-04',
-                tom: '2024-04-18',
                 kontoType: 'MØDREKVOTE',
                 forelder: 'MOR',
             },
@@ -1023,11 +1019,6 @@ export const StjernemarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt: 
                 fom: '2024-03-14',
                 tom: '2024-04-03',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                forelder: 'MOR',
-            },
-            {
-                fom: '2024-04-04',
-                tom: '2024-04-18',
                 forelder: 'MOR',
             },
             {
@@ -1216,6 +1207,28 @@ export const FarsUttakMorForSyk: Story = {
                 kontoType: 'FEDREKVOTE',
                 fom: '2026-08-26',
                 tom: '2026-12-08',
+            },
+        ],
+    },
+};
+
+export const MedArbeidsforhold: Story = {
+    args: {
+        ...MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering.args,
+        aktiveArbeidsforhold: [
+            {
+                arbeidsgiverId: '1',
+                arbeidsgiverIdType: '1',
+                stillingsprosent: 100,
+                arbeidsgiverNavn: 'NAV',
+                fom: '2024-01-01',
+            },
+            {
+                arbeidsgiverId: '2',
+                arbeidsgiverIdType: '2',
+                stillingsprosent: 80,
+                arbeidsgiverNavn: 'Bedrift AS',
+                fom: '2024-01-01',
             },
         ],
     },

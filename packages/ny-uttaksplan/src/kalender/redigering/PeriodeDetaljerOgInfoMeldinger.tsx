@@ -11,7 +11,11 @@ import { EksisterendeValgtePerioder } from './EksisterendeValgtePerioder';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 import { finnValgtePerioder } from './utils/kalenderPeriodeUtils';
 
-export const PeriodeDetaljerOgInfoMeldinger = () => {
+interface Props {
+    setSkalViseKnapper: (skalViseKnapper: boolean) => void;
+}
+
+export const PeriodeDetaljerOgInfoMeldinger = ({ setSkalViseKnapper }: Props) => {
     const {
         familiehendelsedato,
         familiesituasjon,
@@ -33,14 +37,6 @@ export const PeriodeDetaljerOgInfoMeldinger = () => {
 
     return (
         <VStack gap="space-16">
-            {eksisterendePerioderSomErValgt.length > 0 && (
-                <BodyShort>
-                    <FormattedMessage
-                        id="RedigeringPanel.EksisterendePerioder"
-                        values={{ antall: eksisterendePerioderSomErValgt.length }}
-                    />
-                </BodyShort>
-            )}
             {eksisterendePerioderSomErValgt.length === 0 && (
                 <BodyShort>
                     <FormattedMessage id="RedigeringPanel.NyeDagerForklaring" />
@@ -48,7 +44,10 @@ export const PeriodeDetaljerOgInfoMeldinger = () => {
             )}
 
             {eksisterendePerioderSomErValgt.length > 0 && (
-                <EksisterendeValgtePerioder perioder={eksisterendePerioderSomErValgt} />
+                <EksisterendeValgtePerioder
+                    perioder={eksisterendePerioderSomErValgt}
+                    setSkalViseKnapper={setSkalViseKnapper}
+                />
             )}
 
             {erAdopsjon && harPeriodeFør && (
