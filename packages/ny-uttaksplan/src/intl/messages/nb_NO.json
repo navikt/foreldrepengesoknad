@@ -205,6 +205,7 @@
     "RedigeringPanel.LeggTilFerie": "Legg til ferie",
     "RedigeringPanel.ValgtDagerFørFamiliehendelsesdato": "Du kan ikke forskyve perioder når du har valgt minst en dag før fødsel/termin",
     "RedigeringPanel.ValgtDagerFørSeksUkerEtterFamDato": "Du kan ikke forskyve perioder når du har valgt dager før seks uker etter fødsel/termin",
+    "RedigeringPanel.SenerePerioderReadonly": "Du kan ikke forskyve perioder når det finnes senere perioder som ikke kan endres.",
     "LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt": "Du må velge mors aktivitet før du kan gå videre.",
     "RedigeringPanel.RedigerUttaksplan": "Endre",
     "RedigeringPanel.AddUttaksplan": "Legg til",

@@ -62,7 +62,9 @@ export const harUttaksplanperiodeAvslåttPeriodeMedÅrsakAnnet = (uttaksplanperi
         return false;
     }
     const periode = uttaksplanperioder.at(0)!;
-    return erVanligUttakPeriode(periode) && periode.resultat?.årsak === 'ANNET';
+    return (
+        erVanligUttakPeriode(periode) && periode.resultat?.innvilget === false && periode.resultat?.årsak === 'ANNET'
+    );
 };
 
 export const erUttaksplanperiodeUtsettelseOpphold = (uttaksplanperioder: Uttaksplanperiode[]) => {

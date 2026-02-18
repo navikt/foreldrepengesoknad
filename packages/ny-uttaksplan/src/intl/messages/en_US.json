@@ -206,6 +206,7 @@
     "RedigeringPanel.LeggTilFerie": "Add vacation",
     "RedigeringPanel.ValgtDagerFørFamiliehendelsesdato": "You cannot push existing periods when you have selected at least one day before birth",
     "RedigeringPanel.ValgtDagerFørSeksUkerEtterFamDato": "You cannot push existing periods when you have selected days before six weeks after birth",
+    "RedigeringPanel.SenerePerioderReadonly": "You cannot push existing periods when there are later periods that cannot be changed.",
     "RedigeringPanel.RedigerUttaksplan": "Change",
     "RedigeringPanel.AddUttaksplan": "Add",
     "RedigeringPanel.EndreTil": "What do you want to change to?",

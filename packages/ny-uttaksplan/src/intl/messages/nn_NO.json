@@ -246,6 +246,7 @@
     "RedigeringPanel.EndrePlanenDetaljer": "Dagane blir lagt inn og erstattar det som ligg der. Du får dagane til gode og kan legge dei til seinare",
     "RedigeringPanel.AdopsjonPeriodeFørFamiliehendelsedato": "Du kan ikkje ha foreldrepengar før du overtek omsorga for barnet",
     "RedigeringPanel.ValgtDagerFørSeksUkerEtterFamDato": "Du kan ikkje forskyva periodar når du har valgt dagar før seks uker etter fødsel/termin",
+    "RedigeringPanel.SenerePerioderReadonly": "Du kan ikkje forskyva periodar når det finnes seinare periodar som ikkje kan endrast.",
     "RedigeringPanel.SlettFlyttPlanen": "Flytt resten av planen",
     "RedigeringPanel.SlettFlyttPlanenDetaljer": "Dagane som slettes blir tilbake i planen, sånn at du forskyver den.",
     "RedigeringPanel.SlettEndrePlanen": "La resten av planen vera som den er",

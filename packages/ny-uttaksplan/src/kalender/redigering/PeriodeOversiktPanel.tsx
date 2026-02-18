@@ -12,6 +12,7 @@ import { LeggTilPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErst
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
+import { erDetEksisterendePerioderEtterValgtePerioder } from '../../utils/periodeUtils';
 import { PeriodeDetaljerOgInfoMeldinger } from './PeriodeDetaljerOgInfoMeldinger';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 import { RødRamme } from './utils/RødRamme';
@@ -31,6 +32,7 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
     const {
         foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
+        uttakPerioder,
     } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, setValgtePerioder, leggTilUttaksplanPerioder, setEndredePerioder } =
@@ -80,6 +82,11 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
         setValgtePerioder([]);
         setEndredePerioder(sammenslåtteValgtePerioder);
     };
+
+    const erEksisterendePerioderEtterValgteDager = erDetEksisterendePerioderEtterValgtePerioder(
+        uttakPerioder,
+        sammenslåtteValgtePerioder,
+    );
 
     if (visEndreEllerForskyvPanel) {
         return (
@@ -211,7 +218,11 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
                                     <Button
                                         variant="secondary"
                                         size="small"
-                                        onClick={() => setVisEndreEllerForskyvPanel(true)}
+                                        onClick={() =>
+                                            erEksisterendePerioderEtterValgteDager
+                                                ? setVisEndreEllerForskyvPanel(true)
+                                                : leggTilEllerForskyvPeriode(false)
+                                        }
                                         type="button"
                                     >
                                         {skalViseLeggTilKnappetekst ? (
