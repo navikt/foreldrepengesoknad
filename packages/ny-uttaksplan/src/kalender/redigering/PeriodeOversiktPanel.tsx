@@ -51,6 +51,13 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
 
     const harValgtEøsPeriode = eksisterendePerioderSomErValgt.some((p) => erEøsUttakPeriode(p));
 
+    const harPeriodeMedPleiepenger = eksisterendePerioderSomErValgt.some(
+        (p) =>
+            erVanligUttakPeriode(p) &&
+            p.resultat?.innvilget === false &&
+            p.resultat.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER',
+    );
+
     const skalViseLeggTilKnappetekst =
         eksisterendePerioderSomErValgt.length === 0 ||
         (erPeriodeneTilAnnenPartLåst &&
@@ -174,7 +181,7 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
                     <VStack gap="space-12">
                         {labels}
                         <PeriodeDetaljerOgInfoMeldinger setSkalViseKnapper={setSkalViseKnapper} />
-                        {harValgtEøsPeriode && skalViseKnapper && (
+                        {(harPeriodeMedPleiepenger || harValgtEøsPeriode) && skalViseKnapper && (
                             <HStack justify="end">
                                 <Button
                                     type="button"
@@ -186,7 +193,7 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
                                 </Button>
                             </HStack>
                         )}
-                        {!harValgtEøsPeriode && skalViseKnapper && (
+                        {!harPeriodeMedPleiepenger && !harValgtEøsPeriode && skalViseKnapper && (
                             <VStack gap="space-12">
                                 <Show above="md">
                                     <LeggTilOgEndreKnapp

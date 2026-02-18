@@ -98,6 +98,11 @@ export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Pro
                         const erAnnenPartsPeriodeLåst =
                             erPeriodeneTilAnnenPartLåst && erVanligUttakPeriode(p) && p.forelder !== søker;
 
+                        const erAvslåttPeriode = erVanligUttakPeriode(p) && p.resultat?.innvilget === false;
+
+                        const erPleiepengerPeriode =
+                            erAvslåttPeriode && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
+
                         return (
                             <HStack
                                 gap="space-8"
@@ -222,9 +227,23 @@ export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Pro
                                             values={{ antall: p.valgteDagerIPeriode }}
                                         />
                                     </BodyShort>
+
+                                    {erPleiepengerPeriode && (
+                                        <BodyShort>
+                                            <FormattedMessage
+                                                id="RedigeringPanel.Pleiepenger"
+                                                values={{ antall: p.valgteDagerIPeriode }}
+                                            />
+                                        </BodyShort>
+                                    )}
+                                    {erAvslåttPeriode && !erPleiepengerPeriode && (
+                                        <BodyShort>
+                                            <FormattedMessage id="RedigeringPanel.AvslåttPeriode" />
+                                        </BodyShort>
+                                    )}
                                 </VStack>
                                 <Spacer />
-                                {!erEøsUttakPeriode(p) && !erAnnenPartsPeriodeLåst && (
+                                {!erEøsUttakPeriode(p) && !erAnnenPartsPeriodeLåst && !erPleiepengerPeriode && (
                                     <TrashIcon
                                         title={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}
                                         fontSize="1.5rem"

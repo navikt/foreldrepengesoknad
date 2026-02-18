@@ -29,7 +29,7 @@ import {
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
-const UNSELECTABLE_COLORS = new Set<CalendarPeriodColor>(['PINK', 'PURPLE', 'BLACKOUTLINE', 'GRAY']);
+const UNSELECTABLE_COLORS = new Set<CalendarPeriodColor>(['PINK', 'PURPLE', 'GRAY']);
 
 interface Props {
     perioderForKalendervisning: CalendarPeriod[];

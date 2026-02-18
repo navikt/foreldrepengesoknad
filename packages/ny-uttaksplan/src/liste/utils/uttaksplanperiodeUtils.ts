@@ -57,6 +57,14 @@ export const harUttaksplanperiodePrematuruker = (uttaksplanperioder: Uttaksplanp
     return erVanligUttakPeriode(periode) && periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
 };
 
+export const harUttaksplanperiodeAvslåttPeriodeMedÅrsakAnnet = (uttaksplanperioder: Uttaksplanperiode[]) => {
+    if (uttaksplanperioder.length !== 1) {
+        return false;
+    }
+    const periode = uttaksplanperioder.at(0)!;
+    return erVanligUttakPeriode(periode) && periode.resultat?.årsak === 'ANNET';
+};
+
 export const erUttaksplanperiodeUtsettelseOpphold = (uttaksplanperioder: Uttaksplanperiode[]) => {
     if (uttaksplanperioder.length !== 1) {
         return false;
