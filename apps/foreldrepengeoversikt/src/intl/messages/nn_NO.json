@@ -292,7 +292,7 @@
     "beregning.dagsats": "Dagsats: {sumDagsats}",
     "beregning.årsinntekt": "Nav har fastsett årsinntekta di til: <label>{årsinntekt}</label>",
     "beregning.datoForVurdering": "Tidspunktet for berekninga er <label>{dato}</label>.",
-    "beregning.datoForVurdering.fortsettelse": "Foreldrepengane blir <label>berre rekna ut éin gong</label>",
+    "beregning.datoForVurdering.tittel": "Bereknas kun ein gong",
     "beregning.visÅttiProsentReduksjon": "Sidan du har <label>80%</label> foreldrepenger blir grunnlaget ditt redusert til <labelvalue>{value}</labelvalue>",
     "beregning.6GVarsel": "Nav kompenserer deg ikkje for inntekt over: {grunnbeløpSeksG} (6G)",
     "beregning.tittel": "Meir om berekninga",

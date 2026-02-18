@@ -292,7 +292,7 @@
     "beregning.dagsats": "Daily rate: {sumDagsats}",
     "beregning.årsinntekt": "Nav has determined your annual income to be: <label>{årsinntekt}</label>",
     "beregning.datoForVurdering": "The calculation date is <label>{dato}</label>.",
-    "beregning.datoForVurdering.fortsettelse": "The parental benefit is <label>only calculated once</label>",
+    "beregning.datoForVurdering.tittel": "Only calculated once",
     "beregning.visÅttiProsentReduksjon": "Since you have an <label>80%</label> parental benefit, your base amount is reduced to <labelvalue>{value}</labelvalue>",
     "beregning.6GVarsel": "Nav does not compensate you for income exceeding: {grunnbeløpSeksG} (6G)",
     "beregning.tittel": "More about the calculation",

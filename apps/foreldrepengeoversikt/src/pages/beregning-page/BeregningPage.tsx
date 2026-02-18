@@ -131,13 +131,6 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
                             dato: formaterDato(beregning.skjæringsTidspunkt, 'D. MMMM YYYY'),
                         }}
                     />
-                    <br />
-                    <FormattedMessage
-                        id="beregning.datoForVurdering.fortsettelse"
-                        values={{
-                            label: (chunks) => <Label>{chunks}</Label>,
-                        }}
-                    />
                 </List.Item>
                 {vis6GVarsel && (
                     <List.Item>
@@ -215,6 +208,15 @@ const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: n
                     <FormattedMessage id="beregning.forklaringer.ytelserBareOppTil6G.innhold" />
                 </Accordion.Content>
             </Accordion.Item>
+            <Accordion.Item>
+                <Accordion.Header>
+                    <FormattedMessage id="beregning.datoForVurdering.tittel" />
+                </Accordion.Header>
+                <Accordion.Content>
+                    Foreldrengene dine beregnes kun én gang. Det betyr at selv om du bla bla, får du likevel den samme
+                    dagsatsen utbetalt senere. Dette gjelder selv om du går opp eller ned i inntekt, etc osv. TODO
+                </Accordion.Content>
+            </Accordion.Item>
         </Accordion>
     );
 };
@@ -273,11 +275,37 @@ const periodeTilDager = (perioder: TilkjentYtelsePeriode_fpoversikt[]): DagMedPe
     return dager;
 };
 
+const fjernLeadingOgTrailingMånederUtenUtbetaling = (andelerPerDag: DagMedPeriode[]) => {
+    const andelerPerDagGruppertPåMåned = groupBy(andelerPerDag, (d) => dayjs(d.dato).month());
+    const andelerSortertPåMåned = sortBy(Object.values(andelerPerDagGruppertPåMåned), (dager) =>
+        dayjs(dager[0]!.dato).unix(),
+    );
+
+    const beregnSumForMåned = (dager: DagMedPeriode[]) => {
+        const utbetalingsdager = dager.filter((d) => erUttaksdag(new Date(d.dato)));
+        const tilBruker = sumBy(utbetalingsdager, (d) =>
+            sumBy(d.andeler, (andel) => (andel.tilBruker ? andel.dagsats : 0)),
+        );
+        const tilArbeidsgiver = sumBy(utbetalingsdager, (d) =>
+            sumBy(d.andeler, (andel) => (andel.tilBruker ? 0 : andel.dagsats)),
+        );
+        return tilBruker + tilArbeidsgiver;
+    };
+
+    const førstePåMånedMedSum = andelerSortertPåMåned.findIndex((dager) => beregnSumForMåned(dager) !== 0);
+    const sistePåMånedMedSum =
+        andelerSortertPåMåned.length -
+        1 -
+        [...andelerSortertPåMåned].reverse().findIndex((dager) => beregnSumForMåned(dager) !== 0);
+
+    return førstePåMånedMedSum === -1 ? [] : andelerSortertPåMåned.slice(førstePåMånedMedSum, sistePåMånedMedSum + 1);
+};
+
 const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
     const tilkjentYtelse = sak.gjeldendeVedtak?.tilkjentYtelse?.utbetalingsperioder ?? [];
     const andelerPerDag = periodeTilDager(tilkjentYtelse);
 
-    const andelerPerDagGruppertPåMåned = groupBy(andelerPerDag, (d) => dayjs(d.dato).month());
+    const andelerPerMåned = fjernLeadingOgTrailingMånederUtenUtbetaling(andelerPerDag);
 
     return (
         <VStack gap="space-4">
@@ -294,103 +322,97 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                 />
             </BodyShort>
             <VStack gap="space-16">
-                {sortBy(Object.values(andelerPerDagGruppertPåMåned), (dager) => dayjs(dager[0]!.dato).unix()).map(
-                    (dager, index) => {
-                        const utbetalingsdager = dager.filter((d) => erUttaksdag(new Date(d.dato)));
-                        const totaltForMånedenTilDeg = sumBy(utbetalingsdager, (d) =>
-                            sumBy(d.andeler, (andel) => (andel.tilBruker ? andel.dagsats : 0)),
-                        );
+                {andelerPerMåned.map((dager, index) => {
+                    const utbetalingsdager = dager.filter((d) => erUttaksdag(new Date(d.dato)));
+                    const totaltForMånedenTilDeg = sumBy(utbetalingsdager, (d) =>
+                        sumBy(d.andeler, (andel) => (andel.tilBruker ? andel.dagsats : 0)),
+                    );
 
-                        const totaltForMånedenTilAG = sumBy(utbetalingsdager, (d) =>
-                            sumBy(d.andeler, (andel) => (andel.tilBruker ? 0 : andel.dagsats)),
-                        );
+                    const totaltForMånedenTilAG = sumBy(utbetalingsdager, (d) =>
+                        sumBy(d.andeler, (andel) => (andel.tilBruker ? 0 : andel.dagsats)),
+                    );
 
-                        const førsteDato = dager[0]!.dato;
-                        const måned = capitalizeFirstLetter(formaterDato(førsteDato, 'MMMM'));
-                        const skalViseÅr = index === 0 || dayjs(førsteDato).month() === 0;
-                        return (
-                            <React.Fragment key={førsteDato}>
-                                {skalViseÅr && <Label className="mt-4">{dayjs(førsteDato).year()}</Label>}
-                                <ExpansionCard aria-label={måned} data-testid={`expansioncard-${måned}`}>
-                                    <ExpansionCard.Header>
-                                        <HStack wrap={false} gap="space-16" align="center">
-                                            <div>
-                                                <CalendarIcon
-                                                    className="text-ax-border-accent"
-                                                    aria-hidden
-                                                    fontSize="2rem"
-                                                />
-                                            </div>
-                                            <div>
-                                                <ExpansionCard.Title size="medium">{måned}</ExpansionCard.Title>
-                                                <ExpansionCard.Description>
-                                                    {totaltForMånedenTilDeg > 0 && (
-                                                        <>
-                                                            <BodyShort as="span">
-                                                                <FormattedMessage
-                                                                    id="beregning.utbetalingsvisning.direkte"
-                                                                    values={{
-                                                                        beløp: formatCurrencyWithKr(
-                                                                            totaltForMånedenTilDeg,
-                                                                        ),
-                                                                    }}
-                                                                />
-                                                            </BodyShort>
-                                                            <br />
-                                                        </>
-                                                    )}
-                                                    {totaltForMånedenTilAG > 0 && (
+                    const førsteDato = dager[0]!.dato;
+                    const måned = capitalizeFirstLetter(formaterDato(førsteDato, 'MMMM'));
+                    const skalViseÅr = index === 0 || dayjs(førsteDato).month() === 0;
+                    return (
+                        <React.Fragment key={førsteDato}>
+                            {skalViseÅr && <Label className="mt-4">{dayjs(førsteDato).year()}</Label>}
+                            <ExpansionCard aria-label={måned} data-testid={`expansioncard-${måned}`}>
+                                <ExpansionCard.Header>
+                                    <HStack wrap={false} gap="space-16" align="center">
+                                        <div>
+                                            <CalendarIcon
+                                                className="text-ax-border-accent"
+                                                aria-hidden
+                                                fontSize="2rem"
+                                            />
+                                        </div>
+                                        <div>
+                                            <ExpansionCard.Title size="medium">{måned}</ExpansionCard.Title>
+                                            <ExpansionCard.Description>
+                                                {totaltForMånedenTilDeg > 0 && (
+                                                    <>
                                                         <BodyShort as="span">
                                                             <FormattedMessage
-                                                                id="beregning.utbetalingsvisning.arbeidsgiver"
+                                                                id="beregning.utbetalingsvisning.direkte"
                                                                 values={{
-                                                                    beløp: formatCurrencyWithKr(totaltForMånedenTilAG),
+                                                                    beløp: formatCurrencyWithKr(totaltForMånedenTilDeg),
                                                                 }}
                                                             />
                                                         </BodyShort>
-                                                    )}
-                                                </ExpansionCard.Description>
-                                            </div>
-                                        </HStack>
-                                    </ExpansionCard.Header>
+                                                        <br />
+                                                    </>
+                                                )}
+                                                {totaltForMånedenTilAG > 0 && (
+                                                    <BodyShort as="span">
+                                                        <FormattedMessage
+                                                            id="beregning.utbetalingsvisning.arbeidsgiver"
+                                                            values={{
+                                                                beløp: formatCurrencyWithKr(totaltForMånedenTilAG),
+                                                            }}
+                                                        />
+                                                    </BodyShort>
+                                                )}
+                                            </ExpansionCard.Description>
+                                        </div>
+                                    </HStack>
+                                </ExpansionCard.Header>
 
-                                    <ExpansionCard.Content>
-                                        <Table size="small">
-                                            <Table.Header>
-                                                <Table.Row>
-                                                    <Table.HeaderCell scope="col">
-                                                        <FormattedMessage id="beregning.utbetalingsvisning.tabell.dato" />
-                                                    </Table.HeaderCell>
-                                                    <Table.HeaderCell align="right" scope="col">
-                                                        <FormattedMessage id="beregning.utbetalingsvisning.tabell.beløp" />
-                                                    </Table.HeaderCell>
-                                                </Table.Row>
-                                            </Table.Header>
-                                            <Table.Body>
-                                                {dager.map((dag) => {
-                                                    const erUtbetalingsdag = erUttaksdag(new Date(dag.dato));
-                                                    const beløp = sumBy(dag.andeler, (andel) => andel.dagsats);
-                                                    const beløpTekst = erUtbetalingsdag
-                                                        ? formatCurrencyWithKr(beløp)
-                                                        : '-';
+                                <ExpansionCard.Content>
+                                    <Table size="small">
+                                        <Table.Header>
+                                            <Table.Row>
+                                                <Table.HeaderCell scope="col">
+                                                    <FormattedMessage id="beregning.utbetalingsvisning.tabell.dato" />
+                                                </Table.HeaderCell>
+                                                <Table.HeaderCell align="right" scope="col">
+                                                    <FormattedMessage id="beregning.utbetalingsvisning.tabell.beløp" />
+                                                </Table.HeaderCell>
+                                            </Table.Row>
+                                        </Table.Header>
+                                        <Table.Body>
+                                            {dager.map((dag) => {
+                                                const erUtbetalingsdag = erUttaksdag(new Date(dag.dato));
+                                                const beløp = sumBy(dag.andeler, (andel) => andel.dagsats);
+                                                const beløpTekst = erUtbetalingsdag ? formatCurrencyWithKr(beløp) : '-';
 
-                                                    return (
-                                                        <Table.Row key={dag.dato}>
-                                                            <Table.HeaderCell scope="row">
-                                                                {formaterDato(dag.dato, 'DD. MMM')}
-                                                            </Table.HeaderCell>
-                                                            <Table.DataCell align="right">{beløpTekst}</Table.DataCell>
-                                                        </Table.Row>
-                                                    );
-                                                })}
-                                            </Table.Body>
-                                        </Table>
-                                    </ExpansionCard.Content>
-                                </ExpansionCard>
-                            </React.Fragment>
-                        );
-                    },
-                )}
+                                                return (
+                                                    <Table.Row key={dag.dato}>
+                                                        <Table.HeaderCell scope="row">
+                                                            {formaterDato(dag.dato, 'DD. MMM')}
+                                                        </Table.HeaderCell>
+                                                        <Table.DataCell align="right">{beløpTekst}</Table.DataCell>
+                                                    </Table.Row>
+                                                );
+                                            })}
+                                        </Table.Body>
+                                    </Table>
+                                </ExpansionCard.Content>
+                            </ExpansionCard>
+                        </React.Fragment>
+                    );
+                })}
             </VStack>
         </VStack>
     );
