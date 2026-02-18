@@ -10,6 +10,7 @@ import {
     setupSkjermleserCssTilgang,
 } from '@navikt/fp-server-utils';
 
+import { serveKomprimerteFilerHvisMulig } from './compression';
 import { configureReverseProxyApi } from './reverseProxy.js';
 import { validerInnkommendeIdportenToken } from './tokenValidation.js';
 
@@ -24,9 +25,12 @@ const publicRouter = express.Router();
 // Logging i json format
 server.use(logger.morganMiddleware);
 
+// Skjermdeling krever tilgang til CSS uten å være innlogget!
 setupSkjermleserCssTilgang(publicRouter);
 
-// Skjermdeling krever tilgang til CSS uten å være innlogget!
+// Server ferdig komprimerte gzip/br filer hvis mulig.
+publicRouter.use(serveKomprimerteFilerHvisMulig);
+
 publicRouter.use(express.static('./public', { index: false }));
 server.use(serverConfig.app.publicPath, publicRouter);
 

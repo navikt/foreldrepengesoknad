@@ -104,8 +104,6 @@ export const UttaksplanOppsummeringslisteNy = ({ navnPåForeldre, registrerteArb
                                         <UttaksperiodedetaljerNy
                                             periode={periode}
                                             registrerteArbeidsforhold={registrerteArbeidsforhold}
-                                            periodeErNyEllerEndret={periodeErNyEllerEndret}
-                                            søkerErFarEllerMedmor={søkerErFarEllerMedmor}
                                             annenForelder={annenForelder}
                                         />
                                     </FormSummary.Value>

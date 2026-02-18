@@ -16,6 +16,7 @@ import {
     Utsettelsesperiode,
 } from '@navikt/fp-common';
 import {
+    Aktivitet_fpoversikt,
     EksternArbeidsforholdDto_fpoversikt,
     NavnPåForeldre,
     Situasjon,
@@ -67,6 +68,26 @@ export const getArbeidsformTekst = (
     }
 
     return arbeidstakerTekster.concat(arbeidsformerTekster);
+};
+
+export const getAktivitetTekst = (
+    intl: IntlShape,
+    aktivitet: Aktivitet_fpoversikt,
+    arbeidsforhold?: EksternArbeidsforholdDto_fpoversikt[],
+) => {
+    const type = aktivitet.type;
+    const orgnummer = aktivitet.arbeidsgiver?.id;
+
+    if (type === 'ORDINÆRT_ARBEID' && orgnummer !== undefined && arbeidsforhold && arbeidsforhold.length > 0) {
+        const arbeidsgiverNavn = getValgtArbeidsgiverNavn(arbeidsforhold, orgnummer);
+        return intl.formatMessage({ id: `oppsummering.uttak.arbeidstaker` }, { orgnr: orgnummer, arbeidsgiverNavn });
+    } else if (type === 'SELVSTENDIG_NÆRINGSDRIVENDE') {
+        return intl.formatMessage({ id: 'oppsummering.uttak.selvstendig_næringsdrivende' });
+    } else if (type === 'FRILANS') {
+        return intl.formatMessage({ id: 'oppsummering.uttak.frilans' });
+    }
+
+    throw new Error(`Ikke håndtert aktivitetstype: ${type}`);
 };
 
 export const getÅrsakTekst = (

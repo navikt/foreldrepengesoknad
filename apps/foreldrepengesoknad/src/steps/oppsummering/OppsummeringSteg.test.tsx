@@ -78,7 +78,12 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
 
         expect(screen.getByText('Jeg kan ikke oppgi den andre forelderen')).toBeInTheDocument();
-        expect(screen.getByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
+        expect(screen.getByText(/Arbeidsgiver AS/)).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Arbeidsgiveren din blir kontaktet av Nav for å sende opplysninger om din inntekt. Dette vil skje fire uker før du skal starte permisjonen.',
+            ),
+        ).toBeInTheDocument();
     });
 
     it('Skal vise informasjon om farskapserklæring', () => {
