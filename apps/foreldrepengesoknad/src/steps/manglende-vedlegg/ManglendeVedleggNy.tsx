@@ -15,7 +15,7 @@ import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Attachment, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
-import { erVanligUttakPeriode } from '@navikt/fp-uttaksplan-ny/src/types/UttaksplanPeriode';
+import { erVanligUttakPeriode } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ManglendeVedleggFormData } from './ManglendeVedleggFormData';
