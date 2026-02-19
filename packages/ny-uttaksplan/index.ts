@@ -20,4 +20,4 @@ export { useErAntallDagerOvertrukketIUttaksplan } from './src/utils/kvoteOppsumm
 
 export { erEøsUttakPeriode } from './src/types/UttaksplanPeriode';
 
-export { erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from './src/utils/periodeUtils';
+export { erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter, erSøkersPerioder } from './src/utils/periodeUtils';

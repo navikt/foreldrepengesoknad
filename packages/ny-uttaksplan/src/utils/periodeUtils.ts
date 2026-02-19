@@ -204,3 +204,10 @@ export const erDetReadonlyPerioderEtterValgtePerioder = (
 
     return harEøsEllerPleiepenger || harAnnenPartSomErLåst;
 };
+
+export const erSøkersPerioder = (
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    erFarMedmor: boolean,
+) => {
+    return erVanligUttakPeriode(periode) && periode.forelder === (erFarMedmor ? 'FAR_MEDMOR' : 'MOR');
+};
