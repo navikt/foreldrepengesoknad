@@ -1,4 +1,3 @@
-import { StarFillIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import dayjs from 'dayjs';
@@ -11,7 +10,7 @@ import { getTermindato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 import { erIkkeEøsPeriode } from 'utils/uttaksplanInfoUtils';
 
-import { Alert, HStack, Radio, VStack } from '@navikt/ds-react';
+import { Alert, Radio, VStack } from '@navikt/ds-react';
 
 import { isAnnenForelderOppgitt, isIkkeUtfyltTypeBarn } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
@@ -123,15 +122,7 @@ export const UttaksplanForm = ({
             setFeilmelding(<FormattedMessage id="UttaksplanSteg.OvertrukketDager" />);
             scrollToKvoteOppsummering();
         } else if (harPeriodeDerMorsAktivitetIkkeErValgt(uttaksplan || defaultUttaksperioder)) {
-            setFeilmelding(
-                <HStack gap="space-4" align="center">
-                    <FormattedMessage id="UttaksplanSteg.MorsAktivitetIkkeValgt" />
-                    <StarFillIcon
-                        title={intl.formatMessage({ id: 'UttaksplanSteg.MorsAktivitetIkkeValgtStjerne' })}
-                        color="var(--ax-bg-danger-strong)"
-                    />
-                </HStack>,
-            );
+            setFeilmelding(<FormattedMessage id="UttaksplanSteg.MorsAktivitetIkkeValgt" />);
             scrollToKvoteOppsummering();
         } else {
             oppdaterUttaksplanMetadata({

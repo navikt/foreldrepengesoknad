@@ -13,7 +13,7 @@ const {
     MorOverførerFarsKvote,
     SamtidigUttak,
     MorSøkerOgFarHarEøsPeriode,
-    StjernemarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt,
+    MarkerPeriodeNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt,
     FarsUttakMorForSyk,
     FarSøkerEtterAtMorHarSøkt,
     MedArbeidsforhold,
@@ -967,10 +967,10 @@ describe('UttaksplanKalender', () => {
     });
 
     it('skal vise meldinger om at en må fylle ut mors aktivitet når en har stjernemerkede perioder', async () => {
-        render(<StjernemarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt />);
+        render(<MarkerPeriodeNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt />);
 
         expect(
-            await screen.findByText('Du må gi oss mer informasjon for dagene som er merket med'),
+            await screen.findByText('Du må fylle ut informasjon om mors aktivitet i de markerte periodene'),
         ).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Start redigering'));
@@ -981,6 +981,8 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(juli).getByTestId('day:15;dayColor:GREEN'));
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        expect(screen.getByText('Mors aktivitet er ikke oppgitt')).toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 

@@ -100,7 +100,7 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
                             </>
                         )}
                         {harMorsAktivitetIkkeErValgt && (
-                            <>
+                            <HStack gap="space-12">
                                 <ExclamationmarkTriangleFillIcon
                                     title={intl.formatMessage({ id: 'PeriodeListeHeader.MorsAktivitetIkkeValgt' })}
                                     fontSize="1.5rem"
@@ -111,7 +111,7 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
                                         <FormattedMessage id="PeriodeListeHeader.MorsAktivitetIkkeValgt" />
                                     </BodyShort>
                                 </Show>
-                            </>
+                            </HStack>
                         )}
                     </HStack>
                 </div>

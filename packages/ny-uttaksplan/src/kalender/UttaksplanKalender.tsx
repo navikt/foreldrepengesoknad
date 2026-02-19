@@ -1,11 +1,10 @@
-import { StarFillIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, Button, HStack, InlineMessage, Radio, RadioGroup, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, HStack, InlineMessage, Link, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
-import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+import { DDMMYYYY_DATE_FORMAT, links } from '@navikt/fp-constants';
 import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
@@ -135,13 +134,14 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 
                 {perioderForKalendervisning.some((p) => p.isMarked) && (
                     <Alert variant="warning">
-                        <HStack gap="space-4" align="center">
-                            <FormattedMessage id="UttaksplanKalender.MarkertePerioder" />
-                            <StarFillIcon
-                                title={intl.formatMessage({ id: 'UttaksplanKalender.MarkertePerioderStjerne' })}
-                                color="var(--ax-bg-danger-strong)"
-                            />
-                        </HStack>
+                        <VStack gap="space-2">
+                            <BodyShort>
+                                <FormattedMessage id="UttaksplanKalender.MarkertePerioder" />
+                            </BodyShort>
+                            <Link href={links.aktivitetskrav} target="_blank">
+                                <FormattedMessage id="UttaksplanKalender.HvaErAktivitetskrav" />
+                            </Link>
+                        </VStack>
                     </Alert>
                 )}
 
