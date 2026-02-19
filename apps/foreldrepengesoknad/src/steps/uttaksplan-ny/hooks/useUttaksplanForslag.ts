@@ -45,7 +45,7 @@ export const useUttaksplanForslag = (
     if (erDeltUttak) {
         const antallDager = fordeling.antallDagerFellesperiodeTilSøker
             ? Number.parseInt(fordeling.antallDagerFellesperiodeTilSøker)
-            : undefined;
+            : 0;
         return deltUttak(familiehendelsedato, valgtStønadskonto.kontoer, antallDager, startdato);
     }
 
