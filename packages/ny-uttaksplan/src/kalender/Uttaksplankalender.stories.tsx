@@ -1024,7 +1024,7 @@ export const MorSøkerOgMedmorHarEøsPeriode: Story = {
     },
 };
 
-export const StjernemarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt: Story = {
+export const MarkerPeriodeNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt: Story = {
     args: {
         uttakPerioder: [
             {

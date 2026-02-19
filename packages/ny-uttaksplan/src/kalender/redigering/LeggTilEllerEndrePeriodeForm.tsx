@@ -101,6 +101,14 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         uttakPerioderInkludertTapteDager,
     );
 
+    const harValgtDagerKunForEnEksisterendePeriode =
+        eksisterendePerioderSomErValgt.length === 1 &&
+        !sammenslåtteValgtePerioder.some(
+            (vp) =>
+                dayjs(vp.fom).isBefore(eksisterendePerioderSomErValgt.at(0)!.fom) ||
+                dayjs(vp.tom).isAfter(eksisterendePerioderSomErValgt.at(0)!.tom),
+        );
+
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             {visEndreEllerForskyvPanel && (
@@ -113,11 +121,12 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
             )}
             {!visEndreEllerForskyvPanel && (
                 <VStack gap="space-16">
-                    {harPeriodeDerMorsAktivitetIkkeErValgt(eksisterendePerioderSomErValgt) && (
-                        <Alert variant="warning" size="small">
-                            <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt" />
-                        </Alert>
-                    )}
+                    {harValgtDagerKunForEnEksisterendePeriode &&
+                        harPeriodeDerMorsAktivitetIkkeErValgt(eksisterendePerioderSomErValgt) && (
+                            <Alert variant="warning" size="small">
+                                <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt" />
+                            </Alert>
+                        )}
 
                     <LeggTilEllerEndrePeriodeFellesForm
                         valgtePerioder={sammenslåtteValgtePerioder}

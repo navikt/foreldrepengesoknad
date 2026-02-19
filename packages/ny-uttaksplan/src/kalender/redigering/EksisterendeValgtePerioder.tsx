@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
@@ -24,6 +24,7 @@ import { UttaksdagenString } from '@navikt/fp-utils';
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { SlettPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/SlettPeriodeForskyvEllerErstatt';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
+import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 
 export type UttakPeriodeMedAntallDager = (UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) & {
@@ -235,6 +236,13 @@ export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Pro
                                         <BodyShort>
                                             <FormattedMessage id="RedigeringPanel.AvslåttPeriode" />
                                         </BodyShort>
+                                    )}
+                                    {harPeriodeDerMorsAktivitetIkkeErValgt([p]) && (
+                                        <Alert variant="warning" size="small" className="mt-3 mb-1 p-2">
+                                            <BodyShort>
+                                                <FormattedMessage id="RedigeringPanel.MorsAktivitetIkkeValgt" />
+                                            </BodyShort>
+                                        </Alert>
                                     )}
                                 </VStack>
                                 <Spacer />
