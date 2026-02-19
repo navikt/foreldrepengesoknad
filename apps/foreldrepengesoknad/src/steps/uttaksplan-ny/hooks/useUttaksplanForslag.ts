@@ -46,7 +46,19 @@ export const useUttaksplanForslag = (
         const antallDager = fordeling.antallDagerFellesperiodeTilSøker
             ? Number.parseInt(fordeling.antallDagerFellesperiodeTilSøker)
             : 0;
-        return deltUttak(familiehendelsedato, valgtStønadskonto.kontoer, antallDager, startdato);
+
+        const antallUker = fordeling.antallUkerFellesperiodeTilSøker
+            ? Number.parseInt(fordeling.antallUkerFellesperiodeTilSøker)
+            : 0;
+
+        const antallDagerOgUkerSøker = antallUker * 5 + antallDager;
+
+        const antallDagerFellesperiodeMor = erSøkerFarEllerMedmor
+            ? valgtStønadskonto.kontoer.reduce((acc, p) => (p.konto === 'FELLESPERIODE' ? p.dager : acc), 0) -
+              antallDagerOgUkerSøker
+            : antallDagerOgUkerSøker;
+
+        return deltUttak(familiehendelsedato, valgtStønadskonto.kontoer, antallDagerFellesperiodeMor, startdato);
     }
 
     const erFarOgFar = getKjønnFromFnr(annenForelder) === 'M' && søkersituasjon.rolle === 'far';
