@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, Button, HStack, InlineMessage, Link, Radio, RadioGroup, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, HStack, InlineMessage, Link, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT, links } from '@navikt/fp-constants';
 import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
@@ -134,10 +134,14 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 
                 {perioderForKalendervisning.some((p) => p.isMarked) && (
                     <Alert variant="warning">
-                        <FormattedMessage id="UttaksplanKalender.MarkertePerioder" />
-                        <Link href={links.aktivitetskrav} target="_blank">
-                            <FormattedMessage id="UttaksplanKalender.HvaErAktivitetskrav" />
-                        </Link>
+                        <VStack gap="space-2">
+                            <BodyShort>
+                                <FormattedMessage id="UttaksplanKalender.MarkertePerioder" />
+                            </BodyShort>
+                            <Link href={links.aktivitetskrav} target="_blank">
+                                <FormattedMessage id="UttaksplanKalender.HvaErAktivitetskrav" />
+                            </Link>
+                        </VStack>
                     </Alert>
                 )}
 
