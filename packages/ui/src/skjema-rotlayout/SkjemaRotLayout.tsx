@@ -5,7 +5,7 @@ import { Heading, Page, VStack } from '@navikt/ds-react';
 export const SkjemaRotLayout = ({ children, pageTitle }: { children: React.ReactNode; pageTitle: React.ReactNode }) => {
     return (
         <Page>
-            <Page.Block as="main" id="pageMainContent" width="text" gutters>
+            <Page.Block as="main" id="pageMainContent" width={isLocalhostOrDev() ? 'md' : 'text'} gutters>
                 <VStack gap="space-16">
                     {pageTitle && (
                         <Page.Block>
@@ -18,5 +18,14 @@ export const SkjemaRotLayout = ({ children, pageTitle }: { children: React.React
                 </VStack>
             </Page.Block>
         </Page>
+    );
+};
+
+// TODO (TOR) Fjern denne når bredden er verifisert
+const isLocalhostOrDev = () => {
+    const isVitest = typeof process !== 'undefined' && process.env.VITEST === 'true';
+    return (
+        (globalThis.location.hostname === 'localhost' || globalThis.location.hostname === 'www.intern.dev.nav.no') &&
+        !isVitest
     );
 };
