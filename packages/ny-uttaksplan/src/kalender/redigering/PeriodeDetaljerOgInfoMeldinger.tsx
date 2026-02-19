@@ -5,7 +5,7 @@ import { Alert, BodyShort, VStack } from '@navikt/ds-react';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { kanMisteDagerVedEndringTilFerie } from '../../felles/uttaksplanValidatorer';
-import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
+import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import { EksisterendeValgtePerioder } from './EksisterendeValgtePerioder';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
@@ -35,6 +35,13 @@ export const PeriodeDetaljerOgInfoMeldinger = ({ setSkalViseKnapper }: Props) =>
         uttakPerioderInkludertTapteDager,
     );
 
+    const harPeriodeMedPleiepenger = eksisterendePerioderSomErValgt.some(
+        (p) =>
+            erVanligUttakPeriode(p) &&
+            p.resultat?.innvilget === false &&
+            p.resultat.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER',
+    );
+
     return (
         <VStack gap="space-16">
             {eksisterendePerioderSomErValgt.length === 0 && (
@@ -62,8 +69,15 @@ export const PeriodeDetaljerOgInfoMeldinger = ({ setSkalViseKnapper }: Props) =>
                 </Alert>
             )}
 
+            {harPeriodeMedPleiepenger && (
+                <Alert variant="info" size="small">
+                    <FormattedMessage id="RedigeringPanel.IkkeRedigerbarGrunnetPleiepenger" />
+                </Alert>
+            )}
+
             {søker === 'MOR' &&
                 !erAdopsjon &&
+                !harPeriodeMedPleiepenger &&
                 kanMisteDagerVedEndringTilFerie(sammenslåtteValgtePerioder, familiehendelsedato) && (
                     <Alert variant="info" size="small">
                         <FormattedMessage id="RedigeringPanel.KanMisteDager" />

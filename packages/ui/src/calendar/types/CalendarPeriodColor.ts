@@ -8,6 +8,7 @@ export type CalendarPeriodColor =
     | 'GREEN'
     | 'LIGHTGREEN'
     | 'GRAY'
+    | 'DARKGRAY'
     | 'BLACK'
     | 'BLACKOUTLINE'
     | 'LIGHTBLUEGREEN'

@@ -6,12 +6,13 @@ import { skalViseOmsorgsovertakelseDokumentasjon } from 'steps/manglende-vedlegg
 import { skalViseTerminbekreftelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/TerminbekreftelseDokumentasjon.tsx';
 import { AnnenInntektType } from 'types/AndreInntektskilder';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
-import { isLocalhost } from 'utils/tempSystemUtils';
+import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 import { kreverUttaksplanVedleggNy } from 'utils/uttaksplanInfoUtils';
 
 import { isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { kreverUttaksplanVedlegg } from '@navikt/fp-uttaksplan';
+import { erVanligUttakPeriode } from '@navikt/fp-uttaksplan-ny/src/types/UttaksplanPeriode';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { getFamiliehendelsedato } from '../utils/barnUtils';
@@ -95,7 +96,7 @@ const showManglendeDokumentasjonStegTemp = (
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     erEndringssøknad: boolean,
 ) => {
-    if (isLocalhost()) {
+    if (isLocalhostOrDev()) {
         return showManglendeDokumentasjonStegNy(path, getData, arbeidsforhold);
     }
     return showManglendeDokumentasjonSteg(path, getData, arbeidsforhold, erEndringssøknad);
@@ -181,9 +182,18 @@ const showManglendeDokumentasjonStegNy = (
         });
         const skalHaAdopsjonDokumentasjon = skalViseOmsorgsovertakelseDokumentasjon(søkersituasjon);
 
+        const uttaksplanUtenAnnenPartsPerioder = uttaksplan?.filter(
+            (periode) =>
+                erVanligUttakPeriode(periode) && periode.forelder === (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
+        );
         const skalHaUttakDok =
-            annenForelder && uttaksplan && familiehendelsedato
-                ? kreverUttaksplanVedleggNy(uttaksplan, erFarEllerMedmor, annenForelder, familiehendelsedato)
+            annenForelder && uttaksplanUtenAnnenPartsPerioder && familiehendelsedato
+                ? kreverUttaksplanVedleggNy(
+                      uttaksplanUtenAnnenPartsPerioder,
+                      erFarEllerMedmor,
+                      annenForelder,
+                      familiehendelsedato,
+                  )
                 : false;
 
         const skalHaAndreInntekterDok = andreInntektskilder?.some(

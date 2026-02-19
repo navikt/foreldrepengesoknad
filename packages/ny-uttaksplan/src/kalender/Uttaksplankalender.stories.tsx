@@ -147,8 +147,8 @@ export const SkalHaPeriodeMedFratrekkForPleiepenger: Story = {
                 forelder: 'MOR',
             },
             {
-                fom: '2024-05-17',
-                tom: '2024-05-23',
+                fom: '2024-04-17',
+                tom: '2024-04-23',
                 kontoType: 'FELLESPERIODE',
                 forelder: 'MOR',
                 resultat: {
@@ -156,6 +156,18 @@ export const SkalHaPeriodeMedFratrekkForPleiepenger: Story = {
                     trekkerDager: false,
                     trekkerMinsterett: false,
                     årsak: 'AVSLAG_FRATREKK_PLEIEPENGER',
+                },
+            },
+            {
+                fom: '2024-04-24',
+                tom: '2024-04-29',
+                kontoType: 'FELLESPERIODE',
+                forelder: 'MOR',
+                resultat: {
+                    innvilget: false,
+                    trekkerDager: false,
+                    trekkerMinsterett: false,
+                    årsak: 'ANNET',
                 },
             },
         ] satisfies UttakPeriode_fpoversikt[],

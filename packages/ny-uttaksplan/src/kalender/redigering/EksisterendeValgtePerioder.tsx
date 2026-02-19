@@ -24,7 +24,6 @@ import { UttaksdagenString } from '@navikt/fp-utils';
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { SlettPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/SlettPeriodeForskyvEllerErstatt';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
-import { erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato } from '../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 
 export type UttakPeriodeMedAntallDager = (UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) & {
@@ -48,17 +47,13 @@ export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Pro
     const {
         foreldreInfo: { erMedmorDelAvSøknaden, søker },
         erPeriodeneTilAnnenPartLåst,
-        familiehendelsedato,
     } = useUttaksplanData();
 
     return (
         <VStack gap="space-12">
             {valgtPeriodeSomSkalSlettes && (
                 <SlettPeriodeForskyvEllerErstatt
-                    harPeriodeFørSeksUkerEtterFamiliehendelsedato={erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
-                        [valgtPeriodeSomSkalSlettes],
-                        familiehendelsedato,
-                    )}
+                    valgtePerioder={[valgtPeriodeSomSkalSlettes]}
                     avbryt={() => {
                         setValgtPeriodeSomSkalSlettes(undefined);
                         setSkalViseKnapper(true);
@@ -97,6 +92,11 @@ export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Pro
 
                         const erAnnenPartsPeriodeLåst =
                             erPeriodeneTilAnnenPartLåst && erVanligUttakPeriode(p) && p.forelder !== søker;
+
+                        const erAvslåttPeriode = erVanligUttakPeriode(p) && p.resultat?.innvilget === false;
+
+                        const erPleiepengerPeriode =
+                            erAvslåttPeriode && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
 
                         return (
                             <HStack
@@ -222,9 +222,23 @@ export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Pro
                                             values={{ antall: p.valgteDagerIPeriode }}
                                         />
                                     </BodyShort>
+
+                                    {erPleiepengerPeriode && (
+                                        <BodyShort>
+                                            <FormattedMessage
+                                                id="RedigeringPanel.Pleiepenger"
+                                                values={{ antall: p.valgteDagerIPeriode }}
+                                            />
+                                        </BodyShort>
+                                    )}
+                                    {erAvslåttPeriode && !erPleiepengerPeriode && (
+                                        <BodyShort>
+                                            <FormattedMessage id="RedigeringPanel.AvslåttPeriode" />
+                                        </BodyShort>
+                                    )}
                                 </VStack>
                                 <Spacer />
-                                {!erEøsUttakPeriode(p) && !erAnnenPartsPeriodeLåst && (
+                                {!erEøsUttakPeriode(p) && !erAnnenPartsPeriodeLåst && !erPleiepengerPeriode && (
                                     <TrashIcon
                                         title={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}
                                         fontSize="1.5rem"
