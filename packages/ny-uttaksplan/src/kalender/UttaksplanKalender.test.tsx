@@ -17,6 +17,7 @@ const {
     FarsUttakMorForSyk,
     FarSøkerEtterAtMorHarSøkt,
     MedArbeidsforhold,
+    SkalHaPeriodeMedFratrekkForPleiepenger,
 } = composeStories(stories);
 
 describe('UttaksplanKalender', () => {
@@ -1278,5 +1279,55 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
         expect(screen.getByRole('radio', { name: /Bedrift AS/i })).toBeChecked();
+    });
+
+    it('skal vise perioder for avslag av pleiepenger og annet', async () => {
+        render(<SkalHaPeriodeMedFratrekkForPleiepenger />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
+
+        const april = screen.getByTestId('year:2024;month:3');
+
+        await userEvent.click(within(april).getByTestId('day:17;dayColor:DARKGRAY'));
+        await userEvent.click(within(april).getByTestId('day:23;dayColor:DARKGRAY'));
+
+        await userEvent.click(screen.getByText('Utvid panel'));
+
+        const div = within(
+            screen.getByText('Valgte datoer inneholder en eksisterende periode:').closest('div')!.parentElement!
+                .parentElement!,
+        );
+
+        expect(div.getByText('Denne perioden er avslått grunnet pleiepenger')).toBeInTheDocument();
+        expect(
+            screen.getByText('Perioder som er avslått grunnet pleiepenger kan ikke slettes eller endres'),
+        ).toBeInTheDocument();
+
+        expect(div.queryByText('Endre')).not.toBeInTheDocument();
+        expect(div.queryByText('Endre til ferie')).not.toBeInTheDocument();
+        expect(div.queryByText('Legg til')).not.toBeInTheDocument();
+        expect(div.queryByText('Legg til ferie')).not.toBeInTheDocument();
+        expect(div.getByText('Avbryt')).toBeInTheDocument();
+
+        await userEvent.click(div.getByText('Avbryt'));
+
+        await userEvent.click(within(april).getByTestId('day:24;dayColor:BLACKOUTLINE'));
+        await userEvent.click(within(april).getByTestId('day:29;dayColor:BLACKOUTLINE'));
+
+        await userEvent.click(screen.getByText('Utvid panel'));
+
+        const div2 = within(
+            screen.getByText('Valgte datoer inneholder en eksisterende periode:').closest('div')!.parentElement!
+                .parentElement!,
+        );
+        expect(div2.getByText('Avslått periode')).toBeInTheDocument();
+
+        expect(div2.getAllByText('Endre')).toHaveLength(2);
+        expect(div2.getByText('Endre til ferie')).toBeInTheDocument();
+        expect(div2.getByText('Avbryt')).toBeInTheDocument();
     });
 });
