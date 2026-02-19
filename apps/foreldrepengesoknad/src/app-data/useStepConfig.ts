@@ -6,7 +6,7 @@ import { skalViseOmsorgsovertakelseDokumentasjon } from 'steps/manglende-vedlegg
 import { skalViseTerminbekreftelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/TerminbekreftelseDokumentasjon.tsx';
 import { AnnenInntektType } from 'types/AndreInntektskilder';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
-import { isLocalhost } from 'utils/tempSystemUtils';
+import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 import { kreverUttaksplanVedleggNy } from 'utils/uttaksplanInfoUtils';
 
 import { isAnnenForelderOppgitt } from '@navikt/fp-common';
@@ -95,7 +95,7 @@ const showManglendeDokumentasjonStegTemp = (
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     erEndringssøknad: boolean,
 ) => {
-    if (isLocalhost()) {
+    if (isLocalhostOrDev()) {
         return showManglendeDokumentasjonStegNy(path, getData, arbeidsforhold);
     }
     return showManglendeDokumentasjonSteg(path, getData, arbeidsforhold, erEndringssøknad);
