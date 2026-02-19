@@ -8,7 +8,12 @@ import { Søknad } from 'types/Søknad';
 import { MELLOMLAGRET_VERSJON } from 'utils/mellomlagringUtils';
 
 import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
-import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import {
+    FpSak_fpoversikt,
+    PersonMedArbeidsforholdDto_fpoversikt,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
@@ -29,6 +34,11 @@ export interface FpMellomlagretData {
     endringstidspunkt?: Date;
     barnFraNesteSak?: BarnFraNesteSak;
     annenPartsUttakErLagtTilIPlan?: boolean;
+    uttaksplanNy?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    uttaksplanMetadataNy?: {
+        ønskerJustertUttakVedFødsel?: boolean | undefined;
+    };
+    valgtEksisterendeSaksnr?: string;
 }
 
 const UKJENT_UUID = 'ukjent uuid';
@@ -63,6 +73,10 @@ const getDataForMellomlagring = (
     const dekningsgrad = getDataFromState(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const vedlegg = getDataFromState(ContextDataType.VEDLEGG);
 
+    const uttaksplanNy = getDataFromState(ContextDataType.UTTAKSPLAN_NY);
+    const uttaksplanMetadataNy = getDataFromState(ContextDataType.UTTAKSPLAN_METADATA_NY);
+    const valgtEksisterendeSaksnr = getDataFromState(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
+
     // TODO (TOR) Dropp mapping her og lagre context rått
     const dataSomSkalMellomlagres = {
         version: MELLOMLAGRET_VERSJON,
@@ -96,6 +110,9 @@ const getDataForMellomlagring = (
         perioderSomSkalSendesInn: uttaksplanMetadata?.perioderSomSkalSendesInn,
         harUttaksplanBlittSlettet: uttaksplanMetadata?.harUttaksplanBlittSlettet,
         annenPartsUttakErLagtTilIPlan: uttaksplanMetadata?.annenPartsUttakErLagtTilIPlan,
+        uttaksplanNy,
+        uttaksplanMetadataNy,
+        valgtEksisterendeSaksnr,
     } satisfies FpMellomlagretData;
 
     return dataSomSkalMellomlagres;

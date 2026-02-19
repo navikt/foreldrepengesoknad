@@ -27,6 +27,7 @@ import {
     getSisteUttaksplanperiodeTom,
     getUttaksplanperiodeForelder,
     getUttaksplanperiodeUtsettelseÅrsak,
+    harUttaksplanperiodeAvslåttPeriodeMedÅrsakAnnet,
     harUttaksplanperiodePrematuruker,
 } from '../../utils/uttaksplanperiodeUtils';
 
@@ -131,6 +132,9 @@ export const getTekst = (
 
     if (harUttaksplanperiodePrematuruker(uttaksplanperioder)) {
         return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.pleiepenger' });
+    }
+    if (harUttaksplanperiodeAvslåttPeriodeMedÅrsakAnnet(uttaksplanperioder)) {
+        return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.avslåttAnnet' });
     }
 
     const utsettelseÅrsak = getUttaksplanperiodeUtsettelseÅrsak(uttaksplanperioder);

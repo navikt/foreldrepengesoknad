@@ -189,6 +189,12 @@
     cursor: default;
 }
 
+.darkgrayDay {
+    background-color: var(--ax-neutral-400);
+    print-color-adjust: exact;
+    cursor: default;
+}
+
 .blackDay {
     background-color: var(--ax-bg-neutral-strong) !important;
     color: var(--ax-bg-default);
