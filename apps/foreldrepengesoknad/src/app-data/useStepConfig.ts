@@ -12,7 +12,7 @@ import { kreverUttaksplanVedleggNy } from 'utils/uttaksplanInfoUtils';
 import { isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { kreverUttaksplanVedlegg } from '@navikt/fp-uttaksplan';
-import { erSøkersPerioder } from '@navikt/fp-uttaksplan-ny';
+import { erVanligUttakPeriode } from '@navikt/fp-uttaksplan-ny/src/types/UttaksplanPeriode';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { getFamiliehendelsedato } from '../utils/barnUtils';
@@ -182,7 +182,10 @@ const showManglendeDokumentasjonStegNy = (
         });
         const skalHaAdopsjonDokumentasjon = skalViseOmsorgsovertakelseDokumentasjon(søkersituasjon);
 
-        const uttaksplanUtenAnnenPartsPerioder = uttaksplan?.filter((p) => erSøkersPerioder(p, erFarEllerMedmor));
+        const uttaksplanUtenAnnenPartsPerioder = uttaksplan?.filter(
+            (periode) =>
+                erVanligUttakPeriode(periode) && periode.forelder === (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
+        );
         const skalHaUttakDok =
             annenForelder && uttaksplanUtenAnnenPartsPerioder && familiehendelsedato
                 ? kreverUttaksplanVedleggNy(
