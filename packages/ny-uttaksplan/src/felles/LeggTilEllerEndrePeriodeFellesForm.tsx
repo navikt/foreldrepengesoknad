@@ -65,9 +65,11 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         erPeriodeneTilAnnenPartLåst,
         uttakPerioder,
         aktiveArbeidsforhold,
+        barn,
     } = useUttaksplanData();
 
     const formMethods = useFormContext<LeggTilEllerEndrePeriodeFormFormValues>();
+    const erFlerbarnsdager = barn.antallBarn > 1;
 
     const {
         forelder,
