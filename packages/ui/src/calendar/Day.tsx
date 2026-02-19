@@ -15,6 +15,7 @@ const DAY_STYLE: Record<CalendarPeriodColor, string> = {
     ['DARKBLUE']: styles.darkblueDay!,
     ['LIGHTGREEN']: styles.lightgreenDay!,
     ['GRAY']: styles.grayDay!,
+    ['DARKGRAY']: styles.darkgrayDay!,
     ['PINK']: styles.pinkDay!,
     ['PURPLE']: styles.purpleDay!,
     ['BLACK']: styles.blackDay!,

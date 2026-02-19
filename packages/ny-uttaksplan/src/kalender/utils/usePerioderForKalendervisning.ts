@@ -104,10 +104,12 @@ const getKalenderFargeForPeriode = (
 ): CalendarPeriodColor => {
     if (isAvslåttPeriode(periode)) {
         if (erVanligUttakPeriode(periode) && periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
-            return 'BLACKOUTLINE';
+            return 'DARKGRAY';
         }
         const familiehendelsesdato = getFamiliehendelsedato(barn);
-        return !erFarEllerMedmor && isAvslåttPeriodeFørsteSeksUkerMor(periode, familiehendelsesdato) ? 'BLACK' : 'NONE';
+        return !erFarEllerMedmor && isAvslåttPeriodeFørsteSeksUkerMor(periode, familiehendelsesdato)
+            ? 'BLACKOUTLINE'
+            : 'NONE';
     }
 
     const annenForelderSamtidigUttaksperiode = isUttaksperiode(periode)

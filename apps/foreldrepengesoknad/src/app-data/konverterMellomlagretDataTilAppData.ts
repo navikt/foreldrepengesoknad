@@ -31,5 +31,8 @@ export const konverterMellomlagretDataTilAppData = (mellomlagretState: FpMelloml
             endringstidspunkt: mellomlagretState.endringstidspunkt,
         },
         [ContextDataType.VEDLEGG]: søknad?.vedlegg,
+        [ContextDataType.UTTAKSPLAN_NY]: mellomlagretState.uttaksplanNy,
+        [ContextDataType.UTTAKSPLAN_METADATA_NY]: mellomlagretState.uttaksplanMetadataNy,
+        [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: mellomlagretState.valgtEksisterendeSaksnr,
     };
 };

@@ -646,3 +646,62 @@ export const FarSøkerEtterAtMorHarSøkt: Story = {
         },
     },
 };
+
+export const HarAvslåttePerioder: Story = {
+    args: {
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: {
+                farMedmor: 'Annen forelder',
+                mor: 'Avansert',
+            },
+            erMedmorDelAvSøknaden: false,
+        },
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2025-08-13'],
+            termindato: '2025-10-19',
+            antallBarn: 1,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+        uttakPerioder: [
+            {
+                fom: '2025-08-13',
+                tom: '2025-10-10',
+                kontoType: 'FELLESPERIODE',
+                resultat: {
+                    innvilget: false,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'AVSLAG_FRATREKK_PLEIEPENGER',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            {
+                fom: '2025-10-11',
+                tom: '2025-11-25',
+                kontoType: 'MØDREKVOTE',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+        ],
+        valgtStønadskonto: {
+            kontoer: [
+                { konto: 'MØDREKVOTE', dager: 95 },
+                { konto: 'FEDREKVOTE', dager: 95 },
+                { konto: 'FELLESPERIODE', dager: 101 },
+                { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+            ],
+            minsteretter: MINSTERETTER,
+        },
+        erPeriodeneTilAnnenPartLåst: false,
+    },
+};

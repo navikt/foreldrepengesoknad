@@ -26,7 +26,7 @@ import { TidligereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-tidligere/
 import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSteg';
 import { UttaksplanStegNy } from 'steps/uttaksplan-ny/UttaksplanStegNy';
 import { UttaksplanStep } from 'steps/uttaksplan/UttaksplanStep';
-import { isLocalhost } from 'utils/tempSystemUtils';
+import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 
 import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
@@ -52,7 +52,7 @@ const renderSøknadRoutes = (
     if (erEndringssøknad) {
         return (
             <>
-                {isLocalhost() && (
+                {isLocalhostOrDev() && (
                     <>
                         <Route
                             path={SøknadRoutes.UTTAKSPLAN}
@@ -77,7 +77,7 @@ const renderSøknadRoutes = (
                         />
                     </>
                 )}
-                {!isLocalhost() && (
+                {!isLocalhostOrDev() && (
                     <>
                         <Route
                             path={SøknadRoutes.UTTAKSPLAN}
@@ -175,7 +175,7 @@ const renderSøknadRoutes = (
                     />
                 }
             />
-            {isLocalhost() && (
+            {isLocalhostOrDev() && (
                 <>
                     <Route
                         path={SøknadRoutes.UTTAKSPLAN}
@@ -200,7 +200,7 @@ const renderSøknadRoutes = (
                     />
                 </>
             )}
-            {!isLocalhost() && (
+            {!isLocalhostOrDev() && (
                 <>
                     <Route
                         path={SøknadRoutes.UTTAKSPLAN}

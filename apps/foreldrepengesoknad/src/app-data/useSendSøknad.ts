@@ -11,7 +11,7 @@ import { SøknadRoutes } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
 import { useNavigate } from 'react-router-dom';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
-import { isLocalhost } from 'utils/tempSystemUtils';
+import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 
 import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
@@ -36,7 +36,7 @@ export const useSendSøknad = (
         const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
         const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
 
-        const cleanedSøknad = isLocalhost()
+        const cleanedSøknad = isLocalhostOrDev()
             ? getSøknadsdataForInnsendingNy(erEndringssøknad, hentData, søkerinfo, foreldrepengerSaker)
             : getSøknadsdataForInnsending(
                   erEndringssøknad,
@@ -47,7 +47,7 @@ export const useSendSøknad = (
                   uttaksplanMetadata.endringstidspunkt,
               );
 
-        if (!isLocalhost() && cleanedSøknad.uttaksplan.uttaksperioder.length === 0 && erEndringssøknad) {
+        if (!isLocalhostOrDev() && cleanedSøknad.uttaksplan.uttaksperioder.length === 0 && erEndringssøknad) {
             throw new Error('Søknaden din inneholder ingen nye perioder.');
         }
 

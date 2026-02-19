@@ -12,6 +12,7 @@ import { LeggTilPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErst
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
+import { erDetEksisterendePerioderEtterValgtePerioder } from '../../utils/periodeUtils';
 import { PeriodeDetaljerOgInfoMeldinger } from './PeriodeDetaljerOgInfoMeldinger';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 import { RødRamme } from './utils/RødRamme';
@@ -31,6 +32,7 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
     const {
         foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
+        uttakPerioder,
     } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, setValgtePerioder, leggTilUttaksplanPerioder, setEndredePerioder } =
@@ -50,6 +52,13 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
     );
 
     const harValgtEøsPeriode = eksisterendePerioderSomErValgt.some((p) => erEøsUttakPeriode(p));
+
+    const harPeriodeMedPleiepenger = eksisterendePerioderSomErValgt.some(
+        (p) =>
+            erVanligUttakPeriode(p) &&
+            p.resultat?.innvilget === false &&
+            p.resultat.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER',
+    );
 
     const skalViseLeggTilKnappetekst =
         eksisterendePerioderSomErValgt.length === 0 ||
@@ -73,6 +82,11 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
         setValgtePerioder([]);
         setEndredePerioder(sammenslåtteValgtePerioder);
     };
+
+    const erEksisterendePerioderEtterValgteDager = erDetEksisterendePerioderEtterValgtePerioder(
+        uttakPerioder,
+        sammenslåtteValgtePerioder,
+    );
 
     if (visEndreEllerForskyvPanel) {
         return (
@@ -174,7 +188,7 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
                     <VStack gap="space-12">
                         {labels}
                         <PeriodeDetaljerOgInfoMeldinger setSkalViseKnapper={setSkalViseKnapper} />
-                        {harValgtEøsPeriode && skalViseKnapper && (
+                        {(harPeriodeMedPleiepenger || harValgtEøsPeriode) && skalViseKnapper && (
                             <HStack justify="end">
                                 <Button
                                     type="button"
@@ -186,7 +200,7 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
                                 </Button>
                             </HStack>
                         )}
-                        {!harValgtEøsPeriode && skalViseKnapper && (
+                        {!harPeriodeMedPleiepenger && !harValgtEøsPeriode && skalViseKnapper && (
                             <VStack gap="space-12">
                                 <Show above="md">
                                     <LeggTilOgEndreKnapp
@@ -204,7 +218,11 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
                                     <Button
                                         variant="secondary"
                                         size="small"
-                                        onClick={() => setVisEndreEllerForskyvPanel(true)}
+                                        onClick={() =>
+                                            erEksisterendePerioderEtterValgteDager
+                                                ? setVisEndreEllerForskyvPanel(true)
+                                                : leggTilEllerForskyvPeriode(false)
+                                        }
                                         type="button"
                                     >
                                         {skalViseLeggTilKnappetekst ? (

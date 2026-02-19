@@ -18,22 +18,12 @@ export const UtsettelsesperiodedetaljerNy = ({ periode }: Props) => {
     const { morsAktivitet } = periode;
     const intl = useIntl();
 
-    //FIXME (TOR) Kor får ein bekrefterArbeidIPerioden fra?
-    // const bekreftErIArbeidSvar =
-    //     bekrefterArbeidIPerioden === true ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' });
-
     return (
         <>
             <Feltoppsummering
                 feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.årsak' })}
                 verdi={getÅrsakTekst(intl, periode)}
             />
-            {/* {utsettelseÅrsak === 'ARBEID' && (
-                <Feltoppsummering
-                    feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.bekreft100ProsentIArbeid.label' })}
-                    verdi={bekreftErIArbeidSvar}
-                />
-            )} */}
             {morsAktivitet && <MorsAktivitetDetaljer morsAktivitet={morsAktivitet} />}
         </>
     );

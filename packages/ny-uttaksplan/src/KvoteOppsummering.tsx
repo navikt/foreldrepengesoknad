@@ -82,8 +82,10 @@ const KvoteTittelKunEnHarForeldrepenger = ({
     const intl = useIntl();
     const { uttakPerioder, familiesituasjon, valgtStønadskonto } = useUttaksplanData();
 
+    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+
     const { antallBrukteDager, antallOvertrukketDager, antallUbrukteDager } = finnAntallDagerDerKunEnHarForeldrepenger(
-        uttakPerioder,
+        filtrertePerioder,
         familiesituasjon,
         valgtStønadskonto,
     );
@@ -155,6 +157,8 @@ const KvoteTittel = ({
     const intl = useIntl();
     const { foreldreInfo, uttakPerioder, familiesituasjon, valgtStønadskonto } = useUttaksplanData();
 
+    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+
     const {
         antallOvertrukketDager,
         antallUbrukteDager,
@@ -164,7 +168,7 @@ const KvoteTittel = ({
         dagerBruktAvFar,
         dagerBruktAvMor,
         dagerFellesBrukt,
-    } = finnAntallDagerDerBeggeHarForeldrepenger(uttakPerioder, familiesituasjon, valgtStønadskonto);
+    } = finnAntallDagerDerBeggeHarForeldrepenger(filtrertePerioder, familiesituasjon, valgtStønadskonto);
 
     if (antallOvertrukketDager > 0) {
         const beskrivelseMor =
@@ -377,7 +381,9 @@ const TittelKomponent = ({
 const ForeldrepengerFørFødselKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const { uttakPerioder, valgtStønadskonto } = useUttaksplanData();
 
-    const relevantePerioder = uttakPerioder.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL');
+    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+
+    const relevantePerioder = filtrertePerioder.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL');
     const relevantKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
     return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
 };
@@ -385,8 +391,10 @@ const ForeldrepengerFørFødselKvoter = ({ visStatusIkoner }: { visStatusIkoner:
 const KunEnHarForeldrepengeKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const { uttakPerioder, valgtStønadskonto } = useUttaksplanData();
 
+    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+
     const relevantKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FORELDREPENGER');
-    const relevantePerioder = uttakPerioder.filter(
+    const relevantePerioder = filtrertePerioder.filter(
         (p) =>
             getUttaksKontoType(p) === 'FORELDREPENGER' && erVanligUttakPeriode(p) && p.morsAktivitet !== 'IKKE_OPPGITT',
     );
@@ -397,8 +405,10 @@ const KunEnHarForeldrepengeKvoter = ({ visStatusIkoner }: { visStatusIkoner: boo
 const FedreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const { uttakPerioder, valgtStønadskonto } = useUttaksplanData();
 
+    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+
     const relevantKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FEDREKVOTE');
-    const relevantePerioder = uttakPerioder.filter(
+    const relevantePerioder = filtrertePerioder.filter(
         (p) =>
             getUttaksKontoType(p) === 'FEDREKVOTE' ||
             (erVanligUttakPeriode(p) && p.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'),
@@ -412,7 +422,9 @@ const AktivitetsfriKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) 
 
     const relevantKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
 
-    const relevantePerioder = uttakPerioder.filter((p) => {
+    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+
+    const relevantePerioder = filtrertePerioder.filter((p) => {
         // I planlegger og søknad brukes denne kontoen på periodene.
         const harMatchendeKonto = getUttaksKontoType(p) === 'AKTIVITETSFRI_KVOTE';
 
@@ -428,8 +440,10 @@ const AktivitetsfriKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) 
 const MødreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const { uttakPerioder, valgtStønadskonto } = useUttaksplanData();
 
+    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+
     const relevantKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'MØDREKVOTE');
-    const relevantePerioder = uttakPerioder.filter(
+    const relevantePerioder = filtrertePerioder.filter(
         (p) =>
             getUttaksKontoType(p) === 'MØDREKVOTE' ||
             (erVanligUttakPeriode(p) && p.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER'),
@@ -443,18 +457,19 @@ const FellesKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
 
     const forelder = foreldreInfo.søker;
     const fellesKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
+    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
 
     if (!fellesKonto) {
         return null;
     }
     const dagerBruktAvDeg = summerDagerIPerioder(
-        uttakPerioder.filter(
+        filtrertePerioder.filter(
             (p) => getUttaksKontoType(p) === 'FELLESPERIODE' && erVanligUttakPeriode(p) && p.forelder === forelder,
         ),
         valgtStønadskonto.kontoer,
     );
     const dagerBruktAvAnnenPart = summerDagerIPerioder(
-        uttakPerioder.filter(
+        filtrertePerioder.filter(
             (p) =>
                 erVanligUttakPeriode(p) &&
                 (getUttaksKontoType(p) === 'FELLESPERIODE' || p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER') &&
@@ -823,3 +838,11 @@ const ForMyeTidBruktIPlanIkon = ({ size }: IkonProps) => (
         />
     </div>
 );
+
+const filtrerAvslåttePerioderMenBeholdPleiepenger = (periode: UttakPeriode_fpoversikt) => {
+    if (periode.resultat?.innvilget === false) {
+        return periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
+    }
+
+    return periode.resultat?.innvilget ?? true;
+};

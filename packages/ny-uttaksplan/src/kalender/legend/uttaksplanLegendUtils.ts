@@ -165,7 +165,7 @@ export const getCalendarLabel = (
                     navnAnnenPart,
                 },
             );
-        case 'AVSLAG_FRATREKK_PLEIEPENGER':
+        case 'PLEIEPENGER':
             return intl.formatMessage({ id: 'kalender.avslagFratrekkPleiepenger' });
         case 'TAPTE_DAGER':
             return getTapteDagerLabel(
@@ -178,6 +178,8 @@ export const getCalendarLabel = (
             );
         case 'SAMTIDIG_UTTAK':
             return getSamtidigUttakLabel(navnAnnenPart, erIkkeSøkerSpesifisert, intl);
+        case 'AVSLAG':
+            return intl.formatMessage({ id: 'kalender.avslag' });
         default:
             return info.label;
     }
@@ -363,10 +365,13 @@ export const getLegendLabelFromPeriode = (
     erFarEllerMedmor: boolean,
 ): LegendLabel | undefined => {
     if (isAvslåttPeriode(p)) {
-        const familiehendelsesdato = getFamiliehendelsedato(barn);
-        if (!erFarEllerMedmor && isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsesdato)) {
-            return 'TAPTE_DAGER';
+        if (erVanligUttakPeriode(p) && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
+            return 'PLEIEPENGER';
         }
+        const familiehendelsesdato = getFamiliehendelsedato(barn);
+        return !erFarEllerMedmor && isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsesdato)
+            ? 'AVSLAG'
+            : 'TAPTE_DAGER';
     }
 
     if ((erVanligUttakPeriode(p) || erEøsUttakPeriode(p)) && p.kontoType) {
@@ -379,10 +384,6 @@ export const getLegendLabelFromPeriode = (
             case 'FORELDREPENGER':
                 if (erEøsUttakPeriode(p)) {
                     return erFarEllerMedmor ? 'MORS_DEL_EØS' : 'FARS_DEL_EØS';
-                }
-
-                if (p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
-                    return 'AVSLAG_FRATREKK_PLEIEPENGER';
                 }
 
                 if (p.morsAktivitet === 'IKKE_OPPGITT') {

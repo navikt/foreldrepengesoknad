@@ -4,21 +4,43 @@ import { FormattedMessage } from 'react-intl';
 import { Alert, BodyShort, Button, Detail, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import {
+    erDetReadonlyPerioderEtterValgtePerioder,
+    erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato,
+} from '../../utils/periodeUtils';
 
 interface Props {
-    harPeriodeFørSeksUkerEtterFamiliehendelsedato: boolean;
+    valgtePerioder: Array<{ fom: string; tom: string }>;
     avbryt: () => void;
     fjernPeriode: (skalForskyveBakover: boolean) => void;
 }
 
-export const SlettPeriodeForskyvEllerErstatt = ({
-    harPeriodeFørSeksUkerEtterFamiliehendelsedato,
-    avbryt,
-    fjernPeriode,
-}: Props) => {
-    const { familiesituasjon } = useUttaksplanData();
+export const SlettPeriodeForskyvEllerErstatt = ({ valgtePerioder, avbryt, fjernPeriode }: Props) => {
+    const {
+        familiesituasjon,
+        erPeriodeneTilAnnenPartLåst,
+        uttakPerioder,
+        foreldreInfo: { søker },
+        familiehendelsedato,
+    } = useUttaksplanData();
 
     const [skalForskyvePeriode, setSkalForskyvePeriode] = useState<boolean | undefined>(undefined);
+
+    const harPeriodeFørSeksUkerEtterFamiliehendelsedato = erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
+        valgtePerioder,
+        familiehendelsedato,
+    );
+
+    const forelderSomHarLåstePerioder = erPeriodeneTilAnnenPartLåst
+        ? søker === 'MOR'
+            ? 'FAR_MEDMOR'
+            : 'MOR'
+        : undefined;
+    const harSenerePerioderSomErReadonly = erDetReadonlyPerioderEtterValgtePerioder(
+        uttakPerioder,
+        valgtePerioder,
+        forelderSomHarLåstePerioder,
+    );
 
     return (
         <VStack gap="space-16">
@@ -29,7 +51,10 @@ export const SlettPeriodeForskyvEllerErstatt = ({
             >
                 <Radio
                     value={true}
-                    disabled={familiesituasjon !== 'adopsjon' && harPeriodeFørSeksUkerEtterFamiliehendelsedato}
+                    disabled={
+                        harSenerePerioderSomErReadonly ||
+                        (familiesituasjon !== 'adopsjon' && harPeriodeFørSeksUkerEtterFamiliehendelsedato)
+                    }
                 >
                     <VStack gap="space-4">
                         <BodyShort>
@@ -55,6 +80,11 @@ export const SlettPeriodeForskyvEllerErstatt = ({
                     </VStack>
                 </Radio>
             </RadioGroup>
+            {harSenerePerioderSomErReadonly && (
+                <Alert variant="info">
+                    <FormattedMessage id="RedigeringPanel.SenerePerioderReadonly" />
+                </Alert>
+            )}
             {familiesituasjon !== 'adopsjon' && harPeriodeFørSeksUkerEtterFamiliehendelsedato && (
                 <Alert variant="info">
                     <FormattedMessage id="RedigeringPanel.ValgtDagerFørSeksUkerEtterFamDato" />

@@ -23,6 +23,7 @@ import { useHentGyldigeKontotyper } from '../../felles/useHentGyldigeKontotyper'
 import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
 import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
+import { erDetEksisterendePerioderEtterValgtePerioder } from '../../utils/periodeUtils';
 import { TidsperiodeSpørsmål } from './/TidsperiodeSpørsmål';
 
 export type HvaVilDuGjøre = 'LEGG_TIL_FERIE' | 'LEGG_TIL_OPPHOLD' | 'LEGG_TIL_PERIODE';
@@ -108,7 +109,15 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             return;
         }
 
-        setVisEndreEllerForskyvPanel(true);
+        if (
+            erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, [
+                { fom: notEmpty(fomValue), tom: notEmpty(tomValue) },
+            ])
+        ) {
+            setVisEndreEllerForskyvPanel(true);
+        } else {
+            leggIListe(false);
+        }
     };
 
     const leggIListe = (skalForskyve: boolean) => {

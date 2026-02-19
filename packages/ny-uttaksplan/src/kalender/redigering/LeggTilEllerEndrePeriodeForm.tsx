@@ -20,7 +20,10 @@ import {
 import { LeggTilPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstatt';
 import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
-import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../utils/periodeUtils';
+import {
+    erDetEksisterendePerioderEtterValgtePerioder,
+    harPeriodeDerMorsAktivitetIkkeErValgt,
+} from '../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 import { finnValgtePerioder } from './utils/kalenderPeriodeUtils';
 
@@ -67,7 +70,11 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         }
         setFeilmelding(undefined);
 
-        setVisEndreEllerForskyvPanel(true);
+        if (erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, sammenslåtteValgtePerioder)) {
+            setVisEndreEllerForskyvPanel(true);
+        } else {
+            leggIKalender(false);
+        }
     };
 
     const leggIKalender = (skalForskyve: boolean) => {

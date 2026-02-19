@@ -46,6 +46,8 @@ const getRect = (color: CalendarPeriodColor) => {
             return <div className={styles.greenStripedRect} />;
         case 'GRAY':
             return <div className={styles.grayRect} />;
+        case 'DARKGRAY':
+            return <div className={styles.darkgrayRect} />;
         case 'PURPLE':
             return <div className={styles.purpleRect} />;
         case 'PINK':
