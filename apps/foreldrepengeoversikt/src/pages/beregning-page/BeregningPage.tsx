@@ -222,9 +222,7 @@ const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: n
                     <FormattedMessage id="beregning.datoForVurdering.tittel" />
                 </Accordion.Header>
                 <Accordion.Content>
-                    Foreldrepengene dine beregnes kun én gang. Vi tar utgangspunkt i inntekten du har første dag med
-                    foreldrepenger. Det betyr at hvis du går opp eller ned i inntekt senere, så vil du fortsatt få det
-                    samme utbetalt.
+                    <FormattedMessage id="beregning.datoForVurdering.innhold" />
                 </Accordion.Content>
             </Accordion.Item>
         </Accordion>

@@ -293,6 +293,7 @@
     "beregning.årsinntekt": "Nav har fastsett årsinntekta di til: <label>{årsinntekt}</label>",
     "beregning.datoForVurdering": "Tidspunktet for berekninga er <label>{dato}</label>.",
     "beregning.datoForVurdering.tittel": "Bereknas kun ein gong",
+    "beregning.datoForVurdering.innhold": "Foreldrepengane dine blir berekna berre éin gong. Vi tek utgangspunkt i inntekta du har første dag med foreldrepengar. Det betyr at viss du går opp eller ned i inntekt seinare, vil du framleis få det same utbetalt.",
     "beregning.visÅttiProsentReduksjon": "Sidan du har <label>80 %</label> foreldrepengar er foreldrepengegrunnlaget ditt <labelvalue>{value}</labelvalue>",
     "beregning.6GVarsel": "Du får dekt foreldrepengar opptil {grunnbeløpSeksG} (6 G)",
     "beregning.tittel": "Meir om berekninga",
