@@ -207,7 +207,7 @@
     "RedigeringPanel.ValgtDagerFørSeksUkerEtterFamDato": "Du kan ikke forskyve perioder når du har valgt dager før seks uker etter fødsel/termin",
     "RedigeringPanel.SenerePerioderReadonly": "Du kan ikke forskyve perioder når det finnes senere perioder som ikke kan endres.",
     "LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt": "Du må velge mors aktivitet før du kan gå videre.",
-    "RedigeringPanel.MorsAktivitetIkkeValgt": "Mors aktivitet er ikke valgt",
+    "RedigeringPanel.MorsAktivitetIkkeValgt": "Mors aktivitet er ikke oppgitt",
     "RedigeringPanel.RedigerUttaksplan": "Endre",
     "RedigeringPanel.AddUttaksplan": "Legg til",
     "RedigeringPanel.EndreTil": "Hva vil du endre til?",

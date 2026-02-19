@@ -982,7 +982,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
 
-        expect(screen.getByText('Mors aktivitet er ikke valgt')).toBeInTheDocument();
+        expect(screen.getByText('Mors aktivitet er ikke oppgitt')).toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
