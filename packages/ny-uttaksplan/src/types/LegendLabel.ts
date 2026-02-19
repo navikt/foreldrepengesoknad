@@ -12,7 +12,8 @@ export type LegendLabel =
     | 'FARS_DEL_AKTIVITETSFRI_GRADERT'
     | 'SAMTIDIG_UTTAK'
     | 'TAPTE_DAGER'
-    | 'AVSLAG_FRATREKK_PLEIEPENGER'
     | 'UTSETTELSE'
     | 'FARS_DEL_EØS'
-    | 'MORS_DEL_EØS';
+    | 'MORS_DEL_EØS'
+    | 'PLEIEPENGER'
+    | 'AVSLAG';

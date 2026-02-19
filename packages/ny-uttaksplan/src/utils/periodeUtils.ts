@@ -1,7 +1,13 @@
 import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isoWeekday from 'dayjs/plugin/isoWeek';
+import minMax from 'dayjs/plugin/minMax';
 
-import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import {
+    BrukerRolleSak_fpoversikt,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import { UttaksdagenString, slutterTidsperiodeInnen6UkerEtterFødsel } from '@navikt/fp-utils';
 
 import {
@@ -12,6 +18,8 @@ import {
     erVanligUttakPeriode,
 } from '../types/UttaksplanPeriode';
 
+dayjs.extend(isSameOrAfter);
+dayjs.extend(minMax);
 dayjs.extend(isoWeekday);
 
 export const isUttaksperiode = (periode: Uttaksplanperiode) => {
@@ -169,3 +177,30 @@ export const erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato = (
             UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
         ),
     );
+
+export const erDetEksisterendePerioderEtterValgtePerioder = (
+    allePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+) => {
+    const sisteValgteDag = dayjs.max(valgtePerioder.map((p) => dayjs(p.tom)));
+    const perioderEtterValgte = allePerioder.filter((p) => dayjs(p.tom).isSameOrAfter(sisteValgteDag));
+    return perioderEtterValgte.length > 0;
+};
+
+export const erDetReadonlyPerioderEtterValgtePerioder = (
+    allePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    forelderSomHarLåstePerioder: BrukerRolleSak_fpoversikt | undefined,
+) => {
+    const sisteValgteDag = dayjs.max(valgtePerioder.map((p) => dayjs(p.tom)));
+    const perioderEtterValgte = allePerioder.filter((p) => dayjs(p.tom).isSameOrAfter(sisteValgteDag));
+
+    const harEøsEllerPleiepenger = perioderEtterValgte.some(
+        (p) => erEøsUttakPeriode(p) || (erVanligUttakPeriode(p) && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER'),
+    );
+    const harAnnenPartSomErLåst = forelderSomHarLåstePerioder
+        ? perioderEtterValgte.some((p) => erVanligUttakPeriode(p) && p.forelder === forelderSomHarLåstePerioder)
+        : false;
+
+    return harEøsEllerPleiepenger || harAnnenPartSomErLåst;
+};

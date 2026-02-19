@@ -15,7 +15,6 @@ import { useUttaksplanRedigering } from '../../../../context/UttaksplanRedigerin
 import { SlettPeriodeForskyvEllerErstatt } from '../../../../felles/forskyvEllerErstatt/SlettPeriodeForskyvEllerErstatt';
 import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../../utils/UttakPeriodeBuilder';
-import { erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato } from '../../../../utils/periodeUtils';
 import { genererPeriodeKey, getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
 
 const ARIA_LABEL_ID = 'slett-periode-panel-heading';
@@ -34,7 +33,7 @@ interface FormValues {
 export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
 
-    const { uttakPerioder, familiehendelsedato } = useUttaksplanData();
+    const { uttakPerioder } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
@@ -80,10 +79,7 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
             <div>
                 {valgtePerioderSomSkalSlettes.length > 0 && (
                     <SlettPeriodeForskyvEllerErstatt
-                        harPeriodeFørSeksUkerEtterFamiliehendelsedato={erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
-                            valgtePerioderSomSkalSlettes,
-                            familiehendelsedato,
-                        )}
+                        valgtePerioder={valgtePerioderSomSkalSlettes}
                         avbryt={() => {
                             setValgtePerioderSomSkalSlettes([]);
                         }}

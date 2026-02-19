@@ -38,8 +38,10 @@ const shouldPeriodeHaveAttachment = (
     }
     if ('overføringÅrsak' in periode && !!periode.overføringÅrsak) {
         return (
-            (søkerErFarEllerMedmor || periode.overføringÅrsak !== 'ALENEOMSORG') &&
-            periode.overføringÅrsak !== 'IKKE_RETT_ANNEN_FORELDER'
+            periode.overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' ||
+            periode.overføringÅrsak === 'SYKDOM_ANNEN_FORELDER' ||
+            ((søkerErFarEllerMedmor || periode.overføringÅrsak !== 'ALENEOMSORG') &&
+                periode.overføringÅrsak !== 'IKKE_RETT_ANNEN_FORELDER')
         );
     }
 
@@ -58,7 +60,6 @@ const skalBesvaresVedUtsettelse = (søkerErFarEllerMedmor: boolean, annenForelde
     return søkerErFarEllerMedmor && annenForelderHarRett === false;
 };
 
-//FIXME (TOR) Er dette korrekt? Den gamle koden sjekkar fleire ting her INSTITUSJONSOPPHOLD_ANNEN_FORELDER og SYKDOM_ANNEN_FORELDER
 const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UttakUtsettelseÅrsak_fpoversikt) =>
     årsak === 'SØKER_SYKDOM' || årsak === 'SØKER_INNLAGT' || årsak === 'BARN_INNLAGT';
 
