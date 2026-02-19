@@ -85,7 +85,9 @@ export const BeregningPage = () => {
                 </ExpansionCard>
 
                 <UtbetalingsVisning sak={gjeldendeSak} />
-                <Feriepenger sak={gjeldendeSak} />
+                <Box background="default" padding="space-24" borderRadius="8">
+                    <Feriepenger sak={gjeldendeSak} />
+                </Box>
             </VStack>
         </PageRouteLayout>
     );
@@ -205,6 +207,13 @@ const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: n
                         }}
                     />
                     <br />
+                    <FormattedMessage
+                        id="beregning.forklaringer.ytelserBareOppTil6G.dinG"
+                        values={{
+                            grunnbeløp: formatCurrency(grunnbeløp),
+                        }}
+                    />
+                    <br />
                     <FormattedMessage id="beregning.forklaringer.ytelserBareOppTil6G.innhold" />
                 </Accordion.Content>
             </Accordion.Item>
@@ -213,8 +222,9 @@ const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: n
                     <FormattedMessage id="beregning.datoForVurdering.tittel" />
                 </Accordion.Header>
                 <Accordion.Content>
-                    Foreldrengene dine beregnes kun én gang. Det betyr at selv om du bla bla, får du likevel den samme
-                    dagsatsen utbetalt senere. Dette gjelder selv om du går opp eller ned i inntekt, etc osv. TODO
+                    Foreldrepengene dine beregnes kun én gang. Vi tar utgangspunkt i inntekten du har første dag med
+                    foreldrepenger. Det betyr at hvis du går opp eller ned i inntekt senere, så vil du fortsatt få det
+                    samme utbetalt.
                 </Accordion.Content>
             </Accordion.Item>
         </Accordion>
@@ -317,7 +327,9 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                     id="beregning.utbetalingsvisning.fullBeskrivelse"
                     values={{
                         link1: (chunks) => <Link href="https://www.nav.no/utbetalingsoversikt">{chunks}</Link>,
-                        link2: (chunks) => <Link href="https://www.nav.no/utbetalinger">{chunks}</Link>,
+                        link2: (chunks) => (
+                            <Link href="https://www.nav.no/utbetalingsdatoer#foreldrepenger">{chunks}</Link>
+                        ),
                     }}
                 />
             </BodyShort>
