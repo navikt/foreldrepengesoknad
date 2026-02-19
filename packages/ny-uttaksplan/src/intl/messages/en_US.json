@@ -316,7 +316,7 @@
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Mor": "What is the reason for the transfer of the {erMedmor, select, true {co-mother's} other {father's}} quota?",
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.FarMedmor": "What is the reason for the transfer of the mother's quota?",
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Innlagt.Mor": "The {erMedmor, select, true {co-mother} other {father}} is hospitalized",
-    "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Innlagt.FarMedmor": "The mother is hospitalized",
+    "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Innlagt.FarMedmor": "The mother is hospitalized and too sick to care for the child",
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.Mor": "The {erMedmor, select, true {co-mother} other {father}} is too sick to care for the child",
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.FarMedmor": "The mother is too sick to care for the child",
     "LeggTilEllerEndrePeriodeForm.Overføring.Info1.Mor": "The {erMedmor, select, true {co-mother's} other {father's}} quota is ordinarily reserved for the {erMedmor, select, true {co-mother} other {father}}.",
