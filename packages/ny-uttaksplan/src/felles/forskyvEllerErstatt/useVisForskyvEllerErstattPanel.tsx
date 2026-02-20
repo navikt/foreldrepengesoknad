@@ -5,13 +5,13 @@ import { useKalenderRedigeringContext } from '../../kalender/redigering/context/
 export const useVisForskyvEllerErstattPanel = () => {
     const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
 
-    const [openedFor, setOpenedFor] = useState<typeof sammenslåtteValgtePerioder | null>(null);
+    const [åpnedeValgtePerioder, setÅpnedeValgtePerioder] = useState<typeof sammenslåtteValgtePerioder | null>(null);
 
-    const visEndreEllerForskyvPanel = openedFor === sammenslåtteValgtePerioder;
+    const visEndreEllerForskyvPanel = åpnedeValgtePerioder === sammenslåtteValgtePerioder;
 
     return {
         visEndreEllerForskyvPanel,
         setVisEndreEllerForskyvPanel: (skalVisPanel: boolean) =>
-            setOpenedFor(skalVisPanel ? sammenslåtteValgtePerioder : null),
+            setÅpnedeValgtePerioder(skalVisPanel ? sammenslåtteValgtePerioder : null),
     };
 };
