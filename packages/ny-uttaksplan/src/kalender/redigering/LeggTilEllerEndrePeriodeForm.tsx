@@ -18,6 +18,7 @@ import {
     mapFraFormValuesTilUttakPeriode,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { LeggTilPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstatt';
+import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import {
@@ -46,7 +47,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
 
-    const [visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel] = useState(false);
+    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } = useVisForskyvEllerErstattPanel();
 
     const defaultValues = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
         uttakPerioder,

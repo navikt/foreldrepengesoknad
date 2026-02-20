@@ -19,6 +19,7 @@ import {
     mapFraFormValuesTilUttakPeriode,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { LeggTilPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstatt';
+import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useHentGyldigeKontotyper } from '../../felles/useHentGyldigeKontotyper';
 import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
 import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
@@ -58,7 +59,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         erPeriodeneTilAnnenPartLåst,
     } = useUttaksplanData();
 
-    const [visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel] = useState(false);
+    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } = useVisForskyvEllerErstattPanel();
 
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
 

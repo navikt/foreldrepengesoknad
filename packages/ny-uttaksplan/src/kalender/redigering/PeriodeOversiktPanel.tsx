@@ -9,6 +9,7 @@ import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { LeggTilPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstatt';
+import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
@@ -26,7 +27,7 @@ interface Props {
 
 export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) => {
     const intl = useIntl();
-    const [visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel] = useState(false);
+    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } = useVisForskyvEllerErstattPanel();
     const [skalViseKnapper, setSkalViseKnapper] = useState(true);
 
     const {
@@ -107,6 +108,7 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
             className={erMinimert ? undefined : 'max-h-[calc(100vh-100px)] overflow-y-auto md:max-h-full'}
         >
             <Show above="md">
+                d
                 <Box background="accent-soft" padding="space-8" style={{ cursor: 'pointer' }}>
                     <VStack gap="space-8">
                         <HStack gap="space-8" align="center" wrap={false}>
