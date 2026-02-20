@@ -27,9 +27,6 @@ interface Props {
 
 export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) => {
     const intl = useIntl();
-    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } = useVisForskyvEllerErstattPanel();
-    const [skalViseKnapper, setSkalViseKnapper] = useState(true);
-
     const {
         foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
@@ -38,6 +35,10 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
 
     const { sammenslåtteValgtePerioder, setValgtePerioder, leggTilUttaksplanPerioder, setEndredePerioder } =
         useKalenderRedigeringContext();
+
+    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } =
+        useVisForskyvEllerErstattPanel(sammenslåtteValgtePerioder);
+    const [skalViseKnapper, setSkalViseKnapper] = useState(true);
 
     const erDesktop = useErDesktop();
 
