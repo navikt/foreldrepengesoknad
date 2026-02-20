@@ -108,7 +108,6 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
             className={erMinimert ? undefined : 'max-h-[calc(100vh-100px)] overflow-y-auto md:max-h-full'}
         >
             <Show above="md">
-                d
                 <Box background="accent-soft" padding="space-8" style={{ cursor: 'pointer' }}>
                     <VStack gap="space-8">
                         <HStack gap="space-8" align="center" wrap={false}>
