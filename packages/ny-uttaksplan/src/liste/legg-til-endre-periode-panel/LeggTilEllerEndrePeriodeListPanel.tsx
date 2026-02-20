@@ -125,8 +125,12 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         }
 
         if (
+            !harPeriodeDerMorsAktivitetIkkeErValgt &&
             erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, [
-                { fom: notEmpty(fomValue), tom: notEmpty(tomValue) },
+                {
+                    fom: uttaksplanperiode?.fom ?? notEmpty(fomValue),
+                    tom: uttaksplanperiode?.tom ?? notEmpty(tomValue),
+                },
             ])
         ) {
             setVisEndreEllerForskyvPanel(true);
