@@ -18,6 +18,7 @@ import {
     mapFraFormValuesTilUttakPeriode,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { LeggTilPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstatt';
+import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import {
@@ -46,7 +47,8 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
 
-    const [visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel] = useState(false);
+    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } =
+        useVisForskyvEllerErstattPanel(sammenslåtteValgtePerioder);
 
     const defaultValues = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
         uttakPerioder,
@@ -61,6 +63,28 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
     const formSubmitValidator = useFormSubmitValidator<LeggTilEllerEndrePeriodeFormFormValues>();
 
+    const resetFormValuesVedEndringAvForelder = (forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {
+        formMethods.reset({ forelder });
+    };
+
+    const uttakPerioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
+    const eksisterendePerioderSomErValgt = finnValgtePerioder(
+        sammenslåtteValgtePerioder,
+        uttakPerioderInkludertTapteDager,
+    );
+
+    const harValgtDagerKunForEnEksisterendePeriode =
+        eksisterendePerioderSomErValgt.length === 1 &&
+        !sammenslåtteValgtePerioder.some(
+            (vp) =>
+                dayjs(vp.fom).isBefore(eksisterendePerioderSomErValgt.at(0)!.fom) ||
+                dayjs(vp.tom).isAfter(eksisterendePerioderSomErValgt.at(0)!.tom),
+        );
+
+    const skalViseMorsAktivitetInfo =
+        harValgtDagerKunForEnEksisterendePeriode &&
+        harPeriodeDerMorsAktivitetIkkeErValgt(eksisterendePerioderSomErValgt);
+
     const onSubmit = (values: LeggTilEllerEndrePeriodeFormFormValues) => {
         const submitFeilmelding = formSubmitValidator(sammenslåtteValgtePerioder, values);
 
@@ -70,7 +94,10 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         }
         setFeilmelding(undefined);
 
-        if (erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, sammenslåtteValgtePerioder)) {
+        if (
+            !skalViseMorsAktivitetInfo &&
+            erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, sammenslåtteValgtePerioder)
+        ) {
             setVisEndreEllerForskyvPanel(true);
         } else {
             leggIKalender(false);
@@ -91,24 +118,6 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         lukkRedigeringsmodus();
     };
 
-    const resetFormValuesVedEndringAvForelder = (forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {
-        formMethods.reset({ forelder });
-    };
-
-    const uttakPerioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
-    const eksisterendePerioderSomErValgt = finnValgtePerioder(
-        sammenslåtteValgtePerioder,
-        uttakPerioderInkludertTapteDager,
-    );
-
-    const harValgtDagerKunForEnEksisterendePeriode =
-        eksisterendePerioderSomErValgt.length === 1 &&
-        !sammenslåtteValgtePerioder.some(
-            (vp) =>
-                dayjs(vp.fom).isBefore(eksisterendePerioderSomErValgt.at(0)!.fom) ||
-                dayjs(vp.tom).isAfter(eksisterendePerioderSomErValgt.at(0)!.tom),
-        );
-
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             {visEndreEllerForskyvPanel && (
@@ -121,12 +130,11 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
             )}
             {!visEndreEllerForskyvPanel && (
                 <VStack gap="space-16">
-                    {harValgtDagerKunForEnEksisterendePeriode &&
-                        harPeriodeDerMorsAktivitetIkkeErValgt(eksisterendePerioderSomErValgt) && (
-                            <Alert variant="warning" size="small">
-                                <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt" />
-                            </Alert>
-                        )}
+                    {skalViseMorsAktivitetInfo && (
+                        <Alert variant="warning" size="small">
+                            <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt" />
+                        </Alert>
+                    )}
 
                     <LeggTilEllerEndrePeriodeFellesForm
                         valgtePerioder={sammenslåtteValgtePerioder}

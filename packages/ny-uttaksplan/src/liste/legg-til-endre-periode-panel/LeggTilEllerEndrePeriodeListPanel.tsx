@@ -19,6 +19,7 @@ import {
     mapFraFormValuesTilUttakPeriode,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { LeggTilPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstatt';
+import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useHentGyldigeKontotyper } from '../../felles/useHentGyldigeKontotyper';
 import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
 import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
@@ -58,8 +59,6 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         erPeriodeneTilAnnenPartLåst,
     } = useUttaksplanData();
 
-    const [visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel] = useState(false);
-
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
@@ -80,6 +79,22 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         defaultValues,
     });
 
+    const fomValue = formMethods.watch('fom');
+    const tomValue = formMethods.watch('tom');
+    const hvaVilDuGjøre = formMethods.watch('hvaVilDuGjøre');
+    const forelder = formMethods.watch('forelder');
+
+    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } = useVisForskyvEllerErstattPanel(
+        fomValue && tomValue
+            ? [
+                  {
+                      fom: fomValue,
+                      tom: tomValue,
+                  },
+              ]
+            : [],
+    );
+
     const handleAddPeriode = (nyPeriode: UttakPeriode_fpoversikt[], skalForskyve: boolean) => {
         const builder = new UttakPeriodeBuilder(uttakPerioder);
         if (uttaksplanperiode) {
@@ -96,9 +111,9 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         setFeilmelding(undefined);
 
         if (hvaVilDuGjøre === 'LEGG_TIL_PERIODE') {
-            const fomValue = notEmpty(values.fom);
-            const tomValue = notEmpty(values.tom);
-            const submitFeilmelding = formSubmitValidator([{ fom: fomValue, tom: tomValue }], values);
+            const fom = notEmpty(values.fom);
+            const tom = notEmpty(values.tom);
+            const submitFeilmelding = formSubmitValidator([{ fom, tom }], values);
 
             if (submitFeilmelding) {
                 setFeilmelding(submitFeilmelding);
@@ -110,8 +125,12 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         }
 
         if (
+            !harPeriodeDerMorsAktivitetIkkeErValgt &&
             erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, [
-                { fom: notEmpty(fomValue), tom: notEmpty(tomValue) },
+                {
+                    fom: uttaksplanperiode?.fom ?? notEmpty(fomValue),
+                    tom: uttaksplanperiode?.tom ?? notEmpty(tomValue),
+                },
             ])
         ) {
             setVisEndreEllerForskyvPanel(true);
@@ -122,15 +141,15 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
     const leggIListe = (skalForskyve: boolean) => {
         const values = formMethods.getValues();
-        const fomValue = notEmpty(values.fom);
-        const tomValue = notEmpty(values.tom);
+        const fom = notEmpty(values.fom);
+        const tom = notEmpty(values.tom);
 
         if (hvaVilDuGjøre === 'LEGG_TIL_FERIE') {
             handleAddPeriode(
                 [
                     {
-                        fom: fomValue,
-                        tom: tomValue,
+                        fom,
+                        tom,
                         forelder: 'MOR',
                         utsettelseÅrsak: 'LOVBESTEMT_FERIE',
                     },
@@ -142,8 +161,8 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                 .fjernUttakPerioder(
                     [
                         {
-                            fom: fomValue,
-                            tom: tomValue,
+                            fom,
+                            tom,
                         },
                     ],
                     false,
@@ -152,26 +171,18 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
             uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
         } else {
-            const submitFeilmelding = formSubmitValidator([{ fom: fomValue, tom: tomValue }], values);
+            const submitFeilmelding = formSubmitValidator([{ fom, tom }], values);
 
             if (submitFeilmelding) {
                 setFeilmelding(submitFeilmelding);
                 return;
             }
             const mapped = omitMany(values, ['fom', 'tom', 'hvaVilDuGjøre']);
-            handleAddPeriode(
-                mapFraFormValuesTilUttakPeriode(mapped, { fom: fomValue, tom: tomValue }, søker),
-                skalForskyve,
-            );
+            handleAddPeriode(mapFraFormValuesTilUttakPeriode(mapped, { fom, tom }, søker), skalForskyve);
         }
 
         setIsLeggTilPeriodePanelOpen(false);
     };
-
-    const fomValue = formMethods.watch('fom');
-    const tomValue = formMethods.watch('tom');
-    const hvaVilDuGjøre = formMethods.watch('hvaVilDuGjøre');
-    const forelder = formMethods.watch('forelder');
 
     const resetFormValuesVedEndringAvForelder = (forelderVerdi: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {
         formMethods.reset({

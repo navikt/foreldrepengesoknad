@@ -183,7 +183,7 @@ export const erDetEksisterendePerioderEtterValgtePerioder = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
 ) => {
     const sisteValgteDag = dayjs.max(valgtePerioder.map((p) => dayjs(p.tom)));
-    const perioderEtterValgte = allePerioder.filter((p) => dayjs(p.tom).isSameOrAfter(sisteValgteDag));
+    const perioderEtterValgte = allePerioder.filter((p) => dayjs(p.tom).isAfter(sisteValgteDag));
     return perioderEtterValgte.length > 0;
 };
 
@@ -193,7 +193,7 @@ export const erDetReadonlyPerioderEtterValgtePerioder = (
     forelderSomHarLåstePerioder: BrukerRolleSak_fpoversikt | undefined,
 ) => {
     const sisteValgteDag = dayjs.max(valgtePerioder.map((p) => dayjs(p.tom)));
-    const perioderEtterValgte = allePerioder.filter((p) => dayjs(p.tom).isSameOrAfter(sisteValgteDag));
+    const perioderEtterValgte = allePerioder.filter((p) => dayjs(p.tom).isAfter(sisteValgteDag));
 
     const harEøsEllerPleiepenger = perioderEtterValgte.some(
         (p) => erEøsUttakPeriode(p) || (erVanligUttakPeriode(p) && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER'),

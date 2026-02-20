@@ -13,7 +13,7 @@ import {
 interface Props {
     valgtePerioder: Array<{ fom: string; tom: string }>;
     erFerie: boolean;
-    setVisEndreEllerForskyvPanel: React.Dispatch<React.SetStateAction<boolean>>;
+    setVisEndreEllerForskyvPanel: (skalVisPanel: boolean) => void;
     leggTilEllerForskyvPeriode: (skalForskyve: boolean) => void;
 }
 
