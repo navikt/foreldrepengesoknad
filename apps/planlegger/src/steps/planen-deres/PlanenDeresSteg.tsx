@@ -20,10 +20,10 @@ import {
     getNavnPåForeldre,
 } from 'utils/HvemPlanleggerUtils';
 import { mapOmBarnetTilBarn } from 'utils/barnetUtils';
-import { utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
+import { HvemHarRett, utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
-import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
+import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, Box, Heading, InlineMessage, Tabs, ToggleGroup, VStack } from '@navikt/ds-react';
 
@@ -115,7 +115,8 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
     const farOgFarKunEnPartHarRett =
         hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR &&
         (hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett');
-
+    const farOgFarBeggeHarRett =
+        hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && hvemHarRett === 'beggeHarRett';
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
             <VStack gap="space-24">
@@ -126,7 +127,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                 <UttaksplanDataProvider
                     barn={mapOmBarnetTilBarn(omBarnet)}
                     foreldreInfo={{
-                        søker: erFarEllerMedmor ? 'FAR_ELLER_MEDMOR' : 'MOR',
+                        søker: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
                         navnPåForeldre,
                         rettighetType: utledRettighet(erAleneOmOmsorg, erDeltUttak),
                         erMedmorDelAvSøknaden: isMedmorDelAvSøknaden,
@@ -135,6 +136,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     valgtStønadskonto={valgtStønadskonto}
                     harAktivitetskravIPeriodeUtenUttak={false}
                     uttakPerioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
+                    erPeriodeneTilAnnenPartLåst={false}
                 >
                     <div ref={kvoteOppsummeringRef}>
                         <KvoteOppsummering erInnsyn={false} visStatusIkoner />
@@ -143,6 +145,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     <DereKanTilpassePlanenInfoBox erAleneforsørger={erAleneOmOmsorg} />
 
                     {farOgFarKunEnPartHarRett && omBarnet.erFødsel && <FarOgFarKunEnPartHarRettInfoBox />}
+                    {farOgFarBeggeHarRett && omBarnet.erFødsel && <FarOgFarBeggeHarRettInfoBox />}
 
                     <HvaErMulig hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} barnet={omBarnet} />
 
@@ -231,6 +234,24 @@ const FarOgFarKunEnPartHarRettInfoBox = () => (
         </div>
     </Infobox>
 );
+const FarOgFarBeggeHarRettInfoBox = () => (
+    <Infobox
+        header={<FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.BeggeHarRett.DereHarOppgitt" />}
+        icon={
+            <PersonGroupIcon height={24} width={24} fontSize="1.5rem" color="var(--ax-bg-accent-strong)" aria-hidden />
+        }
+        color="green"
+    >
+        <div>
+            <BodyShort>
+                <FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.DenSomErBiologisk" />
+            </BodyShort>
+            <BodyShort>
+                <FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.BeggeHarRett.BiologiskFar" />
+            </BodyShort>
+        </div>
+    </Infobox>
+);
 
 const DereKanTilpassePlanenInfoBox = ({ erAleneforsørger }: { erAleneforsørger: boolean }) => (
     <Infobox
@@ -250,7 +271,7 @@ const AntallUkerVelger = ({
     lagreUttaksplanOgOppdaterUrl,
 }: {
     stønadskontoer: KontoBeregningResultatDto;
-    hvemHarRett: string;
+    hvemHarRett: HvemHarRett;
     lagreUttaksplanOgOppdaterUrl: (oppdatertUttaksplan: UttakPeriode_fpoversikt[] | undefined) => void;
 }) => {
     const intl = useIntl();
@@ -286,6 +307,14 @@ const AntallUkerVelger = ({
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
     const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
+
+    const uttaksdata = finnUttaksdata(
+        hvemHarRett,
+        hvemPlanlegger,
+        valgtStønadskonto,
+        omBarnet,
+        fordeling?.antallDagerSøker1,
+    );
 
     return (
         <VStack gap="space-24">
@@ -334,6 +363,7 @@ const AntallUkerVelger = ({
                                 antallUkerOgDagerFellesperiode={antallUkerOgDagerFellesperiode}
                                 fornavnSøker1={fornavnSøker1}
                                 fornavnSøker2={fornavnSøker2}
+                                uttaksdata={uttaksdata}
                             />
                         </BluePanel>
                         {antallUkerOgDagerFellesperiode.dager > 0 && (

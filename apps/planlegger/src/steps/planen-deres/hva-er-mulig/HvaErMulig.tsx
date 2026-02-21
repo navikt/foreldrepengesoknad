@@ -8,17 +8,20 @@ import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { loggExpansionCardOpen } from 'utils/umamiUtils';
 
-import { BodyLong, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
+import { ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { HvemPlanleggerType } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
-import { Barnehageplass } from './Barnehageplass';
+import { AktivitetskravFar } from './AktivitetskravFar';
 import { DetteKanIkkeEndres } from './DetteKanIkkeEndres';
 import { FarFellesperiode } from './FarFellesperiode';
+import { ForeldrepengerSamtidig } from './ForeldrepengerSamtidig';
+import { FpMedKrav } from './FpMedKrav';
+import { FpUtenKrav } from './FpUtenKrav';
 import { JobbeSamtidig } from './JobbeSamtidig';
 import { LeggeTilFerie } from './LeggeTilFerie';
-import { PermisjonSamtidig } from './PermisjonSamtidig';
+import { Omsorgspermisjon } from './Omsorgspermisjon';
 import { ToUkerRundtFødsel } from './ToUkerRundtFødsel';
 
 interface Props {
@@ -63,42 +66,63 @@ export const HvaErMulig = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) 
             </ExpansionCard.Header>
             <ExpansionCard.Content>
                 <VStack gap="space-20">
-                    <BodyLong>
-                        <FormattedMessage id="HvaErMulig.MyeManKanEndre" />
-                    </BodyLong>
+                    <Heading size="small">
+                        <FormattedMessage id="HvaErMulig.MyeDuKanEndre" />
+                    </Heading>
                     {!erBarnetAdoptert(barnet) && (
                         <>
-                            {!erFarAlene && (
+                            {!(erFarAlene || erFedre || kunFarSøker2EllerMedmorHarRett) && (
                                 <DetteKanIkkeEndres
                                     hvemPlanlegger={hvemPlanlegger}
                                     arbeidssituasjon={arbeidssituasjon}
                                 />
                             )}
 
-                            <Barnehageplass />
-
-                            {kunFarSøker2EllerMedmorHarRett && <ToUkerRundtFødsel hvemPlanlegger={hvemPlanlegger} />}
+                            {(kunFarSøker2EllerMedmorHarRett || erFedre) && (
+                                <ToUkerRundtFødsel hvemPlanlegger={hvemPlanlegger} />
+                            )}
+                            {erFedre && !kunEnPartSkalHa && <AktivitetskravFar />}
 
                             <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} />
 
-                            {!kunEnPartSkalHa && <FarFellesperiode hvemPlanlegger={hvemPlanlegger} />}
+                            {!kunEnPartSkalHa && !erFedre && (
+                                <FarFellesperiode hvemPlanlegger={hvemPlanlegger} barnet={barnet} />
+                            )}
 
                             {!kunSøker2SkalHa && <JobbeSamtidig />}
 
-                            {(!erAlene || !erFedre) && !kunEnPartSkalHa && <PermisjonSamtidig />}
+                            {!erAlene && !kunEnPartSkalHa && (
+                                <ForeldrepengerSamtidig
+                                    hvemPlanlegger={hvemPlanlegger}
+                                    arbeidssituasjon={arbeidssituasjon}
+                                    barnet={barnet}
+                                />
+                            )}
+                            {kunFarSøker2EllerMedmorHarRett && (
+                                <>
+                                    <FpUtenKrav hvemPlanlegger={hvemPlanlegger} />
+                                    <FpMedKrav hvemPlanlegger={hvemPlanlegger} />
+                                </>
+                            )}
                         </>
                     )}
                     {erBarnetAdoptert(barnet) && (
                         <>
-                            {!erFarAlene && <FarFellesperiode hvemPlanlegger={hvemPlanlegger} />}
-
-                            <Barnehageplass />
+                            {!kunEnPartSkalHa && <FarFellesperiode hvemPlanlegger={hvemPlanlegger} barnet={barnet} />}
 
                             <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} />
 
                             <JobbeSamtidig />
+                            <Omsorgspermisjon />
 
-                            {(!erAlene || !erFedre) && !kunEnPartSkalHa && <PermisjonSamtidig erAdopsjon />}
+                            {(!erAlene || !erFedre) && !kunEnPartSkalHa && (
+                                <ForeldrepengerSamtidig
+                                    erAdopsjon
+                                    hvemPlanlegger={hvemPlanlegger}
+                                    arbeidssituasjon={arbeidssituasjon}
+                                    barnet={barnet}
+                                />
+                            )}
                         </>
                     )}
                 </VStack>

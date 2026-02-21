@@ -465,7 +465,6 @@ export type UttaksPeriodeDto = {
     ønskerFlerbarnsdager?: boolean;
     ønskerGradering?: boolean;
     ønskerSamtidigUttak?: boolean;
-    samtidigUttakGyldig?: boolean;
 };
 
 export type GraderingDto = {
@@ -615,7 +614,6 @@ export type UtenlandsoppholdsperiodeDto = {
     fom: string;
     landkode: com_neovisionaries_i18n_CountryCode;
     tom: string;
-    fomAfterTom?: boolean;
 };
 
 export type ForeldrepengesøknadDto = {
@@ -642,7 +640,6 @@ export type AnnenInntektDto = {
     land?: com_neovisionaries_i18n_CountryCode;
     tom?: string;
     type: AnnenOpptjeningType;
-    gyldigJobbIUtlandet?: boolean;
 };
 
 export type AnnenOpptjeningType =
@@ -676,7 +673,6 @@ export type NæringDto = {
     varigEndringBeskrivelse?: string;
     varigEndringDato?: string;
     varigEndringInntektEtterEndring?: number;
-    varigEndringGyldig?: boolean;
 };
 
 export type Virksomhetstype = 'ANNEN' | 'JORDBRUK_SKOGBRUK' | 'FISKE' | 'DAGMAMMA';
@@ -699,7 +695,6 @@ export type AvtaltFerieDto = {
     arbeidsforhold: ArbeidsforholdDto;
     fom: string;
     tom: string;
-    arbeidsforholdVirksomhet?: boolean;
 };
 
 export type BarnSvpDto = {
@@ -713,7 +708,6 @@ export type TilretteleggingbehovDto = {
     risikofaktorer?: string;
     tilrettelegginger?: TilretteleggingDto[];
     tilretteleggingstiltak?: string;
-    risikofaktorerOgTilretteleggingtiltakSattForNæringFrilans?: boolean;
 };
 
 export type TilretteleggingDto = (
@@ -759,24 +753,18 @@ export type EttersendelseDto = {
 
 export type YtelseType = 'FORELDREPENGER' | 'SVANGERSKAPSPENGER' | 'ENGANGSSTØNAD';
 
-export type no_nav_foreldrepenger_soknad_innsending_StatusInnsendingTjeneste_ForsendelseStatus = {
+export type ForsendelseStatus = {
     saksnummer?: string;
-    status: no_nav_foreldrepenger_soknad_innsending_StatusInnsendingTjeneste_ForsendelseStatus_Status;
+    status: Status;
 };
 
-export type no_nav_foreldrepenger_soknad_innsending_StatusInnsendingTjeneste_ForsendelseStatus_Status =
-    | 'PENDING'
-    | 'MIDLERTIDIG'
-    | 'ENDELIG'
-    | 'FORSENDELSE_FINNES_IKKE';
+export type Status = 'PENDING' | 'MIDLERTIDIG' | 'ENDELIG' | 'FORSENDELSE_FINNES_IKKE';
 
-export type no_nav_foreldrepenger_soknad_mellomlagring_YtelseMellomlagringType =
-    | 'FORELDREPENGER'
-    | 'SVANGERSKAPSPENGER'
-    | 'ENGANGSSTONAD';
+export type YtelseMellomlagringType = 'FORELDREPENGER' | 'SVANGERSKAPSPENGER' | 'ENGANGSSTONAD';
 
 export type org_glassfish_jersey_media_multipart_FormDataContentDisposition = {
     creationDate?: string;
+    encoded?: boolean;
     fileName?: string;
     modificationDate?: string;
     name?: string;
@@ -785,5 +773,7 @@ export type org_glassfish_jersey_media_multipart_FormDataContentDisposition = {
     };
     readDate?: string;
     size?: number;
-    type?: string;
+    type?: {
+        empty?: boolean;
+    };
 };

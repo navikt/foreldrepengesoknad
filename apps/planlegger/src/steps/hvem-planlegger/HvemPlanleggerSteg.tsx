@@ -1,3 +1,4 @@
+import { PersonIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { useStepData } from 'appData/useStepData';
 import { BlueRadioGroup } from 'components/form-wrappers/BlueRadioGroup';
@@ -7,11 +8,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { formatError } from 'utils/customErrorFormatter';
 
-import { BodyShort, Radio, Spacer, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
+import { links } from '@navikt/fp-constants';
 import { RhfForm, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { HvemPlanleggerType } from '@navikt/fp-types';
-import { BluePanel } from '@navikt/fp-ui';
+import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired } from '@navikt/fp-validation';
 
@@ -98,6 +100,42 @@ export const HvemPlanleggerSteg = () => {
                                 <FormattedMessage id="HvemPlanleggerSteg.BareFar" />
                             </Radio>
                         </BlueRadioGroup>
+                        {(type === HvemPlanleggerType.MOR || type === HvemPlanleggerType.FAR) && (
+                            <Infobox
+                                header={<FormattedMessage id="HvemPlanleggerSteg.Infoboks" />}
+                                icon={
+                                    <PersonIcon
+                                        height={24}
+                                        width={24}
+                                        color="var(--ax-bg-success-strong)"
+                                        fontSize="1.5rem"
+                                        aria-hidden
+                                    />
+                                }
+                                shouldFadeIn
+                                color="green"
+                            >
+                                <VStack gap="space-8">
+                                    <BodyLong>
+                                        <FormattedMessage
+                                            id="HvemPlanleggerSteg.Infoboks.Tekst"
+                                            values={{
+                                                a: (msg) => (
+                                                    <Link
+                                                        href={links.hvorLenge}
+                                                        rel="noreferrer"
+                                                        target="_blank"
+                                                        inlineText
+                                                    >
+                                                        {msg}
+                                                    </Link>
+                                                ),
+                                            }}
+                                        />
+                                    </BodyLong>
+                                </VStack>
+                            </Infobox>
+                        )}
                         {type && (
                             <BluePanel isDarkBlue={erHvemPlanleggerIkkeOppgittFraFør} shouldFadeIn>
                                 <VStack gap="space-40">

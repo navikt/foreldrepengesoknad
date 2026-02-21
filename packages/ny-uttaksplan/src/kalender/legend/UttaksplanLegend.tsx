@@ -7,12 +7,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, Tooltip, VStack } from '@navikt/ds-react';
 
-import { Barn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
+import { Barn, BrukerRolleSak_fpoversikt, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { CalendarLabel, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { LegendLabel } from '../../types/LegendLabel';
-import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
+import { UttaksplanperiodeMedKunTapteDager, erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import { filtrerBortAnnenPartsIdentiskePerioder } from '../utils/uttaksplanKalenderUtils';
 import { useUttaksplanData } from './../../context/UttaksplanDataContext';
@@ -29,7 +29,7 @@ import {
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
-const UNSELECTABLE_COLORS: readonly CalendarPeriodColor[] = ['PINK', 'PURPLE', 'BLACKOUTLINE', 'GRAY'];
+const UNSELECTABLE_COLORS = new Set<CalendarPeriodColor>(['PINK', 'PURPLE', 'GRAY']);
 
 interface Props {
     perioderForKalendervisning: CalendarPeriod[];
@@ -55,13 +55,10 @@ export const UttaksplanLegend = ({
 
     const saksperioderInkludertHull = useAlleUttakPerioderInklTapteDager();
 
-    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(
-        saksperioderInkludertHull,
-        søker === 'FAR_ELLER_MEDMOR',
-    );
+    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(saksperioderInkludertHull, søker === 'FAR_MEDMOR');
 
     const unikePeriodeLabelsMedFarge = unikePerioder.reduce<UttaksplanKalenderLegendInfo[]>((acc, periode) => {
-        const label = getLegendLabelFromPeriode(periode, barn, søker === 'FAR_ELLER_MEDMOR');
+        const label = getLegendLabelFromPeriode(periode, barn, søker === 'FAR_MEDMOR');
 
         if (!label) {
             return acc;
@@ -87,7 +84,7 @@ export const UttaksplanLegend = ({
             ...acc,
             {
                 label,
-                forelder: erEøsUttakPeriode(periode) ? 'FAR_MEDMOR' : periode.forelder,
+                forelder: utledForelder(periode, søker),
                 calendarPeriod: periodeForKalendervisning,
             },
         ];
@@ -155,6 +152,13 @@ export const UttaksplanLegend = ({
     );
 };
 
+const utledForelder = (periode: UttaksplanperiodeMedKunTapteDager, søker: BrukerRolleSak_fpoversikt) => {
+    if (erEøsUttakPeriode(periode)) {
+        return søker;
+    }
+    return periode.forelder;
+};
+
 const HStackEllerVStack = ({
     children,
     gap,
@@ -192,7 +196,7 @@ const LabelButtonMedEllerUtenToolip = ({
 
     const harAktivitetsfriKvote = valgtStønadskonto.kontoer.some((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
 
-    const erFarEllerMedmor = søker === 'FAR_ELLER_MEDMOR';
+    const erFarEllerMedmor = søker === 'FAR_MEDMOR';
     const navnAnnenPart = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     const label = getCalendarLabel(
@@ -248,7 +252,7 @@ const LabelButton = ({
 }) => {
     const [selectedLabel, setSelectedLabel] = useState<LegendLabel | undefined>(undefined);
 
-    const erKlikkbar = !!selectLegend && !UNSELECTABLE_COLORS.includes(info.calendarPeriod.color) && !readOnly;
+    const erKlikkbar = !!selectLegend && !UNSELECTABLE_COLORS.has(info.calendarPeriod.color) && !readOnly;
 
     return (
         <button
@@ -263,10 +267,10 @@ const LabelButton = ({
                     : undefined
             }
             className={
-                `rounded-sm ${getSelectableStyle(!UNSELECTABLE_COLORS.includes(info.calendarPeriod.color) && !readOnly)}` +
+                `rounded-sm ${getSelectableStyle(!UNSELECTABLE_COLORS.has(info.calendarPeriod.color) && !readOnly)}` +
                 ` ${getFocusStyle(info.calendarPeriod.color)} ${getSelectedStyle(selectedLabel === info.label, info.calendarPeriod.color)} `
             }
-            tabIndex={!UNSELECTABLE_COLORS.includes(info.calendarPeriod.color) && !readOnly ? 0 : -1}
+            tabIndex={!UNSELECTABLE_COLORS.has(info.calendarPeriod.color) && !readOnly ? 0 : -1}
             disabled={!erKlikkbar}
         >
             <CalendarLabel color={info.calendarPeriod.color}>

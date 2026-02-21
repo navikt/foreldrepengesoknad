@@ -108,7 +108,7 @@ describe('lagHullPerioder', () => {
 
         const foreldreInfo = {
             ...DEFAULT_FORELDRE_INFO,
-            søker: 'FAR_ELLER_MEDMOR',
+            søker: 'FAR_MEDMOR',
             rettighetType: 'BARE_SØKER_RETT',
         } satisfies ForeldreInfo;
 
@@ -116,7 +116,7 @@ describe('lagHullPerioder', () => {
 
         expect(perioderMedHull).toEqual([
             {
-                fom: '2025-05-08',
+                fom: '2025-05-07',
                 tom: '2025-08-08',
                 forelder: 'FAR_MEDMOR',
                 type: 'TAPTE_DAGER',
@@ -136,7 +136,7 @@ describe('lagHullPerioder', () => {
 
         const foreldreInfo = {
             ...DEFAULT_FORELDRE_INFO,
-            søker: 'FAR_ELLER_MEDMOR',
+            søker: 'FAR_MEDMOR',
             rettighetType: 'BARE_SØKER_RETT',
         } satisfies ForeldreInfo;
 
@@ -168,7 +168,7 @@ describe('lagHullPerioder', () => {
 
         const foreldreInfo = {
             ...DEFAULT_FORELDRE_INFO,
-            søker: 'FAR_ELLER_MEDMOR',
+            søker: 'FAR_MEDMOR',
             rettighetType: 'BARE_SØKER_RETT',
         } satisfies ForeldreInfo;
 
@@ -200,7 +200,7 @@ describe('lagHullPerioder', () => {
 
         const foreldreInfo = {
             ...DEFAULT_FORELDRE_INFO,
-            søker: 'FAR_ELLER_MEDMOR',
+            søker: 'FAR_MEDMOR',
             rettighetType: 'BARE_SØKER_RETT',
         } satisfies ForeldreInfo;
 

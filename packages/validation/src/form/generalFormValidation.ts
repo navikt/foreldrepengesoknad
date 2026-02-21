@@ -3,14 +3,25 @@ import dayjs from 'dayjs';
 export const textRegex = /^[\p{N}\p{L}\p{Z}\p{Cf}\p{P}\p{Sc}\p{Sk}\n\r+]*$/u;
 export const textGyldigRegex = /[\p{N}\p{L}\p{Z}\p{Cf}\p{P}\p{Sc}\p{Sk}\n\r+]*/gu;
 
-export const isEmpty = (text?: string | number | boolean | dayjs.Dayjs | null) =>
-    text === null || text === undefined || text.toString().trim().length === 0;
+type EmptyCheckValue = string | number | boolean | dayjs.Dayjs | null | undefined | EmptyCheckValue[];
+
+export const isEmpty = (value?: EmptyCheckValue): boolean => {
+    if (value === null || value === undefined) {
+        return true;
+    }
+
+    if (Array.isArray(value)) {
+        return value.every(isEmpty);
+    }
+
+    return value.toString().trim().length === 0;
+};
 
 export type FormValidationResult = string | null;
 
 export const isRequired =
     (i18nText: string) =>
-    (value?: string | number | boolean): FormValidationResult =>
+    (value?: EmptyCheckValue): FormValidationResult =>
         isEmpty(value) ? i18nText : null;
 
 export const isNotEqualValue =

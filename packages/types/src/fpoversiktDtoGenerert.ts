@@ -343,7 +343,7 @@ export type no_nav_foreldrepenger_kontrakter_felles_kodeverk_AktivitetStatus =
     | 'KOMBINERT_AT_FL_SN'
     | 'BRUKERS_ANDEL'
     | 'KUN_YTELSE'
-    | 'TTLSTØTENDE_YTELSE'
+    | 'TILSTØTENDE_YTELSE'
     | 'VENTELØNN_VARTPENGER';
 
 export type BehandlingTilstand_fpoversikt =
@@ -356,7 +356,7 @@ export type BehandlingTilstand_fpoversikt =
 
 export type Beregningsgrunnlag_fpoversikt = {
     beregningAktivitetStatuser: BeregningAktivitetStatus_fpoversikt[];
-    beregningsAndeler: BeregningsAndel_fpoversikt[];
+    beregningsandeler: BeregningsAndel_fpoversikt[];
     grunnbeløp?: number;
     skjæringsTidspunkt: string;
 };
@@ -364,7 +364,7 @@ export type Beregningsgrunnlag_fpoversikt = {
 export type Arbeidsforhold_fpoversikt = {
     arbeidsgiverIdent: string;
     arbeidsgiverNavn: string;
-    refusjonPrMnd?: number;
+    refusjonPrMnd: number;
 };
 
 export type BeregningAktivitetStatus_fpoversikt = {
@@ -375,8 +375,8 @@ export type BeregningAktivitetStatus_fpoversikt = {
 export type BeregningsAndel_fpoversikt = {
     aktivitetStatus: no_nav_foreldrepenger_kontrakter_felles_kodeverk_AktivitetStatus;
     arbeidsforhold?: Arbeidsforhold_fpoversikt;
-    dagsatsArbeidsgiver?: number;
-    dagsatsSøker?: number;
+    dagsatsArbeidsgiver: number;
+    dagsatsSøker: number;
     fastsattPrÅr?: number;
     inntektsKilde?: Inntektskilde_fpoversikt;
 };
@@ -425,6 +425,7 @@ export type FpVedtak_fpoversikt = {
     beregningsgrunnlag?: Beregningsgrunnlag_fpoversikt;
     perioder: UttakPeriode_fpoversikt[];
     perioderAnnenpartEøs?: UttakPeriodeAnnenpartEøs_fpoversikt[];
+    tilkjentYtelse?: TilkjentYtelse_fpoversikt;
 };
 
 export type FpÅpenBehandling_fpoversikt = {
@@ -450,6 +451,33 @@ export type Saker_fpoversikt = {
     engangsstønad: EsSak_fpoversikt[];
     foreldrepenger: FpSak_fpoversikt[];
     svangerskapspenger: SvpSak_fpoversikt[];
+};
+
+export type TilkjentYtelse_fpoversikt = {
+    feriepenger: FeriepengeAndel_fpoversikt[];
+    utbetalingsperioder: TilkjentYtelsePeriode_fpoversikt[];
+};
+
+export type FeriepengeAndel_fpoversikt = {
+    arbeidsgiverIdent?: string;
+    opptjeningsår: string;
+    tilBruker: boolean;
+    årsbeløp: number;
+};
+
+export type TilkjentYtelsePeriode_fpoversikt = {
+    andeler: Andel_fpoversikt[];
+    fom: string;
+    tom: string;
+};
+
+export type Andel_fpoversikt = {
+    aktivitetStatus: no_nav_foreldrepenger_kontrakter_felles_kodeverk_AktivitetStatus;
+    arbeidsgiverIdent?: string;
+    arbeidsgivernavn?: string;
+    dagsats: number;
+    tilBruker: boolean;
+    utbetalingsgrad: number;
 };
 
 export type UttakPeriodeAnnenpartEøs_fpoversikt = {

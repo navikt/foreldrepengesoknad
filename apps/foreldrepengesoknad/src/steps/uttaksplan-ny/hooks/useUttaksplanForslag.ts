@@ -18,7 +18,7 @@ export const useUttaksplanForslag = (
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const fordeling = notEmpty(useContextGetData(ContextDataType.FORDELING));
+    const fordeling = useContextGetData(ContextDataType.FORDELING);
     const familiehendelsedato = getFamiliehendelsedato(barn);
 
     // TODO (TOR) Burde denne sjekka mot erMorUfør og erAleneomsorg òg?
@@ -26,7 +26,7 @@ export const useUttaksplanForslag = (
         isAnnenForelderOppgitt(annenForelder) &&
         (annenForelder.harRettPåForeldrepengerINorge === true || annenForelder.harRettPåForeldrepengerIEØS === true);
 
-    if (!valgtStønadskonto) {
+    if (!valgtStønadskonto || !fordeling) {
         return [];
     }
 
@@ -45,8 +45,20 @@ export const useUttaksplanForslag = (
     if (erDeltUttak) {
         const antallDager = fordeling.antallDagerFellesperiodeTilSøker
             ? Number.parseInt(fordeling.antallDagerFellesperiodeTilSøker)
-            : undefined;
-        return deltUttak(familiehendelsedato, valgtStønadskonto.kontoer, antallDager, startdato);
+            : 0;
+
+        const antallUker = fordeling.antallUkerFellesperiodeTilSøker
+            ? Number.parseInt(fordeling.antallUkerFellesperiodeTilSøker)
+            : 0;
+
+        const antallDagerOgUkerSøker = antallUker * 5 + antallDager;
+
+        const antallDagerFellesperiodeMor = erSøkerFarEllerMedmor
+            ? valgtStønadskonto.kontoer.reduce((acc, p) => (p.konto === 'FELLESPERIODE' ? p.dager : acc), 0) -
+              antallDagerOgUkerSøker
+            : antallDagerOgUkerSøker;
+
+        return deltUttak(familiehendelsedato, valgtStønadskonto.kontoer, antallDagerFellesperiodeMor, startdato);
     }
 
     const erFarOgFar = getKjønnFromFnr(annenForelder) === 'M' && søkersituasjon.rolle === 'far';

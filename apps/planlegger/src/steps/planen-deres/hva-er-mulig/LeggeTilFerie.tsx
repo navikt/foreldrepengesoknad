@@ -7,6 +7,7 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
+import { HvemPlanleggerType } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 interface Props {
@@ -16,9 +17,10 @@ interface Props {
 
 export const LeggeTilFerie = ({ hvemPlanlegger, arbeidssituasjon }: Props) => {
     const intl = useIntl();
-    const erAlenesøker = erAlene(hvemPlanlegger);
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
-    const kunFarSøker2EllerMedmorHarRett = hvemHarRett === 'kunSøker2HarRett';
+    const erAlenesøker = erAlene(hvemPlanlegger);
+    const kunSøker2HarRett = hvemHarRett === 'kunSøker2HarRett';
+
     return (
         <HStack gap="space-20" wrap={false}>
             <div>
@@ -37,17 +39,15 @@ export const LeggeTilFerie = ({ hvemPlanlegger, arbeidssituasjon }: Props) => {
                     <FormattedMessage id="HvaErMulig.LeggeTilFerie" />
                 </Heading>
                 <BodyLong>
-                    {kunFarSøker2EllerMedmorHarRett ? (
-                        <FormattedMessage
-                            id="HvaErMulig.HvisIngenSkalHa.Far"
-                            values={{ hvem: finnSøker2Tekst(intl, hvemPlanlegger) }}
-                        />
-                    ) : (
-                        <FormattedMessage
-                            id="HvaErMulig.HvisIngenSkalHa"
-                            values={{ hvem: finnSøker2Tekst(intl, hvemPlanlegger), erAlenesøker }}
-                        />
-                    )}
+                    <FormattedMessage
+                        id="HvaErMulig.LeggeTilFerie.Tekst"
+                        values={{
+                            hvem: finnSøker2Tekst(intl, hvemPlanlegger),
+                            erAlenesøker,
+                            kunSøker2HarRett,
+                            erMedmor: hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR,
+                        }}
+                    />
                 </BodyLong>
             </div>
         </HStack>

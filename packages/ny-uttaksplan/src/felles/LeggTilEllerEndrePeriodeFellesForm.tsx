@@ -2,12 +2,13 @@ import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { useFormContext } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, InlineMessage, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfNumericField, RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
 import type {
+    AktivitetType_fpoversikt,
     BrukerRolleSak_fpoversikt,
     Gradering_fpoversikt,
     KontoTypeUttak,
@@ -22,6 +23,7 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskontoNavnSimple } from '../liste/utils/uttaksplanListeUtils';
 import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
+import { erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from '../utils/periodeUtils';
 import {
     erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgSeksUkerEtterFamDato,
     useHentGyldigeKontotyper,
@@ -30,6 +32,9 @@ import { prosentValideringGradering, valideringSamtidigUttak } from './uttakspla
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
+
+const SELVSTENDIG_NÆRINGSDRIVENDE = 'SELVSTENDIG_NÆRINGSDRIVENDE' satisfies AktivitetType_fpoversikt;
+const FRILANS = 'FRILANS' satisfies AktivitetType_fpoversikt;
 
 export type LeggTilEllerEndrePeriodeFormFormValues = {
     forelder?: BrukerRolleSak_fpoversikt | 'BEGGE';
@@ -43,19 +48,23 @@ export type LeggTilEllerEndrePeriodeFormFormValues = {
     stillingsprosentFarMedmor?: string;
     morsAktivitet?: MorsAktivitet;
     overføringsårsak?: UttakOverføringÅrsak_fpoversikt;
+    hvorSkalDuJobbe?: string;
 };
 
 interface Props {
     valgtePerioder: Array<{ fom: string; tom: string }>;
-    resetFormValuesVedEndringAvForelder: (forelder: string | number | boolean) => void;
+    resetFormValuesVedEndringAvForelder: (forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => void;
 }
 
-export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAvForelder, valgtePerioder }: Props) => {
+export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormValuesVedEndringAvForelder }: Props) => {
     const intl = useIntl();
 
     const {
-        foreldreInfo: { rettighetType, erMedmorDelAvSøknaden },
+        foreldreInfo: { rettighetType, erMedmorDelAvSøknaden, søker },
         familiehendelsedato,
+        erPeriodeneTilAnnenPartLåst,
+        uttakPerioder,
+        aktiveArbeidsforhold,
     } = useUttaksplanData();
 
     const formMethods = useFormContext<LeggTilEllerEndrePeriodeFormFormValues>();
@@ -72,10 +81,26 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
         skalDuKombinereArbeidOgUttakFarMedmor,
     } = formMethods.watch();
 
+    const infotekstOmFedrekvoteBrukRundtFødsel = getInfotekstOmFedrekvoteBrukRundtFødsel(
+        uttakPerioder,
+        valgtePerioder,
+        kontoTypeFarMedmor,
+        familiehendelsedato,
+        intl,
+    );
+
     const erFarMedmorUtenAleneomsorg =
         forelder === 'FAR_MEDMOR' &&
         rettighetType !== 'ALENEOMSORG' &&
         (kontoTypeFarMedmor === 'FORELDREPENGER' || kontoTypeFarMedmor === 'FELLESPERIODE');
+
+    const skalViseMorsAktivitetskravVedSamtidigUttak = getSkalViseMorsAktivitetskravVedSamtidigUttak(
+        forelder,
+        samtidigUttaksprosentMor,
+        stillingsprosentMor,
+        samtidigUttaksprosentFarMedmor,
+        kontoTypeFarMedmor,
+    );
 
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(
         valgtePerioder,
@@ -95,6 +120,29 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
         );
     }
 
+    const resetStillingsprosentMor = () => {
+        if ((forelder === 'MOR' || forelder === 'BEGGE') && skalDuKombinereArbeidOgUttakMor === false) {
+            formMethods.resetField('stillingsprosentMor', undefined);
+        }
+    };
+
+    const resetStillingsprosentFarMedmor = () => {
+        if ((forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && skalDuKombinereArbeidOgUttakFarMedmor === false) {
+            formMethods.resetField('stillingsprosentFarMedmor', undefined);
+        }
+    };
+
+    const erFarMedmorLåst = erPeriodeneTilAnnenPartLåst && søker === 'MOR';
+    const erMorLåst = erPeriodeneTilAnnenPartLåst && søker === 'FAR_MEDMOR';
+
+    if ((erMorLåst && !erFarMedmorGyldigForelder) || (erFarMedmorLåst && !erMorGyldigForelder)) {
+        return (
+            <Alert variant="info">
+                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Forelder.AnnenPartLåst" />
+            </Alert>
+        );
+    }
+
     return (
         <>
             <RhfRadioGroup
@@ -106,12 +154,12 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
             >
                 {
                     [
-                        erMorGyldigForelder && (
+                        erMorGyldigForelder && !erMorLåst && (
                             <Radio key="mor" value="MOR">
                                 <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />
                             </Radio>
                         ),
-                        erFarMedmorGyldigForelder && (
+                        erFarMedmorGyldigForelder && !erFarMedmorLåst && (
                             <Radio key="far" value="FAR_MEDMOR">
                                 {erMedmorDelAvSøknaden ? (
                                     <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />
@@ -180,6 +228,12 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                         );
                     })}
                 </RhfRadioGroup>
+            )}
+
+            {infotekstOmFedrekvoteBrukRundtFødsel && (
+                <InlineMessage status="info">
+                    <BodyShort>{infotekstOmFedrekvoteBrukRundtFødsel}</BodyShort>
+                </InlineMessage>
             )}
 
             {morSøkerOmOverføring && (
@@ -282,7 +336,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                 </VStack>
             )}
 
-            {erFarMedmorUtenAleneomsorg && (
+            {(erFarMedmorUtenAleneomsorg || skalViseMorsAktivitetskravVedSamtidigUttak) && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
                     <RhfSelect
@@ -292,27 +346,13 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                         validate={[isRequired(intl.formatMessage({ id: 'AktivitetskravSpørsmål.Påkrevd' }))]}
                         description={intl.formatMessage({ id: 'AktivitetskravSpørsmål.Description' })}
                     >
-                        <option value="ARBEID">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Arbeid'} />
-                        </option>
-                        <option value="UTDANNING">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Utdanning'} />
-                        </option>
-                        <option value="KVALPROG">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Kvalprog'} />
-                        </option>
-                        <option value="INTROPROG">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Introprog'} />
-                        </option>
-                        <option value="TRENGER_HJELP">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Trenger_hjelp'} />
-                        </option>
-                        <option value="INNLAGT">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Innlagt'} />
-                        </option>
-                        <option value="ARBEID_OG_UTDANNING">
-                            <FormattedMessage id={'AktivitetskravSpørsmål.Arbeid_og_utdanning'} />
-                        </option>
+                        {getAktivitetskravOptions(skalViseMorsAktivitetskravVedSamtidigUttak).map((value) => {
+                            return (
+                                <option key={value} value={value}>
+                                    {getAktivitetskravTekst(value, intl)}
+                                </option>
+                            );
+                        })}
                     </RhfSelect>
                 </>
             )}
@@ -357,6 +397,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                                     }),
                                 ),
                             ]}
+                            onChange={resetStillingsprosentMor}
                         >
                             <Radio value={true}>
                                 <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Ja" />
@@ -385,6 +426,36 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                                     validate={[prosentValideringGradering(intl, samtidigUttaksprosentMor)]}
                                     maxLength={5}
                                 />
+                                {aktiveArbeidsforhold !== undefined && søker === 'MOR' && (
+                                    <RhfRadioGroup
+                                        name="hvorSkalDuJobbe"
+                                        control={formMethods.control}
+                                        label={intl.formatMessage({
+                                            id: 'LeggTilEllerEndrePeriodeForm.HvorSkalDuJobbe',
+                                        })}
+                                        validate={[
+                                            isRequired(
+                                                intl.formatMessage({
+                                                    id: 'LeggTilEllerEndrePeriodeForm.HvorSkalDuJobbe.Påkrevd',
+                                                }),
+                                            ),
+                                        ]}
+                                    >
+                                        <>
+                                            {aktiveArbeidsforhold.map((a) => (
+                                                <Radio key={a.arbeidsgiverId} value={a.arbeidsgiverId}>
+                                                    {a.arbeidsgiverNavn}
+                                                </Radio>
+                                            ))}
+                                        </>
+                                        <Radio value={SELVSTENDIG_NÆRINGSDRIVENDE}>
+                                            <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Selvstendig" />
+                                        </Radio>
+                                        <Radio value={FRILANS}>
+                                            <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Frilans" />
+                                        </Radio>
+                                    </RhfRadioGroup>
+                                )}
                             </>
                         )}
                     </VStack>
@@ -411,6 +482,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                                     ),
                                 ),
                             ]}
+                            onChange={resetStillingsprosentFarMedmor}
                         >
                             <Radio value={true}>
                                 <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Ja" />
@@ -420,19 +492,52 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
                             </Radio>
                         </RhfRadioGroup>
                         {skalDuKombinereArbeidOgUttakFarMedmor && (
-                            <RhfNumericField
-                                name="stillingsprosentFarMedmor"
-                                control={formMethods.control}
-                                className="max-w-xs"
-                                label={intl.formatMessage(
-                                    {
-                                        id: 'LeggTilEllerEndrePeriodeForm.Stillingsprosent.FarMedmor',
-                                    },
-                                    { erMedmor: erMedmorDelAvSøknaden },
+                            <>
+                                <RhfNumericField
+                                    name="stillingsprosentFarMedmor"
+                                    control={formMethods.control}
+                                    className="max-w-xs"
+                                    label={intl.formatMessage(
+                                        {
+                                            id: 'LeggTilEllerEndrePeriodeForm.Stillingsprosent.FarMedmor',
+                                        },
+                                        { erMedmor: erMedmorDelAvSøknaden },
+                                    )}
+                                    validate={[prosentValideringGradering(intl, samtidigUttaksprosentFarMedmor)]}
+                                    maxLength={5}
+                                />
+
+                                {aktiveArbeidsforhold !== undefined && søker === 'FAR_MEDMOR' && (
+                                    <RhfRadioGroup
+                                        name="hvorSkalDuJobbe"
+                                        control={formMethods.control}
+                                        label={intl.formatMessage({
+                                            id: 'LeggTilEllerEndrePeriodeForm.HvorSkalDuJobbe',
+                                        })}
+                                        validate={[
+                                            isRequired(
+                                                intl.formatMessage({
+                                                    id: 'LeggTilEllerEndrePeriodeForm.HvorSkalDuJobbe.Påkrevd',
+                                                }),
+                                            ),
+                                        ]}
+                                    >
+                                        <>
+                                            {aktiveArbeidsforhold.map((a) => (
+                                                <Radio key={a.arbeidsgiverId} value={a.arbeidsgiverId}>
+                                                    {a.arbeidsgiverNavn}
+                                                </Radio>
+                                            ))}
+                                        </>
+                                        <Radio value={SELVSTENDIG_NÆRINGSDRIVENDE}>
+                                            <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Selvstendig" />
+                                        </Radio>
+                                        <Radio value={FRILANS}>
+                                            <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Frilans" />
+                                        </Radio>
+                                    </RhfRadioGroup>
                                 )}
-                                validate={[prosentValideringGradering(intl, samtidigUttaksprosentFarMedmor)]}
-                                maxLength={5}
-                            />
+                            </>
                         )}
                     </VStack>
                 </>
@@ -441,9 +546,76 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ resetFormValuesVedEndringAv
     );
 };
 
+const getAktivitetskravOptions = (skalViseMorsAktivitetskravVedSamtidigUttak: boolean) => {
+    const aktivitetsKrav = [
+        'ARBEID',
+        'UTDANNING',
+        'KVALPROG',
+        'INTROPROG',
+        'TRENGER_HJELP',
+        'INNLAGT',
+        'ARBEID_OG_UTDANNING',
+    ];
+
+    if (skalViseMorsAktivitetskravVedSamtidigUttak) {
+        return ['ARBEID', 'UTDANNING', 'KVALPROG', 'INTROPROG', 'ARBEID_OG_UTDANNING'];
+    }
+
+    return skalViseMorsAktivitetskravVedSamtidigUttak
+        ? aktivitetsKrav.filter((k) => k !== 'INNLAGT' && k !== 'TRENGER_HJELP')
+        : aktivitetsKrav;
+};
+
+const getAktivitetskravTekst = (value: string, intl: IntlShape) => {
+    switch (value) {
+        case 'ARBEID':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Arbeid' });
+        case 'UTDANNING':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Utdanning' });
+        case 'KVALPROG':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Kvalprog' });
+        case 'INTROPROG':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Introprog' });
+        case 'TRENGER_HJELP':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Trenger_hjelp' });
+        case 'INNLAGT':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Innlagt' });
+        case 'ARBEID_OG_UTDANNING':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Arbeid_og_utdanning' });
+        default:
+            return '';
+    }
+};
+
+const getSkalViseMorsAktivitetskravVedSamtidigUttak = (
+    forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined,
+    samtidigUttaksprosentMor?: string,
+    stillingsprosentMor?: string,
+    samtidigUttaksprosentFarMedmor?: string,
+    kontoTypeFarMedmor?: KontoTypeUttak,
+) => {
+    const morsSamtidigUttakprosent = forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentMor) ?? 0) : 0;
+    const morsStillingProsent = forelder === 'BEGGE' ? (getFloatFromString(stillingsprosentMor) ?? 0) : 0;
+    const morsTotaleProsent = morsSamtidigUttakprosent + morsStillingProsent;
+
+    const farMedmorsSamtidigUttakprosent =
+        forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentFarMedmor) ?? 0) : 0;
+    const kombinertUttaksprosent = morsSamtidigUttakprosent + farMedmorsSamtidigUttakprosent;
+
+    if (kombinertUttaksprosent !== 100) {
+        return false;
+    }
+
+    const skalViseMorsAktivitetskravVedSamtidigUttak =
+        forelder === 'BEGGE' && kontoTypeFarMedmor === 'FELLESPERIODE' && morsTotaleProsent < 100;
+
+    return skalViseMorsAktivitetskravVedSamtidigUttak;
+};
+
 export const mapFraFormValuesTilUttakPeriode = (
     values: LeggTilEllerEndrePeriodeFormFormValues,
     periode: { fom: string; tom: string },
+    søker: BrukerRolleSak_fpoversikt,
 ): UttakPeriode_fpoversikt[] => {
     const nye = new Array<UttakPeriode_fpoversikt>();
 
@@ -455,7 +627,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             morsAktivitet: values.morsAktivitet,
             forelder: 'MOR',
             gradering: values.skalDuKombinereArbeidOgUttakMor
-                ? getGradering(values.skalDuKombinereArbeidOgUttakMor, values.stillingsprosentMor)
+                ? getGradering(søker === 'MOR', values.stillingsprosentMor, values.hvorSkalDuJobbe)
                 : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentMor) : undefined,
@@ -471,7 +643,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             morsAktivitet: values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : values.morsAktivitet,
             forelder: 'FAR_MEDMOR',
             gradering: values.skalDuKombinereArbeidOgUttakFarMedmor
-                ? getGradering(values.skalDuKombinereArbeidOgUttakFarMedmor, values.stillingsprosentFarMedmor)
+                ? getGradering(søker === 'FAR_MEDMOR', values.stillingsprosentFarMedmor, values.hvorSkalDuJobbe)
                 : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentFarMedmor) : undefined,
@@ -484,6 +656,8 @@ export const mapFraFormValuesTilUttakPeriode = (
 export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
     uttaksplanperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     valgtPeriode: { fom: string; tom: string },
+    erPeriodeneTilAnnenPartLåst: boolean,
+    søker: BrukerRolleSak_fpoversikt,
 ): LeggTilEllerEndrePeriodeFormFormValues | undefined => {
     const eksisterendePerioder = uttaksplanperioder.filter(
         (periode) =>
@@ -495,7 +669,8 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
         eksisterendePerioder.length === 0 ||
         eksisterendePerioder.length > 2 ||
         !eksisterendePerioder.every(erVanligUttakPeriode) ||
-        eksisterendePerioder.some((p) => p.utsettelseÅrsak === 'LOVBESTEMT_FERIE')
+        eksisterendePerioder.some((p) => p.utsettelseÅrsak === 'LOVBESTEMT_FERIE') ||
+        eksisterendePerioder.some((p) => erPeriodeneTilAnnenPartLåst && p.forelder !== søker)
     ) {
         return undefined;
     }
@@ -507,6 +682,8 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
         }
         const morsPeriode = notEmpty(eksisterendePerioder.find((p) => p.forelder === 'MOR'));
         const farMedmorPeriode = notEmpty(eksisterendePerioder.find((p) => p.forelder === 'FAR_MEDMOR'));
+
+        const søkersPeriode = søker === 'MOR' ? morsPeriode : farMedmorPeriode;
 
         return {
             forelder: 'BEGGE',
@@ -525,6 +702,8 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
             stillingsprosentMor: morsPeriode.gradering?.arbeidstidprosent.toString(),
             stillingsprosentFarMedmor: farMedmorPeriode.gradering?.arbeidstidprosent.toString(),
             morsAktivitet: morsPeriode.morsAktivitet,
+            hvorSkalDuJobbe:
+                søkersPeriode.gradering?.aktivitet.arbeidsgiver?.id ?? søkersPeriode.gradering?.aktivitet.type,
         };
     }
 
@@ -539,6 +718,7 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
                     : periode.kontoType,
             skalDuKombinereArbeidOgUttakFarMedmor: !!periode.gradering,
             stillingsprosentFarMedmor: periode.gradering?.arbeidstidprosent.toString(),
+            hvorSkalDuJobbe: periode.gradering?.aktivitet.arbeidsgiver?.id ?? periode.gradering?.aktivitet.type,
             morsAktivitet: periode.morsAktivitet,
             overføringsårsak: periode.overføringÅrsak,
         };
@@ -550,19 +730,69 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
         samtidigUttaksprosentMor: periode.samtidigUttak?.toString(),
         skalDuKombinereArbeidOgUttakMor: !!periode.gradering,
         stillingsprosentMor: periode.gradering?.arbeidstidprosent.toString(),
+        hvorSkalDuJobbe: periode.gradering?.aktivitet.arbeidsgiver?.id ?? periode.gradering?.aktivitet.type,
         overføringsårsak: periode.overføringÅrsak,
     };
 };
 
-const getGradering = (skalDuJobbe: boolean, stillingsprosent: string | undefined): Gradering_fpoversikt | undefined => {
-    if (skalDuJobbe) {
-        return {
-            aktivitet: {
-                type: 'ORDINÆRT_ARBEID',
-            },
-            arbeidstidprosent: getFloatFromString(stillingsprosent) ?? 100,
-        };
+const getGradering = (
+    erSøker: boolean,
+    stillingsprosent: string | undefined,
+    hvorSkalDuJobbe: string | undefined,
+): Gradering_fpoversikt => {
+    return {
+        aktivitet: {
+            type: finnAktivitetType(erSøker, hvorSkalDuJobbe),
+            arbeidsgiver:
+                erSøker &&
+                hvorSkalDuJobbe &&
+                hvorSkalDuJobbe !== SELVSTENDIG_NÆRINGSDRIVENDE &&
+                hvorSkalDuJobbe !== FRILANS
+                    ? {
+                          id: hvorSkalDuJobbe,
+                      }
+                    : undefined,
+        },
+        arbeidstidprosent: getFloatFromString(stillingsprosent) ?? 100,
+    } satisfies Gradering_fpoversikt;
+};
+
+const finnAktivitetType = (erSøker: boolean, hvorSkalDuJobbe?: string): AktivitetType_fpoversikt => {
+    return erSøker && (hvorSkalDuJobbe === 'FRILANS' || hvorSkalDuJobbe === 'SELVSTENDIG_NÆRINGSDRIVENDE')
+        ? hvorSkalDuJobbe
+        : 'ORDINÆRT_ARBEID';
+};
+
+const getInfotekstOmFedrekvoteBrukRundtFødsel = (
+    uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    kontoTypeFarMedmor: KontoTypeUttak | undefined,
+    familiehendelsedato: string,
+    intl: IntlShape,
+) => {
+    const perioderInneholderFedrekvoteRundtFødsel = uttakPerioder
+        .filter((periode) => erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(periode, familiehendelsedato))
+        .some((periode) => {
+            return erVanligUttakPeriode(periode) && periode.kontoType === 'FEDREKVOTE' && !periode.samtidigUttak;
+        });
+
+    const valgteDagerRundtFødsel = valgtePerioder.filter((p) =>
+        erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(p, familiehendelsedato),
+    );
+
+    const valgteDagerInneholderFedrekvoteRundtFødsel =
+        valgteDagerRundtFødsel.length > 0 && kontoTypeFarMedmor === 'FEDREKVOTE';
+
+    let infotekstOmFedrekvoteBrukRundtFødsel = undefined;
+
+    if (
+        (perioderInneholderFedrekvoteRundtFødsel || valgteDagerInneholderFedrekvoteRundtFødsel) &&
+        kontoTypeFarMedmor === 'FEDREKVOTE'
+    ) {
+        infotekstOmFedrekvoteBrukRundtFødsel = intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel',
+        });
     }
 
-    return undefined;
+    return infotekstOmFedrekvoteBrukRundtFødsel;
 };

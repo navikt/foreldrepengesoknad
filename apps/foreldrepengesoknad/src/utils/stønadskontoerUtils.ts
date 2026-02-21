@@ -6,7 +6,7 @@ import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils'
 
 export const getStønadskontoNavn = (
     intl: IntlShape,
-    konto: KontoTypeUttak,
+    konto: KontoTypeUttak | undefined,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,

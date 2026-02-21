@@ -3,10 +3,12 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
 import { defineConfig, mergeConfig } from 'vite';
+import compression from 'vite-plugin-compression2';
 
 export const createSharedConfigWithCrossorgin = (setupFileDirName) =>
     mergeConfig(createSharedAppConfig(setupFileDirName), {
         plugins: [
+            compression(),
             {
                 name: 'crossorigin',
                 transformIndexHtml(html) {

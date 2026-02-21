@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils';
@@ -12,6 +12,7 @@ import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
 import { Uttaksplanperiode } from '../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak } from '../utils/lagHullPerioder';
+import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../utils/periodeUtils';
 import { UttaksplanHandlingKnapper } from './UttaksplanHandlingKnapper';
 import { LeggTilEllerEndrePeriodeListPanel } from './legg-til-endre-periode-panel/LeggTilEllerEndrePeriodeListPanel';
 import { PeriodeListeItem } from './periode-liste-item/PeriodeListeItem';
@@ -50,8 +51,17 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
 
     const alleRader = leggTilPeriodeForFamiliehendelsedato(uttaksplanperioderPerRadIListe, familiehendelsedato);
 
+    const harMorsAktivitetIkkeErValgt = harPeriodeDerMorsAktivitetIkkeErValgt(
+        uttakPerioderJustertForFamiliehendelsesdato,
+    );
+
     return (
         <VStack gap="space-16">
+            {harMorsAktivitetIkkeErValgt && (
+                <Alert variant="warning">
+                    <FormattedMessage id="UttaksplanListe.ManglerMorsAktivitet" />
+                </Alert>
+            )}
             {uttakPerioder.length > 0 && (
                 <div>
                     {alleRader.map((uttaksplanperioderForRad) => {
@@ -88,6 +98,7 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
                 <LeggTilEllerEndrePeriodeListPanel
                     setIsLeggTilPeriodePanelOpen={setIsLeggTilPeriodePanelOpen}
                     erNyPeriodeModus
+                    harPeriodeDerMorsAktivitetIkkeErValgt={false}
                 />
             )}
             {uttaksplanRedigering && (

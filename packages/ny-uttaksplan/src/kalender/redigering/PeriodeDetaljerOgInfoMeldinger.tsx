@@ -5,12 +5,17 @@ import { Alert, BodyShort, VStack } from '@navikt/ds-react';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { kanMisteDagerVedEndringTilFerie } from '../../felles/uttaksplanValidatorer';
+import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import { EksisterendeValgtePerioder } from './EksisterendeValgtePerioder';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 import { finnValgtePerioder } from './utils/kalenderPeriodeUtils';
 
-export const PeriodeDetaljerOgInfoMeldinger = () => {
+interface Props {
+    setSkalViseKnapper: (skalViseKnapper: boolean) => void;
+}
+
+export const PeriodeDetaljerOgInfoMeldinger = ({ setSkalViseKnapper }: Props) => {
     const {
         familiehendelsedato,
         familiesituasjon,
@@ -30,16 +35,15 @@ export const PeriodeDetaljerOgInfoMeldinger = () => {
         uttakPerioderInkludertTapteDager,
     );
 
+    const harPeriodeMedPleiepenger = eksisterendePerioderSomErValgt.some(
+        (p) =>
+            erVanligUttakPeriode(p) &&
+            p.resultat?.innvilget === false &&
+            p.resultat.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER',
+    );
+
     return (
         <VStack gap="space-16">
-            {eksisterendePerioderSomErValgt.length > 0 && (
-                <BodyShort>
-                    <FormattedMessage
-                        id="RedigeringPanel.EksisterendePerioder"
-                        values={{ antall: eksisterendePerioderSomErValgt.length }}
-                    />
-                </BodyShort>
-            )}
             {eksisterendePerioderSomErValgt.length === 0 && (
                 <BodyShort>
                     <FormattedMessage id="RedigeringPanel.NyeDagerForklaring" />
@@ -47,7 +51,10 @@ export const PeriodeDetaljerOgInfoMeldinger = () => {
             )}
 
             {eksisterendePerioderSomErValgt.length > 0 && (
-                <EksisterendeValgtePerioder perioder={eksisterendePerioderSomErValgt} />
+                <EksisterendeValgtePerioder
+                    perioder={eksisterendePerioderSomErValgt}
+                    setSkalViseKnapper={setSkalViseKnapper}
+                />
             )}
 
             {erAdopsjon && harPeriodeFør && (
@@ -56,8 +63,21 @@ export const PeriodeDetaljerOgInfoMeldinger = () => {
                 </Alert>
             )}
 
+            {eksisterendePerioderSomErValgt.some((p) => erEøsUttakPeriode(p)) && (
+                <Alert variant="info" size="small">
+                    <FormattedMessage id="RedigeringPanel.IkkeRedigerbarEøsUttakPeriode" />
+                </Alert>
+            )}
+
+            {harPeriodeMedPleiepenger && (
+                <Alert variant="info" size="small">
+                    <FormattedMessage id="RedigeringPanel.IkkeRedigerbarGrunnetPleiepenger" />
+                </Alert>
+            )}
+
             {søker === 'MOR' &&
                 !erAdopsjon &&
+                !harPeriodeMedPleiepenger &&
                 kanMisteDagerVedEndringTilFerie(sammenslåtteValgtePerioder, familiehendelsedato) && (
                     <Alert variant="info" size="small">
                         <FormattedMessage id="RedigeringPanel.KanMisteDager" />

@@ -5,6 +5,7 @@ import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
+import { HvemPlanleggerType } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 interface Props {
@@ -28,15 +29,24 @@ export const ToUkerRundtFødsel = ({ hvemPlanlegger }: Props) => {
             </div>
             <div>
                 <Heading size="small" level="4">
-                    <FormattedMessage id="OmÅTilpassePlanen.ToUkerRundtFødsel" />
+                    <FormattedMessage id="HvaErMulig.ToUkerRundtFødsel" />
                 </Heading>
                 <BodyLong>
-                    <FormattedMessage
-                        id="OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst"
-                        values={{
-                            hvem: finnSøker2Tekst(intl, hvemPlanlegger),
-                        }}
-                    />
+                    {hvemPlanlegger.type !== HvemPlanleggerType.FAR_OG_FAR ? (
+                        <FormattedMessage
+                            id="HvaErMulig.ToUkerRundtFødsel.Tekst"
+                            values={{
+                                hvem: finnSøker2Tekst(intl, hvemPlanlegger),
+                            }}
+                        />
+                    ) : (
+                        <FormattedMessage
+                            id="HvaErMulig.ToUkerRundtFødsel.FedreTekst"
+                            values={{
+                                hvem: finnSøker2Tekst(intl, hvemPlanlegger),
+                            }}
+                        />
+                    )}
                 </BodyLong>
             </div>
         </HStack>

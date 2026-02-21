@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-import { Button, ErrorMessage, HStack, VStack } from '@navikt/ds-react';
+import { Alert, Button, ErrorMessage, HStack, VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
 import type { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
@@ -17,8 +17,16 @@ import {
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilUttakPeriode,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
+import { LeggTilPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstatt';
+import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
+import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
+import {
+    erDetEksisterendePerioderEtterValgtePerioder,
+    harPeriodeDerMorsAktivitetIkkeErValgt,
+} from '../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
+import { finnValgtePerioder } from './utils/kalenderPeriodeUtils';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
@@ -28,16 +36,25 @@ interface Props {
 }
 
 export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) => {
-    const { uttakPerioder } = useUttaksplanData();
+    const {
+        uttakPerioder,
+        foreldreInfo: { søker },
+        erPeriodeneTilAnnenPartLåst,
+    } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, setValgtePerioder, setEndredePerioder } =
         useKalenderRedigeringContext();
 
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
 
+    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } =
+        useVisForskyvEllerErstattPanel(sammenslåtteValgtePerioder);
+
     const defaultValues = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
         uttakPerioder,
         sammenslåtteValgtePerioder[0]!,
+        erPeriodeneTilAnnenPartLåst,
+        søker,
     );
 
     const formMethods = useForm<LeggTilEllerEndrePeriodeFormFormValues>({
@@ -45,6 +62,28 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     });
 
     const formSubmitValidator = useFormSubmitValidator<LeggTilEllerEndrePeriodeFormFormValues>();
+
+    const resetFormValuesVedEndringAvForelder = (forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {
+        formMethods.reset({ forelder });
+    };
+
+    const uttakPerioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
+    const eksisterendePerioderSomErValgt = finnValgtePerioder(
+        sammenslåtteValgtePerioder,
+        uttakPerioderInkludertTapteDager,
+    );
+
+    const harValgtDagerKunForEnEksisterendePeriode =
+        eksisterendePerioderSomErValgt.length === 1 &&
+        !sammenslåtteValgtePerioder.some(
+            (vp) =>
+                dayjs(vp.fom).isBefore(eksisterendePerioderSomErValgt.at(0)!.fom) ||
+                dayjs(vp.tom).isAfter(eksisterendePerioderSomErValgt.at(0)!.tom),
+        );
+
+    const skalViseMorsAktivitetInfo =
+        harValgtDagerKunForEnEksisterendePeriode &&
+        harPeriodeDerMorsAktivitetIkkeErValgt(eksisterendePerioderSomErValgt);
 
     const onSubmit = (values: LeggTilEllerEndrePeriodeFormFormValues) => {
         const submitFeilmelding = formSubmitValidator(sammenslåtteValgtePerioder, values);
@@ -55,10 +94,22 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         }
         setFeilmelding(undefined);
 
+        if (
+            !skalViseMorsAktivitetInfo &&
+            erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, sammenslåtteValgtePerioder)
+        ) {
+            setVisEndreEllerForskyvPanel(true);
+        } else {
+            leggIKalender(false);
+        }
+    };
+
+    const leggIKalender = (skalForskyve: boolean) => {
         leggTilUttaksplanPerioder(
             sammenslåtteValgtePerioder.flatMap((periode) => {
-                return mapFraFormValuesTilUttakPeriode(values, periode);
+                return mapFraFormValuesTilUttakPeriode(formMethods.getValues(), periode, søker);
             }),
+            skalForskyve,
         );
 
         setValgtePerioder([]);
@@ -67,28 +118,41 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         lukkRedigeringsmodus();
     };
 
-    const resetFormValuesVedEndringAvForelder = (value: string | number | boolean) => {
-        formMethods.reset({ forelder: value as BrukerRolleSak_fpoversikt });
-    };
-
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-            <VStack gap="space-16">
-                {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
-
-                <LeggTilEllerEndrePeriodeFellesForm
+            {visEndreEllerForskyvPanel && (
+                <LeggTilPeriodeForskyvEllerErstatt
                     valgtePerioder={sammenslåtteValgtePerioder}
-                    resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}
+                    erFerie={false}
+                    setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
+                    leggTilEllerForskyvPeriode={leggIKalender}
                 />
-                <HStack gap="space-8">
-                    <Button type="button" variant="secondary" onClick={lukkRedigeringsmodus}>
-                        <FormattedMessage id="LeggTilPeriodePanel.Avbryt" />
-                    </Button>
-                    <Button type="submit" variant="primary" disabled={!formMethods.formState.isDirty}>
-                        <FormattedMessage id="LeggTilPeriodePanel.LeggTil" />
-                    </Button>
-                </HStack>
-            </VStack>
+            )}
+            {!visEndreEllerForskyvPanel && (
+                <VStack gap="space-16">
+                    {skalViseMorsAktivitetInfo && (
+                        <Alert variant="warning" size="small">
+                            <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt" />
+                        </Alert>
+                    )}
+
+                    <LeggTilEllerEndrePeriodeFellesForm
+                        valgtePerioder={sammenslåtteValgtePerioder}
+                        resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}
+                    />
+
+                    {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
+
+                    <HStack justify="space-between">
+                        <Button type="submit" variant="primary" size="small" disabled={!formMethods.formState.isDirty}>
+                            <FormattedMessage id="LeggTilPeriodePanel.LeggTil" />
+                        </Button>
+                        <Button type="button" variant="secondary" size="small" onClick={lukkRedigeringsmodus}>
+                            <FormattedMessage id="LeggTilPeriodePanel.Avbryt" />
+                        </Button>
+                    </HStack>
+                </VStack>
+            )}
         </RhfForm>
     );
 };

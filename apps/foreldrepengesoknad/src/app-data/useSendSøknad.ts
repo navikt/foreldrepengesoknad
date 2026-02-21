@@ -1,19 +1,29 @@
 import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
-import { FEIL_VED_INNSENDING, UKJENT_UUID, getSøknadsdataForInnsending } from 'api/apiUtils';
+import {
+    FEIL_VED_INNSENDING,
+    UKJENT_UUID,
+    getSøknadsdataForInnsending,
+    getSøknadsdataForInnsendingNy,
+} from 'api/apiUtils';
 import { API_URLS } from 'api/queries';
 import { SøknadRoutes } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
 import { useNavigate } from 'react-router-dom';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
+import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 
-import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './FpDataContext';
 
-export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt, erEndringssøknad: boolean) => {
+export const useSendSøknad = (
+    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+    erEndringssøknad: boolean,
+    foreldrepengerSaker: FpSak_fpoversikt[],
+) => {
     const navigate = useNavigate();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
@@ -26,17 +36,18 @@ export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt
         const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
         const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
 
-        const cleanedSøknad = getSøknadsdataForInnsending(
-            erEndringssøknad,
-            hentData,
-            uttaksplanMetadata.perioderSomSkalSendesInn!,
-            getFamiliehendelsedato(barn),
-            søkerinfo,
-            uttaksplanMetadata.endringstidspunkt,
-        );
+        const cleanedSøknad = isLocalhostOrDev()
+            ? getSøknadsdataForInnsendingNy(erEndringssøknad, hentData, søkerinfo, foreldrepengerSaker)
+            : getSøknadsdataForInnsending(
+                  erEndringssøknad,
+                  hentData,
+                  uttaksplanMetadata.perioderSomSkalSendesInn!,
+                  getFamiliehendelsedato(barn),
+                  søkerinfo,
+                  uttaksplanMetadata.endringstidspunkt,
+              );
 
-        //TODO (TOR) Denne må håndterast i uttaksplan-steget
-        if (cleanedSøknad.uttaksplan.uttaksperioder.length === 0 && erEndringssøknad) {
+        if (!isLocalhostOrDev() && cleanedSøknad.uttaksplan.uttaksperioder.length === 0 && erEndringssøknad) {
             throw new Error('Søknaden din inneholder ingen nye perioder.');
         }
 

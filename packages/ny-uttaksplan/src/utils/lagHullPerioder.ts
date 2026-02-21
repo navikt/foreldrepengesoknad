@@ -57,7 +57,7 @@ export const lagTapteDagerPerioder = (
     foreldreInfo: ForeldreInfo,
 ): TapteDagerHull[] => {
     if (
-        foreldreInfo.søker === 'FAR_ELLER_MEDMOR' &&
+        foreldreInfo.søker === 'FAR_MEDMOR' &&
         (foreldreInfo.rettighetType === 'ALENEOMSORG' || foreldreInfo.rettighetType === 'BARE_SØKER_RETT')
     ) {
         const førstePeriodeSomStarterEtterFamiliehendelsedato = sortertePerioder.find((p) =>
@@ -69,7 +69,7 @@ export const lagTapteDagerPerioder = (
                 fom:
                     familiesituasjon === 'adopsjon'
                         ? UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato()
-                        : UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(31),
+                        : UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
                 tom: førstePeriodeSomStarterEtterFamiliehendelsedato.fom,
             };
 

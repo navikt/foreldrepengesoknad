@@ -18,6 +18,7 @@ import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import { Uttaksplanperiode } from '../../../types/UttaksplanPeriode';
 import {
     erUttaksplanperiodeErForelderMor,
+    erUttaksplanperiodeEøs,
     erUttaksplanperiodeFamiliehendelseDato,
     erUttaksplanperiodeSamtidigUttak,
     erUttaksplanperiodeTapteDager,
@@ -26,12 +27,25 @@ import {
     getSisteUttaksplanperiodeTom,
     getUttaksplanperiodeForelder,
     getUttaksplanperiodeUtsettelseÅrsak,
+    harUttaksplanperiodeAvslåttPeriodeMedÅrsakAnnet,
     harUttaksplanperiodePrematuruker,
 } from '../../utils/uttaksplanperiodeUtils';
 
-export const finnBakgrunnsfarge = (uttaksplanperioder: Uttaksplanperiode[], erFamiliehendelse?: boolean) => {
+export const finnBakgrunnsfarge = (
+    uttaksplanperioder: Uttaksplanperiode[],
+    harMorsAktivitetIkkeErValgt: boolean,
+    erFamiliehendelse?: boolean,
+) => {
     if (erFamiliehendelse) {
         return 'bg-ax-danger-100';
+    }
+
+    if (harMorsAktivitetIkkeErValgt) {
+        return 'bg-ax-danger-200';
+    }
+
+    if (erUttaksplanperiodeEøs(uttaksplanperioder)) {
+        return 'bg-ax-success-400';
     }
 
     if (erUttaksplanperiodeTapteDager(uttaksplanperioder)) {
@@ -94,6 +108,17 @@ export const getTekst = (
     const forelder = getUttaksplanperiodeForelder(uttaksplanperioder);
     const erEgenPeriode = erFarEllerMedmor ? forelder === 'FAR_MEDMOR' : forelder == 'MOR';
 
+    if (erUttaksplanperiodeEøs(uttaksplanperioder)) {
+        return intl.formatMessage(
+            { id: 'uttaksplan.periodeListeHeader.HarEøsForeldrepenger' },
+            {
+                navn: erEgenPeriode
+                    ? capitalizeFirstLetter(navnPåForelder)
+                    : capitalizeFirstLetter(navnPåAnnenForelder),
+            },
+        );
+    }
+
     if (erUttaksplanperiodeFamiliehendelseDato(uttaksplanperioder)) {
         switch (familiesituasjon) {
             case 'adopsjon':
@@ -107,6 +132,9 @@ export const getTekst = (
 
     if (harUttaksplanperiodePrematuruker(uttaksplanperioder)) {
         return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.pleiepenger' });
+    }
+    if (harUttaksplanperiodeAvslåttPeriodeMedÅrsakAnnet(uttaksplanperioder)) {
+        return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.avslåttAnnet' });
     }
 
     const utsettelseÅrsak = getUttaksplanperiodeUtsettelseÅrsak(uttaksplanperioder);
@@ -194,6 +222,10 @@ export const getIkon = (uttaksplanperioder: Uttaksplanperiode[], familiehendelse
 };
 
 export const getBorderFarge = (uttaksplanperioder: Uttaksplanperiode[]) => {
+    if (erUttaksplanperiodeEøs(uttaksplanperioder)) {
+        return 'border-ax-success-400';
+    }
+
     if (erUttaksplanperiodeFamiliehendelseDato(uttaksplanperioder)) {
         return 'border-ax-danger-100';
     }

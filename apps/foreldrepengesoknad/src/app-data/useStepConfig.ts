@@ -6,12 +6,16 @@ import { skalViseOmsorgsovertakelseDokumentasjon } from 'steps/manglende-vedlegg
 import { skalViseTerminbekreftelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/TerminbekreftelseDokumentasjon.tsx';
 import { AnnenInntektType } from 'types/AndreInntektskilder';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
+import { isLocalhostOrDev } from 'utils/tempSystemUtils';
+import { kreverUttaksplanVedleggNy } from 'utils/uttaksplanInfoUtils';
 
 import { isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { kreverUttaksplanVedlegg } from '@navikt/fp-uttaksplan';
+import { erVanligUttakPeriode } from '@navikt/fp-uttaksplan-ny/src/types/UttaksplanPeriode';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { getFamiliehendelsedato } from '../utils/barnUtils';
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
 
 const getPathToLabelMap = (intl: IntlShape) =>
@@ -86,6 +90,18 @@ const showFrilansOgEgenNæringOgAndreInntekter = (
     return false;
 };
 
+const showManglendeDokumentasjonStegTemp = (
+    path: SøknadRoutes,
+    getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+    erEndringssøknad: boolean,
+) => {
+    if (isLocalhostOrDev()) {
+        return showManglendeDokumentasjonStegNy(path, getData, arbeidsforhold);
+    }
+    return showManglendeDokumentasjonSteg(path, getData, arbeidsforhold, erEndringssøknad);
+};
+
 const showManglendeDokumentasjonSteg = (
     path: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
@@ -140,6 +156,62 @@ const showManglendeDokumentasjonSteg = (
     return false;
 };
 
+const showManglendeDokumentasjonStegNy = (
+    path: SøknadRoutes,
+    getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+) => {
+    if (path === SøknadRoutes.DOKUMENTASJON) {
+        const annenForelder = getData(ContextDataType.ANNEN_FORELDER);
+        const søkersituasjon = getData(ContextDataType.SØKERSITUASJON);
+        const barn = getData(ContextDataType.OM_BARNET);
+        const uttaksplan = getData(ContextDataType.UTTAKSPLAN_NY);
+        const andreInntektskilder = getData(ContextDataType.ANDRE_INNTEKTSKILDER);
+        const familiehendelsedato = barn ? getFamiliehendelsedato(barn) : undefined;
+
+        const skalHaAleneomsorgDok =
+            !!annenForelder && isAnnenForelderOppgitt(annenForelder) && annenForelder.erAleneOmOmsorg;
+
+        const erFarEllerMedmor = !!søkersituasjon && isFarEllerMedmor(søkersituasjon.rolle);
+        const skalHaTerminDokumentasjon = skalViseTerminbekreftelseDokumentasjon({
+            søkersituasjon,
+            barn,
+            erFarEllerMedmor,
+            arbeidsforhold,
+            annenForelder,
+        });
+        const skalHaAdopsjonDokumentasjon = skalViseOmsorgsovertakelseDokumentasjon(søkersituasjon);
+
+        const uttaksplanUtenAnnenPartsPerioder = uttaksplan?.filter(
+            (periode) =>
+                erVanligUttakPeriode(periode) && periode.forelder === (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
+        );
+        const skalHaUttakDok =
+            annenForelder && uttaksplanUtenAnnenPartsPerioder && familiehendelsedato
+                ? kreverUttaksplanVedleggNy(
+                      uttaksplanUtenAnnenPartsPerioder,
+                      erFarEllerMedmor,
+                      annenForelder,
+                      familiehendelsedato,
+                  )
+                : false;
+
+        const skalHaAndreInntekterDok = andreInntektskilder?.some(
+            (i) => i.type === AnnenInntektType.MILITÆRTJENESTE || i.type === AnnenInntektType.SLUTTPAKKE,
+        );
+
+        return (
+            skalHaAleneomsorgDok ||
+            skalHaTerminDokumentasjon ||
+            skalHaAdopsjonDokumentasjon ||
+            skalHaUttakDok ||
+            skalHaAndreInntekterDok
+        );
+    }
+
+    return false;
+};
+
 export const useStepConfig = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[], erEndringssøknad = false) => {
     const intl = useIntl();
     const pathToLabelMap = getPathToLabelMap(intl);
@@ -158,7 +230,7 @@ export const useStepConfig = (arbeidsforhold: EksternArbeidsforholdDto_fpoversik
             ROUTES_ORDER.flatMap((path) =>
                 requiredSteps.includes(path) ||
                 showUtenlandsoppholdStep(path, currentPath, getStateData) ||
-                showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, erEndringssøknad) ||
+                showManglendeDokumentasjonStegTemp(path, getStateData, arbeidsforhold, erEndringssøknad) ||
                 showFrilansOgEgenNæringOgAndreInntekter(path, currentPath, getStateData)
                     ? [path]
                     : [],

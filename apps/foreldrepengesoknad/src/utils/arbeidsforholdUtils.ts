@@ -58,9 +58,9 @@ const UttaksdagenString = (dato: string) => ({
 
 const getFørsteUttaksdag2UkerFørFødsel = (familiehendelsesdato: string, termindato: string | undefined): string => {
     const terminEllerFamHendelsesdatoMinusToUker =
-        termindato !== undefined
-            ? dayjs(termindato).subtract(ANTALL_DAGER_TO_UKER, 'day')
-            : dayjs(familiehendelsesdato).subtract(ANTALL_DAGER_TO_UKER, 'day');
+        termindato === undefined
+            ? dayjs(familiehendelsesdato).subtract(ANTALL_DAGER_TO_UKER, 'day')
+            : dayjs(termindato).subtract(ANTALL_DAGER_TO_UKER, 'day');
     const datoÅRegneFra = dayjs.min(terminEllerFamHendelsesdatoMinusToUker, dayjs(familiehendelsesdato));
     return UttaksdagenString(datoÅRegneFra.format(ISO_DATE_FORMAT)).denneEllerNeste();
 };

@@ -5,7 +5,7 @@ import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
-export const Barnehageplass = () => {
+export const AktivitetskravFar = () => {
     return (
         <HStack gap="space-20" wrap={false}>
             <div>
@@ -21,10 +21,10 @@ export const Barnehageplass = () => {
             </div>
             <div>
                 <Heading size="small" level="4">
-                    <FormattedMessage id="OmÅTilpassePlanen.Barnehageplass" />
+                    <FormattedMessage id="HvaErMulig.AktivitetskravTilFar" />
                 </Heading>
                 <BodyLong>
-                    <FormattedMessage id="OmÅTilpassePlanen.Barnehageplass.Tekst" />
+                    <FormattedMessage id="HvaErMulig.AktivitetskravTilFar.Tekst" />
                 </BodyLong>
             </div>
         </HStack>

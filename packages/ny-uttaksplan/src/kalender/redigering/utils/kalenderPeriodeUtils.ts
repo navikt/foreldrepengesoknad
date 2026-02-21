@@ -80,7 +80,8 @@ export const finnValgtePerioder = (
                     erVanligUttakPeriode(curr) &&
                     p.forelder === curr.forelder &&
                     p.samtidigUttak === curr.samtidigUttak &&
-                    p.gradering === curr.gradering &&
+                    p.gradering?.arbeidstidprosent === curr.gradering?.arbeidstidprosent &&
+                    p.gradering?.aktivitet === curr.gradering?.aktivitet &&
                     p.utsettelseÅrsak === curr.utsettelseÅrsak,
             );
 

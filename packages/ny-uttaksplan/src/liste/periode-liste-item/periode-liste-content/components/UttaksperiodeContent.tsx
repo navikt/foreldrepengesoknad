@@ -1,20 +1,26 @@
-import { CalendarIcon } from '@navikt/aksel-icons';
+import { CalendarIcon, ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { BrukerRolleSak_fpoversikt, MorsAktivitet } from '@navikt/fp-types';
+import {
+    BrukerRolleSak_fpoversikt,
+    MorsAktivitet,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import { TidsperiodenString, capitalizeFirstLetter, formatDateExtended } from '@navikt/fp-utils';
 import { assertUnreachable } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
+import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../../../utils/periodeUtils';
 import { getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
 
 interface Props {
-    periode: Uttaksplanperiode;
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
     inneholderKunEnPeriode: boolean;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
@@ -32,12 +38,19 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
         navnPåForeldre,
         erFarEllerMedmor,
         morsAktivitet,
-        erVanligUttakPeriode(periode) ? periode.kontoType : undefined,
+        periode.kontoType,
         rettighetType === 'ALENEOMSORG',
     );
 
     return (
         <HStack gap="space-8">
+            {harPeriodeDerMorsAktivitetIkkeErValgt([periode]) && (
+                <ExclamationmarkTriangleFillIcon
+                    title={intl.formatMessage({ id: 'PeriodeListeHeader.MorsAktivitetIkkeValgt' })}
+                    fontSize="1.5rem"
+                    className="text-ax-danger-800"
+                />
+            )}
             <div>
                 <CalendarIcon width={24} height={24} />
             </div>

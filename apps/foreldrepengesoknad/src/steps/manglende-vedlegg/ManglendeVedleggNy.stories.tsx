@@ -1,0 +1,504 @@
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { API_URLS } from 'api/queries';
+import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
+import { SøknadRoutes } from 'appData/routes';
+import dayjs from 'dayjs';
+import { HttpResponse, http } from 'msw';
+import { ComponentProps } from 'react';
+import { MemoryRouter } from 'react-router-dom';
+import { action } from 'storybook/actions';
+import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
+
+import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
+import {
+    ArbeidsforholdOgInntektFp,
+    PersonMedArbeidsforholdDto_fpoversikt,
+    Situasjon,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
+import { withQueryClient } from '@navikt/fp-utils-test';
+
+import { ManglendeVedleggNy } from './ManglendeVedleggNy';
+
+const promiseAction = () => () => {
+    action('button-click')();
+    return Promise.resolve();
+};
+
+const defaultSøkerinfo = {
+    person: {
+        fnr: '1',
+        navn: {
+            fornavn: 'TALENTFULL',
+            etternavn: 'MYGG',
+        },
+        kjønn: 'K',
+        fødselsdato: '1978-04-19',
+        barn: [
+            {
+                fnr: '21091981146',
+                fødselsdato: '2021-03-15',
+                annenPart: {
+                    fnr: '12038517080',
+                    fødselsdato: '1985-03-12',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
+                },
+                navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
+                kjønn: 'M',
+            },
+            {
+                fnr: '31091981146',
+                fødselsdato: '2022-08-02',
+                annenPart: {
+                    fnr: '12038517080',
+                    fødselsdato: '1985-03-12',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
+                },
+                navn: { fornavn: 'SNILT', etternavn: 'MIDTPUNKT' },
+                kjønn: 'M',
+            },
+            {
+                fnr: '31091981147',
+                fødselsdato: '2022-08-02',
+                annenPart: {
+                    fnr: '12038517080',
+                    fødselsdato: '1985-03-12',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
+                },
+                navn: { fornavn: 'LYST', etternavn: 'MIDTPUNKT' },
+                kjønn: 'M',
+            },
+        ],
+    },
+    arbeidsforhold: [],
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+
+const defaultAnnenForelder = {
+    fornavn: 'Eline',
+    etternavn: 'Hagen',
+    kanIkkeOppgis: false,
+    fnr: '21091981144',
+    erAleneOmOmsorg: false,
+} satisfies AnnenForelder;
+
+const defaultBarn = {
+    antallBarn: 1,
+    type: BarnType.FØDT,
+    fødselsdatoer: ['2024-01-01'],
+} satisfies Barn;
+
+const defaultArbeidsforholdOgInntekt = {
+    harHattAndreInntektskilder: false,
+    harJobbetSomFrilans: false,
+    harJobbetSomSelvstendigNæringsdrivende: false,
+};
+
+const defaultSøkerinfoFar = {
+    person: {
+        fnr: '08099017784',
+        navn: { fornavn: 'FAR', etternavn: 'MYGG' },
+        kjønn: 'M',
+        fødselsdato: '1978-04-19',
+        barn: [
+            {
+                fnr: '1',
+                fødselsdato: '2021-03-15',
+                annenPart: {
+                    fnr: '12038517080',
+                    fødselsdato: '1985-03-12',
+                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
+                },
+                navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
+                kjønn: 'K',
+            },
+        ],
+        sivilstand: {
+            type: 'GIFT',
+        },
+    },
+    arbeidsforhold: [],
+} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+
+type StoryArgs = {
+    rolle?: 'mor' | 'far' | 'medmor';
+    situasjon?: Situasjon;
+    annenForelder?: AnnenForelder;
+    barn?: Barn;
+    uttaksplan?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
+    annenInntekt?: AndreInntektskilder[];
+    gåTilNesteSide?: (action: Action) => void;
+} & ComponentProps<typeof ManglendeVedleggNy>;
+
+// TODO: (KALLE) Legg til stillingsprosent som en kontrollbar storybook-parameter for relevante historier
+// TODO: (KALLE) Gjør at datoene i stories er relative til dagens dato
+
+const meta = {
+    title: 'steps/ManglendeVedleggNy',
+    component: ManglendeVedleggNy,
+    decorators: [withQueryClient],
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    API_URLS.sendVedlegg,
+                    () =>
+                        new HttpResponse(JSON.stringify('uuid-test'), {
+                            status: 200,
+                        }),
+                ),
+            ],
+        },
+    },
+    render: ({
+        rolle = 'mor',
+        situasjon = 'fødsel',
+        uttaksplan = [],
+        annenForelder = defaultAnnenForelder,
+        barn = defaultBarn,
+        arbeidsforholdOgInntekt = defaultArbeidsforholdOgInntekt,
+        annenInntekt,
+        gåTilNesteSide = action('button-click'),
+        ...rest
+    }) => {
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.DOKUMENTASJON]}>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.UTTAKSPLAN_NY]: uttaksplan,
+                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                        [ContextDataType.OM_BARNET]: barn,
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
+                        [ContextDataType.ANDRE_INNTEKTSKILDER]: annenInntekt,
+                        [ContextDataType.SØKERSITUASJON]: {
+                            rolle,
+                            situasjon,
+                        },
+                    }}
+                >
+                    <ManglendeVedleggNy {...rest} />
+                </FpDataContext>
+            </MemoryRouter>
+        );
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+const arbeidsforholdMorJobber80Prosent = [
+    {
+        arbeidsgiverId: '1',
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Mors Arbeidsplass AS',
+        stillingsprosent: 80,
+        fom: dayjs().subtract(5, 'year').format('YYYY-MM-DD'),
+    },
+];
+
+export const Termindatodokumentasjon: Story = {
+    args: {
+        søkerInfo: defaultSøkerinfo,
+        barn: {
+            antallBarn: 1,
+            type: BarnType.UFØDT,
+            termindato: '2024-01-01',
+        },
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+    },
+};
+
+export const Omsorgsovertakelsedokumentasjon: Story = {
+    args: {
+        ...Termindatodokumentasjon.args,
+        situasjon: 'adopsjon',
+        barn: {
+            antallBarn: 1,
+            type: BarnType.ADOPTERT_ANNET_BARN,
+            adopsjonsdato: '2023-01-01',
+            adoptertIUtlandet: false,
+            fødselsdatoer: ['2022-01-01'],
+        },
+    },
+};
+
+export const Aleneomsorgdokumentasjon: Story = {
+    args: {
+        søkerInfo: defaultSøkerinfo,
+        annenForelder: {
+            ...defaultAnnenForelder,
+            erAleneOmOmsorg: true,
+            datoForAleneomsorg: '2024-01-01',
+        },
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+    },
+};
+
+export const HarAndreInntektskilderMilitærtjeneste: Story = {
+    args: {
+        søkerInfo: defaultSøkerinfo,
+        arbeidsforholdOgInntekt: {
+            harHattAndreInntektskilder: true,
+            harJobbetSomFrilans: false,
+            harJobbetSomSelvstendigNæringsdrivende: false,
+        },
+        annenInntekt: [
+            {
+                fom: '2024-01-01',
+                tom: '2024-04-01',
+                pågående: false,
+                type: AnnenInntektType.MILITÆRTJENESTE,
+            },
+            {
+                fom: '2024-05-01',
+                pågående: true,
+                type: AnnenInntektType.MILITÆRTJENESTE,
+            },
+        ],
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+    },
+};
+
+export const HarAndreInntektskilderEtterlønn: Story = {
+    args: {
+        søkerInfo: defaultSøkerinfo,
+        arbeidsforholdOgInntekt: {
+            harHattAndreInntektskilder: true,
+            harJobbetSomFrilans: false,
+            harJobbetSomSelvstendigNæringsdrivende: false,
+        },
+        annenInntekt: [
+            {
+                fom: '2024-01-01',
+                tom: '2024-04-01',
+                type: AnnenInntektType.SLUTTPAKKE,
+            },
+            {
+                fom: '2024-05-01',
+                tom: '2024-07-01',
+                type: AnnenInntektType.SLUTTPAKKE,
+            },
+        ],
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+    },
+};
+
+export const FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid: Story = {
+    args: {
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+            arbeidsforhold: arbeidsforholdMorJobber80Prosent,
+        },
+        rolle: 'far',
+        barn: {
+            antallBarn: 1,
+            type: BarnType.FØDT,
+            termindato: dayjs().subtract(4, 'month').format('YYYY-MM-DD'),
+            fødselsdatoer: [dayjs().subtract(4, 'month').format('YYYY-MM-DD')],
+        },
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+        uttaksplan: [
+            {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                fom: dayjs().add(10, 'month').startOf('month').add(3, 'day').format('YYYY-MM-DD'),
+                tom: dayjs().add(10, 'month').startOf('month').add(16, 'day').format('YYYY-MM-DD'),
+                samtidigUttak: 100,
+            },
+            {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FELLESPERIODE',
+                fom: dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD'),
+                tom: dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD'),
+                morsAktivitet: 'ARBEID',
+            },
+        ],
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    API_URLS.trengerDokumentereMorsArbeid,
+                    () => new HttpResponse(JSON.stringify(false), { status: 200 }),
+                ),
+            ],
+        },
+    },
+};
+
+export const FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid: Story = {
+    args: {
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+            arbeidsforhold: [
+                {
+                    ...arbeidsforholdMorJobber80Prosent[0]!,
+                    stillingsprosent: 70,
+                },
+            ],
+        },
+        rolle: 'far',
+        barn: {
+            antallBarn: 1,
+            type: BarnType.FØDT,
+            termindato: dayjs().subtract(4, 'month').format('YYYY-MM-DD'),
+            fødselsdatoer: [dayjs().subtract(4, 'month').format('YYYY-MM-DD')],
+        },
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+        uttaksplan: [
+            {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                fom: dayjs().add(10, 'month').startOf('month').add(3, 'day').format('YYYY-MM-DD'),
+                tom: dayjs().add(10, 'month').startOf('month').add(16, 'day').format('YYYY-MM-DD'),
+                samtidigUttak: 100,
+            },
+            {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FELLESPERIODE',
+                fom: dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD'),
+                tom: dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD'),
+                morsAktivitet: 'ARBEID',
+            },
+        ],
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    API_URLS.trengerDokumentereMorsArbeid,
+                    () => new HttpResponse(JSON.stringify(true), { status: 200 }),
+                ),
+            ],
+        },
+    },
+};
+
+export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story = {
+    args: {
+        søkerInfo: defaultSøkerinfoFar,
+        rolle: 'far',
+        barn: {
+            antallBarn: 1,
+            type: BarnType.FØDT,
+            termindato: dayjs().subtract(4, 'month').format('YYYY-MM-DD'),
+            fødselsdatoer: [dayjs().subtract(4, 'month').format('YYYY-MM-DD')],
+        },
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+        uttaksplan: [
+            {
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                fom: dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD'),
+                tom: dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD'),
+                morsAktivitet: 'UTDANNING',
+            },
+        ],
+    },
+
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(API_URLS.trengerDokumentereMorsArbeid, () => {
+                    return HttpResponse.json(true);
+                }),
+            ],
+        },
+    },
+};
+
+export const BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid: Story = {
+    args: {
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+        },
+        rolle: 'far',
+        barn: {
+            antallBarn: 1,
+            type: BarnType.FØDT,
+            termindato: dayjs().subtract(4, 'month').format('YYYY-MM-DD'),
+            fødselsdatoer: [dayjs().subtract(4, 'month').format('YYYY-MM-DD')],
+        },
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+        uttaksplan: [
+            {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FORELDREPENGER',
+                fom: '2025-01-01',
+                tom: '2025-02-01',
+                morsAktivitet: 'ARBEID',
+            },
+            {
+                forelder: 'FAR_MEDMOR',
+                fom: '2026-01-01',
+                tom: '2026-02-01',
+                utsettelseÅrsak: 'FRI',
+                morsAktivitet: 'ARBEID',
+            },
+        ],
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    API_URLS.trengerDokumentereMorsArbeid,
+                    () => new HttpResponse(JSON.stringify(false), { status: 200 }),
+                ),
+            ],
+        },
+    },
+};
+
+export const FarTarUtFedrekvoteFørsteSeksUkerUtenSamtidigMåDokumenterMorsSykdomEllerInnleggelse: Story = {
+    args: {
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+        },
+        rolle: 'far',
+        barn: {
+            antallBarn: 1,
+            type: BarnType.FØDT,
+            termindato: '2026-01-21',
+            fødselsdatoer: ['2026-01-21'],
+        },
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+        uttaksplan: [
+            {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                fom: '2026-01-28',
+                tom: '2026-01-28',
+            },
+        ],
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    API_URLS.trengerDokumentereMorsArbeid,
+                    () => new HttpResponse(JSON.stringify(false), { status: 200 }),
+                ),
+            ],
+        },
+    },
+};

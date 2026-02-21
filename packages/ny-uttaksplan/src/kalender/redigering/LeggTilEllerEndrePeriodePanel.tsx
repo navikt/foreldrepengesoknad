@@ -23,6 +23,7 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
     const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
 
     const [visPeriodeDetaljer, setVisPeriodeDetaljer] = useState(false);
+    const [skalViseKnapper, setSkalViseKnapper] = useState(true);
 
     const [erMinimert, setErMinimert] = useState(false);
 
@@ -33,9 +34,9 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
         <VStack
             gap="space-2"
             className={
-                !erMinimert
-                    ? 'bg-ax-bg-default fixed inset-0 z-50 overflow-y-auto md:static md:max-h-[calc(100vh-100px)] md:overflow-visible'
-                    : undefined
+                erMinimert
+                    ? undefined
+                    : 'bg-ax-bg-default fixed inset-0 z-50 overflow-y-auto md:static md:max-h-[calc(100vh-100px)] md:overflow-visible'
             }
         >
             <Show above="md">
@@ -70,7 +71,9 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
                             )}
                         </HStack>
                         {labels}
-                        {visPeriodeDetaljer && <PeriodeDetaljerOgInfoMeldinger />}
+                        {visPeriodeDetaljer && (
+                            <PeriodeDetaljerOgInfoMeldinger setSkalViseKnapper={setSkalViseKnapper} />
+                        )}
                     </VStack>
                 </Box>
             </Show>
@@ -116,18 +119,20 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
                     {!erMinimert && (
                         <VStack gap="space-16" className="px-4 pb-4">
                             {labels}
-                            <PeriodeDetaljerOgInfoMeldinger />
+                            <PeriodeDetaljerOgInfoMeldinger setSkalViseKnapper={setSkalViseKnapper} />
                         </VStack>
                     )}
                 </VStack>
             </Show>
-            <div className={erMinimert ? 'hidden' : 'block px-4 pb-4'}>
-                <div className={erMinimert ? 'hidden' : 'block'}>
-                    <div className="px-4 pt-4 pb-4">
-                        <LeggTilEllerEndrePeriodeForm lukkRedigeringsmodus={lukkRedigeringsmodus} />
+            {skalViseKnapper && (
+                <div className={erMinimert ? 'hidden' : 'block px-4 pb-4'}>
+                    <div className={erMinimert ? 'hidden' : 'block'}>
+                        <div className="px-4 pt-4 pb-4">
+                            <LeggTilEllerEndrePeriodeForm lukkRedigeringsmodus={lukkRedigeringsmodus} />
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
         </VStack>
     );
 };

@@ -44,6 +44,7 @@ const DEFAULT_DATA = {
     },
     harAktivitetskravIPeriodeUtenUttak: false,
     uttakPerioder: [],
+    erPeriodeneTilAnnenPartLåst: false,
     children: [],
 } satisfies ComponentProps<typeof UttaksplanDataProvider>;
 
@@ -62,7 +63,7 @@ describe('useHentGyldigeKontotyper - mors kvoter', () => {
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
-                        søker: 'FAR_ELLER_MEDMOR',
+                        søker: 'FAR_MEDMOR',
                         rettighetType: 'ALENEOMSORG',
                         erMedmorDelAvSøknaden: false,
                         navnPåForeldre: NAVN_PÅ_FORELDRE,
@@ -80,7 +81,7 @@ describe('useHentGyldigeKontotyper - mors kvoter', () => {
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
-                        søker: 'FAR_ELLER_MEDMOR',
+                        søker: 'FAR_MEDMOR',
                         rettighetType: 'BARE_SØKER_RETT',
                         erMedmorDelAvSøknaden: false,
                         navnPåForeldre: NAVN_PÅ_FORELDRE,
@@ -285,7 +286,7 @@ describe('useHentGyldigeKontotyper - fars kvoter', () => {
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
-                        søker: 'FAR_ELLER_MEDMOR',
+                        søker: 'FAR_MEDMOR',
                         rettighetType: 'BEGGE_RETT',
                         navnPåForeldre: NAVN_PÅ_FORELDRE,
                         erMedmorDelAvSøknaden: false,
@@ -310,7 +311,7 @@ describe('useHentGyldigeKontotyper - fars kvoter', () => {
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
-                        søker: 'FAR_ELLER_MEDMOR',
+                        søker: 'FAR_MEDMOR',
                         rettighetType: 'BEGGE_RETT',
                         navnPåForeldre: NAVN_PÅ_FORELDRE,
                         erMedmorDelAvSøknaden: false,
@@ -341,7 +342,7 @@ describe('useHentGyldigeKontotyper - fars kvoter', () => {
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
-                        søker: 'FAR_ELLER_MEDMOR',
+                        søker: 'FAR_MEDMOR',
                         rettighetType: 'BEGGE_RETT',
                         navnPåForeldre: NAVN_PÅ_FORELDRE,
                         erMedmorDelAvSøknaden: false,
@@ -352,7 +353,6 @@ describe('useHentGyldigeKontotyper - fars kvoter', () => {
 
         expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual([
             'FEDREKVOTE',
-            'FELLESPERIODE',
             'FORELDREPENGER',
             'AKTIVITETSFRI_KVOTE',
         ]);
@@ -371,7 +371,7 @@ describe('useHentGyldigeKontotyper - fars kvoter', () => {
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
-                        søker: 'FAR_ELLER_MEDMOR',
+                        søker: 'FAR_MEDMOR',
                         rettighetType: 'BEGGE_RETT',
                         navnPåForeldre: NAVN_PÅ_FORELDRE,
                         erMedmorDelAvSøknaden: false,
@@ -396,7 +396,7 @@ describe('useHentGyldigeKontotyper - fars kvoter', () => {
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
-                        søker: 'FAR_ELLER_MEDMOR',
+                        søker: 'FAR_MEDMOR',
                         rettighetType: 'BEGGE_RETT',
                         navnPåForeldre: NAVN_PÅ_FORELDRE,
                         erMedmorDelAvSøknaden: false,
@@ -405,11 +405,7 @@ describe('useHentGyldigeKontotyper - fars kvoter', () => {
             },
         );
 
-        expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual([
-            'MØDREKVOTE',
-            'FEDREKVOTE',
-            'AKTIVITETSFRI_KVOTE',
-        ]);
+        expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual(['FEDREKVOTE', 'AKTIVITETSFRI_KVOTE']);
     });
 
     it('skal ikke ha noen gyldige kontotyper for far når en har valgt dag mer enn 60 dager før fødsel', () => {

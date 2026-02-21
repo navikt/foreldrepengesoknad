@@ -2,15 +2,17 @@ import { BulletListIcon, CalendarIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import dayjs from 'dayjs';
-import { useRef } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
+import { erPeriodeIOpprinneligPlan } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnr, getNavnPåForeldre } from 'utils/personUtils';
+import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 
-import { Tabs } from '@navikt/ds-react';
+import { Alert, BodyLong, Tabs } from '@navikt/ds-react';
 
 import { isAnnenForelderOppgitt, isIkkeUtfyltTypeBarn } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
@@ -22,7 +24,8 @@ import {
     isAdoptertBarn,
     isFødtBarn,
 } from '@navikt/fp-types';
-import { SkjemaRotLayout, Step, StepButtons } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
+import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import {
     FjernAltIUttaksplanModal,
     KvoteOppsummering,
@@ -33,14 +36,15 @@ import {
 } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { UttaksplanForm } from './UttaksplanForm';
 import { useUttaksplanForEksisterendeSak } from './hooks/useUttaksplanForEksisterendeSak';
 import { useUttaksplanForslag } from './hooks/useUttaksplanForslag';
 
-type Props = {
+interface Props {
     søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
-};
+}
 
 export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
     const intl = useIntl();
@@ -53,10 +57,11 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN_NY);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN_NY);
 
+    const [feilmelding, setFeilmelding] = useState<ReactNode | undefined>();
+
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad);
-    const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad);
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
@@ -96,19 +101,41 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
 
     const valgteStønadskontoer = tilgjengeligeStønadskontoerQuery.data;
 
-    const uttaksplanForslag = useUttaksplanForslag(valgteStønadskontoer);
+    const nyttUttaksplanForslag = useUttaksplanForslag(valgteStønadskontoer);
 
-    if (!valgteStønadskontoer || annenPartVedtakQuery.isPending) {
+    if (!valgteStønadskontoer || annenPartVedtakQuery.isLoading) {
         return null;
     }
+
+    const tidligereUttaksperioder = uttaksplanForEksisterendeSak || annenPartVedtakQuery.data?.perioder;
+    const defaultUttaksperioder = tidligereUttaksperioder || nyttUttaksplanForslag;
+
+    const erPlanenEndret =
+        uttaksplan !== undefined &&
+        (uttaksplan.length !== defaultUttaksperioder.length ||
+            defaultUttaksperioder.some((defaultPeriode) => !erPeriodeIOpprinneligPlan(uttaksplan, defaultPeriode)));
+
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(
+        søkerInfo.arbeidsforhold,
+        søkersituasjon.situasjon === 'adopsjon',
+        erSøkerFarEllerMedmor,
+        getFamiliehendelsedato(barn),
+    );
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig}>
+                {isLocalhostOrDev() && (
+                    <Alert variant="warning">
+                        <BodyLong>
+                            <FormattedMessage id="uttaksplan.AnnenPartPerioderInfomelding" />
+                        </BodyLong>
+                    </Alert>
+                )}
                 <UttaksplanDataProvider
                     barn={barn}
                     foreldreInfo={{
-                        søker: isFarEllerMedmor(søkersituasjon.rolle) ? 'FAR_ELLER_MEDMOR' : 'MOR',
+                        søker: isFarEllerMedmor(søkersituasjon.rolle) ? 'FAR_MEDMOR' : 'MOR',
                         navnPåForeldre: getNavnPåForeldre(søkerInfo.person, annenForelder, erSøkerFarEllerMedmor, intl),
                         rettighetType: utledRettighet(erAleneOmOmsorg, erDeltUttak),
                         erMedmorDelAvSøknaden:
@@ -118,20 +145,18 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
                     }}
                     valgtStønadskonto={valgteStønadskontoer}
                     harAktivitetskravIPeriodeUtenUttak={false}
-                    uttakPerioder={
-                        uttaksplan ||
-                        uttaksplanForEksisterendeSak ||
-                        annenPartVedtakQuery.data?.perioder ||
-                        uttaksplanForslag
-                    }
+                    uttakPerioder={uttaksplan || defaultUttaksperioder}
+                    erPeriodeneTilAnnenPartLåst={!!tidligereUttaksperioder}
+                    aktiveArbeidsforhold={aktiveArbeidsforhold}
                 >
+                    {feilmelding && <Alert variant="error">{feilmelding}</Alert>}
                     <div ref={kvoteOppsummeringRef}>
                         <KvoteOppsummering erInnsyn={false} visStatusIkoner />
                     </div>
 
                     <UttaksplanRedigeringProvider
                         oppdaterUttaksplan={oppdaterUttaksplan}
-                        harEndretPlan={uttaksplan !== undefined}
+                        harEndretPlan={erPlanenEndret}
                     >
                         <FjernAltIUttaksplanModal />
 
@@ -171,12 +196,15 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
                             </Tabs.Panel>
                         </Tabs>
                     </UttaksplanRedigeringProvider>
+                    <UttaksplanForm
+                        søkerInfo={søkerInfo}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                        setFeilmelding={setFeilmelding}
+                        scrollToKvoteOppsummering={scrollToKvoteOppsummering}
+                        defaultUttaksperioder={defaultUttaksperioder}
+                    />
                 </UttaksplanDataProvider>
-                <StepButtons
-                    onFortsettSenere={navigator.fortsettSøknadSenere}
-                    onAvsluttOgSlett={avbrytSøknad}
-                    goToPreviousStep={navigator.goToPreviousDefaultStep}
-                />
             </Step>
         </SkjemaRotLayout>
     );
@@ -223,7 +251,7 @@ const barnehagestartDato = (barnet: Barn) => {
  * Tar hensyn til stilling av klokken ved å gjøre om klokka til kl 12 før antall timer trekkes fra.
  * @param dato
  */
-export const getUttaksdagTilOgMedDato = (dato: string): string => {
+const getUttaksdagTilOgMedDato = (dato: string): string => {
     const d = dayjs(dato).toDate();
     const newDate = dato ? new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12) : dato;
     switch (getUkedag(dato)) {

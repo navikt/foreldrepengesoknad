@@ -58,7 +58,7 @@ const erGyldigForMor = (
     const harKunEnPartRett = rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT';
     const erAdopsjon = familiesituasjon === 'adopsjon';
 
-    if (søker === 'FAR_ELLER_MEDMOR' && harKunEnPartRett) {
+    if (søker === 'FAR_MEDMOR' && harKunEnPartRett) {
         return false;
     }
 
@@ -149,6 +149,9 @@ const erGyldigForFarMedmor = (
         if (harValgtSamtidigUttak) {
             return false;
         }
+        if (erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(valgtePerioder, familiehendelsedato)) {
+            return false;
+        }
         if (erNoenPerioderFørToUkerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
             return false;
         }
@@ -179,10 +182,23 @@ const erGyldigForFarMedmor = (
         if (erNoenPerioderMerEnn60DagerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
             return false;
         }
+
+        if (
+            erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(valgtePerioder, familiehendelsedato) &&
+            harValgtSamtidigUttak
+        ) {
+            return false;
+        }
+
+        if (erNoenPerioderFørToUkerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+            return false;
+        }
     }
 
     return true;
 };
+
+// TODO (TOR) Vurder å flytta funksjonane under til periodeUtils
 
 const erNoenPerioderFørFamiliehendelsesdato = (
     valgtePerioder: Array<{ fom: string; tom: string }>,

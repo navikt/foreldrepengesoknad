@@ -5,8 +5,7 @@ export default defineConfig({
     output: [
         {
             clean: false,
-            format: 'prettier',
-            lint: 'eslint',
+            postProcess: ['prettier', 'eslint'],
             path: 'src/',
             fileName: {
                 name: 'fpoversiktDtoGenerert',
@@ -15,8 +14,7 @@ export default defineConfig({
         },
         {
             clean: false,
-            format: 'prettier',
-            lint: 'eslint',
+            postProcess: ['prettier', 'eslint'],
             path: 'src/',
             fileName: {
                 name: 'fpsoknadDtoGenerert',
@@ -35,7 +33,7 @@ export default defineConfig({
             definitions: {
                 case: 'preserve',
                 name: (typeName) => {
-                    if (typeName.includes('.fpsoknad.')) {
+                    if (typeName.includes('no.nav.foreldrepenger.soknad.')) {
                         const strippedName = typeName.substring(typeName.lastIndexOf('.') + 1);
                         return `${strippedName}`;
                     }

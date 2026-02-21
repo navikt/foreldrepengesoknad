@@ -1,11 +1,15 @@
 import { API_URLS } from 'api/queries';
+import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FormattedMessage } from 'react-intl';
 import { VedleggDataType } from 'types/VedleggDataType';
+import { getRelevantePerioder } from 'utils/uttaksplanInfoUtils';
 
 import { Alert, BodyLong, BodyShort, FormSummary, Heading, Link, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Periode } from '@navikt/fp-common';
+import { NavnPåForeldre } from '@navikt/fp-common';
 import { AttachmentType } from '@navikt/fp-constants';
+import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { DokumentasjonLastetOppLabel } from './DokumentasjonLastetOppLabel';
 import { DokumentasjonSendSenereLabel } from './DokumentasjonSendSenereLabel';
@@ -15,7 +19,7 @@ interface Props {
     onVilEndreSvar: () => void;
     erSøkerFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
-    uttaksperioderSomManglerVedlegg: Periode[];
+    erEndringssøknad: boolean;
 }
 
 const skalViseVedlegg = (alleVedlegg: VedleggDataType): boolean => {
@@ -30,8 +34,22 @@ export const DokumentasjonOppsummering = ({
     onVilEndreSvar,
     erSøkerFarEllerMedmor,
     navnPåForeldre,
-    uttaksperioderSomManglerVedlegg,
+    erEndringssøknad,
 }: Props) => {
+    const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
+    const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+
+    const relevantePerioder = getRelevantePerioder(
+        uttaksplan,
+        uttaksplanMetadata?.perioderSomSkalSendesInn,
+        erEndringssøknad,
+    );
+    const uttaksperioderSomManglerVedlegg = perioderSomKreverVedlegg(
+        relevantePerioder,
+        erSøkerFarEllerMedmor,
+        annenForelder,
+    );
     const harVedlegg = alleVedlegg && Object.values(alleVedlegg).some((v) => v.length > 0);
 
     if (!harVedlegg) {

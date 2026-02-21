@@ -11,7 +11,7 @@ type StoryArgs = ComponentProps<typeof UforutsetteEndringer>;
 const meta = {
     title: 'steg/PlanenDeresSteg/components/UforutsetteEndringer',
     component: UforutsetteEndringer,
-    render: ({ hvemPlanlegger, barnet, arbeidssituasjon }) => {
+    render: ({ hvemPlanlegger, arbeidssituasjon, barnet }) => {
         return (
             <UforutsetteEndringer arbeidssituasjon={arbeidssituasjon} hvemPlanlegger={hvemPlanlegger} barnet={barnet} />
         );
@@ -21,7 +21,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const AdopsjonMorOgFarBeggeHarRettToBarn: Story = {
+export const AdopsjonMorOgFarBeggeHarRett: Story = {
     args: {
         hvemPlanlegger: {
             type: HvemPlanleggerType.MOR_OG_FAR,
@@ -33,10 +33,70 @@ export const AdopsjonMorOgFarBeggeHarRettToBarn: Story = {
             jobberAnnenPart: true,
         },
         barnet: {
-            antallBarn: '2',
+            antallBarn: '1',
             overtakelsesdato: '2022-01-01',
             fødselsdato: '2022-01-01',
             erFødsel: false,
+            erBarnetFødt: true,
+        },
+    },
+};
+export const AdopsjonMorOgFarKunMorHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            type: HvemPlanleggerType.MOR_OG_FAR,
+            navnPåMor: 'Mor',
+            navnPåFar: 'Far',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: false,
+        },
+        barnet: {
+            antallBarn: '1',
+            overtakelsesdato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: false,
+            erBarnetFødt: true,
+        },
+    },
+};
+export const FødselMorOgFarBeggeHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            type: HvemPlanleggerType.MOR_OG_FAR,
+            navnPåMor: 'Mor',
+            navnPåFar: 'Far',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: true,
+        },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
+        },
+    },
+};
+export const FødselMorOgFarKunMorHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            type: HvemPlanleggerType.MOR_OG_FAR,
+            navnPåMor: 'Mor',
+            navnPåFar: 'Far',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: false,
+        },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
             erBarnetFødt: true,
         },
     },
@@ -61,16 +121,152 @@ export const FødselMorOgFarKunFarHarRett: Story = {
         },
     },
 };
-export const FødselMorOgFarKunMorHarRett: Story = {
+export const FødselMorOgMedmorBeggeHarRett: Story = {
     args: {
         hvemPlanlegger: {
-            type: HvemPlanleggerType.MOR_OG_FAR,
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
             navnPåMor: 'Mor',
+            navnPåMedmor: 'Medmor',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: true,
+        },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
+        },
+    },
+};
+export const FødselMorOgMedmorKunMorHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
+            navnPåMor: 'Mor',
+            navnPåMedmor: 'Medmor',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: false,
+        },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
+        },
+    },
+};
+export const FødselMorOgMedmorKunMedmorHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
+            navnPåMor: 'Mor',
+            navnPåMedmor: 'Medmor',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.INGEN,
+            jobberAnnenPart: true,
+        },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
+        },
+    },
+};
+export const FødselFarOgFarBeggeHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            type: HvemPlanleggerType.FAR_OG_FAR,
+            navnPåMedfar: 'Medfar',
+            navnPåFar: 'Far',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: true,
+        },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
+        },
+    },
+};
+export const FødselFarOgFarKunFarHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            type: HvemPlanleggerType.FAR_OG_FAR,
+            navnPåMedfar: 'Medfar',
             navnPåFar: 'Far',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
+        },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
+        },
+    },
+};
+export const FødselFarOgFarKunMedfarHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            type: HvemPlanleggerType.FAR_OG_FAR,
+            navnPåMedfar: 'Medfar',
+            navnPåFar: 'Far',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.INGEN,
+            jobberAnnenPart: true,
+        },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
+        },
+    },
+};
+export const FødselMorAleneomsorg: Story = {
+    args: {
+        hvemPlanlegger: {
+            type: HvemPlanleggerType.MOR,
+            navnPåMor: 'Mor',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+        },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
+        },
+    },
+};
+export const FødselFarAleneomsorg: Story = {
+    args: {
+        hvemPlanlegger: {
+            type: HvemPlanleggerType.FAR,
+            navnPåFar: 'Far',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
         },
         barnet: {
             antallBarn: '1',

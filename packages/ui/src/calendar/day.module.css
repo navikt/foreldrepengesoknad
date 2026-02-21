@@ -8,6 +8,7 @@
 }
 
 .days {
+    position: relative;
     height: 30px;
     display: flex;
     justify-content: center;
@@ -188,6 +189,12 @@
     cursor: default;
 }
 
+.darkgrayDay {
+    background-color: var(--ax-neutral-400);
+    print-color-adjust: exact;
+    cursor: default;
+}
+
 .blackDay {
     background-color: var(--ax-bg-neutral-strong) !important;
     color: var(--ax-bg-default);
@@ -201,6 +208,18 @@
 
 .blueOutlineDay {
     border: 2px solid var(--ax-accent-500);
+    print-color-adjust: exact;
+}
+
+.greenWithBlackOutlineDay {
+    background-color: var(--ax-success-400) !important;
+    border: 2px solid var(--ax-bg-neutral-strong);
+    print-color-adjust: exact;
+}
+
+.blueWithBlackOutlineDay {
+    background-color: var(--ax-accent-400) !important;
+    border: 2px solid var(--ax-bg-neutral-strong);
     print-color-adjust: exact;
 }
 
@@ -300,4 +319,14 @@
 .purpleDay {
     background-color: var(--ax-meta-purple-400) !important;
     print-color-adjust: exact;
+}
+
+.triangle {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    color: var(--ax-warning-600);
+    pointer-events: none;
 }

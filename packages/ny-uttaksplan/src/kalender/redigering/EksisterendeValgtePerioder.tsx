@@ -1,14 +1,16 @@
 import {
     ParasolBeachIcon,
+    PersonCircleFillIcon,
     PersonGroupIcon,
     PersonPregnantFillIcon,
     PersonSuitFillIcon,
     TrashIcon,
 } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
+import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
@@ -20,7 +22,9 @@ import { CalendarPeriod } from '@navikt/fp-ui';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { SlettPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/SlettPeriodeForskyvEllerErstatt';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
+import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 
 export type UttakPeriodeMedAntallDager = (UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) & {
@@ -29,157 +33,235 @@ export type UttakPeriodeMedAntallDager = (UttakPeriode_fpoversikt | UttakPeriode
 
 interface Props {
     perioder: UttakPeriodeMedAntallDager[];
+    setSkalViseKnapper: (skalViseKnapper: boolean) => void;
 }
 
-export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
+export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Props) => {
     const intl = useIntl();
+
+    const [valgtPeriodeSomSkalSlettes, setValgtPeriodeSomSkalSlettes] = useState<
+        UttakPeriodeMedAntallDager | undefined
+    >(undefined);
 
     const slettPeriode = useSlettPeriodeFn();
 
     const {
-        foreldreInfo: { erMedmorDelAvSøknaden },
+        foreldreInfo: { erMedmorDelAvSøknaden, søker },
+        erPeriodeneTilAnnenPartLåst,
     } = useUttaksplanData();
 
     return (
         <VStack gap="space-12">
-            {perioder.map((p, index) => {
-                const harHåndtertAllerede = perioder.findIndex((per) => per.fom === p.fom && per.tom === p.tom) < index;
-                if (harHåndtertAllerede) {
-                    return null;
-                }
+            {valgtPeriodeSomSkalSlettes && (
+                <SlettPeriodeForskyvEllerErstatt
+                    valgtePerioder={[valgtPeriodeSomSkalSlettes]}
+                    avbryt={() => {
+                        setValgtPeriodeSomSkalSlettes(undefined);
+                        setSkalViseKnapper(true);
+                    }}
+                    fjernPeriode={(skalForskyveBakover: boolean) => {
+                        setValgtPeriodeSomSkalSlettes(undefined);
+                        slettPeriode(valgtPeriodeSomSkalSlettes, skalForskyveBakover);
+                    }}
+                />
+            )}
+            {!valgtPeriodeSomSkalSlettes && (
+                <>
+                    <BodyShort>
+                        <FormattedMessage
+                            id="RedigeringPanel.EksisterendePerioder"
+                            values={{ antall: perioder.length }}
+                        />
+                    </BodyShort>
+                    {perioder.map((p, index) => {
+                        const harHåndtertAllerede =
+                            perioder.findIndex((per) => per.fom === p.fom && per.tom === p.tom) < index;
+                        if (harHåndtertAllerede) {
+                            return null;
+                        }
 
-                const erSamtidigUttak = erVanligUttakPeriode(p) && p.samtidigUttak !== undefined;
-                const denAndrePerioden = erSamtidigUttak
-                    ? perioder.find(
-                          (per) =>
-                              per.fom === p.fom &&
-                              per.tom === p.tom &&
-                              erVanligUttakPeriode(per) &&
-                              per.forelder !== p.forelder,
-                      )
-                    : undefined;
+                        const erSamtidigUttak = erVanligUttakPeriode(p) && p.samtidigUttak !== undefined;
+                        const denAndrePerioden = erSamtidigUttak
+                            ? perioder.find(
+                                  (per) =>
+                                      per.fom === p.fom &&
+                                      per.tom === p.tom &&
+                                      erVanligUttakPeriode(per) &&
+                                      per.forelder !== p.forelder,
+                              )
+                            : undefined;
 
-                return (
-                    <HStack
-                        gap="space-8"
-                        key={`eksisterende-periode-${p.fom}-${p.tom}`}
-                        wrap={false}
-                        data-testid={`eksisterende-periode-${p.fom}-${p.tom}`}
-                    >
-                        <PeriodeIkon periode={p} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
+                        const erAnnenPartsPeriodeLåst =
+                            erPeriodeneTilAnnenPartLåst && erVanligUttakPeriode(p) && p.forelder !== søker;
 
-                        <VStack gap="space-0">
-                            {(erEøsUttakPeriode(p) || p.utsettelseÅrsak !== 'LOVBESTEMT_FERIE') && (
-                                <Heading size="xsmall">
-                                    <PeriodeHeaderText periode={p} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
-                                </Heading>
-                            )}
+                        const erAvslåttPeriode = erVanligUttakPeriode(p) && p.resultat?.innvilget === false;
 
-                            {!erSamtidigUttak && (
-                                <HStack gap="space-4">
-                                    <BodyShort>
-                                        <PeriodeKvoteType periode={p} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
-                                    </BodyShort>
-                                </HStack>
-                            )}
+                        const erPleiepengerPeriode =
+                            erAvslåttPeriode && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
 
-                            {erSamtidigUttak && (
+                        return (
+                            <HStack
+                                gap="space-8"
+                                key={`eksisterende-periode-${p.fom}-${p.tom}`}
+                                wrap={false}
+                                data-testid={`eksisterende-periode-${p.fom}-${p.tom}`}
+                            >
+                                <PeriodeIkon periode={p} søker={søker} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
+
                                 <VStack gap="space-0">
-                                    <BodyShort>
-                                        <FormattedMessage
-                                            id="RedigeringPanel.SamtidigUttakForelder"
-                                            values={{
-                                                forelder: p.forelder,
-                                                erMedmor: p.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
-                                            }}
-                                        />
-                                        <FormattedMessage
-                                            id="RedigeringPanel.SamtidigUttak"
-                                            values={{
-                                                kvote: p.kontoType,
-                                                prosent: p.samtidigUttak,
-                                                erMedmor: p.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
-                                            }}
-                                        />
-                                    </BodyShort>
-                                    {denAndrePerioden && erVanligUttakPeriode(denAndrePerioden) && (
+                                    {(erEøsUttakPeriode(p) || p.utsettelseÅrsak !== 'LOVBESTEMT_FERIE') && (
+                                        <Heading size="xsmall">
+                                            <PeriodeHeaderText
+                                                periode={p}
+                                                erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
+                                                søker={søker}
+                                            />
+                                        </Heading>
+                                    )}
+
+                                    {!erSamtidigUttak && (
+                                        <HStack gap="space-4">
+                                            <BodyShort>
+                                                <PeriodeKvoteType
+                                                    periode={p}
+                                                    erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
+                                                />
+                                            </BodyShort>
+                                        </HStack>
+                                    )}
+                                    {erEøsUttakPeriode(p) && (
                                         <BodyShort>
-                                            <FormattedMessage
-                                                id="RedigeringPanel.SamtidigUttakForelder"
-                                                values={{
-                                                    forelder: denAndrePerioden.forelder,
-                                                    erMedmor:
-                                                        denAndrePerioden.forelder === 'FAR_MEDMOR' &&
-                                                        erMedmorDelAvSøknaden,
-                                                }}
-                                            />
-                                            <FormattedMessage
-                                                id="RedigeringPanel.SamtidigUttak"
-                                                values={{
-                                                    kvote: denAndrePerioden.kontoType,
-                                                    prosent: denAndrePerioden.samtidigUttak,
-                                                    erMedmor: p.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
-                                                }}
-                                            />
+                                            <FormattedMessage id="RedigeringPanel.EøsPeriode" />
                                         </BodyShort>
                                     )}
-                                    {erVanligUttakPeriode(p) && p.gradering !== undefined && (
-                                        <BodyShort>
-                                            <FormattedMessage
-                                                id="RedigeringPanel.GraderingForelder"
-                                                values={{
-                                                    prosent: p.gradering.arbeidstidprosent,
-                                                    forelder: p.forelder,
-                                                    erMedmor: p.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
-                                                }}
-                                            />
-                                        </BodyShort>
-                                    )}
-                                    {denAndrePerioden &&
-                                        erVanligUttakPeriode(denAndrePerioden) &&
-                                        denAndrePerioden.gradering !== undefined && (
+
+                                    {erSamtidigUttak && (
+                                        <VStack gap="space-0">
                                             <BodyShort>
                                                 <FormattedMessage
-                                                    id="RedigeringPanel.GraderingForelder"
+                                                    id="RedigeringPanel.SamtidigUttakForelder"
                                                     values={{
-                                                        prosent: denAndrePerioden.gradering.arbeidstidprosent,
-                                                        forelder: denAndrePerioden.forelder,
-                                                        erMedmor:
-                                                            denAndrePerioden.forelder === 'FAR_MEDMOR' &&
-                                                            erMedmorDelAvSøknaden,
+                                                        forelder: p.forelder,
+                                                        erMedmor: p.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
+                                                    }}
+                                                />
+                                                <FormattedMessage
+                                                    id="RedigeringPanel.SamtidigUttak"
+                                                    values={{
+                                                        kvote: p.kontoType,
+                                                        prosent: p.samtidigUttak,
+                                                        erMedmor: p.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
                                                     }}
                                                 />
                                             </BodyShort>
-                                        )}
+                                            {denAndrePerioden && erVanligUttakPeriode(denAndrePerioden) && (
+                                                <BodyShort>
+                                                    <FormattedMessage
+                                                        id="RedigeringPanel.SamtidigUttakForelder"
+                                                        values={{
+                                                            forelder: denAndrePerioden.forelder,
+                                                            erMedmor:
+                                                                denAndrePerioden.forelder === 'FAR_MEDMOR' &&
+                                                                erMedmorDelAvSøknaden,
+                                                        }}
+                                                    />
+                                                    <FormattedMessage
+                                                        id="RedigeringPanel.SamtidigUttak"
+                                                        values={{
+                                                            kvote: denAndrePerioden.kontoType,
+                                                            prosent: denAndrePerioden.samtidigUttak,
+                                                            erMedmor:
+                                                                p.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
+                                                        }}
+                                                    />
+                                                </BodyShort>
+                                            )}
+                                            {erVanligUttakPeriode(p) && p.gradering !== undefined && (
+                                                <BodyShort>
+                                                    <FormattedMessage
+                                                        id="RedigeringPanel.GraderingForelder"
+                                                        values={{
+                                                            prosent: p.gradering.arbeidstidprosent,
+                                                            forelder: p.forelder,
+                                                            erMedmor:
+                                                                p.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
+                                                        }}
+                                                    />
+                                                </BodyShort>
+                                            )}
+                                            {denAndrePerioden &&
+                                                erVanligUttakPeriode(denAndrePerioden) &&
+                                                denAndrePerioden.gradering !== undefined && (
+                                                    <BodyShort>
+                                                        <FormattedMessage
+                                                            id="RedigeringPanel.GraderingForelder"
+                                                            values={{
+                                                                prosent: denAndrePerioden.gradering.arbeidstidprosent,
+                                                                forelder: denAndrePerioden.forelder,
+                                                                erMedmor:
+                                                                    denAndrePerioden.forelder === 'FAR_MEDMOR' &&
+                                                                    erMedmorDelAvSøknaden,
+                                                            }}
+                                                        />
+                                                    </BodyShort>
+                                                )}
+                                        </VStack>
+                                    )}
+
+                                    {!erSamtidigUttak && erVanligUttakPeriode(p) && p.gradering !== undefined && (
+                                        <BodyShort>
+                                            <FormattedMessage
+                                                id="RedigeringPanel.Gradering"
+                                                values={{ prosent: p.gradering.arbeidstidprosent }}
+                                            />
+                                        </BodyShort>
+                                    )}
+
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="RedigeringPanel.Dager"
+                                            values={{ antall: p.valgteDagerIPeriode }}
+                                        />
+                                    </BodyShort>
+
+                                    {erPleiepengerPeriode && (
+                                        <BodyShort>
+                                            <FormattedMessage
+                                                id="RedigeringPanel.Pleiepenger"
+                                                values={{ antall: p.valgteDagerIPeriode }}
+                                            />
+                                        </BodyShort>
+                                    )}
+                                    {erAvslåttPeriode && !erPleiepengerPeriode && (
+                                        <BodyShort>
+                                            <FormattedMessage id="RedigeringPanel.AvslåttPeriode" />
+                                        </BodyShort>
+                                    )}
+                                    {harPeriodeDerMorsAktivitetIkkeErValgt([p]) && (
+                                        <Alert variant="warning" size="small" className="mt-3 mb-1 p-2">
+                                            <BodyShort>
+                                                <FormattedMessage id="RedigeringPanel.MorsAktivitetIkkeValgt" />
+                                            </BodyShort>
+                                        </Alert>
+                                    )}
                                 </VStack>
-                            )}
-
-                            {!erSamtidigUttak && erVanligUttakPeriode(p) && p.gradering !== undefined && (
-                                <BodyShort>
-                                    <FormattedMessage
-                                        id="RedigeringPanel.Gradering"
-                                        values={{ prosent: p.gradering.arbeidstidprosent }}
+                                <Spacer />
+                                {!erEøsUttakPeriode(p) && !erAnnenPartsPeriodeLåst && !erPleiepengerPeriode && (
+                                    <TrashIcon
+                                        title={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}
+                                        fontSize="1.5rem"
+                                        className="cursor-pointer hover:opacity-70"
+                                        onClick={() => {
+                                            setValgtPeriodeSomSkalSlettes(p);
+                                            setSkalViseKnapper(false);
+                                        }}
                                     />
-                                </BodyShort>
-                            )}
-
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="RedigeringPanel.Dager"
-                                    values={{ antall: p.valgteDagerIPeriode }}
-                                />
-                            </BodyShort>
-                        </VStack>
-                        <Spacer />
-                        <TrashIcon
-                            title={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}
-                            fontSize="1.5rem"
-                            className="cursor-pointer hover:opacity-70"
-                            onClick={() => slettPeriode(p)}
-                        />
-                    </HStack>
-                );
-            })}
+                                )}
+                            </HStack>
+                        );
+                    })}
+                </>
+            )}
         </VStack>
     );
 };
@@ -187,17 +269,15 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
 const PeriodeIkon = ({
     periode,
     erMedmorDelAvSøknaden,
+    søker,
 }: {
     periode: UttakPeriodeMedAntallDager;
     erMedmorDelAvSøknaden: boolean;
+    søker: BrukerRolleSak_fpoversikt;
 }) => {
     const intl = useIntl();
 
-    if (!erVanligUttakPeriode(periode)) {
-        return null;
-    }
-
-    if (periode.samtidigUttak !== undefined && periode.samtidigUttak > 0) {
+    if (erVanligUttakPeriode(periode) && periode.samtidigUttak !== undefined && periode.samtidigUttak > 0) {
         return (
             <PersonGroupIcon
                 title={intl.formatMessage({ id: 'RedigeringPanel.Mor' })}
@@ -209,7 +289,7 @@ const PeriodeIkon = ({
         );
     }
 
-    if (periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+    if (erVanligUttakPeriode(periode) && periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
         return (
             <ParasolBeachIcon
                 title={intl.formatMessage({ id: 'RedigeringPanel.Ferie' })}
@@ -217,6 +297,40 @@ const PeriodeIkon = ({
                 height="35px"
                 width="35px"
                 color="var(--ax-bg-warning-strong)"
+            />
+        );
+    }
+
+    if (erEøsUttakPeriode(periode)) {
+        if (søker === 'MOR') {
+            if (erMedmorDelAvSøknaden) {
+                return (
+                    <PersonCircleFillIcon
+                        title={intl.formatMessage({ id: 'RedigeringPanel.Medmor' })}
+                        fontSize="1.5rem"
+                        height="35px"
+                        width="35px"
+                        color="var(--ax-bg-success-strong)"
+                    />
+                );
+            }
+            return (
+                <PersonSuitFillIcon
+                    title={intl.formatMessage({ id: 'RedigeringPanel.Far' })}
+                    fontSize="1.5rem"
+                    height="35px"
+                    width="35px"
+                    color="var(--ax-bg-success-strong)"
+                />
+            );
+        }
+        return (
+            <PersonPregnantFillIcon
+                title={intl.formatMessage({ id: 'RedigeringPanel.Mor' })}
+                fontSize="1.5rem"
+                height="35px"
+                width="35px"
+                color="var(--ax-bg-meta-purple-strong)"
             />
         );
     }
@@ -251,10 +365,23 @@ const PeriodeIkon = ({
 const PeriodeHeaderText = ({
     periode,
     erMedmorDelAvSøknaden,
+    søker,
 }: {
     periode: UttakPeriodeMedAntallDager;
     erMedmorDelAvSøknaden: boolean;
+    søker: BrukerRolleSak_fpoversikt;
 }) => {
+    if (erEøsUttakPeriode(periode)) {
+        if (søker === 'FAR_MEDMOR') {
+            return <FormattedMessage id="RedigeringPanel.Mor" />;
+        }
+        return erMedmorDelAvSøknaden ? (
+            <FormattedMessage id="RedigeringPanel.Medmor" />
+        ) : (
+            <FormattedMessage id="RedigeringPanel.Far" />
+        );
+    }
+
     if (erVanligUttakPeriode(periode) && periode.samtidigUttak !== undefined) {
         return <FormattedMessage id="RedigeringPanel.Begge" />;
     }
@@ -263,7 +390,7 @@ const PeriodeHeaderText = ({
         return <FormattedMessage id="RedigeringPanel.Mor" />;
     }
 
-    if (erEøsUttakPeriode(periode) || (!erMedmorDelAvSøknaden && periode.forelder === 'FAR_MEDMOR')) {
+    if (!erMedmorDelAvSøknaden && periode.forelder === 'FAR_MEDMOR') {
         return <FormattedMessage id="RedigeringPanel.Far" />;
     }
     if (erMedmorDelAvSøknaden && periode.forelder === 'FAR_MEDMOR') {
@@ -280,8 +407,10 @@ const PeriodeKvoteType = ({
     periode: UttakPeriodeMedAntallDager;
     erMedmorDelAvSøknaden: boolean;
 }) => {
+    const erIkkeEøsUttakPeriode = erVanligUttakPeriode(periode);
+
     const erAktivitetsfri =
-        erVanligUttakPeriode(periode) &&
+        erIkkeEøsUttakPeriode &&
         (periode.kontoType === 'FORELDREPENGER' || periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER') &&
         periode.morsAktivitet === 'IKKE_OPPGITT';
 
@@ -290,45 +419,45 @@ const PeriodeKvoteType = ({
     }
     if (
         periode.kontoType === 'MØDREKVOTE' ||
-        (erVanligUttakPeriode(periode) && periode.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER')
+        (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER')
     ) {
         return <FormattedMessage id="RedigeringPanel.MorKvote" />;
     }
     if (
         !erMedmorDelAvSøknaden &&
         (periode.kontoType === 'FEDREKVOTE' ||
-            (erVanligUttakPeriode(periode) && periode.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'))
+            (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'))
     ) {
         return <FormattedMessage id="RedigeringPanel.FarKvote" />;
     }
     if (
         erMedmorDelAvSøknaden &&
         (periode.kontoType === 'FEDREKVOTE' ||
-            (erVanligUttakPeriode(periode) && periode.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'))
+            (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'))
     ) {
         return <FormattedMessage id="RedigeringPanel.MedmorKvote" />;
     }
     if (
         (periode.kontoType === 'FORELDREPENGER' ||
-            (erVanligUttakPeriode(periode) && periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER')) &&
+            (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER')) &&
         !erAktivitetsfri
     ) {
         return <FormattedMessage id="RedigeringPanel.Foreldrepenger" />;
     }
     if (
         (periode.kontoType === 'FORELDREPENGER' ||
-            (erVanligUttakPeriode(periode) && periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER')) &&
+            (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER')) &&
         erAktivitetsfri
     ) {
         return <FormattedMessage id="RedigeringPanel.UtenAktivitetskrav" />;
     }
     if (
         periode.kontoType === 'FELLESPERIODE' ||
-        (erVanligUttakPeriode(periode) && periode.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER')
+        (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER')
     ) {
         return <FormattedMessage id="RedigeringPanel.Fellesperiode" />;
     }
-    if (erVanligUttakPeriode(periode) && periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+    if (erIkkeEøsUttakPeriode && periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
         return <FormattedMessage id="RedigeringPanel.Ferie" />;
     }
     return null;
@@ -337,7 +466,10 @@ const PeriodeKvoteType = ({
 const useSlettPeriodeFn = () => {
     const { sammenslåtteValgtePerioder, slettUttaksplanPerioder, setValgtePerioder } = useKalenderRedigeringContext();
 
-    return (periodeSomSkalSlettes: { fom: string; tom: string; forelder?: BrukerRolleSak_fpoversikt }) => {
+    return (
+        periodeSomSkalSlettes: { fom: string; tom: string; forelder?: BrukerRolleSak_fpoversikt },
+        skalForskyveBakover: boolean,
+    ) => {
         const fomPeriodeSomSkalSlettes = dayjs(periodeSomSkalSlettes.fom);
         const tomPeriodeSomSkalSlettes = dayjs(periodeSomSkalSlettes.tom);
 
@@ -355,6 +487,7 @@ const useSlettPeriodeFn = () => {
                         tom: dayjs(p.tom).isAfter(periodeSomSkalSlettes.tom) ? periodeSomSkalSlettes.tom : p.tom,
                     }) satisfies UttakPeriode_fpoversikt,
             ),
+            skalForskyveBakover,
         );
 
         setValgtePerioder((oldPeriods) => justerValgteKalenderperioder(oldPeriods, periodeSomSkalSlettes));

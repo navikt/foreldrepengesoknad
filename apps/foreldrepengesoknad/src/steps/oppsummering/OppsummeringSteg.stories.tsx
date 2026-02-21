@@ -18,12 +18,14 @@ import {
     ArbeidsforholdOgInntektFp,
     EksternArbeidsforholdDto_fpoversikt,
     Frilans,
+    KontoBeregningDto,
     NæringDto,
     PersonMedArbeidsforholdDto_fpoversikt,
     Sivilstand_fpoversikt,
     SøkersituasjonFp,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
+    UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 
 import { OppsummeringSteg } from './OppsummeringSteg';
@@ -56,8 +58,17 @@ const defaultSøkerinfoMor = {
             type: 'GIFT',
         },
     },
-    arbeidsforhold: [],
+    arbeidsforhold: [
+        {
+            arbeidsgiverId: '1',
+            arbeidsgiverNavn: 'Arbeidsgiver AS',
+            arbeidsgiverIdType: 'orgnr',
+            fom: '2021-01-01',
+            stillingsprosent: 50,
+        },
+    ],
 } satisfies PersonMedArbeidsforholdDto_fpoversikt;
+
 const defaultSøkerinfoFar = {
     person: {
         fnr: '08099017784',
@@ -148,6 +159,27 @@ const defaultUttaksplan = [
     },
 ] satisfies Periode[];
 
+const defaultUttaksplanNy = [
+    {
+        forelder: 'MOR',
+        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+        fom: '2021-11-24',
+        tom: '2021-12-14',
+    },
+    {
+        utsettelseÅrsak: 'SØKER_INNLAGT',
+        forelder: 'MOR',
+        fom: '2021-12-15',
+        tom: '2022-01-25',
+    },
+    {
+        forelder: 'MOR',
+        kontoType: 'FELLESPERIODE',
+        fom: '2022-03-30',
+        tom: '2022-06-07',
+    },
+] satisfies UttakPeriode_fpoversikt[];
+
 const defaultArbeidsforholdOgInntekt = {
     harHattAndreInntektskilder: false,
     harJobbetSomFrilans: false,
@@ -192,6 +224,56 @@ const arbeidsforholdMorJobber80Prosent = [
     },
 ] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
+const STØNADSKONTO_100 = {
+    kontoer: [
+        {
+            konto: 'MØDREKVOTE',
+            dager: 75,
+        },
+        {
+            konto: 'FEDREKVOTE',
+            dager: 75,
+        },
+        {
+            konto: 'FELLESPERIODE',
+            dager: 80,
+        },
+        {
+            konto: 'FORELDREPENGER_FØR_FØDSEL',
+            dager: 15,
+        },
+    ],
+    minsteretter: {
+        farRundtFødsel: 0,
+        toTette: 0,
+    },
+} satisfies KontoBeregningDto;
+
+const STØNADSKONTO_80 = {
+    kontoer: [
+        {
+            konto: 'MØDREKVOTE',
+            dager: 95,
+        },
+        {
+            konto: 'FEDREKVOTE',
+            dager: 95,
+        },
+        {
+            konto: 'FELLESPERIODE',
+            dager: 90,
+        },
+        {
+            konto: 'FORELDREPENGER_FØR_FØDSEL',
+            dager: 15,
+        },
+    ],
+    minsteretter: {
+        farRundtFødsel: 0,
+        toTette: 0,
+    },
+} satisfies KontoBeregningDto;
+
 type StoryArgs = {
     søkerinfo?: PersonMedArbeidsforholdDto_fpoversikt;
     søkersituasjon?: SøkersituasjonFp;
@@ -206,6 +288,7 @@ type StoryArgs = {
     egenNæring?: NæringDto;
     andreInntekter?: AndreInntektskilder[];
     vedlegg?: VedleggDataType;
+    uttaksplan?: UttakPeriode_fpoversikt[];
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof OppsummeringSteg>;
 
@@ -217,6 +300,12 @@ const meta = {
             handlers: [
                 http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
                 http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.konto, () =>
+                    HttpResponse.json({
+                        '80': STØNADSKONTO_80,
+                        '100': STØNADSKONTO_100,
+                    }),
+                ),
             ],
         },
     },
@@ -233,6 +322,7 @@ const meta = {
         andreInntekter,
         gåTilNesteSide,
         vedlegg = defaultVedlegg,
+        uttaksplan = defaultUttaksplanNy,
         ...rest
     }) => {
         const freshQueryClient = new QueryClient({
@@ -259,12 +349,16 @@ const meta = {
                                 harUttaksplanBlittSlettet: false,
                                 antallUkerIUttaksplan: 1,
                             },
+                            [ContextDataType.UTTAKSPLAN_METADATA_NY]: {
+                                ønskerJustertUttakVedFødsel: false,
+                            },
                             [ContextDataType.OM_BARNET]: barn,
                             [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
                             [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100',
                             [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
+                            [ContextDataType.UTTAKSPLAN_NY]: uttaksplan,
                             [ContextDataType.VEDLEGG]: vedlegg,
                         }}
                     >
@@ -1040,6 +1134,18 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
             } satisfies Periode,
         ];
 
+        // Ny uttaksplan med samtidig uttak
+        const uttaksplanMedSamtidigUttakNy = [
+            ...defaultUttaksplanNy.slice(0, 2), // Behold de første periodene
+            {
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                fom: '2022-03-30',
+                tom: '2022-06-07',
+                samtidigUttak: 50,
+            } satisfies UttakPeriode_fpoversikt,
+        ];
+
         return (
             <QueryClientProvider client={freshQueryClient}>
                 <MemoryRouter initialEntries={[SøknadRoutes.OPPSUMMERING]}>
@@ -1057,12 +1163,16 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
                                 harUttaksplanBlittSlettet: false,
                                 antallUkerIUttaksplan: 1,
                             },
+                            [ContextDataType.UTTAKSPLAN_METADATA_NY]: {
+                                ønskerJustertUttakVedFødsel: false,
+                            },
                             [ContextDataType.OM_BARNET]: args.barn || defaultBarn,
                             [ContextDataType.UTENLANDSOPPHOLD]: args.utenlandsopphold || defaultUtenlandsopphold,
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: args.utenlandsoppholdSenere,
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: args.utenlandsoppholdTidligere,
                             [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100',
                             [ContextDataType.UTTAKSPLAN]: uttaksplanMedSamtidigUttak, // Bruk den nye uttaksplanen
+                            [ContextDataType.UTTAKSPLAN_NY]: uttaksplanMedSamtidigUttakNy, // Bruk den nye uttaksplanen
                             [ContextDataType.VEDLEGG]: args.vedlegg,
                         }}
                     >
@@ -1086,5 +1196,42 @@ export const ErEndringssøknad: Story = {
             kanIkkeOppgis: false,
             erAleneOmOmsorg: false,
         },
+    },
+};
+
+export const VisGradertPeriode: Story = {
+    args: {
+        ...Default.args,
+        annenForelder: {
+            fornavn: 'Espen',
+            etternavn: 'Utvikler',
+            fnr: '1212121313',
+            harRettPåForeldrepengerINorge: true,
+            kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
+        },
+        uttaksplan: [
+            {
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                fom: '2021-11-24',
+                tom: '2021-12-14',
+            },
+            {
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                gradering: {
+                    aktivitet: {
+                        type: 'ORDINÆRT_ARBEID',
+                        arbeidsgiver: {
+                            id: '1',
+                        },
+                    },
+                    arbeidstidprosent: 50,
+                },
+                fom: '2021-12-15',
+                tom: '2022-01-25',
+            },
+        ] satisfies UttakPeriode_fpoversikt[],
     },
 };

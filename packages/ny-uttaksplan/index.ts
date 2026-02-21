@@ -16,3 +16,8 @@ export { KvoteOppsummering } from './src/KvoteOppsummering';
 export { UttaksplanKalender } from './src/kalender/UttaksplanKalender';
 
 export { FjernAltIUttaksplanModal } from './src/FjernAltIUttaksplanModal';
+export { useErAntallDagerOvertrukketIUttaksplan } from './src/utils/kvoteOppsummeringUtils';
+
+export { erEøsUttakPeriode, erVanligUttakPeriode } from './src/types/UttaksplanPeriode';
+
+export { erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from './src/utils/periodeUtils';
