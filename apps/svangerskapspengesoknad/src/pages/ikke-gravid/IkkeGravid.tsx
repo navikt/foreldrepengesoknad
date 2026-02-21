@@ -7,11 +7,11 @@ import { links } from '@navikt/fp-constants';
 import { loggUmamiEvent } from '@navikt/fp-metrics';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
-export const IkkeKvinne = () => {
+export const IkkeGravid = () => {
     loggUmamiEvent({
         origin: 'svangerskapspengesoknad',
         eventName: 'besøk',
-        eventData: { tittel: 'ikkeKvinne' },
+        eventData: { tittel: 'ikkeGravid' },
     });
 
     return (
@@ -20,18 +20,19 @@ export const IkkeKvinne = () => {
                 <GuidePanel poster>
                     <VStack gap="space-16">
                         <Heading level="2" size="small">
-                            <FormattedMessage id="ikkeKvinne.tittel" />
+                            <FormattedMessage id="ikkeGravid.tittel" />
                         </Heading>
-                        <FormattedMessage id="ikkeKvinne.tekst" />
+                        <FormattedMessage id="ikkeGravid.tekst" />
                     </VStack>
                 </GuidePanel>
 
                 <HStack justify="center">
                     <Button as="a" icon={<ArrowRightIcon aria-hidden />} iconPosition="right" href={links.nav}>
-                        <FormattedMessage id="ikkeKvinne.knappetekst" />
+                        <FormattedMessage id="ikkeGravid.knappetekst" />
                     </Button>
                 </HStack>
             </VStack>
         </SkjemaRotLayout>
     );
 };
+

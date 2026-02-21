@@ -18,6 +18,7 @@ const FEIL_VED_INNSENDING =
 export type SvpDataMapAndMetaData = {
     version: number;
     søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    erGravidBekreftet?: boolean;
 } & ContextDataMap;
 
 export const useMellomlagreSøknad = (
