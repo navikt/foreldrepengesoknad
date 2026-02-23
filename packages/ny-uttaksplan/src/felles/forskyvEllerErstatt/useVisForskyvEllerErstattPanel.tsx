@@ -7,7 +7,7 @@ type Periode = {
 };
 
 export const useVisForskyvEllerErstattPanel = (valgtePerioder: Periode[]) => {
-    const [åpnedeValgtePerioder, setÅpnedeValgtePerioder] = useState<typeof valgtePerioder | null>(null);
+    const [åpnedeValgtePerioder, setÅpnedeValgtePerioder] = useState<Periode[] | null>(null);
 
     const visEndreEllerForskyvPanel =
         åpnedeValgtePerioder !== null && erLikePerioder(åpnedeValgtePerioder, valgtePerioder);
