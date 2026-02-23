@@ -64,7 +64,7 @@ export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Pro
         <VStack gap="space-12">
             {visEndreEllerForskyvPanel && valgtPeriodeSomSkalSlettes && (
                 <SlettPeriodeForskyvEllerErstatt
-                    valgtePerioder={[valgtPeriodeSomSkalSlettes]}
+                    valgtePerioder={finnDagerSomSkalSlettes(sammenslåtteValgtePerioder, valgtPeriodeSomSkalSlettes)}
                     avbryt={() => {
                         setValgtPeriodeSomSkalSlettes(undefined);
                         setVisEndreEllerForskyvPanel(false);
