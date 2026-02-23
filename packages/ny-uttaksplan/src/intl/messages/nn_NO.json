@@ -203,6 +203,7 @@
     "LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt": "Du må velge mors aktivitet før du kan gå videre.",
     "RedigeringPanel.AvslåttPeriode": "Avslått periode",
     "RedigeringPanel.LeggTilFerie": "Legg til ferie",
+    "RedigeringPanel.LeggTilUtsettelse": "Legg til utsettelse",
     "RedigeringPanel.EndreTilFerie": "Endre til ferie",
     "RedigeringPanel.ValgtDagerFørFamiliehendelsesdato": "Du kan ikkje forskyve periodar når du har valgt minst ein dag før fødsel/termin",
     "RedigeringPanel.RedigerUttaksplan": "Endre",
@@ -223,6 +224,7 @@
     "RedigeringPanel.SamtidigUttakForelder": "{forelder, select, MOR {Mor} other {{erMedmor, select, true {Medmor} other {Far}}}}",
     "RedigeringPanel.SamtidigUttak": " har {prosent} % {kvote, select, FELLESPERIODE {fellesperiode} MØDREKVOTE {mødrekvote} other {{erMedmor, select, true {medmorkvote} other {fedrekvote}}}}",
     "RedigeringPanel.Ferie": "Ferie",
+    "RedigeringPanel.Utsettelse": "Utsettelse",
     "RedigeringPanel.Far": "Far",
     "RedigeringPanel.Mor": "Mor",
     "RedigeringPanel.Medmor": "Medmor",
@@ -339,5 +341,12 @@
     "LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.FarMedmorMåHa100ProsentUttakJobb": "Far/medmor må arbeide og ha foreldrepengar til saman 100 %",
     "LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.MorMåHa100ProsentUttakJobb": "Mor må arbeide og ha foreldrepengar til saman 100 %. Ho vil miste dagar når ho ikkje har 100 % foreldrepengar",
     "LeggTilEllerEndrePeriodeFellesForm.DagerReduseres": "Arbeid i tidsrommet 3 veker før termin og 6 veker etter fødsel, betyr at foreldrepengane vil reduseres det du jobbar utan at du får dagane til gode til seinere.",
-    "UttaksplanListe.ManglerMorsAktivitet": "Du må velgja mors aktivitet før du går vidare"
+    "UttaksplanListe.ManglerMorsAktivitet": "Du må velgja mors aktivitet før du går vidare",
+    "LeggTilUtsettelsePanel.VelgÅrsak": "Velg årsak for utsettelse",
+    "LeggTilUtsettelsePanel.VelgÅrsak.Required": "Du må velge årsak for utsettelse",
+    "LeggTilUtsettelsePanel.SøkerSykdom": "Søkjar er sjuk",
+    "LeggTilUtsettelsePanel.SøkerInnlagt": "Søkjar er innlagt",
+    "LeggTilUtsettelsePanel.BarnInnlagt": "Barn er innlagt",
+    "LeggTilUtsettelsePanel.LeggTil": "Legg til",
+    "LeggTilUtsettelsePanel.Lukk": "Avbryt"
 }

@@ -10,6 +10,12 @@ import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { LeggTilPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstatt';
 import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
+import { LeggTilUtsettelsePanel } from '../../felles/utsettelse/LeggTilUtsettelsePanel';
+import { useVisUtsettelsePanel } from '../../felles/utsettelse/useVisUtsettelsePanel';
+import {
+    erAllePerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato,
+    erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato,
+} from '../../felles/uttaksplanValidatorer';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
@@ -31,6 +37,8 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
         foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
         uttakPerioder,
+        familiehendelsedato,
+        familiesituasjon,
     } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, setValgtePerioder, leggTilUttaksplanPerioder, setEndredePerioder } =
@@ -38,6 +46,9 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
 
     const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } =
         useVisForskyvEllerErstattPanel(sammenslåtteValgtePerioder);
+
+    const { visUtsettelsePanel, setVisUtsettelsePanel } = useVisUtsettelsePanel(sammenslåtteValgtePerioder);
+
     const [skalViseKnapper, setSkalViseKnapper] = useState(true);
 
     const erDesktop = useErDesktop();
@@ -102,6 +113,25 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
             </Box>
         );
     }
+
+    if (visUtsettelsePanel) {
+        return (
+            <Box padding="space-24">
+                <LeggTilUtsettelsePanel setVisUtsettelsePanel={setVisUtsettelsePanel} />
+            </Box>
+        );
+    }
+
+    const skalViseUtsettelsesknapp =
+        søker === 'MOR' &&
+        familiesituasjon !== 'adopsjon' &&
+        erAllePerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(sammenslåtteValgtePerioder, familiehendelsedato);
+
+    const skalViseFerieknapp = !(
+        søker === 'MOR' &&
+        familiesituasjon !== 'adopsjon' &&
+        erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(sammenslåtteValgtePerioder, familiehendelsedato)
+    );
 
     return (
         <VStack
@@ -217,22 +247,34 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
                                             skalViseLeggTilKnappetekst={skalViseLeggTilKnappetekst}
                                         />
                                     </Show>
-                                    <Button
-                                        variant="secondary"
-                                        size="small"
-                                        onClick={() =>
-                                            erEksisterendePerioderEtterValgteDager
-                                                ? setVisEndreEllerForskyvPanel(true)
-                                                : leggTilEllerForskyvPeriode(false)
-                                        }
-                                        type="button"
-                                    >
-                                        {skalViseLeggTilKnappetekst ? (
-                                            <FormattedMessage id="RedigeringPanel.LeggTilFerie" />
-                                        ) : (
-                                            <FormattedMessage id="RedigeringPanel.EndreTilFerie" />
-                                        )}
-                                    </Button>
+                                    {skalViseFerieknapp && (
+                                        <Button
+                                            variant="secondary"
+                                            size="small"
+                                            onClick={() =>
+                                                erEksisterendePerioderEtterValgteDager
+                                                    ? setVisEndreEllerForskyvPanel(true)
+                                                    : leggTilEllerForskyvPeriode(false)
+                                            }
+                                            type="button"
+                                        >
+                                            {skalViseLeggTilKnappetekst ? (
+                                                <FormattedMessage id="RedigeringPanel.LeggTilFerie" />
+                                            ) : (
+                                                <FormattedMessage id="RedigeringPanel.EndreTilFerie" />
+                                            )}
+                                        </Button>
+                                    )}
+                                    {skalViseUtsettelsesknapp && (
+                                        <Button
+                                            variant="secondary"
+                                            size="small"
+                                            onClick={() => setVisUtsettelsePanel(true)}
+                                            type="button"
+                                        >
+                                            <FormattedMessage id="RedigeringPanel.LeggTilUtsettelse" />
+                                        </Button>
+                                    )}
                                     <Button
                                         type="button"
                                         variant="tertiary"

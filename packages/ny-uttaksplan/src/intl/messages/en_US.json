@@ -204,6 +204,7 @@
     "RedigeringPanel.AvslåttPeriode": "Rejected period",
     "RedigeringPanel.EndreTilFerie": "Change to vacation",
     "RedigeringPanel.LeggTilFerie": "Add vacation",
+    "RedigeringPanel.LeggTilUtsettelse": "Add postponement",
     "RedigeringPanel.ValgtDagerFørFamiliehendelsesdato": "You cannot push existing periods when you have selected at least one day before birth",
     "RedigeringPanel.ValgtDagerFørSeksUkerEtterFamDato": "You cannot push existing periods when you have selected days before six weeks after birth",
     "RedigeringPanel.SenerePerioderReadonly": "You cannot push existing periods when there are later periods that cannot be changed.",
@@ -225,6 +226,7 @@
     "RedigeringPanel.EøsPeriode": "EU/EEA period",
     "RedigeringPanel.MedmorKvote": "Co-mother's quota",
     "RedigeringPanel.Ferie": "Vacation",
+    "RedigeringPanel.Utsettelse": "Postponement",
     "RedigeringPanel.SamtidigUttakForelder": "{forelder, select, MOR {Mother} other {{erMedmor, select, true {Co-mother} other {Father}}}}",
     "RedigeringPanel.SamtidigUttak": " has {prosent} % {kvote, select, FELLESPERIODE {shared period} MØDREKVOTE {mother's quota} other {{erMedmor, select, true {co-mother's quota} other {father's quota}}}}",
     "RedigeringPanel.Foreldrepenger": "Parental benefits",
@@ -339,5 +341,12 @@
     "LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.FarMedmorMåHa100ProsentUttakJobb": "Father/co-mother must work and have parental benefits totaling 100%",
     "LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.MorMåHa100ProsentUttakJobb": "Mother must work and have parental benefits totaling 100%. She will lose days when she does not have 100% parental benefits",
     "LeggTilEllerEndrePeriodeFellesForm.DagerReduseres": "Working in the period 3 weeks before the due date and 6 weeks after birth means that parental benefits will be reduced for the days you work without being able to take those days later.",
-    "UttaksplanListe.ManglerMorsAktivitet": "You must select mother's activity before proceeding."
+    "UttaksplanListe.ManglerMorsAktivitet": "You must select mother's activity before proceeding.",
+    "LeggTilUtsettelsePanel.VelgÅrsak": "Choose reason for postponement",
+    "LeggTilUtsettelsePanel.VelgÅrsak.Required": "You must select a reason for postponement",
+    "LeggTilUtsettelsePanel.SøkerSykdom": "Applicant is sick",
+    "LeggTilUtsettelsePanel.SøkerInnlagt": "Applicant is hospitalized",
+    "LeggTilUtsettelsePanel.BarnInnlagt": "Child is hospitalized",
+    "LeggTilUtsettelsePanel.LeggTil": "Add",
+    "LeggTilUtsettelsePanel.Lukk": "Cancel"
 }

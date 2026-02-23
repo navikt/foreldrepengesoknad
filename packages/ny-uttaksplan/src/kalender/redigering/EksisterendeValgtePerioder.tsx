@@ -1,4 +1,5 @@
 import {
+    ArrowRightIcon,
     ParasolBeachIcon,
     PersonCircleFillIcon,
     PersonGroupIcon,
@@ -17,6 +18,7 @@ import {
     BrukerRolleSak_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
+    UttakUtsettelseÅrsak_fpoversikt,
 } from '@navikt/fp-types/src/genererteTyper';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { UttaksdagenString } from '@navikt/fp-utils';
@@ -325,6 +327,18 @@ const PeriodeIkon = ({
         );
     }
 
+    if (erVanligUttakPeriode(periode) && periode.utsettelseÅrsak && periode.utsettelseÅrsak !== 'LOVBESTEMT_FERIE') {
+        return (
+            <ArrowRightIcon
+                title={intl.formatMessage({ id: 'RedigeringPanel.Utsettelse' })}
+                fontSize="1.5rem"
+                height="35px"
+                width="35px"
+                color="var(--ax-bg-warning-strong)"
+            />
+        );
+    }
+
     if (erEøsUttakPeriode(periode)) {
         if (søker === 'MOR') {
             if (erMedmorDelAvSøknaden) {
@@ -484,7 +498,28 @@ const PeriodeKvoteType = ({
     if (erIkkeEøsUttakPeriode && periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
         return <FormattedMessage id="RedigeringPanel.Ferie" />;
     }
+    if (erIkkeEøsUttakPeriode && periode.utsettelseÅrsak && periode.utsettelseÅrsak !== 'LOVBESTEMT_FERIE') {
+        return (
+            <HStack gap="space-4">
+                <FormattedMessage id="RedigeringPanel.Utsettelse" />:
+                <BodyShort>{getUtsettelseÅrsakTekst(periode.utsettelseÅrsak)}</BodyShort>
+            </HStack>
+        );
+    }
     return null;
+};
+
+const getUtsettelseÅrsakTekst = (utsettelseÅrsak: UttakUtsettelseÅrsak_fpoversikt) => {
+    switch (utsettelseÅrsak) {
+        case 'SØKER_SYKDOM':
+            return <FormattedMessage id="LeggTilUtsettelsePanel.SøkerSykdom" />;
+        case 'SØKER_INNLAGT':
+            return <FormattedMessage id="LeggTilUtsettelsePanel.SøkerInnlagt" />;
+        case 'BARN_INNLAGT':
+            return <FormattedMessage id="LeggTilUtsettelsePanel.BarnInnlagt" />;
+        default:
+            return null;
+    }
 };
 
 const useSlettPeriodeFn = () => {
