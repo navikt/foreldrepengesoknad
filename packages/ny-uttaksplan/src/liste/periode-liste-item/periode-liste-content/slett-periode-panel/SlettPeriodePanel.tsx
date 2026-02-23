@@ -47,7 +47,7 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
         uttaksplanperioder.length === 1 ? uttaksplanperioder : [],
     );
 
-    // TODO (TOR) Bør skriva om heile kompontenen her.
+    // TODO (TOR) Bør skriva om heile komponenten.
     useEffect(() => {
         if (!erEksisterendePerioderEtterValgteDager && uttaksplanperioder.length === 1) {
             // eslint-disable-next-line react-you-might-not-need-an-effect/no-pass-data-to-parent, react-hooks/immutability

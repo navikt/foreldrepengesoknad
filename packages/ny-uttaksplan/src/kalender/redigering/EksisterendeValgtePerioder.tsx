@@ -274,10 +274,10 @@ export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Pro
                                             if (erEksisterendePerioderEtterValgteDager) {
                                                 setValgtPeriodeSomSkalSlettes(p);
                                                 setVisEndreEllerForskyvPanel(true);
+                                                setSkalViseKnapper(false);
                                             } else {
                                                 slettPeriode(p, false);
                                             }
-                                            setSkalViseKnapper(false);
                                         }}
                                     />
                                 )}
