@@ -1357,4 +1357,49 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
         expect(screen.queryByText('Hva skal skje med resten av planen?')).not.toBeInTheDocument();
     });
+
+    it('skal lukke dialog for forskyv/erstatt ved sletting når en endrer på dager i kalender', async () => {
+        render(<MedArbeidsforhold />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
+
+        const juni = screen.getByTestId('year:2024;month:5');
+
+        await userEvent.click(within(juni).getByTestId('day:3;dayColor:BLUE'));
+        await userEvent.click(within(juni).getByTestId('day:12;dayColor:BLUE'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(screen.getByText('Slett dager fra periode'));
+
+        expect(screen.getByText('Hva vil du gjøre med dagene du sletter?')).toBeInTheDocument();
+
+        await userEvent.click(within(juni).getByTestId('day:13;dayColor:BLUE'));
+        expect(screen.getByText('Valgte datoer inneholder en eksisterende periode:')).toBeInTheDocument();
+        expect(screen.queryByText('Hva vil du gjøre med dagene du sletter?')).not.toBeInTheDocument();
+    });
+
+    it('skal ikke få spørsmål om forskyv/erstatt når en sletter siste dag i kalenderen', async () => {
+        render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
+
+        const juli = screen.getByTestId('year:2024;month:6');
+
+        await userEvent.click(within(juli).getByTestId('day:15;dayColor:GREEN'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(screen.getByText('Slett dager fra periode'));
+
+        expect(within(juli).getByTestId('day:15;dayColor:NONE')).toBeInTheDocument();
+    });
 });
