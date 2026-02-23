@@ -66,4 +66,5 @@ export const links = {
     omForeldrepenger: 'https://www.nav.no/foreldrepenger',
     utbetalingsoversikt: 'https://www.nav.no/utbetalingsoversikt/',
     foreldrepengerPlanlegger: 'https://www.nav.no/foreldrepenger/planlegger/',
+    aktivitetskrav: 'https://www.nav.no/foreldrepenger#aktivitetskrav',
 };

@@ -60,7 +60,7 @@ describe('<UttaksplanStegNy>', () => {
             await userEvent.click(screen.getByText('Neste steg'));
 
             expect(
-                await screen.findAllByText('Du må gi oss mer informasjon for dagene som er merket med'),
+                await screen.findAllByText('Du må fylle ut informasjon om mors aktivitet i de markerte periodene'),
             ).toHaveLength(2);
         }),
     );

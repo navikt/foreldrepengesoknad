@@ -1,3 +1,4 @@
+import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons';
 import dayjs, { Dayjs } from 'dayjs';
 import React, { useRef, useState } from 'react';
 
@@ -98,7 +99,9 @@ export const Day = React.memo(
                 aria-label={formatDate(date) + (srText ? `, ${srText}` : '')}
             >
                 {day}
-                {isMarked && periodeColor !== 'GRAY' && <span className={styles.star}>★</span>}
+                {isMarked && periodeColor !== 'GRAY' && (
+                    <ExclamationmarkTriangleFillIcon className={styles.triangle} aria-hidden />
+                )}
                 {dateTooltipCallback && isPeriodDifferentFromNoneOrGray(periodeColor) && (
                     <Popover open={isTooltipOpen} onClose={() => setIsTooltipOpen(false)} anchorEl={buttonRef.current}>
                         <Popover.Content>{dateTooltipCallback(isoDate)}</Popover.Content>

@@ -15,6 +15,7 @@ import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Attachment, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
+import { erVanligUttakPeriode } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ManglendeVedleggFormData } from './ManglendeVedleggFormData';
@@ -89,8 +90,11 @@ export const ManglendeVedleggNy = ({
     const familiehendelsedato = getFamiliehendelsedato(barn);
 
     const erFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
+    const uttaksplanUtenAnnenPartsPerioder = uttaksplan?.filter(
+        (periode) => erVanligUttakPeriode(periode) && periode.forelder === (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
+    );
     const perioderSomManglerVedlegg = perioderSomKreverVedleggNy(
-        uttaksplan || [],
+        uttaksplanUtenAnnenPartsPerioder || [],
         erFarEllerMedmor,
         annenForelder,
         familiehendelsedato,

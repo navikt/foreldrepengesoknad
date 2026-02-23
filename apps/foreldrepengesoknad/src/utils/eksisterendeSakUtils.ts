@@ -37,6 +37,7 @@ import {
 } from '@navikt/fp-types';
 import { Tidsperioden } from '@navikt/fp-utils';
 import { convertTidsperiodeToTidsperiodeDate } from '@navikt/fp-uttaksplan';
+import { erEøsUttakPeriode } from '@navikt/fp-uttaksplan-ny';
 
 import {
     ISOStringToDate,
@@ -619,10 +620,13 @@ export const erPeriodeIOpprinneligPlan = (
     nyPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
 ): boolean => {
     return eksisterendePerioder.some((p) => {
-        if ((erEøsPeriode(nyPeriode) && !erEøsPeriode(p)) || (!erEøsPeriode(nyPeriode) && erEøsPeriode(p))) {
+        if (
+            (erEøsUttakPeriode(nyPeriode) && !erEøsUttakPeriode(p)) ||
+            (!erEøsUttakPeriode(nyPeriode) && erEøsUttakPeriode(p))
+        ) {
             return false;
         }
-        if (erEøsPeriode(nyPeriode) && erEøsPeriode(p)) {
+        if (erEøsUttakPeriode(nyPeriode) && erEøsUttakPeriode(p)) {
             return (
                 nyPeriode.trekkdager === p.trekkdager &&
                 nyPeriode.fom === p.fom &&
@@ -631,7 +635,7 @@ export const erPeriodeIOpprinneligPlan = (
             );
         }
 
-        if (erEøsPeriode(nyPeriode) || erEøsPeriode(p)) {
+        if (erEøsUttakPeriode(nyPeriode) || erEøsUttakPeriode(p)) {
             throw new Error('Ingen perioder bør være eøs-perioder her');
         }
 
@@ -649,10 +653,4 @@ export const erPeriodeIOpprinneligPlan = (
             nyPeriode.overføringÅrsak === p.overføringÅrsak
         );
     });
-};
-
-const erEøsPeriode = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-): periode is UttakPeriodeAnnenpartEøs_fpoversikt => {
-    return 'trekkdager' in periode;
 };
