@@ -12,7 +12,7 @@ import {
 import { TidsperiodenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
-import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
+import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 
 export const useErAntallDagerOvertrukketIUttaksplan = () => {
     const {
@@ -232,7 +232,7 @@ const harOppholdÅrsakLikKontoType = (
     kontoType: KontoTypeUttak,
     periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
 ): boolean => {
-    if ('trekkdager' in periode || !periode.oppholdÅrsak) {
+    if (erEøsUttakPeriode(periode) || !periode.oppholdÅrsak) {
         return false;
     }
 
@@ -256,7 +256,7 @@ const getStønadskontoTypeFromOppholdÅrsakType = (årsak: UttakOppholdÅrsak_fp
 };
 
 const finnAntallDagerÅTrekke = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    if ('trekkdager' in periode) {
+    if (erEøsUttakPeriode(periode)) {
         return periode.trekkdager;
     }
 
