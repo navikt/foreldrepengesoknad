@@ -17,8 +17,8 @@ import {
     erFarDelAvSøknaden,
     erFarOgFar,
     erMorDelAvSøknaden,
+    getFornavnPåSøker1,
 } from '@navikt/fp-uttaksplan-ny';
-import { getFornavnPåSøker1 } from '@navikt/fp-uttaksplan-ny/src/utils/HvemPlanleggerUtils';
 import { isLessThanThreeWeeksAgo, isRequired, isValidDate } from '@navikt/fp-validation';
 
 const TODAY = dayjs().startOf('day').toDate();

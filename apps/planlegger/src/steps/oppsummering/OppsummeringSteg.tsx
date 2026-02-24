@@ -11,9 +11,7 @@ import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { KontoBeregningResultatDto, Satser } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
-import { erBarnetAdoptert, erBarnetFødt } from '@navikt/fp-uttaksplan-ny';
-import { erAlenesøker } from '@navikt/fp-uttaksplan-ny/src/utils/HvemPlanleggerUtils';
-import { utledHvemSomHarRett } from '@navikt/fp-uttaksplan-ny/src/utils/hvemHarRettUtils';
+import { erAlenesøker, erBarnetAdoptert, erBarnetFødt, utledHvemSomHarRett } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { InlineSkyraSurvey } from '../../components/InlineSkyraSurvey';

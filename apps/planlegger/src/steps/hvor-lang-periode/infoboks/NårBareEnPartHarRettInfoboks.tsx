@@ -5,8 +5,14 @@ import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Infobox } from '@navikt/fp-ui';
-import { Arbeidssituasjon, Arbeidsstatus, HvemPlanlegger, erMorDelAvSøknaden } from '@navikt/fp-uttaksplan-ny';
-import { finnSøker1Tekst, finnSøker2Tekst } from '@navikt/fp-uttaksplan-ny/src/utils/HvemPlanleggerUtils';
+import {
+    Arbeidssituasjon,
+    Arbeidsstatus,
+    HvemPlanlegger,
+    erMorDelAvSøknaden,
+    finnSøker1Tekst,
+    finnSøker2Tekst,
+} from '@navikt/fp-uttaksplan-ny';
 
 interface Props {
     hvemPlanlegger: HvemPlanlegger;

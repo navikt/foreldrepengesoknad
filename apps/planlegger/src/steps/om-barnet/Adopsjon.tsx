@@ -8,8 +8,7 @@ import { BodyLong, VStack } from '@navikt/ds-react';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { HvemPlanleggerType } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
-import { HvemPlanlegger, OmBarnet } from '@navikt/fp-uttaksplan-ny';
-import { finnSøker2Tekst } from '@navikt/fp-uttaksplan-ny/src/utils/HvemPlanleggerUtils';
+import { HvemPlanlegger, OmBarnet, finnSøker2Tekst } from '@navikt/fp-uttaksplan-ny';
 import {
     isAfterOrSame,
     isAfterOrSameAsSixMonthsAgo,

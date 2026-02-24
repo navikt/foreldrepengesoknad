@@ -14,23 +14,24 @@ import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-r
 
 import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
-import { capitalizeFirstLetter } from '@navikt/fp-utils';
-import { UttaksplanDataProvider, UttaksplanKalender } from '@navikt/fp-uttaksplan-ny';
-import { Arbeidssituasjon } from '@navikt/fp-uttaksplan-ny/src/types/Arbeidssituasjon';
-import { OmBarnet } from '@navikt/fp-uttaksplan-ny/src/types/Barnet';
-import { Fordeling } from '@navikt/fp-uttaksplan-ny/src/types/Fordeling';
-import { HvemPlanlegger } from '@navikt/fp-uttaksplan-ny/src/types/HvemPlanlegger';
-import { HvorLangPeriode } from '@navikt/fp-uttaksplan-ny/src/types/HvorLangPeriode';
+import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 import {
+    Arbeidssituasjon,
+    Fordeling,
+    HvemPlanlegger,
+    HvorLangPeriode,
+    OmBarnet,
+    UttaksplanDataProvider,
+    UttaksplanKalender,
     erAlenesøker,
     getErFarEllerMedmor,
     getFornavnPåSøker1,
     getFornavnPåSøker2,
-    getNavnGenitivEierform,
-} from '@navikt/fp-uttaksplan-ny/src/utils/HvemPlanleggerUtils';
+    loggExpansionCardOpen,
+    utledHvemSomHarRett,
+    utledRettighet,
+} from '@navikt/fp-uttaksplan-ny';
 import { mapOmBarnetTilBarn } from '@navikt/fp-uttaksplan-ny/src/utils/barnetUtils';
-import { utledHvemSomHarRett, utledRettighet } from '@navikt/fp-uttaksplan-ny/src/utils/hvemHarRettUtils';
-import { loggExpansionCardOpen } from '@navikt/fp-uttaksplan-ny/src/utils/umamiUtils';
 
 import { ContextDataType, useContextGetData } from '../../../app-data/PlanleggerDataContext';
 
