@@ -18,6 +18,7 @@ import {
     UttaksplanDataProvider,
     UttaksplanKalender,
     UttaksplanListe,
+    erEøsUttakPeriode,
 } from '@navikt/fp-uttaksplan-ny';
 
 import { hentUttaksKontoOptions } from '../../api/queries';
@@ -160,7 +161,7 @@ const leggTilForelderOmMangler = (
     forelder: BrukerRolleSak_fpoversikt,
 ) => {
     return perioder.map((periode) => {
-        if ('trekkdager' in periode || periode.forelder !== undefined) {
+        if (erEøsUttakPeriode(periode) || periode.forelder !== undefined) {
             return periode;
         }
         return {
