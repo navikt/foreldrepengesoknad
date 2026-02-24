@@ -1,4 +1,4 @@
-import { loggUmamiEvent } from '../../../metrics/src/umami';
+import { loggUmamiEvent } from '@navikt/fp-metrics';
 
 export const loggExpansionCardOpen = (tittel: string) => (open: boolean) => {
     if (open) {
