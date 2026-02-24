@@ -13,17 +13,13 @@ import { useNavigate } from 'react-router-dom';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 
-import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './FpDataContext';
 
-export const useSendSøknad = (
-    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
-    erEndringssøknad: boolean,
-    foreldrepengerSaker: FpSak_fpoversikt[],
-) => {
+export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt, erEndringssøknad: boolean) => {
     const navigate = useNavigate();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
@@ -37,7 +33,7 @@ export const useSendSøknad = (
         const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
 
         const cleanedSøknad = isLocalhostOrDev()
-            ? getSøknadsdataForInnsendingNy(erEndringssøknad, hentData, søkerinfo, foreldrepengerSaker)
+            ? getSøknadsdataForInnsendingNy(erEndringssøknad, hentData, søkerinfo)
             : getSøknadsdataForInnsending(
                   erEndringssøknad,
                   hentData,

@@ -22,7 +22,6 @@ import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import {
     EndringssøknadForeldrepengerDto,
     ForeldrepengesøknadDto,
-    FpSak_fpoversikt,
     Frilans,
     NæringDto,
     PersonMedArbeidsforholdDto_fpoversikt,
@@ -184,31 +183,6 @@ const EXPECTED_SØKER_INFO = {
     })),
 };
 
-const saker = [
-    {
-        dekningsgrad: 'HUNDRE',
-        familiehendelse: {
-            fødselsdato: '2024-01-01',
-            antallBarn: 1,
-        },
-        gjeldendeVedtak: { perioder: [] },
-        harAnnenForelderTilsvarendeRettEØS: false,
-        gjelderAdopsjon: false,
-        kanSøkeOmEndring: true,
-        morUføretrygd: false,
-        rettighetType: 'BEGGE_RETT',
-        sakAvsluttet: false,
-        sakTilhørerMor: true,
-        saksnummer: '123456',
-        ønskerJustertUttakVedFødsel: false,
-        oppdatertTidspunkt: '2022-05-06',
-        åpenBehandling: undefined,
-        annenPart: { fnr: '123456789' },
-        barn: [{ fnr: '987654321' }],
-        forelder: 'MOR',
-    },
-] satisfies FpSak_fpoversikt[];
-
 const getWrapper =
     () =>
     ({ children }: { children: ReactNode }) => (
@@ -284,7 +258,7 @@ describe('useFpSendSøknad', () => {
         const deleteMock = vi.mocked(ky.delete);
 
         const erEndringssøknad = false;
-        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, erEndringssøknad, saker), {
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, erEndringssøknad), {
             wrapper: getWrapper(),
         });
 
@@ -370,7 +344,7 @@ describe('useFpSendSøknad', () => {
         const deleteMock = vi.mocked(ky.delete);
 
         const erEndringssøknad = true;
-        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, erEndringssøknad, saker), {
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, erEndringssøknad), {
             wrapper: getWrapper(),
         });
 
