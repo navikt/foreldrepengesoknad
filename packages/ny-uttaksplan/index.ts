@@ -15,6 +15,9 @@ export { UttaksplanListe } from './src/liste/UttaksplanListe';
 export { KvoteOppsummering } from './src/KvoteOppsummering';
 export { UttaksplanKalender } from './src/kalender/UttaksplanKalender';
 
+export { HvaErMulig } from './src/infobokser/hva-er-mulig/HvaErMulig';
+export { UforutsetteEndringer } from './src/infobokser/uforutsette-endringer/UforutsetteEndringer';
+
 export { FjernAltIUttaksplanModal } from './src/FjernAltIUttaksplanModal';
 export { useErAntallDagerOvertrukketIUttaksplan } from './src/utils/kvoteOppsummeringUtils';
 

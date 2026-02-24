@@ -28,7 +28,9 @@ import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import {
     FjernAltIUttaksplanModal,
+    HvaErMulig,
     KvoteOppsummering,
+    UforutsetteEndringer,
     UttaksplanDataProvider,
     UttaksplanKalender,
     UttaksplanListe,
@@ -154,6 +156,10 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
                         <KvoteOppsummering erInnsyn={false} visStatusIkoner />
                     </div>
 
+                    <HvaErMulig erFarOgFar={false} loggExpansionCardOpen={loggExpansionCardOpen} />
+
+                    <UforutsetteEndringer erFarOgFar={false} loggExpansionCardOpen={loggExpansionCardOpen} />
+
                     <UttaksplanRedigeringProvider
                         oppdaterUttaksplan={oppdaterUttaksplan}
                         harEndretPlan={erPlanenEndret}
@@ -266,4 +272,14 @@ const getUttaksdagTilOgMedDato = (dato: string): string => {
 
 const getUkedag = (dato: string): number => {
     return dayjs(dato).isoWeekday();
+};
+
+const loggExpansionCardOpen = (tittel: string) => (open: boolean) => {
+    if (open) {
+        loggUmamiEvent({
+            origin: 'foreldrepengesoknad',
+            eventName: 'accordion åpnet',
+            eventData: { tittel },
+        });
+    }
 };
