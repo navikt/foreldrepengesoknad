@@ -1703,6 +1703,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../form-hooks
+      '@navikt/fp-metrics':
+        specifier: workspace:*
+        version: link:../metrics
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types

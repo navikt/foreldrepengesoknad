@@ -11,7 +11,7 @@ export const erBarnetUFødt = (omBarnet: OmBarnet): omBarnet is BarnetErIkkeFød
 };
 
 export const erBarnetFødt = (omBarnet: OmBarnet): omBarnet is BarnetErFødt => {
-    if ('fødselsdato' in omBarnet) {
+    if ((omBarnet as BarnetErFødt).erBarnetFødt === true) {
         return true;
     }
     return false;
