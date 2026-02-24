@@ -11,7 +11,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from '@navikt/fp-uttaksplan-ny';
+import { erEøsUttakPeriode, erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { getTidsperiodeString } from './DokumentasjonLastetOppLabel';
@@ -41,7 +41,7 @@ const isPeriodeMedMorInnleggelse = (
     periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
     familiehendelsedato: string,
 ) => {
-    if ('trekkdager' in periode) {
+    if (erEøsUttakPeriode(periode)) {
         return false;
     }
 
