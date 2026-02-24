@@ -31,6 +31,7 @@ const DAY_STYLE: Record<CalendarPeriodColor, string> = {
     ['BLUESTRIPED']: styles.blueStripedDay!,
     ['GREEN_WITH_BLACK_OUTLINE']: styles.greenWithBlackOutlineDay!,
     ['BLUE_WITH_BLACK_OUTLINE']: styles.blueWithBlackOutlineDay!,
+    ['BEIGEOUTLINE']: styles.beigeOutlineDay!,
 };
 
 type Props = {

@@ -4,18 +4,18 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Box, Link, Show, VStack } from '@navikt/ds-react';
 
-import { KvoteOppsummeringsTittel } from '../../KvoteOppsummering';
-import { useUttaksplanRedigering } from '../../context/UttaksplanRedigeringContext';
-import { UttaksplanHandlingKnapper } from '../../liste/UttaksplanHandlingKnapper';
-import { RødRamme } from './utils/RødRamme';
-import { useErDesktop, useMediaResetMinimering } from './utils/useMediaActions';
+import { KvoteOppsummeringsTittel } from '../../../KvoteOppsummering';
+import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
+import { UttaksplanHandlingKnapper } from '../../../felles/UttaksplanHandlingKnapper';
+import { RødRamme } from '../utils/RødRamme';
+import { useErDesktop, useMediaResetMinimering } from '../utils/useMediaActions';
 
 interface Props {
     scrollToKvoteOppsummering: () => void;
     labels: React.ReactNode;
 }
 
-export const PeriodeIkkeValgtPanel = ({ scrollToKvoteOppsummering, labels }: Props) => {
+export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Props) => {
     const intl = useIntl();
 
     const uttaksplanRedigering = useUttaksplanRedigering();

@@ -10,23 +10,23 @@ import { Alert, Button, ErrorMessage, HStack, VStack } from '@navikt/ds-react';
 import { RhfForm } from '@navikt/fp-form-hooks';
 import type { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
 
-import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import {
     LeggTilEllerEndrePeriodeFellesForm,
     LeggTilEllerEndrePeriodeFormFormValues,
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilUttakPeriode,
-} from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
-import { LeggTilPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstatt';
-import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
-import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
-import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
+} from '../../../../felles/LeggTilEllerEndrePeriodeFellesForm';
+import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
+import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
+import { useFormSubmitValidator } from '../../../../felles/uttaksplanValidatorer';
+import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import {
     erDetEksisterendePerioderEtterValgtePerioder,
     harPeriodeDerMorsAktivitetIkkeErValgt,
-} from '../../utils/periodeUtils';
-import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
-import { finnValgtePerioder } from './utils/kalenderPeriodeUtils';
+} from '../../../../utils/periodeUtils';
+import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
+import { finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
@@ -81,7 +81,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
                 dayjs(vp.tom).isAfter(eksisterendePerioderSomErValgt.at(0)!.tom),
         );
 
-    const skalViseMorsAktivitetInfo =
+    const erMorsAktivitetIkkeOppgitt =
         harValgtDagerKunForEnEksisterendePeriode &&
         harPeriodeDerMorsAktivitetIkkeErValgt(eksisterendePerioderSomErValgt);
 
@@ -95,7 +95,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         setFeilmelding(undefined);
 
         if (
-            !skalViseMorsAktivitetInfo &&
+            !erMorsAktivitetIkkeOppgitt &&
             erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, sammenslåtteValgtePerioder)
         ) {
             setVisEndreEllerForskyvPanel(true);
@@ -106,9 +106,9 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
     const leggIKalender = (skalForskyve: boolean) => {
         leggTilUttaksplanPerioder(
-            sammenslåtteValgtePerioder.flatMap((periode) => {
-                return mapFraFormValuesTilUttakPeriode(formMethods.getValues(), periode, søker);
-            }),
+            sammenslåtteValgtePerioder.flatMap((periode) =>
+                mapFraFormValuesTilUttakPeriode(formMethods.getValues(), periode, søker),
+            ),
             skalForskyve,
         );
 
@@ -121,7 +121,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             {visEndreEllerForskyvPanel && (
-                <LeggTilPeriodeForskyvEllerErstatt
+                <LeggTilPeriodeForskyvEllerErstattPanel
                     valgtePerioder={sammenslåtteValgtePerioder}
                     erFerie={false}
                     setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
@@ -130,7 +130,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
             )}
             {!visEndreEllerForskyvPanel && (
                 <VStack gap="space-16">
-                    {skalViseMorsAktivitetInfo && (
+                    {erMorsAktivitetIkkeOppgitt && (
                         <Alert variant="warning" size="small">
                             <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt" />
                         </Alert>

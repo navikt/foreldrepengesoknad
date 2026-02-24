@@ -7,32 +7,31 @@ import { BodyShort, Box, Button, HStack, Heading, Show, VStack } from '@navikt/d
 
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { LeggTilPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstatt';
-import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
-import { LeggTilUtsettelsePanel } from '../../felles/utsettelse/LeggTilUtsettelsePanel';
-import { useVisUtsettelsePanel } from '../../felles/utsettelse/useVisUtsettelsePanel';
+import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
+import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
+import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
+import { LeggTilUtsettelsePanel } from '../../../../felles/utsettelse/LeggTilUtsettelsePanel';
+import { useVisUtsettelsePanel } from '../../../../felles/utsettelse/useVisUtsettelsePanel';
 import {
     erAllePerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato,
     erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato,
-} from '../../felles/uttaksplanValidatorer';
-import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
-import { getVarighetString } from '../../utils/dateUtils';
-import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
-import { erDetEksisterendePerioderEtterValgtePerioder } from '../../utils/periodeUtils';
-import { PeriodeDetaljerOgInfoMeldinger } from './PeriodeDetaljerOgInfoMeldinger';
-import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
-import { RødRamme } from './utils/RødRamme';
-import { finnAntallDager, finnValgtePerioder } from './utils/kalenderPeriodeUtils';
-import { useErDesktop, useMediaResetMinimering } from './utils/useMediaActions';
+} from '../../../../felles/uttaksplanValidatorer';
+import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
+import { getVarighetString } from '../../../../utils/dateUtils';
+import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
+import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
+import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
+import { RødRamme } from '../../utils/RødRamme';
+import { finnAntallDager, finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
+import { useErDesktop, useMediaResetMinimering } from '../../utils/useMediaActions';
+import { PeriodeDetaljerOgInfoMeldinger } from './eksisterende-perioder/PeriodeDetaljerOgInfoMeldinger';
 
 interface Props {
     åpneRedigeringsmodus: () => void;
     labels: React.ReactNode;
 }
 
-export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) => {
-    const intl = useIntl();
+export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) => {
     const {
         foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
@@ -43,6 +42,8 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
 
     const { sammenslåtteValgtePerioder, setValgtePerioder, leggTilUttaksplanPerioder, setEndredePerioder } =
         useKalenderRedigeringContext();
+
+    const uttakPerioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
 
     const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } =
         useVisForskyvEllerErstattPanel(sammenslåtteValgtePerioder);
@@ -56,8 +57,6 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
     const [erMinimert, setErMinimert] = useState(!erDesktop);
 
     useMediaResetMinimering(setErMinimert);
-
-    const uttakPerioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
 
     const eksisterendePerioderSomErValgt = finnValgtePerioder(
         sammenslåtteValgtePerioder,
@@ -78,6 +77,22 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
         (erPeriodeneTilAnnenPartLåst &&
             eksisterendePerioderSomErValgt.some((p) => erVanligUttakPeriode(p) && p.forelder !== søker));
 
+    const erEksisterendePerioderEtterValgteDager = erDetEksisterendePerioderEtterValgtePerioder(
+        uttakPerioder,
+        sammenslåtteValgtePerioder,
+    );
+
+    const skalViseUtsettelsesknapp =
+        søker === 'MOR' &&
+        familiesituasjon !== 'adopsjon' &&
+        erAllePerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(sammenslåtteValgtePerioder, familiehendelsedato);
+
+    const skalViseFerieknapp = !(
+        søker === 'MOR' &&
+        familiesituasjon !== 'adopsjon' &&
+        erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(sammenslåtteValgtePerioder, familiehendelsedato)
+    );
+
     const leggTilEllerForskyvPeriode = (skalForskyve: boolean) => {
         leggTilUttaksplanPerioder(
             sammenslåtteValgtePerioder.map(
@@ -96,126 +111,36 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
         setEndredePerioder(sammenslåtteValgtePerioder);
     };
 
-    const erEksisterendePerioderEtterValgteDager = erDetEksisterendePerioderEtterValgtePerioder(
-        uttakPerioder,
-        sammenslåtteValgtePerioder,
-    );
-
-    if (visEndreEllerForskyvPanel) {
-        return (
-            <Box padding="space-24">
-                <LeggTilPeriodeForskyvEllerErstatt
-                    valgtePerioder={sammenslåtteValgtePerioder}
-                    erFerie
-                    setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
-                    leggTilEllerForskyvPeriode={leggTilEllerForskyvPeriode}
-                />
-            </Box>
-        );
-    }
-
-    if (visUtsettelsePanel) {
-        return (
-            <Box padding="space-24">
-                <LeggTilUtsettelsePanel setVisUtsettelsePanel={setVisUtsettelsePanel} />
-            </Box>
-        );
-    }
-
-    const skalViseUtsettelsesknapp =
-        søker === 'MOR' &&
-        familiesituasjon !== 'adopsjon' &&
-        erAllePerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(sammenslåtteValgtePerioder, familiehendelsedato);
-
-    const skalViseFerieknapp = !(
-        søker === 'MOR' &&
-        familiesituasjon !== 'adopsjon' &&
-        erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(sammenslåtteValgtePerioder, familiehendelsedato)
-    );
-
     return (
         <VStack
             gap="space-16"
             className={erMinimert ? undefined : 'max-h-[calc(100vh-100px)] overflow-y-auto md:max-h-full'}
         >
             <Show above="md">
-                <Box background="accent-soft" padding="space-8" style={{ cursor: 'pointer' }}>
-                    <VStack gap="space-8">
-                        <HStack gap="space-8" align="center" wrap={false}>
-                            <PencilIcon
-                                title={intl.formatMessage({ id: 'RedigeringPanel.EndreTil' })}
-                                fontSize="1.5rem"
-                            />
-                            <Heading size="small">
-                                <FormattedMessage id="RedigeringPanel.EndreTil" />
-                            </Heading>
-                        </HStack>
-                        <HStack>
-                            <RødRamme>
-                                <BodyShort size="small">
-                                    <FormattedMessage
-                                        id="RedigeringPanel.ValgteDager"
-                                        values={{
-                                            varighet: getVarighetString(
-                                                finnAntallDager(sammenslåtteValgtePerioder),
-                                                intl,
-                                            ),
-                                        }}
-                                    />
-                                </BodyShort>
-                            </RødRamme>
-                        </HStack>
-                    </VStack>
-                </Box>
+                <HeaderForDesktop />
             </Show>
             <Show below="md">
-                <Box
-                    padding="space-12"
-                    onClick={() => setErMinimert(!erMinimert)}
-                    className="bg-ax-bg-accent-soft hover:bg-ax-bg-accent-moderate cursor-pointer"
-                >
-                    <VStack gap="space-4" align="center">
-                        {erMinimert ? (
-                            <ChevronUpIcon
-                                title={intl.formatMessage({ id: 'RedigeringPanel.Maksimer' })}
-                                height={24}
-                                width={24}
-                            />
-                        ) : (
-                            <ChevronDownIcon
-                                title={intl.formatMessage({ id: 'RedigeringPanel.Minimer' })}
-                                height={24}
-                                width={24}
-                            />
-                        )}
-
-                        <HStack gap="space-8" align="center" wrap={false}>
-                            <PencilIcon
-                                title={intl.formatMessage({ id: 'RedigeringPanel.EndreTil' })}
-                                fontSize="1.5rem"
-                            />
-                            <HStack gap="space-32" wrap={false}>
-                                <Heading size="small">
-                                    <FormattedMessage id="RedigeringPanel.EndreTil" />
-                                </Heading>
-                                {erMinimert && <RødRamme>{finnAntallDager(sammenslåtteValgtePerioder)}</RødRamme>}
-                            </HStack>
-                        </HStack>
-
-                        {!erMinimert && (
-                            <RødRamme>
-                                <FormattedMessage
-                                    id="RedigeringPanel.ValgteDager"
-                                    values={{
-                                        varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
-                                    }}
-                                />
-                            </RødRamme>
-                        )}
-                    </VStack>
-                </Box>
+                <HeaderForMobil erMinimert={erMinimert} setErMinimert={setErMinimert} />
             </Show>
-            {!erMinimert && (
+
+            {!erMinimert && visEndreEllerForskyvPanel && (
+                <Box padding="space-24">
+                    <LeggTilPeriodeForskyvEllerErstattPanel
+                        valgtePerioder={sammenslåtteValgtePerioder}
+                        erFerie
+                        setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
+                        leggTilEllerForskyvPeriode={leggTilEllerForskyvPeriode}
+                    />
+                </Box>
+            )}
+
+            {!erMinimert && visUtsettelsePanel && (
+                <Box padding="space-24">
+                    <LeggTilUtsettelsePanel setVisUtsettelsePanel={setVisUtsettelsePanel} />
+                </Box>
+            )}
+
+            {!erMinimert && !visEndreEllerForskyvPanel && !visUtsettelsePanel && (
                 <div className="block px-4 pb-4">
                     <VStack gap="space-12">
                         {labels}
@@ -290,6 +215,94 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
                 </div>
             )}
         </VStack>
+    );
+};
+
+const HeaderForDesktop = () => {
+    const intl = useIntl();
+
+    const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
+
+    return (
+        <Box background="accent-soft" padding="space-8" style={{ cursor: 'pointer' }}>
+            <VStack gap="space-8">
+                <HStack gap="space-8" align="center" wrap={false}>
+                    <PencilIcon title={intl.formatMessage({ id: 'RedigeringPanel.EndreTil' })} fontSize="1.5rem" />
+                    <Heading size="small">
+                        <FormattedMessage id="RedigeringPanel.EndreTil" />
+                    </Heading>
+                </HStack>
+                <HStack>
+                    <RødRamme>
+                        <BodyShort size="small">
+                            <FormattedMessage
+                                id="RedigeringPanel.ValgteDager"
+                                values={{
+                                    varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
+                                }}
+                            />
+                        </BodyShort>
+                    </RødRamme>
+                </HStack>
+            </VStack>
+        </Box>
+    );
+};
+
+const HeaderForMobil = ({
+    erMinimert,
+    setErMinimert,
+}: {
+    erMinimert: boolean;
+    setErMinimert: (value: boolean) => void;
+}) => {
+    const intl = useIntl();
+
+    const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
+
+    return (
+        <Box
+            padding="space-12"
+            onClick={() => setErMinimert(!erMinimert)}
+            className="bg-ax-bg-accent-soft hover:bg-ax-bg-accent-moderate cursor-pointer"
+        >
+            <VStack gap="space-4" align="center">
+                {erMinimert ? (
+                    <ChevronUpIcon
+                        title={intl.formatMessage({ id: 'RedigeringPanel.Maksimer' })}
+                        height={24}
+                        width={24}
+                    />
+                ) : (
+                    <ChevronDownIcon
+                        title={intl.formatMessage({ id: 'RedigeringPanel.Minimer' })}
+                        height={24}
+                        width={24}
+                    />
+                )}
+
+                <HStack gap="space-8" align="center" wrap={false}>
+                    <PencilIcon title={intl.formatMessage({ id: 'RedigeringPanel.EndreTil' })} fontSize="1.5rem" />
+                    <HStack gap="space-32" wrap={false}>
+                        <Heading size="small">
+                            <FormattedMessage id="RedigeringPanel.EndreTil" />
+                        </Heading>
+                        {erMinimert && <RødRamme>{finnAntallDager(sammenslåtteValgtePerioder)}</RødRamme>}
+                    </HStack>
+                </HStack>
+
+                {!erMinimert && (
+                    <RødRamme>
+                        <FormattedMessage
+                            id="RedigeringPanel.ValgteDager"
+                            values={{
+                                varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
+                            }}
+                        />
+                    </RødRamme>
+                )}
+            </VStack>
+        </Box>
     );
 };
 
