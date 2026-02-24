@@ -10,10 +10,10 @@ import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
+import { UttaksplanHandlingKnapper } from '../felles/UttaksplanHandlingKnapper';
 import { Uttaksplanperiode } from '../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak } from '../utils/lagHullPerioder';
 import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../utils/periodeUtils';
-import { UttaksplanHandlingKnapper } from './UttaksplanHandlingKnapper';
 import { LeggTilEllerEndrePeriodeListPanel } from './legg-til-endre-periode-panel/LeggTilEllerEndrePeriodeListPanel';
 import { PeriodeListeItem } from './periode-liste-item/PeriodeListeItem';
 import { mapUttaksplanperioderTilRaderIListe } from './utils/mapUttaksplanperioderTilRaderIListe';

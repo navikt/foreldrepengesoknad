@@ -131,7 +131,10 @@ const getKalenderFargeForPeriode = (
     }
 
     if (periode.utsettelseÅrsak) {
-        return 'BLUEOUTLINE';
+        if (periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+            return 'BLUEOUTLINE';
+        }
+        return 'BEIGEOUTLINE';
     }
 
     if (periode.forelder === 'MOR') {
@@ -223,6 +226,10 @@ const getKalenderSkjermleserPeriodetekst = (
             default:
                 return assertUnreachable('Error: ukjent kontoType i getKalenderSkjermleserPeriodetekst');
         }
+    }
+
+    if (period.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+        return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.LovbestemtFerie' });
     }
 
     return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.Utsettelse' });

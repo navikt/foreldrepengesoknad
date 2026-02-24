@@ -3,13 +3,13 @@ import { FormattedMessage } from 'react-intl';
 
 import { Alert, BodyShort, VStack } from '@navikt/ds-react';
 
-import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { kanMisteDagerVedEndringTilFerie } from '../../felles/uttaksplanValidatorer';
-import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
-import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
+import { useUttaksplanData } from '../../../../../context/UttaksplanDataContext';
+import { kanMisteDagerVedEndringTilFerie } from '../../../../../felles/uttaksplanValidatorer';
+import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../../types/UttaksplanPeriode';
+import { useAlleUttakPerioderInklTapteDager } from '../../../../../utils/lagHullPerioder';
+import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
+import { finnValgtePerioder } from '../../../utils/kalenderPeriodeUtils';
 import { EksisterendeValgtePerioder } from './EksisterendeValgtePerioder';
-import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
-import { finnValgtePerioder } from './utils/kalenderPeriodeUtils';
 
 interface Props {
     setSkalViseKnapper: (skalViseKnapper: boolean) => void;
@@ -22,13 +22,13 @@ export const PeriodeDetaljerOgInfoMeldinger = ({ setSkalViseKnapper }: Props) =>
         foreldreInfo: { søker },
     } = useUttaksplanData();
 
-    const erAdopsjon = familiesituasjon === 'adopsjon';
-
     const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
 
-    const harPeriodeFør = sammenslåtteValgtePerioder.some((p) => dayjs(p.fom).isBefore(familiehendelsedato));
-
     const uttakPerioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
+
+    const harPeriodeFørFamiliehendelsedato = sammenslåtteValgtePerioder.some((p) =>
+        dayjs(p.fom).isBefore(familiehendelsedato),
+    );
 
     const eksisterendePerioderSomErValgt = finnValgtePerioder(
         sammenslåtteValgtePerioder,
@@ -57,7 +57,7 @@ export const PeriodeDetaljerOgInfoMeldinger = ({ setSkalViseKnapper }: Props) =>
                 />
             )}
 
-            {erAdopsjon && harPeriodeFør && (
+            {familiesituasjon === 'adopsjon' && harPeriodeFørFamiliehendelsedato && (
                 <Alert variant="info" size="small">
                     <FormattedMessage id="RedigeringPanel.AdopsjonPeriodeFørFamiliehendelsedato" />
                 </Alert>
@@ -76,7 +76,7 @@ export const PeriodeDetaljerOgInfoMeldinger = ({ setSkalViseKnapper }: Props) =>
             )}
 
             {søker === 'MOR' &&
-                !erAdopsjon &&
+                familiesituasjon !== 'adopsjon' &&
                 !harPeriodeMedPleiepenger &&
                 kanMisteDagerVedEndringTilFerie(sammenslåtteValgtePerioder, familiehendelsedato) && (
                     <Alert variant="info" size="small">

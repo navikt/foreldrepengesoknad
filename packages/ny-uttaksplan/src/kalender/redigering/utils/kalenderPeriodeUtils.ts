@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 
 import {
@@ -7,7 +8,10 @@ import {
     erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../../../types/UttaksplanPeriode';
-import { UttakPeriodeMedAntallDager } from '../EksisterendeValgtePerioder';
+
+export type UttakPeriodeMedAntallDager = (UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) & {
+    valgteDagerIPeriode: number;
+};
 
 export const slåSammenTilstøtendePerioder = (perioder: CalendarPeriod[]): CalendarPeriod[] => {
     if (perioder.length === 0) {

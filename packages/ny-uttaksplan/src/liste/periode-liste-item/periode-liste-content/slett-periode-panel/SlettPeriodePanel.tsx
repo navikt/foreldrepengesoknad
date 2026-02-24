@@ -12,7 +12,7 @@ import { isRequired } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../../context/UttaksplanRedigeringContext';
-import { SlettPeriodeForskyvEllerErstatt } from '../../../../felles/forskyvEllerErstatt/SlettPeriodeForskyvEllerErstatt';
+import { SlettPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/SlettPeriodeForskyvEllerErstattPanel';
 import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../../utils/UttakPeriodeBuilder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
@@ -96,7 +96,7 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
             </div>
             <div>
                 {valgtePerioderSomSkalSlettes.length > 0 && (
-                    <SlettPeriodeForskyvEllerErstatt
+                    <SlettPeriodeForskyvEllerErstattPanel
                         valgtePerioder={valgtePerioderSomSkalSlettes}
                         avbryt={() => {
                             setValgtePerioderSomSkalSlettes([]);

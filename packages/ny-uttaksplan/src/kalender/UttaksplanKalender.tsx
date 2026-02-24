@@ -35,9 +35,9 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
     const [endredePerioder, setEndredePerioder] = useState<Array<{ fom: string; tom: string }>>([]);
 
     const setRedigeringAktivOgValgtePerioder = useCallback<React.Dispatch<React.SetStateAction<CalendarPeriod[]>>>(
-        (periode) => {
+        (perioder) => {
             setErRedigeringAktiv(true);
-            setValgtePerioder(periode);
+            setValgtePerioder(perioder);
             setEndredePerioder([]);
         },
         [],

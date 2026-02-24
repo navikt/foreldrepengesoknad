@@ -1,15 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Box } from '@navikt/ds-react';
 
 import { CalendarPeriod } from '@navikt/fp-ui';
 
-import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
-import { LeggTilEllerEndrePeriodePanel } from './LeggTilEllerEndrePeriodePanel';
-import { PeriodeIkkeValgtPanel } from './PeriodeIkkeValgtPanel';
-import { PeriodeOversiktPanel } from './PeriodeOversiktPanel';
 import { KalenderRedigeringProvider, useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
-import { harEnValgtPeriodeIKunEnEksisterendePeriode } from './utils/kalenderPeriodeUtils';
+import { DagerValgtPanel } from './paneler/DagerValgtPanel';
+import { IngenDagerValgtPanel } from './paneler/IngenDagerValgtPanel';
 
 type Props = {
     valgtePerioder: CalendarPeriod[];
@@ -46,19 +43,7 @@ const RedigerKalender = ({
 
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
 
-    const uttakPerioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
-
-    useEffect(() => {
-        // Reset redigeringmodus hvis alle perioder fjernes
-        if (sammenslåtteValgtePerioder.length === 0) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
-            setErIRedigeringsmodus(false);
-        }
-    }, [sammenslåtteValgtePerioder]);
-
-    const erKunEnHelEksisterendePeriodeValgt =
-        sammenslåtteValgtePerioder.length === 1 &&
-        harEnValgtPeriodeIKunEnEksisterendePeriode(uttakPerioderInkludertTapteDager, sammenslåtteValgtePerioder[0]!);
+    const harValgtePerioderOgErIRedigeringsmodus = sammenslåtteValgtePerioder.length > 0 && erIRedigeringsmodus;
 
     return (
         <Box
@@ -66,29 +51,19 @@ const RedigerKalender = ({
             borderRadius="4"
             borderColor="neutral-subtle"
             height="fit-content"
-            maxHeight={erIRedigeringsmodus ? '100vh' : 'none'}
-            overflow={erIRedigeringsmodus ? 'auto' : 'hidden'}
+            maxHeight={harValgtePerioderOgErIRedigeringsmodus ? '100vh' : 'none'}
+            overflow={harValgtePerioderOgErIRedigeringsmodus ? 'auto' : 'hidden'}
             background="default"
         >
             {sammenslåtteValgtePerioder.length === 0 && (
-                <PeriodeIkkeValgtPanel scrollToKvoteOppsummering={scrollToKvoteOppsummering} labels={labels} />
+                <IngenDagerValgtPanel scrollToKvoteOppsummering={scrollToKvoteOppsummering} labels={labels} />
             )}
             {sammenslåtteValgtePerioder.length > 0 && (
-                <>
-                    {erIRedigeringsmodus && (
-                        <LeggTilEllerEndrePeriodePanel
-                            key={erKunEnHelEksisterendePeriodeValgt ? 1 : 0} // Reset av form når en går fra endre til legg til og omvendt
-                            lukkRedigeringsmodus={() => setErIRedigeringsmodus(false)}
-                            labels={labels}
-                        />
-                    )}
-                    {!erIRedigeringsmodus && (
-                        <PeriodeOversiktPanel
-                            åpneRedigeringsmodus={() => setErIRedigeringsmodus(true)}
-                            labels={labels}
-                        />
-                    )}
-                </>
+                <DagerValgtPanel
+                    labels={labels}
+                    erIRedigeringsmodus={harValgtePerioderOgErIRedigeringsmodus}
+                    setErIRedigeringsmodus={setErIRedigeringsmodus}
+                />
             )}
         </Box>
     );

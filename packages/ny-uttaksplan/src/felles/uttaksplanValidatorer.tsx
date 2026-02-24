@@ -466,7 +466,7 @@ const finnDagerInnenforIntervall = (fom: string, tom: string, førsteDag: string
     return dager;
 };
 
-const erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato = (
+export const erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     familiehendelsedato: string,
 ) => {
@@ -476,7 +476,21 @@ const erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato = (
     return valgtePerioder.some((periode) => {
         const fom = dayjs(periode.fom);
         const tom = dayjs(periode.tom);
-        return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
+        return tom.isSameOrAfter(førsteDag, 'day') && fom.isBefore(sisteDag, 'day');
+    });
+};
+
+export const erAllePerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato = (
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    familiehendelsedato: string,
+) => {
+    const førsteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato();
+    const sisteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30);
+
+    return valgtePerioder.every((periode) => {
+        const fom = dayjs(periode.fom);
+        const tom = dayjs(periode.tom);
+        return fom.isSameOrAfter(førsteDag, 'day') && tom.isBefore(sisteDag, 'day');
     });
 };
 

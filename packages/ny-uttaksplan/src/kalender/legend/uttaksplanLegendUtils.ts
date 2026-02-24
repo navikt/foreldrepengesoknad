@@ -107,6 +107,14 @@ export const getCalendarLabel = (
     switch (info.label) {
         case 'HELG':
             return intl.formatMessage({ id: 'kalender.helg' });
+        case 'FERIE':
+            return intl.formatMessage(
+                { id: 'kalender.ferie' },
+                {
+                    erSokersPeriode: erSøkersPeriode,
+                    navnAnnenPart,
+                },
+            );
         case 'UTSETTELSE':
             return intl.formatMessage(
                 { id: 'kalender.utsettelse' },
@@ -422,6 +430,10 @@ export const getLegendLabelFromPeriode = (
 
     if (erTapteDagerHull(p)) {
         return 'TAPTE_DAGER';
+    }
+
+    if (p.utsettelseÅrsak && p.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+        return 'FERIE';
     }
 
     return 'UTSETTELSE';

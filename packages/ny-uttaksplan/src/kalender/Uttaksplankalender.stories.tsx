@@ -1245,3 +1245,47 @@ export const MedArbeidsforhold: Story = {
         ],
     },
 };
+
+export const HarUtsettelse: Story = {
+    args: {
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2026-01-21'],
+            termindato: '2026-01-21',
+            antallBarn: 1,
+        },
+        uttakPerioder: [
+            {
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                fom: '2025-12-31',
+                tom: '2026-01-20',
+            },
+            {
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                fom: '2026-01-21',
+                tom: '2026-01-22',
+            },
+            {
+                forelder: 'MOR',
+                fom: '2026-01-23',
+                tom: '2026-01-29',
+                utsettelseÅrsak: 'BARN_INNLAGT',
+            },
+            {
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                fom: '2026-01-30',
+                tom: '2026-05-05',
+            },
+        ],
+    },
+};
