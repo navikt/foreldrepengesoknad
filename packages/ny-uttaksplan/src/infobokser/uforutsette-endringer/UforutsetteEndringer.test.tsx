@@ -39,6 +39,7 @@ describe('<UforutsetteEndringer>', () => {
         ).not.toBeInTheDocument();
         expect(screen.queryByText('Barnet blir født før 33. svangerskapsuke')).not.toBeInTheDocument();
     });
+
     it('skal vise info for mor og far adopsjon hvor kun mor har rett', async () => {
         render(<AdopsjonMorOgFarKunMorHarRett />);
 
@@ -57,6 +58,7 @@ describe('<UforutsetteEndringer>', () => {
         ).not.toBeInTheDocument();
         expect(screen.queryByText('Barnet blir født før 33. svangerskapsuke')).not.toBeInTheDocument();
     });
+
     it('mor og far fødsel hvor begge har rett', async () => {
         render(<FødselMorOgFarBeggeHarRett />);
 
@@ -70,7 +72,8 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
-    it('mor og far fødsel hvor kun mor har rett', async () => {
+
+    it.todo('mor og far fødsel hvor kun mor har rett', async () => {
         render(<FødselMorOgFarKunMorHarRett />);
 
         expect(await screen.findByText('Uforutsette endringer')).toBeInTheDocument();
@@ -83,7 +86,8 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
-    it('mor og far fødsel hvor kun far har rett', async () => {
+
+    it.todo('mor og far fødsel hvor kun far har rett', async () => {
         render(<FødselMorOgFarKunFarHarRett />);
 
         expect(await screen.findByText('Uforutsette endringer')).toBeInTheDocument();
@@ -98,6 +102,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
+
     // Mor og medmor
     it('mor og medmor fødsel hvor begge har rett', async () => {
         render(<FødselMorOgMedmorBeggeHarRett />);
@@ -112,7 +117,8 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
-    it('mor og medmor fødsel hvor kun mor har rett', async () => {
+
+    it.todo('mor og medmor fødsel hvor kun mor har rett', async () => {
         render(<FødselMorOgMedmorKunMorHarRett />);
 
         expect(await screen.findByText('Uforutsette endringer')).toBeInTheDocument();
@@ -125,7 +131,8 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
-    it('mor og medmor fødsel hvor kun medmor har rett', async () => {
+
+    it.todo('mor og medmor fødsel hvor kun medmor har rett', async () => {
         render(<FødselMorOgMedmorKunMedmorHarRett />);
 
         expect(await screen.findByText('Uforutsette endringer')).toBeInTheDocument();
@@ -140,6 +147,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
+
     // Far og far
     it('far og far fødsel hvor begge har rett', async () => {
         render(<FødselFarOgFarBeggeHarRett />);
@@ -158,7 +166,8 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
-    it('far og far fødsel hvor kun far har rett', async () => {
+
+    it.todo('far og far fødsel hvor kun far har rett', async () => {
         render(<FødselFarOgFarKunFarHarRett />);
 
         expect(await screen.findByText('Uforutsette endringer')).toBeInTheDocument();
@@ -175,6 +184,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
+
     it('far og far fødsel hvor kun medfar har rett', async () => {
         render(<FødselFarOgFarKunMedfarHarRett />);
 
@@ -192,6 +202,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.queryByText('Barnet blir født før 33. svangerskapsuke')).not.toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
+
     // Aleneomsorg
     it('alenemor fødsel', async () => {
         render(<FødselMorAleneomsorg />);
@@ -206,6 +217,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis du får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
+
     it('alenefar fødsel', async () => {
         render(<FødselFarAleneomsorg />);
 

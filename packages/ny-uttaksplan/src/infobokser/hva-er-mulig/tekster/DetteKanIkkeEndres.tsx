@@ -55,7 +55,7 @@ export const DetteKanIkkeEndres = ({ erFarOgFar }: Props) => {
                     <FormattedMessage id="HvaErMulig.KanIkkeEndres" />
                 </Heading>
                 <VStack gap="space-8">
-                    {!erFarOgFar && kunFarSøker && (
+                    {morHarRett && (
                         <BodyLong>
                             <FormattedMessage id="HvaErMulig.TreUkerFørTermin" values={{ b: bTag, erAleneforsørger }} />
                         </BodyLong>

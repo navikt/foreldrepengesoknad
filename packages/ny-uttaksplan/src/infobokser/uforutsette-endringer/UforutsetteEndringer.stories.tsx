@@ -184,7 +184,7 @@ export const FødselFarOgFarBeggeHarRett: Story = {
                 mor: 'Peder',
                 farMedmor: 'Hans',
             },
-            søker: 'MOR',
+            søker: 'FAR_MEDMOR',
         },
     },
 };
@@ -200,7 +200,7 @@ export const FødselFarOgFarKunFarHarRett: Story = {
                 mor: 'Peder',
                 farMedmor: 'Hans',
             },
-            søker: 'MOR',
+            søker: 'FAR_MEDMOR',
             rettighetType: 'BARE_SØKER_RETT',
         },
     },

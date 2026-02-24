@@ -33,9 +33,6 @@ export const HvaErMulig = ({ loggExpansionCardOpen, erFarOgFar }: Props) => {
 
     const kunEnPartSkalHa = rettighetType !== 'BEGGE_RETT';
 
-    // FIXME (TOR) Søker 2 gir ikkje meining i søknadsdialog. Treng ein dette?
-    const kunSøker2SkalHa = rettighetType === 'BARE_SØKER_RETT';
-
     const kunFarSøker2EllerMedmorHarRett = erAlene && søker === 'FAR_MEDMOR';
 
     return (
@@ -78,7 +75,7 @@ export const HvaErMulig = ({ loggExpansionCardOpen, erFarOgFar }: Props) => {
 
                             {!kunEnPartSkalHa && !erFarOgFar && <FarFellesperiode erFarOgFar={erFarOgFar} />}
 
-                            {!kunSøker2SkalHa && <JobbeSamtidig />}
+                            {rettighetType === 'BEGGE_RETT' && <JobbeSamtidig />}
 
                             {!erAlene && !kunEnPartSkalHa && <ForeldrepengerSamtidig erFarOgFar={erFarOgFar} />}
                             {kunFarSøker2EllerMedmorHarRett && (
