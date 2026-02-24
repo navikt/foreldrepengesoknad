@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
@@ -23,7 +23,12 @@ import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { SlettPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/SlettPeriodeForskyvEllerErstatt';
+import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
+import {
+    erDetEksisterendePerioderEtterValgtePerioder,
+    harPeriodeDerMorsAktivitetIkkeErValgt,
+} from '../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 
 export type UttakPeriodeMedAntallDager = (UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) & {
@@ -38,33 +43,41 @@ interface Props {
 export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Props) => {
     const intl = useIntl();
 
+    const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
+
     const [valgtPeriodeSomSkalSlettes, setValgtPeriodeSomSkalSlettes] = useState<
         UttakPeriodeMedAntallDager | undefined
     >(undefined);
+
+    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } =
+        useVisForskyvEllerErstattPanel(sammenslåtteValgtePerioder);
 
     const slettPeriode = useSlettPeriodeFn();
 
     const {
         foreldreInfo: { erMedmorDelAvSøknaden, søker },
         erPeriodeneTilAnnenPartLåst,
+        uttakPerioder,
     } = useUttaksplanData();
 
     return (
         <VStack gap="space-12">
-            {valgtPeriodeSomSkalSlettes && (
+            {visEndreEllerForskyvPanel && valgtPeriodeSomSkalSlettes && (
                 <SlettPeriodeForskyvEllerErstatt
-                    valgtePerioder={[valgtPeriodeSomSkalSlettes]}
+                    valgtePerioder={finnDagerSomSkalSlettes(sammenslåtteValgtePerioder, valgtPeriodeSomSkalSlettes)}
                     avbryt={() => {
                         setValgtPeriodeSomSkalSlettes(undefined);
+                        setVisEndreEllerForskyvPanel(false);
                         setSkalViseKnapper(true);
                     }}
                     fjernPeriode={(skalForskyveBakover: boolean) => {
                         setValgtPeriodeSomSkalSlettes(undefined);
+                        setVisEndreEllerForskyvPanel(false);
                         slettPeriode(valgtPeriodeSomSkalSlettes, skalForskyveBakover);
                     }}
                 />
             )}
-            {!valgtPeriodeSomSkalSlettes && (
+            {!visEndreEllerForskyvPanel && (
                 <>
                     <BodyShort>
                         <FormattedMessage
@@ -97,6 +110,13 @@ export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Pro
 
                         const erPleiepengerPeriode =
                             erAvslåttPeriode && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
+
+                        const valgteDager = finnDagerSomSkalSlettes(sammenslåtteValgtePerioder, p);
+
+                        const erEksisterendePerioderEtterValgteDager = erDetEksisterendePerioderEtterValgtePerioder(
+                            uttakPerioder,
+                            valgteDager,
+                        );
 
                         return (
                             <HStack
@@ -236,6 +256,13 @@ export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Pro
                                             <FormattedMessage id="RedigeringPanel.AvslåttPeriode" />
                                         </BodyShort>
                                     )}
+                                    {harPeriodeDerMorsAktivitetIkkeErValgt([p]) && (
+                                        <Alert variant="warning" size="small" className="mt-3 mb-1 p-2">
+                                            <BodyShort>
+                                                <FormattedMessage id="RedigeringPanel.MorsAktivitetIkkeValgt" />
+                                            </BodyShort>
+                                        </Alert>
+                                    )}
                                 </VStack>
                                 <Spacer />
                                 {!erEøsUttakPeriode(p) && !erAnnenPartsPeriodeLåst && !erPleiepengerPeriode && (
@@ -244,8 +271,13 @@ export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Pro
                                         fontSize="1.5rem"
                                         className="cursor-pointer hover:opacity-70"
                                         onClick={() => {
-                                            setValgtPeriodeSomSkalSlettes(p);
-                                            setSkalViseKnapper(false);
+                                            if (erEksisterendePerioderEtterValgteDager) {
+                                                setValgtPeriodeSomSkalSlettes(p);
+                                                setVisEndreEllerForskyvPanel(true);
+                                                setSkalViseKnapper(false);
+                                            } else {
+                                                slettPeriode(p, false);
+                                            }
                                         }}
                                     />
                                 )}
@@ -462,14 +494,7 @@ const useSlettPeriodeFn = () => {
         periodeSomSkalSlettes: { fom: string; tom: string; forelder?: BrukerRolleSak_fpoversikt },
         skalForskyveBakover: boolean,
     ) => {
-        const fomPeriodeSomSkalSlettes = dayjs(periodeSomSkalSlettes.fom);
-        const tomPeriodeSomSkalSlettes = dayjs(periodeSomSkalSlettes.tom);
-
-        const perioder = sammenslåtteValgtePerioder.filter(
-            (p) =>
-                fomPeriodeSomSkalSlettes.isSameOrBefore(dayjs(p.tom), 'day') &&
-                tomPeriodeSomSkalSlettes.isSameOrAfter(dayjs(p.fom), 'day'),
-        );
+        const perioder = finnDagerSomSkalSlettes(sammenslåtteValgtePerioder, periodeSomSkalSlettes);
 
         slettUttaksplanPerioder(
             perioder.map(
@@ -484,6 +509,24 @@ const useSlettPeriodeFn = () => {
 
         setValgtePerioder((oldPeriods) => justerValgteKalenderperioder(oldPeriods, periodeSomSkalSlettes));
     };
+};
+
+const finnDagerSomSkalSlettes = (
+    sammenslåtteValgtePerioder: CalendarPeriod[],
+    periodeSomSkalSlettes: {
+        fom: string;
+        tom: string;
+        forelder?: BrukerRolleSak_fpoversikt;
+    },
+) => {
+    const fomPeriodeSomSkalSlettes = dayjs(periodeSomSkalSlettes.fom);
+    const tomPeriodeSomSkalSlettes = dayjs(periodeSomSkalSlettes.tom);
+
+    return sammenslåtteValgtePerioder.filter(
+        (p) =>
+            fomPeriodeSomSkalSlettes.isSameOrBefore(dayjs(p.tom), 'day') &&
+            tomPeriodeSomSkalSlettes.isSameOrAfter(dayjs(p.fom), 'day'),
+    );
 };
 
 const justerValgteKalenderperioder = (

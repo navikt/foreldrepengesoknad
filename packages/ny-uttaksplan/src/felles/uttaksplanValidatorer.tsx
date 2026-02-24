@@ -382,6 +382,10 @@ const harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamili
         const sisteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30);
 
         const nyePerioderInnenforIntervallet = nyePerioder.filter((periode) => {
+            if (formValues.kontoTypeFarMedmor === 'MØDREKVOTE') {
+                return false;
+            }
+
             const fom = dayjs(periode.fom);
             const tom = dayjs(periode.tom);
 
@@ -399,7 +403,16 @@ const harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamili
                     return sum + finnDagerInnenforIntervall(periode.fom, periode.tom, førsteDag, sisteDag);
                 }, 0) * stillingsprosentFaktor;
 
-            const uttaksperioderUtenomBortsettFraEndredePerioder = new UttakPeriodeBuilder(uttakPerioder)
+            const uttakPerioderUtenOverførtMødrekvote = uttakPerioder.filter((p) => {
+                if (erVanligUttakPeriode(p) && p.forelder === 'FAR_MEDMOR' && p.kontoType === 'MØDREKVOTE') {
+                    return false;
+                }
+
+                return true;
+            });
+            const uttaksperioderUtenomBortsettFraEndredePerioder = new UttakPeriodeBuilder(
+                uttakPerioderUtenOverførtMødrekvote,
+            )
                 .fjernUttakPerioder(nyePerioder, false)
                 .getUttakPerioder();
 

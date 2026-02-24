@@ -1,5 +1,5 @@
 import { TrashIcon } from '@navikt/aksel-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -15,6 +15,7 @@ import { useUttaksplanRedigering } from '../../../../context/UttaksplanRedigerin
 import { SlettPeriodeForskyvEllerErstatt } from '../../../../felles/forskyvEllerErstatt/SlettPeriodeForskyvEllerErstatt';
 import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../../utils/UttakPeriodeBuilder';
+import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
 import { genererPeriodeKey, getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
 
 const ARIA_LABEL_ID = 'slett-periode-panel-heading';
@@ -37,9 +38,22 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
+    const erEksisterendePerioderEtterValgteDager = erDetEksisterendePerioderEtterValgtePerioder(
+        uttakPerioder,
+        uttaksplanperioder,
+    );
+
     const [valgtePerioderSomSkalSlettes, setValgtePerioderSomSkalSlettes] = useState<Uttaksplanperiode[]>(
         uttaksplanperioder.length === 1 ? uttaksplanperioder : [],
     );
+
+    // TODO (TOR) Bør skriva om heile komponenten.
+    useEffect(() => {
+        if (!erEksisterendePerioderEtterValgteDager && uttaksplanperioder.length === 1) {
+            // eslint-disable-next-line react-you-might-not-need-an-effect/no-pass-data-to-parent, react-hooks/immutability
+            slettPerioder(uttaksplanperioder, false);
+        }
+    }, []);
 
     const formMethods = useForm<FormValues>();
 
@@ -54,12 +68,16 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
             }
         }
 
-        setValgtePerioderSomSkalSlettes(slettedePerioder);
+        if (erEksisterendePerioderEtterValgteDager) {
+            setValgtePerioderSomSkalSlettes(slettedePerioder);
+        } else {
+            slettPerioder(slettedePerioder, false);
+        }
     };
 
-    const slettPerioder = (skalForskyveBakover: boolean) => {
+    const slettPerioder = (perioderSomSkalSlettes: Uttaksplanperiode[], skalForskyveBakover: boolean) => {
         const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder)
-            .fjernUttakPerioder(valgtePerioderSomSkalSlettes, skalForskyveBakover)
+            .fjernUttakPerioder(perioderSomSkalSlettes, skalForskyveBakover)
             .getUttakPerioder();
         uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
 
@@ -83,7 +101,9 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
                         avbryt={() => {
                             setValgtePerioderSomSkalSlettes([]);
                         }}
-                        fjernPeriode={(skalForskyveBakover: boolean) => slettPerioder(skalForskyveBakover)}
+                        fjernPeriode={(skalForskyveBakover: boolean) =>
+                            slettPerioder(valgtePerioderSomSkalSlettes, skalForskyveBakover)
+                        }
                     />
                 )}
                 {valgtePerioderSomSkalSlettes.length === 0 && (

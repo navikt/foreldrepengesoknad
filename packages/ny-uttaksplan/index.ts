@@ -18,7 +18,7 @@ export { UttaksplanKalender } from './src/kalender/UttaksplanKalender';
 export { FjernAltIUttaksplanModal } from './src/FjernAltIUttaksplanModal';
 export { useErAntallDagerOvertrukketIUttaksplan } from './src/utils/kvoteOppsummeringUtils';
 
-export { erEøsUttakPeriode } from './src/types/UttaksplanPeriode';
+export { erEøsUttakPeriode, erVanligUttakPeriode } from './src/types/UttaksplanPeriode';
 
 export { erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from './src/utils/periodeUtils';
 export { loggExpansionCardOpen } from './src/utils/umamiUtils';

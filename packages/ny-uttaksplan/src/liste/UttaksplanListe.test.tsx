@@ -212,12 +212,6 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
 
-        expect(screen.getByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
-
-        await userEvent.click(screen.getByText('Fortsett'));
-
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
             {
@@ -455,12 +449,6 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
 
-        expect(screen.getByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
-
-        await userEvent.click(screen.getByText('Fortsett'));
-
         expect(screen.getByText('Mor er i arbeid')).toBeInTheDocument();
 
         expect(screen.queryByText('Du må velge mors aktivitet før du går videre')).not.toBeInTheDocument();
@@ -495,5 +483,84 @@ describe('UttaksplanListe', () => {
         expect(screen.queryByText('Mor')).not.toBeInTheDocument();
         expect(screen.getByText('Far')).toBeInTheDocument();
         expect(screen.getByText('Begge')).toBeInTheDocument();
+    });
+
+    it('Skal slette periode og forskyve resten av planen bakover', async () => {
+        const oppdaterUttaksplan = vi.fn();
+
+        render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
+
+        expect(await screen.findByText('09. May - 11. Dec')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('09. May - 11. Dec'));
+
+        await userEvent.click(screen.getAllByText('Slett')[1]!);
+
+        await userEvent.click(screen.getByText('22.08.2025 - 11.12.2025 - Fellesperiode'));
+
+        await userEvent.click(screen.getByText('Slett valgte perioder'));
+
+        expect(await screen.findByText('Hva vil du gjøre med dagene du sletter?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Flytt resten av planen'));
+        await userEvent.click(screen.getByText('Fortsett'));
+
+        expect(await screen.findByText('22. Aug - 04. Dec')).toBeInTheDocument();
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
+            {
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                fom: '2025-04-18',
+                tom: '2025-05-08',
+            },
+            {
+                fom: '2025-05-09',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                tom: '2025-08-21',
+            },
+            {
+                fom: '2025-08-22',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                tom: '2025-12-04',
+            },
+        ]);
+    });
+
+    it('Skal slette periode direkte og ikke spørre om forskyvning når en sletter siste periode', async () => {
+        const oppdaterUttaksplan = vi.fn();
+
+        render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
+
+        expect(await screen.findByText('12. Dec - 26. Mar')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('12. Dec - 26. Mar'));
+
+        await userEvent.click(screen.getAllByText('Slett')[2]!);
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
+            {
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                fom: '2025-04-18',
+                tom: '2025-05-08',
+            },
+            {
+                fom: '2025-05-09',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                tom: '2025-08-21',
+            },
+            {
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                fom: '2025-08-22',
+                tom: '2025-12-11',
+            },
+        ]);
     });
 });

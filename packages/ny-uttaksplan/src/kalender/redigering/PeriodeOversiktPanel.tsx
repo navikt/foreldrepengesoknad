@@ -9,6 +9,7 @@ import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { LeggTilPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstatt';
+import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
@@ -26,9 +27,6 @@ interface Props {
 
 export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) => {
     const intl = useIntl();
-    const [visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel] = useState(false);
-    const [skalViseKnapper, setSkalViseKnapper] = useState(true);
-
     const {
         foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
@@ -37,6 +35,10 @@ export const PeriodeOversiktPanel = ({ åpneRedigeringsmodus, labels }: Props) =
 
     const { sammenslåtteValgtePerioder, setValgtePerioder, leggTilUttaksplanPerioder, setEndredePerioder } =
         useKalenderRedigeringContext();
+
+    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } =
+        useVisForskyvEllerErstattPanel(sammenslåtteValgtePerioder);
+    const [skalViseKnapper, setSkalViseKnapper] = useState(true);
 
     const erDesktop = useErDesktop();
 
