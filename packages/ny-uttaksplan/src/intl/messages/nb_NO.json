@@ -404,5 +404,8 @@
     "HvaErMulig.Omsorgspermisjon": "Omsorgspermisjon",
     "HvaErMulig.Omsorgspermisjon.Tekst": "Når du adopterer kan du ha rett på to uker betalt omsorgspermisjon fra arbeidsgiveren din. Hvis du ikke får dette, kan du heller søke om foreldrepenger.",
     "HvaErMulig.AktivitetskravTilFar": "Aktivitetskrav til biologisk far",
-    "HvaErMulig.AktivitetskravTilFar.Tekst": "Biologisk far må fylle aktivitetskravet hvis far som stebarnsadopterer tar mer enn 15 eller 19 uker med foreldrepenger. Det er ingen aktivitetskrav til far som stebarnsadopterer."
+    "HvaErMulig.AktivitetskravTilFar.Tekst": "Biologisk far må fylle aktivitetskravet hvis far som stebarnsadopterer tar mer enn 15 eller 19 uker med foreldrepenger. Det er ingen aktivitetskrav til far som stebarnsadopterer.",
+    "OversiktSteg.Medmor": "medmor",
+    "OversiktSteg.Mor": "mor",
+    "OversiktSteg.Far": "far"
 }
