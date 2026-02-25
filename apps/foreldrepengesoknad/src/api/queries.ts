@@ -132,6 +132,7 @@ export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams) =
 export const trengerDokumentereMorsArbeidOptions = (data: DokumentereMorsArbeidParams) =>
     queryOptions({
         queryKey: ['TRENGER_DOKUMENTERER_MORS_ARBEID', data],
+        enabled: data.perioder.length > 0,
         queryFn: () => ky.post(API_URLS.trengerDokumentereMorsArbeid, { json: data }).json<boolean>(),
     });
 
