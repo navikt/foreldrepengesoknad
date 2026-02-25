@@ -14,6 +14,7 @@ dayjs.extend(isSameOrAfter);
 export const useHentGyldigeKontotyper = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     harValgtSamtidigUttak: boolean,
+    ønskerFlerbarnsdager: boolean | undefined,
 ) => {
     const { foreldreInfo, familiehendelsedato, familiesituasjon, valgtStønadskonto } = useUttaksplanData();
 
@@ -40,6 +41,7 @@ export const useHentGyldigeKontotyper = (
                     familiesituasjon,
                     valgtePerioder,
                     harValgtSamtidigUttak,
+                    ønskerFlerbarnsdager,
                 ),
             ),
     };
@@ -131,6 +133,7 @@ const erGyldigForFarMedmor = (
     familiesituasjon: Familiesituasjon,
     valgtePerioder: Array<{ fom: string; tom: string }>,
     harValgtSamtidigUttak: boolean,
+    ønskerFlerbarnsdager: boolean | undefined,
 ) => {
     const { søker, rettighetType } = foreldreInfo;
     if (søker === 'MOR' && (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT')) {
@@ -176,6 +179,10 @@ const erGyldigForFarMedmor = (
     }
 
     if (konto === 'FELLESPERIODE') {
+        if (ønskerFlerbarnsdager) {
+            return true;
+        }
+
         if (erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(valgtePerioder, familiehendelsedato)) {
             return false;
         }

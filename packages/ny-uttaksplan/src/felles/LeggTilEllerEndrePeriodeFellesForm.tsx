@@ -70,7 +70,6 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     } = useUttaksplanData();
 
     const formMethods = useFormContext<LeggTilEllerEndrePeriodeFormFormValues>();
-    const harFlerbarnsdager = barn.antallBarn > 1;
 
     const {
         forelder,
@@ -84,6 +83,8 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         skalDuKombinereArbeidOgUttakFarMedmor,
         ønskerFlerbarnsdager,
     } = formMethods.watch();
+
+    const skalViseFlerbarnsdager = barn.antallBarn > 1 && (forelder === 'FAR_MEDMOR' || forelder === 'BEGGE');
 
     const infotekstOmFedrekvoteBrukRundtFødsel = getInfotekstOmFedrekvoteBrukRundtFødsel(
         uttakPerioder,
@@ -111,6 +112,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(
         valgtePerioder,
         forelder === 'BEGGE',
+        ønskerFlerbarnsdager,
     );
 
     const erMorGyldigForelder = gyldigeStønadskontoerForMor.length > 0;
@@ -189,7 +191,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 }
             </RhfRadioGroup>
 
-            {harFlerbarnsdager && (
+            {skalViseFlerbarnsdager && (
                 <RhfRadioGroup
                     name="ønskerFlerbarnsdager"
                     control={formMethods.control}
@@ -668,6 +670,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentMor) : undefined,
             overføringÅrsak: values.overføringsårsak,
+            flerbarnsdager: values.ønskerFlerbarnsdager,
         });
     }
     if (values.forelder === 'FAR_MEDMOR' || values.forelder === 'BEGGE') {
@@ -684,6 +687,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentFarMedmor) : undefined,
             overføringÅrsak: values.overføringsårsak,
+            flerbarnsdager: values.ønskerFlerbarnsdager,
         });
     }
     return nye;
@@ -740,6 +744,7 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
             morsAktivitet: morsPeriode.morsAktivitet,
             hvorSkalDuJobbe:
                 søkersPeriode.gradering?.aktivitet.arbeidsgiver?.id ?? søkersPeriode.gradering?.aktivitet.type,
+            ønskerFlerbarnsdager: morsPeriode.flerbarnsdager || farMedmorPeriode.flerbarnsdager,
         };
     }
 
