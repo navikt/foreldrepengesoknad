@@ -129,7 +129,6 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                                 antallDagerSøker1={antallDagerSøker1}
                                 onAntallDagerSøker1Change={(value) => {
                                     formMethods.setValue('antallDagerSøker1', value);
-                                    scrollToBottom();
                                 }}
                                 antallUkerOgDagerFellesperiode={antallUkerOgDagerFellesperiode}
                                 fornavnSøker1={fornavnSøker1}
