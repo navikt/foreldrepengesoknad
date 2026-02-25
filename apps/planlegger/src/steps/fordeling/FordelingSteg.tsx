@@ -81,7 +81,7 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
 
-    const { ref, scrollToBottom } = useScrollBehaviour();
+    const { ref } = useScrollBehaviour();
 
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
