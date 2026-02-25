@@ -553,7 +553,7 @@ const filtrerUtAnnenPartsPerioder = (
 ): UttakPeriode_fpoversikt[] => {
     const søker = rolle === 'mor' ? 'MOR' : 'FAR_MEDMOR';
     return uttaksplan.filter((periode) => {
-        if ('trekkdager' in periode) {
+        if (erEøsUttakPeriode(periode)) {
             return false;
         }
         return periode.forelder === søker;
