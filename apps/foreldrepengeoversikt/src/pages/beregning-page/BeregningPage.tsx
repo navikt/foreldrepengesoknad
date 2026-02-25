@@ -249,11 +249,13 @@ const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
                         values={{ kilde: finnKildeForInntekt(andel, intl) }}
                     />
                 </BodyShort>
-                <BodyShort>{formatCurrencyWithKr((andel.fastsattPrÅr ?? 0) / 12)}</BodyShort>
+                <BodyShort className="text-end">{formatCurrencyWithKr((andel.fastsattPrÅr ?? 0) / 12)}</BodyShort>
                 <BodyShort>
                     <FormattedMessage id="beregning.andel.omregnetTilÅrsinntekt" />
                 </BodyShort>
-                <BodyShort>{formatCurrencyWithKr(andel.fastsattPrÅr ?? 0)}</BodyShort>
+                <BodyShort className="text-end">{formatCurrencyWithKr(andel.fastsattPrÅr ?? 0)}</BodyShort>
+                <span>Dagsats</span>
+                <BodyShort className="text-end">{formatCurrencyWithKr(andel.dagsatsArbeidsgiver ?? 0)}</BodyShort>
             </HGrid>
         </VStack>
     );
