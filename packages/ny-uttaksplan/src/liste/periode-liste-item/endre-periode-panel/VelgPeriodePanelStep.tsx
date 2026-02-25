@@ -1,3 +1,4 @@
+import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -9,6 +10,7 @@ import { formatDate } from '@navikt/fp-utils';
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { genererPeriodeKey, getStønadskontoNavn } from '../../../liste/utils/uttaksplanListeUtils';
 import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
+import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../../utils/periodeUtils';
 
 interface Props {
     perioder: Uttaksplanperiode[];
@@ -54,14 +56,25 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                         const morsAktivitet = erVanligUttakPeriode(p) && p.morsAktivitet ? p.morsAktivitet : undefined;
                         return (
                             <Radio key={genererPeriodeKey(p)} value={index} autoFocus={index === 0}>
-                                {`${formatDate(p.fom)} - ${formatDate(p.tom)} - ` +
-                                    `${getStønadskontoNavn(
-                                        intl,
-                                        navnPåForeldre,
-                                        søker === 'FAR_MEDMOR',
-                                        morsAktivitet,
-                                        erVanligUttakPeriode(p) ? p.kontoType : undefined,
-                                    )}`}
+                                <HStack gap="space-4">
+                                    {harPeriodeDerMorsAktivitetIkkeErValgt([p]) && (
+                                        <ExclamationmarkTriangleFillIcon
+                                            title={intl.formatMessage({
+                                                id: 'PeriodeListeHeader.MorsAktivitetIkkeValgt',
+                                            })}
+                                            fontSize="1.5rem"
+                                            className="text-ax-danger-800"
+                                        />
+                                    )}
+                                    {`${formatDate(p.fom)} - ${formatDate(p.tom)} - ` +
+                                        `${getStønadskontoNavn(
+                                            intl,
+                                            navnPåForeldre,
+                                            søker === 'FAR_MEDMOR',
+                                            morsAktivitet,
+                                            erVanligUttakPeriode(p) ? p.kontoType : undefined,
+                                        )}`}
+                                </HStack>
                             </Radio>
                         );
                     })}
