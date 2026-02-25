@@ -49,6 +49,7 @@ export type LeggTilEllerEndrePeriodeFormFormValues = {
     morsAktivitet?: MorsAktivitet;
     overføringsårsak?: UttakOverføringÅrsak_fpoversikt;
     hvorSkalDuJobbe?: string;
+    ønskerFlerbarnsdager?: boolean;
 };
 
 interface Props {
@@ -69,7 +70,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     } = useUttaksplanData();
 
     const formMethods = useFormContext<LeggTilEllerEndrePeriodeFormFormValues>();
-    const erFlerbarnsdager = barn.antallBarn > 1;
+    const harFlerbarnsdager = barn.antallBarn > 1;
 
     const {
         forelder,
@@ -81,6 +82,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         stillingsprosentMor,
         stillingsprosentFarMedmor,
         skalDuKombinereArbeidOgUttakFarMedmor,
+        ønskerFlerbarnsdager,
     } = formMethods.watch();
 
     const infotekstOmFedrekvoteBrukRundtFødsel = getInfotekstOmFedrekvoteBrukRundtFødsel(
@@ -94,7 +96,8 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     const erFarMedmorUtenAleneomsorg =
         forelder === 'FAR_MEDMOR' &&
         rettighetType !== 'ALENEOMSORG' &&
-        (kontoTypeFarMedmor === 'FORELDREPENGER' || kontoTypeFarMedmor === 'FELLESPERIODE');
+        (kontoTypeFarMedmor === 'FORELDREPENGER' || kontoTypeFarMedmor === 'FELLESPERIODE') &&
+        !ønskerFlerbarnsdager;
 
     const skalViseMorsAktivitetskravVedSamtidigUttak = getSkalViseMorsAktivitetskravVedSamtidigUttak(
         forelder,
@@ -102,6 +105,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         stillingsprosentMor,
         samtidigUttaksprosentFarMedmor,
         kontoTypeFarMedmor,
+        ønskerFlerbarnsdager,
     );
 
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(
@@ -131,6 +135,12 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     const resetStillingsprosentFarMedmor = () => {
         if ((forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && skalDuKombinereArbeidOgUttakFarMedmor === false) {
             formMethods.resetField('stillingsprosentFarMedmor', undefined);
+        }
+    };
+
+    const resetAktivitetskrav = () => {
+        if ((forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && ønskerFlerbarnsdager) {
+            formMethods.resetField('morsAktivitet', undefined);
         }
     };
 
@@ -178,6 +188,25 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     ].filter(Boolean) as React.ReactElement[]
                 }
             </RhfRadioGroup>
+
+            {harFlerbarnsdager && (
+                <RhfRadioGroup
+                    name="ønskerFlerbarnsdager"
+                    control={formMethods.control}
+                    validate={[
+                        isRequired('Du må svare på spørsmålet om du ønsker å bruke flerbarnsdager for denne perioden'),
+                    ]}
+                    label="Ønsker du å bruke flerbarnsdager for denne perioden?"
+                    onChange={resetAktivitetskrav}
+                >
+                    <Radio key="ja" value={true}>
+                        Ja
+                    </Radio>
+                    <Radio key="nei" value={false}>
+                        Nei
+                    </Radio>
+                </RhfRadioGroup>
+            )}
 
             {forelder !== undefined && <hr className="text-ax-border-neutral-subtle" />}
 
@@ -595,7 +624,12 @@ const getSkalViseMorsAktivitetskravVedSamtidigUttak = (
     stillingsprosentMor?: string,
     samtidigUttaksprosentFarMedmor?: string,
     kontoTypeFarMedmor?: KontoTypeUttak,
+    ønskerFlerbarnsdager?: boolean,
 ) => {
+    if (ønskerFlerbarnsdager) {
+        return false;
+    }
+
     const morsSamtidigUttakprosent = forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentMor) ?? 0) : 0;
     const morsStillingProsent = forelder === 'BEGGE' ? (getFloatFromString(stillingsprosentMor) ?? 0) : 0;
     const morsTotaleProsent = morsSamtidigUttakprosent + morsStillingProsent;
