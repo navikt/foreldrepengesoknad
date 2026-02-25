@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { toNumber } from 'lodash';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'types/VedleggDataType';
+import { erPeriodeIOpprinneligSak } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import {
@@ -28,6 +29,7 @@ import {
     BrukerRolle,
     EndringssøknadForeldrepengerDto,
     ForeldrepengesøknadDto,
+    FpSak_fpoversikt,
     KontoType,
     Målform,
     Oppholdsårsak,
@@ -50,7 +52,7 @@ import {
     omitOne,
 } from '@navikt/fp-utils';
 import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from '@navikt/fp-uttaksplan';
-import { erEøsUttakPeriode, erVanligUttakPeriode } from '@navikt/fp-uttaksplan-ny';
+import { erEøsUttakPeriode } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 export const FEIL_VED_INNSENDING =
@@ -361,9 +363,14 @@ export const getSøknadsdataForInnsendingNy = (
     erEndringssøknad: boolean,
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+    foreldrepengerSaker: FpSak_fpoversikt[],
 ): ForeldrepengesøknadDto | EndringssøknadForeldrepengerDto => {
+    const valgtEksisterendeSaksnr = hentData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
+
+    const eksisterendeSak = foreldrepengerSaker.find((sak) => sak.saksnummer === valgtEksisterendeSaksnr);
+
     if (erEndringssøknad) {
-        return cleanEndringssøknadNy(hentData, søkerinfo);
+        return cleanEndringssøknadNy(hentData, søkerinfo, eksisterendeSak);
     } else {
         return cleanSøknadNy(hentData, søkerinfo);
     }
@@ -501,6 +508,7 @@ export const cleanEndringssøknad = (
 export const cleanEndringssøknadNy = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+    eksisterendeSak?: FpSak_fpoversikt,
 ): EndringssøknadForeldrepengerDto => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
@@ -521,30 +529,21 @@ export const cleanEndringssøknadNy = (
         annenForelder: cleanAnnenforelder(annenForelder),
         vedlegg: convertAttachmentsMapToArray(vedlegg),
         uttaksplan: {
-            uttaksperioder: midlertidigMappingAvUttaksplan(
-                filtrerUtEksisterendePerioderSomLiggerFørFørsteNyePeriode(søkersPerioder),
-            ),
+            uttaksperioder: midlertidigMappingAvUttaksplan(filtrerUtUendredePeriode(søkersPerioder, eksisterendeSak)),
             ønskerJustertUttakVedFødsel,
         },
     };
 };
 
-const filtrerUtEksisterendePerioderSomLiggerFørFørsteNyePeriode = (
+const filtrerUtUendredePeriode = (
     uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    eksisterendeSak?: FpSak_fpoversikt,
 ): UttakPeriode_fpoversikt[] => {
-    const sortertUttaksplan = [...uttaksplan].sort((a, b) => (dayjs(a.fom).isBefore(dayjs(b.fom)) ? -1 : 1));
-    const førsteNyPeriodeIndex = sortertUttaksplan.findIndex(
-        (periode) => erVanligUttakPeriode(periode) && periode.resultat === undefined,
-    );
-
-    return sortertUttaksplan.filter((periode, index) => {
+    return uttaksplan.filter((periode) => {
         if (erEøsUttakPeriode(periode)) {
             return false;
         }
-        if (periode.resultat !== undefined) {
-            return index > førsteNyPeriodeIndex;
-        }
-        return true;
+        return eksisterendeSak ? !erPeriodeIOpprinneligSak(eksisterendeSak, periode) : true;
     });
 };
 

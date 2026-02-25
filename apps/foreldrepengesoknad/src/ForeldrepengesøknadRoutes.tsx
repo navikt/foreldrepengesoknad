@@ -339,7 +339,7 @@ export const ForeldrepengesøknadRoutes = ({
     const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad || false);
     const [søknadGjelderNyttBarn, setSøknadGjelderNyttBarn] = useState(lagretSøknadGjelderNyttBarn);
 
-    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo, erEndringssøknad);
+    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo, erEndringssøknad, foreldrepengerSaker);
 
     const mellomlagreSøknadOgNaviger = useMellomlagreSøknad(
         foreldrepengerSaker,
