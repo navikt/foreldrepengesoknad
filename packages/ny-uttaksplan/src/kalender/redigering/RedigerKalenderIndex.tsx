@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Box } from '@navikt/ds-react';
 
@@ -43,7 +43,13 @@ const RedigerKalender = ({
 
     const [erIRedigeringsmodus, setErIRedigeringsmodus] = useState(false);
 
-    const harValgtePerioderOgErIRedigeringsmodus = sammenslåtteValgtePerioder.length > 0 && erIRedigeringsmodus;
+    useEffect(() => {
+        // Reset redigeringmodus hvis alle perioder fjernes
+        if (sammenslåtteValgtePerioder.length === 0) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setErIRedigeringsmodus(false);
+        }
+    }, [sammenslåtteValgtePerioder]);
 
     return (
         <Box
@@ -51,8 +57,8 @@ const RedigerKalender = ({
             borderRadius="4"
             borderColor="neutral-subtle"
             height="fit-content"
-            maxHeight={harValgtePerioderOgErIRedigeringsmodus ? '100vh' : 'none'}
-            overflow={harValgtePerioderOgErIRedigeringsmodus ? 'auto' : 'hidden'}
+            maxHeight={erIRedigeringsmodus ? '100vh' : 'none'}
+            overflow={erIRedigeringsmodus ? 'auto' : 'hidden'}
             background="default"
         >
             {sammenslåtteValgtePerioder.length === 0 && (
@@ -61,7 +67,7 @@ const RedigerKalender = ({
             {sammenslåtteValgtePerioder.length > 0 && (
                 <DagerValgtPanel
                     labels={labels}
-                    erIRedigeringsmodus={harValgtePerioderOgErIRedigeringsmodus}
+                    erIRedigeringsmodus={erIRedigeringsmodus}
                     setErIRedigeringsmodus={setErIRedigeringsmodus}
                 />
             )}

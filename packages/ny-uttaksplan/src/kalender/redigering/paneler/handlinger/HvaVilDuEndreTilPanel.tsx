@@ -50,7 +50,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
 
     const { visUtsettelsePanel, setVisUtsettelsePanel } = useVisUtsettelsePanel(sammenslåtteValgtePerioder);
 
-    const [skalViseKnapper, setSkalViseKnapper] = useState(true);
+    const [erForskyvEllerErstattPanelvisningPå, setErForskyvEllerErstattPanelvisningPå] = useState(false);
 
     const erDesktop = useErDesktop();
 
@@ -144,72 +144,81 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                 <div className="block px-4 pb-4">
                     <VStack gap="space-12">
                         {labels}
-                        <PeriodeDetaljerOgInfoMeldinger setSkalViseKnapper={setSkalViseKnapper} />
-                        {(harPeriodeMedPleiepenger || harValgtEøsPeriode) && skalViseKnapper && (
-                            <HStack justify="end">
-                                <Button
-                                    type="button"
-                                    variant="tertiary"
-                                    size="small"
-                                    onClick={() => setValgtePerioder([])}
-                                >
-                                    <FormattedMessage id="RedigeringPanel.LukkRedigeringsmodus" />
-                                </Button>
-                            </HStack>
-                        )}
-                        {!harPeriodeMedPleiepenger && !harValgtEøsPeriode && skalViseKnapper && (
-                            <VStack gap="space-12">
-                                <Show above="md">
-                                    <LeggTilOgEndreKnapp
-                                        åpneRedigeringsmodus={åpneRedigeringsmodus}
-                                        skalViseLeggTilKnappetekst={skalViseLeggTilKnappetekst}
-                                    />
-                                </Show>
-                                <HStack gap="space-12" justify="space-between" className="w-full">
-                                    <Show below="md" className="flex-1">
-                                        <LeggTilOgEndreKnapp
-                                            åpneRedigeringsmodus={åpneRedigeringsmodus}
-                                            skalViseLeggTilKnappetekst={skalViseLeggTilKnappetekst}
-                                        />
-                                    </Show>
-                                    {skalViseFerieknapp && (
+
+                        <PeriodeDetaljerOgInfoMeldinger
+                            erForskyvEllerErstattPanelvisningPå={erForskyvEllerErstattPanelvisningPå}
+                            setErForskyvEllerErstattPanelvisningPå={setErForskyvEllerErstattPanelvisningPå}
+                        />
+
+                        {!erForskyvEllerErstattPanelvisningPå && (
+                            <>
+                                {(harPeriodeMedPleiepenger || harValgtEøsPeriode) && (
+                                    <HStack justify="end">
                                         <Button
-                                            variant="secondary"
-                                            size="small"
-                                            onClick={() =>
-                                                erEksisterendePerioderEtterValgteDager
-                                                    ? setVisEndreEllerForskyvPanel(true)
-                                                    : leggTilEllerForskyvPeriode(false)
-                                            }
                                             type="button"
+                                            variant="tertiary"
+                                            size="small"
+                                            onClick={() => setValgtePerioder([])}
                                         >
-                                            {skalViseLeggTilKnappetekst ? (
-                                                <FormattedMessage id="RedigeringPanel.LeggTilFerie" />
-                                            ) : (
-                                                <FormattedMessage id="RedigeringPanel.EndreTilFerie" />
+                                            <FormattedMessage id="RedigeringPanel.LukkRedigeringsmodus" />
+                                        </Button>
+                                    </HStack>
+                                )}
+                                {!harPeriodeMedPleiepenger && !harValgtEøsPeriode && (
+                                    <VStack gap="space-12">
+                                        <Show above="md">
+                                            <LeggTilOgEndreKnapp
+                                                åpneRedigeringsmodus={åpneRedigeringsmodus}
+                                                skalViseLeggTilKnappetekst={skalViseLeggTilKnappetekst}
+                                            />
+                                        </Show>
+                                        <HStack gap="space-12" justify="space-between" className="w-full">
+                                            <Show below="md" className="flex-1">
+                                                <LeggTilOgEndreKnapp
+                                                    åpneRedigeringsmodus={åpneRedigeringsmodus}
+                                                    skalViseLeggTilKnappetekst={skalViseLeggTilKnappetekst}
+                                                />
+                                            </Show>
+                                            {skalViseFerieknapp && (
+                                                <Button
+                                                    variant="secondary"
+                                                    size="small"
+                                                    onClick={() =>
+                                                        erEksisterendePerioderEtterValgteDager
+                                                            ? setVisEndreEllerForskyvPanel(true)
+                                                            : leggTilEllerForskyvPeriode(false)
+                                                    }
+                                                    type="button"
+                                                >
+                                                    {skalViseLeggTilKnappetekst ? (
+                                                        <FormattedMessage id="RedigeringPanel.LeggTilFerie" />
+                                                    ) : (
+                                                        <FormattedMessage id="RedigeringPanel.EndreTilFerie" />
+                                                    )}
+                                                </Button>
                                             )}
-                                        </Button>
-                                    )}
-                                    {skalViseUtsettelsesknapp && (
-                                        <Button
-                                            variant="secondary"
-                                            size="small"
-                                            onClick={() => setVisUtsettelsePanel(true)}
-                                            type="button"
-                                        >
-                                            <FormattedMessage id="RedigeringPanel.LeggTilUtsettelse" />
-                                        </Button>
-                                    )}
-                                    <Button
-                                        type="button"
-                                        variant="tertiary"
-                                        size="small"
-                                        onClick={() => setValgtePerioder([])}
-                                    >
-                                        <FormattedMessage id="RedigeringPanel.LukkRedigeringsmodus" />
-                                    </Button>
-                                </HStack>
-                            </VStack>
+                                            {skalViseUtsettelsesknapp && (
+                                                <Button
+                                                    variant="secondary"
+                                                    size="small"
+                                                    onClick={() => setVisUtsettelsePanel(true)}
+                                                    type="button"
+                                                >
+                                                    <FormattedMessage id="RedigeringPanel.LeggTilUtsettelse" />
+                                                </Button>
+                                            )}
+                                            <Button
+                                                type="button"
+                                                variant="tertiary"
+                                                size="small"
+                                                onClick={() => setValgtePerioder([])}
+                                            >
+                                                <FormattedMessage id="RedigeringPanel.LukkRedigeringsmodus" />
+                                            </Button>
+                                        </HStack>
+                                    </VStack>
+                                )}
+                            </>
                         )}
                     </VStack>
                 </div>
