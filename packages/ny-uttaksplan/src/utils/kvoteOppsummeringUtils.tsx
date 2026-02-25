@@ -102,6 +102,22 @@ export const finnAntallDagerDerKunEnHarForeldrepenger = (
     };
 };
 
+export const filtrerAvslåttePerioderMenBeholdPleiepenger = (periode: UttakPeriode_fpoversikt) => {
+    if (periode.resultat?.innvilget === false) {
+        return periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
+    }
+
+    return periode.resultat?.innvilget ?? true;
+};
+
+export const useFinnAntallDagerDerBeggeHarForeldrepenger = () => {
+    const { uttakPerioder, familiesituasjon, valgtStønadskonto } = useUttaksplanData();
+
+    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+
+    return finnAntallDagerDerBeggeHarForeldrepenger(filtrertePerioder, familiesituasjon, valgtStønadskonto);
+};
+
 export const finnAntallDagerDerBeggeHarForeldrepenger = (
     uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     familiesituasjon: Familiesituasjon,

@@ -16,6 +16,7 @@ import { useUttaksplanData } from './context/UttaksplanDataContext';
 import { erVanligUttakPeriode } from './types/UttaksplanPeriode';
 import { getVarighetString } from './utils/dateUtils';
 import {
+    filtrerAvslåttePerioderMenBeholdPleiepenger,
     finnAntallDagerDerBeggeHarForeldrepenger,
     finnAntallDagerDerKunEnHarForeldrepenger,
     getUttaksKontoType,
@@ -838,11 +839,3 @@ const ForMyeTidBruktIPlanIkon = ({ size }: IkonProps) => (
         />
     </div>
 );
-
-const filtrerAvslåttePerioderMenBeholdPleiepenger = (periode: UttakPeriode_fpoversikt) => {
-    if (periode.resultat?.innvilget === false) {
-        return periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
-    }
-
-    return periode.resultat?.innvilget ?? true;
-};

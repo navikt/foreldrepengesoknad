@@ -7,6 +7,7 @@ import { BodyShort, Box, Link, Show, VStack } from '@navikt/ds-react';
 import { KvoteOppsummeringsTittel } from '../../../KvoteOppsummering';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
 import { UttaksplanHandlingKnapper } from '../../../felles/UttaksplanHandlingKnapper';
+import { useFinnAntallDagerDerBeggeHarForeldrepenger } from '../../../utils/kvoteOppsummeringUtils.tsx';
 import { RødRamme } from '../utils/RødRamme';
 import { useErDesktop, useMediaResetMinimering } from '../utils/useMediaActions';
 
@@ -55,9 +56,7 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
                         <BodyShort size="small">
                             <FormattedMessage id="RedigeringKalenderIndex.VelgDatoerIKalender" />
                         </BodyShort>
-                        <RødRamme>
-                            <KvoteOppsummeringsTittel erInnsyn={false} visStatusIkoner={false} brukEnkelVisning />
-                        </RødRamme>
+                        <Tittel />
                     </VStack>
                 </Show>
                 <Show above="md">
@@ -69,9 +68,7 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
                     {labels}
                     <VStack gap="space-16">
                         <Show above="md">
-                            <RødRamme>
-                                <KvoteOppsummeringsTittel erInnsyn={false} visStatusIkoner={false} brukEnkelVisning />
-                            </RødRamme>
+                            <Tittel />
                         </Show>
                         <Link as="button" onClick={scrollToKvoteOppsummering}>
                             <FormattedMessage id="RedigeringKalenderIndex.SeDetaljer" />
@@ -95,5 +92,19 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
                 </VStack>
             )}
         </VStack>
+    );
+};
+
+const Tittel = () => {
+    const { antallUbrukteDager } = useFinnAntallDagerDerBeggeHarForeldrepenger();
+
+    if (antallUbrukteDager === 0) {
+        return <KvoteOppsummeringsTittel erInnsyn={false} visStatusIkoner={false} brukEnkelVisning />;
+    }
+
+    return (
+        <RødRamme>
+            <KvoteOppsummeringsTittel erInnsyn={false} visStatusIkoner={false} brukEnkelVisning />
+        </RødRamme>
     );
 };
