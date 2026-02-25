@@ -91,45 +91,24 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
             <AvslåttePerioder />
 
             <VStack gap="space-24">
-                {!readOnly && (
-                    <VStack gap="space-24">
-                        <div>
-                            <Button
-                                type="button"
-                                size="small"
-                                variant="primary"
-                                onClick={() => {
-                                    setErRedigeringAktiv(!erRedigeringAktiv);
-                                    setValgtePerioder([]);
-                                }}
-                            >
-                                {erRedigeringAktiv ? (
-                                    <FormattedMessage id="UttaksplanKalender.StopRedigering" />
-                                ) : (
-                                    <FormattedMessage id="UttaksplanKalender.StartRedigering" />
-                                )}
-                            </Button>
-                        </div>
-                        {!erRedigeringInaktiv && (
-                            <RadioGroup
-                                legend={<FormattedMessage id="UttaksplanKalender.VelgDagEllerPeriode" />}
-                                onChange={() => {
-                                    setRedigeringAktivOgValgtePerioder([]);
-                                    setIsRangeSelection(!isRangeSelection);
-                                }}
-                                value={isRangeSelection}
-                            >
-                                <HStack gap="space-16">
-                                    <Radio value={true}>
-                                        <FormattedMessage id="UttaksplanKalender.VelgPeriode" />
-                                    </Radio>
-                                    <Radio value={false}>
-                                        <FormattedMessage id="UttaksplanKalender.VelgEnkeltDager" />
-                                    </Radio>
-                                </HStack>
-                            </RadioGroup>
-                        )}
-                    </VStack>
+                {!readOnly && !erRedigeringInaktiv && (
+                    <RadioGroup
+                        legend={<FormattedMessage id="UttaksplanKalender.VelgDagEllerPeriode" />}
+                        onChange={() => {
+                            setRedigeringAktivOgValgtePerioder([]);
+                            setIsRangeSelection(!isRangeSelection);
+                        }}
+                        value={isRangeSelection}
+                    >
+                        <HStack gap="space-16">
+                            <Radio value={true}>
+                                <FormattedMessage id="UttaksplanKalender.VelgPeriode" />
+                            </Radio>
+                            <Radio value={false}>
+                                <FormattedMessage id="UttaksplanKalender.VelgEnkeltDager" />
+                            </Radio>
+                        </HStack>
+                    </RadioGroup>
                 )}
 
                 {perioderForKalendervisning.some((p) => p.isMarked) && (
@@ -156,7 +135,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                 )}
 
                 <div className="ax-md:flex-row flex flex-col">
-                    <div className={erRedigeringInaktiv ? 'flex-1' : 'ax-md:w-[295px]'}>
+                    <div className={erRedigeringInaktiv ? 'flex-1' : 'ax-md:w-full'}>
                         {kanLeggeTilFlereMånederPåStarten && !erRedigeringInaktiv && (
                             <Button
                                 onClick={() => setSkalViseFørsteMuligeDatoIKalender(true)}
@@ -172,7 +151,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                             periods={perioderForKalendervisning.concat(valgtePerioder).sort(sortPeriods)}
                             setSelectedPeriods={readOnly ? undefined : setRedigeringAktivOgValgtePerioder}
                             getSrTextForSelectedPeriod={readOnly ? undefined : getSrTextForSelectedPeriod}
-                            nrOfColumns={erRedigeringInaktiv ? 2 : 1}
+                            nrOfColumns={2}
                             isRangeSelection={isRangeSelection}
                             firstDateInCalendar={førsteDatoIKalender}
                             lastDateInCalendar={sisteDatoIKalender}
