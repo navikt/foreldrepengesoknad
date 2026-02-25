@@ -111,13 +111,13 @@ describe('UttaksplanKalender', () => {
     it('skal markere en periode som ikke overlapper med eksisterende perioder', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+        const mars = screen.getByTestId('year:2024;month:2');
 
-        await userEvent.click(screen.getByText('Start redigering'));
-
-        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
+        await userEvent.click(within(mars).getByText('29', { exact: false }));
 
         await userEvent.click(screen.getAllByText('Vis flere måneder')[0]!);
+
+        await userEvent.click(within(mars).getByText('29', { exact: false }));
 
         const januar = screen.getByTestId('year:2024;month:0');
 
@@ -145,9 +145,8 @@ describe('UttaksplanKalender', () => {
     it('skal velge enkeltperioder', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
+        const mars = screen.getByTestId('year:2024;month:2');
+        await userEvent.click(within(mars).getByText('28', { exact: false }));
 
         expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 
@@ -173,12 +172,6 @@ describe('UttaksplanKalender', () => {
 
     it('skal markere en periode som overlapper med eksisterende perioder', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
-
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
-        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 
         const mars = screen.getByTestId('year:2024;month:2');
         const mai = screen.getByTestId('year:2024;month:4');
@@ -222,12 +215,6 @@ describe('UttaksplanKalender', () => {
     it('skal vise infomelding når en velger dag før fødselsdato', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
-        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
-
         const mars = screen.getByTestId('year:2024;month:2');
 
         await userEvent.click(within(mars).getByText('28', { exact: false }));
@@ -244,12 +231,6 @@ describe('UttaksplanKalender', () => {
     it('skal vise infomelding når en velger dag i de første 6 ukene etter fødselsdato', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
-        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
-
         const april = screen.getByTestId('year:2024;month:3');
 
         await userEvent.click(within(april).getByText('12', { exact: false }));
@@ -265,12 +246,6 @@ describe('UttaksplanKalender', () => {
 
     it('skal vise infomelding når valg av dager gir ingen mulige kontotyper', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
-
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
-        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 
         const mars = screen.getByTestId('year:2024;month:2');
         const april = screen.getByTestId('year:2024;month:3');
@@ -289,12 +264,6 @@ describe('UttaksplanKalender', () => {
 
     it('skal vise endre-knapp og preutfylte felter når en velger en del av en eksisterende periode', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
-
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
-        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
 
@@ -317,12 +286,6 @@ describe('UttaksplanKalender', () => {
 
     it('skal slette foreldrepenger før fødsel og fremdeles beholde markering for dagene etter fødsel', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
-
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
-        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 
         const mars = screen.getByTestId('year:2024;month:2');
         const april = screen.getByTestId('year:2024;month:3');
@@ -351,11 +314,8 @@ describe('UttaksplanKalender', () => {
     it('skal vise flere måneder i starten av kalender', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        expect(screen.queryByText('Vis flere måneder')).not.toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
+        const mars = screen.getByTestId('year:2024;month:2');
+        await userEvent.click(within(mars).getByTestId('day:18;dayColor:BLUE'));
 
         expect(screen.getAllByText('Vis flere måneder')).toHaveLength(2);
 
@@ -375,11 +335,9 @@ describe('UttaksplanKalender', () => {
     it('skal ikke kunne legge til flere måneder på starten når en allerede viser maks antall måneder', async () => {
         render(<HarPeriode11UkerFørFamiliehendelseDato />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+        const juli = screen.getByTestId('year:2024;month:6');
 
-        expect(screen.queryByText('Vis flere måneder')).not.toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
+        await userEvent.click(within(juli).getByTestId('day:3;dayColor:GREEN'));
 
         // Kun den på slutten vises
         expect(screen.getByText('Vis flere måneder')).toBeInTheDocument();
@@ -392,9 +350,9 @@ describe('UttaksplanKalender', () => {
     it('skal legge til nye måneder på slutten helt til maks antall måneder er nådd', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+        const juli = screen.getByTestId('year:2024;month:6');
 
-        await userEvent.click(screen.getByText('Start redigering'));
+        await userEvent.click(within(juli).getByTestId('day:3;dayColor:GREEN'));
 
         expect(screen.getByTestId('year:2024;month:6')).toBeInTheDocument();
         expect(screen.queryByTestId('year:2024;month:7')).not.toBeInTheDocument();
@@ -482,8 +440,6 @@ describe('UttaksplanKalender', () => {
     it('skal vise perioder med aktivitetsfri kvote', async () => {
         render(<VisFarsAktivitetsfriKvote />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
         const juni = screen.getByTestId('year:2024;month:5');
 
         await userEvent.click(within(juni).getByTestId('day:14;dayColor:GREENSTRIPED'));
@@ -497,14 +453,6 @@ describe('UttaksplanKalender', () => {
 
     it('skal legge til samtidig uttak, så fjerne det igjen', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
-
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
-        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
-
-        await userEvent.click(screen.getAllByText('Vis flere måneder')[0]!);
 
         const juni = screen.getByTestId('year:2024;month:5');
 
@@ -576,10 +524,6 @@ describe('UttaksplanKalender', () => {
     it('mor vil overføre fars kvote', async () => {
         render(<MorOverførerFarsKvote />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
         const september = screen.getByTestId('year:2026;month:8');
 
         await userEvent.click(within(september).getByText('7', { exact: true }));
@@ -620,10 +564,6 @@ describe('UttaksplanKalender', () => {
     it('skal vise advarsel om at en mister dager om en velger å gradere i treukersperioden før fødsel som mor', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
         const mars = screen.getByTestId('year:2024;month:2');
 
         await userEvent.click(within(mars).getByText('14', { exact: true }));
@@ -653,10 +593,6 @@ describe('UttaksplanKalender', () => {
 
     it('skal vise advarsel om at en mister dager om en velger å gradere i seksukersperioden etter fødsel som mor', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
-
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
 
         const mai = screen.getByTestId('year:2024;month:4');
 
@@ -694,10 +630,6 @@ describe('UttaksplanKalender', () => {
     it('skal ikke kunne endre eller slette en EØS-periode', async () => {
         render(<MorSøkerOgFarHarEøsPeriode />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
         const juli = screen.getByTestId('year:2024;month:6');
 
         await userEvent.click(within(juli).getByText('15', { exact: true }));
@@ -718,10 +650,6 @@ describe('UttaksplanKalender', () => {
 
     it('mor og far tar samtidig uttak - far fellesperiode med 100% samtidig uttak skal trigge aktivitetskrav', async () => {
         render(<SamtidigUttak />);
-
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
 
         const september = screen.getByTestId('year:2026;month:8');
 
@@ -773,10 +701,6 @@ describe('UttaksplanKalender', () => {
 
     it('mor og far tar samtidig uttak - mindre enn 100 % samtidig uttak skal trigge krav om gradering', async () => {
         render(<SamtidigUttak />);
-
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
 
         const september = screen.getByTestId('year:2026;month:8');
 
@@ -840,10 +764,6 @@ describe('UttaksplanKalender', () => {
 
     it('mor og far tar samtidig uttak - dersom kombinert uttak er mer enn 100 % skal man ikke kunne ta mer enn 50 % fellesperiode', async () => {
         render(<SamtidigUttak />);
-
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
 
         const september = screen.getByTestId('year:2026;month:8');
 
@@ -915,10 +835,6 @@ describe('UttaksplanKalender', () => {
     it('mor og far tar samtidig uttak - fedrekvote + mødrekvote kan ikke være mer enn 100 % til sammen', async () => {
         render(<SamtidigUttak />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
         const september = screen.getByTestId('year:2026;month:8');
 
         await userEvent.click(within(september).getByText('7', { exact: true }));
@@ -974,8 +890,6 @@ describe('UttaksplanKalender', () => {
             await screen.findByText('Du må fylle ut informasjon om mors aktivitet i de markerte periodene'),
         ).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Start redigering'));
-
         const juli = screen.getByTestId('year:2024;month:6');
 
         await userEvent.click(within(juli).getByTestId('day:3;dayColor:GREEN'));
@@ -1001,10 +915,6 @@ describe('UttaksplanKalender', () => {
     it('skal ikke som far kunne overskrive en dag i perioden to->tre uker før fødselsdato', async () => {
         render(<FarSøkerEtterAtMorHarSøkt />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
         const mars = screen.getByTestId('year:2024;month:2');
 
         await userEvent.click(within(mars).getByTestId('day:14;dayColor:BLUE'));
@@ -1023,10 +933,6 @@ describe('UttaksplanKalender', () => {
     it('skal kunne legge til sin egen periode over perioden til annen part', async () => {
         render(<FarSøkerEtterAtMorHarSøkt />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
         const mars = screen.getByTestId('year:2024;month:2');
 
         await userEvent.click(within(mars).getByTestId('day:28;dayColor:BLUE'));
@@ -1043,10 +949,6 @@ describe('UttaksplanKalender', () => {
     it('skal ikke kunne slette periodene til annen part', async () => {
         render(<FarSøkerEtterAtMorHarSøkt />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
         const mars = screen.getByTestId('year:2024;month:2');
 
         await userEvent.click(within(mars).getByTestId('day:28;dayColor:BLUE'));
@@ -1060,10 +962,6 @@ describe('UttaksplanKalender', () => {
 
     it('dersom far/medmor tar ut fedrekvoten i perioden rundt fødsel forbeholdt mor må han laste opp dokumentasjon', async () => {
         render(<FarsUttakMorForSyk />);
-
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
 
         const februar = screen.getByTestId('year:2026;month:1');
 
@@ -1097,10 +995,6 @@ describe('UttaksplanKalender', () => {
     it('skal kunne velge å forskyve periodene ved innlegging av ferie', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
         const juni = screen.getByTestId('year:2024;month:5');
 
         await userEvent.click(within(juni).getByTestId('day:3;dayColor:BLUE'));
@@ -1124,10 +1018,6 @@ describe('UttaksplanKalender', () => {
 
     it('skal ikke kunne forskyve perioder når en har valgt dager før familiehendelsesdato', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
-
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
 
         const april = screen.getByTestId('year:2024;month:3');
 
@@ -1156,10 +1046,6 @@ describe('UttaksplanKalender', () => {
 
     it('skal kunne velge å forskyve periodene ved endring til fars periode', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
-
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
 
         const april = screen.getByTestId('year:2024;month:3');
 
@@ -1203,12 +1089,6 @@ describe('UttaksplanKalender', () => {
     it('skal slette periode og skyve perioden som ligger bak fremover i planen', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
-        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
-
         const mai = screen.getByTestId('year:2024;month:4');
 
         await userEvent.click(within(mai).getByTestId('day:17;dayColor:BLUEOUTLINE'));
@@ -1235,12 +1115,6 @@ describe('UttaksplanKalender', () => {
 
     it('skal måtte oppgi arbeidsforhold når en graderer', async () => {
         render(<MedArbeidsforhold />);
-
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
-        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 
         const juni = screen.getByTestId('year:2024;month:5');
 
@@ -1280,12 +1154,6 @@ describe('UttaksplanKalender', () => {
 
     it('skal vise perioder for avslag av pleiepenger og annet', async () => {
         render(<SkalHaPeriodeMedFratrekkForPleiepenger />);
-
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
-        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
 
@@ -1331,12 +1199,6 @@ describe('UttaksplanKalender', () => {
     it('skal lukke dialog for forskyv/erstatt om en endrer på dager i kalender', async () => {
         render(<MedArbeidsforhold />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
-        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
-
         const juni = screen.getByTestId('year:2024;month:5');
 
         await userEvent.click(within(juni).getByTestId('day:3;dayColor:BLUE'));
@@ -1362,12 +1224,6 @@ describe('UttaksplanKalender', () => {
     it('skal lukke dialog for forskyv/erstatt ved sletting når en endrer på dager i kalender', async () => {
         render(<MedArbeidsforhold />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
-        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
-
         const juni = screen.getByTestId('year:2024;month:5');
 
         await userEvent.click(within(juni).getByTestId('day:3;dayColor:BLUE'));
@@ -1387,12 +1243,6 @@ describe('UttaksplanKalender', () => {
     it('skal ikke få spørsmål om forskyv/erstatt når en sletter siste dag i kalenderen', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
-        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
-        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
-
         const juli = screen.getByTestId('year:2024;month:6');
 
         await userEvent.click(within(juli).getByTestId('day:15;dayColor:GREEN'));
@@ -1408,10 +1258,6 @@ describe('UttaksplanKalender', () => {
         render(<HarUtsettelse />);
 
         expect(await screen.findByText('Du har utsatt uttaket av foreldrepenger')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
-        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 
         const januar = screen.getByTestId('year:2026;month:0');
 
@@ -1448,10 +1294,6 @@ describe('UttaksplanKalender', () => {
         render(<HarUtsettelse />);
 
         expect(await screen.findByText('Du har utsatt uttaket av foreldrepenger')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Start redigering'));
-
-        expect(await screen.findByText('Velg dager eller periode')).toBeInTheDocument();
 
         const januar = screen.getByTestId('year:2026;month:0');
 
