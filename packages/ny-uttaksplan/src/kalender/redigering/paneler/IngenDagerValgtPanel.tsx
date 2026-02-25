@@ -7,7 +7,7 @@ import { BodyShort, Box, Link, Show, VStack } from '@navikt/ds-react';
 import { KvoteOppsummeringsTittel } from '../../../KvoteOppsummering';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
 import { UttaksplanHandlingKnapper } from '../../../felles/UttaksplanHandlingKnapper';
-import { useFinnAntallDagerDerBeggeHarForeldrepenger } from '../../../utils/kvoteOppsummeringUtils.tsx';
+import { useFinnAntallDagerDerBeggeHarForeldrepenger } from '../../../utils/kvoteOppsummeringUtils';
 import { RødRamme } from '../utils/RødRamme';
 import { useErDesktop, useMediaResetMinimering } from '../utils/useMediaActions';
 
