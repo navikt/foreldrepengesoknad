@@ -138,7 +138,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                             <BodyShort>
                                 <FormattedMessage id="UttaksplanKalender.MarkertePerioder" />
                             </BodyShort>
-                            <Link href={links.aktivitetskrav} target="_blank">
+                            <Link href={links.aktivitetskrav} target="_blank" rel="noopener noreferrer">
                                 <FormattedMessage id="UttaksplanKalender.HvaErAktivitetskrav" />
                             </Link>
                         </VStack>
