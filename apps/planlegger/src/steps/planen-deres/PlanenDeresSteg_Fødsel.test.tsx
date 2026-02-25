@@ -637,4 +637,112 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(within(sliderContainer).getByText('10. juni 2024 – 6. des. 2024')).toBeInTheDocument();
         expect(within(sliderContainer).getByText('9. des. 2024 – 16. mai 2025')).toBeInTheDocument();
     });
+
+    it('Skal vise kort datoformat (dd.mm.yy) på mobil viewport', async () => {
+        // Mock matchMedia for å simulere mobil viewport (under 480px)
+        const originalMatchMedia = globalThis.matchMedia;
+        const listeners: Array<(e: MediaQueryListEvent) => void> = [];
+
+        globalThis.matchMedia = (query: string) => {
+            const matches = !query.includes('min-width: 480px') && !query.includes('min-width: 30em');
+            return {
+                matches,
+                media: query,
+                onchange: null,
+                addListener: (fn: (e: MediaQueryListEvent) => void) => listeners.push(fn),
+                removeListener: (fn: (e: MediaQueryListEvent) => void) => {
+                    const index = listeners.indexOf(fn);
+                    if (index !== -1) listeners.splice(index, 1);
+                },
+                addEventListener: (event: string, fn: (e: MediaQueryListEvent) => void) => {
+                    if (event === 'change') listeners.push(fn);
+                },
+                removeEventListener: (event: string, fn: (e: MediaQueryListEvent) => void) => {
+                    const index = listeners.indexOf(fn);
+                    if (index !== -1) listeners.splice(index, 1);
+                },
+                dispatchEvent: () => true,
+            } as MediaQueryList;
+        };
+
+        const utils = render(<MorOgFarBeggeHarRett />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        // Finn slideren
+        const slider = screen.getByRole('slider', { name: /fordeling/i });
+        const sliderContainer = slider.closest('.aksel-vstack') as HTMLElement;
+
+        // Sjekker at kort datoformat vises (dd.mm.yy)
+        expect(within(sliderContainer).getByText('10.06.24 – 11.10.24')).toBeInTheDocument();
+        expect(within(sliderContainer).getByText('14.10.24 – 16.05.25')).toBeInTheDocument();
+
+        // Endrer fordeling til 8 uker til søker 1
+        await endreFordelingMedSlider(utils, 40);
+
+        // Verifiserer at det korte formatet fortsatt vises
+        expect(within(sliderContainer).getByText('10.06.24 – 06.12.24')).toBeInTheDocument();
+        expect(within(sliderContainer).getByText('09.12.24 – 16.05.25')).toBeInTheDocument();
+
+        // Rydd opp
+        globalThis.matchMedia = originalMatchMedia;
+    });
+
+    it('Skal vise langt datoformat (d. MMM yyyy) på desktop viewport', async () => {
+        // Mock matchMedia for å simulere desktop viewport (over 480px)
+        const originalMatchMedia = globalThis.matchMedia;
+        const listeners: Array<(e: MediaQueryListEvent) => void> = [];
+
+        globalThis.matchMedia = (query: string) => {
+            const matches = query.includes('min-width: 480px') || query.includes('min-width: 30em');
+            return {
+                matches,
+                media: query,
+                onchange: null,
+                addListener: (fn: (e: MediaQueryListEvent) => void) => listeners.push(fn),
+                removeListener: (fn: (e: MediaQueryListEvent) => void) => {
+                    const index = listeners.indexOf(fn);
+                    if (index !== -1) listeners.splice(index, 1);
+                },
+                addEventListener: (event: string, fn: (e: MediaQueryListEvent) => void) => {
+                    if (event === 'change') listeners.push(fn);
+                },
+                removeEventListener: (event: string, fn: (e: MediaQueryListEvent) => void) => {
+                    const index = listeners.indexOf(fn);
+                    if (index !== -1) listeners.splice(index, 1);
+                },
+                dispatchEvent: () => true,
+            } as MediaQueryList;
+        };
+
+        const utils = render(<MorOgFarBeggeHarRett />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        // Finn slideren
+        const slider = screen.getByRole('slider', { name: /fordeling/i });
+        const sliderContainer = slider.closest('.aksel-vstack') as HTMLElement;
+
+        // Sjekker at langt datoformat vises (d. MMM yyyy)
+        expect(within(sliderContainer).getByText('10. juni 2024 – 11. okt. 2024')).toBeVisible();
+        expect(within(sliderContainer).getByText('14. okt. 2024 – 16. mai 2025')).toBeVisible();
+
+        // Sjekker at kort datoformat IKKE er synlig
+        expect(within(sliderContainer).getByText('10.06.24 – 11.10.24')).not.toBeVisible();
+        expect(within(sliderContainer).getByText('14.10.24 – 16.05.25')).not.toBeVisible();
+
+        // Endrer fordeling til 8 uker til søker 1
+        await endreFordelingMedSlider(utils, 40);
+
+        // Verifiserer at det lange formatet fortsatt vises
+        expect(within(sliderContainer).getByText('10. juni 2024 – 6. des. 2024')).toBeVisible();
+        expect(within(sliderContainer).getByText('9. des. 2024 – 16. mai 2025')).toBeVisible();
+
+        // Sjekker at kort datoformat IKKE er synlig
+        expect(within(sliderContainer).getByText('10.06.24 – 06.12.24')).not.toBeVisible();
+        expect(within(sliderContainer).getByText('09.12.24 – 16.05.25')).not.toBeVisible();
+
+        // Rydd opp
+        globalThis.matchMedia = originalMatchMedia;
+    });
 });

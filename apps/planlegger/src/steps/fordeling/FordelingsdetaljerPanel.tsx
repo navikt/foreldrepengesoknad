@@ -6,7 +6,7 @@ import { erAlenesøker, erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
 import { Uttaksdata } from 'utils/uttakUtils';
 
-import { BodyShort, VStack } from '@navikt/ds-react';
+import { BodyShort, Hide, Show, VStack } from '@navikt/ds-react';
 
 import { Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
@@ -97,31 +97,65 @@ export const FordelingsdetaljerPanel = ({
                         </BodyShort>
                     </>
                 )}
-                <BodyShort weight="semibold">
-                    <FormattedMessage
-                        id="FordelingsdetaljerPanel.Infoboks.Periode"
-                        values={{
-                            hvem: capitalizeFirstLetter(fornavnSøker1),
-                            periode: periodFormat(startdatoPeriode1, sluttdatoPeriode1, intl, {
-                                separator: '–',
-                                useShortMonth: true,
-                            }),
-                        }}
-                    />
-                </BodyShort>
-                {fornavnSøker2 && sluttdatoPeriode2 && startdatoPeriode2 && (
+                <Show above="sm">
                     <BodyShort weight="semibold">
                         <FormattedMessage
                             id="FordelingsdetaljerPanel.Infoboks.Periode"
                             values={{
-                                hvem: capitalizeFirstLetter(fornavnSøker2),
-                                periode: periodFormat(startdatoPeriode2, sluttdatoPeriode2, intl, {
+                                hvem: capitalizeFirstLetter(fornavnSøker1),
+                                periode: periodFormat(startdatoPeriode1, sluttdatoPeriode1, intl, {
                                     separator: '–',
                                     useShortMonth: true,
                                 }),
                             }}
                         />
                     </BodyShort>
+                </Show>
+                <Hide above="sm">
+                    <BodyShort weight="semibold">
+                        <FormattedMessage
+                            id="FordelingsdetaljerPanel.Infoboks.Periode"
+                            values={{
+                                hvem: capitalizeFirstLetter(fornavnSøker1),
+                                periode: periodFormat(startdatoPeriode1, sluttdatoPeriode1, intl, {
+                                    separator: '–',
+                                    useShortYear: true,
+                                }),
+                            }}
+                        />
+                    </BodyShort>
+                </Hide>
+                {fornavnSøker2 && sluttdatoPeriode2 && startdatoPeriode2 && (
+                    <>
+                        <Show above="sm">
+                            <BodyShort weight="semibold">
+                                <FormattedMessage
+                                    id="FordelingsdetaljerPanel.Infoboks.Periode"
+                                    values={{
+                                        hvem: capitalizeFirstLetter(fornavnSøker2),
+                                        periode: periodFormat(startdatoPeriode2, sluttdatoPeriode2, intl, {
+                                            separator: '–',
+                                            useShortMonth: true,
+                                        }),
+                                    }}
+                                />
+                            </BodyShort>
+                        </Show>
+                        <Hide above="sm">
+                            <BodyShort weight="semibold">
+                                <FormattedMessage
+                                    id="FordelingsdetaljerPanel.Infoboks.Periode"
+                                    values={{
+                                        hvem: capitalizeFirstLetter(fornavnSøker2),
+                                        periode: periodFormat(startdatoPeriode2, sluttdatoPeriode2, intl, {
+                                            separator: '–',
+                                            useShortYear: true,
+                                        }),
+                                    }}
+                                />
+                            </BodyShort>
+                        </Hide>
+                    </>
                 )}
             </VStack>
         </Infobox>
