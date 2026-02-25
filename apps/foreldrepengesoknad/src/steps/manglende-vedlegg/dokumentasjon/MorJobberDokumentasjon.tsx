@@ -68,7 +68,10 @@ export const MorJobberDokumentasjon = ({
     const trengerDokumentereMorsArbeidQuery = useQuery({
         ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams),
         enabled:
-            !!annenPartFødselsnummer && !isAnnenforelderOppholdtSegIEØS(annenForelder) && !!dokumentereMorsArbeidParams,
+            dokumentereMorsArbeidParams.perioder.length > 0 &&
+            !!annenPartFødselsnummer &&
+            !isAnnenforelderOppholdtSegIEØS(annenForelder) &&
+            !!dokumentereMorsArbeidParams,
     });
 
     if (perioder.length === 0) {
