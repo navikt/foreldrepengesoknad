@@ -18,7 +18,7 @@ import {
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilUttakPeriode,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
-import { LeggTilPeriodeForskyvEllerErstatt } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstatt';
+import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useHentGyldigeKontotyper } from '../../felles/useHentGyldigeKontotyper';
 import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
@@ -246,7 +246,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 {visEndreEllerForskyvPanel && fomValue && tomValue && (
-                    <LeggTilPeriodeForskyvEllerErstatt
+                    <LeggTilPeriodeForskyvEllerErstattPanel
                         valgtePerioder={[{ fom: fomValue, tom: tomValue }]}
                         erFerie={hvaVilDuGjøre === 'LEGG_TIL_FERIE'}
                         setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}

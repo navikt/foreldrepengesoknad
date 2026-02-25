@@ -52,6 +52,7 @@ import {
     omitOne,
 } from '@navikt/fp-utils';
 import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from '@navikt/fp-uttaksplan';
+import { erEøsUttakPeriode } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 export const FEIL_VED_INNSENDING =
@@ -435,6 +436,8 @@ export const cleanSøknadNy = (
 
     const vedlegg = hentData(ContextDataType.VEDLEGG);
 
+    const søkersPerioder = filtrerUtAnnenPartsPerioder(uttaksplan, søkersituasjon.rolle);
+
     return {
         søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
         rolle: konverterRolle(søkersituasjon.rolle),
@@ -446,7 +449,7 @@ export const cleanSøknadNy = (
         annenForelder: cleanAnnenforelder(annenForelder),
         dekningsgrad,
         uttaksplan: {
-            uttaksperioder: midlertidigMappingAvUttaksplan(uttaksplan),
+            uttaksperioder: midlertidigMappingAvUttaksplan(søkersPerioder),
             ønskerJustertUttakVedFødsel,
         },
         utenlandsopphold: (utenlandsoppholdSiste12Mnd ?? []).concat(utenlandsoppholdNeste12Mnd ?? []),
@@ -514,6 +517,9 @@ export const cleanEndringssøknadNy = (
     const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN_NY));
     const { ønskerJustertUttakVedFødsel } = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA_NY));
     const vedlegg = hentData(ContextDataType.VEDLEGG);
+
+    const søkersPerioder = filtrerUtAnnenPartsPerioder(uttaksplan, søkersituasjon.rolle);
+
     return {
         søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
         saksnummer: valgtEksisterendeSaksnr,
@@ -523,7 +529,7 @@ export const cleanEndringssøknadNy = (
         annenForelder: cleanAnnenforelder(annenForelder),
         vedlegg: convertAttachmentsMapToArray(vedlegg),
         uttaksplan: {
-            uttaksperioder: midlertidigMappingAvUttaksplan(filtrerUtUendredePeriode(uttaksplan, eksisterendeSak)),
+            uttaksperioder: midlertidigMappingAvUttaksplan(filtrerUtUendredePeriode(søkersPerioder, eksisterendeSak)),
             ønskerJustertUttakVedFødsel,
         },
     };
@@ -534,10 +540,23 @@ const filtrerUtUendredePeriode = (
     eksisterendeSak?: FpSak_fpoversikt,
 ): UttakPeriode_fpoversikt[] => {
     return uttaksplan.filter((periode) => {
-        if ('trekkdager' in periode) {
+        if (erEøsUttakPeriode(periode)) {
             return false;
         }
         return eksisterendeSak ? !erPeriodeIOpprinneligSak(eksisterendeSak, periode) : true;
+    });
+};
+
+const filtrerUtAnnenPartsPerioder = (
+    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    rolle: Søkerrolle,
+): UttakPeriode_fpoversikt[] => {
+    const søker = rolle === 'mor' ? 'MOR' : 'FAR_MEDMOR';
+    return uttaksplan.filter((periode) => {
+        if (erEøsUttakPeriode(periode)) {
+            return false;
+        }
+        return periode.forelder === søker;
     });
 };
 

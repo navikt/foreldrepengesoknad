@@ -6,7 +6,7 @@
 
 Dette monorepoet bruker følgende verktøy:
 
-- node (v22)
+- node (v24)
 - pnpm - som npm, men mer plasseffektiv.
 - turbo - for å kjøre tasks parrallelt i et monorepo.
 - et personal access token for å installere alle dependencies

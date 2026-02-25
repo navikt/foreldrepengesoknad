@@ -13,6 +13,7 @@ export type LegendLabel =
     | 'SAMTIDIG_UTTAK'
     | 'TAPTE_DAGER'
     | 'UTSETTELSE'
+    | 'FERIE'
     | 'FARS_DEL_EØS'
     | 'MORS_DEL_EØS'
     | 'PLEIEPENGER'

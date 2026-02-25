@@ -18,4 +18,5 @@ export type CalendarPeriodColor =
     | 'GREENOUTLINE'
     | 'BLUEOUTLINE'
     | 'GREEN_WITH_BLACK_OUTLINE'
-    | 'BLUE_WITH_BLACK_OUTLINE';
+    | 'BLUE_WITH_BLACK_OUTLINE'
+    | 'BEIGEOUTLINE';

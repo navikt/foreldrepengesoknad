@@ -30,6 +30,8 @@ const getRect = (color: CalendarPeriodColor) => {
             return <div className={styles.greenRect} />;
         case 'BLUEOUTLINE':
             return <div className={styles.blueOutlineRect} />;
+        case 'BEIGEOUTLINE':
+            return <div className={styles.beigeOutlineRect} />;
         case 'BLACKOUTLINE':
             return <div className={styles.blackOutlineRect} />;
         case 'GREENOUTLINE':

@@ -35,9 +35,9 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
     const [endredePerioder, setEndredePerioder] = useState<Array<{ fom: string; tom: string }>>([]);
 
     const setRedigeringAktivOgValgtePerioder = useCallback<React.Dispatch<React.SetStateAction<CalendarPeriod[]>>>(
-        (periode) => {
+        (perioder) => {
             setErRedigeringAktiv(true);
-            setValgtePerioder(periode);
+            setValgtePerioder(perioder);
             setEndredePerioder([]);
         },
         [],
@@ -138,7 +138,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                             <BodyShort>
                                 <FormattedMessage id="UttaksplanKalender.MarkertePerioder" />
                             </BodyShort>
-                            <Link href={links.aktivitetskrav} target="_blank">
+                            <Link href={links.aktivitetskrav} target="_blank" rel="noopener noreferrer">
                                 <FormattedMessage id="UttaksplanKalender.HvaErAktivitetskrav" />
                             </Link>
                         </VStack>

@@ -19,7 +19,6 @@ import { EksternArbeidsforholdDto_fpoversikt, KontoTypeUttak } from '@navikt/fp-
 import { capitalizeFirstLetter, formatDateMedUkedagShortMonth } from '@navikt/fp-utils';
 import {
     appendPeriodeNavnHvisUttakRundtFødselFarMedmor,
-    finnesPeriodeIOpprinneligPlan,
     getPeriodeTittel,
     uttaksperiodeKanJusteresVedFødsel,
 } from '@navikt/fp-uttaksplan';
@@ -55,7 +54,6 @@ export const UttaksplanOppsummeringsliste = ({
     const intl = useIntl();
 
     const perioder = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
-    const eksisterendeUttaksplan = useContextGetData(ContextDataType.EKSISTERENDE_SAK)?.uttaksplan;
 
     const getStønadskontoNavnFromKonto = (konto: KontoTypeUttak) => {
         return getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
@@ -96,10 +94,6 @@ export const UttaksplanOppsummeringsliste = ({
             <FormSummary.Value>
                 <FormSummary.Answers>
                     {perioder.map((periode) => {
-                        const periodeErNyEllerEndret = eksisterendeUttaksplan
-                            ? finnesPeriodeIOpprinneligPlan(periode, eksisterendeUttaksplan) === false
-                            : true;
-
                         if (periode.type === Periodetype.Uttak) {
                             const tidsperiode = isSkalIkkeHaForeldrepengerFørFødselPeriode(periode)
                                 ? intl.formatMessage({ id: 'uttaksplan.periodeliste.header.skalIkkeHaUttakFørTermin' })
@@ -112,8 +106,6 @@ export const UttaksplanOppsummeringsliste = ({
                                         <Uttaksperiodedetaljer
                                             periode={periode}
                                             registrerteArbeidsforhold={registrerteArbeidsforhold}
-                                            periodeErNyEllerEndret={periodeErNyEllerEndret}
-                                            søkerErFarEllerMedmor={erFarEllerMedmor}
                                             annenForelder={annenForelder}
                                         />
                                     </FormSummary.Value>
@@ -126,13 +118,7 @@ export const UttaksplanOppsummeringsliste = ({
                                     <FormSummary.Label>{formatTidsperiode(periode.tidsperiode)}</FormSummary.Label>
                                     <FormSummary.Value>
                                         <FormattedMessage id="oppsummering.utsettelse.pga" />
-                                        <Utsettelsesperiodedetaljer
-                                            periode={periode}
-                                            registrerteArbeidsforhold={registrerteArbeidsforhold}
-                                            søkerErFarEllerMedmor={erFarEllerMedmor}
-                                            annenForelder={annenForelder}
-                                            periodeErNyEllerEndret={periodeErNyEllerEndret}
-                                        />
+                                        <Utsettelsesperiodedetaljer periode={periode} />
                                     </FormSummary.Value>
                                 </FormSummary.Answer>
                             );

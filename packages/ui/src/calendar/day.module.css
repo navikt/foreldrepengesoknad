@@ -211,6 +211,11 @@
     print-color-adjust: exact;
 }
 
+.beigeOutlineDay {
+    border: 2px solid var(--ax-brand-beige-600);
+    print-color-adjust: exact;
+}
+
 .greenWithBlackOutlineDay {
     background-color: var(--ax-success-400) !important;
     border: 2px solid var(--ax-bg-neutral-strong);

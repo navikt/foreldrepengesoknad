@@ -7,6 +7,7 @@ import { KontoBeregningDto, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_f
 import { UttaksdagenString, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { FellesperiodeFordelingValg } from '../../../types/Fordeling';
 import { deltUttak } from './forslag/deltUttak';
 import { ikkeDeltUttak } from './forslag/ikkeDeltUttak';
 
@@ -52,13 +53,23 @@ export const useUttaksplanForslag = (
             : 0;
 
         const antallDagerOgUkerSøker = antallUker * 5 + antallDager;
+        const antallDagerFellesperiode = valgtStønadskonto.kontoer.reduce(
+            (acc, p) => (p.konto === 'FELLESPERIODE' ? p.dager : acc),
+            0,
+        );
 
         const antallDagerFellesperiodeMor = erSøkerFarEllerMedmor
-            ? valgtStønadskonto.kontoer.reduce((acc, p) => (p.konto === 'FELLESPERIODE' ? p.dager : acc), 0) -
-              antallDagerOgUkerSøker
+            ? antallDagerFellesperiode - antallDagerOgUkerSøker
             : antallDagerOgUkerSøker;
 
-        return deltUttak(familiehendelsedato, valgtStønadskonto.kontoer, antallDagerFellesperiodeMor, startdato);
+        return deltUttak(
+            familiehendelsedato,
+            valgtStønadskonto.kontoer,
+            fordeling.fordelingValg === FellesperiodeFordelingValg.ALT
+                ? antallDagerFellesperiode
+                : antallDagerFellesperiodeMor,
+            startdato,
+        );
     }
 
     const erFarOgFar = getKjønnFromFnr(annenForelder) === 'M' && søkersituasjon.rolle === 'far';
