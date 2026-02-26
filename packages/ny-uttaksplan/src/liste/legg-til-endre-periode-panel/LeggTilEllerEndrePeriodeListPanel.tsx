@@ -69,8 +69,8 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
               lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
                   uttakPerioder,
                   uttaksplanperiode,
-                  erPeriodeneTilAnnenPartLåst,
                   søker,
+                  erPeriodeneTilAnnenPartLåst,
               ),
           )
         : undefined;

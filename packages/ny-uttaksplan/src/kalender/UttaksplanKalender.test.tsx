@@ -960,6 +960,55 @@ describe('UttaksplanKalender', () => {
         expect(foreldrepengerFørFødsel.queryByTitle('Slett dager fra periode')).not.toBeInTheDocument();
     });
 
+    it('skal automatisk få opp mor sin gradering når far velger BEGGE etter å ha trykket på mors periode', async () => {
+        render(<FarSøkerEtterAtMorHarSøkt />);
+
+        const juni = screen.getByTestId('year:2024;month:5');
+
+        await userEvent.click(within(juni).getByTestId('day:14;dayColor:BLUESTRIPED'));
+        await userEvent.click(within(juni).getByTestId('day:27;dayColor:BLUESTRIPED'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(screen.getAllByText('Legg til')[0]!);
+
+        expect(screen.queryByRole('radio', { name: 'Mor' })).not.toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'Far' })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'Begge' })).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Begge'));
+
+        expect(screen.getByText('Mor skal ha?')).toBeInTheDocument();
+
+        expect(screen.getByLabelText('Mors kvote')).toBeDisabled();
+        expect(screen.getAllByLabelText('Fellesperiode')[0]).toBeDisabled();
+        expect(screen.getAllByLabelText('Fellesperiode')[0]).toBeChecked();
+        expect(screen.getAllByText('Ja')).toHaveLength(2);
+        expect(screen.getAllByLabelText('Ja')[0]).toBeChecked();
+
+        expect(screen.getByLabelText('Hvor mange prosent skal mor jobbe?')).toHaveValue('50');
+
+        await userEvent.click(screen.getByText('Fars kvote'));
+
+        const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent for mor?');
+        await userEvent.type(samtidigprosentMor, '50');
+        const samtidigprosentFar = screen.getByLabelText('Hvor mange prosent for far?');
+        await userEvent.type(samtidigprosentFar, '50');
+
+        expect(screen.getAllByText('Nei')).toHaveLength(2);
+        await userEvent.click(screen.getAllByText('Nei')[1]!);
+
+        await userEvent.click(screen.getByText('Legg til'));
+
+        expect(await screen.findByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
+
+        await userEvent.click(screen.getByText('Fortsett'));
+
+        expect(within(juni).getByTestId('day:14;dayColor:LIGHTBLUEGREEN')).toBeInTheDocument();
+    });
+
     it('dersom far/medmor tar ut fedrekvoten i perioden rundt fødsel forbeholdt mor må han laste opp dokumentasjon', async () => {
         render(<FarsUttakMorForSyk />);
 
