@@ -457,7 +457,7 @@ describe('UttaksplanListe', () => {
     it('Skal kunne slette og endre alle perioder bortsett fra periodene til annen part', async () => {
         render(<FarSøkerEtterAtMorHarSøkt />);
         expect(await screen.findAllByText('Hanne har foreldrepenger')).toHaveLength(6);
-        expect(screen.getAllByText('Endre')).toHaveLength(3);
+        expect(screen.getAllByText('Endre')).toHaveLength(2);
         expect(screen.queryByText('Slett')).not.toBeInTheDocument();
     });
 

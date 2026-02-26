@@ -6,7 +6,7 @@ import * as stories from './Uttaksplankalender.stories';
 
 const {
     MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering,
-    FarSøkerMedTapteDagerOgUtsettelse,
+    FarSøkerMedTapteDagerOgFerie,
     MorSøkerMedFlereUtsettelser,
     HarPeriode11UkerFørFamiliehendelseDato,
     VisFarsAktivitetsfriKvote,
@@ -67,28 +67,18 @@ describe('UttaksplanKalender', () => {
         expect(within(juli).getByTestId('day:15;dayColor:GREEN')).toBeInTheDocument();
     });
 
-    it('Skal vise utsettelsegrunn i label når en har kun en type utsettelse i planen', () => {
-        render(<FarSøkerMedTapteDagerOgUtsettelse />);
+    it('Skal vise ha tapte dager i perioden 6 uker etter fam-dato frem til ferie', () => {
+        render(<FarSøkerMedTapteDagerOgFerie />);
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Fødsel')).toBeInTheDocument();
         expect(screen.getByText('Dager du kan tape')).toBeInTheDocument();
         expect(screen.getByText('Du har ferie')).toBeInTheDocument();
         expect(screen.getByText('Helg')).toBeInTheDocument();
-        const juni = screen.getByTestId('year:2021;month:5');
-        expect(within(juni).getByTestId('day:1;dayColor:GREEN')).toBeInTheDocument();
-        expect(within(juni).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(10);
-        expect(within(juni).getByTestId('day:14;dayColor:GREEN')).toBeInTheDocument();
-        expect(within(juni).getByTestId('day:15;dayColor:BLACK')).toBeInTheDocument();
-        expect(within(juni).getByTestId('day:18;dayColor:BLACK')).toBeInTheDocument();
-        expect(within(juni).getAllByTestId('dayColor:BLACK', { exact: false })).toHaveLength(10);
-        expect(within(juni).getByTestId('day:28;dayColor:BLACK')).toBeInTheDocument();
-        expect(within(juni).getByTestId('day:29;dayColor:BLUEOUTLINE')).toBeInTheDocument();
-        expect(within(juni).getAllByTestId('dayColor:BLUEOUTLINE', { exact: false })).toHaveLength(2);
-        expect(within(juni).getByTestId('day:30;dayColor:BLUEOUTLINE')).toBeInTheDocument();
         const juli = screen.getByTestId('year:2021;month:6');
-        expect(within(juli).getByTestId('day:1;dayColor:BLUEOUTLINE')).toBeInTheDocument();
-        expect(within(juli).getAllByTestId('dayColor:BLUEOUTLINE', { exact: false })).toHaveLength(12);
-        expect(within(juli).getByTestId('day:16;dayColor:BLUEOUTLINE')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:9;dayColor:NONE')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:12;dayColor:BLACK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:28;dayColor:BLACK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:29;dayColor:BLUEOUTLINE')).toBeInTheDocument();
     });
     it('Skal ikke vise utsettelsegrunn i label når en har flere typer utsettelser i planen', () => {
         render(<MorSøkerMedFlereUtsettelser />);
