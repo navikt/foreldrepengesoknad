@@ -190,7 +190,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 >
                     {gyldigeStønadskontoerForMor.map((konto) => {
                         return (
-                            <Radio key={konto} value={konto}>
+                            <Radio key={konto} value={konto} disabled={erMorLåst}>
                                 {getStønadskontoNavnSimple(intl, konto, erMedmorDelAvSøknaden)}
                             </Radio>
                         );
@@ -222,7 +222,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 >
                     {gyldigeStønadskontoerForFarMedmor.map((konto) => {
                         return (
-                            <Radio key={konto} value={konto}>
+                            <Radio key={konto} value={konto} disabled={erFarMedmorLåst}>
                                 {getStønadskontoNavnSimple(intl, konto, erMedmorDelAvSøknaden)}
                             </Radio>
                         );
@@ -656,8 +656,8 @@ export const mapFraFormValuesTilUttakPeriode = (
 export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
     uttaksplanperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     valgtPeriode: { fom: string; tom: string },
-    erPeriodeneTilAnnenPartLåst: boolean,
     søker: BrukerRolleSak_fpoversikt,
+    erPeriodeneTilAnnenPartLåst: boolean,
 ): LeggTilEllerEndrePeriodeFormFormValues | undefined => {
     const eksisterendePerioder = uttaksplanperioder.filter(
         (periode) =>
