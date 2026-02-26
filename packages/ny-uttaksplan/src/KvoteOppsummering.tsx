@@ -17,10 +17,10 @@ import { erVanligUttakPeriode } from './types/UttaksplanPeriode';
 import { getVarighetString } from './utils/dateUtils';
 import {
     filtrerAvslåttePerioderMenBeholdPleiepenger,
-    finnAntallDagerDerBeggeHarForeldrepenger,
     finnAntallDagerDerKunEnHarForeldrepenger,
     getUttaksKontoType,
     summerDagerIPerioder,
+    tellDagerIUttaksPeriodene,
 } from './utils/kvoteOppsummeringUtils';
 
 interface Props {
@@ -169,7 +169,7 @@ const KvoteTittel = ({
         dagerBruktAvFar,
         dagerBruktAvMor,
         dagerFellesBrukt,
-    } = finnAntallDagerDerBeggeHarForeldrepenger(filtrertePerioder, familiesituasjon, valgtStønadskonto);
+    } = tellDagerIUttaksPeriodene(filtrertePerioder, familiesituasjon, valgtStønadskonto);
 
     if (antallOvertrukketDager > 0) {
         const beskrivelseMor =

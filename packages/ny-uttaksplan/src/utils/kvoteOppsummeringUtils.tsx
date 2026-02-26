@@ -29,10 +29,7 @@ export const useErAntallDagerOvertrukketIUttaksplan = () => {
         );
     }
 
-    return (
-        finnAntallDagerDerBeggeHarForeldrepenger(uttakPerioder, familiesituasjon, valgtStønadskonto)
-            .antallOvertrukketDager > 0
-    );
+    return tellDagerIUttaksPeriodene(uttakPerioder, familiesituasjon, valgtStønadskonto).antallOvertrukketDager > 0;
 };
 
 export const finnAntallDagerDerKunEnHarForeldrepenger = (
@@ -110,15 +107,15 @@ export const filtrerAvslåttePerioderMenBeholdPleiepenger = (periode: UttakPerio
     return periode.resultat?.innvilget ?? true;
 };
 
-export const useFinnAntallDagerDerBeggeHarForeldrepenger = () => {
+export const useTellDagerIUttaksPeriodene = () => {
     const { uttakPerioder, familiesituasjon, valgtStønadskonto } = useUttaksplanData();
 
     const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
 
-    return finnAntallDagerDerBeggeHarForeldrepenger(filtrertePerioder, familiesituasjon, valgtStønadskonto);
+    return tellDagerIUttaksPeriodene(filtrertePerioder, familiesituasjon, valgtStønadskonto);
 };
 
-export const finnAntallDagerDerBeggeHarForeldrepenger = (
+export const tellDagerIUttaksPeriodene = (
     uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     familiesituasjon: Familiesituasjon,
     valgtStønadskonto: KontoBeregningDto,
