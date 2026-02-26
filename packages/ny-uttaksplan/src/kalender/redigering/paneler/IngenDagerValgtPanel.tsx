@@ -99,7 +99,11 @@ const Tittel = () => {
     const { antallUbrukteDager } = useTellDagerIUttaksPeriodene();
 
     if (antallUbrukteDager === 0) {
-        return <KvoteOppsummeringsTittel erInnsyn={false} visStatusIkoner={false} brukEnkelVisning />;
+        return (
+            <Box className="px-2" borderWidth="2" borderRadius="8">
+                <KvoteOppsummeringsTittel erInnsyn={false} visStatusIkoner={false} brukEnkelVisning />
+            </Box>
+        );
     }
 
     return (
