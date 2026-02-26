@@ -762,6 +762,7 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
             hvorSkalDuJobbe: periode.gradering?.aktivitet.arbeidsgiver?.id ?? periode.gradering?.aktivitet.type,
             morsAktivitet: periode.morsAktivitet,
             overføringsårsak: periode.overføringÅrsak,
+            ønskerFlerbarnsdager: periode.flerbarnsdager,
         };
     }
 
@@ -773,6 +774,7 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
         stillingsprosentMor: periode.gradering?.arbeidstidprosent.toString(),
         hvorSkalDuJobbe: periode.gradering?.aktivitet.arbeidsgiver?.id ?? periode.gradering?.aktivitet.type,
         overføringsårsak: periode.overføringÅrsak,
+        ønskerFlerbarnsdager: periode.flerbarnsdager,
     };
 };
 
