@@ -344,6 +344,11 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                         sumBy(d.andeler, (andel) => (andel.tilBruker ? 0 : andel.dagsats)),
                     );
 
+                    const antallVirkedager = sumBy(utbetalingsdager, (d) => {
+                        const harDagsats = d.andeler.some((andel) => andel.dagsats > 0);
+                        return harDagsats ? 1 : 0;
+                    });
+
                     const førsteDato = dager[0]!.dato;
                     const måned = capitalizeFirstLetter(formaterDato(førsteDato, 'MMMM'));
                     const skalViseÅr = index === 0 || dayjs(førsteDato).month() === 0;
@@ -377,15 +382,19 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                                     </>
                                                 )}
                                                 {totaltForMånedenTilAG > 0 && (
-                                                    <BodyShort as="span">
-                                                        <FormattedMessage
-                                                            id="beregning.utbetalingsvisning.arbeidsgiver"
-                                                            values={{
-                                                                beløp: formatCurrencyWithKr(totaltForMånedenTilAG),
-                                                            }}
-                                                        />
-                                                    </BodyShort>
+                                                    <>
+                                                        <BodyShort as="span">
+                                                            <FormattedMessage
+                                                                id="beregning.utbetalingsvisning.arbeidsgiver"
+                                                                values={{
+                                                                    beløp: formatCurrencyWithKr(totaltForMånedenTilAG),
+                                                                }}
+                                                            />
+                                                        </BodyShort>
+                                                        <br />
+                                                    </>
                                                 )}
+                                                <span>Antall utbetalingsdager: {antallVirkedager}</span>
                                             </ExpansionCard.Description>
                                         </div>
                                     </HStack>
