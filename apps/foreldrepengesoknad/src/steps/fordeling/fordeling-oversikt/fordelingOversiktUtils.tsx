@@ -721,7 +721,7 @@ const getFordelingForeldrepengerFar = (
                     morNavn: morTekst,
                     b: (msg) => <b>{msg}</b>,
                     a: (msg) => (
-                        <Link href={links.hvorLenge} rel="noreferrer" target="_blank">
+                        <Link href={links.aktivitetskrav} rel="noreferrer" target="_blank">
                             {msg}
                         </Link>
                     ),
