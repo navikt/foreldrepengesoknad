@@ -197,6 +197,7 @@ const erUgyldigSamtidigUttak = <T extends LeggTilEllerEndrePeriodeFormFormValues
         kontoTypeMor,
         kontoTypeFarMedmor,
         morsAktivitet,
+        ønskerFlerbarnsdager,
     } = formValues;
 
     const samtidigUttaksprosentMorTrimmed = samtidigUttaksprosentMor.trim();
@@ -210,6 +211,18 @@ const erUgyldigSamtidigUttak = <T extends LeggTilEllerEndrePeriodeFormFormValues
     const totalProsentMor = samtidigUttaksprosentMorFloat + (getFloatFromString(stillingsprosentMor) ?? 0);
     const totalProsentFarMedmor =
         samtidigUttaksprosentFarMedmorFloat + (getFloatFromString(stillingsprosentFarMedmor) ?? 0);
+
+    if (kombinertUttaksprosent > 150 && !ønskerFlerbarnsdager) {
+        return intl.formatMessage({ id: 'Du kan ikke ha mer enn 150 % foreldrepenger til sammen' });
+    }
+
+    if (ønskerFlerbarnsdager) {
+        if (kombinertUttaksprosent < 100) {
+            return intl.formatMessage({
+                id: 'Dere kan ikke ha mindre enn 100 % foreldrepenger til sammen når du har valgt flerbarnsdager',
+            });
+        }
+    }
 
     if (kombinertUttaksprosent < 100) {
         if (totalProsentMor !== 100 || totalProsentFarMedmor !== 100) {
@@ -231,7 +244,7 @@ const erUgyldigSamtidigUttak = <T extends LeggTilEllerEndrePeriodeFormFormValues
     }
 
     if (kombinertUttaksprosent > 100 && kombinertUttaksprosent <= 150) {
-        if (farMedmorsFellesperiodeErStørreEnn50 || morsFellesperiodeErStørreEnn50) {
+        if ((farMedmorsFellesperiodeErStørreEnn50 || morsFellesperiodeErStørreEnn50) && !ønskerFlerbarnsdager) {
             return intl.formatMessage({
                 id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.Maks50ProsentFelles',
             });
@@ -315,7 +328,19 @@ const erGyldigUttakForFarMedmorRundtFødsel = <T extends LeggTilEllerEndrePeriod
     if (ønskerFlerbarnsdager) {
         if (kombinertUttaksprosent < 100) {
             return intl.formatMessage({
-                id: 'Dere kan ikke ha mindre enn 100 % uttak til sammen når dere har valgt flerbarnsdager',
+                id: 'Dere kan ikke ha mindre enn 100 % foreldrepenger til sammen når du har valgt flerbarnsdager',
+            });
+        }
+
+        if (kombinertUttaksprosent === 100 && samtidigUttaksprosentMorFloat !== 100) {
+            return intl.formatMessage({
+                id: 'Mor må ha 100 % foreldrepenger i de første seks ukene etter fødsel.',
+            });
+        }
+
+        if (totalProsentFarMedmor !== 100) {
+            return intl.formatMessage({
+                id: 'Far/medmor må kombinere arbeid med foreldrepenger til sammen 100 % eller ha 100 % foreldrepenger. ',
             });
         }
     }
