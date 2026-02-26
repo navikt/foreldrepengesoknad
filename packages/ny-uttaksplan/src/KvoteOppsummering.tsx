@@ -16,10 +16,11 @@ import { useUttaksplanData } from './context/UttaksplanDataContext';
 import { erVanligUttakPeriode } from './types/UttaksplanPeriode';
 import { getVarighetString } from './utils/dateUtils';
 import {
-    finnAntallDagerDerBeggeHarForeldrepenger,
+    filtrerAvslåttePerioderMenBeholdPleiepenger,
     finnAntallDagerDerKunEnHarForeldrepenger,
     getUttaksKontoType,
     summerDagerIPerioder,
+    tellDagerIUttaksPeriodene,
 } from './utils/kvoteOppsummeringUtils';
 
 interface Props {
@@ -168,7 +169,7 @@ const KvoteTittel = ({
         dagerBruktAvFar,
         dagerBruktAvMor,
         dagerFellesBrukt,
-    } = finnAntallDagerDerBeggeHarForeldrepenger(filtrertePerioder, familiesituasjon, valgtStønadskonto);
+    } = tellDagerIUttaksPeriodene(filtrertePerioder, familiesituasjon, valgtStønadskonto);
 
     if (antallOvertrukketDager > 0) {
         const beskrivelseMor =
@@ -838,11 +839,3 @@ const ForMyeTidBruktIPlanIkon = ({ size }: IkonProps) => (
         />
     </div>
 );
-
-const filtrerAvslåttePerioderMenBeholdPleiepenger = (periode: UttakPeriode_fpoversikt) => {
-    if (periode.resultat?.innvilget === false) {
-        return periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
-    }
-
-    return periode.resultat?.innvilget ?? true;
-};
