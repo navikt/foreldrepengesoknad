@@ -67,7 +67,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         const erFarMedmorLåst = erPeriodeneTilAnnenPartLåst && søker === 'MOR';
         const erMorLåst = erPeriodeneTilAnnenPartLåst && søker === 'FAR_MEDMOR';
 
-        if (forelder == 'BEGGE' && (erFarMedmorLåst || erMorLåst)) {
+        if (forelder === 'BEGGE' && (erFarMedmorLåst || erMorLåst)) {
             const nyeDefaultVerdier = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
                 uttakPerioder,
                 sammenslåtteValgtePerioder[0]!,
