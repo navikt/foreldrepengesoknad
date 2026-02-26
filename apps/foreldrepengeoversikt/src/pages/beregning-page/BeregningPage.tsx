@@ -473,6 +473,7 @@ const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
                 <FormattedMessage
                     id="beregning.feriepenger.harRett"
                     values={{
+                        uker: sak.dekningsgrad === 'ÅTTI' ? 15 : 12,
                         link: (chunks) => <Link href="https://www.nav.no/feriepenger#foreldrepenger">{chunks}</Link>,
                     }}
                 />
