@@ -83,6 +83,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const tomValue = formMethods.watch('tom');
     const hvaVilDuGjøre = formMethods.watch('hvaVilDuGjøre');
     const forelder = formMethods.watch('forelder');
+    const ønskerFlerbarnsdager = formMethods.watch('ønskerFlerbarnsdager');
 
     const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } = useVisForskyvEllerErstattPanel(
         fomValue && tomValue
@@ -206,6 +207,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(
         perioder,
         forelder === 'BEGGE',
+        ønskerFlerbarnsdager,
     );
     const isSubmitDisabled =
         hvaVilDuGjøre === 'LEGG_TIL_PERIODE' &&

@@ -213,13 +213,15 @@ const erUgyldigSamtidigUttak = <T extends LeggTilEllerEndrePeriodeFormFormValues
         samtidigUttaksprosentFarMedmorFloat + (getFloatFromString(stillingsprosentFarMedmor) ?? 0);
 
     if (kombinertUttaksprosent > 150 && !ønskerFlerbarnsdager) {
-        return intl.formatMessage({ id: 'Du kan ikke ha mer enn 150 % foreldrepenger til sammen' });
+        return intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.KanIkkeHaMerEnn150Prosent',
+        });
     }
 
     if (ønskerFlerbarnsdager) {
         if (kombinertUttaksprosent < 100) {
             return intl.formatMessage({
-                id: 'Dere kan ikke ha mindre enn 100 % foreldrepenger til sammen når du har valgt flerbarnsdager',
+                id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.KanIkkeHaMindreEnn100ProsentFlerbarnsdager',
             });
         }
     }
@@ -328,19 +330,19 @@ const erGyldigUttakForFarMedmorRundtFødsel = <T extends LeggTilEllerEndrePeriod
     if (ønskerFlerbarnsdager) {
         if (kombinertUttaksprosent < 100) {
             return intl.formatMessage({
-                id: 'Dere kan ikke ha mindre enn 100 % foreldrepenger til sammen når du har valgt flerbarnsdager',
+                id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.KanIkkeHaMindreEnn100ProsentFlerbarnsdager',
             });
         }
 
         if (kombinertUttaksprosent === 100 && samtidigUttaksprosentMorFloat !== 100) {
             return intl.formatMessage({
-                id: 'Mor må ha 100 % foreldrepenger i de første seks ukene etter fødsel.',
+                id: 'LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.Må100ProsentUttak',
             });
         }
 
         if (totalProsentFarMedmor !== 100) {
             return intl.formatMessage({
-                id: 'Far/medmor må kombinere arbeid med foreldrepenger til sammen 100 % eller ha 100 % foreldrepenger. ',
+                id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.FarMedmorMåHa100ProsentUttakJobb',
             });
         }
     }
