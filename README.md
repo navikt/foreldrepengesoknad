@@ -8,7 +8,7 @@ Dette monorepoet bruker følgende verktøy:
 
 - node (v24)
 - pnpm - som npm, men mer plasseffektiv.
-- turbo - for å kjøre tasks parrallelt i et monorepo.
+- turbo - for å kjøre tasks parallelt i et monorepo.
 - et personal access token for å installere alle dependencies
 
 ### Hvordan lage token
