@@ -295,8 +295,13 @@ const erGyldigUttakForFarMedmorRundtFødsel = <T extends LeggTilEllerEndrePeriod
         return null;
     }
 
-    const { samtidigUttaksprosentMor, samtidigUttaksprosentFarMedmor, stillingsprosentFarMedmor, stillingsprosentMor } =
-        formValues;
+    const {
+        samtidigUttaksprosentMor,
+        samtidigUttaksprosentFarMedmor,
+        stillingsprosentFarMedmor,
+        stillingsprosentMor,
+        ønskerFlerbarnsdager,
+    } = formValues;
 
     const samtidigUttaksprosentMorTrimmed = samtidigUttaksprosentMor.trim();
     const samtidigUttaksprosentFarMedmorTrimmed = samtidigUttaksprosentFarMedmor.trim();
@@ -306,6 +311,14 @@ const erGyldigUttakForFarMedmorRundtFødsel = <T extends LeggTilEllerEndrePeriod
     const totalProsentMor = samtidigUttaksprosentMorFloat + (getFloatFromString(stillingsprosentMor) ?? 0);
     const totalProsentFarMedmor =
         samtidigUttaksprosentFarMedmorFloat + (getFloatFromString(stillingsprosentFarMedmor) ?? 0);
+
+    if (ønskerFlerbarnsdager) {
+        if (kombinertUttaksprosent < 100) {
+            return intl.formatMessage({
+                id: 'Dere kan ikke ha mindre enn 100 % uttak til sammen når dere har valgt flerbarnsdager',
+            });
+        }
+    }
 
     if (kombinertUttaksprosent < 100) {
         return intl.formatMessage({
