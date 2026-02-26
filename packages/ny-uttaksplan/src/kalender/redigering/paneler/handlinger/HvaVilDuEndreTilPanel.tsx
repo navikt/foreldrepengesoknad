@@ -12,10 +12,7 @@ import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forsk
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { LeggTilUtsettelsePanel } from '../../../../felles/utsettelse/LeggTilUtsettelsePanel';
 import { useVisUtsettelsePanel } from '../../../../felles/utsettelse/useVisUtsettelsePanel';
-import {
-    erAllePerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato,
-    erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato,
-} from '../../../../felles/uttaksplanValidatorer';
+import { erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato } from '../../../../felles/uttaksplanValidatorer';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
@@ -85,13 +82,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
     const skalViseUtsettelsesknapp =
         søker === 'MOR' &&
         familiesituasjon !== 'adopsjon' &&
-        erAllePerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(sammenslåtteValgtePerioder, familiehendelsedato);
-
-    const skalViseFerieknapp = !(
-        søker === 'MOR' &&
-        familiesituasjon !== 'adopsjon' &&
-        erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(sammenslåtteValgtePerioder, familiehendelsedato)
-    );
+        erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(sammenslåtteValgtePerioder, familiehendelsedato);
 
     const leggTilEllerForskyvPeriode = (skalForskyve: boolean) => {
         leggTilUttaksplanPerioder(
@@ -179,7 +170,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                                                     skalViseLeggTilKnappetekst={skalViseLeggTilKnappetekst}
                                                 />
                                             </Show>
-                                            {skalViseFerieknapp && (
+                                            {!skalViseUtsettelsesknapp && (
                                                 <Button
                                                     variant="secondary"
                                                     size="small"
