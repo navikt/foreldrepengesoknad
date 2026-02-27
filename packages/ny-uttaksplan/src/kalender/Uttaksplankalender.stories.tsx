@@ -186,20 +186,20 @@ export const SkalHaPeriodeMedFratrekkForPleiepenger: Story = {
     },
 };
 
-export const FarSøkerMedTapteDagerOgUtsettelse: Story = {
+export const FarSøkerMedTapteDagerOgFerie: Story = {
     args: {
         uttakPerioder: [
             {
-                fom: '2021-05-31',
-                tom: '2021-06-14',
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FORELDREPENGER',
-            },
-            {
-                fom: '2021-06-29',
-                tom: '2021-07-16',
+                fom: '2021-07-29',
+                tom: '2021-08-16',
                 forelder: 'FAR_MEDMOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+            },
+            {
+                fom: '2021-09-01',
+                tom: '2021-09-14',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FORELDREPENGER',
             },
         ] satisfies UttakPeriode_fpoversikt[],
         barn: {
@@ -208,7 +208,7 @@ export const FarSøkerMedTapteDagerOgUtsettelse: Story = {
             antallBarn: 1,
         },
         foreldreInfo: {
-            rettighetType: 'BEGGE_RETT',
+            rettighetType: 'BARE_SØKER_RETT',
             søker: 'FAR_MEDMOR',
             navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
             erMedmorDelAvSøknaden: false,

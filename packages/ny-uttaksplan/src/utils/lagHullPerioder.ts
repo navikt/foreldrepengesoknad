@@ -73,15 +73,14 @@ export const lagTapteDagerPerioder = (
                 tom: førstePeriodeSomStarterEtterFamiliehendelsedato.fom,
             };
 
-            return lagTapteDagerHull(sortertePerioder, 'FAR_MEDMOR', periodeSomSkalSjekkesForHull);
+            return lagTapteDagerHull(sortertePerioder, foreldreInfo.søker, periodeSomSkalSjekkesForHull);
         }
-    } else if (familiesituasjon !== 'adopsjon') {
+    } else if (familiesituasjon !== 'adopsjon' && foreldreInfo.søker === 'MOR') {
         const periodeSomSkalSjekkesForHull = {
             fom: UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato(),
             tom: UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
         };
-        const forelder = foreldreInfo.søker === 'MOR' ? 'MOR' : 'FAR_MEDMOR';
-        return lagTapteDagerHull(sortertePerioder, forelder, periodeSomSkalSjekkesForHull);
+        return lagTapteDagerHull(sortertePerioder, foreldreInfo.søker, periodeSomSkalSjekkesForHull);
     }
 
     return [];

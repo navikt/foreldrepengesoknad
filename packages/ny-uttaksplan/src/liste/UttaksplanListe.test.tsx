@@ -14,6 +14,7 @@ const {
     VisPerioderMedOppholdsårsakKorrekt,
     MorSøkerOgFarHarEøsPeriode,
     MarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt,
+    HarUtsettelse,
 } = composeStories(stories);
 
 describe('UttaksplanListe', () => {
@@ -457,7 +458,7 @@ describe('UttaksplanListe', () => {
     it('Skal kunne slette og endre alle perioder bortsett fra periodene til annen part', async () => {
         render(<FarSøkerEtterAtMorHarSøkt />);
         expect(await screen.findAllByText('Hanne har foreldrepenger')).toHaveLength(6);
-        expect(screen.getAllByText('Endre')).toHaveLength(3);
+        expect(screen.getAllByText('Endre')).toHaveLength(2);
         expect(screen.queryByText('Slett')).not.toBeInTheDocument();
     });
 
@@ -560,6 +561,72 @@ describe('UttaksplanListe', () => {
                 kontoType: 'FELLESPERIODE',
                 fom: '2025-08-22',
                 tom: '2025-12-11',
+            },
+        ]);
+    });
+
+    it('Skal ha periode med utsettelse og legge til ny periode med utsettelse', async () => {
+        const oppdaterUttaksplan = vi.fn();
+
+        render(<HarUtsettelse oppdaterUttaksplan={oppdaterUttaksplan} />);
+
+        expect(await screen.findByText('15. Aug - 25. Aug')).toBeInTheDocument();
+        expect(screen.getAllByText('Barnet er innlagt')).toHaveLength(2);
+
+        await userEvent.click(screen.getByText('15. Aug - 25. Aug'));
+
+        expect(screen.getByText('Utsettelse fordi barnet er innlagt i helseinstitusjon')).toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Endre')[1]!);
+
+        expect(screen.getByText('Velg hvorfor du skal utsette')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Avbryt'));
+
+        await userEvent.click(screen.getByText('Legg til periode'));
+
+        await userEvent.click(screen.getByText('Utsettelse'));
+
+        const fraOgMedDato = screen.getByLabelText('Fra og med dato');
+        await userEvent.type(fraOgMedDato, dayjs('2025-10-26').format('DD.MM.YYYY'));
+        await userEvent.tab();
+        const tilOgMedDato = screen.getByLabelText('Til og med dato');
+        await userEvent.type(tilOgMedDato, dayjs('2025-10-28').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        await userEvent.selectOptions(screen.getByLabelText('Velg hvorfor du skal utsette'), 'SØKER_SYKDOM');
+
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+
+        expect(
+            await screen.findByText(
+                'Utsettelse kan kun legges til når en har valgt dager i 6-ukersperioden etter fødsel/termin',
+            ),
+        ).toBeInTheDocument();
+
+        await userEvent.clear(fraOgMedDato);
+        await userEvent.type(fraOgMedDato, dayjs('2025-08-26').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        await userEvent.clear(tilOgMedDato);
+        await userEvent.type(tilOgMedDato, dayjs('2025-08-28').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
+            {
+                fom: '2025-08-15',
+                tom: '2025-08-25',
+                forelder: 'MOR',
+                utsettelseÅrsak: 'BARN_INNLAGT',
+            },
+            {
+                fom: '2025-08-26',
+                tom: '2025-08-28',
+                forelder: 'MOR',
+                utsettelseÅrsak: 'SØKER_SYKDOM',
             },
         ]);
     });

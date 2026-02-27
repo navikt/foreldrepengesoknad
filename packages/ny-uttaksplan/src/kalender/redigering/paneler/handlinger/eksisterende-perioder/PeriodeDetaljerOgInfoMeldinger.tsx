@@ -12,10 +12,14 @@ import { finnValgtePerioder } from '../../../utils/kalenderPeriodeUtils';
 import { EksisterendeValgtePerioder } from './EksisterendeValgtePerioder';
 
 interface Props {
-    setSkalViseKnapper: (skalViseKnapper: boolean) => void;
+    erForskyvEllerErstattPanelvisningPå: boolean;
+    setErForskyvEllerErstattPanelvisningPå: (skaVise: boolean) => void;
 }
 
-export const PeriodeDetaljerOgInfoMeldinger = ({ setSkalViseKnapper }: Props) => {
+export const PeriodeDetaljerOgInfoMeldinger = ({
+    erForskyvEllerErstattPanelvisningPå,
+    setErForskyvEllerErstattPanelvisningPå,
+}: Props) => {
     const {
         familiehendelsedato,
         familiesituasjon,
@@ -53,36 +57,40 @@ export const PeriodeDetaljerOgInfoMeldinger = ({ setSkalViseKnapper }: Props) =>
             {eksisterendePerioderSomErValgt.length > 0 && (
                 <EksisterendeValgtePerioder
                     perioder={eksisterendePerioderSomErValgt}
-                    setSkalViseKnapper={setSkalViseKnapper}
+                    setErForskyvEllerErstattPanelvisningPå={setErForskyvEllerErstattPanelvisningPå}
                 />
             )}
 
-            {familiesituasjon === 'adopsjon' && harPeriodeFørFamiliehendelsedato && (
-                <Alert variant="info" size="small">
-                    <FormattedMessage id="RedigeringPanel.AdopsjonPeriodeFørFamiliehendelsedato" />
-                </Alert>
-            )}
+            {!erForskyvEllerErstattPanelvisningPå && (
+                <>
+                    {familiesituasjon === 'adopsjon' && harPeriodeFørFamiliehendelsedato && (
+                        <Alert variant="info" size="small">
+                            <FormattedMessage id="RedigeringPanel.AdopsjonPeriodeFørFamiliehendelsedato" />
+                        </Alert>
+                    )}
 
-            {eksisterendePerioderSomErValgt.some((p) => erEøsUttakPeriode(p)) && (
-                <Alert variant="info" size="small">
-                    <FormattedMessage id="RedigeringPanel.IkkeRedigerbarEøsUttakPeriode" />
-                </Alert>
-            )}
+                    {eksisterendePerioderSomErValgt.some((p) => erEøsUttakPeriode(p)) && (
+                        <Alert variant="info" size="small">
+                            <FormattedMessage id="RedigeringPanel.IkkeRedigerbarEøsUttakPeriode" />
+                        </Alert>
+                    )}
 
-            {harPeriodeMedPleiepenger && (
-                <Alert variant="info" size="small">
-                    <FormattedMessage id="RedigeringPanel.IkkeRedigerbarGrunnetPleiepenger" />
-                </Alert>
-            )}
+                    {harPeriodeMedPleiepenger && (
+                        <Alert variant="info" size="small">
+                            <FormattedMessage id="RedigeringPanel.IkkeRedigerbarGrunnetPleiepenger" />
+                        </Alert>
+                    )}
 
-            {søker === 'MOR' &&
-                familiesituasjon !== 'adopsjon' &&
-                !harPeriodeMedPleiepenger &&
-                kanMisteDagerVedEndringTilFerie(sammenslåtteValgtePerioder, familiehendelsedato) && (
-                    <Alert variant="info" size="small">
-                        <FormattedMessage id="RedigeringPanel.KanMisteDager" />
-                    </Alert>
-                )}
+                    {søker === 'MOR' &&
+                        familiesituasjon !== 'adopsjon' &&
+                        !harPeriodeMedPleiepenger &&
+                        kanMisteDagerVedEndringTilFerie(sammenslåtteValgtePerioder, familiehendelsedato) && (
+                            <Alert variant="info" size="small">
+                                <FormattedMessage id="RedigeringPanel.KanMisteDager" />
+                            </Alert>
+                        )}
+                </>
+            )}
         </VStack>
     );
 };

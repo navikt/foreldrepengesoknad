@@ -18,7 +18,7 @@ interface Props {
 }
 
 export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: Props) => {
-    const [skalViseKnapper, setSkalViseKnapper] = useState(true);
+    const [erForskyvEllerErstattPanelvisningPå, setErForskyvEllerErstattPanelvisningPå] = useState(false);
 
     const [erMinimert, setErMinimert] = useState(false);
 
@@ -35,17 +35,22 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
             }
         >
             <Show above="md">
-                <HeaderDesktop labels={labels} setSkalViseKnapper={setSkalViseKnapper} />
+                <HeaderDesktop
+                    labels={labels}
+                    erForskyvEllerErstattPanelvisningPå={erForskyvEllerErstattPanelvisningPå}
+                    setErForskyvEllerErstattPanelvisningPå={setErForskyvEllerErstattPanelvisningPå}
+                />
             </Show>
             <Show below="md">
                 <HeaderMobil
                     labels={labels}
                     erMinimert={erMinimert}
                     setErMinimert={setErMinimert}
-                    setSkalViseKnapper={setSkalViseKnapper}
+                    erForskyvEllerErstattPanelvisningPå={erForskyvEllerErstattPanelvisningPå}
+                    setErForskyvEllerErstattPanelvisningPå={setErForskyvEllerErstattPanelvisningPå}
                 />
             </Show>
-            {skalViseKnapper && (
+            {!erForskyvEllerErstattPanelvisningPå && (
                 <div className={erMinimert ? 'hidden' : 'block px-4 pb-4'}>
                     <div className={erMinimert ? 'hidden' : 'block'}>
                         <div className="px-4 pt-4 pb-4">
@@ -60,10 +65,12 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
 
 const HeaderDesktop = ({
     labels,
-    setSkalViseKnapper,
+    erForskyvEllerErstattPanelvisningPå,
+    setErForskyvEllerErstattPanelvisningPå,
 }: {
     labels: React.ReactNode;
-    setSkalViseKnapper: React.Dispatch<React.SetStateAction<boolean>>;
+    erForskyvEllerErstattPanelvisningPå: boolean;
+    setErForskyvEllerErstattPanelvisningPå: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
     const intl = useIntl();
 
@@ -100,7 +107,12 @@ const HeaderDesktop = ({
                     )}
                 </HStack>
                 {labels}
-                {visPeriodeDetaljer && <PeriodeDetaljerOgInfoMeldinger setSkalViseKnapper={setSkalViseKnapper} />}
+                {visPeriodeDetaljer && (
+                    <PeriodeDetaljerOgInfoMeldinger
+                        erForskyvEllerErstattPanelvisningPå={erForskyvEllerErstattPanelvisningPå}
+                        setErForskyvEllerErstattPanelvisningPå={setErForskyvEllerErstattPanelvisningPå}
+                    />
+                )}
             </VStack>
         </Box>
     );
@@ -109,20 +121,22 @@ const HeaderDesktop = ({
 const HeaderMobil = ({
     labels,
     erMinimert,
+    erForskyvEllerErstattPanelvisningPå,
     setErMinimert,
-    setSkalViseKnapper,
+    setErForskyvEllerErstattPanelvisningPå,
 }: {
     labels: React.ReactNode;
     erMinimert: boolean;
+    erForskyvEllerErstattPanelvisningPå: boolean;
     setErMinimert: React.Dispatch<React.SetStateAction<boolean>>;
-    setSkalViseKnapper: React.Dispatch<React.SetStateAction<boolean>>;
+    setErForskyvEllerErstattPanelvisningPå: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
     const intl = useIntl();
 
     const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
 
     return (
-        <VStack gap="space-12">
+        <VStack>
             <Box
                 padding="space-12"
                 onClick={() => setErMinimert(!erMinimert)}
@@ -157,12 +171,17 @@ const HeaderMobil = ({
                     </HStack>
                 </VStack>
             </Box>
-            {!erMinimert && (
-                <VStack gap="space-16" className="px-4 pb-4">
-                    {labels}
-                    <PeriodeDetaljerOgInfoMeldinger setSkalViseKnapper={setSkalViseKnapper} />
-                </VStack>
-            )}
+            <Box className="bg-ax-bg-accent-soft">
+                {!erMinimert && (
+                    <VStack gap="space-16" className="px-4 pb-4">
+                        {labels}
+                        <PeriodeDetaljerOgInfoMeldinger
+                            erForskyvEllerErstattPanelvisningPå={erForskyvEllerErstattPanelvisningPå}
+                            setErForskyvEllerErstattPanelvisningPå={setErForskyvEllerErstattPanelvisningPå}
+                        />
+                    </VStack>
+                )}
+            </Box>
         </VStack>
     );
 };

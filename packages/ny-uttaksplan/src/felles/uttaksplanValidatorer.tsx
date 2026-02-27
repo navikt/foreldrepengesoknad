@@ -480,20 +480,6 @@ export const erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato = (
     });
 };
 
-export const erAllePerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato = (
-    valgtePerioder: Array<{ fom: string; tom: string }>,
-    familiehendelsedato: string,
-) => {
-    const førsteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato();
-    const sisteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30);
-
-    return valgtePerioder.every((periode) => {
-        const fom = dayjs(periode.fom);
-        const tom = dayjs(periode.tom);
-        return fom.isSameOrAfter(førsteDag, 'day') && tom.isBefore(sisteDag, 'day');
-    });
-};
-
 const erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     familiehendelsedato: string,
