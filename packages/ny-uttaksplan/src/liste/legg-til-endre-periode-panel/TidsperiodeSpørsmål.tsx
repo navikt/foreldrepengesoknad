@@ -49,6 +49,7 @@ export const TidsperiodeSpørsmål = () => {
                 <RhfDatepicker
                     name="tom"
                     control={control}
+                    showMonthAndYearDropdowns
                     validate={[
                         isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.påkrevd' })),
                         isValidDate(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.gyldigDato' })),

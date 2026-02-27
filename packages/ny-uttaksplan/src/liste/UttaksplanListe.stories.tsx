@@ -705,3 +705,42 @@ export const HarAvslåttePerioder: Story = {
         erPeriodeneTilAnnenPartLåst: false,
     },
 };
+
+export const HarUtsettelse: Story = {
+    args: {
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: {
+                farMedmor: 'Annen forelder',
+                mor: 'Avansert',
+            },
+            erMedmorDelAvSøknaden: false,
+        },
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2025-08-13'],
+            termindato: '2025-10-19',
+            antallBarn: 1,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+        uttakPerioder: [
+            {
+                fom: '2025-08-15',
+                tom: '2025-08-25',
+                forelder: 'MOR',
+                utsettelseÅrsak: 'BARN_INNLAGT',
+            },
+        ],
+        valgtStønadskonto: {
+            kontoer: [
+                { konto: 'MØDREKVOTE', dager: 95 },
+                { konto: 'FEDREKVOTE', dager: 95 },
+                { konto: 'FELLESPERIODE', dager: 101 },
+                { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+            ],
+            minsteretter: MINSTERETTER,
+        },
+        erPeriodeneTilAnnenPartLåst: false,
+    },
+};

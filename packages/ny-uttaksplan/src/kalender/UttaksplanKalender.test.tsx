@@ -1312,7 +1312,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getByText('Legg til utsettelse'));
 
-        await userEvent.selectOptions(screen.getByLabelText('Velg årsak for utsettelse'), 'SØKER_SYKDOM');
+        await userEvent.selectOptions(screen.getByLabelText('Velg hvorfor du skal utsette'), 'SØKER_SYKDOM');
 
         await userEvent.click(screen.getByText('Legg til'));
 
@@ -1332,12 +1332,12 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getByText('Legg til utsettelse'));
 
-        expect(screen.getByText('Velg årsak for utsettelse')).toBeInTheDocument();
+        expect(screen.getByText('Velg hvorfor du skal utsette')).toBeInTheDocument();
 
         await userEvent.click(within(januar).getByTestId('day:23;dayColor:BEIGEOUTLINE'));
 
         expect(screen.getByText('Valgte datoer inneholder eksisterende perioder:')).toBeInTheDocument();
-        expect(screen.queryByText('Velg årsak for utsettelse')).not.toBeInTheDocument();
+        expect(screen.queryByText('Velg hvorfor du skal utsette')).not.toBeInTheDocument();
     });
 
     it('skal kunne legge til utsettelse så lenge minst en dag i 6-ukersperioden er valgt', async () => {
