@@ -2,12 +2,17 @@ import { useQuery } from '@tanstack/react-query';
 import { sakerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import minMax from 'dayjs/plugin/minMax';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils/src/uttak/UttaksdagenString';
 
 import { sorterPerioder } from './forslag/deltUttak';
+
+dayjs.extend(isSameOrBefore);
+dayjs.extend(minMax);
 
 export const useUttaksplanForEksisterendeSak = (
     perioderAnnenPart: UttakPeriode_fpoversikt[] | undefined,
@@ -54,6 +59,12 @@ const midlertidigJusteringAvSamtidigUttak = (
         if (!overlappendeSøkerPeriode) {
             return [annenPartPeriode];
         }
+        const skalEndreAnnenPartTilSamtidigUttak =
+            overlappendeSøkerPeriode.samtidigUttak !== undefined && annenPartPeriode.samtidigUttak === undefined;
+
+        if (!skalEndreAnnenPartTilSamtidigUttak) {
+            return [annenPartPeriode];
+        }
 
         const annenFom = dayjs(annenPartPeriode.fom);
         const annenTom = dayjs(annenPartPeriode.tom);
@@ -78,7 +89,7 @@ const midlertidigJusteringAvSamtidigUttak = (
             ...annenPartPeriode,
             fom: overlappFom.format(ISO_DATE_FORMAT),
             tom: overlappTom.format(ISO_DATE_FORMAT),
-            samtidigUttak: 50,
+            samtidigUttak: 100,
         });
 
         // Etter overlapp
