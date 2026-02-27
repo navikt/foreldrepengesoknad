@@ -19,6 +19,7 @@ const {
     MedArbeidsforhold,
     SkalHaPeriodeMedFratrekkForPleiepenger,
     HarUtsettelse,
+    FlerbarnMorOgFar,
 } = composeStories(stories);
 
 describe('UttaksplanKalender', () => {
@@ -1378,5 +1379,65 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getByText('Stopp redigering'));
 
         expect(await within(mars).findByTestId('day:14;dayColor:BLUE')).toBeInTheDocument();
+    });
+
+    it('skal spørre om flerbarnsdager', async () => {
+        render(<FlerbarnMorOgFar />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        const juni = screen.getByTestId('year:2026;month:5');
+
+        await userEvent.click(within(juni).getByTestId('day:8;dayColor:BLUE'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(screen.getAllByText('Endre')[1]!);
+
+        expect(screen.queryByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
+
+        expect(screen.queryByText('Ønsker du å bruke flerbarnsdager for denne perioden?')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Far'));
+
+        expect(screen.queryByText('Ønsker du å bruke flerbarnsdager for denne perioden?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Begge'));
+
+        expect(screen.queryByText('Ønsker du å bruke flerbarnsdager for denne perioden?')).toBeInTheDocument();
+    });
+
+    it('skal ikke spørre om aktivitetskrav for far dersom flerbarnsdager er valgt', async () => {
+        render(<FlerbarnMorOgFar />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        const juni = screen.getByTestId('year:2026;month:5');
+
+        await userEvent.click(within(juni).getByTestId('day:8;dayColor:BLUE'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(screen.getAllByText('Endre')[1]!);
+
+        expect(screen.queryByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
+
+        expect(screen.queryByText('Ønsker du å bruke flerbarnsdager for denne perioden?')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Far'));
+
+        expect(screen.queryByText('Ønsker du å bruke flerbarnsdager for denne perioden?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Ja')[0]!);
+
+        expect(screen.queryByText('Far skal ha?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Fellesperiode')[1]!);
+
+        expect(screen.queryByText('Hva skal mor gjøre i denne perioden?')).not.toBeInTheDocument();
     });
 });
