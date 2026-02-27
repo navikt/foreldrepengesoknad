@@ -21,19 +21,28 @@ import {
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useHentGyldigeKontotyper } from '../../felles/useHentGyldigeKontotyper';
-import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
+import {
+    LeggTilUtsettelseForm,
+    FormValues as UtsettelseFormValues,
+} from '../../felles/utsettelse/LeggTilUtsettelseForm';
+import {
+    erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato,
+    kanMisteDagerVedEndringTilFerie,
+    useFormSubmitValidator,
+} from '../../felles/uttaksplanValidatorer';
 import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../utils/periodeUtils';
 import { TidsperiodeSpørsmål } from './/TidsperiodeSpørsmål';
 
-export type HvaVilDuGjøre = 'LEGG_TIL_FERIE' | 'LEGG_TIL_OPPHOLD' | 'LEGG_TIL_PERIODE';
+export type HvaVilDuGjøre = 'LEGG_TIL_FERIE' | 'LEGG_TIL_UTSETTELSE' | 'LEGG_TIL_OPPHOLD' | 'LEGG_TIL_PERIODE';
 
 export type FormValues = {
     fom?: string;
     tom?: string;
     hvaVilDuGjøre?: HvaVilDuGjøre;
-} & LeggTilEllerEndrePeriodeFormFormValues;
+} & LeggTilEllerEndrePeriodeFormFormValues &
+    UtsettelseFormValues;
 
 interface Props {
     erNyPeriodeModus: boolean;
@@ -123,6 +132,9 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         } else if (hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') {
             leggIListe(false);
             return;
+        } else if (hvaVilDuGjøre === 'LEGG_TIL_UTSETTELSE') {
+            leggIListe(false);
+            return;
         }
 
         if (
@@ -153,6 +165,18 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                         tom,
                         forelder: 'MOR',
                         utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+                    },
+                ],
+                skalForskyve,
+            );
+        } else if (hvaVilDuGjøre === 'LEGG_TIL_UTSETTELSE') {
+            handleAddPeriode(
+                [
+                    {
+                        fom,
+                        tom,
+                        forelder: søker,
+                        utsettelseÅrsak: values.utsettelseÅrsak,
                     },
                 ],
                 skalForskyve,
@@ -214,6 +238,16 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         gyldigeStønadskontoerForMor.length === 0 &&
         gyldigeStønadskontoerForFarMedmor.length === 0;
 
+    const erUtsettelseGyldig = (nyHvaVilDuGjøre?: HvaVilDuGjøre) => {
+        return nyHvaVilDuGjøre !== 'LEGG_TIL_UTSETTELSE' ||
+            erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
+                fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [],
+                familiehendelsedato,
+            )
+            ? null
+            : intl.formatMessage({ id: 'uttaksplan.valgPanel.utsettelse' });
+    };
+
     return (
         <VStack
             gap="space-8"
@@ -263,6 +297,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                             control={formMethods.control}
                             validate={[
                                 isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.hvaVilDuGjøre.påkrevd' })),
+                                erUtsettelseGyldig,
                             ]}
                             onChange={resetFormValuesVedEndringAvHvaVilDuGjøre}
                         >
@@ -273,6 +308,13 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                                     <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie.endre" />
                                 )}
                             </Radio>
+                            <>
+                                {søker === 'MOR' && familiesituasjon !== 'adopsjon' && (
+                                    <Radio value={'LEGG_TIL_UTSETTELSE' satisfies HvaVilDuGjøre}>
+                                        <FormattedMessage id="uttaksplan.valgPanel.leggTilUtsettelse" />
+                                    </Radio>
+                                )}
+                            </>
                             <Radio value={'LEGG_TIL_OPPHOLD' satisfies HvaVilDuGjøre}>
                                 {erNyPeriodeModus ? (
                                     <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold" />
@@ -288,14 +330,20 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                                 )}
                             </Radio>
                         </RhfRadioGroup>
+
                         <TidsperiodeSpørsmål />
+
                         {hvaVilDuGjøre === 'LEGG_TIL_PERIODE' && fomValue && tomValue && (
                             <LeggTilEllerEndrePeriodeFellesForm
                                 valgtePerioder={[{ fom: fomValue, tom: tomValue }]}
                                 resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}
                             />
                         )}
+
+                        {hvaVilDuGjøre === 'LEGG_TIL_UTSETTELSE' && <LeggTilUtsettelseForm />}
+
                         {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
+
                         <HStack gap="space-8" justify="space-between">
                             <Button
                                 type="button"
@@ -330,14 +378,24 @@ const leggTilDatoOgHvaVilDuGjøre = (
     uttaksplanperiode: Uttaksplanperiode,
     periode?: LeggTilEllerEndrePeriodeFormFormValues,
 ): FormValues | undefined => {
-    if (
-        erUttaksplanHull(uttaksplanperiode) ||
-        (erVanligUttakPeriode(uttaksplanperiode) && uttaksplanperiode.utsettelseÅrsak === 'LOVBESTEMT_FERIE')
-    ) {
+    if (erVanligUttakPeriode(uttaksplanperiode) && uttaksplanperiode.utsettelseÅrsak) {
         return {
             fom: uttaksplanperiode.fom,
             tom: uttaksplanperiode.tom,
-            hvaVilDuGjøre: erUttaksplanHull(uttaksplanperiode) ? 'LEGG_TIL_OPPHOLD' : 'LEGG_TIL_FERIE',
+            hvaVilDuGjøre:
+                uttaksplanperiode.utsettelseÅrsak === 'LOVBESTEMT_FERIE' ? 'LEGG_TIL_FERIE' : 'LEGG_TIL_UTSETTELSE',
+            utsettelseÅrsak:
+                uttaksplanperiode.utsettelseÅrsak !== 'LOVBESTEMT_FERIE'
+                    ? uttaksplanperiode.utsettelseÅrsak
+                    : undefined,
+        };
+    }
+
+    if (erUttaksplanHull(uttaksplanperiode)) {
+        return {
+            fom: uttaksplanperiode.fom,
+            tom: uttaksplanperiode.tom,
+            hvaVilDuGjøre: 'LEGG_TIL_OPPHOLD',
         };
     }
 

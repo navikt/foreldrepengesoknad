@@ -10,12 +10,7 @@ import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
-import { LeggTilUtsettelsePanel } from '../../../../felles/utsettelse/LeggTilUtsettelsePanel';
-import { useVisUtsettelsePanel } from '../../../../felles/utsettelse/useVisUtsettelsePanel';
-import {
-    erAllePerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato,
-    erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato,
-} from '../../../../felles/uttaksplanValidatorer';
+import { erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato } from '../../../../felles/uttaksplanValidatorer';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
@@ -25,6 +20,8 @@ import { RødRamme } from '../../utils/RødRamme';
 import { finnAntallDager, finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
 import { useErDesktop, useMediaResetMinimering } from '../../utils/useMediaActions';
 import { PeriodeDetaljerOgInfoMeldinger } from './eksisterende-perioder/PeriodeDetaljerOgInfoMeldinger';
+import { LeggTilUtsettelsePanel } from './utsettelse/LeggTilUtsettelsePanel';
+import { useVisUtsettelsePanel } from './utsettelse/useVisUtsettelsePanel';
 
 interface Props {
     åpneRedigeringsmodus: () => void;
@@ -85,13 +82,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
     const skalViseUtsettelsesknapp =
         søker === 'MOR' &&
         familiesituasjon !== 'adopsjon' &&
-        erAllePerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(sammenslåtteValgtePerioder, familiehendelsedato);
-
-    const skalViseFerieknapp = !(
-        søker === 'MOR' &&
-        familiesituasjon !== 'adopsjon' &&
-        erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(sammenslåtteValgtePerioder, familiehendelsedato)
-    );
+        erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(sammenslåtteValgtePerioder, familiehendelsedato);
 
     const leggTilEllerForskyvPeriode = (skalForskyve: boolean) => {
         leggTilUttaksplanPerioder(
@@ -135,7 +126,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
             )}
 
             {!erMinimert && visUtsettelsePanel && (
-                <Box padding="space-24">
+                <Box className="pb-6 pr-6 pl-6">
                     <LeggTilUtsettelsePanel setVisUtsettelsePanel={setVisUtsettelsePanel} />
                 </Box>
             )}
@@ -179,7 +170,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                                                     skalViseLeggTilKnappetekst={skalViseLeggTilKnappetekst}
                                                 />
                                             </Show>
-                                            {skalViseFerieknapp && (
+                                            {!skalViseUtsettelsesknapp && (
                                                 <Button
                                                     variant="secondary"
                                                     size="small"
