@@ -600,7 +600,7 @@ describe('UttaksplanListe', () => {
 
         expect(
             await screen.findByText(
-                'Utsettelse kan kun leggest til når en har valgt dager i 6-ukersperioden etter fødsel/termin',
+                'Utsettelse kan kun legges til når en har valgt dager i 6-ukersperioden etter fødsel/termin',
             ),
         ).toBeInTheDocument();
 
