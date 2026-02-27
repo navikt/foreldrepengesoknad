@@ -98,7 +98,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                             size="small"
                             variant="primary"
                             onClick={() => {
-                                setErRedigeringAktiv(!erRedigeringAktiv);
+                                setErRedigeringAktiv((prev) => !prev);
                                 setValgtePerioder([]);
                             }}
                         >
