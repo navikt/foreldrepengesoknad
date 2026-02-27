@@ -276,6 +276,8 @@
     "RedigeringKalenderIndex.VelgDatoerIKalender": "You can select dates in the calendar",
     "RedigeringKalenderIndex.SeDetaljer": "See details about the plan at the top of the page",
     "UttaksplanKalender.LeggTilMåneder": "Show more months",
+    "UttaksplanKalender.StartRedigering": "Start editing",
+    "UttaksplanKalender.StopRedigering": "Stop editing",
     "UttaksplanKalender.Maks3År": "You're showing the maximum amount of months (3 years)",
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Tittel": "Do you want to remove everything from the plan?",
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Body": "Are you sure you want to remove everything from the plan?",
