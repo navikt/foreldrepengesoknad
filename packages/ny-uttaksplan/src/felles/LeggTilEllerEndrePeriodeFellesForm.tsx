@@ -190,7 +190,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 >
                     {gyldigeStønadskontoerForMor.map((konto) => {
                         return (
-                            <Radio key={konto} value={konto} disabled={erMorLåst}>
+                            <Radio key={konto} value={konto} disabled={!!kontoTypeMor && erMorLåst}>
                                 {getStønadskontoNavnSimple(intl, konto, erMedmorDelAvSøknaden)}
                             </Radio>
                         );
@@ -222,7 +222,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 >
                     {gyldigeStønadskontoerForFarMedmor.map((konto) => {
                         return (
-                            <Radio key={konto} value={konto} disabled={erFarMedmorLåst}>
+                            <Radio key={konto} value={konto} disabled={!!kontoTypeFarMedmor && erFarMedmorLåst}>
                                 {getStønadskontoNavnSimple(intl, konto, erMedmorDelAvSøknaden)}
                             </Radio>
                         );
