@@ -84,7 +84,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         ønskerFlerbarnsdager,
     } = formMethods.watch();
 
-    const skalViseFlerbarnsdager = barn.antallBarn > 1 && (forelder === 'FAR_MEDMOR' || forelder === 'BEGGE');
+    const skalViseFlerbarnsdager = barn.antallBarn > 1 && forelder !== 'MOR';
 
     const infotekstOmFedrekvoteBrukRundtFødsel = getInfotekstOmFedrekvoteBrukRundtFødsel(
         uttakPerioder,
@@ -100,14 +100,15 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         (kontoTypeFarMedmor === 'FORELDREPENGER' || kontoTypeFarMedmor === 'FELLESPERIODE') &&
         !ønskerFlerbarnsdager;
 
-    const skalViseMorsAktivitetskravVedSamtidigUttak = getSkalViseMorsAktivitetskravVedSamtidigUttak(
-        forelder,
-        samtidigUttaksprosentMor,
-        stillingsprosentMor,
-        samtidigUttaksprosentFarMedmor,
-        kontoTypeFarMedmor,
-        ønskerFlerbarnsdager,
-    );
+    const skalViseMorsAktivitetskravVedSamtidigUttak =
+        !ønskerFlerbarnsdager &&
+        getSkalViseMorsAktivitetskravVedSamtidigUttak(
+            forelder,
+            samtidigUttaksprosentMor,
+            stillingsprosentMor,
+            samtidigUttaksprosentFarMedmor,
+            kontoTypeFarMedmor,
+        );
 
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(
         valgtePerioder,
@@ -135,13 +136,13 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     };
 
     const resetStillingsprosentFarMedmor = () => {
-        if ((forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && skalDuKombinereArbeidOgUttakFarMedmor === false) {
+        if (forelder !== 'MOR' && skalDuKombinereArbeidOgUttakFarMedmor === false) {
             formMethods.resetField('stillingsprosentFarMedmor', undefined);
         }
     };
 
     const resetAktivitetskrav = () => {
-        if ((forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && ønskerFlerbarnsdager) {
+        if (forelder !== 'MOR' && ønskerFlerbarnsdager) {
             formMethods.resetField('morsAktivitet', undefined);
         }
     };
@@ -196,23 +197,25 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     name="ønskerFlerbarnsdager"
                     control={formMethods.control}
                     validate={[
-                        isRequired('Du må svare på spørsmålet om du ønsker å bruke flerbarnsdager for denne perioden'),
+                        isRequired(
+                            intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.ØnskerFlerbarnsdager.Påkrevd' }),
+                        ),
                     ]}
-                    label="Ønsker du å bruke flerbarnsdager for denne perioden?"
+                    label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.ØnskerFlerbarnsdager' })}
                     onChange={resetAktivitetskrav}
                 >
-                    <Radio key="ja" value={true}>
-                        Ja
+                    <Radio value={true}>
+                        <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Ja" />
                     </Radio>
-                    <Radio key="nei" value={false}>
-                        Nei
+                    <Radio value={false}>
+                        <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Nei" />
                     </Radio>
                 </RhfRadioGroup>
             )}
 
             {forelder !== undefined && <hr className="text-ax-border-neutral-subtle" />}
 
-            {(forelder === 'MOR' || forelder === 'BEGGE') && (
+            {forelder !== 'FAR_MEDMOR' && (
                 <RhfRadioGroup
                     name="kontoTypeMor"
                     control={formMethods.control}
@@ -230,7 +233,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     })}
                 </RhfRadioGroup>
             )}
-            {(forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && (
+            {forelder !== 'MOR' && (
                 <RhfRadioGroup
                     name="kontoTypeFarMedmor"
                     control={formMethods.control}
@@ -415,7 +418,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     />
                 </>
             )}
-            {kontoTypeMor !== undefined && (forelder === 'MOR' || forelder === 'BEGGE') && !morSøkerOmOverføring && (
+            {kontoTypeMor !== undefined && forelder !== 'FAR_MEDMOR' && !morSøkerOmOverføring && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
                     <VStack gap="space-16">
@@ -494,7 +497,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     </VStack>
                 </>
             )}
-            {(forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && !farMedmorSøkerOmOverføring && (
+            {forelder !== 'MOR' && !farMedmorSøkerOmOverføring && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
                     <VStack gap="space-16">
@@ -626,12 +629,7 @@ const getSkalViseMorsAktivitetskravVedSamtidigUttak = (
     stillingsprosentMor?: string,
     samtidigUttaksprosentFarMedmor?: string,
     kontoTypeFarMedmor?: KontoTypeUttak,
-    ønskerFlerbarnsdager?: boolean,
 ) => {
-    if (ønskerFlerbarnsdager) {
-        return false;
-    }
-
     const morsSamtidigUttakprosent = forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentMor) ?? 0) : 0;
     const morsStillingProsent = forelder === 'BEGGE' ? (getFloatFromString(stillingsprosentMor) ?? 0) : 0;
     const morsTotaleProsent = morsSamtidigUttakprosent + morsStillingProsent;
