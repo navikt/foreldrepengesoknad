@@ -68,9 +68,10 @@ const dokumentasjonBehøvesForUttaksperiode = (
     familiehendelsedato: string,
 ): boolean => {
     const harIkkeAktivitetskrav = periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT';
-    const erPeriodeFedkvoteIFødselspermTidsrommet =
+    const erPeriodeMedFedrekvoteIFødselspermTidsrommet =
         erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(periode, familiehendelsedato) &&
-        periode.kontoType === 'FEDREKVOTE';
+        periode.kontoType === 'FEDREKVOTE' &&
+        !periode.samtidigUttak;
 
     if (harIkkeAktivitetskrav) {
         return false;
@@ -78,6 +79,6 @@ const dokumentasjonBehøvesForUttaksperiode = (
 
     return (
         (periode.morsAktivitet !== undefined && periode.morsAktivitet !== 'UFØRE') ||
-        erPeriodeFedkvoteIFødselspermTidsrommet
+        erPeriodeMedFedrekvoteIFødselspermTidsrommet
     );
 };
