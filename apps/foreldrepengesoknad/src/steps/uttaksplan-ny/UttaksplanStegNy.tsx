@@ -114,13 +114,8 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
         return null;
     }
 
-    const tidligereUttaksperioder = (uttaksplanForEksisterendeSak ?? []).concat(
-        annenPartVedtakQuery.data?.perioder ?? [],
-    );
-    const defaultUttaksperioder =
-        uttaksplanForEksisterendeSak || annenPartVedtakQuery.data?.perioder
-            ? tidligereUttaksperioder
-            : nyttUttaksplanForslag;
+    const tidligereUttaksperioder = uttaksplanForEksisterendeSak || annenPartVedtakQuery.data?.perioder;
+    const defaultUttaksperioder = tidligereUttaksperioder || nyttUttaksplanForslag;
 
     const erPlanenEndret =
         uttaksplan !== undefined &&
@@ -158,7 +153,7 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
                     valgtStønadskonto={valgteStønadskontoer}
                     harAktivitetskravIPeriodeUtenUttak={false}
                     uttakPerioder={uttaksplan || defaultUttaksperioder}
-                    erPeriodeneTilAnnenPartLåst={tidligereUttaksperioder.length > 0}
+                    erPeriodeneTilAnnenPartLåst={!!tidligereUttaksperioder}
                     aktiveArbeidsforhold={aktiveArbeidsforhold}
                 >
                     {feilmelding && <Alert variant="error">{feilmelding}</Alert>}
