@@ -91,6 +91,25 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
             <AvslåttePerioder />
 
             <VStack gap="space-24">
+                {!readOnly && (
+                    <div>
+                        <Button
+                            type="button"
+                            size="small"
+                            variant="primary"
+                            onClick={() => {
+                                setErRedigeringAktiv(!erRedigeringAktiv);
+                                setValgtePerioder([]);
+                            }}
+                        >
+                            {erRedigeringAktiv ? (
+                                <FormattedMessage id="UttaksplanKalender.StopRedigering" />
+                            ) : (
+                                <FormattedMessage id="UttaksplanKalender.StartRedigering" />
+                            )}
+                        </Button>
+                    </div>
+                )}
                 {!readOnly && !erRedigeringInaktiv && (
                     <RadioGroup
                         legend={<FormattedMessage id="UttaksplanKalender.VelgDagEllerPeriode" />}

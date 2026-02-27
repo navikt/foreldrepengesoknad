@@ -1357,4 +1357,26 @@ describe('UttaksplanKalender', () => {
 
         expect(screen.getByText('Legg til utsettelse')).toBeInTheDocument();
     });
+
+    it('skal starte redigeringsmodus når en trykker på knapp Start redigering og fjerne valg når en trykker Stopp redigering', async () => {
+        render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
+
+        expect(await screen.findByText('Start redigering')).toBeInTheDocument();
+
+        expect(screen.queryByText('Du kan velge datoer i kalenderen')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Start redigering'));
+
+        expect(await screen.findAllByText('Du kan velge datoer i kalenderen')).toHaveLength(2);
+
+        const mars = screen.getByTestId('year:2024;month:2');
+
+        await userEvent.click(within(mars).getByTestId('day:14;dayColor:BLUE'));
+
+        expect(await within(mars).findByTestId('day:14;dayColor:DARKBLUE')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Stopp redigering'));
+
+        expect(await within(mars).findByTestId('day:14;dayColor:BLUE')).toBeInTheDocument();
+    });
 });
