@@ -38,5 +38,5 @@ const getÅrsakTekst = (
     messageValues?: { [key: string]: MessageValue },
 ) => {
     //@ts-expect-error Fiks dynamisk id
-    return intl.formatMessage({ id: `uttaksplan.overføringsårsaktype${periode.overføringÅrsak}` }, messageValues);
+    return intl.formatMessage({ id: `uttaksplan.overføringsårsaktype.${periode.overføringÅrsak}` }, messageValues);
 };
