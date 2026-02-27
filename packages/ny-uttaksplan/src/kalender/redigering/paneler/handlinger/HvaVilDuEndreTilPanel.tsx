@@ -10,8 +10,6 @@ import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
-import { LeggTilUtsettelsePanel } from '../../../../felles/utsettelse/LeggTilUtsettelsePanel';
-import { useVisUtsettelsePanel } from '../../../../felles/utsettelse/useVisUtsettelsePanel';
 import { erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato } from '../../../../felles/uttaksplanValidatorer';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
@@ -22,6 +20,8 @@ import { RødRamme } from '../../utils/RødRamme';
 import { finnAntallDager, finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
 import { useErDesktop, useMediaResetMinimering } from '../../utils/useMediaActions';
 import { PeriodeDetaljerOgInfoMeldinger } from './eksisterende-perioder/PeriodeDetaljerOgInfoMeldinger';
+import { LeggTilUtsettelsePanel } from './utsettelse/LeggTilUtsettelsePanel';
+import { useVisUtsettelsePanel } from './utsettelse/useVisUtsettelsePanel';
 
 interface Props {
     åpneRedigeringsmodus: () => void;
@@ -126,7 +126,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
             )}
 
             {!erMinimert && visUtsettelsePanel && (
-                <Box padding="space-24">
+                <Box className="pb-6 pr-6 pl-6">
                     <LeggTilUtsettelsePanel setVisUtsettelsePanel={setVisUtsettelsePanel} />
                 </Box>
             )}
