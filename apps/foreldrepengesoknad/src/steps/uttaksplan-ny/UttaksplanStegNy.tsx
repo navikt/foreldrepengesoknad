@@ -35,6 +35,7 @@ import {
     UttaksplanKalender,
     UttaksplanListe,
     UttaksplanRedigeringProvider,
+    erVanligUttakPeriode,
 } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -103,7 +104,11 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
 
     const valgteStønadskontoer = tilgjengeligeStønadskontoerQuery.data;
 
-    const nyttUttaksplanForslag = useUttaksplanForslag(valgteStønadskontoer);
+    // Filtrerer ut periodane til annen part midlertidig fram til me får på plass lagring av desse periodane
+    const nyttUttaksplanForslag = useUttaksplanForslag(valgteStønadskontoer).filter(
+        (periode) =>
+            erVanligUttakPeriode(periode) && periode.forelder === (erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
+    );
 
     if (!valgteStønadskontoer || annenPartVedtakQuery.isLoading) {
         return null;
@@ -128,7 +133,7 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig}>
                 {isLocalhostOrDev() && (
-                    <Alert variant="warning">
+                    <Alert variant="info">
                         <BodyLong>
                             <FormattedMessage id="uttaksplan.AnnenPartPerioderInfomelding" />
                         </BodyLong>
