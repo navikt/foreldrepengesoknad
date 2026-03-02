@@ -46,6 +46,7 @@ export const Default: Story = {
                 kontoType: 'FEDREKVOTE',
                 forelder: 'FAR_MEDMOR',
                 samtidigUttak: 50,
+                flerbarnsdager: false,
             },
         ],
         navnPåForeldre: {
@@ -90,6 +91,7 @@ export const FarSøker: Story = {
                                             kontoType: 'FEDREKVOTE',
                                             forelder: 'FAR_MEDMOR',
                                             samtidigUttak: 100,
+                                            flerbarnsdager: false,
                                         },
                                         {
                                             fom: '2025-01-01',
@@ -97,6 +99,7 @@ export const FarSøker: Story = {
                                             forelder: 'FAR_MEDMOR',
                                             kontoType: 'MØDREKVOTE',
                                             overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
+                                            flerbarnsdager: false,
                                         },
                                     ],
                                 },
@@ -122,6 +125,7 @@ export const FarSøker: Story = {
                 tom: '2024-09-30',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-10-01',
@@ -129,18 +133,21 @@ export const FarSøker: Story = {
                 kontoType: 'MØDREKVOTE',
                 forelder: 'MOR',
                 samtidigUttak: 100,
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-10-15',
                 tom: '2024-12-09',
                 kontoType: 'MØDREKVOTE',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-12-10',
                 tom: '2024-12-31',
                 kontoType: 'FELLESPERIODE',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2025-02-05',
@@ -159,6 +166,7 @@ export const FarSøker: Story = {
                 tom: '2025-04-22',
                 kontoType: 'FELLESPERIODE',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
         ],
         navnPåForeldre: {
