@@ -93,9 +93,9 @@ const lagTapteDagerHull = (
 ): TapteDagerHull[] => {
     const { fom, tom } = periodeSomSkalSjekkesForHull;
 
-    const perioderForIntervalletSomSkalSjekkes = sortertePerioder.filter(
-        (p) => dayjs(p.fom).isSameOrBefore(tom) && dayjs(p.tom).isSameOrAfter(fom),
-    );
+    const perioderForIntervalletSomSkalSjekkes = sortertePerioder
+        .filter((p) => dayjs(p.fom).isSameOrBefore(tom) && dayjs(p.tom).isSameOrAfter(fom))
+        .map((p) => ({ fom: p.fom, tom: p.tom }));
 
     perioderForIntervalletSomSkalSjekkes.push(
         ...lagPerioderVedStartOgSluttOmDetMangler(perioderForIntervalletSomSkalSjekkes, periodeSomSkalSjekkesForHull),
@@ -129,7 +129,7 @@ const lagTapteDagerHull = (
 };
 
 const lagPerioderVedStartOgSluttOmDetMangler = (
-    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    perioder: Array<{ fom: string; tom: string }>,
     periodeSomSkalSjekkesForHull: { fom: string; tom: string },
 ) => {
     const nyePerioder = [];
@@ -152,10 +152,11 @@ const lagPerioderVedStartOgSluttOmDetMangler = (
 };
 
 export const lagPerioderUtenUttak = (
-    sortertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    sortertePerioder: UttaksplanperiodeMedKunTapteDager[],
     familiehendelsedato: string,
 ): PerioderUtenUttakHull[] => {
     const sortertePerioderMedFamiliehendelse = [...sortertePerioder]
+        .map((p) => ({ fom: p.fom, tom: p.tom }))
         .concat({
             fom: familiehendelsedato,
             tom: familiehendelsedato,

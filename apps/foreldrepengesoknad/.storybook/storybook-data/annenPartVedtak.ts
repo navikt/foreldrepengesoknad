@@ -11,6 +11,7 @@ export const annenPartVedtak = {
             resultat: { innvilget: true, trekkerMinsterett: true, trekkerDager: true, årsak: 'ANNET' },
             samtidigUttak: 100,
             flerbarnsdager: false,
+            forelder: 'FAR_MEDMOR',
         },
         {
             fom: '2023-02-20',
@@ -19,6 +20,7 @@ export const annenPartVedtak = {
             resultat: { innvilget: true, trekkerMinsterett: true, trekkerDager: true, årsak: 'ANNET' },
             samtidigUttak: 50,
             flerbarnsdager: false,
+            forelder: 'FAR_MEDMOR',
         },
         {
             fom: '2023-03-20',
@@ -26,6 +28,7 @@ export const annenPartVedtak = {
             kontoType: 'FEDREKVOTE',
             resultat: { innvilget: true, trekkerMinsterett: true, trekkerDager: true, årsak: 'ANNET' },
             flerbarnsdager: false,
+            forelder: 'FAR_MEDMOR',
         },
     ],
     dekningsgrad: 'HUNDRE',
@@ -42,6 +45,7 @@ export const avslåttAnnenPartVedtak = {
             resultat: { innvilget: false, trekkerMinsterett: true, trekkerDager: true, årsak: 'ANNET' },
             samtidigUttak: 100,
             flerbarnsdager: false,
+            forelder: 'FAR_MEDMOR',
         },
     ],
     dekningsgrad: 'HUNDRE',

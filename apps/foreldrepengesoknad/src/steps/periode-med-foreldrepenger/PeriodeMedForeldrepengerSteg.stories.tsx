@@ -94,6 +94,7 @@ const uttaksperiode = {
     },
     samtidigUttak: 50,
     flerbarnsdager: true,
+    forelder: 'MOR',
 } satisfies UttakPeriode_fpoversikt;
 
 const fellesProps = {

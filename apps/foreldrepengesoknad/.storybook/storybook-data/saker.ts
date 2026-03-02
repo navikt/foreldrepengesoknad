@@ -30,6 +30,7 @@ export const saker = {
                         tom: '2023-07-21',
                         kontoType: 'FEDREKVOTE',
                         flerbarnsdager: false,
+                        forelder: 'FAR_MEDMOR',
                     },
                     {
                         fom: '2023-07-24',
@@ -37,6 +38,7 @@ export const saker = {
                         kontoType: 'FELLESPERIODE',
                         morsAktivitet: 'UTDANNING',
                         flerbarnsdager: false,
+                        forelder: 'MOR',
                     },
                 ],
             },

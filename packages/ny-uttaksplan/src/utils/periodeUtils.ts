@@ -66,7 +66,7 @@ export const erAvslåttPeriodeFørsteSeksUkerMor = (
     );
 };
 
-export const sorterPerioder = (a: Uttaksplanperiode, b: Uttaksplanperiode): number => {
+export const sorterPerioder = (a: { fom: string; tom: string }, b: { fom: string; tom: string }): number => {
     const aFom = dayjs(a.fom);
     const bFom = dayjs(b.fom);
 
@@ -90,7 +90,9 @@ export const sorterPerioder = (a: Uttaksplanperiode, b: Uttaksplanperiode): numb
     return 0;
 };
 
-export const harPeriodeDerMorsAktivitetIkkeErValgt = (perioder?: UttaksplanperiodeMedKunTapteDager[]) => {
+export const harPeriodeDerMorsAktivitetIkkeErValgt = (
+    perioder?: UttaksplanperiodeMedKunTapteDager[] | Uttaksplanperiode[],
+) => {
     return (
         !!perioder &&
         perioder.some(
