@@ -539,12 +539,9 @@ const filtrerUtUendredePeriode = (
     uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     eksisterendeSak?: FpSak_fpoversikt,
 ): UttakPeriode_fpoversikt[] => {
-    return uttaksplan.filter((periode) => {
-        if (Uttaksperioden.erEøsPeriode(periode)) {
-            return false;
-        }
-        return eksisterendeSak ? !erPeriodeIOpprinneligSak(eksisterendeSak, periode) : true;
-    });
+    return uttaksplan
+        .filter((periode) => Uttaksperioden.erIkkeEøsPeriode(periode))
+        .filter((periode) => (eksisterendeSak ? !erPeriodeIOpprinneligSak(eksisterendeSak, periode) : true));
 };
 
 const filtrerUtAnnenPartsPerioder = (
@@ -552,12 +549,9 @@ const filtrerUtAnnenPartsPerioder = (
     rolle: Søkerrolle,
 ): UttakPeriode_fpoversikt[] => {
     const søker = rolle === 'mor' ? 'MOR' : 'FAR_MEDMOR';
-    return uttaksplan.filter((periode) => {
-        if (Uttaksperioden.erEøsPeriode(periode)) {
-            return false;
-        }
-        return periode.forelder === søker;
-    });
+    return uttaksplan
+        .filter((periode) => Uttaksperioden.erIkkeEøsPeriode(periode))
+        .filter((periode) => periode.forelder === søker);
 };
 
 const midlertidigMappingAvUttaksplan = (uttaksplan: UttakPeriode_fpoversikt[]): Uttaksplanperiode[] => {

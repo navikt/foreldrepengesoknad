@@ -104,6 +104,7 @@ export const mapSaksperiodeFromDTO = (p: UttakPeriode_fpoversikt, erAnnenPartsSa
         overføringÅrsak: p.overføringÅrsak,
         samtidigUttak: p.samtidigUttak,
         morsAktivitet: p.morsAktivitet,
+        forelder: p.forelder,
         oppholdÅrsak: mapOppholdÅrsakType(p.oppholdÅrsak),
     };
 

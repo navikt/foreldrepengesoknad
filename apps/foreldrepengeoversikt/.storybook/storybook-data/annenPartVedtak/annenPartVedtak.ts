@@ -14,6 +14,7 @@ export const annenPartVedtak = {
                 årsak: 'ANNET',
             },
             forelder: 'FAR_MEDMOR',
+            flerbarnsdager: false,
         },
     ],
     termindato: '2022-08-17',

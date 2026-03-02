@@ -36,6 +36,8 @@ const vedtakFar = {
                 trekkerDager: true,
                 årsak: 'ANNET',
             },
+            flerbarnsdager: false,
+            forelder: 'MOR',
         },
         {
             fom: '2024-06-11',
@@ -47,6 +49,8 @@ const vedtakFar = {
                 trekkerDager: true,
                 årsak: 'ANNET',
             },
+            flerbarnsdager: false,
+            forelder: 'MOR',
         },
     ] satisfies UttakPeriode_fpoversikt[],
 };
@@ -65,6 +69,8 @@ const vedtakMor = {
                 trekkerDager: true,
                 årsak: 'ANNET',
             },
+            flerbarnsdager: false,
+            forelder: 'FAR_MEDMOR',
         },
         {
             fom: '2024-08-11',
@@ -76,6 +82,8 @@ const vedtakMor = {
                 trekkerDager: true,
                 årsak: 'ANNET',
             },
+            flerbarnsdager: false,
+            forelder: 'MOR',
         },
     ] satisfies UttakPeriode_fpoversikt[],
 };

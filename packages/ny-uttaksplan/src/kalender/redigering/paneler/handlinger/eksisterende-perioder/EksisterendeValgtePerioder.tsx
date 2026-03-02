@@ -566,13 +566,10 @@ const useSlettPeriodeFn = () => {
         const perioder = finnDagerSomSkalSlettes(sammenslåtteValgtePerioder, periodeSomSkalSlettes);
 
         slettUttaksplanPerioder(
-            perioder.map(
-                (p) =>
-                    ({
-                        fom: dayjs(p.fom).isBefore(periodeSomSkalSlettes.fom) ? periodeSomSkalSlettes.fom : p.fom,
-                        tom: dayjs(p.tom).isAfter(periodeSomSkalSlettes.tom) ? periodeSomSkalSlettes.tom : p.tom,
-                    }) satisfies UttakPeriode_fpoversikt,
-            ),
+            perioder.map((p) => ({
+                fom: dayjs(p.fom).isBefore(periodeSomSkalSlettes.fom) ? periodeSomSkalSlettes.fom : p.fom,
+                tom: dayjs(p.tom).isAfter(periodeSomSkalSlettes.tom) ? periodeSomSkalSlettes.tom : p.tom,
+            })),
             skalForskyveBakover,
         );
 
