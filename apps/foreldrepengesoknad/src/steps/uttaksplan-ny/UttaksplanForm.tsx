@@ -16,6 +16,7 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import {
     Barn,
+    FpSak_fpoversikt,
     PersonMedArbeidsforholdDto_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
@@ -53,6 +54,7 @@ interface UttaksplanFormProps {
     avbrytSøknad: () => void;
     setFeilmelding: (melding: ReactNode) => void;
     scrollToKvoteOppsummering: () => void;
+    eksisterendeSak: FpSak_fpoversikt | undefined;
 }
 
 export const UttaksplanForm = ({
@@ -62,6 +64,7 @@ export const UttaksplanForm = ({
     avbrytSøknad,
     setFeilmelding,
     scrollToKvoteOppsummering,
+    eksisterendeSak,
 }: UttaksplanFormProps) => {
     const intl = useIntl();
 
@@ -80,7 +83,12 @@ export const UttaksplanForm = ({
 
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
 
-    const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad);
+    const navigator = useFpNavigator(
+        søkerInfo.arbeidsforhold,
+        mellomlagreSøknadOgNaviger,
+        erEndringssøknad,
+        eksisterendeSak,
+    );
 
     const formMethods = useForm<FormValues>({
         defaultValues: {

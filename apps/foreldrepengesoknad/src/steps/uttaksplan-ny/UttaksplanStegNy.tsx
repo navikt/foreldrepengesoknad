@@ -19,6 +19,7 @@ import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { loggUmamiEvent } from '@navikt/fp-metrics';
 import {
     Barn,
+    FpSak_fpoversikt,
     PersonMedArbeidsforholdDto_fpoversikt,
     RettighetType_fpoversikt,
     isAdoptertBarn,
@@ -46,9 +47,15 @@ interface Props {
     søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
+    foreldrepengerSaker?: FpSak_fpoversikt[];
 }
 
-export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
+export const UttaksplanStegNy = ({
+    søkerInfo,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    foreldrepengerSaker,
+}: Props) => {
     const intl = useIntl();
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
@@ -57,13 +64,16 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN_NY);
+    const eksisterendeSaksnummer = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN_NY);
+
+    const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
 
     const [feilmelding, setFeilmelding] = useState<ReactNode | undefined>();
 
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
 
-    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad);
+    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
@@ -215,6 +225,7 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
                         setFeilmelding={setFeilmelding}
                         scrollToKvoteOppsummering={scrollToKvoteOppsummering}
                         defaultUttaksperioder={defaultUttaksperioder}
+                        eksisterendeSak={eksisterendeSak}
                     />
                 </UttaksplanDataProvider>
             </Step>

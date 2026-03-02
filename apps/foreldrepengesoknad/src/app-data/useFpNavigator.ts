@@ -1,7 +1,7 @@
 import { SøknadRoutes } from 'appData/routes';
 
 import { loggUmamiEvent } from '@navikt/fp-metrics';
-import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataType, useContextSaveData } from './FpDataContext';
 import { useStepConfig } from './useStepConfig';
@@ -10,8 +10,9 @@ export const useFpNavigator = (
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     mellomlagreOgNaviger: () => Promise<void>,
     erEndringssøknad = false,
+    eksisterendeSak: FpSak_fpoversikt | undefined = undefined,
 ) => {
-    const stepConfig = useStepConfig(arbeidsforhold, erEndringssøknad);
+    const stepConfig = useStepConfig(arbeidsforhold, erEndringssøknad, eksisterendeSak);
     const oppdaterPath = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const goToPreviousDefaultStep = () => {
