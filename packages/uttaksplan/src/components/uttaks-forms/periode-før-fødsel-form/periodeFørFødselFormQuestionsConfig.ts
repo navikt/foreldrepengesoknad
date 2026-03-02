@@ -1,6 +1,5 @@
-import { isValidTidsperiodeString } from '@navikt/fp-utils';
-
 import { QuestionConfig, Questions } from '../../../formik-wrappers';
+import { isValidTidsperiodeString } from '../../../utils/getUttaksdagerSomErFridager';
 import { PeriodeFørFødselFormData, PeriodeFørFødselFormField } from './periodeFørFødselFormConfig';
 
 const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;

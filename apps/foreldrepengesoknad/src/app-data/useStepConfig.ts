@@ -11,8 +11,8 @@ import { kreverUttaksplanVedleggNy } from 'utils/uttaksplanInfoUtils';
 
 import { isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { EksternArbeidsforholdDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
+import { Uttaksperioden } from '@navikt/fp-utils';
 import { kreverUttaksplanVedlegg } from '@navikt/fp-uttaksplan';
-import { erEøsUttakPeriode, erVanligUttakPeriode } from '@navikt/fp-uttaksplan-ny/src/types/UttaksplanPeriode';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { getFamiliehendelsedato } from '../utils/barnUtils';
@@ -186,12 +186,13 @@ const showManglendeDokumentasjonStegNy = (
 
         const uttaksplanUtenAnnenPartsPerioder = uttaksplan?.filter(
             (periode) =>
-                erVanligUttakPeriode(periode) && periode.forelder === (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
+                Uttaksperioden.erIkkeEøsPeriode(periode) &&
+                periode.forelder === (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
         );
 
         const perioderSomSkalSjekkes = uttaksplanUtenAnnenPartsPerioder
             ? uttaksplanUtenAnnenPartsPerioder.filter((periode) => {
-                  if (erEøsUttakPeriode(periode)) {
+                  if (Uttaksperioden.erEøsPeriode(periode)) {
                       return false;
                   }
 

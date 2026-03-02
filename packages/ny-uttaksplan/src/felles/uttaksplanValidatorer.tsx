@@ -11,6 +11,7 @@ import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { ForeldreInfo } from '../types/ForeldreInfo';
 import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../utils/UttakPeriodeBuilder';
+import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
 import { LeggTilEllerEndrePeriodeFormFormValues } from './LeggTilEllerEndrePeriodeFellesForm';
 
 dayjs.extend(isSameOrBefore);
@@ -96,8 +97,14 @@ export const kanMisteDagerVedEndringTilFerie = (
     familiehendelsedato: string,
 ) => {
     return (
-        erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(perioder, familiehendelsedato) ||
-        erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(perioder, familiehendelsedato)
+        UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
+            perioder,
+            familiehendelsedato,
+        ) ||
+        UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(
+            perioder,
+            familiehendelsedato,
+        )
     );
 };
 
@@ -180,7 +187,7 @@ const erUgyldigSamtidigUttak = <T extends LeggTilEllerEndrePeriodeFormFormValues
     familiehendelsedato: string,
 ): string | null => {
     const inneholderPerioderRundtFødsel =
-        erNoenPerioderIMellomToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato(
+        UttaksperiodeValidatorer.erNoenPerioderIMellomToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato(
             perioder,
             familiehendelsedato,
         );
@@ -301,7 +308,7 @@ const erGyldigUttakForFarMedmorRundtFødsel = <T extends LeggTilEllerEndrePeriod
     perioder: Array<{ fom: string; tom: string }>,
 ): string | null => {
     const inneholderPerioderRundtFødsel =
-        erNoenPerioderIMellomToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato(
+        UttaksperiodeValidatorer.erNoenPerioderIMellomToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato(
             perioder,
             familiehendelsedato,
         );
@@ -384,7 +391,10 @@ const erKombinasjonAvArbeidOgForeldrepengerDe6FørsteUkene = <T extends LeggTilE
         (formValues.kontoTypeMor === 'MØDREKVOTE' ||
             formValues.kontoTypeMor === 'FELLESPERIODE' ||
             formValues.kontoTypeMor === 'FORELDREPENGER') &&
-        erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(perioder, familiehendelsedato)
+        UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
+            perioder,
+            familiehendelsedato,
+        )
     ) {
         return intl.formatMessage({ id: 'endreTidsPeriodeModal.kanIkkeKombinere' });
     }
@@ -392,7 +402,10 @@ const erKombinasjonAvArbeidOgForeldrepengerDe6FørsteUkene = <T extends LeggTilE
     if (
         formValues.skalDuKombinereArbeidOgUttakFarMedmor &&
         formValues.kontoTypeFarMedmor === 'MØDREKVOTE' &&
-        erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(perioder, familiehendelsedato)
+        UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
+            perioder,
+            familiehendelsedato,
+        )
     ) {
         return intl.formatMessage({ id: 'endreTidsPeriodeModal.kanIkkeKombinere' });
     }
@@ -504,50 +517,4 @@ const finnDagerInnenforIntervall = (fom: string, tom: string, førsteDag: string
     }
 
     return dager;
-};
-
-export const erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato = (
-    valgtePerioder: Array<{ fom: string; tom: string }>,
-    familiehendelsedato: string,
-) => {
-    const førsteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato();
-    const sisteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30);
-
-    return valgtePerioder.some((periode) => {
-        const fom = dayjs(periode.fom);
-        const tom = dayjs(periode.tom);
-        return tom.isSameOrAfter(førsteDag, 'day') && fom.isBefore(sisteDag, 'day');
-    });
-};
-
-const erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato = (
-    valgtePerioder: Array<{ fom: string; tom: string }>,
-    familiehendelsedato: string,
-) => {
-    const førsteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(15);
-    const sisteDag = UttaksdagenString.forrige(familiehendelsedato).getDato();
-
-    return valgtePerioder.some((periode) => {
-        const fom = dayjs(periode.fom);
-        const tom = dayjs(periode.tom);
-
-        return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
-    });
-};
-
-const erNoenPerioderIMellomToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato = (
-    valgtePerioder: Array<{ fom: string; tom: string }>,
-    familiehendelsedato: string,
-) => {
-    const familiehendelse = UttaksdagenString.denneEllerNeste(familiehendelsedato);
-
-    const toUkerFør = familiehendelse.getDatoAntallUttaksdagerTidligere(10);
-    const seksUkerEtter = familiehendelse.getDatoAntallUttaksdagerSenere(30);
-
-    return valgtePerioder.some((periode) => {
-        const fom = dayjs(periode.fom);
-        const tom = dayjs(periode.tom);
-
-        return fom.isSameOrBefore(seksUkerEtter) && tom.isSameOrAfter(toUkerFør);
-    });
 };

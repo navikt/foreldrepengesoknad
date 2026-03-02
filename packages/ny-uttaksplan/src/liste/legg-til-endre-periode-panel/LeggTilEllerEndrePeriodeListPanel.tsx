@@ -25,13 +25,10 @@ import {
     LeggTilUtsettelseForm,
     FormValues as UtsettelseFormValues,
 } from '../../felles/utsettelse/LeggTilUtsettelseForm';
-import {
-    erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato,
-    kanMisteDagerVedEndringTilFerie,
-    useFormSubmitValidator,
-} from '../../felles/uttaksplanValidatorer';
+import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
 import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
+import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../utils/periodeUtils';
 import { TidsperiodeSpørsmål } from './/TidsperiodeSpørsmål';
 
@@ -165,6 +162,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                         tom,
                         forelder: 'MOR',
                         utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+                        flerbarnsdager: false,
                     },
                 ],
                 skalForskyve,
@@ -177,6 +175,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                         tom,
                         forelder: søker,
                         utsettelseÅrsak: values.utsettelseÅrsak,
+                        flerbarnsdager: false,
                     },
                 ],
                 skalForskyve,
@@ -240,7 +239,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
     const erUtsettelseGyldig = (nyHvaVilDuGjøre?: HvaVilDuGjøre) => {
         return nyHvaVilDuGjøre !== 'LEGG_TIL_UTSETTELSE' ||
-            erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
+            UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
                 fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [],
                 familiehendelsedato,
             )

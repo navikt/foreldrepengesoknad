@@ -11,9 +11,10 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { KontoTypeUttak } from '@navikt/fp-types';
-import { Uttaksdagen, isValidTidsperiodeString } from '@navikt/fp-utils';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { andreAugust2022ReglerGjelder, tidperiodeOverlapperDato } from './dateUtils';
+import { isValidTidsperiodeString } from './getUttaksdagerSomErFridager';
 import { finnAntallDagerÅTrekke } from './uttaksPlanStatus';
 
 export const ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL = 10;

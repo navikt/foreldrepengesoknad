@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
-import { TidsperiodenString } from '@navikt/fp-utils';
+import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { Uttaksplanperiode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
@@ -28,7 +28,7 @@ export const PeriodeUtenUttakContent = ({ periode, isHull }: Props) => {
                     </BodyShort>
                     <BodyShort>
                         {getVarighetString(
-                            TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager(),
+                            UttaksdagenString.denneEllerNeste(periode.fom).getUttaksdagerFremTilOgMedDato(periode.tom),
                             intl,
                         )}
                     </BodyShort>

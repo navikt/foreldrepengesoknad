@@ -35,9 +35,8 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { Tidsperioden } from '@navikt/fp-utils';
+import { Tidsperioden, Uttaksperioden } from '@navikt/fp-utils';
 import { convertTidsperiodeToTidsperiodeDate } from '@navikt/fp-uttaksplan';
-import { erEøsUttakPeriode } from '@navikt/fp-uttaksplan-ny';
 
 import {
     ISOStringToDate,
@@ -285,7 +284,6 @@ export const mapSøkerensEksisterendeSakFromDTO = (
         grunnlag,
         saksperioder,
         uttaksplan,
-        uttaksplanNy: perioder.concat(eksisterendeSak.gjeldendeVedtak?.perioderAnnenpartEøs ?? []),
     };
 };
 
@@ -566,7 +564,7 @@ export const lagEndringsSøknad = (
     annenPartFraSak: Person_fpoversikt | undefined,
     valgteBarn: ValgtBarn,
 ): Partial<Søknad> => {
-    const { grunnlag, uttaksplan, uttaksplanNy } = eksisterendeSak;
+    const { grunnlag, uttaksplan } = eksisterendeSak;
     const { dekningsgrad, familiehendelseType, søkerErFarEllerMedmor, ønskerJustertUttakVedFødsel } = grunnlag;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(familiehendelseType);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag, valgteBarn);
@@ -594,7 +592,6 @@ export const lagEndringsSøknad = (
         erEndringssøknad: true,
         dekningsgrad,
         uttaksplan,
-        uttaksplanNy,
         saksnummer: eksisterendeSak.saksnummer,
         ønskerJustertUttakVedFødsel: ønskerJustertUttakVedFødsel,
     };
@@ -621,12 +618,12 @@ export const erPeriodeIOpprinneligPlan = (
 ): boolean => {
     return eksisterendePerioder.some((p) => {
         if (
-            (erEøsUttakPeriode(nyPeriode) && !erEøsUttakPeriode(p)) ||
-            (!erEøsUttakPeriode(nyPeriode) && erEøsUttakPeriode(p))
+            (Uttaksperioden.erEøsPeriode(nyPeriode) && !Uttaksperioden.erEøsPeriode(p)) ||
+            (!Uttaksperioden.erEøsPeriode(nyPeriode) && Uttaksperioden.erEøsPeriode(p))
         ) {
             return false;
         }
-        if (erEøsUttakPeriode(nyPeriode) && erEøsUttakPeriode(p)) {
+        if (Uttaksperioden.erEøsPeriode(nyPeriode) && Uttaksperioden.erEøsPeriode(p)) {
             return (
                 nyPeriode.trekkdager === p.trekkdager &&
                 nyPeriode.fom === p.fom &&
@@ -635,7 +632,7 @@ export const erPeriodeIOpprinneligPlan = (
             );
         }
 
-        if (erEøsUttakPeriode(nyPeriode) || erEøsUttakPeriode(p)) {
+        if (Uttaksperioden.erEøsPeriode(nyPeriode) || Uttaksperioden.erEøsPeriode(p)) {
             throw new Error('Ingen perioder bør være eøs-perioder her');
         }
 

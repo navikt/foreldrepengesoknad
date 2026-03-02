@@ -25,18 +25,35 @@ export const OverføringsperiodedetaljerNy = ({ periode, navnPåForeldre }: Prop
     return (
         <Feltoppsummering
             feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.årsak' })}
-            verdi={getÅrsakTekst(intl, periode, { navnAnnenForelder })}
+            verdi={getÅrsakTekst(intl, periode, navnAnnenForelder)}
         />
     );
 };
 
-type MessageValue = string | number | boolean | Date | null | undefined;
+const getÅrsakTekst = (intl: IntlShape, periode: UttakPeriode_fpoversikt, navnAnnenForelder: string) => {
+    const { overføringÅrsak } = periode;
 
-const getÅrsakTekst = (
-    intl: IntlShape,
-    periode: UttakPeriode_fpoversikt,
-    messageValues?: { [key: string]: MessageValue },
-) => {
-    //@ts-expect-error Fiks dynamisk id
-    return intl.formatMessage({ id: `uttaksplan.overføringsårsaktype.${periode.overføringÅrsak}` }, messageValues);
+    if (overføringÅrsak === 'ALENEOMSORG') {
+        return intl.formatMessage({ id: 'uttaksplan.overføringsårsaktype.ALENEOMSORG' }, { navnAnnenForelder });
+    }
+    if (overføringÅrsak === 'IKKE_RETT_ANNEN_FORELDER') {
+        return intl.formatMessage(
+            { id: 'uttaksplan.overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER' },
+            { navnAnnenForelder },
+        );
+    }
+    if (overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER') {
+        return intl.formatMessage(
+            { id: 'uttaksplan.overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER' },
+            { navnAnnenForelder },
+        );
+    }
+    if (overføringÅrsak === 'SYKDOM_ANNEN_FORELDER') {
+        return intl.formatMessage(
+            { id: 'uttaksplan.overføringsårsaktype.SYKDOM_ANNEN_FORELDER' },
+            { navnAnnenForelder },
+        );
+    }
+
+    return '';
 };

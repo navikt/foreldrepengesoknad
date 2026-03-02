@@ -1,8 +1,9 @@
 import { PlanForslag } from 'types/PlanForslag';
 
 import { KontoDto, Situasjon, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { UttaksdagenString, getTidsperiodeString } from '@navikt/fp-utils';
+import { UttaksdagenString } from '@navikt/fp-utils';
 
+import { getTidsperiodeString } from './deltUttak';
 import { sorterPerioder } from './uttakUtils';
 
 const ikkeDeltUttakAdopsjonFarMedmor = (

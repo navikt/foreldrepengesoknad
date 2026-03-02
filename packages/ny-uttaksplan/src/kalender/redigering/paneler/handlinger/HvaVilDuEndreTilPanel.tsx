@@ -10,8 +10,8 @@ import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
-import { erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato } from '../../../../felles/uttaksplanValidatorer';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
+import { UttaksperiodeValidatorer } from '../../../../utils/UttaksperiodeValidatorer';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
@@ -82,7 +82,10 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
     const skalViseUtsettelsesknapp =
         søker === 'MOR' &&
         familiesituasjon !== 'adopsjon' &&
-        erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(sammenslåtteValgtePerioder, familiehendelsedato);
+        UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
+            sammenslåtteValgtePerioder,
+            familiehendelsedato,
+        );
 
     const leggTilEllerForskyvPeriode = (skalForskyve: boolean) => {
         leggTilUttaksplanPerioder(
@@ -93,6 +96,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                         fom: p.fom,
                         tom: p.tom,
                         utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+                        flerbarnsdager: false,
                     }) satisfies UttakPeriode_fpoversikt,
             ),
             skalForskyve,

@@ -28,7 +28,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakUtsettelseÅrsak_fpoversikt,
 } from '@navikt/fp-types';
-import { Tidsperioden, Uttaksdagen, erUttaksdag, isValidTidsperiodeString } from '@navikt/fp-utils';
+import { Tidsperioden, Uttaksdagen, erUttaksdagOld } from '@navikt/fp-utils';
 import {
     Perioden,
     convertTidsperiodeToTidsperiodeDate,
@@ -49,7 +49,11 @@ const harUttaksdager = (periode: Periode): boolean => {
 };
 
 const harGyldigTidsperiode = (periode: Periode): boolean => {
-    return isValidTidsperiodeString(periode.tidsperiode);
+    return (
+        periode.tidsperiode.fom !== undefined &&
+        periode.tidsperiode.tom !== undefined &&
+        dayjs(periode.tidsperiode.fom).isSameOrBefore(periode.tidsperiode.tom, 'day')
+    );
 };
 
 const erBeggePeriodePåSammeSideAvFamdato = (forrigePeriode: Periode, periode: Periode, familiehendelsesdato: Date) => {
@@ -121,8 +125,8 @@ const slåSammenLikePerioder = (
 
 const korrigerTidsperiodeTilGyldigUttaksdag = (periode: Periode): Periode => {
     const { fom, tom } = periode.tidsperiode;
-    const fomOk = erUttaksdag(fom);
-    const tomOk = erUttaksdag(tom);
+    const fomOk = erUttaksdagOld(fom);
+    const tomOk = erUttaksdagOld(tom);
     if (fomOk && tomOk) {
         return periode;
     } else if (!fomOk && !tomOk) {

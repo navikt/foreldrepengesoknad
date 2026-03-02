@@ -290,7 +290,7 @@ const fjernLeadingOgTrailingMånederUtenUtbetaling = (andelerPerDag: DagMedPerio
     );
 
     const beregnSumForMåned = (dager: DagMedPeriode[]) => {
-        const utbetalingsdager = dager.filter((d) => erUttaksdag(new Date(d.dato)));
+        const utbetalingsdager = dager.filter((d) => erUttaksdag(d.dato));
         const tilBruker = sumBy(utbetalingsdager, (d) =>
             sumBy(d.andeler, (andel) => (andel.tilBruker ? andel.dagsats : 0)),
         );
@@ -333,7 +333,7 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
             </BodyShort>
             <VStack gap="space-16">
                 {andelerPerMåned.map((dager, index) => {
-                    const utbetalingsdager = dager.filter((d) => erUttaksdag(new Date(d.dato)));
+                    const utbetalingsdager = dager.filter((d) => erUttaksdag(d.dato));
                     const totaltForMånedenTilDeg = sumBy(utbetalingsdager, (d) =>
                         sumBy(d.andeler, (andel) => (andel.tilBruker ? andel.dagsats : 0)),
                     );
@@ -403,7 +403,7 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                         </Table.Header>
                                         <Table.Body>
                                             {dager.map((dag) => {
-                                                const erUtbetalingsdag = erUttaksdag(new Date(dag.dato));
+                                                const erUtbetalingsdag = erUttaksdag(dag.dato);
                                                 const beløp = sumBy(dag.andeler, (andel) => andel.dagsats);
                                                 const beløpTekst = erUtbetalingsdag ? formatCurrencyWithKr(beløp) : '-';
 

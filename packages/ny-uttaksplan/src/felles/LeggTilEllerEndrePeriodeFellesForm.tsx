@@ -23,11 +23,8 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskontoNavnSimple } from '../liste/utils/uttaksplanListeUtils';
 import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
-import { erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from '../utils/periodeUtils';
-import {
-    erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgSeksUkerEtterFamDato,
-    useHentGyldigeKontotyper,
-} from './useHentGyldigeKontotyper';
+import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
+import { useHentGyldigeKontotyper } from './useHentGyldigeKontotyper';
 import { prosentValideringGradering, valideringSamtidigUttak } from './uttaksplanValidatorer';
 
 dayjs.extend(isSameOrBefore);
@@ -444,7 +441,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         </RhfRadioGroup>
                         {skalDuKombinereArbeidOgUttakMor && (
                             <>
-                                {erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgSeksUkerEtterFamDato(
+                                {UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgSeksUkerEtterFamDato(
                                     valgtePerioder,
                                     familiehendelsedato,
                                 ) && (
@@ -668,7 +665,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentMor) : undefined,
             overføringÅrsak: values.overføringsårsak,
-            flerbarnsdager: values.ønskerFlerbarnsdager,
+            flerbarnsdager: values.ønskerFlerbarnsdager ?? false,
         });
     }
     if (values.forelder === 'FAR_MEDMOR' || values.forelder === 'BEGGE') {
@@ -685,7 +682,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentFarMedmor) : undefined,
             overføringÅrsak: values.overføringsårsak,
-            flerbarnsdager: values.ønskerFlerbarnsdager,
+            flerbarnsdager: values.ønskerFlerbarnsdager ?? false,
         });
     }
     return nye;
@@ -812,13 +809,23 @@ const getInfotekstOmFedrekvoteBrukRundtFødsel = (
     intl: IntlShape,
 ) => {
     const perioderInneholderFedrekvoteRundtFødsel = uttakPerioder
-        .filter((periode) => erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(periode, familiehendelsedato))
+        .filter((periode) =>
+            UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+                periode,
+                familiehendelsedato,
+                undefined,
+            ),
+        )
         .some((periode) => {
             return erVanligUttakPeriode(periode) && periode.kontoType === 'FEDREKVOTE' && !periode.samtidigUttak;
         });
 
     const valgteDagerRundtFødsel = valgtePerioder.filter((p) =>
-        erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(p, familiehendelsedato),
+        UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+            p,
+            familiehendelsedato,
+            undefined,
+        ),
     );
 
     const valgteDagerInneholderFedrekvoteRundtFødsel =

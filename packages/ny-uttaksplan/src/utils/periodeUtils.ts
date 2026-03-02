@@ -8,25 +8,24 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { UttaksdagenString, slutterTidsperiodeInnen6UkerEtterFødsel } from '@navikt/fp-utils';
 
 import {
     Uttaksplanperiode,
+    UttaksplanperiodeMedKunTapteDager,
     erEøsUttakPeriode,
-    erPeriodeUtenUttakHull,
-    erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../types/UttaksplanPeriode';
+import { UttaksperiodeValidatorer } from './UttaksperiodeValidatorer';
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(minMax);
 dayjs.extend(isoWeekday);
 
-export const isUttaksperiode = (periode: Uttaksplanperiode) => {
+export const erUttaksperiode = (periode: Uttaksplanperiode) => {
     return erVanligUttakPeriode(periode) && periode.utsettelseÅrsak === undefined;
 };
 
-export const isPrematuruker = (periode: Uttaksplanperiode) => {
+export const erPrematuruker = (periode: Uttaksplanperiode) => {
     return (
         erVanligUttakPeriode(periode) &&
         periode.kontoType !== undefined &&
@@ -34,7 +33,7 @@ export const isPrematuruker = (periode: Uttaksplanperiode) => {
     );
 };
 
-export const isUtsettelsesperiode = (periode: Uttaksplanperiode) => {
+export const erUtsettelsesperiode = (periode: Uttaksplanperiode) => {
     return (
         erVanligUttakPeriode(periode) &&
         periode.utsettelseÅrsak !== undefined &&
@@ -42,36 +41,28 @@ export const isUtsettelsesperiode = (periode: Uttaksplanperiode) => {
     );
 };
 
-export const isOverføringsperiode = (periode: Uttaksplanperiode) => {
+export const erOverføringsperiode = (periode: Uttaksplanperiode) => {
     return erVanligUttakPeriode(periode) && periode.overføringÅrsak !== undefined;
 };
 
-export const isOppholdsperiode = (periode: Uttaksplanperiode) => {
+export const erOppholdsperiode = (periode: Uttaksplanperiode) => {
     return erVanligUttakPeriode(periode) && periode.oppholdÅrsak !== undefined;
 };
 
-export const isAvslåttPeriode = (periode: Uttaksplanperiode) => {
+export const erAvslåttPeriode = (periode: Uttaksplanperiode) => {
     return 'resultat' in periode && periode.resultat && periode.resultat.innvilget !== true;
 };
 
-export const isTapteDager = (periode: Uttaksplanperiode) => {
-    return erTapteDagerHull(periode);
-};
-
-export const isPeriodeUtenUttak = (periode: Uttaksplanperiode) => {
-    return erPeriodeUtenUttakHull(periode);
-};
-
-export const isAvslåttPeriodeFørsteSeksUkerMor = (
+export const erAvslåttPeriodeFørsteSeksUkerMor = (
     periode: Uttaksplanperiode,
     familiehendelsesdato: string,
 ): boolean => {
     return (
-        !!isAvslåttPeriode(periode) &&
+        !!erAvslåttPeriode(periode) &&
         'forelder' in periode &&
         periode.forelder === 'MOR' &&
         dayjs(periode.fom).isSameOrAfter(dayjs(familiehendelsesdato), 'day') &&
-        slutterTidsperiodeInnen6UkerEtterFødsel({ fom: periode.fom, tom: periode.tom }, new Date(familiehendelsesdato))
+        UttaksperiodeValidatorer.erInnenforFørsteSeksUker(periode, familiehendelsesdato)
     );
 };
 
@@ -99,9 +90,7 @@ export const sorterPerioder = (a: Uttaksplanperiode, b: Uttaksplanperiode): numb
     return 0;
 };
 
-export const harPeriodeDerMorsAktivitetIkkeErValgt = (
-    perioder?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-) => {
+export const harPeriodeDerMorsAktivitetIkkeErValgt = (perioder?: UttaksplanperiodeMedKunTapteDager[]) => {
     return (
         !!perioder &&
         perioder.some(
@@ -109,25 +98,9 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
                 erVanligUttakPeriode(periode) &&
                 periode.forelder === 'FAR_MEDMOR' &&
                 periode.kontoType === 'FELLESPERIODE' &&
-                periode.flerbarnsdager === undefined &&
                 periode.morsAktivitet === undefined,
         )
     );
-};
-
-export const erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-    familiehendelsedato: string,
-) => {
-    const familiehendelse = UttaksdagenString.denneEllerNeste(familiehendelsedato);
-
-    const toUkerFør = familiehendelse.getDatoAntallUttaksdagerTidligere(10);
-    const seksUkerEtter = familiehendelse.getDatoAntallUttaksdagerSenere(30);
-
-    const fom = dayjs(periode.fom);
-    const tom = dayjs(periode.tom);
-
-    return fom.isBefore(seksUkerEtter) && tom.isSameOrAfter(toUkerFør);
 };
 
 export const erPerioderEkslFomTomLike = (
@@ -166,17 +139,6 @@ export const erPerioderEkslFomTomLike = (
 
     return false;
 };
-
-// TODO (TOR) DEtte er en duplikat - rydd
-export const erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato = (
-    valgtePerioder: Array<{ fom: string; tom: string }>,
-    familiehendelsedato: string,
-) =>
-    valgtePerioder.some((p) =>
-        dayjs(p.fom).isBefore(
-            UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
-        ),
-    );
 
 export const erDetEksisterendePerioderEtterValgtePerioder = (
     allePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,

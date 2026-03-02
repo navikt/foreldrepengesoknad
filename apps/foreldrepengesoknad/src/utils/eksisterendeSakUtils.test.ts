@@ -164,33 +164,6 @@ describe('eksisterendeSakUtils', () => {
                 opprinneligSøkt: undefined,
             }),
         ],
-        uttaksplanNy: [
-            {
-                flerbarnsdager: false,
-                fom: '2022-11-09',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                resultat: {
-                    innvilget: true,
-                    trekkerDager: true,
-                    trekkerMinsterett: true,
-                    årsak: 'ANNET',
-                },
-                tom: '2022-11-29',
-            },
-            {
-                flerbarnsdager: false,
-                fom: '2022-11-30',
-                kontoType: 'MØDREKVOTE',
-                resultat: {
-                    innvilget: true,
-                    trekkerDager: true,
-                    trekkerMinsterett: true,
-                    årsak: 'ANNET',
-                },
-                samtidigUttak: 100,
-                tom: '2022-12-13',
-            },
-        ],
     };
 
     const eksisterendeSakMorAdopsjonBareMorHarRett = {
@@ -292,20 +265,6 @@ describe('eksisterendeSakUtils', () => {
                 opprinneligSøkt: undefined,
             }),
         ],
-        uttaksplanNy: [
-            {
-                flerbarnsdager: false,
-                fom: '2022-11-09',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                resultat: {
-                    innvilget: true,
-                    trekkerDager: true,
-                    trekkerMinsterett: true,
-                    årsak: 'ANNET',
-                },
-                tom: '2022-11-29',
-            },
-        ],
     };
 
     const eksisterendeSakMedØnsketJusteringFarFødsel = {
@@ -401,20 +360,6 @@ describe('eksisterendeSakUtils', () => {
                 angittAvAnnenPart: undefined,
                 opprinneligSøkt: undefined,
             }),
-        ],
-        uttaksplanNy: [
-            {
-                flerbarnsdager: false,
-                fom: '2022-11-09',
-                kontoType: 'FEDREKVOTE',
-                resultat: {
-                    innvilget: true,
-                    trekkerDager: true,
-                    trekkerMinsterett: false,
-                    årsak: 'ANNET',
-                },
-                tom: '2022-11-29',
-            },
         ],
     };
 

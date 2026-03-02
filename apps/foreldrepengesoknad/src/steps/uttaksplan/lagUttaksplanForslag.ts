@@ -8,8 +8,6 @@ import { getAntallDagerFellesperiodeTilSøker, getOppstartsdatoFromFordelingValg
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getKunFarHarRett } from 'utils/personUtils';
 import { getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
-import { deltUttak } from 'utils/uttaksplan/deltUttak';
-import { ikkeDeltUttak } from 'utils/uttaksplan/ikkeDeltUttak';
 
 import {
     AnnenForelder,
@@ -26,6 +24,9 @@ import {
     getHarAktivitetskravIPeriodeUtenUttak,
     leggTilAnnenPartsPerioderISøkerenesUttaksplan,
 } from '@navikt/fp-uttaksplan';
+
+import { deltUttak } from './oldshit/uttaksplan/deltUttak';
+import { ikkeDeltUttak } from './oldshit/uttaksplan/ikkeDeltUttak';
 
 const getSøkerensUttaksplanForslag = (
     søkersituasjon: SøkersituasjonFp,
