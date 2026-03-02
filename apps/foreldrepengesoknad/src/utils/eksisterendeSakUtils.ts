@@ -285,7 +285,6 @@ export const mapSøkerensEksisterendeSakFromDTO = (
         grunnlag,
         saksperioder,
         uttaksplan,
-        uttaksplanNy: perioder.concat(eksisterendeSak.gjeldendeVedtak?.perioderAnnenpartEøs ?? []),
     };
 };
 
@@ -566,7 +565,7 @@ export const lagEndringsSøknad = (
     annenPartFraSak: Person_fpoversikt | undefined,
     valgteBarn: ValgtBarn,
 ): Partial<Søknad> => {
-    const { grunnlag, uttaksplan, uttaksplanNy } = eksisterendeSak;
+    const { grunnlag, uttaksplan } = eksisterendeSak;
     const { dekningsgrad, familiehendelseType, søkerErFarEllerMedmor, ønskerJustertUttakVedFødsel } = grunnlag;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(familiehendelseType);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag, valgteBarn);
@@ -594,7 +593,6 @@ export const lagEndringsSøknad = (
         erEndringssøknad: true,
         dekningsgrad,
         uttaksplan,
-        uttaksplanNy,
         saksnummer: eksisterendeSak.saksnummer,
         ønskerJustertUttakVedFødsel: ønskerJustertUttakVedFødsel,
     };
