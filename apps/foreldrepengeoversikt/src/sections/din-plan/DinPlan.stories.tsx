@@ -160,6 +160,7 @@ export const FarSøker: Story = {
                         type: 'FRILANS',
                     },
                 },
+                flerbarnsdager: false,
             },
             {
                 fom: '2025-03-19',
