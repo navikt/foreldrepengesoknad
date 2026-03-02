@@ -4,11 +4,8 @@ import isoWeek from 'dayjs/plugin/isoWeek';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import { formatDate } from '../dateUtils';
-import { TidsperiodenString } from './TidsperiodenString';
 
 dayjs.extend(isoWeek);
-
-const isoStringFormat = 'YYYY-MM-DD';
 
 export class UttaksdagenString {
     private readonly uttaksdagenDato: string;
@@ -52,6 +49,10 @@ export class UttaksdagenString {
         return getUttaksdagerFremTilDato(this.uttaksdagenDato, tilDato);
     }
 
+    getUttaksdagerFremTilOgMedDato(tilDato: string): number {
+        return getUttaksdagerFremTilOgMedDato(this.uttaksdagenDato, tilDato);
+    }
+
     getDato(): string {
         return this.uttaksdagenDato;
     }
@@ -66,24 +67,25 @@ const getUkedag = (dato: Date | string): number => {
 };
 
 const getUttaksdagFørDato = (dato: string): string => {
-    return getUttaksdagTilOgMedDato(dayjs.utc(dato).subtract(24, 'hours').format(isoStringFormat));
+    return getUttaksdagTilOgMedDato(dayjs.utc(dato).subtract(24, 'hours').format(ISO_DATE_FORMAT));
 };
 
 const getUttaksdagTilOgMedDato = (dato: string): string => {
     switch (getUkedag(dato)) {
         case 6:
-            return dayjs.utc(dato).subtract(24, 'hours').startOf('day').format(isoStringFormat);
+            return dayjs.utc(dato).subtract(24, 'hours').startOf('day').format(ISO_DATE_FORMAT);
         case 7:
-            return dayjs.utc(dato).subtract(48, 'hours').startOf('day').format(isoStringFormat);
+            return dayjs.utc(dato).subtract(48, 'hours').startOf('day').format(ISO_DATE_FORMAT);
         default:
             return dato;
     }
 };
+
 /**
  * Første gyldige uttaksdag etter dato
  */
 const getUttaksdagEtterDato = (dato: string): string => {
-    return getUttaksdagFraOgMedDato(dayjs(dato).add(24, 'hours').format(isoStringFormat));
+    return getUttaksdagFraOgMedDato(dayjs(dato).add(24, 'hours').format(ISO_DATE_FORMAT));
 };
 
 /**
@@ -93,9 +95,9 @@ const getUttaksdagEtterDato = (dato: string): string => {
 const getUttaksdagFraOgMedDato = (dato: string): string => {
     switch (getUkedag(dato)) {
         case 6:
-            return dayjs.utc(dato).add(48, 'hours').startOf('day').format(isoStringFormat);
+            return dayjs.utc(dato).add(48, 'hours').startOf('day').format(ISO_DATE_FORMAT);
         case 7:
-            return dayjs.utc(dato).add(24, 'hours').startOf('day').format(isoStringFormat);
+            return dayjs.utc(dato).add(24, 'hours').startOf('day').format(ISO_DATE_FORMAT);
         default:
             return dato;
     }
@@ -144,14 +146,23 @@ const getUttaksdagerFremTilDato = (fom: string, tom: string): number => {
         return 0;
     }
     if (dayjs(fom).isBefore(tom, 'day')) {
-        return TidsperiodenString({ fom, tom }).getAntallUttaksdager() - 1;
+        return getUttaksdagerFremTilOgMedDato(fom, tom) - 1;
     }
-    return (
-        -1 *
-        (TidsperiodenString({
-            fom: tom,
-            tom: fom,
-        }).getAntallUttaksdager() -
-            1)
-    );
+    return -1 * (getUttaksdagerFremTilOgMedDato(tom, fom) - 1);
+};
+
+const getUttaksdagerFremTilOgMedDato = (fomVerdi: string, tomVerdi: string): number => {
+    if (fomVerdi === undefined || tomVerdi === undefined) {
+        return 0;
+    }
+    let fom = dayjs(fomVerdi);
+    const tom = dayjs(tomVerdi);
+    let antall = 0;
+    while (fom.isSameOrBefore(tom, 'day')) {
+        if (erUttaksdag(fom.format(ISO_DATE_FORMAT))) {
+            antall++;
+        }
+        fom = fom.add(24, 'hours');
+    }
+    return antall;
 };

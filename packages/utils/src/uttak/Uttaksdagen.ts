@@ -1,17 +1,16 @@
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 
+import { Tidsperioden } from '../Tidsperioden';
 import { convertStringOrDateToDate, formatDate } from '../dateUtils';
-import { Tidsperioden } from './Tidsperioden';
 
 dayjs.extend(isoWeek);
 
 /**
- * Wrapper en dato med uttaksdager-funksjonalitet
- * @param dato
+ * @deprecated Bruk heller UttaksdagenString
  */
 export const Uttaksdagen = (dato: Date) => ({
-    erUttaksdag: (): boolean => erUttaksdag(dato),
+    erUttaksdag: (): boolean => erUttaksdagOld(dato),
     forrige: (): Date => getUttaksdagFørDato(dato),
     neste: (): Date => getUttaksdagEtterDato(dato),
     denneEllerNeste: (): Date => getUttaksdagFraOgMedDato(dato),
@@ -32,7 +31,7 @@ function getUkedag(dato: Date): number {
     return dayjs(dato).isoWeekday();
 }
 
-export function erUttaksdag(dato: Date): boolean {
+export function erUttaksdagOld(dato: Date): boolean {
     return getUkedag(dato) !== 6 && getUkedag(dato) !== 7;
 }
 
@@ -94,7 +93,7 @@ function getUttaksdagFraOgMedDato(dato: Date): Date {
  * @param uttaksdager
  */
 function leggUttaksdagerTilDato(dato: Date, uttaksdager: number): Date {
-    if (erUttaksdag(dato) === false) {
+    if (erUttaksdagOld(dato) === false) {
         throw new Error(`leggUttaksdagerTilDato: Dato ${formatDate(dato)} må være uttaksdag`);
     }
     let nyDato = dato;
@@ -105,7 +104,7 @@ function leggUttaksdagerTilDato(dato: Date, uttaksdager: number): Date {
             .utc(dato)
             .add(dagteller++ * 24, 'hours')
             .toDate();
-        if (erUttaksdag(tellerdato)) {
+        if (erUttaksdagOld(tellerdato)) {
             nyDato = tellerdato;
             uttaksdageteller++;
         }
@@ -119,7 +118,7 @@ function leggUttaksdagerTilDato(dato: Date, uttaksdager: number): Date {
  * @param uttaksdager
  */
 function trekkUttaksdagerFraDato(dato: Date, uttaksdager: number): Date {
-    if (erUttaksdag(dato) === false) {
+    if (erUttaksdagOld(dato) === false) {
         throw new Error(`trekkUttaksdagerFraDato: Dato ${formatDate(dato)} må være uttaksdag`);
     }
     let nyDato = dato;
@@ -130,7 +129,7 @@ function trekkUttaksdagerFraDato(dato: Date, uttaksdager: number): Date {
             .utc(dato)
             .add(--dagteller * 24, 'hours')
             .toDate();
-        if (erUttaksdag(tellerdato)) {
+        if (erUttaksdagOld(tellerdato)) {
             nyDato = tellerdato;
             uttaksdageteller++;
         }

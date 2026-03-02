@@ -2,10 +2,10 @@ import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import { ForeldrepengerFørFødselUttaksperiode, Periode, Situasjon, Utsettelsesperiode } from '@navikt/fp-common';
-import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import Block from '../../../common/block/Block';
 import { ISOStringToDate } from '../../../utils/dateUtils';
+import { isValidTidsperiodeString } from '../../../utils/getUttaksdagerSomErFridager';
 import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from '../../uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
 import { SubmitListener } from '../submit-listener/SubmitListener';

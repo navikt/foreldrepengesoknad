@@ -3,11 +3,14 @@ import { IntlShape } from 'react-intl';
 
 import { TidsperiodeDate } from '@navikt/fp-types';
 
-import { dateIsSameOrAfter, dateIsSameOrBefore, formaterDatoUtenDag } from '../dateUtils';
-import { Uttaksdagen } from './Uttaksdagen';
+import { dateIsSameOrAfter, dateIsSameOrBefore, formaterDatoUtenDag } from './dateUtils';
+import { Uttaksdagen } from './uttak/Uttaksdagen';
 
 const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 
+/**
+ * @deprecated Bruk heller TidsperiodenString
+ */
 export const Tidsperioden = (tidsperiode: TidsperiodeDate) => ({
     erLik: (tidsperiode2: TidsperiodeDate) => erTidsperioderLike(tidsperiode, tidsperiode2),
     overlapper: (tidsperiode2: TidsperiodeDate) => overlapperTidsperioder(tidsperiode, tidsperiode2),

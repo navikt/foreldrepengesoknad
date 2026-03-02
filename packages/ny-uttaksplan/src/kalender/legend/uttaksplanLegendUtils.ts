@@ -13,7 +13,7 @@ import {
     erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
-import { isAvslåttPeriode, isAvslåttPeriodeFørsteSeksUkerMor } from '../../utils/periodeUtils';
+import { erAvslåttPeriode, erAvslåttPeriodeFørsteSeksUkerMor } from '../../utils/periodeUtils';
 
 export type UttaksplanKalenderLegendInfo = {
     calendarPeriod: CalendarPeriod;
@@ -372,12 +372,12 @@ export const getLegendLabelFromPeriode = (
     barn: Barn,
     erFarEllerMedmor: boolean,
 ): LegendLabel | undefined => {
-    if (isAvslåttPeriode(p)) {
+    if (erAvslåttPeriode(p)) {
         if (erVanligUttakPeriode(p) && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
             return 'PLEIEPENGER';
         }
         const familiehendelsesdato = getFamiliehendelsedato(barn);
-        return !erFarEllerMedmor && isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsesdato)
+        return !erFarEllerMedmor && erAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsesdato)
             ? 'AVSLAG'
             : 'TAPTE_DAGER';
     }

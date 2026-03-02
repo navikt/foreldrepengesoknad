@@ -5,10 +5,8 @@ import { FormattedMessage } from 'react-intl';
 import { Alert, BodyShort, Button, Detail, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import {
-    erDetReadonlyPerioderEtterValgtePerioder,
-    erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato,
-} from '../../utils/periodeUtils';
+import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
+import { erDetReadonlyPerioderEtterValgtePerioder } from '../../utils/periodeUtils';
 
 interface Props {
     valgtePerioder: Array<{ fom: string; tom: string }>;
@@ -35,7 +33,10 @@ export const LeggTilPeriodeForskyvEllerErstattPanel = ({
 
     const harPeriodeFørFamiliehendelsedato = valgtePerioder.some((p) => dayjs(p.fom).isBefore(familiehendelsedato));
     const harPeriodeFørSeksUkerEtterFamiliehendelsedato = erFerie
-        ? erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(valgtePerioder, familiehendelsedato)
+        ? UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
+              valgtePerioder,
+              familiehendelsedato,
+          )
         : false;
 
     const forelderSomHarLåstePerioder = erPeriodeneTilAnnenPartLåst

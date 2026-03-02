@@ -10,7 +10,7 @@ import {
     isFødtBarn,
 } from '@navikt/fp-types';
 import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
-import { UttaksdagenString, formaterDatoUtenDag, getFamiliehendelsedato } from '@navikt/fp-utils';
+import { UttaksdagenString, Uttaksperioden, formaterDatoUtenDag, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { assertUnreachable } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
@@ -22,10 +22,10 @@ import {
 } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import {
+    erAvslåttPeriode,
+    erAvslåttPeriodeFørsteSeksUkerMor,
+    erUttaksperiode,
     harPeriodeDerMorsAktivitetIkkeErValgt,
-    isAvslåttPeriode,
-    isAvslåttPeriodeFørsteSeksUkerMor,
-    isUttaksperiode,
 } from '../../utils/periodeUtils';
 import { filtrerBortAnnenPartsIdentiskePerioder } from './uttaksplanKalenderUtils';
 
@@ -102,22 +102,22 @@ const getKalenderFargeForPeriode = (
     allePerioder: UttaksplanperiodeMedKunTapteDager[],
     barn: Barn,
 ): CalendarPeriodColor => {
-    if (isAvslåttPeriode(periode)) {
+    if (erAvslåttPeriode(periode)) {
         if (erVanligUttakPeriode(periode) && periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
             return 'DARKGRAY';
         }
         const familiehendelsesdato = getFamiliehendelsedato(barn);
-        return !erFarEllerMedmor && isAvslåttPeriodeFørsteSeksUkerMor(periode, familiehendelsesdato)
+        return !erFarEllerMedmor && erAvslåttPeriodeFørsteSeksUkerMor(periode, familiehendelsesdato)
             ? 'BLACKOUTLINE'
             : 'NONE';
     }
 
-    const annenForelderSamtidigUttaksperiode = isUttaksperiode(periode)
+    const annenForelderSamtidigUttaksperiode = erUttaksperiode(periode)
         ? getAnnenForelderSamtidigUttakPeriode(periode, allePerioder)
         : undefined;
 
     const samtidigUttaksprosent =
-        isUttaksperiode(periode) && erVanligUttakPeriode(periode) ? periode.samtidigUttak : undefined;
+        erVanligUttakPeriode(periode) && erUttaksperiode(periode) ? periode.samtidigUttak : undefined;
     if (annenForelderSamtidigUttaksperiode || (samtidigUttaksprosent && samtidigUttaksprosent > 0)) {
         return erFarEllerMedmor ? 'LIGHTBLUEGREEN' : 'LIGHTGREENBLUE';
     }
@@ -126,7 +126,7 @@ const getKalenderFargeForPeriode = (
         return 'BLACK';
     }
 
-    if (erEøsUttakPeriode(periode)) {
+    if (Uttaksperioden.erEøsPeriode(periode)) {
         return erFarEllerMedmor ? 'BLUE_WITH_BLACK_OUTLINE' : 'GREEN_WITH_BLACK_OUTLINE';
     }
 
@@ -240,7 +240,7 @@ const finnSkjermleserTekstForKvoteForeldrepenger = (
     periodenTilhører: string,
     intl: IntlShape,
 ): string => {
-    if (erEøsUttakPeriode(period)) {
+    if (Uttaksperioden.erEøsPeriode(period)) {
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerIkkeGradert' });
     }
 
@@ -267,14 +267,14 @@ const getAnnenForelderSamtidigUttakPeriode = (
     periode: UttaksplanperiodeMedKunTapteDager,
     perioder: UttaksplanperiodeMedKunTapteDager[],
 ): UttaksplanperiodeMedKunTapteDager | undefined => {
-    if (isUttaksperiode(periode)) {
+    if (erUttaksperiode(periode)) {
         const samtidigUttak = perioder
             .filter(
                 (p) =>
                     'forelder' in p &&
                     'forelder' in periode &&
                     p.forelder !== periode.forelder &&
-                    isUttaksperiode(periode),
+                    erUttaksperiode(periode),
             )
             .find((p) => dayjs(periode.fom).isSame(p.fom));
 

@@ -1,19 +1,19 @@
 import { Søknadsinfo, isInfoPeriode } from '@navikt/fp-common';
-import { erUttaksdag } from '@navikt/fp-utils';
+import { erUttaksdagOld } from '@navikt/fp-utils';
 
 import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../utils/types/regelTypes';
 
 export const inneholderUttaksplanDatoSomIkkeErUttaksdag: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const ugyldigePerioder = grunnlag.perioder
         .filter((p) => !isInfoPeriode(p))
-        .filter(({ tidsperiode: { fom, tom } }) => erUttaksdag(fom) === false || erUttaksdag(tom) === false);
+        .filter(({ tidsperiode: { fom, tom } }) => erUttaksdagOld(fom) === false || erUttaksdagOld(tom) === false);
 
     return {
         passerer: ugyldigePerioder.length === 0,
         info: ugyldigePerioder.map((periode): RegelTestresultatInfo => {
             return {
                 intlKey: `uttaksplan.validering.feil.${
-                    erUttaksdag(periode.tidsperiode.fom)
+                    erUttaksdagOld(periode.tidsperiode.fom)
                         ? 'periodeSlutterPåDatoSomIkkeErUttaksdag'
                         : 'periodeStarterPåDatoSomIkkeErUttaksdag'
                 }`,

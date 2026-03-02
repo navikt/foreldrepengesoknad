@@ -1,9 +1,8 @@
 import dayjs from 'dayjs';
 
-import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { Uttaksperioden } from '@navikt/fp-utils';
 
-import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
-import { isPrematuruker } from '../../utils/periodeUtils';
+import { Uttaksplanperiode, erUttaksplanHull } from '../../types/UttaksplanPeriode';
 
 export const mapUttaksplanperioderTilRaderIListe = (
     saksperioderInkludertHull: Uttaksplanperiode[],
@@ -29,7 +28,11 @@ export const mapUttaksplanperioderTilRaderIListe = (
         const periode = saksperioderInkludertHull[index]!;
 
         // Hull / Prematuruker / Utsettelse -> alltid egen rad
-        if (erUttaksplanHull(periode) || isPrematuruker(periode) || erUtsettelse(periode)) {
+        if (
+            erUttaksplanHull(periode) ||
+            Uttaksperioden.erPrematuruker(periode) ||
+            Uttaksperioden.erUtsettelsesperiode(periode)
+        ) {
             avsluttAktivRad();
             radIListeMap.set(periodeKey(periode.fom, periode.tom), [periode]);
             index += 1;
@@ -99,9 +102,6 @@ const beggePerioderFørEllerEtterFamiliehendelsedato = (
         beggePerioderEtterFamiliehendelsedato(uttaksplanperiode, periode, famdato) ||
         beggePerioderFørFamiliehendelsedato(uttaksplanperiode, periode, famdato)
     );
-};
-const erUtsettelse = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    return erVanligUttakPeriode(periode) && !!periode.utsettelseÅrsak;
 };
 
 const beggePerioderFørFamiliehendelsedato = (

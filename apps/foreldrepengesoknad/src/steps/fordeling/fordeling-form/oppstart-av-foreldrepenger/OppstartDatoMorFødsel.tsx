@@ -33,7 +33,7 @@ export const OppstartDatoMorFødsel = ({ oppstartValg }: Props) => {
     const visInformasjon =
         oppstartDato &&
         isValidDate(oppstartDato) &&
-        erUttaksdag(ISOStringToDate(oppstartDato)!) &&
+        erUttaksdag(oppstartDato) &&
         dayjs(oppstartDato).isSameOrBefore(førsteUttaksdagPåEllerEtterFamHendelse);
     const fødselEllerTermindato = getErBarnetFødtInnenTreUkerFørTermin(erBarnetFødt, termindato, fødselsdato)
         ? intl.formatMessage({ id: 'fødselsdato' })

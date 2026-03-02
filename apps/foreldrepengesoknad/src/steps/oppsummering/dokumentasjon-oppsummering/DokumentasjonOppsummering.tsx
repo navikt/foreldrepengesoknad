@@ -2,11 +2,10 @@ import { API_URLS } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FormattedMessage } from 'react-intl';
 import { VedleggDataType } from 'types/VedleggDataType';
-import { getRelevantePerioder } from 'utils/uttaksplanInfoUtils';
 
 import { Alert, BodyLong, BodyShort, FormSummary, Heading, Link, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre } from '@navikt/fp-common';
+import { NavnPåForeldre, Periode } from '@navikt/fp-common';
 import { AttachmentType } from '@navikt/fp-constants';
 import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
@@ -148,4 +147,16 @@ export const DokumentasjonOppsummering = ({
             )}
         </>
     );
+};
+
+const getRelevantePerioder = (
+    perioder: Periode[],
+    endringssøknadPerioder: Periode[] | undefined,
+    erEndringssøknad: boolean,
+) => {
+    if (erEndringssøknad && endringssøknadPerioder !== undefined) {
+        return endringssøknadPerioder;
+    }
+
+    return perioder;
 };
