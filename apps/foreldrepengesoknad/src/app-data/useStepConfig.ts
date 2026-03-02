@@ -10,9 +10,9 @@ import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 import { kreverUttaksplanVedleggNy } from 'utils/uttaksplanInfoUtils';
 
 import { isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { kreverUttaksplanVedlegg } from '@navikt/fp-uttaksplan';
-import { erVanligUttakPeriode } from '@navikt/fp-uttaksplan-ny/src/types/UttaksplanPeriode';
+import { erEøsUttakPeriode, erVanligUttakPeriode } from '@navikt/fp-uttaksplan-ny/src/types/UttaksplanPeriode';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { getFamiliehendelsedato } from '../utils/barnUtils';
@@ -95,9 +95,10 @@ const showManglendeDokumentasjonStegTemp = (
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     erEndringssøknad: boolean,
+    eksisterendeSak: FpSak_fpoversikt | undefined,
 ) => {
     if (isLocalhostOrDev()) {
-        return showManglendeDokumentasjonStegNy(path, getData, arbeidsforhold);
+        return showManglendeDokumentasjonStegNy(path, getData, arbeidsforhold, eksisterendeSak);
     }
     return showManglendeDokumentasjonSteg(path, getData, arbeidsforhold, erEndringssøknad);
 };
@@ -160,6 +161,7 @@ const showManglendeDokumentasjonStegNy = (
     path: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+    eksisterendeSak: FpSak_fpoversikt | undefined,
 ) => {
     if (path === SøknadRoutes.DOKUMENTASJON) {
         const annenForelder = getData(ContextDataType.ANNEN_FORELDER);
@@ -186,10 +188,21 @@ const showManglendeDokumentasjonStegNy = (
             (periode) =>
                 erVanligUttakPeriode(periode) && periode.forelder === (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
         );
+
+        const perioderSomSkalSjekkes = uttaksplanUtenAnnenPartsPerioder
+            ? uttaksplanUtenAnnenPartsPerioder.filter((periode) => {
+                  if (erEøsUttakPeriode(periode)) {
+                      return false;
+                  }
+
+                  return eksisterendeSak ? periode.resultat === undefined : true;
+              })
+            : [];
+
         const skalHaUttakDok =
-            annenForelder && uttaksplanUtenAnnenPartsPerioder && familiehendelsedato
+            annenForelder && perioderSomSkalSjekkes.length > 0 && familiehendelsedato
                 ? kreverUttaksplanVedleggNy(
-                      uttaksplanUtenAnnenPartsPerioder,
+                      perioderSomSkalSjekkes,
                       erFarEllerMedmor,
                       annenForelder,
                       familiehendelsedato,
@@ -205,14 +218,18 @@ const showManglendeDokumentasjonStegNy = (
             skalHaTerminDokumentasjon ||
             skalHaAdopsjonDokumentasjon ||
             skalHaUttakDok ||
-            skalHaAndreInntekterDok
+            !!skalHaAndreInntekterDok
         );
     }
 
     return false;
 };
 
-export const useStepConfig = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[], erEndringssøknad = false) => {
+export const useStepConfig = (
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+    erEndringssøknad: boolean = false,
+    eksisterendeSak: FpSak_fpoversikt | undefined = undefined,
+) => {
     const intl = useIntl();
     const pathToLabelMap = getPathToLabelMap(intl);
 
@@ -230,12 +247,18 @@ export const useStepConfig = (arbeidsforhold: EksternArbeidsforholdDto_fpoversik
             ROUTES_ORDER.flatMap((path) =>
                 requiredSteps.includes(path) ||
                 showUtenlandsoppholdStep(path, currentPath, getStateData) ||
-                showManglendeDokumentasjonStegTemp(path, getStateData, arbeidsforhold, erEndringssøknad) ||
+                showManglendeDokumentasjonStegTemp(
+                    path,
+                    getStateData,
+                    arbeidsforhold,
+                    erEndringssøknad,
+                    eksisterendeSak,
+                ) ||
                 showFrilansOgEgenNæringOgAndreInntekter(path, currentPath, getStateData)
                     ? [path]
                     : [],
             ),
-        [requiredSteps, currentPath, getStateData, arbeidsforhold, erEndringssøknad],
+        [requiredSteps, currentPath, getStateData, arbeidsforhold, erEndringssøknad, eksisterendeSak],
     );
 
     return useMemo(
