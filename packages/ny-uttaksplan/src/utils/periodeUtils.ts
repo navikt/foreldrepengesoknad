@@ -98,7 +98,6 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (perioder?: Uttaksplanperio
                 erVanligUttakPeriode(periode) &&
                 periode.forelder === 'FAR_MEDMOR' &&
                 periode.kontoType === 'FELLESPERIODE' &&
-                periode.flerbarnsdager === undefined &&
                 periode.morsAktivitet === undefined,
         )
     );

@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
-import { UttaksplanperiodeMedKunTapteDager } from 'types/UttaksplanPeriode';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { UttaksplanperiodeMedKunTapteDager } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 
 export const useAntallMånederIKalenderData = (
