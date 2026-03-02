@@ -14,7 +14,7 @@ import {
     isUttaksperiode,
     isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
-import { Tidsperioden, Uttaksdagen, isValidTidsperiodeString } from '@navikt/fp-utils';
+import { Tidsperioden, Uttaksdagen } from '@navikt/fp-utils';
 
 import { Perioden } from '../utils/Perioden';
 import { Periodene, sorterPerioder } from '../utils/Periodene';
@@ -23,6 +23,7 @@ import {
     førsteOktober2021ReglerGjelder,
     tidperiodeOverlapperDato,
 } from '../utils/dateUtils';
+import { isValidTidsperiodeString } from '../utils/getUttaksdagerSomErFridager';
 import { guid } from '../utils/guid';
 import { splittPeriodePåDato } from './leggTilPeriode';
 

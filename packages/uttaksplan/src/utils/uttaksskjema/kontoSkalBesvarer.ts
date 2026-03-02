@@ -2,9 +2,9 @@ import dayjs from 'dayjs';
 
 import { Periodetype, TidsperiodeDate } from '@navikt/fp-common';
 import { KontoDto } from '@navikt/fp-types';
-import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { andreAugust2022ReglerGjelder } from '../../utils/dateUtils';
+import { isValidTidsperiodeString } from '../../utils/getUttaksdagerSomErFridager';
 
 const kontoSkalBesvares = (
     periodetype: Periodetype,

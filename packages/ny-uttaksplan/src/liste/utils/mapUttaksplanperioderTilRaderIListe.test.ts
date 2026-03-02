@@ -7,18 +7,21 @@ const perioder1: Uttaksplanperiode[] = [
         kontoType: 'FORELDREPENGER_FØR_FØDSEL',
         fom: '2024-04-12',
         tom: '2024-05-02',
+        flerbarnsdager: false,
     },
     {
         forelder: 'MOR',
         kontoType: 'MØDREKVOTE',
         fom: '2024-05-03',
         tom: '2024-08-15',
+        flerbarnsdager: false,
     },
     {
         forelder: 'MOR',
         kontoType: 'FELLESPERIODE',
         fom: '2024-08-16',
         tom: '2024-09-26',
+        flerbarnsdager: false,
     },
     {
         fom: '2024-09-27',
@@ -30,6 +33,7 @@ const perioder1: Uttaksplanperiode[] = [
         kontoType: 'FELLESPERIODE',
         fom: '2024-10-11',
         tom: '2024-10-24',
+        flerbarnsdager: false,
     },
 ];
 

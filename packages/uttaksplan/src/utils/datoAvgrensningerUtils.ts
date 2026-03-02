@@ -1,9 +1,10 @@
 import { Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
 import { KontoTypeUttak } from '@navikt/fp-types';
-import { Tidsperioden, Uttaksdagen, isValidTidsperiodeString } from '@navikt/fp-utils';
+import { Tidsperioden, Uttaksdagen } from '@navikt/fp-utils';
 
 import { DatepickerLimitationsString, dateToISOString } from '../formik-wrappers';
 import { ISOStringToDate } from './dateUtils';
+import { isValidTidsperiodeString } from './getUttaksdagerSomErFridager';
 import { getFørsteMuligeUttaksdag, getSisteMuligeUttaksdag } from './uttaksdatoerUtils';
 import { uttaksplanDatoavgrensninger } from './uttaksplanDatoavgrensninger';
 import { getFørsteUttaksdag2UkerFørFødsel, getSisteUttaksdag6UkerEtterFødsel } from './wlbUtils';

@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, HStack } from '@navikt/ds-react';
 
 import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
-import { isUttaksperiode } from '../../../../utils/periodeUtils';
+import { erUttaksperiode } from '../../../../utils/periodeUtils';
 import {
     erUttaksplanperiodeSamtidigUttak,
     erUttaksplanperiodeTapteDager,
@@ -26,7 +26,7 @@ export const SkalJobbeContent = ({ uttaksplanperioder }: Props) => {
     const erHull = erUttaksplanperiodeTapteDager(uttaksplanperioder);
     const erPrematuruker = harUttaksplanperiodePrematuruker(uttaksplanperioder);
     const skalJobbeIPermisjonsperioden = uttaksplanperioder.some(
-        (p) => isUttaksperiode(p) && erVanligUttakPeriode(p) && p.gradering !== undefined,
+        (p) => erUttaksperiode(p) && erVanligUttakPeriode(p) && p.gradering !== undefined,
     );
 
     if (

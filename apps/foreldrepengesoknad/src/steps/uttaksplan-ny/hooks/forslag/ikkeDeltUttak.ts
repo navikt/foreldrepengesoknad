@@ -4,9 +4,9 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { UttaksdagenString, getTidsperiodeString } from '@navikt/fp-utils';
+import { UttaksdagenString } from '@navikt/fp-utils';
 
-import { sorterPerioder } from './deltUttak';
+import { getTidsperiodeString, sorterPerioder } from './deltUttak';
 
 const ikkeDeltUttakAdopsjonFarMedmor = (
     famDato: string,

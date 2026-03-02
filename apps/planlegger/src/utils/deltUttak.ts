@@ -1,7 +1,7 @@
 import { PlanForslag } from 'types/PlanForslag';
 
-import { KontoDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { UttaksdagenString, getTidsperiodeString } from '@navikt/fp-utils';
+import { KontoDto, Tidsperiode, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttaksdagenString, erUttaksdag } from '@navikt/fp-utils';
 
 import { sorterPerioder } from './uttakUtils';
 
@@ -109,5 +109,16 @@ export const deltUttak = ({
     return {
         søker1: [...morsPerioder].sort(sorterPerioder),
         søker2: [...farsPerioder].sort(sorterPerioder),
+    };
+};
+
+// TODO (TOR) Dette ser ut som noko me ikkje vil gjera. Her er ein vel i ein feilsituasjon?
+export const getTidsperiodeString = (fom: string, uttaksdager: number): Tidsperiode => {
+    if (!erUttaksdag(fom)) {
+        throw new Error('FOM er ikke en uttaksdag');
+    }
+    return {
+        fom,
+        tom: UttaksdagenString.denne(fom).getDatoAntallUttaksdagerSenere(uttaksdager - 1),
     };
 };

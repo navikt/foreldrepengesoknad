@@ -55,30 +55,35 @@ describe('UttaksplanListe', () => {
                 forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 tom: '2025-05-08',
+                flerbarnsdager: false,
             },
             {
                 fom: '2025-05-09',
                 forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
                 tom: '2025-06-27',
+                flerbarnsdager: false,
             },
             {
                 fom: '2025-06-30',
                 tom: '2025-08-28',
                 forelder: 'MOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+                flerbarnsdager: false,
             },
             {
                 fom: '2025-08-29',
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
                 tom: '2025-12-11',
+                flerbarnsdager: false,
             },
             {
                 fom: '2025-12-12',
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 tom: '2026-03-26',
+                flerbarnsdager: false,
             },
         ]);
     });
@@ -146,12 +151,14 @@ describe('UttaksplanListe', () => {
                 forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 tom: '2025-05-08',
+                flerbarnsdager: false,
             },
             {
                 fom: '2025-05-09',
                 forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
                 tom: '2025-06-27',
+                flerbarnsdager: false,
             },
             {
                 fom: '2025-06-30',
@@ -165,6 +172,7 @@ describe('UttaksplanListe', () => {
                 kontoType: 'FELLESPERIODE',
                 samtidigUttak: 50,
                 tom: '2025-08-28',
+                flerbarnsdager: false,
             },
             {
                 fom: '2025-06-30',
@@ -179,18 +187,21 @@ describe('UttaksplanListe', () => {
                 morsAktivitet: undefined,
                 samtidigUttak: 50,
                 tom: '2025-08-28',
+                flerbarnsdager: false,
             },
             {
                 fom: '2025-08-29',
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
                 tom: '2025-12-11',
+                flerbarnsdager: false,
             },
             {
                 fom: '2025-12-12',
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 tom: '2026-03-26',
+                flerbarnsdager: false,
             },
         ]);
     });
@@ -220,24 +231,28 @@ describe('UttaksplanListe', () => {
                 forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 tom: '2025-05-08',
+                flerbarnsdager: false,
             },
             {
                 fom: '2025-05-09',
                 forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
                 tom: '2025-08-21',
+                flerbarnsdager: false,
             },
             {
                 fom: '2025-08-22',
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
                 tom: '2025-12-11',
+                flerbarnsdager: false,
             },
             {
                 fom: '2025-12-12',
                 forelder: 'MOR',
                 tom: '2026-03-26',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+                flerbarnsdager: false,
             },
         ]);
     });
@@ -309,18 +324,21 @@ describe('UttaksplanListe', () => {
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2025-04-18',
                 tom: '2025-05-08',
+                flerbarnsdager: false,
             },
             {
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
                 fom: '2025-08-22',
                 tom: '2025-12-11',
+                flerbarnsdager: false,
             },
             {
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 fom: '2025-12-12',
                 tom: '2026-03-26',
+                flerbarnsdager: false,
             },
         ]);
     });
@@ -515,18 +533,21 @@ describe('UttaksplanListe', () => {
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2025-04-18',
                 tom: '2025-05-08',
+                flerbarnsdager: false,
             },
             {
                 fom: '2025-05-09',
                 forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
                 tom: '2025-08-21',
+                flerbarnsdager: false,
             },
             {
                 fom: '2025-08-22',
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 tom: '2025-12-04',
+                flerbarnsdager: false,
             },
         ]);
     });
@@ -549,18 +570,21 @@ describe('UttaksplanListe', () => {
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2025-04-18',
                 tom: '2025-05-08',
+                flerbarnsdager: false,
             },
             {
                 fom: '2025-05-09',
                 forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
                 tom: '2025-08-21',
+                flerbarnsdager: false,
             },
             {
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
                 fom: '2025-08-22',
                 tom: '2025-12-11',
+                flerbarnsdager: false,
             },
         ]);
     });
@@ -621,12 +645,14 @@ describe('UttaksplanListe', () => {
                 tom: '2025-08-25',
                 forelder: 'MOR',
                 utsettelseÅrsak: 'BARN_INNLAGT',
+                flerbarnsdager: false,
             },
             {
                 fom: '2025-08-26',
                 tom: '2025-08-28',
                 forelder: 'MOR',
                 utsettelseÅrsak: 'SØKER_SYKDOM',
+                flerbarnsdager: false,
             },
         ]);
     });

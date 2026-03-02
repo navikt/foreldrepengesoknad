@@ -1,40 +1,9 @@
-import dayjs from 'dayjs';
-
-import { AnnenForelder, Periode } from '@navikt/fp-common';
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { AnnenForelder } from '@navikt/fp-common';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { UttaksdagenString } from '@navikt/fp-utils';
+import { Uttaksperioden } from '@navikt/fp-utils';
+import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan-ny';
 
 import { perioderSomKreverVedleggNy } from './manglendeVedleggUtils';
-
-export const erUttaksperiode = (periode: UttakPeriode_fpoversikt) => {
-    return !periode.overføringÅrsak && !periode.oppholdÅrsak && !periode.utsettelseÅrsak;
-};
-
-export const erIkkeEøsPeriode = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-): periode is UttakPeriode_fpoversikt => {
-    return !('trekkdager' in periode);
-};
-
-export const getSamtidigUttaksprosent = (
-    gradertPeriode: boolean | undefined,
-    stillingsprosent: string | undefined,
-): string => {
-    return gradertPeriode && stillingsprosent ? (100 - Number.parseInt(stillingsprosent, 10)).toString() : '100';
-};
-
-export const getRelevantePerioder = (
-    perioder: Periode[],
-    endringssøknadPerioder: Periode[] | undefined,
-    erEndringssøknad: boolean,
-) => {
-    if (erEndringssøknad && endringssøknadPerioder !== undefined) {
-        return endringssøknadPerioder;
-    }
-
-    return perioder;
-};
 
 export const prettifyProsent = (nbr: number | undefined): number | undefined => {
     if (nbr === undefined) {
@@ -70,8 +39,8 @@ export const isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel = (
     periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
 ): boolean => {
     return (
-        erUttaksperiode(periode) &&
-        !('trekkdager' in periode) &&
+        Uttaksperioden.erUttaksperiode(periode) &&
+        Uttaksperioden.erIkkeEøsPeriode(periode) &&
         periode.forelder === 'FAR_MEDMOR' &&
         periode.kontoType === 'FEDREKVOTE' &&
         periode.morsAktivitet === undefined &&
@@ -87,41 +56,12 @@ export const isUttaksperiodeFarMedmorPgaFødsel = (
 ): boolean => {
     return (
         isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel(periode) &&
-        starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(periode.fom, familiehendelsesdato, termindato)
+        UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+            periode,
+            familiehendelsesdato,
+            termindato,
+        )
     );
-};
-
-export const starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel = (
-    fom: string,
-    familiehendelsesdato: string,
-    termindato: string | undefined,
-) => {
-    return (
-        starterTidsperiodeEtter2UkerFørFødsel(fom, familiehendelsesdato, termindato) &&
-        dayjs(fom).isSameOrBefore(getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato), 'day')
-    );
-};
-
-const getSisteUttaksdag6UkerEtterFødsel = (familiehendelsesdato: string): string => {
-    return UttaksdagenString.denneEllerNeste(familiehendelsesdato).getDatoAntallUttaksdagerSenere(30);
-};
-
-const starterTidsperiodeEtter2UkerFørFødsel = (
-    fom: string,
-    familiehendelsesdato: string,
-    termindato: string | undefined,
-): boolean => {
-    const førsteUttaksdagToUkerFørFødsel = getFørsteUttaksdag2UkerFørFødsel(familiehendelsesdato, termindato);
-    return dayjs(fom).isSameOrAfter(førsteUttaksdagToUkerFørFødsel, 'day');
-};
-
-const getFørsteUttaksdag2UkerFørFødsel = (familiehendelsesdato: string, termindato: string | undefined): string => {
-    const terminEllerFamHendelsesdatoMinusToUker =
-        termindato === undefined
-            ? dayjs(familiehendelsesdato).subtract(14, 'day')
-            : dayjs(termindato).subtract(14, 'day');
-    const datoÅRegneFra = dayjs.min(terminEllerFamHendelsesdatoMinusToUker, dayjs(familiehendelsesdato));
-    return UttaksdagenString.denneEllerNeste(datoÅRegneFra.format(ISO_DATE_FORMAT)).getDato();
 };
 
 export const kreverUttaksplanVedleggNy = (

@@ -12,13 +12,12 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { useMedia } from '@navikt/fp-utils';
+import { Uttaksperioden, useMedia } from '@navikt/fp-utils';
 import {
     KvoteOppsummering,
     UttaksplanDataProvider,
     UttaksplanKalender,
     UttaksplanListe,
-    erEøsUttakPeriode,
 } from '@navikt/fp-uttaksplan-ny';
 
 import { hentUttaksKontoOptions } from '../../api/queries';
@@ -161,7 +160,7 @@ const leggTilForelderOmMangler = (
     forelder: BrukerRolleSak_fpoversikt,
 ) => {
     return perioder.map((periode) => {
-        if (erEøsUttakPeriode(periode) || periode.forelder !== undefined) {
+        if (Uttaksperioden.erEøsPeriode(periode) || periode.forelder !== undefined) {
             return periode;
         }
         return {
