@@ -12,7 +12,7 @@ import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Attachment, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { Attachment, FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { Uttaksperioden, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -66,6 +66,7 @@ type Props = {
     erEndringssøknad: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
+    foreldrepengerSaker?: FpSak_fpoversikt[];
 };
 
 export const ManglendeVedleggNy = ({
@@ -73,10 +74,10 @@ export const ManglendeVedleggNy = ({
     avbrytSøknad,
     søkerInfo,
     erEndringssøknad,
+    foreldrepengerSaker,
 }: Props) => {
     const intl = useIntl();
     const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad);
-    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad);
 
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_NY));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -85,8 +86,13 @@ export const ManglendeVedleggNy = ({
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG) || ({} as VedleggDataType);
     const arbeidsforholdOgInntekt = useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER);
+    const eksisterendeSaksnummer = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const saveVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
     const familiehendelsedato = getFamiliehendelsedato(barn);
+
+    const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
+
+    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
 
     const erFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const uttaksplanUtenAnnenPartsPerioder = uttaksplan?.filter(
