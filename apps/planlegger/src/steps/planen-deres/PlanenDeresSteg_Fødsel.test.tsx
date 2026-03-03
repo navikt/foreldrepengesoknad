@@ -637,4 +637,40 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(within(sliderContainer).getByText('10. juni 2024 – 6. des. 2024')).toBeInTheDocument();
         expect(within(sliderContainer).getByText('9. des. 2024 – 16. mai 2025')).toBeInTheDocument();
     });
+
+    it('Skal vise kort datoformat (dd.mm.yy) innenfor mobil-container (aksel-responsive__below--sm)', async () => {
+        render(<MorOgFarBeggeHarRett />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        const mobilContainere = document.querySelectorAll('.aksel-responsive__below--sm');
+
+        const kortDatoerPeriode1 = Array.from(mobilContainere).some((el) =>
+            el.textContent?.includes('10.06.24 – 11.10.24'),
+        );
+        const kortDatoerPeriode2 = Array.from(mobilContainere).some((el) =>
+            el.textContent?.includes('14.10.24 – 16.05.25'),
+        );
+
+        expect(kortDatoerPeriode1).toBe(true);
+        expect(kortDatoerPeriode2).toBe(true);
+    });
+
+    it('Skal vise langt datoformat (d. MMM yyyy) innenfor desktop-container (aksel-responsive__above--sm)', async () => {
+        render(<MorOgFarBeggeHarRett />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        const desktopContainere = document.querySelectorAll('.aksel-responsive__above--sm');
+
+        const langtDatoerPeriode1 = Array.from(desktopContainere).some((el) =>
+            el.textContent?.includes('10. juni 2024 – 11. okt. 2024'),
+        );
+        const langtDatoerPeriode2 = Array.from(desktopContainere).some((el) =>
+            el.textContent?.includes('14. okt. 2024 – 16. mai 2025'),
+        );
+
+        expect(langtDatoerPeriode1).toBe(true);
+        expect(langtDatoerPeriode2).toBe(true);
+    });
 });
