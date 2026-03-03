@@ -29,10 +29,10 @@ export type PeriodeRequest_fpoversikt = {
 export type PeriodeMedAktivitetskravType_fpoversikt = 'UTTAK' | 'UTSETTELSE';
 
 export type DokumentDto_fpoversikt = {
-    dokumentId?: string;
-    journalpostId?: string;
+    dokumentId: string;
+    journalpostId: string;
     mottatt: string;
-    saksnummer?: string;
+    saksnummer: string;
     tittel?: string;
     type: JournalpostType_fpoversikt;
 };
@@ -292,9 +292,9 @@ export type UttakOppholdÅrsak_fpoversikt =
     | 'FORELDREPENGER_ANNEN_FORELDER';
 
 export type UttakPeriode_fpoversikt = {
-    flerbarnsdager?: boolean;
+    flerbarnsdager: boolean;
     fom: string;
-    forelder?: BrukerRolleSak_fpoversikt;
+    forelder: BrukerRolleSak_fpoversikt;
     gradering?: Gradering_fpoversikt;
     kontoType?: no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType;
     morsAktivitet?: no_nav_foreldrepenger_kontrakter_felles_kodeverk_MorsAktivitet;

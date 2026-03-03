@@ -1,8 +1,7 @@
 import dayjs from 'dayjs';
 
-import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { UttaksplanperiodeMedKunTapteDager } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 
 export const useAntallMånederIKalenderData = (
@@ -53,10 +52,7 @@ export const useAntallMånederIKalenderData = (
     };
 };
 
-const getFørsteDatoIKalender = (
-    familiehendelsedato: string,
-    saksperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-) => {
+const getFørsteDatoIKalender = (familiehendelsedato: string, saksperioder: UttaksplanperiodeMedKunTapteDager[]) => {
     const treUkerFørFamiliehendelse = dayjs(familiehendelsedato).subtract(3, 'weeks');
     const førsteFomIUttaksplan = saksperioder.at(0)?.fom;
 
@@ -67,7 +63,7 @@ const getFørsteDatoIKalender = (
 
 const getSisteDatoIKalender = (
     familiehendelsedato: string,
-    saksperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    saksperioder: UttaksplanperiodeMedKunTapteDager[],
     barnehagestartdato?: string,
 ) => {
     const sisteTom = saksperioder.at(-1)?.tom;

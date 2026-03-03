@@ -303,7 +303,7 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
 
         const index = perioderÅBruke.findIndex((p) => {
             if (p.fom === periode.fom && p.tom === periode.tom) return false;
-            return TidsperiodenString(p).inneholderDato(periode.tom);
+            return TidsperiodenString.forPeriode(p).inneholderDato(periode.tom);
         });
         const overlappendePeriode = index !== -1 ? perioderÅBruke.splice(index, 1)[0] : undefined;
 

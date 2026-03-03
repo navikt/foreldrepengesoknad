@@ -19,13 +19,14 @@ import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { loggUmamiEvent } from '@navikt/fp-metrics';
 import {
     Barn,
+    FpSak_fpoversikt,
     PersonMedArbeidsforholdDto_fpoversikt,
     RettighetType_fpoversikt,
     isAdoptertBarn,
     isFødtBarn,
 } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
-import { getFamiliehendelsedato } from '@navikt/fp-utils';
+import { Uttaksperioden, getFamiliehendelsedato } from '@navikt/fp-utils';
 import {
     FjernAltIUttaksplanModal,
     HvaErMulig,
@@ -46,9 +47,15 @@ interface Props {
     søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
+    foreldrepengerSaker?: FpSak_fpoversikt[];
 }
 
-export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
+export const UttaksplanStegNy = ({
+    søkerInfo,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    foreldrepengerSaker,
+}: Props) => {
     const intl = useIntl();
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
@@ -57,13 +64,16 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN_NY);
+    const eksisterendeSaksnummer = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN_NY);
+
+    const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
 
     const [feilmelding, setFeilmelding] = useState<ReactNode | undefined>();
 
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
 
-    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad);
+    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
@@ -103,7 +113,12 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
 
     const valgteStønadskontoer = tilgjengeligeStønadskontoerQuery.data;
 
-    const nyttUttaksplanForslag = useUttaksplanForslag(valgteStønadskontoer);
+    // Filtrerer ut periodane til annen part midlertidig fram til me får på plass lagring av desse periodane
+    const nyttUttaksplanForslag = useUttaksplanForslag(valgteStønadskontoer).filter(
+        (periode) =>
+            Uttaksperioden.erIkkeEøsPeriode(periode) &&
+            periode.forelder === (erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
+    );
 
     if (!valgteStønadskontoer || annenPartVedtakQuery.isLoading) {
         return null;
@@ -128,7 +143,7 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig}>
                 {isLocalhostOrDev() && (
-                    <Alert variant="warning">
+                    <Alert variant="info">
                         <BodyLong>
                             <FormattedMessage id="uttaksplan.AnnenPartPerioderInfomelding" />
                         </BodyLong>
@@ -151,14 +166,15 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
                     erPeriodeneTilAnnenPartLåst={!!tidligereUttaksperioder}
                     aktiveArbeidsforhold={aktiveArbeidsforhold}
                 >
-                    {feilmelding && <Alert variant="error">{feilmelding}</Alert>}
+                    <HvaErMulig erFarOgFar={false} loggExpansionCardOpen={loggExpansionCardOpen} />
+
+                    <UforutsetteEndringer erFarOgFar={false} loggExpansionCardOpen={loggExpansionCardOpen} />
+
                     <div ref={kvoteOppsummeringRef}>
                         <KvoteOppsummering erInnsyn={false} visStatusIkoner />
                     </div>
 
-                    <HvaErMulig erFarOgFar={false} loggExpansionCardOpen={loggExpansionCardOpen} />
-
-                    <UforutsetteEndringer erFarOgFar={false} loggExpansionCardOpen={loggExpansionCardOpen} />
+                    {feilmelding && <Alert variant="error">{feilmelding}</Alert>}
 
                     <UttaksplanRedigeringProvider
                         oppdaterUttaksplan={oppdaterUttaksplan}
@@ -209,6 +225,7 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
                         setFeilmelding={setFeilmelding}
                         scrollToKvoteOppsummering={scrollToKvoteOppsummering}
                         defaultUttaksperioder={defaultUttaksperioder}
+                        eksisterendeSak={eksisterendeSak}
                     />
                 </UttaksplanDataProvider>
             </Step>

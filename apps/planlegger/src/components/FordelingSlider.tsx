@@ -1,7 +1,7 @@
 import { PlusIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Box, Button, HStack, Heading, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Button, HStack, Heading, Hide, Show, VStack } from '@navikt/ds-react';
 
 import { Slider } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, periodFormat } from '@navikt/fp-utils';
@@ -40,21 +40,41 @@ export const FordelingSlider = ({
             {uttaksdata && (
                 <HStack width="full" justify="space-between" paddingBlock="space-0 space-16">
                     <Box style={{ width: '50%', wordWrap: 'break-word' }}>
-                        <BodyShort>
-                            {periodFormat(uttaksdata.startdatoPeriode1, uttaksdata.sluttdatoPeriode1, intl, {
-                                separator: '–',
-                                useShortMonth: true,
-                            })}
-                        </BodyShort>
-                    </Box>
-                    {uttaksdata.startdatoPeriode2 && uttaksdata.sluttdatoPeriode2 && (
-                        <Box style={{ width: '50%', wordWrap: 'break-word', textAlign: 'right' }}>
+                        <Show above="sm">
                             <BodyShort>
-                                {periodFormat(uttaksdata.startdatoPeriode2, uttaksdata.sluttdatoPeriode2, intl, {
+                                {periodFormat(uttaksdata.startdatoPeriode1, uttaksdata.sluttdatoPeriode1, intl, {
                                     separator: '–',
                                     useShortMonth: true,
                                 })}
                             </BodyShort>
+                        </Show>
+                        <Hide above="sm">
+                            <BodyShort>
+                                {periodFormat(uttaksdata.startdatoPeriode1, uttaksdata.sluttdatoPeriode1, intl, {
+                                    separator: '–',
+                                    useShortYear: true,
+                                })}
+                            </BodyShort>
+                        </Hide>
+                    </Box>
+                    {uttaksdata.startdatoPeriode2 && uttaksdata.sluttdatoPeriode2 && (
+                        <Box style={{ width: '50%', wordWrap: 'break-word', textAlign: 'right' }}>
+                            <Show above="sm">
+                                <BodyShort>
+                                    {periodFormat(uttaksdata.startdatoPeriode2, uttaksdata.sluttdatoPeriode2, intl, {
+                                        separator: '–',
+                                        useShortMonth: true,
+                                    })}
+                                </BodyShort>
+                            </Show>
+                            <Hide above="sm">
+                                <BodyShort>
+                                    {periodFormat(uttaksdata.startdatoPeriode2, uttaksdata.sluttdatoPeriode2, intl, {
+                                        separator: '–',
+                                        useShortYear: true,
+                                    })}
+                                </BodyShort>
+                            </Hide>
                         </Box>
                     )}
                 </HStack>

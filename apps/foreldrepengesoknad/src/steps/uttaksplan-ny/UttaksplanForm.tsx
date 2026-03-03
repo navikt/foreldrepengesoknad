@@ -8,7 +8,6 @@ import { VedleggDataType } from 'types/VedleggDataType';
 import { getErMorUfør } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
-import { erIkkeEøsPeriode } from 'utils/uttaksplanInfoUtils';
 
 import { Alert, Radio, VStack } from '@navikt/ds-react';
 
@@ -17,6 +16,7 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import {
     Barn,
+    FpSak_fpoversikt,
     PersonMedArbeidsforholdDto_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
@@ -24,7 +24,7 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-types';
-import { UttaksdagenString } from '@navikt/fp-utils';
+import { UttaksdagenString, Uttaksperioden } from '@navikt/fp-utils';
 import { useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan-ny';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
@@ -54,6 +54,7 @@ interface UttaksplanFormProps {
     avbrytSøknad: () => void;
     setFeilmelding: (melding: ReactNode) => void;
     scrollToKvoteOppsummering: () => void;
+    eksisterendeSak: FpSak_fpoversikt | undefined;
 }
 
 export const UttaksplanForm = ({
@@ -63,6 +64,7 @@ export const UttaksplanForm = ({
     avbrytSøknad,
     setFeilmelding,
     scrollToKvoteOppsummering,
+    eksisterendeSak,
 }: UttaksplanFormProps) => {
     const intl = useIntl();
 
@@ -81,7 +83,12 @@ export const UttaksplanForm = ({
 
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
 
-    const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad);
+    const navigator = useFpNavigator(
+        søkerInfo.arbeidsforhold,
+        mellomlagreSøknadOgNaviger,
+        erEndringssøknad,
+        eksisterendeSak,
+    );
 
     const formMethods = useForm<FormValues>({
         defaultValues: {
@@ -238,10 +245,10 @@ const AutomatiskJusteringInfotekst = ({ harSvartJaPåAutoJustering }: { harSvart
     const harSvartJaOgEndretPeriodenPåTermin =
         harSvartJaOgHarEnPeriodeRundtFødsel &&
         dayjs(perioderMedUttakRundtFødsel[0]!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
-        ((erUttaksperiode(perioderMedUttakRundtFødsel[0]!) &&
+        ((Uttaksperioden.erUttaksperiode(perioderMedUttakRundtFødsel[0]!) &&
             (perioderMedUttakRundtFødsel[0]!.kontoType !== 'FEDREKVOTE' ||
-                !erSamtidigUttak(perioderMedUttakRundtFødsel[0]!))) ||
-            erOverføringsperiode(perioderMedUttakRundtFødsel[0]!));
+                !Uttaksperioden.erSamtidigUttak(perioderMedUttakRundtFødsel[0]!))) ||
+            Uttaksperioden.erOverføringsperiode(perioderMedUttakRundtFødsel[0]!));
 
     if (harSvartJaOgEndretPeriodenPåTermin) {
         return (
@@ -254,9 +261,9 @@ const AutomatiskJusteringInfotekst = ({ harSvartJaPåAutoJustering }: { harSvart
     const harSvartJaOgEndretPeriodenTilØnskerFlerbarnsdager =
         harSvartJaOgHarEnPeriodeRundtFødsel &&
         dayjs(perioderMedUttakRundtFødsel[0]!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
-        erUttaksperiode(perioderMedUttakRundtFødsel[0]!) &&
+        Uttaksperioden.erUttaksperiode(perioderMedUttakRundtFødsel[0]!) &&
         perioderMedUttakRundtFødsel[0]!.kontoType === 'FEDREKVOTE' &&
-        erFlerbarnsdager(perioderMedUttakRundtFødsel[0]!);
+        Uttaksperioden.erFlerbarnsdager(perioderMedUttakRundtFødsel[0]!);
 
     if (harSvartJaOgEndretPeriodenTilØnskerFlerbarnsdager) {
         return (
@@ -267,22 +274,6 @@ const AutomatiskJusteringInfotekst = ({ harSvartJaPåAutoJustering }: { harSvart
     }
 
     return null;
-};
-
-const erUttaksperiode = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt): boolean => {
-    return !('trekkdager' in periode) && !periode.oppholdÅrsak && !periode.overføringÅrsak && !periode.utsettelseÅrsak;
-};
-
-const erOverføringsperiode = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt): boolean => {
-    return !('trekkdager' in periode) && !!periode.overføringÅrsak;
-};
-
-const erSamtidigUttak = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt): boolean => {
-    return !('trekkdager' in periode) && !!periode.samtidigUttak;
-};
-
-const erFlerbarnsdager = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt): boolean => {
-    return !('trekkdager' in periode) && !!periode.flerbarnsdager;
 };
 
 const finnPerioderRundtFødsel = (
@@ -333,7 +324,7 @@ const harPeriodeDerMorsAktivitetIkkeErValgt = (
 ) => {
     return perioder?.some(
         (periode) =>
-            erIkkeEøsPeriode(periode) &&
+            Uttaksperioden.erIkkeEøsPeriode(periode) &&
             periode.forelder === 'FAR_MEDMOR' &&
             periode.kontoType === 'FELLESPERIODE' &&
             periode.flerbarnsdager === undefined &&

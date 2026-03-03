@@ -81,7 +81,7 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
 
-    const { ref, scrollToBottom } = useScrollBehaviour();
+    const { ref } = useScrollBehaviour();
 
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
@@ -129,7 +129,6 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                                 antallDagerSøker1={antallDagerSøker1}
                                 onAntallDagerSøker1Change={(value) => {
                                     formMethods.setValue('antallDagerSøker1', value);
-                                    scrollToBottom();
                                 }}
                                 antallUkerOgDagerFellesperiode={antallUkerOgDagerFellesperiode}
                                 fornavnSøker1={fornavnSøker1}

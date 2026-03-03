@@ -1,19 +1,13 @@
-import dayjs from 'dayjs';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-
 import { Familiesituasjon, KontoTypeUttak } from '@navikt/fp-types';
-import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { ForeldreInfo } from '../types/ForeldreInfo';
-
-dayjs.extend(isSameOrBefore);
-dayjs.extend(isSameOrAfter);
+import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
 
 export const useHentGyldigeKontotyper = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     harValgtSamtidigUttak: boolean,
+    ønskerFlerbarnsdager: boolean | undefined,
 ) => {
     const { foreldreInfo, familiehendelsedato, familiesituasjon, valgtStønadskonto } = useUttaksplanData();
 
@@ -40,6 +34,7 @@ export const useHentGyldigeKontotyper = (
                     familiesituasjon,
                     valgtePerioder,
                     harValgtSamtidigUttak,
+                    ønskerFlerbarnsdager,
                 ),
             ),
     };
@@ -62,7 +57,10 @@ const erGyldigForMor = (
         return false;
     }
 
-    if (familiesituasjon === 'adopsjon' && erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+    if (
+        familiesituasjon === 'adopsjon' &&
+        UttaksperiodeValidatorer.erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)
+    ) {
         return false;
     }
 
@@ -70,12 +68,17 @@ const erGyldigForMor = (
         return false;
     }
 
-    if (erNoenPerioderFørOgNoenLikEllerEtterFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+    if (
+        UttaksperiodeValidatorer.erNoenPerioderFørOgNoenLikEllerEtterFamiliehendelsesdato(
+            valgtePerioder,
+            familiehendelsedato,
+        )
+    ) {
         return false;
     }
 
     if (konto === 'MØDREKVOTE') {
-        if (erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+        if (UttaksperiodeValidatorer.erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
             return false;
         }
     }
@@ -85,7 +88,13 @@ const erGyldigForMor = (
             return false;
         }
 
-        if (!erAdopsjon && erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+        if (
+            !erAdopsjon &&
+            UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
+                valgtePerioder,
+                familiehendelsedato,
+            )
+        ) {
             return false;
         }
     }
@@ -93,30 +102,56 @@ const erGyldigForMor = (
     if (konto === 'FORELDREPENGER' && !erAdopsjon) {
         if (
             !harKunEnPartRett &&
-            erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(valgtePerioder, familiehendelsedato)
+            UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
+                valgtePerioder,
+                familiehendelsedato,
+            )
         ) {
             return false;
         }
 
-        if (harKunEnPartRett && erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+        if (
+            harKunEnPartRett &&
+            UttaksperiodeValidatorer.erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)
+        ) {
             return false;
         }
     }
 
     if (konto === 'FORELDREPENGER_FØR_FØDSEL') {
-        if (erNoenPerioderFørTreUkerFørFamDatoEllerEtterLikFamDato(valgtePerioder, familiehendelsedato)) {
+        if (
+            UttaksperiodeValidatorer.erNoenPerioderFørTreUkerFørFamDatoEllerEtterLikFamDato(
+                valgtePerioder,
+                familiehendelsedato,
+            )
+        ) {
             return false;
         }
     }
 
     if (konto === 'FELLESPERIODE' && !erAdopsjon) {
-        if (erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(valgtePerioder, familiehendelsedato)) {
+        if (
+            UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
+                valgtePerioder,
+                familiehendelsedato,
+            )
+        ) {
             return false;
         }
-        if (erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(valgtePerioder, familiehendelsedato)) {
+        if (
+            UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(
+                valgtePerioder,
+                familiehendelsedato,
+            )
+        ) {
             return false;
         }
-        if (erNoenPerioderMerEnn60DagerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+        if (
+            UttaksperiodeValidatorer.erNoenPerioderMerEnn60DagerFørFamiliehendelsesdato(
+                valgtePerioder,
+                familiehendelsedato,
+            )
+        ) {
             return false;
         }
     }
@@ -131,13 +166,17 @@ const erGyldigForFarMedmor = (
     familiesituasjon: Familiesituasjon,
     valgtePerioder: Array<{ fom: string; tom: string }>,
     harValgtSamtidigUttak: boolean,
+    ønskerFlerbarnsdager: boolean | undefined,
 ) => {
     const { søker, rettighetType } = foreldreInfo;
     if (søker === 'MOR' && (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT')) {
         return false;
     }
 
-    if (familiesituasjon === 'adopsjon' && erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+    if (
+        familiesituasjon === 'adopsjon' &&
+        UttaksperiodeValidatorer.erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)
+    ) {
         return false;
     }
 
@@ -149,149 +188,81 @@ const erGyldigForFarMedmor = (
         if (harValgtSamtidigUttak) {
             return false;
         }
-        if (erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(valgtePerioder, familiehendelsedato)) {
+        if (
+            UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(
+                valgtePerioder,
+                familiehendelsedato,
+            )
+        ) {
             return false;
         }
-        if (erNoenPerioderFørToUkerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+        if (
+            UttaksperiodeValidatorer.erNoenPerioderFørToUkerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)
+        ) {
             return false;
         }
     }
 
     if (konto === 'AKTIVITETSFRI_KVOTE') {
-        if (erNoenPerioderFørToUkerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+        if (
+            UttaksperiodeValidatorer.erNoenPerioderFørToUkerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)
+        ) {
             return false;
         }
     }
 
     if (konto === 'FEDREKVOTE') {
-        if (erNoenPerioderFørToUkerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+        if (
+            UttaksperiodeValidatorer.erNoenPerioderFørToUkerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)
+        ) {
             return false;
         }
     }
 
     if (konto === 'FORELDREPENGER') {
-        if (erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+        if (UttaksperiodeValidatorer.erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
             return false;
         }
     }
 
     if (konto === 'FELLESPERIODE') {
-        if (erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(valgtePerioder, familiehendelsedato)) {
+        if (ønskerFlerbarnsdager) {
+            return true;
+        }
+
+        if (
+            UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(
+                valgtePerioder,
+                familiehendelsedato,
+            )
+        ) {
             return false;
         }
-        if (erNoenPerioderMerEnn60DagerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+        if (
+            UttaksperiodeValidatorer.erNoenPerioderMerEnn60DagerFørFamiliehendelsesdato(
+                valgtePerioder,
+                familiehendelsedato,
+            )
+        ) {
             return false;
         }
 
         if (
-            erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(valgtePerioder, familiehendelsedato) &&
+            UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
+                valgtePerioder,
+                familiehendelsedato,
+            ) &&
             harValgtSamtidigUttak
         ) {
             return false;
         }
 
-        if (erNoenPerioderFørToUkerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)) {
+        if (
+            UttaksperiodeValidatorer.erNoenPerioderFørToUkerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)
+        ) {
             return false;
         }
     }
 
     return true;
-};
-
-// TODO (TOR) Vurder å flytta funksjonane under til periodeUtils
-
-const erNoenPerioderFørFamiliehendelsesdato = (
-    valgtePerioder: Array<{ fom: string; tom: string }>,
-    familiehendelsedato: string,
-) => valgtePerioder.some((p) => dayjs(p.fom).isBefore(familiehendelsedato));
-
-const erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato = (
-    valgtePerioder: Array<{ fom: string; tom: string }>,
-    familiehendelsedato: string,
-) =>
-    valgtePerioder.some((p) =>
-        dayjs(p.fom).isBefore(
-            UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
-        ),
-    );
-
-const erNoenPerioderLikEllerEtterFamiliehendelsesdato = (
-    valgtePerioder: Array<{ fom: string; tom: string }>,
-    familiehendelsedato: string,
-) => valgtePerioder.some((p) => dayjs(p.tom).isSameOrAfter(familiehendelsedato));
-
-const erNoenPerioderFørOgNoenLikEllerEtterFamiliehendelsesdato = (
-    valgtePerioder: Array<{ fom: string; tom: string }>,
-    familiehendelsedato: string,
-) =>
-    erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato) &&
-    erNoenPerioderLikEllerEtterFamiliehendelsesdato(valgtePerioder, familiehendelsedato);
-
-const erNoenPerioderFørTreUkerFørFamDatoEllerEtterLikFamDato = (
-    valgtePerioder: Array<{ fom: string; tom: string }>,
-    familiehendelsedato: string,
-) => {
-    const førsteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(15);
-    const sisteDag = UttaksdagenString.forrige(familiehendelsedato).getDato();
-
-    return valgtePerioder.some((p) => dayjs(p.tom).isAfter(sisteDag) || dayjs(p.fom).isBefore(førsteDag));
-};
-
-const erNoenPerioderFørToUkerFørFamiliehendelsesdato = (
-    valgtePerioder: Array<{ fom: string; tom: string }>,
-    familiehendelsedato: string,
-) =>
-    valgtePerioder.some((periode) =>
-        dayjs(periode.fom).isBefore(
-            UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(10),
-        ),
-    );
-const erNoenPerioderMerEnn60DagerFørFamiliehendelsesdato = (
-    valgtePerioder: Array<{ fom: string; tom: string }>,
-    familiehendelsedato: string,
-) =>
-    valgtePerioder.some((periode) =>
-        dayjs(periode.fom).isBefore(
-            UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(60),
-        ),
-    );
-
-const erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato = (
-    valgtePerioder: Array<{ fom: string; tom: string }>,
-    familiehendelsedato: string,
-) => {
-    const førsteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(15);
-    const sisteDag = UttaksdagenString.forrige(familiehendelsedato).getDato();
-
-    return valgtePerioder.some((periode) => {
-        const fom = dayjs(periode.fom);
-        const tom = dayjs(periode.tom);
-
-        return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
-    });
-};
-
-const erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato = (
-    valgtePerioder: Array<{ fom: string; tom: string }>,
-    familiehendelsedato: string,
-) => {
-    const førsteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato();
-    const sisteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30);
-
-    return valgtePerioder.some((periode) => {
-        const fom = dayjs(periode.fom);
-        const tom = dayjs(periode.tom);
-
-        return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
-    });
-};
-
-export const erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgSeksUkerEtterFamDato = (
-    valgtePerioder: Array<{ fom: string; tom: string }>,
-    familiehendelsedato: string,
-) => {
-    return (
-        erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(valgtePerioder, familiehendelsedato) ||
-        erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(valgtePerioder, familiehendelsedato)
-    );
 };

@@ -53,8 +53,8 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     const defaultValues = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
         uttakPerioder,
         sammenslåtteValgtePerioder[0]!,
-        erPeriodeneTilAnnenPartLåst,
         søker,
+        erPeriodeneTilAnnenPartLåst,
     );
 
     const formMethods = useForm<LeggTilEllerEndrePeriodeFormFormValues>({
@@ -64,7 +64,20 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     const formSubmitValidator = useFormSubmitValidator<LeggTilEllerEndrePeriodeFormFormValues>();
 
     const resetFormValuesVedEndringAvForelder = (forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {
-        formMethods.reset({ forelder });
+        const erFarMedmorLåst = erPeriodeneTilAnnenPartLåst && søker === 'MOR';
+        const erMorLåst = erPeriodeneTilAnnenPartLåst && søker === 'FAR_MEDMOR';
+
+        if (forelder === 'BEGGE' && (erFarMedmorLåst || erMorLåst)) {
+            const nyeDefaultVerdier = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
+                uttakPerioder,
+                sammenslåtteValgtePerioder[0]!,
+                søker,
+                false,
+            );
+            formMethods.reset({ ...nyeDefaultVerdier, forelder });
+        } else {
+            formMethods.reset({ forelder });
+        }
     };
 
     const uttakPerioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();

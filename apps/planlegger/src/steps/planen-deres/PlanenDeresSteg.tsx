@@ -28,9 +28,15 @@ import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/ut
 import { BodyLong, BodyShort, Box, Heading, InlineMessage, Tabs, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { loggUmamiEvent } from '@navikt/fp-metrics';
-import { Dekningsgrad, HvemPlanleggerType, KontoBeregningResultatDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import {
+    Dekningsgrad,
+    HvemPlanleggerType,
+    KontoBeregningResultatDto,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import { BluePanel, Infobox, StepButtons } from '@navikt/fp-ui';
-import { encodeToBase64, useMedia } from '@navikt/fp-utils';
+import { Uttaksperioden, encodeToBase64, useMedia } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import {
     FjernAltIUttaksplanModal,
@@ -83,8 +89,10 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
 
     const navnPåForeldre = getNavnPåForeldre(hvemPlanlegger, intl);
 
-    const lagreUttaksplanOgOppdaterUrl = (oppdatertUttaksplan: UttakPeriode_fpoversikt[] | undefined) => {
-        lagreUttaksplan(oppdatertUttaksplan);
+    const lagreUttaksplanOgOppdaterUrl = (
+        oppdatertUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
+    ) => {
+        lagreUttaksplan(oppdatertUttaksplan?.filter((p) => Uttaksperioden.erIkkeEøsPeriode(p)));
 
         const contextData = {
             ...completeAppContext,

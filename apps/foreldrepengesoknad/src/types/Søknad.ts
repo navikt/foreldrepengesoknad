@@ -9,8 +9,6 @@ import {
     NæringDto,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 
 export interface Søknad {
@@ -29,7 +27,6 @@ export interface Søknad {
     erEndringssøknad: boolean;
     dekningsgrad: Dekningsgrad;
     uttaksplan: Periode[];
-    uttaksplanNy?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     saksnummer?: string;
     ønskerJustertUttakVedFødsel: boolean | undefined;
     vedlegg: VedleggDataType;

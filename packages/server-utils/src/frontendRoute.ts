@@ -54,7 +54,7 @@ const setupViteMode = (router: Router) => {
         mountId: 'app',
         setCSPHeaders: false,
     });
-    router.get('*splat', async (_, response, next) => {
+    router.get('*splat', async (request, response, next) => {
         const viteModeHtml = response.viteModeHtml;
 
         if (viteModeHtml) {
@@ -63,11 +63,18 @@ const setupViteMode = (router: Router) => {
 
             const appSettingsScript = `<script type="text/json" id="nav:appSettings">{{{APP_SETTINGS}}}</script>`;
 
+            const origin = `${request.protocol}://${request.get('host')}`;
+            const redirectPath = request.originalUrl; // same as window.location.pathname
+            const loginUrl = `${origin}/oauth2/login?redirect=${encodeURIComponent(redirectPath)}`;
+
+            const loggUtKnapp = `<span id="dev-mode" style="bottom: 100px;"><a href="${loginUrl}">Logg ut</a></span>`;
+
             const html = [
                 DECORATOR_HEADER,
                 DECORATOR_HEAD_ASSETS,
                 DECORATOR_SCRIPTS,
                 replaceAppSettings(appSettingsScript),
+                loggUtKnapp,
                 viteModeHtml,
                 DECORATOR_FOOTER,
             ].join('');

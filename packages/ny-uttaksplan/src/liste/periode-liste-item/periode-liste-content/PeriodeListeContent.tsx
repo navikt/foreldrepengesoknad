@@ -8,15 +8,19 @@ import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
 import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
-import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
 import {
-    isOppholdsperiode,
-    isOverføringsperiode,
-    isPeriodeUtenUttak,
-    isPrematuruker,
-    isTapteDager,
-    isUtsettelsesperiode,
-    isUttaksperiode,
+    Uttaksplanperiode,
+    erEøsUttakPeriode,
+    erPeriodeUtenUttakHull,
+    erTapteDagerHull,
+    erVanligUttakPeriode,
+} from '../../../types/UttaksplanPeriode';
+import {
+    erOppholdsperiode,
+    erOverføringsperiode,
+    erPrematuruker,
+    erUtsettelsesperiode,
+    erUttaksperiode,
 } from '../../../utils/periodeUtils';
 import { genererPeriodeKey } from '../../utils/uttaksplanListeUtils';
 import {
@@ -131,7 +135,7 @@ const Periode = ({
     erFarEllerMedmor: boolean;
     inneholderKunEnPeriode: boolean;
 }) => {
-    if (isOppholdsperiode(periode)) {
+    if (erVanligUttakPeriode(periode) && erOppholdsperiode(periode)) {
         return (
             <OppholdsPeriodeContent
                 key={genererPeriodeKey(periode)}
@@ -143,7 +147,7 @@ const Periode = ({
         );
     }
 
-    if (isOverføringsperiode(periode)) {
+    if (erVanligUttakPeriode(periode) && erOverføringsperiode(periode)) {
         return (
             <OverføringsperiodeContent
                 key={genererPeriodeKey(periode)}
@@ -154,25 +158,25 @@ const Periode = ({
         );
     }
 
-    if (isPeriodeUtenUttak(periode) || isTapteDager(periode)) {
+    if (erPeriodeUtenUttakHull(periode) || erTapteDagerHull(periode)) {
         return (
             <PeriodeUtenUttakContent
                 key={genererPeriodeKey(periode)}
                 periode={periode}
-                isHull={isTapteDager(periode)}
+                isHull={erTapteDagerHull(periode)}
             />
         );
     }
 
-    if (isUtsettelsesperiode(periode)) {
+    if (erVanligUttakPeriode(periode) && erUtsettelsesperiode(periode)) {
         return <UtsettelsesPeriodeContent key={genererPeriodeKey(periode)} periode={periode} />;
     }
 
-    if (isPrematuruker(periode)) {
+    if (erPrematuruker(periode)) {
         return <PrematurukerContent key={genererPeriodeKey(periode)} />;
     }
 
-    if (isUttaksperiode(periode) || erEøsUttakPeriode(periode)) {
+    if ((erVanligUttakPeriode(periode) && erUttaksperiode(periode)) || erEøsUttakPeriode(periode)) {
         return (
             <UttaksperiodeContent
                 key={genererPeriodeKey(periode)}

@@ -39,7 +39,11 @@ export type UttaksplanperiodeMedKunTapteDager =
     | TapteDagerHull;
 
 export const erVanligUttakPeriode = (periode: Uttaksplanperiode): periode is UttakPeriode_fpoversikt =>
-    !erEøsUttakPeriode(periode) && !erUttaksplanHull(periode) && !erFamiliehendelseDato(periode);
+    !erEøsUttakPeriode(periode) &&
+    'forelder' in periode &&
+    'flerbarnsdager' in periode &&
+    !erUttaksplanHull(periode) &&
+    !erFamiliehendelseDato(periode);
 
 export const erEøsUttakPeriode = (periode: Uttaksplanperiode): periode is UttakPeriodeAnnenpartEøs_fpoversikt =>
     'trekkdager' in periode;

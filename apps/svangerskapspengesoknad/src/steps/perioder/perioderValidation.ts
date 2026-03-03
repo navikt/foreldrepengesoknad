@@ -4,7 +4,7 @@ import { PeriodeMedVariasjonFormValues, TilOgMedDatoType } from 'types/Tilrettel
 import { getFloatFromString } from 'utils/numberUtils';
 import { getSlutteTekst } from 'utils/validationUtils';
 
-import { formatDate, overlapperTidsperioder } from '@navikt/fp-utils';
+import { TidsperiodenString, formatDate } from '@navikt/fp-utils';
 
 const validerStillingsprosentInput = (intl: IntlShape, value: string) => {
     if (!value || value.trim() === '') {
@@ -170,10 +170,10 @@ const validateAtPeriodeIkkeOverlapper = (
                 periodeTom = p.tom;
             }
             if (periodeTom && p.fom) {
-                return overlapperTidsperioder(
-                    { fom: fom, tom: tom || sisteDagForSvangerskapspenger },
-                    { fom: p.fom, tom: periodeTom },
-                );
+                return TidsperiodenString.forFomOgTom(fom, tom || sisteDagForSvangerskapspenger).overlapper({
+                    fom: p.fom,
+                    tom: periodeTom,
+                });
             }
             return false;
         });

@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { mswWrapper } from '@navikt/fp-utils-test';
@@ -25,9 +25,14 @@ describe('<UttaksplanStegNy>', () => {
 
             expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
 
-            await userEvent.click(screen.getByText('Start redigering'));
+            const juni = screen.getByTestId('year:2024;month:5');
 
-            // åpne panel på mobil
+            // Start redigeringsmodus
+            await userEvent.click(within(juni).getByTestId('day:10;dayColor:BLUE'));
+
+            // Lukk aksjonspanel for dag
+            await userEvent.click(within(juni).getByTestId('day:10;dayColor:DARKBLUE'));
+
             await userEvent.click(screen.getAllByText('Du kan velge datoer i kalenderen')[0]!);
 
             await userEvent.click(screen.getByText('Fjern alt'));
@@ -41,7 +46,8 @@ describe('<UttaksplanStegNy>', () => {
         }),
     );
 
-    it(
+    //TODO (TOR) Denne skal slåast på igjen etter ein sluttar å filtrera vekk perioden til annen part fra forslaget til plan
+    it.todo(
         'skal vise feilmelding når en prøver å gå videre med stjernemerkede perioder',
         mswWrapper(async ({ setHandlers }) => {
             const gåTilNesteSide = vi.fn();

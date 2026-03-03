@@ -40,6 +40,7 @@ const renderSøknadRoutes = (
     sendSøknad: () => Promise<void>,
     avbrytSøknad: () => void,
     søknadGjelderNyttBarn?: boolean,
+    foreldrepengerSaker?: FpSak_fpoversikt[],
 ) => {
     if (!harGodkjentVilkår || søknadGjelderNyttBarn === undefined) {
         return <Route path="*" element={<Navigate to={SøknadRoutes.VELKOMMEN} />} />;
@@ -61,6 +62,7 @@ const renderSøknadRoutes = (
                                     søkerInfo={søkerInfo}
                                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                                     avbrytSøknad={avbrytSøknad}
+                                    foreldrepengerSaker={foreldrepengerSaker}
                                 />
                             }
                         />
@@ -72,6 +74,7 @@ const renderSøknadRoutes = (
                                     erEndringssøknad={erEndringssøknad}
                                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                                     avbrytSøknad={avbrytSøknad}
+                                    foreldrepengerSaker={foreldrepengerSaker}
                                 />
                             }
                         />
@@ -184,6 +187,7 @@ const renderSøknadRoutes = (
                                 søkerInfo={søkerInfo}
                                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                                 avbrytSøknad={avbrytSøknad}
+                                foreldrepengerSaker={foreldrepengerSaker}
                             />
                         }
                     />
@@ -195,6 +199,7 @@ const renderSøknadRoutes = (
                                 erEndringssøknad={erEndringssøknad}
                                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                                 avbrytSøknad={avbrytSøknad}
+                                foreldrepengerSaker={foreldrepengerSaker}
                             />
                         }
                     />
@@ -420,6 +425,7 @@ export const ForeldrepengesøknadRoutes = ({
                 sendSøknad,
                 avbrytSøknad,
                 søknadGjelderNyttBarn,
+                foreldrepengerSaker,
             )}
         </Routes>
     );

@@ -1,4 +1,6 @@
 import dayjs from 'dayjs';
+import { andreAugust2022ReglerGjelder } from 'utils/dateUtils';
+import { guid } from 'utils/guid';
 
 import { Periode, Periodetype, Situasjon, Uttaksperiode, isUttaksperiode } from '@navikt/fp-common';
 import { KontoDto } from '@navikt/fp-types';
@@ -10,9 +12,6 @@ import {
     splittUttaksperiodePåFamiliehendelsesdato,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-uttaksplan';
-
-import { andreAugust2022ReglerGjelder } from '../dateUtils';
-import { guid } from '../guid';
 
 const ikkeDeltUttakAdopsjonFarMedmor = (
     familiehendelsesdato: Date,

@@ -4,10 +4,8 @@ import { FormattedMessage } from 'react-intl';
 import { Alert, BodyShort, Button, Detail, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import {
-    erDetReadonlyPerioderEtterValgtePerioder,
-    erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato,
-} from '../../utils/periodeUtils';
+import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
+import { erDetReadonlyPerioderEtterValgtePerioder } from '../../utils/periodeUtils';
 
 interface Props {
     valgtePerioder: Array<{ fom: string; tom: string }>;
@@ -26,10 +24,11 @@ export const SlettPeriodeForskyvEllerErstattPanel = ({ valgtePerioder, avbryt, f
 
     const [skalForskyvePeriode, setSkalForskyvePeriode] = useState<boolean | undefined>(undefined);
 
-    const harPeriodeFørSeksUkerEtterFamiliehendelsedato = erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
-        valgtePerioder,
-        familiehendelsedato,
-    );
+    const harPeriodeFørSeksUkerEtterFamiliehendelsedato =
+        UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
+            valgtePerioder,
+            familiehendelsedato,
+        );
 
     const forelderSomHarLåstePerioder = erPeriodeneTilAnnenPartLåst
         ? søker === 'MOR'

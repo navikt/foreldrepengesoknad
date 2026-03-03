@@ -4,7 +4,6 @@ import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
-import { erIkkeEøsPeriode } from 'utils/uttaksplanInfoUtils';
 import { addMetadata, lagAutomatiskDokument } from 'utils/vedleggUtils';
 
 import { Loader } from '@navikt/ds-react';
@@ -19,7 +18,7 @@ import {
     isAdoptertBarn,
     isFødtBarn,
 } from '@navikt/fp-types';
-import { getFamiliehendelsedato } from '@navikt/fp-utils';
+import { Uttaksperioden, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttakUploaderNy } from '../attachment-uploaders/UttakUploaderNy';
@@ -63,7 +62,10 @@ export const MorJobberDokumentasjonNy = ({
     const trengerDokumentereMorsArbeidQuery = useQuery({
         ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams),
         enabled:
-            !!annenPartFødselsnummer && !isAnnenforelderOppholdtSegIEØS(annenForelder) && !!dokumentereMorsArbeidParams,
+            dokumentereMorsArbeidParams.perioder.length > 0 &&
+            !!annenPartFødselsnummer &&
+            !isAnnenforelderOppholdtSegIEØS(annenForelder) &&
+            !!dokumentereMorsArbeidParams,
     });
 
     if (perioder.length === 0) {
@@ -146,7 +148,10 @@ const getDokumentereMorsArbeidParams = (
         perioder: uttaksplan.map((p) => ({
             fom: p.fom,
             tom: p.tom,
-            periodeType: bareFarHarRett && erIkkeEøsPeriode(p) && p.utsettelseÅrsak === 'FRI' ? 'UTSETTELSE' : 'UTTAK',
+            periodeType:
+                bareFarHarRett && Uttaksperioden.erIkkeEøsPeriode(p) && p.utsettelseÅrsak === 'FRI'
+                    ? 'UTSETTELSE'
+                    : 'UTTAK',
         })),
     };
 };

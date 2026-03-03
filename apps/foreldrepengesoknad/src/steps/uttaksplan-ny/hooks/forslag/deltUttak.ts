@@ -1,12 +1,7 @@
 import dayjs from 'dayjs';
 
-import { KontoDto, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import {
-    TidsperiodenString,
-    UttaksdagenString,
-    getTidsperiodeString,
-    isValidTidsperiodeString,
-} from '@navikt/fp-utils';
+import { KontoDto, Tidsperiode, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { TidsperiodenString, UttaksdagenString, erUttaksdag } from '@navikt/fp-utils';
 
 export const deltUttak = (
     famDato: string,
@@ -38,6 +33,7 @@ export const deltUttak = (
             kontoType: 'FORELDREPENGER_FØR_FØDSEL',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
+            flerbarnsdager: false,
         };
 
         morsPerioder.push(periodeFPFF);
@@ -52,6 +48,7 @@ export const deltUttak = (
             kontoType: 'MØDREKVOTE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
+            flerbarnsdager: false,
         };
 
         morsPerioder.push(periodeMødrekvote);
@@ -66,6 +63,7 @@ export const deltUttak = (
             kontoType: 'FELLESPERIODE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
+            flerbarnsdager: false,
         };
 
         morsPerioder.push(periodeFellesperiode);
@@ -80,6 +78,7 @@ export const deltUttak = (
             kontoType: 'FEDREKVOTE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
+            flerbarnsdager: false,
         };
 
         farsPerioder.push(periodeFedrekvote);
@@ -94,6 +93,7 @@ export const deltUttak = (
             kontoType: 'FELLESPERIODE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
+            flerbarnsdager: false,
         };
 
         farsPerioder.push(periodeFellesperiode);
@@ -102,20 +102,37 @@ export const deltUttak = (
     return [...morsPerioder, ...farsPerioder].sort(sorterPerioder);
 };
 
-export const sorterPerioder = (p1: UttakPeriode_fpoversikt, p2: UttakPeriode_fpoversikt) => {
+export const sorterPerioder = (
+    p1: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    p2: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+) => {
     const tidsperiode1 = { fom: p1.fom, tom: p1.tom };
     const tidsperiode2 = { fom: p2.fom, tom: p2.tom };
 
-    if (isValidTidsperiodeString(tidsperiode1) === false || isValidTidsperiodeString(tidsperiode2) === false) {
-        return isValidTidsperiodeString(tidsperiode1) ? 1 : -1;
+    if (
+        TidsperiodenString.forPeriode(tidsperiode1).erGyldig() === false ||
+        TidsperiodenString.forPeriode(tidsperiode2).erGyldig() === false
+    ) {
+        return TidsperiodenString.forPeriode(tidsperiode1).erGyldig() ? 1 : -1;
     }
     if (dayjs(tidsperiode1.fom).isSame(tidsperiode2.fom, 'day')) {
         return 1;
     }
 
-    if (TidsperiodenString(tidsperiode2).erOmsluttetAv(tidsperiode1)) {
+    if (TidsperiodenString.forPeriode(tidsperiode2).erOmsluttetAv(tidsperiode1)) {
         return 1;
     }
 
     return dayjs(tidsperiode1.fom).isBefore(tidsperiode2.fom, 'day') ? -1 : 1;
+};
+
+// TODO (TOR) Dette ser ut som noko me ikkje vil gjera. Her er ein vel i ein feilsituasjon?
+export const getTidsperiodeString = (fom: string, uttaksdager: number): Tidsperiode => {
+    if (!erUttaksdag(fom)) {
+        throw new Error('FOM er ikke en uttaksdag');
+    }
+    return {
+        fom,
+        tom: UttaksdagenString.denne(fom).getDatoAntallUttaksdagerSenere(uttaksdager - 1),
+    };
 };

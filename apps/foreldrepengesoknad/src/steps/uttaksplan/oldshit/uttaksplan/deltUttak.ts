@@ -1,4 +1,6 @@
 import dayjs from 'dayjs';
+import { andreAugust2022ReglerGjelder, dateIsSameOrAfter } from 'utils/dateUtils';
+import { guid } from 'utils/guid';
 
 import { Periode, Periodetype, Situasjon, isUttaksperiode } from '@navikt/fp-common';
 import { KontoDto } from '@navikt/fp-types';
@@ -12,9 +14,6 @@ import {
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-uttaksplan';
-
-import { andreAugust2022ReglerGjelder, dateIsSameOrAfter } from '../dateUtils';
-import { guid } from '../guid';
 
 const deltUttakAdopsjonSøktFørst = (
     famDato: Date,

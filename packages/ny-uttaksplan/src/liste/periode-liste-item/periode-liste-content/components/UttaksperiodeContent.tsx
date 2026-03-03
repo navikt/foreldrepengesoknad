@@ -10,7 +10,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { TidsperiodenString, capitalizeFirstLetter, formatDateExtended } from '@navikt/fp-utils';
+import { UttaksdagenString, capitalizeFirstLetter, formatDateExtended } from '@navikt/fp-utils';
 import { assertUnreachable } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
@@ -59,7 +59,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
                     <BodyShort weight="semibold">{getLengdePåPeriode(intl, inneholderKunEnPeriode, periode)}</BodyShort>
                     <BodyShort>
                         {getVarighetString(
-                            TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager(),
+                            UttaksdagenString.denneEllerNeste(periode.fom).getUttaksdagerFremTilOgMedDato(periode.tom),
                             intl,
                         )}
                     </BodyShort>
@@ -135,7 +135,7 @@ const getTekstForArbeidOgSamtidigUttak = (
         }
 
         if (periode.samtidigUttak !== undefined) {
-            return getSamtidigUttakTekst(periode.samtidigUttak, periode.forelder!, erFarEllerMedmor, navnPåForeldre);
+            return getSamtidigUttakTekst(periode.samtidigUttak, periode.forelder, erFarEllerMedmor, navnPåForeldre);
         }
     }
 

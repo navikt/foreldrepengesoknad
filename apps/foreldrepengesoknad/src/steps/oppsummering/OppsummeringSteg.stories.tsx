@@ -165,18 +165,21 @@ const defaultUttaksplanNy = [
         kontoType: 'FORELDREPENGER_FØR_FØDSEL',
         fom: '2021-11-24',
         tom: '2021-12-14',
+        flerbarnsdager: false,
     },
     {
         utsettelseÅrsak: 'SØKER_INNLAGT',
         forelder: 'MOR',
         fom: '2021-12-15',
         tom: '2022-01-25',
+        flerbarnsdager: false,
     },
     {
         forelder: 'MOR',
         kontoType: 'FELLESPERIODE',
         fom: '2022-03-30',
         tom: '2022-06-07',
+        flerbarnsdager: false,
     },
 ] satisfies UttakPeriode_fpoversikt[];
 
@@ -1143,6 +1146,7 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
                 fom: '2022-03-30',
                 tom: '2022-06-07',
                 samtidigUttak: 50,
+                flerbarnsdager: false,
             } satisfies UttakPeriode_fpoversikt,
         ];
 
@@ -1216,6 +1220,7 @@ export const VisGradertPeriode: Story = {
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2021-11-24',
                 tom: '2021-12-14',
+                flerbarnsdager: false,
             },
             {
                 forelder: 'MOR',
@@ -1231,6 +1236,7 @@ export const VisGradertPeriode: Story = {
                 },
                 fom: '2021-12-15',
                 tom: '2022-01-25',
+                flerbarnsdager: false,
             },
         ] satisfies UttakPeriode_fpoversikt[],
     },

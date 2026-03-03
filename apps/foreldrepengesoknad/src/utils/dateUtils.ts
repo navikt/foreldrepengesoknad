@@ -49,6 +49,7 @@ const getDateFromDateString = (dateString: string | undefined): Date | undefined
     }
     return undefined;
 };
+// FIXME (TOR) Kva er dette?
 dayjs().subtract(4, 'year').startOf('day').toDate();
 export const isDateABeforeDateB = (a: string, b: string): boolean => {
     if (!hasValue(a) || !hasValue(b) || !isISODateString(a) || !isISODateString(b)) {

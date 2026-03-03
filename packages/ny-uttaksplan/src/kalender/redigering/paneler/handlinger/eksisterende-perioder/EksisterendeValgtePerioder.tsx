@@ -35,10 +35,10 @@ import { useKalenderRedigeringContext } from '../../../context/KalenderRedigerin
 
 interface Props {
     perioder: UttakPeriodeMedAntallDager[];
-    setSkalViseKnapper: (skalViseKnapper: boolean) => void;
+    setErForskyvEllerErstattPanelvisningPå: (skalVise: boolean) => void;
 }
 
-export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Props) => {
+export const EksisterendeValgtePerioder = ({ perioder, setErForskyvEllerErstattPanelvisningPå }: Props) => {
     const intl = useIntl();
 
     const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
@@ -66,7 +66,7 @@ export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Pro
                     avbryt={() => {
                         setValgtPeriodeSomSkalSlettes(undefined);
                         setVisEndreEllerForskyvPanel(false);
-                        setSkalViseKnapper(true);
+                        setErForskyvEllerErstattPanelvisningPå(false);
                     }}
                     fjernPeriode={(skalForskyveBakover: boolean) => {
                         setValgtPeriodeSomSkalSlettes(undefined);
@@ -128,14 +128,7 @@ export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Pro
                                     )}
 
                                     {!erSamtidigUttak && (
-                                        <HStack gap="space-4">
-                                            <BodyShort>
-                                                <PeriodeKvoteType
-                                                    periode={p}
-                                                    erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
-                                                />
-                                            </BodyShort>
-                                        </HStack>
+                                        <PeriodeKvoteType periode={p} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
                                     )}
 
                                     {erEøsUttakPeriode(p) && (
@@ -202,7 +195,7 @@ export const EksisterendeValgtePerioder = ({ perioder, setSkalViseKnapper }: Pro
                                             if (erEksisterendePerioderEtterValgteDager) {
                                                 setValgtPeriodeSomSkalSlettes(p);
                                                 setVisEndreEllerForskyvPanel(true);
-                                                setSkalViseKnapper(false);
+                                                setErForskyvEllerErstattPanelvisningPå(true);
                                             } else {
                                                 slettPeriode(p, false);
                                             }
@@ -462,50 +455,82 @@ const PeriodeKvoteType = ({
         periode.morsAktivitet === 'IKKE_OPPGITT';
 
     if (periode.kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
-        return <FormattedMessage id="RedigeringPanel.MorHarForeldrepengerFørFødsel" />;
+        return (
+            <BodyShort>
+                <FormattedMessage id="RedigeringPanel.MorHarForeldrepengerFørFødsel" />
+            </BodyShort>
+        );
     }
     if (
         periode.kontoType === 'MØDREKVOTE' ||
         (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER')
     ) {
-        return <FormattedMessage id="RedigeringPanel.MorKvote" />;
+        return (
+            <BodyShort>
+                <FormattedMessage id="RedigeringPanel.MorKvote" />
+            </BodyShort>
+        );
     }
     if (
         !erMedmorDelAvSøknaden &&
         (periode.kontoType === 'FEDREKVOTE' ||
             (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'))
     ) {
-        return <FormattedMessage id="RedigeringPanel.FarKvote" />;
+        return (
+            <BodyShort>
+                <FormattedMessage id="RedigeringPanel.FarKvote" />
+            </BodyShort>
+        );
     }
     if (
         erMedmorDelAvSøknaden &&
         (periode.kontoType === 'FEDREKVOTE' ||
             (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'))
     ) {
-        return <FormattedMessage id="RedigeringPanel.MedmorKvote" />;
+        return (
+            <BodyShort>
+                <FormattedMessage id="RedigeringPanel.MedmorKvote" />
+            </BodyShort>
+        );
     }
     if (
         (periode.kontoType === 'FORELDREPENGER' ||
             (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER')) &&
         !erAktivitetsfri
     ) {
-        return <FormattedMessage id="RedigeringPanel.Foreldrepenger" />;
+        return (
+            <BodyShort>
+                <FormattedMessage id="RedigeringPanel.Foreldrepenger" />
+            </BodyShort>
+        );
     }
     if (
         (periode.kontoType === 'FORELDREPENGER' ||
             (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER')) &&
         erAktivitetsfri
     ) {
-        return <FormattedMessage id="RedigeringPanel.UtenAktivitetskrav" />;
+        return (
+            <BodyShort>
+                <FormattedMessage id="RedigeringPanel.UtenAktivitetskrav" />
+            </BodyShort>
+        );
     }
     if (
         periode.kontoType === 'FELLESPERIODE' ||
         (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER')
     ) {
-        return <FormattedMessage id="RedigeringPanel.Fellesperiode" />;
+        return (
+            <BodyShort>
+                <FormattedMessage id="RedigeringPanel.Fellesperiode" />
+            </BodyShort>
+        );
     }
     if (erIkkeEøsUttakPeriode && periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
-        return <FormattedMessage id="RedigeringPanel.Ferie" />;
+        return (
+            <BodyShort>
+                <FormattedMessage id="RedigeringPanel.Ferie" />
+            </BodyShort>
+        );
     }
     if (erIkkeEøsUttakPeriode && periode.utsettelseÅrsak && periode.utsettelseÅrsak !== 'LOVBESTEMT_FERIE') {
         return (
@@ -541,13 +566,10 @@ const useSlettPeriodeFn = () => {
         const perioder = finnDagerSomSkalSlettes(sammenslåtteValgtePerioder, periodeSomSkalSlettes);
 
         slettUttaksplanPerioder(
-            perioder.map(
-                (p) =>
-                    ({
-                        fom: dayjs(p.fom).isBefore(periodeSomSkalSlettes.fom) ? periodeSomSkalSlettes.fom : p.fom,
-                        tom: dayjs(p.tom).isAfter(periodeSomSkalSlettes.tom) ? periodeSomSkalSlettes.tom : p.tom,
-                    }) satisfies UttakPeriode_fpoversikt,
-            ),
+            perioder.map((p) => ({
+                fom: dayjs(p.fom).isBefore(periodeSomSkalSlettes.fom) ? periodeSomSkalSlettes.fom : p.fom,
+                tom: dayjs(p.tom).isAfter(periodeSomSkalSlettes.tom) ? periodeSomSkalSlettes.tom : p.tom,
+            })),
             skalForskyveBakover,
         );
 

@@ -1,26 +1,20 @@
 import { useForm } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { Button, HStack, VStack } from '@navikt/ds-react';
 
-import { RhfForm, RhfSelect } from '@navikt/fp-form-hooks';
-import { UttakPeriode_fpoversikt, UttakUtsettelseÅrsak_fpoversikt } from '@navikt/fp-types';
-import { isRequired } from '@navikt/fp-validation';
+import { RhfForm } from '@navikt/fp-form-hooks';
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { useKalenderRedigeringContext } from '../../kalender/redigering/context/KalenderRedigeringContext';
-
-export type FormValues = {
-    utsettelseÅrsak: UttakUtsettelseÅrsak_fpoversikt;
-};
+import { useUttaksplanData } from '../../../../../context/UttaksplanDataContext';
+import { FormValues, LeggTilUtsettelseForm } from '../../../../../felles/utsettelse/LeggTilUtsettelseForm';
+import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
 
 interface Props {
     setVisUtsettelsePanel: (skalVisePanel: boolean) => void;
 }
 
 export const LeggTilUtsettelsePanel = ({ setVisUtsettelsePanel }: Props) => {
-    const intl = useIntl();
-
     const {
         foreldreInfo: { søker },
     } = useUttaksplanData();
@@ -41,6 +35,7 @@ export const LeggTilUtsettelsePanel = ({ setVisUtsettelsePanel }: Props) => {
                         fom: p.fom,
                         tom: p.tom,
                         utsettelseÅrsak: formValues.utsettelseÅrsak,
+                        flerbarnsdager: false,
                     }) satisfies UttakPeriode_fpoversikt,
             ),
             false,
@@ -53,22 +48,7 @@ export const LeggTilUtsettelsePanel = ({ setVisUtsettelsePanel }: Props) => {
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             <VStack gap="space-16">
-                <RhfSelect
-                    name="utsettelseÅrsak"
-                    control={formMethods.control}
-                    label={intl.formatMessage({ id: 'LeggTilUtsettelsePanel.VelgÅrsak' })}
-                    validate={[isRequired(intl.formatMessage({ id: 'LeggTilUtsettelsePanel.VelgÅrsak.Required' }))]}
-                >
-                    <option value={'SØKER_SYKDOM' satisfies UttakUtsettelseÅrsak_fpoversikt}>
-                        <FormattedMessage id="LeggTilUtsettelsePanel.SøkerSykdom" />
-                    </option>
-                    <option value={'SØKER_INNLAGT' satisfies UttakUtsettelseÅrsak_fpoversikt}>
-                        <FormattedMessage id="LeggTilUtsettelsePanel.SøkerInnlagt" />
-                    </option>
-                    <option value={'BARN_INNLAGT' satisfies UttakUtsettelseÅrsak_fpoversikt}>
-                        <FormattedMessage id="LeggTilUtsettelsePanel.BarnInnlagt" />
-                    </option>
-                </RhfSelect>
+                <LeggTilUtsettelseForm visTittel />
                 <HStack justify="space-between">
                     <Button variant="primary" size="small" disabled={!formMethods.formState.isDirty}>
                         <FormattedMessage id="LeggTilUtsettelsePanel.LeggTil" />

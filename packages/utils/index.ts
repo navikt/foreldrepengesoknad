@@ -17,7 +17,6 @@ export {
     getLocaleKey,
 } from './src/countryUtils';
 export { omitOne, omitMany } from './src/objectUtils';
-export { overlapperTidsperioder } from './src/tidsperiodeUtils';
 export { redirect } from './src/loginUtils';
 
 export { useAbortSignal } from './src/hooks/useAbortSignal';
@@ -82,9 +81,9 @@ export {
 } from './src/dateUtils';
 
 export * from './src/uttak/Uttaksdagen';
-export { UttaksdagenString } from './src/uttak/UttaksdagenString';
-export * from './src/uttak/Tidsperioden';
-export * from './src/uttak/TidsperiodenString';
-export * from './src/uttak/uttakUtils';
+export * from './src/Tidsperioden';
+export { UttaksdagenString, erUttaksdag } from './src/uttak/UttaksdagenString';
+export { Uttaksperioden } from './src/uttak/Uttaksperioden';
+export { TidsperiodenString } from './src/TidsperiodenString';
 export * from './src/cookieUtils';
 export { periodFormat } from './src/periodUtils';

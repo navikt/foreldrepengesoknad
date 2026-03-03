@@ -9,7 +9,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { TidsperiodenString } from '@navikt/fp-utils';
+import { Uttaksperioden } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
@@ -29,10 +29,7 @@ export const useErAntallDagerOvertrukketIUttaksplan = () => {
         );
     }
 
-    return (
-        finnAntallDagerDerBeggeHarForeldrepenger(uttakPerioder, familiesituasjon, valgtStønadskonto)
-            .antallOvertrukketDager > 0
-    );
+    return tellDagerIUttaksPeriodene(uttakPerioder, familiesituasjon, valgtStønadskonto).antallOvertrukketDager > 0;
 };
 
 export const finnAntallDagerDerKunEnHarForeldrepenger = (
@@ -102,7 +99,28 @@ export const finnAntallDagerDerKunEnHarForeldrepenger = (
     };
 };
 
-export const finnAntallDagerDerBeggeHarForeldrepenger = (
+export const filtrerAvslåttePerioderMenBeholdPleiepenger = (
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+) => {
+    if (erEøsUttakPeriode(periode)) {
+        return true;
+    }
+    if (periode.resultat?.innvilget === false) {
+        return periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
+    }
+
+    return periode.resultat?.innvilget ?? true;
+};
+
+export const useTellDagerIUttaksPeriodene = () => {
+    const { uttakPerioder, familiesituasjon, valgtStønadskonto } = useUttaksplanData();
+
+    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+
+    return tellDagerIUttaksPeriodene(filtrertePerioder, familiesituasjon, valgtStønadskonto);
+};
+
+export const tellDagerIUttaksPeriodene = (
     uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     familiesituasjon: Familiesituasjon,
     valgtStønadskonto: KontoBeregningDto,
@@ -262,7 +280,7 @@ const finnAntallDagerÅTrekke = (periode: UttakPeriode_fpoversikt | UttakPeriode
 
     const arbeidstidprosent = periode.gradering?.arbeidstidprosent;
     const samtidigUttak = periode.samtidigUttak;
-    const dager = TidsperiodenString(periode).getAntallUttaksdager();
+    const dager = Uttaksperioden.getAntallUttaksdager(periode);
 
     if (arbeidstidprosent) {
         const graderingsProsent = (100 - arbeidstidprosent) / 100;
