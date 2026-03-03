@@ -177,7 +177,10 @@ export const UttaksplanForm = ({
                 />
                 {visAutomatiskJustering && (
                     <VStack gap="space-16">
-                        <AutomatiskJusteringInfotekst harSvartJaPåAutoJustering={harSvartJaPåAutoJustering} />
+                        <AutomatiskJusteringInfotekst
+                            harSvartJaPåAutoJustering={harSvartJaPåAutoJustering}
+                            uttaksplan={gjeldendeUttaksplan}
+                        />
                         <RhfRadioGroup
                             name="ønskerJustertUttakVedFødsel"
                             control={formMethods.control}
@@ -213,9 +216,14 @@ export const UttaksplanForm = ({
     );
 };
 
-const AutomatiskJusteringInfotekst = ({ harSvartJaPåAutoJustering }: { harSvartJaPåAutoJustering: boolean }) => {
+const AutomatiskJusteringInfotekst = ({
+    harSvartJaPåAutoJustering,
+    uttaksplan,
+}: {
+    harSvartJaPåAutoJustering: boolean;
+    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+}) => {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN_NY);
 
     const termindato = getTermindato(barn);
 
