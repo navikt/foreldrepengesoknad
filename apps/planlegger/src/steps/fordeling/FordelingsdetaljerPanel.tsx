@@ -6,11 +6,11 @@ import { erAlenesøker, erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
 import { Uttaksdata } from 'utils/uttakUtils';
 
-import { BodyShort, Hide, Show, VStack } from '@navikt/ds-react';
+import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { Infobox } from '@navikt/fp-ui';
-import { capitalizeFirstLetter } from '@navikt/fp-utils';
-import { periodFormat } from '@navikt/fp-utils/src/periodUtils';
+
+import { PeriodeRad } from '../../components/PeriodeRad';
 
 interface Props {
     barnet: OmBarnet;
@@ -97,65 +97,9 @@ export const FordelingsdetaljerPanel = ({
                         </BodyShort>
                     </>
                 )}
-                <Show above="sm">
-                    <BodyShort weight="semibold">
-                        <FormattedMessage
-                            id="FordelingsdetaljerPanel.Infoboks.Periode"
-                            values={{
-                                hvem: capitalizeFirstLetter(fornavnSøker1),
-                                periode: periodFormat(startdatoPeriode1, sluttdatoPeriode1, intl, {
-                                    separator: '–',
-                                    useShortMonth: true,
-                                }),
-                            }}
-                        />
-                    </BodyShort>
-                </Show>
-                <Hide above="sm">
-                    <BodyShort weight="semibold">
-                        <FormattedMessage
-                            id="FordelingsdetaljerPanel.Infoboks.Periode"
-                            values={{
-                                hvem: capitalizeFirstLetter(fornavnSøker1),
-                                periode: periodFormat(startdatoPeriode1, sluttdatoPeriode1, intl, {
-                                    separator: '–',
-                                    useShortYear: true,
-                                }),
-                            }}
-                        />
-                    </BodyShort>
-                </Hide>
+                <PeriodeRad hvem={fornavnSøker1} fom={startdatoPeriode1} tom={sluttdatoPeriode1} />
                 {fornavnSøker2 && sluttdatoPeriode2 && startdatoPeriode2 && (
-                    <>
-                        <Show above="sm">
-                            <BodyShort weight="semibold">
-                                <FormattedMessage
-                                    id="FordelingsdetaljerPanel.Infoboks.Periode"
-                                    values={{
-                                        hvem: capitalizeFirstLetter(fornavnSøker2),
-                                        periode: periodFormat(startdatoPeriode2, sluttdatoPeriode2, intl, {
-                                            separator: '–',
-                                            useShortMonth: true,
-                                        }),
-                                    }}
-                                />
-                            </BodyShort>
-                        </Show>
-                        <Hide above="sm">
-                            <BodyShort weight="semibold">
-                                <FormattedMessage
-                                    id="FordelingsdetaljerPanel.Infoboks.Periode"
-                                    values={{
-                                        hvem: capitalizeFirstLetter(fornavnSøker2),
-                                        periode: periodFormat(startdatoPeriode2, sluttdatoPeriode2, intl, {
-                                            separator: '–',
-                                            useShortYear: true,
-                                        }),
-                                    }}
-                                />
-                            </BodyShort>
-                        </Hide>
-                    </>
+                    <PeriodeRad hvem={fornavnSøker2} fom={startdatoPeriode2} tom={sluttdatoPeriode2} />
                 )}
             </VStack>
         </Infobox>

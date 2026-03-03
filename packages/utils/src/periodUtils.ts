@@ -15,8 +15,12 @@ type PeriodFormatOptions = {
 const formatDateShortMonthWithYear = (date: string): string => dayjs(date).format('D. MMM YYYY');
 
 const getFormatter = (useShortYear: boolean, useShortMonth: boolean) => {
-    if (useShortYear) return formatDateShortYear;
-    if (useShortMonth) return formatDateShortMonthWithYear;
+    if (useShortYear) {
+        return formatDateShortYear;
+    }
+    if (useShortMonth) {
+        return formatDateShortMonthWithYear;
+    }
     return formatDate;
 };
 
