@@ -7,11 +7,10 @@ import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor, getNavnPåForeldre } from 'utils/personUtils';
-import { getRelevantePerioder } from 'utils/uttaksplanInfoUtils';
 
 import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
-import { isUtsettelseBarnInnlagt } from '@navikt/fp-common';
+import { Periode, isUtsettelseBarnInnlagt } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Attachment, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
@@ -346,4 +345,16 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
             </Step>
         </SkjemaRotLayout>
     );
+};
+
+const getRelevantePerioder = (
+    perioder: Periode[],
+    endringssøknadPerioder: Periode[] | undefined,
+    erEndringssøknad: boolean,
+) => {
+    if (erEndringssøknad && endringssøknadPerioder !== undefined) {
+        return endringssøknadPerioder;
+    }
+
+    return perioder;
 };

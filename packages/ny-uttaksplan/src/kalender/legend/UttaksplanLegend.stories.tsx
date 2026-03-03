@@ -117,12 +117,14 @@ export const VisAlleMedTekst: Story = {
                 tom: '2024-04-18',
                 forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-05-17',
                 tom: '2024-05-23',
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-05-31',
@@ -130,6 +132,7 @@ export const VisAlleMedTekst: Story = {
                 kontoType: 'FELLESPERIODE',
                 forelder: 'MOR',
                 samtidigUttak: 50,
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-05-31',
@@ -137,6 +140,7 @@ export const VisAlleMedTekst: Story = {
                 kontoType: 'FELLESPERIODE',
                 forelder: 'FAR_MEDMOR',
                 samtidigUttak: 50,
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-06-28',
@@ -144,12 +148,14 @@ export const VisAlleMedTekst: Story = {
                 forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
                 gradering: { arbeidstidprosent: 80, aktivitet: { type: 'ANNET' } },
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-06-28',
                 tom: '2024-07-02',
                 forelder: 'FAR_MEDMOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-07-03',
@@ -157,6 +163,7 @@ export const VisAlleMedTekst: Story = {
                 forelder: 'FAR_MEDMOR',
                 morsAktivitet: 'IKKE_OPPGITT',
                 kontoType: 'FORELDREPENGER',
+                flerbarnsdager: false,
             },
         ],
         barn: {

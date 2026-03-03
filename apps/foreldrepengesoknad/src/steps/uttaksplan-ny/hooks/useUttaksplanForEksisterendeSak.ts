@@ -39,7 +39,9 @@ export const useUttaksplanForEksisterendeSak = (
     //           ).getDato()
     //         : undefined;
 
-    const uttaksplan = [...valgtSak.gjeldendeVedtak.perioder];
+    const uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> = [
+        ...valgtSak.gjeldendeVedtak.perioder,
+    ];
 
     if (valgtSak.gjeldendeVedtak?.perioderAnnenpartEøs) {
         uttaksplan.push(...valgtSak.gjeldendeVedtak.perioderAnnenpartEøs);

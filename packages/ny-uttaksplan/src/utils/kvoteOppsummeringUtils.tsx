@@ -9,7 +9,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { TidsperiodenString } from '@navikt/fp-utils';
+import { Uttaksperioden } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
@@ -99,7 +99,12 @@ export const finnAntallDagerDerKunEnHarForeldrepenger = (
     };
 };
 
-export const filtrerAvslåttePerioderMenBeholdPleiepenger = (periode: UttakPeriode_fpoversikt) => {
+export const filtrerAvslåttePerioderMenBeholdPleiepenger = (
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+) => {
+    if (erEøsUttakPeriode(periode)) {
+        return true;
+    }
     if (periode.resultat?.innvilget === false) {
         return periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
     }
@@ -275,7 +280,7 @@ const finnAntallDagerÅTrekke = (periode: UttakPeriode_fpoversikt | UttakPeriode
 
     const arbeidstidprosent = periode.gradering?.arbeidstidprosent;
     const samtidigUttak = periode.samtidigUttak;
-    const dager = TidsperiodenString(periode).getAntallUttaksdager();
+    const dager = Uttaksperioden.getAntallUttaksdager(periode);
 
     if (arbeidstidprosent) {
         const graderingsProsent = (100 - arbeidstidprosent) / 100;

@@ -20,7 +20,6 @@ import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import { ISOStringToDate, dateToISOString, getEndringstidspunkt } from 'utils/dateUtils';
 import { getStartdatoFørstePeriodeAnnenPart, mapAnnenPartsEksisterendeSakFromDTO } from 'utils/eksisterendeSakUtils';
-import { useDebounce } from 'utils/hooks/useDebounce';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import {
     getFarMedmorErAleneOmOmsorg,
@@ -31,7 +30,6 @@ import {
 } from 'utils/personUtils';
 import { getAntallUkerFraStønadskontoer, getAntallUkerMinsterett } from 'utils/stønadskontoerUtils';
 import { getPerioderSomSkalSendesInn } from 'utils/submitUtils';
-import { getSamtidigUttaksprosent } from 'utils/uttaksplanInfoUtils';
 
 import { Alert, Button, HGrid, VStack } from '@navikt/ds-react';
 
@@ -66,6 +64,7 @@ import {
 } from './automatisk-justering-form/automatiskJusteringUtils';
 import { VilDuGåTilbakeModal } from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { lagUttaksplanForslag } from './lagUttaksplanForslag';
+import { useDebounce } from './oldshit/hooks/useDebounce';
 import { uttaksplanQuestionsConfig } from './uttaksplanQuestionConfig';
 
 const EMPTY_PERIOD_ARRAY: Periode[] = [];
@@ -703,4 +702,11 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
             }}
         />
     );
+};
+
+const getSamtidigUttaksprosent = (
+    gradertPeriode: boolean | undefined,
+    stillingsprosent: string | undefined,
+): string => {
+    return gradertPeriode && stillingsprosent ? (100 - Number.parseInt(stillingsprosent, 10)).toString() : '100';
 };

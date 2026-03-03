@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import isString from 'lodash/isString';
 import { IntlShape } from 'react-intl';
-import { ISOStringToDate, getVarighetString } from 'utils/dateUtils';
+import { getVarighetString } from 'utils/dateUtils';
 
 import { erUttaksdag, formatDate, getNumberFromNumberInputValue, isValidDate } from '@navikt/fp-utils';
 
@@ -79,7 +79,7 @@ export const validateOppstartsdato =
             return intl.formatMessage({ id: 'fordeling.oppstartsdato.forSent' }, { maxDato: formatDate(maxDato) });
         }
 
-        if (value && isValidDate(value) && !erUttaksdag(ISOStringToDate(value)!)) {
+        if (value && isValidDate(value) && !erUttaksdag(value)) {
             return intl.formatMessage({ id: 'fordeling.oppstartsdato.ukedag' });
         }
 

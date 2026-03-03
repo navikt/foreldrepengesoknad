@@ -5,8 +5,18 @@ import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
 import { UttakPeriodeBuilder } from './UttakPeriodeBuilder';
 
 // Bruker forelder for å skille på eksisterende og nye perioder.
-const lagPeriode = (fom: string, tom: string) => ({ fom, tom, forelder: 'MOR' as BrukerRolleSak_fpoversikt });
-const lagNyPeriode = (fom: string, tom: string) => ({ fom, tom, forelder: 'FAR_MEDMOR' as BrukerRolleSak_fpoversikt });
+const lagPeriode = (fom: string, tom: string) => ({
+    fom,
+    tom,
+    forelder: 'MOR' as BrukerRolleSak_fpoversikt,
+    flerbarnsdager: false,
+});
+const lagNyPeriode = (fom: string, tom: string) => ({
+    fom,
+    tom,
+    forelder: 'FAR_MEDMOR' as BrukerRolleSak_fpoversikt,
+    flerbarnsdager: false,
+});
 
 const SKAL_FORSKYVE = true;
 
@@ -217,34 +227,34 @@ describe('UttakPeriodeBuilder – sortering og mutasjon', () => {
 
 describe('UttakPeriodeBuilder.fjernUttakPerioder (Ikke forskyv)', () => {
     it('skal fjerne en periode som overlapper en del midt inni en eksisterende periode', () => {
-        const builder = new UttakPeriodeBuilder([{ fom: '2024-01-01', tom: '2024-01-10' }]);
+        const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-01', '2024-01-10')]);
 
         builder.fjernUttakPerioder([{ fom: '2024-01-05', tom: '2024-01-08' }], false);
 
         expect(builder.getUttakPerioder()).toEqual([
-            { fom: '2024-01-01', tom: '2024-01-04' },
-            { fom: '2024-01-09', tom: '2024-01-10' },
+            lagPeriode('2024-01-01', '2024-01-04'),
+            lagPeriode('2024-01-09', '2024-01-10'),
         ]);
     });
 
     it('skal fjerne en periode som overlapper starten av en eksisterende periode', () => {
-        const builder = new UttakPeriodeBuilder([{ fom: '2024-01-05', tom: '2024-01-10' }]);
+        const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-05', '2024-01-10')]);
 
         builder.fjernUttakPerioder([{ fom: '2024-01-01', tom: '2024-01-08' }], false);
 
-        expect(builder.getUttakPerioder()).toEqual([{ fom: '2024-01-09', tom: '2024-01-10' }]);
+        expect(builder.getUttakPerioder()).toEqual([lagPeriode('2024-01-09', '2024-01-10')]);
     });
 
     it('skal fjerne en periode som overlapper slutten av en eksisterende periode', () => {
-        const builder = new UttakPeriodeBuilder([{ fom: '2024-01-05', tom: '2024-01-10' }]);
+        const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-05', '2024-01-10')]);
 
         builder.fjernUttakPerioder([{ fom: '2024-01-08', tom: '2024-01-15' }], false);
 
-        expect(builder.getUttakPerioder()).toEqual([{ fom: '2024-01-05', tom: '2024-01-05' }]);
+        expect(builder.getUttakPerioder()).toEqual([lagPeriode('2024-01-05', '2024-01-05')]);
     });
 
     it('skal fjerne en periode som overlapper helt med en eksisterende periode', () => {
-        const builder = new UttakPeriodeBuilder([{ fom: '2024-01-05', tom: '2024-01-10' }]);
+        const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-05', '2024-01-10')]);
 
         builder.fjernUttakPerioder([{ fom: '2024-01-01', tom: '2024-01-15' }], false);
 
@@ -253,28 +263,28 @@ describe('UttakPeriodeBuilder.fjernUttakPerioder (Ikke forskyv)', () => {
 
     it('skal beholde mellomrom etter fjerning', () => {
         const builder = new UttakPeriodeBuilder([
-            { fom: '2024-01-01', tom: '2024-01-04' },
-            { fom: '2024-01-05', tom: '2024-01-10' },
+            lagPeriode('2024-01-01', '2024-01-04'),
+            lagPeriode('2024-01-05', '2024-01-10'),
         ]);
 
         builder.fjernUttakPerioder([{ fom: '2024-01-04', tom: '2024-01-05' }], false);
 
         expect(builder.getUttakPerioder()).toEqual([
-            { fom: '2024-01-01', tom: '2024-01-03' },
-            { fom: '2024-01-08', tom: '2024-01-10' },
+            lagPeriode('2024-01-01', '2024-01-03'),
+            lagPeriode('2024-01-08', '2024-01-10'),
         ]);
     });
 
     it('skal ikke fjerne periode som ikke overlapper med noe', () => {
-        const builder = new UttakPeriodeBuilder([{ fom: '2024-01-05', tom: '2024-01-10' }]);
+        const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-05', '2024-01-10')]);
 
         builder.fjernUttakPerioder([{ fom: '2024-01-11', tom: '2024-01-12' }], false);
 
-        expect(builder.getUttakPerioder()).toEqual([{ fom: '2024-01-05', tom: '2024-01-10' }]);
+        expect(builder.getUttakPerioder()).toEqual([lagPeriode('2024-01-05', '2024-01-10')]);
     });
 
     it('skal fjerne en periode som overlapper eksakt eksisterende', () => {
-        const builder = new UttakPeriodeBuilder([{ fom: '2024-01-01', tom: '2024-01-10' }]);
+        const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-01', '2024-01-10')]);
 
         builder.fjernUttakPerioder([{ fom: '2024-01-01', tom: '2024-01-10' }], false);
 
@@ -295,31 +305,31 @@ describe('UttakPeriodeBuilder.fjernUttakPerioder (Ikke forskyv)', () => {
 
 describe('UttakPeriodeBuilder.fjernUttakPerioder (Forskyv)', () => {
     it('skal fjerne en periode som overlapper en del midt inni en eksisterende periode', () => {
-        const builder = new UttakPeriodeBuilder([{ fom: '2024-01-01', tom: '2024-01-10' }]);
+        const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-01', '2024-01-10')]);
 
         builder.fjernUttakPerioder([{ fom: '2024-01-05', tom: '2024-01-08' }], SKAL_FORSKYVE);
 
-        expect(builder.getUttakPerioder()).toEqual([{ fom: '2024-01-01', tom: '2024-01-08' }]);
+        expect(builder.getUttakPerioder()).toEqual([lagPeriode('2024-01-01', '2024-01-08')]);
     });
 
     it('skal fjerne en periode som overlapper starten av en eksisterende periode', () => {
-        const builder = new UttakPeriodeBuilder([{ fom: '2024-01-05', tom: '2024-01-10' }]);
+        const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-05', '2024-01-10')]);
 
         builder.fjernUttakPerioder([{ fom: '2024-01-01', tom: '2024-01-08' }], SKAL_FORSKYVE);
 
-        expect(builder.getUttakPerioder()).toEqual([{ fom: '2024-01-01', tom: '2024-01-02' }]);
+        expect(builder.getUttakPerioder()).toEqual([lagPeriode('2024-01-01', '2024-01-02')]);
     });
 
     it('skal fjerne en periode som overlapper slutten av en eksisterende periode', () => {
-        const builder = new UttakPeriodeBuilder([{ fom: '2024-01-05', tom: '2024-01-10' }]);
+        const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-05', '2024-01-10')]);
 
         builder.fjernUttakPerioder([{ fom: '2024-01-08', tom: '2024-01-15' }], SKAL_FORSKYVE);
 
-        expect(builder.getUttakPerioder()).toEqual([{ fom: '2024-01-05', tom: '2024-01-05' }]);
+        expect(builder.getUttakPerioder()).toEqual([lagPeriode('2024-01-05', '2024-01-05')]);
     });
 
     it('skal fjerne en periode som overlapper helt med en eksisterende periode', () => {
-        const builder = new UttakPeriodeBuilder([{ fom: '2024-01-05', tom: '2024-01-10' }]);
+        const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-05', '2024-01-10')]);
 
         builder.fjernUttakPerioder([{ fom: '2024-01-01', tom: '2024-01-15' }], SKAL_FORSKYVE);
 
@@ -328,12 +338,12 @@ describe('UttakPeriodeBuilder.fjernUttakPerioder (Forskyv)', () => {
 
     it('skal forskyve siste periode bakover og slå sammen', () => {
         const builder = new UttakPeriodeBuilder([
-            { fom: '2024-01-01', tom: '2024-01-04' },
-            { fom: '2024-01-05', tom: '2024-01-10' },
+            lagPeriode('2024-01-01', '2024-01-04'),
+            lagPeriode('2024-01-05', '2024-01-10'),
         ]);
 
-        builder.fjernUttakPerioder([{ fom: '2024-01-04', tom: '2024-01-05' }], SKAL_FORSKYVE);
+        builder.fjernUttakPerioder([lagNyPeriode('2024-01-04', '2024-01-05')], SKAL_FORSKYVE);
 
-        expect(builder.getUttakPerioder()).toEqual([{ fom: '2024-01-01', tom: '2024-01-08' }]);
+        expect(builder.getUttakPerioder()).toEqual([lagPeriode('2024-01-01', '2024-01-08')]);
     });
 });

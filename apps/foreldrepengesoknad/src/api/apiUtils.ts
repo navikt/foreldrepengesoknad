@@ -46,13 +46,13 @@ import {
 } from '@navikt/fp-types';
 import {
     Uttaksdagen,
+    Uttaksperioden,
     dateToISOString,
     getDecoratorLanguageCookie,
     isValidTidsperiode,
     omitOne,
 } from '@navikt/fp-utils';
 import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from '@navikt/fp-uttaksplan';
-import { erEøsUttakPeriode } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 export const FEIL_VED_INNSENDING =
@@ -539,12 +539,9 @@ const filtrerUtUendredePeriode = (
     uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     eksisterendeSak?: FpSak_fpoversikt,
 ): UttakPeriode_fpoversikt[] => {
-    return uttaksplan.filter((periode) => {
-        if (erEøsUttakPeriode(periode)) {
-            return false;
-        }
-        return eksisterendeSak ? !erPeriodeIOpprinneligSak(eksisterendeSak, periode) : true;
-    });
+    return uttaksplan
+        .filter((periode) => Uttaksperioden.erIkkeEøsPeriode(periode))
+        .filter((periode) => (eksisterendeSak ? !erPeriodeIOpprinneligSak(eksisterendeSak, periode) : true));
 };
 
 const filtrerUtAnnenPartsPerioder = (
@@ -552,12 +549,9 @@ const filtrerUtAnnenPartsPerioder = (
     rolle: Søkerrolle,
 ): UttakPeriode_fpoversikt[] => {
     const søker = rolle === 'mor' ? 'MOR' : 'FAR_MEDMOR';
-    return uttaksplan.filter((periode) => {
-        if (erEøsUttakPeriode(periode)) {
-            return false;
-        }
-        return periode.forelder === søker;
-    });
+    return uttaksplan
+        .filter((periode) => Uttaksperioden.erIkkeEøsPeriode(periode))
+        .filter((periode) => periode.forelder === søker);
 };
 
 const midlertidigMappingAvUttaksplan = (uttaksplan: UttakPeriode_fpoversikt[]): Uttaksplanperiode[] => {

@@ -25,7 +25,7 @@ import {
     isFødtBarn,
 } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
-import { getFamiliehendelsedato } from '@navikt/fp-utils';
+import { Uttaksperioden, getFamiliehendelsedato } from '@navikt/fp-utils';
 import {
     FjernAltIUttaksplanModal,
     HvaErMulig,
@@ -103,7 +103,12 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
 
     const valgteStønadskontoer = tilgjengeligeStønadskontoerQuery.data;
 
-    const nyttUttaksplanForslag = useUttaksplanForslag(valgteStønadskontoer);
+    // Filtrerer ut periodane til annen part midlertidig fram til me får på plass lagring av desse periodane
+    const nyttUttaksplanForslag = useUttaksplanForslag(valgteStønadskontoer).filter(
+        (periode) =>
+            Uttaksperioden.erIkkeEøsPeriode(periode) &&
+            periode.forelder === (erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
+    );
 
     if (!valgteStønadskontoer || annenPartVedtakQuery.isLoading) {
         return null;
@@ -128,7 +133,7 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig}>
                 {isLocalhostOrDev() && (
-                    <Alert variant="warning">
+                    <Alert variant="info">
                         <BodyLong>
                             <FormattedMessage id="uttaksplan.AnnenPartPerioderInfomelding" />
                         </BodyLong>
@@ -151,14 +156,15 @@ export const UttaksplanStegNy = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbr
                     erPeriodeneTilAnnenPartLåst={!!tidligereUttaksperioder}
                     aktiveArbeidsforhold={aktiveArbeidsforhold}
                 >
-                    {feilmelding && <Alert variant="error">{feilmelding}</Alert>}
+                    <HvaErMulig erFarOgFar={false} loggExpansionCardOpen={loggExpansionCardOpen} />
+
+                    <UforutsetteEndringer erFarOgFar={false} loggExpansionCardOpen={loggExpansionCardOpen} />
+
                     <div ref={kvoteOppsummeringRef}>
                         <KvoteOppsummering erInnsyn={false} visStatusIkoner />
                     </div>
 
-                    <HvaErMulig erFarOgFar={false} loggExpansionCardOpen={loggExpansionCardOpen} />
-
-                    <UforutsetteEndringer erFarOgFar={false} loggExpansionCardOpen={loggExpansionCardOpen} />
+                    {feilmelding && <Alert variant="error">{feilmelding}</Alert>}
 
                     <UttaksplanRedigeringProvider
                         oppdaterUttaksplan={oppdaterUttaksplan}

@@ -36,6 +36,7 @@ describe('eksisterendeSakUtils', () => {
                         årsak: 'ANNET',
                     },
                     flerbarnsdager: false,
+                    forelder: 'MOR',
                 },
                 {
                     fom: '2022-11-30',
@@ -49,6 +50,7 @@ describe('eksisterendeSakUtils', () => {
                     },
                     samtidigUttak: 100,
                     flerbarnsdager: false,
+                    forelder: 'MOR',
                 },
             ],
         },
@@ -164,33 +166,6 @@ describe('eksisterendeSakUtils', () => {
                 opprinneligSøkt: undefined,
             }),
         ],
-        uttaksplanNy: [
-            {
-                flerbarnsdager: false,
-                fom: '2022-11-09',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                resultat: {
-                    innvilget: true,
-                    trekkerDager: true,
-                    trekkerMinsterett: true,
-                    årsak: 'ANNET',
-                },
-                tom: '2022-11-29',
-            },
-            {
-                flerbarnsdager: false,
-                fom: '2022-11-30',
-                kontoType: 'MØDREKVOTE',
-                resultat: {
-                    innvilget: true,
-                    trekkerDager: true,
-                    trekkerMinsterett: true,
-                    årsak: 'ANNET',
-                },
-                samtidigUttak: 100,
-                tom: '2022-12-13',
-            },
-        ],
     };
 
     const eksisterendeSakMorAdopsjonBareMorHarRett = {
@@ -218,6 +193,7 @@ describe('eksisterendeSakUtils', () => {
                         årsak: 'ANNET',
                     },
                     flerbarnsdager: false,
+                    forelder: 'MOR',
                 },
             ],
         },
@@ -292,20 +268,6 @@ describe('eksisterendeSakUtils', () => {
                 opprinneligSøkt: undefined,
             }),
         ],
-        uttaksplanNy: [
-            {
-                flerbarnsdager: false,
-                fom: '2022-11-09',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                resultat: {
-                    innvilget: true,
-                    trekkerDager: true,
-                    trekkerMinsterett: true,
-                    årsak: 'ANNET',
-                },
-                tom: '2022-11-29',
-            },
-        ],
     };
 
     const eksisterendeSakMedØnsketJusteringFarFødsel = {
@@ -330,6 +292,7 @@ describe('eksisterendeSakUtils', () => {
                         årsak: 'ANNET',
                     },
                     flerbarnsdager: false,
+                    forelder: 'FAR_MEDMOR',
                 },
             ],
         },
@@ -401,20 +364,6 @@ describe('eksisterendeSakUtils', () => {
                 angittAvAnnenPart: undefined,
                 opprinneligSøkt: undefined,
             }),
-        ],
-        uttaksplanNy: [
-            {
-                flerbarnsdager: false,
-                fom: '2022-11-09',
-                kontoType: 'FEDREKVOTE',
-                resultat: {
-                    innvilget: true,
-                    trekkerDager: true,
-                    trekkerMinsterett: false,
-                    årsak: 'ANNET',
-                },
-                tom: '2022-11-29',
-            },
         ],
     };
 
@@ -518,6 +467,7 @@ describe('eksisterendeSakUtils', () => {
             },
             samtidigUttak: 50,
             flerbarnsdager: true,
+            forelder: 'MOR',
         } satisfies UttakPeriode_fpoversikt;
 
         const { fom, tom, ...uttaksperiodeRest } = uttaksperiode;
@@ -543,6 +493,8 @@ describe('eksisterendeSakUtils', () => {
                 årsak: 'ANNET',
             },
             utsettelseÅrsak: 'HV_ØVELSE',
+            forelder: 'MOR',
+            flerbarnsdager: false,
         } satisfies UttakPeriode_fpoversikt;
 
         const { fom: fomU, tom: tomU, ...utsettelsesperiodeRest } = utsettelsesperiode;
@@ -554,7 +506,7 @@ describe('eksisterendeSakUtils', () => {
             overføringÅrsak: undefined,
             periode: { fom: '2021-11-02', tom: '2021-11-02' },
             samtidigUttak: undefined,
-            flerbarnsdager: undefined,
+            flerbarnsdager: false,
             gradering: undefined,
             kontoType: undefined,
             morsAktivitet: undefined,
@@ -573,6 +525,8 @@ describe('eksisterendeSakUtils', () => {
                 årsak: 'ANNET',
             },
             overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
+            flerbarnsdager: false,
+            forelder: 'FAR_MEDMOR',
         } satisfies UttakPeriode_fpoversikt;
 
         const { fom: fomO, tom: tomO, ...overføringsperiodeRest } = overføringsperiode;
@@ -582,7 +536,7 @@ describe('eksisterendeSakUtils', () => {
             oppholdÅrsak: undefined,
             periode: { fom: '2022-11-07', tom: '2022-11-07' },
             samtidigUttak: undefined,
-            flerbarnsdager: undefined,
+            flerbarnsdager: false,
             gradering: undefined,
             kontoType: 'FEDREKVOTE',
             morsAktivitet: undefined,
@@ -600,6 +554,8 @@ describe('eksisterendeSakUtils', () => {
                 årsak: 'ANNET',
             },
             oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER',
+            forelder: 'MOR',
+            flerbarnsdager: false,
         } satisfies UttakPeriode_fpoversikt;
 
         const { fom: fomOp, tom: tomOp, ...oppholdsperiodeRest } = oppholdsperiode;
@@ -610,7 +566,8 @@ describe('eksisterendeSakUtils', () => {
             kontoType: 'MØDREKVOTE',
             periode: { fom: '2022-08-05', tom: '2022-08-05' },
             samtidigUttak: undefined,
-            flerbarnsdager: undefined,
+            forelder: 'MOR',
+            flerbarnsdager: false,
             gradering: undefined,
             morsAktivitet: undefined,
             utsettelseÅrsak: undefined,
@@ -634,6 +591,8 @@ describe('eksisterendeSakUtils', () => {
                 trekkerDager: true,
                 årsak: 'ANNET',
             },
+            forelder: 'MOR',
+            flerbarnsdager: false,
         } satisfies UttakPeriode_fpoversikt;
 
         const { fom: fomAp, tom: tomAp, ...avslåttPeriodeRest } = avslåttPeriode;
@@ -641,7 +600,8 @@ describe('eksisterendeSakUtils', () => {
         const forventetMappetAvslåttPeriodeSøker = {
             ...avslåttPeriodeRest,
             gjelderAnnenPart: false,
-            flerbarnsdager: undefined,
+            flerbarnsdager: false,
+            forelder: 'MOR',
             gradering: undefined,
             periode: { fom: '2022-10-07', tom: '2022-10-07' },
             morsAktivitet: undefined,

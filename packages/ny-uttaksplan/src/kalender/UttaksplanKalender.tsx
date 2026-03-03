@@ -10,7 +10,7 @@ import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
 import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
-import { isAvslåttPeriode, isAvslåttPeriodeFørsteSeksUkerMor } from '../utils/periodeUtils';
+import { erAvslåttPeriode, erAvslåttPeriodeFørsteSeksUkerMor } from '../utils/periodeUtils';
 import { UttaksplanLegend } from './legend/UttaksplanLegend';
 import { KalenderPdf } from './pdf/KalenderPdf';
 import { RedigerKalenderIndex } from './redigering/RedigerKalenderIndex';
@@ -235,10 +235,10 @@ const AvslåttePerioder = () => {
 
     const harAvslåttePerioderSomIkkeGirTapteDager = uttakPerioder.some(
         (p) =>
-            isAvslåttPeriode(p) &&
+            erAvslåttPeriode(p) &&
             erVanligUttakPeriode(p) &&
             p.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER' &&
-            (foreldreInfo.søker === 'FAR_MEDMOR' || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
+            (foreldreInfo.søker === 'FAR_MEDMOR' || !erAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
     );
 
     return harAvslåttePerioderSomIkkeGirTapteDager ? (
