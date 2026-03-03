@@ -82,6 +82,9 @@ export const UttaksplanForm = ({
     const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
+    const uttaksplanMedKunNyePerioder =
+        uttaksplan?.filter((p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.resultat === undefined) ?? [];
+    const gjeldendeUttaksplan = erEndringssøknad ? uttaksplanMedKunNyePerioder : uttaksplan;
 
     const navigator = useFpNavigator(
         søkerInfo.arbeidsforhold,
@@ -115,20 +118,25 @@ export const UttaksplanForm = ({
     const visAutomatiskJustering =
         erSøkerFarEllerMedmor &&
         søkersituasjon.situasjon === 'fødsel' &&
-        uttaksplan &&
-        finnPerioderRundtFødsel(uttaksplan, barn).length > 0 &&
+        gjeldendeUttaksplan &&
+        finnPerioderRundtFødsel(gjeldendeUttaksplan, barn).length > 0 &&
         isUfødtBarn(barn) &&
         barn.termindato !== undefined &&
         !bareFarHarRett;
 
     const onSubmit = (formValues: FormValues) => {
-        if (uttaksplan?.length === 0) {
-            setFeilmelding(<FormattedMessage id="UttaksplanSteg.IngenPerioder" />);
+        if (gjeldendeUttaksplan?.length === 0) {
+            if (erEndringssøknad) {
+                setFeilmelding(<FormattedMessage id="UttaksplanSteg.IngenNyePerioder" />);
+            } else {
+                setFeilmelding(<FormattedMessage id="UttaksplanSteg.IngenPerioder" />);
+            }
+
             scrollToKvoteOppsummering();
         } else if (erAntallDagerOvertrukket) {
             setFeilmelding(<FormattedMessage id="UttaksplanSteg.OvertrukketDager" />);
             scrollToKvoteOppsummering();
-        } else if (harPeriodeDerMorsAktivitetIkkeErValgt(uttaksplan || defaultUttaksperioder)) {
+        } else if (harPeriodeDerMorsAktivitetIkkeErValgt(gjeldendeUttaksplan || defaultUttaksperioder)) {
             setFeilmelding(<FormattedMessage id="UttaksplanSteg.MorsAktivitetIkkeValgt" />);
             scrollToKvoteOppsummering();
         } else {
@@ -138,7 +146,7 @@ export const UttaksplanForm = ({
                     : undefined,
             });
 
-            if (!uttaksplan) {
+            if (!gjeldendeUttaksplan) {
                 oppdaterUttaksplan(defaultUttaksperioder);
             }
 
@@ -169,7 +177,10 @@ export const UttaksplanForm = ({
                 />
                 {visAutomatiskJustering && (
                     <VStack gap="space-16">
-                        <AutomatiskJusteringInfotekst harSvartJaPåAutoJustering={harSvartJaPåAutoJustering} />
+                        <AutomatiskJusteringInfotekst
+                            harSvartJaPåAutoJustering={harSvartJaPåAutoJustering}
+                            uttaksplan={gjeldendeUttaksplan}
+                        />
                         <RhfRadioGroup
                             name="ønskerJustertUttakVedFødsel"
                             control={formMethods.control}
@@ -205,9 +216,14 @@ export const UttaksplanForm = ({
     );
 };
 
-const AutomatiskJusteringInfotekst = ({ harSvartJaPåAutoJustering }: { harSvartJaPåAutoJustering: boolean }) => {
+const AutomatiskJusteringInfotekst = ({
+    harSvartJaPåAutoJustering,
+    uttaksplan,
+}: {
+    harSvartJaPåAutoJustering: boolean;
+    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+}) => {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN_NY);
 
     const termindato = getTermindato(barn);
 
