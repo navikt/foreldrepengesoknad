@@ -394,7 +394,10 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                                         <br />
                                                     </>
                                                 )}
-                                                <span>Antall utbetalingsdager: {antallVirkedager}</span>
+                                                <FormattedMessage
+                                                    id="beregning.utbetalingsvisning.antallUtbetalingsdager"
+                                                    values={{ antall: antallVirkedager }}
+                                                />
                                             </ExpansionCard.Description>
                                         </div>
                                     </HStack>

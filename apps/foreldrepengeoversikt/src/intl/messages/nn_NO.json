@@ -331,6 +331,7 @@
     "beregning.utbetalingsvisning.tabell.beløp": "Beløp",
     "beregning.utbetalingsvisning.direkte": "Vi skal betala til deg: {beløp}",
     "beregning.utbetalingsvisning.arbeidsgiver": "Vi skal betala til arbeidsgivar: {beløp}",
+    "beregning.utbetalingsvisning.antallUtbetalingsdager": "Tal på utbetalingsdagar: {antall}",
     "beregning.feriepenger.tittel": "Feriepengar",
     "beregning.feriepenger.ikkeRett": "Du har ikkje rett på feriepengar av foreldrepengane dine. <link>Her kan du lese meir om kven som har rett på feriepengar.</link>",
     "beregning.feriepenger.harRett": "Du har rett på feriepengar av foreldrepengane dine. Du får feriepengar av dei første {uker} vekene av den totale foreldrepengeperioden. Feriepengane er 10,2 % av det som er utbetalt. <link>Her kan du lese meir om feriepengar av foreldrepengar.</link>",
