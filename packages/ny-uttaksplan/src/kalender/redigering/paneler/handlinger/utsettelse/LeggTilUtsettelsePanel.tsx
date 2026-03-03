@@ -35,6 +35,7 @@ export const LeggTilUtsettelsePanel = ({ setVisUtsettelsePanel }: Props) => {
                         fom: p.fom,
                         tom: p.tom,
                         utsettelseÅrsak: formValues.utsettelseÅrsak,
+                        flerbarnsdager: false,
                     }) satisfies UttakPeriode_fpoversikt,
             ),
             false,

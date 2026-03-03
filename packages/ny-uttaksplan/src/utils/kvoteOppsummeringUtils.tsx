@@ -99,7 +99,12 @@ export const finnAntallDagerDerKunEnHarForeldrepenger = (
     };
 };
 
-export const filtrerAvslåttePerioderMenBeholdPleiepenger = (periode: UttakPeriode_fpoversikt) => {
+export const filtrerAvslåttePerioderMenBeholdPleiepenger = (
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+) => {
+    if (erEøsUttakPeriode(periode)) {
+        return true;
+    }
     if (periode.resultat?.innvilget === false) {
         return periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
     }

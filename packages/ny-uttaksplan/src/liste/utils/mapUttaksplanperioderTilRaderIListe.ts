@@ -1,8 +1,7 @@
 import dayjs from 'dayjs';
 
-import { Uttaksperioden } from '@navikt/fp-utils';
-
 import { Uttaksplanperiode, erUttaksplanHull } from '../../types/UttaksplanPeriode';
+import { erPrematuruker, erUtsettelsesperiode } from '../../utils/periodeUtils';
 
 export const mapUttaksplanperioderTilRaderIListe = (
     saksperioderInkludertHull: Uttaksplanperiode[],
@@ -28,11 +27,7 @@ export const mapUttaksplanperioderTilRaderIListe = (
         const periode = saksperioderInkludertHull[index]!;
 
         // Hull / Prematuruker / Utsettelse -> alltid egen rad
-        if (
-            erUttaksplanHull(periode) ||
-            Uttaksperioden.erPrematuruker(periode) ||
-            Uttaksperioden.erUtsettelsesperiode(periode)
-        ) {
+        if (erUttaksplanHull(periode) || erPrematuruker(periode) || erUtsettelsesperiode(periode)) {
             avsluttAktivRad();
             radIListeMap.set(periodeKey(periode.fom, periode.tom), [periode]);
             index += 1;

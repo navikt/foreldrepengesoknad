@@ -33,6 +33,7 @@ export const deltUttak = (
             kontoType: 'FORELDREPENGER_FØR_FØDSEL',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
+            flerbarnsdager: false,
         };
 
         morsPerioder.push(periodeFPFF);
@@ -47,6 +48,7 @@ export const deltUttak = (
             kontoType: 'MØDREKVOTE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
+            flerbarnsdager: false,
         };
 
         morsPerioder.push(periodeMødrekvote);
@@ -61,6 +63,7 @@ export const deltUttak = (
             kontoType: 'FELLESPERIODE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
+            flerbarnsdager: false,
         };
 
         morsPerioder.push(periodeFellesperiode);
@@ -75,6 +78,7 @@ export const deltUttak = (
             kontoType: 'FEDREKVOTE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
+            flerbarnsdager: false,
         };
 
         farsPerioder.push(periodeFedrekvote);
@@ -89,6 +93,7 @@ export const deltUttak = (
             kontoType: 'FELLESPERIODE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
+            flerbarnsdager: false,
         };
 
         farsPerioder.push(periodeFellesperiode);
@@ -97,7 +102,10 @@ export const deltUttak = (
     return [...morsPerioder, ...farsPerioder].sort(sorterPerioder);
 };
 
-export const sorterPerioder = (p1: UttakPeriode_fpoversikt, p2: UttakPeriode_fpoversikt) => {
+export const sorterPerioder = (
+    p1: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    p2: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+) => {
     const tidsperiode1 = { fom: p1.fom, tom: p1.tom };
     const tidsperiode2 = { fom: p2.fom, tom: p2.tom };
 

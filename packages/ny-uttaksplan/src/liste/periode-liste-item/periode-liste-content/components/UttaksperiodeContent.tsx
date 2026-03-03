@@ -135,7 +135,7 @@ const getTekstForArbeidOgSamtidigUttak = (
         }
 
         if (periode.samtidigUttak !== undefined) {
-            return getSamtidigUttakTekst(periode.samtidigUttak, periode.forelder!, erFarEllerMedmor, navnPåForeldre);
+            return getSamtidigUttakTekst(periode.samtidigUttak, periode.forelder, erFarEllerMedmor, navnPåForeldre);
         }
     }
 

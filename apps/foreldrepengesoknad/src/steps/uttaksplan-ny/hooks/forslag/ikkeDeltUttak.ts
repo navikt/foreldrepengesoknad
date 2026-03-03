@@ -26,6 +26,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             morsAktivitet: 'IKKE_OPPGITT',
             fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).fom,
             tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).tom,
+            flerbarnsdager: false,
         };
         perioder.push(aktivitetsFriPeriode);
 
@@ -40,6 +41,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
                 UttaksdagenString.neste(aktivitetsFriPeriode.tom).getDato(),
                 foreldrepengerKonto.dager,
             ).tom,
+            flerbarnsdager: false,
         };
         perioder.push(aktivitetskravPeriode);
     } else if (farOgFar) {
@@ -49,6 +51,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             morsAktivitet: 'IKKE_OPPGITT',
             fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).fom,
             tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).tom,
+            flerbarnsdager: false,
         };
         perioder.push(periode);
     } else {
@@ -60,6 +63,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
                 morsAktivitet: 'IKKE_OPPGITT',
                 fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote.dager).fom,
                 tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote.dager).tom,
+                flerbarnsdager: false,
             };
 
             perioder.push(aktivitetsFriPeriode);
@@ -72,6 +76,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             morsAktivitet: foreldrepengerKonto.konto === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : undefined,
             fom: getTidsperiodeString(startDatoNestePeriode, foreldrepengerKonto.dager).fom,
             tom: getTidsperiodeString(startDatoNestePeriode, foreldrepengerKonto.dager).tom,
+            flerbarnsdager: false,
         };
 
         perioder.push(periode);
@@ -91,6 +96,7 @@ const ikkeDeltUttakAdopsjonMor = (
         morsAktivitet: foreldrepengerKonto.konto === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : undefined,
         fom: getTidsperiodeString(førsteUttaksdag, foreldrepengerKonto.dager).fom,
         tom: getTidsperiodeString(førsteUttaksdag, foreldrepengerKonto.dager).tom,
+        flerbarnsdager: false,
     };
 
     return [periode];
@@ -137,6 +143,7 @@ const ikkeDeltUttakFødselMor = (
             morsAktivitet: foreldrePengerFørFødselKonto.konto === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : undefined,
             fom: UttaksdagenString.denne(førsteUttaksdag).getDatoAntallUttaksdagerTidligere(15),
             tom: UttaksdagenString.forrige(førsteUttaksdag).getDato(),
+            flerbarnsdager: false,
         };
 
         perioder.push(periodeFørFødsel);
@@ -150,6 +157,7 @@ const ikkeDeltUttakFødselMor = (
         morsAktivitet: foreldrepengerKonto.konto === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : undefined,
         fom: antallDagerIForeldrepenger.fom,
         tom: antallDagerIForeldrepenger.tom,
+        flerbarnsdager: false,
     };
 
     perioder.push(foreldrepengerPeriode);
@@ -177,6 +185,7 @@ const ikkeDeltUttakFødselFarMedmor = (
                 kontoType: 'FORELDREPENGER',
                 fom: getTidsperiodeString(startDato, foreldrepengerKonto.dager).fom,
                 tom: getTidsperiodeString(startDato, foreldrepengerKonto.dager).tom,
+                flerbarnsdager: false,
             };
 
             perioder.push(aktivitetskravPeriode);
@@ -187,6 +196,7 @@ const ikkeDeltUttakFødselFarMedmor = (
                 morsAktivitet: 'IKKE_OPPGITT',
                 fom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).fom,
                 tom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).tom,
+                flerbarnsdager: false,
             };
 
             perioder.push(aktivitetsFriPeriode);
@@ -202,6 +212,7 @@ const ikkeDeltUttakFødselFarMedmor = (
                     UttaksdagenString.neste(aktivitetsFriPeriode.tom).getDato(),
                     foreldrepengerKonto.dager,
                 ).tom,
+                flerbarnsdager: false,
             };
 
             perioder.push(aktivitetskravPeriode);
@@ -214,6 +225,7 @@ const ikkeDeltUttakFødselFarMedmor = (
                 morsAktivitet: 'IKKE_OPPGITT',
                 fom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).fom,
                 tom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).tom,
+                flerbarnsdager: false,
             };
             perioder.push(periode);
         } else {
@@ -225,6 +237,7 @@ const ikkeDeltUttakFødselFarMedmor = (
                     morsAktivitet: 'IKKE_OPPGITT',
                     fom: getTidsperiodeString(startDato, aktivitetsfriKvote.dager).fom,
                     tom: getTidsperiodeString(startDato, aktivitetsfriKvote.dager).tom,
+                    flerbarnsdager: false,
                 };
 
                 perioder.push(aktivitetsFriPeriode);
@@ -238,6 +251,7 @@ const ikkeDeltUttakFødselFarMedmor = (
                 morsAktivitet: foreldrepengerKonto.konto === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : undefined,
                 fom: getTidsperiodeString(startDatoNestePeriode, foreldrepengerKonto.dager).fom,
                 tom: getTidsperiodeString(startDatoNestePeriode, foreldrepengerKonto.dager).tom,
+                flerbarnsdager: false,
             };
 
             perioder.push(periode);

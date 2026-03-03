@@ -18,10 +18,15 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { capitalizeFirstLetter, formatDateMedUkedagShortMonth, getFamiliehendelsedato } from '@navikt/fp-utils';
+import {
+    Uttaksperioden,
+    capitalizeFirstLetter,
+    formatDateMedUkedagShortMonth,
+    getFamiliehendelsedato,
+} from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { erUttaksperiode, getPeriodeTittel, uttaksperiodeKanJusteresVedFødsel } from './OppsummeringUtils';
+import { getPeriodeTittel, uttaksperiodeKanJusteresVedFødsel } from './OppsummeringUtils';
 import { OverføringsperiodedetaljerNy } from './detaljer/OverføringsperiodedetaljerNy';
 import { UttaksperiodedetaljerNy } from './detaljer/UttaksperiodedetaljerNy';
 import { UtsettelsesperiodedetaljerNy } from './detaljer/UttsettelsesperiodedetaljerNy';
@@ -94,7 +99,7 @@ export const UttaksplanOppsummeringslisteNy = ({ navnPåForeldre, registrerteArb
                     {uttaksplan.map((periode) => {
                         const periodeErNyEllerEndret = sak ? erPeriodeIOpprinneligSak(sak, periode) === false : true;
 
-                        if (erUttaksperiode(periode)) {
+                        if (Uttaksperioden.erIkkeEøsPeriode(periode) && Uttaksperioden.erUttaksperiode(periode)) {
                             const tidsperiode = formatTidsperiode(periode.fom, periode.tom);
                             return (
                                 <FormSummary.Answer key={periode.kontoType + tidsperiode}>
