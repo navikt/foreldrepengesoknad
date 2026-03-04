@@ -1,4 +1,4 @@
-import { HeartFillIcon, MinusCircleIcon, PlusCircleIcon, TeddyBearFillIcon } from '@navikt/aksel-icons';
+import { ChevronDownCircleIcon, ChevronUpCircleIcon, HeartFillIcon, TeddyBearFillIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -128,7 +128,7 @@ export const UttaksplanLegend = ({
             {skjulTekstSomDefault && !visHorisontalt && (
                 <HStack gap="space-8" align="center">
                     <FormattedMessage id="UttaksplanLegend.HvaFargeneBetyr" />
-                    <MinusCircleIcon
+                    <ChevronUpCircleIcon
                         title={intl.formatMessage({ id: 'UttaksplanLegend.LukkFargeForklaring' })}
                         fontSize="1.5rem"
                         className="mb-1 cursor-pointer"
@@ -146,7 +146,7 @@ export const UttaksplanLegend = ({
                 />
             ))}
             {skjulTekstSomDefault && visHorisontalt && (
-                <PlusCircleIcon
+                <ChevronDownCircleIcon
                     title={intl.formatMessage({ id: 'UttaksplanLegend.ApneFargeForklaring' })}
                     fontSize="1.5rem"
                     className="mb-1 cursor-pointer"
