@@ -20,6 +20,5 @@
     "kalender.utsettelse.HV_OVELSE": "pga. øvelse eller tjeneste i Heimevernet",
     "kalender.utsettelse.NAV_TILTAK": "pga. Nav tiltak som utgjør 100% arbeid",
     "kalender.lastNed": "Last ned kalender som PDF",
-    "kalender.skjermleser.familiehendelse": "{familiehendelsenavn} den {dato}",
     "kalender.skjermleser.periode": "{periodeNavn} fra den {fraDato} til den {tilDato}"
 }

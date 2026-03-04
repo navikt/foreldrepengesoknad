@@ -1,3 +1,4 @@
+import { ExclamationmarkTriangleFillIcon, HeartFillIcon, TeddyBearFillIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { IntlShape, useIntl } from 'react-intl';
 
@@ -10,7 +11,13 @@ import {
     isFødtBarn,
 } from '@navikt/fp-types';
 import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
-import { UttaksdagenString, Uttaksperioden, formaterDatoUtenDag, getFamiliehendelsedato } from '@navikt/fp-utils';
+import {
+    TidsperiodenString,
+    UttaksdagenString,
+    Uttaksperioden,
+    formaterDatoUtenDag,
+    getFamiliehendelsedato,
+} from '@navikt/fp-utils';
 import { assertUnreachable } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
@@ -51,49 +58,84 @@ export const usePerioderForKalendervisning = (
         const color = getKalenderFargeForPeriode(periode, erFarEllerMedmor, saksperioderInkludertTapteDager, barn);
         const isUpdated = endredePerioder.some((p) => p.fom === periode.fom && p.tom === periode.tom);
 
+        const perioder = lagBarnehageOgfamiliehendelsePeriode(
+            intl,
+            barn,
+            color,
+            familiehendelsedato,
+            barnehagestartdato,
+            periode,
+        );
+
         if (dayjs(familiehendelsedato).isBetween(periode.fom, periode.tom, 'day', '[]')) {
-            return [...acc, ...splittPeriodeITo(periode, familiehendelsedato, color, navnPåForeldre, intl, isUpdated)];
+            return [
+                ...acc,
+                ...perioder,
+                ...splittPeriodeITo(periode, familiehendelsedato, color, navnPåForeldre, intl, isUpdated),
+            ];
         }
 
         if (
             barnehagestartdato !== undefined &&
             dayjs(barnehagestartdato).isBetween(periode.fom, periode.tom, 'day', '[]')
         ) {
-            return [...acc, ...splittPeriodeITo(periode, barnehagestartdato, color, navnPåForeldre, intl, isUpdated)];
+            return [
+                ...acc,
+                ...perioder,
+                ...splittPeriodeITo(periode, barnehagestartdato, color, navnPåForeldre, intl, isUpdated),
+            ];
         }
 
         return [
             ...acc,
+            ...perioder,
             {
                 fom: periode.fom,
                 tom: periode.tom,
                 color,
                 srText: getKalenderSkjermlesertekstForPeriode(periode, navnPåForeldre, intl),
                 isUpdated,
-                isMarked: harPeriodeDerMorsAktivitetIkkeErValgt([periode]),
-            },
+                ...leggTilIkonVedPeriodeDerMorsAktivitetIkkeErValgt(periode),
+            } satisfies CalendarPeriod,
         ];
     }, []);
 
-    if (barnehagestartdato !== undefined) {
-        kalenderPerioder.push({
-            fom: barnehagestartdato,
-            tom: barnehagestartdato,
-            color: 'PURPLE',
-            srText: intl.formatMessage({ id: 'kalender.barnehageplass' }),
-        });
+    if (!unikePerioder.some((p) => TidsperiodenString.forPeriode(p).inneholderDato(familiehendelsedato))) {
+        kalenderPerioder.push(lagFamiliehendelseDato(familiehendelsedato, 'NONE', barn, intl));
     }
-
-    kalenderPerioder.push({
-        fom: familiehendelsedato,
-        tom: familiehendelsedato,
-        color: 'PINK',
-        srText: getSkjermlesertekstForFamiliehendelse(barn, intl),
-    });
+    if (
+        barnehagestartdato &&
+        !unikePerioder.some((p) => TidsperiodenString.forPeriode(p).inneholderDato(barnehagestartdato))
+    ) {
+        kalenderPerioder.push(lagBarnehagedatoPeriode(barnehagestartdato, 'NONE', intl));
+    }
 
     kalenderPerioder.sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)));
 
     return kalenderPerioder;
+};
+
+const lagBarnehageOgfamiliehendelsePeriode = (
+    intl: IntlShape,
+    barn: Barn,
+    color: CalendarPeriodColor,
+    familiehendelsedato: string,
+    barnehagedato?: string,
+    periode?: UttaksplanperiodeMedKunTapteDager,
+): CalendarPeriod[] => {
+    const perioder: CalendarPeriod[] = [];
+    if (
+        barnehagedato !== undefined &&
+        (!periode || TidsperiodenString.forPeriode(periode).inneholderDato(barnehagedato))
+    ) {
+        perioder.push(lagBarnehagedatoPeriode(barnehagedato, color, intl));
+    }
+
+    if (!periode || TidsperiodenString.forPeriode(periode).inneholderDato(familiehendelsedato)) {
+        perioder.push(lagFamiliehendelseDato(familiehendelsedato, color, barn, intl));
+    }
+
+    return perioder;
 };
 
 const getKalenderFargeForPeriode = (
@@ -292,38 +334,67 @@ const splittPeriodeITo = (
     intl: IntlShape,
     isUpdated: boolean,
 ): CalendarPeriod[] => {
-    return [
-        {
-            fom: periode.fom,
-            tom: UttaksdagenString.forrige(dato).getDato(),
-            color,
-            srText: getKalenderSkjermlesertekstForPeriode(
-                {
-                    ...periode,
-                    fom: periode.fom,
-                    tom: UttaksdagenString.forrige(dato).getDato(),
-                },
-                navnPåForeldre,
-                intl,
-            ),
-            isUpdated,
-            isMarked: harPeriodeDerMorsAktivitetIkkeErValgt([periode]),
-        },
-        {
-            fom: UttaksdagenString.neste(dato).getDato(),
-            tom: periode.tom,
-            color,
-            srText: getKalenderSkjermlesertekstForPeriode(
-                {
-                    ...periode,
-                    fom: UttaksdagenString.neste(dato).getDato(),
-                    tom: periode.tom,
-                },
-                navnPåForeldre,
-                intl,
-            ),
-            isUpdated,
-            isMarked: harPeriodeDerMorsAktivitetIkkeErValgt([periode]),
-        },
-    ];
+    const forrige = UttaksdagenString.forrige(dato).getDato();
+    const neste = UttaksdagenString.neste(dato).getDato();
+    const ikonProps = leggTilIkonVedPeriodeDerMorsAktivitetIkkeErValgt(periode);
+
+    const lagPeriode = (fom: string, tom: string): CalendarPeriod => ({
+        fom,
+        tom,
+        color,
+        srText: getKalenderSkjermlesertekstForPeriode({ ...periode, fom, tom }, navnPåForeldre, intl),
+        isUpdated,
+        ...ikonProps,
+    });
+
+    if (dato === periode.fom) {
+        return [lagPeriode(neste, periode.tom)];
+    }
+
+    if (dato === periode.tom) {
+        return [lagPeriode(periode.fom, forrige)];
+    }
+
+    return [lagPeriode(periode.fom, forrige), lagPeriode(neste, periode.tom)];
+};
+
+const leggTilIkonVedPeriodeDerMorsAktivitetIkkeErValgt = (periode: UttaksplanperiodeMedKunTapteDager) => {
+    if (harPeriodeDerMorsAktivitetIkkeErValgt([periode])) {
+        return {
+            icon: <ExclamationmarkTriangleFillIcon aria-hidden color="var(--ax-warning-600)" />,
+            iconFull: false,
+        };
+    }
+    return {};
+};
+
+const lagFamiliehendelseDato = (
+    familiehendelsedato: string,
+    color: CalendarPeriodColor,
+    barn: Barn,
+    intl: IntlShape,
+): CalendarPeriod => {
+    return {
+        fom: familiehendelsedato,
+        tom: familiehendelsedato,
+        color,
+        srText: getSkjermlesertekstForFamiliehendelse(barn, intl),
+        icon: <HeartFillIcon aria-hidden color="var(--ax-bg-brand-magenta-strong)" width={25} height={25} />,
+        iconFull: true,
+    };
+};
+
+const lagBarnehagedatoPeriode = (
+    barnehagedato: string,
+    color: CalendarPeriodColor,
+    intl: IntlShape,
+): CalendarPeriod => {
+    return {
+        fom: barnehagedato,
+        tom: barnehagedato,
+        color,
+        srText: intl.formatMessage({ id: 'kalender.barnehageplass' }),
+        icon: <TeddyBearFillIcon aria-hidden color="var(--ax-brand-beige-800)" width={25} height={25} />,
+        iconFull: true,
+    };
 };

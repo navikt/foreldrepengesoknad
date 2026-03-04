@@ -1,3 +1,4 @@
+import { HeartFillIcon } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { ComponentProps } from 'react';
 import { action } from 'storybook/actions';
@@ -57,10 +58,12 @@ export const VisAlleMedTekst: Story = {
     args: {
         perioderForKalendervisning: [
             {
-                fom: '2024-03-14',
-                tom: '2024-04-03',
-                color: 'PINK',
+                fom: '2024-04-04',
+                tom: '2024-04-04',
                 srText: 'Termindato',
+                color: 'GREEN',
+                icon: <HeartFillIcon aria-hidden color="var(--ax-bg-brand-magenta-strong)" width={25} height={25} />,
+                iconFull: true,
             },
             {
                 fom: '2024-04-04',

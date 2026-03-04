@@ -1,4 +1,4 @@
-import { MinusCircleIcon, PlusCircleIcon } from '@navikt/aksel-icons';
+import { HeartFillIcon, MinusCircleIcon, PlusCircleIcon, TeddyBearFillIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -29,13 +29,14 @@ import {
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
-const UNSELECTABLE_COLORS = new Set<CalendarPeriodColor>(['PINK', 'PURPLE', 'GRAY']);
+const UNSELECTABLE_DAYS = new Set<LegendLabel>(['HELG', 'BARNEHAGEPLASS', 'FØDSEL']);
 
 interface Props {
     perioderForKalendervisning: CalendarPeriod[];
     selectLegend?: (color: CalendarPeriodColor) => void;
     readOnly: boolean;
     skjulTekstSomDefault?: boolean;
+    barnehagestartdato?: string;
 }
 
 export const UttaksplanLegend = ({
@@ -43,6 +44,7 @@ export const UttaksplanLegend = ({
     selectLegend,
     skjulTekstSomDefault = false,
     readOnly,
+    barnehagestartdato,
 }: Props) => {
     const intl = useIntl();
 
@@ -51,6 +53,7 @@ export const UttaksplanLegend = ({
     const {
         foreldreInfo: { søker },
         barn,
+        familiehendelsedato,
     } = useUttaksplanData();
 
     const saksperioderInkludertHull = useAlleUttakPerioderInklTapteDager();
@@ -68,8 +71,8 @@ export const UttaksplanLegend = ({
             (p) =>
                 dayjs(p.fom).isSameOrBefore(periode.tom) &&
                 dayjs(p.tom).isSameOrAfter(periode.fom) &&
-                p.color !== 'PINK' &&
-                p.color !== 'PURPLE',
+                !erBarnehageplassPeriode(p, barnehagestartdato) &&
+                !erFamiliehendelsePeriode(p, familiehendelsedato),
         );
 
         if (!periodeForKalendervisning) {
@@ -90,7 +93,9 @@ export const UttaksplanLegend = ({
         ];
     }, []);
 
-    const barnehageplassPeriode = perioderForKalendervisning.find((p) => p.color === 'PURPLE');
+    const barnehageplassPeriode = perioderForKalendervisning.find((p) =>
+        erBarnehageplassPeriode(p, barnehagestartdato),
+    );
     if (barnehageplassPeriode) {
         unikePeriodeLabelsMedFarge.push({
             label: 'BARNEHAGEPLASS',
@@ -101,7 +106,9 @@ export const UttaksplanLegend = ({
     unikePeriodeLabelsMedFarge.push(
         {
             label: getFamiliehendelseKalendarLabel(barn),
-            calendarPeriod: notEmpty(perioderForKalendervisning.find((p) => p.color === 'PINK')),
+            calendarPeriod: notEmpty(
+                perioderForKalendervisning.find((p) => erFamiliehendelsePeriode(p, familiehendelsedato)),
+            ),
         },
         {
             label: 'HELG',
@@ -129,17 +136,15 @@ export const UttaksplanLegend = ({
                     />
                 </HStack>
             )}
-            {sortedLegends
-                .filter((info) => info.calendarPeriod.color !== 'NONE')
-                .map((info) => (
-                    <LabelButtonMedEllerUtenToolip
-                        key={info.calendarPeriod.color}
-                        info={info}
-                        selectLegend={selectLegend}
-                        readOnly={readOnly}
-                        visTekst={!skjulTekstSomDefault || !visHorisontalt}
-                    />
-                ))}
+            {sortedLegends.map((info) => (
+                <LabelButtonMedEllerUtenToolip
+                    key={getPeriodKey(info)}
+                    info={info}
+                    selectLegend={selectLegend}
+                    readOnly={readOnly}
+                    visTekst={!skjulTekstSomDefault || !visHorisontalt}
+                />
+            ))}
             {skjulTekstSomDefault && visHorisontalt && (
                 <PlusCircleIcon
                     title={intl.formatMessage({ id: 'UttaksplanLegend.ApneFargeForklaring' })}
@@ -212,7 +217,6 @@ const LabelButtonMedEllerUtenToolip = ({
     if (visTekst) {
         return (
             <LabelButton
-                key={info.calendarPeriod.color}
                 info={info}
                 label={label}
                 selectLegend={selectLegend}
@@ -225,7 +229,6 @@ const LabelButtonMedEllerUtenToolip = ({
         <Tooltip content={label}>
             <div>
                 <LabelButton
-                    key={info.calendarPeriod.color}
                     info={info}
                     label={label}
                     selectLegend={selectLegend}
@@ -252,12 +255,11 @@ const LabelButton = ({
 }) => {
     const [selectedLabel, setSelectedLabel] = useState<LegendLabel | undefined>(undefined);
 
-    const erKlikkbar = !!selectLegend && !UNSELECTABLE_COLORS.has(info.calendarPeriod.color) && !readOnly;
+    const erKlikkbar = !!selectLegend && !UNSELECTABLE_DAYS.has(info.label) && !readOnly;
 
     return (
         <button
             type="button"
-            key={info.calendarPeriod.color}
             onClick={
                 erKlikkbar
                     ? () => {
@@ -267,15 +269,29 @@ const LabelButton = ({
                     : undefined
             }
             className={
-                `rounded-sm ${getSelectableStyle(!UNSELECTABLE_COLORS.has(info.calendarPeriod.color) && !readOnly)}` +
+                `rounded-sm ${getSelectableStyle(!UNSELECTABLE_DAYS.has(info.label) && !readOnly)}` +
                 ` ${getFocusStyle(info.calendarPeriod.color)} ${getSelectedStyle(selectedLabel === info.label, info.calendarPeriod.color)} `
             }
-            tabIndex={!UNSELECTABLE_COLORS.has(info.calendarPeriod.color) && !readOnly ? 0 : -1}
+            tabIndex={!UNSELECTABLE_DAYS.has(info.label) && !readOnly ? 0 : -1}
             disabled={!erKlikkbar}
         >
-            <CalendarLabel color={info.calendarPeriod.color}>
-                {visTekst && <BodyShort style={{ whiteSpace: 'nowrap' }}>{label}</BodyShort>}
-            </CalendarLabel>
+            {(info.label === 'FØDSEL' || info.label === 'TERMIN') && (
+                <HStack gap="space-4">
+                    <HeartFillIcon aria-hidden color="var(--ax-bg-brand-magenta-strong)" width={25} height={25} />
+                    {visTekst && <BodyShort style={{ whiteSpace: 'nowrap' }}>{label}</BodyShort>}
+                </HStack>
+            )}
+            {info.label === 'BARNEHAGEPLASS' && (
+                <HStack gap="space-4">
+                    <TeddyBearFillIcon aria-hidden color="var(--ax-brand-beige-800)" width={25} height={25} />
+                    {visTekst && <BodyShort style={{ whiteSpace: 'nowrap' }}>{label}</BodyShort>}
+                </HStack>
+            )}
+            {info.label !== 'FØDSEL' && info.label !== 'BARNEHAGEPLASS' && info.label !== 'TERMIN' && (
+                <CalendarLabel color={info.calendarPeriod.color}>
+                    {visTekst && <BodyShort style={{ whiteSpace: 'nowrap' }}>{label}</BodyShort>}
+                </CalendarLabel>
+            )}
         </button>
     );
 };
@@ -285,4 +301,16 @@ const getFamiliehendelseKalendarLabel = (barn: Barn): LegendLabel => {
         return isFødtBarn(barn) ? 'FØDSEL' : 'TERMIN';
     }
     return 'ADOPSJON';
+};
+
+const getPeriodKey = (info: UttaksplanKalenderLegendInfo) => {
+    return `${info.calendarPeriod.fom}${info.calendarPeriod.tom}${info.calendarPeriod.icon ? `;with-icon` : ''}`;
+};
+
+const erFamiliehendelsePeriode = (p: CalendarPeriod, familiehendelsedato: string): boolean => {
+    return p.fom === familiehendelsedato && p.tom === familiehendelsedato && !!p.icon;
+};
+
+const erBarnehageplassPeriode = (p: CalendarPeriod, barnehagestartdato: string | undefined): boolean => {
+    return p.fom === barnehagestartdato && p.tom === barnehagestartdato && !!p.icon;
 };

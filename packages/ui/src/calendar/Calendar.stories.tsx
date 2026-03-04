@@ -1,3 +1,4 @@
+import { ExclamationmarkTriangleFillIcon, HeartFillIcon } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -34,8 +35,10 @@ export const Default: Story = {
             {
                 fom: '2024-02-21',
                 tom: '2024-02-21',
-                color: 'PINK',
+                color: 'BLUE',
                 srText: 'Termindato',
+                icon: <HeartFillIcon aria-hidden color="var(--ax-bg-brand-magenta-strong)" width={25} height={25} />,
+                iconFull: true,
             },
             {
                 fom: '2024-02-22',
@@ -229,22 +232,26 @@ export const MarkertMedStjerne: Story = {
             {
                 fom: '2024-02-21',
                 tom: '2024-02-21',
-                color: 'PINK',
+                color: 'BLUE',
                 srText: 'Termindato',
+                icon: <HeartFillIcon aria-hidden color="var(--ax-bg-brand-magenta-strong)" width={25} height={25} />,
+                iconFull: true,
             },
             {
                 fom: '2024-02-22',
                 tom: '2024-05-05',
                 color: 'BLUE',
                 srText: 'Mors periode',
-                isMarked: true,
+                icon: <ExclamationmarkTriangleFillIcon aria-hidden color="var(--ax-warning-600)" />,
+                iconFull: false,
             },
             {
                 fom: '2024-05-06',
                 tom: '2024-08-30',
                 color: 'LIGHTGREEN',
                 srText: 'Fars periode',
-                isMarked: true,
+                icon: <ExclamationmarkTriangleFillIcon aria-hidden color="var(--ax-warning-600)" />,
+                iconFull: false,
             },
         ],
     },

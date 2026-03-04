@@ -54,7 +54,11 @@ const meta = {
                     oppdaterUttaksplan={handleOnPlanChange}
                     harEndretPlan={perioder !== undefined}
                 >
-                    <UttaksplanKalender readOnly={false} scrollToKvoteOppsummering={action('button-click')} />
+                    <UttaksplanKalender
+                        readOnly={false}
+                        scrollToKvoteOppsummering={action('button-click')}
+                        barnehagestartdato={args.barnehagestartdato}
+                    />
                 </UttaksplanRedigeringProvider>
             </UttaksplanDataProvider>
         );
@@ -144,6 +148,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        barnehagestartdato: '2024-12-14',
     },
 };
 
