@@ -2,6 +2,7 @@ import { useIntl } from 'react-intl';
 
 import { AnnenForelder, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { Barn, EksternArbeidsforholdDto_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan-ny';
 
 import { getAktivitetTekst } from '../OppsummeringUtils';
 import { Feltoppsummering } from './Feltoppsummering';
@@ -19,8 +20,7 @@ export const UttaksperiodedetaljerNy = ({ periode, annenForelder, registrerteArb
 
     const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
 
-    const skalViseFlerbarnsdager =
-        barn.antallBarn > 1 && periode.forelder !== 'MOR' && periode.kontoType !== 'MØDREKVOTE';
+    const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(barn.antallBarn, periode.forelder, periode.kontoType);
 
     return (
         <>
