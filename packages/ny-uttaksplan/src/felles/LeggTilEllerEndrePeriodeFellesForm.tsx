@@ -61,7 +61,6 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         foreldreInfo: { rettighetType, erMedmorDelAvSøknaden, søker },
         familiehendelsedato,
         erPeriodeneTilAnnenPartLåst,
-        uttakPerioder,
         aktiveArbeidsforhold,
         barn,
     } = useUttaksplanData();
@@ -84,10 +83,10 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     const skalViseFlerbarnsdager = barn.antallBarn > 1 && forelder !== 'MOR';
 
     const infotekstOmFedrekvoteBrukRundtFødsel = getInfotekstOmFedrekvoteBrukRundtFødsel(
-        uttakPerioder,
         valgtePerioder,
         kontoTypeFarMedmor,
         familiehendelsedato,
+        forelder,
         intl,
     );
 
@@ -809,24 +808,12 @@ const finnAktivitetType = (hvorSkalDuJobbe?: string): AktivitetType_fpoversikt =
 };
 
 const getInfotekstOmFedrekvoteBrukRundtFødsel = (
-    uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     valgtePerioder: Array<{ fom: string; tom: string }>,
     kontoTypeFarMedmor: KontoTypeUttak | undefined,
     familiehendelsedato: string,
+    forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined,
     intl: IntlShape,
 ) => {
-    const perioderInneholderFedrekvoteRundtFødsel = uttakPerioder
-        .filter((periode) =>
-            UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
-                periode,
-                familiehendelsedato,
-                undefined,
-            ),
-        )
-        .some((periode) => {
-            return erVanligUttakPeriode(periode) && periode.kontoType === 'FEDREKVOTE' && !periode.samtidigUttak;
-        });
-
     const valgteDagerRundtFødsel = valgtePerioder.filter((p) =>
         UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             p,
@@ -835,19 +822,9 @@ const getInfotekstOmFedrekvoteBrukRundtFødsel = (
         ),
     );
 
-    const valgteDagerInneholderFedrekvoteRundtFødsel =
-        valgteDagerRundtFødsel.length > 0 && kontoTypeFarMedmor === 'FEDREKVOTE';
-
-    let infotekstOmFedrekvoteBrukRundtFødsel = undefined;
-
-    if (
-        (perioderInneholderFedrekvoteRundtFødsel || valgteDagerInneholderFedrekvoteRundtFødsel) &&
-        kontoTypeFarMedmor === 'FEDREKVOTE'
-    ) {
-        infotekstOmFedrekvoteBrukRundtFødsel = intl.formatMessage({
-            id: 'LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel',
-        });
-    }
-
-    return infotekstOmFedrekvoteBrukRundtFødsel;
+    return valgteDagerRundtFødsel.length > 0 && kontoTypeFarMedmor === 'FEDREKVOTE' && forelder === 'FAR_MEDMOR'
+        ? intl.formatMessage({
+              id: 'LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel',
+          })
+        : undefined;
 };
