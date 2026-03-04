@@ -49,7 +49,9 @@ export const HvorMyeSteg = ({ satser }: Props) => {
     const lønnSøker2 = formMethods.watch('lønnSøker2');
 
     const erValidLønn = (verdi: number | undefined): boolean => {
-        if (!verdi) return false;
+        if (!verdi) {
+            return false;
+        }
         const strVerdi = String(verdi);
         return strVerdi.length >= 3 && /^\d+$/.test(strVerdi);
     };
