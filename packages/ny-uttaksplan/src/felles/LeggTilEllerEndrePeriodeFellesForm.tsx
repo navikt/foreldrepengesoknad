@@ -80,7 +80,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         ønskerFlerbarnsdager,
     } = formMethods.watch();
 
-    const skalViseFlerbarnsdager = barn.antallBarn > 1 && forelder !== 'MOR' && kontoTypeFarMedmor !== 'MØDREKVOTE';
+    const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(barn.antallBarn, forelder, kontoTypeFarMedmor);
 
     const infotekstOmFedrekvoteBrukRundtFødsel = getInfotekstOmFedrekvoteBrukRundtFødsel(
         valgtePerioder,
@@ -827,4 +827,17 @@ const getInfotekstOmFedrekvoteBrukRundtFødsel = (
               id: 'LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel',
           })
         : undefined;
+};
+
+export const skalBesvareFlerbarnsdager = (
+    antallBarn: number,
+    forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined,
+    kontoTypeFarMedmor: KontoTypeUttak | undefined,
+) => {
+    return (
+        antallBarn > 1 &&
+        forelder !== 'MOR' &&
+        kontoTypeFarMedmor !== 'MØDREKVOTE' &&
+        kontoTypeFarMedmor !== 'AKTIVITETSFRI_KVOTE'
+    );
 };
