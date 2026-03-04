@@ -105,7 +105,8 @@ export const Month = React.memo(
                                                 periodeColor={findDayColor(date, period)}
                                                 srText={period?.srText}
                                                 isUpdated={period?.isUpdated}
-                                                isMarked={period?.isMarked}
+                                                Icon={period?.icon}
+                                                iconFull={period?.iconFull}
                                                 dateTooltipCallback={dateTooltipCallback}
                                                 dateClickCallback={dateClickCallback}
                                                 isFocused={
@@ -155,12 +156,7 @@ const findDayColor = (date: Dayjs, period?: CalendarPeriod): CalendarPeriodColor
     if (!period) {
         return isWeekend(date) ? 'GRAY' : 'NONE';
     }
-    if (period.color === 'PINK') {
-        return 'PINK';
-    }
-    if (period.color === 'PURPLE') {
-        return 'PURPLE';
-    }
+
     return isWeekend(date) ? 'GRAY' : period.color;
 };
 

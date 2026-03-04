@@ -1,7 +1,5 @@
 export type CalendarPeriodColor =
     | 'NONE'
-    | 'PINK'
-    | 'PURPLE'
     | 'LIGHTBLUE'
     | 'BLUE'
     | 'DARKBLUE'

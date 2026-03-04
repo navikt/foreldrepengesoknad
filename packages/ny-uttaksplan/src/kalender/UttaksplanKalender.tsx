@@ -10,7 +10,11 @@ import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
 import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
-import { erAvslåttPeriode, erAvslåttPeriodeFørsteSeksUkerMor } from '../utils/periodeUtils';
+import {
+    erAvslåttPeriode,
+    erAvslåttPeriodeFørsteSeksUkerMor,
+    harPeriodeDerMorsAktivitetIkkeErValgt,
+} from '../utils/periodeUtils';
 import { UttaksplanLegend } from './legend/UttaksplanLegend';
 import { KalenderPdf } from './pdf/KalenderPdf';
 import { RedigerKalenderIndex } from './redigering/RedigerKalenderIndex';
@@ -42,6 +46,8 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
         },
         [],
     );
+
+    const { uttakPerioder } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
@@ -130,7 +136,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                     </RadioGroup>
                 )}
 
-                {perioderForKalendervisning.some((p) => p.isMarked) && (
+                {harPeriodeDerMorsAktivitetIkkeErValgt(uttakPerioder) && (
                     <Alert variant="warning">
                         <VStack gap="space-2">
                             <BodyShort>
@@ -149,6 +155,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                             perioderForKalendervisning={perioderForKalendervisning}
                             readOnly={readOnly}
                             selectLegend={setValgtLegend}
+                            barnehagestartdato={barnehagestartdato}
                         />
                     </div>
                 )}
@@ -211,6 +218,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                                         readOnly
                                         selectLegend={setValgtLegend}
                                         skjulTekstSomDefault
+                                        barnehagestartdato={barnehagestartdato}
                                     />
                                 }
                             />
@@ -223,6 +231,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                 perioderForKalendervisning={perioderForKalendervisning}
                 førsteDatoIKalender={førsteDatoIKalender}
                 sisteDatoIKalender={sisteDatoIKalender}
+                barnehagestartdato={barnehagestartdato}
             />
         </VStack>
     );

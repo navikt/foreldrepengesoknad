@@ -64,7 +64,7 @@ export const getSelectedStyle = (isSelected: boolean, color: CalendarPeriodColor
             return 'outline-2 outline-offset-4 outline-ax-bg-neutral-strong';
         }
 
-        if (color !== 'PINK' && color !== 'PURPLE' && color !== 'BLACKOUTLINE' && color !== 'GRAY') {
+        if (color !== 'BLACKOUTLINE' && color !== 'GRAY') {
             return 'outline-2 outline-offset-4 outline-ax-success-600';
         }
     }
@@ -86,7 +86,7 @@ export const getFocusStyle = (color: CalendarPeriodColor) => {
         return 'focus:outline-2 focus:outline-offset-4 focus:outline-ax-bg-neutral-strong';
     }
 
-    if (color !== 'PINK' && color !== 'PURPLE' && color !== 'BLACKOUTLINE' && color !== 'GRAY') {
+    if (color !== 'BLACKOUTLINE' && color !== 'GRAY') {
         return 'focus:outline-2 focus:outline-offset-4 focus:outline-ax-success-600';
     }
 
