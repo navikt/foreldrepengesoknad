@@ -1,4 +1,4 @@
-import { ExclamationmarkTriangleFillIcon, TeddyBearFillIcon } from '@navikt/aksel-icons';
+import { ExclamationmarkTriangleFillIcon, HeartFillIcon } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -37,7 +37,7 @@ export const Default: Story = {
                 tom: '2024-02-21',
                 color: 'BLUE',
                 srText: 'Termindato',
-                icon: <TeddyBearFillIcon aria-hidden color="var(--ax-brand-beige-800)" width={25} height={25} />,
+                icon: <HeartFillIcon aria-hidden color="var(--ax-bg-brand-magenta-strong)" width={25} height={25} />,
                 iconFull: true,
             },
             {
@@ -234,7 +234,7 @@ export const MarkertMedStjerne: Story = {
                 tom: '2024-02-21',
                 color: 'BLUE',
                 srText: 'Termindato',
-                icon: <TeddyBearFillIcon aria-hidden color="var(--ax-brand-beige-800)" width={25} height={25} />,
+                icon: <HeartFillIcon aria-hidden color="var(--ax-bg-brand-magenta-strong)" width={25} height={25} />,
                 iconFull: true,
             },
             {
