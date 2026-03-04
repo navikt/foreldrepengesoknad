@@ -822,13 +822,9 @@ const getInfotekstOmFedrekvoteBrukRundtFødsel = (
         ),
     );
 
-    let infotekstOmFedrekvoteBrukRundtFødsel = undefined;
-
-    if (valgteDagerRundtFødsel.length > 0 && kontoTypeFarMedmor === 'FEDREKVOTE' && forelder === 'FAR_MEDMOR') {
-        infotekstOmFedrekvoteBrukRundtFødsel = intl.formatMessage({
-            id: 'LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel',
-        });
-    }
-
-    return infotekstOmFedrekvoteBrukRundtFødsel;
+    return valgteDagerRundtFødsel.length > 0 && kontoTypeFarMedmor === 'FEDREKVOTE' && forelder === 'FAR_MEDMOR'
+        ? intl.formatMessage({
+              id: 'LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel',
+          })
+        : undefined;
 };
