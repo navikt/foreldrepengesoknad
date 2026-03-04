@@ -1,4 +1,4 @@
-import { DownloadIcon } from '@navikt/aksel-icons';
+import { DownloadIcon, HeartFillIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
@@ -29,7 +29,13 @@ import {
 } from '@navikt/fp-types';
 import { isUttakAnnenPart } from '@navikt/fp-types/src/Periode';
 import { Calendar, type CalendarPeriod, type CalendarPeriodColor } from '@navikt/fp-ui';
-import { Uttaksdagen, dateToISOString, formatDateIso, getFamiliehendelsedato } from '@navikt/fp-utils';
+import {
+    TidsperiodenString,
+    Uttaksdagen,
+    dateToISOString,
+    formatDateIso,
+    getFamiliehendelsedato,
+} from '@navikt/fp-utils';
 
 import { UttaksplanLegend } from './UttaksplanLegend';
 import { getKalenderSkjermlesertekstForPeriode } from './uttaksplanKalenderUtils';
@@ -58,6 +64,7 @@ const slåSammenPeriods = (periods: CalendarPeriod[]) => {
             index !== 0 &&
             sisteRes &&
             period.color === sisteRes.color &&
+            period.icon === sisteRes.icon &&
             dayjs(Uttaksdagen(new Date(sisteRes.tom)).neste()).isSame(dayjs(period.fom), 'day')
         ) {
             sisteRes.tom = period.tom;
@@ -104,21 +111,43 @@ const getPerioderForKalendervisning = (
     periods.splice(indexOfFamiliehendelse, 0, {
         fom: familiehendelsesdato,
         tom: familiehendelsesdato,
-        color: 'PINK',
         srText: '',
+        color: finnFargeForFamiliehendelse(
+            perioderForVisning,
+            familiehendelsesdato,
+            erFarEllerMedmor,
+            uttaksplan,
+            barn,
+        ),
+        icon: <HeartFillIcon aria-hidden color="var(--ax-bg-brand-magenta-strong)" width={25} height={25} />,
+        iconFull: true,
     });
     const perioderSlåttSammen = slåSammenPeriods(periods);
     return perioderSlåttSammen.map((p) => ({
         ...p,
-        srText: getKalenderSkjermlesertekstForPeriode(
-            p,
-            barn,
-            navnAnnenPart,
-            unikeUtsettelseÅrsaker,
-            erFarEllerMedmor,
-            intl,
-        ),
+        srText: getKalenderSkjermlesertekstForPeriode(p, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl),
     }));
+};
+
+const finnFargeForFamiliehendelse = (
+    perioderForVisning: Periode[],
+    familiehendelsesdato: string,
+    erFarEllerMedmor: boolean,
+    uttaksplan: Periode[],
+    barn: Barn,
+): CalendarPeriodColor => {
+    const periode = perioderForVisning.find((p) =>
+        TidsperiodenString.forFomOgTom(
+            dayjs(p.tidsperiode.fom).toISOString(),
+            dayjs(p.tidsperiode.tom).toISOString(),
+        ).inneholderDato(familiehendelsesdato),
+    );
+
+    if (periode) {
+        return getKalenderFargeForPeriodeType(periode, erFarEllerMedmor, uttaksplan, barn);
+    }
+
+    return 'NONE';
 };
 
 const getKalenderFargeForUttaksperiode = (
@@ -258,7 +287,6 @@ export const UttaksplanKalender = ({ uttaksplan, erFarEllerMedmor, barn, navnAnn
                 <div className="flex flex-wrap max-[768px]:pb-2" id="legend">
                     <UttaksplanLegend
                         uniqueColors={unikePeriodColors}
-                        barn={barn}
                         navnAnnenPart={navnAnnenPart}
                         unikeUtsettelseÅrsaker={unikeUtsettelseÅrsaker}
                         erFarEllerMedmor={erFarEllerMedmor}

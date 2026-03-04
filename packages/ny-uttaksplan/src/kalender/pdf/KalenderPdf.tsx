@@ -13,9 +13,15 @@ interface Props {
     perioderForKalendervisning: CalendarPeriod[];
     førsteDatoIKalender: string;
     sisteDatoIKalender: string;
+    barnehagestartdato: string | undefined;
 }
 
-export const KalenderPdf = ({ perioderForKalendervisning, førsteDatoIKalender, sisteDatoIKalender }: Props) => {
+export const KalenderPdf = ({
+    perioderForKalendervisning,
+    førsteDatoIKalender,
+    sisteDatoIKalender,
+    barnehagestartdato,
+}: Props) => {
     const intl = useIntl();
 
     const [isCreatingPdf, setIsCreatingPdf] = useState(false);
@@ -96,7 +102,11 @@ export const KalenderPdf = ({ perioderForKalendervisning, førsteDatoIKalender, 
                             </HStack>
                         </VStack>
                         <VStack gap="space-24" ref={targetRef}>
-                            <UttaksplanLegend perioderForKalendervisning={perioderForKalendervisning} readOnly />
+                            <UttaksplanLegend
+                                perioderForKalendervisning={perioderForKalendervisning}
+                                readOnly
+                                barnehagestartdato={barnehagestartdato}
+                            />
                             <Calendar
                                 periods={perioderForKalendervisning}
                                 nrOfColumns={antallKolonner}

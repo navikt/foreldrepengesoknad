@@ -2,12 +2,7 @@ import { IntlShape } from 'react-intl';
 
 import { Barn, UtsettelsesÅrsak, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
-import {
-    capitalizeFirstLetter,
-    formaterDatoUtenDag,
-    getFamiliehendelsedato,
-    getNavnGenitivEierform,
-} from '@navikt/fp-utils';
+import { capitalizeFirstLetter, formaterDatoUtenDag, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 const getUtsettelseÅrsakTekst = (årsak: UtsettelsesÅrsak, intl: IntlShape) => {
     if (årsak === 'ARBEID') {
@@ -50,15 +45,6 @@ export const getFamiliehendelseKalendarLabel = (barn: Barn, intl: IntlShape): st
         return intl.formatMessage({ id: 'kalender.termin' });
     }
     return intl.formatMessage({ id: 'kalender.adopsjon' });
-};
-
-const getSkjermlesertekstForFamiliehendelse = (barn: Barn, intl: IntlShape): string => {
-    const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const familiehendelsenavn = getFamiliehendelseKalendarLabel(barn, intl);
-    return intl.formatMessage(
-        { id: 'kalender.skjermleser.familiehendelse' },
-        { familiehendelsenavn, dato: formaterDatoUtenDag(familiehendelsesdato) },
-    );
 };
 
 export const getKalenderPeriodenavn = (
@@ -113,7 +99,6 @@ export const getKalenderPeriodenavn = (
 
 export const getKalenderSkjermlesertekstForPeriode = (
     period: CalendarPeriod,
-    barn: Barn,
     navnAnnenPart: string,
     unikeUtsettelseÅrsaker: UtsettelsesÅrsak[],
     erFarEllerMedmor: boolean,
@@ -122,9 +107,7 @@ export const getKalenderSkjermlesertekstForPeriode = (
     if (['NONE', 'GRAY'].includes(period.color)) {
         return '';
     }
-    if (period.color === 'PINK') {
-        return getSkjermlesertekstForFamiliehendelse(barn, intl);
-    }
+
     const periodeNavn = getKalenderPeriodenavn(
         period.color,
         navnAnnenPart,

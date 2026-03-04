@@ -20,6 +20,5 @@
     "kalender.utsettelse.HV_OVELSE": "due to exercises or service in the Home Guard",
     "kalender.utsettelse.NAV_TILTAK": "due to Nav measures that constitute 100% work",
     "kalender.lastNed": "Download the calendar as PDF",
-    "kalender.skjermleser.familiehendelse": "{familiehendelsenavn} on {dato}",
     "kalender.skjermleser.periode": "{periodeNavn} from the {fraDato} until the {tilDato}"
 }

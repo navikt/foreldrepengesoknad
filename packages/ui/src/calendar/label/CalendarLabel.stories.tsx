@@ -23,12 +23,6 @@ export const BlueLabel: Story = {
         children: <div>blue</div>,
     },
 };
-export const PinkLabel: Story = {
-    args: {
-        color: 'PINK',
-        children: <div>pink</div>,
-    },
-};
 
 export const BlueOutlineLabel: Story = {
     args: {

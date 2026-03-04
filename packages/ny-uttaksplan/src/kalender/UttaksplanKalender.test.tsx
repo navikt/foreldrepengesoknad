@@ -39,9 +39,9 @@ describe('UttaksplanKalender', () => {
         expect(within(mars).getByTestId('day:29;dayColor:BLUE')).toBeInTheDocument();
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:3;dayColor:BLUE')).toBeInTheDocument();
-        expect(within(april).getByTestId('day:4;dayColor:PINK')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:4;dayColor:BLUE;with-icon')).toBeInTheDocument();
         expect(within(april).getByTestId('day:5;dayColor:BLUE')).toBeInTheDocument();
-        expect(within(april).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(13);
+        expect(within(april).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(14);
         expect(within(april).getByTestId('day:18;dayColor:BLUE')).toBeInTheDocument();
         expect(within(april).getByTestId('day:19;dayColor:BLACK')).toBeInTheDocument();
         expect(within(april).getAllByTestId('dayColor:BLACK', { exact: false })).toHaveLength(8);
@@ -258,7 +258,7 @@ describe('UttaksplanKalender', () => {
 
         const april = screen.getByTestId('year:2024;month:3');
 
-        await userEvent.click(within(april).getByTestId('day:4;dayColor:PINK'));
+        await userEvent.click(within(april).getByTestId('day:4;dayColor:BLUE;with-icon'));
         await userEvent.click(within(april).getByTestId('day:18;dayColor:BLUE'));
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
@@ -346,84 +346,74 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(juli).getByTestId('day:3;dayColor:GREEN'));
 
         expect(screen.getByTestId('year:2024;month:6')).toBeInTheDocument();
-        expect(screen.queryByTestId('year:2024;month:7')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('year:2025;month:0')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
 
-        expect(screen.getByTestId('year:2024;month:7')).toBeInTheDocument();
-        expect(screen.getByTestId('year:2024;month:8')).toBeInTheDocument();
-        expect(screen.getByTestId('year:2024;month:9')).toBeInTheDocument();
-        expect(screen.queryByTestId('year:2024;month:10')).not.toBeInTheDocument();
-
-        await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
-
-        expect(screen.getByTestId('year:2024;month:10')).toBeInTheDocument();
-        expect(screen.getByTestId('year:2024;month:11')).toBeInTheDocument();
         expect(screen.getByTestId('year:2025;month:0')).toBeInTheDocument();
-        expect(screen.queryByTestId('year:2025;month:1')).not.toBeInTheDocument();
-
-        await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
-
         expect(screen.getByTestId('year:2025;month:1')).toBeInTheDocument();
         expect(screen.getByTestId('year:2025;month:2')).toBeInTheDocument();
-        expect(screen.getByTestId('year:2025;month:3')).toBeInTheDocument();
-        expect(screen.queryByTestId('year:2025;month:4')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('year:2025;month:3')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
 
+        expect(screen.getByTestId('year:2025;month:3')).toBeInTheDocument();
         expect(screen.getByTestId('year:2025;month:4')).toBeInTheDocument();
         expect(screen.getByTestId('year:2025;month:5')).toBeInTheDocument();
-        expect(screen.getByTestId('year:2025;month:6')).toBeInTheDocument();
-        expect(screen.queryByTestId('year:2025;month:7')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('year:2025;month:6')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
 
+        expect(screen.getByTestId('year:2025;month:6')).toBeInTheDocument();
         expect(screen.getByTestId('year:2025;month:7')).toBeInTheDocument();
         expect(screen.getByTestId('year:2025;month:8')).toBeInTheDocument();
-        expect(screen.getByTestId('year:2025;month:9')).toBeInTheDocument();
-        expect(screen.queryByTestId('year:2025;month:10')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('year:2025;month:9')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
 
+        expect(screen.getByTestId('year:2025;month:9')).toBeInTheDocument();
         expect(screen.getByTestId('year:2025;month:10')).toBeInTheDocument();
         expect(screen.getByTestId('year:2025;month:11')).toBeInTheDocument();
-        expect(screen.getByTestId('year:2026;month:0')).toBeInTheDocument();
-        expect(screen.queryByTestId('year:2026;month:1')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('year:2026;month:0')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
 
+        expect(screen.getByTestId('year:2026;month:0')).toBeInTheDocument();
         expect(screen.getByTestId('year:2026;month:1')).toBeInTheDocument();
         expect(screen.getByTestId('year:2026;month:2')).toBeInTheDocument();
-        expect(screen.getByTestId('year:2026;month:3')).toBeInTheDocument();
-        expect(screen.queryByTestId('year:2026;month:4')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('year:2026;month:3')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
 
+        expect(screen.getByTestId('year:2026;month:3')).toBeInTheDocument();
         expect(screen.getByTestId('year:2026;month:4')).toBeInTheDocument();
         expect(screen.getByTestId('year:2026;month:5')).toBeInTheDocument();
-        expect(screen.getByTestId('year:2026;month:6')).toBeInTheDocument();
-        expect(screen.queryByTestId('year:2026;month:7')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('year:2026;month:6')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
 
+        expect(screen.getByTestId('year:2026;month:6')).toBeInTheDocument();
         expect(screen.getByTestId('year:2026;month:7')).toBeInTheDocument();
         expect(screen.getByTestId('year:2026;month:8')).toBeInTheDocument();
-        expect(screen.getByTestId('year:2026;month:9')).toBeInTheDocument();
-        expect(screen.queryByTestId('year:2026;month:10')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('year:2026;month:9')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
 
+        expect(screen.getByTestId('year:2026;month:9')).toBeInTheDocument();
         expect(screen.getByTestId('year:2026;month:10')).toBeInTheDocument();
         expect(screen.getByTestId('year:2026;month:11')).toBeInTheDocument();
-        expect(screen.getByTestId('year:2027;month:0')).toBeInTheDocument();
-        expect(screen.queryByTestId('year:2027;month:1')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('year:2027;month:0')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
 
+        expect(screen.getByTestId('year:2027;month:0')).toBeInTheDocument();
         expect(screen.getByTestId('year:2027;month:1')).toBeInTheDocument();
         expect(screen.getByTestId('year:2027;month:2')).toBeInTheDocument();
+        expect(screen.queryByTestId('year:2027;month:3')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Vis flere måneder')[1]!);
+
         expect(screen.getByTestId('year:2027;month:3')).toBeInTheDocument();
-        expect(screen.queryByTestId('year:2027;month:4')).not.toBeInTheDocument();
 
         expect(screen.getByText('Du viser maks antall måneder (3 år)')).toBeInTheDocument();
     });
@@ -883,8 +873,8 @@ describe('UttaksplanKalender', () => {
 
         const juli = screen.getByTestId('year:2024;month:6');
 
-        await userEvent.click(within(juli).getByTestId('day:3;dayColor:GREEN'));
-        await userEvent.click(within(juli).getByTestId('day:15;dayColor:GREEN'));
+        await userEvent.click(within(juli).getByTestId('day:3;dayColor:GREEN;with-icon'));
+        await userEvent.click(within(juli).getByTestId('day:15;dayColor:GREEN;with-icon'));
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
 

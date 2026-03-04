@@ -77,12 +77,12 @@ describe('<Default>', () => {
             expect(within(september).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(15);
 
             const oktober = screen.getByTestId('year:2024;month:9');
-            expect(within(oktober).getByTestId('day:1;dayColor:PINK')).toBeInTheDocument();
+            expect(within(oktober).getByTestId('day:1;dayColor:LIGHTBLUEGREEN;with-icon')).toBeInTheDocument();
             expect(within(oktober).getByTestId('day:2;dayColor:LIGHTBLUEGREEN')).toBeInTheDocument();
             expect(within(oktober).getByTestId('day:14;dayColor:LIGHTBLUEGREEN')).toBeInTheDocument();
             expect(within(oktober).getByTestId('day:15;dayColor:BLUE')).toBeInTheDocument();
             expect(within(oktober).getByTestId('day:31;dayColor:BLUE')).toBeInTheDocument();
-            expect(within(oktober).getAllByTestId('dayColor:LIGHTBLUEGREEN', { exact: false })).toHaveLength(9);
+            expect(within(oktober).getAllByTestId('dayColor:LIGHTBLUEGREEN', { exact: false })).toHaveLength(10);
             expect(within(oktober).getAllByTestId(/dayColor:BLUE$/)).toHaveLength(13);
 
             const november = screen.getByTestId('year:2024;month:10');
