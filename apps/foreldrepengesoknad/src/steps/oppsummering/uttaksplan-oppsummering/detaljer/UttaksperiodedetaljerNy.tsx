@@ -19,7 +19,8 @@ export const UttaksperiodedetaljerNy = ({ periode, annenForelder, registrerteArb
 
     const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
 
-    const skalViseFlerbarnsdager = barn.antallBarn > 1 && periode.forelder !== 'MOR';
+    const skalViseFlerbarnsdager =
+        barn.antallBarn > 1 && periode.forelder !== 'MOR' && periode.kontoType !== 'MØDREKVOTE';
 
     return (
         <>
