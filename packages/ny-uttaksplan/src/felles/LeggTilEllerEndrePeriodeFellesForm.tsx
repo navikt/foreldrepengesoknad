@@ -80,7 +80,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         ønskerFlerbarnsdager,
     } = formMethods.watch();
 
-    const skalViseFlerbarnsdager = barn.antallBarn > 1 && forelder !== 'MOR';
+    const skalViseFlerbarnsdager = barn.antallBarn > 1 && forelder !== 'MOR' && kontoTypeFarMedmor !== 'MØDREKVOTE';
 
     const infotekstOmFedrekvoteBrukRundtFødsel = getInfotekstOmFedrekvoteBrukRundtFødsel(
         valgtePerioder,
