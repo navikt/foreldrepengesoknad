@@ -114,6 +114,7 @@ export const RhfDatepicker = <T extends FieldValues>({
             disableWeekends={disableWeekends}
             onSelect={onSelect}
             onBlur={onBlur}
+            fixedWeeks
         >
             <DatePicker.Input
                 {...inputProps}
