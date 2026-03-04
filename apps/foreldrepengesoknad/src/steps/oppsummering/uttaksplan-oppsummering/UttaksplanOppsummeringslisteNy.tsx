@@ -110,6 +110,7 @@ export const UttaksplanOppsummeringslisteNy = ({ navnPåForeldre, registrerteArb
                                             periode={periode}
                                             registrerteArbeidsforhold={registrerteArbeidsforhold}
                                             annenForelder={annenForelder}
+                                            barn={barn}
                                         />
                                     </FormSummary.Value>
                                 </FormSummary.Answer>
