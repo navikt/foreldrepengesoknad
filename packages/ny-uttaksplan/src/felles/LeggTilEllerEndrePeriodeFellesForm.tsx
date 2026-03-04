@@ -86,6 +86,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         valgtePerioder,
         kontoTypeFarMedmor,
         familiehendelsedato,
+        forelder,
         intl,
     );
 
@@ -810,14 +811,16 @@ const getInfotekstOmFedrekvoteBrukRundtFødsel = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     kontoTypeFarMedmor: KontoTypeUttak | undefined,
     familiehendelsedato: string,
+    forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined,
     intl: IntlShape,
 ) => {
-    const valgteDagerRundtFødsel = valgtePerioder.filter((p) =>
-        UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
-            p,
-            familiehendelsedato,
-            undefined,
-        ),
+    const valgteDagerRundtFødsel = valgtePerioder.filter(
+        (p) =>
+            UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+                p,
+                familiehendelsedato,
+                undefined,
+            ) && forelder === 'FAR_MEDMOR',
     );
 
     const valgteDagerInneholderFedrekvoteRundtFødsel =
