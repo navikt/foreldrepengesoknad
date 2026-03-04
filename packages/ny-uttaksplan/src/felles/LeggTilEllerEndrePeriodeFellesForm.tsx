@@ -648,6 +648,7 @@ const getSkalViseMorsAktivitetskravVedSamtidigUttak = (
 export const mapFraFormValuesTilUttakPeriode = (
     values: LeggTilEllerEndrePeriodeFormFormValues,
     periode: { fom: string; tom: string },
+    søker: BrukerRolleSak_fpoversikt,
 ): UttakPeriode_fpoversikt[] => {
     const nye = new Array<UttakPeriode_fpoversikt>();
 
@@ -659,7 +660,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             morsAktivitet: values.morsAktivitet,
             forelder: 'MOR',
             gradering: values.skalDuKombinereArbeidOgUttakMor
-                ? getGradering(values.stillingsprosentMor, values.hvorSkalDuJobbe)
+                ? getGradering(søker === 'MOR', values.stillingsprosentMor, values.hvorSkalDuJobbe)
                 : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentMor) : undefined,
@@ -676,7 +677,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             morsAktivitet: values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : values.morsAktivitet,
             forelder: 'FAR_MEDMOR',
             gradering: values.skalDuKombinereArbeidOgUttakFarMedmor
-                ? getGradering(values.stillingsprosentFarMedmor, values.hvorSkalDuJobbe)
+                ? getGradering(søker === 'FAR_MEDMOR', values.stillingsprosentFarMedmor, values.hvorSkalDuJobbe)
                 : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentFarMedmor) : undefined,
@@ -773,18 +774,29 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
 };
 
 const getGradering = (
+    erSøker: boolean,
     stillingsprosent: string | undefined,
     hvorSkalDuJobbe: string | undefined,
 ): Gradering_fpoversikt => {
+    if (erSøker) {
+        return {
+            aktivitet: {
+                type: finnAktivitetType(hvorSkalDuJobbe),
+                arbeidsgiver:
+                    hvorSkalDuJobbe && hvorSkalDuJobbe !== SELVSTENDIG_NÆRINGSDRIVENDE && hvorSkalDuJobbe !== FRILANS
+                        ? {
+                              id: hvorSkalDuJobbe,
+                          }
+                        : undefined,
+            },
+            arbeidstidprosent: getFloatFromString(stillingsprosent) ?? 100,
+        } satisfies Gradering_fpoversikt;
+    }
+
+    // Dette må endrast når ein byrjar å lagre annen part sine periodar. Per no så kan ein ikkje oppi aktivitet for denne i skjema.
     return {
         aktivitet: {
-            type: finnAktivitetType(hvorSkalDuJobbe),
-            arbeidsgiver:
-                hvorSkalDuJobbe && hvorSkalDuJobbe !== SELVSTENDIG_NÆRINGSDRIVENDE && hvorSkalDuJobbe !== FRILANS
-                    ? {
-                          id: hvorSkalDuJobbe,
-                      }
-                    : undefined,
+            type: 'ANNET',
         },
         arbeidstidprosent: getFloatFromString(stillingsprosent) ?? 100,
     } satisfies Gradering_fpoversikt;

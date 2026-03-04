@@ -84,6 +84,8 @@ export const getAktivitetTekst = (
         return intl.formatMessage({ id: 'oppsummering.uttak.selvstendig_næringsdrivende' });
     } else if (type === 'FRILANS') {
         return intl.formatMessage({ id: 'oppsummering.uttak.frilans' });
+    } else if (type === 'ANNET') {
+        return intl.formatMessage({ id: 'oppsummering.uttak.annet' });
     }
 
     throw new Error(`Ikke håndtert aktivitetstype: ${type}`);
