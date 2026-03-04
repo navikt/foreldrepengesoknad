@@ -523,12 +523,12 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getAllByText('Fars kvote')[1]!);
 
         expect(screen.getByText('Hvorfor skal du overta fars kvote?')).toBeInTheDocument();
-        expect(screen.getByText('Far er innlagt på sykehus')).toBeInTheDocument();
+        expect(screen.getByText('Far er innlagt på sykehus eller annen helseinstitusjon')).toBeInTheDocument();
         expect(
             screen.getByText('I noen tilfeller kan du søke om å overta den andre forelderens kvote.'),
         ).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Far er innlagt på sykehus'));
+        await userEvent.click(screen.getByText('Far er innlagt på sykehus eller annen helseinstitusjon'));
 
         await userEvent.click(screen.getByText('Legg til'));
 
