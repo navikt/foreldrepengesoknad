@@ -78,8 +78,12 @@ const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronol
                 const dato = index === 0 ? `${formatDateShortMonth(p.fom)} - ${formatDateShortMonth(p.tom)}` : '';
 
                 const prosentJobb = (() => {
-                    if (p.type === 'HEL') return 100;
-                    if (p.type === 'INGEN') return 0;
+                    if (p.type === 'HEL') {
+                        return 100;
+                    }
+                    if (p.type === 'INGEN') {
+                        return 0;
+                    }
                     return p.arbeidstidprosent ?? 0;
                 })();
                 const prosentSvangerskapspengerHvisInnvilget = Math.round(p.resultat?.utbetalingsgrad ?? 0);
@@ -302,7 +306,9 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
         }
 
         const index = perioderÅBruke.findIndex((p) => {
-            if (p.fom === periode.fom && p.tom === periode.tom) return false;
+            if (p.fom === periode.fom && p.tom === periode.tom) {
+                return false;
+            }
             return TidsperiodenString.forPeriode(p).inneholderDato(periode.tom);
         });
         const overlappendePeriode = index !== -1 ? perioderÅBruke.splice(index, 1)[0] : undefined;

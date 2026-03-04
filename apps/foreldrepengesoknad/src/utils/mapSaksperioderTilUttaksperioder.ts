@@ -505,7 +505,9 @@ const erAnnenPartsAvslåttePrematurePeriode = (saksperiode: Saksperiode, termind
 };
 
 const gyldigeSaksperioder = (saksperiode: Saksperiode, termindato: string | undefined) => {
-    if (saksperiode.resultat?.innvilget) return true;
+    if (saksperiode.resultat?.innvilget) {
+        return true;
+    }
 
     if (saksperiode.gjelderAnnenPart) {
         if (erAnnenPartsAvslåttePrematurePeriode(saksperiode, termindato)) {
