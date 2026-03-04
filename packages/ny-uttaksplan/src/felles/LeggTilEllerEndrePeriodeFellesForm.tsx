@@ -841,7 +841,8 @@ const getInfotekstOmFedrekvoteBrukRundtFødsel = (
     let infotekstOmFedrekvoteBrukRundtFødsel = undefined;
 
     if (
-        (perioderInneholderFedrekvoteRundtFødsel || valgteDagerInneholderFedrekvoteRundtFødsel) &&
+        ((perioderInneholderFedrekvoteRundtFødsel && valgteDagerInneholderFedrekvoteRundtFødsel) ||
+            valgteDagerInneholderFedrekvoteRundtFødsel) &&
         kontoTypeFarMedmor === 'FEDREKVOTE'
     ) {
         infotekstOmFedrekvoteBrukRundtFødsel = intl.formatMessage({
