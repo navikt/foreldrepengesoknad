@@ -10,7 +10,7 @@ import { DelivisTilretteleggingPeriodeType, TilOgMedDatoType } from 'types/Tilre
 
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
-import { FRILANS_ID, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { FRILANS_ID, SvpPersonDto_fpoversikt } from '@navikt/fp-types';
 
 import { OppsummeringSteg } from './OppsummeringSteg';
 
@@ -66,17 +66,14 @@ const DEFAULT_SØKERINFO = {
             stillingsprosent: 0,
         },
     ],
-    person: {
-        navn: {
-            etternavn: 'Oravakangas',
-            fornavn: 'Erlinga-Mask',
-        },
-        fnr: '1',
-        fødselsdato: '1989-08-30',
-        kjønn: 'K',
-        barn: [],
+    fnr: '1',
+    fødselsdato: '1989-08-30',
+    kjønn: 'K',
+    navn: {
+        etternavn: 'Oravakangas',
+        fornavn: 'Erlinga-Mask',
     },
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies SvpPersonDto_fpoversikt;
 
 const promiseAction = () => () => {
     action('button-click')();

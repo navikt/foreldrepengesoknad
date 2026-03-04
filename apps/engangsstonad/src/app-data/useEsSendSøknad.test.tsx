@@ -8,7 +8,7 @@ import { Dokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet } from 'types/OmBarnet';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { EngangsstønadDto, PersonDto_fpoversikt, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { EngangsstønadDto, EsPersonDto_fpoversikt, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/messages/nb_NO.json';
@@ -68,12 +68,7 @@ const DEFAULT_PERSONINFO = {
     },
     kjønn: 'K',
     fødselsdato: '1979-01-28',
-    bankkonto: {
-        kontonummer: '49875234987',
-        banknavn: 'Storebank',
-    },
-    barn: [],
-} satisfies PersonDto_fpoversikt;
+} satisfies EsPersonDto_fpoversikt;
 
 const getWrapper =
     (barnet: OmBarnet, dokumentasjon?: Dokumentasjon) =>

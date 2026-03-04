@@ -5,20 +5,23 @@ import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { PersonDto_fpoversikt } from '@navikt/fp-types';
+import { EsPersonDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './EsDataContext';
 
 export const VERSJON_MELLOMLAGRING = 4;
 
-export type EsDataMapAndMetaData = { version: number; personinfo: PersonDto_fpoversikt } & ContextDataMap;
+export type EsDataMapAndMetaData = { version: number; personinfo: EsPersonDto_fpoversikt } & ContextDataMap;
 
 // TODO (TOR) Fiks lokalisering
 const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export const useEsMellomlagring = (personinfo: PersonDto_fpoversikt, setVelkommen: (erVelkommen: boolean) => void) => {
+export const useEsMellomlagring = (
+    personinfo: EsPersonDto_fpoversikt,
+    setVelkommen: (erVelkommen: boolean) => void,
+) => {
     const navigate = useNavigate();
     const state = useContextComplete();
     const resetState = useContextReset();

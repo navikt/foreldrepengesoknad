@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
 
-import { EngangsstønadDto, Målform, PersonDto_fpoversikt } from '@navikt/fp-types';
+import { EngangsstønadDto, EsPersonDto_fpoversikt, Målform } from '@navikt/fp-types';
 import { getDecoratorLanguageCookie, useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -51,7 +51,7 @@ const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export const useEsSendSøknad = (personinfo: PersonDto_fpoversikt) => {
+export const useEsSendSøknad = (personinfo: EsPersonDto_fpoversikt) => {
     const navigate = useNavigate();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();

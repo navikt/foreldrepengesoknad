@@ -3,25 +3,18 @@ import { API_URLS } from 'appData/queries';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
 
-import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { SvpPersonDto_fpoversikt } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';
 
 const defaultSøkerinfo = {
-    person: {
-        fnr: '1',
-        navn: {
-            fornavn: 'ERLINGA-MASK',
-            etternavn: 'ORAVAKANGAS',
-        },
-        kjønn: 'K',
-        fødselsdato: '1989-08-30',
-        barn: [],
-        bankkonto: {
-            kontonummer: '10824223373',
-            banknavn: 'Din Bank',
-        },
+    fnr: '1',
+    navn: {
+        fornavn: 'ERLINGA-MASK',
+        etternavn: 'ORAVAKANGAS',
     },
+    kjønn: 'K',
+    fødselsdato: '1989-08-30',
     arbeidsforhold: [
         {
             arbeidsgiverId: '975326209',
@@ -69,7 +62,7 @@ const defaultSøkerinfo = {
             fom: '2018-06-01',
         },
     ],
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies SvpPersonDto_fpoversikt;
 
 const KVITTERING = {
     mottattDato: '2019-02-19T13:40:45.115',
@@ -130,7 +123,7 @@ export const VisAppMann: Story = {
                 http.get(API_URLS.søkerInfo, () =>
                     HttpResponse.json({
                         ...defaultSøkerinfo,
-                        person: { ...defaultSøkerinfo.person, kjønn: 'M' },
+                        kjønn: 'M',
                     }),
                 ),
             ]),
@@ -145,7 +138,8 @@ export const VisAppUmyndig: Story = {
                 http.get(API_URLS.søkerInfo, () =>
                     HttpResponse.json({
                         ...defaultSøkerinfo,
-                        person: { ...defaultSøkerinfo.person, kjønn: 'K', fødselsdato: '2023-08-30' },
+                        kjønn: 'K',
+                        fødselsdato: '2023-08-30',
                     }),
                 ),
             ]),
