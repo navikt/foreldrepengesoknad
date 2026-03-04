@@ -3,7 +3,7 @@ import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { Barn, UtsettelsesÅrsak } from '@navikt/fp-types';
+import { UtsettelsesÅrsak } from '@navikt/fp-types';
 import { CalendarLabel, type CalendarPeriodColor } from '@navikt/fp-ui';
 
 import { getKalenderPeriodenavn } from './uttaksplanKalenderUtils';
