@@ -778,25 +778,32 @@ const getGradering = (
     stillingsprosent: string | undefined,
     hvorSkalDuJobbe: string | undefined,
 ): Gradering_fpoversikt => {
+    if (erSøker) {
+        return {
+            aktivitet: {
+                type: finnAktivitetType(hvorSkalDuJobbe),
+                arbeidsgiver:
+                    hvorSkalDuJobbe && hvorSkalDuJobbe !== SELVSTENDIG_NÆRINGSDRIVENDE && hvorSkalDuJobbe !== FRILANS
+                        ? {
+                              id: hvorSkalDuJobbe,
+                          }
+                        : undefined,
+            },
+            arbeidstidprosent: getFloatFromString(stillingsprosent) ?? 100,
+        } satisfies Gradering_fpoversikt;
+    }
+
+    // Dette må endrast når ein byrjar å lagre annen part sine periodar. Per no så kan ein ikkje oppi aktivitet for denne i skjema.
     return {
         aktivitet: {
-            type: finnAktivitetType(erSøker, hvorSkalDuJobbe),
-            arbeidsgiver:
-                erSøker &&
-                hvorSkalDuJobbe &&
-                hvorSkalDuJobbe !== SELVSTENDIG_NÆRINGSDRIVENDE &&
-                hvorSkalDuJobbe !== FRILANS
-                    ? {
-                          id: hvorSkalDuJobbe,
-                      }
-                    : undefined,
+            type: 'ANNET',
         },
         arbeidstidprosent: getFloatFromString(stillingsprosent) ?? 100,
     } satisfies Gradering_fpoversikt;
 };
 
-const finnAktivitetType = (erSøker: boolean, hvorSkalDuJobbe?: string): AktivitetType_fpoversikt => {
-    return erSøker && (hvorSkalDuJobbe === 'FRILANS' || hvorSkalDuJobbe === 'SELVSTENDIG_NÆRINGSDRIVENDE')
+const finnAktivitetType = (hvorSkalDuJobbe?: string): AktivitetType_fpoversikt => {
+    return hvorSkalDuJobbe === 'FRILANS' || hvorSkalDuJobbe === 'SELVSTENDIG_NÆRINGSDRIVENDE'
         ? hvorSkalDuJobbe
         : 'ORDINÆRT_ARBEID';
 };

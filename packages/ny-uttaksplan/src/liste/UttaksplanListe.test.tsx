@@ -179,7 +179,7 @@ describe('UttaksplanListe', () => {
                 forelder: 'FAR_MEDMOR',
                 gradering: {
                     aktivitet: {
-                        type: 'ORDINÆRT_ARBEID',
+                        type: 'ANNET',
                     },
                     arbeidstidprosent: 50,
                 },
