@@ -38,7 +38,7 @@ export const UttaksplanDataProvider = (props: Props) => {
         const familiehendelsedato = getFamiliehendelsedato(otherProps.barn);
         const familiesituasjon = getFamiliesituasjon(otherProps.barn);
 
-        const sortertePerioder = filtrerBortAvslåtteOverlappendePerioder(otherProps.uttakPerioder).sort(sorterPerioder);
+        const sortertePerioder = filtrerBortPerioderUtenTrekkdager(otherProps.uttakPerioder).sort(sorterPerioder);
 
         return {
             ...otherProps,
@@ -60,6 +60,6 @@ export const useUttaksplanData = () => {
 };
 
 //TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
-const filtrerBortAvslåtteOverlappendePerioder = (
+const filtrerBortPerioderUtenTrekkdager = (
     perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
 ) => perioder.filter((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.resultat?.trekkerDager !== false);

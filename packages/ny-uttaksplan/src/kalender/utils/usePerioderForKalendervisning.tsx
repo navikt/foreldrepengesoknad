@@ -317,7 +317,7 @@ const getAnnenForelderSamtidigUttakPeriode = (
                     erVanligUttakPeriode(periode) &&
                     p.forelder !== periode.forelder &&
                     !!p.samtidigUttak &&
-                    !!p.samtidigUttak,
+                    !!periode.samtidigUttak,
             )
             .find((p) => dayjs(periode.fom).isSame(p.fom));
 
