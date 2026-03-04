@@ -313,10 +313,11 @@ const getAnnenForelderSamtidigUttakPeriode = (
         const samtidigUttak = perioder
             .filter(
                 (p) =>
-                    'forelder' in p &&
-                    'forelder' in periode &&
+                    erVanligUttakPeriode(p) &&
+                    erVanligUttakPeriode(periode) &&
                     p.forelder !== periode.forelder &&
-                    erUttaksperiode(periode),
+                    !!p.samtidigUttak &&
+                    !!p.samtidigUttak,
             )
             .find((p) => dayjs(periode.fom).isSame(p.fom));
 

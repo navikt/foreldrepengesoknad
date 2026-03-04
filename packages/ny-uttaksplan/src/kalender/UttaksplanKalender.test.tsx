@@ -20,6 +20,7 @@ const {
     SkalHaPeriodeMedFratrekkForPleiepenger,
     HarUtsettelse,
     FlerbarnMorOgFar,
+    SkalIkkeViseAvslåttePerioderSomOverlapperMedAndrePerioder,
 } = composeStories(stories);
 
 describe('UttaksplanKalender', () => {
@@ -1545,5 +1546,22 @@ describe('UttaksplanKalender', () => {
                 'Dere kan ikke ha mindre enn 100 % foreldrepenger til sammen når du har valgt flerbarnsdager',
             ),
         ).toBeInTheDocument();
+    });
+
+    it('skal ikke vise avslåtte perioder som overlapper med andre perioder', async () => {
+        render(<SkalIkkeViseAvslåttePerioderSomOverlapperMedAndrePerioder />);
+
+        const desember = screen.getByTestId('year:2025;month:11');
+        const januar = screen.getByTestId('year:2026;month:0');
+
+        expect(within(desember).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(23);
+        expect(within(januar).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(22);
+
+        await userEvent.click(within(desember).getByTestId('day:1;dayColor:GREEN'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        expect(screen.getAllByText('Far')).toHaveLength(2);
+        expect(screen.getByText('Fars kvote')).toBeInTheDocument();
     });
 });

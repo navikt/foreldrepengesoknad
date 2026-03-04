@@ -8,7 +8,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { getFamiliehendelsedato, getFamiliesituasjon } from '@navikt/fp-utils';
+import { Uttaksperioden, getFamiliehendelsedato, getFamiliesituasjon } from '@navikt/fp-utils';
 
 import { ForeldreInfo } from '../types/ForeldreInfo';
 import { sorterPerioder } from '../utils/periodeUtils';
@@ -38,7 +38,7 @@ export const UttaksplanDataProvider = (props: Props) => {
         const familiehendelsedato = getFamiliehendelsedato(otherProps.barn);
         const familiesituasjon = getFamiliesituasjon(otherProps.barn);
 
-        const sortertePerioder = [...otherProps.uttakPerioder].sort(sorterPerioder);
+        const sortertePerioder = filtrerBortAvslåtteOverlappendePerioder(otherProps.uttakPerioder).sort(sorterPerioder);
 
         return {
             ...otherProps,
@@ -58,3 +58,8 @@ export const useUttaksplanData = () => {
     }
     return context;
 };
+
+//TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
+const filtrerBortAvslåtteOverlappendePerioder = (
+    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+) => perioder.filter((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.resultat?.trekkerDager !== false);
