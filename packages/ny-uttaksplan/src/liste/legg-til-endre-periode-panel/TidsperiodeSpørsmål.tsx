@@ -10,6 +10,7 @@ import { UttaksdagenString } from '@navikt/fp-utils';
 import { isBeforeOrSame, isRequired, isValidDate, isWeekday } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { countWeekdaysBetween, getVarighetString } from '../../utils/dateUtils';
 import { FormValues } from './LeggTilEllerEndrePeriodeListPanel';
 
 export const TidsperiodeSpørsmål = () => {
@@ -61,6 +62,16 @@ export const TidsperiodeSpørsmål = () => {
                     maxDate={maxDate}
                 />
             </HStack>
+            <FormattedMessage
+                id="RedigeringPanel.ValgteDager"
+                values={{
+                    varighet: getVarighetString(finnAntallDager(fom, tom), intl),
+                }}
+            />
         </VStack>
     );
+};
+
+const finnAntallDager = (fom?: string, tom?: string): number => {
+    return !fom || !tom ? 0 : countWeekdaysBetween(dayjs(fom), dayjs(tom));
 };
