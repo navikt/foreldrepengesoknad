@@ -832,12 +832,7 @@ const getInfotekstOmFedrekvoteBrukRundtFødsel = (
 export const skalBesvareFlerbarnsdager = (
     antallBarn: number,
     forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined,
-    kontoTypeFarMedmor: KontoTypeUttak | undefined,
+    kontotype: KontoTypeUttak | undefined,
 ) => {
-    return (
-        antallBarn > 1 &&
-        forelder !== 'MOR' &&
-        kontoTypeFarMedmor !== 'MØDREKVOTE' &&
-        kontoTypeFarMedmor !== 'AKTIVITETSFRI_KVOTE'
-    );
+    return antallBarn > 1 && forelder !== 'MOR' && kontotype !== 'MØDREKVOTE' && kontotype !== 'AKTIVITETSFRI_KVOTE';
 };
