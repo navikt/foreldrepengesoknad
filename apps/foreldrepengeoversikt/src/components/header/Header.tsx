@@ -11,7 +11,7 @@ import {
     PersonMedArbeidsforholdDto_fpoversikt,
     Ytelse,
 } from '@navikt/fp-types';
-import { capitalizeFirstLetterInEveryWordOnly, formatDateMedUkedag } from '@navikt/fp-utils';
+import { capitalizeFirstLetter, capitalizeFirstLetterInEveryWordOnly, formatDateMedUkedag } from '@navikt/fp-utils';
 
 import { hentSakerOptions, søkerInfoOptions } from '../../api/queries.ts';
 import { LayoutWrapper } from '../../sections/LayoutWrapper';
@@ -224,6 +224,7 @@ export function DinSakHeader({ sak }: { sak?: Sak }) {
 
     const harMinstEttArbeidsforhold = !!søkerinfo?.arbeidsforhold && søkerinfo.arbeidsforhold.length > 0;
 
+    const ytelseTekst = ytelseSomTekst(sak.ytelse, intl);
     return (
         <HeaderWrapper>
             <HGrid columns="max-content 1fr" gap="space-24" align="start">
@@ -237,7 +238,7 @@ export function DinSakHeader({ sak }: { sak?: Sak }) {
                     </HStack>
                     <Show above="md">
                         <HStack gap="space-12" align="center">
-                            <Detail uppercase>{ytelseSomTekst(sak.ytelse, intl)}</Detail>
+                            <Detail uppercase>{ytelseTekst}</Detail>
                             <BlueDot />
                             <SaksnummerDetail />
                             <BlueDot />
@@ -247,7 +248,7 @@ export function DinSakHeader({ sak }: { sak?: Sak }) {
                     <Show below="md">
                         <VStack gap="space-4">
                             <HStack gap="space-8" align="center">
-                                {ytelseSomTekst(sak.ytelse, intl)} <BlueDot />
+                                {capitalizeFirstLetter(ytelseTekst)} <BlueDot />
                                 <SaksnummerDetail />
                             </HStack>
                             <FamiliehendelseDescription sak={sak} søkerinfo={søkerinfo} />
