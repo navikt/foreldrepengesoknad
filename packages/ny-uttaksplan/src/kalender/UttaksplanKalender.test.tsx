@@ -187,21 +187,21 @@ describe('UttaksplanKalender', () => {
         const fpFørFødselPeriode = within(screen.getByTestId(`eksisterende-periode-2024-03-14-2024-04-03`));
         expect(fpFørFødselPeriode.getAllByText('Mor')).toHaveLength(2);
         expect(fpFørFødselPeriode.getByText('Foreldrepenger før fødsel')).toBeInTheDocument();
-        expect(fpFørFødselPeriode.getByText('15 dager valgt i perioden')).toBeInTheDocument();
+        expect(fpFørFødselPeriode.getByText('15 dager valgt')).toBeInTheDocument();
 
         const foreldrepengerPeriode = within(screen.getByTestId(`eksisterende-periode-2024-04-04-2024-04-18`));
         expect(foreldrepengerPeriode.getAllByText('Mor')).toHaveLength(2);
         expect(foreldrepengerPeriode.getByText('Mors kvote')).toBeInTheDocument();
-        expect(foreldrepengerPeriode.getByText('11 dager valgt i perioden')).toBeInTheDocument();
+        expect(foreldrepengerPeriode.getByText('11 dager valgt')).toBeInTheDocument();
 
         const arbeidPeriode = within(screen.getByTestId(`eksisterende-periode-2024-05-17-2024-05-23`));
         expect(arbeidPeriode.getAllByText('Ferie')).toHaveLength(2);
-        expect(arbeidPeriode.getByText('5 dager valgt i perioden')).toBeInTheDocument();
+        expect(arbeidPeriode.getByText('5 dager valgt')).toBeInTheDocument();
 
         const fellesperiode = within(screen.getByTestId(`eksisterende-periode-2024-05-31-2024-06-13`));
         expect(fellesperiode.getAllByText('Mor')).toHaveLength(2);
         expect(fellesperiode.getByText('Fellesperiode')).toBeInTheDocument();
-        expect(fellesperiode.getByText('1 dag valgt i perioden')).toBeInTheDocument();
+        expect(fellesperiode.getByText('1 dag valgt')).toBeInTheDocument();
     });
 
     it('skal vise infomelding når en velger dag før fødselsdato', async () => {
@@ -489,7 +489,7 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Begge')).toBeInTheDocument();
         expect(screen.getByText('Mor har 60 % mødrekvote')).toBeInTheDocument();
         expect(screen.getByText('Far har 40 % fedrekvote')).toBeInTheDocument();
-        expect(screen.getByText('4 dager valgt i perioden')).toBeInTheDocument();
+        expect(screen.getAllByText('4 dager valgt')).toHaveLength(3);
 
         await userEvent.click(screen.getByText('Slett dager fra periode'));
 
@@ -1297,7 +1297,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
 
-        expect(screen.getByText('Barn er innlagt')).toBeInTheDocument();
+        expect(screen.getByText('Barnet er innlagt')).toBeInTheDocument();
         expect(screen.getByText('Legg til utsettelse')).toBeInTheDocument();
 
         await userEvent.click(within(januar).getByTestId('day:22;dayColor:BLUE'));
