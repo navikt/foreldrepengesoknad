@@ -1,5 +1,5 @@
 {
-    "name": "@navikt/fp-metrics",
+    "name": "@navikt/fp-observability",
     "main": "index.ts",
     "type": "module",
     "types": "index.ts",
@@ -10,14 +10,16 @@
         "prettier": "prettier --write src"
     },
     "dependencies": {
-        "@navikt/fp-types": "workspace:*"
+        "@navikt/fp-types": "workspace:*",
+        "@sentry/browser": "10.38.0"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@types/node": "24.10.1",
         "eslint": "9.39.2",
-        "typescript": "5.9.3"
+        "typescript": "5.9.3",
+        "vite": "7.3.1"
     },
     "packageManager": "pnpm@10.28.0"
 }

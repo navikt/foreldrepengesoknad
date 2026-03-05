@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Link, ReadMore, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 
 export const HvemKanDriveMedEgenNæring = () => {
     const intl = useIntl();

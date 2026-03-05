@@ -14,7 +14,7 @@ import {
     Utsettelsesperiode,
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 import { EksternArbeidsforholdDto_fpoversikt, KontoBeregningDto } from '@navikt/fp-types';
 
 import ActionLink from '../../common/action-link/ActionLink';

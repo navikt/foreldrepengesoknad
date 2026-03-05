@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
 import { Path } from 'appData/paths';
 import { API_URLS } from 'appData/queries';
@@ -8,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
 
+import { captureMessage } from '@navikt/fp-observability';
 import { EngangsstønadDto, Målform, PersonDto_fpoversikt } from '@navikt/fp-types';
 import { getDecoratorLanguageCookie, useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -96,7 +96,7 @@ export const useEsSendSøknad = (personinfo: PersonDto_fpoversikt) => {
                 }
 
                 const jsonResponse = await error.response.json<{ uuid?: string }>();
-                Sentry.captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
+                captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
                 const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
                 throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
             }

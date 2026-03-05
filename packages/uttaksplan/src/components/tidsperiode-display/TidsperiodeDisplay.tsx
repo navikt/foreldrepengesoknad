@@ -3,7 +3,7 @@ import { IntlShape, useIntl } from 'react-intl';
 import { BodyShort, Label, Link } from '@navikt/ds-react';
 
 import { TidsperiodeDate } from '@navikt/fp-common';
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 import { formatDate } from '@navikt/fp-utils';
 
 import Block from '../../common/block/Block';

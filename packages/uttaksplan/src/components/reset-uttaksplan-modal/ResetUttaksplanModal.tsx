@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
 
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 
 import Block from '../../common/block/Block';
 import planBemUtils from '../../utils/planBemUtils';

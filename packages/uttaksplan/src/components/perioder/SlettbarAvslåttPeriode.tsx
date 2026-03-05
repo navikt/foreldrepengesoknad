@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyLong } from '@navikt/ds-react';
 
 import { InfoPeriode, OpprinneligSøkt, isAvslåttPeriode } from '@navikt/fp-common';
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 
 import ActionLink from '../../common/action-link/ActionLink';
 import { getSlettPeriodeTekst } from '../../utils/periodeUtils';

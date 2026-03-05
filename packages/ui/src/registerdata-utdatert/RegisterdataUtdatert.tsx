@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Alert, BodyShort, Button, Heading, VStack } from '@navikt/ds-react';
 
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 import { AppName } from '@navikt/fp-types';
 
 import { SkjemaRotLayout } from '../skjema-rotlayout/SkjemaRotLayout';

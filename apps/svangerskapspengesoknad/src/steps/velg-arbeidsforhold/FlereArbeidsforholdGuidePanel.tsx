@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, Box, GuidePanel, List } from '@navikt/ds-react';
 
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 
 export const FlereArbeidsforholdGuidePanel = () => {
     loggUmamiEvent({ origin: 'svangerskapspengesoknad', eventName: 'besøk', eventData: { tittel: 'umyndig' } });
