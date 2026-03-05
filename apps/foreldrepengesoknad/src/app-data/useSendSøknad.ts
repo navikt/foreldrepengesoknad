@@ -13,14 +13,14 @@ import { useNavigate } from 'react-router-dom';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 
-import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { FpPersonDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './FpDataContext';
 
 export const useSendSøknad = (
-    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+    søkerinfo: FpPersonDto_fpoversikt,
     erEndringssøknad: boolean,
     foreldrepengerSaker: FpSak_fpoversikt[],
 ) => {

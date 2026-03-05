@@ -28,14 +28,14 @@ import { UttaksplanStegNy } from 'steps/uttaksplan-ny/UttaksplanStegNy';
 import { UttaksplanStep } from 'steps/uttaksplan/UttaksplanStep';
 import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 
-import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { FpPersonDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
 
 const renderSøknadRoutes = (
     harGodkjentVilkår: boolean,
     erEndringssøknad: boolean,
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt,
+    søkerInfo: FpPersonDto_fpoversikt,
     mellomlagreSøknadOgNaviger: () => Promise<void>,
     sendSøknad: () => Promise<void>,
     avbrytSøknad: () => void,
@@ -46,7 +46,7 @@ const renderSøknadRoutes = (
         return <Route path="*" element={<Navigate to={SøknadRoutes.VELKOMMEN} />} />;
     }
 
-    if (!erMyndig(søkerInfo.person.fødselsdato)) {
+    if (!erMyndig(søkerInfo.fødselsdato)) {
         return <Route path="*" element={<Navigate to={SøknadRoutes.IKKE_MYNDIG} />} />;
     }
 
@@ -130,7 +130,7 @@ const renderSøknadRoutes = (
                 element={
                     <SøkersituasjonSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        kjønn={søkerInfo.person.kjønn}
+                        kjønn={søkerInfo.kjønn}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -171,7 +171,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.FORDELING}
                 element={
                     <FordelingSteg
-                        person={søkerInfo.person}
+                        person={søkerInfo}
                         arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
@@ -321,7 +321,7 @@ const renderSøknadRoutes = (
 
 interface Props {
     currentRoute: SøknadRoutes;
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonDto_fpoversikt;
     foreldrepengerSaker: FpSak_fpoversikt[];
     lagretErEndringssøknad?: boolean;
     lagretHarGodkjentVilkår?: boolean;
@@ -364,12 +364,7 @@ export const ForeldrepengesøknadRoutes = ({
     useQuery(annenPartVedtakOptions);
 
     useEffect(() => {
-        if (
-            currentRoute &&
-            erMyndig(søkerInfo.person.fødselsdato) &&
-            lagretHarGodkjentVilkår &&
-            isFirstTimeLoadingApp
-        ) {
+        if (currentRoute && erMyndig(søkerInfo.fødselsdato) && lagretHarGodkjentVilkår && isFirstTimeLoadingApp) {
             // eslint-disable-next-line react-hooks/set-state-in-effect -- TODO (TOR) - Vurder om denne kan fjennast
             setIsFirstTimeLoadingApp(false);
             // TODO (TOR) Kan ta vekk innsending av uttaksplan til denne funksjonen når ein tek i bruk ny uttaksplan
@@ -381,7 +376,7 @@ export const ForeldrepengesøknadRoutes = ({
         }
     }, [
         currentRoute,
-        søkerInfo.person.fødselsdato,
+        søkerInfo.fødselsdato,
         lagretHarGodkjentVilkår,
         navigate,
         isFirstTimeLoadingApp,

@@ -17,10 +17,10 @@ import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-consta
 import {
     ArbeidsforholdOgInntektFp,
     EksternArbeidsforholdDto_fpoversikt,
+    FpPersonDto_fpoversikt,
     Frilans,
     KontoBeregningDto,
     NæringDto,
-    PersonMedArbeidsforholdDto_fpoversikt,
     Sivilstand_fpoversikt,
     SøkersituasjonFp,
     Utenlandsopphold,
@@ -67,7 +67,7 @@ const defaultSøkerinfoMor = {
             stillingsprosent: 50,
         },
     ],
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies FpPersonDto_fpoversikt;
 
 const defaultSøkerinfoFar = {
     person: {
@@ -93,7 +93,7 @@ const defaultSøkerinfoFar = {
         },
     },
     arbeidsforhold: [],
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies FpPersonDto_fpoversikt;
 
 const defaultBarn = {
     type: BarnType.FØDT,
@@ -278,7 +278,7 @@ const STØNADSKONTO_80 = {
 } satisfies KontoBeregningDto;
 
 type StoryArgs = {
-    søkerinfo?: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerinfo?: FpPersonDto_fpoversikt;
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelder;
     utenlandsopphold?: Utenlandsopphold;

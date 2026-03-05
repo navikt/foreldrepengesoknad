@@ -12,7 +12,7 @@ import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder
 import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
 import {
     ArbeidsforholdOgInntektFp,
-    PersonMedArbeidsforholdDto_fpoversikt,
+    FpPersonDto_fpoversikt,
     Situasjon,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
@@ -72,7 +72,7 @@ const defaultSøkerinfo = {
         ],
     },
     arbeidsforhold: [],
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies FpPersonDto_fpoversikt;
 
 const defaultAnnenForelder = {
     fornavn: 'Eline',
@@ -118,7 +118,7 @@ const defaultSøkerinfoFar = {
         },
     },
     arbeidsforhold: [],
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies FpPersonDto_fpoversikt;
 
 type StoryArgs = {
     rolle?: 'mor' | 'far' | 'medmor';

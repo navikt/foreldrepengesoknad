@@ -1,7 +1,7 @@
 import { createIntl, createIntlCache } from 'react-intl';
 
 import { AnnenForelder } from '@navikt/fp-common';
-import { PersonDto_fpoversikt } from '@navikt/fp-types';
+import { FpPersonDto_fpoversikt } from '@navikt/fp-types';
 import { getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import messages from '../intl/nb_NO.json';
@@ -122,7 +122,7 @@ describe('personUtils', () => {
             navn: {
                 fornavn: 'Espen',
             },
-        } as PersonDto_fpoversikt;
+        } as FpPersonDto_fpoversikt;
         const annenForelder = {
             kanIkkeOppgis: false,
             fornavn: 'Olga',
@@ -140,7 +140,7 @@ describe('personUtils', () => {
             navn: {
                 fornavn: 'Olga',
             },
-        } as PersonDto_fpoversikt;
+        } as FpPersonDto_fpoversikt;
         const annenForelder = {
             kanIkkeOppgis: false,
             fornavn: 'Espen',

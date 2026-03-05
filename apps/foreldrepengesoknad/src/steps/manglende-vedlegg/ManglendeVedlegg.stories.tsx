@@ -10,7 +10,7 @@ import { action } from 'storybook/actions';
 import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 
 import { AnnenForelder, Barn, BarnType, Periode, Periodetype } from '@navikt/fp-common';
-import { ArbeidsforholdOgInntektFp, PersonMedArbeidsforholdDto_fpoversikt, Situasjon } from '@navikt/fp-types';
+import { ArbeidsforholdOgInntektFp, FpPersonDto_fpoversikt, Situasjon } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { ManglendeVedlegg } from './ManglendeVedlegg';
@@ -66,7 +66,7 @@ const defaultSøkerinfo = {
         ],
     },
     arbeidsforhold: [],
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies FpPersonDto_fpoversikt;
 
 const defaultAnnenForelder = {
     fornavn: 'Eline',
@@ -112,7 +112,7 @@ const defaultSøkerinfoFar = {
         },
     },
     arbeidsforhold: [],
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies FpPersonDto_fpoversikt;
 
 type StoryArgs = {
     rolle?: 'mor' | 'far' | 'medmor';

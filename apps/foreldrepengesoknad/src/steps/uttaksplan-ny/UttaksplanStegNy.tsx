@@ -19,8 +19,8 @@ import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { loggUmamiEvent } from '@navikt/fp-metrics';
 import {
     Barn,
+    FpPersonDto_fpoversikt,
     FpSak_fpoversikt,
-    PersonMedArbeidsforholdDto_fpoversikt,
     RettighetType_fpoversikt,
     isAdoptertBarn,
     isFødtBarn,
@@ -44,7 +44,7 @@ import { useUttaksplanForEksisterendeSak } from './hooks/useUttaksplanForEksiste
 import { useUttaksplanForslag } from './hooks/useUttaksplanForslag';
 
 interface Props {
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonDto_fpoversikt;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
     foreldrepengerSaker?: FpSak_fpoversikt[];

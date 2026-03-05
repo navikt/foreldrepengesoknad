@@ -9,8 +9,8 @@ import { MELLOMLAGRET_VERSJON } from 'utils/mellomlagringUtils';
 
 import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
 import {
+    FpPersonDto_fpoversikt,
     FpSak_fpoversikt,
-    PersonMedArbeidsforholdDto_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
@@ -21,7 +21,7 @@ import { SøknadRoutes } from './routes';
 
 export interface FpMellomlagretData {
     version: number;
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonDto_fpoversikt;
     foreldrepengerSaker: FpSak_fpoversikt[];
     currentRoute: SøknadRoutes;
     søknad?: Partial<Søknad>;
@@ -47,7 +47,7 @@ const FEIL_VED_INNSENDING =
 
 const getDataForMellomlagring = (
     foreldrepengerSaker: FpSak_fpoversikt[],
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt,
+    søkerInfo: FpPersonDto_fpoversikt,
     getDataFromState: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     erEndringssøknad: boolean,
     harGodkjentVilkår: boolean,
@@ -120,7 +120,7 @@ const getDataForMellomlagring = (
 
 export const useMellomlagreSøknad = (
     foreldrepengerSaker: FpSak_fpoversikt[],
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt,
+    søkerInfo: FpPersonDto_fpoversikt,
     erEndringssøknad: boolean,
     harGodkjentVilkår: boolean,
     søknadGjelderEtNyttBarn?: boolean,
@@ -154,7 +154,7 @@ export const useMellomlagreSøknad = (
                     await ky.post(API_URLS.mellomlagring, {
                         json: data,
                         headers: {
-                            fnr: søkerInfo.person.fnr,
+                            fnr: søkerInfo.fnr,
                         },
                     });
                 } catch (error: unknown) {

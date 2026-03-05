@@ -20,7 +20,7 @@ import {
     OppsummeringPanel,
     SelvstendigNæringsdrivendeOppsummering,
 } from '@navikt/fp-steg-oppsummering';
-import { PersonDto_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt, Søkerrolle } from '@navikt/fp-types';
+import { FpPersonDto_fpoversikt, Søkerrolle } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -34,7 +34,7 @@ import { UttaksplanOppsummering } from './uttaksplan-oppsummering/UttaksplanOpps
 import { UttaksplanOppsummeringNy } from './uttaksplan-oppsummering/UttaksplanOppsummeringNy';
 
 interface Props {
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonDto_fpoversikt;
     erEndringssøknad: boolean;
     sendSøknad: () => Promise<void>;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -64,7 +64,7 @@ export const OppsummeringSteg = (props: Props) => {
 
     const erAnnenForelderOppgitt = isAnnenForelderOppgitt(annenForelder);
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
-    const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, søkerErFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(søkerInfo, annenForelder, søkerErFarEllerMedmor, intl);
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
     const termindato = getTermindato(barn);
     const erEndringssøknadOgAnnenForelderHarRett =
@@ -81,7 +81,7 @@ export const OppsummeringSteg = (props: Props) => {
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
 
     const visInfoboksOmFarskapsportal = skalViseInfoOmFarskapsportal(
-        søkerInfo.person,
+        søkerInfo,
         søkersituasjon.rolle,
         annenForelder,
         isUfødtBarn(barn),
@@ -224,7 +224,7 @@ export const OppsummeringSteg = (props: Props) => {
 };
 
 const skalViseInfoOmFarskapsportal = (
-    person: PersonDto_fpoversikt,
+    person: FpPersonDto_fpoversikt,
     rolle: Søkerrolle,
     annenForelder: AnnenForelder,
     barnetErIkkeFødt?: boolean,
@@ -234,7 +234,7 @@ const skalViseInfoOmFarskapsportal = (
     const erAnnenForelderFar =
         !!erAnnenForelderOppgitt?.fnr && getKjønnFromFnrString(erAnnenForelderOppgitt.fnr) === 'M';
     const harAnnenForelderUtenlandskFnr = !!erAnnenForelderOppgitt?.utenlandskFnr;
-    const erSøkerIkkeGift = person.sivilstand?.type !== 'GIFT';
+    const erSøkerIkkeGift = !person.erGift;
 
     return (
         (rolle === 'far' ||

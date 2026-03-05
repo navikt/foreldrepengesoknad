@@ -16,6 +16,7 @@ export type { Kjønn_fpoversikt } from './fpoversiktDtoGenerert';
 export type { Målform_fpoversikt } from './fpoversiktDtoGenerert';
 export type { Navn_fpoversikt } from './fpoversiktDtoGenerert';
 export type { EsPersonDto_fpoversikt } from './fpoversiktDtoGenerert';
+export type { FpPersonDto_fpoversikt } from './fpoversiktDtoGenerert';
 export type { PersonDto_fpoversikt } from './fpoversiktDtoGenerert';
 export type { AnnenForelderDto_fpoversikt } from './fpoversiktDtoGenerert';
 export type { BarnDto_fpoversikt } from './fpoversiktDtoGenerert';

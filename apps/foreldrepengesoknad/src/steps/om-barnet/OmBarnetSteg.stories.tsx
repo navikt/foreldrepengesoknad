@@ -9,7 +9,7 @@ import { action } from 'storybook/actions';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak';
 
 import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
-import { PersonMedArbeidsforholdDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
+import { FpPersonDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { OmBarnetSteg } from './OmBarnetSteg';
@@ -74,7 +74,7 @@ const defaultSøkerinfo = {
         ],
     },
     arbeidsforhold: [],
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies FpPersonDto_fpoversikt;
 
 type StoryArgs = {
     søkersituasjon?: SøkersituasjonFp;

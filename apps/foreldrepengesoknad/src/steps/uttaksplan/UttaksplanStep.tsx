@@ -42,7 +42,7 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
-import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { FpPersonDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Spinner, Step, StepFooter } from '@navikt/fp-ui';
 import {
     Periodene,
@@ -70,7 +70,7 @@ import { uttaksplanQuestionsConfig } from './uttaksplanQuestionConfig';
 const EMPTY_PERIOD_ARRAY: Periode[] = [];
 
 type Props = {
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonDto_fpoversikt;
     erEndringssøknad: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
@@ -439,7 +439,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     };
 
     const foreldreSituasjon = getForeldreparSituasjon(
-        søkerInfo.person.kjønn,
+        søkerInfo.kjønn,
         annenForelderKjønn,
         erDeltUttak,
         morErAleneOmOmsorg,

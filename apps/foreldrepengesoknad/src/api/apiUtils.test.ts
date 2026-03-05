@@ -11,7 +11,7 @@ import {
     Periodetype,
     Uttaksperiode,
 } from '@navikt/fp-common';
-import { ArbeidsforholdOgInntektFp, PersonMedArbeidsforholdDto_fpoversikt, Uttaksplanperiode } from '@navikt/fp-types';
+import { ArbeidsforholdOgInntektFp, FpPersonDto_fpoversikt, Uttaksplanperiode } from '@navikt/fp-types';
 
 import {
     cleanEndringssøknad,
@@ -37,17 +37,16 @@ const DEFAULT_SØKER_INFO = {
             stillingsprosent: 100,
         },
     ],
-    person: {
-        navn: {
-            etternavn: 'Oravakangas',
-            fornavn: 'Erlinga-Mask',
-        },
-        fnr: '02343434',
-        fødselsdato: '1989-08-30',
-        kjønn: 'K',
-        barn: [],
+    barn: [],
+    erGift: false,
+    fnr: '02343434',
+    fødselsdato: '1989-08-30',
+    kjønn: 'K',
+    navn: {
+        etternavn: 'Oravakangas',
+        fornavn: 'Erlinga-Mask',
     },
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies FpPersonDto_fpoversikt;
 
 const getAnnenForelderUførMock = (
     urUførInput: boolean | undefined,

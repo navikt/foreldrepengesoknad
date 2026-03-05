@@ -9,12 +9,7 @@ import { action } from 'storybook/actions';
 import { FellesperiodeFordelingValg, OppstartValg } from 'types/Fordeling';
 
 import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
-import {
-    Dekningsgrad,
-    PersonDto_fpoversikt,
-    PersonMedArbeidsforholdDto_fpoversikt,
-    SøkersituasjonFp,
-} from '@navikt/fp-types';
+import { Dekningsgrad, FpPersonDto_fpoversikt, PersonDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import {
     ALENE_OM_OMSORG_80_FARMEDMOR,
     ALENE_OM_OMSORG_100_FARMEDMOR,
@@ -68,7 +63,7 @@ type StoryArgs = {
     søkersituasjon: SøkersituasjonFp;
     annenForelder: AnnenForelder;
     barnet: Barn;
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonDto_fpoversikt;
     dekningsgrad: Dekningsgrad;
 } & ComponentProps<typeof UttaksplanStegNy>;
 

@@ -16,8 +16,8 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import {
     Barn,
+    FpPersonDto_fpoversikt,
     FpSak_fpoversikt,
-    PersonMedArbeidsforholdDto_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
     isAdoptertBarn,
@@ -48,7 +48,7 @@ type FormValues = {
 };
 
 interface UttaksplanFormProps {
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonDto_fpoversikt;
     defaultUttaksperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;

@@ -12,7 +12,7 @@ import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Attachment, FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { Attachment, FpPersonDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { Uttaksperioden, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -62,7 +62,7 @@ import {
 } from './util';
 
 type Props = {
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonDto_fpoversikt;
     erEndringssøknad: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
@@ -135,7 +135,7 @@ export const ManglendeVedleggNy = ({
     const morKvalPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorKvalprogramNy);
     const morStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorStudererNy);
 
-    const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, erFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(søkerInfo, annenForelder, erFarEllerMedmor, intl);
 
     const lagre = (formValues: ManglendeVedleggFormData) => {
         const alleVedlegg = {
