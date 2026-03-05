@@ -16,20 +16,7 @@ import './index.css';
 
 dayjs.locale('nb');
 
-initSentry({
-    dsn: 'https://b4fd4db97e7d4663852a5203961e3cee@sentry.gc.nav.no/6',
-    beforeSend(event) {
-        const harStacktraceMedOpprinnelseIVårKode = (event.exception?.values ?? []).some((ex) =>
-            ex.stacktrace?.frames?.some((frame) => frame.filename && /\/assets\/.*\.js$/.test(frame.filename)),
-        );
-
-        if (harStacktraceMedOpprinnelseIVårKode) {
-            return event;
-        }
-
-        return null;
-    },
-});
+initSentry({ dsn: 'https://b4fd4db97e7d4663852a5203961e3cee@sentry.gc.nav.no/6' });
 
 const container = document.getElementById('app');
 if (container) {
