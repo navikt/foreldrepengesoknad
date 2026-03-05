@@ -11,7 +11,7 @@ import {
     Utsettelsesperiode,
     isForeldrepengerFørFødselUttaksperiode,
 } from '@navikt/fp-common';
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 import { Tidsperioden, getTidsperiode } from '@navikt/fp-utils';
 
 import Block from '../../common/block/Block';

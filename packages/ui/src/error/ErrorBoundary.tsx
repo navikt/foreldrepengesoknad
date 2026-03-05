@@ -1,6 +1,6 @@
 import { Component, ErrorInfo, ReactElement } from 'react';
 
-import { captureException, withScope } from '@navikt/fp-sentry';
+import { captureException, withScope } from '@navikt/fp-observability';
 import { AppName } from '@navikt/fp-types';
 
 import { ErrorPage } from './ErrorPage';

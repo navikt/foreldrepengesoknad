@@ -1,4 +1,4 @@
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 
 import { ContextDataType, useContextSaveData } from './EsDataContext';
 import { Path } from './paths';

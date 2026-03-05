@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 
-import { captureMessage } from '@navikt/fp-sentry';
+import { captureMessage } from '@navikt/fp-observability';
 import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';

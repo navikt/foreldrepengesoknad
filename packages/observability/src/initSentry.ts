@@ -1,3 +1,4 @@
+/// <reference path="./sentry.d.ts" />
 import * as Sentry from '@sentry/browser';
 
 type InitSentryOptions = {

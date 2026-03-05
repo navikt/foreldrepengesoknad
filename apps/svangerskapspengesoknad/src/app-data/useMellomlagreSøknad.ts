@@ -4,7 +4,7 @@ import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { captureMessage } from '@navikt/fp-sentry';
+import { captureMessage } from '@navikt/fp-observability';
 import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';

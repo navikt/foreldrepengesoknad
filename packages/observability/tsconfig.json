@@ -2,7 +2,9 @@
     "extends": "@navikt/fp-config-typescript/tsconfig.json",
     "compilerOptions": {
         "baseUrl": "src",
+        "jsx": "react-jsx",
         "rootDir": "src",
+        "esModuleInterop": true,
         "types": ["vite/client"]
     },
     "include": ["src/**/*", "../../@types/**/*"],

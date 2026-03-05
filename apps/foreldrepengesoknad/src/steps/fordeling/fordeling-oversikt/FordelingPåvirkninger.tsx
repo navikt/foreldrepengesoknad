@@ -11,7 +11,7 @@ import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'u
 
 import { BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
 
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 import { uttaksConstants } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 

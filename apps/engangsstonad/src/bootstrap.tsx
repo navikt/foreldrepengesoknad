@@ -7,7 +7,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import 'styles/globals.css';
 
-import { initSentry } from '@navikt/fp-sentry';
+import { initSentry } from '@navikt/fp-observability';
 
 import { AppContainer } from './AppContainer';
 import './index.css';

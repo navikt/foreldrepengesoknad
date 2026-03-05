@@ -7,7 +7,7 @@ import { Søknad } from 'types/Søknad';
 import { MELLOMLAGRET_VERSJON } from 'utils/mellomlagringUtils';
 
 import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
-import { captureMessage } from '@navikt/fp-sentry';
+import { captureMessage } from '@navikt/fp-observability';
 import {
     FpSak_fpoversikt,
     PersonMedArbeidsforholdDto_fpoversikt,

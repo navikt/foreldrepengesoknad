@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
 
-import { captureMessage } from '@navikt/fp-sentry';
+import { captureMessage } from '@navikt/fp-observability';
 import { EngangsstønadDto, Målform, PersonDto_fpoversikt } from '@navikt/fp-types';
 import { getDecoratorLanguageCookie, useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';

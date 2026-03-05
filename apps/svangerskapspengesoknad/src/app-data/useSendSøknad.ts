@@ -5,7 +5,7 @@ import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { captureMessage } from '@navikt/fp-sentry';
+import { captureMessage } from '@navikt/fp-observability';
 import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 

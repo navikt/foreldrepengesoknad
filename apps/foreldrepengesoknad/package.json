@@ -33,7 +33,7 @@
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-filopplaster": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
-        "@navikt/fp-metrics": "workspace:*",
+        "@navikt/fp-observability": "workspace:*",
         "@navikt/fp-steg-arbeidsforhold-og-inntekt": "workspace:*",
         "@navikt/fp-steg-egen-naering": "workspace:*",
         "@navikt/fp-steg-frilans": "workspace:*",
@@ -66,8 +66,7 @@
         "react-dom": "19.2.4",
         "react-hook-form": "7.71.1",
         "react-intl": "8.1.3",
-        "react-router-dom": "7.13.0",
-        "@navikt/fp-sentry": "workspace:*"
+        "react-router-dom": "7.13.0"
     },
     "devDependencies": {
         "@formatjs/cli-lib": "8.2.3",

@@ -69,12 +69,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../../packages/form-hooks
-      '@navikt/fp-metrics':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../../packages/metrics
-      '@navikt/fp-sentry':
-        specifier: workspace:*
-        version: link:../../packages/sentry
+        version: link:../../packages/observability
       '@navikt/fp-steg-kvittering':
         specifier: workspace:*
         version: link:../../packages/steg-kvittering
@@ -256,9 +253,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../../packages/form-hooks
-      '@navikt/fp-sentry':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../../packages/sentry
+        version: link:../../packages/observability
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -452,12 +449,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../../packages/form-hooks
-      '@navikt/fp-metrics':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../../packages/metrics
-      '@navikt/fp-sentry':
-        specifier: workspace:*
-        version: link:../../packages/sentry
+        version: link:../../packages/observability
       '@navikt/fp-steg-arbeidsforhold-og-inntekt':
         specifier: workspace:*
         version: link:../../packages/steg-arbeidsforhold-og-inntekt
@@ -672,12 +666,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../../packages/form-hooks
-      '@navikt/fp-metrics':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../../packages/metrics
-      '@navikt/fp-sentry':
-        specifier: workspace:*
-        version: link:../../packages/sentry
+        version: link:../../packages/observability
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -856,12 +847,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../../packages/form-hooks
-      '@navikt/fp-metrics':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../../packages/metrics
-      '@navikt/fp-sentry':
-        specifier: workspace:*
-        version: link:../../packages/sentry
+        version: link:../../packages/observability
       '@navikt/fp-steg-arbeidsforhold-og-inntekt':
         specifier: workspace:*
         version: link:../../packages/steg-arbeidsforhold-og-inntekt
@@ -1052,9 +1040,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../../packages/form-hooks
-      '@navikt/fp-sentry':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../../packages/sentry
+        version: link:../../packages/observability
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -1218,12 +1206,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../../packages/form-hooks
-      '@navikt/fp-metrics':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../../packages/metrics
-      '@navikt/fp-sentry':
-        specifier: workspace:*
-        version: link:../../packages/sentry
+        version: link:../../packages/observability
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -1661,28 +1646,6 @@ importers:
         specifier: 9.39.2
         version: 9.39.2(jiti@2.6.1)
 
-  packages/metrics:
-    dependencies:
-      '@navikt/fp-types':
-        specifier: workspace:*
-        version: link:../types
-    devDependencies:
-      '@navikt/fp-config-eslint':
-        specifier: workspace:*
-        version: link:../config-eslint
-      '@navikt/fp-config-typescript':
-        specifier: workspace:*
-        version: link:../config-typescript
-      '@types/node':
-        specifier: 24.10.1
-        version: 24.10.1
-      eslint:
-        specifier: 9.39.2
-        version: 9.39.2(jiti@2.6.1)
-      typescript:
-        specifier: 5.9.3
-        version: 5.9.3
-
   packages/ny-uttaksplan:
     dependencies:
       '@navikt/aksel-icons':
@@ -1813,8 +1776,11 @@ importers:
         specifier: 4.0.18
         version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.2.0)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@28.0.0)(less@4.5.1)(lightningcss@1.30.2)(msw@2.12.7(@types/node@25.2.0)(typescript@5.9.3))(sass-embedded@1.93.3)(sass@1.93.3)(yaml@2.8.2)
 
-  packages/sentry:
+  packages/observability:
     dependencies:
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../types
       '@sentry/browser':
         specifier: 10.38.0
         version: 10.38.0
@@ -1825,6 +1791,9 @@ importers:
       '@navikt/fp-config-typescript':
         specifier: workspace:*
         version: link:../config-typescript
+      '@types/node':
+        specifier: 24.10.1
+        version: 24.10.1
       eslint:
         specifier: 9.39.2
         version: 9.39.2(jiti@2.6.1)
@@ -1833,7 +1802,7 @@ importers:
         version: 5.9.3
       vite:
         specifier: 7.3.1
-        version: 7.3.1(@types/node@25.2.0)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.30.2)(sass-embedded@1.93.3)(sass@1.93.3)(yaml@2.8.2)
+        version: 7.3.1(@types/node@24.10.1)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.30.2)(sass-embedded@1.93.3)(sass@1.93.3)(yaml@2.8.2)
 
   packages/server-utils:
     dependencies:
@@ -1889,9 +1858,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../form-hooks
-      '@navikt/fp-metrics':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../metrics
+        version: link:../observability
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
@@ -1998,9 +1967,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../form-hooks
-      '@navikt/fp-metrics':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../metrics
+        version: link:../observability
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
@@ -2547,12 +2516,9 @@ importers:
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
-      '@navikt/fp-metrics':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../metrics
-      '@navikt/fp-sentry':
-        specifier: workspace:*
-        version: link:../sentry
+        version: link:../observability
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
@@ -2775,9 +2741,9 @@ importers:
       '@navikt/fp-common':
         specifier: workspace:*
         version: link:../fp-common
-      '@navikt/fp-metrics':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../metrics
+        version: link:../observability
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
@@ -10233,7 +10199,7 @@ snapshots:
   '@types/fs-extra@11.0.4':
     dependencies:
       '@types/jsonfile': 6.1.4
-      '@types/node': 22.19.8
+      '@types/node': 24.10.1
 
   '@types/hoist-non-react-statics@3.3.7(@types/react@19.2.10)':
     dependencies:

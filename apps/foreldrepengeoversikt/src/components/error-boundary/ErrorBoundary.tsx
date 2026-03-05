@@ -2,7 +2,7 @@ import { Component, ErrorInfo } from 'react';
 
 import { Alert } from '@navikt/ds-react';
 
-import { captureException, withScope } from '@navikt/fp-sentry';
+import { captureException, withScope } from '@navikt/fp-observability';
 
 type Props = {
     children: React.ReactNode;
