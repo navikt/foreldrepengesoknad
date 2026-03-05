@@ -46,12 +46,14 @@ import {
 } from '@navikt/fp-types';
 import {
     Uttaksdagen,
+    Uttaksperioden,
     dateToISOString,
     getDecoratorLanguageCookie,
     isValidTidsperiode,
     omitOne,
 } from '@navikt/fp-utils';
 import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from '@navikt/fp-uttaksplan';
+import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 export const FEIL_VED_INNSENDING =
@@ -435,6 +437,8 @@ export const cleanSøknadNy = (
 
     const vedlegg = hentData(ContextDataType.VEDLEGG);
 
+    const søkersPerioder = filtrerUtAnnenPartsPerioder(uttaksplan, søkersituasjon.rolle);
+
     return {
         søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
         rolle: konverterRolle(søkersituasjon.rolle),
@@ -446,7 +450,7 @@ export const cleanSøknadNy = (
         annenForelder: cleanAnnenforelder(annenForelder),
         dekningsgrad,
         uttaksplan: {
-            uttaksperioder: midlertidigMappingAvUttaksplan(uttaksplan),
+            uttaksperioder: midlertidigMappingAvUttaksplan(søkersPerioder, barn),
             ønskerJustertUttakVedFødsel,
         },
         utenlandsopphold: (utenlandsoppholdSiste12Mnd ?? []).concat(utenlandsoppholdNeste12Mnd ?? []),
@@ -514,6 +518,9 @@ export const cleanEndringssøknadNy = (
     const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN_NY));
     const { ønskerJustertUttakVedFødsel } = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA_NY));
     const vedlegg = hentData(ContextDataType.VEDLEGG);
+
+    const søkersPerioder = filtrerUtAnnenPartsPerioder(uttaksplan, søkersituasjon.rolle);
+
     return {
         søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
         saksnummer: valgtEksisterendeSaksnr,
@@ -523,7 +530,10 @@ export const cleanEndringssøknadNy = (
         annenForelder: cleanAnnenforelder(annenForelder),
         vedlegg: convertAttachmentsMapToArray(vedlegg),
         uttaksplan: {
-            uttaksperioder: midlertidigMappingAvUttaksplan(filtrerUtUendredePeriode(uttaksplan, eksisterendeSak)),
+            uttaksperioder: midlertidigMappingAvUttaksplan(
+                filtrerUtUendredePeriode(søkersPerioder, eksisterendeSak),
+                barn,
+            ),
             ønskerJustertUttakVedFødsel,
         },
     };
@@ -533,16 +543,25 @@ const filtrerUtUendredePeriode = (
     uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     eksisterendeSak?: FpSak_fpoversikt,
 ): UttakPeriode_fpoversikt[] => {
-    return uttaksplan.filter((periode) => {
-        if ('trekkdager' in periode) {
-            return false;
-        }
-        return eksisterendeSak ? !erPeriodeIOpprinneligSak(eksisterendeSak, periode) : true;
-    });
+    return uttaksplan
+        .filter((periode) => Uttaksperioden.erIkkeEøsPeriode(periode))
+        .filter((periode) => (eksisterendeSak ? !erPeriodeIOpprinneligSak(eksisterendeSak, periode) : true));
 };
 
-const midlertidigMappingAvUttaksplan = (uttaksplan: UttakPeriode_fpoversikt[]): Uttaksplanperiode[] => {
+const filtrerUtAnnenPartsPerioder = (
+    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    rolle: Søkerrolle,
+): UttakPeriode_fpoversikt[] => {
+    const søker = rolle === 'mor' ? 'MOR' : 'FAR_MEDMOR';
+    return uttaksplan
+        .filter((periode) => Uttaksperioden.erIkkeEøsPeriode(periode))
+        .filter((periode) => periode.forelder === søker);
+};
+
+const midlertidigMappingAvUttaksplan = (uttaksplan: UttakPeriode_fpoversikt[], barn: Barn): Uttaksplanperiode[] => {
     return uttaksplan.map((periode) => {
+        const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(barn.antallBarn, periode.forelder, periode.kontoType);
+
         if (periode.oppholdÅrsak) {
             return {
                 type: 'opphold',
@@ -588,7 +607,7 @@ const midlertidigMappingAvUttaksplan = (uttaksplan: UttakPeriode_fpoversikt[]): 
             konto: notEmpty(periode.kontoType),
             morsAktivitetIPerioden: periode.morsAktivitet,
             samtidigUttakProsent: periode.samtidigUttak,
-            ønskerFlerbarnsdager: periode.flerbarnsdager,
+            ønskerFlerbarnsdager: skalViseFlerbarnsdager ? periode.flerbarnsdager : undefined,
             ønskerGradering: periode.gradering !== undefined,
             ønskerSamtidigUttak: periode.samtidigUttak !== undefined,
         };

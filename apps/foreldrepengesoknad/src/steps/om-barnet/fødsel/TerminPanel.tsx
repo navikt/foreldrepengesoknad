@@ -18,6 +18,7 @@ import { Søkersituasjon } from '@navikt/fp-common';
 import { ISO_DATE_REGEX } from '@navikt/fp-constants';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { EksternArbeidsforholdDto_fpoversikt, Søkerrolle } from '@navikt/fp-types';
+import { isValidDate as isValidDateBoolean } from '@navikt/fp-utils';
 import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
 import { terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke } from '@navikt/fp-validation/src/form/dateFormValidation';
 
@@ -41,8 +42,8 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
 
     const formMethods = useFormContext<UfødtBarn>();
     const termindato = formMethods.watch('termindato');
-
-    const erForTidligTilÅSøkePåTermin = termindato ? !erIUke22Pluss3(termindato) : false;
+    const erForTidligTilÅSøkePåTermin =
+        termindato && isValidDateBoolean(termindato) ? !erIUke22Pluss3(termindato) : false;
 
     const søkerErFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const farMedMorSøkerPåTermin = søkerErFarMedmor && termindato;

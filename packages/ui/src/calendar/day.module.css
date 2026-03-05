@@ -39,10 +39,12 @@
 
 .cursorAndHoover {
     cursor: pointer;
+    border: 1px solid transparent;
 }
 
 .cursorAndHoover:hover {
-    background-color: var(--ax-accent-200);
+    box-shadow: 0 2px 6px var(--ax-bg-overlay);
+    border-color: var(--ax-bg-overlay);
 }
 
 .srOnly {
@@ -211,6 +213,11 @@
     print-color-adjust: exact;
 }
 
+.beigeOutlineDay {
+    border: 2px solid var(--ax-brand-beige-600);
+    print-color-adjust: exact;
+}
+
 .greenWithBlackOutlineDay {
     background-color: var(--ax-success-400) !important;
     border: 2px solid var(--ax-bg-neutral-strong);
@@ -310,23 +317,11 @@
     padding-right: 2px;
 }
 
-.pinkDay {
-    background-color: var(--ax-danger-200) !important;
-    padding: 10px 10px 10px 10px;
-    print-color-adjust: exact;
-}
-
-.purpleDay {
-    background-color: var(--ax-meta-purple-400) !important;
-    print-color-adjust: exact;
-}
-
-.triangle {
+.icon {
     position: absolute;
     bottom: 2px;
     right: 2px;
     width: 12px;
     height: 12px;
-    color: var(--ax-warning-600);
     pointer-events: none;
 }

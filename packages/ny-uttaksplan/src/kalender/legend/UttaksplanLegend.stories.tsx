@@ -1,3 +1,4 @@
+import { HeartFillIcon } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { ComponentProps } from 'react';
 import { action } from 'storybook/actions';
@@ -57,10 +58,12 @@ export const VisAlleMedTekst: Story = {
     args: {
         perioderForKalendervisning: [
             {
-                fom: '2024-03-14',
-                tom: '2024-04-03',
-                color: 'PINK',
+                fom: '2024-04-04',
+                tom: '2024-04-04',
                 srText: 'Termindato',
+                color: 'GREEN',
+                icon: <HeartFillIcon aria-hidden color="var(--ax-bg-brand-magenta-strong)" width={25} height={25} />,
+                iconFull: true,
             },
             {
                 fom: '2024-04-04',
@@ -117,12 +120,14 @@ export const VisAlleMedTekst: Story = {
                 tom: '2024-04-18',
                 forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-05-17',
                 tom: '2024-05-23',
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-05-31',
@@ -130,6 +135,7 @@ export const VisAlleMedTekst: Story = {
                 kontoType: 'FELLESPERIODE',
                 forelder: 'MOR',
                 samtidigUttak: 50,
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-05-31',
@@ -137,6 +143,7 @@ export const VisAlleMedTekst: Story = {
                 kontoType: 'FELLESPERIODE',
                 forelder: 'FAR_MEDMOR',
                 samtidigUttak: 50,
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-06-28',
@@ -144,12 +151,14 @@ export const VisAlleMedTekst: Story = {
                 forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
                 gradering: { arbeidstidprosent: 80, aktivitet: { type: 'ANNET' } },
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-06-28',
                 tom: '2024-07-02',
                 forelder: 'FAR_MEDMOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-07-03',
@@ -157,6 +166,7 @@ export const VisAlleMedTekst: Story = {
                 forelder: 'FAR_MEDMOR',
                 morsAktivitet: 'IKKE_OPPGITT',
                 kontoType: 'FORELDREPENGER',
+                flerbarnsdager: false,
             },
         ],
         barn: {

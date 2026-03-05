@@ -13,7 +13,7 @@ import {
     erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
-import { isAvslåttPeriode, isAvslåttPeriodeFørsteSeksUkerMor } from '../../utils/periodeUtils';
+import { erAvslåttPeriode, erAvslåttPeriodeFørsteSeksUkerMor } from '../../utils/periodeUtils';
 
 export type UttaksplanKalenderLegendInfo = {
     calendarPeriod: CalendarPeriod;
@@ -64,7 +64,7 @@ export const getSelectedStyle = (isSelected: boolean, color: CalendarPeriodColor
             return 'outline-2 outline-offset-4 outline-ax-bg-neutral-strong';
         }
 
-        if (color !== 'PINK' && color !== 'PURPLE' && color !== 'BLACKOUTLINE' && color !== 'GRAY') {
+        if (color !== 'BLACKOUTLINE' && color !== 'GRAY') {
             return 'outline-2 outline-offset-4 outline-ax-success-600';
         }
     }
@@ -86,7 +86,7 @@ export const getFocusStyle = (color: CalendarPeriodColor) => {
         return 'focus:outline-2 focus:outline-offset-4 focus:outline-ax-bg-neutral-strong';
     }
 
-    if (color !== 'PINK' && color !== 'PURPLE' && color !== 'BLACKOUTLINE' && color !== 'GRAY') {
+    if (color !== 'BLACKOUTLINE' && color !== 'GRAY') {
         return 'focus:outline-2 focus:outline-offset-4 focus:outline-ax-success-600';
     }
 
@@ -107,9 +107,17 @@ export const getCalendarLabel = (
     switch (info.label) {
         case 'HELG':
             return intl.formatMessage({ id: 'kalender.helg' });
+        case 'FERIE':
+            return intl.formatMessage(
+                { id: 'kalender.ferie' },
+                {
+                    erSokersPeriode: erSøkersPeriode,
+                    navnAnnenPart,
+                },
+            );
         case 'UTSETTELSE':
             return intl.formatMessage(
-                { id: 'kalender.utsettelse' },
+                { id: 'kalender.utsettelse.label' },
                 {
                     erSokersPeriode: erSøkersPeriode,
                     navnAnnenPart,
@@ -364,12 +372,12 @@ export const getLegendLabelFromPeriode = (
     barn: Barn,
     erFarEllerMedmor: boolean,
 ): LegendLabel | undefined => {
-    if (isAvslåttPeriode(p)) {
+    if (erAvslåttPeriode(p)) {
         if (erVanligUttakPeriode(p) && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
             return 'PLEIEPENGER';
         }
         const familiehendelsesdato = getFamiliehendelsedato(barn);
-        return !erFarEllerMedmor && isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsesdato)
+        return !erFarEllerMedmor && erAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsesdato)
             ? 'AVSLAG'
             : 'TAPTE_DAGER';
     }
@@ -422,6 +430,10 @@ export const getLegendLabelFromPeriode = (
 
     if (erTapteDagerHull(p)) {
         return 'TAPTE_DAGER';
+    }
+
+    if (p.utsettelseÅrsak && p.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+        return 'FERIE';
     }
 
     return 'UTSETTELSE';

@@ -249,11 +249,13 @@ const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
                         values={{ kilde: finnKildeForInntekt(andel, intl) }}
                     />
                 </BodyShort>
-                <BodyShort>{formatCurrencyWithKr((andel.fastsattPrÅr ?? 0) / 12)}</BodyShort>
+                <BodyShort className="text-end">{formatCurrencyWithKr((andel.fastsattPrÅr ?? 0) / 12)}</BodyShort>
                 <BodyShort>
                     <FormattedMessage id="beregning.andel.omregnetTilÅrsinntekt" />
                 </BodyShort>
-                <BodyShort>{formatCurrencyWithKr(andel.fastsattPrÅr ?? 0)}</BodyShort>
+                <BodyShort className="text-end">{formatCurrencyWithKr(andel.fastsattPrÅr ?? 0)}</BodyShort>
+                <span>Dagsats</span>
+                <BodyShort className="text-end">{formatCurrencyWithKr(andel.dagsatsArbeidsgiver ?? 0)}</BodyShort>
             </HGrid>
         </VStack>
     );
@@ -290,7 +292,7 @@ const fjernLeadingOgTrailingMånederUtenUtbetaling = (andelerPerDag: DagMedPerio
     );
 
     const beregnSumForMåned = (dager: DagMedPeriode[]) => {
-        const utbetalingsdager = dager.filter((d) => erUttaksdag(new Date(d.dato)));
+        const utbetalingsdager = dager.filter((d) => erUttaksdag(d.dato));
         const tilBruker = sumBy(utbetalingsdager, (d) =>
             sumBy(d.andeler, (andel) => (andel.tilBruker ? andel.dagsats : 0)),
         );
@@ -333,7 +335,7 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
             </BodyShort>
             <VStack gap="space-16">
                 {andelerPerMåned.map((dager, index) => {
-                    const utbetalingsdager = dager.filter((d) => erUttaksdag(new Date(d.dato)));
+                    const utbetalingsdager = dager.filter((d) => erUttaksdag(d.dato));
                     const totaltForMånedenTilDeg = sumBy(utbetalingsdager, (d) =>
                         sumBy(d.andeler, (andel) => (andel.tilBruker ? andel.dagsats : 0)),
                     );
@@ -341,6 +343,11 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                     const totaltForMånedenTilAG = sumBy(utbetalingsdager, (d) =>
                         sumBy(d.andeler, (andel) => (andel.tilBruker ? 0 : andel.dagsats)),
                     );
+
+                    const antallVirkedager = sumBy(utbetalingsdager, (d) => {
+                        const harDagsats = d.andeler.some((andel) => andel.dagsats > 0);
+                        return harDagsats ? 1 : 0;
+                    });
 
                     const førsteDato = dager[0]!.dato;
                     const måned = capitalizeFirstLetter(formaterDato(førsteDato, 'MMMM'));
@@ -375,15 +382,22 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                                     </>
                                                 )}
                                                 {totaltForMånedenTilAG > 0 && (
-                                                    <BodyShort as="span">
-                                                        <FormattedMessage
-                                                            id="beregning.utbetalingsvisning.arbeidsgiver"
-                                                            values={{
-                                                                beløp: formatCurrencyWithKr(totaltForMånedenTilAG),
-                                                            }}
-                                                        />
-                                                    </BodyShort>
+                                                    <>
+                                                        <BodyShort as="span">
+                                                            <FormattedMessage
+                                                                id="beregning.utbetalingsvisning.arbeidsgiver"
+                                                                values={{
+                                                                    beløp: formatCurrencyWithKr(totaltForMånedenTilAG),
+                                                                }}
+                                                            />
+                                                        </BodyShort>
+                                                        <br />
+                                                    </>
                                                 )}
+                                                <FormattedMessage
+                                                    id="beregning.utbetalingsvisning.antallUtbetalingsdager"
+                                                    values={{ antall: antallVirkedager }}
+                                                />
                                             </ExpansionCard.Description>
                                         </div>
                                     </HStack>
@@ -403,7 +417,7 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                         </Table.Header>
                                         <Table.Body>
                                             {dager.map((dag) => {
-                                                const erUtbetalingsdag = erUttaksdag(new Date(dag.dato));
+                                                const erUtbetalingsdag = erUttaksdag(dag.dato);
                                                 const beløp = sumBy(dag.andeler, (andel) => andel.dagsats);
                                                 const beløpTekst = erUtbetalingsdag ? formatCurrencyWithKr(beløp) : '-';
 
@@ -462,6 +476,7 @@ const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
                 <FormattedMessage
                     id="beregning.feriepenger.harRett"
                     values={{
+                        uker: sak.dekningsgrad === 'ÅTTI' ? 15 : 12,
                         link: (chunks) => <Link href="https://www.nav.no/feriepenger#foreldrepenger">{chunks}</Link>,
                     }}
                 />

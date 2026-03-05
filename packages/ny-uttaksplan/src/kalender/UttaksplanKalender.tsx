@@ -10,7 +10,11 @@ import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
 import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
-import { isAvslåttPeriode, isAvslåttPeriodeFørsteSeksUkerMor } from '../utils/periodeUtils';
+import {
+    erAvslåttPeriode,
+    erAvslåttPeriodeFørsteSeksUkerMor,
+    harPeriodeDerMorsAktivitetIkkeErValgt,
+} from '../utils/periodeUtils';
 import { UttaksplanLegend } from './legend/UttaksplanLegend';
 import { KalenderPdf } from './pdf/KalenderPdf';
 import { RedigerKalenderIndex } from './redigering/RedigerKalenderIndex';
@@ -35,13 +39,15 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
     const [endredePerioder, setEndredePerioder] = useState<Array<{ fom: string; tom: string }>>([]);
 
     const setRedigeringAktivOgValgtePerioder = useCallback<React.Dispatch<React.SetStateAction<CalendarPeriod[]>>>(
-        (periode) => {
+        (perioder) => {
             setErRedigeringAktiv(true);
-            setValgtePerioder(periode);
+            setValgtePerioder(perioder);
             setEndredePerioder([]);
         },
         [],
     );
+
+    const { uttakPerioder } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
@@ -92,53 +98,51 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 
             <VStack gap="space-24">
                 {!readOnly && (
-                    <VStack gap="space-24">
-                        <div>
-                            <Button
-                                type="button"
-                                size="small"
-                                variant="primary"
-                                onClick={() => {
-                                    setErRedigeringAktiv(!erRedigeringAktiv);
-                                    setValgtePerioder([]);
-                                }}
-                            >
-                                {erRedigeringAktiv ? (
-                                    <FormattedMessage id="UttaksplanKalender.StopRedigering" />
-                                ) : (
-                                    <FormattedMessage id="UttaksplanKalender.StartRedigering" />
-                                )}
-                            </Button>
-                        </div>
-                        {!erRedigeringInaktiv && (
-                            <RadioGroup
-                                legend={<FormattedMessage id="UttaksplanKalender.VelgDagEllerPeriode" />}
-                                onChange={() => {
-                                    setRedigeringAktivOgValgtePerioder([]);
-                                    setIsRangeSelection(!isRangeSelection);
-                                }}
-                                value={isRangeSelection}
-                            >
-                                <HStack gap="space-16">
-                                    <Radio value={true}>
-                                        <FormattedMessage id="UttaksplanKalender.VelgPeriode" />
-                                    </Radio>
-                                    <Radio value={false}>
-                                        <FormattedMessage id="UttaksplanKalender.VelgEnkeltDager" />
-                                    </Radio>
-                                </HStack>
-                            </RadioGroup>
-                        )}
-                    </VStack>
+                    <div>
+                        <Button
+                            type="button"
+                            size="small"
+                            variant="primary"
+                            onClick={() => {
+                                setErRedigeringAktiv((prev) => !prev);
+                                setValgtePerioder([]);
+                            }}
+                        >
+                            {erRedigeringAktiv ? (
+                                <FormattedMessage id="UttaksplanKalender.StopRedigering" />
+                            ) : (
+                                <FormattedMessage id="UttaksplanKalender.StartRedigering" />
+                            )}
+                        </Button>
+                    </div>
+                )}
+                {!readOnly && !erRedigeringInaktiv && (
+                    <RadioGroup
+                        legend={<FormattedMessage id="UttaksplanKalender.VelgDagEllerPeriode" />}
+                        onChange={() => {
+                            setRedigeringAktivOgValgtePerioder([]);
+                            setIsRangeSelection(!isRangeSelection);
+                        }}
+                        value={isRangeSelection}
+                    >
+                        <HStack gap="space-16">
+                            <Radio value={true}>
+                                <FormattedMessage id="UttaksplanKalender.VelgPeriode" />
+                            </Radio>
+                            <Radio value={false}>
+                                <FormattedMessage id="UttaksplanKalender.VelgEnkeltDager" />
+                            </Radio>
+                        </HStack>
+                    </RadioGroup>
                 )}
 
-                {perioderForKalendervisning.some((p) => p.isMarked) && (
+                {harPeriodeDerMorsAktivitetIkkeErValgt(uttakPerioder) && (
                     <Alert variant="warning">
                         <VStack gap="space-2">
                             <BodyShort>
                                 <FormattedMessage id="UttaksplanKalender.MarkertePerioder" />
                             </BodyShort>
-                            <Link href={links.aktivitetskrav} target="_blank">
+                            <Link href={links.aktivitetskrav} target="_blank" rel="noopener noreferrer">
                                 <FormattedMessage id="UttaksplanKalender.HvaErAktivitetskrav" />
                             </Link>
                         </VStack>
@@ -151,12 +155,13 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                             perioderForKalendervisning={perioderForKalendervisning}
                             readOnly={readOnly}
                             selectLegend={setValgtLegend}
+                            barnehagestartdato={barnehagestartdato}
                         />
                     </div>
                 )}
 
                 <div className="ax-md:flex-row flex flex-col">
-                    <div className={erRedigeringInaktiv ? 'flex-1' : 'ax-md:w-[295px]'}>
+                    <div className={erRedigeringInaktiv ? 'flex-1' : 'ax-md:w-full'}>
                         {kanLeggeTilFlereMånederPåStarten && !erRedigeringInaktiv && (
                             <Button
                                 onClick={() => setSkalViseFørsteMuligeDatoIKalender(true)}
@@ -172,7 +177,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                             periods={perioderForKalendervisning.concat(valgtePerioder).sort(sortPeriods)}
                             setSelectedPeriods={readOnly ? undefined : setRedigeringAktivOgValgtePerioder}
                             getSrTextForSelectedPeriod={readOnly ? undefined : getSrTextForSelectedPeriod}
-                            nrOfColumns={erRedigeringInaktiv ? 2 : 1}
+                            nrOfColumns={2}
                             isRangeSelection={isRangeSelection}
                             firstDateInCalendar={førsteDatoIKalender}
                             lastDateInCalendar={sisteDatoIKalender}
@@ -213,6 +218,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                                         readOnly
                                         selectLegend={setValgtLegend}
                                         skjulTekstSomDefault
+                                        barnehagestartdato={barnehagestartdato}
                                     />
                                 }
                             />
@@ -225,6 +231,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                 perioderForKalendervisning={perioderForKalendervisning}
                 førsteDatoIKalender={førsteDatoIKalender}
                 sisteDatoIKalender={sisteDatoIKalender}
+                barnehagestartdato={barnehagestartdato}
             />
         </VStack>
     );
@@ -237,10 +244,10 @@ const AvslåttePerioder = () => {
 
     const harAvslåttePerioderSomIkkeGirTapteDager = uttakPerioder.some(
         (p) =>
-            isAvslåttPeriode(p) &&
+            erAvslåttPeriode(p) &&
             erVanligUttakPeriode(p) &&
             p.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER' &&
-            (foreldreInfo.søker === 'FAR_MEDMOR' || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
+            (foreldreInfo.søker === 'FAR_MEDMOR' || !erAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
     );
 
     return harAvslåttePerioderSomIkkeGirTapteDager ? (

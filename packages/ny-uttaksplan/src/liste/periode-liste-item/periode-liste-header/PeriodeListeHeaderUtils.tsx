@@ -141,9 +141,25 @@ export const getTekst = (
     if (utsettelseÅrsak !== undefined) {
         switch (utsettelseÅrsak) {
             case 'SØKER_INNLAGT':
-                return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.instutisjonSøker' });
+                return intl.formatMessage(
+                    { id: 'uttaksplan.periodeListeHeader.instutisjonSøker' },
+                    {
+                        navn: erEgenPeriode
+                            ? capitalizeFirstLetter(navnPåForelder)
+                            : capitalizeFirstLetter(navnPåAnnenForelder),
+                        erEgenPeriode: erEgenPeriode,
+                    },
+                );
             case 'SØKER_SYKDOM':
-                return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.sykdom' });
+                return intl.formatMessage(
+                    { id: 'uttaksplan.periodeListeHeader.sykdom' },
+                    {
+                        navn: erEgenPeriode
+                            ? capitalizeFirstLetter(navnPåForelder)
+                            : capitalizeFirstLetter(navnPåAnnenForelder),
+                        erEgenPeriode: erEgenPeriode,
+                    },
+                );
             case 'BARN_INNLAGT':
                 return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.instutisjonBarn' });
             case 'ARBEID':

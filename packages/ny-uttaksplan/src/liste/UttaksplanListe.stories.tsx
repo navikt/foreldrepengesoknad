@@ -9,6 +9,8 @@ import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
 import { UttaksplanRedigeringProvider } from '../context/UttaksplanRedigeringContext';
 import { UttaksplanListe } from './UttaksplanListe';
 
+type AllePerioder = Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+
 const MINSTERETTER = {
     farRundtFødsel: 10,
     toTette: 0,
@@ -25,9 +27,9 @@ const meta = {
         erPeriodeneTilAnnenPartLåst: false,
     },
     render: (args) => {
-        const [perioder, setPerioder] = useState<UttakPeriode_fpoversikt[] | undefined>(args.uttakPerioder);
+        const [perioder, setPerioder] = useState<AllePerioder | undefined>(args.uttakPerioder);
 
-        const handleOnPlanChange = (oppdatertePerioder: UttakPeriode_fpoversikt[] | undefined) => {
+        const handleOnPlanChange = (oppdatertePerioder: AllePerioder | undefined) => {
             setPerioder(oppdatertePerioder);
 
             if (args.oppdaterUttaksplan) {
@@ -78,24 +80,28 @@ export const Default: Story = {
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2025-04-18',
                 tom: '2025-05-08',
+                flerbarnsdager: false,
             },
             {
                 forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
                 fom: '2025-05-09',
                 tom: '2025-08-21',
+                flerbarnsdager: false,
             },
             {
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
                 fom: '2025-08-22',
                 tom: '2025-12-11',
+                flerbarnsdager: false,
             },
             {
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 fom: '2025-12-12',
                 tom: '2026-03-26',
+                flerbarnsdager: false,
             },
         ],
         harAktivitetskravIPeriodeUtenUttak: false,
@@ -135,30 +141,35 @@ export const MorOgFarMedFerieopphold: Story = {
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2025-04-18',
                 tom: '2025-05-08',
+                flerbarnsdager: false,
             },
             {
                 forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
                 fom: '2025-05-09',
                 tom: '2025-08-21',
+                flerbarnsdager: false,
             },
             {
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
                 fom: '2025-08-22',
                 tom: '2025-12-11',
+                flerbarnsdager: false,
             },
             {
                 forelder: 'MOR',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
                 fom: '2025-12-12',
                 tom: '2025-12-15',
+                flerbarnsdager: false,
             },
             {
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 fom: '2025-12-16',
                 tom: '2026-03-30',
+                flerbarnsdager: false,
             },
         ],
         foreldreInfo: {
@@ -181,24 +192,28 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
                 tom: '2024-04-03',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-04-04',
                 tom: '2024-04-18',
                 kontoType: 'MØDREKVOTE',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-05-17',
                 tom: '2024-05-23',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-05-31',
                 tom: '2024-06-13',
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-06-14',
@@ -211,6 +226,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
                     },
                     arbeidstidprosent: 50,
                 },
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-06-28',
@@ -218,6 +234,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
                 samtidigUttak: 50,
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-06-28',
@@ -225,12 +242,14 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
                 kontoType: 'FEDREKVOTE',
                 forelder: 'FAR_MEDMOR',
                 samtidigUttak: 50,
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-07-03',
                 tom: '2024-07-15',
                 kontoType: 'FEDREKVOTE',
                 forelder: 'FAR_MEDMOR',
+                flerbarnsdager: false,
             },
         ] satisfies UttakPeriode_fpoversikt[],
         barn: {
@@ -264,12 +283,14 @@ export const HullperiodeOverFamiliehendelsesdato: Story = {
                 tom: '2024-04-01',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-05-03',
                 tom: '2024-05-15',
                 kontoType: 'FEDREKVOTE',
                 forelder: 'FAR_MEDMOR',
+                flerbarnsdager: false,
             },
         ] satisfies UttakPeriode_fpoversikt[],
         barn: {
@@ -381,6 +402,7 @@ export const FarSøkerOmsorgsovertakelse: Story = {
                 kontoType: 'MØDREKVOTE',
                 fom: '2025-05-09',
                 tom: '2025-08-21',
+                flerbarnsdager: false,
             },
         ],
         harAktivitetskravIPeriodeUtenUttak: false,
@@ -404,24 +426,28 @@ export const MorSøkerOgFarHarEøsPeriode: Story = {
                 tom: '2024-04-03',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-04-04',
                 tom: '2024-04-18',
                 kontoType: 'MØDREKVOTE',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-05-17',
                 tom: '2024-05-23',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-05-31',
                 tom: '2024-06-13',
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-07-03',
@@ -462,23 +488,27 @@ export const FarSøkerOgMorHarEøsPeriode: Story = {
                 tom: '2024-04-03',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-04-04',
                 tom: '2024-04-18',
                 kontoType: 'FEDREKVOTE',
                 trekkdager: 10,
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-05-17',
                 tom: '2024-05-23',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-05-31',
                 tom: '2024-06-13',
                 forelder: 'MOR',
+                flerbarnsdager: false,
                 kontoType: 'FELLESPERIODE',
             },
             {
@@ -486,6 +516,7 @@ export const FarSøkerOgMorHarEøsPeriode: Story = {
                 tom: '2024-07-15',
                 kontoType: 'FEDREKVOTE',
                 forelder: 'FAR_MEDMOR',
+                flerbarnsdager: false,
             },
         ] satisfies Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
         barn: {
@@ -520,35 +551,41 @@ export const MarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt: Story =
                 tom: '2024-04-03',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-04-04',
                 tom: '2024-04-18',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-04-04',
                 tom: '2024-04-18',
                 kontoType: 'MØDREKVOTE',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-05-17',
                 tom: '2024-05-23',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-05-31',
                 tom: '2024-06-13',
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-07-03',
                 tom: '2024-07-15',
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FELLESPERIODE',
+                flerbarnsdager: false,
             },
         ] satisfies UttakPeriode_fpoversikt[],
         barn: {
@@ -583,24 +620,28 @@ export const FarSøkerEtterAtMorHarSøkt: Story = {
                 tom: '2024-04-03',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-04-04',
                 tom: '2024-04-18',
                 kontoType: 'MØDREKVOTE',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-05-17',
                 tom: '2024-05-23',
                 utsettelseÅrsak: 'LOVBESTEMT_FERIE',
                 forelder: 'MOR',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-05-31',
                 tom: '2024-06-13',
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-06-14',
@@ -613,6 +654,7 @@ export const FarSøkerEtterAtMorHarSøkt: Story = {
                     },
                     arbeidstidprosent: 50,
                 },
+                flerbarnsdager: false,
             },
             {
                 fom: '2024-06-28',
@@ -620,6 +662,7 @@ export const FarSøkerEtterAtMorHarSøkt: Story = {
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
                 samtidigUttak: 50,
+                flerbarnsdager: false,
             },
         ] satisfies UttakPeriode_fpoversikt[],
         barn: {
@@ -691,6 +734,46 @@ export const HarAvslåttePerioder: Story = {
                 },
                 flerbarnsdager: false,
                 forelder: 'MOR',
+            },
+        ],
+        valgtStønadskonto: {
+            kontoer: [
+                { konto: 'MØDREKVOTE', dager: 95 },
+                { konto: 'FEDREKVOTE', dager: 95 },
+                { konto: 'FELLESPERIODE', dager: 101 },
+                { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+            ],
+            minsteretter: MINSTERETTER,
+        },
+        erPeriodeneTilAnnenPartLåst: false,
+    },
+};
+
+export const HarUtsettelse: Story = {
+    args: {
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: {
+                farMedmor: 'Annen forelder',
+                mor: 'Avansert',
+            },
+            erMedmorDelAvSøknaden: false,
+        },
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2025-08-13'],
+            termindato: '2025-10-19',
+            antallBarn: 1,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+        uttakPerioder: [
+            {
+                fom: '2025-08-15',
+                tom: '2025-08-25',
+                forelder: 'MOR',
+                utsettelseÅrsak: 'BARN_INNLAGT',
+                flerbarnsdager: false,
             },
         ],
         valgtStønadskonto: {

@@ -16,7 +16,6 @@ describe('MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering', () => {
 
         expect(await screen.findByText('Avslåtte perioder vises ikke i kalenderen.')).toBeInTheDocument();
         expect(screen.getByText('Din periode')).toBeInTheDocument();
-        expect(screen.getByText('Fødsel')).toBeInTheDocument();
         expect(screen.getByText('Dager du kan tape')).toBeInTheDocument();
         expect(screen.getByText('Du kombinerer jobb og foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Du og Hans har permisjon samtidig')).toBeInTheDocument();
@@ -28,9 +27,9 @@ describe('MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering', () => {
         expect(within(mars).getByTestId('day:29;dayColor:BLUE')).toBeInTheDocument();
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:3;dayColor:BLUE')).toBeInTheDocument();
-        expect(within(april).getByTestId('day:4;dayColor:PINK')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:4;dayColor:BLUE;with-icon')).toBeInTheDocument();
         expect(within(april).getByTestId('day:5;dayColor:BLUE')).toBeInTheDocument();
-        expect(within(april).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(13);
+        expect(within(april).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(14);
         expect(within(april).getByTestId('day:18;dayColor:BLUE')).toBeInTheDocument();
         expect(within(april).getByTestId('day:19;dayColor:BLACK')).toBeInTheDocument();
         expect(within(april).getAllByTestId('dayColor:BLACK', { exact: false })).toHaveLength(8);
@@ -59,7 +58,6 @@ describe('MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering', () => {
     it('Skal vise utsettelsegrunn i label når en har kun en type utsettelse i planen', () => {
         render(<FarSøkerMedTapteDagerOgUtsettelse />);
         expect(screen.getByText('Din periode')).toBeInTheDocument();
-        expect(screen.getByText('Fødsel')).toBeInTheDocument();
         expect(screen.getByText('Dager du kan tape')).toBeInTheDocument();
         expect(screen.getByText('Du utsetter foreldrepenger fordi du skal jobbe')).toBeInTheDocument();
         expect(screen.getByText('Helg')).toBeInTheDocument();
@@ -82,7 +80,6 @@ describe('MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering', () => {
     it('Skal ikke vise utsettelsegrunn i label når en har flere typer utsettelser i planen', () => {
         render(<MorSøkerMedFlereUtsettelser />);
         expect(screen.getByText('Din periode')).toBeInTheDocument();
-        expect(screen.getByText('Fødsel')).toBeInTheDocument();
         expect(screen.getByText('Du utsetter foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Helg')).toBeInTheDocument();
         const juni = screen.getByTestId('year:2021;month:5');
@@ -97,7 +94,6 @@ describe('MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering', () => {
     it('Skal ikke vise label for helg når uttaket ikke inkluderer en helg.', () => {
         render(<KortPeriodeUtenHelg />);
         expect(screen.getByText('Din periode')).toBeInTheDocument();
-        expect(screen.getByText('Adopsjon')).toBeInTheDocument();
         expect(screen.queryByText('Helg')).not.toBeInTheDocument();
     });
 });

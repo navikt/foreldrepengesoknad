@@ -1,4 +1,4 @@
-import { DownloadIcon } from '@navikt/aksel-icons';
+import { DownloadIcon, HeartFillIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
@@ -14,6 +14,8 @@ import {
     Overføringsperiode,
     Periode,
     PeriodeUtenUttak,
+    Tidsperiode,
+    TidsperiodeDate,
     Utsettelsesperiode,
     UtsettelsesÅrsak,
     Uttaksperiode,
@@ -25,19 +27,20 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '@navikt/fp-types';
+import { isUttakAnnenPart } from '@navikt/fp-types/src/Periode';
 import { Calendar, type CalendarPeriod, type CalendarPeriodColor } from '@navikt/fp-ui';
 import {
+    TidsperiodenString,
     Uttaksdagen,
     dateToISOString,
     formatDateIso,
-    getAnnenForelderSamtidigUttakPeriode,
     getFamiliehendelsedato,
-    getIndexOfSistePeriodeFørDato,
-    isAvslåttPeriodeFørsteSeksUkerMor,
 } from '@navikt/fp-utils';
 
 import { UttaksplanLegend } from './UttaksplanLegend';
 import { getKalenderSkjermlesertekstForPeriode } from './uttaksplanKalenderUtils';
+
+const ANTALL_DAGER_SEKS_UKER = 6 * 7;
 
 const getIndexOfFamiliehendelse = (uttaksplan: Periode[], familiehendelsesdato: string) => {
     const indexAvPeriodeUtenForeldrepengerFørFødsel = uttaksplan.findIndex(
@@ -61,6 +64,7 @@ const slåSammenPeriods = (periods: CalendarPeriod[]) => {
             index !== 0 &&
             sisteRes &&
             period.color === sisteRes.color &&
+            period.icon === sisteRes.icon &&
             dayjs(Uttaksdagen(new Date(sisteRes.tom)).neste()).isSame(dayjs(period.fom), 'day')
         ) {
             sisteRes.tom = period.tom;
@@ -107,21 +111,43 @@ const getPerioderForKalendervisning = (
     periods.splice(indexOfFamiliehendelse, 0, {
         fom: familiehendelsesdato,
         tom: familiehendelsesdato,
-        color: 'PINK',
         srText: '',
+        color: finnFargeForFamiliehendelse(
+            perioderForVisning,
+            familiehendelsesdato,
+            erFarEllerMedmor,
+            uttaksplan,
+            barn,
+        ),
+        icon: <HeartFillIcon aria-hidden color="var(--ax-bg-brand-magenta-strong)" width={25} height={25} />,
+        iconFull: true,
     });
     const perioderSlåttSammen = slåSammenPeriods(periods);
     return perioderSlåttSammen.map((p) => ({
         ...p,
-        srText: getKalenderSkjermlesertekstForPeriode(
-            p,
-            barn,
-            navnAnnenPart,
-            unikeUtsettelseÅrsaker,
-            erFarEllerMedmor,
-            intl,
-        ),
+        srText: getKalenderSkjermlesertekstForPeriode(p, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl),
     }));
+};
+
+const finnFargeForFamiliehendelse = (
+    perioderForVisning: Periode[],
+    familiehendelsesdato: string,
+    erFarEllerMedmor: boolean,
+    uttaksplan: Periode[],
+    barn: Barn,
+): CalendarPeriodColor => {
+    const periode = perioderForVisning.find((p) =>
+        TidsperiodenString.forFomOgTom(
+            dayjs(p.tidsperiode.fom).toISOString(),
+            dayjs(p.tidsperiode.tom).toISOString(),
+        ).inneholderDato(familiehendelsesdato),
+    );
+
+    if (periode) {
+        return getKalenderFargeForPeriodeType(periode, erFarEllerMedmor, uttaksplan, barn);
+    }
+
+    return 'NONE';
 };
 
 const getKalenderFargeForUttaksperiode = (
@@ -261,7 +287,6 @@ export const UttaksplanKalender = ({ uttaksplan, erFarEllerMedmor, barn, navnAnn
                 <div className="flex flex-wrap max-[768px]:pb-2" id="legend">
                     <UttaksplanLegend
                         uniqueColors={unikePeriodColors}
-                        barn={barn}
                         navnAnnenPart={navnAnnenPart}
                         unikeUtsettelseÅrsaker={unikeUtsettelseÅrsaker}
                         erFarEllerMedmor={erFarEllerMedmor}
@@ -321,4 +346,53 @@ export const getForelderFarge = (
         return erFarEllerMedmor ? 'LIGHTBLUE' : 'BLUE';
     }
     return erFarEllerMedmor ? 'GREEN' : 'LIGHTGREEN';
+};
+
+const isAvslåttPeriodeFørsteSeksUkerMor = (periode: Periode, familiehendelsesdato: string): boolean => {
+    return (
+        isAvslåttPeriode(periode) &&
+        periode.forelder === 'MOR' &&
+        dayjs(periode.tidsperiode.fom).isSameOrAfter(dayjs(familiehendelsesdato), 'day') &&
+        slutterTidsperiodeInnen6UkerEtterFødsel(periode.tidsperiode, new Date(familiehendelsesdato))
+    );
+};
+
+const slutterTidsperiodeInnen6UkerEtterFødsel = (
+    tidsperiode: TidsperiodeDate | Tidsperiode,
+    familiehendelsesdato: Date,
+): boolean => {
+    const sisteUttaksdag6UkerEtterFødsel = getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato);
+    return dayjs(tidsperiode.tom).isSameOrBefore(sisteUttaksdag6UkerEtterFødsel, 'day');
+};
+
+const getSisteUttaksdag6UkerEtterFødsel = (familiehendelsesdato: Date): Date => {
+    const førsteUttaksdagForPeriodeEtterFødsel = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+    return Uttaksdagen(
+        dayjs(førsteUttaksdagForPeriodeEtterFødsel).add(ANTALL_DAGER_SEKS_UKER, 'day').toDate(),
+    ).forrige();
+};
+
+const getIndexOfSistePeriodeFørDato = (uttaksplan: Periode[], dato: string | undefined) => {
+    if (dato !== undefined) {
+        return Math.max(0, uttaksplan.filter((p) => dayjs(p.tidsperiode.tom).isBefore(dato, 'day')).length);
+    }
+    return undefined;
+};
+
+const getAnnenForelderSamtidigUttakPeriode = (periode: Periode, perioder: Periode[]): Periode | undefined => {
+    if (isUttaksperiode(periode)) {
+        const samtidigUttak = perioder
+            .filter((p) => isUttakAnnenPart(p))
+            .find(
+                (p) =>
+                    isUttakAnnenPart(p) &&
+                    dayjs(periode.tidsperiode.fom).isSame(p.tidsperiode.fom) &&
+                    p.ønskerSamtidigUttak === true &&
+                    p.id !== periode.id,
+            );
+
+        return samtidigUttak;
+    }
+
+    return undefined;
 };

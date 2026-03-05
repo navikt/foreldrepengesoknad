@@ -2,11 +2,12 @@ import dayjs from 'dayjs';
 
 import {
     Periode,
+    Tidsperiode,
     TidsperiodeDate,
     UtsettelseFormPeriodeType,
     isForeldrepengerFørFødselUttaksperiode,
 } from '@navikt/fp-common';
-import { Uttaksdagen, isValidTidsperiodeString } from '@navikt/fp-utils';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { uttaksdatoer } from '../../utils/uttaksdatoerUtils';
 import { DatoValidatorer, Validator } from './types/validatorTypes';
@@ -155,3 +156,15 @@ export const utsettelseTidsperiodeErGyldig = (
 
     return fraDatoErGyldig && tilDatoErGyldig;
 };
+
+function isValidTidsperiodeString(tidsperiode: unknown): tidsperiode is Tidsperiode {
+    return (
+        // @ts-expect-error -- gidder ikke fikse gammel kode
+        tidsperiode.fom !== undefined &&
+        // @ts-expect-error -- gidder ikke fikse gammel kode
+        tidsperiode.tom !== undefined &&
+        // @ts-expect-error -- gidder ikke fikse gammel kode
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        dayjs(tidsperiode.fom).isSameOrBefore(tidsperiode.tom, 'day')
+    );
+}

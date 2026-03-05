@@ -11,7 +11,8 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from '@navikt/fp-uttaksplan-ny';
+import { Uttaksperioden } from '@navikt/fp-utils';
+import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { getTidsperiodeString } from './DokumentasjonLastetOppLabel';
@@ -41,7 +42,7 @@ const isPeriodeMedMorInnleggelse = (
     periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
     familiehendelsedato: string,
 ) => {
-    if ('trekkdager' in periode) {
+    if (Uttaksperioden.erEøsPeriode(periode)) {
         return false;
     }
 
@@ -53,7 +54,11 @@ const isPeriodeMedMorInnleggelse = (
         erUttaksperiode(periode) &&
         periode.kontoType === 'FEDREKVOTE' &&
         !periode.samtidigUttak &&
-        erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(periode, familiehendelsedato)
+        UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+            periode,
+            familiehendelsedato,
+            undefined,
+        )
     ) {
         return true;
     }

@@ -5,7 +5,7 @@ import { Heading, Page, VStack } from '@navikt/ds-react';
 export const SkjemaRotLayout = ({ children, pageTitle }: { children: React.ReactNode; pageTitle: React.ReactNode }) => {
     return (
         <Page>
-            <Page.Block as="main" id="pageMainContent" width={isLocalhostOrDev() ? 'md' : 'text'} gutters>
+            <Page.Block as="main" id="pageMainContent" width={isLocalhostOrDev() ? 'lg' : 'text'} gutters>
                 <VStack gap="space-16">
                     {pageTitle && (
                         <Page.Block>

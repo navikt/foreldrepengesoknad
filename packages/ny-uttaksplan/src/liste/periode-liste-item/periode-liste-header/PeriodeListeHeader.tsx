@@ -4,7 +4,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HGrid, HStack, Heading, Hide, Show } from '@navikt/ds-react';
 
-import { TidsperiodenString, formatDateShortMonth } from '@navikt/fp-utils';
+import { DDMMMYY_DATE_FORMAT } from '@navikt/fp-constants/src/dates';
+import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { Uttaksplanperiode } from '../../../types/UttaksplanPeriode';
@@ -30,10 +31,7 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
     const førsteFom = getFørsteUttaksplanperiodeFom(uttaksplanperioder);
     const sisteTom = getSisteUttaksplanperiodeTom(uttaksplanperioder);
 
-    const antallDager = TidsperiodenString({
-        fom: førsteFom,
-        tom: sisteTom,
-    }).getAntallUttaksdager();
+    const antallDager = UttaksdagenString.denneEllerNeste(førsteFom).getUttaksdagerFremTilOgMedDato(sisteTom);
 
     const erFamiliehendelse = erUttaksplanperiodeFamiliehendelseDato(uttaksplanperioder);
 
@@ -62,8 +60,9 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
             <div className={`px-4 py-2 ${erPermisjonsperiodeTilbakeITid ? 'opacity-75' : 'opacity-100'}`}>
                 <Heading size="xsmall" as="p">
                     {erFamiliehendelse
-                        ? formatDateShortMonth(familiehendelsedato)
-                        : `${formatDateShortMonth(førsteFom)} - ${formatDateShortMonth(sisteTom)}`}
+                        ? dayjs(familiehendelsedato).format(DDMMMYY_DATE_FORMAT)
+                        : `${dayjs(førsteFom).format(DDMMMYY_DATE_FORMAT)} 
+                        - ${dayjs(sisteTom).format(DDMMMYY_DATE_FORMAT)}`}
                 </Heading>
                 <Hide above="md">
                     <BodyShort>{tekst}</BodyShort>

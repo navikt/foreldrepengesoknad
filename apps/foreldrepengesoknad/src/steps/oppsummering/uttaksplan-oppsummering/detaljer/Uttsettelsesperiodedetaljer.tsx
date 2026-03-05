@@ -1,7 +1,6 @@
 import { useIntl } from 'react-intl';
 
-import { AnnenForelder, PeriodeUtenUttakUtsettelse, Utsettelsesperiode } from '@navikt/fp-common';
-import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { PeriodeUtenUttakUtsettelse, Utsettelsesperiode } from '@navikt/fp-common';
 
 import { getÅrsakTekst } from '../OppsummeringUtils';
 import { Feltoppsummering } from './Feltoppsummering';
@@ -9,10 +8,6 @@ import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
 interface Props {
     periode: Utsettelsesperiode | PeriodeUtenUttakUtsettelse;
-    registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
-    søkerErFarEllerMedmor: boolean;
-    annenForelder: AnnenForelder;
-    periodeErNyEllerEndret: boolean;
 }
 
 export const Utsettelsesperiodedetaljer = ({ periode }: Props) => {

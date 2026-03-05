@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { HStack, Heading, VStack } from '@navikt/ds-react';
+import { Box, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
@@ -10,6 +10,7 @@ import { UttaksdagenString } from '@navikt/fp-utils';
 import { isBeforeOrSame, isRequired, isValidDate, isWeekday } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
+import { countWeekdaysBetween, getVarighetString } from '../../utils/dateUtils';
 import { FormValues } from './LeggTilEllerEndrePeriodeListPanel';
 
 export const TidsperiodeSpørsmål = () => {
@@ -49,6 +50,7 @@ export const TidsperiodeSpørsmål = () => {
                 <RhfDatepicker
                     name="tom"
                     control={control}
+                    showMonthAndYearDropdowns
                     validate={[
                         isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.påkrevd' })),
                         isValidDate(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.gyldigDato' })),
@@ -60,6 +62,18 @@ export const TidsperiodeSpørsmål = () => {
                     maxDate={maxDate}
                 />
             </HStack>
+            <Box background="info-moderate" padding="space-8" borderRadius="8" width="fit-content">
+                <FormattedMessage
+                    id="RedigeringPanel.ValgteDager"
+                    values={{
+                        varighet: getVarighetString(finnAntallDager(fom, tom), intl),
+                    }}
+                />
+            </Box>
         </VStack>
     );
+};
+
+const finnAntallDager = (fom?: string, tom?: string): number => {
+    return !fom || !tom ? 0 : countWeekdaysBetween(dayjs(fom), dayjs(tom));
 };

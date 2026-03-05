@@ -1,11 +1,11 @@
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
-import { erIkkeEøsPeriode, erUttaksperiode } from 'utils/uttaksplanInfoUtils';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from '@navikt/fp-uttaksplan-ny';
+import { Uttaksperioden } from '@navikt/fp-utils';
+import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan-ny';
 
 import { UttakUploaderNy } from '../attachment-uploaders/UttakUploaderNy';
 
@@ -33,11 +33,20 @@ export const MorInnlagtDokumentasjonNy = ({
     }
 
     const perioderRundtFødsel = perioder.filter((p) =>
-        erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(p, familiehendelsedato),
+        UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+            p,
+            familiehendelsedato,
+            undefined,
+        ),
     );
 
     const morErForSykEllerInnlagtFørsteSeksUker = perioderRundtFødsel.some((p) => {
-        if (erIkkeEøsPeriode(p) && erUttaksperiode(p) && p.kontoType === 'FEDREKVOTE' && !p.samtidigUttak) {
+        if (
+            Uttaksperioden.erIkkeEøsPeriode(p) &&
+            Uttaksperioden.erUttaksperiode(p) &&
+            p.kontoType === 'FEDREKVOTE' &&
+            !p.samtidigUttak
+        ) {
             return true;
         }
 

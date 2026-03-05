@@ -15,11 +15,12 @@ import {
     Utsettelsesperiode,
     isInfoPeriode,
 } from '@navikt/fp-common';
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 import { EksternArbeidsforholdDto_fpoversikt, KontoBeregningDto } from '@navikt/fp-types';
-import { formatDate, formatDateIso, isValidTidsperiodeString } from '@navikt/fp-utils';
+import { formatDate, formatDateIso } from '@navikt/fp-utils';
 
 import Block from '../../common/block/Block';
+import { isValidTidsperiodeString } from '../../utils/getUttaksdagerSomErFridager';
 import { getAnnenForelderSamtidigUttakPeriode } from '../../utils/periodeUtils';
 import planBemUtils from '../../utils/planBemUtils';
 import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';

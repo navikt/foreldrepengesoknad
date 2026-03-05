@@ -1,21 +1,23 @@
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+
+type AlleUttakPerioder = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
 
 type Props = {
     harEndretPlan: boolean;
-    oppdaterUttaksplan: (uttaksplan: UttakPeriode_fpoversikt[] | undefined) => void;
+    oppdaterUttaksplan: (uttaksplan: AlleUttakPerioder[] | undefined) => void;
     children: React.ReactNode;
 };
 
 type ContextValues = {
-    uttaksplanVersjoner: UttakPeriode_fpoversikt[][];
+    uttaksplanVersjoner: AlleUttakPerioder[][];
     visFjernAltModal: boolean;
     harEndretPlan: boolean;
     setVisFjernAltModal: (open: boolean) => void;
     angreSisteEndring: () => void;
     fjernAltIUttaksplan: () => void;
-    oppdaterUttaksplan: (uttaksplan: UttakPeriode_fpoversikt[]) => void;
+    oppdaterUttaksplan: (uttaksplan: AlleUttakPerioder[]) => void;
     tilbakestillUttaksplan: () => void;
 };
 
@@ -25,10 +27,10 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
     const { oppdaterUttaksplan: oppdater, harEndretPlan, children } = props;
     const [visFjernAltModal, setVisFjernAltModal] = useState(false);
 
-    const [uttaksplanVersjoner, setUttaksplanVersjoner] = useState<UttakPeriode_fpoversikt[][]>([]);
+    const [uttaksplanVersjoner, setUttaksplanVersjoner] = useState<AlleUttakPerioder[][]>([]);
 
     const oppdaterUttaksplan = useCallback(
-        (nyUttaksplan: UttakPeriode_fpoversikt[]) => {
+        (nyUttaksplan: AlleUttakPerioder[]) => {
             setUttaksplanVersjoner((eksisterendeVersjoner) => [...eksisterendeVersjoner, nyUttaksplan]);
             oppdater(nyUttaksplan);
         },

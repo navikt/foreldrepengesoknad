@@ -21,10 +21,9 @@ import {
     NavnPåForeldre,
     Situasjon,
     UttakOppholdÅrsak_fpoversikt,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { capitalizeFirstLetter } from '@navikt/fp-utils';
+import { Uttaksperioden, capitalizeFirstLetter } from '@navikt/fp-utils';
 
 type MessageValue = string | number | boolean | Date | null | undefined;
 
@@ -85,6 +84,8 @@ export const getAktivitetTekst = (
         return intl.formatMessage({ id: 'oppsummering.uttak.selvstendig_næringsdrivende' });
     } else if (type === 'FRILANS') {
         return intl.formatMessage({ id: 'oppsummering.uttak.frilans' });
+    } else if (type === 'ANNET') {
+        return intl.formatMessage({ id: 'oppsummering.uttak.annet' });
     }
 
     throw new Error(`Ikke håndtert aktivitetstype: ${type}`);
@@ -98,10 +99,6 @@ export const getÅrsakTekst = (
     const intlKeyPrefix = type === Periodetype.Utsettelse ? 'utsettelsesårsak.' : 'overføringsårsaktype.';
     //@ts-expect-error Fiks dynamisk id
     return intl.formatMessage({ id: `uttaksplan.${intlKeyPrefix + årsak}` }, messageValues);
-};
-
-export const erUttaksperiode = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt): boolean => {
-    return !('trekkdager' in periode) && !periode.oppholdÅrsak && !periode.overføringÅrsak && !periode.utsettelseÅrsak;
 };
 
 export const uttaksperiodeKanJusteresVedFødsel = (
@@ -122,7 +119,7 @@ export const getPeriodeTittel = (
     erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
 ): string => {
-    if (erUttaksperiode(periode)) {
+    if (Uttaksperioden.erUttaksperiode(periode)) {
         return getPeriodeTittelUttaksPeriode(
             intl,
             periode,

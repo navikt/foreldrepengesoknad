@@ -9,10 +9,10 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { TidsperiodenString } from '@navikt/fp-utils';
+import { Uttaksperioden } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
-import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
+import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 
 export const useErAntallDagerOvertrukketIUttaksplan = () => {
     const {
@@ -29,10 +29,7 @@ export const useErAntallDagerOvertrukketIUttaksplan = () => {
         );
     }
 
-    return (
-        finnAntallDagerDerBeggeHarForeldrepenger(uttakPerioder, familiesituasjon, valgtStønadskonto)
-            .antallOvertrukketDager > 0
-    );
+    return tellDagerIUttaksPeriodene(uttakPerioder, familiesituasjon, valgtStønadskonto).antallOvertrukketDager > 0;
 };
 
 export const finnAntallDagerDerKunEnHarForeldrepenger = (
@@ -102,7 +99,28 @@ export const finnAntallDagerDerKunEnHarForeldrepenger = (
     };
 };
 
-export const finnAntallDagerDerBeggeHarForeldrepenger = (
+export const filtrerAvslåttePerioderMenBeholdPleiepenger = (
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+) => {
+    if (erEøsUttakPeriode(periode)) {
+        return true;
+    }
+    if (periode.resultat?.innvilget === false) {
+        return periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
+    }
+
+    return periode.resultat?.innvilget ?? true;
+};
+
+export const useTellDagerIUttaksPeriodene = () => {
+    const { uttakPerioder, familiesituasjon, valgtStønadskonto } = useUttaksplanData();
+
+    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+
+    return tellDagerIUttaksPeriodene(filtrertePerioder, familiesituasjon, valgtStønadskonto);
+};
+
+export const tellDagerIUttaksPeriodene = (
     uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     familiesituasjon: Familiesituasjon,
     valgtStønadskonto: KontoBeregningDto,
@@ -232,7 +250,7 @@ const harOppholdÅrsakLikKontoType = (
     kontoType: KontoTypeUttak,
     periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
 ): boolean => {
-    if ('trekkdager' in periode || !periode.oppholdÅrsak) {
+    if (erEøsUttakPeriode(periode) || !periode.oppholdÅrsak) {
         return false;
     }
 
@@ -256,13 +274,13 @@ const getStønadskontoTypeFromOppholdÅrsakType = (årsak: UttakOppholdÅrsak_fp
 };
 
 const finnAntallDagerÅTrekke = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    if ('trekkdager' in periode) {
+    if (erEøsUttakPeriode(periode)) {
         return periode.trekkdager;
     }
 
     const arbeidstidprosent = periode.gradering?.arbeidstidprosent;
     const samtidigUttak = periode.samtidigUttak;
-    const dager = TidsperiodenString(periode).getAntallUttaksdager();
+    const dager = Uttaksperioden.getAntallUttaksdager(periode);
 
     if (arbeidstidprosent) {
         const graderingsProsent = (100 - arbeidstidprosent) / 100;

@@ -4,9 +4,8 @@ import {
     UttakPeriode_fpoversikt,
     UttakUtsettelseÅrsak_fpoversikt,
 } from '@navikt/fp-types';
-import { erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from '@navikt/fp-uttaksplan-ny';
-
-import { erUttaksperiode } from './uttaksplanInfoUtils';
+import { Uttaksperioden } from '@navikt/fp-utils';
+import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan-ny';
 
 export const perioderSomKreverVedleggNy = (
     uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
@@ -45,7 +44,7 @@ const shouldPeriodeHaveAttachment = (
         );
     }
 
-    if (!('trekkdager' in periode) && erUttaksperiode(periode)) {
+    if (Uttaksperioden.erIkkeEøsPeriode(periode) && Uttaksperioden.erUttaksperiode(periode)) {
         return dokumentasjonBehøvesForUttaksperiode(periode, familiehendelsedato);
     }
 
@@ -68,9 +67,14 @@ const dokumentasjonBehøvesForUttaksperiode = (
     familiehendelsedato: string,
 ): boolean => {
     const harIkkeAktivitetskrav = periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT';
-    const erPeriodeFedkvoteIFødselspermTidsrommet =
-        erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(periode, familiehendelsedato) &&
-        periode.kontoType === 'FEDREKVOTE';
+    const erPeriodeMedFedrekvoteIFødselspermTidsrommet =
+        UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+            periode,
+            familiehendelsedato,
+            undefined,
+        ) &&
+        periode.kontoType === 'FEDREKVOTE' &&
+        !periode.samtidigUttak;
 
     if (harIkkeAktivitetskrav) {
         return false;
@@ -78,6 +82,6 @@ const dokumentasjonBehøvesForUttaksperiode = (
 
     return (
         (periode.morsAktivitet !== undefined && periode.morsAktivitet !== 'UFØRE') ||
-        erPeriodeFedkvoteIFødselspermTidsrommet
+        erPeriodeMedFedrekvoteIFødselspermTidsrommet
     );
 };

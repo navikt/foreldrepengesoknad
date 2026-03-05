@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call */
 import { ArrowLeftIcon, ArrowRightIcon } from '@navikt/aksel-icons';
-import * as Sentry from '@sentry/browser';
 import { useQuery } from '@tanstack/react-query';
 import { getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter } from 'api/getStønadskontoParams';
 import { annenPartVedtakOptions, useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
@@ -20,7 +19,6 @@ import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import { ISOStringToDate, dateToISOString, getEndringstidspunkt } from 'utils/dateUtils';
 import { getStartdatoFørstePeriodeAnnenPart, mapAnnenPartsEksisterendeSakFromDTO } from 'utils/eksisterendeSakUtils';
-import { useDebounce } from 'utils/hooks/useDebounce';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import {
     getFarMedmorErAleneOmOmsorg,
@@ -31,7 +29,6 @@ import {
 } from 'utils/personUtils';
 import { getAntallUkerFraStønadskontoer, getAntallUkerMinsterett } from 'utils/stønadskontoerUtils';
 import { getPerioderSomSkalSendesInn } from 'utils/submitUtils';
-import { getSamtidigUttaksprosent } from 'utils/uttaksplanInfoUtils';
 
 import { Alert, Button, HGrid, VStack } from '@navikt/ds-react';
 
@@ -44,6 +41,7 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
+import { captureMessage } from '@navikt/fp-observability';
 import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Spinner, Step, StepFooter } from '@navikt/fp-ui';
 import {
@@ -66,6 +64,7 @@ import {
 } from './automatisk-justering-form/automatiskJusteringUtils';
 import { VilDuGåTilbakeModal } from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { lagUttaksplanForslag } from './lagUttaksplanForslag';
+import { useDebounce } from './oldshit/hooks/useDebounce';
 import { uttaksplanQuestionsConfig } from './uttaksplanQuestionConfig';
 
 const EMPTY_PERIOD_ARRAY: Periode[] = [];
@@ -510,20 +509,20 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
 
     useEffect(() => {
         if (tilgjengeligeStønadskontoerQuery.error) {
-            Sentry.captureMessage(tilgjengeligeStønadskontoerQuery.error.message);
+            captureMessage(tilgjengeligeStønadskontoerQuery.error.message);
             throw new Error(
                 `Vi klarte ikke å hente opp stønadskontoer. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
             );
         }
         if (annenPartVedtakQuery.error) {
-            Sentry.captureMessage(annenPartVedtakQuery.error.message);
+            captureMessage(annenPartVedtakQuery.error.message);
             throw new Error(
                 `Vi klarte ikke å hente informasjon om saken til annen forelder. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
             );
         }
 
         if (nesteSakAnnenPartVedtakQuery.error) {
-            Sentry.captureMessage(nesteSakAnnenPartVedtakQuery.error.message);
+            captureMessage(nesteSakAnnenPartVedtakQuery.error.message);
             throw new Error(
                 'Vi klarte ikke å hente informasjon om saken til annen forelder for neste barn. ' +
                     'Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.',
@@ -703,4 +702,11 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
             }}
         />
     );
+};
+
+const getSamtidigUttaksprosent = (
+    gradertPeriode: boolean | undefined,
+    stillingsprosent: string | undefined,
+): string => {
+    return gradertPeriode && stillingsprosent ? (100 - Number.parseInt(stillingsprosent, 10)).toString() : '100';
 };

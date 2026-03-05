@@ -23,11 +23,8 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskontoNavnSimple } from '../liste/utils/uttaksplanListeUtils';
 import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
-import { erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter } from '../utils/periodeUtils';
-import {
-    erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgSeksUkerEtterFamDato,
-    useHentGyldigeKontotyper,
-} from './useHentGyldigeKontotyper';
+import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
+import { useHentGyldigeKontotyper } from './useHentGyldigeKontotyper';
 import { prosentValideringGradering, valideringSamtidigUttak } from './uttaksplanValidatorer';
 
 dayjs.extend(isSameOrBefore);
@@ -49,6 +46,7 @@ export type LeggTilEllerEndrePeriodeFormFormValues = {
     morsAktivitet?: MorsAktivitet;
     overføringsårsak?: UttakOverføringÅrsak_fpoversikt;
     hvorSkalDuJobbe?: string;
+    ønskerFlerbarnsdager?: boolean;
 };
 
 interface Props {
@@ -63,8 +61,8 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         foreldreInfo: { rettighetType, erMedmorDelAvSøknaden, søker },
         familiehendelsedato,
         erPeriodeneTilAnnenPartLåst,
-        uttakPerioder,
         aktiveArbeidsforhold,
+        barn,
     } = useUttaksplanData();
 
     const formMethods = useFormContext<LeggTilEllerEndrePeriodeFormFormValues>();
@@ -79,32 +77,39 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         stillingsprosentMor,
         stillingsprosentFarMedmor,
         skalDuKombinereArbeidOgUttakFarMedmor,
+        ønskerFlerbarnsdager,
     } = formMethods.watch();
 
+    const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(barn.antallBarn, forelder, kontoTypeFarMedmor);
+
     const infotekstOmFedrekvoteBrukRundtFødsel = getInfotekstOmFedrekvoteBrukRundtFødsel(
-        uttakPerioder,
         valgtePerioder,
         kontoTypeFarMedmor,
         familiehendelsedato,
+        forelder,
         intl,
     );
 
     const erFarMedmorUtenAleneomsorg =
         forelder === 'FAR_MEDMOR' &&
         rettighetType !== 'ALENEOMSORG' &&
-        (kontoTypeFarMedmor === 'FORELDREPENGER' || kontoTypeFarMedmor === 'FELLESPERIODE');
+        (kontoTypeFarMedmor === 'FORELDREPENGER' || kontoTypeFarMedmor === 'FELLESPERIODE') &&
+        !ønskerFlerbarnsdager;
 
-    const skalViseMorsAktivitetskravVedSamtidigUttak = getSkalViseMorsAktivitetskravVedSamtidigUttak(
-        forelder,
-        samtidigUttaksprosentMor,
-        stillingsprosentMor,
-        samtidigUttaksprosentFarMedmor,
-        kontoTypeFarMedmor,
-    );
+    const skalViseMorsAktivitetskravVedSamtidigUttak =
+        !ønskerFlerbarnsdager &&
+        getSkalViseMorsAktivitetskravVedSamtidigUttak(
+            forelder,
+            samtidigUttaksprosentMor,
+            stillingsprosentMor,
+            samtidigUttaksprosentFarMedmor,
+            kontoTypeFarMedmor,
+        );
 
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(
         valgtePerioder,
         forelder === 'BEGGE',
+        ønskerFlerbarnsdager,
     );
 
     const erMorGyldigForelder = gyldigeStønadskontoerForMor.length > 0;
@@ -127,8 +132,14 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     };
 
     const resetStillingsprosentFarMedmor = () => {
-        if ((forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && skalDuKombinereArbeidOgUttakFarMedmor === false) {
+        if (forelder !== 'MOR' && skalDuKombinereArbeidOgUttakFarMedmor === false) {
             formMethods.resetField('stillingsprosentFarMedmor', undefined);
+        }
+    };
+
+    const resetAktivitetskrav = () => {
+        if (forelder !== 'MOR' && ønskerFlerbarnsdager) {
+            formMethods.resetField('morsAktivitet', undefined);
         }
     };
 
@@ -177,9 +188,30 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 }
             </RhfRadioGroup>
 
+            {skalViseFlerbarnsdager && (
+                <RhfRadioGroup
+                    name="ønskerFlerbarnsdager"
+                    control={formMethods.control}
+                    validate={[
+                        isRequired(
+                            intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.ØnskerFlerbarnsdager.Påkrevd' }),
+                        ),
+                    ]}
+                    label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.ØnskerFlerbarnsdager' })}
+                    onChange={resetAktivitetskrav}
+                >
+                    <Radio value={true}>
+                        <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Ja" />
+                    </Radio>
+                    <Radio value={false}>
+                        <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Nei" />
+                    </Radio>
+                </RhfRadioGroup>
+            )}
+
             {forelder !== undefined && <hr className="text-ax-border-neutral-subtle" />}
 
-            {(forelder === 'MOR' || forelder === 'BEGGE') && (
+            {forelder !== 'FAR_MEDMOR' && (
                 <RhfRadioGroup
                     name="kontoTypeMor"
                     control={formMethods.control}
@@ -190,14 +222,14 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 >
                     {gyldigeStønadskontoerForMor.map((konto) => {
                         return (
-                            <Radio key={konto} value={konto}>
+                            <Radio key={konto} value={konto} disabled={!!kontoTypeMor && erMorLåst}>
                                 {getStønadskontoNavnSimple(intl, konto, erMedmorDelAvSøknaden)}
                             </Radio>
                         );
                     })}
                 </RhfRadioGroup>
             )}
-            {(forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && (
+            {forelder !== 'MOR' && (
                 <RhfRadioGroup
                     name="kontoTypeFarMedmor"
                     control={formMethods.control}
@@ -222,7 +254,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 >
                     {gyldigeStønadskontoerForFarMedmor.map((konto) => {
                         return (
-                            <Radio key={konto} value={konto}>
+                            <Radio key={konto} value={konto} disabled={!!kontoTypeFarMedmor && erFarMedmorLåst}>
                                 {getStønadskontoNavnSimple(intl, konto, erMedmorDelAvSøknaden)}
                             </Radio>
                         );
@@ -382,7 +414,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     />
                 </>
             )}
-            {kontoTypeMor !== undefined && (forelder === 'MOR' || forelder === 'BEGGE') && !morSøkerOmOverføring && (
+            {kontoTypeMor !== undefined && forelder !== 'FAR_MEDMOR' && !morSøkerOmOverføring && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
                     <VStack gap="space-16">
@@ -408,7 +440,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         </RhfRadioGroup>
                         {skalDuKombinereArbeidOgUttakMor && (
                             <>
-                                {erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgSeksUkerEtterFamDato(
+                                {UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgSeksUkerEtterFamDato(
                                     valgtePerioder,
                                     familiehendelsedato,
                                 ) && (
@@ -461,7 +493,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     </VStack>
                 </>
             )}
-            {(forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && !farMedmorSøkerOmOverføring && (
+            {forelder !== 'MOR' && !farMedmorSøkerOmOverføring && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
                     <VStack gap="space-16">
@@ -632,6 +664,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentMor) : undefined,
             overføringÅrsak: values.overføringsårsak,
+            flerbarnsdager: values.ønskerFlerbarnsdager ?? false,
         });
     }
     if (values.forelder === 'FAR_MEDMOR' || values.forelder === 'BEGGE') {
@@ -648,6 +681,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentFarMedmor) : undefined,
             overføringÅrsak: values.overføringsårsak,
+            flerbarnsdager: values.ønskerFlerbarnsdager ?? false,
         });
     }
     return nye;
@@ -656,8 +690,8 @@ export const mapFraFormValuesTilUttakPeriode = (
 export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
     uttaksplanperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     valgtPeriode: { fom: string; tom: string },
-    erPeriodeneTilAnnenPartLåst: boolean,
     søker: BrukerRolleSak_fpoversikt,
+    erPeriodeneTilAnnenPartLåst: boolean,
 ): LeggTilEllerEndrePeriodeFormFormValues | undefined => {
     const eksisterendePerioder = uttaksplanperioder.filter(
         (periode) =>
@@ -704,6 +738,7 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
             morsAktivitet: morsPeriode.morsAktivitet,
             hvorSkalDuJobbe:
                 søkersPeriode.gradering?.aktivitet.arbeidsgiver?.id ?? søkersPeriode.gradering?.aktivitet.type,
+            ønskerFlerbarnsdager: morsPeriode.flerbarnsdager || farMedmorPeriode.flerbarnsdager,
         };
     }
 
@@ -721,6 +756,7 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
             hvorSkalDuJobbe: periode.gradering?.aktivitet.arbeidsgiver?.id ?? periode.gradering?.aktivitet.type,
             morsAktivitet: periode.morsAktivitet,
             overføringsårsak: periode.overføringÅrsak,
+            ønskerFlerbarnsdager: periode.flerbarnsdager,
         };
     }
 
@@ -732,6 +768,7 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
         stillingsprosentMor: periode.gradering?.arbeidstidprosent.toString(),
         hvorSkalDuJobbe: periode.gradering?.aktivitet.arbeidsgiver?.id ?? periode.gradering?.aktivitet.type,
         overføringsårsak: periode.overføringÅrsak,
+        ønskerFlerbarnsdager: periode.flerbarnsdager,
     };
 };
 
@@ -740,59 +777,62 @@ const getGradering = (
     stillingsprosent: string | undefined,
     hvorSkalDuJobbe: string | undefined,
 ): Gradering_fpoversikt => {
+    if (erSøker) {
+        return {
+            aktivitet: {
+                type: finnAktivitetType(hvorSkalDuJobbe),
+                arbeidsgiver:
+                    hvorSkalDuJobbe && hvorSkalDuJobbe !== SELVSTENDIG_NÆRINGSDRIVENDE && hvorSkalDuJobbe !== FRILANS
+                        ? {
+                              id: hvorSkalDuJobbe,
+                          }
+                        : undefined,
+            },
+            arbeidstidprosent: getFloatFromString(stillingsprosent) ?? 100,
+        } satisfies Gradering_fpoversikt;
+    }
+
+    // Dette må endrast når ein byrjar å lagre annen part sine periodar. Per no så kan ein ikkje oppi aktivitet for denne i skjema.
     return {
         aktivitet: {
-            type: finnAktivitetType(erSøker, hvorSkalDuJobbe),
-            arbeidsgiver:
-                erSøker &&
-                hvorSkalDuJobbe &&
-                hvorSkalDuJobbe !== SELVSTENDIG_NÆRINGSDRIVENDE &&
-                hvorSkalDuJobbe !== FRILANS
-                    ? {
-                          id: hvorSkalDuJobbe,
-                      }
-                    : undefined,
+            type: 'ANNET',
         },
         arbeidstidprosent: getFloatFromString(stillingsprosent) ?? 100,
     } satisfies Gradering_fpoversikt;
 };
 
-const finnAktivitetType = (erSøker: boolean, hvorSkalDuJobbe?: string): AktivitetType_fpoversikt => {
-    return erSøker && (hvorSkalDuJobbe === 'FRILANS' || hvorSkalDuJobbe === 'SELVSTENDIG_NÆRINGSDRIVENDE')
+const finnAktivitetType = (hvorSkalDuJobbe?: string): AktivitetType_fpoversikt => {
+    return hvorSkalDuJobbe === 'FRILANS' || hvorSkalDuJobbe === 'SELVSTENDIG_NÆRINGSDRIVENDE'
         ? hvorSkalDuJobbe
         : 'ORDINÆRT_ARBEID';
 };
 
 const getInfotekstOmFedrekvoteBrukRundtFødsel = (
-    uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     valgtePerioder: Array<{ fom: string; tom: string }>,
     kontoTypeFarMedmor: KontoTypeUttak | undefined,
     familiehendelsedato: string,
+    forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined,
     intl: IntlShape,
 ) => {
-    const perioderInneholderFedrekvoteRundtFødsel = uttakPerioder
-        .filter((periode) => erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(periode, familiehendelsedato))
-        .some((periode) => {
-            return erVanligUttakPeriode(periode) && periode.kontoType === 'FEDREKVOTE' && !periode.samtidigUttak;
-        });
-
     const valgteDagerRundtFødsel = valgtePerioder.filter((p) =>
-        erPeriodeIMellomToUkerFørFamdatoOgSeksUkerEtter(p, familiehendelsedato),
+        UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+            p,
+            familiehendelsedato,
+            undefined,
+        ),
     );
 
-    const valgteDagerInneholderFedrekvoteRundtFødsel =
-        valgteDagerRundtFødsel.length > 0 && kontoTypeFarMedmor === 'FEDREKVOTE';
+    return valgteDagerRundtFødsel.length > 0 && kontoTypeFarMedmor === 'FEDREKVOTE' && forelder === 'FAR_MEDMOR'
+        ? intl.formatMessage({
+              id: 'LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel',
+          })
+        : undefined;
+};
 
-    let infotekstOmFedrekvoteBrukRundtFødsel = undefined;
-
-    if (
-        (perioderInneholderFedrekvoteRundtFødsel || valgteDagerInneholderFedrekvoteRundtFødsel) &&
-        kontoTypeFarMedmor === 'FEDREKVOTE'
-    ) {
-        infotekstOmFedrekvoteBrukRundtFødsel = intl.formatMessage({
-            id: 'LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel',
-        });
-    }
-
-    return infotekstOmFedrekvoteBrukRundtFødsel;
+export const skalBesvareFlerbarnsdager = (
+    antallBarn: number,
+    forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined,
+    kontotype: KontoTypeUttak | undefined,
+) => {
+    return antallBarn > 1 && forelder !== 'MOR' && kontotype !== 'MØDREKVOTE' && kontotype !== 'AKTIVITETSFRI_KVOTE';
 };

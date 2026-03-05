@@ -23,9 +23,10 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
-import { Tidsperioden, Uttaksdagen, datoErInnenforTidsperiode, isValidTidsperiodeString } from '@navikt/fp-utils';
+import { Tidsperioden, Uttaksdagen, datoErInnenforTidsperiode } from '@navikt/fp-utils';
 
 import { Perioden } from './Perioden';
+import { isValidTidsperiodeString } from './getUttaksdagerSomErFridager';
 import { finnAntallDagerÅTrekke } from './uttaksPlanStatus';
 
 export const Periodene = (perioder: Periode[]) => ({

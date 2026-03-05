@@ -6,8 +6,8 @@ import {
     isPeriodeUtenUttak,
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
 } from '@navikt/fp-common';
-import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
+import { isValidTidsperiodeString } from '../../utils/getUttaksdagerSomErFridager';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 
 export const inneholderUttaksplanPerioderTest: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {

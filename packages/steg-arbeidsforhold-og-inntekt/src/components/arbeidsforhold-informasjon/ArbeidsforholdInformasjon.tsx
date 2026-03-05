@@ -2,7 +2,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ReadMore, VStack } from '@navikt/ds-react';
 
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 import { AppName, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { HarArbeidsforhold } from './HarArbeidsforhold';

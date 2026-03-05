@@ -1,6 +1,5 @@
-import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons';
 import dayjs, { Dayjs } from 'dayjs';
-import React, { useRef, useState } from 'react';
+import React, { ReactElement, useRef, useState } from 'react';
 
 import { Popover } from '@navikt/ds-react';
 
@@ -17,8 +16,6 @@ const DAY_STYLE: Record<CalendarPeriodColor, string> = {
     ['LIGHTGREEN']: styles.lightgreenDay!,
     ['GRAY']: styles.grayDay!,
     ['DARKGRAY']: styles.darkgrayDay!,
-    ['PINK']: styles.pinkDay!,
-    ['PURPLE']: styles.purpleDay!,
     ['BLACK']: styles.blackDay!,
     ['BLACKOUTLINE']: styles.blackOutlineDay!,
     ['BLUEOUTLINE']: styles.blueOutlineDay!,
@@ -31,6 +28,7 @@ const DAY_STYLE: Record<CalendarPeriodColor, string> = {
     ['BLUESTRIPED']: styles.blueStripedDay!,
     ['GREEN_WITH_BLACK_OUTLINE']: styles.greenWithBlackOutlineDay!,
     ['BLUE_WITH_BLACK_OUTLINE']: styles.blueWithBlackOutlineDay!,
+    ['BEIGEOUTLINE']: styles.beigeOutlineDay!,
 };
 
 type Props = {
@@ -39,7 +37,8 @@ type Props = {
     isFocused: boolean;
     srText?: string;
     isUpdated?: boolean;
-    isMarked?: boolean;
+    Icon?: ReactElement;
+    iconFull?: boolean;
     dateTooltipCallback?: (date: string) => React.ReactNode | string;
     dateClickCallback?: (date: string) => void;
     setFocusedDate: (date: Dayjs) => void;
@@ -52,7 +51,8 @@ export const Day = React.memo(
         isFocused,
         srText,
         isUpdated,
-        isMarked,
+        Icon,
+        iconFull,
         dateTooltipCallback,
         dateClickCallback,
         setFocusedDate,
@@ -83,7 +83,7 @@ export const Day = React.memo(
             <button
                 ref={setButtonRef}
                 type="button"
-                data-testid={`day:${day};dayColor:${periodeColor}`}
+                data-testid={`day:${day};dayColor:${periodeColor}${Icon ? `;with-icon` : ''}`}
                 tabIndex={isFocused ? 0 : -1}
                 className={`${styles.days} ${DAY_STYLE[periodeColor]} ${isClickable && styles.cursorAndHoover} ${isUpdated && styles.fadeIn}`}
                 onFocus={isClickable ? () => setFocusedDate(date) : undefined}
@@ -98,9 +98,14 @@ export const Day = React.memo(
                 }
                 aria-label={formatDate(date) + (srText ? `, ${srText}` : '')}
             >
-                {day}
-                {isMarked && periodeColor !== 'GRAY' && (
-                    <ExclamationmarkTriangleFillIcon className={styles.triangle} aria-hidden />
+                {(!Icon || (!iconFull && periodeColor === 'GRAY')) && day}
+
+                {Icon && iconFull && Icon}
+                {Icon && !iconFull && periodeColor !== 'GRAY' && (
+                    <>
+                        {day}
+                        <div className={styles.icon}>{Icon}</div>
+                    </>
                 )}
                 {dateTooltipCallback && isPeriodDifferentFromNoneOrGray(periodeColor) && (
                     <Popover open={isTooltipOpen} onClose={() => setIsTooltipOpen(false)} anchorEl={buttonRef.current}>

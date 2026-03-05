@@ -1,10 +1,10 @@
-import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
 import { API_URLS } from 'appData/queries';
 import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { captureMessage } from '@navikt/fp-observability';
 import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
@@ -60,7 +60,7 @@ export const useMellomlagreSøknad = (
 
                             const jsonResponse = await error.response.json<{ uuid?: string }>();
                             const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
-                            Sentry.captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
+                            captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
                             throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
                         }
                         if (error instanceof Error) {
@@ -83,7 +83,7 @@ export const useMellomlagreSøknad = (
             };
 
             lagreEllerSlett().catch((error: Error) => {
-                Sentry.captureMessage(error.message);
+                captureMessage(error.message);
 
                 if (promiseRef.current) {
                     promiseRef.current();

@@ -4,12 +4,9 @@ import { IntlShape, useIntl } from 'react-intl';
 import { getForelderNavn } from 'utils/isFarEllerMedmor';
 import { getStønadskontoNavn } from 'utils/stønadskontoerUtils';
 import {
-    erIkkeEøsPeriode,
-    erUttaksperiode,
     getUttaksprosentFromStillingsprosent,
     isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel,
     prettifyProsent,
-    starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
 } from 'utils/uttaksplanInfoUtils';
 
 import { BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
@@ -20,7 +17,8 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { TidsperiodenString, capitalizeFirstLetter } from '@navikt/fp-utils';
+import { UttaksdagenString, Uttaksperioden, capitalizeFirstLetter } from '@navikt/fp-utils';
+import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan-ny';
 
 import { StønadskontoIkon } from './StønadskontoIkon';
 import { UtsettelseIkon } from './UtsettelseIkon';
@@ -48,7 +46,7 @@ export const PeriodeVisning = ({
     const intl = useIntl();
 
     const varighetString = getVarighetString(
-        TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager(),
+        UttaksdagenString.denneEllerNeste(periode.fom).getUttaksdagerFremTilOgMedDato(periode.tom),
         intl,
     );
 
@@ -88,7 +86,7 @@ const PeriodeIkon = ({
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
 }): React.ReactNode | null => {
-    const erUttak = erIkkeEøsPeriode(periode) && erUttaksperiode(periode);
+    const erUttak = Uttaksperioden.erIkkeEøsPeriode(periode) && Uttaksperioden.erUttaksperiode(periode);
     if (erUttak) {
         if (periode.resultat?.årsak === 'INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID') {
             return <UttaksplanAdvarselIkon />;
@@ -105,7 +103,7 @@ const PeriodeIkon = ({
         );
     }
 
-    if (erIkkeEøsPeriode(periode) && periode.overføringÅrsak) {
+    if (Uttaksperioden.erIkkeEøsPeriode(periode) && periode.overføringÅrsak) {
         return (
             <StønadskontoIkon
                 konto={periode.kontoType}
@@ -116,11 +114,11 @@ const PeriodeIkon = ({
         );
     }
 
-    if (erIkkeEøsPeriode(periode) && periode.utsettelseÅrsak && periode.forelder) {
+    if (Uttaksperioden.erIkkeEøsPeriode(periode) && periode.utsettelseÅrsak && periode.forelder) {
         return <UtsettelseIkon årsak={periode.utsettelseÅrsak} forelder={periode.forelder} />;
     }
 
-    if (erIkkeEøsPeriode(periode) && periode.oppholdÅrsak) {
+    if (Uttaksperioden.erIkkeEøsPeriode(periode) && periode.oppholdÅrsak) {
         return (
             <StønadskontoIkon
                 konto={'FORELDREPENGER'}
@@ -205,7 +203,7 @@ const PeriodeTittel = ({
 }) => {
     const intl = useIntl();
 
-    const erUttak = erIkkeEøsPeriode(periode) && erUttaksperiode(periode);
+    const erUttak = Uttaksperioden.erIkkeEøsPeriode(periode) && Uttaksperioden.erUttaksperiode(periode);
     if (erUttak) {
         return getPeriodeTittelUttaksPeriode(
             intl,
@@ -218,10 +216,10 @@ const PeriodeTittel = ({
             erAleneOmOmsorg,
         );
     }
-    if (erIkkeEøsPeriode(periode) && periode.overføringÅrsak) {
+    if (Uttaksperioden.erIkkeEøsPeriode(periode) && periode.overføringÅrsak) {
         return getStønadskontoNavn(intl, periode.kontoType, navnPåForeldre, erFarEllerMedmor);
     }
-    if (erIkkeEøsPeriode(periode) && periode.utsettelseÅrsak) {
+    if (Uttaksperioden.erIkkeEøsPeriode(periode) && periode.utsettelseÅrsak) {
         return intl.formatMessage(
             { id: 'uttaksplan.periodeliste.utsettelsesårsak' },
             {
@@ -229,7 +227,7 @@ const PeriodeTittel = ({
             },
         );
     }
-    if (erIkkeEøsPeriode(periode) && periode.oppholdÅrsak) {
+    if (Uttaksperioden.erIkkeEøsPeriode(periode) && periode.oppholdÅrsak) {
         return getOppholdskontoNavn(
             intl,
             periode.oppholdÅrsak,
@@ -315,7 +313,7 @@ const getPeriodeTittelUttaksPeriode = (
         familiehendelsesdato,
         termindato,
     );
-    if (erIkkeEøsPeriode(periode) && (periode.gradering || periode.samtidigUttak)) {
+    if (Uttaksperioden.erIkkeEøsPeriode(periode) && (periode.gradering || periode.samtidigUttak)) {
         return `${tittel} ${intl.formatMessage(
             { id: 'gradering.prosent' },
             {
@@ -349,6 +347,10 @@ const isUttaksperiodeFarMedmorPgaFødsel = (
 ): boolean => {
     return (
         isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel(periode) &&
-        starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(periode.fom, familiehendelsesdato, termindato)
+        UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+            periode,
+            familiehendelsesdato,
+            termindato,
+        )
     );
 };

@@ -18,7 +18,7 @@ describe('<Calendar>', () => {
 
     it('skal vise korrekt antall dager med blå markering', async () => {
         render(<Default />);
-        expect(await screen.findAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(67);
+        expect(await screen.findAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(68);
     });
 
     it('skal vise korrekt antall dager med grønn markering', async () => {
@@ -26,10 +26,9 @@ describe('<Calendar>', () => {
         expect(await screen.findAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(85);
     });
 
-    it('skal vise korrekt familiehendelse den 21 februar', async () => {
+    it('skal vise korrekt familiehendelse den 21 februar', () => {
         render(<Default />);
-        expect(await screen.findByTestId('dayColor:PINK', { exact: false })).toBeInTheDocument();
-        expect(screen.getByTestId('day:21;dayColor:PINK')).toBeInTheDocument();
+        expect(screen.getByTestId('day:21;dayColor:BLUE;with-icon')).toBeInTheDocument();
     });
 
     it('skal vise korrekt navn på måneder når perioden går over to år', async () => {

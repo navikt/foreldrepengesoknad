@@ -4,11 +4,8 @@ const server = express();
 server.use(express.json());
 const path = require('node:path');
 const mustacheExpress = require('mustache-express');
-const compression = require('compression');
 
 server.disable('x-powered-by');
-
-server.use(compression());
 
 require('dotenv').config();
 server.set('views', `${__dirname}`);

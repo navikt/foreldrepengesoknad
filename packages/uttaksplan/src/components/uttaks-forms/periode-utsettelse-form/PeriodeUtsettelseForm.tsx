@@ -4,12 +4,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button } from '@navikt/ds-react';
 
 import { NavnPåForeldre, Periode, PeriodeValidState, Situasjon, Utsettelsesperiode } from '@navikt/fp-common';
-import { Tidsperioden, isValidTidsperiodeString } from '@navikt/fp-utils';
+import { Tidsperioden } from '@navikt/fp-utils';
 
 import ActionLink from '../../../common/action-link/ActionLink';
 import Block from '../../../common/block/Block';
 import { ISOStringToDate, førsteOktober2021ReglerGjelder } from '../../../utils/dateUtils';
-import { getUttaksdagerSomErFridager } from '../../../utils/getUttaksdagerSomErFridager';
+import { getUttaksdagerSomErFridager, isValidTidsperiodeString } from '../../../utils/getUttaksdagerSomErFridager';
 import { guid } from '../../../utils/guid';
 import { getIsValidStateForPerioder, getSlettPeriodeTekst } from '../../../utils/periodeUtils';
 import planBemUtils from '../../../utils/planBemUtils';

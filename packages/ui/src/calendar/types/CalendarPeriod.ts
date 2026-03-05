@@ -1,11 +1,22 @@
 import { CalendarPeriodColor } from './CalendarPeriodColor';
 
-export type CalendarPeriod = {
+type CalendarPeriodBase = {
     fom: string;
     tom: string;
     color: CalendarPeriodColor;
     srText: string;
     isSelected?: boolean;
     isUpdated?: boolean;
-    isMarked?: boolean;
 };
+
+type CalendarPeriodWithoutIcon = CalendarPeriodBase & {
+    icon?: never;
+    iconFull?: never;
+};
+
+type CalendarPeriodWithIcon = CalendarPeriodBase & {
+    icon: React.ReactElement;
+    iconFull: boolean;
+};
+
+export type CalendarPeriod = CalendarPeriodWithoutIcon | CalendarPeriodWithIcon;

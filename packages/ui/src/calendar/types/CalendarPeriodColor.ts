@@ -1,7 +1,5 @@
 export type CalendarPeriodColor =
     | 'NONE'
-    | 'PINK'
-    | 'PURPLE'
     | 'LIGHTBLUE'
     | 'BLUE'
     | 'DARKBLUE'
@@ -18,4 +16,5 @@ export type CalendarPeriodColor =
     | 'GREENOUTLINE'
     | 'BLUEOUTLINE'
     | 'GREEN_WITH_BLACK_OUTLINE'
-    | 'BLUE_WITH_BLACK_OUTLINE';
+    | 'BLUE_WITH_BLACK_OUTLINE'
+    | 'BEIGEOUTLINE';

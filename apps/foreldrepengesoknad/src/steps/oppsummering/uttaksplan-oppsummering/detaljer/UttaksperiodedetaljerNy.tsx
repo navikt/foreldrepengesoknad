@@ -1,7 +1,8 @@
 import { useIntl } from 'react-intl';
 
 import { AnnenForelder, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { EksternArbeidsforholdDto_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { Barn, EksternArbeidsforholdDto_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan-ny';
 
 import { getAktivitetTekst } from '../OppsummeringUtils';
 import { Feltoppsummering } from './Feltoppsummering';
@@ -11,16 +12,19 @@ interface Props {
     periode: UttakPeriode_fpoversikt;
     registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[] | undefined;
     annenForelder: AnnenForelder;
+    barn: Barn;
 }
 
-export const UttaksperiodedetaljerNy = ({ periode, annenForelder, registrerteArbeidsforhold }: Props) => {
+export const UttaksperiodedetaljerNy = ({ periode, annenForelder, registrerteArbeidsforhold, barn }: Props) => {
     const intl = useIntl();
 
     const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
 
+    const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(barn.antallBarn, periode.forelder, periode.kontoType);
+
     return (
         <>
-            {periode.flerbarnsdager !== undefined && erDeltUttakINorge && (
+            {skalViseFlerbarnsdager && erDeltUttakINorge && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.ønskerFlerbarnsdager' })}
                     verdi={

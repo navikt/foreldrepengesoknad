@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 
 import {
@@ -7,7 +8,11 @@ import {
     erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../../../types/UttaksplanPeriode';
-import { UttakPeriodeMedAntallDager } from '../EksisterendeValgtePerioder';
+import { countWeekdaysBetween } from '../../../utils/dateUtils';
+
+export type UttakPeriodeMedAntallDager = (UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) & {
+    valgteDagerIPeriode: number;
+};
 
 export const slåSammenTilstøtendePerioder = (perioder: CalendarPeriod[]): CalendarPeriod[] => {
     if (perioder.length === 0) {
@@ -98,21 +103,6 @@ export const finnValgtePerioder = (
 
             return acc.concat(curr);
         }, []);
-};
-
-export const countWeekdaysBetween = (start: dayjs.Dayjs, end: dayjs.Dayjs) => {
-    let count = 0;
-    let d = start;
-
-    while (d.isSameOrBefore(end, 'day')) {
-        const day = d.day();
-        if (day !== 0 && day !== 6) {
-            count++;
-        }
-        d = d.add(1, 'day');
-    }
-
-    return count;
 };
 
 export const harEnValgtPeriodeIKunEnEksisterendePeriode = (

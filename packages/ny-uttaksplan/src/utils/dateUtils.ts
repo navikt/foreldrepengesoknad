@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 type VarighetFormat = 'full' | 'normal';
@@ -34,4 +35,19 @@ const getUkerOgDagerFromDager = (dager: number): { uker: number; dager: number }
         dager: dager - uker * 5,
         uker,
     };
+};
+
+export const countWeekdaysBetween = (start: dayjs.Dayjs, end: dayjs.Dayjs) => {
+    let count = 0;
+    let d = start;
+
+    while (d.isSameOrBefore(end, 'day')) {
+        const day = d.day();
+        if (day !== 0 && day !== 6) {
+            count++;
+        }
+        d = d.add(1, 'day');
+    }
+
+    return count;
 };

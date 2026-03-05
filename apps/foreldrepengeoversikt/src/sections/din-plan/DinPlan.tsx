@@ -12,7 +12,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { useMedia } from '@navikt/fp-utils';
+import { Uttaksperioden, useMedia } from '@navikt/fp-utils';
 import {
     KvoteOppsummering,
     UttaksplanDataProvider,
@@ -160,7 +160,7 @@ const leggTilForelderOmMangler = (
     forelder: BrukerRolleSak_fpoversikt,
 ) => {
     return perioder.map((periode) => {
-        if ('trekkdager' in periode || periode.forelder !== undefined) {
+        if (Uttaksperioden.erEøsPeriode(periode) || periode.forelder !== undefined) {
             return periode;
         }
         return {

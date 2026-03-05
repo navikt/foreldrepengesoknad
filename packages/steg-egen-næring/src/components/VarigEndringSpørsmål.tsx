@@ -6,7 +6,7 @@ import { BodyShort, Radio, ReadMore } from '@navikt/ds-react';
 
 import { DATE_4_YEARS_AGO } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfRadioGroup, RhfTextField, RhfTextarea } from '@navikt/fp-form-hooks';
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 import { AppName } from '@navikt/fp-types';
 import {
     hasMaxLength,

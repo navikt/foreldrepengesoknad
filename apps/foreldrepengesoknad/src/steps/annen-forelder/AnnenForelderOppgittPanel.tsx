@@ -3,13 +3,13 @@ import { useAnnenPartVedtakOptions } from 'api/queries';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
-import { Alert, BodyLong, BodyShort, Box, List, Radio, ReadMore, VStack } from '@navikt/ds-react';
+import { Alert, BodyLong, BodyShort, Box, Link, List, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { Barn } from '@navikt/fp-common';
+import { links } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { Søkerrolle } from '@navikt/fp-types';
 import { isAfterOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
@@ -201,9 +201,16 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                                 <FormattedMessage id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del1"></FormattedMessage>
                             </div>
                             <FormattedMessage id="annenForelder.harRettPåForeldrepengerIEØS.veileder.del2"></FormattedMessage>
-                            <Link to="https://www.nav.no/foreldrepenger#utland" target="_blank">
-                                <FormattedMessage id="annenForelder.harRettPåForeldrepengerIEØS.veileder.link" />
-                            </Link>
+                            <FormattedMessage
+                                id="annenForelder.harRettPåForeldrepengerIEØS.veileder.link"
+                                values={{
+                                    a: (msg) => (
+                                        <Link href={links.foreldrepengerUtland} rel="noreferrer" target="_blank">
+                                            {msg}
+                                        </Link>
+                                    ),
+                                }}
+                            />
                         </VStack>
                     </ReadMore>
                 </div>
