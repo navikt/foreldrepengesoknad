@@ -11,7 +11,7 @@ const getInitialMatch = (media: string, fallback: boolean): boolean => {
  * @example useMedia("screen and (min-width: 1024px)")
  * @param media string
  * @param fallback boolean
- * @returns boolean | undefined
+ * @returns boolean
  */
 export const useMedia = (media: string, fallback = false): boolean => {
     const [matches, setMatches] = useState(() => getInitialMatch(media, fallback));
