@@ -1,9 +1,11 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
+import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { groupBy, min, partition, sortBy, sumBy } from 'lodash';
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { useParams } from 'react-router-dom';
 
 import {
     Accordion,
@@ -16,6 +18,7 @@ import {
     Label,
     Link,
     List,
+    ReadMore,
     Table,
     VStack,
 } from '@navikt/ds-react';
@@ -35,12 +38,14 @@ import {
     getDecoratorLanguageCookie,
 } from '@navikt/fp-utils';
 
+import { API_URLS, hentDokumenterOptions } from '../../api/queries.ts';
 import { DinSakHeader } from '../../components/header/Header.tsx';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor.ts';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute.ts';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak.ts';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes.tsx';
 import { OversiktRoutes } from '../../routes/routes.ts';
+import { DokumentHendelse } from '../../sections/tidslinje/DokumentHendelse.tsx';
 import { formaterDato } from '../../utils/dateUtils.ts';
 
 dayjs.extend(isSameOrBefore);
@@ -177,6 +182,59 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
                         values={{ sumDagsats: formatCurrencyWithKr(sumDagsats) }}
                     />
                 </Label>
+                <ReadMore header="Slik er dagsatsen delt opp">
+                    {/*<HGrid gap="space-6" columns="1fr 1fr 1fr">*/}
+                    {/*    {beregning.beregningsandeler.map((andel) => (*/}
+                    {/*        <>*/}
+                    {/*            <span>{andel.aktivitetStatus}</span>*/}
+                    {/*            <span>{formatCurrencyWithKr(andel.dagsatsArbeidsgiver)}</span>*/}
+                    {/*            <span>{formatCurrencyWithKr(andel.dagsatsSøker)}</span>*/}
+                    {/*        </>*/}
+                    {/*    ))}*/}
+                    {/*</HGrid>*/}
+
+                    <Table size="small">
+                        <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell scope="col">Arbeidsgiver</Table.HeaderCell>
+                                <Table.HeaderCell align="right" scope="col">
+                                    Til deg
+                                </Table.HeaderCell>
+                                <Table.HeaderCell align="right" scope="col">
+                                    Til arbeidsgiver
+                                </Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Header>
+                        <Table.Body>
+                            {beregning.beregningsandeler.map((andel, index) => (
+                                <Table.Row key={index}>
+                                    <Table.DataCell>
+                                        <ArbeidsforholdNavn andel={andel} />
+                                    </Table.DataCell>
+                                    <Table.DataCell align="right">
+                                        {formatCurrencyWithKr(andel.dagsatsSøker)}
+                                    </Table.DataCell>
+                                    <Table.DataCell align="right">
+                                        {formatCurrencyWithKr(andel.dagsatsArbeidsgiver)}
+                                    </Table.DataCell>
+                                </Table.Row>
+                            ))}
+                            <Table.Row className="border-t-2 border-ax-border-neutral">
+                                <Table.DataCell>Totalt</Table.DataCell>
+                                <Table.DataCell align="right">
+                                    {formatCurrencyWithKr(
+                                        sumBy(beregning.beregningsandeler, (andel) => andel.dagsatsSøker),
+                                    )}
+                                </Table.DataCell>
+                                <Table.DataCell align="right">
+                                    {formatCurrencyWithKr(
+                                        sumBy(beregning.beregningsandeler, (andel) => andel.dagsatsArbeidsgiver),
+                                    )}
+                                </Table.DataCell>
+                            </Table.Row>
+                        </Table.Body>
+                    </Table>
+                </ReadMore>
             </Box>
         </Box>
     );
@@ -229,18 +287,26 @@ const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: n
     );
 };
 
+const ArbeidsforholdNavn = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
+    const intl = useIntl();
+    if (andel.arbeidsforhold === undefined) {
+        return capitalizeFirstLetter(finnStatus(andel.aktivitetStatus, intl));
+    }
+    return `${andel.arbeidsforhold.arbeidsgiverNavn} - ${andel.arbeidsforhold.arbeidsgiverIdent}`;
+};
+
 const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
     const intl = useIntl();
+
+    const skalViseVedtaksLenke =
+        andel.aktivitetStatus === 'SELVSTENDIG_NÆRINGSDRIVENDE' && andel.dagsatsArbeidsgiver === 0;
+
     return (
         <VStack gap="space-8">
             <BodyShort>
-                {andel.arbeidsforhold === undefined ? (
-                    <Label>{capitalizeFirstLetter(finnStatus(andel.aktivitetStatus, intl))}</Label>
-                ) : (
-                    <Label>
-                        {andel.arbeidsforhold.arbeidsgiverNavn} - {andel.arbeidsforhold.arbeidsgiverIdent}
-                    </Label>
-                )}
+                <Label>
+                    <ArbeidsforholdNavn andel={andel} />
+                </Label>
             </BodyShort>
             <HGrid gap="space-8" columns={{ xs: '1fr max-content' }}>
                 <BodyShort>
@@ -254,9 +320,10 @@ const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
                     <FormattedMessage id="beregning.andel.omregnetTilÅrsinntekt" />
                 </BodyShort>
                 <BodyShort className="text-end">{formatCurrencyWithKr(andel.fastsattPrÅr ?? 0)}</BodyShort>
-                <span>Dagsats</span>
-                <BodyShort className="text-end">{formatCurrencyWithKr(andel.dagsatsArbeidsgiver ?? 0)}</BodyShort>
+                {/*<span>Dagsats</span>*/}
+                {/*<BodyShort className="text-end">{formatCurrencyWithKr(andel.dagsatsArbeidsgiver ?? 0)}</BodyShort>*/}
             </HGrid>
+            {skalViseVedtaksLenke && <VedtakLenke />}
         </VStack>
     );
 };
@@ -537,6 +604,27 @@ const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
                 );
             })}
         </VStack>
+    );
+};
+
+const VedtakLenke = () => {
+    const params = useParams<{ saksnummer: string }>();
+    const vedtak = useQuery({
+        ...hentDokumenterOptions(params.saksnummer!),
+        select: (dokumenter) => dokumenter.find((d) => d.tittel?.includes('Innvilgelsesbrev Foreldrepenger')),
+    }).data;
+
+    if (!vedtak) {
+        return null;
+    }
+
+    return (
+        <span>
+            Du kan lese mer i{' '}
+            <Link href={API_URLS.hentDokument(vedtak.journalpostId, vedtak.dokumentId ?? 'ukjent')} target="_blank">
+                vedtaksbrevet
+            </Link>
+        </span>
     );
 };
 
