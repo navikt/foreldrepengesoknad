@@ -292,7 +292,7 @@ const LabelButton = ({
             )}
             {info.label !== 'FØDSEL' && info.label !== 'BARNEHAGEPLASS' && info.label !== 'TERMIN' && (
                 <CalendarLabel color={info.calendarPeriod.color}>
-                    {visTekst && <BodyShort>{label}</BodyShort>}
+                    {visTekst && <BodyShort className="text-left">{label}</BodyShort>}
                 </CalendarLabel>
             )}
         </button>
