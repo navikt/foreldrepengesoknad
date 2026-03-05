@@ -13,9 +13,16 @@ interface Props {
     registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[] | undefined;
     annenForelder: AnnenForelder;
     barn: Barn;
+    erSøker: boolean;
 }
 
-export const UttaksperiodedetaljerNy = ({ periode, annenForelder, registrerteArbeidsforhold, barn }: Props) => {
+export const UttaksperiodedetaljerNy = ({
+    periode,
+    annenForelder,
+    registrerteArbeidsforhold,
+    barn,
+    erSøker,
+}: Props) => {
     const intl = useIntl();
 
     const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
@@ -26,7 +33,10 @@ export const UttaksperiodedetaljerNy = ({ periode, annenForelder, registrerteArb
         <>
             {skalViseFlerbarnsdager && erDeltUttakINorge && (
                 <Feltoppsummering
-                    feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.ønskerFlerbarnsdager' })}
+                    feltnavn={intl.formatMessage(
+                        { id: 'oppsummering.uttak.ønskerFlerbarnsdager' },
+                        { erSøker, fornavn: !annenForelder.kanIkkeOppgis ? annenForelder.fornavn : '' },
+                    )}
                     verdi={
                         periode.flerbarnsdager ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })
                     }
@@ -40,7 +50,10 @@ export const UttaksperiodedetaljerNy = ({ periode, annenForelder, registrerteArb
             )}
             {periode.kontoType !== 'FORELDREPENGER_FØR_FØDSEL' && !periode.samtidigUttak && (
                 <Feltoppsummering
-                    feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.kombineresMedarbeid' })}
+                    feltnavn={intl.formatMessage(
+                        { id: 'oppsummering.uttak.kombineresMedarbeid' },
+                        { erSøker, fornavn: !annenForelder.kanIkkeOppgis ? annenForelder.fornavn : '' },
+                    )}
                     verdi={periode.gradering ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
@@ -52,7 +65,7 @@ export const UttaksperiodedetaljerNy = ({ periode, annenForelder, registrerteArb
                 />
             )}
 
-            {periode.gradering?.aktivitet && (
+            {periode.gradering?.aktivitet && erSøker && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.arbeidstaker.label' })}
                     verdi={getAktivitetTekst(intl, periode.gradering?.aktivitet, registrerteArbeidsforhold)}

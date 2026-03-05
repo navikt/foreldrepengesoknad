@@ -9,6 +9,7 @@ import {
 } from 'utils/uttaksplanInfoUtils';
 
 import {
+    AnnenForelder,
     Arbeidsform,
     Overføringsperiode,
     PeriodeUtenUttakUtsettelse,

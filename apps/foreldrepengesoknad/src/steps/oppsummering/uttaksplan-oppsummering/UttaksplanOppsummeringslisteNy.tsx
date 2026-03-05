@@ -8,11 +8,12 @@ import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 import { getStønadskontoNavn } from 'utils/stønadskontoerUtils';
 import { isUttaksperiodeFarMedmorPgaFødsel } from 'utils/uttaksplanInfoUtils';
 
-import { FormSummary } from '@navikt/ds-react';
+import { Alert, BodyLong, FormSummary, VStack } from '@navikt/ds-react';
 
 import { isAnnenForelderOppgitt } from '@navikt/fp-common';
 import {
     EksternArbeidsforholdDto_fpoversikt,
+    FpSak_fpoversikt,
     KontoTypeUttak,
     NavnPåForeldre,
     UttakPeriodeAnnenpartEøs_fpoversikt,
@@ -37,27 +38,91 @@ interface Props {
 }
 
 export const UttaksplanOppsummeringslisteNy = ({ navnPåForeldre, registrerteArbeidsforhold }: Props) => {
-    const intl = useIntl();
-
-    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_NY));
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
-    const { ønskerJustertUttakVedFødsel } = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA_NY));
 
-    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
 
     const sakerQuery = useQuery({ ...sakerOptions(), enabled: !!valgtEksisterendeSaksnr });
 
     const sak = sakerQuery.data?.foreldrepenger.find((s) => s.saksnummer === valgtEksisterendeSaksnr);
 
+    const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
+
+    const søkersPerioder = uttaksplan.filter((periode) => {
+        return (
+            Uttaksperioden.erIkkeEøsPeriode(periode) &&
+            periode.forelder === (søkerErFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR')
+        );
+    });
+
+    const annenPartsPerioder = uttaksplan.filter((periode) => {
+        return (
+            Uttaksperioden.erIkkeEøsPeriode(periode) &&
+            periode.forelder === (søkerErFarEllerMedmor ? 'MOR' : 'FAR_MEDMOR')
+        );
+    });
+
+    return (
+        <VStack gap="space-16">
+            {annenPartsPerioder.length > 0 && (
+                <Alert variant="warning">
+                    <BodyLong>
+                        <FormattedMessage id="oppsummering.AnnenPartPerioderInfomelding" />
+                    </BodyLong>
+                </Alert>
+            )}
+            {søkersPerioder.length > 0 && (
+                <UttaksplanListe
+                    erSøker
+                    uttaksplan={søkersPerioder}
+                    sak={sak}
+                    registrerteArbeidsforhold={registrerteArbeidsforhold}
+                    navnPåForeldre={navnPåForeldre}
+                />
+            )}
+            {annenPartsPerioder.length > 0 && (
+                <UttaksplanListe
+                    erSøker={false}
+                    uttaksplan={annenPartsPerioder}
+                    sak={sak}
+                    registrerteArbeidsforhold={registrerteArbeidsforhold}
+                    navnPåForeldre={navnPåForeldre}
+                />
+            )}
+        </VStack>
+    );
+};
+
+const UttaksplanListe = ({
+    erSøker,
+    uttaksplan,
+    sak,
+    registrerteArbeidsforhold,
+    navnPåForeldre,
+}: {
+    erSøker: boolean;
+    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    sak: FpSak_fpoversikt | undefined;
+    registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    navnPåForeldre: NavnPåForeldre;
+}) => {
+    const intl = useIntl();
+
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+
+    const { ønskerJustertUttakVedFødsel } = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA_NY));
+
+    const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
+
     const familiehendelsesdato = notEmpty(getFamiliehendelsedato(barn));
 
     const erAnnenForelderOppgitt = isAnnenForelderOppgitt(annenForelder);
 
     const erAleneOmOmsorg = erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false;
-
-    const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
 
     const getStønadskontoNavnFromKonto = (konto: KontoTypeUttak | undefined) => {
         return konto === undefined
@@ -90,10 +155,17 @@ export const UttaksplanOppsummeringslisteNy = ({ navnPåForeldre, registrerteArb
     };
 
     return (
-        <>
-            <FormSummary.Label>
-                <FormattedMessage id="oppsummering.uttak.dine.perioder" />
-            </FormSummary.Label>
+        <div>
+            {erSøker && (
+                <FormSummary.Label>
+                    <FormattedMessage id="oppsummering.uttak.dine.perioder" />
+                </FormSummary.Label>
+            )}
+            {!erSøker && (
+                <FormSummary.Label>
+                    <FormattedMessage id="oppsummering.uttak.dine.perioder.annenpart" />
+                </FormSummary.Label>
+            )}
             <FormSummary.Value>
                 <FormSummary.Answers>
                     {uttaksplan.map((periode) => {
@@ -111,6 +183,7 @@ export const UttaksplanOppsummeringslisteNy = ({ navnPåForeldre, registrerteArb
                                             registrerteArbeidsforhold={registrerteArbeidsforhold}
                                             annenForelder={annenForelder}
                                             barn={barn}
+                                            erSøker={erSøker}
                                         />
                                     </FormSummary.Value>
                                 </FormSummary.Answer>
@@ -172,7 +245,7 @@ export const UttaksplanOppsummeringslisteNy = ({ navnPåForeldre, registrerteArb
                     })}
                 </FormSummary.Answers>
             </FormSummary.Value>
-        </>
+        </div>
     );
 };
 

@@ -1241,3 +1241,62 @@ export const VisGradertPeriode: Story = {
         ] satisfies UttakPeriode_fpoversikt[],
     },
 };
+
+export const HarPerioderForBådeMorOgFar: Story = {
+    args: {
+        ...Default.args,
+        annenForelder: {
+            fornavn: 'Espen',
+            etternavn: 'Utvikler',
+            fnr: '1212121313',
+            harRettPåForeldrepengerINorge: true,
+            kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
+        },
+        uttaksplan: [
+            {
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                fom: '2021-11-24',
+                tom: '2021-12-14',
+                flerbarnsdager: false,
+            },
+            {
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                gradering: {
+                    aktivitet: {
+                        type: 'ORDINÆRT_ARBEID',
+                        arbeidsgiver: {
+                            id: '1',
+                        },
+                    },
+                    arbeidstidprosent: 50,
+                },
+                fom: '2021-12-15',
+                tom: '2022-01-25',
+                flerbarnsdager: false,
+            },
+            {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                fom: '2021-01-26',
+                tom: '2021-03-14',
+                flerbarnsdager: false,
+            },
+            {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FELLESPERIODE',
+                gradering: {
+                    aktivitet: {
+                        type: 'ANNET',
+                    },
+                    arbeidstidprosent: 50,
+                },
+                fom: '2021-03-15',
+                tom: '2022-03-25',
+                flerbarnsdager: false,
+            },
+        ] satisfies UttakPeriode_fpoversikt[],
+    },
+};
