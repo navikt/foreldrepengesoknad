@@ -30,7 +30,7 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Fødsel')).toBeInTheDocument();
         expect(screen.getByText('Dager du kan tape')).toBeInTheDocument();
-        expect(screen.getByText('Du kombinerer jobb og foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Du har jobb og foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Du og Hans har permisjon samtidig')).toBeInTheDocument();
         expect(screen.getByText("Hans' periode")).toBeInTheDocument();
         expect(screen.getByText('Helg')).toBeInTheDocument();

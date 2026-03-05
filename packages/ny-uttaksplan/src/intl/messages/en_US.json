@@ -155,7 +155,7 @@
     "kalender.adopsjon": "Adoption",
     "kalender.avslåttePerioder": "Rejected periods are not displayed in the calendar.",
     "kalender.dinPeriode": "Your period",
-    "kalender.dinPeriode.gradert": "You combine work and parental benefits",
+    "kalender.dinPeriode.gradert": "You have work and parental benefits",
     "kalender.dinPeriode.aktivitetsfri": "{erSokersPeriode, select, true {Your} other {{navnAnnenPart}}} period with no activity requirement",
     "kalender.dinPeriode.aktivitetsfri.gradert": "{erSokersPeriode, select, true {You} other {{navnAnnenPart}}} combines work and parental benefits with no activity requirement",
     "kalender.dinPeriode.medAktivitetskrav": "Your period with activity requirement",
