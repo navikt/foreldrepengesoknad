@@ -11,7 +11,6 @@ import {
     Accordion,
     BodyShort,
     Box,
-    Detail,
     ExpansionCard,
     HGrid,
     HStack,
@@ -39,14 +38,14 @@ import {
     getDecoratorLanguageCookie,
 } from '@navikt/fp-utils';
 
-import { API_URLS, hentDokumenterOptions } from '../../api/queries.ts';
-import { DinSakHeader } from '../../components/header/Header.tsx';
-import { useSetBackgroundColor } from '../../hooks/useBackgroundColor.ts';
-import { useSetSelectedRoute } from '../../hooks/useSelectedRoute.ts';
-import { useGetSelectedSak } from '../../hooks/useSelectedSak.ts';
-import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes.tsx';
-import { OversiktRoutes } from '../../routes/routes.ts';
-import { formaterDato } from '../../utils/dateUtils.ts';
+import { API_URLS, hentDokumenterOptions } from '../../api/queries';
+import { DinSakHeader } from '../../components/header/Header';
+import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
+import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
+import { useGetSelectedSak } from '../../hooks/useSelectedSak';
+import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
+import { OversiktRoutes } from '../../routes/routes';
+import { formaterDato } from '../../utils/dateUtils';
 
 dayjs.extend(isSameOrBefore);
 dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
@@ -250,14 +249,22 @@ const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: n
                         }}
                     />
                     <br />
+                    <br />
                     <FormattedMessage
                         id="beregning.forklaringer.ytelserBareOppTil6G.dinG"
                         values={{
+                            link: (chunks) => <Link href="https://www.nav.no/grunnbelopet">{chunks}</Link>,
                             grunnbeløp: formatCurrency(grunnbeløp),
                         }}
                     />
                     <br />
-                    <FormattedMessage id="beregning.forklaringer.ytelserBareOppTil6G.innhold" />
+                    <br />
+                    <FormattedMessage
+                        id="beregning.forklaringer.ytelserBareOppTil6G.innhold"
+                        values={{
+                            link: (chunks) => <Link href="https://www.nav.no/foreldrepenger#hvor-mye">{chunks}</Link>,
+                        }}
+                    />
                 </Accordion.Content>
             </Accordion.Item>
             <Accordion.Item>
