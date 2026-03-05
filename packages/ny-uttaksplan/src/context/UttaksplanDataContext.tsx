@@ -62,4 +62,9 @@ export const useUttaksplanData = () => {
 //TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
 const filtrerBortPerioderUtenTrekkdager = (
     perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-) => perioder.filter((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.resultat?.trekkerDager !== false);
+) =>
+    perioder.filter(
+        (periode) =>
+            Uttaksperioden.erEøsPeriode(periode) ||
+            !(periode.resultat?.innvilget === false && periode.resultat.trekkerDager === false),
+    );
