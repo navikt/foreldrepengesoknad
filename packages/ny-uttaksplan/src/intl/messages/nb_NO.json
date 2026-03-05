@@ -180,7 +180,7 @@
     "kalender.tapteDager.medmor": "Dager medmor kan tape",
     "kalender.tapteDager.du": "Dager du kan tape",
     "kalender.tapteDager.annenPartPeriode": "Dager {navnAnnenPart} kan tape",
-    "kalender.utsettelse": "{erSokersPeriode, select, true {Du} other {{navnAnnenPart}}} har utsatt uttaket av foreldrepenger",
+    "kalender.utsettelse.label": "{erSokersPeriode, select, true {Du} other {{navnAnnenPart}}} har utsatt uttaket av foreldrepenger",
     "kalender.ferie": "{erSokersPeriode, select, true {Du} other {{navnAnnenPart}}} har ferie",
     "kalender.lastNedSomPdf": "Last ned kalender som PDF",
     "kalender.lastNed": "Last ned",

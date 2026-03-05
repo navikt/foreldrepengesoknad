@@ -187,7 +187,7 @@
     "kalender.skjermleser.familiehendelse": "{familiehendelsenavn} on {dato}",
     "kalender.skjermleser.periode": "{periodeNavn} from the {fraDato} until the {tilDato}",
     "kalender.barnehageplass": "Kindergarten",
-    "kalender.utsettelse": "{erSokersPeriode, select, true {You} other {{navnAnnenPart}}} has postponed the use of parental benefits",
+    "kalender.utsettelse.label": "{erSokersPeriode, select, true {You} other {{navnAnnenPart}}} has postponed the use of parental benefits",
     "kalender.ferie": "{erSokersPeriode, select, true {You} other {{navnAnnenPart}}} are on vacation",
     "kalender.avslagFratrekkPleiepenger": "Rejection of deduction for care benefits",
     "kalender.avslag": "Rejected period",
