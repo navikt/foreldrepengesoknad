@@ -1,6 +1,6 @@
-import * as Sentry from '@sentry/browser';
 import { Component, ErrorInfo, ReactElement } from 'react';
 
+import { captureException, withScope } from '@navikt/fp-sentry';
 import { AppName } from '@navikt/fp-types';
 
 import { ErrorPage } from './ErrorPage';
@@ -26,9 +26,9 @@ export class ErrorBoundary extends Component<Props, State> {
     }
 
     componentDidCatch(error: Error | null, errorInfo: ErrorInfo) {
-        Sentry.withScope((scope) => {
+        withScope((scope) => {
             scope.setExtra('errorInfo', errorInfo);
-            const eventId = Sentry.captureException(error);
+            const eventId = captureException(error);
             this.setState({ eventId, errorInfo });
         });
         this.setState({ hasError: true, errorMessage: error?.message });

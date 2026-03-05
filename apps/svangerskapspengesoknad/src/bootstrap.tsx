@@ -1,6 +1,5 @@
 import '@formatjs/intl-pluralrules/locale-data/nb';
 import '@formatjs/intl-pluralrules/polyfill.js';
-import * as Sentry from '@sentry/browser';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
@@ -11,6 +10,8 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
+import { initSentry } from '@navikt/fp-sentry';
+
 import { AppContainer } from './AppContainer';
 import './index.css';
 
@@ -19,12 +20,7 @@ countries.registerLocale(langNN);
 
 dayjs.locale('nb');
 
-Sentry.init({
-    dsn: 'https://b28b752e32e846dd9818f2eb7a9fc013@sentry.gc.nav.no/7',
-    release: import.meta.env.VITE_SENTRY_RELEASE,
-    environment: globalThis.location.hostname,
-    integrations: [Sentry.breadcrumbsIntegration({ console: false })],
-});
+initSentry({ dsn: 'https://b28b752e32e846dd9818f2eb7a9fc013@sentry.gc.nav.no/7' });
 
 const container = document.getElementById('app');
 if (container) {

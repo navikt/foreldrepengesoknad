@@ -1,7 +1,8 @@
-import * as Sentry from '@sentry/browser';
 import { Component, ErrorInfo } from 'react';
 
 import { Alert } from '@navikt/ds-react';
+
+import { captureException, withScope } from '@navikt/fp-sentry';
 
 type Props = {
     children: React.ReactNode;
@@ -22,9 +23,9 @@ export class ErrorBoundary extends Component<Props, State> {
         if (error && error.message !== 'globalThis.hasFocus is not a function') {
             this.setState((oldState) => ({ ...oldState, hasError: true, error }));
 
-            Sentry.withScope((scope) => {
+            withScope((scope) => {
                 scope.setExtra('errorInfo', errorInfo);
-                Sentry.captureException(error);
+                captureException(error);
             });
         }
     }

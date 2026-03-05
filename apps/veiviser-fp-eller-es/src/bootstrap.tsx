@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/browser';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
 import * as countries from 'i18n-iso-countries';
@@ -8,6 +7,8 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
+import { initSentry } from '@navikt/fp-sentry';
+
 import { AppContainer } from './AppContainer';
 import './index.css';
 import './styles/global.css';
@@ -15,14 +16,7 @@ import './styles/global.css';
 countries.registerLocale(langNB);
 countries.registerLocale(langNN);
 
-if (process.env.NODE_ENV !== 'development') {
-    Sentry.init({
-        dsn: 'https://db0c0715bf2e0b91044c530296065174@sentry.gc.nav.no/182',
-        release: import.meta.env.VITE_SENTRY_RELEASE,
-        environment: globalThis.location.hostname,
-        integrations: [Sentry.breadcrumbsIntegration({ console: false })],
-    });
-}
+initSentry({ dsn: 'https://db0c0715bf2e0b91044c530296065174@sentry.gc.nav.no/182' });
 
 const container = document.getElementById('app');
 

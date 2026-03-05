@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
 import { API_URLS } from 'appData/queries';
 import { SøknadRoute } from 'appData/routes';
@@ -6,6 +5,7 @@ import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { captureMessage } from '@navikt/fp-sentry';
 import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 
@@ -40,14 +40,14 @@ export const useSendSøknad = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt
             void navigate(SøknadRoute.KVITTERING);
         } catch (error: unknown) {
             if (error instanceof HTTPError) {
-                Sentry.captureMessage(error.message);
+                captureMessage(error.message);
 
                 if (signal.aborted || error.response.status === 401 || error.response.status === 403) {
                     throw error;
                 }
 
                 const jsonResponse = await error.response.json<{ uuid?: string }>();
-                Sentry.captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
+                captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
                 const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
                 throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
             }

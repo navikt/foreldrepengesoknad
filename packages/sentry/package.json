@@ -1,0 +1,22 @@
+{
+    "name": "@navikt/fp-sentry",
+    "main": "index.ts",
+    "type": "module",
+    "types": "index.ts",
+    "scripts": {
+        "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
+        "lint:tsc": "tsc --noEmit",
+        "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
+        "prettier": "prettier --write src"
+    },
+    "dependencies": {
+        "@sentry/browser": "10.38.0"
+    },
+    "devDependencies": {
+        "@navikt/fp-config-eslint": "workspace:*",
+        "@navikt/fp-config-typescript": "workspace:*",
+        "eslint": "9.39.2",
+        "typescript": "5.9.3",
+        "vite": "7.3.1"
+    }
+}

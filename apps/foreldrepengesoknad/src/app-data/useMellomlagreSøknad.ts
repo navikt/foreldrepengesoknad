@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/browser';
 import { API_URLS } from 'api/queries';
 import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -8,6 +7,7 @@ import { Søknad } from 'types/Søknad';
 import { MELLOMLAGRET_VERSJON } from 'utils/mellomlagringUtils';
 
 import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
+import { captureMessage } from '@navikt/fp-sentry';
 import {
     FpSak_fpoversikt,
     PersonMedArbeidsforholdDto_fpoversikt,
@@ -165,7 +165,7 @@ export const useMellomlagreSøknad = (
 
                         const jsonResponse = await error.response.json<{ uuid?: string }>();
                         const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
-                        Sentry.captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
+                        captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
                         throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
                     }
                     if (error instanceof Error) {
@@ -182,7 +182,7 @@ export const useMellomlagreSøknad = (
             lagre().catch((error) => {
                 //Logg feil, men ikkje vis feilmelding til brukar
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
-                Sentry.captureMessage(error.message);
+                captureMessage(error.message);
 
                 if (promiseRef.current) {
                     promiseRef.current();

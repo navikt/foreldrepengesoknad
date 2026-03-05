@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call */
 import { ArrowLeftIcon, ArrowRightIcon } from '@navikt/aksel-icons';
-import * as Sentry from '@sentry/browser';
 import { useQuery } from '@tanstack/react-query';
 import { getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter } from 'api/getStønadskontoParams';
 import { annenPartVedtakOptions, useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
@@ -42,6 +41,7 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
+import { captureMessage } from '@navikt/fp-sentry';
 import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Spinner, Step, StepFooter } from '@navikt/fp-ui';
 import {
@@ -509,20 +509,20 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
 
     useEffect(() => {
         if (tilgjengeligeStønadskontoerQuery.error) {
-            Sentry.captureMessage(tilgjengeligeStønadskontoerQuery.error.message);
+            captureMessage(tilgjengeligeStønadskontoerQuery.error.message);
             throw new Error(
                 `Vi klarte ikke å hente opp stønadskontoer. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
             );
         }
         if (annenPartVedtakQuery.error) {
-            Sentry.captureMessage(annenPartVedtakQuery.error.message);
+            captureMessage(annenPartVedtakQuery.error.message);
             throw new Error(
                 `Vi klarte ikke å hente informasjon om saken til annen forelder. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
             );
         }
 
         if (nesteSakAnnenPartVedtakQuery.error) {
-            Sentry.captureMessage(nesteSakAnnenPartVedtakQuery.error.message);
+            captureMessage(nesteSakAnnenPartVedtakQuery.error.message);
             throw new Error(
                 'Vi klarte ikke å hente informasjon om saken til annen forelder for neste barn. ' +
                     'Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.',
