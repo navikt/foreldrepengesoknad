@@ -11,6 +11,7 @@ import { Barn, BrukerRolleSak_fpoversikt, isAdoptertBarn, isFødtBarn } from '@n
 import { CalendarLabel, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { useErDesktop } from '../../kalender/redigering/utils/useMediaActions';
 import { LegendLabel } from '../../types/LegendLabel';
 import { UttaksplanperiodeMedKunTapteDager, erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
@@ -48,7 +49,9 @@ export const UttaksplanLegend = ({
 }: Props) => {
     const intl = useIntl();
 
-    const [visHorisontalt, setVisHorisontalt] = useState(true);
+    const erDesktop = useErDesktop();
+
+    const [visHorisontalt, setVisHorisontalt] = useState(skjulTekstSomDefault ? !erDesktop : true);
 
     const {
         foreldreInfo: { søker },
@@ -278,18 +281,18 @@ const LabelButton = ({
             {(info.label === 'FØDSEL' || info.label === 'TERMIN') && (
                 <HStack gap="space-4">
                     <HeartFillIcon aria-hidden color="var(--ax-bg-brand-magenta-strong)" width={25} height={25} />
-                    {visTekst && <BodyShort style={{ whiteSpace: 'nowrap' }}>{label}</BodyShort>}
+                    {visTekst && <BodyShort>{label}</BodyShort>}
                 </HStack>
             )}
             {info.label === 'BARNEHAGEPLASS' && (
                 <HStack gap="space-4">
                     <TeddyBearFillIcon aria-hidden color="var(--ax-brand-beige-800)" width={25} height={25} />
-                    {visTekst && <BodyShort style={{ whiteSpace: 'nowrap' }}>{label}</BodyShort>}
+                    {visTekst && <BodyShort>{label}</BodyShort>}
                 </HStack>
             )}
             {info.label !== 'FØDSEL' && info.label !== 'BARNEHAGEPLASS' && info.label !== 'TERMIN' && (
                 <CalendarLabel color={info.calendarPeriod.color}>
-                    {visTekst && <BodyShort style={{ whiteSpace: 'nowrap' }}>{label}</BodyShort>}
+                    {visTekst && <BodyShort className="text-left">{label}</BodyShort>}
                 </CalendarLabel>
             )}
         </button>
