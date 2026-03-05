@@ -5,6 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Box, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { getVarighetString } from '../../../../utils/dateUtils';
+import { BlåRamme } from '../../../redigering/utils/BlåRamme';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
 import { finnAntallDager } from '../../utils/kalenderPeriodeUtils';
 import { useMediaRemoveScrollingOnMobile, useMediaResetMinimering } from '../../utils/useMediaActions';
@@ -81,13 +82,7 @@ const HeaderDesktop = ({
         <Box background="accent-soft" padding="space-16">
             <VStack gap="space-16">
                 <HStack justify="space-between" align="center" wrap={false}>
-                    <Box
-                        background="brand-blue-strong"
-                        padding="space-2"
-                        borderRadius="8"
-                        width="fit-content"
-                        className={'text-ax-bg-default px-2'}
-                    >
+                    <BlåRamme>
                         <Heading size="xsmall">
                             <FormattedMessage
                                 id="RedigeringPanel.ValgteDager"
@@ -96,7 +91,7 @@ const HeaderDesktop = ({
                                 }}
                             />
                         </Heading>
-                    </Box>
+                    </BlåRamme>
                     {visPeriodeDetaljer ? (
                         <ChevronUpIcon
                             title={intl.formatMessage({ id: 'RedigeringPanel.SkjulDetaljer' })}

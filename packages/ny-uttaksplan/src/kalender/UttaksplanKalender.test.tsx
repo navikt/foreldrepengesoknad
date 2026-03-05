@@ -489,7 +489,7 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Begge')).toBeInTheDocument();
         expect(screen.getByText('Mor har 60 % mødrekvote')).toBeInTheDocument();
         expect(screen.getByText('Far har 40 % fedrekvote')).toBeInTheDocument();
-        expect(screen.getAllByText('4 dager valgt')).toHaveLength(2);
+        expect(screen.getAllByText('4 dager valgt')).toHaveLength(3);
 
         await userEvent.click(screen.getByText('Slett dager fra periode'));
 
