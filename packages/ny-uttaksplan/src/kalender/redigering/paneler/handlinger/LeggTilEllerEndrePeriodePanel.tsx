@@ -6,7 +6,6 @@ import { Box, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
-import { RødRamme } from '../../utils/RødRamme';
 import { finnAntallDager } from '../../utils/kalenderPeriodeUtils';
 import { useMediaRemoveScrollingOnMobile, useMediaResetMinimering } from '../../utils/useMediaActions';
 import { LeggTilEllerEndrePeriodeForm } from './LeggTilEllerEndrePeriodeForm';
@@ -82,7 +81,13 @@ const HeaderDesktop = ({
         <Box background="accent-soft" padding="space-16">
             <VStack gap="space-16">
                 <HStack justify="space-between" align="center" wrap={false}>
-                    <RødRamme>
+                    <Box
+                        background="brand-blue-strong"
+                        padding="space-2"
+                        borderRadius="8"
+                        width="fit-content"
+                        className={'text-ax-bg-default px-2'}
+                    >
                         <Heading size="xsmall">
                             <FormattedMessage
                                 id="RedigeringPanel.ValgteDager"
@@ -91,7 +96,7 @@ const HeaderDesktop = ({
                                 }}
                             />
                         </Heading>
-                    </RødRamme>
+                    </Box>
                     {visPeriodeDetaljer ? (
                         <ChevronUpIcon
                             title={intl.formatMessage({ id: 'RedigeringPanel.SkjulDetaljer' })}
@@ -158,7 +163,13 @@ const HeaderMobil = ({
                     )}
 
                     <HStack>
-                        <RødRamme>
+                        <Box
+                            background="brand-blue-strong"
+                            padding="space-2"
+                            borderRadius="8"
+                            width="fit-content"
+                            className={'text-ax-bg-default px-2'}
+                        >
                             <Heading size="xsmall">
                                 <FormattedMessage
                                     id="RedigeringPanel.ValgteDager"
@@ -167,7 +178,7 @@ const HeaderMobil = ({
                                     }}
                                 />
                             </Heading>
-                        </RødRamme>
+                        </Box>
                     </HStack>
                 </VStack>
             </Box>

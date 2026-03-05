@@ -16,7 +16,6 @@ import { getVarighetString } from '../../../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
-import { RødRamme } from '../../utils/RødRamme';
 import { finnAntallDager, finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
 import { useErDesktop, useMediaResetMinimering } from '../../utils/useMediaActions';
 import { PeriodeDetaljerOgInfoMeldinger } from './eksisterende-perioder/PeriodeDetaljerOgInfoMeldinger';
@@ -237,7 +236,13 @@ const HeaderForDesktop = () => {
                     </Heading>
                 </HStack>
                 <HStack>
-                    <RødRamme>
+                    <Box
+                        background="brand-blue-strong"
+                        padding="space-2"
+                        borderRadius="8"
+                        width="fit-content"
+                        className={'text-ax-bg-default px-2'}
+                    >
                         <BodyShort size="small">
                             <FormattedMessage
                                 id="RedigeringPanel.ValgteDager"
@@ -246,7 +251,7 @@ const HeaderForDesktop = () => {
                                 }}
                             />
                         </BodyShort>
-                    </RødRamme>
+                    </Box>
                 </HStack>
             </VStack>
         </Box>
@@ -291,19 +296,35 @@ const HeaderForMobil = ({
                         <Heading size="small">
                             <FormattedMessage id="RedigeringPanel.EndreTil" />
                         </Heading>
-                        {erMinimert && <RødRamme>{finnAntallDager(sammenslåtteValgtePerioder)}</RødRamme>}
+                        {erMinimert && (
+                            <Box
+                                background="brand-blue-strong"
+                                padding="space-2"
+                                borderRadius="8"
+                                width="fit-content"
+                                className={'text-ax-bg-default px-2'}
+                            >
+                                {finnAntallDager(sammenslåtteValgtePerioder)}
+                            </Box>
+                        )}
                     </HStack>
                 </HStack>
 
                 {!erMinimert && (
-                    <RødRamme>
+                    <Box
+                        background="brand-blue-strong"
+                        padding="space-2"
+                        borderRadius="8"
+                        width="fit-content"
+                        className={'text-ax-bg-default px-2'}
+                    >
                         <FormattedMessage
                             id="RedigeringPanel.ValgteDager"
                             values={{
                                 varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
                             }}
                         />
-                    </RødRamme>
+                    </Box>
                 )}
             </VStack>
         </Box>
