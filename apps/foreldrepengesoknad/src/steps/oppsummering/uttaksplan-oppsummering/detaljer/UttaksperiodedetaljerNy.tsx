@@ -35,7 +35,7 @@ export const UttaksperiodedetaljerNy = ({
                 <Feltoppsummering
                     feltnavn={intl.formatMessage(
                         { id: 'oppsummering.uttak.ønskerFlerbarnsdager' },
-                        { erSøker, fornavn: !annenForelder.kanIkkeOppgis ? annenForelder.fornavn : '' },
+                        { erSøker, fornavn: annenForelder.kanIkkeOppgis ? '' : annenForelder.fornavn },
                     )}
                     verdi={
                         periode.flerbarnsdager ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })
@@ -52,7 +52,7 @@ export const UttaksperiodedetaljerNy = ({
                 <Feltoppsummering
                     feltnavn={intl.formatMessage(
                         { id: 'oppsummering.uttak.kombineresMedarbeid' },
-                        { erSøker, fornavn: !annenForelder.kanIkkeOppgis ? annenForelder.fornavn : '' },
+                        { erSøker, fornavn: annenForelder.kanIkkeOppgis ? '' : annenForelder.fornavn },
                     )}
                     verdi={periode.gradering ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
