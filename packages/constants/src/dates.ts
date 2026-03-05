@@ -7,6 +7,7 @@ export const DDMMYYYY_DATE_FORMAT = 'DD.MM.YYYY';
 export const DDMMYY_DATE_FORMAT = 'DD.MM.YY';
 export const DDMMMMYYY_DATE_FORMAT = 'DD. MMMM YYYY';
 export const DDMMM_DATE_FORMAT = 'DD. MMM';
+export const DDMMMYY_DATE_FORMAT = 'DD. MMM YY';
 export const TIME_FORMAT = 'HH:mm';
 export const WEEKDAY_DDMMMMYYYY_DATE_FORMAT = 'dddd DD. MMMM YYYY';
 export const WEEKDAY_DDMMYY_DATE_FORMAT = 'dddd DD.MM.YY';
