@@ -53,6 +53,7 @@ import {
     omitOne,
 } from '@navikt/fp-utils';
 import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from '@navikt/fp-uttaksplan';
+import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 export const FEIL_VED_INNSENDING =
@@ -449,7 +450,7 @@ export const cleanSøknadNy = (
         annenForelder: cleanAnnenforelder(annenForelder),
         dekningsgrad,
         uttaksplan: {
-            uttaksperioder: midlertidigMappingAvUttaksplan(søkersPerioder),
+            uttaksperioder: midlertidigMappingAvUttaksplan(søkersPerioder, barn),
             ønskerJustertUttakVedFødsel,
         },
         utenlandsopphold: (utenlandsoppholdSiste12Mnd ?? []).concat(utenlandsoppholdNeste12Mnd ?? []),
@@ -529,7 +530,10 @@ export const cleanEndringssøknadNy = (
         annenForelder: cleanAnnenforelder(annenForelder),
         vedlegg: convertAttachmentsMapToArray(vedlegg),
         uttaksplan: {
-            uttaksperioder: midlertidigMappingAvUttaksplan(filtrerUtUendredePeriode(søkersPerioder, eksisterendeSak)),
+            uttaksperioder: midlertidigMappingAvUttaksplan(
+                filtrerUtUendredePeriode(søkersPerioder, eksisterendeSak),
+                barn,
+            ),
             ønskerJustertUttakVedFødsel,
         },
     };
@@ -554,8 +558,10 @@ const filtrerUtAnnenPartsPerioder = (
         .filter((periode) => periode.forelder === søker);
 };
 
-const midlertidigMappingAvUttaksplan = (uttaksplan: UttakPeriode_fpoversikt[]): Uttaksplanperiode[] => {
+const midlertidigMappingAvUttaksplan = (uttaksplan: UttakPeriode_fpoversikt[], barn: Barn): Uttaksplanperiode[] => {
     return uttaksplan.map((periode) => {
+        const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(barn.antallBarn, periode.forelder, periode.kontoType);
+
         if (periode.oppholdÅrsak) {
             return {
                 type: 'opphold',
@@ -601,7 +607,7 @@ const midlertidigMappingAvUttaksplan = (uttaksplan: UttakPeriode_fpoversikt[]): 
             konto: notEmpty(periode.kontoType),
             morsAktivitetIPerioden: periode.morsAktivitet,
             samtidigUttakProsent: periode.samtidigUttak,
-            ønskerFlerbarnsdager: periode.flerbarnsdager,
+            ønskerFlerbarnsdager: skalViseFlerbarnsdager ? periode.flerbarnsdager : undefined,
             ønskerGradering: periode.gradering !== undefined,
             ønskerSamtidigUttak: periode.samtidigUttak !== undefined,
         };
