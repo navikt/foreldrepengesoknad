@@ -11,6 +11,7 @@ import {
     Accordion,
     BodyShort,
     Box,
+    Detail,
     ExpansionCard,
     HGrid,
     HStack,
@@ -45,7 +46,6 @@ import { useSetSelectedRoute } from '../../hooks/useSelectedRoute.ts';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak.ts';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes.tsx';
 import { OversiktRoutes } from '../../routes/routes.ts';
-import { DokumentHendelse } from '../../sections/tidslinje/DokumentHendelse.tsx';
 import { formaterDato } from '../../utils/dateUtils.ts';
 
 dayjs.extend(isSameOrBefore);
@@ -183,57 +183,42 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
                     />
                 </Label>
                 <ReadMore header="Slik er dagsatsen delt opp">
-                    {/*<HGrid gap="space-6" columns="1fr 1fr 1fr">*/}
-                    {/*    {beregning.beregningsandeler.map((andel) => (*/}
-                    {/*        <>*/}
-                    {/*            <span>{andel.aktivitetStatus}</span>*/}
-                    {/*            <span>{formatCurrencyWithKr(andel.dagsatsArbeidsgiver)}</span>*/}
-                    {/*            <span>{formatCurrencyWithKr(andel.dagsatsSøker)}</span>*/}
-                    {/*        </>*/}
-                    {/*    ))}*/}
-                    {/*</HGrid>*/}
-
-                    <Table size="small">
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell scope="col">Arbeidsgiver</Table.HeaderCell>
-                                <Table.HeaderCell align="right" scope="col">
-                                    Til deg
-                                </Table.HeaderCell>
-                                <Table.HeaderCell align="right" scope="col">
-                                    Til arbeidsgiver
-                                </Table.HeaderCell>
-                            </Table.Row>
-                        </Table.Header>
-                        <Table.Body>
-                            {beregning.beregningsandeler.map((andel, index) => (
-                                <Table.Row key={index}>
-                                    <Table.DataCell>
+                    <VStack gap="space-16">
+                        {beregning.beregningsandeler.map((andel, index) => (
+                            <Box background="default" padding="space-16" borderRadius="8" key={index}>
+                                <VStack>
+                                    <Label>
                                         <ArbeidsforholdNavn andel={andel} />
-                                    </Table.DataCell>
-                                    <Table.DataCell align="right">
-                                        {formatCurrencyWithKr(andel.dagsatsSøker)}
-                                    </Table.DataCell>
-                                    <Table.DataCell align="right">
-                                        {formatCurrencyWithKr(andel.dagsatsArbeidsgiver)}
-                                    </Table.DataCell>
-                                </Table.Row>
-                            ))}
-                            <Table.Row className="border-t-2 border-ax-border-neutral">
-                                <Table.DataCell>Totalt</Table.DataCell>
-                                <Table.DataCell align="right">
-                                    {formatCurrencyWithKr(
-                                        sumBy(beregning.beregningsandeler, (andel) => andel.dagsatsSøker),
-                                    )}
-                                </Table.DataCell>
-                                <Table.DataCell align="right">
-                                    {formatCurrencyWithKr(
-                                        sumBy(beregning.beregningsandeler, (andel) => andel.dagsatsArbeidsgiver),
-                                    )}
-                                </Table.DataCell>
-                            </Table.Row>
-                        </Table.Body>
-                    </Table>
+                                    </Label>
+                                    <hr className="text-ax-border-neutral-subtle" />
+                                    <HStack justify="space-between" gap="space-4">
+                                        <span>Til deg:</span>
+                                        <span>{formatCurrencyWithKr(andel.dagsatsSøker)}</span>
+                                    </HStack>
+                                    <HStack justify="space-between" gap="space-4">
+                                        <span>Til arbeidsgiver:</span>
+                                        <span>{formatCurrencyWithKr(andel.dagsatsArbeidsgiver)}</span>
+                                    </HStack>
+                                    {/*<hr className="text-ax-border-neutral-subtle" />*/}
+                                    {/*<HStack justify="space-between" gap="space-4">*/}
+                                    {/*    <span>Totalt</span>*/}
+                                    {/*    <span>*/}
+                                    {/*        {formatCurrencyWithKr(andel.dagsatsArbeidsgiver + andel.dagsatsSøker)}*/}
+                                    {/*    </span>*/}
+                                    {/*</HStack>*/}
+                                </VStack>
+                            </Box>
+                        ))}
+                        <Box background="default" padding="space-16" borderRadius="8">
+                            <VStack>
+                                <HStack justify="space-between" gap="space-4">
+                                    <span>Totalt</span>
+                                    <span>{formatCurrencyWithKr(sumDagsats)}</span>
+                                </HStack>
+                                <hr className="text-ax-border-neutral-subtle" />
+                            </VStack>
+                        </Box>
+                    </VStack>
                 </ReadMore>
             </Box>
         </Box>
