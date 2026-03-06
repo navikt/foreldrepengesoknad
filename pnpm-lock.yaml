@@ -69,9 +69,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../../packages/form-hooks
-      '@navikt/fp-metrics':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../../packages/metrics
+        version: link:../../packages/observability
       '@navikt/fp-steg-kvittering':
         specifier: workspace:*
         version: link:../../packages/steg-kvittering
@@ -93,9 +93,6 @@ importers:
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../../packages/validation
-      '@sentry/browser':
-        specifier: 10.38.0
-        version: 10.38.0
       '@sentry/vite-plugin':
         specifier: 4.9.0
         version: 4.9.0
@@ -256,6 +253,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../../packages/form-hooks
+      '@navikt/fp-observability':
+        specifier: workspace:*
+        version: link:../../packages/observability
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -274,9 +274,6 @@ importers:
       '@navikt/nav-dekoratoren-moduler':
         specifier: 3.6.2
         version: 3.6.2(csp-header@6.2.1)(html-react-parser@5.2.10(@types/react@19.2.10)(react@19.2.4))(jsdom@28.0.0)(react@19.2.4)
-      '@sentry/browser':
-        specifier: 10.38.0
-        version: 10.38.0
       '@sentry/vite-plugin':
         specifier: 4.9.0
         version: 4.9.0
@@ -452,9 +449,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../../packages/form-hooks
-      '@navikt/fp-metrics':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../../packages/metrics
+        version: link:../../packages/observability
       '@navikt/fp-steg-arbeidsforhold-og-inntekt':
         specifier: workspace:*
         version: link:../../packages/steg-arbeidsforhold-og-inntekt
@@ -494,9 +491,6 @@ importers:
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../../packages/validation
-      '@sentry/browser':
-        specifier: 10.38.0
-        version: 10.38.0
       '@sentry/vite-plugin':
         specifier: 4.9.0
         version: 4.9.0
@@ -672,9 +666,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../../packages/form-hooks
-      '@navikt/fp-metrics':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../../packages/metrics
+        version: link:../../packages/observability
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -690,9 +684,6 @@ importers:
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../../packages/validation
-      '@sentry/browser':
-        specifier: 10.38.0
-        version: 10.38.0
       '@sentry/vite-plugin':
         specifier: 4.9.0
         version: 4.9.0
@@ -856,9 +847,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../../packages/form-hooks
-      '@navikt/fp-metrics':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../../packages/metrics
+        version: link:../../packages/observability
       '@navikt/fp-steg-arbeidsforhold-og-inntekt':
         specifier: workspace:*
         version: link:../../packages/steg-arbeidsforhold-og-inntekt
@@ -886,9 +877,6 @@ importers:
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../../packages/validation
-      '@sentry/browser':
-        specifier: 10.38.0
-        version: 10.38.0
       '@sentry/vite-plugin':
         specifier: 4.9.0
         version: 4.9.0
@@ -1052,6 +1040,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../../packages/form-hooks
+      '@navikt/fp-observability':
+        specifier: workspace:*
+        version: link:../../packages/observability
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -1067,9 +1058,6 @@ importers:
       '@navikt/nav-dekoratoren-moduler':
         specifier: 3.6.2
         version: 3.6.2(csp-header@6.2.1)(html-react-parser@5.2.10(@types/react@19.2.10)(react@19.2.4))(jsdom@28.0.0)(react@19.2.4)
-      '@sentry/browser':
-        specifier: 10.38.0
-        version: 10.38.0
       '@sentry/vite-plugin':
         specifier: 4.9.0
         version: 4.9.0
@@ -1218,9 +1206,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../../packages/form-hooks
-      '@navikt/fp-metrics':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../../packages/metrics
+        version: link:../../packages/observability
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -1236,9 +1224,6 @@ importers:
       '@navikt/nav-dekoratoren-moduler':
         specifier: 3.6.2
         version: 3.6.2(csp-header@6.2.1)(html-react-parser@5.2.10(@types/react@19.2.10)(react@19.2.4))(jsdom@28.0.0)(react@19.2.4)
-      '@sentry/browser':
-        specifier: 10.38.0
-        version: 10.38.0
       '@sentry/vite-plugin':
         specifier: 4.9.0
         version: 4.9.0
@@ -1661,28 +1646,6 @@ importers:
         specifier: 9.39.2
         version: 9.39.2(jiti@2.6.1)
 
-  packages/metrics:
-    dependencies:
-      '@navikt/fp-types':
-        specifier: workspace:*
-        version: link:../types
-    devDependencies:
-      '@navikt/fp-config-eslint':
-        specifier: workspace:*
-        version: link:../config-eslint
-      '@navikt/fp-config-typescript':
-        specifier: workspace:*
-        version: link:../config-typescript
-      '@types/node':
-        specifier: 24.10.1
-        version: 24.10.1
-      eslint:
-        specifier: 9.39.2
-        version: 9.39.2(jiti@2.6.1)
-      typescript:
-        specifier: 5.9.3
-        version: 5.9.3
-
   packages/ny-uttaksplan:
     dependencies:
       '@navikt/aksel-icons':
@@ -1813,6 +1776,34 @@ importers:
         specifier: 4.0.18
         version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.2.0)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(jsdom@28.0.0)(less@4.5.1)(lightningcss@1.30.2)(msw@2.12.7(@types/node@25.2.0)(typescript@5.9.3))(sass-embedded@1.93.3)(sass@1.93.3)(yaml@2.8.2)
 
+  packages/observability:
+    dependencies:
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../types
+      '@sentry/browser':
+        specifier: 10.38.0
+        version: 10.38.0
+    devDependencies:
+      '@navikt/fp-config-eslint':
+        specifier: workspace:*
+        version: link:../config-eslint
+      '@navikt/fp-config-typescript':
+        specifier: workspace:*
+        version: link:../config-typescript
+      '@types/node':
+        specifier: 24.10.1
+        version: 24.10.1
+      eslint:
+        specifier: 9.39.2
+        version: 9.39.2(jiti@2.6.1)
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+      vite:
+        specifier: 7.3.1
+        version: 7.3.1(@types/node@24.10.1)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.30.2)(sass-embedded@1.93.3)(sass@1.93.3)(yaml@2.8.2)
+
   packages/server-utils:
     dependencies:
       '@navikt/fp-config-eslint':
@@ -1867,9 +1858,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../form-hooks
-      '@navikt/fp-metrics':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../metrics
+        version: link:../observability
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
@@ -1976,9 +1967,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../form-hooks
-      '@navikt/fp-metrics':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../metrics
+        version: link:../observability
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
@@ -2525,9 +2516,9 @@ importers:
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
-      '@navikt/fp-metrics':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../metrics
+        version: link:../observability
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
@@ -2537,9 +2528,6 @@ importers:
       '@radix-ui/react-slider':
         specifier: ^1.3.6
         version: 1.3.6(@types/react-dom@19.2.3(@types/react@19.2.10))(@types/react@19.2.10)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@sentry/browser':
-        specifier: 10.38.0
-        version: 10.38.0
       dayjs:
         specifier: 1.11.19
         version: 1.11.19
@@ -2753,9 +2741,9 @@ importers:
       '@navikt/fp-common':
         specifier: workspace:*
         version: link:../fp-common
-      '@navikt/fp-metrics':
+      '@navikt/fp-observability':
         specifier: workspace:*
-        version: link:../metrics
+        version: link:../observability
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
@@ -3569,12 +3557,6 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
-
-  '@eslint-community/eslint-utils@4.9.0':
-    resolution: {integrity: sha512-ayVFHdtZ+hsq1t2Dy24wCmGXGe4q9Gu3smhLYALJrr473ZH27MsnSL+LKUlimp4BWJqMDMLmPpx/Q9R3OAlL4g==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    peerDependencies:
-      eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
 
   '@eslint-community/eslint-utils@4.9.1':
     resolution: {integrity: sha512-phrYmNiYppR7znFEdqgfWHXR6NCkZEK7hwWDHZUjit/2/U0r6XvkDl0SYnoM51Hq7FhCGdLDT6zxCCOY1hexsQ==}
@@ -9016,11 +8998,6 @@ snapshots:
   '@esbuild/win32-x64@0.27.2':
     optional: true
 
-  '@eslint-community/eslint-utils@4.9.0(eslint@9.39.2(jiti@2.6.1))':
-    dependencies:
-      eslint: 9.39.2(jiti@2.6.1)
-      eslint-visitor-keys: 3.4.3
-
   '@eslint-community/eslint-utils@4.9.1(eslint@9.39.2(jiti@2.6.1))':
     dependencies:
       eslint: 9.39.2(jiti@2.6.1)
@@ -10222,7 +10199,7 @@ snapshots:
   '@types/fs-extra@11.0.4':
     dependencies:
       '@types/jsonfile': 6.1.4
-      '@types/node': 22.19.8
+      '@types/node': 24.10.1
 
   '@types/hoist-non-react-statics@3.3.7(@types/react@19.2.10)':
     dependencies:
@@ -11537,7 +11514,7 @@ snapshots:
 
   eslint@9.39.2(jiti@2.6.1):
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.0(eslint@9.39.2(jiti@2.6.1))
+      '@eslint-community/eslint-utils': 4.9.1(eslint@9.39.2(jiti@2.6.1))
       '@eslint-community/regexpp': 4.12.2
       '@eslint/config-array': 0.21.1
       '@eslint/config-helpers': 0.4.2

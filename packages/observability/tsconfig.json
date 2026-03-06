@@ -4,8 +4,9 @@
         "baseUrl": "src",
         "jsx": "react-jsx",
         "rootDir": "src",
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "types": ["vite/client"]
     },
-    "include": ["src/**/*"],
+    "include": ["src/**/*", "../../@types/**/*"],
     "exclude": ["node_modules"]
 }

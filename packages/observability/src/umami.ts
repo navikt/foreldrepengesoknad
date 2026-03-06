@@ -32,7 +32,7 @@ export const loggUmamiEvent = ({
     eventName: EventNamesTaksonomi;
     eventData?: Record<string, string>;
 }) => {
-    if (process.env.NODE_ENV === 'production') {
+    if (import.meta.env.MODE === 'production') {
         const analytics = typeof dekoratorenAnalytics === 'function' ? dekoratorenAnalytics : undefined;
         if (analytics) {
             void analytics({

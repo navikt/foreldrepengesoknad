@@ -1,4 +1,4 @@
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataType, useContextSaveData } from './SvpDataContext';

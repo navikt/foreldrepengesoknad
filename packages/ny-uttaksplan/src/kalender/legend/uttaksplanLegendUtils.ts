@@ -117,7 +117,7 @@ export const getCalendarLabel = (
             );
         case 'UTSETTELSE':
             return intl.formatMessage(
-                { id: 'kalender.utsettelse' },
+                { id: 'kalender.utsettelse.label' },
                 {
                     erSokersPeriode: erSøkersPeriode,
                     navnAnnenPart,

@@ -1,24 +1,27 @@
 import { useEffect, useState } from 'react';
 
-const noMatchMedia = typeof globalThis !== 'undefined' && globalThis.matchMedia === undefined;
+const getInitialMatch = (media: string, fallback: boolean): boolean => {
+    if (typeof globalThis === 'undefined' || !globalThis.matchMedia) {
+        return fallback;
+    }
+    return globalThis.matchMedia(media).matches;
+};
 
 /**
  * @example useMedia("screen and (min-width: 1024px)")
  * @param media string
  * @param fallback boolean
- * @returns boolean | undefined
+ * @returns boolean
  */
-export const useMedia = (media: string, fallback?: boolean): boolean | undefined => {
-    const [matches, setMatches] = useState(fallback);
+export const useMedia = (media: string, fallback = false): boolean => {
+    const [matches, setMatches] = useState(() => getInitialMatch(media, fallback));
 
     useEffect(() => {
-        if (noMatchMedia) {
+        if (typeof globalThis === 'undefined' || !globalThis.matchMedia) {
             return;
         }
-        const mediaQueryList = globalThis.matchMedia(media);
 
-        // eslint-disable-next-line react-hooks/set-state-in-effect -- TODO (TOR) - Vurder om denne kan fjennast
-        setMatches(mediaQueryList.matches);
+        const mediaQueryList = globalThis.matchMedia(media);
 
         const listener = (evt: MediaQueryListEvent) => {
             setMatches(evt.matches);

@@ -17,7 +17,7 @@ import {
     isAnnenPartInfoPeriode,
     isUtsettelsesperiode,
 } from '@navikt/fp-common';
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 import {
     Dekningsgrad,
     EksternArbeidsforholdDto_fpoversikt,

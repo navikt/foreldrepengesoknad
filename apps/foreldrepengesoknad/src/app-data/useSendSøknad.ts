@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
 import {
     FEIL_VED_INNSENDING,
@@ -13,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 
+import { captureMessage } from '@navikt/fp-observability';
 import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -76,7 +76,7 @@ export const useSendSøknad = (
                 }
 
                 const jsonResponse = await error.response.json<{ uuid?: string }>();
-                Sentry.captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
+                captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
                 const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
                 throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
             }

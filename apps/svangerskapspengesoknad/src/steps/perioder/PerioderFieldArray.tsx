@@ -16,7 +16,7 @@ import {
 import { Alert, BodyShort, Button, HStack, Heading, Radio, ReadMore, Tag, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfRadioGroup, RhfTextField } from '@navikt/fp-form-hooks';
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 import { EksternArbeidsforholdDto_fpoversikt, Frilans, NæringDto } from '@navikt/fp-types';
 import { HorizontalLine } from '@navikt/fp-ui';
 import { isAfterOrSame, isBeforeOrSame, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';

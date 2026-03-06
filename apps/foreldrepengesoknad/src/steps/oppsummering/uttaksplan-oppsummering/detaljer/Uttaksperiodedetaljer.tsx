@@ -37,7 +37,7 @@ export const Uttaksperiodedetaljer = ({ periode, registrerteArbeidsforhold, anne
         <>
             {ønskerFlerbarnsdager !== undefined && erDeltUttakINorge && (
                 <Feltoppsummering
-                    feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.ønskerFlerbarnsdager' })}
+                    feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.ønskerFlerbarnsdagerOld' })}
                     verdi={ønskerFlerbarnsdager ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
@@ -49,7 +49,7 @@ export const Uttaksperiodedetaljer = ({ periode, registrerteArbeidsforhold, anne
             )}
             {konto !== 'FORELDREPENGER_FØR_FØDSEL' && ønskerSamtidigUttak !== true && (
                 <Feltoppsummering
-                    feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.kombineresMedarbeid' })}
+                    feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.kombineresMedarbeidOld' })}
                     verdi={gradert ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}

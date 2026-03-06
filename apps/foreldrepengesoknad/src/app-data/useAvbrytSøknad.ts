@@ -4,7 +4,7 @@ import ky from 'ky';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 
 import { useContextReset } from './FpDataContext';
 

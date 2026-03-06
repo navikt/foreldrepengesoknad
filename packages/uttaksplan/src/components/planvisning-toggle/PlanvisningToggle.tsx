@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { ToggleGroup } from '@navikt/ds-react';
 
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 
 import planBemUtils from '../../utils/planBemUtils';
 import './planvisning-toggle.css';

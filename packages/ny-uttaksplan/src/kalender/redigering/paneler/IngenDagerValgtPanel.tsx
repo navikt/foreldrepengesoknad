@@ -8,7 +8,6 @@ import { KvoteOppsummeringsTittel } from '../../../KvoteOppsummering';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
 import { UttaksplanHandlingKnapper } from '../../../felles/UttaksplanHandlingKnapper';
 import { useTellDagerIUttaksPeriodene } from '../../../utils/kvoteOppsummeringUtils';
-import { RødRamme } from '../utils/RødRamme';
 import { useErDesktop, useMediaResetMinimering } from '../utils/useMediaActions';
 
 interface Props {
@@ -53,10 +52,12 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
                                 width={24}
                             />
                         )}
-                        <BodyShort size="small">
-                            <FormattedMessage id="RedigeringKalenderIndex.VelgDatoerIKalender" />
-                        </BodyShort>
-                        <Tittel />
+                        <VStack gap="space-4" align="center">
+                            <BodyShort size="small">
+                                <FormattedMessage id="RedigeringKalenderIndex.VelgDatoerIKalender" />
+                            </BodyShort>
+                            <AntallDagerIgjen />
+                        </VStack>
                     </VStack>
                 </Show>
                 <Show above="md">
@@ -68,7 +69,7 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
                     {labels}
                     <VStack gap="space-16">
                         <Show above="md">
-                            <Tittel />
+                            <AntallDagerIgjen />
                         </Show>
                         <Link as="button" onClick={scrollToKvoteOppsummering}>
                             <FormattedMessage id="RedigeringKalenderIndex.SeDetaljer" />
@@ -95,7 +96,7 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
     );
 };
 
-const Tittel = () => {
+const AntallDagerIgjen = () => {
     const { antallUbrukteDager } = useTellDagerIUttaksPeriodene();
 
     if (antallUbrukteDager === 0) {
@@ -107,8 +108,15 @@ const Tittel = () => {
     }
 
     return (
-        <RødRamme>
+        <Box
+            padding="space-6"
+            borderRadius="8"
+            borderWidth="1"
+            borderColor="meta-lime-strong"
+            width="fit-content"
+            className={'bg-ax-meta-lime-100'}
+        >
             <KvoteOppsummeringsTittel erInnsyn={false} visStatusIkoner={false} brukEnkelVisning />
-        </RødRamme>
+        </Box>
     );
 };

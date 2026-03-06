@@ -15,7 +15,7 @@ import { getDefaultMonth, getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSva
 import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfRadioGroup, RhfTextField } from '@navikt/fp-form-hooks';
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 import { tiMånederSidenDato } from '@navikt/fp-utils';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 

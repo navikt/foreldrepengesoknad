@@ -23,9 +23,9 @@ describe('UttaksplanListe', () => {
 
         render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
 
-        expect(await screen.findByText('18. Apr - 08. May')).toBeInTheDocument();
-        expect(screen.getByText('09. May')).toBeInTheDocument();
-        expect(screen.getByText('09. May - 11. Dec')).toBeInTheDocument();
+        expect(await screen.findByText('18. april 25 - 08. mai 25')).toBeInTheDocument();
+        expect(screen.getByText('09. mai 25')).toBeInTheDocument();
+        expect(screen.getByText('09. mai 25 - 11. des. 25')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Legg til periode'));
 
@@ -93,9 +93,9 @@ describe('UttaksplanListe', () => {
 
         render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
 
-        expect(await screen.findByText('18. Apr - 08. May')).toBeInTheDocument();
-        expect(screen.getByText('09. May')).toBeInTheDocument();
-        expect(screen.getByText('09. May - 11. Dec')).toBeInTheDocument();
+        expect(await screen.findByText('18. april 25 - 08. mai 25')).toBeInTheDocument();
+        expect(screen.getByText('09. mai 25')).toBeInTheDocument();
+        expect(screen.getByText('09. mai 25 - 11. des. 25')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Legg til periode'));
         expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
@@ -211,9 +211,9 @@ describe('UttaksplanListe', () => {
 
         render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
 
-        expect(await screen.findByText('12. Dec - 26. Mar')).toBeInTheDocument();
+        expect(await screen.findByText('12. des. 25 - 26. mars 26')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('12. Dec - 26. Mar'));
+        await userEvent.click(screen.getByText('12. des. 25 - 26. mars 26'));
 
         await userEvent.click(screen.getAllByText('Endre')[2]!);
 
@@ -261,10 +261,10 @@ describe('UttaksplanListe', () => {
         const oppdaterUttaksplan = vi.fn();
 
         render(<MorOgFarMedFerieopphold oppdaterUttaksplan={oppdaterUttaksplan} />);
-        expect(await screen.findByText('12. Dec - 15. Dec')).toBeInTheDocument();
+        expect(await screen.findByText('12. des. 25 - 15. des. 25')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('12. Dec - 15. Dec'));
-        const datoElement = screen.getByText('12. Dec - 15. Dec');
+        await userEvent.click(screen.getByText('12. des. 25 - 15. des. 25'));
+        const datoElement = screen.getByText('12. des. 25 - 15. des. 25');
         const periodeContainer = datoElement.closest('.aksel-stack') as HTMLElement;
         const endreKnapp = within(periodeContainer).getByRole('button', { name: /endre/i });
 
@@ -289,8 +289,8 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Fortsett'));
 
-        expect(await screen.findByText('15. Dec - 17. Dec')).toBeInTheDocument();
-        expect(screen.queryByText('12. Dec - 15. Dec')).not.toBeInTheDocument();
+        expect(await screen.findByText('15. des. 25 - 17. des. 25')).toBeInTheDocument();
+        expect(screen.queryByText('12. des. 25 - 15. des. 25')).not.toBeInTheDocument();
     });
 
     it('Skal slette periode', async () => {
@@ -298,9 +298,9 @@ describe('UttaksplanListe', () => {
 
         render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
 
-        expect(await screen.findByText('09. May - 11. Dec')).toBeInTheDocument();
+        expect(await screen.findByText('09. mai 25 - 11. des. 25')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('09. May - 11. Dec'));
+        await userEvent.click(screen.getByText('09. mai 25 - 11. des. 25'));
 
         await userEvent.click(screen.getAllByText('Slett')[1]!);
 
@@ -347,8 +347,8 @@ describe('UttaksplanListe', () => {
         const oppdaterUttaksplan = vi.fn();
         render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
 
-        expect(await screen.findByText('09. May - 11. Dec')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('12. Dec - 26. Mar'));
+        expect(await screen.findByText('09. mai 25 - 11. des. 25')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('12. des. 25 - 26. mars 26'));
         await userEvent.click(screen.getAllByText('Endre')[2]!);
 
         expect(screen.getByText('Fars kvote')).toBeInTheDocument();
@@ -360,8 +360,8 @@ describe('UttaksplanListe', () => {
 
         render(<MorOgMedmor oppdaterUttaksplan={oppdaterUttaksplan} />);
 
-        expect(await screen.findByText('09. May - 11. Dec')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('12. Dec - 26. Mar'));
+        expect(await screen.findByText('09. mai 25 - 11. des. 25')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('12. des. 25 - 26. mars 26'));
         await userEvent.click(screen.getAllByText('Endre')[2]!);
 
         expect(screen.getByText('Medmors kvote')).toBeInTheDocument();
@@ -371,29 +371,29 @@ describe('UttaksplanListe', () => {
     it('Skal vise periode uten foreldrepenger og to perioder for tapte dager', async () => {
         render(<HullperiodeOverFamiliehendelsesdato />);
 
-        expect(await screen.findByText('14. Mar - 01. Apr')).toBeInTheDocument();
+        expect(await screen.findByText('14. mars 24 - 01. april 24')).toBeInTheDocument();
 
         const førsteRad = within(screen.getByTestId('2024-03-14 - 2024-04-01'));
-        expect(førsteRad.getByText('14. Mar - 01. Apr')).toBeInTheDocument();
+        expect(førsteRad.getByText('14. mars 24 - 01. april 24')).toBeInTheDocument();
         expect(førsteRad.getByText('2 uker og 3 dager')).toBeInTheDocument();
         expect(førsteRad.getAllByText('Hanne har foreldrepenger')).toHaveLength(2);
 
         const andreRad = within(screen.getByTestId('2024-04-02 - 2024-04-03'));
-        expect(andreRad.getByText('02. Apr - 03. Apr')).toBeInTheDocument();
+        expect(andreRad.getByText('02. april 24 - 03. april 24')).toBeInTheDocument();
         expect(andreRad.getByText('2 dager')).toBeInTheDocument();
         expect(andreRad.getAllByText('Uten foreldrepenger')).toHaveLength(2);
 
         const tredjeRad = within(screen.getByTestId('2024-04-04 - 2024-04-04'));
-        expect(tredjeRad.getByText('04. Apr')).toBeInTheDocument();
+        expect(tredjeRad.getByText('04. april 24')).toBeInTheDocument();
         expect(tredjeRad.getAllByText('Fødsel')).toHaveLength(2);
 
         const fjerdeRad = within(screen.getByTestId('2024-04-04 - 2024-05-02'));
-        expect(fjerdeRad.getByText('04. Apr - 02. May')).toBeInTheDocument();
+        expect(fjerdeRad.getByText('04. april 24 - 02. mai 24')).toBeInTheDocument();
         expect(fjerdeRad.getByText('4 uker og 1 dag')).toBeInTheDocument();
         expect(fjerdeRad.getAllByText('Dager du kan tape')).toHaveLength(2);
 
         const femteRad = within(screen.getByTestId('2024-05-03 - 2024-05-15'));
-        expect(femteRad.getByText('03. May - 15. May')).toBeInTheDocument();
+        expect(femteRad.getByText('03. mai 24 - 15. mai 24')).toBeInTheDocument();
         expect(femteRad.getByText('1 uke og 4 dager')).toBeInTheDocument();
         expect(femteRad.getAllByText('Hans har foreldrepenger')).toHaveLength(2);
     });
@@ -401,42 +401,43 @@ describe('UttaksplanListe', () => {
     it('Skal vise perioder med oppholdsårsak korrekt', async () => {
         render(<VisPerioderMedOppholdsårsakKorrekt />);
 
-        expect(await screen.findByText('18. Nov - 08. Dec')).toBeInTheDocument();
+        expect(await screen.findByText('18. nov. 24 - 08. des. 24')).toBeInTheDocument();
 
         const førsteRad = within(screen.getByTestId('2024-11-18 - 2024-12-08'));
-        expect(førsteRad.getByText('18. Nov - 08. Dec')).toBeInTheDocument();
+        expect(førsteRad.getByText('18. nov. 24 - 08. des. 24')).toBeInTheDocument();
         expect(førsteRad.getByText('3 uker')).toBeInTheDocument();
         expect(førsteRad.getAllByText('Hanne har foreldrepenger')).toHaveLength(2);
 
         const andreRad = within(screen.getByTestId('2024-12-09 - 2024-12-09'));
-        expect(andreRad.getByText('09. Dec')).toBeInTheDocument();
+        expect(andreRad.getByText('09. des. 24')).toBeInTheDocument();
         expect(andreRad.getAllByText('Fødsel')).toHaveLength(2);
 
         const fjerdeRad = within(screen.getByTestId('2024-12-09 - 2025-05-16'));
-        expect(fjerdeRad.getByText('09. Dec - 16. May')).toBeInTheDocument();
+        expect(fjerdeRad.getByText('09. des. 24 - 16. mai 25')).toBeInTheDocument();
         expect(fjerdeRad.getByText('23 uker')).toBeInTheDocument();
         expect(fjerdeRad.getAllByText('Hanne har foreldrepenger')).toHaveLength(2);
 
         const femteRad = within(screen.getByTestId('2025-05-19 - 2025-09-29'));
-        expect(femteRad.getByText('19. May - 29. Sep')).toBeInTheDocument();
+        expect(femteRad.getByText('19. mai 25 - 29. sep. 25')).toBeInTheDocument();
         expect(femteRad.getByText('19 uker og 1 dag')).toBeInTheDocument();
         expect(femteRad.getAllByText('Hans har foreldrepenger')).toHaveLength(2);
 
         const sjetteRad = within(screen.getByTestId('2025-09-30 - 2025-10-15'));
-        expect(sjetteRad.getByText('30. Sep - 15. Oct')).toBeInTheDocument();
+        expect(sjetteRad.getByText('30. sep. 25 - 15. okt. 25')).toBeInTheDocument();
         expect(sjetteRad.getByText('2 uker og 2 dager')).toBeInTheDocument();
         expect(sjetteRad.getAllByText('Hanne har foreldrepenger')).toHaveLength(2);
 
         expect(screen.queryByText('Uten Foreldrepenger')).not.toBeInTheDocument();
         expect(screen.queryByText('Dager du kan tape')).not.toBeInTheDocument();
     });
+
     it('Skal ikke kunne redigere en EØS-periode', async () => {
         render(<MorSøkerOgFarHarEøsPeriode />);
 
-        expect(await screen.findByText('03. Jul - 15. Jul')).toBeInTheDocument();
+        expect(await screen.findByText('03. juli 24 - 15. juli 24')).toBeInTheDocument();
 
         const eøsRad = within(screen.getByTestId('2024-07-03 - 2024-07-15'));
-        expect(eøsRad.getByText('03. Jul - 15. Jul')).toBeInTheDocument();
+        expect(eøsRad.getByText('03. juli 24 - 15. juli 24')).toBeInTheDocument();
         expect(eøsRad.getByText('1 uke og 4 dager')).toBeInTheDocument();
         expect(eøsRad.getAllByText('Hans har foreldrepenger (EU/EØS)')).toHaveLength(2);
 
@@ -483,7 +484,7 @@ describe('UttaksplanListe', () => {
     it('Skal ikke kunne legge til annen part som forelder når en legger til ny periode', async () => {
         render(<FarSøkerEtterAtMorHarSøkt />);
 
-        expect(await screen.findByText('14. Mar - 03. Apr')).toBeInTheDocument();
+        expect(await screen.findByText('14. mars 24 - 03. april 24')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Legg til periode'));
 
@@ -509,9 +510,9 @@ describe('UttaksplanListe', () => {
 
         render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
 
-        expect(await screen.findByText('09. May - 11. Dec')).toBeInTheDocument();
+        expect(await screen.findByText('09. mai 25 - 11. des. 25')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('09. May - 11. Dec'));
+        await userEvent.click(screen.getByText('09. mai 25 - 11. des. 25'));
 
         await userEvent.click(screen.getAllByText('Slett')[1]!);
 
@@ -524,7 +525,7 @@ describe('UttaksplanListe', () => {
         await userEvent.click(screen.getByText('Flytt resten av planen'));
         await userEvent.click(screen.getByText('Fortsett'));
 
-        expect(await screen.findByText('22. Aug - 04. Dec')).toBeInTheDocument();
+        expect(await screen.findByText('22. aug. 25 - 04. des. 25')).toBeInTheDocument();
 
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
@@ -557,9 +558,9 @@ describe('UttaksplanListe', () => {
 
         render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
 
-        expect(await screen.findByText('12. Dec - 26. Mar')).toBeInTheDocument();
+        expect(await screen.findByText('12. des. 25 - 26. mars 26')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('12. Dec - 26. Mar'));
+        await userEvent.click(screen.getByText('12. des. 25 - 26. mars 26'));
 
         await userEvent.click(screen.getAllByText('Slett')[2]!);
 
@@ -594,10 +595,10 @@ describe('UttaksplanListe', () => {
 
         render(<HarUtsettelse oppdaterUttaksplan={oppdaterUttaksplan} />);
 
-        expect(await screen.findByText('15. Aug - 25. Aug')).toBeInTheDocument();
+        expect(await screen.findByText('15. aug. 25 - 25. aug. 25')).toBeInTheDocument();
         expect(screen.getAllByText('Barnet er innlagt')).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('15. Aug - 25. Aug'));
+        await userEvent.click(screen.getByText('15. aug. 25 - 25. aug. 25'));
 
         expect(screen.getByText('Utsettelse fordi barnet er innlagt i helseinstitusjon')).toBeInTheDocument();
 

@@ -3,7 +3,7 @@ import { API_URLS } from 'appData/queries';
 import ky from 'ky';
 import { useNavigate } from 'react-router-dom';
 
-import { loggUmamiEvent } from '@navikt/fp-metrics';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 
 import { useContextReset } from './SvpDataContext';
 
