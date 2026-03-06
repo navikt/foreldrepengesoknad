@@ -47,6 +47,10 @@ export class TidsperiodenString {
         return inneholderTidsperiodeDato(this.tidsperiode, dato);
     }
 
+    slutterEtter(dato: string) {
+        return dayjs(this.tidsperiode.tom).isAfter(dato, 'day');
+    }
+
     erGyldig() {
         return isValidTidsperiodeString(this.tidsperiode);
     }

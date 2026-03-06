@@ -18,8 +18,14 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { BarnDto_fpoversikt, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
-import { isISODateString } from '@navikt/fp-utils';
+import {
+    BarnDto_fpoversikt,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+    isAdoptertBarn,
+    isFødtBarn,
+} from '@navikt/fp-types';
+import { TidsperiodenString, Uttaksperioden, isISODateString } from '@navikt/fp-utils';
 import { Perioden } from '@navikt/fp-uttaksplan';
 
 import { FeatureToggle } from '../FeatureToggle';
@@ -259,10 +265,123 @@ export const getEndringstidspunkt = (
     return getOldestDate(endringstidspunktNyPlan, endringstidspunktOpprinneligPlan);
 };
 
+export const getEndringstidspunktNy = (
+    opprinneligPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    updatedPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+): string | undefined => {
+    const søkerensOpprinneligePlan = opprinneligPlan;
+    const søkerensUpdatedPlan = updatedPlan;
+
+    let endringstidspunktNyPlan: string | undefined;
+    let endringstidspunktOpprinneligPlan: string | undefined;
+    if (søkerensOpprinneligePlan) {
+        søkerensUpdatedPlan.forEach((periode, index) => {
+            if (endringstidspunktNyPlan) {
+                return;
+            }
+
+            const { fom } = periode;
+            const opprinneligPeriodeMedSammeFom = søkerensOpprinneligePlan.find((opprinneligPeriode) =>
+                dayjs(opprinneligPeriode.fom).isSame(fom, 'day'),
+            );
+
+            if (opprinneligPeriodeMedSammeFom !== undefined) {
+                const perioderErLikeUtenTidSjekk =
+                    TidsperiodenString.forPeriode(periode).erLik(opprinneligPeriodeMedSammeFom);
+                if (
+                    !perioderErLikeUtenTidSjekk ||
+                    (perioderErLikeUtenTidSjekk &&
+                        TidsperiodenString.forPeriode(periode).slutterEtter(opprinneligPeriodeMedSammeFom.tom))
+                ) {
+                    endringstidspunktNyPlan = fom;
+                }
+            }
+
+            if (opprinneligPeriodeMedSammeFom === undefined) {
+                endringstidspunktNyPlan = fom;
+            }
+
+            if (opprinneligPeriodeMedSammeFom !== undefined && søkerensUpdatedPlan.length - 1 === index) {
+                if (!TidsperiodenString.forPeriode(periode).erLik(opprinneligPeriodeMedSammeFom)) {
+                    endringstidspunktNyPlan = fom;
+                }
+            }
+
+            const sistePeriodeISøkersOpprinneligePlan = søkerensOpprinneligePlan.at(-1);
+
+            //Hvis endringstidspunktet er etter siste periode i opprinnelig plan, og 'periode' er periode uten uttak,
+            //finn første uttak/utsettelse etter endringstidspunktet
+            if (
+                endringstidspunktNyPlan &&
+                sistePeriodeISøkersOpprinneligePlan &&
+                dayjs(endringstidspunktNyPlan).isAfter(sistePeriodeISøkersOpprinneligePlan.tom)
+            ) {
+                const førsteUttakEllerUtsettelseEtterEndring = søkerensUpdatedPlan.find(
+                    (p) =>
+                        (Uttaksperioden.erUttaksperiode(p) || Uttaksperioden.erUtsettelsesperiode(p)) &&
+                        dayjs(p.fom).isAfter(endringstidspunktNyPlan),
+                );
+                endringstidspunktNyPlan =
+                    førsteUttakEllerUtsettelseEtterEndring !== undefined
+                        ? førsteUttakEllerUtsettelseEtterEndring.fom
+                        : endringstidspunktNyPlan;
+            }
+        });
+
+        for (const periode of søkerensOpprinneligePlan) {
+            if (endringstidspunktOpprinneligPlan) {
+                continue;
+            }
+
+            const { fom } = periode;
+            const nyPeriodeMedSammeFom = søkerensUpdatedPlan.find((nyPeriode) =>
+                dayjs(nyPeriode.fom).isSame(fom, 'day'),
+            );
+
+            if (
+                nyPeriodeMedSammeFom !== undefined &&
+                !TidsperiodenString.forPeriode(periode).erLik(nyPeriodeMedSammeFom)
+            ) {
+                endringstidspunktOpprinneligPlan = nyPeriodeMedSammeFom.fom;
+            }
+
+            if (nyPeriodeMedSammeFom === undefined) {
+                endringstidspunktOpprinneligPlan = fom;
+            }
+        }
+    } else if (søkerensUpdatedPlan.length > 0) {
+        // Bruker har slettet opprinnelig plan, send med alt
+        return søkerensUpdatedPlan[0]!.fom;
+    }
+
+    return getOldestDateNy(endringstidspunktNyPlan, endringstidspunktOpprinneligPlan);
+};
+
 const getOldestDate = (
     endringstidspunktNyPlan: Date | undefined,
     endringstidspunktOpprinneligPlan: Date | undefined,
 ): Date | undefined => {
+    if (endringstidspunktNyPlan === undefined && endringstidspunktOpprinneligPlan === undefined) {
+        return undefined;
+    }
+
+    if (endringstidspunktNyPlan !== undefined && endringstidspunktOpprinneligPlan === undefined) {
+        return endringstidspunktNyPlan;
+    }
+
+    if (endringstidspunktNyPlan === undefined && endringstidspunktOpprinneligPlan !== undefined) {
+        return endringstidspunktOpprinneligPlan;
+    }
+
+    return dayjs(endringstidspunktNyPlan).isSameOrBefore(dayjs(endringstidspunktOpprinneligPlan))
+        ? endringstidspunktNyPlan
+        : endringstidspunktOpprinneligPlan;
+};
+
+const getOldestDateNy = (
+    endringstidspunktNyPlan: string | undefined,
+    endringstidspunktOpprinneligPlan: string | undefined,
+): string | undefined => {
     if (endringstidspunktNyPlan === undefined && endringstidspunktOpprinneligPlan === undefined) {
         return undefined;
     }
