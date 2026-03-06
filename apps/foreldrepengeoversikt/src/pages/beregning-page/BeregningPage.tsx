@@ -208,19 +208,14 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                         </span>
                                         <span>{formatCurrencyWithKr(andel.dagsatsSøker)}</span>
                                     </HStack>
-                                    <HStack justify="space-between" gap="space-4">
-                                        <span>
-                                            <FormattedMessage id="beregning.dagsats.tilArbeidsgiver" />
-                                        </span>
-                                        <span>{formatCurrencyWithKr(andel.dagsatsArbeidsgiver)}</span>
-                                    </HStack>
-                                    {/*<hr className="text-ax-border-neutral-subtle" />*/}
-                                    {/*<HStack justify="space-between" gap="space-4">*/}
-                                    {/*    <span>Totalt</span>*/}
-                                    {/*    <span>*/}
-                                    {/*        {formatCurrencyWithKr(andel.dagsatsArbeidsgiver + andel.dagsatsSøker)}*/}
-                                    {/*    </span>*/}
-                                    {/*</HStack>*/}
+                                    {andel.aktivitetStatus === 'ARBEIDSTAKER' && (
+                                        <HStack justify="space-between" gap="space-4">
+                                            <span>
+                                                <FormattedMessage id="beregning.dagsats.tilArbeidsgiver" />
+                                            </span>
+                                            <span>{formatCurrencyWithKr(andel.dagsatsArbeidsgiver)}</span>
+                                        </HStack>
+                                    )}
                                 </VStack>
                             </Box>
                         ))}
