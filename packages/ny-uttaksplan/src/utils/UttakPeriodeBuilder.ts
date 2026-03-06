@@ -18,20 +18,25 @@ export class UttakPeriodeBuilder {
     }
 
     leggTilUttakPerioder(nyeUttakPerioder: AlleUttakPerioder[], forskyvPerioder: boolean): this {
+        // Grupper for å håndtera at ein legg til to periodar når ein har samtidig uttak.
+        // Bruk ein av dei nye periodane for å justera andre periodar, og legg så til den andre på slutten
+        const grupperPerFomTom = new Map<string, AlleUttakPerioder[]>();
+
+        for (const periode of nyeUttakPerioder) {
+            const key = `${periode.fom}-${periode.tom}`;
+            const eksisterende = grupperPerFomTom.get(key) ?? [];
+            grupperPerFomTom.set(key, [...eksisterende, periode]);
+        }
+
         if (forskyvPerioder) {
-            for (const nyUttakPeriode of nyeUttakPerioder) {
-                this.alleUttakPerioder = forskyvEksisterendePerioder(this.alleUttakPerioder, nyUttakPeriode);
+            for (const [, gruppe] of grupperPerFomTom) {
+                this.alleUttakPerioder = forskyvEksisterendePerioder(this.alleUttakPerioder, gruppe[0]!);
+
+                for (let i = 1; i < gruppe.length; i++) {
+                    this.alleUttakPerioder.push(gruppe[i]!);
+                }
             }
         } else {
-            // Grupper for å håndtera at ein legg til to periodar når ein har samtidig uttak.
-            // Bruk ein av dei nye periodane for å justera andre periodar, og legg så til den andre på slutten
-            const grupperPerFomTom = new Map<string, AlleUttakPerioder[]>();
-
-            for (const periode of nyeUttakPerioder) {
-                const key = `${periode.fom}-${periode.tom}`;
-                grupperPerFomTom.set(key, [...(grupperPerFomTom.get(key) ?? []), periode]);
-            }
-
             for (const [, gruppe] of grupperPerFomTom) {
                 this.alleUttakPerioder = erstattEksisterendeUttakPerioder(this.alleUttakPerioder, gruppe[0]!);
 

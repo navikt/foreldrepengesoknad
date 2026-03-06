@@ -200,6 +200,24 @@ describe('UttakPeriodeBuilder.leggTilUttakPerioder (Forskyv)', () => {
             lagPeriode('2025-05-23', '2025-06-25'), // Eksisterende periode 1 og 2 slått sammen og forskyvd
         ]);
     });
+    it('Skal forskyve korrekt når en legger til to like perioder', () => {
+        const builder = new UttakPeriodeBuilder([
+            lagPeriode('2024-07-01', '2024-07-02'),
+            lagPeriode('2024-07-03', '2024-07-15'),
+        ]);
+
+        builder.leggTilUttakPerioder(
+            [lagNyPeriode('2024-07-03', '2024-07-04'), lagNyPeriode('2024-07-03', '2024-07-04')],
+            SKAL_FORSKYVE,
+        );
+
+        expect(builder.getUttakPerioder()).toEqual([
+            lagPeriode('2024-07-01', '2024-07-02'),
+            lagNyPeriode('2024-07-03', '2024-07-04'),
+            lagNyPeriode('2024-07-03', '2024-07-04'),
+            lagPeriode('2024-07-05', '2024-07-17'),
+        ]);
+    });
 });
 
 describe('UttakPeriodeBuilder – sortering og mutasjon', () => {
