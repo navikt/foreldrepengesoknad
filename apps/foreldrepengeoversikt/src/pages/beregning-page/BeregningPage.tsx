@@ -98,6 +98,7 @@ export const BeregningPage = () => {
 };
 
 const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
+    const intl = useIntl();
     const beregning = sak.gjeldendeVedtak?.beregningsgrunnlag;
     if (!beregning) {
         return null;
@@ -181,7 +182,7 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
                         values={{ sumDagsats: formatCurrencyWithKr(sumDagsats) }}
                     />
                 </Label>
-                <ReadMore header="Slik er dagsatsen delt opp">
+                <ReadMore header={intl.formatMessage({ id: 'beregning.dagsats.detaljer' })}>
                     <VStack gap="space-16">
                         {beregning.beregningsandeler.map((andel, index) => (
                             <Box background="default" padding="space-16" borderRadius="8" key={index}>
@@ -191,11 +192,15 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
                                     </Label>
                                     <hr className="text-ax-border-neutral-subtle" />
                                     <HStack justify="space-between" gap="space-4">
-                                        <span>Til deg:</span>
+                                        <span>
+                                            <FormattedMessage id="beregning.dagsats.tilDeg" />
+                                        </span>
                                         <span>{formatCurrencyWithKr(andel.dagsatsSøker)}</span>
                                     </HStack>
                                     <HStack justify="space-between" gap="space-4">
-                                        <span>Til arbeidsgiver:</span>
+                                        <span>
+                                            <FormattedMessage id="beregning.dagsats.tilArbeidsgiver" />
+                                        </span>
                                         <span>{formatCurrencyWithKr(andel.dagsatsArbeidsgiver)}</span>
                                     </HStack>
                                     {/*<hr className="text-ax-border-neutral-subtle" />*/}
@@ -211,7 +216,9 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
                         <Box background="default" padding="space-16" borderRadius="8">
                             <VStack>
                                 <HStack justify="space-between" gap="space-4">
-                                    <span>Totalt</span>
+                                    <span>
+                                        <FormattedMessage id="beregning.dagsats.totalt" />
+                                    </span>
                                     <span>{formatCurrencyWithKr(sumDagsats)}</span>
                                 </HStack>
                                 <hr className="text-ax-border-neutral-subtle" />
@@ -613,10 +620,19 @@ const VedtakLenke = () => {
 
     return (
         <span>
-            Du kan lese mer i{' '}
-            <Link href={API_URLS.hentDokument(vedtak.journalpostId, vedtak.dokumentId ?? 'ukjent')} target="_blank">
-                vedtaksbrevet
-            </Link>
+            <FormattedMessage
+                id="beregning.vedtakLenke"
+                values={{
+                    link: (chunks) => (
+                        <Link
+                            href={API_URLS.hentDokument(vedtak.journalpostId, vedtak.dokumentId ?? 'ukjent')}
+                            target="_blank"
+                        >
+                            {chunks}
+                        </Link>
+                    ),
+                }}
+            />
         </span>
     );
 };
