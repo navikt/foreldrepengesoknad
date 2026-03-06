@@ -538,6 +538,10 @@ export const cleanEndringssøknadNy = (
 
     const mappaUttaksperioder = midlertidigMappingAvUttaksplan(filtrerUtEøsPeriode(søkersNyePerioder), barn);
 
+    const harPeriodeVedEndringstidspunkt = søkersNyePerioder.some((periode) =>
+        dayjs(endringstidspunkt).isBetween(periode.fom, periode.tom, 'day', '[]'),
+    );
+
     return {
         søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
         saksnummer: valgtEksisterendeSaksnr,
@@ -547,9 +551,10 @@ export const cleanEndringssøknadNy = (
         annenForelder: cleanAnnenforelder(annenForelder),
         vedlegg: convertAttachmentsMapToArray(vedlegg),
         uttaksplan: {
-            uttaksperioder: endringstidspunkt
-                ? getUttaksplanMedFriUtsettelsesperiode(mappaUttaksperioder, endringstidspunkt)
-                : mappaUttaksperioder,
+            uttaksperioder:
+                endringstidspunkt && !harPeriodeVedEndringstidspunkt
+                    ? getUttaksplanMedFriUtsettelsesperiode(mappaUttaksperioder, endringstidspunkt)
+                    : mappaUttaksperioder,
             ønskerJustertUttakVedFødsel,
         },
     };
