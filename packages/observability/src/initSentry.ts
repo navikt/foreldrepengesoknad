@@ -24,7 +24,7 @@ export const initSentry = ({ dsn }: InitSentryOptions) => {
                     (frame) => frame.filename && /\/assets\/.*\.js$/.test(frame.filename),
                 );
 
-                if (FEIL_VI_VIL_LUKE_BORT.some((feil) => stacktraceMatch?.filename?.includes(feil))) {
+                if (FEIL_VI_VIL_LUKE_BORT.some((feil) => stacktraceMatch?.abs_path?.includes(feil))) {
                     return false;
                 }
 
