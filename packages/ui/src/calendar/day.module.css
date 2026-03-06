@@ -23,6 +23,16 @@
     all: 'unset';
 }
 
+.roundedLeft {
+    border-top-left-radius: 14px;
+    border-bottom-left-radius: 14px;
+}
+
+.roundedRight {
+    border-top-right-radius: 14px;
+    border-bottom-right-radius: 14px;
+}
+
 @media (max-width: 768px) {
     .days {
         height: 40px;
@@ -69,7 +79,7 @@
 }
 
 .darkblueDay {
-    background-color: var(--ax-accent-500) !important;
+    background-color: var(--ax-bg-accent-strong-pressed) !important;
     color: var(--ax-bg-default);
     print-color-adjust: exact;
 }

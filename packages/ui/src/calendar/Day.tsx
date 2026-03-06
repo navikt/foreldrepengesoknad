@@ -9,6 +9,8 @@ import { formatDate } from '@navikt/fp-utils';
 import styles from './day.module.css';
 import { CalendarPeriodColor } from './types/CalendarPeriodColor';
 
+export type DayShape = 'square' | 'rounded-right' | 'rounded-left';
+
 const DAY_STYLE: Record<CalendarPeriodColor, string> = {
     ['NONE']: styles.none!,
     ['BLUE']: styles.blueDay!,
@@ -39,6 +41,7 @@ type Props = {
     isUpdated?: boolean;
     Icon?: ReactElement;
     iconFull?: boolean;
+    shape: DayShape;
     dateTooltipCallback?: (date: string) => React.ReactNode | string;
     dateClickCallback?: (date: string) => void;
     setFocusedDate: (date: Dayjs) => void;
@@ -53,6 +56,7 @@ export const Day = React.memo(
         isUpdated,
         Icon,
         iconFull,
+        shape,
         dateTooltipCallback,
         dateClickCallback,
         setFocusedDate,
@@ -85,7 +89,8 @@ export const Day = React.memo(
                 type="button"
                 data-testid={`day:${day};dayColor:${periodeColor}${Icon ? `;with-icon` : ''}`}
                 tabIndex={isFocused ? 0 : -1}
-                className={`${styles.days} ${DAY_STYLE[periodeColor]} ${isClickable && styles.cursorAndHoover} ${isUpdated && styles.fadeIn}`}
+                className={`${styles.days} ${DAY_STYLE[periodeColor]} ${isClickable && styles.cursorAndHoover} ${isUpdated && styles.fadeIn} 
+                ${shape === 'rounded-left' && styles.roundedLeft} ${shape === 'rounded-right' && styles.roundedRight}`}
                 onFocus={isClickable ? () => setFocusedDate(date) : undefined}
                 onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
                 onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
