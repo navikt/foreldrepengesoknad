@@ -1,28 +1,35 @@
 import { TasklistIcon } from '@navikt/aksel-icons';
-import { useEffect, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, ExpansionCard, HStack, Heading, Skeleton, VStack } from '@navikt/ds-react';
+import { BodyShort, ExpansionCard, HStack, Skeleton, VStack } from '@navikt/ds-react';
 
-import { IconCircleWrapper } from '@navikt/fp-ui';
+import './SkyraSurvey.module.css';
 
-import '../styles/InlineSkyraSurvey.css';
+export interface SkyraSurveyProps {
+    slug: string;
+    title?: string;
+    icon?: ReactNode;
+    onSurveyCompleted?: () => void;
+}
 
-const SURVEY_COMPLETED_KEY = 'skyra-survey-planlegger-completed';
-
-export const InlineSkyraSurvey = () => {
+export const SkyraSurvey = ({ slug, title, icon, onSurveyCompleted }: SkyraSurveyProps) => {
     const intl = useIntl();
+    const resolvedTitle = title ?? intl.formatMessage({ id: 'SkyraSurvey.Tittel' });
     const [isLoaded, setIsLoaded] = useState(false);
     const [hasFailed, setHasFailed] = useState(false);
     const [hasCompletedSurvey, setHasCompletedSurvey] = useState(() => {
-        return sessionStorage.getItem(SURVEY_COMPLETED_KEY) === 'true';
+        const key = `skyra-survey-${slug}-completed`;
+        return sessionStorage.getItem(key) === 'true';
     });
     const [isOpen, setIsOpen] = useState(true);
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        const surveyKey = `skyra-survey-${slug}-completed`;
+
         // Hvis undersøkelsen allerede er fullført, ikke last den på nytt
-        if (sessionStorage.getItem(SURVEY_COMPLETED_KEY) === 'true') {
+        if (sessionStorage.getItem(surveyKey) === 'true') {
             return;
         }
 
@@ -57,7 +64,8 @@ export const InlineSkyraSurvey = () => {
             if (hasLoadedOnce && (!hasContent || isHidden)) {
                 setHasCompletedSurvey(true);
                 setIsOpen(false);
-                sessionStorage.setItem(SURVEY_COMPLETED_KEY, 'true');
+                sessionStorage.setItem(surveyKey, 'true');
+                onSurveyCompleted?.();
                 if (observer) {
                     observer.disconnect();
                 }
@@ -102,7 +110,7 @@ export const InlineSkyraSurvey = () => {
             }
             clearTimeout(timeout);
         };
-    }, []);
+    }, [slug, onSurveyCompleted]);
 
     // Vis kun surveyen for norsk bokmål og nynorsk
     if (intl.locale !== 'nb' && intl.locale !== 'nn') {
@@ -117,7 +125,7 @@ export const InlineSkyraSurvey = () => {
     if (hasCompletedSurvey) {
         surveyContent = (
             <BodyShort>
-                <FormattedMessage id="InlineSkyraSurvey.Takk" />
+                <FormattedMessage id="SkyraSurvey.Takk" />
             </BodyShort>
         );
     } else if (isLoaded) {
@@ -125,9 +133,7 @@ export const InlineSkyraSurvey = () => {
     } else {
         surveyContent = (
             <VStack gap="space-8">
-                <Heading as={Skeleton} size="large">
-                    <FormattedMessage id="InlineSkyraSurvey.Heading" />
-                </Heading>
+                <Skeleton variant="text" />
                 <Skeleton variant="rounded" width="100%" height={30} />
                 <HStack justify={'end'}>
                     <Skeleton variant="rounded" width="30%" height={50} />
@@ -137,21 +143,11 @@ export const InlineSkyraSurvey = () => {
     }
 
     return (
-        <ExpansionCard
-            data-color="brand-beige"
-            aria-label={intl.formatMessage({ id: 'InlineSkyraSurvey.Tittel' })}
-            size="small"
-            open={isOpen}
-            onToggle={setIsOpen}
-        >
+        <ExpansionCard aria-label={resolvedTitle} size="small" open={isOpen} onToggle={setIsOpen}>
             <ExpansionCard.Header>
                 <HStack gap="space-24" align="center" wrap={false}>
-                    <IconCircleWrapper size="medium" color="lightBlue">
-                        <TasklistIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
-                    </IconCircleWrapper>
-                    <ExpansionCard.Title size="small">
-                        <FormattedMessage id="InlineSkyraSurvey.Tittel" />
-                    </ExpansionCard.Title>
+                    {icon ?? <TasklistIcon height={24} width={24} fontSize="1.5rem" aria-hidden />}
+                    <ExpansionCard.Title size="small">{resolvedTitle}</ExpansionCard.Title>
                 </HStack>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
@@ -165,7 +161,7 @@ export const InlineSkyraSurvey = () => {
                                 position: isLoaded ? 'relative' : 'absolute',
                                 pointerEvents: isLoaded ? 'auto' : 'none',
                             }}
-                            slug="arbeids-og-velferdsetaten-nav/planlegg-foreldrepenger-inline"
+                            slug={slug}
                         />
                     )}
                 </div>

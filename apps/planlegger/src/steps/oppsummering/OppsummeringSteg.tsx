@@ -11,12 +11,12 @@ import { BodyShort, Box, Button, HStack, Heading, Link, LinkCard, VStack } from 
 
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
+import { SkyraSurvey } from '@navikt/fp-observability';
 import { KontoBeregningResultatDto, Satser } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { InlineSkyraSurvey } from '../../components/InlineSkyraSurvey';
 import { ShareDataInfobox } from '../../components/boxes/ShareDataInfobox';
 import { OppsummeringHeader } from './OppsummeringHeader';
 import { SøkOmForeldrepenger } from './SøkOmForeldrepenger';
@@ -101,7 +101,7 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
                         )}
                         {stønadskontoer && valgtStønadskonto && hvorLangPeriode && arbeidssituasjon && (
                             <VStack gap="space-8">
-                                <InlineSkyraSurvey />
+                                <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/test-dummy-inline" />
 
                                 {harRettTilForeldrepenger && (
                                     <OppsummeringHarRett
