@@ -55,6 +55,7 @@ describe('personUtils', () => {
         const annenForelder = {
             kanIkkeOppgis: false,
             fnr: '05510552883',
+            kjønn: 'K',
         } as AnnenForelder;
 
         const kjønn = getKjønnFromFnr(annenForelder);
@@ -66,6 +67,7 @@ describe('personUtils', () => {
         const annenForelder = {
             kanIkkeOppgis: false,
             fnr: '08088611111',
+            kjønn: 'M',
         } as AnnenForelder;
 
         const kjønn = getKjønnFromFnr(annenForelder);
@@ -76,6 +78,15 @@ describe('personUtils', () => {
     it('skal ikke finne kjønn når annen forelder ikke er oppgitt', () => {
         const annenForelder = {
             kanIkkeOppgis: true,
+        } as AnnenForelder;
+        const kjønn = getKjønnFromFnr(annenForelder);
+        expect(kjønn).toBeUndefined();
+    });
+
+    it('skal returnere undefined når annen forelder er oppgitt uten kjønn', () => {
+        const annenForelder = {
+            kanIkkeOppgis: false,
+            fnr: '05510552883',
         } as AnnenForelder;
         const kjønn = getKjønnFromFnr(annenForelder);
         expect(kjønn).toBeUndefined();

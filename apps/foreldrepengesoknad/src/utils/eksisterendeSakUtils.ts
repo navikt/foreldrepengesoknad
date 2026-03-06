@@ -28,6 +28,7 @@ import {
     BarnDto_fpoversikt,
     FpSak_fpoversikt,
     KontoType,
+    Kjønn_fpoversikt,
     Oppholdsårsak,
     PersonDto_fpoversikt,
     Person_fpoversikt,
@@ -368,6 +369,7 @@ const getAnnenForelderFromSaksgrunnlag = (
                     erMorUfør: grunnlag.morErUfør,
                     harRettPåForeldrepengerINorge: grunnlag.morHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
                     fnr: annenPart.fnr,
+                    kjønn: getKjønnFromFnrString(annenPart.fnr),
                     kanIkkeOppgis: false,
                     harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
                     erAleneOmOmsorg: grunnlag.farMedmorErAleneOmOmsorg,
@@ -379,6 +381,7 @@ const getAnnenForelderFromSaksgrunnlag = (
                 harRettPåForeldrepengerINorge:
                     grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
                 fnr: annenPart.fnr,
+                kjønn: getKjønnFromFnrString(annenPart.fnr),
                 kanIkkeOppgis: false,
                 harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
                 erAleneOmOmsorg: grunnlag.farMedmorErAleneOmOmsorg || grunnlag.morErAleneOmOmsorg,
@@ -461,6 +464,7 @@ const getAnnenForelderFromValgteBarn = (valgteBarn: ValgtBarn): AnnenForelder | 
             fornavn: valgteBarn.annenForelder.navn.fornavn,
             etternavn: valgteBarn.annenForelder.navn.etternavn,
             fnr: valgteBarn.annenForelder.fnr,
+            kjønn: getKjønnFromFnrString(valgteBarn.annenForelder.fnr),
             kanIkkeOppgis: false,
             erAleneOmOmsorg: false,
         };
@@ -469,14 +473,13 @@ const getAnnenForelderFromValgteBarn = (valgteBarn: ValgtBarn): AnnenForelder | 
     return undefined;
 };
 
-const getRolleFarEllerMedmorFraFnr = (fnr: string): Søkerrolle => {
-    const kjønn = getKjønnFromFnrString(fnr);
+const getRolleFromKjønn = (kjønn: Kjønn_fpoversikt): Søkerrolle => {
     if (kjønn === 'K') {
         return 'medmor';
     } else if (kjønn === 'M') {
         return 'far';
     } else {
-        throw new Error('Kan ikke utlede kjønn fra fødselsnummer.');
+        throw new Error('Kan ikke utlede rolle fra kjønn.');
     }
 };
 
@@ -506,6 +509,7 @@ const opprettAnnenForelderFraEksisterendeSak = (
         fornavn: intl.formatMessage({ id: 'annen.forelder' }),
         etternavn: '',
         fnr: fnrAnnenForelderFraSak ?? '',
+        kjønn: fnrAnnenForelderFraSak ? getKjønnFromFnrString(fnrAnnenForelderFraSak) : undefined,
         harRettPåForeldrepengerINorge: grunnlag.søkerErFarEllerMedmor
             ? grunnlag.morHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS
             : grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
@@ -530,7 +534,7 @@ export const lagSøknadFraValgteBarnMedSak = (
     valgteBarn: ValgtBarn & { sak: FpSak_fpoversikt },
     intl: IntlShape,
     registrerteBarn: BarnDto_fpoversikt[],
-    søkerFnr: string,
+    søkerKjønn: Kjønn_fpoversikt,
 ): Partial<Søknad> => {
     const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, undefined, valgteBarn.fødselsdatoer);
     const { grunnlag } = eksisterendeSak;
@@ -544,7 +548,7 @@ export const lagSøknadFraValgteBarnMedSak = (
         situasjon,
         valgteBarn.fnr,
     );
-    const rolle = valgteBarn.sak.sakTilhørerMor ? 'mor' : getRolleFarEllerMedmorFraFnr(søkerFnr);
+    const rolle = valgteBarn.sak.sakTilhørerMor ? 'mor' : getRolleFromKjønn(søkerKjønn);
     const søkersituasjon = {
         situasjon: valgteBarn.sak.gjelderAdopsjon ? 'adopsjon' : 'fødsel',
         rolle,

@@ -116,7 +116,7 @@ export const Forside = ({
                 { ...valgteBarn, sak: valgteBarn.sak }, // Gjør dette slik at funksjonen slipper deale med undefined sak
                 intl,
                 søkerInfo.person.barn,
-                søkerInfo.person.fnr,
+                søkerInfo.person.kjønn,
             );
             oppdaterSøknadIState(søknad);
         }

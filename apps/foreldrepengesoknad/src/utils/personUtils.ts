@@ -13,12 +13,7 @@ export const formaterNavn = (fornavn: string, etternavn: string, visEtternavn: b
 
 export const getKjønnFromFnr = (annenForelder: AnnenForelder): Kjønn_fpoversikt | undefined => {
     if (isAnnenForelderOppgitt(annenForelder)) {
-        const { fnr } = annenForelder;
-
-        if (fnr === undefined || fnr.length !== 11) {
-            return undefined;
-        }
-        return Number.parseInt(fnr.charAt(8), 10) % 2 === 0 ? 'K' : 'M';
+        return annenForelder.kjønn;
     }
 
     return undefined;
