@@ -16,7 +16,7 @@ export const initSentry = ({ dsn }: InitSentryOptions) => {
         integrations: [Sentry.breadcrumbsIntegration({ console: false })],
         beforeSend: (event) => {
             const harStacktraceMedOpprinnelseIVårKode = (event.exception?.values ?? []).some((ex) =>
-                ex.raw_stacktrace?.frames?.some((frame) => frame.filename && /\/assets\/.*\.js$/.test(frame.filename)),
+                ex.stacktrace?.frames?.some((frame) => frame.filename && /\/assets\/.*\.js$/.test(frame.filename)),
             );
             return harStacktraceMedOpprinnelseIVårKode ? event : null;
         },
