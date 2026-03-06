@@ -16,6 +16,7 @@ const {
     BeggeRettMorOgMedmorMorIngenDagerBrukt,
     BeggeRettMorIngenDagerBrukt,
     MorHarPrematuruker,
+    BeggeRettMangeOvertrukneDager,
 } = composeStories(stories);
 
 describe('<KvoteOppsummering >', () => {
@@ -132,5 +133,16 @@ describe('<KvoteOppsummering >', () => {
             ),
         ).toHaveLength(1);
         expect(screen.queryByText('Medmorkvote')).not.toBeInTheDocument();
+    });
+
+    it('<BeggeRettMangeOvertrukneDager - Tittelen skal korrekt beskrive alle overtrukne kvoter >', () => {
+        render(<BeggeRettMangeOvertrukneDager />);
+
+        expect(
+            screen.getByText(
+                // eslint-disable-next-line max-len
+                'Det er lagt til 12 uker og 3 dager av fellesperioden, 3 dager av mødrekvoten og 3 dager av fedrekvoten for mye i planen. Rett opp i dette før du går videre til neste steg.',
+            ),
+        ).toBeInTheDocument();
     });
 });
