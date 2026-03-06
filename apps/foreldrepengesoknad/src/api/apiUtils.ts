@@ -536,7 +536,7 @@ export const cleanEndringssøknadNy = (
 
     const endringstidspunkt = getEndringstidspunktNy(søkersEksisterendePeriode, søkersNyePerioder);
 
-    const mappaUttaksperioder = midlertidigMappingAvUttaksplan(filtrerUtUendredePeriode(søkersNyePerioder), barn);
+    const mappaUttaksperioder = midlertidigMappingAvUttaksplan(filtrerUtEøsPeriode(søkersNyePerioder), barn);
 
     return {
         søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
@@ -555,7 +555,7 @@ export const cleanEndringssøknadNy = (
     };
 };
 
-const filtrerUtUendredePeriode = (
+const filtrerUtEøsPeriode = (
     nyUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
 ): UttakPeriode_fpoversikt[] => {
     return nyUttaksplan.filter((periode) => Uttaksperioden.erIkkeEøsPeriode(periode));
