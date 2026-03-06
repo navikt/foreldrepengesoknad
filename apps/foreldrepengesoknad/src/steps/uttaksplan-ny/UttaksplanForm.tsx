@@ -184,7 +184,12 @@ export const UttaksplanForm = ({
                         <RhfRadioGroup
                             name="ønskerJustertUttakVedFødsel"
                             control={formMethods.control}
-                            label={<FormattedMessage id="UttaksplanSteg.AutomatiskJustering.Spørsmål" />}
+                            label={
+                                <FormattedMessage
+                                    id="UttaksplanSteg.AutomatiskJustering.Spørsmål"
+                                    values={{ antallBarn: barn.antallBarn }}
+                                />
+                            }
                             validate={[
                                 isRequired(
                                     intl.formatMessage({ id: 'UttaksplanSteg.AutomatiskJustering.Svar.Påkrevd' }),
