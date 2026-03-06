@@ -708,3 +708,52 @@ export const MorHarPrematuruker: Story = {
         },
     },
 };
+
+export const BeggeRettMangeOvertrukneDager: Story = {
+    args: {
+        valgtStønadskonto: kontoNårBeggeHarRett,
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'BEGGE_RETT',
+        },
+        uttakPerioder: [
+            {
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                fom: '2026-02-11',
+                tom: '2026-03-03',
+                flerbarnsdager: false,
+            },
+            {
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                fom: '2026-03-04',
+                tom: '2026-06-16',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2026-08-03',
+                tom: '2026-11-18',
+                kontoType: 'FEDREKVOTE',
+                forelder: 'MOR',
+                overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2027-01-11',
+                tom: '2027-07-28',
+                kontoType: 'FELLESPERIODE',
+                forelder: 'MOR',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2027-08-03',
+                tom: '2027-08-27',
+                kontoType: 'MØDREKVOTE',
+                forelder: 'FAR_MEDMOR',
+                overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
+                flerbarnsdager: false,
+            },
+        ],
+    },
+};

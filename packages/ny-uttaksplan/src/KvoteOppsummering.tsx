@@ -157,7 +157,7 @@ const KvoteTittel = ({
 }) => {
     const intl = useIntl();
     const { foreldreInfo, uttakPerioder, familiesituasjon, valgtStønadskonto } = useUttaksplanData();
-
+    console.log(uttakPerioder);
     const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
 
     const {
