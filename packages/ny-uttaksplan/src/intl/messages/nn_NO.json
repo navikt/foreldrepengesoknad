@@ -122,6 +122,8 @@
     "kvote.beskrivelse.allTidIPlan": "{varighet} er lagt til i planen.",
     "kvote.beskrivelse.forMyeTidIPlan": "Det er lagt til {varighet} for mykje i planen. Rett opp i dette før du går vidare til neste steg.",
     "kvote.varighet.tilForelder": "{varighet} til {forelder}",
+    "kvote.varighet.forMyeMødrekvote": "{varighet} av mødrekvota",
+    "kvote.varighet.forMyeFedrekvote": "{varighet} av fedrekvota",
     "kvote.varighet.fellesperiode": "{varighet} av fellesperioden",
     "kvote.varighet.fellesperiode.forelder": "{varighet} er lagt til for {forelder}",
     "kvote.varighet.gjenstår": "{varighet} gjenstår",

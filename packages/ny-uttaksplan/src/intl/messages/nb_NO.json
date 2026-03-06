@@ -126,6 +126,8 @@
     "kvote.varighet.fellesperiode.forelder": "{varighet} er lagt til for {forelder}",
     "kvote.varighet.gjenstår": "{varighet} gjenstår",
     "kvote.varighet.overtrukket": "{varighet} for mye",
+    "kvote.varighet.forMyeMødrekvote": "{varighet} av mødrekvoten",
+    "kvote.varighet.forMyeFedrekvote": "{varighet} av fedrekvoten",
     "kvote.varighet.erLagtTil": "{varighet} er lagt til",
     "leggTilPeriodePanel.hvaVilDuGjøre.påkrevd": "Du må velge hva du vil gjøre",
     "leggTilPeriodePanel.stillingsprosent.påkrevd": "Du må oppgi stillingsprosenten du skal jobbe",
