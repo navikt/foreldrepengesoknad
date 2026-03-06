@@ -709,7 +709,7 @@ export const MorHarPrematuruker: Story = {
     },
 };
 
-export const BeggeRettMangeOvertrukneDager: Story = {
+export const BeggeRettMangeOvertrukneDagerMedOverføringsÅrsak: Story = {
     args: {
         valgtStønadskonto: kontoNårBeggeHarRett,
         foreldreInfo: {

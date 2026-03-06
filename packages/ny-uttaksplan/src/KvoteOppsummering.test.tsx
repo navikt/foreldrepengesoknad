@@ -16,7 +16,7 @@ const {
     BeggeRettMorOgMedmorMorIngenDagerBrukt,
     BeggeRettMorIngenDagerBrukt,
     MorHarPrematuruker,
-    BeggeRettMangeOvertrukneDager,
+    BeggeRettMangeOvertrukneDagerMedOverføringsÅrsak,
 } = composeStories(stories);
 
 describe('<KvoteOppsummering >', () => {
@@ -135,8 +135,8 @@ describe('<KvoteOppsummering >', () => {
         expect(screen.queryByText('Medmorkvote')).not.toBeInTheDocument();
     });
 
-    it('<BeggeRettMangeOvertrukneDager - Tittelen skal korrekt beskrive alle overtrukne kvoter >', () => {
-        render(<BeggeRettMangeOvertrukneDager />);
+    it('<BeggeRettMangeOvertrukneDagerMedOverføringsÅrsak - Skal vise kvote istedetfor navn ved overtrukket dager med overføringsårsak >', () => {
+        render(<BeggeRettMangeOvertrukneDagerMedOverføringsÅrsak />);
 
         expect(
             screen.getByText(
