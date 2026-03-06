@@ -18,7 +18,6 @@ import {
     Label,
     Link,
     List,
-    ReadMore,
     Table,
     VStack,
 } from '@navikt/ds-react';
@@ -175,14 +174,26 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
                     </List.Item>
                 )}
             </List>
-            <Box className="mt-8" background="accent-moderate" padding="space-12" borderRadius="8">
-                <Label>
-                    <FormattedMessage
-                        id="beregning.dagsats"
-                        values={{ sumDagsats: formatCurrencyWithKr(sumDagsats) }}
-                    />
-                </Label>
-                <ReadMore header={intl.formatMessage({ id: 'beregning.dagsats.detaljer' })}>
+            <ExpansionCard
+                size="small"
+                data-color="info"
+                className="mt-8"
+                aria-label={intl.formatMessage(
+                    {
+                        id: 'beregning.dagsats',
+                    },
+                    { sumDagsats: formatCurrencyWithKr(sumDagsats) },
+                )}
+            >
+                <ExpansionCard.Header>
+                    <ExpansionCard.Title size="small">
+                        <FormattedMessage
+                            id="beregning.dagsats"
+                            values={{ sumDagsats: formatCurrencyWithKr(sumDagsats) }}
+                        />
+                    </ExpansionCard.Title>
+                </ExpansionCard.Header>
+                <ExpansionCard.Content>
                     <VStack gap="space-16">
                         {beregning.beregningsandeler.map((andel, index) => (
                             <Box background="default" padding="space-16" borderRadius="8" key={index}>
@@ -225,8 +236,8 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
                             </VStack>
                         </Box>
                     </VStack>
-                </ReadMore>
-            </Box>
+                </ExpansionCard.Content>
+            </ExpansionCard>
         </Box>
     );
 };
