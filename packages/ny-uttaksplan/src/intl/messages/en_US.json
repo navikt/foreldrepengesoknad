@@ -126,6 +126,8 @@
     "kvote.varighet.fellesperiode.forelder": "{varighet} added for {forelder}",
     "kvote.varighet.gjenstår": "{varighet} left",
     "kvote.varighet.overtrukket": "{varighet} too much",
+    "kvote.varighet.forMyeMødrekvote": "{varighet} of Mother's quota",
+    "kvote.varighet.forMyeFedrekvote": "{varighet} of Father's quota",
     "kvote.varighet.erLagtTil": "{varighet} has been added",
     "leggTilPeriodePanel.hvaVilDuGjøre.påkrevd": "You must choose what you want to do",
     "leggTilPeriodePanel.stillingsprosent.påkrevd": "You must specify what percentage you will be working",

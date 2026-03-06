@@ -172,17 +172,31 @@ const KvoteTittel = ({
     } = tellDagerIUttaksPeriodene(filtrertePerioder, familiesituasjon, valgtStønadskonto);
 
     if (antallOvertrukketDager > 0) {
+        const beggeHarBruktMorsKvote = filtrertePerioder
+            .filter(erVanligUttakPeriode)
+            .filter((p) => p.kontoType === 'MØDREKVOTE')
+            .some((p) => p.overføringÅrsak !== undefined);
+
         const beskrivelseMor =
             ubrukteDagerMor < 0
-                ? intl.formatMessage(
-                      {
-                          id: 'kvote.varighet.tilForelder',
-                      },
-                      {
-                          varighet: getVarighetString(ubrukteDagerMor * -1, intl),
-                          forelder: foreldreInfo.navnPåForeldre.mor,
-                      },
-                  )
+                ? beggeHarBruktMorsKvote
+                    ? intl.formatMessage(
+                          {
+                              id: 'kvote.varighet.forMyeMødrekvote',
+                          },
+                          {
+                              varighet: getVarighetString(ubrukteDagerFar * -1, intl),
+                          },
+                      )
+                    : intl.formatMessage(
+                          {
+                              id: 'kvote.varighet.tilForelder',
+                          },
+                          {
+                              varighet: getVarighetString(ubrukteDagerMor * -1, intl),
+                              forelder: foreldreInfo.navnPåForeldre.mor,
+                          },
+                      )
                 : '';
         const beskrivelseFelles =
             ubrukteDagerFelles < 0
@@ -191,17 +205,31 @@ const KvoteTittel = ({
                       { varighet: getVarighetString(ubrukteDagerFelles * -1, intl) },
                   )
                 : '';
+
+        const beggeHarBruktFarsKvote = filtrertePerioder
+            .filter(erVanligUttakPeriode)
+            .filter((p) => p.kontoType === 'FEDREKVOTE')
+            .some((p) => p.overføringÅrsak !== undefined);
         const beskrivelseFar =
             ubrukteDagerFar < 0
-                ? intl.formatMessage(
-                      {
-                          id: 'kvote.varighet.tilForelder',
-                      },
-                      {
-                          varighet: getVarighetString(ubrukteDagerFar * -1, intl),
-                          forelder: foreldreInfo.navnPåForeldre.farMedmor,
-                      },
-                  )
+                ? beggeHarBruktFarsKvote
+                    ? intl.formatMessage(
+                          {
+                              id: 'kvote.varighet.forMyeFedrekvote',
+                          },
+                          {
+                              varighet: getVarighetString(ubrukteDagerFar * -1, intl),
+                          },
+                      )
+                    : intl.formatMessage(
+                          {
+                              id: 'kvote.varighet.tilForelder',
+                          },
+                          {
+                              varighet: getVarighetString(ubrukteDagerFar * -1, intl),
+                              forelder: foreldreInfo.navnPåForeldre.farMedmor,
+                          },
+                      )
                 : '';
 
         return (
