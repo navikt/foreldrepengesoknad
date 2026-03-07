@@ -164,12 +164,12 @@ describe('personUtils', () => {
         expect(navnPåForeldre.farMedmor).toBe('Espen');
     });
 
-    it('should return true if SøkerRolle is FAR r MEDMOR', () => {
+    it('skal returnere true når SøkerRolle er FAR eller MEDMOR', () => {
         expect(getErSøkerFarEllerMedmor('far')).toBe(true);
         expect(getErSøkerFarEllerMedmor('medmor')).toBe(true);
     });
 
-    it('should return false if SøkerRolle is neither FAR, nor MEDMOR', () => {
+    it('skal returnere false når SøkerRolle verken er FAR eller MEDMOR', () => {
         expect(getErSøkerFarEllerMedmor('mor')).toBe(false);
     });
 });
