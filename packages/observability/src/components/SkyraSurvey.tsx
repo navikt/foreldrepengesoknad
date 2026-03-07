@@ -143,7 +143,13 @@ export const SkyraSurvey = ({ slug, title, icon, onSurveyCompleted }: SkyraSurve
     }
 
     return (
-        <ExpansionCard aria-label={resolvedTitle} size="small" open={isOpen} onToggle={setIsOpen}>
+        <ExpansionCard
+            data-color="brand-beige"
+            aria-label={resolvedTitle}
+            size="small"
+            open={isOpen}
+            onToggle={setIsOpen}
+        >
             <ExpansionCard.Header>
                 <HStack gap="space-24" align="center" wrap={false}>
                     {icon ?? <TasklistIcon height={24} width={24} fontSize="1.5rem" aria-hidden />}
