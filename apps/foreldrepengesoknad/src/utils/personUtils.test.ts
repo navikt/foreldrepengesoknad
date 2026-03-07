@@ -83,13 +83,13 @@ describe('personUtils', () => {
         expect(kjønn).toBeUndefined();
     });
 
-    it('skal returnere undefined når annen forelder er oppgitt uten kjønn', () => {
+    it('skal utlede kjønn fra fnr når kjønn ikke er satt eksplisitt', () => {
         const annenForelder = {
             kanIkkeOppgis: false,
             fnr: '05510552883',
         } as AnnenForelder;
         const kjønn = getKjønnFromFnr(annenForelder);
-        expect(kjønn).toBeUndefined();
+        expect(kjønn).toBe('K');
     });
 
     it('skal returnere true når mor har aleneomsorg', () => {
