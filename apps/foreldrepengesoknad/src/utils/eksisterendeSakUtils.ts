@@ -49,8 +49,6 @@ import {
 import { getFamiliehendelseType } from './familiehendelseUtils';
 import { guid } from './guid';
 import { mapSaksperioderTilUttaksperioder } from './mapSaksperioderTilUttaksperioder';
-import { getKjønnFromFnrString } from './personUtils';
-
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: AktivitetType_fpoversikt): Arbeidsform => {
     switch (arbeidstype) {
         case 'SELVSTENDIG_NÆRINGSDRIVENDE':
@@ -369,7 +367,7 @@ const getAnnenForelderFromSaksgrunnlag = (
                     erMorUfør: grunnlag.morErUfør,
                     harRettPåForeldrepengerINorge: grunnlag.morHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
                     fnr: annenPart.fnr,
-                    kjønn: getKjønnFromFnrString(annenPart.fnr),
+                    kjønn: annenPart.kjønn,
                     kanIkkeOppgis: false,
                     harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
                     erAleneOmOmsorg: grunnlag.farMedmorErAleneOmOmsorg,
@@ -381,7 +379,7 @@ const getAnnenForelderFromSaksgrunnlag = (
                 harRettPåForeldrepengerINorge:
                     grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
                 fnr: annenPart.fnr,
-                kjønn: getKjønnFromFnrString(annenPart.fnr),
+                kjønn: annenPart.kjønn,
                 kanIkkeOppgis: false,
                 harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
                 erAleneOmOmsorg: grunnlag.farMedmorErAleneOmOmsorg || grunnlag.morErAleneOmOmsorg,
@@ -464,7 +462,7 @@ const getAnnenForelderFromValgteBarn = (valgteBarn: ValgtBarn): AnnenForelder | 
             fornavn: valgteBarn.annenForelder.navn.fornavn,
             etternavn: valgteBarn.annenForelder.navn.etternavn,
             fnr: valgteBarn.annenForelder.fnr,
-            kjønn: getKjønnFromFnrString(valgteBarn.annenForelder.fnr),
+            kjønn: valgteBarn.annenForelder.kjønn,
             kanIkkeOppgis: false,
             erAleneOmOmsorg: false,
         };
@@ -509,7 +507,9 @@ const opprettAnnenForelderFraEksisterendeSak = (
         fornavn: intl.formatMessage({ id: 'annen.forelder' }),
         etternavn: '',
         fnr: fnrAnnenForelderFraSak ?? '',
-        kjønn: fnrAnnenForelderFraSak ? getKjønnFromFnrString(fnrAnnenForelderFraSak) : undefined,
+        kjønn: fnrAnnenForelderFraSak
+            ? barn.find((b) => b.annenPart?.fnr === fnrAnnenForelderFraSak)?.annenPart?.kjønn
+            : undefined,
         harRettPåForeldrepengerINorge: grunnlag.søkerErFarEllerMedmor
             ? grunnlag.morHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS
             : grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
