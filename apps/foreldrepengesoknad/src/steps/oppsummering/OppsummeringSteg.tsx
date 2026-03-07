@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import { ISOStringToDate } from 'utils/dateUtils';
-import { getErSøkerFarEllerMedmor, getKjønnFromFnrString, getNavnPåForeldre } from 'utils/personUtils';
+import { getErSøkerFarEllerMedmor, getNavnPåForeldre } from 'utils/personUtils';
 import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 
 import { Alert, Heading, Link } from '@navikt/ds-react';
@@ -225,7 +225,7 @@ const skalViseInfoOmFarskapsportal = (
     const erAnnenForelderOppgitt = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const harAnnenForelderRett = !!erAnnenForelderOppgitt?.harRettPåForeldrepengerINorge;
     const erAnnenForelderFar =
-        !!erAnnenForelderOppgitt?.fnr && getKjønnFromFnrString(erAnnenForelderOppgitt.fnr) === 'M';
+        !!erAnnenForelderOppgitt?.fnr && erAnnenForelderOppgitt.kjønn === 'M';
     const harAnnenForelderUtenlandskFnr = !!erAnnenForelderOppgitt?.utenlandskFnr;
     const erSøkerIkkeGift = person.sivilstand?.type !== 'GIFT';
 

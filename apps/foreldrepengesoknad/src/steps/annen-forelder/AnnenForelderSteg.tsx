@@ -7,6 +7,7 @@ import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrerteP
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { getRegistrerteBarnOmDeFinnes } from 'utils/barnUtils';
+import { getKjønnFromFnrString } from 'utils/personUtils';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -89,6 +90,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
             fornavn: replaceInvisibleCharsWithSpace(fornavn) ?? '',
             etternavn: replaceInvisibleCharsWithSpace(etternavn) ?? '',
             fnr: replaceInvisibleCharsWithSpace(fnr.trim()) ?? '',
+            kjønn: values.utenlandskFnr ? undefined : getKjønnFromFnrString(fnr.trim()),
             harRettPåForeldrepengerIEØS: values.harOppholdtSegIEØS ? values.harRettPåForeldrepengerIEØS : false,
         });
 

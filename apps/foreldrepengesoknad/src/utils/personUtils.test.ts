@@ -55,6 +55,7 @@ describe('personUtils', () => {
         const annenForelder = {
             kanIkkeOppgis: false,
             fnr: '05510552883',
+            kjønn: 'K',
         } as AnnenForelder;
 
         const kjønn = getKjønnFromFnr(annenForelder);
@@ -66,6 +67,7 @@ describe('personUtils', () => {
         const annenForelder = {
             kanIkkeOppgis: false,
             fnr: '08088611111',
+            kjønn: 'M',
         } as AnnenForelder;
 
         const kjønn = getKjønnFromFnr(annenForelder);
@@ -79,6 +81,15 @@ describe('personUtils', () => {
         } as AnnenForelder;
         const kjønn = getKjønnFromFnr(annenForelder);
         expect(kjønn).toBeUndefined();
+    });
+
+    it('skal utlede kjønn fra fnr når kjønn ikke er satt eksplisitt', () => {
+        const annenForelder = {
+            kanIkkeOppgis: false,
+            fnr: '05510552883',
+        } as AnnenForelder;
+        const kjønn = getKjønnFromFnr(annenForelder);
+        expect(kjønn).toBe('K');
     });
 
     it('skal returnere true når mor har aleneomsorg', () => {
@@ -153,12 +164,12 @@ describe('personUtils', () => {
         expect(navnPåForeldre.farMedmor).toBe('Espen');
     });
 
-    it('should return true if SøkerRolle is FAR r MEDMOR', () => {
+    it('skal returnere true når SøkerRolle er FAR eller MEDMOR', () => {
         expect(getErSøkerFarEllerMedmor('far')).toBe(true);
         expect(getErSøkerFarEllerMedmor('medmor')).toBe(true);
     });
 
-    it('should return false if SøkerRolle is neither FAR, nor MEDMOR', () => {
+    it('skal returnere false når SøkerRolle verken er FAR eller MEDMOR', () => {
         expect(getErSøkerFarEllerMedmor('mor')).toBe(false);
     });
 });
