@@ -15,7 +15,7 @@ import { NavnPåForeldre } from '@navikt/fp-common';
 import { Familiesituasjon } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
-import { Uttaksplanperiode } from '../../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
 import {
     erUttaksplanperiodeErForelderMor,
     erUttaksplanperiodeEøs,
@@ -170,8 +170,12 @@ export const getTekst = (
                 return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.hvØvelse' });
             case 'NAV_TILTAK':
                 return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.navTiltak' });
-            case 'FRI':
+            case 'FRI': {
+                if (uttaksplanperioder.some((p) => erVanligUttakPeriode(p) && p.morsAktivitet)) {
+                    return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.pause' });
+                }
                 return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.fri' });
+            }
         }
     }
 

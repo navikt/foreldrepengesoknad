@@ -20,6 +20,7 @@ import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringCo
 import { finnAntallDager, finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
 import { useErDesktop, useMediaResetMinimering } from '../../utils/useMediaActions';
 import { PeriodeDetaljerOgInfoMeldinger } from './eksisterende-perioder/PeriodeDetaljerOgInfoMeldinger';
+import { LeggTilPausePanel } from './utsettelse/LeggTilPausePanel';
 import { LeggTilUtsettelsePanel } from './utsettelse/LeggTilUtsettelsePanel';
 import { useVisUtsettelsePanel } from './utsettelse/useVisUtsettelsePanel';
 
@@ -30,7 +31,7 @@ interface Props {
 
 export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) => {
     const {
-        foreldreInfo: { søker },
+        foreldreInfo: { søker, rettighetType },
         erPeriodeneTilAnnenPartLåst,
         uttakPerioder,
         familiehendelsedato,
@@ -46,6 +47,8 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
         useVisForskyvEllerErstattPanel(sammenslåtteValgtePerioder);
 
     const { visUtsettelsePanel, setVisUtsettelsePanel } = useVisUtsettelsePanel(sammenslåtteValgtePerioder);
+    const { visUtsettelsePanel: visPausePanel, setVisUtsettelsePanel: setVisPausePanel } =
+        useVisUtsettelsePanel(sammenslåtteValgtePerioder);
 
     const [erForskyvEllerErstattPanelvisningPå, setErForskyvEllerErstattPanelvisningPå] = useState(false);
 
@@ -83,6 +86,14 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
         søker === 'MOR' &&
         familiesituasjon !== 'adopsjon' &&
         UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
+            sammenslåtteValgtePerioder,
+            familiehendelsedato,
+        );
+
+    const skalVisePauseknapp =
+        søker === 'FAR_MEDMOR' &&
+        (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT') &&
+        !UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
             sammenslåtteValgtePerioder,
             familiehendelsedato,
         );
@@ -134,8 +145,13 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                     <LeggTilUtsettelsePanel setVisUtsettelsePanel={setVisUtsettelsePanel} />
                 </Box>
             )}
+            {!erMinimert && visPausePanel && (
+                <Box className="pb-6 pr-6 pl-6">
+                    <LeggTilPausePanel setVisPausePanel={setVisPausePanel} />
+                </Box>
+            )}
 
-            {!erMinimert && !visEndreEllerForskyvPanel && !visUtsettelsePanel && (
+            {!erMinimert && !visEndreEllerForskyvPanel && !visUtsettelsePanel && !visPausePanel && (
                 <div className="block px-4 pb-4">
                     <VStack gap="space-12">
                         {labels}
@@ -174,7 +190,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                                                     skalViseLeggTilKnappetekst={skalViseLeggTilKnappetekst}
                                                 />
                                             </Show>
-                                            {!skalViseUtsettelsesknapp && (
+                                            {!skalViseUtsettelsesknapp && !skalVisePauseknapp && (
                                                 <Button
                                                     variant="secondary"
                                                     size="small"
@@ -200,6 +216,16 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                                                     type="button"
                                                 >
                                                     <FormattedMessage id="RedigeringPanel.LeggTilUtsettelse" />
+                                                </Button>
+                                            )}
+                                            {skalVisePauseknapp && (
+                                                <Button
+                                                    variant="secondary"
+                                                    size="small"
+                                                    onClick={() => setVisPausePanel(true)}
+                                                    type="button"
+                                                >
+                                                    <FormattedMessage id="RedigeringPanel.LeggTilPause" />
                                                 </Button>
                                             )}
                                             <Button

@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isoWeekday from 'dayjs/plugin/isoWeek';
 import minMax from 'dayjs/plugin/minMax';
+import { IntlShape } from 'react-intl';
 
 import {
     BrukerRolleSak_fpoversikt,
@@ -167,4 +168,41 @@ export const erDetReadonlyPerioderEtterValgtePerioder = (
         : false;
 
     return harEøsEllerPleiepenger || harAnnenPartSomErLåst;
+};
+
+export const getAktivitetskravOptions = (skalViseMorsAktivitetskravVedSamtidigUttak: boolean) => {
+    const aktivitetsKrav = [
+        'ARBEID',
+        'UTDANNING',
+        'KVALPROG',
+        'INTROPROG',
+        'TRENGER_HJELP',
+        'INNLAGT',
+        'ARBEID_OG_UTDANNING',
+    ];
+
+    return skalViseMorsAktivitetskravVedSamtidigUttak
+        ? aktivitetsKrav.filter((k) => k !== 'INNLAGT' && k !== 'TRENGER_HJELP')
+        : aktivitetsKrav;
+};
+
+export const getAktivitetskravTekst = (value: string, intl: IntlShape) => {
+    switch (value) {
+        case 'ARBEID':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Arbeid' });
+        case 'UTDANNING':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Utdanning' });
+        case 'KVALPROG':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Kvalprog' });
+        case 'INTROPROG':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Introprog' });
+        case 'TRENGER_HJELP':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Trenger_hjelp' });
+        case 'INNLAGT':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Innlagt' });
+        case 'ARBEID_OG_UTDANNING':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Arbeid_og_utdanning' });
+        default:
+            return '';
+    }
 };

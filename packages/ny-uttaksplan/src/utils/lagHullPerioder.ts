@@ -60,17 +60,17 @@ export const lagTapteDagerPerioder = (
         foreldreInfo.søker === 'FAR_MEDMOR' &&
         (foreldreInfo.rettighetType === 'ALENEOMSORG' || foreldreInfo.rettighetType === 'BARE_SØKER_RETT')
     ) {
-        const førstePeriodeSomStarterEtterFamiliehendelsedato = sortertePerioder.find((p) =>
+        const sistePeriodeSomStarterEtterFamiliehendelsedato = sortertePerioder.findLast((p) =>
             dayjs(p.fom).isSameOrAfter(familiehendelsedato),
         );
 
-        if (førstePeriodeSomStarterEtterFamiliehendelsedato?.fom) {
+        if (sistePeriodeSomStarterEtterFamiliehendelsedato?.fom) {
             const periodeSomSkalSjekkesForHull = {
                 fom:
                     familiesituasjon === 'adopsjon'
                         ? UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato()
                         : UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
-                tom: førstePeriodeSomStarterEtterFamiliehendelsedato.fom,
+                tom: sistePeriodeSomStarterEtterFamiliehendelsedato.fom,
             };
 
             return lagTapteDagerHull(sortertePerioder, foreldreInfo.søker, periodeSomSkalSjekkesForHull);
