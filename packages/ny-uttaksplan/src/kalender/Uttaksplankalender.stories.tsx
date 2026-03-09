@@ -221,6 +221,20 @@ export const FarSøkerMedTapteDagerOgFerie: Story = {
                 kontoType: 'FORELDREPENGER',
                 flerbarnsdager: false,
             },
+            {
+                fom: '2021-09-17',
+                tom: '2021-09-30',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FORELDREPENGER',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2021-10-13',
+                tom: '2021-10-29',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FORELDREPENGER',
+                flerbarnsdager: false,
+            },
         ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
@@ -1517,5 +1531,46 @@ export const SkalIkkeViseAvslåttePerioderSomOverlapperMedAndrePerioder: Story =
                 forelder: 'FAR_MEDMOR',
             },
         ],
+    },
+};
+
+export const KunFarHarRettOgHarPausePeriode: Story = {
+    args: {
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2024-04-04'],
+            antallBarn: 1,
+        },
+        foreldreInfo: {
+            rettighetType: 'BARE_SØKER_RETT',
+            søker: 'FAR_MEDMOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+        uttakPerioder: [
+            {
+                fom: '2024-05-17',
+                tom: '2024-05-23',
+                kontoType: 'FEDREKVOTE',
+                forelder: 'FAR_MEDMOR',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2024-05-24',
+                tom: '2024-05-28',
+                forelder: 'FAR_MEDMOR',
+                utsettelseÅrsak: 'FRI',
+                morsAktivitet: 'ARBEID_OG_UTDANNING',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2024-05-31',
+                tom: '2024-06-13',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                flerbarnsdager: false,
+            },
+        ] satisfies Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     },
 };

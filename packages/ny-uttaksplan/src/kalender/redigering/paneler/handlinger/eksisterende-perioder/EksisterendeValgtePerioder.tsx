@@ -533,6 +533,14 @@ const PeriodeKvoteType = ({
         );
     }
     if (erIkkeEøsUttakPeriode && periode.utsettelseÅrsak && periode.utsettelseÅrsak !== 'LOVBESTEMT_FERIE') {
+        if (periode.utsettelseÅrsak === 'FRI' && periode.morsAktivitet) {
+            return (
+                <HStack gap="space-4">
+                    <FormattedMessage id="RedigeringPanel.Pause" />
+                </HStack>
+            );
+        }
+
         return (
             <HStack gap="space-4">
                 <FormattedMessage id="RedigeringPanel.Utsettelse" />:
