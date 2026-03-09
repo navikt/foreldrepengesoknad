@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-import { Barn, BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
+import { Barn, BrukerRolleSak_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { getFamiliehendelsedato, getLocaleFromSessionStorage, getNavnGenitivEierform } from '@navikt/fp-utils';
 import { assertUnreachable } from '@navikt/fp-validation';
@@ -101,6 +101,7 @@ export const getCalendarLabel = (
     søker: BrukerRolleSak_fpoversikt,
     erIkkeSøkerSpesifisert: boolean,
     intl: IntlShape,
+    rettighetType: RettighetType_fpoversikt,
 ): string => {
     const erSøkersPeriode =
         (søker === 'MOR' && info.forelder === 'MOR') || (søker === 'FAR_MEDMOR' && info.forelder === 'FAR_MEDMOR');
@@ -116,6 +117,15 @@ export const getCalendarLabel = (
                 },
             );
         case 'UTSETTELSE':
+            if (søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT') {
+                return intl.formatMessage(
+                    { id: 'kalender.utsettelse.pause.label' },
+                    {
+                        erSokersPeriode: erSøkersPeriode,
+                        navnAnnenPart,
+                    },
+                );
+            }
             return intl.formatMessage(
                 { id: 'kalender.utsettelse.label' },
                 {

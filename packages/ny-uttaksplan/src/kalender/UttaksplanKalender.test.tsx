@@ -21,6 +21,7 @@ const {
     HarUtsettelse,
     FlerbarnMorOgFar,
     SkalIkkeViseAvslåttePerioderSomOverlapperMedAndrePerioder,
+    KunFarHarRettOgHarPausePeriode,
 } = composeStories(stories);
 
 describe('UttaksplanKalender', () => {
@@ -1506,26 +1507,26 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getAllByText('Endre')[1]!);
 
-        expect(screen.queryByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
+        expect(screen.getByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Begge'));
 
-        expect(screen.queryByText('Ønsker du å bruke flerbarnsdager for denne perioden?')).toBeInTheDocument();
+        expect(screen.getByText('Ønsker du å bruke flerbarnsdager for denne perioden?')).toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Ja')[0]!);
 
-        expect(screen.queryByText('Mor skal ha?')).toBeInTheDocument();
+        expect(screen.getByText('Mor skal ha?')).toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Fellesperiode')[1]!);
 
-        expect(screen.queryByText('Far skal ha?')).toBeInTheDocument();
+        expect(screen.getByText('Far skal ha?')).toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Fellesperiode')[2]!);
 
         expect(screen.queryByText('Hva skal mor gjøre i denne perioden?')).not.toBeInTheDocument();
 
-        expect(screen.queryByText('Hvor mange prosent for mor?')).toBeInTheDocument();
-        expect(screen.queryByText('Hvor mange prosent for far?')).toBeInTheDocument();
+        expect(screen.getByText('Hvor mange prosent for mor?')).toBeInTheDocument();
+        expect(screen.getByText('Hvor mange prosent for far?')).toBeInTheDocument();
 
         const arbeidsprosentMor = screen.getByText('Hvor mange prosent for mor?');
         await userEvent.type(arbeidsprosentMor, '45');
@@ -1533,8 +1534,8 @@ describe('UttaksplanKalender', () => {
         const arbeidsprosentFar = screen.getByText('Hvor mange prosent for far?');
         await userEvent.type(arbeidsprosentFar, '45');
 
-        expect(screen.queryByText('Skal mor kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
-        expect(screen.queryByText('Skal far kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
+        expect(screen.getByText('Skal mor kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
+        expect(screen.getByText('Skal far kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Nei')[1]!);
         await userEvent.click(screen.getAllByText('Nei')[2]!);
@@ -1542,7 +1543,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getByText('Legg til'));
 
         expect(
-            screen.queryByText(
+            screen.getByText(
                 'Dere kan ikke ha mindre enn 100 % foreldrepenger til sammen når du har valgt flerbarnsdager',
             ),
         ).toBeInTheDocument();
@@ -1563,5 +1564,38 @@ describe('UttaksplanKalender', () => {
 
         expect(screen.getAllByText('Far')).toHaveLength(2);
         expect(screen.getByText('Fars kvote')).toBeInTheDocument();
+    });
+
+    it('skal vise pause og legge til ny pause', async () => {
+        render(<KunFarHarRettOgHarPausePeriode />);
+
+        expect(screen.getByText('Du har satt uttaket på pause')).toBeInTheDocument();
+
+        const mai = screen.getByTestId('year:2024;month:4');
+
+        expect(within(mai).getAllByTestId('dayColor:BEIGEOUTLINE', { exact: false })).toHaveLength(3);
+
+        await userEvent.click(within(mai).getByTestId('day:24;dayColor:BEIGEOUTLINE'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        expect(screen.getByText('Far')).toBeInTheDocument();
+        expect(screen.getByText('Pause')).toBeInTheDocument();
+
+        await userEvent.click(within(mai).getByTestId('day:24;dayColor:DARKBLUE'));
+        await userEvent.click(within(mai).getByTestId('day:30;dayColor:BLACK'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(screen.getByText('Legg til pause'));
+
+        expect(screen.getByText('Aktivitetskrav gjelder i denne perioden')).toBeInTheDocument();
+
+        const aktivitetskravSelect = screen.getByLabelText('Hva gjør mor i denne perioden?');
+        await userEvent.selectOptions(aktivitetskravSelect, 'ARBEID');
+
+        await userEvent.click(screen.getByText('Legg til'));
+
+        expect(within(mai).getAllByTestId('dayColor:BEIGEOUTLINE', { exact: false })).toHaveLength(4);
     });
 });
