@@ -24,8 +24,12 @@ export class UttakPeriodeBuilder {
 
         for (const periode of nyeUttakPerioder) {
             const key = `${periode.fom}-${periode.tom}`;
-            const eksisterende = grupperPerFomTom.get(key) ?? [];
-            grupperPerFomTom.set(key, [...eksisterende, periode]);
+            const eksisterende = grupperPerFomTom.get(key);
+            if (eksisterende) {
+                eksisterende.push(periode);
+            } else {
+                grupperPerFomTom.set(key, [periode]);
+            }
         }
 
         if (forskyvPerioder) {
