@@ -238,6 +238,7 @@ describe('<Forside>', () => {
 
     //Ingen saker, og noen av barna er døde.
     it('skal vise ett barn fra PDL når ingen saker', async () => {
+        MockDate.set(new Date('2025-10-25'));
         render(<HarIngenSakerOgEttBarn />);
 
         expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();

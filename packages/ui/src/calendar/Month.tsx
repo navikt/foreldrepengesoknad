@@ -4,9 +4,10 @@ import React, { useMemo } from 'react';
 
 import { Box, HGrid, Heading, VStack } from '@navikt/ds-react';
 
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { capitalizeFirstLetter, formatDateIso } from '@navikt/fp-utils';
 
-import { Day, isWeekend, logOnLocalhost } from './Day';
+import { Day, DayShape, isWeekend, logOnLocalhost } from './Day';
 import styles from './month.module.css';
 import { CalendarPeriod } from './types/CalendarPeriod';
 import { CalendarPeriodColor } from './types/CalendarPeriodColor';
@@ -107,6 +108,7 @@ export const Month = React.memo(
                                                 isUpdated={period?.isUpdated}
                                                 Icon={period?.icon}
                                                 iconFull={period?.iconFull}
+                                                shape={getDayShape(date, periodMap)}
                                                 dateTooltipCallback={dateTooltipCallback}
                                                 dateClickCallback={dateClickCallback}
                                                 isFocused={
@@ -151,6 +153,45 @@ export const Month = React.memo(
         return true;
     },
 );
+
+const getDayShape = (date: dayjs.Dayjs, periodMap: Map<string, CalendarPeriod>): DayShape => {
+    const key = date.format(ISO_DATE_FORMAT);
+    if (!periodMap.get(key)?.isSelected) {
+        return 'square';
+    }
+
+    const prevSelected = periodMap.get(getPreviousWeekday(date).format(ISO_DATE_FORMAT))?.isSelected;
+
+    const nextSelected = periodMap.get(getNextWeekday(date).format(ISO_DATE_FORMAT))?.isSelected;
+
+    if (!prevSelected && !nextSelected) {
+        return 'square';
+    }
+    if (!prevSelected) {
+        return 'rounded-left';
+    }
+    if (!nextSelected) {
+        return 'rounded-right';
+    }
+
+    return 'square';
+};
+
+const getPreviousWeekday = (date: dayjs.Dayjs) => {
+    let d = date.subtract(1, 'day');
+    while (isWeekend(d)) {
+        d = d.subtract(1, 'day');
+    }
+    return d;
+};
+
+const getNextWeekday = (date: dayjs.Dayjs) => {
+    let d = date.add(1, 'day');
+    while (isWeekend(d)) {
+        d = d.add(1, 'day');
+    }
+    return d;
+};
 
 const findDayColor = (date: Dayjs, period?: CalendarPeriod): CalendarPeriodColor => {
     if (!period) {

@@ -80,14 +80,16 @@ export const AutomatiskJusteringForm = ({ termindato, perioderMedUttakRundtFøds
                         <UttaksplanFormComponents.YesOrNoQuestion
                             name={UttaksplanFormField.ønskerAutomatiskJustering}
                             legend={intl.formatMessage(
-                                { id: 'uttaksplan.automatiskJustering.spørsmål' },
+                                { id: 'UttaksplanSteg.AutomatiskJustering.Spørsmål' },
                                 {
                                     antallBarn,
                                 },
                             )}
                             validate={(value: YesOrNo) => {
                                 if (value === YesOrNo.UNANSWERED) {
-                                    return intl.formatMessage({ id: 'uttaksplan.automatiskJustering.svar.påkrevd' });
+                                    return intl.formatMessage({
+                                        id: 'UttaksplanSteg.AutomatiskJustering.Svar.Påkrevd',
+                                    });
                                 }
 
                                 return undefined;

@@ -12,7 +12,7 @@ import { annenPartVedtak } from 'storybookData/annenPartVedtak';
 import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import { AnnenForelder, Barn, BarnType, Periode, Periodetype } from '@navikt/fp-common';
+import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import {
     ArbeidsforholdOgInntektFp,
@@ -114,50 +114,6 @@ const defaultUtenlandsopphold = {
     harBoddUtenforNorgeSiste12Mnd: false,
     skalBoUtenforNorgeNeste12Mnd: false,
 };
-
-const defaultUttaksplan = [
-    {
-        id: '0',
-        type: Periodetype.Uttak,
-        forelder: 'MOR',
-        konto: 'FORELDREPENGER_FØR_FØDSEL',
-        tidsperiode: {
-            fom: new Date('2021-11-23T23:00:00.000Z'),
-            tom: new Date('2021-12-13T23:00:00.000Z'),
-        },
-    },
-    {
-        id: '1',
-        type: Periodetype.Utsettelse,
-        årsak: 'INSTITUSJONSOPPHOLD_SØKER',
-        forelder: 'MOR',
-        erArbeidstaker: true,
-        tidsperiode: {
-            fom: new Date('2021-12-14T23:00:00.000Z'),
-            tom: new Date('2022-01-24T23:00:00.000Z'),
-        },
-    },
-    {
-        id: '2',
-        type: Periodetype.PeriodeUtenUttak,
-        tidsperiode: {
-            fom: new Date('2022-01-25T23:00:00.000Z'),
-            tom: new Date('2022-03-28T23:00:00.000Z'),
-        },
-    },
-    {
-        id: '3',
-        type: Periodetype.Uttak,
-        forelder: 'MOR',
-        konto: 'FELLESPERIODE',
-        tidsperiode: {
-            fom: new Date('2022-03-29T23:00:00.000Z'),
-            tom: new Date('2022-06-06T23:00:00.000Z'),
-        },
-        ønskerSamtidigUttak: false,
-        gradert: false,
-    },
-] satisfies Periode[];
 
 const defaultUttaksplanNy = [
     {
@@ -360,7 +316,6 @@ const meta = {
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
                             [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100',
-                            [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
                             [ContextDataType.UTTAKSPLAN_NY]: uttaksplan,
                             [ContextDataType.VEDLEGG]: vedlegg,
                         }}
@@ -1122,23 +1077,6 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
 
         // Ny uttaksplan med samtidig uttak
         const uttaksplanMedSamtidigUttak = [
-            ...defaultUttaksplan.slice(0, 3), // Behold de første periodene
-            {
-                id: '3',
-                type: Periodetype.Uttak,
-                forelder: 'MOR',
-                konto: 'FELLESPERIODE',
-                tidsperiode: {
-                    fom: new Date('2022-03-29T23:00:00.000Z'),
-                    tom: new Date('2022-06-06T23:00:00.000Z'),
-                },
-                ønskerSamtidigUttak: true,
-                gradert: false,
-            } satisfies Periode,
-        ];
-
-        // Ny uttaksplan med samtidig uttak
-        const uttaksplanMedSamtidigUttakNy = [
             ...defaultUttaksplanNy.slice(0, 2), // Behold de første periodene
             {
                 forelder: 'MOR',
@@ -1175,8 +1113,7 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: args.utenlandsoppholdSenere,
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: args.utenlandsoppholdTidligere,
                             [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100',
-                            [ContextDataType.UTTAKSPLAN]: uttaksplanMedSamtidigUttak, // Bruk den nye uttaksplanen
-                            [ContextDataType.UTTAKSPLAN_NY]: uttaksplanMedSamtidigUttakNy, // Bruk den nye uttaksplanen
+                            [ContextDataType.UTTAKSPLAN_NY]: uttaksplanMedSamtidigUttak, // Bruk den nye uttaksplanen
                             [ContextDataType.VEDLEGG]: args.vedlegg,
                         }}
                     >
