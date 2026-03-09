@@ -22,6 +22,7 @@ import {
     isFødtBarn,
     isUttaksperiode,
 } from '@navikt/fp-common';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
     AnnenForelderDto,
     Attachment,
@@ -245,7 +246,7 @@ const cleanUttaksplan = (
                 ønskerJustertUttakVedFødsel: ønskerJustertUttakVedFødsel,
                 uttaksperioder: getUttaksplanMedFriUtsettelsesperiode(
                     cleanedUttaksplan,
-                    dayjs(endringstidspunkt).toISOString(),
+                    dayjs(endringstidspunkt).format(ISO_DATE_FORMAT),
                 ),
             };
         }
@@ -532,9 +533,9 @@ export const cleanEndringssøknadNy = (
         eksisterendePerioder.push(...eksisterendeSak.gjeldendeVedtak.perioderAnnenpartEøs);
     }
 
-    const søkersEksisterendePeriode = filtrerUtAnnenPartsPerioder(eksisterendePerioder, søkersituasjon.rolle);
+    const søkersEksisterendePerioder = filtrerUtAnnenPartsPerioder(eksisterendePerioder, søkersituasjon.rolle);
 
-    const endringstidspunkt = getEndringstidspunktNy(søkersEksisterendePeriode, søkersNyePerioder);
+    const endringstidspunkt = getEndringstidspunktNy(søkersEksisterendePerioder, søkersNyePerioder);
 
     const mappaUttaksperioder = midlertidigMappingAvUttaksplan(filtrerUtEøsPeriode(søkersNyePerioder), barn);
 

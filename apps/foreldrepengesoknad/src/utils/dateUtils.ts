@@ -266,16 +266,13 @@ export const getEndringstidspunkt = (
 };
 
 export const getEndringstidspunktNy = (
-    opprinneligPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    updatedPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    søkerensOpprinneligePlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    søkerensUpdatedPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
 ): string | undefined => {
-    const søkerensOpprinneligePlan = opprinneligPlan;
-    const søkerensUpdatedPlan = updatedPlan;
-
     let endringstidspunktNyPlan: string | undefined;
     let endringstidspunktOpprinneligPlan: string | undefined;
     if (søkerensOpprinneligePlan) {
-        søkerensUpdatedPlan.forEach((periode, index) => {
+        for (const [index, periode] of søkerensUpdatedPlan.entries()) {
             if (endringstidspunktNyPlan) {
                 return;
             }
@@ -326,7 +323,7 @@ export const getEndringstidspunktNy = (
                         ? førsteUttakEllerUtsettelseEtterEndring.fom
                         : endringstidspunktNyPlan;
             }
-        });
+        }
 
         for (const periode of søkerensOpprinneligePlan) {
             if (endringstidspunktOpprinneligPlan) {
