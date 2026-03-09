@@ -28,6 +28,8 @@ const SkyraHandler = () => {
     const location = useLocation();
 
     useEffect(() => {
+        // @ts-expect-error -- denne finnes på window hvis cookie er satt
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         window.skyra?.reload?.();
     }, [location.pathname]);
 
