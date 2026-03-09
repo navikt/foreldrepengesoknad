@@ -15,13 +15,13 @@ const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 type Periode = { fom: string; tom: string };
 
 export const UttaksperiodeValidatorer = {
-    erInnenforFørsteSeksUker(periode: Periode, familiehendelsesdato: string) {
+    erFørFørsteSeksUker(periode: Periode, familiehendelsesdato: string) {
         const førsteUttaksdagEtterSeksUker =
             UttaksdagenString.denneEllerNeste(familiehendelsesdato).getDatoAntallUttaksdagerSenere(
                 ANTALL_UTTAKSDAGER_SEKS_UKER,
             );
 
-        return TidsperiodenString.forPeriode(periode).erFomEllerEtterDato(førsteUttaksdagEtterSeksUker) === false;
+        return TidsperiodenString.forPeriode(periode).erFomFørDato(førsteUttaksdagEtterSeksUker);
     },
 
     erNoenPerioderFørFamiliehendelsesdato: (periode: Periode[], familiehendelsedato: string) =>
@@ -70,7 +70,7 @@ export const UttaksperiodeValidatorer = {
     ) {
         return (
             starterTidsperiodeEtter2UkerFørFødsel(periode.fom, familiehendelsesdato, termindato) &&
-            dayjs(periode.fom).isSameOrBefore(getSisteUttaksdag6UkerEtterFødsel(familiehendelsesdato), 'day')
+            this.erFørFørsteSeksUker(periode, familiehendelsesdato)
         );
     },
 
@@ -131,12 +131,6 @@ export const UttaksperiodeValidatorer = {
             )
         );
     },
-};
-
-const getSisteUttaksdag6UkerEtterFødsel = (familiehendelsesdato: string): string => {
-    return UttaksdagenString.denneEllerNeste(familiehendelsesdato).getDatoAntallUttaksdagerSenere(
-        ANTALL_UTTAKSDAGER_SEKS_UKER,
-    );
 };
 
 const starterTidsperiodeEtter2UkerFørFødsel = (

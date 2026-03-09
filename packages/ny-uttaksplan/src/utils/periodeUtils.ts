@@ -64,7 +64,7 @@ export const erAvslåttPeriodeFørsteSeksUkerMor = (
         'forelder' in periode &&
         periode.forelder === 'MOR' &&
         dayjs(periode.fom).isSameOrAfter(dayjs(familiehendelsesdato), 'day') &&
-        UttaksperiodeValidatorer.erInnenforFørsteSeksUker(periode, familiehendelsesdato)
+        UttaksperiodeValidatorer.erFørFørsteSeksUker(periode, familiehendelsesdato)
     );
 };
 
