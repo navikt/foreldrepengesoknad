@@ -196,6 +196,7 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
                 <ExpansionCard.Content>
                     <VStack gap="space-16">
                         {beregning.beregningsandeler.map((andel, index) => (
+                            // Ikke noe som er garantert unikt, så tillater index for key, få elementer, så ok
                             <Box background="default" padding="space-16" borderRadius="8" key={index}>
                                 <VStack>
                                     <Label>
@@ -325,8 +326,6 @@ const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
                     <FormattedMessage id="beregning.andel.omregnetTilÅrsinntekt" />
                 </BodyShort>
                 <BodyShort className="text-end">{formatCurrencyWithKr(andel.fastsattPrÅr ?? 0)}</BodyShort>
-                {/*<span>Dagsats</span>*/}
-                {/*<BodyShort className="text-end">{formatCurrencyWithKr(andel.dagsatsArbeidsgiver ?? 0)}</BodyShort>*/}
             </HGrid>
             {skalViseVedtaksLenke && <VedtakLenke />}
         </VStack>
@@ -625,21 +624,19 @@ const VedtakLenke = () => {
     }
 
     return (
-        <span>
-            <FormattedMessage
-                id="beregning.vedtakLenke"
-                values={{
-                    link: (chunks) => (
-                        <Link
-                            href={API_URLS.hentDokument(vedtak.journalpostId, vedtak.dokumentId ?? 'ukjent')}
-                            target="_blank"
-                        >
-                            {chunks}
-                        </Link>
-                    ),
-                }}
-            />
-        </span>
+        <FormattedMessage
+            id="beregning.vedtakLenke"
+            values={{
+                link: (chunks) => (
+                    <Link
+                        href={API_URLS.hentDokument(vedtak.journalpostId, vedtak.dokumentId ?? 'ukjent')}
+                        target="_blank"
+                    >
+                        {chunks}
+                    </Link>
+                ),
+            }}
+        />
     );
 };
 
