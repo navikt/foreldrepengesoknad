@@ -9,11 +9,18 @@ import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { mswWrapper } from '@navikt/fp-utils-test';
 
-import * as stories from './ManglendeVedlegg.stories';
+import * as stories from './ManglendeVedleggNy.stories';
 
-const { Termindatodokumentasjon, Omsorgsovertakelsedokumentasjon, Aleneomsorgdokumentasjon } = composeStories(stories);
+const {
+    Termindatodokumentasjon,
+    Omsorgsovertakelsedokumentasjon,
+    Aleneomsorgdokumentasjon,
+    FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid,
+    FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid,
+    BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid,
+} = composeStories(stories);
 
-describe('<ManglendeVedlegg>', () => {
+describe('<ManglendeVedleggNy>', () => {
     it(
         'skal lage "send inn senere" vedlegg for terminbekreftelse',
         mswWrapper(async ({ setHandlers }) => {
@@ -310,6 +317,107 @@ describe('<ManglendeVedlegg>', () => {
                     ],
                 }),
                 key: ContextDataType.VEDLEGG,
+                type: 'update',
+            });
+        }),
+    );
+
+    it(
+        'skal håndtere automatisk dokumentasjon når mor jobber mer enn 75% og vi ikke trenger dokumentere arbeid',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
+
+            setHandlers(FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid.parameters.msw);
+            const screen = render(
+                <FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
+
+            // Verifiser at "Ingen dokumentasjon påkrevd" melding vises
+            expect(await screen.findByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
+            expect(
+                await screen.findByText(
+                    'Du trenger ikke sende inn dokumentasjon. Vi innhenter opplysninger om mors arbeid ' +
+                        'fra Arbeidsgiver- og arbeidstakerregisteret. Mor vil bli informert når søknaden blir sendt.',
+                    { exact: false },
+                ),
+            ).toBeInTheDocument();
+
+            await userEvent.click(screen.getByText('Neste steg'));
+
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+                data: SøknadRoutes.OPPSUMMERING,
+                key: ContextDataType.APP_ROUTE,
+                type: 'update',
+            });
+        }),
+    );
+
+    it(
+        'skal vise krav om dokumentasjon for mors arbeid når stillingsprosenten er < 75%',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
+
+            setHandlers(FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid.parameters.msw);
+            const screen = render(
+                <FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
+
+            expect(await screen.findByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
+            expect(
+                await screen.findByText(
+                    'Du må legge ved bekreftelse fra Eline sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.' +
+                        ' Dersom Eline er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.',
+                    { exact: false },
+                ),
+            ).toBeInTheDocument();
+
+            await userEvent.click(screen.getByText('Neste steg'));
+
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+                data: SøknadRoutes.OPPSUMMERING,
+                key: ContextDataType.APP_ROUTE,
+                type: 'update',
+            });
+        }),
+    );
+
+    it(
+        'skal håndtere automatisk dokumentasjon når bfhr og mor jobber mer enn 75% og vi ikke trenger dokumentere arbeid',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
+
+            setHandlers(BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid.parameters.msw);
+            const screen = render(
+                <BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
+
+            // Verifiser at "Ingen dokumentasjon påkrevd" melding vises
+            expect(await screen.findByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
+            expect(
+                await screen.findByText(
+                    'Du trenger ikke sende inn dokumentasjon. Vi innhenter opplysninger om mors arbeid ' +
+                        'fra Arbeidsgiver- og arbeidstakerregisteret. Mor vil bli informert når søknaden blir sendt.',
+                    { exact: false },
+                ),
+            ).toBeInTheDocument();
+
+            await userEvent.click(screen.getByText('Neste steg'));
+
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+                data: SøknadRoutes.OPPSUMMERING,
+                key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
         }),
