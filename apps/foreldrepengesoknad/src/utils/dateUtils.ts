@@ -31,6 +31,7 @@ import { Perioden } from '@navikt/fp-uttaksplan';
 import { FeatureToggle } from '../FeatureToggle';
 import { getIsDeltUttak } from './annenForelderUtils';
 import { getFamiliehendelsedato } from './barnUtils';
+import { erPeriodeIOpprinneligPlan } from './eksisterendeSakUtils';
 import { toggleUtils } from './toggleUtils';
 import { hasValue } from './validationUtil';
 
@@ -283,8 +284,7 @@ export const getEndringstidspunktNy = (
             );
 
             if (opprinneligPeriodeMedSammeFom !== undefined) {
-                const perioderErLikeUtenTidSjekk =
-                    TidsperiodenString.forPeriode(periode).erLik(opprinneligPeriodeMedSammeFom);
+                const perioderErLikeUtenTidSjekk = erPeriodeIOpprinneligPlan([periode], opprinneligPeriodeMedSammeFom);
                 if (
                     !perioderErLikeUtenTidSjekk ||
                     (perioderErLikeUtenTidSjekk &&
@@ -299,7 +299,7 @@ export const getEndringstidspunktNy = (
             }
 
             if (opprinneligPeriodeMedSammeFom !== undefined && søkerensUpdatedPlan.length - 1 === index) {
-                if (!TidsperiodenString.forPeriode(periode).erLik(opprinneligPeriodeMedSammeFom)) {
+                if (!erPeriodeIOpprinneligPlan([periode], opprinneligPeriodeMedSammeFom)) {
                     endringstidspunktNyPlan = fom;
                 }
             }
@@ -335,10 +335,7 @@ export const getEndringstidspunktNy = (
                 dayjs(nyPeriode.fom).isSame(fom, 'day'),
             );
 
-            if (
-                nyPeriodeMedSammeFom !== undefined &&
-                !TidsperiodenString.forPeriode(periode).erLik(nyPeriodeMedSammeFom)
-            ) {
+            if (nyPeriodeMedSammeFom !== undefined && !erPeriodeIOpprinneligPlan([periode], nyPeriodeMedSammeFom)) {
                 endringstidspunktOpprinneligPlan = nyPeriodeMedSammeFom.fom;
             }
 
