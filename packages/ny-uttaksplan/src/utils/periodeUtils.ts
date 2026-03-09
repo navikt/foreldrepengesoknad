@@ -6,6 +6,7 @@ import { IntlShape } from 'react-intl';
 
 import {
     BrukerRolleSak_fpoversikt,
+    MorsAktivitet,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
@@ -170,7 +171,7 @@ export const erDetReadonlyPerioderEtterValgtePerioder = (
     return harEøsEllerPleiepenger || harAnnenPartSomErLåst;
 };
 
-export const getAktivitetskravOptions = (skalViseMorsAktivitetskravVedSamtidigUttak: boolean) => {
+export const getAktivitetskravOptions = (skalViseMorsAktivitetskravVedSamtidigUttak: boolean): MorsAktivitet[] => {
     const aktivitetsKrav = [
         'ARBEID',
         'UTDANNING',
@@ -179,14 +180,14 @@ export const getAktivitetskravOptions = (skalViseMorsAktivitetskravVedSamtidigUt
         'TRENGER_HJELP',
         'INNLAGT',
         'ARBEID_OG_UTDANNING',
-    ];
+    ] satisfies MorsAktivitet[];
 
     return skalViseMorsAktivitetskravVedSamtidigUttak
         ? aktivitetsKrav.filter((k) => k !== 'INNLAGT' && k !== 'TRENGER_HJELP')
         : aktivitetsKrav;
 };
 
-export const getAktivitetskravTekst = (value: string, intl: IntlShape) => {
+export const getAktivitetskravTekst = (value: MorsAktivitet, intl: IntlShape) => {
     switch (value) {
         case 'ARBEID':
             return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Arbeid' });

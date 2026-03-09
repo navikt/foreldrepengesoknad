@@ -117,7 +117,7 @@ export const getCalendarLabel = (
                 },
             );
         case 'UTSETTELSE':
-            if (søker === 'FAR_MEDMOR' && (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT')) {
+            if (søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT') {
                 return intl.formatMessage(
                     { id: 'kalender.utsettelse.pause.label' },
                     {

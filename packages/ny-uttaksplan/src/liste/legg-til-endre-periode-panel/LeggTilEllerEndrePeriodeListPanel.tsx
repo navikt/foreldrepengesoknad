@@ -345,12 +345,11 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                                         <FormattedMessage id="uttaksplan.valgPanel.leggTilUtsettelse" />
                                     </Radio>
                                 )}
-                                {søker === 'FAR_MEDMOR' &&
-                                    (rettighetType === 'BARE_SØKER_RETT' || rettighetType === 'ALENEOMSORG') && (
-                                        <Radio value={'LEGG_TIL_PAUSE' satisfies HvaVilDuGjøre}>
-                                            <FormattedMessage id="uttaksplan.valgPanel.leggTilPause" />
-                                        </Radio>
-                                    )}
+                                {søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT' && (
+                                    <Radio value={'LEGG_TIL_PAUSE' satisfies HvaVilDuGjøre}>
+                                        <FormattedMessage id="uttaksplan.valgPanel.leggTilPause" />
+                                    </Radio>
+                                )}
                             </>
                             <Radio value={'LEGG_TIL_OPPHOLD' satisfies HvaVilDuGjøre}>
                                 {erNyPeriodeModus ? (

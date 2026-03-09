@@ -56,10 +56,7 @@ export const lagTapteDagerPerioder = (
     familiesituasjon: Familiesituasjon,
     foreldreInfo: ForeldreInfo,
 ): TapteDagerHull[] => {
-    if (
-        foreldreInfo.søker === 'FAR_MEDMOR' &&
-        (foreldreInfo.rettighetType === 'ALENEOMSORG' || foreldreInfo.rettighetType === 'BARE_SØKER_RETT')
-    ) {
+    if (foreldreInfo.søker === 'FAR_MEDMOR' && foreldreInfo.rettighetType === 'BARE_SØKER_RETT') {
         const sistePeriodeSomStarterEtterFamiliehendelsedato = sortertePerioder.findLast((p) =>
             dayjs(p.fom).isSameOrAfter(familiehendelsedato),
         );

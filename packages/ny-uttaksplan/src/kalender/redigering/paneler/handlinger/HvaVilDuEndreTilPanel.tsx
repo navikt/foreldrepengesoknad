@@ -92,7 +92,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
 
     const skalVisePauseknapp =
         søker === 'FAR_MEDMOR' &&
-        (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT') &&
+        rettighetType === 'BARE_SØKER_RETT' &&
         !UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
             sammenslåtteValgtePerioder,
             familiehendelsedato,
