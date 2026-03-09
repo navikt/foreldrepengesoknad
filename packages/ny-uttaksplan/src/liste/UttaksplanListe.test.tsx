@@ -15,6 +15,7 @@ const {
     MorSøkerOgFarHarEøsPeriode,
     MarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt,
     HarUtsettelse,
+    KunFarHarRettOgHarPausePeriode,
 } = composeStories(stories);
 
 describe('UttaksplanListe', () => {
@@ -654,6 +655,86 @@ describe('UttaksplanListe', () => {
                 forelder: 'MOR',
                 utsettelseÅrsak: 'SØKER_SYKDOM',
                 flerbarnsdager: false,
+            },
+        ]);
+    });
+
+    it('Skal ha periode med pause og legge til ny periode med pause', async () => {
+        const oppdaterUttaksplan = vi.fn();
+
+        render(<KunFarHarRettOgHarPausePeriode oppdaterUttaksplan={oppdaterUttaksplan} />);
+
+        expect(await screen.findByText('24. mai 24 - 28. mai 24')).toBeInTheDocument();
+        expect(screen.getAllByText('Pause i uttaket')).toHaveLength(2);
+
+        await userEvent.click(screen.getByText('24. mai 24 - 28. mai 24'));
+
+        expect(screen.getByText('Mor er i arbeid og utdanning')).toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Endre')[3]!);
+
+        expect(screen.getByText('Hva gjør mor i denne perioden?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Avbryt'));
+
+        await userEvent.click(screen.getByText('Legg til periode'));
+
+        await userEvent.click(screen.getByText('Pause'));
+
+        const fraOgMedDato = screen.getByLabelText('Fra og med dato');
+        await userEvent.type(fraOgMedDato, dayjs('2024-04-29').format('DD.MM.YYYY'));
+        await userEvent.tab();
+        const tilOgMedDato = screen.getByLabelText('Til og med dato');
+        await userEvent.type(tilOgMedDato, dayjs('2024-05-30').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        await userEvent.selectOptions(screen.getByLabelText('Hva gjør mor i denne perioden?'), 'ARBEID');
+
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+
+        expect(
+            await screen.findByText(
+                'Pause kan kun legges til når en har valgt dager etter 6-ukersperioden etter fødsel/termin',
+            ),
+        ).toBeInTheDocument();
+
+        await userEvent.clear(fraOgMedDato);
+        await userEvent.type(fraOgMedDato, dayjs('2024-05-29').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
+            {
+                flerbarnsdager: false,
+                fom: '2024-05-17',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                tom: '2024-05-23',
+            },
+            {
+                flerbarnsdager: false,
+                fom: '2024-05-24',
+                forelder: 'FAR_MEDMOR',
+                morsAktivitet: 'ARBEID_OG_UTDANNING',
+                tom: '2024-05-28',
+                utsettelseÅrsak: 'FRI',
+            },
+            {
+                flerbarnsdager: false,
+                fom: '2024-05-29',
+                forelder: 'FAR_MEDMOR',
+                morsAktivitet: 'ARBEID',
+                tom: '2024-05-30',
+                utsettelseÅrsak: 'FRI',
+            },
+            {
+                flerbarnsdager: false,
+                fom: '2024-05-31',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                tom: '2024-06-13',
             },
         ]);
     });

@@ -33,7 +33,6 @@ export const useSendSøknad = (
     });
 
     const send = async () => {
-        const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
         const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
 
         const cleanedSøknad = isLocalhostOrDev()
@@ -41,10 +40,10 @@ export const useSendSøknad = (
             : getSøknadsdataForInnsending(
                   erEndringssøknad,
                   hentData,
-                  uttaksplanMetadata.perioderSomSkalSendesInn!,
+                  notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA)).perioderSomSkalSendesInn!,
                   getFamiliehendelsedato(barn),
                   søkerinfo,
-                  uttaksplanMetadata.endringstidspunkt,
+                  notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA)).endringstidspunkt,
               );
 
         if (!isLocalhostOrDev() && cleanedSøknad.uttaksplan.uttaksperioder.length === 0 && erEndringssøknad) {
