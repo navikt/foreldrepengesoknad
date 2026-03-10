@@ -28,8 +28,3 @@ Avvent om skyra-teamet gjør det mulig å justere hvert enkelt kort for dette. *
 :global(skyra-survey)::part(button-chip) {
     padding: 5px 20px;
 }
-
-/* Vurder å justere dette dersom det ikke blir bra på mobil */
-/* :global(skyra-survey)::part(list-item) {
-    margin-bottom: 15px;
-} */
