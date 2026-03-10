@@ -6,6 +6,7 @@ import { BodyShort, HStack } from '@navikt/ds-react';
 import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { erUttaksperiode } from '../../../../utils/periodeUtils';
 import {
+    erUttaksplanperiodeEøs,
     erUttaksplanperiodeSamtidigUttak,
     erUttaksplanperiodeTapteDager,
     erUttaksplanperiodeUtenUttak,
@@ -20,6 +21,7 @@ interface Props {
 
 export const SkalJobbeContent = ({ uttaksplanperioder }: Props) => {
     const erUtsettelse = erUttaksplanperiodeUtsettelse(uttaksplanperioder);
+    const erEøsPeriode = erUttaksplanperiodeEøs(uttaksplanperioder);
     const erPeriodeUtenUttak = erUttaksplanperiodeUtenUttak(uttaksplanperioder);
     const samtidigUttak = erUttaksplanperiodeSamtidigUttak(uttaksplanperioder);
     const erOpphold = erUttaksplanperiodeUtsettelseOpphold(uttaksplanperioder);
@@ -36,7 +38,8 @@ export const SkalJobbeContent = ({ uttaksplanperioder }: Props) => {
         erOpphold ||
         erPeriodeUtenUttak ||
         samtidigUttak ||
-        erHull
+        erHull ||
+        erEøsPeriode
     ) {
         return null;
     }

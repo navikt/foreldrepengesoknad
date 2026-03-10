@@ -16,6 +16,7 @@ const {
     MarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt,
     HarUtsettelse,
     KunFarHarRettOgHarPausePeriode,
+    EøsPerioderForAnnenPart,
 } = composeStories(stories);
 
 describe('UttaksplanListe', () => {
@@ -737,5 +738,36 @@ describe('UttaksplanListe', () => {
                 tom: '2024-06-13',
             },
         ]);
+    });
+
+    it('Skal ikke kunne endre EØS-perioder', async () => {
+        const oppdaterUttaksplan = vi.fn();
+
+        render(<EøsPerioderForAnnenPart oppdaterUttaksplan={oppdaterUttaksplan} />);
+
+        expect(await screen.findAllByText('Hanne har foreldrepenger (EU/EØS)')).toHaveLength(4);
+
+        await userEvent.click(screen.getByText('Legg til periode'));
+
+        await userEvent.click(screen.getByText('Legge til ferie'));
+
+        const fraOgMedDato = screen.getByLabelText('Fra og med dato');
+        await userEvent.type(fraOgMedDato, dayjs('2025-10-08').format('DD.MM.YYYY'));
+        await userEvent.tab();
+        const tilOgMedDato = screen.getByLabelText('Til og med dato');
+        await userEvent.type(tilOgMedDato, dayjs('2025-10-15').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+
+        expect(screen.getByText('Periode kan ikke overlappe med en eksisterende EU/EØS-periode')).toBeInTheDocument();
+
+        await userEvent.clear(fraOgMedDato);
+        await userEvent.type(fraOgMedDato, dayjs('2025-10-09').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+
+        expect(screen.getByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
     });
 });

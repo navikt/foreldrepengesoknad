@@ -38,7 +38,7 @@ interface Props {
 export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) => {
     const {
         uttakPerioder,
-        foreldreInfo: { søker },
+        foreldreInfo: { søker, rettighetType },
         erPeriodeneTilAnnenPartLåst,
     } = useUttaksplanData();
 
@@ -96,7 +96,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
     const erMorsAktivitetIkkeOppgitt =
         harValgtDagerKunForEnEksisterendePeriode &&
-        harPeriodeDerMorsAktivitetIkkeErValgt(eksisterendePerioderSomErValgt);
+        harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, eksisterendePerioderSomErValgt);
 
     const onSubmit = (values: LeggTilEllerEndrePeriodeFormFormValues) => {
         const submitFeilmelding = formSubmitValidator(sammenslåtteValgtePerioder, values);

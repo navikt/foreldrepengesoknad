@@ -26,7 +26,11 @@ interface Props {
 export const UttaksplanListe = ({ isReadOnly }: Props) => {
     const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
-    const { uttakPerioder, familiehendelsedato } = useUttaksplanData();
+    const {
+        uttakPerioder,
+        familiehendelsedato,
+        foreldreInfo: { rettighetType },
+    } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
@@ -52,6 +56,7 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
     const alleRader = leggTilPeriodeForFamiliehendelsedato(uttaksplanperioderPerRadIListe, familiehendelsedato);
 
     const harMorsAktivitetIkkeErValgt = harPeriodeDerMorsAktivitetIkkeErValgt(
+        rettighetType,
         uttakPerioderJustertForFamiliehendelsesdato,
     );
 

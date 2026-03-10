@@ -7,6 +7,7 @@ import { IntlShape } from 'react-intl';
 import {
     BrukerRolleSak_fpoversikt,
     MorsAktivitet,
+    RettighetType_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
@@ -93,15 +94,17 @@ export const sorterPerioder = (a: { fom: string; tom: string }, b: { fom: string
 };
 
 export const harPeriodeDerMorsAktivitetIkkeErValgt = (
+    rettighetType: RettighetType_fpoversikt,
     perioder?: UttaksplanperiodeMedKunTapteDager[] | Uttaksplanperiode[],
 ) => {
     return (
+        rettighetType !== 'ALENEOMSORG' &&
         !!perioder &&
         perioder.some(
             (periode) =>
                 erVanligUttakPeriode(periode) &&
                 periode.forelder === 'FAR_MEDMOR' &&
-                periode.kontoType === 'FELLESPERIODE' &&
+                (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER') &&
                 periode.morsAktivitet === undefined,
         )
     );

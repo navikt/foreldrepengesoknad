@@ -454,7 +454,7 @@ export const cleanSøknadNy = (
         annenForelder: cleanAnnenforelder(annenForelder),
         dekningsgrad,
         uttaksplan: {
-            uttaksperioder: midlertidigMappingAvUttaksplan(søkersPerioder, barn),
+            uttaksperioder: midlertidigMappingAvUttaksplan(søkersPerioder, barn, annenForelder),
             ønskerJustertUttakVedFødsel,
         },
         utenlandsopphold: (utenlandsoppholdSiste12Mnd ?? []).concat(utenlandsoppholdNeste12Mnd ?? []),
@@ -537,7 +537,11 @@ export const cleanEndringssøknadNy = (
 
     const endringstidspunkt = getEndringstidspunktNy(søkersEksisterendePerioder, søkersNyePerioder);
 
-    const mappaUttaksperioder = midlertidigMappingAvUttaksplan(filtrerUtEøsPeriode(søkersNyePerioder), barn);
+    const mappaUttaksperioder = midlertidigMappingAvUttaksplan(
+        filtrerUtEøsPeriode(søkersNyePerioder),
+        barn,
+        annenForelder,
+    );
 
     const harPeriodeVedEndringstidspunkt = søkersNyePerioder.some((periode) =>
         dayjs(endringstidspunkt).isBetween(periode.fom, periode.tom, 'day', '[]'),
@@ -577,7 +581,15 @@ const filtrerUtAnnenPartsPerioder = (
         .filter((periode) => periode.forelder === søker);
 };
 
-const midlertidigMappingAvUttaksplan = (uttaksplan: UttakPeriode_fpoversikt[], barn: Barn): Uttaksplanperiode[] => {
+const midlertidigMappingAvUttaksplan = (
+    uttaksplan: UttakPeriode_fpoversikt[],
+    barn: Barn,
+    annenForelder: AnnenForelder,
+): Uttaksplanperiode[] => {
+    const erDeltUttak = isAnnenForelderOppgitt(annenForelder)
+        ? !!annenForelder.harRettPåForeldrepengerINorge || !!annenForelder.harRettPåForeldrepengerIEØS
+        : false;
+
     return uttaksplan.map((periode) => {
         const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(barn.antallBarn, periode.forelder, periode.kontoType);
 
@@ -628,7 +640,7 @@ const midlertidigMappingAvUttaksplan = (uttaksplan: UttakPeriode_fpoversikt[], b
             samtidigUttakProsent: periode.samtidigUttak,
             ønskerFlerbarnsdager: skalViseFlerbarnsdager ? periode.flerbarnsdager : undefined,
             ønskerGradering: periode.gradering !== undefined,
-            ønskerSamtidigUttak: periode.samtidigUttak !== undefined,
+            ønskerSamtidigUttak: erDeltUttak ? periode.samtidigUttak !== undefined : undefined,
         };
     });
 };

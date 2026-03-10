@@ -9,7 +9,7 @@ import { formatDate } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { genererPeriodeKey, getStønadskontoNavn } from '../../../liste/utils/uttaksplanListeUtils';
-import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
 import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../../utils/periodeUtils';
 
 interface Props {
@@ -26,7 +26,7 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
     const intl = useIntl();
 
     const {
-        foreldreInfo: { søker, navnPåForeldre },
+        foreldreInfo: { søker, navnPåForeldre, rettighetType },
     } = useUttaksplanData();
 
     const formMethods = useForm<FormValues>();
@@ -57,7 +57,7 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                         return (
                             <Radio key={genererPeriodeKey(p)} value={index} autoFocus={index === 0}>
                                 <HStack gap="space-4">
-                                    {harPeriodeDerMorsAktivitetIkkeErValgt([p]) && (
+                                    {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [p]) && (
                                         <ExclamationmarkTriangleFillIcon
                                             title={intl.formatMessage({
                                                 id: 'PeriodeListeHeader.MorsAktivitetIkkeValgt',
@@ -71,6 +71,7 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                                             intl,
                                             navnPåForeldre,
                                             søker === 'FAR_MEDMOR',
+                                            erEøsUttakPeriode(p),
                                             morsAktivitet,
                                             erVanligUttakPeriode(p) ? p.kontoType : undefined,
                                         )}`}
