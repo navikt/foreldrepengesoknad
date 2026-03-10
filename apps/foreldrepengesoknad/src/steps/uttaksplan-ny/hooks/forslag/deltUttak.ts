@@ -55,7 +55,7 @@ const lagDeltUttakForMor = (famDato: string, stønadskontoer: KontoDto[], startd
             : 0;
 
         tidsperiode = getTidsperiodeString(
-            UttaksdagenString.denne(currentFomDate).getDatoAntallUttaksdagerTidligere(dagerMedForeldrepengerFørFødsel),
+            UttaksdagenString.denne(currentFomDate).getDato(),
             dagerMedForeldrepengerFørFødsel,
         );
 
