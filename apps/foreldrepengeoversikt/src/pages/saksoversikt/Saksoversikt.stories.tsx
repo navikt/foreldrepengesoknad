@@ -138,3 +138,89 @@ export const Svangerskapspenger: Story = {
         søkerinfo: søkerinfo,
     },
 };
+
+export const ForeldrepengerTestAvSkyraNyligInnsending: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+                http.get(API_URLS.tidslinje, () =>
+                    HttpResponse.json([
+                        {
+                            // Søknad opprettet for 3 minutter siden, så undersøkelsen skal vises.
+                            opprettet: new Date(Date.now() - 3 * 60 * 1000).toISOString(),
+                            aktørType: 'BRUKER',
+                            tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+                            dokumenter: [],
+                            manglendeVedlegg: [],
+                        },
+                    ]),
+                ),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+            ],
+        },
+    },
+    args: {
+        søkerinfo: søkerinfo,
+        saksnummer: '1',
+    },
+};
+
+export const ForeldrepengerTestAvSkyraGammelInnsending: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+                http.get(API_URLS.tidslinje, () =>
+                    HttpResponse.json([
+                        {
+                            // Her er den satt til 7 dager siden, så undersøkelsen skal ikke vises.
+                            opprettet: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                            aktørType: 'BRUKER',
+                            tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+                            dokumenter: [],
+                            manglendeVedlegg: [],
+                        },
+                    ]),
+                ),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+            ],
+        },
+    },
+    args: {
+        søkerinfo: søkerinfo,
+        saksnummer: '1',
+    },
+};
+
+export const ForeldrepengerEndringssøknad: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+                http.get(API_URLS.tidslinje, () =>
+                    HttpResponse.json([
+                        {
+                            opprettet: new Date(Date.now() - 3 * 60 * 1000).toISOString(),
+                            aktørType: 'BRUKER',
+                            tidslinjeHendelseType: 'ENDRINGSSØKNAD',
+                            dokumenter: [],
+                            manglendeVedlegg: [],
+                        },
+                    ]),
+                ),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+            ],
+        },
+    },
+    args: {
+        søkerinfo: søkerinfo,
+        saksnummer: '1',
+    },
+};

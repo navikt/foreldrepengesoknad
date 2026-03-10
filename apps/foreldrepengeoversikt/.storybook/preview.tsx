@@ -13,7 +13,9 @@ import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 
 import '../src/index.css';
+import enMessages from '../src/intl/messages/en_US.json';
 import nbMessages from '../src/intl/messages/nb_NO.json';
+import nnMessages from '../src/intl/messages/nn_NO.json';
 
 dayjs.locale('nb');
 
@@ -27,9 +29,40 @@ const withIntlProvider = getIntlDecorator({
         ...filopplasterMessages.nb,
         ...observabilityMessages.nb,
     },
+    nn: {
+        ...nnMessages,
+        ...uiMessages.nn,
+        ...utilsMessages.nn,
+        ...nyUttaksplanMessages.nn,
+        ...formHookMessages.nn,
+        ...filopplasterMessages.nn,
+        ...observabilityMessages.nn,
+    },
+    en: {
+        ...enMessages,
+        ...uiMessages.en,
+        ...utilsMessages.en,
+        ...nyUttaksplanMessages.en,
+        ...formHookMessages.en,
+        ...filopplasterMessages.en,
+        ...observabilityMessages.en,
+    },
 });
 
 export const globalTypes = {
+    locale: {
+        description: 'Internationalization locale',
+        toolbar: {
+            title: 'Språk',
+            icon: 'globe',
+            items: [
+                { value: 'nb', title: 'Bokmål' },
+                { value: 'nn', title: 'Nynorsk' },
+                { value: 'en', title: 'English' },
+            ],
+            dynamicTitle: true,
+        },
+    },
     theme: {
         name: 'Tema',
         description: 'Aksel tema',
