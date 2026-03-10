@@ -101,7 +101,7 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
                         )}
                         {stønadskontoer && valgtStønadskonto && hvorLangPeriode && arbeidssituasjon && (
                             <VStack gap="space-8">
-                                <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/test-planlegg-foreldrepenger-inline" />
+                                <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/planlegg-foreldrepenger-inline" />
 
                                 {harRettTilForeldrepenger && (
                                     <OppsummeringHarRett
