@@ -125,7 +125,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                     saksnummer={params.saksnummer}
                 />
             )}
-            {visSurvey && <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/test-dummy-inline" />}
+            {visSurvey && <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/test-foreldrepengesoknad-inline" />}
             <Oppgaver saksnummer={gjeldendeSak.saksnummer} />
             <VStack gap="space-4">
                 <ContentSection
