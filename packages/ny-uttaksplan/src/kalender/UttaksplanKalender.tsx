@@ -47,7 +47,10 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
         [],
     );
 
-    const { uttakPerioder } = useUttaksplanData();
+    const {
+        uttakPerioder,
+        foreldreInfo: { rettighetType },
+    } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
@@ -136,7 +139,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                     </RadioGroup>
                 )}
 
-                {harPeriodeDerMorsAktivitetIkkeErValgt(uttakPerioder) && (
+                {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, uttakPerioder) && (
                     <Alert variant="warning">
                         <VStack gap="space-2">
                             <BodyShort>
