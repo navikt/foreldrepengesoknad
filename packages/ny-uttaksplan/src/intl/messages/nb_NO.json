@@ -12,6 +12,7 @@
     "uttaksplan.hvilkeperiode": "Hvilken periode vil du endre?",
     "uttaksplan.valgPanel.label": "Hva vil du gjøre?",
     "uttaksplan.valgPanel.utsettelse": "Utsettelse kan kun legges til når en har valgt dager i 6-ukersperioden etter fødsel/termin",
+    "uttaksplan.overskriderEøs": "Periode kan ikke overlappe med en eksisterende EU/EØS-periode",
     "uttaksplan.valgPanel.pause": "Pause kan kun legges til når en har valgt dager etter 6-ukersperioden etter fødsel/termin",
     "uttaksplan.valgPanel.leggTilPeriode": "Legge til periode med foreldrepenger",
     "uttaksplan.valgPanel.leggTilPeriode.endre": "Periode med foreldrepenger",

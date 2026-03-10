@@ -9,7 +9,7 @@ import { formatDate } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { genererPeriodeKey, getStønadskontoNavn } from '../../../liste/utils/uttaksplanListeUtils';
-import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
 import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../../utils/periodeUtils';
 
 interface Props {
@@ -71,6 +71,7 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                                             intl,
                                             navnPåForeldre,
                                             søker === 'FAR_MEDMOR',
+                                            erEøsUttakPeriode(p),
                                             morsAktivitet,
                                             erVanligUttakPeriode(p) ? p.kontoType : undefined,
                                         )}`}

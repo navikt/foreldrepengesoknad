@@ -45,7 +45,7 @@ export const finnBakgrunnsfarge = (
     }
 
     if (erUttaksplanperiodeEøs(uttaksplanperioder)) {
-        return 'bg-ax-success-400';
+        return 'bg-ax-accent-400';
     }
 
     if (erUttaksplanperiodeTapteDager(uttaksplanperioder)) {

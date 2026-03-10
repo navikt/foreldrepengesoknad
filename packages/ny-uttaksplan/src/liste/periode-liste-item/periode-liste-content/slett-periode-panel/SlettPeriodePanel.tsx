@@ -13,7 +13,7 @@ import { isRequired } from '@navikt/fp-validation';
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../../context/UttaksplanRedigeringContext';
 import { SlettPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/SlettPeriodeForskyvEllerErstattPanel';
-import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../../utils/UttakPeriodeBuilder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
 import { genererPeriodeKey, getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
@@ -129,6 +129,7 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
                                             intl,
                                             navnPåForeldre,
                                             erFarEllerMedmor,
+                                            erEøsUttakPeriode(p),
                                             morsAktivitet,
                                             erVanligUttakPeriode(p) ? p.kontoType : undefined,
                                         )}`}
