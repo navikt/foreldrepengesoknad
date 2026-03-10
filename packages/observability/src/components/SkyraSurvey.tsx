@@ -1,5 +1,5 @@
 import { TasklistIcon } from '@navikt/aksel-icons';
-import { type ReactNode, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HStack, Skeleton, VStack } from '@navikt/ds-react';
@@ -8,14 +8,11 @@ import './SkyraSurvey.module.css';
 
 export interface SkyraSurveyProps {
     slug: string;
-    title?: string;
-    icon?: ReactNode;
-    onSurveyCompleted?: () => void;
 }
 
-export const SkyraSurvey = ({ slug, title, icon, onSurveyCompleted }: SkyraSurveyProps) => {
+export const SkyraSurvey = ({ slug }: SkyraSurveyProps) => {
     const intl = useIntl();
-    const resolvedTitle = title ?? intl.formatMessage({ id: 'SkyraSurvey.Tittel' });
+    const resolvedTitle = intl.formatMessage({ id: 'SkyraSurvey.Tittel' });
     const [isLoaded, setIsLoaded] = useState(false);
     const [hasFailed, setHasFailed] = useState(false);
     const [hasCompletedSurvey, setHasCompletedSurvey] = useState(() => {
@@ -65,7 +62,6 @@ export const SkyraSurvey = ({ slug, title, icon, onSurveyCompleted }: SkyraSurve
                 setHasCompletedSurvey(true);
                 setIsOpen(false);
                 sessionStorage.setItem(surveyKey, 'true');
-                onSurveyCompleted?.();
                 if (observer) {
                     observer.disconnect();
                 }
@@ -110,7 +106,7 @@ export const SkyraSurvey = ({ slug, title, icon, onSurveyCompleted }: SkyraSurve
             }
             clearTimeout(timeout);
         };
-    }, [slug, onSurveyCompleted]);
+    }, [slug]);
 
     // Vis kun surveyen for norsk bokmål og nynorsk
     if (intl.locale !== 'nb' && intl.locale !== 'nn') {
@@ -152,7 +148,7 @@ export const SkyraSurvey = ({ slug, title, icon, onSurveyCompleted }: SkyraSurve
         >
             <ExpansionCard.Header>
                 <HStack gap="space-24" align="center" wrap={false}>
-                    {icon ?? <TasklistIcon height={24} width={24} fontSize="1.5rem" aria-hidden />}
+                    <TasklistIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                     <ExpansionCard.Title size="small">{resolvedTitle}</ExpansionCard.Title>
                 </HStack>
             </ExpansionCard.Header>

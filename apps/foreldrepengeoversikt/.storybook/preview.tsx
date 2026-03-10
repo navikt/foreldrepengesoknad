@@ -6,6 +6,7 @@ import { initialize, mswLoader } from 'msw-storybook-addon';
 
 import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
+import { observabilityMessages } from '@navikt/fp-observability';
 import { uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
 import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
@@ -24,6 +25,7 @@ const withIntlProvider = getIntlDecorator({
         ...nyUttaksplanMessages.nb,
         ...formHookMessages.nb,
         ...filopplasterMessages.nb,
+        ...observabilityMessages.nb,
     },
 });
 
