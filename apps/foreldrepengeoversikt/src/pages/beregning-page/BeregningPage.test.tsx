@@ -17,10 +17,14 @@ describe('<BeregningPage>', () => {
             expect(await screen.findByText('Beregning av foreldrepenger')).toBeInTheDocument();
             expect(await screen.findByText('Dagsats: 3 004 kr')).toBeInTheDocument();
 
-            (await screen.findByText('Mer om beregningen')).click();
+            const merOmBeregningen = await screen.findByText('Mer om beregningen');
+            merOmBeregningen.click();
 
-            expect(await screen.findByText('NAV FAMILIE- OG PENSJONSYTELSER OSLO - 992257822')).toBeInTheDocument();
-            expect(await screen.findByText('Frilans')).toBeInTheDocument();
+            const beregningCard = within(merOmBeregningen.closest('section')!);
+            expect(
+                await beregningCard.findByText('NAV FAMILIE- OG PENSJONSYTELSER OSLO - 992257822'),
+            ).toBeInTheDocument();
+            expect(await beregningCard.findByText('Frilans')).toBeInTheDocument();
 
             expect(await screen.findByText('Utbetalingsplan')).toBeInTheDocument();
             const januarExpansionCard = await screen.findByTestId('expansioncard-Januar');

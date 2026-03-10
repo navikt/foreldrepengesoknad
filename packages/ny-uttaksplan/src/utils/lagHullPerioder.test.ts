@@ -108,13 +108,19 @@ describe('lagHullPerioder', () => {
         expect(perioderMedHull).toEqual([]);
     });
 
-    it('skal legge til hull etter seksukersperioden og før første periode for kun far har rett ved fødsel', () => {
+    it('skal legge til hull etter seksukersperioden og før siste periode for kun far har rett ved fødsel', () => {
         const familiehendelsedato = '2025-03-26';
 
         const perioder = [
             {
                 fom: '2025-08-11',
                 tom: '2025-08-20',
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            {
+                fom: '2025-08-20',
+                tom: '2025-08-24',
                 flerbarnsdager: false,
                 forelder: 'MOR',
             },
