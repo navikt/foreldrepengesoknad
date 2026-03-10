@@ -29,6 +29,7 @@ export const getStønadskontoNavn = (
     intl: IntlShape,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
+    erEøsPeriode: boolean,
     morsAktivitet: MorsAktivitet | undefined,
     konto?: KontoType,
     erAleneOmOmsorg?: boolean,
@@ -53,7 +54,7 @@ export const getStønadskontoNavn = (
         );
     }
 
-    if (erFarEllerMedmor === true && erAleneOmOmsorg === false) {
+    if (!erEøsPeriode && erFarEllerMedmor === true && erAleneOmOmsorg === false) {
         if (morsAktivitet === 'IKKE_OPPGITT') {
             return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE_BFHR' });
         }

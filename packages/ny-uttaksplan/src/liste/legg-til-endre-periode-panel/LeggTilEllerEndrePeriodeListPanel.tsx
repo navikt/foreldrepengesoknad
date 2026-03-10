@@ -7,7 +7,7 @@ import { Alert, Button, ErrorMessage, HStack, Heading, Radio, VStack } from '@na
 
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { BrukerRolleSak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { omitMany } from '@navikt/fp-utils';
+import { TidsperiodenString, omitMany } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
@@ -27,7 +27,12 @@ import {
     FormValues as UtsettelseFormValues,
 } from '../../felles/utsettelse/LeggTilUtsettelseForm';
 import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
-import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
+import {
+    Uttaksplanperiode,
+    erEøsUttakPeriode,
+    erUttaksplanHull,
+    erVanligUttakPeriode,
+} from '../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../utils/periodeUtils';
@@ -122,6 +127,19 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
     const onSubmit = (values: FormValues) => {
         setFeilmelding(undefined);
+
+        const erOverlappendeMedEøsPerioder = uttakPerioder.some(
+            (periode) =>
+                erEøsUttakPeriode(periode) &&
+                TidsperiodenString.forPeriode(periode).overlapper({
+                    fom: notEmpty(values.fom),
+                    tom: notEmpty(values.tom),
+                }),
+        );
+        if (erOverlappendeMedEøsPerioder) {
+            setFeilmelding(intl.formatMessage({ id: 'uttaksplan.overskriderEøs' }));
+            return;
+        }
 
         if (hvaVilDuGjøre === 'LEGG_TIL_PERIODE') {
             const fom = notEmpty(values.fom);

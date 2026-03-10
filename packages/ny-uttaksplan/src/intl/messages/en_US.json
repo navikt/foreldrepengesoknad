@@ -12,6 +12,7 @@
     "uttaksplan.hvilkeperiode": "Which period would you like to change?",
     "uttaksplan.valgPanel.label": "What do you want to do?",
     "uttaksplan.valgPanel.utsettelse": "Postponement can only be added when days have been selected in the 6-week period after birth",
+    "uttaksplan.overskriderEøs": "The period cannot overlap with an existing EU/EEA period",
     "uttaksplan.valgPanel.pause": "Pause can only be added when days have been selected after the 6-week period following birth",
     "uttaksplan.valgPanel.leggTilPeriode": "Add period with parental benefits",
     "uttaksplan.valgPanel.leggTilPeriode.endre": "Period with parental benefits",
