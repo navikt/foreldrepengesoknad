@@ -53,7 +53,7 @@ export const EksisterendeValgtePerioder = ({ perioder, setErForskyvEllerErstattP
     const slettPeriode = useSlettPeriodeFn();
 
     const {
-        foreldreInfo: { erMedmorDelAvSøknaden, søker },
+        foreldreInfo: { erMedmorDelAvSøknaden, søker, rettighetType },
         erPeriodeneTilAnnenPartLåst,
         uttakPerioder,
     } = useUttaksplanData();
@@ -176,7 +176,7 @@ export const EksisterendeValgtePerioder = ({ perioder, setErForskyvEllerErstattP
                                         </BodyShort>
                                     )}
 
-                                    {harPeriodeDerMorsAktivitetIkkeErValgt([p]) && (
+                                    {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [p]) && (
                                         <Alert variant="warning" size="small" className="mt-3 mb-1 p-2">
                                             <BodyShort>
                                                 <FormattedMessage id="RedigeringPanel.MorsAktivitetIkkeValgt" />

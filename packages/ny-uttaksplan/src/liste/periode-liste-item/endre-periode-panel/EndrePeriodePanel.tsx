@@ -6,6 +6,7 @@ import { HStack, Heading } from '@navikt/ds-react';
 
 import { notEmpty } from '@navikt/fp-validation';
 
+import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { Uttaksplanperiode } from '../../../types/UttaksplanPeriode';
 import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../../utils/periodeUtils';
 import { LeggTilEllerEndrePeriodeListPanel } from '../../legg-til-endre-periode-panel/LeggTilEllerEndrePeriodeListPanel';
@@ -22,6 +23,10 @@ interface Props {
 export const EndrePeriodePanel = ({ closePanel, uttaksplanperioder }: Props) => {
     const erSamtidigUttak = erUttaksplanperiodeSamtidigUttak(uttaksplanperioder);
     const erKunEnPeriodeEllerSamtidigUttak = uttaksplanperioder.length === 1 || erSamtidigUttak;
+
+    const {
+        foreldreInfo: { rettighetType },
+    } = useUttaksplanData();
 
     const [valgtPeriodeIndex, setValgtPeriodeIndex] = useState<number | undefined>(
         erKunEnPeriodeEllerSamtidigUttak ? 0 : undefined,
@@ -53,7 +58,7 @@ export const EndrePeriodePanel = ({ closePanel, uttaksplanperioder }: Props) => 
                             !erSamtidigUttak && uttaksplanperioder.length !== 1 ? setValgtPeriodeIndex : undefined
                         }
                         erNyPeriodeModus={false}
-                        harPeriodeDerMorsAktivitetIkkeErValgt={harPeriodeDerMorsAktivitetIkkeErValgt([
+                        harPeriodeDerMorsAktivitetIkkeErValgt={harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [
                             finnUttakplanperiode(erSamtidigUttak, uttaksplanperioder, valgtPeriodeIndex),
                         ])}
                     />

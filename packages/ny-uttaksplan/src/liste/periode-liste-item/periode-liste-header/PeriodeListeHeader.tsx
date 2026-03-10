@@ -26,7 +26,11 @@ interface Props {
 export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
     const intl = useIntl();
 
-    const { familiehendelsedato, foreldreInfo, familiesituasjon } = useUttaksplanData();
+    const {
+        familiehendelsedato,
+        foreldreInfo: { rettighetType, søker, navnPåForeldre },
+        familiesituasjon,
+    } = useUttaksplanData();
 
     const førsteFom = getFørsteUttaksplanperiodeFom(uttaksplanperioder);
     const sisteTom = getSisteUttaksplanperiodeTom(uttaksplanperioder);
@@ -42,13 +46,13 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
     const tekst = getTekst(
         intl,
         uttaksplanperioder,
-        foreldreInfo.søker === 'FAR_MEDMOR',
-        foreldreInfo.navnPåForeldre,
+        søker === 'FAR_MEDMOR',
+        navnPåForeldre,
         familiesituasjon,
-        foreldreInfo.rettighetType === 'BEGGE_RETT',
+        rettighetType === 'BEGGE_RETT',
     );
 
-    const harMorsAktivitetIkkeErValgt = harPeriodeDerMorsAktivitetIkkeErValgt(uttaksplanperioder);
+    const harMorsAktivitetIkkeErValgt = harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, uttaksplanperioder);
 
     return (
         <HGrid

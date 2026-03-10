@@ -45,7 +45,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
 
     return (
         <HStack gap="space-8">
-            {harPeriodeDerMorsAktivitetIkkeErValgt([periode]) && (
+            {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [periode]) && (
                 <ExclamationmarkTriangleFillIcon
                     title={intl.formatMessage({ id: 'PeriodeListeHeader.MorsAktivitetIkkeValgt' })}
                     fontSize="1.5rem"
