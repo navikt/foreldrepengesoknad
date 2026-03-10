@@ -128,7 +128,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const onSubmit = (values: FormValues) => {
         setFeilmelding(undefined);
 
-        const erOvelappendeMedEøsPerioder = uttakPerioder.some(
+        const erOverlappendeMedEøsPerioder = uttakPerioder.some(
             (periode) =>
                 erEøsUttakPeriode(periode) &&
                 TidsperiodenString.forPeriode(periode).overlapper({
@@ -136,7 +136,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                     tom: notEmpty(values.tom),
                 }),
         );
-        if (erOvelappendeMedEøsPerioder) {
+        if (erOverlappendeMedEøsPerioder) {
             setFeilmelding(intl.formatMessage({ id: 'uttaksplan.overskriderEøs' }));
             return;
         }
