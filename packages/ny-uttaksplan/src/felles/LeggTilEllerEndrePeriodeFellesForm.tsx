@@ -22,8 +22,9 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskontoNavnSimple } from '../liste/utils/uttaksplanListeUtils';
-import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
+import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
+import { getAktivitetskravOptions, getAktivitetskravTekst } from '../utils/periodeUtils';
 import { useHentGyldigeKontotyper } from './useHentGyldigeKontotyper';
 import { prosentValideringGradering, valideringSamtidigUttak } from './uttaksplanValidatorer';
 
@@ -63,6 +64,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         erPeriodeneTilAnnenPartLåst,
         aktiveArbeidsforhold,
         barn,
+        uttakPerioder,
     } = useUttaksplanData();
 
     const formMethods = useFormContext<LeggTilEllerEndrePeriodeFormFormValues>();
@@ -145,6 +147,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 
     const erFarMedmorLåst = erPeriodeneTilAnnenPartLåst && søker === 'MOR';
     const erMorLåst = erPeriodeneTilAnnenPartLåst && søker === 'FAR_MEDMOR';
+    const erMinstEnEøsPeriode = uttakPerioder.some((periode) => erEøsUttakPeriode(periode));
 
     if ((erMorLåst && !erFarMedmorGyldigForelder) || (erFarMedmorLåst && !erMorGyldigForelder)) {
         return (
@@ -179,7 +182,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                                 )}
                             </Radio>
                         ),
-                        erMorGyldigForelder && erFarMedmorGyldigForelder && (
+                        erMorGyldigForelder && erFarMedmorGyldigForelder && !erMinstEnEøsPeriode && (
                             <Radio key="begge" value="BEGGE">
                                 <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Begge" />
                             </Radio>
@@ -576,47 +579,6 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
             )}
         </>
     );
-};
-
-const getAktivitetskravOptions = (skalViseMorsAktivitetskravVedSamtidigUttak: boolean) => {
-    const aktivitetsKrav = [
-        'ARBEID',
-        'UTDANNING',
-        'KVALPROG',
-        'INTROPROG',
-        'TRENGER_HJELP',
-        'INNLAGT',
-        'ARBEID_OG_UTDANNING',
-    ];
-
-    if (skalViseMorsAktivitetskravVedSamtidigUttak) {
-        return ['ARBEID', 'UTDANNING', 'KVALPROG', 'INTROPROG', 'ARBEID_OG_UTDANNING'];
-    }
-
-    return skalViseMorsAktivitetskravVedSamtidigUttak
-        ? aktivitetsKrav.filter((k) => k !== 'INNLAGT' && k !== 'TRENGER_HJELP')
-        : aktivitetsKrav;
-};
-
-const getAktivitetskravTekst = (value: string, intl: IntlShape) => {
-    switch (value) {
-        case 'ARBEID':
-            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Arbeid' });
-        case 'UTDANNING':
-            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Utdanning' });
-        case 'KVALPROG':
-            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Kvalprog' });
-        case 'INTROPROG':
-            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Introprog' });
-        case 'TRENGER_HJELP':
-            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Trenger_hjelp' });
-        case 'INNLAGT':
-            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Innlagt' });
-        case 'ARBEID_OG_UTDANNING':
-            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Arbeid_og_utdanning' });
-        default:
-            return '';
-    }
 };
 
 const getSkalViseMorsAktivitetskravVedSamtidigUttak = (

@@ -2,6 +2,9 @@ import { createContext, useCallback, useContext, useMemo, useState } from 'react
 
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
+import { erEøsUttakPeriode } from '../types/UttaksplanPeriode';
+import { useUttaksplanData } from './UttaksplanDataContext';
+
 type AlleUttakPerioder = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
 
 type Props = {
@@ -26,6 +29,8 @@ const UttaksplanRedigeringContext = createContext<ContextValues | null>(null);
 export const UttaksplanRedigeringProvider = (props: Props) => {
     const { oppdaterUttaksplan: oppdater, harEndretPlan, children } = props;
     const [visFjernAltModal, setVisFjernAltModal] = useState(false);
+
+    const { uttakPerioder } = useUttaksplanData();
 
     const [uttaksplanVersjoner, setUttaksplanVersjoner] = useState<AlleUttakPerioder[][]>([]);
 
@@ -57,8 +62,8 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
 
     const fjernAltIUttaksplan = useCallback(() => {
         setUttaksplanVersjoner([]);
-        oppdater([]);
-    }, [oppdater]);
+        oppdater(uttakPerioder.filter((periode) => erEøsUttakPeriode(periode)));
+    }, [oppdater, uttakPerioder]);
 
     const value = useMemo(
         () => ({

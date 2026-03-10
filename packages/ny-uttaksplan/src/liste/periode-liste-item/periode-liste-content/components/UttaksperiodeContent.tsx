@@ -37,6 +37,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
         intl,
         navnPåForeldre,
         erFarEllerMedmor,
+        erEøsUttakPeriode(periode),
         morsAktivitet,
         periode.kontoType,
         rettighetType === 'ALENEOMSORG',

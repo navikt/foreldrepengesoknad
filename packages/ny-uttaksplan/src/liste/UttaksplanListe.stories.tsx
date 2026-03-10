@@ -788,3 +788,99 @@ export const HarUtsettelse: Story = {
         erPeriodeneTilAnnenPartLåst: false,
     },
 };
+
+export const KunFarHarRettOgHarPausePeriode: Story = {
+    args: {
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2024-04-04'],
+            antallBarn: 1,
+        },
+        foreldreInfo: {
+            rettighetType: 'BARE_SØKER_RETT',
+            søker: 'FAR_MEDMOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+        uttakPerioder: [
+            {
+                fom: '2024-05-17',
+                tom: '2024-05-23',
+                kontoType: 'FEDREKVOTE',
+                forelder: 'FAR_MEDMOR',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2024-05-24',
+                tom: '2024-05-28',
+                forelder: 'FAR_MEDMOR',
+                utsettelseÅrsak: 'FRI',
+                morsAktivitet: 'ARBEID_OG_UTDANNING',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2024-05-31',
+                tom: '2024-06-13',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                flerbarnsdager: false,
+            },
+        ] satisfies Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+        valgtStønadskonto: {
+            kontoer: [
+                { konto: 'MØDREKVOTE', dager: 95 },
+                { konto: 'FEDREKVOTE', dager: 95 },
+                { konto: 'FELLESPERIODE', dager: 101 },
+                { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+            ],
+            minsteretter: MINSTERETTER,
+        },
+    },
+};
+
+export const EøsPerioderForAnnenPart: Story = {
+    args: {
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2024-04-04'],
+            antallBarn: 1,
+        },
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'FAR_MEDMOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+        uttakPerioder: [
+            { fom: '2025-05-06', tom: '2025-10-08', kontoType: 'MØDREKVOTE', trekkdager: 75 },
+            {
+                fom: '2025-12-09',
+                tom: '2025-12-24',
+                kontoType: 'FEDREKVOTE',
+                resultat: { innvilget: false, trekkerMinsterett: false, trekkerDager: false, årsak: 'ANNET' },
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+            { fom: '2025-10-16', tom: '2025-12-24', kontoType: 'FELLESPERIODE', trekkdager: 50 },
+            {
+                fom: '2025-12-25',
+                tom: '2026-03-23',
+                kontoType: 'FEDREKVOTE',
+                resultat: { innvilget: true, trekkerMinsterett: true, trekkerDager: true, årsak: 'ANNET' },
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+        ] satisfies Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+        valgtStønadskonto: {
+            kontoer: [
+                { konto: 'MØDREKVOTE', dager: 95 },
+                { konto: 'FEDREKVOTE', dager: 95 },
+                { konto: 'FELLESPERIODE', dager: 101 },
+                { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+            ],
+            minsteretter: MINSTERETTER,
+        },
+    },
+};

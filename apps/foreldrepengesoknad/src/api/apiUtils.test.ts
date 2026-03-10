@@ -346,7 +346,7 @@ const uttaksplanUtenPeriode_5 = getUttaksplanUtenPeriode(periode_5);
 
 describe('getUttaksplanMedFriUtsettelsesperiode', () => {
     it('inserts correct fri utsettelsesperiode that ends on a Friday', () => {
-        const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(uttaksplanUtenPeriode_1, new Date(fraDato_1));
+        const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(uttaksplanUtenPeriode_1, fraDato_1);
         const friUtsettelsePeriode = nyUttaksplan[0]!;
         expect(nyUttaksplan.length).toEqual(uttaksplanMedAllePerioder.length);
         expect(friUtsettelsePeriode.type).toBe(Periodetype.Utsettelse);
@@ -354,14 +354,14 @@ describe('getUttaksplanMedFriUtsettelsesperiode', () => {
         expect(friUtsettelsePeriode.tom).toEqual(tilDato_1);
     });
     it('inserts correct fri utsettelsesperiode and fills out hole before next periode', () => {
-        const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(uttaksplanUtenPeriode_2, new Date(fraDato_2));
+        const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(uttaksplanUtenPeriode_2, fraDato_2);
         const friUtsettelsePeriode = nyUttaksplan[1]!;
         expect(nyUttaksplan.length).toEqual(uttaksplanMedAllePerioder.length);
         expect(friUtsettelsePeriode.fom).toEqual(fraDato_2);
         expect(friUtsettelsePeriode.tom).toEqual('2022-02-10');
     });
     it('inserts correct fri utsettelsesperiode that lasts 1 day', () => {
-        const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(uttaksplanUtenPeriode_3, new Date(fraDato_3));
+        const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(uttaksplanUtenPeriode_3, fraDato_3);
         const friUtsettelsePeriode = nyUttaksplan[2]!;
         expect(nyUttaksplan.length).toEqual(uttaksplanMedAllePerioder.length);
         expect(friUtsettelsePeriode.fom).toEqual(fraDato_3);
@@ -369,7 +369,7 @@ describe('getUttaksplanMedFriUtsettelsesperiode', () => {
     });
 
     it('inserts correct fri utsettelsesperiode that ends last day of February in a non-leap year', () => {
-        const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(uttaksplanUtenPeriode_5, new Date(fraDato_5));
+        const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(uttaksplanUtenPeriode_5, fraDato_5);
         const friUtsettelsePeriode = nyUttaksplan[4]!;
         expect(nyUttaksplan.length).toEqual(uttaksplanMedAllePerioder.length);
         expect(friUtsettelsePeriode.fom).toEqual(fraDato_5);
@@ -377,10 +377,7 @@ describe('getUttaksplanMedFriUtsettelsesperiode', () => {
     });
 
     it('inserts correct fri utsettelsesperiode that ends last day of February in leap year', () => {
-        const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(
-            [...uttaksplanMedAllePerioder],
-            new Date('2024-02-27'),
-        );
+        const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode([...uttaksplanMedAllePerioder], '2024-02-27');
         expect(nyUttaksplan.length).toEqual(uttaksplanMedAllePerioder.length + 1);
         const friUtsettelsePeriode = nyUttaksplan[6]!;
         expect(friUtsettelsePeriode.type).toBe(Periodetype.Utsettelse);
@@ -390,10 +387,7 @@ describe('getUttaksplanMedFriUtsettelsesperiode', () => {
 
     it('inserts correct fri utsettelsesperiode that ends at endringstidspunkt if no periods after', () => {
         const endringstidspunkt = '2024-03-08';
-        const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(
-            [...uttaksplanMedAllePerioder],
-            new Date(endringstidspunkt),
-        );
+        const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode([...uttaksplanMedAllePerioder], endringstidspunkt);
         expect(nyUttaksplan.length).toEqual(uttaksplanMedAllePerioder.length + 1);
         const friUtsettelsePeriode = nyUttaksplan[7]!;
         expect(friUtsettelsePeriode.type).toBe(Periodetype.Utsettelse);

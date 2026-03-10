@@ -7,7 +7,7 @@ import { NavnPåForeldre } from '@navikt/fp-common';
 import { UttakOverføringÅrsak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { UttaksdagenString, formatDateExtended } from '@navikt/fp-utils';
 
-import { erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
+import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
 
@@ -25,6 +25,7 @@ export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, na
         intl,
         navnPåForeldre,
         periode.forelder === 'FAR_MEDMOR',
+        erEøsUttakPeriode(periode),
         morsAktivitet,
         periode.kontoType,
     );

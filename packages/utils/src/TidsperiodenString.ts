@@ -35,16 +35,24 @@ export class TidsperiodenString {
         return erTidsperiodeUtenforTidsperiode(this.tidsperiode, tidsperiode2);
     }
 
-    erFomEllerEtterDato(dato: string) {
-        return erTidsperiodeFomEllerEtterDato(this.tidsperiode, dato);
+    erFomLikEllerEtterDato(dato: string) {
+        return erTidsperiodeFomLikEllerEtterDato(this.tidsperiode, dato);
     }
 
-    erFørDato(dato: string) {
-        return erTidsperiodeFomEllerEtterDato(this.tidsperiode, dato) === false;
+    erFomFørDato(dato: string) {
+        return erTidsperiodeFomLikEllerEtterDato(this.tidsperiode, dato) === false;
     }
 
     inneholderDato(dato: string) {
         return inneholderTidsperiodeDato(this.tidsperiode, dato);
+    }
+
+    slutterEtter(dato: string) {
+        const { tom } = this.tidsperiode;
+        if (!tom || !this.erGyldig()) {
+            return false;
+        }
+        return dayjs(tom).isAfter(dato, 'day');
     }
 
     erGyldig() {
@@ -104,11 +112,10 @@ const erTidsperiodeUtenforTidsperiode = (tidsperiode1: Tidsperiode, tidsperiode2
     return false;
 };
 
-const erTidsperiodeFomEllerEtterDato = (tidsperiode: Tidsperiode, dato: string): boolean => {
+const erTidsperiodeFomLikEllerEtterDato = (tidsperiode: Tidsperiode, dato: string): boolean => {
     return (
         tidsperiode.fom !== undefined &&
         tidsperiode.tom !== undefined &&
-        dayjs(tidsperiode.fom).isSameOrAfter(dato, 'day') &&
-        dayjs(tidsperiode.tom).isSameOrAfter(dato, 'day')
+        dayjs(tidsperiode.fom).isSameOrAfter(dato, 'day')
     );
 };

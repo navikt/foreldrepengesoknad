@@ -20,15 +20,18 @@ export const initSentry = ({ dsn }: InitSentryOptions) => {
         integrations: [Sentry.breadcrumbsIntegration({ console: false })],
         beforeSend: (event) => {
             const harStacktraceMedOpprinnelseIVårKode = (event.exception?.values ?? []).some((ex) => {
-                const stacktraceMatch = ex.stacktrace?.frames?.find(
-                    (frame) => frame.filename && /\/assets\/.*\.js$/.test(frame.filename),
-                );
+                const assetsFrames =
+                    ex.stacktrace?.frames?.filter(
+                        (frame) => frame.filename && /\/assets\/.*\.js$/.test(frame.filename),
+                    ) ?? [];
 
-                if (FEIL_VI_VIL_LUKE_BORT.some((feil) => stacktraceMatch?.abs_path?.includes(feil))) {
+                if (assetsFrames.length === 0) {
                     return false;
                 }
 
-                return true;
+                return assetsFrames.some(
+                    (frame) => !FEIL_VI_VIL_LUKE_BORT.some((feil) => frame.abs_path?.includes(feil)),
+                );
             });
             return harStacktraceMedOpprinnelseIVårKode ? event : null;
         },
