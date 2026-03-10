@@ -3,8 +3,153 @@ import dayjs from 'dayjs';
 import { KontoDto, Tidsperiode, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { TidsperiodenString, UttaksdagenString, erUttaksdag } from '@navikt/fp-utils';
 
-const lagDeltUttakForMor = () => {
-    return [];
+import { FellesperiodeFordelingValg, Fordeling } from '../../../../types/Fordeling';
+
+const getFellesperioderDagerFordeling = (fordeling: Fordeling, fellesperiodeDagerTilgjengelig: number) => {
+    let fellesperiodeDagerMor = 0;
+    let fellesperiodeDagerFarMedmor = 0;
+
+    if (fordeling.fordelingValg === FellesperiodeFordelingValg.ALT) {
+        fellesperiodeDagerMor = fellesperiodeDagerTilgjengelig;
+        fellesperiodeDagerFarMedmor = 0;
+    } else if (fordeling.fordelingValg === FellesperiodeFordelingValg.VIL_VELGE) {
+        const antallDager = fordeling.antallDagerFellesperiodeTilSøker
+            ? Number.parseInt(fordeling.antallDagerFellesperiodeTilSøker, 10)
+            : 0;
+
+        const antallUker = fordeling.antallUkerFellesperiodeTilSøker
+            ? Number.parseInt(fordeling.antallUkerFellesperiodeTilSøker, 10)
+            : 0;
+
+        fellesperiodeDagerMor = antallUker * 5 + antallDager;
+        fellesperiodeDagerFarMedmor = fellesperiodeDagerTilgjengelig - fellesperiodeDagerMor;
+    } else {
+        fellesperiodeDagerMor = 0;
+        fellesperiodeDagerFarMedmor = 0;
+    }
+
+    return { fellesperiodeDagerMor, fellesperiodeDagerFarMedmor };
+};
+
+const lagDeltUttakForMor = (famDato: string, stønadskontoer: KontoDto[], startdato: string, fordeling: Fordeling) => {
+    const forslag: UttakPeriode_fpoversikt[] = [];
+    const dagerMellomFamDatoOgStartdato = UttaksdagenString.denne(startdato).getUttaksdagerFremTilDato(famDato);
+    const dagerMedFellesperiodeFørFødsel = dagerMellomFamDatoOgStartdato > 15 ? dagerMellomFamDatoOgStartdato - 15 : 0;
+
+    const foreldrepengerFørFødsel = stønadskontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
+    const mødrekvote = stønadskontoer.find((k) => k.konto === 'MØDREKVOTE');
+    const fedrekvote = stønadskontoer.find((k) => k.konto === 'FEDREKVOTE');
+    const fellesperiode = stønadskontoer.find((k) => k.konto === 'FELLESPERIODE');
+    const fellesperiodeDagerTilgjengelig = fellesperiode ? fellesperiode.dager - dagerMedFellesperiodeFørFødsel : 0;
+    const { fellesperiodeDagerMor, fellesperiodeDagerFarMedmor } = getFellesperioderDagerFordeling(
+        fordeling,
+        fellesperiodeDagerTilgjengelig,
+    );
+
+    let currentFomDate = startdato;
+    let tidsperiode = undefined;
+
+    if (dagerMellomFamDatoOgStartdato > 0 && dagerMellomFamDatoOgStartdato <= 15) {
+        const dagerMedForeldrepengerFørFødsel = foreldrepengerFørFødsel
+            ? Math.min(foreldrepengerFørFødsel.dager, dagerMellomFamDatoOgStartdato)
+            : 0;
+
+        tidsperiode = getTidsperiodeString(
+            UttaksdagenString.denne(currentFomDate).getDatoAntallUttaksdagerTidligere(dagerMedForeldrepengerFørFødsel),
+            dagerMedForeldrepengerFørFødsel,
+        );
+
+        forslag.push({
+            forelder: 'MOR',
+            kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+            fom: tidsperiode.fom,
+            tom: tidsperiode.tom,
+            flerbarnsdager: false,
+        });
+
+        currentFomDate = UttaksdagenString.neste(tidsperiode.tom).getDato();
+    }
+
+    if (dagerMellomFamDatoOgStartdato > 15) {
+        tidsperiode = getTidsperiodeString(
+            UttaksdagenString.denne(currentFomDate).getDato(),
+            dagerMedFellesperiodeFørFødsel,
+        );
+
+        forslag.push({
+            forelder: 'MOR',
+            kontoType: 'FELLESPERIODE',
+            fom: tidsperiode.fom,
+            tom: tidsperiode.tom,
+            flerbarnsdager: false,
+        });
+
+        currentFomDate = UttaksdagenString.neste(tidsperiode.tom).getDato();
+
+        tidsperiode = getTidsperiodeString(currentFomDate, 15);
+
+        forslag.push({
+            forelder: 'MOR',
+            kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+            fom: tidsperiode.fom,
+            tom: tidsperiode.tom,
+            flerbarnsdager: false,
+        });
+
+        currentFomDate = UttaksdagenString.denne(famDato).getDato();
+    }
+
+    tidsperiode = getTidsperiodeString(currentFomDate, mødrekvote ? mødrekvote.dager : 0);
+
+    forslag.push({
+        forelder: 'MOR',
+        kontoType: 'MØDREKVOTE',
+        fom: tidsperiode.fom,
+        tom: tidsperiode.tom,
+        flerbarnsdager: false,
+    });
+
+    currentFomDate = UttaksdagenString.neste(tidsperiode.tom).getDato();
+
+    if (fellesperiodeDagerMor !== 0) {
+        tidsperiode = getTidsperiodeString(currentFomDate, fellesperiodeDagerMor);
+
+        forslag.push({
+            forelder: 'MOR',
+            kontoType: 'FELLESPERIODE',
+            fom: tidsperiode.fom,
+            tom: tidsperiode.tom,
+            flerbarnsdager: false,
+        });
+    }
+
+    currentFomDate = UttaksdagenString.neste(tidsperiode.tom).getDato();
+
+    tidsperiode = getTidsperiodeString(currentFomDate, fedrekvote ? fedrekvote.dager : 0);
+
+    forslag.push({
+        forelder: 'FAR_MEDMOR',
+        kontoType: 'FEDREKVOTE',
+        fom: tidsperiode.fom,
+        tom: tidsperiode.tom,
+        flerbarnsdager: false,
+    });
+
+    currentFomDate = UttaksdagenString.neste(tidsperiode.tom).getDato();
+
+    if (fellesperiodeDagerFarMedmor !== 0) {
+        tidsperiode = getTidsperiodeString(currentFomDate, fellesperiodeDagerFarMedmor);
+
+        forslag.push({
+            forelder: 'FAR_MEDMOR',
+            kontoType: 'FELLESPERIODE',
+            fom: tidsperiode.fom,
+            tom: tidsperiode.tom,
+            flerbarnsdager: false,
+        });
+    }
+
+    return forslag;
 };
 
 const lagDeltUttakForFarMedmor = (
@@ -117,100 +262,13 @@ export const deltUttak = (
     stønadskontoer: KontoDto[],
     erSøkerFarEllerMedmor: boolean,
     startdato: string,
+    fordeling: Fordeling,
 ): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
     if (erSøkerFarEllerMedmor) {
         return lagDeltUttakForFarMedmor(famDato, stønadskontoer, startdato);
     }
 
-    return lagDeltUttakForMor();
-
-    // const førsteUttaksdag = UttaksdagenString.denneEllerNeste(startdato ?? famDato).getDato();
-    // const morsPerioder: UttakPeriode_fpoversikt[] = [];
-    // const farsPerioder: UttakPeriode_fpoversikt[] = [];
-    // const fellesperiodeDagerFarMedmor =
-    //     stønadskontoer.find((k) => k.konto === 'FELLESPERIODE')!.dager - fellesperiodeDagerMor;
-    // const foreldrepengerFørFødsel = stønadskontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
-    // const mødrekvote = stønadskontoer.find((k) => k.konto === 'MØDREKVOTE');
-    // const fedrekvote = stønadskontoer.find((k) => k.konto === 'FEDREKVOTE');
-    // let currentTomDate: string = førsteUttaksdag;
-
-    // if (foreldrepengerFørFødsel !== undefined) {
-    //     const tidsperiode = getTidsperiodeString(
-    //         UttaksdagenString.denne(currentTomDate).getDatoAntallUttaksdagerTidligere(15),
-    //         foreldrepengerFørFødsel.dager,
-    //     );
-    //     const periodeFPFF: UttakPeriode_fpoversikt = {
-    //         forelder: 'MOR',
-    //         kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-    //         fom: tidsperiode.fom,
-    //         tom: tidsperiode.tom,
-    //         flerbarnsdager: false,
-    //     };
-
-    //     morsPerioder.push(periodeFPFF);
-
-    //     currentTomDate = UttaksdagenString.neste(periodeFPFF.tom).getDato();
-    // }
-
-    // if (mødrekvote !== undefined) {
-    //     const tidsperiode = getTidsperiodeString(currentTomDate, mødrekvote.dager);
-    //     const periodeMødrekvote: UttakPeriode_fpoversikt = {
-    //         forelder: 'MOR',
-    //         kontoType: 'MØDREKVOTE',
-    //         fom: tidsperiode.fom,
-    //         tom: tidsperiode.tom,
-    //         flerbarnsdager: false,
-    //     };
-
-    //     morsPerioder.push(periodeMødrekvote);
-
-    //     currentTomDate = UttaksdagenString.neste(periodeMødrekvote.tom).getDato();
-    // }
-
-    // if (fellesperiodeDagerMor > 0) {
-    //     const tidsperiode = getTidsperiodeString(currentTomDate, fellesperiodeDagerMor);
-    //     const periodeFellesperiode: UttakPeriode_fpoversikt = {
-    //         forelder: 'MOR',
-    //         kontoType: 'FELLESPERIODE',
-    //         fom: tidsperiode.fom,
-    //         tom: tidsperiode.tom,
-    //         flerbarnsdager: false,
-    //     };
-
-    //     morsPerioder.push(periodeFellesperiode);
-
-    //     currentTomDate = UttaksdagenString.neste(periodeFellesperiode.tom).getDato();
-    // }
-
-    // if (fedrekvote !== undefined) {
-    //     const tidsperiode = getTidsperiodeString(currentTomDate, fedrekvote.dager);
-    //     const periodeFedrekvote: UttakPeriode_fpoversikt = {
-    //         forelder: 'FAR_MEDMOR',
-    //         kontoType: 'FEDREKVOTE',
-    //         fom: tidsperiode.fom,
-    //         tom: tidsperiode.tom,
-    //         flerbarnsdager: false,
-    //     };
-
-    //     farsPerioder.push(periodeFedrekvote);
-
-    //     currentTomDate = UttaksdagenString.neste(periodeFedrekvote.tom).getDato();
-    // }
-
-    // if (fellesperiodeDagerFarMedmor > 0) {
-    //     const tidsperiode = getTidsperiodeString(currentTomDate, fellesperiodeDagerFarMedmor);
-    //     const periodeFellesperiode: UttakPeriode_fpoversikt = {
-    //         forelder: 'FAR_MEDMOR',
-    //         kontoType: 'FELLESPERIODE',
-    //         fom: tidsperiode.fom,
-    //         tom: tidsperiode.tom,
-    //         flerbarnsdager: false,
-    //     };
-
-    //     farsPerioder.push(periodeFellesperiode);
-    // }
-
-    // return [...morsPerioder, ...farsPerioder].sort(sorterPerioder);
+    return lagDeltUttakForMor(famDato, stønadskontoer, startdato, fordeling);
 };
 
 export const sorterPerioder = (

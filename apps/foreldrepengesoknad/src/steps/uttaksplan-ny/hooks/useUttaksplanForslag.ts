@@ -57,7 +57,13 @@ export const useUttaksplanForslag = (
     );
 
     if (erDeltUttak) {
-        return deltUttak(familiehendelsedato, valgtStønadskonto.kontoer, erSøkerFarEllerMedmor, oppstartsdato);
+        return deltUttak(
+            familiehendelsedato,
+            valgtStønadskonto.kontoer,
+            erSøkerFarEllerMedmor,
+            oppstartsdato,
+            fordeling,
+        );
     }
 
     const erFarOgFar = getKjønnFromFnr(annenForelder) === 'M' && søkersituasjon.rolle === 'far';

@@ -159,7 +159,10 @@ const getKalenderFargeForUttaksperiode = (
         ? getAnnenForelderSamtidigUttakPeriode(periode, uttaksplan)
         : undefined;
     const samtidigUttaksprosent = isUttaksperiode(periode) ? periode.samtidigUttakProsent : undefined;
-    if (annenForelderSamtidigUttaksperiode || (samtidigUttaksprosent && Number.parseInt(samtidigUttaksprosent) > 0)) {
+    if (
+        annenForelderSamtidigUttaksperiode ||
+        (samtidigUttaksprosent && Number.parseInt(samtidigUttaksprosent, 10) > 0)
+    ) {
         return erFarEllerMedmor ? 'LIGHTBLUEGREEN' : 'LIGHTGREENBLUE';
     }
     if (!annenForelderSamtidigUttaksperiode && !samtidigUttaksprosent && isUttaksperiode(periode) && periode.gradert) {

@@ -37,7 +37,7 @@ export const getFamiliesituasjon = (omBarnet: OmBarnet): Familiesituasjon => {
 };
 
 export const mapOmBarnetTilBarn = (omBarnet: OmBarnet): Barn => {
-    const antallBarn = Number.parseInt(omBarnet.antallBarn);
+    const antallBarn = Number.parseInt(omBarnet.antallBarn, 10);
 
     if (erBarnetUFødt(omBarnet)) {
         return {
