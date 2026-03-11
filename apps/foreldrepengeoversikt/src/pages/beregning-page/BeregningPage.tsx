@@ -29,13 +29,7 @@ import {
     FpSak_fpoversikt,
     TilkjentYtelsePeriode_fpoversikt,
 } from '@navikt/fp-types';
-import {
-    capitalizeFirstLetter,
-    erUttaksdag,
-    formatCurrency,
-    formatCurrencyWithKr,
-    getDecoratorLanguageCookie,
-} from '@navikt/fp-utils';
+import { capitalizeFirstLetter, erUttaksdag, formatCurrencyWithKr, getDecoratorLanguageCookie } from '@navikt/fp-utils';
 
 import { API_URLS, hentDokumenterOptions } from '../../api/queries';
 import { DinSakHeader } from '../../components/header/Header';
@@ -106,7 +100,7 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
     const grunnbeløp = beregning.grunnbeløp ?? DEFAULT_SATSER.grunnbeløp[0]!.verdi;
     const seksG = grunnbeløp * 6;
     const vis6GVarsel = samletÅrsinntekt > seksG;
-    const åttiProsentReduksjon = min([samletÅrsinntekt, seksG]) * 0.8;
+    const åttiProsentReduksjon = Math.round(min([samletÅrsinntekt, seksG]) * 0.8);
 
     const visÅttiProsentReduksjon = sak.dekningsgrad === 'ÅTTI';
 
@@ -259,7 +253,7 @@ const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: n
                     <FormattedMessage
                         id="beregning.forklaringer.hvaErDagsatsen.innhold"
                         values={{
-                            grunnbeløpSeksG: formatCurrency(grunnbeløp * 6),
+                            grunnbeløpSeksG: formatCurrencyWithKr(grunnbeløp * 6),
                         }}
                     />
                     <br />
@@ -268,7 +262,7 @@ const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: n
                         id="beregning.forklaringer.ytelserBareOppTil6G.dinG"
                         values={{
                             link: (chunks) => <Link href="https://www.nav.no/grunnbelopet">{chunks}</Link>,
-                            grunnbeløp: formatCurrency(grunnbeløp),
+                            grunnbeløp: formatCurrencyWithKr(grunnbeløp),
                         }}
                     />
                     <br />
