@@ -23,6 +23,7 @@ import {
 } from '@navikt/ds-react';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
+import { SkyraSurvey } from '@navikt/fp-observability';
 import {
     AktivitetStatus,
     BeregningsAndel_fpoversikt,
@@ -85,6 +86,7 @@ export const BeregningPage = () => {
                 <Box background="default" padding="space-24" borderRadius="8">
                     <Feriepenger sak={gjeldendeSak} />
                 </Box>
+                <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/beregning-i-innsyn" />
             </VStack>
         </PageRouteLayout>
     );
