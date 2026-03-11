@@ -573,10 +573,11 @@ const filtrerPerioderFraOgMedEndringstidspunkt = (
     perioder: UttakPeriode_fpoversikt[],
     endringstidspunkt: string,
 ): UttakPeriode_fpoversikt[] => {
+    const endring = dayjs(endringstidspunkt);
     return perioder.filter(
         (periode) =>
-            dayjs(endringstidspunkt).isBetween(periode.fom, periode.tom, 'day', '[]') ||
-            dayjs(periode.fom).isSameOrAfter(dayjs(endringstidspunkt), 'day'),
+            endring.isBetween(periode.fom, periode.tom, 'day', '[]') ||
+            dayjs(periode.fom).isSameOrAfter(endring, 'day'),
     );
 };
 
