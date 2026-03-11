@@ -1603,11 +1603,11 @@ describe('UttaksplanKalender', () => {
     it('skal vise avslåtte periode korrekt og så markere som hull når en sletter', async () => {
         render(<SkalViseAvslåttPeriodeKorrekt />);
 
-        const juni = screen.getByTestId('year:2026;month:6');
+        const juli = screen.getByTestId('year:2026;month:6');
 
-        expect(within(juni).getAllByTestId('dayColor:BLACKOUTLINE', { exact: false })).toHaveLength(13);
+        expect(within(juli).getAllByTestId('dayColor:BLACKOUTLINE', { exact: false })).toHaveLength(13);
 
-        await userEvent.click(within(juni).getByTestId('day:14;dayColor:BLACKOUTLINE'));
+        await userEvent.click(within(juli).getByTestId('day:14;dayColor:BLACKOUTLINE'));
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
 
@@ -1617,6 +1617,6 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getByText('La resten av planen være som den er'));
         await userEvent.click(screen.getByText('Fortsett'));
 
-        expect(within(juni).getByTestId('day:14;dayColor:BLACK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:14;dayColor:BLACK')).toBeInTheDocument();
     });
 });

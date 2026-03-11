@@ -196,6 +196,7 @@
     "kalender.skjermleser.periode": "{periodeNavn} fra den {fraDato} til den {tilDato}",
     "kalender.barnehageplass": "Barnehageplass",
     "kalender.avslagFratrekkPleiepenger": "Avslag på fratrekk for pleiepenger",
+    "kalender.srText.AvslåttPeriode": "Periode med avslag",
     "kalender.avslag": "Avslått periode",
     "kalender.srText.PeriodenTil": "Perioden til {navn}.",
     "kalender.srText.ForeldrepengerFørFødsel": "Foreldrepenger før fødsel",

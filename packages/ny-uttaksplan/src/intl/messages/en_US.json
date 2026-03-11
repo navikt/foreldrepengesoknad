@@ -196,6 +196,7 @@
     "kalender.utsettelse.pause.label": "{erSokersPeriode, select, true {You} other {{navnAnnenPart}}} has put the use on hold",
     "kalender.ferie": "{erSokersPeriode, select, true {You} other {{navnAnnenPart}}} are on vacation",
     "kalender.avslagFratrekkPleiepenger": "Rejection of deduction for care benefits",
+    "kalender.srText.AvslåttPeriode": "Rejected period",
     "kalender.avslag": "Rejected period",
     "kalender.srText.PeriodenTil": "Period belongs to {navn}.",
     "kalender.srText.ForeldrepengerFørFødsel": "Parental benefits before birth",
