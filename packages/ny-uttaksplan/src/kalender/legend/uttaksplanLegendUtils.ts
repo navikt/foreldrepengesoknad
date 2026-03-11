@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-import { Barn, BrukerRolleSak_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
-import { getFamiliehendelsedato, getLocaleFromSessionStorage, getNavnGenitivEierform } from '@navikt/fp-utils';
+import { getLocaleFromSessionStorage, getNavnGenitivEierform } from '@navikt/fp-utils';
 import { assertUnreachable } from '@navikt/fp-validation';
 
 import { LegendLabel } from '../../types/LegendLabel';
@@ -13,7 +13,7 @@ import {
     erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
-import { erAvslåttPeriode, erAvslåttPeriodeFørsteSeksUkerMor } from '../../utils/periodeUtils';
+import { erAvslåttPeriode } from '../../utils/periodeUtils';
 
 export type UttaksplanKalenderLegendInfo = {
     calendarPeriod: CalendarPeriod;
@@ -379,17 +379,13 @@ export const getInneholderKalenderHelgedager = (periods: CalendarPeriod[]): bool
 
 export const getLegendLabelFromPeriode = (
     p: UttaksplanperiodeMedKunTapteDager,
-    barn: Barn,
     erFarEllerMedmor: boolean,
 ): LegendLabel | undefined => {
     if (erAvslåttPeriode(p)) {
         if (erVanligUttakPeriode(p) && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
             return 'PLEIEPENGER';
         }
-        const familiehendelsesdato = getFamiliehendelsedato(barn);
-        return !erFarEllerMedmor && erAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsesdato)
-            ? 'AVSLAG'
-            : 'TAPTE_DAGER';
+        return 'AVSLAG';
     }
 
     if ((erVanligUttakPeriode(p) || erEøsUttakPeriode(p)) && p.kontoType) {
