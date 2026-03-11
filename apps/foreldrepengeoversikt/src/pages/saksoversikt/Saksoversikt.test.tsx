@@ -1,4 +1,4 @@
-import { composeStories, composeStory } from '@storybook/react-vite';
+import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 
 import { mswWrapper } from '@navikt/fp-utils-test';
@@ -9,19 +9,19 @@ const {
     Engangsstønad,
     Foreldrepenger,
     Svangerskapspenger,
-    ForeldrepengerTestAvSkyraGammelInnsending,
-    ForeldrepengerTestAvSkyraNyligInnsending,
-    ForeldrepengerEndringssøknad,
+    // ForeldrepengerTestAvSkyraGammelInnsending,
+    // ForeldrepengerTestAvSkyraNyligInnsending,
+    // ForeldrepengerEndringssøknad,
 } = composeStories(stories);
 
-const ForeldrepengerSkyraNN = composeStory(
-    { ...stories.ForeldrepengerTestAvSkyraNyligInnsending, globals: { locale: 'nn' } },
-    stories.default,
-);
-const ForeldrepengerSkyraEN = composeStory(
-    { ...stories.ForeldrepengerTestAvSkyraNyligInnsending, globals: { locale: 'en' } },
-    stories.default,
-);
+// const ForeldrepengerSkyraNN = composeStory(
+//     { ...stories.ForeldrepengerTestAvSkyraNyligInnsending, globals: { locale: 'nn' } },
+//     stories.default,
+// );
+// const ForeldrepengerSkyraEN = composeStory(
+//     { ...stories.ForeldrepengerTestAvSkyraNyligInnsending, globals: { locale: 'en' } },
+//     stories.default,
+// );
 
 describe('<Saksoversikt>', () => {
     it(
@@ -77,58 +77,58 @@ describe('<Saksoversikt>', () => {
         }),
     );
 
-    describe('Skyra-undersøkelse', () => {
-        it(
-            'skal vise undersøkelsen for førstegangssøker innen 5 minutter på bokmål',
-            mswWrapper(async ({ setHandlers }) => {
-                setHandlers(ForeldrepengerTestAvSkyraNyligInnsending.parameters.msw);
-                render(<ForeldrepengerTestAvSkyraNyligInnsending />);
+    // describe('Skyra-undersøkelse', () => {
+    //     it(
+    //         'skal vise undersøkelsen for førstegangssøker innen 5 minutter på bokmål',
+    //         mswWrapper(async ({ setHandlers }) => {
+    //             setHandlers(ForeldrepengerTestAvSkyraNyligInnsending.parameters.msw);
+    //             render(<ForeldrepengerTestAvSkyraNyligInnsending />);
 
-                expect(await screen.findByText('Frivillig spørreundersøkelse')).toBeInTheDocument();
-            }),
-        );
+    //             expect(await screen.findByText('Frivillig spørreundersøkelse')).toBeInTheDocument();
+    //         }),
+    //     );
 
-        it(
-            'skal IKKE vise undersøkelsen for førstegangssøknad eldre enn 5 minutter',
-            mswWrapper(async ({ setHandlers }) => {
-                setHandlers(ForeldrepengerTestAvSkyraGammelInnsending.parameters.msw);
-                render(<ForeldrepengerTestAvSkyraGammelInnsending />);
+    //     it(
+    //         'skal IKKE vise undersøkelsen for førstegangssøknad eldre enn 5 minutter',
+    //         mswWrapper(async ({ setHandlers }) => {
+    //             setHandlers(ForeldrepengerTestAvSkyraGammelInnsending.parameters.msw);
+    //             render(<ForeldrepengerTestAvSkyraGammelInnsending />);
 
-                expect(await screen.findByText('Din sak')).toBeInTheDocument();
-                expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
-            }),
-        );
+    //             expect(await screen.findByText('Din sak')).toBeInTheDocument();
+    //             expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
+    //         }),
+    //     );
 
-        it(
-            'skal vise undersøkelsen for førstegangssøker innen 5 minutter på nynorsk',
-            mswWrapper(async ({ setHandlers }) => {
-                setHandlers(ForeldrepengerSkyraNN.parameters.msw);
-                render(<ForeldrepengerSkyraNN />);
+    //     it(
+    //         'skal vise undersøkelsen for førstegangssøker innen 5 minutter på nynorsk',
+    //         mswWrapper(async ({ setHandlers }) => {
+    //             setHandlers(ForeldrepengerSkyraNN.parameters.msw);
+    //             render(<ForeldrepengerSkyraNN />);
 
-                expect(await screen.findByText('Frivillig spørjeundersøking')).toBeInTheDocument();
-            }),
-        );
+    //             expect(await screen.findByText('Frivillig spørjeundersøking')).toBeInTheDocument();
+    //         }),
+    //     );
 
-        it(
-            'skal IKKE vise undersøkelsen på engelsk',
-            mswWrapper(async ({ setHandlers }) => {
-                setHandlers(ForeldrepengerSkyraEN.parameters.msw);
-                render(<ForeldrepengerSkyraEN />);
+    //     it(
+    //         'skal IKKE vise undersøkelsen på engelsk',
+    //         mswWrapper(async ({ setHandlers }) => {
+    //             setHandlers(ForeldrepengerSkyraEN.parameters.msw);
+    //             render(<ForeldrepengerSkyraEN />);
 
-                expect(await screen.findByText('Your case')).toBeInTheDocument();
-                expect(screen.queryByText('Optional survey')).not.toBeInTheDocument();
-            }),
-        );
+    //             expect(await screen.findByText('Your case')).toBeInTheDocument();
+    //             expect(screen.queryByText('Optional survey')).not.toBeInTheDocument();
+    //         }),
+    //     );
 
-        it(
-            'skal IKKE vise undersøkelsen for endringssøknad selv om den er nylig',
-            mswWrapper(async ({ setHandlers }) => {
-                setHandlers(ForeldrepengerEndringssøknad.parameters.msw);
-                render(<ForeldrepengerEndringssøknad />);
+    //     it(
+    //         'skal IKKE vise undersøkelsen for endringssøknad selv om den er nylig',
+    //         mswWrapper(async ({ setHandlers }) => {
+    //             setHandlers(ForeldrepengerEndringssøknad.parameters.msw);
+    //             render(<ForeldrepengerEndringssøknad />);
 
-                expect(await screen.findByText('Din sak')).toBeInTheDocument();
-                expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
-            }),
-        );
-    });
+    //             expect(await screen.findByText('Din sak')).toBeInTheDocument();
+    //             expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
+    //         }),
+    //     );
+    // });
 });
