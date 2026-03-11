@@ -1,5 +1,5 @@
-import { ReactNode, useEffect, useRef } from 'react';
-import { Navigate, Outlet, Route, Routes, useLocation, useMatch, useNavigate } from 'react-router-dom';
+import { ReactNode, useRef } from 'react';
+import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router-dom';
 
 import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
@@ -24,22 +24,9 @@ interface Props {
     søkerinfo: PersonMedArbeidsforholdDto_fpoversikt;
 }
 
-const SkyraHandler = () => {
-    const location = useLocation();
-
-    useEffect(() => {
-        // @ts-expect-error -- denne finnes på window hvis cookie er satt
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-        globalThis.skyra?.reload?.();
-    }, [location.pathname]);
-
-    return null;
-};
-
 export const ForeldrepengeoversiktRoutes = ({ søkerinfo, saker }: Props) => {
     return (
         <>
-            <SkyraHandler />
             <Routes>
                 <Route element={<Breadcrumb />}>
                     <Route element={<RedirectTilSakHvisDetKunFinnesEn saker={saker} />}>
