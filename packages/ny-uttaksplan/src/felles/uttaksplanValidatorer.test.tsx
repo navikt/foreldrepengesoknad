@@ -212,7 +212,6 @@ describe('useFormSubmitValidator', () => {
         ];
 
         const formValues = {
-            skalDuKombinereArbeidOgUttakMor: false,
             kontoTypeFarMedmor: 'MØDREKVOTE',
             skalDuKombinereArbeidOgUttakFarMedmor: true,
             forelder: 'FAR_MEDMOR',
@@ -224,7 +223,7 @@ describe('useFormSubmitValidator', () => {
         expect(feilmelding).toBe('Mor kan ikke kombinere foreldrepenger med arbeid de første seks ukene');
     });
 
-    it('skal returnere feilmelding dersom far/medmor har valgt mer enn 2 uker i intervallet to uker før famDato og seks uker etter', () => {
+    it('skal ikke returnere feilmelding dersom far/medmor har valgt mer enn 2 uker i intervallet to uker før famDato og seks uker etter', () => {
         const { result } = renderHook(() => useFormSubmitValidator(), {
             wrapper: getWrapper({
                 foreldreInfo: {
@@ -244,10 +243,9 @@ describe('useFormSubmitValidator', () => {
         ];
 
         const formValues = {
-            skalDuKombinereArbeidOgUttakMor: false,
-            kontoTypeMor: 'FEDREKVOTE',
+            kontoTypeFarMedmor: 'FEDREKVOTE',
             skalDuKombinereArbeidOgUttakFarMedmor: false,
-            forelder: 'FAR_MEDMOR',
+            forelder: 'BEGGE',
         } satisfies LeggTilEllerEndrePeriodeFormFormValues;
 
         const valider = result.current;
@@ -273,6 +271,7 @@ describe('useFormSubmitValidator', () => {
                         tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
                         forelder: 'FAR_MEDMOR',
                         flerbarnsdager: false,
+                        samtidigUttak: 100,
                     },
                 ],
             }),
@@ -286,10 +285,9 @@ describe('useFormSubmitValidator', () => {
         ];
 
         const formValues = {
-            skalDuKombinereArbeidOgUttakMor: false,
-            kontoTypeMor: 'FEDREKVOTE',
+            kontoTypeFarMedmor: 'FEDREKVOTE',
             skalDuKombinereArbeidOgUttakFarMedmor: false,
-            forelder: 'FAR_MEDMOR',
+            forelder: 'BEGGE',
         } satisfies LeggTilEllerEndrePeriodeFormFormValues;
 
         const valider = result.current;
@@ -328,8 +326,7 @@ describe('useFormSubmitValidator', () => {
         ];
 
         const formValues = {
-            skalDuKombinereArbeidOgUttakMor: false,
-            kontoTypeMor: 'FEDREKVOTE',
+            kontoTypeFarMedmor: 'FEDREKVOTE',
             skalDuKombinereArbeidOgUttakFarMedmor: false,
             forelder: 'FAR_MEDMOR',
         } satisfies LeggTilEllerEndrePeriodeFormFormValues;
@@ -378,8 +375,7 @@ describe('useFormSubmitValidator', () => {
         ];
 
         const formValues = {
-            skalDuKombinereArbeidOgUttakMor: false,
-            kontoTypeMor: 'FEDREKVOTE',
+            kontoTypeFarMedmor: 'FEDREKVOTE',
             skalDuKombinereArbeidOgUttakFarMedmor: true,
             forelder: 'FAR_MEDMOR',
             stillingsprosentFarMedmor: '50',
@@ -416,6 +412,7 @@ describe('useFormSubmitValidator', () => {
                             arbeidstidprosent: 50,
                         },
                         flerbarnsdager: false,
+                        samtidigUttak: 50,
                     },
                 ],
             }),
@@ -430,9 +427,10 @@ describe('useFormSubmitValidator', () => {
 
         const formValues = {
             skalDuKombinereArbeidOgUttakMor: false,
-            kontoTypeMor: 'FEDREKVOTE',
+            kontoTypeFarMedmor: 'FEDREKVOTE',
             skalDuKombinereArbeidOgUttakFarMedmor: true,
-            forelder: 'FAR_MEDMOR',
+            forelder: 'BEGGE',
+            samtidigUttaksprosentFarMedmor: '50',
             stillingsprosentFarMedmor: '50',
         } satisfies LeggTilEllerEndrePeriodeFormFormValues;
 
@@ -458,7 +456,7 @@ describe('useFormSubmitValidator', () => {
 
         const formValues = {
             skalDuKombinereArbeidOgUttakMor: false,
-            kontoTypeMor: 'FEDREKVOTE',
+            kontoTypeFarMedmor: 'FEDREKVOTE',
             skalDuKombinereArbeidOgUttakFarMedmor: false,
             forelder: 'FAR_MEDMOR',
         } satisfies LeggTilEllerEndrePeriodeFormFormValues;
