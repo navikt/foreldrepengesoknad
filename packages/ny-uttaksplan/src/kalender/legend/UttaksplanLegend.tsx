@@ -64,7 +64,7 @@ export const UttaksplanLegend = ({
     const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(saksperioderInkludertHull, søker === 'FAR_MEDMOR');
 
     const unikePeriodeLabelsMedFarge = unikePerioder.reduce<UttaksplanKalenderLegendInfo[]>((acc, periode) => {
-        const label = getLegendLabelFromPeriode(periode, barn, søker === 'FAR_MEDMOR');
+        const label = getLegendLabelFromPeriode(periode, søker === 'FAR_MEDMOR');
 
         if (!label) {
             return acc;
