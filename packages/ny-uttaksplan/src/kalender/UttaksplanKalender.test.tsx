@@ -22,6 +22,7 @@ const {
     FlerbarnMorOgFar,
     SkalIkkeViseAvslåttePerioderSomOverlapperMedAndrePerioder,
     KunFarHarRettOgHarPausePeriode,
+    SkalViseAvslåttPeriodeKorrekt,
 } = composeStories(stories);
 
 describe('UttaksplanKalender', () => {
@@ -1597,5 +1598,25 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getByText('Legg til'));
 
         expect(within(mai).getAllByTestId('dayColor:BEIGEOUTLINE', { exact: false })).toHaveLength(4);
+    });
+
+    it('skal vise avslåtte periode korrekt og så markere som hull når en sletter', async () => {
+        render(<SkalViseAvslåttPeriodeKorrekt />);
+
+        const juli = screen.getByTestId('year:2026;month:6');
+
+        expect(within(juli).getAllByTestId('dayColor:BLACKOUTLINE', { exact: false })).toHaveLength(13);
+
+        await userEvent.click(within(juli).getByTestId('day:14;dayColor:BLACKOUTLINE'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        expect(screen.getByText('Avslått periode')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Slett dager fra periode'));
+        await userEvent.click(screen.getByText('La resten av planen være som den er'));
+        await userEvent.click(screen.getByText('Fortsett'));
+
+        expect(within(juli).getByTestId('day:14;dayColor:BLACK')).toBeInTheDocument();
     });
 });

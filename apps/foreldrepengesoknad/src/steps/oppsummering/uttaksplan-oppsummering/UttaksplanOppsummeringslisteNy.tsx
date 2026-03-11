@@ -56,12 +56,13 @@ export const UttaksplanOppsummeringslisteNy = ({ navnPåForeldre, registrerteArb
         );
     });
 
-    const annenPartsPerioder = uttaksplan.filter((periode) => {
-        return (
-            Uttaksperioden.erIkkeEøsPeriode(periode) &&
-            periode.forelder === (søkerErFarEllerMedmor ? 'MOR' : 'FAR_MEDMOR')
-        );
-    });
+    const annenPartsPerioder = filtrerBortPerioderUtenTrekkdager(
+        uttaksplan
+            .filter((periode) => Uttaksperioden.erIkkeEøsPeriode(periode))
+            .filter((periode) => {
+                return periode.forelder === (søkerErFarEllerMedmor ? 'MOR' : 'FAR_MEDMOR');
+            }),
+    );
 
     return (
         <VStack gap="space-16">
@@ -251,3 +252,7 @@ const UttaksplanListe = ({
 
 const lagKeyFraPeriode = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) =>
     periode.kontoType + periode.fom + periode.tom;
+
+//TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
+const filtrerBortPerioderUtenTrekkdager = (perioder: UttakPeriode_fpoversikt[]) =>
+    perioder.filter((periode) => !(periode.resultat?.innvilget === false && periode.resultat.trekkerDager === false));

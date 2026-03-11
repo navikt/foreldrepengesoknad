@@ -1574,3 +1574,78 @@ export const KunFarHarRettOgHarPausePeriode: Story = {
         ] satisfies Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     },
 };
+
+export const SkalViseAvslåttPeriodeKorrekt: Story = {
+    args: {
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2026-02-09'],
+            antallBarn: 1,
+        },
+        foreldreInfo: {
+            rettighetType: 'BARE_SØKER_RETT',
+            søker: 'FAR_MEDMOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+        uttakPerioder: [
+            {
+                fom: '2026-03-23',
+                tom: '2026-05-29',
+                kontoType: 'FORELDREPENGER',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                morsAktivitet: 'IKKE_OPPGITT',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+            {
+                fom: '2026-06-01',
+                tom: '2026-06-30',
+                kontoType: 'FORELDREPENGER',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                morsAktivitet: 'ARBEID',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+            {
+                fom: '2026-07-01',
+                tom: '2026-07-17',
+                kontoType: 'FORELDREPENGER',
+                resultat: {
+                    innvilget: false,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                morsAktivitet: 'UTDANNING',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+            {
+                fom: '2026-07-20',
+                tom: '2026-07-27',
+                kontoType: 'FORELDREPENGER',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                morsAktivitet: 'ARBEID',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+        ] satisfies Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    },
+};
