@@ -7,7 +7,13 @@ import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedleg
 import { saker } from 'storybookData/saker/saker';
 import { SAK_1 } from 'storybookData/saker/svpsaker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
-import { tidslinjeHendelserFP } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
+import {
+    tidslinjeHendelserFP,
+    tidslinjeHendelser_ES_førstegangssøknad,
+    tidslinjeHendelser_FP_endringssøknad_nylig,
+    tidslinjeHendelser_FP_førstegangssøknad_gammel,
+    tidslinjeHendelser_FP_førstegangssøknad_nylig,
+} from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
 
 import { PersonMedArbeidsforholdDto_fpoversikt, Saker_fpoversikt } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
@@ -84,27 +90,7 @@ export const Engangsstønad: Story = {
                         svangerskapspenger: [],
                     } satisfies Saker_fpoversikt),
                 ),
-                http.get(API_URLS.tidslinje, () =>
-                    HttpResponse.json([
-                        {
-                            type: 'søknad',
-                            opprettet: '2023-01-31T09:06:46.541655',
-                            aktørType: 'BRUKER',
-                            tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
-                            dokumenter: [
-                                {
-                                    type: 'INNGÅENDE_DOKUMENT',
-                                    mottatt: '2023-01-31T09:06:48',
-                                    saksnummer: '352011079',
-                                    tittel: 'Søknad om foreldrepenger ved fødsel',
-                                    journalpostId: '598115874',
-                                    dokumentId: '624862989',
-                                },
-                            ],
-                            manglendeVedlegg: [],
-                        },
-                    ]),
-                ),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_ES_førstegangssøknad)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json()),
             ],
         },
@@ -145,18 +131,7 @@ export const ForeldrepengerTestAvSkyraNyligInnsending: Story = {
             handlers: [
                 http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-                http.get(API_URLS.tidslinje, () =>
-                    HttpResponse.json([
-                        {
-                            // Søknad opprettet for 3 minutter siden, så undersøkelsen skal vises.
-                            opprettet: new Date(Date.now() - 3 * 60 * 1000).toISOString(),
-                            aktørType: 'BRUKER',
-                            tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
-                            dokumenter: [],
-                            manglendeVedlegg: [],
-                        },
-                    ]),
-                ),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_førstegangssøknad_nylig)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
                 http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
             ],
@@ -174,18 +149,7 @@ export const ForeldrepengerTestAvSkyraGammelInnsending: Story = {
             handlers: [
                 http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-                http.get(API_URLS.tidslinje, () =>
-                    HttpResponse.json([
-                        {
-                            // Her er den satt til 7 dager siden, så undersøkelsen skal ikke vises.
-                            opprettet: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-                            aktørType: 'BRUKER',
-                            tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
-                            dokumenter: [],
-                            manglendeVedlegg: [],
-                        },
-                    ]),
-                ),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_førstegangssøknad_gammel)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
                 http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
             ],
@@ -203,17 +167,7 @@ export const ForeldrepengerEndringssøknad: Story = {
             handlers: [
                 http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-                http.get(API_URLS.tidslinje, () =>
-                    HttpResponse.json([
-                        {
-                            opprettet: new Date(Date.now() - 3 * 60 * 1000).toISOString(),
-                            aktørType: 'BRUKER',
-                            tidslinjeHendelseType: 'ENDRINGSSØKNAD',
-                            dokumenter: [],
-                            manglendeVedlegg: [],
-                        },
-                    ]),
-                ),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_endringssøknad_nylig)),
                 http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
                 http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
             ],

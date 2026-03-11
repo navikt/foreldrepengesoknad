@@ -13,18 +13,14 @@ export interface SkyraSurveyProps {
 export const SkyraSurvey = ({ slug }: SkyraSurveyProps) => {
     const intl = useIntl();
     const resolvedTitle = intl.formatMessage({ id: 'SkyraSurvey.Tittel' });
+    const surveyKey = `skyra-survey-${slug}-completed`;
     const [isLoaded, setIsLoaded] = useState(false);
     const [hasFailed, setHasFailed] = useState(false);
-    const [hasCompletedSurvey, setHasCompletedSurvey] = useState(() => {
-        const key = `skyra-survey-${slug}-completed`;
-        return sessionStorage.getItem(key) === 'true';
-    });
+    const [hasCompletedSurvey, setHasCompletedSurvey] = useState(() => sessionStorage.getItem(surveyKey) === 'true');
     const [isOpen, setIsOpen] = useState(true);
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const surveyKey = `skyra-survey-${slug}-completed`;
-
         // Hvis undersøkelsen allerede er fullført, ikke last den på nytt
         if (sessionStorage.getItem(surveyKey) === 'true') {
             return;
