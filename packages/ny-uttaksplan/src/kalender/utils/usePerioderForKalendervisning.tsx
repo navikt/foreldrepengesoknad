@@ -29,12 +29,7 @@ import {
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
-import {
-    erAvslåttPeriode,
-    erAvslåttPeriodeFørsteSeksUkerMor,
-    erUttaksperiode,
-    harPeriodeDerMorsAktivitetIkkeErValgt,
-} from '../../utils/periodeUtils';
+import { erAvslåttPeriode, erUttaksperiode, harPeriodeDerMorsAktivitetIkkeErValgt } from '../../utils/periodeUtils';
 import { filtrerBortAnnenPartsIdentiskePerioder } from './uttaksplanKalenderUtils';
 
 export const usePerioderForKalendervisning = (
@@ -56,7 +51,7 @@ export const usePerioderForKalendervisning = (
     const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(saksperioderInkludertTapteDager, erFarEllerMedmor);
 
     const kalenderPerioder = unikePerioder.reduce<CalendarPeriod[]>((acc, periode) => {
-        const color = getKalenderFargeForPeriode(periode, erFarEllerMedmor, saksperioderInkludertTapteDager, barn);
+        const color = getKalenderFargeForPeriode(periode, erFarEllerMedmor, saksperioderInkludertTapteDager);
         const isUpdated = endredePerioder.some((p) => p.fom === periode.fom && p.tom === periode.tom);
 
         const perioder = lagBarnehageOgfamiliehendelsePeriode(
@@ -151,16 +146,12 @@ const getKalenderFargeForPeriode = (
     periode: UttaksplanperiodeMedKunTapteDager,
     erFarEllerMedmor: boolean,
     allePerioder: UttaksplanperiodeMedKunTapteDager[],
-    barn: Barn,
 ): CalendarPeriodColor => {
     if (erAvslåttPeriode(periode)) {
         if (erVanligUttakPeriode(periode) && periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
             return 'DARKGRAY';
         }
-        const familiehendelsesdato = getFamiliehendelsedato(barn);
-        return !erFarEllerMedmor && erAvslåttPeriodeFørsteSeksUkerMor(periode, familiehendelsesdato)
-            ? 'BLACKOUTLINE'
-            : 'NONE';
+        return 'BLACKOUTLINE';
     }
 
     const annenForelderSamtidigUttaksperiode = erUttaksperiode(periode)
