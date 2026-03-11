@@ -11,6 +11,7 @@ import { nb, nn } from '@navikt/ds-react/locales';
 
 import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
+import { observabilityMessages } from '@navikt/fp-observability';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
@@ -37,6 +38,7 @@ const allNbMessages = {
     ...formHookMessages.nb,
     ...kvitteringMessages.nb,
     ...filopplasterMessages.nb,
+    ...observabilityMessages.nb,
 };
 const allNnMessages = {
     ...nnMessages,
@@ -50,6 +52,7 @@ const allNnMessages = {
     ...formHookMessages.nn,
     ...kvitteringMessages.nn,
     ...filopplasterMessages.nn,
+    ...observabilityMessages.nn,
 };
 
 declare global {
