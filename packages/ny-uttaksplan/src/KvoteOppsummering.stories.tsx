@@ -757,3 +757,73 @@ export const BeggeRettMangeOvertrukneDagerMedOverføringsÅrsak: Story = {
         ],
     },
 };
+
+export const BHFRMedAvslåttePerioder: Story = {
+    args: {
+        valgtStønadskonto: kontoNårBareFarHarRett,
+        uttakPerioder: [
+            {
+                fom: '2026-03-23',
+                tom: '2026-05-29',
+                kontoType: 'FORELDREPENGER',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                morsAktivitet: 'IKKE_OPPGITT',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+            {
+                fom: '2026-06-01',
+                tom: '2026-06-30',
+                kontoType: 'FORELDREPENGER',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                morsAktivitet: 'ARBEID',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+            {
+                fom: '2026-07-01',
+                tom: '2026-07-17',
+                kontoType: 'FORELDREPENGER',
+                resultat: {
+                    innvilget: false,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                morsAktivitet: 'UTDANNING',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+            {
+                fom: '2026-07-20',
+                tom: '2026-07-27',
+                kontoType: 'FORELDREPENGER',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                morsAktivitet: 'ARBEID',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+        ],
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'BARE_SØKER_RETT',
+            søker: 'FAR_MEDMOR',
+        },
+        erInnsyn: false,
+    },
+};

@@ -105,11 +105,8 @@ export const filtrerAvslåttePerioderMenBeholdPleiepenger = (
     if (erEøsUttakPeriode(periode)) {
         return true;
     }
-    if (periode.resultat?.innvilget === false) {
-        return periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
-    }
 
-    return periode.resultat?.innvilget ?? true;
+    return periode.resultat?.trekkerDager ?? true;
 };
 
 export const useTellDagerIUttaksPeriodene = () => {
