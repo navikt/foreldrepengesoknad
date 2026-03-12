@@ -229,6 +229,7 @@ export const UttaksplanStegNy = ({
                         scrollToKvoteOppsummering={scrollToKvoteOppsummering}
                         defaultUttaksperioder={defaultUttaksperioder}
                         eksisterendeSak={eksisterendeSak}
+                        opprinneligPlan={uttaksplanForEksisterendeSak}
                     />
                 </UttaksplanDataProvider>
             </Step>

@@ -55,6 +55,7 @@ interface UttaksplanFormProps {
     setFeilmelding: (melding: ReactNode) => void;
     scrollToKvoteOppsummering: () => void;
     eksisterendeSak: FpSak_fpoversikt | undefined;
+    opprinneligPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined;
 }
 
 export const UttaksplanForm = ({
@@ -65,6 +66,7 @@ export const UttaksplanForm = ({
     setFeilmelding,
     scrollToKvoteOppsummering,
     eksisterendeSak,
+    opprinneligPlan,
 }: UttaksplanFormProps) => {
     const intl = useIntl();
 
@@ -125,7 +127,7 @@ export const UttaksplanForm = ({
         !bareFarHarRett;
 
     const onSubmit = (formValues: FormValues) => {
-        if (gjeldendeUttaksplan?.length === 0) {
+        if (gjeldendeUttaksplan?.length === 0 && !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan)) {
             if (erEndringssøknad) {
                 setFeilmelding(<FormattedMessage id="UttaksplanSteg.IngenNyePerioder" />);
             } else {
@@ -351,4 +353,24 @@ const harPeriodeDerMorsAktivitetIkkeErValgt = (
             periode.flerbarnsdager === undefined &&
             periode.morsAktivitet === undefined,
     );
+};
+
+const harBrukerKunSlettetPerioder = (
+    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
+    opprinneligPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
+) => {
+    if (!opprinneligPlan) {
+        return false;
+    }
+
+    const erKunSaksperioder = perioder?.every(
+        (periode) => Uttaksperioden.erEøsPeriode(periode) || periode.resultat !== undefined,
+    );
+
+    if (erKunSaksperioder) {
+        const harSlettetPeriode = perioder?.length ? perioder.length < opprinneligPlan.length : false;
+        return harSlettetPeriode;
+    }
+
+    return false;
 };
