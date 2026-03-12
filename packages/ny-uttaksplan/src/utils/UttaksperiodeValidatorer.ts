@@ -53,12 +53,13 @@ export const UttaksperiodeValidatorer = {
     erNoenPerioderIMellomToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato(
         perioder: Periode[],
         familiehendelsedato: string,
+        termindato: string | undefined,
     ) {
         return perioder.some((periode) =>
             UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
                 periode,
                 familiehendelsedato,
-                undefined,
+                termindato,
             ),
         );
     },

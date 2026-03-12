@@ -7,6 +7,7 @@ import {
     KontoBeregningDto,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
+    isFødtBarn,
 } from '@navikt/fp-types';
 import { Uttaksperioden, getFamiliehendelsedato, getFamiliesituasjon } from '@navikt/fp-utils';
 
@@ -27,6 +28,7 @@ type Props = {
 type ContextValues = Omit<Props, 'children'> & {
     familiesituasjon: Familiesituasjon;
     familiehendelsedato: string;
+    termindato: string | undefined;
 };
 
 const UttaksplanDataContext = createContext<ContextValues | null>(null);
@@ -37,6 +39,7 @@ export const UttaksplanDataProvider = (props: Props) => {
     const value = useMemo(() => {
         const familiehendelsedato = getFamiliehendelsedato(otherProps.barn);
         const familiesituasjon = getFamiliesituasjon(otherProps.barn);
+        const termindato = isFødtBarn(otherProps.barn) ? otherProps.barn.termindato : undefined;
 
         const sortertePerioder = filtrerBortPerioderUtenTrekkdager(otherProps.uttakPerioder).sort(sorterPerioder);
 
@@ -44,6 +47,7 @@ export const UttaksplanDataProvider = (props: Props) => {
             ...otherProps,
             familiehendelsedato,
             familiesituasjon,
+            termindato,
             uttakPerioder: sortertePerioder,
         };
     }, [otherProps]);
