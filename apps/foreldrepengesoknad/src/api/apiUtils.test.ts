@@ -427,14 +427,6 @@ const lagUttakPeriode = (
     kontoType,
 });
 
-/**
- * Testar for getEndringstidspunktNy som er brukt i cleanEndringssøknadNy (apiUtils.ts).
- *
- * Bug: I getEndringstidspunktNy (dateUtils.ts) er det ein `return;` som avsluttar heile
- * funksjonen og returnerer undefined, i staden for å bryte ut av løkka med `break;`.
- * Når det er periodar etter den endra perioden, blir endringstidspunktet undefined,
- * og cleanEndringssøknadNy sender då ALLE periodar i staden for berre dei frå endringstidspunktet.
- */
 describe('getEndringstidspunktNy - endringstidspunkt for endringssøknad', () => {
     describe('skal finne korrekt endringstidspunkt med 3+ periodar', () => {
         it('skal returnere endringstidspunkt når ein periode i midten er endra og det finst periodar etter', () => {
@@ -452,9 +444,6 @@ describe('getEndringstidspunktNy - endringstidspunkt for endringssøknad', () =>
 
             const result = getEndringstidspunktNy(opprinneligPlan, oppdatertPlan);
 
-            // Bør vere '2024-02-01' (fom av den endra perioden).
-            // Utan fix returnerer dette undefined fordi `return;` avsluttar funksjonen
-            // når det finst periodar etter den endra perioden.
             expect(result).toBe('2024-02-01');
         });
 
@@ -508,10 +497,6 @@ describe('getEndringstidspunktNy - endringstidspunkt for endringssøknad', () =>
 
             const result = getEndringstidspunktNy(opprinneligPlan, oppdatertPlan);
 
-            // Med 4 periodar og endring i 2. periode: Etter iterasjon over 2. periode
-            // blir endringstidspunktNyPlan sett. På 3. iterasjon trigger `return;` og
-            // returnerer undefined. Dei uendra periodane etter endringa (mars, april)
-            // skal sendast med, men funksjonen feiler i å identifisere endringstidspunktet.
             expect(result).toBe('2024-02-01');
         });
     });
@@ -529,7 +514,6 @@ describe('getEndringstidspunktNy - endringstidspunkt for endringssøknad', () =>
             ];
 
             const result = getEndringstidspunktNy(opprinneligPlan, oppdatertPlan);
-            // Denne fungerer fordi løkka avsluttar naturleg etter siste periode
             expect(result).toBe('2024-02-01');
         });
 
@@ -547,7 +531,6 @@ describe('getEndringstidspunktNy - endringstidspunkt for endringssøknad', () =>
             ];
 
             const result = getEndringstidspunktNy(opprinneligPlan, oppdatertPlan);
-            // Denne fungerer fordi endringa er i siste periode, så `return;` blir aldri nådd
             expect(result).toBe('2024-03-01');
         });
 
@@ -578,7 +561,6 @@ describe('getEndringstidspunktNy - endringstidspunkt for endringssøknad', () =>
             ];
 
             const result = getEndringstidspunktNy(opprinneligPlan, oppdatertPlan);
-            // Andre løkka oppdagar at feb-perioden manglar i ny plan
             expect(result).toBe('2024-02-01');
         });
     });
