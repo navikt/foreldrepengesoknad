@@ -17,6 +17,7 @@ const {
     BeggeRettMorIngenDagerBrukt,
     MorHarPrematuruker,
     BeggeRettMangeOvertrukneDagerMedOverføringsÅrsak,
+    BHFRMedAvslåttePerioder,
 } = composeStories(stories);
 
 describe('<KvoteOppsummering >', () => {
@@ -144,5 +145,16 @@ describe('<KvoteOppsummering >', () => {
                 'Det er lagt til 12 uker og 3 dager av fellesperioden, 3 dager av mødrekvoten og 3 dager av fedrekvoten for mye i planen. Rett opp i dette før du går videre til neste steg.',
             ),
         ).toBeInTheDocument();
+    });
+
+    it('<BHFRMedAvslåttePerioder - Skal trekke avslåtte perioder for BHFR >', async () => {
+        render(<BHFRMedAvslåttePerioder />);
+
+        expect(screen.getByText('21 uker og 4 dager ligger ikke i planen.')).toBeInTheDocument();
+
+        const expandButton = screen.getByRole('button', { expanded: false });
+        await userEvent.click(expandButton);
+
+        expect(screen.getByText('8 uker og 1 dag er lagt til, 21 uker og 4 dager gjenstår')).toBeInTheDocument();
     });
 });
