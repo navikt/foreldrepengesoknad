@@ -1650,7 +1650,7 @@ export const SkalViseAvslåttPeriodeKorrekt: Story = {
     },
 };
 
-export const T: Story = {
+export const SkalViseGradertePeriodeForAnnenPartSomErLåst: Story = {
     args: {
         barn: {
             type: BarnType.FØDT,
