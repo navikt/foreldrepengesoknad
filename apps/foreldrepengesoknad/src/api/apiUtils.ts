@@ -642,10 +642,10 @@ const midlertidigMappingAvUttaksplan = (
             tom: periode.tom,
             gradering: periode.gradering
                 ? {
-                      erArbeidstaker: periode.gradering.aktivitet.type === 'ORDINÆRT_ARBEID',
-                      erFrilanser: periode.gradering.aktivitet.type === 'FRILANS',
-                      erSelvstendig: periode.gradering.aktivitet.type === 'SELVSTENDIG_NÆRINGSDRIVENDE',
-                      orgnumre: periode.gradering.aktivitet.arbeidsgiver?.id
+                      erArbeidstaker: periode.gradering.aktivitet?.type === 'ORDINÆRT_ARBEID',
+                      erFrilanser: periode.gradering.aktivitet?.type === 'FRILANS',
+                      erSelvstendig: periode.gradering.aktivitet?.type === 'SELVSTENDIG_NÆRINGSDRIVENDE',
+                      orgnumre: periode.gradering.aktivitet?.arbeidsgiver?.id
                           ? [periode.gradering.aktivitet.arbeidsgiver.id]
                           : [],
                       stillingsprosent: periode.gradering?.arbeidstidprosent,
