@@ -275,7 +275,7 @@ export const getEndringstidspunktNy = (
     if (søkerensOpprinneligePlan) {
         for (const [index, periode] of søkerensUpdatedPlan.entries()) {
             if (endringstidspunktNyPlan) {
-                return;
+                break;
             }
 
             const { fom } = periode;

@@ -1,5 +1,5 @@
 import { ContextDataType } from 'appData/FpDataContext';
-import { dateToISOString } from 'utils/dateUtils';
+import { dateToISOString, getEndringstidspunktNy } from 'utils/dateUtils';
 
 import {
     AnnenForelder,
@@ -11,7 +11,12 @@ import {
     Periodetype,
     Uttaksperiode,
 } from '@navikt/fp-common';
-import { ArbeidsforholdOgInntektFp, PersonMedArbeidsforholdDto_fpoversikt, Uttaksplanperiode } from '@navikt/fp-types';
+import {
+    ArbeidsforholdOgInntektFp,
+    PersonMedArbeidsforholdDto_fpoversikt,
+    UttakPeriode_fpoversikt,
+    Uttaksplanperiode,
+} from '@navikt/fp-types';
 
 import {
     cleanEndringssøknad,
@@ -405,5 +410,158 @@ describe('getPeriodeVedTidspunkt', () => {
     it('returns undefined when no periode overlaps at tidspunkt', () => {
         const periodeNotFound = getPeriodeVedTidspunkt(uttaksplanMedAllePerioder, new Date('2024-03-08'));
         expect(periodeNotFound).toBe(undefined);
+    });
+});
+
+// Hjelpefunksjon for å lage UttakPeriode_fpoversikt til testane
+const lagUttakPeriode = (
+    fom: string,
+    tom: string,
+    kontoType: 'MØDREKVOTE' | 'FELLESPERIODE' | 'FEDREKVOTE' | 'FORELDREPENGER' = 'MØDREKVOTE',
+    forelder: 'MOR' | 'FAR_MEDMOR' = 'MOR',
+): UttakPeriode_fpoversikt => ({
+    fom,
+    tom,
+    forelder,
+    flerbarnsdager: false,
+    kontoType,
+});
+
+describe('getEndringstidspunktNy - endringstidspunkt for endringssøknad', () => {
+    describe('skal finne korrekt endringstidspunkt med 3+ periodar', () => {
+        it('skal returnere endringstidspunkt når ein periode i midten er endra og det finst periodar etter', () => {
+            const opprinneligPlan: UttakPeriode_fpoversikt[] = [
+                lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
+            ];
+
+            const oppdatertPlan: UttakPeriode_fpoversikt[] = [
+                lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-02-01', '2024-02-29', 'FELLESPERIODE'), // endra kontoType
+                lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
+            ];
+
+            const result = getEndringstidspunktNy(opprinneligPlan, oppdatertPlan);
+
+            expect(result).toBe('2024-02-01');
+        });
+
+        it('skal returnere endringstidspunkt når første periode er endra og det finst periodar etter', () => {
+            const opprinneligPlan: UttakPeriode_fpoversikt[] = [
+                lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
+            ];
+
+            const oppdatertPlan: UttakPeriode_fpoversikt[] = [
+                lagUttakPeriode('2024-01-01', '2024-01-31', 'FELLESPERIODE'), // endra
+                lagUttakPeriode('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
+            ];
+
+            const result = getEndringstidspunktNy(opprinneligPlan, oppdatertPlan);
+            expect(result).toBe('2024-01-01');
+        });
+
+        it('skal returnere endringstidspunkt når ny periode er lagt til mellom eksisterande periodar', () => {
+            const opprinneligPlan: UttakPeriode_fpoversikt[] = [
+                lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
+            ];
+
+            const oppdatertPlan: UttakPeriode_fpoversikt[] = [
+                lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-02-01', '2024-02-29', 'FELLESPERIODE'), // ny periode
+                lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
+            ];
+
+            const result = getEndringstidspunktNy(opprinneligPlan, oppdatertPlan);
+            expect(result).toBe('2024-02-01');
+        });
+
+        it('skal returnere endringstidspunkt når periode i midten av 4 periodar er endra', () => {
+            const opprinneligPlan: UttakPeriode_fpoversikt[] = [
+                lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-04-01', '2024-04-30', 'MØDREKVOTE'),
+            ];
+
+            const oppdatertPlan: UttakPeriode_fpoversikt[] = [
+                lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-02-01', '2024-02-29', 'FELLESPERIODE'), // endra
+                lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-04-01', '2024-04-30', 'MØDREKVOTE'),
+            ];
+
+            const result = getEndringstidspunktNy(opprinneligPlan, oppdatertPlan);
+
+            expect(result).toBe('2024-02-01');
+        });
+    });
+
+    describe('kontrolltestar - scenario som fungerer korrekt', () => {
+        it('skal returnere endringstidspunkt når siste av to periodar er endra', () => {
+            const opprinneligPlan: UttakPeriode_fpoversikt[] = [
+                lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
+            ];
+
+            const oppdatertPlan: UttakPeriode_fpoversikt[] = [
+                lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-02-01', '2024-02-29', 'FELLESPERIODE'), // endra
+            ];
+
+            const result = getEndringstidspunktNy(opprinneligPlan, oppdatertPlan);
+            expect(result).toBe('2024-02-01');
+        });
+
+        it('skal returnere endringstidspunkt når siste av tre periodar er endra', () => {
+            const opprinneligPlan: UttakPeriode_fpoversikt[] = [
+                lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
+            ];
+
+            const oppdatertPlan: UttakPeriode_fpoversikt[] = [
+                lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-03-01', '2024-03-29', 'FELLESPERIODE'), // endra siste
+            ];
+
+            const result = getEndringstidspunktNy(opprinneligPlan, oppdatertPlan);
+            expect(result).toBe('2024-03-01');
+        });
+
+        it('skal returnere undefined når planane er identiske', () => {
+            const plan: UttakPeriode_fpoversikt[] = [
+                lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
+            ];
+
+            const result = getEndringstidspunktNy(
+                plan,
+                plan.map((p) => ({ ...p })),
+            );
+            expect(result).toBeUndefined();
+        });
+
+        it('skal returnere endringstidspunkt når ein periode er fjerna frå opprinnelig plan', () => {
+            const opprinneligPlan: UttakPeriode_fpoversikt[] = [
+                lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
+            ];
+
+            const oppdatertPlan: UttakPeriode_fpoversikt[] = [
+                lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+                lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'), // feb er fjerna
+            ];
+
+            const result = getEndringstidspunktNy(opprinneligPlan, oppdatertPlan);
+            expect(result).toBe('2024-02-01');
+        });
     });
 });
