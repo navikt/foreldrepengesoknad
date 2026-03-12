@@ -82,21 +82,11 @@ export const UttaksperiodeValidatorer = {
         );
     },
 
-    erNoenPerioderFørSeksUkerEtterFamiliehendelsesdatoOgNoenEtter(perioder: Periode[], familiehendelsedato: string) {
-        return (
-            UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
-                perioder,
-                familiehendelsedato,
-            ) &&
-            UttaksperiodeValidatorer.erNoenPerioderLikEllerEtter6UkerEtterFamiliehendelse(perioder, familiehendelsedato)
-        );
-    },
-
     erNoenPerioderLikEllerEtterFamiliehendelsesdato(perioder: Periode[], familiehendelsedato: string) {
         return perioder.some((p) => dayjs(p.tom).isSameOrAfter(familiehendelsedato));
     },
 
-    erNoenPerioderLikEllerEtter6UkerEtterFamiliehendelse(perioder: Periode[], familiehendelsedato: string) {
+    erNoenPerioderLikEllerEtter6UkerEtterFamiliehendelsedato(perioder: Periode[], familiehendelsedato: string) {
         return perioder.some((p) =>
             dayjs(p.tom).isSameOrAfter(
                 UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),

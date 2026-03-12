@@ -302,7 +302,10 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             rettighetType === 'BARE_SØKER_RETT' &&
             fomValue &&
             tomValue &&
-            !UttaksperiodeValidatorer.erFørFørsteSeksUker({ fom: fomValue, tom: tomValue }, familiehendelsedato)
+            !UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
+                [{ fom: fomValue, tom: tomValue }],
+                familiehendelsedato,
+            )
             ? intl.formatMessage({ id: 'uttaksplan.valgPanel.ferie' })
             : null;
     };

@@ -104,7 +104,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
         !skalVisePauseknapp &&
         !(
             harBareFarRett &&
-            UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdatoOgNoenEtter(
+            UttaksperiodeValidatorer.erNoenPerioderFørOgNoenLikEllerEtterFamiliehendelsesdato(
                 sammenslåtteValgtePerioder,
                 familiehendelsedato,
             )

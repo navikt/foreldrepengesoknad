@@ -740,7 +740,7 @@ describe('UttaksplanListe', () => {
         ]);
     });
 
-    it('Skal ikke kunne legg til ferieperiode etter 6-ukerperioden for kun far har rett', async () => {
+    it('Skal ikke kunne legge til ferieperiode etter 6-ukerperioden for kun far har rett', async () => {
         const oppdaterUttaksplan = vi.fn();
 
         render(<KunFarHarRettOgHarPauseperiode oppdaterUttaksplan={oppdaterUttaksplan} />);
