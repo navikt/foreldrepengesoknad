@@ -34,7 +34,7 @@ export const initSentry = ({ dsn }: InitSentryOptions) => {
 
 /**
  * Sjekker først om stacktrace kommer fra en assets fil. Feks "/foreldrepenger/soknad/assets/index-66kDgVTH.js"
- * Disse kan også matche
+ * Disse kan også matche dekoratøren. Så gjør deretter en sjekk om dekoratøren er involvert
  */
 const feilUtenOpprinnelseIVårKode = (event: Sentry.ErrorEvent) => {
     return (event.exception?.values ?? []).some((ex) => {
