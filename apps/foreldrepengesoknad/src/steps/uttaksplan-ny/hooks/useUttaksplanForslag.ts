@@ -3,11 +3,16 @@ import { getDatoForAleneomsorg, getErMorUfør } from 'utils/annenForelderUtils';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnr } from 'utils/personUtils';
 
 import { isAdoptertAnnetBarn, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { KontoBeregningDto, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import {
+    Barn,
+    KontoBeregningDto,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import { UttaksdagenString, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { OppstartValg } from '../../../types/Fordeling';
+import { Fordeling, OppstartValg } from '../../../types/Fordeling';
 import { getTermindato } from '../../../utils/barnUtils';
 import { deltUttak } from './forslag/deltUttak';
 import { ikkeDeltUttak } from './forslag/ikkeDeltUttak';
@@ -47,13 +52,10 @@ export const useUttaksplanForslag = (
     const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
 
     const oppstartsdato = getOppstartsdatoFromFordelingValg(
-        fordeling.oppstartAvForeldrepengerValg,
-        fordeling.oppstartDato,
-        getTermindato(barn),
-        familiehendelsedato,
-        isAdoptertAnnetBarn(barn) && barn.adoptertIUtlandet ? barn.ankomstdato : undefined,
-        undefined, // TODO (Andreas) - Annen parts siste dag må inn her når vi har støtte for det
+        fordeling,
+        barn,
         getDatoForAleneomsorg(annenForelder),
+        undefined, // TODO (Andreas) - Må finne ut av hvordan man skal gjøre ting når annen part har perioder
     );
 
     if (erDeltUttak) {
@@ -123,14 +125,17 @@ export function getFørsteUttaksdagDatoForAleneomsorg(datoForAleneomsorg: string
 }
 
 export const getOppstartsdatoFromFordelingValg = (
-    oppstartValg: OppstartValg | undefined,
-    oppstartDato: string | undefined,
-    termindato: string | undefined,
-    familiehendelsesdato: string,
-    ankomstDatoNorge: string | undefined,
-    sisteDagAnnenForelder: string | undefined,
+    fordeling: Fordeling,
+    barn: Barn,
     datoForAleneomsorg: string | undefined,
+    sisteDagAnnenForelder: string | undefined,
 ): string => {
+    const oppstartValg = fordeling.oppstartAvForeldrepengerValg;
+    const oppstartDato = fordeling.oppstartDato;
+    const termindato = getTermindato(barn);
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const ankomstDatoNorge = isAdoptertAnnetBarn(barn) && barn.adoptertIUtlandet ? barn.ankomstdato : undefined;
+
     if ((!oppstartValg || oppstartValg === OppstartValg.ANNEN_DATO) && oppstartDato) {
         return oppstartDato;
     }

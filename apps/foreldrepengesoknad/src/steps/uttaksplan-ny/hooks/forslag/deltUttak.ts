@@ -6,12 +6,11 @@ import { TidsperiodenString, UttaksdagenString, erUttaksdag } from '@navikt/fp-u
 import { FellesperiodeFordelingValg, Fordeling } from '../../../../types/Fordeling';
 
 const getFellesperioderDagerFordeling = (fordeling: Fordeling, fellesperiodeDagerTilgjengelig: number) => {
-    let fellesperiodeDagerMor = 0;
-    let fellesperiodeDagerFarMedmor = 0;
-
     if (fordeling.fordelingValg === FellesperiodeFordelingValg.ALT) {
-        fellesperiodeDagerMor = fellesperiodeDagerTilgjengelig;
-        fellesperiodeDagerFarMedmor = 0;
+        const fellesperiodeDagerMor = fellesperiodeDagerTilgjengelig;
+        const fellesperiodeDagerFarMedmor = 0;
+
+        return { fellesperiodeDagerMor, fellesperiodeDagerFarMedmor };
     } else if (fordeling.fordelingValg === FellesperiodeFordelingValg.VIL_VELGE) {
         const antallDager = fordeling.antallDagerFellesperiodeTilSøker
             ? Number.parseInt(fordeling.antallDagerFellesperiodeTilSøker, 10)
@@ -21,14 +20,16 @@ const getFellesperioderDagerFordeling = (fordeling: Fordeling, fellesperiodeDage
             ? Number.parseInt(fordeling.antallUkerFellesperiodeTilSøker, 10)
             : 0;
 
-        fellesperiodeDagerMor = antallUker * 5 + antallDager;
-        fellesperiodeDagerFarMedmor = fellesperiodeDagerTilgjengelig - fellesperiodeDagerMor;
-    } else {
-        fellesperiodeDagerMor = 0;
-        fellesperiodeDagerFarMedmor = 0;
-    }
+        const fellesperiodeDagerMor = antallUker * 5 + antallDager;
+        const fellesperiodeDagerFarMedmor = fellesperiodeDagerTilgjengelig - fellesperiodeDagerMor;
 
-    return { fellesperiodeDagerMor, fellesperiodeDagerFarMedmor };
+        return { fellesperiodeDagerMor, fellesperiodeDagerFarMedmor };
+    } else {
+        const fellesperiodeDagerMor = 0;
+        const fellesperiodeDagerFarMedmor = 0;
+
+        return { fellesperiodeDagerMor, fellesperiodeDagerFarMedmor };
+    }
 };
 
 const lagDeltUttakForMor = (famDato: string, stønadskontoer: KontoDto[], startdato: string, fordeling: Fordeling) => {
