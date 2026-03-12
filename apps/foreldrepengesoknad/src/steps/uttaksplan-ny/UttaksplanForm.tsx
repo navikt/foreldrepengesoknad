@@ -368,7 +368,7 @@ const harBrukerKunSlettetPerioder = (
     );
 
     if (erKunSaksperioder) {
-        const harSlettetPeriode = perioder?.length ? perioder.length < opprinneligPlan.length : false;
+        const harSlettetPeriode = perioder?.length ? perioder.length !== opprinneligPlan.length : false;
         return harSlettetPeriode;
     }
 
