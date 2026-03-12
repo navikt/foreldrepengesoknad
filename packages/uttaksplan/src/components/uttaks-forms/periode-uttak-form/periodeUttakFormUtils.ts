@@ -14,7 +14,12 @@ import {
     isOverføringsperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { BrukerRolleSak_fpoversikt, KontoTypeUttak, UttakOverføringÅrsak_fpoversikt } from '@navikt/fp-types';
+import {
+    BrukerRolleSak_fpoversikt,
+    KontoTypeUttak,
+    Oppholdsårsak,
+    UttakOverføringÅrsak_fpoversikt,
+} from '@navikt/fp-types';
 import { trimNumberValue } from '@navikt/fp-utils';
 
 import { QuestionVisibility, YesOrNo } from '../../../formik-wrappers';
@@ -28,7 +33,53 @@ import {
     erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB,
 } from './periodeUttakFormQuestionsConfig';
 
-const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
+const hasValue = (value: unknown) => value !== '' && value !== undefined && value !== null;
+
+const isBrukerRolle = (value: unknown): value is BrukerRolleSak_fpoversikt => value === 'MOR' || value === 'FAR_MEDMOR';
+
+function requireBrukerRolle(
+    value: PeriodeUttakFormData[PeriodeUttakFormField.hvemSkalTaUttak] | undefined,
+    fieldName: string,
+): BrukerRolleSak_fpoversikt {
+    if (!isBrukerRolle(value)) {
+        throw new Error(`${fieldName} må være satt til MOR eller FAR_MEDMOR`);
+    }
+    return value;
+}
+
+function requireKontoType(
+    value: PeriodeUttakFormData[PeriodeUttakFormField.konto] | undefined,
+    fieldName: string,
+): KontoTypeUttak {
+    if (value === undefined || value === '') {
+        throw new Error(`${fieldName} må være satt`);
+    }
+    return value;
+}
+
+function requireOverføringsårsak(
+    value: PeriodeUttakFormData[PeriodeUttakFormField.overføringsårsak] | undefined,
+): UttakOverføringÅrsak_fpoversikt {
+    if (value === undefined || value === '') {
+        throw new Error('overføringsårsak må være satt');
+    }
+    return value;
+}
+
+function requireOppholdsårsak(konto: KontoTypeUttak): Oppholdsårsak {
+    const oppholdsårsak = getOppholdsÅrsakFromStønadskonto(konto);
+    if (!oppholdsårsak) {
+        throw new Error('Kunne ikke mappe konto til oppholdsårsak');
+    }
+    return oppholdsårsak;
+}
+
+function requireDate(value: Date | undefined, fieldName: string): Date {
+    if (value === undefined) {
+        throw new Error(`${fieldName} må være satt`);
+    }
+    return value;
+}
 
 const getInitialKonto = (
     erDeltUttak: boolean,
@@ -327,7 +378,7 @@ const getKontoVerdi = (
 };
 
 const getForelderForPeriode = (
-    angittForelder: BrukerRolleSak_fpoversikt,
+    angittForelder: PeriodeUttakFormData[PeriodeUttakFormField.hvemSkalTaUttak] | undefined,
     tidsperiode: TidsperiodeDate,
     erFarEllerMedmor: boolean,
     erDeltUttak: boolean,
@@ -339,12 +390,12 @@ const getForelderForPeriode = (
         dayjs(tidsperiode.fom).isSameOrBefore(sisteUttaksdag6UkerEtterFødsel, 'day') &&
         erFarEllerMedmor &&
         erDeltUttak &&
-        (angittForelder as any) === ''
+        angittForelder === ''
     ) {
         return 'FAR_MEDMOR';
     }
 
-    return angittForelder;
+    return requireBrukerRolle(angittForelder, 'hvemSkalTaUttak');
 };
 
 export const mapPeriodeUttakFormToPeriode = (
@@ -357,40 +408,49 @@ export const mapPeriodeUttakFormToPeriode = (
     situasjon: Situasjon,
     harAktivitetsfriKvote: boolean,
 ): Periode => {
+    const fom = requireDate(values.fom, 'fom');
+    const tom = requireDate(values.tom, 'tom');
+
     if (type === Periodetype.Overføring) {
+        const konto = requireKontoType(values.konto, 'konto');
+        const overføringsårsak = requireOverføringsårsak(values.overføringsårsak);
+
         const periode: Overføringsperiode = {
             id,
             type,
             forelder: getForelderForPeriode(
-                values.hvemSkalTaUttak as BrukerRolleSak_fpoversikt,
+                values.hvemSkalTaUttak,
                 {
-                    fom: values.fom!,
-                    tom: values.tom!,
+                    fom,
+                    tom,
                 },
                 erFarEllerMedmor,
                 erDeltUttak,
                 familiehendelsesdato,
             ),
-            konto: values.konto as KontoTypeUttak,
+            konto,
             tidsperiode: {
-                fom: values.fom!,
-                tom: values.tom!,
+                fom,
+                tom,
             },
-            årsak: values.overføringsårsak as UttakOverføringÅrsak_fpoversikt,
+            årsak: overføringsårsak,
         };
 
         return periode;
     }
 
     if (type === Periodetype.Opphold) {
+        const forelder = requireBrukerRolle(values.hvemSkalTaUttak, 'hvemSkalTaUttak');
+        const konto = requireKontoType(values.konto, 'konto');
+
         const periode: Oppholdsperiode = {
             id,
             type,
-            forelder: values.hvemSkalTaUttak as BrukerRolleSak_fpoversikt,
-            årsak: getOppholdsÅrsakFromStønadskonto(values.konto as KontoTypeUttak)!,
+            forelder,
+            årsak: requireOppholdsårsak(konto),
             tidsperiode: {
-                fom: values.fom!,
-                tom: values.tom!,
+                fom,
+                tom,
             },
         };
 
@@ -433,16 +493,22 @@ export const mapPeriodeUttakFormToPeriode = (
               )
             : samtidigUttakProsentInputVerdi;
 
-    const forelderVerdi = samtidigWLBUttakFørFørsteSeksUkerFarMedmor
-        ? 'FAR_MEDMOR'
-        : (values.hvemSkalTaUttak as BrukerRolleSak_fpoversikt);
+    const forelderVerdi = (() => {
+        if (samtidigWLBUttakFørFørsteSeksUkerFarMedmor) {
+            return 'FAR_MEDMOR' as const;
+        }
+
+        return requireBrukerRolle(values.hvemSkalTaUttak, 'hvemSkalTaUttak');
+    })();
+
+    const konto = requireKontoType(values.konto, 'konto');
 
     const kontoVerdi = getKontoVerdi(
         samtidigWLBUttakFørFødselFarMedmor,
         erFarEllerMedmor,
         erDeltUttak,
-        values.fom!,
-        values.konto as KontoTypeUttak,
+        fom,
+        konto,
         familiehendelsesdato,
         harAktivitetsfriKvote,
     );
@@ -452,8 +518,8 @@ export const mapPeriodeUttakFormToPeriode = (
         forelder: forelderVerdi,
         konto: kontoVerdi,
         tidsperiode: {
-            fom: values.fom!,
-            tom: values.tom!,
+            fom,
+            tom,
         },
         type: Periodetype.Uttak,
         arbeidsformer: hasValue(values.arbeidsformer)

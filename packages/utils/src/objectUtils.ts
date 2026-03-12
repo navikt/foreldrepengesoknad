@@ -5,9 +5,9 @@ export const omitOne = <T, K extends keyof T>(object: T, keyToOmit: K): Omit<T, 
 };
 
 export const omitMany = <T, K extends keyof T>(object: T, keysToOmit: K[]): Omit<T, K> => {
-    let result = object as Omit<T, K>;
+    const result: Partial<T> = { ...object };
     for (const key of keysToOmit) {
-        result = omitOne(result, key as unknown as keyof Omit<T, K>) as Omit<T, K>;
+        delete result[key];
     }
-    return result;
+    return result as Omit<T, K>;
 };

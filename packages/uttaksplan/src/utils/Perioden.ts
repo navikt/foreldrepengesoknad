@@ -52,23 +52,25 @@ function erPerioderLike(p1: Periode, p2: Periode, inkluderTidsperiode = false, i
 
 function getPeriodeFootprint(periode: Periode, inkluderTidsperiode = false) {
     const { tidsperiode, id, ...rest } = periode;
-    const sortedPeriode: any = {};
-    Object.keys(rest)
-        .sort((a, b) => a.localeCompare(b))
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        .filter((key) => (rest as any)[key] !== undefined)
-        .forEach((key) => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-            sortedPeriode[key] = (rest as any)[key];
-        });
+    const sortedPeriode = Object.fromEntries(
+        Object.entries(rest)
+            .filter(([, value]) => value !== undefined)
+            .sort(([keyA], [keyB]) => keyA.localeCompare(keyB)),
+    );
+
     if (inkluderTidsperiode && tidsperiode) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        sortedPeriode.tidsperiode = {
-            fom: tidsperiode.fom ? formaterDatoKompakt(tidsperiode.fom) : undefined,
-            tom: tidsperiode.tom ? formaterDatoKompakt(tidsperiode.tom) : undefined,
+        const periodeMedTidsperiode = {
+            ...sortedPeriode,
+            tidsperiode: {
+                fom: tidsperiode.fom ? formaterDatoKompakt(tidsperiode.fom) : undefined,
+                tom: tidsperiode.tom ? formaterDatoKompakt(tidsperiode.tom) : undefined,
+            },
         };
+
+        return JSON.stringify(periodeMedTidsperiode);
     }
-    return JSON.stringify({ ...sortedPeriode });
+
+    return JSON.stringify(sortedPeriode);
 }
 
 function flyttPeriode(periode: Periode, fom: Date): Periode {
