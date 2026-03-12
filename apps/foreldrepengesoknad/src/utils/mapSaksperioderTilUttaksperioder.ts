@@ -297,10 +297,11 @@ const mapUttaksperiodeFromSaksperiode = (
         ønskerFlerbarnsdager: grunnlag.antallBarn > 1 ? saksperiode.flerbarnsdager : undefined,
         stillingsprosent: gradert ? saksperiode.gradering!.arbeidstidprosent.toString() : undefined,
         arbeidsformer: gradert
-            ? [getArbeidsformFromUttakArbeidstype(saksperiode.gradering!.aktivitet.type)]
+            ? // Dette blir snart fjerna så fiksar ikkje type
+              [getArbeidsformFromUttakArbeidstype(saksperiode.gradering!.aktivitet!.type)]
             : undefined,
         orgnumre:
-            gradert && saksperiode.gradering!.aktivitet.arbeidsgiver !== undefined
+            gradert && saksperiode.gradering!.aktivitet?.arbeidsgiver !== undefined
                 ? [saksperiode.gradering!.aktivitet.arbeidsgiver.id]
                 : undefined,
         morsAktivitetIPerioden: saksperiode.morsAktivitet,
