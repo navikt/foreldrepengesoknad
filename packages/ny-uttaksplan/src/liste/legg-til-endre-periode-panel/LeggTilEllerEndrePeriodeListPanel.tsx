@@ -296,6 +296,20 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             : intl.formatMessage({ id: 'uttaksplan.valgPanel.pause' });
     };
 
+    const erFerieOgPeriodeUtenForeldrepengerGyldig = (nyHvaVilDuGjøre?: HvaVilDuGjøre) => {
+        return (nyHvaVilDuGjøre === 'LEGG_TIL_FERIE' || nyHvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') &&
+            søker === 'FAR_MEDMOR' &&
+            rettighetType === 'BARE_SØKER_RETT' &&
+            fomValue &&
+            tomValue &&
+            !UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
+                [{ fom: fomValue, tom: tomValue }],
+                familiehendelsedato,
+            )
+            ? intl.formatMessage({ id: 'uttaksplan.valgPanel.ferie' })
+            : null;
+    };
+
     return (
         <VStack
             gap="space-8"
@@ -347,6 +361,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                                 isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.hvaVilDuGjøre.påkrevd' })),
                                 erUtsettelseGyldig,
                                 erPauseGyldig,
+                                erFerieOgPeriodeUtenForeldrepengerGyldig,
                             ]}
                             onChange={resetFormValuesVedEndringAvHvaVilDuGjøre}
                         >

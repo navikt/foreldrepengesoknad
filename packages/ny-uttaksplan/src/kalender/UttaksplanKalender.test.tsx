@@ -21,8 +21,9 @@ const {
     HarUtsettelse,
     FlerbarnMorOgFar,
     SkalIkkeViseAvslåttePerioderSomOverlapperMedAndrePerioder,
-    KunFarHarRettOgHarPausePeriode,
+    KunFarHarRettOgHarPauseperiode,
     SkalViseAvslåttPeriodeKorrekt,
+    SkalIkkeMarkereAvslåttePerioderMedVarselOmMorsAktivitet,
 } = composeStories(stories);
 
 describe('UttaksplanKalender', () => {
@@ -1568,7 +1569,7 @@ describe('UttaksplanKalender', () => {
     });
 
     it('skal vise pause og legge til ny pause', async () => {
-        render(<KunFarHarRettOgHarPausePeriode />);
+        render(<KunFarHarRettOgHarPauseperiode />);
 
         expect(screen.getByText('Du har satt uttaket på pause')).toBeInTheDocument();
 
@@ -1618,5 +1619,18 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getByText('Fortsett'));
 
         expect(within(juli).getByTestId('day:14;dayColor:BLACK')).toBeInTheDocument();
+    });
+
+    it('skal ikke markere avslåtte perioder med varsel om mors aktivitet', () => {
+        render(<SkalIkkeMarkereAvslåttePerioderMedVarselOmMorsAktivitet />);
+
+        const juni = screen.getByTestId('year:2024;month:5');
+
+        expect(within(juni).getByTestId('day:3;dayColor:BLACKOUTLINE')).toBeInTheDocument();
+        expect(within(juni).getByTestId('day:14;dayColor:DARKGRAY')).toBeInTheDocument();
+
+        expect(
+            screen.queryByText('Du må fylle ut informasjon om mors aktivitet i de markerte periodene'),
+        ).not.toBeInTheDocument();
     });
 });

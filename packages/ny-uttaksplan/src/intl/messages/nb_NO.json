@@ -14,6 +14,7 @@
     "uttaksplan.valgPanel.utsettelse": "Utsettelse kan kun legges til når en har valgt dager i 6-ukersperioden etter fødsel/termin",
     "uttaksplan.overskriderEøs": "Periode kan ikke overlappe med en eksisterende EU/EØS-periode",
     "uttaksplan.valgPanel.pause": "Pause kan kun legges til når en har valgt dager etter 6-ukersperioden etter fødsel/termin",
+    "uttaksplan.valgPanel.ferie": "Ferie og perioder uten foreldrepenger kan kun legges til i 6-ukersperioden etter fødsel/termin eller før",
     "uttaksplan.valgPanel.leggTilPeriode": "Legge til periode med foreldrepenger",
     "uttaksplan.valgPanel.leggTilPeriode.endre": "Periode med foreldrepenger",
     "uttaksplan.valgPanel.leggTilFerie": "Legge til ferie",

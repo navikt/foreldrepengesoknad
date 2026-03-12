@@ -789,7 +789,7 @@ export const HarUtsettelse: Story = {
     },
 };
 
-export const KunFarHarRettOgHarPausePeriode: Story = {
+export const KunFarHarRettOgHarPauseperiode: Story = {
     args: {
         barn: {
             type: BarnType.FØDT,
@@ -873,6 +873,67 @@ export const EøsPerioderForAnnenPart: Story = {
                 forelder: 'FAR_MEDMOR',
             },
         ] satisfies Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+        valgtStønadskonto: {
+            kontoer: [
+                { konto: 'MØDREKVOTE', dager: 95 },
+                { konto: 'FEDREKVOTE', dager: 95 },
+                { konto: 'FELLESPERIODE', dager: 101 },
+                { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+            ],
+            minsteretter: MINSTERETTER,
+        },
+    },
+};
+
+export const SkalIkkeMarkereAvslåttePerioderMedVarselOmMorsAktivitet: Story = {
+    args: {
+        uttakPerioder: [
+            {
+                fom: '2024-04-04',
+                tom: '2024-04-18',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2024-05-31',
+                tom: '2024-06-13',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FELLESPERIODE',
+                flerbarnsdager: false,
+                resultat: {
+                    innvilget: false,
+                    trekkerDager: true,
+                    trekkerMinsterett: false,
+                    årsak: 'ANNET',
+                },
+            },
+            {
+                fom: '2024-06-14',
+                tom: '2024-06-20',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FELLESPERIODE',
+                flerbarnsdager: false,
+                resultat: {
+                    innvilget: false,
+                    trekkerDager: true,
+                    trekkerMinsterett: false,
+                    årsak: 'AVSLAG_FRATREKK_PLEIEPENGER',
+                },
+            },
+        ],
+        barn: {
+            type: BarnType.UFØDT,
+            termindato: '2024-04-04',
+            antallBarn: 1,
+        },
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'FAR_MEDMOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
         valgtStønadskonto: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },

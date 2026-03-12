@@ -90,12 +90,24 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
             familiehendelsedato,
         );
 
+    const harBareFarRett = søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT';
+
     const skalVisePauseknapp =
-        søker === 'FAR_MEDMOR' &&
-        rettighetType === 'BARE_SØKER_RETT' &&
+        harBareFarRett &&
         !UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
             sammenslåtteValgtePerioder,
             familiehendelsedato,
+        );
+
+    const skalViseFerieknapp =
+        !skalViseUtsettelsesknapp &&
+        !skalVisePauseknapp &&
+        !(
+            harBareFarRett &&
+            UttaksperiodeValidatorer.erNoenPerioderLikEllerEtter6UkerEtterFamiliehendelsedato(
+                sammenslåtteValgtePerioder,
+                familiehendelsedato,
+            )
         );
 
     const leggTilEllerForskyvPeriode = (skalForskyve: boolean) => {
@@ -190,7 +202,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                                                     skalViseLeggTilKnappetekst={skalViseLeggTilKnappetekst}
                                                 />
                                             </Show>
-                                            {!skalViseUtsettelsesknapp && !skalVisePauseknapp && (
+                                            {skalViseFerieknapp && (
                                                 <Button
                                                     variant="secondary"
                                                     size="small"
