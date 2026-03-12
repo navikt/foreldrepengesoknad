@@ -191,6 +191,7 @@ export type PersonDto_fpoversikt = {
 export type AnnenForelderDto_fpoversikt = {
     fnr: string;
     fødselsdato?: string;
+    kjønn?: Kjønn_fpoversikt;
     navn: Navn_fpoversikt;
 };
 
