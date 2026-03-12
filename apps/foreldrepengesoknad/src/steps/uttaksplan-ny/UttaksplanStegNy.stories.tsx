@@ -6,7 +6,7 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
-import { FellesperiodeFordelingValg, OppstartValg } from 'types/Fordeling';
+import { FellesperiodeFordelingValg, Fordeling, OppstartValg } from 'types/Fordeling';
 
 import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
 import {
@@ -70,6 +70,7 @@ type StoryArgs = {
     barnet: Barn;
     søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
     dekningsgrad: Dekningsgrad;
+    fordeling: Fordeling;
 } & ComponentProps<typeof UttaksplanStegNy>;
 
 const meta = {
@@ -89,6 +90,7 @@ const meta = {
         annenForelder,
         barnet,
         dekningsgrad,
+        fordeling,
     }) => {
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN]}>
@@ -103,12 +105,7 @@ const meta = {
                             harJobbetSomSelvstendigNæringsdrivende: false,
                         },
                         [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                        [ContextDataType.FORDELING]: {
-                            fordelingValg: FellesperiodeFordelingValg.VIL_VELGE,
-                            antallDagerFellesperiodeTilSøker: '0',
-                            antallUkerFellesperiodeTilSøker: '12',
-                            oppstartAvForeldrepengerValg: OppstartValg.ANKOMSTDATO_NORGE,
-                        },
+                        [ContextDataType.FORDELING]: fordeling,
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: dekningsgrad,
                     }}
                 >
@@ -167,6 +164,12 @@ export const FødselMorOgFarBeggeHarRett: Story = {
             harRettPåForeldrepengerINorge: true,
         },
         dekningsgrad: '100',
+        fordeling: {
+            oppstartAvForeldrepengerValg: OppstartValg.TRE_UKER_FØR_FØDSEL,
+            antallDagerFellesperiodeTilSøker: '0',
+            antallUkerFellesperiodeTilSøker: '12',
+            fordelingValg: FellesperiodeFordelingValg.VIL_VELGE,
+        },
     },
 };
 
@@ -214,6 +217,9 @@ export const FødselMorOgFarKunMorHarRett: Story = {
             harOppholdtSegIEØS: false,
         },
         dekningsgrad: '100',
+        fordeling: {
+            oppstartAvForeldrepengerValg: OppstartValg.TRE_UKER_FØR_FØDSEL,
+        },
     },
 };
 
@@ -247,6 +253,9 @@ export const FødselMorOgMedmorKunMorHarRett: Story = {
             harRettPåForeldrepengerINorge: false,
             harRettPåForeldrepengerIEØS: false,
             harOppholdtSegIEØS: false,
+        },
+        fordeling: {
+            oppstartAvForeldrepengerValg: OppstartValg.TRE_UKER_FØR_FØDSEL,
         },
     },
 };
@@ -293,6 +302,9 @@ export const FødselMorOgMedmorKunMedmorHarRettMorUfør: Story = {
             erMorUfør: true,
         },
         dekningsgrad: '100',
+        fordeling: {
+            oppstartAvForeldrepengerValg: OppstartValg.FAMILIEHENDELSESDATO,
+        },
     },
 };
 
@@ -332,6 +344,9 @@ export const FødselBareFarSøkerAleneOmOmsorg: Story = {
             harRettPåForeldrepengerINorge: false,
             harRettPåForeldrepengerIEØS: false,
             harOppholdtSegIEØS: false,
+        },
+        fordeling: {
+            oppstartAvForeldrepengerValg: OppstartValg.DATO_FOR_ALENEOMSORG,
         },
     },
 };
@@ -377,6 +392,12 @@ export const AdopsjonMorOgFarBeggeHarRett: Story = {
             harRettPåForeldrepengerINorge: true,
         },
         dekningsgrad: '100',
+        fordeling: {
+            oppstartAvForeldrepengerValg: OppstartValg.FAMILIEHENDELSESDATO,
+            antallDagerFellesperiodeTilSøker: '0',
+            antallUkerFellesperiodeTilSøker: '12',
+            fordelingValg: FellesperiodeFordelingValg.VIL_VELGE,
+        },
     },
 };
 
@@ -421,6 +442,9 @@ export const AdopsjonMorOgFarKunMorHarRett: Story = {
             harRettPåForeldrepengerINorge: false,
         },
         dekningsgrad: '100',
+        fordeling: {
+            oppstartAvForeldrepengerValg: OppstartValg.FAMILIEHENDELSESDATO,
+        },
     },
 };
 
@@ -466,6 +490,9 @@ export const AdopsjonMorOgFarKunFarHarRettMorErUfør: Story = {
             erMorUfør: true,
         },
         dekningsgrad: '100',
+        fordeling: {
+            oppstartAvForeldrepengerValg: OppstartValg.FAMILIEHENDELSESDATO,
+        },
     },
 };
 
@@ -493,6 +520,12 @@ export const AdopsjonMorOgMedmorBeggeHarRett: Story = {
             harRettPåForeldrepengerINorge: true,
         },
         dekningsgrad: '100',
+        fordeling: {
+            oppstartAvForeldrepengerValg: OppstartValg.FAMILIEHENDELSESDATO,
+            antallDagerFellesperiodeTilSøker: '0',
+            antallUkerFellesperiodeTilSøker: '12',
+            fordelingValg: FellesperiodeFordelingValg.VIL_VELGE,
+        },
     },
 };
 

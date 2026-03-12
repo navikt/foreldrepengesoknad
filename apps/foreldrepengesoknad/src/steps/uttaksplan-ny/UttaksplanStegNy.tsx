@@ -114,7 +114,10 @@ export const UttaksplanStegNy = ({
     const valgteStønadskontoer = tilgjengeligeStønadskontoerQuery.data;
 
     // Filtrerer ut periodane til annen part midlertidig fram til me får på plass lagring av desse periodane
-    const nyttUttaksplanForslag = useUttaksplanForslag(valgteStønadskontoer).filter(
+    const nyttUttaksplanForslag = useUttaksplanForslag(
+        valgteStønadskontoer,
+        annenPartVedtakQuery.data?.perioder,
+    ).filter(
         (periode) =>
             Uttaksperioden.erIkkeEøsPeriode(periode) &&
             periode.forelder === (erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),

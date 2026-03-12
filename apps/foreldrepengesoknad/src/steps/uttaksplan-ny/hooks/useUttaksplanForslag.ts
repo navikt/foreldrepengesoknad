@@ -1,13 +1,19 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
-import { getErMorUfør } from 'utils/annenForelderUtils';
+import { getDatoForAleneomsorg, getErMorUfør } from 'utils/annenForelderUtils';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnr } from 'utils/personUtils';
 
-import { isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { KontoBeregningDto, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { isAdoptertAnnetBarn, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import {
+    Barn,
+    KontoBeregningDto,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import { UttaksdagenString, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { FellesperiodeFordelingValg } from '../../../types/Fordeling';
+import { Fordeling, OppstartValg } from '../../../types/Fordeling';
+import { getTermindato } from '../../../utils/barnUtils';
 import { deltUttak } from './forslag/deltUttak';
 import { ikkeDeltUttak } from './forslag/ikkeDeltUttak';
 
@@ -15,6 +21,7 @@ import { ikkeDeltUttak } from './forslag/ikkeDeltUttak';
 
 export const useUttaksplanForslag = (
     valgtStønadskonto?: KontoBeregningDto,
+    annenPartsPerioder?: UttakPeriode_fpoversikt[],
 ): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -22,14 +29,20 @@ export const useUttaksplanForslag = (
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const familiehendelsedato = getFamiliehendelsedato(barn);
 
+    if (annenPartsPerioder || !valgtStønadskonto || !fordeling) {
+        return [];
+    }
+
+    // TODO (Andreas) - Må finne ut av hvordan man skal gjøre ting når annen part har perioder
+    // const annenPartsSistePeriode = annenPartsPerioder?.at(-1);
+    // const annenPartsSisteDag = annenPartsSistePeriode
+    //     ? UttaksdagenString.denneEllerForrige(annenPartsSistePeriode.tom).getDato()
+    //     : undefined;
+
     // TODO (TOR) Burde denne sjekka mot erMorUfør og erAleneomsorg òg?
     const erDeltUttak =
         isAnnenForelderOppgitt(annenForelder) &&
         (annenForelder.harRettPåForeldrepengerINorge === true || annenForelder.harRettPåForeldrepengerIEØS === true);
-
-    if (!valgtStønadskonto || !fordeling) {
-        return [];
-    }
 
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
 
@@ -38,37 +51,20 @@ export const useUttaksplanForslag = (
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
 
-    const startdato =
-        erSøkerFarEllerMedmor && (!erDeltUttak || erMorUfør || erAleneOmOmsorg)
-            ? UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30)
-            : undefined;
+    const oppstartsdato = getOppstartsdatoFromFordelingValg(
+        fordeling,
+        barn,
+        getDatoForAleneomsorg(annenForelder),
+        undefined, // TODO (Andreas) - Må finne ut av hvordan man skal gjøre ting når annen part har perioder
+    );
 
     if (erDeltUttak) {
-        const antallDager = fordeling.antallDagerFellesperiodeTilSøker
-            ? Number.parseInt(fordeling.antallDagerFellesperiodeTilSøker)
-            : 0;
-
-        const antallUker = fordeling.antallUkerFellesperiodeTilSøker
-            ? Number.parseInt(fordeling.antallUkerFellesperiodeTilSøker)
-            : 0;
-
-        const antallDagerOgUkerSøker = antallUker * 5 + antallDager;
-        const antallDagerFellesperiode = valgtStønadskonto.kontoer.reduce(
-            (acc, p) => (p.konto === 'FELLESPERIODE' ? p.dager : acc),
-            0,
-        );
-
-        const antallDagerFellesperiodeMor = erSøkerFarEllerMedmor
-            ? antallDagerFellesperiode - antallDagerOgUkerSøker
-            : antallDagerOgUkerSøker;
-
         return deltUttak(
             familiehendelsedato,
             valgtStønadskonto.kontoer,
-            fordeling.fordelingValg === FellesperiodeFordelingValg.ALT
-                ? antallDagerFellesperiode
-                : antallDagerFellesperiodeMor,
-            startdato,
+            erSøkerFarEllerMedmor,
+            oppstartsdato,
+            fordeling,
         );
     }
 
@@ -89,6 +85,74 @@ export const useUttaksplanForslag = (
         bareFarMedmorHarRett,
         erAleneOmOmsorg,
         erFarOgFar,
-        startdato,
+        oppstartsdato,
     );
+};
+
+const getFørsteUttaksdagPåEllerEtterFødsel = (familiehendelsesdato: string) => {
+    return UttaksdagenString.denneEllerNeste(familiehendelsesdato).getDato();
+};
+
+const getNesteUttaksdagEtterAnnenForelder = (sisteDagAnnenForelder: string | undefined) => {
+    if (!sisteDagAnnenForelder) {
+        throw new Error('Mangler informasjon om annen forelders siste dag.');
+    }
+    const sisteUttaksdagAnnenForelder = UttaksdagenString.denneEllerForrige(sisteDagAnnenForelder).getDato();
+    return UttaksdagenString.neste(sisteUttaksdagAnnenForelder).getDato();
+};
+
+export function getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato: string | undefined): string {
+    if (!familiehendelsesdato) {
+        throw new Error('Mangler informasjon om familiehendelsesdato.');
+    }
+    return UttaksdagenString.denne(
+        getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato),
+    ).getDatoAntallUttaksdagerTidligere(15);
+}
+
+export function getFørsteUttaksdagAnkomstdatoNorge(anksomstdatoNorge: string | undefined): string {
+    if (!anksomstdatoNorge) {
+        throw new Error('Mangler informasjon om ankomstdato til Norge.');
+    }
+    return UttaksdagenString.denneEllerNeste(anksomstdatoNorge).getDato();
+}
+
+export function getFørsteUttaksdagDatoForAleneomsorg(datoForAleneomsorg: string | undefined): string {
+    if (!datoForAleneomsorg) {
+        throw new Error('Mangler informasjon om dato for aleneomsorg.');
+    }
+    return UttaksdagenString.denneEllerNeste(datoForAleneomsorg).getDato();
+}
+
+export const getOppstartsdatoFromFordelingValg = (
+    fordeling: Fordeling,
+    barn: Barn,
+    datoForAleneomsorg: string | undefined,
+    sisteDagAnnenForelder: string | undefined,
+): string => {
+    const oppstartValg = fordeling.oppstartAvForeldrepengerValg;
+    const oppstartDato = fordeling.oppstartDato;
+    const termindato = getTermindato(barn);
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const ankomstDatoNorge = isAdoptertAnnetBarn(barn) && barn.adoptertIUtlandet ? barn.ankomstdato : undefined;
+
+    if ((!oppstartValg || oppstartValg === OppstartValg.ANNEN_DATO) && oppstartDato) {
+        return oppstartDato;
+    }
+    switch (oppstartValg) {
+        case OppstartValg.TRE_UKER_FØR_TERMIN:
+            return getFørsteUttaksdagForeldrepengerFørFødsel(termindato);
+        case OppstartValg.TRE_UKER_FØR_FØDSEL:
+            return getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
+        case OppstartValg.FAMILIEHENDELSESDATO:
+            return familiehendelsesdato;
+        case OppstartValg.ANKOMSTDATO_NORGE:
+            return getFørsteUttaksdagAnkomstdatoNorge(ankomstDatoNorge);
+        case OppstartValg.DAGEN_ETTER_ANNEN_FORELDER:
+            return getNesteUttaksdagEtterAnnenForelder(sisteDagAnnenForelder ?? familiehendelsesdato); // TODO (Andreas) - Default verdi for øyeblikket
+        case OppstartValg.DATO_FOR_ALENEOMSORG:
+            return getFørsteUttaksdagDatoForAleneomsorg(datoForAleneomsorg);
+        default:
+            throw new Error('Ukjent verdi på oppstartValg.');
+    }
 };
