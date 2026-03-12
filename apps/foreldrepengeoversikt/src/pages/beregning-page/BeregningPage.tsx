@@ -620,19 +620,21 @@ const VedtakLenke = () => {
     }
 
     return (
-        <FormattedMessage
-            id="beregning.vedtakLenke"
-            values={{
-                link: (chunks) => (
-                    <Link
-                        href={API_URLS.hentDokument(vedtak.journalpostId, vedtak.dokumentId ?? 'ukjent')}
-                        target="_blank"
-                    >
-                        {chunks}
-                    </Link>
-                ),
-            }}
-        />
+        <div>
+            <FormattedMessage
+                id="beregning.vedtakLenke"
+                values={{
+                    link: (chunks) => (
+                        <Link
+                            href={API_URLS.hentDokument(vedtak.journalpostId, vedtak.dokumentId ?? 'ukjent')}
+                            target="_blank"
+                        >
+                            {chunks}
+                        </Link>
+                    ),
+                }}
+            />
+        </div>
     );
 };
 
