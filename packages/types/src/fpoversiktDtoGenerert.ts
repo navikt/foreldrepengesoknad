@@ -281,7 +281,7 @@ export type BrukerRolleSak_fpoversikt = 'MOR' | 'FAR_MEDMOR';
 export type DekningsgradSak_fpoversikt = 'ÅTTI' | 'HUNDRE';
 
 export type Gradering_fpoversikt = {
-    aktivitet: Aktivitet_fpoversikt;
+    aktivitet?: Aktivitet_fpoversikt;
     arbeidstidprosent: number;
 };
 

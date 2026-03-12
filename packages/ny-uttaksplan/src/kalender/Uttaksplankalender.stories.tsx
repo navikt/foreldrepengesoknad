@@ -1649,3 +1649,101 @@ export const SkalViseAvslåttPeriodeKorrekt: Story = {
         ] satisfies Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     },
 };
+
+export const T: Story = {
+    args: {
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2025-08-19'],
+            antallBarn: 1,
+        },
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'FAR_MEDMOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
+        aktiveArbeidsforhold: [
+            {
+                arbeidsgiverId: '1',
+                arbeidsgiverIdType: '1',
+                stillingsprosent: 100,
+                arbeidsgiverNavn: 'NAV',
+                fom: '2024-01-01',
+            },
+        ],
+        erPeriodeneTilAnnenPartLåst: true,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        uttakPerioder: [
+            {
+                fom: '2025-07-29',
+                tom: '2025-08-18',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            {
+                fom: '2025-08-19',
+                tom: '2025-12-01',
+                kontoType: 'MØDREKVOTE',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            {
+                fom: '2025-12-02',
+                tom: '2026-06-30',
+                kontoType: 'FELLESPERIODE',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                gradering: {
+                    arbeidstidprosent: 50.0,
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            {
+                fom: '2026-07-01',
+                tom: '2026-07-07',
+                kontoType: 'FELLESPERIODE',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            {
+                fom: '2026-01-01',
+                tom: '2026-03-31',
+                kontoType: 'FEDREKVOTE',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                samtidigUttak: 50,
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+        ] satisfies Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    },
+};
