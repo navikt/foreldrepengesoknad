@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 import { Alert, BodyShort, HGrid, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
-// import { SkyraSurvey } from '@navikt/fp-observability';
+import { SkyraSurvey } from '@navikt/fp-observability';
 import { PersonMedArbeidsforholdDto_fpoversikt, Satser, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 import { formatCurrencyWithKr, useDocumentTitle } from '@navikt/fp-utils';
 
@@ -101,7 +101,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
     const visBekreftelsePåSendtSøknad =
         relevantNyTidslinjehendelse !== undefined && gjeldendeSak?.åpenBehandling !== undefined;
 
-    // const visSurvey = søknadstidspunkt ? dayjs().diff(dayjs(søknadstidspunkt), 'minute') < 5 : false;
+    const visSurvey = søknadstidspunkt ? dayjs().diff(dayjs(søknadstidspunkt), 'minute') < 5 : false;
 
     const harMinstEttArbeidsforhold = !!søkerinfo.arbeidsforhold && søkerinfo.arbeidsforhold.length > 0;
 
@@ -125,7 +125,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                     saksnummer={params.saksnummer}
                 />
             )}
-            {/* {visSurvey && <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/foreldrepengesoknad-inline" />} */}
+            {visSurvey && <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/foreldrepengesoknad-inline" />}
             <Oppgaver saksnummer={gjeldendeSak.saksnummer} />
             <VStack gap="space-4">
                 <ContentSection
