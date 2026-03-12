@@ -699,7 +699,7 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
             stillingsprosentFarMedmor: farMedmorPeriode.gradering?.arbeidstidprosent.toString(),
             morsAktivitet: morsPeriode.morsAktivitet,
             hvorSkalDuJobbe:
-                søkersPeriode.gradering?.aktivitet.arbeidsgiver?.id ?? søkersPeriode.gradering?.aktivitet.type,
+                søkersPeriode.gradering?.aktivitet?.arbeidsgiver?.id ?? søkersPeriode.gradering?.aktivitet?.type,
             ønskerFlerbarnsdager: morsPeriode.flerbarnsdager || farMedmorPeriode.flerbarnsdager,
         };
     }
@@ -715,7 +715,7 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
                     : periode.kontoType,
             skalDuKombinereArbeidOgUttakFarMedmor: !!periode.gradering,
             stillingsprosentFarMedmor: periode.gradering?.arbeidstidprosent.toString(),
-            hvorSkalDuJobbe: periode.gradering?.aktivitet.arbeidsgiver?.id ?? periode.gradering?.aktivitet.type,
+            hvorSkalDuJobbe: periode.gradering?.aktivitet?.arbeidsgiver?.id ?? periode.gradering?.aktivitet?.type,
             morsAktivitet: periode.morsAktivitet,
             overføringsårsak: periode.overføringÅrsak,
             ønskerFlerbarnsdager: periode.flerbarnsdager,
@@ -728,7 +728,7 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
         samtidigUttaksprosentMor: periode.samtidigUttak?.toString(),
         skalDuKombinereArbeidOgUttakMor: !!periode.gradering,
         stillingsprosentMor: periode.gradering?.arbeidstidprosent.toString(),
-        hvorSkalDuJobbe: periode.gradering?.aktivitet.arbeidsgiver?.id ?? periode.gradering?.aktivitet.type,
+        hvorSkalDuJobbe: periode.gradering?.aktivitet?.arbeidsgiver?.id ?? periode.gradering?.aktivitet?.type,
         overføringsårsak: periode.overføringÅrsak,
         ønskerFlerbarnsdager: periode.flerbarnsdager,
     };
