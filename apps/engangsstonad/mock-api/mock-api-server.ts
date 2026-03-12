@@ -28,23 +28,12 @@ app.use(express.json());
 
 const personMock = {
     fnr: '11111111111',
-    fornavn: 'Henrikke',
-    etternavn: 'Ibsen',
+    navn: {
+        fornavn: 'Henrikke',
+        etternavn: 'Ibsen',
+    },
     kjønn: 'K',
     fødselsdato: '1979-01-28',
-    bankkonto: {
-        kontonummer: '49875234987',
-        banknavn: 'Storebank',
-    },
-    barn: [
-        {
-            etternavn: 'Junior',
-            fnr: '123123123',
-            fornavn: 'Barn',
-            fødselsdato: '2020-01-01',
-            kjønn: 'K',
-        },
-    ],
 };
 
 const kvitteringMock = {

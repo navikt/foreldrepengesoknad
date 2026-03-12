@@ -21,8 +21,8 @@ import {
     AvtaltFerieDto,
     FRILANS_ID,
     NæringDto,
-    PersonMedArbeidsforholdDto_fpoversikt,
     SvangerskapspengesøknadDto,
+    SvpPersonopplysningerDto_fpoversikt,
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
@@ -63,17 +63,14 @@ const DEFAULT_SØKER_INFO = {
             stillingsprosent: 100,
         },
     ],
-    person: {
-        navn: {
-            etternavn: 'Oravakangas',
-            fornavn: 'Erlinga-Mask',
-        },
-        fnr: '1',
-        fødselsdato: '1989-08-30',
-        kjønn: 'K',
-        barn: [],
+    fnr: '1',
+    fødselsdato: '1989-08-30',
+    kjønn: 'K',
+    navn: {
+        etternavn: 'Oravakangas',
+        fornavn: 'Erlinga-Mask',
     },
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies SvpPersonopplysningerDto_fpoversikt;
 
 const BARNET = {
     erBarnetFødt: true,
@@ -237,8 +234,8 @@ describe('useSendSøknad', () => {
             expect.objectContaining({
                 json: {
                     søkerinfo: {
-                        fnr: DEFAULT_SØKER_INFO.person.fnr,
-                        navn: DEFAULT_SØKER_INFO.person.navn,
+                        fnr: DEFAULT_SØKER_INFO.fnr,
+                        navn: DEFAULT_SØKER_INFO.navn,
                         arbeidsforhold: DEFAULT_SØKER_INFO.arbeidsforhold.map((af) => ({
                             navn: af.arbeidsgiverNavn,
                             orgnummer: af.arbeidsgiverId,
@@ -369,8 +366,8 @@ describe('useSendSøknad', () => {
             expect.objectContaining({
                 json: {
                     søkerinfo: {
-                        fnr: DEFAULT_SØKER_INFO.person.fnr,
-                        navn: DEFAULT_SØKER_INFO.person.navn,
+                        fnr: DEFAULT_SØKER_INFO.fnr,
+                        navn: DEFAULT_SØKER_INFO.navn,
                         arbeidsforhold: DEFAULT_SØKER_INFO.arbeidsforhold.map((af) => ({
                             navn: af.arbeidsgiverNavn,
                             orgnummer: af.arbeidsgiverId,
@@ -379,12 +376,9 @@ describe('useSendSøknad', () => {
                         })),
                     },
                     språkkode: 'NB',
-                    barn: BARNET,
-                    frilans: FRILANS,
-                    avtaltFerie: INGEN_FERIE,
-                    egenNæring: EGEN_NÆRING,
-                    andreInntekterSiste10Mnd: ARBEID_I_UTLANDET.arbeidIUtlandet,
-                    utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
+                    barn: {
+                        termindato: '2024-11-02',
+                    },
                     tilretteleggingsbehov: [
                         {
                             arbeidsforhold: {
@@ -506,8 +500,8 @@ describe('useSendSøknad', () => {
             expect.objectContaining({
                 json: {
                     søkerinfo: {
-                        fnr: DEFAULT_SØKER_INFO.person.fnr,
-                        navn: DEFAULT_SØKER_INFO.person.navn,
+                        fnr: DEFAULT_SØKER_INFO.fnr,
+                        navn: DEFAULT_SØKER_INFO.navn,
                         arbeidsforhold: DEFAULT_SØKER_INFO.arbeidsforhold.map((af) => ({
                             navn: af.arbeidsgiverNavn,
                             orgnummer: af.arbeidsgiverId,

@@ -6,7 +6,7 @@ import { VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
 
-import { PersonDto_fpoversikt } from '@navikt/fp-types';
+import { EsPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';
 
@@ -25,12 +25,7 @@ const DEFAULT_PERSONINFO = {
     },
     kjønn: 'K',
     fødselsdato: '1979-01-28',
-    bankkonto: {
-        kontonummer: '49875234987',
-        banknavn: 'Storebank',
-    },
-    barn: [],
-} satisfies PersonDto_fpoversikt;
+} satisfies EsPersonopplysningerDto_fpoversikt;
 
 const HANDLERS = [
     http.post(API_URLS.sendSøknad, () => HttpResponse.json(KVITTERING)),
@@ -92,15 +87,12 @@ export const SøkerErMann: Story = {
                 http.get(API_URLS.personInfo, () =>
                     HttpResponse.json({
                         fnr: '1231111111',
-                        fornavn: 'Espen',
-                        etternavn: 'Utvikler',
+                        navn: {
+                            fornavn: 'Espen',
+                            etternavn: 'Utvikler',
+                        },
                         kjønn: 'M',
                         fødselsdato: '1979-01-28',
-                        bankkonto: {
-                            kontonummer: '49875234987',
-                            banknavn: 'Storebank',
-                        },
-                        barn: [],
                     }),
                 ),
                 http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),

@@ -12,7 +12,7 @@ import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder
 import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
 import {
     ArbeidsforholdOgInntektFp,
-    PersonMedArbeidsforholdDto_fpoversikt,
+    FpPersonopplysningerDto_fpoversikt,
     Situasjon,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
@@ -27,52 +27,51 @@ const promiseAction = () => () => {
 };
 
 const defaultSøkerinfo = {
-    person: {
-        fnr: '1',
-        navn: {
-            fornavn: 'TALENTFULL',
-            etternavn: 'MYGG',
-        },
-        kjønn: 'K',
-        fødselsdato: '1978-04-19',
-        barn: [
-            {
-                fnr: '21091981146',
-                fødselsdato: '2021-03-15',
-                annenPart: {
-                    fnr: '12038517080',
-                    fødselsdato: '1985-03-12',
-                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
-                },
-                navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
-                kjønn: 'M',
-            },
-            {
-                fnr: '31091981146',
-                fødselsdato: '2022-08-02',
-                annenPart: {
-                    fnr: '12038517080',
-                    fødselsdato: '1985-03-12',
-                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
-                },
-                navn: { fornavn: 'SNILT', etternavn: 'MIDTPUNKT' },
-                kjønn: 'M',
-            },
-            {
-                fnr: '31091981147',
-                fødselsdato: '2022-08-02',
-                annenPart: {
-                    fnr: '12038517080',
-                    fødselsdato: '1985-03-12',
-                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
-                },
-                navn: { fornavn: 'LYST', etternavn: 'MIDTPUNKT' },
-                kjønn: 'M',
-            },
-        ],
+    fnr: '1',
+    navn: {
+        fornavn: 'TALENTFULL',
+        etternavn: 'MYGG',
     },
+    kjønn: 'K',
+    fødselsdato: '1978-04-19',
+    erGift: false,
+    barn: [
+        {
+            fnr: '21091981146',
+            fødselsdato: '2021-03-15',
+            annenPart: {
+                fnr: '12038517080',
+                fødselsdato: '1985-03-12',
+                navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
+            },
+            navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
+            kjønn: 'M',
+        },
+        {
+            fnr: '31091981146',
+            fødselsdato: '2022-08-02',
+            annenPart: {
+                fnr: '12038517080',
+                fødselsdato: '1985-03-12',
+                navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
+            },
+            navn: { fornavn: 'SNILT', etternavn: 'MIDTPUNKT' },
+            kjønn: 'M',
+        },
+        {
+            fnr: '31091981147',
+            fødselsdato: '2022-08-02',
+            annenPart: {
+                fnr: '12038517080',
+                fødselsdato: '1985-03-12',
+                navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
+            },
+            navn: { fornavn: 'LYST', etternavn: 'MIDTPUNKT' },
+            kjønn: 'M',
+        },
+    ],
     arbeidsforhold: [],
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies FpPersonopplysningerDto_fpoversikt;
 
 const defaultAnnenForelder = {
     fornavn: 'Eline',
@@ -95,30 +94,26 @@ const defaultArbeidsforholdOgInntekt = {
 };
 
 const defaultSøkerinfoFar = {
-    person: {
-        fnr: '08099017784',
-        navn: { fornavn: 'FAR', etternavn: 'MYGG' },
-        kjønn: 'M',
-        fødselsdato: '1978-04-19',
-        barn: [
-            {
-                fnr: '1',
-                fødselsdato: '2021-03-15',
-                annenPart: {
-                    fnr: '12038517080',
-                    fødselsdato: '1985-03-12',
-                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
-                },
-                navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
-                kjønn: 'K',
+    fnr: '08099017784',
+    navn: { fornavn: 'FAR', etternavn: 'MYGG' },
+    kjønn: 'M',
+    fødselsdato: '1978-04-19',
+    erGift: true,
+    barn: [
+        {
+            fnr: '1',
+            fødselsdato: '2021-03-15',
+            annenPart: {
+                fnr: '12038517080',
+                fødselsdato: '1985-03-12',
+                navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
             },
-        ],
-        sivilstand: {
-            type: 'GIFT',
+            navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
+            kjønn: 'K',
         },
-    },
+    ],
     arbeidsforhold: [],
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies FpPersonopplysningerDto_fpoversikt;
 
 type StoryArgs = {
     rolle?: 'mor' | 'far' | 'medmor';

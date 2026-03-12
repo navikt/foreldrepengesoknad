@@ -19,7 +19,7 @@ import { VStack } from '@navikt/ds-react';
 
 import { Barn, Situasjon, Søkerrolle, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { BarnDto_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { BarnDto_fpoversikt, FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Spinner, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -75,7 +75,7 @@ const skalViseTermindato = (
 };
 
 type Props = {
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
     søknadGjelderNyttBarn: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
@@ -112,14 +112,14 @@ const OmBarnetStegInner = ({
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
 
-    const { arbeidsforhold, person } = søkerInfo;
+    const { arbeidsforhold, barn: registrerteBarn } = søkerInfo;
 
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = omBarnet ? getFamiliehendelsedato(omBarnet) : undefined;
 
     const dødfødteUtenFnrMedSammeFødselsdato =
         omBarnet && isFødtBarn(omBarnet)
-            ? person.barn.filter(
+            ? registrerteBarn.filter(
                   (barn) =>
                       barn.fnr === undefined && getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, familiehendelsesdato),
               )
@@ -127,7 +127,7 @@ const OmBarnetStegInner = ({
 
     const valgteRegistrerteBarn =
         !søknadGjelderNyttBarn && omBarnet && !isUfødtBarn(omBarnet)
-            ? person.barn
+            ? registrerteBarn
                   .filter((b) => findBarnetIRegistrerteBarn(b, omBarnet))
                   .concat(dødfødteUtenFnrMedSammeFødselsdato)
             : undefined;

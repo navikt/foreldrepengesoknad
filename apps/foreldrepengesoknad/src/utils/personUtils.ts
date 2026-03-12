@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 import { AnnenForelder, NavnPåForeldre, Søkerrolle, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { Kjønn_fpoversikt, PersonDto_fpoversikt } from '@navikt/fp-types';
+import { FpPersonopplysningerDto_fpoversikt, Kjønn_fpoversikt } from '@navikt/fp-types';
 
 export const formaterNavn = (fornavn: string, etternavn: string, visEtternavn: boolean, mellomnavn?: string) => {
     if (visEtternavn) {
@@ -75,7 +75,7 @@ export const getFarMedmorErAleneOmOmsorg = (
 };
 
 export const getNavnPåForeldre = (
-    person: PersonDto_fpoversikt,
+    person: FpPersonopplysningerDto_fpoversikt,
     annenForelder: AnnenForelder,
     erFarEllerMedmor: boolean,
     intl: IntlShape,

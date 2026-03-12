@@ -26,10 +26,10 @@ import {
     AnnenForelderDto_fpoversikt,
     AnnenPartSak_fpoversikt,
     BarnDto_fpoversikt,
+    FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
     KontoType,
     Oppholdsårsak,
-    PersonDto_fpoversikt,
     Person_fpoversikt,
     UttakOppholdÅrsak_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
@@ -296,7 +296,10 @@ const getSøkersituasjonFromSaksgrunnlag = (familiehendelseType: Familiehendelse
     return 'adopsjon';
 };
 
-const getSøkerrolleFromSaksgrunnlag = (person: PersonDto_fpoversikt, grunnlag: Saksgrunnlag): Søkerrolle => {
+const getSøkerrolleFromSaksgrunnlag = (
+    person: FpPersonopplysningerDto_fpoversikt,
+    grunnlag: Saksgrunnlag,
+): Søkerrolle => {
     const { søkerErFarEllerMedmor } = grunnlag;
     const søkerErKvinne = person.kjønn === 'K';
     if (søkerErKvinne) {
@@ -559,7 +562,7 @@ export const lagSøknadFraValgteBarnMedSak = (
 };
 
 export const lagEndringsSøknad = (
-    person: PersonDto_fpoversikt,
+    person: FpPersonopplysningerDto_fpoversikt,
     eksisterendeSak: EksisterendeSak,
     intl: IntlShape,
     annenPartFraSak: Person_fpoversikt | undefined,

@@ -16,7 +16,7 @@ import { Alert, BodyShort, Button, GuidePanel, HStack, Link, VStack } from '@nav
 
 import { links } from '@navikt/fp-constants';
 import { RhfConfirmationPanel, RhfForm } from '@navikt/fp-form-hooks';
-import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 import { BarnVelger } from './BarnVelger';
@@ -28,7 +28,7 @@ import { ForsideFormValues } from './types/ForsideFormValues';
 interface Props {
     saker: FpSak_fpoversikt[];
     harGodkjentVilkår: boolean;
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void;
     setErEndringssøknad: (erEndringssøknad: boolean) => void;
     setSøknadGjelderNyttBarn: (søknadGjelderNyttBarn: boolean) => void;
@@ -52,8 +52,8 @@ export const Forside = ({
 
     // Denne må memoriserast, ellers får barna ulik id for kvar render => trøbbel
     const selectableBarn = useMemo(
-        () => [...getSelectableBarnOptions(saker, søkerInfo.person.barn)].sort(sorterSelectableBarnEtterYngst),
-        [saker, søkerInfo.person.barn],
+        () => [...getSelectableBarnOptions(saker, søkerInfo.barn)].sort(sorterSelectableBarnEtterYngst),
+        [saker, søkerInfo.barn],
     );
 
     const onSubmit = (values: ForsideFormValues) => {
@@ -97,7 +97,7 @@ export const Forside = ({
             );
 
             const søknad = lagEndringsSøknad(
-                søkerInfo.person,
+                søkerInfo,
                 eksisterendeSak,
                 intl,
                 valgtEksisterendeSak.annenPart,
@@ -115,8 +115,8 @@ export const Forside = ({
             const søknad = lagSøknadFraValgteBarnMedSak(
                 { ...valgteBarn, sak: valgteBarn.sak }, // Gjør dette slik at funksjonen slipper deale med undefined sak
                 intl,
-                søkerInfo.person.barn,
-                søkerInfo.person.fnr,
+                søkerInfo.barn,
+                søkerInfo.fnr,
             );
             oppdaterSøknadIState(søknad);
         }

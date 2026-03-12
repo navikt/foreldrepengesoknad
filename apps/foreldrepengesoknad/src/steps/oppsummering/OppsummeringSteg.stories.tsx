@@ -17,11 +17,10 @@ import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-consta
 import {
     ArbeidsforholdOgInntektFp,
     EksternArbeidsforholdDto_fpoversikt,
+    FpPersonopplysningerDto_fpoversikt,
     Frilans,
     KontoBeregningDto,
     NæringDto,
-    PersonMedArbeidsforholdDto_fpoversikt,
-    Sivilstand_fpoversikt,
     SøkersituasjonFp,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
@@ -36,28 +35,24 @@ const promiseAction = () => () => {
 };
 
 const defaultSøkerinfoMor = {
-    person: {
-        fnr: '02520489226',
-        navn: { fornavn: 'MOR', etternavn: 'MYGG' },
-        kjønn: 'K',
-        fødselsdato: '1978-04-19',
-        barn: [
-            {
-                fnr: '21091981146',
-                fødselsdato: '2021-03-15',
-                annenPart: {
-                    fnr: '08099017784',
-                    fødselsdato: '1985-03-12',
-                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
-                },
-                navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
-                kjønn: 'M',
+    fnr: '02520489226',
+    navn: { fornavn: 'MOR', etternavn: 'MYGG' },
+    kjønn: 'K',
+    fødselsdato: '1978-04-19',
+    erGift: true,
+    barn: [
+        {
+            fnr: '21091981146',
+            fødselsdato: '2021-03-15',
+            annenPart: {
+                fnr: '08099017784',
+                fødselsdato: '1985-03-12',
+                navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
             },
-        ],
-        sivilstand: {
-            type: 'GIFT',
+            navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
+            kjønn: 'M',
         },
-    },
+    ],
     arbeidsforhold: [
         {
             arbeidsgiverId: '1',
@@ -67,33 +62,29 @@ const defaultSøkerinfoMor = {
             stillingsprosent: 50,
         },
     ],
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies FpPersonopplysningerDto_fpoversikt;
 
 const defaultSøkerinfoFar = {
-    person: {
-        fnr: '08099017784',
-        navn: { fornavn: 'FAR', etternavn: 'MYGG' },
-        kjønn: 'M',
-        fødselsdato: '1978-04-19',
-        barn: [
-            {
-                fnr: '1',
-                fødselsdato: '2021-03-15',
-                annenPart: {
-                    fnr: '12038517080',
-                    fødselsdato: '1985-03-12',
-                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
-                },
-                navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
-                kjønn: 'K',
+    fnr: '08099017784',
+    navn: { fornavn: 'FAR', etternavn: 'MYGG' },
+    kjønn: 'M',
+    fødselsdato: '1978-04-19',
+    erGift: false,
+    barn: [
+        {
+            fnr: '1',
+            fødselsdato: '2021-03-15',
+            annenPart: {
+                fnr: '12038517080',
+                fødselsdato: '1985-03-12',
+                navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
             },
-        ],
-        sivilstand: {
-            type: 'UGIFT',
+            navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
+            kjønn: 'K',
         },
-    },
+    ],
     arbeidsforhold: [],
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies FpPersonopplysningerDto_fpoversikt;
 
 const defaultBarn = {
     type: BarnType.FØDT,
@@ -234,14 +225,13 @@ const STØNADSKONTO_80 = {
 } satisfies KontoBeregningDto;
 
 type StoryArgs = {
-    søkerinfo?: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerinfo?: FpPersonopplysningerDto_fpoversikt;
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelder;
     utenlandsopphold?: Utenlandsopphold;
     utenlandsoppholdSenere?: UtenlandsoppholdPeriode[];
     utenlandsoppholdTidligere?: UtenlandsoppholdPeriode[];
     barn?: Barn;
-    sivilstand?: Sivilstand_fpoversikt;
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
     frilans?: Frilans;
     egenNæring?: NæringDto;
@@ -359,12 +349,7 @@ export const MorMedAnnenForelderUgift: Story = {
         },
         søkerInfo: {
             ...defaultSøkerinfoMor,
-            person: {
-                ...defaultSøkerinfoMor.person,
-                sivilstand: {
-                    type: 'UGIFT',
-                },
-            },
+            erGift: false,
         },
     },
 };
@@ -427,12 +412,7 @@ export const FarMedUførMorUgift: Story = {
         },
         søkerInfo: {
             ...defaultSøkerinfoFar,
-            person: {
-                ...defaultSøkerinfoFar.person,
-                sivilstand: {
-                    type: 'UGIFT',
-                },
-            },
+            erGift: false,
         },
         barn: {
             type: BarnType.UFØDT,
@@ -569,7 +549,7 @@ export const MorMedArbeidsforholdOgAndreInntekter: Story = {
             ...defaultAnnenForelder,
         },
         søkerInfo: {
-            person: defaultSøkerinfoMor.person,
+            ...defaultSøkerinfoMor,
             arbeidsforhold: [
                 {
                     arbeidsgiverId: '1',

@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { captureMessage } from '@navikt/fp-observability';
-import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
@@ -17,11 +17,11 @@ const FEIL_VED_INNSENDING =
 
 export type SvpDataMapAndMetaData = {
     version: number;
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: SvpPersonopplysningerDto_fpoversikt;
 } & ContextDataMap;
 
 export const useMellomlagreSøknad = (
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt,
+    søkerInfo: SvpPersonopplysningerDto_fpoversikt,
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void,
 ) => {
     const navigate = useNavigate();
