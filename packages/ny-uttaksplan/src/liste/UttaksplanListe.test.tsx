@@ -15,7 +15,7 @@ const {
     MorSøkerOgFarHarEøsPeriode,
     MarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt,
     HarUtsettelse,
-    KunFarHarRettOgHarPausePeriode,
+    KunFarHarRettOgHarPauseperiode,
     EøsPerioderForAnnenPart,
 } = composeStories(stories);
 
@@ -663,7 +663,7 @@ describe('UttaksplanListe', () => {
     it('Skal ha periode med pause og legge til ny periode med pause', async () => {
         const oppdaterUttaksplan = vi.fn();
 
-        render(<KunFarHarRettOgHarPausePeriode oppdaterUttaksplan={oppdaterUttaksplan} />);
+        render(<KunFarHarRettOgHarPauseperiode oppdaterUttaksplan={oppdaterUttaksplan} />);
 
         expect(await screen.findByText('24. mai 24 - 28. mai 24')).toBeInTheDocument();
         expect(screen.getAllByText('Pause i uttaket')).toHaveLength(2);
@@ -738,6 +738,28 @@ describe('UttaksplanListe', () => {
                 tom: '2024-06-13',
             },
         ]);
+    });
+
+    it('Skal ikke kunne legg til ferieperiode etter 6-ukerperioden for kun far har rett', async () => {
+        const oppdaterUttaksplan = vi.fn();
+
+        render(<KunFarHarRettOgHarPauseperiode oppdaterUttaksplan={oppdaterUttaksplan} />);
+
+        expect(await screen.findByText('16. mai 24 - 16. mai 24')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('16. mai 24 - 16. mai 24'));
+
+        await userEvent.click(screen.getAllByText('Endre')[3]!);
+
+        await userEvent.click(screen.getByText('Ferie'));
+
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+
+        expect(
+            await screen.findByText(
+                'Ferie og perioder uten foreldrepenger kan kun legges til i 6-ukersperioden etter fødsel/termin eller før',
+            ),
+        ).toBeInTheDocument();
     });
 
     it('Skal ikke kunne endre EØS-perioder', async () => {

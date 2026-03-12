@@ -104,6 +104,7 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
             (periode) =>
                 erVanligUttakPeriode(periode) &&
                 periode.forelder === 'FAR_MEDMOR' &&
+                periode.resultat?.innvilget !== false &&
                 (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER') &&
                 periode.morsAktivitet === undefined,
         )
