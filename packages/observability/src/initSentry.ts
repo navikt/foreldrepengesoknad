@@ -9,10 +9,9 @@ type InitSentryOptions = {
 const FEIL_VI_VIL_LUKE_BORT = ['personbruker/decorator-next'];
 
 export const initSentry = ({ dsn }: InitSentryOptions) => {
-    // if (import.meta.env.MODE === 'development') {
-    //     return;
-    // }
-    console.log('init sentry');
+    if (import.meta.env.MODE === 'development') {
+        return;
+    }
 
     Sentry.init({
         dsn,
@@ -20,7 +19,6 @@ export const initSentry = ({ dsn }: InitSentryOptions) => {
         environment: globalThis.location.hostname,
         integrations: [Sentry.breadcrumbsIntegration({ console: false })],
         beforeSend: (event) => {
-            console.log('event', event);
             if (feilVarSomFølgeAvEn401Handling(event)) {
                 return null;
             }
@@ -46,12 +44,12 @@ const feilUtenOpprinnelseIVårKode = (event: Sentry.ErrorEvent) => {
             if (assetFrame) {
                 const erUønsketAssetFrame = FEIL_VI_VIL_LUKE_BORT.some((feil) => frame.filename?.includes(feil));
                 if (erUønsketAssetFrame) {
-                    return false;
+                    return true;
                 }
 
-                return true;
+                return false;
             }
-            return false;
+            return true;
         });
     });
 };

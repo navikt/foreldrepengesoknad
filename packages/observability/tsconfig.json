@@ -5,7 +5,7 @@
         "jsx": "react-jsx",
         "rootDir": "src",
         "esModuleInterop": true,
-        "types": ["vite/client"]
+        "types": ["vite/client", "vitest/globals"]
     },
     "include": ["src/**/*", "../../@types/**/*"],
     "exclude": ["node_modules"]
