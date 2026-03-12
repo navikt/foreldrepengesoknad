@@ -376,9 +376,12 @@ describe('useSendSøknad', () => {
                         })),
                     },
                     språkkode: 'NB',
-                    barn: {
-                        termindato: '2024-11-02',
-                    },
+                    barn: BARNET,
+                    frilans: FRILANS,
+                    avtaltFerie: INGEN_FERIE,
+                    egenNæring: EGEN_NÆRING,
+                    andreInntekterSiste10Mnd: ARBEID_I_UTLANDET.arbeidIUtlandet,
+                    utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
                     tilretteleggingsbehov: [
                         {
                             arbeidsforhold: {
