@@ -110,7 +110,7 @@ export const kanMisteDagerVedEndringTilFerie = (
 
 export const useFormSubmitValidator = <T extends LeggTilEllerEndrePeriodeFormFormValues>() => {
     const intl = useIntl();
-    const { familiehendelsedato, familiesituasjon, foreldreInfo, uttakPerioder } = useUttaksplanData();
+    const { familiehendelsedato, familiesituasjon, foreldreInfo, uttakPerioder, termindato } = useUttaksplanData();
 
     return (perioder: Array<{ fom: string; tom: string }>, formValues: T): string | null => {
         const feilmeldingArbeidDeFørste6Ukene = erKombinasjonAvArbeidOgForeldrepengerDe6FørsteUkene<T>(
@@ -125,7 +125,13 @@ export const useFormSubmitValidator = <T extends LeggTilEllerEndrePeriodeFormFor
             return feilmeldingArbeidDeFørste6Ukene;
         }
 
-        const feilmeldingPåSamtidigUttak = erUgyldigSamtidigUttak<T>(intl, formValues, perioder, familiehendelsedato);
+        const feilmeldingPåSamtidigUttak = erUgyldigSamtidigUttak<T>(
+            intl,
+            formValues,
+            perioder,
+            familiehendelsedato,
+            termindato,
+        );
 
         if (feilmeldingPåSamtidigUttak) {
             return feilmeldingPåSamtidigUttak;
@@ -136,6 +142,7 @@ export const useFormSubmitValidator = <T extends LeggTilEllerEndrePeriodeFormFor
             formValues,
             familiehendelsedato,
             perioder,
+            termindato,
         );
 
         if (feilmeldingGyldigUttakForFarMedmorRundtFødsel) {
@@ -185,11 +192,13 @@ const erUgyldigSamtidigUttak = <T extends LeggTilEllerEndrePeriodeFormFormValues
     formValues: T,
     perioder: Array<{ fom: string; tom: string }>,
     familiehendelsedato: string,
+    termindato: string | undefined,
 ): string | null => {
     const inneholderPerioderRundtFødsel =
         UttaksperiodeValidatorer.erNoenPerioderIMellomToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato(
             perioder,
             familiehendelsedato,
+            termindato,
         );
 
     if (!skalValidereSamtidigUttak(formValues) || inneholderPerioderRundtFødsel) {
@@ -306,11 +315,13 @@ const erGyldigUttakForFarMedmorRundtFødsel = <T extends LeggTilEllerEndrePeriod
     formValues: T,
     familiehendelsedato: string,
     perioder: Array<{ fom: string; tom: string }>,
+    termindato: string | undefined,
 ): string | null => {
     const inneholderPerioderRundtFødsel =
         UttaksperiodeValidatorer.erNoenPerioderIMellomToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato(
             perioder,
             familiehendelsedato,
+            termindato,
         );
 
     if (!skalValidereUttakForFarMedmorRundtFødsel(formValues) || !inneholderPerioderRundtFødsel) {
