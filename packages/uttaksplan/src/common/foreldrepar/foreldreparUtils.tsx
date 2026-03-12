@@ -1,3 +1,6 @@
+import { type ReactElement } from 'react';
+import { SVGProps } from 'react';
+
 import { ForeldreparForelder } from '@navikt/fp-common';
 
 import Far1 from './assets/Far1';
@@ -9,7 +12,7 @@ import Medmor2 from './assets/Medmor2';
 import Mor1 from './assets/Mor1';
 import Mor2 from './assets/Mor2';
 
-const getForeldreparIkonProps = (className: string, width: number, height: number) => ({
+const getForeldreparIkonProps = (className: string, width: number, height: number): SVGProps<SVGSVGElement> => ({
     focusable: 'false',
     role: 'presentation',
     viewBox: '0 0 68 96',
@@ -23,7 +26,7 @@ export const getForeldreparIkon = (
     className: string,
     width: number,
     height: number,
-): any => {
+): ReactElement | undefined => {
     switch (forelder) {
         case 'far1':
             return <Far1 {...getForeldreparIkonProps(className, width, height)} />;

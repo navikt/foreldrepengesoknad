@@ -1,18 +1,17 @@
-import { FunctionComponent } from 'react';
+import { JSX } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { MorsAktivitet } from '@navikt/fp-types';
 
 import Block from '../../../../common/block/Block';
-import { PeriodeUtsettelseFormField } from '../../periode-utsettelse-form/periodeUtsettelseFormConfig';
-import { PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
+import { TypedFormComponents } from '../../../../formik-wrappers/components/getTypedFormComponents';
 
-const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
+const hasValue = (v: unknown) => v !== '' && v !== undefined && v !== null;
 
-interface Props {
-    fieldName: PeriodeUttakFormField | PeriodeUtsettelseFormField;
-    FormComponents: any;
+interface Props<FieldName> {
+    fieldName: FieldName;
+    FormComponents: Pick<TypedFormComponents<FieldName, Record<string, unknown>, string>, 'Select'>;
     navnPåForeldre: NavnPåForeldre;
 }
 
@@ -37,8 +36,11 @@ const renderOptions = (intl: IntlShape) => {
     );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-restricted-types
-const AktivitetskravSpørsmål: FunctionComponent<Props> = ({ fieldName, navnPåForeldre, FormComponents }) => {
+function AktivitetskravSpørsmål<FieldName>({
+    fieldName,
+    navnPåForeldre,
+    FormComponents,
+}: Props<FieldName>): JSX.Element {
     const intl = useIntl();
 
     return (
@@ -60,6 +62,6 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({ fieldName, navnPå
             </FormComponents.Select>
         </Block>
     );
-};
+}
 // eslint-disable-next-line import/no-default-export
 export default AktivitetskravSpørsmål;

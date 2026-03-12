@@ -68,7 +68,7 @@ const isValidFormattedDateString = (dateString = ''): boolean => {
     return /\d{1,2}.\d{1,2}.(\d{2}|\d{4})$/.test(dateString);
 };
 
-export const isISODateString = (value: any): value is ISODateString => {
+export const isISODateString = (value: unknown): value is ISODateString => {
     if (value && typeof value === 'string') {
         const reg = /^\d{4}-\d{2}-\d{2}$/;
         const match: RegExpMatchArray | null = value.match(reg);

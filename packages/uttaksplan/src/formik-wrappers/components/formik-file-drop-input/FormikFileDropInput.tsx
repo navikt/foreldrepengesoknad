@@ -45,7 +45,7 @@ function FormikFileDropInput<FieldName, ErrorType>({
         <FieldArray
             name={`${name}`}
             render={(arrayHelpers) => (
-                <Field validate={validate ? (value: any) => validate(value, name) : undefined} name={name}>
+                <Field validate={validate ? (value: unknown) => validate(value, name) : undefined} name={name}>
                     {({ field, form }: FieldProps) => {
                         return (
                             <FileDropInput

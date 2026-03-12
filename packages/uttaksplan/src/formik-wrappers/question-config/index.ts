@@ -104,7 +104,7 @@ const validateQuestion = <Value, QuestionKeys, Payload, ErrorFormat = any>(
 };
 
 export interface QuestionVisibility<QuestionKeys, ErrorFormat = any> {
-    validate: (key: QuestionKeys) => (value: any) => undefined | boolean | ErrorFormat | ErrorFormat[];
+    validate: (key: QuestionKeys) => (value: unknown) => undefined | boolean | ErrorFormat | ErrorFormat[];
     isVisible: (key: QuestionKeys) => boolean;
     isAnswered: (key: QuestionKeys) => boolean;
     isIncluded: (key: QuestionKeys) => boolean;
@@ -113,7 +113,7 @@ export interface QuestionVisibility<QuestionKeys, ErrorFormat = any> {
 }
 
 interface QuestionVisibilityInfo<ErrorFormat = any> {
-    validate: (value: any) => undefined | boolean | ErrorFormat | ErrorFormat[];
+    validate: (value: unknown) => undefined | boolean | ErrorFormat | ErrorFormat[];
     isVisible: () => boolean;
     isAnswered: () => boolean;
 }
@@ -122,7 +122,7 @@ export const Questions = <Payload, QuestionKeys, ErrorFormat = undefined>(
     questions: QuestionConfig<Payload, QuestionKeys, ErrorFormat>,
 ) => ({
     getVisbility: (payload: Payload): QuestionVisibility<QuestionKeys, ErrorFormat> => ({
-        validate: (key: QuestionKeys) => (value: any) =>
+        validate: (key: QuestionKeys) => (value: unknown) =>
             validateQuestion<any, QuestionKeys, Payload, ErrorFormat>(value, questions, key, payload),
         isVisible: (key: QuestionKeys) =>
             isQuestionVisible<Payload, QuestionKeys, ErrorFormat>(questions, key, payload),
@@ -136,7 +136,7 @@ export const Questions = <Payload, QuestionKeys, ErrorFormat = undefined>(
     }),
     getQuestionVisbilityInfo: (key: QuestionKeys, payload: Payload): QuestionVisibilityInfo<ErrorFormat> => {
         return {
-            validate: (value: any) =>
+            validate: (value: unknown) =>
                 validateQuestion<any, QuestionKeys, Payload, ErrorFormat>(value, questions, key, payload),
             isVisible: () => isQuestionVisible<Payload, QuestionKeys, ErrorFormat>(questions, key, payload),
             isAnswered: () => isQuestionAnswered<Payload, QuestionKeys, ErrorFormat>(questions, key, payload),

@@ -1,4 +1,5 @@
 import { Dictionary } from 'lodash';
+import { IntlShape } from 'react-intl';
 
 import { UttaksplanAvvikType } from '../utils/types/UttaksplanAvvikType';
 
@@ -9,7 +10,7 @@ export interface VeilederMessage {
     type: VeilederMessageType;
     formatContentAsHTML?: boolean;
     titleIntlKey?: string;
-    values?: any;
+    values?: Record<string, string | number | Date | undefined | ((intl: IntlShape) => string)>;
     periodeId?: string;
     skjulesIOppsummering?: boolean;
     avvikType?: UttaksplanAvvikType;

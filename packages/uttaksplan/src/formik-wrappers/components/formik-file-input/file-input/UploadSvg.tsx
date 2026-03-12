@@ -1,4 +1,6 @@
-function UploadSvg(props: any) {
+import { SVGProps } from 'react';
+
+function UploadSvg(props: SVGProps<SVGSVGElement>) {
     return (
         <svg
             width={22}

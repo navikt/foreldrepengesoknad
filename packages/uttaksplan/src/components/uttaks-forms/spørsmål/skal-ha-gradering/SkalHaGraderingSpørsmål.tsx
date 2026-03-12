@@ -15,7 +15,7 @@ import { dateIsBetween } from '../../../../utils/dateUtils';
 import { prosentValideringGradering } from '../../../../utils/prosentValidering';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 
-const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
+const hasValue = (v: unknown) => v !== '' && v !== undefined && v !== null;
 
 const containsDuplicates = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[]): boolean => {
     if (arbeidsforhold.length > 1) {

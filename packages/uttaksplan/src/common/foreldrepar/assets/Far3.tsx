@@ -1,4 +1,6 @@
-const Far3 = (props: any) => (
+import { SVGProps } from 'react';
+
+const Far3 = (props: SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" {...props}>
         <g fill="none" fillRule="evenodd">
             <path

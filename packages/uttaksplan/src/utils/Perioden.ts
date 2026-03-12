@@ -52,14 +52,12 @@ function erPerioderLike(p1: Periode, p2: Periode, inkluderTidsperiode = false, i
 
 function getPeriodeFootprint(periode: Periode, inkluderTidsperiode = false) {
     const { tidsperiode, id, ...rest } = periode;
-    const sortedPeriode: any = {};
+    const sortedPeriode: Record<string, unknown> = {};
     Object.keys(rest)
         .sort((a, b) => a.localeCompare(b))
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        .filter((key) => (rest as any)[key] !== undefined)
+        .filter((key) => (rest as Record<string, unknown>)[key] !== undefined)
         .forEach((key) => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-            sortedPeriode[key] = (rest as any)[key];
+            sortedPeriode[key] = (rest as Record<string, unknown>)[key];
         });
     if (inkluderTidsperiode && tidsperiode) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access

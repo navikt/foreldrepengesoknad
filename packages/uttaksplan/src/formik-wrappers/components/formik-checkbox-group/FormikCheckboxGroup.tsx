@@ -23,14 +23,17 @@ export type FormikCheckboxGroupProps<FieldName, ErrorType> = OwnProps<FieldName>
     UseFastFieldProps &
     TestProps;
 
-const getFieldValueArray = (value: any): string[] => {
+const getFieldValueArray = (value: unknown): string[] => {
     if (value === undefined) {
         return [];
     }
     if (typeof value === 'string') {
         return [value];
     }
-    return value;
+    if (Array.isArray(value)) {
+        return value as string[];
+    }
+    return [];
 };
 
 function FormikCheckboxGroup<FieldName, ErrorType>({
@@ -46,7 +49,7 @@ function FormikCheckboxGroup<FieldName, ErrorType>({
     const context = React.useContext(TypedFormikFormContext);
     const FieldComponent = useFastField ? FastField : Field;
     return (
-        <FieldComponent validate={validate ? (value: any) => validate(value, name) : undefined} name={name}>
+        <FieldComponent validate={validate ? (value: unknown) => validate(value, name) : undefined} name={name}>
             {({ field, form }: FieldProps) => {
                 return (
                     <CheckboxGroup

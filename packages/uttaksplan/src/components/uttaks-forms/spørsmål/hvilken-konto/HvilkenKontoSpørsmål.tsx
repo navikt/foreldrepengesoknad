@@ -8,7 +8,7 @@ import { FormikRadioProp } from '../../../../formik-wrappers/components/formik-r
 import { getStønadskontoNavn } from '../../../../utils/stønadskontoerUtils';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 
-const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
+const hasValue = (v: unknown) => v !== '' && v !== undefined && v !== null;
 
 interface Props {
     velgbareStønadskontoer: KontoTypeUttak[];

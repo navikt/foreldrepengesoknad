@@ -17,7 +17,10 @@ export const getErrorPropForFormikInput = ({
     return error || (context ? context.getAndRenderFieldErrorMessage(field, form) : undefined);
 };
 
-export const getErrorForField = <FormValues>(elementName: string, errors: FormikErrors<FormValues>): any => {
+export const getErrorForField = <FormValues>(
+    elementName: string,
+    errors: FormikErrors<FormValues>,
+): string | undefined => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const fieldErrors: string[] | string = getIn(errors, elementName);
     if (fieldErrors === null) {
@@ -31,6 +34,7 @@ export const getErrorForField = <FormValues>(elementName: string, errors: Formik
         if (fieldErrors.length >= 1) {
             return fieldErrors[0];
         }
+        return undefined;
     } else {
         return fieldErrors;
     }
@@ -41,8 +45,15 @@ export const isValidationErrorsVisible = (formik: FormikProps<any>): boolean => 
     return formik?.status?.showErrors === true;
 };
 
-export const getAllFieldsWithErrors = (allErrors: any, errorObjectChecker?: ErrorTypeChecker): string[] => {
-    const getFieldsWithErrors = (errors: any, keys: string[] = [], parentKey?: string): string[] => {
+export const getAllFieldsWithErrors = (
+    allErrors: Record<string, unknown>,
+    errorObjectChecker?: ErrorTypeChecker,
+): string[] => {
+    const getFieldsWithErrors = (
+        errors: Record<string, unknown>,
+        keys: string[] = [],
+        parentKey?: string,
+    ): string[] => {
         const createFieldKey = (fieldName: string): string => {
             return parentKey ? `${parentKey}.${fieldName}` : fieldName;
         };
@@ -68,7 +79,7 @@ export const getAllFieldsWithErrors = (allErrors: any, errorObjectChecker?: Erro
                             keys.push(createFieldKey(key));
                             return;
                         }
-                        return getFieldsWithErrors(error, keys, createFieldKey(`${key}`));
+                        return getFieldsWithErrors(error as Record<string, unknown>, keys, createFieldKey(`${key}`));
                     }
                     keys.push(createFieldKey(key));
                 }

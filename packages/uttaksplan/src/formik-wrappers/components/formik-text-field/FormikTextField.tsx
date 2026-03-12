@@ -34,7 +34,7 @@ function FormikTextField<FieldName, ErrorType>({
     const FieldComponent = useFastField ? FastField : Field;
 
     return (
-        <FieldComponent validate={validate ? (value: any) => validate(value, name) : undefined} name={name}>
+        <FieldComponent validate={validate ? (value: unknown) => validate(value, name) : undefined} name={name}>
             {({ field, form }: FieldProps) => {
                 return (
                     <TextField

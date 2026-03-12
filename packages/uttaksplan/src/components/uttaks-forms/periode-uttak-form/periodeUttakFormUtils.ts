@@ -28,7 +28,7 @@ import {
     erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB,
 } from './periodeUttakFormQuestionsConfig';
 
-const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
+const hasValue = (v: unknown) => v !== '' && v !== undefined && v !== null;
 
 const getInitialKonto = (
     erDeltUttak: boolean,

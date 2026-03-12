@@ -129,7 +129,7 @@ export const getRegelIntlValues = (
     return newValues;
 };
 
-export const hasValueRule = (v: any, failText: string): Validator => ({
+export const hasValueRule = (v: unknown, failText: string): Validator => ({
     test: () => v !== undefined && v !== '',
     failText,
 });

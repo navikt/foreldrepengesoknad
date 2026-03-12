@@ -35,7 +35,7 @@ import {
     mapPeriodeUtsettelseFormToPeriode,
 } from './periodeUtsettelseFormUtils';
 
-const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
+const hasValue = (v: unknown) => v !== '' && v !== undefined && v !== null;
 
 interface Props {
     periode: Periode;

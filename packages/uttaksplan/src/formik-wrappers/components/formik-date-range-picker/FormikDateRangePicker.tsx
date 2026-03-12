@@ -65,7 +65,7 @@ function FormikDateRangePicker<FieldName, ErrorType>({
             legend={legend}
             description={description}
             className="dateRangePicker"
-            validate={validate ? (value: any) => validate(value, name) : undefined}
+            validate={validate ? (value: unknown) => validate(value, name) : undefined}
         >
             <div className="dateRangePicker__flexContainer">
                 <FormikDatepicker<FieldName, ErrorType>

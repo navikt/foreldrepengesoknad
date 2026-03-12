@@ -35,7 +35,7 @@ function FormikRadioGroup<FieldName, ErrorType>({
     const context = useContext(TypedFormikFormContext);
     const FieldComponent = useFastField ? FastField : Field;
     return (
-        <FieldComponent validate={validate ? (value: any) => validate(value, name) : undefined} name={name}>
+        <FieldComponent validate={validate ? (value: unknown) => validate(value, name) : undefined} name={name}>
             {({ field, form }: FieldProps) => {
                 return (
                     <RadioGroup

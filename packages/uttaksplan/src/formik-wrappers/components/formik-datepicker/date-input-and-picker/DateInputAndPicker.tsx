@@ -50,10 +50,9 @@ const DateInputAndPicker: React.FunctionComponent<Props> = ({
         disableWeekends,
     });
 
-    const onInputBlur = (evt: any) => {
+    const onInputBlur = (evt: React.FocusEvent<HTMLInputElement>) => {
         setInputHasFocus(false);
         if (inputProps.onBlur) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             inputProps.onBlur(evt);
         }
         if (selectedDay === undefined && typeof inputProps.value === 'string') {
@@ -71,9 +70,8 @@ const DateInputAndPicker: React.FunctionComponent<Props> = ({
         }
     };
 
-    const onInputFocus = (evt: any) => {
+    const onInputFocus = (evt: React.FocusEvent<HTMLInputElement>) => {
         if (inputProps.onFocus) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             inputProps.onFocus(evt);
         }
         setInputHasFocus(true);

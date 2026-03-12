@@ -7,7 +7,7 @@ import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils'
 import Block from '../../../../common/block/Block';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 
-const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
+const hasValue = (v: unknown) => v !== '' && v !== undefined && v !== null;
 
 interface Props {
     navnAnnenForelder: string;

@@ -23,8 +23,8 @@ const FormikValidationErrorSummary: React.FunctionComponent<Props> = ({ heading,
                   const fieldError = getErrorForField(fieldName, formik.errors);
                   const error: ValidationSummaryError = {
                       errorMessage: context.fieldErrorHandler
-                          ? context.fieldErrorHandler(fieldError, fieldName)
-                          : fieldError,
+                          ? context.fieldErrorHandler(fieldError ?? '', fieldName)
+                          : (fieldError ?? ''),
                       fieldName,
                   };
                   return error;

@@ -1,5 +1,3 @@
-// eslint-disable-next-line max-len
-/* eslint-disable @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access */
 import { useFormikContext } from 'formik';
 import { FunctionComponent, useEffect, useRef } from 'react';
 
@@ -11,18 +9,18 @@ interface Props {
     cleanup: () => PeriodeUttakFormData | PeriodeUtsettelseFormData | PeriodeFørFødselFormData;
 }
 
-const jsonSort = (json: any): string => {
-    function isObject(v: any) {
+const jsonSort = (json: unknown): unknown => {
+    function isObject(v: unknown): v is Record<string, unknown> {
         return '[object Object]' === Object.prototype.toString.call(v);
     }
 
-    const sort = (o: any): any => {
+    const sort = (o: unknown): unknown => {
         if (Array.isArray(o)) {
-            return o.sort().map(sort);
+            return (o as unknown[]).sort().map(sort);
         } else if (isObject(o)) {
             return Object.keys(o)
                 .sort((a, b) => a.localeCompare(b))
-                .reduce((a: any, k) => {
+                .reduce((a: Record<string, unknown>, k) => {
                     a[k] = sort(o[k]);
                     return a;
                 }, {});

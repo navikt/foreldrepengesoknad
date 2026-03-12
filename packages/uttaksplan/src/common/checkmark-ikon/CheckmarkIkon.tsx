@@ -1,4 +1,6 @@
-const CheckmarkIkon = (props: any) => (
+import { SVGProps } from 'react';
+
+const CheckmarkIkon = (props: SVGProps<SVGSVGElement>) => (
     <svg focusable="false" role="img" aria-hidden="true" width={24} height={24} {...props}>
         <g fill="none" fillRule="evenodd">
             <path

@@ -1,6 +1,8 @@
 import { Dictionary } from 'lodash';
 import { IntlShape } from 'react-intl';
 
+import { Søknadsinfo } from '@navikt/fp-common';
+
 type FeilIntlMessage = (intl: IntlShape) => string;
 
 export enum RegelAlvorlighet {
@@ -31,7 +33,7 @@ export interface Regel {
     kategori?: RegelKategori;
 }
 
-export type RegelTest = (grunnlag: any) => RegelTestresultat;
+export type RegelTest = (grunnlag: Søknadsinfo) => RegelTestresultat;
 
 export interface RegelTestresultat {
     passerer: boolean;
@@ -57,6 +59,7 @@ export interface RegelAvvik {
 }
 
 type avikValueFunk = (intl: IntlShape) => string;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type intlHTMLFragmentFunc = (msg: any) => any;
 
 interface AvvikInfo {

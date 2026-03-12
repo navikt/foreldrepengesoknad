@@ -154,7 +154,9 @@ function TypedFormikForm<FormValues, ErrorType>({
                 if (isErrorsVisible) {
                     const error = getErrorForField(field.name, form.errors);
                     if (error) {
-                        return formErrorHandler ? formErrorHandler.fieldErrorHandler(error, field.name) : error;
+                        return formErrorHandler
+                            ? formErrorHandler.fieldErrorHandler(error as ErrorType, field.name)
+                            : error;
                     }
                 }
                 return undefined;
