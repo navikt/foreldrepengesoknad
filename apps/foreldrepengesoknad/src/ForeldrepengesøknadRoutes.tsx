@@ -115,6 +115,7 @@ const renderSøknadRoutes = (
                             sendSøknad={sendSøknad}
                             avbrytSøknad={avbrytSøknad}
                             mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            foreldrepengerSaker={foreldrepengerSaker}
                         />
                     }
                 />

@@ -20,7 +20,12 @@ import {
     OppsummeringPanel,
     SelvstendigNæringsdrivendeOppsummering,
 } from '@navikt/fp-steg-oppsummering';
-import { PersonDto_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt, Søkerrolle } from '@navikt/fp-types';
+import {
+    FpSak_fpoversikt,
+    PersonDto_fpoversikt,
+    PersonMedArbeidsforholdDto_fpoversikt,
+    Søkerrolle,
+} from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -39,21 +44,19 @@ interface Props {
     sendSøknad: () => Promise<void>;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
+    foreldrepengerSaker?: FpSak_fpoversikt[];
 }
 
 export const OppsummeringSteg = (props: Props) => {
-    const { søkerInfo, erEndringssøknad, sendSøknad, avbrytSøknad, mellomlagreSøknadOgNaviger } = props;
+    const { søkerInfo, erEndringssøknad, sendSøknad, avbrytSøknad, mellomlagreSøknadOgNaviger, foreldrepengerSaker } =
+        props;
     const intl = useIntl();
-
-    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad);
-    const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad);
 
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-
     const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-
+    const eksisterendeSaksnummer = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const arbeidsforholdOgInntekt = useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
@@ -61,6 +64,16 @@ export const OppsummeringSteg = (props: Props) => {
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
+
+    const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
+
+    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
+    const navigator = useFpNavigator(
+        søkerInfo.arbeidsforhold,
+        mellomlagreSøknadOgNaviger,
+        erEndringssøknad,
+        eksisterendeSak,
+    );
 
     const erAnnenForelderOppgitt = isAnnenForelderOppgitt(annenForelder);
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);

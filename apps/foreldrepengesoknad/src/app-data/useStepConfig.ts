@@ -184,14 +184,20 @@ const showManglendeDokumentasjonStegNy = (
         });
         const skalHaAdopsjonDokumentasjon = skalViseOmsorgsovertakelseDokumentasjon(søkersituasjon);
 
-        const uttaksplanUtenAnnenPartsPerioder = uttaksplan?.filter(
-            (periode) =>
-                Uttaksperioden.erIkkeEøsPeriode(periode) &&
-                periode.forelder === (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
-        );
+        const uttaksplanUtenAnnenPartsOgUendredePerioder = uttaksplan
+            ?.filter(
+                (periode) =>
+                    Uttaksperioden.erIkkeEøsPeriode(periode) &&
+                    periode.forelder === (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
+            )
+            .filter((periode) => {
+                return eksisterendeSak
+                    ? Uttaksperioden.erIkkeEøsPeriode(periode) && periode.resultat === undefined
+                    : true;
+            });
 
-        const perioderSomSkalSjekkes = uttaksplanUtenAnnenPartsPerioder
-            ? uttaksplanUtenAnnenPartsPerioder.filter((periode) => {
+        const perioderSomSkalSjekkes = uttaksplanUtenAnnenPartsOgUendredePerioder
+            ? uttaksplanUtenAnnenPartsOgUendredePerioder.filter((periode) => {
                   if (Uttaksperioden.erEøsPeriode(periode)) {
                       return false;
                   }
