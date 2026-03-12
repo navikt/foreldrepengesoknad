@@ -9,12 +9,7 @@ import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
-import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
-import {
-    erAvslåttPeriode,
-    erAvslåttPeriodeFørsteSeksUkerMor,
-    harPeriodeDerMorsAktivitetIkkeErValgt,
-} from '../utils/periodeUtils';
+import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../utils/periodeUtils';
 import { UttaksplanLegend } from './legend/UttaksplanLegend';
 import { KalenderPdf } from './pdf/KalenderPdf';
 import { RedigerKalenderIndex } from './redigering/RedigerKalenderIndex';
@@ -47,7 +42,10 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
         [],
     );
 
-    const { uttakPerioder } = useUttaksplanData();
+    const {
+        uttakPerioder,
+        foreldreInfo: { rettighetType },
+    } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
@@ -94,8 +92,6 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 
     return (
         <VStack gap="space-8">
-            <AvslåttePerioder />
-
             <VStack gap="space-24">
                 {!readOnly && (
                     <div>
@@ -136,7 +132,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                     </RadioGroup>
                 )}
 
-                {harPeriodeDerMorsAktivitetIkkeErValgt(uttakPerioder) && (
+                {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, uttakPerioder) && (
                     <Alert variant="warning">
                         <VStack gap="space-2">
                             <BodyShort>
@@ -238,21 +234,3 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 };
 
 const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
-
-const AvslåttePerioder = () => {
-    const { uttakPerioder, foreldreInfo, familiehendelsedato } = useUttaksplanData();
-
-    const harAvslåttePerioderSomIkkeGirTapteDager = uttakPerioder.some(
-        (p) =>
-            erAvslåttPeriode(p) &&
-            erVanligUttakPeriode(p) &&
-            p.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER' &&
-            (foreldreInfo.søker === 'FAR_MEDMOR' || !erAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsedato)),
-    );
-
-    return harAvslåttePerioderSomIkkeGirTapteDager ? (
-        <Alert variant="info" className="my-6">
-            <FormattedMessage id="kalender.avslåttePerioder" />
-        </Alert>
-    ) : null;
-};

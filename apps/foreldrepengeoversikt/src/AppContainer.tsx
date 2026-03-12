@@ -11,6 +11,7 @@ import { en, nb, nn } from '@navikt/ds-react/locales';
 
 import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
+import { observabilityMessages } from '@navikt/fp-observability';
 import { LocaleAll } from '@navikt/fp-types';
 import { ByttBrowserModal, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
@@ -49,6 +50,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...nyUttaksplanMessages.nb,
         ...formHookMessages.nb,
         ...filopplasterMessages.nb,
+        ...observabilityMessages.nb,
     },
     nn: {
         ...nnMessages,
@@ -57,6 +59,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...nyUttaksplanMessages.nn,
         ...formHookMessages.nn,
         ...filopplasterMessages.nn,
+        ...observabilityMessages.nn,
     },
     en: {
         ...enMessages,
@@ -65,6 +68,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...nyUttaksplanMessages.en,
         ...formHookMessages.en,
         ...filopplasterMessages.en,
+        ...observabilityMessages.en,
     },
 };
 

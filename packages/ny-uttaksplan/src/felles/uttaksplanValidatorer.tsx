@@ -430,7 +430,7 @@ const harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamili
 
     const harBeggeRett = foreldreInfo.rettighetType === 'BEGGE_RETT';
 
-    if (harBeggeRett && (formValues.forelder === 'BEGGE' || formValues.forelder === 'FAR_MEDMOR')) {
+    if (harBeggeRett && formValues.forelder === 'BEGGE') {
         const førsteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(10);
         const sisteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30);
 

@@ -537,13 +537,17 @@ export const cleanEndringssøknadNy = (
 
     const endringstidspunkt = getEndringstidspunktNy(søkersEksisterendePerioder, søkersNyePerioder);
 
+    const perioderForInnsending = endringstidspunkt
+        ? filtrerPerioderFraOgMedEndringstidspunkt(søkersNyePerioder, endringstidspunkt)
+        : søkersNyePerioder;
+
     const mappaUttaksperioder = midlertidigMappingAvUttaksplan(
-        filtrerUtEøsPeriode(søkersNyePerioder),
+        filtrerUtEøsPeriode(perioderForInnsending),
         barn,
         annenForelder,
     );
 
-    const harPeriodeVedEndringstidspunkt = søkersNyePerioder.some((periode) =>
+    const harPeriodeVedEndringstidspunkt = perioderForInnsending.some((periode) =>
         dayjs(endringstidspunkt).isBetween(periode.fom, periode.tom, 'day', '[]'),
     );
 
@@ -563,6 +567,18 @@ export const cleanEndringssøknadNy = (
             ønskerJustertUttakVedFødsel,
         },
     };
+};
+
+const filtrerPerioderFraOgMedEndringstidspunkt = (
+    perioder: UttakPeriode_fpoversikt[],
+    endringstidspunkt: string,
+): UttakPeriode_fpoversikt[] => {
+    const endring = dayjs(endringstidspunkt);
+    return perioder.filter(
+        (periode) =>
+            endring.isBetween(periode.fom, periode.tom, 'day', '[]') ||
+            dayjs(periode.fom).isSameOrAfter(endring, 'day'),
+    );
 };
 
 const filtrerUtEøsPeriode = (
