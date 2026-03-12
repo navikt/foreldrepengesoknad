@@ -149,7 +149,7 @@ export const getOppstartsdatoFromFordelingValg = (
         case OppstartValg.ANKOMSTDATO_NORGE:
             return getFørsteUttaksdagAnkomstdatoNorge(ankomstDatoNorge);
         case OppstartValg.DAGEN_ETTER_ANNEN_FORELDER:
-            return getNesteUttaksdagEtterAnnenForelder(sisteDagAnnenForelder);
+            return getNesteUttaksdagEtterAnnenForelder(sisteDagAnnenForelder ?? familiehendelsesdato); // TODO (Andreas) - Default verdi for øyeblikket
         case OppstartValg.DATO_FOR_ALENEOMSORG:
             return getFørsteUttaksdagDatoForAleneomsorg(datoForAleneomsorg);
         default:

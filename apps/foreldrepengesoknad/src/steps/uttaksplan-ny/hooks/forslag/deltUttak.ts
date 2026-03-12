@@ -122,9 +122,9 @@ const lagDeltUttakForMor = (famDato: string, stønadskontoer: KontoDto[], startd
             tom: tidsperiode.tom,
             flerbarnsdager: false,
         });
-    }
 
-    currentFomDate = UttaksdagenString.neste(tidsperiode.tom).getDato();
+        currentFomDate = UttaksdagenString.neste(tidsperiode.tom).getDato();
+    }
 
     tidsperiode = getTidsperiodeString(currentFomDate, fedrekvote ? fedrekvote.dager : 0);
 
@@ -158,7 +158,7 @@ const lagDeltUttakForFarMedmor = (
     stønadskontoer: KontoDto[],
     startdato: string,
 ): UttakPeriode_fpoversikt[] => {
-    const harFødselspermisjon = famDato === startdato;
+    const harFødselspermisjon = UttaksdagenString.denne(famDato).getDato() === startdato;
     const forslag: UttakPeriode_fpoversikt[] = [];
 
     const foreldrepengerFørFødsel = stønadskontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
@@ -183,10 +183,7 @@ const lagDeltUttakForFarMedmor = (
     });
 
     if (harFødselspermisjon) {
-        tidsperiode = getTidsperiodeString(
-            UttaksdagenString.denne(currentFomDate).getDatoAntallUttaksdagerSenere(10),
-            10,
-        );
+        tidsperiode = getTidsperiodeString(currentFomDate, 10);
 
         forslag.push({
             forelder: 'MOR',
