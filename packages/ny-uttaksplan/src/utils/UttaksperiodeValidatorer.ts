@@ -29,7 +29,10 @@ export const UttaksperiodeValidatorer = {
 
     erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(perioder: Periode[], familiehendelsedato: string) {
         const førsteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato();
-        const sisteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30);
+        const sisteDag =
+            UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(
+                ANTALL_UTTAKSDAGER_SEKS_UKER,
+            );
 
         return perioder.some((periode) => {
             const fom = dayjs(periode.fom);
@@ -77,7 +80,9 @@ export const UttaksperiodeValidatorer = {
     erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(perioder: Periode[], familiehendelsedato: string) {
         return perioder.some((p) =>
             dayjs(p.fom).isBefore(
-                UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
+                UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(
+                    ANTALL_UTTAKSDAGER_SEKS_UKER,
+                ),
             ),
         );
     },
@@ -89,7 +94,9 @@ export const UttaksperiodeValidatorer = {
     erNoenPerioderLikEllerEtter6UkerEtterFamiliehendelsedato(perioder: Periode[], familiehendelsedato: string) {
         return perioder.some((p) =>
             dayjs(p.tom).isSameOrAfter(
-                UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
+                UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(
+                    ANTALL_UTTAKSDAGER_SEKS_UKER,
+                ),
             ),
         );
     },
