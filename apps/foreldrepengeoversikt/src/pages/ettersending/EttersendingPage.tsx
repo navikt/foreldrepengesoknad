@@ -137,7 +137,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
         mutate({
             saksnummer: sak!.saksnummer,
             type: sak!.ytelse,
-            fnr: notEmpty(søkerInfo).person.fnr,
+            fnr: notEmpty(søkerInfo).fnr,
             vedlegg,
         });
     };

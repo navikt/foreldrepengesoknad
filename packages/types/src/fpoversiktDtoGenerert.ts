@@ -178,7 +178,7 @@ export type Navn_fpoversikt = {
 
 export type FpPersonopplysningerDto_fpoversikt = {
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
-    barn: BarnDto_fpoversikt[];
+    barn: FpBarnDto_fpoversikt[];
     erGift: boolean;
     fnr: string;
     fødselsdato: string;
@@ -192,7 +192,7 @@ export type AnnenForelderDto_fpoversikt = {
     navn: Navn_fpoversikt;
 };
 
-export type BarnDto_fpoversikt = {
+export type FpBarnDto_fpoversikt = {
     annenPart?: AnnenForelderDto_fpoversikt;
     dødsdato?: string;
     fnr: string;
@@ -201,59 +201,21 @@ export type BarnDto_fpoversikt = {
     navn?: Navn_fpoversikt;
 };
 
-export type Bankkonto_fpoversikt = {
-    banknavn?: string;
-    kontonummer?: string;
-};
-
-export type Målform_fpoversikt = 'NB' | 'NN' | 'EN' | 'E';
-
-export type PersonDto_fpoversikt = {
-    aktørid?: string;
-    bankkonto?: Bankkonto_fpoversikt;
-    barn: BarnDto_fpoversikt2[];
+export type OversiktPersonopplysningerDto_fpoversikt = {
+    barn: OversiktBarnDto_fpoversikt[];
     fnr: string;
     fødselsdato: string;
-    kjønn: Kjønn_fpoversikt;
-    målform?: Målform_fpoversikt;
-    navn: Navn_fpoversikt;
-    sivilstand?: Sivilstand_fpoversikt;
-};
-
-export type AnnenForelderDto_fpoversikt2 = {
-    fnr: string;
-    fødselsdato?: string;
+    harArbeidsforhold: boolean;
+    kontonummer?: string;
     navn: Navn_fpoversikt;
 };
 
-export type BarnDto_fpoversikt2 = {
-    annenPart?: AnnenForelderDto_fpoversikt2;
+export type OversiktBarnDto_fpoversikt = {
+    annenPartFornavn?: string;
     dødsdato?: string;
     fnr: string;
     fødselsdato: string;
-    kjønn: Kjønn_fpoversikt;
     navn?: Navn_fpoversikt;
-};
-
-export type Sivilstand_fpoversikt = {
-    type?: SivilstandType_fpoversikt;
-};
-
-export type SivilstandType_fpoversikt =
-    | 'UOPPGITT'
-    | 'UGIFT'
-    | 'GIFT'
-    | 'ENKE_ELLER_ENKEMANN'
-    | 'SKILT'
-    | 'SEPARERT'
-    | 'REGISTRERT_PARTNER'
-    | 'SEPARERT_PARTNER'
-    | 'SKILT_PARTNER'
-    | 'GJENLEVENDE_PARTNER';
-
-export type PersonMedArbeidsforholdDto_fpoversikt = {
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
-    person: PersonDto_fpoversikt;
 };
 
 export type SvpPersonopplysningerDto_fpoversikt = {

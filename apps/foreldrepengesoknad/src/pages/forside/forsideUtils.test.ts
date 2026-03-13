@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { saker } from 'storybookData/saker.ts';
 import { ValgtBarn, ValgtBarnType } from 'types/ValgtBarn';
 
-import { BarnDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
+import { FpBarnDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 
 import { getBarnFraNesteSak, getSelectableBarnOptions } from './forsideUtils';
 
@@ -36,25 +36,25 @@ describe('forsideUtils - getSelectableBarnOptions', () => {
         fødselsdato: fødselsdato,
         fnr: '123456789',
         kjønn: 'K',
-    } satisfies BarnDto_fpoversikt;
+    } satisfies FpBarnDto_fpoversikt;
     const barnFraPDL2 = {
         navn: { fornavn: 'Svart', etternavn: 'Edderkopp' },
         fødselsdato: dayjs(fødselsdato).add(2, 'month').format('YYYY-MM-DD'),
         fnr: '123456780',
         kjønn: 'K',
-    } satisfies BarnDto_fpoversikt;
+    } satisfies FpBarnDto_fpoversikt;
     const barnTvilling = {
         navn: { fornavn: 'Blå', etternavn: 'Dinosaur' },
         fødselsdato: dayjs(fødselsdato).add(1, 'day').format('YYYY-MM-DD'),
         fnr: '123456788',
         kjønn: 'K',
-    } satisfies BarnDto_fpoversikt;
+    } satisfies FpBarnDto_fpoversikt;
     const barnMerEnn3ÅrOg3Mnd = {
         navn: { fornavn: 'Blå', etternavn: 'Dinosaur' },
         fødselsdato: '2019-09-21',
         fnr: '123456788',
         kjønn: 'K',
-    } satisfies BarnDto_fpoversikt;
+    } satisfies FpBarnDto_fpoversikt;
     it('skal kun returnere ett barn hvis barn fra PDL og sak har fødselsdato', () => {
         const result = getSelectableBarnOptions([sak], [barnFraPDL]);
         expect(result.length).toBe(1);

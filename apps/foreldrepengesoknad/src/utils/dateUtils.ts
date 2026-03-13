@@ -19,7 +19,7 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import {
-    BarnDto_fpoversikt,
+    FpBarnDto_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
     isAdoptertBarn,
@@ -70,7 +70,7 @@ export const isDateABeforeDateB = (a: string, b: string): boolean => {
     return false;
 };
 
-export const getEldsteRegistrerteBarn = (registrerteBarn: BarnDto_fpoversikt[]): BarnDto_fpoversikt => {
+export const getEldsteRegistrerteBarn = (registrerteBarn: FpBarnDto_fpoversikt[]): FpBarnDto_fpoversikt => {
     return [...registrerteBarn].sort((a, b) => (isDateABeforeDateB(a.fødselsdato, b.fødselsdato) ? 1 : -1)).at(-1)!;
 };
 
