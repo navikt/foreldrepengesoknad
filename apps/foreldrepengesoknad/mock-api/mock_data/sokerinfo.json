@@ -1,22 +1,21 @@
 {
-    "person": {
-        "aktørid": "123123",
-        "fnr": "13410550312",
-        "fødselsdato": "2005-01-13",
-        "navn": {
-            "fornavn": "Ullen",
-            "etternavn": "Brosme"
-        },
-        "kjønn": "K",
-        "bankkonto": {
-            "kontonummer": "1323",
-            "banknavn": "DNB ASA"
-        },
-        "sivilstand": {
-            "type": "UGIFT"
-        },
-        "barn": []
+    "aktørid": "123123",
+    "fnr": "13410550312",
+    "fødselsdato": "2005-01-13",
+    "navn": {
+        "fornavn": "Ullen",
+        "etternavn": "Brosme"
     },
+    "kjønn": "K",
+    "bankkonto": {
+        "kontonummer": "1323",
+        "banknavn": "DNB ASA"
+    },
+    "sivilstand": {
+        "type": "UGIFT"
+    },
+    "erGift": false,
+    "barn": [],
     "arbeidsforhold": [
         {
             "arbeidsgiverId": "123",

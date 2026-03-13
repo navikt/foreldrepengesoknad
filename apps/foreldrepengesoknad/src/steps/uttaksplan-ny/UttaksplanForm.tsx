@@ -349,7 +349,8 @@ const harPeriodeDerMorsAktivitetIkkeErValgt = (
         (periode) =>
             Uttaksperioden.erIkkeEøsPeriode(periode) &&
             periode.forelder === 'FAR_MEDMOR' &&
-            periode.kontoType === 'FELLESPERIODE' &&
+            periode.resultat?.innvilget !== false &&
+            (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER') &&
             periode.flerbarnsdager === undefined &&
             periode.morsAktivitet === undefined,
     );

@@ -158,7 +158,8 @@ const lagDeltUttakForFarMedmor = (
     stønadskontoer: KontoDto[],
     startdato: string,
 ): UttakPeriode_fpoversikt[] => {
-    const harFødselspermisjon = UttaksdagenString.denne(famDato).getDato() === startdato;
+    const harFødselspermisjon =
+        UttaksdagenString.denneEllerNeste(famDato).getDato() === UttaksdagenString.denneEllerNeste(startdato).getDato();
     const forslag: UttakPeriode_fpoversikt[] = [];
 
     const foreldrepengerFørFødsel = stønadskontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
@@ -167,7 +168,7 @@ const lagDeltUttakForFarMedmor = (
     const fellesperiode = stønadskontoer.find((k) => k.konto === 'FELLESPERIODE');
     const gjenståendreFedrekvote = fedrekvote && harFødselspermisjon ? fedrekvote.dager - 10 : undefined;
 
-    let currentFomDate = startdato;
+    let currentFomDate = UttaksdagenString.denneEllerNeste(startdato).getDato();
 
     let tidsperiode = getTidsperiodeString(
         UttaksdagenString.denne(currentFomDate).getDatoAntallUttaksdagerTidligere(15),
