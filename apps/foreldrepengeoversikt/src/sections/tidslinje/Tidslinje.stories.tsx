@@ -35,7 +35,7 @@ import {
     tidslinjehendelser_SVP_under_behandling,
 } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
 
-import { BarnDto_fpoversikt } from '@navikt/fp-types';
+import { OversiktBarnDto_fpoversikt } from '@navikt/fp-types';
 import { withMockDate, withQueryClient } from '@navikt/fp-utils-test';
 
 import { API_URLS, hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from '../../api/queries.ts';
@@ -50,12 +50,11 @@ const søkersBarn = [
         },
         fnr: '23232424',
         fødselsdato: '2024-01-01',
-        kjønn: 'K',
     },
-] satisfies BarnDto_fpoversikt[];
+] satisfies OversiktBarnDto_fpoversikt[];
 
 type MockProps = {
-    søkersBarn: BarnDto_fpoversikt[];
+    søkersBarn: OversiktBarnDto_fpoversikt[];
 };
 const MockTidslinje = (props: MockProps) => {
     const params = useParams();

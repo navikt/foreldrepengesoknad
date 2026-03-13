@@ -1,7 +1,7 @@
 import { ReactNode, useRef } from 'react';
 import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router-dom';
 
-import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { OversiktPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
 import { Breadcrumb } from '../components/breadcrumb/Breadcrumb';
 import { Snarveier } from '../components/snarveier/Snarveier';
@@ -21,7 +21,7 @@ import { OversiktRoutes } from './routes';
 
 interface Props {
     saker: SakOppslag;
-    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerinfo: OversiktPersonopplysningerDto_fpoversikt;
 }
 
 export const ForeldrepengeoversiktRoutes = ({ søkerinfo, saker }: Props) => {

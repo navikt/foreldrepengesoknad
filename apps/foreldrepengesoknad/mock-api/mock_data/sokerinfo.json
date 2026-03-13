@@ -1,18 +1,10 @@
 {
-    "aktørid": "123123",
     "fnr": "13410550312",
     "fødselsdato": "2005-01-13",
+    "kjønn": "K",
     "navn": {
         "fornavn": "Ullen",
         "etternavn": "Brosme"
-    },
-    "kjønn": "K",
-    "bankkonto": {
-        "kontonummer": "1323",
-        "banknavn": "DNB ASA"
-    },
-    "sivilstand": {
-        "type": "UGIFT"
     },
     "erGift": false,
     "barn": [],
@@ -22,8 +14,7 @@
             "arbeidsgiverIdType": "orgnr",
             "arbeidsgiverNavn": "Fullstendig Ekte Arbeidsgiver",
             "stillingsprosent": 100,
-            "fom": "2020-01-01",
-            "from": "2020-01-01"
+            "fom": "2020-01-01"
         }
     ]
 }

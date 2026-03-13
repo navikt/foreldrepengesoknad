@@ -12,10 +12,7 @@ type Story = StoryObj<typeof meta>;
 
 export const ForForeldrepenger: Story = {
     args: {
-        bankkonto: {
-            kontonummer: '1212123132',
-            banknavn: 'Luster Sparebank',
-        },
+        kontonummer: '1212123132',
         ytelse: 'FORELDREPENGER',
         harMinstEttArbeidsforhold: true,
     },
@@ -23,10 +20,7 @@ export const ForForeldrepenger: Story = {
 
 export const ForForeldrepengerUtenArbeidsforhold: Story = {
     args: {
-        bankkonto: {
-            kontonummer: '1212123132',
-            banknavn: 'Luster Sparebank',
-        },
+        kontonummer: '1212123132',
         ytelse: 'FORELDREPENGER',
         harMinstEttArbeidsforhold: false,
     },
@@ -34,10 +28,7 @@ export const ForForeldrepengerUtenArbeidsforhold: Story = {
 
 export const ForEngangsstønad: Story = {
     args: {
-        bankkonto: {
-            kontonummer: '1212123132',
-            banknavn: 'Luster Sparebank',
-        },
+        kontonummer: '1212123132',
         ytelse: 'ENGANGSSTØNAD',
         harMinstEttArbeidsforhold: true,
     },
@@ -45,10 +36,7 @@ export const ForEngangsstønad: Story = {
 
 export const ForSvangerskapspenger: Story = {
     args: {
-        bankkonto: {
-            kontonummer: '1212123132',
-            banknavn: 'Luster Sparebank',
-        },
+        kontonummer: '1212123132',
         ytelse: 'SVANGERSKAPSPENGER',
         harMinstEttArbeidsforhold: true,
     },
@@ -56,10 +44,7 @@ export const ForSvangerskapspenger: Story = {
 
 export const ForSvangerskapspengerUtenArbeidsforhold: Story = {
     args: {
-        bankkonto: {
-            kontonummer: '1212123132',
-            banknavn: 'Luster Sparebank',
-        },
+        kontonummer: '1212123132',
         ytelse: 'SVANGERSKAPSPENGER',
         harMinstEttArbeidsforhold: false,
     },
@@ -68,7 +53,7 @@ export const ForSvangerskapspengerUtenArbeidsforhold: Story = {
 export const HarIkkeKontonr: Story = {
     args: {
         ytelse: 'ENGANGSSTØNAD',
-        bankkonto: undefined,
+        kontonummer: undefined,
         harMinstEttArbeidsforhold: true,
     },
 };

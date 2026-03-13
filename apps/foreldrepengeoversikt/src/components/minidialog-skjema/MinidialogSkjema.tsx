@@ -110,7 +110,7 @@ export const MinidialogSkjema = ({
             setTilbakemeldingValideringsfeil(feilmelding);
         } else if (brukerØnskerÅUttaleSeg !== undefined) {
             const submitData = {
-                fnr: notEmpty(søkerInfo).person.fnr,
+                fnr: notEmpty(søkerInfo).fnr,
                 vedlegg:
                     brukerØnskerÅUttaleSeg && vedlegg
                         ? vedlegg.filter((a: Attachment) => !isAttachmentWithError(a))
