@@ -330,7 +330,7 @@
     "beregning.dagsats.totalt": "Totalt",
     "beregning.vedtakLenke": "Du kan lese mer i <link>vedtaksbrevet.</link>",
     "beregning.utbetalingsvisning.tittel": "Utbetalingsplan",
-    "beregning.utbetalingsvisning.fullBeskrivelse": "Beløpene er før skatt og eventuelle trekk. Hvis vi betaler foreldrepenger til deg, vil du se hva vi trekker deg i skatt i <link1>utbetalingsoversikten din.</link1> På <link2>nav.no/utbetalinger</link2> finner du våre utbetalingsdatoer. Beløpene du får utbetalt hver måned vil variere, fordi det er forskjellig antall utbetalingsdager hver måned.",
+    "beregning.utbetalingsvisning.fullBeskrivelse": "Beløpene er før skatt og eventuelle trekk. Hvis vi betaler foreldrepenger til deg, vil du se hva vi trekker deg i skatt i <link1>utbetalingsoversikten din.</link1> <link2>Her finner du informasjon om våre utbetalingsdatoer.</link2> Beløpene du får utbetalt hver måned vil variere, fordi det er forskjellig antall utbetalingsdager hver måned.",
     "beregning.utbetalingsvisning.tabell.dato": "Dato",
     "beregning.utbetalingsvisning.tabell.beløp": "Beløp",
     "beregning.utbetalingsvisning.direkte": "Vi skal betale til deg: {beløp}",
