@@ -18,6 +18,7 @@ import {
     Barn,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
+    RettighetType_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
     isAdoptertBarn,
@@ -26,6 +27,7 @@ import {
 } from '@navikt/fp-types';
 import { UttaksdagenString, Uttaksperioden } from '@navikt/fp-utils';
 import { useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan-ny';
+import { useUttaksplanData } from '@navikt/fp-uttaksplan-ny/src/context/UttaksplanDataContext';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { VilDuGåTilbakeModal } from './VilDuGåTilbakeModal';
@@ -83,6 +85,10 @@ export const UttaksplanForm = ({
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN_NY);
     const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
+    const {
+        foreldreInfo: { rettighetType },
+    } = useUttaksplanData();
+
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
     const uttaksplanMedKunNyePerioder =
         uttaksplan?.filter((p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.resultat === undefined) ?? [];
@@ -138,7 +144,7 @@ export const UttaksplanForm = ({
         } else if (erAntallDagerOvertrukket) {
             setFeilmelding(<FormattedMessage id="UttaksplanSteg.OvertrukketDager" />);
             scrollToKvoteOppsummering();
-        } else if (harPeriodeDerMorsAktivitetIkkeErValgt(gjeldendeUttaksplan || defaultUttaksperioder)) {
+        } else if (harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, gjeldendeUttaksplan || defaultUttaksperioder)) {
             setFeilmelding(<FormattedMessage id="UttaksplanSteg.MorsAktivitetIkkeValgt" />);
             scrollToKvoteOppsummering();
         } else {
@@ -343,10 +349,12 @@ const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
 };
 
 const harPeriodeDerMorsAktivitetIkkeErValgt = (
+    rettighetType: RettighetType_fpoversikt,
     perioder?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
 ) => {
     return perioder?.some(
         (periode) =>
+            rettighetType !== 'ALENEOMSORG' &&
             Uttaksperioden.erIkkeEøsPeriode(periode) &&
             periode.forelder === 'FAR_MEDMOR' &&
             periode.resultat?.innvilget !== false &&
