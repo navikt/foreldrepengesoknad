@@ -107,7 +107,7 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
                 periode.resultat?.innvilget !== false &&
                 (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER') &&
                 periode.morsAktivitet === undefined &&
-                periode.flerbarnsdager === undefined,
+                periode.flerbarnsdager === false,
         )
     );
 };
