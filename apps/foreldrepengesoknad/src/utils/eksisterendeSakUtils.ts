@@ -25,7 +25,7 @@ import {
     AktivitetType_fpoversikt,
     AnnenForelderDto_fpoversikt,
     AnnenPartSak_fpoversikt,
-    BarnDto_fpoversikt,
+    FpBarnDto_fpoversikt,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
     KontoType,
@@ -392,7 +392,7 @@ const getAnnenForelderFromSaksgrunnlag = (
 };
 
 const finnAnnenForelderForSaken = (
-    barn: BarnDto_fpoversikt[],
+    barn: FpBarnDto_fpoversikt[],
     fødselsdato: Date | undefined,
     grunnlag: Saksgrunnlag,
     situasjon: Situasjon,
@@ -499,7 +499,7 @@ const opprettAnnenForelderFraEksisterendeSak = (
     intl: IntlShape,
     annenPartFraSak: Person_fpoversikt | undefined,
     grunnlag: Saksgrunnlag,
-    barn: BarnDto_fpoversikt[],
+    barn: FpBarnDto_fpoversikt[],
     situasjon: Situasjon,
     valgteBarnFnr: string[] | undefined,
 ): AnnenForelderOppgitt => {
@@ -532,7 +532,7 @@ const opprettAnnenForelderFraEksisterendeSak = (
 export const lagSøknadFraValgteBarnMedSak = (
     valgteBarn: ValgtBarn & { sak: FpSak_fpoversikt },
     intl: IntlShape,
-    registrerteBarn: BarnDto_fpoversikt[],
+    registrerteBarn: FpBarnDto_fpoversikt[],
     søkerFnr: string,
 ): Partial<Søknad> => {
     const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, undefined, valgteBarn.fødselsdatoer);

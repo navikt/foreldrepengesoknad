@@ -9,7 +9,7 @@ import { action } from 'storybook/actions';
 import { annenPartVedtak, avslåttAnnenPartVedtak } from 'storybookData/annenPartVedtak';
 
 import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
-import { BarnDto_fpoversikt, FpPersonopplysningerDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
+import { FpBarnDto_fpoversikt, FpPersonopplysningerDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { AnnenForelderSteg } from './AnnenForelderSteg';
@@ -156,7 +156,7 @@ export const SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike: Story = {
                         },
                     },
                 },
-            ] satisfies BarnDto_fpoversikt[],
+            ] satisfies FpBarnDto_fpoversikt[],
         },
         annenForelder: {
             ...defaultAnnenForelder,

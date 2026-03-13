@@ -15,7 +15,7 @@ import {
     tidslinjeHendelser_FP_førstegangssøknad_nylig,
 } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
 
-import { PersonMedArbeidsforholdDto_fpoversikt, Saker_fpoversikt } from '@navikt/fp-types';
+import { OversiktPersonopplysningerDto_fpoversikt, Saker_fpoversikt } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { API_URLS } from '../../api/queries.ts';
@@ -23,7 +23,7 @@ import { OversiktRoutes } from '../../routes/routes';
 import { Saksoversikt } from './Saksoversikt';
 
 type StoryArgs = {
-    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerinfo: OversiktPersonopplysningerDto_fpoversikt;
     saksnummer: string;
 };
 

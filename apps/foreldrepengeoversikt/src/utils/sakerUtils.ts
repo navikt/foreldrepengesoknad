@@ -5,12 +5,12 @@ import { IntlShape } from 'react-intl';
 import { BarnType } from '@navikt/fp-constants';
 import {
     Barn,
-    BarnDto_fpoversikt,
     EsSak_fpoversikt,
     Familiehendelse_fpoversikt,
     Familiesituasjon,
     FpSak_fpoversikt,
-    PersonMedArbeidsforholdDto_fpoversikt,
+    OversiktBarnDto_fpoversikt,
+    OversiktPersonopplysningerDto_fpoversikt,
     Saker_fpoversikt,
     SvpSak_fpoversikt,
     Ytelse,
@@ -74,7 +74,7 @@ export const getBarnFraSak = (familiehendelse: Familiehendelse_fpoversikt, gjeld
     };
 };
 
-export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: BarnDto_fpoversikt[]): BarnGruppering => {
+export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: OversiktBarnDto_fpoversikt[]): BarnGruppering => {
     const erForeldrepengesak = sak.ytelse === 'FORELDREPENGER';
     const barnFnrFraSaken = erForeldrepengesak && sak.barn !== undefined ? sak.barn.flatMap((b) => b.fnr) : [];
     const pdlBarnMedSammeFnr =
@@ -109,7 +109,7 @@ export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: BarnDto_fpove
     };
 };
 
-export const grupperSakerPåBarn = (registrerteBarn: BarnDto_fpoversikt[], saker: SakOppslag): GruppertSak[] => {
+export const grupperSakerPåBarn = (registrerteBarn: OversiktBarnDto_fpoversikt[], saker: SakOppslag): GruppertSak[] => {
     const alleSaker = getAlleYtelser(saker);
 
     const sorterteSaker = orderBy(
@@ -239,16 +239,16 @@ export const getFamiliehendelseDato = (familiehendelse: Familiehendelse_fpoversi
 };
 
 export const getNavnAnnenForelder = (
-    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+    søkerinfo: OversiktPersonopplysningerDto_fpoversikt,
     sak: Foreldrepengesak | EngangsstønadSak | SvangerskapspengeSak | undefined,
     intl: IntlShape,
 ) => {
     const fødselsdatoFraSak = sak?.familiehendelse ? sak.familiehendelse.fødselsdato : undefined;
     const barn =
-        søkerinfo.person.barn && fødselsdatoFraSak
-            ? søkerinfo.person.barn.find((b) => dayjs(b.fødselsdato).isSame(fødselsdatoFraSak, 'd'))
+        søkerinfo.barn && fødselsdatoFraSak
+            ? søkerinfo.barn.find((b) => dayjs(b.fødselsdato).isSame(fødselsdatoFraSak, 'd'))
             : undefined;
-    const annenForelderNavn = barn?.annenPart ? barn.annenPart.navn.fornavn : undefined;
+    const annenForelderNavn = barn?.annenPartFornavn;
     return annenForelderNavn !== undefined && annenForelderNavn.trim() !== ''
         ? annenForelderNavn
         : intl.formatMessage({ id: 'forelder.annenForelder' });

@@ -4,7 +4,7 @@ import { IntlShape } from 'react-intl';
 
 import { Barn, isFødtBarn, isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-common';
 import { DDMMMMYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { BarnDto_fpoversikt } from '@navikt/fp-types';
+import { FpBarnDto_fpoversikt } from '@navikt/fp-types';
 
 import { ISOStringToDate } from './dateUtils';
 
@@ -36,8 +36,8 @@ const barnFødselsdatoLikSakFødselsdato = (fødselsdatoer: string[] | undefined
 
 export const getRegistrerteBarnOmDeFinnes = (
     barn: Barn,
-    registrerteBarn: BarnDto_fpoversikt[],
-): BarnDto_fpoversikt[] | undefined => {
+    registrerteBarn: FpBarnDto_fpoversikt[],
+): FpBarnDto_fpoversikt[] | undefined => {
     return registrerteBarn.length > 0 && !isUfødtBarn(barn)
         ? registrerteBarn.filter(
               (regBarn) =>
@@ -55,7 +55,7 @@ export const getFødselsdato = (barn: Barn): string | undefined => {
     return isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined;
 };
 
-export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: BarnDto_fpoversikt) => {
+export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: FpBarnDto_fpoversikt) => {
     const dato3MånederTilbake = dayjs(new Date()).subtract(3, 'month');
     return (
         registrerteBarn.dødsdato !== undefined &&
@@ -74,14 +74,14 @@ export const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): stri
     return intl.formatMessage({ id: 'flerlinger' });
 };
 
-export const getLeverBarnet = (barn: BarnDto_fpoversikt) => {
+export const getLeverBarnet = (barn: FpBarnDto_fpoversikt) => {
     return !barn.dødsdato;
 };
 
 export const getAndreBarnFødtSammenMedBarnet = (
     barnFnr: string | undefined,
     barnFødselsdato: string,
-    registrerteBarn: BarnDto_fpoversikt[],
+    registrerteBarn: FpBarnDto_fpoversikt[],
 ) => {
     const dagenFørFødsel = dayjs.utc(barnFødselsdato).subtract(1, 'day');
     const dagenEtterFødsel = dayjs.utc(barnFødselsdato).add(1, 'day');

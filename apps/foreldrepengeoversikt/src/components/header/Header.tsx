@@ -8,7 +8,7 @@ import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import {
     FpOversiktInntektsmeldingDto_fpoversikt,
-    PersonMedArbeidsforholdDto_fpoversikt,
+    OversiktPersonopplysningerDto_fpoversikt,
     Ytelse,
 } from '@navikt/fp-types';
 import { capitalizeFirstLetter, capitalizeFirstLetterInEveryWordOnly, formatDateMedUkedag } from '@navikt/fp-utils';
@@ -178,7 +178,7 @@ function FamiliehendelseDescription({
     søkerinfo,
 }: {
     sak: Sak;
-    søkerinfo?: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerinfo?: OversiktPersonopplysningerDto_fpoversikt;
 }) {
     const intl = useIntl();
 
@@ -191,7 +191,7 @@ function FamiliehendelseDescription({
         return null;
     }
 
-    const grupperteSaker = grupperSakerPåBarn(søkerinfo.person.barn ?? [], saker);
+    const grupperteSaker = grupperSakerPåBarn(søkerinfo.barn ?? [], saker);
     const sakIGrupperteSaker = sak
         ? grupperteSaker.find((gruppe) => gruppe.saker.map((s) => s.saksnummer).includes(sak.saksnummer))
         : undefined;
@@ -222,7 +222,7 @@ export function DinSakHeader({ sak }: { sak?: Sak }) {
         return null;
     }
 
-    const harMinstEttArbeidsforhold = !!søkerinfo?.arbeidsforhold && søkerinfo.arbeidsforhold.length > 0;
+    const harMinstEttArbeidsforhold = søkerinfo?.harArbeidsforhold ?? false;
 
     const ytelseTekst = ytelseSomTekst(sak.ytelse, intl);
     return (
