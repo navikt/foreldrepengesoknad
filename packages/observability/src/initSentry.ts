@@ -27,6 +27,10 @@ export const initSentry = ({ dsn }: InitSentryOptions) => {
                 return null;
             }
 
+            if (feilFraBrowserExtensions(event)) {
+                return null;
+            }
+
             return event;
         },
     });
@@ -52,6 +56,18 @@ const feilUtenOpprinnelseIVårKode = (event: Sentry.ErrorEvent) => {
             return true;
         });
     });
+};
+
+/**
+ * Nettleserutvidelser som f.eks. taleassistenter (Speech Assist) genererer mange "Request timeout ...Distributor.getValue"-feil.
+ * Disse er ikke våre feil, og vi vil ikke ha dem i Sentry.
+ */
+const feilFraBrowserExtensions = (event: Sentry.ErrorEvent) => {
+    const distributorBreadcrumbs = (event.breadcrumbs ?? []).filter(
+        (breadcrumb) => breadcrumb.message && /Request timeout \S*Distributor\.\S+/.test(breadcrumb.message),
+    );
+
+    return distributorBreadcrumbs.length > 0;
 };
 
 /**
