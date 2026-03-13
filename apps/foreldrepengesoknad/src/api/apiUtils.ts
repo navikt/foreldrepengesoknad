@@ -30,11 +30,11 @@ import {
     BrukerRolle,
     EndringssøknadForeldrepengerDto,
     ForeldrepengesøknadDto,
+    FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
     KontoType,
     Målform,
     Oppholdsårsak,
-    PersonMedArbeidsforholdDto_fpoversikt,
     SøkerDto,
     UtsettelsesÅrsak,
     UttakOppholdÅrsak_fpoversikt,
@@ -354,7 +354,7 @@ export const getSøknadsdataForInnsending = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: string,
-    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+    søkerinfo: FpPersonopplysningerDto_fpoversikt,
     endringstidspunkt?: Date,
 ): ForeldrepengesøknadDto | EndringssøknadForeldrepengerDto => {
     if (erEndringssøknad) {
@@ -367,7 +367,7 @@ export const getSøknadsdataForInnsending = (
 export const getSøknadsdataForInnsendingNy = (
     erEndringssøknad: boolean,
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+    søkerinfo: FpPersonopplysningerDto_fpoversikt,
     foreldrepengerSaker: FpSak_fpoversikt[],
 ): ForeldrepengesøknadDto | EndringssøknadForeldrepengerDto => {
     const valgtEksisterendeSaksnr = hentData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
@@ -384,7 +384,7 @@ export const getSøknadsdataForInnsendingNy = (
 export const cleanSøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     familiehendelsesdato: string,
-    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+    søkerinfo: FpPersonopplysningerDto_fpoversikt,
 ): ForeldrepengesøknadDto => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
@@ -425,7 +425,7 @@ export const cleanSøknad = (
 
 export const cleanSøknadNy = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+    søkerinfo: FpPersonopplysningerDto_fpoversikt,
 ): ForeldrepengesøknadDto => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
@@ -462,10 +462,10 @@ export const cleanSøknadNy = (
     };
 };
 
-const mapSøkerInfoTilSøknadDto = (søkerinfo: PersonMedArbeidsforholdDto_fpoversikt): SøkerDto => {
+const mapSøkerInfoTilSøknadDto = (søkerinfo: FpPersonopplysningerDto_fpoversikt): SøkerDto => {
     return {
-        fnr: søkerinfo.person.fnr,
-        navn: søkerinfo.person.navn,
+        fnr: søkerinfo.fnr,
+        navn: søkerinfo.navn,
         arbeidsforhold: søkerinfo.arbeidsforhold.map((af) => ({
             navn: af.arbeidsgiverNavn,
             orgnummer: af.arbeidsgiverId,
@@ -480,7 +480,7 @@ export const cleanEndringssøknad = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     endringerIUttaksplan: Periode[],
     familiehendelsesdato: string,
-    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+    søkerinfo: FpPersonopplysningerDto_fpoversikt,
     endringstidspunkt?: Date,
 ): EndringssøknadForeldrepengerDto => {
     const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
@@ -512,7 +512,7 @@ export const cleanEndringssøknad = (
 
 export const cleanEndringssøknadNy = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+    søkerinfo: FpPersonopplysningerDto_fpoversikt,
     eksisterendeSak?: FpSak_fpoversikt,
 ): EndringssøknadForeldrepengerDto => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));

@@ -9,12 +9,7 @@ import { action } from 'storybook/actions';
 import { FellesperiodeFordelingValg, Fordeling, OppstartValg } from 'types/Fordeling';
 
 import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
-import {
-    Dekningsgrad,
-    PersonDto_fpoversikt,
-    PersonMedArbeidsforholdDto_fpoversikt,
-    SøkersituasjonFp,
-} from '@navikt/fp-types';
+import { Dekningsgrad, FpPersonopplysningerDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import {
     ALENE_OM_OMSORG_80_FARMEDMOR,
     ALENE_OM_OMSORG_100_FARMEDMOR,
@@ -42,8 +37,10 @@ const søkerInfoKvinne = {
     },
     kjønn: 'K',
     fødselsdato: '1988-04-19',
+    erGift: false,
     barn: [],
-} satisfies PersonDto_fpoversikt;
+    arbeidsforhold: [],
+} satisfies FpPersonopplysningerDto_fpoversikt;
 
 const søkerInfoMann = {
     fnr: '20479134988',
@@ -53,8 +50,10 @@ const søkerInfoMann = {
     },
     kjønn: 'M',
     fødselsdato: '1988-04-19',
+    erGift: false,
     barn: [],
-} satisfies PersonDto_fpoversikt;
+    arbeidsforhold: [],
+} satisfies FpPersonopplysningerDto_fpoversikt;
 
 const promiseAction = () => () => {
     action('button-click')();
@@ -68,7 +67,7 @@ type StoryArgs = {
     søkersituasjon: SøkersituasjonFp;
     annenForelder: AnnenForelder;
     barnet: Barn;
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
     dekningsgrad: Dekningsgrad;
     fordeling: Fordeling;
 } & ComponentProps<typeof UttaksplanStegNy>;
@@ -144,7 +143,7 @@ export const FødselMorOgFarBeggeHarRett: Story = {
         },
     },
     args: {
-        søkerInfo: { person: søkerInfoKvinne, arbeidsforhold: [] },
+        søkerInfo: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -195,7 +194,7 @@ export const FødselMorOgFarKunMorHarRett: Story = {
     },
     args: {
         ...FødselMorOgFarBeggeHarRett.args,
-        søkerInfo: { person: søkerInfoKvinne, arbeidsforhold: [] },
+        søkerInfo: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'mor',
@@ -281,7 +280,7 @@ export const FødselMorOgMedmorKunMedmorHarRettMorUfør: Story = {
         },
     },
     args: {
-        søkerInfo: { person: søkerInfoKvinne, arbeidsforhold: [] },
+        søkerInfo: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'medmor',
@@ -330,7 +329,7 @@ export const FødselBareFarSøkerAleneOmOmsorg: Story = {
     },
     args: {
         ...FødselMorOgFarBeggeHarRett.args,
-        søkerInfo: { person: søkerInfoMann, arbeidsforhold: [] },
+        søkerInfo: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'fødsel',
             rolle: 'far',
@@ -372,7 +371,7 @@ export const AdopsjonMorOgFarBeggeHarRett: Story = {
         },
     },
     args: {
-        søkerInfo: { person: søkerInfoKvinne, arbeidsforhold: [] },
+        søkerInfo: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'mor',
@@ -422,7 +421,7 @@ export const AdopsjonMorOgFarKunMorHarRett: Story = {
         },
     },
     args: {
-        søkerInfo: { person: søkerInfoKvinne, arbeidsforhold: [] },
+        søkerInfo: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'mor',
@@ -469,7 +468,7 @@ export const AdopsjonMorOgFarKunFarHarRettMorErUfør: Story = {
         },
     },
     args: {
-        søkerInfo: { person: søkerInfoMann, arbeidsforhold: [] },
+        søkerInfo: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'far',
@@ -500,7 +499,7 @@ export const AdopsjonMorOgMedmorBeggeHarRett: Story = {
     parameters: AdopsjonMorOgFarBeggeHarRett.parameters,
     args: {
         ...AdopsjonMorOgFarBeggeHarRett.args,
-        søkerInfo: { person: søkerInfoKvinne, arbeidsforhold: [] },
+        søkerInfo: søkerInfoKvinne,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'mor',
@@ -564,7 +563,7 @@ export const AdopsjonBareFarSøkerAleneOmOmsorg: Story = {
     parameters: AdopsjonMorOgFarKunMorHarRett.parameters,
     args: {
         ...AdopsjonMorOgFarKunMorHarRett.args,
-        søkerInfo: { person: søkerInfoMann, arbeidsforhold: [] },
+        søkerInfo: søkerInfoMann,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'far',

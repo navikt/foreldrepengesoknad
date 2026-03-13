@@ -8,8 +8,8 @@ import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenFo
 import {
     AnnenPartSak_fpoversikt,
     ForsendelseStatus,
+    FpPersonopplysningerDto_fpoversikt,
     KontoBeregningResultatDto,
-    PersonMedArbeidsforholdDto_fpoversikt,
     Saker_fpoversikt,
     Tidsperiode,
 } from '@navikt/fp-types';
@@ -18,7 +18,7 @@ import { notEmpty } from '@navikt/fp-validation';
 export const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
-    søkerInfo: `${urlPrefiks}/fpoversikt/api/person/info-med-arbeidsforhold`,
+    søkerInfo: `${urlPrefiks}/fpoversikt/api/personopplysninger/foreldrepenger`,
     saker: `${urlPrefiks}/fpoversikt/api/saker`,
     annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart`,
     konto: `${urlPrefiks}/fpgrunndata/api/konto`,
@@ -61,7 +61,7 @@ export const sakerOptions = () =>
 export const søkerinfoOptions = () =>
     queryOptions({
         queryKey: ['SØKERINFO'],
-        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30000 }).json<PersonMedArbeidsforholdDto_fpoversikt>(),
+        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30000 }).json<FpPersonopplysningerDto_fpoversikt>(),
         staleTime: Infinity,
     });
 

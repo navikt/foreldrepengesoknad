@@ -13,7 +13,7 @@ import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 import { Periode, isUtsettelseBarnInnlagt } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Attachment, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { Attachment, FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
@@ -62,7 +62,7 @@ import {
 } from './util';
 
 type Props = {
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
     erEndringssøknad: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
@@ -118,7 +118,7 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
     const morKvalPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorKvalprogram);
     const morStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorStuderer);
 
-    const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, erFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(søkerInfo, annenForelder, erFarEllerMedmor, intl);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const termindato = getTermindato(barn);
 

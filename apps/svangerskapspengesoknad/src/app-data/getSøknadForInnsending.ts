@@ -14,8 +14,8 @@ import {
     Frilans,
     Målform,
     NæringDto,
-    PersonMedArbeidsforholdDto_fpoversikt,
     SvangerskapspengesøknadDto,
+    SvpPersonopplysningerDto_fpoversikt,
     TilretteleggingbehovDto,
     VedleggDto,
 } from '@navikt/fp-types';
@@ -84,7 +84,7 @@ const finnVedlegg = (
 };
 
 export const getSøknadForInnsending = (
-    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+    søkerinfo: SvpPersonopplysningerDto_fpoversikt,
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ): SvangerskapspengesøknadDto => {
     const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
@@ -99,8 +99,8 @@ export const getSøknadForInnsending = (
 
     return {
         søkerinfo: {
-            fnr: søkerinfo.person.fnr,
-            navn: søkerinfo.person.navn,
+            fnr: søkerinfo.fnr,
+            navn: søkerinfo.navn,
             arbeidsforhold: søkerinfo.arbeidsforhold.map((af) => ({
                 navn: af.arbeidsgiverNavn,
                 orgnummer: af.arbeidsgiverId,

@@ -13,7 +13,7 @@ import {
 } from '@navikt/fp-common';
 import {
     ArbeidsforholdOgInntektFp,
-    PersonMedArbeidsforholdDto_fpoversikt,
+    FpPersonopplysningerDto_fpoversikt,
     UttakPeriode_fpoversikt,
     Uttaksplanperiode,
 } from '@navikt/fp-types';
@@ -42,17 +42,16 @@ const DEFAULT_SØKER_INFO = {
             stillingsprosent: 100,
         },
     ],
-    person: {
-        navn: {
-            etternavn: 'Oravakangas',
-            fornavn: 'Erlinga-Mask',
-        },
-        fnr: '02343434',
-        fødselsdato: '1989-08-30',
-        kjønn: 'K',
-        barn: [],
+    barn: [],
+    erGift: false,
+    fnr: '02343434',
+    fødselsdato: '1989-08-30',
+    kjønn: 'K',
+    navn: {
+        etternavn: 'Oravakangas',
+        fornavn: 'Erlinga-Mask',
     },
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies FpPersonopplysningerDto_fpoversikt;
 
 const getAnnenForelderUførMock = (
     urUførInput: boolean | undefined,

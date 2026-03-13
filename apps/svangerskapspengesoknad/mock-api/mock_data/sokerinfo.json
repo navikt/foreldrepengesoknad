@@ -1,14 +1,10 @@
 {
-    "søker": {
-        "fnr": "1",
+    "fnr": "1",
+    "fødselsdato": "1989-08-30",
+    "kjønn": "K",
+    "navn": {
         "fornavn": "Erlinga-Mask",
-        "etternavn": "Oravakangas",
-        "kjønn": "K",
-        "fødselsdato": "1989-08-30",
-        "land": "NO",
-        "bankkonto": {
-            "kontonummer": "10824223373"
-        }
+        "etternavn": "Oravakangas"
     },
     "arbeidsforhold": [
         {

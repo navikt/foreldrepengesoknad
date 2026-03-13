@@ -12,7 +12,7 @@ import { VStack } from '@navikt/ds-react';
 
 import { AnnenForelder, Barn, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { PersonDto_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -21,7 +21,10 @@ import { AnnenForelderFormData } from './AnnenForelderFormData';
 import { AnnenForelderOppgittPanel } from './AnnenForelderOppgittPanel';
 import { OppgiPersonalia } from './OppgiPersonalia';
 
-const getRegistrertAnnenForelder = (barn: NonNullable<Barn | undefined>, person: PersonDto_fpoversikt) => {
+const getRegistrertAnnenForelder = (
+    barn: NonNullable<Barn | undefined>,
+    person: FpPersonopplysningerDto_fpoversikt,
+) => {
     const registrerteBarn = getRegistrerteBarnOmDeFinnes(barn, person.barn);
     const registrertBarnMedAnnenForelder =
         registrerteBarn === undefined || registrerteBarn.length === 0
@@ -31,7 +34,7 @@ const getRegistrertAnnenForelder = (barn: NonNullable<Barn | undefined>, person:
 };
 
 type Props = {
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
@@ -48,7 +51,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
 
     const oppdaterAnnenForeldre = useContextSaveData(ContextDataType.ANNEN_FORELDER);
 
-    const annenForelderFraRegistrertBarn = getRegistrertAnnenForelder(barn, søkerInfo.person);
+    const annenForelderFraRegistrertBarn = getRegistrertAnnenForelder(barn, søkerInfo);
 
     const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     const annenPartHarVedtak =
@@ -119,7 +122,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
                     <VStack gap="space-40">
                         <ErrorSummaryHookForm />
                         {skalOppgiPersonalia && (
-                            <OppgiPersonalia rolle={rolle} barn={barn} søkersFødselsnummer={søkerInfo.person.fnr} />
+                            <OppgiPersonalia rolle={rolle} barn={barn} søkersFødselsnummer={søkerInfo.fnr} />
                         )}
                         {!skalOppgiPersonalia && (
                             <RegistrertePersonalia

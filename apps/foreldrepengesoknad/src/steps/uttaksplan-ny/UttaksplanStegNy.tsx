@@ -19,8 +19,8 @@ import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import {
     Barn,
+    FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
-    PersonMedArbeidsforholdDto_fpoversikt,
     RettighetType_fpoversikt,
     isAdoptertBarn,
     isFødtBarn,
@@ -44,7 +44,7 @@ import { useUttaksplanForEksisterendeSak } from './hooks/useUttaksplanForEksiste
 import { useUttaksplanForslag } from './hooks/useUttaksplanForslag';
 
 interface Props {
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
     foreldrepengerSaker?: FpSak_fpoversikt[];
@@ -156,7 +156,7 @@ export const UttaksplanStegNy = ({
                     barn={barn}
                     foreldreInfo={{
                         søker: isFarEllerMedmor(søkersituasjon.rolle) ? 'FAR_MEDMOR' : 'MOR',
-                        navnPåForeldre: getNavnPåForeldre(søkerInfo.person, annenForelder, erSøkerFarEllerMedmor, intl),
+                        navnPåForeldre: getNavnPåForeldre(søkerInfo, annenForelder, erSøkerFarEllerMedmor, intl),
                         rettighetType: utledRettighet(erAleneOmOmsorg, erDeltUttak),
                         erMedmorDelAvSøknaden:
                             søkersituasjon.rolle === 'medmor' ||

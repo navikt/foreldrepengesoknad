@@ -42,7 +42,7 @@ import {
 } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { captureMessage } from '@navikt/fp-observability';
-import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Spinner, Step, StepFooter } from '@navikt/fp-ui';
 import {
     Periodene,
@@ -70,7 +70,7 @@ import { uttaksplanQuestionsConfig } from './uttaksplanQuestionConfig';
 const EMPTY_PERIOD_ARRAY: Periode[] = [];
 
 type Props = {
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
     erEndringssøknad: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
@@ -131,7 +131,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const erMorUfør = getErMorUfør(annenForelder, erFarEllerMedmor);
-    const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, erFarEllerMedmor, intl);
+    const navnPåForeldre = getNavnPåForeldre(søkerInfo, annenForelder, erFarEllerMedmor, intl);
     const antallBarn = barn.antallBarn;
     const erFlerbarnssøknad = antallBarn > 1;
     const morHarRett = getMorHarRettPåForeldrepengerINorgeEllerEØS(rolle, erFarEllerMedmor, annenForelder);
@@ -439,7 +439,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     };
 
     const foreldreSituasjon = getForeldreparSituasjon(
-        søkerInfo.person.kjønn,
+        søkerInfo.kjønn,
         annenForelderKjønn,
         erDeltUttak,
         morErAleneOmOmsorg,
