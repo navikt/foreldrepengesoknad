@@ -63,11 +63,21 @@ const feilUtenOpprinnelseIVårKode = (event: Sentry.ErrorEvent) => {
  * Disse er ikke våre feil, og vi vil ikke ha dem i Sentry.
  */
 const feilFraBrowserExtensions = (event: Sentry.ErrorEvent) => {
-    const distributorBreadcrumbs = (event.breadcrumbs ?? []).filter(
-        (breadcrumb) => breadcrumb.message && /Request timeout \S*Distributor\.\S+/.test(breadcrumb.message),
+    const distributorPattern = /Request timeout \S*Distributor\.\S+/;
+
+    const harDistributorBreadcrumbs = (event.breadcrumbs ?? []).some(
+        (breadcrumb) => breadcrumb.message && distributorPattern.test(breadcrumb.message),
     );
 
-    return distributorBreadcrumbs.length > 0;
+    const harDistributorStacktrace = (event.exception?.values ?? []).some((ex) =>
+        ex.stacktrace?.frames?.some(
+            (frame) =>
+                (frame.filename && distributorPattern.test(frame.filename)) ||
+                (frame.function && distributorPattern.test(frame.function)),
+        ),
+    );
+
+    return harDistributorBreadcrumbs || harDistributorStacktrace;
 };
 
 /**
