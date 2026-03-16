@@ -39,14 +39,14 @@ export const SkyraSurvey = ({ slug }: SkyraSurveyProps) => {
 
         let hasLoaded = false;
 
-        const unsubscribeStarted = globalThis.skyra?.on('surveyStarted', (event) => {
+        const unsubscribeSurveyStarted = globalThis.skyra?.on('surveyStarted', (event) => {
             if (event.slug === slug) {
                 hasLoaded = true;
                 setIsLoaded(true);
             }
         });
 
-        const unsubscribeCompleted = globalThis.skyra?.on('surveyCompleted', (event) => {
+        const unsubscribeSurveyCompleted = globalThis.skyra?.on('surveyCompleted', (event) => {
             if (event.slug === slug) {
                 setHasCompletedSurvey(true);
                 setIsOpen(false);
@@ -54,7 +54,7 @@ export const SkyraSurvey = ({ slug }: SkyraSurveyProps) => {
             }
         });
 
-        const unsubscribeRejected = globalThis.skyra?.on('surveyRejected', (event) => {
+        const unsubscribeSurveyRejected = globalThis.skyra?.on('surveyRejected', (event) => {
             if (event.slug === slug) {
                 setHasFailed(true);
             }
@@ -67,9 +67,9 @@ export const SkyraSurvey = ({ slug }: SkyraSurveyProps) => {
         }, 30000);
 
         return () => {
-            unsubscribeStarted?.();
-            unsubscribeCompleted?.();
-            unsubscribeRejected?.();
+            unsubscribeSurveyStarted?.();
+            unsubscribeSurveyCompleted?.();
+            unsubscribeSurveyRejected?.();
             clearTimeout(timeout);
         };
     }, [slug]);
