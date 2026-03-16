@@ -1,10 +1,23 @@
 import { TasklistIcon } from '@navikt/aksel-icons';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HStack, Skeleton, VStack } from '@navikt/ds-react';
 
 import './SkyraSurvey.module.css';
+
+type SkyraEvent =
+    | { type: 'surveyStarted'; slug: string }
+    | { type: 'surveyCompleted'; slug: string }
+    | { type: 'surveyRejected'; slug: string };
+
+declare global {
+    var skyra:
+        | {
+              on: (event: SkyraEvent['type'], callback: (event: { slug: string }) => void) => () => void;
+          }
+        | undefined;
+}
 
 export interface SkyraSurveyProps {
     slug: string;
@@ -18,93 +31,49 @@ export const SkyraSurvey = ({ slug }: SkyraSurveyProps) => {
     const [hasFailed, setHasFailed] = useState(false);
     const [hasCompletedSurvey, setHasCompletedSurvey] = useState(() => sessionStorage.getItem(surveyKey) === 'true');
     const [isOpen, setIsOpen] = useState(true);
-    const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        // Hvis undersøkelsen allerede er fullført, ikke last den på nytt
         if (sessionStorage.getItem(surveyKey) === 'true') {
             return;
         }
 
-        if (!containerRef.current) {
-            return;
-        }
+        let hasLoaded = false;
 
-        const surveyElement = containerRef.current.querySelector('skyra-survey');
-        if (!(surveyElement instanceof HTMLElement)) {
-            return;
-        }
-
-        let hasLoadedOnce = false;
-        let observer: MutationObserver | null = null;
-
-        const checkSurveyState = () => {
-            const hasContent =
-                (surveyElement.shadowRoot?.childNodes.length ?? 0) > 0 ||
-                surveyElement.children.length > 0 ||
-                surveyElement.childNodes.length > 0;
-
-            const isHidden =
-                globalThis.getComputedStyle(surveyElement).display === 'none' ||
-                surveyElement.getAttribute('hidden') !== null ||
-                surveyElement.style.display === 'none';
-
-            if (hasContent && !hasLoadedOnce) {
+        const unsubscribeStarted = globalThis.skyra?.on('surveyStarted', (event) => {
+            if (event.slug === slug) {
+                hasLoaded = true;
                 setIsLoaded(true);
-                hasLoadedOnce = true;
             }
+        });
 
-            if (hasLoadedOnce && (!hasContent || isHidden)) {
+        const unsubscribeCompleted = globalThis.skyra?.on('surveyCompleted', (event) => {
+            if (event.slug === slug) {
                 setHasCompletedSurvey(true);
                 setIsOpen(false);
                 sessionStorage.setItem(surveyKey, 'true');
-                if (observer) {
-                    observer.disconnect();
-                }
-                clearTimeout(timeout);
             }
-        };
-
-        observer = new MutationObserver(() => {
-            checkSurveyState();
         });
 
-        observer.observe(surveyElement, {
-            childList: true,
-            subtree: true,
-            attributes: true,
-            attributeFilter: ['hidden', 'style', 'class'],
-        });
-
-        if (surveyElement.shadowRoot) {
-            observer.observe(surveyElement.shadowRoot, {
-                childList: true,
-                subtree: true,
-            });
-        }
-
-        // Initial sjekk i tilfelle surveyen allerede er lastet
-        checkSurveyState();
-
-        // Timeout på 30 sekunder - hvis ikke lastet, skjul komponenten
-        const timeout = setTimeout(() => {
-            if (!hasLoadedOnce) {
+        const unsubscribeRejected = globalThis.skyra?.on('surveyRejected', (event) => {
+            if (event.slug === slug) {
                 setHasFailed(true);
             }
-            if (observer) {
-                observer.disconnect();
+        });
+
+        const timeout = setTimeout(() => {
+            if (!hasLoaded) {
+                setHasFailed(true);
             }
         }, 30000);
 
         return () => {
-            if (observer) {
-                observer.disconnect();
-            }
+            unsubscribeStarted?.();
+            unsubscribeCompleted?.();
+            unsubscribeRejected?.();
             clearTimeout(timeout);
         };
     }, [slug]);
 
-    // Vis kun surveyen for norsk bokmål og nynorsk
     if (intl.locale !== 'nb' && intl.locale !== 'nn') {
         return null;
     }
@@ -149,7 +118,7 @@ export const SkyraSurvey = ({ slug }: SkyraSurveyProps) => {
                 </HStack>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-                <div ref={containerRef}>
+                <div>
                     {surveyContent}
                     {!hasCompletedSurvey && (
                         // @ts-expect-error skyra-survey er et custom element
