@@ -6,8 +6,8 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 
 import {
-    BarnDto_fpoversikt,
     BehandlingTilstand_fpoversikt,
+    FpBarnDto_fpoversikt,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
 } from '@navikt/fp-types';
@@ -84,7 +84,7 @@ const getSak = (sakinfo: SakInfo): FpSak_fpoversikt => {
     };
 };
 
-const getSøkerinfoMedBarn = (barna: BarnDto_fpoversikt[]): FpPersonopplysningerDto_fpoversikt => {
+const getSøkerinfoMedBarn = (barna: FpBarnDto_fpoversikt[]): FpPersonopplysningerDto_fpoversikt => {
     return { ...defaultPerson, barn: barna };
 };
 
@@ -99,12 +99,12 @@ const levendeBarn = {
     },
     fødselsdato: dato,
     kjønn: 'K',
-} satisfies BarnDto_fpoversikt;
+} satisfies FpBarnDto_fpoversikt;
 
 const dødtBarn = {
     ...levendeBarn,
     dødsdato: '2022-12-07',
-} satisfies BarnDto_fpoversikt;
+} satisfies FpBarnDto_fpoversikt;
 
 const levendeTvilling = {
     fnr: '2',
@@ -114,7 +114,7 @@ const levendeTvilling = {
     },
     fødselsdato: dato,
     kjønn: 'K',
-} satisfies BarnDto_fpoversikt;
+} satisfies FpBarnDto_fpoversikt;
 
 const dødTvilling = { ...levendeTvilling, dødsdato: '2022-12-07' };
 
@@ -127,7 +127,7 @@ const dødfødtBarn = {
         fornavn: 'Vakker',
         etternavn: 'Bokhylle',
     },
-} satisfies BarnDto_fpoversikt;
+} satisfies FpBarnDto_fpoversikt;
 
 const sakErIkkeAvsluttet = false;
 
@@ -140,7 +140,7 @@ const ettBarn = {
     },
     fødselsdato: dato,
     kjønn: 'M',
-} satisfies BarnDto_fpoversikt;
+} satisfies FpBarnDto_fpoversikt;
 
 const annetBarnSammeDato = { ...ettBarn, navn: { ...ettBarn.navn, mellomnavn: undefined, fornavn: 'Grønn' }, fnr: '4' };
 const tredjeBarnSammeDato = {

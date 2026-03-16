@@ -11,7 +11,7 @@ import { formaterFødselsdatoerPåBarn, getTittelBarnNårNavnSkalIkkeVises } fro
 import { Label, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
-import { BarnDto_fpoversikt } from '@navikt/fp-types';
+import { FpBarnDto_fpoversikt } from '@navikt/fp-types';
 import { sorterPersonEtterEldstOgNavn } from '@navikt/fp-utils';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -21,7 +21,7 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
 interface Props {
-    valgteRegistrerteBarn: BarnDto_fpoversikt[];
+    valgteRegistrerteBarn: FpBarnDto_fpoversikt[];
     skalInkludereTermindato: boolean;
 }
 

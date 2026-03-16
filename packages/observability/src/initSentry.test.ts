@@ -164,7 +164,7 @@ const SENTRY_ERROR_401 = {
             category: 'fetch',
             data: {
                 method: 'GET',
-                url: 'https://www.intern.dev.nav.no/foreldrepenger/oversikt/fpoversikt/api/person/info-med-arbeidsforhold',
+                url: 'https://www.intern.dev.nav.no/foreldrepenger/oversikt/fpoversikt/api/personopplysninger/oversikt',
                 status_code: 200,
             },
             type: 'http',
@@ -404,7 +404,7 @@ const BROWSER_EXTENSION_SPEECH_ASSIST = {
             data: {
                 method: 'GET',
                 status_code: 200,
-                url: 'https://www.nav.no/foreldrepenger/soknad/fpoversikt/api/person/info-med-arbeidsforhold',
+                url: 'https://www.nav.no/foreldrepenger/soknad/fpoversikt/api/personopplysninger/foreldrepenger',
             },
         },
         {

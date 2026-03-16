@@ -11,7 +11,7 @@ import {
     Utsettelsesperiode,
     Uttaksperiode,
 } from '@navikt/fp-common';
-import { BarnDto_fpoversikt } from '@navikt/fp-types';
+import { FpBarnDto_fpoversikt } from '@navikt/fp-types';
 
 import messages from '../intl/nb_NO.json';
 import {
@@ -81,7 +81,7 @@ describe('dateUtils', () => {
     });
 
     it('skal finne det eldste barnet', () => {
-        const eldsteBarn: BarnDto_fpoversikt = {
+        const eldsteBarn: FpBarnDto_fpoversikt = {
             navn: {
                 etternavn: 'test',
                 fornavn: 'test',
@@ -91,7 +91,7 @@ describe('dateUtils', () => {
             kjønn: 'K',
         };
 
-        const yngsteBarn: BarnDto_fpoversikt = {
+        const yngsteBarn: FpBarnDto_fpoversikt = {
             navn: {
                 etternavn: 'test',
                 fornavn: 'test',

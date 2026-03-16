@@ -3,20 +3,18 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Accordion, BodyLong, BodyShort, Button, Detail, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { Bankkonto_fpoversikt, Ytelse } from '@navikt/fp-types';
+import { Ytelse } from '@navikt/fp-types';
 
 interface Props {
-    bankkonto: Bankkonto_fpoversikt | undefined;
+    kontonummer: string | undefined;
     ytelse: Ytelse | undefined;
     harMinstEttArbeidsforhold: boolean;
 }
 
-export const KontonummerInfo = ({ bankkonto, ytelse, harMinstEttArbeidsforhold }: Props) => {
+export const KontonummerInfo = ({ kontonummer, ytelse, harMinstEttArbeidsforhold }: Props) => {
     const intl = useIntl();
-    const harKontonummer = !!bankkonto?.kontonummer && bankkonto?.kontonummer.trim().length > 0;
-    const kontonummerTekst = harKontonummer
-        ? bankkonto?.kontonummer
-        : intl.formatMessage({ id: 'kontonummer.info.duMangler' });
+    const harKontonummer = !!kontonummer && kontonummer.trim().length > 0;
+    const kontonummerTekst = harKontonummer ? kontonummer : intl.formatMessage({ id: 'kontonummer.info.duMangler' });
     const kontonummerEndreTekst = harKontonummer
         ? intl.formatMessage({ id: 'kontonummer.endreKontonummer' })
         : intl.formatMessage({ id: 'kontonummer.registrerKontonummer' });

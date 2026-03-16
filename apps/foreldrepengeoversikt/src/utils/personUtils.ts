@@ -1,4 +1,4 @@
-import { BarnDto_fpoversikt } from '@navikt/fp-types';
+import { OversiktBarnDto_fpoversikt } from '@navikt/fp-types';
 
 import { Foreldrepengesak } from '../types/Sak';
 
@@ -19,6 +19,6 @@ export const getNavnPåForeldre = (
     };
 };
 
-export const getLeverPerson = (person: BarnDto_fpoversikt) => {
+export const getLeverPerson = (person: OversiktBarnDto_fpoversikt) => {
     return !person.dødsdato;
 };
