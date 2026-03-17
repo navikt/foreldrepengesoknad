@@ -14,17 +14,21 @@
             "persistent": true
         },
         "lint": {
-            "dependsOn": ["lint:eslint", "lint:tsc"]
+            "dependsOn": ["eslint", "tsc"]
         },
-        "lint:eslint": {},
-        "lint:tsc": {},
-        "lint:fix": {},
-        "build-storybook": {
+        "eslint": {},
+        "eslint:fix": {},
+        "prettier:fix": {
+            "dependsOn": ["build"]
+        },
+        "tsc": {},
+        "test:browser": {
+            "dependsOn": ["build", "lint", "^test:browser"],
+            "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+        },
+        "build:storybook": {
             "dependsOn": ["build"],
             "outputs": [".storybook-static-build/**"]
-        },
-        "prettier": {
-            "dependsOn": ["build"]
         }
     },
     "globalEnv": [

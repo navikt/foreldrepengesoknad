@@ -5,8 +5,8 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "start": "node ./server.js",
-        "build": "ncc build ./src/index.ts -o dist -t --no-cache"
+        "build": "ncc build ./src/index.ts -o dist -t --no-cache",
+        "start": "node ./server.js"
     },
     "dependencies": {
         "@navikt/nav-dekoratoren-moduler": "3.6.2",
