@@ -14,6 +14,7 @@
     },
     "env": {
         "PUBLIC_PATH": "/foreldrepenger/foreldrepenger-eller-engangsstonad",
-        "ENV": "prod"
+        "ENV": "prod",
+        "VITE_MODE_PORT": "8091"
     }
 }

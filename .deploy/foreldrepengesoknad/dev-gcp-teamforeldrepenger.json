@@ -20,6 +20,7 @@
         "PUBLIC_PATH": "/foreldrepenger/soknad",
         "INNSYN": "https://www.intern.dev.nav.no/foreldrepenger/oversikt",
         "ENV": "dev",
-        "FEATURE_TEST_1JULI2024_REGLER": "on"
+        "FEATURE_TEST_1JULI2024_REGLER": "on",
+        "VITE_MODE_PORT": "9111"
     }
 }

@@ -47,7 +47,7 @@ const replaceAppSettings = (html: string) => {
 
 const setupViteMode = (router: Router) => {
     addViteModeHtmlToResponse(router, {
-        port: '5173',
+        port: config.app.viteModePort,
         useNonce: false,
         indexFilePath: 'src/bootstrap.tsx',
         subpath: config.app.publicPath,

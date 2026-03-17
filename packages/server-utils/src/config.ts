@@ -10,7 +10,8 @@ const påkrevMiljøVariabel = (name: string) => {
 };
 
 const app = {
-    port: Number(process.env.PORT) || 8080,
+    port: Number(process.env.PORT) || '8080',
+    viteModePort: process.env.VITE_MODE_PORT || '5173',
     env: process.env.ENV as 'dev' | 'prod',
     version: process.env.APP_VERSION,
     innsyn: process.env.INNSYN,

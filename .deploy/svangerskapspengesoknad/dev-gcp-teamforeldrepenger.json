@@ -20,6 +20,7 @@
         "PUBLIC_PATH": "/svangerskapspenger/soknad",
         "INNSYN": "https://www.intern.dev.nav.no/foreldrepenger/oversikt",
         "LOG_VALIDATION": false,
-        "ENV": "dev"
+        "ENV": "dev",
+        "VITE_MODE_PORT": "9112"
     }
 }

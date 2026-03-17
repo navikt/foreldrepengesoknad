@@ -19,6 +19,7 @@
     "env": {
         "PUBLIC_PATH": "/engangsstonad/soknad",
         "INNSYN": "https://www.intern.dev.nav.no/foreldrepenger/oversikt",
-        "ENV": "dev"
+        "ENV": "dev",
+        "VITE_MODE_PORT": "9113"
     }
 }
