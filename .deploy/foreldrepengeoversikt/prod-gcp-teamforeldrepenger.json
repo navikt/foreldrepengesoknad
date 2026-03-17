@@ -18,6 +18,7 @@
     },
     "env": {
         "ENV": "prod",
-        "PUBLIC_PATH": "/foreldrepenger/oversikt"
+        "PUBLIC_PATH": "/foreldrepenger/oversikt",
+        "VITE_MODE_PORT": "9110"
     }
 }
