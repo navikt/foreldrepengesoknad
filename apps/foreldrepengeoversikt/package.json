@@ -16,7 +16,6 @@
         "dev:vite": "vite",
         "dev:mock": "node --loader ts-node/esm ./mock-api/mock-api-server.ts",
         "dev:lokal": "node ./dev-server.cjs",
-        "test:browser:watch": "vitest --project=browser --watch=true",
         "start-express": "node ./server.cjs",
         "dev-api": "node --loader ts-node/esm ./mock-api/mock-api-server.ts",
         "dev": "node ./dev-server.cjs",

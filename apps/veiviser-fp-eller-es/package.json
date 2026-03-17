@@ -22,7 +22,6 @@
         "dev-api": "node --loader ts-node/esm ./mock-api/mock-api-server.ts",
         "dev": "node ./dev-server.cjs",
         "dev-vite": "vite",
-        "test:browser:watch": "vitest --project=browser --watch=true",
         "storybook": "storybook dev --quiet -p 7003",
         "extract": "formatjs extract",
         "compiler": "tsc --noEmit --watch"

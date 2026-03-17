@@ -9,9 +9,7 @@
         "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
         "prettier:fix": "prettier --write src",
-        "tsc": "tsc --noEmit",
-        "test:coverage": "vitest --project=jsdom --coverage",
-        "test:browser:watch": "vitest --project=browser --watch=true"
+        "tsc": "tsc --noEmit"
     },
     "dependencies": {
         "@navikt/fp-constants": "workspace:*",
