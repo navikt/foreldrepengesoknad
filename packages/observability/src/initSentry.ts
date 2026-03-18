@@ -84,11 +84,5 @@ const feilFraBrowserExtensions = (event: Sentry.ErrorEvent) => {
  * 401 skaper mye støy da det er naturlig at folk sine sesjoner utløper. De blir da automatisk redirected til login, og ser ikke feilen engang
  */
 const feilVarSomFølgeAvEn401Handling = (event: Sentry.ErrorEvent) => {
-    const sisteBreadcrumb = event.breadcrumbs?.at(-1)?.data ?? {};
-
-    if ('status_code' in sisteBreadcrumb) {
-        return sisteBreadcrumb.status_code === 401;
-    }
-
-    return false;
+    return (event.breadcrumbs ?? []).some((breadcrumb) => breadcrumb.data?.status_code === 401);
 };
