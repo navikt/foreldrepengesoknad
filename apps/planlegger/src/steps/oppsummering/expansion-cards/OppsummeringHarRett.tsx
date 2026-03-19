@@ -249,6 +249,7 @@ export const OppsummeringHarRett = ({
                             harAktivitetskravIPeriodeUtenUttak={false}
                             uttakPerioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
                             erPeriodeneTilAnnenPartLåst={false}
+                            erEndringssøknad={false}
                         >
                             <UttaksplanKalender barnehagestartdato={barnehagestartdato} readOnly />
                         </UttaksplanDataProvider>

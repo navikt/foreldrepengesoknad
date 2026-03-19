@@ -70,6 +70,8 @@ const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { s
     const gjelderAdopsjon = sak.gjelderAdopsjon;
     const rettighetType = sak.rettighetType;
     const sakAvsluttet = sak.sakAvsluttet;
+    const erEndringssøknad =
+        søkersPerioder !== undefined && søkersPerioder.some((periode) => periode.resultat !== undefined);
 
     const relevantePerioder = søkersPerioder ?? perioderSomErSøktOm ?? [];
     const erDeltUttak = rettighetType === 'BEGGE_RETT';
@@ -130,6 +132,7 @@ const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { s
                     valgtStønadskonto={konto}
                     harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
                     erPeriodeneTilAnnenPartLåst={false}
+                    erEndringssøknad={erEndringssøknad}
                 >
                     {!visKalender && (
                         <>

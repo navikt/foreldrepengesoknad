@@ -168,6 +168,7 @@ export const UttaksplanStegNy = ({
                     uttakPerioder={uttaksplan || defaultUttaksperioder}
                     erPeriodeneTilAnnenPartLåst={!!tidligereUttaksperioder}
                     aktiveArbeidsforhold={aktiveArbeidsforhold}
+                    erEndringssøknad={erEndringssøknad}
                 >
                     <HvaErMulig erFarOgFar={false} loggExpansionCardOpen={loggExpansionCardOpen} />
 

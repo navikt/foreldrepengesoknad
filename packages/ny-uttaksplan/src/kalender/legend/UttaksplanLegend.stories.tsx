@@ -39,6 +39,7 @@ const meta = {
                 harAktivitetskravIPeriodeUtenUttak={false}
                 uttakPerioder={args.uttakPerioder}
                 erPeriodeneTilAnnenPartLåst={false}
+                erEndringssøknad={args.erEndringssøknad}
             >
                 <UttaksplanLegend
                     perioderForKalendervisning={args.perioderForKalendervisning}
@@ -186,6 +187,7 @@ export const VisAlleMedTekst: Story = {
         harAktivitetskravIPeriodeUtenUttak: false,
         readOnly: false,
         erPeriodeneTilAnnenPartLåst: false,
+        erEndringssøknad: false,
     },
 };
 export const VisAlleUtenTekst: Story = {
