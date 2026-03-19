@@ -154,6 +154,7 @@ const DEFAULT_DATA = {
     uttakPerioder: [],
     erPeriodeneTilAnnenPartLåst: false,
     children: [],
+    erEndringssøknad: false,
 } satisfies ComponentProps<typeof UttaksplanDataProvider>;
 
 const getWrapper =

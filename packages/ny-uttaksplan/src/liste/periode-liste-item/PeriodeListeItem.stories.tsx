@@ -43,9 +43,17 @@ type StoryArgs = {
     familiehendelsedato: string;
     barn: Barn;
     erAleneOmOmsorg: boolean;
+    erEndringssøknad: boolean;
 } & ComponentProps<typeof PeriodeListeItem>;
 
-const customRenderer = ({ erFarEllerMedmor, uttaksplanperioder, erAleneOmOmsorg, barn, isReadOnly }: StoryArgs) => {
+const customRenderer = ({
+    erFarEllerMedmor,
+    uttaksplanperioder,
+    erAleneOmOmsorg,
+    barn,
+    isReadOnly,
+    erEndringssøknad,
+}: StoryArgs) => {
     return (
         <UttaksplanDataProvider
             foreldreInfo={{
@@ -62,6 +70,7 @@ const customRenderer = ({ erFarEllerMedmor, uttaksplanperioder, erAleneOmOmsorg,
             harAktivitetskravIPeriodeUtenUttak={false}
             uttakPerioder={[]}
             erPeriodeneTilAnnenPartLåst={false}
+            erEndringssøknad={erEndringssøknad}
         >
             <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
                 <Accordion>
@@ -104,6 +113,7 @@ export const UttaksperiodeMor: Story = {
                 flerbarnsdager: false,
             },
         ],
+        erEndringssøknad: false,
     },
 };
 
@@ -134,6 +144,7 @@ export const UttaksperiodeMorFlerePerioder: Story = {
                 flerbarnsdager: false,
             },
         ],
+        erEndringssøknad: false,
     },
 };
 
@@ -181,6 +192,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
                 flerbarnsdager: false,
             },
         ],
+        erEndringssøknad: false,
     },
 };
 
@@ -204,6 +216,7 @@ export const UttaksperiodeFar: Story = {
                 flerbarnsdager: false,
             },
         ],
+        erEndringssøknad: false,
     },
 };
 
@@ -225,5 +238,6 @@ export const PeriodeUtenUttak: Story = {
                 type: 'PERIODE_UTEN_UTTAK',
             },
         ],
+        erEndringssøknad: false,
     },
 };

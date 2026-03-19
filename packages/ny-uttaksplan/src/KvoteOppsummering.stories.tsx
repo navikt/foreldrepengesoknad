@@ -84,6 +84,7 @@ export const BeggeRettMorIngenDagerBrukt: Story = {
             rettighetType: 'BEGGE_RETT',
         },
         uttakPerioder: [],
+        erEndringssøknad: false,
     },
 };
 
@@ -142,6 +143,7 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
             ...DEFAULT_FORELDRE_INFO,
             rettighetType: 'BEGGE_RETT',
         },
+        erEndringssøknad: true,
     },
 };
 
@@ -196,6 +198,7 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
             ...DEFAULT_FORELDRE_INFO,
             rettighetType: 'BEGGE_RETT',
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -243,6 +246,7 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
             ...DEFAULT_FORELDRE_INFO,
             rettighetType: 'BEGGE_RETT',
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -297,6 +301,7 @@ export const BeggeRettMorLedigeDager: Story = {
             ...DEFAULT_FORELDRE_INFO,
             rettighetType: 'BEGGE_RETT',
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -352,6 +357,7 @@ export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
                 forelder: 'MOR',
             },
         ],
+        erEndringssøknad: false,
         foreldreInfo: {
             ...DEFAULT_FORELDRE_INFO,
             rettighetType: 'BEGGE_RETT',
@@ -406,6 +412,7 @@ export const EnRettFarAlleDagerBrukt: Story = {
             rettighetType: 'BARE_SØKER_RETT',
             søker: 'FAR_MEDMOR',
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -436,6 +443,7 @@ export const EnRettFarLedigeDager: Story = {
             søker: 'FAR_MEDMOR',
         },
         erInnsyn: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -484,6 +492,7 @@ export const EnRettMorAlleDagerBrukt: Story = {
             rettighetType: 'BARE_SØKER_RETT',
             søker: 'MOR',
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -511,6 +520,7 @@ export const EnRettMorLedigeDager: Story = {
             rettighetType: 'BARE_SØKER_RETT',
             søker: 'MOR',
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -538,6 +548,7 @@ export const AleneomsorgMorLedigeDager: Story = {
             rettighetType: 'ALENEOMSORG',
             søker: 'MOR',
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -580,6 +591,7 @@ export const AleneomsorgFarLedigeDager: Story = {
             rettighetType: 'ALENEOMSORG',
             søker: 'FAR_MEDMOR',
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -622,6 +634,7 @@ export const AleneomsorgFarForMangeDager: Story = {
             rettighetType: 'ALENEOMSORG',
             søker: 'FAR_MEDMOR',
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -706,6 +719,7 @@ export const MorHarPrematuruker: Story = {
             rettighetType: 'BEGGE_RETT',
             søker: 'MOR',
         },
+        erEndringssøknad: true,
     },
 };
 
@@ -755,6 +769,7 @@ export const BeggeRettMangeOvertrukneDagerMedOverføringsÅrsak: Story = {
                 flerbarnsdager: false,
             },
         ],
+        erEndringssøknad: false,
     },
 };
 
@@ -825,5 +840,6 @@ export const BHFRMedAvslåttePerioder: Story = {
             søker: 'FAR_MEDMOR',
         },
         erInnsyn: false,
+        erEndringssøknad: true,
     },
 };

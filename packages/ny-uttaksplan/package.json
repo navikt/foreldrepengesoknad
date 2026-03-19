@@ -16,7 +16,8 @@
         "test:watch": "vitest --project=jsdom --watch=true",
         "test:coverage": "vitest --project=jsdom --coverage",
         "test:browser": "vitest --project=browser",
-        "test:browser:watch": "vitest --project=browser --watch=true"
+        "test:browser:watch": "vitest --project=browser --watch=true",
+        "compiler": "tsc --noEmit --watch"
     },
     "dependencies": {
         "@navikt/aksel-icons": "8.2.2",

@@ -145,6 +145,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     harAktivitetskravIPeriodeUtenUttak={false}
                     uttakPerioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
                     erPeriodeneTilAnnenPartLåst={false}
+                    erEndringssøknad={false}
                 >
                     <div ref={kvoteOppsummeringRef}>
                         <KvoteOppsummering erInnsyn={false} visStatusIkoner />
