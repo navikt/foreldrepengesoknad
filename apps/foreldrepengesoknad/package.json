@@ -15,11 +15,7 @@
         "dev:vite": "vite",
         "dev:mock": "node --loader ts-node/esm ./mock-api/mock-api-server.ts",
         "dev:lokal": "node ./dev-server.cjs",
-        "dev-api": "node --loader ts-node/esm ./mock-api/mock-api-server.ts",
-        "dev": "node ./dev-server.cjs",
-        "dev-vite": "vite",
-        "storybook": "storybook dev --quiet -p 7003",
-        "compiler": "tsc --noEmit --watch"
+        "storybook": "storybook dev --quiet -p 7003"
     },
     "keywords": [],
     "author": "NAV",

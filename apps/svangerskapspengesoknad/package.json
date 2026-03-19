@@ -16,11 +16,7 @@
         "dev:vite": "vite",
         "dev:mock": "node --loader ts-node/esm ./mock-api/mock-api-server.ts",
         "dev:lokal": "node ./dev-server.cjs",
-        "dev": "node ./dev-server.cjs",
-        "dev-vite": "vite",
-        "dev-api": "node --loader ts-node/esm ./mock-api/mock-api-server.ts",
-        "storybook": "storybook dev --quiet -p 7003",
-        "compiler": "tsc --noEmit --watch"
+        "storybook": "storybook dev --quiet -p 7003"
     },
     "author": "",
     "license": "ISC",
