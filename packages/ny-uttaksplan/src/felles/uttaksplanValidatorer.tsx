@@ -150,17 +150,17 @@ export const useFormSubmitValidator = <T extends LeggTilEllerEndrePeriodeFormFor
             return feilmeldingGyldigUttakForFarMedmorRundtFødsel;
         }
 
-        return harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamiliehendelsedato<T>(
+        return harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamiliehendelsedato<T>({
             intl,
             uttakPerioder,
-            perioder,
+            nyePerioder: perioder,
             familiehendelsedato,
             familiesituasjon,
             foreldreInfo,
             formValues,
             termindato,
             erEndringssøknad,
-        );
+        });
     };
 };
 
@@ -427,19 +427,33 @@ const erKombinasjonAvArbeidOgForeldrepengerDe6FørsteUkene = <T extends LeggTilE
     return null;
 };
 
+type HarFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamiliehendelsedatoProps<
+    T extends LeggTilEllerEndrePeriodeFormFormValues,
+> = {
+    intl: IntlShape;
+    uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    nyePerioder: Array<{ fom: string; tom: string }>;
+    familiehendelsedato: string;
+    familiesituasjon: Familiesituasjon;
+    foreldreInfo: ForeldreInfo;
+    formValues: T;
+    termindato: string | undefined;
+    erEndringssøknad: boolean;
+};
+
 const harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamiliehendelsedato = <
     T extends LeggTilEllerEndrePeriodeFormFormValues,
->(
-    intl: IntlShape,
-    uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    nyePerioder: Array<{ fom: string; tom: string }>,
-    familiehendelsedato: string,
-    familiesituasjon: Familiesituasjon,
-    foreldreInfo: ForeldreInfo,
-    formValues: T,
-    termindato: string | undefined,
-    erEndringssøknad: boolean,
-): string | null => {
+>({
+    intl,
+    uttakPerioder,
+    nyePerioder,
+    familiehendelsedato,
+    familiesituasjon,
+    foreldreInfo,
+    formValues,
+    termindato,
+    erEndringssøknad,
+}: HarFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamiliehendelsedatoProps<T>): string | null => {
     if (familiesituasjon === 'adopsjon') {
         return null;
     }
