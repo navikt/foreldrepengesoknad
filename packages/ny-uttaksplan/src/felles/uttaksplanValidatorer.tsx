@@ -110,7 +110,8 @@ export const kanMisteDagerVedEndringTilFerie = (
 
 export const useFormSubmitValidator = <T extends LeggTilEllerEndrePeriodeFormFormValues>() => {
     const intl = useIntl();
-    const { familiehendelsedato, familiesituasjon, foreldreInfo, uttakPerioder, termindato } = useUttaksplanData();
+    const { familiehendelsedato, familiesituasjon, foreldreInfo, uttakPerioder, termindato, erEndringssøknad } =
+        useUttaksplanData();
 
     return (perioder: Array<{ fom: string; tom: string }>, formValues: T): string | null => {
         const feilmeldingArbeidDeFørste6Ukene = erKombinasjonAvArbeidOgForeldrepengerDe6FørsteUkene<T>(
@@ -157,6 +158,8 @@ export const useFormSubmitValidator = <T extends LeggTilEllerEndrePeriodeFormFor
             familiesituasjon,
             foreldreInfo,
             formValues,
+            termindato,
+            erEndringssøknad,
         );
     };
 };
@@ -434,6 +437,8 @@ const harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamili
     familiesituasjon: Familiesituasjon,
     foreldreInfo: ForeldreInfo,
     formValues: T,
+    termindato: string | undefined,
+    erEndringssøknad: boolean,
 ): string | null => {
     if (familiesituasjon === 'adopsjon') {
         return null;
@@ -442,8 +447,19 @@ const harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamili
     const harBeggeRett = foreldreInfo.rettighetType === 'BEGGE_RETT';
 
     if (harBeggeRett && formValues.forelder === 'BEGGE') {
-        const førsteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(10);
-        const sisteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30);
+        const tidligsteDato = termindato
+            ? dayjs.min(dayjs(familiehendelsedato), dayjs(termindato)).format('YYYY-MM-DD')
+            : familiehendelsedato;
+        const senesteDato = termindato
+            ? dayjs.max(dayjs(familiehendelsedato), dayjs(termindato)).format('YYYY-MM-DD')
+            : familiehendelsedato;
+
+        const førsteDag = UttaksdagenString.denneEllerNeste(
+            erEndringssøknad ? tidligsteDato : familiehendelsedato,
+        ).getDatoAntallUttaksdagerTidligere(10);
+        const sisteDag = UttaksdagenString.denneEllerNeste(
+            erEndringssøknad ? senesteDato : familiehendelsedato,
+        ).getDatoAntallUttaksdagerSenere(30);
 
         const nyePerioderInnenforIntervallet = nyePerioder.filter((periode) => {
             if (formValues.kontoTypeFarMedmor === 'MØDREKVOTE') {

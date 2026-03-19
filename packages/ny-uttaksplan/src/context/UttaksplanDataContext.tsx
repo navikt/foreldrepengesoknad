@@ -23,6 +23,7 @@ type Props = {
     uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     aktiveArbeidsforhold?: EksternArbeidsforholdDto_fpoversikt[];
     children: React.ReactNode;
+    erEndringssøknad: boolean;
 };
 
 type ContextValues = Omit<Props, 'children'> & {
