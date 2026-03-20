@@ -1,14 +1,14 @@
 import { FunctionComponent } from 'react';
-import { IntlShape, injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
 import { NavnPåForeldre, Situasjon } from '@navikt/fp-common';
 import { KontoDto } from '@navikt/fp-types';
 
-import { getVarighetString } from '../../../components/periodeliste-item-header/PeriodelisteItemHeader';
 import planBemUtils from '../../../utils/planBemUtils';
 import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
+import { getVarighetString } from '../../periodeliste-item-header/PeriodelisteItemHeader.tsx';
 import StønadskontoIkon from '../../stønadskonto-ikon/StønadskontoIkon';
 import './kontostatus.less';
 
@@ -16,7 +16,6 @@ interface Props {
     uttak: KontoDto;
     navnPåForeldre: NavnPåForeldre;
     erEndringssøknad: boolean;
-    intl: IntlShape;
     erFarEllerMedmor: boolean;
     situasjon: Situasjon;
     erAleneOmOmsorg: boolean;
@@ -29,11 +28,11 @@ const Kontostatus: FunctionComponent<Props> = ({
     uttak,
     navnPåForeldre,
     erEndringssøknad,
-    intl,
     erFarEllerMedmor,
     situasjon,
     erAleneOmOmsorg,
 }) => {
+    const intl = useIntl();
     if (erEndringssøknad && uttak.konto === 'FORELDREPENGER_FØR_FØDSEL') {
         //eslint-disable-next-line react-hooks/immutability -- Fiksar ikkje sidan denne koden blir sletta snart
         uttak.dager = 0;
@@ -69,4 +68,4 @@ const Kontostatus: FunctionComponent<Props> = ({
 };
 
 //eslint-disable-next-line import/no-default-export -- Fiksar ikkje sidan denne koden blir sletta snart
-export default injectIntl(Kontostatus);
+export default Kontostatus;

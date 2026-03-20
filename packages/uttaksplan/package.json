@@ -35,7 +35,7 @@
         "react-day-picker": "8.10.0",
         "react-dom": "19.2.4",
         "react-dropzone": "14.4.0",
-        "react-intl": "8.1.3",
+        "react-intl": "10.0.0",
         "typescript": "5.9.3"
     },
     "devDependencies": {
@@ -50,14 +50,14 @@
         "@testing-library/react": "16.3.2",
         "@testing-library/user-event": "14.6.1",
         "@types/lodash": "4.17.23",
-        "@vitejs/plugin-react": "5.1.3",
+        "@vitejs/plugin-react": "6.0.1",
         "fast-glob": "3.3.3",
         "mockdate": "3.0.5",
         "sass-embedded": "^1.93.2",
         "storybook": "10.2.4",
         "storybook-react-intl": "10.0.3",
-        "vite": "7.3.1",
-        "vitest": "4.0.18"
+        "vite": "8.0.0",
+        "vitest": "4.1.0"
     },
     "packageManager": "pnpm@10.28.0"
 }
