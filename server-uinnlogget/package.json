@@ -5,8 +5,9 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "start": "node ./server.js",
-        "build": "ncc build ./src/index.ts -o dist -t --no-cache"
+        "build": "ncc build ./src/index.ts -o dist -t --no-cache",
+        "tsc:watch": "tsc --noEmit --watch",
+        "start": "node ./server.js"
     },
     "dependencies": {
         "express": "5.2.1",
