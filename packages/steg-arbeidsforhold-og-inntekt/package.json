@@ -46,6 +46,7 @@
         "@types/react": "19.2.14",
         "eslint": "9.39.2",
         "fast-glob": "3.3.3",
+        "jsdom": "27.0.0",
         "playwright": "1.58.2",
         "storybook": "10.2.19",
         "storybook-react-intl": "10.1.1",

@@ -53,6 +53,7 @@
         "@types/lodash": "4.17.24",
         "@vitejs/plugin-react": "6.0.1",
         "fast-glob": "3.3.3",
+        "jsdom": "27.0.0",
         "mockdate": "3.0.5",
         "sass-embedded": "^1.93.2",
         "storybook": "10.2.19",
