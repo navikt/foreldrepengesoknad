@@ -4,10 +4,11 @@
     "type": "module",
     "types": "index.ts",
     "scripts": {
-        "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
-        "lint:tsc": "tsc --noEmit",
-        "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
-        "prettier": "prettier --write src"
+        "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
+        "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
+        "prettier:fix": "prettier --write src",
+        "tsc": "tsc --noEmit",
+        "tsc:watch": "tsc --noEmit --watch"
     },
     "dependencies": {
         "dayjs": "1.11.19"

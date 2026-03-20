@@ -4,16 +4,14 @@
     "type": "module",
     "types": "index.ts",
     "scripts": {
+        "build:storybook": "storybook build -o .storybook-static-build",
         "test": "vitest --project=jsdom --watch=false",
-        "test:watch": "vitest --project=jsdom --watch=true",
-        "test:coverage": "vitest --project=jsdom --coverage",
         "test:browser": "vitest --project=browser",
-        "test:browser:watch": "vitest --project=browser --watch=true",
-        "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
-        "lint:tsc": "tsc --noEmit",
-        "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
-        "prettier": "prettier --write src",
-        "build-storybook": "storybook build -o .storybook-static-build",
+        "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
+        "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
+        "prettier:fix": "prettier --write src",
+        "tsc": "tsc --noEmit",
+        "tsc:watch": "tsc --noEmit --watch",
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {

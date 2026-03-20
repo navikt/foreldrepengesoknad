@@ -20,5 +20,8 @@
     "peerDependencies": {
         "typescript": "5.4.5"
     },
-    "packageManager": "pnpm@10.28.0"
+    "packageManager": "pnpm@10.28.0",
+    "scripts": {
+        "tsc:watch": "tsc --noEmit --watch"
+    }
 }
