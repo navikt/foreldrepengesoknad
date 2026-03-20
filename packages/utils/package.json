@@ -17,21 +17,21 @@
     "dependencies": {
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-types": "workspace:*",
-        "dayjs": "1.11.19",
+        "dayjs": "1.11.20",
         "i18n-iso-countries": "7.14.0",
         "react": "19.2.4",
         "react-intl": "10.0.0"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "8.2.3",
+        "@formatjs/cli-lib": "8.4.0",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
         "@testing-library/jest-dom": "6.9.1",
-        "@types/react": "19.2.10",
+        "@types/react": "19.2.14",
         "eslint": "9.39.2",
         "fast-glob": "3.3.3",
-        "playwright": "1.58.1",
+        "playwright": "1.58.2",
         "typescript": "5.9.3",
         "vite": "8.0.0",
         "vitest": "4.1.0"
