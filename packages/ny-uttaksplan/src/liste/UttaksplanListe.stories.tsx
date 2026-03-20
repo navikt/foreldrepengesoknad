@@ -114,6 +114,7 @@ export const Default: Story = {
             ],
             minsteretter: MINSTERETTER,
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -181,6 +182,7 @@ export const MorOgFarMedFerieopphold: Story = {
             },
             erMedmorDelAvSøknaden: false,
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -273,6 +275,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
             ],
             minsteretter: MINSTERETTER,
         },
+        erEndringssøknad: false,
     },
 };
 export const HullperiodeOverFamiliehendelsesdato: Story = {
@@ -314,6 +317,7 @@ export const HullperiodeOverFamiliehendelsesdato: Story = {
             ],
             minsteretter: MINSTERETTER,
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -376,6 +380,7 @@ export const VisPerioderMedOppholdsårsakKorrekt: Story = {
                 forelder: 'MOR',
             },
         ],
+        erEndringssøknad: false,
     },
 };
 
@@ -415,6 +420,7 @@ export const FarSøkerOmsorgsovertakelse: Story = {
             ],
             minsteretter: MINSTERETTER,
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -477,6 +483,7 @@ export const MorSøkerOgFarHarEøsPeriode: Story = {
             ],
             minsteretter: MINSTERETTER,
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -540,6 +547,7 @@ export const FarSøkerOgMorHarEøsPeriode: Story = {
             ],
             minsteretter: MINSTERETTER,
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -609,6 +617,7 @@ export const MarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt: Story =
             ],
             minsteretter: MINSTERETTER,
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -687,6 +696,7 @@ export const FarSøkerEtterAtMorHarSøkt: Story = {
             ],
             minsteretter: MINSTERETTER,
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -746,6 +756,7 @@ export const HarAvslåttePerioder: Story = {
             minsteretter: MINSTERETTER,
         },
         erPeriodeneTilAnnenPartLåst: false,
+        erEndringssøknad: true,
     },
 };
 
@@ -786,6 +797,7 @@ export const HarUtsettelse: Story = {
             minsteretter: MINSTERETTER,
         },
         erPeriodeneTilAnnenPartLåst: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -836,6 +848,7 @@ export const KunFarHarRettOgHarPauseperiode: Story = {
             ],
             minsteretter: MINSTERETTER,
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -882,6 +895,7 @@ export const EøsPerioderForAnnenPart: Story = {
             ],
             minsteretter: MINSTERETTER,
         },
+        erEndringssøknad: true,
     },
 };
 
@@ -943,5 +957,6 @@ export const SkalIkkeMarkereAvslåttePerioderMedVarselOmMorsAktivitet: Story = {
             ],
             minsteretter: MINSTERETTER,
         },
+        erEndringssøknad: true,
     },
 };

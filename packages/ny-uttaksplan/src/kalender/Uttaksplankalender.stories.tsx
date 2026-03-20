@@ -49,6 +49,7 @@ const meta = {
                 uttakPerioder={perioder ?? []}
                 erPeriodeneTilAnnenPartLåst={args.erPeriodeneTilAnnenPartLåst}
                 aktiveArbeidsforhold={args.aktiveArbeidsforhold}
+                erEndringssøknad={args.erEndringssøknad}
             >
                 <UttaksplanRedigeringProvider
                     oppdaterUttaksplan={handleOnPlanChange}
@@ -149,6 +150,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
         },
         harAktivitetskravIPeriodeUtenUttak: false,
         barnehagestartdato: '2024-12-14',
+        erEndringssøknad: false,
     },
 };
 
@@ -201,6 +203,7 @@ export const SkalHaPeriodeMedFratrekkForPleiepenger: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -248,6 +251,7 @@ export const FarSøkerMedTapteDagerOgFerie: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -281,6 +285,7 @@ export const MorSøkerMedFlereUtsettelser: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -363,6 +368,7 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -396,6 +402,7 @@ export const UtsettelseMorFerieMedFarsUtsettelse: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -442,6 +449,7 @@ export const MorAvslåttPeriodeFørste6UkeneGirTapteDager: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: true,
     },
 };
 
@@ -483,11 +491,12 @@ export const MorAvslåttPeriodeUtenTapteDager: Story = {
         },
         foreldreInfo: {
             rettighetType: 'BEGGE_RETT',
-            søker: 'FAR_MEDMOR',
+            søker: 'MOR',
             navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: true,
     },
 };
 
@@ -515,6 +524,7 @@ export const KortPeriodeMedHelg: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -541,6 +551,7 @@ export const KortPeriodeMedHelgFødsel: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -568,6 +579,7 @@ export const KortPeriodeUtenHelg: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -609,6 +621,7 @@ export const TreSammenhengendePerioderSlåttSammen: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -637,6 +650,7 @@ export const MorOppgirSamtidigUttakMedFar: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -673,6 +687,7 @@ export const MorOppgirSamtidigUttakMedMedmor: Story = {
             erMedmorDelAvSøknaden: true,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -701,6 +716,7 @@ export const FarOppgirSamtidigUttakMedMor: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -764,6 +780,7 @@ export const FellesPeriodeForMorOgSamtidigUttak: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -829,6 +846,7 @@ export const VisFarsAktivitetsfriKvote: Story = {
             ],
             minsteretter: MINSTERETTER,
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -897,6 +915,7 @@ export const VisPerioderMedOppholdsårsakKorrekt: Story = {
                 forelder: 'MOR',
             },
         ],
+        erEndringssøknad: false,
     },
 };
 
@@ -945,6 +964,7 @@ export const MorOverførerFarsKvote: Story = {
                 flerbarnsdager: false,
             },
         ],
+        erEndringssøknad: false,
     },
 };
 
@@ -998,6 +1018,7 @@ export const MorSøkerOgFarHarEøsPeriode: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -1058,6 +1079,7 @@ export const FarSøkerOgMorHarEøsPeriode: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -1112,6 +1134,7 @@ export const MorSøkerOgMedmorHarEøsPeriode: Story = {
             erMedmorDelAvSøknaden: true,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -1166,6 +1189,7 @@ export const MarkerPeriodeNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt: Sto
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
     },
 };
 
@@ -1214,6 +1238,7 @@ export const SamtidigUttak: Story = {
                 flerbarnsdager: false,
             },
         ],
+        erEndringssøknad: false,
     },
 };
 
@@ -1283,6 +1308,7 @@ export const FarSøkerEtterAtMorHarSøkt: Story = {
         },
         harAktivitetskravIPeriodeUtenUttak: false,
         erPeriodeneTilAnnenPartLåst: true,
+        erEndringssøknad: false,
     },
 };
 
@@ -1331,6 +1357,7 @@ export const FarsUttakMorForSyk: Story = {
                 flerbarnsdager: false,
             },
         ],
+        erEndringssøknad: false,
     },
 };
 
@@ -1401,6 +1428,7 @@ export const HarUtsettelse: Story = {
                 flerbarnsdager: false,
             },
         ],
+        erEndringssøknad: false,
     },
 };
 
@@ -1449,6 +1477,7 @@ export const FlerbarnMorOgFar: Story = {
                 flerbarnsdager: false,
             },
         ],
+        erEndringssøknad: false,
     },
 };
 
@@ -1532,6 +1561,7 @@ export const SkalIkkeViseAvslåttePerioderSomOverlapperMedAndrePerioder: Story =
                 forelder: 'FAR_MEDMOR',
             },
         ],
+        erEndringssøknad: true,
     },
 };
 
@@ -1573,6 +1603,7 @@ export const KunFarHarRettOgHarPauseperiode: Story = {
                 flerbarnsdager: false,
             },
         ] satisfies Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+        erEndringssøknad: false,
     },
 };
 
@@ -1648,6 +1679,7 @@ export const SkalViseAvslåttPeriodeKorrekt: Story = {
                 forelder: 'FAR_MEDMOR',
             },
         ] satisfies Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+        erEndringssøknad: true,
     },
 };
 
@@ -1746,6 +1778,7 @@ export const SkalViseGradertePeriodeForAnnenPartSomErLåst: Story = {
                 forelder: 'FAR_MEDMOR',
             },
         ] satisfies Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+        erEndringssøknad: true,
     },
 };
 
@@ -1798,5 +1831,6 @@ export const SkalIkkeMarkereAvslåttePerioderMedVarselOmMorsAktivitet: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: true,
     },
 };

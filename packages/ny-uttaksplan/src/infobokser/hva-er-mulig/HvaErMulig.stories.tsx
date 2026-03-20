@@ -67,6 +67,7 @@ const meta = {
         erPeriodeneTilAnnenPartLåst,
         aktiveArbeidsforhold,
         valgtStønadskonto,
+        erEndringssøknad,
     }) => {
         return (
             <UttaksplanDataProvider
@@ -77,6 +78,7 @@ const meta = {
                 uttakPerioder={uttakPerioder}
                 erPeriodeneTilAnnenPartLåst={erPeriodeneTilAnnenPartLåst}
                 aktiveArbeidsforhold={aktiveArbeidsforhold}
+                erEndringssøknad={erEndringssøknad}
             >
                 <HvaErMulig erFarOgFar={erFarOgFar} loggExpansionCardOpen={loggExpansionCardOpen} />
             </UttaksplanDataProvider>
@@ -87,7 +89,11 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const FødselMorOgFarBeggeHarRett: Story = {};
+export const FødselMorOgFarBeggeHarRett: Story = {
+    args: {
+        erEndringssøknad: false,
+    },
+};
 
 export const FødselMorOgFarBeggeHarRettTvilling: Story = {
     args: {
@@ -97,6 +103,7 @@ export const FødselMorOgFarBeggeHarRettTvilling: Story = {
             termindato: '2022-01-01',
             antallBarn: 2,
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -106,6 +113,7 @@ export const FødselMorOgFarKunMorHarRett: Story = {
             ...DEFAULT_FORELDREINFO,
             rettighetType: 'BARE_SØKER_RETT',
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -116,6 +124,7 @@ export const FødselMorOgFarKunFarHarRett: Story = {
             søker: 'FAR_MEDMOR',
             rettighetType: 'BARE_SØKER_RETT',
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -130,6 +139,7 @@ export const FødselMorOgMedmorBeggeHarRett: Story = {
                 farMedmor: 'Hege',
             },
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -145,6 +155,7 @@ export const FødselMorOgMedmorKunMorHarRett: Story = {
             },
             rettighetType: 'BARE_SØKER_RETT',
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -160,6 +171,7 @@ export const FødselMorOgMedmorKunMedmorHarRett: Story = {
             },
             rettighetType: 'BARE_SØKER_RETT',
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -176,6 +188,7 @@ export const FødselFarOgFarBeggeHarRett: Story = {
                 farMedmor: 'Jan',
             },
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -193,6 +206,7 @@ export const FødselFarOgFarKunFar1HarRett: Story = {
             },
             rettighetType: 'BARE_SØKER_RETT',
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -202,6 +216,7 @@ export const FødselAleneforsørgerMor: Story = {
             ...DEFAULT_FORELDREINFO,
             rettighetType: 'ALENEOMSORG',
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -212,6 +227,7 @@ export const FødselAleneforsørgerFar: Story = {
             søker: 'FAR_MEDMOR',
             rettighetType: 'ALENEOMSORG',
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -223,6 +239,7 @@ export const AdopsjonMorOgFarBeggeHarRett: Story = {
             adopsjonsdato: '2022-01-01',
             antallBarn: 1,
         },
+        erEndringssøknad: false,
     },
 };
 
@@ -234,5 +251,6 @@ export const AdopsjonMorOgFarBeggeHarRettTvilling: Story = {
             adopsjonsdato: '2022-01-01',
             antallBarn: 2,
         },
+        erEndringssøknad: false,
     },
 };

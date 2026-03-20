@@ -13,7 +13,8 @@
         "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "prettier:fix": "prettier --write src",
         "tsc": "tsc --noEmit",
-        "storybook": "storybook dev --quiet -p 7003"
+        "storybook": "storybook dev --quiet -p 7003",
+        "compiler": "tsc --noEmit --watch"
     },
     "dependencies": {
         "@navikt/aksel-icons": "8.2.2",

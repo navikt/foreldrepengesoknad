@@ -110,7 +110,8 @@ export const kanMisteDagerVedEndringTilFerie = (
 
 export const useFormSubmitValidator = <T extends LeggTilEllerEndrePeriodeFormFormValues>() => {
     const intl = useIntl();
-    const { familiehendelsedato, familiesituasjon, foreldreInfo, uttakPerioder, termindato } = useUttaksplanData();
+    const { familiehendelsedato, familiesituasjon, foreldreInfo, uttakPerioder, termindato, erEndringssøknad } =
+        useUttaksplanData();
 
     return (perioder: Array<{ fom: string; tom: string }>, formValues: T): string | null => {
         const feilmeldingArbeidDeFørste6Ukene = erKombinasjonAvArbeidOgForeldrepengerDe6FørsteUkene<T>(
@@ -149,15 +150,17 @@ export const useFormSubmitValidator = <T extends LeggTilEllerEndrePeriodeFormFor
             return feilmeldingGyldigUttakForFarMedmorRundtFødsel;
         }
 
-        return harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamiliehendelsedato<T>(
+        return harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamiliehendelsedato<T>({
             intl,
             uttakPerioder,
-            perioder,
+            nyePerioder: perioder,
             familiehendelsedato,
             familiesituasjon,
             foreldreInfo,
             formValues,
-        );
+            termindato,
+            erEndringssøknad,
+        });
     };
 };
 
@@ -424,17 +427,33 @@ const erKombinasjonAvArbeidOgForeldrepengerDe6FørsteUkene = <T extends LeggTilE
     return null;
 };
 
+type HarFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamiliehendelsedatoProps<
+    T extends LeggTilEllerEndrePeriodeFormFormValues,
+> = {
+    intl: IntlShape;
+    uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    nyePerioder: Array<{ fom: string; tom: string }>;
+    familiehendelsedato: string;
+    familiesituasjon: Familiesituasjon;
+    foreldreInfo: ForeldreInfo;
+    formValues: T;
+    termindato: string | undefined;
+    erEndringssøknad: boolean;
+};
+
 const harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamiliehendelsedato = <
     T extends LeggTilEllerEndrePeriodeFormFormValues,
->(
-    intl: IntlShape,
-    uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    nyePerioder: Array<{ fom: string; tom: string }>,
-    familiehendelsedato: string,
-    familiesituasjon: Familiesituasjon,
-    foreldreInfo: ForeldreInfo,
-    formValues: T,
-): string | null => {
+>({
+    intl,
+    uttakPerioder,
+    nyePerioder,
+    familiehendelsedato,
+    familiesituasjon,
+    foreldreInfo,
+    formValues,
+    termindato,
+    erEndringssøknad,
+}: HarFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamiliehendelsedatoProps<T>): string | null => {
     if (familiesituasjon === 'adopsjon') {
         return null;
     }
@@ -442,8 +461,19 @@ const harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamili
     const harBeggeRett = foreldreInfo.rettighetType === 'BEGGE_RETT';
 
     if (harBeggeRett && formValues.forelder === 'BEGGE') {
-        const førsteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(10);
-        const sisteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30);
+        const tidligsteDato = termindato
+            ? dayjs.min(dayjs(familiehendelsedato), dayjs(termindato)).format('YYYY-MM-DD')
+            : familiehendelsedato;
+        const senesteDato = termindato
+            ? dayjs.max(dayjs(familiehendelsedato), dayjs(termindato)).format('YYYY-MM-DD')
+            : familiehendelsedato;
+
+        const førsteDag = UttaksdagenString.denneEllerNeste(
+            erEndringssøknad ? tidligsteDato : familiehendelsedato,
+        ).getDatoAntallUttaksdagerTidligere(10);
+        const sisteDag = UttaksdagenString.denneEllerNeste(
+            erEndringssøknad ? senesteDato : familiehendelsedato,
+        ).getDatoAntallUttaksdagerSenere(30);
 
         const nyePerioderInnenforIntervallet = nyePerioder.filter((periode) => {
             if (formValues.kontoTypeFarMedmor === 'MØDREKVOTE') {
