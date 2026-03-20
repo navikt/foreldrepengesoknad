@@ -20,7 +20,7 @@
     letter-spacing: 0.06px;
     border-radius: 4px;
     user-select: none;
-    all: 'unset';
+    all: unset;
 }
 
 .roundedLeft {

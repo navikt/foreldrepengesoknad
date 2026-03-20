@@ -11,7 +11,7 @@
         "tsc:watch": "tsc --noEmit --watch"
     },
     "dependencies": {
-        "dayjs": "1.11.19"
+        "dayjs": "1.11.20"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
