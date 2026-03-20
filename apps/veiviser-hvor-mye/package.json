@@ -72,6 +72,7 @@
         "eslint": "9.39.2",
         "fast-glob": "3.3.3",
         "http-proxy-middleware": "3.0.5",
+        "jsdom": "27.0.0",
         "playwright": "1.58.2",
         "storybook": "10.2.19",
         "tailwindcss": "4.2.1",

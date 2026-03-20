@@ -3,7 +3,7 @@
     "main": "vite.config.mjs",
     "type": "module",
     "version": "1.0.0",
-    "dependencies": {
+    "devDependencies": {
         "@tailwindcss/vite": "4.2.1",
         "@vitejs/plugin-react": "6.0.1",
         "@vitest/browser-playwright": "4.1.0",
