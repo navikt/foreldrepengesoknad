@@ -12,6 +12,7 @@
         "eslint:fix": "eslint --quiet --fix \"./src/**/*.{js,ts,tsx}\"",
         "prettier:fix": "prettier --write src",
         "tsc": "tsc --noEmit",
+        "tsc:watch": "tsc --noEmit --watch",
         "dev:vite": "vite",
         "dev:mock": "node --loader ts-node/esm ./mock-api/mock-api-server.ts",
         "dev:lokal": "node ./dev-server.cjs",

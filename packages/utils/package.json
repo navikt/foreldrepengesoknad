@@ -9,7 +9,8 @@
         "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
         "prettier:fix": "prettier --write src",
-        "tsc": "tsc --noEmit"
+        "tsc": "tsc --noEmit",
+        "tsc:watch": "tsc --noEmit --watch"
     },
     "dependencies": {
         "@navikt/fp-constants": "workspace:*",

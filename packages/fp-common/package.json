@@ -6,7 +6,8 @@
     "scripts": {
         "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
-        "prettier:fix": "prettier --write src"
+        "prettier:fix": "prettier --write src",
+        "tsc:watch": "tsc --noEmit --watch"
     },
     "dependencies": {
         "@navikt/fp-config-eslint": "workspace:*",

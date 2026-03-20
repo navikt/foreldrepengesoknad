@@ -7,6 +7,7 @@
         "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
         "prettier:fix": "prettier --write src",
+        "tsc:watch": "tsc --noEmit --watch",
         "update-swagger": "node scripts/hent-openapi-spec.js",
         "generate:local": "pnpm run update-swagger lokal && openapi-ts",
         "generate": "pnpm run update-swagger && openapi-ts",

@@ -6,6 +6,7 @@
     "type": "module",
     "scripts": {
         "build": "ncc build ./src/index.ts -o dist -t --no-cache",
+        "tsc:watch": "tsc --noEmit --watch",
         "start": "node ./server.js"
     },
     "dependencies": {

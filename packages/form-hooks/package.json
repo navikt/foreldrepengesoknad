@@ -12,6 +12,7 @@
         "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
         "prettier:fix": "prettier --write src",
         "tsc": "tsc --noEmit",
+        "tsc:watch": "tsc --noEmit --watch",
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {

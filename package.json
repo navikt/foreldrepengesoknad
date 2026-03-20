@@ -10,6 +10,7 @@
         "eslint:fix": "turbo run eslint:fix",
         "prettier:fix": "turbo run prettier:fix",
         "tsc": "turbo run tsc",
+        "tsc:watch": "tsc --noEmit --watch",
         "knip": "knip",
         "storybook-create-deploy-folder": "node scripts/create-storybook-index.js",
         "generate:local": "pnpm --filter @navikt/fp-types run generate:local",

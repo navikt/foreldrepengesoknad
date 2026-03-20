@@ -10,6 +10,7 @@
         "build:storybook": "storybook build -o .storybook-static-build",
         "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "tsc": "tsc --noEmit",
+        "tsc:watch": "tsc --noEmit --watch",
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
