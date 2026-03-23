@@ -26,7 +26,6 @@
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
-        "@navikt/fp-utils-test": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
         "classnames": "2.5.1",
         "dayjs": "1.11.20",

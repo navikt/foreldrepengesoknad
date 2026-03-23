@@ -69,7 +69,6 @@
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
-        "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
         "@storybook/cli": "10.2.19",
         "@storybook/react-vite": "10.2.19",

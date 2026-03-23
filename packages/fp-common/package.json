@@ -10,11 +10,11 @@
         "tsc:watch": "tsc --noEmit --watch"
     },
     "dependencies": {
-        "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-types": "workspace:*"
     },
     "devDependencies": {
+        "@navikt/fp-config-eslint": "workspace:*",
         "eslint": "9.39.2"
     },
     "packageManager": "pnpm@10.28.0"

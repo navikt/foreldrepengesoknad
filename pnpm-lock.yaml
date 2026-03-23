@@ -657,9 +657,6 @@ importers:
       '@navikt/ds-tailwind':
         specifier: 8.7.0
         version: 8.7.0
-      '@navikt/fp-config-eslint':
-        specifier: workspace:*
-        version: link:../../packages/config-eslint
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -730,6 +727,9 @@ importers:
       '@formatjs/cli-lib':
         specifier: 8.4.0
         version: 8.4.0
+      '@navikt/fp-config-eslint':
+        specifier: workspace:*
+        version: link:../../packages/config-eslint
       '@navikt/fp-config-typescript':
         specifier: workspace:*
         version: link:../../packages/config-typescript
@@ -1031,9 +1031,6 @@ importers:
       '@navikt/ds-tailwind':
         specifier: 8.7.0
         version: 8.7.0
-      '@navikt/fp-config-eslint':
-        specifier: workspace:*
-        version: link:../../packages/config-eslint
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -1098,6 +1095,9 @@ importers:
       '@formatjs/cli-lib':
         specifier: 8.4.0
         version: 8.4.0
+      '@navikt/fp-config-eslint':
+        specifier: workspace:*
+        version: link:../../packages/config-eslint
       '@navikt/fp-config-typescript':
         specifier: workspace:*
         version: link:../../packages/config-typescript
@@ -1197,9 +1197,6 @@ importers:
       '@navikt/ds-tailwind':
         specifier: 8.7.0
         version: 8.7.0
-      '@navikt/fp-config-eslint':
-        specifier: workspace:*
-        version: link:../../packages/config-eslint
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -1264,6 +1261,9 @@ importers:
       '@formatjs/cli-lib':
         specifier: 8.4.0
         version: 8.4.0
+      '@navikt/fp-config-eslint':
+        specifier: workspace:*
+        version: link:../../packages/config-eslint
       '@navikt/fp-config-typescript':
         specifier: workspace:*
         version: link:../../packages/config-typescript
@@ -1351,6 +1351,10 @@ importers:
 
   packages/config-eslint:
     dependencies:
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+    devDependencies:
       '@eslint/js':
         specifier: 9.39.2
         version: 9.39.2
@@ -1384,9 +1388,6 @@ importers:
       globals:
         specifier: 17.4.0
         version: 17.4.0
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
       typescript-eslint:
         specifier: 8.57.1
         version: 8.57.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.4.5)
@@ -1638,9 +1639,6 @@ importers:
 
   packages/fp-common:
     dependencies:
-      '@navikt/fp-config-eslint':
-        specifier: workspace:*
-        version: link:../config-eslint
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -1648,6 +1646,9 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
+      '@navikt/fp-config-eslint':
+        specifier: workspace:*
+        version: link:../config-eslint
       eslint:
         specifier: 9.39.2
         version: 9.39.2(jiti@2.6.1)
@@ -1681,9 +1682,6 @@ importers:
       '@navikt/fp-utils':
         specifier: workspace:*
         version: link:../utils
-      '@navikt/fp-utils-test':
-        specifier: workspace:*
-        version: link:../utils-test
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../validation
@@ -1724,6 +1722,9 @@ importers:
       '@navikt/fp-config-vite':
         specifier: workspace:*
         version: link:../config-vite
+      '@navikt/fp-utils-test':
+        specifier: workspace:*
+        version: link:../utils-test
       '@storybook/addon-links':
         specifier: 10.2.19
         version: 10.2.19(react@19.2.4)(storybook@10.2.19(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
@@ -1836,9 +1837,6 @@ importers:
 
   packages/server-utils:
     dependencies:
-      '@navikt/fp-config-eslint':
-        specifier: workspace:*
-        version: link:../config-eslint
       '@navikt/nav-dekoratoren-moduler':
         specifier: 3.6.3
         version: 3.6.3(csp-header@6.3.0)(html-react-parser@5.2.17(@types/react@19.2.14)(react@19.2.4))(jsdom@27.0.0)(react@19.2.4)
@@ -1851,7 +1849,16 @@ importers:
       jsdom:
         specifier: 27.0.0
         version: 27.0.0
+      morgan:
+        specifier: 1.10.1
+        version: 1.10.1
+      winston:
+        specifier: 3.19.0
+        version: 3.19.0
     devDependencies:
+      '@navikt/fp-config-eslint':
+        specifier: workspace:*
+        version: link:../config-eslint
       '@navikt/fp-config-typescript':
         specifier: workspace:*
         version: link:../config-typescript
@@ -1867,15 +1874,9 @@ importers:
       eslint:
         specifier: 9.39.2
         version: 9.39.2(jiti@2.6.1)
-      morgan:
-        specifier: 1.10.1
-        version: 1.10.1
       typescript:
         specifier: 5.9.3
         version: 5.9.3
-      winston:
-        specifier: 3.19.0
-        version: 3.19.0
 
   packages/steg-arbeidsforhold-og-inntekt:
     dependencies:
@@ -2539,9 +2540,6 @@ importers:
 
   packages/types:
     dependencies:
-      '@navikt/fp-config-eslint':
-        specifier: workspace:*
-        version: link:../config-eslint
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -2549,6 +2547,9 @@ importers:
       '@hey-api/openapi-ts':
         specifier: 0.94.2
         version: 0.94.2(typescript@5.9.3)
+      '@navikt/fp-config-eslint':
+        specifier: workspace:*
+        version: link:../config-eslint
       eslint:
         specifier: 9.39.2
         version: 9.39.2(jiti@2.6.1)
@@ -2813,9 +2814,6 @@ importers:
       '@navikt/fp-utils':
         specifier: workspace:*
         version: link:../utils
-      '@navikt/fp-utils-test':
-        specifier: workspace:*
-        version: link:../utils-test
       '@navikt/fp-uttaksplan-kalender':
         specifier: workspace:*
         version: link:../uttaksplan-kalender
@@ -2865,6 +2863,9 @@ importers:
       '@navikt/fp-config-typescript':
         specifier: workspace:*
         version: link:../config-typescript
+      '@navikt/fp-utils-test':
+        specifier: workspace:*
+        version: link:../utils-test
       '@storybook/addon-links':
         specifier: 10.2.19
         version: 10.2.19(react@19.2.4)(storybook@10.2.19(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
@@ -2943,9 +2944,6 @@ importers:
       '@navikt/fp-utils':
         specifier: workspace:*
         version: link:../utils
-      '@navikt/fp-utils-test':
-        specifier: workspace:*
-        version: link:../utils-test
       dayjs:
         specifier: 1.11.20
         version: 1.11.20
@@ -2974,6 +2972,9 @@ importers:
       '@navikt/fp-config-vite':
         specifier: workspace:*
         version: link:../config-vite
+      '@navikt/fp-utils-test':
+        specifier: workspace:*
+        version: link:../utils-test
       '@storybook/addon-links':
         specifier: 10.2.19
         version: 10.2.19(react@19.2.4)(storybook@10.2.19(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))

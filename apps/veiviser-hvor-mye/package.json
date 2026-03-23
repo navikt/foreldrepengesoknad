@@ -27,7 +27,6 @@
         "@navikt/ds-css": "8.7.0",
         "@navikt/ds-react": "8.7.0",
         "@navikt/ds-tailwind": "8.7.0",
-        "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
         "@navikt/fp-observability": "workspace:*",
