@@ -10,12 +10,12 @@
         "start": "node ./server.js"
     },
     "dependencies": {
+        "@navikt/fp-server-utils": "workspace:*",
         "express": "5.2.1",
         "http-proxy-middleware": "3.0.5"
     },
     "devDependencies": {
         "@navikt/fp-config-typescript": "workspace:*",
-        "@navikt/fp-server-utils": "workspace:*",
         "@types/express": "5.0.6",
         "@types/node": "24.10.1",
         "@vercel/ncc": "0.38.4",

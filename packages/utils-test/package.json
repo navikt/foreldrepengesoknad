@@ -11,7 +11,8 @@
         "tsc:watch": "tsc --noEmit --watch"
     },
     "dependencies": {
-        "@storybook/react-vite": "10.2.19",
+        "@navikt/ds-react": "8.7.0",
+        "@navikt/fp-types": "workspace:*",
         "@tanstack/react-query": "5.90.21",
         "@tanstack/react-query-devtools": "5.91.3",
         "react": "19.2.4",
@@ -19,10 +20,9 @@
         "react-intl": "10.0.0"
     },
     "devDependencies": {
-        "@navikt/ds-react": "8.7.0",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
-        "@navikt/fp-types": "workspace:*",
+        "@storybook/react-vite": "10.2.19",
         "@testing-library/jest-dom": "6.9.1",
         "@types/react": "19.2.14",
         "@types/react-dom": "19.2.3",
