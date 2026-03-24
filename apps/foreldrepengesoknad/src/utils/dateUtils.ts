@@ -296,11 +296,13 @@ export const getEndringstidspunktNy = (
 
             if (opprinneligPeriodeMedSammeFom === undefined) {
                 endringstidspunktNyPlan = fom;
+                break;
             }
 
             if (opprinneligPeriodeMedSammeFom !== undefined && søkerensUpdatedPlan.length - 1 === index) {
                 if (!erPeriodeIOpprinneligPlan([periode], opprinneligPeriodeMedSammeFom)) {
                     endringstidspunktNyPlan = fom;
+                    break;
                 }
             }
 
