@@ -11,7 +11,7 @@ const setupFileDirName = path.resolve(__dirname, './vitest/setupTests.ts');
 export default mergeConfig(createSharedConfigWithCrossorgin(setupFileDirName), {
     base: '/foreldrepenger/soknad',
     server: {
-        port: 9111,
+        port: 9114,
     },
     plugins: [
         // Put the Sentry vite plugin after all other plugins

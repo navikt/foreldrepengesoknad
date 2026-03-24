@@ -13,7 +13,7 @@ import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 
 import { captureMessage } from '@navikt/fp-observability';
-import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
+import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, ProblemDetails } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -74,9 +74,9 @@ export const useSendSøknad = (
                     return navigate(SøknadRoutes.KVITTERING);
                 }
 
-                const jsonResponse = await error.response.json<{ uuid?: string }>();
+                const jsonResponse = await error.response.json<ProblemDetails>();
                 captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
-                const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
+                const callIdForBruker = jsonResponse?.callId ?? UKJENT_UUID;
                 throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
             }
             if (error instanceof Error) {
