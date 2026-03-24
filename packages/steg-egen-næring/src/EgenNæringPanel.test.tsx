@@ -162,6 +162,43 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         expect(screen.queryAllByText('Du må oppgi hvilket land næringen er registert i.')[0]).toBeInTheDocument();
     });
 
+    it('skal vise feilmelding ved desimaltall i næringsinntekt etter varig endring', async () => {
+        render(<Default />);
+
+        expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Jordbruk'));
+
+        const virksomhetsnavnInput = screen.getByLabelText('Hva heter virksomheten?');
+        await userEvent.type(virksomhetsnavnInput, 'Gården AS');
+
+        await userEvent.click(screen.getAllByText('Ja')[0]!);
+
+        const orgnummerInput = screen.getByLabelText('Hva er organisasjonsnummeret?');
+        await userEvent.type(orgnummerInput, '997519485');
+
+        const startdatoInput = screen.getByLabelText('Når startet du virksomheten?');
+        await userEvent.type(startdatoInput, dayjs().subtract(5, 'year').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getAllByText('Ja')[1]!);
+
+        expect(
+            screen.getByText(
+                'Har du hatt en varig endring i virksomheten eller arbeidssituasjonen din de siste 4 årene?',
+            ),
+        ).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Ja')[2]!);
+
+        const inntektInput = screen.getByLabelText('Hva var næringsinntekten din etter endringen?');
+        await userEvent.type(inntektInput, '123.45');
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(
+            screen.queryAllByText('Inntekten din etter endring må være et tall i hele kroner.')[0],
+        ).toBeInTheDocument();
+    });
+
     it('skal avslutte søknad', async () => {
         const onAvsluttOgSlett = vi.fn();
 
