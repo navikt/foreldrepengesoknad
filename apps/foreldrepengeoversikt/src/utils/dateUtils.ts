@@ -4,12 +4,13 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isoWeek from 'dayjs/plugin/isoWeek';
 
-import { isISODateString } from '@navikt/fp-utils';
+import { getDecoratorLanguageCookie, isISODateString } from '@navikt/fp-utils';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isoWeek);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isBetween);
+dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
 
 type DateType = string | Date | undefined;
 
