@@ -18,7 +18,7 @@ import {
     isBeforeTodayOrToday,
     isRequired,
     isValidDate,
-    isValidNumberForm,
+    isValidInteger,
 } from '@navikt/fp-validation';
 
 import { NæringFormValues } from '../types/NæringFormValues';
@@ -109,7 +109,7 @@ export const VarigEndringSpørsmål = ({ egenNæringFom, egenNæringTom, varigEn
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.varigEndringInntekt.påkrevd' })),
                             hasMaxLength(intl.formatMessage({ id: 'valideringsfeil.varigEndringInntekt.forLang' }), 9),
-                            isValidNumberForm(
+                            isValidInteger(
                                 intl.formatMessage({ id: 'valideringsfeil.varigEndringInntekt.ugyldigFormat' }),
                             ),
                             hasMinValue(
