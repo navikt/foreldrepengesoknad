@@ -25,7 +25,7 @@ import {
     isAdoptertBarn,
     isFødtBarn,
 } from '@navikt/fp-types';
-import { TidsperiodenString, Uttaksperioden, isISODateString } from '@navikt/fp-utils';
+import { TidsperiodenString, isISODateString } from '@navikt/fp-utils';
 import { Perioden } from '@navikt/fp-uttaksplan';
 
 import { FeatureToggle } from '../FeatureToggle';
@@ -296,34 +296,12 @@ export const getEndringstidspunktNy = (
 
             if (opprinneligPeriodeMedSammeFom === undefined) {
                 endringstidspunktNyPlan = fom;
-                break;
             }
 
             if (opprinneligPeriodeMedSammeFom !== undefined && søkerensUpdatedPlan.length - 1 === index) {
                 if (!erPeriodeIOpprinneligPlan([periode], opprinneligPeriodeMedSammeFom)) {
                     endringstidspunktNyPlan = fom;
-                    break;
                 }
-            }
-
-            const sistePeriodeISøkersOpprinneligePlan = søkerensOpprinneligePlan.at(-1);
-
-            //Hvis endringstidspunktet er etter siste periode i opprinnelig plan, og 'periode' er periode uten uttak,
-            //finn første uttak/utsettelse etter endringstidspunktet
-            if (
-                endringstidspunktNyPlan &&
-                sistePeriodeISøkersOpprinneligePlan &&
-                dayjs(endringstidspunktNyPlan).isAfter(sistePeriodeISøkersOpprinneligePlan.tom)
-            ) {
-                const førsteUttakEllerUtsettelseEtterEndring = søkerensUpdatedPlan.find(
-                    (p) =>
-                        (Uttaksperioden.erUttaksperiode(p) || Uttaksperioden.erUtsettelsesperiode(p)) &&
-                        dayjs(p.fom).isAfter(endringstidspunktNyPlan),
-                );
-                endringstidspunktNyPlan =
-                    førsteUttakEllerUtsettelseEtterEndring !== undefined
-                        ? førsteUttakEllerUtsettelseEtterEndring.fom
-                        : endringstidspunktNyPlan;
             }
         }
 
