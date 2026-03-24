@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { captureMessage } from '@navikt/fp-observability';
-import { SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+import { ProblemDetails, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
@@ -58,8 +58,8 @@ export const useMellomlagreSøknad = (
                                 throw error;
                             }
 
-                            const jsonResponse = await error.response.json<{ uuid?: string }>();
-                            const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
+                            const jsonResponse = await error.response.json<ProblemDetails>();
+                            const callIdForBruker = jsonResponse?.callId ?? UKJENT_UUID;
                             captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
                             throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
                         }

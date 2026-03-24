@@ -11,6 +11,7 @@ import { captureMessage } from '@navikt/fp-observability';
 import {
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
+    ProblemDetails,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
@@ -163,8 +164,8 @@ export const useMellomlagreSøknad = (
                             throw error;
                         }
 
-                        const jsonResponse = await error.response.json<{ uuid?: string }>();
-                        const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
+                        const jsonResponse = await error.response.json<ProblemDetails>();
+                        const callIdForBruker = jsonResponse?.callId ?? UKJENT_UUID;
                         captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
                         throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
                     }

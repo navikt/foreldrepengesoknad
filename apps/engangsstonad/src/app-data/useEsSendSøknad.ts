@@ -8,7 +8,7 @@ import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
 
 import { captureMessage } from '@navikt/fp-observability';
-import { EngangsstønadDto, EsPersonopplysningerDto_fpoversikt, Målform } from '@navikt/fp-types';
+import { EngangsstønadDto, EsPersonopplysningerDto_fpoversikt, Målform, ProblemDetails } from '@navikt/fp-types';
 import { getDecoratorLanguageCookie, useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -95,9 +95,9 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
                     throw error;
                 }
 
-                const jsonResponse = await error.response.json<{ uuid?: string }>();
+                const jsonResponse = await error.response.json<ProblemDetails>();
                 captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
-                const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
+                const callIdForBruker = jsonResponse?.callId ?? UKJENT_UUID;
                 throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
             }
             if (error instanceof Error) {
