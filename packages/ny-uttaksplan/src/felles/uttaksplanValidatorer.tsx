@@ -476,7 +476,7 @@ const harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamili
         ).getDatoAntallUttaksdagerSenere(30);
 
         const nyePerioderInnenforIntervallet = nyePerioder.filter((periode) => {
-            if (formValues.kontoTypeFarMedmor === 'MØDREKVOTE') {
+            if (formValues.kontoTypeFarMedmor === 'MØDREKVOTE' || formValues.ønskerFlerbarnsdager) {
                 return false;
             }
 
