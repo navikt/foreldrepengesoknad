@@ -32,9 +32,15 @@ const getFellesperioderDagerFordeling = (fordeling: Fordeling, fellesperiodeDage
     }
 };
 
-const lagDeltUttakForMor = (famDato: string, stønadskontoer: KontoDto[], startdato: string, fordeling: Fordeling) => {
+const lagDeltUttakForMor = (
+    helgejustertFamDato: string,
+    stønadskontoer: KontoDto[],
+    startdato: string,
+    fordeling: Fordeling,
+) => {
     const forslag: UttakPeriode_fpoversikt[] = [];
-    const dagerMellomFamDatoOgStartdato = UttaksdagenString.denne(startdato).getUttaksdagerFremTilDato(famDato);
+    const dagerMellomFamDatoOgStartdato =
+        UttaksdagenString.denne(startdato).getUttaksdagerFremTilDato(helgejustertFamDato);
     const dagerMedFellesperiodeFørFødsel = dagerMellomFamDatoOgStartdato > 15 ? dagerMellomFamDatoOgStartdato - 15 : 0;
 
     const foreldrepengerFørFødsel = stønadskontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
@@ -97,7 +103,7 @@ const lagDeltUttakForMor = (famDato: string, stønadskontoer: KontoDto[], startd
             flerbarnsdager: false,
         });
 
-        currentFomDate = UttaksdagenString.denne(famDato).getDato();
+        currentFomDate = UttaksdagenString.denne(helgejustertFamDato).getDato();
     }
 
     tidsperiode = getTidsperiodeString(currentFomDate, mødrekvote ? mødrekvote.dager : 0);
@@ -154,12 +160,11 @@ const lagDeltUttakForMor = (famDato: string, stønadskontoer: KontoDto[], startd
 };
 
 const lagDeltUttakForFarMedmor = (
-    famDato: string,
+    helgejustertFamDato: string,
     stønadskontoer: KontoDto[],
     startdato: string,
 ): UttakPeriode_fpoversikt[] => {
-    const harFødselspermisjon =
-        UttaksdagenString.denneEllerNeste(famDato).getDato() === UttaksdagenString.denneEllerNeste(startdato).getDato();
+    const harFødselspermisjon = helgejustertFamDato === UttaksdagenString.denneEllerNeste(startdato).getDato();
     const forslag: UttakPeriode_fpoversikt[] = [];
 
     const foreldrepengerFørFødsel = stønadskontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
@@ -263,11 +268,13 @@ export const deltUttak = (
     startdato: string,
     fordeling: Fordeling,
 ): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
+    const helgeJustertFamdato = UttaksdagenString.denneEllerNeste(famDato).getDato();
+
     if (erSøkerFarEllerMedmor) {
-        return lagDeltUttakForFarMedmor(famDato, stønadskontoer, startdato);
+        return lagDeltUttakForFarMedmor(helgeJustertFamdato, stønadskontoer, startdato);
     }
 
-    return lagDeltUttakForMor(famDato, stønadskontoer, startdato, fordeling);
+    return lagDeltUttakForMor(helgeJustertFamdato, stønadskontoer, startdato, fordeling);
 };
 
 export const sorterPerioder = (
