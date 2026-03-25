@@ -458,9 +458,9 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Far skal ha?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Fars kvote'));
 
-        const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent for mor?');
+        const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent til mor?');
         await userEvent.type(samtidigprosentMor, '60');
-        const samtidigprosentFar = screen.getByLabelText('Hvor mange prosent for far?');
+        const samtidigprosentFar = screen.getByLabelText('Hvor mange prosent til far?');
         await userEvent.type(samtidigprosentFar, '40');
 
         expect(screen.getByText('Skal mor kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
@@ -652,10 +652,10 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Far skal ha?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Fellesperiode')[1]!);
 
-        const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent for mor?');
+        const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent til mor?');
         await userEvent.type(samtidigprosentMor, '50');
 
-        const samtidigprosentFar = screen.getByLabelText('Hvor mange prosent for far?');
+        const samtidigprosentFar = screen.getByLabelText('Hvor mange prosent til far?');
         await userEvent.type(samtidigprosentFar, '50');
 
         expect(screen.getByText('Hva skal mor gjøre i denne perioden?')).toBeInTheDocument();
@@ -703,10 +703,10 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Far skal ha?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Fellesperiode')[1]!);
 
-        const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent for mor?');
+        const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent til mor?');
         await userEvent.type(samtidigprosentMor, '40');
 
-        const samtidigprosentFar = screen.getByLabelText('Hvor mange prosent for far?');
+        const samtidigprosentFar = screen.getByLabelText('Hvor mange prosent til far?');
         await userEvent.type(samtidigprosentFar, '40');
 
         expect(screen.getByText('Skal mor kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
@@ -766,10 +766,10 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Far skal ha?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Fellesperiode')[1]!);
 
-        const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent for mor?');
+        const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent til mor?');
         await userEvent.type(samtidigprosentMor, '60');
 
-        const samtidigprosentFar = screen.getByLabelText('Hvor mange prosent for far?');
+        const samtidigprosentFar = screen.getByLabelText('Hvor mange prosent til far?');
         await userEvent.type(samtidigprosentFar, '51');
 
         expect(screen.getByText('Skal mor kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
@@ -836,10 +836,10 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Far skal ha?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Fars kvote')[1]!);
 
-        const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent for mor?');
+        const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent til mor?');
         await userEvent.type(samtidigprosentMor, '50');
 
-        const samtidigprosentFar = screen.getByLabelText('Hvor mange prosent for far?');
+        const samtidigprosentFar = screen.getByLabelText('Hvor mange prosent til far?');
         await userEvent.type(samtidigprosentFar, '51');
 
         expect(screen.getByText('Skal mor kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
@@ -975,9 +975,9 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getByText('Fars kvote'));
 
-        const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent for mor?');
+        const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent til mor?');
         await userEvent.type(samtidigprosentMor, '50');
-        const samtidigprosentFar = screen.getByLabelText('Hvor mange prosent for far?');
+        const samtidigprosentFar = screen.getByLabelText('Hvor mange prosent til far?');
         await userEvent.type(samtidigprosentFar, '50');
 
         expect(screen.getAllByText('Nei')).toHaveLength(2);
@@ -1468,13 +1468,13 @@ describe('UttaksplanKalender', () => {
 
         expect(screen.queryByText('Hva skal mor gjøre i denne perioden?')).not.toBeInTheDocument();
 
-        expect(screen.queryByText('Hvor mange prosent for mor?')).toBeInTheDocument();
-        expect(screen.queryByText('Hvor mange prosent for far?')).toBeInTheDocument();
+        expect(screen.queryByText('Hvor mange prosent til mor?')).toBeInTheDocument();
+        expect(screen.queryByText('Hvor mange prosent til far?')).toBeInTheDocument();
 
-        const arbeidsprosentMor = screen.getByText('Hvor mange prosent for mor?');
+        const arbeidsprosentMor = screen.getByText('Hvor mange prosent til mor?');
         await userEvent.type(arbeidsprosentMor, '100');
 
-        const arbeidsprosentFar = screen.getByText('Hvor mange prosent for far?');
+        const arbeidsprosentFar = screen.getByText('Hvor mange prosent til far?');
         await userEvent.type(arbeidsprosentFar, '100');
 
         expect(screen.queryByText('Skal mor kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
@@ -1527,13 +1527,13 @@ describe('UttaksplanKalender', () => {
 
         expect(screen.queryByText('Hva skal mor gjøre i denne perioden?')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Hvor mange prosent for mor?')).toBeInTheDocument();
-        expect(screen.getByText('Hvor mange prosent for far?')).toBeInTheDocument();
+        expect(screen.getByText('Hvor mange prosent til mor?')).toBeInTheDocument();
+        expect(screen.getByText('Hvor mange prosent til far?')).toBeInTheDocument();
 
-        const arbeidsprosentMor = screen.getByText('Hvor mange prosent for mor?');
+        const arbeidsprosentMor = screen.getByText('Hvor mange prosent til mor?');
         await userEvent.type(arbeidsprosentMor, '45');
 
-        const arbeidsprosentFar = screen.getByText('Hvor mange prosent for far?');
+        const arbeidsprosentFar = screen.getByText('Hvor mange prosent til far?');
         await userEvent.type(arbeidsprosentFar, '45');
 
         expect(screen.getByText('Skal mor kombinere foreldrepenger med arbeid?')).toBeInTheDocument();

@@ -120,11 +120,11 @@ describe('UttaksplanListe', () => {
         expect(await screen.findByText('Far skal ha?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Fars kvote')[0]!);
 
-        expect(await screen.findByText('Hvor mange prosent for mor?')).toBeInTheDocument();
-        await userEvent.type(screen.getByLabelText('Hvor mange prosent for mor?'), '50');
+        expect(await screen.findByText('Hvor mange prosent til mor?')).toBeInTheDocument();
+        await userEvent.type(screen.getByLabelText('Hvor mange prosent til mor?'), '50');
 
-        expect(await screen.findByText('Hvor mange prosent for far?')).toBeInTheDocument();
-        await userEvent.type(screen.getByLabelText('Hvor mange prosent for far?'), '50');
+        expect(await screen.findByText('Hvor mange prosent til far?')).toBeInTheDocument();
+        await userEvent.type(screen.getByLabelText('Hvor mange prosent til far?'), '50');
 
         expect(await screen.findByText('Skal mor kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[0]!);
