@@ -64,9 +64,11 @@ export const UttaksplanOppsummeringslisteNy = ({ navnPåForeldre, registrerteArb
             }),
     );
 
+    const søkerHarLagtTilPerioderForAnnenPart = annenPartsPerioder.some((periode) => periode.resultat === undefined);
+
     return (
         <VStack gap="space-16">
-            {annenPartsPerioder.length > 0 && (
+            {annenPartsPerioder.length > 0 && søkerHarLagtTilPerioderForAnnenPart && (
                 <Alert variant="warning">
                     <BodyLong>
                         <FormattedMessage id="oppsummering.AnnenPartPerioderInfomelding" />
