@@ -20,19 +20,11 @@ import { isRequired } from '@navikt/fp-validation';
 import { usePlanleggerNavigator } from '../../app-data/usePlanleggerNavigator';
 
 const erMorDelAvSøknadenGittType = (type: HvemPlanleggerType) => {
-    return (
-        type === HvemPlanleggerType.MOR_OG_FAR ||
-        type === HvemPlanleggerType.MOR_OG_MEDMOR ||
-        type === HvemPlanleggerType.MOR
-    );
+    return type === HvemPlanleggerType.MOR_OG_FAR || type === HvemPlanleggerType.MOR_OG_MEDMOR;
 };
 
 const erFarDelAvSøknadenGittType = (type: HvemPlanleggerType) => {
-    return (
-        type === HvemPlanleggerType.MOR_OG_FAR ||
-        type === HvemPlanleggerType.FAR_OG_FAR ||
-        type === HvemPlanleggerType.FAR
-    );
+    return type === HvemPlanleggerType.MOR_OG_FAR || type === HvemPlanleggerType.FAR_OG_FAR;
 };
 
 export const HvemPlanleggerSteg = () => {
@@ -136,7 +128,7 @@ export const HvemPlanleggerSteg = () => {
                                 </VStack>
                             </Infobox>
                         )}
-                        {type && (
+                        {type && type !== HvemPlanleggerType.MOR && type !== HvemPlanleggerType.FAR && (
                             <BluePanel isDarkBlue={erHvemPlanleggerIkkeOppgittFraFør} shouldFadeIn>
                                 <VStack gap="space-40">
                                     {erMorDelAvSøknadenGittType(type) && (

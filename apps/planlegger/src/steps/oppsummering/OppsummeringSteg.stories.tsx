@@ -344,7 +344,6 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
     args: {
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
-            navnPåMor: 'Klara Utvikler',
             type: HvemPlanleggerType.MOR,
         },
         hvorMye: {
@@ -380,7 +379,6 @@ export const AleneforsørgerFarÅttiProsentFødsel: Story = {
     args: {
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
-            navnPåFar: 'Espen Utvikler',
             type: HvemPlanleggerType.FAR,
         },
         hvorMye: {
@@ -554,7 +552,6 @@ export const AleneforsørgerMorErUfør: Story = {
     args: {
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
-            navnPåMor: 'Klara Utvikler',
             type: HvemPlanleggerType.MOR,
         },
         omBarnet: {

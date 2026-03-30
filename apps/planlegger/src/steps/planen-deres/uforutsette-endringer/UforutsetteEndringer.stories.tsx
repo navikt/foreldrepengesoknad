@@ -245,7 +245,6 @@ export const FødselMorAleneomsorg: Story = {
     args: {
         hvemPlanlegger: {
             type: HvemPlanleggerType.MOR,
-            navnPåMor: 'Mor',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
@@ -263,7 +262,6 @@ export const FødselFarAleneomsorg: Story = {
     args: {
         hvemPlanlegger: {
             type: HvemPlanleggerType.FAR,
-            navnPåFar: 'Far',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
