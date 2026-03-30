@@ -19,11 +19,11 @@ import { isRequired } from '@navikt/fp-validation';
 
 import { usePlanleggerNavigator } from '../../app-data/usePlanleggerNavigator';
 
-const erMorDelAvSøknadenGittType = (type: HvemPlanleggerType) => {
+const skalViseMorNavnfelt = (type: HvemPlanleggerType) => {
     return type === HvemPlanleggerType.MOR_OG_FAR || type === HvemPlanleggerType.MOR_OG_MEDMOR;
 };
 
-const erFarDelAvSøknadenGittType = (type: HvemPlanleggerType) => {
+const skalViseFarNavnfelt = (type: HvemPlanleggerType) => {
     return type === HvemPlanleggerType.MOR_OG_FAR || type === HvemPlanleggerType.FAR_OG_FAR;
 };
 
@@ -131,7 +131,7 @@ export const HvemPlanleggerSteg = () => {
                         {type && type !== HvemPlanleggerType.MOR && type !== HvemPlanleggerType.FAR && (
                             <BluePanel isDarkBlue={erHvemPlanleggerIkkeOppgittFraFør} shouldFadeIn>
                                 <VStack gap="space-40">
-                                    {erMorDelAvSøknadenGittType(type) && (
+                                    {skalViseMorNavnfelt(type) && (
                                         <RhfTextField
                                             name="navnPåMor"
                                             control={formMethods.control}
@@ -139,7 +139,7 @@ export const HvemPlanleggerSteg = () => {
                                             customErrorFormatter={formatError}
                                         />
                                     )}
-                                    {erFarDelAvSøknadenGittType(type) && (
+                                    {skalViseFarNavnfelt(type) && (
                                         <RhfTextField
                                             name="navnPåFar"
                                             control={formMethods.control}
