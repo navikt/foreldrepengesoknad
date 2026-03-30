@@ -160,7 +160,6 @@ export const FlereForsørgereToBarn: Story = {
 export const AleneforsørgerMorEttBarn: Story = {
     args: {
         hvemPlanlegger: {
-            navnPåMor: 'Klara Utvikler',
             type: HvemPlanleggerType.MOR,
         },
         omBarnet: {
@@ -278,7 +277,6 @@ export const FlereForsørgereFarOgFarKunFar1HarRettFødsel: Story = {
 export const AleneforsørgerFarToBarn: Story = {
     args: {
         hvemPlanlegger: {
-            navnPåFar: 'Espen Utvikler',
             type: HvemPlanleggerType.FAR,
         },
         omBarnet: {

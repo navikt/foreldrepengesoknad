@@ -95,20 +95,16 @@ describe('<HvemPlanleggerSteg>', () => {
     it('skal planlegge for mor, aleneomsorg', async () => {
         const gåTilNesteSide = vi.fn();
 
-        const utils = render(<Default gåTilNesteSide={gåTilNesteSide} />);
+        render(<Default gåTilNesteSide={gåTilNesteSide} />);
 
         expect(await screen.findAllByText('Hvem planlegger?')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Bare mor med aleneomsorg'));
 
-        const morNavn = utils.getByLabelText('Hva heter mor? (valgfritt)');
-        await userEvent.type(morNavn, 'Olga');
-
         await userEvent.click(screen.getByText('Neste'));
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                navnPåMor: 'Olga',
                 type: 'mor',
             },
             key: ContextDataType.HVEM_PLANLEGGER,
@@ -119,20 +115,16 @@ describe('<HvemPlanleggerSteg>', () => {
     it('skal planlegge for far, aleneomsorg', async () => {
         const gåTilNesteSide = vi.fn();
 
-        const utils = render(<Default gåTilNesteSide={gåTilNesteSide} />);
+        render(<Default gåTilNesteSide={gåTilNesteSide} />);
 
         expect(await screen.findAllByText('Hvem planlegger?')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Bare far med aleneomsorg'));
 
-        const farNavn = utils.getByLabelText('Hva heter far? (valgfritt)');
-        await userEvent.type(farNavn, 'Espen');
-
         await userEvent.click(screen.getByText('Neste'));
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                navnPåFar: 'Espen',
                 type: 'far',
             },
             key: ContextDataType.HVEM_PLANLEGGER,

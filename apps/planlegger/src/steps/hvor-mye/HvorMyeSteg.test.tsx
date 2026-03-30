@@ -31,7 +31,7 @@ describe('<HvorMyeSteg>', () => {
     it('skal kun vise inputfelt for mor', async () => {
         render(<AleneforsørgerMor />);
         expect(await screen.findAllByText('Hvor mye')).toHaveLength(2);
-        expect(screen.getByText('Hva tjener Klara ca. i måneden? (valgfritt)')).toBeInTheDocument();
+        expect(screen.getByText('Hva tjener du ca. i måneden? (valgfritt)')).toBeInTheDocument();
         expect(screen.queryByText('Hva tjener Espen ca. i måneden? (valgfritt)')).not.toBeInTheDocument();
     });
 });

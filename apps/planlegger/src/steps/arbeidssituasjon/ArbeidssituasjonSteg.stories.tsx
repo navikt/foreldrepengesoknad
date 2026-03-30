@@ -60,7 +60,6 @@ export const ArbeidssituasjonMorOgFar: Story = {
 export const ArbeidssituasjonAleneforsørger: Story = {
     args: {
         hvemPlanlegger: {
-            navnPåMor: 'Klara Utvikler',
             type: HvemPlanleggerType.MOR,
         },
         satser: DEFAULT_SATSER,

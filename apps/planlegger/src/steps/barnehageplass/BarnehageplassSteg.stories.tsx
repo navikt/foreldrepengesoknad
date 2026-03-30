@@ -76,7 +76,6 @@ export const FlereForsørgereBarnFødtSeptemberStartSeptember: Story = {
 export const AleneforsørgerToBarnFødtJanuarStartAugust: Story = {
     args: {
         hvemPlanlegger: {
-            navnPåMor: 'Klara Utvikler',
             type: HvemPlanleggerType.MOR,
         },
         omBarnet: {

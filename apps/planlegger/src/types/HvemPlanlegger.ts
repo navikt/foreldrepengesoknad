@@ -22,10 +22,8 @@ export type FarOgFar = {
 
 export type Mor = {
     type: HvemPlanleggerType.MOR;
-    navnPåMor?: string;
 };
 
 export type Far = {
     type: HvemPlanleggerType.FAR;
-    navnPåFar?: string;
 };
