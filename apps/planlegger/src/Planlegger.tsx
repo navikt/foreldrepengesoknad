@@ -33,7 +33,7 @@ const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHar
     }
 
     if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && !erBarnetAdoptert(omBarnet)) {
-        return 'BARE_SØKER_RETT';
+        return hvemHarRett === 'beggeHarRett' ? 'BEGGE_RETT' : 'BARE_SØKER_RETT';
     }
 
     if (hvemHarRett === 'beggeHarRett') {
@@ -80,25 +80,23 @@ export const PlanleggerDataFetcher = () => {
         select: (data: KontoBeregningResultatDto): KontoBeregningResultatDto => {
             //TODO (TOR) Dette bør ligga i backend. Verkar pussig å henta kontoar for far-og-far, og så modifisera det her
 
-            // Fix for å ikke vise "Foreldrepenger uten aktivitetskrav"
-            // Hvis ikke far-og-far, returner uendret
             if (hvemPlanlegger?.type !== HvemPlanleggerType.FAR_OG_FAR) {
                 return data;
             }
             // Lag en dyp kopi for å unngå å modifisere original data
             const modifiserteData = JSON.parse(JSON.stringify(data)) as KontoBeregningResultatDto;
-            // Liste over dekningsgrader vi skal prosessere
             const dekningsgrader = ['80', '100'] as const;
-            // Bearbeide hver dekningsgrad
             for (const dekningsgrad of dekningsgrader) {
                 const stønadskonto = modifiserteData[dekningsgrad];
-                if (stønadskonto?.kontoer.some((k) => k.konto === 'AKTIVITETSFRI_KVOTE')) {
-                    // Summer antall dager i alle kontoer
-                    const totalDager = stønadskonto.kontoer.reduce((sum, konto) => sum + konto.dager, 0);
-                    // Filtrer og behold kun 'AKTIVITETSFRI_KVOTE' -kontoen
-                    stønadskonto.kontoer = stønadskonto.kontoer
-                        .filter((konto) => konto.konto === 'AKTIVITETSFRI_KVOTE')
-                        .map((konto) => ({ ...konto, dager: totalDager }));
+                if (stønadskonto) {
+                    // Backend returnerer ulike kontoer avhengig av rettighetstype (f.eks. MØDREKVOTE, FEDREKVOTE, FELLESPERIODE).
+                    // For far og far er ikke FORELDREPENGER_FØR_FØDSEL relevant, så den ekskluderes.
+                    // Alle gjenværende dager slås sammen til én AKTIVITETSFRI_KVOTE, slik at resten av
+                    // planleggeren kan forholde seg til én konto for far og far.
+                    const totalDager = stønadskonto.kontoer
+                        .filter((konto) => konto.konto !== 'FORELDREPENGER_FØR_FØDSEL')
+                        .reduce((sum, konto) => sum + konto.dager, 0);
+                    stønadskonto.kontoer = [{ konto: 'AKTIVITETSFRI_KVOTE', dager: totalDager }];
                 }
             }
             return modifiserteData;
