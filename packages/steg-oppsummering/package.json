@@ -25,7 +25,7 @@
         "i18n-iso-countries": "7.14.0",
         "react": "19.2.4",
         "react-dom": "19.2.4",
-"react-intl": "10.1.1"
+        "react-intl": "10.1.1"
     },
     "devDependencies": {
         "@formatjs/cli-lib": "8.5.0",
@@ -34,7 +34,7 @@
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
-"@storybook/addon-links": "10.3.4",
+        "@storybook/addon-links": "10.3.4",
         "@storybook/react-vite": "10.3.4",
         "@tailwindcss/vite": "4.2.2",
         "@testing-library/jest-dom": "6.9.1",
@@ -45,7 +45,7 @@
         "fast-glob": "3.3.3",
         "jsdom": "29.0.1",
         "playwright": "1.58.2",
-"storybook": "10.3.4",
+        "storybook": "10.3.4",
         "storybook-react-intl": "10.1.1",
         "tailwindcss": "4.2.2",
         "typescript": "6.0.2",

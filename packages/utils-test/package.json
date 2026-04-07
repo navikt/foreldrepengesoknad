@@ -17,19 +17,19 @@
         "@tanstack/react-query-devtools": "5.95.2",
         "react": "19.2.4",
         "react-dom": "19.2.4",
-"react-intl": "10.1.1"
+        "react-intl": "10.1.1"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
-"@storybook/react-vite": "10.3.4",
+        "@storybook/react-vite": "10.3.4",
         "@testing-library/jest-dom": "6.9.1",
         "@types/react": "19.2.14",
         "@types/react-dom": "19.2.3",
         "eslint": "9.39.2",
         "jsdom": "29.0.1",
         "mockdate": "3.0.5",
-"storybook": "10.3.4",
+        "storybook": "10.3.4",
         "typescript": "6.0.2",
         "vite": "8.0.5",
         "vitest": "4.1.1"
