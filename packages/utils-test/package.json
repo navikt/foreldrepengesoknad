@@ -17,21 +17,21 @@
         "@tanstack/react-query-devtools": "5.91.3",
         "react": "19.2.4",
         "react-dom": "19.2.4",
-        "react-intl": "10.0.0"
+        "react-intl": "10.1.1"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
-        "@storybook/react-vite": "10.2.19",
+        "@storybook/react-vite": "10.3.4",
         "@testing-library/jest-dom": "6.9.1",
         "@types/react": "19.2.14",
         "@types/react-dom": "19.2.3",
         "eslint": "9.39.2",
         "jsdom": "27.0.0",
         "mockdate": "3.0.5",
-        "storybook": "10.2.19",
+        "storybook": "10.3.4",
         "typescript": "5.9.3",
-        "vite": "8.0.0",
+        "vite": "8.0.5",
         "vitest": "4.1.0"
     },
     "packageManager": "pnpm@10.28.0"

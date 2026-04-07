@@ -48,7 +48,7 @@
         "lodash": "4.17.23",
         "react": "19.2.4",
         "react-dom": "19.2.4",
-        "react-intl": "10.0.0",
+        "react-intl": "10.1.1",
         "react-router-dom": "7.13.1"
     },
     "devDependencies": {
@@ -58,8 +58,8 @@
         "@navikt/fp-config-vite": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
         "@storybook/cli": "10.2.19",
-        "@storybook/react-vite": "10.2.19",
-        "@tailwindcss/vite": "4.2.1",
+        "@storybook/react-vite": "10.3.4",
+        "@tailwindcss/vite": "4.2.2",
         "@testing-library/dom": "10.4.1",
         "@testing-library/jest-dom": "6.9.1",
         "@testing-library/react": "16.3.2",
@@ -81,11 +81,11 @@
         "morgan": "1.10.1",
         "mustache-express": "1.3.2",
         "playwright": "1.58.2",
-        "storybook": "10.2.19",
+        "storybook": "10.3.4",
         "tailwindcss": "4.2.1",
         "ts-node": "^10.9.2",
         "typescript": "5.9.3",
-        "vite": "8.0.0",
+        "vite": "8.0.5",
         "vitest": "4.1.0"
     },
     "packageManager": "pnpm@10.28.0",
