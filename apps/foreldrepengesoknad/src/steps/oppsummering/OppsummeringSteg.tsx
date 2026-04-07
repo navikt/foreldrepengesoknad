@@ -7,7 +7,7 @@ import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import { ISOStringToDate } from 'utils/dateUtils';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnrString, getNavnPåForeldre } from 'utils/personUtils';
-import { isLocalhostOrDev } from 'utils/tempSystemUtils';
+import { skalBrukeNyUttaksplan } from 'utils/tempSystemUtils';
 
 import { Alert, Heading, Link } from '@navikt/ds-react';
 
@@ -20,11 +20,7 @@ import {
     OppsummeringPanel,
     SelvstendigNæringsdrivendeOppsummering,
 } from '@navikt/fp-steg-oppsummering';
-import {
-    FpSak_fpoversikt,
-    FpPersonopplysningerDto_fpoversikt,
-    Søkerrolle,
-} from '@navikt/fp-types';
+import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, Søkerrolle } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -161,7 +157,7 @@ export const OppsummeringSteg = (props: Props) => {
                         onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.PERIODE_MED_FORELDREPENGER)}
                     />
                 )}
-                {!isLocalhostOrDev() && (
+                {!skalBrukeNyUttaksplan() && (
                     <>
                         <UttaksplanOppsummering
                             navnPåForeldre={navnPåForeldre}
@@ -185,7 +181,7 @@ export const OppsummeringSteg = (props: Props) => {
                         />
                     </>
                 )}
-                {isLocalhostOrDev() && (
+                {skalBrukeNyUttaksplan() && (
                     <>
                         <UttaksplanOppsummeringNy
                             navnPåForeldre={navnPåForeldre}

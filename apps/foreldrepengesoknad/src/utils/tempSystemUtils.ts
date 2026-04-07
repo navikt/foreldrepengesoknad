@@ -1,3 +1,3 @@
-export const isLocalhostOrDev = () => {
+export const skalBrukeNyUttaksplan = () => {
     return true;
 };

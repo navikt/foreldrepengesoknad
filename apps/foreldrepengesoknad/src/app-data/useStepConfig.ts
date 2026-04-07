@@ -6,7 +6,7 @@ import { skalViseOmsorgsovertakelseDokumentasjon } from 'steps/manglende-vedlegg
 import { skalViseTerminbekreftelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/TerminbekreftelseDokumentasjon.tsx';
 import { AnnenInntektType } from 'types/AndreInntektskilder';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
-import { isLocalhostOrDev } from 'utils/tempSystemUtils';
+import { skalBrukeNyUttaksplan } from 'utils/tempSystemUtils';
 import { kreverUttaksplanVedleggNy } from 'utils/uttaksplanInfoUtils';
 
 import { isAnnenForelderOppgitt } from '@navikt/fp-common';
@@ -97,7 +97,7 @@ const showManglendeDokumentasjonStegTemp = (
     erEndringssøknad: boolean,
     eksisterendeSak: FpSak_fpoversikt | undefined,
 ) => {
-    if (isLocalhostOrDev()) {
+    if (skalBrukeNyUttaksplan()) {
         return showManglendeDokumentasjonStegNy(path, getData, arbeidsforhold, eksisterendeSak);
     }
     return showManglendeDokumentasjonSteg(path, getData, arbeidsforhold, erEndringssøknad);

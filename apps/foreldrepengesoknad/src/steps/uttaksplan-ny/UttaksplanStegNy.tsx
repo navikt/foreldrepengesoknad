@@ -10,7 +10,7 @@ import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { erPeriodeIOpprinneligPlan } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnr, getNavnPåForeldre } from 'utils/personUtils';
-import { isLocalhostOrDev } from 'utils/tempSystemUtils';
+import { skalBrukeNyUttaksplan } from 'utils/tempSystemUtils';
 
 import { Alert, BodyLong, Tabs } from '@navikt/ds-react';
 
@@ -145,7 +145,7 @@ export const UttaksplanStegNy = ({
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig}>
-                {isLocalhostOrDev() && (
+                {skalBrukeNyUttaksplan() && (
                     <Alert variant="info">
                         <BodyLong>
                             <FormattedMessage id="uttaksplan.AnnenPartPerioderInfomelding" />
