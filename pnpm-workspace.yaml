@@ -7,3 +7,4 @@ packages:
 minimumReleaseAge: 2880
 minimumReleaseAgeExclude:
   - '@navikt/*'
+  - vite@8.0.5
