@@ -36,7 +36,7 @@
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
-        "@storybook/addon-links": "10.2.19",
+        "@storybook/addon-links": "10.3.4",
         "@storybook/react-vite": "10.3.4",
         "@tailwindcss/vite": "4.2.2",
         "@testing-library/jest-dom": "6.9.1",
