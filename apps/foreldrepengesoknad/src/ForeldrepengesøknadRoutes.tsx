@@ -15,7 +15,6 @@ import { ArbeidsforholdOgInntektSteg } from 'steps/arbeidsforhold-og-inntekt/Arb
 import { EgenNæringSteg } from 'steps/egen-næring/EgenNæringSteg';
 import { FordelingSteg } from 'steps/fordeling/FordelingSteg';
 import { FrilansSteg } from 'steps/frilans/FrilansSteg';
-import { ManglendeVedlegg } from 'steps/manglende-vedlegg/ManglendeVedlegg';
 import { ManglendeVedleggNy } from 'steps/manglende-vedlegg/ManglendeVedleggNy';
 import { OmBarnetSteg } from 'steps/om-barnet/OmBarnetSteg';
 import { OppsummeringSteg } from 'steps/oppsummering/OppsummeringSteg';
@@ -25,8 +24,6 @@ import { SenereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-senere/Senere
 import { TidligereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
 import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSteg';
 import { UttaksplanStegNy } from 'steps/uttaksplan-ny/UttaksplanStegNy';
-import { UttaksplanStep } from 'steps/uttaksplan/UttaksplanStep';
-import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
@@ -53,34 +50,30 @@ const renderSøknadRoutes = (
     if (erEndringssøknad) {
         return (
             <>
-                {isLocalhostOrDev() && (
-                    <>
-                        <Route
-                            path={SøknadRoutes.UTTAKSPLAN}
-                            element={
-                                <UttaksplanStegNy
-                                    søkerInfo={søkerInfo}
-                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                    avbrytSøknad={avbrytSøknad}
-                                    foreldrepengerSaker={foreldrepengerSaker}
-                                />
-                            }
+                <Route
+                    path={SøknadRoutes.UTTAKSPLAN}
+                    element={
+                        <UttaksplanStegNy
+                            søkerInfo={søkerInfo}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            avbrytSøknad={avbrytSøknad}
+                            foreldrepengerSaker={foreldrepengerSaker}
                         />
-                        <Route
-                            path={SøknadRoutes.DOKUMENTASJON}
-                            element={
-                                <ManglendeVedleggNy
-                                    søkerInfo={søkerInfo}
-                                    erEndringssøknad={erEndringssøknad}
-                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                    avbrytSøknad={avbrytSøknad}
-                                    foreldrepengerSaker={foreldrepengerSaker}
-                                />
-                            }
+                    }
+                />
+                <Route
+                    path={SøknadRoutes.DOKUMENTASJON}
+                    element={
+                        <ManglendeVedleggNy
+                            søkerInfo={søkerInfo}
+                            erEndringssøknad={erEndringssøknad}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            avbrytSøknad={avbrytSøknad}
+                            foreldrepengerSaker={foreldrepengerSaker}
                         />
-                    </>
-                )}
-                {!isLocalhostOrDev() && (
+                    }
+                />
+                {/* {!isLocalhostOrDev() && (
                     <>
                         <Route
                             path={SøknadRoutes.UTTAKSPLAN}
@@ -105,7 +98,7 @@ const renderSøknadRoutes = (
                             }
                         />
                     </>
-                )}
+                )} */}
                 <Route
                     path={SøknadRoutes.OPPSUMMERING}
                     element={
@@ -179,34 +172,30 @@ const renderSøknadRoutes = (
                     />
                 }
             />
-            {isLocalhostOrDev() && (
-                <>
-                    <Route
-                        path={SøknadRoutes.UTTAKSPLAN}
-                        element={
-                            <UttaksplanStegNy
-                                søkerInfo={søkerInfo}
-                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                avbrytSøknad={avbrytSøknad}
-                                foreldrepengerSaker={foreldrepengerSaker}
-                            />
-                        }
+            <Route
+                path={SøknadRoutes.UTTAKSPLAN}
+                element={
+                    <UttaksplanStegNy
+                        søkerInfo={søkerInfo}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                        foreldrepengerSaker={foreldrepengerSaker}
                     />
-                    <Route
-                        path={SøknadRoutes.DOKUMENTASJON}
-                        element={
-                            <ManglendeVedleggNy
-                                søkerInfo={søkerInfo}
-                                erEndringssøknad={erEndringssøknad}
-                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                avbrytSøknad={avbrytSøknad}
-                                foreldrepengerSaker={foreldrepengerSaker}
-                            />
-                        }
+                }
+            />
+            <Route
+                path={SøknadRoutes.DOKUMENTASJON}
+                element={
+                    <ManglendeVedleggNy
+                        søkerInfo={søkerInfo}
+                        erEndringssøknad={erEndringssøknad}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                        foreldrepengerSaker={foreldrepengerSaker}
                     />
-                </>
-            )}
-            {!isLocalhostOrDev() && (
+                }
+            />
+            {/* {!isLocalhostOrDev() && (
                 <>
                     <Route
                         path={SøknadRoutes.UTTAKSPLAN}
@@ -231,7 +220,7 @@ const renderSøknadRoutes = (
                         }
                     />
                 </>
-            )}
+            )} */}
 
             <Route
                 path={SøknadRoutes.UTENLANDSOPPHOLD}
