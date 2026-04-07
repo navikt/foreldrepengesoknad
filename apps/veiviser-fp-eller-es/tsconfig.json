@@ -2,13 +2,12 @@
     "extends": "@navikt/fp-config-typescript/tsconfig.json",
     "compilerOptions": {
         "jsx": "react-jsx",
-        "baseUrl": "./src",
         "paths": {
-            "appData/*": ["app-data/*"],
-            "utils/*": ["utils/*"]
+            "appData/*": ["./src/app-data/*"],
+            "utils/*": ["./src/utils/*"]
         },
         "types": ["@testing-library/jest-dom", "vitest/globals", "vite/client"]
     },
-    "include": ["src", "mock-api", "vitest", "../../@types/vite.env.d.ts"],
+    "include": ["src", "mock-api", "vitest", "../../@types"],
     "exclude": ["node_modules"]
 }

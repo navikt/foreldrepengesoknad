@@ -11,7 +11,7 @@
     },
     "dependencies": {
         "@navikt/fp-server-utils": "workspace:*",
-        "@navikt/nav-dekoratoren-moduler": "3.6.3",
+        "@navikt/nav-dekoratoren-moduler": "3.7.0",
         "@navikt/oasis": "4.1.4",
         "express": "5.2.1",
         "http-proxy-middleware": "3.0.5"

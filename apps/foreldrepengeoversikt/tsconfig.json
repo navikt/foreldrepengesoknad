@@ -2,14 +2,14 @@
     "extends": "@navikt/fp-config-typescript/tsconfig.json",
     "compilerOptions": {
         "moduleResolution": "bundler",
-        "baseUrl": "src",
         "jsx": "react-jsx",
         "allowImportingTsExtensions": true,
         "paths": {
-            "storybookData/*": ["./../.storybook/storybook-data/*"]
+            "storybookData/*": ["./.storybook/storybook-data/*"],
+            "types/*": ["./src/types/*"]
         },
         "types": ["vite/client", "@testing-library/jest-dom", "vitest/globals"]
     },
-    "include": ["src", "mock-api", "vitest", "../../@types/vite.env.d.ts"],
+    "include": ["src", "mock-api", "vitest", "../../@types"],
     "exclude": ["node_modules"]
 }

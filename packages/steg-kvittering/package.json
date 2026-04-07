@@ -16,9 +16,9 @@
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "8.7.0",
-        "@navikt/ds-css": "8.7.0",
-        "@navikt/ds-react": "8.7.0",
+        "@navikt/aksel-icons": "8.8.0",
+        "@navikt/ds-css": "8.8.0",
+        "@navikt/ds-react": "8.8.0",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
@@ -29,8 +29,8 @@
         "react-intl": "10.1.1"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "8.4.0",
-        "@navikt/ds-tailwind": "8.7.0",
+        "@formatjs/cli-lib": "8.5.0",
+        "@navikt/ds-tailwind": "8.8.0",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
@@ -44,14 +44,14 @@
         "@types/react": "19.2.14",
         "eslint": "9.39.2",
         "fast-glob": "3.3.3",
-        "jsdom": "27.0.0",
+        "jsdom": "29.0.1",
         "playwright": "1.58.2",
         "storybook": "10.3.4",
         "storybook-react-intl": "10.1.1",
         "tailwindcss": "4.2.2",
-        "typescript": "5.9.3",
+        "typescript": "6.0.2",
         "vite": "8.0.5",
-        "vitest": "4.1.0"
+        "vitest": "4.1.1"
     },
     "packageManager": "pnpm@10.28.0"
 }

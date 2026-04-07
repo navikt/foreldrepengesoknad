@@ -21,7 +21,7 @@
         "react-intl": "10.1.1"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "8.4.0",
+        "@formatjs/cli-lib": "8.5.0",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
@@ -29,11 +29,11 @@
         "@types/react": "19.2.14",
         "eslint": "9.39.2",
         "fast-glob": "3.3.3",
-        "jsdom": "27.0.0",
+        "jsdom": "29.0.1",
         "playwright": "1.58.2",
-        "typescript": "5.9.3",
+        "typescript": "6.0.2",
         "vite": "8.0.5",
-        "vitest": "4.1.0"
+        "vitest": "4.1.1"
     },
     "packageManager": "pnpm@10.28.0"
 }
