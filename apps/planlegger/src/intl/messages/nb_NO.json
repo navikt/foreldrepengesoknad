@@ -56,8 +56,6 @@
     "FordelingsdetaljerPanel.InfoboksTittel": "Perioden deres",
     "FordelingSteg.EkstraDagInfo.EnDag": "Den ene ekstra dagen med fellesperiode vil legge seg inn i planen automatisk. Hvis du ønsker en annen fordeling, kan du endre dette i planen senere.",
     "FordelingSteg.EkstraDagInfo.FlereDager": "De ekstra dagene med fellesperiode vil legge seg inn i planen automatisk. Hvis du ønsker en annen fordeling, kan du endre dette i planen senere.",
-    "FordelingSteg.FordelingOptionAlt": "{erOversiktSteg, select, true {Fellesperioden: } other{}} {uker} uker {dager, select, 1 {og en dag} 2 {og to dager} 3 {og tre dager} 4 {og fire dager} other{}} til {hvem}",
-    "FordelingSteg.FordelingOptions": "{erOversiktSteg, select, true {Fellesperioden: } other{}} {uker}{dagerS1, select, 0 {} other {+{dagerS1}}} til {hvem}, {uker2}{dagerS2, select, 0 {} other {+{dagerS2}}} til {hvem2}",
     "FordelingSteg.FordelingTittel": "Hvordan vil dere fordele {uker} uker {dager, select, 1 {og én dag} 2 {og to dager} 3 {og tre dager} 4 {og fire dager} other{}} med fellesperiode?",
     "FordelingSteg.Infoboks.HvordanFordeleTekst": "Foreldrepengene er delt inn i tre deler; en til hver av foreldrene og en fellesperiode. Med {prosent} % foreldrepenger er denne perioden på {uker} uker{dager, select, 1 { og én dag} 2 { og to dager} 3 { og tre dager} 4 { og fire dager} other{}}. Dere kan selv velge hvordan perioden skal fordeles mellom dere.",
     "FordelingSteg.Infoboks.HvordanFordeleTittel": "Fellesperioden",
