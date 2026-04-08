@@ -9,15 +9,7 @@ import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
 import { Alder } from 'types/Alder';
 
-import {
-    AnnenForelder,
-    Barn,
-    Periode,
-    isInfoPeriode,
-    isPeriodeUtenUttak,
-    isUtsettelsesperiode,
-    isUttaksperiode,
-} from '@navikt/fp-common';
+import { AnnenForelder, Barn } from '@navikt/fp-common';
 import {
     FpBarnDto_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
@@ -26,7 +18,6 @@ import {
     isFødtBarn,
 } from '@navikt/fp-types';
 import { TidsperiodenString, isISODateString } from '@navikt/fp-utils';
-import { Perioden } from '@navikt/fp-uttaksplan';
 
 import { FeatureToggle } from '../FeatureToggle';
 import { getIsDeltUttak } from './annenForelderUtils';
@@ -74,11 +65,11 @@ export const getEldsteRegistrerteBarn = (registrerteBarn: FpBarnDto_fpoversikt[]
     return [...registrerteBarn].sort((a, b) => (isDateABeforeDateB(a.fødselsdato, b.fødselsdato) ? 1 : -1)).at(-1)!;
 };
 
-export const sorterDatoEtterEldst = (dato: Date[]): string[] => {
-    return [...dato].map((d) => dateToISOString(d)).sort((a, b) => (isDateABeforeDateB(a, b) ? -1 : 1));
+export const sorterDatoEtterEldst = (dato: string[]): string[] => {
+    return [...dato].sort((a, b) => (isDateABeforeDateB(a, b) ? -1 : 1));
 };
 
-export const getEldsteDato = (dato: Date[]): string => {
+export const getEldsteDato = (dato: string[]): string => {
     return sorterDatoEtterEldst(dato)[0]!;
 };
 
@@ -171,101 +162,6 @@ export const førsteJuli2024ReglerGjelder = (barn: Barn): boolean => {
     return true;
 };
 
-export const getEndringstidspunkt = (
-    opprinneligPlan: Periode[] | undefined,
-    updatedPlan: Periode[],
-    erEndringssøknad: boolean,
-): Date | undefined => {
-    if (!erEndringssøknad) {
-        return undefined;
-    }
-
-    const søkerensOpprinneligePlan =
-        opprinneligPlan === undefined ? undefined : opprinneligPlan.filter((p) => !isInfoPeriode(p));
-    const søkerensUpdatedPlan = updatedPlan.filter((p) => !isInfoPeriode(p));
-
-    let endringstidspunktNyPlan: Date | undefined;
-    let endringstidspunktOpprinneligPlan: Date | undefined;
-    if (søkerensOpprinneligePlan) {
-        søkerensUpdatedPlan.forEach((periode, index) => {
-            if (endringstidspunktNyPlan) {
-                return;
-            }
-
-            const { fom } = periode.tidsperiode;
-            const opprinneligPeriodeMedSammeFom = søkerensOpprinneligePlan.find((opprinneligPeriode) =>
-                dayjs(opprinneligPeriode.tidsperiode.fom).isSame(fom, 'day'),
-            );
-
-            if (opprinneligPeriodeMedSammeFom !== undefined) {
-                const perioderErLikeUtenTidSjekk = Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, false, true);
-                if (
-                    !perioderErLikeUtenTidSjekk ||
-                    (perioderErLikeUtenTidSjekk &&
-                        Perioden(periode).slutterEtter(opprinneligPeriodeMedSammeFom.tidsperiode.tom))
-                ) {
-                    endringstidspunktNyPlan = fom;
-                }
-            }
-
-            if (opprinneligPeriodeMedSammeFom === undefined) {
-                endringstidspunktNyPlan = fom;
-            }
-
-            if (opprinneligPeriodeMedSammeFom !== undefined && søkerensUpdatedPlan.length - 1 === index) {
-                if (!Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, true, true)) {
-                    endringstidspunktNyPlan = fom;
-                }
-            }
-
-            const sistePeriodeISøkersOpprinneligePlan = søkerensOpprinneligePlan.at(-1);
-
-            //Hvis endringstidspunktet er etter siste periode i opprinnelig plan, og 'periode' er periode uten uttak,
-            //finn første uttak/utsettelse etter endringstidspunktet
-            if (
-                endringstidspunktNyPlan &&
-                isPeriodeUtenUttak(periode) &&
-                sistePeriodeISøkersOpprinneligePlan &&
-                dayjs(endringstidspunktNyPlan).isAfter(sistePeriodeISøkersOpprinneligePlan.tidsperiode.tom)
-            ) {
-                const førsteUttakEllerUtsettelseEtterEndring = søkerensUpdatedPlan.find(
-                    (p) =>
-                        (isUttaksperiode(p) || isUtsettelsesperiode(p)) &&
-                        dayjs(p.tidsperiode.fom).isAfter(endringstidspunktNyPlan),
-                );
-                endringstidspunktNyPlan =
-                    førsteUttakEllerUtsettelseEtterEndring !== undefined
-                        ? førsteUttakEllerUtsettelseEtterEndring.tidsperiode.fom
-                        : endringstidspunktNyPlan;
-            }
-        });
-
-        for (const periode of søkerensOpprinneligePlan) {
-            if (endringstidspunktOpprinneligPlan) {
-                continue;
-            }
-
-            const { fom } = periode.tidsperiode;
-            const nyPeriodeMedSammeFom = søkerensUpdatedPlan.find((nyPeriode) =>
-                dayjs(nyPeriode.tidsperiode.fom).isSame(fom, 'day'),
-            );
-
-            if (nyPeriodeMedSammeFom !== undefined && !Perioden(periode).erLik(nyPeriodeMedSammeFom, false, true)) {
-                endringstidspunktOpprinneligPlan = nyPeriodeMedSammeFom.tidsperiode.fom;
-            }
-
-            if (nyPeriodeMedSammeFom === undefined) {
-                endringstidspunktOpprinneligPlan = fom;
-            }
-        }
-    } else if (søkerensUpdatedPlan.length > 0) {
-        // Bruker har slettet opprinnelig plan, send med alt
-        return søkerensUpdatedPlan[0]!.tidsperiode.fom;
-    }
-
-    return getOldestDate(endringstidspunktNyPlan, endringstidspunktOpprinneligPlan);
-};
-
 export const getEndringstidspunktNy = (
     søkerensOpprinneligePlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     søkerensUpdatedPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
@@ -329,27 +225,6 @@ export const getEndringstidspunktNy = (
     }
 
     return getOldestDateNy(endringstidspunktNyPlan, endringstidspunktOpprinneligPlan);
-};
-
-const getOldestDate = (
-    endringstidspunktNyPlan: Date | undefined,
-    endringstidspunktOpprinneligPlan: Date | undefined,
-): Date | undefined => {
-    if (endringstidspunktNyPlan === undefined && endringstidspunktOpprinneligPlan === undefined) {
-        return undefined;
-    }
-
-    if (endringstidspunktNyPlan !== undefined && endringstidspunktOpprinneligPlan === undefined) {
-        return endringstidspunktNyPlan;
-    }
-
-    if (endringstidspunktNyPlan === undefined && endringstidspunktOpprinneligPlan !== undefined) {
-        return endringstidspunktOpprinneligPlan;
-    }
-
-    return dayjs(endringstidspunktNyPlan).isSameOrBefore(dayjs(endringstidspunktOpprinneligPlan))
-        ? endringstidspunktNyPlan
-        : endringstidspunktOpprinneligPlan;
 };
 
 const getOldestDateNy = (

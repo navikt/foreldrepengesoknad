@@ -1,7 +1,7 @@
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import { AnnenForelder, Barn, Periode, Søkersituasjon } from '@navikt/fp-common';
+import { AnnenForelder, Barn, Søkersituasjon } from '@navikt/fp-common';
 import {
     ArbeidsforholdOgInntektFp,
     Dekningsgrad,
@@ -26,7 +26,6 @@ export interface Søknad {
     utenlandsoppholdSiste12Mnd: UtenlandsoppholdPeriode[];
     erEndringssøknad: boolean;
     dekningsgrad: Dekningsgrad;
-    uttaksplan: Periode[];
     saksnummer?: string;
     ønskerJustertUttakVedFødsel: boolean | undefined;
     vedlegg: VedleggDataType;

@@ -2,10 +2,9 @@ import { SøknadRoutes } from 'appData/routes';
 import { JSX, ReactNode, createContext, useContext, useReducer } from 'react';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { Fordeling } from 'types/Fordeling';
-import { UttaksplanMetaData } from 'types/UttaksplanMetaData';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import { AnnenForelder, Barn, BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
+import { AnnenForelder, Barn } from '@navikt/fp-common';
 import {
     ArbeidsforholdOgInntektFp,
     Dekningsgrad,
@@ -21,8 +20,6 @@ import {
 export enum ContextDataType {
     APP_ROUTE = 'APP_ROUTE',
     VALGT_EKSISTERENDE_SAKSNR = 'VALGT_EKSISTERENDE_SAKSNR',
-    EKSISTERENDE_SAK = 'EKSISTERENDE_SAK',
-    BARN_FRA_NESTE_SAK = 'BARN_FRA_NESTE_SAK',
     SØKERSITUASJON = 'SØKERSITUASJON',
     OM_BARNET = 'OM_BARNET',
     ANNEN_FORELDER = 'ANNEN_FORELDER',
@@ -35,18 +32,14 @@ export enum ContextDataType {
     UTENLANDSOPPHOLD_TIDLIGERE = 'UTENLANDSOPPHOLD_TIDLIGERE',
     PERIODE_MED_FORELDREPENGER = 'PERIODE_MED_FORELDREPENGER',
     FORDELING = 'FORDELING',
-    UTTAKSPLAN = 'UTTAKSPLAN',
     UTTAKSPLAN_NY = 'UTTAKSPLAN_NY',
-    UTTAKSPLAN_METADATA = 'UTTAKSPLAN_METADATA',
-    UTTAKSPLAN_METADATA_NY = 'UTTAKSPLAN_METADATA_NY',
+    HAR_JUSTERT_UTTAK_VED_FØDSEL = 'HAR_JUSTERT_UTTAK_VED_FØDSEL',
     VEDLEGG = 'VEDLEGG',
 }
 
 export type ContextDataMap = {
     [ContextDataType.APP_ROUTE]?: SøknadRoutes;
     [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]?: string;
-    [ContextDataType.EKSISTERENDE_SAK]?: EksisterendeSak;
-    [ContextDataType.BARN_FRA_NESTE_SAK]?: BarnFraNesteSak;
     [ContextDataType.SØKERSITUASJON]?: SøkersituasjonFp;
     [ContextDataType.OM_BARNET]?: Barn;
     [ContextDataType.ANNEN_FORELDER]?: AnnenForelder;
@@ -59,13 +52,8 @@ export type ContextDataMap = {
     [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: UtenlandsoppholdPeriode[];
     [ContextDataType.PERIODE_MED_FORELDREPENGER]?: Dekningsgrad;
     [ContextDataType.FORDELING]?: Fordeling;
-    [ContextDataType.UTTAKSPLAN]?: Periode[];
     [ContextDataType.UTTAKSPLAN_NY]?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
-    [ContextDataType.UTTAKSPLAN_METADATA]?: UttaksplanMetaData;
-    // TODO (TOR) Vurder etterkvart om denne trengs. Om det er kun ønskerJustertUttakVedFødsel så vurder å legg denne til UTTAKSPLAN_NY
-    [ContextDataType.UTTAKSPLAN_METADATA_NY]?: {
-        ønskerJustertUttakVedFødsel?: boolean;
-    };
+    [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]?: boolean;
     [ContextDataType.VEDLEGG]?: VedleggDataType;
 };
 

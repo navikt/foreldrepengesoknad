@@ -1,6 +1,3 @@
-import { Periode } from '@navikt/fp-common';
-import { uttaksplanInneholderPerioderUtenKonto } from '@navikt/fp-uttaksplan';
-
 export enum SøknadRoutes {
     VELKOMMEN = '/',
     SØKERSITUASJON = '/soker',
@@ -55,16 +52,10 @@ export const REQUIRED_APP_STEPS = [
 
 export const REQUIRED_APP_STEPS_ENDRINGSSØKNAD = [SøknadRoutes.UTTAKSPLAN, SøknadRoutes.OPPSUMMERING];
 
-export const isRouteAvailable = (
-    route: SøknadRoutes,
-    harGodkjentVilkår: boolean,
-    uttaksplan: Periode[] = [],
-): boolean => {
+export const isRouteAvailable = (route: SøknadRoutes, harGodkjentVilkår: boolean): boolean => {
     switch (route) {
         case SøknadRoutes.SØKERSITUASJON:
             return harGodkjentVilkår === true;
-        case SøknadRoutes.OPPSUMMERING:
-            return uttaksplanInneholderPerioderUtenKonto(uttaksplan) === false && uttaksplan.length > 0;
         default:
             return true;
     }

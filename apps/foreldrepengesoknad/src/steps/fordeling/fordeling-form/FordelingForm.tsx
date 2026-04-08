@@ -2,7 +2,6 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { useForm } from 'react-hook-form';
 import { Fordeling } from 'types/Fordeling';
 import { getDatoForAleneomsorg } from 'utils/annenForelderUtils';
-import { ISOStringToDate } from 'utils/dateUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { VStack } from '@navikt/ds-react';
@@ -19,7 +18,7 @@ type Props = {
     erDeltUttak: boolean;
     navnPåForeldre: NavnPåForeldre;
     dagerMedFellesperiode: number;
-    førsteDagEtterAnnenForelder: Date | undefined;
+    førsteDagEtterAnnenForelder: string | undefined;
     goToPreviousDefaultStep: () => void;
     goToNextDefaultStep: () => void;
     onAvsluttOgSlett?: () => void;
@@ -38,15 +37,13 @@ export const FordelingForm = ({
 }: Props) => {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-    const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const fordelingAvForeldrepenger = useContextGetData(ContextDataType.FORDELING);
 
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
-    const oppdaterUttaksplanMetaData = useContextSaveData(ContextDataType.UTTAKSPLAN_METADATA);
 
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const datoForAleneomsorg = ISOStringToDate(getDatoForAleneomsorg(annenForelder));
+    const datoForAleneomsorg = getDatoForAleneomsorg(annenForelder);
 
     const formMethods = useForm<Fordeling>({
         defaultValues: fordelingAvForeldrepenger,
@@ -69,14 +66,6 @@ export const FordelingForm = ({
 
     const onSubmit = (values: Fordeling) => {
         oppdaterFordeling(values);
-
-        //TODO Fjern denne når ny uttaksplan er i prod
-        if (uttaksplanMetadata?.harUttaksplanBlittSlettet !== false) {
-            oppdaterUttaksplanMetaData({
-                ...uttaksplanMetadata,
-                harUttaksplanBlittSlettet: false,
-            });
-        }
         return goToNextDefaultStep();
     };
     return (

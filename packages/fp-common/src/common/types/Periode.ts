@@ -4,6 +4,7 @@ import {
     KontoTypeUttak,
     MorsAktivitet,
     Oppholdsårsak,
+    Tidsperiode,
     UtsettelsesÅrsak,
     UttakOverføringÅrsak_fpoversikt,
 } from '@navikt/fp-types';
@@ -11,7 +12,6 @@ import {
 import { Arbeidsform } from './Arbeidsform';
 import { PeriodeHullÅrsak } from './PeriodeHullÅrsak';
 import { PeriodeInfoType } from './PeriodeInfoType';
-import { TidsperiodeDate } from './TidsperiodeDate';
 
 export enum Periodetype {
     Uttak = 'uttak',
@@ -26,7 +26,7 @@ export enum Periodetype {
 export interface PeriodeBase {
     id: string;
     type: Periodetype;
-    tidsperiode: TidsperiodeDate;
+    tidsperiode: Tidsperiode;
 }
 
 export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBase {
@@ -81,7 +81,7 @@ export interface Overføringsperiode extends PeriodeBase {
 
 export interface PeriodeHull extends PeriodeBase {
     type: Periodetype.Hull;
-    tidsperiode: TidsperiodeDate;
+    tidsperiode: Tidsperiode;
     årsak?: PeriodeHullÅrsak;
 }
 
@@ -176,12 +176,6 @@ export function isUttaksperiode(periode: Periode): periode is Uttaksperiode {
 
 export const isHarMorsAktivitet = (periode: Periode): periode is Periode & { morsAktivitetIPerioden: unknown } =>
     'morsAktivitetIPerioden' in periode;
-
-export const isForeldrepengerFørFødselUttaksperiode = (
-    periode: Periode,
-): periode is ForeldrepengerFørFødselUttaksperiode => {
-    return periode.type === Periodetype.Uttak && periode.konto === 'FORELDREPENGER_FØR_FØDSEL';
-};
 
 export const isUttakAvFellesperiode = (periode: Periode): periode is Uttaksperiode => {
     return periode.type === Periodetype.Uttak && periode.konto === 'FELLESPERIODE';

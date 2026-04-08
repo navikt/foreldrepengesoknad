@@ -293,14 +293,7 @@ const meta = {
                             [ContextDataType.ANDRE_INNTEKTSKILDER]: andreInntekter,
                             [ContextDataType.ANNEN_FORELDER]: annenForelder,
                             [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                            [ContextDataType.UTTAKSPLAN_METADATA]: {
-                                ønskerJustertUttakVedFødsel: false,
-                                harUttaksplanBlittSlettet: false,
-                                antallUkerIUttaksplan: 1,
-                            },
-                            [ContextDataType.UTTAKSPLAN_METADATA_NY]: {
-                                ønskerJustertUttakVedFødsel: false,
-                            },
+                            [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]: false,
                             [ContextDataType.OM_BARNET]: barn,
                             [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
@@ -1080,14 +1073,7 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
                             [ContextDataType.ANDRE_INNTEKTSKILDER]: args.andreInntekter,
                             [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
                             [ContextDataType.SØKERSITUASJON]: args.søkersituasjon,
-                            [ContextDataType.UTTAKSPLAN_METADATA]: {
-                                ønskerJustertUttakVedFødsel: false,
-                                harUttaksplanBlittSlettet: false,
-                                antallUkerIUttaksplan: 1,
-                            },
-                            [ContextDataType.UTTAKSPLAN_METADATA_NY]: {
-                                ønskerJustertUttakVedFødsel: false,
-                            },
+                            [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]: false,
                             [ContextDataType.OM_BARNET]: args.barn || defaultBarn,
                             [ContextDataType.UTENLANDSOPPHOLD]: args.utenlandsopphold || defaultUtenlandsopphold,
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: args.utenlandsoppholdSenere,

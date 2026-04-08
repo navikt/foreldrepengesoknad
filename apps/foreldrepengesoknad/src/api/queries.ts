@@ -141,20 +141,22 @@ export const useStønadsKontoerOptions = () => {
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-    const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
-    const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
+    const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
     const annenPartOptions = useAnnenPartVedtakOptions();
     const annenPartVedtakQuery = useQuery(annenPartOptions);
 
-    const stønadskontoParams = getStønadskontoParams({
+    const sakerQuery = useQuery({ ...sakerOptions(), enabled: !!valgtEksisterendeSaksnr });
+
+    const valgtSak = sakerQuery.data?.foreldrepenger.find((sak) => sak.saksnummer === valgtEksisterendeSaksnr);
+
+    const stønadskontoParams = getStønadskontoParams(
         barn,
         annenForelder,
         søkersituasjon,
-        barnFraNesteSak,
-        annenPartsVedtak: annenPartVedtakQuery.data,
-        eksisterendeSak,
-    });
+        annenPartVedtakQuery.data,
+        valgtSak?.familiehendelse.termindato,
+    );
 
     return tilgjengeligeStønadskontoerOptions(stønadskontoParams);
 };

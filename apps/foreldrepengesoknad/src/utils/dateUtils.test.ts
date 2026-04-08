@@ -23,7 +23,7 @@ import {
     getAlderFraDato,
     getEldsteDato,
     getEldsteRegistrerteBarn,
-    getEndringstidspunkt,
+    getEndringstidspunktNy,
     getRelevantFamiliehendelseDato,
     getUkerOgDagerFromDager,
     getVarighetString,
@@ -179,24 +179,24 @@ describe('dateUtils', () => {
             {
                 id: '1',
                 tidsperiode: {
-                    fom: new Date('2019-09-10'),
-                    tom: new Date('2019-09-30'),
+                    fom: '2019-09-10',
+                    tom: '2019-09-30',
                 },
                 type: Periodetype.Uttak,
             },
             {
                 id: '2',
                 tidsperiode: {
-                    fom: new Date('2019-10-01'),
-                    tom: new Date('2020-01-13'),
+                    fom: '2019-10-01',
+                    tom: '2020-01-13',
                 },
                 type: Periodetype.Uttak,
             },
             {
                 id: '3',
                 tidsperiode: {
-                    fom: new Date('2020-01-14'),
-                    tom: new Date('2020-05-01'),
+                    fom: '2020-01-14',
+                    tom: '2020-05-01',
                 },
                 type: Periodetype.Uttak,
             },
@@ -206,55 +206,55 @@ describe('dateUtils', () => {
             {
                 id: '20',
                 tidsperiode: {
-                    fom: new Date('2022-09-21'),
-                    tom: new Date('2022-10-11'),
+                    fom: '2022-09-21',
+                    tom: '2022-10-11',
                 },
                 type: Periodetype.Uttak,
             },
             {
                 id: '21',
                 tidsperiode: {
-                    fom: new Date('2022-10-12'),
-                    tom: new Date('2022-12-13'),
+                    fom: '2022-10-12',
+                    tom: '2022-12-13',
                 },
                 type: Periodetype.Uttak,
             },
             {
                 id: '22',
                 tidsperiode: {
-                    fom: new Date('2022-12-14'),
-                    tom: new Date('2022-12-27'),
+                    fom: '2022-12-14',
+                    tom: '2022-12-27',
                 },
                 type: Periodetype.PeriodeUtenUttak,
             },
             {
                 id: '23',
                 tidsperiode: {
-                    fom: new Date('2022-12-28'),
-                    tom: new Date('2023-01-30'),
+                    fom: '2022-12-28',
+                    tom: '2023-01-30',
                 },
                 type: Periodetype.Uttak,
             },
             {
                 id: '24',
                 tidsperiode: {
-                    fom: new Date('2023-01-31'),
-                    tom: new Date('2023-02-20'),
+                    fom: '2023-01-31',
+                    tom: '2023-02-20',
                 },
                 type: Periodetype.Uttak,
             },
             {
                 id: '25',
                 tidsperiode: {
-                    fom: new Date('2023-02-21'),
-                    tom: new Date('2023-02-27'),
+                    fom: '2023-02-21',
+                    tom: '2023-02-27',
                 },
                 type: Periodetype.Uttak,
             },
         ];
 
         it('Skal returnere undefined hvis ikke endringssøknad', () => {
-            const endringstidspunkt = getEndringstidspunkt(undefined, [], false);
+            const endringstidspunkt = getEndringstidspunktNy(undefined, [], false);
 
             expect(endringstidspunkt).toBe(undefined);
         });
@@ -273,8 +273,8 @@ describe('dateUtils', () => {
             const gradertPeriode: Partial<Uttaksperiode> = {
                 id: guid(),
                 tidsperiode: {
-                    fom: new Date('2019-05-04'),
-                    tom: new Date('2019-05-11'),
+                    fom: '2019-05-04',
+                    tom: '2019-05-11',
                 },
                 type: Periodetype.Uttak,
                 gradert: true,
@@ -295,16 +295,16 @@ describe('dateUtils', () => {
                     {
                         id: '23',
                         tidsperiode: {
-                            fom: new Date('2020-05-02'),
-                            tom: new Date('2020-05-09'),
+                            fom: '2020-05-02',
+                            tom: '2020-05-09',
                         },
                         type: Periodetype.PeriodeUtenUttak,
                     },
                     {
                         id: '24',
                         tidsperiode: {
-                            fom: new Date('2020-05-10'),
-                            tom: new Date('2020-05-17'),
+                            fom: '2020-05-10',
+                            tom: '2020-05-17',
                         },
                         type: Periodetype.Uttak,
                     },
@@ -357,11 +357,11 @@ describe('dateUtils', () => {
                 opprinneligPlan[0],
                 {
                     ...opprinneligPlan[1],
-                    tidsperiode: { fom: opprinneligPlan[1]!.tidsperiode?.fom, tom: new Date('2020-01-14') },
+                    tidsperiode: { fom: opprinneligPlan[1]!.tidsperiode?.fom, tom: '2020-01-14' },
                 },
                 {
                     ...opprinneligPlan[2],
-                    tidsperiode: { fom: new Date('2020-01-15'), tom: opprinneligPlan[2]!.tidsperiode?.tom },
+                    tidsperiode: { fom: '2020-01-15', tom: opprinneligPlan[2]!.tidsperiode?.tom },
                 },
             ];
 
@@ -374,11 +374,11 @@ describe('dateUtils', () => {
                 opprinneligPlan[0],
                 {
                     ...opprinneligPlan[1],
-                    tidsperiode: { fom: opprinneligPlan[1]!.tidsperiode?.fom, tom: new Date('2020-01-12') },
+                    tidsperiode: { fom: opprinneligPlan[1]!.tidsperiode?.fom, tom: '2020-01-12' },
                 },
                 {
                     ...opprinneligPlan[2],
-                    tidsperiode: { fom: new Date('2020-01-13'), tom: opprinneligPlan[2]!.tidsperiode?.tom },
+                    tidsperiode: { fom: '2020-01-13', tom: opprinneligPlan[2]!.tidsperiode?.tom },
                 },
             ];
 
@@ -389,9 +389,9 @@ describe('dateUtils', () => {
         it('Hvis en periode med periode uten uttak foran får tidligere startdato, skal endringstidspunktet være lik den nye startdatoen.', () => {
             const nyPeriodeUtenUttak = {
                 ...opprinneligPlanMedHull[2],
-                tidsperiode: { fom: opprinneligPlanMedHull[2]!.tidsperiode.fom, tom: new Date('2022-12-26') },
+                tidsperiode: { fom: opprinneligPlanMedHull[2]!.tidsperiode.fom, tom: '2022-12-26' },
             };
-            const nyFom = new Date('2022-12-27');
+            const nyFom = '2022-12-27';
             const nyUttaksperiodePeriodeMedTidligStart = {
                 ...opprinneligPlanMedHull[3],
                 tidsperiode: { fom: nyFom, tom: opprinneligPlanMedHull[3]!.tidsperiode.tom },
@@ -419,9 +419,9 @@ describe('dateUtils', () => {
             () => {
                 const nyPeriodeUtenUttak = {
                     ...opprinneligPlanMedHull[2],
-                    tidsperiode: { fom: opprinneligPlanMedHull[2]!.tidsperiode.fom, tom: new Date('2022-12-28') },
+                    tidsperiode: { fom: opprinneligPlanMedHull[2]!.tidsperiode.fom, tom: '2022-12-28' },
                 };
-                const nyFom = new Date('2022-12-29');
+                const nyFom = '2022-12-29';
                 const nyUttaksperiodePeriodeMedTidligStart = {
                     ...opprinneligPlanMedHull[3],
                     tidsperiode: { fom: nyFom, tom: opprinneligPlanMedHull[3]!.tidsperiode.tom },
@@ -450,9 +450,9 @@ describe('dateUtils', () => {
             () => {
                 const nyPeriodeUttak = {
                     ...opprinneligPlanMedHull[1],
-                    tidsperiode: { fom: opprinneligPlanMedHull[1]!.tidsperiode.fom, tom: new Date('2022-12-14') },
+                    tidsperiode: { fom: opprinneligPlanMedHull[1]!.tidsperiode.fom, tom: '2022-12-14' },
                 };
-                const nyFom = new Date('2022-12-15');
+                const nyFom = '2022-12-15';
                 const nyPeriodeUtenUttak = {
                     ...opprinneligPlanMedHull[2],
                     tidsperiode: { fom: nyFom, tom: opprinneligPlanMedHull[2]!.tidsperiode.tom },
@@ -481,7 +481,7 @@ describe('dateUtils', () => {
                 opprinneligPlan[1],
                 {
                     ...opprinneligPlan[2],
-                    tidsperiode: { ...opprinneligPlan[2]!.tidsperiode, tom: new Date('2020-04-30') },
+                    tidsperiode: { ...opprinneligPlan[2]!.tidsperiode, tom: '2020-04-30' },
                 },
             ];
 
@@ -499,7 +499,7 @@ describe('dateUtils', () => {
                 opprinneligPlan[1],
                 {
                     ...opprinneligPlan[2],
-                    tidsperiode: { ...opprinneligPlan[2]!.tidsperiode, tom: new Date('2020-0-02') },
+                    tidsperiode: { ...opprinneligPlan[2]!.tidsperiode, tom: '2020-0-02' },
                 },
             ];
 
@@ -517,9 +517,9 @@ describe('dateUtils', () => {
             () => {
                 const nyPeriodeUttak = {
                     ...opprinneligPlanMedHull[1],
-                    tidsperiode: { fom: opprinneligPlanMedHull[1]!.tidsperiode.fom, tom: new Date('2022-12-12') },
+                    tidsperiode: { fom: opprinneligPlanMedHull[1]!.tidsperiode.fom, tom: '2022-12-12' },
                 };
-                const nyFom = new Date('2022-12-13');
+                const nyFom = '2022-12-13';
                 const nyPeriodeUtenUttak = {
                     ...opprinneligPlanMedHull[2],
                     tidsperiode: { fom: nyFom, tom: opprinneligPlanMedHull[2]!.tidsperiode.tom },
@@ -546,8 +546,8 @@ describe('dateUtils', () => {
             const hullPeriode: Partial<PeriodeHull> = {
                 type: Periodetype.Hull,
                 tidsperiode: {
-                    fom: new Date('2019-09-01'),
-                    tom: new Date('2019-09-09'),
+                    fom: '2019-09-01',
+                    tom: '2019-09-09',
                 },
             };
             const endretPlan = [hullPeriode, ...opprinneligPlan];
@@ -560,16 +560,16 @@ describe('dateUtils', () => {
             const deltPeriodeTidligereDel: Partial<Uttaksperiode> = {
                 id: '7',
                 tidsperiode: {
-                    fom: new Date('2020-01-14'),
-                    tom: new Date('2020-04-03'),
+                    fom: '2020-01-14',
+                    tom: '2020-04-03',
                 },
                 type: Periodetype.Uttak,
             };
             const periodeSomDeltePeriode: Partial<Utsettelsesperiode> = {
                 id: '8',
                 tidsperiode: {
-                    fom: new Date('2020-04-06'),
-                    tom: new Date('2020-04-17'),
+                    fom: '2020-04-06',
+                    tom: '2020-04-17',
                 },
                 type: Periodetype.Utsettelse,
                 årsak: 'ARBEID',
@@ -577,8 +577,8 @@ describe('dateUtils', () => {
             const deltPeriodeSenereDel: Partial<Uttaksperiode> = {
                 id: '9',
                 tidsperiode: {
-                    fom: new Date('2020-04-20'),
-                    tom: new Date('2020-05-04'),
+                    fom: '2020-04-20',
+                    tom: '2020-05-04',
                 },
                 type: Periodetype.Uttak,
             };
@@ -599,16 +599,16 @@ describe('dateUtils', () => {
                 {
                     id: '10',
                     tidsperiode: {
-                        fom: new Date('2019-09-10'),
-                        tom: new Date('2019-09-30'),
+                        fom: '2019-09-10',
+                        tom: '2019-09-30',
                     },
                     type: Periodetype.Uttak,
                 },
                 {
                     id: '11',
                     tidsperiode: {
-                        fom: new Date('2019-09-10'),
-                        tom: new Date('2019-09-30'),
+                        fom: '2019-09-10',
+                        tom: '2019-09-30',
                     },
                     type: Periodetype.Info,
                     overskrives: true,
@@ -616,8 +616,8 @@ describe('dateUtils', () => {
                 {
                     id: '12',
                     tidsperiode: {
-                        fom: new Date('2019-10-01'),
-                        tom: new Date('2020-01-13'),
+                        fom: '2019-10-01',
+                        tom: '2020-01-13',
                     },
                     type: Periodetype.Uttak,
                 },
@@ -628,8 +628,8 @@ describe('dateUtils', () => {
                 {
                     id: '13',
                     tidsperiode: {
-                        fom: new Date('2020-01-14'),
-                        tom: new Date('2020-05-04'),
+                        fom: '2020-01-14',
+                        tom: '2020-05-04',
                     },
                     type: Periodetype.Uttak,
                 },
@@ -651,8 +651,8 @@ describe('dateUtils', () => {
                     {
                         id: '14',
                         tidsperiode: {
-                            fom: new Date('2019-09-10'),
-                            tom: new Date('2019-09-30'),
+                            fom: '2019-09-10',
+                            tom: '2019-09-30',
                         },
                         type: Periodetype.Info,
                         overskrives: true,
@@ -660,8 +660,8 @@ describe('dateUtils', () => {
                     {
                         id: '15',
                         tidsperiode: {
-                            fom: new Date('2019-10-01'),
-                            tom: new Date('2020-01-13'),
+                            fom: '2019-10-01',
+                            tom: '2020-01-13',
                         },
                         type: Periodetype.Uttak,
                     },
@@ -671,8 +671,8 @@ describe('dateUtils', () => {
                     {
                         id: '16',
                         tidsperiode: {
-                            fom: new Date('2020-01-14'),
-                            tom: new Date('2020-05-04'),
+                            fom: '2020-01-14',
+                            tom: '2020-05-04',
                         },
                         type: Periodetype.Uttak,
                     },
@@ -691,13 +691,7 @@ describe('dateUtils', () => {
 
 describe('getEldsteDato', () => {
     it('Skal returnere eldste dato riktig.', () => {
-        const datoListe = [
-            new Date('2023-10-21'),
-            new Date('2023-11-21'),
-            new Date('2021-11-21'),
-            new Date('2021-11-20'),
-            new Date('2021-12-20'),
-        ];
+        const datoListe = ['2023-10-21', '2023-11-21', '2021-11-21', '2021-11-20', '2021-12-20'];
         const result = getEldsteDato(datoListe);
         expect(result).toEqual('2021-11-20');
     });
@@ -705,11 +699,7 @@ describe('getEldsteDato', () => {
 
 describe('sorterDatoEtterEldst', () => {
     it('Skal sortere dato riktig', () => {
-        const datoListe = [
-            ISOStringToDate('2021-11-21')!,
-            ISOStringToDate('2021-11-19')!,
-            ISOStringToDate('2021-11-20')!,
-        ];
+        const datoListe = ['2021-11-21', '2021-11-19', '2021-11-20'];
         const result = sorterDatoEtterEldst(datoListe);
         expect(result.length).toBe(3);
         expect(result[0]).toEqual('2021-11-19');

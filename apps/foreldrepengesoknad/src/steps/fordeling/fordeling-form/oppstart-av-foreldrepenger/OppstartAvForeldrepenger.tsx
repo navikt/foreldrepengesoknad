@@ -2,7 +2,6 @@ import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { useFormContext } from 'react-hook-form';
 import { Fordeling, OppstartValg } from 'types/Fordeling';
 import { getErAleneOmOmsorg } from 'utils/annenForelderUtils';
-import { getFamiliehendelsedatoDate } from 'utils/barnUtils';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -16,7 +15,7 @@ import { OppstartValgInput } from './OppstartValgInput';
 interface Props {
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
-    førsteDagEtterAnnenForelder: Date | undefined;
+    førsteDagEtterAnnenForelder: string | undefined;
     oppstartsvalg: OppstartValg[];
 }
 
@@ -26,12 +25,10 @@ export const OppstartAvForeldrepenger = ({
     førsteDagEtterAnnenForelder,
     oppstartsvalg,
 }: Props) => {
-    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
 
     const { watch } = useFormContext<Fordeling>();
-    const familiehendelsesdato = getFamiliehendelsedatoDate(barn);
     const erAleneOmOmsorg = getErAleneOmOmsorg(annenForelder);
     const erMorFødsel = søkersituasjon.situasjon === 'fødsel' && !erFarEllerMedmor;
     const oppstartValg = watch('oppstartAvForeldrepengerValg');
@@ -43,7 +40,6 @@ export const OppstartAvForeldrepenger = ({
             <OppstartValgInput
                 oppstartsvalg={oppstartsvalg}
                 erFarEllerMedmor={erFarEllerMedmor}
-                familiehendelsesdato={familiehendelsesdato}
                 erAleneOmOmsorg={erAleneOmOmsorg}
                 navnPåForeldre={navnPåForeldre}
                 førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}

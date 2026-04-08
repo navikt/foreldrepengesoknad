@@ -12,10 +12,13 @@ import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'u
 import { BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
 
 import { loggUmamiEvent } from '@navikt/fp-observability';
-import { uttaksConstants } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import styles from './fordeling-påvirkninger.module.css';
+
+const ANTALL_UKER_MINSTERETT_MOR_TO_TETTE_FØDSEL = 22;
+const ANTALL_UKER_MINSTERETT_MOR_TO_TETTE_ADOPSJON = 8;
+const ANTALL_UKER_MINSTERETT_FAR_TO_TETTE = 8;
 
 interface Props {
     deltUttak: boolean;
@@ -47,9 +50,9 @@ export const FordelingPåvirkninger = ({
     const degEllerMor = erFarEllerMedmor ? navnAnnenForelder : intl.formatMessage({ id: 'deg' });
     const duEllerDere = deltUttak ? intl.formatMessage({ id: 'dere' }) : intl.formatMessage({ id: 'du' });
     const morMinsterettUkerToTette = erAdopsjon
-        ? uttaksConstants.ANTALL_UKER_MINSTERETT_MOR_TO_TETTE_ADOPSJON
-        : uttaksConstants.ANTALL_UKER_MINSTERETT_MOR_TO_TETTE_FØDSEL;
-    const farMinsterettUkerToTette = uttaksConstants.ANTALL_UKER_MINSTERETT_FAR_TO_TETTE;
+        ? ANTALL_UKER_MINSTERETT_MOR_TO_TETTE_ADOPSJON
+        : ANTALL_UKER_MINSTERETT_MOR_TO_TETTE_FØDSEL;
+    const farMinsterettUkerToTette = ANTALL_UKER_MINSTERETT_FAR_TO_TETTE;
     const søkerensMinsterettToTette = erFarEllerMedmor ? farMinsterettUkerToTette : morMinsterettUkerToTette;
     const wlbReglerGjelder = andreAugust2022ReglerGjelder(familiehendelsesdato);
     const førsteOkt2021Gjelder = førsteOktober2021ReglerGjelder(familiehendelsesdato);

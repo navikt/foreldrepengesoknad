@@ -36,9 +36,7 @@ export interface FpMellomlagretData {
     barnFraNesteSak?: BarnFraNesteSak;
     annenPartsUttakErLagtTilIPlan?: boolean;
     uttaksplanNy?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
-    uttaksplanMetadataNy?: {
-        ønskerJustertUttakVedFødsel?: boolean | undefined;
-    };
+    ønskerJustertUttakVedFødsel?: boolean;
     valgtEksisterendeSaksnr?: string;
 }
 
@@ -66,16 +64,11 @@ const getDataForMellomlagring = (
     const utenlandsopphold = getDataFromState(ContextDataType.UTENLANDSOPPHOLD);
     const senereUtenlandsopphold = getDataFromState(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const tidligereUtenlandsopphold = getDataFromState(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-    const uttaksplanMetadata = getDataFromState(ContextDataType.UTTAKSPLAN_METADATA);
-    const barnFraNesteSak = getDataFromState(ContextDataType.BARN_FRA_NESTE_SAK);
-    const eksisterendeSak = getDataFromState(ContextDataType.EKSISTERENDE_SAK);
-    const uttaksplan = getDataFromState(ContextDataType.UTTAKSPLAN);
     const fordeling = getDataFromState(ContextDataType.FORDELING);
     const dekningsgrad = getDataFromState(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const vedlegg = getDataFromState(ContextDataType.VEDLEGG);
-
     const uttaksplanNy = getDataFromState(ContextDataType.UTTAKSPLAN_NY);
-    const uttaksplanMetadataNy = getDataFromState(ContextDataType.UTTAKSPLAN_METADATA_NY);
+    const ønskerJustertUttakVedFødsel = getDataFromState(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const valgtEksisterendeSaksnr = getDataFromState(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
     // TODO (TOR) Dropp mapping her og lagre context rått
@@ -99,20 +92,12 @@ const getDataForMellomlagring = (
             utenlandsoppholdSiste12Mnd: tidligereUtenlandsopphold,
             erEndringssøknad,
             dekningsgrad,
-            uttaksplan,
             vedlegg,
-            ønskerJustertUttakVedFødsel: uttaksplanMetadata?.ønskerJustertUttakVedFødsel,
+            ønskerJustertUttakVedFødsel,
         },
-        eksisterendeSak,
-        barnFraNesteSak,
         fordeling,
-        endringstidspunkt: uttaksplanMetadata?.endringstidspunkt,
-        antallUkerIUttaksplan: uttaksplanMetadata?.antallUkerIUttaksplan,
-        perioderSomSkalSendesInn: uttaksplanMetadata?.perioderSomSkalSendesInn,
-        harUttaksplanBlittSlettet: uttaksplanMetadata?.harUttaksplanBlittSlettet,
-        annenPartsUttakErLagtTilIPlan: uttaksplanMetadata?.annenPartsUttakErLagtTilIPlan,
         uttaksplanNy,
-        uttaksplanMetadataNy,
+        ønskerJustertUttakVedFødsel,
         valgtEksisterendeSaksnr,
     } satisfies FpMellomlagretData;
 

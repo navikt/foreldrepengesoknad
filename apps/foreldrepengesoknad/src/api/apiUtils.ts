@@ -1,28 +1,20 @@
 import { ContextDataMap, ContextDataType } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
-import { toNumber } from 'lodash';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { getEndringstidspunktNy } from 'utils/dateUtils';
-import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import {
     AnnenForelder,
-    Arbeidsform,
     Barn,
-    Periode,
     Periodetype,
     Søkerrolle,
-    UttaksperiodeBase,
     isAdoptertBarn,
     isAdoptertStebarn,
     isAnnenForelderIkkeOppgitt,
     isAnnenForelderOppgitt,
-    isForeldrepengerFørFødselUttaksperiode,
     isFødtBarn,
-    isUttaksperiode,
 } from '@navikt/fp-common';
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
     AnnenForelderDto,
     Attachment,
@@ -32,7 +24,6 @@ import {
     ForeldrepengesøknadDto,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
-    KontoType,
     Målform,
     Oppholdsårsak,
     SøkerDto,
@@ -41,19 +32,10 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
     UttakUtsettelseÅrsak_fpoversikt,
-    UttaksplanDto,
     Uttaksplanperiode,
     isUfødtBarn,
 } from '@navikt/fp-types';
-import {
-    UttaksdagenString,
-    Uttaksperioden,
-    dateToISOString,
-    getDecoratorLanguageCookie,
-    isValidTidsperiode,
-    omitOne,
-} from '@navikt/fp-utils';
-import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from '@navikt/fp-uttaksplan';
+import { UttaksdagenString, Uttaksperioden, getDecoratorLanguageCookie, omitOne } from '@navikt/fp-utils';
 import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -64,58 +46,6 @@ export const UKJENT_UUID = 'ukjent uuid';
 
 const hentValgtSpråk = (): Målform => {
     return getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform;
-};
-
-const getUttaksperiodeForInnsending = (uttaksperiodeBase: UttaksperiodeBase): Uttaksplanperiode => {
-    const uttaksperiode = {
-        type: 'uttak' as const,
-        fom: dateToISOString(uttaksperiodeBase.tidsperiode.fom),
-        tom: dateToISOString(uttaksperiodeBase.tidsperiode.tom),
-        konto: uttaksperiodeBase.konto as KontoType,
-        morsAktivitetIPerioden: uttaksperiodeBase.morsAktivitetIPerioden,
-        ønskerSamtidigUttak: uttaksperiodeBase.ønskerSamtidigUttak,
-        samtidigUttakProsent: toNumber(uttaksperiodeBase.samtidigUttakProsent) || undefined,
-        ønskerFlerbarnsdager: uttaksperiodeBase.ønskerFlerbarnsdager,
-        ønskerGradering: uttaksperiodeBase.gradert,
-    };
-
-    if (uttaksperiodeBase.gradert) {
-        return {
-            ...uttaksperiode,
-            gradering: {
-                ...getArbeidstakerFrilansSN(uttaksperiodeBase.arbeidsformer),
-                stillingsprosent: toNumber(uttaksperiodeBase.stillingsprosent),
-                orgnumre: uttaksperiodeBase.orgnumre,
-            },
-        };
-    } else {
-        return uttaksperiode;
-    }
-};
-
-const isNotPeriodetypeHull = (periode: Periode): boolean => {
-    return periode.type !== Periodetype.Hull;
-};
-
-const isNotPeriodetypeInfo = (periode: Periode): boolean => {
-    return periode.type !== Periodetype.Info;
-};
-
-const isNotPeriodeUtenUttak = (periode: Periode): boolean => {
-    return periode.type !== Periodetype.PeriodeUtenUttak;
-};
-
-const skalPeriodeSendesInn = (periode: Periode) => {
-    if (isForeldrepengerFørFødselUttaksperiode(periode)) {
-        return !periode.skalIkkeHaUttakFørTermin;
-    }
-
-    return (
-        isNotPeriodetypeHull(periode) &&
-        isNotPeriodetypeInfo(periode) &&
-        isNotPeriodeUtenUttak(periode) &&
-        !(isUttaksperiode(periode) && periode.konto === undefined)
-    );
 };
 
 const cleanBarn = (barn: Barn): BarnDto => {
@@ -158,104 +88,6 @@ const konverterRolle = (rolle: Søkerrolle): BrukerRolle => {
         case 'medmor':
             return 'MEDMOR';
     }
-};
-
-const changeClientonlyKontotype = (
-    periode: Periode,
-    annenForelderHarRettPåForeldrepengerINorge: boolean,
-    morErUfør: boolean,
-    søkerErFarEllerMedmor: boolean,
-    familiehendelsesdato: string,
-) => {
-    if (isUttaksperiode(periode)) {
-        if (periode.konto === 'AKTIVITETSFRI_KVOTE') {
-            periode.konto = 'FORELDREPENGER';
-            if (
-                søkerErFarEllerMedmor &&
-                !annenForelderHarRettPåForeldrepengerINorge &&
-                andreAugust2022ReglerGjelder(familiehendelsesdato)
-            ) {
-                periode.morsAktivitetIPerioden = 'IKKE_OPPGITT';
-            } else if (morErUfør) {
-                periode.morsAktivitetIPerioden = 'UFØRE';
-            }
-        }
-    }
-    return periode;
-};
-
-const getArbeidstakerFrilansSN = (arbeidsformer: Arbeidsform[] | undefined) => {
-    if (arbeidsformer !== undefined && arbeidsformer.length > 0) {
-        const arbeidsform = arbeidsformer[0];
-        return {
-            erArbeidstaker: arbeidsform === Arbeidsform.arbeidstaker,
-            erFrilanser: arbeidsform === Arbeidsform.frilans,
-            erSelvstendig: arbeidsform === Arbeidsform.selvstendignæringsdrivende,
-        };
-    } else {
-        return {};
-    }
-};
-
-const getPeriodeForInnsending = (periode: Periode): Uttaksplanperiode => {
-    const { tidsperiode, ...periodeRest } = periode;
-    // @ts-expect-error -- kontoType må mappes om
-    return {
-        ...periodeRest,
-        fom: dateToISOString(tidsperiode.fom),
-        tom: dateToISOString(tidsperiode.tom),
-    };
-};
-
-const cleanUttaksplan = (
-    plan: Periode[],
-    familiehendelsesdato: string,
-    søkerErFarEllerMedmor: boolean,
-    ønskerJustertUttakVedFødsel: boolean | undefined,
-    annenForelder?: AnnenForelder,
-    endringstidspunkt?: Date,
-): UttaksplanDto => {
-    const uttaksplan = plan.map((periode) => {
-        return { ...periode };
-    });
-    const cleanedUttaksplan = uttaksplan
-        .filter((periode: Periode) => isValidTidsperiode(periode.tidsperiode))
-        .filter(skalPeriodeSendesInn)
-        .map((periode) =>
-            annenForelder && isAnnenForelderOppgitt(annenForelder)
-                ? changeClientonlyKontotype(
-                      periode,
-                      !!annenForelder.harRettPåForeldrepengerINorge,
-                      !!annenForelder.erMorUfør,
-                      søkerErFarEllerMedmor,
-                      familiehendelsesdato,
-                  )
-                : periode,
-        )
-        .map((periode) =>
-            periode.type === Periodetype.Uttak
-                ? getUttaksperiodeForInnsending(periode)
-                : getPeriodeForInnsending(periode),
-        );
-
-    if (endringstidspunkt && førsteOktober2021ReglerGjelder(familiehendelsesdato)) {
-        const periodeVedEndringstidspunkt = getPeriodeVedTidspunkt(cleanedUttaksplan, endringstidspunkt);
-
-        if (!periodeVedEndringstidspunkt) {
-            return {
-                ønskerJustertUttakVedFødsel: ønskerJustertUttakVedFødsel,
-                uttaksperioder: getUttaksplanMedFriUtsettelsesperiode(
-                    cleanedUttaksplan,
-                    dayjs(endringstidspunkt).format(ISO_DATE_FORMAT),
-                ),
-            };
-        }
-    }
-
-    return {
-        ønskerJustertUttakVedFødsel: ønskerJustertUttakVedFødsel,
-        uttaksperioder: cleanedUttaksplan,
-    };
 };
 
 export const getPeriodeVedTidspunkt = (
@@ -354,21 +186,6 @@ const cleanAnnenforelder = (annenForelder: AnnenForelder | undefined): AnnenFore
 export const getSøknadsdataForInnsending = (
     erEndringssøknad: boolean,
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-    endringerIUttaksplan: Periode[],
-    familiehendelsesdato: string,
-    søkerinfo: FpPersonopplysningerDto_fpoversikt,
-    endringstidspunkt?: Date,
-): ForeldrepengesøknadDto | EndringssøknadForeldrepengerDto => {
-    if (erEndringssøknad) {
-        return cleanEndringssøknad(hentData, endringerIUttaksplan, familiehendelsesdato, søkerinfo, endringstidspunkt);
-    } else {
-        return cleanSøknad(hentData, familiehendelsesdato, søkerinfo);
-    }
-};
-
-export const getSøknadsdataForInnsendingNy = (
-    erEndringssøknad: boolean,
-    hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: FpPersonopplysningerDto_fpoversikt,
     foreldrepengerSaker: FpSak_fpoversikt[],
 ): ForeldrepengesøknadDto | EndringssøknadForeldrepengerDto => {
@@ -377,55 +194,13 @@ export const getSøknadsdataForInnsendingNy = (
     const eksisterendeSak = foreldrepengerSaker.find((sak) => sak.saksnummer === valgtEksisterendeSaksnr);
 
     if (erEndringssøknad) {
-        return cleanEndringssøknadNy(hentData, søkerinfo, eksisterendeSak);
+        return mapTilEndringssøknadDto(hentData, søkerinfo, eksisterendeSak);
     } else {
-        return cleanSøknadNy(hentData, søkerinfo);
+        return mapTilSøknadDto(hentData, søkerinfo);
     }
 };
 
-export const cleanSøknad = (
-    hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-    familiehendelsesdato: string,
-    søkerinfo: FpPersonopplysningerDto_fpoversikt,
-): ForeldrepengesøknadDto => {
-    const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
-    const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
-    const frilans = hentData(ContextDataType.FRILANS);
-    const egenNæring = hentData(ContextDataType.EGEN_NÆRING);
-    const andreInntektskilder = hentData(ContextDataType.ANDRE_INNTEKTSKILDER);
-    const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
-    const utenlandsoppholdNeste12Mnd = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
-    const utenlandsoppholdSiste12Mnd = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-    const dekningsgrad = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
-    const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN));
-    const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
-    const vedlegg = hentData(ContextDataType.VEDLEGG);
-
-    const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const uttaksplanInnsending = cleanUttaksplan(
-        uttaksplan,
-        familiehendelsesdato,
-        søkerErFarEllerMedmor,
-        uttaksplanMetadata.ønskerJustertUttakVedFødsel,
-        annenForelder,
-    );
-    return {
-        søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
-        rolle: konverterRolle(søkersituasjon.rolle),
-        språkkode: hentValgtSpråk(),
-        frilans: frilans,
-        egenNæring: egenNæring,
-        andreInntekterSiste10Mnd: andreInntektskilder,
-        barn: cleanBarn(barn),
-        annenForelder: cleanAnnenforelder(annenForelder),
-        dekningsgrad,
-        uttaksplan: uttaksplanInnsending,
-        utenlandsopphold: (utenlandsoppholdSiste12Mnd ?? []).concat(utenlandsoppholdNeste12Mnd ?? []),
-        vedlegg: convertAttachmentsMapToArray(vedlegg),
-    };
-};
-
-export const cleanSøknadNy = (
+export const mapTilSøknadDto = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: FpPersonopplysningerDto_fpoversikt,
 ): ForeldrepengesøknadDto => {
@@ -439,7 +214,7 @@ export const cleanSøknadNy = (
     const utenlandsoppholdSiste12Mnd = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const dekningsgrad = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN_NY));
-    const { ønskerJustertUttakVedFødsel } = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA_NY));
+    const ønskerJustertUttakVedFødsel = notEmpty(hentData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL));
 
     const vedlegg = hentData(ContextDataType.VEDLEGG);
 
@@ -478,41 +253,7 @@ const mapSøkerInfoTilSøknadDto = (søkerinfo: FpPersonopplysningerDto_fpoversi
     };
 };
 
-export const cleanEndringssøknad = (
-    hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-    endringerIUttaksplan: Periode[],
-    familiehendelsesdato: string,
-    søkerinfo: FpPersonopplysningerDto_fpoversikt,
-    endringstidspunkt?: Date,
-): EndringssøknadForeldrepengerDto => {
-    const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
-    const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
-    const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
-    const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
-    const eksisterendeSak = notEmpty(hentData(ContextDataType.EKSISTERENDE_SAK));
-    const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const vedlegg = hentData(ContextDataType.VEDLEGG);
-    return {
-        søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
-
-        saksnummer: eksisterendeSak.saksnummer,
-        rolle: konverterRolle(søkersituasjon.rolle),
-        språkkode: hentValgtSpråk(),
-        barn: cleanBarn(barn),
-        annenForelder: cleanAnnenforelder(annenForelder),
-        uttaksplan: cleanUttaksplan(
-            endringerIUttaksplan,
-            familiehendelsesdato,
-            søkerErFarEllerMedmor,
-            uttaksplanMetadata.ønskerJustertUttakVedFødsel,
-            annenForelder,
-            endringstidspunkt,
-        ),
-        vedlegg: convertAttachmentsMapToArray(vedlegg),
-    };
-};
-
-export const cleanEndringssøknadNy = (
+export const mapTilEndringssøknadDto = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: FpPersonopplysningerDto_fpoversikt,
     eksisterendeSak?: FpSak_fpoversikt,
@@ -522,7 +263,7 @@ export const cleanEndringssøknadNy = (
     const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
     const valgtEksisterendeSaksnr = notEmpty(hentData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR));
     const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN_NY));
-    const { ønskerJustertUttakVedFødsel } = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA_NY));
+    const ønskerJustertUttakVedFødsel = notEmpty(hentData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL));
     const vedlegg = hentData(ContextDataType.VEDLEGG);
 
     const søkersNyePerioder = filtrerUtAnnenPartsPerioder(uttaksplan, søkersituasjon.rolle);

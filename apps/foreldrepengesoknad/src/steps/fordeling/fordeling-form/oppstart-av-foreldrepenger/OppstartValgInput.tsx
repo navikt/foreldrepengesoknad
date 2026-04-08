@@ -6,7 +6,6 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Fordeling, OppstartValg } from 'types/Fordeling';
 import { getDatoForAleneomsorg, getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'utils/barnUtils';
-import { ISOStringToDate } from 'utils/dateUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getKunFarHarRett } from 'utils/personUtils';
 
@@ -16,30 +15,27 @@ import { Barn, NavnPåForeldre, isAdoptertAnnetBarn, isFødtBarn } from '@navikt
 import { RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import { formatDateExtended } from '@navikt/fp-utils';
-import {
-    andreAugust2022ReglerGjelder,
-    førsteOktober2021ReglerGjelder,
-    getFørsteUttaksdagForeldrepengerFørFødsel,
-} from '@navikt/fp-uttaksplan';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
+import { getFørsteUttaksdagForeldrepengerFørFødsel } from './MorOppstartInformasjon';
+
 const getOppstartsvalgFarFødsel = (
-    familiehendelsesDato: Date,
-    førsteDagEtterAnnenForelder: Date | undefined,
+    familiehendelsesDato: string,
+    førsteDagEtterAnnenForelder: string | undefined,
 ): OppstartValg[] => {
     const radioOptions = [] as OppstartValg[];
     const erFødselsdatoOverTreMånederTilbakeITid = dayjs(familiehendelsesDato).isBefore(
         dayjs().startOf('month').subtract(3, 'months').toDate(),
     );
-    if (andreAugust2022ReglerGjelder(familiehendelsesDato) && !erFødselsdatoOverTreMånederTilbakeITid) {
+    if (!erFødselsdatoOverTreMånederTilbakeITid) {
         radioOptions.push(OppstartValg.FAMILIEHENDELSESDATO);
     }
     if (førsteDagEtterAnnenForelder) {
         radioOptions.push(OppstartValg.DAGEN_ETTER_ANNEN_FORELDER);
     }
-    if (førsteOktober2021ReglerGjelder(familiehendelsesDato)) {
-        radioOptions.push(OppstartValg.ANNEN_DATO);
-    }
+
+    radioOptions.push(OppstartValg.ANNEN_DATO);
+
     return radioOptions;
 };
 
@@ -92,8 +88,8 @@ const getOppstartsValgMorFødsel = (barn: Barn) => {
 };
 
 const getOppstartsvalgAdopsjon = (
-    førsteDagEtterAnnenForelder: Date | undefined,
-    adoptertFraUtlandetDato: Date | undefined,
+    førsteDagEtterAnnenForelder: string | undefined,
+    adoptertFraUtlandetDato: string | undefined,
 ): OppstartValg[] => {
     const radioOptions = [OppstartValg.FAMILIEHENDELSESDATO];
     if (adoptertFraUtlandetDato) {
@@ -106,7 +102,7 @@ const getOppstartsvalgAdopsjon = (
     return radioOptions;
 };
 
-const getRadioOptionForDatoForAleneomsorg = (datoForAleneomsorg: Date | undefined): React.ReactElement => {
+const getRadioOptionForDatoForAleneomsorg = (datoForAleneomsorg: string | undefined): React.ReactElement => {
     if (!datoForAleneomsorg) {
         throw new Error('Mangler dato for aleneomsorg');
     }
@@ -130,7 +126,7 @@ const getRadioOptionForDatoForAleneomsorg = (datoForAleneomsorg: Date | undefine
     );
 };
 
-const getRadioOptionAdopsjon = (familiehendelsesdato: Date): React.ReactElement => {
+const getRadioOptionAdopsjon = (familiehendelsesdato: string): React.ReactElement => {
     return (
         <Radio key={OppstartValg.FAMILIEHENDELSESDATO} value={OppstartValg.FAMILIEHENDELSESDATO}>
             <FormattedMessage
@@ -141,7 +137,7 @@ const getRadioOptionAdopsjon = (familiehendelsesdato: Date): React.ReactElement 
     );
 };
 
-const getRadioOptionAdopsjonAnkomstNorge = (ankomstNorge: Date | undefined): React.ReactElement => {
+const getRadioOptionAdopsjonAnkomstNorge = (ankomstNorge: string | undefined): React.ReactElement => {
     if (!ankomstNorge) {
         throw new Error('Ukjent ankomstdato til Norge');
     }
@@ -205,7 +201,7 @@ const getRadioOptionMorFødsel = (antallBarn: number) => {
 
 const getRadioOptionDagenEtterAnnenForelder = (
     navnAnnenForelder: string,
-    førsteDagEtterAnnenForelder: Date | undefined,
+    førsteDagEtterAnnenForelder: string | undefined,
 ): React.ReactElement => {
     if (!førsteDagEtterAnnenForelder) {
         throw new Error('Mangler dato for oppstart etter annen forelder.');
@@ -241,7 +237,7 @@ const getRadioOptionAnnenDatoMorFødsel = (erBarnetFødt: boolean, intl: IntlSha
 };
 
 const getRadioOptionTreUkerFørTermin = (intl: IntlShape, barn: Barn): React.ReactElement => {
-    const termindato = ISOStringToDate(getTermindato(barn));
+    const termindato = getTermindato(barn);
     const førsteDagTreUkerFørFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(termindato);
     return (
         <Radio
@@ -260,7 +256,7 @@ const getRadioOptionTreUkerFørTermin = (intl: IntlShape, barn: Barn): React.Rea
 };
 
 const getRadioOptionTreUkerFørFødsel = (intl: IntlShape, barn: Barn): React.ReactElement => {
-    const fødselsdato = ISOStringToDate(getFødselsdato(barn));
+    const fødselsdato = getFødselsdato(barn);
     const førsteDagTreUkerFørFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(fødselsdato);
     return (
         <Radio
@@ -282,11 +278,11 @@ export const getValgOptionsForOppstart = (
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,
     deltUttak: boolean,
-    førsteDagEtterAnnenForelder: Date | undefined,
-    datoForAleneomsorg: Date | undefined,
+    førsteDagEtterAnnenForelder: string | undefined,
+    datoForAleneomsorg: string | undefined,
 ): OppstartValg[] => {
-    const adoptertFraUtlandetDato = isAdoptertAnnetBarn(barn) ? ISOStringToDate(barn.ankomstdato) : undefined;
-    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
+    const adoptertFraUtlandetDato = isAdoptertAnnetBarn(barn) ? barn.ankomstdato : undefined;
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const erMor = !erFarEllerMedmor;
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
@@ -297,11 +293,7 @@ export const getValgOptionsForOppstart = (
         return getOppstartsvalgFarAleneomsorg();
     }
     if (erFarEllerMedmor && erFødsel) {
-        return getOppstartsvalgFarFødsel(
-            familiehendelsesdato,
-
-            førsteDagEtterAnnenForelder,
-        );
+        return getOppstartsvalgFarFødsel(familiehendelsesdato, førsteDagEtterAnnenForelder);
     }
     return getOppstartsvalgAdopsjon(førsteDagEtterAnnenForelder, adoptertFraUtlandetDato);
 };
@@ -311,7 +303,7 @@ const getRadioOptionFamiliehendelsesdato = (
     intl: IntlShape,
     erFødsel: boolean,
     erBarnetFødt: boolean,
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
     antallBarn: number,
     deltUttak: boolean,
 ) => {
@@ -341,15 +333,15 @@ const mapOppstartValgToRadioOption = (
     barn: Barn,
     erFødsel: boolean,
     erFarEllerMedmor: boolean,
-    datoForAleneomsorg: Date | undefined,
+    datoForAleneomsorg: string | undefined,
     navnAnnenForelder: string,
-    førsteDagEtterAnnenForelder: Date | undefined,
+    førsteDagEtterAnnenForelder: string | undefined,
     deltUttak: boolean,
     intl: IntlShape,
 ) => {
-    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erBarnetFødt = isFødtBarn(barn);
-    const ankomstNorge = isAdoptertAnnetBarn(barn) ? ISOStringToDate(barn.ankomstdato)! : undefined;
+    const ankomstNorge = isAdoptertAnnetBarn(barn) ? barn.ankomstdato : undefined;
     switch (valg) {
         case OppstartValg.FAMILIEHENDELSESDATO:
             return getRadioOptionFamiliehendelsesdato(
@@ -379,16 +371,14 @@ const mapOppstartValgToRadioOption = (
 interface Props {
     oppstartsvalg: OppstartValg[];
     erFarEllerMedmor: boolean;
-    familiehendelsesdato: Date;
     erAleneOmOmsorg: boolean;
     navnPåForeldre: NavnPåForeldre;
-    førsteDagEtterAnnenForelder: Date | undefined;
+    førsteDagEtterAnnenForelder: string | undefined;
 }
 
 export const OppstartValgInput = ({
     oppstartsvalg,
     erFarEllerMedmor,
-    familiehendelsesdato,
     erAleneOmOmsorg,
     navnPåForeldre,
     førsteDagEtterAnnenForelder,
@@ -408,7 +398,7 @@ export const OppstartValgInput = ({
     const navnAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const deltUttak = getIsDeltUttak(annenForelder);
-    const datoForAleneomsorg = ISOStringToDate(getDatoForAleneomsorg(annenForelder));
+    const datoForAleneomsorg = getDatoForAleneomsorg(annenForelder);
 
     return (
         <RhfRadioGroup
@@ -416,10 +406,7 @@ export const OppstartValgInput = ({
             control={control}
             label={<FormattedMessage id="fordeling.oppstartValg.spørsmål" />}
             description={
-                erFarEllerMedmor &&
-                andreAugust2022ReglerGjelder(familiehendelsesdato) &&
-                !erAleneOmOmsorg &&
-                !bareFarHarRett ? (
+                erFarEllerMedmor && !erAleneOmOmsorg && !bareFarHarRett ? (
                     <FormattedMessage id="fordeling.oppstartValg.description.fedreWLB" />
                 ) : (
                     <FormattedMessage id="fordeling.description.kanEndresSenere" />

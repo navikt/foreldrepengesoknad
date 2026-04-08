@@ -70,7 +70,7 @@ export const isValidAntallDagerFellesperiode =
     };
 
 export const validateOppstartsdato =
-    (intl: IntlShape, minDato: Date | undefined, maxDato: Date | undefined) => (value: string) => {
+    (intl: IntlShape, minDato: string | undefined, maxDato: string | undefined) => (value: string) => {
         if (minDato && dayjs(value).isBefore(minDato, 'd')) {
             return intl.formatMessage({ id: 'fordeling.oppstartsdato.forTidlig' }, { minDato: formatDate(minDato) });
         }

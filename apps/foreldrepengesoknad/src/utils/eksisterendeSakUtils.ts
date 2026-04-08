@@ -17,7 +17,6 @@ import {
     Søkerrolle,
     isAdoptertBarn,
     isFødtBarn,
-    isInfoPeriode,
     isUfødtBarn,
 } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
@@ -35,19 +34,16 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { Tidsperioden, Uttaksperioden } from '@navikt/fp-utils';
-import { convertTidsperiodeToTidsperiodeDate } from '@navikt/fp-uttaksplan';
+import { TidsperiodenString, Uttaksperioden } from '@navikt/fp-utils';
 
 import {
     ISOStringToDate,
-    dateToISOString,
     getErDatoInnenEnDagFraAnnenDato,
     getRelevantFamiliehendelseDato,
     sorterDatoEtterEldst,
 } from './dateUtils';
 import { getFamiliehendelseType } from './familiehendelseUtils';
 import { guid } from './guid';
-import { mapSaksperioderTilUttaksperioder } from './mapSaksperioderTilUttaksperioder';
 import { getKjønnFromFnrString } from './personUtils';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: AktivitetType_fpoversikt): Arbeidsform => {
@@ -131,10 +127,7 @@ const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
 ) => {
     const likePerioder = saksperioder.filter(
         (periode2) =>
-            periode.guid !== periode2.guid &&
-            Tidsperioden(convertTidsperiodeToTidsperiodeDate(periode.periode)).erLik(
-                convertTidsperiodeToTidsperiodeDate(periode2.periode),
-            ),
+            periode.guid !== periode2.guid && TidsperiodenString.forPeriode(periode.periode).erLik(periode2.periode),
     );
 
     if (likePerioder.length === 0) {
@@ -164,7 +157,6 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
     barn: Barn,
     søkerErFarEllerMedmor: boolean,
     familiehendelsesdato: string,
-    førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): EksisterendeSak | undefined => {
     if (eksisterendeSakAnnenPart === undefined) {
         return undefined;
@@ -206,26 +198,17 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
         perioderAnnenpartEøs: undefined,
     } as const;
 
-    const uttaksplanAnnenPart = mapSaksperioderTilUttaksperioder(
-        saksperioderAnnenPart,
-        grunnlagForAnnenPart,
-        undefined,
-        førsteUttaksdagNesteBarnsSak,
-    );
-
     return {
         saksnummer: '',
         erAnnenPartsSak,
         grunnlag: grunnlagForAnnenPart,
         saksperioder: saksperioderAnnenPart,
-        uttaksplan: uttaksplanAnnenPart.filter((p) => isInfoPeriode(p)),
     };
 };
 
 export const mapSøkerensEksisterendeSakFromDTO = (
     eksisterendeSak: FpSak_fpoversikt,
-    førsteUttaksdagNesteBarnsSak: Date | undefined,
-    valgtBarnFødselsdatoer: Date[] | undefined,
+    valgtBarnFødselsdatoer: string[] | undefined,
 ): EksisterendeSak => {
     const erAnnenPartsSak = false;
     const {
@@ -242,9 +225,7 @@ export const mapSøkerensEksisterendeSakFromDTO = (
 
     const erFarEllerMedmor = !sakTilhørerMor;
     const fødselsdatoFraValgtBarn =
-        valgtBarnFødselsdatoer && valgtBarnFødselsdatoer.length > 0
-            ? dateToISOString(valgtBarnFødselsdatoer[0])
-            : undefined;
+        valgtBarnFødselsdatoer && valgtBarnFødselsdatoer.length > 0 ? valgtBarnFødselsdatoer[0] : undefined;
     const fødselsdatoForSaken = fødselsdatoFraFPSak ?? fødselsdatoFraValgtBarn;
     const grunnlag: Saksgrunnlag = {
         dekningsgrad: dekningsgrad === 'HUNDRE' ? '100' : '80',
@@ -272,19 +253,11 @@ export const mapSøkerensEksisterendeSakFromDTO = (
         })
         .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
 
-    const uttaksplan = mapSaksperioderTilUttaksperioder(
-        saksperioder,
-        grunnlag,
-        eksisterendeSak.gjeldendeVedtak?.perioderAnnenpartEøs,
-        førsteUttaksdagNesteBarnsSak,
-    );
-
     return {
         saksnummer: eksisterendeSak.saksnummer,
         erAnnenPartsSak,
         grunnlag,
         saksperioder,
-        uttaksplan,
     };
 };
 
@@ -433,7 +406,7 @@ const getBarnFromValgteBarn = (valgteBarn: ValgtBarn): Barn => {
             type: BarnType.FØDT,
             antallBarn: valgteBarn.antallBarn,
             fødselsdatoer: sorterDatoEtterEldst(valgteBarn.fødselsdatoer),
-            termindato: dateToISOString(valgteBarn.termindato),
+            termindato: valgteBarn.termindato,
             fnr:
                 valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0
                     ? valgteBarn.fnr.filter((fnr) => !!fnr)
@@ -535,7 +508,7 @@ export const lagSøknadFraValgteBarnMedSak = (
     registrerteBarn: FpBarnDto_fpoversikt[],
     søkerFnr: string,
 ): Partial<Søknad> => {
-    const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, undefined, valgteBarn.fødselsdatoer);
+    const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, valgteBarn.fødselsdatoer);
     const { grunnlag } = eksisterendeSak;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(grunnlag.familiehendelseType);
     const barn = getBarnFromValgteBarn(valgteBarn);
@@ -568,7 +541,7 @@ export const lagEndringsSøknad = (
     annenPartFraSak: Person_fpoversikt | undefined,
     valgteBarn: ValgtBarn,
 ): Partial<Søknad> => {
-    const { grunnlag, uttaksplan } = eksisterendeSak;
+    const { grunnlag } = eksisterendeSak;
     const { dekningsgrad, familiehendelseType, søkerErFarEllerMedmor, ønskerJustertUttakVedFødsel } = grunnlag;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(familiehendelseType);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag, valgteBarn);
@@ -595,7 +568,6 @@ export const lagEndringsSøknad = (
         },
         erEndringssøknad: true,
         dekningsgrad,
-        uttaksplan,
         saksnummer: eksisterendeSak.saksnummer,
         ønskerJustertUttakVedFødsel: ønskerJustertUttakVedFødsel,
     };

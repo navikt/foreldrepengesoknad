@@ -21,7 +21,7 @@ import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 import { BarnVelger } from './BarnVelger';
 import { DinePlikter } from './dine-plikter/DinePlikter';
-import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './forsideUtils';
+import { getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './forsideUtils';
 import { DinePersonopplysningerModal } from './modaler/DinePersonopplysningerModal';
 import { ForsideFormValues } from './types/ForsideFormValues';
 
@@ -77,11 +77,8 @@ export const Forside = ({
             return navigator.goToNextStep(SøknadRoutes.SØKERSITUASJON);
         }
 
-        const barnFraNesteSak = getBarnFraNesteSak(valgteBarn, selectableBarn);
-        oppdaterDataIState(ContextDataType.BARN_FRA_NESTE_SAK, barnFraNesteSak);
         const vilSøkeOmEndring = !!valgteBarn.kanSøkeOmEndring;
 
-        // TODO (TOR) Denne skal erstatta bruken av BARN_FRA_NESTE_SAK og EKSISTERENDE_SAK i ny uttaksplan
         oppdaterDataIState(ContextDataType.VALGT_EKSISTERENDE_SAKSNR, valgtBarn?.sak?.saksnummer);
 
         // Uklarhet: hvorfor lete etter sak her. Er ikke sak allerede satt på "valgteBarn"
@@ -90,11 +87,7 @@ export const Forside = ({
             : undefined;
 
         if (valgtEksisterendeSak) {
-            const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(
-                valgtEksisterendeSak,
-                barnFraNesteSak?.startdatoFørsteStønadsperiode,
-                valgteBarn.fødselsdatoer,
-            );
+            const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgtEksisterendeSak, valgteBarn.fødselsdatoer);
 
             const søknad = lagEndringsSøknad(
                 søkerInfo,
@@ -103,7 +96,7 @@ export const Forside = ({
                 valgtEksisterendeSak.annenPart,
                 valgteBarn,
             );
-            oppdaterSøknadIState(søknad, eksisterendeSak);
+            oppdaterSøknadIState(søknad);
 
             setErEndringssøknad(true);
             setSøknadGjelderNyttBarn(false);

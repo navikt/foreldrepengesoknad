@@ -7,8 +7,6 @@ import { getFarMedmorErAleneOmOmsorg, getMorErAleneOmOmsorg } from 'utils/person
 import {
     AnnenForelder,
     Barn,
-    BarnFraNesteSak,
-    EksisterendeSak,
     isAdoptertAnnetBarn,
     isAdoptertStebarn,
     isAnnenForelderOppgitt,
@@ -89,21 +87,13 @@ const finnRettighetstype = (
     return 'BARE_SØKER_RETT';
 };
 
-export const getStønadskontoParams = ({
-    barn,
-    annenForelder,
-    søkersituasjon,
-    barnFraNesteSak,
-    annenPartsVedtak,
-    eksisterendeSak,
-}: {
-    barn: Barn;
-    annenForelder: AnnenForelder;
-    søkersituasjon: SøkersituasjonFp;
-    barnFraNesteSak?: BarnFraNesteSak;
-    annenPartsVedtak: AnnenPartSak_fpoversikt | undefined;
-    eksisterendeSak?: EksisterendeSak;
-}) => {
+export const getStønadskontoParams = (
+    barn: Barn,
+    annenForelder: AnnenForelder,
+    søkersituasjon: SøkersituasjonFp,
+    annenPartsVedtak: AnnenPartSak_fpoversikt | undefined,
+    termindatoEksisterendeSak?: string,
+) => {
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(
@@ -118,14 +108,14 @@ export const getStønadskontoParams = ({
         annenForelder,
     );
 
-    const førsteUttaksdagNesteBarnsSak = barnFraNesteSak?.startdatoFørsteStønadsperiode;
+    // TODO (TOR) Er dette noko me treng?
+    const førsteUttaksdagNesteBarnsSak = undefined; // barnFraNesteSak?.startdatoFørsteStønadsperiode;
 
     const eksisterendeVedtakAnnenPart = mapAnnenPartsEksisterendeSakFromDTO(
         annenPartsVedtak,
         barn,
         erFarEllerMedmor,
         getFamiliehendelsedato(barn),
-        førsteUttaksdagNesteBarnsSak,
     );
 
     const saksgrunnlagsAntallBarn = getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter(
@@ -136,7 +126,7 @@ export const getStønadskontoParams = ({
 
     const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
         erFarEllerMedmor,
-        eksisterendeSak?.grunnlag.termindato,
+        termindatoEksisterendeSak,
         eksisterendeVedtakAnnenPart?.grunnlag.termindato,
     );
 

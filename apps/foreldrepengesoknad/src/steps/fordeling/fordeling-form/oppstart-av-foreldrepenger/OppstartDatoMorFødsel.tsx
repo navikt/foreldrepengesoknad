@@ -4,12 +4,11 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Fordeling, OppstartValg } from 'types/Fordeling';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'utils/barnUtils';
-import { ISOStringToDate } from 'utils/dateUtils';
 
 import { Alert, HStack, VStack } from '@navikt/ds-react';
 
 import { isFødtBarn } from '@navikt/fp-common';
-import { Uttaksdagen, erUttaksdag, isValidDate } from '@navikt/fp-utils';
+import { UttaksdagenString, erUttaksdag, isValidDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { MorOppstartInformasjon } from './MorOppstartInformasjon';
@@ -26,10 +25,10 @@ export const OppstartDatoMorFødsel = ({ oppstartValg }: Props) => {
     const erBarnetFødt = isFødtBarn(barn);
     const termindato = getTermindato(barn);
     const fødselsdato = getFødselsdato(barn);
-    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
     const { watch } = useFormContext<Fordeling>();
     const oppstartDato = watch('oppstartDato');
-    const førsteUttaksdagPåEllerEtterFamHendelse = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+    const førsteUttaksdagPåEllerEtterFamHendelse = UttaksdagenString.denneEllerNeste(familiehendelsesdato).getDato();
     const visInformasjon =
         oppstartDato &&
         isValidDate(oppstartDato) &&
