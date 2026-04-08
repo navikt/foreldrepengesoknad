@@ -280,7 +280,9 @@ export const getUttaksplanMedFriUtsettelsesperiode = (
         type: Periodetype.Utsettelse,
         årsak: 'FRI',
         fom: endringstidspunkt,
-        tom: endringsTidspunktPeriodeTom,
+        tom: dayjs(endringsTidspunktPeriodeTom).isBefore(endringstidspunkt, 'day')
+            ? endringstidspunkt
+            : endringsTidspunktPeriodeTom,
         erArbeidstaker: false,
     };
 
