@@ -1,17 +1,16 @@
 import { IntlShape, useIntl } from 'react-intl';
 
-import { NavnPåForeldre, Overføringsperiode } from '@navikt/fp-common';
-import { KontoTypeUttak } from '@navikt/fp-types';
+import { NavnPåForeldre } from '@navikt/fp-common';
+import { KontoTypeUttak, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { getÅrsakTekst } from '../OppsummeringUtils';
 import { Feltoppsummering } from './Feltoppsummering';
 
 interface Props {
-    periode: Overføringsperiode;
+    periode: UttakPeriode_fpoversikt;
     navnPåForeldre: NavnPåForeldre;
 }
 
-const getNavnPåAnnenForelder = (navnPåForeldre: NavnPåForeldre, konto: KontoTypeUttak, intl: IntlShape) => {
+const getNavnPåAnnenForelder = (navnPåForeldre: NavnPåForeldre, konto: KontoTypeUttak | undefined, intl: IntlShape) => {
     if (konto === 'FEDREKVOTE') {
         return navnPåForeldre.farMedmor;
     } else if (konto === 'MØDREKVOTE') {
@@ -22,11 +21,39 @@ const getNavnPåAnnenForelder = (navnPåForeldre: NavnPåForeldre, konto: KontoT
 
 export const Overføringsperiodedetaljer = ({ periode, navnPåForeldre }: Props) => {
     const intl = useIntl();
-    const navnAnnenForelder = getNavnPåAnnenForelder(navnPåForeldre, periode.konto, intl);
+    const navnAnnenForelder = getNavnPåAnnenForelder(navnPåForeldre, periode.kontoType, intl);
     return (
         <Feltoppsummering
             feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.årsak' })}
-            verdi={getÅrsakTekst(intl, periode, { navnAnnenForelder })}
+            verdi={getÅrsakTekst(intl, periode, navnAnnenForelder)}
         />
     );
+};
+
+const getÅrsakTekst = (intl: IntlShape, periode: UttakPeriode_fpoversikt, navnAnnenForelder: string) => {
+    const { overføringÅrsak } = periode;
+
+    if (overføringÅrsak === 'ALENEOMSORG') {
+        return intl.formatMessage({ id: 'uttaksplan.overføringsårsaktype.ALENEOMSORG' }, { navnAnnenForelder });
+    }
+    if (overføringÅrsak === 'IKKE_RETT_ANNEN_FORELDER') {
+        return intl.formatMessage(
+            { id: 'uttaksplan.overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER' },
+            { navnAnnenForelder },
+        );
+    }
+    if (overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER') {
+        return intl.formatMessage(
+            { id: 'uttaksplan.overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER' },
+            { navnAnnenForelder },
+        );
+    }
+    if (overføringÅrsak === 'SYKDOM_ANNEN_FORELDER') {
+        return intl.formatMessage(
+            { id: 'uttaksplan.overføringsårsaktype.SYKDOM_ANNEN_FORELDER' },
+            { navnAnnenForelder },
+        );
+    }
+
+    return '';
 };
