@@ -4,7 +4,7 @@ import ky from 'ky';
 
 import { ForsendelseStatus, Saker_fpoversikt, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
-export const urlPrefiks = import.meta.env.BASE_URL;
+const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/personopplysninger/svangerskapspenger`,

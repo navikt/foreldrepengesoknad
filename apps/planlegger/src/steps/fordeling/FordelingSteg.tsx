@@ -4,12 +4,11 @@ import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
-import { finnSøker1Tekst, finnSøker2Tekst, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
+import { getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { UkerOgDager, getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
+import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyShort, Box, Heading, InlineMessage, Spacer, VStack } from '@navikt/ds-react';
@@ -22,11 +21,6 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { FordelingSlider } from '../../components/FordelingSlider';
 import { FordelingsdetaljerPanel } from './FordelingsdetaljerPanel';
-
-type Fellesperiodefordeling = {
-    antallUkerOgDagerSøker1: UkerOgDager;
-    antallUkerOgDagerSøker2: UkerOgDager;
-};
 
 interface Props {
     stønadskontoer: { '100': KontoBeregningDto; '80': KontoBeregningDto };
@@ -167,83 +161,5 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
                 </VStack>
             </RhfForm>
         </PlanleggerStepPage>
-    );
-};
-
-export const getFellesperiodefordelingSelectOptions = (
-    antallUkerOgDagerFellesperiode: UkerOgDager,
-): Fellesperiodefordeling[] => {
-    const values = [];
-    for (let i = 0; i <= antallUkerOgDagerFellesperiode.uker; i++) {
-        const søker1SkalHaDager = antallUkerOgDagerFellesperiode.uker - i >= i;
-        const dagerSøker1 = søker1SkalHaDager ? antallUkerOgDagerFellesperiode.dager : 0;
-        const dagerSøker2 = !søker1SkalHaDager ? antallUkerOgDagerFellesperiode.dager : 0;
-        values.push({
-            antallUkerOgDagerSøker1: {
-                uker: antallUkerOgDagerFellesperiode.uker - i,
-                dager: søker1SkalHaDager ? antallUkerOgDagerFellesperiode.dager : 0,
-                totaltAntallDager: (antallUkerOgDagerFellesperiode.uker - i) * 5 + dagerSøker1,
-            },
-            antallUkerOgDagerSøker2: {
-                uker: i,
-                dager: søker1SkalHaDager ? 0 : antallUkerOgDagerFellesperiode.dager,
-                totaltAntallDager: i * 5 + dagerSøker2,
-            },
-        });
-    }
-    return values;
-};
-
-export const finnFellesperiodeFordelingOptionTekst = (
-    intl: IntlShape,
-    value: Fellesperiodefordeling,
-    hvemPlanlegger: HvemPlanlegger,
-    fornavnSøker1?: string,
-    fornavnSøker2?: string,
-    erOversiktSteg?: boolean,
-) => {
-    const erFarOgFar = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
-    const søker1Tekst = erFarOgFar && fornavnSøker1 ? fornavnSøker1 : finnSøker1Tekst(intl, hvemPlanlegger);
-    const søker2Tekst = erFarOgFar && fornavnSøker2 ? fornavnSøker2 : finnSøker2Tekst(intl, hvemPlanlegger);
-
-    if (value.antallUkerOgDagerSøker1.uker === 0) {
-        return (
-            <FormattedMessage
-                id="FordelingSteg.FordelingOptionAlt"
-                values={{
-                    hvem: søker2Tekst,
-                    uker: value.antallUkerOgDagerSøker2.uker,
-                    dager: value.antallUkerOgDagerSøker2.dager,
-                    erOversiktSteg,
-                }}
-            />
-        );
-    }
-    if (value.antallUkerOgDagerSøker2.uker === 0) {
-        return (
-            <FormattedMessage
-                id="FordelingSteg.FordelingOptionAlt"
-                values={{
-                    hvem: søker1Tekst,
-                    uker: value.antallUkerOgDagerSøker1.uker,
-                    dager: value.antallUkerOgDagerSøker1.dager,
-                    erOversiktSteg,
-                }}
-            />
-        );
-    }
-    return (
-        <FormattedMessage
-            id="FordelingSteg.FordelingOptions"
-            values={{
-                hvem: søker1Tekst,
-                hvem2: søker2Tekst,
-                uker: value.antallUkerOgDagerSøker1.uker,
-                dagerS1: value.antallUkerOgDagerSøker1.dager,
-                uker2: value.antallUkerOgDagerSøker2.uker,
-                dagerS2: value.antallUkerOgDagerSøker2.dager,
-                erOversiktSteg,
-            }}
-        />
     );
 };

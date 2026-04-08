@@ -4,7 +4,7 @@ import ky from 'ky';
 
 import { EsPersonopplysningerDto_fpoversikt, ForsendelseStatus } from '@navikt/fp-types';
 
-export const urlPrefiks = import.meta.env.BASE_URL;
+const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
     personInfo: `${urlPrefiks}/fpoversikt/api/personopplysninger/engangsstonad`,

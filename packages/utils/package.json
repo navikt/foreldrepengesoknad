@@ -30,7 +30,6 @@
         "eslint": "9.39.2",
         "fast-glob": "3.3.3",
         "jsdom": "29.0.1",
-        "playwright": "1.58.2",
         "typescript": "6.0.2",
         "vite": "8.0.5",
         "vitest": "4.1.1"

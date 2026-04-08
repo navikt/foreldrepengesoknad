@@ -17,9 +17,7 @@
         "generate": "pnpm --filter @navikt/fp-types run generate"
     },
     "dependencies": {
-        "gh-pages": "6.3.0",
         "glob": "13.0.6",
-        "husky": "9.1.7",
         "lint-staged": "16.4.0",
         "shelljs": "0.10.0",
         "turbo": "2.9.3"
@@ -30,7 +28,7 @@
         "msw": "2.12.14",
         "msw-storybook-addon": "2.0.6",
         "prettier": "3.8.1",
-        "prettier-plugin-tailwindcss": "0.7.2"
+        "typescript": "5.9.3"
     },
     "lint-staged": {
         "apps/**/*.{ts,tsx,js,jsx, css}": "prettier --write",

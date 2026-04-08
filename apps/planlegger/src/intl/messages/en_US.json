@@ -56,8 +56,6 @@
     "FordelingsdetaljerPanel.InfoboksTittel": "Your period",
     "FordelingSteg.EkstraDagInfo.EnDag": "The extra day of shared parental leave will be automatically added to the plan. If you would like a different distribution, you can change this in the plan later.",
     "FordelingSteg.EkstraDagInfo.FlereDager": "The extra days of shared parental leave will be automatically added to the plan. If you would like a different distribution, you can change this in the plan later.",
-    "FordelingSteg.FordelingOptionAlt": "{erOversiktSteg, select, true {The joint period: } other{}} {uker} weeks to {hvem}",
-    "FordelingSteg.FordelingOptions": "{erOversiktSteg, select, true {The joint period: } other{}} {uker}{dagerS1, select, 0 {} other {+{dagerS1}}} to {hvem}, {uker2}{dagerS2, select, 0 {} other {+{dagerS2}}} to {hvem2}",
     "FordelingSteg.FordelingTittel": "How do you want to distribute the {uker} weeks {dager, select, 1 {and one day} 2 {and two days} 3 {and three days} 4 {and four days} other{}} of the common period?",
     "FordelingSteg.Infoboks.HvordanFordeleTekst": "The parental allowance is divided into three parts; one for each of the parents and a joint period. With {prosent}% parental allowance, this period is {uker} weeks{dager, select, 1 { and one day} 2 { and two days} 3 { and three days} 4 { and four days} other{}}. You can choose how the period is to be distributed between you.",
     "FordelingSteg.Infoboks.HvordanFordeleTittel": "The joint period",

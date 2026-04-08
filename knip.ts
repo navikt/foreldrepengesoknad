@@ -1,45 +1,29 @@
 import type { KnipConfig } from 'knip';
 
-// Avhengigheter som ikke brukes overalt per nå. Men som vi ønsker ha tilgjengelig.
-const avhengigheterViVilHaUansett = [
-    '@navikt/aksel-icons',
-    '@navikt/ds-css',
-    '@navikt/ds-tailwind',
-    '@tailwindcss/vite',
-    'tailwindcss'
-];
-
-// Usikker på om de med storybook trengs. jsdom og coverage refereres av vitest.
-const avhengigheterRelatertTilTest = [
-    '@vitest/coverage-v8',
-    'jsdom',
-    '@storybook/addon-actions',
-    '@storybook/cli',
-    'playwright'
-];
-
-const avhenegigheterKnipIkkeForstårBrukes = [
-    '@formatjs/intl-pluralrules',
-    '@sentry/browser',
-    'i18n-iso-countries'
-];
-
 const config: KnipConfig = {
     ignore: [
-        'server/**',
-        '**/mock-storage.cjs',
-        '**/@types/externals.d.ts',
-        '**/bootstrap.tsx',
-        '**/openapi-ts.config.ts',
-        '**/hent-openapi-spec.js',
         '**/fpoversiktDtoGenerert.ts',
-        '**/fpsoknadDtoGenerert.ts'
+        '**/fpsoknadDtoGenerert.ts',
+
+        // Disse kan fikses med å gå over til string enums
+        'packages/constants/src/arbeidsform.ts',
+        'packages/constants/src/attachmentType.ts',
+        'packages/constants/src/opprinneligSøkt.ts',
+        'packages/constants/src/periodeHullÅrsak.ts',
+        'packages/constants/src/skjemanummer.ts',
+
+        // Kan fjernes når gamle uttaksplanen er fjernet
+        'apps/foreldrepengesoknad/src/steps/uttaksplan/**/*.ts*',
+        'apps/foreldrepengesoknad/src/api/queries.ts',
+        'apps/foreldrepengesoknad/src/app-data/FpDataContext.tsx',
+        'apps/foreldrepengesoknad/src/utils/eksisterendeSakUtils.ts',
+        'apps/foreldrepengesoknad/src/utils/stønadskontoerUtils.ts',
+        'apps/foreldrepengesoknad/src/utils/submitUtils.ts',
+        'apps/foreldrepengesoknad/src/utils/fordelingUtils.ts'
     ],
-    ignoreBinaries: ['formatjs'],
     ignoreDependencies: [
-        ...avhengigheterViVilHaUansett,
-        ...avhengigheterRelatertTilTest,
-        ...avhenegigheterKnipIkkeForstårBrukes
+        'lint-staged',
+        'formik' // avhengighet kan fjernes når gamle uttaksplanen er slettet
     ]
 };
 

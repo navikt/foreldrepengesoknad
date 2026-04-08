@@ -59,10 +59,6 @@ const createConfig = (setupFileDirName) => {
         },
         test: {
             globals: true,
-            coverage: {
-                include: ['src/**/*'],
-                exclude: [],
-            },
             testTimeout: 15000,
             projects: [
                 {
