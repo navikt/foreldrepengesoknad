@@ -1,8 +1,10 @@
 {
     "extends": "@navikt/fp-config-typescript/tsconfig.json",
     "compilerOptions": {
-        "baseUrl": "src",
         "jsx": "react-jsx",
+        "paths": {
+            "types/*": ["./src/types/*"]
+        },
         "types": ["vite/client", "@testing-library/jest-dom", "vitest/globals"]
     },
     "include": ["src", "vitest"],

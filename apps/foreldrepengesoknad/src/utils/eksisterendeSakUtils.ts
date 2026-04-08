@@ -649,7 +649,10 @@ export const erPeriodeIOpprinneligPlan = (
             nyPeriode.gradering === p.gradering &&
             nyPeriode.utsettelseÅrsak === p.utsettelseÅrsak &&
             nyPeriode.samtidigUttak === p.samtidigUttak &&
-            nyPeriode.resultat === p.resultat &&
+            nyPeriode.resultat?.innvilget === p.resultat?.innvilget &&
+            nyPeriode.resultat?.trekkerDager === p.resultat?.trekkerDager &&
+            nyPeriode.resultat?.trekkerMinsterett === p.resultat?.trekkerMinsterett &&
+            nyPeriode.resultat?.årsak === p.resultat?.årsak &&
             nyPeriode.oppholdÅrsak === p.oppholdÅrsak &&
             nyPeriode.overføringÅrsak === p.overføringÅrsak
         );

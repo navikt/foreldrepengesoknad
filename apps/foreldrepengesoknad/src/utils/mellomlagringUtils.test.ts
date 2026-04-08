@@ -1,7 +1,7 @@
 import { SøknadRoutes } from 'appData/routes';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 
-import { MELLOMLAGRET_VERSJON, shouldApplyStorage } from './mellomlagringUtils';
+import { VERSJON_MELLOMLAGRING, shouldApplyStorage } from './mellomlagringUtils';
 
 describe('Test av mellomlagring', () => {
     it('Burde ikke bruke mellomlagrede data hvis versjon ikke er lik current version', () => {
@@ -14,14 +14,14 @@ describe('Test av mellomlagring', () => {
     });
 
     it('Burde bruke mellomlagrede data hvis versjon er lik current version', () => {
-        const result = shouldApplyStorage({ version: MELLOMLAGRET_VERSJON, søknad: {} } as FpMellomlagretData);
+        const result = shouldApplyStorage({ version: VERSJON_MELLOMLAGRING, søknad: {} } as FpMellomlagretData);
 
         expect(result).toBe(true);
     });
 
     it('Burde ikke bruke mellomlagrede data hvis currentRoute er en rute som ikke finnes for endringssøknad', () => {
         let result = shouldApplyStorage({
-            version: MELLOMLAGRET_VERSJON,
+            version: VERSJON_MELLOMLAGRING,
             currentRoute: SøknadRoutes.SØKERSITUASJON,
             søknad: {
                 erEndringssøknad: true,
@@ -31,7 +31,7 @@ describe('Test av mellomlagring', () => {
         expect(result).toBe(false);
 
         result = shouldApplyStorage({
-            version: MELLOMLAGRET_VERSJON,
+            version: VERSJON_MELLOMLAGRING,
             currentRoute: SøknadRoutes.OM_BARNET,
             søknad: {
                 erEndringssøknad: true,
@@ -41,7 +41,7 @@ describe('Test av mellomlagring', () => {
         expect(result).toBe(false);
 
         result = shouldApplyStorage({
-            version: MELLOMLAGRET_VERSJON,
+            version: VERSJON_MELLOMLAGRING,
             currentRoute: SøknadRoutes.ANNEN_FORELDER,
             søknad: {
                 erEndringssøknad: true,
@@ -51,7 +51,7 @@ describe('Test av mellomlagring', () => {
         expect(result).toBe(false);
 
         result = shouldApplyStorage({
-            version: MELLOMLAGRET_VERSJON,
+            version: VERSJON_MELLOMLAGRING,
             currentRoute: SøknadRoutes.FORDELING,
             søknad: {
                 erEndringssøknad: true,
@@ -61,7 +61,7 @@ describe('Test av mellomlagring', () => {
         expect(result).toBe(false);
 
         result = shouldApplyStorage({
-            version: MELLOMLAGRET_VERSJON,
+            version: VERSJON_MELLOMLAGRING,
             currentRoute: SøknadRoutes.UTENLANDSOPPHOLD,
             søknad: {
                 erEndringssøknad: true,
@@ -71,7 +71,7 @@ describe('Test av mellomlagring', () => {
         expect(result).toBe(false);
 
         result = shouldApplyStorage({
-            version: MELLOMLAGRET_VERSJON,
+            version: VERSJON_MELLOMLAGRING,
             currentRoute: SøknadRoutes.ARBEID_OG_INNTEKT,
             søknad: {
                 erEndringssøknad: true,

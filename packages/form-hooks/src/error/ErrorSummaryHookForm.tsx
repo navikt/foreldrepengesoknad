@@ -56,6 +56,7 @@ export const ErrorSummaryHookForm = () => {
         // eslint-disable-next-line @typescript-eslint/no-base-to-string
         message: error?.message?.toString(),
         //@ts-expect-error TODO Burde nok heller bruka setFocus her
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         focus: error?.ref?.focus,
     }));
 

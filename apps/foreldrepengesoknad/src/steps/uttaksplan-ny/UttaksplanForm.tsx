@@ -147,6 +147,9 @@ export const UttaksplanForm = ({
         } else if (harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, gjeldendeUttaksplan || defaultUttaksperioder)) {
             setFeilmelding(<FormattedMessage id="UttaksplanSteg.MorsAktivitetIkkeValgt" />);
             scrollToKvoteOppsummering();
+        } else if (harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, gjeldendeUttaksplan)) {
+            setFeilmelding(<FormattedMessage id="UttaksplanSteg.KunPerioderForAnnenForelder" />);
+            scrollToKvoteOppsummering();
         } else {
             oppdaterUttaksplanMetadata({
                 ønskerJustertUttakVedFødsel: visAutomatiskJustering
@@ -382,4 +385,17 @@ const harBrukerKunSlettetPerioder = (
     }
 
     return false;
+};
+
+const harKunPerioderForAnnenForelder = (
+    erSøkerFarEllerMedmor: boolean,
+    perioder?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+) => {
+    if (!perioder || perioder.length === 0) {
+        return false;
+    }
+
+    const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
+
+    return perioder.every((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.forelder !== søkersForelder);
 };

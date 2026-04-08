@@ -546,6 +546,7 @@
     "UttaksplanSteg.liste": "Liste",
     "UttaksplanSteg.OvertrukketDager": "Du har lagt til for mange dagar i planen",
     "UttaksplanSteg.IngenPerioder": "Du har ikkje lagt til nokon periodar i planen",
+    "UttaksplanSteg.KunPerioderForAnnenForelder": "Du har berre lagt til periodar for den andre forelderen i planen. Du må leggje inn periodar for deg sjølv for å kunne søkje om foreldrepengar.",
     "UttaksplanSteg.IngenNyePerioder": "Du må gjere ei endring for å kunne søkje om endring",
     "UttaksplanSteg.AutomatiskJustering.Spørsmål": "Planen din inneheld én periode med din egen kvote rundt fødsel. Sidan denne perioden startar på termin, ønsker du at vi endrer den til å starte frå fødselsdato når {antallBarn, plural, one {barnet} other {barna}} blir født?",
     "UttaksplanSteg.AutomatiskJustering.Svar.Påkrevd": "Du må svare på spørsmålet om automatisk justering av perioden når barnet blir født.",
