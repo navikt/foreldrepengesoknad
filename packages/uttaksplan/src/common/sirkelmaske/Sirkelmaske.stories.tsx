@@ -1,9 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { UttaksplanHexColor } from '@navikt/fp-common';
-
 import PengerIkon from '../../common/penger-ikon/PengerIkon';
 import Sirkelmaske from './Sirkelmaske';
+import { UttaksplanHexColor } from './UttaksplanHexColor';
 
 const meta = {
     component: Sirkelmaske,

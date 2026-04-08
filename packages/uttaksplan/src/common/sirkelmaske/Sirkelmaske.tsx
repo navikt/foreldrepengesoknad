@@ -1,8 +1,7 @@
 import { CSSProperties } from 'react';
 
-import { UttaksplanHexColor } from '@navikt/fp-common';
-
 import planBemUtils from '../../utils/planBemUtils';
+import { UttaksplanHexColor } from './UttaksplanHexColor';
 import './sirkelmaske.less';
 
 interface Props {

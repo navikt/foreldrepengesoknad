@@ -21,4 +21,3 @@ export * from './Søknadsinfo';
 export * from './Tidsperiode';
 export * from './TidsperiodeDate';
 export * from './UttakRundtFødselÅrsak';
-export * from './UttaksplanHexColor';

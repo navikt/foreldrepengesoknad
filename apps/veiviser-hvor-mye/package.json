@@ -2,7 +2,7 @@
     "name": "veiviser-hvor-mye",
     "version": "1.0.0",
     "description": "NAV Foreldrepengeveiviser som viser hvor mye du får utbetalt",
-    "main": "./src/app/bootstrap.tsx",
+    "main": "./src/bootstrap.tsx",
     "type": "module",
     "author": "NAV",
     "license": "MIT",

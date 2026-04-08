@@ -325,7 +325,7 @@ const getKontoFarge = (konto: KontoTypeUttak, erFarEllerMedmor: boolean): Calend
     }
 };
 
-export const getUttaksperiodeFarge = (
+const getUttaksperiodeFarge = (
     konto: KontoTypeUttak,
     forelder: BrukerRolleSak_fpoversikt | undefined,
     erFarEllerMedmor: boolean,
@@ -341,10 +341,7 @@ export const getUttaksperiodeFarge = (
     return getForelderFarge(forelder, erFarEllerMedmor);
 };
 
-export const getForelderFarge = (
-    forelder: BrukerRolleSak_fpoversikt,
-    erFarEllerMedmor: boolean,
-): CalendarPeriodColor => {
+const getForelderFarge = (forelder: BrukerRolleSak_fpoversikt, erFarEllerMedmor: boolean): CalendarPeriodColor => {
     if (forelder === 'MOR') {
         return erFarEllerMedmor ? 'LIGHTBLUE' : 'BLUE';
     }

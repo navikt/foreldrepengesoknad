@@ -18,10 +18,6 @@ export const formaterDato = (dato: DateType, datoformat?: string) => {
     return dayjs(dato).format(datoformat || 'dddd D. MMMM YYYY');
 };
 
-export const formaterTid = (dato: DateType) => {
-    return formaterDato(dato, 'KL.HH:mm');
-};
-
 export const ISOStringToDate = (dateString: string | undefined) => {
     if (dateString === undefined) {
         return undefined;

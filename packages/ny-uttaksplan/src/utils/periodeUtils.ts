@@ -18,7 +18,6 @@ import {
     erEøsUttakPeriode,
     erVanligUttakPeriode,
 } from '../types/UttaksplanPeriode';
-import { UttaksperiodeValidatorer } from './UttaksperiodeValidatorer';
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(minMax);
@@ -54,19 +53,6 @@ export const erOppholdsperiode = (periode: Uttaksplanperiode) => {
 
 export const erAvslåttPeriode = (periode: Uttaksplanperiode) => {
     return 'resultat' in periode && periode.resultat && periode.resultat.innvilget !== true;
-};
-
-export const erAvslåttPeriodeFørsteSeksUkerMor = (
-    periode: Uttaksplanperiode,
-    familiehendelsesdato: string,
-): boolean => {
-    return (
-        !!erAvslåttPeriode(periode) &&
-        'forelder' in periode &&
-        periode.forelder === 'MOR' &&
-        dayjs(periode.fom).isSameOrAfter(dayjs(familiehendelsesdato), 'day') &&
-        UttaksperiodeValidatorer.erFørFørsteSeksUker(periode, familiehendelsesdato)
-    );
 };
 
 export const sorterPerioder = (a: { fom: string; tom: string }, b: { fom: string; tom: string }): number => {

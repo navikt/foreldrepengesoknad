@@ -40,7 +40,6 @@
         "@tanstack/react-query-devtools": "5.95.2",
         "dayjs": "1.11.20",
         "i18n-iso-countries": "7.14.0",
-        "ky": "1.14.3",
         "morgan": "1.10.1",
         "react": "19.2.4",
         "react-dom": "19.2.4",

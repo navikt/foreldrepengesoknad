@@ -33,7 +33,6 @@
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
-        "@storybook/addon-links": "10.3.4",
         "@storybook/react-vite": "10.3.4",
         "@testing-library/jest-dom": "6.9.1",
         "@testing-library/react": "16.3.2",
@@ -43,8 +42,7 @@
         "fast-glob": "3.3.3",
         "jsdom": "29.0.1",
         "storybook": "10.3.4",
-        "storybook-react-intl": "10.1.1",
-        "typescript": "6.0.2",
+        "typescript": "5.9.3",
         "vite": "8.0.5",
         "vitest": "4.1.1"
     },

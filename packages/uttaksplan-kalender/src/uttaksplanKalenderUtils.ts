@@ -1,6 +1,6 @@
 import { IntlShape } from 'react-intl';
 
-import { Barn, UtsettelsesÅrsak, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
+import { UtsettelsesÅrsak } from '@navikt/fp-types';
 import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formaterDatoUtenDag, getNavnGenitivEierform } from '@navikt/fp-utils';
 
@@ -35,16 +35,6 @@ const getUtsettelseLabel = (unikeUtsettelseÅrsaker: UtsettelsesÅrsak[], intl: 
         return intl.formatMessage({ id: 'kalender.utsettelse' }, { årsak: årsakTekst });
     }
     return intl.formatMessage({ id: 'kalender.dinUtsettelse' });
-};
-
-export const getFamiliehendelseKalendarLabel = (barn: Barn, intl: IntlShape): string => {
-    if (!isAdoptertBarn(barn)) {
-        if (isFødtBarn(barn)) {
-            return intl.formatMessage({ id: 'kalender.fødsel' });
-        }
-        return intl.formatMessage({ id: 'kalender.termin' });
-    }
-    return intl.formatMessage({ id: 'kalender.adopsjon' });
 };
 
 export const getKalenderPeriodenavn = (

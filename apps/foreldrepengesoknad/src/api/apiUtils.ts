@@ -425,7 +425,7 @@ export const cleanSøknad = (
     };
 };
 
-export const cleanSøknadNy = (
+const cleanSøknadNy = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: FpPersonopplysningerDto_fpoversikt,
 ): ForeldrepengesøknadDto => {
@@ -512,7 +512,7 @@ export const cleanEndringssøknad = (
     };
 };
 
-export const cleanEndringssøknadNy = (
+const cleanEndringssøknadNy = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: FpPersonopplysningerDto_fpoversikt,
     eksisterendeSak?: FpSak_fpoversikt,

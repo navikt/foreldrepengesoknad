@@ -101,7 +101,7 @@ const getNesteUttaksdagEtterAnnenForelder = (sisteDagAnnenForelder: string | und
     return UttaksdagenString.neste(sisteUttaksdagAnnenForelder).getDato();
 };
 
-export function getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato: string | undefined): string {
+function getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato: string | undefined): string {
     if (!familiehendelsesdato) {
         throw new Error('Mangler informasjon om familiehendelsesdato.');
     }
@@ -110,21 +110,21 @@ export function getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdat
     ).getDatoAntallUttaksdagerTidligere(15);
 }
 
-export function getFørsteUttaksdagAnkomstdatoNorge(anksomstdatoNorge: string | undefined): string {
+function getFørsteUttaksdagAnkomstdatoNorge(anksomstdatoNorge: string | undefined): string {
     if (!anksomstdatoNorge) {
         throw new Error('Mangler informasjon om ankomstdato til Norge.');
     }
     return UttaksdagenString.denneEllerNeste(anksomstdatoNorge).getDato();
 }
 
-export function getFørsteUttaksdagDatoForAleneomsorg(datoForAleneomsorg: string | undefined): string {
+function getFørsteUttaksdagDatoForAleneomsorg(datoForAleneomsorg: string | undefined): string {
     if (!datoForAleneomsorg) {
         throw new Error('Mangler informasjon om dato for aleneomsorg.');
     }
     return UttaksdagenString.denneEllerNeste(datoForAleneomsorg).getDato();
 }
 
-export const getOppstartsdatoFromFordelingValg = (
+const getOppstartsdatoFromFordelingValg = (
     fordeling: Fordeling,
     barn: Barn,
     datoForAleneomsorg: string | undefined,
