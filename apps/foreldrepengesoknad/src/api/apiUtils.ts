@@ -206,7 +206,7 @@ export const mapTilSøknadDto = (
     const utenlandsoppholdNeste12Mnd = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const utenlandsoppholdSiste12Mnd = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const dekningsgrad = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
-    const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN_NY));
+    const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN));
     const ønskerJustertUttakVedFødsel = hentData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
 
     const vedlegg = hentData(ContextDataType.VEDLEGG);
@@ -255,7 +255,7 @@ export const mapTilEndringssøknadDto = (
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
     const valgtEksisterendeSaksnr = notEmpty(hentData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR));
-    const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN_NY));
+    const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN));
     const ønskerJustertUttakVedFødsel = hentData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const vedlegg = hentData(ContextDataType.VEDLEGG);
 

@@ -34,7 +34,7 @@ interface Props {
 }
 
 export const UttaksplanOppsummeringsliste = ({ navnPåForeldre, registrerteArbeidsforhold }: Props) => {
-    const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_NY));
+    const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
 

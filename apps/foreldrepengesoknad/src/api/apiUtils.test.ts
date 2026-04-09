@@ -97,7 +97,7 @@ const getStateMock = (
         if (type === ContextDataType.OM_BARNET) {
             return barnInput;
         }
-        if (type === ContextDataType.UTTAKSPLAN_NY) {
+        if (type === ContextDataType.UTTAKSPLAN) {
             return uttaksplanInput;
         }
         if (type === ContextDataType.SØKERSITUASJON) {

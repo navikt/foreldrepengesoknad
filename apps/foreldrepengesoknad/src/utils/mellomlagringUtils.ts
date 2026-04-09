@@ -1,7 +1,7 @@
 import { SøknadRoutes } from 'appData/routes';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 
-export const VERSJON_MELLOMLAGRING = 19;
+export const VERSJON_MELLOMLAGRING = 20;
 
 const isEndringssøknadRoute = (route: SøknadRoutes): boolean => {
     switch (route) {

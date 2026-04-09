@@ -57,9 +57,9 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
-    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN_NY);
+    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
     const eksisterendeSaksnummer = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
-    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN_NY);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
 

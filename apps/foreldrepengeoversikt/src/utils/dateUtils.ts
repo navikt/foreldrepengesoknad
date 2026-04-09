@@ -12,14 +12,8 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(isBetween);
 dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
 
-type DateType = string | undefined;
-
-export const formaterDato = (dato: DateType, datoformat?: string) => {
+export const formaterDato = (dato: string | undefined, datoformat?: string) => {
     return dayjs(dato).format(datoformat || 'dddd D. MMMM YYYY');
-};
-
-export const formaterTid = (dato: DateType) => {
-    return formaterDato(dato, 'KL.HH:mm');
 };
 
 export const getErDatoInnenEnDagFraAnnenDato = (dato1: string | undefined, dato2: string | undefined): boolean => {

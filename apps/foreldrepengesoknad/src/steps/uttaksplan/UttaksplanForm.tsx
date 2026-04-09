@@ -75,13 +75,13 @@ export const UttaksplanForm = ({
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const harJustertUttakVedFødsel = useContextGetData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
-    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN_NY);
+    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
 
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
     const oppdaterHarJustertUttakVedFødsel = useContextSaveData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
-    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN_NY);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
     const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
     const erEndringssøknad = !!valgtEksisterendeSaksnr;

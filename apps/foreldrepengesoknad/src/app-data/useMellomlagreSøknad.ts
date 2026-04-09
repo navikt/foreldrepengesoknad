@@ -35,7 +35,6 @@ export interface FpMellomlagretData {
     barnFraNesteSak?: BarnFraNesteSak;
     annenPartsUttakErLagtTilIPlan?: boolean;
     uttaksplanNy?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
-    ønskerJustertUttakVedFødsel?: boolean;
     valgtEksisterendeSaksnr?: string;
 }
 
@@ -66,7 +65,7 @@ const getDataForMellomlagring = (
     const fordeling = getDataFromState(ContextDataType.FORDELING);
     const dekningsgrad = getDataFromState(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const vedlegg = getDataFromState(ContextDataType.VEDLEGG);
-    const uttaksplanNy = getDataFromState(ContextDataType.UTTAKSPLAN_NY);
+    const uttaksplanNy = getDataFromState(ContextDataType.UTTAKSPLAN);
     const ønskerJustertUttakVedFødsel = getDataFromState(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const valgtEksisterendeSaksnr = getDataFromState(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
@@ -96,7 +95,6 @@ const getDataForMellomlagring = (
         },
         fordeling,
         uttaksplanNy,
-        ønskerJustertUttakVedFødsel,
         valgtEksisterendeSaksnr,
     } satisfies FpMellomlagretData;
 

@@ -15,13 +15,13 @@ export const DAY_MONTHNAME_YEAR_FORMAT = 'D. MMMM YYYY';
 
 // TODO Er dette greie datoar eller bør ein velga noko anna?
 export const TIDENES_MORGEN = '1000-01-01';
-export const TIDENES_ENDE = '9999-31-12';
+export const TIDENES_ENDE = '9999-12-31';
 
 export const DATE_TODAY = dayjs().format(ISO_DATE_FORMAT);
 export const SIX_MONTHS_AGO = dayjs().subtract(6, 'month').startOf('day').format(ISO_DATE_FORMAT);
 export const DATE_1_YEAR_FROM_NOW = dayjs().add(1, 'years').format(ISO_DATE_FORMAT);
 export const DATE_1_YEAR_AGO = dayjs().subtract(1, 'years').format(ISO_DATE_FORMAT);
-export const DATE_3_YEARS_AGO = dayjs().startOf('days').subtract(3, 'years').startOf('day').format(ISO_DATE_FORMAT);
+export const DATE_3_YEARS_AGO = dayjs().startOf('day').subtract(3, 'years').startOf('day').format(ISO_DATE_FORMAT);
 export const DATE_4_YEARS_AGO = dayjs().subtract(4, 'year').startOf('day').format(ISO_DATE_FORMAT);
 
 export const DATE_5_MONTHS_AGO = dayjs().subtract(5, 'month').startOf('day').format(ISO_DATE_FORMAT);

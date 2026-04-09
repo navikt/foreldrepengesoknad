@@ -299,7 +299,7 @@ const meta = {
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
                             [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100',
-                            [ContextDataType.UTTAKSPLAN_NY]: uttaksplan,
+                            [ContextDataType.UTTAKSPLAN]: uttaksplan,
                             [ContextDataType.VEDLEGG]: vedlegg,
                         }}
                     >
@@ -1079,7 +1079,7 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: args.utenlandsoppholdSenere,
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: args.utenlandsoppholdTidligere,
                             [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100',
-                            [ContextDataType.UTTAKSPLAN_NY]: uttaksplanMedSamtidigUttak, // Bruk den nye uttaksplanen
+                            [ContextDataType.UTTAKSPLAN]: uttaksplanMedSamtidigUttak,
                             [ContextDataType.VEDLEGG]: args.vedlegg,
                         }}
                     >

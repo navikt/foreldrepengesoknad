@@ -32,7 +32,7 @@ export enum ContextDataType {
     UTENLANDSOPPHOLD_TIDLIGERE = 'UTENLANDSOPPHOLD_TIDLIGERE',
     PERIODE_MED_FORELDREPENGER = 'PERIODE_MED_FORELDREPENGER',
     FORDELING = 'FORDELING',
-    UTTAKSPLAN_NY = 'UTTAKSPLAN_NY',
+    UTTAKSPLAN = 'UTTAKSPLAN',
     HAR_JUSTERT_UTTAK_VED_FØDSEL = 'HAR_JUSTERT_UTTAK_VED_FØDSEL',
     VEDLEGG = 'VEDLEGG',
 }
@@ -52,7 +52,7 @@ export type ContextDataMap = {
     [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: UtenlandsoppholdPeriode[];
     [ContextDataType.PERIODE_MED_FORELDREPENGER]?: Dekningsgrad;
     [ContextDataType.FORDELING]?: Fordeling;
-    [ContextDataType.UTTAKSPLAN_NY]?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    [ContextDataType.UTTAKSPLAN]?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]?: boolean;
     [ContextDataType.VEDLEGG]?: VedleggDataType;
 };

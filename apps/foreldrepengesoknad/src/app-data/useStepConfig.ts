@@ -98,7 +98,7 @@ const showManglendeDokumentasjonSteg = (
         const annenForelder = getData(ContextDataType.ANNEN_FORELDER);
         const søkersituasjon = getData(ContextDataType.SØKERSITUASJON);
         const barn = getData(ContextDataType.OM_BARNET);
-        const uttaksplan = getData(ContextDataType.UTTAKSPLAN_NY);
+        const uttaksplan = getData(ContextDataType.UTTAKSPLAN);
         const andreInntektskilder = getData(ContextDataType.ANDRE_INNTEKTSKILDER);
         const familiehendelsedato = barn ? getFamiliehendelsedato(barn) : undefined;
 

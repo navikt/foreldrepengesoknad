@@ -162,7 +162,7 @@ const meta = {
                 <FpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
-                        [ContextDataType.UTTAKSPLAN_NY]: uttaksplan,
+                        [ContextDataType.UTTAKSPLAN]: uttaksplan,
                         [ContextDataType.ANNEN_FORELDER]: annenForelder,
                         [ContextDataType.OM_BARNET]: barn,
                         [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,

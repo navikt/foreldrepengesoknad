@@ -21,7 +21,7 @@ interface Props {
 }
 
 export const DokumentasjonOppsummering = ({ onVilEndreSvar, navnPåForeldre }: Props) => {
-    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN_NY);
+    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const alleVedlegg = useContextGetData(ContextDataType.VEDLEGG);
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
