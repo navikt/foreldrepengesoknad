@@ -26,8 +26,7 @@ import {
     isUfødtBarn,
 } from '@navikt/fp-types';
 import { UttaksdagenString, Uttaksperioden } from '@navikt/fp-utils';
-import { useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan-ny';
-import { useUttaksplanData } from '@navikt/fp-uttaksplan-ny/src/context/UttaksplanDataContext';
+import { useErAntallDagerOvertrukketIUttaksplan, useUttaksplanData } from '@navikt/fp-uttaksplan-ny';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { VilDuGåTilbakeModal } from './VilDuGåTilbakeModal';
@@ -127,9 +126,9 @@ export const UttaksplanForm = ({
         erSøkerFarEllerMedmor &&
         søkersituasjon.situasjon === 'fødsel' &&
         gjeldendeUttaksplan &&
-        finnPerioderRundtFødsel(gjeldendeUttaksplan, barn).filter(
+        finnPerioderRundtFødsel(gjeldendeUttaksplan, barn).some(
             (p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.forelder === 'FAR_MEDMOR',
-        ).length > 0 &&
+        ) &&
         isUfødtBarn(barn) &&
         barn.termindato !== undefined &&
         !bareFarHarRett;
