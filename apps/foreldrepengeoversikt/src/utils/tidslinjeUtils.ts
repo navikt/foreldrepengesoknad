@@ -13,8 +13,9 @@ import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { BarnGruppering } from '../types/BarnGruppering.ts';
 import { Tidslinjehendelse2 } from '../types/Tidslinjehendelse.ts';
-import { UTTAKSDAGER_PER_UKE } from './Uttaksdagen.ts';
 import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils.ts';
+
+export const UTTAKSDAGER_PER_UKE = 5;
 
 dayjs.extend(minMax);
 
