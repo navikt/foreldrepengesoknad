@@ -286,7 +286,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
 
                     if (
                         overlappendePerioderAnnenPart.length !== 0 &&
-                        overlappendePerioderAnnenPart.find(
+                        overlappendePerioderAnnenPart.some(
                             (periode) => isUttakAnnenPart(periode) && periode.ønskerSamtidigUttak === true,
                         )
                     ) {

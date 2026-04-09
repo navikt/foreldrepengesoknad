@@ -7,13 +7,13 @@ type Periode = {
 };
 
 export const useVisUtsettelsePanel = (valgtePerioder: Periode[]) => {
-    const [åpnedeValgtePerioder, setÅpnedeValgtePerioder] = useState<Periode[] | null>(null);
+    const [lagretPerioder, setLagretPerioder] = useState<Periode[] | null>(null);
 
-    const visUtsettelsePanel = åpnedeValgtePerioder !== null && erLikePerioder(åpnedeValgtePerioder, valgtePerioder);
+    const visUtsettelsePanel = lagretPerioder !== null && erLikePerioder(lagretPerioder, valgtePerioder);
 
     return {
         visUtsettelsePanel,
-        setVisUtsettelsePanel: (skalVisPanel: boolean) => setÅpnedeValgtePerioder(skalVisPanel ? valgtePerioder : null),
+        setVisUtsettelsePanel: (skalVisPanel: boolean) => setLagretPerioder(skalVisPanel ? valgtePerioder : null),
     };
 };
 

@@ -78,14 +78,14 @@ export const ForeldrepengerSamtidig = ({ erFarOgFar }: Props) => {
 
                         {barn.antallBarn !== 1 && (
                             <BodyLong>
-                                {!erAdopsjon ? (
+                                {erAdopsjon ? (
                                     <FormattedMessage
-                                        id="HvaErMulig.ForeldrepengerSamtidig.Flerbarnsdager"
+                                        id="HvaErMulig.ForeldrepengerSamtidig.Flerbarnsdager.Adopsjon"
                                         values={{ b: bTag }}
                                     />
                                 ) : (
                                     <FormattedMessage
-                                        id="HvaErMulig.ForeldrepengerSamtidig.Flerbarnsdager.Adopsjon"
+                                        id="HvaErMulig.ForeldrepengerSamtidig.Flerbarnsdager"
                                         values={{ b: bTag }}
                                     />
                                 )}{' '}

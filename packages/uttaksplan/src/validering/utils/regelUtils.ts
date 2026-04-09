@@ -49,11 +49,7 @@ const overstyresAvFilter = (avvik: RegelAvvik, _idx: number, alleAvvik: RegelAvv
 
 const overstyrerAndreFilter = (avvik: RegelAvvik, _idx: number, alleAvvik: RegelAvvik[]): boolean => {
     const overstyresAvAndre = alleAvvik.some((rb) =>
-        rb.regel.overstyrerRegler
-            ? rb.regel.overstyrerRegler.some((rbo) => {
-                  return rbo === avvik.regel.key;
-              })
-            : false,
+        rb.regel.overstyrerRegler ? rb.regel.overstyrerRegler.includes(avvik.regel.key) : false,
     );
     return overstyresAvAndre === false;
 };

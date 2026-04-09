@@ -108,7 +108,7 @@ export function getFørsteMuligeUttaksdag(
         return Uttaksdagen(familiehendelsesdato).denneEllerForrige();
     }
 
-    const datoÅRegneFra = termindato !== undefined ? termindato : familiehendelsesdato;
+    const datoÅRegneFra = termindato ?? familiehendelsesdato;
 
     return Uttaksdagen(getFørsteUttaksdagPåEllerEtterFødsel(datoÅRegneFra)).trekkFra(
         uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5,

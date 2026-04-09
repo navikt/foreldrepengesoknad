@@ -1745,7 +1745,7 @@ export const SkalViseGradertePeriodeForAnnenPartSomErLåst: Story = {
                     årsak: 'ANNET',
                 },
                 gradering: {
-                    arbeidstidprosent: 50.0,
+                    arbeidstidprosent: 50,
                 },
                 flerbarnsdager: false,
                 forelder: 'MOR',

@@ -190,7 +190,7 @@ const meta = {
                             <VStack gap="space-20">
                                 <Label>Values in form state:</Label>
                                 {Object.entries(stateVerdier).map((entry) => (
-                                    <BodyShort key={entry[0]}>{entry[0] + ': ' + entry[1]?.toString()}</BodyShort>
+                                    <BodyShort key={entry[0]}>{`${entry[0]}: ${JSON.stringify(entry[1])}`}</BodyShort>
                                 ))}
                             </VStack>
                         </Alert>

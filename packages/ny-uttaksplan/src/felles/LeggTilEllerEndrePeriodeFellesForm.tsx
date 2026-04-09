@@ -31,6 +31,8 @@ import { prosentValideringGradering, valideringSamtidigUttak } from './uttakspla
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
+type ForelderValg = BrukerRolleSak_fpoversikt | 'BEGGE' | undefined;
+
 const SELVSTENDIG_NÆRINGSDRIVENDE = 'SELVSTENDIG_NÆRINGSDRIVENDE' satisfies AktivitetType_fpoversikt;
 const FRILANS = 'FRILANS' satisfies AktivitetType_fpoversikt;
 
@@ -52,7 +54,7 @@ export type LeggTilEllerEndrePeriodeFormFormValues = {
 
 interface Props {
     valgtePerioder: Array<{ fom: string; tom: string }>;
-    resetFormValuesVedEndringAvForelder: (forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => void;
+    resetFormValuesVedEndringAvForelder: (forelder: ForelderValg) => void;
 }
 
 export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormValuesVedEndringAvForelder }: Props) => {
@@ -606,7 +608,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 };
 
 const getSkalViseMorsAktivitetskravVedSamtidigUttak = (
-    forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined,
+    forelder: ForelderValg,
     samtidigUttaksprosentMor?: string,
     stillingsprosentMor?: string,
     samtidigUttaksprosentFarMedmor?: string,
@@ -797,7 +799,7 @@ const getInfotekstOmFedrekvoteBrukRundtFødsel = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     kontoTypeFarMedmor: KontoTypeUttak | undefined,
     familiehendelsedato: string,
-    forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined,
+    forelder: ForelderValg,
     intl: IntlShape,
 ) => {
     const valgteDagerRundtFødsel = valgtePerioder.filter((p) =>
@@ -817,7 +819,7 @@ const getInfotekstOmFedrekvoteBrukRundtFødsel = (
 
 export const skalBesvareFlerbarnsdager = (
     antallBarn: number,
-    forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined,
+    forelder: ForelderValg,
     kontotype: KontoTypeUttak | undefined,
 ) => {
     return antallBarn > 1 && forelder !== 'MOR' && kontotype !== 'MØDREKVOTE' && kontotype !== 'AKTIVITETSFRI_KVOTE';

@@ -50,7 +50,6 @@ const getPeriodeIkon = (
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
     harMidlertidigOmsorg?: boolean,
-    situasjon?: Situasjon,
     erAleneOmOmsorg?: boolean,
 ): React.ReactNode | undefined => {
     switch (periode.type) {
@@ -67,7 +66,6 @@ const getPeriodeIkon = (
                     navnPåForeldre={navnPåForeldre}
                     harMidlertidigOmsorg={harMidlertidigOmsorg}
                     erFarEllerMedmor={erFarEllerMedmor}
-                    situasjon={situasjon}
                     erAleneOmOmsorg={erAleneOmOmsorg}
                 />
             );

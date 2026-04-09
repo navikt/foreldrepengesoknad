@@ -17,7 +17,7 @@ export const getHarAktivitetskravIPeriodeUtenUttak = ({
 };
 
 export const uttaksplanInneholderPerioderUtenKonto = (uttaksplan: Periode[]): boolean => {
-    return uttaksplan.find((periode) => isUttaksperiode(periode) && periode.konto === undefined) !== undefined;
+    return uttaksplan.some((periode) => isUttaksperiode(periode) && periode.konto === undefined);
 };
 
 export const kreverUttaksplanVedlegg = (

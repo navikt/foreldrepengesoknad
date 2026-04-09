@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Situasjon } from '@navikt/fp-common';
+import { NavnPåForeldre } from '@navikt/fp-common';
 import { KontoDto } from '@navikt/fp-types';
 
 import planBemUtils from '../../../utils/planBemUtils';
@@ -17,7 +17,6 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
     erEndringssøknad: boolean;
     erFarEllerMedmor: boolean;
-    situasjon: Situasjon;
     erAleneOmOmsorg: boolean;
 }
 
@@ -29,7 +28,6 @@ const Kontostatus: FunctionComponent<Props> = ({
     navnPåForeldre,
     erEndringssøknad,
     erFarEllerMedmor,
-    situasjon,
     erAleneOmOmsorg,
 }) => {
     const intl = useIntl();
@@ -48,7 +46,6 @@ const Kontostatus: FunctionComponent<Props> = ({
                     konto={uttak.konto}
                     navnPåForeldre={navnPåForeldre}
                     erFarEllerMedmor={erFarEllerMedmor}
-                    situasjon={situasjon}
                     erAleneOmOmsorg={erAleneOmOmsorg}
                 />
             </div>

@@ -39,16 +39,16 @@ export const ToUkerRundtFødsel = ({ erFarOgFar }: Props) => {
                     <FormattedMessage id="HvaErMulig.ToUkerRundtFødsel" />
                 </Heading>
                 <BodyLong>
-                    {!erFarOgFar ? (
+                    {erFarOgFar ? (
                         <FormattedMessage
-                            id="HvaErMulig.ToUkerRundtFødsel.Tekst"
+                            id="HvaErMulig.ToUkerRundtFødsel.FedreTekst"
                             values={{
                                 hvem,
                             }}
                         />
                     ) : (
                         <FormattedMessage
-                            id="HvaErMulig.ToUkerRundtFødsel.FedreTekst"
+                            id="HvaErMulig.ToUkerRundtFødsel.Tekst"
                             values={{
                                 hvem,
                             }}

@@ -98,7 +98,7 @@ const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                 ukeLegend={intl.formatMessage({ id: 'uker.label' })}
                 dagLegend={intl.formatMessage({ id: 'dager.label' })}
                 ukeStepper={{
-                    value: uker !== undefined ? uker : 0,
+                    value: uker ?? 0,
                     min: 0,
                     max: 100,
                     onChange: (nyUker: number) => {

@@ -139,7 +139,7 @@ const getDatoavgrensningerForEkstrauttakFørTermin = (
     familiehendelsesdato: Date,
     termindato: Date | undefined,
 ): DatoAvgrensninger => {
-    const datoÅRegneFra = termindato !== undefined ? termindato : familiehendelsesdato;
+    const datoÅRegneFra = termindato ?? familiehendelsesdato;
     const avgrensninger: DatepickerLimitationsString = {
         ...standardAvgrensningerForUttakEtterFødsel,
         ...uttaksplanDatoavgrensninger.ekstrauttakFørFødsel(dateToISOString(datoÅRegneFra)),

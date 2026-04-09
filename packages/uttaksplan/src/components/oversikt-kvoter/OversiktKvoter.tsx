@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Heading, VStack } from '@navikt/ds-react';
 
@@ -7,7 +7,6 @@ import {
     ForeldreparSituasjon,
     NavnPåForeldre,
     Periode,
-    Situasjon,
     Søkerrolle,
     isUttaksperiodeAnnenpartEøs,
 } from '@navikt/fp-common';
@@ -89,7 +88,6 @@ interface PropsPerKvote {
     erEndringssøknad: boolean;
     uttaksstatus: Uttaksstatus;
     erFarEllerMedmor: boolean;
-    situasjon: Situasjon;
     erAleneOmOmsorg: boolean;
 }
 
@@ -100,7 +98,6 @@ const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
     erEndringssøknad,
     uttaksstatus,
     erFarEllerMedmor,
-    situasjon,
     erAleneOmOmsorg,
 }) => {
     const uttakÅVise = erDeltUttakINorge
@@ -126,7 +123,6 @@ const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
                         navnPåForeldre={navnPåForeldre}
                         erEndringssøknad={erEndringssøknad}
                         erFarEllerMedmor={erFarEllerMedmor}
-                        situasjon={situasjon}
                         erAleneOmOmsorg={erAleneOmOmsorg}
                     />
                 ))}
@@ -142,11 +138,8 @@ interface Props {
     foreldreparSituasjon: ForeldreparSituasjon;
     familiehendelsesdato: Date;
     annenForelderHarRettINorge: boolean;
-    toTetteReglerGjelder: boolean;
-    intl: IntlShape;
     rolle: Søkerrolle;
     erEndringssøknad: boolean;
-    situasjon: Situasjon;
     erAleneOmOmsorg: boolean;
     navnPåForeldre: NavnPåForeldre;
 }
@@ -161,7 +154,6 @@ const OversiktKvoter: FunctionComponent<Props> = ({
     annenForelderHarRettINorge,
     rolle,
     erEndringssøknad,
-    situasjon,
     erAleneOmOmsorg,
     navnPåForeldre,
 }) => {
@@ -193,7 +185,6 @@ const OversiktKvoter: FunctionComponent<Props> = ({
                     erEndringssøknad={erEndringssøknad}
                     uttaksstatus={uttaksstatus}
                     erFarEllerMedmor={søkerErFarEllerMedmor}
-                    situasjon={situasjon}
                     erAleneOmOmsorg={erAleneOmOmsorg}
                 />
             </div>

@@ -34,7 +34,7 @@ import Planlegger from './components/planlegger/Planlegger';
 import PlanvisningToggle from './components/planvisning-toggle/PlanvisningToggle';
 import ResetUttaksplanModal from './components/reset-uttaksplan-modal/ResetUttaksplanModal';
 import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
-import { ISOStringToDate, getToTetteReglerGjelder, tidperiodeOverlapperDato } from './utils/dateUtils';
+import { ISOStringToDate, tidperiodeOverlapperDato } from './utils/dateUtils';
 import { getHarAktivitetskravIPeriodeUtenUttak } from './utils/uttaksplanUtils';
 import { farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato } from './utils/wlbUtils';
 import { validerUttaksplan } from './validering/validerUttaksplan';
@@ -134,7 +134,6 @@ const Uttaksplan = ({
     const bareFarHarRett = !morHarRett && !erAleneOmOmsorg;
     const annenForelderHarRettINorge =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge!;
-    const toTetteReglerGjelder = getToTetteReglerGjelder(familiehendelsesdatoDate, familiehendelsesdatoNesteSak);
     const harAktivitetsfriKvote = stønadskontoer.kontoer.some((st) => st.konto === 'AKTIVITETSFRI_KVOTE');
 
     const builder = Uttaksplanbuilder(
@@ -318,12 +317,9 @@ const Uttaksplan = ({
                             foreldreparSituasjon={foreldreSituasjon}
                             familiehendelsesdato={familiehendelsesdatoDate}
                             annenForelderHarRettINorge={annenForelderHarRettINorge}
-                            toTetteReglerGjelder={toTetteReglerGjelder}
-                            intl={intl}
                             erAleneOmOmsorg={erAleneOmOmsorg}
                             erEndringssøknad={erEndringssøknad}
                             rolle={søkersituasjon.rolle}
-                            situasjon={søkersituasjon.situasjon}
                             navnPåForeldre={navnPåForeldre}
                         />
                     </Block>

@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
-import { NavnPåForeldre, Situasjon } from '@navikt/fp-common';
+import { NavnPåForeldre } from '@navikt/fp-common';
 import { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
 
 import { getStønadskontoNavn } from '../../utils/stønadskontoerUtils';
@@ -14,7 +14,6 @@ interface Props {
     gradert?: boolean;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
-    situasjon?: Situasjon;
     erAleneOmOmsorg?: boolean;
     harMidlertidigOmsorg?: boolean;
 }

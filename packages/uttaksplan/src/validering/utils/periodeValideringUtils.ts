@@ -1,4 +1,5 @@
 import { Periode, Periodetype } from '@navikt/fp-common';
+
 import { getStillingsprosentRegler } from './stillingsprosentValideringUtils';
 
 export const gradertUttaksperiodeErUgyldig = (periode: Periode) => {
@@ -7,7 +8,7 @@ export const gradertUttaksperiodeErUgyldig = (periode: Periode) => {
         if (gradert === true) {
             const regler = getStillingsprosentRegler(false, stillingsprosent || '');
             const results = regler.map((regel) => regel.test() === true);
-            return results.some((erGyldig) => erGyldig === false);
+            return results.includes(false);
         }
     }
     return false;
@@ -19,7 +20,7 @@ export const samtidigUttaksperiodeErUgyldig = (periode: Periode, søkerErFarElle
         if (ønskerSamtidigUttak === true && søkerErFarEllerMedmor) {
             const regler = getStillingsprosentRegler(true, samtidigUttakProsent || '');
             const results = regler.map((regel) => regel.test() === true);
-            return results.some((erGyldig) => erGyldig === false);
+            return results.includes(false);
         }
     }
     return false;

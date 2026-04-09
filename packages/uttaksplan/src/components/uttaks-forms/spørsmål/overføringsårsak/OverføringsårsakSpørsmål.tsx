@@ -40,19 +40,21 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({ navnAnnenForel
     ];
 
     if (erEndringssøknad) {
-        radios.push({
-            label: intl.formatMessage({ id: 'uttaksplan.overføringsårsaktype.ALENEOMSORG' }),
-            value: 'ALENEOMSORG',
-        } satisfies { label: string; value: UttakOverføringÅrsak_fpoversikt });
-        radios.push({
-            label: intl.formatMessage(
-                { id: 'uttaksplan.overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER' },
-                {
-                    navnAnnenForelder: navn,
-                },
-            ),
-            value: 'IKKE_RETT_ANNEN_FORELDER',
-        } satisfies { label: string; value: UttakOverføringÅrsak_fpoversikt });
+        radios.push(
+            {
+                label: intl.formatMessage({ id: 'uttaksplan.overføringsårsaktype.ALENEOMSORG' }),
+                value: 'ALENEOMSORG',
+            } satisfies { label: string; value: UttakOverføringÅrsak_fpoversikt },
+            {
+                label: intl.formatMessage(
+                    { id: 'uttaksplan.overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER' },
+                    {
+                        navnAnnenForelder: navn,
+                    },
+                ),
+                value: 'IKKE_RETT_ANNEN_FORELDER',
+            } satisfies { label: string; value: UttakOverføringÅrsak_fpoversikt },
+        );
     }
 
     return (
