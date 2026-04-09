@@ -412,33 +412,21 @@ describe('eksisterendeSakUtils', () => {
 
     describe('mapSøkerensEksisterendeSakFromDTO', () => {
         it('skal mappe eksisterende sak for mors søknad på termin fra dto til intern representasjon', () => {
-            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMorTermin, undefined, undefined);
+            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMorTermin, undefined);
             expect(internRep).toStrictEqual(forventetMappetEksisterendeSakMorTermin);
         });
         it('skal mappe eksisterende sak for mors søknad på adopsjon (aleneomsorg) fra dto til intern representasjon', () => {
-            const internRep = mapSøkerensEksisterendeSakFromDTO(
-                eksisterendeSakMorAdopsjonBareMorHarRett,
-                undefined,
-                undefined,
-            );
+            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMorAdopsjonBareMorHarRett, undefined);
             expect(internRep).toStrictEqual(forventetMappetEksisterendeSakMorAdopsjonBareMorHarRett);
         });
 
         it('hvis barnet til far er født, skal ikke mappe ønskerJustertUttakVedFødsel til true selv om den kommer inn som true', () => {
-            const internRep = mapSøkerensEksisterendeSakFromDTO(
-                eksisterendeSakMedØnsketJusteringFarFødsel,
-                undefined,
-                undefined,
-            );
+            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMedØnsketJusteringFarFødsel, undefined);
 
             expect(internRep).toStrictEqual(forventetResultatFar);
         });
         it('hvis barnet til far ikke er født, skal mappe ønskerJustertUttakVedFødsel til true hvis den kommer inn som true', () => {
-            const internRep = mapSøkerensEksisterendeSakFromDTO(
-                eksisterendeSakMedØnsketJusteringFarTermin,
-                undefined,
-                undefined,
-            );
+            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMedØnsketJusteringFarTermin, undefined);
 
             expect(internRep).toStrictEqual(forventetResultatFarTermin);
         });

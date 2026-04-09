@@ -2,16 +2,8 @@ import dayjs from 'dayjs';
 import MockDate from 'mockdate';
 import { createIntl, createIntlCache } from 'react-intl';
 
-import {
-    Barn,
-    BarnType,
-    Periode,
-    PeriodeHull,
-    Periodetype,
-    Utsettelsesperiode,
-    Uttaksperiode,
-} from '@navikt/fp-common';
-import { FpBarnDto_fpoversikt } from '@navikt/fp-types';
+import { Barn, BarnType } from '@navikt/fp-common';
+import { FpBarnDto_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import messages from '../intl/nb_NO.json';
 import {
@@ -30,7 +22,6 @@ import {
     isDateABeforeDateB,
     sorterDatoEtterEldst,
 } from './dateUtils';
-import { guid } from './guid';
 import { toggleUtils } from './toggleUtils';
 
 // Create the IntlProvider to retrieve context for wrapping around.
@@ -174,516 +165,303 @@ describe('dateUtils', () => {
         expect(dato).toBe(omsorgsovertakelsesdato);
     });
 
-    describe('getEndringstidspunkt', () => {
-        const opprinneligPlan: Array<Partial<Periode>> = [
-            {
-                id: '1',
-                tidsperiode: {
-                    fom: '2019-09-10',
-                    tom: '2019-09-30',
-                },
-                type: Periodetype.Uttak,
-            },
-            {
-                id: '2',
-                tidsperiode: {
-                    fom: '2019-10-01',
-                    tom: '2020-01-13',
-                },
-                type: Periodetype.Uttak,
-            },
-            {
-                id: '3',
-                tidsperiode: {
-                    fom: '2020-01-14',
-                    tom: '2020-05-01',
-                },
-                type: Periodetype.Uttak,
-            },
+    describe('getEndringstidspunktNy', () => {
+        const opprinneligPlan: UttakPeriode_fpoversikt[] = [
+            { fom: '2019-09-10', tom: '2019-09-30', flerbarnsdager: false, forelder: 'MOR' },
+            { fom: '2019-10-01', tom: '2020-01-13', flerbarnsdager: false, forelder: 'MOR' },
+            { fom: '2020-01-14', tom: '2020-05-01', flerbarnsdager: false, forelder: 'MOR' },
         ];
 
-        const opprinneligPlanMedHull = [
-            {
-                id: '20',
-                tidsperiode: {
-                    fom: '2022-09-21',
-                    tom: '2022-10-11',
-                },
-                type: Periodetype.Uttak,
-            },
-            {
-                id: '21',
-                tidsperiode: {
-                    fom: '2022-10-12',
-                    tom: '2022-12-13',
-                },
-                type: Periodetype.Uttak,
-            },
-            {
-                id: '22',
-                tidsperiode: {
-                    fom: '2022-12-14',
-                    tom: '2022-12-27',
-                },
-                type: Periodetype.PeriodeUtenUttak,
-            },
-            {
-                id: '23',
-                tidsperiode: {
-                    fom: '2022-12-28',
-                    tom: '2023-01-30',
-                },
-                type: Periodetype.Uttak,
-            },
-            {
-                id: '24',
-                tidsperiode: {
-                    fom: '2023-01-31',
-                    tom: '2023-02-20',
-                },
-                type: Periodetype.Uttak,
-            },
-            {
-                id: '25',
-                tidsperiode: {
-                    fom: '2023-02-21',
-                    tom: '2023-02-27',
-                },
-                type: Periodetype.Uttak,
-            },
+        const opprinneligPlanMedHull: UttakPeriode_fpoversikt[] = [
+            { fom: '2022-09-21', tom: '2022-10-11', flerbarnsdager: false, forelder: 'MOR' },
+            { fom: '2022-10-12', tom: '2022-12-13', flerbarnsdager: false, forelder: 'MOR' },
+            { fom: '2022-12-14', tom: '2022-12-27', flerbarnsdager: false, forelder: 'MOR' },
+            { fom: '2022-12-28', tom: '2023-01-30', flerbarnsdager: false, forelder: 'MOR' },
+            { fom: '2023-01-31', tom: '2023-02-20', flerbarnsdager: false, forelder: 'MOR' },
+            { fom: '2023-02-21', tom: '2023-02-27', flerbarnsdager: false, forelder: 'MOR' },
         ];
 
-        it('Skal returnere undefined hvis ikke endringssøknad', () => {
-            const endringstidspunkt = getEndringstidspunktNy(undefined, [], false);
-
+        it('Skal returnere undefined når planene er like og tomme', () => {
+            const endringstidspunkt = getEndringstidspunktNy([], []);
             expect(endringstidspunkt).toBe(undefined);
         });
 
         it('Skal returnere undefined for ingen endringer', () => {
-            const endringstidspunkt = getEndringstidspunkt(
-                opprinneligPlan as Periode[],
-                [...opprinneligPlan] as Periode[],
-                true,
-            );
-
+            const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, [...opprinneligPlan]);
             expect(endringstidspunkt).toBe(undefined);
         });
 
         it('Skal finne endringstidspunkt gitt at det er ny periode i slutten', () => {
-            const gradertPeriode: Partial<Uttaksperiode> = {
-                id: guid(),
-                tidsperiode: {
-                    fom: '2019-05-04',
-                    tom: '2019-05-11',
-                },
-                type: Periodetype.Uttak,
-                gradert: true,
-                stillingsprosent: '50',
+            const gradertPeriode: UttakPeriode_fpoversikt = {
+                fom: '2019-05-04',
+                tom: '2019-05-11',
+                flerbarnsdager: false,
+                forelder: 'MOR',
+                gradering: { arbeidstidprosent: 50 },
             };
             const endretPlan = [...opprinneligPlan, gradertPeriode];
 
-            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(gradertPeriode.tidsperiode?.fom);
+            const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlan);
+            expect(endringstidspunkt).toEqual(gradertPeriode.fom);
         });
 
-        it(
-            'Hvis en ny periode legges til i slutten med en periode uten uttak i mellom den opprinnelige planen,' +
-                ' skal starten på denne perioden være endringstidspunktet',
-            () => {
-                const endretPlan = [
-                    ...opprinneligPlan,
-                    {
-                        id: '23',
-                        tidsperiode: {
-                            fom: '2020-05-02',
-                            tom: '2020-05-09',
-                        },
-                        type: Periodetype.PeriodeUtenUttak,
-                    },
-                    {
-                        id: '24',
-                        tidsperiode: {
-                            fom: '2020-05-10',
-                            tom: '2020-05-17',
-                        },
-                        type: Periodetype.Uttak,
-                    },
-                ];
-
-                const endringstidspunkt = getEndringstidspunkt(
-                    opprinneligPlan as Periode[],
-                    endretPlan as Periode[],
-                    true,
-                );
-                expect(endringstidspunkt).toEqual(endretPlan[4]!.tidsperiode?.fom);
-            },
-        );
-
-        it('Skal finne endringstidspunkt gitt at en gammel periode er endret (f.eks gradert)', () => {
-            const endretPlan = [
-                opprinneligPlan[0],
-                { ...opprinneligPlan[1], gradert: true, stillingsprosent: '50' },
-                opprinneligPlan[2],
+        it('Hvis en ny periode legges til i slutten, skal starten på den første nye perioden være endringstidspunktet', () => {
+            const endretPlan: UttakPeriode_fpoversikt[] = [
+                ...opprinneligPlan,
+                {
+                    fom: '2020-05-02',
+                    tom: '2020-05-09',
+                    flerbarnsdager: false,
+                    forelder: 'MOR',
+                },
+                {
+                    fom: '2020-05-10',
+                    tom: '2020-05-17',
+                    flerbarnsdager: false,
+                    forelder: 'MOR',
+                },
             ];
 
-            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(opprinneligPlan[1]!.tidsperiode?.fom);
+            const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlan);
+            expect(endringstidspunkt).toEqual(endretPlan[3]!.fom);
         });
 
-        it('Skal finne endringstidspunkt gitt at en gammel periode er slettet og skaper periode uten uttak', () => {
-            const endretPlan = [
-                opprinneligPlan[0],
-                { tidsperiode: opprinneligPlan[1]!.tidsperiode, type: Periodetype.PeriodeUtenUttak },
-                opprinneligPlan[2],
+        it('Skal finne endringstidspunkt gitt at en gammel periode er endret', () => {
+            const endretPlan: UttakPeriode_fpoversikt[] = [
+                opprinneligPlan[0]!,
+                { ...opprinneligPlan[1]!, kontoType: 'FEDREKVOTE' },
+                opprinneligPlan[2]!,
             ];
 
-            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(opprinneligPlan[1]!.tidsperiode?.fom);
+            const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlan);
+            expect(endringstidspunkt).toEqual(opprinneligPlan[1]!.fom);
+        });
+
+        it('Skal finne endringstidspunkt gitt at en gammel periode er slettet og erstattet med en annen periode', () => {
+            const endretPlan: UttakPeriode_fpoversikt[] = [
+                opprinneligPlan[0]!,
+                { ...opprinneligPlan[1]!, oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER' },
+                opprinneligPlan[2]!,
+            ];
+
+            const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlan);
+            expect(endringstidspunkt).toEqual(opprinneligPlan[1]!.fom);
         });
 
         it('Skal finne endringstidspunkt gitt at en gammel periode er slettet og skaper hull', () => {
-            const endretPlan = [
-                opprinneligPlan[0],
-                { tidsperiode: opprinneligPlan[1]!.tidsperiode, type: Periodetype.Hull },
-                opprinneligPlan[2],
+            const endretPlan: UttakPeriode_fpoversikt[] = [
+                opprinneligPlan[0]!,
+                { ...opprinneligPlan[1]!, oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER' },
+                opprinneligPlan[2]!,
             ];
 
-            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(opprinneligPlan[1]!.tidsperiode?.fom);
+            const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlan);
+            expect(endringstidspunkt).toEqual(opprinneligPlan[1]!.fom);
         });
 
         it('Skal finne endringstidspunkt gitt at en periode har fått senere sluttdato (blitt lenger)', () => {
-            const endretPlan = [
-                opprinneligPlan[0],
-                {
-                    ...opprinneligPlan[1],
-                    tidsperiode: { fom: opprinneligPlan[1]!.tidsperiode?.fom, tom: '2020-01-14' },
-                },
-                {
-                    ...opprinneligPlan[2],
-                    tidsperiode: { fom: '2020-01-15', tom: opprinneligPlan[2]!.tidsperiode?.tom },
-                },
+            const endretPlan: UttakPeriode_fpoversikt[] = [
+                opprinneligPlan[0]!,
+                { ...opprinneligPlan[1]!, tom: '2020-01-14' },
+                { ...opprinneligPlan[2]!, fom: '2020-01-15' },
             ];
 
-            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(opprinneligPlan[1]!.tidsperiode?.fom);
+            const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlan);
+            expect(endringstidspunkt).toEqual(opprinneligPlan[1]!.fom);
         });
 
         it('Skal finne endringstidspunkt gitt at en periode har fått tidligere sluttdato (blitt kortere)', () => {
-            const endretPlan = [
-                opprinneligPlan[0],
-                {
-                    ...opprinneligPlan[1],
-                    tidsperiode: { fom: opprinneligPlan[1]!.tidsperiode?.fom, tom: '2020-01-12' },
-                },
-                {
-                    ...opprinneligPlan[2],
-                    tidsperiode: { fom: '2020-01-13', tom: opprinneligPlan[2]!.tidsperiode?.tom },
-                },
+            const endretPlan: UttakPeriode_fpoversikt[] = [
+                opprinneligPlan[0]!,
+                { ...opprinneligPlan[1]!, tom: '2020-01-12' },
+                { ...opprinneligPlan[2]!, fom: '2020-01-13' },
             ];
 
-            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-            expect(endringstidspunkt).toEqual(endretPlan[2]!.tidsperiode?.fom);
+            const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlan);
+            expect(endringstidspunkt).toEqual(opprinneligPlan[1]!.fom);
         });
 
-        it('Hvis en periode med periode uten uttak foran får tidligere startdato, skal endringstidspunktet være lik den nye startdatoen.', () => {
-            const nyPeriodeUtenUttak = {
-                ...opprinneligPlanMedHull[2],
-                tidsperiode: { fom: opprinneligPlanMedHull[2]!.tidsperiode.fom, tom: '2022-12-26' },
+        it('Hvis en periode får kortere sluttdato, skal endringstidspunktet være lik starten på den endrede perioden.', () => {
+            const nyPeriode: UttakPeriode_fpoversikt = {
+                ...opprinneligPlanMedHull[2]!,
+                tom: '2022-12-26',
             };
-            const nyFom = '2022-12-27';
-            const nyUttaksperiodePeriodeMedTidligStart = {
-                ...opprinneligPlanMedHull[3],
-                tidsperiode: { fom: nyFom, tom: opprinneligPlanMedHull[3]!.tidsperiode.tom },
+            const nyNestePeriode: UttakPeriode_fpoversikt = {
+                ...opprinneligPlanMedHull[3]!,
+                fom: '2022-12-27',
             };
-            const endretPlanMedHull = [
-                opprinneligPlanMedHull[0],
-                opprinneligPlanMedHull[1],
-                nyPeriodeUtenUttak,
-                nyUttaksperiodePeriodeMedTidligStart,
-                opprinneligPlanMedHull[4],
-                opprinneligPlanMedHull[5],
+            const endretPlanMedHull: UttakPeriode_fpoversikt[] = [
+                opprinneligPlanMedHull[0]!,
+                opprinneligPlanMedHull[1]!,
+                nyPeriode,
+                nyNestePeriode,
+                opprinneligPlanMedHull[4]!,
+                opprinneligPlanMedHull[5]!,
             ];
 
-            const endringstidspunkt = getEndringstidspunkt(
-                opprinneligPlanMedHull as Periode[],
-                endretPlanMedHull as Periode[],
-                true,
-            );
-            expect(endringstidspunkt).toEqual(nyFom);
+            const endringstidspunkt = getEndringstidspunktNy(opprinneligPlanMedHull, endretPlanMedHull);
+            expect(endringstidspunkt).toEqual(opprinneligPlanMedHull[2]!.fom);
         });
 
-        it(
-            'Hvis en periode med periode uten uttak foran får senere startdato, skal endringstidspunktet være lik' +
-                ' starten på perioden uten hull siden den er blitt lenger.',
-            () => {
-                const nyPeriodeUtenUttak = {
-                    ...opprinneligPlanMedHull[2],
-                    tidsperiode: { fom: opprinneligPlanMedHull[2]!.tidsperiode.fom, tom: '2022-12-28' },
-                };
-                const nyFom = '2022-12-29';
-                const nyUttaksperiodePeriodeMedTidligStart = {
-                    ...opprinneligPlanMedHull[3],
-                    tidsperiode: { fom: nyFom, tom: opprinneligPlanMedHull[3]!.tidsperiode.tom },
-                };
-                const endretPlanMedHull = [
-                    opprinneligPlanMedHull[0],
-                    opprinneligPlanMedHull[1],
-                    nyPeriodeUtenUttak,
-                    nyUttaksperiodePeriodeMedTidligStart,
-                    opprinneligPlanMedHull[4],
-                    opprinneligPlanMedHull[5],
-                ];
+        it('Hvis en periode får lengre sluttdato, skal endringstidspunktet være lik starten på den endrede perioden.', () => {
+            const nyPeriode: UttakPeriode_fpoversikt = {
+                ...opprinneligPlanMedHull[2]!,
+                tom: '2022-12-28',
+            };
+            const nyNestePeriode: UttakPeriode_fpoversikt = {
+                ...opprinneligPlanMedHull[3]!,
+                fom: '2022-12-29',
+            };
+            const endretPlanMedHull: UttakPeriode_fpoversikt[] = [
+                opprinneligPlanMedHull[0]!,
+                opprinneligPlanMedHull[1]!,
+                nyPeriode,
+                nyNestePeriode,
+                opprinneligPlanMedHull[4]!,
+                opprinneligPlanMedHull[5]!,
+            ];
 
-                const endringstidspunkt = getEndringstidspunkt(
-                    opprinneligPlanMedHull as Periode[],
-                    endretPlanMedHull as Periode[],
-                    true,
-                );
-                expect(endringstidspunkt).toEqual(nyPeriodeUtenUttak.tidsperiode.fom);
-            },
-        );
+            const endringstidspunkt = getEndringstidspunktNy(opprinneligPlanMedHull, endretPlanMedHull);
+            expect(endringstidspunkt).toEqual(nyPeriode.fom);
+        });
 
-        it(
-            'Hvis en periode med periode uten uttak bak får senere sluttdato, skal endringstidspunktet være lik' +
-                ' starten på perioden siden den er blitt lenger.',
-            () => {
-                const nyPeriodeUttak = {
-                    ...opprinneligPlanMedHull[1],
-                    tidsperiode: { fom: opprinneligPlanMedHull[1]!.tidsperiode.fom, tom: '2022-12-14' },
-                };
-                const nyFom = '2022-12-15';
-                const nyPeriodeUtenUttak = {
-                    ...opprinneligPlanMedHull[2],
-                    tidsperiode: { fom: nyFom, tom: opprinneligPlanMedHull[2]!.tidsperiode.tom },
-                };
-                const endretPlanMedHull = [
-                    opprinneligPlanMedHull[0],
-                    nyPeriodeUttak,
-                    nyPeriodeUtenUttak,
-                    opprinneligPlanMedHull[3],
-                    opprinneligPlanMedHull[4],
-                    opprinneligPlanMedHull[5],
-                ];
+        it('Hvis en foregående periode får lengre sluttdato, skal endringstidspunktet være lik starten på den endrede perioden.', () => {
+            const nyPeriodeUttak: UttakPeriode_fpoversikt = {
+                ...opprinneligPlanMedHull[1]!,
+                tom: '2022-12-14',
+            };
+            const nyPeriodeEtter: UttakPeriode_fpoversikt = {
+                ...opprinneligPlanMedHull[2]!,
+                fom: '2022-12-15',
+            };
+            const endretPlanMedHull: UttakPeriode_fpoversikt[] = [
+                opprinneligPlanMedHull[0]!,
+                nyPeriodeUttak,
+                nyPeriodeEtter,
+                opprinneligPlanMedHull[3]!,
+                opprinneligPlanMedHull[4]!,
+                opprinneligPlanMedHull[5]!,
+            ];
 
-                const endringstidspunkt = getEndringstidspunkt(
-                    opprinneligPlanMedHull as Periode[],
-                    endretPlanMedHull as Periode[],
-                    true,
-                );
-                expect(endringstidspunkt).toEqual(nyPeriodeUttak.tidsperiode.fom);
-            },
-        );
+            const endringstidspunkt = getEndringstidspunktNy(opprinneligPlanMedHull, endretPlanMedHull);
+            expect(endringstidspunkt).toEqual(nyPeriodeUttak.fom);
+        });
 
         it('Hvis en periode i slutten av planen har fått tidligere sluttdato, skal starten på perioden være endringstidspunktet.', () => {
-            const endretPlanMedForkortetSistePeriode = [
-                opprinneligPlan[0],
-                opprinneligPlan[1],
-                {
-                    ...opprinneligPlan[2],
-                    tidsperiode: { ...opprinneligPlan[2]!.tidsperiode, tom: '2020-04-30' },
-                },
+            const endretPlanMedForkortetSistePeriode: UttakPeriode_fpoversikt[] = [
+                opprinneligPlan[0]!,
+                opprinneligPlan[1]!,
+                { ...opprinneligPlan[2]!, tom: '2020-04-30' },
             ];
 
-            const endringstidspunkt = getEndringstidspunkt(
-                opprinneligPlan as Periode[],
-                endretPlanMedForkortetSistePeriode as Periode[],
-                true,
-            );
-            expect(endringstidspunkt).toEqual(endretPlanMedForkortetSistePeriode[2]!.tidsperiode?.fom);
+            const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlanMedForkortetSistePeriode);
+            expect(endringstidspunkt).toEqual(endretPlanMedForkortetSistePeriode[2]!.fom);
         });
 
         it('Hvis en periode i slutten av planen har fått senere sluttdato, skal starten på perioden være endringstidspunktet.', () => {
-            const endretPlanMedForkortetSistePeriode = [
-                opprinneligPlan[0],
-                opprinneligPlan[1],
-                {
-                    ...opprinneligPlan[2],
-                    tidsperiode: { ...opprinneligPlan[2]!.tidsperiode, tom: '2020-0-02' },
-                },
+            const endretPlanMedForlengetSistePeriode: UttakPeriode_fpoversikt[] = [
+                opprinneligPlan[0]!,
+                opprinneligPlan[1]!,
+                { ...opprinneligPlan[2]!, tom: '2020-06-02' },
             ];
 
-            const endringstidspunkt = getEndringstidspunkt(
-                opprinneligPlan as Periode[],
-                endretPlanMedForkortetSistePeriode as Periode[],
-                true,
-            );
-            expect(endringstidspunkt).toEqual(endretPlanMedForkortetSistePeriode[2]!.tidsperiode?.fom);
+            const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlanMedForlengetSistePeriode);
+            expect(endringstidspunkt).toEqual(endretPlanMedForlengetSistePeriode[2]!.fom);
         });
 
-        it(
-            'Hvis en periode med periode uten uttak bak får tidligere sluttdato, skal endringstidspunktet' +
-                ' være lik starten på perioden uten uttak siden den er blitt lenger.',
-            () => {
-                const nyPeriodeUttak = {
-                    ...opprinneligPlanMedHull[1],
-                    tidsperiode: { fom: opprinneligPlanMedHull[1]!.tidsperiode.fom, tom: '2022-12-12' },
-                };
-                const nyFom = '2022-12-13';
-                const nyPeriodeUtenUttak = {
-                    ...opprinneligPlanMedHull[2],
-                    tidsperiode: { fom: nyFom, tom: opprinneligPlanMedHull[2]!.tidsperiode.tom },
-                };
-                const endretPlanMedHull = [
-                    opprinneligPlanMedHull[0],
-                    nyPeriodeUttak,
-                    nyPeriodeUtenUttak,
-                    opprinneligPlanMedHull[3],
-                    opprinneligPlanMedHull[4],
-                    opprinneligPlanMedHull[5],
-                ];
-
-                const endringstidspunkt = getEndringstidspunkt(
-                    opprinneligPlanMedHull as Periode[],
-                    endretPlanMedHull as Periode[],
-                    true,
-                );
-                expect(endringstidspunkt).toEqual(nyPeriodeUtenUttak.tidsperiode.fom);
-            },
-        );
-
-        it('Hvis uttaksplanlogikken setter hull inn i planen skal det telle som en endring', () => {
-            const hullPeriode: Partial<PeriodeHull> = {
-                type: Periodetype.Hull,
-                tidsperiode: {
-                    fom: '2019-09-01',
-                    tom: '2019-09-09',
-                },
+        it('Hvis en foregående periode har fått kortere sluttdato, skal endringstidspunktet være lik starten på den endrede perioden.', () => {
+            const nyPeriodeUttak: UttakPeriode_fpoversikt = {
+                ...opprinneligPlanMedHull[1]!,
+                tom: '2022-12-12',
             };
-            const endretPlan = [hullPeriode, ...opprinneligPlan];
-            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
+            const nyPeriodeEtter: UttakPeriode_fpoversikt = {
+                ...opprinneligPlanMedHull[2]!,
+                fom: '2022-12-13',
+            };
+            const endretPlanMedHull: UttakPeriode_fpoversikt[] = [
+                opprinneligPlanMedHull[0]!,
+                nyPeriodeUttak,
+                nyPeriodeEtter,
+                opprinneligPlanMedHull[3]!,
+                opprinneligPlanMedHull[4]!,
+                opprinneligPlanMedHull[5]!,
+            ];
 
-            expect(endringstidspunkt).toBe(hullPeriode.tidsperiode?.fom);
+            const endringstidspunkt = getEndringstidspunktNy(opprinneligPlanMedHull, endretPlanMedHull);
+            expect(endringstidspunkt).toEqual(nyPeriodeUttak.fom);
         });
 
-        it('Hvis uttaksplanlogikken deler en periode skal endringstidspunkt være fra delingen og fremover ikke ta med tidligere del av perioden', () => {
-            const deltPeriodeTidligereDel: Partial<Uttaksperiode> = {
-                id: '7',
-                tidsperiode: {
-                    fom: '2020-01-14',
-                    tom: '2020-04-03',
-                },
-                type: Periodetype.Uttak,
+        it('Hvis en ny periode settes inn i starten av planen skal det telle som en endring', () => {
+            const nyPeriode: UttakPeriode_fpoversikt = {
+                fom: '2019-09-01',
+                tom: '2019-09-09',
+                flerbarnsdager: false,
+                forelder: 'MOR',
             };
-            const periodeSomDeltePeriode: Partial<Utsettelsesperiode> = {
-                id: '8',
-                tidsperiode: {
-                    fom: '2020-04-06',
-                    tom: '2020-04-17',
-                },
-                type: Periodetype.Utsettelse,
-                årsak: 'ARBEID',
+            const endretPlan = [nyPeriode, ...opprinneligPlan];
+            const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlan);
+            expect(endringstidspunkt).toBe(nyPeriode.fom);
+        });
+
+        it('Hvis uttaksplanlogikken deler en periode skal endringstidspunkt være starten av den endrede perioden', () => {
+            const deltPeriodeTidligereDel: UttakPeriode_fpoversikt = {
+                fom: '2020-01-14',
+                tom: '2020-04-03',
+                flerbarnsdager: false,
+                forelder: 'MOR',
             };
-            const deltPeriodeSenereDel: Partial<Uttaksperiode> = {
-                id: '9',
-                tidsperiode: {
-                    fom: '2020-04-20',
-                    tom: '2020-05-04',
-                },
-                type: Periodetype.Uttak,
+            const periodeSomDeltePeriode: UttakPeriode_fpoversikt = {
+                fom: '2020-04-06',
+                tom: '2020-04-17',
+                flerbarnsdager: false,
+                forelder: 'MOR',
+                utsettelseÅrsak: 'ARBEID',
+            };
+            const deltPeriodeSenereDel: UttakPeriode_fpoversikt = {
+                fom: '2020-04-20',
+                tom: '2020-05-04',
+                flerbarnsdager: false,
+                forelder: 'MOR',
             };
 
             const endretPlan = [
-                opprinneligPlan[0],
-                opprinneligPlan[1],
+                opprinneligPlan[0]!,
+                opprinneligPlan[1]!,
                 deltPeriodeTidligereDel,
                 periodeSomDeltePeriode,
                 deltPeriodeSenereDel,
             ];
-            const endringstidspunkt = getEndringstidspunkt(opprinneligPlan as Periode[], endretPlan as Periode[], true);
-
-            expect(endringstidspunkt).toBe(periodeSomDeltePeriode.tidsperiode?.fom);
+            const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlan);
+            expect(endringstidspunkt).toBe(deltPeriodeTidligereDel.fom);
         });
-        it('Hvis annen parts uttak finnes i planen, skal endringstidspunktet bli riktig når bruker legger til en ny periode på slutten.', () => {
-            const opprinneligPlanMedAnnenPart: Array<Partial<Periode>> = [
-                {
-                    id: '10',
-                    tidsperiode: {
-                        fom: '2019-09-10',
-                        tom: '2019-09-30',
-                    },
-                    type: Periodetype.Uttak,
-                },
-                {
-                    id: '11',
-                    tidsperiode: {
-                        fom: '2019-09-10',
-                        tom: '2019-09-30',
-                    },
-                    type: Periodetype.Info,
-                    overskrives: true,
-                },
-                {
-                    id: '12',
-                    tidsperiode: {
-                        fom: '2019-10-01',
-                        tom: '2020-01-13',
-                    },
-                    type: Periodetype.Uttak,
-                },
+
+        it('Bruker legger til en ny periode på slutten, skal endringstidspunktet bli riktig.', () => {
+            const opprinneligPlanMedAnnenPart: UttakPeriode_fpoversikt[] = [
+                { fom: '2019-09-10', tom: '2019-09-30', flerbarnsdager: false, forelder: 'MOR' },
+                { fom: '2019-10-01', tom: '2020-01-13', flerbarnsdager: false, forelder: 'MOR' },
             ];
 
-            const endretPlanMedAnnenPart = [
+            const endretPlanMedAnnenPart: UttakPeriode_fpoversikt[] = [
                 ...opprinneligPlanMedAnnenPart,
-                {
-                    id: '13',
-                    tidsperiode: {
-                        fom: '2020-01-14',
-                        tom: '2020-05-04',
-                    },
-                    type: Periodetype.Uttak,
-                },
+                { fom: '2020-01-14', tom: '2020-05-04', flerbarnsdager: false, forelder: 'MOR' },
             ];
-            const endringstidspunkt = getEndringstidspunkt(
-                opprinneligPlanMedAnnenPart as Periode[],
-                endretPlanMedAnnenPart as Periode[],
-                true,
-            );
-
-            expect(endringstidspunkt).toBe(endretPlanMedAnnenPart[3]!.tidsperiode?.fom);
+            const endringstidspunkt = getEndringstidspunktNy(opprinneligPlanMedAnnenPart, endretPlanMedAnnenPart);
+            expect(endringstidspunkt).toBe(endretPlanMedAnnenPart[2]!.fom);
         });
 
         it(
-            'Hvis annen parts uttak finnes i planen, bruker sletter opprinnelig plan og legger til ny periode i slutten,' +
-                ' skal endringsdato være starten på den første av brukerens perioder i opprinnelig plan.',
+            'Bruker sletter opprinnelig plan og legger til ny periode,' +
+                ' skal endringsdato være starten på den første perioden i opprinnelig plan.',
             () => {
-                const opprinneligPlanMedAnnenPart: Array<Partial<Periode>> = [
-                    {
-                        id: '14',
-                        tidsperiode: {
-                            fom: '2019-09-10',
-                            tom: '2019-09-30',
-                        },
-                        type: Periodetype.Info,
-                        overskrives: true,
-                    },
-                    {
-                        id: '15',
-                        tidsperiode: {
-                            fom: '2019-10-01',
-                            tom: '2020-01-13',
-                        },
-                        type: Periodetype.Uttak,
-                    },
+                const opprinneligPlanMedAnnenPart: UttakPeriode_fpoversikt[] = [
+                    { fom: '2019-10-01', tom: '2020-01-13', flerbarnsdager: false, forelder: 'MOR' },
                 ];
 
-                const nyPlan = [
-                    {
-                        id: '16',
-                        tidsperiode: {
-                            fom: '2020-01-14',
-                            tom: '2020-05-04',
-                        },
-                        type: Periodetype.Uttak,
-                    },
+                const nyPlan: UttakPeriode_fpoversikt[] = [
+                    { fom: '2020-01-14', tom: '2020-05-04', flerbarnsdager: false, forelder: 'MOR' },
                 ];
-                const endringstidspunkt = getEndringstidspunkt(
-                    opprinneligPlanMedAnnenPart as Periode[],
-                    nyPlan as Periode[],
-                    true,
-                );
-
-                expect(endringstidspunkt).toBe(opprinneligPlanMedAnnenPart[1]!.tidsperiode?.fom);
+                const endringstidspunkt = getEndringstidspunktNy(opprinneligPlanMedAnnenPart, nyPlan);
+                expect(endringstidspunkt).toBe(opprinneligPlanMedAnnenPart[0]!.fom);
             },
         );
     });
