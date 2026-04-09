@@ -2,7 +2,7 @@ import { useIntl } from 'react-intl';
 
 import { AnnenForelder, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { Barn, EksternArbeidsforholdDto_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan-ny';
+import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan';
 
 import { getAktivitetTekst } from '../OppsummeringUtils';
 import { Feltoppsummering } from './Feltoppsummering';

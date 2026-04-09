@@ -12,7 +12,7 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
-import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan-ny';
+import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { getTidsperiodeString } from './DokumentasjonLastetOppLabel';

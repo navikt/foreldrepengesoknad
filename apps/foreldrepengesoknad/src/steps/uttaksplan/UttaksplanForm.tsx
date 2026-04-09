@@ -26,7 +26,7 @@ import {
     isUfødtBarn,
 } from '@navikt/fp-types';
 import { UttaksdagenString, Uttaksperioden } from '@navikt/fp-utils';
-import { useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan-ny';
+import { useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { VilDuGåTilbakeModal } from './VilDuGåTilbakeModal';

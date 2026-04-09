@@ -21,7 +21,7 @@ import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { LocaleAll, LocaleNo } from '@navikt/fp-types';
 import { ByttBrowserModal, ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
-import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
+import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan';
 
 import { Foreldrepengesøknad, slettMellomlagringOgLastSidePåNytt } from './Foreldrepengesøknad';
 import nbMessages from './intl/nb_NO.json';

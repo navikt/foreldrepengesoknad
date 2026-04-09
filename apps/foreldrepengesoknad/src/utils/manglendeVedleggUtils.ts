@@ -5,7 +5,7 @@ import {
     UttakUtsettelseÅrsak_fpoversikt,
 } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
-import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan-ny';
+import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan';
 
 export const perioderSomKreverVedleggNy = (
     uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,

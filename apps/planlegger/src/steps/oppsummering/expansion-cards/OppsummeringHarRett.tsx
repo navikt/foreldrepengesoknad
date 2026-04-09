@@ -29,7 +29,7 @@ import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-r
 import { KontoBeregningDto } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
-import { UttaksplanDataProvider, UttaksplanKalender } from '@navikt/fp-uttaksplan-ny';
+import { UttaksplanDataProvider, UttaksplanKalender } from '@navikt/fp-uttaksplan';
 
 import { ContextDataType, useContextGetData } from '../../../app-data/PlanleggerDataContext';
 import { mapOmBarnetTilBarn } from '../../../utils/barnetUtils';

@@ -36,7 +36,7 @@ import {
     isUfødtBarn,
 } from '@navikt/fp-types';
 import { UttaksdagenString, Uttaksperioden, getDecoratorLanguageCookie, omitOne } from '@navikt/fp-utils';
-import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan-ny';
+import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 export const FEIL_VED_INNSENDING =

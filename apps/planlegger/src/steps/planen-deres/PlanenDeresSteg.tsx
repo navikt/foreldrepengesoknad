@@ -45,7 +45,7 @@ import {
     UttaksplanKalender,
     UttaksplanListe,
     UttaksplanRedigeringProvider,
-} from '@navikt/fp-uttaksplan-ny';
+} from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { PlanleggerStepPage } from '../../components/page/PlanleggerStepPage';

@@ -286,17 +286,12 @@ const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
 const getAntallDagerFellesperiodeBruktAvAnnenPart = (
     uttaksplanAnnenPart: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
     kontoer: KontoBeregningDto,
-    erFarEllerMedmor: boolean,
     familiehendelsesdato: string,
 ): number => {
     if (uttaksplanAnnenPart === undefined || uttaksplanAnnenPart.length === 0) {
         return 0;
     }
-    if (erFarEllerMedmor) {
-        return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato).mor.dagerFellesperiode;
-    } else {
-        return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato).mor.dagerFellesperiode;
-    }
+    return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato).mor.dagerFellesperiode;
 };
 
 const getFordelingFelles = (
@@ -801,7 +796,6 @@ export const getFordelingFraKontoer = (
     const dagerFellesperiodeBruktAvAnnenPart = getAntallDagerFellesperiodeBruktAvAnnenPart(
         uttaksplanAnnenPart,
         kontoer,
-        erFarEllerMedmor,
         familiehendelsesdato,
     );
     const erMor = !erFarEllerMedmor;
