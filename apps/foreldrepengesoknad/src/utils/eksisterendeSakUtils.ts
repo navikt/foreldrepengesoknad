@@ -6,22 +6,18 @@ import { ValgtBarn } from 'types/ValgtBarn';
 import {
     AnnenForelder,
     AnnenForelderOppgitt,
-    Arbeidsform,
     Barn,
     BarnType,
     EksisterendeSak,
     FamiliehendelseType,
     Saksgrunnlag,
     Saksperiode,
-    Situasjon,
-    Søkerrolle,
     isAdoptertBarn,
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
-    AktivitetType_fpoversikt,
     AnnenForelderDto_fpoversikt,
     AnnenPartSak_fpoversikt,
     FpBarnDto_fpoversikt,
@@ -30,6 +26,8 @@ import {
     KontoType,
     Oppholdsårsak,
     Person_fpoversikt,
+    Situasjon,
+    Søkerrolle,
     UttakOppholdÅrsak_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
@@ -40,17 +38,6 @@ import { getErDatoInnenEnDagFraAnnenDato, getRelevantFamiliehendelseDato, sorter
 import { getFamiliehendelseType } from './familiehendelseUtils';
 import { guid } from './guid';
 import { getKjønnFromFnrString } from './personUtils';
-
-export const getArbeidsformFromUttakArbeidstype = (arbeidstype: AktivitetType_fpoversikt): Arbeidsform => {
-    switch (arbeidstype) {
-        case 'SELVSTENDIG_NÆRINGSDRIVENDE':
-            return Arbeidsform.selvstendignæringsdrivende;
-        case 'FRILANS':
-            return Arbeidsform.frilans;
-        default:
-            return Arbeidsform.arbeidstaker;
-    }
-};
 
 const getStønadskontoTypeFromOppholdÅrsakType = (årsak: UttakOppholdÅrsak_fpoversikt): KontoType | undefined => {
     switch (årsak) {

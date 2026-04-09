@@ -8,14 +8,13 @@ import {
     BarnType,
     FødtBarn,
     IkkeUtfyltTypeBarn,
-    Situasjon,
     UfødtBarn,
     isAdoptertAnnetBarn,
     isAdoptertStebarn,
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, Situasjon, SøkersituasjonFp } from '@navikt/fp-types';
 
 import {
     BarnetFormValues,

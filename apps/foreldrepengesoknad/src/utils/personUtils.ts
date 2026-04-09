@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-import { AnnenForelder, NavnPåForeldre, Søkerrolle, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { FpPersonopplysningerDto_fpoversikt, Kjønn_fpoversikt } from '@navikt/fp-types';
+import { AnnenForelder, NavnPåForeldre, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { FpPersonopplysningerDto_fpoversikt, Kjønn_fpoversikt, Søkerrolle } from '@navikt/fp-types';
 
 export const formaterNavn = (fornavn: string, etternavn: string, visEtternavn: boolean, mellomnavn?: string) => {
     if (visEtternavn) {

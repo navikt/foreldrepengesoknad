@@ -1,12 +1,13 @@
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import { AnnenForelder, Barn, Søkersituasjon } from '@navikt/fp-common';
+import { AnnenForelder, Barn } from '@navikt/fp-common';
 import {
     ArbeidsforholdOgInntektFp,
     Dekningsgrad,
     Frilans,
     NæringDto,
+    SøkersituasjonFp,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
@@ -14,7 +15,7 @@ import {
 export interface Søknad {
     type: 'foreldrepenger';
     harGodkjentVilkår: boolean;
-    søkersituasjon: Søkersituasjon;
+    søkersituasjon: SøkersituasjonFp;
     barn: Barn;
     annenForelder: AnnenForelder;
     arbeidsforholdOgInntekt: ArbeidsforholdOgInntektFp;

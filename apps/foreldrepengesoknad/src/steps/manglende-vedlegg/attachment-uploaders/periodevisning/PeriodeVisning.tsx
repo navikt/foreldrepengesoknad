@@ -11,8 +11,9 @@ import {
 
 import { BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Situasjon } from '@navikt/fp-common';
+import { NavnPåForeldre } from '@navikt/fp-common';
 import {
+    Situasjon,
     UttakOppholdÅrsak_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,

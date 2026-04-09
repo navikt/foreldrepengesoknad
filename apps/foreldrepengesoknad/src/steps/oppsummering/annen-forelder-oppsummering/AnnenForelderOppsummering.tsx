@@ -5,7 +5,8 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { FormSummary } from '@navikt/ds-react';
 
-import { AnnenForelder, Søkerrolle, isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { AnnenForelder, isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { Søkerrolle } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 interface Props {
