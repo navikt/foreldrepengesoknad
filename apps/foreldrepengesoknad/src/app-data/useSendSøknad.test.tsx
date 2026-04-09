@@ -220,6 +220,7 @@ const getWrapper =
                             [ContextDataType.UTTAKSPLAN_NY]: [UTTAKSPLAN_PERIODE],
                             [ContextDataType.VEDLEGG]: VEDLEGG,
                             [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: '1',
+                            [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]: true,
                         }}
                     >
                         {children}

@@ -117,7 +117,7 @@ const UttaksplanListe = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
 
-    const ønskerJustertUttakVedFødsel = notEmpty(useContextGetData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL));
+    const ønskerJustertUttakVedFødsel = useContextGetData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
 
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
 

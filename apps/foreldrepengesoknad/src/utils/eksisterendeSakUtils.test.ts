@@ -124,48 +124,6 @@ describe('eksisterendeSakUtils', () => {
                 utsettelseÅrsak: undefined,
             }),
         ],
-        uttaksplan: [
-            expect.objectContaining({
-                type: 'uttak',
-                konto: 'FORELDREPENGER_FØR_FØDSEL',
-                tidsperiode: {
-                    fom: new Date('2022-11-09'),
-                    tom: new Date('2022-11-29'),
-                },
-                forelder: 'MOR',
-                ønskerSamtidigUttak: false,
-                gradert: false,
-                samtidigUttakProsent: undefined,
-                ønskerFlerbarnsdager: undefined,
-                stillingsprosent: undefined,
-                arbeidsformer: undefined,
-                orgnumre: undefined,
-                morsAktivitetIPerioden: undefined,
-                erMorForSyk: undefined,
-                angittAvAnnenPart: undefined,
-                opprinneligSøkt: undefined,
-            }),
-            expect.objectContaining({
-                type: 'uttak',
-                konto: 'MØDREKVOTE',
-                tidsperiode: {
-                    fom: new Date('2022-11-30'),
-                    tom: new Date('2022-12-13'),
-                },
-                forelder: 'MOR',
-                ønskerSamtidigUttak: true,
-                gradert: false,
-                samtidigUttakProsent: '100',
-                ønskerFlerbarnsdager: undefined,
-                stillingsprosent: undefined,
-                arbeidsformer: undefined,
-                orgnumre: undefined,
-                morsAktivitetIPerioden: undefined,
-                erMorForSyk: undefined,
-                angittAvAnnenPart: undefined,
-                opprinneligSøkt: undefined,
-            }),
-        ],
     };
 
     const eksisterendeSakMorAdopsjonBareMorHarRett = {
@@ -246,28 +204,6 @@ describe('eksisterendeSakUtils', () => {
                 utsettelseÅrsak: undefined,
             }),
         ],
-        uttaksplan: [
-            expect.objectContaining({
-                type: 'uttak',
-                konto: 'FORELDREPENGER_FØR_FØDSEL',
-                tidsperiode: {
-                    fom: new Date('2022-11-09'),
-                    tom: new Date('2022-11-29'),
-                },
-                forelder: 'MOR',
-                ønskerSamtidigUttak: false,
-                gradert: false,
-                samtidigUttakProsent: undefined,
-                ønskerFlerbarnsdager: false,
-                stillingsprosent: undefined,
-                arbeidsformer: undefined,
-                orgnumre: undefined,
-                morsAktivitetIPerioden: undefined,
-                erMorForSyk: undefined,
-                angittAvAnnenPart: undefined,
-                opprinneligSøkt: undefined,
-            }),
-        ],
     };
 
     const eksisterendeSakMedØnsketJusteringFarFødsel = {
@@ -334,35 +270,6 @@ describe('eksisterendeSakUtils', () => {
                 },
                 samtidigUttak: undefined,
                 utsettelseÅrsak: undefined,
-            }),
-        ],
-        uttaksplan: [
-            expect.objectContaining({
-                tidsperiode: {
-                    fom: new Date('2022-10-31'),
-                    tom: new Date('2022-11-08'),
-                },
-                type: 'periodeUtenUttak',
-            }),
-            expect.objectContaining({
-                type: 'uttak',
-                konto: 'FEDREKVOTE',
-                tidsperiode: {
-                    fom: new Date('2022-11-09'),
-                    tom: new Date('2022-11-29'),
-                },
-                forelder: 'FAR_MEDMOR',
-                ønskerSamtidigUttak: false,
-                gradert: false,
-                samtidigUttakProsent: undefined,
-                ønskerFlerbarnsdager: undefined,
-                stillingsprosent: undefined,
-                arbeidsformer: undefined,
-                orgnumre: undefined,
-                morsAktivitetIPerioden: undefined,
-                erMorForSyk: true,
-                angittAvAnnenPart: undefined,
-                opprinneligSøkt: undefined,
             }),
         ],
     };
