@@ -3,15 +3,17 @@ import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
 import { Sak } from 'types/Sak.ts';
 
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
     BehandlingTilstand_fpoversikt,
     Familiehendelse_fpoversikt,
     TidslinjeHendelseDto_fpoversikt,
 } from '@navikt/fp-types';
+import { UttaksdagenString } from '@navikt/fp-utils';
 
 import { BarnGruppering } from '../types/BarnGruppering.ts';
 import { Tidslinjehendelse2 } from '../types/Tidslinjehendelse.ts';
-import { UTTAKSDAGER_PER_UKE, Uttaksdagen } from './Uttaksdagen.ts';
+import { UTTAKSDAGER_PER_UKE } from './Uttaksdagen.ts';
 import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils.ts';
 
 dayjs.extend(minMax);
@@ -275,21 +277,25 @@ export const beregnTidslinjeVindu = ({
     };
 };
 
-export const getTidligstBehandlingsDatoForTidligSøknad = (sak: Sak) => {
+export const getTidligstBehandlingsDatoForTidligSøknad = (sak: Sak): string | undefined => {
     if (sak.ytelse === 'SVANGERSKAPSPENGER') {
         const tilretteleggingerFomDatoer =
             sak.åpenBehandling?.søknad.arbeidsforhold.flatMap((a) => {
                 const utenHelTilrettelegging = a.tilrettelegginger.filter((t) => t.type !== 'HEL');
                 return utenHelTilrettelegging.map((periode) => dayjs(periode.fom));
             }) ?? [];
-        const datoFørstePeriodeMedSVP = dayjs.min(tilretteleggingerFomDatoer)!.toDate();
-        return Uttaksdagen(Uttaksdagen(datoFørstePeriodeMedSVP).denneEllerNeste()).trekkFra(4 * UTTAKSDAGER_PER_UKE);
+        const datoFørstePeriodeMedSVP = dayjs.min(tilretteleggingerFomDatoer)!.format(ISO_DATE_FORMAT);
+        return UttaksdagenString.denneEllerNeste(datoFørstePeriodeMedSVP).getDatoAntallUttaksdagerTidligere(
+            4 * UTTAKSDAGER_PER_UKE,
+        );
     }
 
     if (sak.ytelse === 'FORELDREPENGER') {
         const søknadsperioder = sak.åpenBehandling?.søknadsperioder ?? [];
-        const førsteUttaksdagISaken = dayjs(søknadsperioder[0]!.fom).toDate();
-        return Uttaksdagen(Uttaksdagen(førsteUttaksdagISaken).denneEllerNeste()).trekkFra(4 * UTTAKSDAGER_PER_UKE);
+        const førsteUttaksdagISaken = dayjs(søknadsperioder[0]!.fom).format(ISO_DATE_FORMAT);
+        return UttaksdagenString.denneEllerNeste(førsteUttaksdagISaken).getDatoAntallUttaksdagerTidligere(
+            4 * UTTAKSDAGER_PER_UKE,
+        );
     }
 
     return undefined;
@@ -326,10 +332,10 @@ export const getRelevantNyTidslinjehendelse = (
         : undefined;
 };
 
-export const getTidligstDatoForInntektsmelding = (førsteUttaksdagISaken: string | undefined) => {
+export const getTidligstDatoForInntektsmelding = (førsteUttaksdagISaken: string | undefined): string | undefined => {
     return førsteUttaksdagISaken
         ? dayjs(førsteUttaksdagISaken)
               .subtract(4 * 7, 'day')
-              .toDate()
+              .format(ISO_DATE_FORMAT)
         : undefined;
 };

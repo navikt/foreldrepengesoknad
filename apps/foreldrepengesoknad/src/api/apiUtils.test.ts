@@ -9,12 +9,7 @@ import {
     Uttaksplanperiode,
 } from '@navikt/fp-types';
 
-import {
-    getPeriodeVedTidspunkt,
-    getUttaksplanMedFriUtsettelsesperiode,
-    mapTilEndringssøknadDto,
-    mapTilSøknadDto,
-} from './apiUtils';
+import { getUttaksplanMedFriUtsettelsesperiode, mapTilEndringssøknadDto, mapTilSøknadDto } from './apiUtils';
 
 const DEFAULT_SØKER_INFO = {
     arbeidsforhold: [
@@ -417,18 +412,6 @@ describe('getUttaksplanMedFriUtsettelsesperiode', () => {
         expect(friUtsettelsePeriode.type).toBe(Periodetype.Utsettelse);
         expect(friUtsettelsePeriode.fom).toEqual(endringstidspunkt);
         expect(friUtsettelsePeriode.tom).toEqual(endringstidspunkt);
-    });
-});
-
-describe('getPeriodeVedTidspunkt', () => {
-    it('returns correct periode that overlaps at tidspunkt', () => {
-        const periode = getPeriodeVedTidspunkt(uttaksplanMedAllePerioder, new Date(fraDato_2));
-        expect(periode).toEqual(periode_2);
-    });
-
-    it('returns undefined when no periode overlaps at tidspunkt', () => {
-        const periodeNotFound = getPeriodeVedTidspunkt(uttaksplanMedAllePerioder, new Date('2024-03-08'));
-        expect(periodeNotFound).toBe(undefined);
     });
 });
 

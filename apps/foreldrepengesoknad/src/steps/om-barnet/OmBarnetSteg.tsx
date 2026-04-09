@@ -29,9 +29,9 @@ import { AdopsjonPanel } from './adopsjon/AdopsjonPanel';
 import { FødselPanel } from './fødsel/FødselPanel';
 import { getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetContextFormMapping';
 
-const erDatoInnenforDeSiste12Ukene = (dato: string | Date) => {
+const erDatoInnenforDeSiste12Ukene = (dato: string) => {
     const twelveWeeksAfterBirthday = dayjs(dato).add(12, 'weeks');
-    return dayjs(twelveWeeksAfterBirthday).isAfter(new Date(), 'day');
+    return dayjs(twelveWeeksAfterBirthday).isAfter(dayjs(), 'day');
 };
 
 const findBarnetIRegistrerteBarn = (regBarn: FpBarnDto_fpoversikt, barnet: Barn) => {

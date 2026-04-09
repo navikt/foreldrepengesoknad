@@ -9,9 +9,9 @@ import { isFødselsnummerFormatValid, isSixteenOrOlder } from './validation/fød
 
 dayjs.extend(minMax);
 
-export const dateToday = dayjs().toDate();
-export const date21DaysAgo = dayjs().subtract(21, 'days').startOf('day').toDate();
-export const attenUkerTreDager = dayjs().add(18, 'week').add(3, 'day').startOf('day').toDate();
+export const dateToday = dayjs();
+export const date21DaysAgo = dayjs().subtract(21, 'days').startOf('day');
+export const attenUkerTreDager = dayjs().add(18, 'week').add(3, 'day').startOf('day');
 
 export const hasValue = (v: string | number | boolean | undefined | null) => v !== '' && v !== undefined && v !== null;
 

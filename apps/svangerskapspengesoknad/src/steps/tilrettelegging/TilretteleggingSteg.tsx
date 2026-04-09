@@ -139,7 +139,7 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
     );
     const minDatoBehovFom = dayjs.max(dayjs(tiMånederSidenDato(barnet.termindato)), dayjs(periode.fom));
     const maxDatoBehovFom = periode.tom
-        ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(periode.tom)).toDate()
+        ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(periode.tom))
         : sisteDagForSvangerskapspenger;
 
     const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barnet);

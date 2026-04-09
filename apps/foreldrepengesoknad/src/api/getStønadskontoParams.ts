@@ -108,9 +108,6 @@ export const getStønadskontoParams = (
         annenForelder,
     );
 
-    // TODO (TOR) Er dette noko me treng?
-    const førsteUttaksdagNesteBarnsSak = undefined; // barnFraNesteSak?.startdatoFørsteStønadsperiode;
-
     const eksisterendeVedtakAnnenPart = mapAnnenPartsEksisterendeSakFromDTO(
         annenPartsVedtak,
         barn,
@@ -147,6 +144,5 @@ export const getStønadskontoParams = (
         termindato: getTermindatoSomSkalBrukes(barn, saksgrunnlagsTermindato),
         omsorgsovertakelseDato: isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? barn.adopsjonsdato : undefined,
         morHarUføretrygd: getErMorUfør(annenForelder, søkerErFarEllerMedmor),
-        familieHendelseDatoNesteSak: førsteUttaksdagNesteBarnsSak,
     };
 };

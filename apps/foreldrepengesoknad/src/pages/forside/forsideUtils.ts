@@ -3,7 +3,7 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { ValgtBarn, ValgtBarnType } from 'types/ValgtBarn';
 import { getAndreBarnFødtSammenMedBarnet, getDødeBarnetForMerEnn3MånederSiden, getLeverBarnet } from 'utils/barnUtils';
-import { ISOStringToDate, getErDatoInnenEnDagFraAnnenDato, getRelevantFamiliehendelseDato } from 'utils/dateUtils';
+import { getErDatoInnenEnDagFraAnnenDato, getRelevantFamiliehendelseDato } from 'utils/dateUtils';
 import { guid } from 'utils/guid';
 import { erEldreEnn3ÅrOg3Måneder } from 'utils/personUtils';
 
@@ -52,7 +52,7 @@ const getPDLBarnForSakMedFødteBarn = (
     sak: FpSak_fpoversikt,
     registrerteBarn: FpBarnDto_fpoversikt[],
 ): FpBarnDto_fpoversikt[] => {
-    const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse.fødselsdato);
+    const fødselsdatoFraSak = sak.familiehendelse.fødselsdato;
     const barnFnrFraSaken = sak.barn ? sak.barn.flatMap((b) => b.fnr) : [];
     const pdlBarnMedSammeFnr = registrerteBarn.filter((b) => barnFnrFraSaken.includes(b.fnr));
 
@@ -85,7 +85,7 @@ const getSelectableBarnFraSak = (sak: FpSak_fpoversikt, registrerteBarn: FpBarnD
         sak.familiehendelse.omsorgsovertakelse,
     );
     const barnType = getSelectableBarnType(sak.gjelderAdopsjon, sak.familiehendelse, pdlBarn);
-    const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse.fødselsdato);
+    const fødselsdatoFraSak = sak.familiehendelse.fødselsdato;
 
     let fødselsdatoer;
     if (pdlBarn && pdlBarn.length > 0) {
@@ -190,7 +190,7 @@ const getSelectableBarnOptionsFraPDL = (
     const registrerteBarnUtenAvsluttedeSaker = registrerteBarn.filter(
         (regBarn) =>
             !avsluttedeSaker.some((sak) =>
-                getErDatoInnenEnDagFraAnnenDato(regBarn.fødselsdato, ISOStringToDate(sak.familiehendelse.fødselsdato)),
+                getErDatoInnenEnDagFraAnnenDato(regBarn.fødselsdato, sak.familiehendelse.fødselsdato),
             ),
     );
 

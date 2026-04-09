@@ -17,8 +17,6 @@ export * from './Situasjon';
 export * from './SituasjonForelderSvg';
 export * from './Søkerrolle';
 export * from './Søkersituasjon';
-export * from './Søknadsinfo';
 export * from './Tidsperiode';
-export * from './TidsperiodeDate';
 export * from './UttakRundtFødselÅrsak';
 export * from './UttaksplanHexColor';

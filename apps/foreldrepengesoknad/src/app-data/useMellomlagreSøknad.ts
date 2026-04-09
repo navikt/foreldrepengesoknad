@@ -32,7 +32,6 @@ export interface FpMellomlagretData {
     søknadGjelderEtNyttBarn?: boolean;
     fordeling?: Fordeling;
     eksisterendeSak?: EksisterendeSak;
-    endringstidspunkt?: Date;
     barnFraNesteSak?: BarnFraNesteSak;
     annenPartsUttakErLagtTilIPlan?: boolean;
     uttaksplanNy?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;

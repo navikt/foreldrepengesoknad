@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions } from 'api/queries';
-import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
@@ -82,7 +81,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                     name="datoForAleneomsorg"
                     control={formMethods.control}
                     label={intl.formatMessage({ id: 'annenForelder.datoForAleneomsorg' })}
-                    minDate={dayjs(familiehendelsedato).toDate()}
+                    minDate={familiehendelsedato}
                     validate={[
                         isRequired(
                             intl.formatMessage({

@@ -112,7 +112,6 @@ type StønadskontoParams = {
     termindato?: string;
     omsorgsovertakelseDato?: string;
     morHarUføretrygd: boolean;
-    familieHendelseDatoNesteSak?: Date;
 };
 
 export type DokumentereMorsArbeidParams = {

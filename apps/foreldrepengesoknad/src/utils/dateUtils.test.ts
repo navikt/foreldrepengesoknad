@@ -7,19 +7,12 @@ import { FpBarnDto_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types'
 
 import messages from '../intl/nb_NO.json';
 import {
-    ISOStringToDate,
-    dateIsSameOrAfter,
-    dateIsSameOrBefore,
-    findEldsteDato,
     førsteJuli2024ReglerGjelder,
-    getAlderFraDato,
-    getEldsteDato,
     getEldsteRegistrerteBarn,
     getEndringstidspunktNy,
     getRelevantFamiliehendelseDato,
     getUkerOgDagerFromDager,
     getVarighetString,
-    isDateABeforeDateB,
     sorterDatoEtterEldst,
 } from './dateUtils';
 import { toggleUtils } from './toggleUtils';
@@ -48,27 +41,6 @@ describe('dateUtils', () => {
 
     afterAll(() => {
         MockDate.reset();
-    });
-
-    it('skal konvertere string til Date riktig', () => {
-        const dato = ISOStringToDate('2021-05-05');
-
-        expect(dato?.getTime()).toBe(new Date('2021-05-05').getTime());
-    });
-
-    it('skal returnere true når dato er før en annen dato', () => {
-        const erFør = isDateABeforeDateB('2021-05-03', '2021-05-04');
-        expect(erFør).toBe(true);
-    });
-
-    it('skal returnere false når dato er etter en annen dato', () => {
-        const erFør = isDateABeforeDateB('2021-05-06', '2021-05-04');
-        expect(erFør).toBe(false);
-    });
-
-    it('skal returnere false når dato ikke er på iso-format', () => {
-        const erFør = isDateABeforeDateB('06.05.2021', '2021-05-04');
-        expect(erFør).toBe(false);
     });
 
     it('skal finne det eldste barnet', () => {
@@ -113,32 +85,6 @@ describe('dateUtils', () => {
     it('skal finne varighet der antall dager er mindre enn 1 uke', () => {
         const varighet = getVarighetString(2, intl);
         expect(varighet).toBe('2 dager');
-    });
-
-    it('skal returnere true når dato er før annen dato', () => {
-        const erDatoFørAnnenDato = dateIsSameOrBefore(ISOStringToDate('2021-01-01'), ISOStringToDate('2021-01-02'));
-        expect(erDatoFørAnnenDato).toBe(true);
-    });
-
-    it('skal returnere true når dato er etter annen dato', () => {
-        const erDatoEtterAnnenDato = dateIsSameOrAfter(ISOStringToDate('2021-01-02'), ISOStringToDate('2021-01-01'));
-        expect(erDatoEtterAnnenDato).toBe(true);
-    });
-
-    it('skal returnere eldste dato', () => {
-        const kompaktDato = findEldsteDato([
-            ISOStringToDate('2021-01-03')!,
-            ISOStringToDate('2021-01-01')!,
-            ISOStringToDate('2021-01-02')!,
-        ]);
-        expect(kompaktDato).toEqual(ISOStringToDate('2021-01-01')!);
-    });
-
-    it('skal finne alder fra dato', () => {
-        const alder = getAlderFraDato(ISOStringToDate('2020-01-02')!);
-        expect(alder.år).toBe(1);
-        expect(alder.måneder).toBe(18);
-        expect(alder.dager).toBe(553);
     });
 
     it('skal hente fødselsdato når denne finnes', () => {
@@ -464,14 +410,6 @@ describe('dateUtils', () => {
                 expect(endringstidspunkt).toBe(opprinneligPlanMedAnnenPart[0]!.fom);
             },
         );
-    });
-});
-
-describe('getEldsteDato', () => {
-    it('Skal returnere eldste dato riktig.', () => {
-        const datoListe = ['2023-10-21', '2023-11-21', '2021-11-21', '2021-11-20', '2021-12-20'];
-        const result = getEldsteDato(datoListe);
-        expect(result).toEqual('2021-11-20');
     });
 });
 

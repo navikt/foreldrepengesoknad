@@ -90,13 +90,6 @@ const konverterRolle = (rolle: Søkerrolle): BrukerRolle => {
     }
 };
 
-export const getPeriodeVedTidspunkt = (
-    uttaksplan: Uttaksplanperiode[],
-    tidspunkt: Date,
-): Uttaksplanperiode | undefined => {
-    return uttaksplan.find((periode) => dayjs(tidspunkt).isBetween(periode.fom, periode.tom, 'day', '[]'));
-};
-
 export const getUttaksplanMedFriUtsettelsesperiode = (
     uttaksplan: Uttaksplanperiode[],
     endringstidspunkt: string,

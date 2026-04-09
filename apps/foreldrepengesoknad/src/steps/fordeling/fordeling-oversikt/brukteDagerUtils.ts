@@ -84,11 +84,11 @@ const beregnBrukteUttaksdager = (tilgjengeligeStønadskontoer: KontoBeregningDto
         .filter((k) => k.dager > 0);
 };
 
-const getPerioderFørFamiliehendelse = (perioder: Periode[], familiehendelsesdato: Date): Periode[] => {
+const getPerioderFørFamiliehendelse = (perioder: Periode[], familiehendelsesdato: string): Periode[] => {
     return perioder.filter((p) => dayjs(p.tom).isBefore(familiehendelsesdato, 'day'));
 };
 
-const getPerioderEtterFamiliehendelse = (perioder: Periode[], familiehendelsesdato: Date): Periode[] => {
+const getPerioderEtterFamiliehendelse = (perioder: Periode[], familiehendelsesdato: string): Periode[] => {
     return perioder.filter((p) => !dayjs(p.tom).isBefore(familiehendelsesdato, 'day'));
 };
 
@@ -99,7 +99,7 @@ const summerBrukteUttaksdager = (uttak: KontoDto[]) => {
 const getBrukteDagerForForelder = (
     tilgjengeligeStønadskontoer: KontoBeregningDto,
     perioder: Periode[],
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
     forelder: BrukerRolleSak_fpoversikt,
 ): ForeldersBrukteDager => {
     const perioderFørTermin = getPerioderFørFamiliehendelse(perioder, familiehendelsesdato);
@@ -128,7 +128,7 @@ const getBrukteDagerForForelder = (
 export const getBrukteDager = (
     tilgjengeligeStønadskontoer: KontoBeregningDto,
     perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
 ): BrukteDager => {
     const perioderMedUttak = (perioder ?? []).filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
     return {

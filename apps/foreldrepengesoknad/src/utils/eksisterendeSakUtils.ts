@@ -36,12 +36,7 @@ import {
 } from '@navikt/fp-types';
 import { TidsperiodenString, Uttaksperioden } from '@navikt/fp-utils';
 
-import {
-    ISOStringToDate,
-    getErDatoInnenEnDagFraAnnenDato,
-    getRelevantFamiliehendelseDato,
-    sorterDatoEtterEldst,
-} from './dateUtils';
+import { getErDatoInnenEnDagFraAnnenDato, getRelevantFamiliehendelseDato, sorterDatoEtterEldst } from './dateUtils';
 import { getFamiliehendelseType } from './familiehendelseUtils';
 import { guid } from './guid';
 import { getKjønnFromFnrString } from './personUtils';
@@ -141,15 +136,6 @@ const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
     }
 
     return true;
-};
-
-export const getStartdatoFørstePeriodeAnnenPart = (
-    annenPartsSak: AnnenPartSak_fpoversikt | undefined,
-): Date | undefined => {
-    if (!annenPartsSak || annenPartsSak.perioder.length === 0) {
-        return undefined;
-    }
-    return ISOStringToDate(annenPartsSak.perioder[0]!.fom);
 };
 
 export const mapAnnenPartsEksisterendeSakFromDTO = (
@@ -366,7 +352,7 @@ const getAnnenForelderFromSaksgrunnlag = (
 
 const finnAnnenForelderForSaken = (
     barn: FpBarnDto_fpoversikt[],
-    fødselsdato: Date | undefined,
+    fødselsdato: string | undefined,
     grunnlag: Saksgrunnlag,
     situasjon: Situasjon,
     intl: IntlShape,
@@ -492,7 +478,7 @@ const opprettAnnenForelderFraEksisterendeSak = (
     } satisfies AnnenForelderOppgitt;
     const annenForelderFraSak = finnAnnenForelderForSaken(
         barn,
-        ISOStringToDate(grunnlag.fødselsdato),
+        grunnlag.fødselsdato,
         grunnlag,
         situasjon,
         intl,

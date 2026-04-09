@@ -112,7 +112,7 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
                     control={formMethods.control}
                     label={intl.formatMessage({ id: 'omBarnet.terminbekreftelseDato' })}
                     maxDate={dateToday}
-                    minDate={dayjs(termindato).subtract(18, 'week').subtract(3, 'day').startOf('day').toDate()}
+                    minDate={dayjs(termindato).subtract(18, 'week').subtract(3, 'day').startOf('day')}
                     useStrategyAbsolute
                     validate={[
                         isRequired(

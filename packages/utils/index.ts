@@ -77,7 +77,6 @@ export {
     dateIsSameOrAfter,
     dateIsSameOrBefore,
     formaterDatoUtenDag,
-    convertStringOrDateToDate,
 } from './src/dateUtils';
 
 export { UttaksdagenString, erUttaksdag } from './src/uttak/UttaksdagenString';

@@ -69,8 +69,8 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
                     name="termindato"
                     control={formMethods.control}
                     label={<FormattedMessage id="ErIkkeFødtPanel.Termin" />}
-                    minDate={dayjs().subtract(3, 'week').toDate()}
-                    maxDate={dayjs().add(1, 'year').toDate()}
+                    minDate={dayjs().subtract(3, 'week')}
+                    maxDate={dayjs().add(1, 'year')}
                     useStrategyAbsolute
                     validate={[
                         isRequired(intl.formatMessage({ id: 'Termindato.Required' })),

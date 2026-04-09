@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import utc from 'dayjs/plugin/utc';
 
-import { formatDate } from '@navikt/fp-utils';
+import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
 dayjs.extend(isoWeek);
 dayjs.extend(utc);
@@ -60,7 +60,7 @@ const getUttaksdagFraOgMedDato = (dato: Date): Date => {
 
 const trekkUttaksdagerFraDato = (dato: Date, uttaksdager: number): Date => {
     if (erUttaksdag(dato) === false) {
-        throw new Error(`trekkUttaksdagerFraDato: Dato ${formatDate(dato)} må være uttaksdag`);
+        throw new Error(`trekkUttaksdagerFraDato: Dato ${dayjs(dato).format(DDMMYYYY_DATE_FORMAT)} må være uttaksdag`);
     }
     let nyDato = dato;
     let dagteller = 0;

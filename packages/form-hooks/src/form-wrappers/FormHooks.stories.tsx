@@ -155,8 +155,8 @@ const meta = {
                             control={formMethods.control}
                             label="Dette er en datepicker"
                             description="Dette er en mer utfyllende tekst"
-                            maxDate={dayjs().add(10, 'day').toDate()}
-                            minDate={dayjs().subtract(10, 'day').toDate()}
+                            maxDate={dayjs().add(10, 'day')}
+                            minDate={dayjs().subtract(10, 'day')}
                             showMonthAndYearDropdowns
                         />
                         <RhfDatepicker

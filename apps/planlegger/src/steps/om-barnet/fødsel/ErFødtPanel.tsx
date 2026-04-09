@@ -48,7 +48,7 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
                         name="fødselsdato"
                         control={formMethods.control}
                         label={<FormattedMessage id="ErFødtPanel.Fødselsdato" values={{ antallBarn }} />}
-                        maxDate={dayjs().toDate()}
+                        maxDate={dayjs()}
                         useStrategyAbsolute
                         validate={[
                             isRequired(intl.formatMessage({ id: 'Fødselsdato.Required' })),
@@ -68,7 +68,7 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
                         name="termindato"
                         control={formMethods.control}
                         label={<FormattedMessage id="ErFødtPanel.NårVarTermin" />}
-                        maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
+                        maxDate={dayjs().add(18, 'weeks').add(3, 'days')}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'Termindato.Required' })),
                             isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),

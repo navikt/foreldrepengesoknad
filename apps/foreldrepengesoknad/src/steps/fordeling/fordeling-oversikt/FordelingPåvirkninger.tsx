@@ -28,7 +28,7 @@ interface Props {
     farTekst: string;
     erFarEllerMedmor: boolean;
     erIkkeFødtBarn: boolean;
-    familiehendelsesdato: Date;
+    familiehendelsesdato: string;
     annenForelderHarKunRettIEØS: boolean;
 }
 
