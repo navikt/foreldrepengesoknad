@@ -6,7 +6,7 @@ import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils'
 
 export const getStønadskontoNavn = (
     intl: IntlShape,
-    konto: KontoType | undefined,
+    konto: KontoTypeUttak | KontoType | undefined,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
@@ -36,7 +36,7 @@ export const getStønadskontoNavn = (
     }
 
     if (erFarEllerMedmor === true && erAleneOmOmsorg === false) {
-        if (konto === 'FORELDREPENGER' && morsAktivitet === 'IKKE_OPPGITT') {
+        if ((konto === 'FORELDREPENGER' && morsAktivitet === 'IKKE_OPPGITT') || konto === 'AKTIVITETSFRI_KVOTE') {
             return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE_BFHR' });
         }
         if (konto === 'FORELDREPENGER') {
