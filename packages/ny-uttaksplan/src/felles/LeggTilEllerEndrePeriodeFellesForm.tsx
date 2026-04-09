@@ -319,6 +319,18 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                                 values={{ erMedmor: erMedmorDelAvSøknaden }}
                             />
                         </Radio>
+                        <Radio value="ALENEOMSORG">
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.Aleneomsorg.Mor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        </Radio>
+                        <Radio value="IKKE_RETT_ANNEN_FORELDER">
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.IkkeRett.Mor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        </Radio>
                     </RhfRadioGroup>
                 </VStack>
             )}
@@ -364,6 +376,18 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         <Radio value="SYKDOM_ANNEN_FORELDER">
                             <FormattedMessage
                                 id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.FarMedmor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        </Radio>
+                        <Radio value="ALENEOMSORG">
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.Aleneomsorg.FarMedmor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        </Radio>
+                        <Radio value="IKKE_RETT_ANNEN_FORELDER">
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.IkkeRett.FarMedmor"
                                 values={{ erMedmor: erMedmorDelAvSøknaden }}
                             />
                         </Radio>
