@@ -9,7 +9,6 @@ import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
-import { useUttaksplanForEksisterendeSak } from 'steps/uttaksplan/hooks/useUttaksplanForEksisterendeSak';
 import { getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
@@ -60,8 +59,7 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
     });
     const eksisterendeVedtakAnnenPart = annenPartsVedtakQuery.data;
 
-    const uttaksplanForEksisterendeSak = useUttaksplanForEksisterendeSak(annenPartsVedtakQuery.data?.perioder);
-    const uttaksplanAnnenPart = uttaksplanForEksisterendeSak ?? annenPartsVedtakQuery.data?.perioder;
+    const uttaksplanAnnenPart = annenPartsVedtakQuery.data?.perioder;
 
     const kontoerOptions = useStønadsKontoerOptions();
     const valgtStønadskonto = useQuery({
