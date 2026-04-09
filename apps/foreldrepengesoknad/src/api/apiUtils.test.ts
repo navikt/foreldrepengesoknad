@@ -1,28 +1,19 @@
 import { ContextDataType } from 'appData/FpDataContext';
-import { dateToISOString, getEndringstidspunktNy } from 'utils/dateUtils';
+import { getEndringstidspunktNy } from 'utils/dateUtils';
 
+import { AnnenForelder, Barn, BarnType, FødtBarn, Periodetype } from '@navikt/fp-common';
 import {
-    AnnenForelder,
-    Barn,
-    BarnType,
-    FødtBarn,
-    Periode,
-    PeriodeHull,
-    Periodetype,
-    Uttaksperiode,
-} from '@navikt/fp-common';
-import {
-    ArbeidsforholdOgInntektFp,
     FpPersonopplysningerDto_fpoversikt,
+    FpSak_fpoversikt,
     UttakPeriode_fpoversikt,
     Uttaksplanperiode,
 } from '@navikt/fp-types';
 
 import {
-    cleanEndringssøknad,
-    cleanSøknad,
     getPeriodeVedTidspunkt,
     getUttaksplanMedFriUtsettelsesperiode,
+    mapTilEndringssøknadDto,
+    mapTilSøknadDto,
 } from './apiUtils';
 
 const DEFAULT_SØKER_INFO = {
@@ -54,7 +45,7 @@ const DEFAULT_SØKER_INFO = {
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
 const getAnnenForelderUførMock = (
-    urUførInput: boolean | undefined,
+    erUførInput: boolean | undefined,
     erForSykInput: boolean | undefined,
     datoForAleneomsorgInput: string | undefined,
 ): AnnenForelder => {
@@ -63,7 +54,7 @@ const getAnnenForelderUførMock = (
         erAleneOmOmsorg: false,
         fornavn: 'Mor',
         etternavn: 'Utvikler',
-        erMorUfør: urUførInput,
+        erMorUfør: erUførInput,
         erForSyk: erForSykInput,
         kanIkkeOppgis: false,
         datoForAleneomsorg: datoForAleneomsorgInput,
@@ -98,8 +89,12 @@ const getBarnMock = () => {
     } satisfies FødtBarn;
 };
 
-// TODO (TOR) Dette er midlertidig logikk
-const getStateMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaksplanInput: Periode[]) => {
+const getStateMock = (
+    annenForelderInput: AnnenForelder,
+    barnInput: Barn,
+    uttaksplanInput: UttakPeriode_fpoversikt[],
+    saksnummer = 'SAK-001',
+) => {
     return (type: ContextDataType): any => {
         if (type === ContextDataType.ANNEN_FORELDER) {
             return annenForelderInput;
@@ -107,14 +102,20 @@ const getStateMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaks
         if (type === ContextDataType.OM_BARNET) {
             return barnInput;
         }
-        if (type === ContextDataType.UTTAKSPLAN) {
+        if (type === ContextDataType.UTTAKSPLAN_NY) {
             return uttaksplanInput;
         }
-        if (type === ContextDataType.UTENLANDSOPPHOLD) {
-            return {
-                harBoddUtenforNorgeSiste12Mnd: false,
-                skalBoUtenforNorgeNeste12Mnd: false,
-            };
+        if (type === ContextDataType.SØKERSITUASJON) {
+            return { rolle: 'mor', situasjon: 'fødsel' };
+        }
+        if (type === ContextDataType.PERIODE_MED_FORELDREPENGER) {
+            return '100';
+        }
+        if (type === ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL) {
+            return false;
+        }
+        if (type === ContextDataType.VALGT_EKSISTERENDE_SAKSNR) {
+            return saksnummer;
         }
         if (type === ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE) {
             return [];
@@ -122,128 +123,48 @@ const getStateMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaks
         if (type === ContextDataType.UTENLANDSOPPHOLD_SENERE) {
             return [];
         }
-        if (type === ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT) {
-            return {
-                harHattAndreInntektskilder: false,
-                harJobbetSomFrilans: false,
-                harJobbetSomSelvstendigNæringsdrivende: false,
-            } satisfies ArbeidsforholdOgInntektFp;
-        }
-        if (type === ContextDataType.SØKERSITUASJON) {
-            return {
-                rolle: 'mor',
-                situasjon: 'fødsel',
-            };
-        }
-
-        return {};
+        return undefined;
     };
 };
 
-describe('cleanUpSøknadsdataForInnsending', () => {
+describe('mapTilSøknadDto', () => {
     const barnMock = getBarnMock();
-    const fødselsdato = barnMock.fødselsdatoer[0]!;
     const annenForelderMock = getAnnenForelderUførMock(true, false, '2021-01-01');
     const dataFelles = getStateMock(annenForelderMock, barnMock, []);
 
-    const cleanedSøknad = cleanSøknad(dataFelles, fødselsdato, DEFAULT_SØKER_INFO);
+    const søknad = mapTilSøknadDto(dataFelles, DEFAULT_SØKER_INFO);
 
-    it('skal fjerne input om annenForelder.erForSyk fra søknad for innsending', () => {
-        if (!cleanedSøknad.annenForelder) {
-            throw new Error('Annen forelder finnes ikke i cleanedSøknad');
-        }
-        expect(Object.hasOwn(cleanedSøknad.annenForelder, 'erForSyk')).toBe(false);
+    it('skal ikkje ha erForSyk i annenForelder i søknaden', () => {
+        expect(søknad.annenForelder).toBeDefined();
+        expect(Object.hasOwn(søknad.annenForelder!, 'erForSyk')).toBe(false);
     });
 
-    it('skal ikke feile for ikke oppgitt forelder', () => {
+    it('skal returnere undefined for annenForelder som ikkje er oppgitt', () => {
         const data = getStateMock(getAnnenForelderIkkeOppgittMock(), barnMock, []);
-
-        const cleanedSøknadUtenForelder = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);
-        expect(cleanedSøknadUtenForelder.annenForelder).toBe(undefined);
+        const søknadUtenForelder = mapTilSøknadDto(data, DEFAULT_SØKER_INFO);
+        expect(søknadUtenForelder.annenForelder).toBe(undefined);
     });
 
-    it('skal ikke feile når ingen input om erUfør eller erForSyk på annenForelder', () => {
-        const annenForelderUtenUførInfo = getAnnenForelderMock();
-        const data = getStateMock(annenForelderUtenUførInfo, barnMock, []);
-
-        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);
-        if (!cleanedSøknadUtenUførInfo.annenForelder) {
-            throw new Error('Annen forelder finnes ikke i cleanedSøknadUtenUførInfo');
-        }
-        expect(Object.hasOwn(cleanedSøknadUtenUførInfo.annenForelder, 'erUfør')).toBe(false);
+    it('skal ikkje ha erUfør i annenForelder i søknaden', () => {
+        const data = getStateMock(getAnnenForelderMock(), barnMock, []);
+        const søknadUtenUførInfo = mapTilSøknadDto(data, DEFAULT_SØKER_INFO);
+        expect(søknadUtenUførInfo.annenForelder).toBeDefined();
+        expect(Object.hasOwn(søknadUtenUførInfo.annenForelder!, 'erUfør')).toBe(false);
     });
 
-    it('skal sende at annenforelder er informert for endringssøknad', () => {
-        const annenForelder = { ...getAnnenForelderMock(), harRettPåForeldrepengerINorge: true };
-        const data = getStateMock(annenForelder, barnMock, []);
-
-        const cleanedSøknadMedRett = cleanEndringssøknad(data, [], fødselsdato, DEFAULT_SØKER_INFO);
-        expect(cleanedSøknadMedRett.annenForelder).toBeDefined();
-        expect(cleanedSøknadMedRett.annenForelder?.rettigheter.erInformertOmSøknaden).toBe(true);
-    });
-
-    it('skal sende undefined for om annenforelder er informert hvis annen part ikke har rett', () => {
+    it('skal sette erInformertOmSøknaden=undefined når annen part ikkje har rett', () => {
         const annenForelder = { ...getAnnenForelderMock(), harRettPåForeldrepengerINorge: false };
         const data = getStateMock(annenForelder, barnMock, []);
-
-        const cleanedSøknadUtenRett = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);
-        expect(cleanedSøknadUtenRett.annenForelder).toBeDefined();
-        expect(cleanedSøknadUtenRett.annenForelder?.rettigheter.erInformertOmSøknaden).toBe(undefined);
+        const søknadUtenRett = mapTilSøknadDto(data, DEFAULT_SØKER_INFO);
+        expect(søknadUtenRett.annenForelder).toBeDefined();
+        expect(søknadUtenRett.annenForelder?.rettigheter.erInformertOmSøknaden).toBe(undefined);
     });
 
-    it('skal fjerne info om erMorForSyk fra periodene men ikke endre resten av uttaksplanen', () => {
-        const periodeUttak = {
-            id: '0',
-            type: Periodetype.Uttak,
-            erMorForSyk: true,
-            konto: 'FELLESPERIODE',
-            samtidigUttakProsent: undefined,
-            tidsperiode: { fom: new Date('2021-01-01'), tom: new Date('2021-01-03') },
-            forelder: 'FAR_MEDMOR',
-        } satisfies Uttaksperiode;
-        const periodeHull = {
-            id: '1',
-            type: Periodetype.Hull,
-            tidsperiode: { fom: new Date('2021-01-04'), tom: new Date('2021-01-11') },
-        } satisfies PeriodeHull;
-        const data = getStateMock(annenForelderMock, barnMock, [periodeUttak, periodeHull]);
-
-        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);
-        expect(cleanedSøknadUtenUførInfo.uttaksplan.uttaksperioder.length).toBe(1);
-        const uttaksperiodeInnsending = cleanedSøknadUtenUførInfo.uttaksplan.uttaksperioder[0]!;
-        if (uttaksperiodeInnsending.type !== 'uttak') {
-            throw new Error('type er ikke uttak');
-        }
-        expect(Object.hasOwn(uttaksperiodeInnsending, 'erMorForSyk')).toBe(false);
-        expect(uttaksperiodeInnsending.type).toBe(Periodetype.Uttak);
-        expect(uttaksperiodeInnsending.fom).toBe(dateToISOString(periodeUttak.tidsperiode.fom));
-        expect(uttaksperiodeInnsending.tom).toBe(dateToISOString(periodeUttak.tidsperiode.tom));
-        expect(uttaksperiodeInnsending.konto).toBe('FELLESPERIODE');
-    });
-    it('skal fjerne periode uten konto', () => {
-        const periodeUttakUtenKonto = {
-            id: '0',
-            type: Periodetype.Uttak,
-            erMorForSyk: true,
-            tidsperiode: { fom: new Date('2021-01-01'), tom: new Date('2021-01-03') },
-            forelder: 'MOR',
-            // @ts-expect-error -- typene sier konto ikke kan være undefined. Men så har vi kode og test for det
-            konto: undefined,
-        } satisfies Periode;
-
-        // @ts-expect-error -- typene sier konto ikke kan være undefined. Men så har vi kode og test for det
-        const data = getStateMock(annenForelderMock, barnMock, [periodeUttakUtenKonto]);
-
-        const cleanedSøknadUtenUførInfo = cleanSøknad(data, fødselsdato, DEFAULT_SØKER_INFO);
-        expect(cleanedSøknadUtenUførInfo.uttaksplan.uttaksperioder.length).toBe(0);
-    });
-
-    it('skal fjerne datoForAleneomsorg, type og fnr fra født barn objektet og beholde fødsel og termindato', () => {
-        const barn = cleanedSøknad.barn;
+    it('skal mappe barn korrekt (type, fødselsdato, termindato)', () => {
+        const barn = søknad.barn;
         if (barn.type !== 'fødsel') {
-            throw new Error('type er ikke fødsel');
+            throw new Error('type er ikkje fødsel');
         }
-        expect(Object.hasOwn(barn, 'datoForAleneomsorg')).toBe(false);
         expect(Object.hasOwn(barn, 'fnr')).toBe(false);
         expect(barn.type).toEqual('fødsel');
         expect(barn.fødselsdato).toEqual(barnMock.fødselsdatoer[0]);
@@ -251,11 +172,110 @@ describe('cleanUpSøknadsdataForInnsending', () => {
     });
 
     it('skal konvertere rolle til upper case', () => {
-        expect(cleanedSøknad.rolle).toEqual('MOR');
+        expect(søknad.rolle).toEqual('MOR');
     });
 
-    it('skal ikke ha søkersituasjon objektet ved innsending', () => {
-        expect(Object.hasOwn(cleanedSøknad, 'søkersituasjon')).toBe(false);
+    it('skal ikkje ha søkersituasjon i søknaden', () => {
+        expect(Object.hasOwn(søknad, 'søkersituasjon')).toBe(false);
+    });
+
+    it('skal berre inkludere søkers periodar i uttaksplanen', () => {
+        const morsUttak: UttakPeriode_fpoversikt = {
+            fom: '2021-01-01',
+            tom: '2021-01-10',
+            forelder: 'MOR',
+            flerbarnsdager: false,
+            kontoType: 'MØDREKVOTE',
+        };
+        const farsUttak: UttakPeriode_fpoversikt = {
+            fom: '2021-01-11',
+            tom: '2021-01-20',
+            forelder: 'FAR_MEDMOR',
+            flerbarnsdager: false,
+            kontoType: 'FEDREKVOTE',
+        };
+        const data = getStateMock(annenForelderMock, barnMock, [morsUttak, farsUttak]);
+        const søknadMedPerioder = mapTilSøknadDto(data, DEFAULT_SØKER_INFO);
+        expect(søknadMedPerioder.uttaksplan.uttaksperioder.length).toBe(1);
+        expect(søknadMedPerioder.uttaksplan.uttaksperioder[0]!.fom).toBe('2021-01-01');
+    });
+
+    it('skal inkludere dekningsgrad og ønskerJustertUttakVedFødsel', () => {
+        expect(søknad.dekningsgrad).toBe('100');
+        expect(søknad.uttaksplan.ønskerJustertUttakVedFødsel).toBe(false);
+    });
+});
+
+describe('mapTilEndringssøknadDto', () => {
+    const barnMock = getBarnMock();
+    const annenForelderMock = getAnnenForelderMock();
+
+    it('skal sette erInformertOmSøknaden=true for endringssøknad når annen part har rett', () => {
+        const annenForelder = { ...annenForelderMock, harRettPåForeldrepengerINorge: true };
+        const data = getStateMock(annenForelder, barnMock, []);
+        const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
+        expect(endringssøknad.annenForelder).toBeDefined();
+        expect(endringssøknad.annenForelder?.rettigheter.erInformertOmSøknaden).toBe(true);
+    });
+
+    it('skal inkludere saksnummer frå konteksten', () => {
+        const data = getStateMock(annenForelderMock, barnMock, [], 'SAK-123');
+        const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
+        expect(endringssøknad.saksnummer).toBe('SAK-123');
+    });
+
+    it('skal berre inkludere periodar frå og med endringstidspunktet', () => {
+        const nyePerioder: UttakPeriode_fpoversikt[] = [
+            { fom: '2024-01-01', tom: '2024-01-31', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+            {
+                fom: '2024-02-01',
+                tom: '2024-02-29',
+                forelder: 'MOR',
+                flerbarnsdager: false,
+                kontoType: 'FELLESPERIODE',
+            },
+            { fom: '2024-03-01', tom: '2024-03-29', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+        ];
+        const eksisterendePerioder: UttakPeriode_fpoversikt[] = [
+            { fom: '2024-01-01', tom: '2024-01-31', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+            { fom: '2024-02-01', tom: '2024-02-29', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+            { fom: '2024-03-01', tom: '2024-03-29', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+        ];
+        const eksisterendeSak = {
+            gjeldendeVedtak: { perioder: eksisterendePerioder },
+        } as unknown as FpSak_fpoversikt;
+
+        const data = getStateMock(annenForelderMock, barnMock, nyePerioder);
+        const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO, eksisterendeSak);
+
+        // Endringstidspunktet er 2024-02-01 (første avvik), så berre perioder f.o.m. den datoen
+        expect(endringssøknad.uttaksplan.uttaksperioder.length).toBe(2);
+        expect(endringssøknad.uttaksplan.uttaksperioder[0]!.fom).toBe('2024-02-01');
+    });
+
+    it('skal leggje til FRI utsettelsesperiode ved gap på endringstidspunktet', () => {
+        const nyePerioder: UttakPeriode_fpoversikt[] = [
+            { fom: '2024-01-01', tom: '2024-01-31', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+            // gap: 2024-02-01 til 2024-02-29 er fjerna
+            { fom: '2024-03-01', tom: '2024-03-29', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+        ];
+        const eksisterendePerioder: UttakPeriode_fpoversikt[] = [
+            { fom: '2024-01-01', tom: '2024-01-31', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+            { fom: '2024-02-01', tom: '2024-02-29', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+            { fom: '2024-03-01', tom: '2024-03-29', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+        ];
+        const eksisterendeSak = {
+            gjeldendeVedtak: { perioder: eksisterendePerioder },
+        } as unknown as FpSak_fpoversikt;
+
+        const data = getStateMock(annenForelderMock, barnMock, nyePerioder);
+        const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO, eksisterendeSak);
+
+        // Endringstidspunkt er 2024-02-01, inga periode dekkjer den datoen → FRI utsettelse leggjast til
+        const perioder = endringssøknad.uttaksplan.uttaksperioder;
+        const friPeriode = perioder.find((p) => p.type === 'utsettelse');
+        expect(friPeriode).toBeDefined();
+        expect(friPeriode!.fom).toBe('2024-02-01');
     });
 });
 

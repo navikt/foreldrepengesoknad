@@ -6,7 +6,7 @@ import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { finnSøker1Tekst, finnSøker2Tekst, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { UkerOgDager, getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
@@ -15,7 +15,7 @@ import { finnUttaksdata } from 'utils/uttakUtils';
 import { BodyShort, Box, Heading, InlineMessage, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
+import { KontoBeregningDto } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';

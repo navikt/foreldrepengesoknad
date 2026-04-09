@@ -8,6 +8,7 @@ import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
+import { HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { erAlenesøker as erAlene, getTekstForDeSomHarRett } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
@@ -18,7 +19,7 @@ import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-reac
 
 import { links } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
+import { KontoBeregningDto } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';

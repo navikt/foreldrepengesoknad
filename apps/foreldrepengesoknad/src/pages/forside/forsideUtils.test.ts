@@ -1,10 +1,8 @@
 import dayjs from 'dayjs';
-import { saker } from 'storybookData/saker.ts';
-import { ValgtBarn, ValgtBarnType } from 'types/ValgtBarn';
 
 import { FpBarnDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 
-import { getBarnFraNesteSak, getSelectableBarnOptions } from './forsideUtils';
+import { getSelectableBarnOptions } from './forsideUtils';
 
 const fødselsdato = dayjs().subtract(1, 'year').format('YYYY-MM-DD');
 const sak = {
@@ -114,91 +112,5 @@ describe('forsideUtils - getSelectableBarnOptions', () => {
     it('skal ikke vise PDL barn som har avsluttet sak', () => {
         const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd]);
         expect(result.length).toBe(0);
-    });
-});
-
-describe('velkommenUtils - getBarnFraNesteSak', () => {
-    const selectedBarn = {
-        id: '1',
-        type: ValgtBarnType.FØDT,
-        antallBarn: 1,
-        sortableDato: new Date('2022-06-01'),
-        sak: { ...saker.foreldrepenger[0]!, saksnummer: '1' },
-        familiehendelsesdato: new Date('2022-06-01'),
-        fnr: ['1234'],
-        alleBarnaLever: true,
-    };
-    it('skal returnere det første barnet etter barnet som er valgt', () => {
-        const alleBarna = [
-            selectedBarn,
-            {
-                id: '2',
-                type: ValgtBarnType.FØDT,
-                antallBarn: 2,
-                sortableDato: new Date('2021-05-01'),
-                sak: { ...saker.foreldrepenger[0]!, saksnummer: '2' },
-                familiehendelsesdato: new Date('2021-05-01'),
-                fnr: ['1235', '1236'],
-                startdatoFørsteStønadsperiode: new Date('2021-05-01'),
-                alleBarnaLever: true,
-            },
-            {
-                id: '3',
-                type: ValgtBarnType.UFØDT,
-                antallBarn: 1,
-                sortableDato: new Date('2023-04-01'),
-                sak: { ...saker.foreldrepenger[0]!, saksnummer: '3' },
-                familiehendelsesdato: new Date('2023-04-01'),
-                alleBarnaLever: true,
-                startdatoFørsteStønadsperiode: new Date('2023-03-15'),
-            },
-            {
-                id: '3',
-                type: ValgtBarnType.UFØDT,
-                antallBarn: 1,
-                sortableDato: new Date('2024-04-01'),
-                sak: { ...saker.foreldrepenger[0]!, saksnummer: '3' },
-                familiehendelsesdato: new Date('2024-04-01'),
-                startdatoFørsteStønadsperiode: new Date('2024-03-15'),
-                alleBarnaLever: true,
-            },
-        ] satisfies ValgtBarn[];
-        const res = getBarnFraNesteSak(selectedBarn, alleBarna);
-        expect(res?.fnr).toEqual(undefined);
-        expect(res?.familiehendelsesdato).toEqual(new Date('2023-04-01'));
-        expect(res?.startdatoFørsteStønadsperiode).toEqual(new Date('2023-03-15'));
-    });
-    it('skal ikke returnere noe hvis bare eldre barn finnes', () => {
-        const alleBarna = [
-            selectedBarn,
-            {
-                id: '2',
-                type: ValgtBarnType.FØDT,
-                antallBarn: 2,
-                sortableDato: new Date('2021-05-01'),
-                sak: { ...saker.foreldrepenger[0]!, saksnummer: '2' },
-                familiehendelsesdato: new Date('2021-05-01'),
-                fnr: ['1235', '1236'],
-                startdatoFørsteStønadsperiode: new Date('2021-05-01'),
-                alleBarnaLever: true,
-            },
-            {
-                id: '3',
-                type: ValgtBarnType.UFØDT,
-                antallBarn: 1,
-                sortableDato: new Date('2021-04-01'),
-                sak: { ...saker.foreldrepenger[0]!, saksnummer: '3' },
-                familiehendelsesdato: new Date('2021-04-01'),
-                startdatoFørsteStønadsperiode: new Date('2021-03-15'),
-                alleBarnaLever: true,
-            },
-        ];
-        const res = getBarnFraNesteSak(selectedBarn, alleBarna);
-        expect(res).toEqual(undefined);
-    });
-    it('skal ikke returnere seg selv', () => {
-        const alleBarna = [selectedBarn];
-        const res = getBarnFraNesteSak(selectedBarn, alleBarna);
-        expect(res).toEqual(undefined);
     });
 });
