@@ -29,10 +29,6 @@ export default defineConfig({
         globals: true,
         environment: 'jsdom',
         setupFiles: './vitest/setupTests.ts',
-        coverage: {
-            include: ['src/**/*'],
-            exclude: [],
-        },
         maxConcurrency: 10,
     },
 });

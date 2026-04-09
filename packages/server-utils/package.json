@@ -15,7 +15,6 @@
         "@navikt/nav-dekoratoren-moduler": "3.7.0",
         "@navikt/vite-mode": "0.13.7",
         "express": "5.2.1",
-        "jsdom": "29.0.1",
         "morgan": "1.10.1",
         "winston": "3.19.0"
     },
