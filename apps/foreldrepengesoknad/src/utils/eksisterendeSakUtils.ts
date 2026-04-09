@@ -546,21 +546,6 @@ export const lagEndringsSøknad = (
     };
 };
 
-export const erPeriodeIOpprinneligSak = (
-    eksisterendeSak: FpSak_fpoversikt,
-    nyPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-): boolean => {
-    const eksisterendePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> = [];
-    if (eksisterendeSak?.gjeldendeVedtak?.perioder !== undefined) {
-        eksisterendePerioder.push(...eksisterendeSak.gjeldendeVedtak.perioder);
-    }
-    if (eksisterendeSak?.gjeldendeVedtak?.perioderAnnenpartEøs !== undefined) {
-        eksisterendePerioder.push(...eksisterendeSak.gjeldendeVedtak.perioderAnnenpartEøs);
-    }
-
-    return erPeriodeIOpprinneligPlan(eksisterendePerioder, nyPeriode);
-};
-
 export const erPeriodeIOpprinneligPlan = (
     eksisterendePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     nyPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,

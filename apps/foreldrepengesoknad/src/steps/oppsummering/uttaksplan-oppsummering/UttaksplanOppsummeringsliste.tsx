@@ -1,9 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import { sakerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getTermindato } from 'utils/barnUtils';
-import { erPeriodeIOpprinneligSak } from 'utils/eksisterendeSakUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 import { getStønadskontoNavn } from 'utils/stønadskontoerUtils';
 import { isUttaksperiodeFarMedmorPgaFødsel } from 'utils/uttaksplanInfoUtils';
@@ -13,7 +10,6 @@ import { Alert, BodyLong, FormSummary, VStack } from '@navikt/ds-react';
 import { isAnnenForelderOppgitt } from '@navikt/fp-common';
 import {
     EksternArbeidsforholdDto_fpoversikt,
-    FpSak_fpoversikt,
     KontoTypeUttak,
     NavnPåForeldre,
     UttakPeriodeAnnenpartEøs_fpoversikt,
@@ -39,13 +35,8 @@ interface Props {
 
 export const UttaksplanOppsummeringsliste = ({ navnPåForeldre, registrerteArbeidsforhold }: Props) => {
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_NY));
-    const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-
-    const sakerQuery = useQuery({ ...sakerOptions(), enabled: !!valgtEksisterendeSaksnr });
-
-    const sak = sakerQuery.data?.foreldrepenger.find((s) => s.saksnummer === valgtEksisterendeSaksnr);
 
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
 
@@ -79,7 +70,6 @@ export const UttaksplanOppsummeringsliste = ({ navnPåForeldre, registrerteArbei
                 <UttaksplanListe
                     erSøker
                     uttaksplan={søkersPerioder}
-                    sak={sak}
                     registrerteArbeidsforhold={registrerteArbeidsforhold}
                     navnPåForeldre={navnPåForeldre}
                 />
@@ -88,7 +78,6 @@ export const UttaksplanOppsummeringsliste = ({ navnPåForeldre, registrerteArbei
                 <UttaksplanListe
                     erSøker={false}
                     uttaksplan={annenPartsPerioder}
-                    sak={sak}
                     registrerteArbeidsforhold={registrerteArbeidsforhold}
                     navnPåForeldre={navnPåForeldre}
                 />
@@ -100,13 +89,11 @@ export const UttaksplanOppsummeringsliste = ({ navnPåForeldre, registrerteArbei
 const UttaksplanListe = ({
     erSøker,
     uttaksplan,
-    sak,
     registrerteArbeidsforhold,
     navnPåForeldre,
 }: {
     erSøker: boolean;
     uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
-    sak: FpSak_fpoversikt | undefined;
     registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     navnPåForeldre: NavnPåForeldre;
 }) => {
@@ -172,8 +159,6 @@ const UttaksplanListe = ({
             <FormSummary.Value>
                 <FormSummary.Answers>
                     {uttaksplan.map((periode) => {
-                        const periodeErNyEllerEndret = sak ? erPeriodeIOpprinneligSak(sak, periode) === false : true;
-
                         if (Uttaksperioden.erIkkeEøsPeriode(periode) && Uttaksperioden.erUttaksperiode(periode)) {
                             const tidsperiode = formatTidsperiode(periode.fom, periode.tom);
                             return (
@@ -198,13 +183,7 @@ const UttaksplanListe = ({
                                     <FormSummary.Label>{formatTidsperiode(periode.fom, periode.tom)}</FormSummary.Label>
                                     <FormSummary.Value>
                                         <FormattedMessage id="oppsummering.utsettelse.pga" />
-                                        <Utsettelsesperiodedetaljer
-                                            periode={periode}
-                                            registrerteArbeidsforhold={registrerteArbeidsforhold}
-                                            søkerErFarEllerMedmor={søkerErFarEllerMedmor}
-                                            annenForelder={annenForelder}
-                                            periodeErNyEllerEndret={periodeErNyEllerEndret}
-                                        />
+                                        <Utsettelsesperiodedetaljer periode={periode} />
                                     </FormSummary.Value>
                                 </FormSummary.Answer>
                             );

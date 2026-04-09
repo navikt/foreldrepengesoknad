@@ -91,13 +91,13 @@ const startDatoMorUfødtBarn = (termindato: string) => {
 const startDatoMorFødtBarn = (termindato: string | undefined, fødselsdato: string) => {
     const sisteOppstartsdato = getSisteDatoForOppstartMor(fødselsdato);
     const termindatoMinus12Uker =
-        termindato !== undefined
-            ? dayjs(UttaksdagenString.denneEllerNeste(termindato).getDato())
+        termindato === undefined
+            ? undefined
+            : dayjs(UttaksdagenString.denneEllerNeste(termindato).getDato())
                   .subtract(MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL, 'weeks')
-                  .format(ISO_DATE_FORMAT)
-            : undefined;
+                  .format(ISO_DATE_FORMAT);
     const erFødselsdatoFørTermindatoMinus12Uker =
-        termindato !== undefined ? dayjs(fødselsdato).isBefore(dayjs(termindatoMinus12Uker), 'd') : false;
+        termindato === undefined ? false : dayjs(fødselsdato).isBefore(dayjs(termindatoMinus12Uker), 'd');
 
     if (erFødselsdatoFørTermindatoMinus12Uker) {
         return {
