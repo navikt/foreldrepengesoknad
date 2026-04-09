@@ -14,7 +14,8 @@ import { isAnnenForelderOppgitt } from '@navikt/fp-common';
 import {
     EksternArbeidsforholdDto_fpoversikt,
     FpSak_fpoversikt,
-    KontoTypeUttak,
+    KontoType,
+    MorsAktivitet,
     NavnPåForeldre,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
@@ -127,14 +128,15 @@ const UttaksplanListe = ({
 
     const erAleneOmOmsorg = erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false;
 
-    const getStønadskontoNavnFromKonto = (konto: KontoTypeUttak | undefined) => {
+    const getStønadskontoNavnFromKonto = (konto: KontoType | undefined, morsAktivitet?: MorsAktivitet) => {
         return konto === undefined
             ? ''
-            : getStønadskontoNavn(intl, konto, navnPåForeldre, søkerErFarEllerMedmor, erAleneOmOmsorg);
+            : getStønadskontoNavn(intl, konto, navnPåForeldre, søkerErFarEllerMedmor, erAleneOmOmsorg, morsAktivitet);
     };
 
     const getUttaksperiodeNavn = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-        const tittel = getStønadskontoNavnFromKonto(periode.kontoType);
+        const morsAktivitet = Uttaksperioden.erIkkeEøsPeriode(periode) ? periode.morsAktivitet : undefined;
+        const tittel = getStønadskontoNavnFromKonto(periode.kontoType, morsAktivitet);
         const termindato = getTermindato(barn) ? getTermindato(barn) : undefined;
         return søkersituasjon.situasjon === 'fødsel' &&
             isUttaksperiodeFarMedmorPgaFødsel(periode, familiehendelsesdato, termindato)
@@ -179,6 +181,7 @@ const UttaksplanListe = ({
                             return (
                                 <FormSummary.Answer key={periode.kontoType + tidsperiode}>
                                     <FormSummary.Label>{tidsperiode}</FormSummary.Label>
+
                                     <FormSummary.Value>
                                         {getUttaksperiodeNavn(periode)}
                                         <UttaksperiodedetaljerNy
