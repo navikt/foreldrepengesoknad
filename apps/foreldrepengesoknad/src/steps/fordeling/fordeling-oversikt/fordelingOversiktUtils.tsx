@@ -277,11 +277,10 @@ const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
         return 0;
     }
     if (erFarEllerMedmor) {
-        return getBrukteDager(kontoer, uttaksplanAnnenPart, dayjs(familiehendelsesdato).toDate()).mor
-            .dagerAnnenForeldersKvote;
-    } else {
         return getBrukteDager(kontoer, uttaksplanAnnenPart, dayjs(familiehendelsesdato).toDate()).farMedmor
-            .dagerAnnenForeldersKvote;
+            .dagerEgneKvoter;
+    } else {
+        return getBrukteDager(kontoer, uttaksplanAnnenPart, dayjs(familiehendelsesdato).toDate()).mor.dagerEgneKvoter;
     }
 };
 
@@ -298,7 +297,7 @@ const getAntallDagerFellesperiodeBruktAvAnnenPart = (
         return getBrukteDager(kontoer, uttaksplanAnnenPart, dayjs(familiehendelsesdato).toDate()).mor
             .dagerFellesperiode;
     } else {
-        return getBrukteDager(kontoer, uttaksplanAnnenPart, dayjs(familiehendelsesdato).toDate()).farMedmor
+        return getBrukteDager(kontoer, uttaksplanAnnenPart, dayjs(familiehendelsesdato).toDate()).mor
             .dagerFellesperiode;
     }
 };

@@ -61,6 +61,7 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
     const eksisterendeVedtakAnnenPart = annenPartsVedtakQuery.data;
 
     const uttaksplanForEksisterendeSak = useUttaksplanForEksisterendeSak(annenPartsVedtakQuery.data?.perioder);
+    const uttaksplanAnnenPart = uttaksplanForEksisterendeSak ?? annenPartsVedtakQuery.data?.perioder;
 
     const kontoerOptions = useStønadsKontoerOptions();
     const valgtStønadskonto = useQuery({
@@ -82,16 +83,12 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
                   navnPåForeldre,
                   annenForelder,
                   intl,
-                  uttaksplanForEksisterendeSak,
+                  uttaksplanAnnenPart,
               )
             : [];
     const ukerMedFellesperiode = valgtStønadskonto ? getAntallUkerFellesperiode(valgtStønadskonto) : 0;
     const dagerMedFellesperiode = ukerMedFellesperiode * 5;
-    const sisteDagAnnenForelder = getSisteUttaksdagAnnenForelder(
-        erFarEllerMedmor,
-        deltUttak,
-        uttaksplanForEksisterendeSak,
-    );
+    const sisteDagAnnenForelder = getSisteUttaksdagAnnenForelder(erFarEllerMedmor, deltUttak, uttaksplanAnnenPart);
 
     const førsteDagEtterAnnenForelder = sisteDagAnnenForelder
         ? UttaksdagenString.neste(sisteDagAnnenForelder).getDato()
