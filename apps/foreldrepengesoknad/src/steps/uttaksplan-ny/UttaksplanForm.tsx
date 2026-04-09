@@ -27,7 +27,6 @@ import {
 } from '@navikt/fp-types';
 import { UttaksdagenString, Uttaksperioden } from '@navikt/fp-utils';
 import { useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan-ny';
-import { useUttaksplanData } from '@navikt/fp-uttaksplan-ny/src/context/UttaksplanDataContext';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { VilDuGåTilbakeModal } from './VilDuGåTilbakeModal';
@@ -85,10 +84,6 @@ export const UttaksplanForm = ({
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN_NY);
     const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
-    const {
-        foreldreInfo: { rettighetType },
-    } = useUttaksplanData();
-
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
     const uttaksplanMedKunNyePerioder =
         uttaksplan?.filter((p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.resultat === undefined) ?? [];
@@ -127,7 +122,9 @@ export const UttaksplanForm = ({
         erSøkerFarEllerMedmor &&
         søkersituasjon.situasjon === 'fødsel' &&
         gjeldendeUttaksplan &&
-        finnPerioderRundtFødsel(gjeldendeUttaksplan, barn).length > 0 &&
+        finnPerioderRundtFødsel(gjeldendeUttaksplan, barn).some(
+            (p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.forelder === 'FAR_MEDMOR',
+        ) &&
         isUfødtBarn(barn) &&
         barn.termindato !== undefined &&
         !bareFarHarRett;
@@ -144,7 +141,12 @@ export const UttaksplanForm = ({
         } else if (erAntallDagerOvertrukket) {
             setFeilmelding(<FormattedMessage id="UttaksplanSteg.OvertrukketDager" />);
             scrollToKvoteOppsummering();
-        } else if (harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, gjeldendeUttaksplan || defaultUttaksperioder)) {
+        } else if (
+            harPeriodeDerMorsAktivitetIkkeErValgt(
+                utledRettighet(erAleneOmOmsorg, erDeltUttak),
+                gjeldendeUttaksplan || defaultUttaksperioder,
+            )
+        ) {
             setFeilmelding(<FormattedMessage id="UttaksplanSteg.MorsAktivitetIkkeValgt" />);
             scrollToKvoteOppsummering();
         } else if (harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, gjeldendeUttaksplan)) {
@@ -398,4 +400,14 @@ const harKunPerioderForAnnenForelder = (
     const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
 
     return perioder.every((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.forelder !== søkersForelder);
+};
+
+const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean): RettighetType_fpoversikt => {
+    if (erAleneOmOmsorg) {
+        return 'ALENEOMSORG';
+    }
+    if (erDeltUttak) {
+        return 'BEGGE_RETT';
+    }
+    return 'BARE_SØKER_RETT';
 };
