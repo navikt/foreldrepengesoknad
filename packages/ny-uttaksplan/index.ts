@@ -22,4 +22,3 @@ export { FjernAltIUttaksplanModal } from './src/FjernAltIUttaksplanModal';
 export { useErAntallDagerOvertrukketIUttaksplan } from './src/utils/kvoteOppsummeringUtils';
 export { UttaksperiodeValidatorer } from './src/utils/UttaksperiodeValidatorer';
 export { skalBesvareFlerbarnsdager } from './src/felles/LeggTilEllerEndrePeriodeFellesForm';
-export { useUttaksplanData } from './src/context/UttaksplanDataContext';

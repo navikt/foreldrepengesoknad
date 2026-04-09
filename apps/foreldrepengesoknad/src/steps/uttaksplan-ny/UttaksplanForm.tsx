@@ -26,7 +26,7 @@ import {
     isUfødtBarn,
 } from '@navikt/fp-types';
 import { UttaksdagenString, Uttaksperioden } from '@navikt/fp-utils';
-import { useErAntallDagerOvertrukketIUttaksplan, useUttaksplanData } from '@navikt/fp-uttaksplan-ny';
+import { useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan-ny';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { VilDuGåTilbakeModal } from './VilDuGåTilbakeModal';
@@ -83,10 +83,6 @@ export const UttaksplanForm = ({
     const oppdaterUttaksplanMetadata = useContextSaveData(ContextDataType.UTTAKSPLAN_METADATA_NY);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN_NY);
     const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
-
-    const {
-        foreldreInfo: { rettighetType },
-    } = useUttaksplanData();
 
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
     const uttaksplanMedKunNyePerioder =
@@ -145,7 +141,12 @@ export const UttaksplanForm = ({
         } else if (erAntallDagerOvertrukket) {
             setFeilmelding(<FormattedMessage id="UttaksplanSteg.OvertrukketDager" />);
             scrollToKvoteOppsummering();
-        } else if (harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, gjeldendeUttaksplan || defaultUttaksperioder)) {
+        } else if (
+            harPeriodeDerMorsAktivitetIkkeErValgt(
+                utledRettighet(erAleneOmOmsorg, erDeltUttak),
+                gjeldendeUttaksplan || defaultUttaksperioder,
+            )
+        ) {
             setFeilmelding(<FormattedMessage id="UttaksplanSteg.MorsAktivitetIkkeValgt" />);
             scrollToKvoteOppsummering();
         } else if (harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, gjeldendeUttaksplan)) {
@@ -399,4 +400,14 @@ const harKunPerioderForAnnenForelder = (
     const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
 
     return perioder.every((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.forelder !== søkersForelder);
+};
+
+const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean): RettighetType_fpoversikt => {
+    if (erAleneOmOmsorg) {
+        return 'ALENEOMSORG';
+    }
+    if (erDeltUttak) {
+        return 'BEGGE_RETT';
+    }
+    return 'BARE_SØKER_RETT';
 };
