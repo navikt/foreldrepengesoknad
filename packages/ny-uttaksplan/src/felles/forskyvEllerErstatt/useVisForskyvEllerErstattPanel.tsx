@@ -7,14 +7,15 @@ type Periode = {
 };
 
 export const useVisForskyvEllerErstattPanel = (valgtePerioder: Periode[]) => {
-    const [lagretPerioder, setLagretPerioder] = useState<Periode[] | null>(null);
+    const [åpnedeValgtePerioder, setÅpnedeValgtePerioder] = useState<Periode[] | null>(null);
 
-    const visEndreEllerForskyvPanel = lagretPerioder !== null && erLikePerioder(lagretPerioder, valgtePerioder);
+    const visEndreEllerForskyvPanel =
+        åpnedeValgtePerioder !== null && erLikePerioder(åpnedeValgtePerioder, valgtePerioder);
 
     return {
         visEndreEllerForskyvPanel,
         setVisEndreEllerForskyvPanel: (skalVisPanel: boolean) =>
-            setLagretPerioder(skalVisPanel ? valgtePerioder : null),
+            setÅpnedeValgtePerioder(skalVisPanel ? valgtePerioder : null),
     };
 };
 
