@@ -36,7 +36,7 @@ const InnholdMedIllustrasjon: React.FunctionComponent<Props> = ({ tittel, illust
                 <div className={bem.element('content')}>{children}</div>
             </div>
             {illustrasjoner && (
-                <div className={bem.element('illustrasjoner')} role="presentation" aria-hidden={true}>
+                <div className={bem.element('illustrasjoner')} aria-hidden={true}>
                     {Children.map(illustrasjoner, (ill) => (
                         <div className={bem.element('illustrasjon')} key={guid()}>
                             {ill}

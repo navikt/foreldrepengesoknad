@@ -197,7 +197,7 @@ describe('<HvaErMulig>', () => {
         expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
         expect(screen.getByText(/Fedre får ofte permisjon/)).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
-        // FIXME (TOR) Gir det meining at Jobbe samtidig vises her?
+        // TODO (TOR) Gir det meining at Jobbe samtidig vises her?
         // expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
         expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
@@ -221,7 +221,7 @@ describe('<HvaErMulig>', () => {
         expect(screen.getByText('Tre uker før termin:')).toBeInTheDocument();
         expect(screen.getByText('Seks uker etter fødsel:')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
-        // FIXME (TOR) Gir det meining at Jobbe samtidig er synleg for aleneforsørger mor?
+        // TODO (TOR) Gir det meining at Jobbe samtidig er synleg for aleneforsørger mor?
         //expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
         expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();

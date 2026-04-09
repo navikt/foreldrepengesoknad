@@ -11,11 +11,11 @@ interface Props {
     cleanup: () => PeriodeUttakFormData | PeriodeUtsettelseFormData | PeriodeFørFødselFormData;
 }
 
-const jsonSort = (json: any): string => {
-    function isObject(v: any) {
-        return '[object Object]' === Object.prototype.toString.call(v);
-    }
+function isObject(v: any) {
+    return '[object Object]' === Object.prototype.toString.call(v);
+}
 
+const jsonSort = (json: any): string => {
     const sort = (o: any): any => {
         if (Array.isArray(o)) {
             return o.sort().map(sort);

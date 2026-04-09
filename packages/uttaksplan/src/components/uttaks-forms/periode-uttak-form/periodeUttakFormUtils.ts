@@ -347,16 +347,27 @@ const getForelderForPeriode = (
     return angittForelder;
 };
 
-export const mapPeriodeUttakFormToPeriode = (
-    values: Partial<PeriodeUttakFormData>,
-    id: string,
-    type: Periodetype,
-    familiehendelsesdato: Date,
-    erFarEllerMedmor: boolean,
-    erDeltUttak: boolean,
-    situasjon: Situasjon,
-    harAktivitetsfriKvote: boolean,
-): Periode => {
+interface MapPeriodeUttakOptions {
+    values: Partial<PeriodeUttakFormData>;
+    id: string;
+    type: Periodetype;
+    familiehendelsesdato: Date;
+    erFarEllerMedmor: boolean;
+    erDeltUttak: boolean;
+    situasjon: Situasjon;
+    harAktivitetsfriKvote: boolean;
+}
+
+export const mapPeriodeUttakFormToPeriode = ({
+    values,
+    id,
+    type,
+    familiehendelsesdato,
+    erFarEllerMedmor,
+    erDeltUttak,
+    situasjon,
+    harAktivitetsfriKvote,
+}: MapPeriodeUttakOptions): Periode => {
     if (type === Periodetype.Overføring) {
         const periode: Overføringsperiode = {
             id,

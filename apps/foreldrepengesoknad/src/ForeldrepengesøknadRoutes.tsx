@@ -29,16 +29,27 @@ import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
 
-const renderSøknadRoutes = (
-    harGodkjentVilkår: boolean,
-    erEndringssøknad: boolean,
-    søkerInfo: FpPersonopplysningerDto_fpoversikt,
-    mellomlagreSøknadOgNaviger: () => Promise<void>,
-    sendSøknad: () => Promise<void>,
-    avbrytSøknad: () => void,
-    søknadGjelderNyttBarn?: boolean,
-    foreldrepengerSaker?: FpSak_fpoversikt[],
-) => {
+interface SøknadRoutesOptions {
+    harGodkjentVilkår: boolean;
+    erEndringssøknad: boolean;
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    sendSøknad: () => Promise<void>;
+    avbrytSøknad: () => void;
+    søknadGjelderNyttBarn?: boolean;
+    foreldrepengerSaker?: FpSak_fpoversikt[];
+}
+
+const renderSøknadRoutes = ({
+    harGodkjentVilkår,
+    erEndringssøknad,
+    søkerInfo,
+    mellomlagreSøknadOgNaviger,
+    sendSøknad,
+    avbrytSøknad,
+    søknadGjelderNyttBarn,
+    foreldrepengerSaker,
+}: SøknadRoutesOptions) => {
     if (!harGodkjentVilkår || søknadGjelderNyttBarn === undefined) {
         return <Route path="*" element={<Navigate to={SøknadRoutes.VELKOMMEN} />} />;
     }
@@ -73,32 +84,6 @@ const renderSøknadRoutes = (
                         />
                     }
                 />
-                {/* {!isLocalhostOrDev() && (
-                    <>
-                        <Route
-                            path={SøknadRoutes.UTTAKSPLAN}
-                            element={
-                                <UttaksplanStep
-                                    søkerInfo={søkerInfo}
-                                    erEndringssøknad={erEndringssøknad}
-                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                    avbrytSøknad={avbrytSøknad}
-                                />
-                            }
-                        />
-                        <Route
-                            path={SøknadRoutes.DOKUMENTASJON}
-                            element={
-                                <ManglendeVedlegg
-                                    søkerInfo={søkerInfo}
-                                    erEndringssøknad={erEndringssøknad}
-                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                    avbrytSøknad={avbrytSøknad}
-                                />
-                            }
-                        />
-                    </>
-                )} */}
                 <Route
                     path={SøknadRoutes.OPPSUMMERING}
                     element={
@@ -195,33 +180,6 @@ const renderSøknadRoutes = (
                     />
                 }
             />
-            {/* {!isLocalhostOrDev() && (
-                <>
-                    <Route
-                        path={SøknadRoutes.UTTAKSPLAN}
-                        element={
-                            <UttaksplanStep
-                                søkerInfo={søkerInfo}
-                                erEndringssøknad={erEndringssøknad}
-                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                avbrytSøknad={avbrytSøknad}
-                            />
-                        }
-                    />
-                    <Route
-                        path={SøknadRoutes.DOKUMENTASJON}
-                        element={
-                            <ManglendeVedlegg
-                                søkerInfo={søkerInfo}
-                                erEndringssøknad={erEndringssøknad}
-                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                avbrytSøknad={avbrytSøknad}
-                            />
-                        }
-                    />
-                </>
-            )} */}
-
             <Route
                 path={SøknadRoutes.UTENLANDSOPPHOLD}
                 element={
@@ -402,7 +360,7 @@ export const ForeldrepengesøknadRoutes = ({
             />
             <Route path={SøknadRoutes.IKKE_MYNDIG} element={<Umyndig appName="foreldrepengesoknad" />} />
 
-            {renderSøknadRoutes(
+            {renderSøknadRoutes({
                 harGodkjentVilkår,
                 erEndringssøknad,
                 søkerInfo,
@@ -411,7 +369,7 @@ export const ForeldrepengesøknadRoutes = ({
                 avbrytSøknad,
                 søknadGjelderNyttBarn,
                 foreldrepengerSaker,
-            )}
+            })}
         </Routes>
     );
 };

@@ -287,13 +287,14 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     };
 
     const erPauseGyldig = (nyHvaVilDuGjøre?: HvaVilDuGjøre) => {
-        return nyHvaVilDuGjøre !== 'LEGG_TIL_PAUSE' ||
-            !UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
-                fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [],
-                familiehendelsedato,
-            )
-            ? null
-            : intl.formatMessage({ id: 'uttaksplan.valgPanel.pause' });
+        if (nyHvaVilDuGjøre !== 'LEGG_TIL_PAUSE') {
+            return null;
+        }
+        const erFørSeksUker = UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
+            fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [],
+            familiehendelsedato,
+        );
+        return erFørSeksUker ? intl.formatMessage({ id: 'uttaksplan.valgPanel.pause' }) : null;
     };
 
     const erFerieOgPeriodeUtenForeldrepengerGyldig = (nyHvaVilDuGjøre?: HvaVilDuGjøre) => {

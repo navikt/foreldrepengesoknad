@@ -52,7 +52,7 @@ const Sirkelknapp: React.FunctionComponent<SirkelknappProps> = ({
             disabled={disabled}
             aria-pressed={toggle ? toggle.pressed : undefined}
         >
-            <span className="sirkelknapp__ikon" role="presentation">
+            <span className="sirkelknapp__ikon" aria-hidden={true}>
                 {ikon}
             </span>
             <AriaText id={labelId}>{ariaLabel}</AriaText>

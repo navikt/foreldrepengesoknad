@@ -16,7 +16,7 @@ const bem = planBemUtils('foreldrepar');
 // eslint-disable-next-line @typescript-eslint/no-restricted-types
 const Foreldrepar: React.FunctionComponent<Props> = ({ forelder1, forelder2, variant, kompakt }) => {
     return (
-        <div role="presentation" className={bem.classNames(bem.block, bem.modifierConditional('kompakt', kompakt))}>
+        <div className={bem.classNames(bem.block, bem.modifierConditional('kompakt', kompakt))}>
             {getForeldreparIkon(
                 forelder1,
                 bem.classNames(

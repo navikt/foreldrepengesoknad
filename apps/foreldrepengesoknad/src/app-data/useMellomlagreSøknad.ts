@@ -37,7 +37,7 @@ export interface FpMellomlagretData {
     annenPartsUttakErLagtTilIPlan?: boolean;
     uttaksplanNy?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     uttaksplanMetadataNy?: {
-        ønskerJustertUttakVedFødsel?: boolean | undefined;
+        ønskerJustertUttakVedFødsel?: boolean;
     };
     valgtEksisterendeSaksnr?: string;
 }

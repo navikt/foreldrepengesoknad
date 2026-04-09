@@ -245,24 +245,24 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                     );
                     setNyPeriodeFormIsVisible!(false);
                     handleAddPeriode!(
-                        mapPeriodeUttakFormToPeriode(
+                        mapPeriodeUttakFormToPeriode({
                             values,
-                            guid(),
-                            periodetype,
+                            id: guid(),
+                            type: periodetype,
                             familiehendelsesdato,
                             erFarEllerMedmor,
                             erDeltUttak,
                             situasjon,
                             harAktivitetsfriKvote,
-                        ),
+                        }),
                         familiehendelsesdato,
                     );
                 } else {
                     return handleUpdatePeriode(
-                        mapPeriodeUttakFormToPeriode(
+                        mapPeriodeUttakFormToPeriode({
                             values,
-                            periode.id,
-                            getPeriodeType(
+                            id: periode.id,
+                            type: getPeriodeType(
                                 values.hvemSkalTaUttak!,
                                 erFarEllerMedmor,
                                 values.konto!,
@@ -275,7 +275,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                             erDeltUttak,
                             situasjon,
                             harAktivitetsfriKvote,
-                        ),
+                        }),
                         familiehendelsesdato,
                     );
                 }

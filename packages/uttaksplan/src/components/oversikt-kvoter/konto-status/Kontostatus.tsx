@@ -41,7 +41,7 @@ const Kontostatus: FunctionComponent<Props> = ({
 
     return (
         <BodyShort className={bem.block} as="div">
-            <div className={bem.element('ikon')} aria-hidden={true} role="presentation">
+            <div className={bem.element('ikon')} aria-hidden={true}>
                 <StønadskontoIkon
                     konto={uttak.konto}
                     navnPåForeldre={navnPåForeldre}
