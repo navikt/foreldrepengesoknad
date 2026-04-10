@@ -2,8 +2,8 @@ import dayjs from 'dayjs';
 import MockDate from 'mockdate';
 import { createIntl, createIntlCache } from 'react-intl';
 
-import { Barn, BarnType } from '@navikt/fp-common';
-import { FpBarnDto_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { BarnType } from '@navikt/fp-constants';
+import { Barn, FpBarnDto_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import messages from '../intl/nb_NO.json';
 import {

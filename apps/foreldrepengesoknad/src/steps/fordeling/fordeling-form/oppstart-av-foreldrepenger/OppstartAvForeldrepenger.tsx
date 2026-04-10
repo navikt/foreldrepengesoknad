@@ -5,7 +5,7 @@ import { getErAleneOmOmsorg } from 'utils/annenForelderUtils';
 
 import { VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre } from '@navikt/fp-common';
+import { NavnPåForeldre } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { OppstartDatoInput } from './OppstartDatoInput';

@@ -6,7 +6,7 @@ import { getVarighetString } from 'utils/dateUtils';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { isFødtBarn } from '@navikt/fp-common';
+import { isFødtBarn } from '@navikt/fp-types';
 import { TidsperiodenString, UttaksdagenString, isValidDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 

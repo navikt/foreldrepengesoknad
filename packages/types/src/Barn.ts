@@ -5,33 +5,33 @@ interface Common {
     antallBarn: number;
 }
 
-interface IkkeUtfyltTypeBarn extends Common {
+export interface IkkeUtfyltTypeBarn extends Common {
     type: BarnType.IKKE_UTFYLT;
     fødselsdatoer: string[];
     fnr?: string[];
 }
 
-interface FødtBarn extends Common {
+export interface FødtBarn extends Common {
     type: BarnType.FØDT;
     fødselsdatoer: string[];
     termindato?: string;
     fnr?: string[];
 }
 
-interface UfødtBarn extends Common {
+export interface UfødtBarn extends Common {
     type: BarnType.UFØDT;
     termindato: string;
     terminbekreftelsedato?: string;
 }
 
-interface AdoptertBarn extends Common {
+export interface AdoptertBarn extends Common {
     type: BarnType.ADOPTERT_STEBARN | BarnType.ADOPTERT_ANNET_BARN;
     adopsjonsdato: string;
     fødselsdatoer: string[];
     fnr?: string[];
 }
 
-interface AdoptertAnnetBarn extends AdoptertBarn {
+export interface AdoptertAnnetBarn extends AdoptertBarn {
     type: BarnType.ADOPTERT_ANNET_BARN;
     adoptertIUtlandet: boolean;
     ankomstdato?: string;
@@ -52,4 +52,12 @@ export const isUfødtBarn = (barn: Barn): barn is UfødtBarn => {
 
 export const isAdoptertBarn = (barn: Barn): barn is AdoptertBarn => {
     return barn.type === BarnType.ADOPTERT_STEBARN || barn.type === BarnType.ADOPTERT_ANNET_BARN;
+};
+
+export const isAdoptertStebarn = (barn: Barn): barn is AdoptertBarn => {
+    return barn.type === BarnType.ADOPTERT_STEBARN;
+};
+
+export const isAdoptertAnnetBarn = (barn: Barn): barn is AdoptertAnnetBarn => {
+    return barn.type === BarnType.ADOPTERT_ANNET_BARN;
 };

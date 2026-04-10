@@ -3,8 +3,7 @@ import { IntlShape, useIntl } from 'react-intl';
 
 import { Box } from '@navikt/ds-react';
 
-import { NavnPåForeldre } from '@navikt/fp-common';
-import { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, KontoTypeUttak, NavnPåForeldre } from '@navikt/fp-types';
 import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import { UttaksplanIkon, UttaksplanIkonKeys } from './UttaksplanIkon';

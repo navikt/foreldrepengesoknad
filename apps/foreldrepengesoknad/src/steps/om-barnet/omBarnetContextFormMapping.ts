@@ -2,22 +2,24 @@ import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { hasValue } from 'utils/validationUtil';
 
+import { BarnType } from '@navikt/fp-constants';
 import {
     AdoptertBarn,
     Barn,
-    BarnType,
+    EksternArbeidsforholdDto_fpoversikt,
     FødtBarn,
     IkkeUtfyltTypeBarn,
-    UfødtBarn,
+    Situasjon,
+    SøkersituasjonFp,
     isAdoptertAnnetBarn,
     isAdoptertStebarn,
     isFødtBarn,
     isUfødtBarn,
-} from '@navikt/fp-common';
-import { EksternArbeidsforholdDto_fpoversikt, Situasjon, SøkersituasjonFp } from '@navikt/fp-types';
+} from '@navikt/fp-types';
 
 import {
     BarnetFormValues,
+    UfødtBarn,
     erAdoptertAnnetBarn,
     erAdoptertStebarn,
     erFødtBarn,

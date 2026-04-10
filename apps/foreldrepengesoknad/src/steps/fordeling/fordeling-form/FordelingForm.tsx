@@ -1,13 +1,14 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useForm } from 'react-hook-form';
+import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { Fordeling } from 'types/Fordeling';
 import { getDatoForAleneomsorg } from 'utils/annenForelderUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { NavnPåForeldre } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { FellesperiodeFordeling } from './fellesperiode-fordeling/FellesperiodeFordeling';

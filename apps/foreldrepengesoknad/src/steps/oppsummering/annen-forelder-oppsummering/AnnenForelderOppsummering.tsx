@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions } from 'api/queries';
 import { FormattedMessage } from 'react-intl';
+import { AnnenForelder, isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { FormSummary } from '@navikt/ds-react';
 
-import { AnnenForelder, isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { Søkerrolle } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 

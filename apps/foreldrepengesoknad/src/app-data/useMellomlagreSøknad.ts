@@ -2,11 +2,11 @@ import { API_URLS } from 'api/queries';
 import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { EksisterendeSak } from 'types/EksisterendeSak';
 import { Fordeling } from 'types/Fordeling';
 import { Søknad } from 'types/Søknad';
 import { VERSJON_MELLOMLAGRING } from 'utils/mellomlagringUtils';
 
-import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
 import { captureMessage } from '@navikt/fp-observability';
 import {
     FpPersonopplysningerDto_fpoversikt,
@@ -27,12 +27,10 @@ export interface FpMellomlagretData {
     currentRoute: SøknadRoutes;
     søknad?: Partial<Søknad>;
     antallUkerIUttaksplan?: number;
-    perioderSomSkalSendesInn?: Periode[];
     harUttaksplanBlittSlettet?: boolean;
     søknadGjelderEtNyttBarn?: boolean;
     fordeling?: Fordeling;
     eksisterendeSak?: EksisterendeSak;
-    barnFraNesteSak?: BarnFraNesteSak;
     annenPartsUttakErLagtTilIPlan?: boolean;
     uttaksplanNy?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     valgtEksisterendeSaksnr?: string;

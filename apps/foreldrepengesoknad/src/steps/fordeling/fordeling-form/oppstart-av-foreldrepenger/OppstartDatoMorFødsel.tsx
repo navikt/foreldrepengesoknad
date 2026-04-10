@@ -7,7 +7,7 @@ import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'utils/ba
 
 import { Alert, HStack, VStack } from '@navikt/ds-react';
 
-import { isFødtBarn } from '@navikt/fp-common';
+import { isFødtBarn } from '@navikt/fp-types';
 import { UttaksdagenString, erUttaksdag, isValidDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 

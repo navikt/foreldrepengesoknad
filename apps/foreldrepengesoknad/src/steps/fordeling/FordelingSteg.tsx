@@ -17,8 +17,7 @@ import { getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
 
 import { VStack } from '@navikt/ds-react';
 
-import { isFødtBarn } from '@navikt/fp-common';
-import { EksternArbeidsforholdDto_fpoversikt, FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, FpPersonopplysningerDto_fpoversikt, isFødtBarn } from '@navikt/fp-types';
 import { SkjemaRotLayout, Spinner, Step } from '@navikt/fp-ui';
 import { UttaksdagenString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';

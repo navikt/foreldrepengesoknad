@@ -1,10 +1,13 @@
 import { ContextDataType } from 'appData/FpDataContext';
+import { AnnenForelder } from 'types/AnnenForelder';
 import { getEndringstidspunktNy } from 'utils/dateUtils';
 
-import { AnnenForelder, Barn, BarnType, FødtBarn, Periodetype } from '@navikt/fp-common';
+import { BarnType, Periodetype } from '@navikt/fp-constants';
 import {
+    Barn,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
+    FødtBarn,
     UttakPeriode_fpoversikt,
     Uttaksplanperiode,
 } from '@navikt/fp-types';

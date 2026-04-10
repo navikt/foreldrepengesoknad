@@ -1,22 +1,15 @@
 import { ContextDataMap, ContextDataType } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
+import { AnnenForelder, isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { getEndringstidspunktNy } from 'utils/dateUtils';
 
-import {
-    AnnenForelder,
-    Barn,
-    Periodetype,
-    isAdoptertBarn,
-    isAdoptertStebarn,
-    isAnnenForelderIkkeOppgitt,
-    isAnnenForelderOppgitt,
-    isFødtBarn,
-} from '@navikt/fp-common';
+import { Periodetype } from '@navikt/fp-constants';
 import {
     AnnenForelderDto,
     Attachment,
+    Barn,
     BarnDto,
     BrukerRolle,
     EndringssøknadForeldrepengerDto,
@@ -33,6 +26,9 @@ import {
     UttakPeriode_fpoversikt,
     UttakUtsettelseÅrsak_fpoversikt,
     Uttaksplanperiode,
+    isAdoptertBarn,
+    isAdoptertStebarn,
+    isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-types';
 import { UttaksdagenString, Uttaksperioden, getDecoratorLanguageCookie, omitOne } from '@navikt/fp-utils';

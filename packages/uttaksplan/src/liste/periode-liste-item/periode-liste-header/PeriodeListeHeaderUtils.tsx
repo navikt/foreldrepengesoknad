@@ -11,8 +11,7 @@ import {
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-import { NavnPåForeldre } from '@navikt/fp-common';
-import { Familiesituasjon } from '@navikt/fp-types';
+import { Familiesituasjon, NavnPåForeldre } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';

@@ -5,11 +5,12 @@ import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { AnnenInntektType, SluttpakkeInntekt } from 'types/AndreInntektskilder';
+import { AnnenForelder } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, BarnType, Skjemanummer } from '@navikt/fp-constants';
 import {
+    Barn,
     EndringssøknadForeldrepengerDto,
     ForeldrepengesøknadDto,
     FpPersonopplysningerDto_fpoversikt,

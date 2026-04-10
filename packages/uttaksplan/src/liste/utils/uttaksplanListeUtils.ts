@@ -1,10 +1,10 @@
 import { IntlShape } from 'react-intl';
 
-import { NavnPåForeldre } from '@navikt/fp-common';
 import {
     KontoType,
     KontoTypeUttak,
     MorsAktivitet,
+    NavnPåForeldre,
     UttakOppholdÅrsak_fpoversikt,
     UttakUtsettelseÅrsak_fpoversikt,
 } from '@navikt/fp-types';

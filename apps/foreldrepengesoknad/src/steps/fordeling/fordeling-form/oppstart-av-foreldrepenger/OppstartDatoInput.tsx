@@ -3,16 +3,16 @@ import dayjs from 'dayjs';
 import { DayOfWeek } from 'react-day-picker';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { AnnenForelder } from 'types/AnnenForelder';
 import { Fordeling, OppstartValg } from 'types/Fordeling';
 import { getDatoForAleneomsorg, getErAleneOmOmsorg } from 'utils/annenForelderUtils';
 import { getFørsteUttaksdag2UkerFørFødsel } from 'utils/arbeidsforholdUtils';
 import { getFamiliehendelsedato, getFamiliehendelsedatoDate, getFødselsdato, getTermindato } from 'utils/barnUtils';
 import { andreAugust2022ReglerGjelder } from 'utils/dateUtils';
 
-import { AnnenForelder, Barn } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
-import { Situasjon, SøkersituasjonFp } from '@navikt/fp-types';
+import { Barn, Situasjon, SøkersituasjonFp } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils';
 import { isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 

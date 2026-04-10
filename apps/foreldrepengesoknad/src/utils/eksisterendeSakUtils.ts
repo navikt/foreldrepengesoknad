@@ -1,129 +1,34 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
+import { AnnenForelder, AnnenForelderOppgitt } from 'types/AnnenForelder';
+import { EksisterendeSak } from 'types/EksisterendeSak';
+import { FamiliehendelseType } from 'types/FamiliehendelseType';
+import { Saksgrunnlag } from 'types/Saksgrunnlag';
 import { Søknad } from 'types/Søknad';
 import { ValgtBarn } from 'types/ValgtBarn';
 
-import {
-    AnnenForelder,
-    AnnenForelderOppgitt,
-    Barn,
-    BarnType,
-    EksisterendeSak,
-    FamiliehendelseType,
-    Saksgrunnlag,
-    Saksperiode,
-    isAdoptertBarn,
-    isFødtBarn,
-    isUfødtBarn,
-} from '@navikt/fp-common';
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { BarnType, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
     AnnenForelderDto_fpoversikt,
     AnnenPartSak_fpoversikt,
+    Barn,
     FpBarnDto_fpoversikt,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
-    KontoType,
-    Oppholdsårsak,
     Person_fpoversikt,
     Situasjon,
     Søkerrolle,
-    UttakOppholdÅrsak_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
+    isAdoptertBarn,
+    isFødtBarn,
+    isUfødtBarn,
 } from '@navikt/fp-types';
-import { TidsperiodenString, Uttaksperioden } from '@navikt/fp-utils';
+import { Uttaksperioden } from '@navikt/fp-utils';
 
 import { getErDatoInnenEnDagFraAnnenDato, getRelevantFamiliehendelseDato, sorterDatoEtterEldst } from './dateUtils';
 import { getFamiliehendelseType } from './familiehendelseUtils';
-import { guid } from './guid';
 import { getKjønnFromFnrString } from './personUtils';
-
-const getStønadskontoTypeFromOppholdÅrsakType = (årsak: UttakOppholdÅrsak_fpoversikt): KontoType | undefined => {
-    switch (årsak) {
-        case 'FEDREKVOTE_ANNEN_FORELDER':
-            return 'FEDREKVOTE';
-        case 'FELLESPERIODE_ANNEN_FORELDER':
-            return 'FELLESPERIODE';
-        case 'MØDREKVOTE_ANNEN_FORELDER':
-            return 'MØDREKVOTE';
-        default:
-            return undefined;
-    }
-};
-
-const mapOppholdÅrsakType = (årsak: UttakOppholdÅrsak_fpoversikt | undefined): Oppholdsårsak | undefined => {
-    switch (årsak) {
-        case 'FEDREKVOTE_ANNEN_FORELDER':
-            return 'UTTAK_FEDREKVOTE_ANNEN_FORELDER';
-        case 'FELLESPERIODE_ANNEN_FORELDER':
-            return 'UTTAK_FELLESP_ANNEN_FORELDER';
-        case 'MØDREKVOTE_ANNEN_FORELDER':
-            return 'UTTAK_MØDREKVOTE_ANNEN_FORELDER';
-        default:
-            return undefined;
-    }
-};
-
-export const mapSaksperiodeFromDTO = (p: UttakPeriode_fpoversikt, erAnnenPartsSak: boolean): Saksperiode => {
-    const { oppholdÅrsak } = p;
-    const returnPeriode: Saksperiode = {
-        guid: guid(),
-        periode: {
-            fom: p.fom,
-            tom: p.tom,
-        },
-        gjelderAnnenPart: erAnnenPartsSak,
-        resultat: p.resultat,
-        kontoType: p.kontoType,
-        flerbarnsdager: p.flerbarnsdager,
-        gradering: p.gradering,
-        utsettelseÅrsak: p.utsettelseÅrsak,
-        overføringÅrsak: p.overføringÅrsak,
-        samtidigUttak: p.samtidigUttak,
-        morsAktivitet: p.morsAktivitet,
-        forelder: p.forelder,
-        oppholdÅrsak: mapOppholdÅrsakType(p.oppholdÅrsak),
-    };
-
-    if (oppholdÅrsak !== undefined) {
-        returnPeriode.kontoType = getStønadskontoTypeFromOppholdÅrsakType(oppholdÅrsak);
-        if (erAnnenPartsSak) {
-            returnPeriode.gjelderAnnenPart = false;
-            returnPeriode.angittAvAnnenPart = true;
-        }
-        if (!erAnnenPartsSak) {
-            returnPeriode.gjelderAnnenPart = true;
-        }
-    }
-
-    return returnPeriode;
-};
-
-const saksperiodeErInnvilget = (saksperiode: Saksperiode): boolean => saksperiode.resultat?.innvilget === true;
-
-const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
-    periode: Saksperiode,
-    _index: number,
-    saksperioder: Saksperiode[],
-) => {
-    const likePerioder = saksperioder.filter(
-        (periode2) =>
-            periode.guid !== periode2.guid && TidsperiodenString.forPeriode(periode.periode).erLik(periode2.periode),
-    );
-
-    if (likePerioder.length === 0) {
-        return true;
-    }
-
-    const innvilgedePerioder = likePerioder.filter(saksperiodeErInnvilget);
-
-    if (saksperiodeErInnvilget(periode) === false && innvilgedePerioder.length > 0) {
-        return false;
-    }
-
-    return true;
-};
 
 export const mapAnnenPartsEksisterendeSakFromDTO = (
     eksisterendeSakAnnenPart: AnnenPartSak_fpoversikt | undefined,
@@ -135,11 +40,6 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
         return undefined;
     }
     const erAnnenPartsSak = true;
-    const saksperioderAnnenPart = eksisterendeSakAnnenPart.perioder
-        .map((p) => {
-            return mapSaksperiodeFromDTO(p, erAnnenPartsSak);
-        })
-        .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
     let termindato = undefined;
     if (eksisterendeSakAnnenPart.termindato !== undefined) {
         termindato = eksisterendeSakAnnenPart.termindato;
@@ -175,7 +75,6 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
         saksnummer: '',
         erAnnenPartsSak,
         grunnlag: grunnlagForAnnenPart,
-        saksperioder: saksperioderAnnenPart,
     };
 };
 
@@ -193,8 +92,6 @@ export const mapSøkerensEksisterendeSakFromDTO = (
         sakTilhørerMor,
         ønskerJustertUttakVedFødsel,
     } = eksisterendeSak;
-
-    const perioder = eksisterendeSak.gjeldendeVedtak ? eksisterendeSak.gjeldendeVedtak.perioder : [];
 
     const erFarEllerMedmor = !sakTilhørerMor;
     const fødselsdatoFraValgtBarn =
@@ -220,17 +117,10 @@ export const mapSøkerensEksisterendeSakFromDTO = (
         harAnnenForelderTilsvarendeRettEØS,
     };
 
-    const saksperioder = perioder
-        .map((p) => {
-            return mapSaksperiodeFromDTO(p, erAnnenPartsSak);
-        })
-        .filter(filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode);
-
     return {
         saksnummer: eksisterendeSak.saksnummer,
         erAnnenPartsSak,
         grunnlag,
-        saksperioder,
     };
 };
 

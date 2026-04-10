@@ -3,8 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre } from '@navikt/fp-common';
-import { UttakOverføringÅrsak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { NavnPåForeldre, UttakOverføringÅrsak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { UttaksdagenString, formatDateExtended } from '@navikt/fp-utils';
 
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';

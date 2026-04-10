@@ -2,7 +2,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { FormSummary } from '@navikt/ds-react';
 
-import { AdoptertAnnetBarn, AdoptertBarn, isAdoptertAnnetBarn, isAdoptertStebarn } from '@navikt/fp-common';
+import { AdoptertAnnetBarn, AdoptertBarn, isAdoptertAnnetBarn, isAdoptertStebarn } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 import { getAntallBarnTekst } from './BarnFødselOppsummering';

@@ -1,4 +1,5 @@
-import { AnnenForelder } from '@navikt/fp-common';
+import { AnnenForelder } from 'types/AnnenForelder';
+
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan';

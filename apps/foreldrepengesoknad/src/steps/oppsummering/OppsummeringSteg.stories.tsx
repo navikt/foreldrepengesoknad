@@ -10,12 +10,13 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak';
 import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
+import { AnnenForelder } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
-import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, BarnType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import {
     ArbeidsforholdOgInntektFp,
+    Barn,
     EksternArbeidsforholdDto_fpoversikt,
     FpPersonopplysningerDto_fpoversikt,
     Frilans,

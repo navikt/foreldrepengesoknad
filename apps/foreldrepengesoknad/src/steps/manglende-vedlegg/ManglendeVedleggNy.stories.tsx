@@ -8,10 +8,12 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
+import { AnnenForelder } from 'types/AnnenForelder';
 
-import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
+import { BarnType } from '@navikt/fp-constants';
 import {
     ArbeidsforholdOgInntektFp,
+    Barn,
     FpPersonopplysningerDto_fpoversikt,
     Situasjon,
     UttakPeriodeAnnenpartEøs_fpoversikt,

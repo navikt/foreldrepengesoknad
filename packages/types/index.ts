@@ -26,10 +26,10 @@ export type {
     ArbeidsforholdOgInntektSvp,
 } from './src/ArbeidsforholdOgInntekt';
 export { isArbeidsforholdOgInntektFp, isArbeidsforholdOgInntektSvp } from './src/ArbeidsforholdOgInntekt';
-export { isFødtBarn, isUfødtBarn, isAdoptertBarn } from './src/Barn';
+export { isFødtBarn, isUfødtBarn, isAdoptertBarn, isAdoptertStebarn, isAdoptertAnnetBarn } from './src/Barn';
 export type { Utenlandsopphold, UtenlandsoppholdPeriode } from './src/Utenlandsopphold';
 
-export type { Barn } from './src/Barn';
+export type { Barn, FødtBarn, UfødtBarn, AdoptertAnnetBarn, AdoptertBarn, IkkeUtfyltTypeBarn } from './src/Barn';
 export type { Familiesituasjon } from './src/Familiesituasjon';
 export * from './src/Ytelse';
 

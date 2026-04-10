@@ -5,10 +5,10 @@ import { useLocation } from 'react-router-dom';
 import { skalViseOmsorgsovertakelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/OmsorgsovertakelseDokumentasjon.tsx';
 import { skalViseTerminbekreftelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/TerminbekreftelseDokumentasjon.tsx';
 import { AnnenInntektType } from 'types/AndreInntektskilder';
+import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { kreverUttaksplanVedleggNy } from 'utils/uttaksplanInfoUtils';
 
-import { isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { EksternArbeidsforholdDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';

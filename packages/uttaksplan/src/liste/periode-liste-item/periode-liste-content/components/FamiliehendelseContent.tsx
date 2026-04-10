@@ -2,20 +2,20 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, BodyShort, VStack } from '@navikt/ds-react';
 
-import { FamiliehendelseType } from '@navikt/fp-common';
+import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 
 interface Props {
-    familiehendelseType: FamiliehendelseType;
+    barn: Barn;
 }
 
-export const FamiliehendelseContent = ({ familiehendelseType }: Props) => {
+export const FamiliehendelseContent = ({ barn }: Props) => {
     const {
         foreldreInfo: { navnPåForeldre, søker },
     } = useUttaksplanData();
 
-    if (familiehendelseType === FamiliehendelseType.TERM) {
+    if (isUfødtBarn(barn)) {
         return (
             <BodyShort>
                 <FormattedMessage
@@ -26,7 +26,7 @@ export const FamiliehendelseContent = ({ familiehendelseType }: Props) => {
         );
     }
 
-    if (familiehendelseType === FamiliehendelseType.ADOPSJON) {
+    if (isAdoptertBarn(barn)) {
         return (
             <BodyShort>
                 <FormattedMessage id="uttaksplan.periodeListeContent.familiehendelse.adopsjon" />

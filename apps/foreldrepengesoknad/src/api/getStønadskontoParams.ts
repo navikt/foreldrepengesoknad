@@ -1,3 +1,4 @@
+import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getErMorUfør } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'utils/eksisterendeSakUtils';
@@ -5,15 +6,13 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getFarMedmorErAleneOmOmsorg, getMorErAleneOmOmsorg } from 'utils/personUtils';
 
 import {
-    AnnenForelder,
+    AnnenPartSak_fpoversikt,
     Barn,
-    isAdoptertAnnetBarn,
-    isAdoptertStebarn,
-    isAnnenForelderOppgitt,
+    SøkersituasjonFp,
+    isAdoptertBarn,
     isFødtBarn,
     isUfødtBarn,
-} from '@navikt/fp-common';
-import { AnnenPartSak_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
+} from '@navikt/fp-types';
 
 const getFarHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
     if (erFarMedmor) {
@@ -142,7 +141,7 @@ export const getStønadskontoParams = (
         antallBarn: saksgrunnlagsAntallBarn.toString(),
         fødselsdato: isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined,
         termindato: getTermindatoSomSkalBrukes(barn, saksgrunnlagsTermindato),
-        omsorgsovertakelseDato: isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? barn.adopsjonsdato : undefined,
+        omsorgsovertakelseDato: isAdoptertBarn(barn) ? barn.adopsjonsdato : undefined,
         morHarUføretrygd: getErMorUfør(annenForelder, søkerErFarEllerMedmor),
     };
 };

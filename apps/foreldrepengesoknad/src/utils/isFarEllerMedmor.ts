@@ -1,5 +1,4 @@
-import { NavnPåForeldre } from '@navikt/fp-common';
-import { BrukerRolleSak_fpoversikt, Søkerrolle } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, NavnPåForeldre, Søkerrolle } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 export const isFarEllerMedmor = (rolle: Søkerrolle) => {

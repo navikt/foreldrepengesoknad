@@ -11,9 +11,8 @@ import { getKunFarHarRett } from 'utils/personUtils';
 
 import { Radio } from '@navikt/ds-react';
 
-import { Barn, NavnPåForeldre, isAdoptertAnnetBarn, isFødtBarn } from '@navikt/fp-common';
 import { RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { SøkersituasjonFp } from '@navikt/fp-types';
+import { Barn, NavnPåForeldre, SøkersituasjonFp, isAdoptertAnnetBarn, isFødtBarn } from '@navikt/fp-types';
 import { formatDateExtended } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 

@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { getErMorUfør } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
@@ -11,7 +12,6 @@ import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
 import { Alert, Radio, VStack } from '@navikt/ds-react';
 
-import { isAnnenForelderOppgitt, isIkkeUtfyltTypeBarn } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import {
@@ -25,6 +25,7 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-types';
+import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
 import { UttaksdagenString, Uttaksperioden } from '@navikt/fp-utils';
 import { useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
 import { isRequired, notEmpty } from '@navikt/fp-validation';

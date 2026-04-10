@@ -2,8 +2,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { FormSummary } from '@navikt/ds-react';
 
-import { FødtBarn, UfødtBarn } from '@navikt/fp-common';
-import { isFødtBarn } from '@navikt/fp-types';
+import { FødtBarn, UfødtBarn, isFødtBarn } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 interface Props {

@@ -1,12 +1,13 @@
 import { SøknadRoutes } from 'appData/routes';
 import { JSX, ReactNode, createContext, useContext, useReducer } from 'react';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
+import { AnnenForelder } from 'types/AnnenForelder';
 import { Fordeling } from 'types/Fordeling';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import { AnnenForelder, Barn } from '@navikt/fp-common';
 import {
     ArbeidsforholdOgInntektFp,
+    Barn,
     Dekningsgrad,
     Frilans,
     NæringDto,

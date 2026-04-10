@@ -6,10 +6,11 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
+import { AnnenForelder } from 'types/AnnenForelder';
 import { FellesperiodeFordelingValg, Fordeling, OppstartValg } from 'types/Fordeling';
 
-import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
-import { Dekningsgrad, FpPersonopplysningerDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
+import { BarnType } from '@navikt/fp-constants';
+import { Barn, Dekningsgrad, FpPersonopplysningerDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import {
     ALENE_OM_OMSORG_80_FARMEDMOR,
     ALENE_OM_OMSORG_100_FARMEDMOR,

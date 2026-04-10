@@ -6,6 +6,7 @@ import { useStepConfig } from 'appData/useStepConfig';
 import dayjs from 'dayjs';
 import { ReactNode, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { erPeriodeIOpprinneligPlan } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
@@ -13,7 +14,6 @@ import { getErSøkerFarEllerMedmor, getKjønnFromFnr, getNavnPåForeldre } from 
 
 import { Alert, BodyLong, Tabs } from '@navikt/ds-react';
 
-import { isAnnenForelderOppgitt, isIkkeUtfyltTypeBarn } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import {
@@ -24,6 +24,7 @@ import {
     isAdoptertBarn,
     isFødtBarn,
 } from '@navikt/fp-types';
+import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { Uttaksperioden, getFamiliehendelsedato } from '@navikt/fp-utils';
 import {

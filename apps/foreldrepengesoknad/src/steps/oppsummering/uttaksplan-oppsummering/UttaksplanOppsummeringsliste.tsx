@@ -1,5 +1,6 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getTermindato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 import { getStønadskontoNavn } from 'utils/stønadskontoerUtils';
@@ -7,7 +8,6 @@ import { isUttaksperiodeFarMedmorPgaFødsel } from 'utils/uttaksplanInfoUtils';
 
 import { Alert, BodyLong, FormSummary, VStack } from '@navikt/ds-react';
 
-import { isAnnenForelderOppgitt } from '@navikt/fp-common';
 import {
     EksternArbeidsforholdDto_fpoversikt,
     KontoTypeUttak,

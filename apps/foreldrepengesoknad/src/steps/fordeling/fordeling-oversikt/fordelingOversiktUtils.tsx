@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import React, { ReactNode } from 'react';
 import { FormattedMessage, IntlShape } from 'react-intl';
+import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { DelInformasjon, FordelingEier, FordelingFargekode } from 'types/FordelingOversikt';
 import { getErAleneOmOmsorg, getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
@@ -17,22 +18,18 @@ import {
 
 import { Link } from '@navikt/ds-react';
 
-import {
-    AnnenForelder,
-    Barn,
-    NavnPåForeldre,
-    isAdoptertBarn,
-    isAnnenForelderOppgitt,
-    isFødtBarn,
-    isUfødtBarn,
-} from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import {
+    Barn,
     KontoBeregningDto,
     Minsteretter,
+    NavnPåForeldre,
     SøkersituasjonFp,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
+    isAdoptertBarn,
+    isFødtBarn,
+    isUfødtBarn,
 } from '@navikt/fp-types';
 import { UttaksdagenString, Uttaksperioden, capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 

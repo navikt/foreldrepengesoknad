@@ -1,7 +1,6 @@
 import { IntlShape, useIntl } from 'react-intl';
 
-import { NavnPåForeldre } from '@navikt/fp-common';
-import { KontoTypeUttak, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { KontoTypeUttak, NavnPåForeldre, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { Feltoppsummering } from './Feltoppsummering';
 

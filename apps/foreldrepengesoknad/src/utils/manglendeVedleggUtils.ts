@@ -1,4 +1,5 @@
-import { AnnenForelder, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
+
 import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,

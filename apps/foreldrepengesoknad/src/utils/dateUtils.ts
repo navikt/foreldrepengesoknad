@@ -7,9 +7,10 @@ import minMax from 'dayjs/plugin/minMax';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
+import { AnnenForelder } from 'types/AnnenForelder';
 
-import { AnnenForelder, Barn } from '@navikt/fp-common';
 import {
+    Barn,
     FpBarnDto_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,

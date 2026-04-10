@@ -4,8 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
-import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
-import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
+import { NavnPåForeldre } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import {
@@ -65,12 +64,10 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
         !erUttaksplanperiodeUtenUttak(uttaksplanperioder) &&
         !harUttaksplanperiodePrematuruker(uttaksplanperioder);
 
-    const familiehendelseType = getFamiliehendelseType(barn);
-
     const erFamiliehendelse = erUttaksplanperiodeFamiliehendelseDato(uttaksplanperioder);
 
-    if (erFamiliehendelse && familiehendelseType !== undefined) {
-        return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
+    if (erFamiliehendelse) {
+        return <FamiliehendelseContent barn={barn} />;
     }
 
     return (
@@ -196,18 +193,6 @@ const Periode = ({
             <BodyShort weight="semibold">Ikke implementert</BodyShort>
         </HStack>
     );
-};
-
-const getFamiliehendelseType = (barn: Barn) => {
-    if (isUfødtBarn(barn)) {
-        return FamiliehendelseType.TERM;
-    }
-
-    if (isAdoptertBarn(barn)) {
-        return FamiliehendelseType.ADOPSJON;
-    }
-
-    return FamiliehendelseType.FØDSEL;
 };
 
 const EndreOgSlettKnapper = ({

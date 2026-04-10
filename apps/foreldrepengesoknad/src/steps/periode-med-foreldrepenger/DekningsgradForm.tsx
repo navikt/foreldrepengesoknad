@@ -3,16 +3,16 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getFødselsdato, getTermindato } from 'utils/barnUtils';
 import { førsteJuli2024ReglerGjelder, getVarighetString } from 'utils/dateUtils';
 import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 
 import { BodyShort, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { Barn, isAdoptertBarn, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Dekningsgrad, KontoBeregningDto, SøkersituasjonFp } from '@navikt/fp-types';
+import { Barn, Dekningsgrad, KontoBeregningDto, SøkersituasjonFp, isAdoptertBarn } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { UttaksdagenString, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';

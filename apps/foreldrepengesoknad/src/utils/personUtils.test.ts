@@ -1,6 +1,6 @@
 import { createIntl, createIntlCache } from 'react-intl';
+import { AnnenForelder } from 'types/AnnenForelder';
 
-import { AnnenForelder } from '@navikt/fp-common';
 import { FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { getNavnGenitivEierform } from '@navikt/fp-utils';
 

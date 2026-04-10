@@ -1,13 +1,14 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
+import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getDatoForAleneomsorg, getErMorUfør } from 'utils/annenForelderUtils';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnr } from 'utils/personUtils';
 
-import { isAdoptertAnnetBarn, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import {
     Barn,
     KontoBeregningDto,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
+    isAdoptertAnnetBarn,
 } from '@navikt/fp-types';
 import { UttaksdagenString, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';

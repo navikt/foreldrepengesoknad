@@ -7,10 +7,9 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { Alert, BodyLong, BodyShort, Box, Link, List, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { Barn } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { Søkerrolle } from '@navikt/fp-types';
+import { Barn, Søkerrolle } from '@navikt/fp-types';
 import { isAfterOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { AnnenForelderFormData, isAnnenForelderOppgittFormData } from './AnnenForelderFormData';

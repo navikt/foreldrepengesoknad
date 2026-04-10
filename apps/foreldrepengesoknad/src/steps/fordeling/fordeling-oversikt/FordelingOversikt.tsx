@@ -1,6 +1,7 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
+import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { DelInformasjon, FordelingEier } from 'types/FordelingOversikt';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { førsteOktober2021ReglerGjelder } from 'utils/dateUtils';
@@ -10,8 +11,7 @@ import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 
 import { VStack } from '@navikt/ds-react';
 
-import { isAnnenForelderOppgitt, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
-import { KontoBeregningDto } from '@navikt/fp-types';
+import { KontoBeregningDto, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { FlerbarnsdagerInformasjon } from './Flerbarnsdagerinformasjon';

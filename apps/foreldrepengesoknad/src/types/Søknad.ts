@@ -1,9 +1,9 @@
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import { AnnenForelder, Barn } from '@navikt/fp-common';
 import {
     ArbeidsforholdOgInntektFp,
+    Barn,
     Dekningsgrad,
     Frilans,
     NæringDto,
@@ -11,6 +11,8 @@ import {
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
+
+import { AnnenForelder } from './AnnenForelder';
 
 export interface Søknad {
     type: 'foreldrepenger';

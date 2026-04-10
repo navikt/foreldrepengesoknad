@@ -17,9 +17,16 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { VStack } from '@navikt/ds-react';
 
-import { Barn, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { FpBarnDto_fpoversikt, FpPersonopplysningerDto_fpoversikt, Situasjon, Søkerrolle } from '@navikt/fp-types';
+import {
+    Barn,
+    FpBarnDto_fpoversikt,
+    FpPersonopplysningerDto_fpoversikt,
+    Situasjon,
+    Søkerrolle,
+    isFødtBarn,
+    isUfødtBarn,
+} from '@navikt/fp-types';
 import { SkjemaRotLayout, Spinner, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
