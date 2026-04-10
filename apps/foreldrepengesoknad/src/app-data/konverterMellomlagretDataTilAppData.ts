@@ -21,7 +21,7 @@ export const konverterMellomlagretDataTilAppData = (mellomlagretState: FpMelloml
         [ContextDataType.FORDELING]: mellomlagretState.fordeling,
         [ContextDataType.VEDLEGG]: søknad?.vedlegg,
         [ContextDataType.UTTAKSPLAN]: mellomlagretState.uttaksplanNy,
-        [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]: mellomlagretState.ønskerJustertUttakVedFødsel,
+        [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]: søknad?.ønskerJustertUttakVedFødsel,
         [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: mellomlagretState.valgtEksisterendeSaksnr,
     };
 };
