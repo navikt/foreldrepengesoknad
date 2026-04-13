@@ -15,7 +15,7 @@ export const getKjønnFromFnr = (annenForelder: AnnenForelder): Kjønn_fpoversik
     if (isAnnenForelderOppgitt(annenForelder)) {
         const { fnr } = annenForelder;
 
-        if (fnr === undefined || fnr.length !== 11) {
+        if (fnr.length !== 11) {
             return undefined;
         }
         return Number.parseInt(fnr.charAt(8), 10) % 2 === 0 ? 'K' : 'M';

@@ -109,14 +109,14 @@ describe('ny-uttaksplan intl messages', () => {
             (prev, fileLoc) => prev.concat(getAdditionalIntlString(fileLoc)),
             [] as string[],
         );
-        const allTranslationsCode = Object.keys(JSON.parse(foundTranslations)).concat(additionalTranslations);
+        const allTranslationsCode = new Set(Object.keys(JSON.parse(foundTranslations)).concat(additionalTranslations));
 
         const missingKeysCode = Object.keys(nb).filter((key) => {
             // Ikkje sjekk denne sidan den er dynamisk, og derfor litt styr å skriva anleis
             if (key.includes('uttaksplan.stønadskontotype.')) {
                 return false;
             }
-            return !allTranslationsCode.includes(key);
+            return !allTranslationsCode.has(key);
         });
         if (missingKeysCode.length > 0) {
             // eslint-disable-next-line no-console
