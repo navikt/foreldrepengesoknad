@@ -2509,9 +2509,6 @@ importers:
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../validation
-      classnames:
-        specifier: 2.5.1
-        version: 2.5.1
       dayjs:
         specifier: 1.11.20
         version: 1.11.20
@@ -2555,9 +2552,6 @@ importers:
       '@storybook/react-vite':
         specifier: 10.3.4
         version: 10.3.4(esbuild@0.27.7)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(rollup@4.59.0)(storybook@10.3.4(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(typescript@6.0.2)(vite@8.0.5(@emnapi/core@1.9.0)(@emnapi/runtime@1.9.0)(@types/node@25.5.2)(esbuild@0.27.7)(jiti@2.6.1)(less@4.5.1)(sass-embedded@1.99.0)(sass@1.99.0)(yaml@2.8.3))
-      '@tailwindcss/vite':
-        specifier: 4.2.2
-        version: 4.2.2(vite@8.0.5(@emnapi/core@1.9.0)(@emnapi/runtime@1.9.0)(@types/node@25.5.2)(esbuild@0.27.7)(jiti@2.6.1)(less@4.5.1)(sass-embedded@1.99.0)(sass@1.99.0)(yaml@2.8.3))
       '@testing-library/jest-dom':
         specifier: 6.9.1
         version: 6.9.1
@@ -2582,12 +2576,6 @@ importers:
       jsdom:
         specifier: 29.0.1
         version: 29.0.1
-      mockdate:
-        specifier: 3.0.5
-        version: 3.0.5
-      playwright:
-        specifier: 1.58.2
-        version: 1.58.2
       storybook:
         specifier: 10.3.4
         version: 10.3.4(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
