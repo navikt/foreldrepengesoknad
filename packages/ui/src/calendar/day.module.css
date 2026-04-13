@@ -322,6 +322,11 @@
     border-right: 2px solid var(--ax-success-400);
 }
 
+.hoverPreviewDay {
+    background-color: var(--ax-accent-600);
+    print-color-adjust: exact;
+}
+
 .none {
     padding-left: 2px;
     padding-right: 2px;
