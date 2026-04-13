@@ -33,7 +33,7 @@
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
-        "@navikt/fp-uttaksplan-ny": "workspace:*",
+        "@navikt/fp-uttaksplan": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
         "@navikt/nav-dekoratoren-moduler": "3.7.0",
         "@sentry/vite-plugin": "5.1.1",

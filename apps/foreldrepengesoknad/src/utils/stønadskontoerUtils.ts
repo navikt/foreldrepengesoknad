@@ -1,7 +1,6 @@
 import { IntlShape } from 'react-intl';
 
-import { NavnPåForeldre } from '@navikt/fp-common';
-import { KontoBeregningDto, KontoDto, KontoType, KontoTypeUttak, MorsAktivitet } from '@navikt/fp-types';
+import { KontoBeregningDto, KontoDto, KontoTypeUttak, NavnPåForeldre } from '@navikt/fp-types';
 import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 export const getStønadskontoNavn = (

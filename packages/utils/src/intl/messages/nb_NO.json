@@ -1,5 +1,3 @@
 {
-    "tidsperiode": "Fra {fom} til {tom}",
-    "tidsperiode.kort": "{fom} - {tom}",
     "periodLabel.dateToday": "d.d."
 }

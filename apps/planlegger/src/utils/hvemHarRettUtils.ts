@@ -1,7 +1,5 @@
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-
-import { HvemPlanleggerType } from '@navikt/fp-types';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { erMorDelAvSøknaden } from './HvemPlanleggerUtils';
 

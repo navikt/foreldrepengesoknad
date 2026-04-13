@@ -1,8 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { ComponentProps } from 'react';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-
-import { HvemPlanleggerType } from '@navikt/fp-types';
+import { HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { UforutsetteEndringer } from './UforutsetteEndringer';
 

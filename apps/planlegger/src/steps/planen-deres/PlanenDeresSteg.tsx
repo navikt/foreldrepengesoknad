@@ -11,6 +11,7 @@ import { FordelingSlider } from 'components/FordelingSlider';
 import { useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Fordeling } from 'types/Fordeling';
+import { HvemPlanleggerType } from 'types/HvemPlanlegger';
 import {
     erAlenesøker,
     erMedmorDelAvSøknaden,
@@ -30,7 +31,6 @@ import { BodyLong, BodyShort, Box, Heading, InlineMessage, Tabs, ToggleGroup, VS
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import {
     Dekningsgrad,
-    HvemPlanleggerType,
     KontoBeregningResultatDto,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
@@ -45,7 +45,7 @@ import {
     UttaksplanKalender,
     UttaksplanListe,
     UttaksplanRedigeringProvider,
-} from '@navikt/fp-uttaksplan-ny';
+} from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { PlanleggerStepPage } from '../../components/page/PlanleggerStepPage';

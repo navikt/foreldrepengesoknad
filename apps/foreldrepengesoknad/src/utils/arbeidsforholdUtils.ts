@@ -7,7 +7,10 @@ import { UttaksdagenString } from '@navikt/fp-utils';
 const ANTALL_DAGER_TO_UKER = 2 * 7;
 const ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL = 3;
 
-const getFørsteUttaksdag2UkerFørFødsel = (familiehendelsesdato: string, termindato: string | undefined): string => {
+export const getFørsteUttaksdag2UkerFørFødsel = (
+    familiehendelsesdato: string,
+    termindato: string | undefined,
+): string => {
     const terminEllerFamHendelsesdatoMinusToUker =
         termindato === undefined
             ? dayjs(familiehendelsesdato).subtract(ANTALL_DAGER_TO_UKER, 'day')

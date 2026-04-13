@@ -7,8 +7,6 @@ export const konverterMellomlagretDataTilAppData = (mellomlagretState: FpMelloml
 
     return {
         [ContextDataType.APP_ROUTE]: mellomlagretState.currentRoute,
-        [ContextDataType.EKSISTERENDE_SAK]: mellomlagretState.eksisterendeSak,
-        [ContextDataType.BARN_FRA_NESTE_SAK]: mellomlagretState.barnFraNesteSak,
         [ContextDataType.SØKERSITUASJON]: søknad?.søkersituasjon,
         [ContextDataType.OM_BARNET]: søknad?.barn,
         [ContextDataType.ANNEN_FORELDER]: søknad?.annenForelder,
@@ -21,18 +19,9 @@ export const konverterMellomlagretDataTilAppData = (mellomlagretState: FpMelloml
         [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: søknad?.utenlandsoppholdSiste12Mnd,
         [ContextDataType.PERIODE_MED_FORELDREPENGER]: søknad?.dekningsgrad,
         [ContextDataType.FORDELING]: mellomlagretState.fordeling,
-        [ContextDataType.UTTAKSPLAN]: søknad?.uttaksplan,
-        [ContextDataType.UTTAKSPLAN_METADATA]: {
-            ønskerJustertUttakVedFødsel: søknad?.ønskerJustertUttakVedFødsel,
-            perioderSomSkalSendesInn: mellomlagretState.perioderSomSkalSendesInn,
-            antallUkerIUttaksplan: mellomlagretState.antallUkerIUttaksplan,
-            harUttaksplanBlittSlettet: mellomlagretState.harUttaksplanBlittSlettet,
-            annenPartsUttakErLagtTilIPlan: mellomlagretState.annenPartsUttakErLagtTilIPlan,
-            endringstidspunkt: mellomlagretState.endringstidspunkt,
-        },
         [ContextDataType.VEDLEGG]: søknad?.vedlegg,
-        [ContextDataType.UTTAKSPLAN_NY]: mellomlagretState.uttaksplanNy,
-        [ContextDataType.UTTAKSPLAN_METADATA_NY]: mellomlagretState.uttaksplanMetadataNy,
+        [ContextDataType.UTTAKSPLAN]: mellomlagretState.uttaksplanNy,
+        [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]: søknad?.ønskerJustertUttakVedFødsel,
         [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: mellomlagretState.valgtEksisterendeSaksnr,
     };
 };

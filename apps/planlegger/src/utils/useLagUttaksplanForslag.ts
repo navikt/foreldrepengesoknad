@@ -1,7 +1,8 @@
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
+import { HvemPlanleggerType } from 'types/HvemPlanlegger';
 
-import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
+import { KontoBeregningDto } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
