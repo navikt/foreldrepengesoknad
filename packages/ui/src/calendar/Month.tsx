@@ -49,9 +49,9 @@ export const Month = React.memo(
         const periodMap = useMemo(() => buildPeriodMap(periods), [periods]);
 
         const hoverPreviewSet = useMemo(() => {
-            const hooveredDays = new Set<string>();
+            const hoveredDays = new Set<string>();
             if (!pendingFom || !hoverDate) {
-                return hooveredDays;
+                return hoveredDays;
             }
 
             const fom = dayjs(pendingFom).isBefore(hoverDate) ? pendingFom : hoverDate;
@@ -62,12 +62,12 @@ export const Month = React.memo(
 
             while (!current.isAfter(end)) {
                 if (!isWeekend(current)) {
-                    hooveredDays.add(current.format(ISO_DATE_FORMAT));
+                    hoveredDays.add(current.format(ISO_DATE_FORMAT));
                 }
                 current = current.add(1, 'day');
             }
 
-            return hooveredDays;
+            return hoveredDays;
         }, [pendingFom, hoverDate]);
 
         const firstDayOfMonth = dayjs().year(year).month(month).startOf('month');
