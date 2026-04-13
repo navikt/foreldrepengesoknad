@@ -57,8 +57,11 @@ export const Month = React.memo(
             const fom = dayjs(pendingFom).isBefore(hoverDate) ? pendingFom : hoverDate;
             const tom = dayjs(pendingFom).isBefore(hoverDate) ? hoverDate : pendingFom;
 
-            let current = dayjs(fom);
-            const end = dayjs(tom);
+            const firstDayOfMonth = dayjs().year(year).month(month).startOf('month');
+            const lastDayOfMonth = firstDayOfMonth.endOf('month');
+
+            let current = dayjs(fom).isBefore(firstDayOfMonth) ? firstDayOfMonth : dayjs(fom);
+            const end = dayjs(tom).isAfter(lastDayOfMonth) ? lastDayOfMonth : dayjs(tom);
 
             while (!current.isAfter(end)) {
                 if (!isWeekend(current)) {
@@ -68,7 +71,7 @@ export const Month = React.memo(
             }
 
             return hoveredDays;
-        }, [pendingFom, hoverDate]);
+        }, [pendingFom, hoverDate, year, month]);
 
         const firstDayOfMonth = dayjs().year(year).month(month).startOf('month');
         const daysInMonth = firstDayOfMonth.daysInMonth();
