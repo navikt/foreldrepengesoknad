@@ -15,7 +15,7 @@ import { observabilityMessages } from '@navikt/fp-observability';
 import { LocaleAll } from '@navikt/fp-types';
 import { ByttBrowserModal, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
-import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
+import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan';
 
 import { Foreldrepengeoversikt } from './Foreldrepengeoversikt';
 import { ErrorBoundary } from './components/error-boundary/ErrorBoundary';

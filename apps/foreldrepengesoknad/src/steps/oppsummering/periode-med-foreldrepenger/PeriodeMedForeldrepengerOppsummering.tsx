@@ -2,12 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import { useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getVarighetString } from 'utils/dateUtils';
 import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 
 import { FormSummary } from '@navikt/ds-react';
 
-import { isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 
 interface Props {

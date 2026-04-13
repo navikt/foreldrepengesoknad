@@ -3,16 +3,17 @@ import { DokumentereMorsArbeidParams, trengerDokumentereMorsArbeidOptions } from
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
+import { isAnnenForelderOppgittNorsk, isAnnenforelderOppholdtSegIEØS } from 'types/AnnenForelder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { addMetadata, lagAutomatiskDokument } from 'utils/vedleggUtils';
 
 import { Loader } from '@navikt/ds-react';
 
-import { NavnPåForeldre, isAnnenForelderOppgittNorsk, isAnnenforelderOppholdtSegIEØS } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import {
     Attachment,
     Barn,
+    NavnPåForeldre,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
     isAdoptertBarn,

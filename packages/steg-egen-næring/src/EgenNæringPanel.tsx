@@ -5,7 +5,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Radio, ReadMore, VStack, omit } from '@navikt/ds-react';
 
-import { DATE_4_YEARS_AGO, DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO } from '@navikt/fp-constants';
+import { DATE_4_YEARS_AGO, DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
     ErrorSummaryHookForm,
     RhfDatepicker,
@@ -37,11 +37,11 @@ import { NæringFormValues } from './types/NæringFormValues';
 dayjs.extend(minMax);
 
 const hasValue = (v: string | undefined | null) => v !== '' && v !== undefined && v !== null;
-const getMinInputTilOgMedValue = (fom: string | undefined, otherMinDate: Date) => {
+const getMinInputTilOgMedValue = (fom: string | undefined, otherMinDate: string) => {
     let min = otherMinDate;
     if (fom && hasValue(fom)) {
         const minDayjs = dayjs.max([dayjs(otherMinDate), dayjs(fom)]);
-        min = minDayjs ? minDayjs.toDate() : otherMinDate;
+        min = minDayjs ? minDayjs.format(ISO_DATE_FORMAT) : otherMinDate;
     }
     return min;
 };

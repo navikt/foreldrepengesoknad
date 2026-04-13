@@ -21,7 +21,7 @@ import { BarnGruppering } from '../types/BarnGruppering';
 import { GruppertSak } from '../types/GruppertSak';
 import { EngangsstønadSak, Foreldrepengesak, Sak, SvangerskapspengeSak } from '../types/Sak';
 import { SakOppslag } from '../types/SakOppslag';
-import { ISOStringToDate, getErDatoInnenEnDagFraAnnenDato } from './dateUtils';
+import { getErDatoInnenEnDagFraAnnenDato } from './dateUtils';
 import { getLeverPerson } from './personUtils';
 
 export const getAlleYtelser = (saker: SakOppslag): Sak[] => {
@@ -41,9 +41,9 @@ export const ytelseSomTekst = (ytelse: Sak['ytelse'], intl: IntlShape) => {
 
 export const getFørsteUttaksdagIForeldrepengesaken = (sak: Foreldrepengesak) => {
     if (sak.gjeldendeVedtak && sak.gjeldendeVedtak.perioder.length > 0) {
-        return ISOStringToDate(sak.gjeldendeVedtak.perioder[0]!.fom);
+        return sak.gjeldendeVedtak.perioder[0]!.fom;
     } else if (sak.åpenBehandling?.søknadsperioder && sak.åpenBehandling?.søknadsperioder.length > 0) {
-        return ISOStringToDate(sak.åpenBehandling?.søknadsperioder[0]!.fom);
+        return sak.åpenBehandling?.søknadsperioder[0]!.fom;
     }
     return undefined;
 };
@@ -79,21 +79,19 @@ export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: OversiktBarnD
     const barnFnrFraSaken = erForeldrepengesak && sak.barn !== undefined ? sak.barn.flatMap((b) => b.fnr) : [];
     const pdlBarnMedSammeFnr =
         (erForeldrepengesak && registrerteBarn.filter((b) => barnFnrFraSaken.includes(b.fnr))) || [];
-    const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse.fødselsdato);
+    const fødselsdatoFraSak = sak.familiehendelse.fødselsdato;
     const pdlBarnMedSammeFødselsdato = fødselsdatoFraSak
         ? registrerteBarn.filter(
               (barn) =>
-                  getErDatoInnenEnDagFraAnnenDato(ISOStringToDate(barn.fødselsdato), fødselsdatoFraSak) &&
+                  getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, fødselsdatoFraSak) &&
                   !pdlBarnMedSammeFnr?.find((pdlBarn) => pdlBarn.fnr === barn.fnr),
           )
         : [];
 
     const alleBarn = pdlBarnMedSammeFnr.concat(pdlBarnMedSammeFødselsdato);
     alleBarn.sort(sorterPersonEtterEldstOgNavn);
-    const alleBarnFødselsdatoer = alleBarn
-        .filter((b) => b.fødselsdato !== undefined)
-        .map((b) => ISOStringToDate(b.fødselsdato)!);
-    let fødselsdatoer = [] as Date[];
+    const alleBarnFødselsdatoer = alleBarn.filter((b) => b.fødselsdato !== undefined).map((b) => b.fødselsdato);
+    let fødselsdatoer = [] as string[];
     if (alleBarnFødselsdatoer && alleBarnFødselsdatoer.length > 0) {
         fødselsdatoer = alleBarnFødselsdatoer;
     } else if (fødselsdatoFraSak) {
@@ -265,12 +263,12 @@ const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): string => {
     return intl.formatMessage({ id: 'flerlinger' });
 };
 
-const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined, intl: IntlShape): string | undefined => {
+const formaterFødselsdatoerPåBarn = (fødselsdatoer: string[] | undefined, intl: IntlShape): string | undefined => {
     if (fødselsdatoer === undefined) {
         return undefined;
     }
 
-    const unikeFødselsdatoer = [] as Date[];
+    const unikeFødselsdatoer = [] as string[];
 
     for (const f of fødselsdatoer) {
         const finnesIUnikeFødselsdatoer = unikeFødselsdatoer.find((dato) => dayjs(dato).isSame(f, 'day'));
@@ -287,8 +285,8 @@ const formaterFødselsdatoerPåBarn = (fødselsdatoer: Date[] | undefined, intl:
 };
 
 const getTittelBarnNårNavnSkalIkkeVises = (
-    familiehendelsedato: Date,
-    fødselsdatoer: Date[] | undefined,
+    familiehendelsedato: string,
+    fødselsdatoer: string[] | undefined,
     antallBarn: number,
     intl: IntlShape,
     type: Familiesituasjon,
@@ -300,7 +298,7 @@ const getTittelBarnNårNavnSkalIkkeVises = (
                 { id: 'barnHeader.terminBarn' },
                 {
                     barnTekst,
-                    termindato: formatDate(familiehendelsedato),
+                    termindato: familiehendelsedato,
                 },
             ),
             undertittel: '',
@@ -312,7 +310,7 @@ const getTittelBarnNårNavnSkalIkkeVises = (
             tittel: intl.formatMessage(
                 { id: 'barnHeader.adoptertBarn' },
                 {
-                    adopsjonsdato: formatDate(familiehendelsedato),
+                    adopsjonsdato: familiehendelsedato,
                 },
             ),
             undertittel: '',
@@ -357,7 +355,7 @@ export const getSakTittel = (sakTittelArguments: SakTittelArguments): { tittel: 
     const { barngruppering, familiehendelsedato, antallBarn, intl, situasjon } = sakTittelArguments;
     const fornavn = barngruppering?.fornavn;
     const fødselsdatoer = barngruppering?.fødselsdatoer;
-    const familiehendelsesdatoIsoString = ISOStringToDate(familiehendelsedato);
+    const familiehendelsesdatoIsoString = familiehendelsedato;
 
     // Burde ikke skje, men håndter explicit istedenfor "!-assertion"
     if (!familiehendelsesdatoIsoString) {

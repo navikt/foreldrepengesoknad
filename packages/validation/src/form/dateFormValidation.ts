@@ -99,7 +99,7 @@ export const terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke =
 export const isLessThanOneAndHalfYearsAgo =
     (i18nText: string) =>
     (date: string): FormValidationResult =>
-        dayjs(date).isBefore(halvannetÅrSiden(new Date()), 'day') ? i18nText : null;
+        dayjs(date).isBefore(halvannetÅrSiden(dayjs()), 'day') ? i18nText : null;
 
 export const isMaxOneYearIntoTheFuture =
     (i18nText: string) =>
@@ -107,29 +107,29 @@ export const isMaxOneYearIntoTheFuture =
         dayjs(date).isAfter(ONE_YEAR_AFTER_TODAY) ? i18nText : null;
 
 export const isDateWithinRange =
-    (i18nText: string, start: Date, end: Date) =>
+    (i18nText: string, start: string, end: string) =>
     (date: string): FormValidationResult =>
-        isDateWithinRangeUtil(dayjs(date).toDate(), start, end) ? null : i18nText;
+        isDateWithinRangeUtil(dayjs(date), start, end) ? null : i18nText;
 
 export const isPeriodNotOverlappingOthers =
     (
         i18nText: string,
-        otherDateInfo: { date: Date | string; isStartDate: boolean },
-        otherPeriods: Array<{ fom: Date | string; tom: Date | string }>,
+        otherDateInfo: { date: string; isStartDate: boolean },
+        otherPeriods: Array<{ fom: string; tom: string }>,
     ) =>
     (date: string): FormValidationResult => {
         const dateRanges = otherPeriods
             .filter((u) => u.fom)
             .map((u) => ({
-                from: dayjs(u.fom).toDate(),
-                to: u.tom ? dayjs(u.tom).toDate() : TIDENES_ENDE,
+                from: u.fom,
+                to: u.tom ?? TIDENES_ENDE,
             }));
 
         const toDate = otherDateInfo.isStartDate ? date : otherDateInfo.date;
 
         const allDateRanges = dateRanges.concat({
-            from: dayjs(otherDateInfo.isStartDate ? otherDateInfo.date : date).toDate(),
-            to: toDate ? dayjs(toDate).toDate() : TIDENES_ENDE,
+            from: otherDateInfo.isStartDate ? otherDateInfo.date : date,
+            to: toDate ?? TIDENES_ENDE,
         });
 
         return isDateRangesOverlapping(allDateRanges) ? i18nText : null;

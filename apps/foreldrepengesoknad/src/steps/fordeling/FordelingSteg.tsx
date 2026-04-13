@@ -10,18 +10,16 @@ import { useStepConfig } from 'appData/useStepConfig';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { getIsDeltUttak } from 'utils/annenForelderUtils';
-import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
-import { mapAnnenPartsEksisterendeSakFromDTO } from 'utils/eksisterendeSakUtils';
+import { getTermindato } from 'utils/barnUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getNavnPåForeldre } from 'utils/personUtils';
 import { getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
 
 import { VStack } from '@navikt/ds-react';
 
-import { isFødtBarn } from '@navikt/fp-common';
-import { EksternArbeidsforholdDto_fpoversikt, FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, FpPersonopplysningerDto_fpoversikt, isFødtBarn } from '@navikt/fp-types';
 import { SkjemaRotLayout, Spinner, Step } from '@navikt/fp-ui';
-import { Uttaksdagen } from '@navikt/fp-utils';
+import { UttaksdagenString } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { FordelingForm } from './fordeling-form/FordelingForm';
@@ -44,14 +42,11 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-    const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const oppdaterBarn = notEmpty(useContextSaveData(ContextDataType.OM_BARNET));
 
     const termindato = getTermindato(barn);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const førsteUttaksdagNesteBarnsSak = barnFraNesteSak?.startdatoFørsteStønadsperiode;
     const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl);
     const navnMor = navnPåForeldre.mor;
     const navnFarMedmor = navnPåForeldre.farMedmor;
@@ -60,17 +55,10 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
     const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     const annenPartsVedtakQuery = useQuery({
         ...annenPartVedtakOptions,
-        select: (data) => {
-            return mapAnnenPartsEksisterendeSakFromDTO(
-                data ?? undefined,
-                barn,
-                erFarEllerMedmor,
-                familiehendelsesdato,
-                førsteUttaksdagNesteBarnsSak,
-            );
-        },
     });
     const eksisterendeVedtakAnnenPart = annenPartsVedtakQuery.data;
+
+    const uttaksplanAnnenPart = annenPartsVedtakQuery.data?.perioder;
 
     const kontoerOptions = useStønadsKontoerOptions();
     const valgtStønadskonto = useQuery({
@@ -92,29 +80,27 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
                   navnPåForeldre,
                   annenForelder,
                   intl,
-                  eksisterendeVedtakAnnenPart?.uttaksplan,
+                  uttaksplanAnnenPart,
               )
             : [];
     const ukerMedFellesperiode = valgtStønadskonto ? getAntallUkerFellesperiode(valgtStønadskonto) : 0;
     const dagerMedFellesperiode = ukerMedFellesperiode * 5;
-    const sisteDagAnnenForelder = getSisteUttaksdagAnnenForelder(
-        erFarEllerMedmor,
-        deltUttak,
-        eksisterendeVedtakAnnenPart?.uttaksplan,
-    );
+    const sisteDagAnnenForelder = getSisteUttaksdagAnnenForelder(erFarEllerMedmor, deltUttak, uttaksplanAnnenPart);
 
-    const førsteDagEtterAnnenForelder = sisteDagAnnenForelder ? Uttaksdagen(sisteDagAnnenForelder).neste() : undefined;
+    const førsteDagEtterAnnenForelder = sisteDagAnnenForelder
+        ? UttaksdagenString.neste(sisteDagAnnenForelder).getDato()
+        : undefined;
     const visMorsSisteDag = erFarEllerMedmor && sisteDagAnnenForelder;
 
     const saksgrunnlagsAntallBarn = getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter(
         erFarEllerMedmor,
         barn.antallBarn,
-        eksisterendeVedtakAnnenPart?.grunnlag.antallBarn,
+        eksisterendeVedtakAnnenPart?.antallBarn,
     );
     const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
         erFarEllerMedmor,
         termindato,
-        eksisterendeVedtakAnnenPart?.grunnlag.termindato,
+        eksisterendeVedtakAnnenPart?.termindato,
     );
 
     useEffect(() => {

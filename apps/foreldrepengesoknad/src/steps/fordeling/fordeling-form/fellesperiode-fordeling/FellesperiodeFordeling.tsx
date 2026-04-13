@@ -5,8 +5,8 @@ import { FordelingDager, FordelingFargekode } from 'types/FordelingOversikt';
 
 import { Alert, BodyLong, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre } from '@navikt/fp-common';
 import { RhfTextField } from '@navikt/fp-form-hooks';
+import { NavnPåForeldre } from '@navikt/fp-types';
 import { getNumberFromNumberInputValue } from '@navikt/fp-utils';
 import { isValidInteger, isValidNumberForm } from '@navikt/fp-validation';
 

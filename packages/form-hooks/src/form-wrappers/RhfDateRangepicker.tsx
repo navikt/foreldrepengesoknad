@@ -47,9 +47,9 @@ interface Props {
     labelTo?: string | ReactNode;
     validateFrom?: Array<(value: string) => ValidationReturnType>;
     validateTo?: Array<(value: string) => ValidationReturnType>;
-    minDate?: Date | Dayjs | string;
-    maxDate?: Date | Dayjs | string;
-    defaultMonth?: Date | Dayjs | string;
+    minDate?: Dayjs | string;
+    maxDate?: Dayjs | string;
+    defaultMonth?: Dayjs | string;
     disableWeekends?: boolean;
     useStrategyAbsolute?: boolean;
 }

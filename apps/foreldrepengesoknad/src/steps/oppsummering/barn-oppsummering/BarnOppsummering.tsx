@@ -2,8 +2,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { FormSummary } from '@navikt/ds-react';
 
-import { Barn, BarnType } from '@navikt/fp-common';
-import { isAdoptertBarn } from '@navikt/fp-types';
+import { BarnType } from '@navikt/fp-constants';
+import { Barn, isAdoptertBarn } from '@navikt/fp-types';
 
 import { BarnAdoptertOppsummering } from './BarnAdoptertOppsummering';
 import { BarnFødselOppsummering } from './BarnFødselOppsummering';

@@ -3,15 +3,13 @@ import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
-import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
-import { ISOStringToDate } from 'utils/dateUtils';
+import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnrString, getNavnPåForeldre } from 'utils/personUtils';
-import { skalBrukeNyUttaksplan } from 'utils/tempSystemUtils';
 
 import { Alert, Heading, Link } from '@navikt/ds-react';
 
-import { AnnenForelder, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import {
     ArbeidsforholdOppsummering,
@@ -20,7 +18,7 @@ import {
     OppsummeringPanel,
     SelvstendigNæringsdrivendeOppsummering,
 } from '@navikt/fp-steg-oppsummering';
-import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, Søkerrolle } from '@navikt/fp-types';
+import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, Søkerrolle, isUfødtBarn } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -28,10 +26,8 @@ import { AndreInntektskilderOppsummering } from './andre-inntekter-oppsummering/
 import { AnnenForelderOppsummering } from './annen-forelder-oppsummering/AnnenForelderOppsummering';
 import { BarnOppsummering } from './barn-oppsummering/BarnOppsummering';
 import { DokumentasjonOppsummering } from './dokumentasjon-oppsummering/DokumentasjonOppsummering';
-import { DokumentasjonOppsummeringNy } from './dokumentasjon-oppsummering/DokumentasjonOppsummeringNy';
 import { PeriodeMedForeldrepengerOppsummering } from './periode-med-foreldrepenger/PeriodeMedForeldrepengerOppsummering';
 import { UttaksplanOppsummering } from './uttaksplan-oppsummering/UttaksplanOppsummering';
-import { UttaksplanOppsummeringNy } from './uttaksplan-oppsummering/UttaksplanOppsummeringNy';
 
 interface Props {
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
@@ -57,8 +53,6 @@ export const OppsummeringSteg = (props: Props) => {
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER);
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-    const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
-    const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
 
     const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
 
@@ -70,11 +64,8 @@ export const OppsummeringSteg = (props: Props) => {
         eksisterendeSak,
     );
 
-    const erAnnenForelderOppgitt = isAnnenForelderOppgitt(annenForelder);
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const navnPåForeldre = getNavnPåForeldre(søkerInfo, annenForelder, søkerErFarEllerMedmor, intl);
-    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
-    const termindato = getTermindato(barn);
     const erEndringssøknadOgAnnenForelderHarRett =
         erEndringssøknad && isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
     const ekstraSamtykketekst = erEndringssøknadOgAnnenForelderHarRett
@@ -85,8 +76,6 @@ export const OppsummeringSteg = (props: Props) => {
               },
           )
         : '';
-
-    const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
 
     const visInfoboksOmFarskapsportal = skalViseInfoOmFarskapsportal(
         søkerInfo,
@@ -157,43 +146,15 @@ export const OppsummeringSteg = (props: Props) => {
                         onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.PERIODE_MED_FORELDREPENGER)}
                     />
                 )}
-                {!skalBrukeNyUttaksplan() && (
-                    <>
-                        <UttaksplanOppsummering
-                            navnPåForeldre={navnPåForeldre}
-                            annenForelder={annenForelder}
-                            erFarEllerMedmor={søkerErFarEllerMedmor}
-                            registrerteArbeidsforhold={aktiveArbeidsforhold}
-                            dekningsgrad={dekningsgrad}
-                            familiehendelsesdato={notEmpty(familiehendelsesdato)}
-                            termindato={termindato}
-                            situasjon={søkersituasjon.situasjon}
-                            erAleneOmOmsorg={erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false}
-                            antallBarn={barn.antallBarn}
-                            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTTAKSPLAN)}
-                        />
-                        <DokumentasjonOppsummering
-                            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.DOKUMENTASJON)}
-                            alleVedlegg={vedlegg}
-                            erSøkerFarEllerMedmor={erSøkerFarEllerMedmor}
-                            navnPåForeldre={navnPåForeldre}
-                            erEndringssøknad={erEndringssøknad}
-                        />
-                    </>
-                )}
-                {skalBrukeNyUttaksplan() && (
-                    <>
-                        <UttaksplanOppsummeringNy
-                            navnPåForeldre={navnPåForeldre}
-                            registrerteArbeidsforhold={aktiveArbeidsforhold}
-                            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTTAKSPLAN)}
-                        />
-                        <DokumentasjonOppsummeringNy
-                            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.DOKUMENTASJON)}
-                            navnPåForeldre={navnPåForeldre}
-                        />
-                    </>
-                )}
+                <UttaksplanOppsummering
+                    navnPåForeldre={navnPåForeldre}
+                    registrerteArbeidsforhold={aktiveArbeidsforhold}
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTTAKSPLAN)}
+                />
+                <DokumentasjonOppsummering
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.DOKUMENTASJON)}
+                    navnPåForeldre={navnPåForeldre}
+                />
                 <>
                     {visInfoboksOmFarskapsportal && (
                         <Alert variant="info">

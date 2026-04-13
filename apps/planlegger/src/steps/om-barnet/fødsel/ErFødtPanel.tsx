@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erAlenesøker as erAlene, erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 
@@ -11,7 +11,6 @@ import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { DATE_3_YEARS_AGO, ISO_DATE_REGEX } from '@navikt/fp-constants/src/dates';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
-import { HvemPlanleggerType } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { erI22SvangerskapsukeEllerSenere, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -49,7 +48,7 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
                         name="fødselsdato"
                         control={formMethods.control}
                         label={<FormattedMessage id="ErFødtPanel.Fødselsdato" values={{ antallBarn }} />}
-                        maxDate={dayjs().toDate()}
+                        maxDate={dayjs()}
                         useStrategyAbsolute
                         validate={[
                             isRequired(intl.formatMessage({ id: 'Fødselsdato.Required' })),
@@ -69,7 +68,7 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
                         name="termindato"
                         control={formMethods.control}
                         label={<FormattedMessage id="ErFødtPanel.NårVarTermin" />}
-                        maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
+                        maxDate={dayjs().add(18, 'weeks').add(3, 'days')}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'Termindato.Required' })),
                             isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),

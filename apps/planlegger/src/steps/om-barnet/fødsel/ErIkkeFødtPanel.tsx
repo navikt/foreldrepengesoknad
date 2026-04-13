@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import {
     erAlenesøker as erAlene,
     erFarDelAvSøknaden,
@@ -16,7 +16,6 @@ import { formatError } from 'utils/customErrorFormatter';
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
-import { HvemPlanleggerType } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isLessThanThreeWeeksAgo, isRequired, isValidDate } from '@navikt/fp-validation';
@@ -70,8 +69,8 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
                     name="termindato"
                     control={formMethods.control}
                     label={<FormattedMessage id="ErIkkeFødtPanel.Termin" />}
-                    minDate={dayjs().subtract(3, 'week').toDate()}
-                    maxDate={dayjs().add(1, 'year').toDate()}
+                    minDate={dayjs().subtract(3, 'week')}
+                    maxDate={dayjs().add(1, 'year')}
                     useStrategyAbsolute
                     validate={[
                         isRequired(intl.formatMessage({ id: 'Termindato.Required' })),

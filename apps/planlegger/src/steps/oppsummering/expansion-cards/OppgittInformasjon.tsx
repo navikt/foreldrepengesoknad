@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { erAlenesøker as erAlene, erFarOgFar, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
@@ -15,7 +15,7 @@ import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { HvemPlanleggerType, KontoBeregningDto, Satser } from '@navikt/fp-types';
+import { KontoBeregningDto, Satser } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 

@@ -1,12 +1,10 @@
-import { EksisterendeSak } from '@navikt/fp-common';
-
 import { Søknad } from '../types/Søknad';
 import { ContextDataType, useContextSaveAnyData } from './FpDataContext';
 
 export const useSetSøknadsdata = () => {
     const oppdaterData = useContextSaveAnyData();
 
-    const oppdaterSøknadIState = (søknad: Partial<Søknad>, eksisterendeSak?: EksisterendeSak) => {
+    const oppdaterSøknadIState = (søknad: Partial<Søknad>) => {
         oppdaterData(ContextDataType.SØKERSITUASJON, søknad.søkersituasjon);
         oppdaterData(ContextDataType.OM_BARNET, søknad.barn);
         oppdaterData(ContextDataType.ANNEN_FORELDER, søknad.annenForelder);
@@ -18,17 +16,7 @@ export const useSetSøknadsdata = () => {
         oppdaterData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE, søknad.utenlandsoppholdSiste12Mnd);
         oppdaterData(ContextDataType.UTENLANDSOPPHOLD_SENERE, søknad.utenlandsoppholdNeste12Mnd);
         oppdaterData(ContextDataType.PERIODE_MED_FORELDREPENGER, søknad.dekningsgrad);
-        oppdaterData(ContextDataType.UTTAKSPLAN, søknad.uttaksplan);
-        oppdaterData(ContextDataType.UTTAKSPLAN_METADATA_NY, {
-            ønskerJustertUttakVedFødsel: søknad.ønskerJustertUttakVedFødsel,
-        });
-        oppdaterData(ContextDataType.UTTAKSPLAN_METADATA, {
-            ønskerJustertUttakVedFødsel: søknad.ønskerJustertUttakVedFødsel,
-        });
-
-        if (eksisterendeSak) {
-            oppdaterData(ContextDataType.EKSISTERENDE_SAK, eksisterendeSak);
-        }
+        oppdaterData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL, søknad.ønskerJustertUttakVedFødsel);
     };
 
     return { oppdaterSøknadIState };

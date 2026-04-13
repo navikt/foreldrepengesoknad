@@ -62,7 +62,7 @@ export const erUttaksdag = (dato: string): boolean => {
     return getUkedag(dato) !== 6 && getUkedag(dato) !== 7;
 };
 
-const getUkedag = (dato: Date | string): number => {
+const getUkedag = (dato: string): number => {
     return dayjs(dato).isoWeekday();
 };
 

@@ -1,13 +1,12 @@
 import { StethoscopeIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
-import { HvemPlanleggerType } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 interface Props {

@@ -2,13 +2,12 @@ import { PersonPregnantIcon } from '@navikt/aksel-icons';
 import { ReactNode } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erFarDelAvSøknaden, erFarOgFar, erMorDelAvSøknaden, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 import { harKunFarSøker1Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { HvemPlanleggerType } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 interface Props {
