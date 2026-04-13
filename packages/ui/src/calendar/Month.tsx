@@ -72,7 +72,8 @@ export const Month = React.memo(
             }
 
             return hoveredDays;
-        }, [pendingFom, hoverDate, year, month]);
+        }, [pendingFom, hoverDate, firstDayOfMonth]);
+
         const daysInMonth = firstDayOfMonth.daysInMonth();
         const startWeekDay = firstDayOfMonth.isoWeekday();
         const endWeekDay = firstDayOfMonth.endOf('month').isoWeekday();
