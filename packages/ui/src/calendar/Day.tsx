@@ -39,11 +39,13 @@ type Props = {
     isFocused: boolean;
     srText?: string;
     isUpdated?: boolean;
+    isHoverPreview?: boolean;
     Icon?: ReactElement;
     iconFull?: boolean;
     shape: DayShape;
     dateTooltipCallback?: (date: string) => React.ReactNode | string;
     dateClickCallback?: (date: string) => void;
+    onDateHover?: (date: string | undefined) => void;
     setFocusedDate: (date: Dayjs) => void;
 };
 
@@ -54,11 +56,13 @@ export const Day = React.memo(
         isFocused,
         srText,
         isUpdated,
+        isHoverPreview,
         Icon,
         iconFull,
         shape,
         dateTooltipCallback,
         dateClickCallback,
+        onDateHover,
         setFocusedDate,
     }: Props) => {
         const date = dayjs(isoDate);
@@ -82,6 +86,10 @@ export const Day = React.memo(
         );
 
         const isClickable = !!dateClickCallback && !isWeekend(date);
+        const colorClass =
+            isHoverPreview && !isWeekend(date) && periodeColor !== 'DARKBLUE'
+                ? styles.hoverPreviewDay
+                : DAY_STYLE[periodeColor];
 
         return (
             <button
@@ -89,9 +97,10 @@ export const Day = React.memo(
                 type="button"
                 data-testid={`day:${day};dayColor:${periodeColor}${Icon ? `;with-icon` : ''}`}
                 tabIndex={isFocused ? 0 : -1}
-                className={`${styles.days} ${DAY_STYLE[periodeColor]} ${isClickable && styles.cursorAndHoover} ${isUpdated && styles.fadeIn} 
+                className={`${styles.days} ${colorClass} ${isClickable && styles.cursorAndHoover} ${isUpdated && styles.fadeIn} 
                 ${shape === 'rounded-left' && styles.roundedLeft} ${shape === 'rounded-right' && styles.roundedRight}`}
                 onFocus={isClickable ? () => setFocusedDate(date) : undefined}
+                onMouseEnter={onDateHover && isClickable ? () => onDateHover(isoDate) : undefined}
                 onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
                 onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
                 onClick={isClickable ? () => dateClickCallback(isoDate) : undefined}

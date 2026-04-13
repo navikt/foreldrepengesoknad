@@ -21,8 +21,11 @@ interface Props {
     showWeekNumbers: boolean;
     periods: CalendarPeriod[];
     focusedDate: Dayjs | undefined;
+    pendingFom: string | undefined;
+    hoverDate: string | undefined;
     dateTooltipCallback?: (date: string) => React.ReactElement | string;
     dateClickCallback?: (date: string) => void;
+    onDateHover?: (date: string | undefined) => void;
     setFocusedDate: (date: Dayjs) => void;
 }
 
@@ -34,8 +37,11 @@ export const Month = React.memo(
         showWeekNumbers,
         periods,
         focusedDate,
+        pendingFom,
+        hoverDate,
         dateTooltipCallback,
         dateClickCallback,
+        onDateHover,
         setFocusedDate,
     }: Props) => {
         logOnLocalhost(`Rendering Month: ${month}-${year}`);
@@ -43,6 +49,31 @@ export const Month = React.memo(
         const periodMap = useMemo(() => buildPeriodMap(periods), [periods]);
 
         const firstDayOfMonth = dayjs().year(year).month(month).startOf('month');
+
+        const hoverPreviewSet = useMemo(() => {
+            const hoveredDays = new Set<string>();
+            if (!pendingFom || !hoverDate) {
+                return hoveredDays;
+            }
+
+            const fom = dayjs(pendingFom).isBefore(hoverDate) ? pendingFom : hoverDate;
+            const tom = dayjs(pendingFom).isBefore(hoverDate) ? hoverDate : pendingFom;
+
+            const lastDayOfMonth = firstDayOfMonth.endOf('month');
+
+            let current = dayjs(fom).isBefore(firstDayOfMonth) ? firstDayOfMonth : dayjs(fom);
+            const end = dayjs(tom).isAfter(lastDayOfMonth) ? lastDayOfMonth : dayjs(tom);
+
+            while (!current.isAfter(end)) {
+                if (!isWeekend(current)) {
+                    hoveredDays.add(current.format(ISO_DATE_FORMAT));
+                }
+                current = current.add(1, 'day');
+            }
+
+            return hoveredDays;
+        }, [pendingFom, hoverDate, firstDayOfMonth]);
+
         const daysInMonth = firstDayOfMonth.daysInMonth();
         const startWeekDay = firstDayOfMonth.isoWeekday();
         const endWeekDay = firstDayOfMonth.endOf('month').isoWeekday();
@@ -106,11 +137,13 @@ export const Month = React.memo(
                                                 periodeColor={findDayColor(date, period)}
                                                 srText={period?.srText}
                                                 isUpdated={period?.isUpdated}
+                                                isHoverPreview={hoverPreviewSet.has(formatDateIso(date))}
                                                 Icon={period?.icon}
                                                 iconFull={period?.iconFull}
-                                                shape={getDayShape(date, periodMap)}
+                                                shape={getDayShape(date, periodMap, hoverPreviewSet)}
                                                 dateTooltipCallback={dateTooltipCallback}
                                                 dateClickCallback={dateClickCallback}
+                                                onDateHover={onDateHover}
                                                 isFocused={
                                                     focusedDate?.isSame(date, 'day') ??
                                                     (isFirstMonth && cellIndex === startWeekDay - 1) ??
@@ -154,23 +187,32 @@ export const Month = React.memo(
     },
 );
 
-const getDayShape = (date: dayjs.Dayjs, periodMap: Map<string, CalendarPeriod>): DayShape => {
+const getDayShape = (
+    date: dayjs.Dayjs,
+    periodMap: Map<string, CalendarPeriod>,
+    hoverPreviewSet: Set<string>,
+): DayShape => {
     const key = date.format(ISO_DATE_FORMAT);
-    if (!periodMap.get(key)?.isSelected) {
+    const isInPreview = hoverPreviewSet.has(key);
+    const isInSelectedPeriod = periodMap.get(key)?.isSelected;
+
+    if (!isInSelectedPeriod && !isInPreview) {
         return 'square';
     }
 
-    const prevSelected = periodMap.get(getPreviousWeekday(date).format(ISO_DATE_FORMAT))?.isSelected;
+    const prevKey = getPreviousWeekday(date).format(ISO_DATE_FORMAT);
+    const nextKey = getNextWeekday(date).format(ISO_DATE_FORMAT);
 
-    const nextSelected = periodMap.get(getNextWeekday(date).format(ISO_DATE_FORMAT))?.isSelected;
+    const prevActive = isInPreview ? hoverPreviewSet.has(prevKey) : periodMap.get(prevKey)?.isSelected;
+    const nextActive = isInPreview ? hoverPreviewSet.has(nextKey) : periodMap.get(nextKey)?.isSelected;
 
-    if (!prevSelected && !nextSelected) {
+    if (!prevActive && !nextActive) {
         return 'square';
     }
-    if (!prevSelected) {
+    if (!prevActive) {
         return 'rounded-left';
     }
-    if (!nextSelected) {
+    if (!nextActive) {
         return 'rounded-right';
     }
 
