@@ -1,11 +1,15 @@
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
-import { NavnPåForeldre } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import {
+    Attachment,
+    NavnPåForeldre,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
-import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan-ny';
+import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan';
 
 import { UttakUploaderNy } from '../attachment-uploaders/UttakUploaderNy';
 

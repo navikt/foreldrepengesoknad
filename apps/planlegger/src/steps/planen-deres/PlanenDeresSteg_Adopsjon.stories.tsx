@@ -7,10 +7,9 @@ import { action } from 'storybook/actions';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 
-import { HvemPlanleggerType } from '@navikt/fp-types';
 import {
     DELT_UTTAK_80_ADOPSJON,
     DELT_UTTAK_100_ADOPSJON,

@@ -6,12 +6,12 @@ import { MemoryRouter } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { HvorMye } from 'types/HvorMye';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { HvemPlanleggerType, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import {
     ALENE_OM_OMSORG_80_FARMEDMOR,
     ALENE_OM_OMSORG_100_FARMEDMOR,

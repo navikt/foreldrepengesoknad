@@ -7,10 +7,11 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
+import { AnnenForelder } from 'types/AnnenForelder';
 
-import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { BarnType, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
+    Barn,
     Dekningsgrad,
     EksternArbeidsforholdDto_fpoversikt,
     FpPersonopplysningerDto_fpoversikt,

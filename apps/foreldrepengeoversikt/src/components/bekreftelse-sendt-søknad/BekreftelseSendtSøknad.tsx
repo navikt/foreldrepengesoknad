@@ -377,5 +377,5 @@ const useGetTidligstMuligeSvar = () => {
         return undefined;
     }
 
-    return getTidligstDatoForInntektsmelding(getFørsteUttaksdagIForeldrepengesaken(sak)?.toISOString());
+    return getTidligstDatoForInntektsmelding(getFørsteUttaksdagIForeldrepengesaken(sak));
 };

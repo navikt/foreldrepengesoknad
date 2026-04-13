@@ -13,12 +13,7 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { Uttaksperioden, useMedia } from '@navikt/fp-utils';
-import {
-    KvoteOppsummering,
-    UttaksplanDataProvider,
-    UttaksplanKalender,
-    UttaksplanListe,
-} from '@navikt/fp-uttaksplan-ny';
+import { KvoteOppsummering, UttaksplanDataProvider, UttaksplanKalender, UttaksplanListe } from '@navikt/fp-uttaksplan';
 
 import { hentUttaksKontoOptions } from '../../api/queries';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';

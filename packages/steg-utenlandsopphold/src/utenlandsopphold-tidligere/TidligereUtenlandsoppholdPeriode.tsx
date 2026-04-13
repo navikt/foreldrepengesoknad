@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Button, VStack } from '@navikt/ds-react';
 
-import { DATE_1_YEAR_AGO, DATE_TODAY } from '@navikt/fp-constants';
+import { DATE_1_YEAR_AGO, DATE_TODAY, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfSelect } from '@navikt/fp-form-hooks';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { createCountryOptions, formatDate, isDateAAfterDateB } from '@navikt/fp-utils';
@@ -38,14 +38,14 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
     const fom = watch(`utenlandsoppholdSiste12Mnd.${index}.fom`);
     const tom = watch(`utenlandsoppholdSiste12Mnd.${index}.tom`);
 
-    const minDateFom = dayjs(DATE_1_YEAR_AGO).toDate();
-    const maxDateFom = tom ? dayjs(tom).subtract(1, 'days').toDate() : dayjs(DATE_TODAY).toDate();
+    const minDateFom = DATE_1_YEAR_AGO;
+    const maxDateFom = tom ? dayjs(tom).subtract(1, 'days').format(ISO_DATE_FORMAT) : DATE_TODAY;
 
     const minDateTom =
         fom && isDateAAfterDateB(fom, DATE_1_YEAR_AGO)
-            ? dayjs(fom).add(1, 'days').toDate()
-            : dayjs(DATE_1_YEAR_AGO).toDate();
-    const maxDateTom = dayjs(DATE_TODAY).toDate();
+            ? dayjs(fom).add(1, 'days').format(ISO_DATE_FORMAT)
+            : DATE_1_YEAR_AGO;
+    const maxDateTom = DATE_TODAY;
 
     return (
         <VStack gap="space-20" align="start">
@@ -105,7 +105,7 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
                     ),
                 ]}
                 onChange={() => isSubmitted && void trigger()}
-                defaultMonth={tom ? dayjs(tom).toDate() : undefined}
+                defaultMonth={tom}
             />
             <RhfDatepicker
                 name={`utenlandsoppholdSiste12Mnd.${index}.tom`}

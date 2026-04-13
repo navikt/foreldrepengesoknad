@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import {
     erAlenesøker,
     erFarDelAvSøknaden,
@@ -20,7 +20,7 @@ import { UttakUkerOgDager, Uttaksdata, getFamiliehendelsedato } from 'utils/utta
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { Dekningsgrad, HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
+import { Dekningsgrad, KontoBeregningDto } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 
 interface Props {

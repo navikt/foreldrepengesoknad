@@ -49,7 +49,7 @@ export const AdopsjonPanel = ({ kjønn }: Props) => {
                         ? intl.formatMessage({ id: 'AdopsjonPanel.Spørsmål.Stebarnsadopsjondato' })
                         : intl.formatMessage({ id: 'AdopsjonPanel.Spørsmål.Overtaomsorgdato' })
                 }
-                minDate={dayjs().subtract(6, 'month').toDate()}
+                minDate={dayjs().subtract(6, 'month')}
                 validate={[
                     isRequired(
                         adopsjonAvEktefellesBarn

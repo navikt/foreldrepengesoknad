@@ -93,8 +93,8 @@ describe('<Forside>', () => {
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(18);
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(18, {
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(14);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(14, {
             data: SøknadRoutes.UTTAKSPLAN,
             key: ContextDataType.APP_ROUTE,
             type: 'update',

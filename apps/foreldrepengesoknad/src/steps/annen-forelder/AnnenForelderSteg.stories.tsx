@@ -7,9 +7,10 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { annenPartVedtak, avslåttAnnenPartVedtak } from 'storybookData/annenPartVedtak';
+import { AnnenForelder } from 'types/AnnenForelder';
 
-import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
-import { FpBarnDto_fpoversikt, FpPersonopplysningerDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
+import { BarnType } from '@navikt/fp-constants';
+import { Barn, FpBarnDto_fpoversikt, FpPersonopplysningerDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { AnnenForelderSteg } from './AnnenForelderSteg';

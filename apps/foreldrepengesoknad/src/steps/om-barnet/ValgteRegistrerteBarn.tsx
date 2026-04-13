@@ -80,8 +80,8 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
                     }
                     label={intl.formatMessage({ id: 'omBarnet.termindato.født' })}
                     defaultMonth={fødselsdato}
-                    minDate={dayjs(fødselsdato).subtract(1, 'months').toDate()}
-                    maxDate={dayjs(fødselsdato).add(6, 'months').toDate()}
+                    minDate={dayjs(fødselsdato).subtract(1, 'months')}
+                    maxDate={dayjs(fødselsdato).add(6, 'months')}
                     validate={[
                         isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.duMåOppgi' })),
                         isValidDate(

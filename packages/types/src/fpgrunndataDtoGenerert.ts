@@ -37,7 +37,6 @@ export type KontoBeregningResultatDto = {
 export type KontoBeregningGrunnlagDto = {
     antallBarn: number;
     brukerrolle: no_nav_foreldrepenger_stønadskonto_regelmodell_grunnlag_Brukerrolle;
-    familieHendelseDatoNesteSak?: string;
     fødselsdato?: string;
     morHarUføretrygd?: boolean;
     omsorgsovertakelseDato?: string;

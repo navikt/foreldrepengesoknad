@@ -5,11 +5,10 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { HvorMye } from 'types/HvorMye';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { HvorMyeSteg } from './HvorMyeSteg';
 

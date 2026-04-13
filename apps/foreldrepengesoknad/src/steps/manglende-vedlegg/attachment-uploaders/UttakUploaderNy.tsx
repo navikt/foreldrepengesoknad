@@ -9,10 +9,14 @@ import { addMetadata, lagSendSenereDokument } from 'utils/vedleggUtils';
 
 import { BodyLong } from '@navikt/ds-react';
 
-import { NavnPåForeldre } from '@navikt/fp-common';
 import { AttachmentType } from '@navikt/fp-constants';
 import { FileUploader } from '@navikt/fp-filopplaster';
-import { Attachment, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import {
+    Attachment,
+    NavnPåForeldre,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 

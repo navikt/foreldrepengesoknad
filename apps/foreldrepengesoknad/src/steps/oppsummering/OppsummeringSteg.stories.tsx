@@ -10,12 +10,13 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak';
 import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
+import { AnnenForelder } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
-import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, BarnType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import {
     ArbeidsforholdOgInntektFp,
+    Barn,
     EksternArbeidsforholdDto_fpoversikt,
     FpPersonopplysningerDto_fpoversikt,
     Frilans,
@@ -293,20 +294,13 @@ const meta = {
                             [ContextDataType.ANDRE_INNTEKTSKILDER]: andreInntekter,
                             [ContextDataType.ANNEN_FORELDER]: annenForelder,
                             [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                            [ContextDataType.UTTAKSPLAN_METADATA]: {
-                                ønskerJustertUttakVedFødsel: false,
-                                harUttaksplanBlittSlettet: false,
-                                antallUkerIUttaksplan: 1,
-                            },
-                            [ContextDataType.UTTAKSPLAN_METADATA_NY]: {
-                                ønskerJustertUttakVedFødsel: false,
-                            },
+                            [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]: false,
                             [ContextDataType.OM_BARNET]: barn,
                             [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
                             [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100',
-                            [ContextDataType.UTTAKSPLAN_NY]: uttaksplan,
+                            [ContextDataType.UTTAKSPLAN]: uttaksplan,
                             [ContextDataType.VEDLEGG]: vedlegg,
                         }}
                     >
@@ -1080,20 +1074,13 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
                             [ContextDataType.ANDRE_INNTEKTSKILDER]: args.andreInntekter,
                             [ContextDataType.ANNEN_FORELDER]: args.annenForelder,
                             [ContextDataType.SØKERSITUASJON]: args.søkersituasjon,
-                            [ContextDataType.UTTAKSPLAN_METADATA]: {
-                                ønskerJustertUttakVedFødsel: false,
-                                harUttaksplanBlittSlettet: false,
-                                antallUkerIUttaksplan: 1,
-                            },
-                            [ContextDataType.UTTAKSPLAN_METADATA_NY]: {
-                                ønskerJustertUttakVedFødsel: false,
-                            },
+                            [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]: false,
                             [ContextDataType.OM_BARNET]: args.barn || defaultBarn,
                             [ContextDataType.UTENLANDSOPPHOLD]: args.utenlandsopphold || defaultUtenlandsopphold,
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: args.utenlandsoppholdSenere,
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: args.utenlandsoppholdTidligere,
                             [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100',
-                            [ContextDataType.UTTAKSPLAN_NY]: uttaksplanMedSamtidigUttak, // Bruk den nye uttaksplanen
+                            [ContextDataType.UTTAKSPLAN]: uttaksplanMedSamtidigUttak,
                             [ContextDataType.VEDLEGG]: args.vedlegg,
                         }}
                     >

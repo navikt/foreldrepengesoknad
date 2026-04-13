@@ -23,7 +23,7 @@ dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(utc);
 
-type DateTypes = string | Date | dayjs.Dayjs;
+type DateTypes = string | dayjs.Dayjs;
 type Period = { from: DateTypes; to: DateTypes };
 
 /** --- Formater til string --- */
@@ -33,9 +33,10 @@ export const formatDateShortYear = (date: DateTypes): string => dayjs(date).form
 export const formatDateExtended = (date: DateTypes): string => dayjs(date).format(DDMMMMYYY_DATE_FORMAT);
 export const formatDateShortMonth = (date: DateTypes): string => dayjs(date).format(DDMMM_DATE_FORMAT);
 export const formatTime = (date: DateTypes): string => dayjs(date).format(TIME_FORMAT);
-export const formatDateMedUkedag = (date: Date | string) => dayjs(date).format(WEEKDAY_DDMMMMYYYY_DATE_FORMAT);
-export const formatDateMedUkedagShortMonth = (date: Date | string) => dayjs(date).format(WEEKDAY_DDMMYY_DATE_FORMAT);
-export const formaterDatoUtenDag = (dato: string | Date): string => dayjs(dato).format(DAY_MONTHNAME_YEAR_FORMAT);
+export const formatDateMedUkedag = (date: DateTypes): string => dayjs(date).format(WEEKDAY_DDMMMMYYYY_DATE_FORMAT);
+export const formatDateMedUkedagShortMonth = (date: DateTypes): string =>
+    dayjs(date).format(WEEKDAY_DDMMYY_DATE_FORMAT);
+export const formaterDatoUtenDag = (dato: DateTypes): string => dayjs(dato).format(DAY_MONTHNAME_YEAR_FORMAT);
 
 /** --- Finn dato relativt til gitt dato --- */
 export const dagenFør = (dato: DateTypes): Dayjs => dayjs(dato).startOf('day');
@@ -103,7 +104,7 @@ export const ISOStringToDate = (dateString: string | undefined) => {
 
 const isoStringFormat = 'YYYY-MM-DD';
 
-export const dateToISOString = (date?: Date) => (date ? dayjs(date).format(isoStringFormat) : '');
+export const dateToISOString = (date?: DateTypes) => (date ? dayjs(date).format(isoStringFormat) : '');
 
 export const erMyndig = (fødselsdato: DateTypes): boolean => {
     const now = dayjs.utc();
@@ -111,7 +112,7 @@ export const erMyndig = (fødselsdato: DateTypes): boolean => {
     return now.diff(momentDate, 'years') >= 18;
 };
 
-export const dateIsSameOrBefore = (date: Date | undefined, otherDate: Date | undefined): boolean => {
+export const dateIsSameOrBefore = (date: DateTypes | undefined, otherDate: DateTypes | undefined): boolean => {
     if (date && otherDate) {
         return dayjs(date).isSameOrBefore(otherDate, 'day');
     }
@@ -137,12 +138,4 @@ export const dateStringIsSameOrAfter = (date: string | undefined, otherDate: str
         return dayjs(date).isSameOrAfter(otherDate, 'day');
     }
     return false;
-};
-
-export const convertStringOrDateToDate = (date: Date | string): Date => {
-    if (typeof date === 'string') {
-        return new Date(date);
-    }
-
-    return date;
 };

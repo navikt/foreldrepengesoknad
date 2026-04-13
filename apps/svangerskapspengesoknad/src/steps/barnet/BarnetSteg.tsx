@@ -35,7 +35,7 @@ import {
 } from '@navikt/fp-validation';
 
 const getMinDatoTermin = (erBarnetFødt: boolean, fødselsdato?: string): Dayjs =>
-    erBarnetFødt && fødselsdato && isStringADate(fødselsdato) ? enMånedSiden(fødselsdato) : enMånedSiden(new Date());
+    erBarnetFødt && fødselsdato && isStringADate(fødselsdato) ? enMånedSiden(fødselsdato) : enMånedSiden(dayjs());
 
 const validerTermindato = (intl: IntlShape, fødselsdato?: string) => (termindato: string) => {
     if (fødselsdato && !dayjs(termindato).subtract(6, 'months').isSameOrBefore(dayjs(fødselsdato), 'day')) {
@@ -147,8 +147,8 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
                                         }),
                                     ),
                                 ]}
-                                minDate={halvannetÅrSiden(new Date())}
-                                maxDate={dayjs().toDate()}
+                                minDate={halvannetÅrSiden(dayjs())}
+                                maxDate={dayjs()}
                                 onChange={() => void (formMethods.formState.isSubmitted && formMethods.trigger())}
                             />
                         )}
@@ -158,7 +158,7 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
                                 control={formMethods.control}
                                 label={intl.formatMessage({ id: 'barnet.termindato' })}
                                 minDate={minDatoTermin}
-                                maxDate={niMånederFremITid(new Date())}
+                                maxDate={niMånederFremITid(dayjs())}
                                 useStrategyAbsolute
                                 validate={[
                                     isRequired(
@@ -173,7 +173,7 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
                                         intl.formatMessage({
                                             id: 'valideringsfeil.barnet.termindato.forLangtFremITid',
                                         }),
-                                        niMånederFremITid(new Date()),
+                                        niMånederFremITid(dayjs()),
                                     ),
                                     (termindato) =>
                                         !fødselsdato
@@ -181,14 +181,14 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
                                                   intl.formatMessage({
                                                       id: 'valideringsfeil.barnet.termindato.vennligstOppgiBarnetsFødselsDato',
                                                   }),
-                                                  enMånedSiden(new Date()),
+                                                  enMånedSiden(dayjs()),
                                               )(termindato)
                                             : null,
                                     isAfterOrSame(
                                         intl.formatMessage({
                                             id: 'valideringsfeil.barnet.termindato.forLangtTilbakeITid',
                                         }),
-                                        etÅrSiden(new Date()),
+                                        etÅrSiden(dayjs()),
                                     ),
                                     validerTermindato(intl, fødselsdato),
                                 ]}

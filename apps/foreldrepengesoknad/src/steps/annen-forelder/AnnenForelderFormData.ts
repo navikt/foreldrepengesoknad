@@ -1,4 +1,4 @@
-import { AnnenForelder, AnnenForelderOppgitt } from '@navikt/fp-common';
+import { AnnenForelder, AnnenForelderOppgitt } from 'types/AnnenForelder';
 
 export type AnnenForelderFormData = Partial<AnnenForelder>;
 

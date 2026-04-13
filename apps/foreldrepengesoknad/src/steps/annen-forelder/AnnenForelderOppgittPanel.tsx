@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions } from 'api/queries';
-import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
@@ -8,10 +7,9 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { Alert, BodyLong, BodyShort, Box, Link, List, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { Barn } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { Søkerrolle } from '@navikt/fp-types';
+import { Barn, Søkerrolle } from '@navikt/fp-types';
 import { isAfterOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { AnnenForelderFormData, isAnnenForelderOppgittFormData } from './AnnenForelderFormData';
@@ -82,7 +80,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                     name="datoForAleneomsorg"
                     control={formMethods.control}
                     label={intl.formatMessage({ id: 'annenForelder.datoForAleneomsorg' })}
-                    minDate={dayjs(familiehendelsedato).toDate()}
+                    minDate={familiehendelsedato}
                     validate={[
                         isRequired(
                             intl.formatMessage({

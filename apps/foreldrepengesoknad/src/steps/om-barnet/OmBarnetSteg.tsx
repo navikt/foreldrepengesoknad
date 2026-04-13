@@ -17,9 +17,16 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { VStack } from '@navikt/ds-react';
 
-import { Barn, Situasjon, Søkerrolle, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { FpBarnDto_fpoversikt, FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+import {
+    Barn,
+    FpBarnDto_fpoversikt,
+    FpPersonopplysningerDto_fpoversikt,
+    Situasjon,
+    Søkerrolle,
+    isFødtBarn,
+    isUfødtBarn,
+} from '@navikt/fp-types';
 import { SkjemaRotLayout, Spinner, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -29,9 +36,9 @@ import { AdopsjonPanel } from './adopsjon/AdopsjonPanel';
 import { FødselPanel } from './fødsel/FødselPanel';
 import { getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetContextFormMapping';
 
-const erDatoInnenforDeSiste12Ukene = (dato: string | Date) => {
+const erDatoInnenforDeSiste12Ukene = (dato: string) => {
     const twelveWeeksAfterBirthday = dayjs(dato).add(12, 'weeks');
-    return dayjs(twelveWeeksAfterBirthday).isAfter(new Date(), 'day');
+    return dayjs(twelveWeeksAfterBirthday).isAfter(dayjs(), 'day');
 };
 
 const findBarnetIRegistrerteBarn = (regBarn: FpBarnDto_fpoversikt, barnet: Barn) => {

@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import React, { ReactNode } from 'react';
 import { FormattedMessage, IntlShape } from 'react-intl';
+import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { DelInformasjon, FordelingEier, FordelingFargekode } from 'types/FordelingOversikt';
 import { getErAleneOmOmsorg, getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
@@ -17,21 +18,22 @@ import {
 
 import { Link } from '@navikt/ds-react';
 
-import {
-    AnnenForelder,
-    Barn,
-    NavnPåForeldre,
-    Periode,
-    isAdoptertBarn,
-    isAnnenForelderOppgitt,
-    isFødtBarn,
-    isInfoPeriode,
-    isUfødtBarn,
-} from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
-import { KontoBeregningDto, Minsteretter, SøkersituasjonFp } from '@navikt/fp-types';
-import { Uttaksdagen, capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
-import { getBrukteDager, uttaksConstants } from '@navikt/fp-uttaksplan';
+import {
+    Barn,
+    KontoBeregningDto,
+    Minsteretter,
+    NavnPåForeldre,
+    SøkersituasjonFp,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+    isAdoptertBarn,
+    isFødtBarn,
+    isUfødtBarn,
+} from '@navikt/fp-types';
+import { UttaksdagenString, Uttaksperioden, capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
+
+import { getBrukteDager } from './brukteDagerUtils';
 
 export const getHarFåttEllerSkalFå = (barn: Barn, intl: IntlShape) => {
     if (isFødtBarn(barn)) {
@@ -93,7 +95,7 @@ export const getFordelingDelTittel = (
     let varighetTekst = '';
     const navnAnnenForelder = erFarEllerMedmor ? navnMor : navnFarMedmor;
     if (delInfo.eier === FordelingEier.Mor && erFødsel) {
-        const dagerFørFødsel = uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5;
+        const dagerFørFødsel = 15;
         const dagerEtterFødsel = delInfo.sumDager - dagerFørFødsel;
         let varighetUkerEtterFødsel = undefined;
         if (dagerEtterFødsel % 5 === 0) {
@@ -263,7 +265,7 @@ const getFellesInfoTekst = (
 };
 
 const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
-    uttaksplanAnnenPart: Periode[] | undefined,
+    uttaksplanAnnenPart: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
     kontoer: KontoBeregningDto,
     erFarEllerMedmor: boolean,
     familiehendelsesdato: string,
@@ -272,30 +274,21 @@ const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
         return 0;
     }
     if (erFarEllerMedmor) {
-        return getBrukteDager(kontoer, uttaksplanAnnenPart, dayjs(familiehendelsesdato).toDate()).mor
-            .dagerAnnenForeldersKvote;
+        return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato).farMedmor.dagerEgneKvoter;
     } else {
-        return getBrukteDager(kontoer, uttaksplanAnnenPart, dayjs(familiehendelsesdato).toDate()).farMedmor
-            .dagerAnnenForeldersKvote;
+        return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato).mor.dagerEgneKvoter;
     }
 };
 
 const getAntallDagerFellesperiodeBruktAvAnnenPart = (
-    uttaksplanAnnenPart: Periode[] | undefined,
+    uttaksplanAnnenPart: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
     kontoer: KontoBeregningDto,
-    erFarEllerMedmor: boolean,
     familiehendelsesdato: string,
 ): number => {
     if (uttaksplanAnnenPart === undefined || uttaksplanAnnenPart.length === 0) {
         return 0;
     }
-    if (erFarEllerMedmor) {
-        return getBrukteDager(kontoer, uttaksplanAnnenPart, dayjs(familiehendelsesdato).toDate()).mor
-            .dagerFellesperiode;
-    } else {
-        return getBrukteDager(kontoer, uttaksplanAnnenPart, dayjs(familiehendelsesdato).toDate()).farMedmor
-            .dagerFellesperiode;
-    }
+    return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato).mor.dagerFellesperiode;
 };
 
 const getFordelingFelles = (
@@ -521,7 +514,7 @@ const getFordelingMor = (
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const antallBarn = barn.antallBarn;
     const antallDagerMor = dagerMødrekvote + dagerFørFødsel;
-    const dagerRettEtterFødsel = erAdopsjon ? 0 : uttaksConstants.ANTALL_UKER_MØDREKVOTE_ETTER_FØDSEL * 5;
+    const dagerRettEtterFødsel = erAdopsjon ? 0 : 30;
     const resterendeDagerMor = dagerMorsKvoteBruktAvFar
         ? dagerMødrekvote - dagerRettEtterFødsel - dagerMorsKvoteBruktAvFar
         : dagerMødrekvote - dagerRettEtterFødsel;
@@ -784,7 +777,7 @@ export const getFordelingFraKontoer = (
     navnPåForeldre: NavnPåForeldre,
     annenForelder: AnnenForelder,
     intl: IntlShape,
-    uttaksplanAnnenPart?: Periode[],
+    uttaksplanAnnenPart?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
 ): DelInformasjon[] => {
     const navnMor = navnPåForeldre.mor;
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
@@ -800,7 +793,6 @@ export const getFordelingFraKontoer = (
     const dagerFellesperiodeBruktAvAnnenPart = getAntallDagerFellesperiodeBruktAvAnnenPart(
         uttaksplanAnnenPart,
         kontoer,
-        erFarEllerMedmor,
         familiehendelsesdato,
     );
     const erMor = !erFarEllerMedmor;
@@ -893,7 +885,7 @@ export const getBeggeHarRettGrafFordeling = (
     intl: IntlShape,
 ) => {
     const fordelingFørFødsel = {
-        antallDager: uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5,
+        antallDager: 15,
         konto: 'FORELDREPENGER_FØR_FØDSEL',
         eier: FordelingEier.Mor,
         fargekode: erFarEllerMedmor ? FordelingFargekode.ANNEN_PART_MOR : FordelingFargekode.SØKER_MOR,
@@ -929,20 +921,20 @@ export const getBeggeHarRettGrafFordeling = (
 export const getSisteUttaksdagAnnenForelder = (
     erFarEllerMedmor: boolean,
     deltUttak: boolean,
-    perioderAnnenPart: Periode[] | undefined,
-): Date | undefined => {
+    perioderAnnenPart: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
+): string | undefined => {
     if (!deltUttak || !perioderAnnenPart || perioderAnnenPart.length === 0) {
         return undefined;
     }
     const annenPartForelder = erFarEllerMedmor ? 'MOR' : 'FAR_MEDMOR';
     const annenForeldersFiltrertePerioder = perioderAnnenPart.filter(
-        (p) => isInfoPeriode(p) && p.forelder === annenPartForelder,
+        (p) => Uttaksperioden.erEøsPeriode(p) || p.forelder === annenPartForelder,
     );
 
     const sistePeriodeAnnenForelder = annenForeldersFiltrertePerioder.at(-1);
     const sisteDagAnnenForelder =
         annenForeldersFiltrertePerioder && sistePeriodeAnnenForelder
-            ? Uttaksdagen(sistePeriodeAnnenForelder.tidsperiode.tom).denneEllerForrige()
+            ? UttaksdagenString.denneEllerForrige(sistePeriodeAnnenForelder.tom).getDato()
             : undefined;
     return sisteDagAnnenForelder;
 };

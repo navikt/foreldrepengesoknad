@@ -1,4 +1,4 @@
-import { FamiliehendelseType } from '@navikt/fp-common';
+import { FamiliehendelseType } from 'types/FamiliehendelseType';
 
 import { getFamiliehendelseType } from './familiehendelseUtils';
 

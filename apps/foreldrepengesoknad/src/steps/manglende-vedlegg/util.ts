@@ -1,46 +1,9 @@
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import {
-    Periode,
-    isFellesperiodeMorForSyk,
-    isFellesperiodeMorInnlagt,
-    isForeldrepengerMedAktivitetskravMorForSyk,
-    isForeldrepengerMedAktivitetskravMorInnlagt,
-    isMorIntroprogram,
-    isMorJobber,
-    isMorJobberOgStuderer,
-    isMorKvalprogram,
-    isMorStuderer,
-    isOverføringFarForSyk,
-    isOverføringFarInnlagt,
-    isOverføringMorForSyk,
-    isOverføringMorInnlagt,
-    isPeriodeUtenUttakMorForSyk,
-    isPeriodeUtenUttakMorInnlagt,
-    isPeriodeUtenUttakMorIntroprogram,
-    isPeriodeUtenUttakMorJobber,
-    isPeriodeUtenUttakMorJobberOgStuderer,
-    isPeriodeUtenUttakMorKvalprogram,
-    isPeriodeUtenUttakMorStuderer,
-    isUtsettelseMorForSyk,
-    isUtsettelseMorInnlagt,
-    isUttakAvFedrekvoteMorForSyk,
-} from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
-import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan-ny';
-
-export const isPeriodeMedMorInnleggelse = (periode: Periode) => {
-    return (
-        isOverføringMorInnlagt(periode) ||
-        isUttakAvFedrekvoteMorForSyk(periode) ||
-        isFellesperiodeMorInnlagt(periode) ||
-        isForeldrepengerMedAktivitetskravMorInnlagt(periode) ||
-        isUtsettelseMorInnlagt(periode) ||
-        isPeriodeUtenUttakMorInnlagt(periode)
-    );
-};
+import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan';
 
 export const isPeriodeMedMorInnleggelseNy = (
     periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
@@ -133,16 +96,6 @@ const isUttakAvFedrekvoteMorForSykNy = (
             familiehendelsedato,
             undefined,
         )
-    );
-};
-
-export const isPeriodeMedMorForSyk = (periode: Periode) => {
-    return (
-        isFellesperiodeMorForSyk(periode) ||
-        isUtsettelseMorForSyk(periode) ||
-        isOverføringMorForSyk(periode) ||
-        isForeldrepengerMedAktivitetskravMorForSyk(periode) ||
-        isPeriodeUtenUttakMorForSyk(periode)
     );
 };
 
@@ -286,18 +239,6 @@ const isPeriodeUtenUttakMorKvalprogramNy = (periode: UttakPeriode_fpoversikt | U
     );
 };
 
-export const isPeriodeMedFarInnleggelse = (periode: Periode) => {
-    return isOverføringFarInnlagt(periode);
-};
-
-export const isPeriodeMedFarForSyk = (periode: Periode) => {
-    return isOverføringFarForSyk(periode);
-};
-
-export const isPeriodeMedMorStuderer = (periode: Periode) => {
-    return isMorStuderer(periode) || isPeriodeUtenUttakMorStuderer(periode);
-};
-
 export const isPeriodeMedMorStudererNy = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
     return isMorStudererNy(periode) || isPeriodeUtenUttakMorStudererNy(periode);
 };
@@ -316,18 +257,6 @@ const isMorStudererNy = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpar
         Uttaksperioden.erUttaksperiode(periode) &&
         periode.morsAktivitet === 'UTDANNING'
     );
-};
-
-export const isPeriodeMedMorJobber = (periode: Periode) => {
-    return isMorJobber(periode) || isPeriodeUtenUttakMorJobber(periode);
-};
-
-export const isPeriodeMedMorJobberOgStuderer = (periode: Periode) => {
-    return isMorJobberOgStuderer(periode) || isPeriodeUtenUttakMorJobberOgStuderer(periode);
-};
-
-export const isPeriodeMedMorKvalprogram = (periode: Periode) => {
-    return isMorKvalprogram(periode) || isPeriodeUtenUttakMorKvalprogram(periode);
 };
 
 export const getOmsorgsovertakelseVedlegg = (vedlegg: VedleggDataType) => {
@@ -448,8 +377,4 @@ const isSendSenereVedlegg = (attachment: Attachment) => {
 
 const fjernSendSenereVedlegg = (attachments: Attachment[]) => {
     return attachments.filter((a) => !isSendSenereVedlegg(a));
-};
-
-export const isPeriodeMedMorIntroprogram = (periode: Periode) => {
-    return isMorIntroprogram(periode) || isPeriodeUtenUttakMorIntroprogram(periode);
 };

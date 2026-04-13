@@ -1,17 +1,17 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
+import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { DelInformasjon, FordelingEier } from 'types/FordelingOversikt';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
-import { ISOStringToDate, førsteOktober2021ReglerGjelder } from 'utils/dateUtils';
+import { førsteOktober2021ReglerGjelder } from 'utils/dateUtils';
 import { guid } from 'utils/guid';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
 
 import { VStack } from '@navikt/ds-react';
 
-import { isAnnenForelderOppgitt, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
-import { KontoBeregningDto } from '@navikt/fp-types';
+import { KontoBeregningDto, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { FlerbarnsdagerInformasjon } from './Flerbarnsdagerinformasjon';
@@ -37,7 +37,7 @@ export const FordelingOversikt = ({ kontoer, navnFarMedmor, navnMor, deltUttak, 
     const { antallBarn } = barn;
     const erBarnetFødt = isFødtBarn(barn);
     const erIkkeFødtBarn = isUfødtBarn(barn);
-    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);

@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions } from 'api/queries';
-import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { SøknadRoutes, isRouteAvailable } from 'appData/routes';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
 import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
@@ -23,7 +22,7 @@ import { SøkersituasjonSteg } from 'steps/søkersituasjon/SøkersituasjonSteg';
 import { SenereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
 import { TidligereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
 import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSteg';
-import { UttaksplanStegNy } from 'steps/uttaksplan-ny/UttaksplanStegNy';
+import { UttaksplanSteg } from 'steps/uttaksplan/UttaksplanSteg';
 
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
@@ -64,7 +63,7 @@ const renderSøknadRoutes = ({
                 <Route
                     path={SøknadRoutes.UTTAKSPLAN}
                     element={
-                        <UttaksplanStegNy
+                        <UttaksplanSteg
                             søkerInfo={søkerInfo}
                             mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                             avbrytSøknad={avbrytSøknad}
@@ -160,7 +159,7 @@ const renderSøknadRoutes = ({
             <Route
                 path={SøknadRoutes.UTTAKSPLAN}
                 element={
-                    <UttaksplanStegNy
+                    <UttaksplanSteg
                         søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
@@ -304,8 +303,6 @@ export const ForeldrepengesøknadRoutes = ({
 
     const avbrytSøknad = useAvbrytSøknad(setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn);
 
-    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
-
     // Hvis valgt barn kan vi forsøke hente termindato fra annenpartsvedtak.
     // Dette trengs ikke før i OmBarnet. Men om vi legger et query på rot for å prefetche så tidlig som mulig.
     const annenPartVedtakOptions = useAnnenPartVedtakOptions();
@@ -315,8 +312,7 @@ export const ForeldrepengesøknadRoutes = ({
         if (currentRoute && erMyndig(søkerInfo.fødselsdato) && lagretHarGodkjentVilkår && isFirstTimeLoadingApp) {
             // eslint-disable-next-line react-hooks/set-state-in-effect -- TODO (TOR) - Vurder om denne kan fjennast
             setIsFirstTimeLoadingApp(false);
-            // TODO (TOR) Kan ta vekk innsending av uttaksplan til denne funksjonen når ein tek i bruk ny uttaksplan
-            if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
+            if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår)) {
                 void navigate(currentRoute);
             } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING.toString()) {
                 void navigate(SøknadRoutes.UTTAKSPLAN);
@@ -329,7 +325,6 @@ export const ForeldrepengesøknadRoutes = ({
         navigate,
         isFirstTimeLoadingApp,
         routerLocation.pathname,
-        uttaksplan,
     ]);
 
     if (errorSendSøknad) {

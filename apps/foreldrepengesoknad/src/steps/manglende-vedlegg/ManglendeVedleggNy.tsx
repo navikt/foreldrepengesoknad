@@ -79,7 +79,7 @@ export const ManglendeVedleggNy = ({
     const intl = useIntl();
     const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad);
 
-    const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_NY));
+    const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));

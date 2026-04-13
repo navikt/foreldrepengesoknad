@@ -1,7 +1,7 @@
 import { useIntl } from 'react-intl';
+import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
-import { AnnenForelder, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 

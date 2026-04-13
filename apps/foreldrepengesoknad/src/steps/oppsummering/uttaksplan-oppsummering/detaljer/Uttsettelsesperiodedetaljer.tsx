@@ -1,20 +1,17 @@
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 
-import { PeriodeUtenUttakUtsettelse, Utsettelsesperiode } from '@navikt/fp-common';
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { getÅrsakTekst } from '../OppsummeringUtils';
 import { Feltoppsummering } from './Feltoppsummering';
 import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
 interface Props {
-    periode: Utsettelsesperiode | PeriodeUtenUttakUtsettelse;
+    periode: UttakPeriode_fpoversikt;
 }
 
 export const Utsettelsesperiodedetaljer = ({ periode }: Props) => {
-    const { årsak, morsAktivitetIPerioden, bekrefterArbeidIPerioden } = periode;
+    const { morsAktivitet } = periode;
     const intl = useIntl();
-    const bekreftErIArbeidSvar =
-        bekrefterArbeidIPerioden === true ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' });
 
     return (
         <>
@@ -22,13 +19,12 @@ export const Utsettelsesperiodedetaljer = ({ periode }: Props) => {
                 feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.årsak' })}
                 verdi={getÅrsakTekst(intl, periode)}
             />
-            {årsak === 'ARBEID' && (
-                <Feltoppsummering
-                    feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.bekreft100ProsentIArbeid.label' })}
-                    verdi={bekreftErIArbeidSvar}
-                />
-            )}
-            {morsAktivitetIPerioden && <MorsAktivitetDetaljer morsAktivitet={morsAktivitetIPerioden} />}
+            {morsAktivitet && <MorsAktivitetDetaljer morsAktivitet={morsAktivitet} />}
         </>
     );
+};
+
+const getÅrsakTekst = (intl: IntlShape, periode: UttakPeriode_fpoversikt) => {
+    //@ts-expect-error Fiks dynamisk id
+    return intl.formatMessage({ id: `uttaksplan.utsettelsesårsak.${periode.utsettelseÅrsak}` });
 };

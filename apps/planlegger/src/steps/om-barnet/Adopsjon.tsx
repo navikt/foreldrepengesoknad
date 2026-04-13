@@ -3,13 +3,12 @@ import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 
 import { BodyLong, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
-import { HvemPlanleggerType } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import {
     isAfterOrSame,
@@ -48,7 +47,7 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBa
                         name="overtakelsesdato"
                         control={formMethods.control}
                         label={<FormattedMessage id="Adopsjon.Overtakelsesdato" values={{ erAlenesøker, flereBarn }} />}
-                        minDate={dayjs().subtract(6, 'month').toDate()}
+                        minDate={dayjs().subtract(6, 'month')}
                         showMonthAndYearDropdowns
                         validate={[
                             isRequired(
@@ -76,8 +75,8 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBa
                         name="fødselsdato"
                         control={formMethods.control}
                         label={<FormattedMessage id="Adopsjon.Fødselsdato" values={{ flereBarn }} />}
-                        minDate={dayjs().subtract(15, 'years').toDate()}
-                        maxDate={dayjs().toDate()}
+                        minDate={dayjs().subtract(15, 'years')}
+                        maxDate={dayjs()}
                         showMonthAndYearDropdowns
                         validate={[
                             isRequired(intl.formatMessage({ id: 'Fødselsdato.Required' })),
