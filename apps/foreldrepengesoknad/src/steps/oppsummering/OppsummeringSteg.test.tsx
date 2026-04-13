@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
-import { on } from 'events';
 import { vi } from 'vitest';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
