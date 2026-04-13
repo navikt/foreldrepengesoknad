@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
+import { on } from 'events';
 import { vi } from 'vitest';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
@@ -258,6 +259,22 @@ describe('<Oppsummering>', () => {
                 ),
             ).getByText('Nei'),
         ).toBeInTheDocument();
+    });
+
+    it('Skal vise "Foreldrepenger uten aktivitetskrav" når mor er ufør', async () => {
+        render(<FarMedUførMorUgift />);
+
+        const dinPlanDiv = getCardDiv(screen.getByText('Din plan'));
+        const periodeRow = await screen.findByText('Onsdag 24.11.21 - tirsdag 14.12.21');
+
+        expect(
+            checkAndGetParentDiv(
+                dinPlanDiv.getByText(
+                    'Ønsker du at vi endrer perioden som starter på termin til å starte fra fødselsdato når barnet blir født?',
+                ),
+            ).getByText('Nei'),
+        ).toBeInTheDocument();
+        expect(checkAndGetParentDiv(periodeRow).getByText(/Foreldrepenger uten aktivitetskrav/)).toBeInTheDocument();
     });
 
     it('Skal vise informasjon om at mor har rett til foreldrepenger i EØS', async () => {
