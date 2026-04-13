@@ -291,7 +291,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             return null;
         }
         const erFørSeksUker = UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
-            fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [],
+            perioder,
             familiehendelsedato,
         );
         return erFørSeksUker ? intl.formatMessage({ id: 'uttaksplan.valgPanel.pause' }) : null;
