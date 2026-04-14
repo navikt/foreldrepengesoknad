@@ -197,8 +197,6 @@ describe('<HvaErMulig>', () => {
         expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
         expect(screen.getByText(/Fedre får ofte permisjon/)).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
-        // TODO (TOR) Gir det meining at Jobbe samtidig vises her?
-        // expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
         expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('Dette kan du ikke endre:')).not.toBeInTheDocument();
