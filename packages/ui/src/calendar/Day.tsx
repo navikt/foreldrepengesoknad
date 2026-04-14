@@ -144,6 +144,14 @@ export const logOnLocalhost = (message: string) => {
     }
 };
 
+const skipWeekends = (date: Dayjs, direction: 1 | -1): Dayjs => {
+    let next = date.add(direction, 'day');
+    while (isWeekend(next)) {
+        next = next.add(direction, 'day');
+    }
+    return next;
+};
+
 const handleKeyNavigationAndSelection = (
     e: React.KeyboardEvent,
     date: Dayjs,
@@ -159,10 +167,10 @@ const handleKeyNavigationAndSelection = (
 
     switch (e.key) {
         case 'ArrowLeft':
-            setFocusedDate(date.subtract(1, 'day'));
+            setFocusedDate(skipWeekends(date, -1));
             break;
         case 'ArrowRight':
-            setFocusedDate(date.add(1, 'day'));
+            setFocusedDate(skipWeekends(date, 1));
             break;
         case 'ArrowUp':
             setFocusedDate(date.subtract(7, 'day'));
