@@ -52,7 +52,8 @@
     border: 1px solid transparent;
 }
 
-.cursorAndHoover:hover {
+.cursorAndHoover:hover,
+.cursorAndHoover:focus-visible {
     box-shadow: 0 2px 6px var(--ax-bg-overlay);
     border-color: var(--ax-bg-overlay);
 }

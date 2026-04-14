@@ -107,7 +107,8 @@ export const Day = React.memo(
                 onAnimationEnd={() => buttonRef.current?.classList.remove(styles.fadeIn!)}
                 onKeyDown={
                     dateClickCallback
-                        ? (e) => handleKeyNavigationAndSelection(e, date, dateClickCallback, setFocusedDate)
+                        ? (e) =>
+                              handleKeyNavigationAndSelection(e, date, dateClickCallback, setFocusedDate, onDateHover)
                         : undefined
                 }
                 aria-label={formatDate(date) + (srText ? `, ${srText}` : '')}
@@ -144,11 +145,20 @@ export const logOnLocalhost = (message: string) => {
     }
 };
 
+const skipWeekends = (date: Dayjs, direction: 1 | -1): Dayjs => {
+    let next = date.add(direction, 'day');
+    while (isWeekend(next)) {
+        next = next.add(direction, 'day');
+    }
+    return next;
+};
+
 const handleKeyNavigationAndSelection = (
     e: React.KeyboardEvent,
     date: Dayjs,
     dateClickCallback: (date: string) => void,
     setFocusedDate: (date: Dayjs) => void,
+    onDateHover?: (date: string | undefined) => void,
 ) => {
     if (e.key === 'Tab') {
         return;
@@ -157,18 +167,23 @@ const handleKeyNavigationAndSelection = (
     e.preventDefault();
     const isClickable = !!dateClickCallback && !isWeekend(date);
 
+    const navigateTo = (newDate: Dayjs) => {
+        setFocusedDate(newDate);
+        onDateHover?.(newDate.format(ISO_DATE_FORMAT));
+    };
+
     switch (e.key) {
         case 'ArrowLeft':
-            setFocusedDate(date.subtract(1, 'day'));
+            navigateTo(skipWeekends(date, -1));
             break;
         case 'ArrowRight':
-            setFocusedDate(date.add(1, 'day'));
+            navigateTo(skipWeekends(date, 1));
             break;
         case 'ArrowUp':
-            setFocusedDate(date.subtract(7, 'day'));
+            navigateTo(date.subtract(7, 'day'));
             break;
         case 'ArrowDown':
-            setFocusedDate(date.add(7, 'day'));
+            navigateTo(date.add(7, 'day'));
             break;
         case 'Enter':
         case ' ':
