@@ -84,7 +84,7 @@ describe('getNavnPåForeldre', () => {
     });
 
     describe('fallback til standardnavn', () => {
-        it('skal bruke standardnavn på far når far er alene omsorgen', () => {
+        it('skal bruke standardnavn når far er alene om omsorgen', () => {
             const hvemPlanlegger: HvemPlanlegger = {
                 type: HvemPlanleggerType.FAR,
             };
@@ -97,7 +97,7 @@ describe('getNavnPåForeldre', () => {
             });
         });
 
-        it('skal bruke standardnavn når navnPåMor er undefined for MOR type', () => {
+        it('skal bruke standardnavn når mor er alene om omsorgen', () => {
             const hvemPlanlegger: HvemPlanlegger = {
                 type: HvemPlanleggerType.MOR,
             };
@@ -106,7 +106,6 @@ describe('getNavnPåForeldre', () => {
 
             expect(resultat).toEqual({
                 mor: 'mor',
-                farMedmor: 'far',
             });
         });
 
@@ -145,6 +144,8 @@ describe('getNavnPåForeldre', () => {
         it('skal håndtere tomme strenger som navn', () => {
             const hvemPlanlegger: HvemPlanlegger = {
                 type: HvemPlanleggerType.MOR_OG_FAR,
+                navnPåMor: '',
+                navnPåFar: '',
             };
 
             const resultat = getNavnPåForeldre(hvemPlanlegger, mockIntl);
@@ -157,7 +158,7 @@ describe('getNavnPåForeldre', () => {
 
         it('skal håndtere navn med kun mellomrom', () => {
             const hvemPlanlegger: HvemPlanlegger = {
-                type: HvemPlanleggerType.MOR,
+                type: HvemPlanleggerType.MOR_OG_FAR,
             };
 
             const resultat = getNavnPåForeldre(hvemPlanlegger, mockIntl);
