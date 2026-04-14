@@ -1,7 +1,6 @@
 import { IntlShape } from 'react-intl';
-import { Far, FarOgFar, HvemPlanlegger, Mor, MorOgFar, MorOgMedmor } from 'types/HvemPlanlegger';
+import { Far, FarOgFar, HvemPlanlegger, HvemPlanleggerType, Mor, MorOgFar, MorOgMedmor } from 'types/HvemPlanlegger';
 
-import { HvemPlanleggerType } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { HvemHarRett } from './hvemHarRettUtils';

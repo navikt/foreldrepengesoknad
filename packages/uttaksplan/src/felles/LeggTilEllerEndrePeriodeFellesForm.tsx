@@ -1,0 +1,826 @@
+import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import { useFormContext } from 'react-hook-form';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
+import { Alert, BodyShort, InlineMessage, Radio, VStack } from '@navikt/ds-react';
+
+import { RhfNumericField, RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
+import type {
+    AktivitetType_fpoversikt,
+    BrukerRolleSak_fpoversikt,
+    Gradering_fpoversikt,
+    KontoTypeUttak,
+    MorsAktivitet,
+    UttakOverføringÅrsak_fpoversikt,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
+import { getFloatFromString } from '@navikt/fp-utils';
+import { isRequired, notEmpty } from '@navikt/fp-validation';
+
+import { useUttaksplanData } from '../context/UttaksplanDataContext';
+import { getStønadskontoNavnSimple } from '../liste/utils/uttaksplanListeUtils';
+import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
+import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
+import { getAktivitetskravOptions, getAktivitetskravTekst } from '../utils/periodeUtils';
+import { useHentGyldigeKontotyper } from './useHentGyldigeKontotyper';
+import { prosentValideringGradering, valideringSamtidigUttak } from './uttaksplanValidatorer';
+
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
+
+type ForelderValg = BrukerRolleSak_fpoversikt | 'BEGGE' | undefined;
+
+const SELVSTENDIG_NÆRINGSDRIVENDE = 'SELVSTENDIG_NÆRINGSDRIVENDE' satisfies AktivitetType_fpoversikt;
+const FRILANS = 'FRILANS' satisfies AktivitetType_fpoversikt;
+
+export type LeggTilEllerEndrePeriodeFormFormValues = {
+    forelder?: BrukerRolleSak_fpoversikt | 'BEGGE';
+    kontoTypeMor?: KontoTypeUttak;
+    kontoTypeFarMedmor?: KontoTypeUttak;
+    samtidigUttaksprosentMor?: string;
+    samtidigUttaksprosentFarMedmor?: string;
+    skalDuKombinereArbeidOgUttakMor?: boolean;
+    skalDuKombinereArbeidOgUttakFarMedmor?: boolean;
+    stillingsprosentMor?: string;
+    stillingsprosentFarMedmor?: string;
+    morsAktivitet?: MorsAktivitet;
+    overføringsårsak?: UttakOverføringÅrsak_fpoversikt;
+    hvorSkalDuJobbe?: string;
+    ønskerFlerbarnsdager?: boolean;
+};
+
+interface Props {
+    valgtePerioder: Array<{ fom: string; tom: string }>;
+    resetFormValuesVedEndringAvForelder: (forelder: ForelderValg) => void;
+}
+
+export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormValuesVedEndringAvForelder }: Props) => {
+    const intl = useIntl();
+
+    const {
+        foreldreInfo: { rettighetType, erMedmorDelAvSøknaden, søker },
+        familiehendelsedato,
+        erPeriodeneTilAnnenPartLåst,
+        aktiveArbeidsforhold,
+        barn,
+        uttakPerioder,
+    } = useUttaksplanData();
+
+    const formMethods = useFormContext<LeggTilEllerEndrePeriodeFormFormValues>();
+
+    const {
+        forelder,
+        kontoTypeMor,
+        kontoTypeFarMedmor,
+        skalDuKombinereArbeidOgUttakMor,
+        samtidigUttaksprosentMor,
+        samtidigUttaksprosentFarMedmor,
+        stillingsprosentMor,
+        stillingsprosentFarMedmor,
+        skalDuKombinereArbeidOgUttakFarMedmor,
+        ønskerFlerbarnsdager,
+    } = formMethods.watch();
+
+    const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(barn.antallBarn, forelder, kontoTypeFarMedmor);
+
+    const infotekstOmFedrekvoteBrukRundtFødsel = getInfotekstOmFedrekvoteBrukRundtFødsel(
+        valgtePerioder,
+        kontoTypeFarMedmor,
+        familiehendelsedato,
+        forelder,
+        intl,
+    );
+
+    const erFarMedmorUtenAleneomsorg =
+        forelder === 'FAR_MEDMOR' &&
+        rettighetType !== 'ALENEOMSORG' &&
+        (kontoTypeFarMedmor === 'FORELDREPENGER' || kontoTypeFarMedmor === 'FELLESPERIODE') &&
+        !ønskerFlerbarnsdager;
+
+    const skalViseMorsAktivitetskravVedSamtidigUttak =
+        !ønskerFlerbarnsdager &&
+        getSkalViseMorsAktivitetskravVedSamtidigUttak(
+            forelder,
+            samtidigUttaksprosentMor,
+            stillingsprosentMor,
+            samtidigUttaksprosentFarMedmor,
+            kontoTypeFarMedmor,
+        );
+
+    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(
+        valgtePerioder,
+        forelder === 'BEGGE',
+        ønskerFlerbarnsdager,
+    );
+
+    const erMorGyldigForelder = gyldigeStønadskontoerForMor.length > 0;
+    const erFarMedmorGyldigForelder = gyldigeStønadskontoerForFarMedmor.length > 0;
+    const morSøkerOmOverføring = kontoTypeMor === 'FEDREKVOTE' && forelder === 'MOR';
+    const farMedmorSøkerOmOverføring = kontoTypeFarMedmor === 'MØDREKVOTE' && forelder === 'FAR_MEDMOR';
+
+    if (!erMorGyldigForelder && !erFarMedmorGyldigForelder) {
+        return (
+            <Alert variant="info">
+                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon" />
+            </Alert>
+        );
+    }
+
+    const resetStillingsprosentMor = () => {
+        if ((forelder === 'MOR' || forelder === 'BEGGE') && skalDuKombinereArbeidOgUttakMor === false) {
+            formMethods.resetField('stillingsprosentMor', undefined);
+        }
+    };
+
+    const resetStillingsprosentFarMedmor = () => {
+        if (forelder !== 'MOR' && skalDuKombinereArbeidOgUttakFarMedmor === false) {
+            formMethods.resetField('stillingsprosentFarMedmor', undefined);
+        }
+    };
+
+    const resetAktivitetskrav = () => {
+        if (forelder !== 'MOR' && ønskerFlerbarnsdager) {
+            formMethods.resetField('morsAktivitet', undefined);
+        }
+    };
+
+    const erFarMedmorLåst = erPeriodeneTilAnnenPartLåst && søker === 'MOR';
+    const erMorLåst = erPeriodeneTilAnnenPartLåst && søker === 'FAR_MEDMOR';
+    const erMinstEnEøsPeriode = uttakPerioder.some((periode) => erEøsUttakPeriode(periode));
+
+    if ((erMorLåst && !erFarMedmorGyldigForelder) || (erFarMedmorLåst && !erMorGyldigForelder)) {
+        return (
+            <Alert variant="info">
+                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Forelder.AnnenPartLåst" />
+            </Alert>
+        );
+    }
+
+    return (
+        <>
+            <RhfRadioGroup
+                name="forelder"
+                control={formMethods.control}
+                validate={[isRequired(intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Forelder.Påkrevd' }))]}
+                label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Forelder.HvemGjelder' })}
+                onChange={resetFormValuesVedEndringAvForelder}
+            >
+                {
+                    [
+                        erMorGyldigForelder && !erMorLåst && (
+                            <Radio key="mor" value="MOR">
+                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />
+                            </Radio>
+                        ),
+                        erFarMedmorGyldigForelder && !erFarMedmorLåst && (
+                            <Radio key="far" value="FAR_MEDMOR">
+                                {erMedmorDelAvSøknaden ? (
+                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />
+                                ) : (
+                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Far" />
+                                )}
+                            </Radio>
+                        ),
+                        erMorGyldigForelder && erFarMedmorGyldigForelder && !erMinstEnEøsPeriode && (
+                            <Radio key="begge" value="BEGGE">
+                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Begge" />
+                            </Radio>
+                        ),
+                    ].filter(Boolean) as React.ReactElement[]
+                }
+            </RhfRadioGroup>
+
+            {skalViseFlerbarnsdager && (
+                <RhfRadioGroup
+                    name="ønskerFlerbarnsdager"
+                    control={formMethods.control}
+                    validate={[
+                        isRequired(
+                            intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.ØnskerFlerbarnsdager.Påkrevd' }),
+                        ),
+                    ]}
+                    label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.ØnskerFlerbarnsdager' })}
+                    onChange={resetAktivitetskrav}
+                >
+                    <Radio value={true}>
+                        <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Ja" />
+                    </Radio>
+                    <Radio value={false}>
+                        <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Nei" />
+                    </Radio>
+                </RhfRadioGroup>
+            )}
+
+            {forelder !== undefined && <hr className="text-ax-border-neutral-subtle" />}
+
+            {forelder !== 'FAR_MEDMOR' && gyldigeStønadskontoerForMor.length > 0 && (
+                <RhfRadioGroup
+                    name="kontoTypeMor"
+                    control={formMethods.control}
+                    validate={[
+                        isRequired(intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.KontoTypeMor.Påkrevd' })),
+                    ]}
+                    label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.KontoTypeMor' })}
+                >
+                    {gyldigeStønadskontoerForMor.map((konto) => {
+                        return (
+                            <Radio key={konto} value={konto} disabled={!!kontoTypeMor && erMorLåst}>
+                                {getStønadskontoNavnSimple(intl, konto, erMedmorDelAvSøknaden)}
+                            </Radio>
+                        );
+                    })}
+                </RhfRadioGroup>
+            )}
+            {forelder !== 'MOR' && gyldigeStønadskontoerForFarMedmor.length > 0 && (
+                <RhfRadioGroup
+                    name="kontoTypeFarMedmor"
+                    control={formMethods.control}
+                    validate={[
+                        isRequired(
+                            intl.formatMessage(
+                                {
+                                    id: 'LeggTilEllerEndrePeriodeForm.KontoTypeFarMedmor.Påkrevd',
+                                },
+                                {
+                                    erMedmor: erMedmorDelAvSøknaden,
+                                },
+                            ),
+                        ),
+                    ]}
+                    label={
+                        <FormattedMessage
+                            id="LeggTilEllerEndrePeriodeForm.KontoTypeFarMedmor"
+                            values={{ erMedmor: erMedmorDelAvSøknaden }}
+                        />
+                    }
+                >
+                    {gyldigeStønadskontoerForFarMedmor.map((konto) => {
+                        return (
+                            <Radio key={konto} value={konto} disabled={!!kontoTypeFarMedmor && erFarMedmorLåst}>
+                                {getStønadskontoNavnSimple(intl, konto, erMedmorDelAvSøknaden)}
+                            </Radio>
+                        );
+                    })}
+                </RhfRadioGroup>
+            )}
+
+            {infotekstOmFedrekvoteBrukRundtFødsel && (
+                <InlineMessage status="info">
+                    <BodyShort>{infotekstOmFedrekvoteBrukRundtFødsel}</BodyShort>
+                </InlineMessage>
+            )}
+
+            {morSøkerOmOverføring && (
+                <VStack gap="space-16">
+                    <hr className="text-ax-border-neutral-subtle" />
+                    <InlineMessage status="info">
+                        <VStack gap="space-8">
+                            <BodyShort>
+                                <FormattedMessage
+                                    id="LeggTilEllerEndrePeriodeForm.Overføring.Info1.Mor"
+                                    values={{ erMedmor: erMedmorDelAvSøknaden }}
+                                />
+                            </BodyShort>
+                            <BodyShort>
+                                <FormattedMessage
+                                    id="LeggTilEllerEndrePeriodeForm.Overføring.Info2.Mor"
+                                    values={{ erMedmor: erMedmorDelAvSøknaden }}
+                                />
+                            </BodyShort>
+                        </VStack>
+                    </InlineMessage>
+                    <RhfRadioGroup
+                        name="overføringsårsak"
+                        control={formMethods.control}
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({
+                                    id: 'LeggTilEllerEndrePeriodeForm.Overføringsårsak.Påkrevd',
+                                }),
+                            ),
+                        ]}
+                        label={
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.Mor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        }
+                    >
+                        <Radio value="INSTITUSJONSOPPHOLD_ANNEN_FORELDER">
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.Innlagt.Mor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        </Radio>
+                        <Radio value="SYKDOM_ANNEN_FORELDER">
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.Mor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        </Radio>
+                        <Radio value="ALENEOMSORG">
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.Aleneomsorg.Mor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        </Radio>
+                        <Radio value="IKKE_RETT_ANNEN_FORELDER">
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.IkkeRett.Mor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        </Radio>
+                    </RhfRadioGroup>
+                </VStack>
+            )}
+
+            {farMedmorSøkerOmOverføring && (
+                <VStack gap="space-16">
+                    <hr className="text-ax-border-neutral-subtle" />
+                    <InlineMessage status="info">
+                        <VStack gap="space-8">
+                            <VStack gap="space-8">
+                                <BodyShort>
+                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Overføring.Info1.FarMedmor" />
+                                </BodyShort>
+                                <BodyShort>
+                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Overføring.Info2.FarMedmor" />
+                                </BodyShort>
+                            </VStack>
+                        </VStack>
+                    </InlineMessage>
+                    <RhfRadioGroup
+                        name="overføringsårsak"
+                        control={formMethods.control}
+                        validate={[
+                            isRequired(
+                                intl.formatMessage({
+                                    id: 'LeggTilEllerEndrePeriodeForm.Overføringsårsak.Påkrevd',
+                                }),
+                            ),
+                        ]}
+                        label={
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.FarMedmor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        }
+                    >
+                        <Radio value="INSTITUSJONSOPPHOLD_ANNEN_FORELDER">
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.Innlagt.FarMedmor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        </Radio>
+                        <Radio value="SYKDOM_ANNEN_FORELDER">
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.FarMedmor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        </Radio>
+                        <Radio value="ALENEOMSORG">
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.Aleneomsorg.FarMedmor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        </Radio>
+                        <Radio value="IKKE_RETT_ANNEN_FORELDER">
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.IkkeRett.FarMedmor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        </Radio>
+                    </RhfRadioGroup>
+                </VStack>
+            )}
+
+            {(erFarMedmorUtenAleneomsorg || skalViseMorsAktivitetskravVedSamtidigUttak) && (
+                <>
+                    <hr className="text-ax-border-neutral-subtle" />
+                    <RhfSelect
+                        name="morsAktivitet"
+                        label={intl.formatMessage({ id: 'AktivitetskravSpørsmål.Label' })}
+                        control={formMethods.control}
+                        validate={[isRequired(intl.formatMessage({ id: 'AktivitetskravSpørsmål.Påkrevd' }))]}
+                        description={intl.formatMessage({ id: 'AktivitetskravSpørsmål.Description' })}
+                    >
+                        {getAktivitetskravOptions(skalViseMorsAktivitetskravVedSamtidigUttak).map((value) => {
+                            return (
+                                <option key={value} value={value}>
+                                    {getAktivitetskravTekst(value, intl)}
+                                </option>
+                            );
+                        })}
+                    </RhfSelect>
+                </>
+            )}
+            {forelder === 'BEGGE' && (
+                <>
+                    <hr className="text-ax-border-neutral-subtle" />
+                    <RhfNumericField
+                        control={formMethods.control}
+                        className="max-w-xs"
+                        label={<FormattedMessage id="LeggTilEllerEndrePeriodeForm.SamtidigUttaksprosentMor" />}
+                        name="samtidigUttaksprosentMor"
+                        validate={[valideringSamtidigUttak(intl, stillingsprosentMor)]}
+                        maxLength={5}
+                    />
+                    <RhfNumericField
+                        control={formMethods.control}
+                        className="max-w-xs"
+                        label={
+                            <FormattedMessage
+                                id="LeggTilEllerEndrePeriodeForm.SamtidigUttaksprosentFarMedmor"
+                                values={{ erMedmor: erMedmorDelAvSøknaden }}
+                            />
+                        }
+                        name="samtidigUttaksprosentFarMedmor"
+                        validate={[valideringSamtidigUttak(intl, stillingsprosentFarMedmor)]}
+                        maxLength={5}
+                    />
+                </>
+            )}
+            {kontoTypeMor !== undefined && forelder !== 'FAR_MEDMOR' && !morSøkerOmOverføring && (
+                <>
+                    <hr className="text-ax-border-neutral-subtle" />
+                    <VStack gap="space-16">
+                        <RhfRadioGroup
+                            name="skalDuKombinereArbeidOgUttakMor"
+                            control={formMethods.control}
+                            label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor' })}
+                            validate={[
+                                isRequired(
+                                    intl.formatMessage({
+                                        id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor.Påkrevd',
+                                    }),
+                                ),
+                            ]}
+                            onChange={resetStillingsprosentMor}
+                        >
+                            <Radio value={true}>
+                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Ja" />
+                            </Radio>
+                            <Radio value={false}>
+                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Nei" />
+                            </Radio>
+                        </RhfRadioGroup>
+                        {skalDuKombinereArbeidOgUttakMor && (
+                            <>
+                                {UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgSeksUkerEtterFamDato(
+                                    valgtePerioder,
+                                    familiehendelsedato,
+                                ) && (
+                                    <Alert variant="info">
+                                        <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.DagerReduseres" />
+                                    </Alert>
+                                )}
+                                <RhfNumericField
+                                    name="stillingsprosentMor"
+                                    control={formMethods.control}
+                                    className="max-w-xs"
+                                    label={intl.formatMessage({
+                                        id: 'LeggTilEllerEndrePeriodeForm.Stillingsprosent.Mor',
+                                    })}
+                                    validate={[prosentValideringGradering(intl, samtidigUttaksprosentMor)]}
+                                    maxLength={5}
+                                />
+                                {aktiveArbeidsforhold !== undefined && søker === 'MOR' && (
+                                    <RhfRadioGroup
+                                        name="hvorSkalDuJobbe"
+                                        control={formMethods.control}
+                                        label={intl.formatMessage({
+                                            id: 'LeggTilEllerEndrePeriodeForm.HvorSkalDuJobbe',
+                                        })}
+                                        validate={[
+                                            isRequired(
+                                                intl.formatMessage({
+                                                    id: 'LeggTilEllerEndrePeriodeForm.HvorSkalDuJobbe.Påkrevd',
+                                                }),
+                                            ),
+                                        ]}
+                                    >
+                                        <>
+                                            {aktiveArbeidsforhold.map((a) => (
+                                                <Radio key={a.arbeidsgiverId} value={a.arbeidsgiverId}>
+                                                    {a.arbeidsgiverNavn}
+                                                </Radio>
+                                            ))}
+                                        </>
+                                        <Radio value={SELVSTENDIG_NÆRINGSDRIVENDE}>
+                                            <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Selvstendig" />
+                                        </Radio>
+                                        <Radio value={FRILANS}>
+                                            <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Frilans" />
+                                        </Radio>
+                                    </RhfRadioGroup>
+                                )}
+                            </>
+                        )}
+                    </VStack>
+                </>
+            )}
+            {forelder !== 'MOR' && !farMedmorSøkerOmOverføring && (
+                <>
+                    <hr className="text-ax-border-neutral-subtle" />
+                    <VStack gap="space-16">
+                        <RhfRadioGroup
+                            name="skalDuKombinereArbeidOgUttakFarMedmor"
+                            control={formMethods.control}
+                            label={intl.formatMessage(
+                                { id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.FarMedmor' },
+                                { erMedmor: erMedmorDelAvSøknaden },
+                            )}
+                            validate={[
+                                isRequired(
+                                    intl.formatMessage(
+                                        {
+                                            id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.FarMedmor.Påkrevd',
+                                        },
+                                        { erMedmor: erMedmorDelAvSøknaden },
+                                    ),
+                                ),
+                            ]}
+                            onChange={resetStillingsprosentFarMedmor}
+                        >
+                            <Radio value={true}>
+                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Ja" />
+                            </Radio>
+                            <Radio value={false}>
+                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Nei" />
+                            </Radio>
+                        </RhfRadioGroup>
+                        {skalDuKombinereArbeidOgUttakFarMedmor && (
+                            <>
+                                <RhfNumericField
+                                    name="stillingsprosentFarMedmor"
+                                    control={formMethods.control}
+                                    className="max-w-xs"
+                                    label={intl.formatMessage(
+                                        {
+                                            id: 'LeggTilEllerEndrePeriodeForm.Stillingsprosent.FarMedmor',
+                                        },
+                                        { erMedmor: erMedmorDelAvSøknaden },
+                                    )}
+                                    validate={[prosentValideringGradering(intl, samtidigUttaksprosentFarMedmor)]}
+                                    maxLength={5}
+                                />
+
+                                {aktiveArbeidsforhold !== undefined && søker === 'FAR_MEDMOR' && (
+                                    <RhfRadioGroup
+                                        name="hvorSkalDuJobbe"
+                                        control={formMethods.control}
+                                        label={intl.formatMessage({
+                                            id: 'LeggTilEllerEndrePeriodeForm.HvorSkalDuJobbe',
+                                        })}
+                                        validate={[
+                                            isRequired(
+                                                intl.formatMessage({
+                                                    id: 'LeggTilEllerEndrePeriodeForm.HvorSkalDuJobbe.Påkrevd',
+                                                }),
+                                            ),
+                                        ]}
+                                    >
+                                        <>
+                                            {aktiveArbeidsforhold.map((a) => (
+                                                <Radio key={a.arbeidsgiverId} value={a.arbeidsgiverId}>
+                                                    {a.arbeidsgiverNavn}
+                                                </Radio>
+                                            ))}
+                                        </>
+                                        <Radio value={SELVSTENDIG_NÆRINGSDRIVENDE}>
+                                            <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Selvstendig" />
+                                        </Radio>
+                                        <Radio value={FRILANS}>
+                                            <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Frilans" />
+                                        </Radio>
+                                    </RhfRadioGroup>
+                                )}
+                            </>
+                        )}
+                    </VStack>
+                </>
+            )}
+        </>
+    );
+};
+
+const getSkalViseMorsAktivitetskravVedSamtidigUttak = (
+    forelder: ForelderValg,
+    samtidigUttaksprosentMor?: string,
+    stillingsprosentMor?: string,
+    samtidigUttaksprosentFarMedmor?: string,
+    kontoTypeFarMedmor?: KontoTypeUttak,
+) => {
+    const morsSamtidigUttakprosent = forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentMor) ?? 0) : 0;
+    const morsStillingProsent = forelder === 'BEGGE' ? (getFloatFromString(stillingsprosentMor) ?? 0) : 0;
+    const morsTotaleProsent = morsSamtidigUttakprosent + morsStillingProsent;
+
+    const farMedmorsSamtidigUttakprosent =
+        forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentFarMedmor) ?? 0) : 0;
+    const kombinertUttaksprosent = morsSamtidigUttakprosent + farMedmorsSamtidigUttakprosent;
+
+    if (kombinertUttaksprosent !== 100) {
+        return false;
+    }
+
+    const skalViseMorsAktivitetskravVedSamtidigUttak =
+        forelder === 'BEGGE' && kontoTypeFarMedmor === 'FELLESPERIODE' && morsTotaleProsent < 100;
+
+    return skalViseMorsAktivitetskravVedSamtidigUttak;
+};
+
+export const mapFraFormValuesTilUttakPeriode = (
+    values: LeggTilEllerEndrePeriodeFormFormValues,
+    periode: { fom: string; tom: string },
+    søker: BrukerRolleSak_fpoversikt,
+): UttakPeriode_fpoversikt[] => {
+    const nye = new Array<UttakPeriode_fpoversikt>();
+
+    if (values.forelder === 'MOR' || values.forelder === 'BEGGE') {
+        nye.push({
+            fom: periode.fom,
+            tom: periode.tom,
+            kontoType: values.kontoTypeMor === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoTypeMor,
+            morsAktivitet: values.morsAktivitet,
+            forelder: 'MOR',
+            gradering: values.skalDuKombinereArbeidOgUttakMor
+                ? getGradering(søker === 'MOR', values.stillingsprosentMor, values.hvorSkalDuJobbe)
+                : undefined,
+            samtidigUttak:
+                values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentMor) : undefined,
+            overføringÅrsak: values.overføringsårsak,
+            flerbarnsdager: values.ønskerFlerbarnsdager ?? false,
+        });
+    }
+    if (values.forelder === 'FAR_MEDMOR' || values.forelder === 'BEGGE') {
+        nye.push({
+            fom: periode.fom,
+            tom: periode.tom,
+            kontoType:
+                values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoTypeFarMedmor,
+            morsAktivitet: values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : values.morsAktivitet,
+            forelder: 'FAR_MEDMOR',
+            gradering: values.skalDuKombinereArbeidOgUttakFarMedmor
+                ? getGradering(søker === 'FAR_MEDMOR', values.stillingsprosentFarMedmor, values.hvorSkalDuJobbe)
+                : undefined,
+            samtidigUttak:
+                values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentFarMedmor) : undefined,
+            overføringÅrsak: values.overføringsårsak,
+            flerbarnsdager: values.ønskerFlerbarnsdager ?? false,
+        });
+    }
+    return nye;
+};
+
+export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
+    uttaksplanperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    valgtPeriode: { fom: string; tom: string },
+    søker: BrukerRolleSak_fpoversikt,
+    erPeriodeneTilAnnenPartLåst: boolean,
+): LeggTilEllerEndrePeriodeFormFormValues | undefined => {
+    const eksisterendePerioder = uttaksplanperioder.filter(
+        (periode) =>
+            dayjs(valgtPeriode.fom).isSameOrAfter(dayjs(periode.fom), 'day') &&
+            dayjs(valgtPeriode.tom).isSameOrBefore(dayjs(periode.tom), 'day'),
+    );
+
+    if (
+        eksisterendePerioder.length === 0 ||
+        eksisterendePerioder.length > 2 ||
+        !eksisterendePerioder.every(erVanligUttakPeriode) ||
+        eksisterendePerioder.some((p) => p.utsettelseÅrsak === 'LOVBESTEMT_FERIE') ||
+        eksisterendePerioder.some((p) => erPeriodeneTilAnnenPartLåst && p.forelder !== søker)
+    ) {
+        return undefined;
+    }
+
+    if (eksisterendePerioder.length === 2) {
+        const erSamtidigUttak = eksisterendePerioder.every((p) => !!p.samtidigUttak);
+        if (!erSamtidigUttak) {
+            throw new Error('Forventer to perioder ved samtidig uttak.');
+        }
+        const morsPeriode = notEmpty(eksisterendePerioder.find((p) => p.forelder === 'MOR'));
+        const farMedmorPeriode = notEmpty(eksisterendePerioder.find((p) => p.forelder === 'FAR_MEDMOR'));
+
+        const søkersPeriode = søker === 'MOR' ? morsPeriode : farMedmorPeriode;
+
+        return {
+            forelder: 'BEGGE',
+            kontoTypeMor:
+                morsPeriode.kontoType === 'FORELDREPENGER' && morsPeriode.morsAktivitet === 'IKKE_OPPGITT'
+                    ? 'AKTIVITETSFRI_KVOTE'
+                    : morsPeriode.kontoType,
+            kontoTypeFarMedmor:
+                farMedmorPeriode.kontoType === 'FORELDREPENGER' && farMedmorPeriode.morsAktivitet === 'IKKE_OPPGITT'
+                    ? 'AKTIVITETSFRI_KVOTE'
+                    : farMedmorPeriode.kontoType,
+            samtidigUttaksprosentMor: morsPeriode.samtidigUttak?.toString(),
+            samtidigUttaksprosentFarMedmor: farMedmorPeriode.samtidigUttak?.toString(),
+            skalDuKombinereArbeidOgUttakMor: !!morsPeriode.gradering,
+            skalDuKombinereArbeidOgUttakFarMedmor: !!farMedmorPeriode.gradering,
+            stillingsprosentMor: morsPeriode.gradering?.arbeidstidprosent.toString(),
+            stillingsprosentFarMedmor: farMedmorPeriode.gradering?.arbeidstidprosent.toString(),
+            morsAktivitet: morsPeriode.morsAktivitet,
+            hvorSkalDuJobbe:
+                søkersPeriode.gradering?.aktivitet?.arbeidsgiver?.id ?? søkersPeriode.gradering?.aktivitet?.type,
+            ønskerFlerbarnsdager: morsPeriode.flerbarnsdager || farMedmorPeriode.flerbarnsdager,
+        };
+    }
+
+    const periode = eksisterendePerioder[0]!;
+
+    if (periode.forelder === 'FAR_MEDMOR') {
+        return {
+            forelder: 'FAR_MEDMOR',
+            kontoTypeFarMedmor:
+                periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT'
+                    ? 'AKTIVITETSFRI_KVOTE'
+                    : periode.kontoType,
+            skalDuKombinereArbeidOgUttakFarMedmor: !!periode.gradering,
+            stillingsprosentFarMedmor: periode.gradering?.arbeidstidprosent.toString(),
+            hvorSkalDuJobbe: periode.gradering?.aktivitet?.arbeidsgiver?.id ?? periode.gradering?.aktivitet?.type,
+            morsAktivitet: periode.morsAktivitet,
+            overføringsårsak: periode.overføringÅrsak,
+            ønskerFlerbarnsdager: periode.flerbarnsdager,
+        };
+    }
+
+    return {
+        forelder: 'MOR',
+        kontoTypeMor: periode.kontoType,
+        samtidigUttaksprosentMor: periode.samtidigUttak?.toString(),
+        skalDuKombinereArbeidOgUttakMor: !!periode.gradering,
+        stillingsprosentMor: periode.gradering?.arbeidstidprosent.toString(),
+        hvorSkalDuJobbe: periode.gradering?.aktivitet?.arbeidsgiver?.id ?? periode.gradering?.aktivitet?.type,
+        overføringsårsak: periode.overføringÅrsak,
+        ønskerFlerbarnsdager: periode.flerbarnsdager,
+    };
+};
+
+const getGradering = (
+    erSøker: boolean,
+    stillingsprosent: string | undefined,
+    hvorSkalDuJobbe: string | undefined,
+): Gradering_fpoversikt => {
+    if (erSøker) {
+        return {
+            aktivitet: {
+                type: finnAktivitetType(hvorSkalDuJobbe),
+                arbeidsgiver:
+                    hvorSkalDuJobbe && hvorSkalDuJobbe !== SELVSTENDIG_NÆRINGSDRIVENDE && hvorSkalDuJobbe !== FRILANS
+                        ? {
+                              id: hvorSkalDuJobbe,
+                          }
+                        : undefined,
+            },
+            arbeidstidprosent: getFloatFromString(stillingsprosent) ?? 100,
+        } satisfies Gradering_fpoversikt;
+    }
+
+    // Dette må endrast når ein byrjar å lagre annen part sine periodar. Per no så kan ein ikkje oppi aktivitet for denne i skjema.
+    return {
+        aktivitet: {
+            type: 'ANNET',
+        },
+        arbeidstidprosent: getFloatFromString(stillingsprosent) ?? 100,
+    } satisfies Gradering_fpoversikt;
+};
+
+const finnAktivitetType = (hvorSkalDuJobbe?: string): AktivitetType_fpoversikt => {
+    return hvorSkalDuJobbe === 'FRILANS' || hvorSkalDuJobbe === 'SELVSTENDIG_NÆRINGSDRIVENDE'
+        ? hvorSkalDuJobbe
+        : 'ORDINÆRT_ARBEID';
+};
+
+const getInfotekstOmFedrekvoteBrukRundtFødsel = (
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    kontoTypeFarMedmor: KontoTypeUttak | undefined,
+    familiehendelsedato: string,
+    forelder: ForelderValg,
+    intl: IntlShape,
+) => {
+    const valgteDagerRundtFødsel = valgtePerioder.filter((p) =>
+        UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+            p,
+            familiehendelsedato,
+            undefined,
+        ),
+    );
+
+    return valgteDagerRundtFødsel.length > 0 && kontoTypeFarMedmor === 'FEDREKVOTE' && forelder === 'FAR_MEDMOR'
+        ? intl.formatMessage({
+              id: 'LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel',
+          })
+        : undefined;
+};
+
+export const skalBesvareFlerbarnsdager = (
+    antallBarn: number,
+    forelder: ForelderValg,
+    kontotype: KontoTypeUttak | undefined,
+) => {
+    return antallBarn > 1 && forelder !== 'MOR' && kontotype !== 'MØDREKVOTE' && kontotype !== 'AKTIVITETSFRI_KVOTE';
+};

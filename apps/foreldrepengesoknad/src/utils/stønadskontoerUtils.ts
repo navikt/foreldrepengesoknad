@@ -1,15 +1,22 @@
 import { IntlShape } from 'react-intl';
 
-import { NavnPåForeldre } from '@navikt/fp-common';
-import { KontoBeregningDto, KontoDto, KontoTypeUttak } from '@navikt/fp-types';
+import {
+    KontoBeregningDto,
+    KontoDto,
+    KontoType,
+    KontoTypeUttak,
+    MorsAktivitet,
+    NavnPåForeldre,
+} from '@navikt/fp-types';
 import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 export const getStønadskontoNavn = (
     intl: IntlShape,
-    konto: KontoTypeUttak | undefined,
+    konto: KontoType | undefined,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
+    morsAktivitet?: MorsAktivitet,
 ) => {
     if ((erFarEllerMedmor && konto === 'FEDREKVOTE') || (!erFarEllerMedmor && konto === 'MØDREKVOTE')) {
         return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.dinKvote' });
@@ -35,7 +42,7 @@ export const getStønadskontoNavn = (
     }
 
     if (erFarEllerMedmor === true && erAleneOmOmsorg === false) {
-        if (konto === 'AKTIVITETSFRI_KVOTE') {
+        if (konto === 'FORELDREPENGER' && morsAktivitet === 'IKKE_OPPGITT') {
             return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE_BFHR' });
         }
         if (konto === 'FORELDREPENGER') {

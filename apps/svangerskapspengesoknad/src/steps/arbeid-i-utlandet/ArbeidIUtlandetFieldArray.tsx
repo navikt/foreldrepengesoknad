@@ -118,7 +118,7 @@ export const ArbeidIUtlandetFieldArray = () => {
                                 return null;
                             },
                         ]}
-                        maxDate={dayjs().toDate()}
+                        maxDate={dayjs()}
                         minDate={DATE_20_YEARS_AGO}
                     />
                     <RhfRadioGroup
@@ -158,7 +158,7 @@ export const ArbeidIUtlandetFieldArray = () => {
                                     alleArbeidIUtlandet[index]!.fom,
                                 ),
                             ]}
-                            maxDate={dayjs().add(9, 'month').toDate()}
+                            maxDate={dayjs().add(9, 'month')}
                             minDate={getMinInputTilOgMedValue(alleArbeidIUtlandet[index]!.fom, DATE_5_MONTHS_AGO)}
                         />
                     )}

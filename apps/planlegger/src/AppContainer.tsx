@@ -12,7 +12,7 @@ import { observabilityMessages } from '@navikt/fp-observability';
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
 import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
-import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
+import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan';
 
 import { PlanleggerDataInit } from './Planlegger';
 import enMessages from './intl/messages/en_US.json';

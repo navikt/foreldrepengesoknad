@@ -46,8 +46,8 @@ export const TerminDokPanel = ({ attachments, updateAttachments, omBarnet }: Pro
                 name="terminbekreftelsedato"
                 control={control}
                 label={<FormattedMessage id="TerminDokPanel.Terminbekreftelsesdato" />}
-                minDate={dayjs(omBarnet.termindato).subtract(18, 'week').subtract(3, 'day').toDate()}
-                maxDate={dayjs().toDate()}
+                minDate={dayjs(omBarnet.termindato).subtract(18, 'week').subtract(3, 'day')}
+                maxDate={dayjs()}
                 validate={[
                     isRequired(intl.formatMessage({ id: 'TerminDokPanel.Validering.TerminbekreftelseDato.DuMåOppgi' })),
                     isValidDate(intl.formatMessage({ id: 'TerminDokPanel.Validering.TerminBekreftelsedato' })),

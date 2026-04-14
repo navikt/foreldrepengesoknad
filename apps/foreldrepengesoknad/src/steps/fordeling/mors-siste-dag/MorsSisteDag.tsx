@@ -6,7 +6,7 @@ import { BluePanel } from '@navikt/fp-ui';
 import { formatDateMedUkedag, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 interface Props {
-    morsSisteDag: Date;
+    morsSisteDag: string;
     navnMor: string;
 }
 

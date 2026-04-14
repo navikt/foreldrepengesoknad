@@ -1,5 +1,5 @@
-import { Barn, BarnType } from '@navikt/fp-common';
-import { FpBarnDto_fpoversikt } from '@navikt/fp-types';
+import { BarnType } from '@navikt/fp-constants';
+import { Barn, FpBarnDto_fpoversikt } from '@navikt/fp-types';
 
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from './barnUtils';
 

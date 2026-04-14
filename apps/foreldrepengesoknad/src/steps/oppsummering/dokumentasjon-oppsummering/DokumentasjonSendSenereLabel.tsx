@@ -3,17 +3,16 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Box, Label, List, VStack } from '@navikt/ds-react';
 
+import { Skjemanummer } from '@navikt/fp-constants';
 import {
+    Attachment,
+    AttachmentMetadataTidsperiode,
     NavnPåForeldre,
-    Periode,
-    isFellesperiodeMorInnlagt,
-    isForeldrepengerMedAktivitetskravMorInnlagt,
-    isOverføringMorInnlagt,
-    isUtsettelseMorInnlagt,
-    isUttakAvFedrekvoteMorForSyk,
-} from '@navikt/fp-common';
-import { Periodetype, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, AttachmentMetadataTidsperiode } from '@navikt/fp-types';
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
+import { Uttaksperioden } from '@navikt/fp-utils';
+import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { getTidsperiodeString } from './DokumentasjonLastetOppLabel';
@@ -39,21 +38,55 @@ const ManglerDokumentasjon = ({ headerLabel, bodyLabel }: ManglerDokumentasjonPr
     </VStack>
 );
 
-const isPeriodeMedMorInnleggelse = (periode: Periode) => {
-    return (
-        isOverføringMorInnlagt(periode) ||
-        isUttakAvFedrekvoteMorForSyk(periode) ||
-        isFellesperiodeMorInnlagt(periode) ||
-        isForeldrepengerMedAktivitetskravMorInnlagt(periode) ||
-        isUtsettelseMorInnlagt(periode)
-    );
+const isPeriodeMedMorInnleggelse = (
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    familiehendelsedato: string,
+) => {
+    if (Uttaksperioden.erEøsPeriode(periode)) {
+        return false;
+    }
+
+    if (periode.overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' && periode.forelder === 'FAR_MEDMOR') {
+        return true;
+    }
+
+    if (
+        erUttaksperiode(periode) &&
+        periode.kontoType === 'FEDREKVOTE' &&
+        !periode.samtidigUttak &&
+        UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+            periode,
+            familiehendelsedato,
+            undefined,
+        )
+    ) {
+        return true;
+    }
+
+    if (
+        (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER') &&
+        periode.morsAktivitet === 'INNLAGT'
+    ) {
+        return true;
+    }
+
+    if (periode.utsettelseÅrsak === 'SØKER_INNLAGT') {
+        return true;
+    }
+
+    return false;
+};
+
+const erUttaksperiode = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt): boolean => {
+    return !('trekkdager' in periode) && !periode.oppholdÅrsak && !periode.overføringÅrsak && !periode.utsettelseÅrsak;
 };
 
 interface Props {
     attachment: Attachment;
     erFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
-    uttaksperioderSomManglerVedlegg: Periode[];
+    uttaksperioderSomManglerVedlegg: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    familiehendelsedato: string;
 }
 
 export const DokumentasjonSendSenereLabel = ({
@@ -61,14 +94,20 @@ export const DokumentasjonSendSenereLabel = ({
     erFarEllerMedmor,
     navnPåForeldre,
     uttaksperioderSomManglerVedlegg,
+    familiehendelsedato,
 }: Props) => {
     const tidsperioder = attachment.dokumenterer?.perioder;
 
     const morErForSykEllerInnlagtFørsteSeksUker = uttaksperioderSomManglerVedlegg
-        .filter(isPeriodeMedMorInnleggelse)
+        .filter((p) => isPeriodeMedMorInnleggelse(p, familiehendelsedato))
         .some((p) => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison -- dette er riktig sjekk, men med to forskjellige Enums. Burde fikses
-            if (p.type === Periodetype.Uttak && p.erMorForSyk === true && p.konto === 'FEDREKVOTE') {
+            if (
+                erUttaksperiode(p) &&
+                'morsAktivitet' in p &&
+                // TODO (TOR)
+                p.morsAktivitet === 'INNLAGT' &&
+                p.kontoType === 'FEDREKVOTE'
+            ) {
                 return true;
             }
 
@@ -335,6 +374,6 @@ export const DokumentasjonSendSenereLabel = ({
                 </VStack>
             );
         default:
-            throw new Error();
+            throw new Error('Ingen skjemaverdi for ' + attachment.skjemanummer);
     }
 };

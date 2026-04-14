@@ -5,14 +5,13 @@ import { BlueRadioGroup } from 'components/form-wrappers/BlueRadioGroup';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyLong, BodyShort, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { RhfForm, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { HvemPlanleggerType } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired } from '@navikt/fp-validation';

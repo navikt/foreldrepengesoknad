@@ -5,9 +5,7 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-
-import { HvemPlanleggerType } from '@navikt/fp-types';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { BarnehageplassSteg } from './BarnehageplassSteg';
 

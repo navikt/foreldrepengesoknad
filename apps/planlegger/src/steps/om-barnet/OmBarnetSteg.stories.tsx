@@ -3,9 +3,7 @@ import { Action, ContextDataType, PlanleggerDataContext } from 'appData/Planlegg
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-
-import { HvemPlanleggerType } from '@navikt/fp-types';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { OmBarnetSteg } from './OmBarnetSteg';
 

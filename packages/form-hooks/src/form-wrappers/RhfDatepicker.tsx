@@ -19,9 +19,9 @@ type Props<T extends FieldValues> = {
     onChange?: (value: string) => void;
     onSelect?: (val?: ComponentProps<typeof DatePicker>['selected']) => void;
     onBlur?: () => void;
-    minDate?: Date | Dayjs | string;
-    maxDate?: Date | Dayjs | string;
-    defaultMonth?: Date | Dayjs | string;
+    minDate?: Dayjs | string;
+    maxDate?: Dayjs | string;
+    defaultMonth?: Dayjs | string;
     showMonthAndYearDropdowns?: boolean;
     disableWeekends?: boolean;
     autofocusWhenEmpty?: boolean;

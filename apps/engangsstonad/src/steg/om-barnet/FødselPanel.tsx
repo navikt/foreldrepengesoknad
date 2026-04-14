@@ -48,8 +48,8 @@ export const FødselPanel = () => {
                 control={control}
                 label={<FormattedMessage id="FødselPanel.Termindato" />}
                 description={intl.formatMessage({ id: 'FødselPanel.TermindatoFodselsdato.beskrivelse' })}
-                minDate={dayjs(fødselsdato).subtract(3, 'week').toDate()}
-                maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
+                minDate={dayjs(fødselsdato).subtract(3, 'week')}
+                maxDate={dayjs().add(18, 'weeks').add(3, 'days')}
                 validate={[
                     isRequired(intl.formatMessage({ id: 'FødselPanel.Termindato.DuMåOppgi' })),
                     isValidDate(intl.formatMessage({ id: 'FødselPanel.Termindato.Gyldig' })),
@@ -67,8 +67,8 @@ export const FødselPanel = () => {
                     name="fødselsdato"
                     control={control}
                     label={<FormattedMessage id="FødselPanel.Fødselsdato" />}
-                    minDate={dayjs().subtract(6, 'month').toDate()}
-                    maxDate={dayjs().toDate()}
+                    minDate={dayjs().subtract(6, 'month')}
+                    maxDate={dayjs()}
                     validate={[
                         isRequired(intl.formatMessage({ id: 'FødselPanel.Fødselsdato.DuMåOppgi' })),
                         isValidDate(intl.formatMessage({ id: 'FødselPanel.Fødselsdato.Gyldig' })),

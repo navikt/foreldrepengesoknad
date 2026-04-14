@@ -4,7 +4,7 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isoWeek from 'dayjs/plugin/isoWeek';
 
-import { getDecoratorLanguageCookie, isISODateString } from '@navikt/fp-utils';
+import { getDecoratorLanguageCookie } from '@navikt/fp-utils';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isoWeek);
@@ -12,27 +12,11 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(isBetween);
 dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
 
-type DateType = string | Date | undefined;
-
-export const formaterDato = (dato: DateType, datoformat?: string) => {
+export const formaterDato = (dato: string | undefined, datoformat?: string) => {
     return dayjs(dato).format(datoformat || 'dddd D. MMMM YYYY');
 };
 
-export const formaterTid = (dato: DateType) => {
-    return formaterDato(dato, 'KL.HH:mm');
-};
-
-export const ISOStringToDate = (dateString: string | undefined) => {
-    if (dateString === undefined) {
-        return undefined;
-    }
-    if (isISODateString(dateString) && dayjs(dateString, 'YYYY-MM-DD', true).isValid()) {
-        return dayjs.utc(dateString).toDate();
-    }
-    return undefined;
-};
-
-export const getErDatoInnenEnDagFraAnnenDato = (dato1: Date | undefined, dato2: Date | undefined): boolean => {
+export const getErDatoInnenEnDagFraAnnenDato = (dato1: string | undefined, dato2: string | undefined): boolean => {
     if (dato1 === undefined || dato2 === undefined) {
         return false;
     }

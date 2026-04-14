@@ -1,74 +1,72 @@
 import { useIntl } from 'react-intl';
+import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 
-import { AnnenForelder, UttaksperiodeBase, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { Barn, EksternArbeidsforholdDto_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan';
 
-import { getArbeidsformTekst } from '../OppsummeringUtils';
+import { getAktivitetTekst } from '../OppsummeringUtils';
 import { Feltoppsummering } from './Feltoppsummering';
 import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
 interface Props {
-    periode: UttaksperiodeBase;
+    periode: UttakPeriode_fpoversikt;
     registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[] | undefined;
     annenForelder: AnnenForelder;
+    barn: Barn;
+    erSøker: boolean;
 }
 
-export const Uttaksperiodedetaljer = ({ periode, registrerteArbeidsforhold, annenForelder }: Props) => {
-    const {
-        konto,
-        morsAktivitetIPerioden,
-        ønskerSamtidigUttak,
-        gradert,
-        stillingsprosent,
-        orgnumre,
-        arbeidsformer,
-        ønskerFlerbarnsdager,
-    } = periode;
+export const Uttaksperiodedetaljer = ({ periode, annenForelder, registrerteArbeidsforhold, barn, erSøker }: Props) => {
     const intl = useIntl();
-
-    let arbeidsformTekst = '';
-    if (arbeidsformer) {
-        arbeidsformTekst = getArbeidsformTekst(intl, arbeidsformer, orgnumre, registrerteArbeidsforhold).join('\r\n');
-    }
 
     const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
 
+    const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(barn.antallBarn, periode.forelder, periode.kontoType);
+
     return (
         <>
-            {ønskerFlerbarnsdager !== undefined && erDeltUttakINorge && (
+            {skalViseFlerbarnsdager && erDeltUttakINorge && (
                 <Feltoppsummering
-                    feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.ønskerFlerbarnsdagerOld' })}
-                    verdi={ønskerFlerbarnsdager ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
+                    feltnavn={intl.formatMessage(
+                        { id: 'oppsummering.uttak.ønskerFlerbarnsdager' },
+                        { erSøker, fornavn: annenForelder.kanIkkeOppgis ? '' : annenForelder.fornavn },
+                    )}
+                    verdi={
+                        periode.flerbarnsdager ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })
+                    }
                 />
             )}
-            {ønskerSamtidigUttak !== undefined && erDeltUttakINorge && (
+            {periode.samtidigUttak !== undefined && erDeltUttakINorge && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.samtidigUttak' })}
-                    verdi={ønskerSamtidigUttak ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
+                    verdi={periode.samtidigUttak ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
-            {konto !== 'FORELDREPENGER_FØR_FØDSEL' && ønskerSamtidigUttak !== true && (
+            {periode.kontoType !== 'FORELDREPENGER_FØR_FØDSEL' && !periode.samtidigUttak && (
                 <Feltoppsummering
-                    feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.kombineresMedarbeidOld' })}
-                    verdi={gradert ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
+                    feltnavn={intl.formatMessage(
+                        { id: 'oppsummering.uttak.kombineresMedarbeid' },
+                        { erSøker, fornavn: annenForelder.kanIkkeOppgis ? '' : annenForelder.fornavn },
+                    )}
+                    verdi={periode.gradering ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
 
-            {gradert === true && stillingsprosent && (
+            {periode.gradering?.arbeidstidprosent && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.stillingsprosent' })}
-                    verdi={stillingsprosent}
+                    verdi={periode.gradering.arbeidstidprosent.toString()}
                 />
             )}
 
-            {arbeidsformer && (
+            {periode.gradering?.aktivitet && erSøker && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.arbeidstaker.label' })}
-                    verdi={arbeidsformTekst}
+                    verdi={getAktivitetTekst(intl, periode.gradering?.aktivitet, registrerteArbeidsforhold)}
                 />
             )}
-            {morsAktivitetIPerioden && morsAktivitetIPerioden !== 'IKKE_OPPGITT' && (
-                <MorsAktivitetDetaljer morsAktivitet={morsAktivitetIPerioden} />
+            {periode.morsAktivitet && periode.morsAktivitet !== 'IKKE_OPPGITT' && (
+                <MorsAktivitetDetaljer morsAktivitet={periode.morsAktivitet} />
             )}
         </>
     );

@@ -6,13 +6,13 @@ import { useStepConfig } from 'appData/useStepConfig';
 import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrertePersonalia';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getRegistrerteBarnOmDeFinnes } from 'utils/barnUtils';
 
 import { VStack } from '@navikt/ds-react';
 
-import { AnnenForelder, Barn, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+import { Barn, FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';

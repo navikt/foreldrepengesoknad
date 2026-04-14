@@ -2,11 +2,11 @@ import { API_URLS } from 'api/queries';
 import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { EksisterendeSak } from 'types/EksisterendeSak';
 import { Fordeling } from 'types/Fordeling';
 import { Søknad } from 'types/Søknad';
 import { VERSJON_MELLOMLAGRING } from 'utils/mellomlagringUtils';
 
-import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
 import { captureMessage } from '@navikt/fp-observability';
 import {
     FpPersonopplysningerDto_fpoversikt,
@@ -27,18 +27,12 @@ export interface FpMellomlagretData {
     currentRoute: SøknadRoutes;
     søknad?: Partial<Søknad>;
     antallUkerIUttaksplan?: number;
-    perioderSomSkalSendesInn?: Periode[];
     harUttaksplanBlittSlettet?: boolean;
     søknadGjelderEtNyttBarn?: boolean;
     fordeling?: Fordeling;
     eksisterendeSak?: EksisterendeSak;
-    endringstidspunkt?: Date;
-    barnFraNesteSak?: BarnFraNesteSak;
     annenPartsUttakErLagtTilIPlan?: boolean;
     uttaksplanNy?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
-    uttaksplanMetadataNy?: {
-        ønskerJustertUttakVedFødsel?: boolean | undefined;
-    };
     valgtEksisterendeSaksnr?: string;
 }
 
@@ -66,16 +60,11 @@ const getDataForMellomlagring = (
     const utenlandsopphold = getDataFromState(ContextDataType.UTENLANDSOPPHOLD);
     const senereUtenlandsopphold = getDataFromState(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const tidligereUtenlandsopphold = getDataFromState(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-    const uttaksplanMetadata = getDataFromState(ContextDataType.UTTAKSPLAN_METADATA);
-    const barnFraNesteSak = getDataFromState(ContextDataType.BARN_FRA_NESTE_SAK);
-    const eksisterendeSak = getDataFromState(ContextDataType.EKSISTERENDE_SAK);
-    const uttaksplan = getDataFromState(ContextDataType.UTTAKSPLAN);
     const fordeling = getDataFromState(ContextDataType.FORDELING);
     const dekningsgrad = getDataFromState(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const vedlegg = getDataFromState(ContextDataType.VEDLEGG);
-
-    const uttaksplanNy = getDataFromState(ContextDataType.UTTAKSPLAN_NY);
-    const uttaksplanMetadataNy = getDataFromState(ContextDataType.UTTAKSPLAN_METADATA_NY);
+    const uttaksplanNy = getDataFromState(ContextDataType.UTTAKSPLAN);
+    const ønskerJustertUttakVedFødsel = getDataFromState(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const valgtEksisterendeSaksnr = getDataFromState(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
     // TODO (TOR) Dropp mapping her og lagre context rått
@@ -99,20 +88,11 @@ const getDataForMellomlagring = (
             utenlandsoppholdSiste12Mnd: tidligereUtenlandsopphold,
             erEndringssøknad,
             dekningsgrad,
-            uttaksplan,
             vedlegg,
-            ønskerJustertUttakVedFødsel: uttaksplanMetadata?.ønskerJustertUttakVedFødsel,
+            ønskerJustertUttakVedFødsel,
         },
-        eksisterendeSak,
-        barnFraNesteSak,
         fordeling,
-        endringstidspunkt: uttaksplanMetadata?.endringstidspunkt,
-        antallUkerIUttaksplan: uttaksplanMetadata?.antallUkerIUttaksplan,
-        perioderSomSkalSendesInn: uttaksplanMetadata?.perioderSomSkalSendesInn,
-        harUttaksplanBlittSlettet: uttaksplanMetadata?.harUttaksplanBlittSlettet,
-        annenPartsUttakErLagtTilIPlan: uttaksplanMetadata?.annenPartsUttakErLagtTilIPlan,
         uttaksplanNy,
-        uttaksplanMetadataNy,
         valgtEksisterendeSaksnr,
     } satisfies FpMellomlagretData;
 

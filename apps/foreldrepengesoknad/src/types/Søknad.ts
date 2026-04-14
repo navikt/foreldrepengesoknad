@@ -1,20 +1,23 @@
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import { AnnenForelder, Barn, Periode, Søkersituasjon } from '@navikt/fp-common';
 import {
     ArbeidsforholdOgInntektFp,
+    Barn,
     Dekningsgrad,
     Frilans,
     NæringDto,
+    SøkersituasjonFp,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
 
+import { AnnenForelder } from './AnnenForelder';
+
 export interface Søknad {
     type: 'foreldrepenger';
     harGodkjentVilkår: boolean;
-    søkersituasjon: Søkersituasjon;
+    søkersituasjon: SøkersituasjonFp;
     barn: Barn;
     annenForelder: AnnenForelder;
     arbeidsforholdOgInntekt: ArbeidsforholdOgInntektFp;
@@ -26,7 +29,6 @@ export interface Søknad {
     utenlandsoppholdSiste12Mnd: UtenlandsoppholdPeriode[];
     erEndringssøknad: boolean;
     dekningsgrad: Dekningsgrad;
-    uttaksplan: Periode[];
     saksnummer?: string;
     ønskerJustertUttakVedFødsel: boolean | undefined;
     vedlegg: VedleggDataType;

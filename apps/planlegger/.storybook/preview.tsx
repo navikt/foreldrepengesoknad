@@ -8,7 +8,7 @@ import { formHookMessages } from '@navikt/fp-form-hooks';
 import { observabilityMessages } from '@navikt/fp-observability';
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
-import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
+import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan';
 
 import '../src/index.css';
 import enMessages from '../src/intl/messages/en_US.json';

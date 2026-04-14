@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions } from 'api/queries';
-import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { SøknadRoutes, isRouteAvailable } from 'appData/routes';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
 import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
@@ -23,22 +22,33 @@ import { SøkersituasjonSteg } from 'steps/søkersituasjon/SøkersituasjonSteg';
 import { SenereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
 import { TidligereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
 import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSteg';
-import { UttaksplanStegNy } from 'steps/uttaksplan-ny/UttaksplanStegNy';
+import { UttaksplanSteg } from 'steps/uttaksplan/UttaksplanSteg';
 
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
 
-const renderSøknadRoutes = (
-    harGodkjentVilkår: boolean,
-    erEndringssøknad: boolean,
-    søkerInfo: FpPersonopplysningerDto_fpoversikt,
-    mellomlagreSøknadOgNaviger: () => Promise<void>,
-    sendSøknad: () => Promise<void>,
-    avbrytSøknad: () => void,
-    søknadGjelderNyttBarn?: boolean,
-    foreldrepengerSaker?: FpSak_fpoversikt[],
-) => {
+interface SøknadRoutesOptions {
+    harGodkjentVilkår: boolean;
+    erEndringssøknad: boolean;
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    sendSøknad: () => Promise<void>;
+    avbrytSøknad: () => void;
+    søknadGjelderNyttBarn?: boolean;
+    foreldrepengerSaker?: FpSak_fpoversikt[];
+}
+
+const renderSøknadRoutes = ({
+    harGodkjentVilkår,
+    erEndringssøknad,
+    søkerInfo,
+    mellomlagreSøknadOgNaviger,
+    sendSøknad,
+    avbrytSøknad,
+    søknadGjelderNyttBarn,
+    foreldrepengerSaker,
+}: SøknadRoutesOptions) => {
     if (!harGodkjentVilkår || søknadGjelderNyttBarn === undefined) {
         return <Route path="*" element={<Navigate to={SøknadRoutes.VELKOMMEN} />} />;
     }
@@ -53,7 +63,7 @@ const renderSøknadRoutes = (
                 <Route
                     path={SøknadRoutes.UTTAKSPLAN}
                     element={
-                        <UttaksplanStegNy
+                        <UttaksplanSteg
                             søkerInfo={søkerInfo}
                             mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                             avbrytSøknad={avbrytSøknad}
@@ -73,32 +83,6 @@ const renderSøknadRoutes = (
                         />
                     }
                 />
-                {/* {!isLocalhostOrDev() && (
-                    <>
-                        <Route
-                            path={SøknadRoutes.UTTAKSPLAN}
-                            element={
-                                <UttaksplanStep
-                                    søkerInfo={søkerInfo}
-                                    erEndringssøknad={erEndringssøknad}
-                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                    avbrytSøknad={avbrytSøknad}
-                                />
-                            }
-                        />
-                        <Route
-                            path={SøknadRoutes.DOKUMENTASJON}
-                            element={
-                                <ManglendeVedlegg
-                                    søkerInfo={søkerInfo}
-                                    erEndringssøknad={erEndringssøknad}
-                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                    avbrytSøknad={avbrytSøknad}
-                                />
-                            }
-                        />
-                    </>
-                )} */}
                 <Route
                     path={SøknadRoutes.OPPSUMMERING}
                     element={
@@ -175,7 +159,7 @@ const renderSøknadRoutes = (
             <Route
                 path={SøknadRoutes.UTTAKSPLAN}
                 element={
-                    <UttaksplanStegNy
+                    <UttaksplanSteg
                         søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
@@ -195,33 +179,6 @@ const renderSøknadRoutes = (
                     />
                 }
             />
-            {/* {!isLocalhostOrDev() && (
-                <>
-                    <Route
-                        path={SøknadRoutes.UTTAKSPLAN}
-                        element={
-                            <UttaksplanStep
-                                søkerInfo={søkerInfo}
-                                erEndringssøknad={erEndringssøknad}
-                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                avbrytSøknad={avbrytSøknad}
-                            />
-                        }
-                    />
-                    <Route
-                        path={SøknadRoutes.DOKUMENTASJON}
-                        element={
-                            <ManglendeVedlegg
-                                søkerInfo={søkerInfo}
-                                erEndringssøknad={erEndringssøknad}
-                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                avbrytSøknad={avbrytSøknad}
-                            />
-                        }
-                    />
-                </>
-            )} */}
-
             <Route
                 path={SøknadRoutes.UTENLANDSOPPHOLD}
                 element={
@@ -346,8 +303,6 @@ export const ForeldrepengesøknadRoutes = ({
 
     const avbrytSøknad = useAvbrytSøknad(setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn);
 
-    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
-
     // Hvis valgt barn kan vi forsøke hente termindato fra annenpartsvedtak.
     // Dette trengs ikke før i OmBarnet. Men om vi legger et query på rot for å prefetche så tidlig som mulig.
     const annenPartVedtakOptions = useAnnenPartVedtakOptions();
@@ -357,8 +312,7 @@ export const ForeldrepengesøknadRoutes = ({
         if (currentRoute && erMyndig(søkerInfo.fødselsdato) && lagretHarGodkjentVilkår && isFirstTimeLoadingApp) {
             // eslint-disable-next-line react-hooks/set-state-in-effect -- TODO (TOR) - Vurder om denne kan fjennast
             setIsFirstTimeLoadingApp(false);
-            // TODO (TOR) Kan ta vekk innsending av uttaksplan til denne funksjonen når ein tek i bruk ny uttaksplan
-            if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
+            if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår)) {
                 void navigate(currentRoute);
             } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING.toString()) {
                 void navigate(SøknadRoutes.UTTAKSPLAN);
@@ -371,7 +325,6 @@ export const ForeldrepengesøknadRoutes = ({
         navigate,
         isFirstTimeLoadingApp,
         routerLocation.pathname,
-        uttaksplan,
     ]);
 
     if (errorSendSøknad) {
@@ -402,7 +355,7 @@ export const ForeldrepengesøknadRoutes = ({
             />
             <Route path={SøknadRoutes.IKKE_MYNDIG} element={<Umyndig appName="foreldrepengesoknad" />} />
 
-            {renderSøknadRoutes(
+            {renderSøknadRoutes({
                 harGodkjentVilkår,
                 erEndringssøknad,
                 søkerInfo,
@@ -411,7 +364,7 @@ export const ForeldrepengesøknadRoutes = ({
                 avbrytSøknad,
                 søknadGjelderNyttBarn,
                 foreldrepengerSaker,
-            )}
+            })}
         </Routes>
     );
 };

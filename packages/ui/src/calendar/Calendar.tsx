@@ -35,10 +35,22 @@ export const Calendar = ({
     getSrTextForSelectedPeriod,
 }: Props) => {
     const [focusedDate, setFocusedDate] = useState<dayjs.Dayjs | undefined>();
+    const [hoverDate, setHoverDate] = useState<string | undefined>();
+
+    const onDateHover = useCallback((date: string | undefined) => {
+        setHoverDate(date);
+    }, []);
+
+    const pendingFom = useMemo(() => {
+        if (!isRangeSelection) {
+            return undefined;
+        }
+        return periods.find((p) => p.isSelected && p.fom === p.tom)?.fom;
+    }, [isRangeSelection, periods]);
 
     const allMonths = useMemo(
         () => findMonths(firstDateInCalendar, lastDateInCalendar),
-        [periods, firstDateInCalendar, lastDateInCalendar],
+        [firstDateInCalendar, lastDateInCalendar],
     );
     const periodsByMonth = useMemo(() => groupPeriodsByMonth(allMonths, periods), [allMonths, periods]);
 
@@ -49,7 +61,7 @@ export const Calendar = ({
     );
 
     return (
-        <HGrid gap="space-12" columns={{ sm: 1, md: nrOfColumns }}>
+        <HGrid gap="space-12" columns={{ sm: 1, md: nrOfColumns }} onMouseLeave={() => setHoverDate(undefined)}>
             {allMonths.map(({ month, year }, index) => {
                 const monthPeriods = periodsByMonth.get(getMonthKey(year, month)) ?? [];
                 const isMonthInFocus = focusedDate?.year() === year && focusedDate?.month() === month;
@@ -61,9 +73,16 @@ export const Calendar = ({
                         year={year}
                         month={month}
                         periods={monthPeriods}
+                        hoverDate={
+                            pendingFom && hoverDate && isMonthInHoverRange(year, month, pendingFom, hoverDate)
+                                ? hoverDate
+                                : undefined
+                        }
                         showWeekNumbers={showWeekNumbers}
                         dateTooltipCallback={dateTooltipCallback}
                         dateClickCallback={setSelectedPeriods ? dateClickCallback : undefined}
+                        pendingFom={setSelectedPeriods ? pendingFom : undefined}
+                        onDateHover={setSelectedPeriods ? onDateHover : undefined}
                         focusedDate={isMonthInFocus ? focusedDate : undefined}
                         setFocusedDate={setFocusedDate}
                     />
@@ -114,6 +133,14 @@ const groupPeriodsByMonth = (
 
 const findFomDate = (selectedDate: string, period: CalendarPeriod) =>
     dayjs(period.fom).isBefore(dayjs(selectedDate)) ? period.fom : selectedDate;
+
+const isMonthInHoverRange = (year: number, month: number, pendingFom: string, hoverDate: string): boolean => {
+    const fom = dayjs(pendingFom).isBefore(hoverDate) ? dayjs(pendingFom) : dayjs(hoverDate);
+    const tom = dayjs(pendingFom).isBefore(hoverDate) ? dayjs(hoverDate) : dayjs(pendingFom);
+    const monthStart = dayjs().year(year).month(month).startOf('month');
+    const monthEnd = monthStart.endOf('month');
+    return !tom.isBefore(monthStart, 'day') && !fom.isAfter(monthEnd, 'day');
+};
 
 const findTomDate = (selectedDate: string, period: CalendarPeriod) => {
     const parsedSelectedDate = dayjs(selectedDate);

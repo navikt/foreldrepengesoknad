@@ -29,6 +29,6 @@ export const getSisteDagForSvangerskapspenger = (barn: Barn): string => {
     return dagenFørFødsel.format(ISO_DATE_FORMAT);
 };
 
-export const getDefaultMonth = (minDato: Date | string | Dayjs, maxDato: Date | string | Dayjs): Dayjs => {
+export const getDefaultMonth = (minDato: string | Dayjs, maxDato: string | Dayjs): Dayjs => {
     return dayjs().isBetween(dayjs(minDato), dayjs(maxDato), 'd') ? dayjs() : dayjs(maxDato);
 };

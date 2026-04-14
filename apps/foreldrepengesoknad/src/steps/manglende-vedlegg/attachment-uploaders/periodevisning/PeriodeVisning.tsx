@@ -11,14 +11,15 @@ import {
 
 import { BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Situasjon } from '@navikt/fp-common';
 import {
+    NavnPåForeldre,
+    Situasjon,
     UttakOppholdÅrsak_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { UttaksdagenString, Uttaksperioden, capitalizeFirstLetter } from '@navikt/fp-utils';
-import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan-ny';
+import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan';
 
 import { StønadskontoIkon } from './StønadskontoIkon';
 import { UtsettelseIkon } from './UtsettelseIkon';

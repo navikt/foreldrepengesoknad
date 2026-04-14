@@ -5,11 +5,12 @@ import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { AnnenInntektType, SluttpakkeInntekt } from 'types/AndreInntektskilder';
+import { AnnenForelder } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import { AnnenForelder, Barn, BarnType, EksisterendeSak, FamiliehendelseType } from '@navikt/fp-common';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, BarnType, Skjemanummer } from '@navikt/fp-constants';
 import {
+    Barn,
     EndringssøknadForeldrepengerDto,
     ForeldrepengesøknadDto,
     FpPersonopplysningerDto_fpoversikt,
@@ -217,31 +218,10 @@ const getWrapper =
                             },
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: TIDLIGERE_UTENLANDSOPPHOLD,
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: SENERE_UTENLANDSOPPHOLD,
-                            [ContextDataType.UTTAKSPLAN_METADATA_NY]: UTTAKSPLAN_METADATA,
-                            [ContextDataType.UTTAKSPLAN_NY]: [UTTAKSPLAN_PERIODE],
+                            [ContextDataType.UTTAKSPLAN]: [UTTAKSPLAN_PERIODE],
                             [ContextDataType.VEDLEGG]: VEDLEGG,
                             [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: '1',
-                            [ContextDataType.EKSISTERENDE_SAK]: {
-                                saksnummer: '1',
-                                erAnnenPartsSak: false,
-                                grunnlag: {
-                                    dekningsgrad: '100',
-                                    antallBarn: 1,
-                                    morErAleneOmOmsorg: false,
-                                    morErUfør: false,
-                                    morHarRett: true,
-                                    farMedmorErAleneOmOmsorg: false,
-                                    farMedmorHarRett: true,
-                                    søkerErFarEllerMedmor: false,
-                                    erDeltUttak: true,
-                                    erBarnetFødt: true,
-                                    familiehendelseDato: '2024-01-01',
-                                    familiehendelseType: FamiliehendelseType.FØDSEL,
-                                    ønskerJustertUttakVedFødsel: undefined,
-                                },
-                                saksperioder: [],
-                                uttaksplan: [],
-                            } satisfies EksisterendeSak,
+                            [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]: true,
                         }}
                     >
                         {children}
@@ -406,7 +386,7 @@ describe('useFpSendSøknad', () => {
                                 årsak: 'FRI',
                                 fom: '2024-01-01',
                                 tom: '2024-10-10',
-                                //FIXME (TOR) fom og tom under er korrekt så få med dette når endringstidspunkt er på plass
+                                //TODO (TOR) fom og tom under er korrekt så få med dette når endringstidspunkt er på plass
                                 //fom: '2024-01-02', // Endringsstidspunkt
                                 //tom: '2024-01-02', // Endringsstidspunkt
                             }),

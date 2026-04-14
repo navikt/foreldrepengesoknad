@@ -6,9 +6,9 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
-import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
+import { KontoBeregningDto } from '@navikt/fp-types';
 import {
     DELT_UTTAK_80,
     DELT_UTTAK_80_TO_BARN,

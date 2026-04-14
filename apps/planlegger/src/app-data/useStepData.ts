@@ -5,11 +5,11 @@ import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
+import { HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erFlereSøkere } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
-import { HvemPlanleggerType } from '@navikt/fp-types';
 import { ProgressStep } from '@navikt/fp-ui';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './PlanleggerDataContext';

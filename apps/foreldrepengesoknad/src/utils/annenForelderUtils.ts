@@ -1,4 +1,6 @@
-import { AnnenForelder, Barn, isAnnenForelderOppgitt, isFødtBarn } from '@navikt/fp-common';
+import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
+
+import { Barn, isFødtBarn } from '@navikt/fp-types';
 
 import { getFamiliehendelsedato } from './barnUtils';
 

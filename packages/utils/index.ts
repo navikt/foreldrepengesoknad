@@ -77,11 +77,8 @@ export {
     dateIsSameOrAfter,
     dateIsSameOrBefore,
     formaterDatoUtenDag,
-    convertStringOrDateToDate,
 } from './src/dateUtils';
 
-export * from './src/uttak/Uttaksdagen';
-export * from './src/Tidsperioden';
 export { UttaksdagenString, erUttaksdag } from './src/uttak/UttaksdagenString';
 export { Uttaksperioden } from './src/uttak/Uttaksperioden';
 export { TidsperiodenString } from './src/TidsperiodenString';
