@@ -579,3 +579,36 @@ export const AdopsjonBareFarSøkerAleneOmOmsorg: Story = {
         },
     },
 };
+
+// Story som reproduserer buggen der annen part har et vedtak med tomme perioder (perioder: []).
+// API returnerer en gyldig AnnenPartSak, men uten perioder. Dette resulterte tidligere i en tom uttaksplan.
+export const FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(API_URLS.annenPartVedtak, () =>
+                    HttpResponse.json({
+                        antallBarn: 1,
+                        dekningsgrad: 'HUNDRE',
+                        perioder: [],
+                    }),
+                ),
+                http.post(API_URLS.konto, () =>
+                    HttpResponse.json({
+                        '80': {
+                            kontoer: DELT_UTTAK_80,
+                            minsteretter: MINSTERETTER,
+                        },
+                        '100': {
+                            kontoer: DELT_UTTAK_100,
+                            minsteretter: MINSTERETTER,
+                        },
+                    }),
+                ),
+            ],
+        },
+    },
+    args: {
+        ...FødselMorOgFarBeggeHarRett.args,
+    },
+};
