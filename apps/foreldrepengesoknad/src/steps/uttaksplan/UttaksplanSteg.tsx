@@ -122,8 +122,11 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
         return null;
     }
 
-    const tidligereUttaksperioder = uttaksplanForEksisterendeSak || annenPartVedtakQuery.data?.perioder;
-    const defaultUttaksperioder = tidligereUttaksperioder || nyttUttaksplanForslag;
+    const annenPartsPerioderEllerUndefined = annenPartVedtakQuery.data?.perioder?.length
+        ? annenPartVedtakQuery.data.perioder
+        : undefined;
+    const tidligereUttaksperioder = uttaksplanForEksisterendeSak || annenPartsPerioderEllerUndefined;
+    const defaultUttaksperioder = tidligereUttaksperioder ?? nyttUttaksplanForslag;
 
     const erPlanenEndret =
         uttaksplan !== undefined &&

@@ -131,7 +131,8 @@ export const UttaksplanForm = ({
         !bareFarHarRett;
 
     const onSubmit = (formValues: FormValues) => {
-        if (gjeldendeUttaksplan?.length === 0 && !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan)) {
+        const planForValidering = gjeldendeUttaksplan ?? defaultUttaksperioder;
+        if (planForValidering.length === 0 && !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan)) {
             if (erEndringssøknad) {
                 setFeilmelding(<FormattedMessage id="UttaksplanSteg.IngenNyePerioder" />);
             } else {
