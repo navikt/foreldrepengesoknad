@@ -78,10 +78,3 @@ export const getAntallUkerForeldrepenger = (stønadskontoer: KontoBeregningDto):
 
 export const getAntallUkerAktivitetsfriKvote = (stønadskontoer: KontoBeregningDto): number =>
     getDagerForKonto(stønadskontoer, 'AKTIVITETSFRI_KVOTE');
-
-export const getAntallUkerMinsterett = (minsteRettDager: number | undefined): number | undefined => {
-    if (minsteRettDager !== undefined) {
-        return minsteRettDager / 5;
-    }
-    return undefined;
-};

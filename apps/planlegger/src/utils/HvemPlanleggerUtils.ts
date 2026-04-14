@@ -35,7 +35,7 @@ export const erFarOgFar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is Fa
 export const erFarSøker2 = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is FarOgFar | MorOgFar =>
     hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR;
 
-export const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
+const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
     if (hvemPlanlegger.type === HvemPlanleggerType.FAR) {
         return hvemPlanlegger.navnPåFar || intl.formatMessage({ id: 'Du' });
     }
@@ -106,7 +106,7 @@ export const getNavnPåForeldre = (
     };
 };
 
-export const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
+const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
     if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
         return hvemPlanlegger.navnPåMedmor || intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' });
     }
@@ -117,29 +117,6 @@ export const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShap
         return hvemPlanlegger.navnPåMedfar || intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
     }
     return intl.formatMessage({ id: 'HvemPlanlegger.DefaultAnnenForelderNavn' });
-};
-
-export const getDefaultNavnSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
-    if (erMorDelAvSøknaden(hvemPlanlegger)) {
-        return intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' });
-    }
-    if (erFarDelAvSøknaden(hvemPlanlegger)) {
-        return intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
-    }
-    throw new Error('Feil i kode: Ugyldig hvemPlanlegger');
-};
-
-export const getDefaultNavnSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string | undefined => {
-    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
-        return intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' });
-    }
-    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR) {
-        return intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
-    }
-    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
-        return intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
-    }
-    return undefined;
 };
 
 export const getFornavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {

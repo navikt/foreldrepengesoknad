@@ -15,7 +15,7 @@ import {
 } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
-export const urlPrefiks = import.meta.env.BASE_URL;
+const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/personopplysninger/foreldrepenger`,
@@ -72,7 +72,7 @@ export const mellomlagretInfoOptions = () =>
         staleTime: Infinity,
     });
 
-export const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
+const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
     queryOptions({
         queryKey: ['ANNEN_PART_VEDTAK', data],
         queryFn: async () => {
@@ -121,7 +121,7 @@ export type DokumentereMorsArbeidParams = {
     perioder: Array<Tidsperiode & { periodeType: 'UTSETTELSE' | 'UTTAK' }>;
 };
 
-export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams) =>
+const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams) =>
     queryOptions({
         queryKey: ['TILGJENGELIGE_STONADSKONTOER', data],
         queryFn: () => ky.post(API_URLS.konto, { json: data }).json<KontoBeregningResultatDto>(),

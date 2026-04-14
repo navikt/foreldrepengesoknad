@@ -21,7 +21,7 @@ interface ForeldersBrukteDager {
     dagerFellesperiode: number;
 }
 
-export interface BrukteDager {
+interface BrukteDager {
     mor: ForeldersBrukteDager;
     farMedmor: ForeldersBrukteDager;
     alle: KontoDto[];
