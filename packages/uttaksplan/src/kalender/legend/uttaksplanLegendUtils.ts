@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 import { BrukerRolleSak_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-types';
@@ -360,21 +359,6 @@ const getFarsDelGradertLabel = (
     }
 
     return intl.formatMessage({ id: 'kalender.annenPartPeriode.gradert' }, { navnAnnenPart });
-};
-
-export const getInneholderKalenderHelgedager = (periods: CalendarPeriod[]): boolean => {
-    if (periods.length === 0) {
-        return false;
-    }
-
-    const førsteDag = periods[0]!.fom;
-    const sisteDag = periods.at(-1)!.tom;
-    if (dayjs(sisteDag).diff(dayjs(førsteDag), 'days') > 5) {
-        return true;
-    }
-    const førsteDagNr = dayjs(førsteDag).get('day');
-    const sisteDagNr = dayjs(sisteDag).get('day');
-    return sisteDagNr < førsteDagNr;
 };
 
 export const getLegendLabelFromPeriode = (

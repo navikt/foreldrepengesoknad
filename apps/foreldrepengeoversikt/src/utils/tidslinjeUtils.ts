@@ -15,7 +15,7 @@ import { BarnGruppering } from '../types/BarnGruppering.ts';
 import { Tidslinjehendelse2 } from '../types/Tidslinjehendelse.ts';
 import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils.ts';
 
-export const UTTAKSDAGER_PER_UKE = 5;
+const UTTAKSDAGER_PER_UKE = 5;
 
 dayjs.extend(minMax);
 

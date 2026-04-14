@@ -14,7 +14,7 @@ import { serveKomprimerteFilerHvisMulig } from './compression';
 import { configureReverseProxyApi } from './reverseProxy.js';
 import { validerInnkommendeIdportenToken } from './tokenValidation.js';
 
-export const server = express();
+const server = express();
 
 setupServerDefaults(server);
 setupActuators(server);
