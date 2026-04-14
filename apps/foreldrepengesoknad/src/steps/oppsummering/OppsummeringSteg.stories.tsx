@@ -387,23 +387,6 @@ export const FarMedAleneOmsorg: Story = {
             antallBarn: 2,
             termindato: '2025-10-01',
         },
-        uttaksplan: [
-            {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FORELDREPENGER',
-                fom: '2021-11-24',
-                tom: '2021-12-14',
-                flerbarnsdager: false,
-                morsAktivitet: 'IKKE_OPPGITT',
-            },
-            {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FORELDREPENGER',
-                fom: '2021-12-15',
-                tom: '2022-06-07',
-                flerbarnsdager: false,
-            },
-        ],
     },
 };
 
@@ -430,6 +413,23 @@ export const FarMedUførMorUgift: Story = {
             antallBarn: 1,
             termindato: '2025-10-01',
         },
+        uttaksplan: [
+            {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FORELDREPENGER',
+                fom: '2021-11-24',
+                tom: '2021-12-14',
+                flerbarnsdager: false,
+                morsAktivitet: 'IKKE_OPPGITT',
+            },
+            {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FORELDREPENGER',
+                fom: '2021-12-15',
+                tom: '2022-06-07',
+                flerbarnsdager: false,
+            },
+        ],
     },
 };
 
