@@ -1,6 +1,5 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
-import { DayOfWeek } from 'react-day-picker';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { AnnenForelder } from 'types/AnnenForelder';
@@ -48,7 +47,6 @@ interface DatepickerLimitationsString {
     maxDate?: string;
     invalidDateRanges?: DatepickerDateRange[];
     weekendsNotSelectable?: boolean;
-    disabledDaysOfWeek?: DayOfWeek;
 }
 
 const sisteMuligePermisjonsdag = (familiehendelsedato: string): string => {

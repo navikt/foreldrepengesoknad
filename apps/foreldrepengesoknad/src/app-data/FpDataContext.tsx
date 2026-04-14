@@ -147,11 +147,3 @@ export const useContextReset = () => {
         }
     };
 };
-
-// TODO (TOR) Fjern denne
-/**
- * @deprecated Bruk heller useFpStateData eller useFpStateAllDataFn
- */
-export const useContextComplete = () => {
-    return useContext(FpStateContext);
-};

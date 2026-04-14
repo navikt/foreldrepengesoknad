@@ -56,7 +56,7 @@ export const uttaksperiodeKanJusteresVedFødsel = (
     ønskerJustertUttakVedFødsel: boolean | undefined,
     termindato: string | undefined,
     uttaksperiodeFom: string,
-) => {
+): boolean => {
     return !!ønskerJustertUttakVedFødsel && termindato !== undefined && dayjs(uttaksperiodeFom).isSame(termindato, 'd');
 };
 
@@ -157,16 +157,44 @@ const getOppholdskontoNavn = (
 ) => {
     const navn = capitalizeFirstLetter(foreldernavn);
     if (erMor) {
+        if (årsak === 'FEDREKVOTE_ANNEN_FORELDER') {
+            return intl.formatMessage(
+                { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.far.FEDREKVOTE_ANNEN_FORELDER' },
+                { foreldernavn: navn },
+            );
+        }
+        if (årsak === 'FELLESPERIODE_ANNEN_FORELDER') {
+            return intl.formatMessage(
+                { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.far.FELLESPERIODE_ANNEN_FORELDER' },
+                { foreldernavn: navn },
+            );
+        }
+        if (årsak === 'MØDREKVOTE_ANNEN_FORELDER') {
+            return intl.formatMessage(
+                { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.far.MØDREKVOTE_ANNEN_FORELDER' },
+                { foreldernavn: navn },
+            );
+        }
+    }
+
+    if (årsak === 'FEDREKVOTE_ANNEN_FORELDER') {
         return intl.formatMessage(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
-            { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}` },
+            { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.mor.FEDREKVOTE_ANNEN_FORELDER' },
             { foreldernavn: navn },
         );
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
-    return intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
+
+    if (årsak === 'FELLESPERIODE_ANNEN_FORELDER') {
+        return intl.formatMessage(
+            { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.mor.FELLESPERIODE_ANNEN_FORELDER' },
+            { foreldernavn: navn },
+        );
+    }
+
+    return intl.formatMessage(
+        { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.mor.MØDREKVOTE_ANNEN_FORELDER' },
+        { foreldernavn: navn },
+    );
 };
 
 const appendPeriodeNavnHvisUttakRundtFødselFarMedmor = (

@@ -108,8 +108,8 @@ export const dateToISOString = (date?: DateTypes) => (date ? dayjs(date).format(
 
 export const erMyndig = (fødselsdato: DateTypes): boolean => {
     const now = dayjs.utc();
-    const momentDate = dayjs.utc(fødselsdato);
-    return now.diff(momentDate, 'years') >= 18;
+    const date = dayjs.utc(fødselsdato);
+    return now.diff(date, 'years') >= 18;
 };
 
 export const dateIsSameOrBefore = (date: DateTypes | undefined, otherDate: DateTypes | undefined): boolean => {
