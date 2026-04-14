@@ -28,16 +28,27 @@ import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
 
-const renderSøknadRoutes = (
-    harGodkjentVilkår: boolean,
-    erEndringssøknad: boolean,
-    søkerInfo: FpPersonopplysningerDto_fpoversikt,
-    mellomlagreSøknadOgNaviger: () => Promise<void>,
-    sendSøknad: () => Promise<void>,
-    avbrytSøknad: () => void,
-    søknadGjelderNyttBarn?: boolean,
-    foreldrepengerSaker?: FpSak_fpoversikt[],
-) => {
+interface SøknadRoutesOptions {
+    harGodkjentVilkår: boolean;
+    erEndringssøknad: boolean;
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
+    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    sendSøknad: () => Promise<void>;
+    avbrytSøknad: () => void;
+    søknadGjelderNyttBarn?: boolean;
+    foreldrepengerSaker?: FpSak_fpoversikt[];
+}
+
+const renderSøknadRoutes = ({
+    harGodkjentVilkår,
+    erEndringssøknad,
+    søkerInfo,
+    mellomlagreSøknadOgNaviger,
+    sendSøknad,
+    avbrytSøknad,
+    søknadGjelderNyttBarn,
+    foreldrepengerSaker,
+}: SøknadRoutesOptions) => {
     if (!harGodkjentVilkår || søknadGjelderNyttBarn === undefined) {
         return <Route path="*" element={<Navigate to={SøknadRoutes.VELKOMMEN} />} />;
     }
@@ -344,7 +355,7 @@ export const ForeldrepengesøknadRoutes = ({
             />
             <Route path={SøknadRoutes.IKKE_MYNDIG} element={<Umyndig appName="foreldrepengesoknad" />} />
 
-            {renderSøknadRoutes(
+            {renderSøknadRoutes({
                 harGodkjentVilkår,
                 erEndringssøknad,
                 søkerInfo,
@@ -353,7 +364,7 @@ export const ForeldrepengesøknadRoutes = ({
                 avbrytSøknad,
                 søknadGjelderNyttBarn,
                 foreldrepengerSaker,
-            )}
+            })}
         </Routes>
     );
 };

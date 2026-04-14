@@ -386,7 +386,7 @@ describe('useFpSendSøknad', () => {
                                 årsak: 'FRI',
                                 fom: '2024-01-01',
                                 tom: '2024-10-10',
-                                //FIXME (TOR) fom og tom under er korrekt så få med dette når endringstidspunkt er på plass
+                                //TODO (TOR) fom og tom under er korrekt så få med dette når endringstidspunkt er på plass
                                 //fom: '2024-01-02', // Endringsstidspunkt
                                 //tom: '2024-01-02', // Endringsstidspunkt
                             }),
