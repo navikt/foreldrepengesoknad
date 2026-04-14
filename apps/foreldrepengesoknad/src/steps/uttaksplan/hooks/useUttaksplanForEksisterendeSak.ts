@@ -8,8 +8,7 @@ import minMax from 'dayjs/plugin/minMax';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils/src/uttak/UttaksdagenString';
-
-import { sorterPerioder } from './forslag/deltUttak';
+import { sorterPerioder } from '@navikt/fp-uttaksplan';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(minMax);

@@ -1,8 +1,7 @@
 import MockDate from 'mockdate';
 
 import { KontoDto } from '@navikt/fp-types';
-
-import { ikkeDeltUttak } from './ikkeDeltUttak';
+import { ikkeDeltUttak } from '@navikt/fp-uttaksplan';
 
 describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
     beforeAll(() => {
@@ -36,14 +35,14 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
             farOgFar: false,
         });
 
-        expect(forslag.søker1.length).toEqual(2);
-        expect(forslag.søker1[0]!.fom).toEqual(startdato);
-        expect(forslag.søker1[0]!.tom).toEqual('2022-09-30');
-        expect(forslag.søker1[0]!.kontoType).toEqual('FORELDREPENGER');
-        expect(forslag.søker1[0]!.morsAktivitet).toEqual('IKKE_OPPGITT');
-        expect(forslag.søker1[1]!.fom).toEqual('2022-10-03');
-        expect(forslag.søker1[1]!.tom).toEqual('2023-01-13');
-        expect(forslag.søker1[1]!.kontoType).toEqual('FORELDREPENGER');
+        expect(forslag.length).toEqual(2);
+        expect(forslag[0]!.fom).toEqual(startdato);
+        expect(forslag[0]!.tom).toEqual('2022-09-30');
+        expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER');
+        expect(forslag[0]!.morsAktivitet).toEqual('IKKE_OPPGITT');
+        expect(forslag[1]!.fom).toEqual('2022-10-03');
+        expect(forslag[1]!.tom).toEqual('2023-01-13');
+        expect(forslag[1]!.kontoType).toEqual('FORELDREPENGER');
     });
 
     it('skal legge til en periode på 8 uker etter fødsel hvis WLB gjelder og situasjon er fødsel og startdato blir satt til lørdag rett før fødsel', () => {
@@ -59,13 +58,13 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
             erAleneOmOmsorg: false,
             farOgFar: false,
         });
-        expect(forslag.søker1.length).toEqual(2);
-        expect(forslag.søker1[0]!.fom).toEqual(famDato);
-        expect(forslag.søker1[0]!.tom).toEqual('2022-09-30');
-        expect(forslag.søker1[0]!.kontoType).toEqual('FORELDREPENGER');
-        expect(forslag.søker1[0]!.morsAktivitet).toEqual('IKKE_OPPGITT');
-        expect(forslag.søker1[1]!.fom).toEqual('2022-10-03');
-        expect(forslag.søker1[1]!.tom).toEqual('2023-01-13');
-        expect(forslag.søker1[1]!.kontoType).toEqual('FORELDREPENGER');
+        expect(forslag.length).toEqual(2);
+        expect(forslag[0]!.fom).toEqual(famDato);
+        expect(forslag[0]!.tom).toEqual('2022-09-30');
+        expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER');
+        expect(forslag[0]!.morsAktivitet).toEqual('IKKE_OPPGITT');
+        expect(forslag[1]!.fom).toEqual('2022-10-03');
+        expect(forslag[1]!.tom).toEqual('2023-01-13');
+        expect(forslag[1]!.kontoType).toEqual('FORELDREPENGER');
     });
 });
