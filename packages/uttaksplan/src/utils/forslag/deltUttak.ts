@@ -17,7 +17,7 @@ export const sorterPerioder = (
         return TidsperiodenString.forPeriode(tidsperiode1).erGyldig() ? 1 : -1;
     }
     if (dayjs(tidsperiode1.fom).isSame(tidsperiode2.fom, 'day')) {
-        return 1;
+        return 0;
     }
 
     if (TidsperiodenString.forPeriode(tidsperiode2).erOmsluttetAv(tidsperiode1)) {
@@ -53,8 +53,7 @@ interface DeltUttakParams {
  * When `startdato` is provided explicitly (e.g., the same day as `famDato`) the plan starts there
  * with no foreldrepenger-før-fødsel period.
  *
- * Returns a `PlanForslag` with `søker1` containing mor's periods and `søker2` containing
- * far/medmor's periods.
+ * Returns a single `UttakPeriode_fpoversikt[]` with the suggested periods for delt uttak.
  */
 export const deltUttak = ({
     famDato,
