@@ -30,7 +30,7 @@ export const useUttaksplanForslag = (
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const familiehendelsedato = getFamiliehendelsedato(barn);
 
-    if (annenPartsPerioder !== undefined || !valgtStønadskonto || !fordeling) {
+    if (annenPartsPerioder?.length || !valgtStønadskonto || !fordeling) {
         return [];
     }
 
