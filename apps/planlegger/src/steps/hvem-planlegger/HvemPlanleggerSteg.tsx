@@ -44,7 +44,7 @@ export const HvemPlanleggerSteg = () => {
         navigator.goToNextDefaultStep();
     };
 
-    const formMethods = useForm<HvemPlanlegger>({ defaultValues: hvemPlanlegger });
+    const formMethods = useForm<HvemPlanlegger>({ defaultValues: hvemPlanlegger, shouldUnregister: true });
 
     const type = formMethods.watch('type');
 

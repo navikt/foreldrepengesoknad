@@ -84,7 +84,7 @@ describe('getNavnPåForeldre', () => {
     });
 
     describe('fallback til standardnavn', () => {
-        it('skal bruke standardnavn når navnPåFar er undefined for FAR type', () => {
+        it('skal bruke standardnavn på far når far er alene omsorgen', () => {
             const hvemPlanlegger: HvemPlanlegger = {
                 type: HvemPlanleggerType.FAR,
             };
@@ -144,7 +144,7 @@ describe('getNavnPåForeldre', () => {
     describe('edge cases', () => {
         it('skal håndtere tomme strenger som navn', () => {
             const hvemPlanlegger: HvemPlanlegger = {
-                type: HvemPlanleggerType.FAR,
+                type: HvemPlanleggerType.MOR_OG_FAR,
             };
 
             const resultat = getNavnPåForeldre(hvemPlanlegger, mockIntl);
