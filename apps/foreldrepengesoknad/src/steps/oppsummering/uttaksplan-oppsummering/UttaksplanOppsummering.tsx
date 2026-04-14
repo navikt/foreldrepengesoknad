@@ -25,7 +25,7 @@ export const UttaksplanOppsummering = ({ navnPåForeldre, registrerteArbeidsforh
 
     const harJustertUttakVedFødsel = useContextGetData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
 
-    const { antallBarn } = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const { antallBarn } = notEmptasdfy(useContextGetData(ContextDataType.OM_BARNET));
 
     const kontoerOptions = useStønadsKontoerOptions();
     const tilgjengeligeStønadskontoerQuery = useQuery({
