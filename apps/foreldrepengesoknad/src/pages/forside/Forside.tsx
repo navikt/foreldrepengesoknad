@@ -112,10 +112,8 @@ export const Forside = ({
                 søkerInfo.fnr,
             );
             oppdaterSøknadIState(søknad);
-        }
-
-        // Barn er registrert, men det finnes ingen sak
-        if (!valgtEksisterendeSak) {
+        } else if (!valgtEksisterendeSak) {
+            // Barn er registrert, men det finnes ingen sak
             const søknad = lagNySøknadForRegistrerteBarn(valgteBarn);
             oppdaterSøknadIState(søknad);
         }
