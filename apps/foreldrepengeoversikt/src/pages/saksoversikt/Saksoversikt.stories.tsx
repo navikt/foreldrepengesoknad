@@ -10,9 +10,11 @@ import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import {
     tidslinjeHendelserFP,
     tidslinjeHendelser_ES_førstegangssøknad,
+    tidslinjeHendelser_ES_førstegangssøknad_nylig,
     tidslinjeHendelser_FP_endringssøknad_nylig,
     tidslinjeHendelser_FP_førstegangssøknad_gammel,
     tidslinjeHendelser_FP_førstegangssøknad_nylig,
+    tidslinjeHendelser_SVP_førstegangssøknad_nylig,
 } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
 
 import { OversiktPersonopplysningerDto_fpoversikt, Saker_fpoversikt } from '@navikt/fp-types';
@@ -176,5 +178,66 @@ export const ForeldrepengerEndringssøknad: Story = {
     args: {
         søkerinfo: søkerinfo,
         saksnummer: '1',
+    },
+};
+
+export const EngangsstønadTestAvSkyraNyligInnsending: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.saker, () =>
+                    HttpResponse.json({
+                        foreldrepenger: [],
+                        engangsstønad: [
+                            {
+                                saksnummer: '352011079',
+                                sakAvsluttet: false,
+                                gjelderAdopsjon: false,
+                                familiehendelse: {
+                                    fødselsdato: '2024-01-01',
+                                    termindato: '2024-01-01',
+                                    antallBarn: 1,
+                                },
+                                åpenBehandling: {
+                                    tilstand: 'UNDER_BEHANDLING',
+                                },
+                                oppdatertTidspunkt: '2024-02-28T21:19:08.911',
+                            },
+                        ],
+                        svangerskapspenger: [],
+                    } satisfies Saker_fpoversikt),
+                ),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_ES_førstegangssøknad_nylig)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json()),
+            ],
+        },
+    },
+    args: {
+        søkerinfo: søkerinfo,
+        saksnummer: '352011079',
+    },
+};
+
+export const SvangerskapspengerTestAvSkyraNyligInnsending: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+                http.get(API_URLS.saker, () =>
+                    HttpResponse.json({
+                        foreldrepenger: [],
+                        engangsstønad: [],
+                        svangerskapspenger: [SAK_1],
+                    }),
+                ),
+                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_SVP_førstegangssøknad_nylig)),
+                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+            ],
+        },
+    },
+    args: {
+        saksnummer: '202',
+        søkerinfo: søkerinfo,
     },
 };
