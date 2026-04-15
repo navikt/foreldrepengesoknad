@@ -60,6 +60,15 @@ describe('intl foreldrepengeoversikt', () => {
             if (key.includes('ettersendelse.')) {
                 return false;
             }
+            // Dynamisk valt basert på sak.ytelse i BeregningPage
+            if (
+                key.startsWith('beregning.page.heading') ||
+                key.startsWith('beregning.utbetalingsvisning.fullBeskrivelse') ||
+                key.startsWith('beregning.feriepenger.ikkeRett') ||
+                key.startsWith('beregning.feriepenger.harRett')
+            ) {
+                return false;
+            }
             return !allTranslationsCode.includes(key);
         });
         if (missingKeysCode.length > 0) {

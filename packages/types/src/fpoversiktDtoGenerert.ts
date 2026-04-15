@@ -283,7 +283,7 @@ export type BrukerRolleSak_fpoversikt = 'MOR' | 'FAR_MEDMOR';
 export type DekningsgradSak_fpoversikt = 'ÅTTI' | 'HUNDRE';
 
 export type Gradering_fpoversikt = {
-    aktivitet?: Aktivitet_fpoversikt;
+    aktivitet: Aktivitet_fpoversikt;
     arbeidstidprosent: number;
 };
 
@@ -294,9 +294,9 @@ export type UttakOppholdÅrsak_fpoversikt =
     | 'FORELDREPENGER_ANNEN_FORELDER';
 
 export type UttakPeriode_fpoversikt = {
-    flerbarnsdager: boolean;
+    flerbarnsdager?: boolean;
     fom: string;
-    forelder: BrukerRolleSak_fpoversikt;
+    forelder?: BrukerRolleSak_fpoversikt;
     gradering?: Gradering_fpoversikt;
     kontoType?: no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType;
     morsAktivitet?: no_nav_foreldrepenger_kontrakter_felles_kodeverk_MorsAktivitet;
@@ -557,6 +557,8 @@ export type TilretteleggingType_fpoversikt = 'HEL' | 'DELVIS' | 'INGEN';
 export type Vedtak_fpoversikt = {
     arbeidsforhold: SvpArbeidsforhold_fpoversikt[];
     avslagÅrsak?: AvslagÅrsak_fpoversikt;
+    beregningsgrunnlag?: Beregningsgrunnlag_fpoversikt;
+    tilkjentYtelse?: TilkjentYtelse_fpoversikt;
 };
 
 export type AvslagÅrsak_fpoversikt =

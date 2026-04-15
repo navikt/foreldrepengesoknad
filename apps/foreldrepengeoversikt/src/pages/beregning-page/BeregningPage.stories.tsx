@@ -5,6 +5,7 @@ import {
     saker_beregning_delvis_refusjon,
     saker_beregning_direkte_utbetaling,
     saker_beregning_full_refusjon,
+    saker_beregning_svp_direkte_utbetaling,
 } from 'storybookData/saker/saker.ts';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
@@ -66,5 +67,16 @@ export const BeregningFullRefusjon: Story = {
     },
     args: {
         saksnummer: '616',
+    },
+};
+
+export const BeregningSvpDirekteUtbetaling: Story = {
+    parameters: {
+        msw: {
+            handlers: [http.get(API_URLS.saker, () => HttpResponse.json(saker_beregning_svp_direkte_utbetaling))],
+        },
+    },
+    args: {
+        saksnummer: '701',
     },
 };
