@@ -1,7 +1,8 @@
 import MockDate from 'mockdate';
 
 import { KontoDto } from '@navikt/fp-types';
-import { deltUttak } from '@navikt/fp-uttaksplan';
+
+import { deltUttak } from './deltUttak';
 
 describe('deltUttak - Fødsel', () => {
     beforeAll(() => {

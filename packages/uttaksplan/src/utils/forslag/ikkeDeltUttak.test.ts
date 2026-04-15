@@ -1,7 +1,8 @@
 import MockDate from 'mockdate';
 
 import { KontoDto } from '@navikt/fp-types';
-import { ikkeDeltUttak } from '@navikt/fp-uttaksplan';
+
+import { ikkeDeltUttak } from './ikkeDeltUttak';
 
 describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
     beforeAll(() => {
