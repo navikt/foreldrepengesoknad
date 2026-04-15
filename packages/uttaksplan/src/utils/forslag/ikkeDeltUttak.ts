@@ -330,7 +330,7 @@ const ikkeDeltUttakFødsel = ({
     }
 };
 
-export interface IkkeDeltUttakParams {
+interface IkkeDeltUttakParams {
     situasjon: Situasjon;
     famDato: string;
     erFarEllerMedmor: boolean;
