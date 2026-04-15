@@ -144,14 +144,11 @@ export const UttaksplanForm = ({
             setFeilmelding(<FormattedMessage id="UttaksplanSteg.OvertrukketDager" />);
             scrollToKvoteOppsummering();
         } else if (
-            harPeriodeDerMorsAktivitetIkkeErValgt(
-                utledRettighet(erAleneOmOmsorg, erDeltUttak),
-                gjeldendeUttaksplan || defaultUttaksperioder,
-            )
+            harPeriodeDerMorsAktivitetIkkeErValgt(utledRettighet(erAleneOmOmsorg, erDeltUttak), planForValidering)
         ) {
             setFeilmelding(<FormattedMessage id="UttaksplanSteg.MorsAktivitetIkkeValgt" />);
             scrollToKvoteOppsummering();
-        } else if (harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, gjeldendeUttaksplan)) {
+        } else if (harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, planForValidering)) {
             setFeilmelding(<FormattedMessage id="UttaksplanSteg.KunPerioderForAnnenForelder" />);
             scrollToKvoteOppsummering();
         } else {
