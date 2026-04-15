@@ -145,7 +145,7 @@ describe('<Saksoversikt>', () => {
         );
 
         it(
-            'skal IKKE vise undersøkelsen for svangerskapspenger selv om den er nylig',
+            'skal IKKE vise undersøkelsen for svangerskapspenger selv om den er nylig!',
             mswWrapper(async ({ setHandlers }) => {
                 setHandlers(SvangerskapspengerTestAvSkyraNyligInnsending.parameters.msw);
                 render(<SvangerskapspengerTestAvSkyraNyligInnsending />);
