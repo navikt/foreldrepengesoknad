@@ -35,6 +35,7 @@ export const Foreldrepengesøknad = () => {
     const sakerQuery = useQuery(sakerOptions());
 
     const mellomlagretInfoQuery = useQuery(mellomlagretInfoOptions());
+    const mellomlagretInfoData = mellomlagretInfoQuery.data;
 
     useEffect(() => {
         if (søkerinfoQuery.error) {
@@ -51,13 +52,12 @@ export const Foreldrepengesøknad = () => {
         }
     }, [søkerinfoQuery.error, sakerQuery.error]);
 
-    if (!sakerQuery.data || !søkerinfoQuery.data || mellomlagretInfoQuery.isPending) {
+    if (!sakerQuery.data || !søkerinfoQuery.data || mellomlagretInfoData === undefined) {
         return <Spinner />;
     }
 
-    const skalBrukeMellomlagretData =
-        mellomlagretInfoQuery.data !== undefined && shouldApplyStorage(mellomlagretInfoQuery.data);
-    const mellomlagretData = skalBrukeMellomlagretData ? mellomlagretInfoQuery.data : undefined;
+    const skalBrukeMellomlagretData = mellomlagretInfoData !== null && shouldApplyStorage(mellomlagretInfoData);
+    const mellomlagretData = skalBrukeMellomlagretData ? mellomlagretInfoData : undefined;
 
     if (
         !!mellomlagretData &&
