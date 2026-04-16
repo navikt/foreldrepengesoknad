@@ -123,9 +123,9 @@ export const UttaksplanForm = ({
         erSøkerFarEllerMedmor &&
         søkersituasjon.situasjon === 'fødsel' &&
         gjeldendeUttaksplan &&
-        finnPerioderRundtFødsel(gjeldendeUttaksplan, barn).some(
+        finnPerioderRundtFødsel(gjeldendeUttaksplan, barn).filter(
             (p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.forelder === 'FAR_MEDMOR',
-        ) &&
+        ).length === 1 &&
         isUfødtBarn(barn) &&
         barn.termindato !== undefined &&
         !bareFarHarRett;
