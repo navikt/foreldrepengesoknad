@@ -28,7 +28,7 @@ export const mellomlagretInfoOptions = () =>
         queryFn: async () => {
             const response = await ky.get(API_URLS.mellomlagring);
             if (response.status === 204) {
-                return undefined;
+                return null;
             }
             return response.json<EsMellomlagretData>();
         },

@@ -71,7 +71,7 @@ export const mellomlagretInfoOptions = () =>
         queryFn: async () => {
             const response = await ky.get(API_URLS.mellomlagring);
             if (response.status === 204) {
-                return undefined;
+                return null;
             }
             return response.json<FpMellomlagretData>();
         },
@@ -84,7 +84,7 @@ const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
         queryFn: async () => {
             const response = await ky.post(API_URLS.annenPartVedtak, { json: data });
             if (response.status === 204) {
-                return undefined;
+                return null;
             }
             return response.json<AnnenPartSak_fpoversikt>();
         },
