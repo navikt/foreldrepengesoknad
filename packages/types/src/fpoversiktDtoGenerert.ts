@@ -557,6 +557,8 @@ export type TilretteleggingType_fpoversikt = 'HEL' | 'DELVIS' | 'INGEN';
 export type Vedtak_fpoversikt = {
     arbeidsforhold: SvpArbeidsforhold_fpoversikt[];
     avslagÅrsak?: AvslagÅrsak_fpoversikt;
+    beregningsgrunnlag?: Beregningsgrunnlag_fpoversikt;
+    tilkjentYtelse?: TilkjentYtelse_fpoversikt;
 };
 
 export type AvslagÅrsak_fpoversikt =

@@ -12,6 +12,8 @@ const {
     ForeldrepengerTestAvSkyraGammelInnsending,
     ForeldrepengerTestAvSkyraNyligInnsending,
     ForeldrepengerEndringssøknad,
+    EngangsstønadTestAvSkyraNyligInnsending,
+    SvangerskapspengerTestAvSkyraNyligInnsending,
 } = composeStories(stories);
 
 const ForeldrepengerSkyraNN = composeStory(
@@ -125,6 +127,28 @@ describe('<Saksoversikt>', () => {
             mswWrapper(async ({ setHandlers }) => {
                 setHandlers(ForeldrepengerEndringssøknad.parameters.msw);
                 render(<ForeldrepengerEndringssøknad />);
+
+                expect(await screen.findByText('Din sak')).toBeInTheDocument();
+                expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
+            }),
+        );
+
+        it(
+            'skal IKKE vise undersøkelsen for engangsstønad selv om den er nylig',
+            mswWrapper(async ({ setHandlers }) => {
+                setHandlers(EngangsstønadTestAvSkyraNyligInnsending.parameters.msw);
+                render(<EngangsstønadTestAvSkyraNyligInnsending />);
+
+                expect(await screen.findByText('Din sak')).toBeInTheDocument();
+                expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
+            }),
+        );
+
+        it(
+            'skal IKKE vise undersøkelsen for svangerskapspenger selv om den er nylig!',
+            mswWrapper(async ({ setHandlers }) => {
+                setHandlers(SvangerskapspengerTestAvSkyraNyligInnsending.parameters.msw);
+                render(<SvangerskapspengerTestAvSkyraNyligInnsending />);
 
                 expect(await screen.findByText('Din sak')).toBeInTheDocument();
                 expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();

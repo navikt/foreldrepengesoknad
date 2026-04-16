@@ -9,7 +9,7 @@ export const BeregningLenkePanel = () => {
     const gjeldendeSak = useGetSelectedSak();
     const intl = useIntl();
 
-    if (gjeldendeSak?.ytelse !== 'FORELDREPENGER') {
+    if (gjeldendeSak?.ytelse === 'ENGANGSSTØNAD') {
         return undefined;
     }
     const beregning = gjeldendeSak?.gjeldendeVedtak?.beregningsgrunnlag;

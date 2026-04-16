@@ -2,17 +2,15 @@ import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
-import { PlanForslag } from 'types/PlanForslag';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { KontoBeregningDto, KontoDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { TidsperiodenString, UttaksdagenString, treUkerSiden } from '@navikt/fp-utils';
+import { deltUttak, ikkeDeltUttak } from '@navikt/fp-uttaksplan';
 
 import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from './barnetUtils';
-import { deltUttak } from './deltUttak';
 import { HvemHarRett } from './hvemHarRettUtils';
-import { ikkeDeltUttak } from './ikkeDeltUttak';
 import {
     getAntallDagerAktivitetsfriKvote,
     getAntallDagerFedrekvote,
@@ -22,6 +20,11 @@ import {
     getAntallUkerOgDagerForeldrepenger,
     getUkerOgDager,
 } from './stønadskontoerUtils';
+
+export interface PlanForslag {
+    søker1: UttakPeriode_fpoversikt[];
+    søker2: UttakPeriode_fpoversikt[];
+}
 
 dayjs.extend(isoWeek);
 
@@ -342,10 +345,14 @@ export const lagForslagTilPlan = ({
     farOgFar,
 }: LagForslagProps): PlanForslag => {
     if (erDeltUttak) {
-        return deltUttak({ famDato, tilgjengeligeStønadskontoer, fellesperiodeDagerMor, startdato });
+        const perioder = deltUttak({ famDato, tilgjengeligeStønadskontoer, fellesperiodeDagerMor, startdato });
+        return {
+            søker1: perioder.filter((p) => p.forelder === 'MOR'),
+            søker2: perioder.filter((p) => p.forelder === 'FAR_MEDMOR'),
+        };
     }
 
-    return ikkeDeltUttak({
+    const perioder = ikkeDeltUttak({
         situasjon: erAdopsjon ? 'adopsjon' : 'fødsel',
         famDato,
         erFarEllerMedmor,
@@ -356,6 +363,7 @@ export const lagForslagTilPlan = ({
         startdato,
         farOgFar,
     });
+    return { søker1: perioder, søker2: [] };
 };
 
 export const getSøkersPerioder = (

@@ -8,8 +8,7 @@ import minMax from 'dayjs/plugin/minMax';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils/src/uttak/UttaksdagenString';
-
-import { sorterPerioder } from './forslag/deltUttak';
+import { sorterPerioder } from '@navikt/fp-uttaksplan';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(minMax);
@@ -31,9 +30,11 @@ export const useUttaksplanForEksisterendeSak = (
         return undefined;
     }
 
-    const uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> = [
-        ...valgtSak.gjeldendeVedtak.perioder,
-    ];
+    const søkerPerioder = perioderAnnenPart
+        ? midlertidigJusteringAvSamtidigUttak(valgtSak.gjeldendeVedtak.perioder, perioderAnnenPart)
+        : valgtSak.gjeldendeVedtak.perioder;
+
+    const uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> = [...søkerPerioder];
 
     if (valgtSak.gjeldendeVedtak?.perioderAnnenpartEøs) {
         uttaksplan.push(...valgtSak.gjeldendeVedtak.perioderAnnenpartEøs);
@@ -50,26 +51,26 @@ export const useUttaksplanForEksisterendeSak = (
 // synleg om søkar har har lagt til samtidig uttak og så seinare ser på ein endringssøknad), så må en endra
 // annen part sin periode til samtidig uttak for å få rett visning i kalender
 const midlertidigJusteringAvSamtidigUttak = (
-    perioderAnnenPart: UttakPeriode_fpoversikt[],
-    perioderSøker: UttakPeriode_fpoversikt[],
+    perioderSøker1: UttakPeriode_fpoversikt[],
+    perioderSøker2: UttakPeriode_fpoversikt[],
 ): UttakPeriode_fpoversikt[] => {
-    return perioderAnnenPart.flatMap((annenPartPeriode) => {
-        const overlappendeSøkerPeriode = perioderSøker.find((søker) => harOverlapp(annenPartPeriode, søker));
+    return perioderSøker1.flatMap((periodeSøker1) => {
+        const overlappendeSøker2Periode = perioderSøker2.find((søker) => harOverlapp(periodeSøker1, søker));
 
-        if (!overlappendeSøkerPeriode) {
-            return [annenPartPeriode];
+        if (!overlappendeSøker2Periode) {
+            return [periodeSøker1];
         }
-        const skalEndreAnnenPartTilSamtidigUttak =
-            overlappendeSøkerPeriode.samtidigUttak !== undefined && annenPartPeriode.samtidigUttak === undefined;
+        const skalEndreTilSamtidigUttak =
+            overlappendeSøker2Periode.samtidigUttak !== undefined && periodeSøker1.samtidigUttak === undefined;
 
-        if (!skalEndreAnnenPartTilSamtidigUttak) {
-            return [annenPartPeriode];
+        if (!skalEndreTilSamtidigUttak) {
+            return [periodeSøker1];
         }
 
-        const annenFom = dayjs(annenPartPeriode.fom);
-        const annenTom = dayjs(annenPartPeriode.tom);
-        const søkerFom = dayjs(overlappendeSøkerPeriode.fom);
-        const søkerTom = dayjs(overlappendeSøkerPeriode.tom);
+        const annenFom = dayjs(periodeSøker1.fom);
+        const annenTom = dayjs(periodeSøker1.tom);
+        const søkerFom = dayjs(overlappendeSøker2Periode.fom);
+        const søkerTom = dayjs(overlappendeSøker2Periode.tom);
 
         const overlappFom = dayjs.max(annenFom, søkerFom);
         const overlappTom = dayjs.min(annenTom, søkerTom);
@@ -79,14 +80,14 @@ const midlertidigJusteringAvSamtidigUttak = (
         // Før overlapp
         if (annenFom.isBefore(overlappFom, 'day')) {
             resultat.push({
-                ...annenPartPeriode,
+                ...periodeSøker1,
                 tom: UttaksdagenString.forrige(overlappFom.format(ISO_DATE_FORMAT)).getDato(),
             });
         }
 
         // Overlapp-del
         resultat.push({
-            ...annenPartPeriode,
+            ...periodeSøker1,
             fom: overlappFom.format(ISO_DATE_FORMAT),
             tom: overlappTom.format(ISO_DATE_FORMAT),
             samtidigUttak: 100,
@@ -95,7 +96,7 @@ const midlertidigJusteringAvSamtidigUttak = (
         // Etter overlapp
         if (annenTom.isAfter(overlappTom, 'day')) {
             resultat.push({
-                ...annenPartPeriode,
+                ...periodeSøker1,
                 fom: UttaksdagenString.neste(overlappTom.format(ISO_DATE_FORMAT)).getDato(),
             });
         }
