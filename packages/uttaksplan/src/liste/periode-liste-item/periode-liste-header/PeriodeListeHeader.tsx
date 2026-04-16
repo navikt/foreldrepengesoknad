@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, HGrid, HStack, Heading, Hide, Show } from '@navikt/ds-react';
 
 import { DDMMMYY_DATE_FORMAT } from '@navikt/fp-constants/src/dates';
-import { UttaksdagenString } from '@navikt/fp-utils';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { Uttaksplanperiode } from '../../../types/UttaksplanPeriode';
@@ -35,7 +35,7 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
     const førsteFom = getFørsteUttaksplanperiodeFom(uttaksplanperioder);
     const sisteTom = getSisteUttaksplanperiodeTom(uttaksplanperioder);
 
-    const antallDager = UttaksdagenString.denneEllerNeste(førsteFom).getUttaksdagerFremTilOgMedDato(sisteTom);
+    const antallDager = Uttaksdagen.denneEllerNeste(førsteFom).getUttaksdagerFremTilOgMedDato(sisteTom);
 
     const erFamiliehendelse = erUttaksplanperiodeFamiliehendelseDato(uttaksplanperioder);
 

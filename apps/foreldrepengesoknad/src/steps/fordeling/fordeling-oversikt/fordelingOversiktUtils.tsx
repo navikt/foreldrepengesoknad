@@ -31,7 +31,7 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-types';
-import { UttaksdagenString, Uttaksperioden, capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
+import { Uttaksdagen, Uttaksperioden, capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import { getBrukteDager } from './brukteDagerUtils';
 
@@ -934,7 +934,7 @@ export const getSisteUttaksdagAnnenForelder = (
     const sistePeriodeAnnenForelder = annenForeldersFiltrertePerioder.at(-1);
     const sisteDagAnnenForelder =
         annenForeldersFiltrertePerioder && sistePeriodeAnnenForelder
-            ? UttaksdagenString.denneEllerForrige(sistePeriodeAnnenForelder.tom).getDato()
+            ? Uttaksdagen.denneEllerForrige(sistePeriodeAnnenForelder.tom).getDato()
             : undefined;
     return sisteDagAnnenForelder;
 };

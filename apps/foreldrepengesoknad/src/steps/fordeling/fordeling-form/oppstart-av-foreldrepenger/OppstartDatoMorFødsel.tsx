@@ -8,7 +8,7 @@ import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'utils/ba
 import { Alert, HStack, VStack } from '@navikt/ds-react';
 
 import { isFødtBarn } from '@navikt/fp-types';
-import { UttaksdagenString, erUttaksdag, isValidDate } from '@navikt/fp-utils';
+import { Uttaksdagen, erUttaksdag, isValidDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { MorOppstartInformasjon } from './MorOppstartInformasjon';
@@ -28,7 +28,7 @@ export const OppstartDatoMorFødsel = ({ oppstartValg }: Props) => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const { watch } = useFormContext<Fordeling>();
     const oppstartDato = watch('oppstartDato');
-    const førsteUttaksdagPåEllerEtterFamHendelse = UttaksdagenString.denneEllerNeste(familiehendelsesdato).getDato();
+    const førsteUttaksdagPåEllerEtterFamHendelse = Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato();
     const visInformasjon =
         oppstartDato &&
         isValidDate(oppstartDato) &&

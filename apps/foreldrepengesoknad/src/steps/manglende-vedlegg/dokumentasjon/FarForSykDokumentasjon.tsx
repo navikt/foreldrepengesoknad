@@ -9,20 +9,22 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 
-import { UttakUploaderNy } from '../attachment-uploaders/UttakUploaderNy';
+import { UttakUploader } from '../attachment-uploaders/UttakUploader';
 
 interface Props {
     attachments: Attachment[];
     updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
     perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     navnPåForeldre: NavnPåForeldre;
+    erFarEllerMedmor: boolean;
 }
 
-export const MorKvalifiseringsprogrammetDokumentasjonNy = ({
+export const FarForSykDokumentasjon = ({
     attachments,
     updateAttachments,
     perioder,
     navnPåForeldre,
+    erFarEllerMedmor,
 }: Props) => {
     const intl = useIntl();
 
@@ -31,20 +33,27 @@ export const MorKvalifiseringsprogrammetDokumentasjonNy = ({
     }
 
     return (
-        <UttakUploaderNy
+        <UttakUploader
             attachments={attachments}
-            updateAttachments={updateAttachments(Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM)}
+            updateAttachments={updateAttachments(Skjemanummer.DOK_SYKDOM_FAR)}
             perioder={perioder}
             navnPåForeldre={navnPåForeldre}
-            skjemanummer={Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM}
-            labelText={intl.formatMessage({ id: 'manglendeVedlegg.kvalifiseringsprogram.tittel' })}
-            description={intl.formatMessage(
-                { id: 'manglendeVedlegg.kvalifiseringsprogram.description' },
+            skjemanummer={Skjemanummer.DOK_SYKDOM_FAR}
+            labelText={intl.formatMessage(
+                { id: 'manglendeVedlegg.farForSyk.label' },
                 {
-                    navn: navnPåForeldre.mor,
+                    navn: navnPåForeldre.farMedmor,
+                    erFarEllerMedmor,
                 },
             )}
-            attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
+            description={intl.formatMessage(
+                { id: 'manglendeVedlegg.farForSyk.description' },
+                {
+                    navn: navnPåForeldre.farMedmor,
+                    erFarEllerMedmor,
+                },
+            )}
+            attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
         />
     );
 };

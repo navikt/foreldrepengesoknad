@@ -13,8 +13,8 @@ import {
 } from '@navikt/fp-types';
 import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import {
-    TidsperiodenString,
-    UttaksdagenString,
+    Tidsperioden,
+    Uttaksdagen,
     Uttaksperioden,
     formaterDatoUtenDag,
     getFamiliehendelsedato,
@@ -104,12 +104,12 @@ export const usePerioderForKalendervisning = (
         ];
     }, []);
 
-    if (!unikePerioder.some((p) => TidsperiodenString.forPeriode(p).inneholderDato(familiehendelsedato))) {
+    if (!unikePerioder.some((p) => Tidsperioden.forPeriode(p).inneholderDato(familiehendelsedato))) {
         kalenderPerioder.push(lagFamiliehendelseDato(familiehendelsedato, 'NONE', barn, intl));
     }
     if (
         barnehagestartdato &&
-        !unikePerioder.some((p) => TidsperiodenString.forPeriode(p).inneholderDato(barnehagestartdato))
+        !unikePerioder.some((p) => Tidsperioden.forPeriode(p).inneholderDato(barnehagestartdato))
     ) {
         kalenderPerioder.push(lagBarnehagedatoPeriode(barnehagestartdato, 'NONE', intl));
     }
@@ -128,14 +128,11 @@ const lagBarnehageOgfamiliehendelsePeriode = (
     periode?: UttaksplanperiodeMedKunTapteDager,
 ): CalendarPeriod[] => {
     const perioder: CalendarPeriod[] = [];
-    if (
-        barnehagedato !== undefined &&
-        (!periode || TidsperiodenString.forPeriode(periode).inneholderDato(barnehagedato))
-    ) {
+    if (barnehagedato !== undefined && (!periode || Tidsperioden.forPeriode(periode).inneholderDato(barnehagedato))) {
         perioder.push(lagBarnehagedatoPeriode(barnehagedato, color, intl));
     }
 
-    if (!periode || TidsperiodenString.forPeriode(periode).inneholderDato(familiehendelsedato)) {
+    if (!periode || Tidsperioden.forPeriode(periode).inneholderDato(familiehendelsedato)) {
         perioder.push(lagFamiliehendelseDato(familiehendelsedato, color, barn, intl));
     }
 
@@ -339,8 +336,8 @@ const splittPeriodeITo = (
     isUpdated: boolean,
     rettighetType: RettighetType_fpoversikt,
 ): CalendarPeriod[] => {
-    const forrige = UttaksdagenString.forrige(dato).getDato();
-    const neste = UttaksdagenString.neste(dato).getDato();
+    const forrige = Uttaksdagen.forrige(dato).getDato();
+    const neste = Uttaksdagen.neste(dato).getDato();
     const ikonProps = leggTilIkonVedPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, periode);
 
     const lagPeriode = (fom: string, tom: string): CalendarPeriod => ({

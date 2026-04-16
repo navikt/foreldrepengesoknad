@@ -8,7 +8,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { UttaksdagenString } from '@navikt/fp-utils';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { ForeldreInfo } from '../types/ForeldreInfo';
@@ -65,8 +65,8 @@ export const lagTapteDagerPerioder = (
             const periodeSomSkalSjekkesForHull = {
                 fom:
                     familiesituasjon === 'adopsjon'
-                        ? UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato()
-                        : UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
+                        ? Uttaksdagen.denneEllerNeste(familiehendelsedato).getDato()
+                        : Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
                 tom: sistePeriodeSomStarterEtterFamiliehendelsedato.fom,
             };
 
@@ -74,8 +74,8 @@ export const lagTapteDagerPerioder = (
         }
     } else if (familiesituasjon !== 'adopsjon' && foreldreInfo.søker === 'MOR') {
         const periodeSomSkalSjekkesForHull = {
-            fom: UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato(),
-            tom: UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
+            fom: Uttaksdagen.denneEllerNeste(familiehendelsedato).getDato(),
+            tom: Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
         };
         return lagTapteDagerHull(sortertePerioder, foreldreInfo.søker, periodeSomSkalSjekkesForHull);
     }
@@ -107,8 +107,8 @@ const lagTapteDagerHull = (
     const perioderEkslFørstePeriode = perioderForIntervalletSomSkalSjekkes.slice(1);
 
     for (const periode of perioderEkslFørstePeriode) {
-        const hullFom = UttaksdagenString.neste(forrigePeriode.tom).getDato();
-        const hullTom = UttaksdagenString.forrige(periode.fom).getDato();
+        const hullFom = Uttaksdagen.neste(forrigePeriode.tom).getDato();
+        const hullTom = Uttaksdagen.forrige(periode.fom).getDato();
 
         if (dayjs(hullTom).isSameOrAfter(hullFom, 'day')) {
             perioderMedTapteDager.push({
@@ -134,8 +134,8 @@ const lagPerioderVedStartOgSluttOmDetMangler = (
 
     if (!perioder.some((p) => dayjs(p.fom).isSameOrBefore(fom))) {
         nyePerioder.push({
-            fom: UttaksdagenString.forrige(fom).getDato(),
-            tom: UttaksdagenString.forrige(fom).getDato(),
+            fom: Uttaksdagen.forrige(fom).getDato(),
+            tom: Uttaksdagen.forrige(fom).getDato(),
         });
     }
     if (!perioder.some((p) => dayjs(p.tom).isSameOrAfter(tom))) {
@@ -167,8 +167,8 @@ export const lagPerioderUtenUttak = (
     const perioderEkslFørstePeriode = sortertePerioderMedFamiliehendelse.slice(1);
 
     for (const periode of perioderEkslFørstePeriode) {
-        const hullFom = UttaksdagenString.neste(forrigePeriode.tom).getDato();
-        const hullTom = UttaksdagenString.forrige(periode.fom).getDato();
+        const hullFom = Uttaksdagen.neste(forrigePeriode.tom).getDato();
+        const hullTom = Uttaksdagen.forrige(periode.fom).getDato();
 
         if (dayjs(hullTom).isSameOrAfter(hullFom, 'day')) {
             perioderUtenUttak.push({

@@ -9,7 +9,7 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 
-import { UttakUploaderNy } from '../attachment-uploaders/UttakUploaderNy';
+import { UttakUploader } from '../attachment-uploaders/UttakUploader';
 
 interface Props {
     attachments: Attachment[];
@@ -18,7 +18,12 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
 }
 
-export const BarnInnlagtDokumentasjonNy = ({ attachments, updateAttachments, perioder, navnPåForeldre }: Props) => {
+export const MorKvalifiseringsprogrammetDokumentasjon = ({
+    attachments,
+    updateAttachments,
+    perioder,
+    navnPåForeldre,
+}: Props) => {
     const intl = useIntl();
 
     if (perioder.length === 0) {
@@ -26,15 +31,20 @@ export const BarnInnlagtDokumentasjonNy = ({ attachments, updateAttachments, per
     }
 
     return (
-        <UttakUploaderNy
+        <UttakUploader
             attachments={attachments}
-            updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE_BARN)}
+            updateAttachments={updateAttachments(Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM)}
             perioder={perioder}
             navnPåForeldre={navnPåForeldre}
-            skjemanummer={Skjemanummer.DOK_INNLEGGELSE_BARN}
-            labelText={intl.formatMessage({ id: 'manglendeVedlegg.barnInnlagt.label' })}
-            description={intl.formatMessage({ id: 'manglendeVedlegg.barnInnlagt.description' })}
-            attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
+            skjemanummer={Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM}
+            labelText={intl.formatMessage({ id: 'manglendeVedlegg.kvalifiseringsprogram.tittel' })}
+            description={intl.formatMessage(
+                { id: 'manglendeVedlegg.kvalifiseringsprogram.description' },
+                {
+                    navn: navnPåForeldre.mor,
+                },
+            )}
+            attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
         />
     );
 };

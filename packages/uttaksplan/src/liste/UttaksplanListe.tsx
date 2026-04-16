@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import { Alert, BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { UttaksdagenString } from '@navikt/fp-utils';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
@@ -190,14 +190,14 @@ const splittPeriodePåFamiliehendelsesdato = (
         resultat.push({
             ...periode,
             fom: periode.fom,
-            tom: UttaksdagenString.forrige(familiehendelsesdato).getDato(),
+            tom: Uttaksdagen.forrige(familiehendelsesdato).getDato(),
         });
     }
 
     if (tom.isAfter(famdato)) {
         resultat.push({
             ...periode,
-            fom: UttaksdagenString.denneEllerNeste(familiehendelsesdato).getDato(),
+            fom: Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato(),
             tom: periode.tom,
         });
     }

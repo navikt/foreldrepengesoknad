@@ -4,7 +4,7 @@ import { IntlShape, useIntl } from 'react-intl';
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { UttaksdagenString, formatDateExtended } from '@navikt/fp-utils';
+import { Uttaksdagen, formatDateExtended } from '@navikt/fp-utils';
 
 import { erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
@@ -37,7 +37,7 @@ export const OppholdsPeriodeContent = ({
                     <BodyShort weight="semibold">{getLengdePåPeriode(intl, inneholderKunEnPeriode, periode)}</BodyShort>
                     <BodyShort>
                         {getVarighetString(
-                            UttaksdagenString.denneEllerNeste(periode.fom).getUttaksdagerFremTilOgMedDato(periode.tom),
+                            Uttaksdagen.denneEllerNeste(periode.fom).getUttaksdagerFremTilOgMedDato(periode.tom),
                             intl,
                         )}
                     </BodyShort>

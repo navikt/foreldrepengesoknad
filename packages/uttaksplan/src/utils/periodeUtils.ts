@@ -11,6 +11,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
+import { Tidsperioden } from '@navikt/fp-utils';
 
 import {
     Uttaksplanperiode,
@@ -77,6 +78,30 @@ export const sorterPerioder = (a: { fom: string; tom: string }, b: { fom: string
     }
 
     return 0;
+};
+
+export const sorterUttakPerioder = (
+    p1: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    p2: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+) => {
+    const tidsperiode1 = { fom: p1.fom, tom: p1.tom };
+    const tidsperiode2 = { fom: p2.fom, tom: p2.tom };
+
+    const tidsperiode1String = Tidsperioden.forPeriode(tidsperiode1);
+    const tidsperiode2String = Tidsperioden.forPeriode(tidsperiode2);
+
+    if (tidsperiode1String.erGyldig() === false || tidsperiode2String.erGyldig() === false) {
+        return tidsperiode1String.erGyldig() ? 1 : -1;
+    }
+    if (dayjs(tidsperiode1.fom).isSame(tidsperiode2.fom, 'day')) {
+        return 1;
+    }
+
+    if (tidsperiode2String.erOmsluttetAv(tidsperiode1)) {
+        return 1;
+    }
+
+    return dayjs(tidsperiode1.fom).isBefore(tidsperiode2.fom, 'day') ? -1 : 1;
 };
 
 export const harPeriodeDerMorsAktivitetIkkeErValgt = (

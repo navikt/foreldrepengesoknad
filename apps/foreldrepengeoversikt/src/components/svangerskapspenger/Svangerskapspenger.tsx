@@ -14,7 +14,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import {
-    TidsperiodenString,
+    Tidsperioden,
     capitalizeFirstLetter,
     capitalizeFirstLetterInEveryWordOnly,
     formatDateMedUkedag,
@@ -309,7 +309,7 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
             if (p.fom === periode.fom && p.tom === periode.tom) {
                 return false;
             }
-            return TidsperiodenString.forPeriode(p).inneholderDato(periode.tom);
+            return Tidsperioden.forPeriode(p).inneholderDato(periode.tom);
         });
         const overlappendePeriode = index !== -1 ? perioderÅBruke.splice(index, 1)[0] : undefined;
 

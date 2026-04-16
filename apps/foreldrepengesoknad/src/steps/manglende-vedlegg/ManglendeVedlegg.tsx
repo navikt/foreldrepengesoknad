@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'types/VedleggDataType';
-import { perioderSomKreverVedleggNy } from 'utils/manglendeVedleggUtils';
+import { perioderSomKreverVedlegg } from 'utils/manglendeVedleggUtils';
 import { getErSøkerFarEllerMedmor, getNavnPåForeldre } from 'utils/personUtils';
 
 import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
@@ -19,18 +19,18 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { ManglendeVedleggFormData } from './ManglendeVedleggFormData';
 import { AleneomsorgDokumentasjon } from './dokumentasjon/AleneomsorgDokumentasjon';
-import { BarnInnlagtDokumentasjonNy } from './dokumentasjon/BarnInnlagtDokumentasjonNy';
+import { BarnInnlagtDokumentasjon } from './dokumentasjon/BarnInnlagtDokumentasjon';
 import { EtterlønnEllerSluttvederlagDokumentasjon } from './dokumentasjon/EtterlønnEllerSluttvederlagDokumentasjon';
-import { FarForSykDokumentasjonNy } from './dokumentasjon/FarForSykDokumentasjonNy';
-import { FarInnlagtDokumentasjonNy } from './dokumentasjon/FarInnlagtDokumentasjonNy';
+import { FarForSykDokumentasjon } from './dokumentasjon/FarForSykDokumentasjon';
+import { FarInnlagtDokumentasjon } from './dokumentasjon/FarInnlagtDokumentasjon';
 import { MilitærEllerSiviltjenesteDokumentasjon } from './dokumentasjon/MilitærEllerSiviltjenesteDokumentasjon';
-import { MorForSykDokumentasjonNy } from './dokumentasjon/MorForSykDokumentasjonNy';
-import { MorInnlagtDokumentasjonNy } from './dokumentasjon/MorInnlagtDokumentasjonNy';
-import { MorIntroduksjonsprogrammetDokumentasjonNy } from './dokumentasjon/MorIntroduksjonsprogrammetDokumentasjonNy';
-import { MorJobberDokumentasjonNy } from './dokumentasjon/MorJobberDokumentasjonNy';
-import { MorJobberOgStudererDokumentasjonNy } from './dokumentasjon/MorJobberOgStudererDokumentasjonNy';
-import { MorKvalifiseringsprogrammetDokumentasjonNy } from './dokumentasjon/MorKvalifiseringsprogrammetDokumentasjonNy';
-import { MorStudererDokumentasjonNy } from './dokumentasjon/MorStudererDokumentasjonNy';
+import { MorForSykDokumentasjon } from './dokumentasjon/MorForSykDokumentasjon';
+import { MorInnlagtDokumentasjon } from './dokumentasjon/MorInnlagtDokumentasjon';
+import { MorIntroduksjonsprogrammetDokumentasjon } from './dokumentasjon/MorIntroduksjonsprogrammetDokumentasjon';
+import { MorJobberDokumentasjon } from './dokumentasjon/MorJobberDokumentasjon';
+import { MorJobberOgStudererDokumentasjon } from './dokumentasjon/MorJobberOgStudererDokumentasjon';
+import { MorKvalifiseringsprogrammetDokumentasjon } from './dokumentasjon/MorKvalifiseringsprogrammetDokumentasjon';
+import { MorStudererDokumentasjon } from './dokumentasjon/MorStudererDokumentasjon';
 import { OmsorgsovertakelseDokumentasjon } from './dokumentasjon/OmsorgsovertakelseDokumentasjon';
 import { TerminbekreftelseDokumentasjon } from './dokumentasjon/TerminbekreftelseDokumentasjon';
 import {
@@ -49,16 +49,16 @@ import {
     getMorStudererVedlegg,
     getOmsorgsovertakelseVedlegg,
     getTerminbekreftelseVedlegg,
-    isOverføringFarForSykNy,
-    isPeriodeMedFarInnleggelseNy,
-    isPeriodeMedMorForSykNy,
-    isPeriodeMedMorInnleggelseNy,
-    isPeriodeMedMorIntroprogramNy,
-    isPeriodeMedMorJobberNy,
-    isPeriodeMedMorJobberOgStudererNy,
-    isPeriodeMedMorKvalprogramNy,
-    isPeriodeMedMorStudererNy,
-    isUtsettelseBarnInnlagtNy,
+    isOverføringFarForSyk,
+    isPeriodeMedFarInnleggelse,
+    isPeriodeMedMorForSyk,
+    isPeriodeMedMorInnleggelse,
+    isPeriodeMedMorIntroprogram,
+    isPeriodeMedMorJobber,
+    isPeriodeMedMorJobberOgStuderer,
+    isPeriodeMedMorKvalprogram,
+    isPeriodeMedMorStuderer,
+    isUtsettelseBarnInnlagt,
 } from './util';
 
 type Props = {
@@ -69,7 +69,7 @@ type Props = {
     foreldrepengerSaker?: FpSak_fpoversikt[];
 };
 
-export const ManglendeVedleggNy = ({
+export const ManglendeVedlegg = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     søkerInfo,
@@ -99,7 +99,7 @@ export const ManglendeVedleggNy = ({
         (periode) =>
             Uttaksperioden.erIkkeEøsPeriode(periode) && periode.forelder === (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
     );
-    const perioderSomManglerVedlegg = perioderSomKreverVedleggNy(
+    const perioderSomManglerVedlegg = perioderSomKreverVedlegg(
         uttaksplanUtenAnnenPartsPerioder || [],
         erFarEllerMedmor,
         annenForelder,
@@ -122,18 +122,18 @@ export const ManglendeVedleggNy = ({
     const etterlønnEllerSluttvederlagVedlegg = getEtterlønnEllerSluttvederlagVedlegg(vedlegg);
 
     const morInnlagtPerioder = perioderSomManglerVedlegg.filter((periode) =>
-        isPeriodeMedMorInnleggelseNy(periode, familiehendelsedato),
+        isPeriodeMedMorInnleggelse(periode, familiehendelsedato),
     );
-    const barnInnlagtPerioder = perioderSomManglerVedlegg.filter(isUtsettelseBarnInnlagtNy);
-    const farForSykPerioder = perioderSomManglerVedlegg.filter(isOverføringFarForSykNy);
-    const farInnlagtPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedFarInnleggelseNy);
-    const morForSykPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorForSykNy);
-    const morIntroPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorIntroprogramNy);
-    const morJobberPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorJobberNy);
+    const barnInnlagtPerioder = perioderSomManglerVedlegg.filter(isUtsettelseBarnInnlagt);
+    const farForSykPerioder = perioderSomManglerVedlegg.filter(isOverføringFarForSyk);
+    const farInnlagtPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedFarInnleggelse);
+    const morForSykPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorForSyk);
+    const morIntroPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorIntroprogram);
+    const morJobberPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorJobber);
 
-    const morJobberOgStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorJobberOgStudererNy);
-    const morKvalPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorKvalprogramNy);
-    const morStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorStudererNy);
+    const morJobberOgStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorJobberOgStuderer);
+    const morKvalPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorKvalprogram);
+    const morStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorStuderer);
 
     const navnPåForeldre = getNavnPåForeldre(søkerInfo, annenForelder, erFarEllerMedmor, intl);
 
@@ -213,7 +213,7 @@ export const ManglendeVedleggNy = ({
             <Step steps={stepConfig} noFieldsRequired>
                 <RhfForm formMethods={formMethods} onSubmit={lagre}>
                     <VStack gap="space-40">
-                        <MorInnlagtDokumentasjonNy
+                        <MorInnlagtDokumentasjon
                             attachments={morInnlagtVedlegg}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morInnlagtPerioder}
@@ -221,59 +221,59 @@ export const ManglendeVedleggNy = ({
                             erFarEllerMedmor={erFarEllerMedmor}
                             familiehendelsedato={familiehendelsedato}
                         />
-                        <MorForSykDokumentasjonNy
+                        <MorForSykDokumentasjon
                             attachments={morForSykVedlegg}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morForSykPerioder}
                             updateAttachments={updateAttachments}
                             erFarEllerMedmor={erFarEllerMedmor}
                         />
-                        <FarInnlagtDokumentasjonNy
+                        <FarInnlagtDokumentasjon
                             attachments={farInnlagtVedlegg}
                             navnPåForeldre={navnPåForeldre}
                             perioder={farInnlagtPerioder}
                             updateAttachments={updateAttachments}
                             erFarEllerMedmor={erFarEllerMedmor}
                         />
-                        <FarForSykDokumentasjonNy
+                        <FarForSykDokumentasjon
                             attachments={farForSykvedlegg}
                             navnPåForeldre={navnPåForeldre}
                             perioder={farForSykPerioder}
                             updateAttachments={updateAttachments}
                             erFarEllerMedmor={erFarEllerMedmor}
                         />
-                        <BarnInnlagtDokumentasjonNy
+                        <BarnInnlagtDokumentasjon
                             attachments={barnInnlagtVedlegg}
                             navnPåForeldre={navnPåForeldre}
                             perioder={barnInnlagtPerioder}
                             updateAttachments={updateAttachments}
                         />
-                        <MorStudererDokumentasjonNy
+                        <MorStudererDokumentasjon
                             attachments={morStudererVedlegg}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morStudererPerioder}
                             updateAttachments={updateAttachments}
                         />
-                        <MorJobberDokumentasjonNy
+                        <MorJobberDokumentasjon
                             attachments={morJobberVedlegg}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morJobberPerioder}
                             erFarEllerMedmor={erFarEllerMedmor}
                             updateAttachments={updateAttachments}
                         />
-                        <MorJobberOgStudererDokumentasjonNy
+                        <MorJobberOgStudererDokumentasjon
                             attachments={morJobberOgStudererVedlegg}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morJobberOgStudererPerioder}
                             updateAttachments={updateAttachments}
                         />
-                        <MorIntroduksjonsprogrammetDokumentasjonNy
+                        <MorIntroduksjonsprogrammetDokumentasjon
                             attachments={morIntroprogramVedlegg}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morIntroPerioder}
                             updateAttachments={updateAttachments}
                         />
-                        <MorKvalifiseringsprogrammetDokumentasjonNy
+                        <MorKvalifiseringsprogrammetDokumentasjon
                             attachments={morKvalprogramVedlegg}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morKvalPerioder}

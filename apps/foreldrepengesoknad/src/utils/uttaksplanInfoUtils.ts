@@ -4,7 +4,7 @@ import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@
 import { Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan';
 
-import { perioderSomKreverVedleggNy } from './manglendeVedleggUtils';
+import { perioderSomKreverVedlegg } from './manglendeVedleggUtils';
 
 export const prettifyProsent = (nbr: number | undefined): number | undefined => {
     if (nbr === undefined) {
@@ -71,7 +71,7 @@ export const kreverUttaksplanVedleggNy = (
     annenForelder: AnnenForelder,
     familiehendelsedato: string,
 ) => {
-    const periodeSomManglerVedlegg = perioderSomKreverVedleggNy(
+    const periodeSomManglerVedlegg = perioderSomKreverVedlegg(
         uttaksplan,
         erFarEllerMedmor,
         annenForelder,

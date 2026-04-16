@@ -1,6 +1,6 @@
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { UttaksdagenString } from './UttaksdagenString';
+import { Uttaksdagen } from './Uttaksdagen';
 
 type UttakPeriode = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
 
@@ -60,6 +60,6 @@ export const Uttaksperioden = {
     },
 
     getAntallUttaksdager(periode: UttakPeriode) {
-        return UttaksdagenString.denneEllerNeste(periode.fom).getUttaksdagerFremTilOgMedDato(periode.tom);
+        return Uttaksdagen.denneEllerNeste(periode.fom).getUttaksdagerFremTilOgMedDato(periode.tom);
     },
 };

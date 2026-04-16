@@ -19,7 +19,7 @@ import { VStack } from '@navikt/ds-react';
 
 import { EksternArbeidsforholdDto_fpoversikt, FpPersonopplysningerDto_fpoversikt, isFødtBarn } from '@navikt/fp-types';
 import { SkjemaRotLayout, Spinner, Step } from '@navikt/fp-ui';
-import { UttaksdagenString } from '@navikt/fp-utils';
+import { Uttaksdagen } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { FordelingForm } from './fordeling-form/FordelingForm';
@@ -88,7 +88,7 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
     const sisteDagAnnenForelder = getSisteUttaksdagAnnenForelder(erFarEllerMedmor, deltUttak, uttaksplanAnnenPart);
 
     const førsteDagEtterAnnenForelder = sisteDagAnnenForelder
-        ? UttaksdagenString.neste(sisteDagAnnenForelder).getDato()
+        ? Uttaksdagen.neste(sisteDagAnnenForelder).getDato()
         : undefined;
     const visMorsSisteDag = erFarEllerMedmor && sisteDagAnnenForelder;
 

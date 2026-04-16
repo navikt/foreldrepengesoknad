@@ -1,40 +1,12 @@
-import dayjs from 'dayjs';
+import { KontoDto, Tidsperiode, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
-import { KontoDto, Tidsperiode, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { TidsperiodenString, UttaksdagenString, erUttaksdag } from '@navikt/fp-utils';
+import { sorterUttakPerioder } from '../periodeUtils';
 
-export const sorterPerioder = (
-    p1: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-    p2: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-) => {
-    const tidsperiode1 = { fom: p1.fom, tom: p1.tom };
-    const tidsperiode2 = { fom: p2.fom, tom: p2.tom };
-
-    if (
-        TidsperiodenString.forPeriode(tidsperiode1).erGyldig() === false ||
-        TidsperiodenString.forPeriode(tidsperiode2).erGyldig() === false
-    ) {
-        return TidsperiodenString.forPeriode(tidsperiode1).erGyldig() ? 1 : -1;
-    }
-    if (dayjs(tidsperiode1.fom).isSame(tidsperiode2.fom, 'day')) {
-        return 0;
-    }
-
-    if (TidsperiodenString.forPeriode(tidsperiode2).erOmsluttetAv(tidsperiode1)) {
-        return 1;
-    }
-
-    return dayjs(tidsperiode1.fom).isBefore(tidsperiode2.fom, 'day') ? -1 : 1;
-};
-
-// TODO (TOR) Dette ser ut som noko me ikkje vil gjera. Her er ein vel i ein feilsituasjon?
-export const getTidsperiodeString = (fom: string, uttaksdager: number): Tidsperiode => {
-    if (!erUttaksdag(fom)) {
-        throw new Error('FOM er ikke en uttaksdag');
-    }
+const getTidsperiodeString = (fom: string, uttaksdager: number): Tidsperiode => {
     return {
         fom,
-        tom: UttaksdagenString.denne(fom).getDatoAntallUttaksdagerSenere(uttaksdager - 1),
+        tom: Uttaksdagen.denne(fom).getDatoAntallUttaksdagerSenere(uttaksdager - 1),
     };
 };
 
@@ -65,7 +37,7 @@ export const deltUttak = ({
         return [];
     }
 
-    const helgejustertFamDato = UttaksdagenString.denneEllerNeste(famDato).getDato();
+    const helgejustertFamDato = Uttaksdagen.denneEllerNeste(famDato).getDato();
 
     const foreldrepengerFørFødsel = tilgjengeligeStønadskontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
     const mødrekvote = tilgjengeligeStønadskontoer.find((k) => k.konto === 'MØDREKVOTE');
@@ -78,11 +50,11 @@ export const deltUttak = ({
     const effectiveStartdato =
         startdato ??
         (foreldrepengerFørFødsel
-            ? UttaksdagenString.denne(helgejustertFamDato).getDatoAntallUttaksdagerTidligere(15)
+            ? Uttaksdagen.denne(helgejustertFamDato).getDatoAntallUttaksdagerTidligere(15)
             : helgejustertFamDato);
 
     const dagerMellomFamDatoOgStartdato =
-        UttaksdagenString.denne(effectiveStartdato).getUttaksdagerFremTilDato(helgejustertFamDato);
+        Uttaksdagen.denne(effectiveStartdato).getUttaksdagerFremTilDato(helgejustertFamDato);
     const dagerMedFellesperiodeFørFødsel = dagerMellomFamDatoOgStartdato > 15 ? dagerMellomFamDatoOgStartdato - 15 : 0;
 
     const fellesperiodeDagerFarMedmor = Math.max(
@@ -101,7 +73,7 @@ export const deltUttak = ({
             : 0;
 
         tidsperiode = getTidsperiodeString(
-            UttaksdagenString.denne(currentFomDate).getDato(),
+            Uttaksdagen.denne(currentFomDate).getDato(),
             dagerMedForeldrepengerFørFødsel,
         );
 
@@ -113,14 +85,11 @@ export const deltUttak = ({
             flerbarnsdager: false,
         });
 
-        currentFomDate = UttaksdagenString.neste(tidsperiode.tom).getDato();
+        currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
     }
 
     if (dagerMellomFamDatoOgStartdato > 15) {
-        tidsperiode = getTidsperiodeString(
-            UttaksdagenString.denne(currentFomDate).getDato(),
-            dagerMedFellesperiodeFørFødsel,
-        );
+        tidsperiode = getTidsperiodeString(Uttaksdagen.denne(currentFomDate).getDato(), dagerMedFellesperiodeFørFødsel);
 
         morsPerioder.push({
             forelder: 'MOR',
@@ -130,7 +99,7 @@ export const deltUttak = ({
             flerbarnsdager: false,
         });
 
-        currentFomDate = UttaksdagenString.neste(tidsperiode.tom).getDato();
+        currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
 
         tidsperiode = getTidsperiodeString(currentFomDate, 15);
 
@@ -142,7 +111,7 @@ export const deltUttak = ({
             flerbarnsdager: false,
         });
 
-        currentFomDate = UttaksdagenString.denne(helgejustertFamDato).getDato();
+        currentFomDate = Uttaksdagen.denne(helgejustertFamDato).getDato();
     }
 
     tidsperiode = getTidsperiodeString(currentFomDate, mødrekvote ? mødrekvote.dager : 0);
@@ -155,7 +124,7 @@ export const deltUttak = ({
         flerbarnsdager: false,
     });
 
-    currentFomDate = UttaksdagenString.neste(tidsperiode.tom).getDato();
+    currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
 
     if (fellesperiodeDagerMor !== 0) {
         tidsperiode = getTidsperiodeString(currentFomDate, fellesperiodeDagerMor);
@@ -168,7 +137,7 @@ export const deltUttak = ({
             flerbarnsdager: false,
         });
 
-        currentFomDate = UttaksdagenString.neste(tidsperiode.tom).getDato();
+        currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
     }
 
     tidsperiode = getTidsperiodeString(currentFomDate, fedrekvote ? fedrekvote.dager : 0);
@@ -181,7 +150,7 @@ export const deltUttak = ({
         flerbarnsdager: false,
     });
 
-    currentFomDate = UttaksdagenString.neste(tidsperiode.tom).getDato();
+    currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
 
     if (fellesperiodeDagerFarMedmor !== 0) {
         tidsperiode = getTidsperiodeString(currentFomDate, fellesperiodeDagerFarMedmor);
@@ -195,5 +164,5 @@ export const deltUttak = ({
         });
     }
 
-    return [...morsPerioder, ...farsPerioder].sort(sorterPerioder);
+    return [...morsPerioder, ...farsPerioder].sort(sorterUttakPerioder);
 };

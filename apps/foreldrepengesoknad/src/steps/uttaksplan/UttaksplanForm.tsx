@@ -26,7 +26,7 @@ import {
     isUfødtBarn,
 } from '@navikt/fp-types';
 import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
-import { UttaksdagenString, Uttaksperioden } from '@navikt/fp-utils';
+import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 import { useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
@@ -242,9 +242,7 @@ const AutomatiskJusteringInfotekst = ({
 
     const termindato = getTermindato(barn);
 
-    const uttaksdagPåEllerEtterTermin = termindato
-        ? UttaksdagenString.denneEllerNeste(termindato).getDato()
-        : undefined;
+    const uttaksdagPåEllerEtterTermin = termindato ? Uttaksdagen.denneEllerNeste(termindato).getDato() : undefined;
 
     const perioderMedUttakRundtFødsel = finnPerioderRundtFødsel(uttaksplan ?? [], barn);
 
@@ -326,8 +324,8 @@ const finnPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato = (
     valgtePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     familiehendelsedato: string,
 ) => {
-    const førsteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato();
-    const sisteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30);
+    const førsteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDato();
+    const sisteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30);
 
     return valgtePerioder.filter((periode) => {
         const fom = dayjs(periode.fom);
@@ -340,8 +338,8 @@ const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
     valgtePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     familiehendelsedato: string,
 ) => {
-    const førsteDag = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(15);
-    const sisteDag = UttaksdagenString.forrige(familiehendelsedato).getDato();
+    const førsteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(15);
+    const sisteDag = Uttaksdagen.forrige(familiehendelsedato).getDato();
 
     return valgtePerioder.filter((periode) => {
         const fom = dayjs(periode.fom);
