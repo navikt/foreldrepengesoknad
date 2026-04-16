@@ -1,7 +1,7 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
 import { getStønadskontoParams } from 'api/getStønadskontoParams';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
-import { FpDataMapAndMetaData } from 'appData/useMellomlagreSøknad';
+import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenForelderUtils';
 
@@ -68,7 +68,7 @@ export const søkerinfoOptions = () =>
 export const mellomlagretInfoOptions = () =>
     queryOptions({
         queryKey: ['MELLOMLAGRET_INFO'],
-        queryFn: () => ky.get(API_URLS.mellomlagring).json<FpDataMapAndMetaData>(),
+        queryFn: () => ky.get(API_URLS.mellomlagring).json<FpMellomlagretData>(),
         staleTime: Infinity,
     });
 

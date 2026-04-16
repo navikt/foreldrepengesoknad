@@ -1,6 +1,6 @@
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
-import { EsDataMapAndMetaData, useEsMellomlagring } from 'appData/useEsMellomlagring';
+import { EsMellomlagretData, useEsMellomlagring } from 'appData/useEsMellomlagring';
 import { useEsSendSøknad } from 'appData/useEsSendSøknad';
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
@@ -24,7 +24,7 @@ export const ApiErrorHandler = ({ error }: { error: Error }) => {
 
 interface Props {
     personinfo: EsPersonopplysningerDto_fpoversikt;
-    mellomlagretData?: EsDataMapAndMetaData;
+    mellomlagretData?: EsMellomlagretData;
 }
 
 export const EngangsstønadRoutes = ({ personinfo, mellomlagretData }: Props) => {

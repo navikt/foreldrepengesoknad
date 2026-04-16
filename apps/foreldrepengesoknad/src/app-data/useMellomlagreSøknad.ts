@@ -10,7 +10,7 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextComplete } from './FpDataContext';
 
-export type FpDataMapAndMetaData = {
+export type FpMellomlagretData = {
     version: number;
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
     foreldrepengerSaker: FpSak_fpoversikt[];
@@ -51,7 +51,7 @@ export const useMellomlagreSøknad = (
                     erEndringssøknad,
                     søknadGjelderEtNyttBarn,
                     ...state,
-                } satisfies FpDataMapAndMetaData;
+                } satisfies FpMellomlagretData;
 
                 try {
                     await ky.post(API_URLS.mellomlagring, {
