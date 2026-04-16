@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { API_URLS, mellomlagretInfoOptions, sakerOptions, søkerinfoOptions } from 'api/queries';
-import { FpDataContext } from 'appData/FpDataContext';
-import { konverterMellomlagretDataTilAppData } from 'appData/konverterMellomlagretDataTilAppData';
+import { ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import ky from 'ky';
 import isEqual from 'lodash/isEqual';
@@ -12,6 +11,7 @@ import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 import { captureMessage } from '@navikt/fp-observability';
 import { ErrorBoundary, RegisterdataUtdatert, Spinner } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { ForeldrepengesøknadRoutes } from './ForeldrepengesøknadRoutes';
 
@@ -51,22 +51,18 @@ export const Foreldrepengesøknad = () => {
         }
     }, [søkerinfoQuery.error, sakerQuery.error]);
 
-    const skalBrukeMellomlagretData =
-        mellomlagretInfoQuery.data !== undefined && shouldApplyStorage(mellomlagretInfoQuery.data);
-
-    // TODO (TOR) Dropp mapping her og dytt mellomlagra data inn i context rått
-    const initialState = skalBrukeMellomlagretData
-        ? konverterMellomlagretDataTilAppData(mellomlagretInfoQuery.data)
-        : undefined;
-
     if (!sakerQuery.data || !søkerinfoQuery.data || mellomlagretInfoQuery.isPending) {
         return <Spinner />;
     }
 
+    const skalBrukeMellomlagretData =
+        mellomlagretInfoQuery.data !== undefined && shouldApplyStorage(mellomlagretInfoQuery.data);
+    const mellomlagretData = skalBrukeMellomlagretData ? mellomlagretInfoQuery.data : undefined;
+
     if (
-        skalBrukeMellomlagretData &&
-        (!isEqual(mellomlagretInfoQuery.data.søkerInfo, søkerinfoQuery.data) ||
-            !isEqual(mellomlagretInfoQuery.data.foreldrepengerSaker, sakerQuery.data.foreldrepenger))
+        !!mellomlagretData &&
+        (!isEqual(mellomlagretData.søkerInfo, søkerinfoQuery.data) ||
+            !isEqual(mellomlagretData.foreldrepengerSaker, sakerQuery.data.foreldrepenger))
     ) {
         return (
             <RegisterdataUtdatert
@@ -78,22 +74,18 @@ export const Foreldrepengesøknad = () => {
 
     return (
         <ErrorBoundary appName="foreldrepengesoknad" retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}>
-            <FpDataContext initialState={initialState}>
+            <FpDataContext initialState={mellomlagretData}>
                 <ForeldrepengesøknadRoutes
                     søkerInfo={søkerinfoQuery.data}
                     foreldrepengerSaker={sakerQuery.data.foreldrepenger}
                     currentRoute={
-                        skalBrukeMellomlagretData ? mellomlagretInfoQuery.data.currentRoute : SøknadRoutes.VELKOMMEN
+                        skalBrukeMellomlagretData
+                            ? notEmpty(mellomlagretData?.[ContextDataType.APP_ROUTE])
+                            : SøknadRoutes.VELKOMMEN
                     }
-                    lagretErEndringssøknad={
-                        skalBrukeMellomlagretData ? mellomlagretInfoQuery.data.søknad?.erEndringssøknad : false
-                    }
-                    lagretHarGodkjentVilkår={
-                        skalBrukeMellomlagretData ? mellomlagretInfoQuery.data.søknad?.harGodkjentVilkår : false
-                    }
-                    lagretSøknadGjelderNyttBarn={
-                        skalBrukeMellomlagretData ? mellomlagretInfoQuery.data.søknadGjelderEtNyttBarn : false
-                    }
+                    lagretErEndringssøknad={mellomlagretData?.erEndringssøknad ?? false}
+                    lagretHarGodkjentVilkår={!!mellomlagretData?.[ContextDataType.APP_ROUTE]}
+                    lagretSøknadGjelderNyttBarn={mellomlagretData?.søknadGjelderEtNyttBarn ?? false}
                 />
             </FpDataContext>
         </ErrorBoundary>

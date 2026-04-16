@@ -147,3 +147,8 @@ export const useContextReset = () => {
         }
     };
 };
+
+/** Hook returns state  */
+export const useContextComplete = (): ContextDataMap => {
+    return useContext(FpStateContext);
+};

@@ -297,7 +297,6 @@ export const ForeldrepengesøknadRoutes = ({
         foreldrepengerSaker,
         søkerInfo,
         erEndringssøknad,
-        harGodkjentVilkår,
         søknadGjelderNyttBarn,
     );
 

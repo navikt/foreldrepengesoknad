@@ -1,6 +1,7 @@
 import { Søknad } from '../types/Søknad';
 import { ContextDataType, useContextSaveAnyData } from './FpDataContext';
 
+// TODO (TOR) Denne burde kanskje setta opp UTTAKSPLAN i tillegg for konsistens? No blir den satt opp i steget.
 export const useSetSøknadsdata = () => {
     const oppdaterData = useContextSaveAnyData();
 

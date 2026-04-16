@@ -1,7 +1,7 @@
 import { SøknadRoutes } from 'appData/routes';
-import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
+import { FpDataMapAndMetaData } from 'appData/useMellomlagreSøknad';
 
-export const VERSJON_MELLOMLAGRING = 20;
+export const VERSJON_MELLOMLAGRING = 21;
 
 const isEndringssøknadRoute = (route: SøknadRoutes): boolean => {
     switch (route) {
@@ -13,7 +13,7 @@ const isEndringssøknadRoute = (route: SøknadRoutes): boolean => {
     }
 };
 
-export const shouldApplyStorage = (storedState: FpMellomlagretData): boolean => {
+export const shouldApplyStorage = (storedState: FpDataMapAndMetaData): boolean => {
     if (storedState.søknad?.erEndringssøknad) {
         if (!isEndringssøknadRoute(storedState.currentRoute)) {
             return false;
