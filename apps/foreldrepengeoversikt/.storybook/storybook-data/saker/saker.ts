@@ -1740,7 +1740,6 @@ export const saker_beregning_svp_direkte_utbetaling = {
                 },
             },
             oppdatertTidspunkt: '2026-03-15T10:30:00.000',
-            ytelse: 'SVANGERSKAPSPENGER',
         },
     ],
 } satisfies Saker_fpoversikt;
