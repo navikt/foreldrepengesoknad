@@ -49,9 +49,7 @@ export const useUttaksplanForEksisterendeSak = (
     return uttaksplan.sort(sorterUttakPerioder);
 };
 
-const fjernFrieUtsettelser = (
-    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
+const fjernFrieUtsettelser = (perioder: UttakPeriode_fpoversikt[]): UttakPeriode_fpoversikt[] => {
     return perioder.filter((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.utsettelseÅrsak !== 'FRI');
 };
 
