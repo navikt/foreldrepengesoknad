@@ -14,7 +14,7 @@ function bytesToBase64(bytes: Uint8Array) {
 // Quick polyfill since Firefox and Opera do not yet support isWellFormed().
 // encodeURIComponent() throws an error for lone surrogates, which is essentially the same.
 function isWellFormed(str: string) {
-    if (typeof str.isWellFormed != 'undefined') {
+    if (typeof str.isWellFormed !== 'undefined') {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-call
         return str.isWellFormed();
     } else {
