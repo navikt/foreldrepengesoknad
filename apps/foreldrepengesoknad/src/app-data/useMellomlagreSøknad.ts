@@ -8,7 +8,7 @@ import { captureMessage } from '@navikt/fp-observability';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, ProblemDetails } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataMap, ContextDataType, useContextComplete, useContextGetAnyData } from './FpDataContext';
+import { ContextDataMap, ContextDataType, useContextComplete } from './FpDataContext';
 
 export type FpDataMapAndMetaData = {
     version: number;
@@ -30,7 +30,6 @@ export const useMellomlagreSøknad = (
 ) => {
     const navigate = useNavigate();
     const state = useContextComplete();
-    const getDataFromState = useContextGetAnyData();
 
     const [skalMellomlagre, setSkalMellomlagre] = useState(false);
 
@@ -38,7 +37,7 @@ export const useMellomlagreSøknad = (
 
     useEffect(() => {
         if (skalMellomlagre) {
-            const currentRoute = notEmpty(getDataFromState(ContextDataType.APP_ROUTE));
+            const currentRoute = notEmpty(state[ContextDataType.APP_ROUTE]);
 
             const lagre = async () => {
                 setSkalMellomlagre(false);
