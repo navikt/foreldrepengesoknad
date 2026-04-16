@@ -70,22 +70,24 @@ const lagDeltUttakForFarMedmor = (
     if (harFødselspermisjon) {
         tidsperiode = getTidsperiodeString(currentFomDate, 10);
 
-        forslag.push({
-            forelder: 'MOR',
-            kontoType: 'MØDREKVOTE',
-            fom: tidsperiode.fom,
-            tom: tidsperiode.tom,
-            flerbarnsdager: false,
-            samtidigUttak: 100,
-        });
-        forslag.push({
-            forelder: 'FAR_MEDMOR',
-            kontoType: 'FEDREKVOTE',
-            fom: tidsperiode.fom,
-            tom: tidsperiode.tom,
-            flerbarnsdager: false,
-            samtidigUttak: 100,
-        });
+        forslag.push(
+            {
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                fom: tidsperiode.fom,
+                tom: tidsperiode.tom,
+                flerbarnsdager: false,
+                samtidigUttak: 100,
+            },
+            {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                fom: tidsperiode.fom,
+                tom: tidsperiode.tom,
+                flerbarnsdager: false,
+                samtidigUttak: 100,
+            },
+        );
 
         currentFomDate = UttaksdagenString.neste(tidsperiode.tom).getDato();
 
