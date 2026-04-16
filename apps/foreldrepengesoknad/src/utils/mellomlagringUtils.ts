@@ -14,8 +14,8 @@ const isEndringssøknadRoute = (route: SøknadRoutes): boolean => {
 };
 
 export const shouldApplyStorage = (storedState: FpDataMapAndMetaData): boolean => {
-    if (storedState.søknad?.erEndringssøknad) {
-        if (!isEndringssøknadRoute(storedState.currentRoute)) {
+    if (storedState?.erEndringssøknad) {
+        if (storedState.APP_ROUTE && !isEndringssøknadRoute(storedState.APP_ROUTE)) {
             return false;
         }
     }
