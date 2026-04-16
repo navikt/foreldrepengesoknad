@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { EsDataMapAndMetaData } from 'appData/useEsMellomlagring';
+import { EsMellomlagretData } from 'appData/useEsMellomlagring';
 import ky from 'ky';
 
 import { EsPersonopplysningerDto_fpoversikt, ForsendelseStatus } from '@navikt/fp-types';
@@ -25,7 +25,7 @@ export const personOptions = () =>
 export const mellomlagretInfoOptions = () =>
     queryOptions({
         queryKey: ['MELLOMLAGRET_INFO'],
-        queryFn: () => ky.get(API_URLS.mellomlagring).json<EsDataMapAndMetaData>(),
+        queryFn: () => ky.get(API_URLS.mellomlagring).json<EsMellomlagretData>(),
         staleTime: Infinity,
     });
 

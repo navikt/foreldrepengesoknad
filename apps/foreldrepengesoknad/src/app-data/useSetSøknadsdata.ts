@@ -1,6 +1,7 @@
 import { Søknad } from '../types/Søknad';
 import { ContextDataType, useContextSaveAnyData } from './FpDataContext';
 
+// (TOR) UTTAKSPLAN blir satt i uttaksplan-steget. Bør kanskje endrast?
 export const useSetSøknadsdata = () => {
     const oppdaterData = useContextSaveAnyData();
 

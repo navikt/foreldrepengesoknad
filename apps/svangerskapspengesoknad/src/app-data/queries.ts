@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { SvpDataMapAndMetaData } from 'appData/useMellomlagreSøknad';
+import { SvpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 
 import { ForsendelseStatus, Saker_fpoversikt, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
@@ -35,7 +35,7 @@ export const søkerinfoOptions = () =>
 export const mellomlagretInfoOptions = () =>
     queryOptions({
         queryKey: ['MELLOMLAGRET_INFO'],
-        queryFn: () => ky.get(API_URLS.mellomlagring).json<SvpDataMapAndMetaData>(),
+        queryFn: () => ky.get(API_URLS.mellomlagring).json<SvpMellomlagretData>(),
         staleTime: Infinity,
     });
 
