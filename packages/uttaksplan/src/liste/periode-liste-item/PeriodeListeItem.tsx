@@ -21,7 +21,7 @@ export const PeriodeListeItem = ({ isReadOnly, uttaksplanperioder, isAllAccordio
     // Sync local state with global accordion state
     useEffect(() => {
         if (isAllAccordionsOpen !== undefined) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect -- TODO (TOR) - Skriv om dette
+            // eslint-disable-next-line @eslint-react/set-state-in-effect -- TODO (TOR) - Skriv om dette
             setErPeriodeInnholdÅpen(isAllAccordionsOpen);
         }
     }, [isAllAccordionsOpen]);

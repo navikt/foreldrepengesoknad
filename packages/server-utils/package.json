@@ -24,7 +24,7 @@
         "@types/express": "5.0.6",
         "@types/morgan": "1.9.10",
         "@types/node": "24.10.1",
-        "eslint": "9.39.2",
+        "eslint": "10.2.0",
         "typescript": "6.0.2"
     },
     "packageManager": "pnpm@10.28.0"
