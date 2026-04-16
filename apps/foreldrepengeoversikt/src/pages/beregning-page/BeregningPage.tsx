@@ -621,11 +621,13 @@ const VedtakLenke = () => {
     const vedtak = useQuery({
         ...hentDokumenterOptions(params.saksnummer!),
         select: (dokumenter) =>
-            dokumenter.find(
-                (d) =>
-                    d.tittel?.includes('Innvilgelsesbrev Foreldrepenger') ||
-                    d.tittel?.includes('Innvilgelsesbrev Svangerskapspenger'),
-            ),
+            dokumenter.find((d) => {
+                const tittel = d.tittel?.toLowerCase();
+                return (
+                    tittel?.includes('innvilgelsesbrev foreldrepenger') ||
+                    tittel?.includes('innvilgelsesbrev svangerskapspenger')
+                );
+            }),
     }).data;
 
     if (!vedtak) {
