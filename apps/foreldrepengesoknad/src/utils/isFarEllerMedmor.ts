@@ -13,12 +13,11 @@ export const getForelderNavn = (
     forelder: BrukerRolleSak_fpoversikt | undefined,
     navnPåForeldre: NavnPåForeldre,
 ): string => {
-    const forelderNavn = navnPåForeldre.farMedmor
-        ? forelder === 'MOR'
-            ? navnPåForeldre.mor
-            : navnPåForeldre.farMedmor
-        : forelder === 'MOR'
-          ? navnPåForeldre.mor
-          : '';
+    let forelderNavn: string;
+    if (navnPåForeldre.farMedmor) {
+        forelderNavn = forelder === 'MOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    } else {
+        forelderNavn = forelder === 'MOR' ? navnPåForeldre.mor : '';
+    }
     return capitalizeFirstLetter(forelderNavn);
 };
