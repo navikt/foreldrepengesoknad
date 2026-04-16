@@ -8,7 +8,7 @@ import {
 import { Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan';
 
-export const perioderSomKreverVedleggNy = (
+export const perioderSomKreverVedlegg = (
     uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     erFarEllerMedmor: boolean,
     annenForelder: AnnenForelder,

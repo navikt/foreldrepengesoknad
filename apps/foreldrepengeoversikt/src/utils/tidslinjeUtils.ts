@@ -9,7 +9,7 @@ import {
     Familiehendelse_fpoversikt,
     TidslinjeHendelseDto_fpoversikt,
 } from '@navikt/fp-types';
-import { UttaksdagenString } from '@navikt/fp-utils';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { BarnGruppering } from '../types/BarnGruppering.ts';
 import { Tidslinjehendelse2 } from '../types/Tidslinjehendelse.ts';
@@ -286,7 +286,7 @@ export const getTidligstBehandlingsDatoForTidligSøknad = (sak: Sak): string | u
                 return utenHelTilrettelegging.map((periode) => dayjs(periode.fom));
             }) ?? [];
         const datoFørstePeriodeMedSVP = dayjs.min(tilretteleggingerFomDatoer)!.format(ISO_DATE_FORMAT);
-        return UttaksdagenString.denneEllerNeste(datoFørstePeriodeMedSVP).getDatoAntallUttaksdagerTidligere(
+        return Uttaksdagen.denneEllerNeste(datoFørstePeriodeMedSVP).getDatoAntallUttaksdagerTidligere(
             4 * UTTAKSDAGER_PER_UKE,
         );
     }
@@ -294,7 +294,7 @@ export const getTidligstBehandlingsDatoForTidligSøknad = (sak: Sak): string | u
     if (sak.ytelse === 'FORELDREPENGER') {
         const søknadsperioder = sak.åpenBehandling?.søknadsperioder ?? [];
         const førsteUttaksdagISaken = dayjs(søknadsperioder[0]!.fom).format(ISO_DATE_FORMAT);
-        return UttaksdagenString.denneEllerNeste(førsteUttaksdagISaken).getDatoAntallUttaksdagerTidligere(
+        return Uttaksdagen.denneEllerNeste(førsteUttaksdagISaken).getDatoAntallUttaksdagerTidligere(
             4 * UTTAKSDAGER_PER_UKE,
         );
     }

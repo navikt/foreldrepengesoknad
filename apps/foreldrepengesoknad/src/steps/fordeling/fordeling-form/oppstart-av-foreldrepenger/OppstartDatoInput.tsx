@@ -12,7 +12,7 @@ import { andreAugust2022ReglerGjelder } from 'utils/dateUtils';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { Barn, Situasjon, SøkersituasjonFp } from '@navikt/fp-types';
-import { UttaksdagenString } from '@navikt/fp-utils';
+import { Uttaksdagen } from '@navikt/fp-utils';
 import { isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
 import { validateOppstartsdato } from '../fordelingFormUtils';
@@ -50,14 +50,14 @@ interface DatepickerLimitationsString {
 }
 
 const sisteMuligePermisjonsdag = (familiehendelsedato: string): string => {
-    const startDato = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato();
-    return UttaksdagenString.denneEllerNeste(
+    const startDato = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDato();
+    return Uttaksdagen.denneEllerNeste(
         dayjs(startDato).add(MAKS_PERMISJONSLENGDE_I_ÅR, 'years').format(ISO_DATE_FORMAT),
     ).getDato();
 };
 
 const defaultPermisjonsperiodeAvgrensning = (familiehendelsesdato: string): DatepickerLimitationsString => {
-    const minDato = UttaksdagenString.denneEllerNeste(familiehendelsesdato).getDato();
+    const minDato = Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato();
     const maksDato = sisteMuligePermisjonsdag(familiehendelsesdato);
     return {
         minDate: minDato,
@@ -71,7 +71,7 @@ const startdatoPermisjonAdopsjon = (familiehendelsesdato: string): DatepickerLim
 };
 
 const getSisteDatoForOppstartMor = (familiehendelsesdato: string): string => {
-    return UttaksdagenString.denneEllerNeste(familiehendelsesdato).getDato();
+    return Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato();
 };
 
 const startDatoMorUfødtBarn = (termindato: string) => {
@@ -91,7 +91,7 @@ const startDatoMorFødtBarn = (termindato: string | undefined, fødselsdato: str
     const termindatoMinus12Uker =
         termindato === undefined
             ? undefined
-            : dayjs(UttaksdagenString.denneEllerNeste(termindato).getDato())
+            : dayjs(Uttaksdagen.denneEllerNeste(termindato).getDato())
                   .subtract(MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL, 'weeks')
                   .format(ISO_DATE_FORMAT);
     const erFødselsdatoFørTermindatoMinus12Uker =
@@ -106,7 +106,7 @@ const startDatoMorFødtBarn = (termindato: string | undefined, fødselsdato: str
     } else {
         const tidligstOppstartsdato =
             termindatoMinus12Uker ??
-            dayjs(UttaksdagenString.denneEllerNeste(fødselsdato).getDato())
+            dayjs(Uttaksdagen.denneEllerNeste(fødselsdato).getDato())
                 .subtract(MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL, 'weeks')
                 .format(ISO_DATE_FORMAT);
         return {
@@ -134,7 +134,7 @@ const startdatoPermisjonAleneomsorgFarMedmor = (
     datoForAleneomsorg: string,
     familiehendelsesdato: string,
 ): DatepickerLimitationsString => {
-    const minDato = UttaksdagenString.denneEllerNeste(datoForAleneomsorg).getDato();
+    const minDato = Uttaksdagen.denneEllerNeste(datoForAleneomsorg).getDato();
     const maksDato = sisteMuligePermisjonsdag(familiehendelsesdato);
     return {
         minDate: minDato,

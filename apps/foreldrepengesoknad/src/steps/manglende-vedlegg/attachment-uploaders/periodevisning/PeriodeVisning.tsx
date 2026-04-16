@@ -18,7 +18,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { UttaksdagenString, Uttaksperioden, capitalizeFirstLetter } from '@navikt/fp-utils';
+import { Uttaksdagen, Uttaksperioden, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan';
 
 import { StønadskontoIkon } from './StønadskontoIkon';
@@ -47,7 +47,7 @@ export const PeriodeVisning = ({
     const intl = useIntl();
 
     const varighetString = getVarighetString(
-        UttaksdagenString.denneEllerNeste(periode.fom).getUttaksdagerFremTilOgMedDato(periode.tom),
+        Uttaksdagen.denneEllerNeste(periode.fom).getUttaksdagerFremTilOgMedDato(periode.tom),
         intl,
     );
 

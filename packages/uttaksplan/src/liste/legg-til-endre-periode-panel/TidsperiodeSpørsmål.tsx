@@ -6,7 +6,7 @@ import { Box, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
-import { UttaksdagenString } from '@navikt/fp-utils';
+import { Uttaksdagen } from '@navikt/fp-utils';
 import { isBeforeOrSame, isRequired, isValidDate, isWeekday } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
@@ -34,9 +34,7 @@ export const TidsperiodeSpørsmål = () => {
                     name="fom"
                     control={control}
                     showMonthAndYearDropdowns
-                    minDate={UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(
-                        60,
-                    )}
+                    minDate={Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(60)}
                     maxDate={maxDate}
                     label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.fom' })}
                     disableWeekends={true}

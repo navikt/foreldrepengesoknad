@@ -5,7 +5,7 @@ import { IntlProvider, createIntl, createIntlCache } from 'react-intl';
 import { describe, expect, it } from 'vitest';
 
 import { BarnType, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { UttaksdagenString } from '@navikt/fp-utils';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
 import messages from '../intl/messages/nb_NO.json';
@@ -176,7 +176,7 @@ describe('useFormSubmitValidator', () => {
         const nyePerioder = [
             {
                 fom: FAMILIEHENDELSESDATO,
-                tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(5),
+                tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(5),
             },
         ];
 
@@ -208,7 +208,7 @@ describe('useFormSubmitValidator', () => {
         const nyePerioder = [
             {
                 fom: FAMILIEHENDELSESDATO,
-                tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(5),
+                tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(5),
             },
         ];
 
@@ -239,7 +239,7 @@ describe('useFormSubmitValidator', () => {
         const perioder = [
             {
                 fom: FAMILIEHENDELSESDATO,
-                tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(15),
+                tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(15),
             },
         ];
 
@@ -269,7 +269,7 @@ describe('useFormSubmitValidator', () => {
                 uttakPerioder: [
                     {
                         fom: FAMILIEHENDELSESDATO,
-                        tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
+                        tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
                         forelder: 'FAR_MEDMOR',
                         flerbarnsdager: false,
                         samtidigUttak: 100,
@@ -280,8 +280,8 @@ describe('useFormSubmitValidator', () => {
 
         const perioder = [
             {
-                fom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(5),
-                tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(15),
+                fom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(5),
+                tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(15),
             },
         ];
 
@@ -311,7 +311,7 @@ describe('useFormSubmitValidator', () => {
                 uttakPerioder: [
                     {
                         fom: FAMILIEHENDELSESDATO,
-                        tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
+                        tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
                         forelder: 'FAR_MEDMOR',
                         flerbarnsdager: false,
                     },
@@ -321,8 +321,8 @@ describe('useFormSubmitValidator', () => {
 
         const perioder = [
             {
-                fom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(5),
-                tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(9),
+                fom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(5),
+                tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(9),
             },
         ];
 
@@ -350,7 +350,7 @@ describe('useFormSubmitValidator', () => {
                 uttakPerioder: [
                     {
                         fom: FAMILIEHENDELSESDATO,
-                        tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
+                        tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
                         forelder: 'FAR_MEDMOR',
                         gradering: {
                             aktivitet: {
@@ -370,8 +370,8 @@ describe('useFormSubmitValidator', () => {
 
         const perioder = [
             {
-                fom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(5),
-                tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(20),
+                fom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(5),
+                tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(20),
             },
         ];
 
@@ -400,7 +400,7 @@ describe('useFormSubmitValidator', () => {
                 uttakPerioder: [
                     {
                         fom: FAMILIEHENDELSESDATO,
-                        tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
+                        tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
                         forelder: 'FAR_MEDMOR',
                         gradering: {
                             aktivitet: {
@@ -421,8 +421,8 @@ describe('useFormSubmitValidator', () => {
 
         const perioder = [
             {
-                fom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(5),
-                tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(23),
+                fom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(5),
+                tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(23),
             },
         ];
 
@@ -450,8 +450,8 @@ describe('useFormSubmitValidator', () => {
 
         const perioder = [
             {
-                fom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(10),
-                tom: UttaksdagenString.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(15),
+                fom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(10),
+                tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(15),
             },
         ];
 

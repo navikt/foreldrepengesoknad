@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
-import { UttaksdagenString } from '@navikt/fp-utils';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
 const ANTALL_DAGER_TO_UKER = 2 * 7;
 const ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL = 3;
@@ -16,18 +16,18 @@ export const getFørsteUttaksdag2UkerFørFødsel = (
             ? dayjs(familiehendelsesdato).subtract(ANTALL_DAGER_TO_UKER, 'day')
             : dayjs(termindato).subtract(ANTALL_DAGER_TO_UKER, 'day');
     const datoÅRegneFra = dayjs.min(terminEllerFamHendelsesdatoMinusToUker, dayjs(familiehendelsesdato));
-    return UttaksdagenString.denneEllerNeste(datoÅRegneFra.format(ISO_DATE_FORMAT)).getDato();
+    return Uttaksdagen.denneEllerNeste(datoÅRegneFra.format(ISO_DATE_FORMAT)).getDato();
 };
 
 const getFørsteUttaksdagPåEllerEtterFødsel = (familiehendelsesdato: string) => {
-    return UttaksdagenString.denneEllerNeste(familiehendelsesdato).getDato();
+    return Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato();
 };
 
 const getFørsteUttaksdagForeldrepengerFørFødsel = (familiehendelsesdato: string | undefined): string => {
     if (!familiehendelsesdato) {
         throw new Error('Mangler informasjon om familiehendelsesdato.');
     }
-    return UttaksdagenString.denne(
+    return Uttaksdagen.denne(
         getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato),
     ).getDatoAntallUttaksdagerTidligere(ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5);
 };

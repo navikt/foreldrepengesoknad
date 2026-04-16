@@ -2,7 +2,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { UttaksdagenString } from '@navikt/fp-utils';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { erPerioderEkslFomTomLike } from './periodeUtils';
 
@@ -81,7 +81,7 @@ export class UttakPeriodeBuilder {
                         if (eFom.isBefore(nFom)) {
                             nyeUttakPerioder.push({
                                 ...eksisterendePeriode,
-                                tom: UttaksdagenString.forrige(periodeSomSkalFjernes.fom).getDato(),
+                                tom: Uttaksdagen.forrige(periodeSomSkalFjernes.fom).getDato(),
                             });
                         }
 
@@ -89,7 +89,7 @@ export class UttakPeriodeBuilder {
                         if (eTom.isAfter(nTom)) {
                             nyeUttakPerioder.push({
                                 ...eksisterendePeriode,
-                                fom: UttaksdagenString.neste(periodeSomSkalFjernes.tom).getDato(),
+                                fom: Uttaksdagen.neste(periodeSomSkalFjernes.tom).getDato(),
                             });
                         }
                     } else {
@@ -132,17 +132,17 @@ const fjernOgForskyvUttakPerioderBakover = (
             if (eFom.isBefore(nFom)) {
                 nyeUttakPerioder.push({
                     ...eksisterendePeriode,
-                    tom: UttaksdagenString.forrige(periodeSomSkalFjernes.fom).getDato(),
+                    tom: Uttaksdagen.forrige(periodeSomSkalFjernes.fom).getDato(),
                 });
             }
 
             // Del etter slettet periode
             if (eTom.isAfter(nTom)) {
-                const nyFom = UttaksdagenString.neste(periodeSomSkalFjernes.tom).getDatoAntallUttaksdagerTidligere(
+                const nyFom = Uttaksdagen.neste(periodeSomSkalFjernes.tom).getDatoAntallUttaksdagerTidligere(
                     antallUkedager,
                 );
 
-                const nyTom = UttaksdagenString.denne(eksisterendePeriode.tom).getDatoAntallUttaksdagerTidligere(
+                const nyTom = Uttaksdagen.denne(eksisterendePeriode.tom).getDatoAntallUttaksdagerTidligere(
                     antallUkedager,
                 );
 
@@ -160,8 +160,8 @@ const fjernOgForskyvUttakPerioderBakover = (
         if (eFom.isAfter(nTom)) {
             nyeUttakPerioder.push({
                 ...eksisterendePeriode,
-                fom: UttaksdagenString.denne(eksisterendePeriode.fom).getDatoAntallUttaksdagerTidligere(antallUkedager),
-                tom: UttaksdagenString.denne(eksisterendePeriode.tom).getDatoAntallUttaksdagerTidligere(antallUkedager),
+                fom: Uttaksdagen.denne(eksisterendePeriode.fom).getDatoAntallUttaksdagerTidligere(antallUkedager),
+                tom: Uttaksdagen.denne(eksisterendePeriode.tom).getDatoAntallUttaksdagerTidligere(antallUkedager),
             });
             continue;
         }
@@ -191,7 +191,7 @@ const erstattEksisterendeUttakPerioder = (
             if (eFom.isBefore(nFom)) {
                 nyeUttakPerioder.push({
                     ...eksisterendeUttakPeriode,
-                    tom: UttaksdagenString.forrige(nyUttakPeriode.fom).getDato(),
+                    tom: Uttaksdagen.forrige(nyUttakPeriode.fom).getDato(),
                 });
             }
 
@@ -199,7 +199,7 @@ const erstattEksisterendeUttakPerioder = (
             if (eTom.isAfter(nTom)) {
                 nyeUttakPerioder.push({
                     ...eksisterendeUttakPeriode,
-                    fom: UttaksdagenString.neste(nyUttakPeriode.tom).getDato(),
+                    fom: Uttaksdagen.neste(nyUttakPeriode.tom).getDato(),
                 });
             }
         } else {
@@ -237,8 +237,8 @@ const forskyvEksisterendePerioder = (
         if (nyPeriodeStarterFørOgSlutterFørEksisterende || nyPeriodeStarterSamtidigOgSlutterEtterEksisterende) {
             nyeUttakPerioder.push({
                 ...eksisterendePeriode,
-                fom: UttaksdagenString.denne(eksisterendePeriode.fom).getDatoAntallUttaksdagerSenere(antallUkedager),
-                tom: UttaksdagenString.denne(eksisterendePeriode.tom).getDatoAntallUttaksdagerSenere(antallUkedager),
+                fom: Uttaksdagen.denne(eksisterendePeriode.fom).getDatoAntallUttaksdagerSenere(antallUkedager),
+                tom: Uttaksdagen.denne(eksisterendePeriode.tom).getDatoAntallUttaksdagerSenere(antallUkedager),
             });
             continue;
         }
@@ -247,14 +247,14 @@ const forskyvEksisterendePerioder = (
         if (eFom.isBefore(nFom)) {
             nyeUttakPerioder.push({
                 ...eksisterendePeriode,
-                tom: UttaksdagenString.forrige(nyUttakPeriode.fom).getDato(),
+                tom: Uttaksdagen.forrige(nyUttakPeriode.fom).getDato(),
             });
         }
 
         nyeUttakPerioder.push({
             ...eksisterendePeriode,
-            fom: UttaksdagenString.neste(nyUttakPeriode.tom).getDato(),
-            tom: UttaksdagenString.denne(eksisterendePeriode.tom).getDatoAntallUttaksdagerSenere(antallUkedager),
+            fom: Uttaksdagen.neste(nyUttakPeriode.tom).getDato(),
+            tom: Uttaksdagen.denne(eksisterendePeriode.tom).getDatoAntallUttaksdagerSenere(antallUkedager),
         });
     }
 
@@ -275,10 +275,7 @@ const slåSammenLikeTilstøtendePerioder = (sortertePerioder: AlleUttakPerioder[
 
         const forrigePeriode = acc.at(-1)!;
 
-        const erTilstøtende = dayjs(UttaksdagenString.neste(forrigePeriode.tom).getDato()).isSame(
-            dayjs(periode.fom),
-            'day',
-        );
+        const erTilstøtende = dayjs(Uttaksdagen.neste(forrigePeriode.tom).getDato()).isSame(dayjs(periode.fom), 'day');
 
         if (erTilstøtende && erPerioderEkslFomTomLike(forrigePeriode, periode)) {
             return [

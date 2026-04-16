@@ -9,7 +9,7 @@ import * as stories from './UttaksplanSteg.stories';
 
 const { FødselMorOgFarBeggeHarRett, FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak } = composeStories(stories);
 
-describe('<UttaksplanStegNy>', () => {
+describe('<UttaksplanSteg>', () => {
     it(
         'skal vise feilmelding når en sletter alle perioder og prøver å gå videre',
         mswWrapper(async ({ setHandlers }) => {
