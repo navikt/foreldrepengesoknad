@@ -109,9 +109,11 @@ const BeregningOppsummering = ({ sak }: { sak: Foreldrepengesak | Svangerskapspe
     return (
         <Box background="default" padding="space-24" shadow="dialog" borderRadius="8">
             <Heading size="medium" as="h2" spacing>
-                <FormattedMessage
-                    id={sak.ytelse === 'FORELDREPENGER' ? 'beregning.page.heading' : 'beregning.page.heading.svp'}
-                />
+                {sak.ytelse === 'FORELDREPENGER' ? (
+                    <FormattedMessage id="beregning.page.heading" />
+                ) : (
+                    <FormattedMessage id="beregning.page.heading.svp" />
+                )}
             </Heading>
             <List>
                 <List.Item>
@@ -388,23 +390,27 @@ const UtbetalingsVisning = ({ sak }: { sak: Foreldrepengesak | Svangerskapspenge
                 <FormattedMessage id="beregning.utbetalingsvisning.tittel" />
             </Heading>
             <BodyShort>
-                <FormattedMessage
-                    id={
-                        sak.ytelse === 'FORELDREPENGER'
-                            ? 'beregning.utbetalingsvisning.fullBeskrivelse'
-                            : 'beregning.utbetalingsvisning.fullBeskrivelse.svp'
-                    }
-                    values={{
-                        link1: (chunks) => <Link href="https://www.nav.no/utbetalingsoversikt">{chunks}</Link>,
-                        link2: (chunks) => (
-                            <Link
-                                href={`https://www.nav.no/utbetalingsdatoer#${sak.ytelse === 'FORELDREPENGER' ? 'foreldrepenger' : 'svangerskapspenger'}`}
-                            >
-                                {chunks}
-                            </Link>
-                        ),
-                    }}
-                />
+                {sak.ytelse === 'FORELDREPENGER' ? (
+                    <FormattedMessage
+                        id="beregning.utbetalingsvisning.fullBeskrivelse"
+                        values={{
+                            link1: (chunks) => <Link href="https://www.nav.no/utbetalingsoversikt">{chunks}</Link>,
+                            link2: (chunks) => (
+                                <Link href="https://www.nav.no/utbetalingsdatoer#foreldrepenger">{chunks}</Link>
+                            ),
+                        }}
+                    />
+                ) : (
+                    <FormattedMessage
+                        id="beregning.utbetalingsvisning.fullBeskrivelse.svp"
+                        values={{
+                            link1: (chunks) => <Link href="https://www.nav.no/utbetalingsoversikt">{chunks}</Link>,
+                            link2: (chunks) => (
+                                <Link href="https://www.nav.no/utbetalingsdatoer#svangerskapspenger">{chunks}</Link>
+                            ),
+                        }}
+                    />
+                )}
             </BodyShort>
             <VStack gap="space-16">
                 {andelerPerMåned.map((dager, index) => {
@@ -529,13 +535,22 @@ const Feriepenger = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) 
                     <FormattedMessage id="beregning.feriepenger.tittel" />
                 </Heading>
                 <BodyShort>
-                    <FormattedMessage
-                        id={erForeldrepenger ? 'beregning.feriepenger.ikkeRett' : 'beregning.feriepenger.ikkeRett.svp'}
-                        values={{
-                            ...(erForeldrepenger ? { uker: sak.dekningsgrad === 'ÅTTI' ? 15 : 12 } : {}),
-                            link: (chunks) => <Link href={feriepengerLenke}>{chunks}</Link>,
-                        }}
-                    />
+                    {erForeldrepenger ? (
+                        <FormattedMessage
+                            id="beregning.feriepenger.ikkeRett"
+                            values={{
+                                uker: sak.dekningsgrad === 'ÅTTI' ? 15 : 12,
+                                link: (chunks) => <Link href={feriepengerLenke}>{chunks}</Link>,
+                            }}
+                        />
+                    ) : (
+                        <FormattedMessage
+                            id="beregning.feriepenger.ikkeRett.svp"
+                            values={{
+                                link: (chunks) => <Link href={feriepengerLenke}>{chunks}</Link>,
+                            }}
+                        />
+                    )}
                 </BodyShort>
             </VStack>
         );
@@ -549,13 +564,22 @@ const Feriepenger = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) 
                 <FormattedMessage id="beregning.feriepenger.tittel" />
             </Heading>
             <BodyShort>
-                <FormattedMessage
-                    id={erForeldrepenger ? 'beregning.feriepenger.harRett' : 'beregning.feriepenger.harRett.svp'}
-                    values={{
-                        ...(erForeldrepenger ? { uker: sak.dekningsgrad === 'ÅTTI' ? 15 : 12 } : {}),
-                        link: (chunks) => <Link href={feriepengerLenke}>{chunks}</Link>,
-                    }}
-                />
+                {erForeldrepenger ? (
+                    <FormattedMessage
+                        id="beregning.feriepenger.harRett"
+                        values={{
+                            uker: sak.dekningsgrad === 'ÅTTI' ? 15 : 12,
+                            link: (chunks) => <Link href={feriepengerLenke}>{chunks}</Link>,
+                        }}
+                    />
+                ) : (
+                    <FormattedMessage
+                        id="beregning.feriepenger.harRett.svp"
+                        values={{
+                            link: (chunks) => <Link href={feriepengerLenke}>{chunks}</Link>,
+                        }}
+                    />
+                )}
             </BodyShort>
             {Object.entries(feriepengerEtterÅr).map(([år, andeler]) => {
                 const [feriepengerTilBruker, feriepengerTilAG] = partition(andeler, (andel) => andel.tilBruker);
