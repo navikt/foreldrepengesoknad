@@ -147,3 +147,7 @@ export const useContextReset = () => {
         }
     };
 };
+
+export const useContextComplete = (): ContextDataMap => {
+    return useContext(FpStateContext);
+};

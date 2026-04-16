@@ -115,7 +115,6 @@ export const useContextReset = () => {
     }, [dispatch]);
 };
 
-/** Hook returns state  */
 export const useContextComplete = (): ContextDataMap => {
     return useContext(EsStateContext);
 };

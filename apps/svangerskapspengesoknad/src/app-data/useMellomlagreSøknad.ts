@@ -15,7 +15,7 @@ const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export type SvpDataMapAndMetaData = {
+export type SvpMellomlagretData = {
     version: number;
     søkerInfo: SvpPersonopplysningerDto_fpoversikt;
 } & ContextDataMap;
@@ -50,7 +50,7 @@ export const useMellomlagreSøknad = (
                             version: VERSJON_MELLOMLAGRING,
                             søkerInfo,
                             ...state,
-                        } satisfies SvpDataMapAndMetaData;
+                        } satisfies SvpMellomlagretData;
                         await ky.post(API_URLS.mellomlagring, { json: data });
                     } catch (error: unknown) {
                         if (error instanceof HTTPError) {

@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { SvpDataMapAndMetaData } from 'appData/useMellomlagreSøknad';
+import { SvpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 
 import { ForsendelseStatus, Saker_fpoversikt, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
@@ -40,7 +40,7 @@ export const mellomlagretInfoOptions = () =>
             if (response.status === 204) {
                 return null;
             }
-            return response.json<SvpDataMapAndMetaData>();
+            return response.json<SvpMellomlagretData>();
         },
         staleTime: Infinity,
     });

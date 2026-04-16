@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { EsDataMapAndMetaData } from 'appData/useEsMellomlagring';
+import { EsMellomlagretData } from 'appData/useEsMellomlagring';
 import ky from 'ky';
 
 import { EsPersonopplysningerDto_fpoversikt, ForsendelseStatus } from '@navikt/fp-types';
@@ -30,7 +30,7 @@ export const mellomlagretInfoOptions = () =>
             if (response.status === 204) {
                 return null;
             }
-            return response.json<EsDataMapAndMetaData>();
+            return response.json<EsMellomlagretData>();
         },
         staleTime: Infinity,
     });

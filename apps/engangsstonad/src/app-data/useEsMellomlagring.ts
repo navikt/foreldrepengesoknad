@@ -11,7 +11,7 @@ import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } 
 
 export const VERSJON_MELLOMLAGRING = 5;
 
-export type EsDataMapAndMetaData = { version: number; personinfo: EsPersonopplysningerDto_fpoversikt } & ContextDataMap;
+export type EsMellomlagretData = { version: number; personinfo: EsPersonopplysningerDto_fpoversikt } & ContextDataMap;
 
 // TODO (TOR) Fiks lokalisering
 const UKJENT_UUID = 'ukjent uuid';
@@ -48,7 +48,7 @@ export const useEsMellomlagring = (
                             version: VERSJON_MELLOMLAGRING,
                             personinfo,
                             ...state,
-                        } satisfies EsDataMapAndMetaData;
+                        } satisfies EsMellomlagretData;
                         await ky.post(API_URLS.mellomlagring, { json: data });
                     } catch (error: unknown) {
                         if (error instanceof HTTPError) {
