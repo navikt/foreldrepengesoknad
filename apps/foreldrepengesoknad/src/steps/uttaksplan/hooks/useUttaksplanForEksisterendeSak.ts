@@ -8,7 +8,7 @@ import minMax from 'dayjs/plugin/minMax';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils/src/uttak/UttaksdagenString';
-import { sorterPerioder } from '@navikt/fp-uttaksplan';
+import { sorterUttakPerioder } from '@navikt/fp-uttaksplan';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(minMax);
@@ -43,7 +43,7 @@ export const useUttaksplanForEksisterendeSak = (
         uttaksplan.push(...midlertidigJusteringAvSamtidigUttak(perioderAnnenPart, valgtSak.gjeldendeVedtak.perioder));
     }
 
-    return uttaksplan.sort(sorterPerioder);
+    return uttaksplan.sort(sorterUttakPerioder);
 };
 
 // TODO (TOR) Fjern denne når ein byrjar å lagre annen parts periodar

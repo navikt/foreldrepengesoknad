@@ -11,7 +11,7 @@ import {
 import { Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan';
 
-import { UttakUploaderNy } from '../attachment-uploaders/UttakUploaderNy';
+import { UttakUploader } from '../attachment-uploaders/UttakUploader';
 
 interface Props {
     attachments: Attachment[];
@@ -22,7 +22,7 @@ interface Props {
     familiehendelsedato: string;
 }
 
-export const MorInnlagtDokumentasjonNy = ({
+export const MorInnlagtDokumentasjon = ({
     attachments,
     updateAttachments,
     perioder,
@@ -58,7 +58,7 @@ export const MorInnlagtDokumentasjonNy = ({
     });
 
     return (
-        <UttakUploaderNy
+        <UttakUploader
             attachments={attachments}
             updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE_MOR)}
             perioder={perioder}

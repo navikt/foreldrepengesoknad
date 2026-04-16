@@ -107,7 +107,7 @@ const defaultUtenlandsopphold = {
     skalBoUtenforNorgeNeste12Mnd: false,
 };
 
-const defaultUttaksplanNy = [
+const defaultUttaksplan = [
     {
         forelder: 'MOR',
         kontoType: 'FORELDREPENGER_FØR_FØDSEL',
@@ -272,7 +272,7 @@ const meta = {
         andreInntekter,
         gåTilNesteSide,
         vedlegg = defaultVedlegg,
-        uttaksplan = defaultUttaksplanNy,
+        uttaksplan = defaultUttaksplan,
         ...rest
     }) => {
         const freshQueryClient = new QueryClient({
@@ -1068,7 +1068,7 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
 
         // Ny uttaksplan med samtidig uttak
         const uttaksplanMedSamtidigUttak = [
-            ...defaultUttaksplanNy.slice(0, 2), // Behold de første periodene
+            ...defaultUttaksplan.slice(0, 2), // Behold de første periodene
             {
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',

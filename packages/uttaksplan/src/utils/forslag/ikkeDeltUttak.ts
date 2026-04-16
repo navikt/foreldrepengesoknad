@@ -1,7 +1,7 @@
-import { KontoDto, Situasjon, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { KontoDto, Situasjon, Tidsperiode, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { UttaksdagenString } from '@navikt/fp-utils';
 
-import { getTidsperiodeString, sorterPerioder } from './deltUttak';
+import { sorterUttakPerioder } from '../periodeUtils';
 
 const ikkeDeltUttakAdopsjonFarMedmor = ({
     famDato,
@@ -179,7 +179,7 @@ const ikkeDeltUttakFødselMor = ({
 
     perioder.push(foreldrepengerPeriode);
 
-    return [...perioder].sort(sorterPerioder);
+    return [...perioder].sort(sorterUttakPerioder);
 };
 
 const ikkeDeltUttakFødselFarMedmor = ({
@@ -284,7 +284,7 @@ const ikkeDeltUttakFødselFarMedmor = ({
         }
     }
 
-    return [...perioder].sort(sorterPerioder);
+    return [...perioder].sort(sorterUttakPerioder);
 };
 
 const ikkeDeltUttakFødsel = ({
@@ -382,4 +382,11 @@ export const ikkeDeltUttak = ({
         farOgFar,
         startdato,
     });
+};
+
+const getTidsperiodeString = (fom: string, uttaksdager: number): Tidsperiode => {
+    return {
+        fom,
+        tom: UttaksdagenString.denne(fom).getDatoAntallUttaksdagerSenere(uttaksdager - 1),
+    };
 };

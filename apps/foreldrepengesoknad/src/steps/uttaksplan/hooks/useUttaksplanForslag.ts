@@ -7,12 +7,13 @@ import {
     Barn,
     KontoBeregningDto,
     KontoDto,
+    Tidsperiode,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
     isAdoptertAnnetBarn,
 } from '@navikt/fp-types';
 import { UttaksdagenString, getFamiliehendelsedato } from '@navikt/fp-utils';
-import { deltUttak, getTidsperiodeString, ikkeDeltUttak } from '@navikt/fp-uttaksplan';
+import { deltUttak, ikkeDeltUttak } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { FellesperiodeFordelingValg, Fordeling, OppstartValg } from '../../../types/Fordeling';
@@ -296,4 +297,11 @@ const getOppstartsdatoFromFordelingValg = (
         default:
             throw new Error('Ukjent verdi på oppstartValg.');
     }
+};
+
+const getTidsperiodeString = (fom: string, uttaksdager: number): Tidsperiode => {
+    return {
+        fom,
+        tom: UttaksdagenString.denne(fom).getDatoAntallUttaksdagerSenere(uttaksdager - 1),
+    };
 };

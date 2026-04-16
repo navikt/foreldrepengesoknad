@@ -9,7 +9,7 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 
-import { UttakUploaderNy } from '../attachment-uploaders/UttakUploaderNy';
+import { UttakUploader } from '../attachment-uploaders/UttakUploader';
 
 interface Props {
     attachments: Attachment[];
@@ -19,7 +19,7 @@ interface Props {
     erFarEllerMedmor: boolean;
 }
 
-export const FarForSykDokumentasjonNy = ({
+export const MorForSykDokumentasjon = ({
     attachments,
     updateAttachments,
     perioder,
@@ -33,23 +33,23 @@ export const FarForSykDokumentasjonNy = ({
     }
 
     return (
-        <UttakUploaderNy
+        <UttakUploader
             attachments={attachments}
-            updateAttachments={updateAttachments(Skjemanummer.DOK_SYKDOM_FAR)}
+            updateAttachments={updateAttachments(Skjemanummer.DOK_SYKDOM_MOR)}
             perioder={perioder}
             navnPåForeldre={navnPåForeldre}
-            skjemanummer={Skjemanummer.DOK_SYKDOM_FAR}
+            skjemanummer={Skjemanummer.DOK_SYKDOM_MOR}
             labelText={intl.formatMessage(
-                { id: 'manglendeVedlegg.farForSyk.label' },
+                { id: 'manglendeVedlegg.morForSyk.label' },
                 {
-                    navn: navnPåForeldre.farMedmor,
+                    navn: navnPåForeldre.mor,
                     erFarEllerMedmor,
                 },
             )}
             description={intl.formatMessage(
-                { id: 'manglendeVedlegg.farForSyk.description' },
+                { id: 'manglendeVedlegg.morForSyk.description' },
                 {
-                    navn: navnPåForeldre.farMedmor,
+                    navn: navnPåForeldre.mor,
                     erFarEllerMedmor,
                 },
             )}

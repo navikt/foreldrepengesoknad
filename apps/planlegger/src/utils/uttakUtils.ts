@@ -5,7 +5,7 @@ import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { KontoBeregningDto, KontoDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { TidsperiodenString, UttaksdagenString, treUkerSiden } from '@navikt/fp-utils';
+import { UttaksdagenString, treUkerSiden } from '@navikt/fp-utils';
 import { deltUttak, ikkeDeltUttak } from '@navikt/fp-uttaksplan';
 
 import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
@@ -384,25 +384,4 @@ export const getAnnenpartsPerioder = (
     return erDeltUttak
         ? gjeldendeUttaksplan.filter((p) => (erFarEllerMedmor ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'))
         : [];
-};
-
-export const sorterPerioder = (p1: UttakPeriode_fpoversikt, p2: UttakPeriode_fpoversikt) => {
-    const tidsperiode1 = { fom: p1.fom, tom: p1.tom };
-    const tidsperiode2 = { fom: p2.fom, tom: p2.tom };
-
-    const tidsperiode1String = TidsperiodenString.forPeriode(tidsperiode1);
-    const tidsperiode2String = TidsperiodenString.forPeriode(tidsperiode2);
-
-    if (tidsperiode1String.erGyldig() === false || tidsperiode2String.erGyldig() === false) {
-        return tidsperiode1String.erGyldig() ? 1 : -1;
-    }
-    if (dayjs(tidsperiode1.fom).isSame(tidsperiode2.fom, 'day')) {
-        return 1;
-    }
-
-    if (tidsperiode2String.erOmsluttetAv(tidsperiode1)) {
-        return 1;
-    }
-
-    return dayjs(tidsperiode1.fom).isBefore(tidsperiode2.fom, 'day') ? -1 : 1;
 };

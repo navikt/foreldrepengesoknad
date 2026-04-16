@@ -9,7 +9,7 @@ import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { mswWrapper } from '@navikt/fp-utils-test';
 
-import * as stories from './ManglendeVedleggNy.stories';
+import * as stories from './ManglendeVedlegg.stories';
 
 const {
     Termindatodokumentasjon,
@@ -20,7 +20,7 @@ const {
     BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid,
 } = composeStories(stories);
 
-describe('<ManglendeVedleggNy>', () => {
+describe('<ManglendeVedlegg>', () => {
     it(
         'skal lage "send inn senere" vedlegg for terminbekreftelse',
         mswWrapper(async ({ setHandlers }) => {

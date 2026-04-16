@@ -34,7 +34,7 @@ interface Props {
     attachmentType: AttachmentType;
 }
 
-export const UttakUploaderNy = ({
+export const UttakUploader = ({
     attachments,
     updateAttachments,
     perioder,

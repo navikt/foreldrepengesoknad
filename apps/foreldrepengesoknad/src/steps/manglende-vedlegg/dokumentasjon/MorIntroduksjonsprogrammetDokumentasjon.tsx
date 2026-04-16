@@ -9,7 +9,7 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 
-import { UttakUploaderNy } from '../attachment-uploaders/UttakUploaderNy';
+import { UttakUploader } from '../attachment-uploaders/UttakUploader';
 
 interface Props {
     attachments: Attachment[];
@@ -18,7 +18,7 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
 }
 
-export const MorIntroduksjonsprogrammetDokumentasjonNy = ({
+export const MorIntroduksjonsprogrammetDokumentasjon = ({
     attachments,
     updateAttachments,
     perioder,
@@ -31,7 +31,7 @@ export const MorIntroduksjonsprogrammetDokumentasjonNy = ({
     }
 
     return (
-        <UttakUploaderNy
+        <UttakUploader
             attachments={attachments}
             updateAttachments={updateAttachments(Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET)}
             perioder={perioder}
