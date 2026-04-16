@@ -7,6 +7,7 @@ import minMax from 'dayjs/plugin/minMax';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { Uttaksperioden } from '@navikt/fp-utils';
 import { Uttaksdagen } from '@navikt/fp-utils/src/uttak/Uttaksdagen';
 import { sorterUttakPerioder } from '@navikt/fp-uttaksplan';
 
@@ -34,7 +35,9 @@ export const useUttaksplanForEksisterendeSak = (
         ? midlertidigJusteringAvSamtidigUttak(valgtSak.gjeldendeVedtak.perioder, perioderAnnenPart)
         : valgtSak.gjeldendeVedtak.perioder;
 
-    const uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> = [...søkerPerioder];
+    const uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> = [
+        ...fjernFrieUtsettelser(søkerPerioder),
+    ];
 
     if (valgtSak.gjeldendeVedtak?.perioderAnnenpartEøs) {
         uttaksplan.push(...valgtSak.gjeldendeVedtak.perioderAnnenpartEøs);
@@ -44,6 +47,12 @@ export const useUttaksplanForEksisterendeSak = (
     }
 
     return uttaksplan.sort(sorterUttakPerioder);
+};
+
+const fjernFrieUtsettelser = (
+    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
+    return perioder.filter((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.utsettelseÅrsak !== 'FRI');
 };
 
 // TODO (TOR) Fjern denne når ein byrjar å lagre annen parts periodar
