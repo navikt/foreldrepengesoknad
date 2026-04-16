@@ -24,12 +24,7 @@ import {
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { SkyraSurvey } from '@navikt/fp-observability';
-import {
-    AktivitetStatus,
-    BeregningsAndel_fpoversikt,
-    FpSak_fpoversikt,
-    TilkjentYtelsePeriode_fpoversikt,
-} from '@navikt/fp-types';
+import { AktivitetStatus, BeregningsAndel_fpoversikt, TilkjentYtelsePeriode_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetter, erUttaksdag, formatCurrencyWithKr, getDecoratorLanguageCookie } from '@navikt/fp-utils';
 
 import { API_URLS, hentDokumenterOptions } from '../../api/queries';
@@ -39,6 +34,7 @@ import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
+import { Foreldrepengesak, SvangerskapspengeSak } from '../../types/Sak';
 import { formaterDato } from '../../utils/dateUtils';
 
 dayjs.extend(isSameOrBefore);
@@ -49,10 +45,10 @@ export const BeregningPage = () => {
     useSetBackgroundColor('blue');
     useSetSelectedRoute(OversiktRoutes.BEREGNING);
     const intl = useIntl();
-    if (gjeldendeSak?.ytelse !== 'FORELDREPENGER') {
+    if (!gjeldendeSak || gjeldendeSak.ytelse === 'ENGANGSSTØNAD') {
         return undefined;
     }
-    const beregning = gjeldendeSak?.gjeldendeVedtak?.beregningsgrunnlag;
+    const beregning = gjeldendeSak.gjeldendeVedtak?.beregningsgrunnlag;
 
     if (beregning === undefined) {
         return undefined;
@@ -92,7 +88,7 @@ export const BeregningPage = () => {
     );
 };
 
-const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
+const BeregningOppsummering = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) => {
     const intl = useIntl();
     const beregning = sak.gjeldendeVedtak?.beregningsgrunnlag;
     if (!beregning) {
@@ -104,7 +100,7 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
     const vis6GVarsel = samletÅrsinntekt > seksG;
     const åttiProsentReduksjon = Math.round(min([samletÅrsinntekt, seksG]) * 0.8);
 
-    const visÅttiProsentReduksjon = sak.dekningsgrad === 'ÅTTI';
+    const visÅttiProsentReduksjon = sak.ytelse === 'FORELDREPENGER' && sak.dekningsgrad === 'ÅTTI';
 
     const sumDagsats = sumBy(beregning.beregningsandeler, (a) => (a.dagsatsSøker ?? 0) + (a.dagsatsArbeidsgiver ?? 0));
     const finnesRefusjon = beregning.beregningsandeler.some((a) => (a.dagsatsArbeidsgiver ?? 0) > 0);
@@ -113,7 +109,11 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
     return (
         <Box background="default" padding="space-24" shadow="dialog" borderRadius="8">
             <Heading size="medium" as="h2" spacing>
-                <FormattedMessage id="beregning.page.heading" />
+                {sak.ytelse === 'FORELDREPENGER' ? (
+                    <FormattedMessage id="beregning.page.heading" />
+                ) : (
+                    <FormattedMessage id="beregning.page.heading.svp" />
+                )}
             </Heading>
             <List>
                 <List.Item>
@@ -378,7 +378,7 @@ const fjernLeadingOgTrailingMånederUtenUtbetaling = (andelerPerDag: DagMedPerio
     return førstePåMånedMedSum === -1 ? [] : andelerSortertPåMåned.slice(førstePåMånedMedSum, sistePåMånedMedSum + 1);
 };
 
-const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
+const UtbetalingsVisning = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) => {
     const tilkjentYtelse = sak.gjeldendeVedtak?.tilkjentYtelse?.utbetalingsperioder ?? [];
     const andelerPerDag = periodeTilDager(tilkjentYtelse);
 
@@ -390,15 +390,27 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                 <FormattedMessage id="beregning.utbetalingsvisning.tittel" />
             </Heading>
             <BodyShort>
-                <FormattedMessage
-                    id="beregning.utbetalingsvisning.fullBeskrivelse"
-                    values={{
-                        link1: (chunks) => <Link href="https://www.nav.no/utbetalingsoversikt">{chunks}</Link>,
-                        link2: (chunks) => (
-                            <Link href="https://www.nav.no/utbetalingsdatoer#foreldrepenger">{chunks}</Link>
-                        ),
-                    }}
-                />
+                {sak.ytelse === 'FORELDREPENGER' ? (
+                    <FormattedMessage
+                        id="beregning.utbetalingsvisning.fullBeskrivelse"
+                        values={{
+                            link1: (chunks) => <Link href="https://www.nav.no/utbetalingsoversikt">{chunks}</Link>,
+                            link2: (chunks) => (
+                                <Link href="https://www.nav.no/utbetalingsdatoer#foreldrepenger">{chunks}</Link>
+                            ),
+                        }}
+                    />
+                ) : (
+                    <FormattedMessage
+                        id="beregning.utbetalingsvisning.fullBeskrivelse.svp"
+                        values={{
+                            link1: (chunks) => <Link href="https://www.nav.no/utbetalingsoversikt">{chunks}</Link>,
+                            link2: (chunks) => (
+                                <Link href="https://www.nav.no/utbetalingsdatoer#svangerskapspenger">{chunks}</Link>
+                            ),
+                        }}
+                    />
+                )}
             </BodyShort>
             <VStack gap="space-16">
                 {andelerPerMåned.map((dager, index) => {
@@ -509,8 +521,12 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
     );
 };
 
-const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
+const Feriepenger = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) => {
     const feriepenger = sak.gjeldendeVedtak?.tilkjentYtelse?.feriepenger ?? [];
+    const erForeldrepenger = sak.ytelse === 'FORELDREPENGER';
+    const feriepengerLenke = erForeldrepenger
+        ? 'https://www.nav.no/feriepenger#foreldrepenger'
+        : 'https://www.nav.no/feriepenger#svangerskapspenger';
 
     if (feriepenger.length === 0) {
         return (
@@ -519,15 +535,22 @@ const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
                     <FormattedMessage id="beregning.feriepenger.tittel" />
                 </Heading>
                 <BodyShort>
-                    <FormattedMessage
-                        id="beregning.feriepenger.ikkeRett"
-                        values={{
-                            uker: sak.dekningsgrad === 'ÅTTI' ? 15 : 12,
-                            link: (chunks) => (
-                                <Link href="https://www.nav.no/feriepenger#foreldrepenger">{chunks}</Link>
-                            ),
-                        }}
-                    />
+                    {erForeldrepenger ? (
+                        <FormattedMessage
+                            id="beregning.feriepenger.ikkeRett"
+                            values={{
+                                uker: sak.dekningsgrad === 'ÅTTI' ? 15 : 12,
+                                link: (chunks) => <Link href={feriepengerLenke}>{chunks}</Link>,
+                            }}
+                        />
+                    ) : (
+                        <FormattedMessage
+                            id="beregning.feriepenger.ikkeRett.svp"
+                            values={{
+                                link: (chunks) => <Link href={feriepengerLenke}>{chunks}</Link>,
+                            }}
+                        />
+                    )}
                 </BodyShort>
             </VStack>
         );
@@ -541,13 +564,22 @@ const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
                 <FormattedMessage id="beregning.feriepenger.tittel" />
             </Heading>
             <BodyShort>
-                <FormattedMessage
-                    id="beregning.feriepenger.harRett"
-                    values={{
-                        uker: sak.dekningsgrad === 'ÅTTI' ? 15 : 12,
-                        link: (chunks) => <Link href="https://www.nav.no/feriepenger#foreldrepenger">{chunks}</Link>,
-                    }}
-                />
+                {erForeldrepenger ? (
+                    <FormattedMessage
+                        id="beregning.feriepenger.harRett"
+                        values={{
+                            uker: sak.dekningsgrad === 'ÅTTI' ? 15 : 12,
+                            link: (chunks) => <Link href={feriepengerLenke}>{chunks}</Link>,
+                        }}
+                    />
+                ) : (
+                    <FormattedMessage
+                        id="beregning.feriepenger.harRett.svp"
+                        values={{
+                            link: (chunks) => <Link href={feriepengerLenke}>{chunks}</Link>,
+                        }}
+                    />
+                )}
             </BodyShort>
             {Object.entries(feriepengerEtterÅr).map(([år, andeler]) => {
                 const [feriepengerTilBruker, feriepengerTilAG] = partition(andeler, (andel) => andel.tilBruker);
@@ -612,7 +644,14 @@ const VedtakLenke = () => {
     const params = useParams<{ saksnummer: string }>();
     const vedtak = useQuery({
         ...hentDokumenterOptions(params.saksnummer!),
-        select: (dokumenter) => dokumenter.find((d) => d.tittel?.includes('Innvilgelsesbrev Foreldrepenger')),
+        select: (dokumenter) =>
+            dokumenter.find((d) => {
+                const tittel = d.tittel?.toLowerCase();
+                return (
+                    tittel?.includes('innvilgelsesbrev foreldrepenger') ||
+                    tittel?.includes('innvilgelsesbrev svangerskapspenger')
+                );
+            }),
     }).data;
 
     if (!vedtak) {

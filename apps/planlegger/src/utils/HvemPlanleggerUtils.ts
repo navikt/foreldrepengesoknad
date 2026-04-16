@@ -37,10 +37,10 @@ export const erFarSøker2 = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is 
 
 const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
     if (hvemPlanlegger.type === HvemPlanleggerType.FAR) {
-        return hvemPlanlegger.navnPåFar || intl.formatMessage({ id: 'Du' });
+        return intl.formatMessage({ id: 'Du' });
     }
     if (hvemPlanlegger.type === HvemPlanleggerType.MOR) {
-        return hvemPlanlegger.navnPåMor || intl.formatMessage({ id: 'Du' });
+        return intl.formatMessage({ id: 'Du' });
     }
     if (erMorDelAvSøknaden(hvemPlanlegger)) {
         return hvemPlanlegger.navnPåMor || intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' });
@@ -60,9 +60,7 @@ export const getNavnPåForeldre = (
 } => {
     if (hvemPlanlegger.type === HvemPlanleggerType.FAR) {
         return {
-            farMedmor: erGyldigNavn(hvemPlanlegger.navnPåFar)
-                ? hvemPlanlegger.navnPåFar
-                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+            farMedmor: intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
             mor: intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
         };
     }
@@ -79,9 +77,7 @@ export const getNavnPåForeldre = (
     if (hvemPlanlegger.type === HvemPlanleggerType.MOR) {
         return {
             farMedmor: intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
-            mor: erGyldigNavn(hvemPlanlegger.navnPåMor)
-                ? hvemPlanlegger.navnPåMor
-                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+            mor: intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
         };
     }
 

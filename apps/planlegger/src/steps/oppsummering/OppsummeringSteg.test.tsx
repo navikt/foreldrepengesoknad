@@ -14,6 +14,7 @@ const {
     HarIkkeRett,
     OppsummeringFarOgFarKunFar2HarRett,
     MorOgFarKunFarHarRett,
+    AleneforsørgerÅttiProsentFødselToBarn,
 } = composeStories(stories);
 
 describe('<OppsummeringSteg>', () => {
@@ -218,6 +219,25 @@ describe('<OppsummeringSteg>', () => {
         expect(
             screen.getByText(
                 'Espen vil få rundt 46 kr per dag hvis dere velger 100 % foreldrepenger eller 37 kr per dag med 80 %.',
+            ),
+        ).toBeInTheDocument();
+        expect(screen.queryByText('Klara vil få rundt')).not.toBeInTheDocument();
+    });
+
+    it('Skal vise "du" og ikke fornavn når søker er aleneforsørger', async () => {
+        render(<AleneforsørgerÅttiProsentFødselToBarn />);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        const hvorMyeHeading = screen.getAllByText('Dette svarte du')[0]!;
+        const expansionCard = hvorMyeHeading.closest('.navds-expansioncard');
+        if (expansionCard) {
+            const vismerButton = expansionCard.querySelector('button[aria-expanded="false"]');
+            if (vismerButton) {
+                await userEvent.click(vismerButton);
+            }
+        }
+        expect(
+            screen.getByText(
+                'Du vil få rundt 3 003 kr per dag hvis du velger 100 % foreldrepenger eller 2 403 kr per dag med 80 %.',
             ),
         ).toBeInTheDocument();
         expect(screen.queryByText('Klara vil få rundt')).not.toBeInTheDocument();

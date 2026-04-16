@@ -220,7 +220,6 @@ export const BareMorSøkerOgHarRett: Story = {
     args: {
         ...MorOgFarBeggeHarRett.args,
         hvemPlanlegger: {
-            navnPåMor: 'Olga Utvikler',
             type: HvemPlanleggerType.MOR,
         },
         fordeling: undefined,
@@ -236,7 +235,6 @@ export const BareFarSøkerAleneOmOmsorg: Story = {
     args: {
         ...MorOgFarBeggeHarRett.args,
         hvemPlanlegger: {
-            navnPåFar: 'Espen Utvikler',
             type: HvemPlanleggerType.FAR,
         },
         fordeling: undefined,
