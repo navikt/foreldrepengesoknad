@@ -57,14 +57,14 @@ export const useEsMellomlagring = (
                             }
 
                             const jsonResponse = error.data as ProblemDetails | undefined;
-                            const callIdForBruker = jsonResponse?.callId ?? UKJENT_UUID;
-                            captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
-                            throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
+                            const callId = jsonResponse?.callId ?? UKJENT_UUID;
+                            captureMessage(FEIL_VED_INNSENDING + callId);
+                            throw new Error(FEIL_VED_INNSENDING + callId.substring(0, 6), { cause: error });
                         }
                         if (error instanceof Error) {
                             throw error;
                         }
-                        throw new Error(String(error));
+                        throw new Error(String(error), { cause: error });
                     }
                 } else {
                     // Ved avbryt så set ein Path = undefined og må så rydda opp i data her

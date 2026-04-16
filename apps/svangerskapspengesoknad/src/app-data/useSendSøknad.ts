@@ -48,13 +48,13 @@ export const useSendSøknad = (søkerinfo: SvpPersonopplysningerDto_fpoversikt) 
 
                 const jsonResponse = error.data as ProblemDetails | undefined;
                 captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
-                const callIdForBruker = jsonResponse?.callId ?? UKJENT_UUID;
-                throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
+                const callId = jsonResponse?.callId ?? UKJENT_UUID;
+                throw new Error(FEIL_VED_INNSENDING + callId.substring(0, 6), { cause: error });
             }
             if (error instanceof Error) {
                 throw error;
             }
-            throw new Error(String(error));
+            throw new Error(String(error), { cause: error });
         }
     };
 

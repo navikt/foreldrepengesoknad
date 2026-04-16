@@ -50,7 +50,7 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
     // TODO (TOR) Bør skriva om heile komponenten.
     useEffect(() => {
         if (!erEksisterendePerioderEtterValgteDager && uttaksplanperioder.length === 1) {
-            // eslint-disable-next-line react-you-might-not-need-an-effect/no-pass-data-to-parent, react-hooks/immutability
+            // eslint-disable-next-line react-you-might-not-need-an-effect/no-pass-data-to-parent, @eslint-react/immutability
             slettPerioder(uttaksplanperioder, false);
         }
     }, []);

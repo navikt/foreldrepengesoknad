@@ -310,7 +310,7 @@ export const ForeldrepengesøknadRoutes = ({
 
     useEffect(() => {
         if (currentRoute && erMyndig(søkerInfo.fødselsdato) && lagretHarGodkjentVilkår && isFirstTimeLoadingApp) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect -- TODO (TOR) - Vurder om denne kan fjennast
+            // eslint-disable-next-line @eslint-react/set-state-in-effect -- TODO (TOR) - Vurder om denne kan fjennast
             setIsFirstTimeLoadingApp(false);
             if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår)) {
                 void navigate(currentRoute);

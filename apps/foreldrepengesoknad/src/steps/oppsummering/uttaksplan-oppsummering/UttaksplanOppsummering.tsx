@@ -40,7 +40,7 @@ export const UttaksplanOppsummering = ({ navnPåForeldre, registrerteArbeidsforh
 
     const antallUkerOgDagerIUttaksplan = getUkerOgDagerFromDager(antallUkerIUttaksplan * 5);
 
-    let dekningsgradTekst = undefined;
+    let dekningsgradTekst: string;
 
     if (antallUkerOgDagerIUttaksplan.dager > 0) {
         if (dekningsgrad === '100') {
