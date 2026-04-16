@@ -4,19 +4,19 @@ import { Tidsperiode } from '@navikt/fp-types';
 
 import { dateStringIsSameOrAfter, dateStringIsSameOrBefore } from './dateUtils';
 
-export class TidsperiodenString {
+export class Tidsperioden {
     private readonly tidsperiode: Tidsperiode;
 
     private constructor(tidsperiode: Tidsperiode) {
         this.tidsperiode = tidsperiode;
     }
 
-    static forPeriode(tidsperiode: Tidsperiode): TidsperiodenString {
-        return new TidsperiodenString(tidsperiode);
+    static forPeriode(tidsperiode: Tidsperiode): Tidsperioden {
+        return new Tidsperioden(tidsperiode);
     }
 
-    static forFomOgTom(fom: string, tom: string): TidsperiodenString {
-        return new TidsperiodenString({ fom, tom });
+    static forFomOgTom(fom: string, tom: string): Tidsperioden {
+        return new Tidsperioden({ fom, tom });
     }
 
     erLik(tidsperiode2: Tidsperiode) {

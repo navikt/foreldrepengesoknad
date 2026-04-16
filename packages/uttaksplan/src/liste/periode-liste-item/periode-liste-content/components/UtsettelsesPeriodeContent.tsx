@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { UttaksdagenString } from '@navikt/fp-utils';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { finnTekstForUtsettelseÅrsak } from '../../../utils/uttaksplanListeUtils';
@@ -33,7 +33,7 @@ export const UtsettelsesPeriodeContent = ({ periode }: Props) => {
                     </BodyShort>
                     <BodyShort>
                         {getVarighetString(
-                            UttaksdagenString.denneEllerNeste(periode.fom).getUttaksdagerFremTilOgMedDato(periode.tom),
+                            Uttaksdagen.denneEllerNeste(periode.fom).getUttaksdagerFremTilOgMedDato(periode.tom),
                             intl,
                         )}
                     </BodyShort>

@@ -14,7 +14,7 @@ import { links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Barn, Dekningsgrad, KontoBeregningDto, SøkersituasjonFp, isAdoptertBarn } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
-import { UttaksdagenString, capitalizeFirstLetter } from '@navikt/fp-utils';
+import { Uttaksdagen, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 const finnSisteDagMedForeldrepenger = (stønadskontoer: KontoBeregningDto, barn: Barn): string | undefined => {
@@ -32,7 +32,7 @@ const finnSisteDagMedForeldrepenger = (stønadskontoer: KontoBeregningDto, barn:
         getAntallUkerFraStønadskontoer(stønadskontoer.kontoer.filter((s) => s.konto !== 'FORELDREPENGER_FØR_FØDSEL')) *
         5;
 
-    const sisteDag = UttaksdagenString.denneEllerNeste(dato).getDatoAntallUttaksdagerSenere(dagerSomSkalLeggesTil - 1);
+    const sisteDag = Uttaksdagen.denneEllerNeste(dato).getDatoAntallUttaksdagerSenere(dagerSomSkalLeggesTil - 1);
     return dayjs(sisteDag).format('dddd DD. MMMM YYYY');
 };
 

@@ -2,7 +2,7 @@ import { API_URLS } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FormattedMessage } from 'react-intl';
 import { VedleggDataType } from 'types/VedleggDataType';
-import { perioderSomKreverVedleggNy } from 'utils/manglendeVedleggUtils';
+import { perioderSomKreverVedlegg } from 'utils/manglendeVedleggUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
 import { Alert, BodyLong, BodyShort, FormSummary, Heading, Link, VStack } from '@navikt/ds-react';
@@ -29,7 +29,7 @@ export const DokumentasjonOppsummering = ({ onVilEndreSvar, navnPåForeldre }: P
 
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsedato = getFamiliehendelsedato(barn);
-    const uttaksperioderSomManglerVedlegg = perioderSomKreverVedleggNy(
+    const uttaksperioderSomManglerVedlegg = perioderSomKreverVedlegg(
         uttaksplan || [],
         erSøkerFarEllerMedmor,
         annenForelder,

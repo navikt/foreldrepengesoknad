@@ -5,7 +5,7 @@ import minMax from 'dayjs/plugin/minMax';
 import { IntlShape, useIntl } from 'react-intl';
 
 import { Familiesituasjon, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { UttaksdagenString, getFloatFromString } from '@navikt/fp-utils';
+import { Uttaksdagen, getFloatFromString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { ForeldreInfo } from '../types/ForeldreInfo';
@@ -468,10 +468,10 @@ const harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamili
             ? dayjs.max(dayjs(familiehendelsedato), dayjs(termindato)).format('YYYY-MM-DD')
             : familiehendelsedato;
 
-        const førsteDag = UttaksdagenString.denneEllerNeste(
+        const førsteDag = Uttaksdagen.denneEllerNeste(
             erEndringssøknad ? tidligsteDato : familiehendelsedato,
         ).getDatoAntallUttaksdagerTidligere(10);
-        const sisteDag = UttaksdagenString.denneEllerNeste(
+        const sisteDag = Uttaksdagen.denneEllerNeste(
             erEndringssøknad ? senesteDato : familiehendelsedato,
         ).getDatoAntallUttaksdagerSenere(30);
 

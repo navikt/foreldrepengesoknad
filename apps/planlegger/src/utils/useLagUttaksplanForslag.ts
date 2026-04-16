@@ -3,7 +3,7 @@ import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { KontoBeregningDto } from '@navikt/fp-types';
-import { UttaksdagenString } from '@navikt/fp-utils';
+import { Uttaksdagen } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { getErFarEllerMedmor } from './HvemPlanleggerUtils';
@@ -25,7 +25,7 @@ export const useLagUttaksplanForslag = (valgtStønadskonto: KontoBeregningDto) =
         (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR ||
             hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR) &&
         hvemHarRett === 'kunSøker2HarRett'
-            ? UttaksdagenString.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30)
+            ? Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30)
             : undefined;
 
     const bareFarMedmorHarRett =

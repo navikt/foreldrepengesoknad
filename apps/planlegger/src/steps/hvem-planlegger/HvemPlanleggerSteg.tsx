@@ -18,20 +18,12 @@ import { isRequired } from '@navikt/fp-validation';
 
 import { usePlanleggerNavigator } from '../../app-data/usePlanleggerNavigator';
 
-const erMorDelAvSøknadenGittType = (type: HvemPlanleggerType) => {
-    return (
-        type === HvemPlanleggerType.MOR_OG_FAR ||
-        type === HvemPlanleggerType.MOR_OG_MEDMOR ||
-        type === HvemPlanleggerType.MOR
-    );
+const skalViseMorNavnfelt = (type: HvemPlanleggerType) => {
+    return type === HvemPlanleggerType.MOR_OG_FAR || type === HvemPlanleggerType.MOR_OG_MEDMOR;
 };
 
-const erFarDelAvSøknadenGittType = (type: HvemPlanleggerType) => {
-    return (
-        type === HvemPlanleggerType.MOR_OG_FAR ||
-        type === HvemPlanleggerType.FAR_OG_FAR ||
-        type === HvemPlanleggerType.FAR
-    );
+const skalViseFarNavnfelt = (type: HvemPlanleggerType) => {
+    return type === HvemPlanleggerType.MOR_OG_FAR || type === HvemPlanleggerType.FAR_OG_FAR;
 };
 
 export const HvemPlanleggerSteg = () => {
@@ -52,7 +44,7 @@ export const HvemPlanleggerSteg = () => {
         navigator.goToNextDefaultStep();
     };
 
-    const formMethods = useForm<HvemPlanlegger>({ defaultValues: hvemPlanlegger });
+    const formMethods = useForm<HvemPlanlegger>({ defaultValues: hvemPlanlegger, shouldUnregister: true });
 
     const type = formMethods.watch('type');
 
@@ -135,10 +127,10 @@ export const HvemPlanleggerSteg = () => {
                                 </VStack>
                             </Infobox>
                         )}
-                        {type && (
+                        {type && type !== HvemPlanleggerType.MOR && type !== HvemPlanleggerType.FAR && (
                             <BluePanel isDarkBlue={erHvemPlanleggerIkkeOppgittFraFør} shouldFadeIn>
                                 <VStack gap="space-40">
-                                    {erMorDelAvSøknadenGittType(type) && (
+                                    {skalViseMorNavnfelt(type) && (
                                         <RhfTextField
                                             name="navnPåMor"
                                             control={formMethods.control}
@@ -146,7 +138,7 @@ export const HvemPlanleggerSteg = () => {
                                             customErrorFormatter={formatError}
                                         />
                                     )}
-                                    {erFarDelAvSøknadenGittType(type) && (
+                                    {skalViseFarNavnfelt(type) && (
                                         <RhfTextField
                                             name="navnPåFar"
                                             control={formMethods.control}

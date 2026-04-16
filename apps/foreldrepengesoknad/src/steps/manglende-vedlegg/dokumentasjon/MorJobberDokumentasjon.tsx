@@ -22,7 +22,7 @@ import {
 import { Uttaksperioden, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { UttakUploaderNy } from '../attachment-uploaders/UttakUploaderNy';
+import { UttakUploader } from '../attachment-uploaders/UttakUploader';
 import { IngenDokumentasjonPåkrevd } from './IngenDokumentasjonPåkrevd';
 
 interface Props {
@@ -33,7 +33,7 @@ interface Props {
     erFarEllerMedmor: boolean;
 }
 
-export const MorJobberDokumentasjonNy = ({
+export const MorJobberDokumentasjon = ({
     attachments,
     updateAttachments,
     perioder,
@@ -91,7 +91,7 @@ export const MorJobberDokumentasjonNy = ({
     }
 
     return (
-        <UttakUploaderNy
+        <UttakUploader
             attachments={attachments}
             updateAttachments={updateDokArbeidMorAttachment}
             perioder={perioder}

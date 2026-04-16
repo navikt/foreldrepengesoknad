@@ -79,8 +79,8 @@ export {
     formaterDatoUtenDag,
 } from './src/dateUtils';
 
-export { UttaksdagenString, erUttaksdag } from './src/uttak/UttaksdagenString';
+export { Uttaksdagen, erUttaksdag } from './src/uttak/Uttaksdagen';
 export { Uttaksperioden } from './src/uttak/Uttaksperioden';
-export { TidsperiodenString } from './src/TidsperiodenString';
+export { Tidsperioden } from './src/Tidsperioden';
 export * from './src/cookieUtils';
 export { periodFormat } from './src/periodUtils';

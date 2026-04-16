@@ -21,7 +21,7 @@ import {
 } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
-import { ManglendeVedleggNy } from './ManglendeVedleggNy';
+import { ManglendeVedlegg } from './ManglendeVedlegg';
 
 const promiseAction = () => () => {
     action('button-click')();
@@ -126,14 +126,14 @@ type StoryArgs = {
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
     annenInntekt?: AndreInntektskilder[];
     gåTilNesteSide?: (action: Action) => void;
-} & ComponentProps<typeof ManglendeVedleggNy>;
+} & ComponentProps<typeof ManglendeVedlegg>;
 
 // TODO: (KALLE) Legg til stillingsprosent som en kontrollbar storybook-parameter for relevante historier
 // TODO: (KALLE) Gjør at datoene i stories er relative til dagens dato
 
 const meta = {
-    title: 'steps/ManglendeVedleggNy',
-    component: ManglendeVedleggNy,
+    title: 'steps/ManglendeVedlegg',
+    component: ManglendeVedlegg,
     decorators: [withQueryClient],
     parameters: {
         msw: {
@@ -175,7 +175,7 @@ const meta = {
                         },
                     }}
                 >
-                    <ManglendeVedleggNy {...rest} />
+                    <ManglendeVedlegg {...rest} />
                 </FpDataContext>
             </MemoryRouter>
         );

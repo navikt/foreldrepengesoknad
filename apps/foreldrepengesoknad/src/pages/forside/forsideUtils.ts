@@ -14,7 +14,7 @@ import {
     FpBarnDto_fpoversikt,
     FpSak_fpoversikt,
 } from '@navikt/fp-types';
-import { UttaksdagenString, isISODateString, sorterPersonEtterEldstOgNavn } from '@navikt/fp-utils';
+import { Uttaksdagen, isISODateString, sorterPersonEtterEldstOgNavn } from '@navikt/fp-utils';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -106,7 +106,7 @@ const getSelectableBarnFraSak = (sak: FpSak_fpoversikt, registrerteBarn: FpBarnD
         sortableDato: sak.familiehendelse.termindato!,
         startdatoFørsteStønadsperiode:
             sak.gjeldendeVedtak !== undefined && sak.gjeldendeVedtak.perioder.length > 0
-                ? UttaksdagenString.denneEllerNeste(sak.gjeldendeVedtak.perioder[0]!.fom).getDato()
+                ? Uttaksdagen.denneEllerNeste(sak.gjeldendeVedtak.perioder[0]!.fom).getDato()
                 : undefined,
         fornavn:
             pdlBarn !== undefined && pdlBarn.length > 0

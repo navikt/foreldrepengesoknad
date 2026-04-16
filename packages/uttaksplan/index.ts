@@ -22,5 +22,6 @@ export { FjernAltIUttaksplanModal } from './src/FjernAltIUttaksplanModal';
 export { useErAntallDagerOvertrukketIUttaksplan } from './src/utils/kvoteOppsummeringUtils';
 export { UttaksperiodeValidatorer } from './src/utils/UttaksperiodeValidatorer';
 export { skalBesvareFlerbarnsdager } from './src/felles/LeggTilEllerEndrePeriodeFellesForm';
-export { deltUttak, getTidsperiodeString, sorterPerioder } from './src/utils/forslag/deltUttak';
+export { sorterUttakPerioder } from './src/utils/periodeUtils';
+export { deltUttak } from './src/utils/forslag/deltUttak';
 export { ikkeDeltUttak } from './src/utils/forslag/ikkeDeltUttak';

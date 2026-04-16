@@ -31,7 +31,7 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-types';
-import { UttaksdagenString, Uttaksperioden, getDecoratorLanguageCookie, omitOne } from '@navikt/fp-utils';
+import { Uttaksdagen, Uttaksperioden, getDecoratorLanguageCookie, omitOne } from '@navikt/fp-utils';
 import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -94,7 +94,7 @@ export const getUttaksplanMedFriUtsettelsesperiode = (
         dayjs(periode.fom).isAfter(endringstidspunkt, 'day'),
     );
     const endringsTidspunktPeriodeTom = førstePeriodeEtterEndringstidspunkt
-        ? UttaksdagenString.forrige(førstePeriodeEtterEndringstidspunkt.fom).getDato()
+        ? Uttaksdagen.forrige(førstePeriodeEtterEndringstidspunkt.fom).getDato()
         : endringstidspunkt;
 
     const endringsTidspunktPeriode: Uttaksplanperiode = {
