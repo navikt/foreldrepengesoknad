@@ -61,12 +61,12 @@ export const useMellomlagreSøknad = (
                             const jsonResponse = await error.response.json<ProblemDetails>();
                             const callIdForBruker = jsonResponse?.callId ?? UKJENT_UUID;
                             captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
-                            throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
+                            throw new Error(FEIL_VED_INNSENDING + callIdForBruker, { cause: error });
                         }
                         if (error instanceof Error) {
                             throw error;
                         }
-                        throw new Error(String(error));
+                        throw new Error(String(error), { cause: error });
                     }
                 } else {
                     setHarGodkjentVilkår(false);

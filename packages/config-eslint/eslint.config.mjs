@@ -1,10 +1,9 @@
+import eslintReact from '@eslint-react/eslint-plugin';
 import pluginJs from '@eslint/js';
 import vitest from '@vitest/eslint-plugin';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import importPlugin from 'eslint-plugin-import';
+import * as importPlugin from 'eslint-plugin-import-x';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
-import pluginReact from 'eslint-plugin-react';
-import reactHooks from 'eslint-plugin-react-hooks';
 import reactYouMightNotNeedAnEffect from 'eslint-plugin-react-you-might-not-need-an-effect';
 import storybook from 'eslint-plugin-storybook';
 import globals from 'globals';
@@ -16,11 +15,6 @@ const ERROR = 2;
 export default [
     {
         files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
-        settings: {
-            react: {
-                version: 'detect',
-            },
-        },
         plugins: {
             vitest,
         },
@@ -37,10 +31,13 @@ export default [
         },
     },
     ...storybook.configs['flat/recommended'],
-    pluginReact.configs.flat.recommended,
+    eslintReact.configs['recommended-typescript'],
     jsxA11y.flatConfigs.recommended,
-    importPlugin.flatConfigs.recommended,
-    reactHooks.configs.flat.recommended,
+    {
+        plugins: {
+            'import-x': importPlugin,
+        },
+    },
     reactYouMightNotNeedAnEffect.configs.recommended,
     eslintConfigPrettier,
     {
@@ -50,13 +47,10 @@ export default [
             'max-len': [ERROR, 160],
             'no-console': ERROR,
             'no-debugger': ERROR,
-            'react/prop-types': OFF,
             'jsx-a11y/no-autofocus': OFF,
-            'react/react-in-jsx-scope': OFF,
-            'react/display-name': OFF,
-            'import/no-duplicates': ERROR,
-            'import/no-unresolved': OFF,
-            'import/named': OFF,
+            'import-x/no-duplicates': ERROR,
+            'import-x/no-unresolved': OFF,
+            'import-x/named': OFF,
             'vitest/no-disabled-tests': ERROR,
             '@typescript-eslint/no-restricted-types': [
                 'error',
@@ -92,21 +86,11 @@ export default [
             'no-duplicate-imports': ERROR,
             '@typescript-eslint/array-type': [ERROR, { default: 'array-simple' }],
             '@typescript-eslint/ban-ts-comment': ERROR,
-            'import/no-default-export': ERROR,
-            'react-hooks/rules-of-hooks': ERROR,
-            'react-hooks/set-state-in-effect': ERROR,
-            'react-hooks/incompatible-library': OFF,
-            'react-hooks/exhaustive-deps': OFF,
-            'react-hooks/refs': OFF,
-
-            // TODO Bør ein ha med desse to?
-            'react/function-component-definition': [
-                OFF,
-                {
-                    namedComponents: 'arrow-function',
-                    unnamedComponents: 'arrow-function',
-                },
-            ],
+            'import-x/no-default-export': ERROR,
+            '@eslint-react/rules-of-hooks': ERROR,
+            '@eslint-react/set-state-in-effect': ERROR,
+            '@eslint-react/exhaustive-deps': OFF,
+            '@eslint-react/unsupported-syntax': OFF,
 
             // TODO (TOR) Ignorert inntil videre grunnet kost/nytte
             '@typescript-eslint/no-explicit-any': OFF,
@@ -115,8 +99,8 @@ export default [
     {
         files: ['**/*.stories.tsx', 'eslint.config.mjs'],
         rules: {
-            'import/no-default-export': OFF,
-            'react-hooks/rules-of-hooks': OFF,
+            'import-x/no-default-export': OFF,
+            '@eslint-react/rules-of-hooks': OFF,
         },
     },
     {
