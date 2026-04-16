@@ -16,8 +16,8 @@
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
-        "@navikt/ds-css": "8.8.0",
-        "@navikt/ds-react": "8.8.0",
+        "@navikt/ds-css": "8.9.1",
+        "@navikt/ds-react": "8.9.1",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
         "@navikt/fp-observability": "workspace:*",
@@ -25,33 +25,33 @@
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
-        "react": "19.2.4",
-        "react-dom": "19.2.4",
-        "react-hook-form": "7.72.0",
-        "react-intl": "10.1.1"
+        "react": "19.2.5",
+        "react-dom": "19.2.5",
+        "react-hook-form": "7.72.1",
+        "react-intl": "10.1.2"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "8.5.0",
-        "@navikt/ds-tailwind": "8.8.0",
+        "@formatjs/cli-lib": "8.5.2",
+        "@navikt/ds-tailwind": "8.9.1",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
-        "@storybook/addon-links": "10.3.4",
-        "@storybook/react-vite": "10.3.4",
+        "@storybook/addon-links": "10.3.5",
+        "@storybook/react-vite": "10.3.5",
         "@testing-library/jest-dom": "6.9.1",
         "@testing-library/react": "16.3.2",
         "@testing-library/user-event": "14.6.1",
         "@types/react": "19.2.14",
         "eslint": "9.39.2",
         "fast-glob": "3.3.3",
-        "jsdom": "29.0.1",
-        "storybook": "10.3.4",
+        "jsdom": "29.0.2",
+        "storybook": "10.3.5",
         "storybook-react-intl": "10.1.1",
         "tailwindcss": "4.2.2",
         "typescript": "6.0.2",
-        "vite": "8.0.5",
-        "vitest": "4.1.1"
+        "vite": "8.0.8",
+        "vitest": "4.1.4"
     },
     "packageManager": "pnpm@10.28.0"
 }

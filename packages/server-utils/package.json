@@ -12,7 +12,7 @@
         "tsc:watch": "tsc --noEmit --watch"
     },
     "dependencies": {
-        "@navikt/nav-dekoratoren-moduler": "3.7.0",
+        "@navikt/nav-dekoratoren-moduler": "3.7.1",
         "@navikt/vite-mode": "0.13.7",
         "express": "5.2.1",
         "morgan": "1.10.1",
