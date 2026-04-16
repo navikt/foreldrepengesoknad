@@ -144,7 +144,7 @@ export const useMellomlagreSøknad = (
                             throw error;
                         }
 
-                        const jsonResponse = await error.response.json<ProblemDetails>();
+                        const jsonResponse = error.data as ProblemDetails | undefined;
                         const callIdForBruker = jsonResponse?.callId ?? UKJENT_UUID;
                         captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
                         throw new Error(FEIL_VED_INNSENDING + callIdForBruker);

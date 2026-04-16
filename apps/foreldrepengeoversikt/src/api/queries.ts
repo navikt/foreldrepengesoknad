@@ -92,7 +92,13 @@ export const hentInntektsmelding = (saksnummer: string) =>
 export const hentAnnenPartsVedtakOptions = (body: AnnenPartRequest_fpoversikt) =>
     queryOptions({
         queryKey: ['ANNEN_PARTS_VEDTAK', body],
-        queryFn: () => ky.post<AnnenPartSak_fpoversikt>(API_URLS.annenPartVedtak, { json: body }).json(),
+        queryFn: async () => {
+            const response = await ky.post(API_URLS.annenPartVedtak, { json: body });
+            if (response.status === 204) {
+                return null;
+            }
+            return response.json<AnnenPartSak_fpoversikt>();
+        },
     });
 
 export const hentTidslinjehendelserOptions = (saksnummer: string) =>
@@ -109,5 +115,5 @@ export const hentManglendeVedleggOptions = (saksnummer: string) =>
     });
 
 export const sendEttersending = async (ettersending: EttersendelseDto) => {
-    return ky.post(API_URLS.ettersend, { json: ettersending }).json();
+    await ky.post(API_URLS.ettersend, { json: ettersending });
 };

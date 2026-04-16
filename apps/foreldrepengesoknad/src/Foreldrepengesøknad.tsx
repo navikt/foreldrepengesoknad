@@ -51,13 +51,12 @@ export const Foreldrepengesøknad = () => {
         }
     }, [søkerinfoQuery.error, sakerQuery.error]);
 
+    const mellomlagretData = mellomlagretInfoQuery.data;
     const skalBrukeMellomlagretData =
-        mellomlagretInfoQuery.data !== undefined && shouldApplyStorage(mellomlagretInfoQuery.data);
+        mellomlagretData !== undefined && mellomlagretData !== null && shouldApplyStorage(mellomlagretData);
 
     // TODO (TOR) Dropp mapping her og dytt mellomlagra data inn i context rått
-    const initialState = skalBrukeMellomlagretData
-        ? konverterMellomlagretDataTilAppData(mellomlagretInfoQuery.data)
-        : undefined;
+    const initialState = skalBrukeMellomlagretData ? konverterMellomlagretDataTilAppData(mellomlagretData) : undefined;
 
     if (!sakerQuery.data || !søkerinfoQuery.data || mellomlagretInfoQuery.isPending) {
         return <Spinner />;
@@ -65,8 +64,8 @@ export const Foreldrepengesøknad = () => {
 
     if (
         skalBrukeMellomlagretData &&
-        (!isEqual(mellomlagretInfoQuery.data.søkerInfo, søkerinfoQuery.data) ||
-            !isEqual(mellomlagretInfoQuery.data.foreldrepengerSaker, sakerQuery.data.foreldrepenger))
+        (!isEqual(mellomlagretData.søkerInfo, søkerinfoQuery.data) ||
+            !isEqual(mellomlagretData.foreldrepengerSaker, sakerQuery.data.foreldrepenger))
     ) {
         return (
             <RegisterdataUtdatert
@@ -82,17 +81,15 @@ export const Foreldrepengesøknad = () => {
                 <ForeldrepengesøknadRoutes
                     søkerInfo={søkerinfoQuery.data}
                     foreldrepengerSaker={sakerQuery.data.foreldrepenger}
-                    currentRoute={
-                        skalBrukeMellomlagretData ? mellomlagretInfoQuery.data.currentRoute : SøknadRoutes.VELKOMMEN
-                    }
+                    currentRoute={skalBrukeMellomlagretData ? mellomlagretData.currentRoute : SøknadRoutes.VELKOMMEN}
                     lagretErEndringssøknad={
-                        skalBrukeMellomlagretData ? mellomlagretInfoQuery.data.søknad?.erEndringssøknad : false
+                        skalBrukeMellomlagretData ? mellomlagretData.søknad?.erEndringssøknad : false
                     }
                     lagretHarGodkjentVilkår={
-                        skalBrukeMellomlagretData ? mellomlagretInfoQuery.data.søknad?.harGodkjentVilkår : false
+                        skalBrukeMellomlagretData ? mellomlagretData.søknad?.harGodkjentVilkår : false
                     }
                     lagretSøknadGjelderNyttBarn={
-                        skalBrukeMellomlagretData ? mellomlagretInfoQuery.data.søknadGjelderEtNyttBarn : false
+                        skalBrukeMellomlagretData ? mellomlagretData.søknadGjelderEtNyttBarn : false
                     }
                 />
             </FpDataContext>

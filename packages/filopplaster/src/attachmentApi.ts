@@ -29,17 +29,13 @@ export const getSaveAttachmentFetch = async ({
     }
 };
 
-const handleHTTPError = async (error: HTTPError): Promise<AttachmentUploadError> => {
+const handleHTTPError = (error: HTTPError): AttachmentUploadError => {
     const status = error.response.status;
 
     if (status >= 400 && status < 500) {
-        try {
-            return await error.response.json<AttachmentUploadError>();
-        } catch {
-            return {
-                success: false,
-                feilKode: 'SERVER_ERROR',
-            };
+        const data = error.data as AttachmentUploadError | undefined;
+        if (data && 'feilKode' in data) {
+            return data;
         }
     }
 
@@ -49,7 +45,7 @@ const handleHTTPError = async (error: HTTPError): Promise<AttachmentUploadError>
     };
 };
 
-const handleUploadError = async (error: unknown): Promise<AttachmentUploadError> => {
+const handleUploadError = (error: unknown): AttachmentUploadError => {
     if (error instanceof TimeoutError) {
         return {
             success: false,

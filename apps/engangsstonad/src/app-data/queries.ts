@@ -25,7 +25,13 @@ export const personOptions = () =>
 export const mellomlagretInfoOptions = () =>
     queryOptions({
         queryKey: ['MELLOMLAGRET_INFO'],
-        queryFn: () => ky.get(API_URLS.mellomlagring).json<EsDataMapAndMetaData>(),
+        queryFn: async () => {
+            const response = await ky.get(API_URLS.mellomlagring);
+            if (response.status === 204) {
+                return null;
+            }
+            return response.json<EsDataMapAndMetaData>();
+        },
         staleTime: Infinity,
     });
 

@@ -46,6 +46,7 @@ export default [
     {
         rules: {
             ...vitest.configs.recommended.rules,
+            'eqeqeq': [ERROR, 'always'],
             'curly': [ERROR, 'all'],
             'max-len': [ERROR, 160],
             'no-console': ERROR,

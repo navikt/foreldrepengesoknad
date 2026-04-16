@@ -95,7 +95,7 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
                     throw error;
                 }
 
-                const jsonResponse = await error.response.json<ProblemDetails>();
+                const jsonResponse = error.data as ProblemDetails | undefined;
                 captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
                 const callIdForBruker = jsonResponse?.callId ?? UKJENT_UUID;
                 throw new Error(FEIL_VED_INNSENDING + callIdForBruker);

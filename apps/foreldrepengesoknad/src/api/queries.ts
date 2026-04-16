@@ -68,7 +68,13 @@ export const søkerinfoOptions = () =>
 export const mellomlagretInfoOptions = () =>
     queryOptions({
         queryKey: ['MELLOMLAGRET_INFO'],
-        queryFn: () => ky.get(API_URLS.mellomlagring).json<FpMellomlagretData>(),
+        queryFn: async () => {
+            const response = await ky.get(API_URLS.mellomlagring);
+            if (response.status === 204) {
+                return null;
+            }
+            return response.json<FpMellomlagretData>();
+        },
         staleTime: Infinity,
     });
 
@@ -76,14 +82,11 @@ const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
     queryOptions({
         queryKey: ['ANNEN_PART_VEDTAK', data],
         queryFn: async () => {
-            const vedtakEllerTomStrengForIngenVedtak = await ky
-                .post(API_URLS.annenPartVedtak, { json: data })
-                .json<AnnenPartSak_fpoversikt | ''>();
-            if (vedtakEllerTomStrengForIngenVedtak === '') {
+            const response = await ky.post(API_URLS.annenPartVedtak, { json: data });
+            if (response.status === 204) {
                 return null;
             }
-
-            return vedtakEllerTomStrengForIngenVedtak;
+            return response.json<AnnenPartSak_fpoversikt>();
         },
         /**
          * Denne selected ser snodig ut. Men poenget er at QueryCachen liker ikke at data er undefined.
