@@ -38,7 +38,7 @@ export const mellomlagretInfoOptions = () =>
         queryFn: async () => {
             const response = await ky.get(API_URLS.mellomlagring);
             if (response.status === 204) {
-                return null;
+                return undefined;
             }
             return response.json<SvpMellomlagretData>();
         },

@@ -95,7 +95,7 @@ export const hentAnnenPartsVedtakOptions = (body: AnnenPartRequest_fpoversikt) =
         queryFn: async () => {
             const response = await ky.post(API_URLS.annenPartVedtak, { json: body });
             if (response.status === 204) {
-                return null;
+                return undefined;
             }
             return response.json<AnnenPartSak_fpoversikt>();
         },
