@@ -5,7 +5,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "ncc build ./src/index.ts -o dist -t --no-cache",
+        "build": "esbuild ./src/index.ts --bundle --platform=node --format=esm --outfile=dist/index.js",
         "tsc:watch": "tsc --noEmit --watch",
         "start": "node ./server.js"
     },
@@ -18,8 +18,8 @@
         "@navikt/fp-config-typescript": "workspace:*",
         "@types/express": "5.0.6",
         "@types/node": "24.10.1",
-        "@vercel/ncc": "0.38.4",
-        "typescript": "5.9.3"
+        "esbuild": "0.27.7",
+        "typescript": "6.0.2"
     },
     "packageManager": "pnpm@10.28.0"
 }

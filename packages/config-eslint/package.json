@@ -22,7 +22,7 @@
         "eslint-plugin-react-you-might-not-need-an-effect": "0.9.3",
         "eslint-plugin-storybook": "10.3.5",
         "globals": "17.5.0",
-        "typescript": "5.9.3",
+        "typescript": "6.0.2",
         "typescript-eslint": "8.58.2"
     }
 }

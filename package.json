@@ -28,7 +28,7 @@
         "msw": "2.13.3",
         "msw-storybook-addon": "2.0.7",
         "prettier": "3.8.2",
-        "typescript": "5.9.3"
+        "typescript": "6.0.2"
     },
     "lint-staged": {
         "apps/**/*.{ts,tsx,js,jsx, css}": "prettier --write",
