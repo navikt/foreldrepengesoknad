@@ -1635,3 +1635,111 @@ export const saker_beregning_full_refusjon = {
     engangsstønad: [],
     svangerskapspenger: [],
 } satisfies Saker_fpoversikt;
+
+export const saker_beregning_svp_direkte_utbetaling = {
+    foreldrepenger: [],
+    engangsstønad: [],
+    svangerskapspenger: [
+        {
+            saksnummer: '701',
+            familiehendelse: {
+                termindato: '2026-06-15',
+                antallBarn: 1,
+            },
+            sakAvsluttet: false,
+            gjeldendeVedtak: {
+                arbeidsforhold: [
+                    {
+                        aktivitet: {
+                            type: 'ORDINÆRT_ARBEID',
+                            arbeidsgiver: {
+                                id: '992260475',
+                                type: 'ORGANISASJON',
+                            },
+                            arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER STORD',
+                        },
+                        behovFrom: '2026-03-15',
+                        tilrettelegginger: [
+                            {
+                                fom: '2026-03-15',
+                                tom: '2026-05-24',
+                                type: 'INGEN',
+                                resultat: {
+                                    resultatType: 'INNVILGET',
+                                    utbetalingsgrad: 100,
+                                },
+                            },
+                        ],
+                        oppholdsperioder: [],
+                        avslutningÅrsak: 'NORMAL',
+                    },
+                ],
+                beregningsgrunnlag: {
+                    skjæringsTidspunkt: '2026-03-15',
+                    beregningsandeler: [
+                        {
+                            aktivitetStatus: 'ARBEIDSTAKER',
+                            fastsattPrÅr: 540000.0,
+                            inntektsKilde: 'INNTEKTSMELDING',
+                            arbeidsforhold: {
+                                arbeidsgiverIdent: '992260475',
+                                arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER STORD',
+                                refusjonPrMnd: 0.0,
+                            },
+                            dagsatsArbeidsgiver: 0,
+                            dagsatsSøker: 2077,
+                        },
+                    ],
+                    beregningAktivitetStatuser: [
+                        {
+                            aktivitetStatus: 'ARBEIDSTAKER',
+                            hjemmel: 'F_14_7_8_30',
+                        },
+                    ],
+                    grunnbeløp: 130160.0,
+                },
+                tilkjentYtelse: {
+                    utbetalingsperioder: [
+                        {
+                            fom: '2026-03-15',
+                            tom: '2026-04-30',
+                            andeler: [
+                                {
+                                    arbeidsgiverIdent: '992260475',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER STORD',
+                                    dagsats: 2077,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                            ],
+                        },
+                        {
+                            fom: '2026-05-01',
+                            tom: '2026-05-24',
+                            andeler: [
+                                {
+                                    arbeidsgiverIdent: '992260475',
+                                    arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER STORD',
+                                    dagsats: 2077,
+                                    aktivitetStatus: 'ARBEIDSTAKER',
+                                    tilBruker: true,
+                                    utbetalingsgrad: 100.0,
+                                },
+                            ],
+                        },
+                    ],
+                    feriepenger: [
+                        {
+                            opptjeningsår: '2026-12-31',
+                            årsbeløp: 7893,
+                            arbeidsgiverIdent: '992260475',
+                            tilBruker: true,
+                        },
+                    ],
+                },
+            },
+            oppdatertTidspunkt: '2026-03-15T10:30:00.000',
+        },
+    ],
+} satisfies Saker_fpoversikt;
