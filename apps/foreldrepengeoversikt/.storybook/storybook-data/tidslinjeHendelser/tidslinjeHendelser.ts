@@ -467,3 +467,21 @@ export const tidslinjeHendelser_FP_endringssøknad_nylig = [
         dokumenter: [],
     },
 ] satisfies TidslinjeHendelseDto_fpoversikt[];
+
+export const tidslinjeHendelser_ES_førstegangssøknad_nylig = [
+    {
+        opprettet: new Date(Date.now() - 3 * 60 * 1000).toISOString(),
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+        dokumenter: [],
+    },
+] satisfies TidslinjeHendelseDto_fpoversikt[];
+
+export const tidslinjeHendelser_SVP_førstegangssøknad_nylig = [
+    {
+        opprettet: new Date(Date.now() - 3 * 60 * 1000).toISOString(),
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+        dokumenter: [],
+    },
+] satisfies TidslinjeHendelseDto_fpoversikt[];

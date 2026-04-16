@@ -101,7 +101,9 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
     const visBekreftelsePåSendtSøknad =
         relevantNyTidslinjehendelse !== undefined && gjeldendeSak?.åpenBehandling !== undefined;
 
-    const visSkyraSurvey = søknadstidspunkt ? dayjs().diff(dayjs(søknadstidspunkt), 'minute') < 5 : false;
+    const visNyligFpSurvey =
+        gjeldendeSak?.ytelse === 'FORELDREPENGER' &&
+        (søknadstidspunkt ? dayjs().diff(dayjs(søknadstidspunkt), 'minute') < 5 : false);
 
     const harMinstEttArbeidsforhold = søkerinfo.harArbeidsforhold;
 
@@ -125,7 +127,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                     saksnummer={params.saksnummer}
                 />
             )}
-            {visSkyraSurvey && <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/foreldrepengesoknad-inline" />}
+            {visNyligFpSurvey && <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/foreldrepengesoknad-inline" />}
             <Oppgaver saksnummer={gjeldendeSak.saksnummer} />
             <VStack gap="space-4">
                 <ContentSection
