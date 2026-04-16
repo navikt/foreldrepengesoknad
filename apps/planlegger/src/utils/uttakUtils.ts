@@ -5,7 +5,7 @@ import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { KontoBeregningDto, KontoDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { UttaksdagenString, treUkerSiden } from '@navikt/fp-utils';
+import { Uttaksdagen, treUkerSiden } from '@navikt/fp-utils';
 import { deltUttak, ikkeDeltUttak } from '@navikt/fp-uttaksplan';
 
 import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
@@ -162,10 +162,10 @@ const finnDeltUttaksdata = (
 
     const sluttdatoPeriode1 =
         hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR
-            ? UttaksdagenString.denne(startdatoPeriode1).getDatoAntallUttaksdagerSenere(
+            ? Uttaksdagen.denne(startdatoPeriode1).getDatoAntallUttaksdagerSenere(
                   antallDagerMødrekvote + antallUkerOgDagerFellesperiodeForSøker1.totaltAntallDager - 1,
               )
-            : UttaksdagenString.denne(startdatoPeriode1).getDatoAntallUttaksdagerSenere(
+            : Uttaksdagen.denne(startdatoPeriode1).getDatoAntallUttaksdagerSenere(
                   antallDagerForeldrepengerFørFødsel +
                       antallDagerMødrekvote +
                       antallUkerOgDagerFellesperiodeForSøker1.totaltAntallDager -
@@ -174,7 +174,7 @@ const finnDeltUttaksdata = (
 
     const startdatoPeriode2 = getUttaksdagFraOgMedDato(dayjs(sluttdatoPeriode1).add(1, 'day').format(ISO_DATE_FORMAT));
 
-    const sluttdatoPeriode2 = UttaksdagenString.denne(startdatoPeriode2).getDatoAntallUttaksdagerSenere(
+    const sluttdatoPeriode2 = Uttaksdagen.denne(startdatoPeriode2).getDatoAntallUttaksdagerSenere(
         antallUkerOgDagerFellesperiodeForSøker2.totaltAntallDager + antallDagerFedrekvote - 1,
     );
 
@@ -208,7 +208,7 @@ const finnEnsligUttaksdata = (
     if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
         const aktivitetsfriDager = getAntallDagerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskonto);
-        const sluttAktivitetsfri = UttaksdagenString.denne(
+        const sluttAktivitetsfri = Uttaksdagen.denne(
             getUttaksdagTilOgMedDato(familiehendelsedato),
         ).getDatoAntallUttaksdagerSenere(aktivitetsfriDager + (erBarnetAdoptert(barnet) ? 0 : 6 * 5 - 1));
 
@@ -224,7 +224,7 @@ const finnEnsligUttaksdata = (
                 dayjs(sluttAktivitetsfri).add(1, 'day').format(ISO_DATE_FORMAT),
             ),
             sluttdatoPeriode2: dayjs(
-                UttaksdagenString.denne(sluttAktivitetsfri).getDatoAntallUttaksdagerSenere(
+                Uttaksdagen.denne(sluttAktivitetsfri).getDatoAntallUttaksdagerSenere(
                     aktivitetskravUkerOgDager.totaltAntallDager,
                 ),
             ).format(ISO_DATE_FORMAT),
@@ -234,7 +234,7 @@ const finnEnsligUttaksdata = (
     if (hvemHarRett === 'kunSøker2HarRett' && (erFarSøker2(hvemPlanlegger) || erMedmorDelAvSøknaden(hvemPlanlegger))) {
         const aktivitetsfriDager = getAntallDagerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskonto);
-        const sluttAktivitetsfri = UttaksdagenString.denne(
+        const sluttAktivitetsfri = Uttaksdagen.denne(
             getUttaksdagTilOgMedDato(familiehendelsedato),
         ).getDatoAntallUttaksdagerSenere(aktivitetsfriDager + (erBarnetAdoptert(barnet) ? 0 : 6 * 5 - 1));
 
@@ -250,7 +250,7 @@ const finnEnsligUttaksdata = (
                 dayjs(sluttAktivitetsfri).add(1, 'day').format(ISO_DATE_FORMAT),
             ),
             sluttdatoPeriode2: dayjs(
-                UttaksdagenString.denne(sluttAktivitetsfri).getDatoAntallUttaksdagerSenere(
+                Uttaksdagen.denne(sluttAktivitetsfri).getDatoAntallUttaksdagerSenere(
                     aktivitetskravUkerOgDager.totaltAntallDager,
                 ),
             ).format(ISO_DATE_FORMAT),
@@ -266,7 +266,7 @@ const finnEnsligUttaksdata = (
             ? getUttaksdagFraOgMedDato(familiehendelsedato)
             : getFørsteUttaksdagForeldrepengerFørFødsel(barnet);
 
-    const sluttdatoSøker = UttaksdagenString.denne(startdatoSøker).getDatoAntallUttaksdagerSenere(
+    const sluttdatoSøker = Uttaksdagen.denne(startdatoSøker).getDatoAntallUttaksdagerSenere(
         aktivitetskravUkerOgDager.totaltAntallDager + dagerAktivitetsfriKvote + antallDagerForeldrepengerFørFødsel - 1,
     );
 

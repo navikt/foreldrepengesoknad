@@ -7,7 +7,7 @@ import minMax from 'dayjs/plugin/minMax';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { UttaksdagenString } from '@navikt/fp-utils/src/uttak/UttaksdagenString';
+import { Uttaksdagen } from '@navikt/fp-utils/src/uttak/Uttaksdagen';
 import { sorterUttakPerioder } from '@navikt/fp-uttaksplan';
 
 dayjs.extend(isSameOrBefore);
@@ -81,7 +81,7 @@ const midlertidigJusteringAvSamtidigUttak = (
         if (annenFom.isBefore(overlappFom, 'day')) {
             resultat.push({
                 ...periodeSøker1,
-                tom: UttaksdagenString.forrige(overlappFom.format(ISO_DATE_FORMAT)).getDato(),
+                tom: Uttaksdagen.forrige(overlappFom.format(ISO_DATE_FORMAT)).getDato(),
             });
         }
 
@@ -97,7 +97,7 @@ const midlertidigJusteringAvSamtidigUttak = (
         if (annenTom.isAfter(overlappTom, 'day')) {
             resultat.push({
                 ...periodeSøker1,
-                fom: UttaksdagenString.neste(overlappTom.format(ISO_DATE_FORMAT)).getDato(),
+                fom: Uttaksdagen.neste(overlappTom.format(ISO_DATE_FORMAT)).getDato(),
             });
         }
 

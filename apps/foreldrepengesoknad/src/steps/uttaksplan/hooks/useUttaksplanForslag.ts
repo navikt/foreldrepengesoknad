@@ -12,7 +12,7 @@ import {
     UttakPeriode_fpoversikt,
     isAdoptertAnnetBarn,
 } from '@navikt/fp-types';
-import { UttaksdagenString, getFamiliehendelsedato } from '@navikt/fp-utils';
+import { Uttaksdagen, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { deltUttak, ikkeDeltUttak } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -44,7 +44,7 @@ const lagDeltUttakForFarMedmor = (
     stønadskontoer: KontoDto[],
     startdato: string,
 ): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
-    const harFødselspermisjon = helgejustertFamDato === UttaksdagenString.denneEllerNeste(startdato).getDato();
+    const harFødselspermisjon = helgejustertFamDato === Uttaksdagen.denneEllerNeste(startdato).getDato();
     const forslag: UttakPeriode_fpoversikt[] = [];
 
     const foreldrepengerFørFødsel = stønadskontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
@@ -53,10 +53,10 @@ const lagDeltUttakForFarMedmor = (
     const fellesperiode = stønadskontoer.find((k) => k.konto === 'FELLESPERIODE');
     const gjenståendreFedrekvote = fedrekvote && harFødselspermisjon ? fedrekvote.dager - 10 : undefined;
 
-    let currentFomDate = UttaksdagenString.denneEllerNeste(startdato).getDato();
+    let currentFomDate = Uttaksdagen.denneEllerNeste(startdato).getDato();
 
     let tidsperiode = getTidsperiodeString(
-        UttaksdagenString.denne(currentFomDate).getDatoAntallUttaksdagerTidligere(15),
+        Uttaksdagen.denne(currentFomDate).getDatoAntallUttaksdagerTidligere(15),
         foreldrepengerFørFødsel ? foreldrepengerFørFødsel.dager : 15,
     );
 
@@ -88,7 +88,7 @@ const lagDeltUttakForFarMedmor = (
             samtidigUttak: 100,
         });
 
-        currentFomDate = UttaksdagenString.neste(tidsperiode.tom).getDato();
+        currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
 
         tidsperiode = getTidsperiodeString(currentFomDate, mødrekvote ? mødrekvote.dager - 10 : 0);
 
@@ -100,7 +100,7 @@ const lagDeltUttakForFarMedmor = (
             flerbarnsdager: false,
         });
 
-        currentFomDate = UttaksdagenString.neste(tidsperiode.tom).getDato();
+        currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
     } else {
         tidsperiode = getTidsperiodeString(currentFomDate, mødrekvote ? mødrekvote.dager : 0);
 
@@ -112,7 +112,7 @@ const lagDeltUttakForFarMedmor = (
             flerbarnsdager: false,
         });
 
-        currentFomDate = UttaksdagenString.neste(tidsperiode.tom).getDato();
+        currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
     }
 
     tidsperiode = getTidsperiodeString(currentFomDate, fellesperiode ? fellesperiode.dager : 0);
@@ -125,7 +125,7 @@ const lagDeltUttakForFarMedmor = (
         flerbarnsdager: false,
     });
 
-    currentFomDate = UttaksdagenString.neste(tidsperiode.tom).getDato();
+    currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
 
     tidsperiode = getTidsperiodeString(
         currentFomDate,
@@ -160,7 +160,7 @@ export const useUttaksplanForslag = (
     // TODO (Andreas) - Må finne ut av hvordan man skal gjøre ting når annen part har perioder
     // const annenPartsSistePeriode = annenPartsPerioder?.at(-1);
     // const annenPartsSisteDag = annenPartsSistePeriode
-    //     ? UttaksdagenString.denneEllerForrige(annenPartsSistePeriode.tom).getDato()
+    //     ? Uttaksdagen.denneEllerForrige(annenPartsSistePeriode.tom).getDato()
     //     : undefined;
 
     // TODO (TOR) Burde denne sjekka mot erMorUfør og erAleneomsorg òg?
@@ -185,15 +185,15 @@ export const useUttaksplanForslag = (
     if (erDeltUttak) {
         if (erSøkerFarEllerMedmor) {
             return lagDeltUttakForFarMedmor(
-                UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato(),
+                Uttaksdagen.denneEllerNeste(familiehendelsedato).getDato(),
                 valgtStønadskonto.kontoer,
                 oppstartsdato,
             );
         }
 
-        const helgejustertFamDato = UttaksdagenString.denneEllerNeste(familiehendelsedato).getDato();
+        const helgejustertFamDato = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDato();
         const dagerMellomFamDatoOgStartdato =
-            UttaksdagenString.denne(oppstartsdato).getUttaksdagerFremTilDato(helgejustertFamDato);
+            Uttaksdagen.denne(oppstartsdato).getUttaksdagerFremTilDato(helgejustertFamDato);
         const dagerMedFellesperiodeFørFødsel =
             dagerMellomFamDatoOgStartdato > 15 ? dagerMellomFamDatoOgStartdato - 15 : 0;
         const fellesperiodeKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
@@ -232,22 +232,22 @@ export const useUttaksplanForslag = (
 };
 
 const getFørsteUttaksdagPåEllerEtterFødsel = (familiehendelsesdato: string) => {
-    return UttaksdagenString.denneEllerNeste(familiehendelsesdato).getDato();
+    return Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato();
 };
 
 const getNesteUttaksdagEtterAnnenForelder = (sisteDagAnnenForelder: string | undefined) => {
     if (!sisteDagAnnenForelder) {
         throw new Error('Mangler informasjon om annen forelders siste dag.');
     }
-    const sisteUttaksdagAnnenForelder = UttaksdagenString.denneEllerForrige(sisteDagAnnenForelder).getDato();
-    return UttaksdagenString.neste(sisteUttaksdagAnnenForelder).getDato();
+    const sisteUttaksdagAnnenForelder = Uttaksdagen.denneEllerForrige(sisteDagAnnenForelder).getDato();
+    return Uttaksdagen.neste(sisteUttaksdagAnnenForelder).getDato();
 };
 
 function getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato: string | undefined): string {
     if (!familiehendelsesdato) {
         throw new Error('Mangler informasjon om familiehendelsesdato.');
     }
-    return UttaksdagenString.denne(
+    return Uttaksdagen.denne(
         getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato),
     ).getDatoAntallUttaksdagerTidligere(15);
 }
@@ -256,14 +256,14 @@ function getFørsteUttaksdagAnkomstdatoNorge(anksomstdatoNorge: string | undefin
     if (!anksomstdatoNorge) {
         throw new Error('Mangler informasjon om ankomstdato til Norge.');
     }
-    return UttaksdagenString.denneEllerNeste(anksomstdatoNorge).getDato();
+    return Uttaksdagen.denneEllerNeste(anksomstdatoNorge).getDato();
 }
 
 function getFørsteUttaksdagDatoForAleneomsorg(datoForAleneomsorg: string | undefined): string {
     if (!datoForAleneomsorg) {
         throw new Error('Mangler informasjon om dato for aleneomsorg.');
     }
-    return UttaksdagenString.denneEllerNeste(datoForAleneomsorg).getDato();
+    return Uttaksdagen.denneEllerNeste(datoForAleneomsorg).getDato();
 }
 
 const getOppstartsdatoFromFordelingValg = (
@@ -302,6 +302,6 @@ const getOppstartsdatoFromFordelingValg = (
 const getTidsperiodeString = (fom: string, uttaksdager: number): Tidsperiode => {
     return {
         fom,
-        tom: UttaksdagenString.denne(fom).getDatoAntallUttaksdagerSenere(uttaksdager - 1),
+        tom: Uttaksdagen.denne(fom).getDatoAntallUttaksdagerSenere(uttaksdager - 1),
     };
 };

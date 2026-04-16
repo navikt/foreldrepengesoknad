@@ -7,34 +7,34 @@ import { formatDate } from '../dateUtils';
 
 dayjs.extend(isoWeek);
 
-export class UttaksdagenString {
+export class Uttaksdagen {
     private readonly uttaksdagenDato: string;
 
     private constructor(uttaksdagenDato: string) {
         this.uttaksdagenDato = uttaksdagenDato;
     }
 
-    static denne(dato: string): UttaksdagenString {
+    static denne(dato: string): Uttaksdagen {
         if (erUttaksdag(dato) === false) {
             throw new Error(`Dato ${formatDate(dato)} må være uttaksdag`);
         }
-        return new UttaksdagenString(dato);
+        return new Uttaksdagen(dato);
     }
 
-    static denneEllerForrige(dato: string): UttaksdagenString {
-        return new UttaksdagenString(getUttaksdagTilOgMedDato(dato));
+    static denneEllerForrige(dato: string): Uttaksdagen {
+        return new Uttaksdagen(getUttaksdagTilOgMedDato(dato));
     }
 
-    static denneEllerNeste(dato: string): UttaksdagenString {
-        return new UttaksdagenString(getUttaksdagFraOgMedDato(dato));
+    static denneEllerNeste(dato: string): Uttaksdagen {
+        return new Uttaksdagen(getUttaksdagFraOgMedDato(dato));
     }
 
-    static forrige(dato: string): UttaksdagenString {
-        return new UttaksdagenString(getUttaksdagFørDato(dato));
+    static forrige(dato: string): Uttaksdagen {
+        return new Uttaksdagen(getUttaksdagFørDato(dato));
     }
 
-    static neste(dato: string): UttaksdagenString {
-        return new UttaksdagenString(getUttaksdagEtterDato(dato));
+    static neste(dato: string): Uttaksdagen {
+        return new Uttaksdagen(getUttaksdagEtterDato(dato));
     }
 
     getDatoAntallUttaksdagerSenere(uttaksdager: number): string {

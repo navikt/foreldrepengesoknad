@@ -17,7 +17,7 @@ import {
     isAdoptertBarn,
     isFødtBarn,
 } from '@navikt/fp-types';
-import { TidsperiodenString, isISODateString } from '@navikt/fp-utils';
+import { Tidsperioden, isISODateString } from '@navikt/fp-utils';
 
 import { FeatureToggle } from '../FeatureToggle';
 import { getIsDeltUttak } from './annenForelderUtils';
@@ -126,7 +126,7 @@ export const getEndringstidspunktNy = (
                 if (
                     !perioderErLikeUtenTidSjekk ||
                     (perioderErLikeUtenTidSjekk &&
-                        TidsperiodenString.forPeriode(periode).slutterEtter(opprinneligPeriodeMedSammeFom.tom))
+                        Tidsperioden.forPeriode(periode).slutterEtter(opprinneligPeriodeMedSammeFom.tom))
                 ) {
                     endringstidspunktNyPlan = fom;
                 }

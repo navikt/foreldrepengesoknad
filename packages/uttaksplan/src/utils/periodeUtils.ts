@@ -11,7 +11,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { TidsperiodenString } from '@navikt/fp-utils';
+import { Tidsperioden } from '@navikt/fp-utils';
 
 import {
     Uttaksplanperiode,
@@ -87,8 +87,8 @@ export const sorterUttakPerioder = (
     const tidsperiode1 = { fom: p1.fom, tom: p1.tom };
     const tidsperiode2 = { fom: p2.fom, tom: p2.tom };
 
-    const tidsperiode1String = TidsperiodenString.forPeriode(tidsperiode1);
-    const tidsperiode2String = TidsperiodenString.forPeriode(tidsperiode2);
+    const tidsperiode1String = Tidsperioden.forPeriode(tidsperiode1);
+    const tidsperiode2String = Tidsperioden.forPeriode(tidsperiode2);
 
     if (tidsperiode1String.erGyldig() === false || tidsperiode2String.erGyldig() === false) {
         return tidsperiode1String.erGyldig() ? 1 : -1;

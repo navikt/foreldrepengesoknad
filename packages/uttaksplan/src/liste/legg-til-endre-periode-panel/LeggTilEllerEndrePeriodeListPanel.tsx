@@ -7,7 +7,7 @@ import { Alert, Button, ErrorMessage, HStack, Heading, Radio, VStack } from '@na
 
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { BrukerRolleSak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { TidsperiodenString, omitMany } from '@navikt/fp-utils';
+import { Tidsperioden, omitMany } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
@@ -131,7 +131,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         const erOverlappendeMedEøsPerioder = uttakPerioder.some(
             (periode) =>
                 erEøsUttakPeriode(periode) &&
-                TidsperiodenString.forPeriode(periode).overlapper({
+                Tidsperioden.forPeriode(periode).overlapper({
                     fom: notEmpty(values.fom),
                     tom: notEmpty(values.tom),
                 }),

@@ -1,5 +1,5 @@
 import { KontoDto, Situasjon, Tidsperiode, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { UttaksdagenString } from '@navikt/fp-utils';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { sorterUttakPerioder } from '../periodeUtils';
 
@@ -18,7 +18,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = ({
     bareFarMedmorHarRett: boolean;
     farOgFar: boolean;
 }): UttakPeriode_fpoversikt[] => {
-    const førsteUttaksdag = UttaksdagenString.denneEllerNeste(famDato).getDato();
+    const førsteUttaksdag = Uttaksdagen.denneEllerNeste(famDato).getDato();
     const perioder: UttakPeriode_fpoversikt[] = [];
 
     if (erMorUfør) {
@@ -35,14 +35,10 @@ const ikkeDeltUttakAdopsjonFarMedmor = ({
         const aktivitetskravPeriode: UttakPeriode_fpoversikt = {
             forelder: 'FAR_MEDMOR',
             kontoType: 'FORELDREPENGER',
-            fom: getTidsperiodeString(
-                UttaksdagenString.neste(aktivitetsFriPeriode.tom).getDato(),
-                foreldrepengerKonto.dager,
-            ).fom,
-            tom: getTidsperiodeString(
-                UttaksdagenString.neste(aktivitetsFriPeriode.tom).getDato(),
-                foreldrepengerKonto.dager,
-            ).tom,
+            fom: getTidsperiodeString(Uttaksdagen.neste(aktivitetsFriPeriode.tom).getDato(), foreldrepengerKonto.dager)
+                .fom,
+            tom: getTidsperiodeString(Uttaksdagen.neste(aktivitetsFriPeriode.tom).getDato(), foreldrepengerKonto.dager)
+                .tom,
             flerbarnsdager: false,
         };
         perioder.push(aktivitetskravPeriode);
@@ -69,7 +65,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = ({
             };
 
             perioder.push(aktivitetsFriPeriode);
-            startDatoNestePeriode = UttaksdagenString.neste(aktivitetsFriPeriode.tom).getDato();
+            startDatoNestePeriode = Uttaksdagen.neste(aktivitetsFriPeriode.tom).getDato();
         }
         const periode: UttakPeriode_fpoversikt = {
             forelder: 'FAR_MEDMOR',
@@ -94,7 +90,7 @@ const ikkeDeltUttakAdopsjonMor = ({
     famDato: string;
     foreldrepengerKonto: KontoDto;
 }): UttakPeriode_fpoversikt[] => {
-    const førsteUttaksdag = UttaksdagenString.denneEllerNeste(famDato).getDato();
+    const førsteUttaksdag = Uttaksdagen.denneEllerNeste(famDato).getDato();
     const periode: UttakPeriode_fpoversikt = {
         forelder: 'MOR',
         kontoType: foreldrepengerKonto.konto === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : foreldrepengerKonto.konto,
@@ -147,7 +143,7 @@ const ikkeDeltUttakFødselMor = ({
     foreldrepengerKonto: KontoDto;
     foreldrePengerFørFødselKonto: KontoDto;
 }): UttakPeriode_fpoversikt[] => {
-    const førsteUttaksdag = UttaksdagenString.denneEllerNeste(famDato).getDato();
+    const førsteUttaksdag = Uttaksdagen.denneEllerNeste(famDato).getDato();
     const perioder: UttakPeriode_fpoversikt[] = [];
 
     if (foreldrePengerFørFødselKonto !== undefined) {
@@ -158,8 +154,8 @@ const ikkeDeltUttakFødselMor = ({
                     ? 'FORELDREPENGER'
                     : foreldrePengerFørFødselKonto.konto,
             morsAktivitet: foreldrePengerFørFødselKonto.konto === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : undefined,
-            fom: UttaksdagenString.denne(førsteUttaksdag).getDatoAntallUttaksdagerTidligere(15),
-            tom: UttaksdagenString.forrige(førsteUttaksdag).getDato(),
+            fom: Uttaksdagen.denne(førsteUttaksdag).getDatoAntallUttaksdagerTidligere(15),
+            tom: Uttaksdagen.forrige(førsteUttaksdag).getDato(),
             flerbarnsdager: false,
         };
 
@@ -201,7 +197,7 @@ const ikkeDeltUttakFødselFarMedmor = ({
     farOgFar: boolean;
     startdato?: string;
 }): UttakPeriode_fpoversikt[] => {
-    const startDato = UttaksdagenString.denneEllerNeste(startdato ?? famDato).getDato();
+    const startDato = Uttaksdagen.denneEllerNeste(startdato ?? famDato).getDato();
     const perioder: UttakPeriode_fpoversikt[] = [];
 
     if (erMorUfør) {
@@ -231,11 +227,11 @@ const ikkeDeltUttakFødselFarMedmor = ({
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FORELDREPENGER',
                 fom: getTidsperiodeString(
-                    UttaksdagenString.neste(aktivitetsFriPeriode.tom).getDato(),
+                    Uttaksdagen.neste(aktivitetsFriPeriode.tom).getDato(),
                     foreldrepengerKonto.dager,
                 ).fom,
                 tom: getTidsperiodeString(
-                    UttaksdagenString.neste(aktivitetsFriPeriode.tom).getDato(),
+                    Uttaksdagen.neste(aktivitetsFriPeriode.tom).getDato(),
                     foreldrepengerKonto.dager,
                 ).tom,
                 flerbarnsdager: false,
@@ -267,7 +263,7 @@ const ikkeDeltUttakFødselFarMedmor = ({
                 };
 
                 perioder.push(aktivitetsFriPeriode);
-                startDatoNestePeriode = UttaksdagenString.neste(aktivitetsFriPeriode.tom).getDato();
+                startDatoNestePeriode = Uttaksdagen.neste(aktivitetsFriPeriode.tom).getDato();
             }
 
             const periode: UttakPeriode_fpoversikt = {
@@ -387,6 +383,6 @@ export const ikkeDeltUttak = ({
 const getTidsperiodeString = (fom: string, uttaksdager: number): Tidsperiode => {
     return {
         fom,
-        tom: UttaksdagenString.denne(fom).getDatoAntallUttaksdagerSenere(uttaksdager - 1),
+        tom: Uttaksdagen.denne(fom).getDatoAntallUttaksdagerSenere(uttaksdager - 1),
     };
 };

@@ -7,7 +7,7 @@ import { getVarighetString } from 'utils/dateUtils';
 import { BodyShort } from '@navikt/ds-react';
 
 import { isFødtBarn } from '@navikt/fp-types';
-import { TidsperiodenString, UttaksdagenString, isValidDate } from '@navikt/fp-utils';
+import { Tidsperioden, Uttaksdagen, isValidDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 const ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL = 3;
@@ -17,14 +17,14 @@ interface Props {
 }
 
 const getFørsteUttaksdagPåEllerEtterFødsel = (familiehendelsesdato: string) => {
-    return UttaksdagenString.denneEllerNeste(familiehendelsesdato).getDato();
+    return Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato();
 };
 
 export const getFørsteUttaksdagForeldrepengerFørFødsel = (familiehendelsesdato: string | undefined): string => {
     if (!familiehendelsesdato) {
         throw new Error('Mangler informasjon om familiehendelsesdato.');
     }
-    return UttaksdagenString.denne(
+    return Uttaksdagen.denne(
         getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato),
     ).getDatoAntallUttaksdagerTidligere(ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5);
 };
@@ -41,7 +41,7 @@ const getMorInfoMistetDagerFørFødsel = (
     ) {
         return undefined;
     }
-    const uttaksdager = UttaksdagenString.denne(førsteUttaksdagForeldrepengerFørFødsel).getUttaksdagerFremTilDato(
+    const uttaksdager = Uttaksdagen.denne(førsteUttaksdagForeldrepengerFørFødsel).getUttaksdagerFremTilDato(
         oppstartsdato,
     );
     return getVarighetString(uttaksdager, intl);
@@ -59,7 +59,7 @@ const getMorInfoFellesperiodeFørFødsel = (
     ) {
         return undefined;
     }
-    const uttaksdager = UttaksdagenString.denne(oppstartsdato).getUttaksdagerFremTilDato(
+    const uttaksdager = Uttaksdagen.denne(oppstartsdato).getUttaksdagerFremTilDato(
         førsteUttaksdagForeldrepengerFørFødsel,
     );
     return getVarighetString(uttaksdager, intl);
@@ -72,15 +72,15 @@ const getVarighetFørFamiliehendelse = (
     if (!oppstartDato) {
         return '';
     }
-    const sisteUttaksdagFørTermin = UttaksdagenString.forrige(familiehendelsesdato).getDato();
-    const tidsperiode = TidsperiodenString.forFomOgTom(oppstartDato, sisteUttaksdagFørTermin);
+    const sisteUttaksdagFørTermin = Uttaksdagen.forrige(familiehendelsesdato).getDato();
+    const tidsperiode = Tidsperioden.forFomOgTom(oppstartDato, sisteUttaksdagFørTermin);
     const antallUttaksdager =
-        UttaksdagenString.denneEllerNeste(oppstartDato).getUttaksdagerFremTilOgMedDato(sisteUttaksdagFørTermin);
+        Uttaksdagen.denneEllerNeste(oppstartDato).getUttaksdagerFremTilOgMedDato(sisteUttaksdagFørTermin);
     return tidsperiode.erGyldig() ? getVarighetString(antallUttaksdager, intl) : '';
 };
 
 const getStarterPåUttaksdagEtterFamiliehendelse = (familiehendelsesdato: string, oppstartDato: string | undefined) => {
-    const førsteUttaksdagPåEllerEtterFamHendelse = UttaksdagenString.denneEllerNeste(familiehendelsesdato).getDato();
+    const førsteUttaksdagPåEllerEtterFamHendelse = Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato();
 
     return (
         oppstartDato &&

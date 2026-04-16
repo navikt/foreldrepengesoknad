@@ -14,7 +14,7 @@ import { ArbeidsforholdOgInntektSteg } from 'steps/arbeidsforhold-og-inntekt/Arb
 import { EgenNæringSteg } from 'steps/egen-næring/EgenNæringSteg';
 import { FordelingSteg } from 'steps/fordeling/FordelingSteg';
 import { FrilansSteg } from 'steps/frilans/FrilansSteg';
-import { ManglendeVedleggNy } from 'steps/manglende-vedlegg/ManglendeVedleggNy';
+import { ManglendeVedlegg } from 'steps/manglende-vedlegg/ManglendeVedlegg';
 import { OmBarnetSteg } from 'steps/om-barnet/OmBarnetSteg';
 import { OppsummeringSteg } from 'steps/oppsummering/OppsummeringSteg';
 import { PeriodeMedForeldrepengerSteg } from 'steps/periode-med-foreldrepenger/PeriodeMedForeldrepengerSteg';
@@ -74,7 +74,7 @@ const renderSøknadRoutes = ({
                 <Route
                     path={SøknadRoutes.DOKUMENTASJON}
                     element={
-                        <ManglendeVedleggNy
+                        <ManglendeVedlegg
                             søkerInfo={søkerInfo}
                             erEndringssøknad={erEndringssøknad}
                             mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
@@ -170,7 +170,7 @@ const renderSøknadRoutes = ({
             <Route
                 path={SøknadRoutes.DOKUMENTASJON}
                 element={
-                    <ManglendeVedleggNy
+                    <ManglendeVedlegg
                         søkerInfo={søkerInfo}
                         erEndringssøknad={erEndringssøknad}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}

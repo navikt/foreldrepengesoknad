@@ -20,7 +20,7 @@ import {
     UttakUtsettelseÅrsak_fpoversikt,
 } from '@navikt/fp-types/src/genererteTyper';
 import { CalendarPeriod } from '@navikt/fp-ui';
-import { UttaksdagenString } from '@navikt/fp-utils';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../../../context/UttaksplanDataContext';
 import { SlettPeriodeForskyvEllerErstattPanel } from '../../../../../felles/forskyvEllerErstatt/SlettPeriodeForskyvEllerErstattPanel';
@@ -626,7 +626,7 @@ const justerValgteKalenderperioder = (
             nyePerioder.push({
                 ...periode,
                 fom: periode.fom,
-                tom: UttaksdagenString.denneEllerForrige(fomSlett.subtract(1, 'day').format(ISO_DATE_FORMAT)).getDato(),
+                tom: Uttaksdagen.denneEllerForrige(fomSlett.subtract(1, 'day').format(ISO_DATE_FORMAT)).getDato(),
             });
         }
 
@@ -634,7 +634,7 @@ const justerValgteKalenderperioder = (
         if (tom.isAfter(tomSlett, 'day')) {
             nyePerioder.push({
                 ...periode,
-                fom: UttaksdagenString.denneEllerNeste(tomSlett.add(1, 'day').format(ISO_DATE_FORMAT)).getDato(),
+                fom: Uttaksdagen.denneEllerNeste(tomSlett.add(1, 'day').format(ISO_DATE_FORMAT)).getDato(),
                 tom: periode.tom,
             });
         }
