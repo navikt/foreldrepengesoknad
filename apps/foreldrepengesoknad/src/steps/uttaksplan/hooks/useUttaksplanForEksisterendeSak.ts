@@ -35,13 +35,13 @@ export const useUttaksplanForEksisterendeSak = (
         ? midlertidigJusteringAvSamtidigUttak(valgtSak.gjeldendeVedtak.perioder, perioderAnnenPart)
         : valgtSak.gjeldendeVedtak.perioder;
 
-    const uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> = [
-        ...fjernFrieUtsettelser(søkerPerioder),
-    ];
+    const uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> =
+        fjernFrieUtsettelser(søkerPerioder);
 
     if (valgtSak.gjeldendeVedtak?.perioderAnnenpartEøs) {
         uttaksplan.push(...valgtSak.gjeldendeVedtak.perioderAnnenpartEøs);
     }
+
     if (perioderAnnenPart) {
         uttaksplan.push(...midlertidigJusteringAvSamtidigUttak(perioderAnnenPart, valgtSak.gjeldendeVedtak.perioder));
     }
