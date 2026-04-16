@@ -1,396 +1,225 @@
 import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isoWeekday from 'dayjs/plugin/isoWeek';
+import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
 
 import {
-    EksisterendeSak,
-    InfoPeriode,
-    NavnPåForeldre,
-    OpprinneligSøkt,
-    Periode,
-    PeriodeInfoType,
-    PeriodeValidState,
-    Periodetype,
-    Situasjon,
-    Tidsperiode,
-    TidsperiodeDate,
-    Uttaksperiode,
-    isUttakAnnenPart,
-    isUttaksperiode,
-    isUttaksperiodeAnnenpartEøs,
-} from '@navikt/fp-common';
-import {
     BrukerRolleSak_fpoversikt,
-    KontoTypeUttak,
-    Oppholdsårsak,
-    UtsettelsesÅrsak,
-    UttakOverføringÅrsak_fpoversikt,
+    MorsAktivitet,
+    RettighetType_fpoversikt,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { capitalizeFirstLetter, erTidsperioderLike, getFloatFromString } from '@navikt/fp-utils';
+import { Tidsperioden } from '@navikt/fp-utils';
 
-import { ISOStringToDate } from '../formik-wrappers';
-import { Perioden } from './Perioden';
-import { convertTidsperiodeToTidsperiodeDate } from './dateUtils';
-import { getStønadskontoNavn, getUttakAnnenPartStønadskontoNavn } from './stønadskontoerUtils';
-import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from './wlbUtils';
+import {
+    Uttaksplanperiode,
+    UttaksplanperiodeMedKunTapteDager,
+    erEøsUttakPeriode,
+    erVanligUttakPeriode,
+} from '../types/UttaksplanPeriode';
 
-export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {
-    return {
-        fom: ISOStringToDate(t.fom),
-        tom: ISOStringToDate(t.tom),
-    };
+dayjs.extend(isSameOrAfter);
+dayjs.extend(minMax);
+dayjs.extend(isoWeekday);
+
+export const erUttaksperiode = (periode: Uttaksplanperiode) => {
+    return erVanligUttakPeriode(periode) && periode.utsettelseÅrsak === undefined;
 };
 
-export const stillingsprosentIsMoreThan0 = (stillingsprosent: string): boolean => {
-    const pst = getFloatFromString(stillingsprosent);
-    if (pst) {
-        return pst > 0;
-    }
-    return false;
-};
-
-export const samtidigUttakProsentIsMax100 = (samtidigUttakProsent: string): boolean => {
-    const pst = getFloatFromString(samtidigUttakProsent);
-
-    if (pst) {
-        return pst <= 100;
-    }
-
-    return false;
-};
-
-export const stillingsprosentIsLessThan100 = (stillingsprosent: string): boolean => {
-    const pst = getFloatFromString(stillingsprosent);
-    if (pst) {
-        return pst < 100;
-    }
-    return false;
-};
-
-const isValidStillingsprosent = (pst: string | undefined): boolean =>
-    pst !== undefined && Number.isNaN(Number.parseFloat(pst)) === false;
-
-const prettifyProsent = (pst: string | undefined): number | undefined => {
-    if (pst === undefined) {
-        return undefined;
-    }
-
-    const nbr = Number.parseFloat(pst);
-    if (Number.isNaN(nbr)) {
-        return undefined;
-    }
-    if (Math.round(nbr) === nbr) {
-        return Math.round(nbr);
-    }
-    return nbr;
-};
-
-const getUttaksprosentFromStillingsprosent = (
-    stillingsPst: number | undefined,
-    samtidigUttakPst: number | undefined,
-): number | undefined => {
-    if (samtidigUttakPst) {
-        return samtidigUttakPst;
-    }
-    if (stillingsPst) {
-        let prosent = (100 - stillingsPst) * 100;
-        prosent = Math.round(prosent) / 100;
-
-        return prosent;
-    }
-    return undefined;
-};
-
-export const getOppholdskontoNavn = (intl: IntlShape, årsak: Oppholdsårsak, foreldernavn: string, erMor: boolean) => {
-    const navn = capitalizeFirstLetter(foreldernavn);
-    if (erMor) {
-        return intl.formatMessage(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
-            { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}` },
-            { foreldernavn: navn },
-        );
-    }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
-    return intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
-};
-
-export const getStønadskontoFromOppholdsårsak = (årsak: Oppholdsårsak): KontoTypeUttak => {
-    if (årsak === 'UTTAK_FEDREKVOTE_ANNEN_FORELDER') {
-        return 'FEDREKVOTE';
-    }
-
-    if (årsak === 'UTTAK_MØDREKVOTE_ANNEN_FORELDER') {
-        return 'MØDREKVOTE';
-    }
-
-    if (årsak === 'UTTAK_FELLESP_ANNEN_FORELDER') {
-        return 'FELLESPERIODE';
-    }
-
-    if (årsak === 'UTTAK_FORELDREPENGER_ANNEN_FORELDER') {
-        return 'FORELDREPENGER';
-    }
-
-    return 'FORELDREPENGER_FØR_FØDSEL';
-};
-
-export const getOppholdsÅrsakFromStønadskonto = (konto: KontoTypeUttak): Oppholdsårsak | undefined => {
-    switch (konto) {
-        case 'FEDREKVOTE':
-            return 'UTTAK_FEDREKVOTE_ANNEN_FORELDER';
-        case 'MØDREKVOTE':
-            return 'UTTAK_MØDREKVOTE_ANNEN_FORELDER';
-        case 'FELLESPERIODE':
-            return 'UTTAK_FELLESP_ANNEN_FORELDER';
-        default:
-            return undefined;
-    }
-};
-
-export const getForelderNavn = (forelder: BrukerRolleSak_fpoversikt, navnPåForeldre: NavnPåForeldre): string => {
-    let forelderNavn = '';
-    if (navnPåForeldre.farMedmor) {
-        forelderNavn = forelder === 'MOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
-    } else {
-        forelderNavn = forelder === 'MOR' ? navnPåForeldre.mor : forelder;
-    }
-    return capitalizeFirstLetter(forelderNavn);
-};
-
-const getPeriodeTittelUttaksPeriode = (
-    intl: IntlShape,
-    periode: Uttaksperiode,
-    navnPåForeldre: NavnPåForeldre,
-    familiehendelsesdato: Date,
-    termindato: Date | undefined,
-    situasjon: Situasjon,
-    erFarEllerMedmor: boolean,
-    erAleneOmOmsorg?: boolean,
-) => {
-    const tittelMedNavn = getStønadskontoNavn(intl, periode.konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
-    const tittel = appendPeriodeNavnHvisUttakRundtFødselFarMedmor(
-        intl,
-        tittelMedNavn,
-        periode,
-        situasjon,
-        familiehendelsesdato,
-        termindato,
+export const erPrematuruker = (periode: Uttaksplanperiode) => {
+    return (
+        erVanligUttakPeriode(periode) &&
+        periode.kontoType !== undefined &&
+        periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER'
     );
-    if (
-        (periode.gradert && isValidStillingsprosent(periode.stillingsprosent)) ||
-        (periode.ønskerSamtidigUttak && isValidStillingsprosent(periode.samtidigUttakProsent))
-    ) {
-        return `${tittel} ${intl.formatMessage(
-            { id: 'gradering.prosent' },
-            {
-                stillingsprosent: getUttaksprosentFromStillingsprosent(
-                    prettifyProsent(periode.stillingsprosent),
-                    periode.samtidigUttakProsent ? prettifyProsent(periode.samtidigUttakProsent) : undefined,
-                ),
-            },
-        )}`;
-    }
-    return tittel;
 };
 
-const getPeriodeTittelInfoPeriode = (
-    intl: IntlShape,
-    periode: InfoPeriode,
-    navnPåForeldre: NavnPåForeldre,
-    erFarEllerMedmor: boolean,
+export const erUtsettelsesperiode = (periode: Uttaksplanperiode) => {
+    return (
+        erVanligUttakPeriode(periode) &&
+        periode.utsettelseÅrsak !== undefined &&
+        periode.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER'
+    );
+};
+
+export const erOverføringsperiode = (periode: Uttaksplanperiode) => {
+    return erVanligUttakPeriode(periode) && periode.overføringÅrsak !== undefined;
+};
+
+export const erOppholdsperiode = (periode: Uttaksplanperiode) => {
+    return erVanligUttakPeriode(periode) && periode.oppholdÅrsak !== undefined;
+};
+
+export const erAvslåttPeriode = (periode: Uttaksplanperiode) => {
+    return 'resultat' in periode && periode.resultat && periode.resultat.innvilget !== true;
+};
+
+export const sorterPerioder = (a: { fom: string; tom: string }, b: { fom: string; tom: string }): number => {
+    const aFom = dayjs(a.fom);
+    const bFom = dayjs(b.fom);
+
+    if (aFom.isBefore(bFom)) {
+        return -1;
+    }
+    if (aFom.isAfter(bFom)) {
+        return 1;
+    }
+
+    const aTom = dayjs(a.tom);
+    const bTom = dayjs(b.tom);
+
+    if (aTom.isBefore(bTom)) {
+        return -1;
+    }
+    if (aTom.isAfter(bTom)) {
+        return 1;
+    }
+
+    return 0;
+};
+
+export const sorterUttakPerioder = (
+    p1: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    p2: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
 ) => {
-    switch (periode.infotype) {
-        case PeriodeInfoType.uttakAnnenPart:
-            return getUttakAnnenPartStønadskontoNavn(
-                intl,
-                getStønadskontoFromOppholdsårsak(periode.årsak),
-                periode.forelder,
-                navnPåForeldre,
-                isUttaksperiodeAnnenpartEøs(periode) ? undefined : periode.samtidigUttakProsent,
-                erFarEllerMedmor,
-            );
-        case PeriodeInfoType.utsettelseAnnenPart:
-            return intl.formatMessage(
-                { id: `uttaksplan.periodetype.info.utsettelse.${periode.årsak}` },
-                {
-                    navn: getForelderNavn(periode.forelder, navnPåForeldre),
-                },
-            );
-        case PeriodeInfoType.avslåttPeriode:
-            if (
-                periode.opprinneligSøkt === OpprinneligSøkt.Arbeid ||
-                periode.opprinneligSøkt === OpprinneligSøkt.Ferie
-            ) {
-                return 'Avslått utsettelse';
-            }
+    const tidsperiode1 = { fom: p1.fom, tom: p1.tom };
+    const tidsperiode2 = { fom: p2.fom, tom: p2.tom };
 
-            if (
-                (periode.forelder === 'MOR' && erFarEllerMedmor) ||
-                (periode.forelder === 'FAR_MEDMOR' && !erFarEllerMedmor)
-            ) {
-                return intl.formatMessage(
-                    { id: 'uttaksplan.periodetype.info.avslåttPeriode.annenPart' },
-                    {
-                        navn: getForelderNavn(periode.forelder, navnPåForeldre),
-                    },
-                );
-            }
-            return intl.formatMessage({ id: `uttaksplan.periodetype.info.${periode.infotype}` });
+    const tidsperiode1String = Tidsperioden.forPeriode(tidsperiode1);
+    const tidsperiode2String = Tidsperioden.forPeriode(tidsperiode2);
+
+    if (tidsperiode1String.erGyldig() === false || tidsperiode2String.erGyldig() === false) {
+        return tidsperiode1String.erGyldig() ? 1 : -1;
     }
+    if (dayjs(tidsperiode1.fom).isSame(tidsperiode2.fom, 'day')) {
+        return 1;
+    }
+
+    if (tidsperiode2String.erOmsluttetAv(tidsperiode1)) {
+        return 1;
+    }
+
+    return dayjs(tidsperiode1.fom).isBefore(tidsperiode2.fom, 'day') ? -1 : 1;
 };
 
-export const getPeriodeTittel = (
-    intl: IntlShape,
-    periode: Periode,
-    navnPåForeldre: NavnPåForeldre,
-    familiehendelsesdato: Date,
-    termindato: Date | undefined,
-    situasjon: Situasjon,
-    erFarEllerMedmor: boolean,
-    erAleneOmOmsorg?: boolean,
-): string => {
-    switch (periode.type) {
-        case Periodetype.Uttak: {
-            return getPeriodeTittelUttaksPeriode(
-                intl,
-                periode,
-                navnPåForeldre,
-                familiehendelsesdato,
-                termindato,
-                situasjon,
-                erFarEllerMedmor,
-                erAleneOmOmsorg,
-            );
-        }
-        case Periodetype.PeriodeUtenUttak:
-            return intl.formatMessage({ id: 'uttaksplan.periodetype.periodeUtenUttak.tittel' });
-        case Periodetype.Overføring:
-            return getStønadskontoNavn(intl, periode.konto, navnPåForeldre, erFarEllerMedmor);
-        case Periodetype.Utsettelse:
-            if (periode.årsak) {
-                return intl.formatMessage(
-                    { id: 'uttaksplan.periodeliste.utsettelsesårsak' },
-                    {
-                        årsak: intl.formatMessage({ id: `uttaksplan.utsettelsesårsak.${periode.årsak}` }),
-                    },
-                );
-            }
-            return intl.formatMessage({ id: 'uttaksplan.periodeliste.utsettelsesårsak.ukjent' });
-        case Periodetype.Opphold:
-            return getOppholdskontoNavn(
-                intl,
-                periode.årsak,
-                getForelderNavn(periode.forelder, navnPåForeldre),
-                periode.forelder === 'MOR',
-            );
-        case Periodetype.Hull:
-            return intl.formatMessage({ id: 'uttaksplan.periodetype.hull.tittel' });
-        case Periodetype.Info:
-            return getPeriodeTittelInfoPeriode(intl, periode, navnPåForeldre, erFarEllerMedmor);
-    }
+export const harPeriodeDerMorsAktivitetIkkeErValgt = (
+    rettighetType: RettighetType_fpoversikt,
+    perioder?: UttaksplanperiodeMedKunTapteDager[] | Uttaksplanperiode[],
+) => {
+    return (
+        rettighetType !== 'ALENEOMSORG' &&
+        !!perioder &&
+        perioder.some(
+            (periode) =>
+                erVanligUttakPeriode(periode) &&
+                periode.forelder === 'FAR_MEDMOR' &&
+                periode.resultat?.innvilget !== false &&
+                (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER') &&
+                periode.morsAktivitet === undefined &&
+                periode.flerbarnsdager === false,
+        )
+    );
 };
-export const erPeriodeInnvilget = (periode: Periode, eksisterendeSak?: EksisterendeSak): boolean => {
-    if (eksisterendeSak === undefined) {
+
+export const erPerioderEkslFomTomLike = (
+    periode1: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    periode2: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+) => {
+    if (
+        (erEøsUttakPeriode(periode1) && !erEøsUttakPeriode(periode2)) ||
+        (!erEøsUttakPeriode(periode1) && erEøsUttakPeriode(periode2))
+    ) {
         return false;
     }
-    const saksperiode = getSaksperiode(periode, eksisterendeSak);
-    return saksperiode ? !!saksperiode.resultat?.innvilget : false;
-};
 
-const getSaksperiode = (periode: Periode, ekisterendeSak: EksisterendeSak) => {
-    return ekisterendeSak.saksperioder.find((saksperiode) =>
-        erTidsperioderLike(convertTidsperiodeToTidsperiodeDate(saksperiode.periode), periode.tidsperiode),
-    );
-};
-
-export const getPeriodeForelderNavn = (periode: Periode, navnPåForeldre: NavnPåForeldre): string => {
-    if (
-        periode.type === Periodetype.Utsettelse ||
-        periode.type === Periodetype.Uttak ||
-        periode.type === Periodetype.Overføring ||
-        periode.type === Periodetype.Opphold ||
-        periode.type === Periodetype.Info
-    ) {
-        return getForelderNavn(periode.forelder, navnPåForeldre);
+    if (erEøsUttakPeriode(periode1) && erEøsUttakPeriode(periode2)) {
+        return periode1.kontoType === periode2.kontoType && periode1.trekkdager === periode2.trekkdager;
     }
-    return 'Ingen forelder registrert';
-};
-export const getSamtidigUttaksprosent = (
-    gradertPeriode: boolean | undefined,
-    stillingsprosent: string | undefined,
-): string => {
-    return gradertPeriode && stillingsprosent ? (100 - Number.parseInt(stillingsprosent, 10)).toString() : '100';
+
+    if (erVanligUttakPeriode(periode1) && erVanligUttakPeriode(periode2)) {
+        return (
+            periode1.flerbarnsdager === periode2.flerbarnsdager &&
+            periode1.kontoType === periode2.kontoType &&
+            periode1.forelder === periode2.forelder &&
+            periode1.gradering?.arbeidstidprosent === periode2.gradering?.arbeidstidprosent &&
+            periode1.gradering?.aktivitet === periode2.gradering?.aktivitet &&
+            periode1.morsAktivitet === periode2.morsAktivitet &&
+            periode1.oppholdÅrsak === periode2.oppholdÅrsak &&
+            periode1.utsettelseÅrsak === periode2.utsettelseÅrsak &&
+            periode1.overføringÅrsak === periode2.overføringÅrsak &&
+            periode1.resultat?.innvilget === periode2.resultat?.innvilget &&
+            periode1.resultat?.trekkerDager === periode2.resultat?.trekkerDager &&
+            periode1.resultat?.trekkerMinsterett === periode2.resultat?.trekkerMinsterett &&
+            periode1.resultat?.årsak === periode2.resultat?.årsak &&
+            periode1.samtidigUttak === periode2.samtidigUttak
+        );
+    }
+
+    return false;
 };
 
-export const getSlettPeriodeTekst = (periodetype: Periodetype): string => {
-    switch (periodetype) {
-        case Periodetype.Uttak:
-            return 'uttaksplan.slettPeriode.uttak';
-        case Periodetype.Overføring:
-            return 'uttaksplan.slettPeriode.overføring';
-        case Periodetype.Opphold:
-            return 'uttaksplan.slettPeriode.opphold';
-        case Periodetype.Utsettelse:
-            return 'uttaksplan.slettPeriode.utsettelse';
-        case Periodetype.Info:
-            return 'uttaksplan.slettPeriode.info';
+export const erDetEksisterendePerioderEtterValgtePerioder = (
+    allePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+) => {
+    const sisteValgteDag = dayjs.max(valgtePerioder.map((p) => dayjs(p.tom)));
+    const perioderEtterValgte = allePerioder.filter((p) => dayjs(p.tom).isAfter(sisteValgteDag));
+    return perioderEtterValgte.length > 0;
+};
+
+export const erDetReadonlyPerioderEtterValgtePerioder = (
+    allePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    forelderSomHarLåstePerioder: BrukerRolleSak_fpoversikt | undefined,
+) => {
+    const sisteValgteDag = dayjs.max(valgtePerioder.map((p) => dayjs(p.tom)));
+    const perioderEtterValgte = allePerioder.filter((p) => dayjs(p.tom).isAfter(sisteValgteDag));
+
+    const harEøsEllerPleiepenger = perioderEtterValgte.some(
+        (p) => erEøsUttakPeriode(p) || (erVanligUttakPeriode(p) && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER'),
+    );
+    const harAnnenPartSomErLåst = forelderSomHarLåstePerioder
+        ? perioderEtterValgte.some((p) => erVanligUttakPeriode(p) && p.forelder === forelderSomHarLåstePerioder)
+        : false;
+
+    return harEøsEllerPleiepenger || harAnnenPartSomErLåst;
+};
+
+export const getAktivitetskravOptions = (skalViseMorsAktivitetskravVedSamtidigUttak: boolean): MorsAktivitet[] => {
+    const aktivitetsKrav = [
+        'ARBEID',
+        'UTDANNING',
+        'KVALPROG',
+        'INTROPROG',
+        'TRENGER_HJELP',
+        'INNLAGT',
+        'ARBEID_OG_UTDANNING',
+    ] satisfies MorsAktivitet[];
+
+    return skalViseMorsAktivitetskravVedSamtidigUttak
+        ? aktivitetsKrav.filter((k) => k !== 'INNLAGT' && k !== 'TRENGER_HJELP')
+        : aktivitetsKrav;
+};
+
+export const getAktivitetskravTekst = (value: MorsAktivitet, intl: IntlShape) => {
+    switch (value) {
+        case 'ARBEID':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Arbeid' });
+        case 'UTDANNING':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Utdanning' });
+        case 'KVALPROG':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Kvalprog' });
+        case 'INTROPROG':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Introprog' });
+        case 'TRENGER_HJELP':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Trenger_hjelp' });
+        case 'INNLAGT':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Innlagt' });
+        case 'ARBEID_OG_UTDANNING':
+            return intl.formatMessage({ id: 'AktivitetskravSpørsmål.Arbeid_og_utdanning' });
         default:
             return '';
     }
-};
-
-const erPeriodeFomEllerEtterDato = (periode: Periode, dato: Date): boolean => {
-    return (
-        periode.tidsperiode.fom !== undefined &&
-        periode.tidsperiode.tom !== undefined &&
-        dayjs(periode.tidsperiode.fom).isSameOrAfter(dato, 'day') &&
-        dayjs(periode.tidsperiode.tom).isSameOrAfter(dato, 'day')
-    );
-};
-
-export const erPeriodeFørDato = (periode: Periode, dato: Date) => {
-    return erPeriodeFomEllerEtterDato(periode, dato) === false;
-};
-
-export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelsesÅrsak | UttakOverføringÅrsak_fpoversikt) =>
-    årsak === 'SYKDOM' ||
-    årsak === 'INSTITUSJONSOPPHOLD_BARNET' ||
-    årsak === 'INSTITUSJONSOPPHOLD_SØKER' ||
-    årsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' ||
-    årsak === 'SYKDOM_ANNEN_FORELDER';
-
-export const finnesPeriodeIOpprinneligPlan = (periode: Periode, opprinneligPlan: Periode[]): boolean => {
-    return opprinneligPlan.some((op) => Perioden(periode).erLik(op, true, true));
-};
-
-export const getAnnenForelderSamtidigUttakPeriode = (periode: Periode, perioder: Periode[]): Periode | undefined => {
-    if (isUttaksperiode(periode)) {
-        return perioder
-            .filter((p) => isUttakAnnenPart(p))
-            .find(
-                (p) =>
-                    ((isUttakAnnenPart(p) && p.ønskerSamtidigUttak === true) || isUttaksperiodeAnnenpartEøs(p)) &&
-                    dayjs(periode.tidsperiode.fom).isSame(p.tidsperiode.fom) &&
-                    p.id !== periode.id,
-            );
-    }
-
-    return undefined;
-};
-
-export const getIsValidStateForPerioder = (previousState: PeriodeValidState[], periode: Periode, isValid: boolean) => {
-    const periodeIState = previousState.find((p) => p.id === periode.id);
-    if (periodeIState && periodeIState.isValid !== isValid) {
-        return previousState.map((p) => {
-            if (p.id === periodeIState.id) {
-                return { ...p, isValid };
-            }
-            return p;
-        });
-    }
-    if (!periodeIState) {
-        return [...previousState, { id: periode.id, isValid }];
-    }
-    return previousState;
 };

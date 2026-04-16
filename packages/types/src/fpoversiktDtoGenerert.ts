@@ -161,14 +161,14 @@ export type TilbakekrevingUttalelseOppgave_fpoversikt = {
     saksnummer: string;
 };
 
-export type Bankkonto_fpoversikt = {
-    banknavn?: string;
-    kontonummer?: string;
+export type EsPersonopplysningerDto_fpoversikt = {
+    fnr: string;
+    fødselsdato: string;
+    kjønn: Kjønn_fpoversikt;
+    navn: Navn_fpoversikt;
 };
 
 export type Kjønn_fpoversikt = 'M' | 'K' | 'U';
-
-export type Målform_fpoversikt = 'NB' | 'NN' | 'EN' | 'E';
 
 export type Navn_fpoversikt = {
     fornavn: string;
@@ -176,16 +176,14 @@ export type Navn_fpoversikt = {
     etternavn: string;
 };
 
-export type PersonDto_fpoversikt = {
-    aktørid?: string;
-    bankkonto?: Bankkonto_fpoversikt;
-    barn: BarnDto_fpoversikt[];
+export type FpPersonopplysningerDto_fpoversikt = {
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    barn: FpBarnDto_fpoversikt[];
+    erGift: boolean;
     fnr: string;
     fødselsdato: string;
     kjønn: Kjønn_fpoversikt;
-    målform?: Målform_fpoversikt;
     navn: Navn_fpoversikt;
-    sivilstand?: Sivilstand_fpoversikt;
 };
 
 export type AnnenForelderDto_fpoversikt = {
@@ -194,7 +192,7 @@ export type AnnenForelderDto_fpoversikt = {
     navn: Navn_fpoversikt;
 };
 
-export type BarnDto_fpoversikt = {
+export type FpBarnDto_fpoversikt = {
     annenPart?: AnnenForelderDto_fpoversikt;
     dødsdato?: string;
     fnr: string;
@@ -203,25 +201,29 @@ export type BarnDto_fpoversikt = {
     navn?: Navn_fpoversikt;
 };
 
-export type Sivilstand_fpoversikt = {
-    type?: SivilstandType_fpoversikt;
+export type OversiktPersonopplysningerDto_fpoversikt = {
+    barn: OversiktBarnDto_fpoversikt[];
+    fnr: string;
+    fødselsdato: string;
+    harArbeidsforhold: boolean;
+    kontonummer?: string;
+    navn: Navn_fpoversikt;
 };
 
-export type SivilstandType_fpoversikt =
-    | 'UOPPGITT'
-    | 'UGIFT'
-    | 'GIFT'
-    | 'ENKE_ELLER_ENKEMANN'
-    | 'SKILT'
-    | 'SEPARERT'
-    | 'REGISTRERT_PARTNER'
-    | 'SEPARERT_PARTNER'
-    | 'SKILT_PARTNER'
-    | 'GJENLEVENDE_PARTNER';
+export type OversiktBarnDto_fpoversikt = {
+    annenPartFornavn?: string;
+    dødsdato?: string;
+    fnr: string;
+    fødselsdato: string;
+    navn?: Navn_fpoversikt;
+};
 
-export type PersonMedArbeidsforholdDto_fpoversikt = {
+export type SvpPersonopplysningerDto_fpoversikt = {
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
-    person: PersonDto_fpoversikt;
+    fnr: string;
+    fødselsdato: string;
+    kjønn: Kjønn_fpoversikt;
+    navn: Navn_fpoversikt;
 };
 
 export type AnnenPartRequest_fpoversikt = {
@@ -281,7 +283,7 @@ export type BrukerRolleSak_fpoversikt = 'MOR' | 'FAR_MEDMOR';
 export type DekningsgradSak_fpoversikt = 'ÅTTI' | 'HUNDRE';
 
 export type Gradering_fpoversikt = {
-    aktivitet: Aktivitet_fpoversikt;
+    aktivitet?: Aktivitet_fpoversikt;
     arbeidstidprosent: number;
 };
 
@@ -555,6 +557,8 @@ export type TilretteleggingType_fpoversikt = 'HEL' | 'DELVIS' | 'INGEN';
 export type Vedtak_fpoversikt = {
     arbeidsforhold: SvpArbeidsforhold_fpoversikt[];
     avslagÅrsak?: AvslagÅrsak_fpoversikt;
+    beregningsgrunnlag?: Beregningsgrunnlag_fpoversikt;
+    tilkjentYtelse?: TilkjentYtelse_fpoversikt;
 };
 
 export type AvslagÅrsak_fpoversikt =

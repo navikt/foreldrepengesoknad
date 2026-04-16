@@ -11,6 +11,7 @@ import { nb, nn } from '@navikt/ds-react/locales';
 
 import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
+import { observabilityMessages } from '@navikt/fp-observability';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
@@ -20,9 +21,7 @@ import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { LocaleAll, LocaleNo } from '@navikt/fp-types';
 import { ByttBrowserModal, ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
-import { uttaksplanMessages } from '@navikt/fp-uttaksplan';
-import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender';
-import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
+import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan';
 
 import { Foreldrepengesøknad, slettMellomlagringOgLastSidePåNytt } from './Foreldrepengesøknad';
 import nbMessages from './intl/nb_NO.json';
@@ -35,8 +34,6 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utenlandsoppholdMessages.nb,
         ...oppsummeringMessages.nb,
         ...nyUttaksplanMessages.nb,
-        ...uttaksplanKalenderMessages.nb,
-        ...uttaksplanMessages.nb,
         ...utilsMessages.nb,
         ...arbeidsforholdOgInntektMessages.nb,
         ...egenNæringMessages.nb,
@@ -44,6 +41,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...formHookMessages.nb,
         ...kvitteringMessages.nb,
         ...filopplasterMessages.nb,
+        ...observabilityMessages.nb,
     },
     nn: {
         ...nnMessages,
@@ -51,8 +49,6 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utenlandsoppholdMessages.nn,
         ...oppsummeringMessages.nn,
         ...nyUttaksplanMessages.nn,
-        ...uttaksplanKalenderMessages.nn,
-        ...uttaksplanMessages.nn,
         ...utilsMessages.nn,
         ...arbeidsforholdOgInntektMessages.nn,
         ...egenNæringMessages.nn,
@@ -60,6 +56,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...formHookMessages.nn,
         ...kvitteringMessages.nn,
         ...filopplasterMessages.nn,
+        ...observabilityMessages.nn,
     },
 };
 

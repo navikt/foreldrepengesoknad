@@ -2,53 +2,40 @@ import { API_URLS } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FormattedMessage } from 'react-intl';
 import { VedleggDataType } from 'types/VedleggDataType';
+import { perioderSomKreverVedlegg } from 'utils/manglendeVedleggUtils';
+import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
 import { Alert, BodyLong, BodyShort, FormSummary, Heading, Link, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Periode } from '@navikt/fp-common';
 import { AttachmentType } from '@navikt/fp-constants';
-import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
+import { NavnPåForeldre } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { getFamiliehendelsedato } from '../../../utils/barnUtils';
 import { DokumentasjonLastetOppLabel } from './DokumentasjonLastetOppLabel';
 import { DokumentasjonSendSenereLabel } from './DokumentasjonSendSenereLabel';
 
 interface Props {
-    alleVedlegg?: VedleggDataType;
     onVilEndreSvar: () => void;
-    erSøkerFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
-    erEndringssøknad: boolean;
 }
 
-const skalViseVedlegg = (alleVedlegg: VedleggDataType): boolean => {
-    // Sjekk om det er noen gyldige answers å vise
-    return Object.values(alleVedlegg ?? {})
-        .flat()
-        .some((vedlegg) => vedlegg.innsendingsType !== 'AUTOMATISK');
-};
-
-export const DokumentasjonOppsummering = ({
-    alleVedlegg,
-    onVilEndreSvar,
-    erSøkerFarEllerMedmor,
-    navnPåForeldre,
-    erEndringssøknad,
-}: Props) => {
-    const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
-    const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
+export const DokumentasjonOppsummering = ({ onVilEndreSvar, navnPåForeldre }: Props) => {
+    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const alleVedlegg = useContextGetData(ContextDataType.VEDLEGG);
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
-    const relevantePerioder = getRelevantePerioder(
-        uttaksplan,
-        uttaksplanMetadata?.perioderSomSkalSendesInn,
-        erEndringssøknad,
-    );
+    const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
+    const familiehendelsedato = getFamiliehendelsedato(barn);
     const uttaksperioderSomManglerVedlegg = perioderSomKreverVedlegg(
-        relevantePerioder,
+        uttaksplan || [],
         erSøkerFarEllerMedmor,
         annenForelder,
+        familiehendelsedato,
     );
+
     const harVedlegg = alleVedlegg && Object.values(alleVedlegg).some((v) => v.length > 0);
 
     if (!harVedlegg) {
@@ -99,6 +86,7 @@ export const DokumentasjonOppsummering = ({
                                                 erFarEllerMedmor={erSøkerFarEllerMedmor}
                                                 navnPåForeldre={navnPåForeldre}
                                                 uttaksperioderSomManglerVedlegg={uttaksperioderSomManglerVedlegg}
+                                                familiehendelsedato={familiehendelsedato}
                                             />
                                         ) : (
                                             <DokumentasjonLastetOppLabel attachment={idOgVedlegg[1][0]!} />
@@ -149,14 +137,9 @@ export const DokumentasjonOppsummering = ({
     );
 };
 
-const getRelevantePerioder = (
-    perioder: Periode[],
-    endringssøknadPerioder: Periode[] | undefined,
-    erEndringssøknad: boolean,
-) => {
-    if (erEndringssøknad && endringssøknadPerioder !== undefined) {
-        return endringssøknadPerioder;
-    }
-
-    return perioder;
+const skalViseVedlegg = (alleVedlegg: VedleggDataType): boolean => {
+    // Sjekk om det er noen gyldige answers å vise
+    return Object.values(alleVedlegg ?? {})
+        .flat()
+        .some((vedlegg) => vedlegg.innsendingsType !== 'AUTOMATISK');
 };

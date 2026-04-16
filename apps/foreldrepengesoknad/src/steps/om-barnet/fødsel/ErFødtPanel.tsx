@@ -27,8 +27,8 @@ export const ErFødtPanel = () => {
             <RhfDatepicker
                 name="termindato"
                 control={formMethods.control}
-                minDate={fødselsdato ? dayjs(fødselsdato).subtract(1, 'months').toDate() : undefined}
-                maxDate={fødselsdato ? dayjs(fødselsdato).add(6, 'months').toDate() : undefined}
+                minDate={fødselsdato ? dayjs(fødselsdato).subtract(1, 'months') : undefined}
+                maxDate={fødselsdato ? dayjs(fødselsdato).add(6, 'months') : undefined}
                 label={intl.formatMessage({ id: 'omBarnet.termindato.født' })}
                 useStrategyAbsolute
                 validate={[
@@ -55,8 +55,8 @@ export const ErFødtPanel = () => {
                     name="fødselsdatoer.0.dato"
                     control={formMethods.control}
                     label={intl.formatMessage({ id: intlIdFødsel })}
-                    minDate={dayjs().subtract(3, 'years').toDate()}
-                    maxDate={dayjs().toDate()}
+                    minDate={dayjs().subtract(3, 'years')}
+                    maxDate={dayjs()}
                     useStrategyAbsolute
                     validate={[
                         isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.fødselsdato.duMåOppgi' })),

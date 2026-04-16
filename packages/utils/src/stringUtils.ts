@@ -53,7 +53,10 @@ export const replaceInvisibleCharsWithSpace = (inputString: string): string | nu
  * Legger til oppramsing av strenger. Eksempelvis ["epler", "bananer", "pærer] blir "epler, bananer og pærer.
  */
 export const formatOppramsing = (strenger: string[], intl: IntlShape) => {
-    const formatterer = new Intl.ListFormat(intl.locale, {
+    // "nn" (nynorsk) er ikkje støtta av Intl.ListFormat i alle nettlesarar, og fell då tilbake til engelsk.
+    // Sidan "nb" og "nn" brukar same konjunksjon ("og"), kan vi bruke "nb" som fallback.
+    const locale = intl.locale === 'nn' ? 'nb' : intl.locale;
+    const formatterer = new Intl.ListFormat(locale, {
         style: 'long',
         type: 'conjunction',
     });

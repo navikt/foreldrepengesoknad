@@ -1,11 +1,6 @@
-import { Arbeidsform } from '@navikt/fp-common';
-import { FpSak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { FpSak_fpoversikt } from '@navikt/fp-types';
 
-import {
-    getArbeidsformFromUttakArbeidstype,
-    mapSaksperiodeFromDTO,
-    mapSøkerensEksisterendeSakFromDTO,
-} from './eksisterendeSakUtils';
+import { mapSøkerensEksisterendeSakFromDTO } from './eksisterendeSakUtils';
 
 describe('eksisterendeSakUtils', () => {
     const eksisterendeSakMorTermin = {
@@ -80,92 +75,6 @@ describe('eksisterendeSakUtils', () => {
             ønskerJustertUttakVedFødsel: false,
             harAnnenForelderTilsvarendeRettEØS: false,
         },
-        saksperioder: [
-            expect.objectContaining({
-                flerbarnsdager: false,
-                gjelderAnnenPart: false,
-                gradering: undefined,
-                periode: {
-                    fom: '2022-11-09',
-                    tom: '2022-11-29',
-                },
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                morsAktivitet: undefined,
-                overføringÅrsak: undefined,
-                oppholdÅrsak: undefined,
-                resultat: {
-                    innvilget: true,
-                    trekkerDager: true,
-                    trekkerMinsterett: true,
-                    årsak: 'ANNET',
-                },
-                samtidigUttak: undefined,
-                utsettelseÅrsak: undefined,
-            }),
-            expect.objectContaining({
-                flerbarnsdager: false,
-                gjelderAnnenPart: false,
-                gradering: undefined,
-                periode: {
-                    fom: '2022-11-30',
-                    tom: '2022-12-13',
-                },
-                kontoType: 'MØDREKVOTE',
-                morsAktivitet: undefined,
-                overføringÅrsak: undefined,
-                oppholdÅrsak: undefined,
-                resultat: {
-                    innvilget: true,
-                    trekkerDager: true,
-                    trekkerMinsterett: true,
-                    årsak: 'ANNET',
-                },
-                samtidigUttak: 100,
-                utsettelseÅrsak: undefined,
-            }),
-        ],
-        uttaksplan: [
-            expect.objectContaining({
-                type: 'uttak',
-                konto: 'FORELDREPENGER_FØR_FØDSEL',
-                tidsperiode: {
-                    fom: new Date('2022-11-09'),
-                    tom: new Date('2022-11-29'),
-                },
-                forelder: 'MOR',
-                ønskerSamtidigUttak: false,
-                gradert: false,
-                samtidigUttakProsent: undefined,
-                ønskerFlerbarnsdager: undefined,
-                stillingsprosent: undefined,
-                arbeidsformer: undefined,
-                orgnumre: undefined,
-                morsAktivitetIPerioden: undefined,
-                erMorForSyk: undefined,
-                angittAvAnnenPart: undefined,
-                opprinneligSøkt: undefined,
-            }),
-            expect.objectContaining({
-                type: 'uttak',
-                konto: 'MØDREKVOTE',
-                tidsperiode: {
-                    fom: new Date('2022-11-30'),
-                    tom: new Date('2022-12-13'),
-                },
-                forelder: 'MOR',
-                ønskerSamtidigUttak: true,
-                gradert: false,
-                samtidigUttakProsent: '100',
-                ønskerFlerbarnsdager: undefined,
-                stillingsprosent: undefined,
-                arbeidsformer: undefined,
-                orgnumre: undefined,
-                morsAktivitetIPerioden: undefined,
-                erMorForSyk: undefined,
-                angittAvAnnenPart: undefined,
-                opprinneligSøkt: undefined,
-            }),
-        ],
     };
 
     const eksisterendeSakMorAdopsjonBareMorHarRett = {
@@ -223,51 +132,6 @@ describe('eksisterendeSakUtils', () => {
             ønskerJustertUttakVedFødsel: undefined,
         },
         saksnummer: '352010530',
-        saksperioder: [
-            expect.objectContaining({
-                flerbarnsdager: false,
-                gjelderAnnenPart: false,
-                gradering: undefined,
-                periode: {
-                    fom: '2022-11-09',
-                    tom: '2022-11-29',
-                },
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                morsAktivitet: undefined,
-                overføringÅrsak: undefined,
-                oppholdÅrsak: undefined,
-                resultat: {
-                    innvilget: true,
-                    trekkerDager: true,
-                    trekkerMinsterett: true,
-                    årsak: 'ANNET',
-                },
-                samtidigUttak: undefined,
-                utsettelseÅrsak: undefined,
-            }),
-        ],
-        uttaksplan: [
-            expect.objectContaining({
-                type: 'uttak',
-                konto: 'FORELDREPENGER_FØR_FØDSEL',
-                tidsperiode: {
-                    fom: new Date('2022-11-09'),
-                    tom: new Date('2022-11-29'),
-                },
-                forelder: 'MOR',
-                ønskerSamtidigUttak: false,
-                gradert: false,
-                samtidigUttakProsent: undefined,
-                ønskerFlerbarnsdager: false,
-                stillingsprosent: undefined,
-                arbeidsformer: undefined,
-                orgnumre: undefined,
-                morsAktivitetIPerioden: undefined,
-                erMorForSyk: undefined,
-                angittAvAnnenPart: undefined,
-                opprinneligSøkt: undefined,
-            }),
-        ],
     };
 
     const eksisterendeSakMedØnsketJusteringFarFødsel = {
@@ -313,58 +177,6 @@ describe('eksisterendeSakUtils', () => {
             søkerErFarEllerMedmor: true,
             termindato: '2022-10-30',
         },
-        saksperioder: [
-            expect.objectContaining({
-                flerbarnsdager: false,
-                gjelderAnnenPart: false,
-                gradering: undefined,
-                periode: {
-                    fom: '2022-11-09',
-                    tom: '2022-11-29',
-                },
-                kontoType: 'FEDREKVOTE',
-                morsAktivitet: undefined,
-                overføringÅrsak: undefined,
-                oppholdÅrsak: undefined,
-                resultat: {
-                    innvilget: true,
-                    trekkerDager: true,
-                    trekkerMinsterett: false,
-                    årsak: 'ANNET',
-                },
-                samtidigUttak: undefined,
-                utsettelseÅrsak: undefined,
-            }),
-        ],
-        uttaksplan: [
-            expect.objectContaining({
-                tidsperiode: {
-                    fom: new Date('2022-10-31'),
-                    tom: new Date('2022-11-08'),
-                },
-                type: 'periodeUtenUttak',
-            }),
-            expect.objectContaining({
-                type: 'uttak',
-                konto: 'FEDREKVOTE',
-                tidsperiode: {
-                    fom: new Date('2022-11-09'),
-                    tom: new Date('2022-11-29'),
-                },
-                forelder: 'FAR_MEDMOR',
-                ønskerSamtidigUttak: false,
-                gradert: false,
-                samtidigUttakProsent: undefined,
-                ønskerFlerbarnsdager: undefined,
-                stillingsprosent: undefined,
-                arbeidsformer: undefined,
-                orgnumre: undefined,
-                morsAktivitetIPerioden: undefined,
-                erMorForSyk: true,
-                angittAvAnnenPart: undefined,
-                opprinneligSøkt: undefined,
-            }),
-        ],
     };
 
     const eksisterendeSakMedØnsketJusteringFarTermin = {
@@ -391,261 +203,25 @@ describe('eksisterendeSakUtils', () => {
         vi.clearAllMocks();
     });
 
-    describe('getArbeidsformFromUttakArbeidstype', () => {
-        it('skal mappe Frilans uttakarbeidstype til arbeidstype', () => {
-            const arbeidsform = getArbeidsformFromUttakArbeidstype('FRILANS');
-            expect(arbeidsform).toBe(Arbeidsform.frilans);
-        });
-
-        it('skal mappe Selvstendig næringsdrivende uttakarbeidstype til arbeidstype', () => {
-            const arbeidsform = getArbeidsformFromUttakArbeidstype('SELVSTENDIG_NÆRINGSDRIVENDE');
-            expect(arbeidsform).toBe(Arbeidsform.selvstendignæringsdrivende);
-        });
-
-        it('skal mappe arbeidstaker når det ikke er frilans eller selvstendig næringsdrivende', () => {
-            const arbeidsform = getArbeidsformFromUttakArbeidstype('ORDINÆRT_ARBEID');
-            expect(arbeidsform).toBe(Arbeidsform.arbeidstaker);
-            const arbeidsformAnnet = getArbeidsformFromUttakArbeidstype('ANNET');
-            expect(arbeidsformAnnet).toBe(Arbeidsform.arbeidstaker);
-        });
-    });
-
     describe('mapSøkerensEksisterendeSakFromDTO', () => {
         it('skal mappe eksisterende sak for mors søknad på termin fra dto til intern representasjon', () => {
-            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMorTermin, undefined, undefined);
+            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMorTermin, undefined);
             expect(internRep).toStrictEqual(forventetMappetEksisterendeSakMorTermin);
         });
         it('skal mappe eksisterende sak for mors søknad på adopsjon (aleneomsorg) fra dto til intern representasjon', () => {
-            const internRep = mapSøkerensEksisterendeSakFromDTO(
-                eksisterendeSakMorAdopsjonBareMorHarRett,
-                undefined,
-                undefined,
-            );
+            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMorAdopsjonBareMorHarRett, undefined);
             expect(internRep).toStrictEqual(forventetMappetEksisterendeSakMorAdopsjonBareMorHarRett);
         });
 
         it('hvis barnet til far er født, skal ikke mappe ønskerJustertUttakVedFødsel til true selv om den kommer inn som true', () => {
-            const internRep = mapSøkerensEksisterendeSakFromDTO(
-                eksisterendeSakMedØnsketJusteringFarFødsel,
-                undefined,
-                undefined,
-            );
+            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMedØnsketJusteringFarFødsel, undefined);
 
             expect(internRep).toStrictEqual(forventetResultatFar);
         });
         it('hvis barnet til far ikke er født, skal mappe ønskerJustertUttakVedFødsel til true hvis den kommer inn som true', () => {
-            const internRep = mapSøkerensEksisterendeSakFromDTO(
-                eksisterendeSakMedØnsketJusteringFarTermin,
-                undefined,
-                undefined,
-            );
+            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMedØnsketJusteringFarTermin, undefined);
 
             expect(internRep).toStrictEqual(forventetResultatFarTermin);
-        });
-    });
-    describe('mapSaksperiodeFromDTO', () => {
-        const uttaksperiode = {
-            fom: '2022-12-07',
-            tom: '2022-12-07',
-            kontoType: 'MØDREKVOTE',
-            resultat: {
-                innvilget: true,
-                trekkerMinsterett: false,
-                trekkerDager: true,
-                årsak: 'ANNET',
-            },
-            morsAktivitet: 'ARBEID',
-            gradering: {
-                arbeidstidprosent: 55,
-                aktivitet: {
-                    type: 'FRILANS',
-                    arbeidsgiver: {
-                        id: 'string',
-                        type: 'PRIVAT',
-                    },
-                },
-            },
-            samtidigUttak: 50,
-            flerbarnsdager: true,
-            forelder: 'MOR',
-        } satisfies UttakPeriode_fpoversikt;
-
-        const { fom, tom, ...uttaksperiodeRest } = uttaksperiode;
-
-        const forventetMappetPeriodeSøker = {
-            ...uttaksperiodeRest,
-            gjelderAnnenPart: false,
-            oppholdÅrsak: undefined,
-            overføringÅrsak: undefined,
-            periode: { fom: '2022-12-07', tom: '2022-12-07' },
-            utsettelseÅrsak: undefined,
-        };
-
-        const forventetMappetPeriodeAnnenPart = { ...forventetMappetPeriodeSøker, gjelderAnnenPart: true };
-
-        const utsettelsesperiode = {
-            fom: '2021-11-02',
-            tom: '2021-11-02',
-            resultat: {
-                innvilget: true,
-                trekkerMinsterett: false,
-                trekkerDager: true,
-                årsak: 'ANNET',
-            },
-            utsettelseÅrsak: 'HV_ØVELSE',
-            forelder: 'MOR',
-            flerbarnsdager: false,
-        } satisfies UttakPeriode_fpoversikt;
-
-        const { fom: fomU, tom: tomU, ...utsettelsesperiodeRest } = utsettelsesperiode;
-
-        const forventetMappetUtsettelseSøker = {
-            ...utsettelsesperiodeRest,
-            gjelderAnnenPart: false,
-            oppholdÅrsak: undefined,
-            overføringÅrsak: undefined,
-            periode: { fom: '2021-11-02', tom: '2021-11-02' },
-            samtidigUttak: undefined,
-            flerbarnsdager: false,
-            gradering: undefined,
-            kontoType: undefined,
-            morsAktivitet: undefined,
-        };
-
-        const forventetMappetUtsettelseAnnenPart = { ...forventetMappetUtsettelseSøker, gjelderAnnenPart: true };
-
-        const overføringsperiode = {
-            fom: '2022-11-07',
-            tom: '2022-11-07',
-            kontoType: 'FEDREKVOTE',
-            resultat: {
-                innvilget: true,
-                trekkerMinsterett: false,
-                trekkerDager: true,
-                årsak: 'ANNET',
-            },
-            overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
-            flerbarnsdager: false,
-            forelder: 'FAR_MEDMOR',
-        } satisfies UttakPeriode_fpoversikt;
-
-        const { fom: fomO, tom: tomO, ...overføringsperiodeRest } = overføringsperiode;
-        const forventetMappetOverføringSøker = {
-            ...overføringsperiodeRest,
-            gjelderAnnenPart: false,
-            oppholdÅrsak: undefined,
-            periode: { fom: '2022-11-07', tom: '2022-11-07' },
-            samtidigUttak: undefined,
-            flerbarnsdager: false,
-            gradering: undefined,
-            kontoType: 'FEDREKVOTE',
-            morsAktivitet: undefined,
-            utsettelseÅrsak: undefined,
-        };
-        const forventetMappetOverføringAnnenPart = { ...forventetMappetOverføringSøker, gjelderAnnenPart: true };
-
-        const oppholdsperiode = {
-            fom: '2022-08-05',
-            tom: '2022-08-05',
-            resultat: {
-                innvilget: true,
-                trekkerMinsterett: false,
-                trekkerDager: true,
-                årsak: 'ANNET',
-            },
-            oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER',
-            forelder: 'MOR',
-            flerbarnsdager: false,
-        } satisfies UttakPeriode_fpoversikt;
-
-        const { fom: fomOp, tom: tomOp, ...oppholdsperiodeRest } = oppholdsperiode;
-
-        const forventetMappetOppholdSøker = {
-            ...oppholdsperiodeRest,
-            gjelderAnnenPart: true,
-            kontoType: 'MØDREKVOTE',
-            periode: { fom: '2022-08-05', tom: '2022-08-05' },
-            samtidigUttak: undefined,
-            forelder: 'MOR',
-            flerbarnsdager: false,
-            gradering: undefined,
-            morsAktivitet: undefined,
-            utsettelseÅrsak: undefined,
-            oppholdÅrsak: 'UTTAK_MØDREKVOTE_ANNEN_FORELDER',
-            overføringÅrsak: undefined,
-        };
-
-        const forventetMappetOppholdAnnenPart = {
-            ...forventetMappetOppholdSøker,
-            gjelderAnnenPart: false,
-            angittAvAnnenPart: true,
-        };
-
-        const avslåttPeriode = {
-            fom: '2022-10-07',
-            tom: '2022-10-07',
-            kontoType: 'MØDREKVOTE',
-            resultat: {
-                innvilget: false,
-                trekkerMinsterett: false,
-                trekkerDager: true,
-                årsak: 'ANNET',
-            },
-            forelder: 'MOR',
-            flerbarnsdager: false,
-        } satisfies UttakPeriode_fpoversikt;
-
-        const { fom: fomAp, tom: tomAp, ...avslåttPeriodeRest } = avslåttPeriode;
-
-        const forventetMappetAvslåttPeriodeSøker = {
-            ...avslåttPeriodeRest,
-            gjelderAnnenPart: false,
-            flerbarnsdager: false,
-            forelder: 'MOR',
-            gradering: undefined,
-            periode: { fom: '2022-10-07', tom: '2022-10-07' },
-            morsAktivitet: undefined,
-            oppholdÅrsak: undefined,
-            overføringÅrsak: undefined,
-            samtidigUttak: undefined,
-            utsettelseÅrsak: undefined,
-        };
-
-        it('map søkerens uttaksperiode fra DTO', () => {
-            const mappetPeriode = mapSaksperiodeFromDTO(uttaksperiode, false);
-            expect(mappetPeriode).toStrictEqual(expect.objectContaining(forventetMappetPeriodeSøker));
-        });
-        it('map annen parts uttaksperiode fra DTO', () => {
-            const mappetPeriode = mapSaksperiodeFromDTO(uttaksperiode, true);
-            expect(mappetPeriode).toStrictEqual(expect.objectContaining(forventetMappetPeriodeAnnenPart));
-        });
-        it('map søkerens utsettelsesoperiode fra DTO', () => {
-            const mappetPeriode = mapSaksperiodeFromDTO(utsettelsesperiode, false);
-            expect(mappetPeriode).toStrictEqual(expect.objectContaining(forventetMappetUtsettelseSøker));
-        });
-        it('map annen parts utsettelsesoperiode fra DTO', () => {
-            const mappetPeriode = mapSaksperiodeFromDTO(utsettelsesperiode, true);
-            expect(mappetPeriode).toStrictEqual(expect.objectContaining(forventetMappetUtsettelseAnnenPart));
-        });
-        it('map søkerens overføringsperiode fra DTO', () => {
-            const mappetPeriode = mapSaksperiodeFromDTO(overføringsperiode, false);
-            expect(mappetPeriode).toStrictEqual(expect.objectContaining(forventetMappetOverføringSøker));
-        });
-        it('map annen parts overføringsperiode fra DTO', () => {
-            const mappetPeriode = mapSaksperiodeFromDTO(overføringsperiode, true);
-            expect(mappetPeriode).toStrictEqual(expect.objectContaining(forventetMappetOverføringAnnenPart));
-        });
-        it('map søkerens oppholdsperiode fra DTO', () => {
-            const mappetPeriode = mapSaksperiodeFromDTO(oppholdsperiode, false);
-            expect(mappetPeriode).toStrictEqual(expect.objectContaining(forventetMappetOppholdSøker));
-        });
-        it('map annen parts oppholdsperiode fra DTO', () => {
-            const mappetPeriode = mapSaksperiodeFromDTO(oppholdsperiode, true);
-            expect(mappetPeriode).toStrictEqual(expect.objectContaining(forventetMappetOppholdAnnenPart));
-        });
-        it('map søkerens avslåtte periode fra DTO', () => {
-            const mappetPeriode = mapSaksperiodeFromDTO(avslåttPeriode, false);
-            expect(mappetPeriode).toStrictEqual(expect.objectContaining(forventetMappetAvslåttPeriodeSøker));
         });
     });
 });

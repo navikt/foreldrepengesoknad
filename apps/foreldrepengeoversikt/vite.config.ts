@@ -10,6 +10,9 @@ const setupFileDirName = path.resolve(__dirname, './vitest/setupTests.ts');
 // eslint-disable-next-line import/no-default-export
 export default mergeConfig(createSharedConfigWithCrossorgin(setupFileDirName), {
     base: '/foreldrepenger/oversikt',
+    server: {
+        port: 9110,
+    },
     plugins: [
         // Put the Sentry vite plugin after all other plugins
         sentryVitePlugin({

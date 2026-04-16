@@ -1,13 +1,12 @@
 import { useIntl } from 'react-intl';
+import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
-import { andreAugust2022ReglerGjelder } from 'utils/dateUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor.ts';
 import { getFarMedmorErAleneOmOmsorg, getMorHarRettPåForeldrepengerINorgeEllerEØS } from 'utils/personUtils.ts';
 
-import { AnnenForelder, Barn, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
+import { Attachment, Barn, EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp, isUfødtBarn } from '@navikt/fp-types';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 
 import { VedleggUploader } from '../attachment-uploaders/VedleggUploader';
@@ -82,8 +81,7 @@ export const skalViseTerminbekreftelseDokumentasjon = ({
     return (
         isUfødtBarn(barn) &&
         (harIngenAktiveArbeidsforhold(arbeidsforhold, søkersituasjon, barn) ||
-            getBareFarMedmorHarRett(annenForelder, søkersituasjon, erFarEllerMedmor)) &&
-        getKanSøkePåTermin(erFarEllerMedmor, barn.termindato)
+            getBareFarMedmorHarRett(annenForelder, søkersituasjon, erFarEllerMedmor))
     );
 };
 
@@ -105,13 +103,6 @@ const getBareFarMedmorHarRett = (
         !getMorHarRettPåForeldrepengerINorgeEllerEØS(søkersituasjon.rolle, erFarEllerMedmor, annenForelder) &&
         !farMedmorErAleneOmOmsorg
     );
-};
-
-const getKanSøkePåTermin = (erFarEllerMedmor: boolean, termindato: string): boolean => {
-    if (!erFarEllerMedmor) {
-        return true;
-    }
-    return termindato ? andreAugust2022ReglerGjelder(termindato) : false;
 };
 
 const harIngenAktiveArbeidsforhold = (

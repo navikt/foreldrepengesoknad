@@ -2,12 +2,12 @@ import { queryOptions } from '@tanstack/react-query';
 import { EsDataMapAndMetaData } from 'appData/useEsMellomlagring';
 import ky from 'ky';
 
-import { ForsendelseStatus, PersonDto_fpoversikt } from '@navikt/fp-types';
+import { EsPersonopplysningerDto_fpoversikt, ForsendelseStatus } from '@navikt/fp-types';
 
-export const urlPrefiks = import.meta.env.BASE_URL;
+const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
-    personInfo: `${urlPrefiks}/fpoversikt/api/person/info`,
+    personInfo: `${urlPrefiks}/fpoversikt/api/personopplysninger/engangsstonad`,
     erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`,
     mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/ENGANGSSTONAD`,
     status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
@@ -18,7 +18,7 @@ export const API_URLS = {
 export const personOptions = () =>
     queryOptions({
         queryKey: ['PERSONINFO'],
-        queryFn: () => ky.get(API_URLS.personInfo).json<PersonDto_fpoversikt>(),
+        queryFn: () => ky.get(API_URLS.personInfo).json<EsPersonopplysningerDto_fpoversikt>(),
         staleTime: Infinity,
     });
 

@@ -5,9 +5,10 @@ import 'dayjs/locale/nn.js';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
+import { observabilityMessages } from '@navikt/fp-observability';
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
-import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
+import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan';
 
 import '../src/index.css';
 import enMessages from '../src/intl/messages/en_US.json';
@@ -31,18 +32,21 @@ const withIntlProvider = getIntlDecorator({
         ...uiMessages.nb,
         ...nyUttaksplanMessages.nb,
         ...formHookMessages.nb,
+        ...observabilityMessages.nb,
     },
     nn: {
         ...nnMessages,
         ...uiMessages.nn,
         ...nyUttaksplanMessages.nn,
         ...formHookMessages.nn,
+        ...observabilityMessages.nn,
     },
     en: {
         ...enMessages,
         ...uiMessages.en,
         ...nyUttaksplanMessages.en,
         ...formHookMessages.en,
+        ...observabilityMessages.en,
     },
 });
 

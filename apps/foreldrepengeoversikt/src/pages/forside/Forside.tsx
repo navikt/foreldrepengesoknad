@@ -1,6 +1,6 @@
 import { VStack } from '@navikt/ds-react';
 
-import { PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { OversiktPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
 import { HarIkkeSaker } from '../../components/har-ikke-saker/HarIkkeSaker';
 import { HarSaker } from '../../components/har-saker/HarSaker';
@@ -15,13 +15,13 @@ import './forside.css';
 
 interface Props {
     saker: SakOppslag;
-    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerinfo: OversiktPersonopplysningerDto_fpoversikt;
 }
 
 export const Forside = ({ saker, søkerinfo }: Props) => {
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
 
-    const grupperteSaker = grupperSakerPåBarn(søkerinfo.person.barn ?? [], saker);
+    const grupperteSaker = grupperSakerPåBarn(søkerinfo.barn ?? [], saker);
     const alleYtelser = getAlleYtelser(saker);
 
     // Super spesifikt case for avslåtte papirsøknad for svangerskapspenger. Bør fjernes
@@ -30,7 +30,7 @@ export const Forside = ({ saker, søkerinfo }: Props) => {
             ? saker.svangerskapspenger[0]
             : undefined;
 
-    const harMinstEttArbeidsforhold = !!søkerinfo?.arbeidsforhold && søkerinfo.arbeidsforhold.length > 0;
+    const harMinstEttArbeidsforhold = søkerinfo.harArbeidsforhold;
 
     return (
         <PageRouteLayout header={<ForsideHeader />}>

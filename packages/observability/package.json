@@ -4,22 +4,31 @@
     "type": "module",
     "types": "index.ts",
     "scripts": {
-        "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
-        "lint:tsc": "tsc --noEmit",
-        "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
-        "prettier": "prettier --write src"
+        "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
+        "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
+        "prettier:fix": "prettier --write src",
+        "tsc": "tsc --noEmit",
+        "tsc:watch": "tsc --noEmit --watch"
     },
     "dependencies": {
+        "@navikt/aksel-icons": "8.9.1",
+        "@navikt/ds-react": "8.9.1",
         "@navikt/fp-types": "workspace:*",
-        "@sentry/browser": "10.38.0"
+        "@sentry/browser": "10.48.0",
+        "react": "19.2.5",
+        "react-intl": "10.1.2"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
+        "@navikt/fp-config-vite": "workspace:*",
         "@types/node": "24.10.1",
+        "@types/react": "19.2.14",
         "eslint": "9.39.2",
-        "typescript": "5.9.3",
-        "vite": "7.3.1"
+        "jsdom": "29.0.2",
+        "typescript": "6.0.2",
+        "vite": "8.0.8",
+        "vitest": "4.1.4"
     },
     "packageManager": "pnpm@10.28.0"
 }

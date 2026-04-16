@@ -19,7 +19,7 @@ import {
 } from '@navikt/ds-react';
 
 import { Skjemanummer, links } from '@navikt/fp-constants';
-import { Bankkonto_fpoversikt, TidslinjeHendelseDto_fpoversikt, Ytelse } from '@navikt/fp-types';
+import { TidslinjeHendelseDto_fpoversikt, Ytelse } from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
 
 import { søkerInfoOptions } from '../../api/queries.ts';
@@ -32,7 +32,7 @@ import { KontonummerInfo } from '../kontonummer-info/KontonummerInfo';
 
 interface Props {
     relevantNyTidslinjehendelse: TidslinjeHendelseDto_fpoversikt | undefined;
-    bankkonto?: Bankkonto_fpoversikt;
+    kontonummer?: string;
     ytelse: Ytelse | undefined;
     harMinstEttArbeidsforhold: boolean;
     manglendeVedlegg: Skjemanummer[];
@@ -41,7 +41,7 @@ interface Props {
 
 export const BekreftelseSendtSøknad = ({
     relevantNyTidslinjehendelse,
-    bankkonto,
+    kontonummer,
     ytelse,
     harMinstEttArbeidsforhold,
     manglendeVedlegg,
@@ -122,7 +122,7 @@ export const BekreftelseSendtSøknad = ({
                 {ytelse === 'SVANGERSKAPSPENGER' && <SvangerskapspengerBekreftelse />}
                 <KontonummerInfo
                     ytelse={ytelse}
-                    bankkonto={bankkonto}
+                    kontonummer={kontonummer}
                     harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
                 />
             </Accordion>
@@ -356,7 +356,7 @@ const getTidspunktTekst = (mottattDato: string | undefined, intl: IntlShape) => 
 const useHarMinstEttArbeidsforhold = () => {
     const søkerInfo = useQuery(søkerInfoOptions()).data;
 
-    return (søkerInfo?.arbeidsforhold ?? []).length > 0;
+    return søkerInfo?.harArbeidsforhold ?? false;
 };
 
 const useÅpenBehandlingTilstand = () => {
@@ -377,5 +377,5 @@ const useGetTidligstMuligeSvar = () => {
         return undefined;
     }
 
-    return getTidligstDatoForInntektsmelding(getFørsteUttaksdagIForeldrepengesaken(sak)?.toISOString());
+    return getTidligstDatoForInntektsmelding(getFørsteUttaksdagIForeldrepengesaken(sak));
 };

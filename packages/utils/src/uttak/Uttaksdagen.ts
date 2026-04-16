@@ -1,161 +1,168 @@
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 
-import { Tidsperioden } from '../Tidsperioden';
-import { convertStringOrDateToDate, formatDate } from '../dateUtils';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+
+import { formatDate } from '../dateUtils';
 
 dayjs.extend(isoWeek);
 
-/**
- * @deprecated Bruk heller UttaksdagenString
- */
-export const Uttaksdagen = (dato: Date) => ({
-    erUttaksdag: (): boolean => erUttaksdagOld(dato),
-    forrige: (): Date => getUttaksdagFørDato(dato),
-    neste: (): Date => getUttaksdagEtterDato(dato),
-    denneEllerNeste: (): Date => getUttaksdagFraOgMedDato(dato),
-    denneEllerForrige: (): Date => getUttaksdagTilOgMedDato(dato),
-    getUttaksdagerFremTilDato: (tildato: Date) => getUttaksdagerFremTilDato(dato, tildato),
-    leggTil: (uttaksdager: number): Date => {
-        if (uttaksdager < 0) {
-            return trekkUttaksdagerFraDato(dato, uttaksdager);
-        } else if (uttaksdager > 0) {
-            return leggUttaksdagerTilDato(dato, uttaksdager);
+export class Uttaksdagen {
+    private readonly uttaksdagenDato: string;
+
+    private constructor(uttaksdagenDato: string) {
+        this.uttaksdagenDato = uttaksdagenDato;
+    }
+
+    static denne(dato: string): Uttaksdagen {
+        if (erUttaksdag(dato) === false) {
+            throw new Error(`Dato ${formatDate(dato)} må være uttaksdag`);
         }
-        return dato;
-    },
-    trekkFra: (uttaksdager: number): Date => trekkUttaksdagerFraDato(dato, uttaksdager),
-});
+        return new Uttaksdagen(dato);
+    }
 
-function getUkedag(dato: Date): number {
-    return dayjs(dato).isoWeekday();
+    static denneEllerForrige(dato: string): Uttaksdagen {
+        return new Uttaksdagen(getUttaksdagTilOgMedDato(dato));
+    }
+
+    static denneEllerNeste(dato: string): Uttaksdagen {
+        return new Uttaksdagen(getUttaksdagFraOgMedDato(dato));
+    }
+
+    static forrige(dato: string): Uttaksdagen {
+        return new Uttaksdagen(getUttaksdagFørDato(dato));
+    }
+
+    static neste(dato: string): Uttaksdagen {
+        return new Uttaksdagen(getUttaksdagEtterDato(dato));
+    }
+
+    getDatoAntallUttaksdagerSenere(uttaksdager: number): string {
+        return leggUttaksdagerTilDato(this.uttaksdagenDato, uttaksdager);
+    }
+
+    getDatoAntallUttaksdagerTidligere(uttaksdager: number): string {
+        return trekkUttaksdagerFraDato(this.uttaksdagenDato, uttaksdager);
+    }
+
+    getUttaksdagerFremTilDato(tilDato: string): number {
+        return getUttaksdagerFremTilDato(this.uttaksdagenDato, tilDato);
+    }
+
+    getUttaksdagerFremTilOgMedDato(tilDato: string): number {
+        return getUttaksdagerFremTilOgMedDato(this.uttaksdagenDato, tilDato);
+    }
+
+    getDato(): string {
+        return this.uttaksdagenDato;
+    }
 }
 
-export function erUttaksdagOld(dato: Date): boolean {
+export const erUttaksdag = (dato: string): boolean => {
     return getUkedag(dato) !== 6 && getUkedag(dato) !== 7;
-}
+};
 
-function getUttaksdagFørDato(dato: Date): Date {
-    return getUttaksdagTilOgMedDato(dayjs.utc(dato).subtract(24, 'hours').toDate());
-}
+const getUkedag = (dato: string): number => {
+    return dayjs(dato).isoWeekday();
+};
 
-/**
- * Sjekker om dato er en ukedag, dersom ikke finner den foregående fredag.
- * Tar hensyn til stilling av klokken ved å gjøre om klokka til kl 12 før antall timer trekkes fra.
- * @param dato
- */
-function getUttaksdagTilOgMedDato(dato: Date): Date {
-    const newDate = dato
-        ? new Date(
-              convertStringOrDateToDate(dato).getFullYear(),
-              convertStringOrDateToDate(dato).getMonth(),
-              convertStringOrDateToDate(dato).getDate(),
-              12,
-          )
-        : dato;
+const getUttaksdagFørDato = (dato: string): string => {
+    return getUttaksdagTilOgMedDato(dayjs.utc(dato).subtract(24, 'hours').format(ISO_DATE_FORMAT));
+};
+
+const getUttaksdagTilOgMedDato = (dato: string): string => {
     switch (getUkedag(dato)) {
         case 6:
-            return dayjs.utc(newDate).subtract(24, 'hours').startOf('day').toDate();
+            return dayjs.utc(dato).subtract(24, 'hours').startOf('day').format(ISO_DATE_FORMAT);
         case 7:
-            return dayjs.utc(newDate).subtract(48, 'hours').startOf('day').toDate();
+            return dayjs.utc(dato).subtract(48, 'hours').startOf('day').format(ISO_DATE_FORMAT);
         default:
             return dato;
     }
-}
+};
+
 /**
  * Første gyldige uttaksdag etter dato
- * @param termin
  */
-function getUttaksdagEtterDato(dato: Date): Date {
-    return getUttaksdagFraOgMedDato(dayjs.utc(dato).add(24, 'hours').toDate());
-}
+const getUttaksdagEtterDato = (dato: string): string => {
+    return getUttaksdagFraOgMedDato(dayjs(dato).add(24, 'hours').format(ISO_DATE_FORMAT));
+};
 
 /**
  * Sjekker om dato er en ukedag, dersom ikke finner den nærmeste påfølgende mandag
  * Tar hensyn til stilling av klokken ved å gjøre om klokka til kl 12 før antall timer legges til.
- * @param dato
  */
-function getUttaksdagFraOgMedDato(dato: Date): Date {
-    const newDate = dato ? new Date(dato.getFullYear(), dato.getMonth(), dato.getDate(), 12) : dato;
+const getUttaksdagFraOgMedDato = (dato: string): string => {
     switch (getUkedag(dato)) {
         case 6:
-            return dayjs.utc(newDate).add(48, 'hours').startOf('day').toDate();
+            return dayjs.utc(dato).add(48, 'hours').startOf('day').format(ISO_DATE_FORMAT);
         case 7:
-            return dayjs.utc(newDate).add(24, 'hours').startOf('day').toDate();
+            return dayjs.utc(dato).add(24, 'hours').startOf('day').format(ISO_DATE_FORMAT);
         default:
             return dato;
     }
-}
+};
 
 /**
  * Legger uttaksdager til en dato og returnerer ny dato
- * @param dato
- * @param uttaksdager
  */
-function leggUttaksdagerTilDato(dato: Date, uttaksdager: number): Date {
-    if (erUttaksdagOld(dato) === false) {
-        throw new Error(`leggUttaksdagerTilDato: Dato ${formatDate(dato)} må være uttaksdag`);
-    }
-    let nyDato = dato;
+const leggUttaksdagerTilDato = (dato: string, uttaksdager: number): string => {
+    let nyDato = dayjs(dato);
     let dagteller = 0;
     let uttaksdageteller = 0;
     while (uttaksdageteller <= uttaksdager) {
-        const tellerdato = dayjs
-            .utc(dato)
-            .add(dagteller++ * 24, 'hours')
-            .toDate();
-        if (erUttaksdagOld(tellerdato)) {
+        const tellerdato = dayjs(dato).add(dagteller++ * 24, 'hours');
+        if (erUttaksdag(tellerdato.format(ISO_DATE_FORMAT))) {
             nyDato = tellerdato;
             uttaksdageteller++;
         }
     }
-    return nyDato;
-}
+    return nyDato.format(ISO_DATE_FORMAT);
+};
 
 /**
  * Trekker uttaksdager fra en dato og returnerer ny dato
- * @param dato
- * @param uttaksdager
  */
-function trekkUttaksdagerFraDato(dato: Date, uttaksdager: number): Date {
-    if (erUttaksdagOld(dato) === false) {
-        throw new Error(`trekkUttaksdagerFraDato: Dato ${formatDate(dato)} må være uttaksdag`);
-    }
-    let nyDato = dato;
+const trekkUttaksdagerFraDato = (dato: string, uttaksdager: number): string => {
+    let nyDato = dayjs(dato);
     let dagteller = 0;
     let uttaksdageteller = 0;
     while (uttaksdageteller < Math.abs(uttaksdager)) {
-        const tellerdato = dayjs
-            .utc(dato)
-            .add(--dagteller * 24, 'hours')
-            .toDate();
-        if (erUttaksdagOld(tellerdato)) {
+        const tellerdato = dayjs(dato).add(--dagteller * 24, 'hours');
+        if (erUttaksdag(tellerdato.format(ISO_DATE_FORMAT))) {
             nyDato = tellerdato;
             uttaksdageteller++;
         }
     }
-    return nyDato;
-}
+    return nyDato.format(ISO_DATE_FORMAT);
+};
 
 /**
  * Finner antall uttaksdager som er mellom to datoer. Dvs. fra og med startdato, og
  * frem til sluttdato (ikke til og med)
- * @param fra
- * @param til
  */
-function getUttaksdagerFremTilDato(fom: Date, tom: Date): number {
+const getUttaksdagerFremTilDato = (fom: string, tom: string): number => {
     if (dayjs(fom).isSame(tom, 'day')) {
         return 0;
     }
     if (dayjs(fom).isBefore(tom, 'day')) {
-        return Tidsperioden({ fom, tom }).getAntallUttaksdager() - 1;
+        return getUttaksdagerFremTilOgMedDato(fom, tom) - 1;
     }
-    return (
-        -1 *
-        (Tidsperioden({
-            fom: tom,
-            tom: fom,
-        }).getAntallUttaksdager() -
-            1)
-    );
-}
+    return -1 * (getUttaksdagerFremTilOgMedDato(tom, fom) - 1);
+};
+
+const getUttaksdagerFremTilOgMedDato = (fomVerdi: string, tomVerdi: string): number => {
+    if (fomVerdi === undefined || tomVerdi === undefined) {
+        return 0;
+    }
+    let fom = dayjs(fomVerdi);
+    const tom = dayjs(tomVerdi);
+    let antall = 0;
+    while (fom.isSameOrBefore(tom, 'day')) {
+        if (erUttaksdag(fom.format(ISO_DATE_FORMAT))) {
+            antall++;
+        }
+        fom = fom.add(24, 'hours');
+    }
+    return antall;
+};

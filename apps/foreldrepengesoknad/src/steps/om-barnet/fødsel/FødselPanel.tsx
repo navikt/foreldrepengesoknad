@@ -4,9 +4,8 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { Søkersituasjon } from '@navikt/fp-common';
 import { RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
-import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
 
 import { BarnetFormValues } from '../OmBarnetFormValues';
@@ -32,7 +31,7 @@ const finnAntallBarnIsRequired = (intl: IntlShape, søkerErFarMedmor: boolean, e
 };
 
 interface Props {
-    søkersituasjon: Søkersituasjon;
+    søkersituasjon: SøkersituasjonFp;
     erFarEllerMedmor: boolean;
     søknadGjelderEtNyttBarn: boolean;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];

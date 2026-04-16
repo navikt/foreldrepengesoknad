@@ -1,7 +1,7 @@
 import { BarnetErAdoptert, BarnetErFødt, BarnetErIkkeFødt, OmBarnet } from 'types/Barnet';
 
 import { BarnType } from '@navikt/fp-constants';
-import { Barn, Familiesituasjon } from '@navikt/fp-types';
+import { Barn } from '@navikt/fp-types';
 
 export const erBarnetUFødt = (omBarnet: OmBarnet): omBarnet is BarnetErIkkeFødt => {
     if ((omBarnet as BarnetErIkkeFødt).erBarnetFødt === false) {
@@ -24,20 +24,8 @@ export const erBarnetAdoptert = (omBarnet: OmBarnet): omBarnet is BarnetErAdopte
     return false;
 };
 
-export const getFamiliesituasjon = (omBarnet: OmBarnet): Familiesituasjon => {
-    if (erBarnetUFødt(omBarnet)) {
-        return 'termin';
-    }
-
-    if (erBarnetFødt(omBarnet)) {
-        return 'fødsel';
-    }
-
-    return 'adopsjon';
-};
-
 export const mapOmBarnetTilBarn = (omBarnet: OmBarnet): Barn => {
-    const antallBarn = Number.parseInt(omBarnet.antallBarn);
+    const antallBarn = Number.parseInt(omBarnet.antallBarn, 10);
 
     if (erBarnetUFødt(omBarnet)) {
         return {

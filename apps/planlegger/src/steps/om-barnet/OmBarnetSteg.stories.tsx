@@ -3,9 +3,7 @@ import { Action, ContextDataType, PlanleggerDataContext } from 'appData/Planlegg
 import { PlanleggerRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-
-import { HvemPlanleggerType } from '@navikt/fp-types';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { OmBarnetSteg } from './OmBarnetSteg';
 
@@ -49,7 +47,6 @@ export const FlereForsørgere: Story = {
 export const AleneforsørgerMor: Story = {
     args: {
         hvemPlanlegger: {
-            navnPåMor: 'Klara Utvikler',
             type: HvemPlanleggerType.MOR,
         },
     },
@@ -58,7 +55,6 @@ export const AleneforsørgerMor: Story = {
 export const AleneforsørgerFar: Story = {
     args: {
         hvemPlanlegger: {
-            navnPåFar: 'Espen Utvikler',
             type: HvemPlanleggerType.FAR,
         },
     },

@@ -1,5 +1,3 @@
-import { KontoTypeUttak } from '@navikt/fp-types';
-
 export enum FordelingEier {
     Mor = 'MOR',
     FarMedmor = 'FARMEDMOR',
@@ -28,12 +26,4 @@ export interface DelInformasjon {
     sumDager: number;
     fordelingDager: FordelingDager[];
     fordelingInfo: React.ReactNode[];
-}
-
-export interface FordelingGrafInfo {
-    antallDager: number;
-    konto: KontoTypeUttak;
-    eier: FordelingEier;
-    fargekode: FordelingFargekode;
-    beskrivelse: string;
 }

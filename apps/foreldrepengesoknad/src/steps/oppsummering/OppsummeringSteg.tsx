@@ -3,15 +3,13 @@ import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
-import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
-import { ISOStringToDate } from 'utils/dateUtils';
+import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnrString, getNavnPåForeldre } from 'utils/personUtils';
-import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 
-import { Alert, BodyLong, Heading, Link } from '@navikt/ds-react';
+import { Alert, Heading, Link } from '@navikt/ds-react';
 
-import { AnnenForelder, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import {
     ArbeidsforholdOppsummering,
@@ -20,7 +18,7 @@ import {
     OppsummeringPanel,
     SelvstendigNæringsdrivendeOppsummering,
 } from '@navikt/fp-steg-oppsummering';
-import { PersonDto_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt, Søkerrolle } from '@navikt/fp-types';
+import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, Søkerrolle, isUfødtBarn } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -28,45 +26,46 @@ import { AndreInntektskilderOppsummering } from './andre-inntekter-oppsummering/
 import { AnnenForelderOppsummering } from './annen-forelder-oppsummering/AnnenForelderOppsummering';
 import { BarnOppsummering } from './barn-oppsummering/BarnOppsummering';
 import { DokumentasjonOppsummering } from './dokumentasjon-oppsummering/DokumentasjonOppsummering';
-import { DokumentasjonOppsummeringNy } from './dokumentasjon-oppsummering/DokumentasjonOppsummeringNy';
 import { PeriodeMedForeldrepengerOppsummering } from './periode-med-foreldrepenger/PeriodeMedForeldrepengerOppsummering';
 import { UttaksplanOppsummering } from './uttaksplan-oppsummering/UttaksplanOppsummering';
-import { UttaksplanOppsummeringNy } from './uttaksplan-oppsummering/UttaksplanOppsummeringNy';
 
 interface Props {
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
     erEndringssøknad: boolean;
     sendSøknad: () => Promise<void>;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
+    foreldrepengerSaker?: FpSak_fpoversikt[];
 }
 
 export const OppsummeringSteg = (props: Props) => {
-    const { søkerInfo, erEndringssøknad, sendSøknad, avbrytSøknad, mellomlagreSøknadOgNaviger } = props;
+    const { søkerInfo, erEndringssøknad, sendSøknad, avbrytSøknad, mellomlagreSøknadOgNaviger, foreldrepengerSaker } =
+        props;
     const intl = useIntl();
-
-    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad);
-    const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad);
 
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-
     const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-
+    const eksisterendeSaksnummer = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const arbeidsforholdOgInntekt = useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER);
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-    const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
-    const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
 
-    const erAnnenForelderOppgitt = isAnnenForelderOppgitt(annenForelder);
+    const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
+
+    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
+    const navigator = useFpNavigator(
+        søkerInfo.arbeidsforhold,
+        mellomlagreSøknadOgNaviger,
+        erEndringssøknad,
+        eksisterendeSak,
+    );
+
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
-    const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, søkerErFarEllerMedmor, intl);
-    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
-    const termindato = getTermindato(barn);
+    const navnPåForeldre = getNavnPåForeldre(søkerInfo, annenForelder, søkerErFarEllerMedmor, intl);
     const erEndringssøknadOgAnnenForelderHarRett =
         erEndringssøknad && isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
     const ekstraSamtykketekst = erEndringssøknadOgAnnenForelderHarRett
@@ -78,10 +77,8 @@ export const OppsummeringSteg = (props: Props) => {
           )
         : '';
 
-    const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
-
     const visInfoboksOmFarskapsportal = skalViseInfoOmFarskapsportal(
-        søkerInfo.person,
+        søkerInfo,
         søkersituasjon.rolle,
         annenForelder,
         isUfødtBarn(barn),
@@ -105,13 +102,6 @@ export const OppsummeringSteg = (props: Props) => {
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 ekstraSamtykketekst={ekstraSamtykketekst}
             >
-                {isLocalhostOrDev() && (
-                    <Alert variant="warning">
-                        <BodyLong>
-                            <FormattedMessage id="uttaksplan.AnnenPartPerioderInfomelding" />
-                        </BodyLong>
-                    </Alert>
-                )}
                 {!erEndringssøknad && (
                     <>
                         <BarnOppsummering
@@ -156,43 +146,15 @@ export const OppsummeringSteg = (props: Props) => {
                         onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.PERIODE_MED_FORELDREPENGER)}
                     />
                 )}
-                {!isLocalhostOrDev() && (
-                    <>
-                        <UttaksplanOppsummering
-                            navnPåForeldre={navnPåForeldre}
-                            annenForelder={annenForelder}
-                            erFarEllerMedmor={søkerErFarEllerMedmor}
-                            registrerteArbeidsforhold={aktiveArbeidsforhold}
-                            dekningsgrad={dekningsgrad}
-                            familiehendelsesdato={notEmpty(familiehendelsesdato)}
-                            termindato={termindato}
-                            situasjon={søkersituasjon.situasjon}
-                            erAleneOmOmsorg={erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false}
-                            antallBarn={barn.antallBarn}
-                            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTTAKSPLAN)}
-                        />
-                        <DokumentasjonOppsummering
-                            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.DOKUMENTASJON)}
-                            alleVedlegg={vedlegg}
-                            erSøkerFarEllerMedmor={erSøkerFarEllerMedmor}
-                            navnPåForeldre={navnPåForeldre}
-                            erEndringssøknad={erEndringssøknad}
-                        />
-                    </>
-                )}
-                {isLocalhostOrDev() && (
-                    <>
-                        <UttaksplanOppsummeringNy
-                            navnPåForeldre={navnPåForeldre}
-                            registrerteArbeidsforhold={aktiveArbeidsforhold}
-                            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTTAKSPLAN)}
-                        />
-                        <DokumentasjonOppsummeringNy
-                            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.DOKUMENTASJON)}
-                            navnPåForeldre={navnPåForeldre}
-                        />
-                    </>
-                )}
+                <UttaksplanOppsummering
+                    navnPåForeldre={navnPåForeldre}
+                    registrerteArbeidsforhold={aktiveArbeidsforhold}
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTTAKSPLAN)}
+                />
+                <DokumentasjonOppsummering
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.DOKUMENTASJON)}
+                    navnPåForeldre={navnPåForeldre}
+                />
                 <>
                     {visInfoboksOmFarskapsportal && (
                         <Alert variant="info">
@@ -224,7 +186,7 @@ export const OppsummeringSteg = (props: Props) => {
 };
 
 const skalViseInfoOmFarskapsportal = (
-    person: PersonDto_fpoversikt,
+    person: FpPersonopplysningerDto_fpoversikt,
     rolle: Søkerrolle,
     annenForelder: AnnenForelder,
     barnetErIkkeFødt?: boolean,
@@ -234,7 +196,7 @@ const skalViseInfoOmFarskapsportal = (
     const erAnnenForelderFar =
         !!erAnnenForelderOppgitt?.fnr && getKjønnFromFnrString(erAnnenForelderOppgitt.fnr) === 'M';
     const harAnnenForelderUtenlandskFnr = !!erAnnenForelderOppgitt?.utenlandskFnr;
-    const erSøkerIkkeGift = person.sivilstand?.type !== 'GIFT';
+    const erSøkerIkkeGift = !person.erGift;
 
     return (
         (rolle === 'far' ||

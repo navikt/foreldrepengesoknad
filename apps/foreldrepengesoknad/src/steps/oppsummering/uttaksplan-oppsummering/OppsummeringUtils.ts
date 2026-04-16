@@ -9,13 +9,6 @@ import {
 } from 'utils/uttaksplanInfoUtils';
 
 import {
-    Arbeidsform,
-    Overføringsperiode,
-    PeriodeUtenUttakUtsettelse,
-    Periodetype,
-    Utsettelsesperiode,
-} from '@navikt/fp-common';
-import {
     Aktivitet_fpoversikt,
     EksternArbeidsforholdDto_fpoversikt,
     NavnPåForeldre,
@@ -24,8 +17,6 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { Uttaksperioden, capitalizeFirstLetter } from '@navikt/fp-utils';
-
-type MessageValue = string | number | boolean | Date | null | undefined;
 
 const getValgtArbeidsgiverNavn = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[], orgnr?: string) => {
     if (orgnr) {
@@ -37,36 +28,6 @@ const getValgtArbeidsgiverNavn = (arbeidsforhold: EksternArbeidsforholdDto_fpove
         }
     }
     return '';
-};
-
-export const getArbeidsformTekst = (
-    intl: IntlShape,
-    arbeidsformer: Arbeidsform[],
-    orgnumre?: string[],
-    arbeidsforhold?: EksternArbeidsforholdDto_fpoversikt[],
-) => {
-    let arbeidstakerTekster: string[] = [];
-    let arbeidsformerTekster: string[] = [];
-
-    if (orgnumre !== undefined && orgnumre.length > 0 && arbeidsforhold && arbeidsforhold.length > 0) {
-        arbeidstakerTekster = orgnumre.map((orgnr) => {
-            const arbeidsgiverNavn = getValgtArbeidsgiverNavn(arbeidsforhold, orgnr);
-            return intl.formatMessage({ id: `oppsummering.uttak.arbeidstaker` }, { orgnr, arbeidsgiverNavn });
-        });
-    }
-
-    if (arbeidsformer !== undefined && arbeidsformer.length > 0) {
-        arbeidsformerTekster = arbeidsformer
-            .filter((arbeidsform) => arbeidsform !== Arbeidsform.arbeidstaker)
-            .map((arbeidsform) => {
-                if (arbeidsform === Arbeidsform.selvstendignæringsdrivende) {
-                    return intl.formatMessage({ id: 'oppsummering.uttak.selvstendig_næringsdrivende' });
-                }
-                return intl.formatMessage({ id: 'oppsummering.uttak.frilans' });
-            });
-    }
-
-    return arbeidstakerTekster.concat(arbeidsformerTekster);
 };
 
 export const getAktivitetTekst = (
@@ -91,21 +52,11 @@ export const getAktivitetTekst = (
     throw new Error(`Ikke håndtert aktivitetstype: ${type}`);
 };
 
-export const getÅrsakTekst = (
-    intl: IntlShape,
-    { type, årsak }: Utsettelsesperiode | Overføringsperiode | PeriodeUtenUttakUtsettelse,
-    messageValues?: { [key: string]: MessageValue },
-) => {
-    const intlKeyPrefix = type === Periodetype.Utsettelse ? 'utsettelsesårsak.' : 'overføringsårsaktype.';
-    //@ts-expect-error Fiks dynamisk id
-    return intl.formatMessage({ id: `uttaksplan.${intlKeyPrefix + årsak}` }, messageValues);
-};
-
 export const uttaksperiodeKanJusteresVedFødsel = (
     ønskerJustertUttakVedFødsel: boolean | undefined,
     termindato: string | undefined,
     uttaksperiodeFom: string,
-) => {
+): boolean => {
     return !!ønskerJustertUttakVedFødsel && termindato !== undefined && dayjs(uttaksperiodeFom).isSame(termindato, 'd');
 };
 
@@ -206,16 +157,44 @@ const getOppholdskontoNavn = (
 ) => {
     const navn = capitalizeFirstLetter(foreldernavn);
     if (erMor) {
+        if (årsak === 'FEDREKVOTE_ANNEN_FORELDER') {
+            return intl.formatMessage(
+                { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.far.FEDREKVOTE_ANNEN_FORELDER' },
+                { foreldernavn: navn },
+            );
+        }
+        if (årsak === 'FELLESPERIODE_ANNEN_FORELDER') {
+            return intl.formatMessage(
+                { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.far.FELLESPERIODE_ANNEN_FORELDER' },
+                { foreldernavn: navn },
+            );
+        }
+        if (årsak === 'MØDREKVOTE_ANNEN_FORELDER') {
+            return intl.formatMessage(
+                { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.far.MØDREKVOTE_ANNEN_FORELDER' },
+                { foreldernavn: navn },
+            );
+        }
+    }
+
+    if (årsak === 'FEDREKVOTE_ANNEN_FORELDER') {
         return intl.formatMessage(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
-            { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}` },
+            { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.mor.FEDREKVOTE_ANNEN_FORELDER' },
             { foreldernavn: navn },
         );
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
-    return intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
+
+    if (årsak === 'FELLESPERIODE_ANNEN_FORELDER') {
+        return intl.formatMessage(
+            { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.mor.FELLESPERIODE_ANNEN_FORELDER' },
+            { foreldernavn: navn },
+        );
+    }
+
+    return intl.formatMessage(
+        { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.mor.MØDREKVOTE_ANNEN_FORELDER' },
+        { foreldernavn: navn },
+    );
 };
 
 const appendPeriodeNavnHvisUttakRundtFødselFarMedmor = (

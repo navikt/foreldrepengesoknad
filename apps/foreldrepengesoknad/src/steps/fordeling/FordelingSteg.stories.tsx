@@ -7,14 +7,15 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
+import { AnnenForelder } from 'types/AnnenForelder';
 
-import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { BarnType, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
+    Barn,
     Dekningsgrad,
     EksternArbeidsforholdDto_fpoversikt,
+    FpPersonopplysningerDto_fpoversikt,
     KontoBeregningDto,
-    PersonDto_fpoversikt,
     SøkersituasjonFp,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
@@ -96,8 +97,10 @@ const søkerInfoKvinne = {
     },
     kjønn: 'K',
     fødselsdato: '1978-04-19',
+    erGift: false,
     barn: [],
-} satisfies PersonDto_fpoversikt;
+    arbeidsforhold: [],
+} satisfies FpPersonopplysningerDto_fpoversikt;
 
 const søkerInfoMann = {
     fnr: '19047815715',
@@ -107,8 +110,10 @@ const søkerInfoMann = {
     },
     kjønn: 'M',
     fødselsdato: '1972-06-07',
+    erGift: false,
     barn: [],
-} satisfies PersonDto_fpoversikt;
+    arbeidsforhold: [],
+} satisfies FpPersonopplysningerDto_fpoversikt;
 
 const promiseAction = () => () => {
     action('button-click')();
@@ -123,7 +128,7 @@ type StoryArgs = {
     annenForelder: AnnenForelder;
     barnet: Barn;
     erAleneOmOmsorg?: boolean;
-    person: PersonDto_fpoversikt;
+    person: FpPersonopplysningerDto_fpoversikt;
     dekningsgrad: Dekningsgrad;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 } & ComponentProps<typeof FordelingSteg>;

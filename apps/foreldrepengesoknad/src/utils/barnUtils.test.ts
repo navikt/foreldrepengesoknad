@@ -1,5 +1,5 @@
-import { Barn, BarnType } from '@navikt/fp-common';
-import { BarnDto_fpoversikt } from '@navikt/fp-types';
+import { BarnType } from '@navikt/fp-constants';
+import { Barn, FpBarnDto_fpoversikt } from '@navikt/fp-types';
 
 import { getFamiliehendelsedato, getRegistrerteBarnOmDeFinnes } from './barnUtils';
 
@@ -60,7 +60,7 @@ describe('barnUtils', () => {
                     etternavn: '',
                 },
             },
-        ] satisfies BarnDto_fpoversikt[];
+        ] satisfies FpBarnDto_fpoversikt[];
 
         const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 
@@ -84,7 +84,7 @@ describe('barnUtils', () => {
                     etternavn: '',
                 },
             },
-        ] satisfies BarnDto_fpoversikt[];
+        ] satisfies FpBarnDto_fpoversikt[];
 
         const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 
@@ -108,7 +108,7 @@ describe('barnUtils', () => {
                     etternavn: '',
                 },
             },
-        ] satisfies BarnDto_fpoversikt[];
+        ] satisfies FpBarnDto_fpoversikt[];
 
         const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 
@@ -121,7 +121,7 @@ describe('barnUtils', () => {
             fødselsdatoer: ['2021-01-01'],
             antallBarn: 1,
         } satisfies Barn;
-        const registrerteBarn = [] satisfies BarnDto_fpoversikt[];
+        const registrerteBarn = [] satisfies FpBarnDto_fpoversikt[];
 
         const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 

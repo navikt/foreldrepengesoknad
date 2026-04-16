@@ -11,7 +11,7 @@ import { formaterFødselsdatoerPåBarn, getTittelBarnNårNavnSkalIkkeVises } fro
 import { Label, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
-import { BarnDto_fpoversikt } from '@navikt/fp-types';
+import { FpBarnDto_fpoversikt } from '@navikt/fp-types';
 import { sorterPersonEtterEldstOgNavn } from '@navikt/fp-utils';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -21,7 +21,7 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
 interface Props {
-    valgteRegistrerteBarn: BarnDto_fpoversikt[];
+    valgteRegistrerteBarn: FpBarnDto_fpoversikt[];
     skalInkludereTermindato: boolean;
 }
 
@@ -80,8 +80,8 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
                     }
                     label={intl.formatMessage({ id: 'omBarnet.termindato.født' })}
                     defaultMonth={fødselsdato}
-                    minDate={dayjs(fødselsdato).subtract(1, 'months').toDate()}
-                    maxDate={dayjs(fødselsdato).add(6, 'months').toDate()}
+                    minDate={dayjs(fødselsdato).subtract(1, 'months')}
+                    maxDate={dayjs(fødselsdato).add(6, 'months')}
                     validate={[
                         isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.duMåOppgi' })),
                         isValidDate(

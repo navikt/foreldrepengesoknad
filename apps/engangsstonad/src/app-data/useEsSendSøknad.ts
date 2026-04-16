@@ -8,7 +8,7 @@ import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
 
 import { captureMessage } from '@navikt/fp-observability';
-import { EngangsstønadDto, Målform, PersonDto_fpoversikt } from '@navikt/fp-types';
+import { EngangsstønadDto, EsPersonopplysningerDto_fpoversikt, Målform, ProblemDetails } from '@navikt/fp-types';
 import { getDecoratorLanguageCookie, useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -51,7 +51,7 @@ const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-export const useEsSendSøknad = (personinfo: PersonDto_fpoversikt) => {
+export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt) => {
     const navigate = useNavigate();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
@@ -95,9 +95,9 @@ export const useEsSendSøknad = (personinfo: PersonDto_fpoversikt) => {
                     throw error;
                 }
 
-                const jsonResponse = await error.response.json<{ uuid?: string }>();
+                const jsonResponse = await error.response.json<ProblemDetails>();
                 captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
-                const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
+                const callIdForBruker = jsonResponse?.callId ?? UKJENT_UUID;
                 throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
             }
             if (error instanceof Error) {

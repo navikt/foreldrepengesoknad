@@ -8,6 +8,8 @@ import { BodyShort, Detail, VStack } from '@navikt/ds-react';
 import { Calendar } from './Calendar';
 import { CalendarPeriod } from './types/CalendarPeriod';
 
+const getSrTextForSelectedPeriod = () => '';
+
 const meta = {
     title: 'Calendar',
     component: Calendar,
@@ -53,6 +55,7 @@ export const Default: Story = {
                 srText: 'Fars periode',
             },
         ],
+        getSrTextForSelectedPeriod: () => '',
     },
 };
 
@@ -110,6 +113,7 @@ export const VisKalenderMedValgAvEnkeltdager: Story = {
                 setSelectedPeriods={setSelectedPeriods}
                 firstDateInCalendar={allePerioder[0]!.fom}
                 lastDateInCalendar={allePerioder[1]!.tom}
+                getSrTextForSelectedPeriod={getSrTextForSelectedPeriod}
             />
         );
     },
@@ -150,6 +154,7 @@ export const VisKalenderMedValgAvPerioder: Story = {
                 setSelectedPeriods={setSelectedPeriods}
                 firstDateInCalendar={allePerioder[0]!.fom}
                 lastDateInCalendar={allePerioder[1]!.tom}
+                getSrTextForSelectedPeriod={() => ''}
             />
         );
     },
@@ -173,6 +178,7 @@ export const PeriodsWithGap: Story = {
         ],
         firstDateInCalendar: '2024-01-31',
         lastDateInCalendar: '2024-08-30',
+        getSrTextForSelectedPeriod: () => '',
     },
 };
 
@@ -194,6 +200,7 @@ export const PeriodsThatSpanOverAYear: Story = {
         ],
         firstDateInCalendar: '2024-02-01',
         lastDateInCalendar: '2025-07-30',
+        getSrTextForSelectedPeriod: () => '',
     },
 };
 
@@ -222,6 +229,7 @@ export const MarkertMedStjerne: Story = {
     args: {
         firstDateInCalendar: '2024-01-31',
         lastDateInCalendar: '2024-08-30',
+        getSrTextForSelectedPeriod: () => '',
         periods: [
             {
                 fom: '2024-01-31',

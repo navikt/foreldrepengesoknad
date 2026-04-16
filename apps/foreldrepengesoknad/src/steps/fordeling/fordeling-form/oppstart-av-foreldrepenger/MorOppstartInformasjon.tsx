@@ -2,22 +2,36 @@ import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
-import { ISOStringToDate, getVarighetString } from 'utils/dateUtils';
+import { getVarighetString } from 'utils/dateUtils';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { isFødtBarn } from '@navikt/fp-common';
-import { Tidsperioden, Uttaksdagen, getValidTidsperiode, isValidDate } from '@navikt/fp-utils';
-import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-uttaksplan';
+import { isFødtBarn } from '@navikt/fp-types';
+import { Tidsperioden, Uttaksdagen, isValidDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
+
+const ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL = 3;
 
 interface Props {
     oppstartDato: string | undefined;
 }
 
+const getFørsteUttaksdagPåEllerEtterFødsel = (familiehendelsesdato: string) => {
+    return Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato();
+};
+
+export const getFørsteUttaksdagForeldrepengerFørFødsel = (familiehendelsesdato: string | undefined): string => {
+    if (!familiehendelsesdato) {
+        throw new Error('Mangler informasjon om familiehendelsesdato.');
+    }
+    return Uttaksdagen.denne(
+        getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato),
+    ).getDatoAntallUttaksdagerTidligere(ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5);
+};
+
 const getMorInfoMistetDagerFørFødsel = (
     oppstartsdato: string | undefined,
-    førsteUttaksdagForeldrepengerFørFødsel: Date,
+    førsteUttaksdagForeldrepengerFørFødsel: string,
     intl: IntlShape,
 ): string | undefined => {
     if (
@@ -27,15 +41,15 @@ const getMorInfoMistetDagerFørFødsel = (
     ) {
         return undefined;
     }
-    const uttaksdager = Uttaksdagen(førsteUttaksdagForeldrepengerFørFødsel).getUttaksdagerFremTilDato(
-        new Date(oppstartsdato),
+    const uttaksdager = Uttaksdagen.denne(førsteUttaksdagForeldrepengerFørFødsel).getUttaksdagerFremTilDato(
+        oppstartsdato,
     );
     return getVarighetString(uttaksdager, intl);
 };
 
 const getMorInfoFellesperiodeFørFødsel = (
     oppstartsdato: string | undefined,
-    førsteUttaksdagForeldrepengerFørFødsel: Date,
+    førsteUttaksdagForeldrepengerFørFødsel: string,
     intl: IntlShape,
 ): string | undefined => {
     if (
@@ -45,29 +59,28 @@ const getMorInfoFellesperiodeFørFødsel = (
     ) {
         return undefined;
     }
-    const uttaksdager = Uttaksdagen(new Date(oppstartsdato)).getUttaksdagerFremTilDato(
+    const uttaksdager = Uttaksdagen.denne(oppstartsdato).getUttaksdagerFremTilDato(
         førsteUttaksdagForeldrepengerFørFødsel,
     );
     return getVarighetString(uttaksdager, intl);
 };
 const getVarighetFørFamiliehendelse = (
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
     oppstartDato: string | undefined,
     intl: IntlShape,
 ): string => {
     if (!oppstartDato) {
         return '';
     }
-    const sisteUttaksdagFørTermin = Uttaksdagen(familiehendelsesdato).forrige();
-    const tidsperiode = getValidTidsperiode({
-        fom: ISOStringToDate(oppstartDato)!,
-        tom: sisteUttaksdagFørTermin,
-    });
-    return tidsperiode ? getVarighetString(Tidsperioden(tidsperiode).getAntallUttaksdager(), intl) : '';
+    const sisteUttaksdagFørTermin = Uttaksdagen.forrige(familiehendelsesdato).getDato();
+    const tidsperiode = Tidsperioden.forFomOgTom(oppstartDato, sisteUttaksdagFørTermin);
+    const antallUttaksdager =
+        Uttaksdagen.denneEllerNeste(oppstartDato).getUttaksdagerFremTilOgMedDato(sisteUttaksdagFørTermin);
+    return tidsperiode.erGyldig() ? getVarighetString(antallUttaksdager, intl) : '';
 };
 
-const getStarterPåUttaksdagEtterFamiliehendelse = (familiehendelsesdato: Date, oppstartDato: string | undefined) => {
-    const førsteUttaksdagPåEllerEtterFamHendelse = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+const getStarterPåUttaksdagEtterFamiliehendelse = (familiehendelsesdato: string, oppstartDato: string | undefined) => {
+    const førsteUttaksdagPåEllerEtterFamHendelse = Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato();
 
     return (
         oppstartDato &&
@@ -79,7 +92,7 @@ const getStarterPåUttaksdagEtterFamiliehendelse = (familiehendelsesdato: Date, 
 export const MorOppstartInformasjon = ({ oppstartDato }: Props) => {
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
     const førsteUttaksdagMorFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
 
     const starterPåUttaksdagEtterFamiliehendelse = getStarterPåUttaksdagEtterFamiliehendelse(

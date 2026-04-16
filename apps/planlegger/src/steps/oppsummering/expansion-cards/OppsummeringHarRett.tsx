@@ -4,7 +4,7 @@ import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import {
     erAlenesøker,
@@ -26,10 +26,10 @@ import { finnAntallUkerOgDagerMedForeldrepenger, getAnnenpartsPerioder, getSøke
 
 import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
-import { HvemPlanleggerType, KontoBeregningDto } from '@navikt/fp-types';
+import { KontoBeregningDto } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
-import { UttaksplanDataProvider, UttaksplanKalender } from '@navikt/fp-uttaksplan-ny';
+import { UttaksplanDataProvider, UttaksplanKalender } from '@navikt/fp-uttaksplan';
 
 import { ContextDataType, useContextGetData } from '../../../app-data/PlanleggerDataContext';
 import { mapOmBarnetTilBarn } from '../../../utils/barnetUtils';
@@ -249,6 +249,7 @@ export const OppsummeringHarRett = ({
                             harAktivitetskravIPeriodeUtenUttak={false}
                             uttakPerioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
                             erPeriodeneTilAnnenPartLåst={false}
+                            erEndringssøknad={false}
                         >
                             <UttaksplanKalender barnehagestartdato={barnehagestartdato} readOnly />
                         </UttaksplanDataProvider>

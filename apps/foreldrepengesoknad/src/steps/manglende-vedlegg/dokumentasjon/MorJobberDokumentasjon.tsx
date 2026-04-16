@@ -3,22 +3,23 @@ import { DokumentereMorsArbeidParams, trengerDokumentereMorsArbeidOptions } from
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
+import { isAnnenForelderOppgittNorsk, isAnnenforelderOppholdtSegIEØS } from 'types/AnnenForelder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { addMetadata, lagAutomatiskDokument } from 'utils/vedleggUtils';
 
 import { Loader } from '@navikt/ds-react';
 
-import {
-    NavnPåForeldre,
-    Periode,
-    Situasjon,
-    isAnnenForelderOppgittNorsk,
-    isAnnenforelderOppholdtSegIEØS,
-    isPeriodeUtenUttakUtsettelse,
-} from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, Barn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
-import { dateToISOString, getFamiliehendelsedato } from '@navikt/fp-utils';
+import {
+    Attachment,
+    Barn,
+    NavnPåForeldre,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+    isAdoptertBarn,
+    isFødtBarn,
+} from '@navikt/fp-types';
+import { Uttaksperioden, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttakUploader } from '../attachment-uploaders/UttakUploader';
@@ -27,11 +28,8 @@ import { IngenDokumentasjonPåkrevd } from './IngenDokumentasjonPåkrevd';
 interface Props {
     attachments: Attachment[];
     updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
-    perioder: Periode[];
+    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     navnPåForeldre: NavnPåForeldre;
-    familiehendelsesdato: string;
-    termindato: string | undefined;
-    situasjon: Situasjon;
     erFarEllerMedmor: boolean;
 }
 
@@ -40,10 +38,7 @@ export const MorJobberDokumentasjon = ({
     updateAttachments,
     perioder,
     navnPåForeldre,
-    familiehendelsesdato,
-    situasjon,
     erFarEllerMedmor,
-    termindato,
 }: Props) => {
     const intl = useIntl();
 
@@ -101,9 +96,6 @@ export const MorJobberDokumentasjon = ({
             updateAttachments={updateDokArbeidMorAttachment}
             perioder={perioder}
             navnPåForeldre={navnPåForeldre}
-            familiehendelsesdato={familiehendelsesdato}
-            termindato={termindato}
-            situasjon={situasjon}
             skjemanummer={Skjemanummer.DOK_ARBEID_MOR}
             labelText={intl.formatMessage({ id: 'manglendeVedlegg.morJobber.label' })}
             description={intl.formatMessage(
@@ -120,7 +112,7 @@ const TrengerIkkeMorIArbeidDokumentasjon = ({
     perioder,
 }: {
     updateDokArbeidMorAttachment: (attachments: Attachment[]) => void;
-    perioder: Periode[];
+    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
 }) => {
     useEffect(() => {
         const init = lagAutomatiskDokument(AttachmentType.MORS_AKTIVITET_DOKUMENTASJON, Skjemanummer.DOK_ARBEID_MOR);
@@ -128,8 +120,8 @@ const TrengerIkkeMorIArbeidDokumentasjon = ({
         const sendAutomatiskVedlegg = addMetadata(init, {
             type: 'UTTAK',
             perioder: perioder.map((p) => ({
-                fom: dateToISOString(p.tidsperiode.fom),
-                tom: dateToISOString(p.tidsperiode.tom),
+                fom: p.fom,
+                tom: p.tom,
             })),
         });
 
@@ -140,7 +132,7 @@ const TrengerIkkeMorIArbeidDokumentasjon = ({
 };
 
 const getDokumentereMorsArbeidParams = (
-    uttaksplan: Periode[],
+    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     barn: Barn,
     bareFarHarRett: boolean,
     annenPartFødselsnummer: string,
@@ -155,9 +147,12 @@ const getDokumentereMorsArbeidParams = (
         barnFødselsnummer,
         familiehendelse: getFamiliehendelsedato(barn),
         perioder: uttaksplan.map((p) => ({
-            fom: p.tidsperiode.fom.toISOString(),
-            tom: p.tidsperiode.tom.toISOString(),
-            periodeType: bareFarHarRett && isPeriodeUtenUttakUtsettelse(p) ? 'UTSETTELSE' : 'UTTAK',
+            fom: p.fom,
+            tom: p.tom,
+            periodeType:
+                bareFarHarRett && Uttaksperioden.erIkkeEøsPeriode(p) && p.utsettelseÅrsak === 'FRI'
+                    ? 'UTSETTELSE'
+                    : 'UTTAK',
         })),
     };
 };

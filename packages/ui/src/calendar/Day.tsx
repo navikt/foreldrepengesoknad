@@ -9,6 +9,8 @@ import { formatDate } from '@navikt/fp-utils';
 import styles from './day.module.css';
 import { CalendarPeriodColor } from './types/CalendarPeriodColor';
 
+export type DayShape = 'square' | 'rounded-right' | 'rounded-left';
+
 const DAY_STYLE: Record<CalendarPeriodColor, string> = {
     ['NONE']: styles.none!,
     ['BLUE']: styles.blueDay!,
@@ -37,10 +39,13 @@ type Props = {
     isFocused: boolean;
     srText?: string;
     isUpdated?: boolean;
+    isHoverPreview?: boolean;
     Icon?: ReactElement;
     iconFull?: boolean;
+    shape: DayShape;
     dateTooltipCallback?: (date: string) => React.ReactNode | string;
     dateClickCallback?: (date: string) => void;
+    onDateHover?: (date: string | undefined) => void;
     setFocusedDate: (date: Dayjs) => void;
 };
 
@@ -51,10 +56,13 @@ export const Day = React.memo(
         isFocused,
         srText,
         isUpdated,
+        isHoverPreview,
         Icon,
         iconFull,
+        shape,
         dateTooltipCallback,
         dateClickCallback,
+        onDateHover,
         setFocusedDate,
     }: Props) => {
         const date = dayjs(isoDate);
@@ -78,6 +86,10 @@ export const Day = React.memo(
         );
 
         const isClickable = !!dateClickCallback && !isWeekend(date);
+        const colorClass =
+            isHoverPreview && !isWeekend(date) && periodeColor !== 'DARKBLUE'
+                ? styles.hoverPreviewDay
+                : DAY_STYLE[periodeColor];
 
         return (
             <button
@@ -85,15 +97,18 @@ export const Day = React.memo(
                 type="button"
                 data-testid={`day:${day};dayColor:${periodeColor}${Icon ? `;with-icon` : ''}`}
                 tabIndex={isFocused ? 0 : -1}
-                className={`${styles.days} ${DAY_STYLE[periodeColor]} ${isClickable && styles.cursorAndHoover} ${isUpdated && styles.fadeIn}`}
+                className={`${styles.days} ${colorClass} ${isClickable && styles.cursorAndHoover} ${isUpdated && styles.fadeIn} 
+                ${shape === 'rounded-left' && styles.roundedLeft} ${shape === 'rounded-right' && styles.roundedRight}`}
                 onFocus={isClickable ? () => setFocusedDate(date) : undefined}
+                onMouseEnter={onDateHover && isClickable ? () => onDateHover(isoDate) : undefined}
                 onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
                 onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
                 onClick={isClickable ? () => dateClickCallback(isoDate) : undefined}
                 onAnimationEnd={() => buttonRef.current?.classList.remove(styles.fadeIn!)}
                 onKeyDown={
                     dateClickCallback
-                        ? (e) => handleKeyNavigationAndSelection(e, date, dateClickCallback, setFocusedDate)
+                        ? (e) =>
+                              handleKeyNavigationAndSelection(e, date, dateClickCallback, setFocusedDate, onDateHover)
                         : undefined
                 }
                 aria-label={formatDate(date) + (srText ? `, ${srText}` : '')}
@@ -130,11 +145,20 @@ export const logOnLocalhost = (message: string) => {
     }
 };
 
+const skipWeekends = (date: Dayjs, direction: 1 | -1): Dayjs => {
+    let next = date.add(direction, 'day');
+    while (isWeekend(next)) {
+        next = next.add(direction, 'day');
+    }
+    return next;
+};
+
 const handleKeyNavigationAndSelection = (
     e: React.KeyboardEvent,
     date: Dayjs,
     dateClickCallback: (date: string) => void,
     setFocusedDate: (date: Dayjs) => void,
+    onDateHover?: (date: string | undefined) => void,
 ) => {
     if (e.key === 'Tab') {
         return;
@@ -143,18 +167,23 @@ const handleKeyNavigationAndSelection = (
     e.preventDefault();
     const isClickable = !!dateClickCallback && !isWeekend(date);
 
+    const navigateTo = (newDate: Dayjs) => {
+        setFocusedDate(newDate);
+        onDateHover?.(newDate.format(ISO_DATE_FORMAT));
+    };
+
     switch (e.key) {
         case 'ArrowLeft':
-            setFocusedDate(date.subtract(1, 'day'));
+            navigateTo(skipWeekends(date, -1));
             break;
         case 'ArrowRight':
-            setFocusedDate(date.add(1, 'day'));
+            navigateTo(skipWeekends(date, 1));
             break;
         case 'ArrowUp':
-            setFocusedDate(date.subtract(7, 'day'));
+            navigateTo(date.subtract(7, 'day'));
             break;
         case 'ArrowDown':
-            setFocusedDate(date.add(7, 'day'));
+            navigateTo(date.add(7, 'day'));
             break;
         case 'Enter':
         case ' ':

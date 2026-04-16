@@ -5,7 +5,7 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './BeregningPage.stories.tsx';
 
-const { BeregningDelvisRefusjon, BeregningDirekteUtbetaling } = composeStories(stories);
+const { BeregningDelvisRefusjon, BeregningDirekteUtbetaling, BeregningSvpDirekteUtbetaling } = composeStories(stories);
 
 describe('<BeregningPage>', () => {
     it(
@@ -17,10 +17,14 @@ describe('<BeregningPage>', () => {
             expect(await screen.findByText('Beregning av foreldrepenger')).toBeInTheDocument();
             expect(await screen.findByText('Dagsats: 3 004 kr')).toBeInTheDocument();
 
-            (await screen.findByText('Mer om beregningen')).click();
+            const merOmBeregningen = await screen.findByText('Mer om beregningen');
+            merOmBeregningen.click();
 
-            expect(await screen.findByText('NAV FAMILIE- OG PENSJONSYTELSER OSLO - 992257822')).toBeInTheDocument();
-            expect(await screen.findByText('Frilans')).toBeInTheDocument();
+            const beregningCard = within(merOmBeregningen.closest('section')!);
+            expect(
+                await beregningCard.findByText('NAV FAMILIE- OG PENSJONSYTELSER OSLO - 992257822'),
+            ).toBeInTheDocument();
+            expect(await beregningCard.findByText('Frilans')).toBeInTheDocument();
 
             expect(await screen.findByText('Utbetalingsplan')).toBeInTheDocument();
             const januarExpansionCard = await screen.findByTestId('expansioncard-Januar');
@@ -66,6 +70,40 @@ describe('<BeregningPage>', () => {
             expect(await screen.findByText('Opptjent i 2026')).toBeInTheDocument();
             expect(await screen.findByText('7 354 kr som vi betaler til deg.')).toBeInTheDocument();
             expect(await screen.findByText('De utbetales innen utgangen av mai 2027.')).toBeInTheDocument();
+        }),
+    );
+
+    it(
+        'BeregningSvpDirekteUtbetaling',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(BeregningSvpDirekteUtbetaling.parameters.msw);
+            render(<BeregningSvpDirekteUtbetaling />);
+
+            // SVP-specific heading
+            expect(await screen.findByText('Beregning av svangerskapspenger')).toBeInTheDocument();
+
+            // Dagsats renders
+            expect(await screen.findByText('Dagsats: 2 077 kr')).toBeInTheDocument();
+
+            // Annual income shown
+            expect(
+                await screen.findByText('Nav har fastsatt årsinntekten din til:', { exact: false }),
+            ).toBeInTheDocument();
+
+            // 80% reduction should NOT be shown (FP-only with ÅTTI dekningsgrad)
+            expect(screen.queryByText('Siden du har', { exact: false })).not.toBeInTheDocument();
+
+            // Utbetalingsplan renders
+            expect(await screen.findByText('Utbetalingsplan')).toBeInTheDocument();
+            const marsExpansionCard = await screen.findByTestId('expansioncard-Mars');
+            expect(
+                within(marsExpansionCard).getByText('Vi skal betale til deg:', { exact: false }),
+            ).toBeInTheDocument();
+
+            // Feriepenger section renders
+            expect(await screen.findByText('Feriepenger')).toBeInTheDocument();
+            expect(await screen.findByText('Opptjent i 2026')).toBeInTheDocument();
+            expect(await screen.findByText('7 893 kr som vi betaler til deg.')).toBeInTheDocument();
         }),
     );
 });

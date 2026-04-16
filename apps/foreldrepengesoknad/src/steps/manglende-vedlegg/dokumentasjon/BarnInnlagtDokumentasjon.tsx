@@ -1,31 +1,24 @@
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
-import { NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment } from '@navikt/fp-types';
+import {
+    Attachment,
+    NavnPåForeldre,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 
 import { UttakUploader } from '../attachment-uploaders/UttakUploader';
 
 interface Props {
     attachments: Attachment[];
     updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
-    perioder: Periode[];
+    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     navnPåForeldre: NavnPåForeldre;
-    familiehendelsesdato: string;
-    termindato: string | undefined;
-    situasjon: Situasjon;
 }
 
-export const BarnInnlagtDokumentasjon = ({
-    attachments,
-    updateAttachments,
-    perioder,
-    navnPåForeldre,
-    familiehendelsesdato,
-    situasjon,
-    termindato,
-}: Props) => {
+export const BarnInnlagtDokumentasjon = ({ attachments, updateAttachments, perioder, navnPåForeldre }: Props) => {
     const intl = useIntl();
 
     if (perioder.length === 0) {
@@ -38,9 +31,6 @@ export const BarnInnlagtDokumentasjon = ({
             updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE_BARN)}
             perioder={perioder}
             navnPåForeldre={navnPåForeldre}
-            familiehendelsesdato={familiehendelsesdato}
-            termindato={termindato}
-            situasjon={situasjon}
             skjemanummer={Skjemanummer.DOK_INNLEGGELSE_BARN}
             labelText={intl.formatMessage({ id: 'manglendeVedlegg.barnInnlagt.label' })}
             description={intl.formatMessage({ id: 'manglendeVedlegg.barnInnlagt.description' })}

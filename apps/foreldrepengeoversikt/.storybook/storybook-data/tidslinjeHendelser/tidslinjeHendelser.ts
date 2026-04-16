@@ -425,3 +425,63 @@ export const tidslinjehendelser_FP_ny_søknad = [
         ],
     },
 ] satisfies TidslinjeHendelseDto_fpoversikt[];
+
+export const tidslinjeHendelser_ES_førstegangssøknad = [
+    {
+        opprettet: '2023-01-31T09:06:46.541655',
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+        dokumenter: [
+            {
+                tittel: 'Søknad om foreldrepenger ved fødsel',
+                journalpostId: '598115874',
+                dokumentId: '624862989',
+            },
+        ],
+    },
+] satisfies TidslinjeHendelseDto_fpoversikt[];
+
+export const tidslinjeHendelser_FP_førstegangssøknad_nylig = [
+    {
+        opprettet: new Date(Date.now() - 3 * 60 * 1000).toISOString(),
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+        dokumenter: [],
+    },
+] satisfies TidslinjeHendelseDto_fpoversikt[];
+
+export const tidslinjeHendelser_FP_førstegangssøknad_gammel = [
+    {
+        opprettet: new Date(Date.now() - 31 * 24 * 60 * 60 * 1000).toISOString(),
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+        dokumenter: [],
+    },
+] satisfies TidslinjeHendelseDto_fpoversikt[];
+
+export const tidslinjeHendelser_FP_endringssøknad_nylig = [
+    {
+        opprettet: new Date(Date.now() - 3 * 60 * 1000).toISOString(),
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'ENDRINGSSØKNAD',
+        dokumenter: [],
+    },
+] satisfies TidslinjeHendelseDto_fpoversikt[];
+
+export const tidslinjeHendelser_ES_førstegangssøknad_nylig = [
+    {
+        opprettet: new Date(Date.now() - 3 * 60 * 1000).toISOString(),
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+        dokumenter: [],
+    },
+] satisfies TidslinjeHendelseDto_fpoversikt[];
+
+export const tidslinjeHendelser_SVP_førstegangssøknad_nylig = [
+    {
+        opprettet: new Date(Date.now() - 3 * 60 * 1000).toISOString(),
+        aktørType: 'BRUKER',
+        tidslinjeHendelseType: 'FØRSTEGANGSSØKNAD',
+        dokumenter: [],
+    },
+] satisfies TidslinjeHendelseDto_fpoversikt[];

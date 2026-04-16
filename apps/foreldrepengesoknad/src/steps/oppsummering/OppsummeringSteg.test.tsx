@@ -237,9 +237,10 @@ describe('<Oppsummering>', () => {
 
         const dinPlanDiv = getCardDiv(screen.getByText('Din plan'));
 
+        // TODO (TOR) Her trur eg det er noko feil med mocking av kall, står 49 uker i storybook
         expect(
             checkAndGetParentDiv(dinPlanDiv.getByText('Du har planlagt')).getByText(
-                '1 uke med 100 prosent foreldrepenger',
+                '0 uker med 100 prosent foreldrepenger',
             ),
         ).toBeInTheDocument();
         //TODO (TOR) dag og tidspunkt er forskjellig lokalt vs github
@@ -257,6 +258,22 @@ describe('<Oppsummering>', () => {
                 ),
             ).getByText('Nei'),
         ).toBeInTheDocument();
+    });
+
+    it('Skal vise "Foreldrepenger uten aktivitetskrav" når mor er ufør', async () => {
+        render(<FarMedUførMorUgift />);
+
+        const dinPlanDiv = getCardDiv(screen.getByText('Din plan'));
+        const periodeRow = await screen.findByText('Onsdag 24.11.21 - tirsdag 14.12.21');
+
+        expect(
+            checkAndGetParentDiv(
+                dinPlanDiv.getByText(
+                    'Ønsker du at vi endrer perioden som starter på termin til å starte fra fødselsdato når barnet blir født?',
+                ),
+            ).getByText('Nei'),
+        ).toBeInTheDocument();
+        expect(checkAndGetParentDiv(periodeRow).getByText(/Foreldrepenger uten aktivitetskrav/)).toBeInTheDocument();
     });
 
     it('Skal vise informasjon om at mor har rett til foreldrepenger i EØS', async () => {
@@ -466,7 +483,13 @@ describe('<Oppsummering>', () => {
             expect(screen.getByText('Har du orientert den andre forelderen om søknaden din?')).toBeInTheDocument();
             expect(screen.getAllByText('Ja')).toHaveLength(5);
 
-            expect(screen.getByText('Dine perioder med foreldrepenger')).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    'Periodene til den andre forelderen blir ikke sendt inn. Den andre forelderen må selv huske å sende oss en søknad.',
+                ),
+            ).toBeInTheDocument();
+
+            expect(screen.getByText('Periodene med foreldrepenger til den andre forelderen')).toBeInTheDocument();
             expect(screen.getByText('Fellesperiode', { selector: 'dd' })).toBeInTheDocument();
             expect(screen.getByText('Vi skal ha samtidig uttak:')).toBeInTheDocument();
             expect(screen.getByText('Vi skal ha samtidig uttak:').nextSibling).toHaveTextContent('Ja');

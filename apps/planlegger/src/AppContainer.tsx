@@ -8,10 +8,11 @@ import { Provider, Theme } from '@navikt/ds-react';
 import { en, nb, nn } from '@navikt/ds-react/locales';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
+import { observabilityMessages } from '@navikt/fp-observability';
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
 import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
-import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
+import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan';
 
 import { PlanleggerDataInit } from './Planlegger';
 import enMessages from './intl/messages/en_US.json';
@@ -24,6 +25,7 @@ const allNbMessages = {
     ...utilsMessages.nb,
     ...nyUttaksplanMessages.nb,
     ...formHookMessages.nb,
+    ...observabilityMessages.nb,
 };
 
 declare global {
@@ -51,6 +53,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utilsMessages.nn,
         ...nyUttaksplanMessages.nn,
         ...formHookMessages.nn,
+        ...observabilityMessages.nn,
     },
     en: {
         ...enMessages,
@@ -58,6 +61,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utilsMessages.en,
         ...nyUttaksplanMessages.en,
         ...formHookMessages.en,
+        ...observabilityMessages.en,
     },
 };
 

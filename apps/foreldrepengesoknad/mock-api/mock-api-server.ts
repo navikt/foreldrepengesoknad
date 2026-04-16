@@ -175,7 +175,7 @@ app.use(allowCrossDomain);
 app.use(delayAllResponses(500));
 app.use(express.json());
 
-router.get(['/fpoversikt/api/person/info-med-arbeidsforhold'], (_req, res) => {
+router.get(['/fpoversikt/api/personopplysninger/foreldrepenger'], (_req, res) => {
     res.send(getSokerInfo());
 });
 

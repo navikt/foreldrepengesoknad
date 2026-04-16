@@ -7,10 +7,9 @@ import { action } from 'storybook/actions';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 
-import { HvemPlanleggerType } from '@navikt/fp-types';
 import {
     DELT_UTTAK_80_ADOPSJON,
     DELT_UTTAK_100_ADOPSJON,
@@ -221,7 +220,6 @@ export const BareMorSøkerOgHarRett: Story = {
     args: {
         ...MorOgFarBeggeHarRett.args,
         hvemPlanlegger: {
-            navnPåMor: 'Olga Utvikler',
             type: HvemPlanleggerType.MOR,
         },
         fordeling: undefined,
@@ -237,7 +235,6 @@ export const BareFarSøkerAleneOmOmsorg: Story = {
     args: {
         ...MorOgFarBeggeHarRett.args,
         hvemPlanlegger: {
-            navnPåFar: 'Espen Utvikler',
             type: HvemPlanleggerType.FAR,
         },
         fordeling: undefined,

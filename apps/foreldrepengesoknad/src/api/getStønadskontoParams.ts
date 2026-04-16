@@ -1,3 +1,4 @@
+import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getErMorUfør } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'utils/eksisterendeSakUtils';
@@ -5,17 +6,13 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getFarMedmorErAleneOmOmsorg, getMorErAleneOmOmsorg } from 'utils/personUtils';
 
 import {
-    AnnenForelder,
+    AnnenPartSak_fpoversikt,
     Barn,
-    BarnFraNesteSak,
-    EksisterendeSak,
-    isAdoptertAnnetBarn,
-    isAdoptertStebarn,
-    isAnnenForelderOppgitt,
+    SøkersituasjonFp,
+    isAdoptertBarn,
     isFødtBarn,
     isUfødtBarn,
-} from '@navikt/fp-common';
-import { AnnenPartSak_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
+} from '@navikt/fp-types';
 
 const getFarHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
     if (erFarMedmor) {
@@ -89,21 +86,13 @@ const finnRettighetstype = (
     return 'BARE_SØKER_RETT';
 };
 
-export const getStønadskontoParams = ({
-    barn,
-    annenForelder,
-    søkersituasjon,
-    barnFraNesteSak,
-    annenPartsVedtak,
-    eksisterendeSak,
-}: {
-    barn: Barn;
-    annenForelder: AnnenForelder;
-    søkersituasjon: SøkersituasjonFp;
-    barnFraNesteSak?: BarnFraNesteSak;
-    annenPartsVedtak: AnnenPartSak_fpoversikt | undefined;
-    eksisterendeSak?: EksisterendeSak;
-}) => {
+export const getStønadskontoParams = (
+    barn: Barn,
+    annenForelder: AnnenForelder,
+    søkersituasjon: SøkersituasjonFp,
+    annenPartsVedtak: AnnenPartSak_fpoversikt | undefined,
+    termindatoEksisterendeSak?: string,
+) => {
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(
@@ -118,14 +107,11 @@ export const getStønadskontoParams = ({
         annenForelder,
     );
 
-    const førsteUttaksdagNesteBarnsSak = barnFraNesteSak?.startdatoFørsteStønadsperiode;
-
     const eksisterendeVedtakAnnenPart = mapAnnenPartsEksisterendeSakFromDTO(
         annenPartsVedtak,
         barn,
         erFarEllerMedmor,
         getFamiliehendelsedato(barn),
-        førsteUttaksdagNesteBarnsSak,
     );
 
     const saksgrunnlagsAntallBarn = getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter(
@@ -136,7 +122,7 @@ export const getStønadskontoParams = ({
 
     const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
         erFarEllerMedmor,
-        eksisterendeSak?.grunnlag.termindato,
+        termindatoEksisterendeSak,
         eksisterendeVedtakAnnenPart?.grunnlag.termindato,
     );
 
@@ -155,8 +141,7 @@ export const getStønadskontoParams = ({
         antallBarn: saksgrunnlagsAntallBarn.toString(),
         fødselsdato: isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined,
         termindato: getTermindatoSomSkalBrukes(barn, saksgrunnlagsTermindato),
-        omsorgsovertakelseDato: isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? barn.adopsjonsdato : undefined,
+        omsorgsovertakelseDato: isAdoptertBarn(barn) ? barn.adopsjonsdato : undefined,
         morHarUføretrygd: getErMorUfør(annenForelder, søkerErFarEllerMedmor),
-        familieHendelseDatoNesteSak: førsteUttaksdagNesteBarnsSak,
     };
 };

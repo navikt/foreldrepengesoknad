@@ -5,26 +5,27 @@
     "type": "module",
     "types": "index.ts",
     "scripts": {
-        "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
-        "lint:tsc": "tsc --noEmit",
-        "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
-        "prettier": "prettier --write src"
+        "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
+        "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
+        "prettier:fix": "prettier --write src",
+        "tsc": "tsc --noEmit",
+        "tsc:watch": "tsc --noEmit --watch"
     },
     "dependencies": {
-        "@navikt/fp-config-eslint": "workspace:*",
-        "@navikt/nav-dekoratoren-moduler": "3.6.2",
-        "@navikt/vite-mode": "0.13.6",
-        "express": "5.2.1"
+        "@navikt/nav-dekoratoren-moduler": "3.7.1",
+        "@navikt/vite-mode": "0.13.7",
+        "express": "5.2.1",
+        "morgan": "1.10.1",
+        "winston": "3.19.0"
     },
     "devDependencies": {
+        "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@types/express": "5.0.6",
         "@types/morgan": "1.9.10",
         "@types/node": "24.10.1",
         "eslint": "9.39.2",
-        "morgan": "1.10.1",
-        "typescript": "5.9.3",
-        "winston": "3.19.0"
+        "typescript": "6.0.2"
     },
     "packageManager": "pnpm@10.28.0"
 }

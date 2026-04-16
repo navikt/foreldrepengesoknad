@@ -2,11 +2,9 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
 
-import { Barn, isFødtBarn, isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-common';
 import { DDMMMMYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { BarnDto_fpoversikt } from '@navikt/fp-types';
-
-import { ISOStringToDate } from './dateUtils';
+import { Barn, FpBarnDto_fpoversikt, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
+import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
 
 dayjs.extend(utc);
 
@@ -21,12 +19,11 @@ export const getFamiliehendelsedato = (barn: Barn): string => {
     return barn.adopsjonsdato;
 };
 
-export const getFamiliehendelsedatoDate = (barn: Barn): Date => {
-    const familiehendelse = getFamiliehendelsedato(barn);
-    return ISOStringToDate(familiehendelse)!;
+export const getFamiliehendelsedatoDate = (barn: Barn): string => {
+    return getFamiliehendelsedato(barn);
 };
 
-type DateType = string | Date | undefined;
+type DateType = string | undefined;
 
 const barnFødselsdatoLikSakFødselsdato = (fødselsdatoer: string[] | undefined, regBarnFødselsdato: DateType) => {
     return fødselsdatoer !== undefined && regBarnFødselsdato !== undefined
@@ -36,8 +33,8 @@ const barnFødselsdatoLikSakFødselsdato = (fødselsdatoer: string[] | undefined
 
 export const getRegistrerteBarnOmDeFinnes = (
     barn: Barn,
-    registrerteBarn: BarnDto_fpoversikt[],
-): BarnDto_fpoversikt[] | undefined => {
+    registrerteBarn: FpBarnDto_fpoversikt[],
+): FpBarnDto_fpoversikt[] | undefined => {
     return registrerteBarn.length > 0 && !isUfødtBarn(barn)
         ? registrerteBarn.filter(
               (regBarn) =>
@@ -55,8 +52,8 @@ export const getFødselsdato = (barn: Barn): string | undefined => {
     return isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined;
 };
 
-export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: BarnDto_fpoversikt) => {
-    const dato3MånederTilbake = dayjs(new Date()).subtract(3, 'month');
+export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: FpBarnDto_fpoversikt) => {
+    const dato3MånederTilbake = dayjs().subtract(3, 'month');
     return (
         registrerteBarn.dødsdato !== undefined &&
         dayjs.utc(registrerteBarn.dødsdato).isBefore(dato3MånederTilbake, 'day')
@@ -74,14 +71,14 @@ export const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): stri
     return intl.formatMessage({ id: 'flerlinger' });
 };
 
-export const getLeverBarnet = (barn: BarnDto_fpoversikt) => {
+export const getLeverBarnet = (barn: FpBarnDto_fpoversikt) => {
     return !barn.dødsdato;
 };
 
 export const getAndreBarnFødtSammenMedBarnet = (
     barnFnr: string | undefined,
     barnFødselsdato: string,
-    registrerteBarn: BarnDto_fpoversikt[],
+    registrerteBarn: FpBarnDto_fpoversikt[],
 ) => {
     const dagenFørFødsel = dayjs.utc(barnFødselsdato).subtract(1, 'day');
     const dagenEtterFødsel = dayjs.utc(barnFødselsdato).add(1, 'day');
@@ -94,8 +91,8 @@ export const getAndreBarnFødtSammenMedBarnet = (
 };
 
 export const getTittelBarnNårNavnSkalIkkeVises = (
-    omsorgsovertagelsesdato: Date | undefined,
-    fødselsdatoer: string[] | Date[] | undefined,
+    omsorgsovertagelsesdato: string | undefined,
+    fødselsdatoer: string[] | undefined,
     antallBarn: number,
     intl: IntlShape,
 ): string => {
@@ -124,8 +121,8 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
 
 export const formaterNavnPåBarn = (
     fornavn: string[] | undefined,
-    fødselsdatoer: string[] | Date[] | undefined,
-    omsorgsovertagelsesdato: Date | undefined,
+    fødselsdatoer: string[] | undefined,
+    omsorgsovertagelsesdato: string | undefined,
     alleBarnaLever: boolean,
     antallBarn: number,
     intl: IntlShape,
@@ -142,7 +139,7 @@ export const formaterNavnPåBarn = (
     return `${fornavn[0]}`;
 };
 
-export const formaterFødselsdatoerPåBarn = (fødselsdatoer: string[] | Date[] | undefined): string | undefined => {
+export const formaterFødselsdatoerPåBarn = (fødselsdatoer: string[] | undefined): string | undefined => {
     if (fødselsdatoer === undefined) {
         return undefined;
     }

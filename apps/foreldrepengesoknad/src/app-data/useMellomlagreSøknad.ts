@@ -2,15 +2,16 @@ import { API_URLS } from 'api/queries';
 import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { EksisterendeSak } from 'types/EksisterendeSak';
 import { Fordeling } from 'types/Fordeling';
 import { Søknad } from 'types/Søknad';
-import { MELLOMLAGRET_VERSJON } from 'utils/mellomlagringUtils';
+import { VERSJON_MELLOMLAGRING } from 'utils/mellomlagringUtils';
 
-import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
 import { captureMessage } from '@navikt/fp-observability';
 import {
+    FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
-    PersonMedArbeidsforholdDto_fpoversikt,
+    ProblemDetails,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
@@ -21,23 +22,17 @@ import { SøknadRoutes } from './routes';
 
 export interface FpMellomlagretData {
     version: number;
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
     foreldrepengerSaker: FpSak_fpoversikt[];
     currentRoute: SøknadRoutes;
     søknad?: Partial<Søknad>;
     antallUkerIUttaksplan?: number;
-    perioderSomSkalSendesInn?: Periode[];
     harUttaksplanBlittSlettet?: boolean;
     søknadGjelderEtNyttBarn?: boolean;
     fordeling?: Fordeling;
     eksisterendeSak?: EksisterendeSak;
-    endringstidspunkt?: Date;
-    barnFraNesteSak?: BarnFraNesteSak;
     annenPartsUttakErLagtTilIPlan?: boolean;
     uttaksplanNy?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
-    uttaksplanMetadataNy?: {
-        ønskerJustertUttakVedFødsel?: boolean | undefined;
-    };
     valgtEksisterendeSaksnr?: string;
 }
 
@@ -47,7 +42,7 @@ const FEIL_VED_INNSENDING =
 
 const getDataForMellomlagring = (
     foreldrepengerSaker: FpSak_fpoversikt[],
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt,
+    søkerInfo: FpPersonopplysningerDto_fpoversikt,
     getDataFromState: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     erEndringssøknad: boolean,
     harGodkjentVilkår: boolean,
@@ -65,21 +60,16 @@ const getDataForMellomlagring = (
     const utenlandsopphold = getDataFromState(ContextDataType.UTENLANDSOPPHOLD);
     const senereUtenlandsopphold = getDataFromState(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const tidligereUtenlandsopphold = getDataFromState(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-    const uttaksplanMetadata = getDataFromState(ContextDataType.UTTAKSPLAN_METADATA);
-    const barnFraNesteSak = getDataFromState(ContextDataType.BARN_FRA_NESTE_SAK);
-    const eksisterendeSak = getDataFromState(ContextDataType.EKSISTERENDE_SAK);
-    const uttaksplan = getDataFromState(ContextDataType.UTTAKSPLAN);
     const fordeling = getDataFromState(ContextDataType.FORDELING);
     const dekningsgrad = getDataFromState(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const vedlegg = getDataFromState(ContextDataType.VEDLEGG);
-
-    const uttaksplanNy = getDataFromState(ContextDataType.UTTAKSPLAN_NY);
-    const uttaksplanMetadataNy = getDataFromState(ContextDataType.UTTAKSPLAN_METADATA_NY);
+    const uttaksplanNy = getDataFromState(ContextDataType.UTTAKSPLAN);
+    const ønskerJustertUttakVedFødsel = getDataFromState(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const valgtEksisterendeSaksnr = getDataFromState(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
     // TODO (TOR) Dropp mapping her og lagre context rått
     const dataSomSkalMellomlagres = {
-        version: MELLOMLAGRET_VERSJON,
+        version: VERSJON_MELLOMLAGRING,
         foreldrepengerSaker,
         søkerInfo,
         currentRoute,
@@ -98,20 +88,11 @@ const getDataForMellomlagring = (
             utenlandsoppholdSiste12Mnd: tidligereUtenlandsopphold,
             erEndringssøknad,
             dekningsgrad,
-            uttaksplan,
             vedlegg,
-            ønskerJustertUttakVedFødsel: uttaksplanMetadata?.ønskerJustertUttakVedFødsel,
+            ønskerJustertUttakVedFødsel,
         },
-        eksisterendeSak,
-        barnFraNesteSak,
         fordeling,
-        endringstidspunkt: uttaksplanMetadata?.endringstidspunkt,
-        antallUkerIUttaksplan: uttaksplanMetadata?.antallUkerIUttaksplan,
-        perioderSomSkalSendesInn: uttaksplanMetadata?.perioderSomSkalSendesInn,
-        harUttaksplanBlittSlettet: uttaksplanMetadata?.harUttaksplanBlittSlettet,
-        annenPartsUttakErLagtTilIPlan: uttaksplanMetadata?.annenPartsUttakErLagtTilIPlan,
         uttaksplanNy,
-        uttaksplanMetadataNy,
         valgtEksisterendeSaksnr,
     } satisfies FpMellomlagretData;
 
@@ -120,7 +101,7 @@ const getDataForMellomlagring = (
 
 export const useMellomlagreSøknad = (
     foreldrepengerSaker: FpSak_fpoversikt[],
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt,
+    søkerInfo: FpPersonopplysningerDto_fpoversikt,
     erEndringssøknad: boolean,
     harGodkjentVilkår: boolean,
     søknadGjelderEtNyttBarn?: boolean,
@@ -154,7 +135,7 @@ export const useMellomlagreSøknad = (
                     await ky.post(API_URLS.mellomlagring, {
                         json: data,
                         headers: {
-                            fnr: søkerInfo.person.fnr,
+                            fnr: søkerInfo.fnr,
                         },
                     });
                 } catch (error: unknown) {
@@ -163,8 +144,8 @@ export const useMellomlagreSøknad = (
                             throw error;
                         }
 
-                        const jsonResponse = await error.response.json<{ uuid?: string }>();
-                        const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
+                        const jsonResponse = await error.response.json<ProblemDetails>();
+                        const callIdForBruker = jsonResponse?.callId ?? UKJENT_UUID;
                         captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
                         throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
                     }

@@ -13,15 +13,15 @@ import {
     TasklistSendIcon,
     ThumbUpIcon,
 } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link as LinkInternal } from 'react-router-dom';
 
 import { BodyShort, Box, Button, Link, List, Process, ReadMore, VStack } from '@navikt/ds-react';
 
-import { Skjemanummer } from '@navikt/fp-constants';
-import { BarnDto_fpoversikt, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
-import { formatDate } from '@navikt/fp-utils';
+import { DDMMYYYY_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
+import { OversiktBarnDto_fpoversikt, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 
 import { NavRoutes, OversiktRoutes } from '../../routes/routes.ts';
 import { Sak } from '../../types/Sak';
@@ -40,7 +40,7 @@ import {
 import { DokumentHendelse, InntektsmeldingDokumentHendelse } from './DokumentHendelse';
 
 type Props = {
-    søkersBarn: BarnDto_fpoversikt[];
+    søkersBarn: OversiktBarnDto_fpoversikt[];
     manglendeVedlegg: Skjemanummer[];
     tidslinjeHendelser: TidslinjeHendelseDto_fpoversikt[];
     sak: Sak;
@@ -106,7 +106,7 @@ const Hendelse = ({
     sak: Sak;
     status?: 'active' | 'completed' | 'uncompleted';
     hendelse: Tidslinjehendelse2;
-    søkersBarn: BarnDto_fpoversikt[];
+    søkersBarn: OversiktBarnDto_fpoversikt[];
     manglendeVedlegg: Skjemanummer[];
 }) => {
     const intl = useIntl();
@@ -290,7 +290,7 @@ const Hendelse = ({
                     title={intl.formatMessage(
                         { id: 'tidslinje.tittel.VENTER_PGA_TIDLIG_SØKNAD' },
                         {
-                            tidlistBehandlingsdato: formatDate(tidligstBehandlingsDato),
+                            tidlistBehandlingsdato: dayjs(tidligstBehandlingsDato).format(DDMMYYYY_DATE_FORMAT),
                         },
                     )}
                     timestamp={intl.formatMessage(

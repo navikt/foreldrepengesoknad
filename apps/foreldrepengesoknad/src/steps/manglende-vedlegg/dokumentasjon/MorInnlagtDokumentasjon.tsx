@@ -1,21 +1,25 @@
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
-import { NavnPåForeldre, Periode, Periodetype, Situasjon } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment } from '@navikt/fp-types';
+import {
+    Attachment,
+    NavnPåForeldre,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
+import { Uttaksperioden } from '@navikt/fp-utils';
+import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan';
 
 import { UttakUploader } from '../attachment-uploaders/UttakUploader';
 
 interface Props {
     attachments: Attachment[];
     updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
-    perioder: Periode[];
+    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     navnPåForeldre: NavnPåForeldre;
-    familiehendelsesdato: string;
-    termindato: string | undefined;
-    situasjon: Situasjon;
     erFarEllerMedmor: boolean;
+    familiehendelsedato: string;
 }
 
 export const MorInnlagtDokumentasjon = ({
@@ -23,10 +27,8 @@ export const MorInnlagtDokumentasjon = ({
     updateAttachments,
     perioder,
     navnPåForeldre,
-    familiehendelsesdato,
-    situasjon,
-    termindato,
     erFarEllerMedmor,
+    familiehendelsedato,
 }: Props) => {
     const intl = useIntl();
 
@@ -34,8 +36,21 @@ export const MorInnlagtDokumentasjon = ({
         return null;
     }
 
-    const morErForSykEllerInnlagtFørsteSeksUker = perioder.some((p) => {
-        if (p.type === Periodetype.Uttak && p.erMorForSyk === true && p.konto === 'FEDREKVOTE') {
+    const perioderRundtFødsel = perioder.filter((p) =>
+        UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+            p,
+            familiehendelsedato,
+            undefined,
+        ),
+    );
+
+    const morErForSykEllerInnlagtFørsteSeksUker = perioderRundtFødsel.some((p) => {
+        if (
+            Uttaksperioden.erIkkeEøsPeriode(p) &&
+            Uttaksperioden.erUttaksperiode(p) &&
+            p.kontoType === 'FEDREKVOTE' &&
+            !p.samtidigUttak
+        ) {
             return true;
         }
 
@@ -48,9 +63,6 @@ export const MorInnlagtDokumentasjon = ({
             updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE_MOR)}
             perioder={perioder}
             navnPåForeldre={navnPåForeldre}
-            familiehendelsesdato={familiehendelsesdato}
-            termindato={termindato}
-            situasjon={situasjon}
             skjemanummer={Skjemanummer.DOK_INNLEGGELSE_MOR}
             labelText={
                 morErForSykEllerInnlagtFørsteSeksUker

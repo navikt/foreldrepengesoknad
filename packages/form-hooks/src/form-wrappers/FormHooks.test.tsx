@@ -70,22 +70,22 @@ describe('<FormHooks>', () => {
 
         // Test standardformat med punkter
         await userEvent.type(datofelt, '01.02.2020');
-        expect(screen.getByText('datepickerField: 2020-02-01')).toBeInTheDocument();
+        expect(screen.getByText('datepickerField: "2020-02-01"')).toBeInTheDocument();
 
         // Test 8-sifret format (DDMMYYYY)
         await userEvent.clear(datofelt);
         await userEvent.type(datofelt, '03022020');
-        expect(screen.getByText('datepickerField: 2020-02-03')).toBeInTheDocument();
+        expect(screen.getByText('datepickerField: "2020-02-03"')).toBeInTheDocument();
 
         // Test 8-sifret format (DDMMYYYY)
         await userEvent.clear(datofelt);
         await userEvent.type(datofelt, '22111995');
-        expect(screen.getByText('datepickerField: 1995-11-22')).toBeInTheDocument();
+        expect(screen.getByText('datepickerField: "1995-11-22"')).toBeInTheDocument();
 
         // Test 8-sifret ugyldig format. Skal ikke sette "."
         await userEvent.clear(datofelt);
         await userEvent.type(datofelt, '12345678');
-        expect(screen.getByText('datepickerField: 12345678')).toBeInTheDocument();
+        expect(screen.getByText('datepickerField: "12345678"')).toBeInTheDocument();
 
         // Skriver 8 siffer. Formatterer med punktum. Deretter endrer dag
         await userEvent.clear(datofelt);
@@ -95,6 +95,6 @@ describe('<FormHooks>', () => {
         datofelt.setSelectionRange(3, 3);
         const slettTreCharacters = '{Backspace}'.repeat(3);
         await userEvent.keyboard(`${slettTreCharacters}22`);
-        expect(screen.getByText('datepickerField: 2023-11-22')).toBeInTheDocument();
+        expect(screen.getByText('datepickerField: "2023-11-22"')).toBeInTheDocument();
     });
 });

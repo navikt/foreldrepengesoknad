@@ -4,10 +4,9 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { HvemPlanleggerType } from '@navikt/fp-types';
 
 import { ArbeidssituasjonSteg } from './ArbeidssituasjonSteg';
 
@@ -60,7 +59,6 @@ export const ArbeidssituasjonMorOgFar: Story = {
 export const ArbeidssituasjonAleneforsørger: Story = {
     args: {
         hvemPlanlegger: {
-            navnPåMor: 'Klara Utvikler',
             type: HvemPlanleggerType.MOR,
         },
         satser: DEFAULT_SATSER,

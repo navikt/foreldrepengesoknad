@@ -7,24 +7,22 @@ import minMax from 'dayjs/plugin/minMax';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
-import { Alder } from 'types/Alder';
+import { AnnenForelder } from 'types/AnnenForelder';
 
 import {
-    AnnenForelder,
     Barn,
-    Periode,
-    isInfoPeriode,
-    isPeriodeUtenUttak,
-    isUtsettelsesperiode,
-    isUttaksperiode,
-} from '@navikt/fp-common';
-import { BarnDto_fpoversikt, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
-import { isISODateString } from '@navikt/fp-utils';
-import { Perioden } from '@navikt/fp-uttaksplan';
+    FpBarnDto_fpoversikt,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+    isAdoptertBarn,
+    isFødtBarn,
+} from '@navikt/fp-types';
+import { Tidsperioden, isISODateString } from '@navikt/fp-utils';
 
 import { FeatureToggle } from '../FeatureToggle';
 import { getIsDeltUttak } from './annenForelderUtils';
 import { getFamiliehendelsedato } from './barnUtils';
+import { erPeriodeIOpprinneligPlan } from './eksisterendeSakUtils';
 import { toggleUtils } from './toggleUtils';
 import { hasValue } from './validationUtil';
 
@@ -36,22 +34,15 @@ dayjs.extend(minMax);
 dayjs.extend(timezone);
 dayjs.extend(advanced);
 
-const isoStringFormat = 'YYYY-MM-DD';
-export const dateToISOString = (date?: Date) => (date ? dayjs(date).format(isoStringFormat) : '');
-export const ISOStringToDate = (dateString = ''): Date | undefined => getDateFromDateString(dateString);
-
-const getDateFromDateString = (dateString: string | undefined): Date | undefined => {
-    if (dateString === undefined) {
-        return undefined;
-    }
-    if (isISODateString(dateString) && dayjs(dateString, 'YYYY-MM-DD', true).isValid()) {
-        return new Date(dateString);
-    }
-    return undefined;
+export const getEldsteRegistrerteBarn = (registrerteBarn: FpBarnDto_fpoversikt[]): FpBarnDto_fpoversikt => {
+    return [...registrerteBarn].sort((a, b) => (isDateABeforeDateB(a.fødselsdato, b.fødselsdato) ? 1 : -1)).at(-1)!;
 };
-// FIXME (TOR) Kva er dette?
-dayjs().subtract(4, 'year').startOf('day').toDate();
-export const isDateABeforeDateB = (a: string, b: string): boolean => {
+
+export const sorterDatoEtterEldst = (dato: string[]): string[] => {
+    return [...dato].sort((a, b) => (isDateABeforeDateB(a, b) ? -1 : 1));
+};
+
+const isDateABeforeDateB = (a: string, b: string): boolean => {
     if (!hasValue(a) || !hasValue(b) || !isISODateString(a) || !isISODateString(b)) {
         return false;
     }
@@ -61,57 +52,6 @@ export const isDateABeforeDateB = (a: string, b: string): boolean => {
     }
 
     return false;
-};
-
-export const getEldsteRegistrerteBarn = (registrerteBarn: BarnDto_fpoversikt[]): BarnDto_fpoversikt => {
-    return [...registrerteBarn].sort((a, b) => (isDateABeforeDateB(a.fødselsdato, b.fødselsdato) ? 1 : -1)).at(-1)!;
-};
-
-export const sorterDatoEtterEldst = (dato: Date[]): string[] => {
-    return [...dato].map((d) => dateToISOString(d)).sort((a, b) => (isDateABeforeDateB(a, b) ? -1 : 1));
-};
-
-export const getEldsteDato = (dato: Date[]): string => {
-    return sorterDatoEtterEldst(dato)[0]!;
-};
-
-type DateValue = Date | undefined;
-
-export const dateIsSameOrBefore = (date: DateValue, otherDate: DateValue): boolean => {
-    if (date && otherDate) {
-        return dayjs(date).isSameOrBefore(otherDate, 'day');
-    }
-    return true;
-};
-export const dateIsSameOrAfter = (date: DateValue, otherDate: DateValue): boolean => {
-    if (date && otherDate) {
-        return dayjs(date).isSameOrAfter(otherDate, 'day');
-    }
-    return true;
-};
-
-export const findEldsteDato = (dateArray: Array<Date | string>): DateValue => {
-    if (dateArray.length > 0) {
-        return dayjs.min(dateArray.map((date) => dayjs(date)))!.toDate();
-    }
-    return undefined;
-};
-
-export const getAlderFraDato = (fødselsdato: Date): Alder => {
-    const idag = dayjs();
-    const dato = dayjs(fødselsdato);
-
-    const år = idag.diff(dato, 'year');
-    dato.add(år, 'years');
-    const måneder = idag.diff(dato, 'months');
-    dato.add(måneder, 'months');
-    const dager = idag.diff(dato, 'days');
-
-    return {
-        år,
-        måneder,
-        dager,
-    };
 };
 
 export const getRelevantFamiliehendelseDato = (
@@ -130,21 +70,21 @@ export const getRelevantFamiliehendelseDato = (
     }
 };
 
-export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: string | Date): boolean => {
-    const førsteOktober2021 = new Date('2021-10-01');
+export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: string): boolean => {
+    const førsteOktober2021 = dayjs('2021-10-01');
 
     return (
         dayjs(familiehendelsesdato).isSameOrAfter(førsteOktober2021, 'day') &&
-        dayjs(new Date()).isSameOrAfter(førsteOktober2021, 'day')
+        dayjs().isSameOrAfter(førsteOktober2021, 'day')
     );
 };
 
-export const andreAugust2022ReglerGjelder = (familiehendelsesdato: string | Date): boolean => {
-    const andreAugust2022 = new Date('2022-08-02');
+export const andreAugust2022ReglerGjelder = (familiehendelsesdato: string): boolean => {
+    const andreAugust2022 = dayjs('2022-08-02');
 
     return (
         dayjs(familiehendelsesdato).isSameOrAfter(andreAugust2022, 'day') &&
-        dayjs(new Date()).isSameOrAfter(andreAugust2022, 'day')
+        dayjs().isSameOrAfter(andreAugust2022, 'day')
     );
 };
 
@@ -164,38 +104,29 @@ export const førsteJuli2024ReglerGjelder = (barn: Barn): boolean => {
     return true;
 };
 
-export const getEndringstidspunkt = (
-    opprinneligPlan: Periode[] | undefined,
-    updatedPlan: Periode[],
-    erEndringssøknad: boolean,
-): Date | undefined => {
-    if (!erEndringssøknad) {
-        return undefined;
-    }
-
-    const søkerensOpprinneligePlan =
-        opprinneligPlan === undefined ? undefined : opprinneligPlan.filter((p) => !isInfoPeriode(p));
-    const søkerensUpdatedPlan = updatedPlan.filter((p) => !isInfoPeriode(p));
-
-    let endringstidspunktNyPlan: Date | undefined;
-    let endringstidspunktOpprinneligPlan: Date | undefined;
+export const getEndringstidspunktNy = (
+    søkerensOpprinneligePlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    søkerensUpdatedPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+): string | undefined => {
+    let endringstidspunktNyPlan: string | undefined;
+    let endringstidspunktOpprinneligPlan: string | undefined;
     if (søkerensOpprinneligePlan) {
-        søkerensUpdatedPlan.forEach((periode, index) => {
+        for (const [index, periode] of søkerensUpdatedPlan.entries()) {
             if (endringstidspunktNyPlan) {
-                return;
+                break;
             }
 
-            const { fom } = periode.tidsperiode;
+            const { fom } = periode;
             const opprinneligPeriodeMedSammeFom = søkerensOpprinneligePlan.find((opprinneligPeriode) =>
-                dayjs(opprinneligPeriode.tidsperiode.fom).isSame(fom, 'day'),
+                dayjs(opprinneligPeriode.fom).isSame(fom, 'day'),
             );
 
             if (opprinneligPeriodeMedSammeFom !== undefined) {
-                const perioderErLikeUtenTidSjekk = Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, false, true);
+                const perioderErLikeUtenTidSjekk = erPeriodeIOpprinneligPlan([periode], opprinneligPeriodeMedSammeFom);
                 if (
                     !perioderErLikeUtenTidSjekk ||
                     (perioderErLikeUtenTidSjekk &&
-                        Perioden(periode).slutterEtter(opprinneligPeriodeMedSammeFom.tidsperiode.tom))
+                        Tidsperioden.forPeriode(periode).slutterEtter(opprinneligPeriodeMedSammeFom.tom))
                 ) {
                     endringstidspunktNyPlan = fom;
                 }
@@ -206,45 +137,24 @@ export const getEndringstidspunkt = (
             }
 
             if (opprinneligPeriodeMedSammeFom !== undefined && søkerensUpdatedPlan.length - 1 === index) {
-                if (!Perioden(periode).erLik(opprinneligPeriodeMedSammeFom, true, true)) {
+                if (!erPeriodeIOpprinneligPlan([periode], opprinneligPeriodeMedSammeFom)) {
                     endringstidspunktNyPlan = fom;
                 }
             }
-
-            const sistePeriodeISøkersOpprinneligePlan = søkerensOpprinneligePlan.at(-1);
-
-            //Hvis endringstidspunktet er etter siste periode i opprinnelig plan, og 'periode' er periode uten uttak,
-            //finn første uttak/utsettelse etter endringstidspunktet
-            if (
-                endringstidspunktNyPlan &&
-                isPeriodeUtenUttak(periode) &&
-                sistePeriodeISøkersOpprinneligePlan &&
-                dayjs(endringstidspunktNyPlan).isAfter(sistePeriodeISøkersOpprinneligePlan.tidsperiode.tom)
-            ) {
-                const førsteUttakEllerUtsettelseEtterEndring = søkerensUpdatedPlan.find(
-                    (p) =>
-                        (isUttaksperiode(p) || isUtsettelsesperiode(p)) &&
-                        dayjs(p.tidsperiode.fom).isAfter(endringstidspunktNyPlan),
-                );
-                endringstidspunktNyPlan =
-                    førsteUttakEllerUtsettelseEtterEndring !== undefined
-                        ? førsteUttakEllerUtsettelseEtterEndring.tidsperiode.fom
-                        : endringstidspunktNyPlan;
-            }
-        });
+        }
 
         for (const periode of søkerensOpprinneligePlan) {
             if (endringstidspunktOpprinneligPlan) {
                 continue;
             }
 
-            const { fom } = periode.tidsperiode;
+            const { fom } = periode;
             const nyPeriodeMedSammeFom = søkerensUpdatedPlan.find((nyPeriode) =>
-                dayjs(nyPeriode.tidsperiode.fom).isSame(fom, 'day'),
+                dayjs(nyPeriode.fom).isSame(fom, 'day'),
             );
 
-            if (nyPeriodeMedSammeFom !== undefined && !Perioden(periode).erLik(nyPeriodeMedSammeFom, false, true)) {
-                endringstidspunktOpprinneligPlan = nyPeriodeMedSammeFom.tidsperiode.fom;
+            if (nyPeriodeMedSammeFom !== undefined && !erPeriodeIOpprinneligPlan([periode], nyPeriodeMedSammeFom)) {
+                endringstidspunktOpprinneligPlan = nyPeriodeMedSammeFom.fom;
             }
 
             if (nyPeriodeMedSammeFom === undefined) {
@@ -253,16 +163,16 @@ export const getEndringstidspunkt = (
         }
     } else if (søkerensUpdatedPlan.length > 0) {
         // Bruker har slettet opprinnelig plan, send med alt
-        return søkerensUpdatedPlan[0]!.tidsperiode.fom;
+        return søkerensUpdatedPlan[0]!.fom;
     }
 
-    return getOldestDate(endringstidspunktNyPlan, endringstidspunktOpprinneligPlan);
+    return getOldestDateNy(endringstidspunktNyPlan, endringstidspunktOpprinneligPlan);
 };
 
-const getOldestDate = (
-    endringstidspunktNyPlan: Date | undefined,
-    endringstidspunktOpprinneligPlan: Date | undefined,
-): Date | undefined => {
+const getOldestDateNy = (
+    endringstidspunktNyPlan: string | undefined,
+    endringstidspunktOpprinneligPlan: string | undefined,
+): string | undefined => {
     if (endringstidspunktNyPlan === undefined && endringstidspunktOpprinneligPlan === undefined) {
         return undefined;
     }
@@ -335,22 +245,4 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
     return ukerStr;
 };
 
-type DateType = string | Date | undefined;
-
-export const getToTetteReglerGjelder = (
-    familiehendelsesdato: DateType,
-    familiehendelsesdatoNesteBarn: DateType,
-): boolean => {
-    if (familiehendelsesdato === undefined || familiehendelsesdatoNesteBarn === undefined) {
-        return false;
-    }
-    const familiehendelsePlus48Uker = dayjs(familiehendelsesdato).add(48, 'week');
-    return (
-        andreAugust2022ReglerGjelder(familiehendelsesdato) &&
-        andreAugust2022ReglerGjelder(familiehendelsesdatoNesteBarn) &&
-        dayjs(familiehendelsePlus48Uker).isAfter(familiehendelsesdatoNesteBarn, 'day')
-    );
-};
-export const formaterDato = (dato: DateType, datoformat?: string): string => {
-    return dayjs(dato).format(datoformat ?? 'dddd D. MMMM YYYY');
-};
+type DateType = string | undefined;

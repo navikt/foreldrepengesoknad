@@ -1,9 +1,11 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
+import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { groupBy, min, partition, sortBy, sumBy } from 'lodash';
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { useParams } from 'react-router-dom';
 
 import {
     Accordion,
@@ -21,27 +23,19 @@ import {
 } from '@navikt/ds-react';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import {
-    AktivitetStatus,
-    BeregningsAndel_fpoversikt,
-    FpSak_fpoversikt,
-    TilkjentYtelsePeriode_fpoversikt,
-} from '@navikt/fp-types';
-import {
-    capitalizeFirstLetter,
-    erUttaksdag,
-    formatCurrency,
-    formatCurrencyWithKr,
-    getDecoratorLanguageCookie,
-} from '@navikt/fp-utils';
+import { SkyraSurvey } from '@navikt/fp-observability';
+import { AktivitetStatus, BeregningsAndel_fpoversikt, TilkjentYtelsePeriode_fpoversikt } from '@navikt/fp-types';
+import { capitalizeFirstLetter, erUttaksdag, formatCurrencyWithKr, getDecoratorLanguageCookie } from '@navikt/fp-utils';
 
-import { DinSakHeader } from '../../components/header/Header.tsx';
-import { useSetBackgroundColor } from '../../hooks/useBackgroundColor.ts';
-import { useSetSelectedRoute } from '../../hooks/useSelectedRoute.ts';
-import { useGetSelectedSak } from '../../hooks/useSelectedSak.ts';
-import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes.tsx';
-import { OversiktRoutes } from '../../routes/routes.ts';
-import { formaterDato } from '../../utils/dateUtils.ts';
+import { API_URLS, hentDokumenterOptions } from '../../api/queries';
+import { DinSakHeader } from '../../components/header/Header';
+import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
+import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
+import { useGetSelectedSak } from '../../hooks/useSelectedSak';
+import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
+import { OversiktRoutes } from '../../routes/routes';
+import { Foreldrepengesak, SvangerskapspengeSak } from '../../types/Sak';
+import { formaterDato } from '../../utils/dateUtils';
 
 dayjs.extend(isSameOrBefore);
 dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
@@ -51,10 +45,10 @@ export const BeregningPage = () => {
     useSetBackgroundColor('blue');
     useSetSelectedRoute(OversiktRoutes.BEREGNING);
     const intl = useIntl();
-    if (gjeldendeSak?.ytelse !== 'FORELDREPENGER') {
+    if (!gjeldendeSak || gjeldendeSak.ytelse === 'ENGANGSSTØNAD') {
         return undefined;
     }
-    const beregning = gjeldendeSak?.gjeldendeVedtak?.beregningsgrunnlag;
+    const beregning = gjeldendeSak.gjeldendeVedtak?.beregningsgrunnlag;
 
     if (beregning === undefined) {
         return undefined;
@@ -88,12 +82,14 @@ export const BeregningPage = () => {
                 <Box background="default" padding="space-24" borderRadius="8">
                     <Feriepenger sak={gjeldendeSak} />
                 </Box>
+                <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/beregning-i-innsyn" />
             </VStack>
         </PageRouteLayout>
     );
 };
 
-const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
+const BeregningOppsummering = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) => {
+    const intl = useIntl();
     const beregning = sak.gjeldendeVedtak?.beregningsgrunnlag;
     if (!beregning) {
         return null;
@@ -102,9 +98,9 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
     const grunnbeløp = beregning.grunnbeløp ?? DEFAULT_SATSER.grunnbeløp[0]!.verdi;
     const seksG = grunnbeløp * 6;
     const vis6GVarsel = samletÅrsinntekt > seksG;
-    const åttiProsentReduksjon = min([samletÅrsinntekt, seksG]) * 0.8;
+    const åttiProsentReduksjon = Math.round(min([samletÅrsinntekt, seksG]) * 0.8);
 
-    const visÅttiProsentReduksjon = sak.dekningsgrad === 'ÅTTI';
+    const visÅttiProsentReduksjon = sak.ytelse === 'FORELDREPENGER' && sak.dekningsgrad === 'ÅTTI';
 
     const sumDagsats = sumBy(beregning.beregningsandeler, (a) => (a.dagsatsSøker ?? 0) + (a.dagsatsArbeidsgiver ?? 0));
     const finnesRefusjon = beregning.beregningsandeler.some((a) => (a.dagsatsArbeidsgiver ?? 0) > 0);
@@ -113,7 +109,11 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
     return (
         <Box background="default" padding="space-24" shadow="dialog" borderRadius="8">
             <Heading size="medium" as="h2" spacing>
-                <FormattedMessage id="beregning.page.heading" />
+                {sak.ytelse === 'FORELDREPENGER' ? (
+                    <FormattedMessage id="beregning.page.heading" />
+                ) : (
+                    <FormattedMessage id="beregning.page.heading.svp" />
+                )}
             </Heading>
             <List>
                 <List.Item>
@@ -170,14 +170,66 @@ const BeregningOppsummering = ({ sak }: { sak: FpSak_fpoversikt }) => {
                     </List.Item>
                 )}
             </List>
-            <Box className="mt-8" background="accent-moderate" padding="space-12" borderRadius="8">
-                <Label>
-                    <FormattedMessage
-                        id="beregning.dagsats"
-                        values={{ sumDagsats: formatCurrencyWithKr(sumDagsats) }}
-                    />
-                </Label>
-            </Box>
+            <ExpansionCard
+                size="small"
+                data-color="info"
+                className="mt-8"
+                aria-label={intl.formatMessage(
+                    {
+                        id: 'beregning.dagsats',
+                    },
+                    { sumDagsats: formatCurrencyWithKr(sumDagsats) },
+                )}
+            >
+                <ExpansionCard.Header>
+                    <ExpansionCard.Title size="small">
+                        <FormattedMessage
+                            id="beregning.dagsats"
+                            values={{ sumDagsats: formatCurrencyWithKr(sumDagsats) }}
+                        />
+                    </ExpansionCard.Title>
+                </ExpansionCard.Header>
+                <ExpansionCard.Content>
+                    <VStack gap="space-16">
+                        {beregning.beregningsandeler.map((andel, index) => (
+                            // Ikke noe som er garantert unikt, så tillater index for key, få elementer, så ok
+                            <Box background="default" padding="space-16" borderRadius="8" key={index}>
+                                <VStack>
+                                    <Label>
+                                        <ArbeidsforholdNavn andel={andel} />
+                                    </Label>
+                                    <hr className="text-ax-border-neutral-subtle" />
+                                    <HStack justify="space-between" gap="space-4">
+                                        <span>
+                                            <FormattedMessage id="beregning.dagsats.tilDeg" />
+                                        </span>
+                                        <span>{formatCurrencyWithKr(andel.dagsatsSøker)}</span>
+                                    </HStack>
+                                    {andel.aktivitetStatus === 'ARBEIDSTAKER' && (
+                                        <HStack justify="space-between" gap="space-4">
+                                            <span>
+                                                <FormattedMessage id="beregning.dagsats.tilArbeidsgiver" />
+                                            </span>
+                                            <span>{formatCurrencyWithKr(andel.dagsatsArbeidsgiver)}</span>
+                                        </HStack>
+                                    )}
+                                </VStack>
+                            </Box>
+                        ))}
+                        <Box background="default" padding="space-16" borderRadius="8">
+                            <VStack>
+                                <HStack justify="space-between" gap="space-4">
+                                    <span>
+                                        <FormattedMessage id="beregning.dagsats.totalt" />
+                                    </span>
+                                    <span>{formatCurrencyWithKr(sumDagsats)}</span>
+                                </HStack>
+                                <hr className="text-ax-border-neutral-subtle" />
+                            </VStack>
+                        </Box>
+                    </VStack>
+                </ExpansionCard.Content>
+            </ExpansionCard>
         </Box>
     );
 };
@@ -203,18 +255,26 @@ const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: n
                     <FormattedMessage
                         id="beregning.forklaringer.hvaErDagsatsen.innhold"
                         values={{
-                            grunnbeløpSeksG: formatCurrency(grunnbeløp * 6),
+                            grunnbeløpSeksG: formatCurrencyWithKr(grunnbeløp * 6),
                         }}
                     />
+                    <br />
                     <br />
                     <FormattedMessage
                         id="beregning.forklaringer.ytelserBareOppTil6G.dinG"
                         values={{
-                            grunnbeløp: formatCurrency(grunnbeløp),
+                            link: (chunks) => <Link href="https://www.nav.no/grunnbelopet">{chunks}</Link>,
+                            grunnbeløp: formatCurrencyWithKr(grunnbeløp),
                         }}
                     />
                     <br />
-                    <FormattedMessage id="beregning.forklaringer.ytelserBareOppTil6G.innhold" />
+                    <br />
+                    <FormattedMessage
+                        id="beregning.forklaringer.ytelserBareOppTil6G.innhold"
+                        values={{
+                            link: (chunks) => <Link href="https://www.nav.no/foreldrepenger#hvor-mye">{chunks}</Link>,
+                        }}
+                    />
                 </Accordion.Content>
             </Accordion.Item>
             <Accordion.Item>
@@ -229,18 +289,26 @@ const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: n
     );
 };
 
+const ArbeidsforholdNavn = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
+    const intl = useIntl();
+    if (andel.arbeidsforhold === undefined) {
+        return capitalizeFirstLetter(finnStatus(andel.aktivitetStatus, intl));
+    }
+    return `${andel.arbeidsforhold.arbeidsgiverNavn} - ${andel.arbeidsforhold.arbeidsgiverIdent}`;
+};
+
 const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
     const intl = useIntl();
+
+    const skalViseVedtaksLenke =
+        andel.aktivitetStatus === 'SELVSTENDIG_NÆRINGSDRIVENDE' && andel.dagsatsArbeidsgiver === 0;
+
     return (
         <VStack gap="space-8">
             <BodyShort>
-                {andel.arbeidsforhold === undefined ? (
-                    <Label>{capitalizeFirstLetter(finnStatus(andel.aktivitetStatus, intl))}</Label>
-                ) : (
-                    <Label>
-                        {andel.arbeidsforhold.arbeidsgiverNavn} - {andel.arbeidsforhold.arbeidsgiverIdent}
-                    </Label>
-                )}
+                <Label>
+                    <ArbeidsforholdNavn andel={andel} />
+                </Label>
             </BodyShort>
             <HGrid gap="space-8" columns={{ xs: '1fr max-content' }}>
                 <BodyShort>
@@ -254,9 +322,8 @@ const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
                     <FormattedMessage id="beregning.andel.omregnetTilÅrsinntekt" />
                 </BodyShort>
                 <BodyShort className="text-end">{formatCurrencyWithKr(andel.fastsattPrÅr ?? 0)}</BodyShort>
-                <span>Dagsats</span>
-                <BodyShort className="text-end">{formatCurrencyWithKr(andel.dagsatsArbeidsgiver ?? 0)}</BodyShort>
             </HGrid>
+            {skalViseVedtaksLenke && <VedtakLenke />}
         </VStack>
     );
 };
@@ -311,7 +378,7 @@ const fjernLeadingOgTrailingMånederUtenUtbetaling = (andelerPerDag: DagMedPerio
     return førstePåMånedMedSum === -1 ? [] : andelerSortertPåMåned.slice(førstePåMånedMedSum, sistePåMånedMedSum + 1);
 };
 
-const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
+const UtbetalingsVisning = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) => {
     const tilkjentYtelse = sak.gjeldendeVedtak?.tilkjentYtelse?.utbetalingsperioder ?? [];
     const andelerPerDag = periodeTilDager(tilkjentYtelse);
 
@@ -323,15 +390,27 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
                 <FormattedMessage id="beregning.utbetalingsvisning.tittel" />
             </Heading>
             <BodyShort>
-                <FormattedMessage
-                    id="beregning.utbetalingsvisning.fullBeskrivelse"
-                    values={{
-                        link1: (chunks) => <Link href="https://www.nav.no/utbetalingsoversikt">{chunks}</Link>,
-                        link2: (chunks) => (
-                            <Link href="https://www.nav.no/utbetalingsdatoer#foreldrepenger">{chunks}</Link>
-                        ),
-                    }}
-                />
+                {sak.ytelse === 'FORELDREPENGER' ? (
+                    <FormattedMessage
+                        id="beregning.utbetalingsvisning.fullBeskrivelse"
+                        values={{
+                            link1: (chunks) => <Link href="https://www.nav.no/utbetalingsoversikt">{chunks}</Link>,
+                            link2: (chunks) => (
+                                <Link href="https://www.nav.no/utbetalingsdatoer#foreldrepenger">{chunks}</Link>
+                            ),
+                        }}
+                    />
+                ) : (
+                    <FormattedMessage
+                        id="beregning.utbetalingsvisning.fullBeskrivelse.svp"
+                        values={{
+                            link1: (chunks) => <Link href="https://www.nav.no/utbetalingsoversikt">{chunks}</Link>,
+                            link2: (chunks) => (
+                                <Link href="https://www.nav.no/utbetalingsdatoer#svangerskapspenger">{chunks}</Link>
+                            ),
+                        }}
+                    />
+                )}
             </BodyShort>
             <VStack gap="space-16">
                 {andelerPerMåned.map((dager, index) => {
@@ -442,8 +521,12 @@ const UtbetalingsVisning = ({ sak }: { sak: FpSak_fpoversikt }) => {
     );
 };
 
-const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
+const Feriepenger = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) => {
     const feriepenger = sak.gjeldendeVedtak?.tilkjentYtelse?.feriepenger ?? [];
+    const erForeldrepenger = sak.ytelse === 'FORELDREPENGER';
+    const feriepengerLenke = erForeldrepenger
+        ? 'https://www.nav.no/feriepenger#foreldrepenger'
+        : 'https://www.nav.no/feriepenger#svangerskapspenger';
 
     if (feriepenger.length === 0) {
         return (
@@ -452,14 +535,22 @@ const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
                     <FormattedMessage id="beregning.feriepenger.tittel" />
                 </Heading>
                 <BodyShort>
-                    <FormattedMessage
-                        id="beregning.feriepenger.ikkeRett"
-                        values={{
-                            link: (chunks) => (
-                                <Link href="https://www.nav.no/feriepenger#foreldrepenger">{chunks}</Link>
-                            ),
-                        }}
-                    />
+                    {erForeldrepenger ? (
+                        <FormattedMessage
+                            id="beregning.feriepenger.ikkeRett"
+                            values={{
+                                uker: sak.dekningsgrad === 'ÅTTI' ? 15 : 12,
+                                link: (chunks) => <Link href={feriepengerLenke}>{chunks}</Link>,
+                            }}
+                        />
+                    ) : (
+                        <FormattedMessage
+                            id="beregning.feriepenger.ikkeRett.svp"
+                            values={{
+                                link: (chunks) => <Link href={feriepengerLenke}>{chunks}</Link>,
+                            }}
+                        />
+                    )}
                 </BodyShort>
             </VStack>
         );
@@ -473,13 +564,22 @@ const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
                 <FormattedMessage id="beregning.feriepenger.tittel" />
             </Heading>
             <BodyShort>
-                <FormattedMessage
-                    id="beregning.feriepenger.harRett"
-                    values={{
-                        uker: sak.dekningsgrad === 'ÅTTI' ? 15 : 12,
-                        link: (chunks) => <Link href="https://www.nav.no/feriepenger#foreldrepenger">{chunks}</Link>,
-                    }}
-                />
+                {erForeldrepenger ? (
+                    <FormattedMessage
+                        id="beregning.feriepenger.harRett"
+                        values={{
+                            uker: sak.dekningsgrad === 'ÅTTI' ? 15 : 12,
+                            link: (chunks) => <Link href={feriepengerLenke}>{chunks}</Link>,
+                        }}
+                    />
+                ) : (
+                    <FormattedMessage
+                        id="beregning.feriepenger.harRett.svp"
+                        values={{
+                            link: (chunks) => <Link href={feriepengerLenke}>{chunks}</Link>,
+                        }}
+                    />
+                )}
             </BodyShort>
             {Object.entries(feriepengerEtterÅr).map(([år, andeler]) => {
                 const [feriepengerTilBruker, feriepengerTilAG] = partition(andeler, (andel) => andel.tilBruker);
@@ -537,6 +637,43 @@ const Feriepenger = ({ sak }: { sak: FpSak_fpoversikt }) => {
                 );
             })}
         </VStack>
+    );
+};
+
+const VedtakLenke = () => {
+    const params = useParams<{ saksnummer: string }>();
+    const vedtak = useQuery({
+        ...hentDokumenterOptions(params.saksnummer!),
+        select: (dokumenter) =>
+            dokumenter.find((d) => {
+                const tittel = d.tittel?.toLowerCase();
+                return (
+                    tittel?.includes('innvilgelsesbrev foreldrepenger') ||
+                    tittel?.includes('innvilgelsesbrev svangerskapspenger')
+                );
+            }),
+    }).data;
+
+    if (!vedtak) {
+        return null;
+    }
+
+    return (
+        <div>
+            <FormattedMessage
+                id="beregning.vedtakLenke"
+                values={{
+                    link: (chunks) => (
+                        <Link
+                            href={API_URLS.hentDokument(vedtak.journalpostId, vedtak.dokumentId ?? 'ukjent')}
+                            target="_blank"
+                        >
+                            {chunks}
+                        </Link>
+                    ),
+                }}
+            />
+        </div>
     );
 };
 

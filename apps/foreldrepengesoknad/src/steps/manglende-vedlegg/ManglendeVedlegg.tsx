@@ -5,17 +5,16 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'types/VedleggDataType';
-import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
+import { perioderSomKreverVedlegg } from 'utils/manglendeVedleggUtils';
 import { getErSøkerFarEllerMedmor, getNavnPåForeldre } from 'utils/personUtils';
 
 import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
-import { Periode, isUtsettelseBarnInnlagt } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Attachment, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { Attachment, FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
-import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
+import { Uttaksperioden, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ManglendeVedleggFormData } from './ManglendeVedleggFormData';
@@ -50,7 +49,7 @@ import {
     getMorStudererVedlegg,
     getOmsorgsovertakelseVedlegg,
     getTerminbekreftelseVedlegg,
-    isPeriodeMedFarForSyk,
+    isOverføringFarForSyk,
     isPeriodeMedFarInnleggelse,
     isPeriodeMedMorForSyk,
     isPeriodeMedMorInnleggelse,
@@ -59,37 +58,53 @@ import {
     isPeriodeMedMorJobberOgStuderer,
     isPeriodeMedMorKvalprogram,
     isPeriodeMedMorStuderer,
+    isUtsettelseBarnInnlagt,
 } from './util';
 
 type Props = {
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
     erEndringssøknad: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
+    foreldrepengerSaker?: FpSak_fpoversikt[];
 };
 
-export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo, erEndringssøknad }: Props) => {
+export const ManglendeVedlegg = ({
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    søkerInfo,
+    erEndringssøknad,
+    foreldrepengerSaker,
+}: Props) => {
     const intl = useIntl();
     const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad);
-    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad);
 
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG) || ({} as VedleggDataType);
-    const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
     const arbeidsforholdOgInntekt = useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER);
+    const eksisterendeSaksnummer = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const saveVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
-    const relevantePerioder = getRelevantePerioder(
-        uttaksplan,
-        uttaksplanMetadata?.perioderSomSkalSendesInn,
-        erEndringssøknad,
-    );
+    const familiehendelsedato = getFamiliehendelsedato(barn);
+
+    const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
+
+    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
 
     const erFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
-    const perioderSomManglerVedlegg = perioderSomKreverVedlegg(relevantePerioder, erFarEllerMedmor, annenForelder);
+    const uttaksplanUtenAnnenPartsPerioder = uttaksplan?.filter(
+        (periode) =>
+            Uttaksperioden.erIkkeEøsPeriode(periode) && periode.forelder === (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
+    );
+    const perioderSomManglerVedlegg = perioderSomKreverVedlegg(
+        uttaksplanUtenAnnenPartsPerioder || [],
+        erFarEllerMedmor,
+        annenForelder,
+        familiehendelsedato,
+    );
     const morInnlagtVedlegg = getMorInnlagtVedlegg(vedlegg);
     const morForSykVedlegg = getMorForSykVedlegg(vedlegg);
     const farInnlagtVedlegg = getFarInnlagtVedlegg(vedlegg);
@@ -106,9 +121,11 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
     const militærEllerSiviltjenesteVedlegg = getMilitærEllerSiviltjenesteVedlegg(vedlegg);
     const etterlønnEllerSluttvederlagVedlegg = getEtterlønnEllerSluttvederlagVedlegg(vedlegg);
 
-    const morInnlagtPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorInnleggelse);
+    const morInnlagtPerioder = perioderSomManglerVedlegg.filter((periode) =>
+        isPeriodeMedMorInnleggelse(periode, familiehendelsedato),
+    );
     const barnInnlagtPerioder = perioderSomManglerVedlegg.filter(isUtsettelseBarnInnlagt);
-    const farForSykPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedFarForSyk);
+    const farForSykPerioder = perioderSomManglerVedlegg.filter(isOverføringFarForSyk);
     const farInnlagtPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedFarInnleggelse);
     const morForSykPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorForSyk);
     const morIntroPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorIntroprogram);
@@ -118,9 +135,7 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
     const morKvalPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorKvalprogram);
     const morStudererPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorStuderer);
 
-    const navnPåForeldre = getNavnPåForeldre(søkerInfo.person, annenForelder, erFarEllerMedmor, intl);
-    const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const termindato = getTermindato(barn);
+    const navnPåForeldre = getNavnPåForeldre(søkerInfo, annenForelder, erFarEllerMedmor, intl);
 
     const lagre = (formValues: ManglendeVedleggFormData) => {
         const alleVedlegg = {
@@ -200,97 +215,68 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
                     <VStack gap="space-40">
                         <MorInnlagtDokumentasjon
                             attachments={morInnlagtVedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morInnlagtPerioder}
-                            situasjon={søkersituasjon.situasjon}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                             erFarEllerMedmor={erFarEllerMedmor}
+                            familiehendelsedato={familiehendelsedato}
                         />
                         <MorForSykDokumentasjon
                             attachments={morForSykVedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morForSykPerioder}
-                            situasjon={søkersituasjon.situasjon}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                             erFarEllerMedmor={erFarEllerMedmor}
                         />
                         <FarInnlagtDokumentasjon
                             attachments={farInnlagtVedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={farInnlagtPerioder}
-                            situasjon={søkersituasjon.situasjon}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                             erFarEllerMedmor={erFarEllerMedmor}
                         />
                         <FarForSykDokumentasjon
                             attachments={farForSykvedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={farForSykPerioder}
-                            situasjon={søkersituasjon.situasjon}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                             erFarEllerMedmor={erFarEllerMedmor}
                         />
                         <BarnInnlagtDokumentasjon
                             attachments={barnInnlagtVedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={barnInnlagtPerioder}
-                            situasjon={søkersituasjon.situasjon}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                         />
                         <MorStudererDokumentasjon
                             attachments={morStudererVedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morStudererPerioder}
-                            situasjon={søkersituasjon.situasjon}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                         />
                         <MorJobberDokumentasjon
                             attachments={morJobberVedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morJobberPerioder}
-                            situasjon={søkersituasjon.situasjon}
                             erFarEllerMedmor={erFarEllerMedmor}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                         />
                         <MorJobberOgStudererDokumentasjon
                             attachments={morJobberOgStudererVedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morJobberOgStudererPerioder}
-                            situasjon={søkersituasjon.situasjon}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                         />
                         <MorIntroduksjonsprogrammetDokumentasjon
                             attachments={morIntroprogramVedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morIntroPerioder}
-                            situasjon={søkersituasjon.situasjon}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                         />
                         <MorKvalifiseringsprogrammetDokumentasjon
                             attachments={morKvalprogramVedlegg}
-                            familiehendelsesdato={familiehendelsesdato}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morKvalPerioder}
-                            situasjon={søkersituasjon.situasjon}
-                            termindato={termindato}
                             updateAttachments={updateAttachments}
                         />
                         <AleneomsorgDokumentasjon
@@ -345,16 +331,4 @@ export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s
             </Step>
         </SkjemaRotLayout>
     );
-};
-
-const getRelevantePerioder = (
-    perioder: Periode[],
-    endringssøknadPerioder: Periode[] | undefined,
-    erEndringssøknad: boolean,
-) => {
-    if (erEndringssøknad && endringssøknadPerioder !== undefined) {
-        return endringssøknadPerioder;
-    }
-
-    return perioder;
 };

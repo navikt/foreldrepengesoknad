@@ -3,20 +3,21 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
 
-import '@navikt/ds-css';
-
+import { formHookMessages } from '@navikt/fp-form-hooks';
+import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 
 import enMessages from '../src/intl/messages/en_US.json';
 import nbMessages from '../src/intl/messages/nb_NO.json';
 import nnMessages from '../src/intl/messages/nn_NO.json';
+import './index.css';
 
 dayjs.locale('nb');
 
 const withIntlProvider = getIntlDecorator({
-    nb: nbMessages,
-    nn: nnMessages,
-    en: enMessages,
+    nb: { ...nbMessages, ...formHookMessages.nb, ...uiMessages.nb },
+    nn: { ...nnMessages, ...formHookMessages.nn, ...uiMessages.nn },
+    en: { ...enMessages, ...formHookMessages.en, ...uiMessages.en },
 });
 
 export const parameters = {
@@ -38,7 +39,7 @@ export const globalTypes = {
             items: [
                 { value: 'nb', title: 'Bokmål' },
                 { value: 'nn', title: 'Nynorsk' },
-                { value: 'en', title: 'English' },
+                { value: 'en', title: 'Engelsk' },
             ],
             dynamicTitle: true,
         },

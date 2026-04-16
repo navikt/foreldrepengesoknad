@@ -5,36 +5,34 @@
     "types": "index.ts",
     "scripts": {
         "test": "vitest --project=jsdom --watch=false",
-        "test:watch": "vitest --project=jsdom --watch=true",
-        "test:coverage": "vitest --project=jsdom --coverage",
         "test:browser": "vitest --project=browser",
-        "test:browser:watch": "vitest --project=browser --watch=true",
-        "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
-        "lint:tsc": "tsc --noEmit",
-        "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
-        "prettier": "prettier --write src"
+        "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
+        "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
+        "prettier:fix": "prettier --write src",
+        "tsc": "tsc --noEmit",
+        "tsc:watch": "tsc --noEmit --watch"
     },
     "dependencies": {
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-types": "workspace:*",
-        "dayjs": "1.11.19",
+        "dayjs": "1.11.20",
         "i18n-iso-countries": "7.14.0",
-        "react": "19.2.4",
-        "react-intl": "8.1.3"
+        "react": "19.2.5",
+        "react-intl": "10.1.2"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "8.2.3",
+        "@formatjs/cli-lib": "8.5.2",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
         "@testing-library/jest-dom": "6.9.1",
-        "@types/react": "19.2.10",
+        "@types/react": "19.2.14",
         "eslint": "9.39.2",
         "fast-glob": "3.3.3",
-        "playwright": "1.58.1",
-        "typescript": "5.9.3",
-        "vite": "7.3.1",
-        "vitest": "4.0.18"
+        "jsdom": "29.0.2",
+        "typescript": "6.0.2",
+        "vite": "8.0.8",
+        "vitest": "4.1.4"
     },
     "packageManager": "pnpm@10.28.0"
 }

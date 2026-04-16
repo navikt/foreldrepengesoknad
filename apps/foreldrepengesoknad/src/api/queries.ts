@@ -8,17 +8,17 @@ import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenFo
 import {
     AnnenPartSak_fpoversikt,
     ForsendelseStatus,
+    FpPersonopplysningerDto_fpoversikt,
     KontoBeregningResultatDto,
-    PersonMedArbeidsforholdDto_fpoversikt,
     Saker_fpoversikt,
     Tidsperiode,
 } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
-export const urlPrefiks = import.meta.env.BASE_URL;
+const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
-    søkerInfo: `${urlPrefiks}/fpoversikt/api/person/info-med-arbeidsforhold`,
+    søkerInfo: `${urlPrefiks}/fpoversikt/api/personopplysninger/foreldrepenger`,
     saker: `${urlPrefiks}/fpoversikt/api/saker`,
     annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart`,
     konto: `${urlPrefiks}/fpgrunndata/api/konto`,
@@ -61,7 +61,7 @@ export const sakerOptions = () =>
 export const søkerinfoOptions = () =>
     queryOptions({
         queryKey: ['SØKERINFO'],
-        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30000 }).json<PersonMedArbeidsforholdDto_fpoversikt>(),
+        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30000 }).json<FpPersonopplysningerDto_fpoversikt>(),
         staleTime: Infinity,
     });
 
@@ -72,7 +72,7 @@ export const mellomlagretInfoOptions = () =>
         staleTime: Infinity,
     });
 
-export const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
+const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
     queryOptions({
         queryKey: ['ANNEN_PART_VEDTAK', data],
         queryFn: async () => {
@@ -112,7 +112,6 @@ type StønadskontoParams = {
     termindato?: string;
     omsorgsovertakelseDato?: string;
     morHarUføretrygd: boolean;
-    familieHendelseDatoNesteSak?: Date;
 };
 
 export type DokumentereMorsArbeidParams = {
@@ -122,7 +121,7 @@ export type DokumentereMorsArbeidParams = {
     perioder: Array<Tidsperiode & { periodeType: 'UTSETTELSE' | 'UTTAK' }>;
 };
 
-export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams) =>
+const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams) =>
     queryOptions({
         queryKey: ['TILGJENGELIGE_STONADSKONTOER', data],
         queryFn: () => ky.post(API_URLS.konto, { json: data }).json<KontoBeregningResultatDto>(),
@@ -141,20 +140,22 @@ export const useStønadsKontoerOptions = () => {
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-    const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
-    const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
+    const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
     const annenPartOptions = useAnnenPartVedtakOptions();
     const annenPartVedtakQuery = useQuery(annenPartOptions);
 
-    const stønadskontoParams = getStønadskontoParams({
+    const sakerQuery = useQuery({ ...sakerOptions(), enabled: !!valgtEksisterendeSaksnr });
+
+    const valgtSak = sakerQuery.data?.foreldrepenger.find((sak) => sak.saksnummer === valgtEksisterendeSaksnr);
+
+    const stønadskontoParams = getStønadskontoParams(
         barn,
         annenForelder,
         søkersituasjon,
-        barnFraNesteSak,
-        annenPartsVedtak: annenPartVedtakQuery.data,
-        eksisterendeSak,
-    });
+        annenPartVedtakQuery.data,
+        valgtSak?.familiehendelse.termindato,
+    );
 
     return tilgjengeligeStønadskontoerOptions(stønadskontoParams);
 };

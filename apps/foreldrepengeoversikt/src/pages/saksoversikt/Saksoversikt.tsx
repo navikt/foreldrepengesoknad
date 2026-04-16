@@ -8,7 +8,8 @@ import { useParams } from 'react-router-dom';
 import { Alert, BodyShort, HGrid, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
-import { PersonMedArbeidsforholdDto_fpoversikt, Satser, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
+import { SkyraSurvey } from '@navikt/fp-observability';
+import { OversiktPersonopplysningerDto_fpoversikt, Satser, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 import { formatCurrencyWithKr, useDocumentTitle } from '@navikt/fp-utils';
 
 import {
@@ -39,7 +40,7 @@ import { InntektsmeldingLenkePanel } from '../inntektsmelding-page/Inntektsmeldi
 dayjs.extend(isSameOrBefore);
 
 interface Props {
-    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerinfo: OversiktPersonopplysningerDto_fpoversikt;
 }
 
 const finnSøknadstidspunkt = (tidslinjehendelser: TidslinjeHendelseDto_fpoversikt[]) => {
@@ -100,7 +101,11 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
     const visBekreftelsePåSendtSøknad =
         relevantNyTidslinjehendelse !== undefined && gjeldendeSak?.åpenBehandling !== undefined;
 
-    const harMinstEttArbeidsforhold = !!søkerinfo.arbeidsforhold && søkerinfo.arbeidsforhold.length > 0;
+    const visNyligFpSurvey =
+        gjeldendeSak?.ytelse === 'FORELDREPENGER' &&
+        (søknadstidspunkt ? dayjs().diff(dayjs(søknadstidspunkt), 'minute') < 5 : false);
+
+    const harMinstEttArbeidsforhold = søkerinfo.harArbeidsforhold;
 
     if (!gjeldendeSak) {
         return (
@@ -115,14 +120,14 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
             {visBekreftelsePåSendtSøknad && (
                 <BekreftelseSendtSøknad
                     relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
-                    bankkonto={søkerinfo.person.bankkonto}
+                    kontonummer={søkerinfo.kontonummer}
                     ytelse={gjeldendeSak.ytelse}
                     harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
                     manglendeVedlegg={manglendeVedleggQuery.data ?? []}
                     saksnummer={params.saksnummer}
                 />
             )}
-
+            {visNyligFpSurvey && <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/foreldrepengesoknad-inline" />}
             <Oppgaver saksnummer={gjeldendeSak.saksnummer} />
             <VStack gap="space-4">
                 <ContentSection
@@ -135,7 +140,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                         sak={gjeldendeSak}
                         tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
                         manglendeVedlegg={manglendeVedleggQuery.data ?? []}
-                        søkersBarn={søkerinfo.person.barn ?? []}
+                        søkersBarn={søkerinfo.barn ?? []}
                     />
                 </ContentSection>
                 <HGrid gap="space-16" columns={{ sm: 1, md: 2 }} className="mb-12">
@@ -177,7 +182,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                                 annenPartsPerioder={annenPartsVedtakQuery.data?.perioder ?? []}
                                 navnPåForeldre={getNavnPåForeldre(
                                     gjeldendeSak,
-                                    søkerinfo.person.navn.fornavn,
+                                    søkerinfo.navn.fornavn,
                                     getNavnAnnenForelder(søkerinfo, gjeldendeSak, intl),
                                 )}
                             />
@@ -209,11 +214,11 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                                             />
                                         </Heading>
                                     )}
-                                    {søkerinfo.person.bankkonto?.kontonummer && (
+                                    {søkerinfo.kontonummer && (
                                         <BodyShort>
                                             <FormattedMessage
                                                 id="saksoversikt.utbetales"
-                                                values={{ kontonr: søkerinfo.person.bankkonto.kontonummer }}
+                                                values={{ kontonr: søkerinfo.kontonummer }}
                                             />
                                         </BodyShort>
                                     )}

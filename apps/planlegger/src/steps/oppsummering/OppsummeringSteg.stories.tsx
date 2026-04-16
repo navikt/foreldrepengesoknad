@@ -6,12 +6,12 @@ import { MemoryRouter } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { HvorMye } from 'types/HvorMye';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { HvemPlanleggerType, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import {
     ALENE_OM_OMSORG_80_FARMEDMOR,
     ALENE_OM_OMSORG_100_FARMEDMOR,
@@ -344,7 +344,6 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
     args: {
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
-            navnPåMor: 'Klara Utvikler',
             type: HvemPlanleggerType.MOR,
         },
         hvorMye: {
@@ -380,7 +379,6 @@ export const AleneforsørgerFarÅttiProsentFødsel: Story = {
     args: {
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
-            navnPåFar: 'Espen Utvikler',
             type: HvemPlanleggerType.FAR,
         },
         hvorMye: {
@@ -554,7 +552,6 @@ export const AleneforsørgerMorErUfør: Story = {
     args: {
         satser: DEFAULT_SATSER,
         hvemPlanlegger: {
-            navnPåMor: 'Klara Utvikler',
             type: HvemPlanleggerType.MOR,
         },
         omBarnet: {

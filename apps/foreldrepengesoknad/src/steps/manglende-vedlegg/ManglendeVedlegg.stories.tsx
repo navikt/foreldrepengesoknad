@@ -8,9 +8,17 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
+import { AnnenForelder } from 'types/AnnenForelder';
 
-import { AnnenForelder, Barn, BarnType, Periode, Periodetype } from '@navikt/fp-common';
-import { ArbeidsforholdOgInntektFp, PersonMedArbeidsforholdDto_fpoversikt, Situasjon } from '@navikt/fp-types';
+import { BarnType } from '@navikt/fp-constants';
+import {
+    ArbeidsforholdOgInntektFp,
+    Barn,
+    FpPersonopplysningerDto_fpoversikt,
+    Situasjon,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { ManglendeVedlegg } from './ManglendeVedlegg';
@@ -21,52 +29,51 @@ const promiseAction = () => () => {
 };
 
 const defaultSøkerinfo = {
-    person: {
-        fnr: '1',
-        navn: {
-            fornavn: 'TALENTFULL',
-            etternavn: 'MYGG',
-        },
-        kjønn: 'K',
-        fødselsdato: '1978-04-19',
-        barn: [
-            {
-                fnr: '21091981146',
-                fødselsdato: '2021-03-15',
-                annenPart: {
-                    fnr: '12038517080',
-                    fødselsdato: '1985-03-12',
-                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
-                },
-                navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
-                kjønn: 'M',
-            },
-            {
-                fnr: '31091981146',
-                fødselsdato: '2022-08-02',
-                annenPart: {
-                    fnr: '12038517080',
-                    fødselsdato: '1985-03-12',
-                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
-                },
-                navn: { fornavn: 'SNILT', etternavn: 'MIDTPUNKT' },
-                kjønn: 'M',
-            },
-            {
-                fnr: '31091981147',
-                fødselsdato: '2022-08-02',
-                annenPart: {
-                    fnr: '12038517080',
-                    fødselsdato: '1985-03-12',
-                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
-                },
-                navn: { fornavn: 'LYST', etternavn: 'MIDTPUNKT' },
-                kjønn: 'M',
-            },
-        ],
+    fnr: '1',
+    navn: {
+        fornavn: 'TALENTFULL',
+        etternavn: 'MYGG',
     },
+    kjønn: 'K',
+    fødselsdato: '1978-04-19',
+    erGift: false,
+    barn: [
+        {
+            fnr: '21091981146',
+            fødselsdato: '2021-03-15',
+            annenPart: {
+                fnr: '12038517080',
+                fødselsdato: '1985-03-12',
+                navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
+            },
+            navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
+            kjønn: 'M',
+        },
+        {
+            fnr: '31091981146',
+            fødselsdato: '2022-08-02',
+            annenPart: {
+                fnr: '12038517080',
+                fødselsdato: '1985-03-12',
+                navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
+            },
+            navn: { fornavn: 'SNILT', etternavn: 'MIDTPUNKT' },
+            kjønn: 'M',
+        },
+        {
+            fnr: '31091981147',
+            fødselsdato: '2022-08-02',
+            annenPart: {
+                fnr: '12038517080',
+                fødselsdato: '1985-03-12',
+                navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
+            },
+            navn: { fornavn: 'LYST', etternavn: 'MIDTPUNKT' },
+            kjønn: 'M',
+        },
+    ],
     arbeidsforhold: [],
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies FpPersonopplysningerDto_fpoversikt;
 
 const defaultAnnenForelder = {
     fornavn: 'Eline',
@@ -89,37 +96,33 @@ const defaultArbeidsforholdOgInntekt = {
 };
 
 const defaultSøkerinfoFar = {
-    person: {
-        fnr: '08099017784',
-        navn: { fornavn: 'FAR', etternavn: 'MYGG' },
-        kjønn: 'M',
-        fødselsdato: '1978-04-19',
-        barn: [
-            {
-                fnr: '1',
-                fødselsdato: '2021-03-15',
-                annenPart: {
-                    fnr: '12038517080',
-                    fødselsdato: '1985-03-12',
-                    navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
-                },
-                navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
-                kjønn: 'K',
+    fnr: '08099017784',
+    navn: { fornavn: 'FAR', etternavn: 'MYGG' },
+    kjønn: 'M',
+    fødselsdato: '1978-04-19',
+    erGift: true,
+    barn: [
+        {
+            fnr: '1',
+            fødselsdato: '2021-03-15',
+            annenPart: {
+                fnr: '12038517080',
+                fødselsdato: '1985-03-12',
+                navn: { fornavn: 'LEALAUS', etternavn: 'BÆREPOSE' },
             },
-        ],
-        sivilstand: {
-            type: 'GIFT',
+            navn: { fornavn: 'KLØKTIG', etternavn: 'MIDTPUNKT' },
+            kjønn: 'K',
         },
-    },
+    ],
     arbeidsforhold: [],
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies FpPersonopplysningerDto_fpoversikt;
 
 type StoryArgs = {
     rolle?: 'mor' | 'far' | 'medmor';
     situasjon?: Situasjon;
     annenForelder?: AnnenForelder;
     barn?: Barn;
-    uttaksplan?: Periode[];
+    uttaksplan?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
     annenInntekt?: AndreInntektskilder[];
     gåTilNesteSide?: (action: Action) => void;
@@ -305,34 +308,20 @@ export const FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid: Story = 
         avbrytSøknad: action('button-click'),
         uttaksplan: [
             {
-                id: '08499121-6620-16419-3321-0027063089154',
                 forelder: 'FAR_MEDMOR',
-                konto: 'FEDREKVOTE',
-                tidsperiode: {
-                    fom: new Date(dayjs().add(10, 'month').startOf('month').add(3, 'day').format('YYYY-MM-DD')),
-                    tom: new Date(dayjs().add(10, 'month').startOf('month').add(16, 'day').format('YYYY-MM-DD')),
-                },
-                type: Periodetype.Uttak,
-                erArbeidstaker: false,
-                gradert: false,
-                orgnumre: [],
-                ønskerSamtidigUttak: true,
-                samtidigUttakProsent: '100',
+                kontoType: 'FEDREKVOTE',
+                fom: dayjs().add(10, 'month').startOf('month').add(3, 'day').format('YYYY-MM-DD'),
+                tom: dayjs().add(10, 'month').startOf('month').add(16, 'day').format('YYYY-MM-DD'),
+                samtidigUttak: 100,
+                flerbarnsdager: false,
             },
             {
-                id: '0700701673-1838-30857-30810-219862607326',
                 forelder: 'FAR_MEDMOR',
-                konto: 'FELLESPERIODE',
-                tidsperiode: {
-                    fom: new Date(dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD')),
-                    tom: new Date(dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD')),
-                },
-                type: Periodetype.Uttak,
-                morsAktivitetIPerioden: 'ARBEID',
-                erArbeidstaker: false,
-                gradert: false,
-                orgnumre: [],
-                ønskerSamtidigUttak: false,
+                kontoType: 'FELLESPERIODE',
+                fom: dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD'),
+                tom: dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD'),
+                morsAktivitet: 'ARBEID',
+                flerbarnsdager: false,
             },
         ],
     },
@@ -371,34 +360,20 @@ export const FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid: Story = {
         avbrytSøknad: action('button-click'),
         uttaksplan: [
             {
-                id: '08499121-6620-16419-3321-0027063089154',
                 forelder: 'FAR_MEDMOR',
-                konto: 'FEDREKVOTE',
-                tidsperiode: {
-                    fom: new Date(dayjs().add(10, 'month').startOf('month').add(3, 'day').format('YYYY-MM-DD')),
-                    tom: new Date(dayjs().add(10, 'month').startOf('month').add(16, 'day').format('YYYY-MM-DD')),
-                },
-                type: Periodetype.Uttak,
-                erArbeidstaker: false,
-                gradert: false,
-                orgnumre: [],
-                ønskerSamtidigUttak: true,
-                samtidigUttakProsent: '100',
+                kontoType: 'FEDREKVOTE',
+                fom: dayjs().add(10, 'month').startOf('month').add(3, 'day').format('YYYY-MM-DD'),
+                tom: dayjs().add(10, 'month').startOf('month').add(16, 'day').format('YYYY-MM-DD'),
+                samtidigUttak: 100,
+                flerbarnsdager: false,
             },
             {
-                id: '0700701673-1838-30857-30810-219862607326',
                 forelder: 'FAR_MEDMOR',
-                konto: 'FELLESPERIODE',
-                tidsperiode: {
-                    fom: new Date(dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD')),
-                    tom: new Date(dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD')),
-                },
-                type: Periodetype.Uttak,
-                morsAktivitetIPerioden: 'ARBEID',
-                erArbeidstaker: false,
-                gradert: false,
-                orgnumre: [],
-                ønskerSamtidigUttak: false,
+                kontoType: 'FELLESPERIODE',
+                fom: dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD'),
+                tom: dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD'),
+                morsAktivitet: 'ARBEID',
+                flerbarnsdager: false,
             },
         ],
     },
@@ -429,19 +404,12 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
         avbrytSøknad: action('button-click'),
         uttaksplan: [
             {
-                id: '0700701673-1838-30857-30810-219862607326',
                 forelder: 'MOR',
-                konto: 'FELLESPERIODE',
-                tidsperiode: {
-                    fom: new Date(dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD')),
-                    tom: new Date(dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD')),
-                },
-                type: Periodetype.Uttak,
-                morsAktivitetIPerioden: 'UTDANNING',
-                erArbeidstaker: false,
-                gradert: false,
-                orgnumre: [],
-                ønskerSamtidigUttak: false,
+                kontoType: 'FELLESPERIODE',
+                fom: dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD'),
+                tom: dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD'),
+                morsAktivitet: 'UTDANNING',
+                flerbarnsdager: false,
             },
         ],
     },
@@ -474,31 +442,57 @@ export const BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbei
         avbrytSøknad: action('button-click'),
         uttaksplan: [
             {
-                id: '0700701673-1838-30857-30810-219862607326',
                 forelder: 'FAR_MEDMOR',
-                konto: 'FORELDREPENGER',
-                tidsperiode: {
-                    fom: new Date('2025-01-01'),
-                    tom: new Date('2025-02-01'),
-                },
-                type: Periodetype.Uttak,
-                morsAktivitetIPerioden: 'ARBEID',
-                erArbeidstaker: false,
-                gradert: false,
-                orgnumre: [],
-                ønskerSamtidigUttak: false,
+                kontoType: 'FORELDREPENGER',
+                fom: '2025-01-01',
+                tom: '2025-02-01',
+                morsAktivitet: 'ARBEID',
+                flerbarnsdager: false,
             },
             {
-                id: '0700701673-1838-30857-30810-219862607326',
                 forelder: 'FAR_MEDMOR',
-                tidsperiode: {
-                    fom: new Date('2026-01-01'),
-                    tom: new Date('2026-02-01'),
-                },
-                type: Periodetype.Utsettelse,
-                årsak: 'FRI',
-                morsAktivitetIPerioden: 'ARBEID',
-                erArbeidstaker: false,
+                fom: '2026-01-01',
+                tom: '2026-02-01',
+                utsettelseÅrsak: 'FRI',
+                morsAktivitet: 'ARBEID',
+                flerbarnsdager: false,
+            },
+        ],
+    },
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    API_URLS.trengerDokumentereMorsArbeid,
+                    () => new HttpResponse(JSON.stringify(false), { status: 200 }),
+                ),
+            ],
+        },
+    },
+};
+
+export const FarTarUtFedrekvoteFørsteSeksUkerUtenSamtidigMåDokumenterMorsSykdomEllerInnleggelse: Story = {
+    args: {
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+        },
+        rolle: 'far',
+        barn: {
+            antallBarn: 1,
+            type: BarnType.FØDT,
+            termindato: '2026-01-21',
+            fødselsdatoer: ['2026-01-21'],
+        },
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+        uttaksplan: [
+            {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                fom: '2026-01-28',
+                tom: '2026-01-28',
+                flerbarnsdager: false,
             },
         ],
     },

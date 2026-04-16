@@ -5,14 +5,12 @@ import { useLocation } from 'react-router-dom';
 import { skalViseOmsorgsovertakelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/OmsorgsovertakelseDokumentasjon.tsx';
 import { skalViseTerminbekreftelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/TerminbekreftelseDokumentasjon.tsx';
 import { AnnenInntektType } from 'types/AndreInntektskilder';
+import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
-import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 import { kreverUttaksplanVedleggNy } from 'utils/uttaksplanInfoUtils';
 
-import { isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { EksternArbeidsforholdDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
-import { kreverUttaksplanVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { getFamiliehendelsedato } from '../utils/barnUtils';
@@ -90,84 +88,17 @@ const showFrilansOgEgenNæringOgAndreInntekter = (
     return false;
 };
 
-const showManglendeDokumentasjonStegTemp = (
-    path: SøknadRoutes,
-    getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
-    erEndringssøknad: boolean,
-    eksisterendeSak: FpSak_fpoversikt | undefined,
-) => {
-    if (isLocalhostOrDev()) {
-        return showManglendeDokumentasjonStegNy(path, getData, arbeidsforhold, eksisterendeSak);
-    }
-    return showManglendeDokumentasjonSteg(path, getData, arbeidsforhold, erEndringssøknad);
-};
-
 const showManglendeDokumentasjonSteg = (
     path: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
-    erEndringssøknad: boolean,
+    eksisterendeSak: FpSak_fpoversikt | undefined,
 ) => {
     if (path === SøknadRoutes.DOKUMENTASJON) {
         const annenForelder = getData(ContextDataType.ANNEN_FORELDER);
         const søkersituasjon = getData(ContextDataType.SØKERSITUASJON);
         const barn = getData(ContextDataType.OM_BARNET);
         const uttaksplan = getData(ContextDataType.UTTAKSPLAN);
-        const uttaksplanMetadata = getData(ContextDataType.UTTAKSPLAN_METADATA);
-        const andreInntektskilder = getData(ContextDataType.ANDRE_INNTEKTSKILDER);
-
-        const skalHaAleneomsorgDok =
-            !!annenForelder && isAnnenForelderOppgitt(annenForelder) && annenForelder.erAleneOmOmsorg;
-
-        const erFarEllerMedmor = !!søkersituasjon && isFarEllerMedmor(søkersituasjon.rolle);
-        const skalHaTerminDokumentasjon = skalViseTerminbekreftelseDokumentasjon({
-            søkersituasjon,
-            barn,
-            erFarEllerMedmor,
-            arbeidsforhold,
-            annenForelder,
-        });
-        const skalHaAdopsjonDokumentasjon = skalViseOmsorgsovertakelseDokumentasjon(søkersituasjon);
-
-        const skalHaUttakDok =
-            annenForelder && uttaksplan
-                ? kreverUttaksplanVedlegg(
-                      uttaksplan,
-                      erFarEllerMedmor,
-                      annenForelder,
-                      erEndringssøknad,
-                      uttaksplanMetadata?.perioderSomSkalSendesInn,
-                  )
-                : false;
-
-        const skalHaAndreInntekterDok = andreInntektskilder?.some(
-            (i) => i.type === AnnenInntektType.MILITÆRTJENESTE || i.type === AnnenInntektType.SLUTTPAKKE,
-        );
-
-        return (
-            skalHaAleneomsorgDok ||
-            skalHaTerminDokumentasjon ||
-            skalHaAdopsjonDokumentasjon ||
-            skalHaUttakDok ||
-            skalHaAndreInntekterDok
-        );
-    }
-
-    return false;
-};
-
-const showManglendeDokumentasjonStegNy = (
-    path: SøknadRoutes,
-    getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
-    eksisterendeSak: FpSak_fpoversikt | undefined,
-) => {
-    if (path === SøknadRoutes.DOKUMENTASJON) {
-        const annenForelder = getData(ContextDataType.ANNEN_FORELDER);
-        const søkersituasjon = getData(ContextDataType.SØKERSITUASJON);
-        const barn = getData(ContextDataType.OM_BARNET);
-        const uttaksplan = getData(ContextDataType.UTTAKSPLAN_NY);
         const andreInntektskilder = getData(ContextDataType.ANDRE_INNTEKTSKILDER);
         const familiehendelsedato = barn ? getFamiliehendelsedato(barn) : undefined;
 
@@ -184,14 +115,20 @@ const showManglendeDokumentasjonStegNy = (
         });
         const skalHaAdopsjonDokumentasjon = skalViseOmsorgsovertakelseDokumentasjon(søkersituasjon);
 
-        const uttaksplanUtenAnnenPartsPerioder = uttaksplan?.filter(
-            (periode) =>
-                Uttaksperioden.erIkkeEøsPeriode(periode) &&
-                periode.forelder === (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
-        );
+        const uttaksplanUtenAnnenPartsOgUendredePerioder = uttaksplan
+            ?.filter(
+                (periode) =>
+                    Uttaksperioden.erIkkeEøsPeriode(periode) &&
+                    periode.forelder === (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
+            )
+            .filter((periode) => {
+                return eksisterendeSak
+                    ? Uttaksperioden.erIkkeEøsPeriode(periode) && periode.resultat === undefined
+                    : true;
+            });
 
-        const perioderSomSkalSjekkes = uttaksplanUtenAnnenPartsPerioder
-            ? uttaksplanUtenAnnenPartsPerioder.filter((periode) => {
+        const perioderSomSkalSjekkes = uttaksplanUtenAnnenPartsOgUendredePerioder
+            ? uttaksplanUtenAnnenPartsOgUendredePerioder.filter((periode) => {
                   if (Uttaksperioden.erEøsPeriode(periode)) {
                       return false;
                   }
@@ -248,13 +185,7 @@ export const useStepConfig = (
             ROUTES_ORDER.flatMap((path) =>
                 requiredSteps.includes(path) ||
                 showUtenlandsoppholdStep(path, currentPath, getStateData) ||
-                showManglendeDokumentasjonStegTemp(
-                    path,
-                    getStateData,
-                    arbeidsforhold,
-                    erEndringssøknad,
-                    eksisterendeSak,
-                ) ||
+                showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, eksisterendeSak) ||
                 showFrilansOgEgenNæringOgAndreInntekter(path, currentPath, getStateData)
                     ? [path]
                     : [],

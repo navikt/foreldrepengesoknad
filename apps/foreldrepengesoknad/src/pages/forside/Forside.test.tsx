@@ -93,8 +93,8 @@ describe('<Forside>', () => {
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(18);
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(18, {
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(14);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(14, {
             data: SøknadRoutes.UTTAKSPLAN,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
@@ -238,6 +238,7 @@ describe('<Forside>', () => {
 
     //Ingen saker, og noen av barna er døde.
     it('skal vise ett barn fra PDL når ingen saker', async () => {
+        MockDate.set(new Date('2025-10-25'));
         render(<HarIngenSakerOgEttBarn />);
 
         expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();

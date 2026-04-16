@@ -10,7 +10,7 @@ import {
     FpOversiktInntektsmeldingDto_fpoversikt,
     KontoBeregningGrunnlagDto,
     KontoBeregningResultatDto,
-    PersonMedArbeidsforholdDto_fpoversikt,
+    OversiktPersonopplysningerDto_fpoversikt,
     Saker_fpoversikt,
     TidslinjeHendelseDto_fpoversikt,
     TilbakekrevingUttalelseOppgave_fpoversikt,
@@ -20,7 +20,7 @@ import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 export const urlPrefiks = import.meta.env.BASE_URL;
 
 export const API_URLS = {
-    søkerInfo: `${urlPrefiks}/fpoversikt/api/person/info-med-arbeidsforhold`,
+    søkerInfo: `${urlPrefiks}/fpoversikt/api/personopplysninger/oversikt`,
     saker: `${urlPrefiks}/fpoversikt/api/saker`,
     annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart`,
     minidialog: `${urlPrefiks}/fpoversikt/api/oppgaver/tilbakekrevingsuttalelse`,
@@ -43,7 +43,7 @@ export const API_URLS = {
 export const søkerInfoOptions = () =>
     queryOptions({
         queryKey: ['SØKERINFO'],
-        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30000 }).json<PersonMedArbeidsforholdDto_fpoversikt>(),
+        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30000 }).json<OversiktPersonopplysningerDto_fpoversikt>(),
         staleTime: Infinity,
     });
 

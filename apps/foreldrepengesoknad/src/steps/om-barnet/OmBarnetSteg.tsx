@@ -17,9 +17,16 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { VStack } from '@navikt/ds-react';
 
-import { Barn, Situasjon, Søkerrolle, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { BarnDto_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import {
+    Barn,
+    FpBarnDto_fpoversikt,
+    FpPersonopplysningerDto_fpoversikt,
+    Situasjon,
+    Søkerrolle,
+    isFødtBarn,
+    isUfødtBarn,
+} from '@navikt/fp-types';
 import { SkjemaRotLayout, Spinner, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -29,12 +36,12 @@ import { AdopsjonPanel } from './adopsjon/AdopsjonPanel';
 import { FødselPanel } from './fødsel/FødselPanel';
 import { getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetContextFormMapping';
 
-const erDatoInnenforDeSiste12Ukene = (dato: string | Date) => {
+const erDatoInnenforDeSiste12Ukene = (dato: string) => {
     const twelveWeeksAfterBirthday = dayjs(dato).add(12, 'weeks');
-    return dayjs(twelveWeeksAfterBirthday).isAfter(new Date(), 'day');
+    return dayjs(twelveWeeksAfterBirthday).isAfter(dayjs(), 'day');
 };
 
-const findBarnetIRegistrerteBarn = (regBarn: BarnDto_fpoversikt, barnet: Barn) => {
+const findBarnetIRegistrerteBarn = (regBarn: FpBarnDto_fpoversikt, barnet: Barn) => {
     if (barnet && !isUfødtBarn(barnet) && barnet.fnr !== undefined && barnet.fnr.length > 0) {
         return barnet.fnr.includes(regBarn.fnr);
     }
@@ -44,7 +51,7 @@ const findBarnetIRegistrerteBarn = (regBarn: BarnDto_fpoversikt, barnet: Barn) =
 const skalViseTermindato = (
     rolle: Søkerrolle,
     fødselsdato: string | undefined,
-    valgteRegistrerteBarn: BarnDto_fpoversikt[] | undefined,
+    valgteRegistrerteBarn: FpBarnDto_fpoversikt[] | undefined,
     situasjon: Situasjon,
 ): boolean => {
     if (situasjon === 'adopsjon') {
@@ -75,7 +82,7 @@ const skalViseTermindato = (
 };
 
 type Props = {
-    søkerInfo: PersonMedArbeidsforholdDto_fpoversikt;
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
     søknadGjelderNyttBarn: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
@@ -112,14 +119,14 @@ const OmBarnetStegInner = ({
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
 
-    const { arbeidsforhold, person } = søkerInfo;
+    const { arbeidsforhold, barn: registrerteBarn } = søkerInfo;
 
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = omBarnet ? getFamiliehendelsedato(omBarnet) : undefined;
 
     const dødfødteUtenFnrMedSammeFødselsdato =
         omBarnet && isFødtBarn(omBarnet)
-            ? person.barn.filter(
+            ? registrerteBarn.filter(
                   (barn) =>
                       barn.fnr === undefined && getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, familiehendelsesdato),
               )
@@ -127,7 +134,7 @@ const OmBarnetStegInner = ({
 
     const valgteRegistrerteBarn =
         !søknadGjelderNyttBarn && omBarnet && !isUfødtBarn(omBarnet)
-            ? person.barn
+            ? registrerteBarn
                   .filter((b) => findBarnetIRegistrerteBarn(b, omBarnet))
                   .concat(dødfødteUtenFnrMedSammeFødselsdato)
             : undefined;

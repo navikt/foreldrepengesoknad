@@ -1,7 +1,5 @@
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
-
-import { HvemPlanleggerType } from '@navikt/fp-types';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { erMorDelAvSøknaden } from './HvemPlanleggerUtils';
 
@@ -34,9 +32,6 @@ export const harKunFarSøker1Rett = (hvemHarRett: HvemHarRett, hvemPlanlegger: H
 
 export const harMorRett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
     erMorDelAvSøknaden(hvemPlanlegger) && (hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunSøker1HarRett');
-
-export const harKunMorRett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
-    erMorDelAvSøknaden(hvemPlanlegger) && hvemHarRett === 'kunSøker1HarRett';
 
 export const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean) => {
     if (erAleneOmOmsorg) {

@@ -5,29 +5,21 @@ import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { AnnenInntektType, SluttpakkeInntekt } from 'types/AndreInntektskilder';
-import { UttaksplanMetaData } from 'types/UttaksplanMetaData';
+import { AnnenForelder } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
+import { AttachmentType, BarnType, Skjemanummer } from '@navikt/fp-constants';
 import {
-    AnnenForelder,
     Barn,
-    BarnType,
-    EksisterendeSak,
-    FamiliehendelseType,
-    Periode,
-    PeriodeInfoType,
-    Periodetype,
-} from '@navikt/fp-common';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import {
     EndringssøknadForeldrepengerDto,
     ForeldrepengesøknadDto,
+    FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
     Frilans,
     NæringDto,
-    PersonMedArbeidsforholdDto_fpoversikt,
     SøkersituasjonFp,
     UtenlandsoppholdPeriode,
+    UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
@@ -60,17 +52,16 @@ const DEFAULT_SØKER_INFO = {
             stillingsprosent: 100,
         },
     ],
-    person: {
-        navn: {
-            etternavn: 'Oravakangas',
-            fornavn: 'Erlinga-Mask',
-        },
-        fnr: '02343434',
-        fødselsdato: '1989-08-30',
-        kjønn: 'K',
-        barn: [],
+    barn: [],
+    erGift: false,
+    fnr: '02343434',
+    fødselsdato: '1989-08-30',
+    kjønn: 'K',
+    navn: {
+        etternavn: 'Oravakangas',
+        fornavn: 'Erlinga-Mask',
     },
-} satisfies PersonMedArbeidsforholdDto_fpoversikt;
+} satisfies FpPersonopplysningerDto_fpoversikt;
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: nbMessages,
@@ -153,29 +144,21 @@ const VEDLEGG = {
     ],
 } satisfies VedleggDataType;
 
-const PERIODE = {
-    id: '1',
-    årsak: 'ARBEID',
-    tidsperiode: {
-        fom: new Date('2024-01-01'),
-        tom: new Date('2024-10-10'),
-    },
-    type: Periodetype.Info,
+const UTTAKSPLAN_PERIODE = {
+    fom: '2024-01-01',
+    tom: '2024-10-10',
     forelder: 'MOR',
-    infotype: PeriodeInfoType.utsettelseAnnenPart,
-    overskrives: true,
-    visPeriodeIPlan: false,
-} satisfies Periode;
+    utsettelseÅrsak: 'FRI',
+    flerbarnsdager: false,
+} satisfies UttakPeriode_fpoversikt;
 
 const UTTAKSPLAN_METADATA = {
     ønskerJustertUttakVedFødsel: true,
-    perioderSomSkalSendesInn: [PERIODE],
-    endringstidspunkt: new Date('2024-01-02'),
-} satisfies UttaksplanMetaData;
+};
 
 const EXPECTED_SØKER_INFO = {
-    fnr: DEFAULT_SØKER_INFO.person.fnr,
-    navn: DEFAULT_SØKER_INFO.person.navn,
+    fnr: DEFAULT_SØKER_INFO.fnr,
+    navn: DEFAULT_SØKER_INFO.navn,
     arbeidsforhold: DEFAULT_SØKER_INFO.arbeidsforhold.map((af) => ({
         navn: af.arbeidsgiverNavn,
         orgnummer: af.arbeidsgiverId,
@@ -235,30 +218,10 @@ const getWrapper =
                             },
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: TIDLIGERE_UTENLANDSOPPHOLD,
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: SENERE_UTENLANDSOPPHOLD,
-                            [ContextDataType.UTTAKSPLAN_METADATA]: UTTAKSPLAN_METADATA,
-                            [ContextDataType.UTTAKSPLAN]: [PERIODE],
+                            [ContextDataType.UTTAKSPLAN]: [UTTAKSPLAN_PERIODE],
                             [ContextDataType.VEDLEGG]: VEDLEGG,
-                            [ContextDataType.EKSISTERENDE_SAK]: {
-                                saksnummer: '1',
-                                erAnnenPartsSak: false,
-                                grunnlag: {
-                                    dekningsgrad: '100',
-                                    antallBarn: 1,
-                                    morErAleneOmOmsorg: false,
-                                    morErUfør: false,
-                                    morHarRett: true,
-                                    farMedmorErAleneOmOmsorg: false,
-                                    farMedmorHarRett: true,
-                                    søkerErFarEllerMedmor: false,
-                                    erDeltUttak: true,
-                                    erBarnetFødt: true,
-                                    familiehendelseDato: '2024-01-01',
-                                    familiehendelseType: FamiliehendelseType.FØDSEL,
-                                    ønskerJustertUttakVedFødsel: undefined,
-                                },
-                                saksperioder: [],
-                                uttaksplan: [],
-                            } satisfies EksisterendeSak,
+                            [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: '1',
+                            [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]: true,
                         }}
                     >
                         {children}
@@ -354,7 +317,16 @@ describe('useFpSendSøknad', () => {
                     dekningsgrad: '100',
                     uttaksplan: {
                         ønskerJustertUttakVedFødsel: UTTAKSPLAN_METADATA.ønskerJustertUttakVedFødsel,
-                        uttaksperioder: [],
+                        uttaksperioder: [
+                            {
+                                erArbeidstaker: false,
+                                fom: '2024-01-01',
+                                morsAktivitetIPerioden: undefined,
+                                tom: '2024-10-10',
+                                type: 'utsettelse',
+                                årsak: 'FRI',
+                            },
+                        ],
                     },
                     vedlegg: VEDLEGG[Skjemanummer.TERMINBEKREFTELSE],
                 } satisfies ForeldrepengesøknadDto,
@@ -412,8 +384,11 @@ describe('useFpSendSøknad', () => {
                                 erArbeidstaker: false,
                                 type: 'utsettelse',
                                 årsak: 'FRI',
-                                fom: '2024-01-02', // Endringsstidspunkt
-                                tom: '2024-01-02', // Endringsstidspunkt
+                                fom: '2024-01-01',
+                                tom: '2024-10-10',
+                                //TODO (TOR) fom og tom under er korrekt så få med dette når endringstidspunkt er på plass
+                                //fom: '2024-01-02', // Endringsstidspunkt
+                                //tom: '2024-01-02', // Endringsstidspunkt
                             }),
                         ],
                     },

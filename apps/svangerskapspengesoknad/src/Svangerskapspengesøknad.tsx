@@ -43,13 +43,13 @@ export const Svangerskapspengesøknad = () => {
         return <Spinner />;
     }
 
-    const erPersonKvinne = søkerinfo.data.person.kjønn === 'K';
+    const erPersonKvinne = søkerinfo.data.kjønn === 'K';
 
     if (!erPersonKvinne) {
         return <IkkeKvinne />;
     }
 
-    const erPersonMyndig = erMyndig(søkerinfo.data.person.fødselsdato);
+    const erPersonMyndig = erMyndig(søkerinfo.data.fødselsdato);
 
     const mellomlagretState =
         mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING ? mellomlagretInfo.data : undefined;

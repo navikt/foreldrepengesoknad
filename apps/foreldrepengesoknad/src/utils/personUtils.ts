@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
+import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 
-import { AnnenForelder, NavnPåForeldre, Søkerrolle, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { Kjønn_fpoversikt, PersonDto_fpoversikt } from '@navikt/fp-types';
+import { FpPersonopplysningerDto_fpoversikt, Kjønn_fpoversikt, NavnPåForeldre, Søkerrolle } from '@navikt/fp-types';
 
 export const formaterNavn = (fornavn: string, etternavn: string, visEtternavn: boolean, mellomnavn?: string) => {
     if (visEtternavn) {
@@ -15,7 +15,7 @@ export const getKjønnFromFnr = (annenForelder: AnnenForelder): Kjønn_fpoversik
     if (isAnnenForelderOppgitt(annenForelder)) {
         const { fnr } = annenForelder;
 
-        if (fnr === undefined || fnr.length !== 11) {
+        if (fnr.length !== 11) {
             return undefined;
         }
         return Number.parseInt(fnr.charAt(8), 10) % 2 === 0 ? 'K' : 'M';
@@ -75,7 +75,7 @@ export const getFarMedmorErAleneOmOmsorg = (
 };
 
 export const getNavnPåForeldre = (
-    person: PersonDto_fpoversikt,
+    person: FpPersonopplysningerDto_fpoversikt,
     annenForelder: AnnenForelder,
     erFarEllerMedmor: boolean,
     intl: IntlShape,

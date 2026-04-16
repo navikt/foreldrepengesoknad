@@ -4,21 +4,23 @@
     "type": "module",
     "types": "index.ts",
     "scripts": {
-        "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
-        "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
-        "prettier": "prettier --write src",
+        "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
+        "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
+        "prettier:fix": "prettier --write src",
+        "tsc:watch": "tsc --noEmit --watch",
         "update-swagger": "node scripts/hent-openapi-spec.js",
         "generate:local": "pnpm run update-swagger lokal && openapi-ts",
         "generate": "pnpm run update-swagger && openapi-ts",
         "openapi-ts": "openapi-ts"
     },
     "dependencies": {
-        "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-constants": "workspace:*"
     },
     "devDependencies": {
-        "@hey-api/openapi-ts": "0.91.1",
-        "eslint": "9.39.2"
+        "@hey-api/openapi-ts": "0.96.0",
+        "@navikt/fp-config-eslint": "workspace:*",
+        "eslint": "9.39.2",
+        "typescript": "6.0.2"
     },
     "packageManager": "pnpm@10.28.0"
 }

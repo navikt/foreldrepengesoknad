@@ -5,20 +5,21 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "start": "node ./server.js",
-        "build": "ncc build ./src/index.ts -o dist -t --no-cache"
+        "build": "esbuild ./src/index.ts --bundle --platform=node --format=cjs --outfile=dist/index.js",
+        "tsc:watch": "tsc --noEmit --watch",
+        "start": "node ./server.js"
     },
     "dependencies": {
+        "@navikt/fp-server-utils": "workspace:*",
         "express": "5.2.1",
         "http-proxy-middleware": "3.0.5"
     },
     "devDependencies": {
         "@navikt/fp-config-typescript": "workspace:*",
-        "@navikt/fp-server-utils": "workspace:*",
         "@types/express": "5.0.6",
         "@types/node": "24.10.1",
-        "@vercel/ncc": "0.38.4",
-        "typescript": "5.9.3"
+        "esbuild": "0.28.0",
+        "typescript": "6.0.2"
     },
     "packageManager": "pnpm@10.28.0"
 }

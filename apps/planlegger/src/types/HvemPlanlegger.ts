@@ -1,6 +1,12 @@
-import { HvemPlanleggerType } from '@navikt/fp-types';
-
 export type HvemPlanlegger = MorOgFar | MorOgMedmor | FarOgFar | Mor | Far;
+
+export enum HvemPlanleggerType {
+    MOR_OG_FAR = 'morOgFar',
+    MOR_OG_MEDMOR = 'morOgMedmor',
+    FAR_OG_FAR = 'farOgFar',
+    MOR = 'mor',
+    FAR = 'far',
+}
 
 export type MorOgFar = {
     type: HvemPlanleggerType.MOR_OG_FAR;
@@ -22,10 +28,8 @@ export type FarOgFar = {
 
 export type Mor = {
     type: HvemPlanleggerType.MOR;
-    navnPåMor?: string;
 };
 
 export type Far = {
     type: HvemPlanleggerType.FAR;
-    navnPåFar?: string;
 };

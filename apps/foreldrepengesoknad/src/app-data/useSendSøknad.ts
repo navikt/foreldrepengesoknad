@@ -1,26 +1,18 @@
 import { useMutation } from '@tanstack/react-query';
-import {
-    FEIL_VED_INNSENDING,
-    UKJENT_UUID,
-    getSøknadsdataForInnsending,
-    getSøknadsdataForInnsendingNy,
-} from 'api/apiUtils';
+import { FEIL_VED_INNSENDING, UKJENT_UUID, getSøknadsdataForInnsending } from 'api/apiUtils';
 import { API_URLS } from 'api/queries';
 import { SøknadRoutes } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
 import { useNavigate } from 'react-router-dom';
-import { getFamiliehendelsedato } from 'utils/barnUtils';
-import { isLocalhostOrDev } from 'utils/tempSystemUtils';
 
 import { captureMessage } from '@navikt/fp-observability';
-import { FpSak_fpoversikt, PersonMedArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, ProblemDetails } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataType, useContextGetAnyData } from './FpDataContext';
+import { useContextGetAnyData } from './FpDataContext';
 
 export const useSendSøknad = (
-    søkerinfo: PersonMedArbeidsforholdDto_fpoversikt,
+    søkerinfo: FpPersonopplysningerDto_fpoversikt,
     erEndringssøknad: boolean,
     foreldrepengerSaker: FpSak_fpoversikt[],
 ) => {
@@ -33,23 +25,7 @@ export const useSendSøknad = (
     });
 
     const send = async () => {
-        const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
-        const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
-
-        const cleanedSøknad = isLocalhostOrDev()
-            ? getSøknadsdataForInnsendingNy(erEndringssøknad, hentData, søkerinfo, foreldrepengerSaker)
-            : getSøknadsdataForInnsending(
-                  erEndringssøknad,
-                  hentData,
-                  uttaksplanMetadata.perioderSomSkalSendesInn!,
-                  getFamiliehendelsedato(barn),
-                  søkerinfo,
-                  uttaksplanMetadata.endringstidspunkt,
-              );
-
-        if (!isLocalhostOrDev() && cleanedSøknad.uttaksplan.uttaksperioder.length === 0 && erEndringssøknad) {
-            throw new Error('Søknaden din inneholder ingen nye perioder.');
-        }
+        const cleanedSøknad = getSøknadsdataForInnsending(erEndringssøknad, hentData, søkerinfo, foreldrepengerSaker);
 
         const abortSignal = initAbortSignal();
 
@@ -75,9 +51,9 @@ export const useSendSøknad = (
                     return navigate(SøknadRoutes.KVITTERING);
                 }
 
-                const jsonResponse = await error.response.json<{ uuid?: string }>();
+                const jsonResponse = await error.response.json<ProblemDetails>();
                 captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
-                const callIdForBruker = jsonResponse?.uuid ?? UKJENT_UUID;
+                const callIdForBruker = jsonResponse?.callId ?? UKJENT_UUID;
                 throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
             }
             if (error instanceof Error) {

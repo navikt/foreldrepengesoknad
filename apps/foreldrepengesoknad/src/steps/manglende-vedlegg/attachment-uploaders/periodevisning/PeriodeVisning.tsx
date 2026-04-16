@@ -11,14 +11,15 @@ import {
 
 import { BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Situasjon } from '@navikt/fp-common';
 import {
+    NavnPåForeldre,
+    Situasjon,
     UttakOppholdÅrsak_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { UttaksdagenString, Uttaksperioden, capitalizeFirstLetter } from '@navikt/fp-utils';
-import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan-ny';
+import { Uttaksdagen, Uttaksperioden, capitalizeFirstLetter } from '@navikt/fp-utils';
+import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan';
 
 import { StønadskontoIkon } from './StønadskontoIkon';
 import { UtsettelseIkon } from './UtsettelseIkon';
@@ -46,7 +47,7 @@ export const PeriodeVisning = ({
     const intl = useIntl();
 
     const varighetString = getVarighetString(
-        UttaksdagenString.denneEllerNeste(periode.fom).getUttaksdagerFremTilOgMedDato(periode.tom),
+        Uttaksdagen.denneEllerNeste(periode.fom).getUttaksdagerFremTilOgMedDato(periode.tom),
         intl,
     );
 
