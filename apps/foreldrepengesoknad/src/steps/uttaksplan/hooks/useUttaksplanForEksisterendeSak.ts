@@ -50,7 +50,19 @@ export const useUttaksplanForEksisterendeSak = (
 };
 
 const fjernFrieUtsettelser = (perioder: UttakPeriode_fpoversikt[]): UttakPeriode_fpoversikt[] => {
-    return perioder.filter((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.utsettelseÅrsak !== 'FRI');
+    // Dersom perioden har et aktivitetskrav så er det en periode lagt inn for kun far har rett
+    // og det skal derfor ikke fjernes selv om det er en utsettelse med årsak fri
+    const erEnPeriodeMedFriUtsettelseSomSkalBeholdes = (periode: UttakPeriode_fpoversikt) => {
+        if (periode.utsettelseÅrsak === 'FRI' && periode.morsAktivitet !== undefined) {
+            return true;
+        }
+
+        return false;
+    };
+
+    return perioder.filter(
+        (periode) => Uttaksperioden.erEøsPeriode(periode) || erEnPeriodeMedFriUtsettelseSomSkalBeholdes(periode),
+    );
 };
 
 // TODO (TOR) Fjern denne når ein byrjar å lagre annen parts periodar
