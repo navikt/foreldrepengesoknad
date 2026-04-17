@@ -240,7 +240,7 @@ const ikkeDeltUttakFødselFarMedmor = ({
             perioder.push(aktivitetskravPeriode);
         }
     } else {
-        if (farOgFar) {
+        if (farOgFar && !erAleneOmOmsorg) {
             const periode: UttakPeriode_fpoversikt = {
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FORELDREPENGER',

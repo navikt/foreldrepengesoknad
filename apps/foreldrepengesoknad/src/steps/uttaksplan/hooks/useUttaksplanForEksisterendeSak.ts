@@ -34,16 +34,34 @@ export const useUttaksplanForEksisterendeSak = (
         ? midlertidigJusteringAvSamtidigUttak(valgtSak.gjeldendeVedtak.perioder, perioderAnnenPart)
         : valgtSak.gjeldendeVedtak.perioder;
 
-    const uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> = [...søkerPerioder];
+    const uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> =
+        fjernFrieUtsettelser(søkerPerioder);
 
     if (valgtSak.gjeldendeVedtak?.perioderAnnenpartEøs) {
         uttaksplan.push(...valgtSak.gjeldendeVedtak.perioderAnnenpartEøs);
     }
+
     if (perioderAnnenPart) {
         uttaksplan.push(...midlertidigJusteringAvSamtidigUttak(perioderAnnenPart, valgtSak.gjeldendeVedtak.perioder));
     }
 
     return uttaksplan.sort(sorterUttakPerioder);
+};
+
+const fjernFrieUtsettelser = (perioder: UttakPeriode_fpoversikt[]): UttakPeriode_fpoversikt[] => {
+    // Dersom perioden har et aktivitetskrav så er det en periode lagt inn for kun far har rett
+    // og det skal derfor ikke fjernes selv om det er en utsettelse med årsak fri
+    const erEnPeriodeMedFriUtsettelseSomSkalBeholdes = (periode: UttakPeriode_fpoversikt) => {
+        if (periode.utsettelseÅrsak === 'FRI' && periode.morsAktivitet !== undefined) {
+            return true;
+        }
+
+        return false;
+    };
+
+    return perioder.filter(
+        (periode) => erEnPeriodeMedFriUtsettelseSomSkalBeholdes(periode) || periode.utsettelseÅrsak !== 'FRI',
+    );
 };
 
 // TODO (TOR) Fjern denne når ein byrjar å lagre annen parts periodar

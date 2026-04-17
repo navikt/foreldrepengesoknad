@@ -21,7 +21,10 @@ export type Attachment = {
 type InternError = 'NO_DATA';
 
 type ProblemDetailsErrorKode =
+    | 'GENERELL'
     | 'IKKE_TILGANG'
+    | 'IKKE_FUNNET'
+    | 'VALIDERING'
     | 'DUPLIKAT_FORSENDELSE'
     | 'MELLOMLAGRING'
     | 'MELLOMLAGRING_VEDLEGG'
