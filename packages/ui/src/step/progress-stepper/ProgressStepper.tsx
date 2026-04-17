@@ -3,6 +3,8 @@ import { useIntl } from 'react-intl';
 
 import { FormProgress, Heading, VStack } from '@navikt/ds-react';
 
+import { captureMessage } from '@navikt/fp-observability';
+
 export type ProgressStep<TYPE> = {
     id: TYPE;
     label: string;
@@ -26,7 +28,8 @@ export const ProgressStepper = <TYPE extends string>({
     const [activeStep, setActiveStep] = useState(currentStepIndex + 1);
 
     if (currentStepIndex === -1) {
-        throw new Error('No selected step in step-config');
+        captureMessage(`ProgressStepper: No selected step in step-config (antall steg=${steps.length})`);
+        return null;
     }
 
     return (

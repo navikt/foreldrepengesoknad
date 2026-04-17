@@ -3,6 +3,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
+import { captureMessage } from '@navikt/fp-observability';
+
 import { ProgressStep, ProgressStepper } from '../progress-stepper/ProgressStepper';
 
 interface StepProps<TYPE> {
@@ -23,17 +25,22 @@ export const Step = <TYPE extends string>({
     noFieldsRequired = false,
 }: StepProps<TYPE>) => {
     const currentStepIndex = steps.findIndex((s) => s.isSelected);
-    if (currentStepIndex === -1) {
-        throw new Error('Ingen valgte steg funnet');
+    const harValgtSteg = currentStepIndex !== -1;
+
+    if (!harValgtSteg) {
+        // Rapporter i stedet for å throwe – et inkonsistent stepConfig skal ikke krasje hele siden for brukeren
+        captureMessage(`Step: Ingen valgte steg funnet (antall steg=${steps.length})`);
     }
 
-    const title = steps[currentStepIndex]!.label;
+    const title = harValgtSteg ? steps[currentStepIndex]!.label : '';
 
     return (
         <VStack gap="space-24">
-            <div role="presentation">
-                <ProgressStepper steps={steps} hideHeader={hideHeader} onStepChange={onStepChange} />
-            </div>
+            {harValgtSteg && (
+                <div role="presentation">
+                    <ProgressStepper steps={steps} hideHeader={hideHeader} onStepChange={onStepChange} />
+                </div>
+            )}
             {!noFieldsRequired && (
                 <BodyShort>
                     {someFieldsOptional ? (
@@ -43,7 +50,9 @@ export const Step = <TYPE extends string>({
                     )}
                 </BodyShort>
             )}
-            <section aria-label={`Steg ${currentStepIndex + 1} av ${steps.length}:  ${title}`}>
+            <section
+                aria-label={harValgtSteg ? `Steg ${currentStepIndex + 1} av ${steps.length}:  ${title}` : undefined}
+            >
                 <VStack gap="space-16">{children}</VStack>
             </section>
         </VStack>
