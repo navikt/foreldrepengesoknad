@@ -281,7 +281,7 @@ const getOppstartsdatoFromFordelingValg = (
     const ankomstDatoNorge = isAdoptertAnnetBarn(barn) && barn.adoptertIUtlandet ? barn.ankomstdato : undefined;
 
     if ((!oppstartValg || oppstartValg === OppstartValg.ANNEN_DATO) && oppstartDato) {
-        return oppstartDato;
+        return Uttaksdagen.denneEllerNeste(oppstartDato).getDato();
     }
     switch (oppstartValg) {
         case OppstartValg.TRE_UKER_FØR_TERMIN:
@@ -289,7 +289,7 @@ const getOppstartsdatoFromFordelingValg = (
         case OppstartValg.TRE_UKER_FØR_FØDSEL:
             return getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
         case OppstartValg.FAMILIEHENDELSESDATO:
-            return familiehendelsesdato;
+            return Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato();
         case OppstartValg.ANKOMSTDATO_NORGE:
             return getFørsteUttaksdagAnkomstdatoNorge(ankomstDatoNorge);
         case OppstartValg.DAGEN_ETTER_ANNEN_FORELDER:
