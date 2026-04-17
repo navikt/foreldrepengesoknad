@@ -96,6 +96,9 @@ const getErrorMessageMap = (intl: IntlShape): Record<FileRejectionReason | Attac
         id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR',
     }),
     IKKE_TILGANG: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
+    IKKE_FUNNET: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
+    GENERELL: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
+    VALIDERING: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
     MELLOMLAGRING: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
     MELLOMLAGRING_VEDLEGG: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
     SERVER_ERROR: intl.formatMessage({
