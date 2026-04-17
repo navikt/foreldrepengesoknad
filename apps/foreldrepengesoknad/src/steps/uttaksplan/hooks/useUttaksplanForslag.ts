@@ -285,11 +285,9 @@ const getOppstartsdatoFromFordelingValg = (
     }
     switch (oppstartValg) {
         case OppstartValg.TRE_UKER_FØR_TERMIN:
-            return Uttaksdagen.denneEllerNeste(getFørsteUttaksdagForeldrepengerFørFødsel(termindato)).getDato();
+            return getFørsteUttaksdagForeldrepengerFørFødsel(termindato);
         case OppstartValg.TRE_UKER_FØR_FØDSEL:
-            return Uttaksdagen.denneEllerNeste(
-                getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato),
-            ).getDato();
+            return getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
         case OppstartValg.FAMILIEHENDELSESDATO:
             return Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato();
         case OppstartValg.ANKOMSTDATO_NORGE:
