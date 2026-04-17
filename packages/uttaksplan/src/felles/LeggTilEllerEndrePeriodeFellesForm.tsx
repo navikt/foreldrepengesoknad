@@ -216,7 +216,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 
             {forelder !== undefined && <hr className="text-ax-border-neutral-subtle" />}
 
-            {forelder !== 'FAR_MEDMOR' && gyldigeStønadskontoerForMor.length > 0 && (
+            {(forelder === 'MOR' || forelder === 'BEGGE') && gyldigeStønadskontoerForMor.length > 0 && (
                 <RhfRadioGroup
                     name="kontoTypeMor"
                     control={formMethods.control}
@@ -234,7 +234,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     })}
                 </RhfRadioGroup>
             )}
-            {forelder !== 'MOR' && gyldigeStønadskontoerForFarMedmor.length > 0 && (
+            {(forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && gyldigeStønadskontoerForFarMedmor.length > 0 && (
                 <RhfRadioGroup
                     name="kontoTypeFarMedmor"
                     control={formMethods.control}
