@@ -59,7 +59,9 @@ const fjernFrieUtsettelser = (perioder: UttakPeriode_fpoversikt[]): UttakPeriode
         return false;
     };
 
-    return perioder.filter((periode) => erEnPeriodeMedFriUtsettelseSomSkalBeholdes(periode));
+    return perioder.filter(
+        (periode) => erEnPeriodeMedFriUtsettelseSomSkalBeholdes(periode) || periode.utsettelseÅrsak !== 'FRI',
+    );
 };
 
 // TODO (TOR) Fjern denne når ein byrjar å lagre annen parts periodar
