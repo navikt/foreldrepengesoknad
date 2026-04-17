@@ -291,13 +291,11 @@ const getOppstartsdatoFromFordelingValg = (
         case OppstartValg.FAMILIEHENDELSESDATO:
             return Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato();
         case OppstartValg.ANKOMSTDATO_NORGE:
-            return Uttaksdagen.denneEllerNeste(getFørsteUttaksdagAnkomstdatoNorge(ankomstDatoNorge)).getDato();
+            return getFørsteUttaksdagAnkomstdatoNorge(ankomstDatoNorge);
         case OppstartValg.DAGEN_ETTER_ANNEN_FORELDER:
-            return Uttaksdagen.denneEllerNeste(
-                getNesteUttaksdagEtterAnnenForelder(sisteDagAnnenForelder ?? familiehendelsesdato),
-            ).getDato(); // TODO (Andreas) - Default verdi for øyeblikket
+            return getNesteUttaksdagEtterAnnenForelder(sisteDagAnnenForelder ?? familiehendelsesdato); // TODO (Andreas) - Default verdi for øyeblikket
         case OppstartValg.DATO_FOR_ALENEOMSORG:
-            return Uttaksdagen.denneEllerNeste(getFørsteUttaksdagDatoForAleneomsorg(datoForAleneomsorg)).getDato();
+            return getFørsteUttaksdagDatoForAleneomsorg(datoForAleneomsorg);
         default:
             throw new Error('Ukjent verdi på oppstartValg.');
     }
