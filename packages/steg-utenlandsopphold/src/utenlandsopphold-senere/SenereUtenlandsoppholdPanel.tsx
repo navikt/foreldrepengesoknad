@@ -1,5 +1,5 @@
 import { PlusIcon } from '@navikt/aksel-icons';
-import { Fragment, useCallback } from 'react';
+import { Fragment } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
@@ -53,9 +53,9 @@ export const SenereUtenlandsoppholdPanel = <TYPE extends string>({
         control: formMethods.control,
     });
 
-    const leggTilOpphold = useCallback(() => {
+    const leggTilOpphold = () => {
         append(DEFAULT_PERIODE);
-    }, [append]);
+    };
 
     return (
         <Step steps={stepConfig} onStepChange={onStepChange}>

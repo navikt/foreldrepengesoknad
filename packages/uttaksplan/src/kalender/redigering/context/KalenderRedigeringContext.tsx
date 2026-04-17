@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo } from 'react';
+import { createContext, useContext } from 'react';
 
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
@@ -34,43 +34,29 @@ export const KalenderRedigeringProvider = ({
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
-    const sammenslåtteValgtePerioder = useMemo(() => slåSammenTilstøtendePerioder(valgtePerioder), [valgtePerioder]);
+    const sammenslåtteValgtePerioder = slåSammenTilstøtendePerioder(valgtePerioder);
 
-    const leggTilUttaksplanPerioder = useCallback(
-        (perioder: UttakPeriode_fpoversikt[], skalForskyvePeriode: boolean) => {
-            const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder)
-                .leggTilUttakPerioder(perioder, skalForskyvePeriode)
-                .getUttakPerioder();
+    const leggTilUttaksplanPerioder = (perioder: UttakPeriode_fpoversikt[], skalForskyvePeriode: boolean) => {
+        const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder)
+            .leggTilUttakPerioder(perioder, skalForskyvePeriode)
+            .getUttakPerioder();
 
-            notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeUttakPerioder);
-        },
-        [uttaksplanRedigering, uttakPerioder],
-    );
+        notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeUttakPerioder);
+    };
 
-    const slettUttaksplanPerioder = useCallback(
-        (perioder: Array<{ fom: string; tom: string }>, skalForskyveBakover: boolean) => {
-            const uttakPeriodeBuilder = new UttakPeriodeBuilder(uttakPerioder);
-            uttakPeriodeBuilder.fjernUttakPerioder(perioder, skalForskyveBakover);
-            notEmpty(uttaksplanRedigering).oppdaterUttaksplan(uttakPeriodeBuilder.getUttakPerioder());
-        },
-        [uttaksplanRedigering, uttakPerioder],
-    );
+    const slettUttaksplanPerioder = (perioder: Array<{ fom: string; tom: string }>, skalForskyveBakover: boolean) => {
+        const uttakPeriodeBuilder = new UttakPeriodeBuilder(uttakPerioder);
+        uttakPeriodeBuilder.fjernUttakPerioder(perioder, skalForskyveBakover);
+        notEmpty(uttaksplanRedigering).oppdaterUttaksplan(uttakPeriodeBuilder.getUttakPerioder());
+    };
 
-    const value = useMemo(() => {
-        return {
-            sammenslåtteValgtePerioder,
-            leggTilUttaksplanPerioder,
-            slettUttaksplanPerioder,
-            setValgtePerioder,
-            setEndredePerioder,
-        };
-    }, [
+    const value = {
         sammenslåtteValgtePerioder,
         leggTilUttaksplanPerioder,
         slettUttaksplanPerioder,
         setValgtePerioder,
         setEndredePerioder,
-    ]);
+    };
 
     return <KalenderRedigeringContext value={value}>{children}</KalenderRedigeringContext>;
 };

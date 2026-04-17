@@ -4,7 +4,6 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import dayjs from 'dayjs';
-import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
@@ -159,10 +158,7 @@ const OmBarnetStegInner = ({
         return navigator.goToNextDefaultStep();
     };
 
-    const defaultValues = useMemo(
-        () => getOmBarnetInitialValues(arbeidsforhold, søkersituasjon, omBarnet, termindato),
-        [arbeidsforhold, omBarnet, termindato],
-    );
+    const defaultValues = getOmBarnetInitialValues(arbeidsforhold, søkersituasjon, omBarnet, termindato);
     const formMethods = useForm<BarnetFormValues>({
         shouldUnregister: true,
         defaultValues,

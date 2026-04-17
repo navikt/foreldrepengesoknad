@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import React, { ComponentProps, JSX, ReactNode, useCallback, useMemo, useState } from 'react';
+import React, { ComponentProps, JSX, ReactNode, useState } from 'react';
 import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
@@ -58,7 +58,7 @@ export const RhfDatepicker = <T extends FieldValues>({
         name,
         control,
         rules: {
-            validate: useMemo(() => getValidationRules(validate), [validate]),
+            validate: getValidationRules(validate),
         },
     });
 
@@ -83,25 +83,19 @@ export const RhfDatepicker = <T extends FieldValues>({
         defaultMonth: defaultMonth ? dayjs(defaultMonth).toDate() : undefined,
     });
 
-    const onChangeInput = useCallback(
-        (event: React.ChangeEvent<HTMLInputElement>) => {
-            const { inputVerdi, dato } = formatDateInput({ nyVerdi: event.target.value, forrigeVerdi: fieldValue });
+    const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { inputVerdi, dato } = formatDateInput({ nyVerdi: event.target.value, forrigeVerdi: fieldValue });
 
-            setFieldValue(inputVerdi);
-            if (onChange) {
-                onChange(dato);
-            }
-            field.onChange(dato);
-        },
-        [setFieldValue, onChange, field, fieldValue],
-    );
+        setFieldValue(inputVerdi);
+        if (onChange) {
+            onChange(dato);
+        }
+        field.onChange(dato);
+    };
 
     const fromDate = minDate ? dayjs(minDate).toDate() : undefined;
     const toDate = maxDate ? dayjs(maxDate).toDate() : undefined;
-    const disabledDays = useMemo(
-        () => (fromDate || toDate ? findDisabledDays(fromDate, toDate) : undefined),
-        [fromDate, toDate],
-    );
+    const disabledDays = fromDate || toDate ? findDisabledDays(fromDate, toDate) : undefined;
 
     return (
         <DatePicker

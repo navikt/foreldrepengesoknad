@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { Box, HGrid, Heading, VStack } from '@navikt/ds-react';
 
@@ -29,163 +29,137 @@ interface Props {
     setFocusedDate: (date: Dayjs) => void;
 }
 
-export const Month = React.memo(
-    ({
-        year,
-        month,
-        isFirstMonth,
-        showWeekNumbers,
-        periods,
-        focusedDate,
-        pendingFom,
-        hoverDate,
-        dateTooltipCallback,
-        dateClickCallback,
-        onDateHover,
-        setFocusedDate,
-    }: Props) => {
-        logOnLocalhost(`Rendering Month: ${month}-${year}`);
+export const Month = ({
+    year,
+    month,
+    isFirstMonth,
+    showWeekNumbers,
+    periods,
+    focusedDate,
+    pendingFom,
+    hoverDate,
+    dateTooltipCallback,
+    dateClickCallback,
+    onDateHover,
+    setFocusedDate,
+}: Props) => {
+    logOnLocalhost(`Rendering Month: ${month}-${year}`);
 
-        const periodMap = useMemo(() => buildPeriodMap(periods), [periods]);
+    const periodMap = buildPeriodMap(periods);
 
-        const firstDayOfMonth = dayjs().year(year).month(month).startOf('month');
+    const firstDayOfMonth = dayjs().year(year).month(month).startOf('month');
 
-        const hoverPreviewSet = useMemo(() => {
-            const hoveredDays = new Set<string>();
-            if (!pendingFom || !hoverDate) {
-                return hoveredDays;
-            }
-
-            const fom = dayjs(pendingFom).isBefore(hoverDate) ? pendingFom : hoverDate;
-            const tom = dayjs(pendingFom).isBefore(hoverDate) ? hoverDate : pendingFom;
-
-            const lastDayOfMonth = firstDayOfMonth.endOf('month');
-
-            let current = dayjs(fom).isBefore(firstDayOfMonth) ? firstDayOfMonth : dayjs(fom);
-            const end = dayjs(tom).isAfter(lastDayOfMonth) ? lastDayOfMonth : dayjs(tom);
-
-            while (!current.isAfter(end)) {
-                if (!isWeekend(current)) {
-                    hoveredDays.add(current.format(ISO_DATE_FORMAT));
-                }
-                current = current.add(1, 'day');
-            }
-
+    const hoverPreviewSet = (() => {
+        const hoveredDays = new Set<string>();
+        if (!pendingFom || !hoverDate) {
             return hoveredDays;
-        }, [pendingFom, hoverDate, firstDayOfMonth]);
+        }
 
-        const daysInMonth = firstDayOfMonth.daysInMonth();
-        const startWeekDay = firstDayOfMonth.isoWeekday();
-        const endWeekDay = firstDayOfMonth.endOf('month').isoWeekday();
-        const firstWeekNrOfMonth = firstDayOfMonth.isoWeek();
+        const fom = dayjs(pendingFom).isBefore(hoverDate) ? pendingFom : hoverDate;
+        const tom = dayjs(pendingFom).isBefore(hoverDate) ? hoverDate : pendingFom;
 
-        const nrOfWeeks = Math.ceil((daysInMonth + (startWeekDay - 1) + (7 - endWeekDay)) / 7);
+        const lastDayOfMonth = firstDayOfMonth.endOf('month');
 
-        const nrOfColumns = showWeekNumbers ? 8 : 7;
+        let current = dayjs(fom).isBefore(firstDayOfMonth) ? firstDayOfMonth : dayjs(fom);
+        const end = dayjs(tom).isAfter(lastDayOfMonth) ? lastDayOfMonth : dayjs(tom);
 
-        const weekdayHeaders = Array.from({ length: 7 }, (_, i) => firstDayOfMonth.isoWeekday(i + 1).format('dd'));
-
-        return (
-            <Box
-                borderWidth="1"
-                maxWidth="400px"
-                padding="space-12"
-                borderRadius="4"
-                borderColor="neutral-subtle"
-                data-testid={`year:${year};month:${month}`}
-            >
-                <VStack gap="space-12">
-                    <Heading size="small" level="4" align="center">
-                        {`${capitalizeFirstLetter(firstDayOfMonth.format('MMMM'))} ${year}`}
-                    </Heading>
-
-                    <div>
-                        <HGrid columns={nrOfColumns}>
-                            {showWeekNumbers && <div className={styles.weeknr} />}
-                            {weekdayHeaders.map((dayLabel) => (
-                                <div key={dayLabel} className={styles.weekday}>
-                                    {dayLabel}
-                                </div>
-                            ))}
-                        </HGrid>
-
-                        {Array.from({ length: nrOfWeeks }).map((_, week) => {
-                            return (
-                                <HGrid key={`week-${week}`} columns={nrOfColumns}>
-                                    {showWeekNumbers && (
-                                        <div key={`weeknr-${week}`} className={styles.weeknr}>
-                                            {firstWeekNrOfMonth + week}
-                                        </div>
-                                    )}
-                                    {Array.from({ length: 7 }).map((__, day) => {
-                                        const cellIndex = week * 7 + day;
-                                        const isBeforeMonth = week === 0 && day < startWeekDay - 1;
-                                        const isAfterMonth = week === nrOfWeeks - 1 && day >= endWeekDay;
-
-                                        if (isBeforeMonth || isAfterMonth) {
-                                            return <div key={`empty-${cellIndex}`} />;
-                                        }
-
-                                        const date = firstDayOfMonth.add(cellIndex - (startWeekDay - 1), 'day');
-
-                                        const period = periodMap.get(formatDateIso(date));
-
-                                        return (
-                                            <Day
-                                                key={`${year}-${month}-${date.date()}`}
-                                                isoDate={formatDateIso(date)}
-                                                periodeColor={findDayColor(date, period)}
-                                                srText={period?.srText}
-                                                isUpdated={period?.isUpdated}
-                                                isHoverPreview={hoverPreviewSet.has(formatDateIso(date))}
-                                                Icon={period?.icon}
-                                                iconFull={period?.iconFull}
-                                                shape={getDayShape(date, periodMap, hoverPreviewSet)}
-                                                dateTooltipCallback={dateTooltipCallback}
-                                                dateClickCallback={dateClickCallback}
-                                                onDateHover={onDateHover}
-                                                isFocused={
-                                                    focusedDate?.isSame(date, 'day') ??
-                                                    (isFirstMonth && cellIndex === startWeekDay - 1) ??
-                                                    false
-                                                }
-                                                setFocusedDate={setFocusedDate}
-                                            />
-                                        );
-                                    })}
-                                </HGrid>
-                            );
-                        })}
-                    </div>
-                </VStack>
-            </Box>
-        );
-    },
-    (prev, next) => {
-        const keys = Object.keys(prev) as Array<keyof Props>;
-        for (const key of keys) {
-            if (key !== 'periods' && prev[key] !== next[key]) {
-                return false;
+        while (!current.isAfter(end)) {
+            if (!isWeekend(current)) {
+                hoveredDays.add(current.format(ISO_DATE_FORMAT));
             }
+            current = current.add(1, 'day');
         }
 
-        // Sjekk verdiar i perioder spesifikt, fordi periodane vil ligga i eit nytt array etter kvar endring
-        if (prev.periods.length !== next.periods.length) {
-            return false;
-        }
-        for (let i = 0; i < prev.periods.length; i++) {
-            const prevPeriod = prev.periods[i]!;
-            const nextPeriod = next.periods[i]!;
-            const periodKeys = Object.keys(prevPeriod) as Array<keyof typeof prevPeriod>;
-            for (const key of periodKeys) {
-                if (prevPeriod[key] !== nextPeriod[key]) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    },
-);
+        return hoveredDays;
+    })();
+
+    const daysInMonth = firstDayOfMonth.daysInMonth();
+    const startWeekDay = firstDayOfMonth.isoWeekday();
+    const endWeekDay = firstDayOfMonth.endOf('month').isoWeekday();
+    const firstWeekNrOfMonth = firstDayOfMonth.isoWeek();
+
+    const nrOfWeeks = Math.ceil((daysInMonth + (startWeekDay - 1) + (7 - endWeekDay)) / 7);
+
+    const nrOfColumns = showWeekNumbers ? 8 : 7;
+
+    const weekdayHeaders = Array.from({ length: 7 }, (_, i) => firstDayOfMonth.isoWeekday(i + 1).format('dd'));
+
+    return (
+        <Box
+            borderWidth="1"
+            maxWidth="400px"
+            padding="space-12"
+            borderRadius="4"
+            borderColor="neutral-subtle"
+            data-testid={`year:${year};month:${month}`}
+        >
+            <VStack gap="space-12">
+                <Heading size="small" level="4" align="center">
+                    {`${capitalizeFirstLetter(firstDayOfMonth.format('MMMM'))} ${year}`}
+                </Heading>
+
+                <div>
+                    <HGrid columns={nrOfColumns}>
+                        {showWeekNumbers && <div className={styles.weeknr} />}
+                        {weekdayHeaders.map((dayLabel) => (
+                            <div key={dayLabel} className={styles.weekday}>
+                                {dayLabel}
+                            </div>
+                        ))}
+                    </HGrid>
+
+                    {Array.from({ length: nrOfWeeks }).map((_, week) => {
+                        return (
+                            <HGrid key={`week-${week}`} columns={nrOfColumns}>
+                                {showWeekNumbers && (
+                                    <div key={`weeknr-${week}`} className={styles.weeknr}>
+                                        {firstWeekNrOfMonth + week}
+                                    </div>
+                                )}
+                                {Array.from({ length: 7 }).map((__, day) => {
+                                    const cellIndex = week * 7 + day;
+                                    const isBeforeMonth = week === 0 && day < startWeekDay - 1;
+                                    const isAfterMonth = week === nrOfWeeks - 1 && day >= endWeekDay;
+
+                                    if (isBeforeMonth || isAfterMonth) {
+                                        return <div key={`empty-${cellIndex}`} />;
+                                    }
+
+                                    const date = firstDayOfMonth.add(cellIndex - (startWeekDay - 1), 'day');
+
+                                    const period = periodMap.get(formatDateIso(date));
+
+                                    return (
+                                        <Day
+                                            key={`${year}-${month}-${date.date()}`}
+                                            isoDate={formatDateIso(date)}
+                                            periodeColor={findDayColor(date, period)}
+                                            srText={period?.srText}
+                                            isUpdated={period?.isUpdated}
+                                            isHoverPreview={hoverPreviewSet.has(formatDateIso(date))}
+                                            Icon={period?.icon}
+                                            iconFull={period?.iconFull}
+                                            shape={getDayShape(date, periodMap, hoverPreviewSet)}
+                                            dateTooltipCallback={dateTooltipCallback}
+                                            dateClickCallback={dateClickCallback}
+                                            onDateHover={onDateHover}
+                                            isFocused={
+                                                focusedDate?.isSame(date, 'day') ??
+                                                (isFirstMonth && cellIndex === startWeekDay - 1) ??
+                                                false
+                                            }
+                                            setFocusedDate={setFocusedDate}
+                                        />
+                                    );
+                                })}
+                            </HGrid>
+                        );
+                    })}
+                </div>
+            </VStack>
+        </Box>
+    );
+};
 
 const getDayShape = (
     date: dayjs.Dayjs,

@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { FieldValues, UseControllerProps, useController, useWatch } from 'react-hook-form';
 
 import { TextFieldProps as DsTextFieldProps, TextField } from '@navikt/ds-react';
@@ -21,7 +20,7 @@ export const RhfFormattertTallTextField = <T extends FieldValues>({
     const { field, fieldState } = useController({
         name,
         rules: {
-            validate: useMemo(() => getValidationRules(validate), [validate]),
+            validate: getValidationRules(validate),
         },
     });
 

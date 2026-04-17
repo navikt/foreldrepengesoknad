@@ -1,4 +1,4 @@
-import { ReactNode, useMemo } from 'react';
+import { ReactNode } from 'react';
 import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 
 import { ConfirmationPanel } from '@navikt/ds-react';
@@ -28,7 +28,7 @@ export const RhfConfirmationPanel = <T extends FieldValues>({
         name,
         control,
         rules: {
-            validate: useMemo(() => getValidationRules(validate), [validate]),
+            validate: getValidationRules(validate),
         },
     });
 

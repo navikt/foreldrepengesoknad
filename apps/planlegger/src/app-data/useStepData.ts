@@ -1,6 +1,5 @@
 import { PATH_ORDER, PlanleggerRoutes, REQUIRED_APP_STEPS } from 'appData/routes';
 import dayjs from 'dayjs';
-import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
@@ -110,26 +109,22 @@ export const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
     const getStateData = useContextGetAnyData();
     const labelMap = getLabelConfig(intl);
 
-    const currentPath = useMemo(() => {
+    const currentPath = (() => {
         const route = Object.values(PlanleggerRoutes).find(
             (v) => v.toString() === decodeURIComponent(location.pathname),
         );
         return route ?? PlanleggerRoutes.OM_PLANLEGGEREN;
-    }, [location.pathname]);
+    })();
 
-    const appPathList = useMemo(
-        () =>
-            PATH_ORDER.flatMap((path) =>
-                REQUIRED_APP_STEPS.includes(path) ||
-                showArbeidssituasjonStep(path, getStateData) ||
-                showBarnehageplassStep(path, getStateData) ||
-                showHvorMyeStep(path, getStateData) ||
-                showFordelingStep(path, getStateData) ||
-                showHvorLangPeriodeEllerOversiktStep(path, getStateData)
-                    ? [path]
-                    : [],
-            ),
-        [getStateData],
+    const appPathList = PATH_ORDER.flatMap((path) =>
+        REQUIRED_APP_STEPS.includes(path) ||
+        showArbeidssituasjonStep(path, getStateData) ||
+        showBarnehageplassStep(path, getStateData) ||
+        showHvorMyeStep(path, getStateData) ||
+        showFordelingStep(path, getStateData) ||
+        showHvorLangPeriodeEllerOversiktStep(path, getStateData)
+            ? [path]
+            : [],
     );
 
     return appPathList.map((p) => ({

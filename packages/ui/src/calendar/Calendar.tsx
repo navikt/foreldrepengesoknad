@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import isoWeek from 'dayjs/plugin/isoWeek';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 
 import { HGrid } from '@navikt/ds-react';
 
@@ -37,28 +37,22 @@ export const Calendar = ({
     const [focusedDate, setFocusedDate] = useState<dayjs.Dayjs | undefined>();
     const [hoverDate, setHoverDate] = useState<string | undefined>();
 
-    const onDateHover = useCallback((date: string | undefined) => {
+    const onDateHover = (date: string | undefined) => {
         setHoverDate(date);
-    }, []);
+    };
 
-    const pendingFom = useMemo(() => {
+    const pendingFom = (() => {
         if (!isRangeSelection) {
             return undefined;
         }
         return periods.find((p) => p.isSelected && p.fom === p.tom)?.fom;
-    }, [isRangeSelection, periods]);
+    })();
 
-    const allMonths = useMemo(
-        () => findMonths(firstDateInCalendar, lastDateInCalendar),
-        [firstDateInCalendar, lastDateInCalendar],
-    );
-    const periodsByMonth = useMemo(() => groupPeriodsByMonth(allMonths, periods), [allMonths, periods]);
+    const allMonths = findMonths(firstDateInCalendar, lastDateInCalendar);
+    const periodsByMonth = groupPeriodsByMonth(allMonths, periods);
 
-    const dateClickCallback = useCallback(
-        (selectedDate: string) =>
-            getDateClickCallback(isRangeSelection, getSrTextForSelectedPeriod, setSelectedPeriods)(selectedDate),
-        [isRangeSelection, getSrTextForSelectedPeriod, setSelectedPeriods],
-    );
+    const dateClickCallback = (selectedDate: string) =>
+        getDateClickCallback(isRangeSelection, getSrTextForSelectedPeriod, setSelectedPeriods)(selectedDate);
 
     return (
         <HGrid gap="space-12" columns={{ sm: 1, md: nrOfColumns }} onMouseLeave={() => setHoverDate(undefined)}>

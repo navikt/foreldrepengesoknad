@@ -2,7 +2,6 @@ import { ContextDataType, useContextSaveAnyData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useSetSøknadsdata } from 'appData/useSetSøknadsdata';
-import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
@@ -51,10 +50,7 @@ export const Forside = ({
     const { oppdaterSøknadIState } = useSetSøknadsdata();
 
     // Denne må memoriserast, ellers får barna ulik id for kvar render => trøbbel
-    const selectableBarn = useMemo(
-        () => [...getSelectableBarnOptions(saker, søkerInfo.barn)].sort(sorterSelectableBarnEtterYngst),
-        [saker, søkerInfo.barn],
-    );
+    const selectableBarn = [...getSelectableBarnOptions(saker, søkerInfo.barn)].sort(sorterSelectableBarnEtterYngst);
 
     const onSubmit = (values: ForsideFormValues) => {
         // Skal i utgangspunktet ikke få submitte hvis denne ikke er true

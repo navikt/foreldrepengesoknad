@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
@@ -34,15 +34,12 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
 
     const [uttaksplanVersjoner, setUttaksplanVersjoner] = useState<AlleUttakPerioder[][]>([]);
 
-    const oppdaterUttaksplan = useCallback(
-        (nyUttaksplan: AlleUttakPerioder[]) => {
-            setUttaksplanVersjoner((eksisterendeVersjoner) => [...eksisterendeVersjoner, nyUttaksplan]);
-            oppdater(nyUttaksplan);
-        },
-        [oppdater],
-    );
+    const oppdaterUttaksplan = (nyUttaksplan: AlleUttakPerioder[]) => {
+        setUttaksplanVersjoner((eksisterendeVersjoner) => [...eksisterendeVersjoner, nyUttaksplan]);
+        oppdater(nyUttaksplan);
+    };
 
-    const angreSisteEndring = useCallback(() => {
+    const angreSisteEndring = () => {
         setUttaksplanVersjoner((eksisterendeVersjoner) => {
             if (eksisterendeVersjoner.length === 0) {
                 return eksisterendeVersjoner;
@@ -53,39 +50,28 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
 
             return nyeVersjoner;
         });
-    }, [oppdater]);
+    };
 
-    const tilbakestillUttaksplan = useCallback(() => {
+    const tilbakestillUttaksplan = () => {
         setUttaksplanVersjoner([]);
         oppdater(undefined);
-    }, [oppdater]);
+    };
 
-    const fjernAltIUttaksplan = useCallback(() => {
+    const fjernAltIUttaksplan = () => {
         setUttaksplanVersjoner([]);
         oppdater(uttakPerioder.filter((periode) => erEøsUttakPeriode(periode)));
-    }, [oppdater, uttakPerioder]);
+    };
 
-    const value = useMemo(
-        () => ({
-            visFjernAltModal,
-            uttaksplanVersjoner,
-            harEndretPlan,
-            oppdaterUttaksplan,
-            angreSisteEndring,
-            tilbakestillUttaksplan,
-            fjernAltIUttaksplan,
-            setVisFjernAltModal,
-        }),
-        [
-            visFjernAltModal,
-            uttaksplanVersjoner,
-            harEndretPlan,
-            oppdaterUttaksplan,
-            angreSisteEndring,
-            tilbakestillUttaksplan,
-            fjernAltIUttaksplan,
-        ],
-    );
+    const value = {
+        visFjernAltModal,
+        uttaksplanVersjoner,
+        harEndretPlan,
+        oppdaterUttaksplan,
+        angreSisteEndring,
+        tilbakestillUttaksplan,
+        fjernAltIUttaksplan,
+        setVisFjernAltModal,
+    };
 
     return <UttaksplanRedigeringContext.Provider value={value}>{children}</UttaksplanRedigeringContext.Provider>;
 };

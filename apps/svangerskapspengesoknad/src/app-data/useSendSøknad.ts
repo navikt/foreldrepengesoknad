@@ -2,7 +2,6 @@ import { useMutation } from '@tanstack/react-query';
 import { API_URLS } from 'appData/queries';
 import { SøknadRoute } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
-import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { captureMessage } from '@navikt/fp-observability';
@@ -62,11 +61,8 @@ export const useSendSøknad = (søkerinfo: SvpPersonopplysningerDto_fpoversikt) 
         mutationFn: () => send(),
     });
 
-    return useMemo(
-        () => ({
-            sendSøknad: () => sendSøknad(),
-            errorSendSøknad: error,
-        }),
-        [sendSøknad, error],
-    );
+    return {
+        sendSøknad: () => sendSøknad(),
+        errorSendSøknad: error,
+    };
 };

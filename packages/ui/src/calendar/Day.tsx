@@ -49,88 +49,82 @@ type Props = {
     setFocusedDate: (date: Dayjs) => void;
 };
 
-export const Day = React.memo(
-    ({
-        isoDate,
-        periodeColor,
-        isFocused,
-        srText,
-        isUpdated,
-        isHoverPreview,
-        Icon,
-        iconFull,
-        shape,
-        dateTooltipCallback,
-        dateClickCallback,
-        onDateHover,
-        setFocusedDate,
-    }: Props) => {
-        const date = dayjs(isoDate);
-        const day = date.date();
+export const Day = ({
+    isoDate,
+    periodeColor,
+    isFocused,
+    srText,
+    isUpdated,
+    isHoverPreview,
+    Icon,
+    iconFull,
+    shape,
+    dateTooltipCallback,
+    dateClickCallback,
+    onDateHover,
+    setFocusedDate,
+}: Props) => {
+    const date = dayjs(isoDate);
+    const day = date.date();
 
-        logOnLocalhost(`Rendering Day: ${day}, Color: ${periodeColor}`);
+    logOnLocalhost(`Rendering Day: ${day}, Color: ${periodeColor}`);
 
-        const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+    const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
-        const buttonRef = useRef<HTMLButtonElement>(null);
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
-        const setButtonRef = React.useCallback(
-            (el: HTMLButtonElement | null) => {
-                buttonRef.current = el;
+    const setButtonRef = (el: HTMLButtonElement | null) => {
+        buttonRef.current = el;
 
-                if (el && isFocused) {
-                    el.focus();
-                }
-            },
-            [isFocused],
-        );
+        if (el && isFocused) {
+            el.focus();
+        }
+    };
 
-        const isClickable = !!dateClickCallback && !isWeekend(date);
-        const colorClass =
-            isHoverPreview && !isWeekend(date) && periodeColor !== 'DARKBLUE'
-                ? styles.hoverPreviewDay
-                : DAY_STYLE[periodeColor];
+    const isClickable = !!dateClickCallback && !isWeekend(date);
+    const colorClass =
+        isHoverPreview && !isWeekend(date) && periodeColor !== 'DARKBLUE'
+            ? styles.hoverPreviewDay
+            : DAY_STYLE[periodeColor];
 
-        return (
-            <button
-                ref={setButtonRef}
-                type="button"
-                data-testid={`day:${day};dayColor:${periodeColor}${Icon ? `;with-icon` : ''}`}
-                tabIndex={isFocused ? 0 : -1}
-                className={`${styles.days} ${colorClass} ${isClickable && styles.cursorAndHoover} ${isUpdated && styles.fadeIn} 
+    return (
+        <button
+            ref={setButtonRef}
+            type="button"
+            data-testid={`day:${day};dayColor:${periodeColor}${Icon ? `;with-icon` : ''}`}
+            tabIndex={isFocused ? 0 : -1}
+            className={`${styles.days} ${colorClass} ${isClickable && styles.cursorAndHoover} ${isUpdated && styles.fadeIn} 
                 ${shape === 'rounded-left' && styles.roundedLeft} ${shape === 'rounded-right' && styles.roundedRight}`}
-                onFocus={isClickable ? () => setFocusedDate(date) : undefined}
-                onMouseEnter={onDateHover && isClickable ? () => onDateHover(isoDate) : undefined}
-                onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
-                onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
-                onClick={isClickable ? () => dateClickCallback(isoDate) : undefined}
-                onAnimationEnd={() => buttonRef.current?.classList.remove(styles.fadeIn!)}
-                onKeyDown={
-                    dateClickCallback
-                        ? (e) =>
-                              handleKeyNavigationAndSelection(e, date, dateClickCallback, setFocusedDate, onDateHover)
-                        : undefined
-                }
-                aria-label={formatDate(date) + (srText ? `, ${srText}` : '')}
-            >
-                {(!Icon || (!iconFull && periodeColor === 'GRAY')) && day}
+            onFocus={isClickable ? () => setFocusedDate(date) : undefined}
+            onMouseEnter={onDateHover && isClickable ? () => onDateHover(isoDate) : undefined}
+            onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
+            onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
+            onClick={isClickable ? () => dateClickCallback(isoDate) : undefined}
+            onAnimationEnd={() => buttonRef.current?.classList.remove(styles.fadeIn!)}
+            onKeyDown={
+                dateClickCallback
+                    ? (e) => handleKeyNavigationAndSelection(e, date, dateClickCallback, setFocusedDate, onDateHover)
+                    : undefined
+            }
+            aria-label={formatDate(date) + (srText ? `, ${srText}` : '')}
+        >
+            {(!Icon || (!iconFull && periodeColor === 'GRAY')) && day}
 
-                {Icon && iconFull && Icon}
-                {Icon && !iconFull && periodeColor !== 'GRAY' && (
-                    <>
-                        {day}
-                        <div className={styles.icon}>{Icon}</div>
-                    </>
-                )}
-                {dateTooltipCallback && isPeriodDifferentFromNoneOrGray(periodeColor) && (
-                    <Popover open={isTooltipOpen} onClose={() => setIsTooltipOpen(false)} anchorEl={buttonRef.current}>
-                        <Popover.Content>{dateTooltipCallback(isoDate)}</Popover.Content>
-                    </Popover>
-                )}
-            </button>
-        );
-    },
-);
+            {Icon && iconFull && Icon}
+            {Icon && !iconFull && periodeColor !== 'GRAY' && (
+                <>
+                    {day}
+                    <div className={styles.icon}>{Icon}</div>
+                </>
+            )}
+            {dateTooltipCallback && isPeriodDifferentFromNoneOrGray(periodeColor) && (
+                <Popover open={isTooltipOpen} onClose={() => setIsTooltipOpen(false)} anchorEl={buttonRef.current}>
+                    <Popover.Content>{dateTooltipCallback(isoDate)}</Popover.Content>
+                </Popover>
+            )}
+        </button>
+    );
+};
 
 const isPeriodDifferentFromNoneOrGray = (periodeColor: CalendarPeriodColor): boolean =>
     periodeColor !== 'NONE' && periodeColor !== 'GRAY';

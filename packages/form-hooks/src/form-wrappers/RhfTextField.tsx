@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, useCallback, useMemo } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 
 import { TextFieldProps as DsTextFieldProps, TextField } from '@navikt/ds-react';
@@ -48,24 +48,21 @@ export const RhfTextField = <T extends FieldValues>({
         control,
         disabled,
         rules: {
-            validate: useMemo(() => getValidationRules(validate), [validate]),
+            validate: getValidationRules(validate),
         },
     });
 
-    const onChangeFn = useCallback(
-        (evt: React.ChangeEvent<HTMLInputElement>) => {
-            const parsedValues = shouldReplaceInvisibleChars
-                ? replaceInvisibleCharsWithSpace(evt.currentTarget.value)
-                : evt.currentTarget.value;
+    const onChangeFn = (evt: React.ChangeEvent<HTMLInputElement>) => {
+        const parsedValues = shouldReplaceInvisibleChars
+            ? replaceInvisibleCharsWithSpace(evt.currentTarget.value)
+            : evt.currentTarget.value;
 
-            field.onChange(parsedValues);
+        field.onChange(parsedValues);
 
-            if (onChange) {
-                onChange(parsedValues);
-            }
-        },
-        [field, onChange, shouldReplaceInvisibleChars],
-    );
+        if (onChange) {
+            onChange(parsedValues);
+        }
+    };
 
     return (
         <TextField

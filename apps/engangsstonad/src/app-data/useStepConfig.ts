@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 import { harBarnetTermindato } from 'types/OmBarnet';
@@ -93,30 +92,19 @@ export const useStepConfig = () => {
     const location = useLocation();
     const getStateData = useContextGetAnyData();
 
-    const currentPath = useMemo(
-        () => notEmpty(Object.values(Path).find((v: string) => v === decodeURIComponent(location.pathname))),
-        [location.pathname],
+    const currentPath = notEmpty(Object.values(Path).find((v: string) => v === decodeURIComponent(location.pathname)));
+
+    const appPathList = PATH_ORDER.flatMap((path) =>
+        REQUIRED_APP_STEPS.includes(path) ||
+        showUtenlandsoppholdStep(path, currentPath, getStateData) ||
+        showDokumentasjonStep(path, currentPath, getStateData)
+            ? [path]
+            : [],
     );
 
-    const appPathList = useMemo(
-        () =>
-            PATH_ORDER.flatMap((path) =>
-                REQUIRED_APP_STEPS.includes(path) ||
-                showUtenlandsoppholdStep(path, currentPath, getStateData) ||
-                showDokumentasjonStep(path, currentPath, getStateData)
-                    ? [path]
-                    : [],
-            ),
-        [currentPath, getStateData],
-    );
-
-    return useMemo(
-        () =>
-            appPathList.map((p) => ({
-                id: p,
-                label: pathToLabelMap[p],
-                isSelected: p === currentPath,
-            })),
-        [appPathList, currentPath, pathToLabelMap],
-    );
+    return appPathList.map((p) => ({
+        id: p,
+        label: pathToLabelMap[p],
+        isSelected: p === currentPath,
+    }));
 };

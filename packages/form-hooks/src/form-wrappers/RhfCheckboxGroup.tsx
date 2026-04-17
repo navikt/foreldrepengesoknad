@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, useCallback, useMemo } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import {
     FieldPath,
     FieldPathValue,
@@ -40,19 +40,16 @@ export const RhfCheckboxGroup = <TFieldValues extends FieldValues, TName extends
         name,
         control,
         rules: {
-            validate: useMemo(() => getValidationRules(validate), [validate]),
+            validate: getValidationRules(validate),
         },
     });
 
-    const onChangeFn = useCallback(
-        (value: string[]) => {
-            if (onChange) {
-                onChange(value as PathValue<TFieldValues, TName>);
-            }
-            field.onChange(value);
-        },
-        [field, onChange],
-    );
+    const onChangeFn = (value: string[]) => {
+        if (onChange) {
+            onChange(value as PathValue<TFieldValues, TName>);
+        }
+        field.onChange(value);
+    };
 
     return (
         <CheckboxGroup

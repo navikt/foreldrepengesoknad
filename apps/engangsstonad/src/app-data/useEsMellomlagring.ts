@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { API_URLS } from 'appData/queries';
 import ky, { HTTPError } from 'ky';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { captureMessage } from '@navikt/fp-observability';
@@ -90,14 +90,14 @@ export const useEsMellomlagring = (
         }
     }, [skalMellomlagre]);
 
-    const mellomlagreOgNaviger = useCallback(() => {
+    const mellomlagreOgNaviger = () => {
         //Må gå via state change sidan ein må få oppdatert context før ein mellomlagrar
         setSkalMellomlagre(true);
 
         return new Promise<void>((resolve) => {
             promiseRef.current = resolve;
         });
-    }, []);
+    };
 
     return mellomlagreOgNaviger;
 };

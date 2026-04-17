@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Button, HStack, InlineMessage, Link, Radio, RadioGroup, VStack } from '@navikt/ds-react';
@@ -33,14 +33,11 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
     const [endredePerioder, setEndredePerioder] = useState<Array<{ fom: string; tom: string }>>([]);
 
-    const setRedigeringAktivOgValgtePerioder = useCallback<React.Dispatch<React.SetStateAction<CalendarPeriod[]>>>(
-        (perioder) => {
-            setErRedigeringAktiv(true);
-            setValgtePerioder(perioder);
-            setEndredePerioder([]);
-        },
-        [],
-    );
+    const setRedigeringAktivOgValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>> = (perioder) => {
+        setErRedigeringAktiv(true);
+        setValgtePerioder(perioder);
+        setEndredePerioder([]);
+    };
 
     const {
         uttakPerioder,
@@ -62,18 +59,15 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
         barnehagestartdato,
     );
 
-    const getSrTextForSelectedPeriod = useCallback(
-        (periode: { fom: string; tom: string }) => {
-            return intl.formatMessage(
-                { id: 'UttaksplanKalender.ValgtPeriodeSrTekst' },
-                {
-                    fom: dayjs(periode.fom).format(DDMMYYYY_DATE_FORMAT),
-                    tom: dayjs(periode.tom).format(DDMMYYYY_DATE_FORMAT),
-                },
-            );
-        },
-        [intl],
-    );
+    const getSrTextForSelectedPeriod = (periode: { fom: string; tom: string }) => {
+        return intl.formatMessage(
+            { id: 'UttaksplanKalender.ValgtPeriodeSrTekst' },
+            {
+                fom: dayjs(periode.fom).format(DDMMYYYY_DATE_FORMAT),
+                tom: dayjs(periode.tom).format(DDMMYYYY_DATE_FORMAT),
+            },
+        );
+    };
 
     const setValgtLegend = (color: CalendarPeriodColor) => {
         const perioder = perioderForKalendervisning.filter((p) => p.color === color);

@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, useCallback, useMemo } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 
 import { Select } from '@navikt/ds-react';
@@ -40,19 +40,16 @@ export const RhfSelect = <T extends FieldValues>({
         name,
         control,
         rules: {
-            validate: useMemo(() => getValidationRules(validate), [validate]),
+            validate: getValidationRules(validate),
         },
     });
 
-    const onChangeFn = useCallback(
-        (evt: React.ChangeEvent) => {
-            if (onChange) {
-                onChange(evt);
-            }
-            field.onChange(evt);
-        },
-        [field, onChange],
-    );
+    const onChangeFn = (evt: React.ChangeEvent) => {
+        if (onChange) {
+            onChange(evt);
+        }
+        field.onChange(evt);
+    };
 
     return (
         <Select

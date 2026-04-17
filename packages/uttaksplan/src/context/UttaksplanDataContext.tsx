@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo } from 'react';
+import { createContext, useContext } from 'react';
 
 import {
     Barn,
@@ -37,21 +37,19 @@ const UttaksplanDataContext = createContext<ContextValues | null>(null);
 export const UttaksplanDataProvider = (props: Props) => {
     const { children, ...otherProps } = props;
 
-    const value = useMemo(() => {
-        const familiehendelsedato = getFamiliehendelsedato(otherProps.barn);
-        const familiesituasjon = getFamiliesituasjon(otherProps.barn);
-        const termindato = isFødtBarn(otherProps.barn) ? otherProps.barn.termindato : undefined;
+    const familiehendelsedato = getFamiliehendelsedato(otherProps.barn);
+    const familiesituasjon = getFamiliesituasjon(otherProps.barn);
+    const termindato = isFødtBarn(otherProps.barn) ? otherProps.barn.termindato : undefined;
 
-        const sortertePerioder = filtrerBortPerioderUtenTrekkdager(otherProps.uttakPerioder).sort(sorterPerioder);
+    const sortertePerioder = filtrerBortPerioderUtenTrekkdager(otherProps.uttakPerioder).sort(sorterPerioder);
 
-        return {
-            ...otherProps,
-            familiehendelsedato,
-            familiesituasjon,
-            termindato,
-            uttakPerioder: sortertePerioder,
-        };
-    }, [otherProps]);
+    const value = {
+        ...otherProps,
+        familiehendelsedato,
+        familiesituasjon,
+        termindato,
+        uttakPerioder: sortertePerioder,
+    };
 
     return <UttaksplanDataContext value={value}>{children}</UttaksplanDataContext>;
 };

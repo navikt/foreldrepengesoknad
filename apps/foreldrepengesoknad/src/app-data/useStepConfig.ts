@@ -1,5 +1,4 @@
 import { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER, SøknadRoutes } from 'appData/routes.ts';
-import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 import { skalViseOmsorgsovertakelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/OmsorgsovertakelseDokumentasjon.tsx';
@@ -174,33 +173,24 @@ export const useStepConfig = (
     const location = useLocation();
     const getStateData = useContextGetAnyData();
 
-    const currentPath = useMemo(
-        () => notEmpty(Object.values(SøknadRoutes).find((v) => v.toString() === decodeURIComponent(location.pathname))),
-        [location.pathname],
+    const currentPath = notEmpty(
+        Object.values(SøknadRoutes).find((v) => v.toString() === decodeURIComponent(location.pathname)),
     );
 
     const requiredSteps = erEndringssøknad ? REQUIRED_APP_STEPS_ENDRINGSSØKNAD : REQUIRED_APP_STEPS;
-    const appPathList = useMemo(
-        () =>
-            ROUTES_ORDER.flatMap((path) =>
-                requiredSteps.includes(path) ||
-                showUtenlandsoppholdStep(path, currentPath, getStateData) ||
-                showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, eksisterendeSak) ||
-                showFrilansOgEgenNæringOgAndreInntekter(path, currentPath, getStateData)
-                    ? [path]
-                    : [],
-            ),
-        [requiredSteps, currentPath, getStateData, arbeidsforhold, erEndringssøknad, eksisterendeSak],
+    const appPathList = ROUTES_ORDER.flatMap((path) =>
+        requiredSteps.includes(path) ||
+        showUtenlandsoppholdStep(path, currentPath, getStateData) ||
+        showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, eksisterendeSak) ||
+        showFrilansOgEgenNæringOgAndreInntekter(path, currentPath, getStateData)
+            ? [path]
+            : [],
     );
 
-    return useMemo(
-        () =>
-            appPathList.map((p, index) => ({
-                index,
-                id: p,
-                label: pathToLabelMap[p],
-                isSelected: p === currentPath,
-            })),
-        [appPathList, currentPath, pathToLabelMap],
-    );
+    return appPathList.map((p, index) => ({
+        index,
+        id: p,
+        label: pathToLabelMap[p],
+        isSelected: p === currentPath,
+    }));
 };
