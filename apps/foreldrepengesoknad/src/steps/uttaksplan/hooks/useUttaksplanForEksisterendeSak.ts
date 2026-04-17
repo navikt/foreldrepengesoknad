@@ -7,7 +7,6 @@ import minMax from 'dayjs/plugin/minMax';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { Uttaksperioden } from '@navikt/fp-utils';
 import { Uttaksdagen } from '@navikt/fp-utils/src/uttak/Uttaksdagen';
 import { sorterUttakPerioder } from '@navikt/fp-uttaksplan';
 
@@ -60,9 +59,7 @@ const fjernFrieUtsettelser = (perioder: UttakPeriode_fpoversikt[]): UttakPeriode
         return false;
     };
 
-    return perioder.filter(
-        (periode) => Uttaksperioden.erEøsPeriode(periode) || erEnPeriodeMedFriUtsettelseSomSkalBeholdes(periode),
-    );
+    return perioder.filter((periode) => erEnPeriodeMedFriUtsettelseSomSkalBeholdes(periode));
 };
 
 // TODO (TOR) Fjern denne når ein byrjar å lagre annen parts periodar
