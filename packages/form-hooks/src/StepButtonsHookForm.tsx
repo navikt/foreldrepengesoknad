@@ -1,4 +1,4 @@
-import { useFormContext } from 'react-hook-form';
+import { FieldValues, useFormContext } from 'react-hook-form';
 
 import { StepButtons } from '@navikt/fp-ui';
 
