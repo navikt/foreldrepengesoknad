@@ -112,3 +112,41 @@ export const BrukerKanSøkeVedKunNeiSvar: Story = {
         arbeidsforhold: [],
     },
 };
+
+export const HarTidligereSvartJaPåFrilans: Story = {
+    args: {
+        ...Default.args,
+    },
+    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.ARBEID_OG_INNTEKT]}>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: {
+                            rolle: 'mor',
+                            situasjon: 'fødsel',
+                        },
+                        [ContextDataType.OM_BARNET]: {
+                            termindato: '2024-02-18',
+                            type: BarnType.FØDT,
+                            fødselsdatoer: ['2024-02-18'],
+                            antallBarn: 1,
+                        },
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                            harJobbetSomFrilans: true,
+                            harJobbetSomSelvstendigNæringsdrivende: false,
+                            harHattAndreInntektskilder: false,
+                        },
+                        [ContextDataType.FRILANS]: {
+                            jobberFremdelesSomFrilans: true,
+                            oppstart: '2023-01-01',
+                        },
+                    }}
+                >
+                    <ArbeidsforholdOgInntektSteg {...rest} />
+                </FpDataContext>
+            </MemoryRouter>
+        );
+    },
+};

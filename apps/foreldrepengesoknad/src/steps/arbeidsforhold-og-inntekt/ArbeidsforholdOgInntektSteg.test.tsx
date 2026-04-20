@@ -6,7 +6,7 @@ import { SøknadRoutes } from 'appData/routes';
 
 import * as stories from './ArbeidsforholdOgInntektSteg.stories';
 
-const { Default, BrukerKanSøkeVedKunNeiSvar } = composeStories(stories);
+const { Default, BrukerKanSøkeVedKunNeiSvar, HarTidligereSvartJaPåFrilans } = composeStories(stories);
 
 describe('<ArbeidsforholdOgInntektSteg>', () => {
     it('skal gå til neste steg når informasjon er korrekt', async () => {
@@ -96,5 +96,32 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
         expect(screen.queryByText('Du kan dessverre ikke gå videre i søknaden.')).not.toBeInTheDocument();
 
         expect(screen.getByText('Neste steg')).toBeInTheDocument();
+    });
+
+    it('skal navigere til ANNEN_FORELDER (ikke FRILANS) når bruker endrer harJobbetSomFrilans fra Ja til Nei og det finnes lagret frilans-data', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(
+            <HarTidligereSvartJaPåFrilans
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+
+        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Nei')[0]!);
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        const appRouteCall = gåTilNesteSide.mock.calls.find(([action]) => action.key === ContextDataType.APP_ROUTE);
+        expect(appRouteCall?.[0]).toEqual({
+            data: SøknadRoutes.ANNEN_FORELDER,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
     });
 });
