@@ -183,7 +183,6 @@ export const useStepConfig = (
     const appPathList = useMemo(
         () =>
             ROUTES_ORDER.flatMap((path) =>
-                path === currentPath ||
                 requiredSteps.includes(path) ||
                 showUtenlandsoppholdStep(path, currentPath, getStateData) ||
                 showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, eksisterendeSak) ||
