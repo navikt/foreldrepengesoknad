@@ -20,28 +20,20 @@ export const useFpNavigator = (
     // fordi kallande kode ofte dispatcher context-oppdateringar (t.d. oppdaterUttaksplan)
     // i same handler. Vi triggar derfor ein effekt med eit sekvensnummer; effekten køyrer
     // etter neste render og les då ferskt `stepConfig`.
-    const nextSeqRef = useRef(0);
-    const lastProcessedSeqRef = useRef(0);
     const directionRef = useRef<'next' | 'previous' | null>(null);
     const [seq, setSeq] = useState(0);
 
     const navigerTilDefaultSteg = (retning: 'next' | 'previous') => {
-        nextSeqRef.current += 1;
         directionRef.current = retning;
-        setSeq(nextSeqRef.current);
+        setSeq((s) => s + 1);
     };
 
     useEffect(() => {
-        // eslint-disable-next-line react-you-might-not-need-an-effect/no-event-handler -- bevisst: må vente på render etter context-dispatch
-        if (seq === lastProcessedSeqRef.current) {
-            return;
-        }
-        lastProcessedSeqRef.current = seq;
-
         const retning = directionRef.current;
         if (retning === null) {
             return;
         }
+        directionRef.current = null;
 
         const currentIndex = stepConfig.findIndex((s) => s.isSelected);
         if (currentIndex === -1) {
