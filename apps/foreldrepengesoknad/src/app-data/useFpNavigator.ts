@@ -1,6 +1,5 @@
 import { SøknadRoutes } from 'appData/routes';
-import { useRef } from 'react';
-import { flushSync } from 'react-dom';
+import { useEffect, useRef, useState } from 'react';
 
 import { captureMessage, loggUmamiEvent } from '@navikt/fp-observability';
 import { EksternArbeidsforholdDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
@@ -17,19 +16,34 @@ export const useFpNavigator = (
     const stepConfig = useStepConfig(arbeidsforhold, erEndringssøknad, eksisterendeSak);
     const oppdaterPath = useContextSaveData(ContextDataType.APP_ROUTE);
 
-    // `stepConfig` er utleia frå context-data. Når kallande kode oppdaterer context (t.d. `oppdaterUttaksplan(...)`)
-    // rett før den navigerer, har den nye contexten ikkje rukke å bli applisert enno – så closure-en ville sett gamal `stepConfig`.
-    // Vi held derfor ein ref som oppdaterast kvar render, og `flushSync` tvingar React til å committa ventande dispatches før vi les ref-en.
-    const stepConfigRef = useRef(stepConfig);
-    stepConfigRef.current = stepConfig;
+    // Vi kan ikkje rekne ut next/previous path synkront frå closure-fanga `stepConfig`,
+    // fordi kallande kode ofte dispatcher context-oppdateringar (t.d. oppdaterUttaksplan)
+    // i same handler. Vi triggar derfor ein effekt med eit sekvensnummer; effekten køyrer
+    // etter neste render og les då ferskt `stepConfig`.
+    const nextSeqRef = useRef(0);
+    const lastProcessedSeqRef = useRef(0);
+    const directionRef = useRef<'next' | 'previous' | null>(null);
+    const [seq, setSeq] = useState(0);
 
     const navigerTilDefaultSteg = (retning: 'next' | 'previous') => {
-        // Tøm ut ventande context-dispatches frå same event-handler slik at `stepConfigRef.current` reflekterer den oppdaterte tilstanden.
-        // eslint-disable-next-line @eslint-react/dom-no-flush-sync -- bevisst: må committa context-dispatches frå kallande kode før vi reknar ut neste path
-        flushSync(() => {});
+        nextSeqRef.current += 1;
+        directionRef.current = retning;
+        setSeq(nextSeqRef.current);
+    };
 
-        const ferskStepConfig = stepConfigRef.current;
-        const currentIndex = ferskStepConfig.findIndex((s) => s.isSelected);
+    useEffect(() => {
+        // eslint-disable-next-line react-you-might-not-need-an-effect/no-event-handler -- bevisst: må vente på render etter context-dispatch
+        if (seq === lastProcessedSeqRef.current) {
+            return;
+        }
+        lastProcessedSeqRef.current = seq;
+
+        const retning = directionRef.current;
+        if (retning === null) {
+            return;
+        }
+
+        const currentIndex = stepConfig.findIndex((s) => s.isSelected);
         if (currentIndex === -1) {
             captureMessage(`useFpNavigator: kunne ikkje finne valgt steg i stepConfig ved ${retning}-navigasjon`);
             return;
@@ -37,17 +51,17 @@ export const useFpNavigator = (
 
         const path =
             retning === 'next'
-                ? ferskStepConfig[currentIndex + 1]?.id
-                : (ferskStepConfig[currentIndex - 1]?.id ?? SøknadRoutes.VELKOMMEN);
+                ? stepConfig[currentIndex + 1]?.id
+                : (stepConfig[currentIndex - 1]?.id ?? SøknadRoutes.VELKOMMEN);
 
         if (path === undefined) {
-            captureMessage(`useFpNavigator: fann ingen ${retning}-path frå steg ${ferskStepConfig[currentIndex]?.id}`);
+            captureMessage(`useFpNavigator: fann ingen ${retning}-path frå steg ${stepConfig[currentIndex]?.id}`);
             return;
         }
 
         oppdaterPath(path);
         void mellomlagreOgNaviger();
-    };
+    }, [seq, stepConfig, mellomlagreOgNaviger, oppdaterPath]);
 
     const goToPreviousDefaultStep = () => {
         navigerTilDefaultSteg('previous');
