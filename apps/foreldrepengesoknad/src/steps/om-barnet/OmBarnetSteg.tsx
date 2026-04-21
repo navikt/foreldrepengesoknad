@@ -2,12 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
+import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { getFamiliehendelsedato } from 'utils/barnUtils';
+import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import {
     andreAugust2022ReglerGjelder,
     getEldsteRegistrerteBarn,
@@ -118,6 +119,7 @@ const OmBarnetStegInner = ({
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
+    const resetUttaksplanData = useResetUttaksplanData();
 
     const { arbeidsforhold, barn: registrerteBarn } = søkerInfo;
 
@@ -153,6 +155,15 @@ const OmBarnetStegInner = ({
             søkersituasjon.situasjon,
             barnSøktOmFørMenIkkeRegistrert,
         );
+
+        if (
+            omBarnet === undefined ||
+            getFamiliehendelsedato(omBarnet) !== getFamiliehendelsedato(oppdatertBarn) ||
+            omBarnet.antallBarn !== oppdatertBarn.antallBarn ||
+            getTermindato(omBarnet) !== getTermindato(oppdatertBarn)
+        ) {
+            resetUttaksplanData();
+        }
 
         oppdaterOmBarnet(oppdatertBarn);
 

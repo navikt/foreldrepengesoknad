@@ -1,5 +1,6 @@
 import { ExternalLinkIcon, FeedingBottleIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
+import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
@@ -95,11 +96,15 @@ export const DekningsgradForm = ({
     const periodeMedForeldrepenger = useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const oppdaterPeriodeMedForeldrepenger = useContextSaveData(ContextDataType.PERIODE_MED_FORELDREPENGER);
+    const resetUttaksplanData = useResetUttaksplanData();
     const formMethods = useForm<{ dekningsgrad: Dekningsgrad }>({
         defaultValues: { dekningsgrad: periodeMedForeldrepenger },
     });
 
     const onSubmit = (values: { dekningsgrad: Dekningsgrad }) => {
+        if (values.dekningsgrad !== periodeMedForeldrepenger) {
+            resetUttaksplanData();
+        }
         oppdaterPeriodeMedForeldrepenger(values.dekningsgrad);
         return goToNextDefaultStep();
     };

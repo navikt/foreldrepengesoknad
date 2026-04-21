@@ -1,5 +1,6 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
+import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getVarighetString, getVis1Juli2024Info } from 'utils/dateUtils';
@@ -37,13 +38,18 @@ export const DekningsgradValgtAvAnnenPartPanel = ({
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const periodeMedForeldrepenger = useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const oppdaterPeriodeMedForeldrepenger = useContextSaveData(ContextDataType.PERIODE_MED_FORELDREPENGER);
+    const resetUttaksplanData = useResetUttaksplanData();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const lagre = () => {
         setIsSubmitting(true);
 
+        if (dekningsgrad !== periodeMedForeldrepenger) {
+            resetUttaksplanData();
+        }
         oppdaterPeriodeMedForeldrepenger(dekningsgrad);
 
         return goToNextDefaultStep();
