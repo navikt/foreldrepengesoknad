@@ -13,7 +13,7 @@ const NULLSTILTE_PERIODE_VEDLEGG = {
     [Skjemanummer.DOK_ARBEID_MOR]: [],
     [Skjemanummer.DOK_UTDANNING_MOR]: [],
     [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: [],
-} as const;
+};
 
 export const useResetUttaksplanData = () => {
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
