@@ -1,8 +1,7 @@
-export type FeilKode =
-    | 'GENERELL'
-    | 'IKKE_TILGANG'
-    | 'IKKE_FUNNET'
-    | 'VALIDERING'
+type FellesFeilKode = 'GENERELL' | 'IKKE_TILGANG' | 'IKKE_FUNNET' | 'VALIDERING';
+
+export type FpSoknadFeilKode =
+    | FellesFeilKode
     | 'DUPLIKAT_FORSENDELSE'
     | 'DUPLIKAT_VEDLEGG'
     | 'MELLOMLAGRING'
@@ -11,8 +10,16 @@ export type FeilKode =
     | 'MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET'
     | 'KRYPTERING_MELLOMLAGRING';
 
-export type ProblemDetails = {
-    feilkode: FeilKode;
+export type FpOversiktFeilKode =
+    | FellesFeilKode
+    | 'IKKE_TILGANG_TIL_DOKUMENT'
+    | 'IKKE_TILGANG_IKKE_EKSTERN'
+    | 'IKKE_TILGANG_UMYNDIG'
+    | 'IKKE_TILGANG_INAKTIV'
+    | 'IKKE_TILGANG_MANGLER_DRIFT_ROLLE';
+
+export type ProblemDetails<T extends string = string> = {
+    feilkode: T;
     feilmelding: string;
     callId?: string;
 };

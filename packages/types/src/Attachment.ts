@@ -1,6 +1,6 @@
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
-import { FeilKode } from './ProblemDetails';
+import { FpSoknadFeilKode } from './ProblemDetails';
 import { Dokumenterer, InnsendingType } from './fpsoknadDtoGenerert';
 
 export type Attachment = {
@@ -25,7 +25,7 @@ type GenerelleErrorKoder = 'TIMEOUT' | 'SERVER_ERROR';
 
 export type AttachmentUploadError = {
     success: false;
-    feilkode: FeilKode | GenerelleErrorKoder;
+    feilkode: FpSoknadFeilKode | GenerelleErrorKoder;
 };
 
 export type AttachmentUploadSuccess = {
@@ -35,4 +35,4 @@ export type AttachmentUploadSuccess = {
 
 export type AttachmentUploadResult = AttachmentUploadSuccess | AttachmentUploadError;
 
-export type AttachmentError = GenerelleErrorKoder | FeilKode | InternError;
+export type AttachmentError = GenerelleErrorKoder | FpSoknadFeilKode | InternError;
