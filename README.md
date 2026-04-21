@@ -43,7 +43,7 @@ Den gjør at du kan bruke server som er deployet til dev som utgangspunkt.
 Fordelen er at du får brukt helt "ekte" dev data, men med frontend servert fra din localhost.
 
 1. cd til appen du ønsker å kjøre tester på, f.eks `cd apps/foreldrepengeoversikt`
-2. Kjør `pnpm run dev-vite`. Nå har du lokal vite-server kjørende på `localhost:5173/foreldrepenger/oversikt`
+2. Kjør `pnpm run lokal:dev`. Nå har du lokal vite-server kjørende på `localhost:5173/foreldrepenger/oversikt`
 3. Gå til ingress i dev. f.eks https://foreldrepenger.intern.dev.nav.no/. Logg inn med en testbruker.
 4. **Identifiser appens wonderwall port**:
    Sjekk i Docker hvilken port din app bruker. F.eks. kjører `wonderwall-foreldrepengeoversikt` vanligvis på port `9100`.
@@ -64,8 +64,8 @@ Fordelen er at du får brukt helt "ekte" dev data, men med frontend servert fra 
 
 1. cd til `server` og kjør `pnpm build`
 2. cd til appen du ønsker å jobbe med, f.eks `cd apps/foreldrepengeoversikt`
-3. Kjør `pnpm run dev-api`
-4. Kjør `pnpm run dev`
+3. Kjør `pnpm run dev:mock`
+4. Kjør `pnpm run dev:lokal`
 
 ### Autogenere Typescript typer fra backend
 
@@ -80,9 +80,11 @@ Du må ha verdikjeden kjørende i autotest.
 ### Oppgradere avhengigheter
 
 Avhengigheter kan enkelt oppgraderes på tvers av alle workspaces med
+
 ```bash
 pnpm -r up --interactive --latest
 ```
+
 ### Tester
 
 For å kjøre tester for en app:
