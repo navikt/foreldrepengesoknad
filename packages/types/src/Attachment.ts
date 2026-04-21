@@ -36,7 +36,7 @@ type GenerelleErrorKoder = 'TIMEOUT' | 'SERVER_ERROR';
 
 export type AttachmentUploadError = {
     success: false;
-    feilKode: ProblemDetailsErrorKode | GenerelleErrorKoder;
+    feilkode: ProblemDetailsErrorKode | GenerelleErrorKoder;
 };
 
 export type AttachmentUploadSuccess = {

@@ -12,8 +12,7 @@ type FeilKode =
     | 'KRYPTERING_MELLOMLAGRING';
 
 export type ProblemDetails = {
-    feilKode: FeilKode;
-    status: number;
-    message: string;
+    feilkode: FeilKode;
+    feilmelding: string;
     callId?: string;
 };

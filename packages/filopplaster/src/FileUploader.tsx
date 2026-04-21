@@ -41,7 +41,7 @@ const uploadAttachment = async (attachment: Attachment, uploadPath: string, time
         attachment.uploaded = true;
         attachment.uuid = response.data;
     } else {
-        attachment.error = response.feilKode;
+        attachment.error = response.feilkode;
     }
 };
 
