@@ -70,7 +70,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
             return navigator.goToNextStep(SøknadRoutes.ANDRE_INNTEKTER);
         }
 
-        return navigator.goToNextStep(SøknadRoutes.ANNEN_FORELDER);
+        return navigator.goToNextDefaultStep();
     };
 
     return (
