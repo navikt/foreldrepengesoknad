@@ -17,7 +17,7 @@ export type { NavnPåForeldre } from './src/NavnPåForeldre';
 export type { AppName } from './src/AppName';
 export type { DatepickerDateRange } from './src/DatepickerDateRange';
 export type { Frilans } from './src/Frilans';
-export type { ProblemDetails } from './src/ProblemDetails';
+export type { ProblemDetails, FeilKode } from './src/ProblemDetails';
 
 export { FRILANS_ID } from './src/Frilans';
 export type {

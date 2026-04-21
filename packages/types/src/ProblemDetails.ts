@@ -1,4 +1,4 @@
-type FeilKode =
+export type FeilKode =
     | 'GENERELL'
     | 'IKKE_TILGANG'
     | 'IKKE_FUNNET'
