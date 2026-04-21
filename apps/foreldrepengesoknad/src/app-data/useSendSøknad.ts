@@ -6,12 +6,7 @@ import ky, { HTTPError } from 'ky';
 import { useNavigate } from 'react-router-dom';
 
 import { captureMessage } from '@navikt/fp-observability';
-import {
-    FpPersonopplysningerDto_fpoversikt,
-    FpSak_fpoversikt,
-    FpSoknadFeilKode,
-    ProblemDetails,
-} from '@navikt/fp-types';
+import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, FpSoknadProblemDetails } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 
 import { useContextGetAnyData } from './FpDataContext';
@@ -56,7 +51,7 @@ export const useSendSøknad = (
                     return navigate(SøknadRoutes.KVITTERING);
                 }
 
-                const jsonResponse = await error.response.json<ProblemDetails<FpSoknadFeilKode>>();
+                const jsonResponse = await error.response.json<FpSoknadProblemDetails>();
                 captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
                 const callId = jsonResponse?.callId ?? UKJENT_UUID;
                 throw new Error(FEIL_VED_INNSENDING + callId.substring(0, 6), { cause: error });
