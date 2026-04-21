@@ -38,14 +38,14 @@ const handleHTTPError = async (error: HTTPError): Promise<AttachmentUploadError>
         } catch {
             return {
                 success: false,
-                feilKode: 'SERVER_ERROR',
+                feilkode: 'SERVER_ERROR',
             };
         }
     }
 
     return {
         success: false,
-        feilKode: 'SERVER_ERROR',
+        feilkode: 'SERVER_ERROR',
     };
 };
 
@@ -53,7 +53,7 @@ const handleUploadError = async (error: unknown): Promise<AttachmentUploadError>
     if (error instanceof TimeoutError) {
         return {
             success: false,
-            feilKode: 'TIMEOUT',
+            feilkode: 'TIMEOUT',
         };
     }
 

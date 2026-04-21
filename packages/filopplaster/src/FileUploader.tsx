@@ -41,7 +41,7 @@ const uploadAttachment = async (attachment: Attachment, uploadPath: string, time
         attachment.uploaded = true;
         attachment.uuid = response.data;
     } else {
-        attachment.error = response.feilKode;
+        attachment.error = response.feilkode;
     }
 };
 
@@ -90,6 +90,7 @@ const getErrorMessageMap = (intl: IntlShape): Record<FileRejectionReason | Attac
         id: 'FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET',
     }),
     DUPLIKAT_FORSENDELSE: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.DUPLIKAT_FORSENDELSE' }),
+    DUPLIKAT_VEDLEGG: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
 
     // Mappes som generell feil
     KRYPTERING_MELLOMLAGRING: intl.formatMessage({
