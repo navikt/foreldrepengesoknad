@@ -157,10 +157,10 @@ const OmBarnetStegInner = ({
         );
 
         if (
-            omBarnet === undefined ||
-            getFamiliehendelsedato(omBarnet) !== getFamiliehendelsedato(oppdatertBarn) ||
-            omBarnet.antallBarn !== oppdatertBarn.antallBarn ||
-            getTermindato(omBarnet) !== getTermindato(oppdatertBarn)
+            omBarnet !== undefined &&
+            (getFamiliehendelsedato(omBarnet) !== getFamiliehendelsedato(oppdatertBarn) ||
+                omBarnet.antallBarn !== oppdatertBarn.antallBarn ||
+                (getTermindato(omBarnet) !== undefined && getTermindato(omBarnet) !== getTermindato(oppdatertBarn)))
         ) {
             resetUttaksplanData();
         }

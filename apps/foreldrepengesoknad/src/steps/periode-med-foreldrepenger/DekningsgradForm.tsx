@@ -102,7 +102,7 @@ export const DekningsgradForm = ({
     });
 
     const onSubmit = (values: { dekningsgrad: Dekningsgrad }) => {
-        if (values.dekningsgrad !== periodeMedForeldrepenger) {
+        if (periodeMedForeldrepenger !== undefined && values.dekningsgrad !== periodeMedForeldrepenger) {
             resetUttaksplanData();
         }
         oppdaterPeriodeMedForeldrepenger(values.dekningsgrad);

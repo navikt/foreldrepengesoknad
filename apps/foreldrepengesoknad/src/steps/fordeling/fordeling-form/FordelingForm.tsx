@@ -68,7 +68,7 @@ export const FordelingForm = ({
     );
 
     const onSubmit = (values: Fordeling) => {
-        if (JSON.stringify(fordelingAvForeldrepenger) !== JSON.stringify(values)) {
+        if (fordelingAvForeldrepenger !== undefined && JSON.stringify(fordelingAvForeldrepenger) !== JSON.stringify(values)) {
             resetUttaksplanData();
         }
         oppdaterFordeling(values);

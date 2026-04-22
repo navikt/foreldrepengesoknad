@@ -44,8 +44,9 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
         };
 
         if (
-            søkersituasjon?.situasjon !== nySøkersituasjon.situasjon ||
-            søkersituasjon?.rolle !== nySøkersituasjon.rolle
+            søkersituasjon !== undefined &&
+            (søkersituasjon.situasjon !== nySøkersituasjon.situasjon ||
+                søkersituasjon.rolle !== nySøkersituasjon.rolle)
         ) {
             resetUttaksplanData();
         }

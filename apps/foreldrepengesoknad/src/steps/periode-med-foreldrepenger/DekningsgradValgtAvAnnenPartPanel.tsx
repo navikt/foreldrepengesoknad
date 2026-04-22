@@ -47,7 +47,7 @@ export const DekningsgradValgtAvAnnenPartPanel = ({
     const lagre = () => {
         setIsSubmitting(true);
 
-        if (dekningsgrad !== periodeMedForeldrepenger) {
+        if (periodeMedForeldrepenger !== undefined && dekningsgrad !== periodeMedForeldrepenger) {
             resetUttaksplanData();
         }
         oppdaterPeriodeMedForeldrepenger(dekningsgrad);

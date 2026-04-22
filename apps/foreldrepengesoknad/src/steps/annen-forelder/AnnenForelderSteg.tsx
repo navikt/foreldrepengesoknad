@@ -74,7 +74,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
             const gjeldendeGrunnlag = annenForelder
                 ? { kanIkkeOppgis: !isAnnenForelderOppgitt(annenForelder) }
                 : undefined;
-            if (!gjeldendeGrunnlag || gjeldendeGrunnlag.kanIkkeOppgis !== nyttGrunnlag.kanIkkeOppgis) {
+            if (gjeldendeGrunnlag !== undefined && gjeldendeGrunnlag.kanIkkeOppgis !== nyttGrunnlag.kanIkkeOppgis) {
                 resetUttaksplanData();
             }
             oppdaterAnnenForeldre({ kanIkkeOppgis: true });
@@ -111,7 +111,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
                   }
                 : undefined;
 
-        if (JSON.stringify(gjeldendeGrunnlag) !== JSON.stringify(nyttGrunnlag)) {
+        if (gjeldendeGrunnlag !== undefined && JSON.stringify(gjeldendeGrunnlag) !== JSON.stringify(nyttGrunnlag)) {
             resetUttaksplanData();
         }
 
