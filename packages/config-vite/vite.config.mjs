@@ -49,7 +49,7 @@ const createConfig = (setupFileDirName) => {
             react({
                 include: '**/*.{jsx,tsx}',
                 babel: {
-                    plugins: [['babel-plugin-react-compiler', {}]],
+                    plugins: process.env.VITEST ? [] : [['babel-plugin-react-compiler', {}]],
                 },
             }),
         ],
