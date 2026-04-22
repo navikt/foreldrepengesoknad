@@ -16,26 +16,15 @@ import { Uttaksperioden, useMedia } from '@navikt/fp-utils';
 import { KvoteOppsummering, UttaksplanDataProvider, UttaksplanKalender, UttaksplanListe } from '@navikt/fp-uttaksplan';
 
 import { hentUttaksKontoOptions } from '../../api/queries';
-import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { getBarnFraSak } from '../../utils/sakerUtils';
 
 interface Props {
+    sak: Foreldrepengesak;
     navnPåForeldre: NavnPåForeldre;
     annenPartsPerioder: UttakPeriode_fpoversikt[];
 }
 
-// TODO (TOR) Send heller med gjeldendeSak som prop
-export const DinPlan = ({ annenPartsPerioder, navnPåForeldre }: Props) => {
-    const gjeldendeSak = useGetSelectedSak();
-
-    if (gjeldendeSak?.ytelse !== 'FORELDREPENGER') {
-        return null;
-    }
-
-    return <DinPlanMedSak annenPartsPerioder={annenPartsPerioder} navnPåForeldre={navnPåForeldre} sak={gjeldendeSak} />;
-};
-
-const DinPlanMedSak = ({ annenPartsPerioder, navnPåForeldre, sak }: Props & { sak: Foreldrepengesak }) => {
+export const DinPlan = ({ annenPartsPerioder, navnPåForeldre, sak }: Props) => {
     const isDesktop = useMedia('screen and (min-width: 768px)');
 
     const [visKalender, setVisKalender] = useState(false);

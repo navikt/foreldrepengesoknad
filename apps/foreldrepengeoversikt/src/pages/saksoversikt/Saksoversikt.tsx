@@ -179,6 +179,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                             skeletonProps={{ height: '210px', variant: 'rounded' }}
                         >
                             <DinPlan
+                                sak={gjeldendeSak}
                                 annenPartsPerioder={annenPartsVedtakQuery.data?.perioder ?? []}
                                 navnPåForeldre={getNavnPåForeldre(
                                     gjeldendeSak,
