@@ -95,6 +95,7 @@ export const FarSøker: Story = {
                 },
             ],
             dekningsgrad: 'HUNDRE',
+            forelder: 'FAR_MEDMOR',
             ytelse: 'FORELDREPENGER' as const,
         },
         annenPartsPerioder: [
