@@ -152,7 +152,7 @@ const getSelectableFlerlingerFraPDL = (
     const minstEttBarnDødeForMerEnn3MndSiden = alleBarna.some(
         (b) => !getLeverBarnet(b) && getDødeBarnetForMerEnn3MånederSiden(b),
     );
-    if (minstEttBarnDødeForMerEnn3MndSiden || alleBarna.length == 0) {
+    if (minstEttBarnDødeForMerEnn3MndSiden || alleBarna.length === 0) {
         return undefined;
     }
 

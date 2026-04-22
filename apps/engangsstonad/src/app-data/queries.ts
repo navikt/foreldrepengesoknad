@@ -1,10 +1,16 @@
 import { queryOptions } from '@tanstack/react-query';
 import { EsMellomlagretData } from 'appData/useEsMellomlagring';
-import ky from 'ky';
+import ky, { type ResponsePromise } from 'ky';
 
 import { EsPersonopplysningerDto_fpoversikt, ForsendelseStatus } from '@navikt/fp-types';
 
 const urlPrefiks = import.meta.env.BASE_URL;
+
+/** Backend returnerer null for Optional.orElse(null), som JAX-RS oversetter til 204 No Content */
+const jsonEllerNull = async <T>(responsePromise: ResponsePromise) => {
+    const response = await responsePromise;
+    return response.status === 204 ? null : response.json<T>();
+};
 
 export const API_URLS = {
     personInfo: `${urlPrefiks}/fpoversikt/api/personopplysninger/engangsstonad`,
@@ -25,7 +31,8 @@ export const personOptions = () =>
 export const mellomlagretInfoOptions = () =>
     queryOptions({
         queryKey: ['MELLOMLAGRET_INFO'],
-        queryFn: () => ky.get(API_URLS.mellomlagring).json<EsMellomlagretData>(),
+        queryFn: () => jsonEllerNull<EsMellomlagretData>(ky.get(API_URLS.mellomlagring)),
+        select: (data) => data ?? undefined,
         staleTime: Infinity,
     });
 

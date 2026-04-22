@@ -2,7 +2,7 @@ import { queryOptions, useQuery } from '@tanstack/react-query';
 import { getStønadskontoParams } from 'api/getStønadskontoParams';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
-import ky from 'ky';
+import ky, { type ResponsePromise } from 'ky';
 import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenForelderUtils';
 
 import {
@@ -16,6 +16,12 @@ import {
 import { notEmpty } from '@navikt/fp-validation';
 
 const urlPrefiks = import.meta.env.BASE_URL;
+
+/** Backend returnerer null for Optional.orElse(null), som JAX-RS oversetter til 204 No Content */
+const jsonEllerNull = async <T>(responsePromise: ResponsePromise) => {
+    const response = await responsePromise;
+    return response.status === 204 ? null : response.json<T>();
+};
 
 export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/personopplysninger/foreldrepenger`,
@@ -68,33 +74,16 @@ export const søkerinfoOptions = () =>
 export const mellomlagretInfoOptions = () =>
     queryOptions({
         queryKey: ['MELLOMLAGRET_INFO'],
-        queryFn: () => ky.get(API_URLS.mellomlagring).json<FpMellomlagretData>(),
+        queryFn: () => jsonEllerNull<FpMellomlagretData>(ky.get(API_URLS.mellomlagring)),
+        select: (data) => data ?? undefined,
         staleTime: Infinity,
     });
 
 const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
     queryOptions({
         queryKey: ['ANNEN_PART_VEDTAK', data],
-        queryFn: async () => {
-            const vedtakEllerTomStrengForIngenVedtak = await ky
-                .post(API_URLS.annenPartVedtak, { json: data })
-                .json<AnnenPartSak_fpoversikt | ''>();
-            if (vedtakEllerTomStrengForIngenVedtak === '') {
-                return null;
-            }
-
-            return vedtakEllerTomStrengForIngenVedtak;
-        },
-        /**
-         * Denne selected ser snodig ut. Men poenget er at QueryCachen liker ikke at data er undefined.
-         * Derfor lagres den som null i cache. Men i bruk i koden ønsker vi ikke deale med både null og undefined.
-         */
-        select: (vedtak) => {
-            if (vedtak === null) {
-                return undefined;
-            }
-            return vedtak;
-        },
+        queryFn: () => jsonEllerNull<AnnenPartSak_fpoversikt>(ky.post(API_URLS.annenPartVedtak, { json: data })),
+        select: (sak) => sak ?? undefined,
     });
 
 // TODO: relocate types

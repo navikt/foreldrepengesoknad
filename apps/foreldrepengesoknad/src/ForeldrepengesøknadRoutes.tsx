@@ -308,7 +308,12 @@ export const ForeldrepengesøknadRoutes = ({
     useQuery(annenPartVedtakOptions);
 
     useEffect(() => {
-        if (currentRoute && erMyndig(søkerInfo.fødselsdato) && lagretHarGodkjentVilkår && isFirstTimeLoadingApp.current) {
+        if (
+            currentRoute &&
+            erMyndig(søkerInfo.fødselsdato) &&
+            lagretHarGodkjentVilkår &&
+            isFirstTimeLoadingApp.current
+        ) {
             isFirstTimeLoadingApp.current = false;
             if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår)) {
                 void navigate(currentRoute);
@@ -316,13 +321,7 @@ export const ForeldrepengesøknadRoutes = ({
                 void navigate(SøknadRoutes.UTTAKSPLAN);
             }
         }
-    }, [
-        currentRoute,
-        søkerInfo.fødselsdato,
-        lagretHarGodkjentVilkår,
-        navigate,
-        routerLocation.pathname,
-    ]);
+    }, [currentRoute, søkerInfo.fødselsdato, lagretHarGodkjentVilkår, navigate, routerLocation.pathname]);
 
     if (errorSendSøknad) {
         return (

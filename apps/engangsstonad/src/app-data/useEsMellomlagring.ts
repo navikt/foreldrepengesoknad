@@ -56,7 +56,7 @@ export const useEsMellomlagring = (
                                 throw error;
                             }
 
-                            const jsonResponse = await error.response.json<FpSoknadProblemDetails>();
+                            const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
                             const callId = jsonResponse?.callId ?? UKJENT_UUID;
                             captureMessage(FEIL_VED_INNSENDING + callId);
                             throw new Error(FEIL_VED_INNSENDING + callId.substring(0, 6), { cause: error });

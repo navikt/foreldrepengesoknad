@@ -103,8 +103,8 @@ importers:
         specifier: 7.14.0
         version: 7.14.0
       ky:
-        specifier: 1.14.3
-        version: 1.14.3
+        specifier: 2.0.0
+        version: 2.0.0
       lodash:
         specifier: 4.18.1
         version: 4.18.1
@@ -272,8 +272,8 @@ importers:
         specifier: 2.19.1
         version: 2.19.1(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@19.2.14)(react@19.2.5)
       ky:
-        specifier: 1.14.3
-        version: 1.14.3
+        specifier: 2.0.0
+        version: 2.0.0
       lodash:
         specifier: 4.18.1
         version: 4.18.1
@@ -471,8 +471,8 @@ importers:
         specifier: 7.14.0
         version: 7.14.0
       ky:
-        specifier: 1.14.3
-        version: 1.14.3
+        specifier: 2.0.0
+        version: 2.0.0
       lodash:
         specifier: 4.18.1
         version: 4.18.1
@@ -637,8 +637,8 @@ importers:
         specifier: 7.14.0
         version: 7.14.0
       ky:
-        specifier: 1.14.3
-        version: 1.14.3
+        specifier: 2.0.0
+        version: 2.0.0
       lodash:
         specifier: 4.18.1
         version: 4.18.1
@@ -827,8 +827,8 @@ importers:
         specifier: 7.14.0
         version: 7.14.0
       ky:
-        specifier: 1.14.3
-        version: 1.14.3
+        specifier: 2.0.0
+        version: 2.0.0
       lodash:
         specifier: 4.18.1
         version: 4.18.1
@@ -1141,8 +1141,8 @@ importers:
         specifier: 7.14.0
         version: 7.14.0
       ky:
-        specifier: 1.14.3
-        version: 1.14.3
+        specifier: 2.0.0
+        version: 2.0.0
       morgan:
         specifier: 1.10.1
         version: 1.10.1
@@ -1353,8 +1353,8 @@ importers:
         specifier: 1.11.20
         version: 1.11.20
       ky:
-        specifier: 1.14.3
-        version: 1.14.3
+        specifier: 2.0.0
+        version: 2.0.0
       react:
         specifier: 19.2.5
         version: 19.2.5
@@ -6298,9 +6298,9 @@ packages:
   kuler@2.0.0:
     resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==}
 
-  ky@1.14.3:
-    resolution: {integrity: sha512-9zy9lkjac+TR1c2tG+mkNSVlyOpInnWdSMiue4F+kq8TwJSgv6o8jhLRg8Ho6SnZ9wOYUq/yozts9qQCfk7bIw==}
-    engines: {node: '>=18'}
+  ky@2.0.0:
+    resolution: {integrity: sha512-KzI4Vz5AbZFAUFYGx28PCSfFWUo6/qj9Br/P6KRwDieE1xfdz0tIONepJcLw/1xLocN13GgvfJGasa+pfSkbHg==}
+    engines: {node: '>=22'}
 
   language-subtag-registry@0.3.23:
     resolution: {integrity: sha512-0K65Lea881pHotoGEa5gDlMxt3pctLi2RplBb7Ezh4rRdLEOtgi7n4EwK9lamnUCkKBqaeKRVebTq6BAxSkpXQ==}
@@ -11499,7 +11499,7 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  ky@1.14.3: {}
+  ky@2.0.0: {}
 
   language-subtag-registry@0.3.23: {}
 

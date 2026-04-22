@@ -178,7 +178,7 @@ export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': {
@@ -235,7 +235,7 @@ export const MorAleneomsorgEttBarnPrematurFødsel: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -296,7 +296,7 @@ export const MorAleneomsorgAdopsjonTrillinger: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -344,7 +344,7 @@ export const FarMedmorAleneomsorgFødtTvillinger: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -397,7 +397,7 @@ export const FarMedmorAleneomsorgFødtFireBarnFør1Okt2021: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -450,7 +450,7 @@ export const FarMedmorAleneomsorgFødtTreBarnFørWLB: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -503,7 +503,7 @@ export const FarMedmorAleneomsorgEttBarnTerminEtterWLB: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -555,7 +555,7 @@ export const FarMedmorAleneomsorgPrematurtFødtBarn: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -612,7 +612,7 @@ export const FarMedmorAleneomsorgAdopsjonFireBarn: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -734,7 +734,7 @@ export const MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': {
@@ -801,7 +801,7 @@ export const MorDeltUttakEttBarnTermin: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -864,7 +864,7 @@ export const MorDeltUttakTvillingerFødt: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -995,7 +995,7 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -1059,7 +1059,7 @@ export const FarMedmorSøkerDeltUttakTrillingerFødtFørWLB: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -1127,7 +1127,7 @@ export const FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -1190,7 +1190,7 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtPrematurt: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -1322,7 +1322,7 @@ export const FarSøkerAdopsjonToBarn: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -1382,7 +1382,7 @@ export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Stor
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': {
@@ -1445,7 +1445,7 @@ export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': {
@@ -1510,7 +1510,7 @@ export const FarMedmorSøkerMorHarRettIEØSAdopsjon: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -1574,7 +1574,7 @@ export const BareMorHarRettTermin: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -1625,7 +1625,7 @@ export const BareMorHarRettAdopsjon: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -1677,7 +1677,7 @@ export const BareFarHarRettOgMorErUførTermin4Barn: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -1733,7 +1733,7 @@ export const BareFarHarRettOgMorErIkkeUførFødtBarn: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -1790,7 +1790,7 @@ export const BareFarHarRettTvillingerFødtFør1Okt2021: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
@@ -1843,7 +1843,7 @@ export const BareFarHarRettAdopsjonMorErUfør: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,

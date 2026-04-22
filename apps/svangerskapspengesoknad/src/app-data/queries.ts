@@ -1,10 +1,16 @@
 import { queryOptions } from '@tanstack/react-query';
 import { SvpMellomlagretData } from 'appData/useMellomlagreSøknad';
-import ky from 'ky';
+import ky, { type ResponsePromise } from 'ky';
 
 import { ForsendelseStatus, Saker_fpoversikt, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
 const urlPrefiks = import.meta.env.BASE_URL;
+
+/** Backend returnerer null for Optional.orElse(null), som JAX-RS oversetter til 204 No Content */
+const jsonEllerNull = async <T>(responsePromise: ResponsePromise) => {
+    const response = await responsePromise;
+    return response.status === 204 ? null : response.json<T>();
+};
 
 export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/personopplysninger/svangerskapspenger`,
@@ -35,7 +41,8 @@ export const søkerinfoOptions = () =>
 export const mellomlagretInfoOptions = () =>
     queryOptions({
         queryKey: ['MELLOMLAGRET_INFO'],
-        queryFn: () => ky.get(API_URLS.mellomlagring).json<SvpMellomlagretData>(),
+        queryFn: () => jsonEllerNull<SvpMellomlagretData>(ky.get(API_URLS.mellomlagring)),
+        select: (data) => data ?? undefined,
         staleTime: Infinity,
     });
 
