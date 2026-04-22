@@ -84,3 +84,4 @@ export { Uttaksperioden } from './src/uttak/Uttaksperioden';
 export { Tidsperioden } from './src/Tidsperioden';
 export * from './src/cookieUtils';
 export { periodFormat } from './src/periodUtils';
+export { barnehagestartDato, beregnBarnehagestartDato } from './src/barnehagestartUtils';

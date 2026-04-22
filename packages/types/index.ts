@@ -32,7 +32,7 @@ export type {
     ArbeidsforholdOgInntektSvp,
 } from './src/ArbeidsforholdOgInntekt';
 export { isArbeidsforholdOgInntektFp, isArbeidsforholdOgInntektSvp } from './src/ArbeidsforholdOgInntekt';
-export { isFødtBarn, isUfødtBarn, isAdoptertBarn, isAdoptertStebarn, isAdoptertAnnetBarn } from './src/Barn';
+export { isFødtBarn, isUfødtBarn, isAdoptertBarn, isAdoptertStebarn, isAdoptertAnnetBarn, isIkkeUtfyltTypeBarn } from './src/Barn';
 export type { Utenlandsopphold, UtenlandsoppholdPeriode } from './src/Utenlandsopphold';
 
 export type { Barn, FødtBarn, UfødtBarn, AdoptertAnnetBarn, AdoptertBarn, IkkeUtfyltTypeBarn } from './src/Barn';
