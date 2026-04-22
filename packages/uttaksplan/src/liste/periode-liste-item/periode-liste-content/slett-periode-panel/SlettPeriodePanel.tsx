@@ -1,5 +1,5 @@
 import { TrashIcon } from '@navikt/aksel-icons';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -46,14 +46,6 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
     const [valgtePerioderSomSkalSlettes, setValgtePerioderSomSkalSlettes] = useState<Uttaksplanperiode[]>(
         uttaksplanperioder.length === 1 ? uttaksplanperioder : [],
     );
-
-    // TODO (TOR) Bør skriva om heile komponenten.
-    useEffect(() => {
-        if (!erEksisterendePerioderEtterValgteDager && uttaksplanperioder.length === 1) {
-            // eslint-disable-next-line react-you-might-not-need-an-effect/no-pass-data-to-parent, @eslint-react/immutability
-            slettPerioder(uttaksplanperioder, false);
-        }
-    }, []);
 
     const formMethods = useForm<FormValues>();
 

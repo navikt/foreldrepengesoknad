@@ -7,6 +7,7 @@ import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 import { NavnPåForeldre } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
+import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
 import {
     Uttaksplanperiode,
     erEøsUttakPeriode,
@@ -15,12 +16,14 @@ import {
     erVanligUttakPeriode,
 } from '../../../types/UttaksplanPeriode';
 import {
+    erDetEksisterendePerioderEtterValgtePerioder,
     erOppholdsperiode,
     erOverføringsperiode,
     erPrematuruker,
     erUtsettelsesperiode,
     erUttaksperiode,
 } from '../../../utils/periodeUtils';
+import { UttakPeriodeBuilder } from '../../../utils/UttakPeriodeBuilder';
 import { genererPeriodeKey } from '../../utils/uttaksplanListeUtils';
 import {
     erUttaksplanperiodeEøs,
@@ -53,7 +56,10 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
         foreldreInfo: { navnPåForeldre, søker },
         barn,
         erPeriodeneTilAnnenPartLåst,
+        uttakPerioder,
     } = useUttaksplanData();
+
+    const uttaksplanRedigering = useUttaksplanRedigering();
 
     const erPeriodeForAnnenPartSomErLåst =
         erPeriodeneTilAnnenPartLåst && uttaksplanperioder.some((p) => erVanligUttakPeriode(p) && p.forelder !== søker);
@@ -65,6 +71,22 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
         !harUttaksplanperiodePrematuruker(uttaksplanperioder);
 
     const erFamiliehendelse = erUttaksplanperiodeFamiliehendelseDato(uttaksplanperioder);
+
+    const handleSlettClick = () => {
+        const erEksisterendePerioderEtterValgteDager = erDetEksisterendePerioderEtterValgtePerioder(
+            uttakPerioder,
+            uttaksplanperioder,
+        );
+
+        if (!erEksisterendePerioderEtterValgteDager && uttaksplanperioder.length === 1) {
+            const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder)
+                .fjernUttakPerioder(uttaksplanperioder, false)
+                .getUttakPerioder();
+            uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
+        } else {
+            setIsSlettPeriodePanelOpen(true);
+        }
+    };
 
     if (erFamiliehendelse) {
         return <FamiliehendelseContent barn={barn} />;
@@ -95,7 +117,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
                         }
                         erRedigerbar={erRedigerbar}
                         setIsEndrePeriodePanelOpen={setIsEndrePeriodePanelOpen}
-                        setIsSlettPeriodePanelOpen={setIsSlettPeriodePanelOpen}
+                        onSlettPeriodeClick={handleSlettClick}
                     />
                 </>
             )}
@@ -199,12 +221,12 @@ const EndreOgSlettKnapper = ({
     isReadOnly,
     erRedigerbar,
     setIsEndrePeriodePanelOpen,
-    setIsSlettPeriodePanelOpen,
+    onSlettPeriodeClick,
 }: {
     isReadOnly: boolean;
     erRedigerbar: boolean;
     setIsEndrePeriodePanelOpen: (open: boolean) => void;
-    setIsSlettPeriodePanelOpen: (open: boolean) => void;
+    onSlettPeriodeClick: () => void;
 }) => {
     if (isReadOnly) {
         return null;
@@ -246,9 +268,7 @@ const EndreOgSlettKnapper = ({
                 size="small"
                 variant="secondary"
                 icon={<TrashIcon />}
-                onClick={() => {
-                    setIsSlettPeriodePanelOpen(true);
-                }}
+                onClick={onSlettPeriodeClick}
             >
                 <FormattedMessage id="uttaksplan.slett" />
             </Button>
