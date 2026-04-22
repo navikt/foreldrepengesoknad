@@ -7,7 +7,6 @@ import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './AppContainer.stories';
-import { queryClient } from './AppContainer';
 
 const { SøkerErMann, SøkerErKvinne } = composeStories(stories);
 
@@ -17,7 +16,6 @@ describe('<AppContainer>', () => {
             setAvailableLanguages: vi.fn(),
             onLanguageSelect: vi.fn(),
         }));
-        queryClient.clear();
     });
 
     it(

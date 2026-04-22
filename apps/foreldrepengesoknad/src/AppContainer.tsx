@@ -1,8 +1,5 @@
 import { onLanguageSelect, setAvailableLanguages } from '@navikt/nav-dekoratoren-moduler';
-import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
-import { HTTPError } from 'ky';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -69,23 +66,6 @@ declare global {
     }
 }
 
-export const queryClient = new QueryClient({
-    queryCache: new QueryCache({
-        onError: (error) => {
-            if (error instanceof HTTPError) {
-                if (error.response?.status === 401) {
-                    location.reload();
-                }
-            }
-        },
-    }),
-    defaultOptions: {
-        queries: {
-            retry: false,
-        },
-    },
-});
-
 dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
 
 export const AppContainer = () => {
@@ -116,12 +96,9 @@ export const AppContainer = () => {
                     retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}
                 >
                     <ByttBrowserModal />
-                    <QueryClientProvider client={queryClient}>
-                        <ReactQueryDevtools />
-                        <Provider locale={locale === 'nb' ? nb : nn}>
-                            <Foreldrepengesøknad />
-                        </Provider>
-                    </QueryClientProvider>
+                    <Provider locale={locale === 'nb' ? nb : nn}>
+                        <Foreldrepengesøknad />
+                    </Provider>
                 </ErrorBoundary>
             </Theme>
         </IntlProvider>
