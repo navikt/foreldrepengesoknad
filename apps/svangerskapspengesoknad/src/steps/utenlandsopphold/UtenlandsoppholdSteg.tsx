@@ -46,16 +46,11 @@ export const UtenlandsoppholdSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøkna
         return navigator.goToStep(getNextRouteForUtenlandsopphold(values));
     };
 
-    const saveOnPrevious = () => {
-        // TODO (TOR) Lagre uvalidert data i framtida
-    };
-
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <UtenlandsoppholdPanel
                 utenlandsopphold={utenlandsopphold}
                 saveOnNext={onSubmit}
-                saveOnPrevious={saveOnPrevious}
                 onAvsluttOgSlett={avbrytSøknad}
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}

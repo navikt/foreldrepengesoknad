@@ -16,7 +16,6 @@ export const Default: Story = {
         onAvsluttOgSlett: action('button-click'),
         goToPreviousStep: action('button-click'),
         onStepChange: action('button-click'),
-        saveOnPrevious: action('button-click'),
         senereUtenlandsopphold: [],
         stepConfig: [
             {

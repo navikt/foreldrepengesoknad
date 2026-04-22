@@ -133,30 +133,6 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
         expect(screen.getByText('Hvilket land bodde du i?')).toBeInTheDocument();
     });
 
-    it('skal lagre uvalidert data når en går til forrige steg', async () => {
-        const saveOnPrevious = vi.fn();
-        const goToPreviousStep = vi.fn();
-
-        render(<Default saveOnPrevious={saveOnPrevious} goToPreviousStep={goToPreviousStep} />);
-
-        expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
-
-        await userEvent.selectOptions(screen.getByLabelText('Hvilket land bodde du i?'), 'CA');
-
-        await userEvent.click(screen.getByText('Forrige steg'));
-
-        expect(saveOnPrevious).toHaveBeenCalledTimes(1);
-        expect(saveOnPrevious).toHaveBeenNthCalledWith(1, [
-            {
-                fom: '',
-                landkode: 'CA',
-                tom: '',
-            },
-        ]);
-
-        expect(goToPreviousStep).toHaveBeenCalledTimes(1);
-    });
-
     it('skal avslutte søknad', async () => {
         const onAvsluttOgSlett = vi.fn();
 

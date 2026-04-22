@@ -14,7 +14,6 @@ import { HjelpeTekstFelles } from './HjelpeTekstFelles';
 interface Props<TYPE> {
     utenlandsopphold?: Utenlandsopphold;
     saveOnNext: (formValues: Utenlandsopphold) => void;
-    saveOnPrevious: (formValues: Utenlandsopphold | undefined) => void;
     onAvsluttOgSlett: () => void;
     onFortsettSenere?: () => void;
     onStepChange?: (id: TYPE) => void;
@@ -26,7 +25,6 @@ interface Props<TYPE> {
 export const UtenlandsoppholdPanel = <TYPE extends string>({
     utenlandsopphold,
     saveOnNext,
-    saveOnPrevious,
     onAvsluttOgSlett,
     onFortsettSenere,
     onStepChange,
@@ -84,7 +82,6 @@ export const UtenlandsoppholdPanel = <TYPE extends string>({
                         onAvsluttOgSlett={onAvsluttOgSlett}
                         onFortsettSenere={onFortsettSenere}
                         goToPreviousStep={goToPreviousStep}
-                        saveDataOnPreviousClick={saveOnPrevious}
                     />
                 </VStack>
             </RhfForm>
