@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import ky from 'ky';
+import ky, { type ResponsePromise } from 'ky';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 import {
@@ -18,6 +18,12 @@ import {
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
+
+/** Backend returnerer null for Optional.orElse(null), som JAX-RS oversetter til 204 No Content */
+const jsonEllerNull = async <T>(responsePromise: ResponsePromise) => {
+    const response = await responsePromise;
+    return response.status === 204 ? null : response.json<T>();
+};
 
 export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/personopplysninger/oversikt`,
@@ -92,13 +98,8 @@ export const hentInntektsmelding = (saksnummer: string) =>
 export const hentAnnenPartsVedtakOptions = (body: AnnenPartRequest_fpoversikt) =>
     queryOptions({
         queryKey: ['ANNEN_PARTS_VEDTAK', body],
-        queryFn: async () => {
-            const response = await ky.post(API_URLS.annenPartVedtak, { json: body });
-            if (response.status === 204) {
-                return null;
-            }
-            return response.json<AnnenPartSak_fpoversikt>();
-        },
+        queryFn: () => jsonEllerNull<AnnenPartSak_fpoversikt>(ky.post(API_URLS.annenPartVedtak, { json: body })),
+        select: (data) => data ?? undefined,
     });
 
 export const hentTidslinjehendelserOptions = (saksnummer: string) =>

@@ -52,11 +52,11 @@ export const Foreldrepengesøknad = () => {
         }
     }, [søkerinfoQuery.error, sakerQuery.error]);
 
-    if (!sakerQuery.data || !søkerinfoQuery.data || mellomlagretInfoData === undefined) {
+    if (!sakerQuery.data || !søkerinfoQuery.data || mellomlagretInfoQuery.isPending) {
         return <Spinner />;
     }
 
-    const skalBrukeMellomlagretData = mellomlagretInfoData !== null && shouldApplyStorage(mellomlagretInfoData);
+    const skalBrukeMellomlagretData = mellomlagretInfoData !== undefined && shouldApplyStorage(mellomlagretInfoData);
     const mellomlagretData = skalBrukeMellomlagretData ? mellomlagretInfoData : undefined;
 
     if (
