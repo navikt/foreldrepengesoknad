@@ -69,7 +69,7 @@ declare global {
     }
 }
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
     queryCache: new QueryCache({
         onError: (error) => {
             if (error instanceof HTTPError) {
