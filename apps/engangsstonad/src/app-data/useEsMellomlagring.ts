@@ -10,7 +10,7 @@ import { EsPersonopplysningerDto_fpoversikt, FpSoknadProblemDetails } from '@nav
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './EsDataContext';
 
-export const VERSJON_MELLOMLAGRING = 5;
+export const VERSJON_MELLOMLAGRING = 6;
 
 export type EsMellomlagretData = { version: number; personinfo: EsPersonopplysningerDto_fpoversikt } & ContextDataMap;
 

@@ -5,8 +5,7 @@ import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
-import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
-import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
+import { erTerminDokumentasjon } from 'types/Dokumentasjon';
 
 import { captureMessage } from '@navikt/fp-observability';
 import {
@@ -20,38 +19,6 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './EsDataContext';
 
-// TODO Vurder om ein heller bør mappa fram og tilbake i barn-komponenten. Er nok bedre å gjera det
-const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
-    if (erAdopsjon(omBarnet)) {
-        return {
-            type: 'adopsjon' as const,
-            antallBarn: omBarnet.antallBarn,
-            fødselsdatoer: omBarnet.fødselsdatoer.map((f) => f.dato),
-            adopsjonsdato: omBarnet.adopsjonsdato,
-            adopsjonAvEktefellesBarn: omBarnet.adopsjonAvEktefellesBarn,
-        };
-    }
-    if (erBarnetFødt(omBarnet)) {
-        return {
-            type: 'fødsel' as const,
-            antallBarn: omBarnet.antallBarn,
-            fødselsdato: omBarnet.fødselsdato,
-            termindato: omBarnet.termindato,
-        };
-    }
-
-    if (harBarnetTermindato(omBarnet) && dokumentasjon && erTerminDokumentasjon(dokumentasjon)) {
-        return {
-            type: 'termin' as const,
-            antallBarn: omBarnet.antallBarn,
-            termindato: omBarnet.termindato,
-            terminbekreftelseDato: dokumentasjon.terminbekreftelsedato,
-        };
-    }
-
-    throw new Error('Det er feil i data om barnet');
-};
-
 const FEIL_VED_INNSENDING_LOG =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
@@ -62,10 +29,19 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
     const { initAbortSignal } = useAbortSignal();
 
     const send = async () => {
-        const omBarnet = notEmpty(hentData(ContextDataType.OM_BARNET));
+        const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
         const dokumentasjon = hentData(ContextDataType.DOKUMENTASJON);
         const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
         const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+
+        if (barn.type === 'termin' && !(dokumentasjon && erTerminDokumentasjon(dokumentasjon))) {
+            throw new Error('Det er feil i data om barnet: mangler terminbekreftelse for termin-barn');
+        }
+
+        const barnDto =
+            barn.type === 'termin' && dokumentasjon && erTerminDokumentasjon(dokumentasjon)
+                ? { ...barn, terminbekreftelseDato: dokumentasjon.terminbekreftelsedato }
+                : barn;
 
         const søknad = {
             søkerinfo: {
@@ -73,7 +49,7 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
                 navn: personinfo.navn,
             },
             språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform,
-            barn: mapBarn(omBarnet, dokumentasjon),
+            barn: barnDto,
             utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
             vedlegg:
                 dokumentasjon?.vedlegg.map((vedlegg) => ({

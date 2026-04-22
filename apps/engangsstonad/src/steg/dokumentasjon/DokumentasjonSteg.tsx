@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { Dokumentasjon } from 'types/Dokumentasjon';
-import { erAdopsjon, harBarnetTermindato } from 'types/OmBarnet';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -30,10 +29,10 @@ export const DokumentasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
 
     const dokumentasjon = useContextGetData(ContextDataType.DOKUMENTASJON);
     const oppdaterDokumentasjon = useContextSaveData(ContextDataType.DOKUMENTASJON);
-    const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
-    const erBarnetAdoptert = erAdopsjon(omBarnet);
-    const harTermindato = harBarnetTermindato(omBarnet);
+    const erBarnetAdoptert = barn.type === 'adopsjon';
+    const harTermindato = barn.type === 'termin';
 
     const formMethods = useForm<Dokumentasjon>({
         defaultValues: dokumentasjon,
@@ -75,7 +74,7 @@ export const DokumentasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
                             <TerminDokPanel
                                 attachments={dokumentasjon?.vedlegg}
                                 updateAttachments={updateAttachments}
-                                omBarnet={omBarnet}
+                                termindato={barn.type === 'termin' ? barn.termindato : ''}
                             />
                         )}
                         <ScanDocumentInfo />
