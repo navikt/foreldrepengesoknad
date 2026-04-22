@@ -33,6 +33,7 @@ export const TidligereUtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) =
             <TidligereUtenlandsoppholdPanel
                 tidligereUtenlandsopphold={tidligereUtenlandsopphold ?? []}
                 saveOnNext={lagre}
+                saveOnPrevious={oppdaterTidligereUtenlandsopphold}
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 onStepChange={navigator.goToNextStep}
                 onAvsluttOgSlett={navigator.avbrytSøknad}

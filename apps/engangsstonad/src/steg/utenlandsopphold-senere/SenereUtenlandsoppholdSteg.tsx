@@ -29,6 +29,7 @@ export const SenereUtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) => {
             <SenereUtenlandsoppholdPanel
                 senereUtenlandsopphold={senereUtenlandsopphold ?? []}
                 saveOnNext={lagre}
+                saveOnPrevious={oppdaterSenereUtenlandsopphold}
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 onStepChange={navigator.goToNextStep}
                 onAvsluttOgSlett={navigator.avbrytSøknad}

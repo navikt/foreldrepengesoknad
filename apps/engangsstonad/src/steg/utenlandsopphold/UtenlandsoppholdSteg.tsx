@@ -47,6 +47,7 @@ export const UtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) => {
             <UtenlandsoppholdPanel
                 utenlandsopphold={utenlandsopphold}
                 saveOnNext={lagre}
+                saveOnPrevious={oppdaterUtenlandsopphold}
                 onAvsluttOgSlett={navigator.avbrytSøknad}
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}

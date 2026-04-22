@@ -101,6 +101,27 @@ describe('UtenlandsoppholdPanel', () => {
         });
     });
 
+    it('skal lagre uvalidert data når en går til forrige steg', async () => {
+        const saveOnPrevious = vi.fn();
+        const goToPreviousStep = vi.fn();
+
+        render(<Default saveOnPrevious={saveOnPrevious} goToPreviousStep={goToPreviousStep} />);
+
+        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
+
+        await userEvent.click(screen.getByText('Jeg har bodd helt eller delvis i utlandet'));
+
+        await userEvent.click(screen.getByText('Forrige steg'));
+
+        expect(saveOnPrevious).toHaveBeenCalledTimes(1);
+        expect(saveOnPrevious).toHaveBeenNthCalledWith(1, {
+            harBoddUtenforNorgeSiste12Mnd: true,
+            skalBoUtenforNorgeNeste12Mnd: undefined,
+        });
+
+        expect(goToPreviousStep).toHaveBeenCalledTimes(1);
+    });
+
     it('skal avslutte søknad', async () => {
         const onAvsluttOgSlett = vi.fn();
 
