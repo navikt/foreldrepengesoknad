@@ -24,7 +24,7 @@ const DEFAULT_PERIODE: UtenlandsoppholdPeriode = {
 interface Props<TYPE> {
     senereUtenlandsopphold: UtenlandsoppholdPeriode[];
     saveOnNext: (formValues: UtenlandsoppholdPeriode[]) => void;
-    saveOnPrevious: (formValues: UtenlandsoppholdPeriode[]) => void;
+    saveOnPrevious?: (formValues: UtenlandsoppholdPeriode[]) => void;
     onStepChange?: (id: TYPE) => void;
     onAvsluttOgSlett: () => void;
     onFortsettSenere?: () => void;
@@ -83,7 +83,7 @@ export const SenereUtenlandsoppholdPanel = <TYPE extends string>({
                         onAvsluttOgSlett={onAvsluttOgSlett}
                         onFortsettSenere={onFortsettSenere}
                         goToPreviousStep={goToPreviousStep}
-                        saveDataOnPreviousClick={(values) => saveOnPrevious(values.utenlandsoppholdNeste12Mnd)}
+                        saveDataOnPreviousClick={saveOnPrevious ? (values) => saveOnPrevious(values.utenlandsoppholdNeste12Mnd) : undefined}
                     />
                 </VStack>
             </RhfForm>

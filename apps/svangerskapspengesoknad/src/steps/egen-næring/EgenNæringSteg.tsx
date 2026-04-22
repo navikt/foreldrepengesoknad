@@ -35,16 +35,11 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
         return navigator.goToStep(nextRoute);
     };
 
-    const saveOnPrevious = () => {
-        // TODO (TOR) Lagre uvalidert data i framtida
-    };
-
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <EgenNæringPanel
                 egenNæring={egenNæring}
                 saveOnNext={onSubmit}
-                saveOnPrevious={saveOnPrevious}
                 onAvsluttOgSlett={avbrytSøknad}
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}

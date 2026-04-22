@@ -67,7 +67,6 @@ const validateEgenNæringNavn = (intl: IntlShape, erValgfri: boolean) => (value:
 interface Props<TYPE> {
     egenNæring?: NæringDto;
     saveOnNext: (formValues: NæringDto) => void;
-    saveOnPrevious: (formValues: NæringDto | undefined) => void;
     onAvsluttOgSlett: () => void;
     onFortsettSenere?: () => void;
     onStepChange?: (id: TYPE) => void;
@@ -81,7 +80,6 @@ export const EGEN_NÆRING_ID = 'naering';
 export const EgenNæringPanel = <TYPE extends string>({
     egenNæring,
     saveOnNext,
-    saveOnPrevious,
     onAvsluttOgSlett,
     onFortsettSenere,
     onStepChange,
@@ -371,7 +369,6 @@ export const EgenNæringPanel = <TYPE extends string>({
                         onAvsluttOgSlett={onAvsluttOgSlett}
                         onFortsettSenere={onFortsettSenere}
                         goToPreviousStep={goToPreviousStep}
-                        saveDataOnPreviousClick={saveOnPrevious}
                     />
                 </VStack>
             </RhfForm>

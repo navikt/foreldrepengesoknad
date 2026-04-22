@@ -14,7 +14,7 @@ import { HjelpeTekstFelles } from './HjelpeTekstFelles';
 interface Props<TYPE> {
     utenlandsopphold?: Utenlandsopphold;
     saveOnNext: (formValues: Utenlandsopphold) => void;
-    saveOnPrevious: (formValues: Utenlandsopphold | undefined) => void;
+    saveOnPrevious?: (formValues: Utenlandsopphold | undefined) => void;
     onAvsluttOgSlett: () => void;
     onFortsettSenere?: () => void;
     onStepChange?: (id: TYPE) => void;
