@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs';
-import React, { ReactElement, useRef, useState } from 'react';
+import React, { ReactElement, useEffect, useRef, useState } from 'react';
 
 import { Popover } from '@navikt/ds-react';
 
@@ -73,13 +73,11 @@ export const Day = ({
 
     const buttonRef = useRef<HTMLButtonElement>(null);
 
-    const setButtonRef = (el: HTMLButtonElement | null) => {
-        buttonRef.current = el;
-
-        if (el && isFocused) {
-            el.focus();
+    useEffect(() => {
+        if (isFocused && buttonRef.current) {
+            buttonRef.current.focus();
         }
-    };
+    }, [isFocused]);
 
     const isClickable = !!dateClickCallback && !isWeekend(date);
     const colorClass =
@@ -89,7 +87,7 @@ export const Day = ({
 
     return (
         <button
-            ref={setButtonRef}
+            ref={buttonRef}
             type="button"
             data-testid={`day:${day};dayColor:${periodeColor}${Icon ? `;with-icon` : ''}`}
             tabIndex={isFocused ? 0 : -1}
