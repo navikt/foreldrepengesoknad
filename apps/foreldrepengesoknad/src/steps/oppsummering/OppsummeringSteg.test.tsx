@@ -232,33 +232,39 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
     });
 
-    it('Skal vise informasjon om uttaksplan', () => {
-        render(<FarMedUførMorUgift />);
+    it(
+        'Skal vise informasjon om uttaksplan',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(FarMedUførMorUgift.parameters.msw);
+            render(<FarMedUførMorUgift />);
 
-        const dinPlanDiv = getCardDiv(screen.getByText('Din plan'));
+            const dinPlanDiv = getCardDiv(screen.getByText('Din plan'));
+            await dinPlanDiv.findByText('49 uker med 100 prosent foreldrepenger');
 
-        // TODO (TOR) Her trur eg det er noko feil med mocking av kall, står 49 uker i storybook
-        expect(
-            checkAndGetParentDiv(dinPlanDiv.getByText('Du har planlagt')).getByText(
-                '0 uker med 100 prosent foreldrepenger',
-            ),
-        ).toBeInTheDocument();
-        //TODO (TOR) dag og tidspunkt er forskjellig lokalt vs github
-        // expect(
-        //     checkAndGetParentDiv(dinPlanDiv.getAllByText(/Tirsdag/)[0]).getByText('Foreldrepenger før fødsel'),
-        // ).toBeInTheDocument();
-        // expect(checkAndGetParentDiv(dinPlanDiv.getAllByText(/Tirsdag/)[1]).getByText('Utsettelse')).toBeInTheDocument();
-        // expect(
-        //     checkAndGetParentDiv(dinPlanDiv.getAllByText(/Tirsdag/)[2]).getByText('Fellesperiode'),
-        // ).toBeInTheDocument();
-        expect(
-            checkAndGetParentDiv(
-                dinPlanDiv.getByText(
-                    'Ønsker du at vi endrer perioden som starter på termin til å starte fra fødselsdato når barnet blir født?',
+            expect(
+                checkAndGetParentDiv(dinPlanDiv.getByText('Du har planlagt')).getByText(
+                    '49 uker med 100 prosent foreldrepenger',
                 ),
-            ).getByText('Nei'),
-        ).toBeInTheDocument();
-    });
+            ).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(dinPlanDiv.getByText('Onsdag 24.11.21 - tirsdag 14.12.21')).getByText(
+                    /Foreldrepenger uten aktivitetskrav/,
+                ),
+            ).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(dinPlanDiv.getByText('Onsdag 15.12.21 - tirsdag 07.06.22')).getByText(
+                    /Foreldrepenger med aktivitetskrav/,
+                ),
+            ).toBeInTheDocument();
+            expect(
+                checkAndGetParentDiv(
+                    dinPlanDiv.getByText(
+                        'Ønsker du at vi endrer perioden som starter på termin til å starte fra fødselsdato når barnet blir født?',
+                    ),
+                ).getByText('Nei'),
+            ).toBeInTheDocument();
+        }),
+    );
 
     it('Skal vise "Foreldrepenger uten aktivitetskrav" når mor er ufør', async () => {
         render(<FarMedUførMorUgift />);
@@ -440,8 +446,6 @@ describe('<Oppsummering>', () => {
             type: 'update',
         });
     });
-
-    // TODO: De gjenværende må det oppdateres slik at testene gjennomføres uavhengig av rekkefølge, msw-handler virker ikke å resettes som de skal.
 
     it(
         'Far er hovedsøker - Skal vise krav om dokumentasjon for mors arbeid når hun jobber mindre enn 75%',
