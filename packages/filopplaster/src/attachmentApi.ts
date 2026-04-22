@@ -34,14 +34,14 @@ const handleHTTPError = (error: HTTPError): AttachmentUploadError => {
 
     if (status >= 400 && status < 500) {
         const data = error.data as AttachmentUploadError | undefined;
-        if (data && 'feilKode' in data) {
+        if (data && 'feilkode' in data) {
             return data;
         }
     }
 
     return {
         success: false,
-        feilKode: 'SERVER_ERROR',
+        feilkode: 'SERVER_ERROR',
     };
 };
 
@@ -49,7 +49,7 @@ const handleUploadError = (error: unknown): AttachmentUploadError => {
     if (error instanceof TimeoutError) {
         return {
             success: false,
-            feilKode: 'TIMEOUT',
+            feilkode: 'TIMEOUT',
         };
     }
 

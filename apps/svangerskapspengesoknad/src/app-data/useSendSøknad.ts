@@ -6,7 +6,7 @@ import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { captureMessage } from '@navikt/fp-observability';
-import { ProblemDetails, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+import { FpSoknadProblemDetails, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 
 import { useContextGetAnyData } from './SvpDataContext';
@@ -46,7 +46,7 @@ export const useSendSøknad = (søkerinfo: SvpPersonopplysningerDto_fpoversikt) 
                     throw error;
                 }
 
-                const jsonResponse = error.data as ProblemDetails | undefined;
+                const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
                 captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
                 const callId = jsonResponse?.callId ?? UKJENT_UUID;
                 throw new Error(FEIL_VED_INNSENDING + callId.substring(0, 6), { cause: error });

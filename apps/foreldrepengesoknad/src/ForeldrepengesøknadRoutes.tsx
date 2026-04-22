@@ -6,7 +6,7 @@ import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSendSøknad } from 'appData/useSendSøknad';
 import { Forside } from 'pages/forside/Forside';
 import { KvitteringPage } from 'pages/kvittering/KvitteringPage';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { AndreInntektskilderSteg } from 'steps/andre-inntektskilder/AndreInntektskilderSteg';
 import { AnnenForelderSteg } from 'steps/annen-forelder/AnnenForelderSteg';
@@ -285,7 +285,7 @@ export const ForeldrepengesøknadRoutes = ({
 }: Props) => {
     const navigate = useNavigate();
     const routerLocation = useLocation();
-    const [isFirstTimeLoadingApp, setIsFirstTimeLoadingApp] = useState(true);
+    const isFirstTimeLoadingApp = useRef(true);
 
     const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(lagretHarGodkjentVilkår || false);
     const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad || false);
@@ -308,23 +308,20 @@ export const ForeldrepengesøknadRoutes = ({
     useQuery(annenPartVedtakOptions);
 
     useEffect(() => {
-        if (currentRoute && erMyndig(søkerInfo.fødselsdato) && lagretHarGodkjentVilkår && isFirstTimeLoadingApp) {
-            // eslint-disable-next-line @eslint-react/set-state-in-effect -- TODO (TOR) - Vurder om denne kan fjennast
-            setIsFirstTimeLoadingApp(false);
+        if (
+            currentRoute &&
+            erMyndig(søkerInfo.fødselsdato) &&
+            lagretHarGodkjentVilkår &&
+            isFirstTimeLoadingApp.current
+        ) {
+            isFirstTimeLoadingApp.current = false;
             if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår)) {
                 void navigate(currentRoute);
             } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING.toString()) {
                 void navigate(SøknadRoutes.UTTAKSPLAN);
             }
         }
-    }, [
-        currentRoute,
-        søkerInfo.fødselsdato,
-        lagretHarGodkjentVilkår,
-        navigate,
-        isFirstTimeLoadingApp,
-        routerLocation.pathname,
-    ]);
+    }, [currentRoute, søkerInfo.fødselsdato, lagretHarGodkjentVilkår, navigate, routerLocation.pathname]);
 
     if (errorSendSøknad) {
         return (

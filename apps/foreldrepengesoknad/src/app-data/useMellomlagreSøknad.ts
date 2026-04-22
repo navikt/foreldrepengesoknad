@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { VERSJON_MELLOMLAGRING } from 'utils/mellomlagringUtils';
 
 import { captureMessage } from '@navikt/fp-observability';
-import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, ProblemDetails } from '@navikt/fp-types';
+import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, FpSoknadProblemDetails } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextComplete } from './FpDataContext';
@@ -66,7 +66,7 @@ export const useMellomlagreSøknad = (
                             throw error;
                         }
 
-                        const jsonResponse = error.data as ProblemDetails | undefined;
+                        const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
                         const callId = jsonResponse?.callId ?? UKJENT_UUID;
                         captureMessage(FEIL_VED_INNSENDING + callId);
                         throw new Error(FEIL_VED_INNSENDING + callId.substring(0, 6), { cause: error });
