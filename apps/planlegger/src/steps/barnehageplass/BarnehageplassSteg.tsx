@@ -3,44 +3,28 @@ import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContex
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
-import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getFamiliehendelsedato } from 'steps/oppsummering/expansion-cards/BarnehageplassOppsummering';
 import { OmBarnet } from 'types/Barnet';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
-import { Uttaksdata, getUttaksdagTilOgMedDato } from 'utils/uttakUtils';
+import { Uttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
 
-import { ISO_DATE_FORMAT, links } from '@navikt/fp-constants';
+import { links } from '@navikt/fp-constants';
 import { IconCircleWrapper, Infobox, StepButtons } from '@navikt/fp-ui';
+import { beregnBarnehagestartDato } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
 
-export const barnehagestartDato = (barnet: OmBarnet) => {
+export const barnehagestartDato = (barnet: OmBarnet): string | undefined => {
     if (erBarnetAdoptert(barnet)) {
         return undefined;
     }
 
     const dato = erBarnetFødt(barnet) ? barnet.fødselsdato : barnet.termindato;
-
-    if (dayjs(dato).month() < 8) {
-        const newLocal = dayjs(dato).month(7).add(1, 'year').endOf('month').format(ISO_DATE_FORMAT);
-        return getUttaksdagTilOgMedDato(newLocal);
-    }
-    if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) {
-        return getUttaksdagTilOgMedDato(dayjs(dato).add(1, 'year').endOf('month').format(ISO_DATE_FORMAT));
-    }
-    return getUttaksdagTilOgMedDato(
-        dayjs(dato)
-            .startOf('year')
-            .add(2, 'year')
-            .add(7, 'months')
-            .endOf('week')
-            .endOf('month')
-            .format(ISO_DATE_FORMAT),
-    );
+    return beregnBarnehagestartDato(dato);
 };
 
 interface Props {
