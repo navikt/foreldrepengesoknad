@@ -83,7 +83,7 @@ const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
     queryOptions({
         queryKey: ['ANNEN_PART_VEDTAK', data],
         queryFn: () => jsonEllerNull<AnnenPartSak_fpoversikt>(ky.post(API_URLS.annenPartVedtak, { json: data })),
-        select: (data) => data ?? undefined,
+        select: (sak) => sak ?? undefined,
     });
 
 // TODO: relocate types
