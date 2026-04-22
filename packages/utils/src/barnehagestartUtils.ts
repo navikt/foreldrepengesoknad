@@ -21,7 +21,7 @@ export const beregnBarnehagestartDato = (dato: string | undefined): string | und
         ).getDato();
     }
     return Uttaksdagen.denneEllerForrige(
-        dayjs(dato).startOf('year').add(2, 'year').add(7, 'months').endOf('week').endOf('month').format(ISO_DATE_FORMAT),
+        dayjs(dato).startOf('year').add(2, 'year').add(7, 'months').endOf('month').format(ISO_DATE_FORMAT),
     ).getDato();
 };
 
