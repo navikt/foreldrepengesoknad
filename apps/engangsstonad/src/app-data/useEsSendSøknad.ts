@@ -3,6 +3,7 @@ import { Path } from 'appData/paths';
 import { API_URLS } from 'appData/queries';
 import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
@@ -51,12 +52,11 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
     throw new Error('Det er feil i data om barnet');
 };
 
-// TODO (TOR) Fiks lokalisering
-const UKJENT_UUID = 'ukjent uuid';
-const FEIL_VED_INNSENDING =
+const FEIL_VED_INNSENDING_LOG =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
 export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt) => {
+    const intl = useIntl();
     const navigate = useNavigate();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
@@ -101,9 +101,15 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
                 }
 
                 const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
-                const callId = jsonResponse?.callId ?? UKJENT_UUID;
-                throw new Error(FEIL_VED_INNSENDING + callId.substring(0, 6), { cause: error });
+                captureMessage(`${FEIL_VED_INNSENDING_LOG}${JSON.stringify(jsonResponse)}`);
+                const callId = jsonResponse?.callId;
+                const feilmelding = callId
+                    ? intl.formatMessage(
+                          { id: 'useEsSendSøknad.FeilVedInnsending.MedCallId' },
+                          { callId: callId.substring(0, 6) },
+                      )
+                    : intl.formatMessage({ id: 'useEsSendSøknad.FeilVedInnsending.UtenCallId' });
+                throw new Error(feilmelding, { cause: error });
             }
             if (error instanceof Error) {
                 throw error;

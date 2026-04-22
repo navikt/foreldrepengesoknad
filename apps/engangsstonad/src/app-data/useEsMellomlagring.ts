@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { API_URLS } from 'appData/queries';
 import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import { captureMessage } from '@navikt/fp-observability';
@@ -13,15 +14,15 @@ export const VERSJON_MELLOMLAGRING = 5;
 
 export type EsMellomlagretData = { version: number; personinfo: EsPersonopplysningerDto_fpoversikt } & ContextDataMap;
 
-// TODO (TOR) Fiks lokalisering
 const UKJENT_UUID = 'ukjent uuid';
-const FEIL_VED_INNSENDING =
+const FEIL_VED_MELLOMLAGRING_LOG =
     'Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
 export const useEsMellomlagring = (
     personinfo: EsPersonopplysningerDto_fpoversikt,
     setVelkommen: (erVelkommen: boolean) => void,
 ) => {
+    const intl = useIntl();
     const navigate = useNavigate();
     const state = useContextComplete();
     const resetState = useContextReset();
@@ -57,9 +58,15 @@ export const useEsMellomlagring = (
                             }
 
                             const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                            const callId = jsonResponse?.callId ?? UKJENT_UUID;
-                            captureMessage(FEIL_VED_INNSENDING + callId);
-                            throw new Error(FEIL_VED_INNSENDING + callId.substring(0, 6), { cause: error });
+                            const callId = jsonResponse?.callId;
+                            captureMessage(FEIL_VED_MELLOMLAGRING_LOG + (callId ?? UKJENT_UUID));
+                            const feilmelding = callId
+                                ? intl.formatMessage(
+                                      { id: 'useEsMellomlagring.FeilVedMellomlagring.MedCallId' },
+                                      { callId: callId.substring(0, 6) },
+                                  )
+                                : intl.formatMessage({ id: 'useEsMellomlagring.FeilVedMellomlagring.UtenCallId' });
+                            throw new Error(feilmelding, { cause: error });
                         }
                         if (error instanceof Error) {
                             throw error;
