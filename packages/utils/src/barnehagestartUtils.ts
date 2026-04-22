@@ -6,7 +6,9 @@ import { Barn, isAdoptertBarn, isFødtBarn, isIkkeUtfyltTypeBarn } from '@navikt
 import { Uttaksdagen } from './uttak/Uttaksdagen';
 
 export const beregnBarnehagestartDato = (dato: string | undefined): string | undefined => {
-    if (!dato) return undefined;
+    if (!dato) {
+        return undefined;
+    }
 
     if (dayjs(dato).month() < 8) {
         return Uttaksdagen.denneEllerForrige(
