@@ -12,15 +12,19 @@ interface Props {
 
 export const FamiliehendelseContent = ({ barn }: Props) => {
     const {
-        foreldreInfo: { navnPåForeldre, søker },
+        foreldreInfo: { navnPåForeldre, søker, rettighetType },
     } = useUttaksplanData();
+
+    const harBareSøkerRett = rettighetType === 'BARE_SØKER_RETT';
+    const erFarEllerMedmor = søker === 'FAR_MEDMOR';
+    const kunFarEllerMedmorHarRett = harBareSøkerRett && erFarEllerMedmor;
 
     if (isUfødtBarn(barn)) {
         return (
             <BodyShort>
                 <FormattedMessage
                     id="uttaksplan.periodeListeContent.familiehendelse.termin"
-                    values={{ navnMor: navnPåForeldre.mor, erFarEllerMedmor: søker === 'FAR_MEDMOR' }}
+                    values={{ navnMor: navnPåForeldre.mor, erFarEllerMedmor: erFarEllerMedmor }}
                 />
             </BodyShort>
         );
@@ -30,6 +34,14 @@ export const FamiliehendelseContent = ({ barn }: Props) => {
         return (
             <BodyShort>
                 <FormattedMessage id="uttaksplan.periodeListeContent.familiehendelse.adopsjon" />
+            </BodyShort>
+        );
+    }
+
+    if (kunFarEllerMedmorHarRett) {
+        return (
+            <BodyShort>
+                <FormattedMessage id="uttaksplan.periodeListeContent.familiehendelse.bareFarMedmorHarRett" />
             </BodyShort>
         );
     }
