@@ -37,21 +37,12 @@ export const Foreldrepengesøknad = () => {
     const mellomlagretInfoData = mellomlagretInfoQuery.data;
 
     useEffect(() => {
-        if (søkerinfoQuery.error) {
-            const error = new Error(
-                `Vi klarte ikke å hente informasjon om deg. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
-            );
+        if (søkerinfoQuery.error || sakerQuery.error) {
+            const error = new Error(intl.formatMessage({ id: 'Foreldrepengesøknad.FeilVedHentingAvInformasjon' }));
             error.cause = 'capturedBySentry';
             throw error;
         }
-        if (sakerQuery.error) {
-            const error = new Error(
-                `Vi klarte ikke å hente informasjon om sakene dine. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
-            );
-            error.cause = 'capturedBySentry';
-            throw error;
-        }
-    }, [søkerinfoQuery.error, sakerQuery.error]);
+    }, [søkerinfoQuery.error, sakerQuery.error, intl]);
 
     if (!sakerQuery.data || !søkerinfoQuery.data || mellomlagretInfoQuery.isPending) {
         return <Spinner />;
