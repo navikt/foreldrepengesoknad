@@ -5,6 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, HStack, Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
@@ -27,6 +28,7 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
 
     const {
         foreldreInfo: { søker, navnPåForeldre, rettighetType },
+        uttakPerioder,
     } = useUttaksplanData();
 
     const formMethods = useForm<FormValues>();
@@ -57,7 +59,13 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                         return (
                             <Radio key={genererPeriodeKey(p)} value={index} autoFocus={index === 0}>
                                 <HStack gap="space-4">
-                                    {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [p]) && (
+                                    {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [
+                                        p,
+                                        ...uttakPerioder.filter(
+                                            (mp): mp is UttakPeriode_fpoversikt =>
+                                                !erEøsUttakPeriode(mp) && mp.forelder === 'MOR',
+                                        ),
+                                    ]) && (
                                         <ExclamationmarkTriangleFillIcon
                                             title={intl.formatMessage({
                                                 id: 'PeriodeListeHeader.MorsAktivitetIkkeValgt',

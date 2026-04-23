@@ -30,6 +30,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
     const intl = useIntl();
     const {
         foreldreInfo: { rettighetType },
+        uttakPerioder,
     } = useUttaksplanData();
     const morsAktivitet = erVanligUttakPeriode(periode) && periode.morsAktivitet ? periode.morsAktivitet : undefined;
 
@@ -43,9 +44,13 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
         rettighetType === 'ALENEOMSORG',
     );
 
+    const morsPerioder = uttakPerioder.filter(
+        (p): p is UttakPeriode_fpoversikt => !('trekkdager' in p) && p.forelder === 'MOR',
+    );
+
     return (
         <HStack gap="space-8">
-            {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [periode]) && (
+            {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [periode, ...morsPerioder]) && (
                 <ExclamationmarkTriangleFillIcon
                     title={intl.formatMessage({ id: 'PeriodeListeHeader.MorsAktivitetIkkeValgt' })}
                     fontSize="1.5rem"

@@ -118,7 +118,17 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
                 periode.resultat?.innvilget !== false &&
                 (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER') &&
                 periode.morsAktivitet === undefined &&
-                periode.flerbarnsdager === false,
+                periode.flerbarnsdager === false &&
+                !perioder.some(
+                    (morPeriode) =>
+                        erVanligUttakPeriode(morPeriode) &&
+                        morPeriode.forelder === 'MOR' &&
+                        Tidsperioden.forPeriode({ fom: periode.fom, tom: periode.tom }).overlapper({
+                            fom: morPeriode.fom,
+                            tom: morPeriode.tom,
+                        }) &&
+                        (morPeriode.samtidigUttak ?? 0) + (morPeriode.gradering?.arbeidstidprosent ?? 0) === 100,
+                ),
         )
     );
 };

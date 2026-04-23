@@ -26,7 +26,7 @@ import {
     isUfødtBarn,
 } from '@navikt/fp-types';
 import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
-import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
+import { Tidsperioden, Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 import { useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
@@ -360,7 +360,17 @@ const harPeriodeDerMorsAktivitetIkkeErValgt = (
             periode.resultat?.innvilget !== false &&
             (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER') &&
             periode.flerbarnsdager === false &&
-            periode.morsAktivitet === undefined,
+            periode.morsAktivitet === undefined &&
+            !perioder.some(
+                (morPeriode) =>
+                    Uttaksperioden.erIkkeEøsPeriode(morPeriode) &&
+                    morPeriode.forelder === 'MOR' &&
+                    Tidsperioden.forPeriode({ fom: periode.fom, tom: periode.tom }).overlapper({
+                        fom: morPeriode.fom,
+                        tom: morPeriode.tom,
+                    }) &&
+                    (morPeriode.samtidigUttak ?? 0) + (morPeriode.gradering?.arbeidstidprosent ?? 0) === 100,
+            ),
     );
 };
 

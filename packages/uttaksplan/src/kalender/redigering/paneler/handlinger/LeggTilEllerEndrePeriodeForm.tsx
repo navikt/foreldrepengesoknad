@@ -8,7 +8,7 @@ import { FormattedMessage } from 'react-intl';
 import { Alert, Button, ErrorMessage, HStack, VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import type { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
+import type { BrukerRolleSak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import {
@@ -25,6 +25,7 @@ import {
     erDetEksisterendePerioderEtterValgtePerioder,
     harPeriodeDerMorsAktivitetIkkeErValgt,
 } from '../../../../utils/periodeUtils';
+import { erEøsUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
 import { finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
 
@@ -96,7 +97,12 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
     const erMorsAktivitetIkkeOppgitt =
         harValgtDagerKunForEnEksisterendePeriode &&
-        harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, eksisterendePerioderSomErValgt);
+        harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [
+            ...eksisterendePerioderSomErValgt,
+            ...uttakPerioder.filter(
+                (mp): mp is UttakPeriode_fpoversikt => !erEøsUttakPeriode(mp) && mp.forelder === 'MOR',
+            ),
+        ]);
 
     const onSubmit = (values: LeggTilEllerEndrePeriodeFormFormValues) => {
         const submitFeilmelding = formSubmitValidator(sammenslåtteValgtePerioder, values);
