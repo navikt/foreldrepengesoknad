@@ -3,6 +3,7 @@ import { API_URLS } from 'appData/queries';
 import { SøknadRoute } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import { captureApiError, captureMessage } from '@navikt/fp-observability';
@@ -12,12 +13,9 @@ import { useAbortSignal } from '@navikt/fp-utils';
 import { useContextGetAnyData } from './SvpDataContext';
 import { getSøknadForInnsending } from './getSøknadForInnsending';
 
-const UKJENT_UUID = 'ukjent uuid';
-const FEIL_VED_INNSENDING =
-    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
-
 export const useSendSøknad = (søkerinfo: SvpPersonopplysningerDto_fpoversikt) => {
     const navigate = useNavigate();
+    const intl = useIntl();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 
@@ -47,9 +45,12 @@ export const useSendSøknad = (søkerinfo: SvpPersonopplysningerDto_fpoversikt) 
                 }
 
                 const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                captureApiError(FEIL_VED_INNSENDING, jsonResponse);
-                const callId = jsonResponse?.callId?.substring(0, 6) ?? UKJENT_UUID;
-                throw new Error(FEIL_VED_INNSENDING + callId, { cause: error });
+                captureApiError('Feil ved innsending av svangerskapspengesøknad', jsonResponse);
+                const callId = jsonResponse?.callId;
+                const feilmelding = callId
+                    ? intl.formatMessage({ id: 'useSendSøknad.FeilVedInnsending.MedCallId' }, { callId: callId.substring(0, 6) })
+                    : intl.formatMessage({ id: 'useSendSøknad.FeilVedInnsending.UtenCallId' });
+                throw new Error(feilmelding, { cause: error });
             }
             if (error instanceof Error) {
                 throw error;

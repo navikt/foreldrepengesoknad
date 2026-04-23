@@ -261,5 +261,9 @@
     "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige tegn i feltet \"{feltNavn}\".",
     "ArbeidIUtlandetFieldArray.arbeid.tom.description": "Hvis du sluttet i jobben mer enn 4 uker før du skal starte svangerskapspengene dine, vil ikke arbeidsforholdet ha betydning for retten din til svangerskapspenger.",
     "JobbetIUtlandetOppsummering.arbeidsforhold.periode": "{fom} - {tom}",
-    "ArbeidIUtlandetFieldArray.næring.pågående": "Jobber du der fortsatt?"
+    "ArbeidIUtlandetFieldArray.næring.pågående": "Jobber du der fortsatt?",
+    "useSendSøknad.FeilVedInnsending.MedCallId": "Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: {callId}",
+    "useSendSøknad.FeilVedInnsending.UtenCallId": "Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, ta kontakt med oss.",
+    "useMellomlagreSøknad.FeilVedMellomlagring.MedCallId": "Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: {callId}",
+    "useMellomlagreSøknad.FeilVedMellomlagring.UtenCallId": "Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, ta kontakt med oss."
 }

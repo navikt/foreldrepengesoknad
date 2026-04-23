@@ -1,8 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
-import { FEIL_VED_INNSENDING, UKJENT_UUID, getSøknadsdataForInnsending } from 'api/apiUtils';
+import { getSøknadsdataForInnsending } from 'api/apiUtils';
 import { API_URLS } from 'api/queries';
 import { SøknadRoutes } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
+import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import { captureApiError } from '@navikt/fp-observability';
@@ -17,6 +18,7 @@ export const useSendSøknad = (
     foreldrepengerSaker: FpSak_fpoversikt[],
 ) => {
     const navigate = useNavigate();
+    const intl = useIntl();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 
@@ -52,9 +54,12 @@ export const useSendSøknad = (
                 }
 
                 const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                captureApiError(FEIL_VED_INNSENDING, jsonResponse);
-                const callId = jsonResponse?.callId?.substring(0, 6) ?? UKJENT_UUID;
-                throw new Error(FEIL_VED_INNSENDING + callId, { cause: error });
+                captureApiError('Feil ved innsending av foreldrepengesøknad', jsonResponse);
+                const callId = jsonResponse?.callId;
+                const feilmelding = callId
+                    ? intl.formatMessage({ id: 'useSendSøknad.FeilVedInnsending.MedCallId' }, { callId: callId.substring(0, 6) })
+                    : intl.formatMessage({ id: 'useSendSøknad.FeilVedInnsending.UtenCallId' });
+                throw new Error(feilmelding, { cause: error });
             }
             if (error instanceof Error) {
                 throw error;
