@@ -13,7 +13,7 @@ export const WEEKDAY_DDMMMMYYYY_DATE_FORMAT = 'dddd DD. MMMM YYYY';
 export const WEEKDAY_DDMMYY_DATE_FORMAT = 'dddd DD.MM.YY';
 export const DAY_MONTHNAME_YEAR_FORMAT = 'D. MMMM YYYY';
 
-export const TIDENES_MORGENß = '1000-01-01';
+export const TIDENES_MORGEN = '1000-01-01';
 export const TIDENES_ENDE = '9999-12-31';
 
 export const DATE_TODAY = dayjs().format(ISO_DATE_FORMAT);
