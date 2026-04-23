@@ -42,6 +42,7 @@ export const usePerioderForKalendervisning = (
         barn,
         foreldreInfo: { søker, navnPåForeldre, rettighetType },
         familiehendelsedato,
+        uttakPerioder,
     } = useUttaksplanData();
 
     const saksperioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
@@ -75,7 +76,7 @@ export const usePerioderForKalendervisning = (
                     intl,
                     isUpdated,
                     rettighetType,
-                    saksperioderInkludertTapteDager,
+                    uttakPerioder,
                 ),
             ];
         }
@@ -87,7 +88,7 @@ export const usePerioderForKalendervisning = (
             return [
                 ...acc,
                 ...perioder,
-                ...splittPeriodeITo(periode, barnehagestartdato, color, navnPåForeldre, intl, isUpdated, rettighetType, saksperioderInkludertTapteDager),
+                ...splittPeriodeITo(periode, barnehagestartdato, color, navnPåForeldre, intl, isUpdated, rettighetType, uttakPerioder),
             ];
         }
 
@@ -100,7 +101,7 @@ export const usePerioderForKalendervisning = (
                 color,
                 srText: getKalenderSkjermlesertekstForPeriode(periode, navnPåForeldre, intl),
                 isUpdated,
-                ...leggTilIkonVedPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, periode, saksperioderInkludertTapteDager),
+                ...leggTilIkonVedPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, periode, uttakPerioder),
             } satisfies CalendarPeriod,
         ];
     }, []);
@@ -336,7 +337,7 @@ const splittPeriodeITo = (
     intl: IntlShape,
     isUpdated: boolean,
     rettighetType: RettighetType_fpoversikt,
-    allePerioder: UttaksplanperiodeMedKunTapteDager[],
+    allePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
 ): CalendarPeriod[] => {
     const forrige = Uttaksdagen.forrige(dato).getDato();
     const neste = Uttaksdagen.neste(dato).getDato();
@@ -365,7 +366,7 @@ const splittPeriodeITo = (
 const leggTilIkonVedPeriodeDerMorsAktivitetIkkeErValgt = (
     rettighetType: RettighetType_fpoversikt,
     periode: UttaksplanperiodeMedKunTapteDager,
-    allePerioder: UttaksplanperiodeMedKunTapteDager[],
+    allePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
 ) => {
     const morsPerioder = allePerioder.filter(
         (p): p is UttakPeriode_fpoversikt => erVanligUttakPeriode(p) && p.forelder === 'MOR',
