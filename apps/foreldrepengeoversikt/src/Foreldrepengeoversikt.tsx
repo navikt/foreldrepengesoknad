@@ -25,7 +25,9 @@ export const Foreldrepengeoversikt = () => {
     });
 
     if (søkerInfoQuery.isError || sakerQuery.isError) {
-        throw new Error(intl.formatMessage({ id: 'error.hentingInformasjon' }));
+        const error = new Error(intl.formatMessage({ id: 'error.hentingInformasjon' }));
+        error.cause = 'capturedBySentry';
+        throw error;
     }
 
     if (!søkerInfoQuery.data || sakerQuery.isPending) {

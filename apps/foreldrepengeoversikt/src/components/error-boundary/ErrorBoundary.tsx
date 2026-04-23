@@ -23,10 +23,12 @@ export class ErrorBoundary extends Component<Props, State> {
         if (error && error.message !== 'globalThis.hasFocus is not a function') {
             this.setState((oldState) => ({ ...oldState, hasError: true, error }));
 
-            withScope((scope) => {
-                scope.setExtra('errorInfo', errorInfo);
-                captureException(error);
-            });
+            if (error.cause !== 'capturedBySentry') {
+                withScope((scope) => {
+                    scope.setExtra('errorInfo', errorInfo);
+                    captureException(error);
+                });
+            }
         }
     }
 
