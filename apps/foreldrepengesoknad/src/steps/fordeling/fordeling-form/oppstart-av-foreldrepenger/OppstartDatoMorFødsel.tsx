@@ -8,8 +8,8 @@ import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'utils/ba
 import { Alert, HStack, VStack } from '@navikt/ds-react';
 
 import { isFødtBarn } from '@navikt/fp-types';
-import { Uttaksdagen, erUttaksdag, isValidDate } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
+import { Uttaksdagen, erUttaksdag } from '@navikt/fp-utils';
+import { isValidDateString as isValidDate, notEmpty } from '@navikt/fp-validation';
 
 import { MorOppstartInformasjon } from './MorOppstartInformasjon';
 import { OppstartDatoInput } from './OppstartDatoInput';
