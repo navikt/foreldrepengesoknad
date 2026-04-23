@@ -37,6 +37,10 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
         setValgtPeriodeIndex(values.periodeIndex);
     };
 
+    const morsPerioder = uttakPerioder.filter(
+        (mp): mp is UttakPeriode_fpoversikt => !erEøsUttakPeriode(mp) && mp.forelder === 'MOR',
+    );
+
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             <VStack gap="space-16">
@@ -59,13 +63,7 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                         return (
                             <Radio key={genererPeriodeKey(p)} value={index} autoFocus={index === 0}>
                                 <HStack gap="space-4">
-                                    {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [
-                                        p,
-                                        ...uttakPerioder.filter(
-                                            (mp): mp is UttakPeriode_fpoversikt =>
-                                                !erEøsUttakPeriode(mp) && mp.forelder === 'MOR',
-                                        ),
-                                    ]) && (
+                                    {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [p, ...morsPerioder]) && (
                                         <ExclamationmarkTriangleFillIcon
                                             title={intl.formatMessage({
                                                 id: 'PeriodeListeHeader.MorsAktivitetIkkeValgt',
