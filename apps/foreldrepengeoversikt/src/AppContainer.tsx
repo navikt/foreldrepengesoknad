@@ -11,7 +11,7 @@ import { en, nb, nn } from '@navikt/ds-react/locales';
 
 import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
-import { observabilityMessages } from '@navikt/fp-observability';
+import { captureApiError, observabilityMessages } from '@navikt/fp-observability';
 import { LocaleAll } from '@navikt/fp-types';
 import { ByttBrowserModal, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
@@ -27,11 +27,18 @@ import { OversiktRoutes } from './routes/routes.ts';
 
 const queryClient = new QueryClient({
     queryCache: new QueryCache({
-        onError: (error) => {
+        onError: (error, query) => {
             if (error instanceof HTTPError) {
                 if (error.response?.status === 401) {
                     location.reload();
+                    return;
                 }
+                if (error.response?.status === 403) {
+                    return;
+                }
+                const queryName = String(query.queryKey[0]);
+                const apiError = error.data as Record<string, string> | undefined;
+                captureApiError(`API-feil i ${queryName}`, apiError);
             }
         },
     }),

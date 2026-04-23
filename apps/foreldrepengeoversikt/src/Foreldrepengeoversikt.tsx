@@ -1,11 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { HTTPError } from 'ky';
 import { useIntl } from 'react-intl';
 
 import { Loader } from '@navikt/ds-react';
-
-import { captureApiError } from '@navikt/fp-observability';
-import type { FpOversiktProblemDetails } from '@navikt/fp-types';
 
 import { hentSakerOptions, minidialogOptions, søkerInfoOptions } from './api/queries.ts';
 import { ScrollToTop } from './components/scroll-to-top/ScrollToTop';
@@ -13,16 +9,6 @@ import { useGetBackgroundColor } from './hooks/useBackgroundColor';
 import { ForeldrepengeoversiktRoutes } from './routes/ForeldrepengeoversiktRoutes';
 import { SakOppslag } from './types/SakOppslag';
 import { mapSakerDTOToSaker } from './utils/sakerUtils';
-
-const captureQueryError = (queryName: string, error: Error) => {
-    if (error instanceof HTTPError) {
-        if (error.response?.status === 401 || error.response?.status === 403) {
-            return;
-        }
-        const apiError = error.data as FpOversiktProblemDetails | undefined;
-        captureApiError(`API-feil i ${queryName}`, apiError);
-    }
-};
 
 export const Foreldrepengeoversikt = () => {
     const intl = useIntl();
@@ -39,15 +25,7 @@ export const Foreldrepengeoversikt = () => {
     });
 
     if (søkerInfoQuery.isError || sakerQuery.isError) {
-        if (søkerInfoQuery.error) {
-            captureQueryError('søkerInfo', søkerInfoQuery.error);
-        }
-        if (sakerQuery.error) {
-            captureQueryError('saker', sakerQuery.error);
-        }
-        const error = new Error(intl.formatMessage({ id: 'error.hentingInformasjon' }));
-        error.cause = 'capturedBySentry';
-        throw error;
+        throw new Error(intl.formatMessage({ id: 'error.hentingInformasjon' }));
     }
 
     if (!søkerInfoQuery.data || sakerQuery.isPending) {
