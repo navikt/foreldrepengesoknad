@@ -3,13 +3,14 @@ import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { hasValue } from '@navikt/fp-validation';
 
 dayjs.extend(minMax);
 
+export { hasValue };
+
 export const TEXT_INPUT_MIN_LENGTH = 10;
 export const TEXT_INPUT_MAX_LENGTH = 1000;
-
-export const hasValue = (v: string | number | boolean | undefined | null) => v !== '' && v !== undefined && v !== null;
 
 export const getMinInputTilOgMedValue = (fom: string | undefined, otherMinDate: string) => {
     if (fom && hasValue(fom)) {

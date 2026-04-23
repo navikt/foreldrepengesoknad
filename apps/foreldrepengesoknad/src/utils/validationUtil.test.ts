@@ -1,7 +1,8 @@
+import { getIllegalChars } from '@navikt/fp-validation';
 import { createIntl, createIntlCache } from 'react-intl';
 
 import messages from '../intl/nb_NO.json';
-import { getIllegalChars, validateFødselsnummer } from './validationUtil';
+import { validateFødselsnummer } from './validationUtil';
 
 // Create the IntlProvider to retrieve context for wrapping around.
 const cache = createIntlCache();
