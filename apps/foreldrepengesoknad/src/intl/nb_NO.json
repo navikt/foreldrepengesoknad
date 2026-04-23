@@ -556,7 +556,5 @@
     "uttaksplan.overføringsårsaktype.SYKDOM_ANNEN_FORELDER": "{navnAnnenForelder} er for syk til å ta seg av barnet",
     "useSendSøknad.FeilVedInnsending.MedCallId": "Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: {callId}",
     "useSendSøknad.FeilVedInnsending.UtenCallId": "Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, ta kontakt med oss.",
-    "useMellomlagreSøknad.FeilVedMellomlagring.MedCallId": "Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: {callId}",
-    "useMellomlagreSøknad.FeilVedMellomlagring.UtenCallId": "Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, ta kontakt med oss.",
     "Foreldrepengesøknad.FeilVedHentingAvInformasjon": "Vi klarte ikke å hente informasjonen din. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte."
 }

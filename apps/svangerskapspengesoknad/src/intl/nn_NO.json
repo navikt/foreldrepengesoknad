@@ -263,7 +263,5 @@
     "JobbetIUtlandetOppsummering.arbeidsforhold.periode": "{fom} - {tom}",
     "ArbeidIUtlandetFieldArray.næring.pågående": "Jobbar du der fortsatt?",
     "useSendSøknad.FeilVedInnsending.MedCallId": "Det har oppstått eit problem med innsending av søknaden. Ver venleg og prøv igjen seinare. Viss problemet vedvarar, kontakt oss og oppgje feil-id: {callId}",
-    "useSendSøknad.FeilVedInnsending.UtenCallId": "Det har oppstått eit problem med innsending av søknaden. Ver venleg og prøv igjen seinare. Viss problemet vedvarar, ta kontakt med oss.",
-    "useMellomlagreSøknad.FeilVedMellomlagring.MedCallId": "Det har oppstått eit problem med mellomlagring av søknaden. Ver venleg og prøv igjen seinare. Viss problemet vedvarar, kontakt oss og oppgje feil-id: {callId}",
-    "useMellomlagreSøknad.FeilVedMellomlagring.UtenCallId": "Det har oppstått eit problem med mellomlagring av søknaden. Ver venleg og prøv igjen seinare. Viss problemet vedvarar, ta kontakt med oss."
+    "useSendSøknad.FeilVedInnsending.UtenCallId": "Det har oppstått eit problem med innsending av søknaden. Ver venleg og prøv igjen seinare. Viss problemet vedvarar, ta kontakt med oss."
 }

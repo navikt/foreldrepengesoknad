@@ -2,7 +2,6 @@ import { useMutation } from '@tanstack/react-query';
 import { API_URLS } from 'appData/queries';
 import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import { ApiError, captureApiError, captureMessage } from '@navikt/fp-observability';
@@ -22,7 +21,6 @@ export const useMellomlagreSøknad = (
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void,
 ) => {
     const navigate = useNavigate();
-    const intl = useIntl();
     const state = useContextComplete();
     const resetState = useContextReset();
 
@@ -57,15 +55,8 @@ export const useMellomlagreSøknad = (
                             }
 
                             const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                            const callId = jsonResponse?.callId;
-                            const feilmelding = callId
-                                ? intl.formatMessage(
-                                      { id: 'useMellomlagreSøknad.FeilVedMellomlagring.MedCallId' },
-                                      { callId: callId.substring(0, 6) },
-                                  )
-                                : intl.formatMessage({ id: 'useMellomlagreSøknad.FeilVedMellomlagring.UtenCallId' });
                             throw new ApiError(
-                                feilmelding,
+                                'Feil ved mellomlagring',
                                 'Feil ved mellomlagring av svangerskapspengesøknad',
                                 jsonResponse,
                             );
