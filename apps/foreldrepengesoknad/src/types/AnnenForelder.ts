@@ -39,7 +39,7 @@ export const isAnnenforelderOppholdtSegIEØS = (annenForelder: AnnenForelder): a
     return isAnnenForelderOppgitt(annenForelder) && annenForelder.harOppholdtSegIEØS === true;
 };
 
-export const isAnnenForelderOppgittPartial = (
+export const kanAnnenForelderOppgis = (
     annenForelder: Partial<AnnenForelder>,
 ): annenForelder is Partial<AnnenForelderOppgitt> => {
     return annenForelder.kanIkkeOppgis !== true;
