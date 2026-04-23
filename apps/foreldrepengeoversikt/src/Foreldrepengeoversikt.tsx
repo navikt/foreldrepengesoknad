@@ -4,7 +4,8 @@ import { useIntl } from 'react-intl';
 
 import { Loader } from '@navikt/ds-react';
 
-import { captureMessage, withScope } from '@navikt/fp-observability';
+import { captureApiError } from '@navikt/fp-observability';
+import type { FpOversiktProblemDetails } from '@navikt/fp-types';
 
 import { hentSakerOptions, minidialogOptions, søkerInfoOptions } from './api/queries.ts';
 import { ScrollToTop } from './components/scroll-to-top/ScrollToTop';
@@ -15,24 +16,11 @@ import { mapSakerDTOToSaker } from './utils/sakerUtils';
 
 const captureQueryError = (queryName: string, error: Error) => {
     if (error instanceof HTTPError) {
-        withScope((scope) => {
-            scope.setTag('queryName', queryName);
-            scope.setTag('httpStatus', error.response?.status);
-            if (error.response?.status === 401 || error.response?.status === 403) {
-                return;
-            }
-            const apiError = error.data as Record<string, unknown> | undefined;
-            if (typeof apiError?.callId === 'string') {
-                scope.setTag('callId', apiError.callId);
-            }
-            if (typeof apiError?.feilkode === 'string') {
-                scope.setTag('feilkode', apiError.feilkode);
-            }
-            if (apiError) {
-                scope.setContext('apiError', apiError);
-            }
-            captureMessage(`API-feil i ${queryName}`);
-        });
+        if (error.response?.status === 401 || error.response?.status === 403) {
+            return;
+        }
+        const apiError = error.data as FpOversiktProblemDetails | undefined;
+        captureApiError(`API-feil i ${queryName}`, apiError);
     }
 };
 

@@ -18,7 +18,7 @@ export type FpOversiktFeilKode =
     | 'IKKE_TILGANG_INAKTIV'
     | 'IKKE_TILGANG_MANGLER_DRIFT_ROLLE';
 
-type ProblemDetailsBase = {
+export type ProblemDetailsBase = {
     feilmelding: string;
     callId?: string;
 };

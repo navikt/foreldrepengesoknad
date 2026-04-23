@@ -18,6 +18,7 @@ export type { AppName } from './src/AppName';
 export type { DatepickerDateRange } from './src/DatepickerDateRange';
 export type { Frilans } from './src/Frilans';
 export type {
+    ProblemDetailsBase,
     FpSoknadProblemDetails,
     FpOversiktProblemDetails,
     FpGrunndataProblemDetails,
