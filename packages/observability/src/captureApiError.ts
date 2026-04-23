@@ -1,10 +1,8 @@
 import { captureMessage, withScope } from '@sentry/browser';
 
-import type { ProblemDetailsBase } from '@navikt/fp-types';
+import type { ProblemDetails } from '@navikt/fp-types';
 
-type ApiError = Partial<ProblemDetailsBase & { feilkode: string }>;
-
-export const captureApiError = (message: string, apiError?: ApiError) => {
+export const captureApiError = (message: string, apiError?: ProblemDetails) => {
     withScope((scope) => {
         if (apiError?.callId) {
             scope.setTag('callId', apiError.callId);
@@ -13,7 +11,7 @@ export const captureApiError = (message: string, apiError?: ApiError) => {
             scope.setTag('feilkode', apiError.feilkode);
         }
         if (apiError) {
-            scope.setContext('apiError', apiError);
+            scope.setContext('apiError', { ...apiError });
         }
         captureMessage(message);
     });

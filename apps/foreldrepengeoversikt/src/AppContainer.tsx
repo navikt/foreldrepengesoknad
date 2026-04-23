@@ -12,7 +12,7 @@ import { en, nb, nn } from '@navikt/ds-react/locales';
 import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { captureApiError, observabilityMessages } from '@navikt/fp-observability';
-import { LocaleAll } from '@navikt/fp-types';
+import { type ProblemDetails, type LocaleAll } from '@navikt/fp-types';
 import { ByttBrowserModal, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
 import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan';
@@ -37,7 +37,7 @@ const queryClient = new QueryClient({
                     return;
                 }
                 const queryName = String(query.queryKey[0]);
-                const apiError = error.data as Record<string, string> | undefined;
+                const apiError = error.data as ProblemDetails | undefined;
                 captureApiError(`API-feil i ${queryName}`, apiError);
             }
         },

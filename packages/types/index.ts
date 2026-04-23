@@ -18,7 +18,7 @@ export type { AppName } from './src/AppName';
 export type { DatepickerDateRange } from './src/DatepickerDateRange';
 export type { Frilans } from './src/Frilans';
 export type {
-    ProblemDetailsBase,
+    ProblemDetails,
     FpSoknadProblemDetails,
     FpOversiktProblemDetails,
     FpGrunndataProblemDetails,
@@ -33,7 +33,14 @@ export type {
     ArbeidsforholdOgInntektSvp,
 } from './src/ArbeidsforholdOgInntekt';
 export { isArbeidsforholdOgInntektFp, isArbeidsforholdOgInntektSvp } from './src/ArbeidsforholdOgInntekt';
-export { isFødtBarn, isUfødtBarn, isAdoptertBarn, isAdoptertStebarn, isAdoptertAnnetBarn, isIkkeUtfyltTypeBarn } from './src/Barn';
+export {
+    isFødtBarn,
+    isUfødtBarn,
+    isAdoptertBarn,
+    isAdoptertStebarn,
+    isAdoptertAnnetBarn,
+    isIkkeUtfyltTypeBarn,
+} from './src/Barn';
 export type { Utenlandsopphold, UtenlandsoppholdPeriode } from './src/Utenlandsopphold';
 
 export type { Barn, FødtBarn, UfødtBarn, AdoptertAnnetBarn, AdoptertBarn, IkkeUtfyltTypeBarn } from './src/Barn';
