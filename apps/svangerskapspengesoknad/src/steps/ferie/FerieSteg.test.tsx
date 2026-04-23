@@ -140,7 +140,7 @@ describe('<FerieSteg>', () => {
         await user.type(screen.getAllByText('Siste feriedag')[2]!, dayjs('2024-11-12').format('DD.MM.YYYY'));
         await user.tab();
         await user.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Overlapper med 2. periode')).toHaveLength(1);
+        expect(screen.getAllByText('Overlapper med 2. periode')).toHaveLength(2);
 
         await user.clear(screen.getAllByLabelText('Første feriedag')[1]!);
         await user.type(screen.getAllByText('Første feriedag')[1]!, dayjs('2024-11-06').format('DD.MM.YYYY'));

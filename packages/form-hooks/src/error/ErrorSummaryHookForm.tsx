@@ -1,30 +1,26 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { useEffect, useRef } from 'react';
 import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form';
 
 import { ErrorSummaryFp } from '@navikt/fp-ui';
 
-const findAllErrors = (errors: FieldErrors<FieldValues>): FieldErrors<FieldValues> => {
+const findAllErrors = (errors: FieldErrors<FieldValues>, pathPrefix = ''): FieldErrors<FieldValues> => {
     return Object.keys(errors).reduce<FieldErrors<FieldValues>>((acc, fieldKey) => {
         const fieldValue = errors[fieldKey];
+        const fullPath = pathPrefix ? `${pathPrefix}.${fieldKey}` : fieldKey;
 
-        if (fieldValue?.message && !acc[fieldKey]) {
-            const shouldNotAdd = Object.keys(acc).some((key) => acc[key]?.message === fieldValue?.message);
-            if (shouldNotAdd) {
-                return acc;
-            }
+        if (fieldValue?.message) {
             return {
                 ...acc,
-                [fieldKey]: errors[fieldKey],
+                [fullPath]: fieldValue,
             };
         }
 
         if (Array.isArray(fieldValue)) {
-            const alle = fieldValue.reduce((a, f) => {
+            const alle = fieldValue.reduce<FieldErrors<FieldValues>>((a, f, index) => {
                 return {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                    ...(f ? findAllErrors(f) : {}),
                     ...a,
+                    ...(f ? findAllErrors(f, `${fullPath}.${index}`) : {}),
                 };
             }, {});
             return {
@@ -33,6 +29,18 @@ const findAllErrors = (errors: FieldErrors<FieldValues>): FieldErrors<FieldValue
             };
         }
         return acc;
+    }, {});
+};
+
+const dedupErrorsByMessage = (errors: FieldErrors<FieldValues>): FieldErrors<FieldValues> => {
+    const seenMessages = new Set<string>();
+    return Object.keys(errors).reduce<FieldErrors<FieldValues>>((acc, key) => {
+        const message = errors[key]?.message;
+        if (typeof message !== 'string' || seenMessages.has(message)) {
+            return acc;
+        }
+        seenMessages.add(message);
+        return { ...acc, [key]: errors[key] };
     }, {});
 };
 
@@ -50,7 +58,7 @@ export const ErrorSummaryHookForm = () => {
         }
     }, [errors]);
 
-    const flattenAndUniqueErrors = findAllErrors(errors);
+    const flattenAndUniqueErrors = dedupErrorsByMessage(findAllErrors(errors));
 
     const mappedErrors = Object.entries(flattenAndUniqueErrors).map(([fieldName, error]) => ({
         message: typeof error?.message === 'string' ? error.message : undefined,
