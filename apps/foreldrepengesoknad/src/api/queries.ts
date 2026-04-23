@@ -1,9 +1,10 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
-import { getStønadskontoParams } from 'api/getStønadskontoParams';
+import { StønadskontoParams, getStønadskontoParams } from 'api/getStønadskontoParams';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky, { type ResponsePromise } from 'ky';
-import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenForelderUtils';
+import { DokumentereMorsArbeidParams } from 'types/DokumentereMorsArbeidParams';
+import { AnnenPartVedtakParams, annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenForelderUtils';
 
 import {
     AnnenPartSak_fpoversikt,
@@ -11,7 +12,6 @@ import {
     FpPersonopplysningerDto_fpoversikt,
     KontoBeregningResultatDto,
     Saker_fpoversikt,
-    Tidsperiode,
 } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -85,30 +85,6 @@ const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
         queryFn: () => jsonEllerNull<AnnenPartSak_fpoversikt>(ky.post(API_URLS.annenPartVedtak, { json: data })),
         select: (sak) => sak ?? undefined,
     });
-
-// TODO: relocate types
-type AnnenPartVedtakParams = {
-    annenPartFødselsnummer?: string;
-    barnFødselsnummer?: string;
-    familiehendelse: string;
-};
-
-type StønadskontoParams = {
-    rettighetstype: string;
-    brukerrolle: string;
-    antallBarn: string;
-    fødselsdato?: string;
-    termindato?: string;
-    omsorgsovertakelseDato?: string;
-    morHarUføretrygd: boolean;
-};
-
-export type DokumentereMorsArbeidParams = {
-    annenPartFødselsnummer: string;
-    barnFødselsnummer?: string;
-    familiehendelse: string;
-    perioder: Array<Tidsperiode & { periodeType: 'UTSETTELSE' | 'UTTAK' }>;
-};
 
 const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams) =>
     queryOptions({

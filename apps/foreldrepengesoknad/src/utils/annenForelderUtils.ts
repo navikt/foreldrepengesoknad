@@ -12,7 +12,13 @@ export const getDatoForAleneomsorg = (annenForelder: AnnenForelder): string | un
     return isAnnenForelderOppgitt(annenForelder) ? annenForelder.datoForAleneomsorg : undefined;
 };
 
-export const getAnnenPartVedtakParam = (annenForelder: AnnenForelder, barn: Barn) => {
+export type AnnenPartVedtakParams = {
+    annenPartFødselsnummer?: string;
+    barnFødselsnummer?: string;
+    familiehendelse: string;
+};
+
+export const getAnnenPartVedtakParam = (annenForelder: AnnenForelder, barn: Barn): AnnenPartVedtakParams => {
     const annenPartFødselsnummer =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.utenlandskFnr !== true ? annenForelder.fnr : undefined;
     const barnFødselsnummer =

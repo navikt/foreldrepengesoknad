@@ -86,6 +86,16 @@ const finnRettighetstype = (
     return 'BARE_SØKER_RETT';
 };
 
+export type StønadskontoParams = {
+    rettighetstype: string;
+    brukerrolle: string;
+    antallBarn: string;
+    fødselsdato?: string;
+    termindato?: string;
+    omsorgsovertakelseDato?: string;
+    morHarUføretrygd: boolean;
+};
+
 export const getStønadskontoParams = (
     barn: Barn,
     annenForelder: AnnenForelder,

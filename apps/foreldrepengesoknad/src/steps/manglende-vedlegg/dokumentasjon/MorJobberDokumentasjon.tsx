@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { DokumentereMorsArbeidParams, trengerDokumentereMorsArbeidOptions } from 'api/queries';
+import { trengerDokumentereMorsArbeidOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { isAnnenForelderOppgittNorsk, isAnnenforelderOppholdtSegIEØS } from 'types/AnnenForelder';
+import { DokumentereMorsArbeidParams } from 'types/DokumentereMorsArbeidParams';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { addMetadata, lagAutomatiskDokument } from 'utils/vedleggUtils';
 
