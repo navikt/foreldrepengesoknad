@@ -34,6 +34,7 @@ export const HvaErMulig = ({ loggExpansionCardOpen, erFarOgFar }: Props) => {
     const kunEnPartSkalHa = rettighetType !== 'BEGGE_RETT';
 
     const kunFarSøker2EllerMedmorHarRett = erAlene && søker === 'FAR_MEDMOR';
+    const kunSøker2SkalHa = kunEnPartSkalHa && søker === 'FAR_MEDMOR';
 
     return (
         <ExpansionCard
@@ -75,7 +76,7 @@ export const HvaErMulig = ({ loggExpansionCardOpen, erFarOgFar }: Props) => {
 
                             {!kunEnPartSkalHa && !erFarOgFar && <FarFellesperiode erFarOgFar={erFarOgFar} />}
 
-                            {rettighetType === 'BEGGE_RETT' && <JobbeSamtidig />}
+                            {!kunSøker2SkalHa && <JobbeSamtidig />}
 
                             {!erAlene && !kunEnPartSkalHa && <ForeldrepengerSamtidig erFarOgFar={erFarOgFar} />}
                             {kunFarSøker2EllerMedmorHarRett && (

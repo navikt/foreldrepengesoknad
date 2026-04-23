@@ -197,6 +197,7 @@ describe('<HvaErMulig>', () => {
         expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
         expect(screen.getByText(/Fedre får ofte permisjon/)).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
         expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('Dette kan du ikke endre:')).not.toBeInTheDocument();
@@ -219,8 +220,7 @@ describe('<HvaErMulig>', () => {
         expect(screen.getByText('Tre uker før termin:')).toBeInTheDocument();
         expect(screen.getByText('Seks uker etter fødsel:')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
-        // TODO (TOR) Gir det meining at Jobbe samtidig er synleg for aleneforsørger mor?
-        //expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
         expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('2 uker rundt fødsel:')).not.toBeInTheDocument();
