@@ -5,10 +5,11 @@ import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
-import { erTerminDokumentasjon } from 'types/Dokumentasjon';
+import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 
 import { captureMessage } from '@navikt/fp-observability';
 import {
+    BarnDto,
     EngangsstønadDto,
     EsPersonopplysningerDto_fpoversikt,
     FpSoknadProblemDetails,
@@ -34,14 +35,7 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
         const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
         const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
-        if (barn.type === 'termin' && !(dokumentasjon && erTerminDokumentasjon(dokumentasjon))) {
-            throw new Error('Det er feil i data om barnet: mangler terminbekreftelse for termin-barn');
-        }
-
-        const barnDto =
-            barn.type === 'termin' && dokumentasjon && erTerminDokumentasjon(dokumentasjon)
-                ? { ...barn, terminbekreftelseDato: dokumentasjon.terminbekreftelsedato }
-                : barn;
+        const barnDto = mapBarn(barn, dokumentasjon);
 
         const søknad = {
             søkerinfo: {
@@ -105,4 +99,14 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
         }),
         [sendSøknad, error],
     );
+};
+
+const mapBarn = (barn: BarnDto, dokumentasjon?: Dokumentasjon): BarnDto => {
+    if (barn.type === 'termin' && !(dokumentasjon && erTerminDokumentasjon(dokumentasjon))) {
+        throw new Error('Det er feil i data om barnet: mangler terminbekreftelse for termin-barn');
+    }
+
+    return barn.type === 'termin' && dokumentasjon && erTerminDokumentasjon(dokumentasjon)
+        ? { ...barn, terminbekreftelseDato: dokumentasjon.terminbekreftelsedato }
+        : barn;
 };

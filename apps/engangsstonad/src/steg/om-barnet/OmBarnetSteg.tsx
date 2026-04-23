@@ -28,7 +28,7 @@ const utledNesteSteg = (formValues: FormValues, søkersituasjon: Søkersituasjon
     return Path.UTENLANDSOPPHOLD;
 };
 
-const resolveAntallBarn = (formValues: Pick<FormValues, 'antallBarn' | 'antallBarnDropDown'>) =>
+const resolveAntallBarn = (formValues: FormValues) =>
     formValues.antallBarn > 2 && formValues.antallBarnDropDown
         ? Number.parseInt(formValues.antallBarnDropDown, 10)
         : formValues.antallBarn;
@@ -41,7 +41,7 @@ const mapBarnFraFormTilDto = (formValues: FormValues, situasjon: Søkersituasjon
             antallBarn,
             adopsjonAvEktefellesBarn: formValues.adopsjonAvEktefellesBarn,
             adopsjonsdato: formValues.adopsjonsdato,
-            ...(formValues.søkerAdopsjonAlene !== undefined && { søkerAdopsjonAlene: formValues.søkerAdopsjonAlene }),
+            søkerAdopsjonAlene: formValues.søkerAdopsjonAlene,
             fødselsdatoer: formValues.fødselsdatoer.map((f) => f.dato),
         };
     }
