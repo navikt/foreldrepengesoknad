@@ -63,11 +63,7 @@ export const useMellomlagreSøknad = (
                         }
 
                         const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                        throw new ApiError(
-                            'Feil ved mellomlagring',
-                            'Feil ved mellomlagring av foreldrepengesøknad',
-                            jsonResponse,
-                        );
+                        throw new ApiError('', 'Feil ved mellomlagring av foreldrepengesøknad', jsonResponse);
                     }
                     if (error instanceof Error) {
                         throw error;
