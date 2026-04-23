@@ -12,7 +12,7 @@ import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { Barn, Søkerrolle } from '@navikt/fp-types';
 import { isAfterOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
 
-import { AnnenForelderFormData, isAnnenForelderOppgittFormData } from './AnnenForelderFormData';
+import { AnnenForelder, isAnnenForelderOppgittFormData } from 'types/AnnenForelder';
 
 type Props = {
     rolle: Søkerrolle;
@@ -24,7 +24,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
 
     const familiehendelsedato = getFamiliehendelsedato(barn);
 
-    const formMethods = useFormContext<AnnenForelderFormData>();
+    const formMethods = useFormContext<Partial<AnnenForelder>>();
     const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     const annenPartHarVedtak =
         useQuery({

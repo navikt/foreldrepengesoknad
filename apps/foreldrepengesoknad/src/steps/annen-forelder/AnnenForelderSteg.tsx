@@ -7,6 +7,7 @@ import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrerteP
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
+
 import { getRegistrerteBarnOmDeFinnes } from 'utils/barnUtils';
 
 import { VStack } from '@navikt/ds-react';
@@ -17,7 +18,6 @@ import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { AnnenForelderFormData } from './AnnenForelderFormData';
 import { AnnenForelderOppgittPanel } from './AnnenForelderOppgittPanel';
 import { OppgiPersonalia } from './OppgiPersonalia';
 
@@ -98,8 +98,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
         return navigator.goToNextDefaultStep();
     };
 
-    // TODO (TOR) Typen AnnenForelderFormData bør erstattast av AnnenForelder.ts (som bør flyttast til denne appen)
-    const formMethods = useForm<AnnenForelderFormData>({
+    const formMethods = useForm<Partial<AnnenForelder>>({
         shouldUnregister: true,
         defaultValues:
             annenForelder &&
@@ -112,7 +111,6 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
                 : annenForelder,
     });
 
-    // TODO: denne kan være undefined. Som er misvisende siden typen sier Boolean. Stammer trolig fra at AnnenForelderDto puttes rått inn i state?
     const kanIkkeOppgis = formMethods.watch('kanIkkeOppgis');
 
     return (
