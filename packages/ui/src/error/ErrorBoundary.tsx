@@ -26,11 +26,13 @@ export class ErrorBoundary extends Component<Props, State> {
     }
 
     componentDidCatch(error: Error | null, errorInfo: ErrorInfo) {
-        withScope((scope) => {
-            scope.setExtra('errorInfo', errorInfo);
-            const eventId = captureException(error);
-            this.setState({ eventId, errorInfo });
-        });
+        if (error && error.cause !== 'capturedBySentry') {
+            withScope((scope) => {
+                scope.setExtra('errorInfo', errorInfo);
+                const eventId = captureException(error);
+                this.setState({ eventId, errorInfo });
+            });
+        }
         this.setState({ hasError: true, errorMessage: error?.message });
     }
 

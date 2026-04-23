@@ -8,7 +8,6 @@ import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
-import { captureMessage } from '@navikt/fp-observability';
 import { ErrorBoundary, RegisterdataUtdatert, Spinner } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -39,16 +38,18 @@ export const Foreldrepengesøknad = () => {
 
     useEffect(() => {
         if (søkerinfoQuery.error) {
-            captureMessage(søkerinfoQuery.error.message);
-            throw new Error(
+            const error = new Error(
                 `Vi klarte ikke å hente informasjon om deg. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
             );
+            error.cause = 'capturedBySentry';
+            throw error;
         }
         if (sakerQuery.error) {
-            captureMessage(sakerQuery.error.message);
-            throw new Error(
+            const error = new Error(
                 `Vi klarte ikke å hente informasjon om sakene dine. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
             );
+            error.cause = 'capturedBySentry';
+            throw error;
         }
     }, [søkerinfoQuery.error, sakerQuery.error]);
 

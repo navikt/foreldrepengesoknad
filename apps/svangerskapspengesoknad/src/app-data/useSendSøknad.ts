@@ -6,7 +6,7 @@ import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { captureApiError } from '@navikt/fp-observability';
+import { ApiError } from '@navikt/fp-observability';
 import { FpSoknadProblemDetails, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 
@@ -43,7 +43,6 @@ export const useSendSøknad = (søkerinfo: SvpPersonopplysningerDto_fpoversikt) 
                 }
 
                 const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                captureApiError('Feil ved innsending av svangerskapspengesøknad', jsonResponse);
                 const callId = jsonResponse?.callId;
                 const feilmelding = callId
                     ? intl.formatMessage(
@@ -51,7 +50,7 @@ export const useSendSøknad = (søkerinfo: SvpPersonopplysningerDto_fpoversikt) 
                           { callId: callId.substring(0, 6) },
                       )
                     : intl.formatMessage({ id: 'useSendSøknad.FeilVedInnsending.UtenCallId' });
-                throw new Error(feilmelding, { cause: error });
+                throw new ApiError(feilmelding, 'Feil ved innsending av svangerskapspengesøknad', jsonResponse);
             }
             if (error instanceof Error) {
                 throw error;

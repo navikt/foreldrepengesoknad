@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
 
-import { captureApiError } from '@navikt/fp-observability';
+import { ApiError } from '@navikt/fp-observability';
 import {
     EngangsstønadDto,
     EsPersonopplysningerDto_fpoversikt,
@@ -51,9 +51,6 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
 
     throw new Error('Det er feil i data om barnet');
 };
-
-const FEIL_VED_INNSENDING_LOG =
-    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
 export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt) => {
     const intl = useIntl();
@@ -101,7 +98,6 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
                 }
 
                 const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                captureApiError(FEIL_VED_INNSENDING_LOG, jsonResponse);
                 const callId = jsonResponse?.callId;
                 const feilmelding = callId
                     ? intl.formatMessage(
@@ -109,7 +105,7 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
                           { callId: callId.substring(0, 6) },
                       )
                     : intl.formatMessage({ id: 'useEsSendSøknad.FeilVedInnsending.UtenCallId' });
-                throw new Error(feilmelding, { cause: error });
+                throw new ApiError(feilmelding, 'Feil ved innsending av engangsstønad', jsonResponse);
             }
             if (error instanceof Error) {
                 throw error;

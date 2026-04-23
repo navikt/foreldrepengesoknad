@@ -6,7 +6,7 @@ import ky, { HTTPError } from 'ky';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { captureApiError } from '@navikt/fp-observability';
+import { ApiError } from '@navikt/fp-observability';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, FpSoknadProblemDetails } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 
@@ -54,12 +54,14 @@ export const useSendSøknad = (
                 }
 
                 const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                captureApiError('Feil ved innsending av foreldrepengesøknad', jsonResponse);
                 const callId = jsonResponse?.callId;
                 const feilmelding = callId
-                    ? intl.formatMessage({ id: 'useSendSøknad.FeilVedInnsending.MedCallId' }, { callId: callId.substring(0, 6) })
+                    ? intl.formatMessage(
+                          { id: 'useSendSøknad.FeilVedInnsending.MedCallId' },
+                          { callId: callId.substring(0, 6) },
+                      )
                     : intl.formatMessage({ id: 'useSendSøknad.FeilVedInnsending.UtenCallId' });
-                throw new Error(feilmelding, { cause: error });
+                throw new ApiError(feilmelding, 'Feil ved innsending av foreldrepengesøknad', jsonResponse);
             }
             if (error instanceof Error) {
                 throw error;

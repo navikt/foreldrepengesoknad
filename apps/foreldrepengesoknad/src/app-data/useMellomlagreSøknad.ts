@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { VERSJON_MELLOMLAGRING } from 'utils/mellomlagringUtils';
 
-import { captureApiError, captureMessage } from '@navikt/fp-observability';
+import { ApiError, captureApiError, captureMessage } from '@navikt/fp-observability';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, FpSoknadProblemDetails } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -65,7 +65,6 @@ export const useMellomlagreSøknad = (
                         }
 
                         const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                        captureApiError('Feil ved mellomlagring av foreldrepengesøknad', jsonResponse);
                         const callId = jsonResponse?.callId;
                         const feilmelding = callId
                             ? intl.formatMessage(
@@ -73,7 +72,7 @@ export const useMellomlagreSøknad = (
                                   { callId: callId.substring(0, 6) },
                               )
                             : intl.formatMessage({ id: 'useMellomlagreSøknad.FeilVedMellomlagring.UtenCallId' });
-                        throw new Error(feilmelding, { cause: error });
+                        throw new ApiError(feilmelding, 'Feil ved mellomlagring av foreldrepengesøknad', jsonResponse);
                     }
                     if (error instanceof Error) {
                         throw error;
@@ -88,8 +87,9 @@ export const useMellomlagreSøknad = (
 
             lagre().catch((error) => {
                 //Logg feil, men ikkje vis feilmelding til brukar
-                if (!(error instanceof Error && error.cause instanceof HTTPError)) {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
+                if (error instanceof ApiError) {
+                    captureApiError(error.sentryMessage, error.problemDetails);
+                } else if (error instanceof Error) {
                     captureMessage(error.message);
                 }
 

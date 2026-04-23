@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { captureApiError, captureMessage } from '@navikt/fp-observability';
+import { ApiError, captureApiError, captureMessage } from '@navikt/fp-observability';
 import { FpSoknadProblemDetails, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
@@ -57,7 +57,6 @@ export const useMellomlagreSøknad = (
                             }
 
                             const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                            captureApiError('Feil ved mellomlagring av svangerskapspengesøknad', jsonResponse);
                             const callId = jsonResponse?.callId;
                             const feilmelding = callId
                                 ? intl.formatMessage(
@@ -65,7 +64,11 @@ export const useMellomlagreSøknad = (
                                       { callId: callId.substring(0, 6) },
                                   )
                                 : intl.formatMessage({ id: 'useMellomlagreSøknad.FeilVedMellomlagring.UtenCallId' });
-                            throw new Error(feilmelding, { cause: error });
+                            throw new ApiError(
+                                feilmelding,
+                                'Feil ved mellomlagring av svangerskapspengesøknad',
+                                jsonResponse,
+                            );
                         }
                         if (error instanceof Error) {
                             throw error;
@@ -87,7 +90,9 @@ export const useMellomlagreSøknad = (
             };
 
             lagreEllerSlett().catch((error: Error) => {
-                if (!(error.cause instanceof HTTPError)) {
+                if (error instanceof ApiError) {
+                    captureApiError(error.sentryMessage, error.problemDetails);
+                } else {
                     captureMessage(error.message);
                 }
 
