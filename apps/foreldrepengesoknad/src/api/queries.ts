@@ -1,5 +1,5 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
-import { StønadskontoParams, getStønadskontoParams } from 'api/getStønadskontoParams';
+import { getStønadskontoParams } from 'api/getStønadskontoParams';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky, { type ResponsePromise } from 'ky';
@@ -10,6 +10,7 @@ import {
     AnnenPartSak_fpoversikt,
     ForsendelseStatus,
     FpPersonopplysningerDto_fpoversikt,
+    KontoBeregningGrunnlagDto,
     KontoBeregningResultatDto,
     MorArbeidRequest_fpoversikt,
     Saker_fpoversikt,
@@ -87,7 +88,7 @@ const annenPartVedtakOptions = (data?: AnnenPartRequest_fpoversikt) =>
         select: (sak) => sak ?? undefined,
     });
 
-const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams) =>
+const tilgjengeligeStønadskontoerOptions = (data: KontoBeregningGrunnlagDto) =>
     queryOptions({
         queryKey: ['TILGJENGELIGE_STONADSKONTOER', data],
         queryFn: () => ky.post(API_URLS.konto, { json: data }).json<KontoBeregningResultatDto>(),
