@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
 
-import { captureMessage } from '@navikt/fp-observability';
+import { captureApiError } from '@navikt/fp-observability';
 import {
     EngangsstønadDto,
     EsPersonopplysningerDto_fpoversikt,
@@ -101,7 +101,7 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
                 }
 
                 const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                captureMessage(`${FEIL_VED_INNSENDING_LOG}${JSON.stringify(jsonResponse)}`);
+                captureApiError(FEIL_VED_INNSENDING_LOG, jsonResponse);
                 const callId = jsonResponse?.callId;
                 const feilmelding = callId
                     ? intl.formatMessage(

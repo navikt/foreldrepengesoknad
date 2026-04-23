@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { captureMessage } from '@navikt/fp-observability';
+import { captureApiError, captureMessage } from '@navikt/fp-observability';
 import { EsPersonopplysningerDto_fpoversikt, FpSoknadProblemDetails } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './EsDataContext';
@@ -14,7 +14,6 @@ export const VERSJON_MELLOMLAGRING = 5;
 
 export type EsMellomlagretData = { version: number; personinfo: EsPersonopplysningerDto_fpoversikt } & ContextDataMap;
 
-const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_MELLOMLAGRING_LOG =
     'Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
@@ -59,7 +58,7 @@ export const useEsMellomlagring = (
 
                             const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
                             const callId = jsonResponse?.callId;
-                            captureMessage(FEIL_VED_MELLOMLAGRING_LOG + (callId ?? UKJENT_UUID));
+                            captureApiError(FEIL_VED_MELLOMLAGRING_LOG, jsonResponse);
                             const feilmelding = callId
                                 ? intl.formatMessage(
                                       { id: 'useEsMellomlagring.FeilVedMellomlagring.MedCallId' },

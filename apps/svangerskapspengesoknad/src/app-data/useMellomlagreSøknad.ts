@@ -4,7 +4,7 @@ import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { captureMessage } from '@navikt/fp-observability';
+import { captureApiError, captureMessage } from '@navikt/fp-observability';
 import { FpSoknadProblemDetails, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
@@ -60,7 +60,7 @@ export const useMellomlagreSøknad = (
 
                             const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
                             const callId = jsonResponse?.callId ?? UKJENT_UUID;
-                            captureMessage(FEIL_VED_INNSENDING + callId);
+                            captureApiError(FEIL_VED_INNSENDING, jsonResponse);
                             throw new Error(FEIL_VED_INNSENDING + callId.substring(0, 6), { cause: error });
                         }
                         if (error instanceof Error) {
