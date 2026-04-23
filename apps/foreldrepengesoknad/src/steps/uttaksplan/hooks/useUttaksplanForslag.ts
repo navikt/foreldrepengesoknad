@@ -165,7 +165,6 @@ export const useUttaksplanForslag = (
     //     ? Uttaksdagen.denneEllerForrige(annenPartsSistePeriode.tom).getDato()
     //     : undefined;
 
-    // TODO (TOR) Burde denne sjekka mot erMorUfør og erAleneomsorg òg?
     const erDeltUttak =
         isAnnenForelderOppgitt(annenForelder) &&
         (annenForelder.harRettPåForeldrepengerINorge === true || annenForelder.harRettPåForeldrepengerIEØS === true);

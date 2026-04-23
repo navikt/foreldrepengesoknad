@@ -1,8 +1,7 @@
 import { JSX, ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
 import { Dokumentasjon } from 'types/Dokumentasjon';
-import { OmBarnet } from 'types/OmBarnet';
 
-import { Søkersituasjon, Utenlandsopphold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { BarnDto, Søkersituasjon, Utenlandsopphold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
 import { Path } from './paths';
 
@@ -19,7 +18,7 @@ export enum ContextDataType {
 export type ContextDataMap = {
     [ContextDataType.CURRENT_PATH]?: Path;
     [ContextDataType.SØKERSITUASJON]?: Søkersituasjon;
-    [ContextDataType.OM_BARNET]?: OmBarnet;
+    [ContextDataType.OM_BARNET]?: BarnDto;
     [ContextDataType.DOKUMENTASJON]?: Dokumentasjon;
     [ContextDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;
     [ContextDataType.UTENLANDSOPPHOLD_SENERE]?: UtenlandsoppholdPeriode[];
