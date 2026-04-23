@@ -53,7 +53,7 @@ export const ErrorSummaryHookForm = () => {
     const flattenAndUniqueErrors = findAllErrors(errors);
 
     const mappedErrors = Object.entries(flattenAndUniqueErrors).map(([fieldName, error]) => ({
-        message: error?.message,
+        message: typeof error?.message === 'string' ? error.message : undefined,
         focus: () => setFocus(fieldName),
     }));
 
