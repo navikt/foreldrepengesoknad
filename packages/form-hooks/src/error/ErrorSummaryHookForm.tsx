@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { useEffect, useRef } from 'react';
 import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form';
 
@@ -17,12 +16,15 @@ const findAllErrors = (errors: FieldErrors<FieldValues>, pathPrefix = ''): Field
         }
 
         if (Array.isArray(fieldValue)) {
-            const alle = fieldValue.reduce<FieldErrors<FieldValues>>((a, f, index) => {
-                return {
-                    ...a,
-                    ...(f ? findAllErrors(f, `${fullPath}.${index}`) : {}),
-                };
-            }, {});
+            const alle = (fieldValue as Array<FieldErrors<FieldValues>>).reduce<FieldErrors<FieldValues>>(
+                (a, f, index) => {
+                    return {
+                        ...a,
+                        ...(f ? findAllErrors(f, `${fullPath}.${index}`) : {}),
+                    };
+                },
+                {},
+            );
             return {
                 ...acc,
                 ...alle,
