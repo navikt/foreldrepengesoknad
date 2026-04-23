@@ -1,6 +1,6 @@
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 
-import { Barn, isFødtBarn } from '@navikt/fp-types';
+import { AnnenPartRequest_fpoversikt, Barn, isFødtBarn } from '@navikt/fp-types';
 
 import { getFamiliehendelsedato } from './barnUtils';
 
@@ -12,19 +12,12 @@ export const getDatoForAleneomsorg = (annenForelder: AnnenForelder): string | un
     return isAnnenForelderOppgitt(annenForelder) ? annenForelder.datoForAleneomsorg : undefined;
 };
 
-export type AnnenPartVedtakParams = {
-    annenPartFødselsnummer?: string;
-    barnFødselsnummer?: string;
-    familiehendelse: string;
-};
-
-export const getAnnenPartVedtakParam = (annenForelder: AnnenForelder, barn: Barn): AnnenPartVedtakParams => {
-    const annenPartFødselsnummer =
-        isAnnenForelderOppgitt(annenForelder) && annenForelder.utenlandskFnr !== true ? annenForelder.fnr : undefined;
+export const getAnnenPartVedtakParam = (annenForelder: AnnenForelder, barn: Barn): AnnenPartRequest_fpoversikt => {
     const barnFødselsnummer =
         isFødtBarn(barn) && barn.fnr !== undefined && barn.fnr?.length > 0 ? barn.fnr[0] : undefined;
     return {
-        annenPartFødselsnummer,
+        // Funksjonen blir berre kalla når annenForelderHarNorskFnr er true, så fnr er alltid satt
+        annenPartFødselsnummer: isAnnenForelderOppgitt(annenForelder) ? (annenForelder.fnr ?? '') : '',
         barnFødselsnummer,
         familiehendelse: getFamiliehendelsedato(barn),
     };
