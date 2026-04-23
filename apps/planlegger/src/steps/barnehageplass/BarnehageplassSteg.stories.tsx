@@ -18,7 +18,7 @@ type StoryArgs = {
 const meta = {
     title: 'steg/BarnehageplassSteg',
     component: BarnehageplassSteg,
-    render: ({ hvemPlanlegger, omBarnet, gåTilNesteSide = action('button-click') }: StoryArgs) => {
+    render: ({ hvemPlanlegger, omBarnet, uttaksdata, gåTilNesteSide = action('button-click') }: StoryArgs) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.ARBEIDSSITUASJON]}>
                 <PlanleggerDataContext
@@ -28,7 +28,7 @@ const meta = {
                     }}
                     onDispatch={gåTilNesteSide}
                 >
-                    <BarnehageplassSteg />
+                    <BarnehageplassSteg uttaksdata={uttaksdata} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );

@@ -1,6 +1,6 @@
 import { ArrowRightIcon } from '@navikt/aksel-icons';
 import classNames from 'classnames';
-import { ReactNode } from 'react';
+import { ComponentType, ReactNode, SVGProps } from 'react';
 import { Link } from 'react-router-dom';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
@@ -12,7 +12,7 @@ type Props = {
     to: string;
     undertittel?: string;
     className?: string;
-    Ikon?: typeof ArrowRightIcon; // TODO: hacky?
+    Ikon?: ComponentType<SVGProps<SVGSVGElement>>;
     tag?: ReactNode;
 };
 export const LenkePanel = ({ to, tittel, undertittel, Ikon, className, tag }: Props) => {
