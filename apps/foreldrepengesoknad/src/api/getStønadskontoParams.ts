@@ -8,6 +8,7 @@ import { getFarMedmorErAleneOmOmsorg, getMorErAleneOmOmsorg } from 'utils/person
 import {
     AnnenPartSak_fpoversikt,
     Barn,
+    KontoBeregningGrunnlagDto,
     SøkersituasjonFp,
     isAdoptertBarn,
     isFødtBarn,
@@ -86,13 +87,15 @@ const finnRettighetstype = (
     return 'BARE_SØKER_RETT';
 };
 
+export type StønadskontoParams = KontoBeregningGrunnlagDto;
+
 export const getStønadskontoParams = (
     barn: Barn,
     annenForelder: AnnenForelder,
     søkersituasjon: SøkersituasjonFp,
     annenPartsVedtak: AnnenPartSak_fpoversikt | undefined,
     termindatoEksisterendeSak?: string,
-) => {
+): KontoBeregningGrunnlagDto => {
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const farMedmorErAleneOmOmsorg = getFarMedmorErAleneOmOmsorg(
@@ -138,7 +141,7 @@ export const getStønadskontoParams = (
             annenForelderHarRettIEØS || false,
         ),
         brukerrolle: søkerErFarEllerMedmor ? 'FAR' : 'MOR',
-        antallBarn: saksgrunnlagsAntallBarn.toString(),
+        antallBarn: saksgrunnlagsAntallBarn,
         fødselsdato: isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined,
         termindato: getTermindatoSomSkalBrukes(barn, saksgrunnlagsTermindato),
         omsorgsovertakelseDato: isAdoptertBarn(barn) ? barn.adopsjonsdato : undefined,

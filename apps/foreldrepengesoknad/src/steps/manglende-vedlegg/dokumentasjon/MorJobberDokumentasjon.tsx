@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { DokumentereMorsArbeidParams, trengerDokumentereMorsArbeidOptions } from 'api/queries';
+import { trengerDokumentereMorsArbeidOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
@@ -13,6 +13,7 @@ import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import {
     Attachment,
     Barn,
+    MorArbeidRequest_fpoversikt,
     NavnPåForeldre,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
@@ -63,7 +64,7 @@ export const MorJobberDokumentasjon = ({
     const trengerDokumentereMorsArbeidQuery = useQuery({
         ...trengerDokumentereMorsArbeidOptions(dokumentereMorsArbeidParams),
         enabled:
-            dokumentereMorsArbeidParams.perioder.length > 0 &&
+            (dokumentereMorsArbeidParams.perioder?.length ?? 0) > 0 &&
             !!annenPartFødselsnummer &&
             !isAnnenforelderOppholdtSegIEØS(annenForelder) &&
             !!dokumentereMorsArbeidParams,
@@ -136,7 +137,7 @@ const getDokumentereMorsArbeidParams = (
     barn: Barn,
     bareFarHarRett: boolean,
     annenPartFødselsnummer: string,
-): DokumentereMorsArbeidParams => {
+): MorArbeidRequest_fpoversikt => {
     const barnFødselsnummer =
         (isFødtBarn(barn) || isAdoptertBarn(barn)) && barn.fnr !== undefined && barn.fnr.length > 0
             ? barn.fnr[0]

@@ -6,12 +6,14 @@ import ky, { type ResponsePromise } from 'ky';
 import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenForelderUtils';
 
 import {
+    AnnenPartRequest_fpoversikt,
     AnnenPartSak_fpoversikt,
     ForsendelseStatus,
     FpPersonopplysningerDto_fpoversikt,
+    KontoBeregningGrunnlagDto,
     KontoBeregningResultatDto,
+    MorArbeidRequest_fpoversikt,
     Saker_fpoversikt,
-    Tidsperiode,
 } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -79,48 +81,24 @@ export const mellomlagretInfoOptions = () =>
         staleTime: Infinity,
     });
 
-const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
+const annenPartVedtakOptions = (data?: AnnenPartRequest_fpoversikt) =>
     queryOptions({
         queryKey: ['ANNEN_PART_VEDTAK', data],
         queryFn: () => jsonEllerNull<AnnenPartSak_fpoversikt>(ky.post(API_URLS.annenPartVedtak, { json: data })),
         select: (sak) => sak ?? undefined,
     });
 
-// TODO: relocate types
-type AnnenPartVedtakParams = {
-    annenPartFødselsnummer?: string;
-    barnFødselsnummer?: string;
-    familiehendelse: string;
-};
-
-type StønadskontoParams = {
-    rettighetstype: string;
-    brukerrolle: string;
-    antallBarn: string;
-    fødselsdato?: string;
-    termindato?: string;
-    omsorgsovertakelseDato?: string;
-    morHarUføretrygd: boolean;
-};
-
-export type DokumentereMorsArbeidParams = {
-    annenPartFødselsnummer: string;
-    barnFødselsnummer?: string;
-    familiehendelse: string;
-    perioder: Array<Tidsperiode & { periodeType: 'UTSETTELSE' | 'UTTAK' }>;
-};
-
-const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams) =>
+const tilgjengeligeStønadskontoerOptions = (data: KontoBeregningGrunnlagDto) =>
     queryOptions({
         queryKey: ['TILGJENGELIGE_STONADSKONTOER', data],
         queryFn: () => ky.post(API_URLS.konto, { json: data }).json<KontoBeregningResultatDto>(),
         staleTime: Infinity,
     });
 
-export const trengerDokumentereMorsArbeidOptions = (data: DokumentereMorsArbeidParams) =>
+export const trengerDokumentereMorsArbeidOptions = (data: MorArbeidRequest_fpoversikt) =>
     queryOptions({
         queryKey: ['TRENGER_DOKUMENTERER_MORS_ARBEID', data],
-        enabled: data.perioder.length > 0,
+        enabled: (data.perioder?.length ?? 0) > 0,
         queryFn: () => ky.post(API_URLS.trengerDokumentereMorsArbeid, { json: data }).json<boolean>(),
     });
 
