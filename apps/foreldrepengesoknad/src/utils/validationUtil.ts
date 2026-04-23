@@ -61,7 +61,7 @@ export const erIUke22Pluss3 = (dato: string) => {
 
 export const validateTextInputField = (value: string, feltNavn: string, intl: IntlShape): SkjemaelementFeil => {
     if (!textRegex.test(value)) {
-        const ugyldigeTegn = getIllegalChars(value).replace(/\t/g, 'Tabulatortegn');
+        const ugyldigeTegn = getIllegalChars(value).replaceAll('\t', 'Tabulatortegn');
         return intl.formatMessage(
             { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
             { feltNavn, ugyldigeTegn },
