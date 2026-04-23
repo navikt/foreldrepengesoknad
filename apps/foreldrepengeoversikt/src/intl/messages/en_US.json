@@ -294,7 +294,7 @@
     "beregning.årsinntekt": "Nav has determined your annual income to be: <label>{årsinntekt}</label>",
     "beregning.datoForVurdering": "The calculation date is <label>{dato}</label>.",
     "beregning.datoForVurdering.tittel": "Only calculated once",
-    "beregning.datoForVurdering.innhold.fp": "Your parental benefit is only calculated once. We base it on the income you have on your first day of parental benefit. This means that if your income increases or decreases later, you will still receive the same amount from us. We can make a new calculation if you receive a new salary with retroactive effect, and the new salary started before your first day of parental benefit.",
+    "beregning.datoForVurdering.innhold.fp": "Your parental benefit is only calculated once. We base it on the income you have up until you receive parental benefit. This means that if your income increases or decreases later, you will still receive the same amount from us. We can make a new calculation if you receive a new salary with retroactive effect, and the new salary started before your first day of parental benefit.",
     "beregning.datoForVurdering.innhold.svp": "We base the calculation on the income you have up until you start receiving pregnancy benefit. This means that if your income increases or decreases later, you will still receive the same amount from us.",
     "beregning.visÅttiProsentReduksjon": "Since you have <label>80 %</label> parental benefit, your parental benefit base is <labelvalue>{value}</labelvalue>",
     "beregning.6GVarsel": "You get parental benefit covered up to {grunnbeløpSeksG} (6 G)",
