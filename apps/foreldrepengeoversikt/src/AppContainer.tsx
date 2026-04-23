@@ -33,9 +33,6 @@ const queryClient = new QueryClient({
                     location.reload();
                     return;
                 }
-                if (error.response?.status === 403) {
-                    return;
-                }
                 const apiError = error.data as ProblemDetails | undefined;
                 captureApiError(`API-feil`, apiError);
             }
