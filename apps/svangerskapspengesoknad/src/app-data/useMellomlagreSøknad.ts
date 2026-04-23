@@ -59,9 +59,9 @@ export const useMellomlagreSøknad = (
                             }
 
                             const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                            const callId = jsonResponse?.callId ?? UKJENT_UUID;
                             captureApiError(FEIL_VED_INNSENDING, jsonResponse);
-                            throw new Error(FEIL_VED_INNSENDING + callId.substring(0, 6), { cause: error });
+                            const callId = jsonResponse?.callId?.substring(0, 6) ?? UKJENT_UUID;
+                            throw new Error(FEIL_VED_INNSENDING + callId, { cause: error });
                         }
                         if (error instanceof Error) {
                             throw error;

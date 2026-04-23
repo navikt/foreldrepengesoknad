@@ -48,8 +48,8 @@ export const useSendSøknad = (søkerinfo: SvpPersonopplysningerDto_fpoversikt) 
 
                 const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
                 captureApiError(FEIL_VED_INNSENDING, jsonResponse);
-                const callId = jsonResponse?.callId ?? UKJENT_UUID;
-                throw new Error(FEIL_VED_INNSENDING + callId.substring(0, 6), { cause: error });
+                const callId = jsonResponse?.callId?.substring(0, 6) ?? UKJENT_UUID;
+                throw new Error(FEIL_VED_INNSENDING + callId, { cause: error });
             }
             if (error instanceof Error) {
                 throw error;
