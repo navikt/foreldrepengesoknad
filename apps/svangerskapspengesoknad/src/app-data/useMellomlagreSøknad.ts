@@ -60,7 +60,10 @@ export const useMellomlagreSøknad = (
                             captureApiError('Feil ved mellomlagring av svangerskapspengesøknad', jsonResponse);
                             const callId = jsonResponse?.callId;
                             const feilmelding = callId
-                                ? intl.formatMessage({ id: 'useMellomlagreSøknad.FeilVedMellomlagring.MedCallId' }, { callId: callId.substring(0, 6) })
+                                ? intl.formatMessage(
+                                      { id: 'useMellomlagreSøknad.FeilVedMellomlagring.MedCallId' },
+                                      { callId: callId.substring(0, 6) },
+                                  )
                                 : intl.formatMessage({ id: 'useMellomlagreSøknad.FeilVedMellomlagring.UtenCallId' });
                             throw new Error(feilmelding, { cause: error });
                         }
@@ -84,7 +87,9 @@ export const useMellomlagreSøknad = (
             };
 
             lagreEllerSlett().catch((error: Error) => {
-                captureMessage(error.message);
+                if (!(error.cause instanceof HTTPError)) {
+                    captureMessage(error.message);
+                }
 
                 if (promiseRef.current) {
                     promiseRef.current();

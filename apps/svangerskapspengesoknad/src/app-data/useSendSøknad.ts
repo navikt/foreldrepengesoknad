@@ -6,7 +6,7 @@ import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { captureApiError, captureMessage } from '@navikt/fp-observability';
+import { captureApiError } from '@navikt/fp-observability';
 import { FpSoknadProblemDetails, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 
@@ -38,8 +38,6 @@ export const useSendSøknad = (søkerinfo: SvpPersonopplysningerDto_fpoversikt) 
             void navigate(SøknadRoute.KVITTERING);
         } catch (error: unknown) {
             if (error instanceof HTTPError) {
-                captureMessage(error.message);
-
                 if (signal.aborted || error.response.status === 401 || error.response.status === 403) {
                     throw error;
                 }
@@ -48,7 +46,10 @@ export const useSendSøknad = (søkerinfo: SvpPersonopplysningerDto_fpoversikt) 
                 captureApiError('Feil ved innsending av svangerskapspengesøknad', jsonResponse);
                 const callId = jsonResponse?.callId;
                 const feilmelding = callId
-                    ? intl.formatMessage({ id: 'useSendSøknad.FeilVedInnsending.MedCallId' }, { callId: callId.substring(0, 6) })
+                    ? intl.formatMessage(
+                          { id: 'useSendSøknad.FeilVedInnsending.MedCallId' },
+                          { callId: callId.substring(0, 6) },
+                      )
                     : intl.formatMessage({ id: 'useSendSøknad.FeilVedInnsending.UtenCallId' });
                 throw new Error(feilmelding, { cause: error });
             }

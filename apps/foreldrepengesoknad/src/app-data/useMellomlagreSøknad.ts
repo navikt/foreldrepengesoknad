@@ -68,7 +68,10 @@ export const useMellomlagreSøknad = (
                         captureApiError('Feil ved mellomlagring av foreldrepengesøknad', jsonResponse);
                         const callId = jsonResponse?.callId;
                         const feilmelding = callId
-                            ? intl.formatMessage({ id: 'useMellomlagreSøknad.FeilVedMellomlagring.MedCallId' }, { callId: callId.substring(0, 6) })
+                            ? intl.formatMessage(
+                                  { id: 'useMellomlagreSøknad.FeilVedMellomlagring.MedCallId' },
+                                  { callId: callId.substring(0, 6) },
+                              )
                             : intl.formatMessage({ id: 'useMellomlagreSøknad.FeilVedMellomlagring.UtenCallId' });
                         throw new Error(feilmelding, { cause: error });
                     }
@@ -85,8 +88,10 @@ export const useMellomlagreSøknad = (
 
             lagre().catch((error) => {
                 //Logg feil, men ikkje vis feilmelding til brukar
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
-                captureMessage(error.message);
+                if (!(error instanceof Error && error.cause instanceof HTTPError)) {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
+                    captureMessage(error.message);
+                }
 
                 if (promiseRef.current) {
                     promiseRef.current();

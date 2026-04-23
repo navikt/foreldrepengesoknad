@@ -87,7 +87,9 @@ export const useEsMellomlagring = (
             };
 
             lagreEllerSlett().catch((error: Error) => {
-                captureMessage(error.message);
+                if (!(error.cause instanceof HTTPError)) {
+                    captureMessage(error.message);
+                }
 
                 if (promiseRef.current) {
                     promiseRef.current();
