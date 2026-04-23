@@ -26,8 +26,8 @@ import {
     isUfødtBarn,
 } from '@navikt/fp-types';
 import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
-import { Tidsperioden, Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
-import { useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
+import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
+import { harPeriodeDerMorsAktivitetIkkeErValgt, useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { VilDuGåTilbakeModal } from './VilDuGåTilbakeModal';
@@ -346,32 +346,6 @@ const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
         const tom = dayjs(periode.tom);
         return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
     });
-};
-
-const harPeriodeDerMorsAktivitetIkkeErValgt = (
-    rettighetType: RettighetType_fpoversikt,
-    perioder?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-) => {
-    return perioder?.some(
-        (periode) =>
-            rettighetType !== 'ALENEOMSORG' &&
-            Uttaksperioden.erIkkeEøsPeriode(periode) &&
-            periode.forelder === 'FAR_MEDMOR' &&
-            periode.resultat?.innvilget !== false &&
-            (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER') &&
-            periode.flerbarnsdager === false &&
-            periode.morsAktivitet === undefined &&
-            !perioder.some(
-                (morPeriode) =>
-                    Uttaksperioden.erIkkeEøsPeriode(morPeriode) &&
-                    morPeriode.forelder === 'MOR' &&
-                    Tidsperioden.forPeriode({ fom: periode.fom, tom: periode.tom }).overlapper({
-                        fom: morPeriode.fom,
-                        tom: morPeriode.tom,
-                    }) &&
-                    (morPeriode.samtidigUttak ?? 0) + (morPeriode.gradering?.arbeidstidprosent ?? 0) === 100,
-            ),
-    );
 };
 
 const harBrukerKunSlettetPerioder = (
