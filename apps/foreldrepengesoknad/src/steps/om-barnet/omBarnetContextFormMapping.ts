@@ -1,6 +1,6 @@
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
-import { hasValue } from 'utils/validationUtil';
+import { hasValue } from '@navikt/fp-validation';
 
 import { BarnType } from '@navikt/fp-constants';
 import {

@@ -3,7 +3,7 @@ import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
 import { SkjemaelementFeil } from 'types/SkjemaelementFeil';
 
-import { getIllegalChars, hasValue, textRegex } from '@navikt/fp-validation';
+import { getIllegalChars, textRegex } from '@navikt/fp-validation';
 
 import { isFødselsnummerFormatValid, isSixteenOrOlder } from './validation/fødselsnummer';
 
@@ -12,8 +12,6 @@ dayjs.extend(minMax);
 export const dateToday = dayjs();
 export const date21DaysAgo = dayjs().subtract(21, 'days').startOf('day');
 export const attenUkerTreDager = dayjs().add(18, 'week').add(3, 'day').startOf('day');
-
-export { hasValue };
 
 export const validateFødselsnummer =
     (intl: IntlShape, søkersFødselsnummer: string, label: string, erUtenlandskFnr?: boolean) =>

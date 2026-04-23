@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 import { PeriodeMedVariasjonFormValues, TilOgMedDatoType } from 'types/Tilrettelegging';
 import { getFloatFromString } from 'utils/numberUtils';
-import { hasValue } from 'utils/validationUtils';
+import { hasValue } from '@navikt/fp-validation';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { formatDate } from '@navikt/fp-utils';
