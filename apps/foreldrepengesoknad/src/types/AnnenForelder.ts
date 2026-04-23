@@ -38,9 +38,3 @@ export const isAnnenForelderOppgittNorsk = (annenForelder: AnnenForelder): annen
 export const isAnnenforelderOppholdtSegIEØS = (annenForelder: AnnenForelder): annenForelder is AnnenForelderOppgitt => {
     return isAnnenForelderOppgitt(annenForelder) && annenForelder.harOppholdtSegIEØS === true;
 };
-
-export const kanAnnenForelderOppgis = (
-    annenForelder: Partial<AnnenForelder>,
-): annenForelder is Partial<AnnenForelderOppgitt> => {
-    return annenForelder.kanIkkeOppgis !== true;
-};

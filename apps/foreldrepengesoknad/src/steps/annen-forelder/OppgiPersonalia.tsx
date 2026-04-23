@@ -29,7 +29,7 @@ interface Props {
 export const OppgiPersonalia = ({ søkersFødselsnummer, rolle, barn }: Props) => {
     const intl = useIntl();
 
-    const formMethods = useFormContext<Partial<AnnenForelder>>();
+    const formMethods = useFormContext<AnnenForelder>();
     const fornavn = formMethods.watch('fornavn');
     const utenlandskFnr = formMethods.watch('utenlandskFnr');
     const kanIkkeOppgis = formMethods.watch('kanIkkeOppgis');

@@ -98,7 +98,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
         return navigator.goToNextDefaultStep();
     };
 
-    const formMethods = useForm<Partial<AnnenForelder>>({
+    const formMethods = useForm<AnnenForelder>({
         shouldUnregister: true,
         defaultValues:
             annenForelder &&
