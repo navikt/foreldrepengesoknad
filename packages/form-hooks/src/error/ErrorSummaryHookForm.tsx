@@ -41,6 +41,7 @@ export const ErrorSummaryHookForm = () => {
 
     const {
         formState: { errors },
+        setFocus,
     } = useFormContext();
 
     useEffect(() => {
@@ -51,13 +52,9 @@ export const ErrorSummaryHookForm = () => {
 
     const flattenAndUniqueErrors = findAllErrors(errors);
 
-    // TODO Denne er ikkje optimal
-    const mappedErrors = Object.values(flattenAndUniqueErrors).map((error) => ({
-        // eslint-disable-next-line @typescript-eslint/no-base-to-string
-        message: error?.message?.toString(),
-        //@ts-expect-error TODO Burde nok heller bruka setFocus her
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        focus: error?.ref?.focus,
+    const mappedErrors = Object.entries(flattenAndUniqueErrors).map(([fieldName, error]) => ({
+        message: error?.message,
+        focus: () => setFocus(fieldName),
     }));
 
     return (
