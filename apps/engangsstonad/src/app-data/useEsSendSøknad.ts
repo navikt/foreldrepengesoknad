@@ -35,15 +35,13 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
         const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
         const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
-        const barnDto = mapBarn(barn, dokumentasjon);
-
         const søknad = {
             søkerinfo: {
                 fnr: personinfo.fnr,
                 navn: personinfo.navn,
             },
             språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform,
-            barn: barnDto,
+            barn: mapBarn(barn, dokumentasjon),
             utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
             vedlegg:
                 dokumentasjon?.vedlegg.map((vedlegg) => ({

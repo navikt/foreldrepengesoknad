@@ -18,6 +18,58 @@ import { FødselPanel, FormValues as FødtFormValues } from './FødselPanel';
 
 type FormValues = FødtFormValues & AdopsjonFormValues;
 
+interface Props {
+    kjønn: Kjønn_fpoversikt;
+    mellomlagreOgNaviger: () => Promise<void>;
+}
+
+export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
+    const intl = useIntl();
+
+    const stepConfig = useStepConfig();
+    const navigator = useEsNavigator(mellomlagreOgNaviger);
+
+    const barn = useContextGetData(ContextDataType.OM_BARNET);
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
+    const oppdaterDokumentasjon = useContextSaveData(ContextDataType.DOKUMENTASJON);
+
+    const mapOgLagreOmBarnet = (formValues: FormValues) =>
+        oppdaterOmBarnet(mapBarnFraFormTilDto(formValues, søkersituasjon.situasjon));
+
+    const onSubmit = (formValues: FormValues) => {
+        mapOgLagreOmBarnet(formValues);
+        if (formValues.erBarnetFødt === true) {
+            oppdaterDokumentasjon(undefined);
+        }
+        return navigator.goToNextStep(utledNesteSteg(formValues, søkersituasjon));
+    };
+
+    const formMethods = useForm<FormValues>({
+        defaultValues: barn ? mapBarnFraDtoTilForm(barn) : {},
+    });
+
+    return (
+        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}>
+            <Step onStepChange={navigator.goToNextStep} steps={stepConfig}>
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="space-40">
+                        <ErrorSummaryHookForm />
+                        {søkersituasjon?.situasjon === 'adopsjon' && <AdopsjonPanel kjønn={kjønn} />}
+                        {søkersituasjon?.situasjon === 'fødsel' && <FødselPanel />}
+                        <StepButtonsHookForm<FormValues>
+                            onAvsluttOgSlett={navigator.avbrytSøknad}
+                            onFortsettSenere={navigator.fortsettSøknadSenere}
+                            goToPreviousStep={navigator.goToPreviousDefaultStep}
+                            saveDataOnPreviousClick={mapOgLagreOmBarnet}
+                        />
+                    </VStack>
+                </RhfForm>
+            </Step>
+        </SkjemaRotLayout>
+    );
+};
+
 const utledNesteSteg = (formValues: FormValues, søkersituasjon: Søkersituasjon) => {
     if (søkersituasjon.situasjon === 'adopsjon') {
         return Path.ADOPSJONSBEKREFTELSE;
@@ -91,56 +143,4 @@ const mapBarnFraDtoTilForm = (barn: BarnDto): Partial<FormValues> => {
         } satisfies Partial<Fødsel & { antallBarnDropDown?: string }>;
     }
     throw new Error(`Ukjent barn-type: ${barn.type}`);
-};
-
-interface Props {
-    kjønn: Kjønn_fpoversikt;
-    mellomlagreOgNaviger: () => Promise<void>;
-}
-
-export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
-    const intl = useIntl();
-
-    const stepConfig = useStepConfig();
-    const navigator = useEsNavigator(mellomlagreOgNaviger);
-
-    const barn = useContextGetData(ContextDataType.OM_BARNET);
-    const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
-    const oppdaterDokumentasjon = useContextSaveData(ContextDataType.DOKUMENTASJON);
-    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-
-    const mapOgLagreOmBarnet = (formValues: FormValues) =>
-        oppdaterOmBarnet(mapBarnFraFormTilDto(formValues, søkersituasjon.situasjon));
-
-    const onSubmit = (formValues: FormValues) => {
-        mapOgLagreOmBarnet(formValues);
-        if (formValues.erBarnetFødt === true) {
-            oppdaterDokumentasjon(undefined);
-        }
-        return navigator.goToNextStep(utledNesteSteg(formValues, søkersituasjon));
-    };
-
-    const formMethods = useForm<FormValues>({
-        defaultValues: barn ? mapBarnFraDtoTilForm(barn) : {},
-    });
-
-    return (
-        <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}>
-            <Step onStepChange={navigator.goToNextStep} steps={stepConfig}>
-                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                    <VStack gap="space-40">
-                        <ErrorSummaryHookForm />
-                        {søkersituasjon?.situasjon === 'adopsjon' && <AdopsjonPanel kjønn={kjønn} />}
-                        {søkersituasjon?.situasjon === 'fødsel' && <FødselPanel />}
-                        <StepButtonsHookForm<FormValues>
-                            onAvsluttOgSlett={navigator.avbrytSøknad}
-                            onFortsettSenere={navigator.fortsettSøknadSenere}
-                            goToPreviousStep={navigator.goToPreviousDefaultStep}
-                            saveDataOnPreviousClick={mapOgLagreOmBarnet}
-                        />
-                    </VStack>
-                </RhfForm>
-            </Step>
-        </SkjemaRotLayout>
-    );
 };
