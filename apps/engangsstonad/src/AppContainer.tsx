@@ -15,8 +15,7 @@ import { ApiError, captureApiError, observabilityMessages } from '@navikt/fp-obs
 import { kvitteringMessages } from '@navikt/fp-steg-kvittering';
 import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
-import { type ProblemDetails } from '@navikt/fp-types';
-import { LocaleAll } from '@navikt/fp-types';
+import { LocaleAll, type ProblemDetails } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
 
