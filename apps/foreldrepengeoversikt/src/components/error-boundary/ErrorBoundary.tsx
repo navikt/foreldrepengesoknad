@@ -1,4 +1,4 @@
-import { Component, ErrorInfo } from 'react';
+import { Component } from 'react';
 
 import { Alert } from '@navikt/ds-react';
 
@@ -19,7 +19,7 @@ export class ErrorBoundary extends Component<Props, State> {
         this.state = { hasError: false, error: null };
     }
 
-    componentDidCatch(error: Error | null, errorInfo: ErrorInfo): void {
+    componentDidCatch(error: Error | null): void {
         if (error && error.message !== 'globalThis.hasFocus is not a function') {
             this.setState((oldState) => ({ ...oldState, hasError: true, error }));
 
