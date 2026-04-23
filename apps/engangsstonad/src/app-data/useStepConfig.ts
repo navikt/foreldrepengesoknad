@@ -7,7 +7,6 @@ import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './EsDataContext';
 import { PATH_ORDER, Path, REQUIRED_APP_STEPS } from './paths';
 
-// TODO Denne bør flyttast ut
 const getPathToLabelMap = (intl: IntlShape) => ({
     [Path.SØKERSITUASJON]: intl.formatMessage({ id: 'UseStepConfig.Søkersituasjon' }),
     [Path.OM_BARNET]: intl.formatMessage({ id: 'UseStepConfig.OmBarnet' }),
