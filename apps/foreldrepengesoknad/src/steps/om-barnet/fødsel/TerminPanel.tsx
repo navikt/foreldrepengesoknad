@@ -17,8 +17,7 @@ import { Alert, BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 import { ISO_DATE_REGEX } from '@navikt/fp-constants';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { EksternArbeidsforholdDto_fpoversikt, Søkerrolle, SøkersituasjonFp } from '@navikt/fp-types';
-import { isValidDate as isValidDateBoolean } from '@navikt/fp-utils';
-import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
+import { isBeforeToday, isRequired, isValidDate, isValidDateString as isValidDateBoolean } from '@navikt/fp-validation';
 import { terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke } from '@navikt/fp-validation/src/form/dateFormValidation';
 
 import { UfødtBarn } from '../OmBarnetFormValues';

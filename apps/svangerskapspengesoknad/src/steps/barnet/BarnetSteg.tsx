@@ -22,7 +22,6 @@ import {
     enMånedSiden,
     etÅrSiden,
     halvannetÅrSiden,
-    isValidDate as isStringADate,
     niMånederFremITid,
 } from '@navikt/fp-utils';
 import {
@@ -32,6 +31,7 @@ import {
     isLessThanOneAndHalfYearsAgo,
     isRequired,
     isValidDate,
+    isValidDateString as isStringADate,
 } from '@navikt/fp-validation';
 
 const getMinDatoTermin = (erBarnetFødt: boolean, fødselsdato?: string): Dayjs =>

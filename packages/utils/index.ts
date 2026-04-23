@@ -43,7 +43,6 @@ export {
     setLocaleInSessionStorage,
 } from './src/localeUtils';
 export {
-    isValidDate,
     formatDate,
     formatDateIso,
     formatDateExtended,
@@ -57,15 +56,6 @@ export {
     femMånederSiden,
     fireUkerSiden,
     tiMånederSidenDato,
-    isAfterToday,
-    isBeforeToday,
-    isSameOrAfterToday,
-    isSameOrBeforeToday,
-    isDateWithinRange,
-    isToday,
-    isDateRangesOverlapping,
-    isDateAAfterDateB,
-    isDateASameOrBeforeDateB,
     erMyndig,
     halvannetÅrSiden,
     etÅrSiden,

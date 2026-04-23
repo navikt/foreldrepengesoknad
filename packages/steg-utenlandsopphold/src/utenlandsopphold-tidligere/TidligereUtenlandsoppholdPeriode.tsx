@@ -8,10 +8,11 @@ import { Button, VStack } from '@navikt/ds-react';
 import { DATE_1_YEAR_AGO, DATE_TODAY, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfSelect } from '@navikt/fp-form-hooks';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
-import { createCountryOptions, formatDate, isDateAAfterDateB } from '@navikt/fp-utils';
+import { createCountryOptions, formatDate } from '@navikt/fp-utils';
 import {
     isAfterOrSame,
     isBeforeOrSame,
+    isDateAAfterDateB,
     isDateWithinRange,
     isDatesNotTheSame,
     isPeriodNotOverlappingOthers,

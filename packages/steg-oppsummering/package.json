@@ -21,6 +21,7 @@
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
+        "@navikt/fp-validation": "workspace:*",
         "dayjs": "1.11.20",
         "i18n-iso-countries": "7.14.0",
         "react": "19.2.5",

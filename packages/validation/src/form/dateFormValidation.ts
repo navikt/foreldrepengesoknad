@@ -2,11 +2,8 @@ import dayjs, { Dayjs } from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 
 import { DATE_TODAY, ISO_DATE_REGEX, SIX_MONTHS_AGO, TIDENES_ENDE } from '@navikt/fp-constants';
-import {
-    halvannetÅrSiden,
-    isDateRangesOverlapping,
-    isDateWithinRange as isDateWithinRangeUtil,
-} from '@navikt/fp-utils';
+import { halvannetÅrSiden } from '@navikt/fp-utils';
+import { isDateRangesOverlapping, isDateWithinRange as isDateWithinRangeUtil } from '../other/dateValidation';
 
 import { FormValidationResult, isEmpty } from './generalFormValidation';
 

@@ -17,7 +17,7 @@ import {
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import { AppName, NæringDto } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
-import { femMånederSiden, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
+import { femMånederSiden } from '@navikt/fp-utils';
 import {
     hasLegalChars,
     hasMaxLength,
@@ -27,6 +27,7 @@ import {
     isBeforeTodayOrToday,
     isRequired,
     isValidDate,
+    isValidDateString as isStringAValidDate,
     isValidInteger,
 } from '@navikt/fp-validation';
 

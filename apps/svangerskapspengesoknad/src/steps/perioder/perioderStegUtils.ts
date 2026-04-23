@@ -5,7 +5,8 @@ import { getFloatFromString } from 'utils/numberUtils';
 import { hasValue } from 'utils/validationUtils';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { formatDate, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
+import { formatDate } from '@navikt/fp-utils';
+import { isValidDateString as isStringAValidDate } from '@navikt/fp-validation';
 
 export const getMåSendeNySøknad = (
     periodeDerSøkerErTilbakeIOpprinneligStilling: PeriodeMedVariasjonFormValues | undefined,

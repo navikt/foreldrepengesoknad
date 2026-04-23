@@ -7,8 +7,8 @@ import { getVarighetString } from 'utils/dateUtils';
 import { BodyShort } from '@navikt/ds-react';
 
 import { isFødtBarn } from '@navikt/fp-types';
-import { Tidsperioden, Uttaksdagen, isValidDate } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
+import { Tidsperioden, Uttaksdagen } from '@navikt/fp-utils';
+import { isValidDateString as isValidDate, notEmpty } from '@navikt/fp-validation';
 
 const ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL = 3;
 
