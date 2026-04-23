@@ -45,7 +45,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
     );
 
     const morsPerioder = uttakPerioder.filter(
-        (p): p is UttakPeriode_fpoversikt => !('trekkdager' in p) && p.forelder === 'MOR',
+        (p): p is UttakPeriode_fpoversikt => !erEøsUttakPeriode(p) && p.forelder === 'MOR',
     );
 
     return (
