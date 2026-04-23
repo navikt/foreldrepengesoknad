@@ -14,11 +14,7 @@ import { getErSøkerFarEllerMedmor, getKjønnFromFnr, getNavnPåForeldre } from 
 import { Alert, BodyLong, Tabs } from '@navikt/ds-react';
 
 import { loggUmamiEvent } from '@navikt/fp-observability';
-import {
-    FpPersonopplysningerDto_fpoversikt,
-    FpSak_fpoversikt,
-    RettighetType_fpoversikt,
-} from '@navikt/fp-types';
+import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { Uttaksperioden, barnehagestartDato, getFamiliehendelsedato } from '@navikt/fp-utils';
 import {

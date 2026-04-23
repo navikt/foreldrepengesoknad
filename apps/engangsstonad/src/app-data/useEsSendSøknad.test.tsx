@@ -5,10 +5,9 @@ import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Dokumentasjon } from 'types/Dokumentasjon';
-import { OmBarnet } from 'types/OmBarnet';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { EngangsstønadDto, EsPersonopplysningerDto_fpoversikt, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { BarnDto, EngangsstønadDto, EsPersonopplysningerDto_fpoversikt, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/messages/nb_NO.json';
@@ -71,7 +70,7 @@ const DEFAULT_PERSONINFO = {
 } satisfies EsPersonopplysningerDto_fpoversikt;
 
 const getWrapper =
-    (barnet: OmBarnet, dokumentasjon?: Dokumentasjon) =>
+    (barnet: BarnDto, dokumentasjon?: Dokumentasjon) =>
     ({ children }: { children: ReactNode }) => (
         <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <QueryClientProvider client={queryClient}>
@@ -106,11 +105,11 @@ describe('useEsSendSøknad', () => {
         } as ResponsePromise<void>);
         const deleteMock = vi.mocked(ky.delete);
 
-        const omBarnetAdopsjon = {
+        const omBarnetAdopsjon: BarnDto = {
+            type: 'adopsjon',
             adopsjonsdato: '2024-01-02',
-            termindato: '2024-01-02',
             antallBarn: 1,
-            fødselsdatoer: [{ dato: '2024-01-01' }],
+            fødselsdatoer: ['2024-01-01'],
             adopsjonAvEktefellesBarn: true,
         };
 
@@ -159,8 +158,8 @@ describe('useEsSendSøknad', () => {
         } as ResponsePromise<void>);
         const deleteMock = vi.mocked(ky.delete);
 
-        const omBarnetErFødt = {
-            erBarnetFødt: true,
+        const omBarnetErFødt: BarnDto = {
+            type: 'fødsel',
             antallBarn: 1,
             fødselsdato: '2024-01-01',
             termindato: '2024-01-01',
@@ -202,10 +201,9 @@ describe('useEsSendSøknad', () => {
         } as ResponsePromise<void>);
         const deleteMock = vi.mocked(ky.delete);
 
-        const omBarnetVenterPåFødsel = {
-            erBarnetFødt: false,
+        const omBarnetVenterPåFødsel: BarnDto = {
+            type: 'termin',
             antallBarn: 1,
-            fødselsdato: '2024-01-01',
             termindato: '2024-01-01',
         };
 

@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
-import { harBarnetTermindato } from 'types/OmBarnet';
 
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -71,16 +70,11 @@ const showDokumentasjonStep = (
     currentPath: Path,
     getStateData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ): boolean => {
-    const omBarnet = getStateData(ContextDataType.OM_BARNET);
-    if (
-        path === Path.TERMINBEKREFTELSE &&
-        omBarnet &&
-        harBarnetTermindato(omBarnet) &&
-        omBarnet.erBarnetFødt === false
-    ) {
+    const barn = getStateData(ContextDataType.OM_BARNET);
+    if (path === Path.TERMINBEKREFTELSE && barn?.type === 'termin') {
         return isVisible(true, ContextDataType.DOKUMENTASJON, Path.OM_BARNET, currentPath, getStateData);
     }
-    if (path === Path.ADOPSJONSBEKREFTELSE && omBarnet && 'adopsjonAvEktefellesBarn' in omBarnet) {
+    if (path === Path.ADOPSJONSBEKREFTELSE && barn?.type === 'adopsjon') {
         return isVisible(true, ContextDataType.DOKUMENTASJON, Path.OM_BARNET, currentPath, getStateData);
     }
     return false;
