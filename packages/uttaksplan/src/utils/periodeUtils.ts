@@ -108,29 +108,42 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
     rettighetType: RettighetType_fpoversikt,
     perioder?: UttaksplanperiodeMedKunTapteDager[] | Uttaksplanperiode[],
 ) => {
-    return (
-        rettighetType !== 'ALENEOMSORG' &&
-        !!perioder &&
-        perioder.some(
-            (periode) =>
-                erVanligUttakPeriode(periode) &&
-                periode.forelder === 'FAR_MEDMOR' &&
-                periode.resultat?.innvilget !== false &&
-                (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER') &&
-                periode.morsAktivitet === undefined &&
-                periode.flerbarnsdager === false &&
-                !perioder.some(
-                    (morPeriode) =>
-                        erVanligUttakPeriode(morPeriode) &&
-                        morPeriode.forelder === 'MOR' &&
-                        Tidsperioden.forPeriode({ fom: periode.fom, tom: periode.tom }).overlapper({
-                            fom: morPeriode.fom,
-                            tom: morPeriode.tom,
-                        }) &&
-                        (morPeriode.samtidigUttak ?? 0) + (morPeriode.gradering?.arbeidstidprosent ?? 0) === 100,
-                ),
-        )
-    );
+    if (rettighetType === 'ALENEOMSORG' || !perioder) {
+        return false;
+    }
+
+    const morHar100ProsentUttakOgGradering = (farPeriode: UttakPeriode_fpoversikt) =>
+        perioder.some((morPeriode) => {
+            if (!erVanligUttakPeriode(morPeriode) || morPeriode.forelder !== 'MOR') {
+                return false;
+            }
+
+            const overlapper = Tidsperioden.forPeriode({ fom: farPeriode.fom, tom: farPeriode.tom }).overlapper({
+                fom: morPeriode.fom,
+                tom: morPeriode.tom,
+            });
+
+            const morsTotalprosent = (morPeriode.samtidigUttak ?? 0) + (morPeriode.gradering?.arbeidstidprosent ?? 0);
+
+            return overlapper && morsTotalprosent === 100;
+        });
+
+    return perioder.some((periode) => {
+        if (!erVanligUttakPeriode(periode)) {
+            return false;
+        }
+
+        const erFarMedmorsKvote =
+            periode.forelder === 'FAR_MEDMOR' &&
+            (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER');
+
+        const erInnvilgetUtenMorsAktivitet =
+            periode.resultat?.innvilget !== false &&
+            periode.morsAktivitet === undefined &&
+            periode.flerbarnsdager === false;
+
+        return erFarMedmorsKvote && erInnvilgetUtenMorsAktivitet && !morHar100ProsentUttakOgGradering(periode);
+    });
 };
 
 export const erPerioderEkslFomTomLike = (
