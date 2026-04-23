@@ -2,7 +2,7 @@ import { Component, ErrorInfo } from 'react';
 
 import { Alert } from '@navikt/ds-react';
 
-import { captureException, withScope } from '@navikt/fp-observability';
+import { captureException } from '@navikt/fp-observability';
 
 type Props = {
     children: React.ReactNode;
@@ -24,10 +24,7 @@ export class ErrorBoundary extends Component<Props, State> {
             this.setState((oldState) => ({ ...oldState, hasError: true, error }));
 
             if (error.cause !== 'capturedBySentry') {
-                withScope((scope) => {
-                    scope.setExtra('errorInfo', errorInfo);
-                    captureException(error);
-                });
+                captureException(error);
             }
         }
     }

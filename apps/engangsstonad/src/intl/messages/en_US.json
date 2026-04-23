@@ -116,8 +116,6 @@
     "UseStepConfig.TidligereUtenlandsopphold": "Stays abroad",
     "UseStepConfig.FremtidigUtenlandsopphold": "Stay abroad",
     "UseStepConfig.Oppsummering": "Summary",
-    "useEsMellomlagring.FeilVedMellomlagring.MedCallId": "A problem occurred while saving the application. Please try again later. If the problem persists, contact us and provide the error ID: {callId}",
-    "useEsMellomlagring.FeilVedMellomlagring.UtenCallId": "A problem occurred while saving the application. Please try again later. If the problem persists, please contact us.",
     "useEsSendSøknad.FeilVedInnsending.MedCallId": "A problem occurred while submitting the application. Please try again later. If the problem persists, contact us and provide the error ID: {callId}",
     "useEsSendSøknad.FeilVedInnsending.UtenCallId": "A problem occurred while submitting the application. Please try again later. If the problem persists, please contact us."
 }
