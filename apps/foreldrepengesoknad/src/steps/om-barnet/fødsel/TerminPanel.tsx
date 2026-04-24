@@ -86,7 +86,7 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
                                     });
                                 }
 
-                                return undefined;
+                                return null;
                             },
                         ]}
                     />

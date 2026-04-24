@@ -2491,6 +2491,9 @@ importers:
       '@navikt/fp-form-hooks':
         specifier: workspace:*
         version: link:../form-hooks
+      '@navikt/fp-observability':
+        specifier: workspace:*
+        version: link:../observability
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
