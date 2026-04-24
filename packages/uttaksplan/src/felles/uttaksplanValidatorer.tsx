@@ -53,7 +53,7 @@ export const prosentValideringGradering =
             });
         }
 
-        return undefined;
+        return null;
     };
 
 export const valideringSamtidigUttak =
@@ -89,7 +89,7 @@ export const valideringSamtidigUttak =
             });
         }
 
-        return undefined;
+        return null;
     };
 
 export const kanMisteDagerVedEndringTilFerie = (

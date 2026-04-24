@@ -54,7 +54,7 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                         (value) => {
                             return value === undefined
                                 ? intl.formatMessage({ id: 'VelgPeriodePanelStep.VelgPeriode' })
-                                : undefined;
+                                : null;
                         },
                     ]}
                 >

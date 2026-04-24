@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
-import { SkjemaelementFeil } from 'types/SkjemaelementFeil';
 
 import { textGyldigRegex, textRegex } from '@navikt/fp-validation';
 
@@ -17,7 +16,7 @@ export const hasValue = (v: string | number | boolean | undefined | null) => v !
 
 export const validateFødselsnummer =
     (intl: IntlShape, søkersFødselsnummer: string, label: string, erUtenlandskFnr?: boolean) =>
-    (fnr: string): string | undefined => {
+    (fnr: string): string | null => {
         if (erUtenlandskFnr) {
             if (fnr === undefined || fnr.trim() === '') {
                 return intl.formatMessage({ id: 'valideringsfeil.fødselsnummer.required' });
@@ -41,7 +40,7 @@ export const validateFødselsnummer =
         }
 
         return validFnrResult === 'fnr' || validFnrResult === 'dnr' || validFnrResult === 'hnr'
-            ? undefined
+            ? null
             : intl.formatMessage({ id: 'valideringsfeil.fødselsnummer.ugyldigFødselsnummer' });
     };
 
@@ -80,9 +79,9 @@ const getIllegalCharsErrorMessage = (value: string, feltNavn: string, intl: Intl
 
 const validateTextHasLegalChars = (value: string): boolean => textRegex.test(value);
 
-export const validateTextInputField = (value: string, feltNavn: string, intl: IntlShape): SkjemaelementFeil => {
+export const validateTextInputField = (value: string, feltNavn: string, intl: IntlShape): string | null => {
     if (!validateTextHasLegalChars(value)) {
         return getIllegalCharsErrorMessage(value, feltNavn, intl);
     }
-    return undefined;
+    return null;
 };

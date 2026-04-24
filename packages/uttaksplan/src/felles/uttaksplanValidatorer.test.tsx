@@ -53,9 +53,9 @@ describe('prosentValideringGradering', () => {
         expect(validator('50')).toBe('Stillingsprosent og samtidig uttak kan ikke utgjøre mer enn 100 % sammenlagt');
     });
 
-    it('skal returnere undefined når verdi er gyldig', () => {
+    it('skal returnere null når verdi er gyldig', () => {
         const validator = prosentValideringGradering(intlMock, '20');
-        expect(validator('30')).toBeUndefined();
+        expect(validator('30')).toBeNull();
     });
 });
 
@@ -85,9 +85,9 @@ describe('valideringSamtidigUttak', () => {
         expect(validator('40')).toBe('Stillingsprosent og samtidig uttak kan ikke utgjøre mer enn 100 % sammenlagt');
     });
 
-    it('skal returnere undefined når verdi er gyldig', () => {
+    it('skal returnere null når verdi er gyldig', () => {
         const validator = valideringSamtidigUttak(intlMock, '30');
-        expect(validator('40')).toBeUndefined();
+        expect(validator('40')).toBeNull();
     });
 });
 

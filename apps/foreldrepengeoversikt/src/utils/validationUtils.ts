@@ -4,7 +4,7 @@ import { textGyldigRegex, textRegex } from '@navikt/fp-validation';
 
 //TODO (TOR) Ser ut som funksjonane i denne fila har duplikatar i foreldrepengesoknad. Flytt ut i felles-pakke
 
-type SkjemaelementFeil = string | undefined;
+type SkjemaelementFeil = string | null;
 
 const getIllegalChars = (value: string): string => {
     const kunUgyldigeTegn = value.replace(textGyldigRegex, '');
@@ -29,7 +29,7 @@ const validateTextInputField = (value: string, feltNavn: string, intl: IntlShape
     if (!validateTextHasLegalChars(value)) {
         return getIllegalCharsErrorMessage(value, feltNavn, intl);
     }
-    return undefined;
+    return null;
 };
 
 export const validateFritekstFelt = (intl: IntlShape, label: string, inputText?: string) => {
