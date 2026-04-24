@@ -39,7 +39,6 @@ export const Foreldrepengesøknad = () => {
     useEffect(() => {
         if (søkerinfoQuery.error || sakerQuery.error) {
             const error = new Error(intl.formatMessage({ id: 'Foreldrepengesøknad.FeilVedHentingAvInformasjon' }));
-            error.cause = 'capturedBySentry';
             throw error;
         }
     }, [søkerinfoQuery.error, sakerQuery.error, intl]);

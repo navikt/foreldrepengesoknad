@@ -26,10 +26,8 @@ export class ErrorBoundary extends Component<Props, State> {
     }
 
     componentDidCatch(error: Error | null, errorInfo: ErrorInfo) {
-        if (error?.cause !== 'capturedBySentry') {
-            const eventId = captureException(error);
-            this.setState({ eventId, errorInfo });
-        }
+        const eventId = captureException(error);
+        this.setState({ eventId, errorInfo });
         this.setState({ hasError: true, errorMessage: error?.message });
     }
 

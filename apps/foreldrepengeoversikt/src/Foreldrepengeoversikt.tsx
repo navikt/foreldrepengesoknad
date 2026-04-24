@@ -26,7 +26,6 @@ export const Foreldrepengeoversikt = () => {
 
     if (søkerInfoQuery.isError || sakerQuery.isError) {
         const error = new Error(intl.formatMessage({ id: 'error.hentingInformasjon' }));
-        error.cause = 'capturedBySentry';
         throw error;
     }
 
