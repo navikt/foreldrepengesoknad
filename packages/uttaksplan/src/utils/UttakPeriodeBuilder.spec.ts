@@ -5,11 +5,24 @@ import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
 import { UttakPeriodeBuilder } from './UttakPeriodeBuilder';
 
 const captureMessageMock = vi.hoisted(() => vi.fn());
+const setExtraMock = vi.hoisted(() => vi.fn());
+const setTagMock = vi.hoisted(() => vi.fn());
+const setLevelMock = vi.hoisted(() => vi.fn());
 vi.mock('@navikt/fp-observability', () => ({
     captureMessage: captureMessageMock,
-    withScope: (cb: (scope: { setLevel: () => void; setTag: () => void; setExtra: () => void }) => void) =>
-        cb({ setLevel: vi.fn(), setTag: vi.fn(), setExtra: vi.fn() }),
+    withScope: (
+        cb: (scope: {
+            setLevel: typeof setLevelMock;
+            setTag: typeof setTagMock;
+            setExtra: typeof setExtraMock;
+        }) => void,
+    ) => cb({ setLevel: setLevelMock, setTag: setTagMock, setExtra: setExtraMock }),
 }));
+
+const getExtra = (key: string) => {
+    const call = setExtraMock.mock.calls.find(([k]) => k === key);
+    return call?.[1];
+};
 
 // Bruker forelder for å skille på eksisterende og nye perioder.
 const lagPeriode = (fom: string, tom: string) => ({
@@ -376,6 +389,7 @@ describe('UttakPeriodeBuilder.fjernUttakPerioder (Forskyv)', () => {
 describe('UttakPeriodeBuilder.getUttakPerioder - validering av ugyldig overlapp', () => {
     it('loggar ikkje når planen er gyldig', () => {
         captureMessageMock.mockClear();
+        setExtraMock.mockClear();
         const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-01', '2024-01-05')]);
         builder.leggTilUttakPerioder([lagNyPeriode('2024-01-10', '2024-01-12')], false);
 
@@ -386,6 +400,7 @@ describe('UttakPeriodeBuilder.getUttakPerioder - validering av ugyldig overlapp'
 
     it('loggar ikkje for gyldig samtidig uttak (ulik forelder, samtidigUttak satt)', () => {
         captureMessageMock.mockClear();
+        setExtraMock.mockClear();
         const builder = new UttakPeriodeBuilder([
             { ...lagPeriode('2024-01-01', '2024-01-05'), kontoType: 'MØDREKVOTE', samtidigUttak: 100 },
             { ...lagNyPeriode('2024-01-01', '2024-01-05'), kontoType: 'FEDREKVOTE', samtidigUttak: 100 },
@@ -396,12 +411,19 @@ describe('UttakPeriodeBuilder.getUttakPerioder - validering av ugyldig overlapp'
         expect(captureMessageMock).not.toHaveBeenCalled();
     });
 
-    it('loggar når planen inneheld ein FERIE og ein FELLES på same dag', () => {
+    it('loggar når planen inneheld ein FERIE og ein FELLES på same dag, med full diagnostikk', () => {
         captureMessageMock.mockClear();
-        const builder = new UttakPeriodeBuilder([
-            { ...lagPeriode('2026-12-30', '2026-12-30'), kontoType: 'FELLESPERIODE' },
-            { ...lagPeriode('2026-12-30', '2026-12-30'), utsettelseÅrsak: 'LOVBESTEMT_FERIE' },
-        ]);
+        setExtraMock.mockClear();
+        setTagMock.mockClear();
+        setLevelMock.mockClear();
+
+        const opprinnelig = [
+            { ...lagPeriode('2026-12-30', '2026-12-30'), kontoType: 'FELLESPERIODE' as const },
+            { ...lagPeriode('2026-12-30', '2026-12-30'), utsettelseÅrsak: 'LOVBESTEMT_FERIE' as const },
+        ];
+        const builder = new UttakPeriodeBuilder(opprinnelig);
+        const nyPeriode = { ...lagNyPeriode('2026-12-31', '2026-12-31'), kontoType: 'FELLESPERIODE' as const };
+        builder.leggTilUttakPerioder([nyPeriode], false);
 
         builder.getUttakPerioder();
 
@@ -410,5 +432,34 @@ describe('UttakPeriodeBuilder.getUttakPerioder - validering av ugyldig overlapp'
             'UttakPeriodeBuilder produserte ugyldig overlappende perioder',
             'warning',
         );
+
+        expect(setLevelMock).toHaveBeenCalledWith('warning');
+        expect(setTagMock).toHaveBeenCalledWith('feiltype', 'uttaksplan-builder-overlapp');
+
+        expect(getExtra('antallUgyldigeOverlapp')).toBe(1);
+
+        const par = getExtra('ugyldigeOverlappPar');
+        expect(par).toHaveLength(1);
+        expect(par[0]).toMatchObject({
+            a: { fom: '2026-12-30', tom: '2026-12-30' },
+            b: { fom: '2026-12-30', tom: '2026-12-30' },
+        });
+
+        const opp = getExtra('opprinneligPerioder');
+        expect(opp).toHaveLength(2);
+        expect(opp[0]).toMatchObject({ fom: '2026-12-30', tom: '2026-12-30', kontoType: 'FELLESPERIODE' });
+        expect(opp[1]).toMatchObject({ fom: '2026-12-30', tom: '2026-12-30', utsettelseÅrsak: 'LOVBESTEMT_FERIE' });
+
+        const resultat = getExtra('resultatPerioder');
+        expect(resultat.length).toBeGreaterThanOrEqual(2);
+
+        const operasjonsLogg = getExtra('operasjonsLogg');
+        expect(operasjonsLogg).toHaveLength(1);
+        expect(operasjonsLogg[0]).toMatchObject({
+            operasjon: 'leggTilUttakPerioder',
+            forskyvPerioder: false,
+        });
+        expect(operasjonsLogg[0].nyePerioder).toHaveLength(1);
+        expect(operasjonsLogg[0].nyePerioder[0]).toMatchObject({ fom: '2026-12-31', tom: '2026-12-31' });
     });
 });
