@@ -134,6 +134,36 @@ const erOverlappendeIDato = (a: { fom: string; tom: string }, b: { fom: string; 
 
 const erEøsPeriode = (p: AlleUttakPerioder): p is UttakPeriodeAnnenpartEøs_fpoversikt => 'trekkdager' in p;
 
+export const finnUgyldigeOverlapp = (perioder: AlleUttakPerioder[]): Array<[AlleUttakPerioder, AlleUttakPerioder]> => {
+    const ugyldigeOverlapp: Array<[AlleUttakPerioder, AlleUttakPerioder]> = [];
+    for (let i = 0; i < perioder.length; i++) {
+        for (let j = i + 1; j < perioder.length; j++) {
+            const a = perioder[i]!;
+            const b = perioder[j]!;
+            if (erOverlappendeIDato(a, b) && !erGyldigSamtidigUttak(a, b)) {
+                ugyldigeOverlapp.push([a, b]);
+            }
+        }
+    }
+    return ugyldigeOverlapp;
+};
+
+export const periodeTilLoggObjekt = (p: AlleUttakPerioder) => {
+    if (erEøsPeriode(p)) {
+        return { fom: p.fom, tom: p.tom, eøs: true, kontoType: p.kontoType };
+    }
+    return {
+        fom: p.fom,
+        tom: p.tom,
+        forelder: p.forelder,
+        kontoType: p.kontoType,
+        utsettelseÅrsak: p.utsettelseÅrsak,
+        oppholdÅrsak: p.oppholdÅrsak,
+        overføringÅrsak: p.overføringÅrsak,
+        samtidigUttak: p.samtidigUttak,
+    };
+};
+
 const erGyldigSamtidigUttak = (a: AlleUttakPerioder, b: AlleUttakPerioder): boolean => {
     if (erEøsPeriode(a) || erEøsPeriode(b)) {
         // EØS-periodar er annen-part og kan eksistere parallelt med søkers periodar
@@ -150,22 +180,6 @@ const erGyldigSamtidigUttak = (a: AlleUttakPerioder, b: AlleUttakPerioder): bool
     );
 };
 
-const periodeTilLoggObjekt = (p: AlleUttakPerioder) => {
-    if (erEøsPeriode(p)) {
-        return { fom: p.fom, tom: p.tom, eøs: true, kontoType: p.kontoType };
-    }
-    return {
-        fom: p.fom,
-        tom: p.tom,
-        forelder: p.forelder,
-        kontoType: p.kontoType,
-        utsettelseÅrsak: p.utsettelseÅrsak,
-        oppholdÅrsak: p.oppholdÅrsak,
-        overføringÅrsak: p.overføringÅrsak,
-        samtidigUttak: p.samtidigUttak,
-    };
-};
-
 const validerOgLoggOverlapp = (
     resultat: AlleUttakPerioder[],
     opprinneligPerioder: AlleUttakPerioder[],
@@ -177,17 +191,7 @@ const validerOgLoggOverlapp = (
     }>,
     kilde: Builderkilde,
 ): void => {
-    const ugyldigeOverlapp: Array<[AlleUttakPerioder, AlleUttakPerioder]> = [];
-
-    for (let i = 0; i < resultat.length; i++) {
-        for (let j = i + 1; j < resultat.length; j++) {
-            const a = resultat[i]!;
-            const b = resultat[j]!;
-            if (erOverlappendeIDato(a, b) && !erGyldigSamtidigUttak(a, b)) {
-                ugyldigeOverlapp.push([a, b]);
-            }
-        }
-    }
+    const ugyldigeOverlapp = finnUgyldigeOverlapp(resultat);
 
     if (ugyldigeOverlapp.length === 0) {
         return;

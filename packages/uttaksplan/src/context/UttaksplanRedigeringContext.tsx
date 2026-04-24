@@ -1,8 +1,10 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
+import { captureMessage, withScope } from '@navikt/fp-observability';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { erEøsUttakPeriode } from '../types/UttaksplanPeriode';
+import { finnUgyldigeOverlapp, periodeTilLoggObjekt } from '../utils/UttakPeriodeBuilder';
 import { useUttaksplanData } from './UttaksplanDataContext';
 
 type AlleUttakPerioder = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
@@ -31,6 +33,34 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
     const [visFjernAltModal, setVisFjernAltModal] = useState(false);
 
     const { uttakPerioder } = useUttaksplanData();
+
+    const harLoggetInitielleOverlapp = useRef(false);
+    useEffect(() => {
+        if (harLoggetInitielleOverlapp.current) {
+            return;
+        }
+        harLoggetInitielleOverlapp.current = true;
+
+        const ugyldigeOverlapp = finnUgyldigeOverlapp(uttakPerioder);
+        if (ugyldigeOverlapp.length === 0) {
+            return;
+        }
+
+        withScope((scope) => {
+            scope.setLevel('warning');
+            scope.setTag('feiltype', 'uttaksplan-initielle-overlapp');
+            scope.setExtra('antallUgyldigeOverlapp', ugyldigeOverlapp.length);
+            scope.setExtra(
+                'ugyldigeOverlappPar',
+                ugyldigeOverlapp.slice(0, 20).map(([a, b]) => ({
+                    a: periodeTilLoggObjekt(a),
+                    b: periodeTilLoggObjekt(b),
+                })),
+            );
+            scope.setExtra('opprinneligPerioder', uttakPerioder.map(periodeTilLoggObjekt));
+            captureMessage('Uttaksplan har ugyldig overlappende perioder før redigering startet', 'warning');
+        });
+    }, [uttakPerioder]);
 
     const [uttaksplanVersjoner, setUttaksplanVersjoner] = useState<AlleUttakPerioder[][]>([]);
 
