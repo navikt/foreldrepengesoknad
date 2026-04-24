@@ -1,8 +1,15 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
 
 import { UttakPeriodeBuilder } from './UttakPeriodeBuilder';
+
+const captureMessageMock = vi.hoisted(() => vi.fn());
+vi.mock('@navikt/fp-observability', () => ({
+    captureMessage: captureMessageMock,
+    withScope: (cb: (scope: { setLevel: () => void; setTag: () => void; setExtra: () => void }) => void) =>
+        cb({ setLevel: vi.fn(), setTag: vi.fn(), setExtra: vi.fn() }),
+}));
 
 // Bruker forelder for å skille på eksisterende og nye perioder.
 const lagPeriode = (fom: string, tom: string) => ({
@@ -363,5 +370,45 @@ describe('UttakPeriodeBuilder.fjernUttakPerioder (Forskyv)', () => {
         builder.fjernUttakPerioder([lagNyPeriode('2024-01-04', '2024-01-05')], SKAL_FORSKYVE);
 
         expect(builder.getUttakPerioder()).toEqual([lagPeriode('2024-01-01', '2024-01-08')]);
+    });
+});
+
+describe('UttakPeriodeBuilder.getUttakPerioder - validering av ugyldig overlapp', () => {
+    it('loggar ikkje når planen er gyldig', () => {
+        captureMessageMock.mockClear();
+        const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-01', '2024-01-05')]);
+        builder.leggTilUttakPerioder([lagNyPeriode('2024-01-10', '2024-01-12')], false);
+
+        builder.getUttakPerioder();
+
+        expect(captureMessageMock).not.toHaveBeenCalled();
+    });
+
+    it('loggar ikkje for gyldig samtidig uttak (ulik forelder, samtidigUttak satt)', () => {
+        captureMessageMock.mockClear();
+        const builder = new UttakPeriodeBuilder([
+            { ...lagPeriode('2024-01-01', '2024-01-05'), kontoType: 'MØDREKVOTE', samtidigUttak: 100 },
+            { ...lagNyPeriode('2024-01-01', '2024-01-05'), kontoType: 'FEDREKVOTE', samtidigUttak: 100 },
+        ]);
+
+        builder.getUttakPerioder();
+
+        expect(captureMessageMock).not.toHaveBeenCalled();
+    });
+
+    it('loggar når planen inneheld ein FERIE og ein FELLES på same dag', () => {
+        captureMessageMock.mockClear();
+        const builder = new UttakPeriodeBuilder([
+            { ...lagPeriode('2026-12-30', '2026-12-30'), kontoType: 'FELLESPERIODE' },
+            { ...lagPeriode('2026-12-30', '2026-12-30'), utsettelseÅrsak: 'LOVBESTEMT_FERIE' },
+        ]);
+
+        builder.getUttakPerioder();
+
+        expect(captureMessageMock).toHaveBeenCalledTimes(1);
+        expect(captureMessageMock).toHaveBeenCalledWith(
+            'UttakPeriodeBuilder produserte ugyldig overlappende perioder',
+            'warning',
+        );
     });
 });
