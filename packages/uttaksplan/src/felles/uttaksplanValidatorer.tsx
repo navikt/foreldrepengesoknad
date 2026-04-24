@@ -506,6 +506,7 @@ const harFarMedmorValgtMerEnnToUkerTotaltIIntervallet2UkerFørOg6UkerEtterFamili
             });
             const uttaksperioderUtenomBortsettFraEndredePerioder = new UttakPeriodeBuilder(
                 uttakPerioderUtenOverførtMødrekvote,
+                'validator',
             )
                 .fjernUttakPerioder(nyePerioder, false)
                 .getUttakPerioder();

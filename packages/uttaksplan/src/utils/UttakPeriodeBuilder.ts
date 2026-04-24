@@ -11,9 +11,12 @@ dayjs.extend(utc);
 
 type AlleUttakPerioder = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
 
+type Builderkilde = 'liste' | 'kalender' | 'validator' | 'ukjent';
+
 export class UttakPeriodeBuilder {
     private alleUttakPerioder: AlleUttakPerioder[];
     private readonly opprinneligPerioder: AlleUttakPerioder[];
+    private readonly kilde: Builderkilde;
     private readonly operasjonsLogg: Array<{
         operasjon: string;
         nyePerioder?: AlleUttakPerioder[];
@@ -21,9 +24,10 @@ export class UttakPeriodeBuilder {
         forskyvPerioder: boolean;
     }> = [];
 
-    constructor(alleUttakPerioder: AlleUttakPerioder[]) {
+    constructor(alleUttakPerioder: AlleUttakPerioder[], kilde: Builderkilde = 'ukjent') {
         this.alleUttakPerioder = [...alleUttakPerioder].sort(sorterUttakPerioder);
         this.opprinneligPerioder = [...this.alleUttakPerioder];
+        this.kilde = kilde;
     }
 
     leggTilUttakPerioder(nyeUttakPerioder: AlleUttakPerioder[], forskyvPerioder: boolean): this {
@@ -120,7 +124,7 @@ export class UttakPeriodeBuilder {
 
     getUttakPerioder(): AlleUttakPerioder[] {
         const resultat = slåSammenLikeTilstøtendePerioder(this.alleUttakPerioder);
-        validerOgLoggOverlapp(resultat, this.opprinneligPerioder, this.operasjonsLogg);
+        validerOgLoggOverlapp(resultat, this.opprinneligPerioder, this.operasjonsLogg, this.kilde);
         return resultat;
     }
 }
@@ -171,6 +175,7 @@ const validerOgLoggOverlapp = (
         perioderSomSkalFjernes?: Array<{ fom: string; tom: string }>;
         forskyvPerioder: boolean;
     }>,
+    kilde: Builderkilde,
 ): void => {
     const ugyldigeOverlapp: Array<[AlleUttakPerioder, AlleUttakPerioder]> = [];
 
@@ -191,6 +196,8 @@ const validerOgLoggOverlapp = (
     withScope((scope) => {
         scope.setLevel('warning');
         scope.setTag('feiltype', 'uttaksplan-builder-overlapp');
+        scope.setTag('builderKilde', kilde);
+        scope.setExtra('builderKilde', kilde);
         scope.setExtra('antallUgyldigeOverlapp', ugyldigeOverlapp.length);
         scope.setExtra(
             'ugyldigeOverlappPar',

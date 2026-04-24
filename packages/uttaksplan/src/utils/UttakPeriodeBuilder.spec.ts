@@ -421,7 +421,7 @@ describe('UttakPeriodeBuilder.getUttakPerioder - validering av ugyldig overlapp'
             { ...lagPeriode('2026-12-30', '2026-12-30'), kontoType: 'FELLESPERIODE' as const },
             { ...lagPeriode('2026-12-30', '2026-12-30'), utsettelseÅrsak: 'LOVBESTEMT_FERIE' as const },
         ];
-        const builder = new UttakPeriodeBuilder(opprinnelig);
+        const builder = new UttakPeriodeBuilder(opprinnelig, 'liste');
         const nyPeriode = { ...lagNyPeriode('2026-12-31', '2026-12-31'), kontoType: 'FELLESPERIODE' as const };
         builder.leggTilUttakPerioder([nyPeriode], false);
 
@@ -435,7 +435,9 @@ describe('UttakPeriodeBuilder.getUttakPerioder - validering av ugyldig overlapp'
 
         expect(setLevelMock).toHaveBeenCalledWith('warning');
         expect(setTagMock).toHaveBeenCalledWith('feiltype', 'uttaksplan-builder-overlapp');
+        expect(setTagMock).toHaveBeenCalledWith('builderKilde', 'liste');
 
+        expect(getExtra('builderKilde')).toBe('liste');
         expect(getExtra('antallUgyldigeOverlapp')).toBe(1);
 
         const par = getExtra('ugyldigeOverlappPar');
