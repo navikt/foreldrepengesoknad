@@ -1,5 +1,5 @@
 import { onLanguageSelect, setAvailableLanguages } from '@navikt/nav-dekoratoren-moduler';
-import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import { HTTPError } from 'ky';
@@ -11,8 +11,8 @@ import { en, nb, nn } from '@navikt/ds-react/locales';
 
 import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
-import { observabilityMessages } from '@navikt/fp-observability';
-import { LocaleAll } from '@navikt/fp-types';
+import { ApiError, captureApiError, observabilityMessages } from '@navikt/fp-observability';
+import { type LocaleAll, type ProblemDetails } from '@navikt/fp-types';
 import { ByttBrowserModal, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
 import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan';
@@ -31,7 +31,20 @@ const queryClient = new QueryClient({
             if (error instanceof HTTPError) {
                 if (error.response?.status === 401) {
                     location.reload();
+                    return;
                 }
+                if (error.response?.status === 403) {
+                    return;
+                }
+                const apiError = error.data as ProblemDetails | undefined;
+                captureApiError('API query-feil i foreldrepengeoversikt', apiError);
+            }
+        },
+    }),
+    mutationCache: new MutationCache({
+        onError: (error) => {
+            if (error instanceof ApiError) {
+                captureApiError(error.sentryMessage, error.problemDetails);
             }
         },
     }),

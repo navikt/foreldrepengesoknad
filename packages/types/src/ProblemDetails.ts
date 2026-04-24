@@ -26,3 +26,5 @@ type ProblemDetailsBase = {
 export type FpSoknadProblemDetails = ProblemDetailsBase & { feilkode: FpSoknadFeilKode };
 export type FpOversiktProblemDetails = ProblemDetailsBase & { feilkode: FpOversiktFeilKode };
 export type FpGrunndataProblemDetails = ProblemDetailsBase & { feilkode: FellesFeilKode };
+
+export type ProblemDetails = FpSoknadProblemDetails | FpOversiktProblemDetails | FpGrunndataProblemDetails;

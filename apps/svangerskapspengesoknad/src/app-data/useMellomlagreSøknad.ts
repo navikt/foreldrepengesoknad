@@ -4,16 +4,12 @@ import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { captureMessage } from '@navikt/fp-observability';
+import { ApiError, captureApiError, captureMessage } from '@navikt/fp-observability';
 import { FpSoknadProblemDetails, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
 export const VERSJON_MELLOMLAGRING = 9;
-
-const UKJENT_UUID = 'ukjent uuid';
-const FEIL_VED_INNSENDING =
-    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
 export type SvpMellomlagretData = {
     version: number;
@@ -59,9 +55,7 @@ export const useMellomlagreSøknad = (
                             }
 
                             const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                            const callId = jsonResponse?.callId ?? UKJENT_UUID;
-                            captureMessage(FEIL_VED_INNSENDING + callId);
-                            throw new Error(FEIL_VED_INNSENDING + callId.substring(0, 6), { cause: error });
+                            throw new ApiError('', 'Feil ved mellomlagring av svangerskapspengesøknad', jsonResponse);
                         }
                         if (error instanceof Error) {
                             throw error;
@@ -83,7 +77,11 @@ export const useMellomlagreSøknad = (
             };
 
             lagreEllerSlett().catch((error: Error) => {
-                captureMessage(error.message);
+                if (error instanceof ApiError) {
+                    captureApiError(error.sentryMessage, error.problemDetails);
+                } else {
+                    captureMessage(error.message);
+                }
 
                 if (promiseRef.current) {
                     promiseRef.current();

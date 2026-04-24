@@ -1,5 +1,5 @@
 import { onLanguageSelect, setAvailableLanguages } from '@navikt/nav-dekoratoren-moduler';
-import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import { HTTPError } from 'ky';
@@ -11,14 +11,14 @@ import { nb, nn } from '@navikt/ds-react/locales';
 
 import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
-import { observabilityMessages } from '@navikt/fp-observability';
+import { ApiError, captureApiError, observabilityMessages } from '@navikt/fp-observability';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
 import { kvitteringMessages } from '@navikt/fp-steg-kvittering';
 import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
-import { LocaleAll, LocaleNo } from '@navikt/fp-types';
+import { LocaleAll, LocaleNo, type ProblemDetails } from '@navikt/fp-types';
 import { ByttBrowserModal, ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
 
@@ -70,7 +70,20 @@ const queryClient = new QueryClient({
             if (error instanceof HTTPError) {
                 if (error.response?.status === 401) {
                     location.reload();
+                    return;
                 }
+                if (error.response?.status === 403) {
+                    return;
+                }
+                const apiError = error.data as ProblemDetails | undefined;
+                captureApiError('API query-feil i svangerskapspengesøknad', apiError);
+            }
+        },
+    }),
+    mutationCache: new MutationCache({
+        onError: (error) => {
+            if (error instanceof ApiError) {
+                captureApiError(error.sentryMessage, error.problemDetails);
             }
         },
     }),
