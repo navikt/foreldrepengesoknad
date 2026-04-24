@@ -13,8 +13,8 @@ type AlleUttakPerioder = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpo
 
 export class UttakPeriodeBuilder {
     private alleUttakPerioder: AlleUttakPerioder[];
-    private opprinneligPerioder: AlleUttakPerioder[];
-    private operasjonsLogg: Array<{
+    private readonly opprinneligPerioder: AlleUttakPerioder[];
+    private readonly operasjonsLogg: Array<{
         operasjon: string;
         nyePerioder?: AlleUttakPerioder[];
         perioderSomSkalFjernes?: Array<{ fom: string; tom: string }>;
