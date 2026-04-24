@@ -136,10 +136,17 @@ const BeregningOppsummering = ({ sak }: { sak: Foreldrepengesak | Svangerskapspe
                 </List.Item>
                 {vis6GVarsel && (
                     <List.Item>
-                        <FormattedMessage
-                            id="beregning.6GVarsel"
-                            values={{ grunnbeløpSeksG: formatCurrencyWithKr(seksG) }}
-                        />
+                        {sak.ytelse === 'FORELDREPENGER' ? (
+                            <FormattedMessage
+                                id="beregning.6GVarsel.fp"
+                                values={{ grunnbeløpSeksG: formatCurrencyWithKr(seksG) }}
+                            />
+                        ) : (
+                            <FormattedMessage
+                                id="beregning.6GVarsel.svp"
+                                values={{ grunnbeløpSeksG: formatCurrencyWithKr(seksG) }}
+                            />
+                        )}
                     </List.Item>
                 )}
                 {visÅttiProsentReduksjon && (
