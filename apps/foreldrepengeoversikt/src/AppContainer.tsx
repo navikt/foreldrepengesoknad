@@ -29,6 +29,8 @@ const queryClient = new QueryClient({
     queryCache: new QueryCache({
         onError: (error) => {
             if (error instanceof HTTPError) {
+                const apiError = error.data as ProblemDetails | undefined;
+                captureApiError('API query-feil i foreldrepengeoversikt', apiError);
                 if (error.response?.status === 401) {
                     location.reload();
                     return;
@@ -36,8 +38,6 @@ const queryClient = new QueryClient({
                 if (error.response?.status === 403) {
                     return;
                 }
-                const apiError = error.data as ProblemDetails | undefined;
-                captureApiError('API query-feil i foreldrepengeoversikt', apiError);
             }
         },
     }),
