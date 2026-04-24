@@ -47,6 +47,6 @@ export const getIllegalChars = (value: string): string => {
 export const hasValue = (v: string | number | boolean | undefined | null): boolean =>
     v !== '' && v !== undefined && v !== null;
 export const hasLegalChars =
-    (getI18nText: (illigalChars: string) => string | null) =>
+    (getI18nText: (illegalChars: string) => string | null) =>
     (value: string): FormValidationResult =>
         textRegex.test(value) ? null : getI18nText(getIllegalChars(value));
