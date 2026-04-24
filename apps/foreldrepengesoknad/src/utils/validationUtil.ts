@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
-import { SkjemaelementFeil } from 'types/SkjemaelementFeil';
 
 import { textGyldigRegex, textRegex } from '@navikt/fp-validation';
 
