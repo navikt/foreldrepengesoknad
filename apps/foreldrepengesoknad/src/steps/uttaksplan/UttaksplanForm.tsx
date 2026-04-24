@@ -27,7 +27,7 @@ import {
 } from '@navikt/fp-types';
 import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
 import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
-import { useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
+import { harPeriodeDerMorsAktivitetIkkeErValgt, useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { VilDuGåTilbakeModal } from './VilDuGåTilbakeModal';
@@ -346,22 +346,6 @@ const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
         const tom = dayjs(periode.tom);
         return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
     });
-};
-
-const harPeriodeDerMorsAktivitetIkkeErValgt = (
-    rettighetType: RettighetType_fpoversikt,
-    perioder?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-) => {
-    return perioder?.some(
-        (periode) =>
-            rettighetType !== 'ALENEOMSORG' &&
-            Uttaksperioden.erIkkeEøsPeriode(periode) &&
-            periode.forelder === 'FAR_MEDMOR' &&
-            periode.resultat?.innvilget !== false &&
-            (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER') &&
-            periode.flerbarnsdager === false &&
-            periode.morsAktivitet === undefined,
-    );
 };
 
 const harBrukerKunSlettetPerioder = (

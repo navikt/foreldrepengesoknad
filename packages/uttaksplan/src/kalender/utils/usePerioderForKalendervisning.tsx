@@ -42,6 +42,7 @@ export const usePerioderForKalendervisning = (
         barn,
         foreldreInfo: { søker, navnPåForeldre, rettighetType },
         familiehendelsedato,
+        uttakPerioder,
     } = useUttaksplanData();
 
     const saksperioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
@@ -75,6 +76,7 @@ export const usePerioderForKalendervisning = (
                     intl,
                     isUpdated,
                     rettighetType,
+                    uttakPerioder,
                 ),
             ];
         }
@@ -86,7 +88,7 @@ export const usePerioderForKalendervisning = (
             return [
                 ...acc,
                 ...perioder,
-                ...splittPeriodeITo(periode, barnehagestartdato, color, navnPåForeldre, intl, isUpdated, rettighetType),
+                ...splittPeriodeITo(periode, barnehagestartdato, color, navnPåForeldre, intl, isUpdated, rettighetType, uttakPerioder),
             ];
         }
 
@@ -99,7 +101,7 @@ export const usePerioderForKalendervisning = (
                 color,
                 srText: getKalenderSkjermlesertekstForPeriode(periode, navnPåForeldre, intl),
                 isUpdated,
-                ...leggTilIkonVedPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, periode),
+                ...leggTilIkonVedPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, periode, uttakPerioder),
             } satisfies CalendarPeriod,
         ];
     }, []);
@@ -335,10 +337,11 @@ const splittPeriodeITo = (
     intl: IntlShape,
     isUpdated: boolean,
     rettighetType: RettighetType_fpoversikt,
+    allePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
 ): CalendarPeriod[] => {
     const forrige = Uttaksdagen.forrige(dato).getDato();
     const neste = Uttaksdagen.neste(dato).getDato();
-    const ikonProps = leggTilIkonVedPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, periode);
+    const ikonProps = leggTilIkonVedPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, periode, allePerioder);
 
     const lagPeriode = (fom: string, tom: string): CalendarPeriod => ({
         fom,
@@ -363,8 +366,12 @@ const splittPeriodeITo = (
 const leggTilIkonVedPeriodeDerMorsAktivitetIkkeErValgt = (
     rettighetType: RettighetType_fpoversikt,
     periode: UttaksplanperiodeMedKunTapteDager,
+    allePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
 ) => {
-    if (harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [periode])) {
+    const morsPerioder = allePerioder.filter(
+        (p): p is UttakPeriode_fpoversikt => erVanligUttakPeriode(p) && p.forelder === 'MOR',
+    );
+    if (harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [periode, ...morsPerioder])) {
         return {
             icon: <ExclamationmarkTriangleFillIcon aria-hidden color="var(--ax-warning-600)" />,
             iconFull: false,
