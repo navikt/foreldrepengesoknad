@@ -6,6 +6,7 @@ import { groupBy, min, partition, sortBy, sumBy } from 'lodash';
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
+import { Foreldrepengesak, SvangerskapspengeSak } from 'types/Sak.ts';
 
 import {
     Accordion,
@@ -34,7 +35,6 @@ import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
-import { Foreldrepengesak, SvangerskapspengeSak } from '../../types/Sak';
 import { formaterDato } from '../../utils/dateUtils';
 
 dayjs.extend(isSameOrBefore);
@@ -74,7 +74,7 @@ export const BeregningPage = () => {
                                 />
                             ))}
                         </VStack>
-                        <Forklaringer grunnbeløpPåBeregning={beregning.grunnbeløp} />
+                        <Forklaringer sak={gjeldendeSak} grunnbeløpPåBeregning={beregning.grunnbeløp} />
                     </ExpansionCard.Content>
                 </ExpansionCard>
 
@@ -136,10 +136,17 @@ const BeregningOppsummering = ({ sak }: { sak: Foreldrepengesak | Svangerskapspe
                 </List.Item>
                 {vis6GVarsel && (
                     <List.Item>
-                        <FormattedMessage
-                            id="beregning.6GVarsel"
-                            values={{ grunnbeløpSeksG: formatCurrencyWithKr(seksG) }}
-                        />
+                        {sak.ytelse === 'FORELDREPENGER' ? (
+                            <FormattedMessage
+                                id="beregning.6GVarsel.fp"
+                                values={{ grunnbeløpSeksG: formatCurrencyWithKr(seksG) }}
+                            />
+                        ) : (
+                            <FormattedMessage
+                                id="beregning.6GVarsel.svp"
+                                values={{ grunnbeløpSeksG: formatCurrencyWithKr(seksG) }}
+                            />
+                        )}
                     </List.Item>
                 )}
                 {visÅttiProsentReduksjon && (
@@ -234,7 +241,13 @@ const BeregningOppsummering = ({ sak }: { sak: Foreldrepengesak | Svangerskapspe
     );
 };
 
-const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: number }) => {
+const Forklaringer = ({
+    sak,
+    grunnbeløpPåBeregning,
+}: {
+    sak: Foreldrepengesak | SvangerskapspengeSak;
+    grunnbeløpPåBeregning?: number;
+}) => {
     const grunnbeløp = grunnbeløpPåBeregning ?? DEFAULT_SATSER.grunnbeløp[0]!.verdi;
 
     return (
@@ -244,7 +257,11 @@ const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: n
                     <FormattedMessage id="beregning.forklaringer.hvaErDagsatsen" />
                 </Accordion.Header>
                 <Accordion.Content>
-                    <FormattedMessage id="beregning.forklaringer.hvaErDagsatsen.forklaring" />
+                    {sak.ytelse === 'FORELDREPENGER' ? (
+                        <FormattedMessage id="beregning.forklaringer.hvaErDagsatsen.forklaring.fp" />
+                    ) : (
+                        <FormattedMessage id="beregning.forklaringer.hvaErDagsatsen.forklaring.svp" />
+                    )}
                 </Accordion.Content>
             </Accordion.Item>
             <Accordion.Item>
@@ -252,29 +269,54 @@ const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: n
                     <FormattedMessage id="beregning.forklaringer.ytelserBareOppTil6G" />
                 </Accordion.Header>
                 <Accordion.Content>
-                    <FormattedMessage
-                        id="beregning.forklaringer.hvaErDagsatsen.innhold"
-                        values={{
-                            grunnbeløpSeksG: formatCurrencyWithKr(grunnbeløp * 6),
-                        }}
-                    />
+                    {sak.ytelse === 'FORELDREPENGER' ? (
+                        <FormattedMessage
+                            id="beregning.forklaringer.hvaErDagsatsen.innhold.fp"
+                            values={{
+                                grunnbeløpSeksG: formatCurrencyWithKr(grunnbeløp * 6),
+                            }}
+                        />
+                    ) : (
+                        <FormattedMessage
+                            id="beregning.forklaringer.hvaErDagsatsen.innhold.svp"
+                            values={{
+                                grunnbeløpSeksG: formatCurrencyWithKr(grunnbeløp * 6),
+                            }}
+                        />
+                    )}
                     <br />
                     <br />
-                    <FormattedMessage
-                        id="beregning.forklaringer.ytelserBareOppTil6G.dinG"
-                        values={{
-                            link: (chunks) => <Link href="https://www.nav.no/grunnbelopet">{chunks}</Link>,
-                            grunnbeløp: formatCurrencyWithKr(grunnbeløp),
-                        }}
-                    />
+                    {sak.ytelse === 'FORELDREPENGER' ? (
+                        <FormattedMessage
+                            id="beregning.forklaringer.ytelserBareOppTil6G.dinG.fp"
+                            values={{
+                                link: (chunks) => <Link href="https://www.nav.no/grunnbelopet">{chunks}</Link>,
+                                grunnbeløp: formatCurrencyWithKr(grunnbeløp),
+                            }}
+                        />
+                    ) : (
+                        <FormattedMessage
+                            id="beregning.forklaringer.ytelserBareOppTil6G.dinG.svp"
+                            values={{
+                                link: (chunks) => <Link href="https://www.nav.no/grunnbelopet">{chunks}</Link>,
+                                grunnbeløp: formatCurrencyWithKr(grunnbeløp),
+                            }}
+                        />
+                    )}
                     <br />
                     <br />
-                    <FormattedMessage
-                        id="beregning.forklaringer.ytelserBareOppTil6G.innhold"
-                        values={{
-                            link: (chunks) => <Link href="https://www.nav.no/foreldrepenger#hvor-mye">{chunks}</Link>,
-                        }}
-                    />
+                    {sak.ytelse === 'FORELDREPENGER' ? (
+                        <FormattedMessage
+                            id="beregning.forklaringer.ytelserBareOppTil6G.innhold.fp"
+                            values={{
+                                link: (chunks) => (
+                                    <Link href="https://www.nav.no/foreldrepenger#hvor-mye">{chunks}</Link>
+                                ),
+                            }}
+                        />
+                    ) : (
+                        <FormattedMessage id="beregning.forklaringer.ytelserBareOppTil6G.innhold.svp" />
+                    )}
                 </Accordion.Content>
             </Accordion.Item>
             <Accordion.Item>
@@ -282,7 +324,11 @@ const Forklaringer = ({ grunnbeløpPåBeregning }: { grunnbeløpPåBeregning?: n
                     <FormattedMessage id="beregning.datoForVurdering.tittel" />
                 </Accordion.Header>
                 <Accordion.Content>
-                    <FormattedMessage id="beregning.datoForVurdering.innhold" />
+                    {sak.ytelse === 'FORELDREPENGER' ? (
+                        <FormattedMessage id="beregning.datoForVurdering.innhold.fp" />
+                    ) : (
+                        <FormattedMessage id="beregning.datoForVurdering.innhold.svp" />
+                    )}
                 </Accordion.Content>
             </Accordion.Item>
         </Accordion>
