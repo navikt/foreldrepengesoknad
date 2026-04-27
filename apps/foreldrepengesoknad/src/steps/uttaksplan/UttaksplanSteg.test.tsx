@@ -109,7 +109,7 @@ describe('<UttaksplanSteg>', () => {
         }),
     );
 
-    //TODO (TOR) Denne skal slåast på igjen etter ein sluttar å filtrera vekk perioden til annen part fra forslaget til plan
+    // TODO (TOR) Denne skal slåast på igjen etter ein sluttar å filtrera vekk perioden til annen part fra forslaget til plan
     it.todo(
         'skal vise feilmelding når en prøver å gå videre med stjernemerkede perioder',
         mswWrapper(async ({ setHandlers }) => {

@@ -78,7 +78,7 @@ export const PlanleggerDataFetcher = () => {
         queryFn: () => getStønadskontoer(omBarnet, arbeidssituasjon, hvemPlanlegger),
         enabled: hvemHarRett !== undefined && hvemHarRett !== 'ingenHarRett',
         select: (data: KontoBeregningResultatDto): KontoBeregningResultatDto => {
-            //TODO (TOR) Dette bør ligga i backend. Verkar pussig å henta kontoar for far-og-far, og så modifisera det her
+            // TODO (TOR) Dette bør ligga i backend. Verkar pussig å henta kontoar for far-og-far, og så modifisera det her
 
             // Fix for å ikke vise "Foreldrepenger uten aktivitetskrav"
             // Hvis ikke far-og-far, returner uendret

@@ -233,6 +233,6 @@ const UttaksplanListe = ({
 const lagKeyFraPeriode = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) =>
     periode.kontoType + periode.fom + periode.tom;
 
-//TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
+// TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
 const filtrerBortPerioderUtenTrekkdager = (perioder: UttakPeriode_fpoversikt[]) =>
     perioder.filter((periode) => !(periode.resultat?.innvilget === false && periode.resultat.trekkerDager === false));

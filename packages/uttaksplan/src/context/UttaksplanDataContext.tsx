@@ -64,7 +64,7 @@ export const useUttaksplanData = () => {
     return context;
 };
 
-//TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
+// TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
 const filtrerBortPerioderUtenTrekkdager = (
     perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
 ) =>
