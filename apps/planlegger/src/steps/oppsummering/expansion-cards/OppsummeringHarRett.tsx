@@ -98,7 +98,7 @@ export const OppsummeringHarRett = ({
                         </IconCircleWrapper>
                         <ExpansionCard.Title size="small">
                             <FormattedMessage
-                                id="PlanenDeresOppsummering.Tittel"
+                                id="OppsummeringHarRett.Tittel"
                                 values={{ erAlenesøker: erAlenesøker(hvemPlanlegger) }}
                             />
                         </ExpansionCard.Title>

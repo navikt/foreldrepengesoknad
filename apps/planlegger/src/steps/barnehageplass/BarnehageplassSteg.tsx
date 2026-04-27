@@ -52,13 +52,16 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
                 </Heading>
                 <VStack gap="space-20">
                     <BodyLong>
-                        <FormattedMessage id="Barnehageplass.KommuneTekstDeg" values={{ erAlenesøker, antallBarn }} />
+                        <FormattedMessage
+                            id="BarnehageplassSteg.KommuneTekstDeg"
+                            values={{ erAlenesøker, antallBarn }}
+                        />
                     </BodyLong>
                     <Infobox
                         header={
                             erBarnetAdoptert(barnet) ? (
                                 <FormattedMessage
-                                    id="Barnehageplass.DatoTittel"
+                                    id="BarnehageplassSteg.DatoTittel"
                                     values={{
                                         dato: intl.formatDate(sluttdato, {
                                             month: 'long',
@@ -69,7 +72,7 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
                                 />
                             ) : (
                                 <FormattedMessage
-                                    id="Barnehageplass.DatoTittel"
+                                    id="BarnehageplassSteg.DatoTittel"
                                     values={{
                                         dato: intl.formatDate(barnehagestartDato(barnet), {
                                             month: 'long',
@@ -95,7 +98,7 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
                     >
                         <BodyLong>
                             <FormattedMessage
-                                id="Barnehageplass.DatoTekst"
+                                id="BarnehageplassSteg.DatoTekst"
                                 values={{
                                     a: (msg) => (
                                         <Link inlineText href={links.barnehageloven} rel="noreferrer" target="_blank">
@@ -116,7 +119,7 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
                         </BodyLong>
                     </Infobox>
                     <Infobox
-                        header={<FormattedMessage id="Barnehageplass.BarnehageTittel" />}
+                        header={<FormattedMessage id="BarnehageplassSteg.BarnehageTittel" />}
                         icon={
                             <InformationIcon
                                 height={24}
@@ -129,7 +132,7 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
                         color="gray"
                     >
                         <BodyLong>
-                            <FormattedMessage id="Barnehageplass.BarnehageTekst" values={{ erAlenesøker }} />
+                            <FormattedMessage id="BarnehageplassSteg.BarnehageTekst" values={{ erAlenesøker }} />
                         </BodyLong>
                     </Infobox>
                 </VStack>

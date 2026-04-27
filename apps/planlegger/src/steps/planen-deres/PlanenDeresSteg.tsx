@@ -191,12 +191,12 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                             <Tabs.List>
                                 <Tabs.Tab
                                     value="kalender"
-                                    label={<FormattedMessage id="PlanvisningToggle.kalender" />}
+                                    label={<FormattedMessage id="PlanenDeresSteg.kalender" />}
                                     icon={<CalendarIcon aria-hidden />}
                                 />
                                 <Tabs.Tab
                                     value="liste"
-                                    label={<FormattedMessage id="PlanvisningToggle.liste" />}
+                                    label={<FormattedMessage id="PlanenDeresSteg.liste" />}
                                     icon={<BulletListIcon aria-hidden />}
                                 />
                             </Tabs.List>
