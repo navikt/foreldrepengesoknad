@@ -188,7 +188,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
                 </Select>
                 {type !== DEFAULT_OPTION && (
                     <FileUploader
-                        label={intl.formatMessage({ id: 'EttersendingPageInner.dokumenter' })}
+                        label={intl.formatMessage({ id: 'EttersendingPage.dokumenter' })}
                         updateAttachments={updateAttachments}
                         attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                         skjemanummer={type}

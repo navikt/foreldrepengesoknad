@@ -18,40 +18,40 @@ export const KontaktOss = () => {
                         <Link href={NavRoutes.CHAT_MED_OSS}>
                             <Chat2Icon aria-hidden={true} />
                             <BodyShort weight="semibold">
-                                <FormattedMessage id="kontaktOss.chatMedOss" />
+                                <FormattedMessage id="KontaktOss.chatMedOss" />
                             </BodyShort>
                         </Link>
                         <BodyShort size="medium">
-                            <FormattedMessage id="kontaktOss.informasjonOmChat" />
+                            <FormattedMessage id="KontaktOss.informasjonOmChat" />
                         </BodyShort>
                     </VStack>
                     <VStack gap="space-16">
                         <Link href={NavRoutes.SKRIV_TIL_OSS}>
                             <PaperplaneIcon aria-hidden={true} />
                             <BodyShort weight="semibold">
-                                <FormattedMessage id="kontaktOss.skrivTilOss" />
+                                <FormattedMessage id="KontaktOss.skrivTilOss" />
                             </BodyShort>
                         </Link>
                         <BodyShort size="medium">
-                            <FormattedMessage id="kontaktOss.skrivTilOss.del1" />
+                            <FormattedMessage id="KontaktOss.skrivTilOss.del1" />
                         </BodyShort>
                         <BodyShort size="medium">
-                            <FormattedMessage id="kontaktOss.skrivTilOss.del2" />
+                            <FormattedMessage id="KontaktOss.skrivTilOss.del2" />
                         </BodyShort>
                     </VStack>
                     <VStack gap="space-16">
                         <Link href={NavRoutes.RING_OSS}>
                             <PhoneIcon aria-hidden={true} />
                             <BodyShort weight="semibold">
-                                <FormattedMessage id="kontaktOss.ringOss" />
+                                <FormattedMessage id="KontaktOss.ringOss" />
                             </BodyShort>
                         </Link>
                         <BodyShort size="medium">
-                            <FormattedMessage id="kontaktOss.ringOss.åpningstider" />
+                            <FormattedMessage id="KontaktOss.ringOss.åpningstider" />
                         </BodyShort>
                         <Link href={NavRoutes.SE_FLERE_TLF_NR_OG_TASTEVALG}>
                             <BodyShort size="medium">
-                                <FormattedMessage id="kontaktOss.ringOss.flereTelefonnummere" />
+                                <FormattedMessage id="KontaktOss.ringOss.flereTelefonnummere" />
                             </BodyShort>
                         </Link>
                     </VStack>
