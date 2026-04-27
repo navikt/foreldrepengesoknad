@@ -8,14 +8,14 @@ import { ContextDataMap, ContextDataType, useContextGetAnyData } from './EsDataC
 import { PATH_ORDER, Path, REQUIRED_APP_STEPS } from './paths';
 
 const getPathToLabelMap = (intl: IntlShape) => ({
-    [Path.SØKERSITUASJON]: intl.formatMessage({ id: 'UseStepConfig.Søkersituasjon' }),
-    [Path.OM_BARNET]: intl.formatMessage({ id: 'UseStepConfig.OmBarnet' }),
-    [Path.TERMINBEKREFTELSE]: intl.formatMessage({ id: 'UseStepConfig.Termin' }),
-    [Path.ADOPSJONSBEKREFTELSE]: intl.formatMessage({ id: 'UseStepConfig.Adopsjon' }),
-    [Path.UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'UseStepConfig.Utenlandsopphold' }),
-    [Path.TIDLIGERE_UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'UseStepConfig.TidligereUtenlandsopphold' }),
-    [Path.SENERE_UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'UseStepConfig.FremtidigUtenlandsopphold' }),
-    [Path.OPPSUMMERING]: intl.formatMessage({ id: 'UseStepConfig.Oppsummering' }),
+    [Path.SØKERSITUASJON]: intl.formatMessage({ id: 'useStepConfig.Søkersituasjon' }),
+    [Path.OM_BARNET]: intl.formatMessage({ id: 'useStepConfig.OmBarnet' }),
+    [Path.TERMINBEKREFTELSE]: intl.formatMessage({ id: 'useStepConfig.Termin' }),
+    [Path.ADOPSJONSBEKREFTELSE]: intl.formatMessage({ id: 'useStepConfig.Adopsjon' }),
+    [Path.UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'useStepConfig.Utenlandsopphold' }),
+    [Path.TIDLIGERE_UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'useStepConfig.TidligereUtenlandsopphold' }),
+    [Path.SENERE_UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'useStepConfig.FremtidigUtenlandsopphold' }),
+    [Path.OPPSUMMERING]: intl.formatMessage({ id: 'useStepConfig.Oppsummering' }),
     [Path.VELKOMMEN]: '',
     [Path.KVITTERING]: '',
 });
