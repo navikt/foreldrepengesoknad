@@ -11,7 +11,7 @@ import { SVGProps } from 'react';
 
 import UttakIkon from './UttakIkon';
 
-export interface UttaksplanIkonProps extends SVGProps<any> {
+export interface UttaksplanIkonProps extends SVGProps<SVGSVGElement> {
     title: string;
 }
 

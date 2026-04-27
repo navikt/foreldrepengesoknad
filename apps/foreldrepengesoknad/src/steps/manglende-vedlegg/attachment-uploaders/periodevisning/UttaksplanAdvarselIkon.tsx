@@ -5,7 +5,7 @@ interface OwnProps {
     title?: string;
 }
 
-type Props = OwnProps & SVGProps<any>;
+type Props = OwnProps & SVGProps<SVGSVGElement>;
 
 const UttaksplanAdvarselIkon = (props: Props) => {
     const farge = props.type === 'feil' ? '#ba3a26' : '#ff9100';

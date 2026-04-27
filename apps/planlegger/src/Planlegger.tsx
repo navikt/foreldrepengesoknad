@@ -125,10 +125,9 @@ export const PlanleggerDataInit = () => {
         const isSupportedLocale = intl.locale === 'nb' || intl.locale === 'nn';
 
         if (locations.pathname.includes('oppsummering') && isSupportedLocale) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            if (typeof (globalThis as any).skyra?.reload === 'function') {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-                (globalThis as any).skyra.reload();
+            const skyraGlobal = globalThis as typeof globalThis & { skyra?: { reload: () => void } };
+            if (typeof skyraGlobal.skyra?.reload === 'function') {
+                skyraGlobal.skyra.reload();
                 // eslint-disable-next-line no-console
                 console.log(`skyra.reload() kjørt på ${locations.pathname}`);
             } else {

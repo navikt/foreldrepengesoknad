@@ -6,6 +6,11 @@ import { BarnType } from '@navikt/fp-constants';
 import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
 import { UttaksplanListe } from './UttaksplanListe';
 
+const MINSTERETTER = {
+    farRundtFødsel: 10,
+    toTette: 0,
+};
+
 const meta = {
     title: 'UttaksplanListe - Innsyn',
     component: UttaksplanListe,
@@ -85,8 +90,13 @@ export const MorAleneOmOmsorg: Story = {
                 forelder: 'MOR',
             },
         ],
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        valgtStønadskonto: {} as any,
+        valgtStønadskonto: {
+            kontoer: [
+                { konto: 'FORELDREPENGER', dager: 200 },
+                { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+            ],
+            minsteretter: MINSTERETTER,
+        },
         erPeriodeneTilAnnenPartLåst: false,
         erEndringssøknad: true,
     },
@@ -140,9 +150,16 @@ export const PrematurUker: Story = {
                 forelder: 'MOR',
             },
         ],
+        valgtStønadskonto: {
+            kontoer: [
+                { konto: 'MØDREKVOTE', dager: 95 },
+                { konto: 'FEDREKVOTE', dager: 95 },
+                { konto: 'FELLESPERIODE', dager: 101 },
+                { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+            ],
+            minsteretter: MINSTERETTER,
+        },
         erEndringssøknad: true,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        valgtStønadskonto: {} as any,
         erPeriodeneTilAnnenPartLåst: false,
     },
 };
