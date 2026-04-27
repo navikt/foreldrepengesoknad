@@ -32,7 +32,7 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
     const { oppdaterUttaksplan: oppdater, harEndretPlan, children } = props;
     const [visFjernAltModal, setVisFjernAltModal] = useState(false);
 
-    const { uttakPerioder } = useUttaksplanData();
+    const { uttakPerioder, erEndringssøknad } = useUttaksplanData();
 
     const harLoggetInitielleOverlapp = useRef(false);
     useEffect(() => {
@@ -49,6 +49,7 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
         withScope((scope) => {
             scope.setLevel('warning');
             scope.setTag('feiltype', 'uttaksplan-initielle-overlapp');
+            scope.setExtra('erEndringssøknad', erEndringssøknad);
             scope.setExtra('antallUgyldigeOverlapp', ugyldigeOverlapp.length);
             scope.setExtra(
                 'ugyldigeOverlappPar',

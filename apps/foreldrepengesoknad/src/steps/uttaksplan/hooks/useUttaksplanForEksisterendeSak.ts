@@ -10,6 +10,8 @@ import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@
 import { Uttaksdagen } from '@navikt/fp-utils/src/uttak/Uttaksdagen';
 import { sorterUttakPerioder } from '@navikt/fp-uttaksplan';
 
+import { useLoggOverlappIVedtak } from './useLoggOverlappIVedtak';
+
 dayjs.extend(isSameOrBefore);
 dayjs.extend(minMax);
 
@@ -20,19 +22,20 @@ export const useUttaksplanForEksisterendeSak = (
 
     const sakerQuery = useQuery({ ...sakerOptions(), enabled: !!valgtEksisterendeSaksnr });
 
-    if (!sakerQuery?.data || !valgtEksisterendeSaksnr) {
+    const valgtSak = sakerQuery.data?.foreldrepenger.find((sak) => sak.saksnummer === valgtEksisterendeSaksnr);
+    const perioderFraBackend = valgtSak?.gjeldendeVedtak?.perioder;
+    const justeringSøkerPerioder =
+        perioderFraBackend && perioderAnnenPart
+            ? midlertidigJusteringAvSamtidigUttak(perioderFraBackend, perioderAnnenPart)
+            : undefined;
+
+    useLoggOverlappIVedtak(perioderFraBackend, perioderAnnenPart, justeringSøkerPerioder);
+
+    if (!sakerQuery?.data || !valgtEksisterendeSaksnr || !valgtSak?.gjeldendeVedtak) {
         return undefined;
     }
 
-    const valgtSak = sakerQuery.data.foreldrepenger.find((sak) => sak.saksnummer === valgtEksisterendeSaksnr);
-
-    if (!valgtSak?.gjeldendeVedtak) {
-        return undefined;
-    }
-
-    const søkerPerioder = perioderAnnenPart
-        ? midlertidigJusteringAvSamtidigUttak(valgtSak.gjeldendeVedtak.perioder, perioderAnnenPart)
-        : valgtSak.gjeldendeVedtak.perioder;
+    const søkerPerioder = justeringSøkerPerioder ?? valgtSak.gjeldendeVedtak.perioder;
 
     const uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> =
         fjernFrieUtsettelser(søkerPerioder);
