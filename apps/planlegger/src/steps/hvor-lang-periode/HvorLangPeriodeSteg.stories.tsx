@@ -16,9 +16,11 @@ import {
     DELT_UTTAK_100_TO_BARN,
     IKKE_DELT_UTTAK_80_FARMEDMOR,
     IKKE_DELT_UTTAK_80_FAR_OG_FAR,
+    IKKE_DELT_UTTAK_80_FAR_OG_FAR_FØDSEL,
     IKKE_DELT_UTTAK_80_MOR,
     IKKE_DELT_UTTAK_100_FARMEDMOR,
     IKKE_DELT_UTTAK_100_FAR_OG_FAR,
+    IKKE_DELT_UTTAK_100_FAR_OG_FAR_FØDSEL,
     IKKE_DELT_UTTAK_100_MOR,
 } from '@navikt/fp-utils-test';
 
@@ -320,20 +322,14 @@ export const FarOgFarBeggeHarRett: Story = {
         },
         stønadskontoer: {
             '100': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 125 },
-                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 75 },
-                ],
+                kontoer: IKKE_DELT_UTTAK_100_FAR_OG_FAR_FØDSEL,
                 minsteretter: {
                     farRundtFødsel: 0,
                     toTette: 0,
                 },
             } satisfies KontoBeregningDto,
             '80': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 166 },
-                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 95 },
-                ],
+                kontoer: IKKE_DELT_UTTAK_80_FAR_OG_FAR_FØDSEL,
                 minsteretter: {
                     farRundtFødsel: 0,
                     toTette: 0,
