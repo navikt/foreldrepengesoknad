@@ -58,7 +58,7 @@ export const HvemPlanleggerSteg = () => {
                 <VStack gap="space-40" style={{ flex: 1 }}>
                     <VStack gap="space-32">
                         <BodyShort>
-                            <FormattedMessage id="HarValgfrieFelt" />
+                            <FormattedMessage id="HvemPlanleggerSteg.HarValgfrieFelt" />
                         </BodyShort>
                         <BlueRadioGroup
                             name="type"

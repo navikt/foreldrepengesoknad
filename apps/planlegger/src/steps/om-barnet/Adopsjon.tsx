@@ -50,9 +50,7 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBa
                         minDate={dayjs().subtract(6, 'month')}
                         showMonthAndYearDropdowns
                         validate={[
-                            isRequired(
-                                intl.formatMessage({ id: 'Overtakelsesdato.Required' }, { erAlenesøker, flereBarn }),
-                            ),
+                            isRequired(intl.formatMessage({ id: 'Adopsjon.Required' }, { erAlenesøker, flereBarn })),
                             isValidDate(intl.formatMessage({ id: 'ValidationMessage.ValidDate' })),
                             isAfterOrSameAsSixMonthsAgo(
                                 intl.formatMessage({

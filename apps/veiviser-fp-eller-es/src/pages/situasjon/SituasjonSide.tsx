@@ -255,10 +255,10 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                             label={<FormattedMessage id="SituasjonSide.LønnFørSkatt" />}
                                             validate={[
                                                 isValidNumberForm(
-                                                    intl.formatMessage({ id: 'valideringsfeil.lønn.ikkeTall' }),
+                                                    intl.formatMessage({ id: 'SituasjonSide.lønn.ikkeTall' }),
                                                 ),
                                                 isValidDecimal(
-                                                    intl.formatMessage({ id: 'valideringsfeil.lønn.desimaler' }),
+                                                    intl.formatMessage({ id: 'SituasjonSide.lønn.desimaler' }),
                                                 ),
                                             ]}
                                         />
@@ -376,7 +376,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                             type="submit"
                             style={{ flex: 1 }}
                         >
-                            <FormattedMessage id="ArbeidssituasjonSide.SeResultatet" />
+                            <FormattedMessage id="SituasjonSide.SeResultatet" />
                         </Button>
                     )}
                 </VStack>
