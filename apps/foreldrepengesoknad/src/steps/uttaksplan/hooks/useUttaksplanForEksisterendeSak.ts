@@ -4,8 +4,10 @@ import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import minMax from 'dayjs/plugin/minMax';
+import { useEffect, useRef } from 'react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { captureMessage, withScope } from '@navikt/fp-observability';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils/src/uttak/Uttaksdagen';
 import { sorterUttakPerioder } from '@navikt/fp-uttaksplan';
@@ -19,6 +21,41 @@ export const useUttaksplanForEksisterendeSak = (
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
     const sakerQuery = useQuery({ ...sakerOptions(), enabled: !!valgtEksisterendeSaksnr });
+
+    const harLoggetOverlapp = useRef(false);
+    useEffect(() => {
+        if (harLoggetOverlapp.current || !sakerQuery.data || !valgtEksisterendeSaksnr) {
+            return;
+        }
+        harLoggetOverlapp.current = true;
+
+        const valgtSak = sakerQuery.data.foreldrepenger.find((sak) => sak.saksnummer === valgtEksisterendeSaksnr);
+        const perioderFraBackend = valgtSak?.gjeldendeVedtak?.perioder;
+
+        if (!perioderFraBackend) {
+            return;
+        }
+
+        const ugyldigeOverlapp = finnUgyldigeOverlapp(perioderFraBackend);
+        if (ugyldigeOverlapp.length === 0) {
+            return;
+        }
+
+        withScope((scope) => {
+            scope.setLevel('warning');
+            scope.setTag('feiltype', 'uttaksplan-backend-overlapp');
+            scope.setExtra('antallUgyldigeOverlapp', ugyldigeOverlapp.length);
+            scope.setExtra(
+                'ugyldigeOverlappPar',
+                ugyldigeOverlapp.slice(0, 20).map(([a, b]) => ({
+                    a: periodeTilLoggObjekt(a),
+                    b: periodeTilLoggObjekt(b),
+                })),
+            );
+            scope.setExtra('perioderFraBackend', perioderFraBackend.map(periodeTilLoggObjekt));
+            captureMessage('Eksisterande vedtak har ugyldig overlappande periodar', 'warning');
+        });
+    }, [sakerQuery.data, valgtEksisterendeSaksnr]);
 
     if (!sakerQuery?.data || !valgtEksisterendeSaksnr) {
         return undefined;
@@ -125,3 +162,41 @@ const midlertidigJusteringAvSamtidigUttak = (
 
 const harOverlapp = (a: UttakPeriode_fpoversikt, b: UttakPeriode_fpoversikt) =>
     dayjs(a.fom).isSameOrBefore(b.tom, 'day') && dayjs(b.fom).isSameOrBefore(a.tom, 'day');
+
+const finnUgyldigeOverlapp = (
+    perioder: UttakPeriode_fpoversikt[],
+): Array<[UttakPeriode_fpoversikt, UttakPeriode_fpoversikt]> => {
+    const ugyldigeOverlapp: Array<[UttakPeriode_fpoversikt, UttakPeriode_fpoversikt]> = [];
+    for (let i = 0; i < perioder.length; i++) {
+        for (let j = i + 1; j < perioder.length; j++) {
+            const a = perioder[i]!;
+            const b = perioder[j]!;
+            if (
+                harOverlapp(a, b) &&
+                !(
+                    a.utsettelseÅrsak === undefined &&
+                    b.utsettelseÅrsak === undefined &&
+                    a.oppholdÅrsak === undefined &&
+                    b.oppholdÅrsak === undefined &&
+                    a.samtidigUttak !== undefined &&
+                    b.samtidigUttak !== undefined &&
+                    a.forelder !== b.forelder
+                )
+            ) {
+                ugyldigeOverlapp.push([a, b]);
+            }
+        }
+    }
+    return ugyldigeOverlapp;
+};
+
+const periodeTilLoggObjekt = (p: UttakPeriode_fpoversikt) => ({
+    fom: p.fom,
+    tom: p.tom,
+    forelder: p.forelder,
+    kontoType: p.kontoType,
+    utsettelseÅrsak: p.utsettelseÅrsak,
+    oppholdÅrsak: p.oppholdÅrsak,
+    overføringÅrsak: p.overføringÅrsak,
+    samtidigUttak: p.samtidigUttak,
+});
