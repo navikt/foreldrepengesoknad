@@ -9,7 +9,7 @@ const mockIntl: IntlShape = {
     formatMessage: vi.fn(({ id }) => {
         return messages[id as keyof typeof messages] || id;
     }),
-} as any;
+} as unknown as IntlShape;
 
 describe('getNavnPåForeldre', () => {
     it('skal returnere riktige navn for FAR type', () => {

@@ -1,4 +1,4 @@
-import { ContextDataType } from 'appData/FpDataContext';
+import { ContextDataMap, ContextDataType } from 'appData/FpDataContext';
 import { AnnenForelder } from 'types/AnnenForelder';
 import { getEndringstidspunktNy } from 'utils/dateUtils';
 
@@ -93,7 +93,7 @@ const getStateMock = (
     uttaksplanInput: UttakPeriode_fpoversikt[],
     saksnummer = 'SAK-001',
 ) => {
-    return (type: ContextDataType): any => {
+    return <TYPE extends ContextDataType>(type: TYPE): ContextDataMap[TYPE] => {
         if (type === ContextDataType.ANNEN_FORELDER) {
             return annenForelderInput;
         }
