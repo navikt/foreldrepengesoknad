@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
-import { SkjemaelementFeil } from 'types/SkjemaelementFeil';
 
 import { getIllegalChars, textRegex } from '@navikt/fp-validation';
 
@@ -15,7 +14,7 @@ export const attenUkerTreDager = dayjs().add(18, 'week').add(3, 'day').startOf('
 
 export const validateFødselsnummer =
     (intl: IntlShape, søkersFødselsnummer: string, label: string, erUtenlandskFnr?: boolean) =>
-    (fnr: string): string | undefined => {
+    (fnr: string): string | null => {
         if (erUtenlandskFnr) {
             if (fnr === undefined || fnr.trim() === '') {
                 return intl.formatMessage({ id: 'valideringsfeil.fødselsnummer.required' });
@@ -39,7 +38,7 @@ export const validateFødselsnummer =
         }
 
         return validFnrResult === 'fnr' || validFnrResult === 'dnr' || validFnrResult === 'hnr'
-            ? undefined
+            ? null
             : intl.formatMessage({ id: 'valideringsfeil.fødselsnummer.ugyldigFødselsnummer' });
     };
 
@@ -59,7 +58,7 @@ export const erIUke22Pluss3 = (dato: string) => {
     return dayjs.max(dayjs().startOf('day'), uke22Pluss3.startOf('day')).isSame(dayjs().startOf('day'));
 };
 
-export const validateTextInputField = (value: string, feltNavn: string, intl: IntlShape): SkjemaelementFeil => {
+export const validateTextInputField = (value: string, feltNavn: string, intl: IntlShape): string | null => {
     if (!textRegex.test(value)) {
         const ugyldigeTegn = getIllegalChars(value).replaceAll('\t', 'Tabulatortegn');
         return intl.formatMessage(
@@ -67,5 +66,5 @@ export const validateTextInputField = (value: string, feltNavn: string, intl: In
             { feltNavn, ugyldigeTegn },
         );
     }
-    return undefined;
+    return null;
 };

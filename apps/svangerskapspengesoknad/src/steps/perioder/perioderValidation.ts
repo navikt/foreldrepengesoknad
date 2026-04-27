@@ -13,7 +13,7 @@ const validerStillingsprosentInput = (intl: IntlShape, value: string) => {
     const stillingsprosent = getFloatFromString(value);
     return stillingsprosent === undefined
         ? intl.formatMessage({ id: 'valideringsfeil.stillingsprosent.måVæreEtTall' })
-        : undefined;
+        : null;
 };
 
 export const validateStillingsprosentPåPerioder =
@@ -85,7 +85,7 @@ export const validateStillingsprosentPåPerioder =
                 },
             );
         }
-        return undefined;
+        return null;
     };
 
 export const validatePeriodeFom =
@@ -147,7 +147,7 @@ export const validatePeriodeTom =
             );
         }
 
-        return undefined;
+        return null;
     };
 
 const validateAtPeriodeIkkeOverlapper = (
@@ -191,7 +191,7 @@ const validateAtPeriodeIkkeOverlapper = (
             }
         }
     }
-    return undefined;
+    return null;
 };
 
 const validateSammenhengendePerioderFom = (
@@ -203,7 +203,7 @@ const validateSammenhengendePerioderFom = (
     const alleFom = allePerioder.filter((p) => p.fom).map((periode) => dayjs(periode.fom));
     const minstAvAlleFom = alleFom.length > 0 ? dayjs.min(alleFom) : undefined;
     if (minstAvAlleFom && dayjs(fom).isSameOrBefore(minstAvAlleFom, 'day')) {
-        return undefined;
+        return null;
     }
     const alleTom = allePerioder
         .filter((p) => p.tom || p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP)
@@ -216,5 +216,5 @@ const validateSammenhengendePerioderFom = (
     if (!tomSomErDagenFørFom) {
         return intl.formatMessage({ id: 'valideringsfeil.periode.ikkeSammenhengende' });
     }
-    return undefined;
+    return null;
 };

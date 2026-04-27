@@ -19,7 +19,7 @@ const validerStillingsprosentInput = (intl: IntlShape, value: string) => {
         return intl.formatMessage({ id: 'valideringsfeil.stillingsprosent.måVæreEtTall' });
     }
 
-    return undefined;
+    return null;
 };
 
 export const validateStillingsprosentEnDelvisPeriode =
@@ -50,7 +50,7 @@ export const validateStillingsprosentEnDelvisPeriode =
                 },
             );
         }
-        return undefined;
+        return null;
     };
 export const validateTilretteleggingstiltak = (intl: IntlShape) => (value: string) => {
     if (!hasValue(value) || value.trim() === '') {
@@ -133,7 +133,7 @@ export const validateSammePeriodeFremTilTerminFom =
                       },
                   );
         }
-        return undefined;
+        return null;
     };
 
 export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
@@ -199,7 +199,7 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
                 },
             );
         }
-        return undefined;
+        return null;
     };
 
 export const validateBehovForTilretteleggingFom =
@@ -213,7 +213,7 @@ export const validateBehovForTilretteleggingFom =
         kanHaSvpFremTilTreUkerFørTermin: boolean,
         erFrilansTilrettelegging: boolean,
     ) =>
-    (fom: string): string | undefined => {
+    (fom: string): string | null => {
         if (dayjs(fom).isBefore(tiMånederSidenDato(termindato), 'd')) {
             return intl.formatMessage({ id: 'valideringsfeil.tilrettelagtArbeidFom.tiMndSidenTermin' });
         }
@@ -245,12 +245,12 @@ export const validateBehovForTilretteleggingFom =
                 },
             );
         }
-        return undefined;
+        return null;
     };
 
 export const validerTilretteleggingTomType =
     (intl: IntlShape, tilretteleggingType: Tilretteleggingstype, kanHaSVPFremTilTreUkerFørTermin: boolean) =>
-    (value: TilOgMedDatoType | undefined): string | undefined => {
+    (value: TilOgMedDatoType | undefined): string | null => {
         const erDelvis = tilretteleggingType === 'delvis';
         if (!hasValue(value)) {
             if (erDelvis) {
@@ -264,7 +264,7 @@ export const validerTilretteleggingTomType =
             }
         }
 
-        return undefined;
+        return null;
     };
 
 const finnFeilmeldingForPåkrevd = (intl: IntlShape, type: Arbeidsforholdstype) => {

@@ -15,6 +15,7 @@ import {
     erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../../../types/UttaksplanPeriode';
+import { UttakPeriodeBuilder } from '../../../utils/UttakPeriodeBuilder';
 import {
     erDetEksisterendePerioderEtterValgtePerioder,
     erOppholdsperiode,
@@ -23,7 +24,6 @@ import {
     erUtsettelsesperiode,
     erUttaksperiode,
 } from '../../../utils/periodeUtils';
-import { UttakPeriodeBuilder } from '../../../utils/UttakPeriodeBuilder';
 import { genererPeriodeKey } from '../../utils/uttaksplanListeUtils';
 import {
     erUttaksplanperiodeEøs,
@@ -79,7 +79,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
         );
 
         if (!erEksisterendePerioderEtterValgteDager && uttaksplanperioder.length === 1) {
-            const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder)
+            const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder, 'liste')
                 .fjernUttakPerioder(uttaksplanperioder, false)
                 .getUttakPerioder();
             uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
@@ -263,13 +263,7 @@ const EndreOgSlettKnapper = ({
             >
                 <FormattedMessage id="uttaksplan.endre" />
             </Button>
-            <Button
-                type="button"
-                size="small"
-                variant="secondary"
-                icon={<TrashIcon />}
-                onClick={onSlettPeriodeClick}
-            >
+            <Button type="button" size="small" variant="secondary" icon={<TrashIcon />} onClick={onSlettPeriodeClick}>
                 <FormattedMessage id="uttaksplan.slett" />
             </Button>
         </HStack>

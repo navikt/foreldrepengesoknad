@@ -28,7 +28,7 @@ describe('validationUtil', () => {
 
         const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer')(andrePartFnr);
 
-        expect(resultat).toBeUndefined();
+        expect(resultat).toBeNull();
     });
 
     it('skal gi feilmelding når søker oppgir sitt eget fnr som andre parts fnr', () => {
@@ -75,7 +75,7 @@ describe('validationUtil', () => {
 
         const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer', erUtenlandskFnr)(andrePartFnr);
 
-        expect(resultat).toBeUndefined();
+        expect(resultat).toBeNull();
     });
     it('skal ikke gi feilmelding når frn er utenlandsk og fnr inneholder ulovlige tegn', () => {
         const søkerFnr = '05510552883';

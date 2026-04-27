@@ -553,5 +553,8 @@
     "uttaksplan.overføringsårsaktype.ALENEOMSORG": "Eg har blitt aleine om omsorga",
     "uttaksplan.overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER": "{navnAnnenForelder} har ikkje rett til foreldrepengar",
     "uttaksplan.overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER": "{navnAnnenForelder} er innlagt på helseinstitusjon",
-    "uttaksplan.overføringsårsaktype.SYKDOM_ANNEN_FORELDER": "{navnAnnenForelder} er for syk til å ta seg av barnet"
+    "uttaksplan.overføringsårsaktype.SYKDOM_ANNEN_FORELDER": "{navnAnnenForelder} er for syk til å ta seg av barnet",
+    "useSendSøknad.FeilVedInnsending.MedCallId": "Det har oppstått eit problem med innsending av søknaden. Ver venleg og prøv igjen seinare. Viss problemet vedvarar, kontakt oss og oppgje feil-id: {callId}",
+    "useSendSøknad.FeilVedInnsending.UtenCallId": "Det har oppstått eit problem med innsending av søknaden. Ver venleg og prøv igjen seinare. Viss problemet vedvarar, ta kontakt med oss.",
+    "Foreldrepengesøknad.FeilVedHentingAvInformasjon": "Vi klarte ikkje å hente informasjonen din. Prøv igjen om nokre minutter og viss problemet vedvarar, kontakt brukarstøtte."
 }

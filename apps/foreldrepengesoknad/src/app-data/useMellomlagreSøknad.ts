@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { VERSJON_MELLOMLAGRING } from 'utils/mellomlagringUtils';
 
-import { captureMessage } from '@navikt/fp-observability';
+import { ApiError, captureApiError, captureMessage } from '@navikt/fp-observability';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, FpSoknadProblemDetails } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -17,10 +17,6 @@ export type FpMellomlagretData = {
     erEndringssøknad: boolean;
     søknadGjelderEtNyttBarn?: boolean;
 } & ContextDataMap;
-
-const UKJENT_UUID = 'ukjent uuid';
-const FEIL_VED_INNSENDING =
-    'Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
 export const useMellomlagreSøknad = (
     foreldrepengerSaker: FpSak_fpoversikt[],
@@ -67,9 +63,7 @@ export const useMellomlagreSøknad = (
                         }
 
                         const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                        const callId = jsonResponse?.callId ?? UKJENT_UUID;
-                        captureMessage(FEIL_VED_INNSENDING + callId);
-                        throw new Error(FEIL_VED_INNSENDING + callId.substring(0, 6), { cause: error });
+                        throw new ApiError('', 'Feil ved mellomlagring av foreldrepengesøknad', jsonResponse);
                     }
                     if (error instanceof Error) {
                         throw error;
@@ -84,8 +78,11 @@ export const useMellomlagreSøknad = (
 
             lagre().catch((error) => {
                 //Logg feil, men ikkje vis feilmelding til brukar
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
-                captureMessage(error.message);
+                if (error instanceof ApiError) {
+                    captureApiError(error.sentryMessage, error.problemDetails);
+                } else if (error instanceof Error) {
+                    captureMessage(error.message);
+                }
 
                 if (promiseRef.current) {
                     promiseRef.current();

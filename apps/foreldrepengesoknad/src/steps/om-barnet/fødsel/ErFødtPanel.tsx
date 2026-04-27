@@ -36,7 +36,7 @@ export const ErFødtPanel = () => {
                     isValidDate(intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.ugyldigDatoFormat' })),
                     (termindato) => {
                         if (!fødselsdato) {
-                            return undefined;
+                            return null;
                         }
                         if (!dayjs(termindato).subtract(6, 'months').isSameOrBefore(dayjs(fødselsdato), 'day')) {
                             return intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.forLangtFremITid' });
@@ -46,7 +46,7 @@ export const ErFødtPanel = () => {
                                 id: 'valideringsfeil.omBarnet.termindato.forLangtTilbakeITid',
                             });
                         }
-                        return undefined;
+                        return null;
                     },
                 ]}
             />
@@ -71,7 +71,7 @@ export const ErFødtPanel = () => {
                                 ? intl.formatMessage({
                                       id: 'valideringsfeil.omBarnet.fødselsdato.ikkeMerEnn3År3MndTilbake',
                                   })
-                                : undefined,
+                                : null,
                     ]}
                 />
             )}

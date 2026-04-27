@@ -2,7 +2,7 @@ import { IntlShape } from 'react-intl';
 
 import { getIllegalChars, textRegex } from '@navikt/fp-validation';
 
-type SkjemaelementFeil = string | undefined;
+type SkjemaelementFeil = string | null;
 
 const validateTextInputField = (value: string, feltNavn: string, intl: IntlShape): SkjemaelementFeil => {
     if (!textRegex.test(value)) {
@@ -12,7 +12,7 @@ const validateTextInputField = (value: string, feltNavn: string, intl: IntlShape
             { feltNavn, ugyldigeTegn },
         );
     }
-    return undefined;
+    return null;
 };
 
 export const validateFritekstFelt = (intl: IntlShape, label: string, inputText?: string) => {

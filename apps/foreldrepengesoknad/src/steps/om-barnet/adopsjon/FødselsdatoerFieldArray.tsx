@@ -10,10 +10,10 @@ import { isBeforeOrSame, isBeforeTodayOrToday, isDateBeforeToday as isBeforeToda
 
 const erBarnetUnder15årPåAdopsjonsdato = (i18nText: string, adopsjonsdato?: string) => (fødselsdato: string) => {
     if (!adopsjonsdato) {
-        return undefined;
+        return null;
     }
     const datoBarnetFyllerFemten = dayjs(fødselsdato).startOf('day').add(15, 'year');
-    return dayjs(adopsjonsdato).isBetween(fødselsdato, datoBarnetFyllerFemten, null, '[]') ? undefined : i18nText;
+    return dayjs(adopsjonsdato).isBetween(fødselsdato, datoBarnetFyllerFemten, null, '[]') ? null : i18nText;
 };
 
 const finnAntallBarnTekst = (antall: number) => {

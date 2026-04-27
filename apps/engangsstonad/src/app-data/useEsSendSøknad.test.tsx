@@ -7,7 +7,12 @@ import { MemoryRouter } from 'react-router-dom';
 import { Dokumentasjon } from 'types/Dokumentasjon';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { BarnDto, EngangsstønadDto, EsPersonopplysningerDto_fpoversikt, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import {
+    BarnDto,
+    EngangsstønadDto,
+    EsPersonopplysningerDto_fpoversikt,
+    UtenlandsoppholdPeriode,
+} from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/messages/nb_NO.json';

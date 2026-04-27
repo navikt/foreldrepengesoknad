@@ -1,6 +1,7 @@
 import dayjs, { Dayjs } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
+import { captureMessage, withScope } from '@navikt/fp-observability';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
@@ -10,14 +11,27 @@ dayjs.extend(utc);
 
 type AlleUttakPerioder = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
 
+type Builderkilde = 'liste' | 'kalender' | 'validator' | 'ukjent';
+
 export class UttakPeriodeBuilder {
     private alleUttakPerioder: AlleUttakPerioder[];
+    private readonly opprinneligPerioder: AlleUttakPerioder[];
+    private readonly kilde: Builderkilde;
+    private readonly operasjonsLogg: Array<{
+        operasjon: string;
+        nyePerioder?: AlleUttakPerioder[];
+        perioderSomSkalFjernes?: Array<{ fom: string; tom: string }>;
+        forskyvPerioder: boolean;
+    }> = [];
 
-    constructor(alleUttakPerioder: AlleUttakPerioder[]) {
+    constructor(alleUttakPerioder: AlleUttakPerioder[], kilde: Builderkilde = 'ukjent') {
         this.alleUttakPerioder = [...alleUttakPerioder].sort(sorterUttakPerioder);
+        this.opprinneligPerioder = [...this.alleUttakPerioder];
+        this.kilde = kilde;
     }
 
     leggTilUttakPerioder(nyeUttakPerioder: AlleUttakPerioder[], forskyvPerioder: boolean): this {
+        this.operasjonsLogg.push({ operasjon: 'leggTilUttakPerioder', nyePerioder: nyeUttakPerioder, forskyvPerioder });
         // Grupper for å håndtera at ein legg til to periodar når ein har samtidig uttak.
         // Bruk ein av dei nye periodane for å justera andre periodar, og legg så til den andre på slutten
         const grupperPerFomTom = new Map<string, AlleUttakPerioder[]>();
@@ -56,6 +70,7 @@ export class UttakPeriodeBuilder {
     }
 
     fjernUttakPerioder(perioderSomSkalFjernes: Array<{ fom: string; tom: string }>, forskyvPerioder: boolean): this {
+        this.operasjonsLogg.push({ operasjon: 'fjernUttakPerioder', perioderSomSkalFjernes, forskyvPerioder });
         if (forskyvPerioder) {
             for (const periodeSomSkalFjernes of perioderSomSkalFjernes) {
                 this.alleUttakPerioder = fjernOgForskyvUttakPerioderBakover(
@@ -108,9 +123,107 @@ export class UttakPeriodeBuilder {
     }
 
     getUttakPerioder(): AlleUttakPerioder[] {
-        return slåSammenLikeTilstøtendePerioder(this.alleUttakPerioder);
+        const resultat = slåSammenLikeTilstøtendePerioder(this.alleUttakPerioder);
+        validerOgLoggOverlapp(resultat, this.opprinneligPerioder, this.operasjonsLogg, this.kilde);
+        return resultat;
     }
 }
+
+const erOverlappendeIDato = (a: { fom: string; tom: string }, b: { fom: string; tom: string }): boolean =>
+    dayjs(a.fom).isSameOrBefore(b.tom, 'day') && dayjs(b.fom).isSameOrBefore(a.tom, 'day');
+
+const erEøsPeriode = (p: AlleUttakPerioder): p is UttakPeriodeAnnenpartEøs_fpoversikt => 'trekkdager' in p;
+
+export const finnUgyldigeOverlapp = (perioder: AlleUttakPerioder[]): Array<[AlleUttakPerioder, AlleUttakPerioder]> => {
+    const ugyldigeOverlapp: Array<[AlleUttakPerioder, AlleUttakPerioder]> = [];
+    for (let i = 0; i < perioder.length; i++) {
+        for (let j = i + 1; j < perioder.length; j++) {
+            const a = perioder[i]!;
+            const b = perioder[j]!;
+            if (erOverlappendeIDato(a, b) && !erGyldigSamtidigUttak(a, b)) {
+                ugyldigeOverlapp.push([a, b]);
+            }
+        }
+    }
+    return ugyldigeOverlapp;
+};
+
+export const periodeTilLoggObjekt = (p: AlleUttakPerioder) => {
+    if (erEøsPeriode(p)) {
+        return { fom: p.fom, tom: p.tom, eøs: true, kontoType: p.kontoType };
+    }
+    return {
+        fom: p.fom,
+        tom: p.tom,
+        forelder: p.forelder,
+        kontoType: p.kontoType,
+        utsettelseÅrsak: p.utsettelseÅrsak,
+        oppholdÅrsak: p.oppholdÅrsak,
+        overføringÅrsak: p.overføringÅrsak,
+        samtidigUttak: p.samtidigUttak,
+    };
+};
+
+const erGyldigSamtidigUttak = (a: AlleUttakPerioder, b: AlleUttakPerioder): boolean => {
+    if (erEøsPeriode(a) || erEøsPeriode(b)) {
+        // EØS-periodar er annen-part og kan eksistere parallelt med søkers periodar
+        return true;
+    }
+    return (
+        a.utsettelseÅrsak === undefined &&
+        b.utsettelseÅrsak === undefined &&
+        a.oppholdÅrsak === undefined &&
+        b.oppholdÅrsak === undefined &&
+        a.samtidigUttak !== undefined &&
+        b.samtidigUttak !== undefined &&
+        a.forelder !== b.forelder
+    );
+};
+
+const validerOgLoggOverlapp = (
+    resultat: AlleUttakPerioder[],
+    opprinneligPerioder: AlleUttakPerioder[],
+    operasjonsLogg: Array<{
+        operasjon: string;
+        nyePerioder?: AlleUttakPerioder[];
+        perioderSomSkalFjernes?: Array<{ fom: string; tom: string }>;
+        forskyvPerioder: boolean;
+    }>,
+    kilde: Builderkilde,
+): void => {
+    const ugyldigeOverlapp = finnUgyldigeOverlapp(resultat);
+
+    if (ugyldigeOverlapp.length === 0) {
+        return;
+    }
+
+    withScope((scope) => {
+        scope.setLevel('warning');
+        scope.setTag('feiltype', 'uttaksplan-builder-overlapp');
+        scope.setTag('builderKilde', kilde);
+        scope.setExtra('builderKilde', kilde);
+        scope.setExtra('antallUgyldigeOverlapp', ugyldigeOverlapp.length);
+        scope.setExtra(
+            'ugyldigeOverlappPar',
+            ugyldigeOverlapp.slice(0, 20).map(([a, b]) => ({
+                a: periodeTilLoggObjekt(a),
+                b: periodeTilLoggObjekt(b),
+            })),
+        );
+        scope.setExtra('opprinneligPerioder', opprinneligPerioder.map(periodeTilLoggObjekt));
+        scope.setExtra('resultatPerioder', resultat.map(periodeTilLoggObjekt));
+        scope.setExtra(
+            'operasjonsLogg',
+            operasjonsLogg.map((op) => ({
+                operasjon: op.operasjon,
+                forskyvPerioder: op.forskyvPerioder,
+                nyePerioder: op.nyePerioder?.map(periodeTilLoggObjekt),
+                perioderSomSkalFjernes: op.perioderSomSkalFjernes,
+            })),
+        );
+        captureMessage('UttakPeriodeBuilder produserte ugyldig overlappende perioder', 'warning');
+    });
+};
 
 const fjernOgForskyvUttakPerioderBakover = (
     alleUttakPerioder: AlleUttakPerioder[],

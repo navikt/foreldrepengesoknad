@@ -116,8 +116,6 @@
     "UseStepConfig.TidligereUtenlandsopphold": "Har bodd i utlandet",
     "UseStepConfig.FremtidigUtenlandsopphold": "Skal bo i utlandet",
     "UseStepConfig.Oppsummering": "Oppsummering",
-    "useEsMellomlagring.FeilVedMellomlagring.MedCallId": "Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: {callId}",
-    "useEsMellomlagring.FeilVedMellomlagring.UtenCallId": "Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, ta kontakt med oss.",
     "useEsSendSøknad.FeilVedInnsending.MedCallId": "Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: {callId}",
     "useEsSendSøknad.FeilVedInnsending.UtenCallId": "Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, ta kontakt med oss."
 }

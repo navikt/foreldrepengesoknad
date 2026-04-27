@@ -7,7 +7,7 @@ import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 
-import { captureMessage } from '@navikt/fp-observability';
+import { ApiError } from '@navikt/fp-observability';
 import {
     BarnDto,
     EngangsstønadDto,
@@ -19,9 +19,6 @@ import { getDecoratorLanguageCookie, useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './EsDataContext';
-
-const FEIL_VED_INNSENDING_LOG =
-    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
 export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt) => {
     const intl = useIntl();
@@ -69,7 +66,6 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
                 }
 
                 const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                captureMessage(`${FEIL_VED_INNSENDING_LOG}${JSON.stringify(jsonResponse)}`);
                 const callId = jsonResponse?.callId;
                 const feilmelding = callId
                     ? intl.formatMessage(
@@ -77,7 +73,7 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
                           { callId: callId.substring(0, 6) },
                       )
                     : intl.formatMessage({ id: 'useEsSendSøknad.FeilVedInnsending.UtenCallId' });
-                throw new Error(feilmelding, { cause: error });
+                throw new ApiError(feilmelding, 'Feil ved innsending av engangsstønad', jsonResponse);
             }
             if (error instanceof Error) {
                 throw error;
