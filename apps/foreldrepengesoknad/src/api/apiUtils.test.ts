@@ -93,36 +93,18 @@ const getStateMock = (
     uttaksplanInput: UttakPeriode_fpoversikt[],
     saksnummer = 'SAK-001',
 ) => {
-    return <TYPE extends ContextDataType>(type: TYPE): ContextDataMap[TYPE] => {
-        if (type === ContextDataType.ANNEN_FORELDER) {
-            return annenForelderInput;
-        }
-        if (type === ContextDataType.OM_BARNET) {
-            return barnInput;
-        }
-        if (type === ContextDataType.UTTAKSPLAN) {
-            return uttaksplanInput;
-        }
-        if (type === ContextDataType.SØKERSITUASJON) {
-            return { rolle: 'mor', situasjon: 'fødsel' };
-        }
-        if (type === ContextDataType.PERIODE_MED_FORELDREPENGER) {
-            return '100';
-        }
-        if (type === ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL) {
-            return false;
-        }
-        if (type === ContextDataType.VALGT_EKSISTERENDE_SAKSNR) {
-            return saksnummer;
-        }
-        if (type === ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE) {
-            return [];
-        }
-        if (type === ContextDataType.UTENLANDSOPPHOLD_SENERE) {
-            return [];
-        }
-        return undefined;
+    const data: ContextDataMap = {
+        [ContextDataType.ANNEN_FORELDER]: annenForelderInput,
+        [ContextDataType.OM_BARNET]: barnInput,
+        [ContextDataType.UTTAKSPLAN]: uttaksplanInput,
+        [ContextDataType.SØKERSITUASJON]: { rolle: 'mor', situasjon: 'fødsel' },
+        [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100',
+        [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]: false,
+        [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: saksnummer,
+        [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: [],
+        [ContextDataType.UTENLANDSOPPHOLD_SENERE]: [],
     };
+    return <TYPE extends ContextDataType>(type: TYPE): ContextDataMap[TYPE] => data[type] as ContextDataMap[TYPE];
 };
 
 describe('mapTilSøknadDto', () => {
