@@ -43,7 +43,7 @@ export const ArbeidIUtlandetFieldArray = () => {
 
     const alleArbeidIUtlandet = formMethods.watch(`arbeidIUtlandet`);
 
-    const navnPåArbeidsgiverLabel = intl.formatMessage({ id: 'arbeidIUtlandet.navn' });
+    const navnPåArbeidsgiverLabel = intl.formatMessage({ id: 'ArbeidIUtlandetFieldArray.navn' });
 
     return (
         <>
@@ -54,7 +54,7 @@ export const ArbeidIUtlandetFieldArray = () => {
                             name={`arbeidIUtlandet.${index}.land`}
                             control={formMethods.control}
                             style={{ width: 'var(--app-text-input-width)' }}
-                            label={intl.formatMessage({ id: 'arbeidIUtlandet.land' })}
+                            label={intl.formatMessage({ id: 'ArbeidIUtlandetFieldArray.land' })}
                             validate={[
                                 isRequired(intl.formatMessage({ id: 'valideringsfeil.arbeidIUtlandetLand.påkrevd' })),
                             ]}
@@ -101,7 +101,7 @@ export const ArbeidIUtlandetFieldArray = () => {
                     <RhfDatepicker
                         name={`arbeidIUtlandet.${index}.fom`}
                         control={formMethods.control}
-                        label={intl.formatMessage({ id: 'arbeidIUtlandet.fom' })}
+                        label={intl.formatMessage({ id: 'ArbeidIUtlandetFieldArray.fom' })}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.påkrevd' })),
                             isValidDate(intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.gyldigDato' })),
@@ -136,7 +136,7 @@ export const ArbeidIUtlandetFieldArray = () => {
                         <RhfDatepicker
                             name={`arbeidIUtlandet.${index}.tom`}
                             control={formMethods.control}
-                            label={intl.formatMessage({ id: 'arbeidIUtlandet.tom' })}
+                            label={intl.formatMessage({ id: 'ArbeidIUtlandetFieldArray.tom' })}
                             description={intl.formatMessage({
                                 id: 'ArbeidIUtlandetFieldArray.arbeid.tom.description',
                             })}
@@ -172,7 +172,7 @@ export const ArbeidIUtlandetFieldArray = () => {
                     variant="secondary"
                     onClick={() => append(NEW_ARBEID_I_UTLANDET)}
                 >
-                    <FormattedMessage id="arbeidIUtlandet.tittel.ny" />
+                    <FormattedMessage id="ArbeidIUtlandetFieldArray.tittel.ny" />
                 </Button>
             </HStack>
         </>
