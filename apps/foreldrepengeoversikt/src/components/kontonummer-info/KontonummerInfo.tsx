@@ -62,13 +62,13 @@ const KontonummerInfoTekst = ({ harKontonummer, ytelse, harMinstEttArbeidsforhol
         if (harKontonummer) {
             return (
                 <BodyLong size="small">
-                    <FormattedMessage id="KontonummerInfoTekst.NavUtbetaling" values={{ ytelse }} />
+                    <FormattedMessage id="KontonummerInfo.NavUtbetaling" values={{ ytelse }} />
                 </BodyLong>
             );
         } else {
             return (
                 <BodyLong size="small">
-                    <FormattedMessage id="KontonummerInfoTekst.Mangler" values={{ ytelse }} />
+                    <FormattedMessage id="KontonummerInfo.Mangler" values={{ ytelse }} />
                 </BodyLong>
             );
         }
