@@ -36,26 +36,68 @@ export const useUttaksplanForEksisterendeSak = (
             return;
         }
 
-        const ugyldigeOverlapp = finnUgyldigeOverlapp(perioderFraBackend);
-        if (ugyldigeOverlapp.length === 0) {
-            return;
+        const ugyldigeOverlappSøker = finnUgyldigeOverlapp(perioderFraBackend);
+        if (ugyldigeOverlappSøker.length > 0) {
+            withScope((scope) => {
+                scope.setLevel('warning');
+                scope.setTag('feiltype', 'uttaksplan-backend-overlapp');
+                scope.setExtra('kilde', 'søker');
+                scope.setExtra('antallUgyldigeOverlapp', ugyldigeOverlappSøker.length);
+                scope.setExtra(
+                    'ugyldigeOverlappPar',
+                    ugyldigeOverlappSøker.slice(0, 20).map(([a, b]) => ({
+                        a: periodeTilLoggObjekt(a),
+                        b: periodeTilLoggObjekt(b),
+                    })),
+                );
+                scope.setExtra('perioderFraBackend', perioderFraBackend.map(periodeTilLoggObjekt));
+                captureMessage('Eksisterande vedtak (søker) har ugyldig overlappande periodar', 'warning');
+            });
         }
 
-        withScope((scope) => {
-            scope.setLevel('warning');
-            scope.setTag('feiltype', 'uttaksplan-backend-overlapp');
-            scope.setExtra('antallUgyldigeOverlapp', ugyldigeOverlapp.length);
-            scope.setExtra(
-                'ugyldigeOverlappPar',
-                ugyldigeOverlapp.slice(0, 20).map(([a, b]) => ({
-                    a: periodeTilLoggObjekt(a),
-                    b: periodeTilLoggObjekt(b),
-                })),
-            );
-            scope.setExtra('perioderFraBackend', perioderFraBackend.map(periodeTilLoggObjekt));
-            captureMessage('Eksisterande vedtak har ugyldig overlappande periodar', 'warning');
-        });
-    }, [sakerQuery.data, valgtEksisterendeSaksnr]);
+        if (perioderAnnenPart && perioderAnnenPart.length > 0) {
+            const ugyldigeOverlappAnnenPart = finnUgyldigeOverlapp(perioderAnnenPart);
+            if (ugyldigeOverlappAnnenPart.length > 0) {
+                withScope((scope) => {
+                    scope.setLevel('warning');
+                    scope.setTag('feiltype', 'uttaksplan-backend-overlapp');
+                    scope.setExtra('kilde', 'annenPart');
+                    scope.setExtra('antallUgyldigeOverlapp', ugyldigeOverlappAnnenPart.length);
+                    scope.setExtra(
+                        'ugyldigeOverlappPar',
+                        ugyldigeOverlappAnnenPart.slice(0, 20).map(([a, b]) => ({
+                            a: periodeTilLoggObjekt(a),
+                            b: periodeTilLoggObjekt(b),
+                        })),
+                    );
+                    scope.setExtra('perioderFraBackend', perioderAnnenPart.map(periodeTilLoggObjekt));
+                    captureMessage('Eksisterande vedtak (annen part) har ugyldig overlappande periodar', 'warning');
+                });
+            }
+
+            const justert = midlertidigJusteringAvSamtidigUttak(perioderFraBackend, perioderAnnenPart);
+            const ugyldigeOverlappEtterJustering = finnUgyldigeOverlapp(justert);
+            if (ugyldigeOverlappEtterJustering.length > ugyldigeOverlappSøker.length) {
+                withScope((scope) => {
+                    scope.setLevel('warning');
+                    scope.setTag('feiltype', 'uttaksplan-midlertidig-justering-overlapp');
+                    scope.setExtra('antallFørJustering', ugyldigeOverlappSøker.length);
+                    scope.setExtra('antallEtterJustering', ugyldigeOverlappEtterJustering.length);
+                    scope.setExtra(
+                        'ugyldigeOverlappPar',
+                        ugyldigeOverlappEtterJustering.slice(0, 20).map(([a, b]) => ({
+                            a: periodeTilLoggObjekt(a),
+                            b: periodeTilLoggObjekt(b),
+                        })),
+                    );
+                    scope.setExtra('søkerPeriodeFørJustering', perioderFraBackend.map(periodeTilLoggObjekt));
+                    scope.setExtra('søkerPeriodeEtterJustering', justert.map(periodeTilLoggObjekt));
+                    scope.setExtra('annenPartPerioder', perioderAnnenPart.map(periodeTilLoggObjekt));
+                    captureMessage('midlertidigJusteringAvSamtidigUttak introduserte nye overlapp', 'warning');
+                });
+            }
+        }
+    }, [sakerQuery.data, valgtEksisterendeSaksnr, perioderAnnenPart]);
 
     if (!sakerQuery?.data || !valgtEksisterendeSaksnr) {
         return undefined;
