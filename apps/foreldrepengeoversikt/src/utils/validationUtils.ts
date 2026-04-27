@@ -1,33 +1,16 @@
 import { IntlShape } from 'react-intl';
 
-import { textGyldigRegex, textRegex } from '@navikt/fp-validation';
-
-//TODO (TOR) Ser ut som funksjonane i denne fila har duplikatar i foreldrepengesoknad. Flytt ut i felles-pakke
+import { getIllegalChars, textRegex } from '@navikt/fp-validation';
 
 type SkjemaelementFeil = string | null;
 
-const getIllegalChars = (value: string): string => {
-    const kunUgyldigeTegn = value.replace(textGyldigRegex, '');
-    const ugyldigStringSet = new Set(kunUgyldigeTegn.split(''));
-    return Array.from(ugyldigStringSet).join('');
-};
-
-const getIllegalCharsErrorMessage = (value: string, feltNavn: string, intl: IntlShape): string => {
-    const ugyldigeTegn = getIllegalChars(value).replace(/\t/g, 'Tabulatortegn');
-    return intl.formatMessage(
-        { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
-        {
-            feltNavn: feltNavn,
-            ugyldigeTegn: ugyldigeTegn,
-        },
-    );
-};
-
-const validateTextHasLegalChars = (value: string): boolean => textRegex.test(value);
-
 const validateTextInputField = (value: string, feltNavn: string, intl: IntlShape): SkjemaelementFeil => {
-    if (!validateTextHasLegalChars(value)) {
-        return getIllegalCharsErrorMessage(value, feltNavn, intl);
+    if (!textRegex.test(value)) {
+        const ugyldigeTegn = getIllegalChars(value).replaceAll('\t', 'Tabulatortegn');
+        return intl.formatMessage(
+            { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
+            { feltNavn, ugyldigeTegn },
+        );
     }
     return null;
 };

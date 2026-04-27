@@ -38,12 +38,15 @@ export const hasMaxLength =
     (text: string | number): FormValidationResult =>
         isEmpty(text) || text.toString().trim().length <= length ? null : i18nText;
 
-const getIllegalChars = (value: string): string => {
+export const getIllegalChars = (value: string): string => {
     const kunUgyldigeTegn = value.replace(textGyldigRegex, '');
     const ugyldigStringSet = new Set(kunUgyldigeTegn.split(''));
     return Array.from(ugyldigStringSet).join('');
 };
+
+export const hasValue = (v: string | number | boolean | undefined | null): boolean =>
+    v !== '' && v !== undefined && v !== null;
 export const hasLegalChars =
-    (getI18nText: (illigalChars: string) => string | null) =>
+    (getI18nText: (illegalChars: string) => string | null) =>
     (value: string): FormValidationResult =>
         textRegex.test(value) ? null : getI18nText(getIllegalChars(value));

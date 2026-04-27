@@ -3,7 +3,9 @@ import { IntlShape } from 'react-intl';
 import { Arbeidsforholdstype, Stilling, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 import { getTotalStillingsprosentPåSkjæringstidspunktet } from 'utils/arbeidsforholdUtils';
 import { getFloatFromString } from 'utils/numberUtils';
-import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, getSlutteTekst, hasValue } from 'utils/validationUtils';
+import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, getSlutteTekst } from 'utils/validationUtils';
+
+import { hasValue } from '@navikt/fp-validation';
 
 import { dagenFør, formatDate, tiMånederSidenDato } from '@navikt/fp-utils';
 

@@ -24,7 +24,7 @@ import { getIsDeltUttak } from './annenForelderUtils';
 import { getFamiliehendelsedato } from './barnUtils';
 import { erPeriodeIOpprinneligPlan } from './eksisterendeSakUtils';
 import { toggleUtils } from './toggleUtils';
-import { hasValue } from './validationUtil';
+import { hasValue } from '@navikt/fp-validation';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);

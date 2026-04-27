@@ -20,6 +20,8 @@ export {
     hasMaxLength,
     hasLegalChars,
     isEmpty,
+    getIllegalChars,
+    hasValue,
 } from './src/form/generalFormValidation';
 export {
     isValidNumberForm,
