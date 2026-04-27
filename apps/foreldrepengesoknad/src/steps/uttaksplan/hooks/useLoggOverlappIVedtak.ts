@@ -58,6 +58,31 @@ export const useLoggOverlappIVedtak = (
                 });
             }
 
+            // Sjekk overlapp på tvers av søker og annen part med rådata direkte fra backend (ingen transformasjonar)
+            const ugyldigeKrysspartOverlapp = finnUgyldigeOverlapp([...perioderSøker, ...perioderAnnenPart]).filter(
+                ([a, b]) => a.forelder !== b.forelder,
+            );
+            if (ugyldigeKrysspartOverlapp.length > 0) {
+                withScope((scope) => {
+                    scope.setLevel('warning');
+                    scope.setTag('feiltype', 'uttaksplan-krysspart-overlapp');
+                    scope.setExtra('antallUgyldigeOverlapp', ugyldigeKrysspartOverlapp.length);
+                    scope.setExtra(
+                        'ugyldigeOverlappPar',
+                        ugyldigeKrysspartOverlapp.slice(0, 20).map(([a, b]) => ({
+                            a: periodeTilLoggObjekt(a),
+                            b: periodeTilLoggObjekt(b),
+                        })),
+                    );
+                    scope.setExtra('perioderSøker', perioderSøker.map(periodeTilLoggObjekt));
+                    scope.setExtra('perioderAnnenPart', perioderAnnenPart.map(periodeTilLoggObjekt));
+                    captureMessage(
+                        'Eksisterande vedtak har ugyldig overlappande periodar på tvers av foreldre',
+                        'warning',
+                    );
+                });
+            }
+
             if (justeringSøkerPerioder) {
                 const ugyldigeOverlappEtterJustering = finnUgyldigeOverlapp(justeringSøkerPerioder);
                 if (ugyldigeOverlappEtterJustering.length > ugyldigeOverlappSøker.length) {
