@@ -6,7 +6,6 @@ import {
     useContextGetData,
 } from 'appData/PlanleggerDataContext';
 import { API_URLS } from 'appData/queries';
-import ky from 'ky';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
@@ -17,6 +16,7 @@ import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUti
 import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
+import { kyWithSentry as ky } from '@navikt/fp-observability';
 import { KontoBeregningResultatDto } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
 import { decodeBase64 } from '@navikt/fp-utils';

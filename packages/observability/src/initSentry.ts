@@ -17,7 +17,7 @@ export const initSentry = ({ dsn }: InitSentryOptions) => {
         dsn,
         release: import.meta.env.VITE_SENTRY_RELEASE,
         environment: globalThis.location.hostname,
-        integrations: [Sentry.breadcrumbsIntegration({ console: false })],
+        integrations: [Sentry.breadcrumbsIntegration({ console: false, fetch: false })],
         beforeSend: (event) => {
             if (feilVarSomFølgeAvEn401Handling(event)) {
                 return null;

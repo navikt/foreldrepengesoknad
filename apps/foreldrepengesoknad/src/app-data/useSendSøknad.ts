@@ -2,10 +2,11 @@ import { useMutation } from '@tanstack/react-query';
 import { getSøknadsdataForInnsending } from 'api/apiUtils';
 import { API_URLS } from 'api/queries';
 import { SøknadRoutes } from 'appData/routes';
-import ky, { HTTPError } from 'ky';
+import { HTTPError } from 'ky';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
+import { kyWithSentry as ky } from '@navikt/fp-observability';
 import { ApiError } from '@navikt/fp-observability';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, FpSoknadProblemDetails } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';

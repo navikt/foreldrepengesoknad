@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query';
-import ky from 'ky';
 
+import { kyWithSentry as ky } from '@navikt/fp-observability';
 import { KontoBeregningDto } from '@navikt/fp-types';
 
 const urlPrefiks = import.meta.env.BASE_URL;

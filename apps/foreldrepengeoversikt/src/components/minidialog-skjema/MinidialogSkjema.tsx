@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import ky from 'ky';
 import { FormEvent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
@@ -20,6 +19,7 @@ import {
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { FileUploader } from '@navikt/fp-filopplaster';
+import { kyWithSentry as ky } from '@navikt/fp-observability';
 import { Attachment, EttersendelseDto, TilbakekrevingUttalelseOppgave_fpoversikt, Ytelse } from '@navikt/fp-types';
 import { formatDate, replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';

@@ -1,12 +1,13 @@
 import { useMutation } from '@tanstack/react-query';
 import { Path } from 'appData/paths';
 import { API_URLS } from 'appData/queries';
-import ky, { HTTPError } from 'ky';
+import { HTTPError } from 'ky';
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 
+import { kyWithSentry as ky } from '@navikt/fp-observability';
 import { ApiError } from '@navikt/fp-observability';
 import {
     BarnDto,

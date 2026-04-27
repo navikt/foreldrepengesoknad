@@ -1,9 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
 import { API_URLS } from 'api/queries';
-import ky from 'ky';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { kyWithSentry as ky } from '@navikt/fp-observability';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 
 import { useContextReset } from './FpDataContext';

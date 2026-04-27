@@ -1,5 +1,6 @@
-import ky, { HTTPError, TimeoutError } from 'ky';
+import { HTTPError, TimeoutError } from 'ky';
 
+import { kyWithSentry as ky } from '@navikt/fp-observability';
 import { Attachment, AttachmentUploadError, AttachmentUploadSuccess } from '@navikt/fp-types';
 
 export const getSaveAttachmentFetch = async ({

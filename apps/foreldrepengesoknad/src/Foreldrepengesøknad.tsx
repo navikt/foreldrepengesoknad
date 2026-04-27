@@ -2,12 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import { API_URLS, mellomlagretInfoOptions, sakerOptions, søkerinfoOptions } from 'api/queries';
 import { ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
-import ky from 'ky';
 import isEqual from 'lodash/isEqual';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
+import { kyWithSentry as ky } from '@navikt/fp-observability';
 import { ErrorBoundary, RegisterdataUtdatert, Spinner } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';

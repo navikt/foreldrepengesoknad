@@ -1,9 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { API_URLS } from 'appData/queries';
-import ky, { HTTPError } from 'ky';
+import { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { kyWithSentry as ky } from '@navikt/fp-observability';
 import { ApiError, captureApiError, captureMessage } from '@navikt/fp-observability';
 import { FpSoknadProblemDetails, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 

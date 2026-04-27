@@ -2,9 +2,10 @@ import { queryOptions, useQuery } from '@tanstack/react-query';
 import { getStønadskontoParams } from 'api/getStønadskontoParams';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
-import ky, { type ResponsePromise } from 'ky';
+import { type ResponsePromise } from 'ky';
 import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenForelderUtils';
 
+import { kyWithSentry as ky } from '@navikt/fp-observability';
 import {
     AnnenPartRequest_fpoversikt,
     AnnenPartSak_fpoversikt,

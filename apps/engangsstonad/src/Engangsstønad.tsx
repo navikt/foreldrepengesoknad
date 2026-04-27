@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import { EsDataContext } from 'appData/EsDataContext';
 import { API_URLS, mellomlagretInfoOptions, personOptions } from 'appData/queries';
 import { VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
-import ky from 'ky';
 import isEqual from 'lodash/isEqual';
 import { useIntl } from 'react-intl';
 
+import { kyWithSentry as ky } from '@navikt/fp-observability';
 import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';

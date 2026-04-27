@@ -15,6 +15,7 @@
         "@navikt/ds-react": "8.9.1",
         "@navikt/fp-types": "workspace:*",
         "@sentry/browser": "10.48.0",
+        "ky": "2.0.0",
         "react": "19.2.5",
         "react-intl": "10.1.2"
     },

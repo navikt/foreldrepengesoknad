@@ -1,7 +1,8 @@
 import { queryOptions } from '@tanstack/react-query';
-import ky, { type ResponsePromise } from 'ky';
+import { type ResponsePromise } from 'ky';
 
 import { Skjemanummer } from '@navikt/fp-constants';
+import { kyWithSentry as ky } from '@navikt/fp-observability';
 import {
     AnnenPartRequest_fpoversikt,
     AnnenPartSak_fpoversikt,

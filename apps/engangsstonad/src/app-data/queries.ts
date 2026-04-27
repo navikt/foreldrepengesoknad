@@ -1,7 +1,8 @@
 import { queryOptions } from '@tanstack/react-query';
 import { EsMellomlagretData } from 'appData/useEsMellomlagring';
-import ky, { type ResponsePromise } from 'ky';
+import { type ResponsePromise } from 'ky';
 
+import { kyWithSentry as ky } from '@navikt/fp-observability';
 import { EsPersonopplysningerDto_fpoversikt, ForsendelseStatus } from '@navikt/fp-types';
 
 const urlPrefiks = import.meta.env.BASE_URL;

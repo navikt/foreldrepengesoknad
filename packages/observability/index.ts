@@ -8,6 +8,7 @@ export { captureApiError } from './src/captureApiError';
 export { SkyraSurvey } from './src/components/SkyraSurvey';
 export type { SkyraSurveyProps } from './src/components/SkyraSurvey';
 export { initSentry } from './src/initSentry';
+export { kyWithSentry } from './src/kyWithSentry';
 export { loggUmamiEvent } from './src/umami';
 
 export const observabilityMessages = {

@@ -1343,6 +1343,9 @@ importers:
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
+      '@navikt/fp-observability':
+        specifier: workspace:*
+        version: link:../observability
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
@@ -1534,6 +1537,9 @@ importers:
       '@sentry/browser':
         specifier: 10.48.0
         version: 10.48.0
+      ky:
+        specifier: 2.0.0
+        version: 2.0.0
       react:
         specifier: 19.2.5
         version: 19.2.5

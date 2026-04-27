@@ -1,9 +1,10 @@
 import { API_URLS } from 'api/queries';
-import ky, { HTTPError } from 'ky';
+import { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { VERSJON_MELLOMLAGRING } from 'utils/mellomlagringUtils';
 
+import { kyWithSentry as ky } from '@navikt/fp-observability';
 import { ApiError, captureApiError, captureMessage } from '@navikt/fp-observability';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, FpSoknadProblemDetails } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
