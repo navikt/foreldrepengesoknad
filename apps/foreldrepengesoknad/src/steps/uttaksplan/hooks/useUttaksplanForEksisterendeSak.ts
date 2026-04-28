@@ -80,7 +80,9 @@ const splitPerioder = (
     perioderToSplit: UttakPeriode_fpoversikt[],
     splittBasertPå: UttakPeriode_fpoversikt[],
 ): UttakPeriode_fpoversikt[] => {
-    const splitDatoar = [...new Set(splittBasertPå.flatMap((p) => [p.fom, Uttaksdagen.neste(p.tom).getDato()]))].sort();
+    const splitDatoar = [...new Set(splittBasertPå.flatMap((p) => [p.fom, Uttaksdagen.neste(p.tom).getDato()]))].sort(
+        (a, b) => a.localeCompare(b),
+    );
 
     return perioderToSplit.flatMap((periode) => {
         const relevante = splitDatoar.filter(
