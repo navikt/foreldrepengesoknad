@@ -23,9 +23,9 @@ export const useUttaksplanForEksisterendeSak = (
     const gjeldendeVedtak = valgtSak?.gjeldendeVedtak;
     const perioderFraBackend = gjeldendeVedtak?.perioder;
 
-    // Pre-split both parties at each other's boundaries so every segment either
-    // fully overlaps or does not overlap at all. The algorithms then become simple
-    // filter/map operations. Adjacent equal segments are re-merged at the end.
+    // Deler opp begge partar ved kvarandre sine grenser slik at kvart segment anten
+    // heilt overlappar eller ikkje overlappar i det heile. Algoritmane vert då enkle
+    // filter/map-operasjonar. Tilstøytande like segment vert slått saman att til slutt.
     const splitSøker =
         perioderFraBackend && perioderAnnenPart
             ? splitPerioder(perioderFraBackend, perioderAnnenPart)
@@ -47,8 +47,8 @@ export const useUttaksplanForEksisterendeSak = (
             ? midlertidigJusteringAvSamtidigUttak(trimmedSøker, trimmedAnnenPart)
             : undefined;
 
-    // Merge each party separately before combining so that adjacent split-segments
-    // with identical properties are restored to single periods in the output.
+    // Slår saman kvar part for seg før kombinering, slik at tilstøytande segment
+    // med identiske eigenskapar vert gjenoppretta til enkeltperiodar i output.
     const mergedSøker = slåSammenTilstøtande(
         fjernFrieUtsettelser(justeringSøkerPerioder ?? trimmedSøker ?? gjeldendeVedtak?.perioder ?? []),
     );
@@ -138,8 +138,8 @@ const erLikeUtenDatoar = (a: UttakPeriode_fpoversikt, b: UttakPeriode_fpoversikt
     a.samtidigUttak === b.samtidigUttak;
 
 const fjernFrieUtsettelser = (perioder: UttakPeriode_fpoversikt[]): UttakPeriode_fpoversikt[] => {
-    // Dersom perioden har et aktivitetskrav så er det en periode lagt inn for kun far har rett
-    // og det skal derfor ikke fjernes selv om det er en utsettelse med årsak fri
+    // Dersom perioden har eit aktivitetskrav er det ein periode lagt inn for kun far har rett,
+    // og den skal difor ikkje fjernast sjølv om det er ei utsettelse med årsak fri.
     return perioder.filter(
         (periode) =>
             (periode.utsettelseÅrsak === 'FRI' && periode.morsAktivitet !== undefined) ||
