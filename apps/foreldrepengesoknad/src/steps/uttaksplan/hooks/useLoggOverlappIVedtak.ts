@@ -10,13 +10,18 @@ dayjs.extend(isSameOrBefore);
 export const useLoggOverlappIVedtak = (
     uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
 ): void => {
-    const harLoggetUttaksplan = useRef(false);
+    const lastCheckedFingerprint = useRef<string | null>(null);
 
     useEffect(() => {
-        if (harLoggetUttaksplan.current || !uttaksplan || uttaksplan.length === 0) {
+        if (!uttaksplan || uttaksplan.length === 0) {
             return;
         }
-        harLoggetUttaksplan.current = true;
+
+        const fingerprint = uttaksplan.map((p) => `${p.fom}:${p.tom}`).join(',');
+        if (lastCheckedFingerprint.current === fingerprint) {
+            return;
+        }
+        lastCheckedFingerprint.current = fingerprint;
 
         const perioderUttaksplan = uttaksplan.filter((p): p is UttakPeriode_fpoversikt => 'forelder' in p);
         const ugyldigeOverlapp = finnUgyldigeOverlapp(perioderUttaksplan);
