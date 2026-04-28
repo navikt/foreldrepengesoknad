@@ -23,32 +23,45 @@ export const useUttaksplanForEksisterendeSak = (
     const sakerQuery = useQuery({ ...sakerOptions(), enabled: !!valgtEksisterendeSaksnr });
 
     const valgtSak = sakerQuery.data?.foreldrepenger.find((sak) => sak.saksnummer === valgtEksisterendeSaksnr);
-    const perioderFraBackend = valgtSak?.gjeldendeVedtak?.perioder;
-    const justeringSøkerPerioder =
+    const gjeldendeVedtak = valgtSak?.gjeldendeVedtak;
+    const perioderFraBackend = gjeldendeVedtak?.perioder;
+
+    const trimmedSøker =
         perioderFraBackend && perioderAnnenPart
-            ? midlertidigJusteringAvSamtidigUttak(perioderFraBackend, perioderAnnenPart)
+            ? fjernUtsettelseOverlapp(perioderFraBackend, perioderAnnenPart)
+            : perioderFraBackend;
+    const trimmedAnnenPart =
+        perioderFraBackend && perioderAnnenPart
+            ? fjernUtsettelseOverlapp(perioderAnnenPart, perioderFraBackend)
+            : perioderAnnenPart;
+
+    const justeringSøkerPerioder =
+        trimmedSøker && trimmedAnnenPart
+            ? midlertidigJusteringAvSamtidigUttak(trimmedSøker, trimmedAnnenPart)
             : undefined;
 
-    useLoggOverlappIVedtak(perioderFraBackend, perioderAnnenPart, justeringSøkerPerioder);
+    const søkerRef = trimmedSøker ?? perioderFraBackend ?? [];
+    const uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined = gjeldendeVedtak
+        ? [
+              ...fjernFrieUtsettelser(justeringSøkerPerioder ?? gjeldendeVedtak.perioder),
+              ...(gjeldendeVedtak.perioderAnnenpartEøs ?? []),
+              ...(trimmedAnnenPart
+                  ? fjernOverlappUtenSamtidigUttak(
+                        midlertidigJusteringAvSamtidigUttak(trimmedAnnenPart, søkerRef),
+                        søkerRef,
+                    )
+                  : []),
+          ].sort(sorterUttakPerioder)
+        : undefined;
 
-    if (!sakerQuery?.data || !valgtEksisterendeSaksnr || !valgtSak?.gjeldendeVedtak) {
+    useLoggOverlappIVedtak(uttaksplan);
+
+    if (!sakerQuery?.data || !valgtEksisterendeSaksnr || !gjeldendeVedtak) {
         return undefined;
     }
 
-    const søkerPerioder = justeringSøkerPerioder ?? valgtSak.gjeldendeVedtak.perioder;
-
-    const uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> =
-        fjernFrieUtsettelser(søkerPerioder);
-
-    if (valgtSak.gjeldendeVedtak?.perioderAnnenpartEøs) {
-        uttaksplan.push(...valgtSak.gjeldendeVedtak.perioderAnnenpartEøs);
-    }
-
-    if (perioderAnnenPart) {
-        uttaksplan.push(...midlertidigJusteringAvSamtidigUttak(perioderAnnenPart, valgtSak.gjeldendeVedtak.perioder));
-    }
-
-    return uttaksplan.sort(sorterUttakPerioder);
+    // uttaksplan er alltid definert når gjeldendeVedtak er definert
+    return uttaksplan!;
 };
 
 const fjernFrieUtsettelser = (perioder: UttakPeriode_fpoversikt[]): UttakPeriode_fpoversikt[] => {
@@ -128,3 +141,90 @@ const midlertidigJusteringAvSamtidigUttak = (
 
 const harOverlapp = (a: UttakPeriode_fpoversikt, b: UttakPeriode_fpoversikt) =>
     dayjs(a.fom).isSameOrBefore(b.tom, 'day') && dayjs(b.fom).isSameOrBefore(a.tom, 'day');
+
+// TODO (TOR) Fjern denne når ein byrjar å lagre annen parts periodar
+// Periodar med utsettelseÅrsak skal ikkje overlappe med den andre søkaren sine periodar.
+// Den overlappande delen vert kasta. Denne algoritmen har prioritet over dei to andre og skal køyrast først.
+const fjernUtsettelseOverlapp = (
+    perioder: UttakPeriode_fpoversikt[],
+    motpartPerioder: UttakPeriode_fpoversikt[],
+): UttakPeriode_fpoversikt[] => {
+    return perioder.flatMap((periode) => {
+        if (periode.utsettelseÅrsak === undefined) {
+            return [periode];
+        }
+
+        const overlappende = motpartPerioder.find((motpart) => harOverlapp(periode, motpart));
+        if (!overlappende) {
+            return [periode];
+        }
+
+        const periodeFom = dayjs(periode.fom);
+        const periodeTom = dayjs(periode.tom);
+        const motpartFom = dayjs(overlappende.fom);
+        const motpartTom = dayjs(overlappende.tom);
+
+        const resultat: UttakPeriode_fpoversikt[] = [];
+
+        if (periodeFom.isBefore(motpartFom, 'day')) {
+            resultat.push({
+                ...periode,
+                tom: Uttaksdagen.forrige(motpartFom.format(ISO_DATE_FORMAT)).getDato(),
+            });
+        }
+
+        if (periodeTom.isAfter(motpartTom, 'day')) {
+            resultat.push({
+                ...periode,
+                fom: Uttaksdagen.neste(motpartTom.format(ISO_DATE_FORMAT)).getDato(),
+            });
+        }
+
+        return resultat;
+    });
+};
+
+// TODO (TOR) Fjern denne når ein byrjar å lagre annen parts periodar
+// Om søkar har ein periode som overlappar med annen part sin periode, og ingen av dei har samtidigattak,
+// er dette eit duplikat. Den overlappande delen av annen part sin periode skal fjernast.
+const fjernOverlappUtenSamtidigUttak = (
+    perioderAnnenPart: UttakPeriode_fpoversikt[],
+    perioderSøker: UttakPeriode_fpoversikt[],
+): UttakPeriode_fpoversikt[] => {
+    return perioderAnnenPart.flatMap((periodeAnnenPart) => {
+        if (periodeAnnenPart.samtidigUttak !== undefined) {
+            return [periodeAnnenPart];
+        }
+
+        const overlappendeSøkerPeriode = perioderSøker.find(
+            (søker) => søker.samtidigUttak === undefined && harOverlapp(periodeAnnenPart, søker),
+        );
+
+        if (!overlappendeSøkerPeriode) {
+            return [periodeAnnenPart];
+        }
+
+        const annenFom = dayjs(periodeAnnenPart.fom);
+        const annenTom = dayjs(periodeAnnenPart.tom);
+        const søkerFom = dayjs(overlappendeSøkerPeriode.fom);
+        const søkerTom = dayjs(overlappendeSøkerPeriode.tom);
+
+        const resultat: UttakPeriode_fpoversikt[] = [];
+
+        if (annenFom.isBefore(søkerFom, 'day')) {
+            resultat.push({
+                ...periodeAnnenPart,
+                tom: Uttaksdagen.forrige(søkerFom.format(ISO_DATE_FORMAT)).getDato(),
+            });
+        }
+
+        if (annenTom.isAfter(søkerTom, 'day')) {
+            resultat.push({
+                ...periodeAnnenPart,
+                fom: Uttaksdagen.neste(søkerTom.format(ISO_DATE_FORMAT)).getDato(),
+            });
+        }
+
+        return resultat;
+    });
+};
