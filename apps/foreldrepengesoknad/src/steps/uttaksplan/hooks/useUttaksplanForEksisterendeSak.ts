@@ -35,18 +35,22 @@ export const useUttaksplanForEksisterendeSak = (
             ? splitPerioder(perioderAnnenPart, perioderFraBackend)
             : perioderAnnenPart;
 
-    // fjernUtsettelseOverlapp berre på annenPart – søkar sine periodar skal ikkje endrast
+    // Periodar med utsettelseÅrsak som overlappar motparten skal fjernast, uansett kven som eig perioden
+    const trimmedSøker =
+        splitSøker && splitAnnenPart ? fjernUtsettelseOverlapp(splitSøker, splitAnnenPart) : splitSøker;
     const trimmedAnnenPart =
         splitSøker && splitAnnenPart ? fjernUtsettelseOverlapp(splitAnnenPart, splitSøker) : splitAnnenPart;
 
-    const søkerRef = splitSøker ?? [];
+    const søkerRef = trimmedSøker ?? [];
     const justeringSøkerPerioder =
-        splitSøker && trimmedAnnenPart ? midlertidigJusteringAvSamtidigUttak(splitSøker, trimmedAnnenPart) : undefined;
+        trimmedSøker && trimmedAnnenPart
+            ? midlertidigJusteringAvSamtidigUttak(trimmedSøker, trimmedAnnenPart)
+            : undefined;
 
     // Merge each party separately before combining so that adjacent split-segments
     // with identical properties are restored to single periods in the output.
     const mergedSøker = slåSammenTilstøtande(
-        fjernFrieUtsettelser(justeringSøkerPerioder ?? gjeldendeVedtak?.perioder ?? []),
+        fjernFrieUtsettelser(justeringSøkerPerioder ?? trimmedSøker ?? gjeldendeVedtak?.perioder ?? []),
     );
     const processedAnnenPart = trimmedAnnenPart
         ? slåSammenTilstøtande(
