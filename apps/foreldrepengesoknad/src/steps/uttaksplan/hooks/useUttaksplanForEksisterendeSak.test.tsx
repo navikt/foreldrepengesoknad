@@ -132,14 +132,6 @@ describe('useUttaksplanForEksisterendeSak', () => {
                 samtidigUttak: 100,
             },
             {
-                fom: '2025-12-11',
-                tom: '2026-01-13',
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
-                flerbarnsdager: false,
-                samtidigUttak: 100,
-            },
-            {
                 fom: '2026-01-14',
                 tom: '2026-01-30',
                 forelder: 'MOR',
@@ -148,7 +140,7 @@ describe('useUttaksplanForEksisterendeSak', () => {
                 samtidigUttak: 100,
             },
             {
-                fom: '2026-01-14',
+                fom: '2025-12-11',
                 tom: '2026-01-30',
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
@@ -271,7 +263,7 @@ describe('useUttaksplanForEksisterendeSak', () => {
             },
             {
                 fom: '2025-02-17',
-                tom: '2025-02-17',
+                tom: '2025-02-28',
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 flerbarnsdager: false,
@@ -282,14 +274,6 @@ describe('useUttaksplanForEksisterendeSak', () => {
                 tom: '2025-02-17',
                 forelder: 'MOR',
                 kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                flerbarnsdager: false,
-                samtidigUttak: 100,
-            },
-            {
-                fom: '2025-02-18',
-                tom: '2025-02-28',
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
                 flerbarnsdager: false,
                 samtidigUttak: 100,
             },
@@ -420,13 +404,6 @@ describe('useUttaksplanForEksisterendeSak', () => {
             },
             {
                 fom: '2026-02-10',
-                tom: '2026-02-17',
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
-                flerbarnsdager: false,
-            },
-            {
-                fom: '2026-02-18',
                 tom: '2026-06-22',
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
@@ -534,22 +511,6 @@ describe('useUttaksplanForEksisterendeSak', () => {
         const perioderAnnenPart: UttakPeriode_fpoversikt[] = [
             {
                 fom: '2026-02-27',
-                tom: '2026-03-27',
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'MØDREKVOTE',
-                overføringÅrsak: 'SYKDOM_ANNEN_FORELDER',
-                flerbarnsdager: false,
-            },
-            {
-                fom: '2026-03-30',
-                tom: '2026-04-01',
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'MØDREKVOTE',
-                overføringÅrsak: 'SYKDOM_ANNEN_FORELDER',
-                flerbarnsdager: false,
-            },
-            {
-                fom: '2026-04-02',
                 tom: '2026-04-24',
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'MØDREKVOTE',
@@ -626,22 +587,6 @@ describe('useUttaksplanForEksisterendeSak', () => {
             { fom: '2026-02-19', tom: '2026-02-26', forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
             {
                 fom: '2026-02-27',
-                tom: '2026-03-27',
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'MØDREKVOTE',
-                overføringÅrsak: 'SYKDOM_ANNEN_FORELDER',
-                flerbarnsdager: false,
-            },
-            {
-                fom: '2026-03-30',
-                tom: '2026-04-01',
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'MØDREKVOTE',
-                overføringÅrsak: 'SYKDOM_ANNEN_FORELDER',
-                flerbarnsdager: false,
-            },
-            {
-                fom: '2026-04-02',
                 tom: '2026-04-24',
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'MØDREKVOTE',
