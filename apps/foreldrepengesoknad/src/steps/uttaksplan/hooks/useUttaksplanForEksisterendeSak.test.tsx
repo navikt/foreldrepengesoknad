@@ -485,13 +485,6 @@ describe('useUttaksplanForEksisterendeSak', () => {
             { fom: '2025-07-07', tom: '2025-09-19', forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
             {
                 fom: '2025-09-22',
-                tom: '2026-02-09',
-                forelder: 'MOR',
-                kontoType: 'FELLESPERIODE',
-                flerbarnsdager: false,
-            },
-            {
-                fom: '2026-02-10',
                 tom: '2026-02-17',
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
