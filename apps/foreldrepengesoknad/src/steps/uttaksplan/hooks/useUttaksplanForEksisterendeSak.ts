@@ -211,9 +211,9 @@ const fjernOverlappUtenSamtidigUttak = (
             return [periodeAnnenPart];
         }
 
-        const overlappendeSøkerPerioder = perioderSøker.filter(
-            (søker) => søker.samtidigUttak === undefined && harOverlapp(periodeAnnenPart, søker),
-        );
+        const overlappendeSøkerPerioder = perioderSøker
+            .filter((søker) => søker.samtidigUttak === undefined && harOverlapp(periodeAnnenPart, søker))
+            .sort((a, b) => dayjs(a.fom).valueOf() - dayjs(b.fom).valueOf());
 
         if (overlappendeSøkerPerioder.length === 0) {
             return [periodeAnnenPart];
