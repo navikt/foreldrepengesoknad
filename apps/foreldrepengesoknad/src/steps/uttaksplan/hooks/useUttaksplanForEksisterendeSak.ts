@@ -83,7 +83,9 @@ const splitPerioder = (
             (dato) => dayjs(dato).isAfter(periode.fom, 'day') && dayjs(dato).isSameOrBefore(periode.tom, 'day'),
         );
 
-        if (relevante.length === 0) return [periode];
+        if (relevante.length === 0) {
+            return [periode];
+        }
 
         const resultat: UttakPeriode_fpoversikt[] = [];
         let gjeldandeFom = periode.fom;
@@ -103,7 +105,9 @@ const splitPerioder = (
 // som vart delt av splitPerioder.
 const slåSammenTilstøtande = (perioder: UttakPeriode_fpoversikt[]): UttakPeriode_fpoversikt[] => {
     return perioder.reduce<UttakPeriode_fpoversikt[]>((acc, periode) => {
-        if (acc.length === 0) return [periode];
+        if (acc.length === 0) {
+            return [periode];
+        }
         const forrige = acc.at(-1)!;
         const erTilstøtande = Uttaksdagen.neste(forrige.tom).getDato() === periode.fom;
         if (erTilstøtande && erLikeUtenDatoar(forrige, periode)) {
@@ -150,7 +154,9 @@ const midlertidigJusteringAvSamtidigUttak = (
 ): UttakPeriode_fpoversikt[] => {
     return perioderSøker1.map((p) => {
         const overlappande = perioderSøker2.find((s) => harOverlapp(p, s));
-        if (!overlappande) return p;
+        if (!overlappande) {
+            return p;
+        }
         return overlappande.samtidigUttak !== undefined && p.samtidigUttak === undefined
             ? { ...p, samtidigUttak: 100 }
             : p;
