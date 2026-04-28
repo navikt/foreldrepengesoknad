@@ -36,6 +36,14 @@ export { getFamiliehendelsedato, getFamiliesituasjon, sorterPersonEtterEldstOgNa
 export { formatCurrencyWithKr, formatCurrency } from './src/currencyUtils';
 export { encodeToBase64, decodeBase64 } from './src/urlEncodingUtils';
 export {
+    PLANLEGGER_DATA_QUERY_PARAM,
+    appendPlanleggerDataToUrl,
+    decodePlanleggerData,
+    encodePlanleggerData,
+    readPlanleggerDataFromQuery,
+} from './src/planleggerUrlData';
+export { erLokaltEllerDev } from './src/miljoUtils';
+export {
     getBokmålLocale,
     getLocaleForApi,
     getLocaleFromSessionStorage,
