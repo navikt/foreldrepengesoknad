@@ -10,10 +10,8 @@ import { erLokaltEllerDev, readPlanleggerDataFromQuery } from '@navikt/fp-utils'
 export type PlanleggerDataFromUrl = {
     HVEM_PLANLEGGER?: unknown;
     OM_BARNET?: unknown;
-    ARBEIDSSITUASJON?: unknown;
     HVOR_LANG_PERIODE?: unknown;
     FORDELING?: unknown;
-    HVOR_MYE?: unknown;
     UTTAKSPLAN?: unknown;
 };
 
