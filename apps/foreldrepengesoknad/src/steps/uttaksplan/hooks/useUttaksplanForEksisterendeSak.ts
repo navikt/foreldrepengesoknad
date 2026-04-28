@@ -154,33 +154,48 @@ const fjernUtsettelseOverlapp = (
             return [periode];
         }
 
-        const overlappende = motpartPerioder.find((motpart) => harOverlapp(periode, motpart));
-        if (!overlappende) {
+        const overlappendePerioder = motpartPerioder
+            .filter((motpart) => harOverlapp(periode, motpart))
+            .sort((a, b) => dayjs(a.fom).valueOf() - dayjs(b.fom).valueOf());
+
+        if (overlappendePerioder.length === 0) {
             return [periode];
         }
 
-        const periodeFom = dayjs(periode.fom);
-        const periodeTom = dayjs(periode.tom);
-        const motpartFom = dayjs(overlappende.fom);
-        const motpartTom = dayjs(overlappende.tom);
+        let resterendeSegmenter: UttakPeriode_fpoversikt[] = [periode];
 
-        const resultat: UttakPeriode_fpoversikt[] = [];
+        overlappendePerioder.forEach((motpart) => {
+            const motpartFom = dayjs(motpart.fom);
+            const motpartTom = dayjs(motpart.tom);
 
-        if (periodeFom.isBefore(motpartFom, 'day')) {
-            resultat.push({
-                ...periode,
-                tom: Uttaksdagen.forrige(motpartFom.format(ISO_DATE_FORMAT)).getDato(),
+            resterendeSegmenter = resterendeSegmenter.flatMap((segment) => {
+                if (!harOverlapp(segment, motpart)) {
+                    return [segment];
+                }
+
+                const segmentFom = dayjs(segment.fom);
+                const segmentTom = dayjs(segment.tom);
+                const resultat: UttakPeriode_fpoversikt[] = [];
+
+                if (segmentFom.isBefore(motpartFom, 'day')) {
+                    resultat.push({
+                        ...segment,
+                        tom: Uttaksdagen.forrige(motpartFom.format(ISO_DATE_FORMAT)).getDato(),
+                    });
+                }
+
+                if (segmentTom.isAfter(motpartTom, 'day')) {
+                    resultat.push({
+                        ...segment,
+                        fom: Uttaksdagen.neste(motpartTom.format(ISO_DATE_FORMAT)).getDato(),
+                    });
+                }
+
+                return resultat;
             });
-        }
+        });
 
-        if (periodeTom.isAfter(motpartTom, 'day')) {
-            resultat.push({
-                ...periode,
-                fom: Uttaksdagen.neste(motpartTom.format(ISO_DATE_FORMAT)).getDato(),
-            });
-        }
-
-        return resultat;
+        return resterendeSegmenter;
     });
 };
 
