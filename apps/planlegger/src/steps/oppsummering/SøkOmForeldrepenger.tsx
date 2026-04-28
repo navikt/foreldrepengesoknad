@@ -8,7 +8,7 @@ import { BodyShort, Button, HStack, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Infobox } from '@navikt/fp-ui';
-import { appendPlanleggerDataToUrl, erLokaltEllerDev } from '@navikt/fp-utils';
+import { encodeToBase64, erLokaltEllerDev } from '@navikt/fp-utils';
 
 interface Props {
     erAlenesøker: boolean;
@@ -21,7 +21,9 @@ export const SøkOmForeldrepenger = ({ erAlenesøker, barnet }: Props) => {
     // Funksjonen er foreløpig kun aktiv lokalt og i dev for testing — ikke i prod.
     const skalSendeDataViaUrl = erLokaltEllerDev() && harDataÅOverføre;
     const søknadHref = skalSendeDataViaUrl
-        ? appendPlanleggerDataToUrl(links.søknadForeldrepenger, sanitizePlanleggerState(planleggerState))
+        ? `${links.søknadForeldrepenger}?planleggerData=${encodeURIComponent(
+              encodeToBase64(JSON.stringify(sanitizePlanleggerState(planleggerState))),
+          )}`
         : links.søknadForeldrepenger;
 
     return (

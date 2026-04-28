@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
-import { erLokaltEllerDev, readPlanleggerDataFromQuery } from '@navikt/fp-utils';
+import { decodeBase64, erLokaltEllerDev } from '@navikt/fp-utils';
 
 /**
  * Form på planlegger-data slik den serialiseres i planlegger-appen.
@@ -18,17 +19,24 @@ export type PlanleggerDataFromUrl = {
 /**
  * Leser eventuell planlegger-data som er sendt med via query-parameter ved oppstart av søknaden.
  *
- * Dataen blir lagt på URL-en av planlegger-appen (`appendPlanleggerDataToUrl`) når brukeren
- * trykker "Søk om foreldrepenger" på oppsummeringssteget. Wonderwall-sidecar bevarer query-strengen
- * gjennom ID-porten-login slik at parameteret er tilgjengelig her etter innlogging.
+ * Dataen blir lagt på URL-en av planlegger-appen når brukeren trykker "Søk om foreldrepenger"
+ * på oppsummeringssteget. Wonderwall-sidecar bevarer query-strengen gjennom ID-porten-login
+ * slik at parameteret er tilgjengelig her etter innlogging.
  *
- * Returnerer `null` dersom parameter mangler eller er ugyldig.
+ * Returnerer `null` dersom parameteret mangler, er ugyldig, eller appen kjører i prod.
  */
 export const usePlanleggerDataFromUrl = (): PlanleggerDataFromUrl | null => {
+    const [searchParams] = useSearchParams();
+    const encoded = searchParams.get('planleggerData');
+
     return useMemo(() => {
-        if (!erLokaltEllerDev()) {
+        if (!erLokaltEllerDev() || !encoded) {
             return null;
         }
-        return readPlanleggerDataFromQuery<PlanleggerDataFromUrl>(window.location.search);
-    }, []);
+        try {
+            return JSON.parse(decodeBase64(encoded)) as PlanleggerDataFromUrl;
+        } catch {
+            return null;
+        }
+    }, [encoded]);
 };
