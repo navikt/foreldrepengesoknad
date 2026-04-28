@@ -602,4 +602,286 @@ describe('useUttaksplanForEksisterendeSak', () => {
             },
         ]);
     });
+    it('testcase 5 - regel 1: søkar sin ARBEID-utsettelse vert trimma der den overlappar annenPart, resten vert beholdt', () => {
+        const perioderAnnenPart: UttakPeriode_fpoversikt[] = [
+            {
+                fom: '2026-03-15',
+                tom: '2026-04-15',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+            },
+        ];
+
+        const perioderSøker: UttakPeriode_fpoversikt[] = [
+            {
+                fom: '2026-03-01',
+                tom: '2026-03-31',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                utsettelseÅrsak: 'ARBEID',
+                flerbarnsdager: false,
+            },
+        ];
+
+        const saker: Saker_fpoversikt = {
+            engangsstønad: [],
+            svangerskapspenger: [],
+            foreldrepenger: [
+                {
+                    saksnummer: SAKSNUMMER,
+                    familiehendelse: { antallBarn: 1, fødselsdato: '2026-01-01' },
+                    forelder: 'FAR_MEDMOR',
+                    gjelderAdopsjon: false,
+                    kanSøkeOmEndring: true,
+                    morUføretrygd: false,
+                    oppdatertTidspunkt: '2025-01-01T00:00:00',
+                    rettighetType: 'BEGGE_RETT',
+                    sakAvsluttet: false,
+                    sakTilhørerMor: false,
+                    gjeldendeVedtak: { perioder: perioderSøker },
+                },
+            ],
+        };
+
+        const { result } = renderHook(() => useUttaksplanForEksisterendeSak(perioderAnnenPart), {
+            wrapper: getWrapper(saker),
+        });
+
+        // Søkar sin ARBEID-utsettelse [03-01 til 03-14] overlappar ikkje annenPart og skal overleve.
+        // Den overlappande delen [03-15 til 03-31] vert kasta av regel 1.
+        // ARBEID er ikkje FRI, så fjernFrieUtsettelser fjernar den ikkje.
+        expect(result.current).toEqual([
+            {
+                fom: '2026-03-01',
+                tom: '2026-03-13',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                utsettelseÅrsak: 'ARBEID',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2026-03-15',
+                tom: '2026-04-15',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+            },
+        ]);
+    });
+
+    it('testcase 6 - regel 2: kun annenPart har samtidigattak, søkar vert markert for den overlappande delen', () => {
+        const perioderAnnenPart: UttakPeriode_fpoversikt[] = [
+            {
+                fom: '2026-05-15',
+                tom: '2026-06-20',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                flerbarnsdager: false,
+                samtidigUttak: 100,
+            },
+        ];
+
+        const perioderSøker: UttakPeriode_fpoversikt[] = [
+            {
+                fom: '2026-05-01',
+                tom: '2026-05-31',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+            },
+        ];
+
+        const saker: Saker_fpoversikt = {
+            engangsstønad: [],
+            svangerskapspenger: [],
+            foreldrepenger: [
+                {
+                    saksnummer: SAKSNUMMER,
+                    familiehendelse: { antallBarn: 1, fødselsdato: '2026-01-01' },
+                    forelder: 'MOR',
+                    gjelderAdopsjon: false,
+                    kanSøkeOmEndring: true,
+                    morUføretrygd: false,
+                    oppdatertTidspunkt: '2025-01-01T00:00:00',
+                    rettighetType: 'BEGGE_RETT',
+                    sakAvsluttet: false,
+                    sakTilhørerMor: true,
+                    gjeldendeVedtak: { perioder: perioderSøker },
+                },
+            ],
+        };
+
+        const { result } = renderHook(() => useUttaksplanForEksisterendeSak(perioderAnnenPart), {
+            wrapper: getWrapper(saker),
+        });
+
+        // Søkar [05-01 til 05-14] overlappar ikkje annenPart, inga endring.
+        // Søkar [05-15 til 05-31] overlappar annenPart med samtidigattak → markert med samtidigattak: 100.
+        // AnnenPart [05-15 til 06-20] vert slått saman frå to split-segment sidan dei er tilstøytande og like.
+        expect(result.current).toEqual([
+            {
+                fom: '2026-05-01',
+                tom: '2026-05-14',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2026-05-15',
+                tom: '2026-05-31',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+                samtidigUttak: 100,
+            },
+            {
+                fom: '2026-05-15',
+                tom: '2026-06-20',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                flerbarnsdager: false,
+                samtidigUttak: 100,
+            },
+        ]);
+    });
+
+    it('testcase 7 - regel 1 har prioritet over regel 2: utsettelse+samtidigattak markerer ikkje søkar med samtidigattak', () => {
+        const perioderAnnenPart: UttakPeriode_fpoversikt[] = [
+            {
+                fom: '2026-07-01',
+                tom: '2026-07-31',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+                flerbarnsdager: false,
+                samtidigUttak: 100,
+            },
+        ];
+
+        const perioderSøker: UttakPeriode_fpoversikt[] = [
+            {
+                fom: '2026-07-10',
+                tom: '2026-07-20',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+            },
+        ];
+
+        const saker: Saker_fpoversikt = {
+            engangsstønad: [],
+            svangerskapspenger: [],
+            foreldrepenger: [
+                {
+                    saksnummer: SAKSNUMMER,
+                    familiehendelse: { antallBarn: 1, fødselsdato: '2026-01-01' },
+                    forelder: 'MOR',
+                    gjelderAdopsjon: false,
+                    kanSøkeOmEndring: true,
+                    morUføretrygd: false,
+                    oppdatertTidspunkt: '2025-01-01T00:00:00',
+                    rettighetType: 'BEGGE_RETT',
+                    sakAvsluttet: false,
+                    sakTilhørerMor: true,
+                    gjeldendeVedtak: { perioder: perioderSøker },
+                },
+            ],
+        };
+
+        const { result } = renderHook(() => useUttaksplanForEksisterendeSak(perioderAnnenPart), {
+            wrapper: getWrapper(saker),
+        });
+
+        // Annen part sin utsettelse [07-10 til 07-20] overlappar søkar → vert kasta av regel 1.
+        // Utan regel 1 ville søkar vorte markert med samtidigattak av regel 2.
+        // Søkar [07-10 til 07-20] skal IKKJE ha samtidigattak.
+        // Annen part sin ikke-overlappande del [07-01 til 07-09] og [07-21 til 07-31] overlever.
+        expect(result.current).toEqual([
+            {
+                fom: '2026-07-01',
+                tom: '2026-07-09',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+                flerbarnsdager: false,
+                samtidigUttak: 100,
+            },
+            {
+                fom: '2026-07-10',
+                tom: '2026-07-20',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2026-07-21',
+                tom: '2026-07-31',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+                flerbarnsdager: false,
+                samtidigUttak: 100,
+            },
+        ]);
+    });
+
+    it('testcase 8 - regel 4: annenPart heilt omslutta av søkar sin periode, heile annenPart-perioden fjernast', () => {
+        const perioderAnnenPart: UttakPeriode_fpoversikt[] = [
+            {
+                fom: '2026-09-10',
+                tom: '2026-09-20',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+            },
+        ];
+
+        const perioderSøker: UttakPeriode_fpoversikt[] = [
+            {
+                fom: '2026-09-01',
+                tom: '2026-09-30',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                flerbarnsdager: false,
+            },
+        ];
+
+        const saker: Saker_fpoversikt = {
+            engangsstønad: [],
+            svangerskapspenger: [],
+            foreldrepenger: [
+                {
+                    saksnummer: SAKSNUMMER,
+                    familiehendelse: { antallBarn: 1, fødselsdato: '2026-01-01' },
+                    forelder: 'FAR_MEDMOR',
+                    gjelderAdopsjon: false,
+                    kanSøkeOmEndring: true,
+                    morUføretrygd: false,
+                    oppdatertTidspunkt: '2025-01-01T00:00:00',
+                    rettighetType: 'BEGGE_RETT',
+                    sakAvsluttet: false,
+                    sakTilhørerMor: false,
+                    gjeldendeVedtak: { perioder: perioderSøker },
+                },
+            ],
+        };
+
+        const { result } = renderHook(() => useUttaksplanForEksisterendeSak(perioderAnnenPart), {
+            wrapper: getWrapper(saker),
+        });
+
+        // AnnenPart [09-10 til 09-20] er heilt omslutta av søkar [09-01 til 09-30].
+        // Regel 4 fjernar heile annenPart-perioden.
+        // Søkar sine tre split-segment vert slått saman att til éin periode.
+        expect(result.current).toEqual([
+            {
+                fom: '2026-09-01',
+                tom: '2026-09-30',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                flerbarnsdager: false,
+            },
+        ]);
+    });
 });
