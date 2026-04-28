@@ -211,35 +211,47 @@ const fjernOverlappUtenSamtidigUttak = (
             return [periodeAnnenPart];
         }
 
-        const overlappendeSøkerPeriode = perioderSøker.find(
+        const overlappendeSøkerPerioder = perioderSøker.filter(
             (søker) => søker.samtidigUttak === undefined && harOverlapp(periodeAnnenPart, søker),
         );
 
-        if (!overlappendeSøkerPeriode) {
+        if (overlappendeSøkerPerioder.length === 0) {
             return [periodeAnnenPart];
         }
 
-        const annenFom = dayjs(periodeAnnenPart.fom);
-        const annenTom = dayjs(periodeAnnenPart.tom);
-        const søkerFom = dayjs(overlappendeSøkerPeriode.fom);
-        const søkerTom = dayjs(overlappendeSøkerPeriode.tom);
+        let segmenter: UttakPeriode_fpoversikt[] = [periodeAnnenPart];
 
-        const resultat: UttakPeriode_fpoversikt[] = [];
+        overlappendeSøkerPerioder.forEach((overlappendeSøkerPeriode) => {
+            const søkerFom = dayjs(overlappendeSøkerPeriode.fom);
+            const søkerTom = dayjs(overlappendeSøkerPeriode.tom);
 
-        if (annenFom.isBefore(søkerFom, 'day')) {
-            resultat.push({
-                ...periodeAnnenPart,
-                tom: Uttaksdagen.forrige(søkerFom.format(ISO_DATE_FORMAT)).getDato(),
+            segmenter = segmenter.flatMap((segment) => {
+                if (!harOverlapp(segment, overlappendeSøkerPeriode)) {
+                    return [segment];
+                }
+
+                const segmentFom = dayjs(segment.fom);
+                const segmentTom = dayjs(segment.tom);
+                const resultat: UttakPeriode_fpoversikt[] = [];
+
+                if (segmentFom.isBefore(søkerFom, 'day')) {
+                    resultat.push({
+                        ...segment,
+                        tom: Uttaksdagen.forrige(søkerFom.format(ISO_DATE_FORMAT)).getDato(),
+                    });
+                }
+
+                if (segmentTom.isAfter(søkerTom, 'day')) {
+                    resultat.push({
+                        ...segment,
+                        fom: Uttaksdagen.neste(søkerTom.format(ISO_DATE_FORMAT)).getDato(),
+                    });
+                }
+
+                return resultat;
             });
-        }
+        });
 
-        if (annenTom.isAfter(søkerTom, 'day')) {
-            resultat.push({
-                ...periodeAnnenPart,
-                fom: Uttaksdagen.neste(søkerTom.format(ISO_DATE_FORMAT)).getDato(),
-            });
-        }
-
-        return resultat;
+        return segmenter;
     });
 };
