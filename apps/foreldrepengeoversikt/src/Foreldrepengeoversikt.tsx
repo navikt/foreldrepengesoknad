@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { FormattedMessage } from 'react-intl';
 
-import { Alert, Loader } from '@navikt/ds-react';
+import { Loader } from '@navikt/ds-react';
 
 import { hentSakerOptions, minidialogOptions, søkerInfoOptions } from './api/queries.ts';
+import { ErrorAlert } from './components/error-boundary/ErrorAlert';
 import { ScrollToTop } from './components/scroll-to-top/ScrollToTop';
 import { useGetBackgroundColor } from './hooks/useBackgroundColor';
 import { ForeldrepengeoversiktRoutes } from './routes/ForeldrepengeoversiktRoutes';
@@ -25,9 +26,9 @@ export const Foreldrepengeoversikt = () => {
 
     if (søkerInfoQuery.isError || sakerQuery.isError) {
         return (
-            <Alert variant="info" className="m-8 mr-auto ml-auto w-[704px]">
+            <ErrorAlert>
                 <FormattedMessage id="error.hentingInformasjon" />
-            </Alert>
+            </ErrorAlert>
         );
     }
 
