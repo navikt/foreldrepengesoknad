@@ -1,4 +1,5 @@
 import { ContextDataType, useContextSaveAnyData } from 'appData/FpDataContext';
+import { mapPlanleggerDataToSøknadState } from 'appData/mapPlanleggerDataToSøknadState';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { usePlanleggerDataFromUrl } from 'appData/usePlanleggerDataFromUrl';
@@ -52,8 +53,15 @@ export const Forside = ({
     const { oppdaterSøknadIState } = useSetSøknadsdata();
 
     const planleggerDataFromUrl = usePlanleggerDataFromUrl();
+    const mappetSøknadStateFraPlanlegger = useMemo(
+        () =>
+            planleggerDataFromUrl ? mapPlanleggerDataToSøknadState(planleggerDataFromUrl, søkerInfo.kjønn) : null,
+        [planleggerDataFromUrl, søkerInfo.kjønn],
+    );
     // eslint-disable-next-line no-console
     console.log('planleggerDataFromUrl', planleggerDataFromUrl);
+    // eslint-disable-next-line no-console
+    console.log('mappetSøknadStateFraPlanlegger', mappetSøknadStateFraPlanlegger);
 
     // Denne må memoriserast, ellers får barna ulik id for kvar render => trøbbel
     const selectableBarn = useMemo(

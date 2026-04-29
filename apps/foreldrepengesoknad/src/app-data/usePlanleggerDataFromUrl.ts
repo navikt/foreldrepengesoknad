@@ -9,7 +9,6 @@ import { decodeBase64, erLokaltEllerDev } from '@navikt/fp-utils';
  * en hard avhengighet mellom appene.
  */
 export type PlanleggerDataFromUrl = {
-    HVEM_PLANLEGGER?: unknown;
     OM_BARNET?: unknown;
     HVOR_LANG_PERIODE?: unknown;
     FORDELING?: unknown;
