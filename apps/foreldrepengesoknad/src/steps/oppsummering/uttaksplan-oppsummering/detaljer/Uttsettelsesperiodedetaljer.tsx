@@ -43,6 +43,6 @@ const getÅrsakTekst = (intl: IntlShape, periode: UttakPeriode_fpoversikt) => {
         case 'NAV_TILTAK':
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.NAV_TILTAK' });
         default:
-            return '';
+            throw new Error(`Ukjent utsettelseÅrsak: ${periode.utsettelseÅrsak}`);
     }
 };
