@@ -113,7 +113,7 @@ const createFileIfEmpty = (attachment: Attachment): File => {
     if (!file || Object.keys(file).length === 0) {
         return {
             name: attachment.filename,
-            size: attachment.filesize,
+            size: attachment.filesize ?? 0,
         } as File;
     }
     return file;

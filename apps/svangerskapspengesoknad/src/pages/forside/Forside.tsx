@@ -5,21 +5,10 @@ import { SøknadRoute } from 'appData/routes';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import {
-    Alert,
-    BodyShort,
-    Box,
-    Button,
-    ConfirmationPanel,
-    GuidePanel,
-    HStack,
-    Link,
-    List,
-    VStack,
-} from '@navikt/ds-react';
+import { Alert, BodyShort, Box, Button, GuidePanel, HStack, Link, List, VStack } from '@navikt/ds-react';
 
 import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
-import { SkjemaRotLayout } from '@navikt/fp-ui';
+import { SamtykkePanel, SkjemaRotLayout } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
 interface Props {
@@ -113,7 +102,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                     </VStack>
                 </Alert>
                 <EksisterendeSøknad />
-                <ConfirmationPanel
+                <SamtykkePanel
                     label={intl.formatMessage({ id: 'Forside.samtykke' })}
                     onChange={() => setIsChecked((state) => !state)}
                     checked={isChecked}
@@ -143,7 +132,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                             </List.Item>
                         </List>
                     </Box>
-                </ConfirmationPanel>
+                </SamtykkePanel>
                 <HStack justify="center">
                     <Button type="button" onClick={bekreft}>
                         <FormattedMessage id="Forside.begynnMedSøknad" />

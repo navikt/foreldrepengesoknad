@@ -2,7 +2,7 @@ import { type Context, applyRequestHandlers } from 'msw-storybook-addon';
 import { setupWorker } from 'msw/browser';
 
 export const mswWrapper = (
-    fn: ({ setHandlers }: { setHandlers: (msw: Context['parameters']['msw']) => void }) => Promise<void>,
+    fn: ({ setHandlers }: { setHandlers: (msw: Context['parameters']['msw']) => void }) => Promise<void> | void,
 ) => {
     if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
         return async () => {
