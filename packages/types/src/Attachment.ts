@@ -7,7 +7,7 @@ export type Attachment = {
     dokumenterer?: Dokumenterer;
     id: string;
     filename: string;
-    filesize: number | undefined;
+    filesize?: number;
     file: File;
     uuid?: string;
     pending: boolean;
