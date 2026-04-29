@@ -81,8 +81,7 @@ export const AndreInntektskilderFieldArray = () => {
                     icon={<PlusIcon aria-hidden />}
                     type="button"
                     variant="secondary"
-                    //@ts-expect-error fiks
-                    onClick={() => append({})}
+                    onClick={() => append({ type: undefined })}
                     size="small"
                 >
                     <FormattedMessage id="AndreInntektskilderStep.LeggTil" />

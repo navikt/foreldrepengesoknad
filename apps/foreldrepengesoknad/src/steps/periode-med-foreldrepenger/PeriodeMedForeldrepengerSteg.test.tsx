@@ -409,7 +409,6 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
     );
     it(
         'skal ikke vise informasjon om utvidet 80% dekningsgrad for far som søker første gang hvis søkedato er etter 1 juli 2024',
-        // @ts-expect-error -- usikker på beste approach
         mswWrapper(({ setHandlers }) => {
             MockDate.set(new Date('2024-07-01'));
             const gåTilNesteSide = vi.fn();
@@ -456,7 +455,6 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
     it(
         'skal ikke vise informasjon om utvidet 80% dekningsgrad for mor som søker etter far der far valgte 80% dekning' +
             ' hvis søkedato er etter 1 juli 2024',
-        // @ts-expect-error -- usikker på beste approach
         mswWrapper(({ setHandlers }) => {
             MockDate.set(new Date('2024-07-01'));
             const gåTilNesteSide = vi.fn();
