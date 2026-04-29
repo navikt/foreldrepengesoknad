@@ -236,7 +236,6 @@
     "PlanleggerStepPage.Tittel": "Plan the parental leave/benefit",
     "PlanenDeresSteg.kalender": "Calendar",
     "PlanenDeresSteg.liste": "List",
-    "SøkOmForeldrepenger.Anbefalt": "Recommended",
     "SøkOmForeldrepenger.BasertPå": "Estimated on the {erAdopsjon, select, true {date for taking over the care} other {{erFødt, select, true {date of birth} other {due date}}}} you can now apply for parental benefit.",
     "SøkOmForeldrepenger.SendDigitalt": "Send digitally",
     "SøkOmForeldrepenger.SendDigitaltBeskrivelse": "The fastest option, and the information you have filled in the planner is included automatically.",

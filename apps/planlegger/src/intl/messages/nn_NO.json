@@ -236,7 +236,6 @@
     "PlanleggerStepPage.Tittel": "Planlegg foreldrepengar",
     "PlanenDeresSteg.kalender": "Kalender",
     "PlanenDeresSteg.liste": "Liste",
-    "SøkOmForeldrepenger.Anbefalt": "Tilrådd",
     "SøkOmForeldrepenger.BasertPå": "Berekna på {erAdopsjon, select, true {overtakingsdatoen} other {{erFødt, select, true {fødselsdatoen} other {terminen}}}} kan {erAlenesøker, select, true {du} other {de}} søkje om foreldrepengar no.",
     "SøkOmForeldrepenger.SendDigitalt": "Send digitalt",
     "SøkOmForeldrepenger.SendDigitaltBeskrivelse": "Raskast, og opplysningane du har fylt ut i planleggjaren følgjer med automatisk.",

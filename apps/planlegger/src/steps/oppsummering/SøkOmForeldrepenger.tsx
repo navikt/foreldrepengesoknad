@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
-import { BodyShort, LinkCard, Tag, VStack } from '@navikt/ds-react';
+import { BodyShort, LinkCard, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Infobox } from '@navikt/fp-ui';
@@ -53,11 +53,6 @@ export const SøkOmForeldrepenger = ({ erAlenesøker, barnet }: Props) => {
                         <LinkCard.Description>
                             <FormattedMessage id="SøkOmForeldrepenger.SendDigitaltBeskrivelse" />
                         </LinkCard.Description>
-                        <LinkCard.Footer>
-                            <Tag size="small">
-                                <FormattedMessage id="SøkOmForeldrepenger.Anbefalt" />
-                            </Tag>
-                        </LinkCard.Footer>
                     </LinkCard>
                     <LinkCard data-color="accent">
                         <LinkCard.Title>
