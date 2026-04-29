@@ -213,12 +213,12 @@ export const erDetReadonlyPerioderEtterValgtePerioder = (
 export const getAktivitetskravOptions = (skalViseMorsAktivitetskravVedSamtidigUttak: boolean): MorsAktivitet[] => {
     const aktivitetsKrav = [
         'ARBEID',
-        'UTDANNING',
-        'KVALPROG',
-        'INTROPROG',
+        'ARBEID_OG_UTDANNING',
         'TRENGER_HJELP',
         'INNLAGT',
-        'ARBEID_OG_UTDANNING',
+        'INTROPROG',
+        'KVALPROG',
+        'UTDANNING',
     ] satisfies MorsAktivitet[];
 
     return skalViseMorsAktivitetskravVedSamtidigUttak
