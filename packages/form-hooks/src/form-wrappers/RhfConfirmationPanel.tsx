@@ -1,7 +1,7 @@
 import { ReactNode, useMemo } from 'react';
 import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 
-import { Box, Checkbox, ErrorMessage, VStack } from '@navikt/ds-react';
+import { SamtykkePanel } from '@navikt/fp-ui';
 
 import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
@@ -33,26 +33,18 @@ export const RhfConfirmationPanel = <T extends FieldValues>({
     });
 
     const errorMessage = getError(errors, name);
-    const checked = field.value ?? false;
-
-    const background = checked ? 'success-moderate' : errorMessage ? 'danger-moderate' : 'warning-moderate';
 
     return (
-        <Box background={background} padding="space-16" borderRadius="8">
-            <VStack gap="space-16">
-                {children}
-                <Checkbox
-                    ref={field.ref}
-                    name={field.name}
-                    onBlur={field.onBlur}
-                    checked={checked}
-                    onChange={(evt) => field.onChange(evt.target.checked)}
-                    error={!!errorMessage}
-                >
-                    {label}
-                </Checkbox>
-                {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-            </VStack>
-        </Box>
+        <SamtykkePanel
+            label={label}
+            checked={field.value ?? false}
+            onChange={(checked) => field.onChange(checked)}
+            error={errorMessage}
+            name={field.name}
+            onBlur={field.onBlur}
+            checkboxRef={field.ref}
+        >
+            {children}
+        </SamtykkePanel>
     );
 };
