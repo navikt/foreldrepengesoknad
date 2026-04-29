@@ -1,6 +1,7 @@
 import { ContextDataType, useContextSaveAnyData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
+import { usePlanleggerDataFromUrl } from 'appData/usePlanleggerDataFromUrl';
 import { useSetSøknadsdata } from 'appData/useSetSøknadsdata';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
@@ -49,6 +50,10 @@ export const Forside = ({
     const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger);
     const oppdaterDataIState = useContextSaveAnyData();
     const { oppdaterSøknadIState } = useSetSøknadsdata();
+
+    const planleggerDataFromUrl = usePlanleggerDataFromUrl();
+    // eslint-disable-next-line no-console
+    console.log('planleggerDataFromUrl', planleggerDataFromUrl);
 
     // Denne må memoriserast, ellers får barna ulik id for kvar render => trøbbel
     const selectableBarn = useMemo(
