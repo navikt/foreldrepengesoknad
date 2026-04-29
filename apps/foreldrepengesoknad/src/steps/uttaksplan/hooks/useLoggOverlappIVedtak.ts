@@ -9,6 +9,8 @@ dayjs.extend(isSameOrBefore);
 
 export const useLoggOverlappIVedtak = (
     uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
+    perioderFraBackend: UttakPeriode_fpoversikt[] | undefined,
+    perioderAnnenPartFraBackend: UttakPeriode_fpoversikt[] | undefined,
 ): void => {
     const lastCheckedFingerprint = useRef<string | null>(null);
 
@@ -38,10 +40,12 @@ export const useLoggOverlappIVedtak = (
                     })),
                 );
                 scope.setExtra('uttaksplan', perioderUttaksplan.map(periodeTilLoggObjekt));
+                scope.setExtra('perioderFraBackend', perioderFraBackend?.map(periodeTilLoggObjekt));
+                scope.setExtra('perioderAnnenPartFraBackend', perioderAnnenPartFraBackend?.map(periodeTilLoggObjekt));
                 captureMessage('Uttaksplan har ugyldig overlappande periodar etter transformasjon', 'warning');
             });
         }
-    }, [uttaksplan]);
+    }, [uttaksplan, perioderFraBackend, perioderAnnenPartFraBackend]);
 };
 
 const erOverlappande = (a: UttakPeriode_fpoversikt, b: UttakPeriode_fpoversikt): boolean =>
