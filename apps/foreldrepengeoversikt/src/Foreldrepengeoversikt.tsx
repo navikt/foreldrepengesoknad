@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
-import { Loader } from '@navikt/ds-react';
+import { Alert, Loader } from '@navikt/ds-react';
 
 import { hentSakerOptions, minidialogOptions, søkerInfoOptions } from './api/queries.ts';
 import { ScrollToTop } from './components/scroll-to-top/ScrollToTop';
@@ -11,7 +11,6 @@ import { SakOppslag } from './types/SakOppslag';
 import { mapSakerDTOToSaker } from './utils/sakerUtils';
 
 export const Foreldrepengeoversikt = () => {
-    const intl = useIntl();
     const backgroundColor = useGetBackgroundColor();
 
     // Denne trenger vi ikke før senere. Men vi putter den i cache så tidlig som mulig.
@@ -25,8 +24,11 @@ export const Foreldrepengeoversikt = () => {
     });
 
     if (søkerInfoQuery.isError || sakerQuery.isError) {
-        const error = new Error(intl.formatMessage({ id: 'error.hentingInformasjon' }));
-        throw error;
+        return (
+            <Alert variant="info" className="m-8 mr-auto ml-auto w-[704px]">
+                <FormattedMessage id="error.hentingInformasjon" />
+            </Alert>
+        );
     }
 
     if (!søkerInfoQuery.data || sakerQuery.isPending) {
