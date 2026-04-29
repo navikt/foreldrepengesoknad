@@ -4,9 +4,10 @@ import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { usePlanleggerDataFromUrl } from 'appData/usePlanleggerDataFromUrl';
 import { useSetSøknadsdata } from 'appData/useSetSøknadsdata';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { useSearchParams } from 'react-router-dom';
 import {
     lagEndringsSøknad,
     lagNySøknadForRegistrerteBarn,
@@ -54,14 +55,32 @@ export const Forside = ({
 
     const planleggerDataFromUrl = usePlanleggerDataFromUrl();
     const mappetSøknadStateFraPlanlegger = useMemo(
-        () =>
-            planleggerDataFromUrl ? mapPlanleggerDataToSøknadState(planleggerDataFromUrl, søkerInfo.kjønn) : null,
+        () => (planleggerDataFromUrl ? mapPlanleggerDataToSøknadState(planleggerDataFromUrl, søkerInfo.kjønn) : null),
         [planleggerDataFromUrl, søkerInfo.kjønn],
     );
-    // eslint-disable-next-line no-console
-    console.log('planleggerDataFromUrl', planleggerDataFromUrl);
-    // eslint-disable-next-line no-console
-    console.log('mappetSøknadStateFraPlanlegger', mappetSøknadStateFraPlanlegger);
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    const harProsessertPlanleggerDataRef = useRef(false);
+
+    useEffect(() => {
+        if (harProsessertPlanleggerDataRef.current || !mappetSøknadStateFraPlanlegger) {
+            return;
+        }
+
+        harProsessertPlanleggerDataRef.current = true;
+
+        for (const [key, value] of Object.entries(mappetSøknadStateFraPlanlegger)) {
+            if (value !== undefined) {
+                oppdaterDataIState(key as ContextDataType, value);
+            }
+        }
+
+        if (searchParams.has('planleggerData')) {
+            const oppdatert = new URLSearchParams(searchParams);
+            oppdatert.delete('planleggerData');
+            setSearchParams(oppdatert, { replace: true });
+        }
+    }, [mappetSøknadStateFraPlanlegger, oppdaterDataIState, searchParams, setSearchParams]);
 
     // Denne må memoriserast, ellers får barna ulik id for kvar render => trøbbel
     const selectableBarn = useMemo(
