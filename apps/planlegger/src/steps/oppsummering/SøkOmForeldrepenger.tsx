@@ -46,23 +46,27 @@ export const SøkOmForeldrepenger = ({ erAlenesøker, barnet }: Props) => {
                 <VStack gap="space-16">
                     <LinkCard data-color="accent">
                         <LinkCard.Title>
-                            <LinkCard.Anchor href={søknadHref}>Send digitalt</LinkCard.Anchor>
+                            <LinkCard.Anchor href={søknadHref}>
+                                <FormattedMessage id="SøkOmForeldrepenger.SendDigitalt" />
+                            </LinkCard.Anchor>
                         </LinkCard.Title>
                         <LinkCard.Description>
-                            Raskest, og opplysningene du har fylt ut i planleggeren følger med automatisk.
+                            <FormattedMessage id="SøkOmForeldrepenger.SendDigitaltBeskrivelse" />
                         </LinkCard.Description>
                         <LinkCard.Footer>
-                            <Tag size="small">Anbefalt</Tag>
+                            <Tag size="small">
+                                <FormattedMessage id="SøkOmForeldrepenger.Anbefalt" />
+                            </Tag>
                         </LinkCard.Footer>
                     </LinkCard>
                     <LinkCard data-color="accent">
                         <LinkCard.Title>
                             <LinkCard.Anchor href="https://www.nav.no/start/soknad-foreldrepenger?stegvalg=1">
-                                Send i posten
+                                <FormattedMessage id="SøkOmForeldrepenger.SendIPosten" />
                             </LinkCard.Anchor>
                         </LinkCard.Title>
                         <LinkCard.Description>
-                            Du skriver ut og sender selv. Opplysningene fylles ikke inn automatisk.
+                            <FormattedMessage id="SøkOmForeldrepenger.SendIPostenBeskrivelse" />
                         </LinkCard.Description>
                     </LinkCard>
                 </VStack>
