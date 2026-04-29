@@ -9,7 +9,7 @@ import isEqual from 'lodash/isEqual';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
-import { erAlenesøker as erAlene, erFarOgFar } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker as erAlene, erFarOgFar, erMedmorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
 import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
@@ -58,9 +58,13 @@ export const OmBarnetSteg = () => {
         }
     };
 
+    const erMedmor = erMedmorDelAvSøknaden(hvemPlanlegger);
     const formMethods = useForm<OmBarnet>({
         shouldUnregister: true,
-        defaultValues: omBarnet,
+        defaultValues: {
+            ...(omBarnet ?? {}),
+            erFødsel: omBarnet?.erFødsel ?? (erMedmor ? true : undefined),
+        } as any,
     });
 
     const erFødsel = formMethods.watch('erFødsel');
@@ -101,7 +105,7 @@ export const OmBarnetSteg = () => {
                             <Radio value={true} autoFocus>
                                 <FormattedMessage id="OmBarnetSteg.Fødsel" />
                             </Radio>
-                            <Radio value={false}>
+                            <Radio value={false} disabled={erMedmor}>
                                 <FormattedMessage id="OmBarnetSteg.Adopsjon" />
                             </Radio>
                         </BlueRadioGroup>
