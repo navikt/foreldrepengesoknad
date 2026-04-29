@@ -32,7 +32,7 @@ const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHar
         return 'ALENEOMSORG';
     }
 
-    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && !erBarnetAdoptert(omBarnet)) {
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && erBarnetAdoptert(omBarnet)) {
         return 'ALENEOMSORG';
     }
 
