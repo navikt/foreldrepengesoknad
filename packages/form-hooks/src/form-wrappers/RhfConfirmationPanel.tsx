@@ -35,8 +35,10 @@ export const RhfConfirmationPanel = <T extends FieldValues>({
     const errorMessage = getError(errors, name);
     const checked = field.value ?? false;
 
+    const background = checked ? 'success-moderate' : errorMessage ? 'danger-moderate' : 'warning-moderate';
+
     return (
-        <Box background="neutral-moderate" padding="space-16" borderRadius="8">
+        <Box background={background} padding="space-16" borderRadius="8">
             <VStack gap="space-16">
                 {children}
                 <Checkbox
