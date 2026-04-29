@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
-import { BodyShort, Button, HStack, Link, VStack } from '@navikt/ds-react';
+import { BodyShort, LinkCard, Tag, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Infobox } from '@navikt/fp-ui';
@@ -21,10 +21,10 @@ export const SøkOmForeldrepenger = ({ erAlenesøker, barnet }: Props) => {
     // Funksjonen er foreløpig kun aktiv lokalt og i dev for testing — ikke i prod.
     const skalSendeDataViaUrl = erLokaltEllerDev() && harDataÅOverføre;
     const søknadHref = skalSendeDataViaUrl
-        ? `${links.søknadForeldrepenger}?planleggerData=${encodeURIComponent(
+        ? `${links.foreldrepengesoknad}?planleggerData=${encodeURIComponent(
               encodeToBase64(JSON.stringify(sanitizePlanleggerState(planleggerState))),
           )}`
-        : links.søknadForeldrepenger;
+        : links.foreldrepengesoknad;
 
     return (
         <Infobox
@@ -43,13 +43,29 @@ export const SøkOmForeldrepenger = ({ erAlenesøker, barnet }: Props) => {
                         }}
                     />
                 </BodyShort>
-                <HStack>
-                    <Link href={søknadHref} target="_blank" rel="noreferrer">
-                        <Button variant="primary">
-                            <FormattedMessage id="SøkOmForeldrepenger.Søk" />
-                        </Button>
-                    </Link>
-                </HStack>
+                <VStack gap="space-16">
+                    <LinkCard data-color="accent">
+                        <LinkCard.Title>
+                            <LinkCard.Anchor href={søknadHref}>Send digitalt</LinkCard.Anchor>
+                        </LinkCard.Title>
+                        <LinkCard.Description>
+                            Raskest, og opplysningene du har fylt ut i planleggeren følger med automatisk.
+                        </LinkCard.Description>
+                        <LinkCard.Footer>
+                            <Tag size="small">Anbefalt</Tag>
+                        </LinkCard.Footer>
+                    </LinkCard>
+                    <LinkCard data-color="accent">
+                        <LinkCard.Title>
+                            <LinkCard.Anchor href="https://www.nav.no/start/soknad-foreldrepenger?stegvalg=1">
+                                Send i posten
+                            </LinkCard.Anchor>
+                        </LinkCard.Title>
+                        <LinkCard.Description>
+                            Du skriver ut og sender selv. Opplysningene fylles ikke inn automatisk.
+                        </LinkCard.Description>
+                    </LinkCard>
+                </VStack>
             </VStack>
         </Infobox>
     );
