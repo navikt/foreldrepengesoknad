@@ -11,7 +11,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { Tidsperioden } from '@navikt/fp-utils';
+import { Tidsperioden, Uttaksdagen } from '@navikt/fp-utils';
 
 import {
     Uttaksplanperiode,
@@ -23,6 +23,34 @@ import {
 dayjs.extend(isSameOrAfter);
 dayjs.extend(minMax);
 dayjs.extend(isoWeekday);
+
+export const ANTALL_UTTAKSDAGER_TRE_UKER = 15;
+export const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
+
+// Vinduet er [familiehendelsesdato - 15 uttaksdager, familiehendelsesdato + 30 uttaksdager] –
+// dvs. 3 veker før og 6 veker etter (matchar UI-validatoren).
+export const getAntallUttaksdagerIVinduRundtFødsel = (
+    periodeFom: string,
+    periodeTom: string,
+    familiehendelsedato: string,
+): number => {
+    const familiehendelseSomUttaksdag = Uttaksdagen.denneEllerNeste(familiehendelsedato);
+    const førsteDagIVindu = familiehendelseSomUttaksdag.getDatoAntallUttaksdagerTidligere(ANTALL_UTTAKSDAGER_TRE_UKER);
+    // getDatoAntallUttaksdagerSenere(N) returnerer den (N+1)-te uttaksdagen frå familiehendelse,
+    // så vi brukar (30 - 1) for å treffe den 30. (siste) uttaksdagen i seksvekersvinduet.
+    const sisteDagIVindu = familiehendelseSomUttaksdag.getDatoAntallUttaksdagerSenere(
+        ANTALL_UTTAKSDAGER_SEKS_UKER - 1,
+    );
+
+    const overlappFom = dayjs(periodeFom).isAfter(førsteDagIVindu, 'day') ? periodeFom : førsteDagIVindu;
+    const overlappTom = dayjs(periodeTom).isBefore(sisteDagIVindu, 'day') ? periodeTom : sisteDagIVindu;
+
+    if (dayjs(overlappFom).isAfter(overlappTom, 'day')) {
+        return 0;
+    }
+
+    return Uttaksdagen.denneEllerNeste(overlappFom).getUttaksdagerFremTilOgMedDato(overlappTom);
+};
 
 export const erUttaksperiode = (periode: Uttaksplanperiode) => {
     return erVanligUttakPeriode(periode) && periode.utsettelseÅrsak === undefined;

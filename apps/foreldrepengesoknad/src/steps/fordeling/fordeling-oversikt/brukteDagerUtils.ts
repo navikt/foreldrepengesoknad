@@ -7,12 +7,10 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
+import { getAntallUttaksdagerIVinduRundtFødsel } from '@navikt/fp-uttaksplan';
+import { Uttaksperioden } from '@navikt/fp-utils';
 
 type Periode = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
-
-const ANTALL_UTTAKSDAGER_TRE_UKER = 15;
-const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 
 interface ForeldersBrukteDager {
     førTermin: KontoDto[];
@@ -83,27 +81,6 @@ const finnAntallDagerÅTrekke = (periode: Periode, erFødsel: boolean, familiehe
         return dager * (samtidigUttak / 100);
     }
     return dager;
-};
-
-const getAntallUttaksdagerIVinduRundtFødsel = (
-    periodeFom: string,
-    periodeTom: string,
-    familiehendelsedato: string,
-): number => {
-    const familiehendelseSomUttaksdag = Uttaksdagen.denneEllerNeste(familiehendelsedato);
-    const førsteDagIVindu = familiehendelseSomUttaksdag.getDatoAntallUttaksdagerTidligere(ANTALL_UTTAKSDAGER_TRE_UKER);
-    const sisteDagIVindu = familiehendelseSomUttaksdag.getDatoAntallUttaksdagerSenere(
-        ANTALL_UTTAKSDAGER_SEKS_UKER - 1,
-    );
-
-    const overlappFom = dayjs(periodeFom).isAfter(førsteDagIVindu, 'day') ? periodeFom : førsteDagIVindu;
-    const overlappTom = dayjs(periodeTom).isBefore(sisteDagIVindu, 'day') ? periodeTom : sisteDagIVindu;
-
-    if (dayjs(overlappFom).isAfter(overlappTom, 'day')) {
-        return 0;
-    }
-
-    return Uttaksdagen.denneEllerNeste(overlappFom).getUttaksdagerFremTilOgMedDato(overlappTom);
 };
 
 const beregnBrukteUttaksdager = (

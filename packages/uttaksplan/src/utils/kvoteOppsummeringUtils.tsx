@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { sum, sumBy } from 'lodash';
 
 import {
@@ -10,13 +9,11 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
+import { Uttaksperioden } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
-
-const ANTALL_UTTAKSDAGER_TRE_UKER = 15;
-const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
+import { getAntallUttaksdagerIVinduRundtFødsel } from './periodeUtils';
 
 export const useErAntallDagerOvertrukketIUttaksplan = () => {
     const {
@@ -328,29 +325,4 @@ const finnAntallDagerÅTrekke = (
         return dager * (samtidigUttak / 100);
     }
     return dager;
-};
-
-// Vinduet er [familiehendelsesdato - 15 uttaksdager, familiehendelsesdato + 30 uttaksdager] –
-// dvs. 3 veker før og 6 veker etter (matchar UI-validatoren).
-const getAntallUttaksdagerIVinduRundtFødsel = (
-    periodeFom: string,
-    periodeTom: string,
-    familiehendelsedato: string,
-): number => {
-    const familiehendelseSomUttaksdag = Uttaksdagen.denneEllerNeste(familiehendelsedato);
-    const førsteDagIVindu = familiehendelseSomUttaksdag.getDatoAntallUttaksdagerTidligere(ANTALL_UTTAKSDAGER_TRE_UKER);
-    // getDatoAntallUttaksdagerSenere(N) returnerer den (N+1)-te uttaksdagen frå familiehendelse,
-    // så vi brukar (30 - 1) for å treffe den 30. (siste) uttaksdagen i seksvekersvinduet.
-    const sisteDagIVindu = familiehendelseSomUttaksdag.getDatoAntallUttaksdagerSenere(
-        ANTALL_UTTAKSDAGER_SEKS_UKER - 1,
-    );
-
-    const overlappFom = dayjs(periodeFom).isAfter(førsteDagIVindu, 'day') ? periodeFom : førsteDagIVindu;
-    const overlappTom = dayjs(periodeTom).isBefore(sisteDagIVindu, 'day') ? periodeTom : sisteDagIVindu;
-
-    if (dayjs(overlappFom).isAfter(overlappTom, 'day')) {
-        return 0;
-    }
-
-    return Uttaksdagen.denneEllerNeste(overlappFom).getUttaksdagerFremTilOgMedDato(overlappTom);
 };
