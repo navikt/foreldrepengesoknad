@@ -1,8 +1,8 @@
 import { Component } from 'react';
 
-import { Alert } from '@navikt/ds-react';
-
 import { captureException } from '@navikt/fp-observability';
+
+import { ErrorAlert } from './ErrorAlert';
 
 type Props = {
     children: React.ReactNode;
@@ -28,11 +28,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
     render() {
         if (this.state.hasError) {
-            return (
-                <Alert variant="info" className="m-8 mr-auto ml-auto w-[704px]">
-                    {this.state.error?.message}
-                </Alert>
-            );
+            return <ErrorAlert>{this.state.error?.message}</ErrorAlert>;
         }
 
         return this.props.children;
