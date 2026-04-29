@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const SamtykkePanel = ({ label, checked, onChange, error, children, name, onBlur, checkboxRef }: Props) => {
-    const background = checked ? 'success-moderate' : error ? 'danger-moderate' : 'warning-moderate';
+    const background = getBackground(checked, !!error);
 
     return (
         <Box background={background} padding="space-16" borderRadius="8">
@@ -34,4 +34,14 @@ export const SamtykkePanel = ({ label, checked, onChange, error, children, name,
             </VStack>
         </Box>
     );
+};
+
+const getBackground = (checked: boolean, hasError: boolean) => {
+    if (checked) {
+        return 'success-moderate';
+    }
+    if (hasError) {
+        return 'danger-moderate';
+    }
+    return 'warning-moderate';
 };
