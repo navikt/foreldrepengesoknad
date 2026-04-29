@@ -7,6 +7,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
+import { getAntallUttaksdagerIVinduRundtFødsel } from '@navikt/fp-uttaksplan';
 import { Uttaksperioden } from '@navikt/fp-utils';
 
 type Periode = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
@@ -58,7 +59,7 @@ const filtrerAvslåttePerioderMenBeholdPleiepenger = (periode: Periode): boolean
     return periode.resultat?.trekkerDager ?? true;
 };
 
-const finnAntallDagerÅTrekke = (periode: Periode): number => {
+const finnAntallDagerÅTrekke = (periode: Periode, erFødsel: boolean, familiehendelsesdato: string): number => {
     if (Uttaksperioden.erEøsPeriode(periode)) {
         return periode.trekkdager;
     }
@@ -66,7 +67,15 @@ const finnAntallDagerÅTrekke = (periode: Periode): number => {
     const samtidigUttak = periode.samtidigUttak;
     const dager = Uttaksperioden.getAntallUttaksdager(periode);
     if (arbeidstidprosent) {
-        return dager * ((100 - arbeidstidprosent) / 100);
+        const graderingsProsent = (100 - arbeidstidprosent) / 100;
+        // Mor sin gradering i tidsrommet 3 uker før / 6 uker etter familiehendelsesdato
+        // gir ikkje forlenging av stønadsperioden – dagane skal trekkjast som heile.
+        if (erFødsel && periode.forelder === 'MOR') {
+            const dagerIVindu = getAntallUttaksdagerIVinduRundtFødsel(periode.fom, periode.tom, familiehendelsesdato);
+            const dagerUtenforVindu = dager - dagerIVindu;
+            return dagerIVindu + dagerUtenforVindu * graderingsProsent;
+        }
+        return dager * graderingsProsent;
     }
     if (samtidigUttak) {
         return dager * (samtidigUttak / 100);
@@ -74,11 +83,21 @@ const finnAntallDagerÅTrekke = (periode: Periode): number => {
     return dager;
 };
 
-const beregnBrukteUttaksdager = (tilgjengeligeStønadskontoer: KontoBeregningDto, perioder: Periode[]): KontoDto[] => {
+const beregnBrukteUttaksdager = (
+    tilgjengeligeStønadskontoer: KontoBeregningDto,
+    perioder: Periode[],
+    erFødsel: boolean,
+    familiehendelsesdato: string,
+): KontoDto[] => {
     return tilgjengeligeStønadskontoer.kontoer
         .map((konto) => {
             const perioderForKonto = perioder.filter((p) => p.kontoType === konto.konto);
-            const dager = Math.floor(perioderForKonto.reduce((sum, p) => sum + finnAntallDagerÅTrekke(p), 0));
+            const dager = Math.floor(
+                perioderForKonto.reduce(
+                    (sum, p) => sum + finnAntallDagerÅTrekke(p, erFødsel, familiehendelsesdato),
+                    0,
+                ),
+            );
             return { konto: konto.konto, dager };
         })
         .filter((k) => k.dager > 0);
@@ -101,12 +120,23 @@ const getBrukteDagerForForelder = (
     perioder: Periode[],
     familiehendelsesdato: string,
     forelder: BrukerRolleSak_fpoversikt,
+    erFødsel: boolean,
 ): ForeldersBrukteDager => {
     const perioderFørTermin = getPerioderFørFamiliehendelse(perioder, familiehendelsesdato);
     const perioderEtterTermin = getPerioderEtterFamiliehendelse(perioder, familiehendelsesdato);
-    const førTermin = beregnBrukteUttaksdager(tilgjengeligeStønadskontoer, perioderFørTermin);
-    const etterTermin = beregnBrukteUttaksdager(tilgjengeligeStønadskontoer, perioderEtterTermin);
-    const alle = beregnBrukteUttaksdager(tilgjengeligeStønadskontoer, perioder);
+    const førTermin = beregnBrukteUttaksdager(
+        tilgjengeligeStønadskontoer,
+        perioderFørTermin,
+        erFødsel,
+        familiehendelsesdato,
+    );
+    const etterTermin = beregnBrukteUttaksdager(
+        tilgjengeligeStønadskontoer,
+        perioderEtterTermin,
+        erFødsel,
+        familiehendelsesdato,
+    );
+    const alle = beregnBrukteUttaksdager(tilgjengeligeStønadskontoer, perioder, erFødsel, familiehendelsesdato);
     const dagerTotalt = summerBrukteUttaksdager(alle);
 
     const isMor = forelder === 'MOR';
@@ -129,6 +159,7 @@ export const getBrukteDager = (
     tilgjengeligeStønadskontoer: KontoBeregningDto,
     perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
     familiehendelsesdato: string,
+    erFødsel: boolean,
 ): BrukteDager => {
     const perioderMedUttak = (perioder ?? []).filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
     return {
@@ -137,13 +168,15 @@ export const getBrukteDager = (
             perioderMedUttak.filter(isMorsPeriode),
             familiehendelsesdato,
             'MOR',
+            erFødsel,
         ),
         farMedmor: getBrukteDagerForForelder(
             tilgjengeligeStønadskontoer,
             perioderMedUttak.filter(isFarsPeriode),
             familiehendelsesdato,
             'FAR_MEDMOR',
+            erFødsel,
         ),
-        alle: beregnBrukteUttaksdager(tilgjengeligeStønadskontoer, perioderMedUttak),
+        alle: beregnBrukteUttaksdager(tilgjengeligeStønadskontoer, perioderMedUttak, erFødsel, familiehendelsesdato),
     };
 };

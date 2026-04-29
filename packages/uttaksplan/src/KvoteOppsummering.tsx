@@ -81,7 +81,7 @@ const KvoteTittelKunEnHarForeldrepenger = ({
     erInnsyn: boolean;
 }) => {
     const intl = useIntl();
-    const { uttakPerioder, familiesituasjon, valgtStønadskonto } = useUttaksplanData();
+    const { uttakPerioder, familiesituasjon, valgtStønadskonto, familiehendelsedato } = useUttaksplanData();
 
     const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
 
@@ -89,6 +89,7 @@ const KvoteTittelKunEnHarForeldrepenger = ({
         filtrertePerioder,
         familiesituasjon,
         valgtStønadskonto,
+        familiehendelsedato,
     );
 
     if (antallOvertrukketDager > 0) {
@@ -156,7 +157,8 @@ const KvoteTittel = ({
     erInnsyn: boolean;
 }) => {
     const intl = useIntl();
-    const { foreldreInfo, uttakPerioder, familiesituasjon, valgtStønadskonto } = useUttaksplanData();
+    const { foreldreInfo, uttakPerioder, familiesituasjon, valgtStønadskonto, familiehendelsedato } =
+        useUttaksplanData();
 
     const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
 
@@ -169,7 +171,7 @@ const KvoteTittel = ({
         dagerBruktAvFar,
         dagerBruktAvMor,
         dagerFellesBrukt,
-    } = tellDagerIUttaksPeriodene(filtrertePerioder, familiesituasjon, valgtStønadskonto);
+    } = tellDagerIUttaksPeriodene(filtrertePerioder, familiesituasjon, valgtStønadskonto, familiehendelsedato);
 
     if (antallOvertrukketDager > 0) {
         const beggeHarBruktMorsKvote = filtrertePerioder
@@ -482,7 +484,8 @@ const MødreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
 
 const FellesKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const intl = useIntl();
-    const { uttakPerioder, valgtStønadskonto, foreldreInfo } = useUttaksplanData();
+    const { uttakPerioder, valgtStønadskonto, foreldreInfo, familiesituasjon, familiehendelsedato } =
+        useUttaksplanData();
 
     const forelder = foreldreInfo.søker;
     const fellesKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
@@ -496,6 +499,8 @@ const FellesKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
             (p) => getUttaksKontoType(p) === 'FELLESPERIODE' && erVanligUttakPeriode(p) && p.forelder === forelder,
         ),
         valgtStønadskonto.kontoer,
+        familiesituasjon,
+        familiehendelsedato,
     );
     const dagerBruktAvAnnenPart = summerDagerIPerioder(
         filtrertePerioder.filter(
@@ -505,6 +510,8 @@ const FellesKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
                 p.forelder !== forelder,
         ),
         valgtStønadskonto.kontoer,
+        familiesituasjon,
+        familiehendelsedato,
     );
     const samletBrukteDager = dagerBruktAvDeg + dagerBruktAvAnnenPart;
     const ubrukteDager = fellesKonto.dager - samletBrukteDager;
@@ -611,6 +618,7 @@ const StandardVisning = ({
     const intl = useIntl();
     const {
         familiesituasjon,
+        familiehendelsedato,
         foreldreInfo: { erMedmorDelAvSøknaden },
     } = useUttaksplanData();
 
@@ -621,7 +629,7 @@ const StandardVisning = ({
     // Dersom barnet er født vil ubrukte dager på mor sin "3 uker før fødsel" konto utløpe og ikke kunne brukes.
     const ubrukteDagerErUtløpt = konto.konto === 'FORELDREPENGER_FØR_FØDSEL' && familiesituasjon === 'fødsel';
 
-    const dagerBrukt = summerDagerIPerioder(perioder, [konto]);
+    const dagerBrukt = summerDagerIPerioder(perioder, [konto], familiesituasjon, familiehendelsedato);
     const ubrukteDager = konto.dager - dagerBrukt;
     const overtrukketDager = ubrukteDager * -1;
     const prosentBruktAvkvote = Math.floor((dagerBrukt / konto.dager) * 100);
