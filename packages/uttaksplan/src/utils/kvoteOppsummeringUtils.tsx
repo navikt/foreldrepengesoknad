@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { sum, sumBy } from 'lodash';
 
 import {
@@ -344,10 +345,10 @@ const getAntallUttaksdagerIVinduRundtFødsel = (
         ANTALL_UTTAKSDAGER_SEKS_UKER - 1,
     );
 
-    const overlappFom = periodeFom > førsteDagIVindu ? periodeFom : førsteDagIVindu;
-    const overlappTom = periodeTom < sisteDagIVindu ? periodeTom : sisteDagIVindu;
+    const overlappFom = dayjs(periodeFom).isAfter(førsteDagIVindu, 'day') ? periodeFom : førsteDagIVindu;
+    const overlappTom = dayjs(periodeTom).isBefore(sisteDagIVindu, 'day') ? periodeTom : sisteDagIVindu;
 
-    if (overlappFom > overlappTom) {
+    if (dayjs(overlappFom).isAfter(overlappTom, 'day')) {
         return 0;
     }
 
