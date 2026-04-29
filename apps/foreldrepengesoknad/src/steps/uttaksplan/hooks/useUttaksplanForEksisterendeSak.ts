@@ -64,7 +64,7 @@ export const useUttaksplanForEksisterendeSak = (
           )
         : undefined;
 
-    useLoggOverlappIVedtak(uttaksplan);
+    useLoggOverlappIVedtak(uttaksplan, perioderFraBackend, perioderAnnenPart);
 
     if (!sakerQuery?.data || !valgtEksisterendeSaksnr || !gjeldendeVedtak) {
         return undefined;

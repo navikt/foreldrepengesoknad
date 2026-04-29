@@ -1,9 +1,9 @@
 import { ReactNode, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
-import { ConfirmationPanel, VStack } from '@navikt/ds-react';
+import { VStack } from '@navikt/ds-react';
 
-import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
+import { ProgressStep, SamtykkePanel, Step, StepButtons } from '@navikt/fp-ui';
 
 const getSamtykkeTekst = (
     intl: IntlShape,
@@ -64,7 +64,7 @@ export const OppsummeringPanel = <TYPE extends string>({
         <Step steps={stepConfig} onStepChange={onStepChange} noFieldsRequired>
             <VStack gap="space-40">
                 <VStack gap="space-12">{children}</VStack>
-                <ConfirmationPanel
+                <SamtykkePanel
                     label={getSamtykkeTekst(intl, appName, ekstraSamtykketekst)}
                     onChange={() => setIsChecked((state) => !state)}
                     checked={isChecked}

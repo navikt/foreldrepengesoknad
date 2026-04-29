@@ -39,3 +39,4 @@ export { RegisterdataUtdatert } from './src/registerdata-utdatert/RegisterdataUt
 export { Spinner } from './src/loaders/Spinner';
 export { Slider } from './src/slider/Slider';
 export { PeriodLabel } from './src/period-label/PeriodLabel';
+export { SamtykkePanel } from './src/samtykke-panel/SamtykkePanel';
