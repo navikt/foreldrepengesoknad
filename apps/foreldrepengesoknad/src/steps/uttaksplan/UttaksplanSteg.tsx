@@ -9,11 +9,12 @@ import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnr, getNavnPåForeldre } from 'utils/personUtils';
+import { utledRettighet } from 'utils/rettighetUtils';
 
 import { Alert, BodyLong, Tabs } from '@navikt/ds-react';
 
 import { loggUmamiEvent } from '@navikt/fp-observability';
-import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-types';
+import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { barnehagestartDato, getFamiliehendelsedato } from '@navikt/fp-utils';
 import {
@@ -210,16 +211,6 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
             </Step>
         </SkjemaRotLayout>
     );
-};
-
-const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean): RettighetType_fpoversikt => {
-    if (erAleneOmOmsorg) {
-        return 'ALENEOMSORG';
-    }
-    if (erDeltUttak) {
-        return 'BEGGE_RETT';
-    }
-    return 'BARE_SØKER_RETT';
 };
 
 const loggExpansionCardOpen = (tittel: string) => (open: boolean) => {

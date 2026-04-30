@@ -1,36 +1,31 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
-import dayjs from 'dayjs';
 import { ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { getErMorUfør } from 'utils/annenForelderUtils';
-import { getTermindato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
-import { Alert, Radio, VStack } from '@navikt/ds-react';
+import { VStack } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import {
-    Barn,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
-    RettighetType_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
-    isAdoptertBarn,
-    isFødtBarn,
-    isUfødtBarn,
 } from '@navikt/fp-types';
-import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
-import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
-import { harPeriodeDerMorsAktivitetIkkeErValgt, useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
-import { isRequired, notEmpty } from '@navikt/fp-validation';
+import { Uttaksperioden } from '@navikt/fp-utils';
+import { useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
+import { notEmpty } from '@navikt/fp-validation';
 
+import { AutomatiskJusteringSpørsmål, skalViseAutomatiskJustering } from './AutomatiskJusteringSpørsmål';
 import { VilDuGåTilbakeModal } from './VilDuGåTilbakeModal';
+import { validerUttaksplanForInnsending } from './utils/validerUttaksplan';
+
+type AlleUttakPerioder = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
 
 const NULLSTILTE_PERIODE_VEDLEGG: VedleggDataType = {
     [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: [],
@@ -52,9 +47,9 @@ type FormValues = {
 interface UttaksplanFormProps {
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
     /** Den planen som faktisk vises (mellomlagra plan om den finst, ellers initiell). */
-    gjeldendeUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    gjeldendeUttaksplan: AlleUttakPerioder[];
     /** Initiell plan, brukt som fallback for lagring viss brukar ikkje har endra noko. */
-    initiellPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    initiellPlan: AlleUttakPerioder[];
     /** Sann om brukar har ein mellomlagra plan i context. Styrer vis-tilbake-modal og lagringslogikk. */
     harMellomlagretPlan: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -63,7 +58,7 @@ interface UttaksplanFormProps {
     scrollToKvoteOppsummering: () => void;
     eksisterendeSak: FpSak_fpoversikt | undefined;
     /** Plan henta frå eksisterande sak, brukt for å avgjere om brukar berre har sletta saksperiodar. */
-    planFraEksisterendeSak: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined;
+    planFraEksisterendeSak: AlleUttakPerioder[] | undefined;
 }
 
 export const UttaksplanForm = ({
@@ -78,14 +73,11 @@ export const UttaksplanForm = ({
     eksisterendeSak,
     planFraEksisterendeSak,
 }: UttaksplanFormProps) => {
-    const intl = useIntl();
-
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const harJustertUttakVedFødsel = useContextGetData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
-
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
     const oppdaterHarJustertUttakVedFødsel = useContextSaveData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
@@ -96,7 +88,7 @@ export const UttaksplanForm = ({
 
     // I ein endringssøknad er det berre dei nye periodane (utan resultat frå vedtak) som skal brukast
     // til validering og visning av automatisk justering.
-    const planForValideringOgVisning = erEndringssøknad
+    const planForValidering = erEndringssøknad
         ? gjeldendeUttaksplan.filter((p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.resultat === undefined)
         : gjeldendeUttaksplan;
 
@@ -123,65 +115,48 @@ export const UttaksplanForm = ({
     const erDeltUttak =
         oppgittAnnenForelder?.harRettPåForeldrepengerINorge === true ||
         oppgittAnnenForelder?.harRettPåForeldrepengerIEØS === true;
-
     const erMorUfør = getErMorUfør(annenForelder, erSøkerFarEllerMedmor);
     const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
-
     const bareFarHarRett = erSøkerFarEllerMedmor && (!erDeltUttak || erMorUfør || erAleneOmOmsorg);
 
-    const visAutomatiskJustering =
-        erSøkerFarEllerMedmor &&
-        søkersituasjon.situasjon === 'fødsel' &&
-        // Bevarer eksisterande oppførsel: vis berre når brukar har gjort endringar (mellomlagra plan finst).
-        // For endringssøknad krev me i tillegg at det faktisk finst nye periodar etter filtreringa.
-        harMellomlagretPlan &&
-        (!erEndringssøknad || planForValideringOgVisning.length > 0) &&
-        finnPerioderRundtFødsel(planForValideringOgVisning, barn).filter(
-            (p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.forelder === 'FAR_MEDMOR',
-        ).length === 1 &&
-        isUfødtBarn(barn) &&
-        barn.termindato !== undefined &&
-        !bareFarHarRett;
+    const visAutomatiskJustering = skalViseAutomatiskJustering({
+        erSøkerFarEllerMedmor,
+        erFødselsSituasjon: søkersituasjon.situasjon === 'fødsel',
+        bareFarHarRett,
+        harMellomlagretPlan,
+        erEndringssøknad,
+        planForValidering,
+        barn,
+    });
 
     const onSubmit = (formValues: FormValues) => {
-        const planForValidering = planForValideringOgVisning;
-        const mellomlagretPlanForSletteSjekk = harMellomlagretPlan ? gjeldendeUttaksplan : undefined;
-        if (
-            planForValidering.length === 0 &&
-            !harBrukerKunSlettetPerioder(mellomlagretPlanForSletteSjekk, planFraEksisterendeSak)
-        ) {
-            if (erEndringssøknad) {
-                setFeilmelding(<FormattedMessage id="UttaksplanSteg.IngenNyePerioder" />);
-            } else {
-                setFeilmelding(<FormattedMessage id="UttaksplanSteg.IngenPerioder" />);
-            }
+        const feilmelding = validerUttaksplanForInnsending({
+            planForValidering,
+            mellomlagretPlan: harMellomlagretPlan ? gjeldendeUttaksplan : undefined,
+            planFraEksisterendeSak,
+            erEndringssøknad,
+            erAntallDagerOvertrukket,
+            erAleneOmOmsorg,
+            erDeltUttak,
+            erSøkerFarEllerMedmor,
+        });
 
+        if (feilmelding !== null) {
+            setFeilmelding(feilmelding);
             scrollToKvoteOppsummering();
-        } else if (erAntallDagerOvertrukket) {
-            setFeilmelding(<FormattedMessage id="UttaksplanSteg.OvertrukketDager" />);
-            scrollToKvoteOppsummering();
-        } else if (
-            harPeriodeDerMorsAktivitetIkkeErValgt(utledRettighet(erAleneOmOmsorg, erDeltUttak), planForValidering)
-        ) {
-            setFeilmelding(<FormattedMessage id="UttaksplanSteg.MorsAktivitetIkkeValgt" />);
-            scrollToKvoteOppsummering();
-        } else if (harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, planForValidering)) {
-            setFeilmelding(<FormattedMessage id="UttaksplanSteg.KunPerioderForAnnenForelder" />);
-            scrollToKvoteOppsummering();
-        } else {
-            oppdaterHarJustertUttakVedFødsel(
-                visAutomatiskJustering ? formValues.ønskerJustertUttakVedFødsel : undefined,
-            );
-
-            // Bevarer eksisterande oppførsel: lagre initiell plan berre om brukar ikkje har mellomlagra noko.
-            // For endringssøknad vart dette aldri trigga før (sidan filtrert plan var [] ikkje undefined),
-            // så vi held same oppførsel her.
-            if (!harMellomlagretPlan && !erEndringssøknad) {
-                oppdaterUttaksplan(initiellPlan);
-            }
-
-            return navigator.goToNextDefaultStep();
+            return;
         }
+
+        oppdaterHarJustertUttakVedFødsel(visAutomatiskJustering ? formValues.ønskerJustertUttakVedFødsel : undefined);
+
+        // Bevarer eksisterande oppførsel: lagre initiell plan berre om brukar ikkje har mellomlagra noko.
+        // For endringssøknad vart dette aldri trigga før (sidan filtrert plan var [] ikkje undefined),
+        // så vi held same oppførsel her.
+        if (!harMellomlagretPlan && !erEndringssøknad) {
+            oppdaterUttaksplan(initiellPlan);
+        }
+
+        return navigator.goToNextDefaultStep();
     };
 
     //TODO (TOR) TFP-6583 Fjern bruk av VilDuGåTilbakeModal og resett context i andre steg
@@ -189,11 +164,9 @@ export const UttaksplanForm = ({
 
     const gåTilForrigeSteg = () => {
         setGåTilbakeIsOpen(false);
-
         oppdaterHarJustertUttakVedFødsel(undefined);
         oppdaterUttaksplan(undefined);
         oppdaterVedlegg({ ...vedlegg, ...NULLSTILTE_PERIODE_VEDLEGG });
-
         navigator.goToPreviousDefaultStep();
     };
 
@@ -206,34 +179,12 @@ export const UttaksplanForm = ({
                     goToPreviousStep={gåTilForrigeSteg}
                 />
                 {visAutomatiskJustering && (
-                    <VStack gap="space-16">
-                        <AutomatiskJusteringInfotekst
-                            harSvartJaPåAutoJustering={harSvartJaPåAutoJustering}
-                            uttaksplan={planForValideringOgVisning}
-                        />
-                        <RhfRadioGroup
-                            name="ønskerJustertUttakVedFødsel"
-                            control={formMethods.control}
-                            label={
-                                <FormattedMessage
-                                    id="UttaksplanSteg.AutomatiskJustering.Spørsmål"
-                                    values={{ antallBarn: barn.antallBarn }}
-                                />
-                            }
-                            validate={[
-                                isRequired(
-                                    intl.formatMessage({ id: 'UttaksplanSteg.AutomatiskJustering.Svar.Påkrevd' }),
-                                ),
-                            ]}
-                        >
-                            <Radio value={true}>
-                                <FormattedMessage id="UttaksplanSteg.AutomatiskJustering.Ja" />
-                            </Radio>
-                            <Radio value={false}>
-                                <FormattedMessage id="UttaksplanSteg.AutomatiskJustering.Nei" />
-                            </Radio>
-                        </RhfRadioGroup>
-                    </VStack>
+                    <AutomatiskJusteringSpørsmål
+                        control={formMethods.control}
+                        harSvartJaPåAutoJustering={harSvartJaPåAutoJustering}
+                        uttaksplan={planForValidering}
+                        barn={barn}
+                    />
                 )}
                 <StepButtonsHookForm
                     goToPreviousStep={
@@ -249,164 +200,4 @@ export const UttaksplanForm = ({
             </VStack>
         </RhfForm>
     );
-};
-
-const AutomatiskJusteringInfotekst = ({
-    harSvartJaPåAutoJustering,
-    uttaksplan,
-}: {
-    harSvartJaPåAutoJustering: boolean;
-    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
-}) => {
-    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-
-    const termindato = getTermindato(barn);
-
-    const uttaksdagPåEllerEtterTermin = termindato ? Uttaksdagen.denneEllerNeste(termindato).getDato() : undefined;
-
-    const perioderMedUttakRundtFødsel = finnPerioderRundtFødsel(uttaksplan ?? [], barn);
-
-    const harSvartJaOgHarFlerePerioderInnen6Uker = harSvartJaPåAutoJustering && perioderMedUttakRundtFødsel.length > 1;
-
-    if (harSvartJaOgHarFlerePerioderInnen6Uker) {
-        return (
-            <Alert variant="info">
-                <FormattedMessage id="uttaksplan.automatiskJustering.info.hvisFlerePerioder" />
-            </Alert>
-        );
-    }
-
-    const harSvartJaOgHarEnPeriodeRundtFødsel = harSvartJaPåAutoJustering && perioderMedUttakRundtFødsel.length === 1;
-
-    const harSvartJaOgStarterIkkeLengerPåTermin =
-        harSvartJaOgHarEnPeriodeRundtFødsel &&
-        uttaksdagPåEllerEtterTermin &&
-        !dayjs(perioderMedUttakRundtFødsel[0]!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day');
-
-    if (harSvartJaOgStarterIkkeLengerPåTermin) {
-        return (
-            <Alert variant="info">
-                <FormattedMessage id="uttaksplan.automatiskJustering.info.hvisIkkeLengerStarterPåTermin" />
-            </Alert>
-        );
-    }
-
-    const harSvartJaOgEndretPeriodenPåTermin =
-        harSvartJaOgHarEnPeriodeRundtFødsel &&
-        dayjs(perioderMedUttakRundtFødsel[0]!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
-        ((Uttaksperioden.erUttaksperiode(perioderMedUttakRundtFødsel[0]!) &&
-            (perioderMedUttakRundtFødsel[0]!.kontoType !== 'FEDREKVOTE' ||
-                !Uttaksperioden.erSamtidigUttak(perioderMedUttakRundtFødsel[0]!))) ||
-            Uttaksperioden.erOverføringsperiode(perioderMedUttakRundtFødsel[0]!));
-
-    if (harSvartJaOgEndretPeriodenPåTermin) {
-        return (
-            <Alert variant="info">
-                <FormattedMessage id="uttaksplan.automatiskJustering.info.hvisEndretPeriodePåTermin" />
-            </Alert>
-        );
-    }
-
-    const harSvartJaOgEndretPeriodenTilØnskerFlerbarnsdager =
-        harSvartJaOgHarEnPeriodeRundtFødsel &&
-        dayjs(perioderMedUttakRundtFødsel[0]!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
-        Uttaksperioden.erUttaksperiode(perioderMedUttakRundtFødsel[0]!) &&
-        perioderMedUttakRundtFødsel[0]!.kontoType === 'FEDREKVOTE' &&
-        Uttaksperioden.erFlerbarnsdager(perioderMedUttakRundtFødsel[0]!);
-
-    if (harSvartJaOgEndretPeriodenTilØnskerFlerbarnsdager) {
-        return (
-            <Alert variant="info">
-                <FormattedMessage id="uttaksplan.automatiskJustering.info.hvisEndretPeriodeTilØnskerFlerbarnsdager" />
-            </Alert>
-        );
-    }
-
-    return null;
-};
-
-const finnPerioderRundtFødsel = (
-    valgtePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    barnet: Barn,
-) => {
-    if (isAdoptertBarn(barnet) || isIkkeUtfyltTypeBarn(barnet)) {
-        return [];
-    }
-
-    const familiehendelsesdato = isFødtBarn(barnet) ? barnet.fødselsdatoer[0]! : barnet.termindato;
-
-    return finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato(valgtePerioder, familiehendelsesdato).concat(
-        finnPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(valgtePerioder, familiehendelsesdato),
-    );
-};
-
-const finnPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato = (
-    valgtePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    familiehendelsedato: string,
-) => {
-    const førsteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDato();
-    const sisteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30);
-
-    return valgtePerioder.filter((periode) => {
-        const fom = dayjs(periode.fom);
-        const tom = dayjs(periode.tom);
-        return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
-    });
-};
-
-const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
-    valgtePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    familiehendelsedato: string,
-) => {
-    const førsteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(15);
-    const sisteDag = Uttaksdagen.forrige(familiehendelsedato).getDato();
-
-    return valgtePerioder.filter((periode) => {
-        const fom = dayjs(periode.fom);
-        const tom = dayjs(periode.tom);
-        return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
-    });
-};
-
-const harBrukerKunSlettetPerioder = (
-    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
-    opprinneligPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
-) => {
-    if (!opprinneligPlan) {
-        return false;
-    }
-
-    const erKunSaksperioder = perioder?.every(
-        (periode) => Uttaksperioden.erEøsPeriode(periode) || periode.resultat !== undefined,
-    );
-
-    if (erKunSaksperioder) {
-        const harSlettetPeriode = perioder ? !perioder.every((p, index) => p === opprinneligPlan[index]) : false;
-        return harSlettetPeriode;
-    }
-
-    return false;
-};
-
-const harKunPerioderForAnnenForelder = (
-    erSøkerFarEllerMedmor: boolean,
-    perioder?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-) => {
-    if (!perioder || perioder.length === 0) {
-        return false;
-    }
-
-    const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
-
-    return perioder.every((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.forelder !== søkersForelder);
-};
-
-const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean): RettighetType_fpoversikt => {
-    if (erAleneOmOmsorg) {
-        return 'ALENEOMSORG';
-    }
-    if (erDeltUttak) {
-        return 'BEGGE_RETT';
-    }
-    return 'BARE_SØKER_RETT';
 };
