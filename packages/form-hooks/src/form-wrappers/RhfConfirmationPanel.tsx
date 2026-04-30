@@ -1,7 +1,7 @@
 import { ReactNode, useMemo } from 'react';
 import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 
-import { ConfirmationPanel } from '@navikt/ds-react';
+import { SamtykkePanel } from '@navikt/fp-ui';
 
 import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
@@ -32,16 +32,19 @@ export const RhfConfirmationPanel = <T extends FieldValues>({
         },
     });
 
+    const errorMessage = getError(errors, name);
+
     return (
-        <ConfirmationPanel
-            ref={field.ref}
+        <SamtykkePanel
             label={label}
-            onChange={(evt) => field.onChange(evt)}
-            // @ts-expect-error Fiksar ikkje denne da heile komponenten er depricated og bør byttast ut
-            checked={field.value ?? ''}
-            error={getError(errors, name)}
+            checked={field.value ?? false}
+            onChange={(checked) => field.onChange(checked)}
+            error={errorMessage}
+            name={field.name}
+            onBlur={field.onBlur}
+            checkboxRef={field.ref}
         >
             {children}
-        </ConfirmationPanel>
+        </SamtykkePanel>
     );
 };

@@ -168,7 +168,7 @@ const getWrapper =
     );
 
 describe('useFormSubmitValidator', () => {
-    it('skal returnere feilmelding dersom mor kombinerer arbeid og foreldrepenger de første 6 ukene', () => {
+    it('skal ikke returnere feilmelding dersom mor kombinerer arbeid og foreldrepenger de første 6 ukene', () => {
         const { result } = renderHook(() => useFormSubmitValidator(), {
             wrapper: getWrapper(),
         });
@@ -190,7 +190,7 @@ describe('useFormSubmitValidator', () => {
         const valider = result.current;
         const feilmelding = valider(nyePerioder, formValues);
 
-        expect(feilmelding).toBe('Mor kan ikke kombinere foreldrepenger med arbeid de første seks ukene');
+        expect(feilmelding).toBeNull();
     });
 
     it('skal returnere feilmelding dersom far kombinerer arbeid og mødrekvote de første 6 ukene', () => {

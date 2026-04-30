@@ -180,6 +180,15 @@ const erGyldigForFarMedmor = (
         return false;
     }
 
+    if (
+        UttaksperiodeValidatorer.erNoenPerioderFørOgNoenLikEllerEtterFamiliehendelsesdato(
+            valgtePerioder,
+            familiehendelsedato,
+        )
+    ) {
+        return false;
+    }
+
     if (konto === 'FORELDREPENGER_FØR_FØDSEL') {
         return false;
     }

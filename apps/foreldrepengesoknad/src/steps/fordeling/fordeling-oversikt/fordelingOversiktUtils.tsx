@@ -269,14 +269,15 @@ const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
     kontoer: KontoBeregningDto,
     erFarEllerMedmor: boolean,
     familiehendelsesdato: string,
+    erFødsel: boolean,
 ): number => {
     if (uttaksplanAnnenPart === undefined || uttaksplanAnnenPart.length === 0) {
         return 0;
     }
     if (erFarEllerMedmor) {
-        return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato).farMedmor.dagerEgneKvoter;
+        return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, erFødsel).farMedmor.dagerEgneKvoter;
     } else {
-        return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato).mor.dagerEgneKvoter;
+        return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, erFødsel).mor.dagerEgneKvoter;
     }
 };
 
@@ -284,11 +285,12 @@ const getAntallDagerFellesperiodeBruktAvAnnenPart = (
     uttaksplanAnnenPart: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
     kontoer: KontoBeregningDto,
     familiehendelsesdato: string,
+    erFødsel: boolean,
 ): number => {
     if (uttaksplanAnnenPart === undefined || uttaksplanAnnenPart.length === 0) {
         return 0;
     }
-    return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato).mor.dagerFellesperiode;
+    return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, erFødsel).mor.dagerFellesperiode;
 };
 
 const getFordelingFelles = (
@@ -785,6 +787,7 @@ export const getFordelingFraKontoer = (
     const erAleneomsorg = getErAleneOmOmsorg(annenForelder);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
+    const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const fordelingsinformasjon = [];
     const dagerMødrekvote = getAntallUkerMødrekvote(kontoer) * 5;
     const dagerFedrekvote = getAntallUkerFedrekvote(kontoer) * 5;
@@ -794,6 +797,7 @@ export const getFordelingFraKontoer = (
         uttaksplanAnnenPart,
         kontoer,
         familiehendelsesdato,
+        erFødsel,
     );
     const erMor = !erFarEllerMedmor;
     const erMorOgFarHarIkkeKunRettIEØS = erMor && !annenPartHarKunRettIEØS;
@@ -814,6 +818,7 @@ export const getFordelingFraKontoer = (
                   kontoer,
                   erFarEllerMedmor,
                   familiehendelsesdato,
+                  erFødsel,
               );
         const fordelingMor = getFordelingMor(
             kontoer,
@@ -850,6 +855,7 @@ export const getFordelingFraKontoer = (
                   kontoer,
                   erFarEllerMedmor,
                   familiehendelsesdato,
+                  erFødsel,
               )
             : undefined;
         const fordelingFar = getFordelingFedrekvote(

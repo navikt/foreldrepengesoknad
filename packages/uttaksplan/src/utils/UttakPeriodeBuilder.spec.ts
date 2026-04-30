@@ -220,6 +220,30 @@ describe('UttakPeriodeBuilder.leggTilUttakPerioder (Forskyv)', () => {
             lagPeriode('2025-05-23', '2025-06-25'), // Eksisterende periode 1 og 2 slått sammen og forskyvd
         ]);
     });
+    it('Skal forskyve eksisterende periode som ligg heilt inni ny periode utan å produsere overlapp', () => {
+        // Sett opp nærmare produksjonscaset: ein FELLESPERIODE som startar samstundes som den nye,
+        // og ein LOVBESTEMT_FERIE heilt inni den nye. Ulik kontoType/utsettelseÅrsak hindrar
+        // at periodane vert slått saman, slik at eit eventuelt overlapp ville vere synleg.
+        const fellesperiode = { ...lagPeriode('2024-01-01', '2024-01-05'), kontoType: 'FELLESPERIODE' as const };
+        const feriePeriode = {
+            ...lagPeriode('2024-01-08', '2024-01-09'),
+            utsettelseÅrsak: 'LOVBESTEMT_FERIE' as const,
+        };
+
+        const builder = new UttakPeriodeBuilder([fellesperiode, feriePeriode]);
+
+        // Ny periode er 10 verkedagar (2024-01-01 → 2024-01-12)
+        builder.leggTilUttakPerioder([{ ...lagNyPeriode('2024-01-01', '2024-01-12') }], SKAL_FORSKYVE);
+
+        expect(builder.getUttakPerioder()).toEqual([
+            { ...lagNyPeriode('2024-01-01', '2024-01-12') },
+            // FELLESPERIODE: nFom == eFom, nTom > eTom → shift +10 verkedagar
+            { ...fellesperiode, fom: '2024-01-15', tom: '2024-01-19' },
+            // LOVBESTEMT_FERIE: heilt inni → shift +10 verkedagar (ikkje hamne på same fom som over)
+            { ...feriePeriode, fom: '2024-01-22', tom: '2024-01-23' },
+        ]);
+    });
+
     it('Skal forskyve korrekt når en legger til to like perioder', () => {
         const builder = new UttakPeriodeBuilder([
             lagPeriode('2024-07-01', '2024-07-02'),

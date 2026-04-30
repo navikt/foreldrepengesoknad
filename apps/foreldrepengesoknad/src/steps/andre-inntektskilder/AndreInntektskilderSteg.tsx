@@ -3,6 +3,7 @@ import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+import { erFerdigUtfylt } from 'types/AndreInntektskilder';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -29,12 +30,12 @@ export const AndreInntektskilderSteg = ({ arbeidsforhold, mellomlagreSøknadOgNa
     const oppdaterAndreInntektskilder = useContextSaveData(ContextDataType.ANDRE_INNTEKTSKILDER);
 
     const formMethods = useForm<AndreInntekterFormValues>({
-        defaultValues: { andreInntektskilder: andreInntektskilder || [{}] },
+        defaultValues: { andreInntektskilder: andreInntektskilder || [{ type: undefined }] },
         shouldUnregister: true,
     });
 
     const onSubmit = (values: AndreInntekterFormValues) => {
-        oppdaterAndreInntektskilder(values.andreInntektskilder);
+        oppdaterAndreInntektskilder(values.andreInntektskilder.filter(erFerdigUtfylt));
         return navigator.goToNextDefaultStep();
     };
 
