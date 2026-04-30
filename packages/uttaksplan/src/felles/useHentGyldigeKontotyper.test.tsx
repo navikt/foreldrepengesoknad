@@ -425,7 +425,7 @@ describe('useHentGyldigeKontotyper - fars kvoter', () => {
         expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual([]);
     });
 
-    it('skal ha gyldige perioder for far når det er fødsel og det er valgt perioder to uker før familiehendelsedato og periode etter', () => {
+    it('skal ikke ha gyldige perioder for far når det er valgt perioder både før og etter familiehendelsedato', () => {
         const { result } = renderHook(
             () =>
                 useHentGyldigeKontotyper(
@@ -448,7 +448,30 @@ describe('useHentGyldigeKontotyper - fars kvoter', () => {
             },
         );
 
-        expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual(['FEDREKVOTE', 'AKTIVITETSFRI_KVOTE']);
+        expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual([]);
+    });
+
+    it('skal ikke ha gyldige perioder for far når én periode krysser familiehendelsedato', () => {
+        const { result } = renderHook(
+            () =>
+                useHentGyldigeKontotyper(
+                    [{ fom: '2024-06-13', tom: '2024-06-21' }],
+                    !HAR_VALGT_SAMTIDIG_UTTAK,
+                    false,
+                ),
+            {
+                wrapper: getWrapper({
+                    foreldreInfo: {
+                        søker: 'FAR_MEDMOR',
+                        rettighetType: 'BEGGE_RETT',
+                        navnPåForeldre: NAVN_PÅ_FORELDRE,
+                        erMedmorDelAvSøknaden: false,
+                    },
+                }),
+            },
+        );
+
+        expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual([]);
     });
 
     it('skal ikke ha noen gyldige kontotyper for far når en har valgt dag mer enn 60 dager før fødsel', () => {
