@@ -79,7 +79,7 @@ export const mellomlagretInfoOptions = () =>
         staleTime: Infinity,
     });
 
-export const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
+const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
     queryOptions({
         queryKey: ['ANNEN_PART_VEDTAK', data],
         queryFn: () => jsonEllerNull<AnnenPartSak_fpoversikt>(ky.post(API_URLS.annenPartVedtak, { json: data })),
