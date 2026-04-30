@@ -7,7 +7,6 @@ import { ReactNode, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
-import { erPeriodeIOpprinneligPlan } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnr, getNavnPåForeldre } from 'utils/personUtils';
 
@@ -16,7 +15,7 @@ import { Alert, BodyLong, Tabs } from '@navikt/ds-react';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
-import { Uttaksperioden, barnehagestartDato, getFamiliehendelsedato } from '@navikt/fp-utils';
+import { barnehagestartDato, getFamiliehendelsedato } from '@navikt/fp-utils';
 import {
     FjernAltIUttaksplanModal,
     HvaErMulig,
@@ -30,8 +29,7 @@ import {
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanForm } from './UttaksplanForm';
-import { useUttaksplanForEksisterendeSak } from './hooks/useUttaksplanForEksisterendeSak';
-import { useUttaksplanForslag } from './hooks/useUttaksplanForslag';
+import { useGjeldendeUttaksplan } from './hooks/useGjeldendeUttaksplan';
 
 interface Props {
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
@@ -48,11 +46,9 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
-    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
-    const eksisterendeSaksnummer = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
-    const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
+    const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === valgtEksisterendeSaksnr);
 
     const [feilmelding, setFeilmelding] = useState<ReactNode | undefined>();
 
@@ -94,35 +90,24 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
         ...annenPartVedtakOptionsWrapped,
     });
 
-    const uttaksplanForEksisterendeSak = useUttaksplanForEksisterendeSak(annenPartVedtakQuery.data?.perioder);
-
     const valgteStønadskontoer = tilgjengeligeStønadskontoerQuery.data;
 
-    // Filtrerer ut periodane til annen part midlertidig fram til me får på plass lagring av desse periodane
-    const nyttUttaksplanForslag = useUttaksplanForslag(
+    const {
+        planFraEksisterendeSak,
+        initiellPlan,
+        gjeldendeUttaksplan,
+        harMellomlagretPlan,
+        erPeriodeneTilAnnenPartLåst,
+        erPlanenEndret,
+    } = useGjeldendeUttaksplan({
         valgteStønadskontoer,
-        annenPartVedtakQuery.data?.perioder,
-    ).filter(
-        (periode) =>
-            Uttaksperioden.erIkkeEøsPeriode(periode) &&
-            periode.forelder === (erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
-    );
+        annenPartPerioder: annenPartVedtakQuery.data?.perioder,
+        erSøkerFarEllerMedmor,
+    });
 
     if (!valgteStønadskontoer || annenPartVedtakQuery.isLoading) {
         return null;
     }
-
-    const annenPartsPerioderEllerUndefined =
-        annenPartVedtakQuery.data?.perioder && annenPartVedtakQuery.data?.perioder?.length > 0
-            ? annenPartVedtakQuery.data.perioder
-            : undefined;
-    const tidligereUttaksperioder = uttaksplanForEksisterendeSak ?? annenPartsPerioderEllerUndefined;
-    const defaultUttaksperioder = tidligereUttaksperioder ?? nyttUttaksplanForslag;
-
-    const erPlanenEndret =
-        uttaksplan !== undefined &&
-        (uttaksplan.length !== defaultUttaksperioder.length ||
-            defaultUttaksperioder.some((defaultPeriode) => !erPeriodeIOpprinneligPlan(uttaksplan, defaultPeriode)));
 
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(
         søkerInfo.arbeidsforhold,
@@ -152,8 +137,8 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
                     }}
                     valgtStønadskonto={valgteStønadskontoer}
                     harAktivitetskravIPeriodeUtenUttak={false}
-                    uttakPerioder={uttaksplan || defaultUttaksperioder}
-                    erPeriodeneTilAnnenPartLåst={!!tidligereUttaksperioder}
+                    uttakPerioder={gjeldendeUttaksplan}
+                    erPeriodeneTilAnnenPartLåst={erPeriodeneTilAnnenPartLåst}
                     aktiveArbeidsforhold={aktiveArbeidsforhold}
                     erEndringssøknad={erEndringssøknad}
                 >
@@ -215,9 +200,11 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
                         avbrytSøknad={avbrytSøknad}
                         setFeilmelding={setFeilmelding}
                         scrollToKvoteOppsummering={scrollToKvoteOppsummering}
-                        defaultUttaksperioder={defaultUttaksperioder}
+                        gjeldendeUttaksplan={gjeldendeUttaksplan}
+                        initiellPlan={initiellPlan}
+                        harMellomlagretPlan={harMellomlagretPlan}
                         eksisterendeSak={eksisterendeSak}
-                        opprinneligPlan={uttaksplanForEksisterendeSak}
+                        planFraEksisterendeSak={planFraEksisterendeSak}
                     />
                 </UttaksplanDataProvider>
             </Step>

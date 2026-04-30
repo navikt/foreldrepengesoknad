@@ -51,24 +51,32 @@ type FormValues = {
 
 interface UttaksplanFormProps {
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
-    defaultUttaksperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    /** Den planen som faktisk vises (mellomlagra plan om den finst, ellers initiell). */
+    gjeldendeUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    /** Initiell plan, brukt som fallback for lagring viss brukar ikkje har endra noko. */
+    initiellPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    /** Sann om brukar har ein mellomlagra plan i context. Styrer vis-tilbake-modal og lagringslogikk. */
+    harMellomlagretPlan: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
     setFeilmelding: (melding: ReactNode) => void;
     scrollToKvoteOppsummering: () => void;
     eksisterendeSak: FpSak_fpoversikt | undefined;
-    opprinneligPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined;
+    /** Plan henta frå eksisterande sak, brukt for å avgjere om brukar berre har sletta saksperiodar. */
+    planFraEksisterendeSak: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined;
 }
 
 export const UttaksplanForm = ({
     søkerInfo,
-    defaultUttaksperioder,
+    gjeldendeUttaksplan,
+    initiellPlan,
+    harMellomlagretPlan,
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     setFeilmelding,
     scrollToKvoteOppsummering,
     eksisterendeSak,
-    opprinneligPlan,
+    planFraEksisterendeSak,
 }: UttaksplanFormProps) => {
     const intl = useIntl();
 
@@ -76,7 +84,6 @@ export const UttaksplanForm = ({
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const harJustertUttakVedFødsel = useContextGetData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
-    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
 
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
@@ -86,9 +93,12 @@ export const UttaksplanForm = ({
     const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
-    const uttaksplanMedKunNyePerioder =
-        uttaksplan?.filter((p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.resultat === undefined) ?? [];
-    const gjeldendeUttaksplan = erEndringssøknad ? uttaksplanMedKunNyePerioder : uttaksplan;
+
+    // I ein endringssøknad er det berre dei nye periodane (utan resultat frå vedtak) som skal brukast
+    // til validering og visning av automatisk justering.
+    const planForValideringOgVisning = erEndringssøknad
+        ? gjeldendeUttaksplan.filter((p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.resultat === undefined)
+        : gjeldendeUttaksplan;
 
     const navigator = useFpNavigator(
         søkerInfo.arbeidsforhold,
@@ -122,8 +132,11 @@ export const UttaksplanForm = ({
     const visAutomatiskJustering =
         erSøkerFarEllerMedmor &&
         søkersituasjon.situasjon === 'fødsel' &&
-        gjeldendeUttaksplan &&
-        finnPerioderRundtFødsel(gjeldendeUttaksplan, barn).filter(
+        // Bevarer eksisterande oppførsel: vis berre når brukar har gjort endringar (mellomlagra plan finst).
+        // For endringssøknad krev me i tillegg at det faktisk finst nye periodar etter filtreringa.
+        harMellomlagretPlan &&
+        (!erEndringssøknad || planForValideringOgVisning.length > 0) &&
+        finnPerioderRundtFødsel(planForValideringOgVisning, barn).filter(
             (p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.forelder === 'FAR_MEDMOR',
         ).length === 1 &&
         isUfødtBarn(barn) &&
@@ -131,8 +144,12 @@ export const UttaksplanForm = ({
         !bareFarHarRett;
 
     const onSubmit = (formValues: FormValues) => {
-        const planForValidering = gjeldendeUttaksplan ?? defaultUttaksperioder;
-        if (planForValidering.length === 0 && !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan)) {
+        const planForValidering = planForValideringOgVisning;
+        const mellomlagretPlanForSletteSjekk = harMellomlagretPlan ? gjeldendeUttaksplan : undefined;
+        if (
+            planForValidering.length === 0 &&
+            !harBrukerKunSlettetPerioder(mellomlagretPlanForSletteSjekk, planFraEksisterendeSak)
+        ) {
             if (erEndringssøknad) {
                 setFeilmelding(<FormattedMessage id="UttaksplanSteg.IngenNyePerioder" />);
             } else {
@@ -156,8 +173,11 @@ export const UttaksplanForm = ({
                 visAutomatiskJustering ? formValues.ønskerJustertUttakVedFødsel : undefined,
             );
 
-            if (!gjeldendeUttaksplan) {
-                oppdaterUttaksplan(defaultUttaksperioder);
+            // Bevarer eksisterande oppførsel: lagre initiell plan berre om brukar ikkje har mellomlagra noko.
+            // For endringssøknad vart dette aldri trigga før (sidan filtrert plan var [] ikkje undefined),
+            // så vi held same oppførsel her.
+            if (!harMellomlagretPlan && !erEndringssøknad) {
+                oppdaterUttaksplan(initiellPlan);
             }
 
             return navigator.goToNextDefaultStep();
@@ -189,7 +209,7 @@ export const UttaksplanForm = ({
                     <VStack gap="space-16">
                         <AutomatiskJusteringInfotekst
                             harSvartJaPåAutoJustering={harSvartJaPåAutoJustering}
-                            uttaksplan={gjeldendeUttaksplan}
+                            uttaksplan={planForValideringOgVisning}
                         />
                         <RhfRadioGroup
                             name="ønskerJustertUttakVedFødsel"
@@ -217,7 +237,7 @@ export const UttaksplanForm = ({
                 )}
                 <StepButtonsHookForm
                     goToPreviousStep={
-                        uttaksplan
+                        harMellomlagretPlan
                             ? () => {
                                   setGåTilbakeIsOpen(true);
                               }
