@@ -167,11 +167,8 @@ const skalViseFordelingOgPeriodeSteg = (
     path: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ): boolean => {
-    if (path === SøknadRoutes.PERIODE_MED_FORELDREPENGER) {
-        return getData(ContextDataType.PERIODE_MED_FORELDREPENGER) === undefined;
-    }
     if (path === SøknadRoutes.FORDELING) {
-        return getData(ContextDataType.UTTAKSPLAN) === undefined;
+        return getData(ContextDataType.KOMMER_FRA_PLANLEGGER) !== true;
     }
     return true;
 };

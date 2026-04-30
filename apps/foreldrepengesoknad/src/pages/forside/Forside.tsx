@@ -74,6 +74,7 @@ export const Forside = ({
                 oppdaterDataIState(key as ContextDataType, value);
             }
         }
+        oppdaterDataIState(ContextDataType.KOMMER_FRA_PLANLEGGER, true);
 
         if (searchParams.has('planleggerData')) {
             const oppdatert = new URLSearchParams(searchParams);
