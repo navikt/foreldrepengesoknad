@@ -10,6 +10,7 @@ import { useIntl } from 'react-intl';
 import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
 import { ErrorBoundary, RegisterdataUtdatert, Spinner } from '@navikt/fp-ui';
+import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -51,53 +52,54 @@ export const Foreldrepengesøknad = () => {
     const skalBrukeMellomlagretData = mellomlagretInfoData !== undefined && shouldApplyStorage(mellomlagretInfoData);
     const mellomlagretData = skalBrukeMellomlagretData ? mellomlagretInfoData : undefined;
 
-    const registerdataErEndret =
-        !!mellomlagretData &&
-        (!isEqual(mellomlagretData.søkerInfo, søkerinfoQuery.data) ||
-            !isEqual(mellomlagretData.foreldrepengerSaker, sakerQuery.data.foreldrepenger));
-
     return (
         <ErrorBoundary appName="foreldrepengesoknad" retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}>
             <FpDataContext initialState={mellomlagretData}>
-                <AnnenPartVedtakRegisterdataSjekk mellomlagretData={mellomlagretData}>
-                    {registerdataErEndret ? (
-                        <RegisterdataUtdatert
-                            slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt}
-                            appName="foreldrepengesoknad"
-                        />
-                    ) : (
-                        <ForeldrepengesøknadRoutes
-                            søkerInfo={søkerinfoQuery.data}
-                            foreldrepengerSaker={sakerQuery.data.foreldrepenger}
-                            currentRoute={
-                                skalBrukeMellomlagretData
-                                    ? notEmpty(mellomlagretData?.[ContextDataType.APP_ROUTE])
-                                    : SøknadRoutes.VELKOMMEN
-                            }
-                            lagretErEndringssøknad={mellomlagretData?.erEndringssøknad ?? false}
-                            lagretHarGodkjentVilkår={!!mellomlagretData?.[ContextDataType.APP_ROUTE]}
-                            lagretSøknadGjelderNyttBarn={mellomlagretData?.søknadGjelderEtNyttBarn ?? false}
-                        />
-                    )}
-                </AnnenPartVedtakRegisterdataSjekk>
+                <RegisterdataSjekk
+                    mellomlagretData={mellomlagretData}
+                    søkerInfo={søkerinfoQuery.data}
+                    foreldrepengerSaker={sakerQuery.data.foreldrepenger}
+                >
+                    <ForeldrepengesøknadRoutes
+                        søkerInfo={søkerinfoQuery.data}
+                        foreldrepengerSaker={sakerQuery.data.foreldrepenger}
+                        currentRoute={
+                            skalBrukeMellomlagretData
+                                ? notEmpty(mellomlagretData?.[ContextDataType.APP_ROUTE])
+                                : SøknadRoutes.VELKOMMEN
+                        }
+                        lagretErEndringssøknad={mellomlagretData?.erEndringssøknad ?? false}
+                        lagretHarGodkjentVilkår={!!mellomlagretData?.[ContextDataType.APP_ROUTE]}
+                        lagretSøknadGjelderNyttBarn={mellomlagretData?.søknadGjelderEtNyttBarn ?? false}
+                    />
+                </RegisterdataSjekk>
             </FpDataContext>
         </ErrorBoundary>
     );
 };
 
-// Sjekkar om annenpartsvedtak har endra seg sidan mellomlagring. Renderast inne
-// i FpDataContext slik at useAnnenPartVedtakOptions kan lesa annenForelder/barn
-// frå context og sjølv styra `enabled` (kallet skjer berre når relevante data finst).
-const AnnenPartVedtakRegisterdataSjekk = ({
+// Sjekkar om registerdata (søkerInfo, saker, annenpartsvedtak) har endra seg
+// sidan mellomlagring. Renderast inne i FpDataContext slik at
+// useAnnenPartVedtakOptions kan lesa annenForelder/barn frå context og sjølv
+// styra om kallet skal gjerast.
+const RegisterdataSjekk = ({
     mellomlagretData,
+    søkerInfo,
+    foreldrepengerSaker,
     children,
 }: {
     mellomlagretData: FpMellomlagretData | undefined;
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
+    foreldrepengerSaker: FpSak_fpoversikt[];
     children: ReactNode;
 }) => {
     const annenPartVedtakQuery = useQuery(useAnnenPartVedtakOptions());
 
-    const harLagretAnnenPartVedtak = mellomlagretData?.annenPartVedtak !== undefined;
+    if (!mellomlagretData) {
+        return <>{children}</>;
+    }
+
+    const harLagretAnnenPartVedtak = mellomlagretData.annenPartVedtak !== undefined;
 
     if (harLagretAnnenPartVedtak && annenPartVedtakQuery.isPending && annenPartVedtakQuery.fetchStatus !== 'idle') {
         return <Spinner />;
@@ -108,7 +110,12 @@ const AnnenPartVedtakRegisterdataSjekk = ({
         annenPartVedtakQuery.isSuccess &&
         !isEqual(annenPartVedtakQuery.data, mellomlagretData.annenPartVedtak);
 
-    if (annenPartVedtakErEndret) {
+    const registerdataErEndret =
+        !isEqual(mellomlagretData.søkerInfo, søkerInfo) ||
+        !isEqual(mellomlagretData.foreldrepengerSaker, foreldrepengerSaker) ||
+        annenPartVedtakErEndret;
+
+    if (registerdataErEndret) {
         return (
             <RegisterdataUtdatert
                 slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt}
