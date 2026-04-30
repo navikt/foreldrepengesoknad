@@ -1,3 +1,5 @@
+import isEqual from 'lodash/isEqual';
+
 import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
@@ -111,7 +113,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
                   }
                 : undefined;
 
-        if (gjeldendeGrunnlag !== undefined && JSON.stringify(gjeldendeGrunnlag) !== JSON.stringify(nyttGrunnlag)) {
+        if (gjeldendeGrunnlag !== undefined && !isEqual(gjeldendeGrunnlag, nyttGrunnlag)) {
             resetUttaksplanData();
         }
 

@@ -106,9 +106,10 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
     );
 
     useEffect(() => {
+        let oppdatertBarn = barn;
         let barnEndret = false;
         if (erFarEllerMedmor && barn.antallBarn !== saksgrunnlagsAntallBarn) {
-            oppdaterBarn({ ...barn, antallBarn: saksgrunnlagsAntallBarn });
+            oppdatertBarn = { ...oppdatertBarn, antallBarn: saksgrunnlagsAntallBarn };
             barnEndret = true;
         }
         if (
@@ -117,10 +118,11 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
             saksgrunnlagsTermindato &&
             barn.termindato !== saksgrunnlagsTermindato
         ) {
-            oppdaterBarn({ ...barn, termindato: saksgrunnlagsTermindato });
+            oppdatertBarn = { ...oppdatertBarn, termindato: saksgrunnlagsTermindato };
             barnEndret = true;
         }
         if (barnEndret) {
+            oppdaterBarn(oppdatertBarn);
             resetUttaksplanData();
         }
     }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn, saksgrunnlagsTermindato, resetUttaksplanData]);

@@ -1,3 +1,5 @@
+import isEqual from 'lodash/isEqual';
+
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useForm } from 'react-hook-form';
@@ -68,7 +70,7 @@ export const FordelingForm = ({
     );
 
     const onSubmit = (values: Fordeling) => {
-        if (fordelingAvForeldrepenger !== undefined && JSON.stringify(fordelingAvForeldrepenger) !== JSON.stringify(values)) {
+        if (fordelingAvForeldrepenger !== undefined && !isEqual(fordelingAvForeldrepenger, values)) {
             resetUttaksplanData();
         }
         oppdaterFordeling(values);
