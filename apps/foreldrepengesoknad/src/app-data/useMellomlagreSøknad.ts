@@ -1,11 +1,17 @@
-import { API_URLS } from 'api/queries';
+import { useQuery } from '@tanstack/react-query';
+import { API_URLS, useAnnenPartVedtakOptions } from 'api/queries';
 import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { VERSJON_MELLOMLAGRING } from 'utils/mellomlagringUtils';
 
 import { ApiError, captureApiError, captureMessage } from '@navikt/fp-observability';
-import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, FpSoknadProblemDetails } from '@navikt/fp-types';
+import {
+    AnnenPartSak_fpoversikt,
+    FpPersonopplysningerDto_fpoversikt,
+    FpSak_fpoversikt,
+    FpSoknadProblemDetails,
+} from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextComplete } from './FpDataContext';
@@ -16,6 +22,7 @@ export type FpMellomlagretData = {
     foreldrepengerSaker: FpSak_fpoversikt[];
     erEndringssøknad: boolean;
     søknadGjelderEtNyttBarn?: boolean;
+    annenPartVedtak?: AnnenPartSak_fpoversikt;
 } & ContextDataMap;
 
 export const useMellomlagreSøknad = (
@@ -26,6 +33,8 @@ export const useMellomlagreSøknad = (
 ) => {
     const navigate = useNavigate();
     const state = useContextComplete();
+
+    const annenPartVedtakQuery = useQuery(useAnnenPartVedtakOptions());
 
     const [skalMellomlagre, setSkalMellomlagre] = useState(false);
 
@@ -46,6 +55,12 @@ export const useMellomlagreSøknad = (
                     foreldrepengerSaker,
                     erEndringssøknad,
                     søknadGjelderEtNyttBarn,
+                    // Lagre kun når kallet faktisk har et resultat, slik at vi ikkje
+                    // lagrar undefined når kallet er pending/feila og dermed gir falske
+                    // utslag i RegisterdataUtdatert-sjekken ved neste oppstart.
+                    ...(annenPartVedtakQuery.isSuccess
+                        ? { annenPartVedtak: annenPartVedtakQuery.data }
+                        : {}),
                     ...state,
                 } satisfies FpMellomlagretData;
 

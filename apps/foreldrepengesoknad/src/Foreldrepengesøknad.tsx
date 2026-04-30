@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { API_URLS, mellomlagretInfoOptions, sakerOptions, søkerinfoOptions } from 'api/queries';
+import { API_URLS, annenPartVedtakOptions, mellomlagretInfoOptions, sakerOptions, søkerinfoOptions } from 'api/queries';
 import { ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import ky from 'ky';
 import isEqual from 'lodash/isEqual';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
+import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenForelderUtils';
 import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
 import { ErrorBoundary, RegisterdataUtdatert, Spinner } from '@navikt/fp-ui';
@@ -36,6 +37,25 @@ export const Foreldrepengesøknad = () => {
     const mellomlagretInfoQuery = useQuery(mellomlagretInfoOptions());
     const mellomlagretInfoData = mellomlagretInfoQuery.data;
 
+    const skalBrukeMellomlagretData =
+        mellomlagretInfoData !== undefined && shouldApplyStorage(mellomlagretInfoData);
+    const mellomlagretData = skalBrukeMellomlagretData ? mellomlagretInfoData : undefined;
+
+    const lagretAnnenForelder = mellomlagretData?.[ContextDataType.ANNEN_FORELDER];
+    const lagretBarn = mellomlagretData?.[ContextDataType.OM_BARNET];
+    const skalSjekkeAnnenPartVedtak =
+        !!lagretAnnenForelder &&
+        !!lagretBarn &&
+        annenForelderHarNorskFnr(lagretAnnenForelder) &&
+        mellomlagretData?.annenPartVedtak !== undefined;
+
+    const annenPartVedtakQuery = useQuery({
+        ...annenPartVedtakOptions(
+            skalSjekkeAnnenPartVedtak ? getAnnenPartVedtakParam(lagretAnnenForelder, lagretBarn) : undefined,
+        ),
+        enabled: skalSjekkeAnnenPartVedtak,
+    });
+
     useEffect(() => {
         if (søkerinfoQuery.error || sakerQuery.error) {
             const error = new Error(intl.formatMessage({ id: 'Foreldrepengesøknad.FeilVedHentingAvInformasjon' }));
@@ -47,13 +67,20 @@ export const Foreldrepengesøknad = () => {
         return <Spinner />;
     }
 
-    const skalBrukeMellomlagretData = mellomlagretInfoData !== undefined && shouldApplyStorage(mellomlagretInfoData);
-    const mellomlagretData = skalBrukeMellomlagretData ? mellomlagretInfoData : undefined;
+    if (skalSjekkeAnnenPartVedtak && annenPartVedtakQuery.isPending) {
+        return <Spinner />;
+    }
+
+    const annenPartVedtakErEndret =
+        skalSjekkeAnnenPartVedtak &&
+        annenPartVedtakQuery.isSuccess &&
+        !isEqual(annenPartVedtakQuery.data, mellomlagretData?.annenPartVedtak);
 
     if (
         !!mellomlagretData &&
         (!isEqual(mellomlagretData.søkerInfo, søkerinfoQuery.data) ||
-            !isEqual(mellomlagretData.foreldrepengerSaker, sakerQuery.data.foreldrepenger))
+            !isEqual(mellomlagretData.foreldrepengerSaker, sakerQuery.data.foreldrepenger) ||
+            annenPartVedtakErEndret)
     ) {
         return (
             <RegisterdataUtdatert
