@@ -347,7 +347,14 @@ const forskyvEksisterendePerioder = (
 
         const nyPeriodeStarterFørOgSlutterFørEksisterende = eFom.isAfter(nFom) && nTom.isBefore(eTom);
         const nyPeriodeStarterSamtidigOgSlutterEtterEksisterende = nFom.isSame(eFom) && nTom.isAfter(eTom);
-        if (nyPeriodeStarterFørOgSlutterFørEksisterende || nyPeriodeStarterSamtidigOgSlutterEtterEksisterende) {
+        // Eksisterande periode ligg heilt inni den nye => flytt heile perioden framover
+        const eksisterendeErHeltInniNy =
+            (eFom.isAfter(nFom) || eFom.isSame(nFom)) && (eTom.isBefore(nTom) || eTom.isSame(nTom));
+        if (
+            nyPeriodeStarterFørOgSlutterFørEksisterende ||
+            nyPeriodeStarterSamtidigOgSlutterEtterEksisterende ||
+            eksisterendeErHeltInniNy
+        ) {
             nyeUttakPerioder.push({
                 ...eksisterendePeriode,
                 fom: Uttaksdagen.denne(eksisterendePeriode.fom).getDatoAntallUttaksdagerSenere(antallUkedager),
