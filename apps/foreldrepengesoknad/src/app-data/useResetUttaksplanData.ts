@@ -1,8 +1,12 @@
+import { useCallback } from 'react';
+
 import { Skjemanummer } from '@navikt/fp-constants';
+
+import { VedleggDataType } from 'types/VedleggDataType';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from './FpDataContext';
 
-const NULLSTILTE_PERIODE_VEDLEGG = {
+const NULLSTILTE_PERIODE_VEDLEGG: VedleggDataType = {
     [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: [],
     [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: [],
     [Skjemanummer.DOK_SYKDOM_MOR]: [],
@@ -21,9 +25,9 @@ export const useResetUttaksplanData = () => {
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
     const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
-    return () => {
+    return useCallback(() => {
         oppdaterHarJustertUttakVedFødsel(undefined);
         oppdaterUttaksplan(undefined);
         oppdaterVedlegg({ ...vedlegg, ...NULLSTILTE_PERIODE_VEDLEGG });
-    };
+    }, [vedlegg, oppdaterHarJustertUttakVedFødsel, oppdaterUttaksplan, oppdaterVedlegg]);
 };
