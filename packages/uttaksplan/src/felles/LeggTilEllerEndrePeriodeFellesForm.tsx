@@ -63,6 +63,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     const {
         foreldreInfo: { rettighetType, erMedmorDelAvSøknaden, søker },
         familiehendelsedato,
+        familiesituasjon,
         erPeriodeneTilAnnenPartLåst,
         aktiveArbeidsforhold,
         barn,
@@ -120,6 +121,28 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     const erFarMedmorGyldigForelder = gyldigeStønadskontoerForFarMedmor.length > 0;
     const morSøkerOmOverføring = kontoTypeMor === 'FEDREKVOTE' && forelder === 'MOR';
     const farMedmorSøkerOmOverføring = kontoTypeFarMedmor === 'MØDREKVOTE' && forelder === 'FAR_MEDMOR';
+
+    const erValgtePerioderKrysserFamiliehendelse =
+        UttaksperiodeValidatorer.erNoenPerioderFørOgNoenLikEllerEtterFamiliehendelsesdato(
+            valgtePerioder,
+            familiehendelsedato,
+        );
+
+    if (erValgtePerioderKrysserFamiliehendelse) {
+        return (
+            <Alert variant="info">
+                {familiesituasjon === 'fødsel' && (
+                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.fødsel" />
+                )}
+                {familiesituasjon === 'termin' && (
+                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.termin" />
+                )}
+                {familiesituasjon === 'adopsjon' && (
+                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.adopsjon" />
+                )}
+            </Alert>
+        );
+    }
 
     if (!erMorGyldigForelder && !erFarMedmorGyldigForelder) {
         return (
