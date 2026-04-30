@@ -1,13 +1,14 @@
-import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
+import { ContextDataType, useContextGetAnyData, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp, isAdoptertBarn } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
@@ -26,6 +27,7 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
 
     const søkersituasjon = useContextGetData(ContextDataType.SØKERSITUASJON);
     const oppdaterSøkersituasjon = useContextSaveData(ContextDataType.SØKERSITUASJON);
+    const getData = useContextGetAnyData();
 
     const formMethods = useForm<SøkersituasjonFp>({
         defaultValues: søkersituasjon
@@ -34,6 +36,18 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
               }
             : undefined,
     });
+
+    useEffect(() => {
+        if (søkersituasjon?.situasjon || formMethods.formState.isDirty) {
+            return;
+        }
+        const barn = getData(ContextDataType.OM_BARNET);
+        const kommerFraPlanlegger = getData(ContextDataType.KOMMER_FRA_PLANLEGGER);
+        if (barn && kommerFraPlanlegger && !søkersituasjon?.situasjon) {
+            const situasjon = isAdoptertBarn(barn) ? 'adopsjon' : 'fødsel';
+            formMethods.setValue('situasjon', situasjon);
+        }
+    }, [getData, formMethods, søkersituasjon?.situasjon]);
 
     const onSubmit = (values: SøkersituasjonFp) => {
         oppdaterSøkersituasjon({
