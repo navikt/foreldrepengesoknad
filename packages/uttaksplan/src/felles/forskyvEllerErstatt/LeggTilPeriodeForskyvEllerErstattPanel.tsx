@@ -11,6 +11,7 @@ import { erDetReadonlyPerioderEtterValgtePerioder } from '../../utils/periodeUti
 interface Props {
     valgtePerioder: Array<{ fom: string; tom: string }>;
     erFerie: boolean;
+    erGradert: boolean;
     setVisEndreEllerForskyvPanel: (skalVisPanel: boolean) => void;
     leggTilEllerForskyvPeriode: (skalForskyve: boolean) => void;
 }
@@ -18,6 +19,7 @@ interface Props {
 export const LeggTilPeriodeForskyvEllerErstattPanel = ({
     valgtePerioder,
     erFerie,
+    erGradert,
     setVisEndreEllerForskyvPanel,
     leggTilEllerForskyvPeriode,
 }: Props) => {
@@ -32,12 +34,13 @@ export const LeggTilPeriodeForskyvEllerErstattPanel = ({
     const [skalForskyvePeriode, setSkalForskyvePeriode] = useState<boolean | undefined>(undefined);
 
     const harPeriodeFørFamiliehendelsedato = valgtePerioder.some((p) => dayjs(p.fom).isBefore(familiehendelsedato));
-    const harPeriodeFørSeksUkerEtterFamiliehendelsedato = erFerie
-        ? UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
-              valgtePerioder,
-              familiehendelsedato,
-          )
-        : false;
+    const harPeriodeFørSeksUkerEtterFamiliehendelsedato =
+        erFerie || erGradert
+            ? UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
+                  valgtePerioder,
+                  familiehendelsedato,
+              )
+            : false;
 
     const forelderSomHarLåstePerioder = erPeriodeneTilAnnenPartLåst
         ? søker === 'MOR'

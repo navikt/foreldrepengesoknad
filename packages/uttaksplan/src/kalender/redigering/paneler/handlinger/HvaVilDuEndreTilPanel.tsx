@@ -146,6 +146,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                     <LeggTilPeriodeForskyvEllerErstattPanel
                         valgtePerioder={sammenslåtteValgtePerioder}
                         erFerie
+                        erGradert={false}
                         setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
                         leggTilEllerForskyvPeriode={leggTilEllerForskyvPeriode}
                     />
