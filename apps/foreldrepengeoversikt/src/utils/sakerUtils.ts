@@ -298,7 +298,7 @@ const getTittelBarnNårNavnSkalIkkeVises = (
                 { id: 'barnHeader.terminBarn' },
                 {
                     barnTekst,
-                    termindato: familiehendelsedato,
+                    termindato: formatDate(familiehendelsedato),
                 },
             ),
             undertittel: '',
@@ -310,7 +310,7 @@ const getTittelBarnNårNavnSkalIkkeVises = (
             tittel: intl.formatMessage(
                 { id: 'barnHeader.adoptertBarn' },
                 {
-                    adopsjonsdato: familiehendelsedato,
+                    adopsjonsdato: formatDate(familiehendelsedato),
                 },
             ),
             undertittel: '',
