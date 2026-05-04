@@ -5,7 +5,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { groupBy, min, partition, sortBy, sumBy } from 'lodash';
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import { Foreldrepengesak, SvangerskapspengeSak } from 'types/Sak.ts';
 
 import {
@@ -28,7 +28,7 @@ import { SkyraSurvey } from '@navikt/fp-observability';
 import { AktivitetStatus, BeregningsAndel_fpoversikt, TilkjentYtelsePeriode_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetter, erUttaksdag, formatCurrencyWithKr, getDecoratorLanguageCookie } from '@navikt/fp-utils';
 
-import { API_URLS, hentDokumenterOptions } from '../../api/queries';
+import { API_URLS, hentDokumenterOptions, hentInntektsmelding } from '../../api/queries';
 import { DinSakHeader } from '../../components/header/Header';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
@@ -344,8 +344,6 @@ const ArbeidsforholdNavn = ({ andel }: { andel: BeregningsAndel_fpoversikt }) =>
 };
 
 const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
-    const intl = useIntl();
-
     const skalViseVedtaksLenke =
         andel.aktivitetStatus === 'SELVSTENDIG_NÆRINGSDRIVENDE' && andel.dagsatsArbeidsgiver === 0;
 
@@ -358,10 +356,7 @@ const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
             </BodyShort>
             <HGrid gap="space-8" columns={{ xs: '1fr max-content' }}>
                 <BodyShort>
-                    <FormattedMessage
-                        id="beregning.andel.beregnetMånedsinntekt"
-                        values={{ kilde: finnKildeForInntekt(andel, intl) }}
-                    />
+                    <BeregnetMånedsinntekt andel={andel} />
                 </BodyShort>
                 <BodyShort className="text-end">{formatCurrencyWithKr((andel.fastsattPrÅr ?? 0) / 12)}</BodyShort>
                 <BodyShort>
@@ -723,20 +718,41 @@ const VedtakLenke = () => {
     );
 };
 
-const finnKildeForInntekt = (andel: BeregningsAndel_fpoversikt, intl: ReturnType<typeof useIntl>) => {
+const BeregnetMånedsinntekt = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
+    const params = useParams<{ saksnummer: string }>();
+    const inntektsmeldinger = useQuery(hentInntektsmelding(params.saksnummer!)).data ?? [];
+
+    const journalpostId = inntektsmeldinger.find(
+        (im) => im.erAktiv && im.arbeidsgiverIdent === andel.arbeidsforhold?.arbeidsgiverIdent,
+    )?.journalpostId;
+
     switch (andel.inntektsKilde) {
         case 'INNTEKTSMELDING':
-            return intl.formatMessage({ id: 'beregning.inntektsKilde.inntektsmelding' });
+            return (
+                <FormattedMessage
+                    id="beregning.andel.beregnetMånedsinntekt.inntektsmelding"
+                    values={{
+                        a: (chunks) =>
+                            journalpostId ? (
+                                <Link as={RouterLink} to={`../${OversiktRoutes.INNTEKTSMELDING}/${journalpostId}`}>
+                                    {chunks}
+                                </Link>
+                            ) : (
+                                <>{chunks}</>
+                            ),
+                    }}
+                />
+            );
         case 'A_INNTEKT':
-            return intl.formatMessage({ id: 'beregning.inntektsKilde.register' });
+            return <FormattedMessage id="beregning.andel.beregnetMånedsinntekt.register" />;
         case 'SKJØNNSFASTSATT':
-            return intl.formatMessage({ id: 'beregning.inntektsKilde.skjønnsfastsatt' });
+            return <FormattedMessage id="beregning.andel.beregnetMånedsinntekt.skjønnsfastsatt" />;
         case 'PGI':
-            return intl.formatMessage({ id: 'beregning.inntektsKilde.skatteopplysninger' });
+            return <FormattedMessage id="beregning.andel.beregnetMånedsinntekt.skatteopplysninger" />;
         case 'VEDTAK_ANNEN_YTELSE':
-            return intl.formatMessage({ id: 'beregning.inntektsKilde.tidligere_vedtak' });
+            return <FormattedMessage id="beregning.andel.beregnetMånedsinntekt.tidligere_vedtak" />;
         case undefined:
-            return '';
+            return <FormattedMessage id="beregning.andel.beregnetMånedsinntekt.ukjent" />;
     }
 };
 
