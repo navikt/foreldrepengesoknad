@@ -349,7 +349,11 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                     <LeggTilPeriodeForskyvEllerErstattPanel
                         valgtePerioder={[{ fom: fomValue, tom: tomValue }]}
                         erFerie={hvaVilDuGjøre === 'LEGG_TIL_FERIE'}
-                        erGradert={hvaVilDuGjøre === 'LEGG_TIL_PERIODE' && skalDuKombinereArbeidOgUttakMor === true}
+                        erGradert={
+                            hvaVilDuGjøre === 'LEGG_TIL_PERIODE' &&
+                            (forelder === 'MOR' || forelder === 'BEGGE') &&
+                            skalDuKombinereArbeidOgUttakMor === true
+                        }
                         setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
                         leggTilEllerForskyvPeriode={leggIListe}
                     />
