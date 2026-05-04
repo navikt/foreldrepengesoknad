@@ -105,10 +105,12 @@ const startServer = async () => {
 
     server.get(/^\/(?!.*dist).*$/, (req, _res, next) => {
         const fullPath = path.resolve(__dirname, decodeURIComponent(req.path.substring(1)));
-        const fileExists = fs.existsSync(fullPath);
+        const fileExists = req.path !== '/' && fs.existsSync(fullPath);
 
-        if ((!fileExists && !req.url.startsWith('/@')) || req.url === '/') {
-            req.url = '/index-decorated.html';
+        if ((!fileExists && !req.path.startsWith('/@')) || req.path === '/') {
+            const queryIndex = req.url.indexOf('?');
+            const queryString = queryIndex >= 0 ? req.url.substring(queryIndex) : '';
+            req.url = `/index-decorated.html${queryString}`;
         }
         next();
     });

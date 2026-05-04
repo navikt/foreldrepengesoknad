@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
-import { BodyShort, Button, HStack, Link, VStack } from '@navikt/ds-react';
+import { BodyShort, LinkCard, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Infobox } from '@navikt/fp-ui';
@@ -21,10 +21,10 @@ export const SøkOmForeldrepenger = ({ erAlenesøker, barnet }: Props) => {
     // Funksjonen er foreløpig kun aktiv lokalt og i dev for testing — ikke i prod.
     const skalSendeDataViaUrl = erLokaltEllerDev() && harDataÅOverføre;
     const søknadHref = skalSendeDataViaUrl
-        ? `${links.søknadForeldrepenger}?planleggerData=${encodeURIComponent(
+        ? `${links.foreldrepengesoknad}?planleggerData=${encodeURIComponent(
               encodeToBase64(JSON.stringify(sanitizePlanleggerState(planleggerState))),
           )}`
-        : links.søknadForeldrepenger;
+        : links.foreldrepengesoknad;
 
     return (
         <Infobox
@@ -43,20 +43,39 @@ export const SøkOmForeldrepenger = ({ erAlenesøker, barnet }: Props) => {
                         }}
                     />
                 </BodyShort>
-                <HStack>
-                    <Link href={søknadHref} target="_blank" rel="noreferrer">
-                        <Button variant="primary">
-                            <FormattedMessage id="SøkOmForeldrepenger.Søk" />
-                        </Button>
-                    </Link>
-                </HStack>
+                <VStack gap="space-16">
+                    <LinkCard data-color="accent">
+                        <LinkCard.Title>
+                            <LinkCard.Anchor href={søknadHref}>
+                                <FormattedMessage id="SøkOmForeldrepenger.SendDigitalt" />
+                            </LinkCard.Anchor>
+                        </LinkCard.Title>
+                        <LinkCard.Description>
+                            <FormattedMessage id="SøkOmForeldrepenger.SendDigitaltBeskrivelse" />
+                        </LinkCard.Description>
+                    </LinkCard>
+                    <LinkCard data-color="accent">
+                        <LinkCard.Title>
+                            <LinkCard.Anchor href="https://www.nav.no/start/soknad-foreldrepenger?stegvalg=1">
+                                <FormattedMessage id="SøkOmForeldrepenger.SendIPosten" />
+                            </LinkCard.Anchor>
+                        </LinkCard.Title>
+                        <LinkCard.Description>
+                            <FormattedMessage id="SøkOmForeldrepenger.SendIPostenBeskrivelse" />
+                        </LinkCard.Description>
+                    </LinkCard>
+                </VStack>
             </VStack>
         </Infobox>
     );
 };
 
 // Felter som skal utelates fra payloaden som sendes til søknaden
-const EKSKLUDERTE_FELTER: readonly ContextDataType[] = [ContextDataType.HVOR_MYE, ContextDataType.ARBEIDSSITUASJON];
+const EKSKLUDERTE_FELTER: readonly ContextDataType[] = [
+    ContextDataType.HVOR_MYE,
+    ContextDataType.ARBEIDSSITUASJON,
+    ContextDataType.HVEM_PLANLEGGER,
+];
 
 const sanitizePlanleggerState = (state: ReturnType<typeof useContextComplete>) => {
     const result: Record<string, unknown> = {};

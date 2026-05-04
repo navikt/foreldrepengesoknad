@@ -1,10 +1,13 @@
-import { ContextDataType, useContextSaveAnyData } from 'appData/FpDataContext';
+import { ContextDataType, useContextGetAnyData, useContextSaveAnyData } from 'appData/FpDataContext';
+import { mapPlanleggerDataToSøknadState } from 'appData/mapPlanleggerDataToSøknadState';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
+import { usePlanleggerDataFromUrl } from 'appData/usePlanleggerDataFromUrl';
 import { useSetSøknadsdata } from 'appData/useSetSøknadsdata';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { useSearchParams } from 'react-router-dom';
 import {
     lagEndringsSøknad,
     lagNySøknadForRegistrerteBarn,
@@ -19,7 +22,7 @@ import { RhfConfirmationPanel, RhfForm } from '@navikt/fp-form-hooks';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
-import { BarnVelger } from './BarnVelger';
+import { BarnVelger, SelectableBarnOptions } from './BarnVelger';
 import { DinePlikter } from './dine-plikter/DinePlikter';
 import { getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './forsideUtils';
 import { DinePersonopplysningerModal } from './modaler/DinePersonopplysningerModal';
@@ -48,7 +51,38 @@ export const Forside = ({
 
     const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger);
     const oppdaterDataIState = useContextSaveAnyData();
+    const getData = useContextGetAnyData();
     const { oppdaterSøknadIState } = useSetSøknadsdata();
+
+    const planleggerDataFromUrl = usePlanleggerDataFromUrl();
+    const mappetSøknadStateFraPlanlegger = useMemo(
+        () => (planleggerDataFromUrl ? mapPlanleggerDataToSøknadState(planleggerDataFromUrl, søkerInfo.kjønn) : null),
+        [planleggerDataFromUrl, søkerInfo.kjønn],
+    );
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    const harProsessertPlanleggerDataRef = useRef(false);
+
+    useEffect(() => {
+        if (harProsessertPlanleggerDataRef.current || !mappetSøknadStateFraPlanlegger) {
+            return;
+        }
+
+        harProsessertPlanleggerDataRef.current = true;
+
+        for (const [key, value] of Object.entries(mappetSøknadStateFraPlanlegger)) {
+            if (value !== undefined) {
+                oppdaterDataIState(key as ContextDataType, value);
+            }
+        }
+        oppdaterDataIState(ContextDataType.KOMMER_FRA_PLANLEGGER, true);
+
+        if (searchParams.has('planleggerData')) {
+            const oppdatert = new URLSearchParams(searchParams);
+            oppdatert.delete('planleggerData');
+            setSearchParams(oppdatert, { replace: true });
+        }
+    }, [mappetSøknadStateFraPlanlegger, oppdaterDataIState, searchParams, setSearchParams]);
 
     // Denne må memoriserast, ellers får barna ulik id for kvar render => trøbbel
     const selectableBarn = useMemo(
@@ -67,6 +101,13 @@ export const Forside = ({
             return;
         }
         setHarGodkjentVilkår(true);
+
+        // Bruker har valgt det planlagte barnet fra planleggeren
+        if (values.valgteBarn === SelectableBarnOptions.SØKNAD_GJELDER_PLANLAGT_BARN) {
+            setErEndringssøknad(false);
+            setSøknadGjelderNyttBarn(true);
+            return navigator.goToNextStep(SøknadRoutes.SØKERSITUASJON);
+        }
 
         const valgteBarn = selectableBarn.find((sb) => sb.id === values.valgteBarn);
 
@@ -155,7 +196,7 @@ export const Forside = ({
                             />
                         </VStack>
                     </GuidePanel>
-                    <BarnVelger selectableBarn={selectableBarn} />
+                    <BarnVelger selectableBarn={selectableBarn} harPlanleggerData={!!getData(ContextDataType.KOMMER_FRA_PLANLEGGER)} />
                     <Alert variant="info">
                         <FormattedMessage id="velkommen.lagring.info" />
                     </Alert>

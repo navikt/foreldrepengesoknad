@@ -163,6 +163,16 @@ const showManglendeDokumentasjonSteg = (
     return false;
 };
 
+const skalViseFordelingOgPeriodeSteg = (
+    path: SøknadRoutes,
+    getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+): boolean => {
+    if (path === SøknadRoutes.FORDELING) {
+        return getData(ContextDataType.KOMMER_FRA_PLANLEGGER) !== true;
+    }
+    return true;
+};
+
 export const useStepConfig = (
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     erEndringssøknad: boolean = false,
@@ -183,7 +193,7 @@ export const useStepConfig = (
     const appPathList = useMemo(
         () =>
             ROUTES_ORDER.flatMap((path) =>
-                requiredSteps.includes(path) ||
+                (requiredSteps.includes(path) && skalViseFordelingOgPeriodeSteg(path, getStateData)) ||
                 showUtenlandsoppholdStep(path, currentPath, getStateData) ||
                 showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, eksisterendeSak) ||
                 showFrilansOgEgenNæringOgAndreInntekter(path, currentPath, getStateData)
