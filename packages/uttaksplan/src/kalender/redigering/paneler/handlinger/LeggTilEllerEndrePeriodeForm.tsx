@@ -62,6 +62,8 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         defaultValues,
     });
 
+    const skalDuKombinereArbeidOgUttakMor = formMethods.watch('skalDuKombinereArbeidOgUttakMor');
+
     const formSubmitValidator = useFormSubmitValidator<LeggTilEllerEndrePeriodeFormFormValues>();
 
     const resetFormValuesVedEndringAvForelder = (forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {
@@ -143,6 +145,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
                 <LeggTilPeriodeForskyvEllerErstattPanel
                     valgtePerioder={sammenslåtteValgtePerioder}
                     erFerie={false}
+                    erGradert={skalDuKombinereArbeidOgUttakMor === true}
                     setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
                     leggTilEllerForskyvPeriode={leggIKalender}
                 />

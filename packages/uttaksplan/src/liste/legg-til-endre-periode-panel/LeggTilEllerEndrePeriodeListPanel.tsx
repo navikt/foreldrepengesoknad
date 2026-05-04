@@ -101,6 +101,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const hvaVilDuGjøre = formMethods.watch('hvaVilDuGjøre');
     const forelder = formMethods.watch('forelder');
     const ønskerFlerbarnsdager = formMethods.watch('ønskerFlerbarnsdager');
+    const skalDuKombinereArbeidOgUttakMor = formMethods.watch('skalDuKombinereArbeidOgUttakMor');
 
     const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } = useVisForskyvEllerErstattPanel(
         fomValue && tomValue
@@ -348,6 +349,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                     <LeggTilPeriodeForskyvEllerErstattPanel
                         valgtePerioder={[{ fom: fomValue, tom: tomValue }]}
                         erFerie={hvaVilDuGjøre === 'LEGG_TIL_FERIE'}
+                        erGradert={hvaVilDuGjøre === 'LEGG_TIL_PERIODE' && skalDuKombinereArbeidOgUttakMor === true}
                         setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
                         leggTilEllerForskyvPeriode={leggIListe}
                     />
