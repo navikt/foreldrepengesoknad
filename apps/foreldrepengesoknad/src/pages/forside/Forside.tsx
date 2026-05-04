@@ -1,4 +1,4 @@
-import { ContextDataType, useContextSaveAnyData } from 'appData/FpDataContext';
+import { ContextDataType, useContextGetAnyData, useContextSaveAnyData } from 'appData/FpDataContext';
 import { mapPlanleggerDataToSøknadState } from 'appData/mapPlanleggerDataToSøknadState';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
@@ -22,7 +22,7 @@ import { RhfConfirmationPanel, RhfForm } from '@navikt/fp-form-hooks';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
-import { BarnVelger } from './BarnVelger';
+import { BarnVelger, SelectableBarnOptions } from './BarnVelger';
 import { DinePlikter } from './dine-plikter/DinePlikter';
 import { getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './forsideUtils';
 import { DinePersonopplysningerModal } from './modaler/DinePersonopplysningerModal';
@@ -51,6 +51,7 @@ export const Forside = ({
 
     const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger);
     const oppdaterDataIState = useContextSaveAnyData();
+    const getData = useContextGetAnyData();
     const { oppdaterSøknadIState } = useSetSøknadsdata();
 
     const planleggerDataFromUrl = usePlanleggerDataFromUrl();
@@ -100,6 +101,13 @@ export const Forside = ({
             return;
         }
         setHarGodkjentVilkår(true);
+
+        // Bruker har valgt det planlagte barnet fra planleggeren
+        if (values.valgteBarn === SelectableBarnOptions.SØKNAD_GJELDER_PLANLAGT_BARN) {
+            setErEndringssøknad(false);
+            setSøknadGjelderNyttBarn(true);
+            return navigator.goToNextStep(SøknadRoutes.SØKERSITUASJON);
+        }
 
         const valgteBarn = selectableBarn.find((sb) => sb.id === values.valgteBarn);
 
@@ -188,7 +196,7 @@ export const Forside = ({
                             />
                         </VStack>
                     </GuidePanel>
-                    <BarnVelger selectableBarn={selectableBarn} />
+                    <BarnVelger selectableBarn={selectableBarn} harPlanleggerData={!!getData(ContextDataType.KOMMER_FRA_PLANLEGGER)} />
                     <Alert variant="info">
                         <FormattedMessage id="velkommen.lagring.info" />
                     </Alert>
