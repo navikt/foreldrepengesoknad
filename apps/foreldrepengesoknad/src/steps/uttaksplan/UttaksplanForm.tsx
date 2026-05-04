@@ -1,18 +1,16 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import dayjs from 'dayjs';
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
-import { VedleggDataType } from 'types/VedleggDataType';
 import { getErMorUfør } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
 import { Alert, Radio, VStack } from '@navikt/ds-react';
 
-import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import {
     Barn,
@@ -29,21 +27,6 @@ import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
 import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 import { harPeriodeDerMorsAktivitetIkkeErValgt, useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
-
-import { VilDuGåTilbakeModal } from './VilDuGåTilbakeModal';
-
-const NULLSTILTE_PERIODE_VEDLEGG: VedleggDataType = {
-    [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: [],
-    [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: [],
-    [Skjemanummer.DOK_SYKDOM_MOR]: [],
-    [Skjemanummer.DOK_SYKDOM_FAR]: [],
-    [Skjemanummer.DOK_INNLEGGELSE_BARN]: [],
-    [Skjemanummer.DOK_INNLEGGELSE_MOR]: [],
-    [Skjemanummer.DOK_INNLEGGELSE_FAR]: [],
-    [Skjemanummer.DOK_ARBEID_MOR]: [],
-    [Skjemanummer.DOK_UTDANNING_MOR]: [],
-    [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: [],
-};
 
 type FormValues = {
     ønskerJustertUttakVedFødsel?: boolean;
@@ -77,13 +60,11 @@ export const UttaksplanForm = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const harJustertUttakVedFødsel = useContextGetData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
-    const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
 
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
     const oppdaterHarJustertUttakVedFødsel = useContextSaveData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
-    const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
     const uttaksplanMedKunNyePerioder =
@@ -167,27 +148,9 @@ export const UttaksplanForm = ({
         }
     };
 
-    //TODO (TOR) TFP-6583 Fjern bruk av VilDuGåTilbakeModal og resett context i andre steg
-    const [gåTilbakeIsOpen, setGåTilbakeIsOpen] = useState(false);
-
-    const gåTilForrigeSteg = () => {
-        setGåTilbakeIsOpen(false);
-
-        oppdaterHarJustertUttakVedFødsel(undefined);
-        oppdaterUttaksplan(undefined);
-        oppdaterVedlegg({ ...vedlegg, ...NULLSTILTE_PERIODE_VEDLEGG });
-
-        navigator.goToPreviousDefaultStep();
-    };
-
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             <VStack gap="space-24">
-                <VilDuGåTilbakeModal
-                    isOpen={gåTilbakeIsOpen}
-                    setIsOpen={setGåTilbakeIsOpen}
-                    goToPreviousStep={gåTilForrigeSteg}
-                />
                 {visAutomatiskJustering && (
                     <VStack gap="space-16">
                         <AutomatiskJusteringInfotekst
@@ -219,13 +182,7 @@ export const UttaksplanForm = ({
                     </VStack>
                 )}
                 <StepButtonsHookForm
-                    goToPreviousStep={
-                        uttaksplan
-                            ? () => {
-                                  setGåTilbakeIsOpen(true);
-                              }
-                            : navigator.goToPreviousDefaultStep
-                    }
+                    goToPreviousStep={navigator.goToPreviousDefaultStep}
                     onAvsluttOgSlett={avbrytSøknad}
                     onFortsettSenere={navigator.fortsettSøknadSenere}
                 />

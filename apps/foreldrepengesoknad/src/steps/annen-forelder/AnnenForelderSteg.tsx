@@ -1,7 +1,10 @@
+import isEqual from 'lodash/isEqual';
+
 import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
+import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
 import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrertePersonalia';
 import { useForm } from 'react-hook-form';
@@ -50,6 +53,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
     const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER);
 
     const oppdaterAnnenForeldre = useContextSaveData(ContextDataType.ANNEN_FORELDER);
+    const resetUttaksplanData = useResetUttaksplanData();
 
     const annenForelderFraRegistrertBarn = getRegistrertAnnenForelder(barn, søkerInfo);
 
@@ -68,6 +72,13 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
 
     const onSubmit = (values: AnnenForelder) => {
         if (values.kanIkkeOppgis) {
+            const nyttGrunnlag = { kanIkkeOppgis: true as const };
+            const gjeldendeGrunnlag = annenForelder
+                ? { kanIkkeOppgis: !isAnnenForelderOppgitt(annenForelder) }
+                : undefined;
+            if (gjeldendeGrunnlag !== undefined && gjeldendeGrunnlag.kanIkkeOppgis !== nyttGrunnlag.kanIkkeOppgis) {
+                resetUttaksplanData();
+            }
             oppdaterAnnenForeldre({ kanIkkeOppgis: true });
             return navigator.goToNextDefaultStep();
         }
@@ -84,6 +95,27 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
         // Hvis annenPartHarVedtak så har parten rett til foreldrepenger. I det tilfellet vises ikke det valget og verdien er undefined.
         // Derfor settes den true hvis vi har vedtak, og ellers brukes form-verdien
         const harRettPåForeldrepengerINorge = annenPartHarVedtak || values.harRettPåForeldrepengerINorge;
+        const harRettPåForeldrepengerIEØS = values.harOppholdtSegIEØS ? values.harRettPåForeldrepengerIEØS : false;
+
+        const nyttGrunnlag = {
+            kanIkkeOppgis: false as const,
+            harRettPåForeldrepengerINorge,
+            harRettPåForeldrepengerIEØS,
+            erAleneOmOmsorg: values.erAleneOmOmsorg,
+        };
+        const gjeldendeGrunnlag =
+            annenForelder && isAnnenForelderOppgitt(annenForelder)
+                ? {
+                      kanIkkeOppgis: false as const,
+                      harRettPåForeldrepengerINorge: annenForelder.harRettPåForeldrepengerINorge,
+                      harRettPåForeldrepengerIEØS: annenForelder.harRettPåForeldrepengerIEØS,
+                      erAleneOmOmsorg: annenForelder.erAleneOmOmsorg,
+                  }
+                : undefined;
+
+        if (gjeldendeGrunnlag !== undefined && !isEqual(gjeldendeGrunnlag, nyttGrunnlag)) {
+            resetUttaksplanData();
+        }
 
         oppdaterAnnenForeldre({
             ...values,
@@ -92,7 +124,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
             fornavn: replaceInvisibleCharsWithSpace(fornavn) ?? '',
             etternavn: replaceInvisibleCharsWithSpace(etternavn) ?? '',
             fnr: replaceInvisibleCharsWithSpace(fnr.trim()) ?? '',
-            harRettPåForeldrepengerIEØS: values.harOppholdtSegIEØS ? values.harRettPåForeldrepengerIEØS : false,
+            harRettPåForeldrepengerIEØS,
         });
 
         return navigator.goToNextDefaultStep();

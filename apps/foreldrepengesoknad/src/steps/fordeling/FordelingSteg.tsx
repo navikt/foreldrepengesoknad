@@ -6,6 +6,7 @@ import {
 import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
+import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
@@ -44,6 +45,7 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const oppdaterBarn = notEmpty(useContextSaveData(ContextDataType.OM_BARNET));
+    const resetUttaksplanData = useResetUttaksplanData();
 
     const termindato = getTermindato(barn);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
@@ -104,8 +106,11 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
     );
 
     useEffect(() => {
+        let oppdatertBarn = barn;
+        let barnEndret = false;
         if (erFarEllerMedmor && barn.antallBarn !== saksgrunnlagsAntallBarn) {
-            oppdaterBarn({ ...barn, antallBarn: saksgrunnlagsAntallBarn });
+            oppdatertBarn = { ...oppdatertBarn, antallBarn: saksgrunnlagsAntallBarn };
+            barnEndret = true;
         }
         if (
             erFarEllerMedmor &&
@@ -113,9 +118,14 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
             saksgrunnlagsTermindato &&
             barn.termindato !== saksgrunnlagsTermindato
         ) {
-            oppdaterBarn({ ...barn, termindato: saksgrunnlagsTermindato });
+            oppdatertBarn = { ...oppdatertBarn, termindato: saksgrunnlagsTermindato };
+            barnEndret = true;
         }
-    }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn, saksgrunnlagsTermindato]);
+        if (barnEndret) {
+            oppdaterBarn(oppdatertBarn);
+            resetUttaksplanData();
+        }
+    }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn, saksgrunnlagsTermindato, resetUttaksplanData]);
 
     if (!valgtStønadskonto || annenPartsVedtakQuery.isLoading) {
         return <Spinner />;

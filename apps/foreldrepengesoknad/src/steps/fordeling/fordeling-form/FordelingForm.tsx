@@ -1,4 +1,7 @@
+import isEqual from 'lodash/isEqual';
+
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
+import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useForm } from 'react-hook-form';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { Fordeling } from 'types/Fordeling';
@@ -42,6 +45,7 @@ export const FordelingForm = ({
     const fordelingAvForeldrepenger = useContextGetData(ContextDataType.FORDELING);
 
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
+    const resetUttaksplanData = useResetUttaksplanData();
 
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const datoForAleneomsorg = getDatoForAleneomsorg(annenForelder);
@@ -66,6 +70,9 @@ export const FordelingForm = ({
     );
 
     const onSubmit = (values: Fordeling) => {
+        if (fordelingAvForeldrepenger !== undefined && !isEqual(fordelingAvForeldrepenger, values)) {
+            resetUttaksplanData();
+        }
         oppdaterFordeling(values);
         return goToNextDefaultStep();
     };
