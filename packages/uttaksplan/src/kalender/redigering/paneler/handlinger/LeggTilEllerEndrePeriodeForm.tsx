@@ -67,20 +67,20 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
     const formSubmitValidator = useFormSubmitValidator<LeggTilEllerEndrePeriodeFormFormValues>();
 
-    const resetFormValuesVedEndringAvForelder = (forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {
+    const resetFormValuesVedEndringAvForelder = (forelderVerdi: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {
         const erFarMedmorLåst = erPeriodeneTilAnnenPartLåst && søker === 'MOR';
         const erMorLåst = erPeriodeneTilAnnenPartLåst && søker === 'FAR_MEDMOR';
 
-        if (forelder === 'BEGGE' && (erFarMedmorLåst || erMorLåst)) {
+        if (forelderVerdi === 'BEGGE' && (erFarMedmorLåst || erMorLåst)) {
             const nyeDefaultVerdier = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
                 uttakPerioder,
                 sammenslåtteValgtePerioder[0]!,
                 søker,
                 false,
             );
-            formMethods.reset({ ...nyeDefaultVerdier, forelder });
+            formMethods.reset({ ...nyeDefaultVerdier, forelder: forelderVerdi });
         } else {
-            formMethods.reset({ forelder });
+            formMethods.reset({ forelder: forelderVerdi });
         }
     };
 
