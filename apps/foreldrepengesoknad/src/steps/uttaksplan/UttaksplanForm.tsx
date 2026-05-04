@@ -159,7 +159,7 @@ export const UttaksplanForm = ({
                 visAutomatiskJustering ? formValues.ønskerJustertUttakVedFødsel : undefined,
             );
 
-            if (!gjeldendeUttaksplan) {
+            if (!gjeldendeUttaksplan || gjeldendeUttaksplan.length === 0) {
                 oppdaterUttaksplan(defaultUttaksperioder);
             }
 
