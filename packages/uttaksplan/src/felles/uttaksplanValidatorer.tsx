@@ -255,7 +255,7 @@ const erUgyldigSamtidigUttak = <T extends LeggTilEllerEndrePeriodeFormFormValues
 
     if (
         kombinertUttaksprosent === 100 &&
-        kontoTypeFarMedmor === 'FELLESPERIODE' &&
+        (kontoTypeFarMedmor === 'FELLESPERIODE' || kontoTypeFarMedmor === 'FORELDREPENGER') &&
         totalProsentMor !== 100 &&
         !morsAktivitet
     ) {

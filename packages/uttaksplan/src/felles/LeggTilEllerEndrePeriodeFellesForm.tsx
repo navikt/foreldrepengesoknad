@@ -654,7 +654,9 @@ const getSkalViseMorsAktivitetskravVedSamtidigUttak = (
     }
 
     const skalViseMorsAktivitetskravVedSamtidigUttak =
-        forelder === 'BEGGE' && kontoTypeFarMedmor === 'FELLESPERIODE' && morsTotaleProsent < 100;
+        forelder === 'BEGGE' &&
+        (kontoTypeFarMedmor === 'FELLESPERIODE' || kontoTypeFarMedmor === 'FORELDREPENGER') &&
+        morsTotaleProsent < 100;
 
     return skalViseMorsAktivitetskravVedSamtidigUttak;
 };

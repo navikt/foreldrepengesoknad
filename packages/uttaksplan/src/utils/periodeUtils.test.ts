@@ -100,4 +100,53 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
 
         expect(result).toBe(false);
     });
+
+    it('skal returnere true når far har FORELDREPENGER uten morsAktivitet', () => {
+        const perioder = [lagFarPeriode({ kontoType: 'FORELDREPENGER' })];
+
+        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', perioder);
+
+        expect(result).toBe(true);
+    });
+
+    it('skal returnere false når far har FORELDREPENGER med morsAktivitet satt', () => {
+        const perioder = [lagFarPeriode({ kontoType: 'FORELDREPENGER', morsAktivitet: 'ARBEID' })];
+
+        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', perioder);
+
+        expect(result).toBe(false);
+    });
+
+    it('skal returnere false når far har FORELDREPENGER og overlappende mor har 100% total', () => {
+        const perioder = [
+            lagFarPeriode({ kontoType: 'FORELDREPENGER', samtidigUttak: 50 }),
+            lagMorPeriode({
+                samtidigUttak: 50,
+                gradering: { arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } },
+            }),
+        ];
+
+        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', perioder);
+
+        expect(result).toBe(false);
+    });
+
+    it('skal returnere true når far har FORELDREPENGER og overlappende mor har under 100% total', () => {
+        const perioder = [
+            lagFarPeriode({ kontoType: 'FORELDREPENGER', samtidigUttak: 50 }),
+            lagMorPeriode({ samtidigUttak: 50 }),
+        ];
+
+        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', perioder);
+
+        expect(result).toBe(true);
+    });
+
+    it('skal returnere false når far har FEDREKVOTE uten morsAktivitet', () => {
+        const perioder = [lagFarPeriode({ kontoType: 'FEDREKVOTE' })];
+
+        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', perioder);
+
+        expect(result).toBe(false);
+    });
 });
