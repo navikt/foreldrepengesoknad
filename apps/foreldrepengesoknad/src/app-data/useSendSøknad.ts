@@ -51,6 +51,13 @@ export const useSendSøknad = (
             throw new Error('Søknaden din inneholder ingen nye perioder.');
         }
 
+        if (
+            !erEndringssøknad &&
+            !cleanedSøknad.uttaksplan.uttaksperioder.some((p: { type: string }) => p.type === 'uttak')
+        ) {
+            throw new Error('Søknaden må innehalde minst éin uttaksperiode.');
+        }
+
         const abortSignal = initAbortSignal();
 
         try {

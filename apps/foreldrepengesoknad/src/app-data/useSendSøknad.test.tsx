@@ -167,6 +167,17 @@ const PERIODE = {
     visPeriodeIPlan: false,
 } satisfies Periode;
 
+const UTTAK_PERIODE = {
+    id: '2',
+    tidsperiode: {
+        fom: new Date('2024-01-01'),
+        tom: new Date('2024-03-01'),
+    },
+    type: Periodetype.Uttak,
+    forelder: 'MOR',
+    konto: 'MØDREKVOTE',
+} as Periode;
+
 const UTTAKSPLAN_METADATA = {
     ønskerJustertUttakVedFødsel: true,
     perioderSomSkalSendesInn: [PERIODE],
@@ -236,7 +247,7 @@ const getWrapper =
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: TIDLIGERE_UTENLANDSOPPHOLD,
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: SENERE_UTENLANDSOPPHOLD,
                             [ContextDataType.UTTAKSPLAN_METADATA]: UTTAKSPLAN_METADATA,
-                            [ContextDataType.UTTAKSPLAN]: [PERIODE],
+                            [ContextDataType.UTTAKSPLAN]: [PERIODE, UTTAK_PERIODE],
                             [ContextDataType.VEDLEGG]: VEDLEGG,
                             [ContextDataType.EKSISTERENDE_SAK]: {
                                 saksnummer: '1',
@@ -354,7 +365,14 @@ describe('useFpSendSøknad', () => {
                     dekningsgrad: '100',
                     uttaksplan: {
                         ønskerJustertUttakVedFødsel: UTTAKSPLAN_METADATA.ønskerJustertUttakVedFødsel,
-                        uttaksperioder: [],
+                        uttaksperioder: [
+                            expect.objectContaining({
+                                type: 'uttak',
+                                konto: 'MØDREKVOTE',
+                                fom: '2024-01-01',
+                                tom: '2024-03-01',
+                            }),
+                        ],
                     },
                     vedlegg: VEDLEGG[Skjemanummer.TERMINBEKREFTELSE],
                 } satisfies ForeldrepengesøknadDto,

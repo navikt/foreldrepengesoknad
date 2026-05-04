@@ -425,7 +425,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     const ref = useRef<FormikValues>(null);
     const clickHandler = (values: FormikValues) => {
         setSubmitIsClicked(true);
-        if (uttaksplanErGyldig && !erTomEndringssøknad) {
+        if (uttaksplanErGyldig && !erTomEndringssøknad && !harIngenUttaksperioder) {
             setIsSubmitting(true);
             if (ref.current) {
                 ref.current.handleSubmit();
@@ -545,6 +545,8 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
     const erTomEndringssøknad =
         erEndringssøknad && (perioderSomSkalSendesInn === undefined || perioderSomSkalSendesInn.length === 0);
 
+    const harIngenUttaksperioder = !erEndringssøknad && !uttaksplan.some((p) => isUttaksperiode(p));
+
     const handleSlettUttaksplan = () => {
         const slettetPlanUtenomFpFørFødsel = uttaksplan.filter((periode) => isUttakAvForeldrepengerFørFødsel(periode));
         oppdaterUttaksplan(slettetPlanUtenomFpFørFødsel);
@@ -651,6 +653,11 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                                 {erTomEndringssøknad && submitIsClicked && (
                                     <Alert variant="error">
                                         <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidereEndringssøknad" />
+                                    </Alert>
+                                )}
+                                {harIngenUttaksperioder && submitIsClicked && (
+                                    <Alert variant="error">
+                                        <FormattedMessage id="UttaksplanSteg.IngenUttaksperioder" />
                                     </Alert>
                                 )}
                                 {/*Siden knappene her har mye unik logikk gjør vi en liten duplisering av "StepButtons" istedenfor å innføre knotete logikk*/}

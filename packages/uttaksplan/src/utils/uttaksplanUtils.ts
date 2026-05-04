@@ -20,6 +20,10 @@ export const uttaksplanInneholderPerioderUtenKonto = (uttaksplan: Periode[]): bo
     return uttaksplan.find((periode) => isUttaksperiode(periode) && periode.konto === undefined) !== undefined;
 };
 
+export const uttaksplanInneholderUttaksperiode = (uttaksplan: Periode[]): boolean => {
+    return uttaksplan.some((periode) => isUttaksperiode(periode));
+};
+
 export const kreverUttaksplanVedlegg = (
     uttaksplan: Periode[],
     erFarEllerMedmor: boolean,

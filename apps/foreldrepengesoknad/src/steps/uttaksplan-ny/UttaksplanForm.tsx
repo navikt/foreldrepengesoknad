@@ -118,6 +118,14 @@ export const UttaksplanForm = ({
         if (uttaksplan?.length === 0) {
             setFeilmelding(<FormattedMessage id="UttaksplanSteg.IngenPerioder" />);
             scrollToKvoteOppsummering();
+        } else if (
+            !erEndringssøknad &&
+            !(uttaksplan || defaultUttaksperioder).some(
+                (p) => !p.utsettelseÅrsak && !p.oppholdÅrsak && !p.overføringÅrsak,
+            )
+        ) {
+            setFeilmelding(<FormattedMessage id="UttaksplanSteg.IngenUttaksperioder" />);
+            scrollToKvoteOppsummering();
         } else if (erAntallDagerOvertrukket) {
             setFeilmelding(<FormattedMessage id="UttaksplanSteg.OvertrukketDager" />);
             scrollToKvoteOppsummering();

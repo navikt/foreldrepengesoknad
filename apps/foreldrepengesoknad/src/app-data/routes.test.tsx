@@ -46,6 +46,47 @@ describe('<routes>', () => {
         expect(erTilgjengelig).toBe(false);
     });
 
+    it('skal ikke vere tilgjengelig når rute er OPPSUMMERING og førstegangssøknad berre har utsettelsesperiodar', () => {
+        const uttaksplan = [
+            {
+                type: Periodetype.Utsettelse,
+                årsak: 'ARBEID',
+                forelder: 'FAR_MEDMOR',
+            },
+        ] as Periode[];
+        const erTilgjengelig = isRouteAvailable(SøknadRoutes.OPPSUMMERING, true, uttaksplan, false);
+        expect(erTilgjengelig).toBe(false);
+    });
+
+    it('skal vere tilgjengelig når rute er OPPSUMMERING og endringssøknad berre har utsettelsesperiodar', () => {
+        const uttaksplan = [
+            {
+                type: Periodetype.Utsettelse,
+                årsak: 'ARBEID',
+                forelder: 'FAR_MEDMOR',
+            },
+        ] as Periode[];
+        const erTilgjengelig = isRouteAvailable(SøknadRoutes.OPPSUMMERING, true, uttaksplan, true);
+        expect(erTilgjengelig).toBe(true);
+    });
+
+    it('skal vere tilgjengelig når rute er OPPSUMMERING og førstegangssøknad har minst éin uttaksperiode', () => {
+        const uttaksplan = [
+            {
+                type: Periodetype.Utsettelse,
+                årsak: 'ARBEID',
+                forelder: 'FAR_MEDMOR',
+            },
+            {
+                type: Periodetype.Uttak,
+                konto: 'FEDREKVOTE',
+                forelder: 'FAR_MEDMOR',
+            },
+        ] as Periode[];
+        const erTilgjengelig = isRouteAvailable(SøknadRoutes.OPPSUMMERING, true, uttaksplan, false);
+        expect(erTilgjengelig).toBe(true);
+    });
+
     it('skal vere tilgjengelig når rute er noe annet enn SØKERSITUASJON eller OPPSUMMERING', () => {
         const erTilgjengelig = isRouteAvailable(SøknadRoutes.OM_BARNET, true);
         expect(erTilgjengelig).toBe(true);

@@ -1,5 +1,5 @@
 import { Periode } from '@navikt/fp-common';
-import { uttaksplanInneholderPerioderUtenKonto } from '@navikt/fp-uttaksplan';
+import { uttaksplanInneholderPerioderUtenKonto, uttaksplanInneholderUttaksperiode } from '@navikt/fp-uttaksplan';
 
 export enum SøknadRoutes {
     VELKOMMEN = '/',
@@ -59,12 +59,17 @@ export const isRouteAvailable = (
     route: SøknadRoutes,
     harGodkjentVilkår: boolean,
     uttaksplan: Periode[] = [],
+    erEndringssøknad: boolean = false,
 ): boolean => {
     switch (route) {
         case SøknadRoutes.SØKERSITUASJON:
             return harGodkjentVilkår === true;
         case SøknadRoutes.OPPSUMMERING:
-            return uttaksplanInneholderPerioderUtenKonto(uttaksplan) === false && uttaksplan.length > 0;
+            return (
+                uttaksplanInneholderPerioderUtenKonto(uttaksplan) === false &&
+                uttaksplan.length > 0 &&
+                (erEndringssøknad || uttaksplanInneholderUttaksperiode(uttaksplan))
+            );
         default:
             return true;
     }

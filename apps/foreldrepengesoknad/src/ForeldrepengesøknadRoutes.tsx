@@ -368,7 +368,7 @@ export const ForeldrepengesøknadRoutes = ({
             // eslint-disable-next-line react-hooks/set-state-in-effect -- TODO (TOR) - Vurder om denne kan fjennast
             setIsFirstTimeLoadingApp(false);
             // TODO (TOR) Kan ta vekk innsending av uttaksplan til denne funksjonen når ein tek i bruk ny uttaksplan
-            if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
+            if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan, erEndringssøknad)) {
                 void navigate(currentRoute);
             } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING.toString()) {
                 void navigate(SøknadRoutes.UTTAKSPLAN);
