@@ -45,7 +45,7 @@ const meta = {
     render: ({
         hvemPlanlegger,
         omBarnet,
-        stønadskontoer,
+        stønadskvoter,
         gåTilNesteSide = action('button-click'),
         dekningsgrad = '100',
     }: StoryArgs) => {
@@ -63,7 +63,7 @@ const meta = {
                     }}
                     onDispatch={gåTilNesteSide}
                 >
-                    <FordelingSteg stønadskontoer={stønadskontoer} />
+                    <FordelingSteg stønadskvoter={stønadskvoter} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -84,7 +84,7 @@ export const FlereForsørgereEttBarn: Story = {
             termindato: '2024-01-01',
             antallBarn: '1',
         },
-        stønadskontoer: DEFAULT_STØNADSKONTO,
+        stønadskvoter: DEFAULT_STØNADSKONTO,
     },
 };
 
@@ -104,7 +104,7 @@ export const FlereForsørgereEttBarn80ProsentDekningsgrad: Story = {
             antallBarn: '1',
         },
         dekningsgrad: '80',
-        stønadskontoer: DEFAULT_STØNADSKONTO,
+        stønadskvoter: DEFAULT_STØNADSKONTO,
     },
 };
 
@@ -122,7 +122,7 @@ export const FlereForsørgereToBarn: Story = {
             antallBarn: '2',
         },
         dekningsgrad: '100',
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: DELT_UTTAK_80_TO_BARN,
                 minsteretter: MINSTERETTER,
@@ -149,7 +149,7 @@ export const FlereForsørgereToBarn80ProsentDekningsgrad: Story = {
             antallBarn: '2',
         },
         dekningsgrad: '80',
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: DELT_UTTAK_80_TO_BARN,
                 minsteretter: MINSTERETTER,
@@ -176,6 +176,6 @@ export const FarOgFar: Story = {
             overtakelsesdato: '2024-01-01',
         },
         dekningsgrad: '100',
-        stønadskontoer: DEFAULT_STØNADSKONTO,
+        stønadskvoter: DEFAULT_STØNADSKONTO,
     },
 };

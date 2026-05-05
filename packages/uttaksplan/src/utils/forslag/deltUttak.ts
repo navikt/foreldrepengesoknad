@@ -12,7 +12,7 @@ const getTidsperiodeString = (fom: string, uttaksdager: number): Tidsperiode => 
 
 interface DeltUttakParams {
     famDato: string;
-    tilgjengeligeStønadskontoer: KontoDto[];
+    tilgjengeligeStønadskvoter: KontoDto[];
     fellesperiodeDagerMor: number | undefined;
     startdato?: string;
 }
@@ -29,7 +29,7 @@ interface DeltUttakParams {
  */
 export const deltUttak = ({
     famDato,
-    tilgjengeligeStønadskontoer,
+    tilgjengeligeStønadskvoter,
     fellesperiodeDagerMor,
     startdato,
 }: DeltUttakParams): UttakPeriode_fpoversikt[] => {
@@ -39,10 +39,10 @@ export const deltUttak = ({
 
     const helgejustertFamDato = Uttaksdagen.denneEllerNeste(famDato).getDato();
 
-    const foreldrepengerFørFødsel = tilgjengeligeStønadskontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
-    const mødrekvote = tilgjengeligeStønadskontoer.find((k) => k.konto === 'MØDREKVOTE');
-    const fedrekvote = tilgjengeligeStønadskontoer.find((k) => k.konto === 'FEDREKVOTE');
-    const fellesperiode = tilgjengeligeStønadskontoer.find((k) => k.konto === 'FELLESPERIODE');
+    const foreldrepengerFørFødsel = tilgjengeligeStønadskvoter.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
+    const mødrekvote = tilgjengeligeStønadskvoter.find((k) => k.konto === 'MØDREKVOTE');
+    const fedrekvote = tilgjengeligeStønadskvoter.find((k) => k.konto === 'FEDREKVOTE');
+    const fellesperiode = tilgjengeligeStønadskvoter.find((k) => k.konto === 'FELLESPERIODE');
 
     // When no startdato is given and FPFF is available, default to 15 uttaksdager before famDato
     // so that the standard foreldrepenger-før-fødsel period is included automatically.

@@ -38,19 +38,19 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
     const annenPartVedtak = useQuery(annenPartVedtakOptions).data;
 
     const kontoerOptions = useStønadsKontoerOptions();
-    const tilgjengeligeStønadskontoerQuery = useQuery(kontoerOptions);
+    const tilgjengeligeStønadskvoterQuery = useQuery(kontoerOptions);
 
     const visAnnenPartsValg = annenPartVedtak && annenPartVedtak.perioder.length > 0;
     const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && !annenPartVedtak;
 
-    if (tilgjengeligeStønadskontoerQuery.isPending) {
+    if (tilgjengeligeStønadskvoterQuery.isPending) {
         return <Spinner />;
     }
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig}>
-                {tilgjengeligeStønadskontoerQuery.data && (
+                {tilgjengeligeStønadskvoterQuery.data && (
                     <>
                         {vis1Juli2024Info && (
                             <Box padding="space-16" background="brand-blue-moderate" style={{ marginBottom: '2rem' }}>
@@ -71,8 +71,8 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
                                 fornavnAnnenForelder={annenForelder.fornavn}
                                 kjønnAnnenForelder={getKjønnFromFnr(annenForelder)}
                                 dekningsgrad={annenPartVedtak.dekningsgrad === 'HUNDRE' ? '100' : '80'}
-                                valgtStønadskonto={
-                                    tilgjengeligeStønadskontoerQuery.data[
+                                valgtStønadskvote={
+                                    tilgjengeligeStønadskvoterQuery.data[
                                         annenPartVedtak.dekningsgrad === 'HUNDRE' ? '100' : '80'
                                     ]
                                 }
@@ -86,8 +86,8 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
                                 onFortsettSenere={navigator.fortsettSøknadSenere}
                                 barn={barn}
                                 søkersituasjon={søkersituasjon}
-                                stønadskonto100={tilgjengeligeStønadskontoerQuery.data['100']}
-                                stønadskonto80={tilgjengeligeStønadskontoerQuery.data['80']}
+                                stønadskvote100={tilgjengeligeStønadskvoterQuery.data['100']}
+                                stønadskvote80={tilgjengeligeStønadskvoterQuery.data['80']}
                             />
                         )}
                     </>

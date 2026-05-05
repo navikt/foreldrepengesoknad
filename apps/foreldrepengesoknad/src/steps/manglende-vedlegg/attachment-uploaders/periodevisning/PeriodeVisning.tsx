@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { JSX } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { getForelderNavn } from 'utils/isFarEllerMedmor';
-import { getStønadskontoNavn } from 'utils/stønadskontoerUtils';
+import { getStønadskvoteNavn } from 'utils/stønadskvoterUtils';
 import {
     getUttaksprosentFromStillingsprosent,
     isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel,
@@ -21,7 +21,7 @@ import {
 import { Uttaksdagen, Uttaksperioden, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan';
 
-import { StønadskontoIkon } from './StønadskontoIkon';
+import { StønadskvoteIkon } from './StønadskvoteIkon';
 import { UtsettelseIkon } from './UtsettelseIkon';
 import UttaksplanAdvarselIkon from './UttaksplanAdvarselIkon';
 
@@ -94,7 +94,7 @@ const PeriodeIkon = ({
         }
 
         return (
-            <StønadskontoIkon
+            <StønadskvoteIkon
                 konto={periode.kontoType}
                 forelder={periode.forelder}
                 gradert={!!periode.gradering}
@@ -106,7 +106,7 @@ const PeriodeIkon = ({
 
     if (Uttaksperioden.erIkkeEøsPeriode(periode) && periode.overføringÅrsak) {
         return (
-            <StønadskontoIkon
+            <StønadskvoteIkon
                 konto={periode.kontoType}
                 forelder={periode.forelder}
                 navnPåForeldre={navnPåForeldre}
@@ -121,7 +121,7 @@ const PeriodeIkon = ({
 
     if (Uttaksperioden.erIkkeEøsPeriode(periode) && periode.oppholdÅrsak) {
         return (
-            <StønadskontoIkon
+            <StønadskvoteIkon
                 konto={'FORELDREPENGER'}
                 forelder={periode.forelder}
                 navnPåForeldre={navnPåForeldre}
@@ -218,7 +218,7 @@ const PeriodeTittel = ({
         );
     }
     if (Uttaksperioden.erIkkeEøsPeriode(periode) && periode.overføringÅrsak) {
-        return getStønadskontoNavn(intl, periode.kontoType, navnPåForeldre, erFarEllerMedmor);
+        return getStønadskvoteNavn(intl, periode.kontoType, navnPåForeldre, erFarEllerMedmor);
     }
     if (Uttaksperioden.erIkkeEøsPeriode(periode) && periode.utsettelseÅrsak) {
         return intl.formatMessage(
@@ -299,7 +299,7 @@ const getPeriodeTittelUttaksPeriode = (
     erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
 ) => {
-    const tittelMedNavn = getStønadskontoNavn(
+    const tittelMedNavn = getStønadskvoteNavn(
         intl,
         periode.kontoType,
         navnPåForeldre,

@@ -26,11 +26,11 @@ import { OppsummeringHarRett } from './expansion-cards/OppsummeringHarRett';
 import { HvorMyeOppsummering } from './expansion-cards/hvor-mye/HvorMyeOppsummering';
 
 interface Props {
-    stønadskontoer?: KontoBeregningResultatDto;
+    stønadskvoter?: KontoBeregningResultatDto;
     satser: Satser;
 }
 
-export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
+export const OppsummeringSteg = ({ stønadskvoter, satser }: Props) => {
     const navigator = usePlanleggerNavigator();
 
     useScrollBehaviour();
@@ -44,8 +44,8 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
 
     const erAleneforsørger = erAlenesøker(hvemPlanlegger);
 
-    const valgtStønadskonto =
-        stønadskontoer && hvorLangPeriode ? stønadskontoer[hvorLangPeriode.dekningsgrad] : undefined;
+    const valgtStønadskvote =
+        stønadskvoter && hvorLangPeriode ? stønadskvoter[hvorLangPeriode.dekningsgrad] : undefined;
 
     const erBarnetFødtForMerEnnTreÅrSiden =
         erBarnetFødt(barnet) && dayjs(barnet.fødselsdato).isBefore(DATE_3_YEARS_AGO);
@@ -99,13 +99,13 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
                                 </Infobox>
                             </VStack>
                         )}
-                        {stønadskontoer && valgtStønadskonto && hvorLangPeriode && arbeidssituasjon && (
+                        {stønadskvoter && valgtStønadskvote && hvorLangPeriode && arbeidssituasjon && (
                             <VStack gap="space-8">
                                 <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/planlegg-foreldrepenger-inline" />
 
                                 {harRettTilForeldrepenger && (
                                     <OppsummeringHarRett
-                                        valgtStønadskonto={valgtStønadskonto}
+                                        valgtStønadskvote={valgtStønadskvote}
                                         hvorLangPeriode={hvorLangPeriode}
                                         hvemPlanlegger={hvemPlanlegger}
                                         barnet={barnet}
@@ -118,7 +118,7 @@ export const OppsummeringSteg = ({ stønadskontoer, satser }: Props) => {
                                     <BarnehageplassOppsummering hvemPlanlegger={hvemPlanlegger} barnet={barnet} />
                                 )}
                                 <OppgittInformasjon
-                                    stønadskontoer={stønadskontoer}
+                                    stønadskvoter={stønadskvoter}
                                     barnet={barnet}
                                     hvemPlanlegger={hvemPlanlegger}
                                     arbeidssituasjon={arbeidssituasjon}

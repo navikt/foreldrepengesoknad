@@ -11,7 +11,7 @@ import { erBarnetAdoptert } from './barnetUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from './hvemHarRettUtils';
 import { getFamiliehendelsedato, lagForslagTilPlan } from './uttakUtils';
 
-export const useLagUttaksplanForslag = (valgtStønadskonto: KontoBeregningDto) => {
+export const useLagUttaksplanForslag = (valgtStønadskvote: KontoBeregningDto) => {
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
@@ -37,7 +37,7 @@ export const useLagUttaksplanForslag = (valgtStønadskonto: KontoBeregningDto) =
         erDeltUttak: fordeling !== undefined,
         famDato: familiehendelsedato,
         startdato,
-        tilgjengeligeStønadskontoer: valgtStønadskonto.kontoer,
+        tilgjengeligeStønadskvoter: valgtStønadskvote.kontoer,
         fellesperiodeDagerMor: fordeling?.antallDagerSøker1,
         bareFarMedmorHarRett,
         erAdopsjon: erBarnetAdoptert(omBarnet),

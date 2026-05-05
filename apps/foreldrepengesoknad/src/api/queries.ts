@@ -1,5 +1,5 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
-import { getStønadskontoParams } from 'api/getStønadskontoParams';
+import { getStønadskvoteParams } from 'api/getStønadskvoteParams';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky, { type ResponsePromise } from 'ky';
@@ -88,9 +88,9 @@ const annenPartVedtakOptions = (data?: AnnenPartRequest_fpoversikt) =>
         select: (sak) => sak ?? undefined,
     });
 
-const tilgjengeligeStønadskontoerOptions = (data: KontoBeregningGrunnlagDto) =>
+const tilgjengeligeStønadskvoterOptions = (data: KontoBeregningGrunnlagDto) =>
     queryOptions({
-        queryKey: ['TILGJENGELIGE_STONADSKONTOER', data],
+        queryKey: ['TILGJENGELIGE_STONADSKVOTER', data],
         queryFn: () => ky.post(API_URLS.konto, { json: data }).json<KontoBeregningResultatDto>(),
         staleTime: Infinity,
     });
@@ -116,7 +116,7 @@ export const useStønadsKontoerOptions = () => {
 
     const valgtSak = sakerQuery.data?.foreldrepenger.find((sak) => sak.saksnummer === valgtEksisterendeSaksnr);
 
-    const stønadskontoParams = getStønadskontoParams(
+    const stønadskvoteParams = getStønadskvoteParams(
         barn,
         annenForelder,
         søkersituasjon,
@@ -124,7 +124,7 @@ export const useStønadsKontoerOptions = () => {
         valgtSak?.familiehendelse.termindato,
     );
 
-    return tilgjengeligeStønadskontoerOptions(stønadskontoParams);
+    return tilgjengeligeStønadskvoterOptions(stønadskvoteParams);
 };
 
 export const useAnnenPartVedtakOptions = () => {

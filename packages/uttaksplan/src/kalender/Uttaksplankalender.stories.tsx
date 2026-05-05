@@ -21,7 +21,7 @@ const meta = {
     component: UttaksplanKalender,
     args: {
         readOnly: false,
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
                 { konto: 'FEDREKVOTE', dager: 95 },
@@ -43,7 +43,7 @@ const meta = {
         return (
             <UttaksplanDataProvider
                 barn={args.barn}
-                valgtStønadskonto={args.valgtStønadskonto}
+                valgtStønadskvote={args.valgtStønadskvote}
                 foreldreInfo={args.foreldreInfo}
                 harAktivitetskravIPeriodeUtenUttak={false}
                 uttakPerioder={perioder ?? []}
@@ -839,7 +839,7 @@ export const VisFarsAktivitetsfriKvote: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'AKTIVITETSFRI_KVOTE', dager: 75 },
                 { konto: 'FORELDREPENGER', dager: 125 },

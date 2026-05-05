@@ -51,7 +51,7 @@ const meta = {
         hvorLangPeriode,
         omBarnet,
         arbeidssituasjon,
-        stønadskontoer,
+        stønadskvoter,
         satser,
         hvorMye,
         uttaksplan,
@@ -69,7 +69,7 @@ const meta = {
                         [ContextDataType.UTTAKSPLAN]: uttaksplan,
                     }}
                 >
-                    <OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} />
+                    <OppsummeringSteg stønadskvoter={stønadskvoter} satser={satser} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -107,7 +107,7 @@ export const FlereForsørgereHundreProsentTermin: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '100': {
                 kontoer: DELT_UTTAK_100,
                 minsteretter: MINSTERETTER,
@@ -181,7 +181,7 @@ export const MorOgFarKunFarHarRett: Story = {
             status: Arbeidsstatus.INGEN,
             jobberAnnenPart: true,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR,
                 minsteretter: MINSTERETTER,
@@ -220,7 +220,7 @@ export const FarOgFarFødsel: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '100': {
                 kontoer: IKKE_DELT_UTTAK_100_FARMEDMOR,
                 minsteretter: MINSTERETTER,
@@ -258,7 +258,7 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: IKKE_DELT_UTTAK_80_FAR_OG_FAR_ADOPSJON,
                 minsteretter: MINSTERETTER,
@@ -299,7 +299,7 @@ export const FarOgFarAdopsjonBeggeHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
-        stønadskontoer: FlereForsørgereHundreProsentTermin.args?.stønadskontoer,
+        stønadskvoter: FlereForsørgereHundreProsentTermin.args?.stønadskvoter,
         uttaksplan: [
             {
                 fom: '2024-09-23',
@@ -362,7 +362,7 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: IKKE_DELT_UTTAK_TO_BARN_80,
                 minsteretter: MINSTERETTER,
@@ -397,7 +397,7 @@ export const AleneforsørgerFarÅttiProsentFødsel: Story = {
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: ALENE_OM_OMSORG_80_FARMEDMOR,
                 minsteretter: MINSTERETTER,
@@ -439,7 +439,7 @@ export const FlereForsørgereHundreProsentAdopsjon: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
-        stønadskontoer: FlereForsørgereHundreProsentTermin.args?.stønadskontoer,
+        stønadskvoter: FlereForsørgereHundreProsentTermin.args?.stønadskvoter,
         uttaksplan: [
             {
                 fom: '2024-09-19',
@@ -527,7 +527,7 @@ export const KunMorHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '100': {
                 kontoer: IKKE_DELT_UTTAK_100_MOR,
                 minsteretter: MINSTERETTER,
@@ -595,7 +595,7 @@ export const OppsummeringFarOgFarKunFar2HarRett: Story = {
             status: Arbeidsstatus.INGEN,
             jobberAnnenPart: true,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: IKKE_DELT_UTTAK_80_FAR_OG_FAR_FØDSEL,
                 minsteretter: MINSTERETTER,

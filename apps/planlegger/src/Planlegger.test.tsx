@@ -9,14 +9,14 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 import { endreFordelingMedSlider } from '../vitest/testHelpers';
 import * as stories from './Planlegger.stories';
 
-const { DefaultMockaStønadskontoerOgSatser, FarFarMockaStønadskontoerOgSatser } = composeStories(stories);
+const { DefaultMockaStønadskvoterOgSatser, FarFarMockaStønadskvoterOgSatser } = composeStories(stories);
 
 describe('<Planlegger>', () => {
     it(
         'skal gå rett til oppsummering når ingen av foreldrene har rett',
         mswWrapper(async ({ setHandlers }) => {
-            setHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
-            const utils = render(<DefaultMockaStønadskontoerOgSatser />);
+            setHandlers(DefaultMockaStønadskvoterOgSatser.parameters.msw);
+            const utils = render(<DefaultMockaStønadskvoterOgSatser />);
 
             expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Start'));
@@ -80,8 +80,8 @@ describe('<Planlegger>', () => {
     it(
         'skal gå rett til oppsummering når barnet er født for mer enn tre år siden',
         mswWrapper(async ({ setHandlers }) => {
-            setHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
-            const utils = render(<DefaultMockaStønadskontoerOgSatser />);
+            setHandlers(DefaultMockaStønadskvoterOgSatser.parameters.msw);
+            const utils = render(<DefaultMockaStønadskvoterOgSatser />);
 
             expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Start'));
@@ -124,8 +124,8 @@ describe('<Planlegger>', () => {
     it(
         'skal ikke vise fordelingssteget når far og far og barnet er født',
         mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarFarMockaStønadskontoerOgSatser.parameters.msw);
-            const utils = render(<FarFarMockaStønadskontoerOgSatser />);
+            setHandlers(FarFarMockaStønadskvoterOgSatser.parameters.msw);
+            const utils = render(<FarFarMockaStønadskvoterOgSatser />);
 
             expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Start'));
@@ -218,8 +218,8 @@ describe('<Planlegger>', () => {
     it(
         'skal ikke vise barnehageplass-steget når adopsjon',
         mswWrapper(async ({ setHandlers }) => {
-            setHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
-            const utils = render(<DefaultMockaStønadskontoerOgSatser />);
+            setHandlers(DefaultMockaStønadskvoterOgSatser.parameters.msw);
+            const utils = render(<DefaultMockaStønadskvoterOgSatser />);
 
             expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Start'));

@@ -22,7 +22,7 @@ import {
 } from 'utils/HvemPlanleggerUtils';
 import { mapOmBarnetTilBarn } from 'utils/barnetUtils';
 import { HvemHarRett, utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
-import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
+import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskvoterUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
 import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
@@ -54,10 +54,10 @@ import { HvaErMulig } from './hva-er-mulig/HvaErMulig';
 import { UforutsetteEndringer } from './uforutsette-endringer/UforutsetteEndringer';
 
 interface Props {
-    stønadskontoer: KontoBeregningResultatDto;
+    stønadskvoter: KontoBeregningResultatDto;
 }
 
-export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
+export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
@@ -74,9 +74,9 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
 
     const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
-    const stønadskonto100 = stønadskontoer['100'];
-    const stønadskonto80 = stønadskontoer['80'];
-    const valgtStønadskonto = hvorLangPeriode.dekningsgrad === '100' ? stønadskonto100 : stønadskonto80;
+    const stønadskvote100 = stønadskvoter['100'];
+    const stønadskvote80 = stønadskvoter['80'];
+    const valgtStønadskvote = hvorLangPeriode.dekningsgrad === '100' ? stønadskvote100 : stønadskvote80;
     const barnehagestartdato = barnehagestartDato(omBarnet);
 
     const isMedmorDelAvSøknaden = erMedmorDelAvSøknaden(hvemPlanlegger);
@@ -106,7 +106,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
         globalThis.history.replaceState(null, '', newUrl);
     };
 
-    const planforslag = useLagUttaksplanForslag(valgtStønadskonto);
+    const planforslag = useLagUttaksplanForslag(valgtStønadskvote);
 
     const kvoteOppsummeringRef = useRef<HTMLDivElement>(null);
     const scrollToKvoteOppsummering = () => {
@@ -141,7 +141,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                         erMedmorDelAvSøknaden: isMedmorDelAvSøknaden,
                         erIkkeSøkerSpesifisert: erDeltUttak,
                     }}
-                    valgtStønadskonto={valgtStønadskonto}
+                    valgtStønadskvote={valgtStønadskvote}
                     harAktivitetskravIPeriodeUtenUttak={false}
                     uttakPerioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
                     erPeriodeneTilAnnenPartLåst={false}
@@ -165,7 +165,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                     />
 
                     <AntallUkerVelger
-                        stønadskontoer={stønadskontoer}
+                        stønadskvoter={stønadskvoter}
                         hvemHarRett={hvemHarRett}
                         lagreUttaksplanOgOppdaterUrl={lagreUttaksplanOgOppdaterUrl}
                     />
@@ -275,11 +275,11 @@ const DereKanTilpassePlanenInfoBox = ({ erAleneforsørger }: { erAleneforsørger
 );
 
 const AntallUkerVelger = ({
-    stønadskontoer,
+    stønadskvoter,
     hvemHarRett,
     lagreUttaksplanOgOppdaterUrl,
 }: {
-    stønadskontoer: KontoBeregningResultatDto;
+    stønadskvoter: KontoBeregningResultatDto;
     hvemHarRett: HvemHarRett;
     lagreUttaksplanOgOppdaterUrl: (oppdatertUttaksplan: UttakPeriode_fpoversikt[] | undefined) => void;
 }) => {
@@ -300,27 +300,27 @@ const AntallUkerVelger = ({
         lagreHvorLangPeriode({ dekningsgrad });
         if (fordeling) {
             lagreFordeling({
-                antallDagerSøker1: finnAntallDagerSøker1(dekningsgrad, stønadskontoer, fordeling),
+                antallDagerSøker1: finnAntallDagerSøker1(dekningsgrad, stønadskvoter, fordeling),
             });
         }
         lagreUttaksplanOgOppdaterUrl(undefined);
     };
 
-    const stønadskonto100 = stønadskontoer['100'];
-    const stønadskonto80 = stønadskontoer['80'];
-    const valgtStønadskonto = hvorLangPeriode.dekningsgrad === '100' ? stønadskonto100 : stønadskonto80;
+    const stønadskvote100 = stønadskvoter['100'];
+    const stønadskvote80 = stønadskvoter['80'];
+    const valgtStønadskvote = hvorLangPeriode.dekningsgrad === '100' ? stønadskvote100 : stønadskvote80;
 
-    const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(stønadskonto100);
-    const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(stønadskonto80);
+    const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(stønadskvote100);
+    const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(stønadskvote80);
 
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
-    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
+    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskvote);
 
     const uttaksdata = finnUttaksdata(
         hvemHarRett,
         hvemPlanlegger,
-        valgtStønadskonto,
+        valgtStønadskvote,
         omBarnet,
         fordeling?.antallDagerSøker1,
     );
@@ -396,11 +396,11 @@ const AntallUkerVelger = ({
 
 const finnAntallDagerSøker1 = (
     dekningsgrad: Dekningsgrad,
-    stønadskontoer: KontoBeregningResultatDto,
+    stønadskvoter: KontoBeregningResultatDto,
     fordeling: Fordeling,
 ) => {
     const ukerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(
-        dekningsgrad === '100' ? stønadskontoer['100'] : stønadskontoer['80'],
+        dekningsgrad === '100' ? stønadskvoter['100'] : stønadskvoter['80'],
     );
 
     return Math.min(fordeling.antallDagerSøker1, ukerOgDagerFellesperiode.totaltAntallDager);

@@ -16,7 +16,7 @@ import { SlettPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyv
 import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../../utils/UttakPeriodeBuilder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
-import { genererPeriodeKey, getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
+import { genererPeriodeKey, getStønadskvoteNavn } from '../../../utils/uttaksplanListeUtils';
 
 const ARIA_LABEL_ID = 'slett-periode-panel-heading';
 
@@ -117,7 +117,7 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
                                     return (
                                         <Checkbox key={genererPeriodeKey(p)} value={index} autoFocus={index === 0}>
                                             {`${formatDate(p.fom)} - ${formatDate(p.tom)} -
-                                        ${getStønadskontoNavn(
+                                        ${getStønadskvoteNavn(
                                             intl,
                                             navnPåForeldre,
                                             erFarEllerMedmor,

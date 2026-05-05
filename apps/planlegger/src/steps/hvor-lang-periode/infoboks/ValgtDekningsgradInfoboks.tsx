@@ -14,7 +14,7 @@ import {
 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { getAntallUkerOgDagerAktivitetsfriKvote, getAntallUkerOgDagerForeldrepenger } from 'utils/stønadskontoerUtils';
+import { getAntallUkerOgDagerAktivitetsfriKvote, getAntallUkerOgDagerForeldrepenger } from 'utils/stønadskvoterUtils';
 import { UttakUkerOgDager, Uttaksdata, getFamiliehendelsedato } from 'utils/uttakUtils';
 
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
@@ -27,7 +27,7 @@ interface Props {
     barnet: OmBarnet;
     hvemPlanlegger: HvemPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
-    valgtStønadskonto: KontoBeregningDto;
+    valgtStønadskvote: KontoBeregningDto;
     uttaksdata100: Uttaksdata;
     uttaksdata80: Uttaksdata;
     valgtDekningsgrad: Dekningsgrad;
@@ -38,7 +38,7 @@ export const ValgtDekningsgradInfoboks = ({
     barnet,
     hvemPlanlegger,
     arbeidssituasjon,
-    valgtStønadskonto,
+    valgtStønadskvote,
     uttaksdata100,
     uttaksdata80,
     valgtDekningsgrad,
@@ -143,8 +143,8 @@ export const ValgtDekningsgradInfoboks = ({
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.FørsteUker"
                             values={{
-                                uker: getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskonto).uker,
-                                dager: getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskonto).dager,
+                                uker: getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskvote).uker,
+                                dager: getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskvote).dager,
                                 uker2: antallUkerOgDager.uker,
                                 dager2: antallUkerOgDager.dager,
                                 b: (msg) => <b>{msg}</b>,
@@ -157,8 +157,8 @@ export const ValgtDekningsgradInfoboks = ({
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.AndreUker"
                             values={{
-                                uker: getAntallUkerOgDagerForeldrepenger(valgtStønadskonto).uker,
-                                dager: getAntallUkerOgDagerForeldrepenger(valgtStønadskonto).dager,
+                                uker: getAntallUkerOgDagerForeldrepenger(valgtStønadskvote).uker,
+                                dager: getAntallUkerOgDagerForeldrepenger(valgtStønadskvote).dager,
                                 uker2: antallUkerOgDager.uker,
                                 dager2: antallUkerOgDager.dager,
                                 a: (msg) => (

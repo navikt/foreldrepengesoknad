@@ -45,7 +45,7 @@ const meta = {
         hvemPlanlegger,
         omBarnet,
         arbeidssituasjon,
-        stønadskontoer,
+        stønadskvoter,
         gåTilNesteSide = action('button-click'),
     }: StoryArgs) => {
         return (
@@ -58,7 +58,7 @@ const meta = {
                     }}
                     onDispatch={gåTilNesteSide}
                 >
-                    <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} />
+                    <HvorLangPeriodeSteg stønadskvoter={stønadskvoter} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -85,7 +85,7 @@ export const FlereForsørgereEttBarnKunMorHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: DELT_UTTAK_80,
                 minsteretter: MINSTERETTER,
@@ -115,7 +115,7 @@ export const FlereForsørgereEttBarnBeggeHarRettAdopsjon: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: DELT_UTTAK_80,
                 minsteretter: MINSTERETTER,
@@ -144,7 +144,7 @@ export const FlereForsørgereToBarn: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: DELT_UTTAK_80_TO_BARN,
                 minsteretter: MINSTERETTER,
@@ -171,7 +171,7 @@ export const AleneforsørgerMorEttBarn: Story = {
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: IKKE_DELT_UTTAK_80_MOR,
                 minsteretter: MINSTERETTER,
@@ -201,7 +201,7 @@ export const FlereForsørgereKunFarHarRett: Story = {
             status: Arbeidsstatus.INGEN,
             jobberAnnenPart: true,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR,
                 minsteretter: MINSTERETTER,
@@ -231,7 +231,7 @@ export const FlereForsørgereFarOgFarKunFar1HarRettAdopsjon: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR,
                 minsteretter: MINSTERETTER,
@@ -261,7 +261,7 @@ export const FlereForsørgereFarOgFarKunFar1HarRettFødsel: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: IKKE_DELT_UTTAK_80_FAR_OG_FAR,
                 minsteretter: MINSTERETTER,
@@ -288,7 +288,7 @@ export const AleneforsørgerFarToBarn: Story = {
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: [{ konto: 'FORELDREPENGER', dager: 291 }],
                 minsteretter: MINSTERETTER,
@@ -318,7 +318,7 @@ export const FarOgFarBeggeHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '100': {
                 kontoer: [
                     { konto: 'FORELDREPENGER', dager: 125 },

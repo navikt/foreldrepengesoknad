@@ -105,7 +105,7 @@ export const Default: Story = {
             },
         ],
         harAktivitetskravIPeriodeUtenUttak: false,
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
                 { konto: 'FEDREKVOTE', dager: 95 },
@@ -266,7 +266,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
                 { konto: 'FEDREKVOTE', dager: 95 },
@@ -308,7 +308,7 @@ export const HullperiodeOverFamiliehendelsesdato: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
                 { konto: 'FEDREKVOTE', dager: 95 },
@@ -411,7 +411,7 @@ export const FarSøkerOmsorgsovertakelse: Story = {
             },
         ],
         harAktivitetskravIPeriodeUtenUttak: false,
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
                 { konto: 'FEDREKVOTE', dager: 95 },
@@ -474,7 +474,7 @@ export const MorSøkerOgFarHarEøsPeriode: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
                 { konto: 'FEDREKVOTE', dager: 95 },
@@ -538,7 +538,7 @@ export const FarSøkerOgMorHarEøsPeriode: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
                 { konto: 'FEDREKVOTE', dager: 95 },
@@ -608,7 +608,7 @@ export const MarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt: Story =
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
                 { konto: 'FEDREKVOTE', dager: 95 },
@@ -687,7 +687,7 @@ export const FarSøkerEtterAtMorHarSøkt: Story = {
         },
         harAktivitetskravIPeriodeUtenUttak: false,
         erPeriodeneTilAnnenPartLåst: true,
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
                 { konto: 'FEDREKVOTE', dager: 95 },
@@ -746,7 +746,7 @@ export const HarAvslåttePerioder: Story = {
                 forelder: 'MOR',
             },
         ],
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
                 { konto: 'FEDREKVOTE', dager: 95 },
@@ -787,7 +787,7 @@ export const HarUtsettelse: Story = {
                 flerbarnsdager: false,
             },
         ],
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
                 { konto: 'FEDREKVOTE', dager: 95 },
@@ -839,7 +839,7 @@ export const KunFarHarRettOgHarPauseperiode: Story = {
                 flerbarnsdager: false,
             },
         ] satisfies Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
                 { konto: 'FEDREKVOTE', dager: 95 },
@@ -886,7 +886,7 @@ export const EøsPerioderForAnnenPart: Story = {
                 forelder: 'FAR_MEDMOR',
             },
         ] satisfies Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
                 { konto: 'FEDREKVOTE', dager: 95 },
@@ -948,7 +948,7 @@ export const SkalIkkeMarkereAvslåttePerioderMedVarselOmMorsAktivitet: Story = {
             erMedmorDelAvSøknaden: false,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
                 { konto: 'FEDREKVOTE', dager: 95 },

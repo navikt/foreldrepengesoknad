@@ -10,10 +10,10 @@ import { OppsummeringSide } from './pages/oppsummering/OppsummeringSide';
 
 interface Props {
     satser: Satser;
-    stønadskontoer?: { '100': KontoBeregningDto; '80': KontoBeregningDto };
+    stønadskvoter?: { '100': KontoBeregningDto; '80': KontoBeregningDto };
 }
 
-export const HvorMyeRouter = ({ satser, stønadskontoer }: Props) => {
+export const HvorMyeRouter = ({ satser, stønadskvoter }: Props) => {
     const [arbeidssituasjon, setArbeidssituasjon] = useState<Arbeidssituasjon>();
 
     return (
@@ -29,13 +29,13 @@ export const HvorMyeRouter = ({ satser, stønadskontoer }: Props) => {
                     />
                 }
             />
-            {arbeidssituasjon && stønadskontoer && (
+            {arbeidssituasjon && stønadskvoter && (
                 <Route
                     path={HvorMyeRoutes.OPPSUMMERING}
                     element={
                         <OppsummeringSide
                             arbeidssituasjon={arbeidssituasjon}
-                            stønadskontoer={stønadskontoer}
+                            stønadskvoter={stønadskvoter}
                             satser={satser}
                         />
                     }

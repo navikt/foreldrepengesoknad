@@ -43,7 +43,7 @@ const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHar
     return 'BARE_SØKER_RETT';
 };
 
-const getStønadskontoer = async (
+const getStønadskvoter = async (
     omBarnet?: OmBarnet,
     arbeidssituasjon?: Arbeidssituasjon,
     hvemPlanlegger?: HvemPlanlegger,
@@ -73,17 +73,17 @@ export const PlanleggerDataFetcher = () => {
 
     const hvemHarRett = arbeidssituasjon ? utledHvemSomHarRett(arbeidssituasjon) : undefined;
 
-    const stønadskontoerData = useQuery({
-        queryKey: ['KONTOER', omBarnet, arbeidssituasjon, hvemPlanlegger],
-        queryFn: () => getStønadskontoer(omBarnet, arbeidssituasjon, hvemPlanlegger),
+    const stønadskvoterData = useQuery({
+        queryKey: ['KVOTER', omBarnet, arbeidssituasjon, hvemPlanlegger],
+        queryFn: () => getStønadskvoter(omBarnet, arbeidssituasjon, hvemPlanlegger),
         enabled: hvemHarRett !== undefined && hvemHarRett !== 'ingenHarRett',
     });
 
-    if (stønadskontoerData.error) {
+    if (stønadskvoterData.error) {
         return <SimpleErrorPage retryCallback={() => location.reload()} />;
     }
 
-    return <PlanleggerRouter stønadskontoer={stønadskontoerData.data} satser={DEFAULT_SATSER} />;
+    return <PlanleggerRouter stønadskvoter={stønadskvoterData.data} satser={DEFAULT_SATSER} />;
 };
 
 export const PlanleggerDataInit = () => {

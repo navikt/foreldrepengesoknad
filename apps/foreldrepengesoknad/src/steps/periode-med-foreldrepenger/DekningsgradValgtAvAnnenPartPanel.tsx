@@ -4,7 +4,7 @@ import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getVarighetString, getVis1Juli2024Info } from 'utils/dateUtils';
-import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
+import { getAntallUkerFraStønadskvoter } from 'utils/stønadskvoterUtils';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
@@ -22,7 +22,7 @@ type Props = {
     fornavnAnnenForelder: string;
     kjønnAnnenForelder?: 'M' | 'K' | 'U';
     dekningsgrad: Dekningsgrad;
-    valgtStønadskonto: KontoBeregningDto;
+    valgtStønadskvote: KontoBeregningDto;
 };
 
 export const DekningsgradValgtAvAnnenPartPanel = ({
@@ -31,7 +31,7 @@ export const DekningsgradValgtAvAnnenPartPanel = ({
     fornavnAnnenForelder,
     kjønnAnnenForelder,
     dekningsgrad,
-    valgtStønadskonto,
+    valgtStønadskvote,
     onFortsettSenere,
     onAvsluttOgSlett,
 }: Props) => {
@@ -55,7 +55,7 @@ export const DekningsgradValgtAvAnnenPartPanel = ({
         return goToNextDefaultStep();
     };
 
-    const uker = getAntallUkerFraStønadskontoer(valgtStønadskonto.kontoer);
+    const uker = getAntallUkerFraStønadskvoter(valgtStønadskvote.kontoer);
     const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && dekningsgrad === '80';
     return (
         <VStack gap="space-40">
