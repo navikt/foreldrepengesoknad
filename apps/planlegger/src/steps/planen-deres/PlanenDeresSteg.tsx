@@ -19,7 +19,7 @@ import {
     getFornavnPåSøker2,
     getNavnPåForeldre,
 } from 'utils/HvemPlanleggerUtils';
-import { mapOmBarnetTilBarn } from 'utils/barnetUtils';
+import { mapOmBarnetPlanleggerTilBarn } from 'utils/barnetUtils';
 import { HvemHarRett, utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
@@ -133,7 +133,7 @@ export const PlanenDeresSteg = ({ stønadskontoer }: Props) => {
                 </Heading>
 
                 <UttaksplanDataProvider
-                    barn={mapOmBarnetTilBarn(omBarnet)}
+                    barn={mapOmBarnetPlanleggerTilBarn(omBarnet)}
                     foreldreInfo={{
                         søker: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
                         navnPåForeldre,
@@ -291,13 +291,13 @@ const AntallUkerVelger = ({
     const fordeling = useContextGetData(ContextDataType.FORDELING);
 
     const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
-    const lagreHvorLangPeriode = notEmpty(useContextSaveData(ContextDataType.HVOR_LANG_PERIODE));
+    const lagreHvorLangPeriodePlanlegger = notEmpty(useContextSaveData(ContextDataType.HVOR_LANG_PERIODE));
 
     const isDesktop = useMedia('screen and (min-width: 480)');
 
     const oppdaterPeriodeOgFordeling = (value: Dekningsgrad) => {
         const dekningsgrad = value;
-        lagreHvorLangPeriode({ dekningsgrad });
+        lagreHvorLangPeriodePlanlegger({ dekningsgrad });
         if (fordeling) {
             lagreFordeling({
                 antallDagerSøker1: finnAntallDagerSøker1(dekningsgrad, stønadskontoer, fordeling),

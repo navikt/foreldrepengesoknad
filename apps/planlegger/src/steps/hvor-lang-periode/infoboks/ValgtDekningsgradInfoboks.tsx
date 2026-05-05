@@ -19,11 +19,11 @@ import { UttakUkerOgDager, Uttaksdata, getFamiliehendelsedato } from 'utils/utta
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { Dekningsgrad, KontoBeregningDto, OmBarnet } from '@navikt/fp-types';
+import { Dekningsgrad, KontoBeregningDto, OmBarnetPlanlegger } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 
 interface Props {
-    barnet: OmBarnet;
+    barnet: OmBarnetPlanlegger;
     hvemPlanlegger: HvemPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
     valgtStønadskonto: KontoBeregningDto;

@@ -4,12 +4,12 @@ import { useSearchParams } from 'react-router-dom';
 import { BarnType } from '@navikt/fp-constants';
 import {
     Barn,
-    BarnetErAdoptert,
-    BarnetErFødt,
+    BarnetErAdoptertPlanlegger,
+    BarnetErFødtPlanlegger,
     FordelingPlanlegger,
-    HvorLangPeriode,
+    HvorLangPeriodePlanlegger,
     Kjønn_fpoversikt,
-    OmBarnet,
+    OmBarnetPlanlegger,
     Søkerrolle,
     SøkersituasjonFp,
     UttakPeriodeAnnenpartEøs_fpoversikt,
@@ -20,21 +20,22 @@ import { decodeBase64, erLokaltEllerDev } from '@navikt/fp-utils';
 import { ContextDataMap, ContextDataType } from './FpDataContext';
 
 type PlanleggerDataFromUrl = {
-    OM_BARNET?: OmBarnet;
-    HVOR_LANG_PERIODE?: HvorLangPeriode;
+    OM_BARNET?: OmBarnetPlanlegger;
+    HVOR_LANG_PERIODE?: HvorLangPeriodePlanlegger;
     FORDELING?: FordelingPlanlegger;
     UTTAKSPLAN?: UttakPeriode_fpoversikt[];
 };
 
-const erBarnetAdoptert = (barnet: OmBarnet): barnet is BarnetErAdoptert =>
-    (barnet as BarnetErAdoptert).overtakelsesdato !== undefined;
+const erBarnetAdoptert = (barnet: OmBarnetPlanlegger): barnet is BarnetErAdoptertPlanlegger =>
+    (barnet as BarnetErAdoptertPlanlegger).overtakelsesdato !== undefined;
 
-const erBarnetFødt = (barnet: OmBarnet): barnet is BarnetErFødt =>
-    !erBarnetAdoptert(barnet) && (barnet as BarnetErFødt).erBarnetFødt === true;
+const erBarnetFødt = (barnet: OmBarnetPlanlegger): barnet is BarnetErFødtPlanlegger =>
+    !erBarnetAdoptert(barnet) && (barnet as BarnetErFødtPlanlegger).erBarnetFødt === true;
 
-const utledRolleForSøker = (kjønn: Kjønn_fpoversikt): Søkerrolle | undefined => (kjønn === 'M' ? 'far' : undefined);
+const utledRolleForSøker = (kjønn: Kjønn_fpoversikt | undefined): Søkerrolle | undefined =>
+    kjønn === 'M' ? 'far' : undefined;
 
-const mapOmBarnetTilBarn = (barnet: OmBarnet): Barn => {
+const mapOmBarnetTilBarn = (barnet: OmBarnetPlanlegger): Barn => {
     const antallBarn = Number.parseInt(barnet.antallBarn, 10);
 
     if (erBarnetAdoptert(barnet)) {
@@ -64,7 +65,7 @@ const mapOmBarnetTilBarn = (barnet: OmBarnet): Barn => {
 
 const mapPlanleggerDataToSøknadState = (
     data: PlanleggerDataFromUrl,
-    kjønn: Kjønn_fpoversikt,
+    kjønn: Kjønn_fpoversikt | undefined,
 ): Partial<ContextDataMap> => {
     const result: Partial<ContextDataMap> = {};
     const { OM_BARNET: barnet, HVOR_LANG_PERIODE: periode, UTTAKSPLAN: uttaksplan } = data;

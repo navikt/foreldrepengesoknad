@@ -4,9 +4,9 @@ import { ArbeidssituasjonSteg } from 'steps/arbeidssituasjon/ArbeidssituasjonSte
 import { BarnehageplassSteg } from 'steps/barnehageplass/BarnehageplassSteg';
 import { FordelingSteg } from 'steps/fordeling/FordelingSteg';
 import { HvemPlanleggerSteg } from 'steps/hvem-planlegger/HvemPlanleggerSteg';
-import { HvorLangPeriodeSteg } from 'steps/hvor-lang-periode/HvorLangPeriodeSteg';
+import { HvorLangPeriodePlanleggerSteg } from 'steps/hvor-lang-periode/HvorLangPeriodeSteg';
 import { HvorMyeSteg } from 'steps/hvor-mye/HvorMyeSteg';
-import { OmBarnetSteg } from 'steps/om-barnet/OmBarnetSteg';
+import { OmBarnetPlanleggerSteg } from 'steps/om-barnet/OmBarnetSteg';
 import { OmPlanleggerenSteg } from 'steps/om-planleggeren/OmPlanleggerenSteg';
 import { OppsummeringSteg } from 'steps/oppsummering/OppsummeringSteg';
 import { PlanenDeresSteg } from 'steps/planen-deres/PlanenDeresSteg';
@@ -25,13 +25,13 @@ export const PlanleggerRouter = ({ stønadskontoer, satser }: Props) => {
         <Routes>
             <Route path="/" element={<OmPlanleggerenSteg />} />
             <Route path={PlanleggerRoutes.HVEM_PLANLEGGER} element={<HvemPlanleggerSteg />} />
-            <Route path={PlanleggerRoutes.OM_BARNET} element={<OmBarnetSteg />} />
+            <Route path={PlanleggerRoutes.OM_BARNET} element={<OmBarnetPlanleggerSteg />} />
             <Route path={PlanleggerRoutes.BARNEHAGEPLASS} element={<BarnehageplassSteg />} />
             <Route path={PlanleggerRoutes.ARBEIDSSITUASJON} element={<ArbeidssituasjonSteg satser={satser} />} />
             <Route path={PlanleggerRoutes.HVOR_MYE} element={<HvorMyeSteg satser={satser} />} />
             <Route
                 path={PlanleggerRoutes.HVOR_LANG_PERIODE}
-                element={stønadskontoer ? <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} /> : <Loader />}
+                element={stønadskontoer ? <HvorLangPeriodePlanleggerSteg stønadskontoer={stønadskontoer} /> : <Loader />}
             />
             <Route
                 path={PlanleggerRoutes.FORDELING}

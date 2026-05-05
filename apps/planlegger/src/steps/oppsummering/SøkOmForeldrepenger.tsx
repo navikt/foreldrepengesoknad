@@ -1,7 +1,7 @@
 import { TasklistStartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextComplete } from 'appData/PlanleggerDataContext';
 import { FormattedMessage } from 'react-intl';
-import { OmBarnet } from '@navikt/fp-types';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
 import { BodyShort, LinkCard, VStack } from '@navikt/ds-react';
@@ -12,7 +12,7 @@ import { encodeToBase64, erLokaltEllerDev } from '@navikt/fp-utils';
 
 interface Props {
     erAlenesøker: boolean;
-    barnet: OmBarnet;
+    barnet: OmBarnetPlanlegger;
 }
 
 export const SøkOmForeldrepenger = ({ erAlenesøker, barnet }: Props) => {

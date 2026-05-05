@@ -7,7 +7,7 @@ import { action } from 'storybook/actions';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
-import { KontoBeregningDto, OmBarnet } from '@navikt/fp-types';
+import { KontoBeregningDto, OmBarnetPlanlegger } from '@navikt/fp-types';
 import {
     DELT_UTTAK_80,
     DELT_UTTAK_80_TO_BARN,
@@ -21,7 +21,7 @@ import {
     IKKE_DELT_UTTAK_100_MOR,
 } from '@navikt/fp-utils-test';
 
-import { HvorLangPeriodeSteg } from './HvorLangPeriodeSteg';
+import { HvorLangPeriodePlanleggerSteg } from './HvorLangPeriodeSteg';
 
 // TODO: Benytt dayjs for å håndtere datoer i testene. Spesielt for å sørge for at fremtidige datoer alltid er fremtidige.
 
@@ -32,14 +32,14 @@ const MINSTERETTER = {
 
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
-    omBarnet: OmBarnet;
+    omBarnet: OmBarnetPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
     gåTilNesteSide?: (action: Action) => void;
-} & ComponentProps<typeof HvorLangPeriodeSteg>;
+} & ComponentProps<typeof HvorLangPeriodePlanleggerSteg>;
 
 const meta = {
-    title: 'steg/HvorLangPeriodeSteg',
-    component: HvorLangPeriodeSteg,
+    title: 'steg/HvorLangPeriodePlanleggerSteg',
+    component: HvorLangPeriodePlanleggerSteg,
     render: ({
         hvemPlanlegger,
         omBarnet,
@@ -57,7 +57,7 @@ const meta = {
                     }}
                     onDispatch={gåTilNesteSide}
                 >
-                    <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} />
+                    <HvorLangPeriodePlanleggerSteg stønadskontoer={stønadskontoer} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );

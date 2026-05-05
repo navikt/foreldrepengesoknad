@@ -2,7 +2,7 @@ import { TasklistStartIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OmBarnet } from '@navikt/fp-types';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erAlenesøker as erAlene, erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
@@ -18,15 +18,15 @@ const erDatoGyldig = (date: string) => ISO_DATE_REGEX.test(date);
 
 type Props = {
     hvemPlanlegger: HvemPlanlegger;
-    erOmBarnetIkkeOppgittFraFør: boolean;
+    erOmBarnetPlanleggerIkkeOppgittFraFør: boolean;
     antallBarn?: string;
     scrollToBottom: () => void;
 };
 
-export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, antallBarn, scrollToBottom }: Props) => {
+export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetPlanleggerIkkeOppgittFraFør, antallBarn, scrollToBottom }: Props) => {
     const intl = useIntl();
 
-    const formMethods = useFormContext<OmBarnet>();
+    const formMethods = useFormContext<OmBarnetPlanlegger>();
     const fødselsdato = formMethods.watch('fødselsdato');
 
     const erAlenesøker = erAlene(hvemPlanlegger);
@@ -42,7 +42,7 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, ant
 
     return (
         <VStack gap="space-20">
-            <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
+            <BluePanel isDarkBlue={erOmBarnetPlanleggerIkkeOppgittFraFør} shouldFadeIn>
                 <VStack gap="space-32">
                     <RhfDatepicker
                         name="fødselsdato"

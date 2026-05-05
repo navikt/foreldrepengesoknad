@@ -10,7 +10,7 @@ import * as stories from './OmBarnetSteg.stories';
 
 const { AleneforsørgerFar } = composeStories(stories);
 
-describe('<OmBarnetSteg>', () => {
+describe('<OmBarnetPlanleggerSteg>', () => {
     it('skal velge at barnet ikke er født for far som aleneforsørger', async () => {
         const gåTilNesteSide = vi.fn();
 

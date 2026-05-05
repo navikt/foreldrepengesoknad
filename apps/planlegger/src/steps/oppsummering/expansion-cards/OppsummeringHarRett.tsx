@@ -23,19 +23,19 @@ import { finnAntallUkerOgDagerMedForeldrepenger, getAnnenpartsPerioder, getSøke
 
 import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
-import { FordelingPlanlegger, HvorLangPeriode, KontoBeregningDto, OmBarnet } from '@navikt/fp-types';
+import { FordelingPlanlegger, HvorLangPeriodePlanlegger, KontoBeregningDto, OmBarnetPlanlegger } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import { UttaksplanDataProvider, UttaksplanKalender } from '@navikt/fp-uttaksplan';
 
 import { ContextDataType, useContextGetData } from '../../../app-data/PlanleggerDataContext';
-import { mapOmBarnetTilBarn } from '../../../utils/barnetUtils';
+import { mapOmBarnetPlanleggerTilBarn } from '../../../utils/barnetUtils';
 
 interface Props {
     valgtStønadskonto: KontoBeregningDto;
-    hvorLangPeriode: HvorLangPeriode;
+    hvorLangPeriode: HvorLangPeriodePlanlegger;
     hvemPlanlegger: HvemPlanlegger;
-    barnet: OmBarnet;
+    barnet: OmBarnetPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
     fordeling?: FordelingPlanlegger;
 }
@@ -234,7 +234,7 @@ export const OppsummeringHarRett = ({
                             </BluePanel>
                         )}
                         <UttaksplanDataProvider
-                            barn={mapOmBarnetTilBarn(barnet)}
+                            barn={mapOmBarnetPlanleggerTilBarn(barnet)}
                             foreldreInfo={{
                                 søker: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
                                 navnPåForeldre: { mor: fornavnSøker1, farMedmor: fornavnSøker2 || '' },

@@ -7,7 +7,7 @@ import { action } from 'storybook/actions';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
-import { Dekningsgrad, OmBarnet } from '@navikt/fp-types';
+import { Dekningsgrad, OmBarnetPlanlegger } from '@navikt/fp-types';
 import {
     DELT_UTTAK_80,
     DELT_UTTAK_80_TO_BARN,
@@ -33,7 +33,7 @@ const DEFAULT_STØNADSKONTO = {
 
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
-    omBarnet: OmBarnet;
+    omBarnet: OmBarnetPlanlegger;
     dekningsgrad?: Dekningsgrad;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof FordelingSteg>;

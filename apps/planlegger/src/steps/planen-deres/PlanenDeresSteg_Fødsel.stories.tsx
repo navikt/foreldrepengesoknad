@@ -7,7 +7,7 @@ import { action } from 'storybook/actions';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
-import { FordelingPlanlegger, HvorLangPeriode, OmBarnet } from '@navikt/fp-types';
+import { FordelingPlanlegger, HvorLangPeriodePlanlegger, OmBarnetPlanlegger } from '@navikt/fp-types';
 
 import {
     ALENE_OM_OMSORG_80_FARMEDMOR,
@@ -31,9 +31,9 @@ const MINSTERETTER = {
 
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
-    hvorLangPeriode: HvorLangPeriode;
+    hvorLangPeriode: HvorLangPeriodePlanlegger;
     fordeling?: FordelingPlanlegger;
-    omBarnet: OmBarnet;
+    omBarnet: OmBarnetPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof PlanenDeresSteg>;
@@ -318,7 +318,7 @@ export const FarOgFarKunMedfarHarRett: Story = {
     },
 };
 
-export const BarnetErFødtDagenEtterTermindato: Story = {
+export const BarnetErFødtPlanleggerDagenEtterTermindato: Story = {
     args: {
         ...MorOgFarBeggeHarRett.args,
         omBarnet: {

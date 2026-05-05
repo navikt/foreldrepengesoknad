@@ -8,7 +8,7 @@ import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { HvorMye } from 'types/HvorMye';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { FordelingPlanlegger, HvorLangPeriode, OmBarnet, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { FordelingPlanlegger, HvorLangPeriodePlanlegger, OmBarnetPlanlegger, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import {
     ALENE_OM_OMSORG_80_FARMEDMOR,
     ALENE_OM_OMSORG_100_FARMEDMOR,
@@ -32,8 +32,8 @@ import { OppsummeringSteg } from './OppsummeringSteg';
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
     fordeling?: FordelingPlanlegger;
-    hvorLangPeriode?: HvorLangPeriode;
-    omBarnet: OmBarnet;
+    hvorLangPeriode?: HvorLangPeriodePlanlegger;
+    omBarnet: OmBarnetPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
     hvorMye?: HvorMye;
     uttaksplan?: UttakPeriode_fpoversikt[];

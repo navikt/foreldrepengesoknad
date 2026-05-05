@@ -12,16 +12,16 @@ import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { FordelingPlanlegger, HvorLangPeriode, KontoBeregningDto, OmBarnet, Satser } from '@navikt/fp-types';
+import { FordelingPlanlegger, HvorLangPeriodePlanlegger, KontoBeregningDto, OmBarnetPlanlegger, Satser } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 
 interface Props {
     stønadskontoer: { '100': KontoBeregningDto; '80': KontoBeregningDto };
-    barnet: OmBarnet;
+    barnet: OmBarnetPlanlegger;
     hvemPlanlegger: HvemPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
-    hvorLangPeriode: HvorLangPeriode;
+    hvorLangPeriode: HvorLangPeriodePlanlegger;
     fordeling?: FordelingPlanlegger;
     satser: Satser;
 }
