@@ -117,7 +117,6 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
         antallUkerFellesperiodeTilSøker,
         antallDagerFellesperiodeTilSøker,
     );
-    const harHeleUkerTilFordeling = dagerMedFellesperiode % 5 === 0;
     return (
         <VStack gap="space-20">
             <FordelingValg dagerMedFellesperiode={dagerMedFellesperiode} />
@@ -142,25 +141,23 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
                             ]}
                             onChange={() => isSubmitted && void trigger()}
                         />
-                        {!harHeleUkerTilFordeling && (
-                            <RhfTextField
-                                control={control}
-                                name="antallDagerFellesperiodeTilSøker"
-                                label={<FormattedMessage id="fordeling.antallDager.spørsmål" />}
-                                validate={[
-                                    isValidNumberForm(
-                                        intl.formatMessage({ id: 'fordeling.antallDager.ugyldigFormat' }),
-                                    ),
-                                    isValidInteger(intl.formatMessage({ id: 'fordeling.antallDager.ugyldigFormat' })),
-                                    isValidAntallDagerFellesperiode(
-                                        intl,
-                                        dagerMedFellesperiode,
-                                        antallUkerFellesperiodeTilSøker,
-                                    ),
-                                ]}
-                                onChange={() => isSubmitted && void trigger()}
-                            />
-                        )}
+                        <RhfTextField
+                            control={control}
+                            name="antallDagerFellesperiodeTilSøker"
+                            label={<FormattedMessage id="fordeling.antallDager.spørsmål" />}
+                            validate={[
+                                isValidNumberForm(
+                                    intl.formatMessage({ id: 'fordeling.antallDager.ugyldigFormat' }),
+                                ),
+                                isValidInteger(intl.formatMessage({ id: 'fordeling.antallDager.ugyldigFormat' })),
+                                isValidAntallDagerFellesperiode(
+                                    intl,
+                                    dagerMedFellesperiode,
+                                    antallUkerFellesperiodeTilSøker,
+                                ),
+                            ]}
+                            onChange={() => isSubmitted && void trigger()}
+                        />
                     </HStack>
                 </div>
             )}

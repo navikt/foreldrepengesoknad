@@ -797,7 +797,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
             expect(screen.getAllByText('Du må oppgi dato når du vil starte dine foreldrepenger.')).toHaveLength(2);
             await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
             await userEvent.click(screen.getByText('Neste steg'));
-            expect(screen.getAllByText('Du må oppgi en lengde på fellesperioden din.')).toHaveLength(2);
+            expect(screen.getAllByText('Du må oppgi en lengde på fellesperioden din.')).toHaveLength(3);
         }),
     );
 
