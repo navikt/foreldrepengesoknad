@@ -6,7 +6,7 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { useNavigate } from 'react-router-dom';
 
 import { endreFordelingMedSlider } from '../../../vitest/testHelpers';
-import { BarnetErAdoptert } from '../../types/Barnet';
+import { BarnetErAdoptert } from '@navikt/fp-types';
 import * as stories from './FordelingSteg.stories';
 
 // TODO: Benytt dayjs for å håndtere datoer i testene. Spesielt for å sørge for at fremtidige datoer alltid er fremtidige.

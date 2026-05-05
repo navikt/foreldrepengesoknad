@@ -1,8 +1,10 @@
 import { BarnType } from '@navikt/fp-constants';
 import {
     Barn,
-    Dekningsgrad,
+    BarnetErAdoptert,
+    BarnetErFødt,
     Kjønn_fpoversikt,
+    OmBarnet,
     Søkerrolle,
     SøkersituasjonFp,
     UttakPeriodeAnnenpartEøs_fpoversikt,
@@ -12,37 +14,11 @@ import {
 import { ContextDataMap, ContextDataType } from './FpDataContext';
 import { PlanleggerDataFromUrl } from './usePlanleggerDataFromUrl';
 
-type BarnetErFødt = {
-    erFødsel: boolean;
-    antallBarn: string;
-    erBarnetFødt: true;
-    fødselsdato: string;
-    termindato?: string;
-};
+const erBarnetAdoptert = (barnet: OmBarnet): barnet is BarnetErAdoptert =>
+    (barnet as BarnetErAdoptert).overtakelsesdato !== undefined;
 
-type BarnetErIkkeFødt = {
-    erFødsel: boolean;
-    antallBarn: string;
-    erBarnetFødt: false;
-    termindato: string;
-};
-
-type BarnetErAdoptert = {
-    erFødsel: false;
-    antallBarn: string;
-    overtakelsesdato: string;
-    fødselsdato: string;
-};
-
-type OmBarnet = BarnetErFødt | BarnetErIkkeFødt | BarnetErAdoptert;
-
-type HvorLangPeriode = {
-    dekningsgrad: Dekningsgrad;
-};
-
-const erBarnetAdoptert = (barnet: OmBarnet): barnet is BarnetErAdoptert => barnet.erFødsel === false;
-
-const erBarnetFødt = (barnet: OmBarnet): barnet is BarnetErFødt => (barnet as BarnetErFødt).erBarnetFødt === true;
+const erBarnetFødt = (barnet: OmBarnet): barnet is BarnetErFødt =>
+    !erBarnetAdoptert(barnet) && (barnet as BarnetErFødt).erBarnetFødt === true;
 
 const utledRolleForSøker = (kjønn: Kjønn_fpoversikt): Søkerrolle | undefined => {
     if (kjønn === 'M') {
@@ -85,8 +61,8 @@ export const mapPlanleggerDataToSøknadState = (
 ): Partial<ContextDataMap> => {
     const result: Partial<ContextDataMap> = {};
 
-    const barnet = data.OM_BARNET as OmBarnet | undefined;
-    const periode = data.HVOR_LANG_PERIODE as HvorLangPeriode | undefined;
+    const barnet = data.OM_BARNET;
+    const periode = data.HVOR_LANG_PERIODE;
 
     if (barnet) {
         const situasjon = erBarnetAdoptert(barnet) ? 'adopsjon' : 'fødsel';
@@ -108,11 +84,10 @@ export const mapPlanleggerDataToSøknadState = (
         result[ContextDataType.PERIODE_MED_FORELDREPENGER] = periode.dekningsgrad;
     }
 
-    const uttaksplan = data.UTTAKSPLAN as
-        | Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>
-        | undefined;
-    if (uttaksplan) {
-        result[ContextDataType.UTTAKSPLAN] = uttaksplan;
+    if (data.UTTAKSPLAN) {
+        result[ContextDataType.UTTAKSPLAN] = data.UTTAKSPLAN as Array<
+            UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt
+        >;
     }
 
     return result;

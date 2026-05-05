@@ -1,7 +1,7 @@
 import { BabyWrappedIcon, InformationIcon, TeddyBearIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
-import { OmBarnet } from 'types/Barnet';
+import { OmBarnet } from '@navikt/fp-types';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';

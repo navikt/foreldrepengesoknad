@@ -1,3 +1,5 @@
+/** Planlegger-specific input type for "Om barnet" context data */
+
 export type BarnetErFødt = {
     erFødsel: boolean;
     antallBarn: string;
@@ -20,6 +22,4 @@ export type BarnetErAdoptert = {
     fødselsdato: string;
 };
 
-type Fødsel = BarnetErFødt | BarnetErIkkeFødt;
-
-export type OmBarnet = Fødsel | BarnetErAdoptert;
+export type OmBarnet = BarnetErFødt | BarnetErIkkeFødt | BarnetErAdoptert;

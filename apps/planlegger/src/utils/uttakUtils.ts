@@ -1,10 +1,9 @@
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
-import { OmBarnet } from 'types/Barnet';
-import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
+import { KontoBeregningDto, KontoDto, OmBarnet, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { KontoBeregningDto, KontoDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { Uttaksdagen, treUkerSiden } from '@navikt/fp-utils';
 import { deltUttak, ikkeDeltUttak } from '@navikt/fp-uttaksplan';
 

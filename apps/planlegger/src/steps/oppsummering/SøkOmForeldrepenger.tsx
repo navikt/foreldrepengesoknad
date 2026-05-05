@@ -1,7 +1,7 @@
 import { TasklistStartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextComplete } from 'appData/PlanleggerDataContext';
 import { FormattedMessage } from 'react-intl';
-import { OmBarnet } from 'types/Barnet';
+import { OmBarnet } from '@navikt/fp-types';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
 import { BodyShort, LinkCard, VStack } from '@navikt/ds-react';

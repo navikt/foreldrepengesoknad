@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
+import { FordelingPlanlegger, HvorLangPeriode, OmBarnet, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { decodeBase64, erLokaltEllerDev } from '@navikt/fp-utils';
 
 /**
@@ -9,10 +10,10 @@ import { decodeBase64, erLokaltEllerDev } from '@navikt/fp-utils';
  * en hard avhengighet mellom appene.
  */
 export type PlanleggerDataFromUrl = {
-    OM_BARNET?: unknown;
-    HVOR_LANG_PERIODE?: unknown;
-    FORDELING?: unknown;
-    UTTAKSPLAN?: unknown;
+    OM_BARNET?: OmBarnet;
+    HVOR_LANG_PERIODE?: HvorLangPeriode;
+    FORDELING?: FordelingPlanlegger;
+    UTTAKSPLAN?: UttakPeriode_fpoversikt[];
 };
 
 /**

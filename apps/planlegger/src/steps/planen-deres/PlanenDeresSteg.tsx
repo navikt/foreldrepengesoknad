@@ -10,7 +10,6 @@ import { useStepData } from 'appData/useStepData';
 import { FordelingSlider } from 'components/FordelingSlider';
 import { useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Fordeling } from 'types/Fordeling';
 import { HvemPlanleggerType } from 'types/HvemPlanlegger';
 import {
     erAlenesøker,
@@ -31,6 +30,7 @@ import { BodyLong, BodyShort, Box, Heading, InlineMessage, Tabs, ToggleGroup, VS
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import {
     Dekningsgrad,
+    FordelingPlanlegger,
     KontoBeregningResultatDto,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
@@ -397,7 +397,7 @@ const AntallUkerVelger = ({
 const finnAntallDagerSøker1 = (
     dekningsgrad: Dekningsgrad,
     stønadskontoer: KontoBeregningResultatDto,
-    fordeling: Fordeling,
+    fordeling: FordelingPlanlegger,
 ) => {
     const ukerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(
         dekningsgrad === '100' ? stønadskontoer['100'] : stønadskontoer['80'],

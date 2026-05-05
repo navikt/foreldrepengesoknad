@@ -5,10 +5,9 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
-import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
-import { HvorLangPeriode } from 'types/HvorLangPeriode';
+
+import { FordelingPlanlegger, HvorLangPeriode, OmBarnet } from '@navikt/fp-types';
 
 import {
     DELT_UTTAK_80_ADOPSJON,
@@ -33,7 +32,7 @@ const MINSTERETTER = {
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
     hvorLangPeriode: HvorLangPeriode;
-    fordeling?: Fordeling;
+    fordeling?: FordelingPlanlegger;
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
     gåTilNesteSide?: (action: Action) => void;

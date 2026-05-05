@@ -1,7 +1,6 @@
-import { BarnetErAdoptert, BarnetErFødt, BarnetErIkkeFødt, OmBarnet } from 'types/Barnet';
+import { BarnetErAdoptert, BarnetErFødt, BarnetErIkkeFødt, Barn, OmBarnet } from '@navikt/fp-types';
 
 import { BarnType } from '@navikt/fp-constants';
-import { Barn } from '@navikt/fp-types';
 
 export const erBarnetUFødt = (omBarnet: OmBarnet): omBarnet is BarnetErIkkeFødt => {
     if ((omBarnet as BarnetErIkkeFødt).erBarnetFødt === false) {
