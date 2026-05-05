@@ -3,7 +3,7 @@ import { FordelingDager, FordelingFargekode } from 'types/FordelingOversikt';
 import { getVarighetString } from 'utils/dateUtils';
 import { guid } from 'utils/guid';
 
-import { Heading, VStack } from '@navikt/ds-react';
+import { VStack } from '@navikt/ds-react';
 
 import { DelGraf } from '../../fordeling-oversikt/grafer/del-graf/DelGraf';
 
@@ -20,14 +20,8 @@ export const FellesperiodeValgVisning = ({ fordelingsdager, dagerMedFellesperiod
         fordelingsdager.length > 0 && !fordelingsdager.every((f) => f.fargekode === FordelingFargekode.IKKE_TILDELT);
     return (
         <VStack gap="space-4" aria-hidden={true}>
-            <Heading size="xsmall">
-                <FormattedMessage
-                    id="fordeling.fellesperiodeVisning.sumUker"
-                    values={{ varighetString: varighetStringFellesperiode }}
-                />
-            </Heading>
             <DelGraf fordelingsdager={fordelingsdager} sumDager={dagerMedFellesperiode} />
-            {fordelingErValgt && (
+            {fordelingErValgt ? (
                 <div className="flex">
                     {fordelingsdager.map((fordeling) => {
                         const width = (fordeling.antallDager / dagerMedFellesperiode) * 100;
@@ -55,6 +49,13 @@ export const FellesperiodeValgVisning = ({ fordelingsdager, dagerMedFellesperiod
                             </div>
                         );
                     })}
+                </div>
+            ) : (
+                <div>
+                    <FormattedMessage
+                        id="fordeling.fellesperiodeVisning.ikkeTildelt"
+                        values={{ varighetString: varighetStringFellesperiode }}
+                    />
                 </div>
             )}
         </VStack>

@@ -20,27 +20,18 @@ export const FordelingValg = ({ dagerMedFellesperiode }: Props) => {
         <RhfRadioGroup
             name="fordelingValg"
             control={control}
-            label={<FormattedMessage id="fordeling.fordelingvalg.spørsmål" />}
-            description={<FormattedMessage id="fordeling.description.kanEndresSenere" />}
+            label={
+                <FormattedMessage
+                    id="fordeling.fordelingvalg.spørsmål"
+                    values={{ varighetString: getVarighetString(dagerMedFellesperiode, intl) }}
+                />
+            }
             validate={[isRequired(intl.formatMessage({ id: 'fordeling.fordelingsvalg.måOppgis' }))]}
         >
-            <Radio
-                value={FellesperiodeFordelingValg.ALT}
-                description={intl.formatMessage(
-                    {
-                        id: 'fordeling.fordelingsvalg.option.alt.description',
-                    },
-                    {
-                        ukerDeg: getVarighetString(dagerMedFellesperiode, intl),
-                    },
-                )}
-            >
+            <Radio value={FellesperiodeFordelingValg.ALT}>
                 <FormattedMessage id="fordeling.fordelingsvalg.option.alt" />
             </Radio>
-            <Radio
-                value={FellesperiodeFordelingValg.VIL_VELGE}
-                description={intl.formatMessage({ id: 'fordeling.fordelingsvalg.option.valgfritt.description' })}
-            >
+            <Radio value={FellesperiodeFordelingValg.VIL_VELGE}>
                 <FormattedMessage id="fordeling.fordelingsvalg.option.valgfritt" />
             </Radio>
             <Radio value={FellesperiodeFordelingValg.HOPP_OVER_FORDELING}>
