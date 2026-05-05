@@ -12,6 +12,7 @@ export const setupServerDefaults = (server: Express) => {
                     'script-src': [
                         "'self'",
                         "'unsafe-inline'",
+                        "'unsafe-eval'",
                         '*.nav.no',
                         'https://survey.skyra.no',
                         'https://in2.taskanalytics.com',
@@ -21,7 +22,7 @@ export const setupServerDefaults = (server: Express) => {
                         "'self'",
                         '*.nav.no',
                         'https://sentry.gc.nav.no',
-                        'https://survey.skyra.no',
+                        'https://*.skyra.no',
                         'https://in2.taskanalytics.com',
                     ],
                     'font-src': ["'self'", 'https://cdn.nav.no', 'data:'],
