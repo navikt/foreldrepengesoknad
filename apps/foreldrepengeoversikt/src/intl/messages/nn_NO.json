@@ -336,6 +336,7 @@
     "beregning.dagsats.tilArbeidsgiver": "Til arbeidsgivar",
     "beregning.dagsats.totalt": "Totalt",
     "beregning.vedtakLenke": "Du kan lese meir i <link>vedtaksbrevet.</link>",
+    "beregning.innvilgelsesLenke": "Sjå vedtaksbrevet for innvilga yting",
     "beregning.utbetalingsvisning.tittel": "Utbetalingsplan",
     "beregning.utbetalingsvisning.fullBeskrivelse": "Beløpa er før skatt og eventuelle trekk. Viss vi betalar foreldrepengar til deg, vil du sjå kva vi trekker deg i skatt i <link1>utbetalingsoversikta di.</link1> <link2>Her finn du informasjon om utbetalingsdatoane våre.</link2> Beløpa du får utbetalt kvar månad vil variere, fordi det er ulikt antal utbetalingsdagar kvar månad.",
     "beregning.utbetalingsvisning.fullBeskrivelse.svp": "Beløpa er før skatt og eventuelle trekk. Viss vi betalar svangerskapspengar til deg, vil du sjå kva vi trekker deg i skatt i <link1>utbetalingsoversikta di.</link1> <link2>Her finn du informasjon om utbetalingsdatoane våre.</link2> Beløpa du får utbetalt kvar månad vil variere, fordi det er ulikt antal utbetalingsdagar kvar månad.",

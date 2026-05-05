@@ -336,6 +336,7 @@
     "beregning.dagsats.tilArbeidsgiver": "Til arbeidsgiver",
     "beregning.dagsats.totalt": "Totalt",
     "beregning.vedtakLenke": "Du kan lese mer i <link>vedtaksbrevet.</link>",
+    "beregning.innvilgelsesLenke": "Se vedtaksbrevet for innvilget ytelse",
     "beregning.utbetalingsvisning.tittel": "Utbetalingsplan",
     "beregning.utbetalingsvisning.fullBeskrivelse": "Beløpene er før skatt og eventuelle trekk. Hvis vi betaler foreldrepenger til deg, vil du se hva vi trekker deg i skatt i <link1>utbetalingsoversikten din.</link1> <link2>Her finner du informasjon om våre utbetalingsdatoer.</link2> Beløpene du får utbetalt hver måned vil variere, fordi det er forskjellig antall utbetalingsdager hver måned.",
     "beregning.utbetalingsvisning.fullBeskrivelse.svp": "Beløpene er før skatt og eventuelle trekk. Hvis vi betaler svangerskapspenger til deg, vil du se hva vi trekker deg i skatt i <link1>utbetalingsoversikten din.</link1> <link2>Her finner du informasjon om våre utbetalingsdatoer.</link2> Beløpene du får utbetalt hver måned vil variere, fordi det er forskjellig antall utbetalingsdager hver måned.",

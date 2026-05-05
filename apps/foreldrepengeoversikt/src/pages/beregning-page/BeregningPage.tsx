@@ -44,7 +44,6 @@ export const BeregningPage = () => {
     const gjeldendeSak = useGetSelectedSak();
     useSetBackgroundColor('blue');
     useSetSelectedRoute(OversiktRoutes.BEREGNING);
-    const intl = useIntl();
     if (!gjeldendeSak || gjeldendeSak.ytelse === 'ENGANGSSTØNAD') {
         return undefined;
     }
@@ -57,26 +56,7 @@ export const BeregningPage = () => {
     return (
         <PageRouteLayout header={<DinSakHeader sak={gjeldendeSak} />}>
             <VStack gap="space-40">
-                <BeregningOppsummering sak={gjeldendeSak} />
-
-                <ExpansionCard size="medium" aria-label={intl.formatMessage({ id: 'beregning.tittel' })}>
-                    <ExpansionCard.Header>
-                        <ExpansionCard.Title size="small">
-                            <FormattedMessage id="beregning.tittel" />
-                        </ExpansionCard.Title>
-                    </ExpansionCard.Header>
-                    <ExpansionCard.Content>
-                        <VStack gap="space-16">
-                            {beregning.beregningsandeler.map((andel) => (
-                                <BeregningAndel
-                                    andel={andel}
-                                    key={`${andel.aktivitetStatus}-${andel.arbeidsforhold?.arbeidsgiverIdent}`}
-                                />
-                            ))}
-                        </VStack>
-                        <Forklaringer sak={gjeldendeSak} grunnbeløpPåBeregning={beregning.grunnbeløp} />
-                    </ExpansionCard.Content>
-                </ExpansionCard>
+                <BeregningDetaljer sak={gjeldendeSak} />
 
                 <UtbetalingsVisning sak={gjeldendeSak} />
                 <Box background="default" padding="space-24" borderRadius="8">
@@ -88,12 +68,79 @@ export const BeregningPage = () => {
     );
 };
 
+// TODO: sammenlign med backend
+const IKKE_STØTTET: AktivitetStatus[] = ['ARBEIDSAVKLARINGSPENGER', 'DAGPENGER', 'KUN_YTELSE', 'VENTELØNN_VARTPENGER'];
+
+const BeregningDetaljer = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) => {
+    const intl = useIntl();
+    const params = useParams<{ saksnummer: string }>();
+    const beregning = sak.gjeldendeVedtak?.beregningsgrunnlag;
+
+    const beregningEgnerSegIkkeForÅViseOppsummering = beregning?.beregningAktivitetStatuser.some(
+        ({ aktivitetStatus }) => IKKE_STØTTET.includes(aktivitetStatus),
+    );
+
+    const innvilgelsesdokument = useQuery({
+        ...hentDokumenterOptions(params.saksnummer!),
+        select: (dokumenter) =>
+            dokumenter.find((d) => {
+                const tittel = d.tittel?.toLowerCase();
+                return (
+                    tittel?.includes('innvilgelsesbrev foreldrepenger') ||
+                    tittel?.includes('innvilgelsesbrev svangerskapspenger')
+                );
+            }),
+    }).data;
+
+    if (!beregning || beregningEgnerSegIkkeForÅViseOppsummering) {
+        return (
+            <VStack>
+                <Heading size="medium" level="2">
+                    Beregning
+                </Heading>
+                {innvilgelsesdokument && (
+                    <Link
+                        href={API_URLS.hentDokument(
+                            innvilgelsesdokument.journalpostId,
+                            innvilgelsesdokument.dokumentId ?? 'ukjent',
+                        )}
+                        target="_blank"
+                    >
+                        <FormattedMessage id="beregning.innvilgelsesLenke" />
+                    </Link>
+                )}
+            </VStack>
+        );
+    }
+
+    return (
+        <>
+            <BeregningOppsummering sak={sak} />
+            <ExpansionCard size="medium" aria-label={intl.formatMessage({ id: 'beregning.tittel' })}>
+                <ExpansionCard.Header>
+                    <ExpansionCard.Title size="small">
+                        <FormattedMessage id="beregning.tittel" />
+                    </ExpansionCard.Title>
+                </ExpansionCard.Header>
+                <ExpansionCard.Content>
+                    <VStack gap="space-16">
+                        {beregning.beregningsandeler.map((andel) => (
+                            <BeregningAndel
+                                andel={andel}
+                                key={`${andel.aktivitetStatus}-${andel.arbeidsforhold?.arbeidsgiverIdent}`}
+                            />
+                        ))}
+                    </VStack>
+                    <Forklaringer sak={sak} grunnbeløpPåBeregning={beregning.grunnbeløp} />
+                </ExpansionCard.Content>
+            </ExpansionCard>
+        </>
+    );
+};
+
 const BeregningOppsummering = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) => {
     const intl = useIntl();
-    const beregning = sak.gjeldendeVedtak?.beregningsgrunnlag;
-    if (!beregning) {
-        return null;
-    }
+    const beregning = sak.gjeldendeVedtak!.beregningsgrunnlag!;
     const samletÅrsinntekt = sumBy(beregning.beregningsandeler, (andel) => andel.fastsattPrÅr ?? 0);
     const grunnbeløp = beregning.grunnbeløp ?? DEFAULT_SATSER.grunnbeløp[0]!.verdi;
     const seksG = grunnbeløp * 6;

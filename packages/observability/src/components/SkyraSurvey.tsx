@@ -4,6 +4,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HStack, Skeleton, VStack } from '@navikt/ds-react';
 
+import { erLokaltEllerDev } from '@navikt/fp-utils';
+
 import './SkyraSurvey.css';
 
 type SkyraEvent =
@@ -74,6 +76,9 @@ export const SkyraSurvey = ({ slug }: SkyraSurveyProps) => {
         };
     }, [slug]);
 
+    if (erLokaltEllerDev()) {
+        return null;
+    }
     if (intl.locale !== 'nb' && intl.locale !== 'nn') {
         return null;
     }
