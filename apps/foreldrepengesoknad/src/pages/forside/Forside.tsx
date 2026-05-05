@@ -109,6 +109,15 @@ export const Forside = ({
             return navigator.goToNextStep(SøknadRoutes.SØKERSITUASJON);
         }
 
+        // Bruker har valgt et annet barn — nullstill eventuell mappet planlegger-tilstand
+        if (getData(ContextDataType.KOMMER_FRA_PLANLEGGER)) {
+            oppdaterDataIState(ContextDataType.SØKERSITUASJON, undefined);
+            oppdaterDataIState(ContextDataType.OM_BARNET, undefined);
+            oppdaterDataIState(ContextDataType.PERIODE_MED_FORELDREPENGER, undefined);
+            oppdaterDataIState(ContextDataType.UTTAKSPLAN, undefined);
+            oppdaterDataIState(ContextDataType.KOMMER_FRA_PLANLEGGER, undefined);
+        }
+
         const valgteBarn = selectableBarn.find((sb) => sb.id === values.valgteBarn);
 
         // Har valgt å opprette en helt ny sak

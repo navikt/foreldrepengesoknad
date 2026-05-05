@@ -1,8 +1,7 @@
-import { ContextDataType, useContextGetAnyData, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -28,28 +27,20 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
 
     const søkersituasjon = useContextGetData(ContextDataType.SØKERSITUASJON);
     const oppdaterSøkersituasjon = useContextSaveData(ContextDataType.SØKERSITUASJON);
-    const getData = useContextGetAnyData();
+    const barn = useContextGetData(ContextDataType.OM_BARNET);
+    const kommerFraPlanlegger = useContextGetData(ContextDataType.KOMMER_FRA_PLANLEGGER);
     const resetUttaksplanData = useResetUttaksplanData();
 
-    const formMethods = useForm<SøkersituasjonFp>({
-        defaultValues: søkersituasjon
-            ? {
-                  ...søkersituasjon,
-              }
-            : undefined,
-    });
+    const defaultSituasjon =
+        !søkersituasjon?.situasjon && kommerFraPlanlegger && barn
+            ? isAdoptertBarn(barn)
+                ? 'adopsjon'
+                : 'fødsel'
+            : undefined;
 
-    useEffect(() => {
-        if (søkersituasjon?.situasjon || formMethods.formState.isDirty) {
-            return;
-        }
-        const barn = getData(ContextDataType.OM_BARNET);
-        const kommerFraPlanlegger = getData(ContextDataType.KOMMER_FRA_PLANLEGGER);
-        if (barn && kommerFraPlanlegger && !søkersituasjon?.situasjon) {
-            const situasjon = isAdoptertBarn(barn) ? 'adopsjon' : 'fødsel';
-            formMethods.setValue('situasjon', situasjon);
-        }
-    }, [getData, formMethods, søkersituasjon?.situasjon]);
+    const formMethods = useForm<SøkersituasjonFp>({
+        defaultValues: søkersituasjon ?? (defaultSituasjon ? { situasjon: defaultSituasjon } : undefined),
+    });
 
     const onSubmit = (values: SøkersituasjonFp) => {
         const nySøkersituasjon = {
