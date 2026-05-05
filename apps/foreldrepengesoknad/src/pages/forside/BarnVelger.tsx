@@ -5,7 +5,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { ValgtBarn, ValgtBarnType } from 'types/ValgtBarn';
 import { formaterFødselsdatoerPåBarn, formaterNavnPåBarn, getTekstForAntallBarn } from 'utils/barnUtils';
 
-import { Radio } from '@navikt/ds-react';
+import { BodyShort, Radio } from '@navikt/ds-react';
 
 import { DDMMMMYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfRadioGroup } from '@navikt/fp-form-hooks';
@@ -125,7 +125,9 @@ export const BarnVelger = ({ selectableBarn, harPlanleggerData }: Props) => {
                 value={SelectableBarnOptions.SØKNAD_GJELDER_PLANLAGT_BARN}
                 description={intl.formatMessage({ id: 'velkommen.intro.harSaker.barnVelger.planlagtBarnInfo' })}
             >
-                <FormattedMessage id="velkommen.intro.harSaker.barnVelger.planlagtBarn" />
+                <BodyShort weight="semibold">
+                    <FormattedMessage id="velkommen.intro.harSaker.barnVelger.planlagtBarn" />
+                </BodyShort>
             </Radio>,
         );
     }
@@ -136,12 +138,9 @@ export const BarnVelger = ({ selectableBarn, harPlanleggerData }: Props) => {
             value={SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN}
             description={intl.formatMessage({ id: 'velkommen.intro.harSaker.barnVelger.info' })}
         >
-            <FormattedMessage
-                id="omBarnet.gjelderAnnetBarn"
-                values={{
-                    b: (chunks) => <b>{chunks}</b>,
-                }}
-            />
+            <BodyShort weight="semibold">
+                <FormattedMessage id="omBarnet.gjelderAnnetBarn" />
+            </BodyShort>
         </Radio>,
     );
 
