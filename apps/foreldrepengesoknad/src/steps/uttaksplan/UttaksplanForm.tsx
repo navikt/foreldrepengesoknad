@@ -1,7 +1,7 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import dayjs from 'dayjs';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
@@ -27,6 +27,8 @@ import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
 import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 import { useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
+
+import { GåTilbakeModal } from './GåTilbakeModal';
 
 type FormValues = {
     ønskerJustertUttakVedFødsel?: boolean;
@@ -145,9 +147,16 @@ export const UttaksplanForm = ({
         }
     };
 
+    const [gåTilbakeIsOpen, setGåTilbakeIsOpen] = useState(false);
+
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             <VStack gap="space-24">
+                <GåTilbakeModal
+                    isOpen={gåTilbakeIsOpen}
+                    setIsOpen={setGåTilbakeIsOpen}
+                    goToPreviousStep={navigator.goToPreviousDefaultStep}
+                />
                 {visAutomatiskJustering && (
                     <VStack gap="space-16">
                         <AutomatiskJusteringInfotekst
@@ -179,7 +188,13 @@ export const UttaksplanForm = ({
                     </VStack>
                 )}
                 <StepButtonsHookForm
-                    goToPreviousStep={navigator.goToPreviousDefaultStep}
+                    goToPreviousStep={
+                        uttaksplan
+                            ? () => {
+                                  setGåTilbakeIsOpen(true);
+                              }
+                            : navigator.goToPreviousDefaultStep
+                    }
                     onAvsluttOgSlett={avbrytSøknad}
                     onFortsettSenere={navigator.fortsettSøknadSenere}
                 />
