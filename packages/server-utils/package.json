@@ -15,6 +15,7 @@
         "@navikt/nav-dekoratoren-moduler": "3.7.1",
         "@navikt/vite-mode": "0.13.7",
         "express": "5.2.1",
+        "helmet": "8.1.0",
         "morgan": "1.10.1",
         "winston": "3.19.0"
     },

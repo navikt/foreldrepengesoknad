@@ -1,16 +1,30 @@
 import express, { Express } from 'express';
+import helmet from 'helmet';
 
 export const setupServerDefaults = (server: Express) => {
-    server.disable('x-powered-by');
-    server.use((_req, res, next) => {
-        res.removeHeader('X-Powered-By');
-        res.set('X-Frame-Options', 'SAMEORIGIN');
-        res.set('X-XSS-Protection', '1; mode=block');
-        res.set('X-Content-Type-Options', 'nosniff');
-        res.set('Referrer-Policy', 'no-referrer');
-        res.set('Feature-Policy', "geolocation 'none'; microphone 'none'; camera 'none'");
-        next();
-    });
+    server.use(
+        helmet({
+            contentSecurityPolicy: {
+                useDefaults: false,
+                directives: {
+                    'default-src': ["'self'"],
+                    'base-uri': ["'self'"],
+                    'script-src': ["'self'", "'unsafe-inline'", '*.nav.no'],
+                    'style-src': ["'self'", "'unsafe-inline'", '*.nav.no'],
+                    'connect-src': ["'self'", '*.nav.no', 'https://sentry.gc.nav.no'],
+                    'font-src': ["'self'", 'https://cdn.nav.no', 'data:'],
+                    'img-src': ["'self'", 'data:', '*.nav.no'],
+                    'frame-src': ["'self'"],
+                    'child-src': ["'self'"],
+                    'media-src': ["'none'"],
+                    'object-src': ["'none'"],
+                },
+            },
+            referrerPolicy: { policy: 'no-referrer' },
+            hidePoweredBy: true,
+            noSniff: true,
+        }),
+    );
 
     // Restricts the server to only accept UTF-8 encoding of bodies
     server.use(express.urlencoded({ extended: true }));
