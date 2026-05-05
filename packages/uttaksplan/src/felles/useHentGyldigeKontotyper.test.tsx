@@ -451,14 +451,55 @@ describe('useHentGyldigeKontotyper - fars kvoter', () => {
         expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual([]);
     });
 
-    it('skal ikke ha gyldige perioder for far når én periode krysser familiehendelsedato', () => {
+    it('skal tillate periode som krysser familiehendelsedato for far når kun far har rett', () => {
+        const { result } = renderHook(
+            () =>
+                useHentGyldigeKontotyper([{ fom: '2024-06-13', tom: '2024-06-21' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
+            {
+                wrapper: getWrapper({
+                    foreldreInfo: {
+                        søker: 'FAR_MEDMOR',
+                        rettighetType: 'BARE_SØKER_RETT',
+                        navnPåForeldre: NAVN_PÅ_FORELDRE,
+                        erMedmorDelAvSøknaden: false,
+                    },
+                }),
+            },
+        );
+
+        expect(result.current.gyldigeStønadskontoerForFarMedmor.length).toBeGreaterThan(0);
+    });
+
+    it('skal tillate perioder både før og etter familiehendelsedato for far når kun far har rett', () => {
         const { result } = renderHook(
             () =>
                 useHentGyldigeKontotyper(
-                    [{ fom: '2024-06-13', tom: '2024-06-21' }],
+                    [
+                        { fom: '2024-06-03', tom: '2024-06-14' },
+                        { fom: '2024-06-20', tom: '2024-06-21' },
+                    ],
                     !HAR_VALGT_SAMTIDIG_UTTAK,
                     false,
                 ),
+            {
+                wrapper: getWrapper({
+                    foreldreInfo: {
+                        søker: 'FAR_MEDMOR',
+                        rettighetType: 'BARE_SØKER_RETT',
+                        navnPåForeldre: NAVN_PÅ_FORELDRE,
+                        erMedmorDelAvSøknaden: false,
+                    },
+                }),
+            },
+        );
+
+        expect(result.current.gyldigeStønadskontoerForFarMedmor.length).toBeGreaterThan(0);
+    });
+
+    it('skal ikke ha gyldige perioder for far når én periode krysser familiehendelsedato', () => {
+        const { result } = renderHook(
+            () =>
+                useHentGyldigeKontotyper([{ fom: '2024-06-13', tom: '2024-06-21' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {

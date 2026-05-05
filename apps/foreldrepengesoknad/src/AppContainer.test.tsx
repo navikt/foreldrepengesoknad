@@ -90,7 +90,8 @@ describe('<AppContainer>', () => {
             expect(screen.getAllByText('Din plan med foreldrepenger')).toHaveLength(2);
 
             await userEvent.click(screen.getByText('Forrige steg'));
-            await userEvent.click(screen.getByText('Ja'));
+            expect(screen.getByText('Uttaksplanen kan bli nullstilt')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Ja, gå tilbake'));
             expect(screen.getAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
 
             await userEvent.click(screen.getByText('Forrige steg'));

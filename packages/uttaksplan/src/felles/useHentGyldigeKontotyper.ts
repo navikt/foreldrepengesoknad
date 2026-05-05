@@ -173,6 +173,9 @@ const erGyldigForFarMedmor = (
         return false;
     }
 
+    const kunFarHarRett =
+        søker === 'FAR_MEDMOR' && (rettighetType === 'BARE_SØKER_RETT' || rettighetType === 'ALENEOMSORG');
+
     if (
         familiesituasjon === 'adopsjon' &&
         UttaksperiodeValidatorer.erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)
@@ -181,6 +184,7 @@ const erGyldigForFarMedmor = (
     }
 
     if (
+        !kunFarHarRett &&
         UttaksperiodeValidatorer.erNoenPerioderFørOgNoenLikEllerEtterFamiliehendelsesdato(
             valgtePerioder,
             familiehendelsedato,

@@ -1,5 +1,6 @@
 import { ContextDataType, useContextGetAnyData, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
+import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -28,6 +29,7 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
     const søkersituasjon = useContextGetData(ContextDataType.SØKERSITUASJON);
     const oppdaterSøkersituasjon = useContextSaveData(ContextDataType.SØKERSITUASJON);
     const getData = useContextGetAnyData();
+    const resetUttaksplanData = useResetUttaksplanData();
 
     const formMethods = useForm<SøkersituasjonFp>({
         defaultValues: søkersituasjon
@@ -50,10 +52,19 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
     }, [getData, formMethods, søkersituasjon?.situasjon]);
 
     const onSubmit = (values: SøkersituasjonFp) => {
-        oppdaterSøkersituasjon({
+        const nySøkersituasjon = {
             situasjon: values.situasjon,
             rolle: values.rolle ?? 'far',
-        });
+        };
+
+        if (
+            søkersituasjon !== undefined &&
+            (søkersituasjon.situasjon !== nySøkersituasjon.situasjon || søkersituasjon.rolle !== nySøkersituasjon.rolle)
+        ) {
+            resetUttaksplanData();
+        }
+
+        oppdaterSøkersituasjon(nySøkersituasjon);
 
         return navigator.goToNextDefaultStep();
     };
