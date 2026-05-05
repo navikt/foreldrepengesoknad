@@ -225,11 +225,8 @@ const getRadioOptionAnnenDato = (): React.ReactElement => (
 );
 
 const getRadioOptionAnnenDatoMorFødsel = (erBarnetFødt: boolean, intl: IntlShape): React.ReactElement => {
-    const description = erBarnetFødt
-        ? intl.formatMessage({ id: 'fordeling.oppstartValg.annenDato.description.fødsel' })
-        : intl.formatMessage({ id: 'fordeling.oppstartValg.annenDato.description.termin' });
     return (
-        <Radio key={OppstartValg.ANNEN_DATO} value={OppstartValg.ANNEN_DATO} description={description}>
+        <Radio key={OppstartValg.ANNEN_DATO} value={OppstartValg.ANNEN_DATO}>
             <FormattedMessage id="fordeling.oppstartValg.annenDato" />
         </Radio>
     );
@@ -239,17 +236,11 @@ const getRadioOptionTreUkerFørTermin = (intl: IntlShape, barn: Barn): React.Rea
     const termindato = getTermindato(barn);
     const førsteDagTreUkerFørFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(termindato);
     return (
-        <Radio
-            key={OppstartValg.TRE_UKER_FØR_TERMIN}
-            value={OppstartValg.TRE_UKER_FØR_TERMIN}
-            description={intl.formatMessage(
-                { id: 'fordeling.oppstartValg.treUkerFør.description' },
-                {
-                    dato: formatDateExtended(førsteDagTreUkerFørFødsel),
-                },
-            )}
-        >
-            <FormattedMessage id="fordeling.oppstartValg.treUkerFørTermin" />
+        <Radio key={OppstartValg.TRE_UKER_FØR_TERMIN} value={OppstartValg.TRE_UKER_FØR_TERMIN}>
+            <FormattedMessage
+                id="fordeling.oppstartValg.treUkerFørTermin"
+                values={{ dato: formatDateExtended(førsteDagTreUkerFørFødsel) }}
+            />
         </Radio>
     );
 };
@@ -258,17 +249,11 @@ const getRadioOptionTreUkerFørFødsel = (intl: IntlShape, barn: Barn): React.Re
     const fødselsdato = getFødselsdato(barn);
     const førsteDagTreUkerFørFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(fødselsdato);
     return (
-        <Radio
-            key={OppstartValg.TRE_UKER_FØR_FØDSEL}
-            value={OppstartValg.TRE_UKER_FØR_FØDSEL}
-            description={intl.formatMessage(
-                { id: 'fordeling.oppstartValg.treUkerFør.description' },
-                {
-                    dato: formatDateExtended(førsteDagTreUkerFørFødsel),
-                },
-            )}
-        >
-            <FormattedMessage id="fordeling.oppstartValg.treUkerFørFødsel" />
+        <Radio key={OppstartValg.TRE_UKER_FØR_FØDSEL} value={OppstartValg.TRE_UKER_FØR_FØDSEL}>
+            <FormattedMessage
+                id="fordeling.oppstartValg.treUkerFørFødsel"
+                values={{ dato: formatDateExtended(førsteDagTreUkerFørFødsel) }}
+            />
         </Radio>
     );
 };
@@ -399,18 +384,24 @@ export const OppstartValgInput = ({
     const deltUttak = getIsDeltUttak(annenForelder);
     const datoForAleneomsorg = getDatoForAleneomsorg(annenForelder);
 
+    const erMorFødsel = !erFarEllerMedmor && erFødsel;
+
+    const getDescription = () => {
+        if (erFarEllerMedmor && !erAleneOmOmsorg && !bareFarHarRett) {
+            return <FormattedMessage id="fordeling.oppstartValg.description.fedreWLB" />;
+        }
+        if (erMorFødsel) {
+            return <FormattedMessage id="fordeling.oppstartValg.description.morFødsel" />;
+        }
+        return <FormattedMessage id="fordeling.description.kanEndresSenere" />;
+    };
+
     return (
         <RhfRadioGroup
             name="oppstartAvForeldrepengerValg"
             control={control}
             label={<FormattedMessage id="fordeling.oppstartValg.spørsmål" />}
-            description={
-                erFarEllerMedmor && !erAleneOmOmsorg && !bareFarHarRett ? (
-                    <FormattedMessage id="fordeling.oppstartValg.description.fedreWLB" />
-                ) : (
-                    <FormattedMessage id="fordeling.description.kanEndresSenere" />
-                )
-            }
+            description={getDescription()}
             validate={[isRequired(intl.formatMessage({ id: 'fordeling.oppstartValg.måOppgis' }))]}
         >
             {oppstartsvalg.map((valg) =>

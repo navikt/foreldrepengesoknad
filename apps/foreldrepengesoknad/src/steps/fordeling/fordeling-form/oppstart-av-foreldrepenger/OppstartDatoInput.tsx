@@ -222,7 +222,6 @@ export const OppstartDatoInput = ({ oppstartValg }: Props) => {
                     <FormattedMessage id="fordeling.oppstartDato.spørsmål" />
                 )
             }
-            description={intl.formatMessage({ id: 'fordeling.oppstartDato.description' })}
             minDate={minDato}
             maxDate={maksDato}
             showMonthAndYearDropdowns={true}

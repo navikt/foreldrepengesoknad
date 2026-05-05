@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { FellesperiodeFordelingValg, Fordeling } from 'types/Fordeling';
 import { FordelingDager, FordelingFargekode } from 'types/FordelingOversikt';
 
-import { Alert, BodyLong, HStack, Heading, VStack } from '@navikt/ds-react';
+import { Alert, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { RhfTextField } from '@navikt/fp-form-hooks';
 import { NavnPåForeldre } from '@navikt/fp-types';
@@ -99,7 +99,7 @@ interface Props {
     erFarEllerMedmor: boolean;
 }
 
-export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode, erFarEllerMedmor }: Props) => {
+export const FellesperiodeFordeling = ({ dagerMedFellesperiode, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
     const {
         control,
@@ -110,7 +110,6 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
     const valgtFordeling = watch('fordelingValg');
     const antallUkerFellesperiodeTilSøker = watch('antallUkerFellesperiodeTilSøker');
     const antallDagerFellesperiodeTilSøker = watch('antallDagerFellesperiodeTilSøker');
-    const navnAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const fordelingsdagerForVisning = getFordelingDagerForVisning(
         erFarEllerMedmor,
         dagerMedFellesperiode,
@@ -125,17 +124,8 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
             {valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE && (
                 <div className="pb-4 pl-4">
                     <Heading size="xsmall">
-                        <FormattedMessage
-                            id="fordeling.antallUkerDager.spørsmål"
-                            values={{ harHeleUkerTilFordeling }}
-                        />
+                        <FormattedMessage id="fordeling.antallUkerDager.spørsmål" />
                     </Heading>
-                    <BodyLong className="text-ax-text-neutral-subtle">
-                        <FormattedMessage
-                            id="fordeling.antallUkerDager.spørsmål.description"
-                            values={{ harHeleUkerTilFordeling, navnAnnenForelder }}
-                        />
-                    </BodyLong>
                     <HStack gap="space-20" align="start">
                         <RhfTextField
                             control={control}
