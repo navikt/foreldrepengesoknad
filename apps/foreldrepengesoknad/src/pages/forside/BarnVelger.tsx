@@ -14,7 +14,7 @@ import { isRequired } from '@navikt/fp-validation';
 import { ForsideFormValues } from './types/ForsideFormValues';
 
 export enum SelectableBarnOptions {
-    SØKNAD_GJELDER_NYTT_BARN = 'søknad_gjeder_nytt_barn',
+    SØKNAD_GJELDER_NYTT_BARN = 'søknad_gjelder_nytt_barn',
     SØKNAD_GJELDER_PLANLAGT_BARN = 'søknad_gjelder_planlagt_barn',
 }
 

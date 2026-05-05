@@ -163,7 +163,7 @@ const showManglendeDokumentasjonSteg = (
     return false;
 };
 
-const skalViseFordelingOgPeriodeSteg = (
+const skalViseFordelingSteg = (
     path: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ): boolean => {
@@ -193,7 +193,7 @@ export const useStepConfig = (
     const appPathList = useMemo(
         () =>
             ROUTES_ORDER.flatMap((path) =>
-                (requiredSteps.includes(path) && skalViseFordelingOgPeriodeSteg(path, getStateData)) ||
+                (requiredSteps.includes(path) && skalViseFordelingSteg(path, getStateData)) ||
                 showUtenlandsoppholdStep(path, currentPath, getStateData) ||
                 showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, eksisterendeSak) ||
                 showFrilansOgEgenNæringOgAndreInntekter(path, currentPath, getStateData)
