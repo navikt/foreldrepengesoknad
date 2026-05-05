@@ -34,9 +34,9 @@ export const UttaksplanOppsummering = ({ navnPåForeldre, registrerteArbeidsforh
             return kontoer[dekningsgrad];
         },
     });
-    const valgteStønadskontoer = tilgjengeligeStønadskvoterQuery.data;
+    const valgteStønadskvoter = tilgjengeligeStønadskvoterQuery.data;
 
-    const antallUkerIUttaksplan = getAntallUkerFraStønadskvoter(valgteStønadskontoer?.kontoer ?? []);
+    const antallUkerIUttaksplan = getAntallUkerFraStønadskvoter(valgteStønadskvoter?.kontoer ?? []);
 
     const antallUkerOgDagerIUttaksplan = getUkerOgDagerFromDager(antallUkerIUttaksplan * 5);
 
