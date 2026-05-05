@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { tilgjengeligeStønadskontoerOptions } from 'appData/queries';
+import { tilgjengeligeStønadskvoterOptions } from 'appData/queries';
 import dayjs from 'dayjs';
 
 import { DEFAULT_SATSER, ISO_DATE_FORMAT } from '@navikt/fp-constants';
@@ -16,15 +16,15 @@ const STØNADSKONTO_PARAMS = {
 };
 
 export const HvorMyeVeiviser = () => {
-    const stønadskontoerData = useQuery(tilgjengeligeStønadskontoerOptions(STØNADSKONTO_PARAMS));
+    const stønadskvoterData = useQuery(tilgjengeligeStønadskvoterOptions(STØNADSKONTO_PARAMS));
 
-    if (stønadskontoerData.error) {
+    if (stønadskvoterData.error) {
         return <SimpleErrorPage />;
     }
 
-    if (!stønadskontoerData.data) {
+    if (!stønadskvoterData.data) {
         return <Spinner />;
     }
 
-    return <HvorMyeRouter satser={DEFAULT_SATSER} stønadskontoer={stønadskontoerData.data} />;
+    return <HvorMyeRouter satser={DEFAULT_SATSER} stønadskvoter={stønadskvoterData.data} />;
 };

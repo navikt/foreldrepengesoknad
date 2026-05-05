@@ -18,7 +18,7 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
         dager: 75,
     } satisfies KontoDto;
     const aktivitetsfriKonto = { konto: 'AKTIVITETSFRI_KVOTE', dager: 40 } satisfies KontoDto;
-    const tilgjengeligeStønadskontoer = [foreldrepenger, aktivitetsfriKonto] satisfies KontoDto[];
+    const tilgjengeligeStønadskvoter = [foreldrepenger, aktivitetsfriKonto] satisfies KontoDto[];
     const erMorUfør = true;
     const bareFarMedmorHarRett = true;
     const erFarEllerMedmor = true;
@@ -28,7 +28,7 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
             situasjon: 'fødsel',
             famDato,
             erFarEllerMedmor,
-            tilgjengeligeStønadskontoer,
+            tilgjengeligeStønadskvoter,
             startdato,
             erMorUfør,
             bareFarMedmorHarRett,
@@ -52,7 +52,7 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
             situasjon: 'fødsel',
             famDato,
             erFarEllerMedmor,
-            tilgjengeligeStønadskontoer,
+            tilgjengeligeStønadskvoter,
             startdato: startDato1DagFørFødsel,
             erMorUfør,
             bareFarMedmorHarRett,
@@ -88,7 +88,7 @@ describe('ikkeDeltUttak - Fødsel - Mor', () => {
             situasjon: 'fødsel',
             famDato,
             erFarEllerMedmor: false,
-            tilgjengeligeStønadskontoer: [foreldrepenger, foreldrepengerFørFødsel],
+            tilgjengeligeStønadskvoter: [foreldrepenger, foreldrepengerFørFødsel],
             erMorUfør: false,
             bareFarMedmorHarRett: false,
             erAleneOmOmsorg: false,
@@ -111,7 +111,7 @@ describe('ikkeDeltUttak - Fødsel - Mor', () => {
             situasjon: 'fødsel',
             famDato,
             erFarEllerMedmor: false,
-            tilgjengeligeStønadskontoer: [foreldrepenger],
+            tilgjengeligeStønadskvoter: [foreldrepenger],
             erMorUfør: false,
             bareFarMedmorHarRett: false,
             erAleneOmOmsorg: false,
@@ -143,7 +143,7 @@ describe('ikkeDeltUttak - Fødsel - Far aleneOmOmsorg', () => {
             situasjon: 'fødsel',
             famDato,
             erFarEllerMedmor: true,
-            tilgjengeligeStønadskontoer: [foreldrepenger],
+            tilgjengeligeStønadskvoter: [foreldrepenger],
             erMorUfør: false,
             bareFarMedmorHarRett: false,
             erAleneOmOmsorg: true,
@@ -176,7 +176,7 @@ describe('ikkeDeltUttak - Adopsjon', () => {
             situasjon: 'adopsjon',
             famDato,
             erFarEllerMedmor: false,
-            tilgjengeligeStønadskontoer: [foreldrepenger],
+            tilgjengeligeStønadskvoter: [foreldrepenger],
             erMorUfør: false,
             bareFarMedmorHarRett: false,
             erAleneOmOmsorg: false,
@@ -195,7 +195,7 @@ describe('ikkeDeltUttak - Adopsjon', () => {
             situasjon: 'adopsjon',
             famDato,
             erFarEllerMedmor: true,
-            tilgjengeligeStønadskontoer: [foreldrepenger, aktivitetsfriKonto],
+            tilgjengeligeStønadskvoter: [foreldrepenger, aktivitetsfriKonto],
             erMorUfør: false,
             bareFarMedmorHarRett: true,
             erAleneOmOmsorg: false,

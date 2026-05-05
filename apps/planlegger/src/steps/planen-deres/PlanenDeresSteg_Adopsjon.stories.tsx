@@ -49,7 +49,7 @@ const meta = {
         hvorLangPeriode,
         omBarnet,
         arbeidssituasjon,
-        stønadskontoer,
+        stønadskvoter,
     }) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.PLANEN_DERES]}>
@@ -63,7 +63,7 @@ const meta = {
                         [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
                     }}
                 >
-                    <PlanenDeresSteg stønadskontoer={stønadskontoer} />
+                    <PlanenDeresSteg stønadskvoter={stønadskvoter} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -96,7 +96,7 @@ export const MorOgFarBeggeHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '100': {
                 kontoer: DELT_UTTAK_100_ADOPSJON,
                 minsteretter: MINSTERETTER,
@@ -117,7 +117,7 @@ export const MorOgFarKunMorHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '100': {
                 kontoer: IKKE_DELT_UTTAK_100_ADOPSJON_MOR,
                 minsteretter: MINSTERETTER,
@@ -138,7 +138,7 @@ export const MorOgFarKunFarHarRettMorErUfør: Story = {
             status: Arbeidsstatus.UFØR,
             jobberAnnenPart: true,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '100': {
                 kontoer: IKKE_DELT_UTTAK_100_FARMEDMOR_MOR_UFØR,
                 minsteretter: MINSTERETTER,
@@ -159,7 +159,7 @@ export const MorOgFarKunFarHarRettMorIngenAvDisse: Story = {
             status: Arbeidsstatus.UFØR,
             jobberAnnenPart: true,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '100': {
                 kontoer: IKKE_DELT_UTTAK_100_FARMEDMOR,
                 minsteretter: MINSTERETTER,
@@ -227,7 +227,7 @@ export const BareMorSøkerOgHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: undefined,
         },
-        stønadskontoer: MorOgFarKunMorHarRett.args?.stønadskontoer,
+        stønadskvoter: MorOgFarKunMorHarRett.args?.stønadskvoter,
     },
 };
 
@@ -242,7 +242,7 @@ export const BareFarSøkerAleneOmOmsorg: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: undefined,
         },
-        stønadskontoer: MorOgFarKunMorHarRett.args?.stønadskontoer,
+        stønadskvoter: MorOgFarKunMorHarRett.args?.stønadskvoter,
     },
 };
 
@@ -265,7 +265,7 @@ export const FarOgFarKunFarHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: IKKE_DELT_UTTAK_80_FAR_OG_FAR_ADOPSJON,
                 minsteretter: MINSTERETTER,
@@ -286,7 +286,7 @@ export const FarOgFarKunMedfarHarRett: Story = {
             status: Arbeidsstatus.INGEN,
             jobberAnnenPart: true,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR,
                 minsteretter: MINSTERETTER,

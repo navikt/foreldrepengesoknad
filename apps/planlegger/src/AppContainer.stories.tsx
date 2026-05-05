@@ -8,7 +8,7 @@ import { KontoBeregningResultatDto } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';
 
-const STØNADSKONTOER = {
+const STØNADSKVOTER = {
     '100': {
         kontoer: [
             {
@@ -98,11 +98,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-export const DefaultMockaStønadskontoerOgSatser: Story = {
+export const DefaultMockaStønadskvoterOgSatser: Story = {
     ...Default,
     parameters: {
         msw: {
-            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(STØNADSKONTOER))],
+            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(STØNADSKVOTER))],
         },
     },
 };

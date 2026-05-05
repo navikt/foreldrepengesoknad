@@ -16,7 +16,7 @@ interface Props {
     erFarEllerMedmor: boolean;
 }
 
-export const StønadskontoIkon = ({ konto, forelder, gradert, navnPåForeldre, erFarEllerMedmor }: Props) => {
+export const StønadskvoteIkon = ({ konto, forelder, gradert, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
     return (
         <Box
@@ -28,7 +28,7 @@ export const StønadskontoIkon = ({ konto, forelder, gradert, navnPåForeldre, e
         >
             <UttaksplanIkon
                 ikon={UttaksplanIkonKeys.uttak}
-                title={getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor)}
+                title={getStønadskvoteNavn(intl, konto, navnPåForeldre, erFarEllerMedmor)}
             />
         </Box>
     );
@@ -75,7 +75,7 @@ const getForelderFarge = (
     return erFarEllerMedmor ? 'success-strong' : 'success-moderate';
 };
 
-const getStønadskontoNavn = (
+const getStønadskvoteNavn = (
     intl: IntlShape,
     konto: KontoTypeUttak | undefined,
     navnPåForeldre: NavnPåForeldre,
@@ -83,7 +83,7 @@ const getStønadskontoNavn = (
     erAleneOmOmsorg?: boolean,
 ) => {
     if ((erFarEllerMedmor && konto === 'FEDREKVOTE') || (!erFarEllerMedmor && konto === 'MØDREKVOTE')) {
-        return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.dinKvote' });
+        return intl.formatMessage({ id: 'uttaksplan.stønadskvotetype.dinKvote' });
     }
     let navn;
 
@@ -100,18 +100,18 @@ const getStønadskontoNavn = (
 
     if (navn) {
         return intl.formatMessage(
-            { id: 'uttaksplan.stønadskontotype.foreldernavn.kvote' },
+            { id: 'uttaksplan.stønadskvotetype.foreldernavn.kvote' },
             { navn: getNavnGenitivEierform(capitalizeFirstLetter(navn), intl.locale) },
         );
     }
 
     if (erFarEllerMedmor === true && erAleneOmOmsorg === false) {
         if (konto === 'AKTIVITETSFRI_KVOTE') {
-            return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE_BFHR' });
+            return intl.formatMessage({ id: 'uttaksplan.stønadskvotetype.AKTIVITETSFRI_KVOTE_BFHR' });
         }
         if (konto === 'FORELDREPENGER') {
-            return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSKRAV_KVOTE_BFHR' });
+            return intl.formatMessage({ id: 'uttaksplan.stønadskvotetype.AKTIVITETSKRAV_KVOTE_BFHR' });
         }
     }
-    return intl.formatMessage({ id: `uttaksplan.stønadskontotype.${konto}` });
+    return intl.formatMessage({ id: `uttaksplan.stønadskvotetype.${konto}` });
 };

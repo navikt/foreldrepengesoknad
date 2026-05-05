@@ -7,7 +7,7 @@ import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { førsteOktober2021ReglerGjelder } from 'utils/dateUtils';
 import { guid } from 'utils/guid';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
-import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
+import { getAntallUkerFraStønadskvoter } from 'utils/stønadskvoterUtils';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -50,7 +50,7 @@ export const FordelingOversikt = ({ kontoer, navnFarMedmor, navnMor, deltUttak, 
 
     const [currentUthevet, setCurrentUthevet] = useState<FordelingEier | undefined>(undefined);
     const antallFlerbarnsdager = kontoer.tillegg?.flerbarn;
-    const sumDager = getAntallUkerFraStønadskontoer(kontoer.kontoer) * 5;
+    const sumDager = getAntallUkerFraStønadskvoter(kontoer.kontoer) * 5;
     const visBeggeHarRettGraf = deltUttak && !annenForelderHarKunRettIEØS;
     const visFlerbarnsdagerInformasjon = deltUttak && !!antallFlerbarnsdager && antallFlerbarnsdager > 0;
     return (

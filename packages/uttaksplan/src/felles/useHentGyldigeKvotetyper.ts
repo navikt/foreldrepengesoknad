@@ -4,15 +4,15 @@ import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { ForeldreInfo } from '../types/ForeldreInfo';
 import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
 
-export const useHentGyldigeKontotyper = (
+export const useHentGyldigeKvotetyper = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     harValgtSamtidigUttak: boolean,
     ønskerFlerbarnsdager: boolean | undefined,
 ) => {
-    const { foreldreInfo, familiehendelsedato, familiesituasjon, valgtStønadskonto } = useUttaksplanData();
+    const { foreldreInfo, familiehendelsedato, familiesituasjon, valgtStønadskvote } = useUttaksplanData();
 
     return {
-        gyldigeStønadskontoerForMor: valgtStønadskonto.kontoer
+        gyldigeStønadskontoerForMor: valgtStønadskvote.kontoer
             .map((kt) => kt.konto)
             .filter((kt) =>
                 erGyldigForMor(
@@ -24,7 +24,7 @@ export const useHentGyldigeKontotyper = (
                     harValgtSamtidigUttak,
                 ),
             ),
-        gyldigeStønadskontoerForFarMedmor: valgtStønadskonto.kontoer
+        gyldigeStønadskontoerForFarMedmor: valgtStønadskvote.kontoer
             .map((kt) => kt.konto)
             .filter((kt) =>
                 erGyldigForFarMedmor(

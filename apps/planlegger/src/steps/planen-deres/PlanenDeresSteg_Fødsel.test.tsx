@@ -593,7 +593,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
                 hvorLangPeriode={{
                     dekningsgrad: '80',
                 }}
-                stønadskontoer={{
+                stønadskvoter={{
                     '80': {
                         kontoer: DELT_UTTAK_80_TO_BARN,
                         minsteretter: { farRundtFødsel: 10, toTette: 0 },

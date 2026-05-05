@@ -1,6 +1,6 @@
 import { KontoBeregningDto } from '@navikt/fp-types';
 
-export const stønadskontoer = {
+export const stønadskvoter = {
     kontoer: [
         {
             konto: 'MØDREKVOTE',

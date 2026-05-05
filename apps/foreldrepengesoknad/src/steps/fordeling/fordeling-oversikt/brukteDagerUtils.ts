@@ -84,12 +84,12 @@ const finnAntallDagerÅTrekke = (periode: Periode, erFødsel: boolean, familiehe
 };
 
 const beregnBrukteUttaksdager = (
-    tilgjengeligeStønadskontoer: KontoBeregningDto,
+    tilgjengeligeStønadskvoter: KontoBeregningDto,
     perioder: Periode[],
     erFødsel: boolean,
     familiehendelsesdato: string,
 ): KontoDto[] => {
-    return tilgjengeligeStønadskontoer.kontoer
+    return tilgjengeligeStønadskvoter.kontoer
         .map((konto) => {
             const perioderForKonto = perioder.filter((p) => p.kontoType === konto.konto);
             const dager = Math.floor(
@@ -116,7 +116,7 @@ const summerBrukteUttaksdager = (uttak: KontoDto[]) => {
 };
 
 const getBrukteDagerForForelder = (
-    tilgjengeligeStønadskontoer: KontoBeregningDto,
+    tilgjengeligeStønadskvoter: KontoBeregningDto,
     perioder: Periode[],
     familiehendelsesdato: string,
     forelder: BrukerRolleSak_fpoversikt,
@@ -125,18 +125,18 @@ const getBrukteDagerForForelder = (
     const perioderFørTermin = getPerioderFørFamiliehendelse(perioder, familiehendelsesdato);
     const perioderEtterTermin = getPerioderEtterFamiliehendelse(perioder, familiehendelsesdato);
     const førTermin = beregnBrukteUttaksdager(
-        tilgjengeligeStønadskontoer,
+        tilgjengeligeStønadskvoter,
         perioderFørTermin,
         erFødsel,
         familiehendelsesdato,
     );
     const etterTermin = beregnBrukteUttaksdager(
-        tilgjengeligeStønadskontoer,
+        tilgjengeligeStønadskvoter,
         perioderEtterTermin,
         erFødsel,
         familiehendelsesdato,
     );
-    const alle = beregnBrukteUttaksdager(tilgjengeligeStønadskontoer, perioder, erFødsel, familiehendelsesdato);
+    const alle = beregnBrukteUttaksdager(tilgjengeligeStønadskvoter, perioder, erFødsel, familiehendelsesdato);
     const dagerTotalt = summerBrukteUttaksdager(alle);
 
     const isMor = forelder === 'MOR';
@@ -156,7 +156,7 @@ const getBrukteDagerForForelder = (
 };
 
 export const getBrukteDager = (
-    tilgjengeligeStønadskontoer: KontoBeregningDto,
+    tilgjengeligeStønadskvoter: KontoBeregningDto,
     perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
     familiehendelsesdato: string,
     erFødsel: boolean,
@@ -164,19 +164,19 @@ export const getBrukteDager = (
     const perioderMedUttak = (perioder ?? []).filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
     return {
         mor: getBrukteDagerForForelder(
-            tilgjengeligeStønadskontoer,
+            tilgjengeligeStønadskvoter,
             perioderMedUttak.filter(isMorsPeriode),
             familiehendelsesdato,
             'MOR',
             erFødsel,
         ),
         farMedmor: getBrukteDagerForForelder(
-            tilgjengeligeStønadskontoer,
+            tilgjengeligeStønadskvoter,
             perioderMedUttak.filter(isFarsPeriode),
             familiehendelsesdato,
             'FAR_MEDMOR',
             erFødsel,
         ),
-        alle: beregnBrukteUttaksdager(tilgjengeligeStønadskontoer, perioderMedUttak, erFødsel, familiehendelsesdato),
+        alle: beregnBrukteUttaksdager(tilgjengeligeStønadskvoter, perioderMedUttak, erFødsel, familiehendelsesdato),
     };
 };

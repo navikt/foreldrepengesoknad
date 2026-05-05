@@ -18,14 +18,14 @@ import {
     erTapteDagerHull,
 } from '../../types/UttaksplanPeriode';
 
-export const getStønadskontoNavnSimple = (intl: IntlShape, konto: KontoTypeUttak, erMedmorDelAvSøknaden?: boolean) => {
+export const getStønadskvoteNavnSimple = (intl: IntlShape, konto: KontoTypeUttak, erMedmorDelAvSøknaden?: boolean) => {
     if (konto === 'FEDREKVOTE' && erMedmorDelAvSøknaden) {
-        return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.MEDMORSKVOTE' });
+        return intl.formatMessage({ id: 'uttaksplan.stønadskvotetype.MEDMORSKVOTE' });
     }
-    return intl.formatMessage({ id: `uttaksplan.stønadskontotype.${konto}` });
+    return intl.formatMessage({ id: `uttaksplan.stønadskvotetype.${konto}` });
 };
 
-export const getStønadskontoNavn = (
+export const getStønadskvoteNavn = (
     intl: IntlShape,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
@@ -49,19 +49,19 @@ export const getStønadskontoNavn = (
 
     if (navn) {
         return intl.formatMessage(
-            { id: 'uttaksplan.stønadskontotype.foreldernavn.kvote' },
+            { id: 'uttaksplan.stønadskvotetype.foreldernavn.kvote' },
             { navn: getNavnGenitivEierform(capitalizeFirstLetter(navn), intl.locale) },
         );
     }
 
     if (!erEøsPeriode && erFarEllerMedmor === true && erAleneOmOmsorg === false) {
         if (morsAktivitet === 'IKKE_OPPGITT') {
-            return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE_BFHR' });
+            return intl.formatMessage({ id: 'uttaksplan.stønadskvotetype.AKTIVITETSFRI_KVOTE_BFHR' });
         }
-        return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSKRAV_KVOTE_BFHR' });
+        return intl.formatMessage({ id: 'uttaksplan.stønadskvotetype.AKTIVITETSKRAV_KVOTE_BFHR' });
     }
 
-    return intl.formatMessage({ id: `uttaksplan.stønadskontotype.${konto}` });
+    return intl.formatMessage({ id: `uttaksplan.stønadskvotetype.${konto}` });
 };
 
 export const getOppholdskontoNavn = (

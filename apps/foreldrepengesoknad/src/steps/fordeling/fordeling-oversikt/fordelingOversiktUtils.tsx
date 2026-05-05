@@ -14,7 +14,7 @@ import {
     getAntallUkerForeldrepenger,
     getAntallUkerForeldrepengerFørFødsel,
     getAntallUkerMødrekvote,
-} from 'utils/stønadskontoerUtils';
+} from 'utils/stønadskvoterUtils';
 
 import { Link } from '@navikt/ds-react';
 

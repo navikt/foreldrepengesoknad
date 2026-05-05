@@ -9,7 +9,7 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 import { endreFordelingMedSlider } from '../vitest/testHelpers';
 import * as stories from './AppContainer.stories';
 
-const { DefaultMockaStønadskontoerOgSatser } = composeStories(stories);
+const { DefaultMockaStønadskvoterOgSatser } = composeStories(stories);
 
 // Denne testen har kun ein test grunna at context ikkje blir sletta mellom testande. Skriv derfor testane i Planlegger.test.tsx
 
@@ -24,9 +24,9 @@ describe('<AppContainer>', () => {
     it(
         'skal gå gjennom applikasjonen og så tilbake',
         mswWrapper(async ({ setHandlers }) => {
-            setHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
+            setHandlers(DefaultMockaStønadskvoterOgSatser.parameters.msw);
 
-            const utils = render(<DefaultMockaStønadskontoerOgSatser />);
+            const utils = render(<DefaultMockaStønadskvoterOgSatser />);
 
             expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Start'));

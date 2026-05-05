@@ -131,7 +131,7 @@ const DEFAULT_DATA = {
         erMedmorDelAvSøknaden: false,
         navnPåForeldre: { farMedmor: 'Far Medmor', mor: 'Mor' },
     },
-    valgtStønadskonto: {
+    valgtStønadskvote: {
         kontoer: [
             { konto: 'MØDREKVOTE', dager: 100 },
             { konto: 'FEDREKVOTE', dager: 100 },

@@ -330,7 +330,7 @@ interface IkkeDeltUttakParams {
     situasjon: Situasjon;
     famDato: string;
     erFarEllerMedmor: boolean;
-    tilgjengeligeStønadskontoer: KontoDto[];
+    tilgjengeligeStønadskvoter: KontoDto[];
     erMorUfør: boolean | undefined;
     bareFarMedmorHarRett: boolean;
     erAleneOmOmsorg: boolean;
@@ -342,18 +342,18 @@ export const ikkeDeltUttak = ({
     situasjon,
     famDato,
     erFarEllerMedmor,
-    tilgjengeligeStønadskontoer,
+    tilgjengeligeStønadskvoter,
     erMorUfør,
     bareFarMedmorHarRett,
     erAleneOmOmsorg,
     startdato,
     farOgFar,
 }: IkkeDeltUttakParams): UttakPeriode_fpoversikt[] => {
-    const foreldrepengerKonto = tilgjengeligeStønadskontoer.find((konto) => konto.konto === 'FORELDREPENGER');
-    const foreldrePengerFørFødselKonto = tilgjengeligeStønadskontoer.find(
+    const foreldrepengerKonto = tilgjengeligeStønadskvoter.find((konto) => konto.konto === 'FORELDREPENGER');
+    const foreldrePengerFørFødselKonto = tilgjengeligeStønadskvoter.find(
         (konto) => konto.konto === 'FORELDREPENGER_FØR_FØDSEL',
     );
-    const aktivitetsfriKvote = tilgjengeligeStønadskontoer.find((konto) => konto.konto === 'AKTIVITETSFRI_KVOTE');
+    const aktivitetsfriKvote = tilgjengeligeStønadskvoter.find((konto) => konto.konto === 'AKTIVITETSFRI_KVOTE');
 
     if (situasjon === 'adopsjon') {
         return ikkeDeltUttakAdopsjon({

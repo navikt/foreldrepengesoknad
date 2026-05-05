@@ -82,7 +82,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
     };
 
     const kontoerOptions = useStønadsKontoerOptions();
-    const tilgjengeligeStønadskontoerQuery = useQuery({
+    const tilgjengeligeStønadskvoterQuery = useQuery({
         ...kontoerOptions,
         select: (kontoer) => {
             return kontoer[dekningsgrad];
@@ -96,7 +96,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
 
     const uttaksplanForEksisterendeSak = useUttaksplanForEksisterendeSak(annenPartVedtakQuery.data?.perioder);
 
-    const valgteStønadskontoer = tilgjengeligeStønadskontoerQuery.data;
+    const valgteStønadskontoer = tilgjengeligeStønadskvoterQuery.data;
 
     // Filtrerer ut periodane til annen part midlertidig fram til me får på plass lagring av desse periodane
     const nyttUttaksplanForslag = useUttaksplanForslag(
@@ -150,7 +150,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
                             (søkersituasjon.rolle === 'mor' && getKjønnFromFnr(annenForelder) === 'K'),
                         erIkkeSøkerSpesifisert: false,
                     }}
-                    valgtStønadskonto={valgteStønadskontoer}
+                    valgtStønadskvote={valgteStønadskontoer}
                     harAktivitetskravIPeriodeUtenUttak={false}
                     uttakPerioder={uttaksplan || defaultUttaksperioder}
                     erPeriodeneTilAnnenPartLåst={!!tidligereUttaksperioder}
