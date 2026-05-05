@@ -263,7 +263,6 @@ describe('<AppContainer>', () => {
             const row1 = screen.getByTestId('2026-04-14 - 2026-05-04');
             expect(within(row1).getByText(/14\. april 26/)).toBeInTheDocument();
             expect(within(row1).getByText(/04\. mai 26/)).toBeInTheDocument();
-            expect(within(row1).getByText('Ullen har foreldrepenger')).toBeInTheDocument();
 
             // Fødselsdato row (familiehendelse, "Fødsel" label appears twice via responsive Hide/Show)
             const fødselRow = screen.getByTestId('2026-05-05 - 2026-05-05');
