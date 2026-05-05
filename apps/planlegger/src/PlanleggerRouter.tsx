@@ -4,7 +4,7 @@ import { ArbeidssituasjonSteg } from 'steps/arbeidssituasjon/ArbeidssituasjonSte
 import { BarnehageplassSteg } from 'steps/barnehageplass/BarnehageplassSteg';
 import { FordelingSteg } from 'steps/fordeling/FordelingSteg';
 import { HvemPlanleggerSteg } from 'steps/hvem-planlegger/HvemPlanleggerSteg';
-import { HvorLangPeriodePlanleggerSteg } from 'steps/hvor-lang-periode/HvorLangPeriodeSteg';
+import { HvorLangPeriodeSteg } from 'steps/hvor-lang-periode/HvorLangPeriodeSteg';
 import { HvorMyeSteg } from 'steps/hvor-mye/HvorMyeSteg';
 import { OmBarnetPlanleggerSteg } from 'steps/om-barnet/OmBarnetSteg';
 import { OmPlanleggerenSteg } from 'steps/om-planleggeren/OmPlanleggerenSteg';
@@ -16,11 +16,11 @@ import { Loader } from '@navikt/ds-react';
 import { KontoBeregningDto, Satser } from '@navikt/fp-types';
 
 interface Props {
-    stønadskontoer?: { '100': KontoBeregningDto; '80': KontoBeregningDto };
+    stønadskvoter?: { '100': KontoBeregningDto; '80': KontoBeregningDto };
     satser: Satser;
 }
 
-export const PlanleggerRouter = ({ stønadskontoer, satser }: Props) => {
+export const PlanleggerRouter = ({ stønadskvoter, satser }: Props) => {
     return (
         <Routes>
             <Route path="/" element={<OmPlanleggerenSteg />} />
@@ -31,19 +31,19 @@ export const PlanleggerRouter = ({ stønadskontoer, satser }: Props) => {
             <Route path={PlanleggerRoutes.HVOR_MYE} element={<HvorMyeSteg satser={satser} />} />
             <Route
                 path={PlanleggerRoutes.HVOR_LANG_PERIODE}
-                element={stønadskontoer ? <HvorLangPeriodePlanleggerSteg stønadskontoer={stønadskontoer} /> : <Loader />}
+                element={stønadskvoter ? <HvorLangPeriodeSteg stønadskvoter={stønadskvoter} /> : <Loader />}
             />
             <Route
                 path={PlanleggerRoutes.FORDELING}
-                element={stønadskontoer ? <FordelingSteg stønadskontoer={stønadskontoer} /> : <Loader />}
+                element={stønadskvoter ? <FordelingSteg stønadskvoter={stønadskvoter} /> : <Loader />}
             />
             <Route
                 path={PlanleggerRoutes.PLANEN_DERES}
-                element={stønadskontoer ? <PlanenDeresSteg stønadskontoer={stønadskontoer} /> : <Loader />}
+                element={stønadskvoter ? <PlanenDeresSteg stønadskvoter={stønadskvoter} /> : <Loader />}
             />
             <Route
                 path={PlanleggerRoutes.OPPSUMMERING}
-                element={<OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} />}
+                element={<OppsummeringSteg stønadskvoter={stønadskvoter} satser={satser} />}
             />
             <Route path="*" element={<Navigate to="/" />} />
         </Routes>

@@ -9,7 +9,7 @@ import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
-import { genererPeriodeKey, getStønadskontoNavn } from '../../../liste/utils/uttaksplanListeUtils';
+import { genererPeriodeKey, getStønadskvoteNavn } from '../../../liste/utils/uttaksplanListeUtils';
 import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
 import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../../utils/periodeUtils';
 
@@ -73,7 +73,7 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                                         />
                                     )}
                                     {`${formatDate(p.fom)} - ${formatDate(p.tom)} - ` +
-                                        `${getStønadskontoNavn(
+                                        `${getStønadskvoteNavn(
                                             intl,
                                             navnPåForeldre,
                                             søker === 'FAR_MEDMOR',

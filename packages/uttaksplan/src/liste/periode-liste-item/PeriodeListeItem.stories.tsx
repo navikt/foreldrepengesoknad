@@ -66,7 +66,7 @@ const customRenderer = ({
                 erMedmorDelAvSøknaden: true,
             }}
             barn={barn}
-            valgtStønadskonto={kontoNårBeggeHarRett}
+            valgtStønadskvote={kontoNårBeggeHarRett}
             harAktivitetskravIPeriodeUtenUttak={false}
             uttakPerioder={[]}
             erPeriodeneTilAnnenPartLåst={false}

@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
+import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskvoterUtils';
 import { finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyShort, Box, Heading, InlineMessage, Spacer, VStack } from '@navikt/ds-react';
@@ -22,10 +22,10 @@ import { FordelingSlider } from '../../components/FordelingSlider';
 import { FordelingsdetaljerPanel } from './FordelingsdetaljerPanel';
 
 interface Props {
-    stønadskontoer: { '100': KontoBeregningDto; '80': KontoBeregningDto };
+    stønadskvoter: { '100': KontoBeregningDto; '80': KontoBeregningDto };
 }
 
-export const FordelingSteg = ({ stønadskontoer }: Props) => {
+export const FordelingSteg = ({ stønadskvoter }: Props) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
@@ -39,8 +39,8 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
-    const valgtStønadskonto = stønadskontoer[dekningsgrad];
-    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
+    const valgtStønadskvote = stønadskvoter[dekningsgrad];
+    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskvote);
 
     // Sett standardverdi: del likt (halvparten av totalen)
     const totalDager = antallUkerOgDagerFellesperiode.uker * 5 + antallUkerOgDagerFellesperiode.dager;
@@ -68,8 +68,8 @@ export const FordelingSteg = ({ stønadskontoer }: Props) => {
     };
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
-    const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallDagerSøker1);
-    const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallDagerSøker1);
+    const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskvote, barnet, antallDagerSøker1);
+    const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskvote, barnet, antallDagerSøker1);
 
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);

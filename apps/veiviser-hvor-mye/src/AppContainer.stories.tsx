@@ -45,7 +45,7 @@ type Story = StoryObj<typeof meta>;
 
 export const HvorMyeVeiviser: Story = {};
 
-export const HvorMyeVeiviserMockaStønadskontoerOgSatser: Story = {
+export const HvorMyeVeiviserMockaStønadskvoterOgSatser: Story = {
     parameters: {
         msw: {
             handlers: [

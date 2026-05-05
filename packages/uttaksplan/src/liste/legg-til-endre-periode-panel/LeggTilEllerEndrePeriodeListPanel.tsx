@@ -20,7 +20,7 @@ import {
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
-import { useHentGyldigeKontotyper } from '../../felles/useHentGyldigeKontotyper';
+import { useHentGyldigeKvotetyper } from '../../felles/useHentGyldigeKvotetyper';
 import { LeggTilPauseForm } from '../../felles/utsettelse/LeggTilPauseForm';
 import {
     LeggTilUtsettelseForm,
@@ -267,7 +267,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const erAdopsjon = familiesituasjon === 'adopsjon';
 
     const perioder = fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [];
-    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(
+    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKvotetyper(
         perioder,
         forelder === 'BEGGE',
         ønskerFlerbarnsdager,

@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 import { getForelderNavn } from 'utils/isFarEllerMedmor';
-import { getStønadskontoNavn } from 'utils/stønadskontoerUtils';
+import { getStønadskvoteNavn } from 'utils/stønadskvoterUtils';
 import {
     getUttaksprosentFromStillingsprosent,
     isUttaksperiodeFarMedmorPgaFødsel,
@@ -83,7 +83,7 @@ export const getPeriodeTittel = (
         );
     }
     if (!('trekkdager' in periode) && periode.overføringÅrsak) {
-        return getStønadskontoNavn(intl, periode.kontoType, navnPåForeldre, erFarEllerMedmor);
+        return getStønadskvoteNavn(intl, periode.kontoType, navnPåForeldre, erFarEllerMedmor);
     }
 
     if (!('trekkdager' in periode) && periode.utsettelseÅrsak) {
@@ -120,7 +120,7 @@ const getPeriodeTittelUttaksPeriode = (
     erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
 ) => {
-    const tittelMedNavn = getStønadskontoNavn(
+    const tittelMedNavn = getStønadskvoteNavn(
         intl,
         periode.kontoType,
         navnPåForeldre,

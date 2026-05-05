@@ -9,7 +9,6 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanleggerType } from 'types/HvemPlanlegger';
-import { HvorLangPeriodePlanlegger, KontoBeregningDto } from '@navikt/fp-types';
 import { erAlenesøker as erAlene, getTekstForDeSomHarRett } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -19,6 +18,7 @@ import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-reac
 
 import { links } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { HvorLangPeriodePlanlegger, KontoBeregningDto } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -27,10 +27,10 @@ import { NårBareEnPartHarRettInfoboks } from './infoboks/NårBareEnPartHarRettI
 import { ValgtDekningsgradInfoboks } from './infoboks/ValgtDekningsgradInfoboks';
 
 interface Props {
-    stønadskontoer: { '100': KontoBeregningDto; '80': KontoBeregningDto };
+    stønadskvoter: { '100': KontoBeregningDto; '80': KontoBeregningDto };
 }
 
-export const HvorLangPeriodePlanleggerSteg = ({ stønadskontoer }: Props) => {
+export const HvorLangPeriodeSteg = ({ stønadskvoter }: Props) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
@@ -80,17 +80,17 @@ export const HvorLangPeriodePlanleggerSteg = ({ stønadskontoer }: Props) => {
 
     const deSomHarRett = getTekstForDeSomHarRett(hvemPlanlegger, hvemHarRett, intl);
 
-    const stønadskonto100 = stønadskontoer['100'];
-    const stønadskonto80 = stønadskontoer['80'];
+    const stønadskvote100 = stønadskvoter['100'];
+    const stønadskvote80 = stønadskvoter['80'];
 
-    const stønadskonto = valgtDekningsgrad === '100' ? stønadskonto100 : stønadskonto80;
-    const valgtStønadskonto = valgtDekningsgrad ? stønadskonto : undefined;
+    const stønadskvote = valgtDekningsgrad === '100' ? stønadskvote100 : stønadskvote80;
+    const valgtStønadskvote = valgtDekningsgrad ? stønadskvote : undefined;
 
-    const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, barnet);
-    const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, barnet);
+    const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskvote100, barnet);
+    const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskvote80, barnet);
 
-    const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(stønadskonto100);
-    const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(stønadskonto80);
+    const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(stønadskvote100);
+    const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(stønadskvote80);
     const antallUkerOgDager = valgtDekningsgrad === '100' ? antallUkerOgDager100 : antallUkerOgDager80;
 
     const kunEnAvSøkereneHarRett = hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett';
@@ -206,14 +206,14 @@ export const HvorLangPeriodePlanleggerSteg = ({ stønadskontoer }: Props) => {
                                 />
                             </Radio>
                         </BlueRadioGroup>
-                        {valgtStønadskonto && (
+                        {valgtStønadskvote && (
                             <VStack gap="space-8">
                                 <ValgtDekningsgradInfoboks
                                     key={valgtDekningsgrad}
                                     barnet={barnet}
                                     hvemPlanlegger={hvemPlanlegger}
                                     arbeidssituasjon={arbeidssituasjon}
-                                    valgtStønadskonto={valgtStønadskonto}
+                                    valgtStønadskvote={valgtStønadskvote}
                                     uttaksdata100={uttaksdata100}
                                     uttaksdata80={uttaksdata80}
                                     valgtDekningsgrad={valgtDekningsgrad}

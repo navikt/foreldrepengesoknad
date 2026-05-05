@@ -41,11 +41,11 @@ const finnHendelse = (
 
 interface Props {
     arbeidssituasjon: Arbeidssituasjon;
-    stønadskontoer: { '100': KontoBeregningDto; '80': KontoBeregningDto };
+    stønadskvoter: { '100': KontoBeregningDto; '80': KontoBeregningDto };
     satser: Satser;
 }
 
-export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: Props) => {
+export const OppsummeringSide = ({ arbeidssituasjon, stønadskvoter, satser }: Props) => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator();
     const { ref } = useScrollBehaviour();
@@ -119,13 +119,13 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: 
                             <Utbetalingspanel
                                 dekningsgrad={'100'}
                                 gjennomsnittslønn={gjennomsnittslønnPerMåned}
-                                stønadskontoer={stønadskontoer}
+                                stønadskvoter={stønadskvoter}
                                 satser={satser}
                             />
                             <Utbetalingspanel
                                 dekningsgrad={'80'}
                                 gjennomsnittslønn={gjennomsnittslønnPerMåned}
-                                stønadskontoer={stønadskontoer}
+                                stønadskvoter={stønadskvoter}
                                 satser={satser}
                             />
                             {erMellomMinÅrslønnOg1Komma5G && (

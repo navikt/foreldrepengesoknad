@@ -11,7 +11,7 @@ import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { PlanleggerDataFetcher } from './Planlegger';
 
-const STØNADSKONTOER = {
+const STØNADSKVOTER = {
     '100': {
         kontoer: [
             {
@@ -111,16 +111,16 @@ export const Default: Story = {
     },
 };
 
-export const DefaultMockaStønadskontoerOgSatser: Story = {
+export const DefaultMockaStønadskvoterOgSatser: Story = {
     ...Default,
     parameters: {
         msw: {
-            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(STØNADSKONTOER))],
+            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(STØNADSKVOTER))],
         },
     },
 };
 
-export const FarFarMockaStønadskontoerOgSatser: Story = {
+export const FarFarMockaStønadskvoterOgSatser: Story = {
     ...Default,
     parameters: {
         msw: {

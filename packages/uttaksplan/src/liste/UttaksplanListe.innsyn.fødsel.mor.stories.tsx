@@ -90,7 +90,7 @@ export const MorAleneOmOmsorg: Story = {
                 forelder: 'MOR',
             },
         ],
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'FORELDREPENGER', dager: 200 },
                 { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
@@ -150,7 +150,7 @@ export const PrematurUker: Story = {
                 forelder: 'MOR',
             },
         ],
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
                 { konto: 'FEDREKVOTE', dager: 95 },

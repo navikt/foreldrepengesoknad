@@ -8,7 +8,7 @@ import { KontoBeregningDto } from '@navikt/fp-types';
 import { Arbeidssituasjon } from '../arbeidssituasjon/ArbeidssituasjonSide';
 import { OppsummeringSide } from './OppsummeringSide';
 
-const STØNADSKONTOER = {
+const STØNADSKVOTER = {
     '100': {
         kontoer: [
             {
@@ -80,7 +80,7 @@ type Story = StoryObj<typeof meta>;
 
 export const ArbeidstakerMed20000Imåneden: Story = {
     args: {
-        stønadskontoer: STØNADSKONTOER,
+        stønadskvoter: STØNADSKVOTER,
         satser: DEFAULT_SATSER,
         arbeidssituasjon: {
             erArbeidstakerEllerFrilanser: true,

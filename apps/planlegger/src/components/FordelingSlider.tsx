@@ -6,7 +6,7 @@ import { BodyShort, Box, Button, HStack, Heading, Hide, Show, VStack } from '@na
 import { Slider } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, periodFormat } from '@navikt/fp-utils';
 
-import { UkerOgDager } from '../utils/stønadskontoerUtils';
+import { UkerOgDager } from '../utils/stønadskvoterUtils';
 import { Uttaksdata } from '../utils/uttakUtils';
 
 interface FordelingSliderProps {

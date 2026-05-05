@@ -15,7 +15,7 @@ import {
 import { Uttaksperioden, useMedia } from '@navikt/fp-utils';
 import { KvoteOppsummering, UttaksplanDataProvider, UttaksplanKalender, UttaksplanListe } from '@navikt/fp-uttaksplan';
 
-import { hentUttaksKontoOptions } from '../../api/queries';
+import { hentUttakskvoteOptions } from '../../api/queries';
 import { getBarnFraSak } from '../../utils/sakerUtils';
 
 interface Props {
@@ -30,7 +30,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre, sak }: Props) => 
     const [visKalender, setVisKalender] = useState(false);
 
     const kontoQuery = useQuery(
-        hentUttaksKontoOptions({
+        hentUttakskvoteOptions({
             brukerrolle: sak.forelder === 'MOR' ? 'MOR' : 'FAR',
             morHarUføretrygd: sak.morUføretrygd,
             rettighetstype: sak.rettighetType,
@@ -113,7 +113,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre, sak }: Props) => 
                         erMedmorDelAvSøknaden: false,
                         rettighetType,
                     }}
-                    valgtStønadskonto={konto}
+                    valgtStønadskvote={konto}
                     harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
                     erPeriodeneTilAnnenPartLåst={false}
                     erEndringssøknad={erEndringssøknad}

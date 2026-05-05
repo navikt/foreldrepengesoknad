@@ -9,7 +9,7 @@ export const API_URLS = {
     konto: `${urlPrefiks}/fpgrunndata/api/konto`,
 } as const;
 
-type StønadskontoParams = {
+type StønadskvoteParams = {
     rettighetstype: string;
     brukerrolle: string;
     antallBarn: string;
@@ -18,9 +18,9 @@ type StønadskontoParams = {
     omsorgsovertakelseDato?: string;
     morHarUføretrygd: boolean;
 };
-export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams) =>
+export const tilgjengeligeStønadskvoterOptions = (data: StønadskvoteParams) =>
     queryOptions({
-        queryKey: ['TILGJENGELIGE_STONADSKONTOER', data],
+        queryKey: ['TILGJENGELIGE_STONADSKVOTER', data],
         queryFn: () =>
             ky.post(API_URLS.konto, { json: data }).json<{ '100': KontoBeregningDto; '80': KontoBeregningDto }>(),
         staleTime: Infinity,

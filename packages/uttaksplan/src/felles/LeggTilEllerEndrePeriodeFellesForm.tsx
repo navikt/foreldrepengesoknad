@@ -21,11 +21,11 @@ import { getFloatFromString } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
-import { getStønadskontoNavnSimple } from '../liste/utils/uttaksplanListeUtils';
+import { getStønadskvoteNavnSimple } from '../liste/utils/uttaksplanListeUtils';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
 import { getAktivitetskravOptions, getAktivitetskravTekst } from '../utils/periodeUtils';
-import { useHentGyldigeKontotyper } from './useHentGyldigeKontotyper';
+import { useHentGyldigeKvotetyper } from './useHentGyldigeKvotetyper';
 import { prosentValideringGradering, valideringSamtidigUttak } from './uttaksplanValidatorer';
 
 dayjs.extend(isSameOrBefore);
@@ -111,7 +111,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
             kontoTypeFarMedmor,
         );
 
-    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKontotyper(
+    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKvotetyper(
         valgtePerioder,
         forelder === 'BEGGE',
         ønskerFlerbarnsdager,
@@ -248,14 +248,14 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     name="kontoTypeMor"
                     control={formMethods.control}
                     validate={[
-                        isRequired(intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.KontoTypeMor.Påkrevd' })),
+                        isRequired(intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeMor.Påkrevd' })),
                     ]}
-                    label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.KontoTypeMor' })}
+                    label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeMor' })}
                 >
                     {gyldigeStønadskontoerForMor.map((konto) => {
                         return (
                             <Radio key={konto} value={konto} disabled={!!kontoTypeMor && erMorLåst}>
-                                {getStønadskontoNavnSimple(intl, konto, erMedmorDelAvSøknaden)}
+                                {getStønadskvoteNavnSimple(intl, konto, erMedmorDelAvSøknaden)}
                             </Radio>
                         );
                     })}
@@ -269,7 +269,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         isRequired(
                             intl.formatMessage(
                                 {
-                                    id: 'LeggTilEllerEndrePeriodeForm.KontoTypeFarMedmor.Påkrevd',
+                                    id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeFarMedmor.Påkrevd',
                                 },
                                 {
                                     erMedmor: erMedmorDelAvSøknaden,
@@ -279,7 +279,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     ]}
                     label={
                         <FormattedMessage
-                            id="LeggTilEllerEndrePeriodeForm.KontoTypeFarMedmor"
+                            id="LeggTilEllerEndrePeriodeForm.KvoteTypeFarMedmor"
                             values={{ erMedmor: erMedmorDelAvSøknaden }}
                         />
                     }
@@ -287,7 +287,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     {gyldigeStønadskontoerForFarMedmor.map((konto) => {
                         return (
                             <Radio key={konto} value={konto} disabled={!!kontoTypeFarMedmor && erFarMedmorLåst}>
-                                {getStønadskontoNavnSimple(intl, konto, erMedmorDelAvSøknaden)}
+                                {getStønadskvoteNavnSimple(intl, konto, erMedmorDelAvSøknaden)}
                             </Radio>
                         );
                     })}
