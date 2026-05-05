@@ -1,9 +1,8 @@
 import { ContextDataType, useContextGetAnyData, useContextSaveAnyData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
-import { usePlanleggerDataFromUrl } from 'appData/usePlanleggerDataFromUrl';
 import { useSetSøknadsdata } from 'appData/useSetSøknadsdata';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
@@ -53,32 +52,14 @@ export const Forside = ({
     const getData = useContextGetAnyData();
     const { oppdaterSøknadIState } = useSetSøknadsdata();
 
-    const planleggerDataFromUrl = usePlanleggerDataFromUrl(søkerInfo.kjønn);
-    const mappetSøknadStateFraPlanlegger = planleggerDataFromUrl;
-
     const [searchParams, setSearchParams] = useSearchParams();
-    const harProsessertPlanleggerDataRef = useRef(false);
-
     useEffect(() => {
-        if (harProsessertPlanleggerDataRef.current || !mappetSøknadStateFraPlanlegger) {
-            return;
-        }
-
-        harProsessertPlanleggerDataRef.current = true;
-
-        for (const [key, value] of Object.entries(mappetSøknadStateFraPlanlegger)) {
-            if (value !== undefined) {
-                oppdaterDataIState(key as ContextDataType, value);
-            }
-        }
-        oppdaterDataIState(ContextDataType.KOMMER_FRA_PLANLEGGER, true);
-
         if (searchParams.has('planleggerData')) {
             const oppdatert = new URLSearchParams(searchParams);
             oppdatert.delete('planleggerData');
             setSearchParams(oppdatert, { replace: true });
         }
-    }, [mappetSøknadStateFraPlanlegger, oppdaterDataIState, searchParams, setSearchParams]);
+    }, [searchParams, setSearchParams]);
 
     // Denne må memoriserast, ellers får barna ulik id for kvar render => trøbbel
     const selectableBarn = useMemo(

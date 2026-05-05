@@ -101,12 +101,12 @@ const mapPlanleggerDataToSøknadState = (
  *
  * Returnerer `null` dersom parameteret mangler, er ugyldig, eller appen kjører i prod.
  */
-export const usePlanleggerDataFromUrl = (kjønn: Kjønn_fpoversikt): Partial<ContextDataMap> | null => {
+export const usePlanleggerDataFromUrl = (kjønn: Kjønn_fpoversikt | undefined): Partial<ContextDataMap> | null => {
     const [searchParams] = useSearchParams();
     const encoded = searchParams.get('planleggerData');
 
     return useMemo(() => {
-        if (!erLokaltEllerDev() || !encoded) {
+        if (!erLokaltEllerDev() || !encoded || !kjønn) {
             return null;
         }
         try {
