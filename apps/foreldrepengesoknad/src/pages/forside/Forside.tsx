@@ -1,5 +1,4 @@
 import { ContextDataType, useContextGetAnyData, useContextSaveAnyData } from 'appData/FpDataContext';
-import { mapPlanleggerDataToSøknadState } from 'appData/mapPlanleggerDataToSøknadState';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { usePlanleggerDataFromUrl } from 'appData/usePlanleggerDataFromUrl';
@@ -54,11 +53,8 @@ export const Forside = ({
     const getData = useContextGetAnyData();
     const { oppdaterSøknadIState } = useSetSøknadsdata();
 
-    const planleggerDataFromUrl = usePlanleggerDataFromUrl();
-    const mappetSøknadStateFraPlanlegger = useMemo(
-        () => (planleggerDataFromUrl ? mapPlanleggerDataToSøknadState(planleggerDataFromUrl, søkerInfo.kjønn) : null),
-        [planleggerDataFromUrl, søkerInfo.kjønn],
-    );
+    const planleggerDataFromUrl = usePlanleggerDataFromUrl(søkerInfo.kjønn);
+    const mappetSøknadStateFraPlanlegger = planleggerDataFromUrl;
 
     const [searchParams, setSearchParams] = useSearchParams();
     const harProsessertPlanleggerDataRef = useRef(false);
