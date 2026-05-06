@@ -6,7 +6,6 @@ import { FordelingDager, FordelingFargekode } from 'types/FordelingOversikt';
 import { Alert, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { RhfTextField } from '@navikt/fp-form-hooks';
-import { NavnPåForeldre } from '@navikt/fp-types';
 import { getNumberFromNumberInputValue } from '@navikt/fp-utils';
 import { isValidInteger, isValidNumberForm } from '@navikt/fp-validation';
 
@@ -94,7 +93,6 @@ const getFordelingDagerForVisning = (
 };
 
 interface Props {
-    navnPåForeldre: NavnPåForeldre;
     dagerMedFellesperiode: number;
     erFarEllerMedmor: boolean;
 }
