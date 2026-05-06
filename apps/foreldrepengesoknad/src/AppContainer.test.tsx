@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { mswWrapper } from '@navikt/fp-utils-test';
 
-import { queryClient } from './AppContainer';
+import { AppContainer, queryClient } from './AppContainer';
 import * as stories from './AppContainer.stories';
 
 const { SøkerErMann, SøkerErKvinne } = composeStories(stories);
