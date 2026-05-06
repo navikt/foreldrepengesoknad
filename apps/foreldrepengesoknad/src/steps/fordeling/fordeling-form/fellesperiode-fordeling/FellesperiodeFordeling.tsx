@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { FellesperiodeFordelingValg, Fordeling } from 'types/Fordeling';
 import { FordelingDager, FordelingFargekode } from 'types/FordelingOversikt';
 
-import { Alert, HStack, VStack } from '@navikt/ds-react';
+import { Alert, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { RhfTextField } from '@navikt/fp-form-hooks';
 import { NavnPåForeldre } from '@navikt/fp-types';
@@ -124,14 +124,14 @@ export const FellesperiodeFordeling = ({ dagerMedFellesperiode, erFarEllerMedmor
             {valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE && (
                 <div className="pb-4 pl-4">
                     <VStack gap="space-12">
-                        <FormattedMessage id="fordeling.antallUkerDager.spørsmål" />
+                        <Heading size="xsmall">
+                            <FormattedMessage id="fordeling.antallUkerDager.spørsmål" />
+                        </Heading>
                         <HStack gap="space-20" align="start">
                             <RhfTextField
                                 control={control}
                                 name="antallUkerFellesperiodeTilSøker"
-                                label={intl.formatMessage({ id: 'fordeling.antallUker.spørsmål' })}
-                                hideLabel
-                                description={<FormattedMessage id="fordeling.antallUker.spørsmål" />}
+                                label={<FormattedMessage id="fordeling.antallUker.spørsmål" />}
                                 validate={[
                                     isValidNumberForm(intl.formatMessage({ id: 'fordeling.antallUker.ugyldigFormat' })),
                                     isValidInteger(intl.formatMessage({ id: 'fordeling.antallUker.ugyldigFormat' })),
@@ -147,9 +147,7 @@ export const FellesperiodeFordeling = ({ dagerMedFellesperiode, erFarEllerMedmor
                                 <RhfTextField
                                     control={control}
                                     name="antallDagerFellesperiodeTilSøker"
-                                    label={intl.formatMessage({ id: 'fordeling.antallDager.spørsmål' })}
-                                    hideLabel
-                                    description={<FormattedMessage id="fordeling.antallDager.spørsmål" />}
+                                    label={<FormattedMessage id="fordeling.antallDager.spørsmål" />}
                                     validate={[
                                         isValidNumberForm(
                                             intl.formatMessage({ id: 'fordeling.antallDager.ugyldigFormat' }),

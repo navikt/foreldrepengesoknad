@@ -949,8 +949,8 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
             await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
             expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
-            expect(screen.getAllByText('Uker')).toHaveLength(2);
-            expect(screen.getAllByText('Dager')).toHaveLength(2);
+            expect(screen.getByText('Uker')).toBeInTheDocument();
+            expect(screen.getByText('Dager')).toBeInTheDocument();
         }),
     );
     it(
