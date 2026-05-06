@@ -140,6 +140,7 @@ const BeregningDetaljer = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeS
 
 const BeregningOppsummering = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) => {
     const intl = useIntl();
+    const params = useParams<{ saksnummer: string }>();
     const beregning = sak.gjeldendeVedtak!.beregningsgrunnlag!;
     const samletÅrsinntekt = sumBy(beregning.beregningsandeler, (andel) => andel.fastsattPrÅr ?? 0);
     const grunnbeløp = beregning.grunnbeløp ?? DEFAULT_SATSER.grunnbeløp[0]!.verdi;
@@ -152,6 +153,11 @@ const BeregningOppsummering = ({ sak }: { sak: Foreldrepengesak | Svangerskapspe
     const sumDagsats = sumBy(beregning.beregningsandeler, (a) => (a.dagsatsSøker ?? 0) + (a.dagsatsArbeidsgiver ?? 0));
     const finnesRefusjon = beregning.beregningsandeler.some((a) => (a.dagsatsArbeidsgiver ?? 0) > 0);
     const finnesDirekteutbetaling = beregning.beregningsandeler.some((a) => (a.dagsatsSøker ?? 0) > 0);
+
+    const inntektsmeldinger = useQuery(hentInntektsmelding(params.saksnummer!)).data ?? [];
+    const inntektsmeldingerMedNaturalytelser = inntektsmeldinger.filter(
+        (im) => im.erAktiv && im.bortfalteNaturalytelser.length > 0,
+    );
 
     return (
         <Box background="default" padding="space-24" shadow="dialog" borderRadius="8">
@@ -208,82 +214,101 @@ const BeregningOppsummering = ({ sak }: { sak: Foreldrepengesak | Svangerskapspe
                         />
                     </List.Item>
                 )}
-                {finnesRefusjon && !finnesDirekteutbetaling && (
+                {finnesRefusjon && !finnesDirekteutbetaling && sak.ytelse === 'FORELDREPENGER' && (
                     <List.Item>
                         <FormattedMessage id="beregning.utbetalingsTekst.arbeidsgiver" />
                     </List.Item>
                 )}
-                {!finnesRefusjon && finnesDirekteutbetaling && (
+                {!finnesRefusjon && finnesDirekteutbetaling && sak.ytelse === 'FORELDREPENGER' && (
                     <List.Item>
                         <FormattedMessage id="beregning.utbetalingsTekst.deg" />
                     </List.Item>
                 )}
-                {finnesRefusjon && finnesDirekteutbetaling && (
+                {finnesRefusjon && finnesDirekteutbetaling && sak.ytelse === 'FORELDREPENGER' && (
                     <List.Item>
                         <FormattedMessage id="beregning.utbetalingsTekst.degOgArbeidsgiver" />
                     </List.Item>
                 )}
-            </List>
-            <ExpansionCard
-                size="small"
-                data-color="info"
-                className="mt-8"
-                aria-label={intl.formatMessage(
-                    {
-                        id: 'beregning.dagsats',
-                    },
-                    { sumDagsats: formatCurrencyWithKr(sumDagsats) },
-                )}
-            >
-                <ExpansionCard.Header>
-                    <ExpansionCard.Title size="small">
+                {inntektsmeldingerMedNaturalytelser.length > 0 && (
+                    <List.Item>
                         <FormattedMessage
-                            id="beregning.dagsats"
-                            values={{ sumDagsats: formatCurrencyWithKr(sumDagsats) }}
+                            id="beregning.naturalytelser"
+                            values={{
+                                a: (chunks) => (
+                                    <Link
+                                        as={RouterLink}
+                                        to={`../${OversiktRoutes.INNTEKTSMELDING}/${inntektsmeldingerMedNaturalytelser[0]!.journalpostId}`}
+                                    >
+                                        {chunks}
+                                    </Link>
+                                ),
+                            }}
                         />
-                    </ExpansionCard.Title>
-                </ExpansionCard.Header>
-                <ExpansionCard.Content>
-                    <VStack gap="space-16">
-                        {beregning.beregningsandeler.map((andel, index) => (
-                            // Ikke noe som er garantert unikt, så tillater index for key, få elementer, så ok
-                            <Box background="default" padding="space-16" borderRadius="8" key={index}>
-                                <VStack>
-                                    <Label>
-                                        <ArbeidsforholdNavn andel={andel} />
-                                    </Label>
-                                    <hr className="text-ax-border-neutral-subtle" />
-                                    <HStack justify="space-between" gap="space-4">
-                                        <span>
-                                            <FormattedMessage id="beregning.dagsats.tilDeg" />
-                                        </span>
-                                        <span>{formatCurrencyWithKr(andel.dagsatsSøker)}</span>
-                                    </HStack>
-                                    {andel.aktivitetStatus === 'ARBEIDSTAKER' && (
+                    </List.Item>
+                )}
+            </List>
+            {sak.ytelse === 'FORELDREPENGER' && (
+                <ExpansionCard
+                    size="small"
+                    data-color="info"
+                    className="mt-8"
+                    aria-label={intl.formatMessage(
+                        {
+                            id: 'beregning.dagsats',
+                        },
+                        { sumDagsats: formatCurrencyWithKr(sumDagsats) },
+                    )}
+                >
+                    <ExpansionCard.Header>
+                        <ExpansionCard.Title size="small">
+                            <FormattedMessage
+                                id="beregning.dagsats"
+                                values={{ sumDagsats: formatCurrencyWithKr(sumDagsats) }}
+                            />
+                        </ExpansionCard.Title>
+                    </ExpansionCard.Header>
+                    <ExpansionCard.Content>
+                        <VStack gap="space-16">
+                            {beregning.beregningsandeler.map((andel, index) => (
+                                // Ikke noe som er garantert unikt, så tillater index for key, få elementer, så ok
+                                <Box background="default" padding="space-16" borderRadius="8" key={index}>
+                                    <VStack>
+                                        <Label>
+                                            <ArbeidsforholdNavn andel={andel} />
+                                        </Label>
+                                        <hr className="text-ax-border-neutral-subtle" />
                                         <HStack justify="space-between" gap="space-4">
                                             <span>
-                                                <FormattedMessage id="beregning.dagsats.tilArbeidsgiver" />
+                                                <FormattedMessage id="beregning.dagsats.tilDeg" />
                                             </span>
-                                            <span>{formatCurrencyWithKr(andel.dagsatsArbeidsgiver)}</span>
+                                            <span>{formatCurrencyWithKr(andel.dagsatsSøker)}</span>
                                         </HStack>
-                                    )}
+                                        {andel.aktivitetStatus === 'ARBEIDSTAKER' && (
+                                            <HStack justify="space-between" gap="space-4">
+                                                <span>
+                                                    <FormattedMessage id="beregning.dagsats.tilArbeidsgiver" />
+                                                </span>
+                                                <span>{formatCurrencyWithKr(andel.dagsatsArbeidsgiver)}</span>
+                                            </HStack>
+                                        )}
+                                    </VStack>
+                                </Box>
+                            ))}
+                            <Box background="default" padding="space-16" borderRadius="8">
+                                <VStack>
+                                    <HStack justify="space-between" gap="space-4">
+                                        <span>
+                                            <FormattedMessage id="beregning.dagsats.totalt" />
+                                        </span>
+                                        <span>{formatCurrencyWithKr(sumDagsats)}</span>
+                                    </HStack>
+                                    <hr className="text-ax-border-neutral-subtle" />
                                 </VStack>
                             </Box>
-                        ))}
-                        <Box background="default" padding="space-16" borderRadius="8">
-                            <VStack>
-                                <HStack justify="space-between" gap="space-4">
-                                    <span>
-                                        <FormattedMessage id="beregning.dagsats.totalt" />
-                                    </span>
-                                    <span>{formatCurrencyWithKr(sumDagsats)}</span>
-                                </HStack>
-                                <hr className="text-ax-border-neutral-subtle" />
-                            </VStack>
-                        </Box>
-                    </VStack>
-                </ExpansionCard.Content>
-            </ExpansionCard>
+                        </VStack>
+                    </ExpansionCard.Content>
+                </ExpansionCard>
+            )}
         </Box>
     );
 };
