@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { mswWrapper } from '@navikt/fp-utils-test';
 
-import { AppContainer, queryClient } from './AppContainer';
+import { queryClient } from './AppContainer';
 import * as stories from './AppContainer.stories';
 
 const { SøkerErMann, SøkerErKvinne } = composeStories(stories);
@@ -172,7 +172,7 @@ describe('<AppContainer>', () => {
 
             await waitFor(() => expect(screen.getAllByText('Fordeling av foreldrepenger')).toHaveLength(2));
             expect(screen.getByText('Steg 7 av 9')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Tre uker før fødsel'));
+            await userEvent.click(screen.getByText(/Tre uker før fødsel fra/));
             await userEvent.click(screen.getByText('Neste steg'));
 
             await waitFor(() => expect(screen.getAllByText('Din plan med foreldrepenger')).toHaveLength(2));
