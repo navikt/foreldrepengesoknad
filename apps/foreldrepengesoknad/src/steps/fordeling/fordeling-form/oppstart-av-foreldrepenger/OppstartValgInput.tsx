@@ -224,7 +224,7 @@ const getRadioOptionAnnenDato = (): React.ReactElement => (
     </Radio>
 );
 
-const getRadioOptionAnnenDatoMorFødsel = (erBarnetFødt: boolean, intl: IntlShape): React.ReactElement => {
+const getRadioOptionAnnenDatoMorFødsel = (): React.ReactElement => {
     return (
         <Radio key={OppstartValg.ANNEN_DATO} value={OppstartValg.ANNEN_DATO}>
             <FormattedMessage id="fordeling.oppstartValg.annenDato" />
@@ -232,7 +232,7 @@ const getRadioOptionAnnenDatoMorFødsel = (erBarnetFødt: boolean, intl: IntlSha
     );
 };
 
-const getRadioOptionTreUkerFørTermin = (intl: IntlShape, barn: Barn): React.ReactElement => {
+const getRadioOptionTreUkerFørTermin = (barn: Barn): React.ReactElement => {
     const termindato = getTermindato(barn);
     const førsteDagTreUkerFørFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(termindato);
     return (
@@ -245,7 +245,7 @@ const getRadioOptionTreUkerFørTermin = (intl: IntlShape, barn: Barn): React.Rea
     );
 };
 
-const getRadioOptionTreUkerFørFødsel = (intl: IntlShape, barn: Barn): React.ReactElement => {
+const getRadioOptionTreUkerFørFødsel = (barn: Barn): React.ReactElement => {
     const fødselsdato = getFødselsdato(barn);
     const førsteDagTreUkerFørFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(fødselsdato);
     return (
@@ -300,14 +300,9 @@ const getRadioOptionFamiliehendelsesdato = (
     return getRadioOptionAdopsjon(familiehendelsesdato);
 };
 
-const getRadioOptionForAnnenDato = (
-    erFarEllerMedmor: boolean,
-    intl: IntlShape,
-    erFødsel: boolean,
-    erBarnetFødt: boolean,
-) => {
+const getRadioOptionForAnnenDato = (erFarEllerMedmor: boolean, erFødsel: boolean) => {
     if (!erFarEllerMedmor && erFødsel) {
-        return getRadioOptionAnnenDatoMorFødsel(erBarnetFødt, intl);
+        return getRadioOptionAnnenDatoMorFødsel();
     }
     return getRadioOptionAnnenDato();
 };
@@ -338,9 +333,9 @@ const mapOppstartValgToRadioOption = (
                 deltUttak,
             );
         case OppstartValg.TRE_UKER_FØR_TERMIN:
-            return getRadioOptionTreUkerFørTermin(intl, barn);
+            return getRadioOptionTreUkerFørTermin(barn);
         case OppstartValg.TRE_UKER_FØR_FØDSEL:
-            return getRadioOptionTreUkerFørFødsel(intl, barn);
+            return getRadioOptionTreUkerFørFødsel(barn);
         case OppstartValg.DATO_FOR_ALENEOMSORG:
             return getRadioOptionForDatoForAleneomsorg(datoForAleneomsorg);
         case OppstartValg.DAGEN_ETTER_ANNEN_FORELDER:
@@ -348,7 +343,7 @@ const mapOppstartValgToRadioOption = (
         case OppstartValg.ANKOMSTDATO_NORGE:
             return getRadioOptionAdopsjonAnkomstNorge(ankomstNorge);
         case OppstartValg.ANNEN_DATO:
-            return getRadioOptionForAnnenDato(erFarEllerMedmor, intl, erFødsel, erBarnetFødt);
+            return getRadioOptionForAnnenDato(erFarEllerMedmor, erFødsel);
     }
 };
 
