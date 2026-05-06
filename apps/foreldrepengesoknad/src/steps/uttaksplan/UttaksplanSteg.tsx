@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useStepConfig } from 'appData/useStepConfig';
-import { ReactNode, useRef, useState } from 'react';
+import { ReactNode, useCallback, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
@@ -55,6 +55,14 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
     const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
 
     const [feilmelding, setFeilmelding] = useState<ReactNode | undefined>();
+
+    const oppdaterUttaksplanOgFjernFeilmelding = useCallback(
+        (...args: Parameters<typeof oppdaterUttaksplan>) => {
+            setFeilmelding(undefined);
+            oppdaterUttaksplan(...args);
+        },
+        [oppdaterUttaksplan],
+    );
 
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
 
@@ -168,7 +176,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
                     {feilmelding && <Alert variant="error">{feilmelding}</Alert>}
 
                     <UttaksplanRedigeringProvider
-                        oppdaterUttaksplan={oppdaterUttaksplan}
+                        oppdaterUttaksplan={oppdaterUttaksplanOgFjernFeilmelding}
                         harEndretPlan={erPlanenEndret}
                     >
                         <FjernAltIUttaksplanModal />
