@@ -1,12 +1,12 @@
 import { TasklistStartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextComplete } from 'appData/PlanleggerDataContext';
 import { FormattedMessage } from 'react-intl';
-import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
 import { BodyShort, LinkCard, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { encodeToBase64, erLokaltEllerDev } from '@navikt/fp-utils';
 
@@ -21,7 +21,7 @@ export const SøkOmForeldrepenger = ({ erAlenesøker, barnet }: Props) => {
     // Funksjonen er foreløpig kun aktiv lokalt og i dev for testing — ikke i prod.
     const skalSendeDataViaUrl = erLokaltEllerDev() && harDataÅOverføre;
     const søknadHref = skalSendeDataViaUrl
-        ? `${links.foreldrepengesoknad}?planleggerData=${encodeURIComponent(
+        ? `https://www.intern.dev.nav.no/foreldrepenger/soknad/?planleggerData=${encodeURIComponent(
               encodeToBase64(JSON.stringify(sanitizePlanleggerState(planleggerState))),
           )}`
         : links.foreldrepengesoknad;
