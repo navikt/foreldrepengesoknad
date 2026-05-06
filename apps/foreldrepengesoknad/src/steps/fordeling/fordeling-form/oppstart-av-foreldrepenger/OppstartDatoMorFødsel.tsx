@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import { Fordeling, OppstartValg } from 'types/Fordeling';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 
-import { HStack, InlineMessage, VStack } from '@navikt/ds-react';
+import { InlineMessage, VStack } from '@navikt/ds-react';
 
 import { Uttaksdagen, erUttaksdag } from '@navikt/fp-utils';
 import { isValidDateString as isValidDate, notEmpty } from '@navikt/fp-validation';
@@ -31,10 +31,8 @@ export const OppstartDatoMorFødsel = ({ oppstartValg }: Props) => {
     return (
         <div>
             <VStack gap="space-12">
-                <HStack gap="space-4">
-                    <OppstartDatoInput oppstartValg={oppstartValg} />
-                    {visInformasjon && <MorOppstartInformasjon oppstartDato={oppstartDato} />}
-                </HStack>
+                <OppstartDatoInput oppstartValg={oppstartValg} />
+                {visInformasjon && <MorOppstartInformasjon oppstartDato={oppstartDato} />}
                 <InlineMessage status="info">
                     <FormattedMessage id="fordeling.oppstartValg.morFødsel.info" />
                 </InlineMessage>
