@@ -417,6 +417,7 @@
     "fordeling.oppstartValg.måOppgis": "Du må oppgi når du ønsker å starte din periode med foreldrepenger.",
     "fordeling.oppstartValg.description.fedreWLB": "Mange får dekket permisjon de første to ukene rundt fødsel fra arbeidsgiveren sin. Hvis du ikke får dette dekket kan du bruke av din kvote og få foreldrepenger i disse to ukene.",
     "fordeling.oppstartValg.description.morFødsel": "Du kan velge en dato fra 12 uker før termin og fram til fødselsdato.",
+    "fordeling.oppstartValg.description.morFødselTermin": "Du kan velge en dato fra 12 uker før termin og fram til termindato.",
     "fordeling.oppstartValg.treUkerFørTermin": "Tre uker før fødsel fra {dato}",
     "fordeling.oppstartValg.treUkerFørFødsel": "Tre uker før fødsel fra {dato}",
     "fordeling.oppstartValg.annenDato": "Jeg vil velge en annen dato",

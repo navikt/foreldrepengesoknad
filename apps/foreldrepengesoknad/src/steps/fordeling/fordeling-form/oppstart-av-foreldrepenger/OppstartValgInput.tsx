@@ -386,7 +386,12 @@ export const OppstartValgInput = ({
             return <FormattedMessage id="fordeling.oppstartValg.description.fedreWLB" />;
         }
         if (erMorFødsel) {
-            return <FormattedMessage id="fordeling.oppstartValg.description.morFødsel" />;
+            const erBarnetFødt = isFødtBarn(barn);
+            return erBarnetFødt ? (
+                <FormattedMessage id="fordeling.oppstartValg.description.morFødsel" />
+            ) : (
+                <FormattedMessage id="fordeling.oppstartValg.description.morFødselTermin" />
+            );
         }
         return undefined;
     };
