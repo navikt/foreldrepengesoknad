@@ -2,9 +2,12 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import {
+    saker_beregning_aap,
+    saker_beregning_dagpenger,
     saker_beregning_delvis_refusjon,
     saker_beregning_direkte_utbetaling,
     saker_beregning_full_refusjon,
+    saker_beregning_kun_ytelse,
     saker_beregning_svp_direkte_utbetaling,
 } from 'storybookData/saker/saker.ts';
 
@@ -90,5 +93,121 @@ export const BeregningSvpDirekteUtbetaling: Story = {
     },
     args: {
         saksnummer: '701',
+    },
+};
+
+export const BeregningMedNaturalytelser: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_beregning_direkte_utbetaling)),
+                http.get(API_URLS.inntektsmelding, () =>
+                    HttpResponse.json([
+                        {
+                            arbeidsgiverIdent: '992260475',
+                            arbeidsgiverNavn: 'SJOKKANSEN AS',
+                            bortfalteNaturalytelser: [
+                                {
+                                    beløpPerMnd: 500,
+                                    fomDato: '2025-11-12',
+                                    tomDato: '2026-03-03',
+                                    type: 'ELEKTRISK_KOMMUNIKASJON',
+                                },
+                            ],
+                            erAktiv: true,
+                            inntektPrMnd: 80000,
+                            journalpostId: 'jp-nat-1',
+                            mottattTidspunkt: '2025-11-01T10:00:00.000',
+                            refusjonPrMnd: 0,
+                            refusjonsperioder: [],
+                            startDatoPermisjon: '2025-11-12',
+                            stillingsprosent: 100,
+                            versjon: 2,
+                        },
+                    ]),
+                ),
+            ],
+        },
+    },
+    args: {
+        saksnummer: '611',
+    },
+};
+
+export const BeregningDagpenger: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_beregning_dagpenger)),
+                http.get(API_URLS.inntektsmelding, () => HttpResponse.json([])),
+                http.get(API_URLS.dokumenter, () =>
+                    HttpResponse.json([
+                        {
+                            dokumentId: 'dok-1',
+                            journalpostId: 'jp-1',
+                            mottatt: '2025-12-10',
+                            saksnummer: '801',
+                            tittel: 'Innvilgelsesbrev foreldrepenger',
+                            type: 'UTGÅENDE_DOKUMENT',
+                        },
+                    ]),
+                ),
+            ],
+        },
+    },
+    args: {
+        saksnummer: '801',
+    },
+};
+
+export const BeregningAAP: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_beregning_aap)),
+                http.get(API_URLS.inntektsmelding, () => HttpResponse.json([])),
+                http.get(API_URLS.dokumenter, () =>
+                    HttpResponse.json([
+                        {
+                            dokumentId: 'dok-2',
+                            journalpostId: 'jp-2',
+                            mottatt: '2025-12-10',
+                            saksnummer: '802',
+                            tittel: 'Innvilgelsesbrev foreldrepenger',
+                            type: 'UTGÅENDE_DOKUMENT',
+                        },
+                    ]),
+                ),
+            ],
+        },
+    },
+    args: {
+        saksnummer: '802',
+    },
+};
+
+export const BeregningKunYtelse: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_beregning_kun_ytelse)),
+                http.get(API_URLS.inntektsmelding, () => HttpResponse.json([])),
+                http.get(API_URLS.dokumenter, () =>
+                    HttpResponse.json([
+                        {
+                            dokumentId: 'dok-3',
+                            journalpostId: 'jp-3',
+                            mottatt: '2025-12-10',
+                            saksnummer: '803',
+                            tittel: 'Innvilgelsesbrev foreldrepenger',
+                            type: 'UTGÅENDE_DOKUMENT',
+                        },
+                    ]),
+                ),
+            ],
+        },
+    },
+    args: {
+        saksnummer: '803',
     },
 };

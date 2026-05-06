@@ -26,7 +26,13 @@ import {
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { SkyraSurvey } from '@navikt/fp-observability';
 import { AktivitetStatus, BeregningsAndel_fpoversikt, TilkjentYtelsePeriode_fpoversikt } from '@navikt/fp-types';
-import { capitalizeFirstLetter, erUttaksdag, formatCurrencyWithKr, getDecoratorLanguageCookie } from '@navikt/fp-utils';
+import {
+    capitalizeFirstLetter,
+    erLokaltEllerDev,
+    erUttaksdag,
+    formatCurrencyWithKr,
+    getDecoratorLanguageCookie,
+} from '@navikt/fp-utils';
 
 import { API_URLS, hentDokumenterOptions, hentInntektsmelding } from '../../api/queries';
 import { DinSakHeader } from '../../components/header/Header';
@@ -62,7 +68,7 @@ export const BeregningPage = () => {
                 <Box background="default" padding="space-24" borderRadius="8">
                     <Feriepenger sak={gjeldendeSak} />
                 </Box>
-                <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/beregning-i-innsyn" />
+                {erLokaltEllerDev() && <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/beregning-i-innsyn" />}
             </VStack>
         </PageRouteLayout>
     );

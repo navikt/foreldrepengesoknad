@@ -1743,3 +1743,76 @@ export const saker_beregning_svp_direkte_utbetaling = {
         },
     ],
 } satisfies Saker_fpoversikt;
+
+const beregningIkkeStøttetSak = (saksnummer: string, aktivitetStatus: string) =>
+    ({
+        foreldrepenger: [
+            {
+                saksnummer,
+                sakAvsluttet: false,
+                kanSøkeOmEndring: true,
+                sakTilhørerMor: true,
+                gjelderAdopsjon: false,
+                morUføretrygd: false,
+                harAnnenForelderTilsvarendeRettEØS: false,
+                ønskerJustertUttakVedFødsel: false,
+                rettighetType: 'BEGGE_RETT',
+                annenPart: { fnr: '08517932311' },
+                familiehendelse: { fødselsdato: '2025-12-03', termindato: '2025-12-03', antallBarn: 1 },
+                gjeldendeVedtak: {
+                    perioder: [
+                        {
+                            fom: '2025-12-03',
+                            tom: '2026-03-03',
+                            kontoType: 'MØDREKVOTE',
+                            resultat: { innvilget: true, trekkerMinsterett: true, trekkerDager: true, årsak: 'ANNET' },
+                            flerbarnsdager: false,
+                            forelder: 'MOR',
+                        },
+                    ],
+                    perioderAnnenpartEøs: [],
+                    beregningsgrunnlag: {
+                        skjæringsTidspunkt: '2025-12-03',
+                        beregningsandeler: [
+                            {
+                                aktivitetStatus,
+                                fastsattPrÅr: 300000.0,
+                                inntektsKilde: 'A_INNTEKT',
+                                dagsatsArbeidsgiver: 0,
+                                dagsatsSøker: 1154,
+                            },
+                        ],
+                        beregningAktivitetStatuser: [{ aktivitetStatus, hjemmel: 'F_14_7' }],
+                        grunnbeløp: 130160.0,
+                    },
+                    tilkjentYtelse: {
+                        utbetalingsperioder: [
+                            {
+                                fom: '2025-12-03',
+                                tom: '2026-03-03',
+                                andeler: [
+                                    {
+                                        aktivitetStatus,
+                                        dagsats: 1154,
+                                        tilBruker: true,
+                                        utbetalingsgrad: 100.0,
+                                    },
+                                ],
+                            },
+                        ],
+                        feriepenger: [],
+                    },
+                },
+                barn: [{ fnr: '19442385397' }],
+                dekningsgrad: 'HUNDRE',
+                oppdatertTidspunkt: '2026-03-01T10:00:00.000',
+                forelder: 'MOR',
+            },
+        ],
+        engangsstønad: [],
+        svangerskapspenger: [],
+    }) satisfies Saker_fpoversikt;
+
+export const saker_beregning_dagpenger = beregningIkkeStøttetSak('801', 'DAGPENGER');
+export const saker_beregning_aap = beregningIkkeStøttetSak('802', 'ARBEIDSAVKLARINGSPENGER');
+export const saker_beregning_kun_ytelse = beregningIkkeStøttetSak('803', 'KUN_YTELSE');
