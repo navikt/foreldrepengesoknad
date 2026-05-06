@@ -388,7 +388,7 @@ export const OppstartValgInput = ({
         if (erMorFødsel) {
             return <FormattedMessage id="fordeling.oppstartValg.description.morFødsel" />;
         }
-        return <FormattedMessage id="fordeling.description.kanEndresSenere" />;
+        return undefined;
     };
 
     return (

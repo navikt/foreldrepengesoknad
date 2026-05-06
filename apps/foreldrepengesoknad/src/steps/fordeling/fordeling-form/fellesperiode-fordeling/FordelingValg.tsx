@@ -22,7 +22,6 @@ export const FordelingValg = ({ dagerMedFellesperiode }: Props) => {
             name="fordelingValg"
             control={control}
             label={<FormattedMessage id="fordeling.fordelingvalg.spørsmål" values={{ varighetTekst }} />}
-            description={<FormattedMessage id="fordeling.description.kanEndresSenere" />}
             validate={[isRequired(intl.formatMessage({ id: 'fordeling.fordelingsvalg.måOppgis' }))]}
         >
             <Radio value={FellesperiodeFordelingValg.ALT}>

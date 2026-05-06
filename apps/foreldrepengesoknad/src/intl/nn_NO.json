@@ -399,7 +399,6 @@
     "fordeling.påvirkninger.utsettelse.tittel": "Viss du blir sjuk, eller viss du eller {antallBarn, plural, one {barnet} other {barna}} blir innlagt på helseinstitusjon",
     "fordeling.påvirkninger.utsettelse.info": "Du kan utsette foreldrepengane dine viss du blir sjuk eller innlagt på helseinstitusjon. {navnAnnenForelder} kan også søke om overta foreldrepengar i denne perioden. Du kan også utsette foreldrepengane dine viss barnet blir innlagt på helseinstitusjon.",
     "fordeling.fordelingvalg.spørsmål": "Korleis vil de fordele fellesperioden på {varighetTekst}?",
-    "fordeling.description.kanEndresSenere": "Dette kan du endre seinare, også etter at du har sendt søknaden.",
     "fordeling.fordelingsvalg.option.alt": "Eg vil ha heile fellesperioden",
     "fordeling.fordelingsvalg.option.valgfritt": "Eg vil velje kor mykje av fellesperioden eg skal ha",
     "fordeling.fordelingsvalg.option.senere": "Eg ønskjer ikkje å leggje til fellesperiode no",
