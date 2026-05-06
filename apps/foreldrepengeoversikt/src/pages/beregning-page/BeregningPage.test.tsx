@@ -82,8 +82,8 @@ describe('<BeregningPage>', () => {
             // SVP-specific heading
             expect(await screen.findByText('Beregning av svangerskapspenger')).toBeInTheDocument();
 
-            // Dagsats renders
-            expect(await screen.findByText('Dagsats: 2 077 kr')).toBeInTheDocument();
+            // Dagsats ExpansionCard should NOT be shown for SVP
+            expect(screen.queryByText('Dagsats: 2 077 kr')).not.toBeInTheDocument();
 
             // Annual income shown
             expect(

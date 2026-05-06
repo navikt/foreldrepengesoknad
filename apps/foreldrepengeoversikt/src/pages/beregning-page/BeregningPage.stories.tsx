@@ -40,7 +40,10 @@ type Story = StoryObj<typeof meta>;
 export const BeregningDirekteUtbetaling: Story = {
     parameters: {
         msw: {
-            handlers: [http.get(API_URLS.saker, () => HttpResponse.json(saker_beregning_direkte_utbetaling))],
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_beregning_direkte_utbetaling)),
+                http.get(API_URLS.inntektsmelding, () => HttpResponse.json([])),
+            ],
         },
     },
     args: {
@@ -51,7 +54,10 @@ export const BeregningDirekteUtbetaling: Story = {
 export const BeregningDelvisRefusjon: Story = {
     parameters: {
         msw: {
-            handlers: [http.get(API_URLS.saker, () => HttpResponse.json(saker_beregning_delvis_refusjon))],
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_beregning_delvis_refusjon)),
+                http.get(API_URLS.inntektsmelding, () => HttpResponse.json([])),
+            ],
         },
     },
     args: {
@@ -62,7 +68,10 @@ export const BeregningDelvisRefusjon: Story = {
 export const BeregningFullRefusjon: Story = {
     parameters: {
         msw: {
-            handlers: [http.get(API_URLS.saker, () => HttpResponse.json(saker_beregning_full_refusjon))],
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_beregning_full_refusjon)),
+                http.get(API_URLS.inntektsmelding, () => HttpResponse.json([])),
+            ],
         },
     },
     args: {
@@ -73,7 +82,10 @@ export const BeregningFullRefusjon: Story = {
 export const BeregningSvpDirekteUtbetaling: Story = {
     parameters: {
         msw: {
-            handlers: [http.get(API_URLS.saker, () => HttpResponse.json(saker_beregning_svp_direkte_utbetaling))],
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_beregning_svp_direkte_utbetaling)),
+                http.get(API_URLS.inntektsmelding, () => HttpResponse.json([])),
+            ],
         },
     },
     args: {
