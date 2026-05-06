@@ -36,6 +36,7 @@ export enum ContextDataType {
     UTTAKSPLAN = 'UTTAKSPLAN',
     HAR_JUSTERT_UTTAK_VED_FØDSEL = 'HAR_JUSTERT_UTTAK_VED_FØDSEL',
     VEDLEGG = 'VEDLEGG',
+    KOMMER_FRA_PLANLEGGER = 'KOMMER_FRA_PLANLEGGER',
 }
 
 export type ContextDataMap = {
@@ -56,6 +57,7 @@ export type ContextDataMap = {
     [ContextDataType.UTTAKSPLAN]?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]?: boolean;
     [ContextDataType.VEDLEGG]?: VedleggDataType;
+    [ContextDataType.KOMMER_FRA_PLANLEGGER]?: boolean;
 };
 
 const defaultInitialState = {} as ContextDataMap;

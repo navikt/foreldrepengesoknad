@@ -1,14 +1,14 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
-import { useStepConfig } from 'appData/useStepConfig';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
+import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp, isAdoptertBarn } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
@@ -27,14 +27,19 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
 
     const søkersituasjon = useContextGetData(ContextDataType.SØKERSITUASJON);
     const oppdaterSøkersituasjon = useContextSaveData(ContextDataType.SØKERSITUASJON);
+    const barn = useContextGetData(ContextDataType.OM_BARNET);
+    const kommerFraPlanlegger = useContextGetData(ContextDataType.KOMMER_FRA_PLANLEGGER);
     const resetUttaksplanData = useResetUttaksplanData();
 
+    const defaultSituasjon =
+        !søkersituasjon?.situasjon && kommerFraPlanlegger && barn
+            ? isAdoptertBarn(barn)
+                ? 'adopsjon'
+                : 'fødsel'
+            : undefined;
+
     const formMethods = useForm<SøkersituasjonFp>({
-        defaultValues: søkersituasjon
-            ? {
-                  ...søkersituasjon,
-              }
-            : undefined,
+        defaultValues: søkersituasjon ?? (defaultSituasjon ? { situasjon: defaultSituasjon } : undefined),
     });
 
     const onSubmit = (values: SøkersituasjonFp) => {
@@ -45,8 +50,7 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
 
         if (
             søkersituasjon !== undefined &&
-            (søkersituasjon.situasjon !== nySøkersituasjon.situasjon ||
-                søkersituasjon.rolle !== nySøkersituasjon.rolle)
+            (søkersituasjon.situasjon !== nySøkersituasjon.situasjon || søkersituasjon.rolle !== nySøkersituasjon.rolle)
         ) {
             resetUttaksplanData();
         }

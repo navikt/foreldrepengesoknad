@@ -10,7 +10,6 @@ import { useStepData } from 'appData/useStepData';
 import { FordelingSlider } from 'components/FordelingSlider';
 import { useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Fordeling } from 'types/Fordeling';
 import { HvemPlanleggerType } from 'types/HvemPlanlegger';
 import {
     erAlenesøker,
@@ -20,7 +19,7 @@ import {
     getFornavnPåSøker2,
     getNavnPåForeldre,
 } from 'utils/HvemPlanleggerUtils';
-import { mapOmBarnetTilBarn } from 'utils/barnetUtils';
+import { mapOmBarnetPlanleggerTilBarn } from 'utils/barnetUtils';
 import { HvemHarRett, utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskvoterUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
@@ -31,6 +30,7 @@ import { BodyLong, BodyShort, Box, Heading, InlineMessage, Tabs, ToggleGroup, VS
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import {
     Dekningsgrad,
+    FordelingPlanlegger,
     KontoBeregningResultatDto,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
@@ -133,7 +133,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
                 </Heading>
 
                 <UttaksplanDataProvider
-                    barn={mapOmBarnetTilBarn(omBarnet)}
+                    barn={mapOmBarnetPlanleggerTilBarn(omBarnet)}
                     foreldreInfo={{
                         søker: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
                         navnPåForeldre,
@@ -291,13 +291,13 @@ const AntallUkerVelger = ({
     const fordeling = useContextGetData(ContextDataType.FORDELING);
 
     const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
-    const lagreHvorLangPeriode = notEmpty(useContextSaveData(ContextDataType.HVOR_LANG_PERIODE));
+    const lagreHvorLangPeriodePlanlegger = notEmpty(useContextSaveData(ContextDataType.HVOR_LANG_PERIODE));
 
     const isDesktop = useMedia('screen and (min-width: 480)');
 
     const oppdaterPeriodeOgFordeling = (value: Dekningsgrad) => {
         const dekningsgrad = value;
-        lagreHvorLangPeriode({ dekningsgrad });
+        lagreHvorLangPeriodePlanlegger({ dekningsgrad });
         if (fordeling) {
             lagreFordeling({
                 antallDagerSøker1: finnAntallDagerSøker1(dekningsgrad, stønadskvoter, fordeling),
@@ -397,7 +397,7 @@ const AntallUkerVelger = ({
 const finnAntallDagerSøker1 = (
     dekningsgrad: Dekningsgrad,
     stønadskvoter: KontoBeregningResultatDto,
-    fordeling: Fordeling,
+    fordeling: FordelingPlanlegger,
 ) => {
     const ukerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(
         dekningsgrad === '100' ? stønadskvoter['100'] : stønadskvoter['80'],

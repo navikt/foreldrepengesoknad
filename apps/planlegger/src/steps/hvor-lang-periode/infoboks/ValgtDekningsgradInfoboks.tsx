@@ -2,7 +2,6 @@ import { CalendarIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import {
     erAlenesøker,
@@ -20,11 +19,11 @@ import { UttakUkerOgDager, Uttaksdata, getFamiliehendelsedato } from 'utils/utta
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { Dekningsgrad, KontoBeregningDto } from '@navikt/fp-types';
+import { Dekningsgrad, KontoBeregningDto, OmBarnetPlanlegger } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 
 interface Props {
-    barnet: OmBarnet;
+    barnet: OmBarnetPlanlegger;
     hvemPlanlegger: HvemPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
     valgtStønadskvote: KontoBeregningDto;

@@ -91,6 +91,8 @@
     "velkommen.dinePersonopplysninger.sectionheading": "Slik behandlar Nav personopplysningane dine",
     "velkommen.intro.harSaker.barnVelger.label": "Kva for barn gjeld søknaden din?",
     "velkommen.intro.harSaker.barnVelger.info": "Det vil bli oppretta ein ny sak",
+    "velkommen.intro.harSaker.barnVelger.planlagtBarn": "Det planlagde barnet frå planleggjar",
+    "velkommen.intro.harSaker.barnVelger.planlagtBarnInfo": "Søknaden blir fyllt ut basert på planleggingsdataa dine",
     "velkommen.lesMerOmPersonopplysninger": "Les om korleis Nav behandlar personopplysningane dine",
     "velkommen.sak.status.ferdigBehandlet": "Saken er ferdig behandla",
     "velkommen.sak.status.underBehandling": "Saken er under behandling",

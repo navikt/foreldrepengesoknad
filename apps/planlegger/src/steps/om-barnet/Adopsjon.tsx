@@ -2,7 +2,7 @@ import { TasklistStartIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OmBarnet } from 'types/Barnet';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 
@@ -22,16 +22,16 @@ import {
 type Props = {
     hvemPlanlegger: HvemPlanlegger;
     erAlenesøker: boolean;
-    erOmBarnetIkkeOppgittFraFør: boolean;
+    erOmBarnetPlanleggerIkkeOppgittFraFør: boolean;
     antallBarn?: string;
 };
 
-export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBarn, hvemPlanlegger }: Props) => {
+export const Adopsjon = ({ erAlenesøker, erOmBarnetPlanleggerIkkeOppgittFraFør, antallBarn, hvemPlanlegger }: Props) => {
     const intl = useIntl();
 
     const flereBarn = antallBarn === '3' || antallBarn === '2';
 
-    const formMethods = useFormContext<OmBarnet>();
+    const formMethods = useFormContext<OmBarnetPlanlegger>();
     const fødselsdato = formMethods.watch('fødselsdato');
     const overtakelsesdato = formMethods.watch('overtakelsesdato');
 
@@ -41,7 +41,7 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBa
 
     return (
         <>
-            <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
+            <BluePanel isDarkBlue={erOmBarnetPlanleggerIkkeOppgittFraFør} shouldFadeIn>
                 <VStack gap="space-32">
                     <RhfDatepicker
                         name="overtakelsesdato"

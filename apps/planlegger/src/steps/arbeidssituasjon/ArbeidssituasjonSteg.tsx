@@ -37,7 +37,7 @@ export const ArbeidssituasjonSteg = ({ satser }: Props) => {
 
     const oppdaterArbeidssituasjon = useContextSaveData(ContextDataType.ARBEIDSSITUASJON);
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
-    const oppdaterHvorLangPeriode = useContextSaveData(ContextDataType.HVOR_LANG_PERIODE);
+    const oppdaterHvorLangPeriodePlanlegger = useContextSaveData(ContextDataType.HVOR_LANG_PERIODE);
     const oppdaterHvorMye = useContextSaveData(ContextDataType.HVOR_MYE);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
@@ -70,7 +70,7 @@ export const ArbeidssituasjonSteg = ({ satser }: Props) => {
         } else {
             oppdaterHvorMye(undefined);
             oppdaterFordeling(undefined);
-            oppdaterHvorLangPeriode(undefined);
+            oppdaterHvorLangPeriodePlanlegger(undefined);
             navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);
         }
     };

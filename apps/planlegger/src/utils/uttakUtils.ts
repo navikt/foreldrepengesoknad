@@ -1,10 +1,9 @@
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
-import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { KontoBeregningDto, KontoDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { KontoBeregningDto, KontoDto, OmBarnetPlanlegger, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen, treUkerSiden } from '@navikt/fp-utils';
 import { deltUttak, ikkeDeltUttak } from '@navikt/fp-uttaksplan';
 
@@ -98,14 +97,14 @@ const trekkUttaksdagerFraDato = (dato: string, uttaksdager: number): string => {
     return nyDato;
 };
 
-export const getFamiliehendelsedato = (barnet: OmBarnet) => {
+export const getFamiliehendelsedato = (barnet: OmBarnetPlanlegger) => {
     if (erBarnetAdoptert(barnet)) {
         return barnet.overtakelsesdato;
     }
     return erBarnetUFødt(barnet) ? barnet.termindato : barnet.fødselsdato;
 };
 
-const getFørsteUttaksdagForeldrepengerFørFødsel = (barnet: OmBarnet): string => {
+const getFørsteUttaksdagForeldrepengerFørFødsel = (barnet: OmBarnetPlanlegger): string => {
     if (erBarnetAdoptert(barnet)) {
         throw new Error('Kan ikke være adoptert');
     }
@@ -137,10 +136,9 @@ export type Uttaksdata = {
 const finnDeltUttaksdata = (
     hvemPlanlegger: HvemPlanlegger,
     valgtStønadskvote: KontoBeregningDto,
-    barnet: OmBarnet,
+    barnet: OmBarnetPlanlegger,
     antallDagerFellesperiodeSøker1: number = 0,
 ): Uttaksdata => {
-
     const totaltAntallDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskvote).totaltAntallDager;
     const antallUkerOgDagerFellesperiodeForSøker1 = getUkerOgDager(antallDagerFellesperiodeSøker1);
     const antallUkerOgDagerFellesperiodeForSøker2 = getUkerOgDager(
@@ -198,7 +196,7 @@ const finnDeltUttaksdata = (
 const finnEnsligUttaksdata = (
     hvemPlanlegger: HvemPlanlegger,
     valgtStønadskvote: KontoBeregningDto,
-    barnet: OmBarnet,
+    barnet: OmBarnetPlanlegger,
     hvemHarRett: HvemHarRett,
 ): Uttaksdata => {
     const familiehendelsedato = getFamiliehendelsedato(barnet);
@@ -281,7 +279,7 @@ export const finnUttaksdata = (
     hvemHarRett: HvemHarRett,
     hvemPlanlegger: HvemPlanlegger,
     valgtStønadskvote: KontoBeregningDto,
-    barnet: OmBarnet,
+    barnet: OmBarnetPlanlegger,
     antallDagerFellesperiodeSøker1?: number,
 ): Uttaksdata => {
     if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && !erBarnetAdoptert(barnet)) {

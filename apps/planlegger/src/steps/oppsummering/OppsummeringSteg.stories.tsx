@@ -4,14 +4,11 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
-import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
-import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { HvorMye } from 'types/HvorMye';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { FordelingPlanlegger, HvorLangPeriodePlanlegger, OmBarnetPlanlegger, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import {
     ALENE_OM_OMSORG_80_FARMEDMOR,
     ALENE_OM_OMSORG_100_FARMEDMOR,
@@ -34,9 +31,9 @@ import { OppsummeringSteg } from './OppsummeringSteg';
 
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
-    fordeling?: Fordeling;
-    hvorLangPeriode?: HvorLangPeriode;
-    omBarnet: OmBarnet;
+    fordeling?: FordelingPlanlegger;
+    hvorLangPeriode?: HvorLangPeriodePlanlegger;
+    omBarnet: OmBarnetPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
     hvorMye?: HvorMye;
     uttaksplan?: UttakPeriode_fpoversikt[];

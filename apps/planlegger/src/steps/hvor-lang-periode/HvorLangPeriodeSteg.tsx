@@ -9,7 +9,6 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanleggerType } from 'types/HvemPlanlegger';
-import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { erAlenesøker as erAlene, getTekstForDeSomHarRett } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -19,7 +18,7 @@ import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-reac
 
 import { links } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { KontoBeregningDto } from '@navikt/fp-types';
+import { HvorLangPeriodePlanlegger, KontoBeregningDto } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -45,12 +44,12 @@ export const HvorLangPeriodeSteg = ({ stønadskvoter }: Props) => {
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
-    const formMethods = useForm<HvorLangPeriode>({ defaultValues: periode });
+    const formMethods = useForm<HvorLangPeriodePlanlegger>({ defaultValues: periode });
 
     const erAlenesøker = erAlene(hvemPlanlegger);
     const erAdopsjon = erBarnetAdoptert(barnet);
 
-    const onSubmit = (formValues: HvorLangPeriode) => {
+    const onSubmit = (formValues: HvorLangPeriodePlanlegger) => {
         oppdaterPeriode(formValues);
 
         if (periode && periode.dekningsgrad !== formValues.dekningsgrad) {
@@ -224,7 +223,7 @@ export const HvorLangPeriodeSteg = ({ stønadskvoter }: Props) => {
                         )}
                     </VStack>
                     <Spacer />
-                    <StepButtonsHookForm<HvorLangPeriode>
+                    <StepButtonsHookForm<HvorLangPeriodePlanlegger>
                         saveDataOnPreviousClick={oppdaterPeriode}
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         useSimplifiedTexts

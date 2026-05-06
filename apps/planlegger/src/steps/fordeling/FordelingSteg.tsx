@@ -5,7 +5,6 @@ import { useStepData } from 'appData/useStepData';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Fordeling } from 'types/Fordeling';
 import { getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskvoterUtils';
@@ -14,7 +13,7 @@ import { finnUttaksdata } from 'utils/uttakUtils';
 import { BodyShort, Box, Heading, InlineMessage, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { KontoBeregningDto } from '@navikt/fp-types';
+import { FordelingPlanlegger, KontoBeregningDto } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
@@ -48,7 +47,7 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
     const halvpart = Math.floor(totalDager / 2);
     const restdager = antallUkerOgDagerFellesperiode.dager;
 
-    const formMethods = useForm<Fordeling>({
+    const formMethods = useForm<FordelingPlanlegger>({
         defaultValues: fordeling ?? { antallDagerSøker1: halvpart },
     });
 
@@ -58,7 +57,7 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
             ? undefined
             : Number(antallDagerSøker1Temp);
 
-    const lagre = (formValues: Fordeling) => {
+    const lagre = (formValues: FordelingPlanlegger) => {
         oppdaterFordeling(formValues);
 
         if (fordeling && fordeling.antallDagerSøker1 !== formValues.antallDagerSøker1) {
@@ -153,7 +152,7 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
                         )}
                     </VStack>
                     <Spacer />
-                    <StepButtonsHookForm<Fordeling>
+                    <StepButtonsHookForm<FordelingPlanlegger>
                         saveDataOnPreviousClick={oppdaterFordeling}
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         useSimplifiedTexts

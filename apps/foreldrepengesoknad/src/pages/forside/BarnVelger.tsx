@@ -5,7 +5,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { ValgtBarn, ValgtBarnType } from 'types/ValgtBarn';
 import { formaterFødselsdatoerPåBarn, formaterNavnPåBarn, getTekstForAntallBarn } from 'utils/barnUtils';
 
-import { Radio } from '@navikt/ds-react';
+import { BodyShort, Radio } from '@navikt/ds-react';
 
 import { DDMMMMYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfRadioGroup } from '@navikt/fp-form-hooks';
@@ -13,8 +13,9 @@ import { isRequired } from '@navikt/fp-validation';
 
 import { ForsideFormValues } from './types/ForsideFormValues';
 
-enum SelectableBarnOptions {
-    SØKNAD_GJELDER_NYTT_BARN = 'søknad_gjeder_nytt_barn',
+export enum SelectableBarnOptions {
+    SØKNAD_GJELDER_NYTT_BARN = 'søknad_gjelder_nytt_barn',
+    SØKNAD_GJELDER_PLANLAGT_BARN = 'søknad_gjelder_planlagt_barn',
 }
 
 const getRadioForUfødtBarn = (barna: ValgtBarn[], intl: IntlShape) => {
@@ -92,14 +93,15 @@ const getRadioForFødtEllerAdoptertBarn = (barna: ValgtBarn[], intl: IntlShape) 
 
 interface Props {
     selectableBarn: ValgtBarn[];
+    harPlanleggerData?: boolean;
 }
 
-export const BarnVelger = ({ selectableBarn }: Props) => {
+export const BarnVelger = ({ selectableBarn, harPlanleggerData }: Props) => {
     const intl = useIntl();
 
     const { control } = useFormContext<ForsideFormValues>();
 
-    if (selectableBarn.length === 0) {
+    if (selectableBarn.length === 0 && !harPlanleggerData) {
         return null;
     }
 
@@ -114,6 +116,34 @@ export const BarnVelger = ({ selectableBarn }: Props) => {
         radios = radios.concat(getRadioForUfødtBarn(ufødteBarn, intl));
     }
 
+    const radioOptionsToAdd = [];
+
+    if (harPlanleggerData) {
+        radioOptionsToAdd.push(
+            <Radio
+                key={SelectableBarnOptions.SØKNAD_GJELDER_PLANLAGT_BARN}
+                value={SelectableBarnOptions.SØKNAD_GJELDER_PLANLAGT_BARN}
+                description={intl.formatMessage({ id: 'velkommen.intro.harSaker.barnVelger.planlagtBarnInfo' })}
+            >
+                <BodyShort weight="semibold">
+                    <FormattedMessage id="velkommen.intro.harSaker.barnVelger.planlagtBarn" />
+                </BodyShort>
+            </Radio>,
+        );
+    }
+
+    radioOptionsToAdd.push(
+        <Radio
+            key={SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN}
+            value={SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN}
+            description={intl.formatMessage({ id: 'velkommen.intro.harSaker.barnVelger.info' })}
+        >
+            <BodyShort weight="semibold">
+                <FormattedMessage id="omBarnet.gjelderAnnetBarn" />
+            </BodyShort>
+        </Radio>,
+    );
+
     return (
         <RhfRadioGroup
             name="valgteBarn"
@@ -121,20 +151,7 @@ export const BarnVelger = ({ selectableBarn }: Props) => {
             label={<FormattedMessage id="velkommen.intro.harSaker.barnVelger.label" />}
             validate={[isRequired(intl.formatMessage({ id: 'steg.footer.spørsmålMåBesvares' }))]}
         >
-            {radios.concat(
-                <Radio
-                    key={SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN}
-                    value={SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN}
-                    description={intl.formatMessage({ id: 'velkommen.intro.harSaker.barnVelger.info' })}
-                >
-                    <FormattedMessage
-                        id="omBarnet.gjelderAnnetBarn"
-                        values={{
-                            b: (chunks) => <b>{chunks}</b>,
-                        }}
-                    />
-                </Radio>,
-            )}
+            {radios.concat(radioOptionsToAdd)}
         </RhfRadioGroup>
     );
 };

@@ -2,10 +2,7 @@ import { CalendarIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
-import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
-import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import {
     erAlenesøker,
     getErFarEllerMedmor,
@@ -26,21 +23,26 @@ import { finnAntallUkerOgDagerMedForeldrepenger, getAnnenpartsPerioder, getSøke
 
 import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
-import { KontoBeregningDto } from '@navikt/fp-types';
+import {
+    FordelingPlanlegger,
+    HvorLangPeriodePlanlegger,
+    KontoBeregningDto,
+    OmBarnetPlanlegger,
+} from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import { UttaksplanDataProvider, UttaksplanKalender } from '@navikt/fp-uttaksplan';
 
 import { ContextDataType, useContextGetData } from '../../../app-data/PlanleggerDataContext';
-import { mapOmBarnetTilBarn } from '../../../utils/barnetUtils';
+import { mapOmBarnetPlanleggerTilBarn } from '../../../utils/barnetUtils';
 
 interface Props {
+    hvorLangPeriode: HvorLangPeriodePlanlegger;
     valgtStønadskvote: KontoBeregningDto;
-    hvorLangPeriode: HvorLangPeriode;
     hvemPlanlegger: HvemPlanlegger;
-    barnet: OmBarnet;
+    barnet: OmBarnetPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
-    fordeling?: Fordeling;
+    fordeling?: FordelingPlanlegger;
 }
 
 export const OppsummeringHarRett = ({
@@ -237,7 +239,7 @@ export const OppsummeringHarRett = ({
                             </BluePanel>
                         )}
                         <UttaksplanDataProvider
-                            barn={mapOmBarnetTilBarn(barnet)}
+                            barn={mapOmBarnetPlanleggerTilBarn(barnet)}
                             foreldreInfo={{
                                 søker: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
                                 navnPåForeldre: { mor: fornavnSøker1, farMedmor: fornavnSøker2 || '' },
