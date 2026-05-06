@@ -442,7 +442,6 @@
     "fordeling.oppstartValg.misterDagerInfo": "Du mistar {varighetString}.",
     "fordeling.oppstartValg.taFraFellesperioden": "{varighetString} vert teke frå fellesperioden.",
     "fordeling.oppstartValg.morFødsel.info": "Du kan endre datoar seinare, også etter du har sendt søknaden.",
-    "fordeling.fellesperiodeVisning.sumUker": "Fellesperiode - {varighetString}",
     "fordeling.fellesperiodeVisning.tilDeg": "{varighetString} til deg",
     "fordeling.fellesperiodeVisning.resterende": "{varighetString} att",
     "fordeling.morsSisteDag.tittel": "{navnMor} si siste dag med foreldrepengar er {dato}.",

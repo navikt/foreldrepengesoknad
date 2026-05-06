@@ -757,7 +757,6 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
             expect(screen.getByText('Jeg vil ha hele fellesperioden')).toBeInTheDocument();
             expect(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha')).toBeInTheDocument();
             expect(screen.getByText('Jeg ønsker ikke å legge til fellesperiode nå')).toBeInTheDocument();
-            expect(screen.getByText('Fellesperiode - 20 uker')).toBeInTheDocument();
 
             expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
             expect(screen.queryByText(/Tre uker før fødsel fra/)).not.toBeInTheDocument();
@@ -1172,7 +1171,6 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
 
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
             expect(screen.getByText('Jeg vil ha hele fellesperioden')).toBeInTheDocument();
-            expect(screen.getByText('Fellesperiode - 16 uker')).toBeInTheDocument();
 
             expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
             expect(screen.getByText(/Tre uker før fødsel fra/)).toBeInTheDocument();
