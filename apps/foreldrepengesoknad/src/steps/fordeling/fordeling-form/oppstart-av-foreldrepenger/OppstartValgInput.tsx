@@ -224,14 +224,6 @@ const getRadioOptionAnnenDato = (): React.ReactElement => (
     </Radio>
 );
 
-const getRadioOptionAnnenDatoMorFødsel = (): React.ReactElement => {
-    return (
-        <Radio key={OppstartValg.ANNEN_DATO} value={OppstartValg.ANNEN_DATO}>
-            <FormattedMessage id="fordeling.oppstartValg.annenDato" />
-        </Radio>
-    );
-};
-
 const getRadioOptionTreUkerFørTermin = (barn: Barn): React.ReactElement => {
     const termindato = getTermindato(barn);
     const førsteDagTreUkerFørFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(termindato);
@@ -300,13 +292,6 @@ const getRadioOptionFamiliehendelsesdato = (
     return getRadioOptionAdopsjon(familiehendelsesdato);
 };
 
-const getRadioOptionForAnnenDato = (erFarEllerMedmor: boolean, erFødsel: boolean) => {
-    if (!erFarEllerMedmor && erFødsel) {
-        return getRadioOptionAnnenDatoMorFødsel();
-    }
-    return getRadioOptionAnnenDato();
-};
-
 const mapOppstartValgToRadioOption = (
     valg: OppstartValg,
     barn: Barn,
@@ -343,7 +328,7 @@ const mapOppstartValgToRadioOption = (
         case OppstartValg.ANKOMSTDATO_NORGE:
             return getRadioOptionAdopsjonAnkomstNorge(ankomstNorge);
         case OppstartValg.ANNEN_DATO:
-            return getRadioOptionForAnnenDato(erFarEllerMedmor, erFødsel);
+            return getRadioOptionAnnenDato();
     }
 };
 
