@@ -87,7 +87,7 @@ export const OppgiPersonalia = ({ søkersFødselsnummer, rolle, barn }: Props) =
                         <RhfCheckbox
                             name="utenlandskFnr"
                             control={formMethods.control}
-                            onChange={() => void formMethods.trigger()}
+                            onChange={() => formMethods.formState.isSubmitted && void formMethods.trigger()}
                             label={intl.formatMessage({ id: 'annenForelder.spørsmål.utenlandskFnr' })}
                         />
                     </div>
