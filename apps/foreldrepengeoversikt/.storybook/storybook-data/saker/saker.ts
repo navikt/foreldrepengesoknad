@@ -1,4 +1,4 @@
-import { Saker_fpoversikt } from '@navikt/fp-types';
+import { AktivitetStatus, Saker_fpoversikt } from '@navikt/fp-types';
 
 export const saker = {
     foreldrepenger: [
@@ -1744,7 +1744,7 @@ export const saker_beregning_svp_direkte_utbetaling = {
     ],
 } satisfies Saker_fpoversikt;
 
-const beregningIkkeStøttetSak = (saksnummer: string, aktivitetStatus: string) =>
+const beregningIkkeStøttetSak = (saksnummer: string, aktivitetStatus: AktivitetStatus) =>
     ({
         foreldrepenger: [
             {
