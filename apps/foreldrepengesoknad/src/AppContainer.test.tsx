@@ -172,7 +172,7 @@ describe('<AppContainer>', () => {
 
             await waitFor(() => expect(screen.getAllByText('Fordeling av foreldrepenger')).toHaveLength(2));
             expect(screen.getByText('Steg 7 av 9')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Tre uker før fødsel'));
+            await userEvent.click(screen.getByText(/Tre uker før fødsel fra/));
             await userEvent.click(screen.getByText('Neste steg'));
 
             await waitFor(() => expect(screen.getAllByText('Din plan med foreldrepenger')).toHaveLength(2));

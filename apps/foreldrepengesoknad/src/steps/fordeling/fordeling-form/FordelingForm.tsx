@@ -1,7 +1,6 @@
-import isEqual from 'lodash/isEqual';
-
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
+import isEqual from 'lodash/isEqual';
 import { useForm } from 'react-hook-form';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { Fordeling } from 'types/Fordeling';
@@ -82,7 +81,6 @@ export const FordelingForm = ({
                 <ErrorSummaryHookForm />
                 {søkerDeltUttakINorgeSomMorFørFar && (
                     <FellesperiodeFordeling
-                        navnPåForeldre={navnPåForeldre}
                         dagerMedFellesperiode={dagerMedFellesperiode}
                         erFarEllerMedmor={erFarEllerMedmor}
                     />
