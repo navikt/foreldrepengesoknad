@@ -12,28 +12,32 @@ import {
 
 import { configureReverseProxyApi } from './reverseProxy';
 
-const server = express();
+const createServer = async () => {
+    const server = express();
 
-setupServerDefaults(server);
-setupActuators(server);
+    await setupServerDefaults(server);
+    setupActuators(server);
 
-const router = express.Router();
-const publicRouter = express.Router();
+    const router = express.Router();
+    const publicRouter = express.Router();
 
-// Logging i json format
-server.use(logger.morganMiddleware);
+    // Logging i json format
+    server.use(logger.morganMiddleware);
 
-setupSkjermleserCssTilgang(publicRouter);
+    setupSkjermleserCssTilgang(publicRouter);
 
-publicRouter.use(express.static('./public', { index: false }));
-server.use(serverConfig.app.publicPath, publicRouter);
+    publicRouter.use(express.static('./public', { index: false }));
+    server.use(serverConfig.app.publicPath, publicRouter);
 
-configureReverseProxyApi(router);
-// Catch all route, må være sist
-setupAndServeHtml(router);
+    configureReverseProxyApi(router);
+    // Catch all route, må være sist
+    await setupAndServeHtml(router);
 
-server.use(serverConfig.app.publicPath, router);
+    server.use(serverConfig.app.publicPath, router);
 
-server.use(errorHandling);
+    server.use(errorHandling);
 
-export default server;
+    return server;
+};
+
+export default createServer();
