@@ -1583,9 +1583,6 @@ importers:
       express:
         specifier: 5.2.1
         version: 5.2.1
-      helmet:
-        specifier: 8.1.0
-        version: 8.1.0
       morgan:
         specifier: 1.10.1
         version: 1.10.1
@@ -5970,10 +5967,6 @@ packages:
 
   headers-polyfill@4.0.3:
     resolution: {integrity: sha512-IScLbePpkvO846sIwOtOTDjutRMWdXdJmXdMvk6gCBHxFO8d+QKOQedyZSxFTTFYRSmlgSTDtXqqq4pcenBXLQ==}
-
-  helmet@8.1.0:
-    resolution: {integrity: sha512-jOiHyAZsmnr8LqoPGmCjYAaiuWwjAPLgY8ZX2XrmHawt99/u1y6RgrZMTeoPfpUbV96HOalYgz1qzkRbw54Pmg==}
-    engines: {node: '>=18.0.0'}
 
   html-dom-parser@5.1.8:
     resolution: {integrity: sha512-MCIUng//mF2qTtGHXJWr6OLfHWmg3Pm8ezpfiltF83tizPWY17JxT4dRLE8lykJ5bChJELoY3onQKPbufJHxYA==}
@@ -11138,8 +11131,6 @@ snapshots:
       function-bind: 1.1.2
 
   headers-polyfill@4.0.3: {}
-
-  helmet@8.1.0: {}
 
   html-dom-parser@5.1.8:
     dependencies:

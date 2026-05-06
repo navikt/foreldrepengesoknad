@@ -1,44 +1,24 @@
+import { buildCspHeader } from '@navikt/nav-dekoratoren-moduler/ssr/index.js';
 import express, { Express } from 'express';
-import helmet from 'helmet';
 
-export const setupServerDefaults = (server: Express) => {
-    server.use(
-        helmet({
-            contentSecurityPolicy: {
-                useDefaults: false,
-                directives: {
-                    'default-src': ["'self'"],
-                    'base-uri': ["'self'"],
-                    'script-src': [
-                        "'self'",
-                        "'unsafe-inline'",
-                        "'unsafe-eval'",
-                        '*.nav.no',
-                        'https://survey.skyra.no',
-                        'https://in2.taskanalytics.com',
-                    ],
-                    'style-src': ["'self'", "'unsafe-inline'", '*.nav.no'],
-                    'connect-src': [
-                        "'self'",
-                        '*.nav.no',
-                        'https://sentry.gc.nav.no',
-                        'https://*.skyra.no',
-                        'https://in2.taskanalytics.com',
-                    ],
-                    'font-src': ["'self'", 'https://cdn.nav.no', 'data:'],
-                    'img-src': ["'self'", 'data:', '*.nav.no'],
-                    'frame-src': ["'self'"],
-                    'child-src': ["'self'"],
-                    'manifest-src': ["'self'", 'https://cdn.nav.no'],
-                    'media-src': ["'none'"],
-                    'object-src': ["'none'"],
-                },
-            },
-            referrerPolicy: { policy: 'no-referrer' },
-            hidePoweredBy: true,
-            noSniff: true,
-        }),
-    );
+import config from './config.js';
+
+const appDirectives = {
+    'default-src': ["'self'"], // Restricts all resource loading to same-origin by default
+    'connect-src': ["'self'", 'https://sentry.gc.nav.no'], // Sentry error reporting sends events to a non-nav.no domain
+    'object-src': ["'none'"], // Blocks legacy plugin content (Flash/Java) regardless of default-src
+};
+
+export const setupServerDefaults = async (server: Express) => {
+    const cspHeader = await buildCspHeader(appDirectives, { env: config.app.env });
+
+    server.use((_req, res, next) => {
+        res.setHeader('Content-Security-Policy', cspHeader);
+        res.setHeader('X-Content-Type-Options', 'nosniff');
+        res.setHeader('Referrer-Policy', 'no-referrer');
+        res.removeHeader('X-Powered-By');
+        next();
+    });
 
     // Restricts the server to only accept UTF-8 encoding of bodies
     server.use(express.urlencoded({ extended: true }));
