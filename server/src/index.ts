@@ -4,9 +4,8 @@ import serverPromise from './server.js';
 
 const port = serverConfig.app.port;
 
-(async () => {
-    const server = await serverPromise;
+serverPromise.then((server) => {
     server.listen(port, () => {
         logger.info(`Starter server på ${port}`);
     });
-})();
+});
