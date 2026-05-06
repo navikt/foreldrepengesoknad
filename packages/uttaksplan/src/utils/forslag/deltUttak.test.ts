@@ -23,7 +23,7 @@ describe('deltUttak - Fødsel', () => {
     it('skal gi far/medmor fellesperioden som ikke blir brukt av mor', () => {
         const forslag = deltUttak({
             famDato: '2022-08-08',
-            tilgjengeligeStønadskontoer: alleKontoer,
+            tilgjengeligeStønadskvoter: alleKontoer,
             fellesperiodeDagerMor: 40,
         });
 
@@ -54,7 +54,7 @@ describe('deltUttak - Fødsel', () => {
     it('skal gi mor all fellesperiode og ingen fellesperiode til far', () => {
         const forslag = deltUttak({
             famDato: '2022-08-08',
-            tilgjengeligeStønadskontoer: alleKontoer,
+            tilgjengeligeStønadskvoter: alleKontoer,
             fellesperiodeDagerMor: 80,
         });
 
@@ -76,7 +76,7 @@ describe('deltUttak - Fødsel', () => {
     it('skal gi far all fellesperiode og ingen fellesperiode til mor', () => {
         const forslag = deltUttak({
             famDato: '2022-08-08',
-            tilgjengeligeStønadskontoer: alleKontoer,
+            tilgjengeligeStønadskvoter: alleKontoer,
             fellesperiodeDagerMor: 0,
         });
 
@@ -99,7 +99,7 @@ describe('deltUttak - Fødsel', () => {
         // startdato 20 uttaksdager (4 uker) før fødsel → 5 dager fellesperiode før FPFF
         const forslag = deltUttak({
             famDato: '2022-08-08',
-            tilgjengeligeStønadskontoer: alleKontoer,
+            tilgjengeligeStønadskvoter: alleKontoer,
             fellesperiodeDagerMor: 35,
             startdato: '2022-07-11',
         });
@@ -146,7 +146,7 @@ describe('deltUttak - Adopsjon', () => {
     it('skal starte planen på omsorgsovertakelsesdatoen uten FPFF-periode', () => {
         const forslag = deltUttak({
             famDato: '2022-08-08',
-            tilgjengeligeStønadskontoer: [fedrekvote, fellesperiode, mødrekvote],
+            tilgjengeligeStønadskvoter: [fedrekvote, fellesperiode, mødrekvote],
             fellesperiodeDagerMor: 40,
         });
 

@@ -51,7 +51,7 @@ export const getSokerInfo = () => {
     }
 };
 
-export const getStønadskontoer = async (req: any) => {
+export const getStønadskvoter = async (req: any) => {
     try {
         const data = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
             method: 'POST',
@@ -212,7 +212,7 @@ router.get('/fpoversikt/api/innsyn/uttaksplanannen', (_req, res) => {
 });
 
 router.post('/fpgrunndata/api/konto', async (req, res) => {
-    const response = await getStønadskontoer(req);
+    const response = await getStønadskvoter(req);
     res.send(response);
 });
 

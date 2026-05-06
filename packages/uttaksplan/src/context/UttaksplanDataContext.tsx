@@ -17,7 +17,7 @@ import { sorterPerioder } from '../utils/periodeUtils';
 type Props = {
     barn: Barn;
     foreldreInfo: ForeldreInfo;
-    valgtStønadskonto: KontoBeregningDto;
+    valgtStønadskvote: KontoBeregningDto;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     erPeriodeneTilAnnenPartLåst: boolean;
     uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;

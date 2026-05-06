@@ -34,4 +34,4 @@ export {
     DELT_UTTAK_80_TO_BARN,
     IKKE_DELT_UTTAK_100_ADOPSJON_MOR,
     IKKE_DELT_UTTAK_80_ADOPSJON_MOR,
-} from './src/uttaksplan/kontoer';
+} from './src/uttaksplan/kvoter';

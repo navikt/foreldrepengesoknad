@@ -1,36 +1,39 @@
 import { ChatElipsisIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
-import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
-import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { erAlenesøker as erAlene, erFarOgFar, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
-import { getAntallUkerOgDagerFellesperiode, getUkerOgDager } from 'utils/stønadskontoerUtils';
+import { getAntallUkerOgDagerFellesperiode, getUkerOgDager } from 'utils/stønadskvoterUtils';
 import { loggExpansionCardOpen } from 'utils/umamiUtils';
 import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { KontoBeregningDto, Satser } from '@navikt/fp-types';
+import {
+    FordelingPlanlegger,
+    HvorLangPeriodePlanlegger,
+    KontoBeregningDto,
+    OmBarnetPlanlegger,
+    Satser,
+} from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 
 interface Props {
-    stønadskontoer: { '100': KontoBeregningDto; '80': KontoBeregningDto };
-    barnet: OmBarnet;
+    barnet: OmBarnetPlanlegger;
+    stønadskvoter: { '100': KontoBeregningDto; '80': KontoBeregningDto };
     hvemPlanlegger: HvemPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
-    hvorLangPeriode: HvorLangPeriode;
-    fordeling?: Fordeling;
+    hvorLangPeriode: HvorLangPeriodePlanlegger;
+    fordeling?: FordelingPlanlegger;
     satser: Satser;
 }
 
 export const OppgittInformasjon = ({
-    stønadskontoer,
+    stønadskvoter,
     barnet,
     hvemPlanlegger,
     arbeidssituasjon,
@@ -66,11 +69,11 @@ export const OppgittInformasjon = ({
     const denAndreFaren = getTekstTilFar2();
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
-    const valgtStønadskonto = stønadskontoer[hvorLangPeriode.dekningsgrad];
+    const valgtStønadskvote = stønadskvoter[hvorLangPeriode.dekningsgrad];
 
-    const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(valgtStønadskonto);
+    const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(valgtStønadskvote);
 
-    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
+    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskvote);
 
     const antallUkerOgDagerFellesperiodeSøker1 = fordeling ? getUkerOgDager(fordeling.antallDagerSøker1) : undefined;
     const antallUkerOgDagerFellesperiodeSøker2 = fordeling

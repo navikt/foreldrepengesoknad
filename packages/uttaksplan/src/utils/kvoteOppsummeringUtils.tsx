@@ -20,7 +20,7 @@ export const useErAntallDagerOvertrukketIUttaksplan = () => {
         foreldreInfo: { rettighetType },
         uttakPerioder,
         familiesituasjon,
-        valgtStønadskonto,
+        valgtStønadskvote,
         familiehendelsedato,
     } = useUttaksplanData();
 
@@ -29,14 +29,14 @@ export const useErAntallDagerOvertrukketIUttaksplan = () => {
             finnAntallDagerDerKunEnHarForeldrepenger(
                 uttakPerioder,
                 familiesituasjon,
-                valgtStønadskonto,
+                valgtStønadskvote,
                 familiehendelsedato,
             ).antallOvertrukketDager > 0
         );
     }
 
     return (
-        tellDagerIUttaksPeriodene(uttakPerioder, familiesituasjon, valgtStønadskonto, familiehendelsedato)
+        tellDagerIUttaksPeriodene(uttakPerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato)
             .antallOvertrukketDager > 0
     );
 };
@@ -44,11 +44,11 @@ export const useErAntallDagerOvertrukketIUttaksplan = () => {
 export const finnAntallDagerDerKunEnHarForeldrepenger = (
     uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     familiesituasjon: Familiesituasjon,
-    valgtStønadskonto: KontoBeregningDto,
+    valgtStønadskvote: KontoBeregningDto,
     familiehendelsedato: string,
 ) => {
     const kvoter = ['FORELDREPENGER_FØR_FØDSEL', 'FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'].map((kontoType) => {
-        const aktuellKonto = valgtStønadskonto.kontoer.find((k) => k.konto === kontoType);
+        const aktuellKonto = valgtStønadskvote.kontoer.find((k) => k.konto === kontoType);
         if (!aktuellKonto) {
             return null;
         }
@@ -76,7 +76,7 @@ export const finnAntallDagerDerKunEnHarForeldrepenger = (
 
                 return kontoType === getUttaksKontoType(p);
             }),
-            valgtStønadskonto.kontoer,
+            valgtStønadskvote.kontoer,
             familiesituasjon,
             familiehendelsedato,
         );
@@ -122,22 +122,22 @@ export const filtrerAvslåttePerioderMenBeholdPleiepenger = (
 };
 
 export const useTellDagerIUttaksPeriodene = () => {
-    const { uttakPerioder, familiesituasjon, valgtStønadskonto, familiehendelsedato } = useUttaksplanData();
+    const { uttakPerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato } = useUttaksplanData();
 
     const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
 
-    return tellDagerIUttaksPeriodene(filtrertePerioder, familiesituasjon, valgtStønadskonto, familiehendelsedato);
+    return tellDagerIUttaksPeriodene(filtrertePerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato);
 };
 
 export const tellDagerIUttaksPeriodene = (
     uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     familiesituasjon: Familiesituasjon,
-    valgtStønadskonto: KontoBeregningDto,
+    valgtStønadskvote: KontoBeregningDto,
     familiehendelsedato: string,
 ) => {
     const dagerBruktAvMorFørFødsel = summerDagerIPerioder(
         uttakPerioder.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL'),
-        valgtStønadskonto.kontoer,
+        valgtStønadskvote.kontoer,
         familiesituasjon,
         familiehendelsedato,
     );
@@ -148,7 +148,7 @@ export const tellDagerIUttaksPeriodene = (
                 getUttaksKontoType(p) === 'MØDREKVOTE' ||
                 (erVanligUttakPeriode(p) && p.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER'),
         ),
-        valgtStønadskonto.kontoer,
+        valgtStønadskvote.kontoer,
         familiesituasjon,
         familiehendelsedato,
     );
@@ -158,7 +158,7 @@ export const tellDagerIUttaksPeriodene = (
                 getUttaksKontoType(p) === 'FEDREKVOTE' ||
                 (erVanligUttakPeriode(p) && p.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'),
         ),
-        valgtStønadskonto.kontoer,
+        valgtStønadskvote.kontoer,
         familiesituasjon,
         familiehendelsedato,
     );
@@ -168,17 +168,17 @@ export const tellDagerIUttaksPeriodene = (
                 getUttaksKontoType(p) === 'FELLESPERIODE' ||
                 (erVanligUttakPeriode(p) && p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER'),
         ),
-        valgtStønadskonto.kontoer,
+        valgtStønadskvote.kontoer,
         familiesituasjon,
         familiehendelsedato,
     );
 
     const barnetErFødt = familiesituasjon === 'fødsel';
 
-    const fedreKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FEDREKVOTE');
-    const førFødselKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
-    const mødreKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'MØDREKVOTE');
-    const fellesKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
+    const fedreKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FEDREKVOTE');
+    const førFødselKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
+    const mødreKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'MØDREKVOTE');
+    const fellesKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FELLESPERIODE');
 
     // Dersom barnet er født skal vi se bortifra ubrukte dager på mor sin "3 uker før fødsel" konto.
     const ubrukteDagerMor =
@@ -213,7 +213,7 @@ export const summerDagerIPerioder = (
     const aktuelleKontotyper = new Set(
         perioder.map((p) => {
             if (!('trekkdager' in p) && p.oppholdÅrsak) {
-                return getStønadskontoTypeFromOppholdÅrsakType(p.oppholdÅrsak);
+                return getStønadskvoteTypeFromOppholdÅrsakType(p.oppholdÅrsak);
             }
 
             return getUttaksKontoType(p);
@@ -274,11 +274,11 @@ const harOppholdÅrsakLikKontoType = (
         return false;
     }
 
-    const stønadskontoType = getStønadskontoTypeFromOppholdÅrsakType(periode.oppholdÅrsak);
+    const stønadskontoType = getStønadskvoteTypeFromOppholdÅrsakType(periode.oppholdÅrsak);
     return stønadskontoType === kontoType;
 };
 
-const getStønadskontoTypeFromOppholdÅrsakType = (årsak: UttakOppholdÅrsak_fpoversikt): KontoTypeUttak | undefined => {
+const getStønadskvoteTypeFromOppholdÅrsakType = (årsak: UttakOppholdÅrsak_fpoversikt): KontoTypeUttak | undefined => {
     switch (årsak) {
         case 'FEDREKVOTE_ANNEN_FORELDER':
             return 'FEDREKVOTE';

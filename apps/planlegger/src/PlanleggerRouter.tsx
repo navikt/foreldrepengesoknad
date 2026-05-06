@@ -6,7 +6,7 @@ import { FordelingSteg } from 'steps/fordeling/FordelingSteg';
 import { HvemPlanleggerSteg } from 'steps/hvem-planlegger/HvemPlanleggerSteg';
 import { HvorLangPeriodeSteg } from 'steps/hvor-lang-periode/HvorLangPeriodeSteg';
 import { HvorMyeSteg } from 'steps/hvor-mye/HvorMyeSteg';
-import { OmBarnetSteg } from 'steps/om-barnet/OmBarnetSteg';
+import { OmBarnetPlanleggerSteg } from 'steps/om-barnet/OmBarnetSteg';
 import { OmPlanleggerenSteg } from 'steps/om-planleggeren/OmPlanleggerenSteg';
 import { OppsummeringSteg } from 'steps/oppsummering/OppsummeringSteg';
 import { PlanenDeresSteg } from 'steps/planen-deres/PlanenDeresSteg';
@@ -16,34 +16,34 @@ import { Loader } from '@navikt/ds-react';
 import { KontoBeregningDto, Satser } from '@navikt/fp-types';
 
 interface Props {
-    stønadskontoer?: { '100': KontoBeregningDto; '80': KontoBeregningDto };
+    stønadskvoter?: { '100': KontoBeregningDto; '80': KontoBeregningDto };
     satser: Satser;
 }
 
-export const PlanleggerRouter = ({ stønadskontoer, satser }: Props) => {
+export const PlanleggerRouter = ({ stønadskvoter, satser }: Props) => {
     return (
         <Routes>
             <Route path="/" element={<OmPlanleggerenSteg />} />
             <Route path={PlanleggerRoutes.HVEM_PLANLEGGER} element={<HvemPlanleggerSteg />} />
-            <Route path={PlanleggerRoutes.OM_BARNET} element={<OmBarnetSteg />} />
+            <Route path={PlanleggerRoutes.OM_BARNET} element={<OmBarnetPlanleggerSteg />} />
             <Route path={PlanleggerRoutes.BARNEHAGEPLASS} element={<BarnehageplassSteg />} />
             <Route path={PlanleggerRoutes.ARBEIDSSITUASJON} element={<ArbeidssituasjonSteg satser={satser} />} />
             <Route path={PlanleggerRoutes.HVOR_MYE} element={<HvorMyeSteg satser={satser} />} />
             <Route
                 path={PlanleggerRoutes.HVOR_LANG_PERIODE}
-                element={stønadskontoer ? <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} /> : <Loader />}
+                element={stønadskvoter ? <HvorLangPeriodeSteg stønadskvoter={stønadskvoter} /> : <Loader />}
             />
             <Route
                 path={PlanleggerRoutes.FORDELING}
-                element={stønadskontoer ? <FordelingSteg stønadskontoer={stønadskontoer} /> : <Loader />}
+                element={stønadskvoter ? <FordelingSteg stønadskvoter={stønadskvoter} /> : <Loader />}
             />
             <Route
                 path={PlanleggerRoutes.PLANEN_DERES}
-                element={stønadskontoer ? <PlanenDeresSteg stønadskontoer={stønadskontoer} /> : <Loader />}
+                element={stønadskvoter ? <PlanenDeresSteg stønadskvoter={stønadskvoter} /> : <Loader />}
             />
             <Route
                 path={PlanleggerRoutes.OPPSUMMERING}
-                element={<OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} />}
+                element={<OppsummeringSteg stønadskvoter={stønadskvoter} satser={satser} />}
             />
             <Route path="*" element={<Navigate to="/" />} />
         </Routes>

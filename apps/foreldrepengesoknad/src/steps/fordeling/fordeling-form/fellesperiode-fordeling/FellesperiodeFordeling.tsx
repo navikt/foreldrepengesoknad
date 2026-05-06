@@ -3,10 +3,9 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { FellesperiodeFordelingValg, Fordeling } from 'types/Fordeling';
 import { FordelingDager, FordelingFargekode } from 'types/FordelingOversikt';
 
-import { Alert, BodyLong, HStack, Heading, VStack } from '@navikt/ds-react';
+import { Alert, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { RhfTextField } from '@navikt/fp-form-hooks';
-import { NavnPåForeldre } from '@navikt/fp-types';
 import { getNumberFromNumberInputValue } from '@navikt/fp-utils';
 import { isValidInteger, isValidNumberForm } from '@navikt/fp-validation';
 
@@ -94,12 +93,11 @@ const getFordelingDagerForVisning = (
 };
 
 interface Props {
-    navnPåForeldre: NavnPåForeldre;
     dagerMedFellesperiode: number;
     erFarEllerMedmor: boolean;
 }
 
-export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode, erFarEllerMedmor }: Props) => {
+export const FellesperiodeFordeling = ({ dagerMedFellesperiode, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
     const {
         control,
@@ -110,7 +108,6 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
     const valgtFordeling = watch('fordelingValg');
     const antallUkerFellesperiodeTilSøker = watch('antallUkerFellesperiodeTilSøker');
     const antallDagerFellesperiodeTilSøker = watch('antallDagerFellesperiodeTilSøker');
-    const navnAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const fordelingsdagerForVisning = getFordelingDagerForVisning(
         erFarEllerMedmor,
         dagerMedFellesperiode,
@@ -124,54 +121,49 @@ export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode,
             <FordelingValg dagerMedFellesperiode={dagerMedFellesperiode} />
             {valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE && (
                 <div className="pb-4 pl-4">
-                    <Heading size="xsmall">
-                        <FormattedMessage
-                            id="fordeling.antallUkerDager.spørsmål"
-                            values={{ harHeleUkerTilFordeling }}
-                        />
-                    </Heading>
-                    <BodyLong className="text-ax-text-neutral-subtle">
-                        <FormattedMessage
-                            id="fordeling.antallUkerDager.spørsmål.description"
-                            values={{ harHeleUkerTilFordeling, navnAnnenForelder }}
-                        />
-                    </BodyLong>
-                    <HStack gap="space-20" align="start">
-                        <RhfTextField
-                            control={control}
-                            name="antallUkerFellesperiodeTilSøker"
-                            label={<FormattedMessage id="fordeling.antallUker.spørsmål" />}
-                            validate={[
-                                isValidNumberForm(intl.formatMessage({ id: 'fordeling.antallUker.ugyldigFormat' })),
-                                isValidInteger(intl.formatMessage({ id: 'fordeling.antallUker.ugyldigFormat' })),
-                                isValidAntallUkerFellesperiode(
-                                    intl,
-                                    dagerMedFellesperiode,
-                                    antallDagerFellesperiodeTilSøker,
-                                ),
-                            ]}
-                            onChange={() => isSubmitted && void trigger()}
-                        />
-                        {!harHeleUkerTilFordeling && (
+                    <VStack gap="space-12">
+                        <Heading size="xsmall">
+                            <FormattedMessage id="fordeling.antallUkerDager.spørsmål" />
+                        </Heading>
+                        <HStack gap="space-20" align="start">
                             <RhfTextField
                                 control={control}
-                                name="antallDagerFellesperiodeTilSøker"
-                                label={<FormattedMessage id="fordeling.antallDager.spørsmål" />}
+                                name="antallUkerFellesperiodeTilSøker"
+                                label={<FormattedMessage id="fordeling.antallUker.spørsmål" />}
                                 validate={[
-                                    isValidNumberForm(
-                                        intl.formatMessage({ id: 'fordeling.antallDager.ugyldigFormat' }),
-                                    ),
-                                    isValidInteger(intl.formatMessage({ id: 'fordeling.antallDager.ugyldigFormat' })),
-                                    isValidAntallDagerFellesperiode(
+                                    isValidNumberForm(intl.formatMessage({ id: 'fordeling.antallUker.ugyldigFormat' })),
+                                    isValidInteger(intl.formatMessage({ id: 'fordeling.antallUker.ugyldigFormat' })),
+                                    isValidAntallUkerFellesperiode(
                                         intl,
                                         dagerMedFellesperiode,
-                                        antallUkerFellesperiodeTilSøker,
+                                        antallDagerFellesperiodeTilSøker,
                                     ),
                                 ]}
                                 onChange={() => isSubmitted && void trigger()}
                             />
-                        )}
-                    </HStack>
+                            {!harHeleUkerTilFordeling && (
+                                <RhfTextField
+                                    control={control}
+                                    name="antallDagerFellesperiodeTilSøker"
+                                    label={<FormattedMessage id="fordeling.antallDager.spørsmål" />}
+                                    validate={[
+                                        isValidNumberForm(
+                                            intl.formatMessage({ id: 'fordeling.antallDager.ugyldigFormat' }),
+                                        ),
+                                        isValidInteger(
+                                            intl.formatMessage({ id: 'fordeling.antallDager.ugyldigFormat' }),
+                                        ),
+                                        isValidAntallDagerFellesperiode(
+                                            intl,
+                                            dagerMedFellesperiode,
+                                            antallUkerFellesperiodeTilSøker,
+                                        ),
+                                    ]}
+                                    onChange={() => isSubmitted && void trigger()}
+                                />
+                            )}
+                        </HStack>
+                    </VStack>
                 </div>
             )}
             {valgtFordeling === FellesperiodeFordelingValg.HOPP_OVER_FORDELING && (

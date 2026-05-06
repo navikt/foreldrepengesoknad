@@ -1,12 +1,8 @@
 import { JSX, ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
-import { Fordeling } from 'types/Fordeling';
+import { FordelingPlanlegger, HvorLangPeriodePlanlegger, OmBarnetPlanlegger, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { HvorMye } from 'types/HvorMye';
-
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 export enum ContextDataType {
     HVEM_PLANLEGGER = 'HVEM_PLANLEGGER',
@@ -20,11 +16,11 @@ export enum ContextDataType {
 
 export type ContextDataMap = {
     [ContextDataType.HVEM_PLANLEGGER]?: HvemPlanlegger;
-    [ContextDataType.OM_BARNET]?: OmBarnet;
+    [ContextDataType.OM_BARNET]?: OmBarnetPlanlegger;
     [ContextDataType.ARBEIDSSITUASJON]?: Arbeidssituasjon;
     [ContextDataType.HVOR_MYE]?: HvorMye;
-    [ContextDataType.HVOR_LANG_PERIODE]?: HvorLangPeriode;
-    [ContextDataType.FORDELING]?: Fordeling;
+    [ContextDataType.HVOR_LANG_PERIODE]?: HvorLangPeriodePlanlegger;
+    [ContextDataType.FORDELING]?: FordelingPlanlegger;
     [ContextDataType.UTTAKSPLAN]?: UttakPeriode_fpoversikt[];
 };
 

@@ -2,7 +2,6 @@ import { CalendarIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import {
     erAlenesøker,
@@ -14,20 +13,20 @@ import {
 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { getAntallUkerOgDagerAktivitetsfriKvote, getAntallUkerOgDagerForeldrepenger } from 'utils/stønadskontoerUtils';
+import { getAntallUkerOgDagerAktivitetsfriKvote, getAntallUkerOgDagerForeldrepenger } from 'utils/stønadskvoterUtils';
 import { UttakUkerOgDager, Uttaksdata, getFamiliehendelsedato } from 'utils/uttakUtils';
 
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { Dekningsgrad, KontoBeregningDto } from '@navikt/fp-types';
+import { Dekningsgrad, KontoBeregningDto, OmBarnetPlanlegger } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 
 interface Props {
-    barnet: OmBarnet;
+    barnet: OmBarnetPlanlegger;
     hvemPlanlegger: HvemPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
-    valgtStønadskonto: KontoBeregningDto;
+    valgtStønadskvote: KontoBeregningDto;
     uttaksdata100: Uttaksdata;
     uttaksdata80: Uttaksdata;
     valgtDekningsgrad: Dekningsgrad;
@@ -38,7 +37,7 @@ export const ValgtDekningsgradInfoboks = ({
     barnet,
     hvemPlanlegger,
     arbeidssituasjon,
-    valgtStønadskonto,
+    valgtStønadskvote,
     uttaksdata100,
     uttaksdata80,
     valgtDekningsgrad,
@@ -143,8 +142,8 @@ export const ValgtDekningsgradInfoboks = ({
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.FørsteUker"
                             values={{
-                                uker: getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskonto).uker,
-                                dager: getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskonto).dager,
+                                uker: getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskvote).uker,
+                                dager: getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskvote).dager,
                                 uker2: antallUkerOgDager.uker,
                                 dager2: antallUkerOgDager.dager,
                                 b: (msg) => <b>{msg}</b>,
@@ -157,8 +156,8 @@ export const ValgtDekningsgradInfoboks = ({
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.AndreUker"
                             values={{
-                                uker: getAntallUkerOgDagerForeldrepenger(valgtStønadskonto).uker,
-                                dager: getAntallUkerOgDagerForeldrepenger(valgtStønadskonto).dager,
+                                uker: getAntallUkerOgDagerForeldrepenger(valgtStønadskvote).uker,
+                                dager: getAntallUkerOgDagerForeldrepenger(valgtStønadskvote).dager,
                                 uker2: antallUkerOgDager.uker,
                                 dager2: antallUkerOgDager.dager,
                                 a: (msg) => (

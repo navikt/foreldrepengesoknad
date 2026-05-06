@@ -1,11 +1,11 @@
 import { KontoBeregningResultatDto } from '@navikt/fp-types';
 
-export const stønadskontoer2 = {
+export const stønadskvoter1 = {
     '80': {
         kontoer: [
             {
                 konto: 'FELLESPERIODE',
-                dager: 101,
+                dager: 90,
             },
             {
                 konto: 'MØDREKVOTE',
@@ -21,7 +21,7 @@ export const stønadskontoer2 = {
             },
         ],
         minsteretter: {
-            farRundtFødsel: 10,
+            farRundtFødsel: 0,
             toTette: 0,
         },
         tillegg: {
@@ -49,7 +49,7 @@ export const stønadskontoer2 = {
             },
         ],
         minsteretter: {
-            farRundtFødsel: 10,
+            farRundtFødsel: 0,
             toTette: 0,
         },
         tillegg: {

@@ -65,9 +65,9 @@ export const hentSakerOptions = () =>
         queryFn: () => ky.get(API_URLS.saker).json<Saker_fpoversikt>(),
     });
 
-export const hentUttaksKontoOptions = (body: KontoBeregningGrunnlagDto) =>
+export const hentUttakskvoteOptions = (body: KontoBeregningGrunnlagDto) =>
     queryOptions({
-        queryKey: ['UTTAKSKONTO', body],
+        queryKey: ['UTTAKSKVOTE', body],
         queryFn: () => ky.post(API_URLS.konto, { json: body }).json<KontoBeregningResultatDto>(),
     });
 

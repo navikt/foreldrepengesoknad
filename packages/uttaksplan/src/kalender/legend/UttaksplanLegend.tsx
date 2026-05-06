@@ -199,10 +199,10 @@ const LabelButtonMedEllerUtenToolip = ({
 
     const {
         foreldreInfo: { søker, navnPåForeldre, erMedmorDelAvSøknaden, erIkkeSøkerSpesifisert, rettighetType },
-        valgtStønadskonto,
+        valgtStønadskvote,
     } = useUttaksplanData();
 
-    const harAktivitetsfriKvote = valgtStønadskonto.kontoer.some((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
+    const harAktivitetsfriKvote = valgtStønadskvote.kontoer.some((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
 
     const erFarEllerMedmor = søker === 'FAR_MEDMOR';
     const navnAnnenPart = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;

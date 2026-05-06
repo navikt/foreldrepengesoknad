@@ -2,10 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
-} from 'api/getStønadskontoParams';
+} from 'api/getStønadskvoteParams';
 import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
+import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
@@ -13,7 +14,7 @@ import { getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getNavnPåForeldre } from 'utils/personUtils';
-import { getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
+import { getAntallUkerFellesperiode } from 'utils/stønadskvoterUtils';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -44,6 +45,7 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const oppdaterBarn = notEmpty(useContextSaveData(ContextDataType.OM_BARNET));
+    const resetUttaksplanData = useResetUttaksplanData();
 
     const termindato = getTermindato(barn);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
@@ -61,19 +63,19 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
     const uttaksplanAnnenPart = annenPartsVedtakQuery.data?.perioder;
 
     const kontoerOptions = useStønadsKontoerOptions();
-    const valgtStønadskonto = useQuery({
+    const valgtStønadskvote = useQuery({
         ...kontoerOptions,
         select: (kontoer) => {
             return kontoer[dekningsgrad];
         },
     }).data;
 
-    const minsterett = valgtStønadskonto?.minsteretter;
+    const minsterett = valgtStønadskvote?.minsteretter;
 
     const fordelingScenario =
-        valgtStønadskonto && minsterett
+        valgtStønadskvote && minsterett
             ? getFordelingFraKontoer(
-                  valgtStønadskonto,
+                  valgtStønadskvote,
                   minsterett,
                   søkersituasjon,
                   barn,
@@ -83,7 +85,7 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
                   uttaksplanAnnenPart,
               )
             : [];
-    const ukerMedFellesperiode = valgtStønadskonto ? getAntallUkerFellesperiode(valgtStønadskonto) : 0;
+    const ukerMedFellesperiode = valgtStønadskvote ? getAntallUkerFellesperiode(valgtStønadskvote) : 0;
     const dagerMedFellesperiode = ukerMedFellesperiode * 5;
     const sisteDagAnnenForelder = getSisteUttaksdagAnnenForelder(erFarEllerMedmor, deltUttak, uttaksplanAnnenPart);
 
@@ -104,20 +106,28 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
     );
 
     useEffect(() => {
+        let oppdatertBarn = barn;
+        let barnEndret = false;
         if (erFarEllerMedmor && barn.antallBarn !== saksgrunnlagsAntallBarn) {
-            oppdaterBarn({ ...barn, antallBarn: saksgrunnlagsAntallBarn });
+            oppdatertBarn = { ...oppdatertBarn, antallBarn: saksgrunnlagsAntallBarn };
+            barnEndret = true;
         }
         if (
             erFarEllerMedmor &&
-            isFødtBarn(barn) &&
+            isFødtBarn(oppdatertBarn) &&
             saksgrunnlagsTermindato &&
-            barn.termindato !== saksgrunnlagsTermindato
+            oppdatertBarn.termindato !== saksgrunnlagsTermindato
         ) {
-            oppdaterBarn({ ...barn, termindato: saksgrunnlagsTermindato });
+            oppdatertBarn = { ...oppdatertBarn, termindato: saksgrunnlagsTermindato };
+            barnEndret = true;
         }
-    }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn, saksgrunnlagsTermindato]);
+        if (barnEndret) {
+            oppdaterBarn(oppdatertBarn);
+            resetUttaksplanData();
+        }
+    }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn, saksgrunnlagsTermindato, resetUttaksplanData]);
 
-    if (!valgtStønadskonto || annenPartsVedtakQuery.isLoading) {
+    if (!valgtStønadskvote || annenPartsVedtakQuery.isLoading) {
         return <Spinner />;
     }
 
@@ -126,7 +136,7 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
             <Step steps={stepConfig}>
                 <VStack gap="space-20">
                     <FordelingOversikt
-                        kontoer={valgtStønadskonto}
+                        kontoer={valgtStønadskvote}
                         navnFarMedmor={navnFarMedmor}
                         navnMor={navnMor}
                         deltUttak={deltUttak}

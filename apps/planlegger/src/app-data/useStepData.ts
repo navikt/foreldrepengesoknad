@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erFlereSøkere } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
@@ -27,10 +27,10 @@ const getLabelConfig = (intl: IntlShape): Record<PlanleggerRoutes, string> => ({
     [PlanleggerRoutes.OPPSUMMERING]: intl.formatMessage({ id: 'OppsummeringHeader.Tittel' }),
 });
 
-const erBarnIkkeOppgittEllerYngreEnnTreÅr = (omBarnet?: OmBarnet) =>
+const erBarnIkkeOppgittEllerYngreEnnTreÅr = (omBarnet?: OmBarnetPlanlegger) =>
     !omBarnet || !(erBarnetFødt(omBarnet) && dayjs(omBarnet.fødselsdato).isBefore(DATE_3_YEARS_AGO));
 
-const erBarnetIkkeAdoptert = (omBarnet?: OmBarnet) => !omBarnet || !erBarnetAdoptert(omBarnet);
+const erBarnetIkkeAdoptert = (omBarnet?: OmBarnetPlanlegger) => !omBarnet || !erBarnetAdoptert(omBarnet);
 
 const harMinstEnPartJobb = (arbeidssituasjon: Arbeidssituasjon) =>
     arbeidssituasjon?.status === Arbeidsstatus.JOBBER || arbeidssituasjon?.jobberAnnenPart;
@@ -54,7 +54,7 @@ const showFordelingStep = (
     return false;
 };
 
-const showHvorLangPeriodeEllerOversiktStep = (
+const showHvorLangPeriodePlanleggerEllerOversiktStep = (
     path: PlanleggerRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ) => {
@@ -125,7 +125,7 @@ export const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
                 showBarnehageplassStep(path, getStateData) ||
                 showHvorMyeStep(path, getStateData) ||
                 showFordelingStep(path, getStateData) ||
-                showHvorLangPeriodeEllerOversiktStep(path, getStateData)
+                showHvorLangPeriodePlanleggerEllerOversiktStep(path, getStateData)
                     ? [path]
                     : [],
             ),

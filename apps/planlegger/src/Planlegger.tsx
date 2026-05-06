@@ -11,13 +11,12 @@ import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { KontoBeregningResultatDto } from '@navikt/fp-types';
+import { KontoBeregningResultatDto, OmBarnetPlanlegger } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
 import { decodeBase64 } from '@navikt/fp-utils';
 
@@ -27,7 +26,7 @@ const finnBrukerRolle = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRet
     return harMorRett(hvemHarRett, hvemPlanlegger) ? 'MOR' : 'FAR';
 };
 
-const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett, omBarnet: OmBarnet) => {
+const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett, omBarnet: OmBarnetPlanlegger) => {
     if (hvemPlanlegger.type === HvemPlanleggerType.MOR || hvemPlanlegger.type === HvemPlanleggerType.FAR) {
         return 'ALENEOMSORG';
     }
@@ -43,8 +42,8 @@ const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHar
     return 'BARE_SØKER_RETT';
 };
 
-const getStønadskontoer = async (
-    omBarnet?: OmBarnet,
+const getStønadskvoter = async (
+    omBarnet?: OmBarnetPlanlegger,
     arbeidssituasjon?: Arbeidssituasjon,
     hvemPlanlegger?: HvemPlanlegger,
 ) => {
@@ -73,17 +72,17 @@ export const PlanleggerDataFetcher = () => {
 
     const hvemHarRett = arbeidssituasjon ? utledHvemSomHarRett(arbeidssituasjon) : undefined;
 
-    const stønadskontoerData = useQuery({
-        queryKey: ['KONTOER', omBarnet, arbeidssituasjon, hvemPlanlegger],
-        queryFn: () => getStønadskontoer(omBarnet, arbeidssituasjon, hvemPlanlegger),
+    const stønadskvoterData = useQuery({
+        queryKey: ['KVOTER', omBarnet, arbeidssituasjon, hvemPlanlegger],
+        queryFn: () => getStønadskvoter(omBarnet, arbeidssituasjon, hvemPlanlegger),
         enabled: hvemHarRett !== undefined && hvemHarRett !== 'ingenHarRett',
     });
 
-    if (stønadskontoerData.error) {
+    if (stønadskvoterData.error) {
         return <SimpleErrorPage retryCallback={() => location.reload()} />;
     }
 
-    return <PlanleggerRouter stønadskontoer={stønadskontoerData.data} satser={DEFAULT_SATSER} />;
+    return <PlanleggerRouter stønadskvoter={stønadskvoterData.data} satser={DEFAULT_SATSER} />;
 };
 
 export const PlanleggerDataInit = () => {

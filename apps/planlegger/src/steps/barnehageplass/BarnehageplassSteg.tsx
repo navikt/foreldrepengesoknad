@@ -5,7 +5,7 @@ import { useStepData } from 'appData/useStepData';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getFamiliehendelsedato } from 'steps/oppsummering/expansion-cards/BarnehageplassOppsummering';
-import { OmBarnet } from 'types/Barnet';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { Uttaksdata } from 'utils/uttakUtils';
@@ -18,7 +18,7 @@ import { beregnBarnehagestartDato } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
 
-export const barnehagestartDato = (barnet: OmBarnet): string | undefined => {
+export const barnehagestartDato = (barnet: OmBarnetPlanlegger): string | undefined => {
     if (erBarnetAdoptert(barnet)) {
         return undefined;
     }

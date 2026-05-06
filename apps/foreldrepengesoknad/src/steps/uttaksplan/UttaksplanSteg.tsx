@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useStepConfig } from 'appData/useStepConfig';
-import { ReactNode, useRef, useState } from 'react';
+import { ReactNode, useCallback, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
@@ -56,6 +56,14 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
 
     const [feilmelding, setFeilmelding] = useState<ReactNode | undefined>();
 
+    const oppdaterUttaksplanOgFjernFeilmelding = useCallback(
+        (...args: Parameters<typeof oppdaterUttaksplan>) => {
+            setFeilmelding(undefined);
+            oppdaterUttaksplan(...args);
+        },
+        [oppdaterUttaksplan],
+    );
+
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
@@ -82,7 +90,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
     };
 
     const kontoerOptions = useStønadsKontoerOptions();
-    const tilgjengeligeStønadskontoerQuery = useQuery({
+    const tilgjengeligeStønadskvoterQuery = useQuery({
         ...kontoerOptions,
         select: (kontoer) => {
             return kontoer[dekningsgrad];
@@ -96,11 +104,11 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
 
     const uttaksplanForEksisterendeSak = useUttaksplanForEksisterendeSak(annenPartVedtakQuery.data?.perioder);
 
-    const valgteStønadskontoer = tilgjengeligeStønadskontoerQuery.data;
+    const valgteStønadskvoter = tilgjengeligeStønadskvoterQuery.data;
 
     // Filtrerer ut periodane til annen part midlertidig fram til me får på plass lagring av desse periodane
     const nyttUttaksplanForslag = useUttaksplanForslag(
-        valgteStønadskontoer,
+        valgteStønadskvoter,
         annenPartVedtakQuery.data?.perioder,
     ).filter(
         (periode) =>
@@ -108,7 +116,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
             periode.forelder === (erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
     );
 
-    if (!valgteStønadskontoer || annenPartVedtakQuery.isLoading) {
+    if (!valgteStønadskvoter || annenPartVedtakQuery.isLoading) {
         return null;
     }
 
@@ -150,7 +158,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
                             (søkersituasjon.rolle === 'mor' && getKjønnFromFnr(annenForelder) === 'K'),
                         erIkkeSøkerSpesifisert: false,
                     }}
-                    valgtStønadskonto={valgteStønadskontoer}
+                    valgtStønadskvote={valgteStønadskvoter}
                     harAktivitetskravIPeriodeUtenUttak={false}
                     uttakPerioder={uttaksplan || defaultUttaksperioder}
                     erPeriodeneTilAnnenPartLåst={!!tidligereUttaksperioder}
@@ -168,7 +176,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
                     {feilmelding && <Alert variant="error">{feilmelding}</Alert>}
 
                     <UttaksplanRedigeringProvider
-                        oppdaterUttaksplan={oppdaterUttaksplan}
+                        oppdaterUttaksplan={oppdaterUttaksplanOgFjernFeilmelding}
                         harEndretPlan={erPlanenEndret}
                     >
                         <FjernAltIUttaksplanModal />

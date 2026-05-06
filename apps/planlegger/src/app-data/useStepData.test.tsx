@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
@@ -20,7 +20,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 const getWrapper =
     (
         route: PlanleggerRoutes,
-        barnet?: OmBarnet,
+        barnet?: OmBarnetPlanlegger,
         hvemPlanlegger?: HvemPlanlegger,
         arbeidssituasjon?: Arbeidssituasjon,
     ) =>

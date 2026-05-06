@@ -1,4 +1,6 @@
-export type BarnetErFødt = {
+/** Planlegger-specific input type for "Om barnet" context data */
+
+export type BarnetErFødtPlanlegger = {
     erFødsel: boolean;
     antallBarn: string;
     erBarnetFødt: boolean;
@@ -6,20 +8,18 @@ export type BarnetErFødt = {
     termindato?: string;
 };
 
-export type BarnetErIkkeFødt = {
+export type BarnetErIkkeFødtPlanlegger = {
     erFødsel: boolean;
     antallBarn: string;
     erBarnetFødt: boolean;
     termindato: string;
 };
 
-export type BarnetErAdoptert = {
+export type BarnetErAdoptertPlanlegger = {
     erFødsel: boolean;
     antallBarn: string;
     overtakelsesdato: string;
     fødselsdato: string;
 };
 
-type Fødsel = BarnetErFødt | BarnetErIkkeFødt;
-
-export type OmBarnet = Fødsel | BarnetErAdoptert;
+export type OmBarnetPlanlegger = BarnetErFødtPlanlegger | BarnetErIkkeFødtPlanlegger | BarnetErAdoptertPlanlegger;

@@ -78,7 +78,7 @@ const kontoNårBeggeHarRett = {
 
 export const BeggeRettMorIngenDagerBrukt: Story = {
     args: {
-        valgtStønadskonto: kontoNårBeggeHarRett,
+        valgtStønadskvote: kontoNårBeggeHarRett,
         foreldreInfo: {
             ...DEFAULT_FORELDRE_INFO,
             rettighetType: 'BEGGE_RETT',
@@ -90,7 +90,7 @@ export const BeggeRettMorIngenDagerBrukt: Story = {
 
 export const BeggeRettMorAlleDagerBrukt: Story = {
     args: {
-        valgtStønadskonto: kontoNårBeggeHarRett,
+        valgtStønadskvote: kontoNårBeggeHarRett,
         uttakPerioder: [
             {
                 fom: '2025-05-06',
@@ -149,7 +149,7 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
 
 export const BeggeRettMorForMangeDagerBrukt: Story = {
     args: {
-        valgtStønadskonto: kontoNårBeggeHarRett,
+        valgtStønadskvote: kontoNårBeggeHarRett,
         uttakPerioder: [
             {
                 fom: '2024-11-18',
@@ -204,7 +204,7 @@ export const BeggeRettMorForMangeDagerBrukt: Story = {
 
 export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
     args: {
-        valgtStønadskonto: kontoNårBeggeHarRett,
+        valgtStønadskvote: kontoNårBeggeHarRett,
         uttakPerioder: [
             {
                 fom: '2024-11-18',
@@ -252,7 +252,7 @@ export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
 
 export const BeggeRettMorLedigeDager: Story = {
     args: {
-        valgtStønadskonto: kontoNårBeggeHarRett,
+        valgtStønadskvote: kontoNårBeggeHarRett,
         uttakPerioder: [
             {
                 fom: '2024-11-18',
@@ -312,7 +312,7 @@ export const BeggeRettMorLedigeDagerMedDagerFørFødselFaltBort: Story = {
             fødselsdatoer: ['2025-05-06'],
             antallBarn: 1,
         },
-        valgtStønadskonto: kontoNårBeggeHarRett,
+        valgtStønadskvote: kontoNårBeggeHarRett,
         uttakPerioder: [
             {
                 fom: '2024-11-18',
@@ -388,7 +388,7 @@ const kontoNårBareFarHarRett = {
 
 export const EnRettFarAlleDagerBrukt: Story = {
     args: {
-        valgtStønadskonto: kontoNårBareFarHarRett,
+        valgtStønadskvote: kontoNårBareFarHarRett,
         uttakPerioder: [
             {
                 fom: '2024-12-06',
@@ -418,7 +418,7 @@ export const EnRettFarAlleDagerBrukt: Story = {
 
 export const EnRettFarLedigeDager: Story = {
     args: {
-        valgtStønadskonto: kontoNårBareFarHarRett,
+        valgtStønadskvote: kontoNårBareFarHarRett,
         uttakPerioder: [
             {
                 fom: '2024-12-06',
@@ -470,7 +470,7 @@ const kontoNårBareMorHarRett = {
 
 export const EnRettMorAlleDagerBrukt: Story = {
     args: {
-        valgtStønadskonto: kontoNårBareMorHarRett,
+        valgtStønadskvote: kontoNårBareMorHarRett,
         uttakPerioder: [
             {
                 fom: '2024-11-19',
@@ -498,7 +498,7 @@ export const EnRettMorAlleDagerBrukt: Story = {
 
 export const EnRettMorLedigeDager: Story = {
     args: {
-        valgtStønadskonto: kontoNårBareMorHarRett,
+        valgtStønadskvote: kontoNårBareMorHarRett,
         uttakPerioder: [
             {
                 fom: '2024-11-19',
@@ -526,7 +526,7 @@ export const EnRettMorLedigeDager: Story = {
 
 export const AleneomsorgMorLedigeDager: Story = {
     args: {
-        valgtStønadskonto: kontoNårBareMorHarRett,
+        valgtStønadskvote: kontoNårBareMorHarRett,
         uttakPerioder: [
             {
                 fom: '2024-11-19',
@@ -554,7 +554,7 @@ export const AleneomsorgMorLedigeDager: Story = {
 
 export const AleneomsorgFarLedigeDager: Story = {
     args: {
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 {
                     konto: 'FORELDREPENGER',
@@ -597,7 +597,7 @@ export const AleneomsorgFarLedigeDager: Story = {
 
 export const AleneomsorgFarForMangeDager: Story = {
     args: {
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 {
                     konto: 'FORELDREPENGER',
@@ -657,7 +657,7 @@ export const BeggeRettMorOgMedmorMorIngenDagerBrukt: Story = {
 export const MorHarPrematuruker: Story = {
     name: 'Mor har prematuruker',
     args: {
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 {
                     konto: 'FELLESPERIODE',
@@ -725,7 +725,7 @@ export const MorHarPrematuruker: Story = {
 
 export const BeggeRettMangeOvertrukneDagerMedOverføringsÅrsak: Story = {
     args: {
-        valgtStønadskonto: kontoNårBeggeHarRett,
+        valgtStønadskvote: kontoNårBeggeHarRett,
         foreldreInfo: {
             ...DEFAULT_FORELDRE_INFO,
             rettighetType: 'BEGGE_RETT',
@@ -775,7 +775,7 @@ export const BeggeRettMangeOvertrukneDagerMedOverføringsÅrsak: Story = {
 
 export const BHFRMedAvslåttePerioder: Story = {
     args: {
-        valgtStønadskonto: kontoNårBareFarHarRett,
+        valgtStønadskvote: kontoNårBareFarHarRett,
         uttakPerioder: [
             {
                 fom: '2026-03-23',

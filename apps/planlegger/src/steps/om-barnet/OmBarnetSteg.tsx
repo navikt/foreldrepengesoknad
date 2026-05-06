@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import isEqual from 'lodash/isEqual';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OmBarnet } from 'types/Barnet';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { erAlenesøker as erAlene, erFarOgFar } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
@@ -33,18 +33,18 @@ const finnHvorMangeBarnLabel = (erAlenesøker: boolean, erFødsel: boolean) => {
     return <FormattedMessage id="OmBarnetSteg.Adopsjon.HvorMange" values={{ erAlenesøker }} />;
 };
 
-export const OmBarnetSteg = () => {
+export const OmBarnetPlanleggerSteg = () => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
-    const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
+    const oppdaterOmBarnetPlanlegger = useContextSaveData(ContextDataType.OM_BARNET);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
-    const lagre = (formValues: OmBarnet) => {
-        oppdaterOmBarnet(formValues);
+    const lagre = (formValues: OmBarnetPlanlegger) => {
+        oppdaterOmBarnetPlanlegger(formValues);
         if (omBarnet && !isEqual(omBarnet, formValues)) {
             oppdaterUttaksplan(undefined);
         }
@@ -58,7 +58,7 @@ export const OmBarnetSteg = () => {
         }
     };
 
-    const formMethods = useForm<OmBarnet>({
+    const formMethods = useForm<OmBarnetPlanlegger>({
         shouldUnregister: true,
         defaultValues: omBarnet,
     });
@@ -175,7 +175,7 @@ export const OmBarnetSteg = () => {
                         {erFødsel && antallBarn && (
                             <Fødsel
                                 hvemPlanlegger={hvemPlanlegger}
-                                erOmBarnetIkkeOppgittFraFør={omBarnet === undefined}
+                                erOmBarnetPlanleggerIkkeOppgittFraFør={omBarnet === undefined}
                                 antallBarn={antallBarn}
                                 scrollToBottom={scrollToBottom}
                             />
@@ -183,15 +183,15 @@ export const OmBarnetSteg = () => {
                         {erFødsel === false && antallBarn && (
                             <Adopsjon
                                 erAlenesøker={erAlenesøker}
-                                erOmBarnetIkkeOppgittFraFør={omBarnet === undefined}
+                                erOmBarnetPlanleggerIkkeOppgittFraFør={omBarnet === undefined}
                                 antallBarn={antallBarn}
                                 hvemPlanlegger={hvemPlanlegger}
                             />
                         )}
                     </VStack>
                     <Spacer />
-                    <StepButtonsHookForm<OmBarnet>
-                        saveDataOnPreviousClick={oppdaterOmBarnet}
+                    <StepButtonsHookForm<OmBarnetPlanlegger>
+                        saveDataOnPreviousClick={oppdaterOmBarnetPlanlegger}
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         useSimplifiedTexts
                     />

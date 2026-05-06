@@ -401,6 +401,19 @@ const erKombinasjonAvArbeidOgForeldrepengerDe6FørsteUkene = <T extends LeggTilE
     }
 
     if (
+        formValues.skalDuKombinereArbeidOgUttakMor &&
+        (formValues.kontoTypeMor === 'MØDREKVOTE' ||
+            formValues.kontoTypeMor === 'FELLESPERIODE' ||
+            formValues.kontoTypeMor === 'FORELDREPENGER') &&
+        UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
+            perioder,
+            familiehendelsedato,
+        )
+    ) {
+        return intl.formatMessage({ id: 'endreTidsPeriodeModal.kanIkkeKombinere' });
+    }
+
+    if (
         formValues.skalDuKombinereArbeidOgUttakFarMedmor &&
         formValues.kontoTypeFarMedmor === 'MØDREKVOTE' &&
         UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(

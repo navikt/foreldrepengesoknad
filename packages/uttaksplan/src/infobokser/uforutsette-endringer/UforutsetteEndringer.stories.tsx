@@ -47,7 +47,7 @@ const meta = {
         harAktivitetskravIPeriodeUtenUttak: false,
         aktiveArbeidsforhold: [],
         loggExpansionCardOpen: () => action('loggExpansionCardOpen'),
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
                 { konto: 'FEDREKVOTE', dager: 95 },
@@ -67,14 +67,14 @@ const meta = {
         harAktivitetskravIPeriodeUtenUttak,
         erPeriodeneTilAnnenPartLåst,
         aktiveArbeidsforhold,
-        valgtStønadskonto,
+        valgtStønadskvote,
         erEndringssøknad,
     }) => {
         return (
             <UttaksplanDataProvider
                 barn={barn}
                 foreldreInfo={foreldreInfo}
-                valgtStønadskonto={valgtStønadskonto}
+                valgtStønadskvote={valgtStønadskvote}
                 harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
                 uttakPerioder={uttakPerioder}
                 erPeriodeneTilAnnenPartLåst={erPeriodeneTilAnnenPartLåst}

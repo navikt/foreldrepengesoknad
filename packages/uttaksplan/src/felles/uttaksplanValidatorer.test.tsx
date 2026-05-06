@@ -131,7 +131,7 @@ const DEFAULT_DATA = {
         erMedmorDelAvSøknaden: false,
         navnPåForeldre: { farMedmor: 'Far Medmor', mor: 'Mor' },
     },
-    valgtStønadskonto: {
+    valgtStønadskvote: {
         kontoer: [
             { konto: 'MØDREKVOTE', dager: 100 },
             { konto: 'FEDREKVOTE', dager: 100 },
@@ -168,7 +168,7 @@ const getWrapper =
     );
 
 describe('useFormSubmitValidator', () => {
-    it('skal ikke returnere feilmelding dersom mor kombinerer arbeid og foreldrepenger de første 6 ukene', () => {
+    it('skal returnere feilmelding dersom mor kombinerer arbeid og foreldrepenger de første 6 ukene', () => {
         const { result } = renderHook(() => useFormSubmitValidator(), {
             wrapper: getWrapper(),
         });
@@ -190,7 +190,7 @@ describe('useFormSubmitValidator', () => {
         const valider = result.current;
         const feilmelding = valider(nyePerioder, formValues);
 
-        expect(feilmelding).toBeNull();
+        expect(feilmelding).toBe('Mor kan ikke kombinere foreldrepenger med arbeid de første seks ukene');
     });
 
     it('skal returnere feilmelding dersom far kombinerer arbeid og mødrekvote de første 6 ukene', () => {

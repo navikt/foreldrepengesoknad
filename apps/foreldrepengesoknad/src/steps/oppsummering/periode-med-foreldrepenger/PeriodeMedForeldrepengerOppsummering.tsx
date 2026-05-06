@@ -4,7 +4,7 @@ import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getVarighetString } from 'utils/dateUtils';
-import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
+import { getAntallUkerFraStønadskvoter } from 'utils/stønadskvoterUtils';
 
 import { FormSummary } from '@navikt/ds-react';
 
@@ -72,7 +72,7 @@ const PeriodeLabel = () => {
             <FormattedMessage
                 id="uttaksplaninfo.49Uker"
                 values={{
-                    varighetString: getVarighetString(getAntallUkerFraStønadskontoer(konto.kontoer) * 5, intl),
+                    varighetString: getVarighetString(getAntallUkerFraStønadskvoter(konto.kontoer) * 5, intl),
                 }}
             />
         );
@@ -82,7 +82,7 @@ const PeriodeLabel = () => {
         <FormattedMessage
             id="uttaksplaninfo.59Uker"
             values={{
-                varighetString: getVarighetString(getAntallUkerFraStønadskontoer(konto.kontoer) * 5, intl),
+                varighetString: getVarighetString(getAntallUkerFraStønadskvoter(konto.kontoer) * 5, intl),
             }}
         />
     );

@@ -23,4 +23,4 @@ type Story = StoryObj<typeof meta>;
 
 export const FpEllerEsVeiviser: Story = {};
 
-export const FpEllerEsVeiviserMockaStønadskontoerOgSatser: Story = {};
+export const FpEllerEsVeiviserMockaStønadskvoterOgSatser: Story = {};

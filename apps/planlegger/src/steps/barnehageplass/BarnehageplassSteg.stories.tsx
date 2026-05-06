@@ -4,14 +4,14 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
-import { OmBarnet } from 'types/Barnet';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { BarnehageplassSteg } from './BarnehageplassSteg';
 
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
-    omBarnet: OmBarnet;
+    omBarnet: OmBarnetPlanlegger;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof BarnehageplassSteg>;
 

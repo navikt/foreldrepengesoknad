@@ -1,7 +1,7 @@
 import { BlueRadioGroup } from 'components/form-wrappers/BlueRadioGroup';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OmBarnet } from 'types/Barnet';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 import { Radio, VStack } from '@navikt/ds-react';
@@ -13,15 +13,15 @@ import { ErIkkeFødtPanel } from './ErIkkeFødtPanel';
 
 type Props = {
     hvemPlanlegger: HvemPlanlegger;
-    erOmBarnetIkkeOppgittFraFør: boolean;
+    erOmBarnetPlanleggerIkkeOppgittFraFør: boolean;
     antallBarn?: string;
     scrollToBottom: () => void;
 };
 
-export const Fødsel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, antallBarn, scrollToBottom }: Props) => {
+export const Fødsel = ({ hvemPlanlegger, erOmBarnetPlanleggerIkkeOppgittFraFør, antallBarn, scrollToBottom }: Props) => {
     const intl = useIntl();
 
-    const formMethods = useFormContext<OmBarnet>();
+    const formMethods = useFormContext<OmBarnetPlanlegger>();
     const erBarnetFødt = formMethods.watch('erBarnetFødt');
 
     return (
@@ -57,7 +57,7 @@ export const Fødsel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, antallBa
             {erBarnetFødt && (
                 <ErFødtPanel
                     hvemPlanlegger={hvemPlanlegger}
-                    erOmBarnetIkkeOppgittFraFør={erOmBarnetIkkeOppgittFraFør}
+                    erOmBarnetPlanleggerIkkeOppgittFraFør={erOmBarnetPlanleggerIkkeOppgittFraFør}
                     antallBarn={antallBarn}
                     scrollToBottom={scrollToBottom}
                 />
@@ -65,7 +65,7 @@ export const Fødsel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, antallBa
             {erBarnetFødt === false && (
                 <ErIkkeFødtPanel
                     hvemPlanlegger={hvemPlanlegger}
-                    erOmBarnetIkkeOppgittFraFør={erOmBarnetIkkeOppgittFraFør}
+                    erOmBarnetPlanleggerIkkeOppgittFraFør={erOmBarnetPlanleggerIkkeOppgittFraFør}
                     scrollToBottom={scrollToBottom}
                 />
             )}

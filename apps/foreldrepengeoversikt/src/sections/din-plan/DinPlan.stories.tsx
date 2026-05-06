@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
 import { saker } from 'storybookData/saker/saker';
-import { stønadskontoer1 } from 'storybookData/stønadskontoer/stønadskontoer1';
-import { stønadskontoer2 } from 'storybookData/stønadskontoer/stønadskontoer2';
+import { stønadskvoter1 } from 'storybookData/stønadskvoter/stønadskvoter1';
+import { stønadskvoter2 } from 'storybookData/stønadskvoter/stønadskvoter2';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -21,7 +21,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     parameters: {
         msw: {
-            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(stønadskontoer1))],
+            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(stønadskvoter1))],
         },
     },
     args: {
@@ -46,7 +46,7 @@ export const Default: Story = {
 export const FarSøker: Story = {
     parameters: {
         msw: {
-            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(stønadskontoer2))],
+            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(stønadskvoter2))],
         },
     },
     args: {
@@ -160,7 +160,7 @@ export const MorOgFarOgFarGraderer: Story = {
     name: 'Mor og far søker - far graderer',
     parameters: {
         msw: {
-            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(stønadskontoer2))],
+            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(stønadskvoter2))],
         },
     },
     args: {

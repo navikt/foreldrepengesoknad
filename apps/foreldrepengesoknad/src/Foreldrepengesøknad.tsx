@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { API_URLS, mellomlagretInfoOptions, sakerOptions, useAnnenPartVedtakOptions, søkerinfoOptions } from 'api/queries';
-import { ContextDataType, FpDataContext } from 'appData/FpDataContext';
+import { ContextDataMap, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
+import { usePlanleggerDataFromUrl } from 'appData/usePlanleggerDataFromUrl';
 import { SøknadRoutes } from 'appData/routes';
 import ky from 'ky';
 import isEqual from 'lodash/isEqual';
@@ -38,6 +39,8 @@ export const Foreldrepengesøknad = () => {
     const mellomlagretInfoQuery = useQuery(mellomlagretInfoOptions());
     const mellomlagretInfoData = mellomlagretInfoQuery.data;
 
+    const planleggerData = usePlanleggerDataFromUrl(søkerinfoQuery.data?.kjønn);
+
     useEffect(() => {
         if (søkerinfoQuery.error || sakerQuery.error) {
             const error = new Error(intl.formatMessage({ id: 'Foreldrepengesøknad.FeilVedHentingAvInformasjon' }));
@@ -52,9 +55,13 @@ export const Foreldrepengesøknad = () => {
     const skalBrukeMellomlagretData = mellomlagretInfoData !== undefined && shouldApplyStorage(mellomlagretInfoData);
     const mellomlagretData = skalBrukeMellomlagretData ? mellomlagretInfoData : undefined;
 
+    const initialState: ContextDataMap | undefined = planleggerData
+        ? { ...mellomlagretData, ...planleggerData, [ContextDataType.KOMMER_FRA_PLANLEGGER]: true }
+        : mellomlagretData;
+
     return (
         <ErrorBoundary appName="foreldrepengesoknad" retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}>
-            <FpDataContext initialState={mellomlagretData}>
+            <FpDataContext initialState={initialState}>
                 <RegisterdataSjekk
                     mellomlagretData={mellomlagretData}
                     søkerInfo={søkerinfoQuery.data}
