@@ -1,13 +1,12 @@
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { AnnenForelder } from 'types/AnnenForelder';
 import { validateFødselsnummer, validateTextInputField } from 'utils/validationUtil';
 
 import { RhfCheckbox, RhfSelect, RhfTextField } from '@navikt/fp-form-hooks';
 import { Barn, Søkerrolle, isAdoptertStebarn } from '@navikt/fp-types';
 import { createCountryOptions } from '@navikt/fp-utils';
 import { isRequired } from '@navikt/fp-validation';
-
-import { AnnenForelder } from 'types/AnnenForelder';
 
 const isValidText = (intl: IntlShape, label: string) => (fornavn: string) => {
     return validateTextInputField(fornavn, label, intl);
@@ -88,6 +87,7 @@ export const OppgiPersonalia = ({ søkersFødselsnummer, rolle, barn }: Props) =
                         <RhfCheckbox
                             name="utenlandskFnr"
                             control={formMethods.control}
+                            onChange={() => formMethods.formState.isSubmitted && void formMethods.trigger()}
                             label={intl.formatMessage({ id: 'annenForelder.spørsmål.utenlandskFnr' })}
                         />
                     </div>
