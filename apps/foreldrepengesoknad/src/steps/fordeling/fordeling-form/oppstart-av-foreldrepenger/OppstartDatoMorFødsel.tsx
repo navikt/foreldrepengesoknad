@@ -29,14 +29,12 @@ export const OppstartDatoMorFødsel = ({ oppstartValg }: Props) => {
         erUttaksdag(oppstartDato) &&
         dayjs(oppstartDato).isSameOrBefore(førsteUttaksdagPåEllerEtterFamHendelse);
     return (
-        <div>
-            <VStack gap="space-12">
-                <OppstartDatoInput oppstartValg={oppstartValg} />
-                {visInformasjon && <MorOppstartInformasjon oppstartDato={oppstartDato} />}
-                <InlineMessage status="info">
-                    <FormattedMessage id="fordeling.oppstartValg.morFødsel.info" />
-                </InlineMessage>
-            </VStack>
-        </div>
+        <VStack gap="space-12">
+            <OppstartDatoInput oppstartValg={oppstartValg} />
+            {visInformasjon && <MorOppstartInformasjon oppstartDato={oppstartDato} />}
+            <InlineMessage status="info">
+                <FormattedMessage id="fordeling.oppstartValg.morFødsel.info" />
+            </InlineMessage>
+        </VStack>
     );
 };

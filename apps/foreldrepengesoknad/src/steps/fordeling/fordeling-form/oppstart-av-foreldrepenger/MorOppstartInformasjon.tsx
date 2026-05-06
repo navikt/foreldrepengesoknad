@@ -117,11 +117,7 @@ export const MorOppstartInformasjon = ({ oppstartDato }: Props) => {
         : intl.formatMessage({ id: 'termindato' });
 
     return (
-        <div
-            className={
-                'bg-ax-accent-200 mt-[3.2rem] -ml-[13rem] flex h-[3.5rem] w-[20rem] flex-col justify-center p-2 max-[768px]:mt-0 max-[768px]:ml-0'
-            }
-        >
+        <div className={'bg-ax-accent-200 flex h-[3.5rem] w-[20rem] flex-col justify-center p-2'}>
             {starterPåUttaksdagEtterFamiliehendelse && (
                 <BodyShort size="small" className="font-bold">
                     <FormattedMessage
