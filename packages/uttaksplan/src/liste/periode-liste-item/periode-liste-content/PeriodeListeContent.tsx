@@ -28,6 +28,7 @@ import { genererPeriodeKey } from '../../utils/uttaksplanListeUtils';
 import {
     erUttaksplanperiodeEøs,
     erUttaksplanperiodeFamiliehendelseDato,
+    erUttaksplanperiodeSamtidigUttak,
     erUttaksplanperiodeTapteDager,
     erUttaksplanperiodeUtenUttak,
     harUttaksplanperiodePrematuruker,
@@ -61,8 +62,11 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
+    const erSamtidigUttak = erUttaksplanperiodeSamtidigUttak(uttaksplanperioder);
     const erPeriodeForAnnenPartSomErLåst =
-        erPeriodeneTilAnnenPartLåst && uttaksplanperioder.some((p) => erVanligUttakPeriode(p) && p.forelder !== søker);
+        erPeriodeneTilAnnenPartLåst &&
+        !erSamtidigUttak &&
+        uttaksplanperioder.some((p) => erVanligUttakPeriode(p) && p.forelder !== søker);
 
     const inneholderKunEnPeriode = uttaksplanperioder.length === 1;
     const erRedigerbar =
