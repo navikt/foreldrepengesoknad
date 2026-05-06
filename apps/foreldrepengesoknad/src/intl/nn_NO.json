@@ -439,7 +439,7 @@
     "fordeling.oppstartsdato.ukedag": "Oppstartsdato for foreldrepengar må vere ein ukedag.",
     "fordeling.oppstartValg.førFødselEllerTerminInfo": "{varighetString} før {fødselEllerTermin}.",
     "fordeling.oppstartValg.førsteUkedagEtterTerminFødsel": "Første ukedag etter {fødselEllerTerminDato}",
-    "fordeling.oppstartValg.påFødselEllerTermin": "På {fødselEllerTermindato}",
+    "fordeling.oppstartValg.påFødselEllerTermin": "På {fødselEllerTerminDato}",
     "fordeling.oppstartValg.misterDagerInfo": "Du mistar {varighetString}.",
     "fordeling.oppstartValg.taFraFellesperioden": "{varighetString} vert teke frå fellesperioden.",
     "fordeling.oppstartValg.morFødsel.info": "Du kan endre datoar seinare, også etter du har sendt søknaden.",
