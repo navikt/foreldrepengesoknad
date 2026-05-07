@@ -88,7 +88,7 @@ const BeregningDetaljer = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeS
     if (!beregning) {
         return (
             <VStack>
-                <Heading size="medium" level="2">
+                <Heading size="medium" level="2" spacing>
                     Beregning
                 </Heading>
                 {innvilgelsesdokument && (
@@ -507,7 +507,7 @@ const UtbetalingsVisning = ({ sak }: { sak: Foreldrepengesak | Svangerskapspenge
 
     return (
         <VStack gap="space-4">
-            <Heading size="medium" as="h2">
+            <Heading size="medium" as="h2" spacing>
                 <FormattedMessage id="beregning.utbetalingsvisning.tittel" />
             </Heading>
             <BodyShort>
