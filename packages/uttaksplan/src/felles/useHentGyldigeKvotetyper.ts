@@ -119,6 +119,16 @@ const erGyldigForMor = (
         ) {
             return false;
         }
+
+        if (
+            harKunEnPartRett &&
+            UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(
+                valgtePerioder,
+                familiehendelsedato,
+            )
+        ) {
+            return false;
+        }
     }
 
     if (konto === 'FORELDREPENGER_FØR_FØDSEL') {
