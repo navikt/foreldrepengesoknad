@@ -2,7 +2,7 @@
     "name": "foreldrepengesoknad",
     "version": "1.0.0",
     "type": "module",
-    "description": "NAV Foreldrepengesøknad",
+    "description": "NAV Foreldrepengesøknad - Søknad om foreldrepenger",
     "scripts": {
         "build": "vite build",
         "build:storybook": "storybook build -o .storybook-static-build",
