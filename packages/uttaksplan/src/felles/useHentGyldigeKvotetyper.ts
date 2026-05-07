@@ -112,7 +112,10 @@ const erGyldigForMor = (
 
         if (
             harKunEnPartRett &&
-            UttaksperiodeValidatorer.erNoenPerioderFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)
+            UttaksperiodeValidatorer.erNoenPerioderMerEnn60DagerFørFamiliehendelsesdato(
+                valgtePerioder,
+                familiehendelsedato,
+            )
         ) {
             return false;
         }
