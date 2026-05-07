@@ -792,4 +792,23 @@ describe('UttaksplanListe', () => {
 
         expect(screen.getByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
     });
+
+    it('Bare far har rett - avslåtte perioder skal ikke vise "med aktivitetskrav" i listevisningen', async () => {
+        const { BareFarHarRettMedAvslåttePerioder } = composeStories(stories);
+        render(<BareFarHarRettMedAvslåttePerioder />);
+
+        // Alle 3 perioder (fom 2026-03-09 til 2026-07-10) er gruppert i én rad.
+        // Klikk for å åpne:
+        // - Periode 1: innvilget, morsAktivitet=IKKE_OPPGITT → "Foreldrepenger uten aktivitetskrav"
+        // - Periode 2: avslått, morsAktivitet=ARBEID → skal vise "Foreldrepenger" (ikke "med aktivitetskrav")
+        // - Periode 3: innvilget, morsAktivitet=ARBEID → "Foreldrepenger med aktivitetskrav"
+        const periodeRad = screen.getByTestId('2026-03-09 - 2026-07-10');
+        await userEvent.click(periodeRad);
+
+        // Innvilget med IKKE_OPPGITT skal vise "uten aktivitetskrav"
+        expect(screen.getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+
+        // Bare innvilget med ARBEID skal vise "med aktivitetskrav" (1 gang, ikke 2)
+        expect(screen.getAllByText('Foreldrepenger med aktivitetskrav')).toHaveLength(1);
+    });
 });

@@ -33,6 +33,7 @@ export const getStønadskvoteNavn = (
     morsAktivitet: MorsAktivitet | undefined,
     konto?: KontoType,
     erAleneOmOmsorg?: boolean,
+    erAvslått?: boolean,
 ) => {
     let navn;
 
@@ -54,7 +55,7 @@ export const getStønadskvoteNavn = (
         );
     }
 
-    if (!erEøsPeriode && erFarEllerMedmor === true && erAleneOmOmsorg === false) {
+    if (!erAvslått && !erEøsPeriode && erFarEllerMedmor === true && erAleneOmOmsorg === false) {
         if (morsAktivitet === 'IKKE_OPPGITT') {
             return intl.formatMessage({ id: 'uttaksplan.stønadskvotetype.AKTIVITETSFRI_KVOTE_BFHR' });
         }
