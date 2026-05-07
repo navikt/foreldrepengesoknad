@@ -125,6 +125,8 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
         (hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett');
     const farOgFarBeggeHarRett =
         hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && hvemHarRett === 'beggeHarRett';
+    const kombinertForslag = [...planforslag.søker1, ...planforslag.søker2];
+
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
             <VStack gap="space-24">
@@ -143,7 +145,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
                     }}
                     valgtStønadskvote={valgtStønadskvote}
                     harAktivitetskravIPeriodeUtenUttak={false}
-                    uttakPerioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
+                    uttakPerioder={uttaksplan ?? kombinertForslag}
                     erPeriodeneTilAnnenPartLåst={false}
                     erEndringssøknad={false}
                 >
@@ -218,7 +220,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
                     goToPreviousStep={navigator.goToPreviousDefaultStep}
                     nextButtonOnClick={() => {
                         if (!uttaksplan) {
-                            lagreUttaksplanOgOppdaterUrl([...planforslag.søker1, ...planforslag.søker2]);
+                            lagreUttaksplanOgOppdaterUrl(kombinertForslag);
                         }
                         navigator.goToNextDefaultStep();
                     }}

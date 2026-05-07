@@ -1,11 +1,20 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { PlanleggerRoutes } from 'appData/routes';
 
 import { DELT_UTTAK_80_TO_BARN, DELT_UTTAK_100_TO_BARN } from '@navikt/fp-utils-test';
 
 import { endreFordelingMedSlider } from '../../../vitest/testHelpers';
 import * as stories from './PlanenDeresSteg_Fødsel.stories';
+
+vi.mock('react-router-dom', async () => {
+    const actual = await vi.importActual('react-router-dom');
+    return {
+        ...actual,
+        useNavigate: vi.fn(),
+    };
+});
 
 const {
     MorOgFarBeggeHarRett,
@@ -671,5 +680,28 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         expect(langtDatoerPeriode1).toBe(true);
         expect(langtDatoerPeriode2).toBe(true);
+    });
+
+    it('skal lagre planforslaget til context ved navigering til oppsummering uten at brukeren har gjort endringer', async () => {
+        const { useNavigate } = await import('react-router-dom');
+        const navigateMock = vi.fn();
+        vi.mocked(useNavigate).mockReturnValue(navigateMock);
+
+        const gåTilNesteSide = vi.fn();
+        render(<MorOgFarBeggeHarRett gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Oppsummering' }));
+
+        const uttaksplanDispatch = gåTilNesteSide.mock.calls.find(
+            ([action]) => action.key === 'UTTAKSPLAN' && action.type === 'update',
+        )?.[0];
+
+        expect(uttaksplanDispatch).toBeDefined();
+        expect(Array.isArray(uttaksplanDispatch.data)).toBe(true);
+        expect(uttaksplanDispatch.data.length).toBeGreaterThan(0);
+
+        expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.OPPSUMMERING));
     });
 });
