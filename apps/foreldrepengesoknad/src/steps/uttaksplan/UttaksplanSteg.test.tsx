@@ -36,10 +36,10 @@ describe('<UttaksplanSteg>', () => {
 
             await userEvent.click(screen.getAllByText('Du kan velge datoer i kalenderen')[0]!);
 
-            await userEvent.click(screen.getByText('Fjern alt'));
+            await userEvent.click(screen.getByText('Fjern alt i planen'));
 
-            expect(await screen.findByText('Vil du fjerne alt i planen?')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Ja, fjern alt'));
+            expect(await screen.findByText('Ønsker du å fjerne alt som er lagt til?')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Fjern alt'));
 
             await userEvent.click(screen.getByText('Neste steg'));
 

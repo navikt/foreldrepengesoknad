@@ -7,10 +7,11 @@ interface Props {
     visKnapper?: boolean;
     tilbakestillPlan?: () => void;
     angreEndring?: () => void;
-    fjernAltIPlanen: () => void;
+    fjernAltIPlanen?: () => void;
     toggleAllAccordions?: () => void;
     isAllAccordionsOpen?: boolean;
     visFjernAltModal?: boolean;
+    visTilbakestillModal?: boolean;
 }
 
 export const UttaksplanHandlingKnapper = ({
@@ -21,6 +22,7 @@ export const UttaksplanHandlingKnapper = ({
     toggleAllAccordions,
     isAllAccordionsOpen,
     visFjernAltModal,
+    visTilbakestillModal,
 }: Props) => {
     const erListevisning = !!toggleAllAccordions;
 
@@ -32,6 +34,9 @@ export const UttaksplanHandlingKnapper = ({
                 icon={visKnapper ? <ArrowCirclepathIcon aria-hidden height={24} width={24} /> : null}
                 onClick={tilbakestillPlan}
                 disabled={!tilbakestillPlan}
+                aria-haspopup="dialog"
+                aria-expanded={visTilbakestillModal}
+                aria-controls={visTilbakestillModal ? 'TilbakestillPlanModal' : undefined}
             >
                 <FormattedMessage id="UttaksplanHandlingKnapper.Tilbakestill" />
             </Button>
@@ -64,17 +69,19 @@ export const UttaksplanHandlingKnapper = ({
                     )}
                 </Button>
             )}
-            <Button
-                size="small"
-                variant="secondary"
-                icon={visKnapper ? <TrashIcon aria-hidden height={24} width={24} /> : null}
-                onClick={fjernAltIPlanen}
-                aria-haspopup="dialog"
-                aria-expanded={visFjernAltModal}
-                aria-controls={visFjernAltModal ? 'FjernAltIUttaksplanModal' : undefined}
-            >
-                <FormattedMessage id="UttaksplanHandlingKnapper.FjernAlt" />
-            </Button>
+            {fjernAltIPlanen && (
+                <Button
+                    size="small"
+                    variant="secondary"
+                    icon={visKnapper ? <TrashIcon aria-hidden height={24} width={24} /> : null}
+                    onClick={fjernAltIPlanen}
+                    aria-haspopup="dialog"
+                    aria-expanded={visFjernAltModal}
+                    aria-controls={visFjernAltModal ? 'FjernAltIUttaksplanModal' : undefined}
+                >
+                    <FormattedMessage id="UttaksplanHandlingKnapper.FjernAlt" />
+                </Button>
+            )}
         </HStack>
     );
 };

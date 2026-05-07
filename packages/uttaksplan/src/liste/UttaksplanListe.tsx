@@ -112,7 +112,7 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
                     visKnapper
                     tilbakestillPlan={
                         uttaksplanRedigering.harEndretPlan
-                            ? () => uttaksplanRedigering.tilbakestillUttaksplan()
+                            ? () => uttaksplanRedigering.setVisTilbakestillModal(true)
                             : undefined
                     }
                     angreEndring={
@@ -122,6 +122,7 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
                     }
                     fjernAltIPlanen={() => uttaksplanRedigering.setVisFjernAltModal(true)}
                     visFjernAltModal={uttaksplanRedigering.visFjernAltModal}
+                    visTilbakestillModal={uttaksplanRedigering.visTilbakestillModal}
                 />
             )}
         </VStack>
