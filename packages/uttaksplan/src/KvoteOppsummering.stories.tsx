@@ -773,6 +773,138 @@ export const BeggeRettMangeOvertrukneDagerMedOverføringsÅrsak: Story = {
     },
 };
 
+// TFP-6964: Fri utsettelse med pleiepenger etter termin skal ikkje teljast som brukte dagar
+export const BeggeRettMedFriUtsettelseAnnenPart: Story = {
+    name: 'Fri utsettelse frå annen part skal ikkje teljast',
+    args: {
+        valgtStønadskvote: kontoNårBeggeHarRett,
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2025-05-06'],
+            antallBarn: 1,
+        },
+        uttakPerioder: [
+            {
+                fom: '2025-04-15',
+                tom: '2025-05-05',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            {
+                fom: '2025-05-06',
+                tom: '2025-08-18',
+                kontoType: 'MØDREKVOTE',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            // Denne "fri utsettelse"-perioden frå mor (pga pleiepenger) skal IKKJE teljast
+            {
+                fom: '2025-08-19',
+                tom: '2025-11-28',
+                kontoType: 'MØDREKVOTE',
+                utsettelseÅrsak: 'FRI',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: false,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            {
+                fom: '2025-12-01',
+                tom: '2026-03-13',
+                kontoType: 'FEDREKVOTE',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+        ],
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'BEGGE_RETT',
+            søker: 'FAR_MEDMOR',
+        },
+        erEndringssøknad: false,
+    },
+};
+
+// TFP-6964: Variant der trekkerDager er undefined (kan skje med eldre vedtak)
+export const BeggeRettMedFriUtsettelseUtenTrekkerDager: Story = {
+    name: 'Fri utsettelse utan trekkerDager-flagg skal ikkje teljast',
+    args: {
+        valgtStønadskvote: kontoNårBeggeHarRett,
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2025-05-06'],
+            antallBarn: 1,
+        },
+        uttakPerioder: [
+            {
+                fom: '2025-04-15',
+                tom: '2025-05-05',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            {
+                fom: '2025-05-06',
+                tom: '2025-08-18',
+                kontoType: 'MØDREKVOTE',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            // Fri utsettelse utan resultat (eldre vedtak kan mangle dette feltet)
+            {
+                fom: '2025-08-19',
+                tom: '2025-11-28',
+                kontoType: 'MØDREKVOTE',
+                utsettelseÅrsak: 'FRI',
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            {
+                fom: '2025-12-01',
+                tom: '2026-03-13',
+                kontoType: 'FEDREKVOTE',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+        ],
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'BEGGE_RETT',
+            søker: 'FAR_MEDMOR',
+        },
+        erEndringssøknad: false,
+    },
+};
+
 export const BHFRMedAvslåttePerioder: Story = {
     args: {
         valgtStønadskvote: kontoNårBareFarHarRett,
