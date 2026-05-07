@@ -104,7 +104,6 @@ export const DokumentasjonSendSenereLabel = ({
             if (
                 erUttaksperiode(p) &&
                 'morsAktivitet' in p &&
-                // TODO (TOR)
                 p.morsAktivitet === 'INNLAGT' &&
                 p.kontoType === 'FEDREKVOTE'
             ) {

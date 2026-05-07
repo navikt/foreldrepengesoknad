@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
-import { OmBarnetSteg } from './OmBarnetSteg';
+import { OmBarnetPlanleggerSteg } from './OmBarnetSteg';
 
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
@@ -13,8 +13,8 @@ type StoryArgs = {
 };
 
 const meta = {
-    title: 'steg/OmBarnetSteg',
-    component: OmBarnetSteg,
+    title: 'steg/OmBarnetPlanleggerSteg',
+    component: OmBarnetPlanleggerSteg,
     render: ({ hvemPlanlegger, gåTilNesteSide = action('button-click') }: StoryArgs) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.OM_BARNET]}>
@@ -24,7 +24,7 @@ const meta = {
                     }}
                     onDispatch={gåTilNesteSide}
                 >
-                    <OmBarnetSteg />
+                    <OmBarnetPlanleggerSteg />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );

@@ -1,30 +1,34 @@
-import { BarnetErAdoptert, BarnetErFødt, BarnetErIkkeFødt, OmBarnet } from 'types/Barnet';
-
 import { BarnType } from '@navikt/fp-constants';
-import { Barn } from '@navikt/fp-types';
+import {
+    Barn,
+    BarnetErAdoptertPlanlegger,
+    BarnetErFødtPlanlegger,
+    BarnetErIkkeFødtPlanlegger,
+    OmBarnetPlanlegger,
+} from '@navikt/fp-types';
 
-export const erBarnetUFødt = (omBarnet: OmBarnet): omBarnet is BarnetErIkkeFødt => {
-    if ((omBarnet as BarnetErIkkeFødt).erBarnetFødt === false) {
+export const erBarnetUFødt = (omBarnet: OmBarnetPlanlegger): omBarnet is BarnetErIkkeFødtPlanlegger => {
+    if ((omBarnet as BarnetErIkkeFødtPlanlegger).erBarnetFødt === false) {
         return true;
     }
     return false;
 };
 
-export const erBarnetFødt = (omBarnet: OmBarnet): omBarnet is BarnetErFødt => {
-    if ((omBarnet as BarnetErFødt).erBarnetFødt === true) {
+export const erBarnetFødt = (omBarnet: OmBarnetPlanlegger): omBarnet is BarnetErFødtPlanlegger => {
+    if ((omBarnet as BarnetErFødtPlanlegger).erBarnetFødt === true) {
         return true;
     }
     return false;
 };
 
-export const erBarnetAdoptert = (omBarnet: OmBarnet): omBarnet is BarnetErAdoptert => {
-    if ((omBarnet as BarnetErAdoptert).erFødsel === false) {
+export const erBarnetAdoptert = (omBarnet: OmBarnetPlanlegger): omBarnet is BarnetErAdoptertPlanlegger => {
+    if ((omBarnet as BarnetErAdoptertPlanlegger).erFødsel === false) {
         return true;
     }
     return false;
 };
 
-export const mapOmBarnetTilBarn = (omBarnet: OmBarnet): Barn => {
+export const mapOmBarnetPlanleggerTilBarn = (omBarnet: OmBarnetPlanlegger): Barn => {
     const antallBarn = Number.parseInt(omBarnet.antallBarn, 10);
 
     if (erBarnetUFødt(omBarnet)) {

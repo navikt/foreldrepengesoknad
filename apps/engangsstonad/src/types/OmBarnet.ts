@@ -22,17 +22,3 @@ export type Adopsjon = {
         dato: string;
     }>;
 };
-
-export type OmBarnet = Fødsel | Adopsjon;
-
-export const erAdopsjon = (omBarnet: OmBarnet): omBarnet is Adopsjon => {
-    return 'adopsjonsdato' in omBarnet;
-};
-
-export const harBarnetTermindato = (omBarnet: OmBarnet): omBarnet is BarnetErIkkeFødt => {
-    return 'termindato' in omBarnet;
-};
-
-export const erBarnetFødt = (omBarnet: OmBarnet): omBarnet is BarnetErFødt => {
-    return 'erBarnetFødt' in omBarnet && omBarnet.erBarnetFødt;
-};

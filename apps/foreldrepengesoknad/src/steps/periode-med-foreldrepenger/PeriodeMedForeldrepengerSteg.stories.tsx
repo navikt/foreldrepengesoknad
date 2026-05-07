@@ -145,7 +145,7 @@ export const FarEllerMedmorAleneomsorgFødsel: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
                 http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': STØNADSKONTO_80,
@@ -177,7 +177,7 @@ export const FarEllerMedmorFødselOgMorHarIkkeRett: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
                 http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': {
@@ -300,7 +300,7 @@ export const MorSøkerAdopsjonMedAleneomsorg: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
                 http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '100': {
@@ -441,7 +441,7 @@ export const MorFødselDeltUttakPrematurFødsel: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
                 http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '100': {
@@ -484,7 +484,7 @@ export const MorAleneomsorgPrematurFødsel: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
                 http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '100': {
@@ -566,7 +566,7 @@ export const MorFødselMedTvillingFlerbarnsuker: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
                 http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '100': {
@@ -644,7 +644,7 @@ export const MorFødselAleneomsorgMedTrillingFlerbarnsuker: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
                 http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '100': {

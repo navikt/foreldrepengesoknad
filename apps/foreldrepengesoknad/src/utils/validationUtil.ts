@@ -1,9 +1,8 @@
 import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
-import { SkjemaelementFeil } from 'types/SkjemaelementFeil';
 
-import { textGyldigRegex, textRegex } from '@navikt/fp-validation';
+import { getIllegalChars, textRegex } from '@navikt/fp-validation';
 
 import { isFødselsnummerFormatValid, isSixteenOrOlder } from './validation/fødselsnummer';
 
@@ -13,11 +12,9 @@ export const dateToday = dayjs();
 export const date21DaysAgo = dayjs().subtract(21, 'days').startOf('day');
 export const attenUkerTreDager = dayjs().add(18, 'week').add(3, 'day').startOf('day');
 
-export const hasValue = (v: string | number | boolean | undefined | null) => v !== '' && v !== undefined && v !== null;
-
 export const validateFødselsnummer =
     (intl: IntlShape, søkersFødselsnummer: string, label: string, erUtenlandskFnr?: boolean) =>
-    (fnr: string): string | undefined => {
+    (fnr: string): string | null => {
         if (erUtenlandskFnr) {
             if (fnr === undefined || fnr.trim() === '') {
                 return intl.formatMessage({ id: 'valideringsfeil.fødselsnummer.required' });
@@ -41,7 +38,7 @@ export const validateFødselsnummer =
         }
 
         return validFnrResult === 'fnr' || validFnrResult === 'dnr' || validFnrResult === 'hnr'
-            ? undefined
+            ? null
             : intl.formatMessage({ id: 'valideringsfeil.fødselsnummer.ugyldigFødselsnummer' });
     };
 
@@ -61,28 +58,10 @@ export const erIUke22Pluss3 = (dato: string) => {
     return dayjs.max(dayjs().startOf('day'), uke22Pluss3.startOf('day')).isSame(dayjs().startOf('day'));
 };
 
-export const getIllegalChars = (value: string): string => {
-    const kunUgyldigeTegn = value.replace(textGyldigRegex, '');
-    const ugyldigStringSet = new Set(kunUgyldigeTegn.split(''));
-    return Array.from(ugyldigStringSet).join('');
-};
-
-const getIllegalCharsErrorMessage = (value: string, feltNavn: string, intl: IntlShape): string => {
-    const ugyldigeTegn = getIllegalChars(value).replace(/[\t]/g, 'Tabulatortegn');
-    return intl.formatMessage(
-        { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
-        {
-            feltNavn: feltNavn,
-            ugyldigeTegn: ugyldigeTegn,
-        },
-    );
-};
-
-const validateTextHasLegalChars = (value: string): boolean => textRegex.test(value);
-
-export const validateTextInputField = (value: string, feltNavn: string, intl: IntlShape): SkjemaelementFeil => {
-    if (!validateTextHasLegalChars(value)) {
-        return getIllegalCharsErrorMessage(value, feltNavn, intl);
+export const validateTextInputField = (value: string, feltNavn: string, intl: IntlShape): string | null => {
+    if (!textRegex.test(value)) {
+        const ugyldigeTegn = getIllegalChars(value).replaceAll('\t', 'Tabulatortegn');
+        return intl.formatMessage({ id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' }, { feltNavn, ugyldigeTegn });
     }
-    return undefined;
+    return null;
 };

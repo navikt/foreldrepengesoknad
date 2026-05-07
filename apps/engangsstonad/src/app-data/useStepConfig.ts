@@ -1,23 +1,21 @@
 import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
-import { harBarnetTermindato } from 'types/OmBarnet';
 
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './EsDataContext';
 import { PATH_ORDER, Path, REQUIRED_APP_STEPS } from './paths';
 
-// TODO Denne bør flyttast ut
 const getPathToLabelMap = (intl: IntlShape) => ({
-    [Path.SØKERSITUASJON]: intl.formatMessage({ id: 'UseStepConfig.Søkersituasjon' }),
-    [Path.OM_BARNET]: intl.formatMessage({ id: 'UseStepConfig.OmBarnet' }),
-    [Path.TERMINBEKREFTELSE]: intl.formatMessage({ id: 'UseStepConfig.Termin' }),
-    [Path.ADOPSJONSBEKREFTELSE]: intl.formatMessage({ id: 'UseStepConfig.Adopsjon' }),
-    [Path.UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'UseStepConfig.Utenlandsopphold' }),
-    [Path.TIDLIGERE_UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'UseStepConfig.TidligereUtenlandsopphold' }),
-    [Path.SENERE_UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'UseStepConfig.FremtidigUtenlandsopphold' }),
-    [Path.OPPSUMMERING]: intl.formatMessage({ id: 'UseStepConfig.Oppsummering' }),
+    [Path.SØKERSITUASJON]: intl.formatMessage({ id: 'useStepConfig.Søkersituasjon' }),
+    [Path.OM_BARNET]: intl.formatMessage({ id: 'useStepConfig.OmBarnet' }),
+    [Path.TERMINBEKREFTELSE]: intl.formatMessage({ id: 'useStepConfig.Termin' }),
+    [Path.ADOPSJONSBEKREFTELSE]: intl.formatMessage({ id: 'useStepConfig.Adopsjon' }),
+    [Path.UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'useStepConfig.Utenlandsopphold' }),
+    [Path.TIDLIGERE_UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'useStepConfig.TidligereUtenlandsopphold' }),
+    [Path.SENERE_UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'useStepConfig.FremtidigUtenlandsopphold' }),
+    [Path.OPPSUMMERING]: intl.formatMessage({ id: 'useStepConfig.Oppsummering' }),
     [Path.VELKOMMEN]: '',
     [Path.KVITTERING]: '',
 });
@@ -71,16 +69,11 @@ const showDokumentasjonStep = (
     currentPath: Path,
     getStateData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ): boolean => {
-    const omBarnet = getStateData(ContextDataType.OM_BARNET);
-    if (
-        path === Path.TERMINBEKREFTELSE &&
-        omBarnet &&
-        harBarnetTermindato(omBarnet) &&
-        omBarnet.erBarnetFødt === false
-    ) {
+    const barn = getStateData(ContextDataType.OM_BARNET);
+    if (path === Path.TERMINBEKREFTELSE && barn?.type === 'termin') {
         return isVisible(true, ContextDataType.DOKUMENTASJON, Path.OM_BARNET, currentPath, getStateData);
     }
-    if (path === Path.ADOPSJONSBEKREFTELSE && omBarnet && 'adopsjonAvEktefellesBarn' in omBarnet) {
+    if (path === Path.ADOPSJONSBEKREFTELSE && barn?.type === 'adopsjon') {
         return isVisible(true, ContextDataType.DOKUMENTASJON, Path.OM_BARNET, currentPath, getStateData);
     }
     return false;

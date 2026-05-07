@@ -26,16 +26,11 @@ export const SenereUtenlandsoppholdSteg = ({ mellomlagreSøknadOgNaviger, avbryt
         return navigator.goToNextDefaultStep();
     };
 
-    const saveOnPrevious = () => {
-        // TODO (TOR) Lagre uvalidert data i framtida
-    };
-
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <SenereUtenlandsoppholdPanel
                 senereUtenlandsopphold={senereUtenlandsopphold ?? []}
                 saveOnNext={save}
-                saveOnPrevious={saveOnPrevious}
                 onAvsluttOgSlett={avbrytSøknad}
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}

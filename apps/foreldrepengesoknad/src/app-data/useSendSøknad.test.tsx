@@ -156,6 +156,15 @@ const UTTAKSPLAN_METADATA = {
     ønskerJustertUttakVedFødsel: true,
 };
 
+// Perioden brukeren fjerner i endringssøknaden — var eneste periode i det gjeldende vedtaket
+const EKSISTERENDE_PERIODE = {
+    fom: '2024-01-02',
+    tom: '2024-01-02',
+    forelder: 'MOR',
+    utsettelseÅrsak: 'FRI',
+    flerbarnsdager: false,
+} satisfies UttakPeriode_fpoversikt;
+
 const EXPECTED_SØKER_INFO = {
     fnr: DEFAULT_SØKER_INFO.fnr,
     navn: DEFAULT_SØKER_INFO.navn,
@@ -174,7 +183,7 @@ const saker = [
             fødselsdato: '2024-01-01',
             antallBarn: 1,
         },
-        gjeldendeVedtak: { perioder: [] },
+        gjeldendeVedtak: { perioder: [EKSISTERENDE_PERIODE] },
         harAnnenForelderTilsvarendeRettEØS: false,
         gjelderAdopsjon: false,
         kanSøkeOmEndring: true,
@@ -182,7 +191,7 @@ const saker = [
         rettighetType: 'BEGGE_RETT',
         sakAvsluttet: false,
         sakTilhørerMor: true,
-        saksnummer: '123456',
+        saksnummer: '1',
         ønskerJustertUttakVedFødsel: false,
         oppdatertTidspunkt: '2022-05-06',
         åpenBehandling: undefined,
@@ -193,7 +202,7 @@ const saker = [
 ] satisfies FpSak_fpoversikt[];
 
 const getWrapper =
-    () =>
+    (uttaksplan: UttakPeriode_fpoversikt[] = [UTTAKSPLAN_PERIODE]) =>
     ({ children }: { children: ReactNode }) => (
         <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <QueryClientProvider client={queryClient}>
@@ -218,7 +227,7 @@ const getWrapper =
                             },
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: TIDLIGERE_UTENLANDSOPPHOLD,
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: SENERE_UTENLANDSOPPHOLD,
-                            [ContextDataType.UTTAKSPLAN]: [UTTAKSPLAN_PERIODE],
+                            [ContextDataType.UTTAKSPLAN]: uttaksplan,
                             [ContextDataType.VEDLEGG]: VEDLEGG,
                             [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: '1',
                             [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]: true,
@@ -343,7 +352,7 @@ describe('useFpSendSøknad', () => {
 
         const erEndringssøknad = true;
         const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, erEndringssøknad, saker), {
-            wrapper: getWrapper(),
+            wrapper: getWrapper([]),
         });
 
         await result.current.sendSøknad();
@@ -384,11 +393,8 @@ describe('useFpSendSøknad', () => {
                                 erArbeidstaker: false,
                                 type: 'utsettelse',
                                 årsak: 'FRI',
-                                fom: '2024-01-01',
-                                tom: '2024-10-10',
-                                //TODO (TOR) fom og tom under er korrekt så få med dette når endringstidspunkt er på plass
-                                //fom: '2024-01-02', // Endringsstidspunkt
-                                //tom: '2024-01-02', // Endringsstidspunkt
+                                fom: '2024-01-02', // Endringstidspunkt
+                                tom: '2024-01-02', // Endringstidspunkt
                             }),
                         ],
                     },

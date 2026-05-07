@@ -11,7 +11,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { Tidsperioden } from '@navikt/fp-utils';
+import { Tidsperioden, Uttaksdagen } from '@navikt/fp-utils';
 
 import {
     Uttaksplanperiode,
@@ -23,6 +23,32 @@ import {
 dayjs.extend(isSameOrAfter);
 dayjs.extend(minMax);
 dayjs.extend(isoWeekday);
+
+export const ANTALL_UTTAKSDAGER_TRE_UKER = 15;
+export const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
+
+// Vinduet er [familiehendelsesdato - 15 uttaksdager, familiehendelsesdato + 30 uttaksdager] –
+// dvs. 3 veker før og 6 veker etter (matchar UI-validatoren).
+export const getAntallUttaksdagerIVinduRundtFødsel = (
+    periodeFom: string,
+    periodeTom: string,
+    familiehendelsedato: string,
+): number => {
+    const familiehendelseSomUttaksdag = Uttaksdagen.denneEllerNeste(familiehendelsedato);
+    const førsteDagIVindu = familiehendelseSomUttaksdag.getDatoAntallUttaksdagerTidligere(ANTALL_UTTAKSDAGER_TRE_UKER);
+    // getDatoAntallUttaksdagerSenere(N) returnerer den (N+1)-te uttaksdagen frå familiehendelse,
+    // så vi brukar (30 - 1) for å treffe den 30. (siste) uttaksdagen i seksvekersvinduet.
+    const sisteDagIVindu = familiehendelseSomUttaksdag.getDatoAntallUttaksdagerSenere(ANTALL_UTTAKSDAGER_SEKS_UKER - 1);
+
+    const overlappFom = dayjs(periodeFom).isAfter(førsteDagIVindu, 'day') ? periodeFom : førsteDagIVindu;
+    const overlappTom = dayjs(periodeTom).isBefore(sisteDagIVindu, 'day') ? periodeTom : sisteDagIVindu;
+
+    if (dayjs(overlappFom).isAfter(overlappTom, 'day')) {
+        return 0;
+    }
+
+    return Uttaksdagen.denneEllerNeste(overlappFom).getUttaksdagerFremTilOgMedDato(overlappTom);
+};
 
 export const erUttaksperiode = (periode: Uttaksplanperiode) => {
     return erVanligUttakPeriode(periode) && periode.utsettelseÅrsak === undefined;
@@ -108,19 +134,42 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
     rettighetType: RettighetType_fpoversikt,
     perioder?: UttaksplanperiodeMedKunTapteDager[] | Uttaksplanperiode[],
 ) => {
-    return (
-        rettighetType !== 'ALENEOMSORG' &&
-        !!perioder &&
-        perioder.some(
-            (periode) =>
-                erVanligUttakPeriode(periode) &&
-                periode.forelder === 'FAR_MEDMOR' &&
-                periode.resultat?.innvilget !== false &&
-                (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER') &&
-                periode.morsAktivitet === undefined &&
-                periode.flerbarnsdager === false,
-        )
-    );
+    if (rettighetType === 'ALENEOMSORG' || !perioder) {
+        return false;
+    }
+
+    const morHar100ProsentUttakOgGradering = (farPeriode: UttakPeriode_fpoversikt) =>
+        perioder.some((morPeriode) => {
+            if (!erVanligUttakPeriode(morPeriode) || morPeriode.forelder !== 'MOR') {
+                return false;
+            }
+
+            const overlapper = Tidsperioden.forPeriode({ fom: farPeriode.fom, tom: farPeriode.tom }).overlapper({
+                fom: morPeriode.fom,
+                tom: morPeriode.tom,
+            });
+
+            const morsTotalprosent = (morPeriode.samtidigUttak ?? 0) + (morPeriode.gradering?.arbeidstidprosent ?? 0);
+
+            return overlapper && morsTotalprosent === 100;
+        });
+
+    return perioder.some((periode) => {
+        if (!erVanligUttakPeriode(periode)) {
+            return false;
+        }
+
+        const erFarMedmorsKvote =
+            periode.forelder === 'FAR_MEDMOR' &&
+            (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER');
+
+        const erInnvilgetUtenMorsAktivitet =
+            periode.resultat?.innvilget !== false &&
+            periode.morsAktivitet === undefined &&
+            periode.flerbarnsdager === false;
+
+        return erFarMedmorsKvote && erInnvilgetUtenMorsAktivitet && !morHar100ProsentUttakOgGradering(periode);
+    });
 };
 
 export const erPerioderEkslFomTomLike = (
@@ -190,12 +239,12 @@ export const erDetReadonlyPerioderEtterValgtePerioder = (
 export const getAktivitetskravOptions = (skalViseMorsAktivitetskravVedSamtidigUttak: boolean): MorsAktivitet[] => {
     const aktivitetsKrav = [
         'ARBEID',
-        'UTDANNING',
-        'KVALPROG',
-        'INTROPROG',
+        'ARBEID_OG_UTDANNING',
         'TRENGER_HJELP',
         'INNLAGT',
-        'ARBEID_OG_UTDANNING',
+        'INTROPROG',
+        'KVALPROG',
+        'UTDANNING',
     ] satisfies MorsAktivitet[];
 
     return skalViseMorsAktivitetskravVedSamtidigUttak

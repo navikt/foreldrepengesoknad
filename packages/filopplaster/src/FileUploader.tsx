@@ -41,7 +41,7 @@ const uploadAttachment = async (attachment: Attachment, uploadPath: string, time
         attachment.uploaded = true;
         attachment.uuid = response.data;
     } else {
-        attachment.error = response.feilKode;
+        attachment.error = response.feilkode;
     }
 };
 
@@ -90,12 +90,16 @@ const getErrorMessageMap = (intl: IntlShape): Record<FileRejectionReason | Attac
         id: 'FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET',
     }),
     DUPLIKAT_FORSENDELSE: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.DUPLIKAT_FORSENDELSE' }),
+    DUPLIKAT_VEDLEGG: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
 
     // Mappes som generell feil
     KRYPTERING_MELLOMLAGRING: intl.formatMessage({
         id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR',
     }),
     IKKE_TILGANG: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
+    IKKE_FUNNET: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
+    GENERELL: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
+    VALIDERING: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
     MELLOMLAGRING: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
     MELLOMLAGRING_VEDLEGG: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' }),
     SERVER_ERROR: intl.formatMessage({
@@ -109,7 +113,7 @@ const createFileIfEmpty = (attachment: Attachment): File => {
     if (!file || Object.keys(file).length === 0) {
         return {
             name: attachment.filename,
-            size: attachment.filesize,
+            size: attachment.filesize ?? 0,
         } as File;
     }
     return file;

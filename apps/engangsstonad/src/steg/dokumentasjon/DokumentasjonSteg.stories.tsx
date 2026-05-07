@@ -6,7 +6,8 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
-import { OmBarnet } from 'types/OmBarnet';
+
+import { BarnDto } from '@navikt/fp-types';
 
 import { DokumentasjonSteg } from './DokumentasjonSteg';
 
@@ -17,7 +18,7 @@ const promiseAction = () => (): Promise<void> => {
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
-    omBarnet: OmBarnet;
+    omBarnet: BarnDto;
     path: Path;
 } & ComponentProps<typeof DokumentasjonSteg>;
 
@@ -60,7 +61,7 @@ export const Terminbekreftelse: Story = {
     args: {
         path: Path.TERMINBEKREFTELSE,
         omBarnet: {
-            erBarnetFødt: false,
+            type: 'termin' as const,
             antallBarn: 1,
             termindato: '2023-10-06',
         },
@@ -85,10 +86,11 @@ export const Adopsjonsbekreftelse: Story = {
     args: {
         path: Path.ADOPSJONSBEKREFTELSE,
         omBarnet: {
+            type: 'adopsjon' as const,
             adopsjonAvEktefellesBarn: true,
             adopsjonsdato: '2020-01-01',
             antallBarn: 1,
-            fødselsdatoer: [{ dato: '2020-01-01' }],
+            fødselsdatoer: ['2020-01-01'],
         },
         mellomlagreOgNaviger: promiseAction(),
     },
@@ -103,10 +105,11 @@ export const FeilerOpplastinger: Story = {
     args: {
         path: Path.ADOPSJONSBEKREFTELSE,
         omBarnet: {
+            type: 'adopsjon' as const,
             adopsjonAvEktefellesBarn: true,
             adopsjonsdato: '2020-01-01',
             antallBarn: 1,
-            fødselsdatoer: [{ dato: '2020-01-01' }],
+            fødselsdatoer: ['2020-01-01'],
         },
         mellomlagreOgNaviger: promiseAction(),
     },

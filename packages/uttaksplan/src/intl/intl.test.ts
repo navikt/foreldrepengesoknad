@@ -113,7 +113,7 @@ describe('ny-uttaksplan intl messages', () => {
 
         const missingKeysCode = Object.keys(nb).filter((key) => {
             // Ikkje sjekk denne sidan den er dynamisk, og derfor litt styr å skriva anleis
-            if (key.includes('uttaksplan.stønadskontotype.')) {
+            if (key.includes('uttaksplan.stønadskvotetype.')) {
                 return false;
             }
             return !allTranslationsCode.has(key);

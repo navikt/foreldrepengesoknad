@@ -1,6 +1,6 @@
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
-import { EsDataMapAndMetaData, useEsMellomlagring } from 'appData/useEsMellomlagring';
+import { EsMellomlagretData, useEsMellomlagring } from 'appData/useEsMellomlagring';
 import { useEsSendSøknad } from 'appData/useEsSendSøknad';
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
@@ -24,7 +24,7 @@ export const ApiErrorHandler = ({ error }: { error: Error }) => {
 
 interface Props {
     personinfo: EsPersonopplysningerDto_fpoversikt;
-    mellomlagretData?: EsDataMapAndMetaData;
+    mellomlagretData?: EsMellomlagretData;
 }
 
 export const EngangsstønadRoutes = ({ personinfo, mellomlagretData }: Props) => {
@@ -37,7 +37,7 @@ export const EngangsstønadRoutes = ({ personinfo, mellomlagretData }: Props) =>
 
     useEffect(() => {
         if (mellomlagretData?.[ContextDataType.CURRENT_PATH]) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect -- OK, skjer kun ved ekstern endring
+            // eslint-disable-next-line @eslint-react/set-state-in-effect -- OK, skjer kun ved ekstern endring
             setErVelkommen(true);
             void navigate(mellomlagretData[ContextDataType.CURRENT_PATH]);
         }

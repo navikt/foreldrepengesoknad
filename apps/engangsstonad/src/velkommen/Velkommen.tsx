@@ -2,21 +2,10 @@ import { useEsNavigator } from 'appData/useEsNavigator';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import {
-    BodyShort,
-    Box,
-    Button,
-    ConfirmationPanel,
-    ExpansionCard,
-    GuidePanel,
-    HStack,
-    Link,
-    List,
-    VStack,
-} from '@navikt/ds-react';
+import { BodyShort, Box, Button, ExpansionCard, GuidePanel, HStack, Link, List, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { SkjemaRotLayout } from '@navikt/fp-ui';
+import { SamtykkePanel, SkjemaRotLayout } from '@navikt/fp-ui';
 
 interface Props {
     startSøknad: (start: boolean) => void;
@@ -113,7 +102,7 @@ export const Velkommen = ({ startSøknad, erVelkommen, mellomlagreOgNaviger }: P
                         </VStack>
                     </ExpansionCard.Content>
                 </ExpansionCard>
-                <ConfirmationPanel
+                <SamtykkePanel
                     label={intl.formatMessage({ id: 'Velkommen.Samtykke' })}
                     onChange={() => setIsChecked((state) => !state)}
                     checked={isChecked}
@@ -138,7 +127,7 @@ export const Velkommen = ({ startSøknad, erVelkommen, mellomlagreOgNaviger }: P
                             <FormattedMessage id="Velkommen.KunEnStønad" />
                         </BodyShort>
                     </VStack>
-                </ConfirmationPanel>
+                </SamtykkePanel>
                 <HStack justify="center">
                     <Button type="button" onClick={bekreft}>
                         <FormattedMessage id="Velkommen.StartSøknad" />

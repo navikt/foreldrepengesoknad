@@ -99,7 +99,7 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
                                 });
                             }
 
-                            return undefined;
+                            return null;
                         },
                     ]}
                 />

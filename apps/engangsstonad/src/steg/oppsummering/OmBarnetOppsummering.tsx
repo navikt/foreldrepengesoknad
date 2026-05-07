@@ -1,23 +1,24 @@
 import { FormattedMessage } from 'react-intl';
-import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
 
 import { FormSummary } from '@navikt/ds-react';
 
+import { BarnDto } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 interface Props {
-    readonly omBarnet: OmBarnet;
+    readonly omBarnet: BarnDto;
     readonly onVilEndreSvar: () => void;
 }
 
-function AntallBarnFormattedText({ omBarnet }: { readonly omBarnet: OmBarnet }) {
-    const harAdoptert = erAdopsjon(omBarnet);
+function AntallBarnFormattedText({ omBarnet }: { readonly omBarnet: BarnDto }) {
+    const antallBarn = omBarnet.antallBarn ?? 1;
+    const harAdoptert = omBarnet.type === 'adopsjon';
 
-    if (omBarnet.antallBarn === 1) {
+    if (antallBarn === 1) {
         return <FormattedMessage id={'OmBarnetOppsummering.EttBarn'} />;
-    } else if (omBarnet.antallBarn === 2 && !harAdoptert) {
+    } else if (antallBarn === 2 && !harAdoptert) {
         return <FormattedMessage id={'OmBarnetOppsummering.Tvillinger'} />;
-    } else if (omBarnet.antallBarn === 2 && harAdoptert) {
+    } else if (antallBarn === 2 && harAdoptert) {
         return <FormattedMessage id={'OmBarnetOppsummering.ToBarn'} />;
     } else {
         return <FormattedMessage id={'OmBarnetOppsummering.FlereBarn'} />;
@@ -25,9 +26,9 @@ function AntallBarnFormattedText({ omBarnet }: { readonly omBarnet: OmBarnet }) 
 }
 
 export const OmBarnetOppsummering = ({ omBarnet, onVilEndreSvar }: Props) => {
-    const harAdoptert = erAdopsjon(omBarnet);
-    const harTermin = harBarnetTermindato(omBarnet);
-    const harFødt = erBarnetFødt(omBarnet);
+    const harAdoptert = omBarnet.type === 'adopsjon';
+    const harTermin = omBarnet.type === 'termin';
+    const harFødt = omBarnet.type === 'fødsel';
 
     return (
         <FormSummary>
@@ -53,7 +54,7 @@ export const OmBarnetOppsummering = ({ omBarnet, onVilEndreSvar }: Props) => {
                         <FormSummary.Value>{formatDate(omBarnet.fødselsdato)}</FormSummary.Value>
                     </FormSummary.Answer>
                 )}
-                {harTermin && (
+                {(harTermin || harFødt) && omBarnet.termindato && (
                     <FormSummary.Answer>
                         <FormSummary.Label>
                             <FormattedMessage id={'OmBarnetOppsummering.MedTermindato'} />
@@ -74,11 +75,11 @@ export const OmBarnetOppsummering = ({ omBarnet, onVilEndreSvar }: Props) => {
                             <FormSummary.Label>
                                 <FormattedMessage
                                     id="OmBarnetOppsummering.MedFødselsdato"
-                                    values={{ antall: omBarnet.fødselsdatoer.length }}
+                                    values={{ antall: (omBarnet.fødselsdatoer ?? []).length }}
                                 />
                             </FormSummary.Label>
                             <FormSummary.Value>
-                                {omBarnet.fødselsdatoer.map(({ dato }) => formatDate(dato)).join(', ')}
+                                {(omBarnet.fødselsdatoer ?? []).map((dato) => formatDate(dato)).join(', ')}
                             </FormSummary.Value>
                         </FormSummary.Answer>
                     </>

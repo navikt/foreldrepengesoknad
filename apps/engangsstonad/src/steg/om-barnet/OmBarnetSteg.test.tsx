@@ -47,14 +47,11 @@ describe('<OmBarnetSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
+                type: 'adopsjon',
                 adopsjonAvEktefellesBarn: true,
                 adopsjonsdato: dayjs().format(ISO_DATE_FORMAT),
                 antallBarn: 1,
-                fødselsdatoer: [
-                    {
-                        dato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
-                    },
-                ],
+                fødselsdatoer: [dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT)],
             },
             key: ContextDataType.OM_BARNET,
             type: 'update',
@@ -104,14 +101,11 @@ describe('<OmBarnetSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
+                type: 'adopsjon',
                 adopsjonAvEktefellesBarn: false,
                 adopsjonsdato: dayjs().format(ISO_DATE_FORMAT),
                 antallBarn: 1,
-                fødselsdatoer: [
-                    {
-                        dato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
-                    },
-                ],
+                fødselsdatoer: [dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT)],
                 søkerAdopsjonAlene: true,
             },
             key: ContextDataType.OM_BARNET,
@@ -167,19 +161,14 @@ describe('<OmBarnetSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
+                type: 'adopsjon',
                 adopsjonAvEktefellesBarn: true,
                 adopsjonsdato: dayjs().format(ISO_DATE_FORMAT),
                 antallBarn: 3,
                 fødselsdatoer: [
-                    {
-                        dato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
-                    },
-                    {
-                        dato: dayjs().subtract(5, 'day').format(ISO_DATE_FORMAT),
-                    },
-                    {
-                        dato: dayjs().subtract(1, 'day').format(ISO_DATE_FORMAT),
-                    },
+                    dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
+                    dayjs().subtract(5, 'day').format(ISO_DATE_FORMAT),
+                    dayjs().subtract(1, 'day').format(ISO_DATE_FORMAT),
                 ],
             },
             key: ContextDataType.OM_BARNET,
@@ -228,7 +217,7 @@ describe('<OmBarnetSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                erBarnetFødt: true,
+                type: 'fødsel',
                 antallBarn: 1,
                 fødselsdato: dayjs().format(ISO_DATE_FORMAT),
                 termindato: dayjs().format(ISO_DATE_FORMAT),
@@ -281,8 +270,8 @@ describe('<OmBarnetSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
+                type: 'termin',
                 antallBarn: 3,
-                erBarnetFødt: false,
                 termindato: dayjs().format(ISO_DATE_FORMAT),
             },
             key: ContextDataType.OM_BARNET,

@@ -31,3 +31,8 @@ interface JobbIUtlandetInntekt extends AnnenInntektBase {
 }
 
 export type AndreInntektskilder = SluttpakkeInntekt | MilitærtjenesteInntekt | JobbIUtlandetInntekt;
+
+export type AndreInntektskilderUtkast = AndreInntektskilder | { type: undefined };
+
+export const erFerdigUtfylt = (entry: AndreInntektskilderUtkast): entry is AndreInntektskilder =>
+    entry.type !== undefined;

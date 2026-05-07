@@ -4,19 +4,14 @@ import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { captureMessage } from '@navikt/fp-observability';
-import { EsPersonopplysningerDto_fpoversikt, ProblemDetails } from '@navikt/fp-types';
+import { ApiError, captureApiError, captureMessage } from '@navikt/fp-observability';
+import { EsPersonopplysningerDto_fpoversikt, FpSoknadProblemDetails } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './EsDataContext';
 
-export const VERSJON_MELLOMLAGRING = 5;
+export const VERSJON_MELLOMLAGRING = 6;
 
-export type EsDataMapAndMetaData = { version: number; personinfo: EsPersonopplysningerDto_fpoversikt } & ContextDataMap;
-
-// TODO (TOR) Fiks lokalisering
-const UKJENT_UUID = 'ukjent uuid';
-const FEIL_VED_INNSENDING =
-    'Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
+export type EsMellomlagretData = { version: number; personinfo: EsPersonopplysningerDto_fpoversikt } & ContextDataMap;
 
 export const useEsMellomlagring = (
     personinfo: EsPersonopplysningerDto_fpoversikt,
@@ -48,7 +43,7 @@ export const useEsMellomlagring = (
                             version: VERSJON_MELLOMLAGRING,
                             personinfo,
                             ...state,
-                        } satisfies EsDataMapAndMetaData;
+                        } satisfies EsMellomlagretData;
                         await ky.post(API_URLS.mellomlagring, { json: data });
                     } catch (error: unknown) {
                         if (error instanceof HTTPError) {
@@ -56,15 +51,13 @@ export const useEsMellomlagring = (
                                 throw error;
                             }
 
-                            const jsonResponse = await error.response.json<ProblemDetails>();
-                            const callIdForBruker = jsonResponse?.callId ?? UKJENT_UUID;
-                            captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
-                            throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
+                            const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
+                            throw new ApiError('', 'Feil ved mellomlagring av engangsstønad', jsonResponse);
                         }
                         if (error instanceof Error) {
                             throw error;
                         }
-                        throw new Error(String(error));
+                        throw new Error(String(error), { cause: error });
                     }
                 } else {
                     // Ved avbryt så set ein Path = undefined og må så rydda opp i data her
@@ -81,7 +74,11 @@ export const useEsMellomlagring = (
             };
 
             lagreEllerSlett().catch((error: Error) => {
-                captureMessage(error.message);
+                if (error instanceof ApiError) {
+                    captureApiError(error.sentryMessage, error.problemDetails);
+                } else {
+                    captureMessage(error.message);
+                }
 
                 if (promiseRef.current) {
                     promiseRef.current();

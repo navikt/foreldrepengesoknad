@@ -18,7 +18,6 @@ import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-valida
 interface Props<TYPE> {
     frilans?: Frilans;
     saveOnNext: (formValues: Frilans) => void;
-    saveOnPrevious: (formValues: Frilans | undefined) => void;
     onAvsluttOgSlett: () => void;
     onFortsettSenere?: () => void;
     onStepChange?: (id: TYPE) => void;
@@ -29,7 +28,6 @@ interface Props<TYPE> {
 export const FrilansPanel = <TYPE extends string>({
     frilans,
     saveOnNext,
-    saveOnPrevious,
     onAvsluttOgSlett,
     onFortsettSenere,
     onStepChange,
@@ -87,7 +85,6 @@ export const FrilansPanel = <TYPE extends string>({
                         onAvsluttOgSlett={onAvsluttOgSlett}
                         onFortsettSenere={onFortsettSenere}
                         goToPreviousStep={goToPreviousStep}
-                        saveDataOnPreviousClick={saveOnPrevious}
                     />
                 </VStack>
             </RhfForm>

@@ -8,7 +8,7 @@ import { Uttaksdagen, formatDateExtended } from '@navikt/fp-utils';
 
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
-import { getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
+import { getStønadskvoteNavn } from '../../../utils/uttaksplanListeUtils';
 
 interface Props {
     periode: UttakPeriode_fpoversikt;
@@ -20,7 +20,7 @@ export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, na
     const intl = useIntl();
 
     const morsAktivitet = erVanligUttakPeriode(periode) && periode.morsAktivitet ? periode.morsAktivitet : undefined;
-    const stønadskontoNavn = getStønadskontoNavn(
+    const stønadskvoteNavn = getStønadskvoteNavn(
         intl,
         navnPåForeldre,
         periode.forelder === 'FAR_MEDMOR',
@@ -53,7 +53,7 @@ export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, na
                 </HStack>
                 <HStack gap="space-8">
                     <BodyShort>
-                        {getOverføringsTekst(stønadskontoNavn, navnPåAnnenForelder, periode.overføringÅrsak)}
+                        {getOverføringsTekst(stønadskvoteNavn, navnPåAnnenForelder, periode.overføringÅrsak)}
                     </BodyShort>
                     {periode.gradering !== undefined && (
                         <BodyShort>
@@ -73,7 +73,7 @@ export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, na
 };
 
 const getOverføringsTekst = (
-    stønadskontoNavn: string,
+    stønadskvoteNavn: string,
     navnPåAnnenForelder: string,
     overføringsÅrsak: UttakOverføringÅrsak_fpoversikt | undefined,
 ) => {
@@ -82,28 +82,28 @@ const getOverføringsTekst = (
             return (
                 <FormattedMessage
                     id="uttaksplan.periodeListeContent.overføring.sykdomAnnenForelder"
-                    values={{ stønadskontoNavn, navnPåAnnenForelder }}
+                    values={{ stønadskvoteNavn, navnPåAnnenForelder }}
                 />
             );
         case 'ALENEOMSORG':
             return (
                 <FormattedMessage
                     id="uttaksplan.periodeListeContent.overføring.aleneomsorg"
-                    values={{ stønadskontoNavn, navnPåAnnenForelder }}
+                    values={{ stønadskvoteNavn, navnPåAnnenForelder }}
                 />
             );
         case 'IKKE_RETT_ANNEN_FORELDER':
             return (
                 <FormattedMessage
                     id="uttaksplan.periodeListeContent.overføring.ikkeRettAnnenForelder"
-                    values={{ stønadskontoNavn, navnPåAnnenForelder }}
+                    values={{ stønadskvoteNavn, navnPåAnnenForelder }}
                 />
             );
         case 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER':
             return (
                 <FormattedMessage
                     id="uttaksplan.periodeListeContent.overføring.institusjonsoppholdAnnenForelder"
-                    values={{ stønadskontoNavn, navnPåAnnenForelder }}
+                    values={{ stønadskvoteNavn, navnPåAnnenForelder }}
                 />
             );
         default:

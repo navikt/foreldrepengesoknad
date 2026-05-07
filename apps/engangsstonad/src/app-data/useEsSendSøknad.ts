@@ -3,61 +3,31 @@ import { Path } from 'appData/paths';
 import { API_URLS } from 'appData/queries';
 import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
-import { OmBarnet, erAdopsjon, erBarnetFødt, harBarnetTermindato } from 'types/OmBarnet';
 
-import { captureMessage } from '@navikt/fp-observability';
-import { EngangsstønadDto, EsPersonopplysningerDto_fpoversikt, Målform, ProblemDetails } from '@navikt/fp-types';
+import { ApiError } from '@navikt/fp-observability';
+import {
+    BarnDto,
+    EngangsstønadDto,
+    EsPersonopplysningerDto_fpoversikt,
+    FpSoknadProblemDetails,
+    Målform,
+} from '@navikt/fp-types';
 import { getDecoratorLanguageCookie, useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './EsDataContext';
 
-// TODO Vurder om ein heller bør mappa fram og tilbake i barn-komponenten. Er nok bedre å gjera det
-const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
-    if (erAdopsjon(omBarnet)) {
-        return {
-            type: 'adopsjon' as const,
-            antallBarn: omBarnet.antallBarn,
-            fødselsdatoer: omBarnet.fødselsdatoer.map((f) => f.dato),
-            adopsjonsdato: omBarnet.adopsjonsdato,
-            adopsjonAvEktefellesBarn: omBarnet.adopsjonAvEktefellesBarn,
-        };
-    }
-    if (erBarnetFødt(omBarnet)) {
-        return {
-            type: 'fødsel' as const,
-            antallBarn: omBarnet.antallBarn,
-            fødselsdato: omBarnet.fødselsdato,
-            termindato: omBarnet.termindato,
-        };
-    }
-
-    if (harBarnetTermindato(omBarnet) && dokumentasjon && erTerminDokumentasjon(dokumentasjon)) {
-        return {
-            type: 'termin' as const,
-            antallBarn: omBarnet.antallBarn,
-            termindato: omBarnet.termindato,
-            terminbekreftelseDato: dokumentasjon.terminbekreftelsedato,
-        };
-    }
-
-    throw new Error('Det er feil i data om barnet');
-};
-
-// TODO (TOR) Fiks lokalisering
-const UKJENT_UUID = 'ukjent uuid';
-const FEIL_VED_INNSENDING =
-    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
-
 export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt) => {
+    const intl = useIntl();
     const navigate = useNavigate();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 
     const send = async () => {
-        const omBarnet = notEmpty(hentData(ContextDataType.OM_BARNET));
+        const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
         const dokumentasjon = hentData(ContextDataType.DOKUMENTASJON);
         const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
         const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
@@ -68,7 +38,7 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
                 navn: personinfo.navn,
             },
             språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform,
-            barn: mapBarn(omBarnet, dokumentasjon),
+            barn: mapBarn(barn, dokumentasjon),
             utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
             vedlegg:
                 dokumentasjon?.vedlegg.map((vedlegg) => ({
@@ -95,15 +65,20 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
                     throw error;
                 }
 
-                const jsonResponse = await error.response.json<ProblemDetails>();
-                captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
-                const callIdForBruker = jsonResponse?.callId ?? UKJENT_UUID;
-                throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
+                const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
+                const callId = jsonResponse?.callId;
+                const feilmelding = callId
+                    ? intl.formatMessage(
+                          { id: 'useEsSendSøknad.FeilVedInnsending.MedCallId' },
+                          { callId: callId.substring(0, 6) },
+                      )
+                    : intl.formatMessage({ id: 'useEsSendSøknad.FeilVedInnsending.UtenCallId' });
+                throw new ApiError(feilmelding, 'Feil ved innsending av engangsstønad', jsonResponse);
             }
             if (error instanceof Error) {
                 throw error;
             }
-            throw new Error(String(error));
+            throw new Error(String(error), { cause: error });
         }
     };
 
@@ -118,4 +93,14 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
         }),
         [sendSøknad, error],
     );
+};
+
+const mapBarn = (barn: BarnDto, dokumentasjon?: Dokumentasjon): BarnDto => {
+    if (barn.type === 'termin' && !(dokumentasjon && erTerminDokumentasjon(dokumentasjon))) {
+        throw new Error('Det er feil i data om barnet: mangler terminbekreftelse for termin-barn');
+    }
+
+    return barn.type === 'termin' && dokumentasjon && erTerminDokumentasjon(dokumentasjon)
+        ? { ...barn, terminbekreftelseDato: dokumentasjon.terminbekreftelsedato }
+        : barn;
 };

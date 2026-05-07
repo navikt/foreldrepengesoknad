@@ -17,7 +17,7 @@ import { sorterPerioder } from '../utils/periodeUtils';
 type Props = {
     barn: Barn;
     foreldreInfo: ForeldreInfo;
-    valgtStønadskonto: KontoBeregningDto;
+    valgtStønadskvote: KontoBeregningDto;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     erPeriodeneTilAnnenPartLåst: boolean;
     uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
@@ -64,7 +64,7 @@ export const useUttaksplanData = () => {
     return context;
 };
 
-//TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
+// TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
 const filtrerBortPerioderUtenTrekkdager = (
     perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
 ) =>

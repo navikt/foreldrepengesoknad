@@ -1,7 +1,9 @@
 import { createIntl, createIntlCache } from 'react-intl';
 
+import { getIllegalChars } from '@navikt/fp-validation';
+
 import messages from '../intl/nb_NO.json';
-import { getIllegalChars, validateFødselsnummer } from './validationUtil';
+import { validateFødselsnummer } from './validationUtil';
 
 // Create the IntlProvider to retrieve context for wrapping around.
 const cache = createIntlCache();
@@ -11,8 +13,7 @@ const getIntlMock = () => {
         {
             locale: 'nb',
             defaultLocale: 'nb',
-            //@ts-expect-error fiks
-            messages,
+            messages: messages as Record<string, string>,
         },
         cache,
     );
@@ -27,7 +28,7 @@ describe('validationUtil', () => {
 
         const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer')(andrePartFnr);
 
-        expect(resultat).toBeUndefined();
+        expect(resultat).toBeNull();
     });
 
     it('skal gi feilmelding når søker oppgir sitt eget fnr som andre parts fnr', () => {
@@ -74,7 +75,7 @@ describe('validationUtil', () => {
 
         const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer', erUtenlandskFnr)(andrePartFnr);
 
-        expect(resultat).toBeUndefined();
+        expect(resultat).toBeNull();
     });
     it('skal ikke gi feilmelding når frn er utenlandsk og fnr inneholder ulovlige tegn', () => {
         const søkerFnr = '05510552883';

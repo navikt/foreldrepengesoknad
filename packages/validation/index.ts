@@ -1,4 +1,15 @@
 export { notEmpty, assertUnreachable, containsWhiteSpace } from './src/other/validation';
+export {
+    isToday,
+    isAfterToday,
+    isBeforeToday as isDateBeforeToday,
+    isSameOrAfterToday,
+    isSameOrBeforeToday,
+    isDateASameOrBeforeDateB,
+    isDateAAfterDateB,
+    isDateRangesOverlapping,
+    isValidDate as isValidDateString,
+} from './src/other/dateValidation';
 export { erGyldigNorskOrgnummer } from './src/other/orgnrValidation';
 export {
     textRegex,
@@ -9,6 +20,8 @@ export {
     hasMaxLength,
     hasLegalChars,
     isEmpty,
+    getIllegalChars,
+    hasValue,
 } from './src/form/generalFormValidation';
 export {
     isValidNumberForm,

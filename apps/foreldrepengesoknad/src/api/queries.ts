@@ -1,21 +1,29 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
-import { getStønadskontoParams } from 'api/getStønadskontoParams';
+import { getStønadskvoteParams } from 'api/getStønadskvoteParams';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
-import ky from 'ky';
+import ky, { type ResponsePromise } from 'ky';
 import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenForelderUtils';
 
 import {
+    AnnenPartRequest_fpoversikt,
     AnnenPartSak_fpoversikt,
     ForsendelseStatus,
     FpPersonopplysningerDto_fpoversikt,
+    KontoBeregningGrunnlagDto,
     KontoBeregningResultatDto,
+    MorArbeidRequest_fpoversikt,
     Saker_fpoversikt,
-    Tidsperiode,
 } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 const urlPrefiks = import.meta.env.BASE_URL;
+
+/** Backend returnerer null for Optional.orElse(null), som JAX-RS oversetter til 204 No Content */
+const jsonEllerNull = async <T>(responsePromise: ResponsePromise) => {
+    const response = await responsePromise;
+    return response.status === 204 ? null : response.json<T>();
+};
 
 export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/personopplysninger/foreldrepenger`,
@@ -68,70 +76,29 @@ export const søkerinfoOptions = () =>
 export const mellomlagretInfoOptions = () =>
     queryOptions({
         queryKey: ['MELLOMLAGRET_INFO'],
-        queryFn: () => ky.get(API_URLS.mellomlagring).json<FpMellomlagretData>(),
+        queryFn: () => jsonEllerNull<FpMellomlagretData>(ky.get(API_URLS.mellomlagring)),
+        select: (data) => data ?? undefined,
         staleTime: Infinity,
     });
 
-const annenPartVedtakOptions = (data?: AnnenPartVedtakParams) =>
+const annenPartVedtakOptions = (data?: AnnenPartRequest_fpoversikt) =>
     queryOptions({
         queryKey: ['ANNEN_PART_VEDTAK', data],
-        queryFn: async () => {
-            const vedtakEllerTomStrengForIngenVedtak = await ky
-                .post(API_URLS.annenPartVedtak, { json: data })
-                .json<AnnenPartSak_fpoversikt | ''>();
-            if (vedtakEllerTomStrengForIngenVedtak === '') {
-                return null;
-            }
-
-            return vedtakEllerTomStrengForIngenVedtak;
-        },
-        /**
-         * Denne selected ser snodig ut. Men poenget er at QueryCachen liker ikke at data er undefined.
-         * Derfor lagres den som null i cache. Men i bruk i koden ønsker vi ikke deale med både null og undefined.
-         */
-        select: (vedtak) => {
-            if (vedtak === null) {
-                return undefined;
-            }
-            return vedtak;
-        },
+        queryFn: () => jsonEllerNull<AnnenPartSak_fpoversikt>(ky.post(API_URLS.annenPartVedtak, { json: data })),
+        select: (sak) => sak ?? undefined,
     });
 
-// TODO: relocate types
-type AnnenPartVedtakParams = {
-    annenPartFødselsnummer?: string;
-    barnFødselsnummer?: string;
-    familiehendelse: string;
-};
-
-type StønadskontoParams = {
-    rettighetstype: string;
-    brukerrolle: string;
-    antallBarn: string;
-    fødselsdato?: string;
-    termindato?: string;
-    omsorgsovertakelseDato?: string;
-    morHarUføretrygd: boolean;
-};
-
-export type DokumentereMorsArbeidParams = {
-    annenPartFødselsnummer: string;
-    barnFødselsnummer?: string;
-    familiehendelse: string;
-    perioder: Array<Tidsperiode & { periodeType: 'UTSETTELSE' | 'UTTAK' }>;
-};
-
-const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams) =>
+const tilgjengeligeStønadskvoterOptions = (data: KontoBeregningGrunnlagDto) =>
     queryOptions({
-        queryKey: ['TILGJENGELIGE_STONADSKONTOER', data],
+        queryKey: ['TILGJENGELIGE_STONADSKVOTER', data],
         queryFn: () => ky.post(API_URLS.konto, { json: data }).json<KontoBeregningResultatDto>(),
         staleTime: Infinity,
     });
 
-export const trengerDokumentereMorsArbeidOptions = (data: DokumentereMorsArbeidParams) =>
+export const trengerDokumentereMorsArbeidOptions = (data: MorArbeidRequest_fpoversikt) =>
     queryOptions({
         queryKey: ['TRENGER_DOKUMENTERER_MORS_ARBEID', data],
-        enabled: data.perioder.length > 0,
+        enabled: (data.perioder?.length ?? 0) > 0,
         queryFn: () => ky.post(API_URLS.trengerDokumentereMorsArbeid, { json: data }).json<boolean>(),
     });
 
@@ -149,7 +116,7 @@ export const useStønadsKontoerOptions = () => {
 
     const valgtSak = sakerQuery.data?.foreldrepenger.find((sak) => sak.saksnummer === valgtEksisterendeSaksnr);
 
-    const stønadskontoParams = getStønadskontoParams(
+    const stønadskvoteParams = getStønadskvoteParams(
         barn,
         annenForelder,
         søkersituasjon,
@@ -157,7 +124,7 @@ export const useStønadsKontoerOptions = () => {
         valgtSak?.familiehendelse.termindato,
     );
 
-    return tilgjengeligeStønadskontoerOptions(stønadskontoParams);
+    return tilgjengeligeStønadskvoterOptions(stønadskvoteParams);
 };
 
 export const useAnnenPartVedtakOptions = () => {

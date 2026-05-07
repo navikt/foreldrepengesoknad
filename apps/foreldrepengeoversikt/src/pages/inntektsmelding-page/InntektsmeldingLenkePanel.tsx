@@ -21,7 +21,7 @@ export const InntektsmeldingLenkePanel = () => {
     if (aktiveInntektsmeldinger.length === 1) {
         return (
             <LenkePanel
-                tittel={intl.formatMessage({ id: 'lenkePanel.rapportertInntekt' })}
+                tittel={intl.formatMessage({ id: 'InntektsmeldingLenkePanel.rapportertInntekt' })}
                 to={`${OversiktRoutes.INNTEKTSMELDING}/${aktiveInntektsmeldinger[0]!.journalpostId}`}
                 Ikon={SackKronerIcon}
             />
@@ -30,7 +30,7 @@ export const InntektsmeldingLenkePanel = () => {
 
     return (
         <LenkePanel
-            tittel={intl.formatMessage({ id: 'lenkePanel.rapportertInntekt' })}
+            tittel={intl.formatMessage({ id: 'InntektsmeldingLenkePanel.rapportertInntekt' })}
             to={OversiktRoutes.INNTEKTSMELDING}
             Ikon={SackKronerIcon}
         />

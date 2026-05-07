@@ -8,16 +8,16 @@ import { Dekningsgrad, KontoBeregningDto, KontoBeregningResultatDto, KontoTypeUt
 import { Infobox } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
-const getDagerForKonto = (stønadskontoer: KontoBeregningDto, stønadskontoType: KontoTypeUttak) => {
-    const konto = stønadskontoer.kontoer.find((k) => k.konto === stønadskontoType);
+const getDagerForKvote = (stønadskvoter: KontoBeregningDto, stønadskontoType: KontoTypeUttak) => {
+    const konto = stønadskvoter.kontoer.find((k) => k.konto === stønadskontoType);
     return konto ? konto.dager : 0;
 };
 
-const finnAntallUkerOgDager = (valgtStønadskonto: KontoBeregningDto) => {
-    const totaltAntallDagerFellesperiode = getDagerForKonto(valgtStønadskonto, 'FELLESPERIODE');
-    const antallDagerForeldrepengerFørFødsel = getDagerForKonto(valgtStønadskonto, 'FORELDREPENGER_FØR_FØDSEL');
-    const antallUkerMødrekvote = getDagerForKonto(valgtStønadskonto, 'MØDREKVOTE');
-    const antallUkerFedrekvote = getDagerForKonto(valgtStønadskonto, 'FEDREKVOTE');
+const finnAntallUkerOgDager = (valgtStønadskvote: KontoBeregningDto) => {
+    const totaltAntallDagerFellesperiode = getDagerForKvote(valgtStønadskvote, 'FELLESPERIODE');
+    const antallDagerForeldrepengerFørFødsel = getDagerForKvote(valgtStønadskvote, 'FORELDREPENGER_FØR_FØDSEL');
+    const antallUkerMødrekvote = getDagerForKvote(valgtStønadskvote, 'MØDREKVOTE');
+    const antallUkerFedrekvote = getDagerForKvote(valgtStønadskvote, 'FEDREKVOTE');
 
     const totaltAntallDager =
         totaltAntallDagerFellesperiode +
@@ -36,12 +36,12 @@ const getDailyPayment = (monthlyWage: number) => (monthlyWage * 12) / 260;
 interface Props {
     dekningsgrad: Dekningsgrad;
     gjennomsnittslønn: number;
-    stønadskontoer: KontoBeregningResultatDto;
+    stønadskvoter: KontoBeregningResultatDto;
     satser: Satser;
 }
 
-export const Utbetalingspanel = ({ dekningsgrad, gjennomsnittslønn, stønadskontoer, satser }: Props) => {
-    const antallUkerOgDagerMedUttak = finnAntallUkerOgDager(stønadskontoer[dekningsgrad]);
+export const Utbetalingspanel = ({ dekningsgrad, gjennomsnittslønn, stønadskvoter, satser }: Props) => {
+    const antallUkerOgDagerMedUttak = finnAntallUkerOgDager(stønadskvoter[dekningsgrad]);
 
     const erDekningsgrad100 = dekningsgrad === '100';
 

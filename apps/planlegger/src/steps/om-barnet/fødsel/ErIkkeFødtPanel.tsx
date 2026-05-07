@@ -2,7 +2,6 @@ import { TasklistStartIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import {
     erAlenesøker as erAlene,
@@ -16,6 +15,7 @@ import { formatError } from 'utils/customErrorFormatter';
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isLessThanThreeWeeksAgo, isRequired, isValidDate } from '@navikt/fp-validation';
@@ -33,14 +33,14 @@ const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): st
 };
 type Props = {
     hvemPlanlegger: HvemPlanlegger;
-    erOmBarnetIkkeOppgittFraFør: boolean;
+    erOmBarnetPlanleggerIkkeOppgittFraFør: boolean;
     scrollToBottom: () => void;
 };
 
-export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, scrollToBottom }: Props) => {
+export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetPlanleggerIkkeOppgittFraFør, scrollToBottom }: Props) => {
     const intl = useIntl();
 
-    const formMethods = useFormContext<OmBarnet>();
+    const formMethods = useFormContext<OmBarnetPlanlegger>();
     const termindato = formMethods.watch('termindato');
 
     const datoSvangerskapsuke22 = termindato
@@ -64,7 +64,7 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør,
 
     return (
         <VStack gap="space-20">
-            <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
+            <BluePanel isDarkBlue={erOmBarnetPlanleggerIkkeOppgittFraFør} shouldFadeIn>
                 <RhfDatepicker
                     name="termindato"
                     control={formMethods.control}

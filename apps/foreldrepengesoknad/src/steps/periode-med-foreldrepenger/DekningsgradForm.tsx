@@ -1,12 +1,13 @@
 import { ExternalLinkIcon, FeedingBottleIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
+import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getFødselsdato, getTermindato } from 'utils/barnUtils';
 import { førsteJuli2024ReglerGjelder, getVarighetString } from 'utils/dateUtils';
-import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
+import { getAntallUkerFraStønadskvoter } from 'utils/stønadskvoterUtils';
 
 import { BodyShort, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
@@ -17,7 +18,7 @@ import { Infobox } from '@navikt/fp-ui';
 import { Uttaksdagen, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
-const finnSisteDagMedForeldrepenger = (stønadskontoer: KontoBeregningDto, barn: Barn): string | undefined => {
+const finnSisteDagMedForeldrepenger = (stønadskvoter: KontoBeregningDto, barn: Barn): string | undefined => {
     const erAdopsjon = isAdoptertBarn(barn);
     const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
@@ -29,8 +30,7 @@ const finnSisteDagMedForeldrepenger = (stønadskontoer: KontoBeregningDto, barn:
     }
 
     const dagerSomSkalLeggesTil =
-        getAntallUkerFraStønadskontoer(stønadskontoer.kontoer.filter((s) => s.konto !== 'FORELDREPENGER_FØR_FØDSEL')) *
-        5;
+        getAntallUkerFraStønadskvoter(stønadskvoter.kontoer.filter((s) => s.konto !== 'FORELDREPENGER_FØR_FØDSEL')) * 5;
 
     const sisteDag = Uttaksdagen.denneEllerNeste(dato).getDatoAntallUttaksdagerSenere(dagerSomSkalLeggesTil - 1);
     return dayjs(sisteDag).format('dddd DD. MMMM YYYY');
@@ -59,8 +59,8 @@ type Props = {
     onFortsettSenere?: () => void;
     barn: Barn;
     søkersituasjon: SøkersituasjonFp;
-    stønadskonto100: KontoBeregningDto;
-    stønadskonto80: KontoBeregningDto;
+    stønadskvote100: KontoBeregningDto;
+    stønadskvote80: KontoBeregningDto;
 };
 
 const getDekningsgradReadMoreTekst = (erDeltUttak: boolean, barn: Barn) => {
@@ -85,8 +85,8 @@ export const DekningsgradForm = ({
     goToNextDefaultStep,
     barn,
     søkersituasjon,
-    stønadskonto100,
-    stønadskonto80,
+    stønadskvote100,
+    stønadskvote80,
     onAvsluttOgSlett,
     onFortsettSenere,
 }: Props) => {
@@ -95,11 +95,15 @@ export const DekningsgradForm = ({
     const periodeMedForeldrepenger = useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const oppdaterPeriodeMedForeldrepenger = useContextSaveData(ContextDataType.PERIODE_MED_FORELDREPENGER);
+    const resetUttaksplanData = useResetUttaksplanData();
     const formMethods = useForm<{ dekningsgrad: Dekningsgrad }>({
         defaultValues: { dekningsgrad: periodeMedForeldrepenger },
     });
 
     const onSubmit = (values: { dekningsgrad: Dekningsgrad }) => {
+        if (periodeMedForeldrepenger !== undefined && values.dekningsgrad !== periodeMedForeldrepenger) {
+            resetUttaksplanData();
+        }
         oppdaterPeriodeMedForeldrepenger(values.dekningsgrad);
         return goToNextDefaultStep();
     };
@@ -110,10 +114,10 @@ export const DekningsgradForm = ({
 
     const erAdopsjon = isAdoptertBarn(barn);
     const fødselsdato = getFødselsdato(barn);
-    const ekstraDagePrematur = stønadskonto100.tillegg?.prematur;
+    const ekstraDagePrematur = stønadskvote100.tillegg?.prematur;
 
-    const sisteDag100Prosent = finnSisteDagMedForeldrepenger(stønadskonto100, barn);
-    const sisteDag80Prosent = finnSisteDagMedForeldrepenger(stønadskonto80, barn);
+    const sisteDag100Prosent = finnSisteDagMedForeldrepenger(stønadskvote100, barn);
+    const sisteDag80Prosent = finnSisteDagMedForeldrepenger(stønadskvote80, barn);
 
     const søkerAntallTekst = erDeltUttak
         ? intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.dere' })
@@ -164,7 +168,7 @@ export const DekningsgradForm = ({
                                 id="uttaksplaninfo.49Uker"
                                 values={{
                                     varighetString: getVarighetString(
-                                        getAntallUkerFraStønadskontoer(stønadskonto100.kontoer) * 5,
+                                        getAntallUkerFraStønadskvoter(stønadskvote100.kontoer) * 5,
                                         intl,
                                     ),
                                 }}
@@ -184,7 +188,7 @@ export const DekningsgradForm = ({
                                 id="uttaksplaninfo.59Uker"
                                 values={{
                                     varighetString: getVarighetString(
-                                        getAntallUkerFraStønadskontoer(stønadskonto80.kontoer) * 5,
+                                        getAntallUkerFraStønadskvoter(stønadskvote80.kontoer) * 5,
                                         intl,
                                     ),
                                 }}
@@ -265,8 +269,8 @@ export const DekningsgradForm = ({
                             <FormattedMessage
                                 id="DekningsgradForm.InformasjonFlerbarnUker"
                                 values={{
-                                    uker80: getVarighetString(stønadskonto80.tillegg?.flerbarn ?? 0, intl),
-                                    uker100: getVarighetString(stønadskonto100.tillegg?.flerbarn ?? 0, intl),
+                                    uker80: getVarighetString(stønadskvote80.tillegg?.flerbarn ?? 0, intl),
+                                    uker100: getVarighetString(stønadskvote100.tillegg?.flerbarn ?? 0, intl),
                                     soker: søkerAntallTekst,
                                 }}
                             />

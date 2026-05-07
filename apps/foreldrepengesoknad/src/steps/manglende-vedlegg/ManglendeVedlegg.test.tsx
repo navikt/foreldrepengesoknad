@@ -54,7 +54,6 @@ describe('<ManglendeVedlegg>', () => {
                             type: AttachmentType.TERMINBEKREFTELSE,
                             uploaded: false,
                             id: expect.any(String),
-                            //@ts-expect-error -- filesize er undefined i testen, men den virkelige typen krever verdi
                             filesize: undefined,
                             file: expect.any(Object),
                         } satisfies Attachment),
@@ -154,7 +153,6 @@ describe('<ManglendeVedlegg>', () => {
                             type: AttachmentType.OMSORGSOVERTAKELSE,
                             uploaded: false,
                             id: expect.any(String),
-                            //@ts-expect-error -- filesize er undefined i testen, men den virkelige typen krever verdi
                             filesize: undefined,
                             file: expect.any(Object),
                         } satisfies Attachment),
@@ -255,7 +253,6 @@ describe('<ManglendeVedlegg>', () => {
                             type: AttachmentType.ALENEOMSORG,
                             uploaded: false,
                             id: expect.any(String),
-                            //@ts-expect-error -- filesize er undefined i testen, men den virkelige typen krever verdi
                             filesize: undefined,
                             file: expect.any(Object),
                         } satisfies Attachment),

@@ -13,7 +13,6 @@ export const WEEKDAY_DDMMMMYYYY_DATE_FORMAT = 'dddd DD. MMMM YYYY';
 export const WEEKDAY_DDMMYY_DATE_FORMAT = 'dddd DD.MM.YY';
 export const DAY_MONTHNAME_YEAR_FORMAT = 'D. MMMM YYYY';
 
-// TODO Er dette greie datoar eller bør ein velga noko anna?
 export const TIDENES_MORGEN = '1000-01-01';
 export const TIDENES_ENDE = '9999-12-31';
 

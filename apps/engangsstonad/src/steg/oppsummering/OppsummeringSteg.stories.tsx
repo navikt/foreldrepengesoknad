@@ -6,10 +6,9 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { Dokumentasjon } from 'types/Dokumentasjon';
-import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
 
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
-import { Utenlandsopphold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { BarnDto, Utenlandsopphold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
 import { OppsummeringSteg } from './OppsummeringSteg';
 
@@ -18,12 +17,12 @@ const promiseAction = () => () => {
     return Promise.resolve();
 };
 
-const barnetDefault = {
-    erBarnetFødt: true,
+const barnetDefault: BarnDto = {
+    type: 'fødsel',
     antallBarn: 1,
     fødselsdato: dayjs().subtract(9, 'day').format(ISO_DATE_FORMAT),
     termindato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
-} satisfies BarnetErFødt;
+};
 
 const utenlandsoppholdDefault = {
     harBoddUtenforNorgeSiste12Mnd: false,
@@ -35,7 +34,7 @@ const vedleggDefault = {
 };
 
 type StoryArgs = {
-    omBarnet?: OmBarnet;
+    omBarnet?: BarnDto;
     utenlandsopphold?: Utenlandsopphold;
     tidligereUtenlandsopphold?: UtenlandsoppholdPeriode[];
     senereUtenlandsopphold?: UtenlandsoppholdPeriode[];
@@ -88,10 +87,11 @@ export const AdopsjonAvEktefellesBarn: Story = {
     args: {
         sendSøknad: promiseAction(),
         omBarnet: {
+            type: 'adopsjon',
             adopsjonAvEktefellesBarn: true,
             antallBarn: 1,
             adopsjonsdato: '2023-01-01',
-            fødselsdatoer: [{ dato: '2023-01-01' }],
+            fødselsdatoer: ['2023-01-01'],
         },
         dokumentasjon: {
             vedlegg: [
@@ -116,10 +116,11 @@ export const AdopsjonAvEktefellesFlereBarn: Story = {
     args: {
         sendSøknad: promiseAction(),
         omBarnet: {
+            type: 'adopsjon',
             adopsjonAvEktefellesBarn: true,
             antallBarn: 1,
             adopsjonsdato: '2023-01-01',
-            fødselsdatoer: [{ dato: '2023-01-01' }, { dato: '2020-01-01' }],
+            fødselsdatoer: ['2023-01-01', '2020-01-01'],
         },
         dokumentasjon: {
             vedlegg: [
@@ -144,7 +145,7 @@ export const BarnetErIkkeFodt: Story = {
     args: {
         sendSøknad: promiseAction(),
         omBarnet: {
-            erBarnetFødt: false,
+            type: 'termin',
             antallBarn: 1,
             termindato: '2023-01-02',
         },

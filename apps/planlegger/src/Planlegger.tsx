@@ -11,13 +11,12 @@ import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
-import { KontoBeregningResultatDto } from '@navikt/fp-types';
+import { KontoBeregningResultatDto, OmBarnetPlanlegger } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
 import { decodeBase64 } from '@navikt/fp-utils';
 
@@ -27,13 +26,13 @@ const finnBrukerRolle = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRet
     return harMorRett(hvemHarRett, hvemPlanlegger) ? 'MOR' : 'FAR';
 };
 
-const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett, omBarnet: OmBarnet) => {
+const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett, omBarnet: OmBarnetPlanlegger) => {
     if (hvemPlanlegger.type === HvemPlanleggerType.MOR || hvemPlanlegger.type === HvemPlanleggerType.FAR) {
         return 'ALENEOMSORG';
     }
 
-    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && !erBarnetAdoptert(omBarnet)) {
-        return 'BARE_SØKER_RETT';
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && erBarnetAdoptert(omBarnet)) {
+        return 'ALENEOMSORG';
     }
 
     if (hvemHarRett === 'beggeHarRett') {
@@ -43,8 +42,8 @@ const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHar
     return 'BARE_SØKER_RETT';
 };
 
-const getStønadskontoer = async (
-    omBarnet?: OmBarnet,
+const getStønadskvoter = async (
+    omBarnet?: OmBarnetPlanlegger,
     arbeidssituasjon?: Arbeidssituasjon,
     hvemPlanlegger?: HvemPlanlegger,
 ) => {
@@ -73,43 +72,17 @@ export const PlanleggerDataFetcher = () => {
 
     const hvemHarRett = arbeidssituasjon ? utledHvemSomHarRett(arbeidssituasjon) : undefined;
 
-    const stønadskontoerData = useQuery({
-        queryKey: ['KONTOER', omBarnet, arbeidssituasjon, hvemPlanlegger],
-        queryFn: () => getStønadskontoer(omBarnet, arbeidssituasjon, hvemPlanlegger),
+    const stønadskvoterData = useQuery({
+        queryKey: ['KVOTER', omBarnet, arbeidssituasjon, hvemPlanlegger],
+        queryFn: () => getStønadskvoter(omBarnet, arbeidssituasjon, hvemPlanlegger),
         enabled: hvemHarRett !== undefined && hvemHarRett !== 'ingenHarRett',
-        select: (data: KontoBeregningResultatDto): KontoBeregningResultatDto => {
-            //TODO (TOR) Dette bør ligga i backend. Verkar pussig å henta kontoar for far-og-far, og så modifisera det her
-
-            // Fix for å ikke vise "Foreldrepenger uten aktivitetskrav"
-            // Hvis ikke far-og-far, returner uendret
-            if (hvemPlanlegger?.type !== HvemPlanleggerType.FAR_OG_FAR) {
-                return data;
-            }
-            // Lag en dyp kopi for å unngå å modifisere original data
-            const modifiserteData = JSON.parse(JSON.stringify(data)) as KontoBeregningResultatDto;
-            // Liste over dekningsgrader vi skal prosessere
-            const dekningsgrader = ['80', '100'] as const;
-            // Bearbeide hver dekningsgrad
-            for (const dekningsgrad of dekningsgrader) {
-                const stønadskonto = modifiserteData[dekningsgrad];
-                if (stønadskonto?.kontoer.some((k) => k.konto === 'AKTIVITETSFRI_KVOTE')) {
-                    // Summer antall dager i alle kontoer
-                    const totalDager = stønadskonto.kontoer.reduce((sum, konto) => sum + konto.dager, 0);
-                    // Filtrer og behold kun 'AKTIVITETSFRI_KVOTE' -kontoen
-                    stønadskonto.kontoer = stønadskonto.kontoer
-                        .filter((konto) => konto.konto === 'AKTIVITETSFRI_KVOTE')
-                        .map((konto) => ({ ...konto, dager: totalDager }));
-                }
-            }
-            return modifiserteData;
-        },
     });
 
-    if (stønadskontoerData.error) {
+    if (stønadskvoterData.error) {
         return <SimpleErrorPage retryCallback={() => location.reload()} />;
     }
 
-    return <PlanleggerRouter stønadskontoer={stønadskontoerData.data} satser={DEFAULT_SATSER} />;
+    return <PlanleggerRouter stønadskvoter={stønadskvoterData.data} satser={DEFAULT_SATSER} />;
 };
 
 export const PlanleggerDataInit = () => {
@@ -125,10 +98,9 @@ export const PlanleggerDataInit = () => {
         const isSupportedLocale = intl.locale === 'nb' || intl.locale === 'nn';
 
         if (locations.pathname.includes('oppsummering') && isSupportedLocale) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            if (typeof (globalThis as any).skyra?.reload === 'function') {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-                (globalThis as any).skyra.reload();
+            const skyraGlobal = globalThis as typeof globalThis & { skyra?: { reload: () => void } };
+            if (typeof skyraGlobal.skyra?.reload === 'function') {
+                skyraGlobal.skyra.reload();
                 // eslint-disable-next-line no-console
                 console.log(`skyra.reload() kjørt på ${locations.pathname}`);
             } else {

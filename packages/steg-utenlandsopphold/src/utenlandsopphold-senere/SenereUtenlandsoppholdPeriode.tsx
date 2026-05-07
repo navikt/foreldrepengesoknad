@@ -8,7 +8,7 @@ import { Button, VStack } from '@navikt/ds-react';
 import { DATE_1_YEAR_FROM_NOW, DATE_TODAY, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfSelect } from '@navikt/fp-form-hooks';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
-import { createCountryOptions, formatDate, isSameOrAfterToday } from '@navikt/fp-utils';
+import { createCountryOptions, formatDate } from '@navikt/fp-utils';
 import {
     isAfterOrSame,
     isBeforeOrSame,
@@ -16,6 +16,7 @@ import {
     isDatesNotTheSame,
     isPeriodNotOverlappingOthers,
     isRequired,
+    isSameOrAfterToday,
     isValidDate,
 } from '@navikt/fp-validation';
 

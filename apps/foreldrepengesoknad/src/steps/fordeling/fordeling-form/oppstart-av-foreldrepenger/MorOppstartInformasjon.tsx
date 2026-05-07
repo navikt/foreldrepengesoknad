@@ -7,8 +7,8 @@ import { getVarighetString } from 'utils/dateUtils';
 import { BodyShort } from '@navikt/ds-react';
 
 import { isFødtBarn } from '@navikt/fp-types';
-import { Tidsperioden, Uttaksdagen, isValidDate } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
+import { Tidsperioden, Uttaksdagen } from '@navikt/fp-utils';
+import { isValidDateString as isValidDate, notEmpty } from '@navikt/fp-validation';
 
 const ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL = 3;
 
@@ -117,11 +117,7 @@ export const MorOppstartInformasjon = ({ oppstartDato }: Props) => {
         : intl.formatMessage({ id: 'termindato' });
 
     return (
-        <div
-            className={
-                'bg-ax-accent-200 mt-[3.2rem] -ml-[13rem] flex h-[3.5rem] w-[20rem] flex-col justify-center p-2 max-[768px]:mt-0 max-[768px]:ml-0'
-            }
-        >
+        <div className={'bg-ax-accent-200 flex h-[3.5rem] w-[20rem] flex-col justify-center p-2'}>
             {starterPåUttaksdagEtterFamiliehendelse && (
                 <BodyShort size="small" className="font-bold">
                     <FormattedMessage

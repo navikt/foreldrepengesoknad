@@ -224,51 +224,28 @@ const getRadioOptionAnnenDato = (): React.ReactElement => (
     </Radio>
 );
 
-const getRadioOptionAnnenDatoMorFødsel = (erBarnetFødt: boolean, intl: IntlShape): React.ReactElement => {
-    const description = erBarnetFødt
-        ? intl.formatMessage({ id: 'fordeling.oppstartValg.annenDato.description.fødsel' })
-        : intl.formatMessage({ id: 'fordeling.oppstartValg.annenDato.description.termin' });
-    return (
-        <Radio key={OppstartValg.ANNEN_DATO} value={OppstartValg.ANNEN_DATO} description={description}>
-            <FormattedMessage id="fordeling.oppstartValg.annenDato" />
-        </Radio>
-    );
-};
-
-const getRadioOptionTreUkerFørTermin = (intl: IntlShape, barn: Barn): React.ReactElement => {
+const getRadioOptionTreUkerFørTermin = (barn: Barn): React.ReactElement => {
     const termindato = getTermindato(barn);
     const førsteDagTreUkerFørFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(termindato);
     return (
-        <Radio
-            key={OppstartValg.TRE_UKER_FØR_TERMIN}
-            value={OppstartValg.TRE_UKER_FØR_TERMIN}
-            description={intl.formatMessage(
-                { id: 'fordeling.oppstartValg.treUkerFør.description' },
-                {
-                    dato: formatDateExtended(førsteDagTreUkerFørFødsel),
-                },
-            )}
-        >
-            <FormattedMessage id="fordeling.oppstartValg.treUkerFørTermin" />
+        <Radio key={OppstartValg.TRE_UKER_FØR_TERMIN} value={OppstartValg.TRE_UKER_FØR_TERMIN}>
+            <FormattedMessage
+                id="fordeling.oppstartValg.treUkerFørTermin"
+                values={{ dato: formatDateExtended(førsteDagTreUkerFørFødsel) }}
+            />
         </Radio>
     );
 };
 
-const getRadioOptionTreUkerFørFødsel = (intl: IntlShape, barn: Barn): React.ReactElement => {
+const getRadioOptionTreUkerFørFødsel = (barn: Barn): React.ReactElement => {
     const fødselsdato = getFødselsdato(barn);
     const førsteDagTreUkerFørFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(fødselsdato);
     return (
-        <Radio
-            key={OppstartValg.TRE_UKER_FØR_FØDSEL}
-            value={OppstartValg.TRE_UKER_FØR_FØDSEL}
-            description={intl.formatMessage(
-                { id: 'fordeling.oppstartValg.treUkerFør.description' },
-                {
-                    dato: formatDateExtended(førsteDagTreUkerFørFødsel),
-                },
-            )}
-        >
-            <FormattedMessage id="fordeling.oppstartValg.treUkerFørFødsel" />
+        <Radio key={OppstartValg.TRE_UKER_FØR_FØDSEL} value={OppstartValg.TRE_UKER_FØR_FØDSEL}>
+            <FormattedMessage
+                id="fordeling.oppstartValg.treUkerFørFødsel"
+                values={{ dato: formatDateExtended(førsteDagTreUkerFørFødsel) }}
+            />
         </Radio>
     );
 };
@@ -315,18 +292,6 @@ const getRadioOptionFamiliehendelsesdato = (
     return getRadioOptionAdopsjon(familiehendelsesdato);
 };
 
-const getRadioOptionForAnnenDato = (
-    erFarEllerMedmor: boolean,
-    intl: IntlShape,
-    erFødsel: boolean,
-    erBarnetFødt: boolean,
-) => {
-    if (!erFarEllerMedmor && erFødsel) {
-        return getRadioOptionAnnenDatoMorFødsel(erBarnetFødt, intl);
-    }
-    return getRadioOptionAnnenDato();
-};
-
 const mapOppstartValgToRadioOption = (
     valg: OppstartValg,
     barn: Barn,
@@ -353,9 +318,9 @@ const mapOppstartValgToRadioOption = (
                 deltUttak,
             );
         case OppstartValg.TRE_UKER_FØR_TERMIN:
-            return getRadioOptionTreUkerFørTermin(intl, barn);
+            return getRadioOptionTreUkerFørTermin(barn);
         case OppstartValg.TRE_UKER_FØR_FØDSEL:
-            return getRadioOptionTreUkerFørFødsel(intl, barn);
+            return getRadioOptionTreUkerFørFødsel(barn);
         case OppstartValg.DATO_FOR_ALENEOMSORG:
             return getRadioOptionForDatoForAleneomsorg(datoForAleneomsorg);
         case OppstartValg.DAGEN_ETTER_ANNEN_FORELDER:
@@ -363,7 +328,7 @@ const mapOppstartValgToRadioOption = (
         case OppstartValg.ANKOMSTDATO_NORGE:
             return getRadioOptionAdopsjonAnkomstNorge(ankomstNorge);
         case OppstartValg.ANNEN_DATO:
-            return getRadioOptionForAnnenDato(erFarEllerMedmor, intl, erFødsel, erBarnetFødt);
+            return getRadioOptionAnnenDato();
     }
 };
 
@@ -399,18 +364,29 @@ export const OppstartValgInput = ({
     const deltUttak = getIsDeltUttak(annenForelder);
     const datoForAleneomsorg = getDatoForAleneomsorg(annenForelder);
 
+    const erMorFødsel = !erFarEllerMedmor && erFødsel;
+
+    const getDescription = () => {
+        if (erFarEllerMedmor && !erAleneOmOmsorg && !bareFarHarRett) {
+            return <FormattedMessage id="fordeling.oppstartValg.description.fedreWLB" />;
+        }
+        if (erMorFødsel) {
+            const erBarnetFødt = isFødtBarn(barn);
+            return erBarnetFødt ? (
+                <FormattedMessage id="fordeling.oppstartValg.description.morFødsel" />
+            ) : (
+                <FormattedMessage id="fordeling.oppstartValg.description.morFødselTermin" />
+            );
+        }
+        return undefined;
+    };
+
     return (
         <RhfRadioGroup
             name="oppstartAvForeldrepengerValg"
             control={control}
             label={<FormattedMessage id="fordeling.oppstartValg.spørsmål" />}
-            description={
-                erFarEllerMedmor && !erAleneOmOmsorg && !bareFarHarRett ? (
-                    <FormattedMessage id="fordeling.oppstartValg.description.fedreWLB" />
-                ) : (
-                    <FormattedMessage id="fordeling.description.kanEndresSenere" />
-                )
-            }
+            description={getDescription()}
             validate={[isRequired(intl.formatMessage({ id: 'fordeling.oppstartValg.måOppgis' }))]}
         >
             {oppstartsvalg.map((valg) =>

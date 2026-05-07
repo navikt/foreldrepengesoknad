@@ -3,21 +3,19 @@ import { API_URLS } from 'appData/queries';
 import { SøknadRoute } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { captureMessage } from '@navikt/fp-observability';
-import { ProblemDetails, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+import { ApiError } from '@navikt/fp-observability';
+import { FpSoknadProblemDetails, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 
 import { useContextGetAnyData } from './SvpDataContext';
 import { getSøknadForInnsending } from './getSøknadForInnsending';
 
-const UKJENT_UUID = 'ukjent uuid';
-const FEIL_VED_INNSENDING =
-    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
-
 export const useSendSøknad = (søkerinfo: SvpPersonopplysningerDto_fpoversikt) => {
     const navigate = useNavigate();
+    const intl = useIntl();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 
@@ -40,21 +38,24 @@ export const useSendSøknad = (søkerinfo: SvpPersonopplysningerDto_fpoversikt) 
             void navigate(SøknadRoute.KVITTERING);
         } catch (error: unknown) {
             if (error instanceof HTTPError) {
-                captureMessage(error.message);
-
                 if (signal.aborted || error.response.status === 401 || error.response.status === 403) {
                     throw error;
                 }
 
-                const jsonResponse = await error.response.json<ProblemDetails>();
-                captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
-                const callIdForBruker = jsonResponse?.callId ?? UKJENT_UUID;
-                throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
+                const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
+                const callId = jsonResponse?.callId;
+                const feilmelding = callId
+                    ? intl.formatMessage(
+                          { id: 'useSendSøknad.FeilVedInnsending.MedCallId' },
+                          { callId: callId.substring(0, 6) },
+                      )
+                    : intl.formatMessage({ id: 'useSendSøknad.FeilVedInnsending.UtenCallId' });
+                throw new ApiError(feilmelding, 'Feil ved innsending av svangerskapspengesøknad', jsonResponse);
             }
             if (error instanceof Error) {
                 throw error;
             }
-            throw new Error(String(error));
+            throw new Error(String(error), { cause: error });
         }
     };
 

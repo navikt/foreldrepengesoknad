@@ -60,7 +60,7 @@
     "OppsummeringFpEllerEsSide.SøkOmEs": "Søk om engangsstønad",
     "OppsummeringFpEllerEsSide.MerOmEs": "Mer om engangsstønad",
     "OppsummeringFpEllerEsSide.Tilbake": "Tilbake til spørsmålene",
-    "ArbeidssituasjonSide.SeResultatet": "Se resultatet",
+    "SituasjonSide.SeResultatet": "Se resultatet",
     "OppsummeringSide.HvaErEs": "Hva er engangsstønad?",
     "HvorforHarJegRettPanel.HvorforHarJegRett": "Hvorfor har jeg rett til foreldrepenger?",
     "HvorforHarJegRettPanel.HvorforKanJegHaRett": "Hvorfor kan jeg ha rett til foreldrepenger?",
@@ -90,7 +90,7 @@
     "FpEllerEs.Tittel": "Foreldrepenger eller engangsstønad",
     "HvorMyeOgHvaSkjerNåLinkPanel.HvorMye": "Hvor mye?",
     "HvorMyeOgHvaSkjerNåLinkPanel.PlanleggForeldrepenger": "Planlegg foreldrepenger",
-    "valideringsfeil.lønn.ikkeTall": "Du har skrevet noe som ikke er et tall",
-    "valideringsfeil.lønn.desimaler": "Du har skrevet for mange desimaler. Skriv inn et tall med maks 2 desimaler",
+    "SituasjonSide.lønn.ikkeTall": "Du har skrevet noe som ikke er et tall",
+    "SituasjonSide.lønn.desimaler": "Du har skrevet for mange desimaler. Skriv inn et tall med maks 2 desimaler",
     "HvorMyeOgHvaSkjerNåLinkPanel.AndreVeivisere": "Andre veivisere:"
 }

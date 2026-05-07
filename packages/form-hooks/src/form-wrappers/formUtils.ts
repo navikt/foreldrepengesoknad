@@ -1,7 +1,6 @@
 import { FieldErrors, FieldValues, Path } from 'react-hook-form';
 
-//TODO (TOR) Trur ein bør fjerna undefined her
-export type ValidationReturnType = string | null | undefined;
+export type ValidationReturnType = string | null;
 
 export const getValidationRules = <T>(validate: Array<(value: T) => ValidationReturnType>) =>
     validate.reduce(

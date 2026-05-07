@@ -3,44 +3,28 @@ import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContex
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
-import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getFamiliehendelsedato } from 'steps/oppsummering/expansion-cards/BarnehageplassOppsummering';
-import { OmBarnet } from 'types/Barnet';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
-import { Uttaksdata, getUttaksdagTilOgMedDato } from 'utils/uttakUtils';
+import { Uttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
 
-import { ISO_DATE_FORMAT, links } from '@navikt/fp-constants';
+import { links } from '@navikt/fp-constants';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { IconCircleWrapper, Infobox, StepButtons } from '@navikt/fp-ui';
+import { beregnBarnehagestartDato } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
 
-export const barnehagestartDato = (barnet: OmBarnet) => {
+export const barnehagestartDato = (barnet: OmBarnetPlanlegger): string | undefined => {
     if (erBarnetAdoptert(barnet)) {
         return undefined;
     }
 
     const dato = erBarnetFødt(barnet) ? barnet.fødselsdato : barnet.termindato;
-
-    if (dayjs(dato).month() < 8) {
-        const newLocal = dayjs(dato).month(7).add(1, 'year').endOf('month').format(ISO_DATE_FORMAT);
-        return getUttaksdagTilOgMedDato(newLocal);
-    }
-    if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) {
-        return getUttaksdagTilOgMedDato(dayjs(dato).add(1, 'year').endOf('month').format(ISO_DATE_FORMAT));
-    }
-    return getUttaksdagTilOgMedDato(
-        dayjs(dato)
-            .startOf('year')
-            .add(2, 'year')
-            .add(7, 'months')
-            .endOf('week')
-            .endOf('month')
-            .format(ISO_DATE_FORMAT),
-    );
+    return beregnBarnehagestartDato(dato);
 };
 
 interface Props {
@@ -68,13 +52,16 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
                 </Heading>
                 <VStack gap="space-20">
                     <BodyLong>
-                        <FormattedMessage id="Barnehageplass.KommuneTekstDeg" values={{ erAlenesøker, antallBarn }} />
+                        <FormattedMessage
+                            id="BarnehageplassSteg.KommuneTekstDeg"
+                            values={{ erAlenesøker, antallBarn }}
+                        />
                     </BodyLong>
                     <Infobox
                         header={
                             erBarnetAdoptert(barnet) ? (
                                 <FormattedMessage
-                                    id="Barnehageplass.DatoTittel"
+                                    id="BarnehageplassSteg.DatoTittel"
                                     values={{
                                         dato: intl.formatDate(sluttdato, {
                                             month: 'long',
@@ -85,7 +72,7 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
                                 />
                             ) : (
                                 <FormattedMessage
-                                    id="Barnehageplass.DatoTittel"
+                                    id="BarnehageplassSteg.DatoTittel"
                                     values={{
                                         dato: intl.formatDate(barnehagestartDato(barnet), {
                                             month: 'long',
@@ -111,7 +98,7 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
                     >
                         <BodyLong>
                             <FormattedMessage
-                                id="Barnehageplass.DatoTekst"
+                                id="BarnehageplassSteg.DatoTekst"
                                 values={{
                                     a: (msg) => (
                                         <Link inlineText href={links.barnehageloven} rel="noreferrer" target="_blank">
@@ -132,7 +119,7 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
                         </BodyLong>
                     </Infobox>
                     <Infobox
-                        header={<FormattedMessage id="Barnehageplass.BarnehageTittel" />}
+                        header={<FormattedMessage id="BarnehageplassSteg.BarnehageTittel" />}
                         icon={
                             <InformationIcon
                                 height={24}
@@ -145,7 +132,7 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
                         color="gray"
                     >
                         <BodyLong>
-                            <FormattedMessage id="Barnehageplass.BarnehageTekst" values={{ erAlenesøker }} />
+                            <FormattedMessage id="BarnehageplassSteg.BarnehageTekst" values={{ erAlenesøker }} />
                         </BodyLong>
                     </Infobox>
                 </VStack>

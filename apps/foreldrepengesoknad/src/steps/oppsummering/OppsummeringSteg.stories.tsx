@@ -249,7 +249,7 @@ const meta = {
         msw: {
             handlers: [
                 http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.konto, () =>
                     HttpResponse.json({
                         '80': STØNADSKONTO_80,

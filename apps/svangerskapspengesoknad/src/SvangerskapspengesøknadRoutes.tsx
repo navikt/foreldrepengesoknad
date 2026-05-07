@@ -1,7 +1,7 @@
 import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute, TILRETTELEGGING_PARAM } from 'appData/routes';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
-import { SvpDataMapAndMetaData, useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
+import { SvpMellomlagretData, useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSendSøknad } from 'appData/useSendSøknad';
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
@@ -196,7 +196,7 @@ const renderSøknadRoutes = (
 
 interface Props {
     søkerInfo: SvpPersonopplysningerDto_fpoversikt;
-    mellomlagretData?: SvpDataMapAndMetaData;
+    mellomlagretData?: SvpMellomlagretData;
 }
 
 export const SvangerskapspengesøknadRoutes = ({ søkerInfo, mellomlagretData }: Props) => {
@@ -210,7 +210,7 @@ export const SvangerskapspengesøknadRoutes = ({ søkerInfo, mellomlagretData }:
 
     useEffect(() => {
         if (mellomlagretData?.[ContextDataType.APP_ROUTE]) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect -- OK, kun kjørt ved endringa av ekstern data
+            // eslint-disable-next-line @eslint-react/set-state-in-effect -- OK, kun kjørt ved endringa av ekstern data
             setHarGodkjentVilkår(true);
             void navigate(mellomlagretData[ContextDataType.APP_ROUTE]);
         }

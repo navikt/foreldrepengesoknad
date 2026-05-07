@@ -105,7 +105,7 @@ export const getTekst = (
     const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const navnPåForelder = erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
     const forelder = getUttaksplanperiodeForelder(uttaksplanperioder);
-    const erEgenPeriode = erFarEllerMedmor ? forelder === 'FAR_MEDMOR' : forelder == 'MOR';
+    const erEgenPeriode = erFarEllerMedmor ? forelder === 'FAR_MEDMOR' : forelder === 'MOR';
 
     if (erUttaksplanperiodeEøs(uttaksplanperioder)) {
         return intl.formatMessage(

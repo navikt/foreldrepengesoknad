@@ -2,7 +2,7 @@ import { PlusIcon } from '@navikt/aksel-icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { FormEvent, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 
 import {
     Alert,
@@ -106,9 +106,8 @@ const EttersendingPageInner = ({ saker }: Props) => {
     const params = useParams();
     const søkerInfo = useQuery(søkerInfoOptions()).data;
 
-    const { search } = useLocation();
-    // TODO: bruk useSearchParams
-    const skjematypeParam = new URLSearchParams(search).get('skjematype');
+    const [searchParams] = useSearchParams();
+    const skjematypeParam = searchParams.get('skjematype');
     const manglendeSkjemanummer = skjematypeParam ? skjematypeParam.split(',') : [];
     const alleYtelser = getAlleYtelser(saker);
     const sak = alleYtelser.find((ytelse) => ytelse.saksnummer === params.saksnummer);
@@ -189,7 +188,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
                 </Select>
                 {type !== DEFAULT_OPTION && (
                     <FileUploader
-                        label={intl.formatMessage({ id: 'EttersendingPageInner.dokumenter' })}
+                        label={intl.formatMessage({ id: 'EttersendingPage.dokumenter' })}
                         updateAttachments={updateAttachments}
                         attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                         skjemanummer={type}

@@ -7,7 +7,6 @@ const meta = {
     component: UtenlandsoppholdPanel,
     args: {
         saveOnNext: action('saveOnNext'),
-        saveOnPrevious: action('saveOnPrevious'),
         onAvsluttOgSlett: action('onAvsluttOgSlett'),
         goToPreviousStep: action('goToPreviousStep'),
         onStepChange: action('onStepChange'),

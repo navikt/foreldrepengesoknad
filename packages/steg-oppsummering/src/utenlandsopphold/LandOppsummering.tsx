@@ -5,7 +5,8 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { FormSummary } from '@navikt/ds-react';
 
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
-import { formatDate, isToday } from '@navikt/fp-utils';
+import { formatDate } from '@navikt/fp-utils';
+import { isToday } from '@navikt/fp-validation';
 
 const formaterDato = (dato: string, intl: IntlShape) => {
     if (isToday(dato)) {

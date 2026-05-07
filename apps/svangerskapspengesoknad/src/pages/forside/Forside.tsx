@@ -5,21 +5,10 @@ import { SøknadRoute } from 'appData/routes';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import {
-    Alert,
-    BodyShort,
-    Box,
-    Button,
-    ConfirmationPanel,
-    GuidePanel,
-    HStack,
-    Link,
-    List,
-    VStack,
-} from '@navikt/ds-react';
+import { Alert, BodyShort, Box, Button, GuidePanel, HStack, Link, List, VStack } from '@navikt/ds-react';
 
 import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
-import { SkjemaRotLayout } from '@navikt/fp-ui';
+import { SamtykkePanel, SkjemaRotLayout } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
 import { hentSakerOptions } from '../../api/queries';
@@ -54,30 +43,30 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
     };
 
     return (
-        <SkjemaRotLayout pageTitle={<FormattedMessage id="forside.tittel" />}>
+        <SkjemaRotLayout pageTitle={<FormattedMessage id="Forside.tittel" />}>
             <VStack gap="space-32">
                 <GuidePanel poster>
                     <BodyShort size="medium">
-                        <FormattedMessage id="forside.guidepanel" />
+                        <FormattedMessage id="Forside.guidepanel" />
                     </BodyShort>
                     <Box marginBlock="space-16" asChild>
                         <List>
                             <List.Item>
-                                <FormattedMessage id="forside.guidepanel.punkt1" />
+                                <FormattedMessage id="Forside.guidepanel.punkt1" />
                             </List.Item>
                             <List.Item>
                                 <FormattedMessage
-                                    id="forside.guidepanel.punkt2"
+                                    id="Forside.guidepanel.punkt2"
                                     values={{ beløp: formatCurrencyWithKr(minimumOpptjening) }}
                                 />
                             </List.Item>
                             <List.Item>
-                                <FormattedMessage id="forside.guidepanel.punkt3" />
+                                <FormattedMessage id="Forside.guidepanel.punkt3" />
                             </List.Item>
                         </List>
                     </Box>
                     <FormattedMessage
-                        id="forside.guidepanel.lesMer"
+                        id="Forside.guidepanel.lesMer"
                         values={{
                             a: (msg) => (
                                 <Link rel="noopener noreferrer" href={links.svangerskapspenger}>
@@ -91,7 +80,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                     <VStack gap="space-16">
                         <div>
                             <FormattedMessage
-                                id="forside.tilrettelegging.info.del1"
+                                id="Forside.tilrettelegging.info.del1"
                                 values={{
                                     a: (msg) => (
                                         <Link rel="noopener noreferrer" href={links.tilretteleggingsskjema}>
@@ -103,7 +92,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                         </div>
                         <div>
                             <FormattedMessage
-                                id="forside.tilrettelegging.info.del2"
+                                id="Forside.tilrettelegging.info.del2"
                                 values={{
                                     a: (msg) => (
                                         <Link rel="noopener noreferrer" href={links.slikSøkerDuSvp}>
@@ -117,25 +106,25 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                 </Alert>
                 <EksisterendeSøknad />
                 {sak.data && <span>Du har allerede sak for barn med termin {sak.data.OM_BARNET.termindato}</span>}
-                <ConfirmationPanel
-                    label={intl.formatMessage({ id: 'forside.samtykke' })}
+                <SamtykkePanel
+                    label={intl.formatMessage({ id: 'Forside.samtykke' })}
                     onChange={() => setIsChecked((state) => !state)}
                     checked={isChecked}
                     error={
                         isError &&
                         !isChecked &&
-                        intl.formatMessage({ id: 'forside.valideringsfeil.harForståttRettigheterOgPlikter' })
+                        intl.formatMessage({ id: 'Forside.valideringsfeil.harForståttRettigheterOgPlikter' })
                     }
                 >
-                    <BodyShort size="medium">{intl.formatMessage({ id: 'forside.samtykkeIntro' })}</BodyShort>
+                    <BodyShort size="medium">{intl.formatMessage({ id: 'Forside.samtykkeIntro' })}</BodyShort>
                     <Box marginBlock="space-16" asChild>
                         <List>
                             <List.Item>
-                                <FormattedMessage id="forside.samtykkeIntro.punkt1" />
+                                <FormattedMessage id="Forside.samtykkeIntro.punkt1" />
                             </List.Item>
                             <List.Item>
                                 <FormattedMessage
-                                    id="forside.samtykkeIntro.punkt2"
+                                    id="Forside.samtykkeIntro.punkt2"
                                     values={{
                                         a: (msg) => (
                                             <Link rel="noopener noreferrer" href={links.rettOgPlikt}>
@@ -147,10 +136,10 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
                             </List.Item>
                         </List>
                     </Box>
-                </ConfirmationPanel>
+                </SamtykkePanel>
                 <HStack justify="center">
                     <Button type="button" onClick={bekreft}>
-                        {sak.data ? 'Endre søknad' : <FormattedMessage id="forside.begynnMedSøknad" />}
+                        {sak.data ? 'Endre søknad' : <FormattedMessage id="Forside.begynnMedSøknad" />}
                     </Button>
                 </HStack>
             </VStack>
@@ -173,7 +162,7 @@ const EksisterendeSøknad = () => {
 
     return (
         <Alert variant="warning">
-            <FormattedMessage id="forside.eksisterendeSøknad" />
+            <FormattedMessage id="Forside.eksisterendeSøknad" />
         </Alert>
     );
 };

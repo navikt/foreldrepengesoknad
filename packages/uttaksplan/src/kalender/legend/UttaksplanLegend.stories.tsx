@@ -17,7 +17,7 @@ const meta = {
     title: 'UttaksplanLegend',
     component: UttaksplanLegend,
     args: {
-        valgtStønadskonto: {
+        valgtStønadskvote: {
             kontoer: [
                 { konto: 'MØDREKVOTE', dager: 95 },
                 { konto: 'FEDREKVOTE', dager: 95 },
@@ -35,7 +35,7 @@ const meta = {
             <UttaksplanDataProvider
                 foreldreInfo={args.foreldreInfo}
                 barn={args.barn}
-                valgtStønadskonto={args.valgtStønadskonto}
+                valgtStønadskvote={args.valgtStønadskvote}
                 harAktivitetskravIPeriodeUtenUttak={false}
                 uttakPerioder={args.uttakPerioder}
                 erPeriodeneTilAnnenPartLåst={false}

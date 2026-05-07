@@ -1,6 +1,6 @@
 import { Component, ErrorInfo, ReactElement } from 'react';
 
-import { captureException, withScope } from '@navikt/fp-observability';
+import { captureException } from '@navikt/fp-observability';
 import { AppName } from '@navikt/fp-types';
 
 import { ErrorPage } from './ErrorPage';
@@ -26,11 +26,8 @@ export class ErrorBoundary extends Component<Props, State> {
     }
 
     componentDidCatch(error: Error | null, errorInfo: ErrorInfo) {
-        withScope((scope) => {
-            scope.setExtra('errorInfo', errorInfo);
-            const eventId = captureException(error);
-            this.setState({ eventId, errorInfo });
-        });
+        const eventId = captureException(error);
+        this.setState({ eventId, errorInfo });
         this.setState({ hasError: true, errorMessage: error?.message });
     }
 

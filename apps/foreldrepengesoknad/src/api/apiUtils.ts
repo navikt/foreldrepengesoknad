@@ -35,11 +35,6 @@ import { Uttaksdagen, Uttaksperioden, getDecoratorLanguageCookie, omitOne } from
 import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
-export const FEIL_VED_INNSENDING =
-    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
-
-export const UKJENT_UUID = 'ukjent uuid';
-
 const hentValgtSpråk = (): Målform => {
     return getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform;
 };

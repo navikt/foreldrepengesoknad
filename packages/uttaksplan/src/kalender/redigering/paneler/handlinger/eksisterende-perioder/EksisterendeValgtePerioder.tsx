@@ -176,7 +176,13 @@ export const EksisterendeValgtePerioder = ({ perioder, setErForskyvEllerErstattP
                                         </BodyShort>
                                     )}
 
-                                    {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [p]) && (
+                                    {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [
+                                        p,
+                                        ...uttakPerioder.filter(
+                                            (mp): mp is UttakPeriode_fpoversikt =>
+                                                !erEøsUttakPeriode(mp) && mp.forelder === 'MOR',
+                                        ),
+                                    ]) && (
                                         <Alert variant="warning" size="small" className="mt-3 mb-1 p-2">
                                             <BodyShort>
                                                 <FormattedMessage id="RedigeringPanel.MorsAktivitetIkkeValgt" />

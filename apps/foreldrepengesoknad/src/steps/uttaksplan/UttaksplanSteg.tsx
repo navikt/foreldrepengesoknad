@@ -3,8 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useStepConfig } from 'appData/useStepConfig';
-import dayjs from 'dayjs';
-import { ReactNode, useRef, useState } from 'react';
+import { ReactNode, useCallback, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
@@ -14,19 +13,10 @@ import { getErSøkerFarEllerMedmor, getKjønnFromFnr, getNavnPåForeldre } from 
 
 import { Alert, BodyLong, Tabs } from '@navikt/ds-react';
 
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { loggUmamiEvent } from '@navikt/fp-observability';
-import {
-    Barn,
-    FpPersonopplysningerDto_fpoversikt,
-    FpSak_fpoversikt,
-    RettighetType_fpoversikt,
-    isAdoptertBarn,
-    isFødtBarn,
-} from '@navikt/fp-types';
-import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
+import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
-import { Uttaksperioden, getFamiliehendelsedato } from '@navikt/fp-utils';
+import { Uttaksperioden, barnehagestartDato, getFamiliehendelsedato } from '@navikt/fp-utils';
 import {
     FjernAltIUttaksplanModal,
     HvaErMulig,
@@ -66,6 +56,14 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
 
     const [feilmelding, setFeilmelding] = useState<ReactNode | undefined>();
 
+    const oppdaterUttaksplanOgFjernFeilmelding = useCallback(
+        (...args: Parameters<typeof oppdaterUttaksplan>) => {
+            setFeilmelding(undefined);
+            oppdaterUttaksplan(...args);
+        },
+        [oppdaterUttaksplan],
+    );
+
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
@@ -92,7 +90,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
     };
 
     const kontoerOptions = useStønadsKontoerOptions();
-    const tilgjengeligeStønadskontoerQuery = useQuery({
+    const tilgjengeligeStønadskvoterQuery = useQuery({
         ...kontoerOptions,
         select: (kontoer) => {
             return kontoer[dekningsgrad];
@@ -106,19 +104,16 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
 
     const uttaksplanForEksisterendeSak = useUttaksplanForEksisterendeSak(annenPartVedtakQuery.data?.perioder);
 
-    const valgteStønadskontoer = tilgjengeligeStønadskontoerQuery.data;
+    const valgteStønadskvoter = tilgjengeligeStønadskvoterQuery.data;
 
     // Filtrerer ut periodane til annen part midlertidig fram til me får på plass lagring av desse periodane
-    const nyttUttaksplanForslag = useUttaksplanForslag(
-        valgteStønadskontoer,
-        annenPartVedtakQuery.data?.perioder,
-    ).filter(
+    const nyttUttaksplanForslag = useUttaksplanForslag(valgteStønadskvoter, annenPartVedtakQuery.data?.perioder).filter(
         (periode) =>
             Uttaksperioden.erIkkeEøsPeriode(periode) &&
             periode.forelder === (erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
     );
 
-    if (!valgteStønadskontoer || annenPartVedtakQuery.isLoading) {
+    if (!valgteStønadskvoter || annenPartVedtakQuery.isLoading) {
         return null;
     }
 
@@ -160,7 +155,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
                             (søkersituasjon.rolle === 'mor' && getKjønnFromFnr(annenForelder) === 'K'),
                         erIkkeSøkerSpesifisert: false,
                     }}
-                    valgtStønadskonto={valgteStønadskontoer}
+                    valgtStønadskvote={valgteStønadskvoter}
                     harAktivitetskravIPeriodeUtenUttak={false}
                     uttakPerioder={uttaksplan || defaultUttaksperioder}
                     erPeriodeneTilAnnenPartLåst={!!tidligereUttaksperioder}
@@ -178,7 +173,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
                     {feilmelding && <Alert variant="error">{feilmelding}</Alert>}
 
                     <UttaksplanRedigeringProvider
-                        oppdaterUttaksplan={oppdaterUttaksplan}
+                        oppdaterUttaksplan={oppdaterUttaksplanOgFjernFeilmelding}
                         harEndretPlan={erPlanenEndret}
                     >
                         <FjernAltIUttaksplanModal />
@@ -243,54 +238,6 @@ const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean): Rettigh
         return 'BEGGE_RETT';
     }
     return 'BARE_SØKER_RETT';
-};
-
-// TODO (TOR) Flytt denne til felleskode - er lik funksjon i planlegger
-const barnehagestartDato = (barnet: Barn) => {
-    if (isAdoptertBarn(barnet) || isIkkeUtfyltTypeBarn(barnet)) {
-        return undefined;
-    }
-
-    const dato = isFødtBarn(barnet) ? barnet.fødselsdatoer[0]! : barnet.termindato;
-
-    if (dayjs(dato).month() < 8) {
-        const newLocal = dayjs(dato).month(7).add(1, 'year').endOf('month').format(ISO_DATE_FORMAT);
-        return getUttaksdagTilOgMedDato(newLocal);
-    }
-    if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) {
-        return getUttaksdagTilOgMedDato(dayjs(dato).add(1, 'year').endOf('month').format(ISO_DATE_FORMAT));
-    }
-    return getUttaksdagTilOgMedDato(
-        dayjs(dato)
-            .startOf('year')
-            .add(2, 'year')
-            .add(7, 'months')
-            .endOf('week')
-            .endOf('month')
-            .format(ISO_DATE_FORMAT),
-    );
-};
-
-/**
- * Sjekker om dato er en ukedag, dersom ikke finner den foregående fredag.
- * Tar hensyn til stilling av klokken ved å gjøre om klokka til kl 12 før antall timer trekkes fra.
- * @param dato
- */
-const getUttaksdagTilOgMedDato = (dato: string): string => {
-    const d = dayjs(dato).toDate();
-    const newDate = dato ? new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12) : dato;
-    switch (getUkedag(dato)) {
-        case 6:
-            return dayjs.utc(newDate).subtract(24, 'hours').format(ISO_DATE_FORMAT);
-        case 7:
-            return dayjs.utc(newDate).subtract(48, 'hours').format(ISO_DATE_FORMAT);
-        default:
-            return dato;
-    }
-};
-
-const getUkedag = (dato: string): number => {
-    return dayjs(dato).isoWeekday();
 };
 
 const loggExpansionCardOpen = (tittel: string) => (open: boolean) => {

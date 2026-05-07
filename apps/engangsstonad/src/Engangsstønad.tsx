@@ -24,7 +24,7 @@ export const slettMellomlagringOgLastSidePåNytt = async () => {
 
 export const Engangsstønad = () => {
     const intl = useIntl();
-    useDocumentTitle(intl.formatMessage({ id: 'Søknad.Pagetitle' }));
+    useDocumentTitle(intl.formatMessage({ id: 'Engangsstønad.Pagetitle' }));
 
     const personinfo = useQuery(personOptions());
 

@@ -20,8 +20,7 @@ const getIntlMock = () => {
         {
             locale: 'nb',
             defaultLocale: 'nb',
-            //@ts-expect-error fiks
-            messages,
+            messages: messages as Record<string, string>,
         },
         cache,
     );

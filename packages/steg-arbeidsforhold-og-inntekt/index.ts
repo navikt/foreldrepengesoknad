@@ -9,6 +9,6 @@ export const arbeidsforholdOgInntektMessages = {
 };
 
 export { ArbeidsforholdOgInntektPanel } from './src/ArbeidsforholdOgInntektPanel';
-//TODO Usikker på om desse to bør ligga i denne pakka sidan dei i tillegg blir brukt i oppsummering i FP
+// TODO Usikker på om desse to bør ligga i denne pakka sidan dei i tillegg blir brukt i oppsummering i FP
 export { HarArbeidsforhold } from './src/components/arbeidsforhold-informasjon/HarArbeidsforhold';
 export { HarIkkeArbeidsforhold } from './src/components/arbeidsforhold-informasjon/HarIkkeArbeidsforhold';

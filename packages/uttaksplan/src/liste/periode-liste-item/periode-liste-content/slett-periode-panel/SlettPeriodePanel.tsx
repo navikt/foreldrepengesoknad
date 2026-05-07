@@ -1,5 +1,5 @@
 import { TrashIcon } from '@navikt/aksel-icons';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -16,7 +16,7 @@ import { SlettPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyv
 import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../../utils/UttakPeriodeBuilder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
-import { genererPeriodeKey, getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
+import { genererPeriodeKey, getStønadskvoteNavn } from '../../../utils/uttaksplanListeUtils';
 
 const ARIA_LABEL_ID = 'slett-periode-panel-heading';
 
@@ -47,14 +47,6 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
         uttaksplanperioder.length === 1 ? uttaksplanperioder : [],
     );
 
-    // TODO (TOR) Bør skriva om heile komponenten.
-    useEffect(() => {
-        if (!erEksisterendePerioderEtterValgteDager && uttaksplanperioder.length === 1) {
-            // eslint-disable-next-line react-you-might-not-need-an-effect/no-pass-data-to-parent, react-hooks/immutability
-            slettPerioder(uttaksplanperioder, false);
-        }
-    }, []);
-
     const formMethods = useForm<FormValues>();
 
     const onSubmit = (values: FormValues) => {
@@ -76,7 +68,7 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
     };
 
     const slettPerioder = (perioderSomSkalSlettes: Uttaksplanperiode[], skalForskyveBakover: boolean) => {
-        const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder)
+        const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder, 'liste')
             .fjernUttakPerioder(perioderSomSkalSlettes, skalForskyveBakover)
             .getUttakPerioder();
         uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
@@ -125,7 +117,7 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
                                     return (
                                         <Checkbox key={genererPeriodeKey(p)} value={index} autoFocus={index === 0}>
                                             {`${formatDate(p.fom)} - ${formatDate(p.tom)} -
-                                        ${getStønadskontoNavn(
+                                        ${getStønadskvoteNavn(
                                             intl,
                                             navnPåForeldre,
                                             erFarEllerMedmor,

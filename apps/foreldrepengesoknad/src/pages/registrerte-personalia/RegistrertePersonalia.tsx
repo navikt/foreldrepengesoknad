@@ -43,7 +43,7 @@ export const RegistrertePersonalia = ({
             {fødselsnummerForVisning !== undefined && (
                 <BodyShort>
                     <FormattedMessage
-                        id="registrertePersonalia.fødselsnummer"
+                        id="RegistrertePersonalia.fødselsnummer"
                         values={{ fnr: fødselsnummerForVisning }}
                     />
                 </BodyShort>
@@ -51,7 +51,7 @@ export const RegistrertePersonalia = ({
             {!altTekstHvisUkjentNavn && fødselsdatoForVisning !== undefined && (
                 <BodyShort>
                     <FormattedMessage
-                        id="registrertePersonalia.fødselsdato"
+                        id="RegistrertePersonalia.fødselsdato"
                         values={{ fødselsdato: fødselsdatoForVisning }}
                     />
                 </BodyShort>

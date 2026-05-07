@@ -18,19 +18,14 @@ import {
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
-import {
-    enMånedSiden,
-    etÅrSiden,
-    halvannetÅrSiden,
-    isValidDate as isStringADate,
-    niMånederFremITid,
-} from '@navikt/fp-utils';
+import { enMånedSiden, etÅrSiden, halvannetÅrSiden, niMånederFremITid } from '@navikt/fp-utils';
 import {
     isAfterOrSame,
     isBeforeDate,
     isBeforeTodayOrToday,
     isLessThanOneAndHalfYearsAgo,
     isRequired,
+    isValidDateString as isStringADate,
     isValidDate,
 } from '@navikt/fp-validation';
 

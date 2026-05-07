@@ -35,6 +35,7 @@ export {
 export { getFamiliehendelsedato, getFamiliesituasjon, sorterPersonEtterEldstOgNavn } from './src/barnUtils';
 export { formatCurrencyWithKr, formatCurrency } from './src/currencyUtils';
 export { encodeToBase64, decodeBase64 } from './src/urlEncodingUtils';
+export { erLokaltEllerDev } from './src/miljoUtils';
 export {
     getBokmålLocale,
     getLocaleForApi,
@@ -43,7 +44,6 @@ export {
     setLocaleInSessionStorage,
 } from './src/localeUtils';
 export {
-    isValidDate,
     formatDate,
     formatDateIso,
     formatDateExtended,
@@ -57,15 +57,6 @@ export {
     femMånederSiden,
     fireUkerSiden,
     tiMånederSidenDato,
-    isAfterToday,
-    isBeforeToday,
-    isSameOrAfterToday,
-    isSameOrBeforeToday,
-    isDateWithinRange,
-    isToday,
-    isDateRangesOverlapping,
-    isDateAAfterDateB,
-    isDateASameOrBeforeDateB,
     erMyndig,
     halvannetÅrSiden,
     etÅrSiden,
@@ -84,3 +75,4 @@ export { Uttaksperioden } from './src/uttak/Uttaksperioden';
 export { Tidsperioden } from './src/Tidsperioden';
 export * from './src/cookieUtils';
 export { periodFormat } from './src/periodUtils';
+export { barnehagestartDato, beregnBarnehagestartDato } from './src/barnehagestartUtils';

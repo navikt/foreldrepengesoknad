@@ -24,11 +24,11 @@
         "@navikt/fp-config-vite": "workspace:*",
         "@types/node": "24.10.1",
         "@types/react": "19.2.14",
-        "eslint": "9.39.2",
+        "eslint": "10.2.0",
         "jsdom": "29.0.2",
         "typescript": "6.0.2",
         "vite": "8.0.8",
         "vitest": "4.1.4"
     },
-    "packageManager": "pnpm@10.28.0"
+    "packageManager": "pnpm@10.33.1"
 }

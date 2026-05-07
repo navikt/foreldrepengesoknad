@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions } from 'api/queries';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { AnnenForelder } from 'types/AnnenForelder';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
@@ -11,8 +12,6 @@ import { links } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { Barn, Søkerrolle } from '@navikt/fp-types';
 import { isAfterOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
-
-import { AnnenForelderFormData, isAnnenForelderOppgittFormData } from './AnnenForelderFormData';
 
 type Props = {
     rolle: Søkerrolle;
@@ -24,7 +23,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
 
     const familiehendelsedato = getFamiliehendelsedato(barn);
 
-    const formMethods = useFormContext<AnnenForelderFormData>();
+    const formMethods = useFormContext<AnnenForelder>();
     const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     const annenPartHarVedtak =
         useQuery({
@@ -33,7 +32,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
         }).data ?? false;
 
     const formValues = formMethods.watch();
-    if (!isAnnenForelderOppgittFormData(formValues)) {
+    if (formValues.kanIkkeOppgis === true) {
         throw new Error('Annen forelder skal alltid være oppgitt her');
     }
 

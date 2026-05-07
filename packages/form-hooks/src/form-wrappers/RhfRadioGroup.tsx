@@ -63,11 +63,12 @@ export const RhfRadioGroup = <TFieldValues extends FieldValues, TName extends Fi
             className={className}
         >
             {children.map((child, index) => {
-                //TODO Vurder å heller lage ein wrapper til children
-                //Denne map'en legg til ref for å kunna setta fokus ved feil
+                // Legg til ref på første child for å kunna setta fokus ved feil
                 if (index === 0) {
-                    // @ts-expect-error fiks
-                    return React.cloneElement(child, { key: child.key, ref: field.ref });
+                    return React.cloneElement(child as React.ReactElement<React.RefAttributes<HTMLElement>>, {
+                        key: child.key,
+                        ref: field.ref,
+                    });
                 }
                 return child;
             })}

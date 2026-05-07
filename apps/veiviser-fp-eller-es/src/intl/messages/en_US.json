@@ -60,7 +60,7 @@
     "OppsummeringFpEllerEsSide.SøkOmEs": "Apply for a lump sum benefit",
     "OppsummeringFpEllerEsSide.MerOmEs": "More about a lump sum benefit",
     "OppsummeringFpEllerEsSide.Tilbake": "Back to the questions",
-    "ArbeidssituasjonSide.SeResultatet": "See the result",
+    "SituasjonSide.SeResultatet": "See the result",
     "OppsummeringSide.HvaErEs": "What is a lump sum grant?",
     "HvorforHarJegRettPanel.HvorforHarJegRett": "Why am I entitled to parental benefit?",
     "HvorforHarJegRettPanel.HvorforKanJegHaRett": "Why might I be entitled to parental benefit?",
@@ -90,7 +90,7 @@
     "FpEllerEs.Tittel": "Parental benefit or lump sum grant?",
     "HvorMyeOgHvaSkjerNåLinkPanel.HvorMye": "How much?",
     "HvorMyeOgHvaSkjerNåLinkPanel.PlanleggForeldrepenger": "Plan parental leave",
-    "valideringsfeil.lønn.ikkeTall": "You have typed something that is not a number",
-    "valideringsfeil.lønn.desimaler": "You have typed too many decimals. Type a number with the maximum of 2 decimals",
+    "SituasjonSide.lønn.ikkeTall": "You have typed something that is not a number",
+    "SituasjonSide.lønn.desimaler": "You have typed too many decimals. Type a number with the maximum of 2 decimals",
     "HvorMyeOgHvaSkjerNåLinkPanel.AndreVeivisere": "Other guides:"
 }

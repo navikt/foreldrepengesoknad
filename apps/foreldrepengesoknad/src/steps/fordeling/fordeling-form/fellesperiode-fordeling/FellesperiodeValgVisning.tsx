@@ -3,7 +3,7 @@ import { FordelingDager, FordelingFargekode } from 'types/FordelingOversikt';
 import { getVarighetString } from 'utils/dateUtils';
 import { guid } from 'utils/guid';
 
-import { Heading, VStack } from '@navikt/ds-react';
+import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { DelGraf } from '../../fordeling-oversikt/grafer/del-graf/DelGraf';
 
@@ -15,17 +15,10 @@ interface Props {
 
 export const FellesperiodeValgVisning = ({ fordelingsdager, dagerMedFellesperiode, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
-    const varighetStringFellesperiode = getVarighetString(dagerMedFellesperiode, intl);
     const fordelingErValgt =
         fordelingsdager.length > 0 && !fordelingsdager.every((f) => f.fargekode === FordelingFargekode.IKKE_TILDELT);
     return (
         <VStack gap="space-4" aria-hidden={true}>
-            <Heading size="xsmall">
-                <FormattedMessage
-                    id="fordeling.fellesperiodeVisning.sumUker"
-                    values={{ varighetString: varighetStringFellesperiode }}
-                />
-            </Heading>
             <DelGraf fordelingsdager={fordelingsdager} sumDager={dagerMedFellesperiode} />
             {fordelingErValgt && (
                 <div className="flex">
@@ -46,12 +39,12 @@ export const FellesperiodeValgVisning = ({ fordelingsdager, dagerMedFellesperiod
                         return (
                             <div
                                 key={guid()}
-                                className="flex"
                                 style={{
                                     width: `${width}%`,
+                                    textAlign: 'center',
                                 }}
                             >
-                                {fordeling.antallDager <= 10 ? varighetString : infoTekst}
+                                <BodyShort>{fordeling.antallDager <= 10 ? varighetString : infoTekst}</BodyShort>
                             </div>
                         );
                     })}

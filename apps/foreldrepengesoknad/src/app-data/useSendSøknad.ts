@@ -1,12 +1,13 @@
 import { useMutation } from '@tanstack/react-query';
-import { FEIL_VED_INNSENDING, UKJENT_UUID, getSøknadsdataForInnsending } from 'api/apiUtils';
+import { getSøknadsdataForInnsending } from 'api/apiUtils';
 import { API_URLS } from 'api/queries';
 import { SøknadRoutes } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
+import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { captureMessage } from '@navikt/fp-observability';
-import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, ProblemDetails } from '@navikt/fp-types';
+import { ApiError } from '@navikt/fp-observability';
+import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, FpSoknadProblemDetails } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 
 import { useContextGetAnyData } from './FpDataContext';
@@ -17,6 +18,7 @@ export const useSendSøknad = (
     foreldrepengerSaker: FpSak_fpoversikt[],
 ) => {
     const navigate = useNavigate();
+    const intl = useIntl();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 
@@ -51,15 +53,20 @@ export const useSendSøknad = (
                     return navigate(SøknadRoutes.KVITTERING);
                 }
 
-                const jsonResponse = await error.response.json<ProblemDetails>();
-                captureMessage(`${FEIL_VED_INNSENDING}${JSON.stringify(jsonResponse)}`);
-                const callIdForBruker = jsonResponse?.callId ?? UKJENT_UUID;
-                throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
+                const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
+                const callId = jsonResponse?.callId;
+                const feilmelding = callId
+                    ? intl.formatMessage(
+                          { id: 'useSendSøknad.FeilVedInnsending.MedCallId' },
+                          { callId: callId.substring(0, 6) },
+                      )
+                    : intl.formatMessage({ id: 'useSendSøknad.FeilVedInnsending.UtenCallId' });
+                throw new ApiError(feilmelding, 'Feil ved innsending av foreldrepengesøknad', jsonResponse);
             }
             if (error instanceof Error) {
                 throw error;
             }
-            throw new Error(String(error));
+            throw new Error(String(error), { cause: error });
         }
     };
 

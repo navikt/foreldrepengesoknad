@@ -5,11 +5,9 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { OmBarnet } from 'types/Barnet';
-import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
-import { HvorLangPeriode } from 'types/HvorLangPeriode';
 
+import { FordelingPlanlegger, HvorLangPeriodePlanlegger, OmBarnetPlanlegger } from '@navikt/fp-types';
 import {
     ALENE_OM_OMSORG_80_FARMEDMOR,
     ALENE_OM_OMSORG_100_FARMEDMOR,
@@ -32,9 +30,9 @@ const MINSTERETTER = {
 
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
-    hvorLangPeriode: HvorLangPeriode;
-    fordeling?: Fordeling;
-    omBarnet: OmBarnet;
+    hvorLangPeriode: HvorLangPeriodePlanlegger;
+    fordeling?: FordelingPlanlegger;
+    omBarnet: OmBarnetPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof PlanenDeresSteg>;
@@ -49,7 +47,7 @@ const meta = {
         hvorLangPeriode,
         omBarnet,
         arbeidssituasjon,
-        stønadskontoer,
+        stønadskvoter,
     }) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.PLANEN_DERES]}>
@@ -63,7 +61,7 @@ const meta = {
                         [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
                     }}
                 >
-                    <PlanenDeresSteg stønadskontoer={stønadskontoer} />
+                    <PlanenDeresSteg stønadskvoter={stønadskvoter} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -96,7 +94,7 @@ export const MorOgFarBeggeHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: DELT_UTTAK_80,
                 minsteretter: MINSTERETTER,
@@ -117,7 +115,7 @@ export const MorOgFarKunMorHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: IKKE_DELT_UTTAK_80_MOR,
                 minsteretter: MINSTERETTER,
@@ -138,7 +136,7 @@ export const MorOgFarKunFarHarRettMorUfør: Story = {
             status: Arbeidsstatus.UFØR,
             jobberAnnenPart: true,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR_MOR_UFØR,
                 minsteretter: MINSTERETTER,
@@ -159,7 +157,7 @@ export const MorOgFarKunFarHarRettMorIngenAvDisse: Story = {
             status: Arbeidsstatus.INGEN,
             jobberAnnenPart: true,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR,
                 minsteretter: MINSTERETTER,
@@ -227,7 +225,7 @@ export const BareMorSøkerOgHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: undefined,
         },
-        stønadskontoer: MorOgFarKunMorHarRett.args?.stønadskontoer,
+        stønadskvoter: MorOgFarKunMorHarRett.args?.stønadskvoter,
     },
 };
 
@@ -242,7 +240,7 @@ export const BareFarSøkerAleneOmOmsorg: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: undefined,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: ALENE_OM_OMSORG_80_FARMEDMOR,
                 minsteretter: MINSTERETTER,
@@ -264,7 +262,7 @@ export const FarOgFarBeggeHarRett: Story = {
             navnPåMedfar: 'Anders Utvikler',
             type: HvemPlanleggerType.FAR_OG_FAR,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR,
                 minsteretter: MINSTERETTER,
@@ -285,7 +283,7 @@ export const FarOgFarKunFarHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR,
                 minsteretter: MINSTERETTER,
@@ -306,7 +304,7 @@ export const FarOgFarKunMedfarHarRett: Story = {
             status: Arbeidsstatus.INGEN,
             jobberAnnenPart: true,
         },
-        stønadskontoer: {
+        stønadskvoter: {
             '80': {
                 kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR,
                 minsteretter: MINSTERETTER,
@@ -319,7 +317,7 @@ export const FarOgFarKunMedfarHarRett: Story = {
     },
 };
 
-export const BarnetErFødtDagenEtterTermindato: Story = {
+export const BarnetErFødtPlanleggerDagenEtterTermindato: Story = {
     args: {
         ...MorOgFarBeggeHarRett.args,
         omBarnet: {

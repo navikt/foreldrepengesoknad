@@ -1,7 +1,6 @@
 import { BabyWrappedIcon, InformationIcon, TeddyBearIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
-import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
@@ -10,9 +9,10 @@ import { loggExpansionCardOpen } from 'utils/umamiUtils';
 import { BodyShort, ExpansionCard, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper, Infobox } from '@navikt/fp-ui';
 
-export const getFamiliehendelsedato = (barnet: OmBarnet) => {
+export const getFamiliehendelsedato = (barnet: OmBarnetPlanlegger) => {
     if (erBarnetAdoptert(barnet)) {
         return barnet.overtakelsesdato;
     }
@@ -20,7 +20,7 @@ export const getFamiliehendelsedato = (barnet: OmBarnet) => {
 };
 interface Props {
     hvemPlanlegger: HvemPlanlegger;
-    barnet: OmBarnet;
+    barnet: OmBarnetPlanlegger;
 }
 
 export const BarnehageplassOppsummering = ({ hvemPlanlegger, barnet }: Props) => {

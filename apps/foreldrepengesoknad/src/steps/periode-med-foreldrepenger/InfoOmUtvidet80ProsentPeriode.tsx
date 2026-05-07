@@ -6,13 +6,13 @@ export const InfoOmUtvidet80ProsentPeriode = () => {
     return (
         <VStack gap="space-16" style={{ width: '85%' }}>
             <Heading size="xsmall">
-                <FormattedMessage id="Utvidet80ProsentPeriodePanel.Heading" />
+                <FormattedMessage id="InfoOmUtvidet80ProsentPeriode.Heading" />
             </Heading>
             <BodyShort>
-                <FormattedMessage id="Utvidet80ProsentPeriodePanel.Del1" />
+                <FormattedMessage id="InfoOmUtvidet80ProsentPeriode.Del1" />
             </BodyShort>
             <BodyShort>
-                <FormattedMessage id="Utvidet80ProsentPeriodePanel.Del2" />
+                <FormattedMessage id="InfoOmUtvidet80ProsentPeriode.Del2" />
             </BodyShort>
         </VStack>
     );

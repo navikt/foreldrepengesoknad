@@ -239,7 +239,7 @@ describe('UttaksplanKalender', () => {
         ).toBeInTheDocument();
     });
 
-    it('skal vise infomelding når valg av dager gir ingen mulige kontotyper', async () => {
+    it('skal vise infomelding når valg av dager krysser familiehendelsedato', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
         const mars = screen.getByTestId('year:2024;month:2');
@@ -253,7 +253,10 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
         expect(
-            await screen.findByText('Du har valgt en kombinasjon av dager som ikke er gyldig for noen foreldre.'),
+            await screen.findByText(
+                'Du kan ikke endre planen når du markerer dager både før og etter fødselsdato. ' +
+                    'Du må først endre planen før fødselsdato, og så endre planen fra og med fødselsdatoen.',
+            ),
         ).toBeInTheDocument();
     });
 

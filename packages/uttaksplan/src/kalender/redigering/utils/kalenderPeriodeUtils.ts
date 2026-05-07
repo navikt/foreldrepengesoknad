@@ -49,7 +49,7 @@ export const slåSammenTilstøtendePerioder = (perioder: CalendarPeriod[]): Cale
         }, []);
 };
 
-//TODO (TOR) Bør skriva om denne, men avventar å sjå om det blir endringar i funksjonalitet
+// TODO (TOR) Bør skriva om denne, men avventar å sjå om det blir endringar i funksjonalitet
 export const finnValgtePerioder = (
     valgtePerioder: CalendarPeriod[],
     uttaksplan: UttaksplanperiodeMedKunTapteDager[],

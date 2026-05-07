@@ -13,11 +13,26 @@ export type { Søkerrolle } from './src/Søkerrolle';
 export type { StepConfig } from './src/StepConfig';
 export type { Tidsperiode } from './src/Tidsperiode';
 export type { Satser } from './src/Satser';
+export type {
+    OmBarnetPlanlegger,
+    BarnetErFødtPlanlegger,
+    BarnetErIkkeFødtPlanlegger,
+    BarnetErAdoptertPlanlegger,
+} from './src/OmBarnet';
+export type { HvorLangPeriodePlanlegger } from './src/HvorLangPeriode';
+export type { FordelingPlanlegger } from './src/FordelingPlanlegger';
 export type { NavnPåForeldre } from './src/NavnPåForeldre';
 export type { AppName } from './src/AppName';
 export type { DatepickerDateRange } from './src/DatepickerDateRange';
 export type { Frilans } from './src/Frilans';
-export type { ProblemDetails } from './src/ProblemDetails';
+export type {
+    ProblemDetails,
+    FpSoknadProblemDetails,
+    FpOversiktProblemDetails,
+    FpGrunndataProblemDetails,
+    FpSoknadFeilKode,
+    FpOversiktFeilKode,
+} from './src/ProblemDetails';
 
 export { FRILANS_ID } from './src/Frilans';
 export type {
@@ -26,7 +41,14 @@ export type {
     ArbeidsforholdOgInntektSvp,
 } from './src/ArbeidsforholdOgInntekt';
 export { isArbeidsforholdOgInntektFp, isArbeidsforholdOgInntektSvp } from './src/ArbeidsforholdOgInntekt';
-export { isFødtBarn, isUfødtBarn, isAdoptertBarn, isAdoptertStebarn, isAdoptertAnnetBarn } from './src/Barn';
+export {
+    isFødtBarn,
+    isUfødtBarn,
+    isAdoptertBarn,
+    isAdoptertStebarn,
+    isAdoptertAnnetBarn,
+    isIkkeUtfyltTypeBarn,
+} from './src/Barn';
 export type { Utenlandsopphold, UtenlandsoppholdPeriode } from './src/Utenlandsopphold';
 
 export type { Barn, FødtBarn, UfødtBarn, AdoptertAnnetBarn, AdoptertBarn, IkkeUtfyltTypeBarn } from './src/Barn';

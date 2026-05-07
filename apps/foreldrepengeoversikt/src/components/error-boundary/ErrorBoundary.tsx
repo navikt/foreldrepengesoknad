@@ -1,8 +1,8 @@
-import { Component, ErrorInfo } from 'react';
+import { Component } from 'react';
 
-import { Alert } from '@navikt/ds-react';
+import { captureException } from '@navikt/fp-observability';
 
-import { captureException, withScope } from '@navikt/fp-observability';
+import { ErrorAlert } from './ErrorAlert';
 
 type Props = {
     children: React.ReactNode;
@@ -19,24 +19,16 @@ export class ErrorBoundary extends Component<Props, State> {
         this.state = { hasError: false, error: null };
     }
 
-    componentDidCatch(error: Error | null, errorInfo: ErrorInfo): void {
+    componentDidCatch(error: Error | null): void {
         if (error && error.message !== 'globalThis.hasFocus is not a function') {
             this.setState((oldState) => ({ ...oldState, hasError: true, error }));
-
-            withScope((scope) => {
-                scope.setExtra('errorInfo', errorInfo);
-                captureException(error);
-            });
+            captureException(error);
         }
     }
 
     render() {
         if (this.state.hasError) {
-            return (
-                <Alert variant="info" className="m-8 mr-auto ml-auto w-[704px]">
-                    {this.state.error?.message}
-                </Alert>
-            );
+            return <ErrorAlert>{this.state.error?.message}</ErrorAlert>;
         }
 
         return this.props.children;

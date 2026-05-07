@@ -33,7 +33,6 @@ export enum ContextDataType {
 }
 
 export type ContextDataMap = {
-    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     [ContextDataType.APP_ROUTE]?: SøknadRoute | string;
     [ContextDataType.OM_BARNET]?: Barn;
     [ContextDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;
@@ -130,10 +129,6 @@ export const useContextReset = () => {
     };
 };
 
-// TODO (TOR) Fjern denne
-/**
- * @deprecated Bruk heller useFpStateData eller useFpStateAllDataFn
- */
 export const useContextComplete = () => {
     return useContext(SvpStateContext);
 };

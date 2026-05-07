@@ -38,7 +38,7 @@ export const KalenderRedigeringProvider = ({
 
     const leggTilUttaksplanPerioder = useCallback(
         (perioder: UttakPeriode_fpoversikt[], skalForskyvePeriode: boolean) => {
-            const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder)
+            const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder, 'kalender')
                 .leggTilUttakPerioder(perioder, skalForskyvePeriode)
                 .getUttakPerioder();
 
@@ -49,7 +49,7 @@ export const KalenderRedigeringProvider = ({
 
     const slettUttaksplanPerioder = useCallback(
         (perioder: Array<{ fom: string; tom: string }>, skalForskyveBakover: boolean) => {
-            const uttakPeriodeBuilder = new UttakPeriodeBuilder(uttakPerioder);
+            const uttakPeriodeBuilder = new UttakPeriodeBuilder(uttakPerioder, 'kalender');
             uttakPeriodeBuilder.fjernUttakPerioder(perioder, skalForskyveBakover);
             notEmpty(uttaksplanRedigering).oppdaterUttaksplan(uttakPeriodeBuilder.getUttakPerioder());
         },

@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HStack, Skeleton, VStack } from '@navikt/ds-react';
 
-import './SkyraSurvey.module.css';
+import './SkyraSurvey.css';
 
 type SkyraEvent =
     | { type: 'surveyStarted'; slug: string }

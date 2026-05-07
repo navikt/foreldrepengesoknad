@@ -9,7 +9,6 @@ const s4 = (): string =>
         .toString()
         .substring(1);
 
-//TODO Denne ligg sikkert ein annan stad (evt flytt ut)
 const guid = (): string => `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
 
 const generateAttachmentId = () => 'V'.concat(guid().replace(/-/g, ''));
@@ -22,7 +21,7 @@ export const mapFileToAttachment = (
     const file = fileObject.file;
     return {
         attachmentData: {
-            id: generateAttachmentId(), //TODO Kan denne slettast?
+            id: generateAttachmentId(),
             file,
             filename: file.name,
             filesize: file.size,

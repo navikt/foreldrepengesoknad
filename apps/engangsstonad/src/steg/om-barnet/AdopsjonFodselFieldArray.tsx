@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -59,8 +59,7 @@ export const AdopsjonFodselFieldArray = ({ adopsjonsdato, antallBarn, antallBarn
                     label={
                         fields.length === 1
                             ? intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fødselsdato' })
-                            : // @ts-expect-error Bør ikkje bruka dynamiske tekstId'ar
-                              intl.formatMessage({ id: `AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.${index + 1}` })
+                            : getFødselsdatoLabel(intl, index + 1)
                     }
                     validate={[
                         isRequired(intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fodselsdato.DuMåOppgi' })),
@@ -79,4 +78,29 @@ export const AdopsjonFodselFieldArray = ({ adopsjonsdato, antallBarn, antallBarn
             ))}
         </VStack>
     );
+};
+
+const getFødselsdatoLabel = (intl: IntlShape, barnNummer: number) => {
+    switch (barnNummer) {
+        case 1:
+            return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.1' });
+        case 2:
+            return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.2' });
+        case 3:
+            return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.3' });
+        case 4:
+            return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.4' });
+        case 5:
+            return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.5' });
+        case 6:
+            return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.6' });
+        case 7:
+            return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.7' });
+        case 8:
+            return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.8' });
+        case 9:
+            return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.9' });
+        default:
+            throw new Error(`Manglar fødselsdato-label for barn nummer ${barnNummer}`);
+    }
 };

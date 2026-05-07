@@ -4,7 +4,6 @@ import minMax from 'dayjs/plugin/minMax';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Dokumentasjon } from 'types/Dokumentasjon';
-import { BarnetErIkkeFødt } from 'types/OmBarnet';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { FileUploader } from '@navikt/fp-filopplaster';
@@ -32,10 +31,10 @@ const isUtstedtDatoIUke22 = (termindato: string, intl: IntlShape) => (terminBekr
 interface Props {
     attachments?: Attachment[];
     updateAttachments: (attachments: Attachment[], hasPendingUploads: boolean) => void;
-    omBarnet: BarnetErIkkeFødt;
+    termindato: string;
 }
 
-export const TerminDokPanel = ({ attachments, updateAttachments, omBarnet }: Props) => {
+export const TerminDokPanel = ({ attachments, updateAttachments, termindato }: Props) => {
     const intl = useIntl();
 
     const { control } = useFormContext<Dokumentasjon>();
@@ -46,7 +45,7 @@ export const TerminDokPanel = ({ attachments, updateAttachments, omBarnet }: Pro
                 name="terminbekreftelsedato"
                 control={control}
                 label={<FormattedMessage id="TerminDokPanel.Terminbekreftelsesdato" />}
-                minDate={dayjs(omBarnet.termindato).subtract(18, 'week').subtract(3, 'day')}
+                minDate={dayjs(termindato).subtract(18, 'week').subtract(3, 'day')}
                 maxDate={dayjs()}
                 validate={[
                     isRequired(intl.formatMessage({ id: 'TerminDokPanel.Validering.TerminbekreftelseDato.DuMåOppgi' })),
@@ -56,7 +55,7 @@ export const TerminDokPanel = ({ attachments, updateAttachments, omBarnet }: Pro
                             id: 'TerminDokPanel.Validering.TerminBekreftelsedato.MåVæreIdagEllerTidligere',
                         }),
                     ),
-                    isUtstedtDatoIUke22(omBarnet.termindato, intl),
+                    isUtstedtDatoIUke22(termindato, intl),
                 ]}
             />
             <FileUploader

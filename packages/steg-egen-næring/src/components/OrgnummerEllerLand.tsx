@@ -9,7 +9,7 @@ import { NæringFormValues } from '../types/NæringFormValues';
 
 const validateEgenNæringOrgnr =
     (intl: IntlShape, erValgfri: boolean) =>
-    (orgnrValue = ''): string | undefined => {
+    (orgnrValue = ''): string | null => {
         if (!erValgfri && !orgnrValue) {
             return intl.formatMessage({ id: 'valideringsfeil.egenNæringOrgnr.påkrevd' });
         }
@@ -22,7 +22,7 @@ const validateEgenNæringOrgnr =
             return intl.formatMessage({ id: 'valideringsfeil.egenNæringOrgnr.ugyldigFormat' });
         }
 
-        return undefined;
+        return null;
     };
 
 interface Props {

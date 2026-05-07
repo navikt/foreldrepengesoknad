@@ -5,14 +5,12 @@ import { ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
-import { VedleggDataType } from 'types/VedleggDataType';
 import { getErMorUfør } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
 import { Alert, Radio, VStack } from '@navikt/ds-react';
 
-import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import {
     Barn,
@@ -27,23 +25,10 @@ import {
 } from '@navikt/fp-types';
 import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
 import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
-import { useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
+import { harPeriodeDerMorsAktivitetIkkeErValgt, useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
-import { VilDuGåTilbakeModal } from './VilDuGåTilbakeModal';
-
-const NULLSTILTE_PERIODE_VEDLEGG: VedleggDataType = {
-    [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: [],
-    [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: [],
-    [Skjemanummer.DOK_SYKDOM_MOR]: [],
-    [Skjemanummer.DOK_SYKDOM_FAR]: [],
-    [Skjemanummer.DOK_INNLEGGELSE_BARN]: [],
-    [Skjemanummer.DOK_INNLEGGELSE_MOR]: [],
-    [Skjemanummer.DOK_INNLEGGELSE_FAR]: [],
-    [Skjemanummer.DOK_ARBEID_MOR]: [],
-    [Skjemanummer.DOK_UTDANNING_MOR]: [],
-    [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: [],
-};
+import { GåTilbakeModal } from './GåTilbakeModal';
 
 type FormValues = {
     ønskerJustertUttakVedFødsel?: boolean;
@@ -77,13 +62,11 @@ export const UttaksplanForm = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const harJustertUttakVedFødsel = useContextGetData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
-    const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
 
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
     const oppdaterHarJustertUttakVedFødsel = useContextSaveData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
-    const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
 
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
     const uttaksplanMedKunNyePerioder =
@@ -123,9 +106,9 @@ export const UttaksplanForm = ({
         erSøkerFarEllerMedmor &&
         søkersituasjon.situasjon === 'fødsel' &&
         gjeldendeUttaksplan &&
-        finnPerioderRundtFødsel(gjeldendeUttaksplan, barn).some(
+        finnPerioderRundtFødsel(gjeldendeUttaksplan, barn).filter(
             (p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.forelder === 'FAR_MEDMOR',
-        ) &&
+        ).length === 1 &&
         isUfødtBarn(barn) &&
         barn.termindato !== undefined &&
         !bareFarHarRett;
@@ -139,6 +122,9 @@ export const UttaksplanForm = ({
                 setFeilmelding(<FormattedMessage id="UttaksplanSteg.IngenPerioder" />);
             }
 
+            scrollToKvoteOppsummering();
+        } else if (!erEndringssøknad && !planForValidering.some((p) => Uttaksperioden.erUttaksperiode(p))) {
+            setFeilmelding(<FormattedMessage id="UttaksplanSteg.IngenUttaksperioder" />);
             scrollToKvoteOppsummering();
         } else if (erAntallDagerOvertrukket) {
             setFeilmelding(<FormattedMessage id="UttaksplanSteg.OvertrukketDager" />);
@@ -164,26 +150,15 @@ export const UttaksplanForm = ({
         }
     };
 
-    //TODO (TOR) TFP-6583 Fjern bruk av VilDuGåTilbakeModal og resett context i andre steg
     const [gåTilbakeIsOpen, setGåTilbakeIsOpen] = useState(false);
-
-    const gåTilForrigeSteg = () => {
-        setGåTilbakeIsOpen(false);
-
-        oppdaterHarJustertUttakVedFødsel(undefined);
-        oppdaterUttaksplan(undefined);
-        oppdaterVedlegg({ ...vedlegg, ...NULLSTILTE_PERIODE_VEDLEGG });
-
-        navigator.goToPreviousDefaultStep();
-    };
 
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             <VStack gap="space-24">
-                <VilDuGåTilbakeModal
+                <GåTilbakeModal
                     isOpen={gåTilbakeIsOpen}
                     setIsOpen={setGåTilbakeIsOpen}
-                    goToPreviousStep={gåTilForrigeSteg}
+                    goToPreviousStep={navigator.goToPreviousDefaultStep}
                 />
                 {visAutomatiskJustering && (
                     <VStack gap="space-16">
@@ -346,22 +321,6 @@ const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
         const tom = dayjs(periode.tom);
         return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
     });
-};
-
-const harPeriodeDerMorsAktivitetIkkeErValgt = (
-    rettighetType: RettighetType_fpoversikt,
-    perioder?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-) => {
-    return perioder?.some(
-        (periode) =>
-            rettighetType !== 'ALENEOMSORG' &&
-            Uttaksperioden.erIkkeEøsPeriode(periode) &&
-            periode.forelder === 'FAR_MEDMOR' &&
-            periode.resultat?.innvilget !== false &&
-            (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER') &&
-            periode.flerbarnsdager === false &&
-            periode.morsAktivitet === undefined,
-    );
 };
 
 const harBrukerKunSlettetPerioder = (

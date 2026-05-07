@@ -4,10 +4,11 @@ import { FormattedMessage } from 'react-intl';
 
 import { HStack, Heading } from '@navikt/ds-react';
 
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
-import { Uttaksplanperiode } from '../../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, erEøsUttakPeriode } from '../../../types/UttaksplanPeriode';
 import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../../utils/periodeUtils';
 import { LeggTilEllerEndrePeriodeListPanel } from '../../legg-til-endre-periode-panel/LeggTilEllerEndrePeriodeListPanel';
 import { erUttaksplanperiodeSamtidigUttak } from '../../utils/uttaksplanperiodeUtils';
@@ -26,6 +27,7 @@ export const EndrePeriodePanel = ({ closePanel, uttaksplanperioder }: Props) => 
 
     const {
         foreldreInfo: { rettighetType },
+        uttakPerioder,
     } = useUttaksplanData();
 
     const [valgtPeriodeIndex, setValgtPeriodeIndex] = useState<number | undefined>(
@@ -60,6 +62,9 @@ export const EndrePeriodePanel = ({ closePanel, uttaksplanperioder }: Props) => 
                         erNyPeriodeModus={false}
                         harPeriodeDerMorsAktivitetIkkeErValgt={harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [
                             finnUttakplanperiode(erSamtidigUttak, uttaksplanperioder, valgtPeriodeIndex),
+                            ...uttakPerioder.filter(
+                                (mp): mp is UttakPeriode_fpoversikt => !erEøsUttakPeriode(mp) && mp.forelder === 'MOR',
+                            ),
                         ])}
                     />
                 )}

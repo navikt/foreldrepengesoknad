@@ -26,7 +26,7 @@ export const slettMellomlagringOgLastSidePåNytt = async () => {
 
 export const Svangerskapspengesøknad = () => {
     const intl = useIntl();
-    useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
+    useDocumentTitle(intl.formatMessage({ id: 'Svangerskapspengesøknad.pagetitle' }));
 
     const søkerinfo = useQuery(søkerinfoOptions());
 

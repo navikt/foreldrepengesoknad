@@ -4,18 +4,14 @@ import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { captureMessage } from '@navikt/fp-observability';
-import { ProblemDetails, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+import { ApiError, captureApiError, captureMessage } from '@navikt/fp-observability';
+import { FpSoknadProblemDetails, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
 export const VERSJON_MELLOMLAGRING = 9;
 
-const UKJENT_UUID = 'ukjent uuid';
-const FEIL_VED_INNSENDING =
-    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
-
-export type SvpDataMapAndMetaData = {
+export type SvpMellomlagretData = {
     version: number;
     søkerInfo: SvpPersonopplysningerDto_fpoversikt;
 } & ContextDataMap;
@@ -50,7 +46,7 @@ export const useMellomlagreSøknad = (
                             version: VERSJON_MELLOMLAGRING,
                             søkerInfo,
                             ...state,
-                        } satisfies SvpDataMapAndMetaData;
+                        } satisfies SvpMellomlagretData;
                         await ky.post(API_URLS.mellomlagring, { json: data });
                     } catch (error: unknown) {
                         if (error instanceof HTTPError) {
@@ -58,15 +54,13 @@ export const useMellomlagreSøknad = (
                                 throw error;
                             }
 
-                            const jsonResponse = await error.response.json<ProblemDetails>();
-                            const callIdForBruker = jsonResponse?.callId ?? UKJENT_UUID;
-                            captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
-                            throw new Error(FEIL_VED_INNSENDING + callIdForBruker);
+                            const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
+                            throw new ApiError('', 'Feil ved mellomlagring av svangerskapspengesøknad', jsonResponse);
                         }
                         if (error instanceof Error) {
                             throw error;
                         }
-                        throw new Error(String(error));
+                        throw new Error(String(error), { cause: error });
                     }
                 } else {
                     setHarGodkjentVilkår(false);
@@ -83,7 +77,11 @@ export const useMellomlagreSøknad = (
             };
 
             lagreEllerSlett().catch((error: Error) => {
-                captureMessage(error.message);
+                if (error instanceof ApiError) {
+                    captureApiError(error.sentryMessage, error.problemDetails);
+                } else {
+                    captureMessage(error.message);
+                }
 
                 if (promiseRef.current) {
                     promiseRef.current();

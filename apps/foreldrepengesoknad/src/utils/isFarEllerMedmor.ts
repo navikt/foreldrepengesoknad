@@ -13,7 +13,7 @@ export const getForelderNavn = (
     forelder: BrukerRolleSak_fpoversikt | undefined,
     navnPåForeldre: NavnPåForeldre,
 ): string => {
-    let forelderNavn = '';
+    let forelderNavn: string;
     if (navnPåForeldre.farMedmor) {
         forelderNavn = forelder === 'MOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     } else {

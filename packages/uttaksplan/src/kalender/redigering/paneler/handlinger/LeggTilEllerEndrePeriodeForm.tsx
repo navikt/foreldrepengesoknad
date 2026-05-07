@@ -8,7 +8,7 @@ import { FormattedMessage } from 'react-intl';
 import { Alert, Button, ErrorMessage, HStack, VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import type { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
+import type { BrukerRolleSak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import {
@@ -20,6 +20,7 @@ import {
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useFormSubmitValidator } from '../../../../felles/uttaksplanValidatorer';
+import { erEøsUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import {
     erDetEksisterendePerioderEtterValgtePerioder,
@@ -61,22 +62,25 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         defaultValues,
     });
 
+    const skalDuKombinereArbeidOgUttakMor = formMethods.watch('skalDuKombinereArbeidOgUttakMor');
+    const forelder = formMethods.watch('forelder');
+
     const formSubmitValidator = useFormSubmitValidator<LeggTilEllerEndrePeriodeFormFormValues>();
 
-    const resetFormValuesVedEndringAvForelder = (forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {
+    const resetFormValuesVedEndringAvForelder = (forelderVerdi: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {
         const erFarMedmorLåst = erPeriodeneTilAnnenPartLåst && søker === 'MOR';
         const erMorLåst = erPeriodeneTilAnnenPartLåst && søker === 'FAR_MEDMOR';
 
-        if (forelder === 'BEGGE' && (erFarMedmorLåst || erMorLåst)) {
+        if (forelderVerdi === 'BEGGE' && (erFarMedmorLåst || erMorLåst)) {
             const nyeDefaultVerdier = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
                 uttakPerioder,
                 sammenslåtteValgtePerioder[0]!,
                 søker,
                 false,
             );
-            formMethods.reset({ ...nyeDefaultVerdier, forelder });
+            formMethods.reset({ ...nyeDefaultVerdier, forelder: forelderVerdi });
         } else {
-            formMethods.reset({ forelder });
+            formMethods.reset({ forelder: forelderVerdi });
         }
     };
 
@@ -96,7 +100,12 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
     const erMorsAktivitetIkkeOppgitt =
         harValgtDagerKunForEnEksisterendePeriode &&
-        harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, eksisterendePerioderSomErValgt);
+        harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [
+            ...eksisterendePerioderSomErValgt,
+            ...uttakPerioder.filter(
+                (mp): mp is UttakPeriode_fpoversikt => !erEøsUttakPeriode(mp) && mp.forelder === 'MOR',
+            ),
+        ]);
 
     const onSubmit = (values: LeggTilEllerEndrePeriodeFormFormValues) => {
         const submitFeilmelding = formSubmitValidator(sammenslåtteValgtePerioder, values);
@@ -137,6 +146,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
                 <LeggTilPeriodeForskyvEllerErstattPanel
                     valgtePerioder={sammenslåtteValgtePerioder}
                     erFerie={false}
+                    erGradert={skalDuKombinereArbeidOgUttakMor === true && (forelder === 'MOR' || forelder === 'BEGGE')}
                     setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
                     leggTilEllerForskyvPeriode={leggIKalender}
                 />

@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getTermindato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
-import { getStønadskontoNavn } from 'utils/stønadskontoerUtils';
+import { getStønadskvoteNavn } from 'utils/stønadskvoterUtils';
 import { isUttaksperiodeFarMedmorPgaFødsel } from 'utils/uttaksplanInfoUtils';
 
 import { Alert, BodyLong, FormSummary, VStack } from '@navikt/ds-react';
@@ -115,15 +115,15 @@ const UttaksplanListe = ({
 
     const erAleneOmOmsorg = erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false;
 
-    const getStønadskontoNavnFromKonto = (konto: KontoType | undefined, morsAktivitet?: MorsAktivitet) => {
+    const getStønadskvoteNavnFraKvote = (konto: KontoType | undefined, morsAktivitet?: MorsAktivitet) => {
         return konto === undefined
             ? ''
-            : getStønadskontoNavn(intl, konto, navnPåForeldre, søkerErFarEllerMedmor, erAleneOmOmsorg, morsAktivitet);
+            : getStønadskvoteNavn(intl, konto, navnPåForeldre, søkerErFarEllerMedmor, erAleneOmOmsorg, morsAktivitet);
     };
 
     const getUttaksperiodeNavn = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
         const morsAktivitet = Uttaksperioden.erIkkeEøsPeriode(periode) ? periode.morsAktivitet : undefined;
-        const tittel = getStønadskontoNavnFromKonto(periode.kontoType, morsAktivitet);
+        const tittel = getStønadskvoteNavnFraKvote(periode.kontoType, morsAktivitet);
         const termindato = getTermindato(barn) ? getTermindato(barn) : undefined;
         return søkersituasjon.situasjon === 'fødsel' &&
             isUttaksperiodeFarMedmorPgaFødsel(periode, familiehendelsesdato, termindato)
@@ -197,7 +197,7 @@ const UttaksplanListe = ({
                                     <FormSummary.Value>
                                         <FormattedMessage
                                             id="oppsummering.overtakelse.pga"
-                                            values={{ konto: getStønadskontoNavnFromKonto(periode.kontoType) }}
+                                            values={{ kvote: getStønadskvoteNavnFraKvote(periode.kontoType) }}
                                         />
                                         <Overføringsperiodedetaljer periode={periode} navnPåForeldre={navnPåForeldre} />
                                     </FormSummary.Value>
@@ -233,6 +233,6 @@ const UttaksplanListe = ({
 const lagKeyFraPeriode = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) =>
     periode.kontoType + periode.fom + periode.tom;
 
-//TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
+// TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
 const filtrerBortPerioderUtenTrekkdager = (perioder: UttakPeriode_fpoversikt[]) =>
     perioder.filter((periode) => !(periode.resultat?.innvilget === false && periode.resultat.trekkerDager === false));

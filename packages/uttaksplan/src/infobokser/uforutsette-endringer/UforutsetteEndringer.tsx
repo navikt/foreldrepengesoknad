@@ -31,7 +31,7 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
 
     const beggeHarRett = rettighetType === 'BEGGE_RETT';
 
-    //TODO (TOR) Er dette korrekt, eller er mor del av søknaden uansett om ho har rett eller ikkje?
+    // TODO (TOR) Er dette korrekt, eller er mor del av søknaden uansett om ho har rett eller ikkje?
     const erMorDelAvSøknaden = !erFarOgFar && (søker === 'MOR' || rettighetType === 'BEGGE_RETT');
 
     const kunMorHarRett = søker === 'MOR' && (rettighetType === 'BARE_SØKER_RETT' || erAleneforsørger);

@@ -3,7 +3,8 @@ import isString from 'lodash/isString';
 import { IntlShape } from 'react-intl';
 import { getVarighetString } from 'utils/dateUtils';
 
-import { erUttaksdag, formatDate, getNumberFromNumberInputValue, isValidDate } from '@navikt/fp-utils';
+import { erUttaksdag, formatDate, getNumberFromNumberInputValue } from '@navikt/fp-utils';
+import { isValidDateString as isValidDate } from '@navikt/fp-validation';
 
 const validateMaxValueAntallUkerFellesperiode = (
     antallUker: number,
@@ -16,7 +17,7 @@ const validateMaxValueAntallUkerFellesperiode = (
         const maxValue = getVarighetString(tilgjengeligeDager, intl);
         return intl.formatMessage({ id: 'fordeling.antallDagerUker.forStor' }, { maxValue });
     }
-    return undefined;
+    return null;
 };
 
 export const isValidAntallUkerFellesperiode =
@@ -41,7 +42,7 @@ export const isValidAntallUkerFellesperiode =
                 intl,
             );
         }
-        return undefined;
+        return null;
     };
 
 export const isValidAntallDagerFellesperiode =
@@ -66,7 +67,7 @@ export const isValidAntallDagerFellesperiode =
                 intl,
             );
         }
-        return undefined;
+        return null;
     };
 
 export const validateOppstartsdato =
@@ -83,5 +84,5 @@ export const validateOppstartsdato =
             return intl.formatMessage({ id: 'fordeling.oppstartsdato.ukedag' });
         }
 
-        return undefined;
+        return null;
     };

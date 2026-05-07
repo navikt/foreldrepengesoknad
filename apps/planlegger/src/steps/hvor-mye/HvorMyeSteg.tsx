@@ -86,7 +86,9 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                                             <FormattedMessage id="HvorMyeSteg.Lønn" values={{ hvem: fornavnSøker1 }} />
                                         )
                                     }
-                                    validate={[isValidNumberForm(intl.formatMessage({ id: 'Validering.ValidNumber' }))]}
+                                    validate={[
+                                        isValidNumberForm(intl.formatMessage({ id: 'HvorMyeSteg.ValidNumber' })),
+                                    ]}
                                     description={intl.formatMessage({ id: 'HvorMyeSteg.LønnBeskrivelse' })}
                                 />
                             </BluePanel>
@@ -115,7 +117,7 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                                             />
                                         }
                                         validate={[
-                                            isValidNumberForm(intl.formatMessage({ id: 'Validering.ValidNumber' })),
+                                            isValidNumberForm(intl.formatMessage({ id: 'HvorMyeSteg.ValidNumber' })),
                                         ]}
                                         description={intl.formatMessage({ id: 'HvorMyeSteg.LønnBeskrivelse' })}
                                     />

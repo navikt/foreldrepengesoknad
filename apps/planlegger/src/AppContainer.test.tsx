@@ -9,7 +9,7 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 import { endreFordelingMedSlider } from '../vitest/testHelpers';
 import * as stories from './AppContainer.stories';
 
-const { DefaultMockaStønadskontoerOgSatser } = composeStories(stories);
+const { DefaultMockaStønadskvoterOgSatser } = composeStories(stories);
 
 // Denne testen har kun ein test grunna at context ikkje blir sletta mellom testande. Skriv derfor testane i Planlegger.test.tsx
 
@@ -24,9 +24,9 @@ describe('<AppContainer>', () => {
     it(
         'skal gå gjennom applikasjonen og så tilbake',
         mswWrapper(async ({ setHandlers }) => {
-            setHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
+            setHandlers(DefaultMockaStønadskvoterOgSatser.parameters.msw);
 
-            const utils = render(<DefaultMockaStønadskontoerOgSatser />);
+            const utils = render(<DefaultMockaStønadskvoterOgSatser />);
 
             expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Start'));
@@ -87,47 +87,46 @@ describe('<AppContainer>', () => {
 
             await userEvent.click(screen.getByText('Neste'));
 
-            // TODO (TOR) Dette feilar av ein eller annan grunn kun på github
-            // expect(await screen.findByText('Planen deres')).toBeInTheDocument();
-            // expect(screen.getByText('Steg 8 av 9')).toBeInTheDocument();
-            // await userEvent.click(screen.getAllByText('Oppsummering')[1]!);
+            expect(await screen.findByText('Planen deres', {}, { timeout: 5000 })).toBeInTheDocument();
+            expect(screen.getByText('Steg 8 av 9')).toBeInTheDocument();
+            await userEvent.click(screen.getAllByText('Oppsummering')[1]!);
 
-            // await waitFor(() => expect(screen.getAllByText('Oppsummering')).toHaveLength(2));
-            // await userEvent.click(screen.getByText('Tilbake til spørsmålene'));
+            expect(screen.getAllByText('Oppsummering')).toHaveLength(2);
+            await userEvent.click(screen.getByText('Tilbake til spørsmålene'));
 
-            // expect(screen.getByText('Planen deres')).toBeInTheDocument();
-            // expect(screen.getByText('Steg 8 av 9')).toBeInTheDocument();
-            // await userEvent.click(screen.getByText('Forrige'));
+            expect(screen.getByText('Planen deres')).toBeInTheDocument();
+            expect(screen.getByText('Steg 8 av 9')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Forrige'));
 
-            // await waitFor(() => expect(screen.getAllByText('Fordeling')).toHaveLength(2));
-            // expect(screen.getByText('Steg 7 av 9')).toBeInTheDocument();
-            // await userEvent.click(screen.getByText('Forrige'));
+            await waitFor(() => expect(screen.getAllByText('Fordeling')).toHaveLength(2));
+            expect(screen.getByText('Steg 7 av 9')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Forrige'));
 
-            // await waitFor(() => expect(screen.getAllByText('Hvor lenge')).toHaveLength(2));
-            // expect(screen.getByText('Steg 6 av 9')).toBeInTheDocument();
-            // await userEvent.click(screen.getByText('Forrige'));
+            await waitFor(() => expect(screen.getAllByText('Hvor lenge')).toHaveLength(2));
+            expect(screen.getByText('Steg 6 av 9')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Forrige'));
 
-            // await waitFor(() => expect(screen.getAllByText('Hvor mye')).toHaveLength(2));
-            // expect(screen.getByText('Steg 5 av 9')).toBeInTheDocument();
-            // await userEvent.click(screen.getByText('Forrige'));
+            await waitFor(() => expect(screen.getAllByText('Hvor mye')).toHaveLength(2));
+            expect(screen.getByText('Steg 5 av 9')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Forrige'));
 
-            // await waitFor(() => expect(screen.getAllByText('Arbeidssituasjon')).toHaveLength(2));
-            // expect(screen.getByText('Steg 4 av 9')).toBeInTheDocument();
-            // await userEvent.click(screen.getByText('Forrige'));
+            await waitFor(() => expect(screen.getAllByText('Arbeidssituasjon')).toHaveLength(2));
+            expect(screen.getByText('Steg 4 av 9')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Forrige'));
 
-            // await waitFor(() => expect(screen.getAllByText('Barnehageplass')).toHaveLength(2));
-            // expect(screen.getByText('Steg 3 av 9')).toBeInTheDocument();
-            // await userEvent.click(screen.getByText('Forrige'));
+            await waitFor(() => expect(screen.getAllByText('Barnehageplass')).toHaveLength(2));
+            expect(screen.getByText('Steg 3 av 9')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Forrige'));
 
-            // await waitFor(() => expect(screen.getAllByText('Barnet')).toHaveLength(2));
-            // expect(screen.getByText('Steg 2 av 9')).toBeInTheDocument();
-            // await userEvent.click(screen.getByText('Forrige'));
+            await waitFor(() => expect(screen.getAllByText('Barnet')).toHaveLength(2));
+            expect(screen.getByText('Steg 2 av 9')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Forrige'));
 
-            // await waitFor(() => expect(screen.getAllByText('Hvem planlegger?')).toHaveLength(2));
-            // expect(screen.getByText('Steg 1 av 9')).toBeInTheDocument();
-            // await userEvent.click(screen.getByText('Forrige'));
+            await waitFor(() => expect(screen.getAllByText('Hvem planlegger?')).toHaveLength(2));
+            expect(screen.getByText('Steg 1 av 9')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Forrige'));
 
-            // expect(screen.getByText('Planleggeren består av to deler:')).toBeInTheDocument();
+            expect(screen.getByText('Planleggeren består av to deler:')).toBeInTheDocument();
         }),
     );
 });

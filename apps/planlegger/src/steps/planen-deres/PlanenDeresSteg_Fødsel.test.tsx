@@ -21,7 +21,7 @@ const {
     FarOgFarBeggeHarRett,
     FarOgFarKunFarHarRett,
     FarOgFarKunMedfarHarRett,
-    BarnetErFødtDagenEtterTermindato,
+    BarnetErFødtPlanleggerDagenEtterTermindato,
 } = composeStories(stories);
 
 describe('<PlanenDeresSteg - fødsel>', () => {
@@ -433,7 +433,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
     });
 
     it('skal vise korrekt data for fødsel - barnet er født dagen etter termindato', async () => {
-        render(<BarnetErFødtDagenEtterTermindato />);
+        render(<BarnetErFødtPlanleggerDagenEtterTermindato />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
@@ -593,7 +593,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
                 hvorLangPeriode={{
                     dekningsgrad: '80',
                 }}
-                stønadskontoer={{
+                stønadskvoter={{
                     '80': {
                         kontoer: DELT_UTTAK_80_TO_BARN,
                         minsteretter: { farRundtFødsel: 10, toTette: 0 },

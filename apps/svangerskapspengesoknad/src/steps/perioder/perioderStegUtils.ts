@@ -2,10 +2,10 @@ import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 import { PeriodeMedVariasjonFormValues, TilOgMedDatoType } from 'types/Tilrettelegging';
 import { getFloatFromString } from 'utils/numberUtils';
-import { hasValue } from 'utils/validationUtils';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { formatDate, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
+import { formatDate } from '@navikt/fp-utils';
+import { hasValue, isValidDateString as isStringAValidDate } from '@navikt/fp-validation';
 
 export const getMåSendeNySøknad = (
     periodeDerSøkerErTilbakeIOpprinneligStilling: PeriodeMedVariasjonFormValues | undefined,
@@ -66,10 +66,10 @@ export const getPeriodeInfoTekst = (
         let sluttdatotekst = formatDate(tomDato);
         if (erSisteDagMedSvpValgt) {
             sluttdatotekst = kanHaSVPFremTilTreUkerFørTermin
-                ? intl.formatMessage({ id: 'PerioderStep.TreUkerFørTermin' })
-                : intl.formatMessage({ id: 'PerioderStep.Fødsel' });
+                ? intl.formatMessage({ id: 'perioderStegUtils.TreUkerFørTermin' })
+                : intl.formatMessage({ id: 'perioderStegUtils.Fødsel' });
         }
-        return `${formatDate(fomDato)} - ${sluttdatotekst} (${intl.formatMessage({ id: 'PerioderStep.tidsperiode' }, { ukeAntall, dagAntall })})`;
+        return `${formatDate(fomDato)} - ${sluttdatotekst} (${intl.formatMessage({ id: 'perioderStegUtils.tidsperiode' }, { ukeAntall, dagAntall })})`;
     }
     return intl.formatMessage({ id: 'ny.periode' });
 };

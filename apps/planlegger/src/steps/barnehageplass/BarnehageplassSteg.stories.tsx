@@ -4,21 +4,22 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
-import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
+
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 
 import { BarnehageplassSteg } from './BarnehageplassSteg';
 
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
-    omBarnet: OmBarnet;
+    omBarnet: OmBarnetPlanlegger;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof BarnehageplassSteg>;
 
 const meta = {
     title: 'steg/BarnehageplassSteg',
     component: BarnehageplassSteg,
-    render: ({ hvemPlanlegger, omBarnet, gåTilNesteSide = action('button-click') }: StoryArgs) => {
+    render: ({ hvemPlanlegger, omBarnet, uttaksdata, gåTilNesteSide = action('button-click') }: StoryArgs) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.ARBEIDSSITUASJON]}>
                 <PlanleggerDataContext
@@ -28,7 +29,7 @@ const meta = {
                     }}
                     onDispatch={gåTilNesteSide}
                 >
-                    <BarnehageplassSteg />
+                    <BarnehageplassSteg uttaksdata={uttaksdata} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );

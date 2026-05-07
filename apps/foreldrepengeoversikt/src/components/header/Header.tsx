@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ReactNode } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
+import { Sak } from 'types/Sak.ts';
 
 import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
@@ -15,7 +16,6 @@ import { capitalizeFirstLetter, capitalizeFirstLetterInEveryWordOnly, formatDate
 
 import { hentSakerOptions, søkerInfoOptions } from '../../api/queries.ts';
 import { LayoutWrapper } from '../../sections/LayoutWrapper';
-import { Sak } from '../../types/Sak';
 import {
     getFamiliehendelseDato,
     getSakTittel,

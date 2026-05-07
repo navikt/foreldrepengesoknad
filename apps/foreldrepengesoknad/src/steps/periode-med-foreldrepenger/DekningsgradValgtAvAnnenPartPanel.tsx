@@ -1,9 +1,10 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
+import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getVarighetString, getVis1Juli2024Info } from 'utils/dateUtils';
-import { getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
+import { getAntallUkerFraStønadskvoter } from 'utils/stønadskvoterUtils';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
@@ -21,7 +22,7 @@ type Props = {
     fornavnAnnenForelder: string;
     kjønnAnnenForelder?: 'M' | 'K' | 'U';
     dekningsgrad: Dekningsgrad;
-    valgtStønadskonto: KontoBeregningDto;
+    valgtStønadskvote: KontoBeregningDto;
 };
 
 export const DekningsgradValgtAvAnnenPartPanel = ({
@@ -30,26 +31,31 @@ export const DekningsgradValgtAvAnnenPartPanel = ({
     fornavnAnnenForelder,
     kjønnAnnenForelder,
     dekningsgrad,
-    valgtStønadskonto,
+    valgtStønadskvote,
     onFortsettSenere,
     onAvsluttOgSlett,
 }: Props) => {
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const periodeMedForeldrepenger = useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const oppdaterPeriodeMedForeldrepenger = useContextSaveData(ContextDataType.PERIODE_MED_FORELDREPENGER);
+    const resetUttaksplanData = useResetUttaksplanData();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const lagre = () => {
         setIsSubmitting(true);
 
+        if (periodeMedForeldrepenger !== undefined && dekningsgrad !== periodeMedForeldrepenger) {
+            resetUttaksplanData();
+        }
         oppdaterPeriodeMedForeldrepenger(dekningsgrad);
 
         return goToNextDefaultStep();
     };
 
-    const uker = getAntallUkerFraStønadskontoer(valgtStønadskonto.kontoer);
+    const uker = getAntallUkerFraStønadskvoter(valgtStønadskvote.kontoer);
     const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && dekningsgrad === '80';
     return (
         <VStack gap="space-40">

@@ -1,18 +1,18 @@
 import { PersonGroupIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erMorDelAvSøknaden, finnSøker1Tekst, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 interface Props {
     hvemPlanlegger: HvemPlanlegger;
-    barnet: OmBarnet;
+    barnet: OmBarnetPlanlegger;
 }
 
 export const FarFellesperiode = ({ hvemPlanlegger, barnet }: Props) => {

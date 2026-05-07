@@ -17,7 +17,7 @@ import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../../../utils/periodeUtils';
-import { getStønadskontoNavn } from '../../../utils/uttaksplanListeUtils';
+import { getStønadskvoteNavn } from '../../../utils/uttaksplanListeUtils';
 
 interface Props {
     periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
@@ -30,10 +30,11 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
     const intl = useIntl();
     const {
         foreldreInfo: { rettighetType },
+        uttakPerioder,
     } = useUttaksplanData();
     const morsAktivitet = erVanligUttakPeriode(periode) && periode.morsAktivitet ? periode.morsAktivitet : undefined;
 
-    const stønadskontoNavn = getStønadskontoNavn(
+    const stønadskvoteNavn = getStønadskvoteNavn(
         intl,
         navnPåForeldre,
         erFarEllerMedmor,
@@ -43,9 +44,13 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
         rettighetType === 'ALENEOMSORG',
     );
 
+    const morsPerioder = uttakPerioder.filter(
+        (p): p is UttakPeriode_fpoversikt => !erEøsUttakPeriode(p) && p.forelder === 'MOR',
+    );
+
     return (
         <HStack gap="space-8">
-            {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [periode]) && (
+            {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [periode, ...morsPerioder]) && (
                 <ExclamationmarkTriangleFillIcon
                     title={intl.formatMessage({ id: 'PeriodeListeHeader.MorsAktivitetIkkeValgt' })}
                     fontSize="1.5rem"
@@ -66,7 +71,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
                     </BodyShort>
                 </HStack>
                 <VStack gap="space-8">
-                    <BodyShort>{stønadskontoNavn}</BodyShort>
+                    <BodyShort>{stønadskvoteNavn}</BodyShort>
                     {morsAktivitet !== undefined && <BodyShort>{getMorsAktivitetTekst(intl, morsAktivitet)}</BodyShort>}
                     {erEøsUttakPeriode(periode) && periode.trekkdager !== undefined ? (
                         <BodyShort>

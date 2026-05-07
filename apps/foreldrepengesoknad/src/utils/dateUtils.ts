@@ -18,13 +18,13 @@ import {
     isFødtBarn,
 } from '@navikt/fp-types';
 import { Tidsperioden, isISODateString } from '@navikt/fp-utils';
+import { hasValue } from '@navikt/fp-validation';
 
 import { FeatureToggle } from '../FeatureToggle';
 import { getIsDeltUttak } from './annenForelderUtils';
 import { getFamiliehendelsedato } from './barnUtils';
 import { erPeriodeIOpprinneligPlan } from './eksisterendeSakUtils';
 import { toggleUtils } from './toggleUtils';
-import { hasValue } from './validationUtil';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);

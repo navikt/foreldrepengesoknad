@@ -360,7 +360,7 @@ const useHarMinstEttArbeidsforhold = () => {
 };
 
 const useÅpenBehandlingTilstand = () => {
-    //eslint-disable-next-line react-hooks/rules-of-hooks -- Denne feiler fordi regelen ikkje taklar norske bokstavar i hook-navn
+    //eslint-disable-next-line @eslint-react/rules-of-hooks -- Denne feiler fordi regelen ikkje taklar norske bokstavar i hook-navn
     const sak = useGetSelectedSak();
 
     if (!sak || sak.ytelse === 'ENGANGSSTØNAD') {

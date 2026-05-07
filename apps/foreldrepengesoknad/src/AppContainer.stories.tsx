@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak';
 import { kvittering } from 'storybookData/kvittering';
 import { saker } from 'storybookData/saker';
-import { stønadskontoer } from 'storybookData/stønadskontoer';
+import { stønadskvoter } from 'storybookData/stønadskvoter';
 
 import { FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
@@ -32,6 +32,15 @@ const søkerinfo = {
     ],
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
+const søkerinfoKvinne = {
+    ...søkerinfo,
+    kjønn: 'K',
+    navn: {
+        fornavn: 'Modig',
+        etternavn: 'Konvolutt',
+    },
+} satisfies FpPersonopplysningerDto_fpoversikt;
+
 const meta = {
     component: AppContainer,
     parameters: {
@@ -40,9 +49,9 @@ const meta = {
                 http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker)),
                 http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
-                http.post(API_URLS.konto, () => HttpResponse.json({ 80: stønadskontoer, 100: stønadskontoer })),
+                http.post(API_URLS.konto, () => HttpResponse.json({ 80: stønadskvoter, 100: stønadskvoter })),
                 http.get(API_URLS.sendSøknad, () => HttpResponse.json(kvittering)),
-                http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+                http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 204 })),
                 http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
                 http.post(API_URLS.sendSøknad, () => new HttpResponse(null, { status: 200 })),
                 http.delete(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
@@ -63,3 +72,22 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const SøkerErMann: Story = {};
+
+export const SøkerErKvinne: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfoKvinne)),
+                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+                http.post(API_URLS.konto, () => HttpResponse.json({ 80: stønadskvoter, 100: stønadskvoter })),
+                http.get(API_URLS.sendSøknad, () => HttpResponse.json(kvittering)),
+                http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.sendSøknad, () => new HttpResponse(null, { status: 200 })),
+                http.delete(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+                http.post(API_URLS.sendVedlegg, () => new HttpResponse(null, { status: 200 })),
+            ],
+        },
+    },
+};

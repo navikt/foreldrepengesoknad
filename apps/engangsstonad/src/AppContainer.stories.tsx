@@ -54,7 +54,7 @@ export const SøkerErKvinne: Story = {
         msw: {
             handlers: HANDLERS.concat([
                 http.get(API_URLS.personInfo, () => HttpResponse.json(DEFAULT_PERSONINFO)),
-                http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+                http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 204 })),
             ]),
         },
     },
@@ -95,7 +95,7 @@ export const SøkerErMann: Story = {
                         fødselsdato: '1979-01-28',
                     }),
                 ),
-                http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+                http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 204 })),
             ]),
         },
     },

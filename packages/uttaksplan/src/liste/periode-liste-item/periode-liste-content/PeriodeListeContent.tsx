@@ -7,6 +7,7 @@ import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 import { NavnPåForeldre } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
+import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
 import {
     Uttaksplanperiode,
     erEøsUttakPeriode,
@@ -14,7 +15,9 @@ import {
     erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../../../types/UttaksplanPeriode';
+import { UttakPeriodeBuilder } from '../../../utils/UttakPeriodeBuilder';
 import {
+    erDetEksisterendePerioderEtterValgtePerioder,
     erOppholdsperiode,
     erOverføringsperiode,
     erPrematuruker,
@@ -25,6 +28,7 @@ import { genererPeriodeKey } from '../../utils/uttaksplanListeUtils';
 import {
     erUttaksplanperiodeEøs,
     erUttaksplanperiodeFamiliehendelseDato,
+    erUttaksplanperiodeSamtidigUttak,
     erUttaksplanperiodeTapteDager,
     erUttaksplanperiodeUtenUttak,
     harUttaksplanperiodePrematuruker,
@@ -53,10 +57,16 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
         foreldreInfo: { navnPåForeldre, søker },
         barn,
         erPeriodeneTilAnnenPartLåst,
+        uttakPerioder,
     } = useUttaksplanData();
 
+    const uttaksplanRedigering = useUttaksplanRedigering();
+
+    const erSamtidigUttak = erUttaksplanperiodeSamtidigUttak(uttaksplanperioder);
     const erPeriodeForAnnenPartSomErLåst =
-        erPeriodeneTilAnnenPartLåst && uttaksplanperioder.some((p) => erVanligUttakPeriode(p) && p.forelder !== søker);
+        erPeriodeneTilAnnenPartLåst &&
+        !erSamtidigUttak &&
+        uttaksplanperioder.some((p) => erVanligUttakPeriode(p) && p.forelder !== søker);
 
     const inneholderKunEnPeriode = uttaksplanperioder.length === 1;
     const erRedigerbar =
@@ -65,6 +75,22 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
         !harUttaksplanperiodePrematuruker(uttaksplanperioder);
 
     const erFamiliehendelse = erUttaksplanperiodeFamiliehendelseDato(uttaksplanperioder);
+
+    const handleSlettClick = () => {
+        const erEksisterendePerioderEtterValgteDager = erDetEksisterendePerioderEtterValgtePerioder(
+            uttakPerioder,
+            uttaksplanperioder,
+        );
+
+        if (!erEksisterendePerioderEtterValgteDager && uttaksplanperioder.length === 1) {
+            const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder, 'liste')
+                .fjernUttakPerioder(uttaksplanperioder, false)
+                .getUttakPerioder();
+            uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
+        } else {
+            setIsSlettPeriodePanelOpen(true);
+        }
+    };
 
     if (erFamiliehendelse) {
         return <FamiliehendelseContent barn={barn} />;
@@ -95,7 +121,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
                         }
                         erRedigerbar={erRedigerbar}
                         setIsEndrePeriodePanelOpen={setIsEndrePeriodePanelOpen}
-                        setIsSlettPeriodePanelOpen={setIsSlettPeriodePanelOpen}
+                        onSlettPeriodeClick={handleSlettClick}
                     />
                 </>
             )}
@@ -199,12 +225,12 @@ const EndreOgSlettKnapper = ({
     isReadOnly,
     erRedigerbar,
     setIsEndrePeriodePanelOpen,
-    setIsSlettPeriodePanelOpen,
+    onSlettPeriodeClick,
 }: {
     isReadOnly: boolean;
     erRedigerbar: boolean;
     setIsEndrePeriodePanelOpen: (open: boolean) => void;
-    setIsSlettPeriodePanelOpen: (open: boolean) => void;
+    onSlettPeriodeClick: () => void;
 }) => {
     if (isReadOnly) {
         return null;
@@ -241,15 +267,7 @@ const EndreOgSlettKnapper = ({
             >
                 <FormattedMessage id="uttaksplan.endre" />
             </Button>
-            <Button
-                type="button"
-                size="small"
-                variant="secondary"
-                icon={<TrashIcon />}
-                onClick={() => {
-                    setIsSlettPeriodePanelOpen(true);
-                }}
-            >
+            <Button type="button" size="small" variant="secondary" icon={<TrashIcon />} onClick={onSlettPeriodeClick}>
                 <FormattedMessage id="uttaksplan.slett" />
             </Button>
         </HStack>

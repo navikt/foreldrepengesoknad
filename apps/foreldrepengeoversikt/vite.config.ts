@@ -7,7 +7,7 @@ import { createSharedConfigWithCrossorgin } from '@navikt/fp-config-vite';
 
 const setupFileDirName = path.resolve(__dirname, './vitest/setupTests.ts');
 
-// eslint-disable-next-line import/no-default-export
+// eslint-disable-next-line import-x/no-default-export
 export default mergeConfig(createSharedConfigWithCrossorgin(setupFileDirName), {
     base: '/foreldrepenger/oversikt',
     server: {

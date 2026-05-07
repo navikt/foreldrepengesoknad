@@ -6,7 +6,7 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './AppContainer.stories';
 
-const { FpEllerEsVeiviserMockaStønadskontoerOgSatser } = composeStories(stories);
+const { FpEllerEsVeiviserMockaStønadskvoterOgSatser } = composeStories(stories);
 
 describe('<AppContainer>', () => {
     beforeEach(() => {
@@ -19,8 +19,8 @@ describe('<AppContainer>', () => {
     it(
         'FP eller ES veiviser: skal gå gjennom app og så tilbake',
         mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FpEllerEsVeiviserMockaStønadskontoerOgSatser.parameters.msw);
-            const utils = render(<FpEllerEsVeiviserMockaStønadskontoerOgSatser />);
+            setHandlers(FpEllerEsVeiviserMockaStønadskvoterOgSatser.parameters.msw);
+            const utils = render(<FpEllerEsVeiviserMockaStønadskvoterOgSatser />);
 
             expect(await screen.findAllByText('Foreldrepenger eller engangsstønad?')).toHaveLength(2);
             await userEvent.click(screen.getByText('Start'));

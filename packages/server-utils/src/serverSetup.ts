@@ -1,14 +1,22 @@
+import { buildCspHeader } from '@navikt/nav-dekoratoren-moduler/ssr/index.js';
 import express, { Express } from 'express';
 
-export const setupServerDefaults = (server: Express) => {
-    server.disable('x-powered-by');
+import config from './config.js';
+
+const appDirectives = {
+    'default-src': ["'self'"], // Restricts all resource loading to same-origin by default
+    'connect-src': ["'self'", 'https://sentry.gc.nav.no'], // Sentry error reporting sends events to a non-nav.no domain
+    'object-src': ["'none'"], // Blocks legacy plugin content (Flash/Java) regardless of default-src
+};
+
+export const setupServerDefaults = async (server: Express) => {
+    const cspHeader = await buildCspHeader(appDirectives, { env: config.app.env });
+
     server.use((_req, res, next) => {
+        res.setHeader('Content-Security-Policy', cspHeader);
+        res.setHeader('X-Content-Type-Options', 'nosniff');
+        res.setHeader('Referrer-Policy', 'no-referrer');
         res.removeHeader('X-Powered-By');
-        res.set('X-Frame-Options', 'SAMEORIGIN');
-        res.set('X-XSS-Protection', '1; mode=block');
-        res.set('X-Content-Type-Options', 'nosniff');
-        res.set('Referrer-Policy', 'no-referrer');
-        res.set('Feature-Policy', "geolocation 'none'; microphone 'none'; camera 'none'");
         next();
     });
 

@@ -14,33 +14,37 @@ import { serveKomprimerteFilerHvisMulig } from './compression';
 import { configureReverseProxyApi } from './reverseProxy.js';
 import { validerInnkommendeIdportenToken } from './tokenValidation.js';
 
-const server = express();
+const createServer = async () => {
+    const server = express();
 
-setupServerDefaults(server);
-setupActuators(server);
+    await setupServerDefaults(server);
+    setupActuators(server);
 
-const router = express.Router();
-const publicRouter = express.Router();
+    const router = express.Router();
+    const publicRouter = express.Router();
 
-// Logging i json format
-server.use(logger.morganMiddleware);
+    // Logging i json format
+    server.use(logger.morganMiddleware);
 
-// Skjermdeling krever tilgang til CSS uten å være innlogget!
-setupSkjermleserCssTilgang(publicRouter);
+    // Skjermdeling krever tilgang til CSS uten å være innlogget!
+    setupSkjermleserCssTilgang(publicRouter);
 
-// Server ferdig komprimerte gzip/br filer hvis mulig.
-publicRouter.use(serveKomprimerteFilerHvisMulig);
+    // Server ferdig komprimerte gzip/br filer hvis mulig.
+    publicRouter.use(serveKomprimerteFilerHvisMulig);
 
-publicRouter.use(express.static('./public', { index: false }));
-server.use(serverConfig.app.publicPath, publicRouter);
+    publicRouter.use(express.static('./public', { index: false }));
+    server.use(serverConfig.app.publicPath, publicRouter);
 
-server.use(validerInnkommendeIdportenToken);
-configureReverseProxyApi(router);
-// Catch all route, må være sist
-setupAndServeHtml(router);
+    server.use(validerInnkommendeIdportenToken);
+    configureReverseProxyApi(router);
+    // Catch all route, må være sist
+    await setupAndServeHtml(router);
 
-server.use(serverConfig.app.publicPath, router);
+    server.use(serverConfig.app.publicPath, router);
 
-server.use(errorHandling);
+    server.use(errorHandling);
 
-export default server;
+    return server;
+};
+
+export default createServer();

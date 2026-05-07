@@ -1,8 +1,11 @@
 import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
 
 import { Tidsperiode } from '@navikt/fp-types';
 
 import { dateStringIsSameOrAfter, dateStringIsSameOrBefore } from './dateUtils';
+
+dayjs.extend(isBetween);
 
 export class Tidsperioden {
     private readonly tidsperiode: Tidsperiode;

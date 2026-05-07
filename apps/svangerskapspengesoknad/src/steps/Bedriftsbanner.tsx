@@ -13,7 +13,7 @@ interface Props {
 
 const getNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?: string) => {
     if (type === 'frilanser') {
-        return intl.formatMessage({ id: 'bedriftsbanner.tittel.frilansarbeid' });
+        return intl.formatMessage({ id: 'Bedriftsbanner.tittel.frilansarbeid' });
     }
     if (type === 'selvstendig' && (!navn || navn.trim().length === 0)) {
         return intl.formatMessage({ id: 'egenNæring' });
@@ -27,8 +27,8 @@ export const Bedriftsbanner = ({ arbeidsforholdType, arbeidsforholdNavn }: Props
 
     const detailTekst =
         arbeidsforholdType === 'frilanser'
-            ? intl.formatMessage({ id: 'bedriftsbanner.detail.frilans' })
-            : intl.formatMessage({ id: 'bedriftsbanner.detail' });
+            ? intl.formatMessage({ id: 'Bedriftsbanner.detail.frilans' })
+            : intl.formatMessage({ id: 'Bedriftsbanner.detail' });
     return (
         <div className="bg-ax-accent-200 border-ax-accent-400 rounded-[2px] border-2 p-4">
             <HStack gap="space-20" align="center">

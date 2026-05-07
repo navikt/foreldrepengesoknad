@@ -41,16 +41,16 @@ const getFellesperioderDagerFordeling = (fordeling: Fordeling, fellesperiodeDage
 
 const lagDeltUttakForFarMedmor = (
     helgejustertFamDato: string,
-    stønadskontoer: KontoDto[],
+    stønadskvoter: KontoDto[],
     startdato: string,
 ): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
     const harFødselspermisjon = helgejustertFamDato === Uttaksdagen.denneEllerNeste(startdato).getDato();
     const forslag: UttakPeriode_fpoversikt[] = [];
 
-    const foreldrepengerFørFødsel = stønadskontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
-    const mødrekvote = stønadskontoer.find((k) => k.konto === 'MØDREKVOTE');
-    const fedrekvote = stønadskontoer.find((k) => k.konto === 'FEDREKVOTE');
-    const fellesperiode = stønadskontoer.find((k) => k.konto === 'FELLESPERIODE');
+    const foreldrepengerFørFødsel = stønadskvoter.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
+    const mødrekvote = stønadskvoter.find((k) => k.konto === 'MØDREKVOTE');
+    const fedrekvote = stønadskvoter.find((k) => k.konto === 'FEDREKVOTE');
+    const fellesperiode = stønadskvoter.find((k) => k.konto === 'FELLESPERIODE');
     const gjenståendreFedrekvote = fedrekvote && harFødselspermisjon ? fedrekvote.dager - 10 : undefined;
 
     let currentFomDate = Uttaksdagen.denneEllerNeste(startdato).getDato();
@@ -146,7 +146,7 @@ const lagDeltUttakForFarMedmor = (
 };
 
 export const useUttaksplanForslag = (
-    valgtStønadskonto?: KontoBeregningDto,
+    valgtStønadskvote?: KontoBeregningDto,
     annenPartsPerioder?: UttakPeriode_fpoversikt[],
 ): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
@@ -155,7 +155,7 @@ export const useUttaksplanForslag = (
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const familiehendelsedato = getFamiliehendelsedato(barn);
 
-    if ((annenPartsPerioder !== undefined && annenPartsPerioder.length > 0) || !valgtStønadskonto || !fordeling) {
+    if ((annenPartsPerioder !== undefined && annenPartsPerioder.length > 0) || !valgtStønadskvote || !fordeling) {
         return [];
     }
 
@@ -165,7 +165,6 @@ export const useUttaksplanForslag = (
     //     ? Uttaksdagen.denneEllerForrige(annenPartsSistePeriode.tom).getDato()
     //     : undefined;
 
-    // TODO (TOR) Burde denne sjekka mot erMorUfør og erAleneomsorg òg?
     const erDeltUttak =
         isAnnenForelderOppgitt(annenForelder) &&
         (annenForelder.harRettPåForeldrepengerINorge === true || annenForelder.harRettPåForeldrepengerIEØS === true);
@@ -188,7 +187,7 @@ export const useUttaksplanForslag = (
         if (erSøkerFarEllerMedmor) {
             return lagDeltUttakForFarMedmor(
                 Uttaksdagen.denneEllerNeste(familiehendelsedato).getDato(),
-                valgtStønadskonto.kontoer,
+                valgtStønadskvote.kontoer,
                 oppstartsdato,
             );
         }
@@ -198,7 +197,7 @@ export const useUttaksplanForslag = (
             Uttaksdagen.denne(oppstartsdato).getUttaksdagerFremTilDato(helgejustertFamDato);
         const dagerMedFellesperiodeFørFødsel =
             dagerMellomFamDatoOgStartdato > 15 ? dagerMellomFamDatoOgStartdato - 15 : 0;
-        const fellesperiodeKonto = valgtStønadskonto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
+        const fellesperiodeKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FELLESPERIODE');
         const fellesperiodeDagerTilgjengelig = fellesperiodeKonto
             ? fellesperiodeKonto.dager - dagerMedFellesperiodeFørFødsel
             : 0;
@@ -206,7 +205,7 @@ export const useUttaksplanForslag = (
 
         return deltUttak({
             famDato: familiehendelsedato,
-            tilgjengeligeStønadskontoer: valgtStønadskonto.kontoer,
+            tilgjengeligeStønadskvoter: valgtStønadskvote.kontoer,
             fellesperiodeDagerMor,
             startdato: oppstartsdato,
         });
@@ -224,7 +223,7 @@ export const useUttaksplanForslag = (
         situasjon: søkersituasjon.situasjon,
         famDato: familiehendelsedato,
         erFarEllerMedmor: erSøkerFarEllerMedmor,
-        tilgjengeligeStønadskontoer: valgtStønadskonto.kontoer,
+        tilgjengeligeStønadskvoter: valgtStønadskvote.kontoer,
         erMorUfør,
         bareFarMedmorHarRett,
         erAleneOmOmsorg,
@@ -281,7 +280,7 @@ const getOppstartsdatoFromFordelingValg = (
     const ankomstDatoNorge = isAdoptertAnnetBarn(barn) && barn.adoptertIUtlandet ? barn.ankomstdato : undefined;
 
     if ((!oppstartValg || oppstartValg === OppstartValg.ANNEN_DATO) && oppstartDato) {
-        return oppstartDato;
+        return Uttaksdagen.denneEllerNeste(oppstartDato).getDato();
     }
     switch (oppstartValg) {
         case OppstartValg.TRE_UKER_FØR_TERMIN:
@@ -289,7 +288,7 @@ const getOppstartsdatoFromFordelingValg = (
         case OppstartValg.TRE_UKER_FØR_FØDSEL:
             return getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
         case OppstartValg.FAMILIEHENDELSESDATO:
-            return familiehendelsesdato;
+            return Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato();
         case OppstartValg.ANKOMSTDATO_NORGE:
             return getFørsteUttaksdagAnkomstdatoNorge(ankomstDatoNorge);
         case OppstartValg.DAGEN_ETTER_ANNEN_FORELDER:
