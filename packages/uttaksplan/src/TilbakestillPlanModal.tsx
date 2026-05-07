@@ -26,8 +26,12 @@ export const TilbakestillPlanModal = () => {
                     </BodyLong>
                 </Dialog.Body>
                 <Dialog.Footer>
+                    <Dialog.CloseTrigger>
+                        <Button type="button" variant="secondary">
+                            <FormattedMessage id="TilbakestillPlanModal.Knapp.Avbryt" />
+                        </Button>
+                    </Dialog.CloseTrigger>
                     <Button
-                        data-color="danger"
                         type="button"
                         variant="primary"
                         onClick={() => {
@@ -37,11 +41,6 @@ export const TilbakestillPlanModal = () => {
                     >
                         <FormattedMessage id="TilbakestillPlanModal.Knapp.Bekreft" />
                     </Button>
-                    <Dialog.CloseTrigger>
-                        <Button type="button" variant="secondary">
-                            <FormattedMessage id="TilbakestillPlanModal.Knapp.Avbryt" />
-                        </Button>
-                    </Dialog.CloseTrigger>
                 </Dialog.Footer>
             </Dialog.Popup>
         </Dialog>

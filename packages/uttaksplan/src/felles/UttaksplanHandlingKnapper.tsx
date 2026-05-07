@@ -4,7 +4,6 @@ import { FormattedMessage } from 'react-intl';
 import { Button, HStack } from '@navikt/ds-react';
 
 interface Props {
-    visKnapper?: boolean;
     tilbakestillPlan?: () => void;
     angreEndring?: () => void;
     fjernAltIPlanen?: () => void;
@@ -15,7 +14,6 @@ interface Props {
 }
 
 export const UttaksplanHandlingKnapper = ({
-    visKnapper = true,
     tilbakestillPlan,
     angreEndring,
     fjernAltIPlanen,
@@ -31,7 +29,16 @@ export const UttaksplanHandlingKnapper = ({
             <Button
                 size="small"
                 variant="secondary"
-                icon={visKnapper ? <ArrowCirclepathIcon aria-hidden height={24} width={24} /> : null}
+                icon={<ArrowUndoIcon aria-hidden height={24} width={24} />}
+                onClick={angreEndring}
+                disabled={!angreEndring}
+            >
+                <FormattedMessage id="UttaksplanHandlingKnapper.Angre" />
+            </Button>
+            <Button
+                size="small"
+                variant="secondary"
+                icon={<ArrowCirclepathIcon aria-hidden height={24} width={24} />}
                 onClick={tilbakestillPlan}
                 disabled={!tilbakestillPlan}
                 aria-haspopup="dialog"
@@ -39,15 +46,6 @@ export const UttaksplanHandlingKnapper = ({
                 aria-controls={visTilbakestillModal ? 'TilbakestillPlanModal' : undefined}
             >
                 <FormattedMessage id="UttaksplanHandlingKnapper.Tilbakestill" />
-            </Button>
-            <Button
-                size="small"
-                variant="secondary"
-                icon={visKnapper ? <ArrowUndoIcon aria-hidden height={24} width={24} /> : null}
-                onClick={angreEndring}
-                disabled={!angreEndring}
-            >
-                <FormattedMessage id="UttaksplanHandlingKnapper.Angre" />
             </Button>
             {erListevisning && (
                 <Button
@@ -73,7 +71,7 @@ export const UttaksplanHandlingKnapper = ({
                 <Button
                     size="small"
                     variant="secondary"
-                    icon={visKnapper ? <TrashIcon aria-hidden height={24} width={24} /> : null}
+                    icon={<TrashIcon aria-hidden height={24} width={24} />}
                     onClick={fjernAltIPlanen}
                     aria-haspopup="dialog"
                     aria-expanded={visFjernAltModal}

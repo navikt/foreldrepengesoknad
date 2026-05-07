@@ -76,7 +76,6 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
                         </Link>
                     </VStack>
                     <UttaksplanHandlingKnapper
-                        visKnapper={false}
                         tilbakestillPlan={
                             uttaksplanRedigering?.harEndretPlan
                                 ? () => uttaksplanRedigering.setVisTilbakestillModal(true)

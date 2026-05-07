@@ -25,8 +25,12 @@ export const FjernAltIUttaksplanModal = () => {
                     </BodyLong>
                 </Dialog.Body>
                 <Dialog.Footer>
+                    <Dialog.CloseTrigger>
+                        <Button type="button" variant="secondary">
+                            <FormattedMessage id="FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Avbryt" />
+                        </Button>
+                    </Dialog.CloseTrigger>
                     <Button
-                        data-color="danger"
                         type="button"
                         variant="primary"
                         onClick={() => {
@@ -36,11 +40,6 @@ export const FjernAltIUttaksplanModal = () => {
                     >
                         <FormattedMessage id="FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Bekreft" />
                     </Button>
-                    <Dialog.CloseTrigger>
-                        <Button type="button" variant="secondary">
-                            <FormattedMessage id="FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Avbryt" />
-                        </Button>
-                    </Dialog.CloseTrigger>
                 </Dialog.Footer>
             </Dialog.Popup>
         </Dialog>

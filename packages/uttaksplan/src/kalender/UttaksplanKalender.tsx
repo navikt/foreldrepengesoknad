@@ -1,3 +1,4 @@
+import { TrashIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -115,6 +116,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                                 type="button"
                                 size="small"
                                 variant="secondary"
+                                icon={<TrashIcon aria-hidden height={24} width={24} />}
                                 onClick={() => uttaksplanRedigering.setVisFjernAltModal(true)}
                                 aria-haspopup="dialog"
                                 aria-expanded={uttaksplanRedigering.visFjernAltModal}

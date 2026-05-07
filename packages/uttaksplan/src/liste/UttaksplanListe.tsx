@@ -109,7 +109,6 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
             {uttaksplanRedigering && (
                 <UttaksplanHandlingKnapper
                     toggleAllAccordions={toggleAllAccordions}
-                    visKnapper
                     tilbakestillPlan={
                         uttaksplanRedigering.harEndretPlan
                             ? () => uttaksplanRedigering.setVisTilbakestillModal(true)
