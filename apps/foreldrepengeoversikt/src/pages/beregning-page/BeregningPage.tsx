@@ -92,15 +92,30 @@ const BeregningDetaljer = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeS
                     Beregning
                 </Heading>
                 {innvilgelsesdokument && (
-                    <Link
-                        href={API_URLS.hentDokument(
-                            innvilgelsesdokument.journalpostId,
-                            innvilgelsesdokument.dokumentId ?? 'ukjent',
-                        )}
-                        target="_blank"
-                    >
-                        <FormattedMessage id="beregning.innvilgelsesLenke" />
-                    </Link>
+                    <BodyShort>
+                        <FormattedMessage
+                            id="beregning.ikkeStøttet"
+                            values={{
+                                ytelse: intl.formatMessage({
+                                    id:
+                                        sak.ytelse === 'SVANGERSKAPSPENGER'
+                                            ? 'beregning.ikkeStøttet.svp'
+                                            : 'beregning.ikkeStøttet.fp',
+                                }),
+                                a: (chunks) => (
+                                    <Link
+                                        href={API_URLS.hentDokument(
+                                            innvilgelsesdokument.journalpostId,
+                                            innvilgelsesdokument.dokumentId ?? 'ukjent',
+                                        )}
+                                        target="_blank"
+                                    >
+                                        {chunks}
+                                    </Link>
+                                ),
+                            }}
+                        />
+                    </BodyShort>
                 )}
             </VStack>
         );

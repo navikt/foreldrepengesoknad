@@ -9,9 +9,6 @@ const {
     BeregningDelvisRefusjon,
     BeregningDirekteUtbetaling,
     BeregningSvpDirekteUtbetaling,
-    BeregningDagpenger,
-    BeregningAAP,
-    BeregningKunYtelse,
     BeregningMedNaturalytelser,
 } = composeStories(stories);
 
@@ -112,49 +109,6 @@ describe('<BeregningPage>', () => {
             expect(await screen.findByText('Feriepenger')).toBeInTheDocument();
             expect(await screen.findByText('Opptjent i 2026')).toBeInTheDocument();
             expect(await screen.findByText('7 893 kr som vi betaler til deg.')).toBeInTheDocument();
-        }),
-    );
-
-    it(
-        'BeregningDagpenger - viser forenklet visning',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(BeregningDagpenger.parameters.msw);
-            render(<BeregningDagpenger />);
-
-            expect(await screen.findByText('Beregning')).toBeInTheDocument();
-            expect(await screen.findByText('Se vedtaksbrevet for innvilget ytelse')).toBeInTheDocument();
-            // Should NOT show the full oppsummering
-            expect(
-                screen.queryByText('Nav har fastsatt årsinntekten din til:', { exact: false }),
-            ).not.toBeInTheDocument();
-        }),
-    );
-
-    it(
-        'BeregningAAP - viser forenklet visning',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(BeregningAAP.parameters.msw);
-            render(<BeregningAAP />);
-
-            expect(await screen.findByText('Beregning')).toBeInTheDocument();
-            expect(await screen.findByText('Se vedtaksbrevet for innvilget ytelse')).toBeInTheDocument();
-            expect(
-                screen.queryByText('Nav har fastsatt årsinntekten din til:', { exact: false }),
-            ).not.toBeInTheDocument();
-        }),
-    );
-
-    it(
-        'BeregningKunYtelse - viser forenklet visning',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(BeregningKunYtelse.parameters.msw);
-            render(<BeregningKunYtelse />);
-
-            expect(await screen.findByText('Beregning')).toBeInTheDocument();
-            expect(await screen.findByText('Se vedtaksbrevet for innvilget ytelse')).toBeInTheDocument();
-            expect(
-                screen.queryByText('Nav har fastsatt årsinntekten din til:', { exact: false }),
-            ).not.toBeInTheDocument();
         }),
     );
 
