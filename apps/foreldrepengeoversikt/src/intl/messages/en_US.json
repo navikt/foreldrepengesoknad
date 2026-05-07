@@ -303,7 +303,7 @@
     "beregning.utbetalingsTekst.arbeidsgiver": "We will pay to employer",
     "beregning.utbetalingsTekst.deg": "We will pay to you",
     "beregning.utbetalingsTekst.degOgArbeidsgiver": "We will pay both to employer and to you",
-    "beregning.naturalytelser": "You have fringe benefits from your employer. See details in the <a>income statement</a>",
+    "beregning.naturalytelser": "You have fringe benefits from your employer that affect your payments from Nav. See details in the <a>income statement</a>",
     "beregning.forklaringer.hvaErDagsatsen": "What is the daily rate?",
     "beregning.forklaringer.hvaErDagsatsen.forklaring.fp": "The daily rate is the parental benefit base divided by 260, which is all days in the year minus Saturdays and Sundays. This gives you the daily rate, which is the amount you receive each day. There are 5 payment days per week (Monday to Friday), including public holidays. If you have graded parental benefit, you receive the daily rate at the percentage you should have parental benefit.",
     "beregning.forklaringer.hvaErDagsatsen.forklaring.svp": "The daily rate is the annual income divided by 260, which is all days in the year minus Saturdays and Sundays. This gives you the daily rate, which is the amount you receive each day. There are 5 payment days per week (Monday to Friday), including public holidays. If your employer accommodates you so that you work part-time, you receive the daily rate at the percentage you have pregnancy benefit.",
