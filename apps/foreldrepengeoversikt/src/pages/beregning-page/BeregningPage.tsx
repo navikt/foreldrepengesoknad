@@ -53,17 +53,11 @@ export const BeregningPage = () => {
     if (!gjeldendeSak || gjeldendeSak.ytelse === 'ENGANGSSTØNAD') {
         return undefined;
     }
-    const beregning = gjeldendeSak.gjeldendeVedtak?.beregningsgrunnlag;
-
-    if (beregning === undefined) {
-        return undefined;
-    }
 
     return (
         <PageRouteLayout header={<DinSakHeader sak={gjeldendeSak} />}>
             <VStack gap="space-40">
                 <BeregningDetaljer sak={gjeldendeSak} />
-
                 <UtbetalingsVisning sak={gjeldendeSak} />
                 <Box background="default" padding="space-24" borderRadius="8">
                     <Feriepenger sak={gjeldendeSak} />
@@ -74,29 +68,10 @@ export const BeregningPage = () => {
     );
 };
 
-const IKKE_STØTTEDE_AKTIVITET_STATUSER = new Set<AktivitetStatus>([
-    'VENTELØNN_VARTPENGER',
-    'TILSTØTENDE_YTELSE',
-    'ARBEIDSAVKLARINGSPENGER',
-    'DAGPENGER',
-    'MILITÆR_ELLER_SIVIL',
-    'BRUKERS_ANDEL',
-    'KUN_YTELSE',
-]);
-
 const BeregningDetaljer = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) => {
     const intl = useIntl();
     const params = useParams<{ saksnummer: string }>();
     const beregning = sak.gjeldendeVedtak?.beregningsgrunnlag;
-
-    const harIkkeStøttetStatus = beregning?.beregningAktivitetStatuser.some(({ aktivitetStatus }) =>
-        IKKE_STØTTEDE_AKTIVITET_STATUSER.has(aktivitetStatus),
-    );
-    const harArbeidsandelUtenArbeidsgiver = beregning?.beregningsandeler.some(
-        (andel) => andel.aktivitetStatus === 'ARBEIDSTAKER' && !andel.arbeidsforhold,
-    );
-
-    const beregningEgnerSegIkkeForÅViseOppsummering = harIkkeStøttetStatus || harArbeidsandelUtenArbeidsgiver;
 
     const innvilgelsesdokument = useQuery({
         ...hentDokumenterOptions(params.saksnummer!),
@@ -110,7 +85,7 @@ const BeregningDetaljer = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeS
             }),
     }).data;
 
-    if (!beregning || beregningEgnerSegIkkeForÅViseOppsummering) {
+    if (!beregning) {
         return (
             <VStack>
                 <Heading size="medium" level="2">
