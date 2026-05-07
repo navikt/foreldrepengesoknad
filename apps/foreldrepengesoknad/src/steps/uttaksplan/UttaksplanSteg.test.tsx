@@ -109,6 +109,80 @@ describe('<UttaksplanSteg>', () => {
         }),
     );
 
+    it(
+        'skal vise TilbakestillPlanModal og lukke uten endring ved avbryt',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
+            setHandlers(FødselMorOgFarBeggeHarRett.parameters.msw);
+
+            render(
+                <FødselMorOgFarBeggeHarRett
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
+
+            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+
+            // Gå til redigeringsmodus og ekspander mobilpanelet
+            await userEvent.click(screen.getByText('Start redigering'));
+            await userEvent.click(screen.getAllByText('Du kan velge datoer i kalenderen')[0]!);
+
+            // Fjern alt for å aktivere 'Tilbakestill plan'-knappen
+            await userEvent.click(screen.getByText('Fjern alt i planen'));
+            expect(await screen.findByText('Ønsker du å fjerne alt som er lagt til?')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Fjern alt'));
+
+            // Klikk på 'Tilbakestill plan'
+            await userEvent.click(screen.getByRole('button', { name: 'Tilbakestill plan' }));
+            expect(await screen.findByText('Ønsker du å tilbakestille planen?')).toBeInTheDocument();
+
+            // Avbryt lukker modalen uten å tilbakestille
+            await userEvent.click(screen.getByText('Avbryt'));
+
+            // Tilbakestill-knappen er fortsatt aktiv (planen er ikke tilbakestilt)
+            expect(screen.getByRole('button', { name: 'Tilbakestill plan' })).not.toBeDisabled();
+        }),
+    );
+
+    it(
+        'skal tilbakestille planen ved bekreftelse i TilbakestillPlanModal',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
+            setHandlers(FødselMorOgFarBeggeHarRett.parameters.msw);
+
+            render(
+                <FødselMorOgFarBeggeHarRett
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
+
+            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+
+            // Gå til redigeringsmodus og ekspander mobilpanelet
+            await userEvent.click(screen.getByText('Start redigering'));
+            await userEvent.click(screen.getAllByText('Du kan velge datoer i kalenderen')[0]!);
+
+            // Fjern alt for å aktivere 'Tilbakestill plan'-knappen
+            await userEvent.click(screen.getByText('Fjern alt i planen'));
+            expect(await screen.findByText('Ønsker du å fjerne alt som er lagt til?')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Fjern alt'));
+
+            // Klikk på 'Tilbakestill plan'
+            await userEvent.click(screen.getByRole('button', { name: 'Tilbakestill plan' }));
+            expect(await screen.findByText('Ønsker du å tilbakestille planen?')).toBeInTheDocument();
+
+            // Bekreft tilbakestilling
+            await userEvent.click(screen.getByRole('button', { name: 'Tilbakestill' }));
+
+            // Tilbakestill-knappen er nå deaktivert (planen er tilbakestilt til standardforslaget)
+            expect(screen.getByRole('button', { name: 'Tilbakestill plan' })).toBeDisabled();
+        }),
+    );
+
     // TODO (TOR) Denne skal slåast på igjen etter ein sluttar å filtrera vekk perioden til annen part fra forslaget til plan
     it.todo(
         'skal vise feilmelding når en prøver å gå videre med stjernemerkede perioder',
