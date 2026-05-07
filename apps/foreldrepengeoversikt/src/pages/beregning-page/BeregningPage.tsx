@@ -74,7 +74,6 @@ export const BeregningPage = () => {
     );
 };
 
-// Matches backend: BeregningOversiktDtoTjeneste.gjelderSakInnsynIkkeStøtter
 const IKKE_STØTTEDE_AKTIVITET_STATUSER = new Set<AktivitetStatus>([
     'VENTELØNN_VARTPENGER',
     'TILSTØTENDE_YTELSE',
