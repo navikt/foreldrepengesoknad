@@ -98,7 +98,7 @@ Spørsmål knyttet til koden eller prosjektet kan rettes mot nav.team.foreldrepe
 
 ## Bidrag
 
-Vi tar gjerne imot Pull Requests og gode forslag til forbedringer! 🧦
+Vi tar gjerne imot Pull Requests og gode forslag til forbedringer! 🧦🚀
 
 Gode bidrag som blir merget inn kan bli belønnet med eksklusive Nav-sokker som takk for innsatsen. Vi setter stor pris på alle som bidrar til å gjøre våre løsninger bedre for brukerne.
 
