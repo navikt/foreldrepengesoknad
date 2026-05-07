@@ -1,4 +1,4 @@
-import { JSX, ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
+import { JSX, ReactNode, createContext, use, useCallback, useReducer } from 'react';
 import { Dokumentasjon } from 'types/Dokumentasjon';
 
 import { BarnDto, Søkersituasjon, Utenlandsopphold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
@@ -67,21 +67,21 @@ export const EsDataContext = ({ children, initialState, onDispatch }: Props): JS
     );
 
     return (
-        <EsStateContext.Provider value={state}>
-            <EsDispatchContext.Provider value={dispatchWrapper}>{children}</EsDispatchContext.Provider>
-        </EsStateContext.Provider>
+        <EsStateContext value={state}>
+            <EsDispatchContext value={dispatchWrapper}>{children}</EsDispatchContext>
+        </EsStateContext>
     );
 };
 
 /** Hook returns data for one specific data type  */
 export const useContextGetData = <TYPE extends ContextDataType>(key: TYPE): ContextDataMap[TYPE] => {
-    const state = useContext(EsStateContext);
+    const state = use(EsStateContext);
     return state[key];
 };
 
 /** Hook returns function capable of getting all types of data from context state  */
 export const useContextGetAnyData = () => {
-    const state = useContext(EsStateContext);
+    const state = use(EsStateContext);
 
     return useCallback(
         <TYPE extends ContextDataType>(key: TYPE) => {
@@ -93,7 +93,7 @@ export const useContextGetAnyData = () => {
 
 /** Hook returns save function for one specific data type */
 export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((data: ContextDataMap[TYPE]) => void) => {
-    const dispatch = useContext(EsDispatchContext);
+    const dispatch = use(EsDispatchContext);
     return useCallback(
         (data: ContextDataMap[TYPE]) => {
             if (dispatch) {
@@ -106,7 +106,7 @@ export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((d
 
 /** Hook returns state reset function  */
 export const useContextReset = () => {
-    const dispatch = useContext(EsDispatchContext);
+    const dispatch = use(EsDispatchContext);
     return useCallback(() => {
         if (dispatch) {
             dispatch({ type: 'reset' });
@@ -115,5 +115,5 @@ export const useContextReset = () => {
 };
 
 export const useContextComplete = (): ContextDataMap => {
-    return useContext(EsStateContext);
+    return use(EsStateContext);
 };

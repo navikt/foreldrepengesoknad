@@ -1,4 +1,4 @@
-import { ReactElement, forwardRef } from 'react';
+import { ReactElement, Ref } from 'react';
 
 import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 
@@ -11,9 +11,10 @@ interface Props {
     description?: string;
     children: React.ReactElement | React.ReactElement[];
     icon?: ReactElement;
+    ref?: Ref<HTMLDivElement>;
 }
 
-export const VeiviserPage = forwardRef<HTMLDivElement, Props>(({ label, description, children, icon }, ref) => (
+export const VeiviserPage = ({ label, description, children, icon, ref }: Props) => (
     <>
         <Page
             header={
@@ -36,4 +37,4 @@ export const VeiviserPage = forwardRef<HTMLDivElement, Props>(({ label, descript
         </Page>
         <div ref={ref} />
     </>
-));
+);

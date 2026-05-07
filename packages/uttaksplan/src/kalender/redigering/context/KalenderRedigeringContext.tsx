@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo } from 'react';
+import { createContext, use, useCallback, useMemo } from 'react';
 
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
@@ -76,7 +76,7 @@ export const KalenderRedigeringProvider = ({
 };
 
 export const useKalenderRedigeringContext = () => {
-    const context = useContext(KalenderRedigeringContext);
+    const context = use(KalenderRedigeringContext);
     if (!context) {
         throw new Error('KalenderRedigeringContext.Provider er ikke satt opp');
     }

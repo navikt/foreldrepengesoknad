@@ -77,6 +77,7 @@ export const Tidslinje = ({ sak, søkersBarn, tidslinjeHendelser, manglendeVedle
                     const status = erUtført ? 'completed' : 'uncompleted';
                     return (
                         <Hendelse
+                            // eslint-disable-next-line @eslint-react/no-array-index-key
                             key={hendelse.opprettet + index}
                             status={status}
                             søkersBarn={søkersBarn}

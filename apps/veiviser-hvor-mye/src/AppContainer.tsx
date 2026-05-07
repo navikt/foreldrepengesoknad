@@ -52,7 +52,9 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
 
 export const AppContainer = () => {
-    const [locale, setLocale] = useState<LocaleAll>(getDecoratorLanguageCookie('decorator-language') as LocaleAll);
+    const [locale, setLocale] = useState<LocaleAll>(
+        () => getDecoratorLanguageCookie('decorator-language') as LocaleAll,
+    );
 
     void setAvailableLanguages([
         { locale: 'nb', handleInApp: true },

@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { createContext, use, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { captureMessage, withScope } from '@navikt/fp-observability';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
@@ -118,9 +118,9 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
         ],
     );
 
-    return <UttaksplanRedigeringContext.Provider value={value}>{children}</UttaksplanRedigeringContext.Provider>;
+    return <UttaksplanRedigeringContext value={value}>{children}</UttaksplanRedigeringContext>;
 };
 
 export const useUttaksplanRedigering = () => {
-    return useContext(UttaksplanRedigeringContext);
+    return use(UttaksplanRedigeringContext);
 };

@@ -1,5 +1,5 @@
 import { SøknadRoutes } from 'appData/routes';
-import { JSX, ReactNode, createContext, useContext, useReducer } from 'react';
+import { JSX, ReactNode, createContext, use, useReducer } from 'react';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenForelder } from 'types/AnnenForelder';
 import { Fordeling } from 'types/Fordeling';
@@ -99,21 +99,21 @@ export const FpDataContext = ({ children, initialState, onDispatch }: Props): JS
     };
 
     return (
-        <FpStateContext.Provider value={state}>
-            <FpDispatchContext.Provider value={dispatchWrapper}>{children}</FpDispatchContext.Provider>
-        </FpStateContext.Provider>
+        <FpStateContext value={state}>
+            <FpDispatchContext value={dispatchWrapper}>{children}</FpDispatchContext>
+        </FpStateContext>
     );
 };
 
 /** Hook returns data for one specific data type  */
 export const useContextGetData = <TYPE extends ContextDataType>(key: TYPE): ContextDataMap[TYPE] => {
-    const state = useContext(FpStateContext);
+    const state = use(FpStateContext);
     return state[key];
 };
 
 /** Hook returns function capable of getting all types of data from context state  */
 export const useContextGetAnyData = () => {
-    const state = useContext(FpStateContext);
+    const state = use(FpStateContext);
 
     return <TYPE extends ContextDataType>(key: TYPE) => {
         return state[key];
@@ -122,7 +122,7 @@ export const useContextGetAnyData = () => {
 
 /** Hook returns save function for one specific data type */
 export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((data: ContextDataMap[TYPE]) => void) => {
-    const dispatch = useContext(FpDispatchContext);
+    const dispatch = use(FpDispatchContext);
     return (data: ContextDataMap[TYPE]) => {
         if (dispatch) {
             dispatch({ type: 'update', key, data });
@@ -132,7 +132,7 @@ export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((d
 
 /** Hook returns save function usable with all data types  */
 export const useContextSaveAnyData = () => {
-    const dispatch = useContext(FpDispatchContext);
+    const dispatch = use(FpDispatchContext);
     return <TYPE extends ContextDataType>(key: TYPE, data: ContextDataMap[TYPE]) => {
         if (dispatch) {
             dispatch({ type: 'update', key, data });
@@ -142,7 +142,7 @@ export const useContextSaveAnyData = () => {
 
 /** Hook returns state reset function  */
 export const useContextReset = () => {
-    const dispatch = useContext(FpDispatchContext);
+    const dispatch = use(FpDispatchContext);
     return () => {
         if (dispatch) {
             dispatch({ type: 'reset' });
@@ -151,5 +151,5 @@ export const useContextReset = () => {
 };
 
 export const useContextComplete = (): ContextDataMap => {
-    return useContext(FpStateContext);
+    return use(FpStateContext);
 };

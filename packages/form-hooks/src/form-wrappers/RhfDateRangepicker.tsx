@@ -89,13 +89,15 @@ export const RhfDateRangepicker = ({
         ? // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           dayjs(fromField.value, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT)
         : '';
-    const [fromFieldValue, setFromFieldValue] = useState<string>(
+    const [fromFieldValue, setFromFieldValue] = useState<string>(() =>
         isValidDateString(fromDefaultDate) ? fromDefaultDate : '',
     );
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const toDefaultDate = toField.value ? dayjs(toField.value, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT) : '';
-    const [toFieldValue, setToFieldValue] = useState<string>(isValidDateString(toDefaultDate) ? toDefaultDate : '');
+    const [toFieldValue, setToFieldValue] = useState<string>(() =>
+        isValidDateString(toDefaultDate) ? toDefaultDate : '',
+    );
 
     const { datepickerProps, toInputProps, fromInputProps } = useRangeDatepicker({
         onRangeChange: (range) => {

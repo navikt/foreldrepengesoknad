@@ -19,7 +19,6 @@ export const useSvpNavigator = (
         void mellomlagreOgNaviger();
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     const goToStep = (path: SøknadRoute | string) => {
         oppdaterPath(path);
         void mellomlagreOgNaviger();
