@@ -338,7 +338,7 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
             },
         );
 
-        expect(result.current.gyldigeStønadskontoerForMor).toEqual(['MØDREKVOTE', 'FORELDREPENGER_FØR_FØDSEL']);
+        expect(result.current.gyldigeStønadskontoerForMor).toEqual(['FORELDREPENGER_FØR_FØDSEL']);
     });
 
     it('skal ikke ha foreldrepenger som gyldig kontotype for mor med aleneomsorg i treukersperioden før fødsel', () => {
@@ -361,7 +361,7 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
             },
         );
 
-        expect(result.current.gyldigeStønadskontoerForMor).toEqual(['MØDREKVOTE', 'FORELDREPENGER_FØR_FØDSEL']);
+        expect(result.current.gyldigeStønadskontoerForMor).toEqual(['FORELDREPENGER_FØR_FØDSEL']);
     });
 
     it('skal ikke ha foreldrepenger som gyldig kontotype for mor når kun mor har rett og perioden er mer enn 60 dager før fødsel', () => {
