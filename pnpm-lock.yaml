@@ -1531,9 +1531,6 @@ importers:
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
-      '@navikt/fp-utils':
-        specifier: workspace:*
-        version: link:../utils
       '@sentry/browser':
         specifier: 10.48.0
         version: 10.48.0

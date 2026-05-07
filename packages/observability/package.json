@@ -14,7 +14,6 @@
         "@navikt/aksel-icons": "8.9.1",
         "@navikt/ds-react": "8.9.1",
         "@navikt/fp-types": "workspace:*",
-        "@navikt/fp-utils": "workspace:*",
         "@sentry/browser": "10.48.0",
         "react": "19.2.5",
         "react-intl": "10.1.2"
