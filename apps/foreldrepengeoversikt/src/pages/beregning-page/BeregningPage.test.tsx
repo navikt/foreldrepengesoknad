@@ -116,14 +116,13 @@ describe('<BeregningPage>', () => {
     );
 
     it(
-        'BeregningDagpenger - viser forenklet visning',
+        'BeregningDagpenger - viser forenklet visning med vedtakslenke',
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(BeregningDagpenger.parameters.msw);
             render(<BeregningDagpenger />);
 
             expect(await screen.findByText('Beregning')).toBeInTheDocument();
-            expect(await screen.findByText('Se vedtaksbrevet for innvilget ytelse')).toBeInTheDocument();
-            // Should NOT show the full oppsummering
+            expect(await screen.findByRole('link', { name: 'I vedtaksbrevet ditt' })).toBeInTheDocument();
             expect(
                 screen.queryByText('Nav har fastsatt årsinntekten din til:', { exact: false }),
             ).not.toBeInTheDocument();
@@ -131,13 +130,13 @@ describe('<BeregningPage>', () => {
     );
 
     it(
-        'BeregningAAP - viser forenklet visning',
+        'BeregningAAP - viser forenklet visning med vedtakslenke',
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(BeregningAAP.parameters.msw);
             render(<BeregningAAP />);
 
             expect(await screen.findByText('Beregning')).toBeInTheDocument();
-            expect(await screen.findByText('Se vedtaksbrevet for innvilget ytelse')).toBeInTheDocument();
+            expect(await screen.findByRole('link', { name: 'I vedtaksbrevet ditt' })).toBeInTheDocument();
             expect(
                 screen.queryByText('Nav har fastsatt årsinntekten din til:', { exact: false }),
             ).not.toBeInTheDocument();
@@ -145,13 +144,13 @@ describe('<BeregningPage>', () => {
     );
 
     it(
-        'BeregningKunYtelse - viser forenklet visning',
+        'BeregningKunYtelse - viser forenklet visning med vedtakslenke',
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(BeregningKunYtelse.parameters.msw);
             render(<BeregningKunYtelse />);
 
             expect(await screen.findByText('Beregning')).toBeInTheDocument();
-            expect(await screen.findByText('Se vedtaksbrevet for innvilget ytelse')).toBeInTheDocument();
+            expect(await screen.findByRole('link', { name: 'I vedtaksbrevet ditt' })).toBeInTheDocument();
             expect(
                 screen.queryByText('Nav har fastsatt årsinntekten din til:', { exact: false }),
             ).not.toBeInTheDocument();

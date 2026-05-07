@@ -53,17 +53,11 @@ export const BeregningPage = () => {
     if (!gjeldendeSak || gjeldendeSak.ytelse === 'ENGANGSSTØNAD') {
         return undefined;
     }
-    const beregning = gjeldendeSak.gjeldendeVedtak?.beregningsgrunnlag;
-
-    if (beregning === undefined) {
-        return undefined;
-    }
 
     return (
         <PageRouteLayout header={<DinSakHeader sak={gjeldendeSak} />}>
             <VStack gap="space-40">
                 <BeregningDetaljer sak={gjeldendeSak} />
-
                 <UtbetalingsVisning sak={gjeldendeSak} />
                 <Box background="default" padding="space-24" borderRadius="8">
                     <Feriepenger sak={gjeldendeSak} />
@@ -74,29 +68,10 @@ export const BeregningPage = () => {
     );
 };
 
-const IKKE_STØTTEDE_AKTIVITET_STATUSER = new Set<AktivitetStatus>([
-    'VENTELØNN_VARTPENGER',
-    'TILSTØTENDE_YTELSE',
-    'ARBEIDSAVKLARINGSPENGER',
-    'DAGPENGER',
-    'MILITÆR_ELLER_SIVIL',
-    'BRUKERS_ANDEL',
-    'KUN_YTELSE',
-]);
-
 const BeregningDetaljer = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) => {
     const intl = useIntl();
     const params = useParams<{ saksnummer: string }>();
     const beregning = sak.gjeldendeVedtak?.beregningsgrunnlag;
-
-    const harIkkeStøttetStatus = beregning?.beregningAktivitetStatuser.some(({ aktivitetStatus }) =>
-        IKKE_STØTTEDE_AKTIVITET_STATUSER.has(aktivitetStatus),
-    );
-    const harArbeidsandelUtenArbeidsgiver = beregning?.beregningsandeler.some(
-        (andel) => andel.aktivitetStatus === 'ARBEIDSTAKER' && !andel.arbeidsforhold,
-    );
-
-    const beregningEgnerSegIkkeForÅViseOppsummering = harIkkeStøttetStatus || harArbeidsandelUtenArbeidsgiver;
 
     const innvilgelsesdokument = useQuery({
         ...hentDokumenterOptions(params.saksnummer!),
@@ -110,22 +85,31 @@ const BeregningDetaljer = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeS
             }),
     }).data;
 
-    if (!beregning || beregningEgnerSegIkkeForÅViseOppsummering) {
+    if (!beregning) {
+        const vedtakLenke = (chunks: React.ReactNode) => (
+            <Link
+                href={API_URLS.hentDokument(
+                    innvilgelsesdokument!.journalpostId,
+                    innvilgelsesdokument!.dokumentId ?? 'ukjent',
+                )}
+                target="_blank"
+            >
+                {chunks}
+            </Link>
+        );
         return (
             <VStack>
-                <Heading size="medium" level="2">
-                    Beregning
+                <Heading size="medium" level="2" spacing>
+                    <FormattedMessage id="beregning.heading" />
                 </Heading>
                 {innvilgelsesdokument && (
-                    <Link
-                        href={API_URLS.hentDokument(
-                            innvilgelsesdokument.journalpostId,
-                            innvilgelsesdokument.dokumentId ?? 'ukjent',
+                    <BodyShort>
+                        {sak.ytelse === 'SVANGERSKAPSPENGER' ? (
+                            <FormattedMessage id="beregning.ikkeStøttet.svp" values={{ a: vedtakLenke }} />
+                        ) : (
+                            <FormattedMessage id="beregning.ikkeStøttet.fp" values={{ a: vedtakLenke }} />
                         )}
-                        target="_blank"
-                    >
-                        <FormattedMessage id="beregning.innvilgelsesLenke" />
-                    </Link>
+                    </BodyShort>
                 )}
             </VStack>
         );
@@ -517,7 +501,7 @@ const UtbetalingsVisning = ({ sak }: { sak: Foreldrepengesak | Svangerskapspenge
 
     return (
         <VStack gap="space-4">
-            <Heading size="medium" as="h2">
+            <Heading size="medium" as="h2" spacing>
                 <FormattedMessage id="beregning.utbetalingsvisning.tittel" />
             </Heading>
             <BodyShort>
