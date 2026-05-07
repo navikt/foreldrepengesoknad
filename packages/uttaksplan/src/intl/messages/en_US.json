@@ -281,7 +281,7 @@
     "UttaksplanHandlingKnapper.FjernAlt": "Remove everything in the plan",
     "UttaksplanHandlingKnapper.EndrePlanen": "Edit the plan",
     "UttaksplanHandlingKnapper.LukkPerioder": "Close periods",
-    "UttaksplanHandlingKnapper.Angre": "Undo last",
+    "UttaksplanHandlingKnapper.Angre": "Undo",
     "UttaksplanKalender.MarkertePerioder": "You must fill out information about mom's activity in the marked periods",
     "UttaksplanKalender.HvaErAktivitetskrav": "What is the activity requirement for mom?",
     "RedigeringKalenderIndex.VelgDatoerIKalender": "You can select dates in the calendar",
