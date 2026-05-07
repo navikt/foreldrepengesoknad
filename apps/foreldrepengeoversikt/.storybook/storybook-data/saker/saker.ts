@@ -1771,20 +1771,7 @@ const beregningIkkeStøttetSak = (saksnummer: string, aktivitetStatus: Aktivitet
                         },
                     ],
                     perioderAnnenpartEøs: [],
-                    beregningsgrunnlag: {
-                        skjæringsTidspunkt: '2025-12-03',
-                        beregningsandeler: [
-                            {
-                                aktivitetStatus,
-                                fastsattPrÅr: 300000.0,
-                                inntektsKilde: 'A_INNTEKT',
-                                dagsatsArbeidsgiver: 0,
-                                dagsatsSøker: 1154,
-                            },
-                        ],
-                        beregningAktivitetStatuser: [{ aktivitetStatus, hjemmel: 'F_14_7' }],
-                        grunnbeløp: 130160.0,
-                    },
+                    beregningsgrunnlag: undefined,
                     tilkjentYtelse: {
                         utbetalingsperioder: [
                             {

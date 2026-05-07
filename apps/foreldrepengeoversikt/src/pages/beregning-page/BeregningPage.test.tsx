@@ -9,6 +9,9 @@ const {
     BeregningDelvisRefusjon,
     BeregningDirekteUtbetaling,
     BeregningSvpDirekteUtbetaling,
+    BeregningDagpenger,
+    BeregningAAP,
+    BeregningKunYtelse,
     BeregningMedNaturalytelser,
 } = composeStories(stories);
 
@@ -113,7 +116,48 @@ describe('<BeregningPage>', () => {
     );
 
     it(
-        'BeregningMedNaturalytelser - viser kulepunkt om naturalytelser',
+        'BeregningDagpenger - viser forenklet visning med vedtakslenke',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(BeregningDagpenger.parameters.msw);
+            render(<BeregningDagpenger />);
+
+            expect(await screen.findByText('Beregning')).toBeInTheDocument();
+            expect(await screen.findByRole('link', { name: 'I vedtaksbrevet ditt' })).toBeInTheDocument();
+            expect(
+                screen.queryByText('Nav har fastsatt årsinntekten din til:', { exact: false }),
+            ).not.toBeInTheDocument();
+        }),
+    );
+
+    it(
+        'BeregningAAP - viser forenklet visning med vedtakslenke',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(BeregningAAP.parameters.msw);
+            render(<BeregningAAP />);
+
+            expect(await screen.findByText('Beregning')).toBeInTheDocument();
+            expect(await screen.findByRole('link', { name: 'I vedtaksbrevet ditt' })).toBeInTheDocument();
+            expect(
+                screen.queryByText('Nav har fastsatt årsinntekten din til:', { exact: false }),
+            ).not.toBeInTheDocument();
+        }),
+    );
+
+    it(
+        'BeregningKunYtelse - viser forenklet visning med vedtakslenke',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(BeregningKunYtelse.parameters.msw);
+            render(<BeregningKunYtelse />);
+
+            expect(await screen.findByText('Beregning')).toBeInTheDocument();
+            expect(await screen.findByRole('link', { name: 'I vedtaksbrevet ditt' })).toBeInTheDocument();
+            expect(
+                screen.queryByText('Nav har fastsatt årsinntekten din til:', { exact: false }),
+            ).not.toBeInTheDocument();
+        }),
+    );
+
+    it(
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(BeregningMedNaturalytelser.parameters.msw);
             render(<BeregningMedNaturalytelser />);
