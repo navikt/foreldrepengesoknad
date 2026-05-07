@@ -12,9 +12,9 @@ export const BeregningLenkePanel = () => {
     if (gjeldendeSak?.ytelse === 'ENGANGSSTØNAD') {
         return undefined;
     }
-    const beregning = gjeldendeSak?.gjeldendeVedtak?.tilkjentYtelse;
+    const tilkjentYtelse = gjeldendeSak?.gjeldendeVedtak?.tilkjentYtelse;
 
-    if (beregning === undefined) {
+    if (tilkjentYtelse === undefined) {
         return undefined;
     }
 
