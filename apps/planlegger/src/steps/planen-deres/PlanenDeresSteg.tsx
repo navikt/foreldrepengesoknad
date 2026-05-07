@@ -216,7 +216,12 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
 
                 <StepButtons
                     goToPreviousStep={navigator.goToPreviousDefaultStep}
-                    nextButtonOnClick={navigator.goToNextDefaultStep}
+                    nextButtonOnClick={() => {
+                        if (!uttaksplan) {
+                            lagreUttaksplanOgOppdaterUrl([...planforslag.søker1, ...planforslag.søker2]);
+                        }
+                        navigator.goToNextDefaultStep();
+                    }}
                     isJumpToEndButton
                     useSimplifiedTexts
                 />
