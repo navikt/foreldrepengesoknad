@@ -5,7 +5,15 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './BeregningPage.stories.tsx';
 
-const { BeregningDelvisRefusjon, BeregningDirekteUtbetaling, BeregningSvpDirekteUtbetaling } = composeStories(stories);
+const {
+    BeregningDelvisRefusjon,
+    BeregningDirekteUtbetaling,
+    BeregningSvpDirekteUtbetaling,
+    BeregningDagpenger,
+    BeregningAAP,
+    BeregningKunYtelse,
+    BeregningMedNaturalytelser,
+} = composeStories(stories);
 
 describe('<BeregningPage>', () => {
     it(
@@ -82,8 +90,8 @@ describe('<BeregningPage>', () => {
             // SVP-specific heading
             expect(await screen.findByText('Beregning av svangerskapspenger')).toBeInTheDocument();
 
-            // Dagsats renders
-            expect(await screen.findByText('Dagsats: 2 077 kr')).toBeInTheDocument();
+            // Dagsats ExpansionCard should NOT be shown for SVP
+            expect(screen.queryByText('Dagsats: 2 077 kr')).not.toBeInTheDocument();
 
             // Annual income shown
             expect(
@@ -104,6 +112,60 @@ describe('<BeregningPage>', () => {
             expect(await screen.findByText('Feriepenger')).toBeInTheDocument();
             expect(await screen.findByText('Opptjent i 2026')).toBeInTheDocument();
             expect(await screen.findByText('7 893 kr som vi betaler til deg.')).toBeInTheDocument();
+        }),
+    );
+
+    it(
+        'BeregningDagpenger - viser forenklet visning',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(BeregningDagpenger.parameters.msw);
+            render(<BeregningDagpenger />);
+
+            expect(await screen.findByText('Beregning')).toBeInTheDocument();
+            expect(await screen.findByText('Se vedtaksbrevet for innvilget ytelse')).toBeInTheDocument();
+            // Should NOT show the full oppsummering
+            expect(
+                screen.queryByText('Nav har fastsatt årsinntekten din til:', { exact: false }),
+            ).not.toBeInTheDocument();
+        }),
+    );
+
+    it(
+        'BeregningAAP - viser forenklet visning',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(BeregningAAP.parameters.msw);
+            render(<BeregningAAP />);
+
+            expect(await screen.findByText('Beregning')).toBeInTheDocument();
+            expect(await screen.findByText('Se vedtaksbrevet for innvilget ytelse')).toBeInTheDocument();
+            expect(
+                screen.queryByText('Nav har fastsatt årsinntekten din til:', { exact: false }),
+            ).not.toBeInTheDocument();
+        }),
+    );
+
+    it(
+        'BeregningKunYtelse - viser forenklet visning',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(BeregningKunYtelse.parameters.msw);
+            render(<BeregningKunYtelse />);
+
+            expect(await screen.findByText('Beregning')).toBeInTheDocument();
+            expect(await screen.findByText('Se vedtaksbrevet for innvilget ytelse')).toBeInTheDocument();
+            expect(
+                screen.queryByText('Nav har fastsatt årsinntekten din til:', { exact: false }),
+            ).not.toBeInTheDocument();
+        }),
+    );
+
+    it(
+        'BeregningMedNaturalytelser - viser kulepunkt om naturalytelser',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(BeregningMedNaturalytelser.parameters.msw);
+            render(<BeregningMedNaturalytelser />);
+
+            expect(await screen.findByText('Beregning av foreldrepenger')).toBeInTheDocument();
+            expect(await screen.findByRole('link', { name: 'inntektsmeldingen' })).toBeInTheDocument();
         }),
     );
 });

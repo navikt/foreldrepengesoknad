@@ -5,7 +5,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { groupBy, min, partition, sortBy, sumBy } from 'lodash';
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import { Foreldrepengesak, SvangerskapspengeSak } from 'types/Sak.ts';
 
 import {
@@ -26,9 +26,15 @@ import {
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { SkyraSurvey } from '@navikt/fp-observability';
 import { AktivitetStatus, BeregningsAndel_fpoversikt, TilkjentYtelsePeriode_fpoversikt } from '@navikt/fp-types';
-import { capitalizeFirstLetter, erUttaksdag, formatCurrencyWithKr, getDecoratorLanguageCookie } from '@navikt/fp-utils';
+import {
+    capitalizeFirstLetter,
+    erLokaltEllerDev,
+    erUttaksdag,
+    formatCurrencyWithKr,
+    getDecoratorLanguageCookie,
+} from '@navikt/fp-utils';
 
-import { API_URLS, hentDokumenterOptions } from '../../api/queries';
+import { API_URLS, hentDokumenterOptions, hentInntektsmelding } from '../../api/queries';
 import { DinSakHeader } from '../../components/header/Header';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
@@ -44,7 +50,6 @@ export const BeregningPage = () => {
     const gjeldendeSak = useGetSelectedSak();
     useSetBackgroundColor('blue');
     useSetSelectedRoute(OversiktRoutes.BEREGNING);
-    const intl = useIntl();
     if (!gjeldendeSak || gjeldendeSak.ytelse === 'ENGANGSSTØNAD') {
         return undefined;
     }
@@ -57,43 +62,104 @@ export const BeregningPage = () => {
     return (
         <PageRouteLayout header={<DinSakHeader sak={gjeldendeSak} />}>
             <VStack gap="space-40">
-                <BeregningOppsummering sak={gjeldendeSak} />
-
-                <ExpansionCard size="medium" aria-label={intl.formatMessage({ id: 'beregning.tittel' })}>
-                    <ExpansionCard.Header>
-                        <ExpansionCard.Title size="small">
-                            <FormattedMessage id="beregning.tittel" />
-                        </ExpansionCard.Title>
-                    </ExpansionCard.Header>
-                    <ExpansionCard.Content>
-                        <VStack gap="space-16">
-                            {beregning.beregningsandeler.map((andel) => (
-                                <BeregningAndel
-                                    andel={andel}
-                                    key={`${andel.aktivitetStatus}-${andel.arbeidsforhold?.arbeidsgiverIdent}`}
-                                />
-                            ))}
-                        </VStack>
-                        <Forklaringer sak={gjeldendeSak} grunnbeløpPåBeregning={beregning.grunnbeløp} />
-                    </ExpansionCard.Content>
-                </ExpansionCard>
+                <BeregningDetaljer sak={gjeldendeSak} />
 
                 <UtbetalingsVisning sak={gjeldendeSak} />
                 <Box background="default" padding="space-24" borderRadius="8">
                     <Feriepenger sak={gjeldendeSak} />
                 </Box>
-                <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/beregning-i-innsyn" />
+                {erLokaltEllerDev() && <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/beregning-i-innsyn" />}
             </VStack>
         </PageRouteLayout>
     );
 };
 
+const IKKE_STØTTEDE_AKTIVITET_STATUSER = new Set<AktivitetStatus>([
+    'VENTELØNN_VARTPENGER',
+    'TILSTØTENDE_YTELSE',
+    'ARBEIDSAVKLARINGSPENGER',
+    'DAGPENGER',
+    'MILITÆR_ELLER_SIVIL',
+    'BRUKERS_ANDEL',
+    'KUN_YTELSE',
+]);
+
+const BeregningDetaljer = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) => {
+    const intl = useIntl();
+    const params = useParams<{ saksnummer: string }>();
+    const beregning = sak.gjeldendeVedtak?.beregningsgrunnlag;
+
+    const harIkkeStøttetStatus = beregning?.beregningAktivitetStatuser.some(({ aktivitetStatus }) =>
+        IKKE_STØTTEDE_AKTIVITET_STATUSER.has(aktivitetStatus),
+    );
+    const harArbeidsandelUtenArbeidsgiver = beregning?.beregningsandeler.some(
+        (andel) => andel.aktivitetStatus === 'ARBEIDSTAKER' && !andel.arbeidsforhold,
+    );
+
+    const beregningEgnerSegIkkeForÅViseOppsummering = harIkkeStøttetStatus || harArbeidsandelUtenArbeidsgiver;
+
+    const innvilgelsesdokument = useQuery({
+        ...hentDokumenterOptions(params.saksnummer!),
+        select: (dokumenter) =>
+            dokumenter.find((d) => {
+                const tittel = d.tittel?.toLowerCase();
+                return (
+                    tittel?.includes('innvilgelsesbrev foreldrepenger') ||
+                    tittel?.includes('innvilgelsesbrev svangerskapspenger')
+                );
+            }),
+    }).data;
+
+    if (!beregning || beregningEgnerSegIkkeForÅViseOppsummering) {
+        return (
+            <VStack>
+                <Heading size="medium" level="2">
+                    Beregning
+                </Heading>
+                {innvilgelsesdokument && (
+                    <Link
+                        href={API_URLS.hentDokument(
+                            innvilgelsesdokument.journalpostId,
+                            innvilgelsesdokument.dokumentId ?? 'ukjent',
+                        )}
+                        target="_blank"
+                    >
+                        <FormattedMessage id="beregning.innvilgelsesLenke" />
+                    </Link>
+                )}
+            </VStack>
+        );
+    }
+
+    return (
+        <>
+            <BeregningOppsummering sak={sak} />
+            <ExpansionCard size="medium" aria-label={intl.formatMessage({ id: 'beregning.tittel' })}>
+                <ExpansionCard.Header>
+                    <ExpansionCard.Title size="small">
+                        <FormattedMessage id="beregning.tittel" />
+                    </ExpansionCard.Title>
+                </ExpansionCard.Header>
+                <ExpansionCard.Content>
+                    <VStack gap="space-16">
+                        {beregning.beregningsandeler.map((andel) => (
+                            <BeregningAndel
+                                andel={andel}
+                                key={`${andel.aktivitetStatus}-${andel.arbeidsforhold?.arbeidsgiverIdent}`}
+                            />
+                        ))}
+                    </VStack>
+                    <Forklaringer sak={sak} grunnbeløpPåBeregning={beregning.grunnbeløp} />
+                </ExpansionCard.Content>
+            </ExpansionCard>
+        </>
+    );
+};
+
 const BeregningOppsummering = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) => {
     const intl = useIntl();
-    const beregning = sak.gjeldendeVedtak?.beregningsgrunnlag;
-    if (!beregning) {
-        return null;
-    }
+    const params = useParams<{ saksnummer: string }>();
+    const beregning = sak.gjeldendeVedtak!.beregningsgrunnlag!;
     const samletÅrsinntekt = sumBy(beregning.beregningsandeler, (andel) => andel.fastsattPrÅr ?? 0);
     const grunnbeløp = beregning.grunnbeløp ?? DEFAULT_SATSER.grunnbeløp[0]!.verdi;
     const seksG = grunnbeløp * 6;
@@ -105,6 +171,11 @@ const BeregningOppsummering = ({ sak }: { sak: Foreldrepengesak | Svangerskapspe
     const sumDagsats = sumBy(beregning.beregningsandeler, (a) => (a.dagsatsSøker ?? 0) + (a.dagsatsArbeidsgiver ?? 0));
     const finnesRefusjon = beregning.beregningsandeler.some((a) => (a.dagsatsArbeidsgiver ?? 0) > 0);
     const finnesDirekteutbetaling = beregning.beregningsandeler.some((a) => (a.dagsatsSøker ?? 0) > 0);
+
+    const inntektsmeldinger = useQuery(hentInntektsmelding(params.saksnummer!)).data ?? [];
+    const inntektsmeldingerMedNaturalytelser = inntektsmeldinger.filter(
+        (im) => im.erAktiv && im.bortfalteNaturalytelser.length > 0,
+    );
 
     return (
         <Box background="default" padding="space-24" shadow="dialog" borderRadius="8">
@@ -161,82 +232,101 @@ const BeregningOppsummering = ({ sak }: { sak: Foreldrepengesak | Svangerskapspe
                         />
                     </List.Item>
                 )}
-                {finnesRefusjon && !finnesDirekteutbetaling && (
+                {finnesRefusjon && !finnesDirekteutbetaling && sak.ytelse === 'FORELDREPENGER' && (
                     <List.Item>
                         <FormattedMessage id="beregning.utbetalingsTekst.arbeidsgiver" />
                     </List.Item>
                 )}
-                {!finnesRefusjon && finnesDirekteutbetaling && (
+                {!finnesRefusjon && finnesDirekteutbetaling && sak.ytelse === 'FORELDREPENGER' && (
                     <List.Item>
                         <FormattedMessage id="beregning.utbetalingsTekst.deg" />
                     </List.Item>
                 )}
-                {finnesRefusjon && finnesDirekteutbetaling && (
+                {finnesRefusjon && finnesDirekteutbetaling && sak.ytelse === 'FORELDREPENGER' && (
                     <List.Item>
                         <FormattedMessage id="beregning.utbetalingsTekst.degOgArbeidsgiver" />
                     </List.Item>
                 )}
-            </List>
-            <ExpansionCard
-                size="small"
-                data-color="info"
-                className="mt-8"
-                aria-label={intl.formatMessage(
-                    {
-                        id: 'beregning.dagsats',
-                    },
-                    { sumDagsats: formatCurrencyWithKr(sumDagsats) },
-                )}
-            >
-                <ExpansionCard.Header>
-                    <ExpansionCard.Title size="small">
+                {inntektsmeldingerMedNaturalytelser.length > 0 && (
+                    <List.Item>
                         <FormattedMessage
-                            id="beregning.dagsats"
-                            values={{ sumDagsats: formatCurrencyWithKr(sumDagsats) }}
+                            id="beregning.naturalytelser"
+                            values={{
+                                a: (chunks) => (
+                                    <Link
+                                        as={RouterLink}
+                                        to={`../${OversiktRoutes.INNTEKTSMELDING}/${inntektsmeldingerMedNaturalytelser[0]!.journalpostId}`}
+                                    >
+                                        {chunks}
+                                    </Link>
+                                ),
+                            }}
                         />
-                    </ExpansionCard.Title>
-                </ExpansionCard.Header>
-                <ExpansionCard.Content>
-                    <VStack gap="space-16">
-                        {beregning.beregningsandeler.map((andel, index) => (
-                            // Ikke noe som er garantert unikt, så tillater index for key, få elementer, så ok
-                            <Box background="default" padding="space-16" borderRadius="8" key={index}>
-                                <VStack>
-                                    <Label>
-                                        <ArbeidsforholdNavn andel={andel} />
-                                    </Label>
-                                    <hr className="text-ax-border-neutral-subtle" />
-                                    <HStack justify="space-between" gap="space-4">
-                                        <span>
-                                            <FormattedMessage id="beregning.dagsats.tilDeg" />
-                                        </span>
-                                        <span>{formatCurrencyWithKr(andel.dagsatsSøker)}</span>
-                                    </HStack>
-                                    {andel.aktivitetStatus === 'ARBEIDSTAKER' && (
+                    </List.Item>
+                )}
+            </List>
+            {sak.ytelse === 'FORELDREPENGER' && (
+                <ExpansionCard
+                    size="small"
+                    data-color="info"
+                    className="mt-8"
+                    aria-label={intl.formatMessage(
+                        {
+                            id: 'beregning.dagsats',
+                        },
+                        { sumDagsats: formatCurrencyWithKr(sumDagsats) },
+                    )}
+                >
+                    <ExpansionCard.Header>
+                        <ExpansionCard.Title size="small">
+                            <FormattedMessage
+                                id="beregning.dagsats"
+                                values={{ sumDagsats: formatCurrencyWithKr(sumDagsats) }}
+                            />
+                        </ExpansionCard.Title>
+                    </ExpansionCard.Header>
+                    <ExpansionCard.Content>
+                        <VStack gap="space-16">
+                            {beregning.beregningsandeler.map((andel, index) => (
+                                // Ikke noe som er garantert unikt, så tillater index for key, få elementer, så ok
+                                <Box background="default" padding="space-16" borderRadius="8" key={index}>
+                                    <VStack>
+                                        <Label>
+                                            <ArbeidsforholdNavn andel={andel} />
+                                        </Label>
+                                        <hr className="text-ax-border-neutral-subtle" />
                                         <HStack justify="space-between" gap="space-4">
                                             <span>
-                                                <FormattedMessage id="beregning.dagsats.tilArbeidsgiver" />
+                                                <FormattedMessage id="beregning.dagsats.tilDeg" />
                                             </span>
-                                            <span>{formatCurrencyWithKr(andel.dagsatsArbeidsgiver)}</span>
+                                            <span>{formatCurrencyWithKr(andel.dagsatsSøker)}</span>
                                         </HStack>
-                                    )}
+                                        {andel.aktivitetStatus === 'ARBEIDSTAKER' && (
+                                            <HStack justify="space-between" gap="space-4">
+                                                <span>
+                                                    <FormattedMessage id="beregning.dagsats.tilArbeidsgiver" />
+                                                </span>
+                                                <span>{formatCurrencyWithKr(andel.dagsatsArbeidsgiver)}</span>
+                                            </HStack>
+                                        )}
+                                    </VStack>
+                                </Box>
+                            ))}
+                            <Box background="default" padding="space-16" borderRadius="8">
+                                <VStack>
+                                    <HStack justify="space-between" gap="space-4">
+                                        <span>
+                                            <FormattedMessage id="beregning.dagsats.totalt" />
+                                        </span>
+                                        <span>{formatCurrencyWithKr(sumDagsats)}</span>
+                                    </HStack>
+                                    <hr className="text-ax-border-neutral-subtle" />
                                 </VStack>
                             </Box>
-                        ))}
-                        <Box background="default" padding="space-16" borderRadius="8">
-                            <VStack>
-                                <HStack justify="space-between" gap="space-4">
-                                    <span>
-                                        <FormattedMessage id="beregning.dagsats.totalt" />
-                                    </span>
-                                    <span>{formatCurrencyWithKr(sumDagsats)}</span>
-                                </HStack>
-                                <hr className="text-ax-border-neutral-subtle" />
-                            </VStack>
-                        </Box>
-                    </VStack>
-                </ExpansionCard.Content>
-            </ExpansionCard>
+                        </VStack>
+                    </ExpansionCard.Content>
+                </ExpansionCard>
+            )}
         </Box>
     );
 };
@@ -344,8 +434,6 @@ const ArbeidsforholdNavn = ({ andel }: { andel: BeregningsAndel_fpoversikt }) =>
 };
 
 const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
-    const intl = useIntl();
-
     const skalViseVedtaksLenke =
         andel.aktivitetStatus === 'SELVSTENDIG_NÆRINGSDRIVENDE' && andel.dagsatsArbeidsgiver === 0;
 
@@ -358,10 +446,7 @@ const BeregningAndel = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
             </BodyShort>
             <HGrid gap="space-8" columns={{ xs: '1fr max-content' }}>
                 <BodyShort>
-                    <FormattedMessage
-                        id="beregning.andel.beregnetMånedsinntekt"
-                        values={{ kilde: finnKildeForInntekt(andel, intl) }}
-                    />
+                    <BeregnetMånedsinntekt andel={andel} />
                 </BodyShort>
                 <BodyShort className="text-end">{formatCurrencyWithKr((andel.fastsattPrÅr ?? 0) / 12)}</BodyShort>
                 <BodyShort>
@@ -723,20 +808,41 @@ const VedtakLenke = () => {
     );
 };
 
-const finnKildeForInntekt = (andel: BeregningsAndel_fpoversikt, intl: ReturnType<typeof useIntl>) => {
+const BeregnetMånedsinntekt = ({ andel }: { andel: BeregningsAndel_fpoversikt }) => {
+    const params = useParams<{ saksnummer: string }>();
+    const inntektsmeldinger = useQuery(hentInntektsmelding(params.saksnummer!)).data ?? [];
+
+    const journalpostId = inntektsmeldinger.find(
+        (im) => im.erAktiv && im.arbeidsgiverIdent === andel.arbeidsforhold?.arbeidsgiverIdent,
+    )?.journalpostId;
+
     switch (andel.inntektsKilde) {
         case 'INNTEKTSMELDING':
-            return intl.formatMessage({ id: 'beregning.inntektsKilde.inntektsmelding' });
+            return (
+                <FormattedMessage
+                    id="beregning.andel.beregnetMånedsinntekt.inntektsmelding"
+                    values={{
+                        a: (chunks) =>
+                            journalpostId ? (
+                                <Link as={RouterLink} to={`../${OversiktRoutes.INNTEKTSMELDING}/${journalpostId}`}>
+                                    {chunks}
+                                </Link>
+                            ) : (
+                                <>{chunks}</>
+                            ),
+                    }}
+                />
+            );
         case 'A_INNTEKT':
-            return intl.formatMessage({ id: 'beregning.inntektsKilde.register' });
+            return <FormattedMessage id="beregning.andel.beregnetMånedsinntekt.register" />;
         case 'SKJØNNSFASTSATT':
-            return intl.formatMessage({ id: 'beregning.inntektsKilde.skjønnsfastsatt' });
+            return <FormattedMessage id="beregning.andel.beregnetMånedsinntekt.skjønnsfastsatt" />;
         case 'PGI':
-            return intl.formatMessage({ id: 'beregning.inntektsKilde.skatteopplysninger' });
+            return <FormattedMessage id="beregning.andel.beregnetMånedsinntekt.skatteopplysninger" />;
         case 'VEDTAK_ANNEN_YTELSE':
-            return intl.formatMessage({ id: 'beregning.inntektsKilde.tidligere_vedtak' });
+            return <FormattedMessage id="beregning.andel.beregnetMånedsinntekt.tidligere_vedtak" />;
         case undefined:
-            return '';
+            return <FormattedMessage id="beregning.andel.beregnetMånedsinntekt.ukjent" />;
     }
 };
 
