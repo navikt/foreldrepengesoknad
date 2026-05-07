@@ -24,7 +24,7 @@ export const useErAntallDagerOvertrukketIUttaksplan = () => {
         familiehendelsedato,
     } = useUttaksplanData();
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     if (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT') {
         return (
@@ -113,7 +113,7 @@ export const finnAntallDagerDerKunEnHarForeldrepenger = (
     };
 };
 
-export const filtrerAvslåttePerioderMenBeholdPleiepenger = (
+export const filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger = (
     periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
 ) => {
     if (erEøsUttakPeriode(periode)) {
@@ -131,7 +131,7 @@ export const filtrerAvslåttePerioderMenBeholdPleiepenger = (
 export const useTellDagerIUttaksPeriodene = () => {
     const { uttakPerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato } = useUttaksplanData();
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     return tellDagerIUttaksPeriodene(filtrertePerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato);
 };

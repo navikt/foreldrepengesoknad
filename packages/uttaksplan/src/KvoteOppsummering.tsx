@@ -16,7 +16,7 @@ import { useUttaksplanData } from './context/UttaksplanDataContext';
 import { erVanligUttakPeriode } from './types/UttaksplanPeriode';
 import { getVarighetString } from './utils/dateUtils';
 import {
-    filtrerAvslåttePerioderMenBeholdPleiepenger,
+    filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger,
     finnAntallDagerDerKunEnHarForeldrepenger,
     getUttaksKontoType,
     summerDagerIPerioder,
@@ -83,7 +83,7 @@ const KvoteTittelKunEnHarForeldrepenger = ({
     const intl = useIntl();
     const { uttakPerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato } = useUttaksplanData();
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     const { antallBrukteDager, antallOvertrukketDager, antallUbrukteDager } = finnAntallDagerDerKunEnHarForeldrepenger(
         filtrertePerioder,
@@ -160,7 +160,7 @@ const KvoteTittel = ({
     const { foreldreInfo, uttakPerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato } =
         useUttaksplanData();
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     const {
         antallOvertrukketDager,
@@ -412,7 +412,7 @@ const TittelKomponent = ({
 const ForeldrepengerFørFødselKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const { uttakPerioder, valgtStønadskvote } = useUttaksplanData();
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     const relevantePerioder = filtrertePerioder.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL');
     const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
@@ -422,7 +422,7 @@ const ForeldrepengerFørFødselKvoter = ({ visStatusIkoner }: { visStatusIkoner:
 const KunEnHarForeldrepengeKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const { uttakPerioder, valgtStønadskvote } = useUttaksplanData();
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FORELDREPENGER');
     const relevantePerioder = filtrertePerioder.filter(
@@ -436,7 +436,7 @@ const KunEnHarForeldrepengeKvoter = ({ visStatusIkoner }: { visStatusIkoner: boo
 const FedreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const { uttakPerioder, valgtStønadskvote } = useUttaksplanData();
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FEDREKVOTE');
     const relevantePerioder = filtrertePerioder.filter(
@@ -453,7 +453,7 @@ const AktivitetsfriKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) 
 
     const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     const relevantePerioder = filtrertePerioder.filter((p) => {
         // I planlegger og søknad brukes denne kontoen på periodene.
@@ -471,7 +471,7 @@ const AktivitetsfriKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) 
 const MødreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const { uttakPerioder, valgtStønadskvote } = useUttaksplanData();
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'MØDREKVOTE');
     const relevantePerioder = filtrertePerioder.filter(
@@ -489,7 +489,7 @@ const FellesKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
 
     const forelder = foreldreInfo.søker;
     const fellesKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FELLESPERIODE');
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     if (!fellesKonto) {
         return null;
