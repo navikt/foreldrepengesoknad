@@ -62,7 +62,7 @@ export const BeregningPage = () => {
                 <Box background="default" padding="space-24" borderRadius="8">
                     <Feriepenger sak={gjeldendeSak} />
                 </Box>
-                {erLokaltEllerDev() && <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/beregning-i-innsyn" />}
+                {!erLokaltEllerDev() && <SkyraSurvey slug="arbeids-og-velferdsetaten-nav/beregning-i-innsyn" />}
             </VStack>
         </PageRouteLayout>
     );
