@@ -158,6 +158,7 @@ describe('<BeregningPage>', () => {
     );
 
     it(
+        'BeregningMedNaturalytelser - viser kulepunkt om naturalytelser',
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(BeregningMedNaturalytelser.parameters.msw);
             render(<BeregningMedNaturalytelser />);

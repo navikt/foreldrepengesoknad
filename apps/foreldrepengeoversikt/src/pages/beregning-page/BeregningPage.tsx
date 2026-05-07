@@ -86,35 +86,29 @@ const BeregningDetaljer = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeS
     }).data;
 
     if (!beregning) {
+        const vedtakLenke = (chunks: React.ReactNode) => (
+            <Link
+                href={API_URLS.hentDokument(
+                    innvilgelsesdokument!.journalpostId,
+                    innvilgelsesdokument!.dokumentId ?? 'ukjent',
+                )}
+                target="_blank"
+            >
+                {chunks}
+            </Link>
+        );
         return (
             <VStack>
                 <Heading size="medium" level="2" spacing>
-                    Beregning
+                    <FormattedMessage id="beregning.heading" />
                 </Heading>
                 {innvilgelsesdokument && (
                     <BodyShort>
-                        <FormattedMessage
-                            id="beregning.ikkeStøttet"
-                            values={{
-                                ytelse: intl.formatMessage({
-                                    id:
-                                        sak.ytelse === 'SVANGERSKAPSPENGER'
-                                            ? 'beregning.ikkeStøttet.svp'
-                                            : 'beregning.ikkeStøttet.fp',
-                                }),
-                                a: (chunks) => (
-                                    <Link
-                                        href={API_URLS.hentDokument(
-                                            innvilgelsesdokument.journalpostId,
-                                            innvilgelsesdokument.dokumentId ?? 'ukjent',
-                                        )}
-                                        target="_blank"
-                                    >
-                                        {chunks}
-                                    </Link>
-                                ),
-                            }}
-                        />
+                        {sak.ytelse === 'SVANGERSKAPSPENGER' ? (
+                            <FormattedMessage id="beregning.ikkeStøttet.svp" values={{ a: vedtakLenke }} />
+                        ) : (
+                            <FormattedMessage id="beregning.ikkeStøttet.fp" values={{ a: vedtakLenke }} />
+                        )}
                     </BodyShort>
                 )}
             </VStack>

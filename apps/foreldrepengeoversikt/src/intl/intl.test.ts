@@ -60,9 +60,6 @@ describe('intl foreldrepengeoversikt', () => {
             if (key.includes('ettersendelse.')) {
                 return false;
             }
-            if (key === 'beregning.ikkeStøttet.fp' || key === 'beregning.ikkeStøttet.svp') {
-                return false;
-            }
             return !allTranslationsCode.includes(key);
         });
         if (missingKeysCode.length > 0) {
