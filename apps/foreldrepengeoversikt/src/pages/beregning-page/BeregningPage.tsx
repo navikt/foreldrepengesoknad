@@ -74,17 +74,30 @@ export const BeregningPage = () => {
     );
 };
 
-// TODO: sammenlign med backend
-const IKKE_STØTTET: AktivitetStatus[] = ['ARBEIDSAVKLARINGSPENGER', 'DAGPENGER', 'KUN_YTELSE', 'VENTELØNN_VARTPENGER'];
+// Matches backend: BeregningOversiktDtoTjeneste.gjelderSakInnsynIkkeStøtter
+const IKKE_STØTTEDE_AKTIVITET_STATUSER = new Set<AktivitetStatus>([
+    'VENTELØNN_VARTPENGER',
+    'TILSTØTENDE_YTELSE',
+    'ARBEIDSAVKLARINGSPENGER',
+    'DAGPENGER',
+    'MILITÆR_ELLER_SIVIL',
+    'BRUKERS_ANDEL',
+    'KUN_YTELSE',
+]);
 
 const BeregningDetaljer = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) => {
     const intl = useIntl();
     const params = useParams<{ saksnummer: string }>();
     const beregning = sak.gjeldendeVedtak?.beregningsgrunnlag;
 
-    const beregningEgnerSegIkkeForÅViseOppsummering = beregning?.beregningAktivitetStatuser.some(
-        ({ aktivitetStatus }) => IKKE_STØTTET.includes(aktivitetStatus),
+    const harIkkeStøttetStatus = beregning?.beregningAktivitetStatuser.some(({ aktivitetStatus }) =>
+        IKKE_STØTTEDE_AKTIVITET_STATUSER.has(aktivitetStatus),
     );
+    const harArbeidsandelUtenArbeidsgiver = beregning?.beregningsandeler.some(
+        (andel) => andel.aktivitetStatus === 'ARBEIDSTAKER' && !andel.arbeidsforhold,
+    );
+
+    const beregningEgnerSegIkkeForÅViseOppsummering = harIkkeStøttetStatus || harArbeidsandelUtenArbeidsgiver;
 
     const innvilgelsesdokument = useQuery({
         ...hentDokumenterOptions(params.saksnummer!),
