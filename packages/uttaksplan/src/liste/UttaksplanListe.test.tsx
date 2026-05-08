@@ -807,24 +807,24 @@ describe('UttaksplanListe', () => {
 
         // Periode 1: Innvilget med IKKE_OPPGITT skal vise "uten aktivitetskrav"
         const periode1Header = screen.getByText('09. mars - 15. mai');
-        const periode1Container = periode1Header.closest('div[class*="gap"]');
+        const periode1Container = periode1Header.closest('div[class*="gap"]') as HTMLElement;
         expect(periode1Container).toBeInTheDocument();
-        expect(within(periode1Container!).getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        expect(within(periode1Container).getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
 
         // Periode 2: Avslått skal vise bare "Foreldrepenger" (ikke "med aktivitetskrav")
         const periode2Header = screen.getByText('18. mai - 12. juni');
-        const periode2Container = periode2Header.closest('div[class*="gap"]');
+        const periode2Container = periode2Header.closest('div[class*="gap"]') as HTMLElement;
         expect(periode2Container).toBeInTheDocument();
         // Skal finne "Foreldrepenger" men ikke "med aktivitetskrav" eller "uten aktivitetskrav"
-        const periode2Text = within(periode2Container!).getByText(/^Foreldrepenger$/);
+        const periode2Text = within(periode2Container).getByText(/^Foreldrepenger$/);
         expect(periode2Text).toBeInTheDocument();
-        expect(within(periode2Container!).queryByText(/med aktivitetskrav/)).not.toBeInTheDocument();
-        expect(within(periode2Container!).queryByText(/uten aktivitetskrav/)).not.toBeInTheDocument();
+        expect(within(periode2Container).queryByText(/med aktivitetskrav/)).not.toBeInTheDocument();
+        expect(within(periode2Container).queryByText(/uten aktivitetskrav/)).not.toBeInTheDocument();
 
         // Periode 3: Innvilget med ARBEID skal vise "med aktivitetskrav"
         const periode3Header = screen.getByText('15. juni - 10. juli');
-        const periode3Container = periode3Header.closest('div[class*="gap"]');
+        const periode3Container = periode3Header.closest('div[class*="gap"]') as HTMLElement;
         expect(periode3Container).toBeInTheDocument();
-        expect(within(periode3Container!).getByText('Foreldrepenger med aktivitetskrav')).toBeInTheDocument();
+        expect(within(periode3Container).getByText('Foreldrepenger med aktivitetskrav')).toBeInTheDocument();
     });
 });
