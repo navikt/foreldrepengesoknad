@@ -34,7 +34,9 @@ export const prosesserPerioderForVisning = (
 
     const mergedSøker = slåSammenTilstøtande(fjernFrieUtsettelser(justeringSøkerPerioder));
     const processedAnnenPart = slåSammenTilstøtande(
-        fjernOverlappUtenSamtidigUttak(midlertidigJusteringAvSamtidigUttak(trimmedAnnenPart, trimmedSøker), trimmedSøker),
+        fjernFrieUtsettelser(
+            fjernOverlappUtenSamtidigUttak(midlertidigJusteringAvSamtidigUttak(trimmedAnnenPart, trimmedSøker), trimmedSøker),
+        ),
     );
 
     return [...mergedSøker, ...(perioderAnnenpartEøs ?? []), ...processedAnnenPart].sort(sorterUttakPerioder);
