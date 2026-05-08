@@ -18,8 +18,10 @@ type Props = {
 type ContextValues = {
     uttaksplanVersjoner: AlleUttakPerioder[][];
     visFjernAltModal: boolean;
+    visTilbakestillModal: boolean;
     harEndretPlan: boolean;
     setVisFjernAltModal: (open: boolean) => void;
+    setVisTilbakestillModal: (open: boolean) => void;
     angreSisteEndring: () => void;
     fjernAltIUttaksplan: () => void;
     oppdaterUttaksplan: (uttaksplan: AlleUttakPerioder[]) => void;
@@ -31,6 +33,7 @@ const UttaksplanRedigeringContext = createContext<ContextValues | null>(null);
 export const UttaksplanRedigeringProvider = (props: Props) => {
     const { oppdaterUttaksplan: oppdater, harEndretPlan, children } = props;
     const [visFjernAltModal, setVisFjernAltModal] = useState(false);
+    const [visTilbakestillModal, setVisTilbakestillModal] = useState(false);
 
     const { uttakPerioder, erEndringssøknad } = useUttaksplanData();
 
@@ -99,6 +102,7 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
     const value = useMemo(
         () => ({
             visFjernAltModal,
+            visTilbakestillModal,
             uttaksplanVersjoner,
             harEndretPlan,
             oppdaterUttaksplan,
@@ -106,9 +110,11 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
             tilbakestillUttaksplan,
             fjernAltIUttaksplan,
             setVisFjernAltModal,
+            setVisTilbakestillModal,
         }),
         [
             visFjernAltModal,
+            visTilbakestillModal,
             uttaksplanVersjoner,
             harEndretPlan,
             oppdaterUttaksplan,

@@ -16,7 +16,7 @@ import { useUttaksplanData } from './context/UttaksplanDataContext';
 import { erVanligUttakPeriode } from './types/UttaksplanPeriode';
 import { getVarighetString } from './utils/dateUtils';
 import {
-    filtrerAvslåttePerioderMenBeholdPleiepenger,
+    filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger,
     finnAntallDagerDerKunEnHarForeldrepenger,
     getUttaksKontoType,
     summerDagerIPerioder,
@@ -83,7 +83,7 @@ const KvoteTittelKunEnHarForeldrepenger = ({
     const intl = useIntl();
     const { uttakPerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato } = useUttaksplanData();
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     const { antallBrukteDager, antallOvertrukketDager, antallUbrukteDager } = finnAntallDagerDerKunEnHarForeldrepenger(
         filtrertePerioder,
@@ -160,7 +160,7 @@ const KvoteTittel = ({
     const { foreldreInfo, uttakPerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato } =
         useUttaksplanData();
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     const {
         antallOvertrukketDager,
@@ -412,7 +412,7 @@ const TittelKomponent = ({
 const ForeldrepengerFørFødselKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const { uttakPerioder, valgtStønadskvote } = useUttaksplanData();
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     const relevantePerioder = filtrertePerioder.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL');
     const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
@@ -422,7 +422,7 @@ const ForeldrepengerFørFødselKvoter = ({ visStatusIkoner }: { visStatusIkoner:
 const KunEnHarForeldrepengeKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const { uttakPerioder, valgtStønadskvote } = useUttaksplanData();
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FORELDREPENGER');
     const relevantePerioder = filtrertePerioder.filter(
@@ -436,7 +436,7 @@ const KunEnHarForeldrepengeKvoter = ({ visStatusIkoner }: { visStatusIkoner: boo
 const FedreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const { uttakPerioder, valgtStønadskvote } = useUttaksplanData();
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FEDREKVOTE');
     const relevantePerioder = filtrertePerioder.filter(
@@ -453,7 +453,7 @@ const AktivitetsfriKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) 
 
     const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     const relevantePerioder = filtrertePerioder.filter((p) => {
         // I planlegger og søknad brukes denne kontoen på periodene.
@@ -471,7 +471,7 @@ const AktivitetsfriKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) 
 const MødreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const { uttakPerioder, valgtStønadskvote } = useUttaksplanData();
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'MØDREKVOTE');
     const relevantePerioder = filtrertePerioder.filter(
@@ -489,7 +489,7 @@ const FellesKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
 
     const forelder = foreldreInfo.søker;
     const fellesKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FELLESPERIODE');
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     if (!fellesKonto) {
         return null;
@@ -619,8 +619,10 @@ const StandardVisning = ({
     const {
         familiesituasjon,
         familiehendelsedato,
+        valgtStønadskvote,
         foreldreInfo: { erMedmorDelAvSøknaden },
     } = useUttaksplanData();
+    const harAktivitetsfriKvote = valgtStønadskvote.kontoer.some((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
 
     if (!konto) {
         return null;
@@ -650,7 +652,11 @@ const StandardVisning = ({
             <HStack gap="space-8" align="center">
                 {visStatusIkoner ? finnIkon() : null}
                 <BodyShort weight="semibold">
-                    <VisningsnavnForKvote kontoType={konto.konto} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
+                    <VisningsnavnForKvote
+                        kontoType={konto.konto}
+                        erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
+                        harAktivitetsfriKvote={harAktivitetsfriKvote}
+                    />
                     {' - '}
                     {getVarighetString(konto.dager, intl)}
                 </BodyShort>
@@ -719,13 +725,15 @@ const StandardVisning = ({
 const VisningsnavnForKvote = ({
     kontoType,
     erMedmorDelAvSøknaden,
+    harAktivitetsfriKvote,
 }: {
     kontoType: KontoTypeUttak;
     erMedmorDelAvSøknaden?: boolean;
+    harAktivitetsfriKvote?: boolean;
 }) => {
     switch (kontoType) {
         case 'AKTIVITETSFRI_KVOTE':
-            return <FormattedMessage id="kvote.kvote.Aktivitetsfrikvote" />;
+            return <FormattedMessage id="kvote.kvote.ForeldrepengerUtenAktivitetskrav" />;
         case 'FEDREKVOTE':
             return erMedmorDelAvSøknaden ? (
                 <FormattedMessage id="kvote.kvote.Medmorkvote" />
@@ -737,7 +745,11 @@ const VisningsnavnForKvote = ({
         case 'FORELDREPENGER_FØR_FØDSEL':
             return <FormattedMessage id="kvote.kvote.ForeldrepengerFørFødsel" />;
         case 'FORELDREPENGER':
-            return <FormattedMessage id="kvote.kvote.Foreldrepenger" />;
+            return harAktivitetsfriKvote ? (
+                <FormattedMessage id="kvote.kvote.ForeldrepengerMedAktivitetskrav" />
+            ) : (
+                <FormattedMessage id="kvote.kvote.Foreldrepenger" />
+            );
         case 'FELLESPERIODE':
             return <FormattedMessage id="kvote.kvote.Fellesperioder" />;
     }

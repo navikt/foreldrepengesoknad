@@ -17,6 +17,8 @@ const {
     BeggeRettMorIngenDagerBrukt,
     MorHarPrematuruker,
     BeggeRettMangeOvertrukneDagerMedOverføringsÅrsak,
+    BeggeRettMedFriUtsettelseAnnenPart,
+    BeggeRettMedFriUtsettelseUtenTrekkerDager,
     BHFRMedAvslåttePerioder,
 } = composeStories(stories);
 
@@ -156,5 +158,31 @@ describe('<KvoteOppsummering >', () => {
         await userEvent.click(expandButton);
 
         expect(screen.getByText('8 uker og 1 dag er lagt til, 21 uker og 4 dager gjenstår')).toBeInTheDocument();
+    });
+
+    it('TFP-6964: Fri utsettelse frå annen part (pleiepenger) skal ikkje teljast som brukte dagar', async () => {
+        render(<BeggeRettMedFriUtsettelseAnnenPart />);
+
+        // Utan fixen ville dette vist "for mange dager" fordi fri utsettelse-perioden vart telt
+        expect(screen.queryByText(/for mye/)).not.toBeInTheDocument();
+
+        const expandButton = screen.getByRole('button', { expanded: false });
+        await userEvent.click(expandButton);
+
+        // Mødrekvote og fedrekvote har begge 75 dagar (15 uker) og begge er fylte
+        expect(screen.getAllByText('15 uker er lagt til')).toHaveLength(2);
+    });
+
+    it('TFP-6964: Fri utsettelse utan trekkerDager-flagg skal heller ikkje teljast', async () => {
+        render(<BeggeRettMedFriUtsettelseUtenTrekkerDager />);
+
+        // Sjølv om trekkerDager er undefined, skal utsettelseperiodar ikkje teljast
+        expect(screen.queryByText(/for mye/)).not.toBeInTheDocument();
+
+        const expandButton = screen.getByRole('button', { expanded: false });
+        await userEvent.click(expandButton);
+
+        // Mødrekvote og fedrekvote har begge 75 dagar (15 uker) og begge er fylte
+        expect(screen.getAllByText('15 uker er lagt til')).toHaveLength(2);
     });
 });

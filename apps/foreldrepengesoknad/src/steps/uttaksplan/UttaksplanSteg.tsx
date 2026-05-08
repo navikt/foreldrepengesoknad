@@ -21,6 +21,7 @@ import {
     FjernAltIUttaksplanModal,
     HvaErMulig,
     KvoteOppsummering,
+    TilbakestillPlanModal,
     UforutsetteEndringer,
     UttaksplanDataProvider,
     UttaksplanKalender,
@@ -180,6 +181,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
                         harEndretPlan={erPlanenEndret}
                     >
                         <FjernAltIUttaksplanModal />
+                        <TilbakestillPlanModal />
 
                         <Tabs
                             defaultValue="kalender"

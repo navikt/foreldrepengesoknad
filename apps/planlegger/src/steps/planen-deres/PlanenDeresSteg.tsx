@@ -41,6 +41,7 @@ import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviou
 import {
     FjernAltIUttaksplanModal,
     KvoteOppsummering,
+    TilbakestillPlanModal,
     UttaksplanDataProvider,
     UttaksplanKalender,
     UttaksplanListe,
@@ -177,6 +178,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
                         harEndretPlan={uttaksplan !== undefined}
                     >
                         <FjernAltIUttaksplanModal />
+                        <TilbakestillPlanModal />
 
                         <Tabs
                             defaultValue="kalender"

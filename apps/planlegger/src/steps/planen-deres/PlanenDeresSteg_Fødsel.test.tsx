@@ -113,8 +113,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         // Verifiserer at slideren ikke vises når kun én har rett
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -150,8 +150,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         // Verifiserer at slideren ikke vises når kun én har rett
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -255,8 +255,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         // Verifiserer at slideren ikke vises når kun én har rett
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -293,8 +293,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         // Verifiserer at slideren ikke vises når kun én har rett
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -385,7 +385,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         // Verifiserer at slideren ikke vises når kun én søker
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -408,7 +408,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         // Verifiserer at slideren ikke vises når kun én har rett
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -431,7 +431,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         // Verifiserer at slideren ikke vises når kun én har rett
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
         expect(screen.getAllByText('Barnehageplass')[0]).toBeInTheDocument();
 
