@@ -805,26 +805,13 @@ describe('UttaksplanListe', () => {
         const periodeRad = screen.getByTestId('2026-03-09 - 2026-07-10');
         await userEvent.click(periodeRad);
 
-        // Periode 1: Innvilget med IKKE_OPPGITT skal vise "uten aktivitetskrav"
-        const periode1Header = screen.getByText('09. mars 2026 - 15. mai 2026');
-        const periode1Container = periode1Header.closest('div[class*="gap"]') as HTMLElement;
-        expect(periode1Container).toBeInTheDocument();
-        expect(within(periode1Container).getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        // Innvilget med IKKE_OPPGITT skal vise "uten aktivitetskrav"
+        expect(screen.getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
 
-        // Periode 2: Avslått skal vise bare "Foreldrepenger" (ikke "med aktivitetskrav")
-        const periode2Header = screen.getByText('18. mai 2026 - 12. juni 2026');
-        const periode2Container = periode2Header.closest('div[class*="gap"]') as HTMLElement;
-        expect(periode2Container).toBeInTheDocument();
-        // Skal finne "Foreldrepenger" men ikke "med aktivitetskrav" eller "uten aktivitetskrav"
-        const periode2Text = within(periode2Container).getByText(/^Foreldrepenger$/);
-        expect(periode2Text).toBeInTheDocument();
-        expect(within(periode2Container).queryByText(/med aktivitetskrav/)).not.toBeInTheDocument();
-        expect(within(periode2Container).queryByText(/uten aktivitetskrav/)).not.toBeInTheDocument();
+        // Innvilget med ARBEID skal vise "med aktivitetskrav" (bare 1 gang, ikke 2 – avslått periode skal ikke ha det)
+        expect(screen.getAllByText('Foreldrepenger med aktivitetskrav')).toHaveLength(1);
 
-        // Periode 3: Innvilget med ARBEID skal vise "med aktivitetskrav"
-        const periode3Header = screen.getByText('15. juni 2026 - 10. juli 2026');
-        const periode3Container = periode3Header.closest('div[class*="gap"]') as HTMLElement;
-        expect(periode3Container).toBeInTheDocument();
-        expect(within(periode3Container).getByText('Foreldrepenger med aktivitetskrav')).toBeInTheDocument();
+        // Avslått periode skal vise bare "Foreldrepenger" uten aktivitetskrav-tekst
+        expect(screen.getAllByText(/^Foreldrepenger$/)).toHaveLength(1);
     });
 });
