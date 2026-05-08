@@ -799,16 +799,27 @@ describe('UttaksplanListe', () => {
 
         // Alle 3 perioder (fom 2026-03-09 til 2026-07-10) er gruppert i én rad.
         // Klikk for å åpne:
-        // - Periode 1: innvilget, morsAktivitet=IKKE_OPPGITT → "Foreldrepenger uten aktivitetskrav"
-        // - Periode 2: avslått, morsAktivitet=ARBEID → skal vise "Foreldrepenger" (ikke "med aktivitetskrav")
-        // - Periode 3: innvilget, morsAktivitet=ARBEID → "Foreldrepenger med aktivitetskrav"
+        // - Periode 1 (09. mars - 15. mai): innvilget, morsAktivitet=IKKE_OPPGITT → "Foreldrepenger uten aktivitetskrav"
+        // - Periode 2 (18. mai - 12. juni): avslått, morsAktivitet=ARBEID → skal vise "Foreldrepenger" (ikke "med aktivitetskrav")
+        // - Periode 3 (15. juni - 10. juli): innvilget, morsAktivitet=ARBEID → "Foreldrepenger med aktivitetskrav"
         const periodeRad = screen.getByTestId('2026-03-09 - 2026-07-10');
         await userEvent.click(periodeRad);
 
-        // Innvilget med IKKE_OPPGITT skal vise "uten aktivitetskrav"
-        expect(screen.getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        // Periode 1: Innvilget med IKKE_OPPGITT skal vise "uten aktivitetskrav"
+        const periode1 = screen.getByText('09. mars - 15. mai').closest('div')?.parentElement;
+        expect(periode1).toBeInTheDocument();
+        expect(periode1).toHaveTextContent('Foreldrepenger uten aktivitetskrav');
 
-        // Bare innvilget med ARBEID skal vise "med aktivitetskrav" (1 gang, ikke 2)
-        expect(screen.getAllByText('Foreldrepenger med aktivitetskrav')).toHaveLength(1);
+        // Periode 2: Avslått skal vise bare "Foreldrepenger" (ikke "med aktivitetskrav")
+        const periode2 = screen.getByText('18. mai - 12. juni').closest('div')?.parentElement;
+        expect(periode2).toBeInTheDocument();
+        expect(periode2).toHaveTextContent('Foreldrepenger');
+        expect(periode2).not.toHaveTextContent('med aktivitetskrav');
+        expect(periode2).not.toHaveTextContent('uten aktivitetskrav');
+
+        // Periode 3: Innvilget med ARBEID skal vise "med aktivitetskrav"
+        const periode3 = screen.getByText('15. juni - 10. juli').closest('div')?.parentElement;
+        expect(periode3).toBeInTheDocument();
+        expect(periode3).toHaveTextContent('Foreldrepenger med aktivitetskrav');
     });
 });
