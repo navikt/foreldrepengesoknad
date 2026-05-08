@@ -12,7 +12,7 @@ import {
 
 import { serveKomprimerteFilerHvisMulig } from './compression';
 import { configureReverseProxyApi } from './reverseProxy.js';
-import { decodeHtmlAmpersandsInQueryString } from './decodeHtmlAmpersandsInQueryString';
+import { rewriteHtmlAmpersandsInQueryString } from './rewriteHtmlAmpersandsInQueryString';
 import { validerInnkommendeIdportenToken } from './tokenValidation.js';
 
 const createServer = async () => {
@@ -28,7 +28,7 @@ const createServer = async () => {
     server.use(logger.morganMiddleware);
 
     // tidvis får vi &amp; fremfor & som separator i querystrings
-    server.use(decodeHtmlAmpersandsInQueryString);
+    server.use(rewriteHtmlAmpersandsInQueryString);
 
     // Skjermdeling krever tilgang til CSS uten å være innlogget!
     setupSkjermleserCssTilgang(publicRouter);
