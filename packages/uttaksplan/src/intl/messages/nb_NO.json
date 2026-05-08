@@ -164,7 +164,7 @@
     "kalender.adopsjon": "Adopsjon",
     "kalender.dinPeriode": "Din periode",
     "kalender.dinPeriode.gradert": "Du har jobb og foreldrepenger",
-    "kalender.dinPeriode.aktivitetsfri": "{erSokersPeriode, select, true {Dine} other {{navnAnnenPart}}} foreldrepenger uten aktivitetskrav",
+    "kalender.dinPeriode.aktivitetsfri": "{erSokersPeriode, select, true {Dine foreldrepenger uten aktivitetskrav} other {Foreldrepengene til {navnAnnenPart} uten aktivitetskrav}}",
     "kalender.dinPeriode.aktivitetsfri.gradert": "{erSokersPeriode, select, true {Du} other {{navnAnnenPart}}} kombinerer jobb og foreldrepenger uten aktivitetskrav",
     "kalender.dinPeriode.medAktivitetskrav": "Dine foreldrepenger med aktivitetskrav",
     "kalender.dinPeriode.medAktivitetskrav.gradert": "Du kombinerer jobb og foreldrepenger med aktivitetskrav",
