@@ -96,8 +96,8 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         // Verifiserer at slideren ikke vises når kun én har rett
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -124,8 +124,8 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         // Verifiserer at slideren ikke vises når kun én har rett
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -214,8 +214,8 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         // Verifiserer at slideren ikke vises når kun én har rett
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -242,8 +242,8 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         // Verifiserer at slideren ikke vises når kun én har rett
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Din periode med aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -359,7 +359,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         // Verifiserer at slideren ikke vises når kun én har rett
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
 
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
@@ -387,7 +387,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         // Verifiserer at slideren ikke vises når kun én har rett
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Din periode uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
