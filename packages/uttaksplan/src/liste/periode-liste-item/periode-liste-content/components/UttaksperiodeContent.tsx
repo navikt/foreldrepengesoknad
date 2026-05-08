@@ -35,16 +35,15 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
     const erAvslått = erAvslåttPeriode(periode);
     const morsAktivitet = erVanligUttakPeriode(periode) && periode.morsAktivitet ? periode.morsAktivitet : undefined;
 
-    const stønadskvoteNavn = getStønadskvoteNavn(
-        intl,
+    const stønadskvoteNavn = getStønadskvoteNavn(intl, {
         navnPåForeldre,
         erFarEllerMedmor,
-        erEøsUttakPeriode(periode),
+        erEøsPeriode: erEøsUttakPeriode(periode),
         morsAktivitet,
-        periode.kontoType,
-        rettighetType === 'ALENEOMSORG',
+        konto: periode.kontoType,
+        erAleneOmOmsorg: rettighetType === 'ALENEOMSORG',
         erAvslått,
-    );
+    });
 
     const morsPerioder = uttakPerioder.filter(
         (p): p is UttakPeriode_fpoversikt => !erEøsUttakPeriode(p) && p.forelder === 'MOR',

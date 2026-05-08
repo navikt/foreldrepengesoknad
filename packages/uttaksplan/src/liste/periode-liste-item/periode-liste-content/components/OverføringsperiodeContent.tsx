@@ -20,14 +20,13 @@ export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, na
     const intl = useIntl();
 
     const morsAktivitet = erVanligUttakPeriode(periode) && periode.morsAktivitet ? periode.morsAktivitet : undefined;
-    const stønadskvoteNavn = getStønadskvoteNavn(
-        intl,
+    const stønadskvoteNavn = getStønadskvoteNavn(intl, {
         navnPåForeldre,
-        periode.forelder === 'FAR_MEDMOR',
-        erEøsUttakPeriode(periode),
+        erFarEllerMedmor: periode.forelder === 'FAR_MEDMOR',
+        erEøsPeriode: erEøsUttakPeriode(periode),
         morsAktivitet,
-        periode.kontoType,
-    );
+        konto: periode.kontoType,
+    });
     const navnPåAnnenForelder = periode.forelder === 'FAR_MEDMOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     return (

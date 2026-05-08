@@ -117,14 +117,13 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
                                     return (
                                         <Checkbox key={genererPeriodeKey(p)} value={index} autoFocus={index === 0}>
                                             {`${formatDate(p.fom)} - ${formatDate(p.tom)} -
-                                        ${getStønadskvoteNavn(
-                                            intl,
+                                        ${getStønadskvoteNavn(intl, {
                                             navnPåForeldre,
                                             erFarEllerMedmor,
-                                            erEøsUttakPeriode(p),
+                                            erEøsPeriode: erEøsUttakPeriode(p),
                                             morsAktivitet,
-                                            erVanligUttakPeriode(p) ? p.kontoType : undefined,
-                                        )}`}
+                                            konto: erVanligUttakPeriode(p) ? p.kontoType : undefined,
+                                        })}`}
                                         </Checkbox>
                                     );
                                 })}

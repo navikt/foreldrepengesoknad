@@ -73,14 +73,13 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                                         />
                                     )}
                                     {`${formatDate(p.fom)} - ${formatDate(p.tom)} - ` +
-                                        `${getStønadskvoteNavn(
-                                            intl,
+                                        `${getStønadskvoteNavn(intl, {
                                             navnPåForeldre,
-                                            søker === 'FAR_MEDMOR',
-                                            erEøsUttakPeriode(p),
+                                            erFarEllerMedmor: søker === 'FAR_MEDMOR',
+                                            erEøsPeriode: erEøsUttakPeriode(p),
                                             morsAktivitet,
-                                            erVanligUttakPeriode(p) ? p.kontoType : undefined,
-                                        )}`}
+                                            konto: erVanligUttakPeriode(p) ? p.kontoType : undefined,
+                                        })}`}
                                 </HStack>
                             </Radio>
                         );
