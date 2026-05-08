@@ -619,8 +619,10 @@ const StandardVisning = ({
     const {
         familiesituasjon,
         familiehendelsedato,
+        valgtStønadskvote,
         foreldreInfo: { erMedmorDelAvSøknaden },
     } = useUttaksplanData();
+    const harAktivitetsfriKvote = valgtStønadskvote.kontoer.some((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
 
     if (!konto) {
         return null;
@@ -650,7 +652,11 @@ const StandardVisning = ({
             <HStack gap="space-8" align="center">
                 {visStatusIkoner ? finnIkon() : null}
                 <BodyShort weight="semibold">
-                    <VisningsnavnForKvote kontoType={konto.konto} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
+                    <VisningsnavnForKvote
+                        kontoType={konto.konto}
+                        erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
+                        harAktivitetsfriKvote={harAktivitetsfriKvote}
+                    />
                     {' - '}
                     {getVarighetString(konto.dager, intl)}
                 </BodyShort>
@@ -719,13 +725,15 @@ const StandardVisning = ({
 const VisningsnavnForKvote = ({
     kontoType,
     erMedmorDelAvSøknaden,
+    harAktivitetsfriKvote,
 }: {
     kontoType: KontoTypeUttak;
     erMedmorDelAvSøknaden?: boolean;
+    harAktivitetsfriKvote?: boolean;
 }) => {
     switch (kontoType) {
         case 'AKTIVITETSFRI_KVOTE':
-            return <FormattedMessage id="kvote.kvote.Aktivitetsfrikvote" />;
+            return <FormattedMessage id="kvote.kvote.ForeldrepengerUtenAktivitetskrav" />;
         case 'FEDREKVOTE':
             return erMedmorDelAvSøknaden ? (
                 <FormattedMessage id="kvote.kvote.Medmorkvote" />
@@ -737,7 +745,11 @@ const VisningsnavnForKvote = ({
         case 'FORELDREPENGER_FØR_FØDSEL':
             return <FormattedMessage id="kvote.kvote.ForeldrepengerFørFødsel" />;
         case 'FORELDREPENGER':
-            return <FormattedMessage id="kvote.kvote.Foreldrepenger" />;
+            return harAktivitetsfriKvote ? (
+                <FormattedMessage id="kvote.kvote.ForeldrepengerMedAktivitetskrav" />
+            ) : (
+                <FormattedMessage id="kvote.kvote.Foreldrepenger" />
+            );
         case 'FELLESPERIODE':
             return <FormattedMessage id="kvote.kvote.Fellesperioder" />;
     }
