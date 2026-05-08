@@ -806,20 +806,25 @@ describe('UttaksplanListe', () => {
         await userEvent.click(periodeRad);
 
         // Periode 1: Innvilget med IKKE_OPPGITT skal vise "uten aktivitetskrav"
-        const periode1 = screen.getByText('09. mars - 15. mai').closest('div')?.parentElement;
-        expect(periode1).toBeInTheDocument();
-        expect(periode1).toHaveTextContent('Foreldrepenger uten aktivitetskrav');
+        const periode1Header = screen.getByText('09. mars - 15. mai');
+        const periode1Container = periode1Header.closest('div[class*="gap"]');
+        expect(periode1Container).toBeInTheDocument();
+        expect(within(periode1Container!).getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
 
         // Periode 2: Avslått skal vise bare "Foreldrepenger" (ikke "med aktivitetskrav")
-        const periode2 = screen.getByText('18. mai - 12. juni').closest('div')?.parentElement;
-        expect(periode2).toBeInTheDocument();
-        expect(periode2).toHaveTextContent('Foreldrepenger');
-        expect(periode2).not.toHaveTextContent('med aktivitetskrav');
-        expect(periode2).not.toHaveTextContent('uten aktivitetskrav');
+        const periode2Header = screen.getByText('18. mai - 12. juni');
+        const periode2Container = periode2Header.closest('div[class*="gap"]');
+        expect(periode2Container).toBeInTheDocument();
+        // Skal finne "Foreldrepenger" men ikke "med aktivitetskrav" eller "uten aktivitetskrav"
+        const periode2Text = within(periode2Container!).getByText(/^Foreldrepenger$/);
+        expect(periode2Text).toBeInTheDocument();
+        expect(within(periode2Container!).queryByText(/med aktivitetskrav/)).not.toBeInTheDocument();
+        expect(within(periode2Container!).queryByText(/uten aktivitetskrav/)).not.toBeInTheDocument();
 
         // Periode 3: Innvilget med ARBEID skal vise "med aktivitetskrav"
-        const periode3 = screen.getByText('15. juni - 10. juli').closest('div')?.parentElement;
-        expect(periode3).toBeInTheDocument();
-        expect(periode3).toHaveTextContent('Foreldrepenger med aktivitetskrav');
+        const periode3Header = screen.getByText('15. juni - 10. juli');
+        const periode3Container = periode3Header.closest('div[class*="gap"]');
+        expect(periode3Container).toBeInTheDocument();
+        expect(within(periode3Container!).getByText('Foreldrepenger med aktivitetskrav')).toBeInTheDocument();
     });
 });
