@@ -35,7 +35,10 @@ export const prosesserPerioderForVisning = (
     const mergedSøker = slåSammenTilstøtande(fjernFrieUtsettelser(justeringSøkerPerioder));
     const processedAnnenPart = slåSammenTilstøtande(
         fjernFrieUtsettelser(
-            fjernOverlappUtenSamtidigUttak(midlertidigJusteringAvSamtidigUttak(trimmedAnnenPart, trimmedSøker), trimmedSøker),
+            fjernOverlappUtenSamtidigUttak(
+                midlertidigJusteringAvSamtidigUttak(trimmedAnnenPart, trimmedSøker),
+                trimmedSøker,
+            ),
         ),
     );
 
@@ -126,7 +129,7 @@ const midlertidigJusteringAvSamtidigUttak = (
             return p;
         }
         return overlappande.samtidigUttak !== undefined && p.samtidigUttak === undefined
-            ? { ...p, samtidigUttak: 100 }
+            ? { ...p, samtidigUttak: p.gradering ? 100 - p.gradering.arbeidstidprosent : 100 }
             : p;
     });
 };
