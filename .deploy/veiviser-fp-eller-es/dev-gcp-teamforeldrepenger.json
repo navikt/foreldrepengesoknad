@@ -1,6 +1,7 @@
 {
     "app": "veiviser-fp-eller-es",
     "autentisering": false,
+    "ingress": "https://www.intern.dev.nav.no/foreldrepenger/foreldrepenger-eller-engangsstonad",
     "minReplicas": "1",
     "maxReplicas": "1",
     "limits": {
@@ -15,8 +16,5 @@
         "PUBLIC_PATH": "/foreldrepenger/foreldrepenger-eller-engangsstonad",
         "ENV": "dev",
         "VITE_MODE_PORT": "8091"
-    },
-    "ingresses": [
-        "https://www.intern.dev.nav.no/foreldrepenger/foreldrepenger-eller-engangsstonad"
-    ]
+    }
 }

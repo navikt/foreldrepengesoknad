@@ -24,9 +24,10 @@ spec:
       enabled: true
       runtime: nodejs
   ingresses:
-  {{#each ingresses}}
-    - {{this}}
-  {{/each}}
+    - {{ingress}}
+  {{#if eksternIngress}}
+    - {{eksternIngress}}
+  {{/if}}
   replicas:
     min: {{minReplicas}}
     max: {{maxReplicas}}
@@ -87,7 +88,7 @@ metadata:
   labels:
     team: teamforeldrepenger
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: {{lookup ../ingresses 0}}/$1
+    nginx.ingress.kubernetes.io/rewrite-target: {{../ingress}}/$1
 spec:
   ingressClassName: {{ingressClassName}}
   rules:

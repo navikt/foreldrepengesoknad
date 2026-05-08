@@ -1,6 +1,7 @@
 {
     "app": "planlegger",
     "autentisering": false,
+    "ingress": "https://www.nav.no/foreldrepenger/planlegger",
     "minReplicas": "2",
     "maxReplicas": "2",
     "limits": {
@@ -15,8 +16,5 @@
         "PUBLIC_PATH": "/foreldrepenger/planlegger",
         "ENV": "prod",
         "VITE_MODE_PORT": "8090"
-    },
-    "ingresses": [
-        "https://www.nav.no/foreldrepenger/planlegger"
-    ]
+    }
 }
