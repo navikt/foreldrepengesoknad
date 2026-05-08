@@ -1,7 +1,6 @@
 {
     "app": "planlegger",
     "autentisering": false,
-    "ingress": "https://www.nav.no/foreldrepenger/planlegger",
     "minReplicas": "2",
     "maxReplicas": "2",
     "limits": {

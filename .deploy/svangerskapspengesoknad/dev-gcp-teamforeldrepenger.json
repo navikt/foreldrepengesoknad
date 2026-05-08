@@ -1,7 +1,6 @@
 {
     "app": "svangerskapspengesoknad",
     "autentisering": true,
-    "ingress": "https://www.intern.dev.nav.no/svangerskapspenger/soknad",
     "minReplicas": "1",
     "maxReplicas": "1",
     "limits": {

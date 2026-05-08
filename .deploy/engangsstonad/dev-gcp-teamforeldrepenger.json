@@ -1,7 +1,6 @@
 {
     "app": "engangsstonad",
     "autentisering": true,
-    "ingress": "https://www.intern.dev.nav.no/engangsstonad/soknad",
     "minReplicas": "1",
     "maxReplicas": "1",
     "limits": {

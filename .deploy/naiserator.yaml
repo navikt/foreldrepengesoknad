@@ -87,7 +87,7 @@ metadata:
   labels:
     team: teamforeldrepenger
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: {{../ingress}}/$1
+    nginx.ingress.kubernetes.io/rewrite-target: {{lookup ../ingresses 0}}/$1
 spec:
   ingressClassName: {{ingressClassName}}
   rules:

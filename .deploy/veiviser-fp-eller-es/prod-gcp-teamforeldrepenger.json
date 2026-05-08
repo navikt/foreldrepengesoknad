@@ -1,7 +1,6 @@
 {
     "app": "veiviser-fp-eller-es",
     "autentisering": false,
-    "ingress": "https://www.nav.no/foreldrepenger/foreldrepenger-eller-engangsstonad",
     "minReplicas": "2",
     "maxReplicas": "2",
     "limits": {

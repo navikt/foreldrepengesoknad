@@ -1,7 +1,6 @@
 {
     "app": "engangsstonad",
     "autentisering": true,
-    "ingress": "https://www.nav.no/engangsstonad/soknad",
     "minReplicas": "2",
     "maxReplicas": "2",
     "limits": {

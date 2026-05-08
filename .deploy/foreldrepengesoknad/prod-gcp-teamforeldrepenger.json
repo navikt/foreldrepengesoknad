@@ -1,7 +1,6 @@
 {
     "app": "foreldrepengesoknad",
     "autentisering": true,
-    "ingress": "https://www.nav.no/foreldrepenger/soknad",
     "minReplicas": "2",
     "maxReplicas": "2",
     "limits": {
