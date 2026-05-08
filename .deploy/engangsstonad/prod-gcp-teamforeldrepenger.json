@@ -21,5 +21,8 @@
         "INNSYN": "https://www.nav.no/foreldrepenger/oversikt",
         "ENV": "prod",
         "VITE_MODE_PORT": "9113"
-    }
+    },
+    "ingresses": [
+        "https://www.nav.no/engangsstonad/soknad"
+    ]
 }

@@ -24,7 +24,9 @@ spec:
       enabled: true
       runtime: nodejs
   ingresses:
-    - {{ingress}}
+  {{#each ingresses}}
+    - {{this}}
+  {{/each}}
   replicas:
     min: {{minReplicas}}
     max: {{maxReplicas}}

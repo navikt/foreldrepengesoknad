@@ -16,5 +16,8 @@
         "PUBLIC_PATH": "/foreldrepenger/hvor-mye",
         "ENV": "dev",
         "VITE_MODE_PORT": "8092"
-    }
+    },
+    "ingresses": [
+        "https://www.intern.dev.nav.no/foreldrepenger/hvor-mye"
+    ]
 }

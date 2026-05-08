@@ -22,5 +22,9 @@
         "ENV": "dev",
         "FEATURE_TEST_1JULI2024_REGLER": "on",
         "VITE_MODE_PORT": "9114"
-    }
+    },
+    "ingresses": [
+        "https://www.intern.dev.nav.no/foreldrepenger/soknad",
+        "https://www.ekstern.dev.nav.no/foreldrepenger/soknad"
+    ]
 }

@@ -16,5 +16,8 @@
         "PUBLIC_PATH": "/foreldrepenger/planlegger",
         "ENV": "prod",
         "VITE_MODE_PORT": "8090"
-    }
+    },
+    "ingresses": [
+        "https://www.nav.no/foreldrepenger/planlegger"
+    ]
 }

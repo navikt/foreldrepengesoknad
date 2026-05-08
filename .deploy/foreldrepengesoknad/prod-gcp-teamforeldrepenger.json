@@ -22,5 +22,8 @@
         "ENV": "prod",
         "FEATURE_TEST_1JULI2024_REGLER": "off",
         "VITE_MODE_PORT": "9114"
-    }
+    },
+    "ingresses": [
+        "https://www.nav.no/foreldrepenger/soknad"
+    ]
 }

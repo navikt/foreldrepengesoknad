@@ -16,5 +16,8 @@
         "PUBLIC_PATH": "/foreldrepenger/hvor-mye",
         "ENV": "prod",
         "VITE_MODE_PORT": "8092"
-    }
+    },
+    "ingresses": [
+        "https://www.nav.no/foreldrepenger/hvor-mye"
+    ]
 }

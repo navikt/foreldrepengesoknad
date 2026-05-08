@@ -16,5 +16,8 @@
         "PUBLIC_PATH": "/foreldrepenger/foreldrepenger-eller-engangsstonad",
         "ENV": "prod",
         "VITE_MODE_PORT": "8091"
-    }
+    },
+    "ingresses": [
+        "https://www.nav.no/foreldrepenger/foreldrepenger-eller-engangsstonad"
+    ]
 }

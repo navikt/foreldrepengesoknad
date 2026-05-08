@@ -20,5 +20,8 @@
         "ENV": "prod",
         "PUBLIC_PATH": "/foreldrepenger/oversikt",
         "VITE_MODE_PORT": "9110"
-    }
+    },
+    "ingresses": [
+        "https://www.nav.no/foreldrepenger/oversikt"
+    ]
 }

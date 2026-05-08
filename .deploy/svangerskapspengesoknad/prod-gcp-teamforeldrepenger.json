@@ -22,5 +22,8 @@
         "LOG_VALIDATION": false,
         "ENV": "prod",
         "VITE_MODE_PORT": "9112"
-    }
+    },
+    "ingresses": [
+        "https://www.nav.no/svangerskapspenger/soknad"
+    ]
 }

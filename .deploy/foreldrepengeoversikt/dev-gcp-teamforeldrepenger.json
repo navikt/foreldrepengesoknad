@@ -20,5 +20,8 @@
         "ENV": "dev",
         "PUBLIC_PATH": "/foreldrepenger/oversikt",
         "VITE_MODE_PORT": "9110"
-    }
+    },
+    "ingresses": [
+        "https://www.intern.dev.nav.no/foreldrepenger/oversikt"
+    ]
 }

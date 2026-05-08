@@ -22,5 +22,9 @@
         "LOG_VALIDATION": false,
         "ENV": "dev",
         "VITE_MODE_PORT": "9112"
-    }
+    },
+    "ingresses": [
+        "https://www.intern.dev.nav.no/svangerskapspenger/soknad",
+        "https://www.ekstern.dev.nav.no/svangerskapspenger/soknad"
+    ]
 }
