@@ -960,3 +960,72 @@ export const SkalIkkeMarkereAvslåttePerioderMedVarselOmMorsAktivitet: Story = {
         erEndringssøknad: true,
     },
 };
+
+export const BareFarHarRettMedAvslåttePerioder: Story = {
+    args: {
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2026-03-09'],
+            antallBarn: 1,
+        },
+        foreldreInfo: {
+            rettighetType: 'BARE_SØKER_RETT',
+            søker: 'FAR_MEDMOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+        uttakPerioder: [
+            {
+                fom: '2026-03-09',
+                tom: '2026-05-15',
+                kontoType: 'FORELDREPENGER',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                morsAktivitet: 'IKKE_OPPGITT',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+            {
+                fom: '2026-05-18',
+                tom: '2026-06-12',
+                kontoType: 'FORELDREPENGER',
+                resultat: {
+                    innvilget: false,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                morsAktivitet: 'ARBEID',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+            {
+                fom: '2026-06-15',
+                tom: '2026-07-10',
+                kontoType: 'FORELDREPENGER',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                morsAktivitet: 'ARBEID',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+        ] satisfies Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+        valgtStønadskvote: {
+            kontoer: [
+                { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
+                { konto: 'FORELDREPENGER', dager: 150 },
+            ],
+            minsteretter: MINSTERETTER,
+        },
+        erEndringssøknad: true,
+    },
+};

@@ -16,7 +16,7 @@ import { assertUnreachable } from '@navikt/fp-validation';
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
-import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../../../utils/periodeUtils';
+import { erAvslåttPeriode, harPeriodeDerMorsAktivitetIkkeErValgt } from '../../../../utils/periodeUtils';
 import { getStønadskvoteNavn } from '../../../utils/uttaksplanListeUtils';
 
 interface Props {
@@ -32,17 +32,18 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
         foreldreInfo: { rettighetType },
         uttakPerioder,
     } = useUttaksplanData();
+    const erAvslått = erAvslåttPeriode(periode);
     const morsAktivitet = erVanligUttakPeriode(periode) && periode.morsAktivitet ? periode.morsAktivitet : undefined;
 
-    const stønadskvoteNavn = getStønadskvoteNavn(
-        intl,
+    const stønadskvoteNavn = getStønadskvoteNavn(intl, {
         navnPåForeldre,
         erFarEllerMedmor,
-        erEøsUttakPeriode(periode),
+        erEøsPeriode: erEøsUttakPeriode(periode),
         morsAktivitet,
-        periode.kontoType,
-        rettighetType === 'ALENEOMSORG',
-    );
+        konto: periode.kontoType,
+        erAleneOmOmsorg: rettighetType === 'ALENEOMSORG',
+        erAvslått,
+    });
 
     const morsPerioder = uttakPerioder.filter(
         (p): p is UttakPeriode_fpoversikt => !erEøsUttakPeriode(p) && p.forelder === 'MOR',
@@ -72,7 +73,9 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
                 </HStack>
                 <VStack gap="space-8">
                     <BodyShort>{stønadskvoteNavn}</BodyShort>
-                    {morsAktivitet !== undefined && <BodyShort>{getMorsAktivitetTekst(intl, morsAktivitet)}</BodyShort>}
+                    {!erAvslått && morsAktivitet !== undefined && (
+                        <BodyShort>{getMorsAktivitetTekst(intl, morsAktivitet)}</BodyShort>
+                    )}
                     {erEøsUttakPeriode(periode) && periode.trekkdager !== undefined ? (
                         <BodyShort>
                             <FormattedMessage id="uttaksplan.periodeListeContent.eøs" />

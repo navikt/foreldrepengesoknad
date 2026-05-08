@@ -25,15 +25,20 @@ export const getStønadskvoteNavnSimple = (intl: IntlShape, konto: KontoTypeUtta
     return intl.formatMessage({ id: `uttaksplan.stønadskvotetype.${konto}` });
 };
 
-export const getStønadskvoteNavn = (
-    intl: IntlShape,
-    navnPåForeldre: NavnPåForeldre,
-    erFarEllerMedmor: boolean,
-    erEøsPeriode: boolean,
-    morsAktivitet: MorsAktivitet | undefined,
-    konto?: KontoType,
-    erAleneOmOmsorg?: boolean,
-) => {
+export interface GetStønadskvoteNavnOptions {
+    navnPåForeldre: NavnPåForeldre;
+    erFarEllerMedmor: boolean;
+    erEøsPeriode: boolean;
+    morsAktivitet?: MorsAktivitet;
+    konto?: KontoType;
+    erAleneOmOmsorg?: boolean;
+    erAvslått?: boolean;
+}
+
+export const getStønadskvoteNavn = (intl: IntlShape, options: GetStønadskvoteNavnOptions) => {
+    const { navnPåForeldre, erFarEllerMedmor, erEøsPeriode, morsAktivitet, konto, erAleneOmOmsorg, erAvslått } =
+        options;
+
     let navn;
 
     switch (konto) {
@@ -54,7 +59,7 @@ export const getStønadskvoteNavn = (
         );
     }
 
-    if (!erEøsPeriode && erFarEllerMedmor === true && erAleneOmOmsorg === false) {
+    if (!erAvslått && !erEøsPeriode && erFarEllerMedmor === true && erAleneOmOmsorg === false) {
         if (morsAktivitet === 'IKKE_OPPGITT') {
             return intl.formatMessage({ id: 'uttaksplan.stønadskvotetype.AKTIVITETSFRI_KVOTE_BFHR' });
         }
