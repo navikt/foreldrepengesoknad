@@ -1,3 +1,4 @@
+import { TrashIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -94,7 +95,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
         <VStack gap="space-8">
             <VStack gap="space-24">
                 {!readOnly && (
-                    <div>
+                    <HStack gap="space-16">
                         <Button
                             type="button"
                             size="small"
@@ -110,7 +111,25 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                                 <FormattedMessage id="UttaksplanKalender.StartRedigering" />
                             )}
                         </Button>
-                    </div>
+                        {uttaksplanRedigering && (
+                            <Button
+                                type="button"
+                                size="small"
+                                variant="secondary"
+                                icon={<TrashIcon aria-hidden height={24} width={24} />}
+                                onClick={() => uttaksplanRedigering.setVisFjernAltModal(true)}
+                                aria-haspopup="dialog"
+                                aria-expanded={uttaksplanRedigering.visFjernAltModal}
+                                aria-controls={
+                                    uttaksplanRedigering.visFjernAltModal
+                                        ? 'FjernAltIUttaksplanModal'
+                                        : undefined
+                                }
+                            >
+                                <FormattedMessage id="UttaksplanHandlingKnapper.FjernAlt" />
+                            </Button>
+                        )}
+                    </HStack>
                 )}
                 {!readOnly && !erRedigeringInaktiv && (
                     <RadioGroup

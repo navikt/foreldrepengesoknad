@@ -6,39 +6,40 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanRedigering } from './context/UttaksplanRedigeringContext';
 
-export const FjernAltIUttaksplanModal = () => {
+export const TilbakestillPlanModal = () => {
     const uttaksplanRedigering = useUttaksplanRedigering();
 
-    const { fjernAltIUttaksplan, visFjernAltModal, setVisFjernAltModal } = notEmpty(uttaksplanRedigering);
+    const { tilbakestillUttaksplan, visTilbakestillModal, setVisTilbakestillModal } =
+        notEmpty(uttaksplanRedigering);
 
     return (
-        <Dialog open={visFjernAltModal} onOpenChange={setVisFjernAltModal}>
-            <Dialog.Popup id="FjernAltIUttaksplanModal">
+        <Dialog open={visTilbakestillModal} onOpenChange={setVisTilbakestillModal}>
+            <Dialog.Popup id="TilbakestillPlanModal">
                 <Dialog.Header>
                     <Dialog.Title>
-                        <FormattedMessage id="FjernAltIUttaksplanModal.FjernAlt.Modal.Tittel" />
+                        <FormattedMessage id="TilbakestillPlanModal.Tittel" />
                     </Dialog.Title>
                 </Dialog.Header>
                 <Dialog.Body>
                     <BodyLong>
-                        <FormattedMessage id="FjernAltIUttaksplanModal.FjernAlt.Modal.Body" />
+                        <FormattedMessage id="TilbakestillPlanModal.Body" />
                     </BodyLong>
                 </Dialog.Body>
                 <Dialog.Footer>
                     <Dialog.CloseTrigger>
                         <Button type="button" variant="secondary">
-                            <FormattedMessage id="FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Avbryt" />
+                            <FormattedMessage id="TilbakestillPlanModal.Knapp.Avbryt" />
                         </Button>
                     </Dialog.CloseTrigger>
                     <Button
                         type="button"
                         variant="primary"
                         onClick={() => {
-                            fjernAltIUttaksplan();
-                            setVisFjernAltModal(false);
+                            tilbakestillUttaksplan();
+                            setVisTilbakestillModal(false);
                         }}
                     >
-                        <FormattedMessage id="FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Bekreft" />
+                        <FormattedMessage id="TilbakestillPlanModal.Knapp.Bekreft" />
                     </Button>
                 </Dialog.Footer>
             </Dialog.Popup>

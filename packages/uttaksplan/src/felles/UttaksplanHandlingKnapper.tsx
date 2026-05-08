@@ -4,23 +4,23 @@ import { FormattedMessage } from 'react-intl';
 import { Button, HStack } from '@navikt/ds-react';
 
 interface Props {
-    visKnapper?: boolean;
     tilbakestillPlan?: () => void;
     angreEndring?: () => void;
-    fjernAltIPlanen: () => void;
+    fjernAltIPlanen?: () => void;
     toggleAllAccordions?: () => void;
     isAllAccordionsOpen?: boolean;
     visFjernAltModal?: boolean;
+    visTilbakestillModal?: boolean;
 }
 
 export const UttaksplanHandlingKnapper = ({
-    visKnapper = true,
     tilbakestillPlan,
     angreEndring,
     fjernAltIPlanen,
     toggleAllAccordions,
     isAllAccordionsOpen,
     visFjernAltModal,
+    visTilbakestillModal,
 }: Props) => {
     const erListevisning = !!toggleAllAccordions;
 
@@ -29,20 +29,23 @@ export const UttaksplanHandlingKnapper = ({
             <Button
                 size="small"
                 variant="secondary"
-                icon={visKnapper ? <ArrowCirclepathIcon aria-hidden height={24} width={24} /> : null}
-                onClick={tilbakestillPlan}
-                disabled={!tilbakestillPlan}
-            >
-                <FormattedMessage id="UttaksplanHandlingKnapper.Tilbakestill" />
-            </Button>
-            <Button
-                size="small"
-                variant="secondary"
-                icon={visKnapper ? <ArrowUndoIcon aria-hidden height={24} width={24} /> : null}
+                icon={<ArrowUndoIcon aria-hidden height={24} width={24} />}
                 onClick={angreEndring}
                 disabled={!angreEndring}
             >
                 <FormattedMessage id="UttaksplanHandlingKnapper.Angre" />
+            </Button>
+            <Button
+                size="small"
+                variant="secondary"
+                icon={<ArrowCirclepathIcon aria-hidden height={24} width={24} />}
+                onClick={tilbakestillPlan}
+                disabled={!tilbakestillPlan}
+                aria-haspopup="dialog"
+                aria-expanded={visTilbakestillModal}
+                aria-controls={visTilbakestillModal ? 'TilbakestillPlanModal' : undefined}
+            >
+                <FormattedMessage id="UttaksplanHandlingKnapper.Tilbakestill" />
             </Button>
             {erListevisning && (
                 <Button
@@ -64,17 +67,19 @@ export const UttaksplanHandlingKnapper = ({
                     )}
                 </Button>
             )}
-            <Button
-                size="small"
-                variant="secondary"
-                icon={visKnapper ? <TrashIcon aria-hidden height={24} width={24} /> : null}
-                onClick={fjernAltIPlanen}
-                aria-haspopup="dialog"
-                aria-expanded={visFjernAltModal}
-                aria-controls={visFjernAltModal ? 'FjernAltIUttaksplanModal' : undefined}
-            >
-                <FormattedMessage id="UttaksplanHandlingKnapper.FjernAlt" />
-            </Button>
+            {fjernAltIPlanen && (
+                <Button
+                    size="small"
+                    variant="secondary"
+                    icon={<TrashIcon aria-hidden height={24} width={24} />}
+                    onClick={fjernAltIPlanen}
+                    aria-haspopup="dialog"
+                    aria-expanded={visFjernAltModal}
+                    aria-controls={visFjernAltModal ? 'FjernAltIUttaksplanModal' : undefined}
+                >
+                    <FormattedMessage id="UttaksplanHandlingKnapper.FjernAlt" />
+                </Button>
+            )}
         </HStack>
     );
 };

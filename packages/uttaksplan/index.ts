@@ -19,6 +19,7 @@ export { HvaErMulig } from './src/infobokser/hva-er-mulig/HvaErMulig';
 export { UforutsetteEndringer } from './src/infobokser/uforutsette-endringer/UforutsetteEndringer';
 
 export { FjernAltIUttaksplanModal } from './src/FjernAltIUttaksplanModal';
+export { TilbakestillPlanModal } from './src/TilbakestillPlanModal';
 export { useErAntallDagerOvertrukketIUttaksplan } from './src/utils/kvoteOppsummeringUtils';
 export { UttaksperiodeValidatorer } from './src/utils/UttaksperiodeValidatorer';
 export { skalBesvareFlerbarnsdager } from './src/felles/LeggTilEllerEndrePeriodeFellesForm';

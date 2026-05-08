@@ -76,10 +76,9 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
                         </Link>
                     </VStack>
                     <UttaksplanHandlingKnapper
-                        visKnapper={false}
                         tilbakestillPlan={
                             uttaksplanRedigering?.harEndretPlan
-                                ? () => uttaksplanRedigering.tilbakestillUttaksplan()
+                                ? () => uttaksplanRedigering.setVisTilbakestillModal(true)
                                 : undefined
                         }
                         angreEndring={
@@ -87,8 +86,7 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
                                 ? () => uttaksplanRedigering.angreSisteEndring()
                                 : undefined
                         }
-                        fjernAltIPlanen={() => uttaksplanRedigering?.setVisFjernAltModal(true)}
-                        visFjernAltModal={uttaksplanRedigering?.visFjernAltModal}
+                        visTilbakestillModal={uttaksplanRedigering?.visTilbakestillModal}
                     />
                 </VStack>
             )}
