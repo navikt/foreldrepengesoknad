@@ -24,10 +24,12 @@ export const useErAntallDagerOvertrukketIUttaksplan = () => {
         familiehendelsedato,
     } = useUttaksplanData();
 
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
+
     if (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT') {
         return (
             finnAntallDagerDerKunEnHarForeldrepenger(
-                uttakPerioder,
+                filtrertePerioder,
                 familiesituasjon,
                 valgtStønadskvote,
                 familiehendelsedato,
@@ -36,7 +38,7 @@ export const useErAntallDagerOvertrukketIUttaksplan = () => {
     }
 
     return (
-        tellDagerIUttaksPeriodene(uttakPerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato)
+        tellDagerIUttaksPeriodene(filtrertePerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato)
             .antallOvertrukketDager > 0
     );
 };
@@ -111,11 +113,16 @@ export const finnAntallDagerDerKunEnHarForeldrepenger = (
     };
 };
 
-export const filtrerAvslåttePerioderMenBeholdPleiepenger = (
+export const filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger = (
     periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
 ) => {
     if (erEøsUttakPeriode(periode)) {
         return true;
+    }
+
+    // Utsettelseperiodar trekker ikkje dagar frå kvoten og skal ikkje reknast med.
+    if (periode.utsettelseÅrsak !== undefined && periode.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER') {
+        return false;
     }
 
     return periode.resultat?.trekkerDager ?? true;
@@ -124,7 +131,7 @@ export const filtrerAvslåttePerioderMenBeholdPleiepenger = (
 export const useTellDagerIUttaksPeriodene = () => {
     const { uttakPerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato } = useUttaksplanData();
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     return tellDagerIUttaksPeriodene(filtrertePerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato);
 };

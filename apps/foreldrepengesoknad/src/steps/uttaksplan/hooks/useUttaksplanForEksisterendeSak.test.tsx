@@ -884,4 +884,78 @@ describe('useUttaksplanForEksisterendeSak', () => {
             },
         ]);
     });
+
+    // TFP-6964: Fri utsettelse frå annen part (pleiepenger etter termin) skal filtrerast bort
+    it('testcase 9 - fri utsettelse frå annen part skal fjernast', () => {
+        const perioderAnnenPart: UttakPeriode_fpoversikt[] = [
+            {
+                fom: '2025-10-01',
+                tom: '2025-12-10',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+            },
+            // Fri utsettelse frå mor (pga pleiepenger) - skal fjernast
+            {
+                fom: '2025-12-11',
+                tom: '2026-02-15',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                utsettelseÅrsak: 'FRI',
+                flerbarnsdager: false,
+            },
+        ];
+
+        const perioderSøker: UttakPeriode_fpoversikt[] = [
+            {
+                fom: '2026-03-01',
+                tom: '2026-06-01',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                flerbarnsdager: false,
+            },
+        ];
+
+        const saker: Saker_fpoversikt = {
+            engangsstønad: [],
+            svangerskapspenger: [],
+            foreldrepenger: [
+                {
+                    saksnummer: SAKSNUMMER,
+                    familiehendelse: { antallBarn: 1, fødselsdato: '2025-10-01' },
+                    forelder: 'FAR_MEDMOR',
+                    gjelderAdopsjon: false,
+                    kanSøkeOmEndring: true,
+                    morUføretrygd: false,
+                    oppdatertTidspunkt: '2025-01-01T00:00:00',
+                    rettighetType: 'BEGGE_RETT',
+                    sakAvsluttet: false,
+                    sakTilhørerMor: false,
+                    gjeldendeVedtak: { perioder: perioderSøker },
+                },
+            ],
+        };
+
+        const { result } = renderHook(() => useUttaksplanForEksisterendeSak(perioderAnnenPart), {
+            wrapper: getWrapper(saker),
+        });
+
+        // Fri utsettelse frå annen part skal vere fjerna
+        expect(result.current).toEqual([
+            {
+                fom: '2025-10-01',
+                tom: '2025-12-10',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2026-03-01',
+                tom: '2026-06-01',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                flerbarnsdager: false,
+            },
+        ]);
+    });
 });

@@ -54,7 +54,12 @@ export const useUttaksplanForEksisterendeSak = (
     );
     const processedAnnenPart = trimmedAnnenPart
         ? slåSammenTilstøtande(
-              fjernOverlappUtenSamtidigUttak(midlertidigJusteringAvSamtidigUttak(trimmedAnnenPart, søkerRef), søkerRef),
+              fjernFrieUtsettelser(
+                  fjernOverlappUtenSamtidigUttak(
+                      midlertidigJusteringAvSamtidigUttak(trimmedAnnenPart, søkerRef),
+                      søkerRef,
+                  ),
+              ),
           )
         : [];
 
