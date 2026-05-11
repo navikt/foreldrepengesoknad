@@ -25,6 +25,9 @@ spec:
       runtime: nodejs
   ingresses:
     - {{ingress}}
+  {{#if eksternIngress}}
+    - {{eksternIngress}}
+  {{/if}}
   replicas:
     min: {{minReplicas}}
     max: {{maxReplicas}}

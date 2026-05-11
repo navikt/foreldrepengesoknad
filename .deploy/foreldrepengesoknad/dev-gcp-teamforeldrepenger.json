@@ -2,6 +2,7 @@
     "app": "foreldrepengesoknad",
     "autentisering": true,
     "ingress": "https://www.intern.dev.nav.no/foreldrepenger/soknad",
+    "eksternIngress": "https://www.ekstern.dev.nav.no/foreldrepenger/soknad",
     "minReplicas": "1",
     "maxReplicas": "1",
     "limits": {
