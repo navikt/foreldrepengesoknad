@@ -1,4 +1,4 @@
-import { JSX, ReactNode, createContext, useContext, useReducer } from 'react';
+import { JSX, ReactNode, createContext, use, useReducer } from 'react';
 import { ArbeidIUtlandet } from 'types/ArbeidIUtlandet';
 import { AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
 import { Barn } from 'types/Barn';
@@ -88,21 +88,21 @@ export const SvpDataContext = ({ children, initialState, onDispatch }: Props): J
     };
 
     return (
-        <SvpStateContext.Provider value={state}>
-            <SvpDispatchContext.Provider value={dispatchWrapper}>{children}</SvpDispatchContext.Provider>
-        </SvpStateContext.Provider>
+        <SvpStateContext value={state}>
+            <SvpDispatchContext value={dispatchWrapper}>{children}</SvpDispatchContext>
+        </SvpStateContext>
     );
 };
 
 /** Hook returns data for one specific data type  */
 export const useContextGetData = <TYPE extends ContextDataType>(key: TYPE): ContextDataMap[TYPE] => {
-    const state = useContext(SvpStateContext);
+    const state = use(SvpStateContext);
     return state[key];
 };
 
 /** Hook returns function capable of getting all types of data from context state  */
 export const useContextGetAnyData = () => {
-    const state = useContext(SvpStateContext);
+    const state = use(SvpStateContext);
 
     return <TYPE extends ContextDataType>(key: TYPE) => {
         return state[key];
@@ -111,7 +111,7 @@ export const useContextGetAnyData = () => {
 
 /** Hook returns save function for one specific data type */
 export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((data: ContextDataMap[TYPE]) => void) => {
-    const dispatch = useContext(SvpDispatchContext);
+    const dispatch = use(SvpDispatchContext);
     return (data: ContextDataMap[TYPE]) => {
         if (dispatch) {
             dispatch({ type: 'update', key, data });
@@ -121,7 +121,7 @@ export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((d
 
 /** Hook returns state reset function  */
 export const useContextReset = () => {
-    const dispatch = useContext(SvpDispatchContext);
+    const dispatch = use(SvpDispatchContext);
     return () => {
         if (dispatch) {
             dispatch({ type: 'reset' });
@@ -130,5 +130,5 @@ export const useContextReset = () => {
 };
 
 export const useContextComplete = () => {
-    return useContext(SvpStateContext);
+    return use(SvpStateContext);
 };

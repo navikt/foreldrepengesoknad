@@ -70,10 +70,10 @@ function RedirectTilSakHvisDetKunFinnesEn({ saker }: { readonly saker: SakOppsla
     const harKunDetteSaksnummeret = alleSaker.length === 1 ? alleSaker[0]!.saksnummer : undefined;
 
     // Etter første gang denne komponenten rendres skal det ikke lenger tillates redirects.
-    const harRedirectet = useRef(false);
+    const harRedirectetRef = useRef(false);
 
-    if (viErPåLandingSiden && !harRedirectet.current && harKunDetteSaksnummeret) {
-        harRedirectet.current = true;
+    if (viErPåLandingSiden && !harRedirectetRef.current && harKunDetteSaksnummeret) {
+        harRedirectetRef.current = true;
         void navigate(`${OversiktRoutes.SAKSOVERSIKT}/${harKunDetteSaksnummeret}`);
     }
 

@@ -111,8 +111,10 @@ export const Month = React.memo(
 
                         {Array.from({ length: nrOfWeeks }).map((_, week) => {
                             return (
+                                // eslint-disable-next-line @eslint-react/no-array-index-key
                                 <HGrid key={`week-${week}`} columns={nrOfColumns}>
                                     {showWeekNumbers && (
+                                        // eslint-disable-next-line @eslint-react/no-array-index-key
                                         <div key={`weeknr-${week}`} className={styles.weeknr}>
                                             {firstWeekNrOfMonth + week}
                                         </div>

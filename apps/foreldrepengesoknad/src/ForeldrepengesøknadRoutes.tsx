@@ -285,7 +285,7 @@ export const ForeldrepengesøknadRoutes = ({
 }: Props) => {
     const navigate = useNavigate();
     const routerLocation = useLocation();
-    const isFirstTimeLoadingApp = useRef(true);
+    const isFirstTimeLoadingAppRef = useRef(true);
 
     const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(lagretHarGodkjentVilkår || false);
     const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad || false);
@@ -312,9 +312,9 @@ export const ForeldrepengesøknadRoutes = ({
             currentRoute &&
             erMyndig(søkerInfo.fødselsdato) &&
             lagretHarGodkjentVilkår &&
-            isFirstTimeLoadingApp.current
+            isFirstTimeLoadingAppRef.current
         ) {
-            isFirstTimeLoadingApp.current = false;
+            isFirstTimeLoadingAppRef.current = false;
             if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår)) {
                 void navigate(currentRoute);
             } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING.toString()) {

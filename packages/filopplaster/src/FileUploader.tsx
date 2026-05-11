@@ -170,7 +170,7 @@ export const FileUploader = ({
     const intl = useIntl();
     const errorMessageMap = getErrorMessageMap(intl);
 
-    const [attachments, setAttachments] = useState(convertToInternalFormat(existingAttachments));
+    const [attachments, setAttachments] = useState(() => convertToInternalFormat(existingAttachments));
 
     useEffect(() => {
         const attachmentsWithoutError = attachments.filter((a) => !a.attachmentData.error && !a.fileObject.error);

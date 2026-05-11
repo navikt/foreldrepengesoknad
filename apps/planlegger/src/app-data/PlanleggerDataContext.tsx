@@ -1,8 +1,14 @@
-import { JSX, ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
+import { JSX, ReactNode, createContext, use, useCallback, useReducer } from 'react';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { FordelingPlanlegger, HvorLangPeriodePlanlegger, OmBarnetPlanlegger, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorMye } from 'types/HvorMye';
+
+import {
+    FordelingPlanlegger,
+    HvorLangPeriodePlanlegger,
+    OmBarnetPlanlegger,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 
 export enum ContextDataType {
     HVEM_PLANLEGGER = 'HVEM_PLANLEGGER',
@@ -66,15 +72,15 @@ export const PlanleggerDataContext = ({ children, initialState, onDispatch }: Pr
     );
 
     return (
-        <PlanleggerStateContext.Provider value={state}>
-            <PlanleggerDispatchContext.Provider value={dispatchWrapper}>{children}</PlanleggerDispatchContext.Provider>
-        </PlanleggerStateContext.Provider>
+        <PlanleggerStateContext value={state}>
+            <PlanleggerDispatchContext value={dispatchWrapper}>{children}</PlanleggerDispatchContext>
+        </PlanleggerStateContext>
     );
 };
 
 /** Hook returns save function for one specific data type */
 export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((data: ContextDataMap[TYPE]) => void) => {
-    const dispatch = useContext(PlanleggerDispatchContext);
+    const dispatch = use(PlanleggerDispatchContext);
     return useCallback(
         (data: ContextDataMap[TYPE]) => {
             if (dispatch) {
@@ -87,13 +93,13 @@ export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((d
 
 /** Hook returns data for one specific data type  */
 export const useContextGetData = <TYPE extends ContextDataType>(key: TYPE): ContextDataMap[TYPE] => {
-    const state = useContext(PlanleggerStateContext);
+    const state = use(PlanleggerStateContext);
     return state[key];
 };
 
 /** Hook returns function capable of getting all types of data from context state  */
 export const useContextGetAnyData = () => {
-    const state = useContext(PlanleggerStateContext);
+    const state = use(PlanleggerStateContext);
 
     return useCallback(
         <TYPE extends ContextDataType>(key: TYPE) => {
@@ -104,5 +110,5 @@ export const useContextGetAnyData = () => {
 };
 
 export const useContextComplete = () => {
-    return useContext(PlanleggerStateContext);
+    return use(PlanleggerStateContext);
 };

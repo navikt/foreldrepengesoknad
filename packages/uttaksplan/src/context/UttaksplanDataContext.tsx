@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo } from 'react';
+import { createContext, use, useMemo } from 'react';
 
 import {
     Barn,
@@ -57,7 +57,7 @@ export const UttaksplanDataProvider = (props: Props) => {
 };
 
 export const useUttaksplanData = () => {
-    const context = useContext(UttaksplanDataContext);
+    const context = use(UttaksplanDataContext);
     if (!context) {
         throw new Error('UttaksplanDataContext.Provider er ikke satt opp');
     }

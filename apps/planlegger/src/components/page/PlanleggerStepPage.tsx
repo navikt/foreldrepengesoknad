@@ -1,5 +1,5 @@
 import { PlanleggerRoutes } from 'appData/routes';
-import { forwardRef } from 'react';
+import { Ref } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Heading, VStack } from '@navikt/ds-react';
@@ -10,9 +10,10 @@ interface Props {
     steps: Array<ProgressStep<PlanleggerRoutes>>;
     goToStep: (nextPath: PlanleggerRoutes) => void;
     children: React.ReactElement | React.ReactElement[];
+    ref?: Ref<HTMLDivElement>;
 }
 
-export const PlanleggerStepPage = forwardRef<HTMLDivElement, Props>(({ steps, children, goToStep }, ref) => (
+export const PlanleggerStepPage = ({ steps, children, goToStep, ref }: Props) => (
     <>
         <Page
             header={
@@ -30,4 +31,4 @@ export const PlanleggerStepPage = forwardRef<HTMLDivElement, Props>(({ steps, ch
         </Page>
         <div ref={ref} />
     </>
-));
+);

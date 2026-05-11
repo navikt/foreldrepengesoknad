@@ -273,6 +273,7 @@ const BeregningOppsummering = ({ sak }: { sak: Foreldrepengesak | Svangerskapspe
                         <VStack gap="space-16">
                             {beregning.beregningsandeler.map((andel, index) => (
                                 // Ikke noe som er garantert unikt, så tillater index for key, få elementer, så ok
+                                // eslint-disable-next-line @eslint-react/no-array-index-key
                                 <Box background="default" padding="space-16" borderRadius="8" key={index}>
                                     <VStack>
                                         <Label>
