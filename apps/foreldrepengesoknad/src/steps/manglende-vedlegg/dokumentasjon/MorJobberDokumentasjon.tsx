@@ -15,6 +15,7 @@ import {
     Barn,
     MorArbeidRequest_fpoversikt,
     NavnPåForeldre,
+    PeriodeMedAktivitetskravType_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
     isAdoptertBarn,
@@ -143,6 +144,16 @@ const getDokumentereMorsArbeidParams = (
             ? barn.fnr[0]
             : undefined;
 
+    const getPeriodeType = (p: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt): PeriodeMedAktivitetskravType_fpoversikt => {
+        if (!bareFarHarRett) {
+            return 'UTTAK_FELLESPERIODE';
+        }
+        if (Uttaksperioden.erIkkeEøsPeriode(p) && p.utsettelseÅrsak === 'FRI') {
+            return 'UTSETTELSE_BFHR';
+        }
+        return 'UTTAK_BFHR';
+    };
+
     return {
         annenPartFødselsnummer,
         barnFødselsnummer,
@@ -150,10 +161,7 @@ const getDokumentereMorsArbeidParams = (
         perioder: uttaksplan.map((p) => ({
             fom: p.fom,
             tom: p.tom,
-            periodeType:
-                bareFarHarRett && Uttaksperioden.erIkkeEøsPeriode(p) && p.utsettelseÅrsak === 'FRI'
-                    ? 'UTSETTELSE'
-                    : 'UTTAK',
+            periodeType: getPeriodeType(p),
         })),
     };
 };
