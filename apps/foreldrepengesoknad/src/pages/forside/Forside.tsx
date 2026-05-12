@@ -67,9 +67,66 @@ export const Forside = ({
         [saker, søkerInfo.barn],
     );
 
+    const harBekreftetRettigheterOgPlikter = (values: ForsideFormValues) => values.harForståttRettigheterOgPlikter;
+
+    const gjelderPlanlagtBarnFraPlanlegger = (values: ForsideFormValues) =>
+        values.valgteBarn === SelectableBarnOptions.SØKNAD_GJELDER_PLANLAGT_BARN;
+
+    const harPlanleggerdata = !!getData(ContextDataType.KOMMER_FRA_PLANLEGGER);
+
+    const nullstillPlanleggerTilstand = () => {
+        oppdaterDataIState(ContextDataType.SØKERSITUASJON, undefined);
+        oppdaterDataIState(ContextDataType.OM_BARNET, undefined);
+        oppdaterDataIState(ContextDataType.PERIODE_MED_FORELDREPENGER, undefined);
+        oppdaterDataIState(ContextDataType.UTTAKSPLAN, undefined);
+        oppdaterDataIState(ContextDataType.KOMMER_FRA_PLANLEGGER, undefined);
+    };
+
+    const gåTilSøkersituasjonSomNySøknad = () => {
+        setErEndringssøknad(false);
+        setSøknadGjelderNyttBarn(true);
+        return navigator.goToNextStep(SøknadRoutes.SØKERSITUASJON);
+    };
+
+    const finnValgtEksisterendeSak = (valgteBarn: (typeof selectableBarn)[number]) => {
+        const vilSøkeOmEndring = !!valgteBarn.kanSøkeOmEndring;
+        return vilSøkeOmEndring ? saker.find((sak) => sak.saksnummer === valgteBarn.sak?.saksnummer) : undefined;
+    };
+
+    const gåTilEndringssøknad = (
+        valgteBarn: (typeof selectableBarn)[number],
+        valgtEksisterendeSak: FpSak_fpoversikt,
+    ) => {
+        const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgtEksisterendeSak, valgteBarn.fødselsdatoer);
+
+        const søknad = lagEndringsSøknad(søkerInfo, eksisterendeSak, intl, valgtEksisterendeSak.annenPart, valgteBarn);
+        oppdaterSøknadIState(søknad);
+
+        setErEndringssøknad(true);
+        setSøknadGjelderNyttBarn(false);
+        return navigator.goToNextStep(SøknadRoutes.UTTAKSPLAN);
+    };
+
+    const opprettNySøknadBasertPåValgtBarn = (valgteBarn: (typeof selectableBarn)[number]) => {
+        if (valgteBarn.sak !== undefined && valgteBarn.kanSøkeOmEndring === false) {
+            const søknad = lagSøknadFraValgteBarnMedSak(
+                { ...valgteBarn, sak: valgteBarn.sak }, // Gjør dette slik at funksjonen slipper deale med undefined sak
+                intl,
+                søkerInfo.barn,
+                søkerInfo.fnr,
+            );
+            oppdaterSøknadIState(søknad);
+            return;
+        }
+
+        // Barn er registrert, men det finnes ingen sak
+        const søknad = lagNySøknadForRegistrerteBarn(valgteBarn);
+        oppdaterSøknadIState(søknad);
+    };
+
     const onSubmit = (values: ForsideFormValues) => {
         // Skal i utgangspunktet ikke få submitte hvis denne ikke er true
-        if (!values.harForståttRettigheterOgPlikter) {
+        if (!harBekreftetRettigheterOgPlikter(values)) {
             // eslint-disable-next-line no-console
             console.error(
                 'harForståttRettigheterOgPlikter er falsy til tross for at formet skal ha validert den',
@@ -80,70 +137,31 @@ export const Forside = ({
         setHarGodkjentVilkår(true);
 
         // Bruker har valgt det planlagte barnet fra planleggeren
-        if (values.valgteBarn === SelectableBarnOptions.SØKNAD_GJELDER_PLANLAGT_BARN) {
-            setErEndringssøknad(false);
-            setSøknadGjelderNyttBarn(true);
-            return navigator.goToNextStep(SøknadRoutes.SØKERSITUASJON);
+        if (gjelderPlanlagtBarnFraPlanlegger(values)) {
+            return gåTilSøkersituasjonSomNySøknad();
         }
 
         // Bruker har valgt et annet barn — nullstill eventuell mappet planlegger-tilstand
-        if (getData(ContextDataType.KOMMER_FRA_PLANLEGGER)) {
-            oppdaterDataIState(ContextDataType.SØKERSITUASJON, undefined);
-            oppdaterDataIState(ContextDataType.OM_BARNET, undefined);
-            oppdaterDataIState(ContextDataType.PERIODE_MED_FORELDREPENGER, undefined);
-            oppdaterDataIState(ContextDataType.UTTAKSPLAN, undefined);
-            oppdaterDataIState(ContextDataType.KOMMER_FRA_PLANLEGGER, undefined);
+        if (harPlanleggerdata) {
+            nullstillPlanleggerTilstand();
         }
 
         const valgteBarn = selectableBarn.find((sb) => sb.id === values.valgteBarn);
 
         // Har valgt å opprette en helt ny sak
         if (valgteBarn === undefined) {
-            setErEndringssøknad(false);
-            setSøknadGjelderNyttBarn(true);
-            return navigator.goToNextStep(SøknadRoutes.SØKERSITUASJON);
+            return gåTilSøkersituasjonSomNySøknad();
         }
-
-        const vilSøkeOmEndring = !!valgteBarn.kanSøkeOmEndring;
 
         oppdaterDataIState(ContextDataType.VALGT_EKSISTERENDE_SAKSNR, valgtBarn?.sak?.saksnummer);
 
-        // Uklarhet: hvorfor lete etter sak her. Er ikke sak allerede satt på "valgteBarn"
-        const valgtEksisterendeSak = vilSøkeOmEndring
-            ? saker.find((sak) => sak.saksnummer === valgteBarn.sak?.saksnummer)
-            : undefined;
+        const valgtEksisterendeSak = finnValgtEksisterendeSak(valgteBarn);
 
         if (valgtEksisterendeSak) {
-            const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgtEksisterendeSak, valgteBarn.fødselsdatoer);
-
-            const søknad = lagEndringsSøknad(
-                søkerInfo,
-                eksisterendeSak,
-                intl,
-                valgtEksisterendeSak.annenPart,
-                valgteBarn,
-            );
-            oppdaterSøknadIState(søknad);
-
-            setErEndringssøknad(true);
-            setSøknadGjelderNyttBarn(false);
-            return navigator.goToNextStep(SøknadRoutes.UTTAKSPLAN);
+            return gåTilEndringssøknad(valgteBarn, valgtEksisterendeSak);
         }
 
-        // Det finnes en sak som ikke kan endres. Lag derfor ny søknad fra eksisterende sak
-        if (valgteBarn.sak !== undefined && valgteBarn.kanSøkeOmEndring === false) {
-            const søknad = lagSøknadFraValgteBarnMedSak(
-                { ...valgteBarn, sak: valgteBarn.sak }, // Gjør dette slik at funksjonen slipper deale med undefined sak
-                intl,
-                søkerInfo.barn,
-                søkerInfo.fnr,
-            );
-            oppdaterSøknadIState(søknad);
-        } else if (!valgtEksisterendeSak) {
-            // Barn er registrert, men det finnes ingen sak
-            const søknad = lagNySøknadForRegistrerteBarn(valgteBarn);
-            oppdaterSøknadIState(søknad);
-        }
+        opprettNySøknadBasertPåValgtBarn(valgteBarn);
 
         setErEndringssøknad(false);
         setSøknadGjelderNyttBarn(false);
@@ -182,7 +200,7 @@ export const Forside = ({
                             />
                         </VStack>
                     </GuidePanel>
-                    <BarnVelger selectableBarn={selectableBarn} harPlanleggerData={!!getData(ContextDataType.KOMMER_FRA_PLANLEGGER)} />
+                    <BarnVelger selectableBarn={selectableBarn} harPlanleggerData={harPlanleggerdata} />
                     <Alert variant="info">
                         <FormattedMessage id="velkommen.lagring.info" />
                     </Alert>
