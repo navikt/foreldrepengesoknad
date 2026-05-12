@@ -319,20 +319,14 @@ export const FarOgFarBeggeHarRett: Story = {
         },
         stønadskvoter: {
             '100': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 125 },
-                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 75 },
-                ],
+                kontoer: DELT_UTTAK_100,
                 minsteretter: {
                     farRundtFødsel: 0,
                     toTette: 0,
                 },
             } satisfies KontoBeregningDto,
             '80': {
-                kontoer: [
-                    { konto: 'FORELDREPENGER', dager: 166 },
-                    { konto: 'AKTIVITETSFRI_KVOTE', dager: 95 },
-                ],
+                kontoer: DELT_UTTAK_80,
                 minsteretter: {
                     farRundtFødsel: 0,
                     toTette: 0,

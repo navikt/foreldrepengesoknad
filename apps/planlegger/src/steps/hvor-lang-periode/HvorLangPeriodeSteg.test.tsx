@@ -5,6 +5,8 @@ import { ContextDataType } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import { useNavigate } from 'react-router-dom';
 
+import { DELT_UTTAK_80, DELT_UTTAK_100, MINSTERETTER } from '@navikt/fp-utils-test';
+
 import * as stories from './HvorLangPeriodeSteg.stories';
 
 // TODO: Benytt dayjs for å håndtere datoer i testene. Spesielt for å sørge for at fremtidige datoer alltid er fremtidige.
@@ -117,7 +119,7 @@ describe('<HvorLangPeriodePlanleggerSteg>', () => {
             />,
         );
         expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
-        await userEvent.click(screen.getByText('100 % utbetaling over 40 uker'));
+        await userEvent.click(screen.getByText('100 % utbetaling over 46 uker'));
 
         expect(
             screen.getByText('Denne datoen gjelder om dere har foreldrepenger sammenhengende fra fødsel.'),
@@ -134,7 +136,7 @@ describe('<HvorLangPeriodePlanleggerSteg>', () => {
 
         expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('100 % utbetaling over 40 uker'));
+        await userEvent.click(screen.getByText('100 % utbetaling over 46 uker'));
 
         expect(screen.queryByText('Når bare far skal ha foreldrepenger')).not.toBeInTheDocument();
         expect(screen.queryByText('Når bare én av fedrene skal ha foreldrepenger')).not.toBeInTheDocument();
@@ -254,5 +256,33 @@ describe('<HvorLangPeriodePlanleggerSteg>', () => {
                 'Dette er hvis dere har foreldrepenger sammenhengende fra omsorgsovertagelsen den 08. juli 2025.',
             ),
         ).toBeInTheDocument();
+    });
+
+    it('skal vise 46 uker ved 100% for far og far, begge har rett, fødsel', async () => {
+        render(
+            <FarOgFarBeggeHarRett
+                stønadskvoter={{
+                    '100': { kontoer: DELT_UTTAK_100, minsteretter: MINSTERETTER },
+                    '80': { kontoer: DELT_UTTAK_80, minsteretter: MINSTERETTER },
+                }}
+            />,
+        );
+
+        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
+        expect(screen.getByText('100 % utbetaling over 46 uker')).toBeInTheDocument();
+    });
+
+    it('skal vise 58 uker + 1 dag ved 80% for far og far, begge har rett, fødsel', async () => {
+        render(
+            <FarOgFarBeggeHarRett
+                stønadskvoter={{
+                    '100': { kontoer: DELT_UTTAK_100, minsteretter: MINSTERETTER },
+                    '80': { kontoer: DELT_UTTAK_80, minsteretter: MINSTERETTER },
+                }}
+            />,
+        );
+
+        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
+        expect(screen.getByText('80 % utbetaling over 58 uker + 1 dag')).toBeInTheDocument();
     });
 });

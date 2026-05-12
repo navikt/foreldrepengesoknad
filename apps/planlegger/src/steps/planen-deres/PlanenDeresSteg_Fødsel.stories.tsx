@@ -8,7 +8,6 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { FordelingPlanlegger, HvorLangPeriodePlanlegger, OmBarnetPlanlegger } from '@navikt/fp-types';
-
 import {
     ALENE_OM_OMSORG_80_FARMEDMOR,
     ALENE_OM_OMSORG_100_FARMEDMOR,
@@ -20,14 +19,10 @@ import {
     IKKE_DELT_UTTAK_100_FARMEDMOR,
     IKKE_DELT_UTTAK_100_FARMEDMOR_MOR_UFØR,
     IKKE_DELT_UTTAK_100_MOR,
+    MINSTERETTER,
 } from '@navikt/fp-utils-test';
 
 import { PlanenDeresSteg } from './PlanenDeresSteg';
-
-const MINSTERETTER = {
-    farRundtFødsel: 10,
-    toTette: 0,
-};
 
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
@@ -265,11 +260,11 @@ export const FarOgFarBeggeHarRett: Story = {
         },
         stønadskvoter: {
             '80': {
-                kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR,
+                kontoer: DELT_UTTAK_80,
                 minsteretter: MINSTERETTER,
             },
             '100': {
-                kontoer: IKKE_DELT_UTTAK_100_FARMEDMOR,
+                kontoer: DELT_UTTAK_100,
                 minsteretter: MINSTERETTER,
             },
         },

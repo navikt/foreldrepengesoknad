@@ -31,6 +31,7 @@ import { loggUmamiEvent } from '@navikt/fp-observability';
 import {
     Dekningsgrad,
     FordelingPlanlegger,
+    KontoBeregningDto,
     KontoBeregningResultatDto,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
@@ -299,6 +300,13 @@ const AntallUkerVelger = ({
     const hvorLangPeriode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
 
+    const erFarOgFarFødsel = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && omBarnet.erFødsel;
+
+    const filtrerKvoteForFarOgFarFødsel = (kvote: KontoBeregningDto): KontoBeregningDto =>
+        erFarOgFarFødsel
+            ? { ...kvote, kontoer: kvote.kontoer.filter((k) => k.konto !== 'FORELDREPENGER_FØR_FØDSEL') }
+            : kvote;
+
     const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
     const lagreHvorLangPeriodePlanlegger = notEmpty(useContextSaveData(ContextDataType.HVOR_LANG_PERIODE));
 
@@ -319,8 +327,8 @@ const AntallUkerVelger = ({
     const stønadskvote80 = stønadskvoter['80'];
     const valgtStønadskvote = hvorLangPeriode.dekningsgrad === '100' ? stønadskvote100 : stønadskvote80;
 
-    const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(stønadskvote100);
-    const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(stønadskvote80);
+    const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(filtrerKvoteForFarOgFarFødsel(stønadskvote100));
+    const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(filtrerKvoteForFarOgFarFødsel(stønadskvote80));
 
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
