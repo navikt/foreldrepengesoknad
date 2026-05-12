@@ -20,6 +20,7 @@ import { RhfConfirmationPanel, RhfForm } from '@navikt/fp-form-hooks';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
+import { ValgtBarn } from '../../types/ValgtBarn';
 import { BarnVelger, SelectableBarnOptions } from './BarnVelger';
 import { DinePlikter } from './dine-plikter/DinePlikter';
 import { getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './forsideUtils';
@@ -67,12 +68,7 @@ export const Forside = ({
         [saker, søkerInfo.barn],
     );
 
-    const harBekreftetRettigheterOgPlikter = (values: ForsideFormValues) => values.harForståttRettigheterOgPlikter;
-
-    const gjelderPlanlagtBarnFraPlanlegger = (values: ForsideFormValues) =>
-        values.valgteBarn === SelectableBarnOptions.SØKNAD_GJELDER_PLANLAGT_BARN;
-
-    const harPlanleggerdata = !!getData(ContextDataType.KOMMER_FRA_PLANLEGGER);
+    const harPlanleggerData = !!getData(ContextDataType.KOMMER_FRA_PLANLEGGER);
 
     const nullstillPlanleggerTilstand = () => {
         oppdaterDataIState(ContextDataType.SØKERSITUASJON, undefined);
@@ -88,15 +84,12 @@ export const Forside = ({
         return navigator.goToNextStep(SøknadRoutes.SØKERSITUASJON);
     };
 
-    const finnValgtEksisterendeSak = (valgteBarn: (typeof selectableBarn)[number]) => {
+    const finnValgtEksisterendeSak = (valgteBarn: ValgtBarn) => {
         const vilSøkeOmEndring = !!valgteBarn.kanSøkeOmEndring;
         return vilSøkeOmEndring ? saker.find((sak) => sak.saksnummer === valgteBarn.sak?.saksnummer) : undefined;
     };
 
-    const gåTilEndringssøknad = (
-        valgteBarn: (typeof selectableBarn)[number],
-        valgtEksisterendeSak: FpSak_fpoversikt,
-    ) => {
+    const gåTilEndringssøknad = (valgteBarn: ValgtBarn, valgtEksisterendeSak: FpSak_fpoversikt) => {
         const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgtEksisterendeSak, valgteBarn.fødselsdatoer);
 
         const søknad = lagEndringsSøknad(søkerInfo, eksisterendeSak, intl, valgtEksisterendeSak.annenPart, valgteBarn);
@@ -107,7 +100,7 @@ export const Forside = ({
         return navigator.goToNextStep(SøknadRoutes.UTTAKSPLAN);
     };
 
-    const opprettNySøknadBasertPåValgtBarn = (valgteBarn: (typeof selectableBarn)[number]) => {
+    const opprettNySøknadBasertPåValgtBarn = (valgteBarn: ValgtBarn) => {
         if (valgteBarn.sak !== undefined && valgteBarn.kanSøkeOmEndring === false) {
             const søknad = lagSøknadFraValgteBarnMedSak(
                 { ...valgteBarn, sak: valgteBarn.sak }, // Gjør dette slik at funksjonen slipper deale med undefined sak
@@ -125,8 +118,13 @@ export const Forside = ({
     };
 
     const onSubmit = (values: ForsideFormValues) => {
+        const harBekreftetRettigheterOgPlikter = values.harForståttRettigheterOgPlikter;
+
+        const gjelderPlanlagtBarnFraPlanlegger =
+            values.valgteBarn === SelectableBarnOptions.SØKNAD_GJELDER_PLANLAGT_BARN;
+
         // Skal i utgangspunktet ikke få submitte hvis denne ikke er true
-        if (!harBekreftetRettigheterOgPlikter(values)) {
+        if (!harBekreftetRettigheterOgPlikter) {
             // eslint-disable-next-line no-console
             console.error(
                 'harForståttRettigheterOgPlikter er falsy til tross for at formet skal ha validert den',
@@ -137,12 +135,12 @@ export const Forside = ({
         setHarGodkjentVilkår(true);
 
         // Bruker har valgt det planlagte barnet fra planleggeren
-        if (gjelderPlanlagtBarnFraPlanlegger(values)) {
+        if (gjelderPlanlagtBarnFraPlanlegger) {
             return gåTilSøkersituasjonSomNySøknad();
         }
 
         // Bruker har valgt et annet barn — nullstill eventuell mappet planlegger-tilstand
-        if (harPlanleggerdata) {
+        if (harPlanleggerData) {
             nullstillPlanleggerTilstand();
         }
 
@@ -200,7 +198,7 @@ export const Forside = ({
                             />
                         </VStack>
                     </GuidePanel>
-                    <BarnVelger selectableBarn={selectableBarn} harPlanleggerData={harPlanleggerdata} />
+                    <BarnVelger selectableBarn={selectableBarn} harPlanleggerData={harPlanleggerData} />
                     <Alert variant="info">
                         <FormattedMessage id="velkommen.lagring.info" />
                     </Alert>
