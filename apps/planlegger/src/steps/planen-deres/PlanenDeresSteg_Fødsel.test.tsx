@@ -441,6 +441,27 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(within(august).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(15);
     });
 
+    it('skal vise korrekt sluttdato i kalender for far og far - begge har rett - stemmer med HvorLangPeriodeSteg', async () => {
+        render(<FarOgFarBeggeHarRett />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        // Termindato: 2024-07-01, startdato: 2024-08-12 (termin + 6 uker)
+        // 100% (230 dager): sluttdato = fredag 27. juni 2025
+        const juni2025 = screen.getByTestId('year:2025;month:5');
+        expect(within(juni2025).getByTestId('day:27;dayColor:GREENOUTLINE')).toBeInTheDocument();
+        // Dag 28 (mandag) skal ikke ha uttaksdager
+        expect(within(juni2025).queryByTestId('day:28;dayColor:GREENOUTLINE')).not.toBeInTheDocument();
+
+        // Bytt til 80% og verifiser sluttdato: mandag 22. september 2025 (291 dager)
+        await userEvent.click(screen.getByText('80 % i 58 uker + 1 dag'));
+
+        const sept2025 = screen.getByTestId('year:2025;month:8');
+        expect(within(sept2025).getByTestId('day:22;dayColor:GREENOUTLINE')).toBeInTheDocument();
+        // Dag 23 (tirsdag) skal ikke ha uttaksdager
+        expect(within(sept2025).queryByTestId('day:23;dayColor:GREENOUTLINE')).not.toBeInTheDocument();
+    });
+
     it('skal vise korrekt data for fødsel - barnet er født dagen etter termindato', async () => {
         render(<BarnetErFødtPlanleggerDagenEtterTermindato />);
 
