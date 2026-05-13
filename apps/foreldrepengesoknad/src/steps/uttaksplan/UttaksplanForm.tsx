@@ -24,11 +24,10 @@ import {
 } from '@navikt/fp-types';
 import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
 import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
-import { useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { GåTilbakeModal } from './GåTilbakeModal';
-import { finnFørsteSubmitFeilmelding } from './submitValidering';
+import { useFinnFørsteSubmitFeilmelding } from './submitValidering';
 
 type FormValues = {
     ønskerJustertUttakVedFødsel?: boolean;
@@ -88,8 +87,6 @@ export const UttaksplanForm = ({
 
     const harSvartJaPåAutoJustering = !!formMethods.watch('ønskerJustertUttakVedFødsel');
 
-    const erAntallDagerOvertrukket = useErAntallDagerOvertrukketIUttaksplan();
-
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
@@ -113,12 +110,19 @@ export const UttaksplanForm = ({
         barn.termindato !== undefined &&
         !bareFarHarRett;
 
-    const visFeilOgScroll = (message: string) => {
-        setFeilmelding(message);
-        scrollToKvoteOppsummering();
-    };
+    const finnFørsteSubmitFeilmelding = useFinnFørsteSubmitFeilmelding({ opprinneligPlan });
 
-    const håndterGyldigSubmit = (formValues: FormValues) => {
+    const onSubmit = (formValues: FormValues) => {
+        const planForValidering = gjeldendeUttaksplan ?? defaultUttaksperioder;
+        const feilmelding = finnFørsteSubmitFeilmelding(planForValidering);
+
+        if (feilmelding) {
+            setFeilmelding(feilmelding);
+            scrollToKvoteOppsummering();
+
+            return;
+        }
+
         oppdaterHarJustertUttakVedFødsel(visAutomatiskJustering ? formValues.ønskerJustertUttakVedFødsel : undefined);
 
         if (!gjeldendeUttaksplan) {
@@ -126,27 +130,6 @@ export const UttaksplanForm = ({
         }
 
         return navigator.goToNextDefaultStep();
-    };
-
-    const onSubmit = (formValues: FormValues) => {
-        const planForValidering = gjeldendeUttaksplan ?? defaultUttaksperioder;
-        const feilmelding = finnFørsteSubmitFeilmelding({
-            planForValidering,
-            erEndringssøknad,
-            uttaksplan,
-            opprinneligPlan,
-            erAntallDagerOvertrukket,
-            erAleneOmOmsorg,
-            erDeltUttak,
-            erSøkerFarEllerMedmor,
-            intl,
-        });
-        if (feilmelding) {
-            visFeilOgScroll(feilmelding);
-            return;
-        }
-
-        return håndterGyldigSubmit(formValues);
     };
 
     const [gåTilbakeIsOpen, setGåTilbakeIsOpen] = useState(false);

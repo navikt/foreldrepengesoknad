@@ -1,4 +1,7 @@
-import { IntlShape } from 'react-intl';
+import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
+import { useIntl } from 'react-intl';
+import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
+import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
 import {
     RettighetType_fpoversikt,
@@ -6,7 +9,8 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
-import { harPeriodeDerMorsAktivitetIkkeErValgt } from '@navikt/fp-uttaksplan';
+import { harPeriodeDerMorsAktivitetIkkeErValgt, useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
+import { notEmpty } from '@navikt/fp-validation';
 
 export type UttaksplanPerioder = Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
 
@@ -15,29 +19,26 @@ type SubmitValideringsregel = {
     message: string;
 };
 
-interface FinnFørsteSubmitFeilmeldingProps {
-    planForValidering: UttaksplanPerioder;
-    erEndringssøknad: boolean;
-    uttaksplan: UttaksplanPerioder | undefined;
+interface UseFinnFørsteSubmitFeilmeldingProps {
     opprinneligPlan: UttaksplanPerioder | undefined;
-    erAntallDagerOvertrukket: boolean;
-    erAleneOmOmsorg: boolean;
-    erDeltUttak: boolean;
-    erSøkerFarEllerMedmor: boolean;
-    intl: IntlShape;
 }
 
-export const finnFørsteSubmitFeilmelding = ({
-    planForValidering,
-    erEndringssøknad,
-    uttaksplan,
-    opprinneligPlan,
-    erAntallDagerOvertrukket,
-    erAleneOmOmsorg,
-    erDeltUttak,
-    erSøkerFarEllerMedmor,
-    intl,
-}: FinnFørsteSubmitFeilmeldingProps): string | undefined => {
+export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFørsteSubmitFeilmeldingProps) => {
+    const intl = useIntl();
+    const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
+    const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
+    const erEndringssøknad = !!valgtEksisterendeSaksnr;
+    const erAntallDagerOvertrukket = useErAntallDagerOvertrukketIUttaksplan();
+
+    const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
+    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
+    const erDeltUttak =
+        oppgittAnnenForelder?.harRettPåForeldrepengerINorge === true ||
+        oppgittAnnenForelder?.harRettPåForeldrepengerIEØS === true;
+    const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
+
     const manglerPerioderEtterValg = (perioder: UttaksplanPerioder) =>
         perioder.length === 0 && !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan);
 
@@ -77,11 +78,16 @@ export const finnFørsteSubmitFeilmelding = ({
         },
     ];
 
-    const valideringsfeil = submitValideringsregler.find((regel) => regel.gjelder(planForValidering));
-    return valideringsfeil?.message;
+    return (planForValidering: UttaksplanPerioder): string | undefined => {
+        const valideringsfeil = submitValideringsregler.find((regel) => regel.gjelder(planForValidering));
+        return valideringsfeil?.message;
+    };
 };
 
-const harBrukerKunSlettetPerioder = (perioder: UttaksplanPerioder | undefined, opprinneligPlan: UttaksplanPerioder | undefined) => {
+const harBrukerKunSlettetPerioder = (
+    perioder: UttaksplanPerioder | undefined,
+    opprinneligPlan: UttaksplanPerioder | undefined,
+) => {
     if (!opprinneligPlan) {
         return false;
     }
@@ -91,7 +97,9 @@ const harBrukerKunSlettetPerioder = (perioder: UttaksplanPerioder | undefined, o
     );
 
     if (erKunSaksperioder) {
-        const harSlettetPeriode = perioder ? !perioder.every((periode, index) => periode === opprinneligPlan[index]) : false;
+        const harSlettetPeriode = perioder
+            ? !perioder.every((periode, index) => periode === opprinneligPlan[index])
+            : false;
         return harSlettetPeriode;
     }
 
