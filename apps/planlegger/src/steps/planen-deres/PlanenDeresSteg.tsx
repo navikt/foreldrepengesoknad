@@ -19,7 +19,7 @@ import {
     getFornavnPåSøker2,
     getNavnPåForeldre,
 } from 'utils/HvemPlanleggerUtils';
-import { mapOmBarnetPlanleggerTilBarn } from 'utils/barnetUtils';
+import { erBarnetAdoptert, mapOmBarnetPlanleggerTilBarn } from 'utils/barnetUtils';
 import { HvemHarRett, utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskvoterUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
@@ -78,7 +78,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
 
     const stønadskvote100 = stønadskvoter['100'];
     const stønadskvote80 = stønadskvoter['80'];
-    const valgtStønadskvote = hvorLangPeriode.dekningsgrad === '100' ? stønadskvote100 : stønadskvote80;
+    const valgtStønadskvoteRå = hvorLangPeriode.dekningsgrad === '100' ? stønadskvote100 : stønadskvote80;
     const barnehagestartdato = barnehagestartDato(omBarnet);
 
     const isMedmorDelAvSøknaden = erMedmorDelAvSøknaden(hvemPlanlegger);
@@ -88,6 +88,24 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
 
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
     const erDeltUttak = fordeling !== undefined;
+
+    // For FAR_OG_FAR + fødsel transformer DELT_UTTAK-kvoter til AKTIVITETSFRI_KVOTE.
+    // API returnerer MØDREKVOTE/FEDREKVOTE/FELLESPERIODE/FFF, men KvoteOppsummering og
+    // kalendervisning forventer AKTIVITETSFRI_KVOTE. Far1 tar hele kvoten, far2 får ikke noe.
+    const erFarOgFarFødsel = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && !erBarnetAdoptert(omBarnet);
+    const valgtStønadskvote = erFarOgFarFødsel
+        ? {
+              ...valgtStønadskvoteRå,
+              kontoer: [
+                  {
+                      konto: 'AKTIVITETSFRI_KVOTE' as const,
+                      dager: valgtStønadskvoteRå.kontoer
+                          .filter((k) => k.konto !== 'FORELDREPENGER_FØR_FØDSEL')
+                          .reduce((sum, k) => sum + k.dager, 0),
+                  },
+              ],
+          }
+        : valgtStønadskvoteRå;
 
     const navnPåForeldre = getNavnPåForeldre(hvemPlanlegger, intl);
 

@@ -382,12 +382,18 @@ describe('<PlanenDeresSteg - fødsel>', () => {
             'false',
         );
 
-        // Verifiserer at slideren ikke vises når kun én søker
+        // Verifiserer at slideren ikke vises – far1 tar hele kvoten, far2 har ingen FP
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
+        // KvoteOppsummering skal vise aktivitetsfri kvote (hele 46 uker for far1)
         expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
+        // Juli (termindato 2024-07-01): ingen GREENOUTLINE-dager – de første 6 ukene er uten FP
+        const juli = screen.getByTestId('year:2024;month:6');
+        expect(within(juli).queryAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(0);
+
+        // August: startdato er 12. august (termin + 6 uker) – 15 uttaksdager totalt
         const august = screen.getByTestId('year:2024;month:7');
         expect(within(august).getByTestId('day:12;dayColor:GREENOUTLINE')).toBeInTheDocument();
         expect(within(august).getByTestId('day:13;dayColor:GREENOUTLINE')).toBeInTheDocument();
