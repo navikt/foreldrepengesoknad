@@ -45,6 +45,20 @@ interface UttaksplanFormProps {
     opprinneligPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined;
 }
 
+type UttaksplanPerioder = Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+type FeilmeldingId =
+    | 'UttaksplanSteg.IngenNyePerioder'
+    | 'UttaksplanSteg.IngenPerioder'
+    | 'UttaksplanSteg.IngenUttaksperioder'
+    | 'UttaksplanSteg.OvertrukketDager'
+    | 'UttaksplanSteg.MorsAktivitetIkkeValgt'
+    | 'UttaksplanSteg.KunPerioderForAnnenForelder';
+
+type SubmitValideringsregel = {
+    gjelder: (planForValidering: UttaksplanPerioder) => boolean;
+    messageId: FeilmeldingId;
+};
+
 export const UttaksplanForm = ({
     søkerInfo,
     defaultUttaksperioder,
@@ -113,41 +127,60 @@ export const UttaksplanForm = ({
         barn.termindato !== undefined &&
         !bareFarHarRett;
 
+    const visFeilOgScroll = (messageId: FeilmeldingId) => {
+        setFeilmelding(<FormattedMessage id={messageId} />);
+        scrollToKvoteOppsummering();
+    };
+
+    const manglerPerioderEtterValg = (planForValidering: UttaksplanPerioder) =>
+        planForValidering.length === 0 && !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan);
+
+    const manglerUttaksperioderForNySøknad = (planForValidering: UttaksplanPerioder) =>
+        !erEndringssøknad && !planForValidering.some((periode) => Uttaksperioden.erUttaksperiode(periode));
+
+    const harOvertrukketDager = () => erAntallDagerOvertrukket;
+
+    const manglerMorsAktivitetDerPåkrevd = (planForValidering: UttaksplanPerioder) =>
+        harPeriodeDerMorsAktivitetIkkeErValgt(utledRettighet(erAleneOmOmsorg, erDeltUttak), planForValidering);
+
+    const harKunPerioderForDenAndreForelderen = (planForValidering: UttaksplanPerioder) =>
+        harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, planForValidering);
+
+    const submitValideringsregler: SubmitValideringsregel[] = [
+        {
+            gjelder: manglerPerioderEtterValg,
+            messageId: erEndringssøknad ? 'UttaksplanSteg.IngenNyePerioder' : 'UttaksplanSteg.IngenPerioder',
+        },
+        { gjelder: manglerUttaksperioderForNySøknad, messageId: 'UttaksplanSteg.IngenUttaksperioder' },
+        { gjelder: harOvertrukketDager, messageId: 'UttaksplanSteg.OvertrukketDager' },
+        { gjelder: manglerMorsAktivitetDerPåkrevd, messageId: 'UttaksplanSteg.MorsAktivitetIkkeValgt' },
+        { gjelder: harKunPerioderForDenAndreForelderen, messageId: 'UttaksplanSteg.KunPerioderForAnnenForelder' },
+    ];
+
+    const finnFørsteValideringsfeil = (planForValidering: UttaksplanPerioder): FeilmeldingId | undefined => {
+        const valideringsfeil = submitValideringsregler.find((regel) => regel.gjelder(planForValidering));
+        return valideringsfeil?.messageId;
+    };
+
+    const håndterGyldigSubmit = (formValues: FormValues) => {
+        oppdaterHarJustertUttakVedFødsel(visAutomatiskJustering ? formValues.ønskerJustertUttakVedFødsel : undefined);
+
+        if (!gjeldendeUttaksplan) {
+            oppdaterUttaksplan(defaultUttaksperioder);
+        }
+
+        return navigator.goToNextDefaultStep();
+    };
+
     const onSubmit = (formValues: FormValues) => {
         const planForValidering = gjeldendeUttaksplan ?? defaultUttaksperioder;
-        if (planForValidering.length === 0 && !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan)) {
-            if (erEndringssøknad) {
-                setFeilmelding(<FormattedMessage id="UttaksplanSteg.IngenNyePerioder" />);
-            } else {
-                setFeilmelding(<FormattedMessage id="UttaksplanSteg.IngenPerioder" />);
-            }
-
-            scrollToKvoteOppsummering();
-        } else if (!erEndringssøknad && !planForValidering.some((p) => Uttaksperioden.erUttaksperiode(p))) {
-            setFeilmelding(<FormattedMessage id="UttaksplanSteg.IngenUttaksperioder" />);
-            scrollToKvoteOppsummering();
-        } else if (erAntallDagerOvertrukket) {
-            setFeilmelding(<FormattedMessage id="UttaksplanSteg.OvertrukketDager" />);
-            scrollToKvoteOppsummering();
-        } else if (
-            harPeriodeDerMorsAktivitetIkkeErValgt(utledRettighet(erAleneOmOmsorg, erDeltUttak), planForValidering)
-        ) {
-            setFeilmelding(<FormattedMessage id="UttaksplanSteg.MorsAktivitetIkkeValgt" />);
-            scrollToKvoteOppsummering();
-        } else if (harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, planForValidering)) {
-            setFeilmelding(<FormattedMessage id="UttaksplanSteg.KunPerioderForAnnenForelder" />);
-            scrollToKvoteOppsummering();
-        } else {
-            oppdaterHarJustertUttakVedFødsel(
-                visAutomatiskJustering ? formValues.ønskerJustertUttakVedFødsel : undefined,
-            );
-
-            if (!gjeldendeUttaksplan) {
-                oppdaterUttaksplan(defaultUttaksperioder);
-            }
-
-            return navigator.goToNextDefaultStep();
+        const feilmeldingId = finnFørsteValideringsfeil(planForValidering);
+        if (feilmeldingId) {
+            visFeilOgScroll(feilmeldingId);
+            return;
         }
+
+        return håndterGyldigSubmit(formValues);
     };
 
     const [gåTilbakeIsOpen, setGåTilbakeIsOpen] = useState(false);
