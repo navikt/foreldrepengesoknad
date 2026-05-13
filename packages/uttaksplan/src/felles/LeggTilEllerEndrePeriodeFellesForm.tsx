@@ -176,6 +176,26 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         }
     };
 
+    const resetGraderingFelterForMor = (nyKontoType: KontoTypeUttak | undefined) => {
+        if (nyKontoType === 'FEDREKVOTE') {
+            formMethods.resetField('skalDuKombinereArbeidOgUttakMor', { defaultValue: undefined });
+            formMethods.resetField('stillingsprosentMor', { defaultValue: undefined });
+            if (søker === 'MOR') {
+                formMethods.resetField('hvorSkalDuJobbe', { defaultValue: undefined });
+            }
+        }
+    };
+
+    const resetGraderingFelterForFarMedmor = (nyKontoType: KontoTypeUttak | undefined) => {
+        if (nyKontoType === 'MØDREKVOTE') {
+            formMethods.resetField('skalDuKombinereArbeidOgUttakFarMedmor', { defaultValue: undefined });
+            formMethods.resetField('stillingsprosentFarMedmor', { defaultValue: undefined });
+            if (søker === 'FAR_MEDMOR') {
+                formMethods.resetField('hvorSkalDuJobbe', { defaultValue: undefined });
+            }
+        }
+    };
+
     const erFarMedmorLåst = erPeriodeneTilAnnenPartLåst && søker === 'MOR';
     const erMorLåst = erPeriodeneTilAnnenPartLåst && søker === 'FAR_MEDMOR';
     const erMinstEnEøsPeriode = uttakPerioder.some((periode) => erEøsUttakPeriode(periode));
@@ -253,6 +273,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         isRequired(intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeMor.Påkrevd' })),
                     ]}
                     label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeMor' })}
+                    onChange={resetGraderingFelterForMor}
                 >
                     {gyldigeStønadskontoerForMor.map((konto) => {
                         return (
@@ -285,6 +306,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                             values={{ erMedmor: erMedmorDelAvSøknaden }}
                         />
                     }
+                    onChange={resetGraderingFelterForFarMedmor}
                 >
                     {gyldigeStønadskontoerForFarMedmor.map((konto) => {
                         return (
@@ -669,15 +691,17 @@ export const mapFraFormValuesTilUttakPeriode = (
     const nye = new Array<UttakPeriode_fpoversikt>();
 
     if (values.forelder === 'MOR' || values.forelder === 'BEGGE') {
+        const erOverføringMor = values.kontoTypeMor === 'FEDREKVOTE';
         nye.push({
             fom: periode.fom,
             tom: periode.tom,
             kontoType: values.kontoTypeMor === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoTypeMor,
             morsAktivitet: values.morsAktivitet,
             forelder: 'MOR',
-            gradering: values.skalDuKombinereArbeidOgUttakMor
-                ? getGradering(søker === 'MOR', values.stillingsprosentMor, values.hvorSkalDuJobbe)
-                : undefined,
+            gradering:
+                !erOverføringMor && values.skalDuKombinereArbeidOgUttakMor
+                    ? getGradering(søker === 'MOR', values.stillingsprosentMor, values.hvorSkalDuJobbe)
+                    : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentMor) : undefined,
             overføringÅrsak: values.overføringsårsak,
@@ -685,6 +709,7 @@ export const mapFraFormValuesTilUttakPeriode = (
         });
     }
     if (values.forelder === 'FAR_MEDMOR' || values.forelder === 'BEGGE') {
+        const erOverføringFarMedmor = values.kontoTypeFarMedmor === 'MØDREKVOTE';
         nye.push({
             fom: periode.fom,
             tom: periode.tom,
@@ -692,9 +717,10 @@ export const mapFraFormValuesTilUttakPeriode = (
                 values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoTypeFarMedmor,
             morsAktivitet: values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : values.morsAktivitet,
             forelder: 'FAR_MEDMOR',
-            gradering: values.skalDuKombinereArbeidOgUttakFarMedmor
-                ? getGradering(søker === 'FAR_MEDMOR', values.stillingsprosentFarMedmor, values.hvorSkalDuJobbe)
-                : undefined,
+            gradering:
+                !erOverføringFarMedmor && values.skalDuKombinereArbeidOgUttakFarMedmor
+                    ? getGradering(søker === 'FAR_MEDMOR', values.stillingsprosentFarMedmor, values.hvorSkalDuJobbe)
+                    : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentFarMedmor) : undefined,
             overføringÅrsak: values.overføringsårsak,
