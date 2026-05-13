@@ -409,6 +409,28 @@ describe('dateUtils', () => {
                 expect(endringstidspunkt).toBe(opprinneligPlanMedAnnenPart[0]!.fom);
             },
         );
+
+        it('Skal finne endringstidspunkt når morsAktivitet endres fra undefined til en verdi (aktivitetskrav legges til)', () => {
+            const opprinneligPlanUtenAktivitetskrav: UttakPeriode_fpoversikt[] = [
+                { fom: '2025-01-06', tom: '2025-02-14', flerbarnsdager: false, forelder: 'FAR_MEDMOR', kontoType: 'FORELDREPENGER' },
+                { fom: '2025-02-17', tom: '2025-03-10', flerbarnsdager: false, forelder: 'FAR_MEDMOR', kontoType: 'FORELDREPENGER' },
+            ];
+
+            const endretPlanMedAktivitetskrav: UttakPeriode_fpoversikt[] = [
+                { fom: '2025-01-06', tom: '2025-02-14', flerbarnsdager: false, forelder: 'FAR_MEDMOR', kontoType: 'FORELDREPENGER' },
+                {
+                    fom: '2025-02-17',
+                    tom: '2025-03-10',
+                    flerbarnsdager: false,
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FORELDREPENGER',
+                    morsAktivitet: 'ARBEID',
+                },
+            ];
+
+            const endringstidspunkt = getEndringstidspunktNy(opprinneligPlanUtenAktivitetskrav, endretPlanMedAktivitetskrav);
+            expect(endringstidspunkt).toBe('2025-02-17');
+        });
     });
 });
 
