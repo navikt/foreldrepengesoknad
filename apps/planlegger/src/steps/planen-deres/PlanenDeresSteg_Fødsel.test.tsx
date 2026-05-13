@@ -388,10 +388,10 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
-        const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).getByTestId('day:1;dayColor:GREENOUTLINE;with-icon')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:2;dayColor:GREENOUTLINE')).toBeInTheDocument();
-        expect(within(juli).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(23);
+        const august = screen.getByTestId('year:2024;month:7');
+        expect(within(august).getByTestId('day:12;dayColor:GREENOUTLINE')).toBeInTheDocument();
+        expect(within(august).getByTestId('day:13;dayColor:GREENOUTLINE')).toBeInTheDocument();
+        expect(within(august).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(15);
     });
 
     it('skal vise korrekt data for fødsel - far og far søker - kun biologisk far har rett', async () => {
@@ -411,10 +411,10 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
-        const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).getByTestId('day:1;dayColor:GREENOUTLINE;with-icon')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:2;dayColor:GREENOUTLINE')).toBeInTheDocument();
-        expect(within(juli).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(23);
+        const august = screen.getByTestId('year:2024;month:7');
+        expect(within(august).getByTestId('day:12;dayColor:GREENOUTLINE')).toBeInTheDocument();
+        expect(within(august).getByTestId('day:13;dayColor:GREENOUTLINE')).toBeInTheDocument();
+        expect(within(august).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(15);
     });
 
     it('skal vise korrekt data for fødsel - far og far søker - kun medfar har rett', async () => {
@@ -435,10 +435,10 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.getByText('Termin')).toBeInTheDocument();
         expect(screen.getAllByText('Barnehageplass')[0]).toBeInTheDocument();
 
-        const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).getByTestId('day:1;dayColor:GREENOUTLINE;with-icon')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:2;dayColor:GREENOUTLINE')).toBeInTheDocument();
-        expect(within(juli).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(23);
+        const august = screen.getByTestId('year:2024;month:7');
+        expect(within(august).getByTestId('day:12;dayColor:GREENOUTLINE')).toBeInTheDocument();
+        expect(within(august).getByTestId('day:13;dayColor:GREENOUTLINE')).toBeInTheDocument();
+        expect(within(august).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(15);
     });
 
     it('skal vise korrekt data for fødsel - barnet er født dagen etter termindato', async () => {

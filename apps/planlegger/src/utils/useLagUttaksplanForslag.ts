@@ -1,7 +1,9 @@
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
+import dayjs from 'dayjs';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanleggerType } from 'types/HvemPlanlegger';
 
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { KontoBeregningDto } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -21,12 +23,15 @@ export const useLagUttaksplanForslag = (valgtStønadskvote: KontoBeregningDto) =
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
 
-    const startdato =
-        (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR ||
-            hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR) &&
-        hvemHarRett === 'kunSøker2HarRett'
-            ? Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30)
-            : undefined;
+    const erFarOgFarFødsel = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && !erBarnetAdoptert(omBarnet);
+
+    const startdato = erFarOgFarFødsel
+        ? dayjs(familiehendelsedato).add(6, 'weeks').format(ISO_DATE_FORMAT)
+        : (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR ||
+                hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR) &&
+            hvemHarRett === 'kunSøker2HarRett'
+          ? Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30)
+          : undefined;
 
     const bareFarMedmorHarRett =
         harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
