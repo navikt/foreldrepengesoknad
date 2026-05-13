@@ -29,7 +29,7 @@ const uttakMor: UttakPeriode_fpoversikt = {
 
 describe('harKunPerioderForAnnenForelder', () => {
     it('returnerer false når perioder er undefined eller tom', () => {
-        expect(harKunPerioderForAnnenForelder(true, undefined)).toBe(false);
+        expect(harKunPerioderForAnnenForelder(true)).toBe(false);
         expect(harKunPerioderForAnnenForelder(true, [])).toBe(false);
     });
 
