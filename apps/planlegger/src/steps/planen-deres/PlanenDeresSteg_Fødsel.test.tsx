@@ -394,8 +394,9 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(within(juli).queryAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(0);
 
         // August: startdato er 12. august (termin + 6 uker) – 15 uttaksdager totalt
+        // Dag 12 har familiehendelse-ikon siden termindato er satt til startdato (termin + 6 uker)
         const august = screen.getByTestId('year:2024;month:7');
-        expect(within(august).getByTestId('day:12;dayColor:GREENOUTLINE')).toBeInTheDocument();
+        expect(within(august).getByTestId('day:12;dayColor:GREENOUTLINE;with-icon')).toBeInTheDocument();
         expect(within(august).getByTestId('day:13;dayColor:GREENOUTLINE')).toBeInTheDocument();
         expect(within(august).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(15);
     });
@@ -418,7 +419,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const august = screen.getByTestId('year:2024;month:7');
-        expect(within(august).getByTestId('day:12;dayColor:GREENOUTLINE')).toBeInTheDocument();
+        expect(within(august).getByTestId('day:12;dayColor:GREENOUTLINE;with-icon')).toBeInTheDocument();
         expect(within(august).getByTestId('day:13;dayColor:GREENOUTLINE')).toBeInTheDocument();
         expect(within(august).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(15);
     });
@@ -442,7 +443,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.getAllByText('Barnehageplass')[0]).toBeInTheDocument();
 
         const august = screen.getByTestId('year:2024;month:7');
-        expect(within(august).getByTestId('day:12;dayColor:GREENOUTLINE')).toBeInTheDocument();
+        expect(within(august).getByTestId('day:12;dayColor:GREENOUTLINE;with-icon')).toBeInTheDocument();
         expect(within(august).getByTestId('day:13;dayColor:GREENOUTLINE')).toBeInTheDocument();
         expect(within(august).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(15);
     });
