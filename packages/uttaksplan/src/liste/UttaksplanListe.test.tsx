@@ -828,7 +828,7 @@ describe('UttaksplanListe', () => {
         expect(screen.getAllByText('Avslått periode')).toHaveLength(3);
     });
 
-    it('Begge rett - avslått mødrekvote skal vise "Avslått periode" i listevisningen, ikke "mødrekvote"', async () => {
+    it('Begge rett - avslått mødrekvote skal vise "Avslått periode" i listevisningen, ikke "mødrekvote"', () => {
         const { BeggeRettMedAvslåttMødrekvote } = composeStories(stories);
         render(<BeggeRettMedAvslåttMødrekvote />);
 
