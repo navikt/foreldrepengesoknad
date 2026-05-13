@@ -46,17 +46,9 @@ interface UttaksplanFormProps {
 }
 
 type UttaksplanPerioder = Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
-type FeilmeldingId =
-    | 'UttaksplanSteg.IngenNyePerioder'
-    | 'UttaksplanSteg.IngenPerioder'
-    | 'UttaksplanSteg.IngenUttaksperioder'
-    | 'UttaksplanSteg.OvertrukketDager'
-    | 'UttaksplanSteg.MorsAktivitetIkkeValgt'
-    | 'UttaksplanSteg.KunPerioderForAnnenForelder';
-
 type SubmitValideringsregel = {
     gjelder: (planForValidering: UttaksplanPerioder) => boolean;
-    messageId: FeilmeldingId;
+    message: string;
 };
 
 export const UttaksplanForm = ({
@@ -127,8 +119,8 @@ export const UttaksplanForm = ({
         barn.termindato !== undefined &&
         !bareFarHarRett;
 
-    const visFeilOgScroll = (messageId: FeilmeldingId) => {
-        setFeilmelding(<FormattedMessage id={messageId} />);
+    const visFeilOgScroll = (message: string) => {
+        setFeilmelding(message);
         scrollToKvoteOppsummering();
     };
 
@@ -149,17 +141,31 @@ export const UttaksplanForm = ({
     const submitValideringsregler: SubmitValideringsregel[] = [
         {
             gjelder: manglerPerioderEtterValg,
-            messageId: erEndringssøknad ? 'UttaksplanSteg.IngenNyePerioder' : 'UttaksplanSteg.IngenPerioder',
+            message: erEndringssøknad
+                ? intl.formatMessage({ id: 'UttaksplanSteg.IngenNyePerioder' })
+                : intl.formatMessage({ id: 'UttaksplanSteg.IngenPerioder' }),
         },
-        { gjelder: manglerUttaksperioderForNySøknad, messageId: 'UttaksplanSteg.IngenUttaksperioder' },
-        { gjelder: harOvertrukketDager, messageId: 'UttaksplanSteg.OvertrukketDager' },
-        { gjelder: manglerMorsAktivitetDerPåkrevd, messageId: 'UttaksplanSteg.MorsAktivitetIkkeValgt' },
-        { gjelder: harKunPerioderForDenAndreForelderen, messageId: 'UttaksplanSteg.KunPerioderForAnnenForelder' },
+        {
+            gjelder: manglerUttaksperioderForNySøknad,
+            message: intl.formatMessage({ id: 'UttaksplanSteg.IngenUttaksperioder' }),
+        },
+        {
+            gjelder: harOvertrukketDager,
+            message: intl.formatMessage({ id: 'UttaksplanSteg.OvertrukketDager' }),
+        },
+        {
+            gjelder: manglerMorsAktivitetDerPåkrevd,
+            message: intl.formatMessage({ id: 'UttaksplanSteg.MorsAktivitetIkkeValgt' }),
+        },
+        {
+            gjelder: harKunPerioderForDenAndreForelderen,
+            message: intl.formatMessage({ id: 'UttaksplanSteg.KunPerioderForAnnenForelder' }),
+        },
     ];
 
-    const finnFørsteValideringsfeil = (planForValidering: UttaksplanPerioder): FeilmeldingId | undefined => {
+    const finnFørsteValideringsfeil = (planForValidering: UttaksplanPerioder): string | undefined => {
         const valideringsfeil = submitValideringsregler.find((regel) => regel.gjelder(planForValidering));
-        return valideringsfeil?.messageId;
+        return valideringsfeil?.message;
     };
 
     const håndterGyldigSubmit = (formValues: FormValues) => {
@@ -174,9 +180,9 @@ export const UttaksplanForm = ({
 
     const onSubmit = (formValues: FormValues) => {
         const planForValidering = gjeldendeUttaksplan ?? defaultUttaksperioder;
-        const feilmeldingId = finnFørsteValideringsfeil(planForValidering);
-        if (feilmeldingId) {
-            visFeilOgScroll(feilmeldingId);
+        const feilmelding = finnFørsteValideringsfeil(planForValidering);
+        if (feilmelding) {
+            visFeilOgScroll(feilmelding);
             return;
         }
 
