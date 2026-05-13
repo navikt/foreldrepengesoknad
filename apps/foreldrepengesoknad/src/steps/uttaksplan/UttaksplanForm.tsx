@@ -16,7 +16,6 @@ import {
     Barn,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
-    RettighetType_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
     isAdoptertBarn,
@@ -25,10 +24,11 @@ import {
 } from '@navikt/fp-types';
 import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
 import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
-import { harPeriodeDerMorsAktivitetIkkeErValgt, useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
+import { useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { GåTilbakeModal } from './GåTilbakeModal';
+import { finnFørsteSubmitFeilmelding } from './submitValidering';
 
 type FormValues = {
     ønskerJustertUttakVedFødsel?: boolean;
@@ -44,12 +44,6 @@ interface UttaksplanFormProps {
     eksisterendeSak: FpSak_fpoversikt | undefined;
     opprinneligPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined;
 }
-
-type UttaksplanPerioder = Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
-type SubmitValideringsregel = {
-    gjelder: (planForValidering: UttaksplanPerioder) => boolean;
-    message: string;
-};
 
 export const UttaksplanForm = ({
     søkerInfo,
@@ -124,50 +118,6 @@ export const UttaksplanForm = ({
         scrollToKvoteOppsummering();
     };
 
-    const manglerPerioderEtterValg = (planForValidering: UttaksplanPerioder) =>
-        planForValidering.length === 0 && !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan);
-
-    const manglerUttaksperioderForNySøknad = (planForValidering: UttaksplanPerioder) =>
-        !erEndringssøknad && !planForValidering.some((periode) => Uttaksperioden.erUttaksperiode(periode));
-
-    const harOvertrukketDager = () => erAntallDagerOvertrukket;
-
-    const manglerMorsAktivitetDerPåkrevd = (planForValidering: UttaksplanPerioder) =>
-        harPeriodeDerMorsAktivitetIkkeErValgt(utledRettighet(erAleneOmOmsorg, erDeltUttak), planForValidering);
-
-    const harKunPerioderForDenAndreForelderen = (planForValidering: UttaksplanPerioder) =>
-        harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, planForValidering);
-
-    const submitValideringsregler: SubmitValideringsregel[] = [
-        {
-            gjelder: manglerPerioderEtterValg,
-            message: erEndringssøknad
-                ? intl.formatMessage({ id: 'UttaksplanSteg.IngenNyePerioder' })
-                : intl.formatMessage({ id: 'UttaksplanSteg.IngenPerioder' }),
-        },
-        {
-            gjelder: manglerUttaksperioderForNySøknad,
-            message: intl.formatMessage({ id: 'UttaksplanSteg.IngenUttaksperioder' }),
-        },
-        {
-            gjelder: harOvertrukketDager,
-            message: intl.formatMessage({ id: 'UttaksplanSteg.OvertrukketDager' }),
-        },
-        {
-            gjelder: manglerMorsAktivitetDerPåkrevd,
-            message: intl.formatMessage({ id: 'UttaksplanSteg.MorsAktivitetIkkeValgt' }),
-        },
-        {
-            gjelder: harKunPerioderForDenAndreForelderen,
-            message: intl.formatMessage({ id: 'UttaksplanSteg.KunPerioderForAnnenForelder' }),
-        },
-    ];
-
-    const finnFørsteValideringsfeil = (planForValidering: UttaksplanPerioder): string | undefined => {
-        const valideringsfeil = submitValideringsregler.find((regel) => regel.gjelder(planForValidering));
-        return valideringsfeil?.message;
-    };
-
     const håndterGyldigSubmit = (formValues: FormValues) => {
         oppdaterHarJustertUttakVedFødsel(visAutomatiskJustering ? formValues.ønskerJustertUttakVedFødsel : undefined);
 
@@ -180,7 +130,17 @@ export const UttaksplanForm = ({
 
     const onSubmit = (formValues: FormValues) => {
         const planForValidering = gjeldendeUttaksplan ?? defaultUttaksperioder;
-        const feilmelding = finnFørsteValideringsfeil(planForValidering);
+        const feilmelding = finnFørsteSubmitFeilmelding({
+            planForValidering,
+            erEndringssøknad,
+            uttaksplan,
+            opprinneligPlan,
+            erAntallDagerOvertrukket,
+            erAleneOmOmsorg,
+            erDeltUttak,
+            erSøkerFarEllerMedmor,
+            intl,
+        });
         if (feilmelding) {
             visFeilOgScroll(feilmelding);
             return;
@@ -360,47 +320,4 @@ const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
         const tom = dayjs(periode.tom);
         return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
     });
-};
-
-const harBrukerKunSlettetPerioder = (
-    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
-    opprinneligPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
-) => {
-    if (!opprinneligPlan) {
-        return false;
-    }
-
-    const erKunSaksperioder = perioder?.every(
-        (periode) => Uttaksperioden.erEøsPeriode(periode) || periode.resultat !== undefined,
-    );
-
-    if (erKunSaksperioder) {
-        const harSlettetPeriode = perioder ? !perioder.every((p, index) => p === opprinneligPlan[index]) : false;
-        return harSlettetPeriode;
-    }
-
-    return false;
-};
-
-const harKunPerioderForAnnenForelder = (
-    erSøkerFarEllerMedmor: boolean,
-    perioder?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-) => {
-    if (!perioder || perioder.length === 0) {
-        return false;
-    }
-
-    const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
-
-    return perioder.every((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.forelder !== søkersForelder);
-};
-
-const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean): RettighetType_fpoversikt => {
-    if (erAleneOmOmsorg) {
-        return 'ALENEOMSORG';
-    }
-    if (erDeltUttak) {
-        return 'BEGGE_RETT';
-    }
-    return 'BARE_SØKER_RETT';
 };
