@@ -211,17 +211,14 @@ const finnEnsligUttaksdata = (
                   getAntallDagerFedrekvote(valgtStønadskvote) +
                   getAntallUkerOgDagerFellesperiode(valgtStønadskvote).totaltAntallDager;
         const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskvote);
+        // FAR_OG_FAR har ingen biologisk mor — ingen 6-ukersregel. FP starter fra termindato.
         const sluttAktivitetsfri = Uttaksdagen.denne(
             getUttaksdagTilOgMedDato(familiehendelsedato),
-        ).getDatoAntallUttaksdagerSenere(aktivitetsfriDager + (erBarnetAdoptert(barnet) ? 0 : 6 * 5 - 1));
-
-        const startdatoSøker1 = erBarnetAdoptert(barnet)
-            ? dayjs(familiehendelsedato)
-            : dayjs(familiehendelsedato).add(6, 'weeks');
+        ).getDatoAntallUttaksdagerSenere(aktivitetsfriDager - 1);
 
         return {
             familiehendelsedato,
-            startdatoPeriode1: getUttaksdagFraOgMedDato(startdatoSøker1.format(ISO_DATE_FORMAT)),
+            startdatoPeriode1: getUttaksdagFraOgMedDato(familiehendelsedato),
             sluttdatoPeriode1: getUttaksdagTilOgMedDato(dayjs(sluttAktivitetsfri).format(ISO_DATE_FORMAT)),
             startdatoPeriode2: getUttaksdagFraOgMedDato(
                 dayjs(sluttAktivitetsfri).add(1, 'day').format(ISO_DATE_FORMAT),

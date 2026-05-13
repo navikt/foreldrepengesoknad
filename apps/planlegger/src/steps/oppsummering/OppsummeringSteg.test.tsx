@@ -84,7 +84,7 @@ describe('<OppsummeringSteg>', () => {
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
         expect(screen.getByText('Dere valgte 100 % i 40 uker.')).toBeInTheDocument();
         expect(screen.getByText(/Periode:/)).toBeInTheDocument();
-        expect(screen.getByText(/6. jan. 2025 – 14. mars 2025/)).toBeInTheDocument();
+        expect(screen.getByText(/25. nov. 2024 – 31. jan. 2025/)).toBeInTheDocument();
     });
 
     it('skal vise perioder for begge fedrene ved adopsjon far og far', async () => {
@@ -153,7 +153,7 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Dere valgte 100 % foreldrepenger i 46 uker.')).toBeInTheDocument();
 
         expect(screen.getByText('Dere valgte 100 % i 46 uker.')).toBeInTheDocument();
-        expect(screen.getByText(/5. des. 2024 – 22. okt. 2025/)).toBeInTheDocument();
+        expect(screen.getByText(/24. okt. 2024 – 10. sep. 2025/)).toBeInTheDocument();
     });
     it('skal vise info om hvor mye-steget der det er flere forsørgere og begge har rett til foreldrepenger - fødsel', async () => {
         render(<FlereForsørgereHundreProsentTermin />);

@@ -389,16 +389,10 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
-        // Juli (termindato 2024-07-01): ingen GREENOUTLINE-dager – de første 6 ukene er uten FP
+        // FP starter fra termindato (2024-07-01). Dag 1 i juli er famDato = startdato → with-icon
         const juli = screen.getByTestId('year:2024;month:6');
-        expect(within(juli).queryAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(0);
-
-        // August: startdato er 12. august (termin + 6 uker) – 15 uttaksdager totalt
-        // Dag 12 har familiehendelse-ikon siden termindato er satt til startdato (termin + 6 uker)
-        const august = screen.getByTestId('year:2024;month:7');
-        expect(within(august).getByTestId('day:12;dayColor:GREENOUTLINE;with-icon')).toBeInTheDocument();
-        expect(within(august).getByTestId('day:13;dayColor:GREENOUTLINE')).toBeInTheDocument();
-        expect(within(august).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(15);
+        expect(within(juli).getByTestId('day:1;dayColor:GREENOUTLINE;with-icon')).toBeInTheDocument();
+        expect(within(juli).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(23);
     });
 
     it('skal vise korrekt data for fødsel - far og far søker - kun biologisk far har rett', async () => {
@@ -418,10 +412,9 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
-        const august = screen.getByTestId('year:2024;month:7');
-        expect(within(august).getByTestId('day:12;dayColor:GREENOUTLINE;with-icon')).toBeInTheDocument();
-        expect(within(august).getByTestId('day:13;dayColor:GREENOUTLINE')).toBeInTheDocument();
-        expect(within(august).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(15);
+        // FP starter fra termindato (2024-07-01). Dag 1 i juli er famDato = startdato → with-icon
+        const juli = screen.getByTestId('year:2024;month:6');
+        expect(within(juli).getByTestId('day:1;dayColor:GREENOUTLINE;with-icon')).toBeInTheDocument();
     });
 
     it('skal vise korrekt data for fødsel - far og far søker - kun medfar har rett', async () => {
@@ -442,10 +435,9 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.getByText('Termin')).toBeInTheDocument();
         expect(screen.getAllByText('Barnehageplass')[0]).toBeInTheDocument();
 
-        const august = screen.getByTestId('year:2024;month:7');
-        expect(within(august).getByTestId('day:12;dayColor:GREENOUTLINE;with-icon')).toBeInTheDocument();
-        expect(within(august).getByTestId('day:13;dayColor:GREENOUTLINE')).toBeInTheDocument();
-        expect(within(august).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(15);
+        // FP starter fra termindato (2024-07-01). Dag 1 i juli er famDato = startdato → with-icon
+        const juli = screen.getByTestId('year:2024;month:6');
+        expect(within(juli).getByTestId('day:1;dayColor:GREENOUTLINE;with-icon')).toBeInTheDocument();
     });
 
     it('skal vise korrekt sluttdato i kalender for far og far - begge har rett - stemmer med HvorLangPeriodeSteg', async () => {
@@ -453,20 +445,20 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
-        // Termindato: 2024-07-01, startdato: 2024-08-12 (termin + 6 uker)
-        // 100% (230 dager): sluttdato = fredag 27. juni 2025
-        const juni2025 = screen.getByTestId('year:2025;month:5');
-        expect(within(juni2025).getByTestId('day:27;dayColor:GREENOUTLINE')).toBeInTheDocument();
-        // Dag 28 (mandag) skal ikke ha uttaksdager
-        expect(within(juni2025).queryByTestId('day:28;dayColor:GREENOUTLINE')).not.toBeInTheDocument();
+        // Termindato: 2024-07-01, startdato: 2024-07-01 (termindato = startdato)
+        // 100% (230 dager): sluttdato = fredag 16. mai 2025
+        const mai2025 = screen.getByTestId('year:2025;month:4');
+        expect(within(mai2025).getByTestId('day:16;dayColor:GREENOUTLINE')).toBeInTheDocument();
+        // Dag 17 (lørdag) skal ikke ha uttaksdager
+        expect(within(mai2025).queryByTestId('day:17;dayColor:GREENOUTLINE')).not.toBeInTheDocument();
 
-        // Bytt til 80% og verifiser sluttdato: mandag 22. september 2025 (291 dager)
+        // Bytt til 80% og verifiser sluttdato: mandag 11. august 2025 (291 dager)
         await userEvent.click(screen.getByText('80 % i 58 uker + 1 dag'));
 
-        const sept2025 = screen.getByTestId('year:2025;month:8');
-        expect(within(sept2025).getByTestId('day:22;dayColor:GREENOUTLINE')).toBeInTheDocument();
-        // Dag 23 (tirsdag) skal ikke ha uttaksdager
-        expect(within(sept2025).queryByTestId('day:23;dayColor:GREENOUTLINE')).not.toBeInTheDocument();
+        const aug2025 = screen.getByTestId('year:2025;month:7');
+        expect(within(aug2025).getByTestId('day:11;dayColor:GREENOUTLINE')).toBeInTheDocument();
+        // Dag 12 (tirsdag) skal ikke ha uttaksdager
+        expect(within(aug2025).queryByTestId('day:12;dayColor:GREENOUTLINE')).not.toBeInTheDocument();
     });
 
     it('skal vise korrekt data for fødsel - barnet er født dagen etter termindato', async () => {

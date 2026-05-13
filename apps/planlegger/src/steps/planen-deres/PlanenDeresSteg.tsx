@@ -8,7 +8,6 @@ import {
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { FordelingSlider } from 'components/FordelingSlider';
-import dayjs from 'dayjs';
 import { useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanleggerType } from 'types/HvemPlanlegger';
@@ -24,11 +23,10 @@ import { erBarnetAdoptert, mapOmBarnetPlanleggerTilBarn } from 'utils/barnetUtil
 import { HvemHarRett, utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskvoterUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
-import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata, getFamiliehendelsedato } from 'utils/uttakUtils';
+import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, Box, Heading, InlineMessage, Tabs, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import {
     Dekningsgrad,
@@ -109,16 +107,6 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
           }
         : valgtStønadskvoteRå;
 
-    // For FAR_OG_FAR + fødsel sett termindato = famDato + 6 uker slik at familiehendelsedato
-    // i UttaksplanDataProvider samsvarer med startdato. Da unngår vi en forvirrende
-    // "uten foreldrepenger"-periode på 5u4d mellom termin og faktisk start av FP.
-    const barnTilKalender = erFarOgFarFødsel
-        ? {
-              ...mapOmBarnetPlanleggerTilBarn(omBarnet),
-              termindato: dayjs(getFamiliehendelsedato(omBarnet)).add(6, 'weeks').format(ISO_DATE_FORMAT),
-          }
-        : mapOmBarnetPlanleggerTilBarn(omBarnet);
-
     const navnPåForeldre = getNavnPåForeldre(hvemPlanlegger, intl);
 
     const lagreUttaksplanOgOppdaterUrl = (
@@ -167,7 +155,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
                 </Heading>
 
                 <UttaksplanDataProvider
-                    barn={barnTilKalender}
+                    barn={mapOmBarnetPlanleggerTilBarn(omBarnet)}
                     foreldreInfo={{
                         søker: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
                         navnPåForeldre,
