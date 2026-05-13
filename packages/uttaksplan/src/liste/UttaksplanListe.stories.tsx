@@ -1029,3 +1029,126 @@ export const BareFarHarRettMedAvslåttePerioder: Story = {
         erEndringssøknad: true,
     },
 };
+
+export const BeggeRettMedAvslåttMødrekvote: Story = {
+    args: {
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2026-01-05'],
+            antallBarn: 1,
+        },
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: { mor: 'Kari', farMedmor: 'Ola' },
+            erMedmorDelAvSøknaden: false,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+        uttakPerioder: [
+            {
+                fom: '2026-01-05',
+                tom: '2026-03-20',
+                kontoType: 'MØDREKVOTE',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            {
+                fom: '2026-03-23',
+                tom: '2026-06-30',
+                kontoType: 'MØDREKVOTE',
+                resultat: {
+                    innvilget: false,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+        ] satisfies Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+        valgtStønadskvote: {
+            kontoer: [
+                { konto: 'MØDREKVOTE', dager: 75 },
+                { konto: 'FEDREKVOTE', dager: 75 },
+                { konto: 'FELLESPERIODE', dager: 80 },
+                { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+            ],
+            minsteretter: MINSTERETTER,
+        },
+        erEndringssøknad: true,
+    },
+};
+
+export const BareFarHarRettMedAvslåttUtsettelse: Story = {
+    args: {
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2026-01-05'],
+            antallBarn: 1,
+        },
+        foreldreInfo: {
+            rettighetType: 'BARE_SØKER_RETT',
+            søker: 'FAR_MEDMOR',
+            navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
+            erMedmorDelAvSøknaden: false,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+        uttakPerioder: [
+            {
+                fom: '2026-01-05',
+                tom: '2026-05-15',
+                kontoType: 'FORELDREPENGER',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: true,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                morsAktivitet: 'IKKE_OPPGITT',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+            {
+                fom: '2026-05-18',
+                tom: '2026-06-12',
+                utsettelseÅrsak: 'FRI',
+                resultat: {
+                    innvilget: false,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'AVSLAG_UTSETTELSE_TILBAKE_I_TID',
+                },
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+            {
+                fom: '2026-06-15',
+                tom: '2026-07-10',
+                kontoType: 'FORELDREPENGER',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                morsAktivitet: 'ARBEID',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+        ] satisfies Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+        valgtStønadskvote: {
+            kontoer: [
+                { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
+                { konto: 'FORELDREPENGER', dager: 150 },
+            ],
+            minsteretter: MINSTERETTER,
+        },
+        erEndringssøknad: true,
+    },
+};

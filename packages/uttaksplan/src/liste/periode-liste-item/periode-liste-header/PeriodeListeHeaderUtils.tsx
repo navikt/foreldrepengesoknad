@@ -16,6 +16,7 @@ import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
 import {
+    erAlleUttaksplanperioderAvslått,
     erUttaksplanperiodeErForelderMor,
     erUttaksplanperiodeEøs,
     erUttaksplanperiodeFamiliehendelseDato,
@@ -26,7 +27,6 @@ import {
     getSisteUttaksplanperiodeTom,
     getUttaksplanperiodeForelder,
     getUttaksplanperiodeUtsettelseÅrsak,
-    harUttaksplanperiodeAvslåttPeriodeMedÅrsakAnnet,
     harUttaksplanperiodePrematuruker,
 } from '../../utils/uttaksplanperiodeUtils';
 
@@ -41,6 +41,10 @@ export const finnBakgrunnsfarge = (
 
     if (harMorsAktivitetIkkeErValgt) {
         return 'bg-ax-danger-200';
+    }
+
+    if (erAlleUttaksplanperioderAvslått(uttaksplanperioder)) {
+        return 'bg-ax-bg-default shadow-[inset_0_0_0_2px_var(--ax-bg-neutral-strong)]';
     }
 
     if (erUttaksplanperiodeEøs(uttaksplanperioder)) {
@@ -73,6 +77,10 @@ export const finnBakgrunnsfarge = (
 const getIkonFarge = (uttaksplanperiode: Uttaksplanperiode[], erFamiliehendelse?: boolean) => {
     if (erFamiliehendelse) {
         return 'text-ax-danger-600';
+    }
+
+    if (erAlleUttaksplanperioderAvslått(uttaksplanperiode)) {
+        return 'text-ax-neutral-800';
     }
 
     if (erUttaksplanperiodeTapteDager(uttaksplanperiode)) {
@@ -132,7 +140,7 @@ export const getTekst = (
     if (harUttaksplanperiodePrematuruker(uttaksplanperioder)) {
         return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.pleiepenger' });
     }
-    if (harUttaksplanperiodeAvslåttPeriodeMedÅrsakAnnet(uttaksplanperioder)) {
+    if (erAlleUttaksplanperioderAvslått(uttaksplanperioder)) {
         return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.avslåttAnnet' });
     }
 
@@ -241,6 +249,10 @@ export const getIkon = (uttaksplanperioder: Uttaksplanperiode[], familiehendelse
 };
 
 export const getBorderFarge = (uttaksplanperioder: Uttaksplanperiode[]) => {
+    if (erAlleUttaksplanperioderAvslått(uttaksplanperioder)) {
+        return 'border-ax-bg-neutral-strong';
+    }
+
     if (erUttaksplanperiodeEøs(uttaksplanperioder)) {
         return 'border-ax-success-400';
     }
