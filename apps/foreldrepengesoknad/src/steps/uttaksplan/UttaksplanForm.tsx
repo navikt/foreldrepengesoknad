@@ -16,7 +16,6 @@ import {
     Barn,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
-    RettighetType_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
     isAdoptertBarn,
@@ -25,10 +24,12 @@ import {
 } from '@navikt/fp-types';
 import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
 import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
-import { harPeriodeDerMorsAktivitetIkkeErValgt, useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { GåTilbakeModal } from './GåTilbakeModal';
+import { useFinnFørsteSubmitFeilmelding } from './submitValidering';
+
+export { harKunPerioderForAnnenForelder } from './submitValidering';
 
 type FormValues = {
     ønskerJustertUttakVedFødsel?: boolean;
@@ -88,8 +89,6 @@ export const UttaksplanForm = ({
 
     const harSvartJaPåAutoJustering = !!formMethods.watch('ønskerJustertUttakVedFødsel');
 
-    const erAntallDagerOvertrukket = useErAntallDagerOvertrukketIUttaksplan();
-
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
@@ -113,41 +112,26 @@ export const UttaksplanForm = ({
         barn.termindato !== undefined &&
         !bareFarHarRett;
 
+    const finnFørsteSubmitFeilmelding = useFinnFørsteSubmitFeilmelding({ opprinneligPlan });
+
     const onSubmit = (formValues: FormValues) => {
         const planForValidering = gjeldendeUttaksplan ?? defaultUttaksperioder;
-        if (planForValidering.length === 0 && !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan)) {
-            if (erEndringssøknad) {
-                setFeilmelding(<FormattedMessage id="UttaksplanSteg.IngenNyePerioder" />);
-            } else {
-                setFeilmelding(<FormattedMessage id="UttaksplanSteg.IngenPerioder" />);
-            }
+        const feilmelding = finnFørsteSubmitFeilmelding(planForValidering);
 
+        if (feilmelding) {
+            setFeilmelding(feilmelding);
             scrollToKvoteOppsummering();
-        } else if (!erEndringssøknad && !planForValidering.some((p) => Uttaksperioden.erUttaksperiode(p))) {
-            setFeilmelding(<FormattedMessage id="UttaksplanSteg.IngenUttaksperioder" />);
-            scrollToKvoteOppsummering();
-        } else if (erAntallDagerOvertrukket) {
-            setFeilmelding(<FormattedMessage id="UttaksplanSteg.OvertrukketDager" />);
-            scrollToKvoteOppsummering();
-        } else if (
-            harPeriodeDerMorsAktivitetIkkeErValgt(utledRettighet(erAleneOmOmsorg, erDeltUttak), planForValidering)
-        ) {
-            setFeilmelding(<FormattedMessage id="UttaksplanSteg.MorsAktivitetIkkeValgt" />);
-            scrollToKvoteOppsummering();
-        } else if (harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, planForValidering)) {
-            setFeilmelding(<FormattedMessage id="UttaksplanSteg.KunPerioderForAnnenForelder" />);
-            scrollToKvoteOppsummering();
-        } else {
-            oppdaterHarJustertUttakVedFødsel(
-                visAutomatiskJustering ? formValues.ønskerJustertUttakVedFødsel : undefined,
-            );
 
-            if (!gjeldendeUttaksplan) {
-                oppdaterUttaksplan(defaultUttaksperioder);
-            }
-
-            return navigator.goToNextDefaultStep();
+            return;
         }
+
+        oppdaterHarJustertUttakVedFødsel(visAutomatiskJustering ? formValues.ønskerJustertUttakVedFødsel : undefined);
+
+        if (!gjeldendeUttaksplan) {
+            oppdaterUttaksplan(defaultUttaksperioder);
+        }
+
+        return navigator.goToNextDefaultStep();
     };
 
     const [gåTilbakeIsOpen, setGåTilbakeIsOpen] = useState(false);
@@ -321,52 +305,4 @@ const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
         const tom = dayjs(periode.tom);
         return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
     });
-};
-
-const harBrukerKunSlettetPerioder = (
-    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
-    opprinneligPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
-) => {
-    if (!opprinneligPlan) {
-        return false;
-    }
-
-    const erKunSaksperioder = perioder?.every(
-        (periode) => Uttaksperioden.erEøsPeriode(periode) || periode.resultat !== undefined,
-    );
-
-    if (erKunSaksperioder) {
-        const harSlettetPeriode = perioder ? !perioder.every((p, index) => p === opprinneligPlan[index]) : false;
-        return harSlettetPeriode;
-    }
-
-    return false;
-};
-
-export const harKunPerioderForAnnenForelder = (
-    erSøkerFarEllerMedmor: boolean,
-    perioder?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-) => {
-    if (!perioder || perioder.length === 0) {
-        return false;
-    }
-
-    const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
-
-    return perioder.every(
-        (periode) =>
-            Uttaksperioden.erEøsPeriode(periode) ||
-            periode.forelder !== søkersForelder ||
-            !Uttaksperioden.erUttaksperiode(periode),
-    );
-};
-
-const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean): RettighetType_fpoversikt => {
-    if (erAleneOmOmsorg) {
-        return 'ALENEOMSORG';
-    }
-    if (erDeltUttak) {
-        return 'BEGGE_RETT';
-    }
-    return 'BARE_SØKER_RETT';
 };
