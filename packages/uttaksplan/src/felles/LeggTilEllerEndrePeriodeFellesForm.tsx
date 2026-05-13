@@ -111,6 +111,19 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
             kontoTypeFarMedmor,
         );
 
+    const erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel =
+        familiesituasjon !== 'adopsjon' &&
+        UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
+            valgtePerioder,
+            familiehendelsedato,
+        );
+
+    const skalViseAktivitetskravFordiFedrekvoteFørsteSeksUker =
+        forelder === 'FAR_MEDMOR' &&
+        rettighetType !== 'ALENEOMSORG' &&
+        kontoTypeFarMedmor === 'FEDREKVOTE' &&
+        erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel;
+
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKvotetyper(
         valgtePerioder,
         forelder === 'BEGGE',
@@ -424,7 +437,9 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 </VStack>
             )}
 
-            {(erFarMedmorUtenAleneomsorg || skalViseMorsAktivitetskravVedSamtidigUttak) && (
+            {(erFarMedmorUtenAleneomsorg ||
+                skalViseMorsAktivitetskravVedSamtidigUttak ||
+                skalViseAktivitetskravFordiFedrekvoteFørsteSeksUker) && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
                     <RhfSelect
@@ -434,7 +449,10 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         validate={[isRequired(intl.formatMessage({ id: 'AktivitetskravSpørsmål.Påkrevd' }))]}
                         description={intl.formatMessage({ id: 'AktivitetskravSpørsmål.Description' })}
                     >
-                        {getAktivitetskravOptions(skalViseMorsAktivitetskravVedSamtidigUttak).map((value) => {
+                        {getAktivitetskravOptions(
+                            skalViseMorsAktivitetskravVedSamtidigUttak,
+                            erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel,
+                        ).map((value) => {
                             return (
                                 <option key={value} value={value}>
                                     {getAktivitetskravTekst(value, intl)}
