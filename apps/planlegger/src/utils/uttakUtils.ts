@@ -202,7 +202,14 @@ const finnEnsligUttaksdata = (
     const familiehendelsedato = getFamiliehendelsedato(barnet);
 
     if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
-        const aktivitetsfriDager = getAntallDagerAktivitetsfriKvote(valgtStønadskvote);
+        // For DELT_UTTAK-kvoter mangler AKTIVITETSFRI_KVOTE. Summer alle kvoter minus FFF i stedet.
+        const aktivitetsfriDagerFraKvote = getAntallDagerAktivitetsfriKvote(valgtStønadskvote);
+        const aktivitetsfriDager =
+            aktivitetsfriDagerFraKvote > 0 || erBarnetAdoptert(barnet)
+                ? aktivitetsfriDagerFraKvote
+                : getAntallDagerMødrekvote(valgtStønadskvote) +
+                  getAntallDagerFedrekvote(valgtStønadskvote) +
+                  getAntallUkerOgDagerFellesperiode(valgtStønadskvote).totaltAntallDager;
         const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskvote);
         const sluttAktivitetsfri = Uttaksdagen.denne(
             getUttaksdagTilOgMedDato(familiehendelsedato),

@@ -126,6 +126,35 @@ describe('<HvorLangPeriodePlanleggerSteg>', () => {
         ).toBeInTheDocument();
     });
 
+    it('skal vise korrekt siste dag for far og far fødsel 100% og 80%', async () => {
+        const navigateMock = vi.fn();
+        useNavigateMock.mockReturnValue(navigateMock);
+        const gåTilNesteSide = vi.fn();
+
+        const originalArgs = FarOgFarBeggeHarRett.args;
+
+        render(
+            <FarOgFarBeggeHarRett
+                {...originalArgs}
+                omBarnet={{
+                    ...originalArgs.omBarnet,
+                    erBarnetFødt: true,
+                    fødselsdato: '2024-01-15',
+                    erFødsel: true,
+                    antallBarn: '1',
+                }}
+                gåTilNesteSide={gåTilNesteSide}
+            />,
+        );
+        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
+
+        await userEvent.click(screen.getByText('100 % utbetaling over 46 uker'));
+        expect(screen.getByText('Siste dag med foreldrepenger kan bli fredag 10. januar 2025')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('80 % utbetaling over 58 uker + 1 dag'));
+        expect(screen.getByText('Siste dag med foreldrepenger kan bli mandag 07. april 2025')).toBeInTheDocument();
+    });
+
     it('skal gå til oversikt ved far og far og begge foreldre har rett', async () => {
         const navigateMock = vi.fn();
         useNavigateMock.mockReturnValue(navigateMock);
