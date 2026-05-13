@@ -343,7 +343,7 @@ const harBrukerKunSlettetPerioder = (
     return false;
 };
 
-const harKunPerioderForAnnenForelder = (
+export const harKunPerioderForAnnenForelder = (
     erSøkerFarEllerMedmor: boolean,
     perioder?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
 ) => {
@@ -353,7 +353,12 @@ const harKunPerioderForAnnenForelder = (
 
     const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
 
-    return perioder.every((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.forelder !== søkersForelder);
+    return perioder.every(
+        (periode) =>
+            Uttaksperioden.erEøsPeriode(periode) ||
+            periode.forelder !== søkersForelder ||
+            !Uttaksperioden.erUttaksperiode(periode),
+    );
 };
 
 const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean): RettighetType_fpoversikt => {
