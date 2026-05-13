@@ -103,13 +103,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 
     const skalViseMorsAktivitetskravVedSamtidigUttak =
         !ønskerFlerbarnsdager &&
-        getSkalViseMorsAktivitetskravVedSamtidigUttak(
-            forelder,
-            samtidigUttaksprosentMor,
-            stillingsprosentMor,
-            samtidigUttaksprosentFarMedmor,
-            kontoTypeFarMedmor,
-        );
+        getSkalViseMorsAktivitetskravVedSamtidigUttak(forelder, samtidigUttaksprosentMor, stillingsprosentMor, kontoTypeFarMedmor);
 
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKvotetyper(
         valgtePerioder,
@@ -638,25 +632,13 @@ const getSkalViseMorsAktivitetskravVedSamtidigUttak = (
     forelder: ForelderValg,
     samtidigUttaksprosentMor?: string,
     stillingsprosentMor?: string,
-    samtidigUttaksprosentFarMedmor?: string,
     kontoTypeFarMedmor?: KontoTypeUttak,
 ) => {
     const morsSamtidigUttakprosent = forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentMor) ?? 0) : 0;
     const morsStillingProsent = forelder === 'BEGGE' ? (getFloatFromString(stillingsprosentMor) ?? 0) : 0;
     const morsTotaleProsent = morsSamtidigUttakprosent + morsStillingProsent;
 
-    const farMedmorsSamtidigUttakprosent =
-        forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentFarMedmor) ?? 0) : 0;
-    const kombinertUttaksprosent = morsSamtidigUttakprosent + farMedmorsSamtidigUttakprosent;
-
-    if (kombinertUttaksprosent !== 100) {
-        return false;
-    }
-
-    const skalViseMorsAktivitetskravVedSamtidigUttak =
-        forelder === 'BEGGE' && kontoTypeFarMedmor === 'FELLESPERIODE' && morsTotaleProsent < 100;
-
-    return skalViseMorsAktivitetskravVedSamtidigUttak;
+    return forelder === 'BEGGE' && kontoTypeFarMedmor === 'FELLESPERIODE' && morsTotaleProsent < 100;
 };
 
 export const mapFraFormValuesTilUttakPeriode = (

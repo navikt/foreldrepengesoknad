@@ -706,6 +706,8 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Far skal ha?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Fellesperiode')[1]!);
 
+        await userEvent.selectOptions(screen.getByLabelText('Hva skal mor gjøre i denne perioden?'), 'ARBEID');
+
         const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent til mor?');
         await userEvent.type(samtidigprosentMor, '40');
 
@@ -768,6 +770,8 @@ describe('UttaksplanKalender', () => {
 
         expect(screen.getByText('Far skal ha?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Fellesperiode')[1]!);
+
+        await userEvent.selectOptions(screen.getByLabelText('Hva skal mor gjøre i denne perioden?'), 'ARBEID');
 
         const samtidigprosentMor = screen.getByLabelText('Hvor mange prosent til mor?');
         await userEvent.type(samtidigprosentMor, '60');
