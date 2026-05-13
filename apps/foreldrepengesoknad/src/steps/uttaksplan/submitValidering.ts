@@ -106,14 +106,19 @@ const harBrukerKunSlettetPerioder = (
     return false;
 };
 
-const harKunPerioderForAnnenForelder = (erSøkerFarEllerMedmor: boolean, perioder?: UttaksplanPerioder) => {
+export const harKunPerioderForAnnenForelder = (erSøkerFarEllerMedmor: boolean, perioder?: UttaksplanPerioder) => {
     if (!perioder || perioder.length === 0) {
         return false;
     }
 
     const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
 
-    return perioder.every((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.forelder !== søkersForelder);
+    return perioder.every(
+        (periode) =>
+            Uttaksperioden.erEøsPeriode(periode) ||
+            periode.forelder !== søkersForelder ||
+            !Uttaksperioden.erUttaksperiode(periode),
+    );
 };
 
 const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean): RettighetType_fpoversikt => {

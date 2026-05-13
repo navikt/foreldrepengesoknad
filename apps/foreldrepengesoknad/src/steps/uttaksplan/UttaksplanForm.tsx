@@ -29,6 +29,8 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { GåTilbakeModal } from './GåTilbakeModal';
 import { useFinnFørsteSubmitFeilmelding } from './submitValidering';
 
+export { harKunPerioderForAnnenForelder } from './submitValidering';
+
 type FormValues = {
     ønskerJustertUttakVedFødsel?: boolean;
 };
