@@ -125,6 +125,8 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     const kunFarHarRett =
         søker === 'FAR_MEDMOR' && (rettighetType === 'BARE_SØKER_RETT' || rettighetType === 'ALENEOMSORG');
 
+    const erBareFarHarRett = søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT';
+
     const erValgtePerioderKrysserFamiliehendelse =
         !kunFarHarRett &&
         UttaksperiodeValidatorer.erNoenPerioderFørOgNoenLikEllerEtterFamiliehendelsesdato(
@@ -309,7 +311,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     {gyldigeStønadskontoerForFarMedmor.map((konto) => {
                         return (
                             <Radio key={konto} value={konto} disabled={!!kontoTypeFarMedmor && erFarMedmorLåst}>
-                                {getStønadskvoteNavnSimple(intl, konto, erMedmorDelAvSøknaden)}
+                                {getStønadskvoteNavnSimple(intl, konto, erMedmorDelAvSøknaden, erBareFarHarRett)}
                             </Radio>
                         );
                     })}
