@@ -17,22 +17,22 @@
         "@navikt/fp-types": "workspace:*",
         "dayjs": "1.11.20",
         "i18n-iso-countries": "7.14.0",
-        "react": "19.2.5",
-        "react-intl": "10.1.2"
+        "react": "19.2.6",
+        "react-intl": "10.1.6"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "8.5.2",
+        "@formatjs/cli-lib": "8.6.0",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
         "@testing-library/jest-dom": "6.9.1",
         "@types/react": "19.2.14",
-        "eslint": "10.2.0",
+        "eslint": "10.3.0",
         "fast-glob": "3.3.3",
-        "jsdom": "29.0.2",
-        "typescript": "6.0.2",
-        "vite": "8.0.8",
-        "vitest": "4.1.4"
+        "jsdom": "29.1.1",
+        "typescript": "6.0.3",
+        "vite": "8.0.12",
+        "vitest": "4.1.6"
     },
     "packageManager": "pnpm@10.33.1"
 }
