@@ -101,13 +101,21 @@ export const UttaksplanForm = ({
 
     const bareFarHarRett = erSøkerFarEllerMedmor && (!erDeltUttak || erMorUfør || erAleneOmOmsorg);
 
+    const termindato = getTermindato(barn);
+    const uttaksdagPåEllerEtterTermin = termindato ? Uttaksdagen.denneEllerNeste(termindato).getDato() : undefined;
+
+    const perioderRundtFødselForFarMedmor = gjeldendeUttaksplan
+        ? finnPerioderRundtFødsel(gjeldendeUttaksplan, barn).filter(
+              (p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.forelder === 'FAR_MEDMOR',
+          )
+        : [];
+
     const visAutomatiskJustering =
         erSøkerFarEllerMedmor &&
         søkersituasjon.situasjon === 'fødsel' &&
-        gjeldendeUttaksplan &&
-        finnPerioderRundtFødsel(gjeldendeUttaksplan, barn).filter(
-            (p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.forelder === 'FAR_MEDMOR',
-        ).length === 1 &&
+        perioderRundtFødselForFarMedmor.length === 1 &&
+        uttaksdagPåEllerEtterTermin !== undefined &&
+        dayjs(perioderRundtFødselForFarMedmor[0]!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
         isUfødtBarn(barn) &&
         barn.termindato !== undefined &&
         !bareFarHarRett;
