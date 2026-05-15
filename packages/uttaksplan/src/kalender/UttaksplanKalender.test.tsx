@@ -1111,6 +1111,8 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Skal far kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Nei'));
 
+        await userEvent.selectOptions(screen.getByLabelText('Hva skal mor gjøre i denne perioden?'), 'INNLAGT');
+
         await userEvent.click(screen.getByText('Legg til'));
 
         expect(await screen.findByText('Hva skal skje med resten av planen?')).toBeInTheDocument();

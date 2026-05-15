@@ -238,7 +238,10 @@ export const erDetReadonlyPerioderEtterValgtePerioder = (
     return harEøsEllerPleiepenger || harAnnenPartSomErLåst;
 };
 
-export const getAktivitetskravOptions = (skalViseMorsAktivitetskravVedSamtidigUttak: boolean): MorsAktivitet[] => {
+export const getAktivitetskravOptions = (
+    skalViseMorsAktivitetskravVedSamtidigUttak: boolean,
+    erInnenforFørsteSeksUkerEtterFødsel = false,
+): MorsAktivitet[] => {
     const aktivitetsKrav = [
         'ARBEID',
         'ARBEID_OG_UTDANNING',
@@ -248,6 +251,10 @@ export const getAktivitetskravOptions = (skalViseMorsAktivitetskravVedSamtidigUt
         'KVALPROG',
         'UTDANNING',
     ] satisfies MorsAktivitet[];
+
+    if (erInnenforFørsteSeksUkerEtterFødsel) {
+        return aktivitetsKrav.filter((k) => k === 'INNLAGT' || k === 'TRENGER_HJELP');
+    }
 
     return skalViseMorsAktivitetskravVedSamtidigUttak
         ? aktivitetsKrav.filter((k) => k !== 'INNLAGT' && k !== 'TRENGER_HJELP')
