@@ -95,10 +95,24 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         intl,
     );
 
+    const erFarMedmorMedFedrekvoteRundtFødsel =
+        forelder === 'FAR_MEDMOR' &&
+        rettighetType === 'BEGGE_RETT' &&
+        kontoTypeFarMedmor === 'FEDREKVOTE' &&
+        valgtePerioder.some((p) =>
+            UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+                p,
+                familiehendelsedato,
+                undefined,
+            ),
+        );
+
     const erFarMedmorUtenAleneomsorg =
         forelder === 'FAR_MEDMOR' &&
         rettighetType !== 'ALENEOMSORG' &&
-        (kontoTypeFarMedmor === 'FORELDREPENGER' || kontoTypeFarMedmor === 'FELLESPERIODE') &&
+        (kontoTypeFarMedmor === 'FORELDREPENGER' ||
+            kontoTypeFarMedmor === 'FELLESPERIODE' ||
+            erFarMedmorMedFedrekvoteRundtFødsel) &&
         !ønskerFlerbarnsdager;
 
     const skalViseMorsAktivitetskravVedSamtidigUttak =
