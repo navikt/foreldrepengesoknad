@@ -474,7 +474,8 @@ export const erPeriodeIOpprinneligPlan = (
             nyPeriode.resultat?.trekkerMinsterett === p.resultat?.trekkerMinsterett &&
             nyPeriode.resultat?.årsak === p.resultat?.årsak &&
             nyPeriode.oppholdÅrsak === p.oppholdÅrsak &&
-            nyPeriode.overføringÅrsak === p.overføringÅrsak
+            nyPeriode.overføringÅrsak === p.overføringÅrsak &&
+            nyPeriode.morsAktivitet === p.morsAktivitet
         );
     });
 };
