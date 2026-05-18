@@ -6,6 +6,7 @@ import {
     erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
+import { erAvslåttPeriode } from '../../utils/periodeUtils';
 
 export const getFørsteUttaksplanperiodeFom = (uttaksplanperioder: Uttaksplanperiode[]) => {
     return uttaksplanperioder.at(0)!.fom;
@@ -57,16 +58,6 @@ export const harUttaksplanperiodePrematuruker = (uttaksplanperioder: Uttaksplanp
     return erVanligUttakPeriode(periode) && periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
 };
 
-export const harUttaksplanperiodeAvslåttPeriodeMedÅrsakAnnet = (uttaksplanperioder: Uttaksplanperiode[]) => {
-    if (uttaksplanperioder.length !== 1) {
-        return false;
-    }
-    const periode = uttaksplanperioder.at(0)!;
-    return (
-        erVanligUttakPeriode(periode) && periode.resultat?.innvilget === false && periode.resultat?.årsak === 'ANNET'
-    );
-};
-
 export const erUttaksplanperiodeUtsettelseOpphold = (uttaksplanperioder: Uttaksplanperiode[]) => {
     if (uttaksplanperioder.length !== 1) {
         return false;
@@ -98,6 +89,17 @@ export const getUttaksplanperiodeForelder = (uttaksplanperioder: Uttaksplanperio
 export const erUttaksplanperiodeErForelderMor = (uttaksplanperioder: Uttaksplanperiode[]) => {
     const forelder = getUttaksplanperiodeForelder(uttaksplanperioder);
     return forelder === 'MOR';
+};
+
+export const erAlleUttaksplanperioderAvslått = (uttaksplanperioder: Uttaksplanperiode[]) => {
+    return (
+        uttaksplanperioder.length > 0 &&
+        uttaksplanperioder.every(
+            (p) =>
+                erAvslåttPeriode(p) &&
+                !(erVanligUttakPeriode(p) && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER'),
+        )
+    );
 };
 
 export const erUttaksplanperiodeEøs = (uttaksplanperioder: Uttaksplanperiode[]) => {

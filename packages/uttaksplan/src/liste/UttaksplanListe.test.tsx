@@ -793,25 +793,65 @@ describe('UttaksplanListe', () => {
         expect(screen.getByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
     });
 
-    it('Bare far har rett - avslåtte perioder skal ikke vise "med aktivitetskrav" i listevisningen', async () => {
+    it('Bare far har rett - avslåtte perioder skal vise "Avslått periode" i listevisningen', async () => {
         const { BareFarHarRettMedAvslåttePerioder } = composeStories(stories);
         render(<BareFarHarRettMedAvslåttePerioder />);
 
-        // Alle 3 perioder (fom 2026-03-09 til 2026-07-10) er gruppert i én rad.
-        // Klikk for å åpne:
-        // - Periode 1 (09. mars - 15. mai): innvilget, morsAktivitet=IKKE_OPPGITT → "Foreldrepenger uten aktivitetskrav"
-        // - Periode 2 (18. mai - 12. juni): avslått, morsAktivitet=ARBEID → skal vise "Foreldrepenger" (ikke "med aktivitetskrav")
-        // - Periode 3 (15. juni - 10. juli): innvilget, morsAktivitet=ARBEID → "Foreldrepenger med aktivitetskrav"
-        const periodeRad = screen.getByTestId('2026-03-09 - 2026-07-10');
-        await userEvent.click(periodeRad);
+        // Med grupperings-fix: avslått periode (18. mai - 12. juni) er nå i en egen rad, separert fra innvilgede perioder.
+        // Rad 1 (09. mars - 15. mai): innvilget, morsAktivitet=IKKE_OPPGITT → "Du har foreldrepenger" i header
+        // Rad 2 (18. mai - 12. juni): avslått → "Avslått periode" i header
+        // Rad 3 (15. juni - 10. juli): innvilget, morsAktivitet=ARBEID → "Du har foreldrepenger" i header
 
-        // Innvilget med IKKE_OPPGITT skal vise "uten aktivitetskrav"
+        // Avslått perioden skal ha "Avslått periode" i headeren
+        const avslåttRad = screen.getByTestId('2026-05-18 - 2026-06-12');
+        expect(avslåttRad).toBeInTheDocument();
+        expect(within(avslåttRad).getAllByText('Avslått periode')).toHaveLength(2); // mobile + desktop
+
+        // Innvilgede perioder skal ikke vise "Avslått periode"
+        const innvilgetRad1 = screen.getByTestId('2026-03-09 - 2026-05-15');
+        expect(innvilgetRad1).toBeInTheDocument();
+
+        const innvilgetRad2 = screen.getByTestId('2026-06-15 - 2026-07-10');
+        expect(innvilgetRad2).toBeInTheDocument();
+
+        // Åpne innvilget rad 1 for å sjekke content
+        await userEvent.click(innvilgetRad1);
         expect(screen.getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
 
-        // Innvilget med ARBEID skal vise "med aktivitetskrav" (bare 1 gang, ikke 2 – avslått periode skal ikke ha det)
-        expect(screen.getAllByText('Foreldrepenger med aktivitetskrav')).toHaveLength(1);
+        // Åpne innvilget rad 2 for å sjekke content
+        await userEvent.click(innvilgetRad2);
+        expect(screen.getByText('Foreldrepenger med aktivitetskrav')).toBeInTheDocument();
 
-        // Avslått periode skal vise bare "Foreldrepenger" uten aktivitetskrav-tekst
-        expect(screen.getAllByText(/^Foreldrepenger$/)).toHaveLength(1);
+        // Åpne avslått rad for å sjekke content viser "Avslått periode" (ikke "med aktivitetskrav")
+        await userEvent.click(avslåttRad);
+        // Header viser det to ganger (mobile + desktop) + content viser det én gang = 3 totalt
+        expect(screen.getAllByText('Avslått periode')).toHaveLength(3);
+    });
+
+    it('Begge rett - avslått mødrekvote skal vise "Avslått periode" i listevisningen, ikke "mødrekvote"', () => {
+        const { BeggeRettMedAvslåttMødrekvote } = composeStories(stories);
+        render(<BeggeRettMedAvslåttMødrekvote />);
+
+        // Rad 1 (05. jan - 20. mars): innvilget mødrekvote → "{navn} har foreldrepenger"
+        // Rad 2 (23. mars - 30. juni): avslått mødrekvote → "Avslått periode"
+
+        const avslåttRad = screen.getByTestId('2026-03-23 - 2026-06-30');
+        expect(avslåttRad).toBeInTheDocument();
+        expect(within(avslåttRad).getAllByText('Avslått periode')).toHaveLength(2); // mobile + desktop
+    });
+
+    it('Bare far har rett - avslått utsettelse skal vise "Avslått periode" i listevisningen, ikke utsettelsestekst', async () => {
+        const { BareFarHarRettMedAvslåttUtsettelse } = composeStories(stories);
+        render(<BareFarHarRettMedAvslåttUtsettelse />);
+
+        // Rad med avslått utsettelse (18. mai - 12. juni) skal vise "Avslått periode" i header
+        const avslåttRad = screen.getByTestId('2026-05-18 - 2026-06-12');
+        expect(avslåttRad).toBeInTheDocument();
+        expect(within(avslåttRad).getAllByText('Avslått periode')).toHaveLength(2); // mobile + desktop
+
+        // Skal IKKE vise "Pause i uttaket" eller "Uten foreldrepenger" for den avslåtte perioden
+        await userEvent.click(avslåttRad);
+        expect(within(avslåttRad).queryByText('Pause i uttaket')).not.toBeInTheDocument();
+        expect(within(avslåttRad).queryByText('Uten foreldrepenger')).not.toBeInTheDocument();
     });
 });

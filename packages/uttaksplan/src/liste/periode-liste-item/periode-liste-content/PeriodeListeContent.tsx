@@ -1,10 +1,11 @@
 import { CalendarIcon, PencilIcon, TrashIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-types';
+import { Uttaksdagen, formatDateExtended } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
@@ -15,8 +16,10 @@ import {
     erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../../../types/UttaksplanPeriode';
+import { getVarighetString } from '../../../utils/dateUtils';
 import { UttakPeriodeBuilder } from '../../../utils/UttakPeriodeBuilder';
 import {
+    erAvslåttPeriode,
     erDetEksisterendePerioderEtterValgtePerioder,
     erOppholdsperiode,
     erOverføringsperiode,
@@ -191,6 +194,16 @@ const Periode = ({
         );
     }
 
+    if (erVanligUttakPeriode(periode) && erAvslåttPeriode(periode) && !erPrematuruker(periode)) {
+        return (
+            <AvslåttPeriodeContent
+                key={genererPeriodeKey(periode)}
+                periode={periode}
+                inneholderKunEnPeriode={inneholderKunEnPeriode}
+            />
+        );
+    }
+
     if (erVanligUttakPeriode(periode) && erUtsettelsesperiode(periode)) {
         return <UtsettelsesPeriodeContent key={genererPeriodeKey(periode)} periode={periode} />;
     }
@@ -270,6 +283,42 @@ const EndreOgSlettKnapper = ({
             <Button type="button" size="small" variant="secondary" icon={<TrashIcon />} onClick={onSlettPeriodeClick}>
                 <FormattedMessage id="uttaksplan.slett" />
             </Button>
+        </HStack>
+    );
+};
+
+const AvslåttPeriodeContent = ({
+    periode,
+    inneholderKunEnPeriode,
+}: {
+    periode: Uttaksplanperiode;
+    inneholderKunEnPeriode: boolean;
+}) => {
+    const intl = useIntl();
+
+    const lengdeTekst = inneholderKunEnPeriode
+        ? intl.formatMessage({ id: 'uttaksplan.varighet.helePerioden' })
+        : `${formatDateExtended(periode.fom)} - ${formatDateExtended(periode.tom)}`;
+
+    return (
+        <HStack gap="space-8">
+            <div>
+                <CalendarIcon width={24} height={24} />
+            </div>
+            <VStack gap="space-4">
+                <HStack gap="space-8">
+                    <BodyShort weight="semibold">{lengdeTekst}</BodyShort>
+                    <BodyShort>
+                        {getVarighetString(
+                            Uttaksdagen.denneEllerNeste(periode.fom).getUttaksdagerFremTilOgMedDato(periode.tom),
+                            intl,
+                        )}
+                    </BodyShort>
+                </HStack>
+                <BodyShort>
+                    <FormattedMessage id="uttaksplan.periodeListeHeader.avslåttAnnet" />
+                </BodyShort>
+            </VStack>
         </HStack>
     );
 };
