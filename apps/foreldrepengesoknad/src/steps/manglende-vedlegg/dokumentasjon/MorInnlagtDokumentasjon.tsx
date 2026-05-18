@@ -49,7 +49,8 @@ export const MorInnlagtDokumentasjon = ({
             Uttaksperioden.erIkkeEøsPeriode(p) &&
             Uttaksperioden.erUttaksperiode(p) &&
             p.kontoType === 'FEDREKVOTE' &&
-            !p.samtidigUttak
+            !p.samtidigUttak &&
+            p.morsAktivitet === undefined
         ) {
             return true;
         }

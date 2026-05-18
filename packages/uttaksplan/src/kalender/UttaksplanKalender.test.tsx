@@ -1010,8 +1010,9 @@ describe('UttaksplanKalender', () => {
 
         expect(
             screen.queryByText(
-                'De første seks ukene er vanligvis kun for mor.' +
-                    ' I noen tilfeller kan du få foreldrepenger i stedet for mor.',
+                'De første seks ukene etter fødsel er vanligvis forbeholdt mor.' +
+                    ' Hvis dere begge skal ha foreldrepenger i denne perioden, velg «Begge» under «Hvem gjelder perioden for?».' +
+                    ' Velger du kun deg selv, må du oppgi hva mor skal gjøre i denne perioden.',
             ),
         ).not.toBeInTheDocument();
 
@@ -1027,8 +1028,9 @@ describe('UttaksplanKalender', () => {
 
         expect(
             screen.queryByText(
-                'De første seks ukene er vanligvis kun for mor.' +
-                    ' I noen tilfeller kan du få foreldrepenger i stedet for mor.',
+                'De første seks ukene etter fødsel er vanligvis forbeholdt mor.' +
+                    ' Hvis dere begge skal ha foreldrepenger i denne perioden, velg «Begge» under «Hvem gjelder perioden for?».' +
+                    ' Velger du kun deg selv, må du oppgi hva mor skal gjøre i denne perioden.',
             ),
         ).toBeInTheDocument();
     });
@@ -1107,6 +1109,9 @@ describe('UttaksplanKalender', () => {
 
         expect(screen.getByText('Far skal ha?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Fars kvote'));
+
+        expect(screen.getByText('Hva skal mor gjøre i denne perioden?')).toBeInTheDocument();
+        await userEvent.selectOptions(screen.getByRole('combobox', { name: /Hva skal mor gjøre/i }), 'ARBEID');
 
         expect(screen.getByText('Skal far kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Nei'));

@@ -89,6 +89,7 @@ const isUttakAvFedrekvoteMorForSyk = (
         Uttaksperioden.erUttaksperiode(periode) &&
         periode.kontoType === 'FEDREKVOTE' &&
         !periode.samtidigUttak &&
+        periode.morsAktivitet === undefined &&
         UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             periode,
             familiehendelsedato,

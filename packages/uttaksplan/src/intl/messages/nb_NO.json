@@ -351,7 +351,7 @@
     "LeggTilEllerEndrePeriodeForm.Overføring.Info1.FarMedmor": "Mors kvote er vanligvis kun for mor.",
     "LeggTilEllerEndrePeriodeForm.Overføring.Info2.FarMedmor": "I noen tilfeller kan du søke om å overta den andre forelderens kvote.",
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Påkrevd": "Du må velge en årsak for overtakelse av kvote",
-    "LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel": "De første seks ukene er vanligvis kun for mor. I noen tilfeller kan du få foreldrepenger i stedet for mor.",
+    "LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel": "De første seks ukene etter fødsel er vanligvis forbeholdt mor. Hvis dere begge skal ha foreldrepenger i denne perioden, velg «Begge» under «Hvem gjelder perioden for?». Velger du kun deg selv, må du oppgi hva mor skal gjøre i denne perioden.",
     "VelgPeriodePanelStep.VelgPeriode": "Du må velge hvilken periode du vil endre",
     "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "Du har valgt en kombinasjon av dager som ikke er gyldig for noen foreldre.",
     "LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.fødsel": "Du kan ikke endre planen når du markerer dager både før og etter fødselsdato. Du må først endre planen før fødselsdato, og så endre planen fra og med fødselsdatoen.",

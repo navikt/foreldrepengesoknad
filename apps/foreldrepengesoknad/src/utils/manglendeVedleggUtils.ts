@@ -75,7 +75,8 @@ const dokumentasjonBehøvesForUttaksperiode = (
             undefined,
         ) &&
         periode.kontoType === 'FEDREKVOTE' &&
-        !periode.samtidigUttak;
+        !periode.samtidigUttak &&
+        periode.morsAktivitet === undefined;
 
     if (harIkkeAktivitetskrav) {
         return false;
