@@ -156,7 +156,7 @@ export const UttaksplanForm = ({
                     <VStack gap="space-16">
                         <AutomatiskJusteringInfotekst
                             harSvartJaPåAutoJustering={harSvartJaPåAutoJustering}
-                            uttaksplan={gjeldendeUttaksplan}
+                            uttaksplan={gjeldendeUttaksplan!}
                         />
                         <RhfRadioGroup
                             name="ønskerJustertUttakVedFødsel"
