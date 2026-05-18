@@ -214,7 +214,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                         tom,
                         forelder: søker,
                         utsettelseÅrsak: 'FRI',
-                        morsAktivitet: values.morsAktivitet,
+                        morsAktivitet: values.morsAktivitet || undefined,
                         flerbarnsdager: false,
                     },
                 ],
