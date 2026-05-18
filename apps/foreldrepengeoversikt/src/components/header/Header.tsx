@@ -1,6 +1,6 @@
 import { BabyWrappedIcon, PersonPregnantIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
-import { ReactNode } from 'react';
+import { ReactNode, createElement } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { Sak } from 'types/Sak.ts';
@@ -71,18 +71,18 @@ function getYtelseIkon(ytelse: Ytelse | undefined) {
 }
 
 function BabyIkon({ ytelse }: { ytelse: Ytelse | undefined }) {
-    const Ikon = getYtelseIkon(ytelse);
+    const icon = getYtelseIkon(ytelse);
 
     return (
         <>
             <Show above="md">
                 <div className="bg-ax-brand-blue-400 h-[60px] w-[60px] rounded-full pt-2 pl-2">
-                    <Ikon fontSize={44} className="text-ax-brand-blue-700" />
+                    {createElement(icon, { fontSize: '44', className: 'text-ax-brand-blue-700' })}
                 </div>
             </Show>
             <Show below="md">
                 <div className="bg-ax-brand-blue-400 h-[38px] w-[38px] rounded-full pt-2 pl-2">
-                    <Ikon fontSize={22} className="text-ax-brand-blue-700" />
+                    {createElement(icon, { fontSize: '22', className: 'text-ax-brand-blue-700' })}
                 </div>
             </Show>
         </>
