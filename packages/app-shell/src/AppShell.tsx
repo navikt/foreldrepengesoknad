@@ -14,13 +14,13 @@ import { getDecoratorLanguageCookie } from '@navikt/fp-utils';
 
 export type AvailableLocale = LocaleAll;
 
-export type MessagesByLocale<L extends AvailableLocale> = Record<L, Record<string, string>>;
+export type MessagesByLocale = Partial<Record<AvailableLocale, Record<string, string>>>;
 
-export interface AppShellProps<L extends AvailableLocale = AvailableLocale> {
+export interface AppShellProps {
     appName: AppName;
     /** Lista med språk appen støtter. Brukes til setAvailableLanguages og initial locale-clamping. */
-    availableLocales: readonly L[];
-    messagesGroupedByLocale: MessagesByLocale<L>;
+    availableLocales: readonly AvailableLocale[];
+    messagesGroupedByLocale: MessagesByLocale;
     queryClient: QueryClient;
     /** Vis ReactQueryDevtools (default true). */
     withReactQueryDevtools?: boolean;
