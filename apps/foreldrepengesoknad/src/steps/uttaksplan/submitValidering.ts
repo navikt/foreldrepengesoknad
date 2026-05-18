@@ -51,7 +51,7 @@ export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFør
         harPeriodeDerMorsAktivitetIkkeErValgt(utledRettighet(erAleneOmOmsorg, erDeltUttak), perioder);
 
     const harKunPerioderForDenAndreForelderen = (perioder: UttaksplanPerioder) =>
-        harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, perioder);
+        harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, erAleneOmOmsorg, perioder);
 
     const submitValideringsregler: SubmitValideringsregel[] = [
         {
@@ -106,8 +106,16 @@ const harBrukerKunSlettetPerioder = (
     return false;
 };
 
-export const harKunPerioderForAnnenForelder = (erSøkerFarEllerMedmor: boolean, perioder?: UttaksplanPerioder) => {
+export const harKunPerioderForAnnenForelder = (
+    erSøkerFarEllerMedmor: boolean,
+    erAleneOmOmsorg: boolean,
+    perioder?: UttaksplanPerioder,
+) => {
     if (!perioder || perioder.length === 0) {
+        return false;
+    }
+
+    if (erAleneOmOmsorg) {
         return false;
     }
 

@@ -29,21 +29,25 @@ const uttakMor: UttakPeriode_fpoversikt = {
 
 describe('harKunPerioderForAnnenForelder', () => {
     it('returnerer false når perioder er undefined eller tom', () => {
-        expect(harKunPerioderForAnnenForelder(true)).toBe(false);
-        expect(harKunPerioderForAnnenForelder(true, [])).toBe(false);
+        expect(harKunPerioderForAnnenForelder(true, false)).toBe(false);
+        expect(harKunPerioderForAnnenForelder(true, false, [])).toBe(false);
     });
 
     it('returnerer true når søker (far) kun har utsettelser og mor har uttaksperioder', () => {
         // Sak 152610557: far søker, mor har eksisterende vedtak/uttak,
         // far har kun utsettelse (ferie/barn syk). Skal blokkeres med feilmelding.
-        expect(harKunPerioderForAnnenForelder(true, [uttakMor, utsettelseFar])).toBe(true);
+        expect(harKunPerioderForAnnenForelder(true, false, [uttakMor, utsettelseFar])).toBe(true);
     });
 
     it('returnerer false når søker (far) har minst én ekte uttaksperiode', () => {
-        expect(harKunPerioderForAnnenForelder(true, [uttakMor, uttakFar])).toBe(false);
+        expect(harKunPerioderForAnnenForelder(true, false, [uttakMor, uttakFar])).toBe(false);
     });
 
     it('returnerer true når planen kun har perioder for annen forelder', () => {
-        expect(harKunPerioderForAnnenForelder(true, [uttakMor])).toBe(true);
+        expect(harKunPerioderForAnnenForelder(true, false, [uttakMor])).toBe(true);
+    });
+
+    it('returnerer false for aleneomsorg', () => {
+        expect(harKunPerioderForAnnenForelder(true, true, [uttakMor, utsettelseFar])).toBe(false);
     });
 });
