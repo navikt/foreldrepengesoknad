@@ -77,8 +77,9 @@ export const AppShell = ({
         return supports(cookie) ? cookie : 'nb';
     });
 
+    dayjs.locale(locale);
+
     useEffect(() => {
-        dayjs.locale(locale);
         document.documentElement.setAttribute('lang', locale);
     }, [locale]);
 
