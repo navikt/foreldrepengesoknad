@@ -7,7 +7,17 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './UttaksplanSteg.stories';
 
-const { FødselMorOgFarBeggeHarRett, FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak } = composeStories(stories);
+const infoTekst = [
+    'I denne søknaden søker du kun for deg selv.',
+    'Du kan legge inn foreldrepenger for den andre forelderen, men informasjonen vil ikke bli sendt inn.',
+    'Den andre forelderen må selv huske å sende oss en søknad.',
+].join(' ');
+
+const {
+    FødselMorOgFarBeggeHarRett,
+    FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak,
+    FødselMorOgFarKunMorHarRett,
+} = composeStories(stories);
 
 describe('<UttaksplanSteg>', () => {
     it(
@@ -106,6 +116,18 @@ describe('<UttaksplanSteg>', () => {
             );
             expect(uttaksplanAction).toBeDefined();
             expect((uttaksplanAction![0].data as unknown[]).length).toBeGreaterThan(0);
+        }),
+    );
+
+    it(
+        'skal skjule info-teksten når annen forelder ikke har rett',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(FødselMorOgFarKunMorHarRett.parameters.msw);
+
+            render(<FødselMorOgFarKunMorHarRett />);
+
+            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+            expect(screen.queryByText(infoTekst)).not.toBeInTheDocument();
         }),
     );
 
