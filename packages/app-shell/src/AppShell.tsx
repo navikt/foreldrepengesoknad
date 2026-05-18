@@ -1,6 +1,7 @@
 import { onLanguageSelect, setAvailableLanguages } from '@navikt/nav-dekoratoren-moduler';
 import { type QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import dayjs from 'dayjs';
 import { type ReactElement, type ReactNode, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -77,11 +78,15 @@ export const AppShell = ({
     });
 
     useEffect(() => {
+        dayjs.locale(locale);
+        document.documentElement.setAttribute('lang', locale);
+    }, [locale]);
+
+    useEffect(() => {
         void setAvailableLanguages(availableLocales.map((l) => ({ locale: l, handleInApp: true })));
         onLanguageSelect((lang) => {
             if (supports(lang.locale)) {
                 setLocale(lang.locale);
-                document.documentElement.setAttribute('lang', lang.locale);
             }
         });
         // Vi vil bare registrere én gang per app-mount.
