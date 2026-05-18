@@ -6,6 +6,6 @@
         "esModuleInterop": true,
         "types": ["vite/client"]
     },
-    "include": ["src/**/*", "index.ts"],
+    "include": ["src/**/*"],
     "exclude": ["node_modules"]
 }
