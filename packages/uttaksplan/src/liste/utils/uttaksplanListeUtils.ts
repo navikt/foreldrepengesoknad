@@ -18,9 +18,17 @@ import {
     erTapteDagerHull,
 } from '../../types/UttaksplanPeriode';
 
-export const getStønadskvoteNavnSimple = (intl: IntlShape, konto: KontoTypeUttak, erMedmorDelAvSøknaden?: boolean) => {
+export const getStønadskvoteNavnSimple = (
+    intl: IntlShape,
+    konto: KontoTypeUttak,
+    erMedmorDelAvSøknaden?: boolean,
+    erBareFarHarRett?: boolean,
+) => {
     if (konto === 'FEDREKVOTE' && erMedmorDelAvSøknaden) {
         return intl.formatMessage({ id: 'uttaksplan.stønadskvotetype.MEDMORSKVOTE' });
+    }
+    if (konto === 'FORELDREPENGER' && erBareFarHarRett) {
+        return intl.formatMessage({ id: 'uttaksplan.stønadskvotetype.AKTIVITETSKRAV_KVOTE_BFHR' });
     }
     return intl.formatMessage({ id: `uttaksplan.stønadskvotetype.${konto}` });
 };
