@@ -1,20 +1,12 @@
-import { onLanguageSelect, setAvailableLanguages } from '@navikt/nav-dekoratoren-moduler';
-import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import dayjs from 'dayjs';
-import { HTTPError } from 'ky';
-import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { Provider, Theme } from '@navikt/ds-react';
-import { en, nb, nn } from '@navikt/ds-react/locales';
+import { AppShell, createDefaultQueryClient } from '@navikt/fp-app-shell';
 
 import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
-import { ApiError, captureApiError, observabilityMessages } from '@navikt/fp-observability';
-import { type LocaleAll, type ProblemDetails } from '@navikt/fp-types';
-import { ByttBrowserModal, IntlProvider, uiMessages } from '@navikt/fp-ui';
-import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
+import { observabilityMessages } from '@navikt/fp-observability';
+import { uiMessages } from '@navikt/fp-ui';
+import { utilsMessages } from '@navikt/fp-utils';
 import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan';
 
 import { Foreldrepengeoversikt } from './Foreldrepengeoversikt';
@@ -24,36 +16,6 @@ import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
 import { BruktOpplysningerOmArbeidsforhold } from './pages/BruktOpplysningerOmArbeidsforhold/BruktOpplysningerOmArbeidsforhold.tsx';
 import { OversiktRoutes } from './routes/routes.ts';
-
-const queryClient = new QueryClient({
-    queryCache: new QueryCache({
-        onError: (error) => {
-            if (error instanceof HTTPError) {
-                const apiError = error.data as ProblemDetails | undefined;
-                captureApiError('API query-feil i foreldrepengeoversikt', apiError);
-                if (error.response?.status === 401) {
-                    location.reload();
-                    return;
-                }
-                if (error.response?.status === 403) {
-                    return;
-                }
-            }
-        },
-    }),
-    mutationCache: new MutationCache({
-        onError: (error) => {
-            if (error instanceof ApiError) {
-                captureApiError(error.sentryMessage, error.problemDetails);
-            }
-        },
-    }),
-    defaultOptions: {
-        queries: {
-            retry: false,
-        },
-    },
-});
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: {
@@ -94,54 +56,26 @@ declare global {
     }
 }
 
-dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
+const queryClient = createDefaultQueryClient({
+    sentryQueryErrorMessage: 'API query-feil i foreldrepengeoversikt',
+});
 
-export const AppContainer = () => {
-    const initialLocale = getDecoratorLanguageCookie('decorator-language') as LocaleAll;
-    const [locale, setLocale] = useState<LocaleAll>(initialLocale === 'en' ? 'nb' : initialLocale);
-
-    void setAvailableLanguages([
-        { locale: 'nb', handleInApp: true },
-        { locale: 'nn', handleInApp: true },
-        { locale: 'en', handleInApp: true },
-    ]);
-
-    onLanguageSelect((lang) => {
-        setLocale(lang.locale as 'nb' | 'nn' | 'en');
-        document.documentElement.setAttribute('lang', lang.locale);
-    });
-
-    const akselLocale = (() => {
-        switch (locale) {
-            case 'nn':
-                return nn;
-            case 'en':
-                return en;
-            default:
-                return nb;
-        }
-    })();
-
-    return (
-        <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <Theme theme="light">
-                <ErrorBoundary>
-                    <QueryClientProvider client={queryClient}>
-                        <ReactQueryDevtools />
-                        <Provider locale={akselLocale}>
-                            <ByttBrowserModal />
-                            <Routes>
-                                {/* // Informasjonssiden er plassert her for å unngå fetching av persondata vi ikke har grunnlag for */}
-                                <Route
-                                    path={OversiktRoutes.BRUKT_OPPLYSNINGER_OM_ARBEIDSFORHOLD}
-                                    element={<BruktOpplysningerOmArbeidsforhold />}
-                                />
-                                <Route path="*" element={<Foreldrepengeoversikt />} />
-                            </Routes>
-                        </Provider>
-                    </QueryClientProvider>
-                </ErrorBoundary>
-            </Theme>
-        </IntlProvider>
-    );
-};
+export const AppContainer = () => (
+    <AppShell
+        appName="foreldrepengeoversikt"
+        availableLocales={['nb', 'nn', 'en']}
+        messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}
+        queryClient={queryClient}
+        withByttBrowserModal
+        renderErrorBoundary={(children) => <ErrorBoundary>{children}</ErrorBoundary>}
+    >
+        <Routes>
+            {/* Informasjonssiden er plassert her for å unngå fetching av persondata vi ikke har grunnlag for */}
+            <Route
+                path={OversiktRoutes.BRUKT_OPPLYSNINGER_OM_ARBEIDSFORHOLD}
+                element={<BruktOpplysningerOmArbeidsforhold />}
+            />
+            <Route path="*" element={<Foreldrepengeoversikt />} />
+        </Routes>
+    </AppShell>
+);

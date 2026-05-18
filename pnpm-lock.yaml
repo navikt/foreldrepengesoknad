@@ -51,6 +51,9 @@ importers:
       '@navikt/ds-tailwind':
         specifier: 8.9.1
         version: 8.9.1
+      '@navikt/fp-app-shell':
+        specifier: workspace:*
+        version: link:../../packages/app-shell
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -223,6 +226,9 @@ importers:
       '@navikt/ds-tailwind':
         specifier: 8.9.1
         version: 8.9.1
+      '@navikt/fp-app-shell':
+        specifier: workspace:*
+        version: link:../../packages/app-shell
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -404,6 +410,9 @@ importers:
       '@navikt/fnrvalidator':
         specifier: 2.2.1
         version: 2.2.1
+      '@navikt/fp-app-shell':
+        specifier: workspace:*
+        version: link:../../packages/app-shell
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -594,6 +603,9 @@ importers:
       '@navikt/ds-tailwind':
         specifier: 8.9.1
         version: 8.9.1
+      '@navikt/fp-app-shell':
+        specifier: workspace:*
+        version: link:../../packages/app-shell
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -766,6 +778,9 @@ importers:
       '@navikt/ds-tailwind':
         specifier: 8.9.1
         version: 8.9.1
+      '@navikt/fp-app-shell':
+        specifier: workspace:*
+        version: link:../../packages/app-shell
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -947,6 +962,9 @@ importers:
       '@navikt/ds-tailwind':
         specifier: 8.9.1
         version: 8.9.1
+      '@navikt/fp-app-shell':
+        specifier: workspace:*
+        version: link:../../packages/app-shell
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -1101,6 +1119,9 @@ importers:
       '@navikt/ds-tailwind':
         specifier: 8.9.1
         version: 8.9.1
+      '@navikt/fp-app-shell':
+        specifier: workspace:*
+        version: link:../../packages/app-shell
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -1243,6 +1264,76 @@ importers:
       vitest:
         specifier: 4.1.4
         version: 4.1.4(@opentelemetry/api@1.9.0)(@types/node@25.5.2)(@vitest/browser-playwright@4.1.4)(jsdom@29.0.2)(msw@2.13.3(@types/node@25.5.2)(typescript@6.0.2))(vite@8.0.8(@types/node@25.5.2)(esbuild@0.28.0)(jiti@2.6.1)(less@4.5.1)(sass-embedded@1.99.0)(sass@1.99.0)(yaml@2.8.3))
+
+  packages/app-shell:
+    dependencies:
+      '@formatjs/intl-pluralrules':
+        specifier: 6.3.2
+        version: 6.3.2
+      '@navikt/ds-react':
+        specifier: 8.9.1
+        version: 8.9.1(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@navikt/fp-observability':
+        specifier: workspace:*
+        version: link:../observability
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../types
+      '@navikt/fp-ui':
+        specifier: workspace:*
+        version: link:../ui
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../utils
+      '@navikt/nav-dekoratoren-moduler':
+        specifier: 3.7.1
+        version: 3.7.1(html-react-parser@5.2.17(@types/react@19.2.14)(react@19.2.5))(react@19.2.5)
+      '@tanstack/react-query':
+        specifier: 5.99.0
+        version: 5.99.0(react@19.2.5)
+      '@tanstack/react-query-devtools':
+        specifier: 5.99.0
+        version: 5.99.0(@tanstack/react-query@5.99.0(react@19.2.5))(react@19.2.5)
+      dayjs:
+        specifier: 1.11.20
+        version: 1.11.20
+      i18n-iso-countries:
+        specifier: 7.14.0
+        version: 7.14.0
+      ky:
+        specifier: 2.0.0
+        version: 2.0.0
+      react:
+        specifier: 19.2.5
+        version: 19.2.5
+      react-dom:
+        specifier: 19.2.5
+        version: 19.2.5(react@19.2.5)
+      react-router-dom:
+        specifier: 7.14.1
+        version: 7.14.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+    devDependencies:
+      '@navikt/fp-config-eslint':
+        specifier: workspace:*
+        version: link:../config-eslint
+      '@navikt/fp-config-typescript':
+        specifier: workspace:*
+        version: link:../config-typescript
+      '@types/react':
+        specifier: 19.2.14
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: 19.2.3
+        version: 19.2.3(@types/react@19.2.14)
+      eslint:
+        specifier: 10.2.0
+        version: 10.2.0(jiti@2.6.1)
+      vite:
+        specifier: 8.0.8
+        version: 8.0.8(@types/node@25.5.2)(esbuild@0.28.0)(jiti@2.6.1)(less@4.5.1)(sass-embedded@1.99.0)(sass@1.99.0)(yaml@2.8.3)
+      typescript:
+        specifier: 6.0.2
+        version: 6.0.2
 
   packages/config-eslint:
     devDependencies:
