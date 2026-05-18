@@ -353,7 +353,18 @@ export const ikkeDeltUttak = ({
     const foreldrePengerFørFødselKonto = tilgjengeligeStønadskvoter.find(
         (konto) => konto.konto === 'FORELDREPENGER_FØR_FØDSEL',
     );
-    const aktivitetsfriKvote = tilgjengeligeStønadskvoter.find((konto) => konto.konto === 'AKTIVITETSFRI_KVOTE');
+    let aktivitetsfriKvote = tilgjengeligeStønadskvoter.find((konto) => konto.konto === 'AKTIVITETSFRI_KVOTE');
+
+    // For far og far + fødsel med DELT_UTTAK-kvoter (MØDREKVOTE, FEDREKVOTE, FELLESPERIODE, FORELDREPENGER_FØR_FØDSEL),
+    // summer alle kvoter minus FFF til én syntetisk AKTIVITETSFRI_KVOTE.
+    if (farOgFar && situasjon !== 'adopsjon' && !aktivitetsfriKvote) {
+        const totalDager = tilgjengeligeStønadskvoter
+            .filter((k) => k.konto !== 'FORELDREPENGER_FØR_FØDSEL')
+            .reduce((sum, k) => sum + k.dager, 0);
+        if (totalDager > 0) {
+            aktivitetsfriKvote = { konto: 'AKTIVITETSFRI_KVOTE', dager: totalDager };
+        }
+    }
 
     if (situasjon === 'adopsjon') {
         return ikkeDeltUttakAdopsjon({

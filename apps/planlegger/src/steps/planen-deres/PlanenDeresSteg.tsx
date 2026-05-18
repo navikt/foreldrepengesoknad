@@ -19,7 +19,7 @@ import {
     getFornavnPåSøker2,
     getNavnPåForeldre,
 } from 'utils/HvemPlanleggerUtils';
-import { mapOmBarnetPlanleggerTilBarn } from 'utils/barnetUtils';
+import { erBarnetAdoptert, mapOmBarnetPlanleggerTilBarn } from 'utils/barnetUtils';
 import { HvemHarRett, utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskvoterUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
@@ -31,6 +31,7 @@ import { loggUmamiEvent } from '@navikt/fp-observability';
 import {
     Dekningsgrad,
     FordelingPlanlegger,
+    KontoBeregningDto,
     KontoBeregningResultatDto,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
@@ -77,7 +78,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
 
     const stønadskvote100 = stønadskvoter['100'];
     const stønadskvote80 = stønadskvoter['80'];
-    const valgtStønadskvote = hvorLangPeriode.dekningsgrad === '100' ? stønadskvote100 : stønadskvote80;
+    const valgtStønadskvoteRå = hvorLangPeriode.dekningsgrad === '100' ? stønadskvote100 : stønadskvote80;
     const barnehagestartdato = barnehagestartDato(omBarnet);
 
     const isMedmorDelAvSøknaden = erMedmorDelAvSøknaden(hvemPlanlegger);
@@ -87,6 +88,24 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
 
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
     const erDeltUttak = fordeling !== undefined;
+
+    // For FAR_OG_FAR + fødsel transformer DELT_UTTAK-kvoter til AKTIVITETSFRI_KVOTE.
+    // API returnerer MØDREKVOTE/FEDREKVOTE/FELLESPERIODE/FFF, men KvoteOppsummering og
+    // kalendervisning forventer AKTIVITETSFRI_KVOTE. Far1 tar hele kvoten, far2 får ikke noe.
+    const erFarOgFarFødsel = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && !erBarnetAdoptert(omBarnet);
+    const valgtStønadskvote = erFarOgFarFødsel
+        ? {
+              ...valgtStønadskvoteRå,
+              kontoer: [
+                  {
+                      konto: 'AKTIVITETSFRI_KVOTE' as const,
+                      dager: valgtStønadskvoteRå.kontoer
+                          .filter((k) => k.konto !== 'FORELDREPENGER_FØR_FØDSEL')
+                          .reduce((sum, k) => sum + k.dager, 0),
+                  },
+              ],
+          }
+        : valgtStønadskvoteRå;
 
     const navnPåForeldre = getNavnPåForeldre(hvemPlanlegger, intl);
 
@@ -299,6 +318,13 @@ const AntallUkerVelger = ({
     const hvorLangPeriode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
 
+    const erFarOgFarFødsel = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && omBarnet.erFødsel;
+
+    const filtrerKvoteForFarOgFarFødsel = (kvote: KontoBeregningDto): KontoBeregningDto =>
+        erFarOgFarFødsel
+            ? { ...kvote, kontoer: kvote.kontoer.filter((k) => k.konto !== 'FORELDREPENGER_FØR_FØDSEL') }
+            : kvote;
+
     const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
     const lagreHvorLangPeriodePlanlegger = notEmpty(useContextSaveData(ContextDataType.HVOR_LANG_PERIODE));
 
@@ -319,8 +345,8 @@ const AntallUkerVelger = ({
     const stønadskvote80 = stønadskvoter['80'];
     const valgtStønadskvote = hvorLangPeriode.dekningsgrad === '100' ? stønadskvote100 : stønadskvote80;
 
-    const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(stønadskvote100);
-    const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(stønadskvote80);
+    const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(filtrerKvoteForFarOgFarFødsel(stønadskvote100));
+    const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(filtrerKvoteForFarOgFarFødsel(stønadskvote80));
 
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);

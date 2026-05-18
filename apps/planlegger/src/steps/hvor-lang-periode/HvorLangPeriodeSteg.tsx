@@ -48,6 +48,12 @@ export const HvorLangPeriodeSteg = ({ stønadskvoter }: Props) => {
 
     const erAlenesøker = erAlene(hvemPlanlegger);
     const erAdopsjon = erBarnetAdoptert(barnet);
+    const erFarOgFarFødsel = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && !erAdopsjon;
+
+    const filtrerKvoteForFarOgFarFødsel = (kvote: KontoBeregningDto): KontoBeregningDto =>
+        erFarOgFarFødsel
+            ? { ...kvote, kontoer: kvote.kontoer.filter((k) => k.konto !== 'FORELDREPENGER_FØR_FØDSEL') }
+            : kvote;
 
     const onSubmit = (formValues: HvorLangPeriodePlanlegger) => {
         oppdaterPeriode(formValues);
@@ -89,8 +95,8 @@ export const HvorLangPeriodeSteg = ({ stønadskvoter }: Props) => {
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskvote100, barnet);
     const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskvote80, barnet);
 
-    const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(stønadskvote100);
-    const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(stønadskvote80);
+    const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(filtrerKvoteForFarOgFarFødsel(stønadskvote100));
+    const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(filtrerKvoteForFarOgFarFødsel(stønadskvote80));
     const antallUkerOgDager = valgtDekningsgrad === '100' ? antallUkerOgDager100 : antallUkerOgDager80;
 
     const kunEnAvSøkereneHarRett = hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett';

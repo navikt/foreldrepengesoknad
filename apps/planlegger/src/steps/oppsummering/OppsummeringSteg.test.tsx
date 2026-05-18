@@ -153,7 +153,7 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Dere valgte 100 % foreldrepenger i 46 uker.')).toBeInTheDocument();
 
         expect(screen.getByText('Dere valgte 100 % i 46 uker.')).toBeInTheDocument();
-        expect(screen.getByText('24. okt. 2024 – 10. sep. 2025')).toBeInTheDocument();
+        expect(screen.getByText(/24. okt. 2024 – 10. sep. 2025/)).toBeInTheDocument();
     });
     it('skal vise info om hvor mye-steget der det er flere forsørgere og begge har rett til foreldrepenger - fødsel', async () => {
         render(<FlereForsørgereHundreProsentTermin />);

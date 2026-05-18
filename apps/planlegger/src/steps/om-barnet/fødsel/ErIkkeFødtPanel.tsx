@@ -2,7 +2,6 @@ import { TasklistStartIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import {
     erAlenesøker as erAlene,
@@ -16,6 +15,7 @@ import { formatError } from 'utils/customErrorFormatter';
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isLessThanThreeWeeksAgo, isRequired, isValidDate } from '@navikt/fp-validation';
@@ -151,9 +151,11 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetPlanleggerIkkeOppgi
                     >
                         <VStack gap="space-8">
                             <HStack gap="space-2">
-                                <BodyShort>
-                                    <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
-                                </BodyShort>
+                                {!erFedre && (
+                                    <BodyShort>
+                                        <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
+                                    </BodyShort>
+                                )}
                                 <BodyShort>
                                     {erFedre || erFar ? (
                                         <FormattedMessage
@@ -239,9 +241,11 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetPlanleggerIkkeOppgi
                         color="green"
                     >
                         <VStack gap="space-8">
-                            <BodyShort>
-                                <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
-                            </BodyShort>
+                            {!erFedre && (
+                                <BodyShort>
+                                    <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
+                                </BodyShort>
+                            )}
                             <BodyShort>
                                 <FormattedMessage
                                     id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
