@@ -51,6 +51,9 @@ importers:
       '@navikt/ds-tailwind':
         specifier: 8.9.1
         version: 8.9.1
+      '@navikt/fp-app-shell':
+        specifier: workspace:*
+        version: link:../../packages/app-shell
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -223,6 +226,9 @@ importers:
       '@navikt/ds-tailwind':
         specifier: 8.9.1
         version: 8.9.1
+      '@navikt/fp-app-shell':
+        specifier: workspace:*
+        version: link:../../packages/app-shell
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -404,6 +410,9 @@ importers:
       '@navikt/fnrvalidator':
         specifier: 2.2.1
         version: 2.2.1
+      '@navikt/fp-app-shell':
+        specifier: workspace:*
+        version: link:../../packages/app-shell
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -594,6 +603,9 @@ importers:
       '@navikt/ds-tailwind':
         specifier: 8.9.1
         version: 8.9.1
+      '@navikt/fp-app-shell':
+        specifier: workspace:*
+        version: link:../../packages/app-shell
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -766,6 +778,9 @@ importers:
       '@navikt/ds-tailwind':
         specifier: 8.9.1
         version: 8.9.1
+      '@navikt/fp-app-shell':
+        specifier: workspace:*
+        version: link:../../packages/app-shell
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -947,6 +962,9 @@ importers:
       '@navikt/ds-tailwind':
         specifier: 8.9.1
         version: 8.9.1
+      '@navikt/fp-app-shell':
+        specifier: workspace:*
+        version: link:../../packages/app-shell
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -1101,6 +1119,9 @@ importers:
       '@navikt/ds-tailwind':
         specifier: 8.9.1
         version: 8.9.1
+      '@navikt/fp-app-shell':
+        specifier: workspace:*
+        version: link:../../packages/app-shell
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -1243,6 +1264,70 @@ importers:
       vitest:
         specifier: 4.1.4
         version: 4.1.4(@opentelemetry/api@1.9.0)(@types/node@25.5.2)(@vitest/browser-playwright@4.1.4)(jsdom@29.0.2)(msw@2.13.3(@types/node@25.5.2)(typescript@6.0.2))(vite@8.0.8(@types/node@25.5.2)(esbuild@0.28.0)(jiti@2.6.1)(less@4.5.1)(sass-embedded@1.99.0)(sass@1.99.0)(yaml@2.8.3))
+
+  packages/app-shell:
+    dependencies:
+      '@formatjs/intl-pluralrules':
+        specifier: 6.3.2
+        version: 6.3.2
+      '@navikt/ds-react':
+        specifier: 8.9.1
+        version: 8.9.1(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@navikt/fp-observability':
+        specifier: workspace:*
+        version: link:../observability
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../types
+      '@navikt/fp-ui':
+        specifier: workspace:*
+        version: link:../ui
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../utils
+      '@navikt/nav-dekoratoren-moduler':
+        specifier: 3.7.1
+        version: 3.7.1(html-react-parser@5.2.17(@types/react@19.2.14)(react@19.2.5))(react@19.2.5)
+      '@tanstack/react-query':
+        specifier: 5.99.0
+        version: 5.99.0(react@19.2.5)
+      '@tanstack/react-query-devtools':
+        specifier: 5.99.0
+        version: 5.99.0(@tanstack/react-query@5.99.0(react@19.2.5))(react@19.2.5)
+      dayjs:
+        specifier: 1.11.20
+        version: 1.11.20
+      i18n-iso-countries:
+        specifier: 7.14.0
+        version: 7.14.0
+      ky:
+        specifier: 2.0.0
+        version: 2.0.0
+      react:
+        specifier: 19.2.5
+        version: 19.2.5
+      react-dom:
+        specifier: 19.2.5
+        version: 19.2.5(react@19.2.5)
+      react-router-dom:
+        specifier: 7.14.1
+        version: 7.14.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+    devDependencies:
+      '@navikt/fp-config-eslint':
+        specifier: workspace:*
+        version: link:../config-eslint
+      '@navikt/fp-config-typescript':
+        specifier: workspace:*
+        version: link:../config-typescript
+      '@types/react':
+        specifier: 19.2.14
+        version: 19.2.14
+      eslint:
+        specifier: 10.2.0
+        version: 10.2.0(jiti@2.6.1)
+      typescript:
+        specifier: 6.0.2
+        version: 6.0.2
 
   packages/config-eslint:
     devDependencies:
@@ -3481,9 +3566,6 @@ packages:
       '@types/react': ^17.0.30 || ^18 || ^19
       react: ^17 || ^18 || ^19
       react-dom: ^17 || ^18 || ^19
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
 
   '@navikt/ds-tailwind@8.9.1':
     resolution: {integrity: sha512-Ye3j0uK/StBVfGZmafwyswh4FAbfOC+jkEjRj2e3/JIH1yxGJGJ9wvsWooTw5WUqnEUGALFGcaisZLbc8EOzNA==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/8.9.1/f8b730a978199467fa2718f9c2bd768a1622bbb7}
@@ -3500,9 +3582,6 @@ packages:
     peerDependencies:
       html-react-parser: '>=5.x'
       react: '>=17.x'
-    peerDependenciesMeta:
-      react:
-        optional: true
 
   '@navikt/oasis@4.1.4':
     resolution: {integrity: sha512-v+LW8V5CTiHkfIXhceQ8RXRtrBktCK8wSFYmiR6hmzl9CJRYRLUpFC7YbLiC7jwHIuLHKUyl+Zawf8zQm6fDeQ==, tarball: https://npm.pkg.github.com/download/@navikt/oasis/4.1.4/0d9c93820b9b6d93b1bd9da134feb95461ad8a47}
@@ -8642,12 +8721,11 @@ snapshots:
       '@floating-ui/react-dom': 2.1.8(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@navikt/aksel-icons': 8.9.1
       '@navikt/ds-tokens': 8.9.1
+      '@types/react': 19.2.14
       date-fns: 4.1.0
       react: 19.2.5
       react-day-picker: 9.7.0(react@19.2.5)
       react-dom: 19.2.5(react@19.2.5)
-    optionalDependencies:
-      '@types/react': 19.2.14
 
   '@navikt/ds-tailwind@8.9.1': {}
 
@@ -8660,7 +8738,6 @@ snapshots:
       csp-header: 6.3.1
       html-react-parser: 5.2.17(@types/react@19.2.14)(react@19.2.5)
       js-cookie: 3.0.5
-    optionalDependencies:
       react: 19.2.5
 
   '@navikt/oasis@4.1.4':

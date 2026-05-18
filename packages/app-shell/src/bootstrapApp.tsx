@@ -15,7 +15,7 @@ export interface BootstrapAppOptions {
     /** basename til BrowserRouter. Default `import.meta.env.BASE_URL`. */
     basename?: string;
     /** Hvilke språk appen støtter. Brukes til å registrere dayjs- og i18n-iso-countries-locales. */
-    availableLocales: ReadonlyArray<LocaleAll>;
+    availableLocales: readonly LocaleAll[];
     /** Last @formatjs/intl-pluralrules-polyfill (default true). */
     withPluralRulesPolyfill?: boolean;
     /** Registrer i18n-iso-countries-locales (default true). */
@@ -26,7 +26,7 @@ export interface BootstrapAppOptions {
     app: ReactElement;
 }
 
-const loadDayjsLocales = async (locales: ReadonlyArray<LocaleAll>) => {
+const loadDayjsLocales = async (locales: readonly LocaleAll[]) => {
     const loaders: Array<Promise<unknown>> = [];
     if (locales.includes('nb')) {
         loaders.push(import('dayjs/locale/nb.js'));
@@ -40,7 +40,7 @@ const loadDayjsLocales = async (locales: ReadonlyArray<LocaleAll>) => {
     await Promise.all(loaders);
 };
 
-const loadCountryLocales = async (locales: ReadonlyArray<LocaleAll>) => {
+const loadCountryLocales = async (locales: readonly LocaleAll[]) => {
     if (locales.includes('nb')) {
         const lang = await import('i18n-iso-countries/langs/nb.json');
         countries.registerLocale(lang.default ?? lang);
@@ -55,7 +55,7 @@ const loadCountryLocales = async (locales: ReadonlyArray<LocaleAll>) => {
     }
 };
 
-const loadPluralRulesPolyfill = async (locales: ReadonlyArray<LocaleAll>) => {
+const loadPluralRulesPolyfill = async (locales: readonly LocaleAll[]) => {
     await import('@formatjs/intl-pluralrules/polyfill.js');
     if (locales.includes('nb')) {
         await import('@formatjs/intl-pluralrules/locale-data/nb');

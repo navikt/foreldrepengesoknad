@@ -18,7 +18,7 @@ export type MessagesByLocale = Partial<Record<AvailableLocale, Record<string, st
 export interface AppShellProps {
     appName: AppName;
     /** Lista med språk appen støtter. Brukes til setAvailableLanguages og initial locale-clamping. */
-    availableLocales: ReadonlyArray<AvailableLocale>;
+    availableLocales: readonly AvailableLocale[];
     messagesGroupedByLocale: MessagesByLocale;
     queryClient: QueryClient;
     /** Vis ReactQueryDevtools (default true). */
@@ -69,8 +69,7 @@ export const AppShell = ({
     customErrorPage,
     children,
 }: AppShellProps) => {
-    const supports = (l: string): l is AvailableLocale =>
-        (availableLocales as ReadonlyArray<string>).includes(l);
+    const supports = (l: string): l is AvailableLocale => (availableLocales as readonly string[]).includes(l);
 
     const [locale, setLocale] = useState<AvailableLocale>(() => {
         const cookie = getDecoratorLanguageCookie('decorator-language');
@@ -86,7 +85,6 @@ export const AppShell = ({
             }
         });
         // Vi vil bare registrere én gang per app-mount.
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const errorBoundaryWrap =
@@ -98,7 +96,10 @@ export const AppShell = ({
         ));
 
     return (
-        <IntlProvider locale={locale} messagesGroupedByLocale={messagesGroupedByLocale as Record<AvailableLocale, Record<string, string>>}>
+        <IntlProvider
+            locale={locale}
+            messagesGroupedByLocale={messagesGroupedByLocale as Record<AvailableLocale, Record<string, string>>}
+        >
             <Theme theme="light">
                 {errorBoundaryWrap(
                     <QueryClientProvider client={queryClient}>
