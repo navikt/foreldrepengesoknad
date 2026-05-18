@@ -58,13 +58,13 @@ const loadCountryLocales = async (locales: readonly LocaleAll[]) => {
 const loadPluralRulesPolyfill = async (locales: readonly LocaleAll[]) => {
     await import('@formatjs/intl-pluralrules/polyfill.js');
     if (locales.includes('nb')) {
-        await import('@formatjs/intl-pluralrules/locale-data/nb');
+        await import('@formatjs/intl-pluralrules/locale-data/nb.js');
     }
     if (locales.includes('nn')) {
-        await import('@formatjs/intl-pluralrules/locale-data/nn');
+        await import('@formatjs/intl-pluralrules/locale-data/nn.js');
     }
     if (locales.includes('en')) {
-        await import('@formatjs/intl-pluralrules/locale-data/en');
+        await import('@formatjs/intl-pluralrules/locale-data/en.js');
     }
 };
 
