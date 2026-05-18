@@ -1328,6 +1328,9 @@ importers:
       eslint:
         specifier: 10.2.0
         version: 10.2.0(jiti@2.6.1)
+      vite:
+        specifier: 8.0.8
+        version: 8.0.8(@types/node@25.5.2)(esbuild@0.28.0)(jiti@2.6.1)(less@4.5.1)(sass-embedded@1.99.0)(sass@1.99.0)(yaml@2.8.3)
       typescript:
         specifier: 6.0.2
         version: 6.0.2
