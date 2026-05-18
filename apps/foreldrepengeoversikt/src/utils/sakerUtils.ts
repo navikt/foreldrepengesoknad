@@ -156,13 +156,10 @@ const addYtelseToSak = (
     ytelse: Ytelse,
 ): Sak[] => {
     if (ytelse === 'ENGANGSSTØNAD') {
-        return saker.map(
-            (sak) =>
-                ({
-                    ...sak,
-                    ytelse,
-                }) as EngangsstønadSak,
-        );
+        return saker.map((sak) => ({
+            ...sak,
+            ytelse,
+        }));
     }
 
     if (ytelse === 'SVANGERSKAPSPENGER') {
