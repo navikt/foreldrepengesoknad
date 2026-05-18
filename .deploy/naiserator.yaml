@@ -64,15 +64,15 @@ spec:
      value: "{{this}}"
   {{/each}}
    - name: FPSOKNAD_API_URL
-     value: "http://fpsoknad/fpsoknad"
+     value: "http://fpsoknad/fpsoknad/api"
    - name: FPSOKNAD_API_SCOPE
      value: "{{env.ENV}}-gcp:teamforeldrepenger:fpsoknad"
    - name: FPOVERSIKT_API_URL
-     value: "http://fpoversikt/fpoversikt"
+     value: "http://fpoversikt/fpoversikt/api"
    - name: FPOVERSIKT_API_SCOPE
      value: "{{env.ENV}}-gcp:teamforeldrepenger:fpoversikt"
    - name: FPGRUNNDATA_API_URL
-     value: "http://fpgrunndata/fpgrunndata"
+     value: "http://fpgrunndata/fpgrunndata/api"
    - name: APP_VERSION
      value: {{image}}
    - name: NODE_ENV
