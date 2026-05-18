@@ -26,6 +26,7 @@
         "@navikt/ds-css": "8.9.1",
         "@navikt/ds-react": "8.9.1",
         "@navikt/ds-tailwind": "8.9.1",
+        "@navikt/fp-app-shell": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-filopplaster": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",

@@ -1,17 +1,9 @@
-import { onLanguageSelect, setAvailableLanguages } from '@navikt/nav-dekoratoren-moduler';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import dayjs from 'dayjs';
-import { useState } from 'react';
-
-import { Provider, Theme } from '@navikt/ds-react';
-import { en, nb, nn } from '@navikt/ds-react/locales';
+import { AppShell, createDefaultQueryClient } from '@navikt/fp-app-shell';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { observabilityMessages } from '@navikt/fp-observability';
-import { LocaleAll } from '@navikt/fp-types';
-import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
-import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
+import { SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
+import { utilsMessages } from '@navikt/fp-utils';
 import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan';
 
 import { PlanleggerDataInit } from './Planlegger';
@@ -37,14 +29,6 @@ declare global {
     }
 }
 
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: false,
-        },
-    },
-});
-
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: allNbMessages,
     nn: {
@@ -65,50 +49,16 @@ const MESSAGES_GROUPED_BY_LOCALE = {
     },
 };
 
-dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
+const queryClient = createDefaultQueryClient();
 
-export const AppContainer = () => {
-    const [locale, setLocale] = useState<LocaleAll>(
-        () => getDecoratorLanguageCookie('decorator-language') as LocaleAll,
-    );
-
-    void setAvailableLanguages([
-        { locale: 'nb', handleInApp: true },
-        { locale: 'nn', handleInApp: true },
-        { locale: 'en', handleInApp: true },
-    ]);
-
-    onLanguageSelect((lang) => {
-        setLocale(lang.locale as LocaleAll);
-        document.documentElement.setAttribute('lang', lang.locale);
-    });
-
-    return (
-        <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <Theme theme="light">
-                <ErrorBoundary
-                    appName="planlegger"
-                    customErrorPage={<SimpleErrorPage retryCallback={() => location.reload()} />}
-                >
-                    <QueryClientProvider client={queryClient}>
-                        <ReactQueryDevtools />
-                        <Provider locale={getDsProviderLocale(locale)}>
-                            <PlanleggerDataInit />
-                        </Provider>
-                    </QueryClientProvider>
-                </ErrorBoundary>
-            </Theme>
-        </IntlProvider>
-    );
-};
-
-const getDsProviderLocale = (locale: LocaleAll) => {
-    switch (locale) {
-        case 'nn':
-            return nn;
-        case 'en':
-            return en;
-        default:
-            return nb;
-    }
-};
+export const AppContainer = () => (
+    <AppShell
+        appName="planlegger"
+        availableLocales={['nb', 'nn', 'en']}
+        messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}
+        queryClient={queryClient}
+        customErrorPage={<SimpleErrorPage retryCallback={() => location.reload()} />}
+    >
+        <PlanleggerDataInit />
+    </AppShell>
+);
