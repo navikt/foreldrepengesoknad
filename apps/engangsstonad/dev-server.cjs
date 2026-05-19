@@ -38,9 +38,21 @@ const startServer = async () => {
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
 
     server.use(
-        '/rest',
+        '/fpoversikt/api',
         createProxyMiddleware({
-            target: 'http://localhost:8888/rest',
+            target: 'http://localhost:8888/fpoversikt/api',
+            changeOrigin: true,
+            logger: console,
+            on: {
+                proxyReq: fixRequestBody,
+            },
+        }),
+    );
+
+    server.use(
+        '/fpsoknad/api',
+        createProxyMiddleware({
+            target: 'http://localhost:8888/fpsoknad/api',
             changeOrigin: true,
             logger: console,
             on: {

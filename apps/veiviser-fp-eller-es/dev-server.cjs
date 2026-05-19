@@ -1,4 +1,3 @@
-const { createProxyMiddleware, fixRequestBody } = require('http-proxy-middleware');
 const express = require('express');
 const server = express();
 server.use(express.json());
@@ -36,18 +35,6 @@ const renderApp = () =>
 const startServer = async (html) => {
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
-
-    server.use(
-        '/rest',
-        createProxyMiddleware({
-            target: 'http://localhost:8888/rest',
-            changeOrigin: true,
-            logger: console,
-            on: {
-                proxyReq: fixRequestBody,
-            },
-        }),
-    );
 
     const fs = require('node:fs');
     fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), html.replaceAll('</link>', ''));

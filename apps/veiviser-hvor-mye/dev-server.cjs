@@ -38,9 +38,9 @@ const startServer = async (html) => {
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
 
     server.use(
-        '/rest',
+        '/fpgrunndata/api',
         createProxyMiddleware({
-            target: 'http://localhost:8888/rest',
+            target: 'http://localhost:8888/fpgrunndata/api',
             changeOrigin: true,
             logger: console,
             on: {
