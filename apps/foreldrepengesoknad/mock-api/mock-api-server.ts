@@ -112,45 +112,6 @@ export const getAnnenPartVedtak = () => {
     }
 };
 
-export const getUttaksplan = () => {
-    const fileName = getFilePath('uttaksplan.json');
-    if (!fs.existsSync(fileName)) {
-        return {};
-    } else {
-        try {
-            return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch {
-            return {};
-        }
-    }
-};
-
-export const getUttaksplanannen = () => {
-    const fileName = getFilePath('uttaksplanannen.json');
-    if (!fs.existsSync(fileName)) {
-        return {};
-    } else {
-        try {
-            return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch {
-            return {};
-        }
-    }
-};
-
-export const getStorageKvittering = () => {
-    const fileName = getFilePath('storage_kvittering.json');
-    if (!fs.existsSync(fileName)) {
-        return {};
-    } else {
-        try {
-            return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch {
-            return {};
-        }
-    }
-};
-
 dotenv.config();
 const app = express();
 const router = express.Router();
@@ -179,18 +140,16 @@ router.get(['/fpoversikt/api/personopplysninger/foreldrepenger'], (_req, res) =>
     res.send(getSokerInfo());
 });
 
-router.post('/fpoversikt/api/engangsstonad', (_req, res) => res.sendStatus(200));
-
 router.get('/fpsoknad/api/storage/FORELDREPENGER', (_req, res) => {
     res.send(getSoknad());
 });
 
-router.post('/fpsoknad/api/storage/foreldrepenger', (req, res) => {
+router.post('/fpsoknad/api/storage/FORELDREPENGER', (req, res) => {
     updateSoknad(req.body);
     return res.sendStatus(200);
 });
 
-router.delete('/fpsoknad/api/storage/foreldrepenger', (_req, res) => {
+router.delete('/fpsoknad/api/storage/FORELDREPENGER', (_req, res) => {
     deleteSoknad();
     return res.sendStatus(200);
 });
@@ -199,16 +158,8 @@ router.get('/fpoversikt/api/saker', (_req, res) => {
     res.send(getSaker());
 });
 
-router.post('/fpoversikt/api/innsyn/v2/annenPartVedtak', (_req, res) => {
+router.post('/fpoversikt/api/annenPart', (_req, res) => {
     res.send(getAnnenPartVedtak());
-});
-
-router.get('/fpoversikt/api/innsyn/uttaksplan', (_req, res) => {
-    res.send(getUttaksplan());
-});
-
-router.get('/fpoversikt/api/innsyn/uttaksplanannen', (_req, res) => {
-    res.send(getUttaksplanannen());
 });
 
 router.post('/fpgrunndata/api/konto', async (req, res) => {
@@ -216,17 +167,33 @@ router.post('/fpgrunndata/api/konto', async (req, res) => {
     res.send(response);
 });
 
-router.post('/fpoversikt/api/soknad/foreldrepenger', (_req, res) => {
+router.post('/fpsoknad/api/soknad/foreldrepenger', (_req, res) => {
     return res.send(getSoknadSendt());
 });
 
-router.post('/fpoversikt/api/soknad/foreldrepenger/endre', (_req, res) => {
+router.post('/fpsoknad/api/soknad/foreldrepenger/endre', (_req, res) => {
     return res.send(getSoknadSendt());
 });
 
-router.delete('/fpoversikt/api/storage/foreldrepenger/vedlegg', (_req, res) => {
-    deleteSoknad();
-    return res.sendStatus(200);
+router.delete('/fpsoknad/api/storage/FORELDREPENGER/vedlegg/:uuid', (_req, res) => {
+    return res.sendStatus(204);
+});
+
+router.post('/fpsoknad/api/storage/FORELDREPENGER/vedlegg', (_req, res) => {
+    res.setHeader('Location', 'http://localhost:8888/vedlegg/123');
+    res.sendStatus(201);
+});
+
+router.get('/fpoversikt/api/saker/erOppdatert', (_req, res) => {
+    res.send(true);
+});
+
+router.get('/fpsoknad/api/soknad/status', (_req, res) => {
+    res.send([]);
+});
+
+router.post('/fpoversikt/api/arbeid/morDokumentasjon', (_req, res) => {
+    res.send(false);
 });
 
 app.use('', router);
