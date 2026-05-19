@@ -33,11 +33,21 @@ export const HvemPlanleggerSteg = () => {
 
     const hvemPlanlegger = useContextGetData(ContextDataType.HVEM_PLANLEGGER);
     const oppdaterHvemPlanlegger = useContextSaveData(ContextDataType.HVEM_PLANLEGGER);
+    const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
+    const oppdaterArbeidssituasjon = useContextSaveData(ContextDataType.ARBEIDSSITUASJON);
+    const oppdaterHvorLangPeriode = useContextSaveData(ContextDataType.HVOR_LANG_PERIODE);
+    const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
+    const oppdaterHvorMye = useContextSaveData(ContextDataType.HVOR_MYE);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const lagre = (formValues: HvemPlanlegger) => {
         oppdaterHvemPlanlegger(formValues);
         if (hvemPlanlegger && hvemPlanlegger.type !== formValues.type) {
+            oppdaterOmBarnet(undefined);
+            oppdaterArbeidssituasjon(undefined);
+            oppdaterHvorLangPeriode(undefined);
+            oppdaterFordeling(undefined);
+            oppdaterHvorMye(undefined);
             oppdaterUttaksplan(undefined);
         }
 
