@@ -108,15 +108,20 @@ export const UttaksplanForm = ({
           )
         : [];
 
+    const periodeRundtFødsel = perioderRundtFødselForFarMedmor[0];
     const visAutomatiskJustering =
         erSøkerFarEllerMedmor &&
         søkersituasjon.situasjon === 'fødsel' &&
         perioderRundtFødselForFarMedmor.length === 1 &&
+        periodeRundtFødsel !== undefined &&
         uttaksdagPåEllerEtterTermin !== undefined &&
-        dayjs(perioderRundtFødselForFarMedmor[0]!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
+        dayjs(periodeRundtFødsel.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
         isUfødtBarn(barn) &&
         barn.termindato !== undefined &&
-        !bareFarHarRett;
+        !bareFarHarRett &&
+        Uttaksperioden.erUttaksperiode(periodeRundtFødsel) &&
+        Uttaksperioden.erSamtidigUttak(periodeRundtFødsel) &&
+        (periodeRundtFødsel.kontoType === 'FEDREKVOTE' || periodeRundtFødsel.kontoType === 'FORELDREPENGER');
 
     const finnFørsteSubmitFeilmelding = useFinnFørsteSubmitFeilmelding({ opprinneligPlan });
 
