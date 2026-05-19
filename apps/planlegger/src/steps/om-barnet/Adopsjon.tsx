@@ -3,8 +3,6 @@ import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnetPlanlegger } from '@navikt/fp-types';
-import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
-import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 
 import { BodyLong, VStack } from '@navikt/ds-react';
 
@@ -20,13 +18,12 @@ import {
 } from '@navikt/fp-validation';
 
 type Props = {
-    hvemPlanlegger: HvemPlanlegger;
     erAlenesøker: boolean;
     erOmBarnetPlanleggerIkkeOppgittFraFør: boolean;
     antallBarn?: string;
 };
 
-export const Adopsjon = ({ erAlenesøker, erOmBarnetPlanleggerIkkeOppgittFraFør, antallBarn, hvemPlanlegger }: Props) => {
+export const Adopsjon = ({ erAlenesøker, erOmBarnetPlanleggerIkkeOppgittFraFør, antallBarn }: Props) => {
     const intl = useIntl();
 
     const flereBarn = antallBarn === '3' || antallBarn === '2';
@@ -34,10 +31,6 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetPlanleggerIkkeOppgittFraFør
     const formMethods = useFormContext<OmBarnetPlanlegger>();
     const fødselsdato = formMethods.watch('fødselsdato');
     const overtakelsesdato = formMethods.watch('overtakelsesdato');
-
-    const erFarEllerMedmor =
-        hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR ||
-        hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
 
     return (
         <>
@@ -107,15 +100,26 @@ export const Adopsjon = ({ erAlenesøker, erOmBarnetPlanleggerIkkeOppgittFraFør
                 >
                     <VStack gap="space-8">
                         <BodyLong>
-                            <FormattedMessage id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekst" />
+                            <FormattedMessage
+                                id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekst.KanSøke"
+                                values={{
+                                    erAlenesøker,
+                                }}
+                            />
                         </BodyLong>
                         <BodyLong>
                             <FormattedMessage
-                                id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekstDel2Deg"
+                                id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekst.FireUkerFør"
                                 values={{
                                     erAlenesøker,
-                                    erFarEllerMedmor,
-                                    hvem: finnSøker2Tekst(intl, hvemPlanlegger),
+                                }}
+                            />
+                        </BodyLong>
+                        <BodyLong>
+                            <FormattedMessage
+                                id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekst.KanStarte"
+                                values={{
+                                    erAlenesøker,
                                 }}
                             />
                         </BodyLong>
