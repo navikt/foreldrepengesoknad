@@ -21,6 +21,7 @@ import { InfoTilFiskere } from './components/info-til-fiskere/InfoTilFiskere';
 interface Props<TYPE> {
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
     aktiveArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[];
     saveOnNext: (formValues: ArbeidsforholdOgInntekt) => void;
     onAvsluttOgSlett: () => void;
     onFortsettSenere?: () => void;
@@ -33,6 +34,7 @@ interface Props<TYPE> {
 export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
     arbeidsforholdOgInntekt,
     aktiveArbeidsforhold,
+    frilansoppdrag,
     saveOnNext,
     onAvsluttOgSlett,
     onFortsettSenere,
@@ -75,7 +77,11 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                         <BodyShort style={{ fontWeight: 'bold' }}>
                             <FormattedMessage id="inntektsinformasjon.arbeidsforhold.label" />
                         </BodyShort>
-                        <ArbeidsforholdInformasjon appOrigin={appOrigin} arbeidsforhold={aktiveArbeidsforhold} />
+                        <ArbeidsforholdInformasjon
+                            appOrigin={appOrigin}
+                            arbeidsforhold={aktiveArbeidsforhold}
+                            frilansoppdrag={frilansoppdrag}
+                        />
                         <ReadMore
                             header={
                                 <FormattedMessage

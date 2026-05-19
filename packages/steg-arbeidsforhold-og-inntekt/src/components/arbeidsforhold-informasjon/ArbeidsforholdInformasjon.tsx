@@ -10,18 +10,33 @@ import { HarIkkeArbeidsforhold } from './HarIkkeArbeidsforhold';
 
 interface Props {
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[];
     visManglerInfo?: boolean;
     appOrigin: AppName;
 }
 
-export const ArbeidsforholdInformasjon = ({ appOrigin, arbeidsforhold, visManglerInfo = true }: Props) => {
+export const ArbeidsforholdInformasjon = ({
+    appOrigin,
+    arbeidsforhold,
+    frilansoppdrag,
+    visManglerInfo = true,
+}: Props) => {
     const harArbeidsforhold = arbeidsforhold !== undefined && arbeidsforhold.length > 0;
+    const harFrilansoppdrag = frilansoppdrag.length > 0;
     const intl = useIntl();
 
     return (
         <VStack gap="space-16">
             <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
+            {harFrilansoppdrag && (
+                <>
+                    <BodyShort style={{ fontWeight: 'bold' }}>
+                        <FormattedMessage id="inntektsinformasjon.frilansoppdrag.label" />
+                    </BodyShort>
+                    <HarArbeidsforhold harArbeidsforhold={harFrilansoppdrag} arbeidsforhold={frilansoppdrag} />
+                </>
+            )}
             {visManglerInfo && (
                 <ReadMore
                     onOpenChange={(open) =>

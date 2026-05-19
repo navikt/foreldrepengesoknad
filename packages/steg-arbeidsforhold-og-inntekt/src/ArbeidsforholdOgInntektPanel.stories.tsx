@@ -39,6 +39,7 @@ type Story = StoryObj<typeof meta>;
 export const ForSvangerskapspenger: Story = {
     args: {
         aktiveArbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+        frilansoppdrag: [],
         saveOnNext: action('button-click'),
         onAvsluttOgSlett: action('button-click'),
         goToPreviousStep: action('button-click'),
