@@ -1,6 +1,6 @@
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { harKunPerioderForAnnenForelder } from './UttaksplanForm';
+import { harKunPerioderForAnnenForelder } from './submitValidering';
 
 const utsettelseFar: UttakPeriode_fpoversikt = {
     fom: '2026-06-01',
