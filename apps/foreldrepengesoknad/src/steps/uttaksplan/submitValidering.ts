@@ -125,6 +125,10 @@ export const harKunPerioderForAnnenForelder = (
 };
 
 const erKunUtsettelser = (perioder: UttaksplanPerioder) => {
+    if (perioder.length === 0) {
+        return false;
+    }
+
     return perioder.every((periode) => Uttaksperioden.erUtsettelsesperiode(periode));
 };
 
