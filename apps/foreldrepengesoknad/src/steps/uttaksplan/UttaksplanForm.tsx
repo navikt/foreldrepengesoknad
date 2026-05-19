@@ -254,7 +254,8 @@ const AutomatiskJusteringInfotekst = ({
         harSvartJaOgHarEnPeriodeRundtFødsel &&
         dayjs(perioderMedUttakRundtFødsel[0]!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
         ((Uttaksperioden.erUttaksperiode(perioderMedUttakRundtFødsel[0]!) &&
-            (perioderMedUttakRundtFødsel[0]!.kontoType !== 'FEDREKVOTE' ||
+            ((perioderMedUttakRundtFødsel[0]!.kontoType !== 'FEDREKVOTE' &&
+                perioderMedUttakRundtFødsel[0]!.kontoType !== 'FORELDREPENGER') ||
                 !Uttaksperioden.erSamtidigUttak(perioderMedUttakRundtFødsel[0]!))) ||
             Uttaksperioden.erOverføringsperiode(perioderMedUttakRundtFødsel[0]!));
 
