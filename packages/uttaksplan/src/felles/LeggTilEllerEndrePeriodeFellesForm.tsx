@@ -103,13 +103,20 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 
     const skalViseMorsAktivitetskravVedSamtidigUttak =
         !ønskerFlerbarnsdager &&
-        getSkalViseMorsAktivitetskravVedSamtidigUttak(
-            forelder,
-            samtidigUttaksprosentMor,
-            stillingsprosentMor,
-            samtidigUttaksprosentFarMedmor,
-            kontoTypeFarMedmor,
+        getSkalViseMorsAktivitetskravVedSamtidigUttak(forelder, samtidigUttaksprosentMor, stillingsprosentMor, kontoTypeFarMedmor);
+
+    const erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel =
+        familiesituasjon !== 'adopsjon' &&
+        UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
+            valgtePerioder,
+            familiehendelsedato,
         );
+
+    const skalViseAktivitetskravFordiFedrekvoteFørsteSeksUker =
+        forelder === 'FAR_MEDMOR' &&
+        rettighetType !== 'ALENEOMSORG' &&
+        kontoTypeFarMedmor === 'FEDREKVOTE' &&
+        erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel;
 
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKvotetyper(
         valgtePerioder,
@@ -448,7 +455,9 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 </VStack>
             )}
 
-            {(erFarMedmorUtenAleneomsorg || skalViseMorsAktivitetskravVedSamtidigUttak) && (
+            {(erFarMedmorUtenAleneomsorg ||
+                skalViseMorsAktivitetskravVedSamtidigUttak ||
+                skalViseAktivitetskravFordiFedrekvoteFørsteSeksUker) && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
                     <RhfSelect
@@ -458,7 +467,10 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         validate={[isRequired(intl.formatMessage({ id: 'AktivitetskravSpørsmål.Påkrevd' }))]}
                         description={intl.formatMessage({ id: 'AktivitetskravSpørsmål.Description' })}
                     >
-                        {getAktivitetskravOptions(skalViseMorsAktivitetskravVedSamtidigUttak).map((value) => {
+                        {getAktivitetskravOptions(
+                            skalViseMorsAktivitetskravVedSamtidigUttak,
+                            erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel,
+                        ).map((value) => {
                             return (
                                 <option key={value} value={value}>
                                     {getAktivitetskravTekst(value, intl)}
@@ -662,25 +674,13 @@ const getSkalViseMorsAktivitetskravVedSamtidigUttak = (
     forelder: ForelderValg,
     samtidigUttaksprosentMor?: string,
     stillingsprosentMor?: string,
-    samtidigUttaksprosentFarMedmor?: string,
     kontoTypeFarMedmor?: KontoTypeUttak,
 ) => {
     const morsSamtidigUttakprosent = forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentMor) ?? 0) : 0;
     const morsStillingProsent = forelder === 'BEGGE' ? (getFloatFromString(stillingsprosentMor) ?? 0) : 0;
     const morsTotaleProsent = morsSamtidigUttakprosent + morsStillingProsent;
 
-    const farMedmorsSamtidigUttakprosent =
-        forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentFarMedmor) ?? 0) : 0;
-    const kombinertUttaksprosent = morsSamtidigUttakprosent + farMedmorsSamtidigUttakprosent;
-
-    if (kombinertUttaksprosent !== 100) {
-        return false;
-    }
-
-    const skalViseMorsAktivitetskravVedSamtidigUttak =
-        forelder === 'BEGGE' && kontoTypeFarMedmor === 'FELLESPERIODE' && morsTotaleProsent < 100;
-
-    return skalViseMorsAktivitetskravVedSamtidigUttak;
+    return forelder === 'BEGGE' && kontoTypeFarMedmor === 'FELLESPERIODE' && morsTotaleProsent < 100;
 };
 
 export const mapFraFormValuesTilUttakPeriode = (
@@ -696,7 +696,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             fom: periode.fom,
             tom: periode.tom,
             kontoType: values.kontoTypeMor === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoTypeMor,
-            morsAktivitet: values.morsAktivitet,
+            morsAktivitet: values.morsAktivitet || undefined,
             forelder: 'MOR',
             gradering:
                 !erOverføringMor && values.skalDuKombinereArbeidOgUttakMor
@@ -715,7 +715,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             tom: periode.tom,
             kontoType:
                 values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoTypeFarMedmor,
-            morsAktivitet: values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : values.morsAktivitet,
+            morsAktivitet: values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : (values.morsAktivitet || undefined),
             forelder: 'FAR_MEDMOR',
             gradering:
                 !erOverføringFarMedmor && values.skalDuKombinereArbeidOgUttakFarMedmor

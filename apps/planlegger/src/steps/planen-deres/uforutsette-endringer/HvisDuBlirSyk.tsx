@@ -30,7 +30,10 @@ export const HvisDuBlirSyk = ({ arbeidssituasjon }: Props) => {
             </div>
             <div>
                 <Heading size="small" level="4">
-                    <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisDuBlirSyk" />
+                    <FormattedMessage
+                        id="UforutsetteEndringer.UforutsetteEndringer.HvisDuBlirSyk"
+                        values={{ kunEnPartSkalHa }}
+                    />
                 </Heading>
 
                 <BodyLong>

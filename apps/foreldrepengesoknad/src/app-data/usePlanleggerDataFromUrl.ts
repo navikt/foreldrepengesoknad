@@ -12,7 +12,6 @@ import {
     OmBarnetPlanlegger,
     Søkerrolle,
     SøkersituasjonFp,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { decodeBase64, erLokaltEllerDev } from '@navikt/fp-utils';
@@ -84,9 +83,7 @@ const mapPlanleggerDataToSøknadState = (
     }
 
     if (uttaksplan) {
-        result[ContextDataType.UTTAKSPLAN] = uttaksplan as Array<
-            UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt
-        >;
+        result[ContextDataType.UTTAKSPLAN] = uttaksplan;
     }
 
     return result;
