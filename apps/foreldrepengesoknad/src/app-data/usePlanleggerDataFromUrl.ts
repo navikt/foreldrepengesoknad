@@ -97,7 +97,7 @@ const mapPlanleggerDataToSøknadState = (
  * på oppsummeringssteget. Wonderwall-sidecar bevarer query-strengen gjennom ID-porten-login
  * slik at parameteret er tilgjengelig her etter innlogging.
  *
- * Returnerer `null` dersom parameteret mangler, er ugyldig, eller appen kjører i prod.
+ * Returnerer `null` dersom parameteret mangler eller er ugyldig.
  */
 export const usePlanleggerDataFromUrl = (kjønn: Kjønn_fpoversikt | undefined): Partial<ContextDataMap> | null => {
     const [searchParams] = useSearchParams();
