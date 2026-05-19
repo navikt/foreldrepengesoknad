@@ -51,6 +51,11 @@ importers:
       '@navikt/ds-tailwind':
         specifier: 8.9.1
         version: 8.9.1
+        specifier: 8.10.5
+        version: 8.10.5
+      '@navikt/fp-app-shell':
+        specifier: workspace:*
+        version: link:../../packages/app-shell
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -223,6 +228,11 @@ importers:
       '@navikt/ds-tailwind':
         specifier: 8.9.1
         version: 8.9.1
+        specifier: 8.10.5
+        version: 8.10.5
+      '@navikt/fp-app-shell':
+        specifier: workspace:*
+        version: link:../../packages/app-shell
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -404,6 +414,9 @@ importers:
       '@navikt/fnrvalidator':
         specifier: 2.2.1
         version: 2.2.1
+      '@navikt/fp-app-shell':
+        specifier: workspace:*
+        version: link:../../packages/app-shell
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -1249,6 +1262,76 @@ importers:
       vitest:
         specifier: 4.1.4
         version: 4.1.4(@opentelemetry/api@1.9.1)(@types/node@24.10.1)(@vitest/browser-playwright@4.1.4)(jsdom@29.0.2)(msw@2.13.3(@types/node@24.10.1)(typescript@6.0.2))(vite@8.0.8(@types/node@24.10.1)(esbuild@0.28.0)(jiti@2.6.1)(less@4.5.1)(sass-embedded@1.99.0)(sass@1.99.0)(yaml@2.8.3))
+
+  packages/app-shell:
+    dependencies:
+      '@formatjs/intl-pluralrules':
+        specifier: 6.3.6
+        version: 6.3.6
+      '@navikt/ds-react':
+        specifier: 8.10.5
+        version: 8.10.5(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      '@navikt/fp-observability':
+        specifier: workspace:*
+        version: link:../observability
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../types
+      '@navikt/fp-ui':
+        specifier: workspace:*
+        version: link:../ui
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../utils
+      '@navikt/nav-dekoratoren-moduler':
+        specifier: 4.0.0
+        version: 4.0.0(html-react-parser@5.2.17(@types/react@19.2.14)(react@19.2.6))(react@19.2.6)
+      '@tanstack/react-query':
+        specifier: 5.100.10
+        version: 5.100.10(react@19.2.6)
+      '@tanstack/react-query-devtools':
+        specifier: 5.100.10
+        version: 5.100.10(@tanstack/react-query@5.100.10(react@19.2.6))(react@19.2.6)
+      dayjs:
+        specifier: 1.11.20
+        version: 1.11.20
+      i18n-iso-countries:
+        specifier: 7.14.0
+        version: 7.14.0
+      ky:
+        specifier: 2.0.2
+        version: 2.0.2
+      react:
+        specifier: 19.2.6
+        version: 19.2.6
+      react-dom:
+        specifier: 19.2.6
+        version: 19.2.6(react@19.2.6)
+      react-router-dom:
+        specifier: 7.15.0
+        version: 7.15.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+    devDependencies:
+      '@navikt/fp-config-eslint':
+        specifier: workspace:*
+        version: link:../config-eslint
+      '@navikt/fp-config-typescript':
+        specifier: workspace:*
+        version: link:../config-typescript
+      '@types/react':
+        specifier: 19.2.14
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: 19.2.3
+        version: 19.2.3(@types/react@19.2.14)
+      eslint:
+        specifier: 10.2.0
+        version: 10.2.0(jiti@2.7.0)
+      typescript:
+        specifier: 6.0.2
+        version: 6.0.2
+      vite:
+        specifier: 8.0.12
+        version: 8.0.12(@types/node@25.7.0)(esbuild@0.28.0)(jiti@2.7.0)(less@4.5.1)(sass-embedded@1.99.0)(sass@1.99.0)(yaml@2.9.0)
 
   packages/config-eslint:
     devDependencies:

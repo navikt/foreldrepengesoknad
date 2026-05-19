@@ -1,23 +1,13 @@
-import { onLanguageSelect, setAvailableLanguages } from '@navikt/nav-dekoratoren-moduler';
-import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import dayjs from 'dayjs';
-import { HTTPError } from 'ky';
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-
-import { Provider, Theme } from '@navikt/ds-react';
-import { en, nb, nn } from '@navikt/ds-react/locales';
+import { AppShell, createDefaultQueryClient } from '@navikt/fp-app-shell';
 
 import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
-import { ApiError, captureApiError, observabilityMessages } from '@navikt/fp-observability';
+import { observabilityMessages } from '@navikt/fp-observability';
 import { kvitteringMessages } from '@navikt/fp-steg-kvittering';
 import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
-import { LocaleAll, type ProblemDetails } from '@navikt/fp-types';
-import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
-import { getDecoratorLanguageCookie, utilsMessages } from '@navikt/fp-utils';
+import { uiMessages } from '@navikt/fp-ui';
+import { utilsMessages } from '@navikt/fp-utils';
 
 import { Engangsstønad, slettMellomlagringOgLastSidePåNytt } from './Engangsstønad';
 import enMessages from './intl/messages/en_US.json';
@@ -69,82 +59,19 @@ declare global {
     }
 }
 
-const queryClient = new QueryClient({
-    queryCache: new QueryCache({
-        onError: (error) => {
-            if (error instanceof HTTPError) {
-                if (error.response?.status === 401) {
-                    location.reload();
-                    return;
-                }
-                if (error.response?.status === 403) {
-                    return;
-                }
-                const apiError = error.data as ProblemDetails | undefined;
-                captureApiError('API query-feil i engangsstønad', apiError);
-            }
-        },
-    }),
-    mutationCache: new MutationCache({
-        onError: (error) => {
-            if (error instanceof ApiError) {
-                captureApiError(error.sentryMessage, error.problemDetails);
-            }
-        },
-    }),
-    defaultOptions: {
-        queries: {
-            retry: false,
-        },
-    },
+const queryClient = createDefaultQueryClient({
+    sentryQueryErrorMessage: 'API query-feil i engangsstønad',
 });
 
-dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
-
-export const AppContainer = () => {
-    const [locale, setLocale] = useState<LocaleAll>(
-        () => getDecoratorLanguageCookie('decorator-language') as LocaleAll,
-    );
-
-    void setAvailableLanguages([
-        { locale: 'nb', handleInApp: true },
-        { locale: 'nn', handleInApp: true },
-        { locale: 'en', handleInApp: true },
-    ]);
-
-    onLanguageSelect((lang) => {
-        setLocale(lang.locale as LocaleAll);
-        document.documentElement.setAttribute('lang', lang.locale);
-    });
-    const { pathname } = useLocation();
-    // Scroll til toppen når man endrer side.
-    useEffect(() => {
-        globalThis.scrollTo(0, 0);
-    }, [pathname]);
-
-    return (
-        <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <Theme theme="light">
-                <ErrorBoundary appName="engangsstonad" retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}>
-                    <QueryClientProvider client={queryClient}>
-                        <ReactQueryDevtools />
-                        <Provider locale={getDsProviderLocale(locale)}>
-                            <Engangsstønad />
-                        </Provider>
-                    </QueryClientProvider>
-                </ErrorBoundary>
-            </Theme>
-        </IntlProvider>
-    );
-};
-
-const getDsProviderLocale = (locale: LocaleAll) => {
-    switch (locale) {
-        case 'nn':
-            return nn;
-        case 'en':
-            return en;
-        default:
-            return nb;
-    }
-};
+export const AppContainer = () => (
+    <AppShell
+        appName="engangsstonad"
+        availableLocales={['nb', 'nn', 'en']}
+        messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}
+        queryClient={queryClient}
+        scrollToTopOnNavigation
+        retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}
+    >
+        <Engangsstønad />
+    </AppShell>
+);

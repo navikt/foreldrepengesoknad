@@ -1,31 +1,12 @@
-import * as countries from 'i18n-iso-countries';
-import * as langEN from 'i18n-iso-countries/langs/en.json';
-import * as langNB from 'i18n-iso-countries/langs/nb.json';
-import * as langNN from 'i18n-iso-countries/langs/nn.json';
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import 'styles/globals.css';
-
-import { initSentry } from '@navikt/fp-observability';
+import { bootstrapApp } from '@navikt/fp-app-shell';
 
 import { AppContainer } from './AppContainer';
 import './index.css';
+import './styles/globals.css';
 
-countries.registerLocale(langNB);
-countries.registerLocale(langNN);
-countries.registerLocale(langEN);
-
-initSentry({ dsn: 'https://e2de35941445465aae1e83fcbcc2934d@sentry.gc.nav.no/8' });
-
-const container = document.getElementById('app');
-if (container) {
-    const root = createRoot(container);
-    root.render(
-        <StrictMode>
-            <BrowserRouter basename={import.meta.env.BASE_URL}>
-                <AppContainer />
-            </BrowserRouter>
-        </StrictMode>,
-    );
-}
+void bootstrapApp({
+    sentryDsn: 'https://e2de35941445465aae1e83fcbcc2934d@sentry.gc.nav.no/8',
+    availableLocales: ['nb', 'nn', 'en'],
+    withPluralRulesPolyfill: false,
+    app: <AppContainer />,
+});
