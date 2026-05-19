@@ -14,7 +14,7 @@ import {
     SøkersituasjonFp,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { decodeBase64, erLokaltEllerDev } from '@navikt/fp-utils';
+import { decodeBase64 } from '@navikt/fp-utils';
 
 import { ContextDataMap, ContextDataType } from './FpDataContext';
 
@@ -104,7 +104,7 @@ export const usePlanleggerDataFromUrl = (kjønn: Kjønn_fpoversikt | undefined):
     const encoded = searchParams.get('planleggerData');
 
     return useMemo(() => {
-        if (!erLokaltEllerDev() || !encoded || !kjønn) {
+        if (!encoded || !kjønn) {
             return null;
         }
         try {

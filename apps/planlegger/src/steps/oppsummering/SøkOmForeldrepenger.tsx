@@ -8,7 +8,7 @@ import { BodyShort, LinkCard, VStack } from '@navikt/ds-react';
 import { links } from '@navikt/fp-constants';
 import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
-import { encodeToBase64, erLokaltEllerDev } from '@navikt/fp-utils';
+import { encodeToBase64 } from '@navikt/fp-utils';
 
 interface Props {
     erAlenesøker: boolean;
@@ -17,14 +17,9 @@ interface Props {
 
 export const SøkOmForeldrepenger = ({ erAlenesøker, barnet }: Props) => {
     const planleggerState = useContextComplete();
-    const harDataÅOverføre = Object.values(planleggerState).some((v) => v !== undefined);
-    // Funksjonen er foreløpig kun aktiv lokalt og i dev for testing — ikke i prod.
-    const skalSendeDataViaUrl = erLokaltEllerDev() && harDataÅOverføre;
-    const søknadHref = skalSendeDataViaUrl
-        ? `https://www.intern.dev.nav.no/foreldrepenger/soknad/?planleggerData=${encodeURIComponent(
+    const søknadHref = `${links.foreldrepengesoknad}/planleggerData?${encodeURIComponent(
               encodeToBase64(JSON.stringify(sanitizePlanleggerState(planleggerState))),
-          )}`
-        : links.foreldrepengesoknad;
+          )}`;
 
     return (
         <Infobox
