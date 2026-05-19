@@ -14,7 +14,7 @@ import {
     SøkersituasjonFp,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { decodeBase64, erLokaltEllerDev } from '@navikt/fp-utils';
+import { decodeBase64 } from '@navikt/fp-utils';
 
 import { ContextDataMap, ContextDataType } from './FpDataContext';
 
@@ -97,14 +97,14 @@ const mapPlanleggerDataToSøknadState = (
  * på oppsummeringssteget. Wonderwall-sidecar bevarer query-strengen gjennom ID-porten-login
  * slik at parameteret er tilgjengelig her etter innlogging.
  *
- * Returnerer `null` dersom parameteret mangler, er ugyldig, eller appen kjører i prod.
+ * Returnerer `null` dersom parameteret mangler eller er ugyldig.
  */
 export const usePlanleggerDataFromUrl = (kjønn: Kjønn_fpoversikt | undefined): Partial<ContextDataMap> | null => {
     const [searchParams] = useSearchParams();
     const encoded = searchParams.get('planleggerData');
 
     return useMemo(() => {
-        if (!erLokaltEllerDev() || !encoded || !kjønn) {
+        if (!encoded || !kjønn) {
             return null;
         }
         try {
