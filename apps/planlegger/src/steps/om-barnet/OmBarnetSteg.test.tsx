@@ -28,7 +28,9 @@ describe('<OmBarnetPlanleggerSteg>', () => {
         await userEvent.type(termindato, dayjs().format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(termindato);
 
-        expect(screen.getByText('Du kan nå søke om foreldrepenger')).toBeInTheDocument();
+        expect(
+            screen.getByText('Hvis du ikke har søkt om foreldrepenger enda, kan du gjøre det nå.'),
+        ).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste'));
 
@@ -137,7 +139,9 @@ describe('<OmBarnetPlanleggerSteg>', () => {
         await userEvent.type(fødselsdato, dayjs().subtract(10, 'days').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(fødselsdato);
 
-        expect(screen.getByText('Du kan søke om foreldrepenger allerede nå.')).toBeInTheDocument();
+        expect(
+            screen.getByText('Hvis du ikke har søkt om foreldrepenger enda, kan du gjøre det nå.'),
+        ).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste'));
 

@@ -60,6 +60,7 @@
         "react-router-dom": "7.15.0"
     },
     "devDependencies": {
+        "@eslint-react/eslint-plugin": "4.2.3",
         "@formatjs/cli-lib": "8.6.0",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
