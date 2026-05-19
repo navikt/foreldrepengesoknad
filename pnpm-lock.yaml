@@ -386,9 +386,6 @@ importers:
 
   apps/foreldrepengesoknad:
     dependencies:
-      '@eslint-react/eslint-plugin':
-        specifier: 4.2.3
-        version: 4.2.3(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       '@formatjs/intl-pluralrules':
         specifier: 6.3.2
         version: 6.3.2
@@ -495,6 +492,9 @@ importers:
         specifier: 7.14.1
         version: 7.14.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
     devDependencies:
+      '@eslint-react/eslint-plugin':
+        specifier: 4.2.3
+        version: 4.2.3(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       '@formatjs/cli-lib':
         specifier: 8.5.2
         version: 8.5.2
@@ -585,9 +585,6 @@ importers:
 
   apps/planlegger:
     dependencies:
-      '@eslint-react/eslint-plugin':
-        specifier: 4.2.3
-        version: 4.2.3(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       '@navikt/aksel-icons':
         specifier: 8.9.1
         version: 8.9.1
@@ -667,6 +664,9 @@ importers:
         specifier: 7.14.1
         version: 7.14.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
     devDependencies:
+      '@eslint-react/eslint-plugin':
+        specifier: 4.2.3
+        version: 4.2.3(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       '@formatjs/cli-lib':
         specifier: 8.5.2
         version: 8.5.2

@@ -22,7 +22,6 @@
     "author": "NAV",
     "license": "MIT",
     "dependencies": {
-        "@eslint-react/eslint-plugin": "4.2.3",
         "@formatjs/intl-pluralrules": "6.3.6",
         "@navikt/aksel-icons": "8.10.5",
         "@navikt/ds-css": "8.10.5",
@@ -60,6 +59,7 @@
         "react-router-dom": "7.15.0"
     },
     "devDependencies": {
+        "@eslint-react/eslint-plugin": "4.2.3",
         "@formatjs/cli-lib": "8.6.0",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
