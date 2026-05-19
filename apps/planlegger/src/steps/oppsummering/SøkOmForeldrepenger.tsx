@@ -17,7 +17,7 @@ interface Props {
 
 export const SøkOmForeldrepenger = ({ erAlenesøker, barnet }: Props) => {
     const planleggerState = useContextComplete();
-    const søknadHref = `${links.foreldrepengesoknad}/planleggerData?${encodeURIComponent(
+    const søknadHref = `${links.foreldrepengesoknad}/?planleggerData=${encodeURIComponent(
               encodeToBase64(JSON.stringify(sanitizePlanleggerState(planleggerState))),
           )}`;
 
