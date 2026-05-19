@@ -109,19 +109,28 @@ export const UttaksplanForm = ({
         : [];
 
     const periodeRundtFødsel = perioderRundtFødselForFarMedmor[0];
-    const visAutomatiskJustering =
-        erSøkerFarEllerMedmor &&
-        søkersituasjon.situasjon === 'fødsel' &&
+
+    const erFødselssituasjonForFar =
+        erSøkerFarEllerMedmor && søkersituasjon.situasjon === 'fødsel' && !bareFarHarRett;
+
+    const harNøyaktigEnPeriodePåTermindato =
         perioderRundtFødselForFarMedmor.length === 1 &&
         periodeRundtFødsel !== undefined &&
         uttaksdagPåEllerEtterTermin !== undefined &&
-        dayjs(periodeRundtFødsel.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
-        isUfødtBarn(barn) &&
-        barn.termindato !== undefined &&
-        !bareFarHarRett &&
+        dayjs(periodeRundtFødsel.fom).isSame(uttaksdagPåEllerEtterTermin, 'day');
+
+    const erJusterbarPeriodetype =
+        periodeRundtFødsel !== undefined &&
         Uttaksperioden.erUttaksperiode(periodeRundtFødsel) &&
         Uttaksperioden.erSamtidigUttak(periodeRundtFødsel) &&
         (periodeRundtFødsel.kontoType === 'FEDREKVOTE' || periodeRundtFødsel.kontoType === 'FORELDREPENGER');
+
+    const visAutomatiskJustering =
+        erFødselssituasjonForFar &&
+        harNøyaktigEnPeriodePåTermindato &&
+        erJusterbarPeriodetype &&
+        isUfødtBarn(barn) &&
+        barn.termindato !== undefined;
 
     const finnFørsteSubmitFeilmelding = useFinnFørsteSubmitFeilmelding({ opprinneligPlan });
 
