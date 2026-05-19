@@ -32,7 +32,14 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const arbeidsforholdOgInntekt = useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
 
-    const frilansoppdragQuery = useQuery(mineFrilansoppdragOptions());
+    const frilansoppdragQuery = useQuery({
+        ...mineFrilansoppdragOptions(),
+        select: (data) => {
+            const threeMonthsAgo = new Date();
+            threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+            return data.filter((oppdrag) => !oppdrag.tom || new Date(oppdrag.tom) >= threeMonthsAgo);
+        },
+    });
     const frilansoppdrag = frilansoppdragQuery.data ?? [];
 
     const oppdaterArbeidsforholdOgInntekt = useContextSaveData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
