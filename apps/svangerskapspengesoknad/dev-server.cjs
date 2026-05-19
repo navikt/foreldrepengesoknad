@@ -42,18 +42,32 @@ const startServer = async () => {
 
     const htmlWithDecoratorInjected = await injectDecorator(indexHtmlPath);
 
-    const renderedHtml = htmlWithDecoratorInjected.replaceAll(
-        '{{{APP_SETTINGS}}}',
-        JSON.stringify({
-            INNSYN: `${process.env.INNSYN}`,
-            LOG_VALIDATION: `${process.env.LOG_VALIDATION}`,
+    const renderedHtml = htmlWithDecoratorInjected
+        .replaceAll('</link>', '')
+        .replaceAll(
+            '{{{APP_SETTINGS}}}',
+            JSON.stringify({
+                INNSYN: `${process.env.INNSYN}`,
+                LOG_VALIDATION: `${process.env.LOG_VALIDATION}`,
+            }),
+        );
+
+    server.use(
+        '/fpoversikt/api',
+        createProxyMiddleware({
+            target: 'http://localhost:8888/fpoversikt/api',
+            changeOrigin: true,
+            logger: console,
+            on: {
+                proxyReq: fixRequestBody,
+            },
         }),
     );
 
     server.use(
-        '/rest',
+        '/fpsoknad/api',
         createProxyMiddleware({
-            target: 'http://localhost:8888/rest',
+            target: 'http://localhost:8888/fpsoknad/api',
             changeOrigin: true,
             logger: console,
             on: {

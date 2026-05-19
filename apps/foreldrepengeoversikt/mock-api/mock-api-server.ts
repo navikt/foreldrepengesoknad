@@ -37,14 +37,6 @@ export const getSaker = () => {
     return getFileContent('saker.json');
 };
 
-export const getKvitteringStorage = () => {
-    return getFileContent('storage_kvittering.json');
-};
-
-export const getHistorikk = () => {
-    return getFileContent('historikk.json');
-};
-
 export const getMinidialog = () => {
     return getFileContent('miniDialog.json');
 };
@@ -55,19 +47,6 @@ export const getManglendeVedlegg = () => {
 
 export const getTidslinjeHendelser = () => {
     return getFileContent('tidslinjeHendelser.json');
-};
-
-export const getUttaksplan = () => {
-    const fileName = getFilePath('uttaksplan.json');
-    if (!fs.existsSync(fileName)) {
-        return {};
-    } else {
-        try {
-            return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch {
-            return {};
-        }
-    }
 };
 
 export const getKonto = () => {
@@ -113,77 +92,57 @@ app.use(delayAllResponses(500));
 app.use(express.json());
 app.use(morgan('tiny'));
 
-router.get(['/rest/sokerinfo'], (_req, res) => {
+router.get(['/fpoversikt/api/personopplysninger/oversikt'], (_req, res) => {
     res.send(getSokerinfo());
 });
 
-router.get(['/rest/dokument/alle'], (_req, res) => {
+router.get(['/fpoversikt/api/dokument/alle'], (_req, res) => {
     res.send(getDokumenter());
 });
 
-router.post(['/rest/innsyn/v2/annenPartVedtak'], (_req, res) => {
+router.post(['/fpoversikt/api/annenPart'], (_req, res) => {
     res.send(getAnnenPartsVedtak());
 });
 
-router.post('/rest/engangsstonad', (_req, res) => res.sendStatus(200));
-
-router.get('/rest/innsyn/v2/saker', (_req, res) => {
+router.get('/fpoversikt/api/saker', (_req, res) => {
     res.send(getSaker());
 });
 
-router.get('/rest/innsyn/v2/saker/oppdatert', (_req, res) => {
+router.get('/fpoversikt/api/saker/erOppdatert', (_req, res) => {
     res.send(true);
 });
 
-router.get('/rest/historikk', (_req, res) => {
-    res.send(getHistorikk());
-});
-
-router.get('/rest/minidialog', (_req, res) => {
+router.get('/fpoversikt/api/oppgaver/tilbakekrevingsuttalelse', (_req, res) => {
     res.send(getMinidialog());
 });
 
-router.get('/rest/historikk/vedlegg', (_req, res) => {
+router.get('/fpoversikt/api/oppgaver/manglendevedlegg', (_req, res) => {
     res.send(getManglendeVedlegg());
 });
 
-router.delete('/rest/storage', (_req, res) => {
-    res.sendStatus(204);
-});
-
-router.get('/rest/storage/foreldrepenger/kvittering/foreldrepenger', (_req, res) => {
-    res.send(getKvitteringStorage());
-});
-router.get('/rest/storage/svangerskapspenger/kvittering/foreldrepenger', (_req, res) => {
-    res.send(getKvitteringStorage());
-});
-router.get('/rest/storage/engangsstonad/kvittering/foreldrepenger', (_req, res) => {
-    res.send(getKvitteringStorage());
-});
-
-router.get('/rest/innsyn/uttaksplan', (_req, res) => {
-    res.send(getUttaksplan());
-});
-
-router.post('/rest/konto', (_req, res) => {
+router.post('/fpgrunndata/api/konto', (_req, res) => {
     res.send(getKonto());
 });
 
-router.get('/rest/innsyn/tidslinje', (_req, res) => {
+router.get('/fpoversikt/api/tidslinje', (_req, res) => {
     res.send(getTidslinjeHendelser());
 });
 
-router.delete('/rest/storage/foreldrepenger/vedlegg/:id', (_req, res) => {
+router.get('/fpoversikt/api/inntektsmeldinger', (_req, res) => {
+    res.send([]);
+});
+
+router.delete('/fpsoknad/api/storage/FORELDREPENGER/vedlegg/:id', (_req, res) => {
     res.sendStatus(204);
 });
-router.delete('/rest/storage/svangerskapspenger/vedlegg/:id', (_req, res) => {
+router.delete('/fpsoknad/api/storage/SVANGERSKAPSPENGER/vedlegg/:id', (_req, res) => {
     res.sendStatus(204);
 });
-router.delete('/rest/storage/engangsstonad/vedlegg/:id', (_req, res) => {
+router.delete('/fpsoknad/api/storage/ENGANGSSTONAD/vedlegg/:id', (_req, res) => {
     res.sendStatus(204);
 });
 
-router.post('/rest/soknad/ettersend', (_req, res) => {
+router.post('/fpsoknad/api/soknad/ettersend', (_req, res) => {
     const kvittering = {
         saksNr: '123',
         jornalId: '123',

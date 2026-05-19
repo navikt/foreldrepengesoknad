@@ -43,35 +43,43 @@ const kvitteringMock = {
     journalId: '439772941',
 };
 
-router.get(['/', '/rest/personinfo'], (_req, res) => {
+router.get(['/fpoversikt/api/personopplysninger/engangsstonad'], (_req, res) => {
     res.send(personMock);
 });
 
-router.post('/rest/soknad/engangsstonad', (_req, res) => {
+router.post('/fpsoknad/api/soknad/engangsstonad', (_req, res) => {
     res.send(kvitteringMock);
 });
 
-router.get('/rest/storage/engangsstonad', (_req, res) => {
+router.get('/fpsoknad/api/storage/ENGANGSSTONAD', (_req, res) => {
     res.send(getMellomlagretData());
 });
 
-router.post('/rest/storage/engangsstonad', (req, res) => {
+router.post('/fpsoknad/api/storage/ENGANGSSTONAD', (req, res) => {
     lagreMellomlagretData(req.body);
     return res.sendStatus(200);
 });
 
-router.delete('/rest/storage/engangsstonad', (_req, res) => {
+router.delete('/fpsoknad/api/storage/ENGANGSSTONAD', (_req, res) => {
     deleteMellomlagretData();
     return res.sendStatus(200);
 });
 
-router.post('/rest/storage/engangsstonad/vedlegg', (req, res) => {
+router.post('/fpsoknad/api/storage/ENGANGSSTONAD/vedlegg', (req, res) => {
     res.setHeader('Location', `http://localhost:8080/engangsstonad/dist/vedlegg/${req.body.id}`);
     res.sendStatus(201);
 });
 
-router.delete('/rest/storage/engangsstonad/vedlegg', (_req, res) => {
+router.delete('/fpsoknad/api/storage/ENGANGSSTONAD/vedlegg', (_req, res) => {
     res.sendStatus(204);
+});
+
+router.get('/fpoversikt/api/saker/erOppdatert', (_req, res) => {
+    res.send(true);
+});
+
+router.get('/fpsoknad/api/soknad/status', (_req, res) => {
+    res.send([]);
 });
 
 app.use('', router);
