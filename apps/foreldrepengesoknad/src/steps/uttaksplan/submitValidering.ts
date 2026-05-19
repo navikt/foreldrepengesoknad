@@ -76,6 +76,10 @@ export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFør
             gjelder: harKunPerioderForDenAndreForelderen,
             message: intl.formatMessage({ id: 'UttaksplanSteg.KunPerioderForAnnenForelder' }),
         },
+        {
+            gjelder: erKunUtsettelser,
+            message: intl.formatMessage({ id: 'UttaksplanSteg.KunUtsettelser' }),
+        },
     ];
 
     return (planForValidering: UttaksplanPerioder): string | undefined => {
@@ -117,12 +121,11 @@ export const harKunPerioderForAnnenForelder = (
 
     const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
 
-    return perioder.every(
-        (periode) =>
-            Uttaksperioden.erEøsPeriode(periode) ||
-            periode.forelder !== søkersForelder ||
-            !Uttaksperioden.erUttaksperiode(periode),
-    );
+    return perioder.every((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.forelder !== søkersForelder);
+};
+
+const erKunUtsettelser = (perioder: UttaksplanPerioder) => {
+    return perioder.every((periode) => Uttaksperioden.erUtsettelsesperiode(periode));
 };
 
 const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean): RettighetType_fpoversikt => {

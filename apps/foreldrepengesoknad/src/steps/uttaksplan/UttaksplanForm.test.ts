@@ -1,6 +1,6 @@
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { harKunPerioderForAnnenForelder } from './UttaksplanForm';
+import { harKunPerioderForAnnenForelder } from './submitValidering';
 
 const utsettelseFar: UttakPeriode_fpoversikt = {
     fom: '2026-06-01',
@@ -31,12 +31,6 @@ describe('harKunPerioderForAnnenForelder', () => {
     it('returnerer false når perioder er undefined eller tom', () => {
         expect(harKunPerioderForAnnenForelder(true, false)).toBe(false);
         expect(harKunPerioderForAnnenForelder(true, false, [])).toBe(false);
-    });
-
-    it('returnerer true når søker (far) kun har utsettelser og mor har uttaksperioder', () => {
-        // Sak 152610557: far søker, mor har eksisterende vedtak/uttak,
-        // far har kun utsettelse (ferie/barn syk). Skal blokkeres med feilmelding.
-        expect(harKunPerioderForAnnenForelder(true, false, [uttakMor, utsettelseFar])).toBe(true);
     });
 
     it('returnerer false når søker (far) har minst én ekte uttaksperiode', () => {
