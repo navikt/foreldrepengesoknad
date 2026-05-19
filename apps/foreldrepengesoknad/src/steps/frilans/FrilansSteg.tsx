@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+import { mineFrilansoppdragOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
@@ -23,6 +25,9 @@ export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeid
     const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
 
     const oppdaterFrilans = useContextSaveData(ContextDataType.FRILANS);
+
+    const frilansoppdragQuery = useQuery(mineFrilansoppdragOptions());
+    const frilansoppdrag = frilansoppdragQuery.data;
 
     const onSubmit = (values: Frilans) => {
         oppdaterFrilans(values);
