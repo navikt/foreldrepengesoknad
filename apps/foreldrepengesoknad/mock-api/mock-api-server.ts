@@ -196,6 +196,18 @@ router.post('/fpoversikt/api/arbeid/morDokumentasjon', (_req, res) => {
     res.send(false);
 });
 
+router.get('/fpoversikt/api/arbeid/mineFrilansoppdrag', (_req, res) => {
+    res.send([
+        {
+            arbeidsgiverId: '999999999',
+            arbeidsgiverIdType: 'orgnr',
+            arbeidsgiverNavn: 'Frilansoppdrag AS',
+            stillingsprosent: 100,
+            fom: '2025-01-01',
+        },
+    ]);
+});
+
 app.use('', router);
 
 const port = process.env.PORT || 8888;

@@ -8,6 +8,7 @@ import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenFo
 import {
     AnnenPartRequest_fpoversikt,
     AnnenPartSak_fpoversikt,
+    EksternArbeidsforholdDto_fpoversikt,
     ForsendelseStatus,
     FpPersonopplysningerDto_fpoversikt,
     KontoBeregningGrunnlagDto,
@@ -31,6 +32,7 @@ export const API_URLS = {
     annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart`,
     konto: `${urlPrefiks}/fpgrunndata/api/konto`,
     trengerDokumentereMorsArbeid: `${urlPrefiks}/fpoversikt/api/arbeid/morDokumentasjon`,
+    mineFrilansoppdrag: `${urlPrefiks}/fpoversikt/api/arbeid/mineFrilansoppdrag`,
     erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`,
 
     mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER`,
@@ -100,6 +102,13 @@ export const trengerDokumentereMorsArbeidOptions = (data: MorArbeidRequest_fpove
         queryKey: ['TRENGER_DOKUMENTERER_MORS_ARBEID', data],
         enabled: (data.perioder?.length ?? 0) > 0,
         queryFn: () => ky.post(API_URLS.trengerDokumentereMorsArbeid, { json: data }).json<boolean>(),
+    });
+
+export const mineFrilansoppdragOptions = () =>
+    queryOptions({
+        queryKey: ['MINE_FRILANSOPPDRAG'],
+        queryFn: () => ky.get(API_URLS.mineFrilansoppdrag).json<EksternArbeidsforholdDto_fpoversikt[]>(),
+        staleTime: Infinity,
     });
 
 export const useStønadsKontoerOptions = () => {
