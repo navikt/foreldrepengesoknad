@@ -259,7 +259,7 @@ describe('<Oppsummering>', () => {
             expect(
                 checkAndGetParentDiv(
                     dinPlanDiv.getByText(
-                        'Ønsker du at vi endrer perioden som starter på termin til å starte fra fødselsdato når barnet blir født?',
+                        'Ønsker du at vi endrer perioden som starter ved termin til å starte fra fødselsdato når barnet blir født?',
                     ),
                 ).getByText('Nei'),
             ).toBeInTheDocument();
@@ -275,7 +275,7 @@ describe('<Oppsummering>', () => {
         expect(
             checkAndGetParentDiv(
                 dinPlanDiv.getByText(
-                    'Ønsker du at vi endrer perioden som starter på termin til å starte fra fødselsdato når barnet blir født?',
+                    'Ønsker du at vi endrer perioden som starter ved termin til å starte fra fødselsdato når barnet blir født?',
                 ),
             ).getByText('Nei'),
         ).toBeInTheDocument();

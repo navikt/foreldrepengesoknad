@@ -36,7 +36,7 @@ export const LeggTilPausePanel = ({ setVisPausePanel }: Props) => {
                         tom: p.tom,
                         utsettelseÅrsak: 'FRI',
                         flerbarnsdager: false,
-                        morsAktivitet: formValues.morsAktivitet,
+                        morsAktivitet: formValues.morsAktivitet || undefined,
                     }) satisfies UttakPeriode_fpoversikt,
             ),
             false,

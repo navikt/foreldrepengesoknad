@@ -104,7 +104,7 @@ const getStateMock = (
         [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: [],
         [ContextDataType.UTENLANDSOPPHOLD_SENERE]: [],
     };
-    return <TYPE extends ContextDataType>(type: TYPE): ContextDataMap[TYPE] => data[type] as ContextDataMap[TYPE];
+    return <TYPE extends ContextDataType>(type: TYPE): ContextDataMap[TYPE] => data[type];
 };
 
 describe('mapTilSøknadDto', () => {

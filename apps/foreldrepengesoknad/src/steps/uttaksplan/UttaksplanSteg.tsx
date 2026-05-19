@@ -143,11 +143,13 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
             <Step steps={stepConfig}>
-                <Alert variant="info">
-                    <BodyLong>
-                        <FormattedMessage id="uttaksplan.AnnenPartPerioderInfomelding" />
-                    </BodyLong>
-                </Alert>
+                {erDeltUttak && (
+                    <Alert variant="info">
+                        <BodyLong>
+                            <FormattedMessage id="uttaksplan.AnnenPartPerioderInfomelding" />
+                        </BodyLong>
+                    </Alert>
+                )}
                 <UttaksplanDataProvider
                     barn={barn}
                     foreldreInfo={{
