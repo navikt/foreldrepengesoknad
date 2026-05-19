@@ -50,7 +50,7 @@ const startServer = async (html) => {
     );
 
     const fs = require('node:fs');
-    fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), html);
+    fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), html.replaceAll('</link>', ''));
 
     const vite = await require('vite').createServer({
         root: __dirname,

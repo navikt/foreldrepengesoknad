@@ -42,14 +42,16 @@ const startServer = async () => {
 
     const htmlWithDecoratorInjected = await injectDecorator(indexHtmlPath);
 
-    const renderedHtml = htmlWithDecoratorInjected.replaceAll(
-        '{{{APP_SETTINGS}}}',
-        JSON.stringify({
-            APP_VERSION: `${process.env.APP_VERSION}`,
-            INNSYN: `${process.env.INNSYN}`,
-            FEATURE_TEST_1JULI2024_REGLER: `${process.env.FEATURE_TEST_1JULI2024_REGLER}`,
-        }),
-    );
+    const renderedHtml = htmlWithDecoratorInjected
+        .replaceAll('</link>', '')
+        .replaceAll(
+            '{{{APP_SETTINGS}}}',
+            JSON.stringify({
+                APP_VERSION: `${process.env.APP_VERSION}`,
+                INNSYN: `${process.env.INNSYN}`,
+                FEATURE_TEST_1JULI2024_REGLER: `${process.env.FEATURE_TEST_1JULI2024_REGLER}`,
+            }),
+        );
 
     server.use(
         '/fpoversikt/api',

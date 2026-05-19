@@ -53,13 +53,15 @@ const startServer = async () => {
 
     const htmlWithDecoratorInjected = await injectDecorator(indexHtmlPath);
 
-    const renderedHtml = htmlWithDecoratorInjected.replaceAll(
-        '{{{APP_SETTINGS}}}',
-        JSON.stringify({
-            INNSYN: `${process.env.INNSYN}`,
-            APP_VERSION: 'Lokal utvikling',
-        }),
-    );
+    const renderedHtml = htmlWithDecoratorInjected
+        .replaceAll('</link>', '')
+        .replaceAll(
+            '{{{APP_SETTINGS}}}',
+            JSON.stringify({
+                INNSYN: `${process.env.INNSYN}`,
+                APP_VERSION: 'Lokal utvikling',
+            }),
+        );
 
     const fs = require('node:fs');
     fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), renderedHtml);
