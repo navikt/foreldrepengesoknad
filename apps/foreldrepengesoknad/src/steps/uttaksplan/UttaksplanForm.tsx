@@ -4,8 +4,6 @@ import dayjs from 'dayjs';
 import { ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
-import { getErMorUfør } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
@@ -57,7 +55,6 @@ export const UttaksplanForm = ({
     const intl = useIntl();
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const harJustertUttakVedFødsel = useContextGetData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
@@ -89,16 +86,6 @@ export const UttaksplanForm = ({
 
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
 
-    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
-    const erDeltUttak =
-        oppgittAnnenForelder?.harRettPåForeldrepengerINorge === true ||
-        oppgittAnnenForelder?.harRettPåForeldrepengerIEØS === true;
-
-    const erMorUfør = getErMorUfør(annenForelder, erSøkerFarEllerMedmor);
-    const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
-
-    const bareFarHarRett = erSøkerFarEllerMedmor && (!erDeltUttak || erMorUfør || erAleneOmOmsorg);
-
     const termindato = getTermindato(barn);
     const uttaksdagPåEllerEtterTermin = termindato ? Uttaksdagen.denneEllerNeste(termindato).getDato() : undefined;
 
@@ -110,13 +97,11 @@ export const UttaksplanForm = ({
 
     const periodeRundtFødsel = perioderRundtFødselForFarMedmor[0];
 
-    const erFødselssituasjonForFar =
-        erSøkerFarEllerMedmor && søkersituasjon.situasjon === 'fødsel' && !bareFarHarRett;
+    const erFødselssituasjonForFar = erSøkerFarEllerMedmor && søkersituasjon.situasjon === 'fødsel';
 
     const harNøyaktigEnPeriodePåTermindato =
         perioderRundtFødselForFarMedmor.length === 1 &&
         periodeRundtFødsel !== undefined &&
-        uttaksdagPåEllerEtterTermin !== undefined &&
         dayjs(periodeRundtFødsel.fom).isSame(uttaksdagPåEllerEtterTermin, 'day');
 
     const erJusterbarPeriodetype =
@@ -325,6 +310,8 @@ const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
     });
 };
 
-export const erJusterbartUttakRundtTermin = (periode: UttakPeriode_fpoversikt): boolean =>
-    (periode.kontoType === 'FEDREKVOTE' && Uttaksperioden.erSamtidigUttak(periode)) ||
-    periode.kontoType === 'FORELDREPENGER';
+export const erJusterbartUttakRundtTermin = (
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+): boolean =>
+    periode.kontoType === 'FORELDREPENGER' ||
+    (periode.kontoType === 'FEDREKVOTE' && 'samtidigUttak' in periode && periode.samtidigUttak !== undefined);
