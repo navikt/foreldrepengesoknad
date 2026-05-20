@@ -120,6 +120,33 @@ describe('<UttaksplanSteg>', () => {
     );
 
     it(
+        'skal initialisere uttaksplan i endringssøknad når den mangler i context',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
+            setHandlers(FødselMorOgFarBeggeHarRett.parameters.msw);
+
+            render(
+                <FødselMorOgFarBeggeHarRett
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    initialState={{ [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: 'SAKSNR-1' }}
+                />,
+            );
+
+            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+
+            await userEvent.click(screen.getByText('Neste steg'));
+
+            const uttaksplanAction = gåTilNesteSide.mock.calls.find(
+                ([action]) => action.key === ContextDataType.UTTAKSPLAN,
+            );
+            expect(uttaksplanAction).toBeDefined();
+            expect((uttaksplanAction![0].data as unknown[]).length).toBeGreaterThan(0);
+        }),
+    );
+
+    it(
         'skal skjule info-teksten når annen forelder ikke har rett',
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(FødselMorOgFarKunMorHarRett.parameters.msw);

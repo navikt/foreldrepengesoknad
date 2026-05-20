@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { API_URLS } from 'api/queries';
-import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
+import { Action, ContextDataMap, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
@@ -65,6 +65,7 @@ type StoryArgs = {
     mellomlagreSøknadOgNaviger?: () => Promise<void>;
     avbrytSøknad: () => void;
     gåTilNesteSide?: (action: Action) => void;
+    initialState?: ContextDataMap;
     søkersituasjon: SøkersituasjonFp;
     annenForelder: AnnenForelder;
     barnet: Barn;
@@ -86,6 +87,7 @@ const meta = {
         mellomlagreSøknadOgNaviger,
         avbrytSøknad,
         gåTilNesteSide,
+        initialState,
         søkersituasjon,
         annenForelder,
         barnet,
@@ -107,6 +109,7 @@ const meta = {
                         [ContextDataType.ANNEN_FORELDER]: annenForelder,
                         [ContextDataType.FORDELING]: fordeling,
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: dekningsgrad,
+                        ...initialState,
                     }}
                 >
                     <UttaksplanSteg
