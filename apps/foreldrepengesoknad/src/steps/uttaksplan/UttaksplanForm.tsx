@@ -119,7 +119,8 @@ export const UttaksplanForm = ({
     const finnFørsteSubmitFeilmelding = useFinnFørsteSubmitFeilmelding({ opprinneligPlan });
 
     const onSubmit = (formValues: FormValues) => {
-        const planForValidering = gjeldendeUttaksplan ?? defaultUttaksperioder;
+        const planForValidering =
+            uttaksplan === undefined ? defaultUttaksperioder : (gjeldendeUttaksplan ?? defaultUttaksperioder);
         const feilmelding = finnFørsteSubmitFeilmelding(planForValidering);
 
         if (feilmelding) {
