@@ -1,6 +1,6 @@
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { erJusterbartUttakRundtTermin } from './automatiskJusteringUtils';
+import { erJusterbartUttakRundtTermin } from './UttaksplanForm';
 
 const lagPeriode = (
     kontoType: UttakPeriode_fpoversikt['kontoType'],

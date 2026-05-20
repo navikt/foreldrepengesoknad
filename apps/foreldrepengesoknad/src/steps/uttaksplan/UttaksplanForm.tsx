@@ -27,7 +27,6 @@ import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { GåTilbakeModal } from './GåTilbakeModal';
-import { erJusterbartUttakRundtTermin } from './automatiskJusteringUtils';
 import { useFinnFørsteSubmitFeilmelding } from './submitValidering';
 
 type FormValues = {
@@ -325,3 +324,7 @@ const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
         return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
     });
 };
+
+export const erJusterbartUttakRundtTermin = (periode: UttakPeriode_fpoversikt): boolean =>
+    (periode.kontoType === 'FEDREKVOTE' && Uttaksperioden.erSamtidigUttak(periode)) ||
+    periode.kontoType === 'FORELDREPENGER';
