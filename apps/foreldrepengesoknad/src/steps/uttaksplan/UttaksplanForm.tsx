@@ -27,6 +27,7 @@ import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { GåTilbakeModal } from './GåTilbakeModal';
+import { erJusterbartUttakRundtTermin } from './automatiskJusteringUtils';
 import { useFinnFørsteSubmitFeilmelding } from './submitValidering';
 
 type FormValues = {
@@ -122,8 +123,7 @@ export const UttaksplanForm = ({
     const erJusterbarPeriodetype =
         periodeRundtFødsel !== undefined &&
         Uttaksperioden.erUttaksperiode(periodeRundtFødsel) &&
-        Uttaksperioden.erSamtidigUttak(periodeRundtFødsel) &&
-        (periodeRundtFødsel.kontoType === 'FEDREKVOTE' || periodeRundtFødsel.kontoType === 'FORELDREPENGER');
+        erJusterbartUttakRundtTermin(periodeRundtFødsel);
 
     const visAutomatiskJustering =
         erFødselssituasjonForFar &&
@@ -254,9 +254,7 @@ const AutomatiskJusteringInfotekst = ({
         harSvartJaOgHarEnPeriodeRundtFødsel &&
         dayjs(perioderMedUttakRundtFødsel[0]!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
         ((Uttaksperioden.erUttaksperiode(perioderMedUttakRundtFødsel[0]!) &&
-            ((perioderMedUttakRundtFødsel[0]!.kontoType !== 'FEDREKVOTE' &&
-                perioderMedUttakRundtFødsel[0]!.kontoType !== 'FORELDREPENGER') ||
-                !Uttaksperioden.erSamtidigUttak(perioderMedUttakRundtFødsel[0]!))) ||
+            !erJusterbartUttakRundtTermin(perioderMedUttakRundtFødsel[0]!)) ||
             Uttaksperioden.erOverføringsperiode(perioderMedUttakRundtFødsel[0]!));
 
     if (harSvartJaOgEndretPeriodenPåTermin) {
