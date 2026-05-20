@@ -101,6 +101,7 @@ export const getCalendarLabel = (
     erIkkeSøkerSpesifisert: boolean,
     intl: IntlShape,
     rettighetType: RettighetType_fpoversikt,
+    farOgFar?: boolean,
 ): string => {
     const erSøkersPeriode =
         (søker === 'MOR' && info.forelder === 'MOR') || (søker === 'FAR_MEDMOR' && info.forelder === 'FAR_MEDMOR');
@@ -167,6 +168,15 @@ export const getCalendarLabel = (
                 intl,
             );
         case 'FARS_DEL_AKTIVITETSFRI':
+            if (farOgFar) {
+                return intl.formatMessage(
+                    { id: 'kalender.dinPeriode.aktivitetsfri.farOgFar' },
+                    {
+                        erSokersPeriode: erSøkersPeriode,
+                        navnAnnenPart,
+                    },
+                );
+            }
             return intl.formatMessage(
                 { id: 'kalender.dinPeriode.aktivitetsfri' },
                 {

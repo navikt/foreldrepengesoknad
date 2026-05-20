@@ -121,7 +121,7 @@ describe('getNavnPåForeldre', () => {
 
             expect(resultat).toEqual({
                 farMedmor: 'Ola Nordmann',
-                mor: 'far',
+                mor: 'far 2',
             });
         });
 

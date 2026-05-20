@@ -359,19 +359,19 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         // Verifiserer at slideren ikke vises når kun én har rett
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger')).toBeInTheDocument();
 
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:7;dayColor:GRAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:8;dayColor:GREENOUTLINE;with-icon')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:9;dayColor:GREENOUTLINE')).toBeInTheDocument();
-        expect(within(juli).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(18);
+        expect(within(juli).getByTestId('day:8;dayColor:GREEN;with-icon')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:9;dayColor:GREEN')).toBeInTheDocument();
+        expect(within(juli).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(18);
 
         const april2025 = screen.getByTestId('year:2025;month:3');
-        expect(within(april2025).getByTestId('day:11;dayColor:GREENOUTLINE')).toBeInTheDocument();
-        expect(within(april2025).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(9);
+        expect(within(april2025).getByTestId('day:11;dayColor:GREEN')).toBeInTheDocument();
+        expect(within(april2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(9);
     });
 
     it('skal vise korrekt data for fødsel - far og far søker - kun medfar har rett', async () => {
@@ -387,14 +387,15 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         // Verifiserer at slideren ikke vises når kun én har rett
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Dine foreldrepenger')).toBeInTheDocument();
+
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:7;dayColor:GRAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:8;dayColor:GREENOUTLINE;with-icon')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:9;dayColor:GREENOUTLINE')).toBeInTheDocument();
-        expect(within(juli).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(18);
+        expect(within(juli).getByTestId('day:8;dayColor:GREEN;with-icon')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:9;dayColor:GREEN')).toBeInTheDocument();
+        expect(within(juli).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(18);
     });
 
     it('skal vise korrekt data for adopsjon - mor og medmor - kun mor har rett med omsorgsovertakelse i helgen', async () => {

@@ -198,7 +198,7 @@ const LabelButtonMedEllerUtenToolip = ({
     const intl = useIntl();
 
     const {
-        foreldreInfo: { søker, navnPåForeldre, erMedmorDelAvSøknaden, erIkkeSøkerSpesifisert, rettighetType },
+        foreldreInfo: { søker, navnPåForeldre, erMedmorDelAvSøknaden, erIkkeSøkerSpesifisert, rettighetType, farOgFar },
         valgtStønadskvote,
     } = useUttaksplanData();
 
@@ -216,6 +216,7 @@ const LabelButtonMedEllerUtenToolip = ({
         erIkkeSøkerSpesifisert ?? false,
         intl,
         rettighetType,
+        farOgFar,
     );
 
     if (visTekst) {

@@ -165,6 +165,7 @@
     "kalender.dinPeriode": "Your period",
     "kalender.dinPeriode.gradert": "You have work and parental benefits",
     "kalender.dinPeriode.aktivitetsfri": "{erSokersPeriode, select, true {Your} other {{navnAnnenPart}}} parental benefits without activity requirement",
+    "kalender.dinPeriode.aktivitetsfri.farOgFar": "{erSokersPeriode, select, true {Your parental benefits} other {{navnAnnenPart} parental benefits}}",
     "kalender.dinPeriode.aktivitetsfri.gradert": "{erSokersPeriode, select, true {You} other {{navnAnnenPart}}} combines work and parental benefits without activity requirement",
     "kalender.dinPeriode.medAktivitetskrav": "Your parental benefits with activity requirement",
     "kalender.dinPeriode.medAktivitetskrav.gradert": "You combine work and parental benefits with activity requirement",

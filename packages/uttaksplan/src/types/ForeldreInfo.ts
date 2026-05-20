@@ -6,4 +6,5 @@ export type ForeldreInfo = {
     rettighetType: RettighetType_fpoversikt;
     erMedmorDelAvSøknaden: boolean;
     erIkkeSøkerSpesifisert?: boolean;
+    farOgFar?: boolean;
 };

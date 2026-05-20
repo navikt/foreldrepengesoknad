@@ -40,7 +40,7 @@ export const usePerioderForKalendervisning = (
 
     const {
         barn,
-        foreldreInfo: { søker, navnPåForeldre, rettighetType },
+        foreldreInfo: { søker, navnPåForeldre, rettighetType, farOgFar },
         familiehendelsedato,
         uttakPerioder,
     } = useUttaksplanData();
@@ -52,7 +52,7 @@ export const usePerioderForKalendervisning = (
     const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(saksperioderInkludertTapteDager, erFarEllerMedmor);
 
     const kalenderPerioder = unikePerioder.reduce<CalendarPeriod[]>((acc, periode) => {
-        const color = getKalenderFargeForPeriode(periode, erFarEllerMedmor, saksperioderInkludertTapteDager);
+        const color = getKalenderFargeForPeriode(periode, erFarEllerMedmor, saksperioderInkludertTapteDager, farOgFar);
         const isUpdated = endredePerioder.some((p) => p.fom === periode.fom && p.tom === periode.tom);
 
         const perioder = lagBarnehageOgfamiliehendelsePeriode(
@@ -88,7 +88,16 @@ export const usePerioderForKalendervisning = (
             return [
                 ...acc,
                 ...perioder,
-                ...splittPeriodeITo(periode, barnehagestartdato, color, navnPåForeldre, intl, isUpdated, rettighetType, uttakPerioder),
+                ...splittPeriodeITo(
+                    periode,
+                    barnehagestartdato,
+                    color,
+                    navnPåForeldre,
+                    intl,
+                    isUpdated,
+                    rettighetType,
+                    uttakPerioder,
+                ),
             ];
         }
 
@@ -145,6 +154,7 @@ const getKalenderFargeForPeriode = (
     periode: UttaksplanperiodeMedKunTapteDager,
     erFarEllerMedmor: boolean,
     allePerioder: UttaksplanperiodeMedKunTapteDager[],
+    farOgFar?: boolean,
 ): CalendarPeriodColor => {
     if (erAvslåttPeriode(periode)) {
         if (erVanligUttakPeriode(periode) && periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
@@ -190,7 +200,7 @@ const getKalenderFargeForPeriode = (
         if (periode.gradering && periode.gradering.arbeidstidprosent > 0) {
             return 'GREENSTRIPED';
         }
-        if (periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT') {
+        if (periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT' && !farOgFar) {
             return 'GREENOUTLINE';
         }
 

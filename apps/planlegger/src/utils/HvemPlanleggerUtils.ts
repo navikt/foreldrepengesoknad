@@ -71,7 +71,7 @@ export const getNavnPåForeldre = (
                 : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
             mor: erGyldigNavn(hvemPlanlegger.navnPåMedfar)
                 ? hvemPlanlegger.navnPåMedfar
-                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedfarNavn' }),
         };
     }
     if (hvemPlanlegger.type === HvemPlanleggerType.MOR) {

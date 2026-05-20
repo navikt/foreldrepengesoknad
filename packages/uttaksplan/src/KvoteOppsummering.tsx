@@ -620,7 +620,7 @@ const StandardVisning = ({
         familiesituasjon,
         familiehendelsedato,
         valgtStønadskvote,
-        foreldreInfo: { erMedmorDelAvSøknaden },
+        foreldreInfo: { erMedmorDelAvSøknaden, farOgFar },
     } = useUttaksplanData();
     const harAktivitetsfriKvote = valgtStønadskvote.kontoer.some((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
 
@@ -656,6 +656,7 @@ const StandardVisning = ({
                         kontoType={konto.konto}
                         erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
                         harAktivitetsfriKvote={harAktivitetsfriKvote}
+                        farOgFar={farOgFar}
                     />
                     {' - '}
                     {getVarighetString(konto.dager, intl)}
@@ -726,14 +727,21 @@ const VisningsnavnForKvote = ({
     kontoType,
     erMedmorDelAvSøknaden,
     harAktivitetsfriKvote,
+    farOgFar,
 }: {
     kontoType: KontoTypeUttak;
     erMedmorDelAvSøknaden?: boolean;
     harAktivitetsfriKvote?: boolean;
+    farOgFar?: boolean;
 }) => {
     switch (kontoType) {
         case 'AKTIVITETSFRI_KVOTE':
-            return <FormattedMessage id="kvote.kvote.ForeldrepengerUtenAktivitetskrav" />;
+            // For far og far: vis bare "Foreldrepenger" (ingen mor → aktivitetskrav er ikke relevant)
+            return farOgFar ? (
+                <FormattedMessage id="kvote.kvote.Foreldrepenger" />
+            ) : (
+                <FormattedMessage id="kvote.kvote.ForeldrepengerUtenAktivitetskrav" />
+            );
         case 'FEDREKVOTE':
             return erMedmorDelAvSøknaden ? (
                 <FormattedMessage id="kvote.kvote.Medmorkvote" />

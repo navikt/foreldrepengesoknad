@@ -126,7 +126,10 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
         globalThis.history.replaceState(null, '', newUrl);
     };
 
-    const planforslag = useLagUttaksplanForslag(valgtStønadskvote);
+    // For far og far fødsel: bruk råe kvoter (MØDREKVOTE/FEDREKVOTE/FELLESPERIODE) til planforslags-generering,
+    // slik at ikkeDeltUttak kan splitte 31 uker til far1 og la de resterende ukene være uallokerte.
+    // Den transformerte valgtStønadskvote (AKTIVITETSFRI_KVOTE) brukes kun til display.
+    const planforslag = useLagUttaksplanForslag(erFarOgFarFødsel ? valgtStønadskvoteRå : valgtStønadskvote);
 
     const kvoteOppsummeringRef = useRef<HTMLDivElement>(null);
     const scrollToKvoteOppsummering = () => {
@@ -162,6 +165,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
                         rettighetType: utledRettighet(erAleneOmOmsorg, erDeltUttak),
                         erMedmorDelAvSøknaden: isMedmorDelAvSøknaden,
                         erIkkeSøkerSpesifisert: erDeltUttak,
+                        farOgFar: hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR,
                     }}
                     valgtStønadskvote={valgtStønadskvote}
                     harAktivitetskravIPeriodeUtenUttak={false}

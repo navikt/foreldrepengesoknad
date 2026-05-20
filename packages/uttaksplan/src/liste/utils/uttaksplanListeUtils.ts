@@ -41,11 +41,20 @@ export interface GetStønadskvoteNavnOptions {
     konto?: KontoType;
     erAleneOmOmsorg?: boolean;
     erAvslått?: boolean;
+    farOgFar?: boolean;
 }
 
 export const getStønadskvoteNavn = (intl: IntlShape, options: GetStønadskvoteNavnOptions) => {
-    const { navnPåForeldre, erFarEllerMedmor, erEøsPeriode, morsAktivitet, konto, erAleneOmOmsorg, erAvslått } =
-        options;
+    const {
+        navnPåForeldre,
+        erFarEllerMedmor,
+        erEøsPeriode,
+        morsAktivitet,
+        konto,
+        erAleneOmOmsorg,
+        erAvslått,
+        farOgFar,
+    } = options;
 
     let navn;
 
@@ -67,7 +76,8 @@ export const getStønadskvoteNavn = (intl: IntlShape, options: GetStønadskvoteN
         );
     }
 
-    if (!erAvslått && !erEøsPeriode && erFarEllerMedmor === true && erAleneOmOmsorg === false) {
+    // For far og far: vis bare "Foreldrepenger" (ikke "uten/med aktivitetskrav") på samme måte som for far med aleneansvar
+    if (!erAvslått && !erEøsPeriode && erFarEllerMedmor === true && erAleneOmOmsorg === false && !farOgFar) {
         if (morsAktivitet === 'IKKE_OPPGITT') {
             return intl.formatMessage({ id: 'uttaksplan.stønadskvotetype.AKTIVITETSFRI_KVOTE_BFHR' });
         }

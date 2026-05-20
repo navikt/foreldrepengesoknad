@@ -61,7 +61,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     const intl = useIntl();
 
     const {
-        foreldreInfo: { rettighetType, erMedmorDelAvSøknaden, søker },
+        foreldreInfo: { rettighetType, erMedmorDelAvSøknaden, søker, farOgFar, navnPåForeldre },
         familiehendelsedato,
         familiesituasjon,
         erPeriodeneTilAnnenPartLåst,
@@ -103,7 +103,12 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 
     const skalViseMorsAktivitetskravVedSamtidigUttak =
         !ønskerFlerbarnsdager &&
-        getSkalViseMorsAktivitetskravVedSamtidigUttak(forelder, samtidigUttaksprosentMor, stillingsprosentMor, kontoTypeFarMedmor);
+        getSkalViseMorsAktivitetskravVedSamtidigUttak(
+            forelder,
+            samtidigUttaksprosentMor,
+            stillingsprosentMor,
+            kontoTypeFarMedmor,
+        );
 
     const erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel =
         familiesituasjon !== 'adopsjon' &&
@@ -228,19 +233,25 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     [
                         erMorGyldigForelder && !erMorLåst && (
                             <Radio key="mor" value="MOR">
-                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />
+                                {farOgFar ? (
+                                    navnPåForeldre.mor
+                                ) : (
+                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />
+                                )}
                             </Radio>
                         ),
                         erFarMedmorGyldigForelder && !erFarMedmorLåst && (
                             <Radio key="far" value="FAR_MEDMOR">
-                                {erMedmorDelAvSøknaden ? (
+                                {farOgFar ? (
+                                    navnPåForeldre.farMedmor
+                                ) : erMedmorDelAvSøknaden ? (
                                     <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />
                                 ) : (
                                     <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Far" />
                                 )}
                             </Radio>
                         ),
-                        erMorGyldigForelder && erFarMedmorGyldigForelder && !erMinstEnEøsPeriode && (
+                        erMorGyldigForelder && erFarMedmorGyldigForelder && !erMinstEnEøsPeriode && !farOgFar && (
                             <Radio key="begge" value="BEGGE">
                                 <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Begge" />
                             </Radio>
@@ -696,7 +707,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             fom: periode.fom,
             tom: periode.tom,
             kontoType: values.kontoTypeMor === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoTypeMor,
-            morsAktivitet: values.morsAktivitet,
+            morsAktivitet: values.kontoTypeMor === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : values.morsAktivitet,
             forelder: 'MOR',
             gradering:
                 !erOverføringMor && values.skalDuKombinereArbeidOgUttakMor

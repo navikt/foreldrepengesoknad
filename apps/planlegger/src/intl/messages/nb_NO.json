@@ -104,6 +104,7 @@
     "HvaErMulig.AktivitetskravTilFar.Tekst": "Biologisk far må fylle aktivitetskravet hvis far som stebarnsadopterer tar mer enn 15 eller 19 uker med foreldrepenger. Det er ingen aktivitetskrav til far som stebarnsadopterer.",
     "HvemPlanlegger.DefaultAnnenForelderNavn": "annen forelder",
     "HvemPlanlegger.DefaultFarNavn": "far",
+    "HvemPlanlegger.DefaultMedfarNavn": "far 2",
     "HvemPlanlegger.DefaultMedMorNavn": "medmor",
     "HvemPlanlegger.DefaultMorNavn": "mor",
     "HvemPlanleggerSteg.BareFar": "Bare far med aleneomsorg",

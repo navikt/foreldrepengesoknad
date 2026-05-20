@@ -357,12 +357,17 @@ export const ikkeDeltUttak = ({
 
     // For far og far + fødsel med DELT_UTTAK-kvoter (MØDREKVOTE, FEDREKVOTE, FELLESPERIODE, FORELDREPENGER_FØR_FØDSEL),
     // summer alle kvoter minus FFF til én syntetisk AKTIVITETSFRI_KVOTE.
+    // Når MØDREKVOTE er tilgjengelig (begge har rett), trekkes den fra summen slik at planforslaget
+    // gir far1 kun FEDREKVOTE+FELLESPERIODE (31 uker ved 100%). De gjenværende MØDREKVOTE-dagene
+    // forblir uallokerte i forslaget – begge foreldre kan ta dem etter eget ønske.
     if (farOgFar && situasjon !== 'adopsjon' && !aktivitetsfriKvote) {
+        const mødrekvoteDager = tilgjengeligeStønadskvoter.find((k) => k.konto === 'MØDREKVOTE')?.dager ?? 0;
         const totalDager = tilgjengeligeStønadskvoter
             .filter((k) => k.konto !== 'FORELDREPENGER_FØR_FØDSEL')
             .reduce((sum, k) => sum + k.dager, 0);
-        if (totalDager > 0) {
-            aktivitetsfriKvote = { konto: 'AKTIVITETSFRI_KVOTE', dager: totalDager };
+        const far1Dager = totalDager - mødrekvoteDager;
+        if (far1Dager > 0) {
+            aktivitetsfriKvote = { konto: 'AKTIVITETSFRI_KVOTE', dager: far1Dager };
         }
     }
 

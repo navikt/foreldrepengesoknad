@@ -104,6 +104,7 @@
     "HvaErMulig.AktivitetskravTilFar.Tekst": "The biological father must meet the activity requirement if the father who adopts a stepchild takes more than 15 or 19 weeks of parental leave. There is no activity requirement for fathers who adopt stepchildren.",
     "HvemPlanlegger.DefaultAnnenForelderNavn": "other parent",
     "HvemPlanlegger.DefaultFarNavn": "father",
+    "HvemPlanlegger.DefaultMedfarNavn": "father 2",
     "HvemPlanlegger.DefaultMedMorNavn": "co-mother",
     "HvemPlanlegger.DefaultMorNavn": "mother",
     "HvemPlanleggerSteg.BareFar": "Only the father with sole care",

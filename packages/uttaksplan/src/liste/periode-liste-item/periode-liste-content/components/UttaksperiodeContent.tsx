@@ -29,7 +29,7 @@ interface Props {
 export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
     const {
-        foreldreInfo: { rettighetType },
+        foreldreInfo: { rettighetType, farOgFar },
         uttakPerioder,
     } = useUttaksplanData();
     const erAvslått = erAvslåttPeriode(periode);
@@ -43,6 +43,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
         konto: periode.kontoType,
         erAleneOmOmsorg: rettighetType === 'ALENEOMSORG',
         erAvslått,
+        farOgFar,
     });
 
     const morsPerioder = uttakPerioder.filter(
@@ -73,7 +74,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
                 </HStack>
                 <VStack gap="space-8">
                     <BodyShort>{stønadskvoteNavn}</BodyShort>
-                    {!erAvslått && morsAktivitet !== undefined && (
+                    {!erAvslått && morsAktivitet !== undefined && !(farOgFar && morsAktivitet === 'IKKE_OPPGITT') && (
                         <BodyShort>{getMorsAktivitetTekst(intl, morsAktivitet)}</BodyShort>
                     )}
                     {erEøsUttakPeriode(periode) && periode.trekkdager !== undefined ? (

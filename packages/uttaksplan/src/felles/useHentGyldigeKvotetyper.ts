@@ -11,6 +11,9 @@ export const useHentGyldigeKvotetyper = (
 ) => {
     const { foreldreInfo, familiehendelsedato, familiesituasjon, valgtStønadskvote } = useUttaksplanData();
 
+    const erFarOgFarBeggeHarRett =
+        foreldreInfo.farOgFar === true && valgtStønadskvote.kontoer.every((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
+
     return {
         gyldigeStønadskontoerForMor: valgtStønadskvote.kontoer
             .map((kt) => kt.konto)
@@ -22,6 +25,7 @@ export const useHentGyldigeKvotetyper = (
                     familiesituasjon,
                     valgtePerioder,
                     harValgtSamtidigUttak,
+                    erFarOgFarBeggeHarRett,
                 ),
             ),
         gyldigeStønadskontoerForFarMedmor: valgtStønadskvote.kontoer
@@ -47,13 +51,14 @@ const erGyldigForMor = (
     familiesituasjon: Familiesituasjon,
     valgtePerioder: Array<{ fom: string; tom: string }>,
     harValgtSamtidigUttak: boolean,
+    erFarOgFarBeggeHarRett: boolean,
 ) => {
     const { søker, rettighetType } = foreldreInfo;
 
     const harKunEnPartRett = rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT';
     const erAdopsjon = familiesituasjon === 'adopsjon';
 
-    if (søker === 'FAR_MEDMOR' && harKunEnPartRett) {
+    if (søker === 'FAR_MEDMOR' && harKunEnPartRett && !erFarOgFarBeggeHarRett) {
         return false;
     }
 
@@ -65,7 +70,14 @@ const erGyldigForMor = (
     }
 
     if (konto === 'AKTIVITETSFRI_KVOTE') {
-        return false;
+        if (!erFarOgFarBeggeHarRett) {
+            return false;
+        }
+        if (
+            UttaksperiodeValidatorer.erNoenPerioderFørToUkerFørFamiliehendelsesdato(valgtePerioder, familiehendelsedato)
+        ) {
+            return false;
+        }
     }
 
     if (

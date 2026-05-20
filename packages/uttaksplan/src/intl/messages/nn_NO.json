@@ -165,6 +165,7 @@
     "kalender.dinPeriode": "Din periode",
     "kalender.dinPeriode.gradert": "Du har jobb og foreldrepengar",
     "kalender.dinPeriode.aktivitetsfri": "{erSokersPeriode, select, true {Dine foreldrepengar utan aktivitetskrav} other {Foreldrepengane til {navnAnnenPart} utan aktivitetskrav}}",
+    "kalender.dinPeriode.aktivitetsfri.farOgFar": "{erSokersPeriode, select, true {Dine foreldrepengar} other {Foreldrepengane til {navnAnnenPart}}}",
     "kalender.dinPeriode.aktivitetsfri.gradert": "{erSokersPeriode, select, true {Du} other {{navnAnnenPart}}} kombinerer jobb og foreldrepengar utan aktivitetskrav",
     "kalender.dinPeriode.medAktivitetskrav": "Dine foreldrepengar med aktivitetskrav",
     "kalender.dinPeriode.medAktivitetskrav.gradert": "Du kombinerer jobb og foreldrepengar med aktivitetskrav",
