@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'server/**'
+      - 'packages/server-utils/**'
       - '.github/workflows/verify-server.yml'
 
 jobs:
