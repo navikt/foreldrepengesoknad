@@ -3,7 +3,7 @@
     "compilerOptions": {
         "jsx": "react-jsx",
         "rootDir": "src",
-        "types": ["node", "vite/client", "@testing-library/jest-dom", "vitest/globals"],
+        "types": ["vite/client", "@testing-library/jest-dom", "vitest/globals", "node"],
         "esModuleInterop": true
     },
     "include": ["src/**/*"],

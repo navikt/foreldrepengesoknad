@@ -8,7 +8,7 @@
             "storybookData/*": ["./.storybook/storybook-data/*"],
             "types/*": ["./src/types/*"]
         },
-        "types": ["node", "vite/client", "@testing-library/jest-dom", "vitest/globals"]
+        "types": ["vite/client", "@testing-library/jest-dom", "vitest/globals"]
     },
     "include": ["src", "mock-api", "vitest", "../../@types"],
     "exclude": ["node_modules"]
