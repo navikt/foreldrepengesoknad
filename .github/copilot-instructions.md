@@ -1,4 +1,4 @@
-# Copilot Instructions – fp-selvbetjening
+# Copilot Instructions – foreldrepengesoknad
 
 ## About this repo
 
