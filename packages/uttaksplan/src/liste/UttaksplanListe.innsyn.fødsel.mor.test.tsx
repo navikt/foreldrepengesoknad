@@ -58,8 +58,8 @@ describe('<UttaksplanListe - innsyn - fødsel mor >', () => {
         // Opna den avslåtte perioden
         await userEvent.click(screen.getByText('13. okt. 25 - 21. nov. 25'));
 
-        // Sjekk at innhaldet viser "Avslått periode"
-        expect(screen.getByText('Avslått periode')).toBeInTheDocument();
+        // Sjekk at innhaldet viser "Trekte dager"
+        expect(screen.getByText('Trekte dager')).toBeInTheDocument();
 
         // Skal ikkje ha endre/slett-knappar
         expect(screen.queryByText('Endre')).not.toBeInTheDocument();

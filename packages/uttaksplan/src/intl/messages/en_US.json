@@ -99,7 +99,7 @@
     "uttaksplan.periodeListeHeader.HarForeldrepenger": "{navn} has parental benefits",
     "uttaksplan.periodeListeHeader.HarEøsForeldrepenger": "{navn} has parental benefits (EU/EEA)",
     "uttaksplan.periodeListeHeader.pleiepenger": "Attendance allowance",
-    "uttaksplan.periodeListeHeader.avslåttAnnet": "Rejected period",
+    "uttaksplan.periodeListeHeader.avslåttAnnet": "Deducted days",
     "uttaksplan.slettPeriode.tittel": "Delete period",
     "uttaksplan.slettPeriode.hvilkePerioder": "Which periods would you like to delete?",
     "uttaksplan.ingenPerioder.tittel": "All periods have been removed from the plan.",
