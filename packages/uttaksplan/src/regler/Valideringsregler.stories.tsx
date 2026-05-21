@@ -23,8 +23,9 @@ const Valideringsregler = () => {
                 gjelder både i listen og i kalenderen.
             </p>
             <p>
-                Siden er autogenerert fra regelkatalogen i koden (<code>packages/uttaksplan/src/regler/</code>
-                ). Endrer du regelteksten der, endrer denne siden seg også.
+                Siden er autogenerert fra regelkatalogen i koden ({' '}
+                <code>packages/uttaksplan/src/regler/</code>). Endrer du regelteksten der, endrer denne
+                siden seg også.
             </p>
             {ALLE_VALIDERINGSREGLER.map((gruppe, gruppeIdx) => (
                 <section key={gruppe.id} style={{ marginTop: 32 }}>

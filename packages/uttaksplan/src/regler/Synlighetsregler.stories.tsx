@@ -24,9 +24,9 @@ const Synlighetsregler = () => {
                 deler av skjemaet som vises i hvilke situasjoner.
             </p>
             <p>
-                Siden er autogenerert fra synlighetskatalogen i koden (
-                <code>packages/uttaksplan/src/regler/synlighet/</code>
-                ). Endrer du regelteksten der, endrer denne siden seg også.
+                Siden er autogenerert fra synlighetskatalogen i koden ({' '}
+                <code>packages/uttaksplan/src/regler/synlighet/</code>). Endrer du regelteksten der, endrer
+                denne siden seg også.
             </p>
             {ALLE_SYNLIGHETSREGLER.map((kapittel, kapittelIdx) => (
                 <section key={kapittel.id} style={{ marginTop: 32 }}>

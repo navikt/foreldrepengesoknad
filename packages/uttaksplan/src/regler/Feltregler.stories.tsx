@@ -28,9 +28,9 @@ const Feltregler = () => {
                 lagring.
             </p>
             <p>
-                Siden er autogenerert fra regelkatalogen i koden (
-                <code>packages/uttaksplan/src/regler/felt/</code>
-                ). Endrer du regelteksten der, endrer denne siden seg også.
+                Siden er autogenerert fra regelkatalogen i koden ({' '}
+                <code>packages/uttaksplan/src/regler/felt/</code>). Endrer du regelteksten der, endrer denne
+                siden seg også.
             </p>
             {ALLE_FELTREGLER.map((kapittel, kapittelIdx) => (
                 <section key={kapittel.id} style={{ marginTop: 32 }}>
