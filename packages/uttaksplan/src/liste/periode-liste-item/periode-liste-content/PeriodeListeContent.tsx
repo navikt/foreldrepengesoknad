@@ -196,16 +196,16 @@ const Periode = ({
         );
     }
 
+    if (erPrematuruker(periode)) {
+        return <PrematurukerContent key={genererPeriodeKey(periode)} />;
+    }
+
     if (erVanligUttakPeriode(periode) && erAvslåttPeriode(periode)) {
         return <AvslåttPeriodeContent key={genererPeriodeKey(periode)} periode={periode} />;
     }
 
     if (erVanligUttakPeriode(periode) && erUtsettelsesperiode(periode)) {
         return <UtsettelsesPeriodeContent key={genererPeriodeKey(periode)} periode={periode} />;
-    }
-
-    if (erPrematuruker(periode)) {
-        return <PrematurukerContent key={genererPeriodeKey(periode)} />;
     }
 
     if ((erVanligUttakPeriode(periode) && erUttaksperiode(periode)) || erEøsUttakPeriode(periode)) {
