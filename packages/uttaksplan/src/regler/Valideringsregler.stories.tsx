@@ -1,13 +1,16 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { IntlProvider, useIntl } from 'react-intl';
 
+import { BodyLong, Heading, Table, VStack } from '@navikt/ds-react';
+
 import messages from '../intl/messages/nb_NO.json';
 import { ALLE_VALIDERINGSREGLER } from './index';
 
 /**
- * Selvdokumenterende Storybook-side: viser hele valideringsregelkatalogen
- * for perioder i uttaksplanen. Siden er ment å leses av designere,
- * produkteiere og saksbehandlere — ikke bare utviklere.
+ * Selvdokumenterende Storybook-side: viser valideringsreglene som kjøres
+ * ved submit (lagring) av en periode. Disse reglene kjøres etter at
+ * feltvalideringene har passert, og sjekker tverrgående betingelser som
+ * ikke kan fanges opp av enkeltfelt alene.
  *
  * Innholdet blir generert direkte fra reglene i `src/regler/`, så siden er
  * alltid i synk med koden.
@@ -15,55 +18,53 @@ import { ALLE_VALIDERINGSREGLER } from './index';
 const Valideringsregler = () => {
     const intl = useIntl();
     return (
-        <div style={{ fontFamily: 'sans-serif', maxWidth: 980, padding: 24 }}>
-            <h1>Valideringsregler for perioder i uttaksplanen</h1>
-            <p>
-                Når brukeren legger til eller endrer en periode i uttaksplanen, blir reglene under sjekket i
-                rekkefølge. Første regel som er brutt bestemmer hvilken feilmelding brukeren får. Samme regler
-                gjelder både i listen og i kalenderen.
-            </p>
-            <p>
-                Siden er autogenerert fra regelkatalogen i koden ({' '}
-                <code>packages/uttaksplan/src/regler/</code>). Endrer du regelteksten der, endrer denne
-                siden seg også.
-            </p>
+        <VStack gap="space-8" className="max-w-4xl p-6">
+            <VStack gap="space-4">
+                <Heading size="xlarge">Valideringsregler ved lagring av periode</Heading>
+                <BodyLong>
+                    Når brukeren lagrer en ny eller endret periode i uttaksplanen, blir reglene under sjekket i
+                    rekkefølge — etter at feltvalideringene allerede har passert. Første regel som er brutt
+                    bestemmer hvilken feilmelding brukeren får. Samme regler gjelder både i listen og i kalenderen.
+                </BodyLong>
+                <BodyLong>
+                    Siden er autogenerert fra regelkatalogen i koden ({' '}
+                    <code>packages/uttaksplan/src/regler/</code>). Endrer du regelteksten der, endrer denne siden
+                    seg også.
+                </BodyLong>
+            </VStack>
             {ALLE_VALIDERINGSREGLER.map((gruppe, gruppeIdx) => (
-                <section key={gruppe.id} style={{ marginTop: 32 }}>
-                    <h2>
+                <VStack key={gruppe.id} gap="space-2">
+                    <Heading size="medium">
                         {gruppeIdx + 1}. {gruppe.id}
-                    </h2>
-                    <p style={{ fontStyle: 'italic', color: '#444' }}>{gruppe.beskrivelse}</p>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 12 }}>
-                        <thead>
-                            <tr style={{ background: '#f0f4f8', textAlign: 'left' }}>
-                                <th className={cellClass}>#</th>
-                                <th className={cellClass}>Regel-id</th>
-                                <th className={cellClass}>Hva regelen sier</th>
-                                <th className={cellClass}>Feilmelding til brukeren</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    </Heading>
+                    <BodyLong className="italic text-ax-text-subtle">{gruppe.beskrivelse}</BodyLong>
+                    <Table>
+                        <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell>#</Table.HeaderCell>
+                                <Table.HeaderCell>Regel-id</Table.HeaderCell>
+                                <Table.HeaderCell>Hva regelen sier</Table.HeaderCell>
+                                <Table.HeaderCell>Feilmelding til brukeren</Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Header>
+                        <Table.Body>
                             {gruppe.regler.map((regel, idx) => (
-                                <tr key={regel.id} style={{ borderTop: '1px solid #e5e7eb' }}>
-                                    <td className={cellClass}>{idx + 1}</td>
-                                    <td className={`${cellClass} font-mono text-xs`}>
-                                        {regel.id}
-                                    </td>
-                                    <td className={cellClass}>{regel.beskrivelse}</td>
-                                    <td className={`${cellClass} text-orange-800`}>
+                                <Table.Row key={regel.id}>
+                                    <Table.DataCell>{idx + 1}</Table.DataCell>
+                                    <Table.DataCell className="font-mono text-xs">{regel.id}</Table.DataCell>
+                                    <Table.DataCell>{regel.beskrivelse}</Table.DataCell>
+                                    <Table.DataCell className="text-ax-text-warning">
                                         «{intl.formatMessage({ id: regel.feilmeldingId })}»
-                                    </td>
-                                </tr>
+                                    </Table.DataCell>
+                                </Table.Row>
                             ))}
-                        </tbody>
-                    </table>
-                </section>
+                        </Table.Body>
+                    </Table>
+                </VStack>
             ))}
-        </div>
+        </VStack>
     );
 };
-
-const cellClass = 'py-2.5 px-3 align-top text-sm leading-[1.45]';
 
 const meta = {
     title: 'Uttaksplan/Valideringsregler (dokumentasjon)',

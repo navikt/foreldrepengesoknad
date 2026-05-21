@@ -1,6 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { IntlProvider, useIntl } from 'react-intl';
 
+import { BodyLong, Heading, Table, VStack } from '@navikt/ds-react';
+
 import messages from '../intl/messages/nb_NO.json';
 import { ALLE_FELTREGLER } from './felt';
 
@@ -19,54 +21,54 @@ import { ALLE_FELTREGLER } from './felt';
 const Feltregler = () => {
     const intl = useIntl();
     return (
-        <div style={{ fontFamily: 'sans-serif', maxWidth: 980, padding: 24 }}>
-            <h1>Feltregler i uttaksplanen</h1>
-            <p>
-                Når brukeren fyller ut skjemaet for å legge til eller endre en periode, kjører hvert felt sine
-                egne regler. Disse reglene gir tilbakemelding på det enkelte feltet (f.eks. «Stillingsprosent må
-                være mindre enn 100 %»), i tillegg til de overordnede valideringsreglene som kjøres ved
-                lagring.
-            </p>
-            <p>
-                Siden er autogenerert fra regelkatalogen i koden ({' '}
-                <code>packages/uttaksplan/src/regler/felt/</code>). Endrer du regelteksten der, endrer denne
-                siden seg også.
-            </p>
+        <VStack gap="space-8" className="max-w-4xl p-6">
+            <VStack gap="space-4">
+                <Heading size="xlarge">Feltregler i uttaksplanen</Heading>
+                <BodyLong>
+                    Når brukeren fyller ut skjemaet for å legge til eller endre en periode, kjører hvert felt sine
+                    egne regler. Disse reglene gir tilbakemelding på det enkelte feltet (f.eks. «Stillingsprosent
+                    må være mindre enn 100 %»), i tillegg til de overordnede valideringsreglene som kjøres ved
+                    lagring.
+                </BodyLong>
+                <BodyLong>
+                    Siden er autogenerert fra regelkatalogen i koden ({' '}
+                    <code>packages/uttaksplan/src/regler/felt/</code>). Endrer du regelteksten der, endrer denne
+                    siden seg også.
+                </BodyLong>
+            </VStack>
             {ALLE_FELTREGLER.map((område, områdeIdx) => (
-                <section key={område.id} style={{ marginTop: 32 }}>
-                    <h2>
+                <VStack key={område.id} gap="space-2">
+                    <Heading size="medium">
                         {områdeIdx + 1}. {område.feltnavn}
-                    </h2>
-                    <p style={{ fontStyle: 'italic', color: '#444' }}>{område.beskrivelse}</p>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 12 }}>
-                        <thead>
-                            <tr style={{ background: '#f0f4f8', textAlign: 'left' }}>
-                                <th className={cellClass}>#</th>
-                                <th className={cellClass}>Regel-id</th>
-                                <th className={cellClass}>Hva regelen sier</th>
-                                <th className={cellClass}>Feilmelding til brukeren</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    </Heading>
+                    <BodyLong className="italic text-ax-text-subtle">{område.beskrivelse}</BodyLong>
+                    <Table>
+                        <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell>#</Table.HeaderCell>
+                                <Table.HeaderCell>Regel-id</Table.HeaderCell>
+                                <Table.HeaderCell>Hva regelen sier</Table.HeaderCell>
+                                <Table.HeaderCell>Feilmelding til brukeren</Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Header>
+                        <Table.Body>
                             {område.regler.map((regel, idx) => (
-                                <tr key={regel.id} style={{ borderTop: '1px solid #e5e7eb' }}>
-                                    <td className={cellClass}>{idx + 1}</td>
-                                    <td className={`${cellClass} font-mono text-xs`}>
-                                        {regel.id}
-                                    </td>
-                                    <td className={cellClass}>{regel.beskrivelse}</td>
-                                    <td className={cellClass}>{intl.formatMessage({ id: regel.feilmeldingId })}</td>
-                                </tr>
+                                <Table.Row key={regel.id}>
+                                    <Table.DataCell>{idx + 1}</Table.DataCell>
+                                    <Table.DataCell className="font-mono text-xs">{regel.id}</Table.DataCell>
+                                    <Table.DataCell>{regel.beskrivelse}</Table.DataCell>
+                                    <Table.DataCell>
+                                        {intl.formatMessage({ id: regel.feilmeldingId })}
+                                    </Table.DataCell>
+                                </Table.Row>
                             ))}
-                        </tbody>
-                    </table>
-                </section>
+                        </Table.Body>
+                    </Table>
+                </VStack>
             ))}
-        </div>
+        </VStack>
     );
 };
-
-const cellClass = 'py-2.5 px-3 align-top text-sm leading-[1.45]';
 
 const meta = {
     title: 'Uttaksplan/Feltregler (dokumentasjon)',
