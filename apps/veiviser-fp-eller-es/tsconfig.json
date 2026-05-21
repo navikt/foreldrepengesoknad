@@ -6,7 +6,7 @@
             "appData/*": ["./src/app-data/*"],
             "utils/*": ["./src/utils/*"]
         },
-        "types": ["node", "@testing-library/jest-dom", "vitest/globals", "vite/client"]
+        "types": ["@testing-library/jest-dom", "vitest/globals", "vite/client"]
     },
     "include": ["src", "mock-api", "vitest", "../../@types"],
     "exclude": ["node_modules"]
