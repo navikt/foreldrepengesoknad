@@ -117,8 +117,8 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 
     if (blokkerandeAlert) {
         return (
-            <Alert variant={blokkerandeAlert.regel.variant}>
-                {intl.formatMessage({ id: blokkerandeAlert.meldingId })}
+            <Alert variant={blokkerandeAlert.variant}>
+                {blokkerandeAlert.melding}
             </Alert>
         );
     }

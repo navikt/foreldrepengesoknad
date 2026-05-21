@@ -1,4 +1,5 @@
 import { Familiesituasjon } from '@navikt/fp-types';
+import { useIntl } from 'react-intl';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
@@ -133,14 +134,15 @@ export const finnFørsteBlokkerandeAlert = (
 
 /**
  * Hook som hentar kontekst frå UttaksplanDataContext og evaluerer
- * blokkerande alerts. Kallaren treng berre oppgi det som ikkje
- * finst i konteksten.
+ * blokkerande alerts. Returnerer ferdigformatert melding + variant,
+ * eller undefined om ingen alert slår inn.
  */
 export const useBlokkerandeAlert = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     erMorGyldigForelder: boolean,
     erFarMedmorGyldigForelder: boolean,
-) => {
+): { melding: string; variant: 'info' | 'warning' } | undefined => {
+    const intl = useIntl();
     const {
         foreldreInfo: { rettighetType, søker },
         familiehendelsedato,
@@ -148,7 +150,7 @@ export const useBlokkerandeAlert = (
         erPeriodeneTilAnnenPartLåst,
     } = useUttaksplanData();
 
-    return finnFørsteBlokkerandeAlert({
+    const treff = finnFørsteBlokkerandeAlert({
         valgtePerioder,
         familiehendelsedato,
         familiesituasjon,
@@ -158,6 +160,15 @@ export const useBlokkerandeAlert = (
         erFarMedmorGyldigForelder,
         erPeriodeneTilAnnenPartLåst,
     });
+
+    if (!treff) {
+        return undefined;
+    }
+
+    return {
+        melding: intl.formatMessage({ id: treff.meldingId }),
+        variant: treff.regel.variant,
+    };
 };
 
 /** Sjekk om graderingsalerten skal visast. */
