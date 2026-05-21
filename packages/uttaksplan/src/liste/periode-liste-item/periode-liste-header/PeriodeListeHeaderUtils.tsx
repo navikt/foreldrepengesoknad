@@ -79,11 +79,7 @@ const getIkonFarge = (uttaksplanperiode: Uttaksplanperiode[], erFamiliehendelse?
         return 'text-ax-danger-600';
     }
 
-    if (erAlleUttaksplanperioderAvslått(uttaksplanperiode)) {
-        return 'text-ax-neutral-800';
-    }
-
-    if (erUttaksplanperiodeTapteDager(uttaksplanperiode)) {
+    if (erAlleUttaksplanperioderAvslått(uttaksplanperiode) || erUttaksplanperiodeTapteDager(uttaksplanperiode)) {
         return 'text-ax-neutral-800';
     }
 
