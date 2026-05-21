@@ -48,8 +48,13 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const formMethods = useForm<ArbeidsforholdOgInntekt>({
-        defaultValues: arbeidsforholdOgInntekt,
+        defaultValues: {
+            ...arbeidsforholdOgInntekt,
+            ...(frilansoppdrag.length > 0 && { harJobbetSomFrilans: true }),
+        },
     });
+
+    const harFrilansoppdrag = frilansoppdrag.length > 0;
 
     const hattInntektSomFrilans = formMethods.watch('harJobbetSomFrilans');
     const hattInntektSomNæringsdrivende = formMethods.watch('harJobbetSomSelvstendigNæringsdrivende');
@@ -96,28 +101,33 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                             />
                         </ReadMore>
                     </VStack>
-                    <VStack gap="space-4">
-                        <RhfRadioGroup
-                            name="harJobbetSomFrilans"
-                            control={formMethods.control}
-                            label={intl.formatMessage({ id: 'inntektsinformasjon.harDuJobbetSomFrilans' }, { erSvp })}
-                            validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.frilans.påkrevd' }))]}
-                            description={
-                                erSvp &&
-                                intl.formatMessage({
-                                    id: 'inntektsinformasjon.beskrivelse',
-                                })
-                            }
-                        >
-                            <Radio value={false}>
-                                <FormattedMessage id="inntektsinformasjon.nei" />
-                            </Radio>
-                            <Radio value={true}>
-                                <FormattedMessage id="inntektsinformasjon.ja" />
-                            </Radio>
-                        </RhfRadioGroup>
-                        <HvemKanVæreFrilanser appOrigin={appOrigin} />
-                    </VStack>
+                    {!harFrilansoppdrag && (
+                        <VStack gap="space-4">
+                            <RhfRadioGroup
+                                name="harJobbetSomFrilans"
+                                control={formMethods.control}
+                                label={intl.formatMessage(
+                                    { id: 'inntektsinformasjon.harDuJobbetSomFrilans' },
+                                    { erSvp },
+                                )}
+                                validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.frilans.påkrevd' }))]}
+                                description={
+                                    erSvp &&
+                                    intl.formatMessage({
+                                        id: 'inntektsinformasjon.beskrivelse',
+                                    })
+                                }
+                            >
+                                <Radio value={false}>
+                                    <FormattedMessage id="inntektsinformasjon.nei" />
+                                </Radio>
+                                <Radio value={true}>
+                                    <FormattedMessage id="inntektsinformasjon.ja" />
+                                </Radio>
+                            </RhfRadioGroup>
+                            <HvemKanVæreFrilanser appOrigin={appOrigin} />
+                        </VStack>
+                    )}
                     <VStack gap="space-4">
                         <RhfRadioGroup
                             name="harJobbetSomSelvstendigNæringsdrivende"
