@@ -22,7 +22,7 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskvoteNavnSimple } from '../liste/utils/uttaksplanListeUtils';
-import { synlighetForFelter, synlighetForForelderValg } from '../regler/synlighet';
+import { synlighetForForelderValg, useFeltSynlighet } from '../regler/synlighet';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
 import { getAktivitetskravOptions, getAktivitetskravTekst } from '../utils/periodeUtils';
@@ -67,7 +67,6 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         familiesituasjon,
         erPeriodeneTilAnnenPartLåst,
         aktiveArbeidsforhold,
-        barn,
         uttakPerioder,
     } = useUttaksplanData();
 
@@ -86,31 +85,20 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         ønskerFlerbarnsdager,
     } = formMethods.watch();
 
-    const erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel =
-        familiesituasjon !== 'adopsjon' &&
-        UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
-            valgtePerioder,
-            familiehendelsedato,
-        );
+    const feltSynlighet = useFeltSynlighet(valgtePerioder, {
+        forelder,
+        kontoTypeMor,
+        kontoTypeFarMedmor,
+        ønskerFlerbarnsdager,
+        samtidigUttaksprosentMor,
+        stillingsprosentMor,
+    });
 
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKvotetyper(
         valgtePerioder,
         forelder === 'BEGGE',
         ønskerFlerbarnsdager,
     );
-
-    const feltSynlighet = synlighetForFelter({
-        forelder,
-        søker,
-        rettighetType,
-        kontoTypeMor,
-        kontoTypeFarMedmor,
-        ønskerFlerbarnsdager,
-        antallBarn: barn.antallBarn,
-        samtidigUttaksprosentMor,
-        stillingsprosentMor,
-        erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel,
-    });
 
     const skalViseFlerbarnsdager = feltSynlighet.visFlerbarnsdager;
     const skalViseMorsAktivitetskravVedSamtidigUttak = feltSynlighet.visMorsAktivitetskravVedSamtidigUttak;
@@ -475,7 +463,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     >
                         {getAktivitetskravOptions(
                             skalViseMorsAktivitetskravVedSamtidigUttak,
-                            erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel,
+                            feltSynlighet.erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel,
                         ).map((value) => {
                             return (
                                 <option key={value} value={value}>

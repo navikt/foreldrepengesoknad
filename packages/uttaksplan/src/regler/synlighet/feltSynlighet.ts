@@ -1,10 +1,12 @@
 import type {
     BrukerRolleSak_fpoversikt,
+    Familiesituasjon,
     KontoTypeUttak,
     RettighetType_fpoversikt,
 } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 
+import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Synlighetskapittel, Synlighetsregel } from './types';
 
 type ForelderValg = BrukerRolleSak_fpoversikt | 'BEGGE' | undefined;
@@ -19,7 +21,9 @@ export type FeltSynlighetKontekst = {
     antallBarn: number;
     samtidigUttaksprosentMor: string | undefined;
     stillingsprosentMor: string | undefined;
-    erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel: boolean;
+    familiesituasjon: Familiesituasjon;
+    valgtePerioder: Array<{ fom: string; tom: string }>;
+    familiehendelsedato: string;
 };
 
 const morSøkerOmOverføring = (k: FeltSynlighetKontekst) =>
@@ -81,16 +85,23 @@ export const VIS_MORS_AKTIVITETSKRAV_VED_SAMTIDIG_UTTAK: Synlighetsregel<FeltSyn
         morsTotaleProsent(k) < 100,
 };
 
+const erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel = (k: FeltSynlighetKontekst) =>
+    k.familiesituasjon !== 'adopsjon' &&
+    UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
+        k.valgtePerioder,
+        k.familiehendelsedato,
+    );
+
 export const VIS_AKTIVITETSKRAV_FORDI_FEDREKVOTE_FØRSTE_SEKS_UKER: Synlighetsregel<FeltSynlighetKontekst> = {
     id: 'felt.visAktivitetskravFordiFedrekvoteFørsteSeksUker',
     beskrivelse:
         'Far/medmor som tar ut fedrekvote i de første seks ukene etter fødsel/termin må dokumentere mors ' +
-        'aktivitet. Gjelder ikke ved aleneomsorg.',
+        'aktivitet. Gjelder ikke ved aleneomsorg, og ikke ved adopsjon.',
     skalVises: (k) =>
         k.forelder === 'FAR_MEDMOR' &&
         k.rettighetType !== 'ALENEOMSORG' &&
         k.kontoTypeFarMedmor === 'FEDREKVOTE' &&
-        k.erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel,
+        erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel(k),
 };
 
 export const VIS_AKTIVITETSKRAV_FELT: Synlighetsregel<FeltSynlighetKontekst> = {
@@ -162,4 +173,5 @@ export const synlighetForFelter = (kontekst: FeltSynlighetKontekst) => ({
     visSamtidigUttakFelter: VIS_SAMTIDIG_UTTAK_FELTER.skalVises(kontekst),
     visKombinereArbeidOgUttakMor: VIS_KOMBINERE_ARBEID_OG_UTTAK_MOR.skalVises(kontekst),
     visKombinereArbeidOgUttakFarMedmor: VIS_KOMBINERE_ARBEID_OG_UTTAK_FAR_MEDMOR.skalVises(kontekst),
+    erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel: erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel(kontekst),
 });

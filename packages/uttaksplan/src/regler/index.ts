@@ -51,9 +51,13 @@ const GRUPPER = [
  * fra den opprinnelige implementasjonen for å sikre at brukeren får samme feilmelding
  * som før.
  */
-export const ALLE_VALIDERINGSREGLER: readonly RegelgruppeVisning[] = GRUPPER.map((gruppe) => tilVisning(gruppe));
+export const ALLE_VALIDERINGSREGLER: readonly RegelgruppeVisning[] = GRUPPER.map((gruppe) =>
+    tilVisning(gruppe as Regelgruppe<unknown>),
+);
 
-const VALIDATORS: readonly Validator[] = GRUPPER.map((gruppe) => lagValidator(gruppe));
+const VALIDATORS: readonly Validator[] = GRUPPER.map((gruppe) =>
+    lagValidator(gruppe as Regelgruppe<unknown>),
+);
 
 /**
  * Kjører hele regelkatalogen mot en gitt input og returnerer første feilmelding,

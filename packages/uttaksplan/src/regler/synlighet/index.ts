@@ -6,6 +6,7 @@ export { synlighetForForelderValg } from './forelderValg';
 export type { ForelderValgKontekst } from './forelderValg';
 export { synlighetForFelter } from './feltSynlighet';
 export type { FeltSynlighetKontekst } from './feltSynlighet';
+export { useFeltSynlighet } from './useFeltSynlighet';
 
 /**
  * Alle synlighetsregler i uttaksplan. Brukes av Storybook-siden for å
