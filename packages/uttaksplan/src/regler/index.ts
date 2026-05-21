@@ -31,11 +31,18 @@ const lagValidator =
         return førsteBrutteRegel(gruppe.regler, kontekst)?.feilmeldingId ?? null;
     };
 
-const tilVisning = (gruppe: Regelgruppe<unknown>): RegelgruppeVisning => ({
+const tilVisning = <TCtx>(gruppe: Regelgruppe<TCtx>): RegelgruppeVisning => ({
     id: gruppe.id,
     beskrivelse: gruppe.beskrivelse,
     regler: gruppe.regler.map(({ id, beskrivelse, feilmeldingId }) => ({ id, beskrivelse, feilmeldingId })),
 });
+
+const GRUPPER = [
+    ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_GRUPPE,
+    SAMTIDIG_UTTAK_GRUPPE,
+    FAR_MEDMOR_RUNDT_FØDSEL_GRUPPE,
+    FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE,
+] as const;
 
 /**
  * Alle valideringsregler som blir sjekket når brukeren lagrer/legger til en periode.
@@ -44,19 +51,9 @@ const tilVisning = (gruppe: Regelgruppe<unknown>): RegelgruppeVisning => ({
  * fra den opprinnelige implementasjonen for å sikre at brukeren får samme feilmelding
  * som før.
  */
-export const ALLE_VALIDERINGSREGLER: readonly RegelgruppeVisning[] = [
-    tilVisning(ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_GRUPPE as Regelgruppe<unknown>),
-    tilVisning(SAMTIDIG_UTTAK_GRUPPE as Regelgruppe<unknown>),
-    tilVisning(FAR_MEDMOR_RUNDT_FØDSEL_GRUPPE as Regelgruppe<unknown>),
-    tilVisning(FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE as Regelgruppe<unknown>),
-];
+export const ALLE_VALIDERINGSREGLER: readonly RegelgruppeVisning[] = GRUPPER.map((gruppe) => tilVisning(gruppe));
 
-const VALIDATORS: readonly Validator[] = [
-    lagValidator(ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_GRUPPE),
-    lagValidator(SAMTIDIG_UTTAK_GRUPPE),
-    lagValidator(FAR_MEDMOR_RUNDT_FØDSEL_GRUPPE),
-    lagValidator(FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE),
-];
+const VALIDATORS: readonly Validator[] = GRUPPER.map((gruppe) => lagValidator(gruppe));
 
 /**
  * Kjører hele regelkatalogen mot en gitt input og returnerer første feilmelding,
