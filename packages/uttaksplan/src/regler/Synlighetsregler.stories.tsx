@@ -1,9 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { IntlProvider } from 'react-intl';
 
 import { BodyLong, Heading, Table, VStack } from '@navikt/ds-react';
 
-import messages from '../intl/messages/nb_NO.json';
 import { ALLE_SYNLIGHETSREGLER } from './synlighet';
 
 /**
@@ -68,13 +66,6 @@ const meta = {
     parameters: {
         layout: 'fullscreen',
     },
-    decorators: [
-        (Story) => (
-            <IntlProvider locale="nb" messages={messages}>
-                <Story />
-            </IntlProvider>
-        ),
-    ],
 } satisfies Meta<typeof Synlighetsregler>;
 
 export default meta;

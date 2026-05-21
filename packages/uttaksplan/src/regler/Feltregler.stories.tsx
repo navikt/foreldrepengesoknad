@@ -1,9 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { IntlProvider, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import { BodyLong, Heading, Table, VStack } from '@navikt/ds-react';
 
-import messages from '../intl/messages/nb_NO.json';
 import { ALLE_FELTREGLER } from './felt';
 
 /**
@@ -76,13 +75,6 @@ const meta = {
     parameters: {
         layout: 'fullscreen',
     },
-    decorators: [
-        (Story) => (
-            <IntlProvider locale="nb" messages={messages}>
-                <Story />
-            </IntlProvider>
-        ),
-    ],
 } satisfies Meta<typeof Feltregler>;
 
 export default meta;
