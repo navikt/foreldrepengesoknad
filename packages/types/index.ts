@@ -13,7 +13,12 @@ export type { Søkerrolle } from './src/Søkerrolle';
 export type { StepConfig } from './src/StepConfig';
 export type { Tidsperiode } from './src/Tidsperiode';
 export type { Satser } from './src/Satser';
-export type { OmBarnetPlanlegger, BarnetErFødtPlanlegger, BarnetErIkkeFødtPlanlegger, BarnetErAdoptertPlanlegger } from './src/OmBarnet';
+export type {
+    OmBarnetPlanlegger,
+    BarnetErFødtPlanlegger,
+    BarnetErIkkeFødtPlanlegger,
+    BarnetErAdoptertPlanlegger,
+} from './src/OmBarnet';
 export type { HvorLangPeriodePlanlegger } from './src/HvorLangPeriode';
 export type { FordelingPlanlegger } from './src/FordelingPlanlegger';
 export type { NavnPåForeldre } from './src/NavnPåForeldre';

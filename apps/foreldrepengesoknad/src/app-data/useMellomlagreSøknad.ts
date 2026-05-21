@@ -58,9 +58,7 @@ export const useMellomlagreSøknad = (
                     // Lagre kun når kallet faktisk har et resultat, slik at vi ikkje
                     // lagrar undefined når kallet er pending/feila og dermed gir falske
                     // utslag i RegisterdataUtdatert-sjekken ved neste oppstart.
-                    ...(annenPartVedtakQuery.isSuccess
-                        ? { annenPartVedtak: annenPartVedtakQuery.data }
-                        : {}),
+                    ...(annenPartVedtakQuery.isSuccess ? { annenPartVedtak: annenPartVedtakQuery.data } : {}),
                     ...state,
                 } satisfies FpMellomlagretData;
 

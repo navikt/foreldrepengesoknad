@@ -1,5 +1,4 @@
 import { AppShell, createDefaultQueryClient } from '@navikt/fp-app-shell';
-
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { observabilityMessages } from '@navikt/fp-observability';

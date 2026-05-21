@@ -1,5 +1,4 @@
 import { MorsAktivitet } from '@navikt/fp-types';
-
 import { hasValue } from '@navikt/fp-validation';
 
 export const getMorsAktivitet = (

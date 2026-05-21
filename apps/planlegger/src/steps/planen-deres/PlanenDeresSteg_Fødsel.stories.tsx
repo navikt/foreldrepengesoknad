@@ -8,7 +8,6 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { FordelingPlanlegger, HvorLangPeriodePlanlegger, OmBarnetPlanlegger } from '@navikt/fp-types';
-
 import {
     ALENE_OM_OMSORG_80_FARMEDMOR,
     ALENE_OM_OMSORG_100_FARMEDMOR,

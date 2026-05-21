@@ -5,9 +5,8 @@ import { getTotalStillingsprosentPåSkjæringstidspunktet } from 'utils/arbeidsf
 import { getFloatFromString } from 'utils/numberUtils';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, getSlutteTekst } from 'utils/validationUtils';
 
-import { hasValue } from '@navikt/fp-validation';
-
 import { dagenFør, formatDate, tiMånederSidenDato } from '@navikt/fp-utils';
+import { hasValue } from '@navikt/fp-validation';
 
 const validerStillingsprosentInput = (intl: IntlShape, value: string) => {
     if (!hasValue(value) || value.trim() === '') {

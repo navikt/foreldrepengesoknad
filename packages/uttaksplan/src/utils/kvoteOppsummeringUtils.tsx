@@ -318,11 +318,7 @@ const finnAntallDagerÅTrekke = (
         // Mor sin gradering i tidsrommet 3 uker før / 6 uker etter familiehendelsesdato
         // gir ikkje forlenging av stønadsperioden – dagane skal trekkjast som heile.
         if (familiesituasjon === 'fødsel' && periode.forelder === 'MOR') {
-            const dagerIVindu = getAntallUttaksdagerIVinduRundtFødsel(
-                periode.fom,
-                periode.tom,
-                familiehendelsedato,
-            );
+            const dagerIVindu = getAntallUttaksdagerIVinduRundtFødsel(periode.fom, periode.tom, familiehendelsedato);
             const dagerUtenforVindu = dager - dagerIVindu;
             return dagerIVindu + dagerUtenforVindu * graderingsProsent;
         }

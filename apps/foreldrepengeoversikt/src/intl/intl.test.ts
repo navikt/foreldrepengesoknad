@@ -1,6 +1,5 @@
 import { extract } from '@formatjs/cli-lib';
-import glob from 'fast-glob';
-import fs from 'node:fs';
+import { globSync, readFileSync } from 'node:fs';
 
 import nb from './messages/nb_NO.json';
 
@@ -8,14 +7,14 @@ describe('intl foreldrepengeoversikt', () => {
     const regex = /(?<=(intlUtils\(intl,\s'))[^']*/gm;
 
     const getAdditionalIntlString = (fileLoc: string) => {
-        const fileBuffer = fs.readFileSync(fileLoc);
+        const fileBuffer = readFileSync(fileLoc);
         const matches = fileBuffer.toString().match(regex);
         return matches ?? [];
     };
 
     it('Check that i18n strings in code exists in nb_NO language file', async () => {
-        const files = await glob('src/**/*.{ts,tsx}', {
-            ignore: ['**/vite.env.d.ts'],
+        const files = globSync('src/**/*.{ts,tsx}', {
+            exclude: (name) => name.includes('vite.env.d.ts'),
         });
 
         const foundTranslations = await extract(files, {
@@ -43,8 +42,8 @@ describe('intl foreldrepengeoversikt', () => {
     });
 
     it('Check that all i18n strings nb_NO language file exists in code', async () => {
-        const files = await glob('src/**/*.{ts,tsx}', {
-            ignore: ['**/vite.env.d.ts'],
+        const files = globSync('src/**/*.{ts,tsx}', {
+            exclude: (name) => name.includes('vite.env.d.ts'),
         });
         const foundTranslations = await extract(files, {
             idInterpolationPattern: '[sha512:contenthash:base64:6]',

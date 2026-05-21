@@ -17,11 +17,7 @@ const KONTOER: KontoBeregningDto = {
     tillegg: { flerbarn: 0, prematur: 0 },
 };
 
-const lagMorsMødrekvotePeriode = (
-    fom: string,
-    tom: string,
-    arbeidstidprosent?: number,
-): UttakPeriode_fpoversikt => ({
+const lagMorsMødrekvotePeriode = (fom: string, tom: string, arbeidstidprosent?: number): UttakPeriode_fpoversikt => ({
     fom,
     tom,
     forelder: 'MOR',

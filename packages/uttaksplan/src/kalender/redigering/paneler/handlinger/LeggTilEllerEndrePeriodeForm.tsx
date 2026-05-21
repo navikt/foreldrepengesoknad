@@ -20,12 +20,12 @@ import {
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useFormSubmitValidator } from '../../../../felles/uttaksplanValidatorer';
+import { erEøsUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import {
     erDetEksisterendePerioderEtterValgtePerioder,
     harPeriodeDerMorsAktivitetIkkeErValgt,
 } from '../../../../utils/periodeUtils';
-import { erEøsUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
 import { finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
 

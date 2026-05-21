@@ -178,9 +178,6 @@ importers:
       express:
         specifier: 5.2.1
         version: 5.2.1
-      fast-glob:
-        specifier: 3.3.3
-        version: 3.3.3
       http-proxy-middleware:
         specifier: 4.0.0
         version: 4.0.0
@@ -356,9 +353,6 @@ importers:
       express:
         specifier: 5.2.1
         version: 5.2.1
-      fast-glob:
-        specifier: 3.3.3
-        version: 3.3.3
       http-proxy-middleware:
         specifier: 4.0.0
         version: 4.0.0
@@ -558,9 +552,6 @@ importers:
       express:
         specifier: 5.2.1
         version: 5.2.1
-      fast-glob:
-        specifier: 3.3.3
-        version: 3.3.3
       http-proxy-middleware:
         specifier: 4.0.0
         version: 4.0.0
@@ -733,9 +724,6 @@ importers:
       express:
         specifier: 5.2.1
         version: 5.2.1
-      fast-glob:
-        specifier: 3.3.3
-        version: 3.3.3
       http-proxy-middleware:
         specifier: 4.0.0
         version: 4.0.0
@@ -920,9 +908,6 @@ importers:
       express:
         specifier: 5.2.1
         version: 5.2.1
-      fast-glob:
-        specifier: 3.3.3
-        version: 3.3.3
       http-proxy-middleware:
         specifier: 4.0.0
         version: 4.0.0
@@ -1080,9 +1065,6 @@ importers:
       express:
         specifier: 5.2.1
         version: 5.2.1
-      fast-glob:
-        specifier: 3.3.3
-        version: 3.3.3
       http-proxy-middleware:
         specifier: 4.0.0
         version: 4.0.0
@@ -1240,9 +1222,6 @@ importers:
       express:
         specifier: 5.2.1
         version: 5.2.1
-      fast-glob:
-        specifier: 3.3.3
-        version: 3.3.3
       http-proxy-middleware:
         specifier: 4.0.0
         version: 4.0.0
@@ -1495,9 +1474,6 @@ importers:
       eslint:
         specifier: 10.3.0
         version: 10.3.0(jiti@2.7.0)
-      fast-glob:
-        specifier: 3.3.3
-        version: 3.3.3
       jsdom:
         specifier: 29.1.1
         version: 29.1.1(@noble/hashes@1.8.0)
@@ -1592,9 +1568,6 @@ importers:
       eslint:
         specifier: 10.3.0
         version: 10.3.0(jiti@2.7.0)
-      fast-glob:
-        specifier: 3.3.3
-        version: 3.3.3
       jsdom:
         specifier: 29.1.1
         version: 29.1.1(@noble/hashes@1.8.0)
@@ -1790,9 +1763,6 @@ importers:
       eslint:
         specifier: 10.3.0
         version: 10.3.0(jiti@2.7.0)
-      fast-glob:
-        specifier: 3.3.3
-        version: 3.3.3
       jsdom:
         specifier: 29.1.1
         version: 29.1.1(@noble/hashes@1.8.0)
@@ -1899,9 +1869,6 @@ importers:
       eslint:
         specifier: 10.3.0
         version: 10.3.0(jiti@2.7.0)
-      fast-glob:
-        specifier: 3.3.3
-        version: 3.3.3
       jsdom:
         specifier: 29.1.1
         version: 29.1.1(@noble/hashes@1.8.0)
@@ -2002,9 +1969,6 @@ importers:
       eslint:
         specifier: 10.3.0
         version: 10.3.0(jiti@2.7.0)
-      fast-glob:
-        specifier: 3.3.3
-        version: 3.3.3
       jsdom:
         specifier: 29.1.1
         version: 29.1.1(@noble/hashes@1.8.0)
@@ -2090,9 +2054,6 @@ importers:
       eslint:
         specifier: 10.3.0
         version: 10.3.0(jiti@2.7.0)
-      fast-glob:
-        specifier: 3.3.3
-        version: 3.3.3
       jsdom:
         specifier: 29.1.1
         version: 29.1.1(@noble/hashes@1.8.0)
@@ -2190,9 +2151,6 @@ importers:
       eslint:
         specifier: 10.3.0
         version: 10.3.0(jiti@2.7.0)
-      fast-glob:
-        specifier: 3.3.3
-        version: 3.3.3
       jsdom:
         specifier: 29.1.1
         version: 29.1.1(@noble/hashes@1.8.0)
@@ -2299,9 +2257,6 @@ importers:
       eslint:
         specifier: 10.3.0
         version: 10.3.0(jiti@2.7.0)
-      fast-glob:
-        specifier: 3.3.3
-        version: 3.3.3
       jsdom:
         specifier: 29.1.1
         version: 29.1.1(@noble/hashes@1.8.0)
@@ -2424,9 +2379,6 @@ importers:
       eslint:
         specifier: 10.3.0
         version: 10.3.0(jiti@2.7.0)
-      fast-glob:
-        specifier: 3.3.3
-        version: 3.3.3
       jsdom:
         specifier: 29.1.1
         version: 29.1.1(@noble/hashes@1.8.0)
@@ -2491,9 +2443,6 @@ importers:
       eslint:
         specifier: 10.3.0
         version: 10.3.0(jiti@2.7.0)
-      fast-glob:
-        specifier: 3.3.3
-        version: 3.3.3
       jsdom:
         specifier: 29.1.1
         version: 29.1.1(@noble/hashes@1.8.0)
@@ -2664,9 +2613,6 @@ importers:
       eslint:
         specifier: 10.3.0
         version: 10.3.0(jiti@2.7.0)
-      fast-glob:
-        specifier: 3.3.3
-        version: 3.3.3
       jsdom:
         specifier: 29.1.1
         version: 29.1.1(@noble/hashes@1.8.0)

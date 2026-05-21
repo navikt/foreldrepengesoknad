@@ -9,8 +9,7 @@ import { useUttaksplanRedigering } from './context/UttaksplanRedigeringContext';
 export const TilbakestillPlanModal = () => {
     const uttaksplanRedigering = useUttaksplanRedigering();
 
-    const { tilbakestillUttaksplan, visTilbakestillModal, setVisTilbakestillModal } =
-        notEmpty(uttaksplanRedigering);
+    const { tilbakestillUttaksplan, visTilbakestillModal, setVisTilbakestillModal } = notEmpty(uttaksplanRedigering);
 
     return (
         <Dialog open={visTilbakestillModal} onOpenChange={setVisTilbakestillModal}>
