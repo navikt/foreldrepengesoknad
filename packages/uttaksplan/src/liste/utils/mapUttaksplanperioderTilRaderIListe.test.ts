@@ -63,4 +63,38 @@ describe('Skal gruppere perioder på søker og ikke kvote', () => {
             : undefined;
         expect(periode4?.forelder).toEqual('MOR');
     });
+
+    it('Skal ikke gruppere avslått og innvilget periode på samme rad', () => {
+        const perioder: Uttaksplanperiode[] = [
+            {
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                fom: '2024-05-03',
+                tom: '2024-05-16',
+                flerbarnsdager: false,
+            },
+            {
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                fom: '2024-05-17',
+                tom: '2024-05-30',
+                flerbarnsdager: false,
+                resultat: { innvilget: false, trekkerMinsterett: false, trekkerDager: false, årsak: 'ANNET' },
+            },
+            {
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                fom: '2024-05-31',
+                tom: '2024-06-13',
+                flerbarnsdager: false,
+            },
+        ];
+
+        const uttaksplanperioderPerRadIListe = mapUttaksplanperioderTilRaderIListe(perioder, '2024-05-03');
+
+        expect(uttaksplanperioderPerRadIListe).toHaveLength(3);
+        expect(uttaksplanperioderPerRadIListe[0]).toHaveLength(1);
+        expect(uttaksplanperioderPerRadIListe[1]).toHaveLength(1);
+        expect(uttaksplanperioderPerRadIListe[2]).toHaveLength(1);
+    });
 });

@@ -99,7 +99,7 @@
     "uttaksplan.periodeListeHeader.HarForeldrepenger": "{navn} har foreldrepenger",
     "uttaksplan.periodeListeHeader.HarEøsForeldrepenger": "{navn} har foreldrepenger (EU/EØS)",
     "uttaksplan.periodeListeHeader.pleiepenger": "Pleiepenger",
-    "uttaksplan.periodeListeHeader.avslåttAnnet": "Avslått periode",
+    "uttaksplan.periodeListeHeader.avslåttAnnet": "Trekte dager",
     "uttaksplan.slettPeriode.tittel": "Slett periode",
     "uttaksplan.slettPeriode.hvilkePerioder": "Hvilke perioder vil du slette?",
     "uttaksplan.ingenPerioder.tittel": "Alle perioder er fjernet fra planen.",

@@ -6,6 +6,7 @@ import {
     erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
+import { erAvslåttPeriode } from '../../utils/periodeUtils';
 
 export const getFørsteUttaksplanperiodeFom = (uttaksplanperioder: Uttaksplanperiode[]) => {
     return uttaksplanperioder.at(0)!.fom;
@@ -57,13 +58,15 @@ export const harUttaksplanperiodePrematuruker = (uttaksplanperioder: Uttaksplanp
     return erVanligUttakPeriode(periode) && periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
 };
 
-export const harUttaksplanperiodeAvslåttPeriodeMedÅrsakAnnet = (uttaksplanperioder: Uttaksplanperiode[]) => {
-    if (uttaksplanperioder.length !== 1) {
-        return false;
-    }
-    const periode = uttaksplanperioder.at(0)!;
+export const erAlleUttaksplanperioderAvslått = (uttaksplanperioder: Uttaksplanperiode[]) => {
     return (
-        erVanligUttakPeriode(periode) && periode.resultat?.innvilget === false && periode.resultat?.årsak === 'ANNET'
+        uttaksplanperioder.length > 0 &&
+        uttaksplanperioder.every(
+            (p) =>
+                erVanligUttakPeriode(p) &&
+                erAvslåttPeriode(p) &&
+                p.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER',
+        )
     );
 };
 

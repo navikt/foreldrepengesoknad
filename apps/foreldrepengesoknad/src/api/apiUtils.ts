@@ -269,7 +269,7 @@ export const mapTilEndringssøknadDto = (
         : søkersNyePerioder;
 
     const mappaUttaksperioder = midlertidigMappingAvUttaksplan(
-        filtrerUtEøsPeriode(perioderForInnsending),
+        filtrerUtAvslåttePerioder(filtrerUtEøsPeriode(perioderForInnsending)),
         barn,
         annenForelder,
     );
@@ -312,6 +312,10 @@ const filtrerUtEøsPeriode = (
     nyUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
 ): UttakPeriode_fpoversikt[] => {
     return nyUttaksplan.filter((periode) => Uttaksperioden.erIkkeEøsPeriode(periode));
+};
+
+const filtrerUtAvslåttePerioder = (perioder: UttakPeriode_fpoversikt[]): UttakPeriode_fpoversikt[] => {
+    return perioder.filter((periode) => periode.resultat?.innvilget !== false);
 };
 
 const filtrerUtAnnenPartsPerioder = (
