@@ -23,9 +23,8 @@ const Valideringsregler = () => {
                 gjelder både i listen og i kalenderen.
             </p>
             <p>
-                Siden er autogenerert fra regelkatalogen i koden (
-                <code>packages/uttaksplan/src/regler/</code>). Endrer du regelteksten der, endrer denne siden
-                seg også.
+                Siden er autogenerert fra regelkatalogen i koden (<code>packages/uttaksplan/src/regler/</code>
+                ). Endrer du regelteksten der, endrer denne siden seg også.
             </p>
             {ALLE_VALIDERINGSREGLER.map((gruppe, gruppeIdx) => (
                 <section key={gruppe.id} style={{ marginTop: 32 }}>
@@ -36,21 +35,21 @@ const Valideringsregler = () => {
                     <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 12 }}>
                         <thead>
                             <tr style={{ background: '#f0f4f8', textAlign: 'left' }}>
-                                <th style={cellStyle}>#</th>
-                                <th style={cellStyle}>Regel-id</th>
-                                <th style={cellStyle}>Hva regelen sier</th>
-                                <th style={cellStyle}>Feilmelding til brukeren</th>
+                                <th className={cellClass}>#</th>
+                                <th className={cellClass}>Regel-id</th>
+                                <th className={cellClass}>Hva regelen sier</th>
+                                <th className={cellClass}>Feilmelding til brukeren</th>
                             </tr>
                         </thead>
                         <tbody>
                             {gruppe.regler.map((regel, idx) => (
                                 <tr key={regel.id} style={{ borderTop: '1px solid #e5e7eb' }}>
-                                    <td style={cellStyle}>{idx + 1}</td>
-                                    <td style={{ ...cellStyle, fontFamily: 'monospace', fontSize: 12 }}>
+                                    <td className={cellClass}>{idx + 1}</td>
+                                    <td className={`${cellClass} font-mono text-xs`}>
                                         {regel.id}
                                     </td>
-                                    <td style={cellStyle}>{regel.beskrivelse}</td>
-                                    <td style={{ ...cellStyle, color: '#9a3412' }}>
+                                    <td className={cellClass}>{regel.beskrivelse}</td>
+                                    <td className={`${cellClass} text-orange-800`}>
                                         «{intl.formatMessage({ id: regel.feilmeldingId })}»
                                     </td>
                                 </tr>
@@ -63,12 +62,7 @@ const Valideringsregler = () => {
     );
 };
 
-const cellStyle: React.CSSProperties = {
-    padding: '10px 12px',
-    verticalAlign: 'top',
-    fontSize: 14,
-    lineHeight: 1.45,
-};
+const cellClass = 'py-2.5 px-3 align-top text-sm leading-[1.45]';
 
 const meta = {
     title: 'Uttaksplan/Valideringsregler (dokumentasjon)',

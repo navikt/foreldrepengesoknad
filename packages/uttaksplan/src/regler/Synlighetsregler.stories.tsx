@@ -25,8 +25,8 @@ const Synlighetsregler = () => {
             </p>
             <p>
                 Siden er autogenerert fra synlighetskatalogen i koden (
-                <code>packages/uttaksplan/src/regler/synlighet/</code>). Endrer du regelteksten der, endrer
-                denne siden seg også.
+                <code>packages/uttaksplan/src/regler/synlighet/</code>
+                ). Endrer du regelteksten der, endrer denne siden seg også.
             </p>
             {ALLE_SYNLIGHETSREGLER.map((kapittel, kapittelIdx) => (
                 <section key={kapittel.id} style={{ marginTop: 32 }}>
@@ -37,19 +37,19 @@ const Synlighetsregler = () => {
                     <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 12 }}>
                         <thead>
                             <tr style={{ background: '#f0f4f8', textAlign: 'left' }}>
-                                <th style={cellStyle}>#</th>
-                                <th style={cellStyle}>Regel-id</th>
-                                <th style={cellStyle}>Hva regelen sier</th>
+                                <th className={cellClass}>#</th>
+                                <th className={cellClass}>Regel-id</th>
+                                <th className={cellClass}>Hva regelen sier</th>
                             </tr>
                         </thead>
                         <tbody>
                             {kapittel.regler.map((regel, idx) => (
                                 <tr key={regel.id} style={{ borderTop: '1px solid #e5e7eb' }}>
-                                    <td style={cellStyle}>{idx + 1}</td>
-                                    <td style={{ ...cellStyle, fontFamily: 'monospace', fontSize: 12 }}>
+                                    <td className={cellClass}>{idx + 1}</td>
+                                    <td className={`${cellClass} font-mono text-xs`}>
                                         {regel.id}
                                     </td>
-                                    <td style={cellStyle}>{regel.beskrivelse}</td>
+                                    <td className={cellClass}>{regel.beskrivelse}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -60,12 +60,7 @@ const Synlighetsregler = () => {
     );
 };
 
-const cellStyle: React.CSSProperties = {
-    padding: '10px 12px',
-    verticalAlign: 'top',
-    fontSize: 14,
-    lineHeight: 1.45,
-};
+const cellClass = 'py-2.5 px-3 align-top text-sm leading-[1.45]';
 
 const meta = {
     title: 'Uttaksplan/Synlighetsregler (dokumentasjon)',
