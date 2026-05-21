@@ -1,3 +1,5 @@
+import { Familiesituasjon } from '@navikt/fp-types';
+
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { i18n } from '../types';
 import { Alertområde, Alertregel } from './types';
@@ -11,12 +13,18 @@ type Periode = { fom: string; tom: string };
 export type BlokkerandeAlertKontekst = {
     valgtePerioder: Periode[];
     familiehendelsedato: string;
-    familiesituasjon: 'fødsel' | 'termin' | 'adopsjon';
+    familiesituasjon: Familiesituasjon;
     søker: 'MOR' | 'FAR_MEDMOR';
     rettighetType: string;
     erMorGyldigForelder: boolean;
     erFarMedmorGyldigForelder: boolean;
     erPeriodeneTilAnnenPartLåst: boolean;
+};
+
+const KRYSSER_FAMILIEHENDELSE_MELDING_ID: Record<Familiesituasjon, string> = {
+    fødsel: i18n('LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.fødsel'),
+    termin: i18n('LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.termin'),
+    adopsjon: i18n('LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.adopsjon'),
 };
 
 const BLOKKERANDE_ALERTS: ReadonlyArray<Alertregel<BlokkerandeAlertKontekst>> = [
@@ -102,6 +110,29 @@ const KONTEKSTUELLE_ALERTS: ReadonlyArray<Alertregel<KontekstuellAlertKontekst>>
             ),
     },
 ];
+
+/**
+ * Finn den første blokkerande alerten som slår inn, eller undefined.
+ * Returnerer regelen + riktig meldingId basert på familiesituasjon.
+ */
+export const finnFørsteBlokkerandeAlert = (
+    ctx: BlokkerandeAlertKontekst,
+): { regel: Alertregel<BlokkerandeAlertKontekst>; meldingId: string } | undefined => {
+    for (const regel of BLOKKERANDE_ALERTS) {
+        if (regel.skalVises(ctx)) {
+            const meldingId =
+                regel.id === 'perioder-krysser-familiehendelse'
+                    ? KRYSSER_FAMILIEHENDELSE_MELDING_ID[ctx.familiesituasjon]
+                    : regel.meldingIder[0]!;
+            return { regel, meldingId };
+        }
+    }
+    return undefined;
+};
+
+/** Sjekk om graderingsalerten skal visast. */
+export const skalViseGraderingAlert = (ctx: KontekstuellAlertKontekst): boolean =>
+    KONTEKSTUELLE_ALERTS[0]!.skalVises(ctx);
 
 export const BLOKKERANDE_ALERT_OMRÅDE: Alertområde = {
     id: 'blokkerande-alerts',

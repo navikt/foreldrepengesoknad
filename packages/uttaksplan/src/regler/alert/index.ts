@@ -5,6 +5,8 @@ export {
     KONTEKSTUELLE_ALERTS,
     BLOKKERANDE_ALERT_OMRÅDE,
     KONTEKSTUELL_ALERT_OMRÅDE,
+    finnFørsteBlokkerandeAlert,
+    skalViseGraderingAlert,
 } from './skjemaAlerts';
 
 import { Alertområde } from './types';

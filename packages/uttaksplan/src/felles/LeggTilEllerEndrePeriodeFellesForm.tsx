@@ -22,6 +22,7 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskvoteNavnSimple } from '../liste/utils/uttaksplanListeUtils';
+import { finnFørsteBlokkerandeAlert, skalViseGraderingAlert } from '../regler/alert';
 import { synlighetForForelderValg, useFeltSynlighet } from '../regler/synlighet';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
@@ -100,12 +101,6 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         ønskerFlerbarnsdager,
     );
 
-    const skalViseFlerbarnsdager = feltSynlighet.visFlerbarnsdager;
-    const skalViseMorsAktivitetskravVedSamtidigUttak = feltSynlighet.visMorsAktivitetskravVedSamtidigUttak;
-    const skalViseAktivitetskravFelt = feltSynlighet.visAktivitetskravFelt;
-    const morSøkerOmOverføring = feltSynlighet.visMorOverføring;
-    const farMedmorSøkerOmOverføring = feltSynlighet.visFarMedmorOverføring;
-
     const infotekstOmFedrekvoteBrukRundtFødsel = getInfotekstOmFedrekvoteBrukRundtFødsel(
         valgtePerioder,
         kontoTypeFarMedmor,
@@ -117,38 +112,23 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     const erMorGyldigForelder = gyldigeStønadskontoerForMor.length > 0;
     const erFarMedmorGyldigForelder = gyldigeStønadskontoerForFarMedmor.length > 0;
 
-    const kunFarHarRett =
-        søker === 'FAR_MEDMOR' && (rettighetType === 'BARE_SØKER_RETT' || rettighetType === 'ALENEOMSORG');
-
     const erBareFarHarRett = søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT';
 
-    const erValgtePerioderKrysserFamiliehendelse =
-        !kunFarHarRett &&
-        UttaksperiodeValidatorer.erNoenPerioderFørOgNoenLikEllerEtterFamiliehendelsesdato(
-            valgtePerioder,
-            familiehendelsedato,
-        );
+    const blokkerandeAlert = finnFørsteBlokkerandeAlert({
+        valgtePerioder,
+        familiehendelsedato,
+        familiesituasjon,
+        søker,
+        rettighetType,
+        erMorGyldigForelder,
+        erFarMedmorGyldigForelder,
+        erPeriodeneTilAnnenPartLåst,
+    });
 
-    if (erValgtePerioderKrysserFamiliehendelse) {
+    if (blokkerandeAlert) {
         return (
-            <Alert variant="info">
-                {familiesituasjon === 'fødsel' && (
-                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.fødsel" />
-                )}
-                {familiesituasjon === 'termin' && (
-                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.termin" />
-                )}
-                {familiesituasjon === 'adopsjon' && (
-                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.adopsjon" />
-                )}
-            </Alert>
-        );
-    }
-
-    if (!erMorGyldigForelder && !erFarMedmorGyldigForelder) {
-        return (
-            <Alert variant="info">
-                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon" />
+            <Alert variant={blokkerandeAlert.regel.variant}>
+                <FormattedMessage id={blokkerandeAlert.meldingId} />
             </Alert>
         );
     }
@@ -191,17 +171,9 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         }
     };
 
+    const erMinstEnEøsPeriode = uttakPerioder.some((periode) => erEøsUttakPeriode(periode));
     const erFarMedmorLåst = erPeriodeneTilAnnenPartLåst && søker === 'MOR';
     const erMorLåst = erPeriodeneTilAnnenPartLåst && søker === 'FAR_MEDMOR';
-    const erMinstEnEøsPeriode = uttakPerioder.some((periode) => erEøsUttakPeriode(periode));
-
-    if ((erMorLåst && !erFarMedmorGyldigForelder) || (erFarMedmorLåst && !erMorGyldigForelder)) {
-        return (
-            <Alert variant="info">
-                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Forelder.AnnenPartLåst" />
-            </Alert>
-        );
-    }
 
     const forelderValgSynlighet = synlighetForForelderValg({
         erMorGyldigForelder,
@@ -245,7 +217,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 }
             </RhfRadioGroup>
 
-            {skalViseFlerbarnsdager && (
+            {feltSynlighet.visFlerbarnsdager && (
                 <RhfRadioGroup
                     name="ønskerFlerbarnsdager"
                     control={formMethods.control}
@@ -327,7 +299,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 </InlineMessage>
             )}
 
-            {morSøkerOmOverføring && (
+            {feltSynlighet.visMorOverføring && (
                 <VStack gap="space-16">
                     <hr className="text-ax-border-neutral-subtle" />
                     <InlineMessage status="info">
@@ -391,7 +363,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 </VStack>
             )}
 
-            {farMedmorSøkerOmOverføring && (
+            {feltSynlighet.visFarMedmorOverføring && (
                 <VStack gap="space-16">
                     <hr className="text-ax-border-neutral-subtle" />
                     <InlineMessage status="info">
@@ -451,7 +423,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 </VStack>
             )}
 
-            {skalViseAktivitetskravFelt && (
+            {feltSynlighet.visAktivitetskravFelt && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
                     <RhfSelect
@@ -462,7 +434,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         description={intl.formatMessage({ id: 'AktivitetskravSpørsmål.Description' })}
                     >
                         {getAktivitetskravOptions(
-                            skalViseMorsAktivitetskravVedSamtidigUttak,
+                            feltSynlighet.visMorsAktivitetskravVedSamtidigUttak,
                             feltSynlighet.erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel,
                         ).map((value) => {
                             return (
@@ -500,7 +472,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     />
                 </>
             )}
-            {kontoTypeMor !== undefined && forelder !== 'FAR_MEDMOR' && !morSøkerOmOverføring && (
+            {kontoTypeMor !== undefined && forelder !== 'FAR_MEDMOR' && !feltSynlighet.visMorOverføring && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
                     <VStack gap="space-16">
@@ -526,10 +498,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         </RhfRadioGroup>
                         {skalDuKombinereArbeidOgUttakMor && (
                             <>
-                                {UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgSeksUkerEtterFamDato(
-                                    valgtePerioder,
-                                    familiehendelsedato,
-                                ) && (
+                                {skalViseGraderingAlert({ valgtePerioder, familiehendelsedato }) && (
                                     <Alert variant="info">
                                         <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.DagerReduseres" />
                                     </Alert>
@@ -579,7 +548,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     </VStack>
                 </>
             )}
-            {forelder !== 'MOR' && !farMedmorSøkerOmOverføring && (
+            {forelder !== 'MOR' && !feltSynlighet.visFarMedmorOverføring && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
                     <VStack gap="space-16">
