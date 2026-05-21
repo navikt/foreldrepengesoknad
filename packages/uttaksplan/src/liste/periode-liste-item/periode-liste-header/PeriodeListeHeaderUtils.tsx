@@ -23,10 +23,10 @@ import {
     erUttaksplanperiodeTapteDager,
     erUttaksplanperiodeUtenUttak,
     erUttaksplanperiodeUtsettelse,
+    erAlleUttaksplanperioderAvslått,
     getSisteUttaksplanperiodeTom,
     getUttaksplanperiodeForelder,
     getUttaksplanperiodeUtsettelseÅrsak,
-    harUttaksplanperiodeAvslåttPeriodeMedÅrsakAnnet,
     harUttaksplanperiodePrematuruker,
 } from '../../utils/uttaksplanperiodeUtils';
 
@@ -45,6 +45,10 @@ export const finnBakgrunnsfarge = (
 
     if (erUttaksplanperiodeEøs(uttaksplanperioder)) {
         return 'bg-ax-accent-400';
+    }
+
+    if (erAlleUttaksplanperioderAvslått(uttaksplanperioder)) {
+        return 'bg-ax-bg-default shadow-[inset_0_0_0_2px_var(--ax-bg-neutral-strong)]';
     }
 
     if (erUttaksplanperiodeTapteDager(uttaksplanperioder)) {
@@ -73,6 +77,10 @@ export const finnBakgrunnsfarge = (
 const getIkonFarge = (uttaksplanperiode: Uttaksplanperiode[], erFamiliehendelse?: boolean) => {
     if (erFamiliehendelse) {
         return 'text-ax-danger-600';
+    }
+
+    if (erAlleUttaksplanperioderAvslått(uttaksplanperiode)) {
+        return 'text-ax-neutral-800';
     }
 
     if (erUttaksplanperiodeTapteDager(uttaksplanperiode)) {
@@ -132,7 +140,7 @@ export const getTekst = (
     if (harUttaksplanperiodePrematuruker(uttaksplanperioder)) {
         return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.pleiepenger' });
     }
-    if (harUttaksplanperiodeAvslåttPeriodeMedÅrsakAnnet(uttaksplanperioder)) {
+    if (erAlleUttaksplanperioderAvslått(uttaksplanperioder)) {
         return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.avslåttAnnet' });
     }
 
@@ -212,7 +220,11 @@ export const getIkon = (uttaksplanperioder: Uttaksplanperiode[], familiehendelse
         return <HeartFillIcon className={ikonfarge} width={24} height={24} />;
     }
 
-    if (erUttaksplanperiodeTapteDager(uttaksplanperioder) || harUttaksplanperiodePrematuruker(uttaksplanperioder)) {
+    if (
+        erUttaksplanperiodeTapteDager(uttaksplanperioder) ||
+        harUttaksplanperiodePrematuruker(uttaksplanperioder) ||
+        erAlleUttaksplanperioderAvslått(uttaksplanperioder)
+    ) {
         return <InformationSquareFillIcon className={ikonfarge} width={24} height={24} />;
     }
 
@@ -247,6 +259,10 @@ export const getBorderFarge = (uttaksplanperioder: Uttaksplanperiode[]) => {
 
     if (erUttaksplanperiodeFamiliehendelseDato(uttaksplanperioder)) {
         return 'border-ax-danger-100';
+    }
+
+    if (erAlleUttaksplanperioderAvslått(uttaksplanperioder)) {
+        return 'border-ax-bg-neutral-strong';
     }
 
     if (erUttaksplanperiodeTapteDager(uttaksplanperioder)) {
