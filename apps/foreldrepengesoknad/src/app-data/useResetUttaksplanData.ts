@@ -1,8 +1,7 @@
 import { useCallback } from 'react';
+import { VedleggDataType } from 'types/VedleggDataType';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-
-import { VedleggDataType } from 'types/VedleggDataType';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from './FpDataContext';
 

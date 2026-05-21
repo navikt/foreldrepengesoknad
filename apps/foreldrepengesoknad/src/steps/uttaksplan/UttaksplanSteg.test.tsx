@@ -13,11 +13,8 @@ const infoTekst = [
     'Den andre forelderen må selv huske å sende oss en søknad.',
 ].join(' ');
 
-const {
-    FødselMorOgFarBeggeHarRett,
-    FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak,
-    FødselMorOgFarKunMorHarRett,
-} = composeStories(stories);
+const { FødselMorOgFarBeggeHarRett, FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak, FødselMorOgFarKunMorHarRett } =
+    composeStories(stories);
 
 describe('<UttaksplanSteg>', () => {
     it(

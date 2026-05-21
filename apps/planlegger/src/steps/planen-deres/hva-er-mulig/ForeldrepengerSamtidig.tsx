@@ -2,7 +2,6 @@ import { PersonGroupIcon } from '@navikt/aksel-icons';
 import { ReactNode } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -10,6 +9,7 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { BodyLong, HStack, Heading, Link } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 interface Props {

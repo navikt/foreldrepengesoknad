@@ -26,10 +26,7 @@ export type PeriodeRequest_fpoversikt = {
     tom: string;
 };
 
-export type PeriodeMedAktivitetskravType_fpoversikt =
-    | 'UTTAK_FELLESPERIODE'
-    | 'UTTAK_BFHR'
-    | 'UTSETTELSE_BFHR';
+export type PeriodeMedAktivitetskravType_fpoversikt = 'UTTAK_FELLESPERIODE' | 'UTTAK_BFHR' | 'UTSETTELSE_BFHR';
 
 export type DokumentDto_fpoversikt = {
     dokumentId: string;

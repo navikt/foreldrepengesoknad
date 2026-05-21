@@ -53,10 +53,7 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
     });
 
     it('skal returnere false når mor tar 100% samtidigUttak uten gradering', () => {
-        const perioder = [
-            lagFarPeriode({ samtidigUttak: 100 }),
-            lagMorPeriode({ samtidigUttak: 100 }),
-        ];
+        const perioder = [lagFarPeriode({ samtidigUttak: 100 }), lagMorPeriode({ samtidigUttak: 100 })];
 
         const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', perioder);
 

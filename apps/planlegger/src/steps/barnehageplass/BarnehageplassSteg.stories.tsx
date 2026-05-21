@@ -4,8 +4,9 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
-import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
+
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 
 import { BarnehageplassSteg } from './BarnehageplassSteg';
 

@@ -30,8 +30,7 @@ const finnSisteDagMedForeldrepenger = (stønadskvoter: KontoBeregningDto, barn: 
     }
 
     const dagerSomSkalLeggesTil =
-        getAntallUkerFraStønadskvoter(stønadskvoter.kontoer.filter((s) => s.konto !== 'FORELDREPENGER_FØR_FØDSEL')) *
-        5;
+        getAntallUkerFraStønadskvoter(stønadskvoter.kontoer.filter((s) => s.konto !== 'FORELDREPENGER_FØR_FØDSEL')) * 5;
 
     const sisteDag = Uttaksdagen.denneEllerNeste(dato).getDatoAntallUttaksdagerSenere(dagerSomSkalLeggesTil - 1);
     return dayjs(sisteDag).format('dddd DD. MMMM YYYY');

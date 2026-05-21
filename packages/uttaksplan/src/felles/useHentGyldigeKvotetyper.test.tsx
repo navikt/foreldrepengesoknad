@@ -275,11 +275,7 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal ha foreldrepenger som gyldig kontotype for mor når kun mor har rett og perioden er mer enn tre uker før fødsel', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper(
-                    [{ fom: '2024-04-22', tom: '2024-05-24' }],
-                    !HAR_VALGT_SAMTIDIG_UTTAK,
-                    false,
-                ),
+                useHentGyldigeKvotetyper([{ fom: '2024-04-22', tom: '2024-05-24' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -298,11 +294,7 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal ha foreldrepenger som gyldig kontotype for mor med aleneomsorg og perioden er mer enn tre uker før fødsel', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper(
-                    [{ fom: '2024-04-22', tom: '2024-05-24' }],
-                    !HAR_VALGT_SAMTIDIG_UTTAK,
-                    false,
-                ),
+                useHentGyldigeKvotetyper([{ fom: '2024-04-22', tom: '2024-05-24' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -321,11 +313,7 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal ikke ha foreldrepenger som gyldig kontotype for mor når kun mor har rett i treukersperioden før fødsel', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper(
-                    [{ fom: '2024-05-27', tom: '2024-06-14' }],
-                    !HAR_VALGT_SAMTIDIG_UTTAK,
-                    false,
-                ),
+                useHentGyldigeKvotetyper([{ fom: '2024-05-27', tom: '2024-06-14' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -344,11 +332,7 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal ikke ha foreldrepenger som gyldig kontotype for mor med aleneomsorg i treukersperioden før fødsel', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper(
-                    [{ fom: '2024-05-27', tom: '2024-06-14' }],
-                    !HAR_VALGT_SAMTIDIG_UTTAK,
-                    false,
-                ),
+                useHentGyldigeKvotetyper([{ fom: '2024-05-27', tom: '2024-06-14' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -367,11 +351,7 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal ikke ha foreldrepenger som gyldig kontotype for mor når kun mor har rett og perioden er mer enn 60 dager før fødsel', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper(
-                    [{ fom: '2024-03-24', tom: '2024-05-24' }],
-                    !HAR_VALGT_SAMTIDIG_UTTAK,
-                    false,
-                ),
+                useHentGyldigeKvotetyper([{ fom: '2024-03-24', tom: '2024-05-24' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {

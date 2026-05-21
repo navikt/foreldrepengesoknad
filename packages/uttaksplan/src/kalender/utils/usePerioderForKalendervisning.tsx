@@ -88,7 +88,16 @@ export const usePerioderForKalendervisning = (
             return [
                 ...acc,
                 ...perioder,
-                ...splittPeriodeITo(periode, barnehagestartdato, color, navnPåForeldre, intl, isUpdated, rettighetType, uttakPerioder),
+                ...splittPeriodeITo(
+                    periode,
+                    barnehagestartdato,
+                    color,
+                    navnPåForeldre,
+                    intl,
+                    isUpdated,
+                    rettighetType,
+                    uttakPerioder,
+                ),
             ];
         }
 

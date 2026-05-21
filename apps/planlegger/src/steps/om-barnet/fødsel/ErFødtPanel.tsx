@@ -2,7 +2,6 @@ import { TasklistStartIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erAlenesøker as erAlene, erFarDelAvSøknaden, erFarOgFar, erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
@@ -11,6 +10,7 @@ import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { DATE_3_YEARS_AGO, ISO_DATE_REGEX } from '@navikt/fp-constants/src/dates';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { erI22SvangerskapsukeEllerSenere, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -31,7 +31,12 @@ type Props = {
     scrollToBottom: () => void;
 };
 
-export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetPlanleggerIkkeOppgittFraFør, antallBarn, scrollToBottom }: Props) => {
+export const ErFødtPanel = ({
+    hvemPlanlegger,
+    erOmBarnetPlanleggerIkkeOppgittFraFør,
+    antallBarn,
+    scrollToBottom,
+}: Props) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnetPlanlegger>();

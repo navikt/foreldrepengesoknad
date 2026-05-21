@@ -144,7 +144,9 @@ const getDokumentereMorsArbeidParams = (
             ? barn.fnr[0]
             : undefined;
 
-    const getPeriodeType = (p: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt): PeriodeMedAktivitetskravType_fpoversikt => {
+    const getPeriodeType = (
+        p: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    ): PeriodeMedAktivitetskravType_fpoversikt => {
         if (!bareFarHarRett) {
             return 'UTTAK_FELLESPERIODE';
         }
