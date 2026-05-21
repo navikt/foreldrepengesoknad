@@ -32,33 +32,33 @@ const REGLER: ReadonlyArray<Regel<SamtidigUttakKontekst>> = [
     {
         id: 'KanIkkeHaMerEnn150Prosent',
         beskrivelse:
-            'Mor og far/medmor kan ikkje ta ut meir enn 150 % foreldrepengar til saman. ' +
-            'Unntak: når dei har valt flerbarnsdagar.',
-        erBrote: (k) => k.kombinertUttaksprosent > 150 && !k.ønskerFlerbarnsdager,
+            'Mor og far/medmor kan ikke ta ut mer enn 150 % foreldrepenger til sammen. ' +
+            'Unntak: når de har valgt flerbarnsdager.',
+        erBrutt: (k) => k.kombinertUttaksprosent > 150 && !k.ønskerFlerbarnsdager,
         feilmeldingId: i18n('LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.KanIkkeHaMerEnn150Prosent'),
     },
     {
         id: 'KanIkkeHaMindreEnn100ProsentFlerbarnsdager',
         beskrivelse:
-            'Når foreldra har valt flerbarnsdagar, må summen av samtidige uttak vere minst 100 %.',
-        erBrote: (k) => k.ønskerFlerbarnsdager && k.kombinertUttaksprosent < 100,
+            'Når foreldrene har valgt flerbarnsdager, må summen av samtidige uttak være minst 100 %.',
+        erBrutt: (k) => k.ønskerFlerbarnsdager && k.kombinertUttaksprosent < 100,
         feilmeldingId: i18n('LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.KanIkkeHaMindreEnn100ProsentFlerbarnsdager'),
     },
     {
         id: 'MindreEnn100Prosent',
         beskrivelse:
-            'Når foreldra til saman har mindre enn 100 % foreldrepengar, må kvar forelder kombinere arbeid ' +
-            'og foreldrepengar slik at summen blir nøyaktig 100 % per forelder.',
-        erBrote: (k) =>
+            'Når foreldrene til sammen har mindre enn 100 % foreldrepenger, må hver forelder kombinere arbeid ' +
+            'og foreldrepenger slik at summen blir nøyaktig 100 % per forelder.',
+        erBrutt: (k) =>
             k.kombinertUttaksprosent < 100 && (k.totalProsentMor !== 100 || k.totalProsentFarMedmor !== 100),
         feilmeldingId: i18n('LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.MindreEnn100Prosent'),
     },
     {
         id: 'Nøyaktig100ProsentMorsAktivitet',
         beskrivelse:
-            'Når kombinert uttak er nøyaktig 100 % og far/medmor brukar fellesperiode, må mor anten ha 100 % ' +
-            'aktivitet (arbeid + foreldrepengar) eller vere i annan godkjent aktivitet.',
-        erBrote: (k) =>
+            'Når kombinert uttak er nøyaktig 100 % og far/medmor bruker fellesperiode, må mor enten ha 100 % ' +
+            'aktivitet (arbeid + foreldrepenger) eller være i annen godkjent aktivitet.',
+        erBrutt: (k) =>
             k.kombinertUttaksprosent === 100 &&
             k.kontoTypeFarMedmor === 'FELLESPERIODE' &&
             k.totalProsentMor !== 100 &&
@@ -68,9 +68,9 @@ const REGLER: ReadonlyArray<Regel<SamtidigUttakKontekst>> = [
     {
         id: 'Maks50ProsentFelles',
         beskrivelse:
-            'Når kombinert uttak er mellom 100 % og 150 %, kan kvar forelder maks bruke 50 % av fellesperioden. ' +
-            'Unntak: flerbarnsdagar.',
-        erBrote: (k) =>
+            'Når kombinert uttak er mellom 100 % og 150 %, kan hver forelder maks bruke 50 % av fellesperioden. ' +
+            'Unntak: flerbarnsdager.',
+        erBrutt: (k) =>
             k.kombinertUttaksprosent > 100 &&
             k.kombinertUttaksprosent <= 150 &&
             (k.farMedmorsFellesperiodeErStørreEnn50 || k.morsFellesperiodeErStørreEnn50) &&
@@ -80,9 +80,9 @@ const REGLER: ReadonlyArray<Regel<SamtidigUttakKontekst>> = [
     {
         id: 'ToKvoterMerEnn100Prosent',
         beskrivelse:
-            'Når kombinert uttak er over 100 %, kan ikkje begge foreldre ta sin eigen kvote (mødrekvote og ' +
-            'fedrekvote) samtidig — berre éin av dei kan bruke kvote.',
-        erBrote: (k) =>
+            'Når kombinert uttak er over 100 %, kan ikke begge foreldre ta sin egen kvote (mødrekvote og ' +
+            'fedrekvote) samtidig — bare én av dem kan bruke kvote.',
+        erBrutt: (k) =>
             k.kombinertUttaksprosent > 100 &&
             k.kombinertUttaksprosent <= 150 &&
             k.kontoTypeFarMedmor === 'FEDREKVOTE' &&
@@ -92,9 +92,9 @@ const REGLER: ReadonlyArray<Regel<SamtidigUttakKontekst>> = [
     {
         id: 'MåHa100Prosent',
         beskrivelse:
-            'Når kombinert uttak er mellom 100 % og 150 %, må summen av arbeid og foreldrepengar vere 100 % ' +
-            'for kvar forelder.',
-        erBrote: (k) =>
+            'Når kombinert uttak er mellom 100 % og 150 %, må summen av arbeid og foreldrepenger være 100 % ' +
+            'for hver forelder.',
+        erBrutt: (k) =>
             k.kombinertUttaksprosent > 100 &&
             k.kombinertUttaksprosent <= 150 &&
             (k.totalProsentMor < 100 || k.totalProsentFarMedmor < 100),
@@ -105,8 +105,8 @@ const REGLER: ReadonlyArray<Regel<SamtidigUttakKontekst>> = [
 export const SAMTIDIG_UTTAK_GRUPPE: Regelgruppe<SamtidigUttakKontekst> = {
     id: 'samtidigUttak',
     beskrivelse:
-        'Reglar for samtidig uttak når begge foreldre tek ut foreldrepengar samtidig utanfor verneperioden ' +
-        'rundt fødsel (dvs. ikkje frå 2 veker før til 6 veker etter fødsel).',
+        'Regler for samtidig uttak når begge foreldre tar ut foreldrepenger samtidig utenfor verneperioden ' +
+        'rundt fødsel (dvs. ikke fra 2 uker før til 6 uker etter fødsel).',
     byggKontekst: (input: ValideringInput): SamtidigUttakKontekst | null => {
         const { formValues, perioder, familiehendelsedato, termindato } = input;
 

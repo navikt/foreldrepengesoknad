@@ -20,7 +20,7 @@ type FarMedmorMaks2UkerKontekst = {
     totaltAntallDagerInnenforIntervallet: number;
 };
 
-const tellArbeidsdagarInnenfor = (
+const tellArbeidsdagerInnenfor = (
     fom: string,
     tom: string,
     førsteDag: string,
@@ -49,10 +49,10 @@ const REGLER: ReadonlyArray<Regel<FarMedmorMaks2UkerKontekst>> = [
     {
         id: 'MerEnnToUkerRundtFamiliehendelse',
         beskrivelse:
-            'Når begge foreldre har rett og far/medmor tek uttak i intervallet 2 veker før til 6 veker etter ' +
-            'fødsel/termin, kan far/medmor maks ha 2 veker (10 uttaksdagar) totalt i dette intervallet. ' +
-            'Også gradert uttak tel med (skalert med stillingsprosent).',
-        erBrote: (k) => k.totaltAntallDagerInnenforIntervallet > TO_UKER_UTTAKSDAGER,
+            'Når begge foreldre har rett og far/medmor tar uttak i intervallet 2 uker før til 6 uker etter ' +
+            'fødsel/termin, kan far/medmor maks ha 2 uker (10 uttaksdager) totalt i dette intervallet. ' +
+            'Også gradert uttak teller med (skalert med stillingsprosent).',
+        erBrutt: (k) => k.totaltAntallDagerInnenforIntervallet > TO_UKER_UTTAKSDAGER,
         feilmeldingId: i18n('LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse'),
     },
 ];
@@ -60,9 +60,9 @@ const REGLER: ReadonlyArray<Regel<FarMedmorMaks2UkerKontekst>> = [
 export const FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE: Regelgruppe<FarMedmorMaks2UkerKontekst> = {
     id: 'farMedmorMaksToUkerRundtFødsel',
     beskrivelse:
-        'Kontroll på at far/medmor ikkje samla får meir enn 2 veker uttak i intervallet 2 veker før til ' +
-        '6 veker etter fødsel/termin. Gjeld berre når begge har rett og søknaden gjeld begge foreldre, og ' +
-        'ikkje ved adopsjon eller overført mødrekvote eller flerbarnsdagar.',
+        'Kontroll på at far/medmor ikke samlet får mer enn 2 uker uttak i intervallet 2 uker før til ' +
+        '6 uker etter fødsel/termin. Gjelder bare når begge har rett og søknaden gjelder begge foreldre, og ' +
+        'ikke ved adopsjon eller overført mødrekvote eller flerbarnsdager.',
     byggKontekst: (input: ValideringInput): FarMedmorMaks2UkerKontekst | null => {
         const {
             familiesituasjon,
@@ -96,10 +96,10 @@ export const FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE: Regelgruppe<FarMedmor
             erEndringssøknad ? senesteDato : familiehendelsedato,
         ).getDatoAntallUttaksdagerSenere(SEKS_UKER_UTTAKSDAGER);
 
-        const skalReglaSkipsForNyePerioder =
+        const skalRegelHoppesOverForNyePerioder =
             formValues.kontoTypeFarMedmor === 'MØDREKVOTE' || formValues.ønskerFlerbarnsdager === true;
 
-        const nyePerioderInnenforIntervallet: Periode[] = skalReglaSkipsForNyePerioder
+        const nyePerioderInnenforIntervallet: Periode[] = skalRegelHoppesOverForNyePerioder
             ? []
             : perioder.filter((p) => {
                   const fom = dayjs(p.fom);
@@ -118,7 +118,7 @@ export const FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE: Regelgruppe<FarMedmor
 
         const dagerNyePerioder =
             nyePerioderInnenforIntervallet.reduce(
-                (sum, p) => sum + tellArbeidsdagarInnenfor(p.fom, p.tom, førsteDag, sisteDag),
+                (sum, p) => sum + tellArbeidsdagerInnenfor(p.fom, p.tom, førsteDag, sisteDag),
                 0,
             ) * stillingsprosentFaktor;
 
@@ -132,7 +132,7 @@ export const FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE: Regelgruppe<FarMedmor
             .filter((p) => erVanligUttakPeriode(p) && p.forelder === 'FAR_MEDMOR');
 
         const dagerEksisterendePerioder = eksisterendeFarMedmorPerioder.reduce((sum, p) => {
-            const dager = tellArbeidsdagarInnenfor(p.fom, p.tom, førsteDag, sisteDag);
+            const dager = tellArbeidsdagerInnenfor(p.fom, p.tom, førsteDag, sisteDag);
             const stillingsprosent =
                 erVanligUttakPeriode(p) && p.gradering?.arbeidstidprosent !== undefined
                     ? p.gradering.arbeidstidprosent

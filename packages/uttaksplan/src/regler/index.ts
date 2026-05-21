@@ -4,19 +4,19 @@ import { ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_GRUPPE } from './arbeidOgUttakDeFørs
 import { FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE } from './farMedmorMaksToUkerRundtFødsel';
 import { FAR_MEDMOR_RUNDT_FØDSEL_GRUPPE } from './farMedmorRundtFødsel';
 import { SAMTIDIG_UTTAK_GRUPPE } from './samtidigUttak';
-import { Regel, Regelgruppe, ValideringInput, førsteBroteRegel } from './types';
+import { Regel, Regelgruppe, ValideringInput, førsteBrutteRegel } from './types';
 
 export type { Regel, Regelgruppe, ValideringInput, Periode } from './types';
-export { førsteBroteRegel } from './types';
+export { førsteBrutteRegel } from './types';
 
 /**
- * Visning av ein regelgruppe utan eksponering av kontekst-typen — for
- * dokumentasjon (Storybook) og for å sjå alle reglane samla.
+ * Visning av en regelgruppe uten eksponering av kontekst-typen — for
+ * dokumentasjon (Storybook) og for å se alle reglene samlet.
  */
 export type RegelgruppeVisning = {
     id: string;
     beskrivelse: string;
-    regler: ReadonlyArray<Omit<Regel<unknown>, 'erBrote'>>;
+    regler: ReadonlyArray<Omit<Regel<unknown>, 'erBrutt'>>;
 };
 
 type Validator = (input: ValideringInput) => string | null;
@@ -28,7 +28,7 @@ const lagValidator =
         if (kontekst === null) {
             return null;
         }
-        return førsteBroteRegel(gruppe.regler, kontekst)?.feilmeldingId ?? null;
+        return førsteBrutteRegel(gruppe.regler, kontekst)?.feilmeldingId ?? null;
     };
 
 const tilVisning = (gruppe: Regelgruppe<unknown>): RegelgruppeVisning => ({
@@ -38,10 +38,10 @@ const tilVisning = (gruppe: Regelgruppe<unknown>): RegelgruppeVisning => ({
 });
 
 /**
- * Alle valideringsreglar som blir sjekka når brukaren lagrar/legg til ein periode.
+ * Alle valideringsregler som blir sjekket når brukeren lagrer/legger til en periode.
  *
- * Rekkjefølgja er viktig: første regel som er brote vinn, og rekkjefølgja er bevart
- * frå den opphavlege implementasjonen for å sikre at brukaren får same feilmelding
+ * Rekkefølgen er viktig: første regel som er brutt vinner, og rekkefølgen er bevart
+ * fra den opprinnelige implementasjonen for å sikre at brukeren får samme feilmelding
  * som før.
  */
 export const ALLE_VALIDERINGSREGLER: readonly RegelgruppeVisning[] = [
@@ -59,7 +59,7 @@ const VALIDATORS: readonly Validator[] = [
 ];
 
 /**
- * Køyrer heile regelkatalogen mot ein gitt input og returnerer første feilmelding,
+ * Kjører hele regelkatalogen mot en gitt input og returnerer første feilmelding,
  * eller `null` om alt er gyldig.
  */
 export const valider = (input: ValideringInput, intl: IntlShape): string | null => {

@@ -18,9 +18,9 @@ const REGLER: ReadonlyArray<Regel<ArbeidOgUttakKontekst>> = [
     {
         id: 'MorKanIkkeKombinereArbeidOgUttakFørsteSeksUker',
         beskrivelse:
-            'Mor kan ikkje kombinere arbeid med uttak av mødrekvote, fellesperiode eller foreldrepengar i ' +
-            'dei første seks vekene etter fødsel.',
-        erBrote: (k) =>
+            'Mor kan ikke kombinere arbeid med uttak av mødrekvote, fellesperiode eller foreldrepenger i ' +
+            'de første seks ukene etter fødsel.',
+        erBrutt: (k) =>
             k.formValues.skalDuKombinereArbeidOgUttakMor === true &&
             (k.formValues.kontoTypeMor === 'MØDREKVOTE' ||
                 k.formValues.kontoTypeMor === 'FELLESPERIODE' ||
@@ -31,8 +31,8 @@ const REGLER: ReadonlyArray<Regel<ArbeidOgUttakKontekst>> = [
     {
         id: 'FarMedmorKanIkkeKombinereArbeidOgOverførtMødrekvoteFørsteSeksUker',
         beskrivelse:
-            'Far/medmor kan ikkje kombinere arbeid med overført mødrekvote i dei første seks vekene etter fødsel.',
-        erBrote: (k) =>
+            'Far/medmor kan ikke kombinere arbeid med overført mødrekvote i de første seks ukene etter fødsel.',
+        erBrutt: (k) =>
             k.formValues.skalDuKombinereArbeidOgUttakFarMedmor === true &&
             k.formValues.kontoTypeFarMedmor === 'MØDREKVOTE' &&
             periodeOverlapperFørsteSeksUker(k),
@@ -43,8 +43,8 @@ const REGLER: ReadonlyArray<Regel<ArbeidOgUttakKontekst>> = [
 export const ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_GRUPPE: Regelgruppe<ArbeidOgUttakKontekst> = {
     id: 'arbeidOgUttakDeFørsteSeksUkene',
     beskrivelse:
-        'Reglar som hindrar at ein kombinerer arbeid med uttak av visse kontotypar i dei første seks vekene ' +
-        'etter fødsel. Gjeld ikkje ved adopsjon.',
+        'Regler som hindrer at man kombinerer arbeid med uttak av visse kontotyper i de første seks ukene ' +
+        'etter fødsel. Gjelder ikke ved adopsjon.',
     byggKontekst: (input: ValideringInput): ArbeidOgUttakKontekst | null => {
         if (input.familiesituasjon === 'adopsjon') {
             return null;

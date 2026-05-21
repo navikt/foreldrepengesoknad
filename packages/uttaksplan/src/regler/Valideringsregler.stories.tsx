@@ -5,27 +5,27 @@ import messages from '../intl/messages/nb_NO.json';
 import { ALLE_VALIDERINGSREGLER } from './index';
 
 /**
- * Sjølv-dokumenterande Storybook-side: viser heile valideringsregelkatalogen
- * for periodar i uttaksplanen. Sida er meint å lesast av designarar,
- * produkteigarar og saksbehandlarar — ikkje berre utviklarar.
+ * Selvdokumenterende Storybook-side: viser hele valideringsregelkatalogen
+ * for perioder i uttaksplanen. Siden er ment å leses av designere,
+ * produkteiere og saksbehandlere — ikke bare utviklere.
  *
- * Innhaldet blir generert direkte frå reglane i `src/regler/`, så sida er
+ * Innholdet blir generert direkte fra reglene i `src/regler/`, så siden er
  * alltid i synk med koden.
  */
 const Valideringsregler = () => {
     const intl = useIntl();
     return (
         <div style={{ fontFamily: 'sans-serif', maxWidth: 980, padding: 24 }}>
-            <h1>Valideringsreglar for periodar i uttaksplanen</h1>
+            <h1>Valideringsregler for perioder i uttaksplanen</h1>
             <p>
-                Når brukaren legg til eller endrar ein periode i uttaksplanen, blir reglane under sjekka i
-                rekkjefølgje. Første regel som er brote bestemmer kva feilmelding brukaren får. Same reglar
-                gjeld både i lista og i kalenderen.
+                Når brukeren legger til eller endrer en periode i uttaksplanen, blir reglene under sjekket i
+                rekkefølge. Første regel som er brutt bestemmer hvilken feilmelding brukeren får. Samme regler
+                gjelder både i listen og i kalenderen.
             </p>
             <p>
-                Sida er autogenerert frå regelkatalogen i koden (
-                <code>packages/uttaksplan/src/regler/</code>). Endrar du regelteksten der, endrar denne sida
-                seg òg.
+                Siden er autogenerert fra regelkatalogen i koden (
+                <code>packages/uttaksplan/src/regler/</code>). Endrer du regelteksten der, endrer denne siden
+                seg også.
             </p>
             {ALLE_VALIDERINGSREGLER.map((gruppe, gruppeIdx) => (
                 <section key={gruppe.id} style={{ marginTop: 32 }}>
@@ -38,8 +38,8 @@ const Valideringsregler = () => {
                             <tr style={{ background: '#f0f4f8', textAlign: 'left' }}>
                                 <th style={cellStyle}>#</th>
                                 <th style={cellStyle}>Regel-id</th>
-                                <th style={cellStyle}>Kva regelen seier</th>
-                                <th style={cellStyle}>Feilmelding til brukaren</th>
+                                <th style={cellStyle}>Hva regelen sier</th>
+                                <th style={cellStyle}>Feilmelding til brukeren</th>
                             </tr>
                         </thead>
                         <tbody>

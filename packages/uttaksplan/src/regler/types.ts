@@ -7,7 +7,7 @@ export type Periode = { fom: string; tom: string };
 
 /**
  * Felles input til alle regelgrupper. Bygd opp av useFormSubmitValidator
- * frå skjemaverdiar + kontekstdata.
+ * fra skjemaverdier + kontekstdata.
  */
 export type ValideringInput = {
     formValues: LeggTilEllerEndrePeriodeFormFormValues;
@@ -21,28 +21,28 @@ export type ValideringInput = {
 };
 
 /**
- * Ein einskild valideringsregel uttrykt som data.
+ * En enkelt valideringsregel uttrykt som data.
  *
- * - `beskrivelse` er klartekst som ein saksbehandlar eller designar kan lese
- *   for å forstå kva regelen handlar om.
- * - `erBrote` tek imot ein førebudd kontekst frå regelgruppa og avgjer om
- *   regelen er brote.
- * - `feilmeldingId` er intl-nøkkelen som blir vist til brukaren.
+ * - `beskrivelse` er klartekst som en saksbehandler eller designer kan lese
+ *   for å forstå hva regelen handler om.
+ * - `erBrutt` tar imot en ferdig kontekst fra regelgruppen og avgjør om
+ *   regelen er brutt.
+ * - `feilmeldingId` er intl-nøkkelen som blir vist til brukeren.
  */
 export type Regel<TCtx> = {
     id: string;
     beskrivelse: string;
-    erBrote: (kontekst: TCtx) => boolean;
+    erBrutt: (kontekst: TCtx) => boolean;
     feilmeldingId: string;
 };
 
 /**
- * Ei gruppe reglar med felles forutsetning og felles kontekst.
+ * En gruppe regler med felles forutsetning og felles kontekst.
  *
- * - `byggKontekst` returnerer `null` når gruppa ikkje er relevant (t.d. når
- *   skjemaet ikkje har fylt ut alt som trengst, eller når situasjonen ikkje
- *   passar). Reglane i gruppa blir då hoppa over.
- * - Reglane blir evaluert i rekkjefølgje, og første brote regel vinn.
+ * - `byggKontekst` returnerer `null` når gruppen ikke er relevant (f.eks. når
+ *   skjemaet ikke har fylt ut alt som trengs, eller når situasjonen ikke
+ *   passer). Reglene i gruppen blir da hoppet over.
+ * - Reglene blir evaluert i rekkefølge, og første brutte regel vinner.
  */
 export type Regelgruppe<TCtx> = {
     id: string;
@@ -51,14 +51,14 @@ export type Regelgruppe<TCtx> = {
     regler: ReadonlyArray<Regel<TCtx>>;
 };
 
-/** Returnerer første regel som er brote, eller undefined. */
-export const førsteBroteRegel = <TCtx>(
+/** Returnerer første regel som er brutt, eller undefined. */
+export const førsteBrutteRegel = <TCtx>(
     regler: ReadonlyArray<Regel<TCtx>>,
     kontekst: TCtx,
-): Regel<TCtx> | undefined => regler.find((regel) => regel.erBrote(kontekst));
+): Regel<TCtx> | undefined => regler.find((regel) => regel.erBrutt(kontekst));
 
 /**
- * Identitetshjelpar som markerer ein streng som ein intl-id. Brukt for at
- * intl-testane skal oppdage at id-en faktisk er i bruk i koden.
+ * Identitetshjelper som markerer en streng som en intl-id. Brukt for at
+ * intl-testene skal oppdage at id-en faktisk er i bruk i koden.
  */
 export const i18n = (id: string): string => id;
