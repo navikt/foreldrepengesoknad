@@ -108,7 +108,11 @@ export const Tidslinje = ({ sak, søkersBarn, tidslinjeHendelser, manglendeVedle
                 })}
             </Process>
             <Button className="w-fit" variant="secondary" size="small" onClick={toggleVisning}>
-                <FormattedMessage id={visHeleTidslinjen ? 'tidslinje.visKompakt' : 'tidslinje.visHele'} />
+                {visHeleTidslinjen ? (
+                    <FormattedMessage id="tidslinje.visKompakt" />
+                ) : (
+                    <FormattedMessage id="tidslinje.visHele" />
+                )}
             </Button>
         </VStack>
     );
