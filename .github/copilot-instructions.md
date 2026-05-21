@@ -68,7 +68,7 @@ Read more: https://www.nav.no/engangsstonad
 - **Forms:** React Hook Form
 - **Data fetching:** TanStack React Query
 - **Build:** Vite, TypeScript, Turborepo, pnpm workspaces
-- **Testing:** Vitest, Storybook, Playwright (browser tests)
+- **Testing:** Vitest, Vitest Browser (Playwright driver), Storybook
 - **Server:** Express 5, esbuild-bundled Node.js
 - **Infrastructure:** Docker, NAIS (Kubernetes), GitHub Actions
 
