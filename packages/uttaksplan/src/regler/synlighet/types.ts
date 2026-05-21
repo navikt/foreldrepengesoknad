@@ -18,7 +18,7 @@ export type Synlighetsregel<TKontekst> = {
  * brukt både til selve visningslogikken og til å autogenerere
  * Storybook-dokumentasjon.
  */
-export type Synlighetskapittel = {
+export type Synlighetsområde = {
     id: string;
     område: string;
     beskrivelse: string;

@@ -3,7 +3,7 @@ import { IntlShape } from 'react-intl';
 import { BrukerRolleSak_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-types';
 
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
-import { Feltregel, Feltregelkapittel, Periode, i18n } from '../types';
+import { Feltregel, Feltregelområde, Periode, i18n } from '../types';
 
 type HvaVilDuGjøre = 'LEGG_TIL_FERIE' | 'LEGG_TIL_UTSETTELSE' | 'LEGG_TIL_PAUSE' | 'LEGG_TIL_OPPHOLD' | 'LEGG_TIL_PERIODE';
 
@@ -67,7 +67,7 @@ export const HVA_VIL_DU_GJØRE_REGLER: ReadonlyArray<Feltregel<HvaVilDuGjøreInp
     },
 ];
 
-export const HVA_VIL_DU_GJØRE_KAPITTEL: Feltregelkapittel = {
+export const HVA_VIL_DU_GJØRE_OMRÅDE: Feltregelområde = {
     id: 'HvaVilDuGjøre',
     feltnavn: 'Hva vil du gjøre?',
     beskrivelse:

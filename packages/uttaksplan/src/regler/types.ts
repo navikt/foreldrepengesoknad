@@ -83,7 +83,7 @@ export type Feltregel<TInput> = {
  * En samling av feltregler for ett konkret skjemafelt — brukt både til
  * validering og til å generere dokumentasjon.
  */
-export type Feltregelkapittel = {
+export type Feltregelområde = {
     id: string;
     feltnavn: string;
     beskrivelse: string;

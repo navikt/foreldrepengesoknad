@@ -2,7 +2,7 @@ import { IntlShape } from 'react-intl';
 
 import { getFloatFromString } from '@navikt/fp-utils';
 
-import { Feltregel, Feltregelkapittel, førsteBrutteFeltregel, i18n } from '../types';
+import { Feltregel, Feltregelområde, førsteBrutteFeltregel, i18n } from '../types';
 
 export type StillingsprosentInput = {
     value: string;
@@ -60,7 +60,7 @@ export const STILLINGSPROSENT_REGLER: ReadonlyArray<Feltregel<StillingsprosentIn
     },
 ];
 
-export const STILLINGSPROSENT_KAPITTEL: Feltregelkapittel = {
+export const STILLINGSPROSENT_OMRÅDE: Feltregelområde = {
     id: 'Stillingsprosent',
     feltnavn: 'Stillingsprosent',
     beskrivelse:

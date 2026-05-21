@@ -2,7 +2,7 @@ import { IntlShape } from 'react-intl';
 
 import { getFloatFromString } from '@navikt/fp-utils';
 
-import { Feltregel, Feltregelkapittel, førsteBrutteFeltregel, i18n } from '../types';
+import { Feltregel, Feltregelområde, førsteBrutteFeltregel, i18n } from '../types';
 
 export type SamtidigUttaksprosentInput = {
     value: string;
@@ -60,7 +60,7 @@ export const SAMTIDIG_UTTAKSPROSENT_REGLER: ReadonlyArray<Feltregel<SamtidigUtta
     },
 ];
 
-export const SAMTIDIG_UTTAKSPROSENT_KAPITTEL: Feltregelkapittel = {
+export const SAMTIDIG_UTTAKSPROSENT_OMRÅDE: Feltregelområde = {
     id: 'SamtidigUttaksprosent',
     feltnavn: 'Samtidig uttaksprosent',
     beskrivelse:

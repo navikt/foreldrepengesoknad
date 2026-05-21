@@ -32,12 +32,12 @@ const Feltregler = () => {
                 <code>packages/uttaksplan/src/regler/felt/</code>). Endrer du regelteksten der, endrer denne
                 siden seg også.
             </p>
-            {ALLE_FELTREGLER.map((kapittel, kapittelIdx) => (
-                <section key={kapittel.id} style={{ marginTop: 32 }}>
+            {ALLE_FELTREGLER.map((område, områdeIdx) => (
+                <section key={område.id} style={{ marginTop: 32 }}>
                     <h2>
-                        {kapittelIdx + 1}. {kapittel.feltnavn}
+                        {områdeIdx + 1}. {område.feltnavn}
                     </h2>
-                    <p style={{ fontStyle: 'italic', color: '#444' }}>{kapittel.beskrivelse}</p>
+                    <p style={{ fontStyle: 'italic', color: '#444' }}>{område.beskrivelse}</p>
                     <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 12 }}>
                         <thead>
                             <tr style={{ background: '#f0f4f8', textAlign: 'left' }}>
@@ -48,7 +48,7 @@ const Feltregler = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {kapittel.regler.map((regel, idx) => (
+                            {område.regler.map((regel, idx) => (
                                 <tr key={regel.id} style={{ borderTop: '1px solid #e5e7eb' }}>
                                     <td className={cellClass}>{idx + 1}</td>
                                     <td className={`${cellClass} font-mono text-xs`}>

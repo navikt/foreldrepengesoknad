@@ -8,7 +8,7 @@ import { getFloatFromString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
-import { Synlighetskapittel, Synlighetsregel } from './types';
+import { Synlighetsområde, Synlighetsregel } from './types';
 
 type ForelderValg = BrukerRolleSak_fpoversikt | 'BEGGE' | undefined;
 
@@ -154,7 +154,7 @@ export const FELT_SYNLIGHET_REGLER = [
     VIS_KOMBINERE_ARBEID_OG_UTTAK_FAR_MEDMOR,
 ] as const;
 
-export const FELT_SYNLIGHET_KAPITTEL: Synlighetskapittel = {
+export const FELT_SYNLIGHET_OMRÅDE: Synlighetsområde = {
     id: 'FeltSynlighet',
     område: 'Hvilke felter, infobokser og oppfølgingsspørsmål vises i skjemaet?',
     beskrivelse:

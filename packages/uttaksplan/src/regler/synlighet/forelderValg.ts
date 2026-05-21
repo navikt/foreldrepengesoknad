@@ -1,4 +1,4 @@
-import { Synlighetskapittel, Synlighetsregel } from './types';
+import { Synlighetsområde, Synlighetsregel } from './types';
 
 export type ForelderValgKontekst = {
     erMorGyldigForelder: boolean;
@@ -44,7 +44,7 @@ export const VIS_BEGGE_RADIO: Synlighetsregel<ForelderValgKontekst> = {
 
 export const FORELDER_VALG_REGLER = [VIS_MOR_RADIO, VIS_FAR_MEDMOR_RADIO, VIS_BEGGE_RADIO] as const;
 
-export const FORELDER_VALG_KAPITTEL: Synlighetskapittel = {
+export const FORELDER_VALG_OMRÅDE: Synlighetsområde = {
     id: 'ForelderValg',
     område: 'Hvilke alternativ vises i «Hvem gjelder perioden»-radiogruppen?',
     beskrivelse:
