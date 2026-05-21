@@ -6,6 +6,7 @@ import type {
 } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 
+import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Synlighetskapittel, Synlighetsregel } from './types';
 
@@ -175,3 +176,31 @@ export const synlighetForFelter = (kontekst: FeltSynlighetKontekst) => ({
     visKombinereArbeidOgUttakFarMedmor: VIS_KOMBINERE_ARBEID_OG_UTTAK_FAR_MEDMOR.skalVises(kontekst),
     erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel: erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel(kontekst),
 });
+
+type FormVerdier = {
+    forelder: ForelderValg;
+    kontoTypeMor: KontoTypeUttak | undefined;
+    kontoTypeFarMedmor: KontoTypeUttak | undefined;
+    ønskerFlerbarnsdager: boolean | undefined;
+    samtidigUttaksprosentMor: string | undefined;
+    stillingsprosentMor: string | undefined;
+};
+
+export const useFeltSynlighet = (valgtePerioder: Array<{ fom: string; tom: string }>, formVerdier: FormVerdier) => {
+    const {
+        foreldreInfo: { rettighetType, søker },
+        familiehendelsedato,
+        familiesituasjon,
+        barn,
+    } = useUttaksplanData();
+
+    return synlighetForFelter({
+        ...formVerdier,
+        søker,
+        rettighetType,
+        antallBarn: barn.antallBarn,
+        familiesituasjon,
+        valgtePerioder,
+        familiehendelsedato,
+    });
+};
