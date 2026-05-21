@@ -5,7 +5,7 @@
         "paths": {
             "types/*": ["./src/types/*"]
         },
-        "types": ["vite/client", "@testing-library/jest-dom", "vitest/globals"]
+        "types": ["node", "vite/client", "@testing-library/jest-dom", "vitest/globals"]
     },
     "include": ["src", "vitest"],
     "exclude": ["node_modules"]

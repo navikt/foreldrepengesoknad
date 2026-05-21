@@ -12,18 +12,17 @@
         "tsc": "turbo run tsc",
         "tsc:watch": "tsc --noEmit --watch",
         "knip": "knip",
-        "storybook-create-deploy-folder": "node scripts/create-storybook-index.js",
+        "storybook-create-deploy-folder": "node scripts/create-storybook-index.mjs",
         "generate:local": "pnpm --filter @navikt/fp-types run generate:local",
         "generate": "pnpm --filter @navikt/fp-types run generate"
     },
     "dependencies": {
-        "glob": "13.0.6",
         "lint-staged": "17.0.4",
-        "shelljs": "0.10.0",
         "turbo": "2.9.12"
     },
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "6.0.2",
+        "@types/node": "24.10.1",
         "knip": "6.13.1",
         "msw": "2.14.6",
         "msw-storybook-addon": "2.0.7",
