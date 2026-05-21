@@ -21,8 +21,9 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        working-directory: server
         run: pnpm install --frozen-lockfile
+        env:
+          PACKAGES_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Run tests
         working-directory: server
