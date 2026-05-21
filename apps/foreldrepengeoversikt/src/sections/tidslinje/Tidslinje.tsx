@@ -88,11 +88,16 @@ export const Tidslinje = ({ sak, søkersBarn, tidslinjeHendelser, manglendeVedle
                     );
                 })}
             </Process>
-            {visHeleTidslinjen ? undefined : (
-                <Button className="w-fit" variant="secondary" size="small" onClick={() => setVisHeleTidslinjen(true)}>
-                    <FormattedMessage id="tidslinje.visHele" />
-                </Button>
-            )}
+            <Button
+                className="w-fit"
+                variant="secondary"
+                size="small"
+                onClick={() => setVisHeleTidslinjen((visible) => !visible)}
+            >
+                <FormattedMessage
+                    id={visHeleTidslinjen ? 'tidslinje.visKompakt' : 'tidslinje.visHele'}
+                />
+            </Button>
         </VStack>
     );
 };
