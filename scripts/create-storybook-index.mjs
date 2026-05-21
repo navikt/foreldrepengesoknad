@@ -5,7 +5,7 @@ const scriptDir = import.meta.dirname;
 const DEPLOY_FOLDER = '../.storybook-static-build';
 
 const generateRow = (packageJson) => `
-  <a href="${packageJson.name}" class="package" target="${packageJson.name}">
+  <a href="${packageJson.name}" class="package" target="${packageJson.name}" rel="noopener">
     <code>${packageJson.name}</code>
     ${packageJson.description ? `<p>${packageJson.description}</p>` : ''}
   </a>
