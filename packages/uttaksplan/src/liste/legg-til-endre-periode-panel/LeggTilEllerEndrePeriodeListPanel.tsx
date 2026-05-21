@@ -27,6 +27,7 @@ import {
     FormValues as UtsettelseFormValues,
 } from '../../felles/utsettelse/LeggTilUtsettelseForm';
 import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
+import { lagHvaVilDuGjøreValidatorer } from '../../regler/felt';
 import {
     Uttaksplanperiode,
     erEøsUttakPeriode,
@@ -34,7 +35,6 @@ import {
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
-import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../utils/periodeUtils';
 import { TidsperiodeSpørsmål } from './/TidsperiodeSpørsmål';
 
@@ -277,40 +277,14 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         gyldigeStønadskontoerForMor.length === 0 &&
         gyldigeStønadskontoerForFarMedmor.length === 0;
 
-    const erUtsettelseGyldig = (nyHvaVilDuGjøre?: HvaVilDuGjøre) => {
-        return nyHvaVilDuGjøre !== 'LEGG_TIL_UTSETTELSE' ||
-            UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
-                fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [],
-                familiehendelsedato,
-            )
-            ? null
-            : intl.formatMessage({ id: 'uttaksplan.valgPanel.utsettelse' });
-    };
-
-    const erPauseGyldig = (nyHvaVilDuGjøre?: HvaVilDuGjøre) => {
-        if (nyHvaVilDuGjøre !== 'LEGG_TIL_PAUSE') {
-            return null;
-        }
-        const erFørSeksUker = UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
-            perioder,
-            familiehendelsedato,
-        );
-        return erFørSeksUker ? intl.formatMessage({ id: 'uttaksplan.valgPanel.pause' }) : null;
-    };
-
-    const erFerieOgPeriodeUtenForeldrepengerGyldig = (nyHvaVilDuGjøre?: HvaVilDuGjøre) => {
-        return (nyHvaVilDuGjøre === 'LEGG_TIL_FERIE' || nyHvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') &&
-            søker === 'FAR_MEDMOR' &&
-            rettighetType === 'BARE_SØKER_RETT' &&
-            fomValue &&
-            tomValue &&
-            !UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
-                [{ fom: fomValue, tom: tomValue }],
-                familiehendelsedato,
-            )
-            ? intl.formatMessage({ id: 'uttaksplan.valgPanel.ferie' })
-            : null;
-    };
+    const hvaVilDuGjøreFeltvalidatorer = lagHvaVilDuGjøreValidatorer(intl, {
+        fomValue,
+        tomValue,
+        perioder,
+        familiehendelsedato,
+        søker,
+        rettighetType,
+    });
 
     return (
         <VStack
@@ -366,9 +340,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                             control={formMethods.control}
                             validate={[
                                 isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.hvaVilDuGjøre.påkrevd' })),
-                                erUtsettelseGyldig,
-                                erPauseGyldig,
-                                erFerieOgPeriodeUtenForeldrepengerGyldig,
+                                ...hvaVilDuGjøreFeltvalidatorer,
                             ]}
                             onChange={resetFormValuesVedEndringAvHvaVilDuGjøre}
                         >
