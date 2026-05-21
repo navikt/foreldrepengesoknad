@@ -22,6 +22,7 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskvoteNavnSimple } from '../liste/utils/uttaksplanListeUtils';
+import { synlighetForFelter, synlighetForForelderValg } from '../regler/synlighet';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
 import { getAktivitetskravOptions, getAktivitetskravTekst } from '../utils/periodeUtils';
@@ -85,7 +86,37 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         ønskerFlerbarnsdager,
     } = formMethods.watch();
 
-    const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(barn.antallBarn, forelder, kontoTypeFarMedmor);
+    const erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel =
+        familiesituasjon !== 'adopsjon' &&
+        UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
+            valgtePerioder,
+            familiehendelsedato,
+        );
+
+    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKvotetyper(
+        valgtePerioder,
+        forelder === 'BEGGE',
+        ønskerFlerbarnsdager,
+    );
+
+    const feltSynlighet = synlighetForFelter({
+        forelder,
+        søker,
+        rettighetType,
+        kontoTypeMor,
+        kontoTypeFarMedmor,
+        ønskerFlerbarnsdager,
+        antallBarn: barn.antallBarn,
+        samtidigUttaksprosentMor,
+        stillingsprosentMor,
+        erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel,
+    });
+
+    const skalViseFlerbarnsdager = feltSynlighet.visFlerbarnsdager;
+    const skalViseMorsAktivitetskravVedSamtidigUttak = feltSynlighet.visMorsAktivitetskravVedSamtidigUttak;
+    const skalViseAktivitetskravFelt = feltSynlighet.visAktivitetskravFelt;
+    const morSøkerOmOverføring = feltSynlighet.visMorOverføring;
+    const farMedmorSøkerOmOverføring = feltSynlighet.visFarMedmorOverføring;
 
     const infotekstOmFedrekvoteBrukRundtFødsel = getInfotekstOmFedrekvoteBrukRundtFødsel(
         valgtePerioder,
@@ -95,44 +126,8 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         intl,
     );
 
-    const erFarMedmorUtenAleneomsorg =
-        forelder === 'FAR_MEDMOR' &&
-        rettighetType !== 'ALENEOMSORG' &&
-        (kontoTypeFarMedmor === 'FORELDREPENGER' || kontoTypeFarMedmor === 'FELLESPERIODE') &&
-        !ønskerFlerbarnsdager;
-
-    const skalViseMorsAktivitetskravVedSamtidigUttak =
-        !ønskerFlerbarnsdager &&
-        getSkalViseMorsAktivitetskravVedSamtidigUttak(
-            forelder,
-            samtidigUttaksprosentMor,
-            stillingsprosentMor,
-            kontoTypeFarMedmor,
-        );
-
-    const erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel =
-        familiesituasjon !== 'adopsjon' &&
-        UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
-            valgtePerioder,
-            familiehendelsedato,
-        );
-
-    const skalViseAktivitetskravFordiFedrekvoteFørsteSeksUker =
-        forelder === 'FAR_MEDMOR' &&
-        rettighetType !== 'ALENEOMSORG' &&
-        kontoTypeFarMedmor === 'FEDREKVOTE' &&
-        erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel;
-
-    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKvotetyper(
-        valgtePerioder,
-        forelder === 'BEGGE',
-        ønskerFlerbarnsdager,
-    );
-
     const erMorGyldigForelder = gyldigeStønadskontoerForMor.length > 0;
     const erFarMedmorGyldigForelder = gyldigeStønadskontoerForFarMedmor.length > 0;
-    const morSøkerOmOverføring = kontoTypeMor === 'FEDREKVOTE' && forelder === 'MOR';
-    const farMedmorSøkerOmOverføring = kontoTypeFarMedmor === 'MØDREKVOTE' && forelder === 'FAR_MEDMOR';
 
     const kunFarHarRett =
         søker === 'FAR_MEDMOR' && (rettighetType === 'BARE_SØKER_RETT' || rettighetType === 'ALENEOMSORG');
@@ -220,6 +215,14 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         );
     }
 
+    const forelderValgSynlighet = synlighetForForelderValg({
+        erMorGyldigForelder,
+        erFarMedmorGyldigForelder,
+        erMorLåst,
+        erFarMedmorLåst,
+        erMinstEnEøsPeriode,
+    });
+
     return (
         <>
             <RhfRadioGroup
@@ -231,12 +234,12 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
             >
                 {
                     [
-                        erMorGyldigForelder && !erMorLåst && (
+                        forelderValgSynlighet.visMor && (
                             <Radio key="mor" value="MOR">
                                 <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />
                             </Radio>
                         ),
-                        erFarMedmorGyldigForelder && !erFarMedmorLåst && (
+                        forelderValgSynlighet.visFarMedmor && (
                             <Radio key="far" value="FAR_MEDMOR">
                                 {erMedmorDelAvSøknaden ? (
                                     <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />
@@ -245,7 +248,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                                 )}
                             </Radio>
                         ),
-                        erMorGyldigForelder && erFarMedmorGyldigForelder && !erMinstEnEøsPeriode && (
+                        forelderValgSynlighet.visBegge && (
                             <Radio key="begge" value="BEGGE">
                                 <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Begge" />
                             </Radio>
@@ -460,9 +463,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 </VStack>
             )}
 
-            {(erFarMedmorUtenAleneomsorg ||
-                skalViseMorsAktivitetskravVedSamtidigUttak ||
-                skalViseAktivitetskravFordiFedrekvoteFørsteSeksUker) && (
+            {skalViseAktivitetskravFelt && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
                     <RhfSelect
@@ -675,19 +676,6 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     );
 };
 
-const getSkalViseMorsAktivitetskravVedSamtidigUttak = (
-    forelder: ForelderValg,
-    samtidigUttaksprosentMor?: string,
-    stillingsprosentMor?: string,
-    kontoTypeFarMedmor?: KontoTypeUttak,
-) => {
-    const morsSamtidigUttakprosent = forelder === 'BEGGE' ? (getFloatFromString(samtidigUttaksprosentMor) ?? 0) : 0;
-    const morsStillingProsent = forelder === 'BEGGE' ? (getFloatFromString(stillingsprosentMor) ?? 0) : 0;
-    const morsTotaleProsent = morsSamtidigUttakprosent + morsStillingProsent;
-
-    return forelder === 'BEGGE' && kontoTypeFarMedmor === 'FELLESPERIODE' && morsTotaleProsent < 100;
-};
-
 export const mapFraFormValuesTilUttakPeriode = (
     values: LeggTilEllerEndrePeriodeFormFormValues,
     periode: { fom: string; tom: string },
@@ -878,12 +866,4 @@ const getInfotekstOmFedrekvoteBrukRundtFødsel = (
               id: 'LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel',
           })
         : undefined;
-};
-
-export const skalBesvareFlerbarnsdager = (
-    antallBarn: number,
-    forelder: ForelderValg,
-    kontotype: KontoTypeUttak | undefined,
-) => {
-    return antallBarn > 1 && forelder !== 'MOR' && kontotype !== 'MØDREKVOTE' && kontotype !== 'AKTIVITETSFRI_KVOTE';
 };
