@@ -9,17 +9,6 @@ vi.mock('@navikt/oasis', () => ({
     requestTokenxOboToken: async () => ({ ok: true, token: 'mock-obo-token' }),
 }));
 
-vi.mock('@navikt/fp-server-utils', () => ({
-    logger: {
-        info: () => {},
-        warning: () => {},
-        error: () => {},
-    },
-    serverConfig: {
-        påkrevMiljøVariabel: (name: string) => `mock-${name}`,
-    },
-}));
-
 let app: express.Express;
 let backendServer: http.Server;
 let backendPort: number;
