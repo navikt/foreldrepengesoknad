@@ -108,4 +108,4 @@ conventions, see:
 - Follow existing patterns in the app you are working on
 - Apps can be run locally with `pnpm run dev:mock` / `pnpm run dev:lokal` or
   via Vite mode against the dev environment (see README)
-- Types are generated from the backend with `./generate-api-types.sh`
+- Types are generated from the backend with `pnpm generate` or `pnpm generate:local`
