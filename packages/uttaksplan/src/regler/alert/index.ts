@@ -6,6 +6,7 @@ export {
     BLOKKERANDE_ALERT_OMRÅDE,
     KONTEKSTUELL_ALERT_OMRÅDE,
     finnFørsteBlokkerandeAlert,
+    useBlokkerandeAlert,
     skalViseGraderingAlert,
 } from './skjemaAlerts';
 

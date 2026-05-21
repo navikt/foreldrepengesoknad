@@ -1,5 +1,6 @@
 import { Familiesituasjon } from '@navikt/fp-types';
 
+import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { i18n } from '../types';
 import { Alertområde, Alertregel } from './types';
@@ -128,6 +129,35 @@ export const finnFørsteBlokkerandeAlert = (
         }
     }
     return undefined;
+};
+
+/**
+ * Hook som hentar kontekst frå UttaksplanDataContext og evaluerer
+ * blokkerande alerts. Kallaren treng berre oppgi det som ikkje
+ * finst i konteksten.
+ */
+export const useBlokkerandeAlert = (
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    erMorGyldigForelder: boolean,
+    erFarMedmorGyldigForelder: boolean,
+) => {
+    const {
+        foreldreInfo: { rettighetType, søker },
+        familiehendelsedato,
+        familiesituasjon,
+        erPeriodeneTilAnnenPartLåst,
+    } = useUttaksplanData();
+
+    return finnFørsteBlokkerandeAlert({
+        valgtePerioder,
+        familiehendelsedato,
+        familiesituasjon,
+        søker,
+        rettighetType,
+        erMorGyldigForelder,
+        erFarMedmorGyldigForelder,
+        erPeriodeneTilAnnenPartLåst,
+    });
 };
 
 /** Sjekk om graderingsalerten skal visast. */

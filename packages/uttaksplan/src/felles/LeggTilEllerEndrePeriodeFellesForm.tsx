@@ -22,7 +22,7 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskvoteNavnSimple } from '../liste/utils/uttaksplanListeUtils';
-import { finnFørsteBlokkerandeAlert, skalViseGraderingAlert } from '../regler/alert';
+import { useBlokkerandeAlert, skalViseGraderingAlert } from '../regler/alert';
 import { synlighetForForelderValg, useFeltSynlighet } from '../regler/synlighet';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
@@ -65,7 +65,6 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     const {
         foreldreInfo: { rettighetType, erMedmorDelAvSøknaden, søker },
         familiehendelsedato,
-        familiesituasjon,
         erPeriodeneTilAnnenPartLåst,
         aktiveArbeidsforhold,
         uttakPerioder,
@@ -114,16 +113,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 
     const erBareFarHarRett = søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT';
 
-    const blokkerandeAlert = finnFørsteBlokkerandeAlert({
-        valgtePerioder,
-        familiehendelsedato,
-        familiesituasjon,
-        søker,
-        rettighetType,
-        erMorGyldigForelder,
-        erFarMedmorGyldigForelder,
-        erPeriodeneTilAnnenPartLåst,
-    });
+    const blokkerandeAlert = useBlokkerandeAlert(valgtePerioder, erMorGyldigForelder, erFarMedmorGyldigForelder);
 
     if (blokkerandeAlert) {
         return (
