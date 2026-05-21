@@ -4,7 +4,6 @@ import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
-import { VedleggDataType } from 'types/VedleggDataType';
 import { perioderSomKreverVedlegg } from 'utils/manglendeVedleggUtils';
 import { getErSøkerFarEllerMedmor, getNavnPåForeldre } from 'utils/personUtils';
 
@@ -83,7 +82,7 @@ export const ManglendeVedlegg = ({
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-    const vedlegg = useContextGetData(ContextDataType.VEDLEGG) || ({} as VedleggDataType);
+    const vedlegg = useContextGetData(ContextDataType.VEDLEGG) || {};
     const arbeidsforholdOgInntekt = useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER);
     const eksisterendeSaksnummer = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);

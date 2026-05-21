@@ -38,9 +38,9 @@ const startServer = async (html) => {
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
 
     server.use(
-        '/rest',
+        '/fpgrunndata/api',
         createProxyMiddleware({
-            target: 'http://localhost:8888/rest',
+            target: 'http://localhost:8888/fpgrunndata/api',
             changeOrigin: true,
             logger: console,
             on: {
@@ -50,7 +50,7 @@ const startServer = async (html) => {
     );
 
     const fs = require('node:fs');
-    fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), html);
+    fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), html.replaceAll('</link>', ''));
 
     const vite = await require('vite').createServer({
         root: __dirname,

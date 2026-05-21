@@ -4,8 +4,6 @@ import dayjs from 'dayjs';
 import { ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
-import { getErMorUfør } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
@@ -28,8 +26,6 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { GåTilbakeModal } from './GåTilbakeModal';
 import { useFinnFørsteSubmitFeilmelding } from './submitValidering';
-
-export { harKunPerioderForAnnenForelder } from './submitValidering';
 
 type FormValues = {
     ønskerJustertUttakVedFødsel?: boolean;
@@ -59,7 +55,6 @@ export const UttaksplanForm = ({
     const intl = useIntl();
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const harJustertUttakVedFødsel = useContextGetData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
@@ -91,26 +86,35 @@ export const UttaksplanForm = ({
 
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
 
-    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
-    const erDeltUttak =
-        oppgittAnnenForelder?.harRettPåForeldrepengerINorge === true ||
-        oppgittAnnenForelder?.harRettPåForeldrepengerIEØS === true;
+    const termindato = getTermindato(barn);
+    const uttaksdagPåEllerEtterTermin = termindato ? Uttaksdagen.denneEllerNeste(termindato).getDato() : undefined;
 
-    const erMorUfør = getErMorUfør(annenForelder, erSøkerFarEllerMedmor);
-    const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
+    const perioderRundtFødselForFarMedmor = gjeldendeUttaksplan
+        ? finnPerioderRundtFødsel(gjeldendeUttaksplan, barn).filter(
+              (p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.forelder === 'FAR_MEDMOR',
+          )
+        : [];
 
-    const bareFarHarRett = erSøkerFarEllerMedmor && (!erDeltUttak || erMorUfør || erAleneOmOmsorg);
+    const periodeRundtFødsel = perioderRundtFødselForFarMedmor[0];
+
+    const erFødselssituasjonForFar = erSøkerFarEllerMedmor && søkersituasjon.situasjon === 'fødsel';
+
+    const harNøyaktigEnPeriodePåTermindato =
+        perioderRundtFødselForFarMedmor.length === 1 &&
+        periodeRundtFødsel !== undefined &&
+        dayjs(periodeRundtFødsel.fom).isSame(uttaksdagPåEllerEtterTermin, 'day');
+
+    const erJusterbarPeriodetype =
+        periodeRundtFødsel !== undefined &&
+        Uttaksperioden.erUttaksperiode(periodeRundtFødsel) &&
+        erJusterbartUttakRundtTermin(periodeRundtFødsel);
 
     const visAutomatiskJustering =
-        erSøkerFarEllerMedmor &&
-        søkersituasjon.situasjon === 'fødsel' &&
-        gjeldendeUttaksplan &&
-        finnPerioderRundtFødsel(gjeldendeUttaksplan, barn).filter(
-            (p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.forelder === 'FAR_MEDMOR',
-        ).length === 1 &&
+        erFødselssituasjonForFar &&
+        harNøyaktigEnPeriodePåTermindato &&
+        erJusterbarPeriodetype &&
         isUfødtBarn(barn) &&
-        barn.termindato !== undefined &&
-        !bareFarHarRett;
+        barn.termindato !== undefined;
 
     const finnFørsteSubmitFeilmelding = useFinnFørsteSubmitFeilmelding({ opprinneligPlan });
 
@@ -148,7 +152,7 @@ export const UttaksplanForm = ({
                     <VStack gap="space-16">
                         <AutomatiskJusteringInfotekst
                             harSvartJaPåAutoJustering={harSvartJaPåAutoJustering}
-                            uttaksplan={gjeldendeUttaksplan}
+                            uttaksplan={gjeldendeUttaksplan!}
                         />
                         <RhfRadioGroup
                             name="ønskerJustertUttakVedFødsel"
@@ -234,8 +238,7 @@ const AutomatiskJusteringInfotekst = ({
         harSvartJaOgHarEnPeriodeRundtFødsel &&
         dayjs(perioderMedUttakRundtFødsel[0]!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
         ((Uttaksperioden.erUttaksperiode(perioderMedUttakRundtFødsel[0]!) &&
-            (perioderMedUttakRundtFødsel[0]!.kontoType !== 'FEDREKVOTE' ||
-                !Uttaksperioden.erSamtidigUttak(perioderMedUttakRundtFødsel[0]!))) ||
+            !erJusterbartUttakRundtTermin(perioderMedUttakRundtFødsel[0]!)) ||
             Uttaksperioden.erOverføringsperiode(perioderMedUttakRundtFødsel[0]!));
 
     if (harSvartJaOgEndretPeriodenPåTermin) {
@@ -306,3 +309,9 @@ const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
         return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
     });
 };
+
+export const erJusterbartUttakRundtTermin = (
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+): boolean =>
+    periode.kontoType === 'FORELDREPENGER' ||
+    (periode.kontoType === 'FEDREKVOTE' && 'samtidigUttak' in periode && periode.samtidigUttak !== undefined);

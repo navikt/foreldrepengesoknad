@@ -103,30 +103,47 @@ app.use(allowCrossDomain);
 app.use(delayAllResponses(500));
 app.use(express.json());
 
-router.get(['/rest/sokerinfo'], (_req, res) => {
+router.get(['/fpoversikt/api/personopplysninger/svangerskapspenger'], (_req, res) => {
     res.send(getSokerInfo());
 });
 
-router.post('/rest/soknad/svangerskapspenger', (_req, res) => {
+router.post('/fpsoknad/api/soknad/svangerskapspenger', (_req, res) => {
     return res.send(getSoknadSendt());
 });
 
-router.get('/rest/storage/svangerskapspenger', (_req, res) => {
+router.get('/fpsoknad/api/storage/SVANGERSKAPSPENGER', (_req, res) => {
     res.send(getMellomlagretData());
 });
 
-router.post('/rest/storage/svangerskapspenger', (req, res) => {
+router.post('/fpsoknad/api/storage/SVANGERSKAPSPENGER', (req, res) => {
     lagreMellomlagretData(req.body);
     return res.sendStatus(200);
 });
 
-router.delete('/rest/storage/svangerskapspenger', (_req, res) => {
+router.delete('/fpsoknad/api/storage/SVANGERSKAPSPENGER', (_req, res) => {
     deleteMellomlagretData();
     return res.sendStatus(200);
 });
 
-router.delete('/rest/storage/svangerskapspenger/vedlegg/:id', (_req, res) => {
+router.delete('/fpsoknad/api/storage/SVANGERSKAPSPENGER/vedlegg/:id', (_req, res) => {
     res.sendStatus(204);
+});
+
+router.post('/fpsoknad/api/storage/SVANGERSKAPSPENGER/vedlegg', (_req, res) => {
+    res.setHeader('Location', 'http://localhost:8888/vedlegg/123');
+    res.sendStatus(201);
+});
+
+router.get('/fpoversikt/api/saker', (_req, res) => {
+    res.send([]);
+});
+
+router.get('/fpoversikt/api/saker/erOppdatert', (_req, res) => {
+    res.send(true);
+});
+
+router.get('/fpsoknad/api/soknad/status', (_req, res) => {
+    res.send([]);
 });
 
 app.use('', router);

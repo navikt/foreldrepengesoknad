@@ -42,7 +42,7 @@ app.listen(port, () => {
     console.log(`Mock-api listening on port: ${port}`);
 });
 
-router.post('/rest/konto', async (req: any, res: any) => {
+router.post('/fpgrunndata/api/konto', async (req: any, res: any) => {
     try {
         const data = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
             method: 'POST',
@@ -60,7 +60,7 @@ router.post('/rest/konto', async (req: any, res: any) => {
     }
 });
 
-router.get('/rest/satser', async (_req: any, res: any) => {
+router.get('/fpgrunndata/api/satser', async (_req: any, res: any) => {
     try {
         const data = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/satser', {
             method: 'GET',

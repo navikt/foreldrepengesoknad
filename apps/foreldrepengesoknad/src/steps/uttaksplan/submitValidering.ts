@@ -51,7 +51,7 @@ export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFør
         harPeriodeDerMorsAktivitetIkkeErValgt(utledRettighet(erAleneOmOmsorg, erDeltUttak), perioder);
 
     const harKunPerioderForDenAndreForelderen = (perioder: UttaksplanPerioder) =>
-        harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, perioder);
+        harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, erAleneOmOmsorg, perioder);
 
     const submitValideringsregler: SubmitValideringsregel[] = [
         {
@@ -75,6 +75,10 @@ export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFør
         {
             gjelder: harKunPerioderForDenAndreForelderen,
             message: intl.formatMessage({ id: 'UttaksplanSteg.KunPerioderForAnnenForelder' }),
+        },
+        {
+            gjelder: erKunUtsettelser,
+            message: intl.formatMessage({ id: 'UttaksplanSteg.KunUtsettelser' }),
         },
     ];
 
@@ -106,19 +110,26 @@ const harBrukerKunSlettetPerioder = (
     return false;
 };
 
-export const harKunPerioderForAnnenForelder = (erSøkerFarEllerMedmor: boolean, perioder?: UttaksplanPerioder) => {
-    if (!perioder || perioder.length === 0) {
+export const harKunPerioderForAnnenForelder = (
+    erSøkerFarEllerMedmor: boolean,
+    erAleneOmOmsorg: boolean,
+    perioder?: UttaksplanPerioder,
+) => {
+    if (!perioder || perioder.length === 0 || erAleneOmOmsorg) {
         return false;
     }
 
     const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
 
-    return perioder.every(
-        (periode) =>
-            Uttaksperioden.erEøsPeriode(periode) ||
-            periode.forelder !== søkersForelder ||
-            !Uttaksperioden.erUttaksperiode(periode),
-    );
+    return perioder.every((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.forelder !== søkersForelder);
+};
+
+const erKunUtsettelser = (perioder: UttaksplanPerioder) => {
+    if (perioder.length === 0) {
+        return false;
+    }
+
+    return perioder.every((periode) => Uttaksperioden.erUtsettelsesperiode(periode));
 };
 
 const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean): RettighetType_fpoversikt => {

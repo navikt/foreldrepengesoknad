@@ -185,7 +185,6 @@ export const OmBarnetPlanleggerSteg = () => {
                                 erAlenesøker={erAlenesøker}
                                 erOmBarnetPlanleggerIkkeOppgittFraFør={omBarnet === undefined}
                                 antallBarn={antallBarn}
-                                hvemPlanlegger={hvemPlanlegger}
                             />
                         )}
                     </VStack>

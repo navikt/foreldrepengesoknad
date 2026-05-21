@@ -9,7 +9,7 @@ const proxy = {
 
 export const configureReverseProxyApi = (router: Router) => {
     router.use(
-        '/fpgrunndata',
+        '/fpgrunndata/api',
         createProxyMiddleware({
             target: proxy.FPGRUNNDATA_API_URL,
             changeOrigin: true,

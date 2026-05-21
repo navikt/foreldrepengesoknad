@@ -42,12 +42,14 @@ const startServer = async () => {
 
     const htmlWithDecoratorInjected = await injectDecorator(indexHtmlPath);
 
-    const renderedHtml = htmlWithDecoratorInjected.replaceAll(
-        '{{{APP_SETTINGS}}}',
-        JSON.stringify({
-            APP_VERSION: `${process.env.APP_VERSION}`,
-        }),
-    );
+    const renderedHtml = htmlWithDecoratorInjected
+        .replaceAll('</link>', '')
+        .replaceAll(
+            '{{{APP_SETTINGS}}}',
+            JSON.stringify({
+                APP_VERSION: `${process.env.APP_VERSION}`,
+            }),
+        );
 
     server.use(
         '/fpgrunndata/api',

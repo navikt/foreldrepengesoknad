@@ -1,32 +1,12 @@
-import 'dayjs/locale/nb.js';
-import 'dayjs/locale/nn.js';
-import * as countries from 'i18n-iso-countries';
-import * as langNB from 'i18n-iso-countries/langs/nb.json';
-import * as langNN from 'i18n-iso-countries/langs/nn.json';
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-
-import { initSentry } from '@navikt/fp-observability';
+import { bootstrapApp } from '@navikt/fp-app-shell';
 
 import { AppContainer } from './AppContainer';
 import './index.css';
 import './styles/global.css';
 
-countries.registerLocale(langNB);
-countries.registerLocale(langNN);
-
-initSentry({ dsn: 'https://4cb9a04935f48499fb83548dedbd4def@sentry.gc.nav.no/183' });
-
-const container = document.getElementById('app');
-
-if (container) {
-    const root = createRoot(container);
-    root.render(
-        <StrictMode>
-            <BrowserRouter basename={import.meta.env.BASE_URL}>
-                <AppContainer />
-            </BrowserRouter>
-        </StrictMode>,
-    );
-}
+void bootstrapApp({
+    sentryDsn: 'https://4cb9a04935f48499fb83548dedbd4def@sentry.gc.nav.no/183',
+    availableLocales: ['nb', 'nn', 'en'],
+    withPluralRulesPolyfill: false,
+    app: <AppContainer />,
+});

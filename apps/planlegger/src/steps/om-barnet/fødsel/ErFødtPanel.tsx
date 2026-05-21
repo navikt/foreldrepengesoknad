@@ -1,10 +1,10 @@
 import { TasklistStartIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
-import { erAlenesøker as erAlene, erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker as erAlene, erFarDelAvSøknaden, erFarOgFar, erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
@@ -15,7 +15,15 @@ import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { erI22SvangerskapsukeEllerSenere, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 const erDatoGyldig = (date: string) => ISO_DATE_REGEX.test(date);
-
+const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
+        return intl.formatMessage({ id: 'OversiktSteg.Medmor' });
+    }
+    if (erFarDelAvSøknaden(hvemPlanlegger)) {
+        return intl.formatMessage({ id: 'OversiktSteg.Far' });
+    }
+    return undefined;
+};
 type Props = {
     hvemPlanlegger: HvemPlanlegger;
     erOmBarnetPlanleggerIkkeOppgittFraFør: boolean;
@@ -30,6 +38,9 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetPlanleggerIkkeOppgittFr
     const fødselsdato = formMethods.watch('fødselsdato');
 
     const erAlenesøker = erAlene(hvemPlanlegger);
+    const erFedre = erFarOgFar(hvemPlanlegger);
+    const erFarMedISøknaden = erFarDelAvSøknaden(hvemPlanlegger);
+
     const erFar = (() => {
         switch (hvemPlanlegger.type) {
             case HvemPlanleggerType.MOR:
@@ -107,23 +118,49 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetPlanleggerIkkeOppgittFr
                         </BodyShort>
 
                         <BodyShort>
-                            <FormattedMessage
-                                id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
-                                values={{
-                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                                }}
-                            />
+                            {erFedre || erFar ? (
+                                <VStack gap="space-8">
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                            values={{
+                                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
+                                            }}
+                                        />
+                                    </BodyShort>
+                                    {erFedre && (
+                                        <BodyShort>
+                                            <FormattedMessage id="Fødsel.ForeldrepengerInfoTekst.StebarnsadopterendeFar" />
+                                        </BodyShort>
+                                    )}
+                                </VStack>
+                            ) : (
+                                <FormattedMessage
+                                    id="Fødsel.ForeldrepengerInfoTekst.SøkeFireUkerFør"
+                                    values={{
+                                        erMorDelAvSøknaden: true,
+                                        erAlenesøker,
+                                    }}
+                                />
+                            )}
                         </BodyShort>
-
-                        <BodyShort>
-                            <FormattedMessage
-                                id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
-                                values={{
-                                    erAlenesøker,
-                                    erFar,
-                                }}
-                            />
-                        </BodyShort>
+                        {!erFedre && (
+                            <>
+                                {!erAlenesøker && (
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="Fødsel.ForeldrepengerInfoTekst.ToFørsteUkerDekket"
+                                            values={{
+                                                erAlenesøker,
+                                                erFar: erFarMedISøknaden,
+                                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                                erMedmor: !erFarDelAvSøknaden(hvemPlanlegger),
+                                            }}
+                                        />
+                                    </BodyShort>
+                                )}
+                            </>
+                        )}
                     </VStack>
                 </Infobox>
             )}
