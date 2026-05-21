@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import React, { ComponentProps, JSX, ReactNode, useCallback, useMemo, useState } from 'react';
+import React, { ComponentProps, JSX, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
@@ -64,6 +64,13 @@ export const RhfDatepicker = <T extends FieldValues>({
 
     const defaultDate = field.value ? dayjs(field.value, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT) : '';
     const [fieldValue, setFieldValue] = useState<string>(() => (isValidDateString(defaultDate) ? defaultDate : ''));
+
+    useEffect(() => {
+        const formatted = field.value ? dayjs(field.value, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT) : '';
+        if (isValidDateString(formatted) && formatted !== fieldValue) {
+            setFieldValue(formatted);
+        }
+    }, [field.value]);
 
     const { datepickerProps, inputProps } = useDatepicker({
         onDateChange: (date) => {
