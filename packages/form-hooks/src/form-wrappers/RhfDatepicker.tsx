@@ -68,6 +68,7 @@ export const RhfDatepicker = <T extends FieldValues>({
     useEffect(() => {
         const formatted = field.value ? dayjs(field.value, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT) : '';
         if (isValidDateString(formatted) && formatted !== fieldValue) {
+            // eslint-disable-next-line @eslint-react/set-state-in-effect -- Sync display with external setValue calls
             setFieldValue(formatted);
         }
     }, [field.value]);

@@ -31,15 +31,15 @@ describe('RhfDatepicker', () => {
         let setValueFn: (val: string) => void = () => {};
         render(<SetValueTestWrapper onReady={(fn) => (setValueFn = fn)} />);
 
-        const input = screen.getByLabelText('Velg dato') as HTMLInputElement;
-        expect(input.value).toBe('15.01.2024');
+        const input = screen.getByLabelText('Velg dato');
+        expect(input).toHaveValue('15.01.2024');
 
         act(() => {
             setValueFn('2024-06-20');
         });
 
         await waitFor(() => {
-            expect(input.value).toBe('20.06.2024');
+            expect(input).toHaveValue('20.06.2024');
         });
     });
 
@@ -47,8 +47,8 @@ describe('RhfDatepicker', () => {
         let setValueFn: (val: string) => void = () => {};
         render(<SetValueTestWrapper onReady={(fn) => (setValueFn = fn)} />);
 
-        const input = screen.getByLabelText('Velg dato') as HTMLInputElement;
-        expect(input.value).toBe('15.01.2024');
+        const input = screen.getByLabelText('Velg dato');
+        expect(input).toHaveValue('15.01.2024');
 
         await userEvent.clear(input);
         await userEvent.type(input, '03.0');
@@ -58,7 +58,7 @@ describe('RhfDatepicker', () => {
         });
 
         await waitFor(() => {
-            expect(input.value).toBe('03.0');
+            expect(input).toHaveValue('03.0');
         });
     });
 });
