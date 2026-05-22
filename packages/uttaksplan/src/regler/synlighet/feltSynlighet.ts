@@ -8,6 +8,7 @@ import { getFloatFromString } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
+import { Periode } from '../types';
 import { Synlighetsområde, Synlighetsregel } from './types';
 
 export type ForelderValg = BrukerRolleSak_fpoversikt | 'BEGGE' | undefined;
@@ -23,7 +24,7 @@ export type FeltSynlighetKontekst = {
     samtidigUttaksprosentMor: string | undefined;
     stillingsprosentMor: string | undefined;
     familiesituasjon: Familiesituasjon;
-    valgtePerioder: Array<{ fom: string; tom: string }>;
+    valgtePerioder: Periode[];
     familiehendelsedato: string;
 };
 
@@ -186,7 +187,7 @@ type FormVerdier = {
     stillingsprosentMor: string | undefined;
 };
 
-export const useFeltSynlighet = (valgtePerioder: Array<{ fom: string; tom: string }>, formVerdier: FormVerdier) => {
+export const useFeltSynlighet = (valgtePerioder: Periode[], formVerdier: FormVerdier) => {
     const {
         foreldreInfo: { rettighetType, søker },
         familiehendelsedato,

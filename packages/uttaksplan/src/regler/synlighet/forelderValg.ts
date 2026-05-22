@@ -1,6 +1,7 @@
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { useHentGyldigeKvotetyper } from '../kvotetype/kvoteRegler';
 import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
+import { Periode } from '../types';
 import { ForelderValg } from './feltSynlighet';
 import { Synlighetsområde, Synlighetsregel } from './types';
 
@@ -76,7 +77,7 @@ export type ForelderValgSynlighet = {
  * det med EØS- og låst-status fra UttaksplanDataContext.
  */
 export const useForelderValgSynlighet = (input: {
-    valgtePerioder: Array<{ fom: string; tom: string }>;
+    valgtePerioder: Periode[];
     forelder: ForelderValg;
     ønskerFlerbarnsdager: boolean | undefined;
 }): ForelderValgSynlighet => {

@@ -1,7 +1,7 @@
 import { LeggTilEllerEndrePeriodeFormFormValues } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
 
 /**
- * Sjekkar om alle felter som krevst for å vurdera samtidig-uttak-reglar er fylte ut.
+ * Sjekker om alle felter som kreves for å vurdere samtidig-uttak-regler er fylt ut.
  * Brukt av både `samtidigUttak`-gruppa og `farMedmorRundtFødsel`-gruppa.
  */
 export const erUtfyltForSamtidigUttak = (values: LeggTilEllerEndrePeriodeFormFormValues): boolean =>

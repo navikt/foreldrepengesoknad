@@ -7,7 +7,7 @@ import { Periode } from '../types';
 export { i18n, type Periode } from '../types';
 
 /**
- * Felles input til alle regelgrupper. Bygd opp av useFormSubmitValidator
+ * Felles input til alle valideringsområder. Bygd opp av useFormSubmitValidator
  * fra skjemaverdier + kontekstdata.
  */
 export type ValideringInput = {
@@ -26,11 +26,11 @@ export type ValideringInput = {
  *
  * - `beskrivelse` er klartekst som en saksbehandler eller designer kan lese
  *   for å forstå hva regelen handler om.
- * - `erBrutt` tar imot en ferdig kontekst fra regelgruppen og avgjør om
+ * - `erBrutt` tar imot en ferdig kontekst fra regelområdet og avgjør om
  *   regelen er brutt.
  * - `feilmeldingId` er intl-nøkkelen som blir vist til brukeren.
  */
-export type Regel<TCtx> = {
+export type Valideringsregel<TCtx> = {
     id: string;
     beskrivelse: string;
     erBrutt: (kontekst: TCtx) => boolean;
@@ -38,24 +38,25 @@ export type Regel<TCtx> = {
 };
 
 /**
- * En gruppe regler med felles forutsetning og felles kontekst.
+ * Et område med valideringsregler som deler en felles forutsetning og en felles
+ * kontekst. Følger samme mønster som de andre regelkatalogene (alert, synlighet,
+ * felt, kvotetype), med tillegg av `byggKontekst` som er spesifikk for validering.
  *
- * - `tittel` er en menneskelig lesbar overskrift brukt i dokumentasjon (Storybook).
- * - `byggKontekst` returnerer `null` når gruppen ikke er relevant (f.eks. når
+ * - `byggKontekst` returnerer `null` når området ikke er relevant (f.eks. når
  *   skjemaet ikke har fylt ut alt som trengs, eller når situasjonen ikke
- *   passer). Reglene i gruppen blir da hoppet over.
+ *   passer). Reglene i området blir da hoppet over.
  * - Reglene blir evaluert i rekkefølge, og første brutte regel vinner.
  */
-export type Regelgruppe<TCtx> = {
+export type Valideringsområde<TCtx> = {
     id: string;
-    tittel: string;
+    område: string;
     beskrivelse: string;
     byggKontekst: (input: ValideringInput) => TCtx | null;
-    regler: ReadonlyArray<Regel<TCtx>>;
+    regler: ReadonlyArray<Valideringsregel<TCtx>>;
 };
 
 /** Returnerer første regel som er brutt, eller undefined. */
-export const førsteBrutteRegel = <TCtx>(
-    regler: ReadonlyArray<Regel<TCtx>>,
+export const førsteBrutteValideringsregel = <TCtx>(
+    regler: ReadonlyArray<Valideringsregel<TCtx>>,
     kontekst: TCtx,
-): Regel<TCtx> | undefined => regler.find((regel) => regel.erBrutt(kontekst));
+): Valideringsregel<TCtx> | undefined => regler.find((regel) => regel.erBrutt(kontekst));

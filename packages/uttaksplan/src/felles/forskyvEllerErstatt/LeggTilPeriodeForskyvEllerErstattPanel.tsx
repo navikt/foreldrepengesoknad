@@ -22,13 +22,13 @@ export const LeggTilPeriodeForskyvEllerErstattPanel = ({
 }: Props) => {
     const [skalForskyvePeriode, setSkalForskyvePeriode] = useState<boolean | undefined>(undefined);
 
-    const { senerePerioderReadonly, valgteDagarFørSeksUker, valgteDagarFørFamhend } = useForskyvEllerErstattAlerts({
+    const { senerePerioderReadonly, valgteDagerFørSeksUker, valgteDagerFørFamhend } = useForskyvEllerErstattAlerts({
         valgtePerioder,
         erFerie,
         erGradert,
     });
 
-    const harDisablingAlert = Boolean(senerePerioderReadonly || valgteDagarFørSeksUker || valgteDagarFørFamhend);
+    const harDisablingAlert = Boolean(senerePerioderReadonly || valgteDagerFørSeksUker || valgteDagerFørFamhend);
 
     return (
         <VStack gap="space-16">
@@ -70,14 +70,14 @@ export const LeggTilPeriodeForskyvEllerErstattPanel = ({
                     <FormattedMessage id={senerePerioderReadonly.meldingId} />
                 </Alert>
             )}
-            {valgteDagarFørSeksUker && (
-                <Alert variant={valgteDagarFørSeksUker.variant}>
-                    <FormattedMessage id={valgteDagarFørSeksUker.meldingId} />
+            {valgteDagerFørSeksUker && (
+                <Alert variant={valgteDagerFørSeksUker.variant}>
+                    <FormattedMessage id={valgteDagerFørSeksUker.meldingId} />
                 </Alert>
             )}
-            {valgteDagarFørFamhend && (
-                <Alert variant={valgteDagarFørFamhend.variant}>
-                    <FormattedMessage id={valgteDagarFørFamhend.meldingId} />
+            {valgteDagerFørFamhend && (
+                <Alert variant={valgteDagerFørFamhend.variant}>
+                    <FormattedMessage id={valgteDagerFørFamhend.meldingId} />
                 </Alert>
             )}
             <HStack justify="space-between">

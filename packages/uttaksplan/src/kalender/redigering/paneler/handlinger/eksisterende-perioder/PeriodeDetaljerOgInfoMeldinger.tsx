@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Alert, BodyShort, VStack } from '@navikt/ds-react';
 
-import { usePeriodeDetaljarAlerts } from '../../../../../regler/alert/informasjonsAlerts';
+import { usePeriodeDetaljerAlerts } from '../../../../../regler/alert/informasjonsAlerts';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../../utils/lagHullPerioder';
 import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
 import { finnValgtePerioder } from '../../../utils/kalenderPeriodeUtils';
@@ -26,7 +26,7 @@ export const PeriodeDetaljerOgInfoMeldinger = ({
         uttakPerioderInkludertTapteDager,
     );
 
-    const { adopsjonFørFamhend, eøs, pleiepenger, kanMisteDagar } = usePeriodeDetaljarAlerts({
+    const { adopsjonFørFamhend, eøs, pleiepenger, kanMisteDager } = usePeriodeDetaljerAlerts({
         sammenslåtteValgtePerioder,
         eksisterendePerioderSomErValgt,
     });
@@ -66,9 +66,9 @@ export const PeriodeDetaljerOgInfoMeldinger = ({
                         </Alert>
                     )}
 
-                    {kanMisteDagar && (
-                        <Alert variant={kanMisteDagar.variant} size="small">
-                            <FormattedMessage id={kanMisteDagar.meldingId} />
+                    {kanMisteDager && (
+                        <Alert variant={kanMisteDager.variant} size="small">
+                            <FormattedMessage id={kanMisteDager.meldingId} />
                         </Alert>
                     )}
                 </>

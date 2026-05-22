@@ -3,31 +3,17 @@ import { useIntl } from 'react-intl';
 
 import { BodyLong, Heading, Table, VStack } from '@navikt/ds-react';
 
-import { ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_GRUPPE } from './validering/arbeidOgUttakDeFørsteSeksUkene';
-import { FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE } from './validering/farMedmorMaksToUkerRundtFødsel';
-import { FAR_MEDMOR_RUNDT_FØDSEL_GRUPPE } from './validering/farMedmorRundtFødsel';
-import { SAMTIDIG_UTTAK_GRUPPE } from './validering/samtidigUttak';
-import { Regel, Regelgruppe } from './validering/types';
+import { ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_OMRÅDE } from './validering/arbeidOgUttakDeFørsteSeksUkene';
+import { FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_OMRÅDE } from './validering/farMedmorMaksToUkerRundtFødsel';
+import { FAR_MEDMOR_RUNDT_FØDSEL_OMRÅDE } from './validering/farMedmorRundtFødsel';
+import { SAMTIDIG_UTTAK_OMRÅDE } from './validering/samtidigUttak';
+import { Valideringsområde } from './validering/types';
 
-type RegelgruppeVisning = {
-    id: string;
-    tittel: string;
-    beskrivelse: string;
-    regler: ReadonlyArray<Omit<Regel<unknown>, 'erBrutt'>>;
-};
-
-const tilVisning = <TCtx,>(gruppe: Regelgruppe<TCtx>): RegelgruppeVisning => ({
-    id: gruppe.id,
-    tittel: gruppe.tittel,
-    beskrivelse: gruppe.beskrivelse,
-    regler: gruppe.regler.map(({ id, beskrivelse, feilmeldingId }) => ({ id, beskrivelse, feilmeldingId })),
-});
-
-const ALLE_VALIDERINGSREGLER: readonly RegelgruppeVisning[] = [
-    tilVisning(ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_GRUPPE),
-    tilVisning(SAMTIDIG_UTTAK_GRUPPE),
-    tilVisning(FAR_MEDMOR_RUNDT_FØDSEL_GRUPPE),
-    tilVisning(FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE),
+const ALLE_VALIDERINGSREGLER: ReadonlyArray<Valideringsområde<any>> = [
+    ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_OMRÅDE,
+    SAMTIDIG_UTTAK_OMRÅDE,
+    FAR_MEDMOR_RUNDT_FØDSEL_OMRÅDE,
+    FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_OMRÅDE,
 ];
 
 /**
@@ -59,7 +45,7 @@ const Valideringsregler = () => {
             {ALLE_VALIDERINGSREGLER.map((gruppe, gruppeIdx) => (
                 <VStack key={gruppe.id} gap="space-2">
                     <Heading size="medium">
-                        {gruppeIdx + 1}. {gruppe.tittel}
+                        {gruppeIdx + 1}. {gruppe.område}
                     </Heading>
                     <BodyLong className="italic text-ax-text-subtle">{gruppe.beskrivelse}</BodyLong>
                     <Table>
@@ -102,4 +88,4 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const AlleReglar: Story = {};
+export const AlleRegler: Story = {};

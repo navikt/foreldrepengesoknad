@@ -4,11 +4,11 @@ import { useIntl } from 'react-intl';
 import { BodyLong, Heading, Table, Tag, VStack } from '@navikt/ds-react';
 
 import { INFORMASJONS_ALERT_OMRÅDE } from './alert/informasjonsAlerts';
-import { BLOKKERANDE_ALERT_OMRÅDE, KONTEKSTUELL_ALERT_OMRÅDE } from './alert/skjemaAlerts';
-import { Alertområde, VISNINGSSTAD_LABELS } from './alert/types';
+import { BLOKKERENDE_ALERT_OMRÅDE, KONTEKSTUELL_ALERT_OMRÅDE } from './alert/skjemaAlerts';
+import { Alertområde, VISNINGSSTED_LABELS } from './alert/types';
 
 const ALLE_ALERTREGLER: readonly Alertområde[] = [
-    BLOKKERANDE_ALERT_OMRÅDE,
+    BLOKKERENDE_ALERT_OMRÅDE,
     KONTEKSTUELL_ALERT_OMRÅDE,
     INFORMASJONS_ALERT_OMRÅDE,
 ];
@@ -69,7 +69,7 @@ const Alertregler = () => {
                                     <Table.DataCell className="font-mono text-xs">{regel.id}</Table.DataCell>
                                     <Table.DataCell>
                                         <Tag
-                                            variant={regel.type === 'blokkerande' ? 'warning' : 'info'}
+                                            variant={regel.type === 'blokkerende' ? 'warning' : 'info'}
                                             size="small"
                                         >
                                             {regel.type}
@@ -77,9 +77,9 @@ const Alertregler = () => {
                                     </Table.DataCell>
                                     <Table.DataCell>
                                         <VStack gap="space-1">
-                                            {regel.visningsstader.map((stad) => (
-                                                <BodyLong key={stad} size="small">
-                                                    {VISNINGSSTAD_LABELS[stad]}
+                                            {regel.visningssteder.map((sted) => (
+                                                <BodyLong key={sted} size="small">
+                                                    {VISNINGSSTED_LABELS[sted]}
                                                 </BodyLong>
                                             ))}
                                         </VStack>

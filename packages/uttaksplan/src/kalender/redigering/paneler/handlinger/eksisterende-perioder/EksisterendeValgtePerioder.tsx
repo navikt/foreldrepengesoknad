@@ -26,7 +26,7 @@ import { useUttaksplanData } from '../../../../../context/UttaksplanDataContext'
 import { SlettPeriodeForskyvEllerErstattPanel } from '../../../../../felles/forskyvEllerErstatt/SlettPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { UttakPeriodeMedAntallDager } from '../../../../../kalender/redigering/utils/kalenderPeriodeUtils';
-import { MORS_AKTIVITET_IKKJE_VALGT_EKSISTERANDE } from '../../../../../regler/alert/informasjonsAlerts';
+import { MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE } from '../../../../../regler/alert/informasjonsAlerts';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../../types/UttaksplanPeriode';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
@@ -174,7 +174,7 @@ export const EksisterendeValgtePerioder = ({ perioder, setErForskyvEllerErstattP
                                         </BodyShort>
                                     )}
 
-                                    {MORS_AKTIVITET_IKKJE_VALGT_EKSISTERANDE.skalVises({
+                                    {MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE.skalVises({
                                         rettighetType,
                                         periode: p,
                                         morsUttakPerioder: uttakPerioder.filter(
@@ -183,13 +183,13 @@ export const EksisterendeValgtePerioder = ({ perioder, setErForskyvEllerErstattP
                                         ),
                                     }) && (
                                         <Alert
-                                            variant={MORS_AKTIVITET_IKKJE_VALGT_EKSISTERANDE.variant}
+                                            variant={MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE.variant}
                                             size="small"
                                             className="mt-3 mb-1 p-2"
                                         >
                                             <BodyShort>
                                                 <FormattedMessage
-                                                    id={MORS_AKTIVITET_IKKJE_VALGT_EKSISTERANDE.meldingIder[0]}
+                                                    id={MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE.meldingIder[0]}
                                                 />
                                             </BodyShort>
                                         </Alert>

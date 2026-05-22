@@ -1,6 +1,6 @@
 import { LeggTilEllerEndrePeriodeFormFormValues } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
-import { Periode, Regel, Regelgruppe, i18n, ValideringInput } from './types';
+import { Periode, Valideringsregel, Valideringsområde, i18n, ValideringInput } from './types';
 
 type ArbeidOgUttakKontekst = {
     formValues: LeggTilEllerEndrePeriodeFormFormValues;
@@ -14,7 +14,7 @@ const periodeOverlapperFørsteSeksUker = (k: ArbeidOgUttakKontekst): boolean =>
         k.familiehendelsedato,
     );
 
-const REGLER: ReadonlyArray<Regel<ArbeidOgUttakKontekst>> = [
+const REGLER: ReadonlyArray<Valideringsregel<ArbeidOgUttakKontekst>> = [
     {
         id: 'MorKanIkkeKombinereArbeidOgUttakFørsteSeksUker',
         beskrivelse:
@@ -40,9 +40,9 @@ const REGLER: ReadonlyArray<Regel<ArbeidOgUttakKontekst>> = [
     },
 ];
 
-export const ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_GRUPPE: Regelgruppe<ArbeidOgUttakKontekst> = {
+export const ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_OMRÅDE: Valideringsområde<ArbeidOgUttakKontekst> = {
     id: 'arbeidOgUttakDeFørsteSeksUkene',
-    tittel: 'Arbeid og uttak de første seks ukene etter fødsel',
+    område: 'Arbeid og uttak de første seks ukene etter fødsel',
     beskrivelse:
         'Regler som hindrer at man kombinerer arbeid med uttak av visse kontotyper i de første seks ukene ' +
         'etter fødsel. Gjelder ikke ved adopsjon.',

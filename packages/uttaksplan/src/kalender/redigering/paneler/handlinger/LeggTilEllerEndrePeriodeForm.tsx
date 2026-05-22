@@ -96,7 +96,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
                 dayjs(vp.tom).isAfter(eksisterendePerioderSomErValgt.at(0)!.tom),
         );
 
-    const { morsAktivitetIkkjeOppgitt: morsAktivitetAlert } = useLeggTilEndreSkjemaInfoAlerts(
+    const { morsAktivitetIkkeOppgitt: morsAktivitetAlert } = useLeggTilEndreSkjemaInfoAlerts(
         harValgtDagerKunForEnEksisterendePeriode
             ? [
                   ...eksisterendePerioderSomErValgt,

@@ -7,7 +7,7 @@ import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
-import { Periode, Regel, Regelgruppe, i18n, ValideringInput } from './types';
+import { Periode, Valideringsregel, Valideringsområde, i18n, ValideringInput } from './types';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
@@ -45,7 +45,7 @@ const tellArbeidsdagerInnenfor = (
     return dager;
 };
 
-const REGLER: ReadonlyArray<Regel<FarMedmorMaks2UkerKontekst>> = [
+const REGLER: ReadonlyArray<Valideringsregel<FarMedmorMaks2UkerKontekst>> = [
     {
         id: 'MerEnnToUkerRundtFamiliehendelse',
         beskrivelse:
@@ -57,9 +57,9 @@ const REGLER: ReadonlyArray<Regel<FarMedmorMaks2UkerKontekst>> = [
     },
 ];
 
-export const FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE: Regelgruppe<FarMedmorMaks2UkerKontekst> = {
+export const FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_OMRÅDE: Valideringsområde<FarMedmorMaks2UkerKontekst> = {
     id: 'farMedmorMaksToUkerRundtFødsel',
-    tittel: 'Far/medmor sitt maksimum på 2 uker rundt fødsel',
+    område: 'Far/medmor sitt maksimum på 2 uker rundt fødsel',
     beskrivelse:
         'Kontroll på at far/medmor ikke samlet får mer enn 2 uker uttak i intervallet 2 uker før til ' +
         '6 uker etter fødsel/termin. Gjelder bare når begge har rett og søknaden gjelder begge foreldre, og ' +

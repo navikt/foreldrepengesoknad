@@ -2,6 +2,7 @@ import type { BrukerRolleSak_fpoversikt, Familiesituasjon, KontoTypeUttak, Retti
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
+import { Periode } from '../types';
 import { Kvoteregel, Kvoteområde } from './types';
 
 export type KvoteKontekst = {
@@ -9,7 +10,7 @@ export type KvoteKontekst = {
     rettighetType: RettighetType_fpoversikt;
     familiesituasjon: Familiesituasjon;
     familiehendelsedato: string;
-    valgtePerioder: Array<{ fom: string; tom: string }>;
+    valgtePerioder: Periode[];
     harValgtSamtidigUttak: boolean;
     ønskerFlerbarnsdager: boolean | undefined;
 };
@@ -271,20 +272,13 @@ export const ALLE_KVOTE_REGLER: ReadonlyArray<Kvoteregel<KvoteKontekst>> = [
     ...FAR_MEDMOR_KVOTE_REGLER,
 ];
 
-const tilDoc = (regel: Kvoteregel<KvoteKontekst>) => ({
-    id: regel.id,
-    beskrivelse: regel.beskrivelse,
-    forelder: regel.forelder,
-    kontotype: regel.kontotype,
-});
-
 export const MOR_KVOTE_OMRÅDE: Kvoteområde = {
     id: 'mor-kvoter',
     område: 'Hvilke kvotetyper er gyldige å velge for mor?',
     beskrivelse:
         'Når mor er valgt som forelder for en periode, må kvotetypen (stønadskonto) være gyldig. ' +
         'Reglene under bestemmer hvilke kvoter mor får tilbudt i nedtrekkslisten.',
-    regler: MOR_KVOTE_REGLER.map(tilDoc),
+    regler: MOR_KVOTE_REGLER,
 };
 
 export const FAR_MEDMOR_KVOTE_OMRÅDE: Kvoteområde = {
@@ -293,12 +287,10 @@ export const FAR_MEDMOR_KVOTE_OMRÅDE: Kvoteområde = {
     beskrivelse:
         'Når far/medmor er valgt som forelder for en periode, må kvotetypen (stønadskonto) være gyldig. ' +
         'Reglene under bestemmer hvilke kvoter far/medmor får tilbudt i nedtrekkslisten.',
-    regler: FAR_MEDMOR_KVOTE_REGLER.map(tilDoc),
+    regler: FAR_MEDMOR_KVOTE_REGLER,
 };
 
 /* ---------- Helpers og hook ---------- */
-
-const tilgjengeligeKontotyperFra = (kontoer: KontoTypeUttak[]) => kontoer;
 
 /**
  * Filtrer kvotetyper som faktisk eksisterer i søknadens stønadskontoer
@@ -307,7 +299,7 @@ const tilgjengeligeKontotyperFra = (kontoer: KontoTypeUttak[]) => kontoer;
  */
 const filtrer = (
     regler: ReadonlyArray<Kvoteregel<KvoteKontekst>>,
-    tilgjengelige: ReadonlyArray<KontoTypeUttak>,
+    tilgjengelige: readonly KontoTypeUttak[],
     kontekst: KvoteKontekst,
 ): KontoTypeUttak[] => {
     const regelForKonto = new Map(regler.map((r) => [r.kontotype, r]));
@@ -328,7 +320,7 @@ export type GyldigeKvoter = {
  * `kvoteRegler.ts`.
  */
 export const useHentGyldigeKvotetyper = (
-    valgtePerioder: Array<{ fom: string; tom: string }>,
+    valgtePerioder: Periode[],
     harValgtSamtidigUttak: boolean,
     ønskerFlerbarnsdager: boolean | undefined,
 ): GyldigeKvoter => {
@@ -339,7 +331,7 @@ export const useHentGyldigeKvotetyper = (
         valgtStønadskvote,
     } = useUttaksplanData();
 
-    const tilgjengelige = tilgjengeligeKontotyperFra(valgtStønadskvote.kontoer.map((k) => k.konto));
+    const tilgjengelige = valgtStønadskvote.kontoer.map((k) => k.konto);
 
     const kontekst: KvoteKontekst = {
         søker,

@@ -27,7 +27,7 @@ import {
     FormValues as UtsettelseFormValues,
 } from '../../felles/utsettelse/LeggTilUtsettelseForm';
 import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
-import { KAN_MISTE_DAGAR, MORS_AKTIVITET_IKKJE_OPPGITT_REDIGERING } from '../../regler/alert/informasjonsAlerts';
+import { KAN_MISTE_DAGER, MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING } from '../../regler/alert/informasjonsAlerts';
 import { lagHvaVilDuGjøreValidatorer } from '../../regler/felt/hvaVilDuGjøre';
 import {
     Uttaksplanperiode,
@@ -308,14 +308,14 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                 !erAdopsjon &&
                 (hvaVilDuGjøre === 'LEGG_TIL_FERIE' || hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') &&
                 kanMisteDagerVedEndringTilFerie([{ fom: fomValue, tom: tomValue }], familiehendelsedato) && (
-                    <Alert variant={KAN_MISTE_DAGAR.variant} size="small">
-                        <FormattedMessage id={KAN_MISTE_DAGAR.meldingIder[0]} />
+                    <Alert variant={KAN_MISTE_DAGER.variant} size="small">
+                        <FormattedMessage id={KAN_MISTE_DAGER.meldingIder[0]} />
                     </Alert>
                 )}
 
             {harPeriodeDerMorsAktivitetIkkeErValgt && (
-                <Alert variant={MORS_AKTIVITET_IKKJE_OPPGITT_REDIGERING.variant} size="small">
-                    <FormattedMessage id={MORS_AKTIVITET_IKKJE_OPPGITT_REDIGERING.meldingIder[0]} />
+                <Alert variant={MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING.variant} size="small">
+                    <FormattedMessage id={MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING.meldingIder[0]} />
                 </Alert>
             )}
 

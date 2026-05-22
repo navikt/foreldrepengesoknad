@@ -2,7 +2,7 @@ import { getFloatFromString } from '@navikt/fp-utils';
 
 import { LeggTilEllerEndrePeriodeFormFormValues } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
-import { Regel, Regelgruppe, ValideringInput, i18n } from './types';
+import { Valideringsregel, Valideringsområde, ValideringInput, i18n } from './types';
 import { erUtfyltForSamtidigUttak } from './utils';
 
 type SamtidigUttakKontekst = {
@@ -18,7 +18,7 @@ type SamtidigUttakKontekst = {
     morsFellesperiodeErStørreEnn50: boolean;
 };
 
-const REGLER: ReadonlyArray<Regel<SamtidigUttakKontekst>> = [
+const REGLER: ReadonlyArray<Valideringsregel<SamtidigUttakKontekst>> = [
     {
         id: 'KanIkkeHaMerEnn150Prosent',
         beskrivelse:
@@ -92,9 +92,9 @@ const REGLER: ReadonlyArray<Regel<SamtidigUttakKontekst>> = [
     },
 ];
 
-export const SAMTIDIG_UTTAK_GRUPPE: Regelgruppe<SamtidigUttakKontekst> = {
+export const SAMTIDIG_UTTAK_OMRÅDE: Valideringsområde<SamtidigUttakKontekst> = {
     id: 'samtidigUttak',
-    tittel: 'Samtidig uttak utanfor verneperioden rundt fødsel',
+    område: 'Samtidig uttak utanfor verneperioden rundt fødsel',
     beskrivelse:
         'Regler for samtidig uttak når begge foreldre tar ut foreldrepenger samtidig utenfor verneperioden ' +
         'rundt fødsel (dvs. ikke fra 2 uker før til 6 uker etter fødsel).',

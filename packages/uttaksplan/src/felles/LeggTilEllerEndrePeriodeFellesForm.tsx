@@ -22,7 +22,7 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskvoteNavnSimple } from '../liste/utils/uttaksplanListeUtils';
-import { useBlokkerandeAlert, skalViseGraderingAlert } from '../regler/alert/skjemaAlerts';
+import { useBlokkerendeAlert, KONTEKSTUELL_GRADERING_ALERT } from '../regler/alert/skjemaAlerts';
 import { useForelderValgSynlighet } from '../regler/synlighet/forelderValg';
 import { ForelderValg, useFeltSynlighet } from '../regler/synlighet/feltSynlighet';
 import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
@@ -115,12 +115,12 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 
     const erBareFarHarRett = søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT';
 
-    const blokkerandeAlert = useBlokkerandeAlert(valgtePerioder, erMorGyldigForelder, erFarMedmorGyldigForelder);
+    const blokkerendeAlert = useBlokkerendeAlert(valgtePerioder, erMorGyldigForelder, erFarMedmorGyldigForelder);
 
-    if (blokkerandeAlert) {
+    if (blokkerendeAlert) {
         return (
-            <Alert variant={blokkerandeAlert.variant}>
-                {blokkerandeAlert.melding}
+            <Alert variant={blokkerendeAlert.variant}>
+                <FormattedMessage id={blokkerendeAlert.meldingId} />
             </Alert>
         );
     }
@@ -481,7 +481,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         </RhfRadioGroup>
                         {skalDuKombinereArbeidOgUttakMor && (
                             <>
-                                {skalViseGraderingAlert({ valgtePerioder, familiehendelsedato }) && (
+                                {KONTEKSTUELL_GRADERING_ALERT.skalVises({ valgtePerioder, familiehendelsedato }) && (
                                     <Alert variant="info">
                                         <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.DagerReduseres" />
                                     </Alert>

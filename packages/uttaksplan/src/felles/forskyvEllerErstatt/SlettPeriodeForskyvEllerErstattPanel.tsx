@@ -14,12 +14,12 @@ interface Props {
 export const SlettPeriodeForskyvEllerErstattPanel = ({ valgtePerioder, avbryt, fjernPeriode }: Props) => {
     const [skalForskyvePeriode, setSkalForskyvePeriode] = useState<boolean | undefined>(undefined);
 
-    const { senerePerioderReadonly, valgteDagarFørSeksUker } = useForskyvEllerErstattAlerts({
+    const { senerePerioderReadonly, valgteDagerFørSeksUker } = useForskyvEllerErstattAlerts({
         valgtePerioder,
         erFerie: true,
     });
 
-    const harDisablingAlert = Boolean(senerePerioderReadonly || valgteDagarFørSeksUker);
+    const harDisablingAlert = Boolean(senerePerioderReadonly || valgteDagerFørSeksUker);
 
     return (
         <VStack gap="space-16">
@@ -61,9 +61,9 @@ export const SlettPeriodeForskyvEllerErstattPanel = ({ valgtePerioder, avbryt, f
                     <FormattedMessage id={senerePerioderReadonly.meldingId} />
                 </Alert>
             )}
-            {valgteDagarFørSeksUker && (
-                <Alert variant={valgteDagarFørSeksUker.variant}>
-                    <FormattedMessage id={valgteDagarFørSeksUker.meldingId} />
+            {valgteDagerFørSeksUker && (
+                <Alert variant={valgteDagerFørSeksUker.variant}>
+                    <FormattedMessage id={valgteDagerFørSeksUker.meldingId} />
                 </Alert>
             )}
             <HStack justify="space-between">

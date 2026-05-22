@@ -3,21 +3,21 @@
  * dokumentasjon i Storybook og som en semantisk peker fra katalogen
  * til faktiske komponenter.
  */
-export type Visningsstad =
+export type Visningssted =
     | 'uttaksplan-liste'
     | 'uttaksplan-kalender'
     | 'legg-til-endre-skjema'
-    | 'eksisterande-valgte-perioder'
-    | 'periode-detaljar-redigering'
+    | 'eksisterende-valgte-perioder'
+    | 'periode-detaljer-redigering'
     | 'forskyv-eller-erstatt';
 
 /** Menneskelig lesbar tekst for hver visningsstad. */
-export const VISNINGSSTAD_LABELS: Record<Visningsstad, string> = {
+export const VISNINGSSTED_LABELS: Record<Visningssted, string> = {
     'uttaksplan-liste': 'Over listevisningen av uttaksplanen',
     'uttaksplan-kalender': 'Over kalendervisningen av uttaksplanen',
     'legg-til-endre-skjema': 'I skjemaet for å legge til eller endre periode',
-    'eksisterande-valgte-perioder': 'Inne i hver valgte eksisterende periode i kalender-redigering',
-    'periode-detaljar-redigering': 'I detaljvisning av valgte eksisterende perioder',
+    'eksisterende-valgte-perioder': 'Inne i hver valgte eksisterende periode i kalender-redigering',
+    'periode-detaljer-redigering': 'I detaljvisning av valgte eksisterende perioder',
     'forskyv-eller-erstatt': 'I forskyv- og erstatt-panelene',
 };
 
@@ -34,10 +34,10 @@ export const VISNINGSSTAD_LABELS: Record<Visningsstad, string> = {
 export type AlertregelDoc = {
     id: string;
     beskrivelse: string;
-    visningsstader: readonly Visningsstad[];
+    visningssteder: readonly Visningssted[];
     meldingIder: readonly string[];
     variant: 'info' | 'warning';
-    type: 'blokkerande' | 'kontekstuell';
+    type: 'blokkerende' | 'kontekstuell';
 };
 
 /**

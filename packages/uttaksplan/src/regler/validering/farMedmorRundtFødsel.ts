@@ -1,7 +1,7 @@
 import { getFloatFromString } from '@navikt/fp-utils';
 
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
-import { Regel, Regelgruppe, ValideringInput, i18n } from './types';
+import { Valideringsregel, Valideringsområde, ValideringInput, i18n } from './types';
 import { erUtfyltForSamtidigUttak } from './utils';
 
 type FarMedmorRundtFødselKontekst = {
@@ -12,7 +12,7 @@ type FarMedmorRundtFødselKontekst = {
     ønskerFlerbarnsdager: boolean;
 };
 
-const REGLER: ReadonlyArray<Regel<FarMedmorRundtFødselKontekst>> = [
+const REGLER: ReadonlyArray<Valideringsregel<FarMedmorRundtFødselKontekst>> = [
     {
         id: 'KanIkkeHaMindreEnn100ProsentFlerbarnsdager',
         beskrivelse:
@@ -59,9 +59,9 @@ const REGLER: ReadonlyArray<Regel<FarMedmorRundtFødselKontekst>> = [
     },
 ];
 
-export const FAR_MEDMOR_RUNDT_FØDSEL_GRUPPE: Regelgruppe<FarMedmorRundtFødselKontekst> = {
+export const FAR_MEDMOR_RUNDT_FØDSEL_OMRÅDE: Valideringsområde<FarMedmorRundtFødselKontekst> = {
     id: 'farMedmorRundtFødsel',
-    tittel: 'Far/medmor sitt samtidige uttak rundt fødsel',
+    område: 'Far/medmor sitt samtidige uttak rundt fødsel',
     beskrivelse:
         'Regler for samtidig uttak når minst én av periodene ligger i verneperioden rundt fødsel ' +
         '(fra 2 uker før til 6 uker etter fødsel/termin). Her er kravene strengere enn ellers.',
