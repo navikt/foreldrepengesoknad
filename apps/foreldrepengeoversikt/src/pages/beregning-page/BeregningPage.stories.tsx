@@ -3,6 +3,7 @@ import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import {
     saker_beregning_aap,
+    saker_beregning_cross_year,
     saker_beregning_dagpenger,
     saker_beregning_delvis_refusjon,
     saker_beregning_direkte_utbetaling,
@@ -209,5 +210,19 @@ export const BeregningKunYtelse: Story = {
     },
     args: {
         saksnummer: '803',
+    },
+};
+
+export const BeregningCrossYear: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get(API_URLS.saker, () => HttpResponse.json(saker_beregning_cross_year)),
+                http.get(API_URLS.inntektsmelding, () => HttpResponse.json([])),
+            ],
+        },
+    },
+    args: {
+        saksnummer: '901',
     },
 };
