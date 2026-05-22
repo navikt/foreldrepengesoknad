@@ -4,7 +4,9 @@ import { BodyLong, BodyShort, ExpansionCard, Link, VStack } from '@navikt/ds-rea
 
 import { links } from '@navikt/fp-constants';
 
-export const InfoTilFiskere = () => {
+type Props = { erSvp: boolean };
+
+export const InfoTilFiskere = ({ erSvp }: Props) => {
     return (
         <ExpansionCard size="small" aria-label="Info til fiskere">
             <ExpansionCard.Header>
@@ -15,7 +17,7 @@ export const InfoTilFiskere = () => {
             <ExpansionCard.Content>
                 <VStack gap="space-16">
                     <BodyLong>
-                        <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del1" />
+                        <FormattedMessage id="inntektsinformasjon.infoTilFiskere.del1" values={{ erSvp }} />
                     </BodyLong>
                     <div>
                         <BodyShort as="h4" style={{ marginBottom: '.5rem', fontWeight: 'bold' }}>
