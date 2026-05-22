@@ -175,11 +175,18 @@ describe('<BeregningPage>', () => {
             setHandlers(BeregningCrossYear.parameters.msw);
             render(<BeregningCrossYear />);
 
-            expect(await screen.findByText('Utbetalingsplan')).toBeInTheDocument();
+            const utbetalingsplanHeading = await screen.findByText('Utbetalingsplan');
+            expect(utbetalingsplanHeading).toBeInTheDocument();
 
-            // Both year headings should be visible
-            expect(await screen.findByText('2026')).toBeInTheDocument();
-            expect(await screen.findByText('2027')).toBeInTheDocument();
+            const utbetalingsplanContainer =
+                utbetalingsplanHeading.closest('section') ?? utbetalingsplanHeading.parentElement;
+            expect(utbetalingsplanContainer).not.toBeNull();
+
+            const utbetalingsplan = within(utbetalingsplanContainer as HTMLElement);
+
+            // Both year headings should be visible in the payment plan section
+            expect(await utbetalingsplan.findByText('2026')).toBeInTheDocument();
+            expect(await utbetalingsplan.findByText('2027')).toBeInTheDocument();
 
             // Months that exist in both years should appear as separate expansion cards
             const juniCards = await screen.findAllByTestId('expansioncard-Juni');
