@@ -4,8 +4,8 @@ import { describe, expect, it } from 'vitest';
 
 import { BarnType } from '@navikt/fp-constants';
 
-import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
-import { useHentGyldigeKvotetyper } from './useHentGyldigeKvotetyper';
+import { UttaksplanDataProvider } from '../../context/UttaksplanDataContext';
+import { useHentGyldigeKvotetyper } from './kvoteRegler';
 
 const FAMILIEHENDELSESDATO = '2024-06-17';
 

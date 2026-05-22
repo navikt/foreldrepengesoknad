@@ -23,12 +23,11 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskvoteNavnSimple } from '../liste/utils/uttaksplanListeUtils';
 import { useBlokkerandeAlert, skalViseGraderingAlert } from '../regler/alert/skjemaAlerts';
-import { synlighetForForelderValg } from '../regler/synlighet/forelderValg';
+import { useForelderValgSynlighet } from '../regler/synlighet/forelderValg';
 import { ForelderValg, useFeltSynlighet } from '../regler/synlighet/feltSynlighet';
-import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
+import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
 import { getAktivitetskravOptions, getAktivitetskravTekst } from '../utils/periodeUtils';
-import { useHentGyldigeKvotetyper } from './useHentGyldigeKvotetyper';
 import { prosentValideringGradering, valideringSamtidigUttak } from './uttaksplanValidatorer';
 
 dayjs.extend(isSameOrBefore);
@@ -66,7 +65,6 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         familiehendelsedato,
         erPeriodeneTilAnnenPartLåst,
         aktiveArbeidsforhold,
-        uttakPerioder,
     } = useUttaksplanData();
 
     const formMethods = useFormContext<LeggTilEllerEndrePeriodeFormFormValues>();
@@ -93,11 +91,19 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         stillingsprosentMor,
     });
 
-    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKvotetyper(
+    const {
+        gyldigeStønadskontoerForMor,
+        gyldigeStønadskontoerForFarMedmor,
+        erMorGyldigForelder,
+        erFarMedmorGyldigForelder,
+        visMor: visMorRadio,
+        visFarMedmor: visFarMedmorRadio,
+        visBegge: visBeggeRadio,
+    } = useForelderValgSynlighet({
         valgtePerioder,
-        forelder === 'BEGGE',
+        forelder,
         ønskerFlerbarnsdager,
-    );
+    });
 
     const infotekstOmFedrekvoteBrukRundtFødsel = getInfotekstOmFedrekvoteBrukRundtFødsel(
         valgtePerioder,
@@ -106,9 +112,6 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         forelder,
         intl,
     );
-
-    const erMorGyldigForelder = gyldigeStønadskontoerForMor.length > 0;
-    const erFarMedmorGyldigForelder = gyldigeStønadskontoerForFarMedmor.length > 0;
 
     const erBareFarHarRett = søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT';
 
@@ -160,17 +163,8 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         }
     };
 
-    const erMinstEnEøsPeriode = uttakPerioder.some((periode) => erEøsUttakPeriode(periode));
     const erFarMedmorLåst = erPeriodeneTilAnnenPartLåst && søker === 'MOR';
     const erMorLåst = erPeriodeneTilAnnenPartLåst && søker === 'FAR_MEDMOR';
-
-    const forelderValgSynlighet = synlighetForForelderValg({
-        erMorGyldigForelder,
-        erFarMedmorGyldigForelder,
-        erMorLåst,
-        erFarMedmorLåst,
-        erMinstEnEøsPeriode,
-    });
 
     return (
         <>
@@ -183,12 +177,12 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
             >
                 {
                     [
-                        forelderValgSynlighet.visMor && (
+                        visMorRadio && (
                             <Radio key="mor" value="MOR">
                                 <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />
                             </Radio>
                         ),
-                        forelderValgSynlighet.visFarMedmor && (
+                        visFarMedmorRadio && (
                             <Radio key="far" value="FAR_MEDMOR">
                                 {erMedmorDelAvSøknaden ? (
                                     <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />
@@ -197,7 +191,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                                 )}
                             </Radio>
                         ),
-                        forelderValgSynlighet.visBegge && (
+                        visBeggeRadio && (
                             <Radio key="begge" value="BEGGE">
                                 <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Begge" />
                             </Radio>

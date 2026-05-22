@@ -20,7 +20,7 @@ import {
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
-import { useHentGyldigeKvotetyper } from '../../felles/useHentGyldigeKvotetyper';
+import { useHentGyldigeKvotetyper } from '../../regler/kvotetype/kvoteRegler';
 import { LeggTilPauseForm } from '../../felles/utsettelse/LeggTilPauseForm';
 import {
     LeggTilUtsettelseForm,
