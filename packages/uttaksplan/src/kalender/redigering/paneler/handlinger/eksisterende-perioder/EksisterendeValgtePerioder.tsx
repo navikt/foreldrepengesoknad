@@ -26,7 +26,7 @@ import { useUttaksplanData } from '../../../../../context/UttaksplanDataContext'
 import { SlettPeriodeForskyvEllerErstattPanel } from '../../../../../felles/forskyvEllerErstatt/SlettPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { UttakPeriodeMedAntallDager } from '../../../../../kalender/redigering/utils/kalenderPeriodeUtils';
-import { MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE } from '../../../../../regler/alert/informasjonsAlerts';
+import { useEksisterendeValgtePeriodeAlerts } from '../../../../../regler/alert/informasjonsAlertHooks';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../../types/UttaksplanPeriode';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
@@ -51,10 +51,12 @@ export const EksisterendeValgtePerioder = ({ perioder, setErForskyvEllerErstattP
     const slettPeriode = useSlettPeriodeFn();
 
     const {
-        foreldreInfo: { erMedmorDelAvSøknaden, søker, rettighetType },
+        foreldreInfo: { erMedmorDelAvSøknaden, søker },
         erPeriodeneTilAnnenPartLåst,
         uttakPerioder,
     } = useUttaksplanData();
+
+    const alertsForPeriode = useEksisterendeValgtePeriodeAlerts();
 
     return (
         <VStack gap="space-12">
@@ -174,26 +176,16 @@ export const EksisterendeValgtePerioder = ({ perioder, setErForskyvEllerErstattP
                                         </BodyShort>
                                     )}
 
-                                    {MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE.skalVises({
-                                        rettighetType,
-                                        periode: p,
-                                        morsUttakPerioder: uttakPerioder.filter(
-                                            (mp): mp is UttakPeriode_fpoversikt =>
-                                                !erEøsUttakPeriode(mp) && mp.forelder === 'MOR',
-                                        ),
-                                    }) && (
-                                        <Alert
-                                            variant={MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE.variant}
-                                            size="small"
-                                            className="mt-3 mb-1 p-2"
-                                        >
-                                            <BodyShort>
-                                                <FormattedMessage
-                                                    id={MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE.meldingIder[0]}
-                                                />
-                                            </BodyShort>
-                                        </Alert>
-                                    )}
+                                    {(() => {
+                                        const morsAktivitet = alertsForPeriode(p).morsAktivitetIkkeValgt;
+                                        return morsAktivitet ? (
+                                            <Alert variant={morsAktivitet.variant} size="small" className="mt-3 mb-1 p-2">
+                                                <BodyShort>
+                                                    <FormattedMessage id={morsAktivitet.meldingId} />
+                                                </BodyShort>
+                                            </Alert>
+                                        ) : null;
+                                    })()}
                                 </VStack>
                                 <Spacer />
 

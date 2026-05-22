@@ -1,7 +1,15 @@
 import dayjs from 'dayjs';
 
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { Uttaksplanperiode, UttaksplanperiodeMedKunTapteDager, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
+import { kanMisteDagerVedEndringTilFerie } from '../../felles/uttaksplanValidatorer';
+import {
+    Uttaksplanperiode,
+    UttaksplanperiodeMedKunTapteDager,
+    erEøsUttakPeriode,
+    erVanligUttakPeriode,
+} from '../../types/UttaksplanPeriode';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { erDetReadonlyPerioderEtterValgtePerioder } from '../../utils/periodeUtils';
 import { Periode } from '../types';
@@ -14,6 +22,7 @@ import {
     MANGLER_MORS_AKTIVITET_KALENDER,
     MANGLER_MORS_AKTIVITET_LISTE,
     MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING,
+    MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE,
     PeriodeDetaljerKontekst,
     SENERE_PERIODER_READONLY,
     VALGTE_DAGER_FØR_FAMHEND,
@@ -30,6 +39,78 @@ export type AktivAlert = { meldingId: string; variant: 'info' | 'warning' };
 
 const tilAktiv = <T,>(regel: Alertregel<T>, ctx: T): AktivAlert | undefined =>
     regel.skalVises(ctx) ? { meldingId: regel.getMeldingId(ctx), variant: regel.variant } : undefined;
+
+/**
+ * Listepanelet skal varsle om at mor kan miste dager når hun endrer en
+ * periode til ferie/opphold, og når en eller flere eksisterende perioder
+ * mangler valg av mors aktivitet. Mor-aktivitet-flagget regnes ut høyere
+ * oppe (over hele uttaksplanen) og mates inn som input.
+ */
+export type ListePanelInfoAlerts = {
+    kanMisteDagerVedFerie?: AktivAlert;
+    morsAktivitetIkkeOppgitt?: AktivAlert;
+};
+
+export const useListePanelInfoAlerts = (input: {
+    valgtPeriode: { fom: string; tom: string } | undefined;
+    harValgtFerieEllerOpphold: boolean;
+    harPeriodeDerMorsAktivitetIkkeErValgt: boolean;
+}): ListePanelInfoAlerts => {
+    const {
+        foreldreInfo: { søker, rettighetType },
+        familiesituasjon,
+        familiehendelsedato,
+    } = useUttaksplanData();
+
+    const visKanMisteDager =
+        !!input.valgtPeriode &&
+        input.harValgtFerieEllerOpphold &&
+        søker === 'MOR' &&
+        familiesituasjon !== 'adopsjon' &&
+        kanMisteDagerVedEndringTilFerie([input.valgtPeriode], familiehendelsedato);
+
+    return {
+        kanMisteDagerVedFerie: visKanMisteDager
+            ? {
+                  variant: KAN_MISTE_DAGER.variant,
+                  meldingId: KAN_MISTE_DAGER.getMeldingId({} as never),
+              }
+            : undefined,
+        morsAktivitetIkkeOppgitt: input.harPeriodeDerMorsAktivitetIkkeErValgt
+            ? {
+                  variant: MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING.variant,
+                  meldingId: MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING.getMeldingId({ rettighetType, perioder: [] }),
+              }
+            : undefined,
+    };
+};
+
+/**
+ * For listen av eksisterende valgte perioder i kalender-redigering: evaluer
+ * mors-aktivitet-alerten én gang per periode mot en felles ferdigberegnet
+ * `morsUttakPerioder`-liste. Returnerer en ren funksjon konsumenten kaller
+ * per periode under render.
+ */
+export const useEksisterendeValgtePeriodeAlerts = (): ((
+    periode: Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager,
+) => { morsAktivitetIkkeValgt?: AktivAlert }) => {
+    const {
+        foreldreInfo: { rettighetType },
+        uttakPerioder,
+    } = useUttaksplanData();
+
+    const morsUttakPerioder = uttakPerioder.filter(
+        (p): p is UttakPeriode_fpoversikt => !erEøsUttakPeriode(p) && p.forelder === 'MOR',
+    );
+
+    return (periode) => ({
+        morsAktivitetIkkeValgt: tilAktiv(MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE, {
+            rettighetType,
+            periode,
+            morsUttakPerioder,
+        }),
+    });
+};
 
 export type UttaksplanListeAlerts = {
     manglerMorsAktivitet?: AktivAlert;

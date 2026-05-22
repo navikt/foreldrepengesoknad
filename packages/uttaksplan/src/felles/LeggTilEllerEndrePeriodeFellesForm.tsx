@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { useFormContext } from 'react-hook-form';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, InlineMessage, Radio, VStack } from '@navikt/ds-react';
 
@@ -22,11 +22,10 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskvoteNavnSimple } from '../liste/utils/uttaksplanListeUtils';
-import { useBlokkerendeAlert, KONTEKSTUELL_GRADERING_ALERT } from '../regler/alert/skjemaAlerts';
+import { useBlokkerendeAlert, useSkjemaKontekstuelleAlerts } from '../regler/alert/skjemaAlerts';
 import { useForelderValgSynlighet } from '../regler/synlighet/forelderValg';
 import { ForelderValg, useFeltSynlighet } from '../regler/synlighet/feltSynlighet';
 import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
-import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
 import { getAktivitetskravOptions, getAktivitetskravTekst } from '../utils/periodeUtils';
 import { prosentValideringGradering, valideringSamtidigUttak } from './uttaksplanValidatorer';
 
@@ -62,7 +61,6 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 
     const {
         foreldreInfo: { rettighetType, erMedmorDelAvSøknaden, søker },
-        familiehendelsedato,
         aktiveArbeidsforhold,
     } = useUttaksplanData();
 
@@ -108,13 +106,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         ønskerFlerbarnsdager,
     });
 
-    const infotekstOmFedrekvoteBrukRundtFødsel = getInfotekstOmFedrekvoteBrukRundtFødsel(
-        valgtePerioder,
-        kontoTypeFarMedmor,
-        familiehendelsedato,
-        forelder,
-        intl,
-    );
+    const skjemaKontekstuelleAlerts = useSkjemaKontekstuelleAlerts(valgtePerioder);
 
     const erBareFarHarRett = søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT';
 
@@ -280,9 +272,11 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 </RhfRadioGroup>
             )}
 
-            {infotekstOmFedrekvoteBrukRundtFødsel && (
+            {feltSynlighet.visInfoFedrekvoteRundtFødsel && (
                 <InlineMessage status="info">
-                    <BodyShort>{infotekstOmFedrekvoteBrukRundtFødsel}</BodyShort>
+                    <BodyShort>
+                        <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel" />
+                    </BodyShort>
                 </InlineMessage>
             )}
 
@@ -459,7 +453,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     />
                 </>
             )}
-            {kontoTypeMor !== undefined && forelder !== 'FAR_MEDMOR' && !feltSynlighet.visMorOverføring && (
+            {feltSynlighet.visKombinereArbeidOgUttakMor && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
                     <VStack gap="space-16">
@@ -485,9 +479,11 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         </RhfRadioGroup>
                         {skalDuKombinereArbeidOgUttakMor && (
                             <>
-                                {KONTEKSTUELL_GRADERING_ALERT.skalVises({ valgtePerioder, familiehendelsedato }) && (
-                                    <Alert variant="info">
-                                        <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.DagerReduseres" />
+                                {skjemaKontekstuelleAlerts.graderingDagerReduseres && (
+                                    <Alert variant={skjemaKontekstuelleAlerts.graderingDagerReduseres.variant}>
+                                        <FormattedMessage
+                                            id={skjemaKontekstuelleAlerts.graderingDagerReduseres.meldingId}
+                                        />
                                     </Alert>
                                 )}
                                 <RhfNumericField
@@ -535,7 +531,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     </VStack>
                 </>
             )}
-            {forelder !== 'MOR' && !feltSynlighet.visFarMedmorOverføring && (
+            {feltSynlighet.visKombinereArbeidOgUttakFarMedmor && (
                 <>
                     <hr className="text-ax-border-neutral-subtle" />
                     <VStack gap="space-16">
@@ -788,26 +784,4 @@ const finnAktivitetType = (hvorSkalDuJobbe?: string): AktivitetType_fpoversikt =
     return hvorSkalDuJobbe === 'FRILANS' || hvorSkalDuJobbe === 'SELVSTENDIG_NÆRINGSDRIVENDE'
         ? hvorSkalDuJobbe
         : 'ORDINÆRT_ARBEID';
-};
-
-const getInfotekstOmFedrekvoteBrukRundtFødsel = (
-    valgtePerioder: Array<{ fom: string; tom: string }>,
-    kontoTypeFarMedmor: KontoTypeUttak | undefined,
-    familiehendelsedato: string,
-    forelder: ForelderValg,
-    intl: IntlShape,
-) => {
-    const valgteDagerRundtFødsel = valgtePerioder.filter((p) =>
-        UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
-            p,
-            familiehendelsedato,
-            undefined,
-        ),
-    );
-
-    return valgteDagerRundtFødsel.length > 0 && kontoTypeFarMedmor === 'FEDREKVOTE' && forelder === 'FAR_MEDMOR'
-        ? intl.formatMessage({
-              id: 'LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel',
-          })
-        : undefined;
 };

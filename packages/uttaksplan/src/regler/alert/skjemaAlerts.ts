@@ -117,6 +117,29 @@ const KONTEKSTUELLE_ALERTS: ReadonlyArray<Alertregel<KontekstuellAlertKontekst>>
 export { KONTEKSTUELL_GRADERING_ALERT };
 
 /**
+ * Aktive kontekstuelle alerts i legg-til-/endre-skjemaet, ferdig pakket
+ * med variant og meldingsnøkkel. Konsumentene rendrer kun.
+ */
+export type SkjemaKontekstuelleAlerts = {
+    graderingDagerReduseres?: { meldingId: string; variant: 'info' | 'warning' };
+};
+
+export const useSkjemaKontekstuelleAlerts = (
+    valgtePerioder: Periode[],
+): SkjemaKontekstuelleAlerts => {
+    const { familiehendelsedato } = useUttaksplanData();
+    const ctx: KontekstuellAlertKontekst = { valgtePerioder, familiehendelsedato };
+    return {
+        graderingDagerReduseres: KONTEKSTUELL_GRADERING_ALERT.skalVises(ctx)
+            ? {
+                  meldingId: KONTEKSTUELL_GRADERING_ALERT.getMeldingId(ctx),
+                  variant: KONTEKSTUELL_GRADERING_ALERT.variant,
+              }
+            : undefined,
+    };
+};
+
+/**
  * Finn den første blokkerende alerten som slår inn, eller undefined.
  * Bruker regelens `getMeldingId` for å finne riktig meldingsnøkkel.
  */

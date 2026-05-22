@@ -143,6 +143,27 @@ export const VIS_KOMBINERE_ARBEID_OG_UTTAK_FAR_MEDMOR: Synlighetsregel<FeltSynli
     skalVises: (k) => k.forelder !== 'MOR' && !farMedmorSøkerOmOverføring(k),
 };
 
+const erValgtPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel = (k: FeltSynlighetKontekst) =>
+    k.valgtePerioder.some((p) =>
+        UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+            p,
+            k.familiehendelsedato,
+            undefined,
+        ),
+    );
+
+export const VIS_INFO_FEDREKVOTE_RUNDT_FØDSEL: Synlighetsregel<FeltSynlighetKontekst> = {
+    id: 'feltSynlighet.visInfoFedrekvoteRundtFødsel',
+    beskrivelse:
+        'Infotekst om at far/medmor må bruke fedrekvotedager i perioden rundt fødsel vises når far/medmor ' +
+        'er valgt forelder, kvotetypen er fedrekvote og minst én av de valgte dagene ligger i intervallet ' +
+        'to uker før fødsel til seks uker etter fødsel.',
+    skalVises: (k) =>
+        k.forelder === 'FAR_MEDMOR' &&
+        k.kontoTypeFarMedmor === 'FEDREKVOTE' &&
+        erValgtPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(k),
+};
+
 export const FELT_SYNLIGHET_REGLER = [
     VIS_FLERBARNSDAGER_SPØRSMÅL,
     VIS_MOR_OVERFØRING,
@@ -153,6 +174,7 @@ export const FELT_SYNLIGHET_REGLER = [
     VIS_SAMTIDIG_UTTAK_FELTER,
     VIS_KOMBINERE_ARBEID_OG_UTTAK_MOR,
     VIS_KOMBINERE_ARBEID_OG_UTTAK_FAR_MEDMOR,
+    VIS_INFO_FEDREKVOTE_RUNDT_FØDSEL,
 ] as const;
 
 export const FELT_SYNLIGHET_OMRÅDE: Synlighetsområde = {
@@ -175,6 +197,7 @@ export const synlighetForFelter = (kontekst: FeltSynlighetKontekst) => ({
     visSamtidigUttakFelter: VIS_SAMTIDIG_UTTAK_FELTER.skalVises(kontekst),
     visKombinereArbeidOgUttakMor: VIS_KOMBINERE_ARBEID_OG_UTTAK_MOR.skalVises(kontekst),
     visKombinereArbeidOgUttakFarMedmor: VIS_KOMBINERE_ARBEID_OG_UTTAK_FAR_MEDMOR.skalVises(kontekst),
+    visInfoFedrekvoteRundtFødsel: VIS_INFO_FEDREKVOTE_RUNDT_FØDSEL.skalVises(kontekst),
     erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel: erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel(kontekst),
 });
 

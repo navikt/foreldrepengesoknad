@@ -26,8 +26,8 @@ import {
     LeggTilUtsettelseForm,
     FormValues as UtsettelseFormValues,
 } from '../../felles/utsettelse/LeggTilUtsettelseForm';
-import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
-import { KAN_MISTE_DAGER, MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING } from '../../regler/alert/informasjonsAlerts';
+import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
+import { useListePanelInfoAlerts } from '../../regler/alert/informasjonsAlertHooks';
 import { lagHvaVilDuGjøreValidatorer } from '../../regler/felt/hvaVilDuGjøre';
 import {
     Uttaksplanperiode,
@@ -265,8 +265,6 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         formMethods.setValue('hvaVilDuGjøre', value, { shouldDirty: true });
     };
 
-    const erAdopsjon = familiesituasjon === 'adopsjon';
-
     const perioder = fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [];
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useGyldigeKvotetyper({
         valgtePerioder: perioder,
@@ -287,6 +285,12 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         rettighetType,
     });
 
+    const listePanelAlerts = useListePanelInfoAlerts({
+        valgtPeriode: fomValue && tomValue ? { fom: fomValue, tom: tomValue } : undefined,
+        harValgtFerieEllerOpphold: hvaVilDuGjøre === 'LEGG_TIL_FERIE' || hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD',
+        harPeriodeDerMorsAktivitetIkkeErValgt,
+    });
+
     return (
         <VStack
             gap="space-8"
@@ -302,20 +306,15 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                     </Heading>
                 </HStack>
             )}
-            {fomValue &&
-                tomValue &&
-                søker === 'MOR' &&
-                !erAdopsjon &&
-                (hvaVilDuGjøre === 'LEGG_TIL_FERIE' || hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') &&
-                kanMisteDagerVedEndringTilFerie([{ fom: fomValue, tom: tomValue }], familiehendelsedato) && (
-                    <Alert variant={KAN_MISTE_DAGER.variant} size="small">
-                        <FormattedMessage id={KAN_MISTE_DAGER.meldingIder[0]} />
-                    </Alert>
-                )}
+            {listePanelAlerts.kanMisteDagerVedFerie && (
+                <Alert variant={listePanelAlerts.kanMisteDagerVedFerie.variant} size="small">
+                    <FormattedMessage id={listePanelAlerts.kanMisteDagerVedFerie.meldingId} />
+                </Alert>
+            )}
 
-            {harPeriodeDerMorsAktivitetIkkeErValgt && (
-                <Alert variant={MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING.variant} size="small">
-                    <FormattedMessage id={MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING.meldingIder[0]} />
+            {listePanelAlerts.morsAktivitetIkkeOppgitt && (
+                <Alert variant={listePanelAlerts.morsAktivitetIkkeOppgitt.variant} size="small">
+                    <FormattedMessage id={listePanelAlerts.morsAktivitetIkkeOppgitt.meldingId} />
                 </Alert>
             )}
 
