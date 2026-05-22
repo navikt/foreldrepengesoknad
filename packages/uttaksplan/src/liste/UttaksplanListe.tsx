@@ -10,9 +10,10 @@ import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
+import { UttaksplanHandlingKnapper } from '../felles/UttaksplanHandlingKnapper';
+import { useManglerMorsAktivitetListeAlert } from '../regler/alert/informasjonsAlerts';
 import { Uttaksplanperiode } from '../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak } from '../utils/lagHullPerioder';
-import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../utils/periodeUtils';
 import { LeggTilEllerEndrePeriodeListPanel } from './legg-til-endre-periode-panel/LeggTilEllerEndrePeriodeListPanel';
 import { PeriodeListeItem } from './periode-liste-item/PeriodeListeItem';
 import { UttaksplanListeKnapper } from './UttaksplanListeKnapper';
@@ -26,11 +27,7 @@ interface Props {
 export const UttaksplanListe = ({ isReadOnly }: Props) => {
     const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
-    const {
-        uttakPerioder,
-        familiehendelsedato,
-        foreldreInfo: { rettighetType },
-    } = useUttaksplanData();
+    const { uttakPerioder, familiehendelsedato } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
@@ -55,16 +52,13 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
 
     const alleRader = leggTilPeriodeForFamiliehendelsedato(uttaksplanperioderPerRadIListe, familiehendelsedato);
 
-    const harMorsAktivitetIkkeErValgt = harPeriodeDerMorsAktivitetIkkeErValgt(
-        rettighetType,
-        uttakPerioderJustertForFamiliehendelsesdato,
-    );
+    const manglerMorsAktivitetAlert = useManglerMorsAktivitetListeAlert(uttakPerioderJustertForFamiliehendelsesdato);
 
     return (
         <VStack gap="space-16">
-            {harMorsAktivitetIkkeErValgt && (
-                <Alert variant="warning">
-                    <FormattedMessage id="UttaksplanListe.ManglerMorsAktivitet" />
+            {manglerMorsAktivitetAlert && (
+                <Alert variant={manglerMorsAktivitetAlert.variant}>
+                    <FormattedMessage id={manglerMorsAktivitetAlert.meldingId} />
                 </Alert>
             )}
             {uttakPerioder.length > 0 && (

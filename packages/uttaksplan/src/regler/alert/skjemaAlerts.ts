@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Periode, i18n } from '../types';
-import { Alertområde, Alertregel } from './types';
+import { Alertregel, Alertområde, Visningsstad } from './types';
 
 /**
  * Kontekst for blokkerande alerts som avgjør om hele skjemaet skal
@@ -21,6 +21,8 @@ export type BlokkerandeAlertKontekst = {
     erPeriodeneTilAnnenPartLåst: boolean;
 };
 
+const SKJEMA_VISNINGSSTADER: readonly Visningsstad[] = ['legg-til-endre-skjema'];
+
 const BLOKKERANDE_ALERTS: ReadonlyArray<Alertregel<BlokkerandeAlertKontekst>> = [
     {
         id: 'perioder-krysser-familiehendelse',
@@ -28,6 +30,7 @@ const BLOKKERANDE_ALERTS: ReadonlyArray<Alertregel<BlokkerandeAlertKontekst>> = 
             'Brukeren har markert dager både før og etter familiehendelsesdatoen. ' +
             'Skjemaet blokkeres fordi planen må endres i to steg — først dagene ' +
             'før, så dagene etter familiehendelsen.',
+        visningsstader: SKJEMA_VISNINGSSTADER,
         meldingIder: [
             i18n('LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.fødsel'),
             i18n('LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.termin'),
@@ -54,6 +57,7 @@ const BLOKKERANDE_ALERTS: ReadonlyArray<Alertregel<BlokkerandeAlertKontekst>> = 
         beskrivelse:
             'Ingen forelder har gyldige stønadskontoer for den valgte perioden. ' +
             'Skjemaet blokkeres fordi det ikke finnes noen gyldig kontotype å velge.',
+        visningsstader: SKJEMA_VISNINGSSTADER,
         meldingIder: [i18n('LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon')],
         getMeldingId: () => i18n('LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon'),
         variant: 'info',
@@ -66,6 +70,7 @@ const BLOKKERANDE_ALERTS: ReadonlyArray<Alertregel<BlokkerandeAlertKontekst>> = 
             'Brukeren har valgt dager som inkluderer ein periode som berre annen ' +
             'part kan endre. Skjemaet blokkeres fordi brukeren ikkje har lov til ' +
             'å endre desse periodene.',
+        visningsstader: SKJEMA_VISNINGSSTADER,
         meldingIder: [i18n('LeggTilEllerEndrePeriodeForm.Forelder.AnnenPartLåst')],
         getMeldingId: () => i18n('LeggTilEllerEndrePeriodeForm.Forelder.AnnenPartLåst'),
         variant: 'info',
@@ -96,6 +101,7 @@ const KONTEKSTUELL_GRADERING_ALERT: Alertregel<KontekstuellAlertKontekst> = {
         'Brukeren har valt gradering i tidsrommet 3 veker før termin til 6 veker ' +
         'etter fødsel. Foreldrepengane blir reduserte den tida brukaren jobbar, ' +
         'utan at dagane blir sparte til seinare.',
+    visningsstader: SKJEMA_VISNINGSSTADER,
     meldingIder: [i18n('LeggTilEllerEndrePeriodeFellesForm.DagerReduseres')],
     getMeldingId: () => i18n('LeggTilEllerEndrePeriodeFellesForm.DagerReduseres'),
     variant: 'info',
@@ -176,12 +182,13 @@ const tilAlertområde = (
     id,
     område,
     beskrivelse,
-    regler: regler.map(({ id, beskrivelse, meldingIder, variant, type }) => ({
-        id,
-        beskrivelse,
-        meldingIder,
-        variant,
-        type,
+    regler: regler.map((regel) => ({
+        id: regel.id,
+        beskrivelse: regel.beskrivelse,
+        visningsstader: regel.visningsstader,
+        meldingIder: regel.meldingIder,
+        variant: regel.variant,
+        type: regel.type,
     })),
 });
 

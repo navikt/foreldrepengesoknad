@@ -1,12 +1,9 @@
-import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Alert, BodyShort, Button, Detail, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
-import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
-import { erDetReadonlyPerioderEtterValgtePerioder } from '../../utils/periodeUtils';
+import { useForskyvEllerErstattAlerts } from '../../regler/alert/informasjonsAlerts';
 
 interface Props {
     valgtePerioder: Array<{ fom: string; tom: string }>;
@@ -23,35 +20,15 @@ export const LeggTilPeriodeForskyvEllerErstattPanel = ({
     setVisEndreEllerForskyvPanel,
     leggTilEllerForskyvPeriode,
 }: Props) => {
-    const {
-        familiesituasjon,
-        familiehendelsedato,
-        uttakPerioder,
-        erPeriodeneTilAnnenPartLåst,
-        foreldreInfo: { søker },
-    } = useUttaksplanData();
-
     const [skalForskyvePeriode, setSkalForskyvePeriode] = useState<boolean | undefined>(undefined);
 
-    const harPeriodeFørFamiliehendelsedato = valgtePerioder.some((p) => dayjs(p.fom).isBefore(familiehendelsedato));
-    const harPeriodeFørSeksUkerEtterFamiliehendelsedato =
-        erFerie || erGradert
-            ? UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
-                  valgtePerioder,
-                  familiehendelsedato,
-              )
-            : false;
-
-    const forelderSomHarLåstePerioder = erPeriodeneTilAnnenPartLåst
-        ? søker === 'MOR'
-            ? 'FAR_MEDMOR'
-            : 'MOR'
-        : undefined;
-    const harSenerePerioderSomErReadonly = erDetReadonlyPerioderEtterValgtePerioder(
-        uttakPerioder,
+    const { senerePerioderReadonly, valgteDagarFørSeksUker, valgteDagarFørFamhend } = useForskyvEllerErstattAlerts({
         valgtePerioder,
-        forelderSomHarLåstePerioder,
-    );
+        erFerie,
+        erGradert,
+    });
+
+    const harDisablingAlert = Boolean(senerePerioderReadonly || valgteDagarFørSeksUker || valgteDagarFørFamhend);
 
     return (
         <VStack gap="space-16">
@@ -62,11 +39,7 @@ export const LeggTilPeriodeForskyvEllerErstattPanel = ({
             >
                 <Radio
                     value={true}
-                    disabled={
-                        harSenerePerioderSomErReadonly ||
-                        (familiesituasjon !== 'adopsjon' &&
-                            (harPeriodeFørSeksUkerEtterFamiliehendelsedato || harPeriodeFørFamiliehendelsedato))
-                    }
+                    disabled={harDisablingAlert}
                 >
                     <VStack gap="space-4">
                         <BodyShort>
@@ -92,23 +65,21 @@ export const LeggTilPeriodeForskyvEllerErstattPanel = ({
                     </VStack>
                 </Radio>
             </RadioGroup>
-            {harSenerePerioderSomErReadonly && (
-                <Alert variant="info">
-                    <FormattedMessage id="RedigeringPanel.SenerePerioderReadonly" />
+            {senerePerioderReadonly && (
+                <Alert variant={senerePerioderReadonly.variant}>
+                    <FormattedMessage id={senerePerioderReadonly.meldingId} />
                 </Alert>
             )}
-            {familiesituasjon !== 'adopsjon' && harPeriodeFørSeksUkerEtterFamiliehendelsedato && (
-                <Alert variant="info">
-                    <FormattedMessage id="RedigeringPanel.ValgtDagerFørSeksUkerEtterFamDato" />
+            {valgteDagarFørSeksUker && (
+                <Alert variant={valgteDagarFørSeksUker.variant}>
+                    <FormattedMessage id={valgteDagarFørSeksUker.meldingId} />
                 </Alert>
             )}
-            {familiesituasjon !== 'adopsjon' &&
-                !harPeriodeFørSeksUkerEtterFamiliehendelsedato &&
-                harPeriodeFørFamiliehendelsedato && (
-                    <Alert variant="info">
-                        <FormattedMessage id="RedigeringPanel.ValgtDagerFørFamiliehendelsesdato" />
-                    </Alert>
-                )}
+            {valgteDagarFørFamhend && (
+                <Alert variant={valgteDagarFørFamhend.variant}>
+                    <FormattedMessage id={valgteDagarFørFamhend.meldingId} />
+                </Alert>
+            )}
             <HStack justify="space-between">
                 <Button
                     type="button"

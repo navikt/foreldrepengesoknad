@@ -10,7 +10,7 @@ import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
-import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../utils/periodeUtils';
+import { useManglerMorsAktivitetKalenderAlert } from '../regler/alert/informasjonsAlerts';
 import { UttaksplanLegend } from './legend/UttaksplanLegend';
 import { KalenderPdf } from './pdf/KalenderPdf';
 import { RedigerKalenderIndex } from './redigering/RedigerKalenderIndex';
@@ -45,12 +45,13 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 
     const {
         uttakPerioder,
-        foreldreInfo: { rettighetType },
     } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
     const perioderForKalendervisning = usePerioderForKalendervisning(endredePerioder, barnehagestartdato);
+
+    const manglerMorsAktivitetAlert = useManglerMorsAktivitetKalenderAlert(uttakPerioder);
 
     const {
         førsteDatoIKalender,
@@ -149,11 +150,11 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                     </RadioGroup>
                 )}
 
-                {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, uttakPerioder) && (
-                    <Alert variant="warning">
+                {manglerMorsAktivitetAlert && (
+                    <Alert variant={manglerMorsAktivitetAlert.variant}>
                         <VStack gap="space-2">
                             <BodyShort>
-                                <FormattedMessage id="UttaksplanKalender.MarkertePerioder" />
+                                <FormattedMessage id={manglerMorsAktivitetAlert.meldingId} />
                             </BodyShort>
                             <Link href={links.aktivitetskrav} target="_blank" rel="noopener noreferrer">
                                 <FormattedMessage id="UttaksplanKalender.HvaErAktivitetskrav" />

@@ -3,38 +3,46 @@ import { useIntl } from 'react-intl';
 
 import { BodyLong, Heading, Table, Tag, VStack } from '@navikt/ds-react';
 
+import { INFORMASJONS_ALERT_OMRÅDE } from './alert/informasjonsAlerts';
 import { BLOKKERANDE_ALERT_OMRÅDE, KONTEKSTUELL_ALERT_OMRÅDE } from './alert/skjemaAlerts';
-import { Alertområde } from './alert/types';
+import { Alertområde, VISNINGSSTAD_LABELS } from './alert/types';
 
-const ALLE_ALERTREGLER: readonly Alertområde[] = [BLOKKERANDE_ALERT_OMRÅDE, KONTEKSTUELL_ALERT_OMRÅDE];
+const ALLE_ALERTREGLER: readonly Alertområde[] = [
+    BLOKKERANDE_ALERT_OMRÅDE,
+    KONTEKSTUELL_ALERT_OMRÅDE,
+    INFORMASJONS_ALERT_OMRÅDE,
+];
 
 /**
- * Selvdokumenterende Storybook-side: viser alertreglene i skjemaet for
- * å legge til/endre en periode i uttaksplanen — altså reglene som
- * bestemmer hvilke informasjonsmeldinger (Alert/InlineMessage) brukeren
- * ser i ulike situasjoner.
+ * Selvdokumenterende Storybook-side: viser alertreglane i heile
+ * uttaksplan-pakken — informasjonsmeldingar (Alert/InlineMessage) som
+ * dukkar opp ulike stader: i skjemaet for å leggje til/endre periode,
+ * i listevisninga, i kalendervisninga, i redigeringspaneler osb.
  *
- * Blokkerande meldingar erstattar heile skjemaet, medan kontekstuelle
- * meldingar dukkar opp som tilleggsinformasjon inne i skjemaet.
+ * Blokkerande meldingar erstattar heile skjemaet. Kontekstuelle
+ * meldingar dukkar opp som tilleggsinformasjon utan å stoppe
+ * brukaren. Kolonnen «Vises» fortel kvar i applikasjonen kvar
+ * regel slår inn.
  *
- * Siden er autogenerert frå regelkatalogen i koden
+ * Siden er autogenerert frå alertkatalogen i koden
  * (`packages/uttaksplan/src/regler/alert/`), og er alltid i synk med koden.
  */
 const Alertregler = () => {
     const intl = useIntl();
     return (
-        <VStack gap="space-8" className="max-w-4xl p-6">
+        <VStack gap="space-8" className="max-w-5xl p-6">
             <VStack gap="space-4">
-                <Heading size="xlarge">Alertregler i uttaksplan-skjemaet</Heading>
+                <Heading size="xlarge">Alertregler i uttaksplanen</Heading>
                 <BodyLong>
-                    I tillegg til felt- og valideringsreglane har skjemaet informasjonsmeldingar som dukkar opp i
-                    bestemte situasjonar. Nokre av dei blokkerer heile skjemaet (brukaren kan ikkje gå vidare),
-                    medan andre er kontekstuelle hint som vises inne i skjemaet.
+                    I tillegg til felt- og valideringsreglane har uttaksplanen ei rekkje
+                    informasjonsmeldingar som dukkar opp i bestemte situasjonar. Nokre
+                    blokkerer skjemaet (brukaren kan ikkje gå vidare), medan andre er
+                    kontekstuelle hint som vises i lista, kalenderen eller redigeringspanela.
                 </BodyLong>
                 <BodyLong>
                     Siden er autogenerert frå alertkatalogen i koden ({' '}
-                    <code>packages/uttaksplan/src/regler/alert/</code>). Endrar du regelteksten der, endrar denne
-                    siden seg også.
+                    <code>packages/uttaksplan/src/regler/alert/</code>). Endrar du regelteksten
+                    der, endrar denne siden seg også.
                 </BodyLong>
             </VStack>
             {ALLE_ALERTREGLER.map((område, områdeIdx) => (
@@ -49,6 +57,7 @@ const Alertregler = () => {
                                 <Table.HeaderCell>#</Table.HeaderCell>
                                 <Table.HeaderCell>Regel-id</Table.HeaderCell>
                                 <Table.HeaderCell>Type</Table.HeaderCell>
+                                <Table.HeaderCell>Vises</Table.HeaderCell>
                                 <Table.HeaderCell>Kva regelen seier</Table.HeaderCell>
                                 <Table.HeaderCell>Melding(ar) til brukaren</Table.HeaderCell>
                             </Table.Row>
@@ -65,6 +74,15 @@ const Alertregler = () => {
                                         >
                                             {regel.type}
                                         </Tag>
+                                    </Table.DataCell>
+                                    <Table.DataCell>
+                                        <VStack gap="space-1">
+                                            {regel.visningsstader.map((stad) => (
+                                                <BodyLong key={stad} size="small">
+                                                    {VISNINGSSTAD_LABELS[stad]}
+                                                </BodyLong>
+                                            ))}
+                                        </VStack>
                                     </Table.DataCell>
                                     <Table.DataCell>{regel.beskrivelse}</Table.DataCell>
                                     <Table.DataCell>

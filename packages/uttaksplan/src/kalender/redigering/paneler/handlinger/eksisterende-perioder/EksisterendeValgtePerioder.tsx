@@ -26,11 +26,9 @@ import { useUttaksplanData } from '../../../../../context/UttaksplanDataContext'
 import { SlettPeriodeForskyvEllerErstattPanel } from '../../../../../felles/forskyvEllerErstatt/SlettPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { UttakPeriodeMedAntallDager } from '../../../../../kalender/redigering/utils/kalenderPeriodeUtils';
+import { MORS_AKTIVITET_IKKJE_VALGT_EKSISTERANDE } from '../../../../../regler/alert/informasjonsAlerts';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../../types/UttaksplanPeriode';
-import {
-    erDetEksisterendePerioderEtterValgtePerioder,
-    harPeriodeDerMorsAktivitetIkkeErValgt,
-} from '../../../../../utils/periodeUtils';
+import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
 
 interface Props {
@@ -176,16 +174,23 @@ export const EksisterendeValgtePerioder = ({ perioder, setErForskyvEllerErstattP
                                         </BodyShort>
                                     )}
 
-                                    {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [
-                                        p,
-                                        ...uttakPerioder.filter(
+                                    {MORS_AKTIVITET_IKKJE_VALGT_EKSISTERANDE.skalVises({
+                                        rettighetType,
+                                        periode: p,
+                                        morsUttakPerioder: uttakPerioder.filter(
                                             (mp): mp is UttakPeriode_fpoversikt =>
                                                 !erEøsUttakPeriode(mp) && mp.forelder === 'MOR',
                                         ),
-                                    ]) && (
-                                        <Alert variant="warning" size="small" className="mt-3 mb-1 p-2">
+                                    }) && (
+                                        <Alert
+                                            variant={MORS_AKTIVITET_IKKJE_VALGT_EKSISTERANDE.variant}
+                                            size="small"
+                                            className="mt-3 mb-1 p-2"
+                                        >
                                             <BodyShort>
-                                                <FormattedMessage id="RedigeringPanel.MorsAktivitetIkkeValgt" />
+                                                <FormattedMessage
+                                                    id={MORS_AKTIVITET_IKKJE_VALGT_EKSISTERANDE.meldingIder[0]}
+                                                />
                                             </BodyShort>
                                         </Alert>
                                     )}
