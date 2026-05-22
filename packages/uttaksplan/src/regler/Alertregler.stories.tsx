@@ -14,17 +14,17 @@ const ALLE_ALERTREGLER: readonly Alertområde[] = [
 ];
 
 /**
- * Selvdokumenterende Storybook-side: viser alertreglane i heile
- * uttaksplan-pakken — informasjonsmeldingar (Alert/InlineMessage) som
- * dukkar opp ulike stader: i skjemaet for å leggje til/endre periode,
- * i listevisninga, i kalendervisninga, i redigeringspaneler osb.
+ * Selvdokumenterende Storybook-side: viser alertreglene i hele
+ * uttaksplan-pakken — informasjonsmeldinger (Alert/InlineMessage) som
+ * dukker opp ulike steder: i skjemaet for å legge til/endre periode,
+ * i listevisningen, i kalendervisningen, i redigeringspaneler osv.
  *
- * Blokkerande meldingar erstattar heile skjemaet. Kontekstuelle
- * meldingar dukkar opp som tilleggsinformasjon utan å stoppe
- * brukaren. Kolonnen «Vises» fortel kvar i applikasjonen kvar
+ * Blokkerende meldinger erstatter hele skjemaet. Kontekstuelle
+ * meldinger dukker opp som tilleggsinformasjon uten å stoppe
+ * brukeren. Kolonnen «Vises» forteller hvor i applikasjonen hver
  * regel slår inn.
  *
- * Siden er autogenerert frå alertkatalogen i koden
+ * Siden er autogenerert fra alertkatalogen i koden
  * (`packages/uttaksplan/src/regler/alert/`), og er alltid i synk med koden.
  */
 const Alertregler = () => {
@@ -34,15 +34,15 @@ const Alertregler = () => {
             <VStack gap="space-4">
                 <Heading size="xlarge">Alertregler i uttaksplanen</Heading>
                 <BodyLong>
-                    I tillegg til felt- og valideringsreglane har uttaksplanen ei rekkje
-                    informasjonsmeldingar som dukkar opp i bestemte situasjonar. Nokre
-                    blokkerer skjemaet (brukaren kan ikkje gå vidare), medan andre er
-                    kontekstuelle hint som vises i lista, kalenderen eller redigeringspanela.
+                    I tillegg til felt- og valideringsreglene har uttaksplanen en rekke
+                    informasjonsmeldinger som dukker opp i bestemte situasjoner. Noen
+                    blokkerer skjemaet (brukeren kan ikke gå videre), mens andre er
+                    kontekstuelle hint som vises i listen, kalenderen eller redigeringspanelene.
                 </BodyLong>
                 <BodyLong>
-                    Siden er autogenerert frå alertkatalogen i koden ({' '}
-                    <code>packages/uttaksplan/src/regler/alert/</code>). Endrar du regelteksten
-                    der, endrar denne siden seg også.
+                    Siden er autogenerert fra alertkatalogen i koden ({' '}
+                    <code>packages/uttaksplan/src/regler/alert/</code>). Endrer du regelteksten
+                    der, endrer denne siden seg også.
                 </BodyLong>
             </VStack>
             {ALLE_ALERTREGLER.map((område, områdeIdx) => (
@@ -58,8 +58,8 @@ const Alertregler = () => {
                                 <Table.HeaderCell>Regel-id</Table.HeaderCell>
                                 <Table.HeaderCell>Type</Table.HeaderCell>
                                 <Table.HeaderCell>Vises</Table.HeaderCell>
-                                <Table.HeaderCell>Kva regelen seier</Table.HeaderCell>
-                                <Table.HeaderCell>Melding(ar) til brukaren</Table.HeaderCell>
+                                <Table.HeaderCell>Hva regelen sier</Table.HeaderCell>
+                                <Table.HeaderCell>Melding(er) til brukeren</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>

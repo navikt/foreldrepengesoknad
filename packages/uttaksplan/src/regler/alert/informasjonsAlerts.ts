@@ -64,8 +64,8 @@ const erIkkjeAdopsjon = (familiesituasjon: Familiesituasjon) => familiesituasjon
 const MANGLER_MORS_AKTIVITET_LISTE: Alertregel<MorsAktivitetListeKontekst> = {
     id: 'mangler-mors-aktivitet-liste',
     beskrivelse:
-        'Brukaren har éin eller fleire periodar som krev mors aktivitet, men ' +
-        'aktiviteten er ikkje vald. Vises som ein samla melding over heile lista.',
+        'Brukeren har én eller flere perioder som krever mors aktivitet, men ' +
+        'aktiviteten er ikke valgt. Vises som en samlet melding over hele listen.',
     visningsstader: ['uttaksplan-liste'],
     meldingIder: [i18n('UttaksplanListe.ManglerMorsAktivitet')],
     getMeldingId: () => i18n('UttaksplanListe.ManglerMorsAktivitet'),
@@ -77,8 +77,8 @@ const MANGLER_MORS_AKTIVITET_LISTE: Alertregel<MorsAktivitetListeKontekst> = {
 const MANGLER_MORS_AKTIVITET_KALENDER: Alertregel<MorsAktivitetListeKontekst> = {
     id: 'mangler-mors-aktivitet-kalender',
     beskrivelse:
-        'Brukaren har éin eller fleire periodar som krev mors aktivitet, men ' +
-        'aktiviteten er ikkje vald. Vises samla over heile kalenderen, saman med ' +
+        'Brukeren har én eller flere perioder som krever mors aktivitet, men ' +
+        'aktiviteten er ikke valgt. Vises samlet over hele kalenderen, sammen med ' +
         'lenke til informasjon om aktivitetskravet.',
     visningsstader: ['uttaksplan-kalender'],
     meldingIder: [i18n('UttaksplanKalender.MarkertePerioder')],
@@ -91,9 +91,9 @@ const MANGLER_MORS_AKTIVITET_KALENDER: Alertregel<MorsAktivitetListeKontekst> = 
 const MORS_AKTIVITET_IKKJE_OPPGITT_REDIGERING: Alertregel<MorsAktivitetListeKontekst> = {
     id: 'mors-aktivitet-ikkje-oppgitt-redigering',
     beskrivelse:
-        'Vises i redigeringspanela når brukaren har valt periodar som krev mors ' +
-        'aktivitet, men aktiviteten ikkje er fylt ut. Vises både i kalender- og ' +
-        'listeredigering for å minne om manglande val før innsending.',
+        'Vises i redigeringspanelene når brukeren har valgt perioder som krever mors ' +
+        'aktivitet, men aktiviteten ikke er fylt ut. Vises både i kalender- og ' +
+        'listeredigering for å minne om manglende valg før innsending.',
     visningsstader: ['legg-til-endre-skjema'],
     meldingIder: [i18n('LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt')],
     getMeldingId: () => i18n('LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt'),
@@ -105,9 +105,9 @@ const MORS_AKTIVITET_IKKJE_OPPGITT_REDIGERING: Alertregel<MorsAktivitetListeKont
 const MORS_AKTIVITET_IKKJE_VALGT_EKSISTERANDE: Alertregel<EksisterendeValgtePeriodeKontekst> = {
     id: 'mors-aktivitet-ikkje-valgt-eksisterande',
     beskrivelse:
-        'Vises ved kvar valgt eksisterande periode i kalender-redigering når perioden ' +
-        'krev mors aktivitet, men aktiviteten ikkje er vald. Synleggjer kva konkrete ' +
-        'periodar som manglar val.',
+        'Vises ved hver valgte eksisterende periode i kalender-redigering når perioden ' +
+        'krever mors aktivitet, men aktiviteten ikke er valgt. Synliggjør hvilke konkrete ' +
+        'perioder som mangler valg.',
     visningsstader: ['eksisterande-valgte-perioder'],
     meldingIder: [i18n('RedigeringPanel.MorsAktivitetIkkeValgt')],
     getMeldingId: () => i18n('RedigeringPanel.MorsAktivitetIkkeValgt'),
@@ -120,9 +120,9 @@ const MORS_AKTIVITET_IKKJE_VALGT_EKSISTERANDE: Alertregel<EksisterendeValgtePeri
 const KAN_MISTE_DAGAR: Alertregel<PeriodeDetaljarKontekst> = {
     id: 'kan-miste-dager',
     beskrivelse:
-        'Mor har valt å endre éin eller fleire periodar til ferie. Slik endring kan ' +
-        'føre til at dagar blir tapt — brukaren får ein åtvaring om dette før ho ' +
-        'stadfestar endringa.',
+        'Mor har valgt å endre én eller flere perioder til ferie. Slik endring kan ' +
+        'føre til at dager blir tapt — brukeren får et varsel om dette før hun ' +
+        'bekrefter endringen.',
     visningsstader: ['periode-detaljar-redigering'],
     meldingIder: [i18n('RedigeringPanel.KanMisteDager')],
     getMeldingId: () => i18n('RedigeringPanel.KanMisteDager'),
@@ -138,9 +138,9 @@ const KAN_MISTE_DAGAR: Alertregel<PeriodeDetaljarKontekst> = {
 const ADOPSJON_PERIODE_FØR_FAMHEND: Alertregel<PeriodeDetaljarKontekst> = {
     id: 'adopsjon-periode-før-familiehendelsesdato',
     beskrivelse:
-        'Adopsjon: brukaren har valt periodar som ligg før familiehendelsesdatoen. ' +
-        'Vises i detaljvisning av eksisterande valgte periodar for å forklare kvifor ' +
-        'dei ikkje er redigerbare.',
+        'Adopsjon: brukeren har valgt perioder som ligger før familiehendelsesdatoen. ' +
+        'Vises i detaljvisning av eksisterende valgte perioder for å forklare hvorfor ' +
+        'de ikke er redigerbare.',
     visningsstader: ['periode-detaljar-redigering'],
     meldingIder: [i18n('RedigeringPanel.AdopsjonPeriodeFørFamiliehendelsedato')],
     getMeldingId: () => i18n('RedigeringPanel.AdopsjonPeriodeFørFamiliehendelsedato'),
@@ -152,8 +152,8 @@ const ADOPSJON_PERIODE_FØR_FAMHEND: Alertregel<PeriodeDetaljarKontekst> = {
 const IKKJE_REDIGERBAR_EØS: Alertregel<PeriodeDetaljarKontekst> = {
     id: 'ikkje-redigerbar-eøs-uttak',
     beskrivelse:
-        'EØS-uttaksperiodar kan ikkje redigerast i denne flyten. Alerten forklarar ' +
-        'kvifor periodane som er valt, er låst.',
+        'EØS-uttaksperioder kan ikke redigeres i denne flyten. Alerten forklarer ' +
+        'hvorfor periodene som er valgt, er låst.',
     visningsstader: ['periode-detaljar-redigering'],
     meldingIder: [i18n('RedigeringPanel.IkkeRedigerbarEøsUttakPeriode')],
     getMeldingId: () => i18n('RedigeringPanel.IkkeRedigerbarEøsUttakPeriode'),
@@ -165,8 +165,8 @@ const IKKJE_REDIGERBAR_EØS: Alertregel<PeriodeDetaljarKontekst> = {
 const IKKJE_REDIGERBAR_PLEIEPENGER: Alertregel<PeriodeDetaljarKontekst> = {
     id: 'ikkje-redigerbar-pleiepenger',
     beskrivelse:
-        'Periodar med pleiepengar kan ikkje redigerast i uttaksplanen. Alerten forklarar ' +
-        'at desse blir ståande som dei er.',
+        'Perioder med pleiepenger kan ikke redigeres i uttaksplanen. Alerten forklarer ' +
+        'at disse blir stående som de er.',
     visningsstader: ['periode-detaljar-redigering'],
     meldingIder: [i18n('RedigeringPanel.IkkeRedigerbarGrunnetPleiepenger')],
     getMeldingId: () => i18n('RedigeringPanel.IkkeRedigerbarGrunnetPleiepenger'),
@@ -178,8 +178,8 @@ const IKKJE_REDIGERBAR_PLEIEPENGER: Alertregel<PeriodeDetaljarKontekst> = {
 const SENERE_PERIODER_READONLY: Alertregel<ForskyvEllerErstattKontekst> = {
     id: 'senere-perioder-readonly',
     beskrivelse:
-        'Brukaren har valt forskyv eller erstatt, og det finst seinare periodar i ' +
-        'planen som ikkje kan endrast. Alerten forklarar at desse blir ståande.',
+        'Brukeren har valgt forskyv eller erstatt, og det finnes senere perioder i ' +
+        'planen som ikke kan endres. Alerten forklarer at disse blir stående.',
     visningsstader: ['forskyv-eller-erstatt'],
     meldingIder: [i18n('RedigeringPanel.SenerePerioderReadonly')],
     getMeldingId: () => i18n('RedigeringPanel.SenerePerioderReadonly'),
@@ -191,8 +191,8 @@ const SENERE_PERIODER_READONLY: Alertregel<ForskyvEllerErstattKontekst> = {
 const VALGTE_DAGAR_FØR_SEKS_UKER: Alertregel<ForskyvEllerErstattKontekst> = {
     id: 'valgte-dager-før-seks-uker-etter-fam-dato',
     beskrivelse:
-        'Brukaren har valt dagar som ligg innanfor seks veker etter familiehendelses' +
-        'datoen (gjeld ikkje adopsjon). Alerten forklarar konsekvensar for ' +
+        'Brukeren har valgt dager som ligger innenfor seks uker etter familiehendelses' +
+        'datoen (gjelder ikke adopsjon). Alerten forklarer konsekvenser for ' +
         'forskyv/erstatt-operasjonen.',
     visningsstader: ['forskyv-eller-erstatt'],
     meldingIder: [i18n('RedigeringPanel.ValgtDagerFørSeksUkerEtterFamDato')],
@@ -205,8 +205,8 @@ const VALGTE_DAGAR_FØR_SEKS_UKER: Alertregel<ForskyvEllerErstattKontekst> = {
 const VALGTE_DAGAR_FØR_FAMHEND: Alertregel<ForskyvEllerErstattKontekst> = {
     id: 'valgte-dager-før-familiehendelsesdato',
     beskrivelse:
-        'Brukaren har valt dagar før familiehendelsesdatoen, men ikkje innanfor seks ' +
-        'veker etter (gjeld ikkje adopsjon). Alerten forklarar konsekvensar for ' +
+        'Brukeren har valgt dager før familiehendelsesdatoen, men ikke innenfor seks ' +
+        'uker etter (gjelder ikke adopsjon). Alerten forklarer konsekvenser for ' +
         'forskyv/erstatt.',
     visningsstader: ['forskyv-eller-erstatt'],
     meldingIder: [i18n('RedigeringPanel.ValgtDagerFørFamiliehendelsesdato')],
@@ -242,12 +242,12 @@ export {
 
 export const INFORMASJONS_ALERT_OMRÅDE: Alertområde = {
     id: 'informasjons-alerts',
-    område: 'Informasjonsmeldingar i uttaksplanen',
+    område: 'Informasjonsmeldinger i uttaksplanen',
     beskrivelse:
-        'Desse meldingane dukkar opp ulike stader i uttaksplan-visninga (liste, kalender, ' +
-        'redigeringspaneler) for å informere brukaren om konsekvensar av val, manglande ' +
-        'utfyllingar eller låste periodar. Dei stoppar ikkje brukaren — men gir kontekst ' +
-        'eller varslar om noko som krev oppmerksemd.',
+        'Disse meldingene dukker opp ulike steder i uttaksplan-visningen (liste, kalender, ' +
+        'redigeringspaneler) for å informere brukeren om konsekvenser av valg, manglende ' +
+        'utfyllinger eller låste perioder. De stopper ikke brukeren — men gir kontekst ' +
+        'eller varsler om noe som krever oppmerksomhet.',
     regler: ALLE_INFORMASJONS_ALERTS.map(({ id, beskrivelse, visningsstader, meldingIder, variant, type }) => ({
         id,
         beskrivelse,
@@ -269,7 +269,7 @@ export type UttaksplanListeAlerts = {
     manglerMorsAktivitet?: AktivAlert;
 };
 
-/** Alertar som vises over heile listevisninga. */
+/** Alerter som vises over hele listevisningen. */
 export const useUttaksplanListeAlerts = (
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
 ): UttaksplanListeAlerts => {
@@ -285,7 +285,7 @@ export type UttaksplanKalenderAlerts = {
     manglerMorsAktivitet?: AktivAlert;
 };
 
-/** Alertar som vises over heile kalendervisninga. */
+/** Alerter som vises over hele kalendervisningen. */
 export const useUttaksplanKalenderAlerts = (
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
 ): UttaksplanKalenderAlerts => {
@@ -301,7 +301,7 @@ export type LeggTilEndreSkjemaInfoAlerts = {
     morsAktivitetIkkjeOppgitt?: AktivAlert;
 };
 
-/** Informasjons-alertar i legg-til/endre-periode-skjemaet. */
+/** Informasjons-alerter i legg-til/endre-periode-skjemaet. */
 export const useLeggTilEndreSkjemaInfoAlerts = (
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
 ): LeggTilEndreSkjemaInfoAlerts => {
@@ -320,7 +320,7 @@ export type PeriodeDetaljarAlerts = {
     kanMisteDagar?: AktivAlert;
 };
 
-/** Alle informasjons-alertar i detaljvisning av valgte eksisterande periodar. */
+/** Alle informasjons-alerter i detaljvisning av valgte eksisterende perioder. */
 export const usePeriodeDetaljarAlerts = (input: {
     sammenslåtteValgtePerioder: readonly Periode[];
     eksisterendePerioderSomErValgt: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>;
@@ -365,7 +365,7 @@ export type ForskyvEllerErstattAlerts = {
     valgteDagarFørFamhend?: AktivAlert;
 };
 
-/** Alertar i forskyv- og erstatt-panela. */
+/** Alerter i forskyv- og erstatt-panelene. */
 export const useForskyvEllerErstattAlerts = (input: {
     valgtePerioder: readonly Periode[];
     erFerie?: boolean;

@@ -1,7 +1,7 @@
 /**
- * Stadane i uttaksplan-pakken der ein alert kan visast. Brukt både til
- * dokumentasjon i Storybook og som ein semantisk peikar frå katalogen
- * til faktiske komponentar.
+ * Stedene i uttaksplan-pakken der en alert kan vises. Brukt både til
+ * dokumentasjon i Storybook og som en semantisk peker fra katalogen
+ * til faktiske komponenter.
  */
 export type Visningsstad =
     | 'uttaksplan-liste'
@@ -11,25 +11,25 @@ export type Visningsstad =
     | 'periode-detaljar-redigering'
     | 'forskyv-eller-erstatt';
 
-/** Menneskeleg lesbar tekst for kvar visningsstad. */
+/** Menneskelig lesbar tekst for hver visningsstad. */
 export const VISNINGSSTAD_LABELS: Record<Visningsstad, string> = {
-    'uttaksplan-liste': 'Over listevisninga av uttaksplanen',
-    'uttaksplan-kalender': 'Over kalendervisninga av uttaksplanen',
-    'legg-til-endre-skjema': 'I skjemaet for å leggje til eller endre periode',
-    'eksisterande-valgte-perioder': 'Inne i kvar valgt eksisterande periode i kalender-redigering',
-    'periode-detaljar-redigering': 'I detaljvisning av valgte eksisterande periodar',
-    'forskyv-eller-erstatt': 'I forskyv- og erstatt-panela',
+    'uttaksplan-liste': 'Over listevisningen av uttaksplanen',
+    'uttaksplan-kalender': 'Over kalendervisningen av uttaksplanen',
+    'legg-til-endre-skjema': 'I skjemaet for å legge til eller endre periode',
+    'eksisterande-valgte-perioder': 'Inne i hver valgte eksisterende periode i kalender-redigering',
+    'periode-detaljar-redigering': 'I detaljvisning av valgte eksisterende perioder',
+    'forskyv-eller-erstatt': 'I forskyv- og erstatt-panelene',
 };
 
 /**
- * Felles metadata for ein alert — det som beskriv regelen utan å
- * inkludere runtime-logikk. Brukt direkte for alertar som lever som
- * rein dokumentasjon, og som basis for `Alertregel<TKontekst>` for
- * alertar som og har trigger-logikk i katalogen.
+ * Felles metadata for en alert — det som beskriver regelen uten å
+ * inkludere runtime-logikk. Brukt direkte for alerter som lever som
+ * ren dokumentasjon, og som basis for `Alertregel<TKontekst>` for
+ * alerter som også har trigger-logikk i katalogen.
  *
- * `type` skil mellom:
- * - `blokkerande`: Erstattar heile skjemaet (early return).
- * - `kontekstuell`: Dukkar opp inne i skjemaet/visninga som ekstra info.
+ * `type` skiller mellom:
+ * - `blokkerande`: Erstatter hele skjemaet (early return).
+ * - `kontekstuell`: Dukker opp inne i skjemaet/visningen som ekstra info.
  */
 export type AlertregelDoc = {
     id: string;
@@ -47,9 +47,9 @@ export type AlertregelDoc = {
  *
  * - `skalVises` avgjør om regelen slår inn.
  * - `getMeldingId` returnerer riktig intl-nøkkel for konteksten
- *   (for reglar med fleire meldingsvarianter, t.d. per familiesituasjon).
- * - `meldingIder` er den fullstendige lista over moglege meldingar —
- *   brukt til dokumentasjon i Storybook, ikkje til runtime-logikk.
+ *   (for regler med flere meldingsvarianter, f.eks. per familiesituasjon).
+ * - `meldingIder` er den fullstendige listen over mulige meldinger —
+ *   brukt til dokumentasjon i Storybook, ikke til runtime-logikk.
  */
 export type Alertregel<TKontekst> = AlertregelDoc & {
     getMeldingId: (kontekst: TKontekst) => string;
@@ -57,7 +57,7 @@ export type Alertregel<TKontekst> = AlertregelDoc & {
 };
 
 /**
- * En samling alertregler innanfor eitt funksjonelt område —
+ * En samling alertregler innenfor ett funksjonelt område —
  * brukt både til visningslogikk og til å autogenerere
  * Storybook-dokumentasjon.
  */

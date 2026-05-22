@@ -8,7 +8,7 @@ import { Alertregel, Alertområde, Visningsstad } from './types';
 
 /**
  * Kontekst for blokkerande alerts som avgjør om hele skjemaet skal
- * erstattes av ein informasjonsmelding.
+ * erstattes av en informasjonsmelding.
  */
 export type BlokkerandeAlertKontekst = {
     valgtePerioder: Periode[];
@@ -67,9 +67,9 @@ const BLOKKERANDE_ALERTS: ReadonlyArray<Alertregel<BlokkerandeAlertKontekst>> = 
     {
         id: 'annen-part-låst',
         beskrivelse:
-            'Brukeren har valgt dager som inkluderer ein periode som berre annen ' +
-            'part kan endre. Skjemaet blokkeres fordi brukeren ikkje har lov til ' +
-            'å endre desse periodene.',
+            'Brukeren har valgt dager som inkluderer en periode som bare annen ' +
+            'part kan endre. Skjemaet blokkeres fordi brukeren ikke har lov til ' +
+            'å endre disse periodene.',
         visningsstader: SKJEMA_VISNINGSSTADER,
         meldingIder: [i18n('LeggTilEllerEndrePeriodeForm.Forelder.AnnenPartLåst')],
         getMeldingId: () => i18n('LeggTilEllerEndrePeriodeForm.Forelder.AnnenPartLåst'),
@@ -87,8 +87,8 @@ const BLOKKERANDE_ALERTS: ReadonlyArray<Alertregel<BlokkerandeAlertKontekst>> = 
 ];
 
 /**
- * Kontekst for kontekstuelle alerts som dukkar opp inne i skjemaet
- * som informasjon til brukaren.
+ * Kontekst for kontekstuelle alerts som dukker opp inne i skjemaet
+ * som informasjon til brukeren.
  */
 export type KontekstuellAlertKontekst = {
     valgtePerioder: Periode[];
@@ -98,9 +98,9 @@ export type KontekstuellAlertKontekst = {
 const KONTEKSTUELL_GRADERING_ALERT: Alertregel<KontekstuellAlertKontekst> = {
     id: 'gradering-dager-reduseres',
     beskrivelse:
-        'Brukeren har valt gradering i tidsrommet 3 veker før termin til 6 veker ' +
-        'etter fødsel. Foreldrepengane blir reduserte den tida brukaren jobbar, ' +
-        'utan at dagane blir sparte til seinare.',
+        'Brukeren har valgt gradering i tidsrommet 3 uker før termin til 6 uker ' +
+        'etter fødsel. Foreldrepengene blir redusert den tiden brukeren jobber, ' +
+        'uten at dagene blir spart til senere.',
     visningsstader: SKJEMA_VISNINGSSTADER,
     meldingIder: [i18n('LeggTilEllerEndrePeriodeFellesForm.DagerReduseres')],
     getMeldingId: () => i18n('LeggTilEllerEndrePeriodeFellesForm.DagerReduseres'),
@@ -117,7 +117,7 @@ const KONTEKSTUELLE_ALERTS: ReadonlyArray<Alertregel<KontekstuellAlertKontekst>>
 
 /**
  * Finn den første blokkerande alerten som slår inn, eller undefined.
- * Brukar regelens `getMeldingId` for å finna riktig meldingsnøkkel.
+ * Bruker regelens `getMeldingId` for å finne riktig meldingsnøkkel.
  */
 export const finnFørsteBlokkerandeAlert = (
     ctx: BlokkerandeAlertKontekst,
@@ -131,7 +131,7 @@ export const finnFørsteBlokkerandeAlert = (
 };
 
 /**
- * Hook som hentar kontekst frå UttaksplanDataContext og evaluerer
+ * Hook som henter kontekst fra UttaksplanDataContext og evaluerer
  * blokkerande alerts. Returnerer ferdigformatert melding + variant,
  * eller undefined om ingen alert slår inn.
  */
@@ -169,7 +169,7 @@ export const useBlokkerandeAlert = (
     };
 };
 
-/** Sjekk om graderingsalerten skal visast. */
+/** Sjekk om graderingsalerten skal vises. */
 export const skalViseGraderingAlert = (ctx: KontekstuellAlertKontekst): boolean =>
     KONTEKSTUELL_GRADERING_ALERT.skalVises(ctx);
 
@@ -194,17 +194,17 @@ const tilAlertområde = (
 
 export const BLOKKERANDE_ALERT_OMRÅDE: Alertområde = tilAlertområde(
     'blokkerande-alerts',
-    'Blokkerande meldingar',
-    'Desse meldingane erstattar heile skjemaet (early return). Dei hindrar brukaren frå å ' +
-        'gjere endringar som ikkje er lovlege, og forklarar kvifor skjemaet ikkje er tilgjengeleg.',
+    'Blokkerende meldinger',
+    'Disse meldingene erstatter hele skjemaet (early return). De hindrer brukeren fra å ' +
+        'gjøre endringer som ikke er lovlige, og forklarer hvorfor skjemaet ikke er tilgjengelig.',
     BLOKKERANDE_ALERTS as ReadonlyArray<Alertregel<unknown>>,
 );
 
 export const KONTEKSTUELL_ALERT_OMRÅDE: Alertområde = tilAlertområde(
     'kontekstuelle-alerts',
-    'Kontekstuelle meldingar',
-    'Desse meldingane dukkar opp inne i skjemaet som tilleggsinformasjon — typisk når ' +
-        'brukaren har gjort eit val som har konsekvensar det er viktig å vite om.',
+    'Kontekstuelle meldinger',
+    'Disse meldingene dukker opp inne i skjemaet som tilleggsinformasjon — typisk når ' +
+        'brukeren har gjort et valg som har konsekvenser det er viktig å vite om.',
     KONTEKSTUELLE_ALERTS as ReadonlyArray<Alertregel<unknown>>,
 );
 
