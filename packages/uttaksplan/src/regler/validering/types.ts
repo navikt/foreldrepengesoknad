@@ -40,6 +40,7 @@ export type Regel<TCtx> = {
 /**
  * En gruppe regler med felles forutsetning og felles kontekst.
  *
+ * - `tittel` er en menneskelig lesbar overskrift brukt i dokumentasjon (Storybook).
  * - `byggKontekst` returnerer `null` når gruppen ikke er relevant (f.eks. når
  *   skjemaet ikke har fylt ut alt som trengs, eller når situasjonen ikke
  *   passer). Reglene i gruppen blir da hoppet over.
@@ -47,6 +48,7 @@ export type Regel<TCtx> = {
  */
 export type Regelgruppe<TCtx> = {
     id: string;
+    tittel: string;
     beskrivelse: string;
     byggKontekst: (input: ValideringInput) => TCtx | null;
     regler: ReadonlyArray<Regel<TCtx>>;

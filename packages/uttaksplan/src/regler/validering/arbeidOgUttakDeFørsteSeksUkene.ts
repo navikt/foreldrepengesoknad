@@ -42,6 +42,7 @@ const REGLER: ReadonlyArray<Regel<ArbeidOgUttakKontekst>> = [
 
 export const ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_GRUPPE: Regelgruppe<ArbeidOgUttakKontekst> = {
     id: 'arbeidOgUttakDeFørsteSeksUkene',
+    tittel: 'Arbeid og uttak de første seks ukene etter fødsel',
     beskrivelse:
         'Regler som hindrer at man kombinerer arbeid med uttak av visse kontotyper i de første seks ukene ' +
         'etter fødsel. Gjelder ikke ved adopsjon.',

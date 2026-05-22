@@ -3,13 +3,12 @@ import { IntlShape } from 'react-intl';
 import { getFloatFromString } from '@navikt/fp-utils';
 
 import { Feltregel, Feltregelområde, førsteBrutteFeltregel, i18n } from '../types';
+import { harIngenVerdi } from './utils';
 
 export type SamtidigUttaksprosentInput = {
     value: string;
     stillingsprosentValue: string | undefined;
 };
-
-const harIngenVerdi = (value: string) => value === '' || value === undefined || value === null || value.trim() === '';
 
 export const SAMTIDIG_UTTAKSPROSENT_REGLER: ReadonlyArray<Feltregel<SamtidigUttaksprosentInput>> = [
     {

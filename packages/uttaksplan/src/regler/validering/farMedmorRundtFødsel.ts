@@ -1,8 +1,8 @@
 import { getFloatFromString } from '@navikt/fp-utils';
 
-import { LeggTilEllerEndrePeriodeFormFormValues } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Regel, Regelgruppe, ValideringInput, i18n } from './types';
+import { erUtfyltForSamtidigUttak } from './utils';
 
 type FarMedmorRundtFødselKontekst = {
     kombinertUttaksprosent: number;
@@ -11,17 +11,6 @@ type FarMedmorRundtFødselKontekst = {
     totalProsentFarMedmor: number;
     ønskerFlerbarnsdager: boolean;
 };
-
-const erUtfyltForVurdering = (values: LeggTilEllerEndrePeriodeFormFormValues): boolean =>
-    values.forelder === 'BEGGE' &&
-    values.samtidigUttaksprosentMor !== undefined &&
-    values.samtidigUttaksprosentFarMedmor !== undefined &&
-    values.skalDuKombinereArbeidOgUttakMor !== undefined &&
-    values.skalDuKombinereArbeidOgUttakFarMedmor !== undefined &&
-    values.kontoTypeFarMedmor !== undefined &&
-    values.kontoTypeMor !== undefined &&
-    (!values.skalDuKombinereArbeidOgUttakMor || values.stillingsprosentMor !== undefined) &&
-    (!values.skalDuKombinereArbeidOgUttakFarMedmor || values.stillingsprosentFarMedmor !== undefined);
 
 const REGLER: ReadonlyArray<Regel<FarMedmorRundtFødselKontekst>> = [
     {
@@ -72,13 +61,14 @@ const REGLER: ReadonlyArray<Regel<FarMedmorRundtFødselKontekst>> = [
 
 export const FAR_MEDMOR_RUNDT_FØDSEL_GRUPPE: Regelgruppe<FarMedmorRundtFødselKontekst> = {
     id: 'farMedmorRundtFødsel',
+    tittel: 'Far/medmor sitt samtidige uttak rundt fødsel',
     beskrivelse:
         'Regler for samtidig uttak når minst én av periodene ligger i verneperioden rundt fødsel ' +
         '(fra 2 uker før til 6 uker etter fødsel/termin). Her er kravene strengere enn ellers.',
     byggKontekst: (input: ValideringInput): FarMedmorRundtFødselKontekst | null => {
         const { formValues, perioder, familiehendelsedato, termindato } = input;
 
-        if (!erUtfyltForVurdering(formValues)) {
+        if (!erUtfyltForSamtidigUttak(formValues)) {
             return null;
         }
 

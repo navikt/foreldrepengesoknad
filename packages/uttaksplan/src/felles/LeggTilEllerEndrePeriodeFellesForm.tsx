@@ -24,7 +24,7 @@ import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskvoteNavnSimple } from '../liste/utils/uttaksplanListeUtils';
 import { useBlokkerandeAlert, skalViseGraderingAlert } from '../regler/alert/skjemaAlerts';
 import { synlighetForForelderValg } from '../regler/synlighet/forelderValg';
-import { useFeltSynlighet } from '../regler/synlighet/feltSynlighet';
+import { ForelderValg, useFeltSynlighet } from '../regler/synlighet/feltSynlighet';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
 import { getAktivitetskravOptions, getAktivitetskravTekst } from '../utils/periodeUtils';
@@ -33,8 +33,6 @@ import { prosentValideringGradering, valideringSamtidigUttak } from './uttakspla
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
-
-type ForelderValg = BrukerRolleSak_fpoversikt | 'BEGGE' | undefined;
 
 const SELVSTENDIG_NÆRINGSDRIVENDE = 'SELVSTENDIG_NÆRINGSDRIVENDE' satisfies AktivitetType_fpoversikt;
 const FRILANS = 'FRILANS' satisfies AktivitetType_fpoversikt;

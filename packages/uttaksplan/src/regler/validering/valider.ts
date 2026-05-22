@@ -9,7 +9,7 @@ import { Regelgruppe, ValideringInput, førsteBrutteRegel } from './types';
 type Validator = (input: ValideringInput) => string | null;
 
 const lagValidator =
-    <TCtx>(gruppe: Regelgruppe<TCtx>): Validator =>
+    <TCtx,>(gruppe: Regelgruppe<TCtx>): Validator =>
     (input) => {
         const kontekst = gruppe.byggKontekst(input);
         if (kontekst === null) {
@@ -18,16 +18,12 @@ const lagValidator =
         return førsteBrutteRegel(gruppe.regler, kontekst)?.feilmeldingId ?? null;
     };
 
-const GRUPPER = [
-    ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_GRUPPE,
-    SAMTIDIG_UTTAK_GRUPPE,
-    FAR_MEDMOR_RUNDT_FØDSEL_GRUPPE,
-    FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE,
-] as const;
-
-const VALIDATORS: readonly Validator[] = GRUPPER.map((gruppe) =>
-    lagValidator(gruppe as Regelgruppe<unknown>),
-);
+const VALIDATORS: readonly Validator[] = [
+    lagValidator(ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_GRUPPE),
+    lagValidator(SAMTIDIG_UTTAK_GRUPPE),
+    lagValidator(FAR_MEDMOR_RUNDT_FØDSEL_GRUPPE),
+    lagValidator(FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE),
+];
 
 /**
  * Kjører hele regelkatalogen mot en gitt input og returnerer første feilmelding,

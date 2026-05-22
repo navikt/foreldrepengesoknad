@@ -11,22 +11,24 @@ import { Regel, Regelgruppe } from './validering/types';
 
 type RegelgruppeVisning = {
     id: string;
+    tittel: string;
     beskrivelse: string;
     regler: ReadonlyArray<Omit<Regel<unknown>, 'erBrutt'>>;
 };
 
 const tilVisning = <TCtx,>(gruppe: Regelgruppe<TCtx>): RegelgruppeVisning => ({
     id: gruppe.id,
+    tittel: gruppe.tittel,
     beskrivelse: gruppe.beskrivelse,
     regler: gruppe.regler.map(({ id, beskrivelse, feilmeldingId }) => ({ id, beskrivelse, feilmeldingId })),
 });
 
 const ALLE_VALIDERINGSREGLER: readonly RegelgruppeVisning[] = [
-    ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_GRUPPE,
-    SAMTIDIG_UTTAK_GRUPPE,
-    FAR_MEDMOR_RUNDT_FØDSEL_GRUPPE,
-    FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE,
-].map((gruppe) => tilVisning(gruppe as Regelgruppe<unknown>));
+    tilVisning(ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_GRUPPE),
+    tilVisning(SAMTIDIG_UTTAK_GRUPPE),
+    tilVisning(FAR_MEDMOR_RUNDT_FØDSEL_GRUPPE),
+    tilVisning(FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE),
+];
 
 /**
  * Selvdokumenterende Storybook-side: viser valideringsreglene som kjøres
@@ -57,7 +59,7 @@ const Valideringsregler = () => {
             {ALLE_VALIDERINGSREGLER.map((gruppe, gruppeIdx) => (
                 <VStack key={gruppe.id} gap="space-2">
                     <Heading size="medium">
-                        {gruppeIdx + 1}. {gruppe.id}
+                        {gruppeIdx + 1}. {gruppe.tittel}
                     </Heading>
                     <BodyLong className="italic text-ax-text-subtle">{gruppe.beskrivelse}</BodyLong>
                     <Table>

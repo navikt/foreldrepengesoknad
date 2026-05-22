@@ -10,7 +10,7 @@ import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Synlighetsområde, Synlighetsregel } from './types';
 
-type ForelderValg = BrukerRolleSak_fpoversikt | 'BEGGE' | undefined;
+export type ForelderValg = BrukerRolleSak_fpoversikt | 'BEGGE' | undefined;
 
 export type FeltSynlighetKontekst = {
     forelder: ForelderValg;

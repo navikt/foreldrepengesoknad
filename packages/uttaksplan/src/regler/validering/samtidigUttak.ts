@@ -3,6 +3,7 @@ import { getFloatFromString } from '@navikt/fp-utils';
 import { LeggTilEllerEndrePeriodeFormFormValues } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Regel, Regelgruppe, ValideringInput, i18n } from './types';
+import { erUtfyltForSamtidigUttak } from './utils';
 
 type SamtidigUttakKontekst = {
     kombinertUttaksprosent: number;
@@ -16,17 +17,6 @@ type SamtidigUttakKontekst = {
     farMedmorsFellesperiodeErStørreEnn50: boolean;
     morsFellesperiodeErStørreEnn50: boolean;
 };
-
-const erUtfyltForSamtidigUttak = (values: LeggTilEllerEndrePeriodeFormFormValues): boolean =>
-    values.forelder === 'BEGGE' &&
-    values.samtidigUttaksprosentMor !== undefined &&
-    values.samtidigUttaksprosentFarMedmor !== undefined &&
-    values.skalDuKombinereArbeidOgUttakMor !== undefined &&
-    values.skalDuKombinereArbeidOgUttakFarMedmor !== undefined &&
-    values.kontoTypeFarMedmor !== undefined &&
-    values.kontoTypeMor !== undefined &&
-    (!values.skalDuKombinereArbeidOgUttakMor || values.stillingsprosentMor !== undefined) &&
-    (!values.skalDuKombinereArbeidOgUttakFarMedmor || values.stillingsprosentFarMedmor !== undefined);
 
 const REGLER: ReadonlyArray<Regel<SamtidigUttakKontekst>> = [
     {
@@ -104,6 +94,7 @@ const REGLER: ReadonlyArray<Regel<SamtidigUttakKontekst>> = [
 
 export const SAMTIDIG_UTTAK_GRUPPE: Regelgruppe<SamtidigUttakKontekst> = {
     id: 'samtidigUttak',
+    tittel: 'Samtidig uttak utanfor verneperioden rundt fødsel',
     beskrivelse:
         'Regler for samtidig uttak når begge foreldre tar ut foreldrepenger samtidig utenfor verneperioden ' +
         'rundt fødsel (dvs. ikke fra 2 uker før til 6 uker etter fødsel).',
