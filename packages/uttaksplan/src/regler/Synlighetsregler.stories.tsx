@@ -2,7 +2,11 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { BodyLong, Heading, Table, VStack } from '@navikt/ds-react';
 
-import { ALLE_SYNLIGHETSREGLER } from './synlighet';
+import { FELT_SYNLIGHET_OMRÅDE } from './synlighet/feltSynlighet';
+import { FORELDER_VALG_OMRÅDE } from './synlighet/forelderValg';
+import { Synlighetsområde } from './synlighet/types';
+
+const ALLE_SYNLIGHETSREGLER: readonly Synlighetsområde[] = [FORELDER_VALG_OMRÅDE, FELT_SYNLIGHET_OMRÅDE];
 
 /**
  * Selvdokumenterende Storybook-side: viser synlighetsreglene for skjemaet

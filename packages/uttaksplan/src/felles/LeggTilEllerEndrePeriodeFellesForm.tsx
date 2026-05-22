@@ -22,8 +22,9 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskvoteNavnSimple } from '../liste/utils/uttaksplanListeUtils';
-import { useBlokkerandeAlert, skalViseGraderingAlert } from '../regler/alert';
-import { synlighetForForelderValg, useFeltSynlighet } from '../regler/synlighet';
+import { useBlokkerandeAlert, skalViseGraderingAlert } from '../regler/alert/skjemaAlerts';
+import { synlighetForForelderValg } from '../regler/synlighet/forelderValg';
+import { useFeltSynlighet } from '../regler/synlighet/feltSynlighet';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
 import { getAktivitetskravOptions, getAktivitetskravTekst } from '../utils/periodeUtils';

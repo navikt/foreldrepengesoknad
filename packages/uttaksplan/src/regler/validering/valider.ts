@@ -4,20 +4,7 @@ import { ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_GRUPPE } from './arbeidOgUttakDeFørs
 import { FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE } from './farMedmorMaksToUkerRundtFødsel';
 import { FAR_MEDMOR_RUNDT_FØDSEL_GRUPPE } from './farMedmorRundtFødsel';
 import { SAMTIDIG_UTTAK_GRUPPE } from './samtidigUttak';
-import { Regel, Regelgruppe, ValideringInput, førsteBrutteRegel } from './types';
-
-export type { Regel, Regelgruppe, ValideringInput, Periode } from './types';
-export { førsteBrutteRegel } from './types';
-
-/**
- * Visning av en regelgruppe uten eksponering av kontekst-typen — for
- * dokumentasjon (Storybook) og for å se alle reglene samlet.
- */
-export type RegelgruppeVisning = {
-    id: string;
-    beskrivelse: string;
-    regler: ReadonlyArray<Omit<Regel<unknown>, 'erBrutt'>>;
-};
+import { Regelgruppe, ValideringInput, førsteBrutteRegel } from './types';
 
 type Validator = (input: ValideringInput) => string | null;
 
@@ -31,29 +18,12 @@ const lagValidator =
         return førsteBrutteRegel(gruppe.regler, kontekst)?.feilmeldingId ?? null;
     };
 
-const tilVisning = <TCtx>(gruppe: Regelgruppe<TCtx>): RegelgruppeVisning => ({
-    id: gruppe.id,
-    beskrivelse: gruppe.beskrivelse,
-    regler: gruppe.regler.map(({ id, beskrivelse, feilmeldingId }) => ({ id, beskrivelse, feilmeldingId })),
-});
-
 const GRUPPER = [
     ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_GRUPPE,
     SAMTIDIG_UTTAK_GRUPPE,
     FAR_MEDMOR_RUNDT_FØDSEL_GRUPPE,
     FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE,
 ] as const;
-
-/**
- * Alle valideringsregler som blir sjekket når brukeren lagrer/legger til en periode.
- *
- * Rekkefølgen er viktig: første regel som er brutt vinner, og rekkefølgen er bevart
- * fra den opprinnelige implementasjonen for å sikre at brukeren får samme feilmelding
- * som før.
- */
-export const ALLE_VALIDERINGSREGLER: readonly RegelgruppeVisning[] = GRUPPER.map((gruppe) =>
-    tilVisning(gruppe as Regelgruppe<unknown>),
-);
 
 const VALIDATORS: readonly Validator[] = GRUPPER.map((gruppe) =>
     lagValidator(gruppe as Regelgruppe<unknown>),

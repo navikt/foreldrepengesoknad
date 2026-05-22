@@ -3,7 +3,30 @@ import { useIntl } from 'react-intl';
 
 import { BodyLong, Heading, Table, VStack } from '@navikt/ds-react';
 
-import { ALLE_VALIDERINGSREGLER } from './validering';
+import { ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_GRUPPE } from './validering/arbeidOgUttakDeFørsteSeksUkene';
+import { FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE } from './validering/farMedmorMaksToUkerRundtFødsel';
+import { FAR_MEDMOR_RUNDT_FØDSEL_GRUPPE } from './validering/farMedmorRundtFødsel';
+import { SAMTIDIG_UTTAK_GRUPPE } from './validering/samtidigUttak';
+import { Regel, Regelgruppe } from './validering/types';
+
+type RegelgruppeVisning = {
+    id: string;
+    beskrivelse: string;
+    regler: ReadonlyArray<Omit<Regel<unknown>, 'erBrutt'>>;
+};
+
+const tilVisning = <TCtx,>(gruppe: Regelgruppe<TCtx>): RegelgruppeVisning => ({
+    id: gruppe.id,
+    beskrivelse: gruppe.beskrivelse,
+    regler: gruppe.regler.map(({ id, beskrivelse, feilmeldingId }) => ({ id, beskrivelse, feilmeldingId })),
+});
+
+const ALLE_VALIDERINGSREGLER: readonly RegelgruppeVisning[] = [
+    ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_GRUPPE,
+    SAMTIDIG_UTTAK_GRUPPE,
+    FAR_MEDMOR_RUNDT_FØDSEL_GRUPPE,
+    FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_GRUPPE,
+].map((gruppe) => tilVisning(gruppe as Regelgruppe<unknown>));
 
 /**
  * Selvdokumenterende Storybook-side: viser valideringsreglene som kjøres

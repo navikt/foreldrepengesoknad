@@ -27,7 +27,7 @@ import {
     FormValues as UtsettelseFormValues,
 } from '../../felles/utsettelse/LeggTilUtsettelseForm';
 import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
-import { lagHvaVilDuGjøreValidatorer } from '../../regler/felt';
+import { lagHvaVilDuGjøreValidatorer } from '../../regler/felt/hvaVilDuGjøre';
 import {
     Uttaksplanperiode,
     erEøsUttakPeriode,

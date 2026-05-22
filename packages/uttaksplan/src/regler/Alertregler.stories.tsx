@@ -3,7 +3,10 @@ import { useIntl } from 'react-intl';
 
 import { BodyLong, Heading, Table, Tag, VStack } from '@navikt/ds-react';
 
-import { ALLE_ALERTREGLER } from './alert';
+import { BLOKKERANDE_ALERT_OMRÅDE, KONTEKSTUELL_ALERT_OMRÅDE } from './alert/skjemaAlerts';
+import { Alertområde } from './alert/types';
+
+const ALLE_ALERTREGLER: readonly Alertområde[] = [BLOKKERANDE_ALERT_OMRÅDE, KONTEKSTUELL_ALERT_OMRÅDE];
 
 /**
  * Selvdokumenterende Storybook-side: viser alertreglene i skjemaet for

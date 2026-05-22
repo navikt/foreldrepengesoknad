@@ -3,7 +3,16 @@ import { useIntl } from 'react-intl';
 
 import { BodyLong, Heading, Table, VStack } from '@navikt/ds-react';
 
-import { ALLE_FELTREGLER } from './felt';
+import { Feltregelområde } from './types';
+import { HVA_VIL_DU_GJØRE_OMRÅDE } from './felt/hvaVilDuGjøre';
+import { SAMTIDIG_UTTAKSPROSENT_OMRÅDE } from './felt/samtidigUttaksprosent';
+import { STILLINGSPROSENT_OMRÅDE } from './felt/stillingsprosent';
+
+const ALLE_FELTREGLER: readonly Feltregelområde[] = [
+    STILLINGSPROSENT_OMRÅDE,
+    SAMTIDIG_UTTAKSPROSENT_OMRÅDE,
+    HVA_VIL_DU_GJØRE_OMRÅDE,
+];
 
 /**
  * Selvdokumenterende Storybook-side: viser feltreglene som kjøres direkte
