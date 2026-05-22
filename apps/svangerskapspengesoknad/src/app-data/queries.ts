@@ -2,7 +2,12 @@ import { queryOptions } from '@tanstack/react-query';
 import { SvpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky, { type ResponsePromise } from 'ky';
 
-import { ForsendelseStatus, Saker_fpoversikt, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+import {
+    EksternArbeidsforholdDto_fpoversikt,
+    ForsendelseStatus,
+    Saker_fpoversikt,
+    SvpPersonopplysningerDto_fpoversikt,
+} from '@navikt/fp-types';
 
 const urlPrefiks = import.meta.env.BASE_URL;
 
@@ -16,6 +21,7 @@ export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/personopplysninger/svangerskapspenger`,
     saker: `${urlPrefiks}/fpoversikt/api/saker`,
     erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`,
+    mineFrilansoppdrag: `${urlPrefiks}/fpoversikt/api/arbeid/mineFrilansoppdrag`,
 
     status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
     mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER`,
@@ -61,5 +67,12 @@ export const statusOptions = () =>
 
             return status;
         },
+        staleTime: Infinity,
+    });
+
+export const mineFrilansoppdragOptions = () =>
+    queryOptions({
+        queryKey: ['MINE_FRILANSOPPDRAG'],
+        queryFn: () => ky.get(API_URLS.mineFrilansoppdrag).json<EksternArbeidsforholdDto_fpoversikt[]>(),
         staleTime: Infinity,
     });

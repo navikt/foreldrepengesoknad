@@ -16,6 +16,7 @@ import { JaNeiTekst } from '../OppsummeringPanel';
 interface ArbeidsforholdOppsummeringProps {
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[];
     onVilEndreSvar: () => void;
     skalViseAlertOmIM: boolean;
 }
@@ -23,6 +24,7 @@ interface ArbeidsforholdOppsummeringProps {
 export const ArbeidsforholdOppsummering = ({
     arbeidsforholdOgInntekt,
     arbeidsforhold,
+    frilansoppdrag,
     onVilEndreSvar,
     skalViseAlertOmIM,
 }: ArbeidsforholdOppsummeringProps) => {
@@ -68,19 +70,21 @@ export const ArbeidsforholdOppsummering = ({
                         </Alert>
                     )}
                 </FormSummary.Answer>
-                <FormSummary.Answer>
-                    <FormSummary.Label>
-                        {erForeldrepenger && (
-                            <FormattedMessage id="ArbeidsforholdOppsummering.HarDuJobbetSomFrilansFp" />
-                        )}
-                        {!erForeldrepenger && (
-                            <FormattedMessage id="ArbeidsforholdOppsummering.HarDuJobbetSomFrilans" />
-                        )}
-                    </FormSummary.Label>
-                    <FormSummary.Value>
-                        <JaNeiTekst ja={arbeidsforholdOgInntekt.harJobbetSomFrilans} />
-                    </FormSummary.Value>
-                </FormSummary.Answer>
+                {frilansoppdrag.length === 0 && (
+                    <FormSummary.Answer>
+                        <FormSummary.Label>
+                            {erForeldrepenger && (
+                                <FormattedMessage id="ArbeidsforholdOppsummering.HarDuJobbetSomFrilansFp" />
+                            )}
+                            {!erForeldrepenger && (
+                                <FormattedMessage id="ArbeidsforholdOppsummering.HarDuJobbetSomFrilans" />
+                            )}
+                        </FormSummary.Label>
+                        <FormSummary.Value>
+                            <JaNeiTekst ja={arbeidsforholdOgInntekt.harJobbetSomFrilans} />
+                        </FormSummary.Value>
+                    </FormSummary.Answer>
+                )}
 
                 <FormSummary.Answer>
                     <FormSummary.Label>

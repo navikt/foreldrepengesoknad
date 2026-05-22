@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+import { mineFrilansoppdragOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
@@ -91,6 +93,16 @@ export const OppsummeringSteg = (props: Props) => {
         getFamiliehendelsedato(barn),
     );
 
+    const frilansoppdragQuery = useQuery({
+        ...mineFrilansoppdragOptions(),
+        select: (data) => {
+            const threeMonthsAgo = new Date();
+            threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+            return data.filter((oppdrag) => !oppdrag.tom || new Date(oppdrag.tom) >= threeMonthsAgo);
+        },
+    });
+    const frilansoppdrag = frilansoppdragQuery.data ?? [];
+
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <OppsummeringPanel
@@ -127,6 +139,7 @@ export const OppsummeringSteg = (props: Props) => {
                     skalViseAlertOmIM={aktiveArbeidsforhold.length > 0}
                     arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                     arbeidsforhold={aktiveArbeidsforhold}
+                    frilansoppdrag={frilansoppdrag}
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ARBEID_OG_INNTEKT)}
                 />
                 <FrilansOppsummering

@@ -1,4 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData } from 'appData/SvpDataContext';
+import { mineFrilansoppdragOptions } from 'appData/queries';
 import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
@@ -49,6 +51,16 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
     const skalViseAlertOmIM = aktiveArbeidsforhold.some((arbeidsforhold) =>
         valgteArbeidsforhold?.includes(arbeidsforhold.arbeidsgiverId),
     );
+
+    const frilansoppdragQuery = useQuery({
+        ...mineFrilansoppdragOptions(),
+        select: (data) => {
+            const threeMonthsAgo = new Date();
+            threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+            return data.filter((oppdrag) => !oppdrag.tom || new Date(oppdrag.tom) >= threeMonthsAgo);
+        },
+    });
+    const frilansoppdrag = frilansoppdragQuery.data ?? [];
 
     const førsteTilretteleggingId = getTilretteleggingId(
         søkerInfo.arbeidsforhold,
@@ -105,6 +117,7 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                     skalViseAlertOmIM={skalViseAlertOmIM}
                     arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                     arbeidsforhold={aktiveArbeidsforhold}
+                    frilansoppdrag={frilansoppdrag}
                     onVilEndreSvar={() => navigator.goToStep(SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT)}
                 />
                 <FrilansOppsummering frilans={frilans} onVilEndreSvar={() => navigator.goToStep(SøknadRoute.FRILANS)} />
