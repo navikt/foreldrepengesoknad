@@ -469,7 +469,7 @@ const periodeTilDager = (perioder: TilkjentYtelsePeriode_fpoversikt[]): DagMedPe
 };
 
 const fjernLeadingOgTrailingMånederUtenUtbetaling = (andelerPerDag: DagMedPeriode[]) => {
-    const andelerPerDagGruppertPåMåned = groupBy(andelerPerDag, (d) => dayjs(d.dato).month());
+    const andelerPerDagGruppertPåMåned = groupBy(andelerPerDag, (d) => dayjs(d.dato).format('YYYY-MM'));
     const andelerSortertPåMåned = sortBy(Object.values(andelerPerDagGruppertPåMåned), (dager) =>
         dayjs(dager[0]!.dato).unix(),
     );
@@ -496,8 +496,9 @@ const fjernLeadingOgTrailingMånederUtenUtbetaling = (andelerPerDag: DagMedPerio
 
 const UtbetalingsVisning = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) => {
     const tilkjentYtelse = sak.gjeldendeVedtak?.tilkjentYtelse?.utbetalingsperioder ?? [];
+    console.log(tilkjentYtelse);
     const andelerPerDag = periodeTilDager(tilkjentYtelse);
-
+    console.log(andelerPerDag);
     const andelerPerMåned = fjernLeadingOgTrailingMånederUtenUtbetaling(andelerPerDag);
 
     return (
@@ -546,7 +547,8 @@ const UtbetalingsVisning = ({ sak }: { sak: Foreldrepengesak | Svangerskapspenge
 
                     const førsteDato = dager[0]!.dato;
                     const måned = capitalizeFirstLetter(formaterDato(førsteDato, 'MMMM'));
-                    const skalViseÅr = index === 0 || dayjs(førsteDato).month() === 0;
+                    const forrigeDato = index > 0 ? andelerPerMåned[index - 1]![0]!.dato : undefined;
+                    const skalViseÅr = index === 0 || dayjs(førsteDato).year() !== dayjs(forrigeDato).year();
                     return (
                         <React.Fragment key={førsteDato}>
                             {skalViseÅr && <Label className="mt-4">{dayjs(førsteDato).year()}</Label>}
