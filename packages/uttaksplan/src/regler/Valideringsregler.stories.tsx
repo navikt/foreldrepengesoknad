@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 
 import { BodyLong, Heading, Table, VStack } from '@navikt/ds-react';
 
-import { ALLE_VALIDERINGSREGLER } from './index';
+import { ALLE_VALIDERINGSREGLER } from './validering';
 
 /**
  * Selvdokumenterende Storybook-side: viser valideringsreglene som kjøres
@@ -11,7 +11,7 @@ import { ALLE_VALIDERINGSREGLER } from './index';
  * feltvalideringene har passert, og sjekker tverrgående betingelser som
  * ikke kan fanges opp av enkeltfelt alene.
  *
- * Innholdet blir generert direkte fra reglene i `src/regler/`, så siden er
+ * Innholdet blir generert direkte fra reglene i `src/regler/validering/`, så siden er
  * alltid i synk med koden.
  */
 const Valideringsregler = () => {
@@ -27,7 +27,7 @@ const Valideringsregler = () => {
                 </BodyLong>
                 <BodyLong>
                     Siden er autogenerert fra regelkatalogen i koden ({' '}
-                    <code>packages/uttaksplan/src/regler/</code>). Endrer du regelteksten der, endrer denne siden
+                    <code>packages/uttaksplan/src/regler/validering/</code>). Endrer du regelteksten der, endrer denne siden
                     seg også.
                 </BodyLong>
             </VStack>

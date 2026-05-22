@@ -1,5 +1,5 @@
-import { LeggTilEllerEndrePeriodeFormFormValues } from '../felles/LeggTilEllerEndrePeriodeFellesForm';
-import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
+import { LeggTilEllerEndrePeriodeFormFormValues } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
+import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Periode, Regel, Regelgruppe, i18n, ValideringInput } from './types';
 
 type ArbeidOgUttakKontekst = {

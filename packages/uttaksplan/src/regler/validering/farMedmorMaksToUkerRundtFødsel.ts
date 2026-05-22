@@ -5,8 +5,8 @@ import minMax from 'dayjs/plugin/minMax';
 
 import { Uttaksdagen } from '@navikt/fp-utils';
 
-import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
-import { UttakPeriodeBuilder } from '../utils/UttakPeriodeBuilder';
+import { erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
+import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
 import { Periode, Regel, Regelgruppe, i18n, ValideringInput } from './types';
 
 dayjs.extend(isSameOrBefore);

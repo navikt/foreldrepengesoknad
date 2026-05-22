@@ -1,7 +1,7 @@
 import { getFloatFromString } from '@navikt/fp-utils';
 
-import { LeggTilEllerEndrePeriodeFormFormValues } from '../felles/LeggTilEllerEndrePeriodeFellesForm';
-import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
+import { LeggTilEllerEndrePeriodeFormFormValues } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
+import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Regel, Regelgruppe, ValideringInput, i18n } from './types';
 
 type FarMedmorRundtFødselKontekst = {
