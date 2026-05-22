@@ -1,16 +1,23 @@
-import { NotePencilDashIcon } from '@navikt/aksel-icons';
+import {
+    ArrowCirclepathReverseIcon,
+    ArrowUndoIcon,
+    ChevronDownIcon,
+    NotePencilDashIcon,
+    NotePencilIcon,
+    PlusIcon,
+    TrashIcon,
+} from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Alert, BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
+import { ActionMenu, Alert, BodyShort, Button, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
-import { UttaksplanHandlingKnapper } from '../felles/UttaksplanHandlingKnapper';
 import { Uttaksplanperiode } from '../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak } from '../utils/lagHullPerioder';
 import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../utils/periodeUtils';
@@ -94,8 +101,116 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
                     </VStack>
                 </HStack>
             )}
+            {uttaksplanRedigering && (
+                <HStack gap="space-16" justify="space-between" wrap>
+                    <HStack gap="space-16">
+                        <Button
+                            size="small"
+                            variant="secondary"
+                            data-color="neutral"
+                            onClick={
+                                uttaksplanRedigering.uttaksplanVersjoner.length > 0
+                                    ? () => uttaksplanRedigering.angreSisteEndring()
+                                    : undefined
+                            }
+                            disabled={uttaksplanRedigering.uttaksplanVersjoner.length === 0}
+                        >
+                            <VStack gap="space-4" align="center">
+                                <ArrowUndoIcon aria-hidden height={24} width={24} />
+                                <FormattedMessage id="UttaksplanHandlingKnapper.Angre" />
+                            </VStack>
+                        </Button>
+                        <Button
+                            size="small"
+                            variant="secondary"
+                            data-color="danger"
+                            onClick={() => uttaksplanRedigering.setVisFjernAltModal(true)}
+                            aria-haspopup="dialog"
+                            aria-expanded={uttaksplanRedigering.visFjernAltModal}
+                            aria-controls={
+                                uttaksplanRedigering.visFjernAltModal ? 'FjernAltIUttaksplanModal' : undefined
+                            }
+                        >
+                            <VStack gap="space-4" align="center">
+                                <TrashIcon aria-hidden height={24} width={24} />
+                                <FormattedMessage id="UttaksplanHandlingKnapper.FjernAlt" />
+                            </VStack>
+                        </Button>
+                    </HStack>
+                    {uttaksplanRedigering && (
+                        <HStack gap="space-16" wrap>
+                            <ActionMenu>
+                                <ActionMenu.Trigger>
+                                    <Button
+                                        variant="tertiary"
+                                        size="small"
+                                        data-color="neutral"
+                                        icon={<NotePencilIcon aria-hidden height={24} width={24} />}
+                                        iconPosition="left"
+                                        style={{ display: 'inline-flex', flexWrap: 'nowrap' }}
+                                    >
+                                        <HStack gap="space-4" align="center">
+                                            <FormattedMessage id="UttaksplanHandlingKnapper.EndrePlanen" />
+                                            <ChevronDownIcon aria-hidden height={20} width={20} />
+                                        </HStack>
+                                    </Button>
+                                </ActionMenu.Trigger>
+                                <ActionMenu.Content>
+                                    <VStack gap="space-16">
+                                        <ActionMenu.Item onClick={toggleAllAccordions}>
+                                            <HStack gap="space-8">
+                                                <NotePencilIcon aria-hidden height={24} width={24} color="#3F8047" />
+                                                <VStack gap="space-4">
+                                                    <BodyShort weight="semibold" size="small">
+                                                        <FormattedMessage id="UttaksplanHandlingKnapper.EndreValg" />
+                                                    </BodyShort>
+                                                    <ActionMenu.Label style={{ paddingLeft: '0', color: '#747A86' }}>
+                                                        <FormattedMessage id="UttaksplanHandlingKnapper.EndreValg.Beskrivelse" />
+                                                    </ActionMenu.Label>
+                                                </VStack>
+                                            </HStack>
+                                        </ActionMenu.Item>
+
+                                        <ActionMenu.Item
+                                            onClick={
+                                                uttaksplanRedigering.harEndretPlan
+                                                    ? () => uttaksplanRedigering.setVisTilbakestillModal(true)
+                                                    : undefined
+                                            }
+                                            disabled={!uttaksplanRedigering.harEndretPlan}
+                                        >
+                                            <HStack gap="space-8">
+                                                <ArrowCirclepathReverseIcon
+                                                    aria-hidden
+                                                    height={24}
+                                                    width={24}
+                                                    color="#413FC3"
+                                                />
+                                                <VStack gap="space-4">
+                                                    <BodyShort weight="semibold" size="small">
+                                                        <FormattedMessage id="UttaksplanHandlingKnapper.Tilbakestill" />
+                                                    </BodyShort>
+                                                    <ActionMenu.Label style={{ paddingLeft: '0', color: '#747A86' }}>
+                                                        <FormattedMessage id="UttaksplanHandlingKnapper.Tilbakestill.Beskrivelse" />
+                                                    </ActionMenu.Label>
+                                                </VStack>
+                                            </HStack>
+                                        </ActionMenu.Item>
+                                    </VStack>
+                                </ActionMenu.Content>
+                            </ActionMenu>
+                        </HStack>
+                    )}
+                </HStack>
+            )}
+
             {!isReadOnly && !isLeggTilPeriodePanelOpen && (
-                <Button variant="secondary" onClick={() => setIsLeggTilPeriodePanelOpen(true)}>
+                <Button
+                    variant="secondary"
+                    onClick={() => setIsLeggTilPeriodePanelOpen(true)}
+                    icon={<PlusIcon aria-hidden />}
+                    style={{ outline: '1px solid var(--ax-border-subtle)', outlineOffset: '-1px' }}
+                >
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />
                 </Button>
             )}
@@ -104,24 +219,6 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
                     setIsLeggTilPeriodePanelOpen={setIsLeggTilPeriodePanelOpen}
                     erNyPeriodeModus
                     harPeriodeDerMorsAktivitetIkkeErValgt={false}
-                />
-            )}
-            {uttaksplanRedigering && (
-                <UttaksplanHandlingKnapper
-                    toggleAllAccordions={toggleAllAccordions}
-                    tilbakestillPlan={
-                        uttaksplanRedigering.harEndretPlan
-                            ? () => uttaksplanRedigering.setVisTilbakestillModal(true)
-                            : undefined
-                    }
-                    angreEndring={
-                        uttaksplanRedigering.uttaksplanVersjoner.length > 0
-                            ? () => uttaksplanRedigering.angreSisteEndring()
-                            : undefined
-                    }
-                    fjernAltIPlanen={() => uttaksplanRedigering.setVisFjernAltModal(true)}
-                    visFjernAltModal={uttaksplanRedigering.visFjernAltModal}
-                    visTilbakestillModal={uttaksplanRedigering.visTilbakestillModal}
                 />
             )}
         </VStack>
