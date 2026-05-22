@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Alert, BodyShort, Button, Detail, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
-import { useForskyvEllerErstattAlerts } from '../../regler/alert/informasjonsAlerts';
+import { useForskyvEllerErstattAlerts } from '../../regler/alert/informasjonsAlertHooks';
 
 interface Props {
     valgtePerioder: Array<{ fom: string; tom: string }>;

@@ -10,7 +10,7 @@ import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
-import { useUttaksplanKalenderAlerts } from '../regler/alert/informasjonsAlerts';
+import { useUttaksplanKalenderAlerts } from '../regler/alert/informasjonsAlertHooks';
 import { UttaksplanLegend } from './legend/UttaksplanLegend';
 import { KalenderPdf } from './pdf/KalenderPdf';
 import { RedigerKalenderIndex } from './redigering/RedigerKalenderIndex';

@@ -16,7 +16,7 @@ const periodeOverlapperFørsteSeksUker = (k: ArbeidOgUttakKontekst): boolean =>
 
 const REGLER: ReadonlyArray<Valideringsregel<ArbeidOgUttakKontekst>> = [
     {
-        id: 'MorKanIkkeKombinereArbeidOgUttakFørsteSeksUker',
+        id: 'arbeidOgUttakDeFørsteSeksUkene.morKanIkkeKombinereArbeidOgUttakFørsteSeksUker',
         beskrivelse:
             'Mor kan ikke kombinere arbeid med uttak av mødrekvote, fellesperiode eller foreldrepenger i ' +
             'de første seks ukene etter fødsel.',
@@ -29,7 +29,7 @@ const REGLER: ReadonlyArray<Valideringsregel<ArbeidOgUttakKontekst>> = [
         feilmeldingId: i18n('endreTidsPeriodeModal.kanIkkeKombinere'),
     },
     {
-        id: 'FarMedmorKanIkkeKombinereArbeidOgOverførtMødrekvoteFørsteSeksUker',
+        id: 'arbeidOgUttakDeFørsteSeksUkene.farMedmorKanIkkeKombinereArbeidOgOverførtMødrekvoteFørsteSeksUker',
         beskrivelse:
             'Far/medmor kan ikke kombinere arbeid med overført mødrekvote i de første seks ukene etter fødsel.',
         erBrutt: (k) =>

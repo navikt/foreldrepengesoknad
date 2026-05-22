@@ -89,7 +89,7 @@ const farMedmorErAktuell = (k: KvoteKontekst): boolean => {
 /* ---------- Regler for mor ---------- */
 
 const MOR_AKTIVITETSFRI_KVOTE: Kvoteregel<KvoteKontekst> = {
-    id: 'mor.AKTIVITETSFRI_KVOTE',
+    id: 'morKvoter.aktivitetsfriKvote',
     forelder: 'MOR',
     kontotype: 'AKTIVITETSFRI_KVOTE',
     beskrivelse: 'Aktivitetsfri kvote er aldri tilgjengelig for mor — denne kvotetypen gjelder bare far/medmor.',
@@ -97,7 +97,7 @@ const MOR_AKTIVITETSFRI_KVOTE: Kvoteregel<KvoteKontekst> = {
 };
 
 const MOR_MØDREKVOTE: Kvoteregel<KvoteKontekst> = {
-    id: 'mor.MØDREKVOTE',
+    id: 'morKvoter.mødrekvote',
     forelder: 'MOR',
     kontotype: 'MØDREKVOTE',
     beskrivelse:
@@ -107,7 +107,7 @@ const MOR_MØDREKVOTE: Kvoteregel<KvoteKontekst> = {
 };
 
 const MOR_FEDREKVOTE: Kvoteregel<KvoteKontekst> = {
-    id: 'mor.FEDREKVOTE',
+    id: 'morKvoter.fedrekvote',
     forelder: 'MOR',
     kontotype: 'FEDREKVOTE',
     beskrivelse:
@@ -122,7 +122,7 @@ const MOR_FEDREKVOTE: Kvoteregel<KvoteKontekst> = {
 };
 
 const MOR_FORELDREPENGER: Kvoteregel<KvoteKontekst> = {
-    id: 'mor.FORELDREPENGER',
+    id: 'morKvoter.foreldrepenger',
     forelder: 'MOR',
     kontotype: 'FORELDREPENGER',
     beskrivelse:
@@ -141,7 +141,7 @@ const MOR_FORELDREPENGER: Kvoteregel<KvoteKontekst> = {
 };
 
 const MOR_FORELDREPENGER_FØR_FØDSEL: Kvoteregel<KvoteKontekst> = {
-    id: 'mor.FORELDREPENGER_FØR_FØDSEL',
+    id: 'morKvoter.foreldrepengerFørFødsel',
     forelder: 'MOR',
     kontotype: 'FORELDREPENGER_FØR_FØDSEL',
     beskrivelse:
@@ -152,7 +152,7 @@ const MOR_FORELDREPENGER_FØR_FØDSEL: Kvoteregel<KvoteKontekst> = {
 };
 
 const MOR_FELLESPERIODE: Kvoteregel<KvoteKontekst> = {
-    id: 'mor.FELLESPERIODE',
+    id: 'morKvoter.fellesperiode',
     forelder: 'MOR',
     kontotype: 'FELLESPERIODE',
     beskrivelse:
@@ -172,7 +172,7 @@ const MOR_FELLESPERIODE: Kvoteregel<KvoteKontekst> = {
 /* ---------- Regler for far/medmor ---------- */
 
 const FAR_MEDMOR_FORELDREPENGER_FØR_FØDSEL: Kvoteregel<KvoteKontekst> = {
-    id: 'farMedmor.FORELDREPENGER_FØR_FØDSEL',
+    id: 'farMedmorKvoter.foreldrepengerFørFødsel',
     forelder: 'FAR_MEDMOR',
     kontotype: 'FORELDREPENGER_FØR_FØDSEL',
     beskrivelse:
@@ -181,7 +181,7 @@ const FAR_MEDMOR_FORELDREPENGER_FØR_FØDSEL: Kvoteregel<KvoteKontekst> = {
 };
 
 const FAR_MEDMOR_MØDREKVOTE: Kvoteregel<KvoteKontekst> = {
-    id: 'farMedmor.MØDREKVOTE',
+    id: 'farMedmorKvoter.mødrekvote',
     forelder: 'FAR_MEDMOR',
     kontotype: 'MØDREKVOTE',
     beskrivelse:
@@ -198,7 +198,7 @@ const FAR_MEDMOR_MØDREKVOTE: Kvoteregel<KvoteKontekst> = {
 };
 
 const FAR_MEDMOR_AKTIVITETSFRI_KVOTE: Kvoteregel<KvoteKontekst> = {
-    id: 'farMedmor.AKTIVITETSFRI_KVOTE',
+    id: 'farMedmorKvoter.aktivitetsfriKvote',
     forelder: 'FAR_MEDMOR',
     kontotype: 'AKTIVITETSFRI_KVOTE',
     beskrivelse:
@@ -208,7 +208,7 @@ const FAR_MEDMOR_AKTIVITETSFRI_KVOTE: Kvoteregel<KvoteKontekst> = {
 };
 
 const FAR_MEDMOR_FEDREKVOTE: Kvoteregel<KvoteKontekst> = {
-    id: 'farMedmor.FEDREKVOTE',
+    id: 'farMedmorKvoter.fedrekvote',
     forelder: 'FAR_MEDMOR',
     kontotype: 'FEDREKVOTE',
     beskrivelse:
@@ -218,7 +218,7 @@ const FAR_MEDMOR_FEDREKVOTE: Kvoteregel<KvoteKontekst> = {
 };
 
 const FAR_MEDMOR_FORELDREPENGER: Kvoteregel<KvoteKontekst> = {
-    id: 'farMedmor.FORELDREPENGER',
+    id: 'farMedmorKvoter.foreldrepenger',
     forelder: 'FAR_MEDMOR',
     kontotype: 'FORELDREPENGER',
     beskrivelse:
@@ -227,7 +227,7 @@ const FAR_MEDMOR_FORELDREPENGER: Kvoteregel<KvoteKontekst> = {
 };
 
 const FAR_MEDMOR_FELLESPERIODE: Kvoteregel<KvoteKontekst> = {
-    id: 'farMedmor.FELLESPERIODE',
+    id: 'farMedmorKvoter.fellesperiode',
     forelder: 'FAR_MEDMOR',
     kontotype: 'FELLESPERIODE',
     beskrivelse:
@@ -273,7 +273,7 @@ export const ALLE_KVOTE_REGLER: ReadonlyArray<Kvoteregel<KvoteKontekst>> = [
 ];
 
 export const MOR_KVOTE_OMRÅDE: Kvoteområde = {
-    id: 'mor-kvoter',
+    id: 'morKvoter',
     område: 'Hvilke kvotetyper er gyldige å velge for mor?',
     beskrivelse:
         'Når mor er valgt som forelder for en periode, må kvotetypen (stønadskonto) være gyldig. ' +
@@ -282,7 +282,7 @@ export const MOR_KVOTE_OMRÅDE: Kvoteområde = {
 };
 
 export const FAR_MEDMOR_KVOTE_OMRÅDE: Kvoteområde = {
-    id: 'far-medmor-kvoter',
+    id: 'farMedmorKvoter',
     område: 'Hvilke kvotetyper er gyldige å velge for far/medmor?',
     beskrivelse:
         'Når far/medmor er valgt som forelder for en periode, må kvotetypen (stønadskonto) være gyldig. ' +
@@ -319,11 +319,11 @@ export type GyldigeKvoter = {
  * gyldige kvotetyper for mor og far/medmor basert på reglene i
  * `kvoteRegler.ts`.
  */
-export const useHentGyldigeKvotetyper = (
-    valgtePerioder: Periode[],
-    harValgtSamtidigUttak: boolean,
-    ønskerFlerbarnsdager: boolean | undefined,
-): GyldigeKvoter => {
+export const useGyldigeKvotetyper = (input: {
+    valgtePerioder: Periode[];
+    harValgtSamtidigUttak: boolean;
+    ønskerFlerbarnsdager: boolean | undefined;
+}): GyldigeKvoter => {
     const {
         foreldreInfo: { søker, rettighetType },
         familiehendelsedato,
@@ -338,9 +338,9 @@ export const useHentGyldigeKvotetyper = (
         rettighetType,
         familiesituasjon,
         familiehendelsedato,
-        valgtePerioder,
-        harValgtSamtidigUttak,
-        ønskerFlerbarnsdager,
+        valgtePerioder: input.valgtePerioder,
+        harValgtSamtidigUttak: input.harValgtSamtidigUttak,
+        ønskerFlerbarnsdager: input.ønskerFlerbarnsdager,
     };
 
     return {

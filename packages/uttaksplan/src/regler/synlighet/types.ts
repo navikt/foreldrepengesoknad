@@ -1,4 +1,14 @@
 /**
+ * Doc-typen for en synlighetsregel — alt som beskriver regelen uten
+ * runtime-logikk. Brukt i Storybook-katalogen og som basis for
+ * `Synlighetsregel<TKontekst>`.
+ */
+export type SynlighetsregelDoc = {
+    id: string;
+    beskrivelse: string;
+};
+
+/**
  * En regel for å avgjøre om noe skal vises i skjemaet — et felt, en
  * radioknapp, eller en infoboks. Reglene er rene funksjoner som tar imot
  * en kontekst (relevant skjemastatus + bakgrunnsdata) og returnerer en
@@ -7,9 +17,7 @@
  * `beskrivelse` skal være klartekst på bokmål som forklarer regelen for
  * en designer, produkteier eller saksbehandler.
  */
-export type Synlighetsregel<TKontekst> = {
-    id: string;
-    beskrivelse: string;
+export type Synlighetsregel<TKontekst> = SynlighetsregelDoc & {
     skalVises: (kontekst: TKontekst) => boolean;
 };
 
@@ -22,5 +30,5 @@ export type Synlighetsområde = {
     id: string;
     område: string;
     beskrivelse: string;
-    regler: ReadonlyArray<Omit<Synlighetsregel<unknown>, 'skalVises'>>;
+    regler: readonly SynlighetsregelDoc[];
 };

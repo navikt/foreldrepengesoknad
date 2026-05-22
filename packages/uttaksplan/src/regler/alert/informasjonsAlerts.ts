@@ -9,16 +9,13 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 
-import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { kanMisteDagerVedEndringTilFerie } from '../../felles/uttaksplanValidatorer';
 import {
     Uttaksplanperiode,
     UttaksplanperiodeMedKunTapteDager,
     erEøsUttakPeriode,
-    erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
-import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
-import { erDetReadonlyPerioderEtterValgtePerioder, harPeriodeDerMorsAktivitetIkkeErValgt } from '../../utils/periodeUtils';
+import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../utils/periodeUtils';
 import { Periode, i18n } from '../types';
 import { Alertregel, Alertområde } from './types';
 
@@ -27,7 +24,7 @@ dayjs.extend(isSameOrAfter);
 
 /* ----------------- Kontekst-typer ----------------- */
 
-type MorsAktivitetListeKontekst = {
+export type MorsAktivitetListeKontekst = {
     rettighetType: RettighetType_fpoversikt;
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>;
 };
@@ -38,7 +35,7 @@ type EksisterendeValgtePeriodeKontekst = {
     morsUttakPerioder: readonly UttakPeriode_fpoversikt[];
 };
 
-type PeriodeDetaljerKontekst = {
+export type PeriodeDetaljerKontekst = {
     søker: BrukerRolleSak_fpoversikt;
     familiesituasjon: Familiesituasjon;
     familiehendelsedato: string;
@@ -48,7 +45,7 @@ type PeriodeDetaljerKontekst = {
     harPeriodeFørFamiliehendelsedato: boolean;
 };
 
-type ForskyvEllerErstattKontekst = {
+export type ForskyvEllerErstattKontekst = {
     familiesituasjon: Familiesituasjon;
     harSenerePerioderSomErReadonly: boolean;
     harPeriodeFørSeksUkerEtterFamiliehendelsedato: boolean;
@@ -61,8 +58,8 @@ const erIkkeAdopsjon = (familiesituasjon: Familiesituasjon) => familiesituasjon 
 
 /* ----------------- Regler ----------------- */
 
-const MANGLER_MORS_AKTIVITET_LISTE: Alertregel<MorsAktivitetListeKontekst> = {
-    id: 'mangler-mors-aktivitet-liste',
+export const MANGLER_MORS_AKTIVITET_LISTE: Alertregel<MorsAktivitetListeKontekst> = {
+    id: 'informasjonsAlerts.manglerMorsAktivitetListe',
     beskrivelse:
         'Brukeren har én eller flere perioder som krever mors aktivitet, men ' +
         'aktiviteten er ikke valgt. Vises som en samlet melding over hele listen.',
@@ -74,8 +71,8 @@ const MANGLER_MORS_AKTIVITET_LISTE: Alertregel<MorsAktivitetListeKontekst> = {
     skalVises: (ctx) => harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, [...ctx.perioder]),
 };
 
-const MANGLER_MORS_AKTIVITET_KALENDER: Alertregel<MorsAktivitetListeKontekst> = {
-    id: 'mangler-mors-aktivitet-kalender',
+export const MANGLER_MORS_AKTIVITET_KALENDER: Alertregel<MorsAktivitetListeKontekst> = {
+    id: 'informasjonsAlerts.manglerMorsAktivitetKalender',
     beskrivelse:
         'Brukeren har én eller flere perioder som krever mors aktivitet, men ' +
         'aktiviteten er ikke valgt. Vises samlet over hele kalenderen, sammen med ' +
@@ -88,8 +85,8 @@ const MANGLER_MORS_AKTIVITET_KALENDER: Alertregel<MorsAktivitetListeKontekst> = 
     skalVises: (ctx) => harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, [...ctx.perioder]),
 };
 
-const MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING: Alertregel<MorsAktivitetListeKontekst> = {
-    id: 'mors-aktivitet-ikke-oppgitt-redigering',
+export const MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING: Alertregel<MorsAktivitetListeKontekst> = {
+    id: 'informasjonsAlerts.morsAktivitetIkkeOppgittRedigering',
     beskrivelse:
         'Vises i redigeringspanelene når brukeren har valgt perioder som krever mors ' +
         'aktivitet, men aktiviteten ikke er fylt ut. Vises både i kalender- og ' +
@@ -102,8 +99,8 @@ const MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING: Alertregel<MorsAktivitetListeKonte
     skalVises: (ctx) => harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, [...ctx.perioder]),
 };
 
-const MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE: Alertregel<EksisterendeValgtePeriodeKontekst> = {
-    id: 'mors-aktivitet-ikke-valgt-eksisterende',
+export const MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE: Alertregel<EksisterendeValgtePeriodeKontekst> = {
+    id: 'informasjonsAlerts.morsAktivitetIkkeValgtEksisterende',
     beskrivelse:
         'Vises ved hver valgte eksisterende periode i kalender-redigering når perioden ' +
         'krever mors aktivitet, men aktiviteten ikke er valgt. Synliggjør hvilke konkrete ' +
@@ -117,8 +114,8 @@ const MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE: Alertregel<EksisterendeValgtePerio
         harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, [ctx.periode, ...ctx.morsUttakPerioder]),
 };
 
-const KAN_MISTE_DAGER: Alertregel<PeriodeDetaljerKontekst> = {
-    id: 'kan-miste-dager',
+export const KAN_MISTE_DAGER: Alertregel<PeriodeDetaljerKontekst> = {
+    id: 'informasjonsAlerts.kanMisteDager',
     beskrivelse:
         'Mor har valgt å endre én eller flere perioder til ferie. Slik endring kan ' +
         'føre til at dager blir tapt — brukeren får et varsel om dette før hun ' +
@@ -135,8 +132,8 @@ const KAN_MISTE_DAGER: Alertregel<PeriodeDetaljerKontekst> = {
         kanMisteDagerVedEndringTilFerie([...ctx.sammenslåtteValgtePerioder], ctx.familiehendelsedato),
 };
 
-const ADOPSJON_PERIODE_FØR_FAMHEND: Alertregel<PeriodeDetaljerKontekst> = {
-    id: 'adopsjon-periode-før-familiehendelsesdato',
+export const ADOPSJON_PERIODE_FØR_FAMHEND: Alertregel<PeriodeDetaljerKontekst> = {
+    id: 'informasjonsAlerts.adopsjonPeriodeFørFamiliehendelsesdato',
     beskrivelse:
         'Adopsjon: brukeren har valgt perioder som ligger før familiehendelsesdatoen. ' +
         'Vises i detaljvisning av eksisterende valgte perioder for å forklare hvorfor ' +
@@ -149,8 +146,8 @@ const ADOPSJON_PERIODE_FØR_FAMHEND: Alertregel<PeriodeDetaljerKontekst> = {
     skalVises: (ctx) => ctx.familiesituasjon === 'adopsjon' && ctx.harPeriodeFørFamiliehendelsedato,
 };
 
-const IKKE_REDIGERBAR_EØS: Alertregel<PeriodeDetaljerKontekst> = {
-    id: 'ikke-redigerbar-eøs-uttak',
+export const IKKE_REDIGERBAR_EØS: Alertregel<PeriodeDetaljerKontekst> = {
+    id: 'informasjonsAlerts.ikkeRedigerbarEøsUttak',
     beskrivelse:
         'EØS-uttaksperioder kan ikke redigeres i denne flyten. Alerten forklarer ' +
         'hvorfor periodene som er valgt, er låst.',
@@ -162,8 +159,8 @@ const IKKE_REDIGERBAR_EØS: Alertregel<PeriodeDetaljerKontekst> = {
     skalVises: (ctx) => ctx.eksisterendePerioderSomErValgt.some((p) => erEøsUttakPeriode(p)),
 };
 
-const IKKE_REDIGERBAR_PLEIEPENGER: Alertregel<PeriodeDetaljerKontekst> = {
-    id: 'ikke-redigerbar-pleiepenger',
+export const IKKE_REDIGERBAR_PLEIEPENGER: Alertregel<PeriodeDetaljerKontekst> = {
+    id: 'informasjonsAlerts.ikkeRedigerbarPleiepenger',
     beskrivelse:
         'Perioder med pleiepenger kan ikke redigeres i uttaksplanen. Alerten forklarer ' +
         'at disse blir stående som de er.',
@@ -175,8 +172,8 @@ const IKKE_REDIGERBAR_PLEIEPENGER: Alertregel<PeriodeDetaljerKontekst> = {
     skalVises: (ctx) => ctx.harPeriodeMedPleiepenger,
 };
 
-const SENERE_PERIODER_READONLY: Alertregel<ForskyvEllerErstattKontekst> = {
-    id: 'senere-perioder-readonly',
+export const SENERE_PERIODER_READONLY: Alertregel<ForskyvEllerErstattKontekst> = {
+    id: 'informasjonsAlerts.senerePerioderReadonly',
     beskrivelse:
         'Brukeren har valgt forskyv eller erstatt, og det finnes senere perioder i ' +
         'planen som ikke kan endres. Alerten forklarer at disse blir stående.',
@@ -188,8 +185,8 @@ const SENERE_PERIODER_READONLY: Alertregel<ForskyvEllerErstattKontekst> = {
     skalVises: (ctx) => ctx.harSenerePerioderSomErReadonly,
 };
 
-const VALGTE_DAGER_FØR_SEKS_UKER: Alertregel<ForskyvEllerErstattKontekst> = {
-    id: 'valgte-dager-før-seks-uker-etter-fam-dato',
+export const VALGTE_DAGER_FØR_SEKS_UKER: Alertregel<ForskyvEllerErstattKontekst> = {
+    id: 'informasjonsAlerts.valgteDagerFørSeksUkerEtterFamDato',
     beskrivelse:
         'Brukeren har valgt dager som ligger innenfor seks uker etter familiehendelses' +
         'datoen (gjelder ikke adopsjon). Alerten forklarer konsekvenser for ' +
@@ -202,8 +199,8 @@ const VALGTE_DAGER_FØR_SEKS_UKER: Alertregel<ForskyvEllerErstattKontekst> = {
     skalVises: (ctx) => erIkkeAdopsjon(ctx.familiesituasjon) && ctx.harPeriodeFørSeksUkerEtterFamiliehendelsedato,
 };
 
-const VALGTE_DAGER_FØR_FAMHEND: Alertregel<ForskyvEllerErstattKontekst> = {
-    id: 'valgte-dager-før-familiehendelsesdato',
+export const VALGTE_DAGER_FØR_FAMHEND: Alertregel<ForskyvEllerErstattKontekst> = {
+    id: 'informasjonsAlerts.valgteDagerFørFamiliehendelsesdato',
     beskrivelse:
         'Brukeren har valgt dager før familiehendelsesdatoen, men ikke innenfor seks ' +
         'uker etter (gjelder ikke adopsjon). Alerten forklarer konsekvenser for ' +
@@ -233,15 +230,8 @@ const ALLE_INFORMASJONS_ALERTS: ReadonlyArray<Alertregel<unknown>> = [
     VALGTE_DAGER_FØR_FAMHEND,
 ] as ReadonlyArray<Alertregel<unknown>>;
 
-/** Eksporterte rule-konstanter for komponentar som allereie har trigger-tilstanden lokalt. */
-export {
-    MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING,
-    MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE,
-    KAN_MISTE_DAGER,
-};
-
 export const INFORMASJONS_ALERT_OMRÅDE: Alertområde = {
-    id: 'informasjons-alerts',
+    id: 'informasjonsAlerts',
     område: 'Informasjonsmeldinger i uttaksplanen',
     beskrivelse:
         'Disse meldingene dukker opp ulike steder i uttaksplan-visningen (liste, kalender, ' +
@@ -249,161 +239,4 @@ export const INFORMASJONS_ALERT_OMRÅDE: Alertområde = {
         'utfyllinger eller låste perioder. De stopper ikke brukeren — men gir kontekst ' +
         'eller varsler om noe som krever oppmerksomhet.',
     regler: ALLE_INFORMASJONS_ALERTS,
-};
-
-/* ----------------- Hooks og helpers for komponentene ----------------- */
-
-type AktivAlert = { meldingId: string; variant: 'info' | 'warning' };
-
-const tilAktiv = <T,>(regel: Alertregel<T>, ctx: T): AktivAlert | undefined =>
-    regel.skalVises(ctx) ? { meldingId: regel.getMeldingId(ctx), variant: regel.variant } : undefined;
-
-export type UttaksplanListeAlerts = {
-    manglerMorsAktivitet?: AktivAlert;
-};
-
-/** Alerter som vises over hele listevisningen. */
-export const useUttaksplanListeAlerts = (
-    perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
-): UttaksplanListeAlerts => {
-    const {
-        foreldreInfo: { rettighetType },
-    } = useUttaksplanData();
-    return {
-        manglerMorsAktivitet: tilAktiv(MANGLER_MORS_AKTIVITET_LISTE, { rettighetType, perioder }),
-    };
-};
-
-export type UttaksplanKalenderAlerts = {
-    manglerMorsAktivitet?: AktivAlert;
-};
-
-/** Alerter som vises over hele kalendervisningen. */
-export const useUttaksplanKalenderAlerts = (
-    perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
-): UttaksplanKalenderAlerts => {
-    const {
-        foreldreInfo: { rettighetType },
-    } = useUttaksplanData();
-    return {
-        manglerMorsAktivitet: tilAktiv(MANGLER_MORS_AKTIVITET_KALENDER, { rettighetType, perioder }),
-    };
-};
-
-export type LeggTilEndreSkjemaInfoAlerts = {
-    morsAktivitetIkkeOppgitt?: AktivAlert;
-};
-
-/** Informasjons-alerter i legg-til/endre-periode-skjemaet. */
-export const useLeggTilEndreSkjemaInfoAlerts = (
-    perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
-): LeggTilEndreSkjemaInfoAlerts => {
-    const {
-        foreldreInfo: { rettighetType },
-    } = useUttaksplanData();
-    return {
-        morsAktivitetIkkeOppgitt: tilAktiv(MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING, { rettighetType, perioder }),
-    };
-};
-
-export type PeriodeDetaljerAlerts = {
-    adopsjonFørFamhend?: AktivAlert;
-    eøs?: AktivAlert;
-    pleiepenger?: AktivAlert;
-    kanMisteDager?: AktivAlert;
-};
-
-/** Alle informasjons-alerter i detaljvisning av valgte eksisterende perioder. */
-export const usePeriodeDetaljerAlerts = (input: {
-    sammenslåtteValgtePerioder: readonly Periode[];
-    eksisterendePerioderSomErValgt: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>;
-}): PeriodeDetaljerAlerts => {
-    const {
-        familiesituasjon,
-        familiehendelsedato,
-        foreldreInfo: { søker },
-    } = useUttaksplanData();
-
-    const harPeriodeFørFamiliehendelsedato = input.sammenslåtteValgtePerioder.some((p) =>
-        dayjs(p.fom).isBefore(familiehendelsedato),
-    );
-    const harPeriodeMedPleiepenger = input.eksisterendePerioderSomErValgt.some(
-        (p) =>
-            erVanligUttakPeriode(p) &&
-            p.resultat?.innvilget === false &&
-            p.resultat.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER',
-    );
-
-    const ctx: PeriodeDetaljerKontekst = {
-        søker,
-        familiesituasjon,
-        familiehendelsedato,
-        sammenslåtteValgtePerioder: input.sammenslåtteValgtePerioder,
-        eksisterendePerioderSomErValgt: input.eksisterendePerioderSomErValgt,
-        harPeriodeMedPleiepenger,
-        harPeriodeFørFamiliehendelsedato,
-    };
-
-    return {
-        adopsjonFørFamhend: tilAktiv(ADOPSJON_PERIODE_FØR_FAMHEND, ctx),
-        eøs: tilAktiv(IKKE_REDIGERBAR_EØS, ctx),
-        pleiepenger: tilAktiv(IKKE_REDIGERBAR_PLEIEPENGER, ctx),
-        kanMisteDager: tilAktiv(KAN_MISTE_DAGER, ctx),
-    };
-};
-
-export type ForskyvEllerErstattAlerts = {
-    senerePerioderReadonly?: AktivAlert;
-    valgteDagerFørSeksUker?: AktivAlert;
-    valgteDagerFørFamhend?: AktivAlert;
-};
-
-/** Alerter i forskyv- og erstatt-panelene. */
-export const useForskyvEllerErstattAlerts = (input: {
-    valgtePerioder: readonly Periode[];
-    erFerie?: boolean;
-    erGradert?: boolean;
-}): ForskyvEllerErstattAlerts => {
-    const {
-        familiesituasjon,
-        familiehendelsedato,
-        uttakPerioder,
-        erPeriodeneTilAnnenPartLåst,
-        foreldreInfo: { søker },
-    } = useUttaksplanData();
-
-    const harPeriodeFørFamiliehendelsedato = input.valgtePerioder.some((p) =>
-        dayjs(p.fom).isBefore(familiehendelsedato),
-    );
-    const harPeriodeFørSeksUkerEtterFamiliehendelsedato =
-        input.erFerie || input.erGradert
-            ? UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
-                  [...input.valgtePerioder],
-                  familiehendelsedato,
-              )
-            : false;
-
-    const forelderSomHarLåstePerioder = erPeriodeneTilAnnenPartLåst
-        ? søker === 'MOR'
-            ? 'FAR_MEDMOR'
-            : 'MOR'
-        : undefined;
-    const harSenerePerioderSomErReadonly = erDetReadonlyPerioderEtterValgtePerioder(
-        uttakPerioder,
-        [...input.valgtePerioder],
-        forelderSomHarLåstePerioder,
-    );
-
-    const ctx: ForskyvEllerErstattKontekst = {
-        familiesituasjon,
-        harSenerePerioderSomErReadonly,
-        harPeriodeFørSeksUkerEtterFamiliehendelsedato,
-        harPeriodeFørFamiliehendelsedato,
-    };
-
-    return {
-        senerePerioderReadonly: tilAktiv(SENERE_PERIODER_READONLY, ctx),
-        valgteDagerFørSeksUker: tilAktiv(VALGTE_DAGER_FØR_SEKS_UKER, ctx),
-        valgteDagerFørFamhend: tilAktiv(VALGTE_DAGER_FØR_FAMHEND, ctx),
-    };
 };

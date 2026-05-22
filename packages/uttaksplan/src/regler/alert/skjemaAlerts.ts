@@ -24,7 +24,7 @@ const SKJEMA_VISNINGSSTEDER: readonly Visningssted[] = ['legg-til-endre-skjema']
 
 const BLOKKERENDE_ALERTS: ReadonlyArray<Alertregel<BlokkerendeAlertKontekst>> = [
     {
-        id: 'perioder-krysser-familiehendelse',
+        id: 'blokkerendeAlerts.perioderKrysserFamiliehendelse',
         beskrivelse:
             'Brukeren har markert dager både før og etter familiehendelsesdatoen. ' +
             'Skjemaet blokkeres fordi planen må endres i to steg — først dagene ' +
@@ -52,7 +52,7 @@ const BLOKKERENDE_ALERTS: ReadonlyArray<Alertregel<BlokkerendeAlertKontekst>> = 
         },
     },
     {
-        id: 'ugyldig-forelder-kombinasjon',
+        id: 'blokkerendeAlerts.ugyldigForelderKombinasjon',
         beskrivelse:
             'Ingen forelder har gyldige stønadskontoer for den valgte perioden. ' +
             'Skjemaet blokkeres fordi det ikke finnes noen gyldig kontotype å velge.',
@@ -64,7 +64,7 @@ const BLOKKERENDE_ALERTS: ReadonlyArray<Alertregel<BlokkerendeAlertKontekst>> = 
         skalVises: (ctx) => !ctx.erMorGyldigForelder && !ctx.erFarMedmorGyldigForelder,
     },
     {
-        id: 'annen-part-låst',
+        id: 'blokkerendeAlerts.annenPartLåst',
         beskrivelse:
             'Brukeren har valgt dager som inkluderer en periode som bare annen ' +
             'part kan endre. Skjemaet blokkeres fordi brukeren ikke har lov til ' +
@@ -95,7 +95,7 @@ export type KontekstuellAlertKontekst = {
 };
 
 const KONTEKSTUELL_GRADERING_ALERT: Alertregel<KontekstuellAlertKontekst> = {
-    id: 'gradering-dager-reduseres',
+    id: 'kontekstuelleAlerts.graderingDagerReduseres',
     beskrivelse:
         'Brukeren har valgt gradering i tidsrommet 3 uker før termin til 6 uker ' +
         'etter fødsel. Foreldrepengene blir redusert den tiden brukeren jobber, ' +
@@ -136,11 +136,11 @@ export const finnFørsteBlokkerendeAlert = (
  * blokkerende alerts. Returnerer melding-id + variant slik konsumenten
  * selv kan rendre med FormattedMessage, eller undefined om ingen alert slår inn.
  */
-export const useBlokkerendeAlert = (
-    valgtePerioder: Periode[],
-    erMorGyldigForelder: boolean,
-    erFarMedmorGyldigForelder: boolean,
-): { meldingId: string; variant: 'info' | 'warning' } | undefined => {
+export const useBlokkerendeAlert = (input: {
+    valgtePerioder: Periode[];
+    erMorGyldigForelder: boolean;
+    erFarMedmorGyldigForelder: boolean;
+}): { meldingId: string; variant: 'info' | 'warning' } | undefined => {
     const {
         foreldreInfo: { rettighetType, søker },
         familiehendelsedato,
@@ -149,13 +149,13 @@ export const useBlokkerendeAlert = (
     } = useUttaksplanData();
 
     const treff = finnFørsteBlokkerendeAlert({
-        valgtePerioder,
+        valgtePerioder: input.valgtePerioder,
         familiehendelsedato,
         familiesituasjon,
         søker,
         rettighetType,
-        erMorGyldigForelder,
-        erFarMedmorGyldigForelder,
+        erMorGyldigForelder: input.erMorGyldigForelder,
+        erFarMedmorGyldigForelder: input.erFarMedmorGyldigForelder,
         erPeriodeneTilAnnenPartLåst,
     });
 
@@ -170,7 +170,7 @@ export const useBlokkerendeAlert = (
 };
 
 export const BLOKKERENDE_ALERT_OMRÅDE: Alertområde = {
-    id: 'blokkerende-alerts',
+    id: 'blokkerendeAlerts',
     område: 'Blokkerende meldinger',
     beskrivelse:
         'Disse meldingene erstatter hele skjemaet (early return). De hindrer brukeren fra å ' +
@@ -179,7 +179,7 @@ export const BLOKKERENDE_ALERT_OMRÅDE: Alertområde = {
 };
 
 export const KONTEKSTUELL_ALERT_OMRÅDE: Alertområde = {
-    id: 'kontekstuelle-alerts',
+    id: 'kontekstuelleAlerts',
     område: 'Kontekstuelle meldinger',
     beskrivelse:
         'Disse meldingene dukker opp inne i skjemaet som tilleggsinformasjon — typisk når ' +

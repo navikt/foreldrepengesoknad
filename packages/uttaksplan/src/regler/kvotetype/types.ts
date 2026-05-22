@@ -1,6 +1,18 @@
 import type { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
 
 /**
+ * Doc-typen for en kvoteregel — alt som beskriver regelen uten
+ * runtime-logikk. Brukt i Storybook-katalogen og som basis for
+ * `Kvoteregel<TKontekst>`.
+ */
+export type KvoteregelDoc = {
+    id: string;
+    beskrivelse: string;
+    forelder: BrukerRolleSak_fpoversikt;
+    kontotype: KontoTypeUttak;
+};
+
+/**
  * En regel som avgjør om en gitt kvotetype (stønadskontotype) er gyldig
  * å velge for én forelder gitt valgte perioder og søknadens kontekst.
  *
@@ -8,11 +20,7 @@ import type { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types
  * boolean. `beskrivelse` er klartekst på bokmål for designere,
  * produkteiere og saksbehandlere.
  */
-export type Kvoteregel<TKontekst> = {
-    id: string;
-    beskrivelse: string;
-    forelder: BrukerRolleSak_fpoversikt;
-    kontotype: KontoTypeUttak;
+export type Kvoteregel<TKontekst> = KvoteregelDoc & {
     erGyldig: (kontekst: TKontekst) => boolean;
 };
 
@@ -24,5 +32,5 @@ export type Kvoteområde = {
     id: string;
     område: string;
     beskrivelse: string;
-    regler: ReadonlyArray<Omit<Kvoteregel<unknown>, 'erGyldig'>>;
+    regler: readonly KvoteregelDoc[];
 };

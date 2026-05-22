@@ -20,7 +20,7 @@ import {
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
-import { useHentGyldigeKvotetyper } from '../../regler/kvotetype/kvoteRegler';
+import { useGyldigeKvotetyper } from '../../regler/kvotetype/kvoteRegler';
 import { LeggTilPauseForm } from '../../felles/utsettelse/LeggTilPauseForm';
 import {
     LeggTilUtsettelseForm,
@@ -268,11 +268,11 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const erAdopsjon = familiesituasjon === 'adopsjon';
 
     const perioder = fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [];
-    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKvotetyper(
-        perioder,
-        forelder === 'BEGGE',
-        ønskerFlerbarnsdager,
-    );
+    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useGyldigeKvotetyper({
+        valgtePerioder: perioder,
+        harValgtSamtidigUttak: forelder === 'BEGGE',
+        ønskerFlerbarnsdager: ønskerFlerbarnsdager,
+    });
     const isSubmitDisabled =
         hvaVilDuGjøre === 'LEGG_TIL_PERIODE' &&
         gyldigeStønadskontoerForMor.length === 0 &&

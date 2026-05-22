@@ -47,7 +47,7 @@ const morsTotaleProsent = (k: FeltSynlighetKontekst) => {
 };
 
 export const VIS_FLERBARNSDAGER_SPØRSMÅL: Synlighetsregel<FeltSynlighetKontekst> = {
-    id: 'felt.visFlerbarnsdager',
+    id: 'feltSynlighet.visFlerbarnsdager',
     beskrivelse:
         'Spørsmålet «Ønsker du å bruke flerbarnsdager?» vises bare ved flerbarnssituasjon (antall barn > 1), ' +
         'når forelderen ikke er mor, og når kontotypen for far/medmor ikke er mødrekvote eller aktivitetsfri kvote.',
@@ -59,7 +59,7 @@ export const VIS_FLERBARNSDAGER_SPØRSMÅL: Synlighetsregel<FeltSynlighetKonteks
 };
 
 export const VIS_MOR_OVERFØRING: Synlighetsregel<FeltSynlighetKontekst> = {
-    id: 'felt.visMorOverføring',
+    id: 'feltSynlighet.visMorOverføring',
     beskrivelse:
         'Overføring av fedrekvote til mor vises som eget infoavsnitt og spørsmål om overføringsårsak når ' +
         'mor er valgt forelder og kontotypen er fedrekvote.',
@@ -67,7 +67,7 @@ export const VIS_MOR_OVERFØRING: Synlighetsregel<FeltSynlighetKontekst> = {
 };
 
 export const VIS_FAR_MEDMOR_OVERFØRING: Synlighetsregel<FeltSynlighetKontekst> = {
-    id: 'felt.visFarMedmorOverføring',
+    id: 'feltSynlighet.visFarMedmorOverføring',
     beskrivelse:
         'Overføring av mødrekvote til far/medmor vises som eget infoavsnitt og spørsmål om overføringsårsak ' +
         'når far/medmor er valgt forelder og kontotypen er mødrekvote.',
@@ -75,7 +75,7 @@ export const VIS_FAR_MEDMOR_OVERFØRING: Synlighetsregel<FeltSynlighetKontekst> 
 };
 
 export const VIS_MORS_AKTIVITETSKRAV_VED_SAMTIDIG_UTTAK: Synlighetsregel<FeltSynlighetKontekst> = {
-    id: 'felt.visMorsAktivitetskravVedSamtidigUttak',
+    id: 'feltSynlighet.visMorsAktivitetskravVedSamtidigUttak',
     beskrivelse:
         'Ved samtidig uttak (forelder = Begge) på fellesperiode må mor utløse aktivitetskravet dersom hun ikke ' +
         'samlet er minst 100 % på arbeid + samtidig uttak. Vises ikke hvis flerbarnsdager er valgt — da gjelder ' +
@@ -95,7 +95,7 @@ const erValgtPeriodeInnenforFørsteSeksUkerEtterFødsel = (k: FeltSynlighetKonte
     );
 
 export const VIS_AKTIVITETSKRAV_FORDI_FEDREKVOTE_FØRSTE_SEKS_UKER: Synlighetsregel<FeltSynlighetKontekst> = {
-    id: 'felt.visAktivitetskravFordiFedrekvoteFørsteSeksUker',
+    id: 'feltSynlighet.visAktivitetskravFordiFedrekvoteFørsteSeksUker',
     beskrivelse:
         'Far/medmor som tar ut fedrekvote i de første seks ukene etter fødsel/termin må dokumentere mors ' +
         'aktivitet. Gjelder ikke ved aleneomsorg, og ikke ved adopsjon.',
@@ -107,7 +107,7 @@ export const VIS_AKTIVITETSKRAV_FORDI_FEDREKVOTE_FØRSTE_SEKS_UKER: Synlighetsre
 };
 
 export const VIS_AKTIVITETSKRAV_FELT: Synlighetsregel<FeltSynlighetKontekst> = {
-    id: 'felt.visAktivitetskravFelt',
+    id: 'feltSynlighet.visAktivitetskravFelt',
     beskrivelse:
         'Spørsmålet om mors aktivitet vises når far/medmor tar ut foreldrepenger eller fellesperiode uten ' +
         'aleneomsorg (og uten flerbarnsdager), eller når aktivitetskravet trigges av samtidig uttak, eller ' +
@@ -119,7 +119,7 @@ export const VIS_AKTIVITETSKRAV_FELT: Synlighetsregel<FeltSynlighetKontekst> = {
 };
 
 export const VIS_SAMTIDIG_UTTAK_FELTER: Synlighetsregel<FeltSynlighetKontekst> = {
-    id: 'felt.visSamtidigUttakFelter',
+    id: 'feltSynlighet.visSamtidigUttakFelter',
     beskrivelse:
         'Feltene for samtidig uttaksprosent (både mor og far/medmor) vises når brukeren har valgt at ' +
         'perioden gjelder begge foreldre.',
@@ -127,7 +127,7 @@ export const VIS_SAMTIDIG_UTTAK_FELTER: Synlighetsregel<FeltSynlighetKontekst> =
 };
 
 export const VIS_KOMBINERE_ARBEID_OG_UTTAK_MOR: Synlighetsregel<FeltSynlighetKontekst> = {
-    id: 'felt.visKombinereArbeidOgUttakMor',
+    id: 'feltSynlighet.visKombinereArbeidOgUttakMor',
     beskrivelse:
         'Spørsmålet om mor skal kombinere arbeid og uttak vises når mor er valgt forelder (Mor eller Begge), ' +
         'kvotetype er valgt, og mor ikke søker om overføring av fedrekvote.',
@@ -136,7 +136,7 @@ export const VIS_KOMBINERE_ARBEID_OG_UTTAK_MOR: Synlighetsregel<FeltSynlighetKon
 };
 
 export const VIS_KOMBINERE_ARBEID_OG_UTTAK_FAR_MEDMOR: Synlighetsregel<FeltSynlighetKontekst> = {
-    id: 'felt.visKombinereArbeidOgUttakFarMedmor',
+    id: 'feltSynlighet.visKombinereArbeidOgUttakFarMedmor',
     beskrivelse:
         'Spørsmålet om far/medmor skal kombinere arbeid og uttak vises når far/medmor er valgt forelder ' +
         '(Far/medmor eller Begge), og far/medmor ikke søker om overføring av mødrekvote.',
@@ -156,7 +156,7 @@ export const FELT_SYNLIGHET_REGLER = [
 ] as const;
 
 export const FELT_SYNLIGHET_OMRÅDE: Synlighetsområde = {
-    id: 'FeltSynlighet',
+    id: 'feltSynlighet',
     område: 'Hvilke felter, infobokser og oppfølgingsspørsmål vises i skjemaet?',
     beskrivelse:
         'Avhengig av hvilken forelder, kvotetype og rettighet brukeren har, blir ulike felter relevante. ' +

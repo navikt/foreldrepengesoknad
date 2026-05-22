@@ -47,7 +47,7 @@ const Feltregler = () => {
             {ALLE_FELTREGLER.map((område, områdeIdx) => (
                 <VStack key={område.id} gap="space-2">
                     <Heading size="medium">
-                        {områdeIdx + 1}. {område.feltnavn}
+                        {områdeIdx + 1}. {område.område}
                     </Heading>
                     <BodyLong className="italic text-ax-text-subtle">{område.beskrivelse}</BodyLong>
                     <Table>

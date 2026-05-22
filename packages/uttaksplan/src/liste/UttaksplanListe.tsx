@@ -11,7 +11,7 @@ import { Uttaksdagen } from '@navikt/fp-utils';
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
 import { UttaksplanHandlingKnapper } from '../felles/UttaksplanHandlingKnapper';
-import { useUttaksplanListeAlerts } from '../regler/alert/informasjonsAlerts';
+import { useUttaksplanListeAlerts } from '../regler/alert/informasjonsAlertHooks';
 import { Uttaksplanperiode } from '../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak } from '../utils/lagHullPerioder';
 import { LeggTilEllerEndrePeriodeListPanel } from './legg-til-endre-periode-panel/LeggTilEllerEndrePeriodeListPanel';

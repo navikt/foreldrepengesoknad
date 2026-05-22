@@ -22,7 +22,7 @@ const valgtPeriode = ({ fomValue, tomValue }: HvaVilDuGjøreInput): Periode[] =>
 
 export const HVA_VIL_DU_GJØRE_REGLER: ReadonlyArray<Feltregel<HvaVilDuGjøreInput>> = [
     {
-        id: 'utsettelseMåLiggeInnenforSeksUkerEtterFødsel',
+        id: 'hvaVilDuGjøre.utsettelseMåLiggeInnenforSeksUkerEtterFødsel',
         beskrivelse:
             'Når brukeren velger «Legg til utsettelse» må den valgte perioden ligge innenfor de første seks ' +
             'ukene etter familiehendelsesdato — utsettelse av mødrekvote er bare aktuelt i denne perioden.',
@@ -35,7 +35,7 @@ export const HVA_VIL_DU_GJØRE_REGLER: ReadonlyArray<Feltregel<HvaVilDuGjøreInp
         feilmeldingId: i18n('uttaksplan.valgPanel.utsettelse'),
     },
     {
-        id: 'pauseKanIkkeLeggesIFørsteSeksUkerEtterFødsel',
+        id: 'hvaVilDuGjøre.pauseKanIkkeLeggesIFørsteSeksUkerEtterFødsel',
         beskrivelse:
             'Når brukeren velger «Legg til pause» kan ikke noen av periodene ligge i de første seks ukene etter ' +
             'familiehendelsesdato — pause er ikke tillatt i mors forbeholdte periode rett etter fødsel.',
@@ -48,7 +48,7 @@ export const HVA_VIL_DU_GJØRE_REGLER: ReadonlyArray<Feltregel<HvaVilDuGjøreInp
         feilmeldingId: i18n('uttaksplan.valgPanel.pause'),
     },
     {
-        id: 'ferieEllerOppholdMåLiggeFørSeksUkerEtterFødselForFarMedmorBareSøkerRett',
+        id: 'hvaVilDuGjøre.ferieEllerOppholdMåLiggeFørSeksUkerEtterFødselForFarMedmorBareSøkerRett',
         beskrivelse:
             'For far/medmor med bare-søker-rett må «Legg til ferie» eller «Legg til opphold» plasseres i de ' +
             'første seks ukene etter familiehendelsesdato — utenfor denne perioden er ferie/opphold ikke ' +
@@ -68,8 +68,8 @@ export const HVA_VIL_DU_GJØRE_REGLER: ReadonlyArray<Feltregel<HvaVilDuGjøreInp
 ];
 
 export const HVA_VIL_DU_GJØRE_OMRÅDE: Feltregelområde = {
-    id: 'HvaVilDuGjøre',
-    feltnavn: 'Hva vil du gjøre?',
+    id: 'hvaVilDuGjøre',
+    område: 'Hva vil du gjøre?',
     beskrivelse:
         'Når brukeren velger hva som skal legges til i uttaksplanen (ferie, utsettelse, pause, opphold eller ' +
         'periode), sjekker vi at valget er gyldig i forhold til når perioden ligger og hvilke rettigheter ' +

@@ -63,7 +63,6 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     const {
         foreldreInfo: { rettighetType, erMedmorDelAvSøknaden, søker },
         familiehendelsedato,
-        erPeriodeneTilAnnenPartLåst,
         aktiveArbeidsforhold,
     } = useUttaksplanData();
 
@@ -99,6 +98,10 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         visMor: visMorRadio,
         visFarMedmor: visFarMedmorRadio,
         visBegge: visBeggeRadio,
+        visKontoMorRadiogruppe,
+        visKontoFarMedmorRadiogruppe,
+        erMorLåst,
+        erFarMedmorLåst,
     } = useForelderValgSynlighet({
         valgtePerioder,
         forelder,
@@ -115,7 +118,11 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 
     const erBareFarHarRett = søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT';
 
-    const blokkerendeAlert = useBlokkerendeAlert(valgtePerioder, erMorGyldigForelder, erFarMedmorGyldigForelder);
+    const blokkerendeAlert = useBlokkerendeAlert({
+        valgtePerioder,
+        erMorGyldigForelder,
+        erFarMedmorGyldigForelder,
+    });
 
     if (blokkerendeAlert) {
         return (
@@ -162,9 +169,6 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
             }
         }
     };
-
-    const erFarMedmorLåst = erPeriodeneTilAnnenPartLåst && søker === 'MOR';
-    const erMorLåst = erPeriodeneTilAnnenPartLåst && søker === 'FAR_MEDMOR';
 
     return (
         <>
@@ -223,7 +227,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 
             {forelder !== undefined && <hr className="text-ax-border-neutral-subtle" />}
 
-            {(forelder === 'MOR' || forelder === 'BEGGE') && gyldigeStønadskontoerForMor.length > 0 && (
+            {visKontoMorRadiogruppe && (
                 <RhfRadioGroup
                     name="kontoTypeMor"
                     control={formMethods.control}
@@ -242,7 +246,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     })}
                 </RhfRadioGroup>
             )}
-            {(forelder === 'FAR_MEDMOR' || forelder === 'BEGGE') && gyldigeStønadskontoerForFarMedmor.length > 0 && (
+            {visKontoFarMedmorRadiogruppe && (
                 <RhfRadioGroup
                     name="kontoTypeFarMedmor"
                     control={formMethods.control}

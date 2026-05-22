@@ -60,8 +60,8 @@ export const SAMTIDIG_UTTAKSPROSENT_REGLER: ReadonlyArray<Feltregel<SamtidigUtta
 ];
 
 export const SAMTIDIG_UTTAKSPROSENT_OMRÅDE: Feltregelområde = {
-    id: 'SamtidigUttaksprosent',
-    feltnavn: 'Samtidig uttaksprosent',
+    id: 'samtidigUttaksprosent',
+    område: 'Samtidig uttaksprosent',
     beskrivelse:
         'Hvor stor andel av kvoten brukeren tar ut samtidig med den andre forelderen. Reglene sikrer at verdien ' +
         'er et gyldig tall mellom 0 og 100 %, og at summen med stillingsprosent ikke overstiger 100 %.',

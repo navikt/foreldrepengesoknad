@@ -14,7 +14,7 @@ type FarMedmorRundtFødselKontekst = {
 
 const REGLER: ReadonlyArray<Valideringsregel<FarMedmorRundtFødselKontekst>> = [
     {
-        id: 'KanIkkeHaMindreEnn100ProsentFlerbarnsdager',
+        id: 'farMedmorRundtFødsel.kanIkkeHaMindreEnn100ProsentFlerbarnsdager',
         beskrivelse:
             'Når foreldrene tar samtidig uttak rundt fødsel og har valgt flerbarnsdager, må summen av samtidige ' +
             'uttak være minst 100 %.',
@@ -22,7 +22,7 @@ const REGLER: ReadonlyArray<Valideringsregel<FarMedmorRundtFødselKontekst>> = [
         feilmeldingId: i18n('LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.KanIkkeHaMindreEnn100ProsentFlerbarnsdager'),
     },
     {
-        id: 'Flerbarnsdager.MorMåHa100ProsentSamtidig',
+        id: 'farMedmorRundtFødsel.flerbarnsdagerMorMåHa100ProsentSamtidig',
         beskrivelse:
             'Når kombinert uttak rundt fødsel er nøyaktig 100 % og foreldrene har valgt flerbarnsdager, må ' +
             'mor ha 100 % samtidig uttak.',
@@ -31,7 +31,7 @@ const REGLER: ReadonlyArray<Valideringsregel<FarMedmorRundtFødselKontekst>> = [
         feilmeldingId: i18n('LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.Må100ProsentUttak'),
     },
     {
-        id: 'Flerbarnsdager.FarMedmorMåHa100Prosent',
+        id: 'farMedmorRundtFødsel.flerbarnsdagerFarMedmorMåHa100Prosent',
         beskrivelse:
             'Når foreldrene har flerbarnsdager i perioden rundt fødsel, må far/medmor kombinere arbeid og ' +
             'foreldrepenger slik at det blir 100 %, eller ha 100 % foreldrepenger.',
@@ -39,19 +39,19 @@ const REGLER: ReadonlyArray<Valideringsregel<FarMedmorRundtFødselKontekst>> = [
         feilmeldingId: i18n('LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.FarMedmorMåHa100ProsentUttakJobb'),
     },
     {
-        id: 'Må100ProsentUttak',
+        id: 'farMedmorRundtFødsel.må100ProsentUttak',
         beskrivelse: 'I perioden rundt fødsel (2 uker før til 6 uker etter) må kombinert uttak være minst 100 %.',
         erBrutt: (k) => k.kombinertUttaksprosent < 100,
         feilmeldingId: i18n('LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.Må100ProsentUttak'),
     },
     {
-        id: 'FarMedmorMåHa100ProsentUttakJobb',
+        id: 'farMedmorRundtFødsel.farMedmorMåHa100ProsentUttakJobb',
         beskrivelse: 'Far/medmor må ha 100 % (arbeid + foreldrepenger) i perioden rundt fødsel.',
         erBrutt: (k) => k.totalProsentFarMedmor !== 100,
         feilmeldingId: i18n('LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.FarMedmorMåHa100ProsentUttakJobb'),
     },
     {
-        id: 'MorMåHa100ProsentUttakJobb',
+        id: 'farMedmorRundtFødsel.morMåHa100ProsentUttakJobb',
         beskrivelse:
             'Mor må ha 100 % (arbeid + foreldrepenger) i perioden rundt fødsel — ellers mister hun dager.',
         erBrutt: (k) => k.totalProsentMor !== 100,

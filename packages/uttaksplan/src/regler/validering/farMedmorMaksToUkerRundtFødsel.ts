@@ -47,7 +47,7 @@ const tellArbeidsdagerInnenfor = (
 
 const REGLER: ReadonlyArray<Valideringsregel<FarMedmorMaks2UkerKontekst>> = [
     {
-        id: 'MerEnnToUkerRundtFamiliehendelse',
+        id: 'farMedmorMaksToUkerRundtFødsel.merEnnToUkerRundtFamiliehendelse',
         beskrivelse:
             'Når begge foreldre har rett og far/medmor tar uttak i intervallet 2 uker før til 6 uker etter ' +
             'fødsel/termin, kan far/medmor maks ha 2 uker (10 uttaksdager) totalt i dette intervallet. ' +

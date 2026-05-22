@@ -1,16 +1,19 @@
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { useHentGyldigeKvotetyper } from '../kvotetype/kvoteRegler';
+import { useGyldigeKvotetyper } from '../kvotetype/kvoteRegler';
 import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
 import { Periode } from '../types';
 import { ForelderValg } from './feltSynlighet';
 import { Synlighetsområde, Synlighetsregel } from './types';
 
 export type ForelderValgKontekst = {
+    forelder: ForelderValg;
     erMorGyldigForelder: boolean;
     erFarMedmorGyldigForelder: boolean;
     erMorLåst: boolean;
     erFarMedmorLåst: boolean;
     erMinstEnEøsPeriode: boolean;
+    harGyldigeKontoerForMor: boolean;
+    harGyldigeKontoerForFarMedmor: boolean;
 };
 
 /**
@@ -47,10 +50,39 @@ export const VIS_BEGGE_RADIO: Synlighetsregel<ForelderValgKontekst> = {
     skalVises: (k) => k.erMorGyldigForelder && k.erFarMedmorGyldigForelder && !k.erMinstEnEøsPeriode,
 };
 
-export const FORELDER_VALG_REGLER = [VIS_MOR_RADIO, VIS_FAR_MEDMOR_RADIO, VIS_BEGGE_RADIO] as const;
+/**
+ * Vis kvotetype-radiogruppen for mor.
+ */
+export const VIS_KONTO_MOR_RADIOGRUPPE: Synlighetsregel<ForelderValgKontekst> = {
+    id: 'forelderValg.visKontoMorRadiogruppe',
+    beskrivelse:
+        'Radiogruppen for å velge kvotetype for mor vises når den valgte forelderen er Mor eller Begge, ' +
+        'og det finnes minst én gyldig stønadskontotype for mor.',
+    skalVises: (k) => (k.forelder === 'MOR' || k.forelder === 'BEGGE') && k.harGyldigeKontoerForMor,
+};
+
+/**
+ * Vis kvotetype-radiogruppen for far/medmor.
+ */
+export const VIS_KONTO_FAR_MEDMOR_RADIOGRUPPE: Synlighetsregel<ForelderValgKontekst> = {
+    id: 'forelderValg.visKontoFarMedmorRadiogruppe',
+    beskrivelse:
+        'Radiogruppen for å velge kvotetype for far/medmor vises når den valgte forelderen er Far/medmor ' +
+        'eller Begge, og det finnes minst én gyldig stønadskontotype for far/medmor.',
+    skalVises: (k) =>
+        (k.forelder === 'FAR_MEDMOR' || k.forelder === 'BEGGE') && k.harGyldigeKontoerForFarMedmor,
+};
+
+export const FORELDER_VALG_REGLER = [
+    VIS_MOR_RADIO,
+    VIS_FAR_MEDMOR_RADIO,
+    VIS_BEGGE_RADIO,
+    VIS_KONTO_MOR_RADIOGRUPPE,
+    VIS_KONTO_FAR_MEDMOR_RADIOGRUPPE,
+] as const;
 
 export const FORELDER_VALG_OMRÅDE: Synlighetsområde = {
-    id: 'ForelderValg',
+    id: 'forelderValg',
     område: 'Hvilke alternativ vises i «Hvem gjelder perioden»-radiogruppen?',
     beskrivelse:
         'Når brukeren legger til eller endrer en periode, må det velges hvilken forelder perioden gjelder. ' +
@@ -62,18 +94,22 @@ export type ForelderValgSynlighet = {
     visMor: boolean;
     visFarMedmor: boolean;
     visBegge: boolean;
+    visKontoMorRadiogruppe: boolean;
+    visKontoFarMedmorRadiogruppe: boolean;
     erMorGyldigForelder: boolean;
     erFarMedmorGyldigForelder: boolean;
-    gyldigeStønadskontoerForMor: ReturnType<typeof useHentGyldigeKvotetyper>['gyldigeStønadskontoerForMor'];
+    erMorLåst: boolean;
+    erFarMedmorLåst: boolean;
+    gyldigeStønadskontoerForMor: ReturnType<typeof useGyldigeKvotetyper>['gyldigeStønadskontoerForMor'];
     gyldigeStønadskontoerForFarMedmor: ReturnType<
-        typeof useHentGyldigeKvotetyper
+        typeof useGyldigeKvotetyper
     >['gyldigeStønadskontoerForFarMedmor'];
 };
 
 /**
  * Hook som regner ut synlighet for Mor/Far/Begge-radioknappene i
  * skjemaet for å legge til eller endre en periode. Henter gyldige
- * kvotetyper direkte via {@link useHentGyldigeKvotetyper} og kombinerer
+ * kvotetyper direkte via {@link useGyldigeKvotetyper} og kombinerer
  * det med EØS- og låst-status fra UttaksplanDataContext.
  */
 export const useForelderValgSynlighet = (input: {
@@ -87,11 +123,11 @@ export const useForelderValgSynlighet = (input: {
         uttakPerioder,
     } = useUttaksplanData();
 
-    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKvotetyper(
-        input.valgtePerioder,
-        input.forelder === 'BEGGE',
-        input.ønskerFlerbarnsdager,
-    );
+    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useGyldigeKvotetyper({
+        valgtePerioder: input.valgtePerioder,
+        harValgtSamtidigUttak: input.forelder === 'BEGGE',
+        ønskerFlerbarnsdager: input.ønskerFlerbarnsdager,
+    });
 
     const erMorGyldigForelder = gyldigeStønadskontoerForMor.length > 0;
     const erFarMedmorGyldigForelder = gyldigeStønadskontoerForFarMedmor.length > 0;
@@ -100,19 +136,26 @@ export const useForelderValgSynlighet = (input: {
     const erMorLåst = erPeriodeneTilAnnenPartLåst && søker === 'FAR_MEDMOR';
 
     const kontekst: ForelderValgKontekst = {
+        forelder: input.forelder,
         erMorGyldigForelder,
         erFarMedmorGyldigForelder,
         erMorLåst,
         erFarMedmorLåst,
         erMinstEnEøsPeriode,
+        harGyldigeKontoerForMor: gyldigeStønadskontoerForMor.length > 0,
+        harGyldigeKontoerForFarMedmor: gyldigeStønadskontoerForFarMedmor.length > 0,
     };
 
     return {
         visMor: VIS_MOR_RADIO.skalVises(kontekst),
         visFarMedmor: VIS_FAR_MEDMOR_RADIO.skalVises(kontekst),
         visBegge: VIS_BEGGE_RADIO.skalVises(kontekst),
+        visKontoMorRadiogruppe: VIS_KONTO_MOR_RADIOGRUPPE.skalVises(kontekst),
+        visKontoFarMedmorRadiogruppe: VIS_KONTO_FAR_MEDMOR_RADIOGRUPPE.skalVises(kontekst),
         erMorGyldigForelder,
         erFarMedmorGyldigForelder,
+        erMorLåst,
+        erFarMedmorLåst,
         gyldigeStønadskontoerForMor,
         gyldigeStønadskontoerForFarMedmor,
     };

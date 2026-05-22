@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Alert, BodyShort, VStack } from '@navikt/ds-react';
 
-import { usePeriodeDetaljerAlerts } from '../../../../../regler/alert/informasjonsAlerts';
+import { usePeriodeDetaljerAlerts } from '../../../../../regler/alert/informasjonsAlertHooks';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../../utils/lagHullPerioder';
 import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
 import { finnValgtePerioder } from '../../../utils/kalenderPeriodeUtils';

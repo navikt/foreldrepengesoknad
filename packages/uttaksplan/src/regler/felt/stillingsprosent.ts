@@ -60,8 +60,8 @@ export const STILLINGSPROSENT_REGLER: ReadonlyArray<Feltregel<StillingsprosentIn
 ];
 
 export const STILLINGSPROSENT_OMRÅDE: Feltregelområde = {
-    id: 'Stillingsprosent',
-    feltnavn: 'Stillingsprosent',
+    id: 'stillingsprosent',
+    område: 'Stillingsprosent',
     beskrivelse:
         'Hvor stor andel brukeren skal jobbe når arbeid kombineres med uttak. Reglene sikrer at verdien er ' +
         'et gyldig tall mellom 0 og 100 %, og at summen med samtidig uttak ikke overstiger 100 %.',

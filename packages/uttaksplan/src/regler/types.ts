@@ -7,19 +7,36 @@ export const i18n = (id: string): string => id;
 export type Periode = { fom: string; tom: string };
 
 /**
- * En regel for ett enkelt skjemafelt (kjøres av React Hook Form på input-nivå).
+ * Konvensjonen for predicate-navn på tvers av regelkatalogene:
+ * - `erBrutt`  — validering/felt: regelen blir vist som **feilmelding** når den slår inn.
+ * - `skalVises` — synlighet/alert: regelen avgjør om noe blir **rendret**.
+ * - `erGyldig`  — kvotetype: regelen avgjør om et alternativ er **lovlig å velge**.
  *
- * - `beskrivelse` er klartekst som en saksbehandler eller designer kan lese
- *   for å forstå hva regelen handler om.
- * - `erBrutt` får en samlet input som inneholder feltverdien og eventuelle
- *   andre verdier regelen avhenger av, og returnerer `true` om regelen er brutt.
- * - `feilmeldingId` er intl-nøkkelen som blir vist til brukeren.
+ * Tre ulike navn fordi semantikken er ulik — same navn ville gjort det
+ * vanskeligere å lese ved bruk (`if (regel.skalVises(...))` vs
+ * `if (regel.erBrutt(...))`).
  */
-export type Feltregel<TInput> = {
+
+/**
+ * Doc-typen for en feltregel — alt som beskriver regelen uten å inkludere
+ * runtime-logikk. Brukt direkte i Storybook-katalogen og som basis for
+ * `Feltregel<TInput>`.
+ */
+export type FeltregelDoc = {
     id: string;
     beskrivelse: string;
-    erBrutt: (input: TInput) => boolean;
     feilmeldingId: string;
+};
+
+/**
+ * En regel for ett enkelt skjemafelt (kjøres av React Hook Form på input-nivå).
+ * - `beskrivelse` er klartekst for designer/PO/saksbehandler.
+ * - `erBrutt` får en samlet input (feltverdi + avhengige verdier) og returnerer
+ *   `true` om regelen er brutt.
+ * - `feilmeldingId` er intl-nøkkelen som blir vist til brukeren.
+ */
+export type Feltregel<TInput> = FeltregelDoc & {
+    erBrutt: (input: TInput) => boolean;
 };
 
 /**
@@ -28,9 +45,9 @@ export type Feltregel<TInput> = {
  */
 export type Feltregelområde = {
     id: string;
-    feltnavn: string;
+    område: string;
     beskrivelse: string;
-    regler: ReadonlyArray<Omit<Feltregel<unknown>, 'erBrutt'>>;
+    regler: readonly FeltregelDoc[];
 };
 
 /** Returnerer første feltregel som er brutt, eller undefined. */
