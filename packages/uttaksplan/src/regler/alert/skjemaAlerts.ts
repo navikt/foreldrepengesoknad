@@ -23,12 +23,6 @@ export type BlokkerandeAlertKontekst = {
     erPeriodeneTilAnnenPartLåst: boolean;
 };
 
-const KRYSSER_FAMILIEHENDELSE_MELDING_ID: Record<Familiesituasjon, string> = {
-    fødsel: i18n('LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.fødsel'),
-    termin: i18n('LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.termin'),
-    adopsjon: i18n('LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.adopsjon'),
-};
-
 const BLOKKERANDE_ALERTS: ReadonlyArray<Alertregel<BlokkerandeAlertKontekst>> = [
     {
         id: 'perioder-krysser-familiehendelse',
@@ -41,6 +35,7 @@ const BLOKKERANDE_ALERTS: ReadonlyArray<Alertregel<BlokkerandeAlertKontekst>> = 
             i18n('LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.termin'),
             i18n('LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.adopsjon'),
         ],
+        getMeldingId: (ctx) => i18n(`LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.${ctx.familiesituasjon}`),
         variant: 'info',
         type: 'blokkerande',
         skalVises: (ctx) => {
@@ -62,6 +57,7 @@ const BLOKKERANDE_ALERTS: ReadonlyArray<Alertregel<BlokkerandeAlertKontekst>> = 
             'Ingen forelder har gyldige stønadskontoer for den valgte perioden. ' +
             'Skjemaet blokkeres fordi det ikke finnes noen gyldig kontotype å velge.',
         meldingIder: [i18n('LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon')],
+        getMeldingId: () => i18n('LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon'),
         variant: 'info',
         type: 'blokkerande',
         skalVises: (ctx) => !ctx.erMorGyldigForelder && !ctx.erFarMedmorGyldigForelder,
@@ -73,6 +69,7 @@ const BLOKKERANDE_ALERTS: ReadonlyArray<Alertregel<BlokkerandeAlertKontekst>> = 
             'part kan endre. Skjemaet blokkeres fordi brukeren ikkje har lov til ' +
             'å endre desse periodene.',
         meldingIder: [i18n('LeggTilEllerEndrePeriodeForm.Forelder.AnnenPartLåst')],
+        getMeldingId: () => i18n('LeggTilEllerEndrePeriodeForm.Forelder.AnnenPartLåst'),
         variant: 'info',
         type: 'blokkerande',
         skalVises: (ctx) => {
@@ -103,6 +100,7 @@ const KONTEKSTUELLE_ALERTS: ReadonlyArray<Alertregel<KontekstuellAlertKontekst>>
             'etter fødsel. Foreldrepengane blir reduserte den tida brukaren jobbar, ' +
             'utan at dagane blir sparte til seinare.',
         meldingIder: [i18n('LeggTilEllerEndrePeriodeFellesForm.DagerReduseres')],
+        getMeldingId: () => i18n('LeggTilEllerEndrePeriodeFellesForm.DagerReduseres'),
         variant: 'info',
         type: 'kontekstuell',
         skalVises: (ctx) =>
@@ -115,18 +113,14 @@ const KONTEKSTUELLE_ALERTS: ReadonlyArray<Alertregel<KontekstuellAlertKontekst>>
 
 /**
  * Finn den første blokkerande alerten som slår inn, eller undefined.
- * Returnerer regelen + riktig meldingId basert på familiesituasjon.
+ * Brukar regelens `getMeldingId` for å finna riktig meldingsnøkkel.
  */
 export const finnFørsteBlokkerandeAlert = (
     ctx: BlokkerandeAlertKontekst,
 ): { regel: Alertregel<BlokkerandeAlertKontekst>; meldingId: string } | undefined => {
     for (const regel of BLOKKERANDE_ALERTS) {
         if (regel.skalVises(ctx)) {
-            const meldingId =
-                regel.id === 'perioder-krysser-familiehendelse'
-                    ? KRYSSER_FAMILIEHENDELSE_MELDING_ID[ctx.familiesituasjon]
-                    : regel.meldingIder[0]!;
-            return { regel, meldingId };
+            return { regel, meldingId: regel.getMeldingId(ctx) };
         }
     }
     return undefined;
