@@ -496,9 +496,7 @@ const fjernLeadingOgTrailingMånederUtenUtbetaling = (andelerPerDag: DagMedPerio
 
 const UtbetalingsVisning = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) => {
     const tilkjentYtelse = sak.gjeldendeVedtak?.tilkjentYtelse?.utbetalingsperioder ?? [];
-    console.log(tilkjentYtelse);
     const andelerPerDag = periodeTilDager(tilkjentYtelse);
-    console.log(andelerPerDag);
     const andelerPerMåned = fjernLeadingOgTrailingMånederUtenUtbetaling(andelerPerDag);
 
     return (

@@ -1803,3 +1803,223 @@ const beregningIkkeStøttetSak = (saksnummer: string, aktivitetStatus: Aktivitet
 export const saker_beregning_dagpenger = beregningIkkeStøttetSak('801', 'DAGPENGER');
 export const saker_beregning_aap = beregningIkkeStøttetSak('802', 'ARBEIDSAVKLARINGSPENGER');
 export const saker_beregning_kun_ytelse = beregningIkkeStøttetSak('803', 'KUN_YTELSE');
+
+export const saker_beregning_cross_year = JSON.parse(
+    JSON.stringify({
+        foreldrepenger: [
+            {
+                saksnummer: '901',
+                sakAvsluttet: false,
+                kanSøkeOmEndring: true,
+                sakTilhørerMor: true,
+                gjelderAdopsjon: false,
+                morUføretrygd: false,
+                harAnnenForelderTilsvarendeRettEØS: false,
+                ønskerJustertUttakVedFødsel: false,
+                rettighetType: 'BEGGE_RETT',
+                annenPart: { fnr: '12345678910' },
+                familiehendelse: {
+                    fødselsdato: '2025-12-15',
+                    termindato: '2025-12-15',
+                    antallBarn: 1,
+                },
+                gjeldendeVedtak: {
+                    perioder: [
+                        {
+                            fom: '2026-01-02',
+                            tom: '2027-07-21',
+                            kontoType: 'FORELDREPENGER',
+                            resultat: { innvilget: true, trekkerMinsterett: true, trekkerDager: true, årsak: 'ANNET' },
+                            flerbarnsdager: false,
+                            forelder: 'MOR',
+                        },
+                    ],
+                    perioderAnnenpartEøs: [],
+                    beregningsgrunnlag: {
+                        skjæringsTidspunkt: '2026-01-02',
+                        beregningsandeler: [
+                            {
+                                aktivitetStatus: 'ARBEIDSTAKER',
+                                fastsattPrÅr: 400000.0,
+                                inntektsKilde: 'INNTEKTSMELDING',
+                                arbeidsforhold: {
+                                    arbeidsgiverIdent: '999999999',
+                                    arbeidsgiverNavn: 'TESTBEDRIFTEN AS',
+                                    refusjonPrMnd: 0.0,
+                                },
+                                dagsatsArbeidsgiver: 526,
+                                dagsatsSøker: 0,
+                            },
+                            {
+                                aktivitetStatus: 'SELVSTENDIG_NÆRINGSDRIVENDE',
+                                fastsattPrÅr: 0.0,
+                                inntektsKilde: 'SØKNAD',
+                                dagsatsArbeidsgiver: 0,
+                                dagsatsSøker: 0,
+                            },
+                        ],
+                        beregningAktivitetStatuser: [{ aktivitetStatus: 'KOMBINERT_AT_SN', hjemmel: 'F_14_7_8_30' }],
+                        grunnbeløp: 130160.0,
+                    },
+                    tilkjentYtelse: {
+                        utbetalingsperioder: [
+                            {
+                                fom: '2026-01-02',
+                                tom: '2026-02-19',
+                                andeler: [
+                                    {
+                                        dagsats: 0,
+                                        tilBruker: true,
+                                        aktivitetStatus: 'ARBEIDSTAKER',
+                                        utbetalingsgrad: 20,
+                                        arbeidsgivernavn: 'TESTBEDRIFTEN AS',
+                                        arbeidsgiverIdent: '999999999',
+                                    },
+                                    {
+                                        dagsats: 526,
+                                        tilBruker: false,
+                                        aktivitetStatus: 'ARBEIDSTAKER',
+                                        utbetalingsgrad: 20,
+                                        arbeidsgivernavn: 'TESTBEDRIFTEN AS',
+                                        arbeidsgiverIdent: '999999999',
+                                    },
+                                    {
+                                        dagsats: 0,
+                                        tilBruker: true,
+                                        aktivitetStatus: 'SELVSTENDIG_NÆRINGSDRIVENDE',
+                                        utbetalingsgrad: 100,
+                                    },
+                                ],
+                            },
+                            {
+                                fom: '2026-02-23',
+                                tom: '2026-04-02',
+                                andeler: [
+                                    {
+                                        dagsats: 0,
+                                        tilBruker: true,
+                                        aktivitetStatus: 'ARBEIDSTAKER',
+                                        utbetalingsgrad: 20,
+                                        arbeidsgivernavn: 'TESTBEDRIFTEN AS',
+                                        arbeidsgiverIdent: '999999999',
+                                    },
+                                    {
+                                        dagsats: 526,
+                                        tilBruker: false,
+                                        aktivitetStatus: 'ARBEIDSTAKER',
+                                        utbetalingsgrad: 20,
+                                        arbeidsgivernavn: 'TESTBEDRIFTEN AS',
+                                        arbeidsgiverIdent: '999999999',
+                                    },
+                                    {
+                                        dagsats: 0,
+                                        tilBruker: true,
+                                        aktivitetStatus: 'SELVSTENDIG_NÆRINGSDRIVENDE',
+                                        utbetalingsgrad: 100,
+                                    },
+                                ],
+                            },
+                            {
+                                fom: '2026-04-06',
+                                tom: '2026-06-26',
+                                andeler: [
+                                    {
+                                        dagsats: 0,
+                                        tilBruker: true,
+                                        aktivitetStatus: 'ARBEIDSTAKER',
+                                        utbetalingsgrad: 20,
+                                        arbeidsgivernavn: 'TESTBEDRIFTEN AS',
+                                        arbeidsgiverIdent: '999999999',
+                                    },
+                                    {
+                                        dagsats: 526,
+                                        tilBruker: false,
+                                        aktivitetStatus: 'ARBEIDSTAKER',
+                                        utbetalingsgrad: 20,
+                                        arbeidsgivernavn: 'TESTBEDRIFTEN AS',
+                                        arbeidsgiverIdent: '999999999',
+                                    },
+                                    {
+                                        dagsats: 0,
+                                        tilBruker: true,
+                                        aktivitetStatus: 'SELVSTENDIG_NÆRINGSDRIVENDE',
+                                        utbetalingsgrad: 0,
+                                    },
+                                ],
+                            },
+                            {
+                                fom: '2026-08-03',
+                                tom: '2027-06-11',
+                                andeler: [
+                                    {
+                                        dagsats: 0,
+                                        tilBruker: true,
+                                        aktivitetStatus: 'ARBEIDSTAKER',
+                                        utbetalingsgrad: 20,
+                                        arbeidsgivernavn: 'TESTBEDRIFTEN AS',
+                                        arbeidsgiverIdent: '999999999',
+                                    },
+                                    {
+                                        dagsats: 526,
+                                        tilBruker: false,
+                                        aktivitetStatus: 'ARBEIDSTAKER',
+                                        utbetalingsgrad: 20,
+                                        arbeidsgivernavn: 'TESTBEDRIFTEN AS',
+                                        arbeidsgiverIdent: '999999999',
+                                    },
+                                    {
+                                        dagsats: 0,
+                                        tilBruker: true,
+                                        aktivitetStatus: 'SELVSTENDIG_NÆRINGSDRIVENDE',
+                                        utbetalingsgrad: 0,
+                                    },
+                                ],
+                            },
+                            {
+                                fom: '2027-06-12',
+                                tom: '2027-07-21',
+                                andeler: [
+                                    {
+                                        dagsats: 0,
+                                        tilBruker: true,
+                                        aktivitetStatus: 'ARBEIDSTAKER',
+                                        utbetalingsgrad: 20,
+                                        arbeidsgivernavn: 'TESTBEDRIFTEN AS',
+                                        arbeidsgiverIdent: '999999999',
+                                    },
+                                    {
+                                        dagsats: 526,
+                                        tilBruker: false,
+                                        aktivitetStatus: 'ARBEIDSTAKER',
+                                        utbetalingsgrad: 20,
+                                        arbeidsgivernavn: 'TESTBEDRIFTEN AS',
+                                        arbeidsgiverIdent: '999999999',
+                                    },
+                                    {
+                                        dagsats: 0,
+                                        tilBruker: true,
+                                        aktivitetStatus: 'SELVSTENDIG_NÆRINGSDRIVENDE',
+                                        utbetalingsgrad: 0,
+                                    },
+                                ],
+                            },
+                        ],
+                        feriepenger: [
+                            {
+                                tilBruker: false,
+                                årsbeløp: 3219,
+                                opptjeningsår: '2026-12-31',
+                                arbeidsgiverIdent: '999999999',
+                            },
+                        ],
+                    },
+                },
+                dekningsgrad: 'HUNDRE',
+                oppdatertTidspunkt: '2026-05-20T10:00:00.000',
+                forelder: 'MOR',
+            },
+        ],
+        engangsstønad: [],
+        svangerskapspenger: [],
+    }),
+) satisfies Saker_fpoversikt;
