@@ -20,7 +20,7 @@ import {
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useFormSubmitValidator } from '../../../../felles/uttaksplanValidatorer';
-import { useMorsAktivitetIkkjeOppgittRedigeringAlert } from '../../../../regler/alert/informasjonsAlerts';
+import { useLeggTilEndreSkjemaInfoAlerts } from '../../../../regler/alert/informasjonsAlerts';
 import { erEøsUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
@@ -96,7 +96,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
                 dayjs(vp.tom).isAfter(eksisterendePerioderSomErValgt.at(0)!.tom),
         );
 
-    const morsAktivitetAlert = useMorsAktivitetIkkjeOppgittRedigeringAlert(
+    const { morsAktivitetIkkjeOppgitt: morsAktivitetAlert } = useLeggTilEndreSkjemaInfoAlerts(
         harValgtDagerKunForEnEksisterendePeriode
             ? [
                   ...eksisterendePerioderSomErValgt,

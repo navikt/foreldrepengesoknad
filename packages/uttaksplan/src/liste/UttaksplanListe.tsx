@@ -11,7 +11,7 @@ import { Uttaksdagen } from '@navikt/fp-utils';
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
 import { UttaksplanHandlingKnapper } from '../felles/UttaksplanHandlingKnapper';
-import { useManglerMorsAktivitetListeAlert } from '../regler/alert/informasjonsAlerts';
+import { useUttaksplanListeAlerts } from '../regler/alert/informasjonsAlerts';
 import { Uttaksplanperiode } from '../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak } from '../utils/lagHullPerioder';
 import { LeggTilEllerEndrePeriodeListPanel } from './legg-til-endre-periode-panel/LeggTilEllerEndrePeriodeListPanel';
@@ -52,7 +52,9 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
 
     const alleRader = leggTilPeriodeForFamiliehendelsedato(uttaksplanperioderPerRadIListe, familiehendelsedato);
 
-    const manglerMorsAktivitetAlert = useManglerMorsAktivitetListeAlert(uttakPerioderJustertForFamiliehendelsesdato);
+    const { manglerMorsAktivitet: manglerMorsAktivitetAlert } = useUttaksplanListeAlerts(
+        uttakPerioderJustertForFamiliehendelsesdato,
+    );
 
     return (
         <VStack gap="space-16">

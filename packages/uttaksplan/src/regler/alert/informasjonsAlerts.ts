@@ -265,45 +265,52 @@ type AktivAlert = { meldingId: string; variant: 'info' | 'warning' };
 const tilAktiv = <T,>(regel: Alertregel<T>, ctx: T): AktivAlert | undefined =>
     regel.skalVises(ctx) ? { meldingId: regel.getMeldingId(ctx), variant: regel.variant } : undefined;
 
-/** Alert over heile listevisninga når mors aktivitet manglar på éin eller fleire periodar. */
-export const useManglerMorsAktivitetListeAlert = (
-    perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
-): AktivAlert | undefined => {
-    const {
-        foreldreInfo: { rettighetType },
-    } = useUttaksplanData();
-    return tilAktiv(MANGLER_MORS_AKTIVITET_LISTE, { rettighetType, perioder });
+export type UttaksplanListeAlerts = {
+    manglerMorsAktivitet?: AktivAlert;
 };
 
-/** Alert over heile kalendervisninga når mors aktivitet manglar. */
-export const useManglerMorsAktivitetKalenderAlert = (
+/** Alertar som vises over heile listevisninga. */
+export const useUttaksplanListeAlerts = (
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
-): AktivAlert | undefined => {
+): UttaksplanListeAlerts => {
     const {
         foreldreInfo: { rettighetType },
     } = useUttaksplanData();
-    return tilAktiv(MANGLER_MORS_AKTIVITET_KALENDER, { rettighetType, perioder });
+    return {
+        manglerMorsAktivitet: tilAktiv(MANGLER_MORS_AKTIVITET_LISTE, { rettighetType, perioder }),
+    };
 };
 
-/** Alert i skjema-redigering når mors aktivitet ikkje er oppgitt. */
-export const useMorsAktivitetIkkjeOppgittRedigeringAlert = (
-    perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
-): AktivAlert | undefined => {
-    const {
-        foreldreInfo: { rettighetType },
-    } = useUttaksplanData();
-    return tilAktiv(MORS_AKTIVITET_IKKJE_OPPGITT_REDIGERING, { rettighetType, perioder });
+export type UttaksplanKalenderAlerts = {
+    manglerMorsAktivitet?: AktivAlert;
 };
 
-/** Per-periode alert i kalender-redigering når mors aktivitet ikkje er vald. */
-export const useMorsAktivitetIkkjeValgtEksisterandeAlert = (
-    periode: Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager,
-    morsUttakPerioder: readonly UttakPeriode_fpoversikt[],
-): AktivAlert | undefined => {
+/** Alertar som vises over heile kalendervisninga. */
+export const useUttaksplanKalenderAlerts = (
+    perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
+): UttaksplanKalenderAlerts => {
     const {
         foreldreInfo: { rettighetType },
     } = useUttaksplanData();
-    return tilAktiv(MORS_AKTIVITET_IKKJE_VALGT_EKSISTERANDE, { rettighetType, periode, morsUttakPerioder });
+    return {
+        manglerMorsAktivitet: tilAktiv(MANGLER_MORS_AKTIVITET_KALENDER, { rettighetType, perioder }),
+    };
+};
+
+export type LeggTilEndreSkjemaInfoAlerts = {
+    morsAktivitetIkkjeOppgitt?: AktivAlert;
+};
+
+/** Informasjons-alertar i legg-til/endre-periode-skjemaet. */
+export const useLeggTilEndreSkjemaInfoAlerts = (
+    perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
+): LeggTilEndreSkjemaInfoAlerts => {
+    const {
+        foreldreInfo: { rettighetType },
+    } = useUttaksplanData();
+    return {
+        morsAktivitetIkkjeOppgitt: tilAktiv(MORS_AKTIVITET_IKKJE_OPPGITT_REDIGERING, { rettighetType, perioder }),
+    };
 };
 
 export type PeriodeDetaljarAlerts = {
