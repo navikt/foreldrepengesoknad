@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { ActionMenu, Alert, BodyShort, Button, HStack, Heading, VStack } from '@navikt/ds-react';
+import { ActionMenu, Alert, BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
