@@ -1,7 +1,7 @@
 import { useIntl } from 'react-intl';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
-import { valider } from '../regler';
+import { valider } from '../regler/validering';
 import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
 import { LeggTilEllerEndrePeriodeFormFormValues } from './LeggTilEllerEndrePeriodeFellesForm';
 
