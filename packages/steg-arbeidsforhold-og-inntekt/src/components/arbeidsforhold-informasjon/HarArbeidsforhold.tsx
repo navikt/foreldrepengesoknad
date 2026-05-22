@@ -1,6 +1,6 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Detail, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
@@ -35,14 +35,14 @@ export const HarArbeidsforhold = ({ arbeidsforhold, harArbeidsforhold }: Props) 
                                     <FormattedMessage id="HarArbeidsforhold.arbeidsgiver" />
                                 )}
                             </Heading>
-                            <BodyShort>
+                            <Detail uppercase>
                                 <FormattedMessage
                                     id="inntektsinformasjon.arbeidsforhold.stillingsprosent"
                                     values={{
                                         stillingsprosent: arbforhold.stillingsprosent,
                                     }}
                                 />
-                            </BodyShort>
+                            </Detail>
                         </HStack>
                         {arbforhold.arbeidsgiverIdType === 'orgnr' && (
                             <BodyShort>

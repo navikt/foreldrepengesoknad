@@ -79,27 +79,11 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                         <FormattedMessage id="inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV" />
                     </BodyShort>
                     <VStack gap="space-8">
-                        <BodyShort style={{ fontWeight: 'bold' }}>
-                            <FormattedMessage id="inntektsinformasjon.arbeidsforhold.label" />
-                        </BodyShort>
                         <ArbeidsforholdInformasjon
                             appOrigin={appOrigin}
                             arbeidsforhold={aktiveArbeidsforhold}
                             frilansoppdrag={frilansoppdrag}
                         />
-                        <ReadMore
-                            header={
-                                <FormattedMessage
-                                    id="inntektsinformasjon.inntektsmelding.header"
-                                    values={{ antall: aktiveArbeidsforhold.length }}
-                                />
-                            }
-                        >
-                            <FormattedMessage
-                                id="inntektsinformasjon.inntektsmelding.body"
-                                values={{ antall: aktiveArbeidsforhold.length }}
-                            />
-                        </ReadMore>
                     </VStack>
                     {!harFrilansoppdrag && (
                         <VStack gap="space-4">
