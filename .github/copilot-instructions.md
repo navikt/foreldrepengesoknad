@@ -13,35 +13,16 @@ End users are citizens who apply for, plan, or monitor these benefits via nav.no
 
 ## The benefits
 
-### Foreldrepenger (parental benefit)
+Three benefits under Folketrygdloven kap. 14:
 
-Foreldrepenger is income compensation for parents who stay home with a child
-after birth or adoption. Both parents may be eligible if they have had
-pensionable income for at least 6 of the last 10 months. Parents choose between
-100 % or 80 % coverage (dekningsgrad), and the parental benefit period is split
-into a maternal quota (mødrekvote), a paternal quota (fedrekvote), and a shared
-period (fellesperiode) that can be divided between the parents.
+| Code | Norwegian | Citizen info |
+|------|-----------|--------------|
+| FP | Foreldrepenger | https://www.nav.no/foreldrepenger |
+| SVP | Svangerskapspenger | https://www.nav.no/svangerskapspenger |
+| ES | Engangsstønad | https://www.nav.no/engangsstonad |
 
-Read more: https://www.nav.no/foreldrepenger
-
-### Svangerskapspenger (pregnancy benefit)
-
-Svangerskapspenger is for pregnant employees, freelancers, or self-employed
-individuals who cannot continue working during pregnancy because the work
-environment poses a risk to the child – and the employer is unable to
-accommodate or reassign. The benefit covers income from when the person must
-stop working until three weeks before the due date, when the parental benefit
-period begins.
-
-Read more: https://www.nav.no/svangerskapspenger
-
-### Engangsstønad (lump-sum grant)
-
-Engangsstønad is a one-time payment at birth or adoption for parents who have
-not earned the right to foreldrepenger (i.e. have not had sufficient income for
-at least 6 of the last 10 months). The grant is a fixed amount per child.
-
-Read more: https://www.nav.no/engangsstonad
+See [fp-context/domain/business-context.md](https://github.com/navikt/fp-context/blob/main/domain/business-context.md)
+for legal basis, value chain, and core concepts.
 
 ## Applications
 
