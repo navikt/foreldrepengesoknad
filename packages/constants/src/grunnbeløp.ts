@@ -43,6 +43,10 @@ export const DEFAULT_SATSER = {
     ],
     grunnbeløp: [
         {
+            fom: '01.05.2026',
+            verdi: 136549,
+        },
+        {
             fom: '01.05.2025',
             verdi: 130160,
         },
