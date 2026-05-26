@@ -162,19 +162,6 @@ export const VIS_INFO_FEDREKVOTE_RUNDT_FØDSEL: Synlighetsregel<FeltSynlighetKon
         erValgtPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(k),
 };
 
-export const FELT_SYNLIGHET_REGLER = [
-    VIS_FLERBARNSDAGER_SPØRSMÅL,
-    VIS_MOR_OVERFØRING,
-    VIS_FAR_MEDMOR_OVERFØRING,
-    VIS_MORS_AKTIVITETSKRAV_VED_SAMTIDIG_UTTAK,
-    VIS_AKTIVITETSKRAV_FORDI_FEDREKVOTE_FØRSTE_SEKS_UKER,
-    VIS_AKTIVITETSKRAV_FELT,
-    VIS_SAMTIDIG_UTTAK_FELTER,
-    VIS_KOMBINERE_ARBEID_OG_UTTAK_MOR,
-    VIS_KOMBINERE_ARBEID_OG_UTTAK_FAR_MEDMOR,
-    VIS_INFO_FEDREKVOTE_RUNDT_FØDSEL,
-] as const;
-
 export const synlighetForFelter = (kontekst: FeltSynlighetKontekst) => ({
     visFlerbarnsdager: VIS_FLERBARNSDAGER_SPØRSMÅL.skalVises(kontekst),
     visMorOverføring: VIS_MOR_OVERFØRING.skalVises(kontekst),

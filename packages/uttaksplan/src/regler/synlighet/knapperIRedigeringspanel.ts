@@ -89,13 +89,6 @@ export const SKAL_VISE_LEGG_TIL_KNAPPETEKST: Synlighetsregel<KnapperIRedigerings
             k.eksisterendePerioderSomErValgt.some((p) => erVanligUttakPeriode(p) && p.forelder !== k.søker)),
 };
 
-export const KNAPPER_I_REDIGERINGSPANEL_REGLER = [
-    SKAL_VISE_UTSETTELSESKNAPP,
-    SKAL_VISE_PAUSEKNAPP,
-    SKAL_VISE_FERIEKNAPP,
-    SKAL_VISE_LEGG_TIL_KNAPPETEKST,
-] as const;
-
 export type KnapperIRedigeringspanelSynlighet = {
     skalViseUtsettelsesknapp: boolean;
     skalVisePauseknapp: boolean;

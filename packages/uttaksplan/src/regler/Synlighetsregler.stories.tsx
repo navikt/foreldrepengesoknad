@@ -1,9 +1,31 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Kolonne, RegelIdBadge, RegelkatalogSide } from './RegelkatalogSide';
-import { FELT_SYNLIGHET_REGLER } from './synlighet/feltSynlighet';
-import { FORELDER_VALG_REGLER } from './synlighet/forelderValg';
-import { KNAPPER_I_REDIGERINGSPANEL_REGLER } from './synlighet/knapperIRedigeringspanel';
+import {
+    VIS_AKTIVITETSKRAV_FELT,
+    VIS_AKTIVITETSKRAV_FORDI_FEDREKVOTE_FØRSTE_SEKS_UKER,
+    VIS_FAR_MEDMOR_OVERFØRING,
+    VIS_FLERBARNSDAGER_SPØRSMÅL,
+    VIS_INFO_FEDREKVOTE_RUNDT_FØDSEL,
+    VIS_KOMBINERE_ARBEID_OG_UTTAK_FAR_MEDMOR,
+    VIS_KOMBINERE_ARBEID_OG_UTTAK_MOR,
+    VIS_MORS_AKTIVITETSKRAV_VED_SAMTIDIG_UTTAK,
+    VIS_MOR_OVERFØRING,
+    VIS_SAMTIDIG_UTTAK_FELTER,
+} from './synlighet/feltSynlighet';
+import {
+    VIS_BEGGE_RADIO,
+    VIS_FAR_MEDMOR_RADIO,
+    VIS_KONTO_FAR_MEDMOR_RADIOGRUPPE,
+    VIS_KONTO_MOR_RADIOGRUPPE,
+    VIS_MOR_RADIO,
+} from './synlighet/forelderValg';
+import {
+    SKAL_VISE_FERIEKNAPP,
+    SKAL_VISE_LEGG_TIL_KNAPPETEKST,
+    SKAL_VISE_PAUSEKNAPP,
+    SKAL_VISE_UTSETTELSESKNAPP,
+} from './synlighet/knapperIRedigeringspanel';
 import { Synlighetsområde } from './synlighet/types';
 
 const FORELDER_VALG_OMRÅDE: Synlighetsområde = {
@@ -12,7 +34,13 @@ const FORELDER_VALG_OMRÅDE: Synlighetsområde = {
     beskrivelse:
         'Når brukeren legger til eller endrer en periode, må det velges hvilken forelder perioden gjelder. ' +
         'Reglene under bestemmer hvilke alternativ (Mor, Far/medmor, Begge) som er tilgjengelige.',
-    regler: FORELDER_VALG_REGLER,
+    regler: [
+        VIS_MOR_RADIO,
+        VIS_FAR_MEDMOR_RADIO,
+        VIS_BEGGE_RADIO,
+        VIS_KONTO_MOR_RADIOGRUPPE,
+        VIS_KONTO_FAR_MEDMOR_RADIOGRUPPE,
+    ],
 };
 
 const FELT_SYNLIGHET_OMRÅDE: Synlighetsområde = {
@@ -21,7 +49,18 @@ const FELT_SYNLIGHET_OMRÅDE: Synlighetsområde = {
     beskrivelse:
         'Avhengig av hvilken forelder, kvotetype og rettighet brukeren har, blir ulike felter relevante. ' +
         'Reglene under er det som bestemmer hva som vises etter forelderen er valgt.',
-    regler: FELT_SYNLIGHET_REGLER,
+    regler: [
+        VIS_FLERBARNSDAGER_SPØRSMÅL,
+        VIS_MOR_OVERFØRING,
+        VIS_FAR_MEDMOR_OVERFØRING,
+        VIS_MORS_AKTIVITETSKRAV_VED_SAMTIDIG_UTTAK,
+        VIS_AKTIVITETSKRAV_FORDI_FEDREKVOTE_FØRSTE_SEKS_UKER,
+        VIS_AKTIVITETSKRAV_FELT,
+        VIS_SAMTIDIG_UTTAK_FELTER,
+        VIS_KOMBINERE_ARBEID_OG_UTTAK_MOR,
+        VIS_KOMBINERE_ARBEID_OG_UTTAK_FAR_MEDMOR,
+        VIS_INFO_FEDREKVOTE_RUNDT_FØDSEL,
+    ],
 };
 
 const KNAPPER_I_REDIGERINGSPANEL_OMRÅDE: Synlighetsområde = {
@@ -31,7 +70,12 @@ const KNAPPER_I_REDIGERINGSPANEL_OMRÅDE: Synlighetsområde = {
         'Når brukeren har markert én eller flere dager i kalenderen, viser redigeringspanelet ulike ' +
         'handlingsknapper avhengig av søker, rettighet, familiesituasjon og hvor periodene ligger i ' +
         'forhold til familiehendelsesdatoen. Reglene under bestemmer hvilke knapper som faktisk vises.',
-    regler: KNAPPER_I_REDIGERINGSPANEL_REGLER,
+    regler: [
+        SKAL_VISE_UTSETTELSESKNAPP,
+        SKAL_VISE_PAUSEKNAPP,
+        SKAL_VISE_FERIEKNAPP,
+        SKAL_VISE_LEGG_TIL_KNAPPETEKST,
+    ],
 };
 
 const ALLE_SYNLIGHETSREGLER: readonly Synlighetsområde[] = [

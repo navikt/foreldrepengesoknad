@@ -72,14 +72,6 @@ export const VIS_KONTO_FAR_MEDMOR_RADIOGRUPPE: Synlighetsregel<ForelderValgKonte
         (k.forelder === 'FAR_MEDMOR' || k.forelder === 'BEGGE') && k.harGyldigeKontoerForFarMedmor,
 };
 
-export const FORELDER_VALG_REGLER = [
-    VIS_MOR_RADIO,
-    VIS_FAR_MEDMOR_RADIO,
-    VIS_BEGGE_RADIO,
-    VIS_KONTO_MOR_RADIOGRUPPE,
-    VIS_KONTO_FAR_MEDMOR_RADIOGRUPPE,
-] as const;
-
 export type ForelderValgSynlighet = {
     visMorRadio: boolean;
     visFarMedmorRadio: boolean;
