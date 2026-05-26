@@ -102,7 +102,6 @@ const SENERE_UTENLANDSOPPHOLD = [
 ] satisfies UtenlandsoppholdPeriode[];
 
 const FRILANS = {
-    jobberFremdelesSomFrilans: true,
     oppstart: '2024-01-01',
 } satisfies Frilans;
 
@@ -279,7 +278,6 @@ describe('useFpSendSøknad', () => {
                         },
                     ],
                     frilans: {
-                        jobberFremdelesSomFrilans: true,
                         oppstart: '2024-01-01',
                     },
                     egenNæring: {

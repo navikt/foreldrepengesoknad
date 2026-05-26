@@ -40,7 +40,6 @@ describe('<Arbeid som frilanser>', () => {
 
         expect(saveOnNext).toHaveBeenCalledTimes(1);
         expect(saveOnNext).toHaveBeenNthCalledWith(1, {
-            jobberFremdelesSomFrilans: true,
             oppstart: '2023-12-30',
         });
     });

@@ -15,6 +15,12 @@ import { Frilans } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
+type FrilansFormValues = {
+    oppstart: string;
+    jobberFremdelesSomFrilans?: boolean;
+    tom?: string;
+};
+
 interface Props<TYPE> {
     frilans?: Frilans;
     saveOnNext: (formValues: Frilans) => void;
@@ -36,13 +42,26 @@ export const FrilansPanel = <TYPE extends string>({
 }: Props<TYPE>) => {
     const intl = useIntl();
 
-    const formMethods = useForm<Frilans>({
-        defaultValues: frilans,
+    const formMethods = useForm<FrilansFormValues>({
+        defaultValues: {
+            oppstart: frilans?.oppstart,
+            jobberFremdelesSomFrilans: frilans ? !frilans.tom : undefined,
+            tom: frilans?.tom,
+        },
     });
+
+    const jobberFremdeles = formMethods.watch('jobberFremdelesSomFrilans');
+
+    const onSubmit = (values: FrilansFormValues) => {
+        saveOnNext({
+            oppstart: values.oppstart,
+            tom: values.jobberFremdelesSomFrilans ? undefined : values.tom,
+        });
+    };
 
     return (
         <Step steps={stepConfig} onStepChange={onStepChange}>
-            <RhfForm formMethods={formMethods} onSubmit={saveOnNext}>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="space-40">
                     <ErrorSummaryHookForm />
                     <RhfDatepicker
@@ -81,7 +100,30 @@ export const FrilansPanel = <TYPE extends string>({
                             <FormattedMessage id="FrilansPanel.JobberFremdelesSomFrilans.Nei" />
                         </Radio>
                     </RhfRadioGroup>
-                    <StepButtonsHookForm<Frilans>
+                    {jobberFremdeles === false && (
+                        <RhfDatepicker
+                            name="tom"
+                            control={formMethods.control}
+                            label={intl.formatMessage({ id: 'FrilansPanel.SluttetDato' })}
+                            validate={[
+                                isRequired(
+                                    intl.formatMessage({ id: 'FrilansPanel.Valideringsfeil.TilOgMedDato.Påkrevd' }),
+                                ),
+                                isValidDate(
+                                    intl.formatMessage({ id: 'FrilansPanel.Valideringsfeil.TilOgMedDato.GyldigDato' }),
+                                ),
+                                isBeforeTodayOrToday(
+                                    intl.formatMessage({
+                                        id: 'FrilansPanel.Valideringsfeil.TilOgMedDato.ErIFremtiden',
+                                    }),
+                                ),
+                            ]}
+                            maxDate={DATE_TODAY}
+                            minDate={DATE_20_YEARS_AGO}
+                            showMonthAndYearDropdowns
+                        />
+                    )}
+                    <StepButtonsHookForm<FrilansFormValues>
                         onAvsluttOgSlett={onAvsluttOgSlett}
                         onFortsettSenere={onFortsettSenere}
                         goToPreviousStep={goToPreviousStep}

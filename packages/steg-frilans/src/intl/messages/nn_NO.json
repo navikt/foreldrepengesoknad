@@ -3,8 +3,12 @@
     "FrilansPanel.JobberFremdelesSomFrilans": "Jobbar du framleis som frilansar?",
     "FrilansPanel.JobberFremdelesSomFrilans.Ja": "Ja",
     "FrilansPanel.JobberFremdelesSomFrilans.Nei": "Nei",
+    "FrilansPanel.SluttetDato": "Når slutta du som frilansar?",
     "FrilansPanel.Valideringsfeil.FraOgMedDato.Påkrevd": "Du må oppgi ei startdato.",
     "FrilansPanel.Valideringsfeil.FraOgMedDato.GyldigDato": "Startdatoen må vere ein gyldig dato på formatet dd.mm.åååå.",
     "FrilansPanel.Valideringsfeil.FraOgMedDato.ErIFremtiden": "Startdatoen må vere før eller lik dagens dato.",
+    "FrilansPanel.Valideringsfeil.TilOgMedDato.Påkrevd": "Du må oppgi ei sluttdato.",
+    "FrilansPanel.Valideringsfeil.TilOgMedDato.GyldigDato": "Sluttdatoen må vere ein gyldig dato på formatet dd.mm.åååå.",
+    "FrilansPanel.Valideringsfeil.TilOgMedDato.ErIFremtiden": "Sluttdatoen må vere før eller lik dagens dato.",
     "FrilansPanel.Valideringsfeil.JobberFremdelesSomFrilans.Påkrevd": "Du må oppgi om du framleis jobbar som frilansar."
 }

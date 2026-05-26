@@ -553,7 +553,6 @@ export const MorMedArbeidsforholdOgAndreInntekter: Story = {
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
         frilans: {
-            jobberFremdelesSomFrilans: true,
             oppstart: '2019-01-01',
         },
         annenForelder: {
