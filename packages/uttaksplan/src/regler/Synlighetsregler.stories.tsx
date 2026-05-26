@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { Kolonne, RegelIdBadge, RegelkatalogSide } from './RegelkatalogSide';
 import { FELT_SYNLIGHET_REGLER } from './synlighet/feltSynlighet';
 import { FORELDER_VALG_REGLER } from './synlighet/forelderValg';
+import { KNAPPER_I_REDIGERINGSPANEL_REGLER } from './synlighet/knapperIRedigeringspanel';
 import { Synlighetsområde } from './synlighet/types';
 
 const FORELDER_VALG_OMRÅDE: Synlighetsområde = {
@@ -23,7 +24,21 @@ const FELT_SYNLIGHET_OMRÅDE: Synlighetsområde = {
     regler: FELT_SYNLIGHET_REGLER,
 };
 
-const ALLE_SYNLIGHETSREGLER: readonly Synlighetsområde[] = [FORELDER_VALG_OMRÅDE, FELT_SYNLIGHET_OMRÅDE];
+const KNAPPER_I_REDIGERINGSPANEL_OMRÅDE: Synlighetsområde = {
+    id: 'knapperIRedigeringspanel',
+    område: 'Hvilke «Legg til»-knapper vises i redigeringspanelet?',
+    beskrivelse:
+        'Når brukeren har markert én eller flere dager i kalenderen, viser redigeringspanelet ulike ' +
+        'handlingsknapper avhengig av søker, rettighet, familiesituasjon og hvor periodene ligger i ' +
+        'forhold til familiehendelsesdatoen. Reglene under bestemmer hvilke knapper som faktisk vises.',
+    regler: KNAPPER_I_REDIGERINGSPANEL_REGLER,
+};
+
+const ALLE_SYNLIGHETSREGLER: readonly Synlighetsområde[] = [
+    FORELDER_VALG_OMRÅDE,
+    FELT_SYNLIGHET_OMRÅDE,
+    KNAPPER_I_REDIGERINGSPANEL_OMRÅDE,
+];
 
 const INTRO =
     'Skjemaet for å legge til eller endre en periode er progressivt — felter, radioknapper og infobokser ' +

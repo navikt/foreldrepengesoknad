@@ -10,8 +10,8 @@ import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
+import { synlighetForKnapperIRedigeringspanel } from '../../../../regler/synlighet/knapperIRedigeringspanel';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
-import { UttaksperiodeValidatorer } from '../../../../utils/UttaksperiodeValidatorer';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
@@ -82,33 +82,17 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
         sammenslåtteValgtePerioder,
     );
 
-    const skalViseUtsettelsesknapp =
-        søker === 'MOR' &&
-        familiesituasjon !== 'adopsjon' &&
-        UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
-            sammenslåtteValgtePerioder,
-            familiehendelsedato,
-        );
-
-    const harBareFarRett = søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT';
-
-    const skalVisePauseknapp =
-        harBareFarRett &&
-        !UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
-            sammenslåtteValgtePerioder,
-            familiehendelsedato,
-        );
-
-    const skalViseFerieknapp =
-        !skalViseUtsettelsesknapp &&
-        !skalVisePauseknapp &&
-        !(
-            harBareFarRett &&
-            UttaksperiodeValidatorer.erNoenPerioderLikEllerEtter6UkerEtterFamiliehendelsedato(
-                sammenslåtteValgtePerioder,
-                familiehendelsedato,
-            )
-        );
+    const {
+        visUtsettelsesknapp: skalViseUtsettelsesknapp,
+        visPauseknapp: skalVisePauseknapp,
+        visFerieknapp: skalViseFerieknapp,
+    } = synlighetForKnapperIRedigeringspanel({
+        søker,
+        rettighetType,
+        familiesituasjon,
+        familiehendelsedato,
+        sammenslåtteValgtePerioder,
+    });
 
     const leggTilEllerForskyvPeriode = (skalForskyve: boolean) => {
         leggTilUttaksplanPerioder(
