@@ -19,7 +19,7 @@ export type ForelderValgKontekst = {
  * Vis Mor-radioknappen: brukeren kan velge mor som forelder for perioden.
  */
 export const VIS_MOR_RADIO: Synlighetsregel<ForelderValgKontekst> = {
-    id: 'forelderValg.visMor',
+    id: 'forelderValg.visMorRadio',
     beskrivelse:
         'Mor-alternativet vises når mor er en gyldig forelder for den valgte perioden (mor har minst én ' +
         'gyldig stønadskontotype) og mor ikke er låst av annen parts plan.',
@@ -30,7 +30,7 @@ export const VIS_MOR_RADIO: Synlighetsregel<ForelderValgKontekst> = {
  * Vis Far/medmor-radioknappen.
  */
 export const VIS_FAR_MEDMOR_RADIO: Synlighetsregel<ForelderValgKontekst> = {
-    id: 'forelderValg.visFarMedmor',
+    id: 'forelderValg.visFarMedmorRadio',
     beskrivelse:
         'Far/medmor-alternativet vises når far/medmor er en gyldig forelder for den valgte perioden ' +
         '(far/medmor har minst én gyldig stønadskontotype) og far/medmor ikke er låst av annen parts plan.',
@@ -41,7 +41,7 @@ export const VIS_FAR_MEDMOR_RADIO: Synlighetsregel<ForelderValgKontekst> = {
  * Vis Begge-radioknappen (samtidig uttak).
  */
 export const VIS_BEGGE_RADIO: Synlighetsregel<ForelderValgKontekst> = {
-    id: 'forelderValg.visBegge',
+    id: 'forelderValg.visBeggeRadio',
     beskrivelse:
         'Begge-alternativet (samtidig uttak) vises bare når både mor og far/medmor er gyldige foreldre ' +
         'for perioden, og det ikke finnes noen EØS-perioder i planen — samtidig uttak støttes ikke ' +
@@ -81,9 +81,9 @@ export const FORELDER_VALG_REGLER = [
 ] as const;
 
 export type ForelderValgSynlighet = {
-    visMor: boolean;
-    visFarMedmor: boolean;
-    visBegge: boolean;
+    visMorRadio: boolean;
+    visFarMedmorRadio: boolean;
+    visBeggeRadio: boolean;
     visKontoMorRadiogruppe: boolean;
     visKontoFarMedmorRadiogruppe: boolean;
     erMorGyldigForelder: boolean;
@@ -139,9 +139,9 @@ export const useForelderValgSynlighet = (
     };
 
     return {
-        visMor: VIS_MOR_RADIO.skalVises(kontekst),
-        visFarMedmor: VIS_FAR_MEDMOR_RADIO.skalVises(kontekst),
-        visBegge: VIS_BEGGE_RADIO.skalVises(kontekst),
+        visMorRadio: VIS_MOR_RADIO.skalVises(kontekst),
+        visFarMedmorRadio: VIS_FAR_MEDMOR_RADIO.skalVises(kontekst),
+        visBeggeRadio: VIS_BEGGE_RADIO.skalVises(kontekst),
         visKontoMorRadiogruppe: VIS_KONTO_MOR_RADIOGRUPPE.skalVises(kontekst),
         visKontoFarMedmorRadiogruppe: VIS_KONTO_FAR_MEDMOR_RADIOGRUPPE.skalVises(kontekst),
         erMorGyldigForelder,

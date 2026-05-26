@@ -89,19 +89,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         stillingsprosentMor,
     });
 
-    const {
-        gyldigeStønadskontoerForMor,
-        gyldigeStønadskontoerForFarMedmor,
-        erMorGyldigForelder,
-        erFarMedmorGyldigForelder,
-        visMor: visMorRadio,
-        visFarMedmor: visFarMedmorRadio,
-        visBegge: visBeggeRadio,
-        visKontoMorRadiogruppe,
-        visKontoFarMedmorRadiogruppe,
-        erMorLåst,
-        erFarMedmorLåst,
-    } = useForelderValgSynlighet(valgtePerioder, {
+    const forelderValgSynlighet = useForelderValgSynlighet(valgtePerioder, {
         forelder,
         ønskerFlerbarnsdager,
     });
@@ -112,8 +100,8 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 
     const blokkerendeAlert = useBlokkerendeAlert({
         valgtePerioder,
-        erMorGyldigForelder,
-        erFarMedmorGyldigForelder,
+        erMorGyldigForelder: forelderValgSynlighet.erMorGyldigForelder,
+        erFarMedmorGyldigForelder: forelderValgSynlighet.erFarMedmorGyldigForelder,
     });
 
     if (blokkerendeAlert) {
@@ -173,12 +161,12 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
             >
                 {
                     [
-                        visMorRadio && (
+                        forelderValgSynlighet.visMorRadio && (
                             <Radio key="mor" value="MOR">
                                 <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />
                             </Radio>
                         ),
-                        visFarMedmorRadio && (
+                        forelderValgSynlighet.visFarMedmorRadio && (
                             <Radio key="far" value="FAR_MEDMOR">
                                 {erMedmorDelAvSøknaden ? (
                                     <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />
@@ -187,7 +175,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                                 )}
                             </Radio>
                         ),
-                        visBeggeRadio && (
+                        forelderValgSynlighet.visBeggeRadio && (
                             <Radio key="begge" value="BEGGE">
                                 <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Begge" />
                             </Radio>
@@ -219,7 +207,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 
             {forelder !== undefined && <hr className="text-ax-border-neutral-subtle" />}
 
-            {visKontoMorRadiogruppe && (
+            {forelderValgSynlighet.visKontoMorRadiogruppe && (
                 <RhfRadioGroup
                     name="kontoTypeMor"
                     control={formMethods.control}
@@ -229,16 +217,20 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeMor' })}
                     onChange={resetGraderingFelterForMor}
                 >
-                    {gyldigeStønadskontoerForMor.map((konto) => {
+                    {forelderValgSynlighet.gyldigeStønadskontoerForMor.map((konto) => {
                         return (
-                            <Radio key={konto} value={konto} disabled={!!kontoTypeMor && erMorLåst}>
+                            <Radio
+                                key={konto}
+                                value={konto}
+                                disabled={!!kontoTypeMor && forelderValgSynlighet.erMorLåst}
+                            >
                                 {getStønadskvoteNavnSimple(intl, konto, erMedmorDelAvSøknaden)}
                             </Radio>
                         );
                     })}
                 </RhfRadioGroup>
             )}
-            {visKontoFarMedmorRadiogruppe && (
+            {forelderValgSynlighet.visKontoFarMedmorRadiogruppe && (
                 <RhfRadioGroup
                     name="kontoTypeFarMedmor"
                     control={formMethods.control}
@@ -262,9 +254,13 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     }
                     onChange={resetGraderingFelterForFarMedmor}
                 >
-                    {gyldigeStønadskontoerForFarMedmor.map((konto) => {
+                    {forelderValgSynlighet.gyldigeStønadskontoerForFarMedmor.map((konto) => {
                         return (
-                            <Radio key={konto} value={konto} disabled={!!kontoTypeFarMedmor && erFarMedmorLåst}>
+                            <Radio
+                                key={konto}
+                                value={konto}
+                                disabled={!!kontoTypeFarMedmor && forelderValgSynlighet.erFarMedmorLåst}
+                            >
                                 {getStønadskvoteNavnSimple(intl, konto, erMedmorDelAvSøknaden, erBareFarHarRett)}
                             </Radio>
                         );
