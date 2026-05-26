@@ -61,7 +61,7 @@ describe('<AppContainer>', () => {
             expect(screen.getByText('Steg 4 av 9')).toBeInTheDocument();
             await userEvent.click(
                 screen.getByText(
-                    'Har jobbet minst 6 av de siste 10 månedene og har tjent 65 080 kr eller mer det siste året',
+                    'Har jobbet minst 6 av de siste 10 månedene og har tjent 68 274,50 kr eller mer det siste året',
                 ),
             );
             await userEvent.click(screen.getByText('Ja'));
