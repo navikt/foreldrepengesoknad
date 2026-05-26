@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { linkTo } from '@storybook/addon-links';
 
 import { Kolonne, RegelIdBadge, RegelkatalogSide } from './RegelkatalogSide';
 import {
@@ -65,6 +66,16 @@ const FORELDER_VALG_OMRÅDE: Synlighetsområde = {
     beskrivelse:
         'Når brukeren legger til eller endrer en periode, må det velges hvilken forelder perioden gjelder. ' +
         'Reglene under bestemmer hvilke alternativ (Mor, Far/medmor, Begge) som er tilgjengelige.',
+    seOgså: [
+        {
+            tekst: 'Hvilke kvotetyper er gyldige for mor? (Kvotetyperegler)',
+            onClick: linkTo('Uttaksplan/Kvotetyperegler (dokumentasjon)', 'AlleKvotetyperegler'),
+        },
+        {
+            tekst: 'Hvilke kvotetyper er gyldige for far/medmor? (Kvotetyperegler)',
+            onClick: linkTo('Uttaksplan/Kvotetyperegler (dokumentasjon)', 'AlleKvotetyperegler'),
+        },
+    ],
     regler: [
         VIS_MOR_RADIO,
         VIS_FAR_MEDMOR_RADIO,

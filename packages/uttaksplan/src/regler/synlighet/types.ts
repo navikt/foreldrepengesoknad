@@ -1,5 +1,7 @@
 import type { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
 
+import type { SeOgsåLenke } from '../RegelkatalogSide';
+
 /**
  * Brukerens valg av forelder for én periode i uttaksplan-skjemaet.
  * - `MOR` / `FAR_MEDMOR`: én forelder tar perioden alene
@@ -43,5 +45,6 @@ export type Synlighetsområde = {
     id: string;
     område: string;
     beskrivelse: string;
+    seOgså?: readonly SeOgsåLenke[];
     regler: readonly SynlighetsregelDoc[];
 };

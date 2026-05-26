@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { BodyLong, BodyShort, Box, HStack, Heading, Tag, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Box, HStack, Heading, Link, Tag, VStack } from '@navikt/ds-react';
 
 /**
  * Felles layout-skall for de selvdokumenterende regelkatalog-sidene i
@@ -27,6 +27,7 @@ export const RegelkatalogSide = <T,>({
                     nummer={idx + 1}
                     tittel={område.område}
                     beskrivelse={område.beskrivelse}
+                    seOgså={område.seOgså}
                     farge={farge}
                     regler={område.regler}
                     getRegelId={getRegelId}
@@ -114,6 +115,7 @@ type OmrådeKortProps<T> = {
     nummer: number;
     tittel: string;
     beskrivelse: string;
+    seOgså?: readonly SeOgsåLenke[];
     farge: Katalogfarge;
     regler: readonly T[];
     getRegelId: (regel: T) => string;
@@ -124,6 +126,7 @@ const OmrådeKort = <T,>({
     nummer,
     tittel,
     beskrivelse,
+    seOgså,
     farge,
     regler,
     getRegelId,
@@ -151,6 +154,18 @@ const OmrådeKort = <T,>({
                     <BodyLong size="small" className="text-ax-text-subtle">
                         {beskrivelse}
                     </BodyLong>
+                    {seOgså && seOgså.length > 0 && (
+                        <HStack gap="space-12" align="center" wrap>
+                            <BodyShort size="small" className="text-ax-text-subtle font-semibold">
+                                Se også:
+                            </BodyShort>
+                            {seOgså.map((lenke) => (
+                                <Link key={lenke.tekst} as="button" type="button" onClick={lenke.onClick}>
+                                    {lenke.tekst}
+                                </Link>
+                            ))}
+                        </HStack>
+                    )}
                 </VStack>
                 <Tag variant="neutral-moderate" size="small">
                     {regler.length} {regler.length === 1 ? 'regel' : 'regler'}
@@ -202,7 +217,13 @@ type Område<T> = {
     id: string;
     område: string;
     beskrivelse: string;
+    seOgså?: readonly SeOgsåLenke[];
     regler: readonly T[];
+};
+
+export type SeOgsåLenke = {
+    tekst: string;
+    onClick: () => void;
 };
 
 export type RegelkatalogSideProps<T> = {

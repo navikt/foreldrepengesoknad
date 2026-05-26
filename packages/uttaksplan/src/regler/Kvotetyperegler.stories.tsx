@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { linkTo } from '@storybook/addon-links';
 
 import { Tag } from '@navikt/ds-react';
 
@@ -42,6 +43,12 @@ const MOR_KVOTE_OMRÅDE: Kvoteområde = {
     beskrivelse:
         'Når mor er valgt som forelder for en periode, må kvotetypen (stønadskonto) være gyldig. ' +
         'Reglene under bestemmer hvilke kvoter mor får tilbudt i nedtrekkslisten.',
+    seOgså: [
+        {
+            tekst: 'Når vises Mor som alternativ i «Hvem gjelder perioden»? (Synlighetsregler)',
+            onClick: linkTo('Uttaksplan/Synlighetsregler (dokumentasjon)', 'AlleSynlighetsregler'),
+        },
+    ],
     regler: MOR_KVOTE_REGLER,
 };
 
@@ -51,6 +58,12 @@ const FAR_MEDMOR_KVOTE_OMRÅDE: Kvoteområde = {
     beskrivelse:
         'Når far/medmor er valgt som forelder for en periode, må kvotetypen (stønadskonto) være gyldig. ' +
         'Reglene under bestemmer hvilke kvoter far/medmor får tilbudt i nedtrekkslisten.',
+    seOgså: [
+        {
+            tekst: 'Når vises Far/medmor som alternativ i «Hvem gjelder perioden»? (Synlighetsregler)',
+            onClick: linkTo('Uttaksplan/Synlighetsregler (dokumentasjon)', 'AlleSynlighetsregler'),
+        },
+    ],
     regler: FAR_MEDMOR_KVOTE_REGLER,
 };
 

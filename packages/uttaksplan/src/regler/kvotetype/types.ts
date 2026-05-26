@@ -1,5 +1,7 @@
 import type { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types';
 
+import type { SeOgsåLenke } from '../RegelkatalogSide';
+
 /**
  * Doc-typen for en kvoteregel — alt som beskriver regelen uten
  * runtime-logikk. Brukt i Storybook-katalogen og som basis for
@@ -32,5 +34,6 @@ export type Kvoteområde = {
     id: string;
     område: string;
     beskrivelse: string;
+    seOgså?: readonly SeOgsåLenke[];
     regler: readonly KvoteregelDoc[];
 };
