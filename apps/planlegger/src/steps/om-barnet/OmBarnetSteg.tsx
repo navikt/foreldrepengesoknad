@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import isEqual from 'lodash/isEqual';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { erAlenesøker as erAlene, erFarOgFar } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker as erAlene, erFarOgFar, erMedmorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
 import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
@@ -68,6 +68,7 @@ export const OmBarnetPlanleggerSteg = () => {
 
     const erAlenesøker = erAlene(hvemPlanlegger);
     const erFedre = erFarOgFar(hvemPlanlegger);
+    const erMorOgMedmor = erMedmorDelAvSøknaden(hvemPlanlegger);
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
@@ -101,7 +102,7 @@ export const OmBarnetPlanleggerSteg = () => {
                             <Radio value={true} autoFocus>
                                 <FormattedMessage id="OmBarnetSteg.Fødsel" />
                             </Radio>
-                            <Radio value={false}>
+                            <Radio value={false} disabled={erMorOgMedmor}>
                                 <FormattedMessage id="OmBarnetSteg.Adopsjon" />
                             </Radio>
                         </BlueRadioGroup>
