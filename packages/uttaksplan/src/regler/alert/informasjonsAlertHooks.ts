@@ -189,11 +189,8 @@ export const useForskyvEllerErstattAlerts = (input: {
               )
             : false;
 
-    const forelderSomHarLåstePerioder = erPeriodeneTilAnnenPartLåst
-        ? søker === 'MOR'
-            ? 'FAR_MEDMOR'
-            : 'MOR'
-        : undefined;
+    const annenPart = søker === 'MOR' ? 'FAR_MEDMOR' : 'MOR';
+    const forelderSomHarLåstePerioder = erPeriodeneTilAnnenPartLåst ? annenPart : undefined;
     const harSenerePerioderSomErReadonly = erDetReadonlyPerioderEtterValgtePerioder(
         uttakPerioder,
         [...input.valgtePerioder],

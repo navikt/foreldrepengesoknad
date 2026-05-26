@@ -315,10 +315,7 @@ const filtrer = (
     kontekst: KvoteKontekst,
 ): KontoTypeUttak[] => {
     const regelForKonto = new Map(regler.map((r) => [r.kontotype, r]));
-    return tilgjengelige.filter((konto) => {
-        const regel = regelForKonto.get(konto);
-        return regel !== undefined && regel.erGyldig(kontekst);
-    });
+    return tilgjengelige.filter((konto) => regelForKonto.get(konto)?.erGyldig(kontekst) ?? false);
 };
 
 type GyldigeKvoter = {
