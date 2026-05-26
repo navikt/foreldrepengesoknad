@@ -96,7 +96,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
                 dayjs(vp.tom).isAfter(eksisterendePerioderSomErValgt.at(0)!.tom),
         );
 
-    const { morsAktivitetIkkeOppgitt: morsAktivitetAlert } = useLeggTilEndreSkjemaInfoAlerts(
+    const { morsAktivitetIkkeOppgittAlert } = useLeggTilEndreSkjemaInfoAlerts(
         harValgtDagerKunForEnEksisterendePeriode
             ? [
                   ...eksisterendePerioderSomErValgt,
@@ -106,7 +106,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
               ]
             : [],
     );
-    const erMorsAktivitetIkkeOppgitt = Boolean(morsAktivitetAlert);
+    const erMorsAktivitetIkkeOppgitt = Boolean(morsAktivitetIkkeOppgittAlert);
 
     const onSubmit = (values: LeggTilEllerEndrePeriodeFormFormValues) => {
         const submitFeilmelding = formSubmitValidator(sammenslåtteValgtePerioder, values);
@@ -154,9 +154,9 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
             )}
             {!visEndreEllerForskyvPanel && (
                 <VStack gap="space-16">
-                    {morsAktivitetAlert && (
-                        <Alert variant={morsAktivitetAlert.variant} size="small">
-                            <FormattedMessage id={morsAktivitetAlert.meldingId} />
+                    {morsAktivitetIkkeOppgittAlert && (
+                        <Alert variant={morsAktivitetIkkeOppgittAlert.variant} size="small">
+                            <FormattedMessage id={morsAktivitetIkkeOppgittAlert.meldingId} />
                         </Alert>
                     )}
 

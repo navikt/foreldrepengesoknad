@@ -51,7 +51,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 
     const perioderForKalendervisning = usePerioderForKalendervisning(endredePerioder, barnehagestartdato);
 
-    const { manglerMorsAktivitet: manglerMorsAktivitetAlert } = useUttaksplanKalenderAlerts(uttakPerioder);
+    const { manglerMorsAktivitetAlert } = useUttaksplanKalenderAlerts(uttakPerioder);
 
     const {
         førsteDatoIKalender,

@@ -52,7 +52,7 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
 
     const alleRader = leggTilPeriodeForFamiliehendelsedato(uttaksplanperioderPerRadIListe, familiehendelsedato);
 
-    const { manglerMorsAktivitet: manglerMorsAktivitetAlert } = useUttaksplanListeAlerts(
+    const { manglerMorsAktivitetAlert } = useUttaksplanListeAlerts(
         uttakPerioderJustertForFamiliehendelsesdato,
     );
 

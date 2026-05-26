@@ -118,7 +118,7 @@ export const useEksisterendeValgtePeriodeAlerts = (): ((
 };
 
 export type UttaksplanListeAlerts = {
-    manglerMorsAktivitet?: AktivAlert;
+    manglerMorsAktivitetAlert?: AktivAlert;
 };
 
 /** Alerter som vises over hele listevisningen. */
@@ -129,12 +129,12 @@ export const useUttaksplanListeAlerts = (
         foreldreInfo: { rettighetType },
     } = useUttaksplanData();
     return {
-        manglerMorsAktivitet: tilAktiv(MANGLER_MORS_AKTIVITET_LISTE, { rettighetType, perioder }),
+        manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_LISTE, { rettighetType, perioder }),
     };
 };
 
 export type UttaksplanKalenderAlerts = {
-    manglerMorsAktivitet?: AktivAlert;
+    manglerMorsAktivitetAlert?: AktivAlert;
 };
 
 /** Alerter som vises over hele kalendervisningen. */
@@ -145,12 +145,12 @@ export const useUttaksplanKalenderAlerts = (
         foreldreInfo: { rettighetType },
     } = useUttaksplanData();
     return {
-        manglerMorsAktivitet: tilAktiv(MANGLER_MORS_AKTIVITET_KALENDER, { rettighetType, perioder }),
+        manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_KALENDER, { rettighetType, perioder }),
     };
 };
 
 export type LeggTilEndreSkjemaInfoAlerts = {
-    morsAktivitetIkkeOppgitt?: AktivAlert;
+    morsAktivitetIkkeOppgittAlert?: AktivAlert;
 };
 
 /** Informasjons-alerter i legg-til/endre-periode-skjemaet. */
@@ -161,7 +161,7 @@ export const useLeggTilEndreSkjemaInfoAlerts = (
         foreldreInfo: { rettighetType },
     } = useUttaksplanData();
     return {
-        morsAktivitetIkkeOppgitt: tilAktiv(MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING, { rettighetType, perioder }),
+        morsAktivitetIkkeOppgittAlert: tilAktiv(MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING, { rettighetType, perioder }),
     };
 };
 
