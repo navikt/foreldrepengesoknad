@@ -107,6 +107,8 @@ export const EksisterendeValgtePerioder = ({ perioder, setErForskyvEllerErstattP
                             valgteDager,
                         );
 
+                        const morsAktivitetIkkeValgtAlert = alertsForPeriode(p).morsAktivitetIkkeValgt;
+
                         return (
                             <HStack
                                 gap="space-8"
@@ -176,16 +178,17 @@ export const EksisterendeValgtePerioder = ({ perioder, setErForskyvEllerErstattP
                                         </BodyShort>
                                     )}
 
-                                    {(() => {
-                                        const morsAktivitet = alertsForPeriode(p).morsAktivitetIkkeValgt;
-                                        return morsAktivitet ? (
-                                            <Alert variant={morsAktivitet.variant} size="small" className="mt-3 mb-1 p-2">
-                                                <BodyShort>
-                                                    <FormattedMessage id={morsAktivitet.meldingId} />
-                                                </BodyShort>
-                                            </Alert>
-                                        ) : null;
-                                    })()}
+                                    {morsAktivitetIkkeValgtAlert && (
+                                        <Alert
+                                            variant={morsAktivitetIkkeValgtAlert.variant}
+                                            size="small"
+                                            className="mt-3 mb-1 p-2"
+                                        >
+                                            <BodyShort>
+                                                <FormattedMessage id={morsAktivitetIkkeValgtAlert.meldingId} />
+                                            </BodyShort>
+                                        </Alert>
+                                    )}
                                 </VStack>
                                 <Spacer />
 

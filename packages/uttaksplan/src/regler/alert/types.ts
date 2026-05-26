@@ -22,6 +22,13 @@ export const VISNINGSSTED_LABELS: Record<Visningssted, string> = {
 };
 
 /**
+ * Ferdig pakket alert for visning — meldingsnøkkel + variant.
+ * Brukes som returtype fra alert-hooker for å gi konsumentene en
+ * uniform shape uavhengig av hvilken regel som slo inn.
+ */
+export type AktivAlertMetadata = { meldingId: string; variant: 'info' | 'warning' };
+
+/**
  * Felles metadata for en alert — det som beskriver regelen uten å
  * inkludere runtime-logikk. Brukt direkte for alerter som lever som
  * ren dokumentasjon, og som basis for `Alertregel<TKontekst>` for

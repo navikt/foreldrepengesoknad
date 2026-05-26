@@ -28,17 +28,33 @@ import {
     VALGTE_DAGER_FØR_FAMHEND,
     VALGTE_DAGER_FØR_SEKS_UKER,
 } from './informasjonsAlerts';
-import { Alertregel } from './types';
+import { AktivAlertMetadata, Alertregel, AlertregelDoc } from './types';
 
 /**
  * Aktiv alert = en regel som har slått inn, ferdig pakket for visning
  * (meldingsnøkkel + variant). Brukes som returtype fra alle hookene
  * under for å gi konsumentene en uniform shape.
  */
-export type AktivAlert = { meldingId: string; variant: 'info' | 'warning' };
+export type AktivAlert = AktivAlertMetadata;
 
 const tilAktiv = <T,>(regel: Alertregel<T>, ctx: T): AktivAlert | undefined =>
     regel.skalVises(ctx) ? { meldingId: regel.getMeldingId(ctx), variant: regel.variant } : undefined;
+
+/**
+ * Bygg en AktivAlert kun fra metadataen på regelen — uten å evaluere
+ * `skalVises` / `getMeldingId`. Brukes når kallstedet allerede har
+ * regnet ut betingelsen selv (typisk fordi konteksten ikke matcher
+ * regelens runtime-kontrakt), og regelen har én fast melding.
+ */
+const aktivFraMetadata = (regel: AlertregelDoc): AktivAlert => {
+    const [meldingId, ...resten] = regel.meldingIder;
+    if (meldingId === undefined || resten.length > 0) {
+        throw new Error(
+            `aktivFraMetadata krever én fast meldingId, men ${regel.id} har ${regel.meldingIder.length}`,
+        );
+    }
+    return { meldingId, variant: regel.variant };
+};
 
 /**
  * Listepanelet skal varsle om at mor kan miste dager når hun endrer en
@@ -57,7 +73,7 @@ export const useListePanelInfoAlerts = (input: {
     harPeriodeDerMorsAktivitetIkkeErValgt: boolean;
 }): ListePanelInfoAlerts => {
     const {
-        foreldreInfo: { søker, rettighetType },
+        foreldreInfo: { søker },
         familiesituasjon,
         familiehendelsedato,
     } = useUttaksplanData();
@@ -70,17 +86,9 @@ export const useListePanelInfoAlerts = (input: {
         kanMisteDagerVedEndringTilFerie([input.valgtPeriode], familiehendelsedato);
 
     return {
-        kanMisteDagerVedFerie: visKanMisteDager
-            ? {
-                  variant: KAN_MISTE_DAGER.variant,
-                  meldingId: KAN_MISTE_DAGER.getMeldingId({} as never),
-              }
-            : undefined,
+        kanMisteDagerVedFerie: visKanMisteDager ? aktivFraMetadata(KAN_MISTE_DAGER) : undefined,
         morsAktivitetIkkeOppgitt: input.harPeriodeDerMorsAktivitetIkkeErValgt
-            ? {
-                  variant: MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING.variant,
-                  meldingId: MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING.getMeldingId({ rettighetType, perioder: [] }),
-              }
+            ? aktivFraMetadata(MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING)
             : undefined,
     };
 };

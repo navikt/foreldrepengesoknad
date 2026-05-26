@@ -17,7 +17,7 @@ import {
 } from '../../types/UttaksplanPeriode';
 import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../utils/periodeUtils';
 import { Periode, i18n } from '../types';
-import { Alertregel, Alertområde } from './types';
+import { Alertregel, AlertregelDoc, Alertområde } from './types';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
@@ -216,7 +216,12 @@ export const VALGTE_DAGER_FØR_FAMHEND: Alertregel<ForskyvEllerErstattKontekst> 
         ctx.harPeriodeFørFamiliehendelsedato,
 };
 
-const ALLE_INFORMASJONS_ALERTS: ReadonlyArray<Alertregel<unknown>> = [
+/**
+ * Storybook-katalogen treng berre metadata-projeksjonen (`AlertregelDoc`).
+ * Reglane lever som `Alertregel<TKontekst>` for runtime, men har eit
+ * konsistent supersett — så vi kan liste dei direkte utan cast.
+ */
+const ALLE_INFORMASJONS_ALERTS: readonly AlertregelDoc[] = [
     MANGLER_MORS_AKTIVITET_LISTE,
     MANGLER_MORS_AKTIVITET_KALENDER,
     MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING,
@@ -228,7 +233,7 @@ const ALLE_INFORMASJONS_ALERTS: ReadonlyArray<Alertregel<unknown>> = [
     SENERE_PERIODER_READONLY,
     VALGTE_DAGER_FØR_SEKS_UKER,
     VALGTE_DAGER_FØR_FAMHEND,
-] as ReadonlyArray<Alertregel<unknown>>;
+];
 
 export const INFORMASJONS_ALERT_OMRÅDE: Alertområde = {
     id: 'informasjonsAlerts',
