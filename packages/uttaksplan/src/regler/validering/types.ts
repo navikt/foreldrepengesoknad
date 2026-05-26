@@ -4,7 +4,7 @@ import { LeggTilEllerEndrePeriodeFormFormValues } from '../../felles/LeggTilElle
 import { ForeldreInfo } from '../../types/ForeldreInfo';
 import { Periode } from '../types';
 
-export { i18n, type Periode } from '../types';
+export { type Periode } from '../types';
 
 /**
  * Felles input til alle valideringsområder. Bygd opp av useFormSubmitValidator
@@ -28,13 +28,13 @@ export type ValideringInput = {
  *   for å forstå hva regelen handler om.
  * - `erBrutt` tar imot en ferdig kontekst fra regelområdet og avgjør om
  *   regelen er brutt.
- * - `feilmeldingId` er intl-nøkkelen som blir vist til brukeren.
+ * - `feilmelding` er ferdig formatert tekst som blir vist til brukeren.
  */
 export type Valideringsregel<TCtx> = {
     id: string;
     beskrivelse: string;
     erBrutt: (kontekst: TCtx) => boolean;
-    feilmeldingId: string;
+    feilmelding: string;
 };
 
 /**

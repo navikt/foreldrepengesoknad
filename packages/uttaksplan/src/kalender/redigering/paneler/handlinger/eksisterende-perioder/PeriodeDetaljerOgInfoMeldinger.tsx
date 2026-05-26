@@ -50,25 +50,25 @@ export const PeriodeDetaljerOgInfoMeldinger = ({
                 <>
                     {adopsjonFørFamhend && (
                         <Alert variant={adopsjonFørFamhend.variant} size="small">
-                            <FormattedMessage id={adopsjonFørFamhend.meldingId} />
+                            {adopsjonFørFamhend.melding}
                         </Alert>
                     )}
 
                     {eøs && (
                         <Alert variant={eøs.variant} size="small">
-                            <FormattedMessage id={eøs.meldingId} />
+                            {eøs.melding}
                         </Alert>
                     )}
 
                     {pleiepenger && (
                         <Alert variant={pleiepenger.variant} size="small">
-                            <FormattedMessage id={pleiepenger.meldingId} />
+                            {pleiepenger.melding}
                         </Alert>
                     )}
 
                     {kanMisteDager && (
                         <Alert variant={kanMisteDager.variant} size="small">
-                            <FormattedMessage id={kanMisteDager.meldingId} />
+                            {kanMisteDager.melding}
                         </Alert>
                     )}
                 </>

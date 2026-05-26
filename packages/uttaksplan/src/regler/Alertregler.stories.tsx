@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { useIntl } from 'react-intl';
 
 import { BodyShort, Tag, VStack } from '@navikt/ds-react';
 
@@ -18,7 +17,7 @@ import {
     VALGTE_DAGER_FØR_SEKS_UKER,
 } from './alert/informasjonsAlerts';
 import { BLOKKERENDE_ALERTS, KONTEKSTUELLE_ALERTS } from './alert/skjemaAlerts';
-import { AlertregelDoc, Alertområde, VISNINGSSTED_LABELS } from './alert/types';
+import { Alertområde, AlertregelDoc, VISNINGSSTED_LABELS } from './alert/types';
 
 /**
  * Selvdokumenterende Storybook-side: viser alertreglene i hele
@@ -27,7 +26,6 @@ import { AlertregelDoc, Alertområde, VISNINGSSTED_LABELS } from './alert/types'
  * i listevisningen, i kalendervisningen, i redigeringspaneler osv.
  */
 const Alertregler = () => {
-    const intl = useIntl();
     const kolonner: ReadonlyArray<Kolonne<Alertregel>> = [
         {
             overskrift: 'Regel-id',
@@ -65,8 +63,8 @@ const Alertregler = () => {
             bredde: '25%',
             render: (r) => (
                 <VStack gap="space-4">
-                    {r.meldingIder.map((id) => (
-                        <MeldingSitat key={id} tekst={intl.formatMessage({ id })} />
+                    {r.meldinger.map((melding, i) => (
+                        <MeldingSitat key={i}>{melding}</MeldingSitat>
                     ))}
                 </VStack>
             ),

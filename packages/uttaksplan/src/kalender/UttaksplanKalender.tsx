@@ -43,9 +43,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
         [],
     );
 
-    const {
-        uttakPerioder,
-    } = useUttaksplanData();
+    const { uttakPerioder } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
@@ -153,9 +151,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                 {manglerMorsAktivitetAlert && (
                     <Alert variant={manglerMorsAktivitetAlert.variant}>
                         <VStack gap="space-2">
-                            <BodyShort>
-                                <FormattedMessage id={manglerMorsAktivitetAlert.meldingId} />
-                            </BodyShort>
+                            <BodyShort>{manglerMorsAktivitetAlert.melding}</BodyShort>
                             <Link href={links.aktivitetskrav} target="_blank" rel="noopener noreferrer">
                                 <FormattedMessage id="UttaksplanKalender.HvaErAktivitetskrav" />
                             </Link>

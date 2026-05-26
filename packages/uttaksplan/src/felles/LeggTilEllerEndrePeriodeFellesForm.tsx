@@ -23,8 +23,8 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskvoteNavnSimple } from '../liste/utils/uttaksplanListeUtils';
 import { useBlokkerendeAlert, useSkjemaKontekstuelleAlerts } from '../regler/alert/skjemaAlerts';
-import { useForelderValgSynlighet } from '../regler/synlighet/forelderValg';
 import { useFeltSynlighet } from '../regler/synlighet/feltSynlighet';
+import { useForelderValgSynlighet } from '../regler/synlighet/forelderValg';
 import { ForelderValg } from '../regler/synlighet/types';
 import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import { getAktivitetskravOptions, getAktivitetskravTekst } from '../utils/periodeUtils';
@@ -105,11 +105,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     });
 
     if (blokkerendeAlert) {
-        return (
-            <Alert variant={blokkerendeAlert.variant}>
-                <FormattedMessage id={blokkerendeAlert.meldingId} />
-            </Alert>
-        );
+        return <Alert variant={blokkerendeAlert.variant}>{blokkerendeAlert.melding}</Alert>;
     }
 
     const resetStillingsprosentMor = () => {
@@ -477,9 +473,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                             <>
                                 {skjemaKontekstuelleAlerts.graderingDagerReduseres && (
                                     <Alert variant={skjemaKontekstuelleAlerts.graderingDagerReduseres.variant}>
-                                        <FormattedMessage
-                                            id={skjemaKontekstuelleAlerts.graderingDagerReduseres.meldingId}
-                                        />
+                                        {skjemaKontekstuelleAlerts.graderingDagerReduseres.melding}
                                     </Alert>
                                 )}
                                 <RhfNumericField

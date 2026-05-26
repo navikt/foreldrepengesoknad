@@ -155,7 +155,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
                 <VStack gap="space-16">
                     {morsAktivitetIkkeOppgittAlert && (
                         <Alert variant={morsAktivitetIkkeOppgittAlert.variant} size="small">
-                            <FormattedMessage id={morsAktivitetIkkeOppgittAlert.meldingId} />
+                            {morsAktivitetIkkeOppgittAlert.melding}
                         </Alert>
                     )}
 

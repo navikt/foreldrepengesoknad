@@ -2,7 +2,7 @@ import { IntlShape } from 'react-intl';
 
 import { getFloatFromString } from '@navikt/fp-utils';
 
-import { Feltregel, førsteBrutteFeltregel, i18n } from '../types';
+import { Feltregel, førsteBrutteFeltregel } from '../types';
 import { harIngenVerdi } from './utils';
 
 /**
@@ -11,8 +11,8 @@ import { harIngenVerdi } from './utils';
 export const lagStillingsprosentValidator =
     (intl: IntlShape, samtidigUttaksprosentValue: string | undefined) =>
     (value: string): string | null => {
-        const brutt = førsteBrutteFeltregel(STILLINGSPROSENT_REGLER, { value, samtidigUttaksprosentValue });
-        return brutt ? intl.formatMessage({ id: brutt.feilmeldingId }) : null;
+        const brutt = førsteBrutteFeltregel(lagStillingsprosentRegler(intl), { value, samtidigUttaksprosentValue });
+        return brutt ? brutt.feilmelding : null;
     };
 
 type StillingsprosentInput = {
@@ -20,18 +20,18 @@ type StillingsprosentInput = {
     samtidigUttaksprosentValue: string | undefined;
 };
 
-export const STILLINGSPROSENT_REGLER: ReadonlyArray<Feltregel<StillingsprosentInput>> = [
+export const lagStillingsprosentRegler = (intl: IntlShape): ReadonlyArray<Feltregel<StillingsprosentInput>> => [
     {
         id: 'stillingsprosent.påkrevd',
         beskrivelse: 'Stillingsprosent må fylles ut når brukeren skal kombinere arbeid og uttak.',
         erBrutt: ({ value }) => harIngenVerdi(value),
-        feilmeldingId: i18n('leggTilPeriodePanel.stillingsprosent.påkrevd'),
+        feilmelding: intl.formatMessage({ id: 'leggTilPeriodePanel.stillingsprosent.påkrevd' }),
     },
     {
         id: 'stillingsprosent.måVæreEtTall',
         beskrivelse: 'Stillingsprosent må være et gyldig tall.',
         erBrutt: ({ value }) => !harIngenVerdi(value) && getFloatFromString(value) === undefined,
-        feilmeldingId: i18n('leggTilPeriodePanel.stillingsprosent.måVæreEtTall'),
+        feilmelding: intl.formatMessage({ id: 'leggTilPeriodePanel.stillingsprosent.måVæreEtTall' }),
     },
     {
         id: 'stillingsprosent.måVæreStørreEnn0',
@@ -40,7 +40,7 @@ export const STILLINGSPROSENT_REGLER: ReadonlyArray<Feltregel<StillingsprosentIn
             const tall = getFloatFromString(value);
             return tall !== undefined && tall <= 0;
         },
-        feilmeldingId: i18n('leggTilPeriodePanel.stillingsprosent.måVæreStørreEnn0'),
+        feilmelding: intl.formatMessage({ id: 'leggTilPeriodePanel.stillingsprosent.måVæreStørreEnn0' }),
     },
     {
         id: 'stillingsprosent.måVæreMindreEnn100',
@@ -49,7 +49,7 @@ export const STILLINGSPROSENT_REGLER: ReadonlyArray<Feltregel<StillingsprosentIn
             const tall = getFloatFromString(value);
             return tall !== undefined && tall >= 100;
         },
-        feilmeldingId: i18n('leggTilPeriodePanel.stillingsprosent.måVæreMindreEnn100'),
+        feilmelding: intl.formatMessage({ id: 'leggTilPeriodePanel.stillingsprosent.måVæreMindreEnn100' }),
     },
     {
         id: 'stillingsprosent.sumMedSamtidigUttakMaks100',
@@ -60,11 +60,9 @@ export const STILLINGSPROSENT_REGLER: ReadonlyArray<Feltregel<StillingsprosentIn
             const stillingsprosent = getFloatFromString(value);
             const samtidigUttak = getFloatFromString(samtidigUttaksprosentValue);
             return (
-                stillingsprosent !== undefined &&
-                samtidigUttak !== undefined &&
-                stillingsprosent + samtidigUttak > 100
+                stillingsprosent !== undefined && samtidigUttak !== undefined && stillingsprosent + samtidigUttak > 100
             );
         },
-        feilmeldingId: i18n('leggTilPeriodePanel.stillingsprosent.samtidigUttak'),
+        feilmelding: intl.formatMessage({ id: 'leggTilPeriodePanel.stillingsprosent.samtidigUttak' }),
     },
 ];

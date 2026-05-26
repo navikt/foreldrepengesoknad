@@ -196,9 +196,7 @@ const OmrådeKort = <T,>({
                                 key={getRegelId(regel)}
                                 className="border-t border-ax-border-subtle align-top hover:bg-ax-bg-neutral-soft"
                             >
-                                <td className="px-3 py-3 text-sm font-semibold text-ax-text-subtle">
-                                    {idx + 1}
-                                </td>
+                                <td className="px-3 py-3 text-sm font-semibold text-ax-text-subtle">{idx + 1}</td>
                                 {kolonner.map((k) => (
                                     <td key={k.overskrift} className="px-3 py-3 text-sm">
                                         {k.render(regel)}
@@ -239,17 +237,23 @@ export type RegelkatalogSideProps<T> = {
 
 /** Liten badge med monospace-id — brukt i tabellene. */
 export const RegelIdBadge = ({ id }: { id: string }) => (
-    <code className="inline-block rounded bg-ax-bg-neutral-moderate px-2 py-0.5 font-mono text-xs">
-        {id}
-    </code>
+    <code className="inline-block rounded bg-ax-bg-neutral-moderate px-2 py-0.5 font-mono text-xs">{id}</code>
 );
 
 /** Sitert melding-tekst — typisk «Slik ser meldingen ut for brukeren». */
-export const MeldingSitat = ({ tekst, tone = 'subtle' }: { tekst: string; tone?: 'subtle' | 'warning' }) => (
+export const MeldingSitat = ({
+    tekst,
+    children,
+    tone = 'subtle',
+}: {
+    tekst?: string;
+    children?: ReactNode;
+    tone?: 'subtle' | 'warning';
+}) => (
     <BodyShort
         size="small"
         className={tone === 'warning' ? 'text-ax-text-warning italic' : 'text-ax-text-subtle italic'}
     >
-        «{tekst}»
+        «{children ?? tekst}»
     </BodyShort>
 );

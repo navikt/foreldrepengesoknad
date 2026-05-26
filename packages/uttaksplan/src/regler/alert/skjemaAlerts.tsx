@@ -1,20 +1,23 @@
+import type { ReactNode } from 'react';
+import { FormattedMessage } from 'react-intl';
+
 import { BrukerRolleSak_fpoversikt, Familiesituasjon, RettighetType_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
-import { Periode, i18n } from '../types';
-import { Alertregel, Visningssted } from './types';
+import { Periode } from '../types';
+import { Alertregel, Visningssted, lagAlertregel } from './types';
 
 /**
  * Hook som henter kontekst fra UttaksplanDataContext og evaluerer
- * blokkerende alerts. Returnerer melding-id + variant slik konsumenten
- * selv kan rendre med FormattedMessage, eller undefined om ingen alert slår inn.
+ * blokkerende alerts. Returnerer melding + variant slik konsumenten
+ * kan rendre den direkte, eller undefined om ingen alert slår inn.
  */
 export const useBlokkerendeAlert = (input: {
     valgtePerioder: Periode[];
     erMorGyldigForelder: boolean;
     erFarMedmorGyldigForelder: boolean;
-}): { meldingId: string; variant: 'info' | 'warning' } | undefined => {
+}): { melding: ReactNode; variant: 'info' | 'warning' } | undefined => {
     const {
         foreldreInfo: { rettighetType, søker },
         familiehendelsedato,
@@ -38,29 +41,29 @@ export const useBlokkerendeAlert = (input: {
     }
 
     return {
-        meldingId: treff.meldingId,
+        melding: treff.melding,
         variant: treff.regel.variant,
     };
 };
 
 /**
  * Aktive kontekstuelle alerts i legg-til-/endre-skjemaet, ferdig pakket
- * med variant og meldingsnøkkel. Konsumentene rendrer kun.
+ * med variant og melding. Konsumentene rendrer kun.
  */
-export const useSkjemaKontekstuelleAlerts = (
-    valgtePerioder: Periode[],
-): SkjemaKontekstuelleAlerts => {
+export const useSkjemaKontekstuelleAlerts = (valgtePerioder: Periode[]): SkjemaKontekstuelleAlerts => {
     const { familiehendelsedato } = useUttaksplanData();
     const ctx: KontekstuellAlertKontekst = { valgtePerioder, familiehendelsedato };
     return {
         graderingDagerReduseres: KONTEKSTUELL_GRADERING_ALERT.skalVises(ctx)
             ? {
-                  meldingId: KONTEKSTUELL_GRADERING_ALERT.getMeldingId(ctx),
+                  melding: KONTEKSTUELL_GRADERING_ALERT.getMelding(ctx),
                   variant: KONTEKSTUELL_GRADERING_ALERT.variant,
               }
             : undefined,
     };
 };
+
+export { BLOKKERENDE_ALERTS, KONTEKSTUELLE_ALERTS };
 
 /**
  * Kontekst for blokkerende alerts som avgjør om hele skjemaet skal
@@ -79,20 +82,37 @@ type BlokkerendeAlertKontekst = {
 
 const SKJEMA_VISNINGSSTEDER: readonly Visningssted[] = ['legg-til-endre-skjema'];
 
+const KRYSSET_FAMILIEHENDELSE_MELDINGER: Record<Familiesituasjon, ReactNode> = {
+    fødsel: (
+        <FormattedMessage
+            key="LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.fødsel"
+            id="LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.fødsel"
+        />
+    ),
+    termin: (
+        <FormattedMessage
+            key="LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.termin"
+            id="LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.termin"
+        />
+    ),
+    adopsjon: (
+        <FormattedMessage
+            key="LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.adopsjon"
+            id="LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.adopsjon"
+        />
+    ),
+};
+
 const BLOKKERENDE_ALERTS: ReadonlyArray<Alertregel<BlokkerendeAlertKontekst>> = [
-    {
+    lagAlertregel<BlokkerendeAlertKontekst>({
         id: 'blokkerendeAlerts.perioderKrysserFamiliehendelse',
         beskrivelse:
             'Brukeren har markert dager både før og etter familiehendelsesdatoen. ' +
             'Skjemaet blokkeres fordi planen må endres i to steg — først dagene ' +
             'før, så dagene etter familiehendelsen.',
         visningssteder: SKJEMA_VISNINGSSTEDER,
-        meldingIder: [
-            i18n('LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.fødsel'),
-            i18n('LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.termin'),
-            i18n('LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.adopsjon'),
-        ],
-        getMeldingId: (ctx) => i18n(`LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.${ctx.familiesituasjon}`),
+        meldinger: Object.values(KRYSSET_FAMILIEHENDELSE_MELDINGER),
+        getMelding: (ctx) => KRYSSET_FAMILIEHENDELSE_MELDINGER[ctx.familiesituasjon],
         variant: 'info',
         type: 'blokkerende',
         skalVises: (ctx) => {
@@ -107,39 +127,44 @@ const BLOKKERENDE_ALERTS: ReadonlyArray<Alertregel<BlokkerendeAlertKontekst>> = 
                 )
             );
         },
-    },
-    {
+    }),
+    lagAlertregel<BlokkerendeAlertKontekst>({
         id: 'blokkerendeAlerts.ugyldigForelderKombinasjon',
         beskrivelse:
             'Ingen forelder har gyldige stønadskontoer for den valgte perioden. ' +
             'Skjemaet blokkeres fordi det ikke finnes noen gyldig kontotype å velge.',
         visningssteder: SKJEMA_VISNINGSSTEDER,
-        meldingIder: [i18n('LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon')],
-        getMeldingId: () => i18n('LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon'),
+        meldinger: [
+            <FormattedMessage
+                key="LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon"
+                id="LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon"
+            />,
+        ],
         variant: 'info',
         type: 'blokkerende',
         skalVises: (ctx) => !ctx.erMorGyldigForelder && !ctx.erFarMedmorGyldigForelder,
-    },
-    {
+    }),
+    lagAlertregel<BlokkerendeAlertKontekst>({
         id: 'blokkerendeAlerts.annenPartLåst',
         beskrivelse:
             'Brukeren har valgt dager som inkluderer en periode som bare annen ' +
             'part kan endre. Skjemaet blokkeres fordi brukeren ikke har lov til ' +
             'å endre disse periodene.',
         visningssteder: SKJEMA_VISNINGSSTEDER,
-        meldingIder: [i18n('LeggTilEllerEndrePeriodeForm.Forelder.AnnenPartLåst')],
-        getMeldingId: () => i18n('LeggTilEllerEndrePeriodeForm.Forelder.AnnenPartLåst'),
+        meldinger: [
+            <FormattedMessage
+                key="LeggTilEllerEndrePeriodeForm.Forelder.AnnenPartLåst"
+                id="LeggTilEllerEndrePeriodeForm.Forelder.AnnenPartLåst"
+            />,
+        ],
         variant: 'info',
         type: 'blokkerende',
         skalVises: (ctx) => {
             const erFarMedmorLåst = ctx.erPeriodeneTilAnnenPartLåst && ctx.søker === 'MOR';
             const erMorLåst = ctx.erPeriodeneTilAnnenPartLåst && ctx.søker === 'FAR_MEDMOR';
-            return (
-                (erMorLåst && !ctx.erFarMedmorGyldigForelder) ||
-                (erFarMedmorLåst && !ctx.erMorGyldigForelder)
-            );
+            return (erMorLåst && !ctx.erFarMedmorGyldigForelder) || (erFarMedmorLåst && !ctx.erMorGyldigForelder);
         },
-    },
+    }),
 ];
 
 /**
@@ -151,15 +176,19 @@ type KontekstuellAlertKontekst = {
     familiehendelsedato: string;
 };
 
-const KONTEKSTUELL_GRADERING_ALERT: Alertregel<KontekstuellAlertKontekst> = {
+const KONTEKSTUELL_GRADERING_ALERT = lagAlertregel<KontekstuellAlertKontekst>({
     id: 'kontekstuelleAlerts.graderingDagerReduseres',
     beskrivelse:
         'Brukeren har valgt gradering i tidsrommet 3 uker før termin til 6 uker ' +
         'etter fødsel. Foreldrepengene blir redusert den tiden brukeren jobber, ' +
         'uten at dagene blir spart til senere.',
     visningssteder: SKJEMA_VISNINGSSTEDER,
-    meldingIder: [i18n('LeggTilEllerEndrePeriodeFellesForm.DagerReduseres')],
-    getMeldingId: () => i18n('LeggTilEllerEndrePeriodeFellesForm.DagerReduseres'),
+    meldinger: [
+        <FormattedMessage
+            key="LeggTilEllerEndrePeriodeFellesForm.DagerReduseres"
+            id="LeggTilEllerEndrePeriodeFellesForm.DagerReduseres"
+        />,
+    ],
     variant: 'info',
     type: 'kontekstuell',
     skalVises: (ctx) =>
@@ -167,27 +196,25 @@ const KONTEKSTUELL_GRADERING_ALERT: Alertregel<KontekstuellAlertKontekst> = {
             ctx.valgtePerioder,
             ctx.familiehendelsedato,
         ),
-};
+});
 
 const KONTEKSTUELLE_ALERTS: ReadonlyArray<Alertregel<KontekstuellAlertKontekst>> = [KONTEKSTUELL_GRADERING_ALERT];
 
-export { KONTEKSTUELL_GRADERING_ALERT };
 type SkjemaKontekstuelleAlerts = {
-    graderingDagerReduseres?: { meldingId: string; variant: 'info' | 'warning' };
+    graderingDagerReduseres?: { melding: ReactNode; variant: 'info' | 'warning' };
 };
 
 /**
  * Finn den første blokkerende alerten som slår inn, eller undefined.
- * Bruker regelens `getMeldingId` for å finne riktig meldingsnøkkel.
+ * Bruker regelens `getMelding` for å finne riktig melding-node.
  */
 const finnFørsteBlokkerendeAlert = (
     ctx: BlokkerendeAlertKontekst,
-): { regel: Alertregel<BlokkerendeAlertKontekst>; meldingId: string } | undefined => {
+): { regel: Alertregel<BlokkerendeAlertKontekst>; melding: ReactNode } | undefined => {
     for (const regel of BLOKKERENDE_ALERTS) {
         if (regel.skalVises(ctx)) {
-            return { regel, meldingId: regel.getMeldingId(ctx) };
+            return { regel, melding: regel.getMelding(ctx) };
         }
     }
     return undefined;
 };
-export { BLOKKERENDE_ALERTS, KONTEKSTUELLE_ALERTS };

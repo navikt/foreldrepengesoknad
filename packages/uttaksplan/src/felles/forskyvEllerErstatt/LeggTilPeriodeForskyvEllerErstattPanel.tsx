@@ -37,10 +37,7 @@ export const LeggTilPeriodeForskyvEllerErstattPanel = ({
                 description={<FormattedMessage id="RedigeringPanel.HvaSkalSkjeBeskrivelse" />}
                 onChange={(value: boolean) => setSkalForskyvePeriode(value)}
             >
-                <Radio
-                    value={true}
-                    disabled={harDisablingAlert}
-                >
+                <Radio value={true} disabled={harDisablingAlert}>
                     <VStack gap="space-4">
                         <BodyShort>
                             <FormattedMessage id="RedigeringPanel.FlyttPlanen" />
@@ -66,19 +63,13 @@ export const LeggTilPeriodeForskyvEllerErstattPanel = ({
                 </Radio>
             </RadioGroup>
             {senerePerioderReadonly && (
-                <Alert variant={senerePerioderReadonly.variant}>
-                    <FormattedMessage id={senerePerioderReadonly.meldingId} />
-                </Alert>
+                <Alert variant={senerePerioderReadonly.variant}>{senerePerioderReadonly.melding}</Alert>
             )}
             {valgteDagerFørSeksUker && (
-                <Alert variant={valgteDagerFørSeksUker.variant}>
-                    <FormattedMessage id={valgteDagerFørSeksUker.meldingId} />
-                </Alert>
+                <Alert variant={valgteDagerFørSeksUker.variant}>{valgteDagerFørSeksUker.melding}</Alert>
             )}
             {valgteDagerFørFamhend && (
-                <Alert variant={valgteDagerFørFamhend.variant}>
-                    <FormattedMessage id={valgteDagerFørFamhend.meldingId} />
-                </Alert>
+                <Alert variant={valgteDagerFørFamhend.variant}>{valgteDagerFørFamhend.melding}</Alert>
             )}
             <HStack justify="space-between">
                 <Button

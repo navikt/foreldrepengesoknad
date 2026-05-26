@@ -3,7 +3,7 @@ import { IntlShape } from 'react-intl';
 import { BrukerRolleSak_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-types';
 
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
-import { Feltregel, Periode, i18n } from '../types';
+import { Feltregel, Periode } from '../types';
 
 /**
  * Lager validator-funksjoner for «Hva vil du gjøre»-feltet. Returnerer en array som kan
@@ -11,9 +11,14 @@ import { Feltregel, Periode, i18n } from '../types';
  * feilmelding.
  */
 export const lagHvaVilDuGjøreValidatorer = (intl: IntlShape, kontekst: StaticKontekst) =>
-    HVA_VIL_DU_GJØRE_REGLER.map((regel) => lagFeltvalidator(intl, regel, kontekst));
+    lagHvaVilDuGjøreRegler(intl).map((regel) => lagFeltvalidator(regel, kontekst));
 
-type HvaVilDuGjøre = 'LEGG_TIL_FERIE' | 'LEGG_TIL_UTSETTELSE' | 'LEGG_TIL_PAUSE' | 'LEGG_TIL_OPPHOLD' | 'LEGG_TIL_PERIODE';
+type HvaVilDuGjøre =
+    | 'LEGG_TIL_FERIE'
+    | 'LEGG_TIL_UTSETTELSE'
+    | 'LEGG_TIL_PAUSE'
+    | 'LEGG_TIL_OPPHOLD'
+    | 'LEGG_TIL_PERIODE';
 
 type HvaVilDuGjøreInput = {
     nyHvaVilDuGjøre: HvaVilDuGjøre | undefined;
@@ -28,7 +33,7 @@ type HvaVilDuGjøreInput = {
 const valgtPeriode = ({ fomValue, tomValue }: HvaVilDuGjøreInput): Periode[] =>
     fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [];
 
-export const HVA_VIL_DU_GJØRE_REGLER: ReadonlyArray<Feltregel<HvaVilDuGjøreInput>> = [
+export const lagHvaVilDuGjøreRegler = (intl: IntlShape): ReadonlyArray<Feltregel<HvaVilDuGjøreInput>> => [
     {
         id: 'hvaVilDuGjøre.utsettelseMåLiggeInnenforSeksUkerEtterFødsel',
         beskrivelse:
@@ -40,7 +45,7 @@ export const HVA_VIL_DU_GJØRE_REGLER: ReadonlyArray<Feltregel<HvaVilDuGjøreInp
                 valgtPeriode(input),
                 input.familiehendelsedato,
             ),
-        feilmeldingId: i18n('uttaksplan.valgPanel.utsettelse'),
+        feilmelding: intl.formatMessage({ id: 'uttaksplan.valgPanel.utsettelse' }),
     },
     {
         id: 'hvaVilDuGjøre.pauseKanIkkeLeggesIFørsteSeksUkerEtterFødsel',
@@ -53,7 +58,7 @@ export const HVA_VIL_DU_GJØRE_REGLER: ReadonlyArray<Feltregel<HvaVilDuGjøreInp
                 input.perioder,
                 input.familiehendelsedato,
             ),
-        feilmeldingId: i18n('uttaksplan.valgPanel.pause'),
+        feilmelding: intl.formatMessage({ id: 'uttaksplan.valgPanel.pause' }),
     },
     {
         id: 'hvaVilDuGjøre.ferieEllerOppholdMåLiggeFørSeksUkerEtterFødselForFarMedmorBareSøkerRett',
@@ -71,17 +76,17 @@ export const HVA_VIL_DU_GJØRE_REGLER: ReadonlyArray<Feltregel<HvaVilDuGjøreInp
                 valgtPeriode(input),
                 input.familiehendelsedato,
             ),
-        feilmeldingId: i18n('uttaksplan.valgPanel.ferie'),
+        feilmelding: intl.formatMessage({ id: 'uttaksplan.valgPanel.ferie' }),
     },
 ];
 
 type StaticKontekst = Omit<HvaVilDuGjøreInput, 'nyHvaVilDuGjøre'>;
 
 const lagFeltvalidator =
-    (intl: IntlShape, regel: Feltregel<HvaVilDuGjøreInput>, kontekst: StaticKontekst) =>
+    (regel: Feltregel<HvaVilDuGjøreInput>, kontekst: StaticKontekst) =>
     (nyHvaVilDuGjøre?: HvaVilDuGjøre): string | null => {
         if (regel.erBrutt({ ...kontekst, nyHvaVilDuGjøre })) {
-            return intl.formatMessage({ id: regel.feilmeldingId });
+            return regel.feilmelding;
         }
         return null;
     };

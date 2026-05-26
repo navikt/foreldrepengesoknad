@@ -1,9 +1,3 @@
-/**
- * Identitetshjelper som markerer en streng som en intl-id. Brukt for at
- * intl-testene skal oppdage at id-en faktisk er i bruk i koden.
- */
-export const i18n = (id: string): string => id;
-
 export type Periode = { fom: string; tom: string };
 
 /**
@@ -25,7 +19,7 @@ export type Periode = { fom: string; tom: string };
 type FeltregelDoc = {
     id: string;
     beskrivelse: string;
-    feilmeldingId: string;
+    feilmelding: string;
 };
 
 /**
@@ -33,7 +27,7 @@ type FeltregelDoc = {
  * - `beskrivelse` er klartekst for designer/PO/saksbehandler.
  * - `erBrutt` får en samlet input (feltverdi + avhengige verdier) og returnerer
  *   `true` om regelen er brutt.
- * - `feilmeldingId` er intl-nøkkelen som blir vist til brukeren.
+ * - `feilmelding` er ferdig formatert tekst som blir vist til brukeren.
  */
 export type Feltregel<TInput> = FeltregelDoc & {
     erBrutt: (input: TInput) => boolean;

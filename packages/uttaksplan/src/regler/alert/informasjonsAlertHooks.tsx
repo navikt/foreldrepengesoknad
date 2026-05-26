@@ -219,18 +219,17 @@ export const useForskyvEllerErstattAlerts = (input: {
 type AktivAlert = AktivAlertMetadata;
 
 const tilAktiv = <T,>(regel: Alertregel<T>, ctx: T): AktivAlert | undefined =>
-    regel.skalVises(ctx) ? { meldingId: regel.getMeldingId(ctx), variant: regel.variant } : undefined;
+    regel.skalVises(ctx) ? { melding: regel.getMelding(ctx), variant: regel.variant } : undefined;
 
 /**
  * Bygg en AktivAlert kun fra metadataen på regelen — uten å evaluere
- * `skalVises` eller `getMeldingId`. Brukes når kallstedet allerede har
+ * `skalVises` eller `getMelding`. Brukes når kallstedet allerede har
  * regnet ut betingelsen selv (typisk fordi konteksten ikke matcher
- * regelens runtime-kontrakt). Tar kun imot regler som har `fastMeldingId`
- * satt, så TypeScript hindrer feilaktig bruk på regler med flere
- * meldingsvarianter.
+ * regelens runtime-kontrakt). Bruker `meldinger[0]` direkte, så den
+ * skal kun brukes på regler med én meldingsvariant.
  */
-const aktivFraMetadata = (regel: AlertregelDoc & { fastMeldingId: string }): AktivAlert => ({
-    meldingId: regel.fastMeldingId,
+const aktivFraMetadata = (regel: AlertregelDoc): AktivAlert => ({
+    melding: regel.meldinger[0],
     variant: regel.variant,
 });
 type ListePanelInfoAlerts = {

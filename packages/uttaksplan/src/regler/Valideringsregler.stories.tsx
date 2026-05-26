@@ -2,10 +2,10 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { useIntl } from 'react-intl';
 
 import { Kolonne, MeldingSitat, RegelIdBadge, RegelkatalogSide } from './RegelkatalogSide';
-import { ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_OMRÅDE } from './validering/arbeidOgUttakDeFørsteSeksUkene';
-import { FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_OMRÅDE } from './validering/farMedmorMaksToUkerRundtFødsel';
-import { FAR_MEDMOR_RUNDT_FØDSEL_OMRÅDE } from './validering/farMedmorRundtFødsel';
-import { SAMTIDIG_UTTAK_OMRÅDE } from './validering/samtidigUttak';
+import { lagArbeidOgUttakFørsteSeksUkerOmråde } from './validering/arbeidOgUttakDeFørsteSeksUkene';
+import { lagFarMedmorMaksToUkerRundtFødselOmråde } from './validering/farMedmorMaksToUkerRundtFødsel';
+import { lagFarMedmorRundtFødselOmråde } from './validering/farMedmorRundtFødsel';
+import { lagSamtidigUttakOmråde } from './validering/samtidigUttak';
 
 /**
  * Selvdokumenterende Storybook-side: viser valideringsreglene som kjøres
@@ -28,10 +28,15 @@ const Valideringsregler = () => {
         {
             overskrift: 'Feilmelding til brukeren',
             bredde: '32%',
-            render: (r) => (
-                <MeldingSitat tone="warning" tekst={intl.formatMessage({ id: r.feilmeldingId })} />
-            ),
+            render: (r) => <MeldingSitat tone="warning" tekst={r.feilmelding} />,
         },
+    ];
+
+    const alleValideringsregler: readonly ValideringskatalogOmråde[] = [
+        lagArbeidOgUttakFørsteSeksUkerOmråde(intl),
+        lagSamtidigUttakOmråde(intl),
+        lagFarMedmorRundtFødselOmråde(intl),
+        lagFarMedmorMaksToUkerRundtFødselOmråde(intl),
     ];
 
     return (
@@ -41,7 +46,7 @@ const Valideringsregler = () => {
             farge="validering"
             kildesti="packages/uttaksplan/src/regler/validering/"
             intro={INTRO}
-            områder={ALLE_VALIDERINGSREGLER}
+            områder={alleValideringsregler}
             getRegelId={(r) => r.id}
             kolonner={kolonner}
         />
@@ -62,21 +67,14 @@ export const AlleRegler: Story = {};
 
 /**
  * Katalog-projeksjon: storybook-siden bryr seg kun om id, beskrivelse og
- * feilmeldingId — ikke om kontekst-typen som varierer per regelområde.
+ * feilmelding — ikke om kontekst-typen som varierer per regelområde.
  */
 type ValideringskatalogOmråde = {
     id: string;
     område: string;
     beskrivelse: string;
-    regler: ReadonlyArray<{ id: string; beskrivelse: string; feilmeldingId: string }>;
+    regler: ReadonlyArray<{ id: string; beskrivelse: string; feilmelding: string }>;
 };
-
-const ALLE_VALIDERINGSREGLER: readonly ValideringskatalogOmråde[] = [
-    ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_OMRÅDE,
-    SAMTIDIG_UTTAK_OMRÅDE,
-    FAR_MEDMOR_RUNDT_FØDSEL_OMRÅDE,
-    FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_OMRÅDE,
-];
 
 type Valideringsregel = ValideringskatalogOmråde['regler'][number];
 

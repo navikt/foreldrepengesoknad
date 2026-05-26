@@ -184,9 +184,7 @@ export const EksisterendeValgtePerioder = ({ perioder, setErForskyvEllerErstattP
                                             size="small"
                                             className="mt-3 mb-1 p-2"
                                         >
-                                            <BodyShort>
-                                                <FormattedMessage id={morsAktivitetIkkeValgtAlert.meldingId} />
-                                            </BodyShort>
+                                            <BodyShort>{morsAktivitetIkkeValgtAlert.melding}</BodyShort>
                                         </Alert>
                                     )}
                                 </VStack>

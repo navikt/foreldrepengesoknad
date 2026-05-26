@@ -1,9 +1,21 @@
+import { IntlShape } from 'react-intl';
+
 import { getFloatFromString } from '@navikt/fp-utils';
 
 import { LeggTilEllerEndrePeriodeFormFormValues } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
-import { Valideringsregel, Valideringsområde, ValideringInput, i18n } from './types';
+import { ValideringInput, Valideringsområde, Valideringsregel } from './types';
 import { erUtfyltForSamtidigUttak } from './utils';
+
+export const lagSamtidigUttakOmråde = (intl: IntlShape): Valideringsområde<SamtidigUttakKontekst> => ({
+    id: 'samtidigUttak',
+    område: 'Samtidig uttak utanfor verneperioden rundt fødsel',
+    beskrivelse:
+        'Regler for samtidig uttak når begge foreldre tar ut foreldrepenger samtidig utenfor verneperioden ' +
+        'rundt fødsel (dvs. ikke fra 2 uker før til 6 uker etter fødsel).',
+    byggKontekst: byggSamtidigUttakKontekst,
+    regler: lagRegler(intl),
+});
 
 type SamtidigUttakKontekst = {
     kombinertUttaksprosent: number;
@@ -18,21 +30,24 @@ type SamtidigUttakKontekst = {
     morsFellesperiodeErStørreEnn50: boolean;
 };
 
-const REGLER: ReadonlyArray<Valideringsregel<SamtidigUttakKontekst>> = [
+const lagRegler = (intl: IntlShape): ReadonlyArray<Valideringsregel<SamtidigUttakKontekst>> => [
     {
         id: 'samtidigUttak.kanIkkeHaMerEnn150Prosent',
         beskrivelse:
             'Mor og far/medmor kan ikke ta ut mer enn 150 % foreldrepenger til sammen. ' +
             'Unntak: når de har valgt flerbarnsdager.',
         erBrutt: (k) => k.kombinertUttaksprosent > 150 && !k.ønskerFlerbarnsdager,
-        feilmeldingId: i18n('LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.KanIkkeHaMerEnn150Prosent'),
+        feilmelding: intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.KanIkkeHaMerEnn150Prosent',
+        }),
     },
     {
         id: 'samtidigUttak.kanIkkeHaMindreEnn100ProsentFlerbarnsdager',
-        beskrivelse:
-            'Når foreldrene har valgt flerbarnsdager, må summen av samtidige uttak være minst 100 %.',
+        beskrivelse: 'Når foreldrene har valgt flerbarnsdager, må summen av samtidige uttak være minst 100 %.',
         erBrutt: (k) => k.ønskerFlerbarnsdager && k.kombinertUttaksprosent < 100,
-        feilmeldingId: i18n('LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.KanIkkeHaMindreEnn100ProsentFlerbarnsdager'),
+        feilmelding: intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.KanIkkeHaMindreEnn100ProsentFlerbarnsdager',
+        }),
     },
     {
         id: 'samtidigUttak.mindreEnn100Prosent',
@@ -41,7 +56,9 @@ const REGLER: ReadonlyArray<Valideringsregel<SamtidigUttakKontekst>> = [
             'og foreldrepenger slik at summen blir nøyaktig 100 % per forelder.',
         erBrutt: (k) =>
             k.kombinertUttaksprosent < 100 && (k.totalProsentMor !== 100 || k.totalProsentFarMedmor !== 100),
-        feilmeldingId: i18n('LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.MindreEnn100Prosent'),
+        feilmelding: intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.MindreEnn100Prosent',
+        }),
     },
     {
         id: 'samtidigUttak.nøyaktig100ProsentMorsAktivitet',
@@ -53,7 +70,9 @@ const REGLER: ReadonlyArray<Valideringsregel<SamtidigUttakKontekst>> = [
             k.kontoTypeFarMedmor === 'FELLESPERIODE' &&
             k.totalProsentMor !== 100 &&
             !k.morsAktivitet,
-        feilmeldingId: i18n('LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.Nøyaktig100ProsentMorsAktivitet'),
+        feilmelding: intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.Nøyaktig100ProsentMorsAktivitet',
+        }),
     },
     {
         id: 'samtidigUttak.maks50ProsentFelles',
@@ -65,7 +84,9 @@ const REGLER: ReadonlyArray<Valideringsregel<SamtidigUttakKontekst>> = [
             k.kombinertUttaksprosent <= 150 &&
             (k.farMedmorsFellesperiodeErStørreEnn50 || k.morsFellesperiodeErStørreEnn50) &&
             !k.ønskerFlerbarnsdager,
-        feilmeldingId: i18n('LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.Maks50ProsentFelles'),
+        feilmelding: intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.Maks50ProsentFelles',
+        }),
     },
     {
         id: 'samtidigUttak.toKvoterMerEnn100Prosent',
@@ -77,7 +98,9 @@ const REGLER: ReadonlyArray<Valideringsregel<SamtidigUttakKontekst>> = [
             k.kombinertUttaksprosent <= 150 &&
             k.kontoTypeFarMedmor === 'FEDREKVOTE' &&
             k.kontoTypeMor === 'MØDREKVOTE',
-        feilmeldingId: i18n('LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.ToKvoterMerEnn100Prosent'),
+        feilmelding: intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.ToKvoterMerEnn100Prosent',
+        }),
     },
     {
         id: 'samtidigUttak.måHa100Prosent',
@@ -88,53 +111,46 @@ const REGLER: ReadonlyArray<Valideringsregel<SamtidigUttakKontekst>> = [
             k.kombinertUttaksprosent > 100 &&
             k.kombinertUttaksprosent <= 150 &&
             (k.totalProsentMor < 100 || k.totalProsentFarMedmor < 100),
-        feilmeldingId: i18n('LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.MåHa100Prosent'),
+        feilmelding: intl.formatMessage({
+            id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.MåHa100Prosent',
+        }),
     },
 ];
 
-export const SAMTIDIG_UTTAK_OMRÅDE: Valideringsområde<SamtidigUttakKontekst> = {
-    id: 'samtidigUttak',
-    område: 'Samtidig uttak utanfor verneperioden rundt fødsel',
-    beskrivelse:
-        'Regler for samtidig uttak når begge foreldre tar ut foreldrepenger samtidig utenfor verneperioden ' +
-        'rundt fødsel (dvs. ikke fra 2 uker før til 6 uker etter fødsel).',
-    byggKontekst: (input: ValideringInput): SamtidigUttakKontekst | null => {
-        const { formValues, perioder, familiehendelsedato, termindato } = input;
+const byggSamtidigUttakKontekst = (input: ValideringInput): SamtidigUttakKontekst | null => {
+    const { formValues, perioder, familiehendelsedato, termindato } = input;
 
-        if (!erUtfyltForSamtidigUttak(formValues)) {
-            return null;
-        }
+    if (!erUtfyltForSamtidigUttak(formValues)) {
+        return null;
+    }
 
-        const inneholderPerioderRundtFødsel =
-            UttaksperiodeValidatorer.erNoenPerioderIMellomToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato(
-                perioder,
-                familiehendelsedato,
-                termindato,
-            );
+    const inneholderPerioderRundtFødsel =
+        UttaksperiodeValidatorer.erNoenPerioderIMellomToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato(
+            perioder,
+            familiehendelsedato,
+            termindato,
+        );
 
-        if (inneholderPerioderRundtFødsel) {
-            return null;
-        }
+    if (inneholderPerioderRundtFødsel) {
+        return null;
+    }
 
-        const samtidigUttaksprosentMor = getFloatFromString(formValues.samtidigUttaksprosentMor!.trim())!;
-        const samtidigUttaksprosentFarMedmor = getFloatFromString(formValues.samtidigUttaksprosentFarMedmor!.trim())!;
-        const stillingsprosentMor = getFloatFromString(formValues.stillingsprosentMor) ?? 0;
-        const stillingsprosentFarMedmor = getFloatFromString(formValues.stillingsprosentFarMedmor) ?? 0;
+    const samtidigUttaksprosentMor = getFloatFromString(formValues.samtidigUttaksprosentMor!.trim())!;
+    const samtidigUttaksprosentFarMedmor = getFloatFromString(formValues.samtidigUttaksprosentFarMedmor!.trim())!;
+    const stillingsprosentMor = getFloatFromString(formValues.stillingsprosentMor) ?? 0;
+    const stillingsprosentFarMedmor = getFloatFromString(formValues.stillingsprosentFarMedmor) ?? 0;
 
-        return {
-            kombinertUttaksprosent: samtidigUttaksprosentMor + samtidigUttaksprosentFarMedmor,
-            samtidigUttaksprosentMor,
-            totalProsentMor: samtidigUttaksprosentMor + stillingsprosentMor,
-            totalProsentFarMedmor: samtidigUttaksprosentFarMedmor + stillingsprosentFarMedmor,
-            kontoTypeMor: formValues.kontoTypeMor!,
-            kontoTypeFarMedmor: formValues.kontoTypeFarMedmor!,
-            morsAktivitet: formValues.morsAktivitet,
-            ønskerFlerbarnsdager: formValues.ønskerFlerbarnsdager === true,
-            farMedmorsFellesperiodeErStørreEnn50:
-                formValues.kontoTypeFarMedmor === 'FELLESPERIODE' && samtidigUttaksprosentFarMedmor > 50,
-            morsFellesperiodeErStørreEnn50:
-                formValues.kontoTypeMor === 'FELLESPERIODE' && samtidigUttaksprosentMor > 50,
-        };
-    },
-    regler: REGLER,
+    return {
+        kombinertUttaksprosent: samtidigUttaksprosentMor + samtidigUttaksprosentFarMedmor,
+        samtidigUttaksprosentMor,
+        totalProsentMor: samtidigUttaksprosentMor + stillingsprosentMor,
+        totalProsentFarMedmor: samtidigUttaksprosentFarMedmor + stillingsprosentFarMedmor,
+        kontoTypeMor: formValues.kontoTypeMor!,
+        kontoTypeFarMedmor: formValues.kontoTypeFarMedmor!,
+        morsAktivitet: formValues.morsAktivitet,
+        ønskerFlerbarnsdager: formValues.ønskerFlerbarnsdager === true,
+        farMedmorsFellesperiodeErStørreEnn50:
+            formValues.kontoTypeFarMedmor === 'FELLESPERIODE' && samtidigUttaksprosentFarMedmor > 50,
+        morsFellesperiodeErStørreEnn50: formValues.kontoTypeMor === 'FELLESPERIODE' && samtidigUttaksprosentMor > 50,
+    };
 };

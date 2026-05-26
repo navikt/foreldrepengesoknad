@@ -20,7 +20,6 @@ import {
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
-import { useGyldigeKvotetyper } from '../../regler/kvotetype/kvoteRegler';
 import { LeggTilPauseForm } from '../../felles/utsettelse/LeggTilPauseForm';
 import {
     LeggTilUtsettelseForm,
@@ -29,6 +28,7 @@ import {
 import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
 import { useListePanelInfoAlerts } from '../../regler/alert/informasjonsAlertHooks';
 import { lagHvaVilDuGjøreValidatorer } from '../../regler/felt/hvaVilDuGjøre';
+import { useGyldigeKvotetyper } from '../../regler/kvotetype/kvoteRegler';
 import {
     Uttaksplanperiode,
     erEøsUttakPeriode,
@@ -308,13 +308,13 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             )}
             {listePanelAlerts.kanMisteDagerVedFerie && (
                 <Alert variant={listePanelAlerts.kanMisteDagerVedFerie.variant} size="small">
-                    <FormattedMessage id={listePanelAlerts.kanMisteDagerVedFerie.meldingId} />
+                    {listePanelAlerts.kanMisteDagerVedFerie.melding}
                 </Alert>
             )}
 
             {listePanelAlerts.morsAktivitetIkkeOppgitt && (
                 <Alert variant={listePanelAlerts.morsAktivitetIkkeOppgitt.variant} size="small">
-                    <FormattedMessage id={listePanelAlerts.morsAktivitetIkkeOppgitt.meldingId} />
+                    {listePanelAlerts.morsAktivitetIkkeOppgitt.melding}
                 </Alert>
             )}
 

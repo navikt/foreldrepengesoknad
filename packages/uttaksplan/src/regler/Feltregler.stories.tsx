@@ -2,10 +2,10 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { useIntl } from 'react-intl';
 
 import { Kolonne, MeldingSitat, RegelIdBadge, RegelkatalogSide } from './RegelkatalogSide';
+import { lagHvaVilDuGjøreRegler } from './felt/hvaVilDuGjøre';
+import { lagSamtidigUttaksprosentRegler } from './felt/samtidigUttaksprosent';
+import { lagStillingsprosentRegler } from './felt/stillingsprosent';
 import { Feltregelområde } from './types';
-import { HVA_VIL_DU_GJØRE_REGLER } from './felt/hvaVilDuGjøre';
-import { SAMTIDIG_UTTAKSPROSENT_REGLER } from './felt/samtidigUttaksprosent';
-import { STILLINGSPROSENT_REGLER } from './felt/stillingsprosent';
 
 /**
  * Selvdokumenterende Storybook-side: viser feltreglene som kjøres direkte
@@ -30,7 +30,35 @@ const Feltregler = () => {
         {
             overskrift: 'Feilmelding til brukeren',
             bredde: '32%',
-            render: (r) => <MeldingSitat tekst={intl.formatMessage({ id: r.feilmeldingId })} />,
+            render: (r) => <MeldingSitat tekst={r.feilmelding} />,
+        },
+    ];
+
+    const alleFeltregler: readonly Feltregelområde[] = [
+        {
+            id: 'stillingsprosent',
+            område: 'Stillingsprosent',
+            beskrivelse:
+                'Hvor stor andel brukeren skal jobbe når arbeid kombineres med uttak. Reglene sikrer at verdien er ' +
+                'et gyldig tall mellom 0 og 100 %, og at summen med samtidig uttak ikke overstiger 100 %.',
+            regler: lagStillingsprosentRegler(intl),
+        },
+        {
+            id: 'samtidigUttaksprosent',
+            område: 'Samtidig uttaksprosent',
+            beskrivelse:
+                'Hvor stor andel av kvoten brukeren tar ut samtidig med den andre forelderen. Reglene sikrer at ' +
+                'verdien er et gyldig tall mellom 0 og 100 %, og at summen med stillingsprosent ikke overstiger 100 %.',
+            regler: lagSamtidigUttaksprosentRegler(intl),
+        },
+        {
+            id: 'hvaVilDuGjøre',
+            område: 'Hva vil du gjøre?',
+            beskrivelse:
+                'Når brukeren velger hva som skal legges til i uttaksplanen (ferie, utsettelse, pause, opphold eller ' +
+                'periode), sjekker vi at valget er gyldig i forhold til når perioden ligger og hvilke rettigheter ' +
+                'brukeren har.',
+            regler: lagHvaVilDuGjøreRegler(intl),
         },
     ];
 
@@ -41,7 +69,7 @@ const Feltregler = () => {
             farge="felt"
             kildesti="packages/uttaksplan/src/regler/felt/"
             intro={INTRO}
-            områder={ALLE_FELTREGLER}
+            områder={alleFeltregler}
             getRegelId={(r) => r.id}
             kolonner={kolonner}
         />
@@ -59,40 +87,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const AlleFeltregler: Story = {};
-
-const STILLINGSPROSENT_OMRÅDE: Feltregelområde = {
-    id: 'stillingsprosent',
-    område: 'Stillingsprosent',
-    beskrivelse:
-        'Hvor stor andel brukeren skal jobbe når arbeid kombineres med uttak. Reglene sikrer at verdien er ' +
-        'et gyldig tall mellom 0 og 100 %, og at summen med samtidig uttak ikke overstiger 100 %.',
-    regler: STILLINGSPROSENT_REGLER,
-};
-
-const SAMTIDIG_UTTAKSPROSENT_OMRÅDE: Feltregelområde = {
-    id: 'samtidigUttaksprosent',
-    område: 'Samtidig uttaksprosent',
-    beskrivelse:
-        'Hvor stor andel av kvoten brukeren tar ut samtidig med den andre forelderen. Reglene sikrer at verdien ' +
-        'er et gyldig tall mellom 0 og 100 %, og at summen med stillingsprosent ikke overstiger 100 %.',
-    regler: SAMTIDIG_UTTAKSPROSENT_REGLER,
-};
-
-const HVA_VIL_DU_GJØRE_OMRÅDE: Feltregelområde = {
-    id: 'hvaVilDuGjøre',
-    område: 'Hva vil du gjøre?',
-    beskrivelse:
-        'Når brukeren velger hva som skal legges til i uttaksplanen (ferie, utsettelse, pause, opphold eller ' +
-        'periode), sjekker vi at valget er gyldig i forhold til når perioden ligger og hvilke rettigheter ' +
-        'brukeren har.',
-    regler: HVA_VIL_DU_GJØRE_REGLER,
-};
-
-const ALLE_FELTREGLER: readonly Feltregelområde[] = [
-    STILLINGSPROSENT_OMRÅDE,
-    SAMTIDIG_UTTAKSPROSENT_OMRÅDE,
-    HVA_VIL_DU_GJØRE_OMRÅDE,
-];
 
 const INTRO =
     'Når brukeren fyller ut skjemaet for å legge til eller endre en periode, kjører hvert felt sine egne regler. ' +
