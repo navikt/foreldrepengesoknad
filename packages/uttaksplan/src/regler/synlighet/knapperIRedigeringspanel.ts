@@ -1,5 +1,6 @@
 import type { BrukerRolleSak_fpoversikt, Familiesituasjon, RettighetType_fpoversikt } from '@navikt/fp-types';
 
+import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import {
     Uttaksplanperiode,
     UttaksplanperiodeMedKunTapteDager,
@@ -27,8 +28,8 @@ export type KnapperIRedigeringspanelKontekst = {
 const harBareFarRett = (k: KnapperIRedigeringspanelKontekst) =>
     k.søker === 'FAR_MEDMOR' && k.rettighetType === 'BARE_SØKER_RETT';
 
-export const VIS_UTSETTELSESKNAPP: Synlighetsregel<KnapperIRedigeringspanelKontekst> = {
-    id: 'knapperIRedigeringspanel.visUtsettelse',
+export const SKAL_VISE_UTSETTELSESKNAPP: Synlighetsregel<KnapperIRedigeringspanelKontekst> = {
+    id: 'knapperIRedigeringspanel.skalViseUtsettelsesknapp',
     beskrivelse:
         '«Legg til utsettelse»-knappen vises kun for mor (ikke ved adopsjon), og bare når minst én av de ' +
         'sammenslåtte valgte periodene ligger innenfor intervallet fra familiehendelsesdato til og med seks ' +
@@ -42,8 +43,8 @@ export const VIS_UTSETTELSESKNAPP: Synlighetsregel<KnapperIRedigeringspanelKonte
         ),
 };
 
-export const VIS_PAUSEKNAPP: Synlighetsregel<KnapperIRedigeringspanelKontekst> = {
-    id: 'knapperIRedigeringspanel.visPause',
+export const SKAL_VISE_PAUSEKNAPP: Synlighetsregel<KnapperIRedigeringspanelKontekst> = {
+    id: 'knapperIRedigeringspanel.skalVisePauseknapp',
     beskrivelse:
         '«Legg til pause»-knappen vises kun når far/medmor er aleneom rettigheter (BARE_SØKER_RETT), og når ' +
         'ingen av de valgte periodene ligger før seks uker etter familiehendelsesdato — pause er ikke gyldig ' +
@@ -56,15 +57,15 @@ export const VIS_PAUSEKNAPP: Synlighetsregel<KnapperIRedigeringspanelKontekst> =
         ),
 };
 
-export const VIS_FERIEKNAPP: Synlighetsregel<KnapperIRedigeringspanelKontekst> = {
-    id: 'knapperIRedigeringspanel.visFerie',
+export const SKAL_VISE_FERIEKNAPP: Synlighetsregel<KnapperIRedigeringspanelKontekst> = {
+    id: 'knapperIRedigeringspanel.skalViseFerieknapp',
     beskrivelse:
         '«Legg til ferie»-knappen vises som hovedalternativ når verken utsettelse eller pause er tilgjengelig. ' +
         'For far/medmor med BARE_SØKER_RETT skjules den likevel hvis minst én valgt periode ligger på eller ' +
         'etter seks uker etter familiehendelsesdato — der er pause det riktige valget i stedet for ferie.',
     skalVises: (k) =>
-        !VIS_UTSETTELSESKNAPP.skalVises(k) &&
-        !VIS_PAUSEKNAPP.skalVises(k) &&
+        !SKAL_VISE_UTSETTELSESKNAPP.skalVises(k) &&
+        !SKAL_VISE_PAUSEKNAPP.skalVises(k) &&
         !(
             harBareFarRett(k) &&
             UttaksperiodeValidatorer.erNoenPerioderLikEllerEtter6UkerEtterFamiliehendelsedato(
@@ -74,8 +75,8 @@ export const VIS_FERIEKNAPP: Synlighetsregel<KnapperIRedigeringspanelKontekst> =
         ),
 };
 
-export const BRUK_LEGG_TIL_TEKST_PÅ_FERIEKNAPP: Synlighetsregel<KnapperIRedigeringspanelKontekst> = {
-    id: 'knapperIRedigeringspanel.brukLeggTilTekstPåFerieknapp',
+export const SKAL_VISE_LEGG_TIL_KNAPPETEKST: Synlighetsregel<KnapperIRedigeringspanelKontekst> = {
+    id: 'knapperIRedigeringspanel.skalViseLeggTilKnappetekst',
     beskrivelse:
         'Ferie-knappen sier «Legg til ferie» når brukeren ikke har valgt eksisterende perioder — da er ' +
         'handlingen reint additiv. Hvis brukeren har valgt eksisterende perioder, sier knappen «Endre til ' +
@@ -89,29 +90,50 @@ export const BRUK_LEGG_TIL_TEKST_PÅ_FERIEKNAPP: Synlighetsregel<KnapperIRediger
 };
 
 export const KNAPPER_I_REDIGERINGSPANEL_REGLER = [
-    VIS_UTSETTELSESKNAPP,
-    VIS_PAUSEKNAPP,
-    VIS_FERIEKNAPP,
-    BRUK_LEGG_TIL_TEKST_PÅ_FERIEKNAPP,
+    SKAL_VISE_UTSETTELSESKNAPP,
+    SKAL_VISE_PAUSEKNAPP,
+    SKAL_VISE_FERIEKNAPP,
+    SKAL_VISE_LEGG_TIL_KNAPPETEKST,
 ] as const;
 
 export type KnapperIRedigeringspanelSynlighet = {
-    visUtsettelsesknapp: boolean;
-    visPauseknapp: boolean;
-    visFerieknapp: boolean;
-    brukLeggTilTekstPåFerieknapp: boolean;
+    skalViseUtsettelsesknapp: boolean;
+    skalVisePauseknapp: boolean;
+    skalViseFerieknapp: boolean;
+    skalViseLeggTilKnappetekst: boolean;
 };
 
 /**
- * Avgjer kva «legg til»-knappar som skal vises i redigeringspanelet,
- * og kva tekst som brukes på ferie-knappen, gitt søker, rettighet,
- * familiesituasjon og dei valgte periodene.
+ * Hook som avgjer kva «Legg til»-knappar som vises i redigeringspanelet,
+ * og kva tekst som brukes på ferie-knappen. Hentar søker, rettighet,
+ * familiesituasjon og familiehendelsedato sjølv frå UttaksplanData; kallaren
+ * gir berre periodene som er aktuelle for dette render-passet.
  */
-export const synlighetForKnapperIRedigeringspanel = (
-    kontekst: KnapperIRedigeringspanelKontekst,
-): KnapperIRedigeringspanelSynlighet => ({
-    visUtsettelsesknapp: VIS_UTSETTELSESKNAPP.skalVises(kontekst),
-    visPauseknapp: VIS_PAUSEKNAPP.skalVises(kontekst),
-    visFerieknapp: VIS_FERIEKNAPP.skalVises(kontekst),
-    brukLeggTilTekstPåFerieknapp: BRUK_LEGG_TIL_TEKST_PÅ_FERIEKNAPP.skalVises(kontekst),
-});
+export const useKnapperIRedigeringspanelSynlighet = (input: {
+    sammenslåtteValgtePerioder: readonly Periode[];
+    eksisterendePerioderSomErValgt: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>;
+}): KnapperIRedigeringspanelSynlighet => {
+    const {
+        foreldreInfo: { søker, rettighetType },
+        familiesituasjon,
+        familiehendelsedato,
+        erPeriodeneTilAnnenPartLåst,
+    } = useUttaksplanData();
+
+    const kontekst: KnapperIRedigeringspanelKontekst = {
+        søker,
+        rettighetType,
+        familiesituasjon,
+        familiehendelsedato,
+        erPeriodeneTilAnnenPartLåst,
+        sammenslåtteValgtePerioder: input.sammenslåtteValgtePerioder,
+        eksisterendePerioderSomErValgt: input.eksisterendePerioderSomErValgt,
+    };
+
+    return {
+        skalViseUtsettelsesknapp: SKAL_VISE_UTSETTELSESKNAPP.skalVises(kontekst),
+        skalVisePauseknapp: SKAL_VISE_PAUSEKNAPP.skalVises(kontekst),
+        skalViseFerieknapp: SKAL_VISE_FERIEKNAPP.skalVises(kontekst),
+        skalViseLeggTilKnappetekst: SKAL_VISE_LEGG_TIL_KNAPPETEKST.skalVises(kontekst),
+    };
+};

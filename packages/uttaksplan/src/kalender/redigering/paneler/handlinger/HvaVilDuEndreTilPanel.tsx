@@ -10,7 +10,7 @@ import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
-import { synlighetForKnapperIRedigeringspanel } from '../../../../regler/synlighet/knapperIRedigeringspanel';
+import { useKnapperIRedigeringspanelSynlighet } from '../../../../regler/synlighet/knapperIRedigeringspanel';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
@@ -31,11 +31,8 @@ interface Props {
 
 export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) => {
     const {
-        foreldreInfo: { søker, rettighetType },
-        erPeriodeneTilAnnenPartLåst,
+        foreldreInfo: { søker },
         uttakPerioder,
-        familiehendelsedato,
-        familiesituasjon,
     } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, setValgtePerioder, leggTilUttaksplanPerioder, setEndredePerioder } =
@@ -78,18 +75,13 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
     );
 
     const {
-        visUtsettelsesknapp: skalViseUtsettelsesknapp,
-        visPauseknapp: skalVisePauseknapp,
-        visFerieknapp: skalViseFerieknapp,
-        brukLeggTilTekstPåFerieknapp: skalViseLeggTilKnappetekst,
-    } = synlighetForKnapperIRedigeringspanel({
-        søker,
-        rettighetType,
-        familiesituasjon,
-        familiehendelsedato,
+        skalViseUtsettelsesknapp,
+        skalVisePauseknapp,
+        skalViseFerieknapp,
+        skalViseLeggTilKnappetekst,
+    } = useKnapperIRedigeringspanelSynlighet({
         sammenslåtteValgtePerioder,
         eksisterendePerioderSomErValgt,
-        erPeriodeneTilAnnenPartLåst,
     });
 
     const leggTilEllerForskyvPeriode = (skalForskyve: boolean) => {
