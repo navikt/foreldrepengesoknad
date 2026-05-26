@@ -17,7 +17,7 @@ import {
 } from '../../types/UttaksplanPeriode';
 import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../utils/periodeUtils';
 import { Periode, i18n } from '../types';
-import { Alertregel, AlertregelDoc, Alertområde } from './types';
+import { Alertregel } from './types';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
@@ -219,32 +219,3 @@ export const VALGTE_DAGER_FØR_FAMHEND: Alertregel<ForskyvEllerErstattKontekst> 
         ctx.harPeriodeFørFamiliehendelsedato,
 };
 
-/**
- * Storybook-katalogen treng berre metadata-projeksjonen (`AlertregelDoc`).
- * Reglane lever som `Alertregel<TKontekst>` for runtime, men har eit
- * konsistent supersett — så vi kan liste dei direkte utan cast.
- */
-const ALLE_INFORMASJONS_ALERTS: readonly AlertregelDoc[] = [
-    MANGLER_MORS_AKTIVITET_LISTE,
-    MANGLER_MORS_AKTIVITET_KALENDER,
-    MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING,
-    MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE,
-    KAN_MISTE_DAGER,
-    ADOPSJON_PERIODE_FØR_FAMHEND,
-    IKKE_REDIGERBAR_EØS,
-    IKKE_REDIGERBAR_PLEIEPENGER,
-    SENERE_PERIODER_READONLY,
-    VALGTE_DAGER_FØR_SEKS_UKER,
-    VALGTE_DAGER_FØR_FAMHEND,
-];
-
-export const INFORMASJONS_ALERT_OMRÅDE: Alertområde = {
-    id: 'informasjonsAlerts',
-    område: 'Informasjonsmeldinger i uttaksplanen',
-    beskrivelse:
-        'Disse meldingene dukker opp ulike steder i uttaksplan-visningen (liste, kalender, ' +
-        'redigeringspaneler) for å informere brukeren om konsekvenser av valg, manglende ' +
-        'utfyllinger eller låste perioder. De stopper ikke brukeren — men gir kontekst ' +
-        'eller varsler om noe som krever oppmerksomhet.',
-    regler: ALLE_INFORMASJONS_ALERTS,
-};

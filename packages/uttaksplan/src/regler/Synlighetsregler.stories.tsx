@@ -1,9 +1,27 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Kolonne, RegelIdBadge, RegelkatalogSide } from './RegelkatalogSide';
-import { FELT_SYNLIGHET_OMRÅDE } from './synlighet/feltSynlighet';
-import { FORELDER_VALG_OMRÅDE } from './synlighet/forelderValg';
+import { FELT_SYNLIGHET_REGLER } from './synlighet/feltSynlighet';
+import { FORELDER_VALG_REGLER } from './synlighet/forelderValg';
 import { Synlighetsområde } from './synlighet/types';
+
+const FORELDER_VALG_OMRÅDE: Synlighetsområde = {
+    id: 'forelderValg',
+    område: 'Hvilke alternativ vises i «Hvem gjelder perioden»-radiogruppen?',
+    beskrivelse:
+        'Når brukeren legger til eller endrer en periode, må det velges hvilken forelder perioden gjelder. ' +
+        'Reglene under bestemmer hvilke alternativ (Mor, Far/medmor, Begge) som er tilgjengelige.',
+    regler: FORELDER_VALG_REGLER,
+};
+
+const FELT_SYNLIGHET_OMRÅDE: Synlighetsområde = {
+    id: 'feltSynlighet',
+    område: 'Hvilke felter, infobokser og oppfølgingsspørsmål vises i skjemaet?',
+    beskrivelse:
+        'Avhengig av hvilken forelder, kvotetype og rettighet brukeren har, blir ulike felter relevante. ' +
+        'Reglene under er det som bestemmer hva som vises etter forelderen er valgt.',
+    regler: FELT_SYNLIGHET_REGLER,
+};
 
 const ALLE_SYNLIGHETSREGLER: readonly Synlighetsområde[] = [FORELDER_VALG_OMRÅDE, FELT_SYNLIGHET_OMRÅDE];
 

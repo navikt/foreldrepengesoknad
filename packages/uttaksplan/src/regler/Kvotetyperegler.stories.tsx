@@ -3,8 +3,26 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { Tag } from '@navikt/ds-react';
 
 import { Kolonne, RegelIdBadge, RegelkatalogSide } from './RegelkatalogSide';
-import { FAR_MEDMOR_KVOTE_OMRÅDE, MOR_KVOTE_OMRÅDE } from './kvotetype/kvoteRegler';
+import { FAR_MEDMOR_KVOTE_REGLER, MOR_KVOTE_REGLER } from './kvotetype/kvoteRegler';
 import { Kvoteområde } from './kvotetype/types';
+
+const MOR_KVOTE_OMRÅDE: Kvoteområde = {
+    id: 'morKvoter',
+    område: 'Hvilke kvotetyper er gyldige å velge for mor?',
+    beskrivelse:
+        'Når mor er valgt som forelder for en periode, må kvotetypen (stønadskonto) være gyldig. ' +
+        'Reglene under bestemmer hvilke kvoter mor får tilbudt i nedtrekkslisten.',
+    regler: MOR_KVOTE_REGLER,
+};
+
+const FAR_MEDMOR_KVOTE_OMRÅDE: Kvoteområde = {
+    id: 'farMedmorKvoter',
+    område: 'Hvilke kvotetyper er gyldige å velge for far/medmor?',
+    beskrivelse:
+        'Når far/medmor er valgt som forelder for en periode, må kvotetypen (stønadskonto) være gyldig. ' +
+        'Reglene under bestemmer hvilke kvoter far/medmor får tilbudt i nedtrekkslisten.',
+    regler: FAR_MEDMOR_KVOTE_REGLER,
+};
 
 const ALLE_KVOTE_OMRÅDER: readonly Kvoteområde[] = [MOR_KVOTE_OMRÅDE, FAR_MEDMOR_KVOTE_OMRÅDE];
 

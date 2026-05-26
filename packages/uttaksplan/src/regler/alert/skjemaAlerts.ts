@@ -3,7 +3,7 @@ import { BrukerRolleSak_fpoversikt, Familiesituasjon, RettighetType_fpoversikt }
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Periode, i18n } from '../types';
-import { Alertregel, Alertområde, Visningssted } from './types';
+import { Alertregel, Visningssted } from './types';
 
 /**
  * Kontekst for blokkerende alerts som avgjør om hele skjemaet skal
@@ -190,24 +190,6 @@ export const useBlokkerendeAlert = (input: {
         meldingId: treff.meldingId,
         variant: treff.regel.variant,
     };
-};
-
-export const BLOKKERENDE_ALERT_OMRÅDE: Alertområde = {
-    id: 'blokkerendeAlerts',
-    område: 'Blokkerende meldinger',
-    beskrivelse:
-        'Disse meldingene erstatter hele skjemaet (early return). De hindrer brukeren fra å ' +
-        'gjøre endringer som ikke er lovlige, og forklarer hvorfor skjemaet ikke er tilgjengelig.',
-    regler: BLOKKERENDE_ALERTS,
-};
-
-export const KONTEKSTUELL_ALERT_OMRÅDE: Alertområde = {
-    id: 'kontekstuelleAlerts',
-    område: 'Kontekstuelle meldinger',
-    beskrivelse:
-        'Disse meldingene dukker opp inne i skjemaet som tilleggsinformasjon — typisk når ' +
-        'brukeren har gjort et valg som har konsekvenser det er viktig å vite om.',
-    regler: KONTEKSTUELLE_ALERTS,
 };
 
 export { BLOKKERENDE_ALERTS, KONTEKSTUELLE_ALERTS };

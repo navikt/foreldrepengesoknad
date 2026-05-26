@@ -4,9 +4,68 @@ import { useIntl } from 'react-intl';
 import { BodyShort, Tag, VStack } from '@navikt/ds-react';
 
 import { Kolonne, MeldingSitat, RegelIdBadge, RegelkatalogSide } from './RegelkatalogSide';
-import { INFORMASJONS_ALERT_OMRÅDE } from './alert/informasjonsAlerts';
-import { BLOKKERENDE_ALERT_OMRÅDE, KONTEKSTUELL_ALERT_OMRÅDE } from './alert/skjemaAlerts';
-import { Alertområde, VISNINGSSTED_LABELS } from './alert/types';
+import {
+    ADOPSJON_PERIODE_FØR_FAMHEND,
+    IKKE_REDIGERBAR_EØS,
+    IKKE_REDIGERBAR_PLEIEPENGER,
+    KAN_MISTE_DAGER,
+    MANGLER_MORS_AKTIVITET_KALENDER,
+    MANGLER_MORS_AKTIVITET_LISTE,
+    MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING,
+    MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE,
+    SENERE_PERIODER_READONLY,
+    VALGTE_DAGER_FØR_FAMHEND,
+    VALGTE_DAGER_FØR_SEKS_UKER,
+} from './alert/informasjonsAlerts';
+import { BLOKKERENDE_ALERTS, KONTEKSTUELLE_ALERTS } from './alert/skjemaAlerts';
+import { AlertregelDoc, Alertområde, VISNINGSSTED_LABELS } from './alert/types';
+
+const BLOKKERENDE_ALERT_OMRÅDE: Alertområde = {
+    id: 'blokkerendeAlerts',
+    område: 'Blokkerende meldinger',
+    beskrivelse:
+        'Disse meldingene erstatter hele skjemaet (early return). De hindrer brukeren fra å ' +
+        'gjøre endringer som ikke er lovlige, og forklarer hvorfor skjemaet ikke er tilgjengelig.',
+    regler: BLOKKERENDE_ALERTS,
+};
+
+const KONTEKSTUELL_ALERT_OMRÅDE: Alertområde = {
+    id: 'kontekstuelleAlerts',
+    område: 'Kontekstuelle meldinger',
+    beskrivelse:
+        'Disse meldingene dukker opp inne i skjemaet som tilleggsinformasjon — typisk når ' +
+        'brukeren har gjort et valg som har konsekvenser det er viktig å vite om.',
+    regler: KONTEKSTUELLE_ALERTS,
+};
+
+/**
+ * Informasjonsalert-reglane lever som `Alertregel<TKontekst>` for runtime, men har eit
+ * konsistent supersett (`AlertregelDoc`) — så vi kan liste dei direkte utan cast.
+ */
+const ALLE_INFORMASJONS_ALERTS: readonly AlertregelDoc[] = [
+    MANGLER_MORS_AKTIVITET_LISTE,
+    MANGLER_MORS_AKTIVITET_KALENDER,
+    MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING,
+    MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE,
+    KAN_MISTE_DAGER,
+    ADOPSJON_PERIODE_FØR_FAMHEND,
+    IKKE_REDIGERBAR_EØS,
+    IKKE_REDIGERBAR_PLEIEPENGER,
+    SENERE_PERIODER_READONLY,
+    VALGTE_DAGER_FØR_SEKS_UKER,
+    VALGTE_DAGER_FØR_FAMHEND,
+];
+
+const INFORMASJONS_ALERT_OMRÅDE: Alertområde = {
+    id: 'informasjonsAlerts',
+    område: 'Informasjonsmeldinger i uttaksplanen',
+    beskrivelse:
+        'Disse meldingene dukker opp ulike steder i uttaksplan-visningen (liste, kalender, ' +
+        'redigeringspaneler) for å informere brukeren om konsekvenser av valg, manglende ' +
+        'utfyllinger eller låste perioder. De stopper ikke brukeren — men gir kontekst ' +
+        'eller varsler om noe som krever oppmerksomhet.',
+    regler: ALLE_INFORMASJONS_ALERTS,
+};
 
 const ALLE_ALERTREGLER: readonly Alertområde[] = [
     BLOKKERENDE_ALERT_OMRÅDE,

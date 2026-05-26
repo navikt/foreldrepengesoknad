@@ -2,7 +2,7 @@ import { IntlShape } from 'react-intl';
 
 import { getFloatFromString } from '@navikt/fp-utils';
 
-import { Feltregel, Feltregelområde, førsteBrutteFeltregel, i18n } from '../types';
+import { Feltregel, førsteBrutteFeltregel, i18n } from '../types';
 import { harIngenVerdi } from './utils';
 
 export type StillingsprosentInput = {
@@ -58,15 +58,6 @@ export const STILLINGSPROSENT_REGLER: ReadonlyArray<Feltregel<StillingsprosentIn
         feilmeldingId: i18n('leggTilPeriodePanel.stillingsprosent.samtidigUttak'),
     },
 ];
-
-export const STILLINGSPROSENT_OMRÅDE: Feltregelområde = {
-    id: 'stillingsprosent',
-    område: 'Stillingsprosent',
-    beskrivelse:
-        'Hvor stor andel brukeren skal jobbe når arbeid kombineres med uttak. Reglene sikrer at verdien er ' +
-        'et gyldig tall mellom 0 og 100 %, og at summen med samtidig uttak ikke overstiger 100 %.',
-    regler: STILLINGSPROSENT_REGLER,
-};
 
 /**
  * Lager en validator-funksjon som passer rett inn i React Hook Form sin `validate`-prop.

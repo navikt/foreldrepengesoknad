@@ -2,7 +2,7 @@ import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { useGyldigeKvotetyper } from '../kvotetype/kvoteRegler';
 import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
 import { Periode } from '../types';
-import { ForelderValg, Synlighetsområde, Synlighetsregel } from './types';
+import { ForelderValg, Synlighetsregel } from './types';
 
 export type ForelderValgKontekst = {
     forelder: ForelderValg;
@@ -79,15 +79,6 @@ export const FORELDER_VALG_REGLER = [
     VIS_KONTO_MOR_RADIOGRUPPE,
     VIS_KONTO_FAR_MEDMOR_RADIOGRUPPE,
 ] as const;
-
-export const FORELDER_VALG_OMRÅDE: Synlighetsområde = {
-    id: 'forelderValg',
-    område: 'Hvilke alternativ vises i «Hvem gjelder perioden»-radiogruppen?',
-    beskrivelse:
-        'Når brukeren legger til eller endrer en periode, må det velges hvilken forelder perioden gjelder. ' +
-        'Reglene under bestemmer hvilke alternativ (Mor, Far/medmor, Begge) som er tilgjengelige.',
-    regler: FORELDER_VALG_REGLER,
-};
 
 export type ForelderValgSynlighet = {
     visMor: boolean;

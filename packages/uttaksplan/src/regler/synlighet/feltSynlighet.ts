@@ -9,7 +9,7 @@ import { getFloatFromString } from '@navikt/fp-utils';
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Periode } from '../types';
-import { ForelderValg, Synlighetsområde, Synlighetsregel } from './types';
+import { ForelderValg, Synlighetsregel } from './types';
 
 export type FeltSynlighetKontekst = {
     forelder: ForelderValg;
@@ -174,15 +174,6 @@ export const FELT_SYNLIGHET_REGLER = [
     VIS_KOMBINERE_ARBEID_OG_UTTAK_FAR_MEDMOR,
     VIS_INFO_FEDREKVOTE_RUNDT_FØDSEL,
 ] as const;
-
-export const FELT_SYNLIGHET_OMRÅDE: Synlighetsområde = {
-    id: 'feltSynlighet',
-    område: 'Hvilke felter, infobokser og oppfølgingsspørsmål vises i skjemaet?',
-    beskrivelse:
-        'Avhengig av hvilken forelder, kvotetype og rettighet brukeren har, blir ulike felter relevante. ' +
-        'Reglene under er det som bestemmer hva som vises etter forelderen er valgt.',
-    regler: FELT_SYNLIGHET_REGLER,
-};
 
 export const synlighetForFelter = (kontekst: FeltSynlighetKontekst) => ({
     visFlerbarnsdager: VIS_FLERBARNSDAGER_SPØRSMÅL.skalVises(kontekst),

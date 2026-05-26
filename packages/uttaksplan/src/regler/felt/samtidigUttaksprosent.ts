@@ -2,7 +2,7 @@ import { IntlShape } from 'react-intl';
 
 import { getFloatFromString } from '@navikt/fp-utils';
 
-import { Feltregel, Feltregelområde, førsteBrutteFeltregel, i18n } from '../types';
+import { Feltregel, førsteBrutteFeltregel, i18n } from '../types';
 import { harIngenVerdi } from './utils';
 
 export type SamtidigUttaksprosentInput = {
@@ -58,15 +58,6 @@ export const SAMTIDIG_UTTAKSPROSENT_REGLER: ReadonlyArray<Feltregel<SamtidigUtta
         feilmeldingId: i18n('leggTilPeriodePanel.stillingsprosent.samtidigUttak'),
     },
 ];
-
-export const SAMTIDIG_UTTAKSPROSENT_OMRÅDE: Feltregelområde = {
-    id: 'samtidigUttaksprosent',
-    område: 'Samtidig uttaksprosent',
-    beskrivelse:
-        'Hvor stor andel av kvoten brukeren tar ut samtidig med den andre forelderen. Reglene sikrer at verdien ' +
-        'er et gyldig tall mellom 0 og 100 %, og at summen med stillingsprosent ikke overstiger 100 %.',
-    regler: SAMTIDIG_UTTAKSPROSENT_REGLER,
-};
 
 export const lagSamtidigUttaksprosentValidator =
     (intl: IntlShape, stillingsprosentValue: string | undefined) =>

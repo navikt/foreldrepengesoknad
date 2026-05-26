@@ -3,7 +3,7 @@ import { IntlShape } from 'react-intl';
 import { BrukerRolleSak_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-types';
 
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
-import { Feltregel, Feltregelområde, Periode, i18n } from '../types';
+import { Feltregel, Periode, i18n } from '../types';
 
 type HvaVilDuGjøre = 'LEGG_TIL_FERIE' | 'LEGG_TIL_UTSETTELSE' | 'LEGG_TIL_PAUSE' | 'LEGG_TIL_OPPHOLD' | 'LEGG_TIL_PERIODE';
 
@@ -66,16 +66,6 @@ export const HVA_VIL_DU_GJØRE_REGLER: ReadonlyArray<Feltregel<HvaVilDuGjøreInp
         feilmeldingId: i18n('uttaksplan.valgPanel.ferie'),
     },
 ];
-
-export const HVA_VIL_DU_GJØRE_OMRÅDE: Feltregelområde = {
-    id: 'hvaVilDuGjøre',
-    område: 'Hva vil du gjøre?',
-    beskrivelse:
-        'Når brukeren velger hva som skal legges til i uttaksplanen (ferie, utsettelse, pause, opphold eller ' +
-        'periode), sjekker vi at valget er gyldig i forhold til når perioden ligger og hvilke rettigheter ' +
-        'brukeren har.',
-    regler: HVA_VIL_DU_GJØRE_REGLER,
-};
 
 type StaticKontekst = Omit<HvaVilDuGjøreInput, 'nyHvaVilDuGjøre'>;
 
