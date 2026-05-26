@@ -101,8 +101,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         visKontoFarMedmorRadiogruppe,
         erMorLåst,
         erFarMedmorLåst,
-    } = useForelderValgSynlighet({
-        valgtePerioder,
+    } = useForelderValgSynlighet(valgtePerioder, {
         forelder,
         ønskerFlerbarnsdager,
     });

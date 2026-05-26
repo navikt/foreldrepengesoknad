@@ -102,11 +102,13 @@ export type ForelderValgSynlighet = {
  * kvotetyper direkte via {@link useGyldigeKvotetyper} og kombinerer
  * det med EØS- og låst-status fra UttaksplanDataContext.
  */
-export const useForelderValgSynlighet = (input: {
-    valgtePerioder: Periode[];
-    forelder: ForelderValg;
-    ønskerFlerbarnsdager: boolean | undefined;
-}): ForelderValgSynlighet => {
+export const useForelderValgSynlighet = (
+    valgtePerioder: Periode[],
+    input: {
+        forelder: ForelderValg;
+        ønskerFlerbarnsdager: boolean | undefined;
+    },
+): ForelderValgSynlighet => {
     const {
         foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
@@ -114,7 +116,7 @@ export const useForelderValgSynlighet = (input: {
     } = useUttaksplanData();
 
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useGyldigeKvotetyper({
-        valgtePerioder: input.valgtePerioder,
+        valgtePerioder,
         harValgtSamtidigUttak: input.forelder === 'BEGGE',
         ønskerFlerbarnsdager: input.ønskerFlerbarnsdager,
     });
