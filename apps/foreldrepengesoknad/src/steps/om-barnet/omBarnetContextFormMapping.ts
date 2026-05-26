@@ -1,6 +1,5 @@
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
-import { hasValue } from '@navikt/fp-validation';
 
 import { BarnType } from '@navikt/fp-constants';
 import {
@@ -16,6 +15,7 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-types';
+import { hasValue } from '@navikt/fp-validation';
 
 import {
     BarnetFormValues,

@@ -13,6 +13,7 @@ const {
     BeregningAAP,
     BeregningKunYtelse,
     BeregningMedNaturalytelser,
+    BeregningCrossYear,
 } = composeStories(stories);
 
 describe('<BeregningPage>', () => {
@@ -165,6 +166,31 @@ describe('<BeregningPage>', () => {
 
             expect(await screen.findByText('Beregning av foreldrepenger')).toBeInTheDocument();
             expect(await screen.findByRole('link', { name: 'inntektsmeldingen' })).toBeInTheDocument();
+        }),
+    );
+
+    it(
+        'BeregningCrossYear - months spanning two years are not merged',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(BeregningCrossYear.parameters.msw);
+            render(<BeregningCrossYear />);
+
+            const utbetalingsplanHeading = await screen.findByText('Utbetalingsplan');
+            expect(utbetalingsplanHeading).toBeInTheDocument();
+
+            const utbetalingsplanContainer =
+                utbetalingsplanHeading.closest('section') ?? utbetalingsplanHeading.parentElement;
+            expect(utbetalingsplanContainer).not.toBeNull();
+
+            const utbetalingsplan = within(utbetalingsplanContainer as HTMLElement);
+
+            // Both year headings should be visible in the payment plan section
+            expect(await utbetalingsplan.findByText('2026')).toBeInTheDocument();
+            expect(await utbetalingsplan.findByText('2027')).toBeInTheDocument();
+
+            // Months that exist in both years should appear as separate expansion cards
+            const juniCards = await screen.findAllByTestId('expansioncard-Juni');
+            expect(juniCards).toHaveLength(2);
         }),
     );
 });

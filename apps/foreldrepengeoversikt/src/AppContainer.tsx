@@ -1,7 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 
 import { AppShell, createDefaultQueryClient } from '@navikt/fp-app-shell';
-
 import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { observabilityMessages } from '@navikt/fp-observability';

@@ -8,7 +8,6 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { FordelingPlanlegger, HvorLangPeriodePlanlegger, OmBarnetPlanlegger } from '@navikt/fp-types';
-
 import {
     DELT_UTTAK_80_ADOPSJON,
     DELT_UTTAK_100_ADOPSJON,

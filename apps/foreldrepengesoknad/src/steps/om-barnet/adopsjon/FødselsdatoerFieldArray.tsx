@@ -6,7 +6,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
-import { isBeforeOrSame, isBeforeTodayOrToday, isDateBeforeToday as isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
+import {
+    isBeforeOrSame,
+    isDateBeforeToday as isBeforeToday,
+    isBeforeTodayOrToday,
+    isRequired,
+    isValidDate,
+} from '@navikt/fp-validation';
 
 const erBarnetUnder15årPåAdopsjonsdato = (i18nText: string, adopsjonsdato?: string) => (fødselsdato: string) => {
     if (!adopsjonsdato) {

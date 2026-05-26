@@ -3,10 +3,10 @@ import dayjs from 'dayjs';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/messages/nb_NO.json';

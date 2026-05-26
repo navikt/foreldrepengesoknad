@@ -121,9 +121,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                                 aria-haspopup="dialog"
                                 aria-expanded={uttaksplanRedigering.visFjernAltModal}
                                 aria-controls={
-                                    uttaksplanRedigering.visFjernAltModal
-                                        ? 'FjernAltIUttaksplanModal'
-                                        : undefined
+                                    uttaksplanRedigering.visFjernAltModal ? 'FjernAltIUttaksplanModal' : undefined
                                 }
                             >
                                 <FormattedMessage id="UttaksplanHandlingKnapper.FjernAlt" />

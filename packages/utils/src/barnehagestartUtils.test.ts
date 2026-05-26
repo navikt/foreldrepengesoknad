@@ -1,6 +1,7 @@
+import { describe, expect, it } from 'vitest';
+
 import { BarnType } from '@navikt/fp-constants';
 import { Barn } from '@navikt/fp-types';
-import { describe, expect, it } from 'vitest';
 
 import { barnehagestartDato, beregnBarnehagestartDato } from './barnehagestartUtils';
 

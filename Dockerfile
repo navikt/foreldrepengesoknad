@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
-ARG NODE_BUILD_IMG=node:24-alpine
-ARG NODE_DEPLOY_IMG=europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:24-slim
+ARG NODE_BUILD_IMG=node:26.1.0-alpine
+ARG NODE_DEPLOY_IMG=europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:26.1.0-slim
 ARG APP="foreldrepengesoknad"
 ARG SERVER="server"
 ARG SENTRY_RELEASE=""

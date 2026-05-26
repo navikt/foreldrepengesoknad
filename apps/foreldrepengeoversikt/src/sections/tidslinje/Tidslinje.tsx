@@ -21,6 +21,7 @@ import { Link as LinkInternal } from 'react-router-dom';
 import { BodyShort, Box, Button, Link, List, Process, ReadMore, VStack } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
+import { loggUmamiEvent } from '@navikt/fp-observability';
 import { OversiktBarnDto_fpoversikt, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 
 import { NavRoutes, OversiktRoutes } from '../../routes/routes.ts';
@@ -69,6 +70,24 @@ export const Tidslinje = ({ sak, søkersBarn, tidslinjeHendelser, manglendeVedle
         visHeleTidslinjen,
     });
 
+    const toggleVisning = () => {
+        if (visHeleTidslinjen) {
+            loggUmamiEvent({
+                origin: 'foreldrepengeoversikt',
+                eventName: 'button klikk',
+                eventData: { tittel: 'kompakt visning' },
+            });
+        } else {
+            loggUmamiEvent({
+                origin: 'foreldrepengeoversikt',
+                eventName: 'button klikk',
+                eventData: { tittel: 'ekspandert visning' },
+            });
+        }
+
+        setVisHeleTidslinjen((visible) => !visible);
+    };
+
     return (
         <VStack gap="space-16">
             <Process isTruncated={isTruncated}>
@@ -88,11 +107,13 @@ export const Tidslinje = ({ sak, søkersBarn, tidslinjeHendelser, manglendeVedle
                     );
                 })}
             </Process>
-            {visHeleTidslinjen ? undefined : (
-                <Button className="w-fit" variant="secondary" size="small" onClick={() => setVisHeleTidslinjen(true)}>
+            <Button className="w-fit" variant="secondary" size="small" onClick={toggleVisning}>
+                {visHeleTidslinjen ? (
+                    <FormattedMessage id="tidslinje.visKompakt" />
+                ) : (
                     <FormattedMessage id="tidslinje.visHele" />
-                </Button>
-            )}
+                )}
+            </Button>
         </VStack>
     );
 };

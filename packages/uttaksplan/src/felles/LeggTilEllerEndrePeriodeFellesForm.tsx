@@ -726,7 +726,10 @@ export const mapFraFormValuesTilUttakPeriode = (
             tom: periode.tom,
             kontoType:
                 values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoTypeFarMedmor,
-            morsAktivitet: values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : (values.morsAktivitet || undefined),
+            morsAktivitet:
+                values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE'
+                    ? 'IKKE_OPPGITT'
+                    : values.morsAktivitet || undefined,
             forelder: 'FAR_MEDMOR',
             gradering:
                 !erOverføringFarMedmor && values.skalDuKombinereArbeidOgUttakFarMedmor

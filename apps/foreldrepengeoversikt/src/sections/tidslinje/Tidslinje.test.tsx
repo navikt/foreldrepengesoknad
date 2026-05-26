@@ -30,6 +30,7 @@ describe('<Tidslinje>', () => {
 
             const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
             await userEvent.click(button);
+            expect(screen.getByRole('button', { name: 'Kompakt visning' })).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 4, completed: 2 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
@@ -43,6 +44,10 @@ describe('<Tidslinje>', () => {
             expect(within(timelineDatoer[1]!).getByText(/27. november 2025 kl 01:00/i)).toBeInTheDocument();
             expect(within(timelineDatoer[2]!).getByText(/senere/i)).toBeInTheDocument();
             expect(within(timelineDatoer[3]!).getByText(/25. nov. 2028/i)).toBeInTheDocument();
+
+            await userEvent.click(screen.getByRole('button', { name: 'Kompakt visning' }));
+            expect(screen.getByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
+            verifiserHendelseStatus({ container, antall: 3, completed: 2 });
         }),
     );
 

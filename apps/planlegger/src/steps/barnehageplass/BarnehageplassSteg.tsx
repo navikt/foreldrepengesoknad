@@ -5,7 +5,6 @@ import { useStepData } from 'appData/useStepData';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getFamiliehendelsedato } from 'steps/oppsummering/expansion-cards/BarnehageplassOppsummering';
-import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { Uttaksdata } from 'utils/uttakUtils';
@@ -13,6 +12,7 @@ import { Uttaksdata } from 'utils/uttakUtils';
 import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { IconCircleWrapper, Infobox, StepButtons } from '@navikt/fp-ui';
 import { beregnBarnehagestartDato } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';

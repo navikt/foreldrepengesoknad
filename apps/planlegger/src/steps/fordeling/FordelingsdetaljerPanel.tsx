@@ -1,6 +1,5 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erAlenesøker, erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
@@ -8,6 +7,7 @@ import { Uttaksdata } from 'utils/uttakUtils';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 
 import { PeriodeRad } from '../../components/PeriodeRad';

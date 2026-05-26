@@ -1,5 +1,6 @@
-import { getIllegalChars } from '@navikt/fp-validation';
 import { createIntl, createIntlCache } from 'react-intl';
+
+import { getIllegalChars } from '@navikt/fp-validation';
 
 import messages from '../intl/nb_NO.json';
 import { validateFødselsnummer } from './validationUtil';

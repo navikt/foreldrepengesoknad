@@ -1,7 +1,6 @@
 import { PencilWritingIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erAlenesøker, erFarDelAvSøknaden, erFarOgFar } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
@@ -10,6 +9,7 @@ import { loggExpansionCardOpen } from 'utils/umamiUtils';
 
 import { ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { AktivitetskravFar } from './AktivitetskravFar';

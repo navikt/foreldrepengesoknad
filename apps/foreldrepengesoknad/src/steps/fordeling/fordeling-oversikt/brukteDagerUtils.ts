@@ -7,8 +7,8 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { getAntallUttaksdagerIVinduRundtFødsel } from '@navikt/fp-uttaksplan';
 import { Uttaksperioden } from '@navikt/fp-utils';
+import { getAntallUttaksdagerIVinduRundtFødsel } from '@navikt/fp-uttaksplan';
 
 type Periode = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
 
@@ -93,10 +93,7 @@ const beregnBrukteUttaksdager = (
         .map((konto) => {
             const perioderForKonto = perioder.filter((p) => p.kontoType === konto.konto);
             const dager = Math.floor(
-                perioderForKonto.reduce(
-                    (sum, p) => sum + finnAntallDagerÅTrekke(p, erFødsel, familiehendelsesdato),
-                    0,
-                ),
+                perioderForKonto.reduce((sum, p) => sum + finnAntallDagerÅTrekke(p, erFødsel, familiehendelsesdato), 0),
             );
             return { konto: konto.konto, dager };
         })

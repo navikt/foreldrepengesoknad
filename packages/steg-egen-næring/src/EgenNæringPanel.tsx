@@ -26,8 +26,8 @@ import {
     isBeforeOrSame,
     isBeforeTodayOrToday,
     isRequired,
-    isValidDate,
     isValidDateString as isStringAValidDate,
+    isValidDate,
     isValidInteger,
 } from '@navikt/fp-validation';
 

@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
-import { Uttaksplanperiode, erUttaksplanHull } from '../../types/UttaksplanPeriode';
-import { erPrematuruker, erUtsettelsesperiode } from '../../utils/periodeUtils';
+import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
+import { erAvslåttPeriode, erPrematuruker, erUtsettelsesperiode } from '../../utils/periodeUtils';
 
 export const mapUttaksplanperioderTilRaderIListe = (
     saksperioderInkludertHull: Uttaksplanperiode[],
@@ -86,7 +86,14 @@ const kanGrupperesPåSammeRad = (
     !erUttaksplanHull(forrige) &&
     !erUttaksplanHull(nestePeriode) &&
     harSammeForelder(forrige, nestePeriode) &&
+    harSammeAvslåttStatus(forrige, nestePeriode) &&
     beggePerioderFørEllerEtterFamiliehendelsedato(forrige, nestePeriode, familiehendelsesdato);
+
+const harSammeAvslåttStatus = (a: Uttaksplanperiode, b: Uttaksplanperiode): boolean => {
+    const aErAvslått = erVanligUttakPeriode(a) && erAvslåttPeriode(a);
+    const bErAvslått = erVanligUttakPeriode(b) && erAvslåttPeriode(b);
+    return aErAvslått === bErAvslått;
+};
 
 const beggePerioderFørEllerEtterFamiliehendelsedato = (
     uttaksplanperiode: Uttaksplanperiode | undefined,

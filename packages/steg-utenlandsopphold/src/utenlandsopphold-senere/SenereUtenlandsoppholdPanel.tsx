@@ -83,7 +83,9 @@ export const SenereUtenlandsoppholdPanel = <TYPE extends string>({
                         onAvsluttOgSlett={onAvsluttOgSlett}
                         onFortsettSenere={onFortsettSenere}
                         goToPreviousStep={goToPreviousStep}
-                        saveDataOnPreviousClick={saveOnPrevious ? (values) => saveOnPrevious(values.utenlandsoppholdNeste12Mnd) : undefined}
+                        saveDataOnPreviousClick={
+                            saveOnPrevious ? (values) => saveOnPrevious(values.utenlandsoppholdNeste12Mnd) : undefined
+                        }
                     />
                 </VStack>
             </RhfForm>

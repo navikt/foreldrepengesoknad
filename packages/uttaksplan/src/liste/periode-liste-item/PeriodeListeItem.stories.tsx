@@ -241,3 +241,33 @@ export const PeriodeUtenUttak: Story = {
         erEndringssøknad: false,
     },
 };
+
+export const AvslåttPeriode: Story = {
+    args: {
+        barn: {
+            antallBarn: 1,
+            fødselsdatoer: ['2024-06-01'],
+            type: BarnType.FØDT,
+            termindato: '2024-06-01',
+        },
+        erAleneOmOmsorg: false,
+        erFarEllerMedmor: false,
+        familiehendelsedato: '2024-06-01',
+        uttaksplanperioder: [
+            {
+                fom: '2024-06-01',
+                tom: '2024-06-28',
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                flerbarnsdager: false,
+                resultat: {
+                    innvilget: false,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER',
+                },
+            },
+        ],
+        erEndringssøknad: true,
+    },
+};

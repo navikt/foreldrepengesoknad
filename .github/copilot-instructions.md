@@ -1,0 +1,92 @@
+# Copilot Instructions – foreldrepengesoknad
+
+## About this repo
+
+This is a pnpm/Turborepo monorepo containing all self-service frontend
+applications for Team Foreldrepenger at Nav (Norwegian Labour and Welfare
+Administration). The repo covers three benefits defined in Folketrygdloven
+(National Insurance Act) chapter 14: **foreldrepenger** (parental benefit),
+**svangerskapspenger** (pregnancy benefit), and **engangsstønad** (lump-sum
+grant).
+
+End users are citizens who apply for, plan, or monitor these benefits via nav.no.
+
+## The benefits
+
+Three benefits under Folketrygdloven kap. 14:
+
+| Code | Norwegian | Citizen info |
+|------|-----------|--------------|
+| FP | Foreldrepenger | https://www.nav.no/foreldrepenger |
+| SVP | Svangerskapspenger | https://www.nav.no/svangerskapspenger |
+| ES | Engangsstønad | https://www.nav.no/engangsstonad |
+
+See [fp-context/domain/business-context.md](https://github.com/navikt/fp-context/blob/main/domain/business-context.md)
+for legal basis, value chain, and core concepts.
+
+## Applications
+
+| App | Description | Requires login |
+|-----|-------------|----------------|
+| `foreldrepengesoknad` | Application for foreldrepenger – multi-step form with leave planner (uttaksplan) | Yes |
+| `svangerskapspengesoknad` | Application for svangerskapspenger – multi-step form with employment details | Yes |
+| `engangsstonad` | Application for engangsstønad – simpler multi-step form | Yes |
+| `foreldrepengeoversikt` | Dashboard for viewing applications, cases, and payments across all three benefits | Yes |
+| `planlegger` | Parental leave planner – plan how to split the leave period between parents | No |
+| `veiviser-fp-eller-es` | Wizard that helps the user choose between foreldrepenger and engangsstønad | No |
+| `veiviser-hvor-mye` | Wizard that estimates how much foreldrepenger the user may receive | No |
+
+### Servers
+
+| Directory | Description |
+|-----------|-------------|
+| `server` | Express 5 server for authenticated apps (proxy, token handling via `@navikt/oasis`) |
+| `server-uinnlogget` | Express 5 server for unauthenticated apps (planlegger, wizards) |
+
+## Tech stack
+
+- **UI:** React 19, React Router 7, Aksel (Nav's design system via `@navikt/ds-*`)
+- **Forms:** React Hook Form
+- **Data fetching:** TanStack React Query
+- **Build:** Vite, TypeScript, Turborepo, pnpm workspaces
+- **Testing:** Vitest, Vitest Browser (Playwright driver), Storybook
+- **Server:** Express 5, esbuild-bundled Node.js
+- **Infrastructure:** Docker, NAIS (Kubernetes), GitHub Actions
+
+## Shared packages (`packages/`)
+
+Common functionality lives in the `packages/` directory. Key packages:
+
+- `ui` – Shared React components built on Aksel
+- `types` – Auto-generated TypeScript types from backend OpenAPI specs
+- `uttaksplan` – Logic and UI for leave period planning
+- `form-hooks` – Reusable React Hook Form hooks
+- `filopplaster` – File upload component
+- `steg-*` – Reusable application steps (foreign residence, employment, freelance, self-employment, summary, receipt)
+- `validation` – Validation rules
+- `utils` / `constants` – Utility functions and constants
+- `observability` – OpenTelemetry setup
+- `server-utils` – Shared server logic
+
+## Additional context
+
+For deeper understanding of Team Foreldrepenger's domain, architecture, and
+conventions, see:
+
+- **[fp-context](https://github.com/navikt/fp-context)** – AI context hub with
+  domain explanations, glossary, architecture overview, and conventions shared
+  across the team's 40+ repositories.
+- **Copilot Space
+  [TeamForeldrepenger](https://github.com/copilot/spaces/navikt/15)** (owned by
+  `navikt`) – Knowledge base for chat, IDE agent, and CLI. Use with: _"Using the
+  TeamForeldrepenger space owned by navikt, ..."_
+
+## Guidelines for code changes
+
+- Use Norwegian domain terminology where appropriate (søknad, uttaksplan,
+  dekningsgrad, stønadsperiode, etc.)
+- Prefer components from `packages/` and Aksel over custom solutions
+- Follow existing patterns in the app you are working on
+- Apps can be run locally with `pnpm run dev:mock` / `pnpm run dev:lokal` or
+  via Vite mode against the dev environment (see README)
+- Types are generated from the backend with `pnpm generate` or `pnpm generate:local`

@@ -1,12 +1,12 @@
 import { PersonGroupIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erMorDelAvSøknaden, finnSøker1Tekst, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
