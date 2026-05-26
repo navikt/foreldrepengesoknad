@@ -106,7 +106,6 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
               ]
             : [],
     );
-    const erMorsAktivitetIkkeOppgitt = Boolean(morsAktivitetIkkeOppgittAlert);
 
     const onSubmit = (values: LeggTilEllerEndrePeriodeFormFormValues) => {
         const submitFeilmelding = formSubmitValidator(sammenslåtteValgtePerioder, values);
@@ -118,7 +117,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         setFeilmelding(undefined);
 
         if (
-            !erMorsAktivitetIkkeOppgitt &&
+            !morsAktivitetIkkeOppgittAlert &&
             erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, sammenslåtteValgtePerioder)
         ) {
             setVisEndreEllerForskyvPanel(true);
