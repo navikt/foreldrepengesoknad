@@ -8,7 +8,7 @@ import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './OmBarnetSteg.stories';
 
-const { AleneforsørgerFar } = composeStories(stories);
+const { AleneforsørgerFar, FlereForsørgereMorOgMor } = composeStories(stories);
 
 describe('<OmBarnetPlanleggerSteg>', () => {
     it('skal velge at barnet ikke er født for far som aleneforsørger', async () => {
@@ -155,5 +155,13 @@ describe('<OmBarnetPlanleggerSteg>', () => {
             key: ContextDataType.OM_BARNET,
             type: 'update',
         });
+    });
+
+    it('skal ikke kunne velge adopsjon for mor og medmor', async () => {
+        render(<FlereForsørgereMorOgMor />);
+
+        expect(await screen.findAllByText('Barnet')).toHaveLength(2);
+
+        expect(screen.getByRole('radio', { name: 'Adopsjon' })).toBeDisabled();
     });
 });

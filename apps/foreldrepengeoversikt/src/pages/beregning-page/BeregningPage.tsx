@@ -176,7 +176,7 @@ const BeregningOppsummering = ({ sak }: { sak: Foreldrepengesak | Svangerskapspe
                         id="beregning.årsinntekt"
                         values={{
                             label: (chunks) => <Label>{chunks}</Label>,
-                            årsinntekt: formatCurrencyWithKr(samletÅrsinntekt),
+                            årsinntekt: formatCurrencyWithKr(Math.round(samletÅrsinntekt)),
                         }}
                     />
                 </List.Item>
