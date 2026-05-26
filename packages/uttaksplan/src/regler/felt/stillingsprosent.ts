@@ -5,7 +5,7 @@ import { getFloatFromString } from '@navikt/fp-utils';
 import { Feltregel, førsteBrutteFeltregel, i18n } from '../types';
 import { harIngenVerdi } from './utils';
 
-export type StillingsprosentInput = {
+type StillingsprosentInput = {
     value: string;
     samtidigUttaksprosentValue: string | undefined;
 };

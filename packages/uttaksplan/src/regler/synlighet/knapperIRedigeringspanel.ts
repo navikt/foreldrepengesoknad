@@ -15,7 +15,7 @@ import { Synlighetsregel } from './types';
  * vises i redigeringspanelet (HvaVilDuEndreTilPanel), og kva tekst som
  * brukes på ferie-knappen.
  */
-export type KnapperIRedigeringspanelKontekst = {
+type KnapperIRedigeringspanelKontekst = {
     søker: BrukerRolleSak_fpoversikt;
     rettighetType: RettighetType_fpoversikt;
     familiesituasjon: Familiesituasjon;
@@ -89,7 +89,7 @@ export const SKAL_VISE_LEGG_TIL_KNAPPETEKST: Synlighetsregel<KnapperIRedigerings
             k.eksisterendePerioderSomErValgt.some((p) => erVanligUttakPeriode(p) && p.forelder !== k.søker)),
 };
 
-export type KnapperIRedigeringspanelSynlighet = {
+type KnapperIRedigeringspanelSynlighet = {
     skalViseUtsettelsesknapp: boolean;
     skalVisePauseknapp: boolean;
     skalViseFerieknapp: boolean;

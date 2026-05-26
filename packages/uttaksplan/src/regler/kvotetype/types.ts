@@ -5,7 +5,7 @@ import type { BrukerRolleSak_fpoversikt, KontoTypeUttak } from '@navikt/fp-types
  * runtime-logikk. Brukt i Storybook-katalogen og som basis for
  * `Kvoteregel<TKontekst>`.
  */
-export type KvoteregelDoc = {
+type KvoteregelDoc = {
     id: string;
     beskrivelse: string;
     forelder: BrukerRolleSak_fpoversikt;

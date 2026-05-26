@@ -22,7 +22,7 @@ export type Periode = { fom: string; tom: string };
  * runtime-logikk. Brukt direkte i Storybook-katalogen og som basis for
  * `Feltregel<TInput>`.
  */
-export type FeltregelDoc = {
+type FeltregelDoc = {
     id: string;
     beskrivelse: string;
     feilmeldingId: string;

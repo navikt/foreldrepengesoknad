@@ -5,7 +5,7 @@ import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Periode } from '../types';
 import { Kvoteregel } from './types';
 
-export type KvoteKontekst = {
+type KvoteKontekst = {
     søker: BrukerRolleSak_fpoversikt;
     rettighetType: RettighetType_fpoversikt;
     familiesituasjon: Familiesituasjon;
@@ -267,11 +267,6 @@ export const FAR_MEDMOR_KVOTE_REGLER: ReadonlyArray<Kvoteregel<KvoteKontekst>> =
     FAR_MEDMOR_FORELDREPENGER_FØR_FØDSEL,
 ];
 
-export const ALLE_KVOTE_REGLER: ReadonlyArray<Kvoteregel<KvoteKontekst>> = [
-    ...MOR_KVOTE_REGLER,
-    ...FAR_MEDMOR_KVOTE_REGLER,
-];
-
 /* ---------- Helpers og hook ---------- */
 
 /**
@@ -291,7 +286,7 @@ const filtrer = (
     });
 };
 
-export type GyldigeKvoter = {
+type GyldigeKvoter = {
     gyldigeStønadskontoerForMor: KontoTypeUttak[];
     gyldigeStønadskontoerForFarMedmor: KontoTypeUttak[];
 };

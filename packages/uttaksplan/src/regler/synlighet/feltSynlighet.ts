@@ -11,7 +11,7 @@ import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Periode } from '../types';
 import { ForelderValg, Synlighetsregel } from './types';
 
-export type FeltSynlighetKontekst = {
+type FeltSynlighetKontekst = {
     forelder: ForelderValg;
     søker: BrukerRolleSak_fpoversikt;
     rettighetType: RettighetType_fpoversikt;
@@ -162,7 +162,7 @@ export const VIS_INFO_FEDREKVOTE_RUNDT_FØDSEL: Synlighetsregel<FeltSynlighetKon
         erValgtPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(k),
 };
 
-export const synlighetForFelter = (kontekst: FeltSynlighetKontekst) => ({
+const synlighetForFelter = (kontekst: FeltSynlighetKontekst) => ({
     visFlerbarnsdager: VIS_FLERBARNSDAGER_SPØRSMÅL.skalVises(kontekst),
     visMorOverføring: VIS_MOR_OVERFØRING.skalVises(kontekst),
     visFarMedmorOverføring: VIS_FAR_MEDMOR_OVERFØRING.skalVises(kontekst),

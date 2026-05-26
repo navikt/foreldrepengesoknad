@@ -24,7 +24,7 @@ dayjs.extend(isSameOrAfter);
 
 /* ----------------- Kontekst-typer ----------------- */
 
-export type MorsAktivitetListeKontekst = {
+type MorsAktivitetListeKontekst = {
     rettighetType: RettighetType_fpoversikt;
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>;
 };

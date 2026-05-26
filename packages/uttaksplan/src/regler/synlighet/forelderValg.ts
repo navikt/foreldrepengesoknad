@@ -4,7 +4,7 @@ import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
 import { Periode } from '../types';
 import { ForelderValg, Synlighetsregel } from './types';
 
-export type ForelderValgKontekst = {
+type ForelderValgKontekst = {
     forelder: ForelderValg;
     erMorGyldigForelder: boolean;
     erFarMedmorGyldigForelder: boolean;
@@ -72,7 +72,7 @@ export const VIS_KONTO_FAR_MEDMOR_RADIOGRUPPE: Synlighetsregel<ForelderValgKonte
         (k.forelder === 'FAR_MEDMOR' || k.forelder === 'BEGGE') && k.harGyldigeKontoerForFarMedmor,
 };
 
-export type ForelderValgSynlighet = {
+type ForelderValgSynlighet = {
     visMorRadio: boolean;
     visFarMedmorRadio: boolean;
     visBeggeRadio: boolean;

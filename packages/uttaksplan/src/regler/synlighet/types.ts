@@ -16,7 +16,7 @@ export type ForelderValg = BrukerRolleSak_fpoversikt | 'BEGGE' | undefined;
  * runtime-logikk. Brukt i Storybook-katalogen og som basis for
  * `Synlighetsregel<TKontekst>`.
  */
-export type SynlighetsregelDoc = {
+type SynlighetsregelDoc = {
     id: string;
     beskrivelse: string;
 };

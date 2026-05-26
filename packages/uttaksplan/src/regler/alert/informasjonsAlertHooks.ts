@@ -35,7 +35,7 @@ import { AktivAlertMetadata, Alertregel, AlertregelDoc } from './types';
  * (meldingsnøkkel + variant). Brukes som returtype fra alle hookene
  * under for å gi konsumentene en uniform shape.
  */
-export type AktivAlert = AktivAlertMetadata;
+type AktivAlert = AktivAlertMetadata;
 
 const tilAktiv = <T,>(regel: Alertregel<T>, ctx: T): AktivAlert | undefined =>
     regel.skalVises(ctx) ? { meldingId: regel.getMeldingId(ctx), variant: regel.variant } : undefined;
@@ -59,7 +59,7 @@ const aktivFraMetadata = (regel: AlertregelDoc & { fastMeldingId: string }): Akt
  * mangler valg av mors aktivitet. Mor-aktivitet-flagget regnes ut høyere
  * oppe (over hele uttaksplanen) og mates inn som input.
  */
-export type ListePanelInfoAlerts = {
+type ListePanelInfoAlerts = {
     kanMisteDagerVedFerie?: AktivAlert;
     morsAktivitetIkkeOppgitt?: AktivAlert;
 };
@@ -117,7 +117,7 @@ export const useEksisterendeValgtePeriodeAlerts = (): ((
     });
 };
 
-export type UttaksplanListeAlerts = {
+type UttaksplanListeAlerts = {
     manglerMorsAktivitetAlert?: AktivAlert;
 };
 
@@ -133,7 +133,7 @@ export const useUttaksplanListeAlerts = (
     };
 };
 
-export type UttaksplanKalenderAlerts = {
+type UttaksplanKalenderAlerts = {
     manglerMorsAktivitetAlert?: AktivAlert;
 };
 
@@ -149,7 +149,7 @@ export const useUttaksplanKalenderAlerts = (
     };
 };
 
-export type LeggTilEndreSkjemaInfoAlerts = {
+type LeggTilEndreSkjemaInfoAlerts = {
     morsAktivitetIkkeOppgittAlert?: AktivAlert;
 };
 
@@ -165,7 +165,7 @@ export const useLeggTilEndreSkjemaInfoAlerts = (
     };
 };
 
-export type PeriodeDetaljerAlerts = {
+type PeriodeDetaljerAlerts = {
     adopsjonFørFamhend?: AktivAlert;
     eøs?: AktivAlert;
     pleiepenger?: AktivAlert;
@@ -211,7 +211,7 @@ export const usePeriodeDetaljerAlerts = (input: {
     };
 };
 
-export type ForskyvEllerErstattAlerts = {
+type ForskyvEllerErstattAlerts = {
     senerePerioderReadonly?: AktivAlert;
     valgteDagerFørSeksUker?: AktivAlert;
     valgteDagerFørFamhend?: AktivAlert;

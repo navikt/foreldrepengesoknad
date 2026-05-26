@@ -9,7 +9,7 @@ import { Alertregel, Visningssted } from './types';
  * Kontekst for blokkerende alerts som avgjør om hele skjemaet skal
  * erstattes av en informasjonsmelding.
  */
-export type BlokkerendeAlertKontekst = {
+type BlokkerendeAlertKontekst = {
     valgtePerioder: Periode[];
     familiehendelsedato: string;
     familiesituasjon: Familiesituasjon;
@@ -89,7 +89,7 @@ const BLOKKERENDE_ALERTS: ReadonlyArray<Alertregel<BlokkerendeAlertKontekst>> = 
  * Kontekst for kontekstuelle alerts som dukker opp inne i skjemaet
  * som informasjon til brukeren.
  */
-export type KontekstuellAlertKontekst = {
+type KontekstuellAlertKontekst = {
     valgtePerioder: Periode[];
     familiehendelsedato: string;
 };
@@ -120,7 +120,7 @@ export { KONTEKSTUELL_GRADERING_ALERT };
  * Aktive kontekstuelle alerts i legg-til-/endre-skjemaet, ferdig pakket
  * med variant og meldingsnøkkel. Konsumentene rendrer kun.
  */
-export type SkjemaKontekstuelleAlerts = {
+type SkjemaKontekstuelleAlerts = {
     graderingDagerReduseres?: { meldingId: string; variant: 'info' | 'warning' };
 };
 
@@ -143,7 +143,7 @@ export const useSkjemaKontekstuelleAlerts = (
  * Finn den første blokkerende alerten som slår inn, eller undefined.
  * Bruker regelens `getMeldingId` for å finne riktig meldingsnøkkel.
  */
-export const finnFørsteBlokkerendeAlert = (
+const finnFørsteBlokkerendeAlert = (
     ctx: BlokkerendeAlertKontekst,
 ): { regel: Alertregel<BlokkerendeAlertKontekst>; meldingId: string } | undefined => {
     for (const regel of BLOKKERENDE_ALERTS) {

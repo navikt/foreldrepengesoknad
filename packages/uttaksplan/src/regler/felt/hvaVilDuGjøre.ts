@@ -7,7 +7,7 @@ import { Feltregel, Periode, i18n } from '../types';
 
 type HvaVilDuGjøre = 'LEGG_TIL_FERIE' | 'LEGG_TIL_UTSETTELSE' | 'LEGG_TIL_PAUSE' | 'LEGG_TIL_OPPHOLD' | 'LEGG_TIL_PERIODE';
 
-export type HvaVilDuGjøreInput = {
+type HvaVilDuGjøreInput = {
     nyHvaVilDuGjøre: HvaVilDuGjøre | undefined;
     fomValue: string | undefined;
     tomValue: string | undefined;
