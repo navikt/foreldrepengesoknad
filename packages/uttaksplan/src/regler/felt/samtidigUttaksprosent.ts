@@ -5,6 +5,13 @@ import { getFloatFromString } from '@navikt/fp-utils';
 import { Feltregel, førsteBrutteFeltregel, i18n } from '../types';
 import { harIngenVerdi } from './utils';
 
+export const lagSamtidigUttaksprosentValidator =
+    (intl: IntlShape, stillingsprosentValue: string | undefined) =>
+    (value: string): string | null => {
+        const brutt = førsteBrutteFeltregel(SAMTIDIG_UTTAKSPROSENT_REGLER, { value, stillingsprosentValue });
+        return brutt ? intl.formatMessage({ id: brutt.feilmeldingId }) : null;
+    };
+
 type SamtidigUttaksprosentInput = {
     value: string;
     stillingsprosentValue: string | undefined;
@@ -58,10 +65,3 @@ export const SAMTIDIG_UTTAKSPROSENT_REGLER: ReadonlyArray<Feltregel<SamtidigUtta
         feilmeldingId: i18n('leggTilPeriodePanel.stillingsprosent.samtidigUttak'),
     },
 ];
-
-export const lagSamtidigUttaksprosentValidator =
-    (intl: IntlShape, stillingsprosentValue: string | undefined) =>
-    (value: string): string | null => {
-        const brutt = førsteBrutteFeltregel(SAMTIDIG_UTTAKSPROSENT_REGLER, { value, stillingsprosentValue });
-        return brutt ? intl.formatMessage({ id: brutt.feilmeldingId }) : null;
-    };

@@ -5,6 +5,41 @@ import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Periode } from '../types';
 import { Kvoteregel } from './types';
 
+/**
+ * Hook som henter kontekst fra UttaksplanDataContext og returnerer
+ * gyldige kvotetyper for mor og far/medmor basert på reglene i
+ * `kvoteRegler.ts`.
+ */
+export const useGyldigeKvotetyper = (input: {
+    valgtePerioder: Periode[];
+    harValgtSamtidigUttak: boolean;
+    ønskerFlerbarnsdager: boolean | undefined;
+}): GyldigeKvoter => {
+    const {
+        foreldreInfo: { søker, rettighetType },
+        familiehendelsedato,
+        familiesituasjon,
+        valgtStønadskvote,
+    } = useUttaksplanData();
+
+    const tilgjengelige = valgtStønadskvote.kontoer.map((k) => k.konto);
+
+    const kontekst: KvoteKontekst = {
+        søker,
+        rettighetType,
+        familiesituasjon,
+        familiehendelsedato,
+        valgtePerioder: input.valgtePerioder,
+        harValgtSamtidigUttak: input.harValgtSamtidigUttak,
+        ønskerFlerbarnsdager: input.ønskerFlerbarnsdager,
+    };
+
+    return {
+        gyldigeStønadskontoerForMor: filtrer(MOR_KVOTE_REGLER, tilgjengelige, kontekst),
+        gyldigeStønadskontoerForFarMedmor: filtrer(FAR_MEDMOR_KVOTE_REGLER, tilgjengelige, kontekst),
+    };
+};
+
 type KvoteKontekst = {
     søker: BrukerRolleSak_fpoversikt;
     rettighetType: RettighetType_fpoversikt;
@@ -289,39 +324,4 @@ const filtrer = (
 type GyldigeKvoter = {
     gyldigeStønadskontoerForMor: KontoTypeUttak[];
     gyldigeStønadskontoerForFarMedmor: KontoTypeUttak[];
-};
-
-/**
- * Hook som henter kontekst fra UttaksplanDataContext og returnerer
- * gyldige kvotetyper for mor og far/medmor basert på reglene i
- * `kvoteRegler.ts`.
- */
-export const useGyldigeKvotetyper = (input: {
-    valgtePerioder: Periode[];
-    harValgtSamtidigUttak: boolean;
-    ønskerFlerbarnsdager: boolean | undefined;
-}): GyldigeKvoter => {
-    const {
-        foreldreInfo: { søker, rettighetType },
-        familiehendelsedato,
-        familiesituasjon,
-        valgtStønadskvote,
-    } = useUttaksplanData();
-
-    const tilgjengelige = valgtStønadskvote.kontoer.map((k) => k.konto);
-
-    const kontekst: KvoteKontekst = {
-        søker,
-        rettighetType,
-        familiesituasjon,
-        familiehendelsedato,
-        valgtePerioder: input.valgtePerioder,
-        harValgtSamtidigUttak: input.harValgtSamtidigUttak,
-        ønskerFlerbarnsdager: input.ønskerFlerbarnsdager,
-    };
-
-    return {
-        gyldigeStønadskontoerForMor: filtrer(MOR_KVOTE_REGLER, tilgjengelige, kontekst),
-        gyldigeStønadskontoerForFarMedmor: filtrer(FAR_MEDMOR_KVOTE_REGLER, tilgjengelige, kontekst),
-    };
 };

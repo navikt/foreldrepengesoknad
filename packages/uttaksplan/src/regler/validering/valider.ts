@@ -6,6 +6,20 @@ import { FAR_MEDMOR_RUNDT_FØDSEL_OMRÅDE } from './farMedmorRundtFødsel';
 import { SAMTIDIG_UTTAK_OMRÅDE } from './samtidigUttak';
 import { Valideringsområde, ValideringInput, førsteBrutteValideringsregel } from './types';
 
+/**
+ * Kjører hele regelkatalogen mot en gitt input og returnerer første feilmelding,
+ * eller `null` om alt er gyldig.
+ */
+export const valider = (input: ValideringInput, intl: IntlShape): string | null => {
+    for (const validator of VALIDATORS) {
+        const feilmeldingId = validator(input);
+        if (feilmeldingId !== null) {
+            return intl.formatMessage({ id: feilmeldingId });
+        }
+    }
+    return null;
+};
+
 type Validator = (input: ValideringInput) => string | null;
 
 const lagValidator =
@@ -24,17 +38,3 @@ const VALIDATORS: readonly Validator[] = [
     lagValidator(FAR_MEDMOR_RUNDT_FØDSEL_OMRÅDE),
     lagValidator(FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_OMRÅDE),
 ];
-
-/**
- * Kjører hele regelkatalogen mot en gitt input og returnerer første feilmelding,
- * eller `null` om alt er gyldig.
- */
-export const valider = (input: ValideringInput, intl: IntlShape): string | null => {
-    for (const validator of VALIDATORS) {
-        const feilmeldingId = validator(input);
-        if (feilmeldingId !== null) {
-            return intl.formatMessage({ id: feilmeldingId });
-        }
-    }
-    return null;
-};

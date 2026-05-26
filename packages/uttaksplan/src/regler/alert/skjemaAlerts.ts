@@ -6,6 +6,63 @@ import { Periode, i18n } from '../types';
 import { Alertregel, Visningssted } from './types';
 
 /**
+ * Hook som henter kontekst fra UttaksplanDataContext og evaluerer
+ * blokkerende alerts. Returnerer melding-id + variant slik konsumenten
+ * selv kan rendre med FormattedMessage, eller undefined om ingen alert slår inn.
+ */
+export const useBlokkerendeAlert = (input: {
+    valgtePerioder: Periode[];
+    erMorGyldigForelder: boolean;
+    erFarMedmorGyldigForelder: boolean;
+}): { meldingId: string; variant: 'info' | 'warning' } | undefined => {
+    const {
+        foreldreInfo: { rettighetType, søker },
+        familiehendelsedato,
+        familiesituasjon,
+        erPeriodeneTilAnnenPartLåst,
+    } = useUttaksplanData();
+
+    const treff = finnFørsteBlokkerendeAlert({
+        valgtePerioder: input.valgtePerioder,
+        familiehendelsedato,
+        familiesituasjon,
+        søker,
+        rettighetType,
+        erMorGyldigForelder: input.erMorGyldigForelder,
+        erFarMedmorGyldigForelder: input.erFarMedmorGyldigForelder,
+        erPeriodeneTilAnnenPartLåst,
+    });
+
+    if (!treff) {
+        return undefined;
+    }
+
+    return {
+        meldingId: treff.meldingId,
+        variant: treff.regel.variant,
+    };
+};
+
+/**
+ * Aktive kontekstuelle alerts i legg-til-/endre-skjemaet, ferdig pakket
+ * med variant og meldingsnøkkel. Konsumentene rendrer kun.
+ */
+export const useSkjemaKontekstuelleAlerts = (
+    valgtePerioder: Periode[],
+): SkjemaKontekstuelleAlerts => {
+    const { familiehendelsedato } = useUttaksplanData();
+    const ctx: KontekstuellAlertKontekst = { valgtePerioder, familiehendelsedato };
+    return {
+        graderingDagerReduseres: KONTEKSTUELL_GRADERING_ALERT.skalVises(ctx)
+            ? {
+                  meldingId: KONTEKSTUELL_GRADERING_ALERT.getMeldingId(ctx),
+                  variant: KONTEKSTUELL_GRADERING_ALERT.variant,
+              }
+            : undefined,
+    };
+};
+
+/**
  * Kontekst for blokkerende alerts som avgjør om hele skjemaet skal
  * erstattes av en informasjonsmelding.
  */
@@ -115,28 +172,8 @@ const KONTEKSTUELL_GRADERING_ALERT: Alertregel<KontekstuellAlertKontekst> = {
 const KONTEKSTUELLE_ALERTS: ReadonlyArray<Alertregel<KontekstuellAlertKontekst>> = [KONTEKSTUELL_GRADERING_ALERT];
 
 export { KONTEKSTUELL_GRADERING_ALERT };
-
-/**
- * Aktive kontekstuelle alerts i legg-til-/endre-skjemaet, ferdig pakket
- * med variant og meldingsnøkkel. Konsumentene rendrer kun.
- */
 type SkjemaKontekstuelleAlerts = {
     graderingDagerReduseres?: { meldingId: string; variant: 'info' | 'warning' };
-};
-
-export const useSkjemaKontekstuelleAlerts = (
-    valgtePerioder: Periode[],
-): SkjemaKontekstuelleAlerts => {
-    const { familiehendelsedato } = useUttaksplanData();
-    const ctx: KontekstuellAlertKontekst = { valgtePerioder, familiehendelsedato };
-    return {
-        graderingDagerReduseres: KONTEKSTUELL_GRADERING_ALERT.skalVises(ctx)
-            ? {
-                  meldingId: KONTEKSTUELL_GRADERING_ALERT.getMeldingId(ctx),
-                  variant: KONTEKSTUELL_GRADERING_ALERT.variant,
-              }
-            : undefined,
-    };
 };
 
 /**
@@ -153,43 +190,4 @@ const finnFørsteBlokkerendeAlert = (
     }
     return undefined;
 };
-
-/**
- * Hook som henter kontekst fra UttaksplanDataContext og evaluerer
- * blokkerende alerts. Returnerer melding-id + variant slik konsumenten
- * selv kan rendre med FormattedMessage, eller undefined om ingen alert slår inn.
- */
-export const useBlokkerendeAlert = (input: {
-    valgtePerioder: Periode[];
-    erMorGyldigForelder: boolean;
-    erFarMedmorGyldigForelder: boolean;
-}): { meldingId: string; variant: 'info' | 'warning' } | undefined => {
-    const {
-        foreldreInfo: { rettighetType, søker },
-        familiehendelsedato,
-        familiesituasjon,
-        erPeriodeneTilAnnenPartLåst,
-    } = useUttaksplanData();
-
-    const treff = finnFørsteBlokkerendeAlert({
-        valgtePerioder: input.valgtePerioder,
-        familiehendelsedato,
-        familiesituasjon,
-        søker,
-        rettighetType,
-        erMorGyldigForelder: input.erMorGyldigForelder,
-        erFarMedmorGyldigForelder: input.erFarMedmorGyldigForelder,
-        erPeriodeneTilAnnenPartLåst,
-    });
-
-    if (!treff) {
-        return undefined;
-    }
-
-    return {
-        meldingId: treff.meldingId,
-        variant: treff.regel.variant,
-    };
-};
-
 export { BLOKKERENDE_ALERTS, KONTEKSTUELLE_ALERTS };

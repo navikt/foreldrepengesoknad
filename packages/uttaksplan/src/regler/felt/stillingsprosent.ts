@@ -5,6 +5,16 @@ import { getFloatFromString } from '@navikt/fp-utils';
 import { Feltregel, førsteBrutteFeltregel, i18n } from '../types';
 import { harIngenVerdi } from './utils';
 
+/**
+ * Lager en validator-funksjon som passer rett inn i React Hook Form sin `validate`-prop.
+ */
+export const lagStillingsprosentValidator =
+    (intl: IntlShape, samtidigUttaksprosentValue: string | undefined) =>
+    (value: string): string | null => {
+        const brutt = førsteBrutteFeltregel(STILLINGSPROSENT_REGLER, { value, samtidigUttaksprosentValue });
+        return brutt ? intl.formatMessage({ id: brutt.feilmeldingId }) : null;
+    };
+
 type StillingsprosentInput = {
     value: string;
     samtidigUttaksprosentValue: string | undefined;
@@ -58,13 +68,3 @@ export const STILLINGSPROSENT_REGLER: ReadonlyArray<Feltregel<StillingsprosentIn
         feilmeldingId: i18n('leggTilPeriodePanel.stillingsprosent.samtidigUttak'),
     },
 ];
-
-/**
- * Lager en validator-funksjon som passer rett inn i React Hook Form sin `validate`-prop.
- */
-export const lagStillingsprosentValidator =
-    (intl: IntlShape, samtidigUttaksprosentValue: string | undefined) =>
-    (value: string): string | null => {
-        const brutt = førsteBrutteFeltregel(STILLINGSPROSENT_REGLER, { value, samtidigUttaksprosentValue });
-        return brutt ? intl.formatMessage({ id: brutt.feilmeldingId }) : null;
-    };

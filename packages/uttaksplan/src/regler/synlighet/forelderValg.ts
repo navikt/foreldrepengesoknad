@@ -4,6 +4,63 @@ import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
 import { Periode } from '../types';
 import { ForelderValg, Synlighetsregel } from './types';
 
+/**
+ * Hook som regner ut synlighet for Mor/Far/Begge-radioknappene i
+ * skjemaet for å legge til eller endre en periode. Henter gyldige
+ * kvotetyper direkte via {@link useGyldigeKvotetyper} og kombinerer
+ * det med EØS- og låst-status fra UttaksplanDataContext.
+ */
+export const useForelderValgSynlighet = (
+    valgtePerioder: Periode[],
+    input: {
+        forelder: ForelderValg;
+        ønskerFlerbarnsdager: boolean | undefined;
+    },
+): ForelderValgSynlighet => {
+    const {
+        foreldreInfo: { søker },
+        erPeriodeneTilAnnenPartLåst,
+        uttakPerioder,
+    } = useUttaksplanData();
+
+    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useGyldigeKvotetyper({
+        valgtePerioder,
+        harValgtSamtidigUttak: input.forelder === 'BEGGE',
+        ønskerFlerbarnsdager: input.ønskerFlerbarnsdager,
+    });
+
+    const erMorGyldigForelder = gyldigeStønadskontoerForMor.length > 0;
+    const erFarMedmorGyldigForelder = gyldigeStønadskontoerForFarMedmor.length > 0;
+    const erMinstEnEøsPeriode = uttakPerioder.some((periode) => erEøsUttakPeriode(periode));
+    const erFarMedmorLåst = erPeriodeneTilAnnenPartLåst && søker === 'MOR';
+    const erMorLåst = erPeriodeneTilAnnenPartLåst && søker === 'FAR_MEDMOR';
+
+    const kontekst: ForelderValgKontekst = {
+        forelder: input.forelder,
+        erMorGyldigForelder,
+        erFarMedmorGyldigForelder,
+        erMorLåst,
+        erFarMedmorLåst,
+        erMinstEnEøsPeriode,
+        harGyldigeKontoerForMor: gyldigeStønadskontoerForMor.length > 0,
+        harGyldigeKontoerForFarMedmor: gyldigeStønadskontoerForFarMedmor.length > 0,
+    };
+
+    return {
+        visMorRadio: VIS_MOR_RADIO.skalVises(kontekst),
+        visFarMedmorRadio: VIS_FAR_MEDMOR_RADIO.skalVises(kontekst),
+        visBeggeRadio: VIS_BEGGE_RADIO.skalVises(kontekst),
+        visKontoMorRadiogruppe: VIS_KONTO_MOR_RADIOGRUPPE.skalVises(kontekst),
+        visKontoFarMedmorRadiogruppe: VIS_KONTO_FAR_MEDMOR_RADIOGRUPPE.skalVises(kontekst),
+        erMorGyldigForelder,
+        erFarMedmorGyldigForelder,
+        erMorLåst,
+        erFarMedmorLåst,
+        gyldigeStønadskontoerForMor,
+        gyldigeStønadskontoerForFarMedmor,
+    };
+};
+
 type ForelderValgKontekst = {
     forelder: ForelderValg;
     erMorGyldigForelder: boolean;
@@ -86,61 +143,4 @@ type ForelderValgSynlighet = {
     gyldigeStønadskontoerForFarMedmor: ReturnType<
         typeof useGyldigeKvotetyper
     >['gyldigeStønadskontoerForFarMedmor'];
-};
-
-/**
- * Hook som regner ut synlighet for Mor/Far/Begge-radioknappene i
- * skjemaet for å legge til eller endre en periode. Henter gyldige
- * kvotetyper direkte via {@link useGyldigeKvotetyper} og kombinerer
- * det med EØS- og låst-status fra UttaksplanDataContext.
- */
-export const useForelderValgSynlighet = (
-    valgtePerioder: Periode[],
-    input: {
-        forelder: ForelderValg;
-        ønskerFlerbarnsdager: boolean | undefined;
-    },
-): ForelderValgSynlighet => {
-    const {
-        foreldreInfo: { søker },
-        erPeriodeneTilAnnenPartLåst,
-        uttakPerioder,
-    } = useUttaksplanData();
-
-    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useGyldigeKvotetyper({
-        valgtePerioder,
-        harValgtSamtidigUttak: input.forelder === 'BEGGE',
-        ønskerFlerbarnsdager: input.ønskerFlerbarnsdager,
-    });
-
-    const erMorGyldigForelder = gyldigeStønadskontoerForMor.length > 0;
-    const erFarMedmorGyldigForelder = gyldigeStønadskontoerForFarMedmor.length > 0;
-    const erMinstEnEøsPeriode = uttakPerioder.some((periode) => erEøsUttakPeriode(periode));
-    const erFarMedmorLåst = erPeriodeneTilAnnenPartLåst && søker === 'MOR';
-    const erMorLåst = erPeriodeneTilAnnenPartLåst && søker === 'FAR_MEDMOR';
-
-    const kontekst: ForelderValgKontekst = {
-        forelder: input.forelder,
-        erMorGyldigForelder,
-        erFarMedmorGyldigForelder,
-        erMorLåst,
-        erFarMedmorLåst,
-        erMinstEnEøsPeriode,
-        harGyldigeKontoerForMor: gyldigeStønadskontoerForMor.length > 0,
-        harGyldigeKontoerForFarMedmor: gyldigeStønadskontoerForFarMedmor.length > 0,
-    };
-
-    return {
-        visMorRadio: VIS_MOR_RADIO.skalVises(kontekst),
-        visFarMedmorRadio: VIS_FAR_MEDMOR_RADIO.skalVises(kontekst),
-        visBeggeRadio: VIS_BEGGE_RADIO.skalVises(kontekst),
-        visKontoMorRadiogruppe: VIS_KONTO_MOR_RADIOGRUPPE.skalVises(kontekst),
-        visKontoFarMedmorRadiogruppe: VIS_KONTO_FAR_MEDMOR_RADIOGRUPPE.skalVises(kontekst),
-        erMorGyldigForelder,
-        erFarMedmorGyldigForelder,
-        erMorLåst,
-        erFarMedmorLåst,
-        gyldigeStønadskontoerForMor,
-        gyldigeStønadskontoerForFarMedmor,
-    };
 };

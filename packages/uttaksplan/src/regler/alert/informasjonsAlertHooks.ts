@@ -31,39 +31,11 @@ import {
 import { AktivAlertMetadata, Alertregel, AlertregelDoc } from './types';
 
 /**
- * Aktiv alert = en regel som har slått inn, ferdig pakket for visning
- * (meldingsnøkkel + variant). Brukes som returtype fra alle hookene
- * under for å gi konsumentene en uniform shape.
- */
-type AktivAlert = AktivAlertMetadata;
-
-const tilAktiv = <T,>(regel: Alertregel<T>, ctx: T): AktivAlert | undefined =>
-    regel.skalVises(ctx) ? { meldingId: regel.getMeldingId(ctx), variant: regel.variant } : undefined;
-
-/**
- * Bygg en AktivAlert kun fra metadataen på regelen — uten å evaluere
- * `skalVises` eller `getMeldingId`. Brukes når kallstedet allerede har
- * regnet ut betingelsen selv (typisk fordi konteksten ikke matcher
- * regelens runtime-kontrakt). Tar kun imot regler som har `fastMeldingId`
- * satt, så TypeScript hindrer feilaktig bruk på regler med flere
- * meldingsvarianter.
- */
-const aktivFraMetadata = (regel: AlertregelDoc & { fastMeldingId: string }): AktivAlert => ({
-    meldingId: regel.fastMeldingId,
-    variant: regel.variant,
-});
-
-/**
  * Listepanelet skal varsle om at mor kan miste dager når hun endrer en
  * periode til ferie/opphold, og når en eller flere eksisterende perioder
  * mangler valg av mors aktivitet. Mor-aktivitet-flagget regnes ut høyere
  * oppe (over hele uttaksplanen) og mates inn som input.
  */
-type ListePanelInfoAlerts = {
-    kanMisteDagerVedFerie?: AktivAlert;
-    morsAktivitetIkkeOppgitt?: AktivAlert;
-};
-
 export const useListePanelInfoAlerts = (input: {
     valgtPeriode: { fom: string; tom: string } | undefined;
     harValgtFerieEllerOpphold: boolean;
@@ -117,10 +89,6 @@ export const useEksisterendeValgtePeriodeAlerts = (): ((
     });
 };
 
-type UttaksplanListeAlerts = {
-    manglerMorsAktivitetAlert?: AktivAlert;
-};
-
 /** Alerter som vises over hele listevisningen. */
 export const useUttaksplanListeAlerts = (
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
@@ -131,10 +99,6 @@ export const useUttaksplanListeAlerts = (
     return {
         manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_LISTE, { rettighetType, perioder }),
     };
-};
-
-type UttaksplanKalenderAlerts = {
-    manglerMorsAktivitetAlert?: AktivAlert;
 };
 
 /** Alerter som vises over hele kalendervisningen. */
@@ -149,10 +113,6 @@ export const useUttaksplanKalenderAlerts = (
     };
 };
 
-type LeggTilEndreSkjemaInfoAlerts = {
-    morsAktivitetIkkeOppgittAlert?: AktivAlert;
-};
-
 /** Informasjons-alerter i legg-til/endre-periode-skjemaet. */
 export const useLeggTilEndreSkjemaInfoAlerts = (
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
@@ -163,13 +123,6 @@ export const useLeggTilEndreSkjemaInfoAlerts = (
     return {
         morsAktivitetIkkeOppgittAlert: tilAktiv(MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING, { rettighetType, perioder }),
     };
-};
-
-type PeriodeDetaljerAlerts = {
-    adopsjonFørFamhend?: AktivAlert;
-    eøs?: AktivAlert;
-    pleiepenger?: AktivAlert;
-    kanMisteDager?: AktivAlert;
 };
 
 /** Alle informasjons-alerter i detaljvisning av valgte eksisterende perioder. */
@@ -209,12 +162,6 @@ export const usePeriodeDetaljerAlerts = (input: {
         pleiepenger: tilAktiv(IKKE_REDIGERBAR_PLEIEPENGER, ctx),
         kanMisteDager: tilAktiv(KAN_MISTE_DAGER, ctx),
     };
-};
-
-type ForskyvEllerErstattAlerts = {
-    senerePerioderReadonly?: AktivAlert;
-    valgteDagerFørSeksUker?: AktivAlert;
-    valgteDagerFørFamhend?: AktivAlert;
 };
 
 /** Alerter i forskyv- og erstatt-panelene. */
@@ -265,4 +212,51 @@ export const useForskyvEllerErstattAlerts = (input: {
         valgteDagerFørSeksUker: tilAktiv(VALGTE_DAGER_FØR_SEKS_UKER, ctx),
         valgteDagerFørFamhend: tilAktiv(VALGTE_DAGER_FØR_FAMHEND, ctx),
     };
+};
+
+/**
+ * Aktiv alert = en regel som har slått inn, ferdig pakket for visning
+ * (meldingsnøkkel + variant). Brukes som returtype fra alle hookene
+ * under for å gi konsumentene en uniform shape.
+ */
+type AktivAlert = AktivAlertMetadata;
+
+const tilAktiv = <T,>(regel: Alertregel<T>, ctx: T): AktivAlert | undefined =>
+    regel.skalVises(ctx) ? { meldingId: regel.getMeldingId(ctx), variant: regel.variant } : undefined;
+
+/**
+ * Bygg en AktivAlert kun fra metadataen på regelen — uten å evaluere
+ * `skalVises` eller `getMeldingId`. Brukes når kallstedet allerede har
+ * regnet ut betingelsen selv (typisk fordi konteksten ikke matcher
+ * regelens runtime-kontrakt). Tar kun imot regler som har `fastMeldingId`
+ * satt, så TypeScript hindrer feilaktig bruk på regler med flere
+ * meldingsvarianter.
+ */
+const aktivFraMetadata = (regel: AlertregelDoc & { fastMeldingId: string }): AktivAlert => ({
+    meldingId: regel.fastMeldingId,
+    variant: regel.variant,
+});
+type ListePanelInfoAlerts = {
+    kanMisteDagerVedFerie?: AktivAlert;
+    morsAktivitetIkkeOppgitt?: AktivAlert;
+};
+type UttaksplanListeAlerts = {
+    manglerMorsAktivitetAlert?: AktivAlert;
+};
+type UttaksplanKalenderAlerts = {
+    manglerMorsAktivitetAlert?: AktivAlert;
+};
+type LeggTilEndreSkjemaInfoAlerts = {
+    morsAktivitetIkkeOppgittAlert?: AktivAlert;
+};
+type PeriodeDetaljerAlerts = {
+    adopsjonFørFamhend?: AktivAlert;
+    eøs?: AktivAlert;
+    pleiepenger?: AktivAlert;
+    kanMisteDager?: AktivAlert;
+};
+type ForskyvEllerErstattAlerts = {
+    senerePerioderReadonly?: AktivAlert;
+    valgteDagerFørSeksUker?: AktivAlert;
+    valgteDagerFørFamhend?: AktivAlert;
 };

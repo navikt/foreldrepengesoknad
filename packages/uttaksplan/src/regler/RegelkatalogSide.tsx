@@ -8,7 +8,34 @@ import { BodyLong, BodyShort, Box, HStack, Heading, Tag, VStack } from '@navikt/
  * tabellramme — så designere og PO-er kjenner igjen mønsteret på tvers
  * av felt-, synlighets-, kvotetype-, alert- og valideringsreglene.
  */
-
+export const RegelkatalogSide = <T,>({
+    tittel,
+    intro,
+    kildesti,
+    farge,
+    badge,
+    områder,
+    getRegelId,
+    kolonner,
+}: RegelkatalogSideProps<T>) => (
+    <div className="bg-ax-bg-neutral-soft min-h-screen p-8">
+        <VStack gap="space-24" className="mx-auto max-w-6xl">
+            <Hero tittel={tittel} intro={intro} kildesti={kildesti} farge={farge} badge={badge} />
+            {områder.map((område, idx) => (
+                <OmrådeKort
+                    key={område.id}
+                    nummer={idx + 1}
+                    tittel={område.område}
+                    beskrivelse={område.beskrivelse}
+                    farge={farge}
+                    regler={område.regler}
+                    getRegelId={getRegelId}
+                    kolonner={kolonner}
+                />
+            ))}
+        </VStack>
+    </div>
+);
 /**
  * Visuell identitet per katalogtype — eksplisitte felt så lesaren
  * slepp å gjette kva del av strengen som hører til kvar plass.
@@ -188,35 +215,6 @@ export type RegelkatalogSideProps<T> = {
     getRegelId: (regel: T) => string;
     kolonner: ReadonlyArray<Kolonne<T>>;
 };
-
-export const RegelkatalogSide = <T,>({
-    tittel,
-    intro,
-    kildesti,
-    farge,
-    badge,
-    områder,
-    getRegelId,
-    kolonner,
-}: RegelkatalogSideProps<T>) => (
-    <div className="bg-ax-bg-neutral-soft min-h-screen p-8">
-        <VStack gap="space-24" className="mx-auto max-w-6xl">
-            <Hero tittel={tittel} intro={intro} kildesti={kildesti} farge={farge} badge={badge} />
-            {områder.map((område, idx) => (
-                <OmrådeKort
-                    key={område.id}
-                    nummer={idx + 1}
-                    tittel={område.område}
-                    beskrivelse={område.beskrivelse}
-                    farge={farge}
-                    regler={område.regler}
-                    getRegelId={getRegelId}
-                    kolonner={kolonner}
-                />
-            ))}
-        </VStack>
-    </div>
-);
 
 /** Liten badge med monospace-id — brukt i tabellene. */
 export const RegelIdBadge = ({ id }: { id: string }) => (

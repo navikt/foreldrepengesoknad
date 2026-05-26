@@ -11,6 +11,25 @@ import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Periode } from '../types';
 import { ForelderValg, Synlighetsregel } from './types';
 
+export const useFeltSynlighet = (valgtePerioder: Periode[], formVerdier: FormVerdier) => {
+    const {
+        foreldreInfo: { rettighetType, søker },
+        familiehendelsedato,
+        familiesituasjon,
+        barn,
+    } = useUttaksplanData();
+
+    return synlighetForFelter({
+        ...formVerdier,
+        søker,
+        rettighetType,
+        antallBarn: barn.antallBarn,
+        familiesituasjon,
+        valgtePerioder,
+        familiehendelsedato,
+    });
+};
+
 type FeltSynlighetKontekst = {
     forelder: ForelderValg;
     søker: BrukerRolleSak_fpoversikt;
@@ -184,23 +203,4 @@ type FormVerdier = {
     ønskerFlerbarnsdager: boolean | undefined;
     samtidigUttaksprosentMor: string | undefined;
     stillingsprosentMor: string | undefined;
-};
-
-export const useFeltSynlighet = (valgtePerioder: Periode[], formVerdier: FormVerdier) => {
-    const {
-        foreldreInfo: { rettighetType, søker },
-        familiehendelsedato,
-        familiesituasjon,
-        barn,
-    } = useUttaksplanData();
-
-    return synlighetForFelter({
-        ...formVerdier,
-        søker,
-        rettighetType,
-        antallBarn: barn.antallBarn,
-        familiesituasjon,
-        valgtePerioder,
-        familiehendelsedato,
-    });
 };

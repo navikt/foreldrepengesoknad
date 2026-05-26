@@ -11,22 +11,39 @@ import { Periode } from '../types';
 import { Synlighetsregel } from './types';
 
 /**
- * Konteksten knappereglane treng for å avgjere kva «Legg til»-knappar som
- * vises i redigeringspanelet (HvaVilDuEndreTilPanel), og kva tekst som
- * brukes på ferie-knappen.
+ * Hook som avgjer kva «Legg til»-knappar som vises i redigeringspanelet,
+ * og kva tekst som brukes på ferie-knappen. Hentar søker, rettighet,
+ * familiesituasjon og familiehendelsedato sjølv frå UttaksplanData; kallaren
+ * gir berre periodene som er aktuelle for dette render-passet.
  */
-type KnapperIRedigeringspanelKontekst = {
-    søker: BrukerRolleSak_fpoversikt;
-    rettighetType: RettighetType_fpoversikt;
-    familiesituasjon: Familiesituasjon;
-    familiehendelsedato: string;
+export const useKnapperIRedigeringspanelSynlighet = (input: {
     sammenslåtteValgtePerioder: readonly Periode[];
     eksisterendePerioderSomErValgt: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>;
-    erPeriodeneTilAnnenPartLåst: boolean;
-};
+}): KnapperIRedigeringspanelSynlighet => {
+    const {
+        foreldreInfo: { søker, rettighetType },
+        familiesituasjon,
+        familiehendelsedato,
+        erPeriodeneTilAnnenPartLåst,
+    } = useUttaksplanData();
 
-const harBareFarRett = (k: KnapperIRedigeringspanelKontekst) =>
-    k.søker === 'FAR_MEDMOR' && k.rettighetType === 'BARE_SØKER_RETT';
+    const kontekst: KnapperIRedigeringspanelKontekst = {
+        søker,
+        rettighetType,
+        familiesituasjon,
+        familiehendelsedato,
+        erPeriodeneTilAnnenPartLåst,
+        sammenslåtteValgtePerioder: input.sammenslåtteValgtePerioder,
+        eksisterendePerioderSomErValgt: input.eksisterendePerioderSomErValgt,
+    };
+
+    return {
+        skalViseUtsettelsesknapp: SKAL_VISE_UTSETTELSESKNAPP.skalVises(kontekst),
+        skalVisePauseknapp: SKAL_VISE_PAUSEKNAPP.skalVises(kontekst),
+        skalViseFerieknapp: SKAL_VISE_FERIEKNAPP.skalVises(kontekst),
+        skalViseLeggTilKnappetekst: SKAL_VISE_LEGG_TIL_KNAPPETEKST.skalVises(kontekst),
+    };
+};
 
 export const SKAL_VISE_UTSETTELSESKNAPP: Synlighetsregel<KnapperIRedigeringspanelKontekst> = {
     id: 'knapperIRedigeringspanel.skalViseUtsettelsesknapp',
@@ -89,6 +106,21 @@ export const SKAL_VISE_LEGG_TIL_KNAPPETEKST: Synlighetsregel<KnapperIRedigerings
             k.eksisterendePerioderSomErValgt.some((p) => erVanligUttakPeriode(p) && p.forelder !== k.søker)),
 };
 
+/**
+ * Konteksten knappereglane treng for å avgjere kva «Legg til»-knappar som
+ * vises i redigeringspanelet (HvaVilDuEndreTilPanel), og kva tekst som
+ * brukes på ferie-knappen.
+ */
+type KnapperIRedigeringspanelKontekst = {
+    søker: BrukerRolleSak_fpoversikt;
+    rettighetType: RettighetType_fpoversikt;
+    familiesituasjon: Familiesituasjon;
+    familiehendelsedato: string;
+    sammenslåtteValgtePerioder: readonly Periode[];
+    eksisterendePerioderSomErValgt: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>;
+    erPeriodeneTilAnnenPartLåst: boolean;
+};
+
 type KnapperIRedigeringspanelSynlighet = {
     skalViseUtsettelsesknapp: boolean;
     skalVisePauseknapp: boolean;
@@ -96,37 +128,5 @@ type KnapperIRedigeringspanelSynlighet = {
     skalViseLeggTilKnappetekst: boolean;
 };
 
-/**
- * Hook som avgjer kva «Legg til»-knappar som vises i redigeringspanelet,
- * og kva tekst som brukes på ferie-knappen. Hentar søker, rettighet,
- * familiesituasjon og familiehendelsedato sjølv frå UttaksplanData; kallaren
- * gir berre periodene som er aktuelle for dette render-passet.
- */
-export const useKnapperIRedigeringspanelSynlighet = (input: {
-    sammenslåtteValgtePerioder: readonly Periode[];
-    eksisterendePerioderSomErValgt: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>;
-}): KnapperIRedigeringspanelSynlighet => {
-    const {
-        foreldreInfo: { søker, rettighetType },
-        familiesituasjon,
-        familiehendelsedato,
-        erPeriodeneTilAnnenPartLåst,
-    } = useUttaksplanData();
-
-    const kontekst: KnapperIRedigeringspanelKontekst = {
-        søker,
-        rettighetType,
-        familiesituasjon,
-        familiehendelsedato,
-        erPeriodeneTilAnnenPartLåst,
-        sammenslåtteValgtePerioder: input.sammenslåtteValgtePerioder,
-        eksisterendePerioderSomErValgt: input.eksisterendePerioderSomErValgt,
-    };
-
-    return {
-        skalViseUtsettelsesknapp: SKAL_VISE_UTSETTELSESKNAPP.skalVises(kontekst),
-        skalVisePauseknapp: SKAL_VISE_PAUSEKNAPP.skalVises(kontekst),
-        skalViseFerieknapp: SKAL_VISE_FERIEKNAPP.skalVises(kontekst),
-        skalViseLeggTilKnappetekst: SKAL_VISE_LEGG_TIL_KNAPPETEKST.skalVises(kontekst),
-    };
-};
+const harBareFarRett = (k: KnapperIRedigeringspanelKontekst) =>
+    k.søker === 'FAR_MEDMOR' && k.rettighetType === 'BARE_SØKER_RETT';

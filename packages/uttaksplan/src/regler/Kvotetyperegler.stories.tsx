@@ -6,6 +6,36 @@ import { Kolonne, RegelIdBadge, RegelkatalogSide } from './RegelkatalogSide';
 import { FAR_MEDMOR_KVOTE_REGLER, MOR_KVOTE_REGLER } from './kvotetype/kvoteRegler';
 import { Kvoteområde } from './kvotetype/types';
 
+/**
+ * Selvdokumenterende Storybook-side: viser hvilke kvotetyper (stønadskontoer)
+ * som er gyldige å velge for hver forelder i skjemaet for å legge til eller
+ * endre en periode.
+ */
+const Kvotetyperegler = () => (
+    <RegelkatalogSide
+        tittel="Kvotetyperegler i uttaksplan-skjemaet"
+        badge="Kvotetyper"
+        farge="kvote"
+        kildesti="packages/uttaksplan/src/regler/kvotetype/"
+        intro={INTRO}
+        områder={ALLE_KVOTE_OMRÅDER}
+        getRegelId={(r) => r.id}
+        kolonner={kolonner}
+    />
+);
+
+const meta = {
+    title: 'Uttaksplan/Kvotetyperegler (dokumentasjon)',
+    component: Kvotetyperegler,
+    parameters: { layout: 'fullscreen' },
+} satisfies Meta<typeof Kvotetyperegler>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const AlleKvotetyperegler: Story = {};
+
 const MOR_KVOTE_OMRÅDE: Kvoteområde = {
     id: 'morKvoter',
     område: 'Hvilke kvotetyper er gyldige å velge for mor?',
@@ -53,33 +83,3 @@ const kolonner: ReadonlyArray<Kolonne<Kvoteregel>> = [
         render: (r) => r.beskrivelse,
     },
 ];
-
-/**
- * Selvdokumenterende Storybook-side: viser hvilke kvotetyper (stønadskontoer)
- * som er gyldige å velge for hver forelder i skjemaet for å legge til eller
- * endre en periode.
- */
-const Kvotetyperegler = () => (
-    <RegelkatalogSide
-        tittel="Kvotetyperegler i uttaksplan-skjemaet"
-        badge="Kvotetyper"
-        farge="kvote"
-        kildesti="packages/uttaksplan/src/regler/kvotetype/"
-        intro={INTRO}
-        områder={ALLE_KVOTE_OMRÅDER}
-        getRegelId={(r) => r.id}
-        kolonner={kolonner}
-    />
-);
-
-const meta = {
-    title: 'Uttaksplan/Kvotetyperegler (dokumentasjon)',
-    component: Kvotetyperegler,
-    parameters: { layout: 'fullscreen' },
-} satisfies Meta<typeof Kvotetyperegler>;
-
-export default meta;
-
-type Story = StoryObj<typeof meta>;
-
-export const AlleKvotetyperegler: Story = {};

@@ -5,6 +5,14 @@ import { BrukerRolleSak_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Feltregel, Periode, i18n } from '../types';
 
+/**
+ * Lager validator-funksjoner for «Hva vil du gjøre»-feltet. Returnerer en array som kan
+ * spres rett inn i React Hook Form sin `validate`-prop, slik at hver regel viser sin egen
+ * feilmelding.
+ */
+export const lagHvaVilDuGjøreValidatorer = (intl: IntlShape, kontekst: StaticKontekst) =>
+    HVA_VIL_DU_GJØRE_REGLER.map((regel) => lagFeltvalidator(intl, regel, kontekst));
+
 type HvaVilDuGjøre = 'LEGG_TIL_FERIE' | 'LEGG_TIL_UTSETTELSE' | 'LEGG_TIL_PAUSE' | 'LEGG_TIL_OPPHOLD' | 'LEGG_TIL_PERIODE';
 
 type HvaVilDuGjøreInput = {
@@ -77,11 +85,3 @@ const lagFeltvalidator =
         }
         return null;
     };
-
-/**
- * Lager validator-funksjoner for «Hva vil du gjøre»-feltet. Returnerer en array som kan
- * spres rett inn i React Hook Form sin `validate`-prop, slik at hver regel viser sin egen
- * feilmelding.
- */
-export const lagHvaVilDuGjøreValidatorer = (intl: IntlShape, kontekst: StaticKontekst) =>
-    HVA_VIL_DU_GJØRE_REGLER.map((regel) => lagFeltvalidator(intl, regel, kontekst));

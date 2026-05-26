@@ -8,31 +8,6 @@ import { FAR_MEDMOR_RUNDT_FØDSEL_OMRÅDE } from './validering/farMedmorRundtFø
 import { SAMTIDIG_UTTAK_OMRÅDE } from './validering/samtidigUttak';
 
 /**
- * Katalog-projeksjon: storybook-siden bryr seg kun om id, beskrivelse og
- * feilmeldingId — ikke om kontekst-typen som varierer per regelområde.
- */
-type ValideringskatalogOmråde = {
-    id: string;
-    område: string;
-    beskrivelse: string;
-    regler: ReadonlyArray<{ id: string; beskrivelse: string; feilmeldingId: string }>;
-};
-
-const ALLE_VALIDERINGSREGLER: readonly ValideringskatalogOmråde[] = [
-    ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_OMRÅDE,
-    SAMTIDIG_UTTAK_OMRÅDE,
-    FAR_MEDMOR_RUNDT_FØDSEL_OMRÅDE,
-    FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_OMRÅDE,
-];
-
-type Valideringsregel = ValideringskatalogOmråde['regler'][number];
-
-const INTRO =
-    'Når brukeren lagrer en ny eller endret periode i uttaksplanen, blir reglene under sjekket i rekkefølge — ' +
-    'etter at feltvalideringene allerede har passert. Første regel som er brutt bestemmer hvilken feilmelding ' +
-    'brukeren får. Samme regler gjelder både i listen og i kalenderen.';
-
-/**
  * Selvdokumenterende Storybook-side: viser valideringsreglene som kjøres
  * ved submit (lagring) av en periode. Disse reglene kjøres etter at
  * feltvalideringene har passert, og sjekker tverrgående betingelser som
@@ -84,3 +59,28 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const AlleRegler: Story = {};
+
+/**
+ * Katalog-projeksjon: storybook-siden bryr seg kun om id, beskrivelse og
+ * feilmeldingId — ikke om kontekst-typen som varierer per regelområde.
+ */
+type ValideringskatalogOmråde = {
+    id: string;
+    område: string;
+    beskrivelse: string;
+    regler: ReadonlyArray<{ id: string; beskrivelse: string; feilmeldingId: string }>;
+};
+
+const ALLE_VALIDERINGSREGLER: readonly ValideringskatalogOmråde[] = [
+    ARBEID_OG_UTTAK_FØRSTE_SEKS_UKER_OMRÅDE,
+    SAMTIDIG_UTTAK_OMRÅDE,
+    FAR_MEDMOR_RUNDT_FØDSEL_OMRÅDE,
+    FAR_MEDMOR_MAKS_TO_UKER_RUNDT_FØDSEL_OMRÅDE,
+];
+
+type Valideringsregel = ValideringskatalogOmråde['regler'][number];
+
+const INTRO =
+    'Når brukeren lagrer en ny eller endret periode i uttaksplanen, blir reglene under sjekket i rekkefølge — ' +
+    'etter at feltvalideringene allerede har passert. Første regel som er brutt bestemmer hvilken feilmelding ' +
+    'brukeren får. Samme regler gjelder både i listen og i kalenderen.';
