@@ -133,7 +133,7 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step steps={stepConfig}>
+            <Step steps={stepConfig} onStepChange={navigator.goToNextStep}>
                 <VStack gap="space-20">
                     <FordelingOversikt
                         kontoer={valgtStønadskvote}

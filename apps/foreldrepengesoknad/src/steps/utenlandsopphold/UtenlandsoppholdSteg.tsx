@@ -54,6 +54,7 @@ export const UtenlandsoppholdSteg = ({ arbeidsforhold, mellomlagreSøknadOgNavig
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
+                onStepChange={navigator.goToNextStep}
                 stønadstype="Foreldrepenger"
             />
         </SkjemaRotLayout>

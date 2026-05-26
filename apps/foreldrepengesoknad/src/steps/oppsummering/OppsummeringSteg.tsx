@@ -100,6 +100,7 @@ export const OppsummeringSteg = (props: Props) => {
                 onAvsluttOgSlett={avbrytSøknad}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 onFortsettSenere={navigator.fortsettSøknadSenere}
+                onStepChange={navigator.goToNextStep}
                 ekstraSamtykketekst={ekstraSamtykketekst}
             >
                 {!erEndringssøknad && (

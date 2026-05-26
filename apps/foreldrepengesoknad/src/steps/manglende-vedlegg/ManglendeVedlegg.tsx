@@ -209,7 +209,7 @@ export const ManglendeVedlegg = ({
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step steps={stepConfig} noFieldsRequired>
+            <Step steps={stepConfig} noFieldsRequired onStepChange={navigator.goToNextStep}>
                 <RhfForm formMethods={formMethods} onSubmit={lagre}>
                     <VStack gap="space-40">
                         <MorInnlagtDokumentasjon

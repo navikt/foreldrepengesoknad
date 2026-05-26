@@ -49,7 +49,7 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step steps={stepConfig}>
+            <Step steps={stepConfig} onStepChange={navigator.goToNextStep}>
                 {tilgjengeligeStønadskvoterQuery.data && (
                     <>
                         {vis1Juli2024Info && (

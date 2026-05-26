@@ -46,6 +46,7 @@ export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeid
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
+                onStepChange={navigator.goToNextStep}
             />
         </SkjemaRotLayout>
     );

@@ -36,6 +36,7 @@ export const SenereUtenlandsoppholdSteg = ({ arbeidsforhold, mellomlagreSøknadO
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
+                onStepChange={navigator.goToNextStep}
             />
         </SkjemaRotLayout>
     );
