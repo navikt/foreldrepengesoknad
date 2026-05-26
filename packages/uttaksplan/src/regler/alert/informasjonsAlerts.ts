@@ -85,7 +85,7 @@ export const MANGLER_MORS_AKTIVITET_KALENDER: Alertregel<MorsAktivitetListeKonte
     skalVises: (ctx) => harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, [...ctx.perioder]),
 };
 
-export const MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING: Alertregel<MorsAktivitetListeKontekst> = {
+export const MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING = {
     id: 'informasjonsAlerts.morsAktivitetIkkeOppgittRedigering',
     beskrivelse:
         'Vises i redigeringspanelene når brukeren har valgt perioder som krever mors ' +
@@ -93,11 +93,13 @@ export const MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING: Alertregel<MorsAktivitetLis
         'listeredigering for å minne om manglende valg før innsending.',
     visningssteder: ['legg-til-endre-skjema'],
     meldingIder: [i18n('LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt')],
+    fastMeldingId: i18n('LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt'),
     getMeldingId: () => i18n('LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt'),
     variant: 'warning',
     type: 'kontekstuell',
-    skalVises: (ctx) => harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, [...ctx.perioder]),
-};
+    skalVises: (ctx: MorsAktivitetListeKontekst) =>
+        harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, [...ctx.perioder]),
+} as const satisfies Alertregel<MorsAktivitetListeKontekst> & { fastMeldingId: string };
 
 export const MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE: Alertregel<EksisterendeValgtePeriodeKontekst> = {
     id: 'informasjonsAlerts.morsAktivitetIkkeValgtEksisterende',
@@ -114,7 +116,7 @@ export const MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE: Alertregel<EksisterendeValg
         harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, [ctx.periode, ...ctx.morsUttakPerioder]),
 };
 
-export const KAN_MISTE_DAGER: Alertregel<PeriodeDetaljerKontekst> = {
+export const KAN_MISTE_DAGER = {
     id: 'informasjonsAlerts.kanMisteDager',
     beskrivelse:
         'Mor har valgt å endre én eller flere perioder til ferie. Slik endring kan ' +
@@ -122,15 +124,16 @@ export const KAN_MISTE_DAGER: Alertregel<PeriodeDetaljerKontekst> = {
         'bekrefter endringen.',
     visningssteder: ['periode-detaljer-redigering'],
     meldingIder: [i18n('RedigeringPanel.KanMisteDager')],
+    fastMeldingId: i18n('RedigeringPanel.KanMisteDager'),
     getMeldingId: () => i18n('RedigeringPanel.KanMisteDager'),
     variant: 'info',
     type: 'kontekstuell',
-    skalVises: (ctx) =>
+    skalVises: (ctx: PeriodeDetaljerKontekst) =>
         ctx.søker === 'MOR' &&
         erIkkeAdopsjon(ctx.familiesituasjon) &&
         !ctx.harPeriodeMedPleiepenger &&
         kanMisteDagerVedEndringTilFerie([...ctx.sammenslåtteValgtePerioder], ctx.familiehendelsedato),
-};
+} as const satisfies Alertregel<PeriodeDetaljerKontekst> & { fastMeldingId: string };
 
 export const ADOPSJON_PERIODE_FØR_FAMHEND: Alertregel<PeriodeDetaljerKontekst> = {
     id: 'informasjonsAlerts.adopsjonPeriodeFørFamiliehendelsesdato',

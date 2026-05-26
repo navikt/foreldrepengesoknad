@@ -2,8 +2,7 @@ import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { useGyldigeKvotetyper } from '../kvotetype/kvoteRegler';
 import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
 import { Periode } from '../types';
-import { ForelderValg } from './feltSynlighet';
-import { Synlighetsområde, Synlighetsregel } from './types';
+import { ForelderValg, Synlighetsområde, Synlighetsregel } from './types';
 
 export type ForelderValgKontekst = {
     forelder: ForelderValg;

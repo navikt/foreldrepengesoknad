@@ -1,3 +1,16 @@
+import type { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
+
+/**
+ * Brukerens valg av forelder for én periode i uttaksplan-skjemaet.
+ * - `MOR` / `FAR_MEDMOR`: én forelder tar perioden alene
+ * - `BEGGE`: samtidig uttak
+ * - `undefined`: brukeren har ikke valgt enda
+ *
+ * Bor i synlighet/-katalogen fordi den brukes som inputtype til både
+ * felt- og forelder-synlighetsreglene.
+ */
+export type ForelderValg = BrukerRolleSak_fpoversikt | 'BEGGE' | undefined;
+
 /**
  * Doc-typen for en synlighetsregel — alt som beskriver regelen uten
  * runtime-logikk. Brukt i Storybook-katalogen og som basis for

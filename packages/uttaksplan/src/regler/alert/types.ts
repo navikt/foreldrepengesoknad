@@ -37,12 +37,26 @@ export type AktivAlertMetadata = { meldingId: string; variant: 'info' | 'warning
  * `type` skiller mellom:
  * - `blokkerande`: Erstatter hele skjemaet (early return).
  * - `kontekstuell`: Dukker opp inne i skjemaet/visningen som ekstra info.
+ *
+ * Kontrakten mellom `meldingIder` og `getMeldingId`:
+ * - `meldingIder` er den fullstendige listen over mulige meldinger
+ *   regelen kan vise. Brukt til dokumentasjon i Storybook.
+ * - `getMeldingId(ctx)` skal alltid returnere en verdi som finnes i
+ *   `meldingIder`. Typesystemet kan ikke håndheve dette, så det er
+ *   en konvensjon.
+ *
+ * `fastMeldingId` settes for alerter som har én melding uavhengig av
+ * kontekst. Det lar kallsteder hente meldingen direkte (uten å
+ * evaluere `getMeldingId` med en kontekst de kanskje ikke har), og
+ * gjør kontrakten typesikker — se `aktivFraMetadata` i
+ * `informasjonsAlertHooks.ts`.
  */
 export type AlertregelDoc = {
     id: string;
     beskrivelse: string;
     visningssteder: readonly Visningssted[];
     meldingIder: readonly string[];
+    fastMeldingId?: string;
     variant: 'info' | 'warning';
     type: 'blokkerende' | 'kontekstuell';
 };

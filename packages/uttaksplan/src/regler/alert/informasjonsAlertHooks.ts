@@ -42,19 +42,16 @@ const tilAktiv = <T,>(regel: Alertregel<T>, ctx: T): AktivAlert | undefined =>
 
 /**
  * Bygg en AktivAlert kun fra metadataen på regelen — uten å evaluere
- * `skalVises` / `getMeldingId`. Brukes når kallstedet allerede har
+ * `skalVises` eller `getMeldingId`. Brukes når kallstedet allerede har
  * regnet ut betingelsen selv (typisk fordi konteksten ikke matcher
- * regelens runtime-kontrakt), og regelen har én fast melding.
+ * regelens runtime-kontrakt). Tar kun imot regler som har `fastMeldingId`
+ * satt, så TypeScript hindrer feilaktig bruk på regler med flere
+ * meldingsvarianter.
  */
-const aktivFraMetadata = (regel: AlertregelDoc): AktivAlert => {
-    const [meldingId, ...resten] = regel.meldingIder;
-    if (meldingId === undefined || resten.length > 0) {
-        throw new Error(
-            `aktivFraMetadata krever én fast meldingId, men ${regel.id} har ${regel.meldingIder.length}`,
-        );
-    }
-    return { meldingId, variant: regel.variant };
-};
+const aktivFraMetadata = (regel: AlertregelDoc & { fastMeldingId: string }): AktivAlert => ({
+    meldingId: regel.fastMeldingId,
+    variant: regel.variant,
+});
 
 /**
  * Listepanelet skal varsle om at mor kan miste dager når hun endrer en

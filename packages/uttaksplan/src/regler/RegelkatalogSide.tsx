@@ -9,12 +9,34 @@ import { BodyLong, BodyShort, Box, HStack, Heading, Tag, VStack } from '@navikt/
  * av felt-, synlighets-, kvotetype-, alert- og valideringsreglene.
  */
 
+/**
+ * Visuell identitet per katalogtype — eksplisitte felt så lesaren
+ * slepp å gjette kva del av strengen som hører til kvar plass.
+ *
+ * - `badge`: brukt på det vesle badge-elementet (bakgrunn + ramme + tekst)
+ * - `border`: brukt aleine på den fargete venstrekanten av hero-boksen
+ */
 const FARGER = {
-    felt: 'bg-ax-bg-accent-soft border-ax-border-accent text-ax-text-accent',
-    synlighet: 'bg-ax-bg-info-soft border-ax-border-info text-ax-text-info',
-    kvote: 'bg-ax-bg-success-soft border-ax-border-success text-ax-text-success',
-    alert: 'bg-ax-bg-warning-soft border-ax-border-warning text-ax-text-warning',
-    validering: 'bg-ax-bg-danger-soft border-ax-border-danger text-ax-text-danger',
+    felt: {
+        badge: 'bg-ax-bg-accent-soft border-ax-border-accent text-ax-text-accent',
+        border: 'border-ax-border-accent',
+    },
+    synlighet: {
+        badge: 'bg-ax-bg-info-soft border-ax-border-info text-ax-text-info',
+        border: 'border-ax-border-info',
+    },
+    kvote: {
+        badge: 'bg-ax-bg-success-soft border-ax-border-success text-ax-text-success',
+        border: 'border-ax-border-success',
+    },
+    alert: {
+        badge: 'bg-ax-bg-warning-soft border-ax-border-warning text-ax-text-warning',
+        border: 'border-ax-border-warning',
+    },
+    validering: {
+        badge: 'bg-ax-bg-danger-soft border-ax-border-danger text-ax-text-danger',
+        border: 'border-ax-border-danger',
+    },
 } as const;
 
 export type Katalogfarge = keyof typeof FARGER;
@@ -32,12 +54,12 @@ const Hero = ({ tittel, intro, kildesti, farge, badge }: HeroProps) => (
         background="neutral-soft"
         borderRadius="12"
         padding="space-32"
-        className={`border-l-8 ${FARGER[farge].split(' ')[1]}`}
+        className={`border-l-8 ${FARGER[farge].border}`}
     >
         <VStack gap="space-12">
             <HStack gap="space-12" align="center">
                 <span
-                    className={`rounded-full border px-3 py-1 text-sm font-semibold uppercase tracking-wide ${FARGER[farge]}`}
+                    className={`rounded-full border px-3 py-1 text-sm font-semibold uppercase tracking-wide ${FARGER[farge].badge}`}
                 >
                     {badge}
                 </span>
@@ -90,7 +112,7 @@ const OmrådeKort = <T,>({
         <VStack gap="space-16">
             <HStack gap="space-16" align="start">
                 <span
-                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border font-bold ${FARGER[farge]}`}
+                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border font-bold ${FARGER[farge].badge}`}
                     aria-hidden
                 >
                     {nummer}

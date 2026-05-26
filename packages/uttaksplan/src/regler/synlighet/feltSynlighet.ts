@@ -9,9 +9,7 @@ import { getFloatFromString } from '@navikt/fp-utils';
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Periode } from '../types';
-import { Synlighetsområde, Synlighetsregel } from './types';
-
-export type ForelderValg = BrukerRolleSak_fpoversikt | 'BEGGE' | undefined;
+import { ForelderValg, Synlighetsområde, Synlighetsregel } from './types';
 
 export type FeltSynlighetKontekst = {
     forelder: ForelderValg;
