@@ -150,14 +150,16 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
                                         style={{ display: 'inline-flex', flexWrap: 'nowrap' }}
                                     >
                                         <HStack gap="space-4" align="center">
-                                            <FormattedMessage id="UttaksplanHandlingKnapper.EndrePlanen" />
+                                            <BodyShort size="small">
+                                                <FormattedMessage id="UttaksplanHandlingKnapper.EndrePlanen" />
+                                            </BodyShort>
                                             <ChevronDownIcon aria-hidden height={20} width={20} />
                                         </HStack>
                                     </Button>
                                 </ActionMenu.Trigger>
                                 <ActionMenu.Content>
                                     <VStack gap="space-16">
-                                        <ActionMenu.Item onClick={toggleAllAccordions}>
+                                        <ActionMenu.Item onClick={toggleAllAccordions} style={{ paddingTop: '4px' }}>
                                             <HStack gap="space-8">
                                                 <NotePencilIcon aria-hidden height={24} width={24} color="#3F8047" />
                                                 <VStack gap="space-4">
