@@ -44,8 +44,8 @@ export const TidsperiodeSpørsmål = () => {
                 return;
             }
             setValue('tom', nyTom);
-            trigger('tom');
-            trigger('fom');
+            void trigger('tom');
+            void trigger('fom');
         },
         [fom, maxDate, setValue, trigger],
     );
