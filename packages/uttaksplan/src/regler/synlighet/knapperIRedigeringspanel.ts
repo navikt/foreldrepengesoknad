@@ -1,13 +1,18 @@
 import type { BrukerRolleSak_fpoversikt, Familiesituasjon, RettighetType_fpoversikt } from '@navikt/fp-types';
 
+import {
+    Uttaksplanperiode,
+    UttaksplanperiodeMedKunTapteDager,
+    erVanligUttakPeriode,
+} from '../../types/UttaksplanPeriode';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Periode } from '../types';
 import { Synlighetsregel } from './types';
 
 /**
- * Konteksten knappereglane treng for å avgjere om
- * «Legg til utsettelse / pause / ferie»-knappane skal vises i
- * redigeringspanelet (HvaVilDuEndreTilPanel).
+ * Konteksten knappereglane treng for å avgjere kva «Legg til»-knappar som
+ * vises i redigeringspanelet (HvaVilDuEndreTilPanel), og kva tekst som
+ * brukes på ferie-knappen.
  */
 export type KnapperIRedigeringspanelKontekst = {
     søker: BrukerRolleSak_fpoversikt;
@@ -15,6 +20,8 @@ export type KnapperIRedigeringspanelKontekst = {
     familiesituasjon: Familiesituasjon;
     familiehendelsedato: string;
     sammenslåtteValgtePerioder: readonly Periode[];
+    eksisterendePerioderSomErValgt: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>;
+    erPeriodeneTilAnnenPartLåst: boolean;
 };
 
 const harBareFarRett = (k: KnapperIRedigeringspanelKontekst) =>
@@ -67,21 +74,38 @@ export const VIS_FERIEKNAPP: Synlighetsregel<KnapperIRedigeringspanelKontekst> =
         ),
 };
 
+export const BRUK_LEGG_TIL_TEKST_PÅ_FERIEKNAPP: Synlighetsregel<KnapperIRedigeringspanelKontekst> = {
+    id: 'knapperIRedigeringspanel.brukLeggTilTekstPåFerieknapp',
+    beskrivelse:
+        'Ferie-knappen sier «Legg til ferie» når brukeren ikke har valgt eksisterende perioder — da er ' +
+        'handlingen reint additiv. Hvis brukeren har valgt eksisterende perioder, sier knappen «Endre til ' +
+        'ferie» i staden — med ett unntak: når den andre partens perioder er låst og det er valgt minst én ' +
+        'periode som tilhører den andre forelderen, faller vi tilbake til «Legg til ferie» (fordi vi ikke ' +
+        'kan endre den andres perioder).',
+    skalVises: (k) =>
+        k.eksisterendePerioderSomErValgt.length === 0 ||
+        (k.erPeriodeneTilAnnenPartLåst &&
+            k.eksisterendePerioderSomErValgt.some((p) => erVanligUttakPeriode(p) && p.forelder !== k.søker)),
+};
+
 export const KNAPPER_I_REDIGERINGSPANEL_REGLER = [
     VIS_UTSETTELSESKNAPP,
     VIS_PAUSEKNAPP,
     VIS_FERIEKNAPP,
+    BRUK_LEGG_TIL_TEKST_PÅ_FERIEKNAPP,
 ] as const;
 
 export type KnapperIRedigeringspanelSynlighet = {
     visUtsettelsesknapp: boolean;
     visPauseknapp: boolean;
     visFerieknapp: boolean;
+    brukLeggTilTekstPåFerieknapp: boolean;
 };
 
 /**
- * Avgjer kva «legg til»-knappar som skal vises i redigeringspanelet
- * gitt søker, rettighet, familiesituasjon og dei valgte periodene.
+ * Avgjer kva «legg til»-knappar som skal vises i redigeringspanelet,
+ * og kva tekst som brukes på ferie-knappen, gitt søker, rettighet,
+ * familiesituasjon og dei valgte periodene.
  */
 export const synlighetForKnapperIRedigeringspanel = (
     kontekst: KnapperIRedigeringspanelKontekst,
@@ -89,4 +113,5 @@ export const synlighetForKnapperIRedigeringspanel = (
     visUtsettelsesknapp: VIS_UTSETTELSESKNAPP.skalVises(kontekst),
     visPauseknapp: VIS_PAUSEKNAPP.skalVises(kontekst),
     visFerieknapp: VIS_FERIEKNAPP.skalVises(kontekst),
+    brukLeggTilTekstPåFerieknapp: BRUK_LEGG_TIL_TEKST_PÅ_FERIEKNAPP.skalVises(kontekst),
 });

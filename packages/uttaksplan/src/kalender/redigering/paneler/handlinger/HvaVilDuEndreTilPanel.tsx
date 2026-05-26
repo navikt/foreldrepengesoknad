@@ -72,11 +72,6 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
             p.resultat.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER',
     );
 
-    const skalViseLeggTilKnappetekst =
-        eksisterendePerioderSomErValgt.length === 0 ||
-        (erPeriodeneTilAnnenPartLåst &&
-            eksisterendePerioderSomErValgt.some((p) => erVanligUttakPeriode(p) && p.forelder !== søker));
-
     const erEksisterendePerioderEtterValgteDager = erDetEksisterendePerioderEtterValgtePerioder(
         uttakPerioder,
         sammenslåtteValgtePerioder,
@@ -86,12 +81,15 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
         visUtsettelsesknapp: skalViseUtsettelsesknapp,
         visPauseknapp: skalVisePauseknapp,
         visFerieknapp: skalViseFerieknapp,
+        brukLeggTilTekstPåFerieknapp: skalViseLeggTilKnappetekst,
     } = synlighetForKnapperIRedigeringspanel({
         søker,
         rettighetType,
         familiesituasjon,
         familiehendelsedato,
         sammenslåtteValgtePerioder,
+        eksisterendePerioderSomErValgt,
+        erPeriodeneTilAnnenPartLåst,
     });
 
     const leggTilEllerForskyvPeriode = (skalForskyve: boolean) => {
