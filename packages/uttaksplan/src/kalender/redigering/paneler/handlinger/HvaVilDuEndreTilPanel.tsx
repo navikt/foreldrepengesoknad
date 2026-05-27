@@ -47,8 +47,6 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
     const { visUtsettelsePanel: visPausePanel, setVisUtsettelsePanel: setVisPausePanel } =
         useVisUtsettelsePanel(sammenslåtteValgtePerioder);
 
-    const [erForskyvEllerErstattPanelvisningPå] = useState(false);
-
     const erDesktop = useErDesktop();
 
     const [erMinimert, setErMinimert] = useState(!erDesktop);
