@@ -53,7 +53,7 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
 
     const slettPerioder = (perioderSomSkalSlettes: Uttaksplanperiode[]) => {
         const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder, 'liste')
-            .fjernUttakPerioder(perioderSomSkalSlettes, false)
+            .fjernUttakPerioder(perioderSomSkalSlettes)
             .getUttakPerioder();
         uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
 
