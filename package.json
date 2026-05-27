@@ -18,7 +18,7 @@
     },
     "dependencies": {
         "lint-staged": "17.0.4",
-        "turbo": "2.9.12"
+        "turbo": "2.9.14"
     },
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "6.0.2",
