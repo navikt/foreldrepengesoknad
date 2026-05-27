@@ -37,7 +37,7 @@ export type AktivAlertMetadata = { melding: ReactNode; variant: 'info' | 'warnin
  * alerter som også har trigger-logikk i katalogen.
  *
  * `type` skiller mellom:
- * - `blokkerande`: Erstatter hele skjemaet (early return).
+ * - `blokkerende`: Erstatter hele skjemaet (early return).
  * - `kontekstuell`: Dukker opp inne i skjemaet/visningen som ekstra info.
  *
  * `meldinger` er den fullstendige listen over mulige meldinger
