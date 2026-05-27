@@ -8,7 +8,6 @@ import {
     TrashIcon,
 } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
@@ -23,65 +22,34 @@ import { CalendarPeriod } from '@navikt/fp-ui';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../../../context/UttaksplanDataContext';
-import { SlettPeriodeForskyvEllerErstattPanel } from '../../../../../felles/forskyvEllerErstatt/SlettPeriodeForskyvEllerErstattPanel';
-import { useVisForskyvEllerErstattPanel } from '../../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { UttakPeriodeMedAntallDager } from '../../../../../kalender/redigering/utils/kalenderPeriodeUtils';
 import { useEksisterendeValgtePeriodeAlerts } from '../../../../../regler/alert/informasjonsAlertHooks';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../../types/UttaksplanPeriode';
-import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
 
 interface Props {
     perioder: UttakPeriodeMedAntallDager[];
-    setErForskyvEllerErstattPanelvisningPå: (skalVise: boolean) => void;
 }
 
-export const EksisterendeValgtePerioder = ({ perioder, setErForskyvEllerErstattPanelvisningPå }: Props) => {
+export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
     const intl = useIntl();
-
-    const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
-
-    const [valgtPeriodeSomSkalSlettes, setValgtPeriodeSomSkalSlettes] = useState<
-        UttakPeriodeMedAntallDager | undefined
-    >(undefined);
-
-    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } =
-        useVisForskyvEllerErstattPanel(sammenslåtteValgtePerioder);
 
     const slettPeriode = useSlettPeriodeFn();
 
     const {
         foreldreInfo: { erMedmorDelAvSøknaden, søker },
         erPeriodeneTilAnnenPartLåst,
-        uttakPerioder,
     } = useUttaksplanData();
 
     const alertsForPeriode = useEksisterendeValgtePeriodeAlerts();
 
     return (
         <VStack gap="space-12">
-            {visEndreEllerForskyvPanel && valgtPeriodeSomSkalSlettes && (
-                <SlettPeriodeForskyvEllerErstattPanel
-                    valgtePerioder={finnDagerSomSkalSlettes(sammenslåtteValgtePerioder, valgtPeriodeSomSkalSlettes)}
-                    avbryt={() => {
-                        setValgtPeriodeSomSkalSlettes(undefined);
-                        setVisEndreEllerForskyvPanel(false);
-                        setErForskyvEllerErstattPanelvisningPå(false);
-                    }}
-                    fjernPeriode={(skalForskyveBakover: boolean) => {
-                        setValgtPeriodeSomSkalSlettes(undefined);
-                        setVisEndreEllerForskyvPanel(false);
-                        slettPeriode(valgtPeriodeSomSkalSlettes, skalForskyveBakover);
-                    }}
+            <BodyShort>
+                <FormattedMessage
+                    id="RedigeringPanel.EksisterendePerioder"
+                    values={{ antall: perioder.length }}
                 />
-            )}
-            {!visEndreEllerForskyvPanel && (
-                <>
-                    <BodyShort>
-                        <FormattedMessage
-                            id="RedigeringPanel.EksisterendePerioder"
-                            values={{ antall: perioder.length }}
-                        />
                     </BodyShort>
                     {perioder.map((p, index) => {
                         const erSamtidigUttaksperiodeSomAlleredeErHåndtert =
@@ -99,13 +67,6 @@ export const EksisterendeValgtePerioder = ({ perioder, setErForskyvEllerErstattP
 
                         const erPleiepengerPeriode =
                             erAvslåttPeriode && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
-
-                        const valgteDager = finnDagerSomSkalSlettes(sammenslåtteValgtePerioder, p);
-
-                        const erEksisterendePerioderEtterValgteDager = erDetEksisterendePerioderEtterValgtePerioder(
-                            uttakPerioder,
-                            valgteDager,
-                        );
 
                         const morsAktivitetIkkeValgtAlert = alertsForPeriode(p).morsAktivitetIkkeValgt;
 
@@ -196,21 +157,13 @@ export const EksisterendeValgtePerioder = ({ perioder, setErForskyvEllerErstattP
                                         fontSize="1.5rem"
                                         className="cursor-pointer hover:opacity-70"
                                         onClick={() => {
-                                            if (erEksisterendePerioderEtterValgteDager) {
-                                                setValgtPeriodeSomSkalSlettes(p);
-                                                setVisEndreEllerForskyvPanel(true);
-                                                setErForskyvEllerErstattPanelvisningPå(true);
-                                            } else {
-                                                slettPeriode(p, false);
-                                            }
+                                            slettPeriode(p, false);
                                         }}
                                     />
                                 )}
                             </HStack>
                         );
                     })}
-                </>
-            )}
         </VStack>
     );
 };

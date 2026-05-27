@@ -20,7 +20,6 @@ import { UttakPeriodeBuilder } from '../../../utils/UttakPeriodeBuilder';
 import { getVarighetString } from '../../../utils/dateUtils';
 import {
     erAvslåttPeriode,
-    erDetEksisterendePerioderEtterValgtePerioder,
     erOppholdsperiode,
     erOverføringsperiode,
     erPrematuruker,
@@ -82,12 +81,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
     const erFamiliehendelse = erUttaksplanperiodeFamiliehendelseDato(uttaksplanperioder);
 
     const handleSlettClick = () => {
-        const erEksisterendePerioderEtterValgteDager = erDetEksisterendePerioderEtterValgtePerioder(
-            uttakPerioder,
-            uttaksplanperioder,
-        );
-
-        if (!erEksisterendePerioderEtterValgteDager && uttaksplanperioder.length === 1) {
+        if (uttaksplanperioder.length === 1) {
             const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder, 'liste')
                 .fjernUttakPerioder(uttaksplanperioder, false)
                 .getUttakPerioder();

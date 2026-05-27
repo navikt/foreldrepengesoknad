@@ -10,12 +10,10 @@ import { EksisterendeValgtePerioder } from './EksisterendeValgtePerioder';
 
 interface Props {
     erForskyvEllerErstattPanelvisningPå: boolean;
-    setErForskyvEllerErstattPanelvisningPå: (skaVise: boolean) => void;
 }
 
 export const PeriodeDetaljerOgInfoMeldinger = ({
     erForskyvEllerErstattPanelvisningPå,
-    setErForskyvEllerErstattPanelvisningPå,
 }: Props) => {
     const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
 
@@ -42,7 +40,6 @@ export const PeriodeDetaljerOgInfoMeldinger = ({
             {eksisterendePerioderSomErValgt.length > 0 && (
                 <EksisterendeValgtePerioder
                     perioder={eksisterendePerioderSomErValgt}
-                    setErForskyvEllerErstattPanelvisningPå={setErForskyvEllerErstattPanelvisningPå}
                 />
             )}
 

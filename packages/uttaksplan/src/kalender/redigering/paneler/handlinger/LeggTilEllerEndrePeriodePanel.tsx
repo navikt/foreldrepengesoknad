@@ -18,7 +18,7 @@ interface Props {
 }
 
 export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: Props) => {
-    const [erForskyvEllerErstattPanelvisningPå, setErForskyvEllerErstattPanelvisningPå] = useState(false);
+    const [erForskyvEllerErstattPanelvisningPå] = useState(false);
 
     const [erMinimert, setErMinimert] = useState(false);
 
@@ -38,7 +38,6 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
                 <HeaderDesktop
                     labels={labels}
                     erForskyvEllerErstattPanelvisningPå={erForskyvEllerErstattPanelvisningPå}
-                    setErForskyvEllerErstattPanelvisningPå={setErForskyvEllerErstattPanelvisningPå}
                 />
             </Show>
             <Show below="md">
@@ -47,7 +46,6 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
                     erMinimert={erMinimert}
                     setErMinimert={setErMinimert}
                     erForskyvEllerErstattPanelvisningPå={erForskyvEllerErstattPanelvisningPå}
-                    setErForskyvEllerErstattPanelvisningPå={setErForskyvEllerErstattPanelvisningPå}
                 />
             </Show>
             {!erForskyvEllerErstattPanelvisningPå && (
@@ -66,11 +64,9 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
 const HeaderDesktop = ({
     labels,
     erForskyvEllerErstattPanelvisningPå,
-    setErForskyvEllerErstattPanelvisningPå,
 }: {
     labels: React.ReactNode;
     erForskyvEllerErstattPanelvisningPå: boolean;
-    setErForskyvEllerErstattPanelvisningPå: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
     const intl = useIntl();
 
@@ -110,7 +106,6 @@ const HeaderDesktop = ({
                 {visPeriodeDetaljer && (
                     <PeriodeDetaljerOgInfoMeldinger
                         erForskyvEllerErstattPanelvisningPå={erForskyvEllerErstattPanelvisningPå}
-                        setErForskyvEllerErstattPanelvisningPå={setErForskyvEllerErstattPanelvisningPå}
                     />
                 )}
             </VStack>
@@ -123,13 +118,11 @@ const HeaderMobil = ({
     erMinimert,
     erForskyvEllerErstattPanelvisningPå,
     setErMinimert,
-    setErForskyvEllerErstattPanelvisningPå,
 }: {
     labels: React.ReactNode;
     erMinimert: boolean;
     erForskyvEllerErstattPanelvisningPå: boolean;
     setErMinimert: React.Dispatch<React.SetStateAction<boolean>>;
-    setErForskyvEllerErstattPanelvisningPå: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
     const intl = useIntl();
 
@@ -183,7 +176,6 @@ const HeaderMobil = ({
                         {labels}
                         <PeriodeDetaljerOgInfoMeldinger
                             erForskyvEllerErstattPanelvisningPå={erForskyvEllerErstattPanelvisningPå}
-                            setErForskyvEllerErstattPanelvisningPå={setErForskyvEllerErstattPanelvisningPå}
                         />
                     </VStack>
                 )}

@@ -47,7 +47,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
     const { visUtsettelsePanel: visPausePanel, setVisUtsettelsePanel: setVisPausePanel } =
         useVisUtsettelsePanel(sammenslåtteValgtePerioder);
 
-    const [erForskyvEllerErstattPanelvisningPå, setErForskyvEllerErstattPanelvisningPå] = useState(false);
+    const [erForskyvEllerErstattPanelvisningPå] = useState(false);
 
     const erDesktop = useErDesktop();
 
@@ -145,7 +145,6 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
 
                         <PeriodeDetaljerOgInfoMeldinger
                             erForskyvEllerErstattPanelvisningPå={erForskyvEllerErstattPanelvisningPå}
-                            setErForskyvEllerErstattPanelvisningPå={setErForskyvEllerErstattPanelvisningPå}
                         />
 
                         {!erForskyvEllerErstattPanelvisningPå && (
