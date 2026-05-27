@@ -35,11 +35,7 @@ const Alertregler = () => {
         {
             overskrift: 'Type',
             bredde: '10%',
-            render: (r) => (
-                <Tag variant={r.type === 'blokkerende' ? 'warning' : 'info'} size="small">
-                    {r.type}
-                </Tag>
-            ),
+            render: (r) => <Tag variant={r.type === 'blokkerende' ? 'warning' : 'info'} size="small">{r.type}</Tag>,
         },
         {
             overskrift: 'Vises',
