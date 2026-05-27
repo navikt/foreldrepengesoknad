@@ -18,8 +18,6 @@ interface Props {
 }
 
 export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: Props) => {
-    const [erForskyvEllerErstattPanelvisningPå] = useState(false);
-
     const [erMinimert, setErMinimert] = useState(false);
 
     useMediaResetMinimering(setErMinimert);
@@ -37,7 +35,6 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
             <Show above="md">
                 <HeaderDesktop
                     labels={labels}
-                    erForskyvEllerErstattPanelvisningPå={erForskyvEllerErstattPanelvisningPå}
                 />
             </Show>
             <Show below="md">
@@ -45,28 +42,23 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
                     labels={labels}
                     erMinimert={erMinimert}
                     setErMinimert={setErMinimert}
-                    erForskyvEllerErstattPanelvisningPå={erForskyvEllerErstattPanelvisningPå}
                 />
             </Show>
-            {!erForskyvEllerErstattPanelvisningPå && (
-                <div className={erMinimert ? 'hidden' : 'block px-4 pb-4'}>
-                    <div className={erMinimert ? 'hidden' : 'block'}>
-                        <div className="px-4 pt-4 pb-4">
-                            <LeggTilEllerEndrePeriodeForm lukkRedigeringsmodus={lukkRedigeringsmodus} />
-                        </div>
+            <div className={erMinimert ? 'hidden' : 'block px-4 pb-4'}>
+                <div className={erMinimert ? 'hidden' : 'block'}>
+                    <div className="px-4 pt-4 pb-4">
+                        <LeggTilEllerEndrePeriodeForm lukkRedigeringsmodus={lukkRedigeringsmodus} />
                     </div>
                 </div>
-            )}
+            </div>
         </VStack>
     );
 };
 
 const HeaderDesktop = ({
     labels,
-    erForskyvEllerErstattPanelvisningPå,
 }: {
     labels: React.ReactNode;
-    erForskyvEllerErstattPanelvisningPå: boolean;
 }) => {
     const intl = useIntl();
 
@@ -104,9 +96,7 @@ const HeaderDesktop = ({
                 </HStack>
                 {labels}
                 {visPeriodeDetaljer && (
-                    <PeriodeDetaljerOgInfoMeldinger
-                        erForskyvEllerErstattPanelvisningPå={erForskyvEllerErstattPanelvisningPå}
-                    />
+                    <PeriodeDetaljerOgInfoMeldinger />
                 )}
             </VStack>
         </Box>
@@ -116,12 +106,10 @@ const HeaderDesktop = ({
 const HeaderMobil = ({
     labels,
     erMinimert,
-    erForskyvEllerErstattPanelvisningPå,
     setErMinimert,
 }: {
     labels: React.ReactNode;
     erMinimert: boolean;
-    erForskyvEllerErstattPanelvisningPå: boolean;
     setErMinimert: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
     const intl = useIntl();
@@ -174,9 +162,7 @@ const HeaderMobil = ({
                 {!erMinimert && (
                     <VStack gap="space-16" className="px-4 pb-4">
                         {labels}
-                        <PeriodeDetaljerOgInfoMeldinger
-                            erForskyvEllerErstattPanelvisningPå={erForskyvEllerErstattPanelvisningPå}
-                        />
+                        <PeriodeDetaljerOgInfoMeldinger />
                     </VStack>
                 )}
             </Box>
