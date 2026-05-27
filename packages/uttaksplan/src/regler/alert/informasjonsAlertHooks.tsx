@@ -70,7 +70,7 @@ export const useListePanelInfoAlerts = (input: {
  */
 export const useEksisterendeValgtePeriodeAlerts = (): ((
     periode: Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager,
-) => { morsAktivitetIkkeValgt?: AktivAlert }) => {
+) => { morsAktivitetIkkeValgt?: AktivAlertMetadata }) => {
     const {
         foreldreInfo: { rettighetType },
         uttakPerioder,
@@ -211,48 +211,41 @@ export const useForskyvEllerErstattAlerts = (input: {
     };
 };
 
-/**
- * Aktiv alert = en regel som har slått inn, ferdig pakket for visning
- * (meldingsnøkkel + variant). Brukes som returtype fra alle hookene
- * under for å gi konsumentene en uniform shape.
- */
-type AktivAlert = AktivAlertMetadata;
-
-const tilAktiv = <T,>(regel: Alertregel<T>, ctx: T): AktivAlert | undefined =>
+const tilAktiv = <T,>(regel: Alertregel<T>, ctx: T): AktivAlertMetadata | undefined =>
     regel.skalVises(ctx) ? { melding: regel.getMelding(ctx), variant: regel.variant } : undefined;
 
 /**
- * Bygg en AktivAlert kun fra metadataen på regelen — uten å evaluere
+ * Bygg ein AktivAlertMetadata kun fra metadataen på regelen — uten å evaluere
  * `skalVises` eller `getMelding`. Brukes når kallstedet allerede har
  * regnet ut betingelsen selv (typisk fordi konteksten ikke matcher
  * regelens runtime-kontrakt). Bruker `meldinger[0]` direkte, så den
  * skal kun brukes på regler med én meldingsvariant.
  */
-const aktivFraMetadata = (regel: AlertregelDoc): AktivAlert => ({
+const aktivFraMetadata = (regel: AlertregelDoc): AktivAlertMetadata => ({
     melding: regel.meldinger[0],
     variant: regel.variant,
 });
 type ListePanelInfoAlerts = {
-    kanMisteDagerVedFerie?: AktivAlert;
-    morsAktivitetIkkeOppgitt?: AktivAlert;
+    kanMisteDagerVedFerie?: AktivAlertMetadata;
+    morsAktivitetIkkeOppgitt?: AktivAlertMetadata;
 };
 type UttaksplanListeAlerts = {
-    manglerMorsAktivitetAlert?: AktivAlert;
+    manglerMorsAktivitetAlert?: AktivAlertMetadata;
 };
 type UttaksplanKalenderAlerts = {
-    manglerMorsAktivitetAlert?: AktivAlert;
+    manglerMorsAktivitetAlert?: AktivAlertMetadata;
 };
 type LeggTilEndreSkjemaInfoAlerts = {
-    morsAktivitetIkkeOppgittAlert?: AktivAlert;
+    morsAktivitetIkkeOppgittAlert?: AktivAlertMetadata;
 };
 type PeriodeDetaljerAlerts = {
-    adopsjonFørFamhend?: AktivAlert;
-    eøs?: AktivAlert;
-    pleiepenger?: AktivAlert;
-    kanMisteDager?: AktivAlert;
+    adopsjonFørFamhend?: AktivAlertMetadata;
+    eøs?: AktivAlertMetadata;
+    pleiepenger?: AktivAlertMetadata;
+    kanMisteDager?: AktivAlertMetadata;
 };
 type ForskyvEllerErstattAlerts = {
-    senerePerioderReadonly?: AktivAlert;
-    valgteDagerFørSeksUker?: AktivAlert;
-    valgteDagerFørFamhend?: AktivAlert;
+    senerePerioderReadonly?: AktivAlertMetadata;
+    valgteDagerFørSeksUker?: AktivAlertMetadata;
+    valgteDagerFørFamhend?: AktivAlertMetadata;
 };
