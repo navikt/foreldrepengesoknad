@@ -166,7 +166,7 @@ export const ManglendeVedlegg = ({
 
         saveVedlegg(alleVedlegg);
 
-        return navigator.goToNextDefaultStep();
+        return navigator.goToNextStep();
     };
 
     const formMethods = useForm<ManglendeVedleggFormData>({
@@ -209,7 +209,7 @@ export const ManglendeVedlegg = ({
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step steps={stepConfig} noFieldsRequired>
+            <Step steps={stepConfig} noFieldsRequired onStepChange={navigator.goToStep}>
                 <RhfForm formMethods={formMethods} onSubmit={lagre}>
                     <VStack gap="space-40">
                         <MorInnlagtDokumentasjon

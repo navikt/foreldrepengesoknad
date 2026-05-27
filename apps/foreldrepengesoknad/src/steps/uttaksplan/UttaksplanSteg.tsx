@@ -2,6 +2,7 @@ import { BulletListIcon, CalendarIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
+import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { ReactNode, useCallback, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -68,6 +69,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
     const erEndringssøknad = !!valgtEksisterendeSaksnr;
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
+    const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad, eksisterendeSak);
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
@@ -139,7 +141,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step steps={stepConfig}>
+            <Step steps={stepConfig} onStepChange={navigator.goToStep}>
                 {erDeltUttak && (
                     <Alert variant="info">
                         <BodyLong>

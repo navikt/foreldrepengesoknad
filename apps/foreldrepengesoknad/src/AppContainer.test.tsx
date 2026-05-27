@@ -86,32 +86,19 @@ describe('<AppContainer>', () => {
             await waitFor(() => expect(screen.getAllByText('Oppsummering')).toHaveLength(2));
             expect(screen.getByText('Steg 9 av 9')).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Forrige steg'));
-            expect(screen.getAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+            // Stegvelger: hopp frå Oppsummering (steg 9) tilbake til Bo i utlandet (steg 3) via stegvelgar
+            await userEvent.click(screen.getByText('Vis alle steg'));
+            await userEvent.click(screen.getByText('Bo i utlandet'));
+            await waitFor(() => expect(screen.getAllByText('Bo i utlandet')).toHaveLength(2));
+            expect(screen.getByText('Steg 3 av 9')).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Forrige steg'));
-            expect(screen.getByText('Uttaksplanen kan bli nullstilt')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Ja, gå tilbake'));
-            expect(screen.getAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            // Stegvelger: hopp frå Bo i utlandet (steg 3) tilbake til Din situasjon (steg 1) via stegvelgar
+            await userEvent.click(screen.getByText('Vis alle steg'));
+            await userEvent.click(screen.getByText('Din situasjon'));
+            await waitFor(() => expect(screen.getAllByText('Din situasjon')).toHaveLength(2));
+            expect(screen.getByText('Steg 1 av 9')).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Forrige steg'));
-            expect(screen.getAllByText('Periode med foreldrepenger')).toHaveLength(2);
-
-            await userEvent.click(screen.getByText('Forrige steg'));
-            expect(screen.getAllByText('Den andre forelderen')).toHaveLength(2);
-
-            await userEvent.click(screen.getByText('Forrige steg'));
-            expect(screen.getAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
-
-            await userEvent.click(screen.getByText('Forrige steg'));
-            expect(screen.getAllByText('Bo i utlandet')).toHaveLength(2);
-
-            await userEvent.click(screen.getByText('Forrige steg'));
-            expect(screen.getAllByText('Barnet')).toHaveLength(2);
-
-            await userEvent.click(screen.getByText('Forrige steg'));
-            expect(screen.getAllByText('Din situasjon')).toHaveLength(2);
-
+            // Forrige steg frå steg 1 → Velkommen
             await userEvent.click(screen.getByText('Forrige steg'));
             expect(screen.getByText('Hvilket barn gjelder søknaden din?')).toBeInTheDocument();
         }),

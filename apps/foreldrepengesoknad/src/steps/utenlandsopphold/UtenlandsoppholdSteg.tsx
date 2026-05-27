@@ -42,7 +42,7 @@ export const UtenlandsoppholdSteg = ({ arbeidsforhold, mellomlagreSøknadOgNavig
             oppdaterSenereUtenlandsopphold(undefined);
         }
 
-        return navigator.goToNextStep(utledNesteSide(values));
+        return navigator.goToStep(utledNesteSide(values));
     };
 
     return (
@@ -54,6 +54,7 @@ export const UtenlandsoppholdSteg = ({ arbeidsforhold, mellomlagreSøknadOgNavig
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
+                onStepChange={navigator.goToStep}
                 stønadstype="Foreldrepenger"
             />
         </SkjemaRotLayout>

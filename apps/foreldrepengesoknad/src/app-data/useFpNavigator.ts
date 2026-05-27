@@ -59,12 +59,12 @@ export const useFpNavigator = (
         navigerTilDefaultSteg('previous');
     };
 
-    const goToNextStep = (path: SøknadRoutes) => {
+    const goToStep = (path: SøknadRoutes) => {
         oppdaterPath(path);
         void mellomlagreOgNaviger();
     };
 
-    const goToNextDefaultStep = () => {
+    const goToNextStep = () => {
         navigerTilDefaultSteg('next');
     };
 
@@ -75,8 +75,8 @@ export const useFpNavigator = (
 
     return {
         goToPreviousDefaultStep,
+        goToStep,
         goToNextStep,
-        goToNextDefaultStep,
         fortsettSøknadSenere,
     };
 };

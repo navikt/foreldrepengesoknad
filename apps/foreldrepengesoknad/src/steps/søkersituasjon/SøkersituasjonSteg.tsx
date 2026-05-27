@@ -57,12 +57,12 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
 
         oppdaterSøkersituasjon(nySøkersituasjon);
 
-        return navigator.goToNextDefaultStep();
+        return navigator.goToNextStep();
     };
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step steps={stepConfig}>
+            <Step steps={stepConfig} onStepChange={navigator.goToStep}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                     <VStack gap="space-40">
                         <ErrorSummaryHookForm />

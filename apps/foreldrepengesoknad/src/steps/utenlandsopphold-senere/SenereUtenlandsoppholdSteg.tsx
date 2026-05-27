@@ -24,7 +24,7 @@ export const SenereUtenlandsoppholdSteg = ({ arbeidsforhold, mellomlagreSøknadO
     const save = (values: UtenlandsoppholdPeriode[]) => {
         oppdaterSenereUtenlandsopphold(values);
 
-        return navigator.goToNextDefaultStep();
+        return navigator.goToNextStep();
     };
 
     return (
@@ -36,6 +36,7 @@ export const SenereUtenlandsoppholdSteg = ({ arbeidsforhold, mellomlagreSøknadO
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
+                onStepChange={navigator.goToStep}
             />
         </SkjemaRotLayout>
     );
