@@ -2,10 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { useIntl } from 'react-intl';
 
 import { Kolonne, MeldingSitat, RegelIdBadge, RegelkatalogSide } from './RegelkatalogSide';
-import { lagArbeidOgUttakFørsteSeksUkerOmråde } from './validering/arbeidOgUttakDeFørsteSeksUkene';
-import { lagFarMedmorMaksToUkerRundtFødselOmråde } from './validering/farMedmorMaksToUkerRundtFødsel';
-import { lagFarMedmorRundtFødselOmråde } from './validering/farMedmorRundtFødsel';
-import { lagSamtidigUttakOmråde } from './validering/samtidigUttak';
+import { lagValideringsområder } from './validering/valider';
 
 /**
  * Selvdokumenterende Storybook-side: viser valideringsreglene som kjøres
@@ -32,12 +29,7 @@ const Valideringsregler = () => {
         },
     ];
 
-    const alleValideringsregler: readonly ValideringskatalogOmråde[] = [
-        lagArbeidOgUttakFørsteSeksUkerOmråde(intl),
-        lagSamtidigUttakOmråde(intl),
-        lagFarMedmorRundtFødselOmråde(intl),
-        lagFarMedmorMaksToUkerRundtFødselOmråde(intl),
-    ];
+    const alleValideringsregler: readonly ValideringskatalogOmråde[] = lagValideringsområder(intl);
 
     return (
         <RegelkatalogSide
