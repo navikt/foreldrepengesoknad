@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
+import { SøknadRoutes } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { ReactNode, useCallback, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -31,6 +32,7 @@ import {
 } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { GåTilbakeModal } from './GåTilbakeModal';
 import { UttaksplanForm } from './UttaksplanForm';
 import { useUttaksplanForEksisterendeSak } from './hooks/useUttaksplanForEksisterendeSak';
 import { useUttaksplanForslag } from './hooks/useUttaksplanForslag';
@@ -70,6 +72,32 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
     const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad, eksisterendeSak);
+    const [gåTilbakeIsOpen, setGåTilbakeIsOpen] = useState(false);
+    const [stegEtterBekreftelse, setStegEtterBekreftelse] = useState<SøknadRoutes | undefined>();
+
+    const onStepChange = useCallback(
+        (path: SøknadRoutes) => {
+            const currentIndex = stepConfig.findIndex((step) => step.isSelected);
+            const targetIndex = stepConfig.findIndex((step) => step.id === path);
+            const gårTilTidligereSteg = currentIndex !== -1 && targetIndex !== -1 && targetIndex < currentIndex;
+
+            if (uttaksplan && gårTilTidligereSteg) {
+                setStegEtterBekreftelse(path);
+                setGåTilbakeIsOpen(true);
+                return;
+            }
+
+            navigator.goToNextStep(path);
+        },
+        [navigator, stepConfig, uttaksplan],
+    );
+
+    const gåTilStegEtterBekreftelse = useCallback(() => {
+        if (!stegEtterBekreftelse) {
+            return;
+        }
+        navigator.goToNextStep(stegEtterBekreftelse);
+    }, [navigator, stegEtterBekreftelse]);
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
@@ -141,7 +169,17 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step steps={stepConfig} onStepChange={navigator.goToNextStep}>
+            <Step steps={stepConfig} onStepChange={onStepChange}>
+                <GåTilbakeModal
+                    isOpen={gåTilbakeIsOpen}
+                    setIsOpen={(isOpen) => {
+                        setGåTilbakeIsOpen(isOpen);
+                        if (!isOpen) {
+                            setStegEtterBekreftelse(undefined);
+                        }
+                    }}
+                    goToPreviousStep={gåTilStegEtterBekreftelse}
+                />
                 {erDeltUttak && (
                     <Alert variant="info">
                         <BodyLong>
