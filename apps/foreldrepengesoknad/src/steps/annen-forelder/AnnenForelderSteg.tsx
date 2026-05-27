@@ -78,7 +78,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
                 resetUttaksplanData();
             }
             oppdaterAnnenForeldre({ kanIkkeOppgis: true });
-            return navigator.goToNextDefaultStep();
+            return navigator.goToNextStep();
         }
 
         const skalIkkeOppgiPersonaliaOgHarFraRegBarn = !skalOppgiPersonalia && annenForelderFraRegistrertBarn;
@@ -125,7 +125,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
             harRettPåForeldrepengerIEØS,
         });
 
-        return navigator.goToNextDefaultStep();
+        return navigator.goToNextStep();
     };
 
     const formMethods = useForm<AnnenForelder>({
@@ -145,7 +145,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step steps={stepConfig} onStepChange={navigator.goToNextStep}>
+            <Step steps={stepConfig} onStepChange={navigator.goToStep}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                     <VStack gap="space-40">
                         <ErrorSummaryHookForm />

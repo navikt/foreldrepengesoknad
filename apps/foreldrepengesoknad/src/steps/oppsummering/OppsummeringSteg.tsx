@@ -100,22 +100,22 @@ export const OppsummeringSteg = (props: Props) => {
                 onAvsluttOgSlett={avbrytSøknad}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 onFortsettSenere={navigator.fortsettSøknadSenere}
-                onStepChange={navigator.goToNextStep}
+                onStepChange={navigator.goToStep}
                 ekstraSamtykketekst={ekstraSamtykketekst}
             >
                 {!erEndringssøknad && (
                     <>
                         <BarnOppsummering
                             barn={barn}
-                            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.OM_BARNET)}
+                            onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.OM_BARNET)}
                         />
                         <AnnenForelderOppsummering
                             annenForelder={annenForelder}
                             søkerrolle={søkersituasjon.rolle}
-                            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ANNEN_FORELDER)}
+                            onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.ANNEN_FORELDER)}
                         />
                         <BoIUtlandetOppsummering
-                            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}
+                            onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.UTENLANDSOPPHOLD)}
                             tidligereUtenlandsopphold={tidligereUtenlandsopphold ?? []}
                             senereUtenlandsopphold={senereUtenlandsopphold ?? []}
                         />
@@ -128,32 +128,32 @@ export const OppsummeringSteg = (props: Props) => {
                     skalViseAlertOmIM={aktiveArbeidsforhold.length > 0}
                     arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                     arbeidsforhold={aktiveArbeidsforhold}
-                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ARBEID_OG_INNTEKT)}
+                    onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.ARBEID_OG_INNTEKT)}
                 />
                 <FrilansOppsummering
                     frilans={frilans}
-                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.FRILANS)}
+                    onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.FRILANS)}
                 />
                 <SelvstendigNæringsdrivendeOppsummering
                     egenNæring={egenNæring}
-                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.EGEN_NÆRING)}
+                    onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.EGEN_NÆRING)}
                 />
                 <AndreInntektskilderOppsummering
                     andreInntektskilder={andreInntektskilder}
-                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ANDRE_INNTEKTER)}
+                    onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.ANDRE_INNTEKTER)}
                 />
                 {!erEndringssøknad && (
                     <PeriodeMedForeldrepengerOppsummering
-                        onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.PERIODE_MED_FORELDREPENGER)}
+                        onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.PERIODE_MED_FORELDREPENGER)}
                     />
                 )}
                 <UttaksplanOppsummering
                     navnPåForeldre={navnPåForeldre}
                     registrerteArbeidsforhold={aktiveArbeidsforhold}
-                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTTAKSPLAN)}
+                    onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.UTTAKSPLAN)}
                 />
                 <DokumentasjonOppsummering
-                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.DOKUMENTASJON)}
+                    onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.DOKUMENTASJON)}
                     navnPåForeldre={navnPåForeldre}
                 />
                 <>

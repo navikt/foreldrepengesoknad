@@ -87,7 +87,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
                 return;
             }
 
-            navigator.goToNextStep(path);
+            navigator.goToStep(path);
         },
         [navigator, stepConfig, uttaksplan],
     );
@@ -96,7 +96,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
         if (!stegEtterBekreftelse) {
             return;
         }
-        navigator.goToNextStep(stegEtterBekreftelse);
+        navigator.goToStep(stegEtterBekreftelse);
     }, [navigator, stegEtterBekreftelse]);
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;

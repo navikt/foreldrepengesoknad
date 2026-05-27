@@ -36,12 +36,12 @@ export const AndreInntektskilderSteg = ({ arbeidsforhold, mellomlagreSøknadOgNa
 
     const onSubmit = (values: AndreInntekterFormValues) => {
         oppdaterAndreInntektskilder(values.andreInntektskilder.filter(erFerdigUtfylt));
-        return navigator.goToNextDefaultStep();
+        return navigator.goToNextStep();
     };
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step steps={stepConfig} onStepChange={navigator.goToNextStep}>
+            <Step steps={stepConfig} onStepChange={navigator.goToStep}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                     <VStack gap="space-40">
                         <ErrorSummaryHookForm />
