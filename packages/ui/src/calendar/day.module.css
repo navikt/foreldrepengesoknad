@@ -328,9 +328,6 @@
     print-color-adjust: exact;
 }
 
-.none {
-}
-
 .icon {
     position: absolute;
     bottom: 2px;
