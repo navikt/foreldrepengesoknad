@@ -310,7 +310,7 @@ const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
     });
 };
 
-export const erJusterbartUttakRundtTermin = (
+const erJusterbartUttakRundtTermin = (
     periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
 ): boolean =>
     periode.kontoType === 'FORELDREPENGER' ||

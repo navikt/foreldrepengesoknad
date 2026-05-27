@@ -87,8 +87,6 @@ const finnRettighetstype = (
     return 'BARE_SØKER_RETT';
 };
 
-export type StønadskvoteParams = KontoBeregningGrunnlagDto;
-
 export const getStønadskvoteParams = (
     barn: Barn,
     annenForelder: AnnenForelder,
