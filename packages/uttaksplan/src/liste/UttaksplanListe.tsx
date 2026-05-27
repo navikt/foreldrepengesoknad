@@ -145,22 +145,21 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
                                         variant="tertiary"
                                         size="small"
                                         data-color="neutral"
-                                        icon={<NotePencilIcon aria-hidden height={24} width={24} />}
-                                        iconPosition="left"
-                                        style={{ display: 'inline-flex', flexWrap: 'nowrap' }}
+                                        icon={<ChevronDownIcon aria-hidden />}
+                                        iconPosition="right"
                                     >
                                         <HStack gap="space-4" align="center">
+                                            <NotePencilIcon aria-hidden height={24} width={24} />
                                             <BodyShort size="small">
                                                 <FormattedMessage id="UttaksplanHandlingKnapper.EndrePlanen" />
                                             </BodyShort>
-                                            <ChevronDownIcon aria-hidden height={20} width={20} />
                                         </HStack>
                                     </Button>
                                 </ActionMenu.Trigger>
-                                <ActionMenu.Content>
+                                <ActionMenu.Content className="max-w-65 ax-md:max-w-none" align="end">
                                     <VStack gap="space-16">
                                         <ActionMenu.Item onClick={toggleAllAccordions} style={{ paddingTop: '4px' }}>
-                                            <HStack gap="space-8">
+                                            <HStack gap="space-8" wrap={false}>
                                                 <NotePencilIcon aria-hidden height={24} width={24} color="#3F8047" />
                                                 <VStack gap="space-4">
                                                     <BodyShort weight="semibold" size="small">
@@ -181,7 +180,7 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
                                             }
                                             disabled={!uttaksplanRedigering.harEndretPlan}
                                         >
-                                            <HStack gap="space-8">
+                                            <HStack gap="space-8" wrap={false}>
                                                 <ArrowCirclepathReverseIcon
                                                     aria-hidden
                                                     height={24}
