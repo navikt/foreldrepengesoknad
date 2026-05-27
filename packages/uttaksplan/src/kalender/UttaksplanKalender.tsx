@@ -1,6 +1,6 @@
 import { TrashIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Button, HStack, InlineMessage, Link, Radio, RadioGroup, VStack } from '@navikt/ds-react';
@@ -33,6 +33,46 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
     const [isRangeSelection, setIsRangeSelection] = useState(true);
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
     const [endredePerioder, setEndredePerioder] = useState<Array<{ fom: string; tom: string }>>([]);
+    const [synligeEndredePerioder, setSynligeEndredePerioder] = useState<Array<{ fom: string; tom: string }>>([]);
+    const [visToast, setVisToast] = useState(false);
+
+    const toastTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+    const scrollTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+    useEffect(() => {
+        if (endredePerioder.length === 0) {
+            setSynligeEndredePerioder([]);
+            return;
+        }
+
+        const førsteDato = dayjs(endredePerioder[0]!.fom);
+        const year = førsteDato.year();
+        const month = førsteDato.month();
+
+        const visEndring = () => {
+            setSynligeEndredePerioder(endredePerioder);
+            setVisToast(true);
+            clearTimeout(toastTimerRef.current);
+            toastTimerRef.current = setTimeout(() => setVisToast(false), 3000);
+        };
+
+        requestAnimationFrame(() => {
+            const monthElement = document.querySelector(`[data-testid="year:${year};month:${month}"]`);
+
+            if (monthElement && !erElementSynlegIViewport(monthElement)) {
+                monthElement.scrollIntoView?.({ behavior: 'smooth', block: 'center' });
+                clearTimeout(scrollTimerRef.current);
+                scrollTimerRef.current = setTimeout(visEndring, 600);
+            } else {
+                visEndring();
+            }
+        });
+
+        return () => {
+            clearTimeout(toastTimerRef.current);
+            clearTimeout(scrollTimerRef.current);
+        };
+    }, [endredePerioder]);
 
     const setRedigeringAktivOgValgtePerioder = useCallback<React.Dispatch<React.SetStateAction<CalendarPeriod[]>>>(
         (perioder) => {
@@ -50,7 +90,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
-    const perioderForKalendervisning = usePerioderForKalendervisning(endredePerioder, barnehagestartdato);
+    const perioderForKalendervisning = usePerioderForKalendervisning(synligeEndredePerioder, barnehagestartdato);
 
     const {
         førsteDatoIKalender,
@@ -246,8 +286,41 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                 sisteDatoIKalender={sisteDatoIKalender}
                 barnehagestartdato={barnehagestartdato}
             />
+
+            <PeriodeLagtTilToast visToast={visToast} />
         </VStack>
     );
 };
 
+const PeriodeLagtTilToast = ({ visToast }: { visToast: boolean }) => (
+    <div
+        role="status"
+        aria-live="polite"
+        style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 50,
+            pointerEvents: 'none',
+            backgroundColor: '#1a1a1a',
+            color: '#ffffff',
+            padding: '1rem 2rem',
+            borderRadius: '0.75rem',
+            fontSize: '1rem',
+            fontWeight: 500,
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.25)',
+            opacity: visToast ? 1 : 0,
+            transition: 'opacity 300ms ease',
+        }}
+    >
+        <FormattedMessage id="UttaksplanKalender.PeriodeLagtTil" />
+    </div>
+);
+
 const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
+
+const erElementSynlegIViewport = (el: Element): boolean => {
+    const rect = el.getBoundingClientRect();
+    return rect.top >= 0 && rect.bottom <= window.innerHeight;
+};
