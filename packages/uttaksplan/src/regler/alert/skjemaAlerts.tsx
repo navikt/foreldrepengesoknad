@@ -63,8 +63,6 @@ export const useSkjemaKontekstuelleAlerts = (valgtePerioder: Periode[]): SkjemaK
     };
 };
 
-export { BLOKKERENDE_ALERTS, KONTEKSTUELLE_ALERTS };
-
 /**
  * Kontekst for blokkerende alerts som avgjør om hele skjemaet skal
  * erstattes av en informasjonsmelding.
@@ -103,7 +101,7 @@ const KRYSSET_FAMILIEHENDELSE_MELDINGER: Record<Familiesituasjon, ReactNode> = {
     ),
 };
 
-const BLOKKERENDE_ALERTS: ReadonlyArray<Alertregel<BlokkerendeAlertKontekst>> = [
+export const BLOKKERENDE_ALERTS: ReadonlyArray<Alertregel<BlokkerendeAlertKontekst>> = [
     lagAlertregel<BlokkerendeAlertKontekst>({
         id: 'blokkerendeAlerts.perioderKrysserFamiliehendelse',
         beskrivelse:
@@ -198,7 +196,7 @@ const KONTEKSTUELL_GRADERING_ALERT = lagAlertregel<KontekstuellAlertKontekst>({
         ),
 });
 
-const KONTEKSTUELLE_ALERTS: ReadonlyArray<Alertregel<KontekstuellAlertKontekst>> = [KONTEKSTUELL_GRADERING_ALERT];
+export const KONTEKSTUELLE_ALERTS: ReadonlyArray<Alertregel<KontekstuellAlertKontekst>> = [KONTEKSTUELL_GRADERING_ALERT];
 
 type SkjemaKontekstuelleAlerts = {
     graderingDagerReduseres?: { melding: ReactNode; variant: 'info' | 'warning' };
