@@ -310,7 +310,7 @@ const PeriodeLagtTilToast = ({ visToast }: { visToast: boolean }) => (
     >
         {visToast && (
             <Box background="neutral-strong" borderRadius="8" shadow="dialog" padding="space-16">
-                <BodyShort style={{ color: '#ffffff' }}>
+                <BodyShort style={{ color: 'var(--ax-text-neutral-contrast)' }}>
                     <FormattedMessage id="UttaksplanKalender.PlanOppdatert" defaultMessage="Plan updated" />
                 </BodyShort>
             </Box>
