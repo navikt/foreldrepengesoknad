@@ -315,7 +315,7 @@ const PeriodeLagtTilToast = ({ visToast }: { visToast: boolean }) => (
             transition: 'opacity 300ms ease',
         }}
     >
-        <FormattedMessage id="UttaksplanKalender.PeriodeLagtTil" />
+        <FormattedMessage id="UttaksplanKalender.PlanOppdatert" defaultMessage="Plan updated" />
     </div>
 );
 
