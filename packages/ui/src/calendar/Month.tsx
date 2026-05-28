@@ -93,6 +93,7 @@ export const Month = React.memo(
                 borderRadius="4"
                 borderColor="neutral-subtle"
                 data-testid={`year:${year};month:${month}`}
+                data-month-key={`${year}-${month}`}
             >
                 <VStack gap="space-12">
                     <Heading size="small" level="4" align="center">

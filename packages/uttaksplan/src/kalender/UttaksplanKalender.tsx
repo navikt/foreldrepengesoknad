@@ -61,7 +61,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                 };
 
                 requestAnimationFrame(() => {
-                    const monthElement = document.querySelector(`[data-testid="year:${year};month:${month}"]`);
+                    const monthElement = document.querySelector(`[data-month-key="${year}-${month}"]`);
 
                     if (monthElement && !erElementSynlegIViewport(monthElement)) {
                         monthElement.scrollIntoView?.({ behavior: 'smooth', block: 'center' });
