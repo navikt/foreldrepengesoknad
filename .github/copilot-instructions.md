@@ -81,6 +81,32 @@ conventions, see:
   `navikt`) – Knowledge base for chat, IDE agent, and CLI. Use with: _"Using the
   TeamForeldrepenger space owned by navikt, ..."_
 
+## Uttaksplan rule catalog (self-documenting Storybook)
+
+The `packages/uttaksplan/src/regler/` directory contains the business rules for
+the leave planner (uttaksplan) — visibility rules, quota type rules, field
+validation, submit validation, and alert rules. Each rule category lives in its
+own subdirectory and has a corresponding `*.stories.tsx` file that renders a
+self-documenting catalog page in Storybook.
+
+The stories import the rule constants directly, so **existing rules update
+automatically** in Storybook when you change them. However, when you:
+
+- **Add a new rule constant** — you must also import it and add it to the
+  relevant array in the corresponding `.stories.tsx` file.
+- **Add a new rule area (område)** — you must create a new område object in the
+  story and include it in the top-level array.
+- **Add a new rule category** — create a new `.stories.tsx` following the
+  existing pattern (use `RegelkatalogSide`).
+
+| Rule category | Source directory | Story file |
+|---------------|-----------------|------------|
+| Quota types (stønadskonto) | `regler/kvotetype/` | `Kvotetyperegler.stories.tsx` |
+| Visibility (field/button) | `regler/synlighet/` | `Synlighetsregler.stories.tsx` |
+| Field validation | `regler/felt/` | `Feltregler.stories.tsx` |
+| Submit validation | `regler/validering/` | `Valideringsregler.stories.tsx` |
+| Alerts / info messages | `regler/alert/` | `Alertregler.stories.tsx` |
+
 ## Guidelines for code changes
 
 - Use Norwegian domain terminology where appropriate (søknad, uttaksplan,
