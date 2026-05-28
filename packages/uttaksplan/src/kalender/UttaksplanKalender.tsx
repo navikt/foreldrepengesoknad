@@ -297,20 +297,15 @@ const PeriodeLagtTilToast = ({ visToast }: { visToast: boolean }) => (
     <div
         role="status"
         aria-live="polite"
-        style={{
-            position: 'fixed',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            zIndex: 50,
-            pointerEvents: 'none',
-            opacity: visToast ? 1 : 0,
-            transition: 'opacity 300ms ease',
-        }}
+        className={[
+            'pointer-events-none fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2',
+            'transition-opacity duration-300',
+            visToast ? 'opacity-100' : 'opacity-0',
+        ].join(' ')}
     >
         {visToast && (
             <Box background="neutral-strong" borderRadius="8" shadow="dialog" padding="space-16">
-                <BodyShort style={{ color: 'var(--ax-text-neutral-contrast)' }}>
+                <BodyShort className="text-[var(--ax-text-neutral-contrast)]">
                     <FormattedMessage id="UttaksplanKalender.PlanOppdatert" defaultMessage="Plan updated" />
                 </BodyShort>
             </Box>
