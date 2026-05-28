@@ -61,7 +61,9 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 
                     let harVistEndring = false;
                     const visEndring = () => {
-                        if (harVistEndring) return;
+                        if (harVistEndring) {
+                            return;
+                        }
                         harVistEndring = true;
                         clearTimeout(scrollFallbackRef.current);
                         setEndredePerioder(perioder);
