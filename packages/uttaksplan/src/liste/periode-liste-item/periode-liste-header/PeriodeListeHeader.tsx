@@ -10,7 +10,7 @@ import { Uttaksdagen } from '@navikt/fp-utils';
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { Uttaksplanperiode } from '../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../utils/dateUtils';
-import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../../utils/periodeUtils';
+import { harPeriodeDerMorsAktivitetIkkeErValgt, harPeriodeMedUkjentGraderingsaktivitet } from '../../../utils/periodeUtils';
 import {
     erUttaksplanperiodeFamiliehendelseDato,
     getFørsteUttaksplanperiodeFom,
@@ -53,6 +53,11 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
     );
 
     const harMorsAktivitetIkkeErValgt = harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, uttaksplanperioder);
+    const harUkjentGraderingsaktivitet = harPeriodeMedUkjentGraderingsaktivitet(uttaksplanperioder);
+    const harValideringsfeil = harMorsAktivitetIkkeErValgt || harUkjentGraderingsaktivitet;
+    const valideringsfeilTekstId = harMorsAktivitetIkkeErValgt
+        ? 'PeriodeListeHeader.MorsAktivitetIkkeValgt'
+        : 'PeriodeListeHeader.GraderingsaktivitetIkkeValgt';
 
     return (
         <HGrid
@@ -82,7 +87,7 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
                         `ax-md:m-0 ax-md:h-auto ax-md:w-full ax-md:rounded-xl ax-md:px-4 ax-md:py-2` +
                         ` m-2 flex h-12 w-12 justify-between rounded-2xl ${finnBakgrunnsfarge(
                             uttaksplanperioder,
-                            harMorsAktivitetIkkeErValgt,
+                            harValideringsfeil,
                             erFamiliehendelse,
                         )}`
                     }
@@ -94,7 +99,7 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
                         wrap={false}
                         gap="space-4"
                     >
-                        {!harMorsAktivitetIkkeErValgt && (
+                        {!harValideringsfeil && (
                             <>
                                 <Show above="md">
                                     <BodyShort>{tekst}</BodyShort>
@@ -102,16 +107,16 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
                                 <div>{getIkon(uttaksplanperioder, familiehendelsedato)}</div>
                             </>
                         )}
-                        {harMorsAktivitetIkkeErValgt && (
+                        {harValideringsfeil && (
                             <HStack gap="space-12">
                                 <ExclamationmarkTriangleFillIcon
-                                    title={intl.formatMessage({ id: 'PeriodeListeHeader.MorsAktivitetIkkeValgt' })}
+                                    title={intl.formatMessage({ id: valideringsfeilTekstId })}
                                     fontSize="1.5rem"
                                     className="text-ax-danger-800"
                                 />
                                 <Show above="md">
                                     <BodyShort className="text-ax-danger-800">
-                                        <FormattedMessage id="PeriodeListeHeader.MorsAktivitetIkkeValgt" />
+                                        <FormattedMessage id={valideringsfeilTekstId} />
                                     </BodyShort>
                                 </Show>
                             </HStack>

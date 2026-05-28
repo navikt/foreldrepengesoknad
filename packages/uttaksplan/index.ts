@@ -26,6 +26,7 @@ export { skalBesvareFlerbarnsdager } from './src/utils/flerbarnsdager';
 export {
     sorterUttakPerioder,
     harPeriodeDerMorsAktivitetIkkeErValgt,
+    harPeriodeMedUkjentGraderingsaktivitet,
     getAntallUttaksdagerIVinduRundtFødsel,
 } from './src/utils/periodeUtils';
 export { prosesserPerioderForVisning } from './src/utils/prosesserPerioderForVisning';
