@@ -1,5 +1,12 @@
-import { ReactNode } from 'react';
+import { ComponentType, ReactNode } from 'react';
 
+import {
+    ExclamationmarkTriangleIcon,
+    EyeIcon,
+    PencilLineIcon,
+    ShieldCheckmarkIcon,
+    TokenIcon,
+} from '@navikt/aksel-icons';
 import { BodyLong, BodyShort, Box, HStack, Heading, Link, Tag, VStack } from '@navikt/ds-react';
 
 /**
@@ -48,24 +55,29 @@ const FARGER = {
     felt: {
         badge: 'bg-ax-bg-accent-soft border-ax-border-accent text-ax-text-accent',
         border: 'border-ax-border-accent',
+        Icon: PencilLineIcon,
     },
     synlighet: {
         badge: 'bg-ax-bg-info-soft border-ax-border-info text-ax-text-info',
         border: 'border-ax-border-info',
+        Icon: EyeIcon,
     },
     kvote: {
         badge: 'bg-ax-bg-success-soft border-ax-border-success text-ax-text-success',
         border: 'border-ax-border-success',
+        Icon: TokenIcon,
     },
     alert: {
         badge: 'bg-ax-bg-warning-soft border-ax-border-warning text-ax-text-warning',
         border: 'border-ax-border-warning',
+        Icon: ExclamationmarkTriangleIcon,
     },
     validering: {
         badge: 'bg-ax-bg-danger-soft border-ax-border-danger text-ax-text-danger',
         border: 'border-ax-border-danger',
+        Icon: ShieldCheckmarkIcon,
     },
-} as const;
+} as const satisfies Record<string, { badge: string; border: string; Icon: ComponentType<{ className?: string; 'aria-hidden'?: boolean }> }>;
 
 export type Katalogfarge = keyof typeof FARGER;
 
@@ -77,25 +89,29 @@ type HeroProps = {
     badge: string;
 };
 
-const Hero = ({ tittel, intro, kildesti, farge, badge }: HeroProps) => (
-    <Box
-        background="neutral-soft"
-        borderRadius="12"
-        padding="space-32"
-        className={`border-l-8 ${FARGER[farge].border}`}
-    >
-        <VStack gap="space-12">
-            <HStack gap="space-12" align="center">
-                <span
-                    className={`rounded-full border px-3 py-1 text-sm font-semibold uppercase tracking-wide ${FARGER[farge].badge}`}
-                >
-                    {badge}
-                </span>
-                <BodyShort size="small" className="text-ax-text-subtle">
-                    Autogenerert fra <code className="font-mono">{kildesti}</code>
-                </BodyShort>
-            </HStack>
-            <Heading size="xlarge" level="1">
+const Hero = ({ tittel, intro, kildesti, farge, badge }: HeroProps) => {
+    const { Icon } = FARGER[farge];
+    return (
+        <Box
+            background="neutral-soft"
+            borderRadius="12"
+            padding="space-32"
+            className={`border-l-8 ${FARGER[farge].border}`}
+        >
+            <VStack gap="space-12">
+                <HStack gap="space-12" align="center">
+                    <span
+                        className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm
+                            font-semibold uppercase tracking-wide ${FARGER[farge].badge}`}
+                    >
+                        <Icon aria-hidden className="h-4 w-4" />
+                        {badge}
+                    </span>
+                    <BodyShort size="small" className="text-ax-text-subtle">
+                        Autogenerert fra <code className="font-mono">{kildesti}</code>
+                    </BodyShort>
+                </HStack>
+                <Heading size="xlarge" level="1">
                 {tittel}
             </Heading>
             <BodyLong size="medium" className="max-w-3xl">
@@ -103,7 +119,8 @@ const Hero = ({ tittel, intro, kildesti, farge, badge }: HeroProps) => (
             </BodyLong>
         </VStack>
     </Box>
-);
+    );
+};
 
 export type Kolonne<T> = {
     overskrift: string;
@@ -235,9 +252,20 @@ export type RegelkatalogSideProps<T> = {
     kolonner: ReadonlyArray<Kolonne<T>>;
 };
 
-/** Liten badge med monospace-id — brukt i tabellene. */
+/** Liten badge med monospace-id — brukt i tabellene. Wrapper på punktum. */
 export const RegelIdBadge = ({ id }: { id: string }) => (
-    <code className="inline-block rounded bg-ax-bg-neutral-moderate px-2 py-0.5 font-mono text-xs">{id}</code>
+    <code className="rounded bg-ax-bg-neutral-moderate px-2 py-0.5 font-mono text-xs">
+        {id.split('.').map((segment, i, arr) => (
+            <span key={i}>
+                {segment}
+                {i < arr.length - 1 && (
+                    <>
+                        .<wbr />
+                    </>
+                )}
+            </span>
+        ))}
+    </code>
 );
 
 /** Sitert melding-tekst — typisk «Slik ser meldingen ut for brukeren». */
