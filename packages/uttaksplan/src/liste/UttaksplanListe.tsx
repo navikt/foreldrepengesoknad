@@ -1,4 +1,4 @@
-import { NotePencilDashIcon } from '@navikt/aksel-icons';
+import { NotePencilDashIcon, PlusIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -10,12 +10,12 @@ import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
-import { UttaksplanHandlingKnapper } from '../felles/UttaksplanHandlingKnapper';
 import { Uttaksplanperiode } from '../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak } from '../utils/lagHullPerioder';
 import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../utils/periodeUtils';
 import { LeggTilEllerEndrePeriodeListPanel } from './legg-til-endre-periode-panel/LeggTilEllerEndrePeriodeListPanel';
 import { PeriodeListeItem } from './periode-liste-item/PeriodeListeItem';
+import { UttaksplanListeKnapper } from './UttaksplanListeKnapper';
 import { mapUttaksplanperioderTilRaderIListe } from './utils/mapUttaksplanperioderTilRaderIListe';
 import { getFørsteUttaksplanperiodeFom, getSisteUttaksplanperiodeTom } from './utils/uttaksplanperiodeUtils';
 
@@ -94,8 +94,15 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
                     </VStack>
                 </HStack>
             )}
+            <UttaksplanListeKnapper toggleAllAccordions={toggleAllAccordions} />
+
             {!isReadOnly && !isLeggTilPeriodePanelOpen && (
-                <Button variant="secondary" onClick={() => setIsLeggTilPeriodePanelOpen(true)}>
+                <Button
+                    variant="secondary"
+                    onClick={() => setIsLeggTilPeriodePanelOpen(true)}
+                    icon={<PlusIcon aria-hidden />}
+                    style={{ outline: '1px solid var(--ax-border-subtle)', outlineOffset: '-1px' }}
+                >
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />
                 </Button>
             )}
@@ -104,24 +111,6 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
                     setIsLeggTilPeriodePanelOpen={setIsLeggTilPeriodePanelOpen}
                     erNyPeriodeModus
                     harPeriodeDerMorsAktivitetIkkeErValgt={false}
-                />
-            )}
-            {uttaksplanRedigering && (
-                <UttaksplanHandlingKnapper
-                    toggleAllAccordions={toggleAllAccordions}
-                    tilbakestillPlan={
-                        uttaksplanRedigering.harEndretPlan
-                            ? () => uttaksplanRedigering.setVisTilbakestillModal(true)
-                            : undefined
-                    }
-                    angreEndring={
-                        uttaksplanRedigering.uttaksplanVersjoner.length > 0
-                            ? () => uttaksplanRedigering.angreSisteEndring()
-                            : undefined
-                    }
-                    fjernAltIPlanen={() => uttaksplanRedigering.setVisFjernAltModal(true)}
-                    visFjernAltModal={uttaksplanRedigering.visFjernAltModal}
-                    visTilbakestillModal={uttaksplanRedigering.visTilbakestillModal}
                 />
             )}
         </VStack>

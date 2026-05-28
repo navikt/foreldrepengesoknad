@@ -43,10 +43,11 @@ describe('<UttaksplanSteg>', () => {
 
             await userEvent.click(screen.getAllByText('Du kan velge datoer i kalenderen')[0]!);
 
-            await userEvent.click(screen.getByText('Fjern alt i planen'));
+            await userEvent.click(screen.getByText('Fjern alt'));
 
             expect(await screen.findByText('Ønsker du å fjerne alt som er lagt til?')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Fjern alt'));
+            const modal = screen.getByRole('dialog');
+            await userEvent.click(within(modal).getByText('Fjern alt'));
 
             await userEvent.click(screen.getByText('Neste steg'));
 
@@ -149,9 +150,10 @@ describe('<UttaksplanSteg>', () => {
             await userEvent.click(screen.getAllByText('Du kan velge datoer i kalenderen')[0]!);
 
             // Fjern alt for å aktivere 'Tilbakestill plan'-knappen
-            await userEvent.click(screen.getByText('Fjern alt i planen'));
-            expect(await screen.findByText('Ønsker du å fjerne alt som er lagt til?')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Fjern alt'));
+            expect(await screen.findByText('Ønsker du å fjerne alt som er lagt til?')).toBeInTheDocument();
+            const fjernAltModal = screen.getByRole('dialog');
+            await userEvent.click(within(fjernAltModal).getByText('Fjern alt'));
 
             // Klikk på 'Tilbakestill plan'
             await userEvent.click(screen.getByRole('button', { name: 'Tilbakestill plan' }));
@@ -186,9 +188,10 @@ describe('<UttaksplanSteg>', () => {
             await userEvent.click(screen.getAllByText('Du kan velge datoer i kalenderen')[0]!);
 
             // Fjern alt for å aktivere 'Tilbakestill plan'-knappen
-            await userEvent.click(screen.getByText('Fjern alt i planen'));
-            expect(await screen.findByText('Ønsker du å fjerne alt som er lagt til?')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Fjern alt'));
+            expect(await screen.findByText('Ønsker du å fjerne alt som er lagt til?')).toBeInTheDocument();
+            const fjernAltModal2 = screen.getByRole('dialog');
+            await userEvent.click(within(fjernAltModal2).getByText('Fjern alt'));
 
             // Klikk på 'Tilbakestill plan'
             await userEvent.click(screen.getByRole('button', { name: 'Tilbakestill plan' }));
