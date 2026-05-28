@@ -14,6 +14,7 @@ const {
     VisPerioderMedOppholdsårsakKorrekt,
     MorSøkerOgFarHarEøsPeriode,
     MarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt,
+    MarkeringNårGraderingsaktivitetMangler,
     HarUtsettelse,
     KunFarHarRettOgHarPauseperiode,
     EøsPerioderForAnnenPart,
@@ -465,6 +466,16 @@ describe('UttaksplanListe', () => {
         expect(screen.getByText('Mor er i arbeid')).toBeInTheDocument();
 
         expect(screen.queryByText('Du må velge mors aktivitet før du går videre')).not.toBeInTheDocument();
+    });
+
+    it('Skal få advarsel om at gradering manglar arbeidsgiver når plan kjem frå planleggar', async () => {
+        render(<MarkeringNårGraderingsaktivitetMangler />);
+
+        expect(
+            await screen.findByText('Du må velge hvor du skal jobbe under gradering før du går videre'),
+        ).toBeInTheDocument();
+
+        expect(screen.getAllByText('Mangler hvor du skal jobbe under gradering').length).toBeGreaterThanOrEqual(1);
     });
 
     it('Skal kunne slette og endre alle perioder bortsett fra periodene til annen part', async () => {

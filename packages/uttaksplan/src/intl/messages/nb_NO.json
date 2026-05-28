@@ -385,6 +385,7 @@
     "LeggTilEllerEndrePeriodeForm.ØnskerFlerbarnsdager.Påkrevd": "Du må svare på spørsmålet om du ønsker å bruke flerbarnsdager for denne perioden",
     "LeggTilEllerEndrePeriodeFellesForm.DagerReduseres": "Arbeid i tidsrommet 3 uker før termin og 6 uker etter fødsel, betyr at foreldrepengene vil reduseres det du jobber uten at du får dagene til gode til senere.",
     "UttaksplanListe.ManglerMorsAktivitet": "Du må velge mors aktivitet før du går videre",
+    "UttaksplanListe.ManglerGraderingsaktivitet": "Du må velge hvor du skal jobbe under gradering før du går videre",
     "LeggTilUtsettelsePanel.VelgÅrsak": "Velg hvorfor du skal utsette",
     "LeggTilUtsettelsePanel.VelgÅrsak.Required": "Du må velge hvorfor du skal utsette",
     "LeggTilUtsettelsePanel.Periode6Uker": "Perioden har dager i de første 6 ukene etter fødsel",

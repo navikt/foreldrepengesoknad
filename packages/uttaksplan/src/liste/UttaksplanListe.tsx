@@ -53,10 +53,19 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
 
     const { manglerMorsAktivitetAlert } = useUttaksplanListeAlerts(uttakPerioderJustertForFamiliehendelsesdato);
 
+    const harUkjentGraderingsaktivitet = harPeriodeMedUkjentGraderingsaktivitet(
+        uttakPerioderJustertForFamiliehendelsesdato,
+    );
+
     return (
         <VStack gap="space-16">
             {manglerMorsAktivitetAlert && (
                 <Alert variant={manglerMorsAktivitetAlert.variant}>{manglerMorsAktivitetAlert.melding}</Alert>
+            )}
+            {harUkjentGraderingsaktivitet && (
+                <Alert variant="warning">
+                    <FormattedMessage id="UttaksplanListe.ManglerGraderingsaktivitet" />
+                </Alert>
             )}
             {uttakPerioder.length > 0 && (
                 <div>

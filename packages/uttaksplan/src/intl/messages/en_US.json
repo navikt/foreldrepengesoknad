@@ -385,6 +385,7 @@
     "LeggTilEllerEndrePeriodeForm.ØnskerFlerbarnsdager.Påkrevd": "You must answer the question about whether you want to use multiple children days for this period",
     "LeggTilEllerEndrePeriodeFellesForm.DagerReduseres": "Working in the period 3 weeks before the due date and 6 weeks after birth means that parental benefits will be reduced for the days you work without being able to take those days later.",
     "UttaksplanListe.ManglerMorsAktivitet": "You must select mother's activity before proceeding.",
+    "UttaksplanListe.ManglerGraderingsaktivitet": "You must select where you will work during graded leave before proceeding.",
     "LeggTilUtsettelsePanel.VelgÅrsak": "Choose why you want to postpone",
     "LeggTilUtsettelsePanel.VelgÅrsak.Required": "You must select why you want to postpone",
     "LeggTilUtsettelsePanel.Periode6Uker": "The selected period has days in the first 6 weeks after birth",
