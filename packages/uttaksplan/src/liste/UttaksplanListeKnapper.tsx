@@ -39,7 +39,7 @@ export const UttaksplanListeKnapper = ({ toggleAllAccordions }: Props) => {
                     <VStack gap="space-4" align="center">
                         <ArrowUndoIcon aria-hidden height={24} width={24} />
                         <BodyShort size="small">
-                            <FormattedMessage id="UttaksplanHandlingKnapper.Angre" />
+                            <FormattedMessage id="UttaksplanListeKnapper.Angre" />
                         </BodyShort>
                     </VStack>
                 </Button>
@@ -55,7 +55,7 @@ export const UttaksplanListeKnapper = ({ toggleAllAccordions }: Props) => {
                     <VStack gap="space-4" align="center">
                         <TrashIcon aria-hidden height={24} width={24} />
                         <BodyShort size="small">
-                            <FormattedMessage id="UttaksplanHandlingKnapper.FjernAlt" />
+                            <FormattedMessage id="UttaksplanListeKnapper.FjernAlt" />
                         </BodyShort>
                     </VStack>
                 </Button>
@@ -73,7 +73,7 @@ export const UttaksplanListeKnapper = ({ toggleAllAccordions }: Props) => {
                             <HStack gap="space-4" align="center">
                                 <NotePencilIcon aria-hidden height={24} width={24} />
                                 <BodyShort size="small">
-                                    <FormattedMessage id="UttaksplanHandlingKnapper.EndrePlanen" />
+                                    <FormattedMessage id="UttaksplanListeKnapper.EndrePlanen" />
                                 </BodyShort>
                             </HStack>
                         </Button>
@@ -97,11 +97,11 @@ export const UttaksplanListeKnapper = ({ toggleAllAccordions }: Props) => {
                                     </Box>
                                     <VStack gap="space-4">
                                         <BodyShort weight="semibold" size="small">
-                                            <FormattedMessage id="UttaksplanHandlingKnapper.EndreValg" />
+                                            <FormattedMessage id="UttaksplanListeKnapper.EndreValg" />
                                         </BodyShort>
                                         <ActionMenu.Label className="pl-0">
                                             <BodyShort size="small" color="text-ax-text-neutral-subtle">
-                                                <FormattedMessage id="UttaksplanHandlingKnapper.EndreValg.Beskrivelse" />
+                                                <FormattedMessage id="UttaksplanListeKnapper.EndreValg.Beskrivelse" />
                                             </BodyShort>
                                         </ActionMenu.Label>
                                     </VStack>
@@ -133,11 +133,11 @@ export const UttaksplanListeKnapper = ({ toggleAllAccordions }: Props) => {
                                     </Box>
                                     <VStack gap="space-4">
                                         <BodyShort weight="semibold" size="small">
-                                            <FormattedMessage id="UttaksplanHandlingKnapper.Tilbakestill" />
+                                            <FormattedMessage id="UttaksplanListeKnapper.Tilbakestill" />
                                         </BodyShort>
                                         <ActionMenu.Label className="pl-0">
                                             <BodyShort size="small" color="text-ax-text-neutral-subtle">
-                                                <FormattedMessage id="UttaksplanHandlingKnapper.Tilbakestill.Beskrivelse" />
+                                                <FormattedMessage id="UttaksplanListeKnapper.Tilbakestill.Beskrivelse" />
                                             </BodyShort>
                                         </ActionMenu.Label>
                                     </VStack>
