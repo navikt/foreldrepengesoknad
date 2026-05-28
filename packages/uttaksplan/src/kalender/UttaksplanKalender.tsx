@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useCallback, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, BodyShort, Button, HStack, InlineMessage, Link, Radio, RadioGroup, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Box, Button, HStack, InlineMessage, Link, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT, links } from '@navikt/fp-constants';
 import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
@@ -304,18 +304,15 @@ const PeriodeLagtTilToast = ({ visToast }: { visToast: boolean }) => (
             transform: 'translate(-50%, -50%)',
             zIndex: 50,
             pointerEvents: 'none',
-            backgroundColor: '#1a1a1a',
-            color: '#ffffff',
-            padding: '1rem 2rem',
-            borderRadius: '0.75rem',
-            fontSize: '1rem',
-            fontWeight: 500,
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.25)',
             opacity: visToast ? 1 : 0,
             transition: 'opacity 300ms ease',
         }}
     >
-        <FormattedMessage id="UttaksplanKalender.PlanOppdatert" defaultMessage="Plan updated" />
+        <Box background="neutral-strong" borderRadius="8" shadow="dialog" padding="space-16">
+            <BodyShort>
+                <FormattedMessage id="UttaksplanKalender.PlanOppdatert" defaultMessage="Plan updated" />
+            </BodyShort>
+        </Box>
     </div>
 );
 
