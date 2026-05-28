@@ -10,12 +10,12 @@ import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
+import { useUttaksplanListeAlerts } from '../regler/alert/informasjonsAlertHooks';
 import { Uttaksplanperiode } from '../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak } from '../utils/lagHullPerioder';
-import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../utils/periodeUtils';
+import { UttaksplanListeKnapper } from './UttaksplanListeKnapper';
 import { LeggTilEllerEndrePeriodeListPanel } from './legg-til-endre-periode-panel/LeggTilEllerEndrePeriodeListPanel';
 import { PeriodeListeItem } from './periode-liste-item/PeriodeListeItem';
-import { UttaksplanListeKnapper } from './UttaksplanListeKnapper';
 import { mapUttaksplanperioderTilRaderIListe } from './utils/mapUttaksplanperioderTilRaderIListe';
 import { getFørsteUttaksplanperiodeFom, getSisteUttaksplanperiodeTom } from './utils/uttaksplanperiodeUtils';
 
@@ -26,11 +26,7 @@ interface Props {
 export const UttaksplanListe = ({ isReadOnly }: Props) => {
     const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
-    const {
-        uttakPerioder,
-        familiehendelsedato,
-        foreldreInfo: { rettighetType },
-    } = useUttaksplanData();
+    const { uttakPerioder, familiehendelsedato } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
@@ -55,17 +51,12 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
 
     const alleRader = leggTilPeriodeForFamiliehendelsedato(uttaksplanperioderPerRadIListe, familiehendelsedato);
 
-    const harMorsAktivitetIkkeErValgt = harPeriodeDerMorsAktivitetIkkeErValgt(
-        rettighetType,
-        uttakPerioderJustertForFamiliehendelsesdato,
-    );
+    const { manglerMorsAktivitetAlert } = useUttaksplanListeAlerts(uttakPerioderJustertForFamiliehendelsesdato);
 
     return (
         <VStack gap="space-16">
-            {harMorsAktivitetIkkeErValgt && (
-                <Alert variant="warning">
-                    <FormattedMessage id="UttaksplanListe.ManglerMorsAktivitet" />
-                </Alert>
+            {manglerMorsAktivitetAlert && (
+                <Alert variant={manglerMorsAktivitetAlert.variant}>{manglerMorsAktivitetAlert.melding}</Alert>
             )}
             {uttakPerioder.length > 0 && (
                 <div>

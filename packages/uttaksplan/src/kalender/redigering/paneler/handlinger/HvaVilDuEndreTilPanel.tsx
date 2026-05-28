@@ -10,8 +10,8 @@ import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
+import { useKnapperIRedigeringspanelSynlighet } from '../../../../regler/synlighet/knapperIRedigeringspanel';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
-import { UttaksperiodeValidatorer } from '../../../../utils/UttaksperiodeValidatorer';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
@@ -31,11 +31,8 @@ interface Props {
 
 export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) => {
     const {
-        foreldreInfo: { søker, rettighetType },
-        erPeriodeneTilAnnenPartLåst,
+        foreldreInfo: { søker },
         uttakPerioder,
-        familiehendelsedato,
-        familiesituasjon,
     } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, setValgtePerioder, leggTilUttaksplanPerioder, setEndredePerioder } =
@@ -72,43 +69,20 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
             p.resultat.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER',
     );
 
-    const skalViseLeggTilKnappetekst =
-        eksisterendePerioderSomErValgt.length === 0 ||
-        (erPeriodeneTilAnnenPartLåst &&
-            eksisterendePerioderSomErValgt.some((p) => erVanligUttakPeriode(p) && p.forelder !== søker));
-
     const erEksisterendePerioderEtterValgteDager = erDetEksisterendePerioderEtterValgtePerioder(
         uttakPerioder,
         sammenslåtteValgtePerioder,
     );
 
-    const skalViseUtsettelsesknapp =
-        søker === 'MOR' &&
-        familiesituasjon !== 'adopsjon' &&
-        UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
-            sammenslåtteValgtePerioder,
-            familiehendelsedato,
-        );
-
-    const harBareFarRett = søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT';
-
-    const skalVisePauseknapp =
-        harBareFarRett &&
-        !UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
-            sammenslåtteValgtePerioder,
-            familiehendelsedato,
-        );
-
-    const skalViseFerieknapp =
-        !skalViseUtsettelsesknapp &&
-        !skalVisePauseknapp &&
-        !(
-            harBareFarRett &&
-            UttaksperiodeValidatorer.erNoenPerioderLikEllerEtter6UkerEtterFamiliehendelsedato(
-                sammenslåtteValgtePerioder,
-                familiehendelsedato,
-            )
-        );
+    const {
+        skalViseUtsettelsesknapp,
+        skalVisePauseknapp,
+        skalViseFerieknapp,
+        skalViseLeggTilKnappetekst,
+    } = useKnapperIRedigeringspanelSynlighet({
+        sammenslåtteValgtePerioder,
+        eksisterendePerioderSomErValgt,
+    });
 
     const leggTilEllerForskyvPeriode = (skalForskyve: boolean) => {
         leggTilUttaksplanPerioder(
