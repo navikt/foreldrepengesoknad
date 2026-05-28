@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, BodyShort, Box, Button, HStack, InlineMessage, Link, Radio, RadioGroup, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, HStack, InlineMessage, Link, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT, links } from '@navikt/fp-constants';
 import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
@@ -33,19 +33,16 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
     const [isRangeSelection, setIsRangeSelection] = useState(true);
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
     const [endredePerioder, setEndredePerioder] = useState<Array<{ fom: string; tom: string }>>([]);
-    const [visToast, setVisToast] = useState(false);
 
-    const toastTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
     const scrollFallbackRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
     useEffect(() => {
         return () => {
-            clearTimeout(toastTimerRef.current);
             clearTimeout(scrollFallbackRef.current);
         };
     }, []);
 
-    const setEndredePerioderMedScrollOgToast = useCallback(
+    const setEndredePerioderMedScroll = useCallback(
         (perioder: Array<{ fom: string; tom: string }>) => {
             if (perioder.length === 0) {
                 setEndredePerioder([]);
@@ -56,13 +53,6 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
             const year = førsteDato.year();
             const month = førsteDato.month();
 
-            const visEndring = () => {
-                setEndredePerioder(perioder);
-                setVisToast(true);
-                clearTimeout(toastTimerRef.current);
-                toastTimerRef.current = setTimeout(() => setVisToast(false), 3000);
-            };
-
             requestAnimationFrame(() => {
                 const monthElement = document.querySelector(`[data-month-key="${year}-${month}"]`);
 
@@ -70,18 +60,18 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                     monthElement.scrollIntoView?.({ behavior: 'smooth', block: 'center' });
 
                     let harVistEndring = false;
-                    const visEndringEinGong = () => {
+                    const visEndring = () => {
                         if (harVistEndring) return;
                         harVistEndring = true;
                         clearTimeout(scrollFallbackRef.current);
-                        visEndring();
+                        setEndredePerioder(perioder);
                     };
 
                     const scrollTarget = document.scrollingElement ?? document.documentElement;
-                    scrollTarget.addEventListener('scrollend', visEndringEinGong, { once: true });
-                    scrollFallbackRef.current = setTimeout(visEndringEinGong, 1000);
+                    scrollTarget.addEventListener('scrollend', visEndring, { once: true });
+                    scrollFallbackRef.current = setTimeout(visEndring, 1000);
                 } else {
-                    visEndring();
+                    setEndredePerioder(perioder);
                 }
             });
         },
@@ -277,7 +267,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                             <RedigerKalenderIndex
                                 valgtePerioder={valgtePerioder}
                                 setValgtePerioder={setRedigeringAktivOgValgtePerioder}
-                                setEndredePerioder={setEndredePerioderMedScrollOgToast}
+                                setEndredePerioder={setEndredePerioderMedScroll}
                                 scrollToKvoteOppsummering={scrollToKvoteOppsummering}
                                 labels={
                                     <UttaksplanLegend
@@ -300,37 +290,16 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                 sisteDatoIKalender={sisteDatoIKalender}
                 barnehagestartdato={barnehagestartdato}
             />
-
-            <PeriodeLagtTilToast visToast={visToast} />
         </VStack>
     );
 };
-
-const PeriodeLagtTilToast = ({ visToast }: { visToast: boolean }) => (
-    <div
-        role="status"
-        aria-live="polite"
-        className={[
-            'pointer-events-none fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2',
-            'transition-opacity duration-300',
-            visToast ? 'opacity-100' : 'opacity-0',
-        ].join(' ')}
-    >
-        {visToast && (
-            <Box background="neutral-strong" borderRadius="8" shadow="dialog" padding="space-16">
-                <BodyShort className="text-[var(--ax-text-neutral-contrast)]">
-                    <FormattedMessage id="UttaksplanKalender.PlanOppdatert" defaultMessage="Plan updated" />
-                </BodyShort>
-            </Box>
-        )}
-    </div>
-);
 
 const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
 
 const HEADER_HØGDE = 80;
 
+/** Sjekkar om ein del av elementet er synleg i viewporten (under headeren). */
 const erElementSynlegIViewport = (el: Element): boolean => {
     const rect = el.getBoundingClientRect();
-    return rect.top >= HEADER_HØGDE && rect.bottom <= window.innerHeight;
+    return rect.bottom > HEADER_HØGDE && rect.top < window.innerHeight;
 };
