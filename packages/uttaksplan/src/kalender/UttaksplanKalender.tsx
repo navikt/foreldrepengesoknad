@@ -1,6 +1,6 @@
 import { TrashIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Box, Button, HStack, InlineMessage, Link, Radio, RadioGroup, VStack } from '@navikt/ds-react';
@@ -37,6 +37,13 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 
     const toastTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
     const scrollTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+    useEffect(() => {
+        return () => {
+            clearTimeout(toastTimerRef.current);
+            clearTimeout(scrollTimerRef.current);
+        };
+    }, []);
 
     const setEndredePerioderMedScrollOgToast = useCallback(
         (perioder: Array<{ fom: string; tom: string }>) => {
@@ -311,7 +318,9 @@ const PeriodeLagtTilToast = ({ visToast }: { visToast: boolean }) => (
 
 const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
 
+const HEADER_HØGDE = 80;
+
 const erElementSynlegIViewport = (el: Element): boolean => {
     const rect = el.getBoundingClientRect();
-    return rect.top >= 0 && rect.bottom <= window.innerHeight;
+    return rect.top >= HEADER_HØGDE && rect.bottom <= window.innerHeight;
 };
