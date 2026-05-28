@@ -25,6 +25,24 @@ import { Alertområde, AlertregelDoc, VISNINGSSTED_LABELS } from './alert/types'
  * dukker opp ulike steder: i skjemaet for å legge til/endre periode,
  * i listevisningen, i kalendervisningen, i redigeringspaneler osv.
  */
+const renderVisningssteder = (regel: Alertregel) => (
+    <VStack gap="space-4">
+        {regel.visningssteder.map((sted) => (
+            <Tag key={sted} variant="neutral" size="xsmall">
+                {VISNINGSSTED_LABELS[sted]}
+            </Tag>
+        ))}
+    </VStack>
+);
+
+const renderMeldinger = (regel: Alertregel) => (
+    <VStack gap="space-4">
+        {regel.meldinger.map((melding) => (
+            <MeldingSitat key={`${regel.id}-${melding}`}>{melding}</MeldingSitat>
+        ))}
+    </VStack>
+);
+
 const Alertregler = () => {
     const kolonner: ReadonlyArray<Kolonne<Alertregel>> = [
         {
@@ -40,15 +58,7 @@ const Alertregler = () => {
         {
             overskrift: 'Vises',
             bredde: '20%',
-            render: (r) => (
-                <VStack gap="space-4">
-                    {r.visningssteder.map((sted) => (
-                        <Tag key={sted} variant="neutral" size="xsmall">
-                            {VISNINGSSTED_LABELS[sted]}
-                        </Tag>
-                    ))}
-                </VStack>
-            ),
+            render: renderVisningssteder,
         },
         {
             overskrift: 'Hva regelen sier',
@@ -57,13 +67,7 @@ const Alertregler = () => {
         {
             overskrift: 'Melding(er) til brukeren',
             bredde: '25%',
-            render: (r) => (
-                <VStack gap="space-4">
-                    {r.meldinger.map((melding, i) => (
-                        <MeldingSitat key={i}>{melding}</MeldingSitat>
-                    ))}
-                </VStack>
-            ),
+            render: renderMeldinger,
         },
     ];
 
