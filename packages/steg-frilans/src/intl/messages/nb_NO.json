@@ -10,5 +10,6 @@
     "FrilansPanel.Valideringsfeil.TilOgMedDato.Påkrevd": "Du må oppgi en sluttdato.",
     "FrilansPanel.Valideringsfeil.TilOgMedDato.GyldigDato": "Sluttdatoen må være en gyldig dato på formatet dd.mm.åååå.",
     "FrilansPanel.Valideringsfeil.TilOgMedDato.ErIFremtiden": "Sluttdatoen må være før eller lik dagens dato.",
+    "FrilansPanel.Valideringsfeil.TilOgMedDato.FørStartdato": "Sluttdatoen kan ikke være før startdatoen.",
     "FrilansPanel.Valideringsfeil.JobberFremdelesSomFrilans.Påkrevd": "Du må oppgi om du fortsatt jobber som frilanser."
 }

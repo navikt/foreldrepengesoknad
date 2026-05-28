@@ -13,7 +13,7 @@ import {
 } from '@navikt/fp-form-hooks';
 import { Frilans } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
-import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
+import { isAfterOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 type FrilansFormValues = {
     oppstart: string;
@@ -51,6 +51,7 @@ export const FrilansPanel = <TYPE extends string>({
     });
 
     const jobberFremdeles = formMethods.watch('jobberFremdelesSomFrilans');
+    const oppstart = formMethods.watch('oppstart');
 
     const onSubmit = (values: FrilansFormValues) => {
         saveOnNext({
@@ -116,6 +117,12 @@ export const FrilansPanel = <TYPE extends string>({
                                     intl.formatMessage({
                                         id: 'FrilansPanel.Valideringsfeil.TilOgMedDato.ErIFremtiden',
                                     }),
+                                ),
+                                isAfterOrSame(
+                                    intl.formatMessage({
+                                        id: 'FrilansPanel.Valideringsfeil.TilOgMedDato.FørStartdato',
+                                    }),
+                                    oppstart,
                                 ),
                             ]}
                             maxDate={DATE_TODAY}

@@ -84,4 +84,52 @@ describe('<Arbeid som frilanser>', () => {
         expect(onStepChange).toHaveBeenCalledTimes(1);
         expect(onStepChange).toHaveBeenNthCalledWith(1, 'BARNET_PATH');
     });
+
+    it('skal vise feilmelding når sluttdato er før startdato', async () => {
+        render(<Default />);
+
+        expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
+
+        const frilansStartdatoInput = screen.getByLabelText('Når startet du som frilanser?');
+        await userEvent.type(frilansStartdatoInput, dayjs('2024-06-15').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Nei'));
+
+        const sluttdatoInput = screen.getByLabelText('Når sluttet du som frilanser?');
+        await userEvent.type(sluttdatoInput, dayjs('2024-05-01').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(screen.getAllByText('Sluttdatoen kan ikke være før startdatoen.')[0]).toBeInTheDocument();
+    });
+
+    it('skal ikke vise feilmelding når sluttdato er lik startdato', async () => {
+        const saveOnNext = vi.fn();
+
+        render(<Default saveOnNext={saveOnNext} />);
+
+        expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
+
+        const frilansStartdatoInput = screen.getByLabelText('Når startet du som frilanser?');
+        await userEvent.type(frilansStartdatoInput, dayjs('2024-06-15').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Nei'));
+
+        const sluttdatoInput = screen.getByLabelText('Når sluttet du som frilanser?');
+        await userEvent.type(sluttdatoInput, dayjs('2024-06-15').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(screen.queryByText('Sluttdatoen kan ikke være før startdatoen.')).not.toBeInTheDocument();
+
+        expect(saveOnNext).toHaveBeenCalledTimes(1);
+        expect(saveOnNext).toHaveBeenNthCalledWith(1, {
+            oppstart: '2024-06-15',
+            tom: '2024-06-15',
+        });
+    });
 });
