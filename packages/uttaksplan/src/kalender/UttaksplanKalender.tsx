@@ -38,42 +38,38 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
     const toastTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
     const scrollTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-    const setEndredePerioderMedScrollOgToast: React.Dispatch<React.SetStateAction<Array<{ fom: string; tom: string }>>> =
-        useCallback(
-            (perioderOrUpdater) => {
-                const perioder =
-                    typeof perioderOrUpdater === 'function' ? perioderOrUpdater([]) : perioderOrUpdater;
+    const setEndredePerioderMedScrollOgToast = useCallback(
+        (perioder: Array<{ fom: string; tom: string }>) => {
+            if (perioder.length === 0) {
+                setEndredePerioder([]);
+                return;
+            }
 
-                if (perioder.length === 0) {
-                    setEndredePerioder([]);
-                    return;
+            const førsteDato = dayjs(perioder[0]!.fom);
+            const year = førsteDato.year();
+            const month = førsteDato.month();
+
+            const visEndring = () => {
+                setEndredePerioder(perioder);
+                setVisToast(true);
+                clearTimeout(toastTimerRef.current);
+                toastTimerRef.current = setTimeout(() => setVisToast(false), 3000);
+            };
+
+            requestAnimationFrame(() => {
+                const monthElement = document.querySelector(`[data-month-key="${year}-${month}"]`);
+
+                if (monthElement && !erElementSynlegIViewport(monthElement)) {
+                    monthElement.scrollIntoView?.({ behavior: 'smooth', block: 'center' });
+                    clearTimeout(scrollTimerRef.current);
+                    scrollTimerRef.current = setTimeout(visEndring, 600);
+                } else {
+                    visEndring();
                 }
-
-                const førsteDato = dayjs(perioder[0]!.fom);
-                const year = førsteDato.year();
-                const month = førsteDato.month();
-
-                const visEndring = () => {
-                    setEndredePerioder(perioder);
-                    setVisToast(true);
-                    clearTimeout(toastTimerRef.current);
-                    toastTimerRef.current = setTimeout(() => setVisToast(false), 3000);
-                };
-
-                requestAnimationFrame(() => {
-                    const monthElement = document.querySelector(`[data-month-key="${year}-${month}"]`);
-
-                    if (monthElement && !erElementSynlegIViewport(monthElement)) {
-                        monthElement.scrollIntoView?.({ behavior: 'smooth', block: 'center' });
-                        clearTimeout(scrollTimerRef.current);
-                        scrollTimerRef.current = setTimeout(visEndring, 600);
-                    } else {
-                        visEndring();
-                    }
-                });
-            },
-            [],
-        );
+            });
+        },
+        [],
+    );
 
     const setRedigeringAktivOgValgtePerioder = useCallback<React.Dispatch<React.SetStateAction<CalendarPeriod[]>>>(
         (perioder) => {

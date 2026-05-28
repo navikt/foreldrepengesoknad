@@ -13,7 +13,7 @@ type Props = {
     valgtePerioder: CalendarPeriod[];
     children: React.ReactNode;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
-    setEndredePerioder: React.Dispatch<React.SetStateAction<Array<{ fom: string; tom: string }>>>;
+    setEndredePerioder: (perioder: Array<{ fom: string; tom: string }>) => void;
 };
 
 type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaksplan'> & {
