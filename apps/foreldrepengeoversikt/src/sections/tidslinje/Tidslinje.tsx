@@ -20,11 +20,11 @@ import { Link as LinkInternal } from 'react-router-dom';
 
 import { BodyShort, Box, Button, Link, List, Process, ReadMore, VStack } from '@navikt/ds-react';
 
-import { DDMMYYYY_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
+import { DDMMYYYY_DATE_FORMAT, Skjemanummer, links } from '@navikt/fp-constants';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import { OversiktBarnDto_fpoversikt, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 
-import { NavRoutes, OversiktRoutes } from '../../routes/routes.ts';
+import { OversiktRoutes } from '../../routes/routes.ts';
 import { Sak } from '../../types/Sak';
 import { Tidslinjehendelse2 } from '../../types/Tidslinjehendelse.ts';
 import { formaterDato } from '../../utils/dateUtils.ts';
@@ -280,7 +280,7 @@ const Hendelse = ({
                     bullet={<HourglassBottomFilledIcon />}
                 >
                     <BodyShort>{intl.formatMessage({ id: 'tidslinje.VENT_MELDEKORT.informasjon' })}</BodyShort>
-                    <Link href={NavRoutes.VENT_MELDEKORT} className="text-ax-brand-blue-700 mt-2">
+                    <Link href={links.ventMeldekort} className="text-ax-brand-blue-700 mt-2">
                         <BodyShort size="small">
                             {intl.formatMessage({ id: 'tidslinje.VENT_MELDEKORT.linkTittel' })}
                         </BodyShort>
@@ -322,7 +322,7 @@ const Hendelse = ({
                     bullet={<HourglassBottomFilledIcon />}
                 >
                     <BodyShort>{merInformasjon}</BodyShort>
-                    <Link href={NavRoutes.SØKNADSFRISTER} className="text-ax-brand-blue-700 mt-2">
+                    <Link href={links.søknadsfrister} className="text-ax-brand-blue-700 mt-2">
                         <BodyShort size="small">
                             {intl.formatMessage({ id: 'tidslinje.VENT_TIDLIG_SØKNAD.linkTittel' })}
                         </BodyShort>
@@ -342,7 +342,7 @@ const Hendelse = ({
                     bullet={<HourglassBottomFilledIcon />}
                 >
                     <BodyShort>{intl.formatMessage({ id: 'tidslinje.VENT_INNTEKTSMELDING.informasjon' })}</BodyShort>
-                    <Link href={NavRoutes.VENT_INNTEKTSMELDING} className="text-ax-brand-blue-700 mt-2">
+                    <Link href={links.ventInntektsmelding} className="text-ax-brand-blue-700 mt-2">
                         <BodyShort size="small">
                             {intl.formatMessage({ id: 'tidslinje.VENT_INNTEKTSMELDING.linkTittel' })}
                         </BodyShort>
@@ -388,12 +388,12 @@ const Hendelse = ({
             );
         }
         case 'FREMTIDIG_VEDTAK': {
-            let url = NavRoutes.SAKSBEHANDLINGSTIDER_FP;
+            let url = links.saksbehandlingstiderFp;
             if (sak.ytelse === 'SVANGERSKAPSPENGER') {
-                url = NavRoutes.SAKSBEHANDLINGSTIDER_SVP;
+                url = links.saksbehandlingstiderSvp;
             }
             if (sak.ytelse === 'ENGANGSSTØNAD') {
-                url = NavRoutes.SAKSBEHANDLINGSTIDER_ES;
+                url = links.saksbehandlingstiderEs;
             }
 
             return (
@@ -449,7 +449,7 @@ const Hendelse = ({
                     bullet={<ChildHairEyesIcon />}
                 >
                     <BodyShort>{merInformasjon}</BodyShort>
-                    <Link href={NavRoutes.HVOR_LENGE} className="text-ax-brand-blue-700 mt-2">
+                    <Link href={links.hvorLenge} className="text-ax-brand-blue-700 mt-2">
                         <BodyShort size="small">
                             {intl.formatMessage({ id: 'tidslinje.BARN_TRE_ÅR.linkTittel' })}
                         </BodyShort>

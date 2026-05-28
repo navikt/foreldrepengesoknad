@@ -12,7 +12,7 @@ import { CalendarPeriodColor } from './types/CalendarPeriodColor';
 export type DayShape = 'square' | 'rounded-right' | 'rounded-left';
 
 const DAY_STYLE: Record<CalendarPeriodColor, string> = {
-    ['NONE']: styles.none!,
+    ['NONE']: '',
     ['BLUE']: styles.blueDay!,
     ['DARKBLUE']: styles.darkblueDay!,
     ['LIGHTGREEN']: styles.lightgreenDay!,

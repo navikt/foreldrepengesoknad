@@ -45,7 +45,7 @@ export const BruktOpplysningerOmArbeidsforhold = () => {
                         id="BruktOpplysningerOmArbeidsforhold.tekst.4"
                         values={{
                             a: (msg) => (
-                                <Link href={links.forelderpengerHvorLenge} rel="noreferrer" target="_blank">
+                                <Link href={links.hvorLenge} rel="noreferrer" target="_blank">
                                     {msg}
                                 </Link>
                             ),
