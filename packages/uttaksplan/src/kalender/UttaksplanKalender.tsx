@@ -32,53 +32,54 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
     const [erRedigeringAktiv, setErRedigeringAktiv] = useState(false);
     const [isRangeSelection, setIsRangeSelection] = useState(true);
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
-    const [endredePerioder, setEndredePerioderState] = useState<Array<{ fom: string; tom: string }>>([]);
+    const [endredePerioder, setEndredePerioder] = useState<Array<{ fom: string; tom: string }>>([]);
     const [visToast, setVisToast] = useState(false);
 
     const toastTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
     const scrollTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-    const setEndredePerioder: React.Dispatch<React.SetStateAction<Array<{ fom: string; tom: string }>>> = useCallback(
-        (perioderOrUpdater) => {
-            const perioder =
-                typeof perioderOrUpdater === 'function' ? perioderOrUpdater([]) : perioderOrUpdater;
+    const setEndredePerioderMedScrollOgToast: React.Dispatch<React.SetStateAction<Array<{ fom: string; tom: string }>>> =
+        useCallback(
+            (perioderOrUpdater) => {
+                const perioder =
+                    typeof perioderOrUpdater === 'function' ? perioderOrUpdater([]) : perioderOrUpdater;
 
-            if (perioder.length === 0) {
-                setEndredePerioderState([]);
-                return;
-            }
-
-            const førsteDato = dayjs(perioder[0]!.fom);
-            const year = førsteDato.year();
-            const month = førsteDato.month();
-
-            const visEndring = () => {
-                setEndredePerioderState(perioder);
-                setVisToast(true);
-                clearTimeout(toastTimerRef.current);
-                toastTimerRef.current = setTimeout(() => setVisToast(false), 3000);
-            };
-
-            requestAnimationFrame(() => {
-                const monthElement = document.querySelector(`[data-testid="year:${year};month:${month}"]`);
-
-                if (monthElement && !erElementSynlegIViewport(monthElement)) {
-                    monthElement.scrollIntoView?.({ behavior: 'smooth', block: 'center' });
-                    clearTimeout(scrollTimerRef.current);
-                    scrollTimerRef.current = setTimeout(visEndring, 600);
-                } else {
-                    visEndring();
+                if (perioder.length === 0) {
+                    setEndredePerioder([]);
+                    return;
                 }
-            });
-        },
-        [],
-    );
+
+                const førsteDato = dayjs(perioder[0]!.fom);
+                const year = førsteDato.year();
+                const month = førsteDato.month();
+
+                const visEndring = () => {
+                    setEndredePerioder(perioder);
+                    setVisToast(true);
+                    clearTimeout(toastTimerRef.current);
+                    toastTimerRef.current = setTimeout(() => setVisToast(false), 3000);
+                };
+
+                requestAnimationFrame(() => {
+                    const monthElement = document.querySelector(`[data-testid="year:${year};month:${month}"]`);
+
+                    if (monthElement && !erElementSynlegIViewport(monthElement)) {
+                        monthElement.scrollIntoView?.({ behavior: 'smooth', block: 'center' });
+                        clearTimeout(scrollTimerRef.current);
+                        scrollTimerRef.current = setTimeout(visEndring, 600);
+                    } else {
+                        visEndring();
+                    }
+                });
+            },
+            [],
+        );
 
     const setRedigeringAktivOgValgtePerioder = useCallback<React.Dispatch<React.SetStateAction<CalendarPeriod[]>>>(
         (perioder) => {
             setErRedigeringAktiv(true);
             setValgtePerioder(perioder);
-            setEndredePerioderState([]);
+            setEndredePerioder([]);
         },
         [],
     );
@@ -263,7 +264,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                             <RedigerKalenderIndex
                                 valgtePerioder={valgtePerioder}
                                 setValgtePerioder={setRedigeringAktivOgValgtePerioder}
-                                setEndredePerioder={setEndredePerioder}
+                                setEndredePerioder={setEndredePerioderMedScrollOgToast}
                                 scrollToKvoteOppsummering={scrollToKvoteOppsummering}
                                 labels={
                                     <UttaksplanLegend
