@@ -18,7 +18,7 @@ Kjør opp lokalt ved å gå inn i app-folder og skriv `pnpm storybook`.
 
 # Henvendelser
 
-Spørsmål kan sendes https://engangsstonad.nav.no
+Spørsmål kan sendes https://www.nav.no/engangsstonad/soknad
 
 ## For NAV-ansatte
 
