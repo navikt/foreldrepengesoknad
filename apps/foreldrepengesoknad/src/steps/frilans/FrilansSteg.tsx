@@ -28,13 +28,13 @@ export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeid
         oppdaterFrilans(values);
 
         if (arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende) {
-            return navigator.goToNextStep(SøknadRoutes.EGEN_NÆRING);
+            return navigator.goToStep(SøknadRoutes.EGEN_NÆRING);
         }
         if (arbeidsforholdOgInntekt.harHattAndreInntektskilder) {
-            return navigator.goToNextStep(SøknadRoutes.ANDRE_INNTEKTER);
+            return navigator.goToStep(SøknadRoutes.ANDRE_INNTEKTER);
         }
 
-        return navigator.goToNextDefaultStep();
+        return navigator.goToNextStep();
     };
 
     return (
@@ -46,6 +46,7 @@ export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeid
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
+                onStepChange={navigator.goToStep}
             />
         </SkjemaRotLayout>
     );

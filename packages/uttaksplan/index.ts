@@ -22,7 +22,7 @@ export { FjernAltIUttaksplanModal } from './src/FjernAltIUttaksplanModal';
 export { TilbakestillPlanModal } from './src/TilbakestillPlanModal';
 export { useErAntallDagerOvertrukketIUttaksplan } from './src/utils/kvoteOppsummeringUtils';
 export { UttaksperiodeValidatorer } from './src/utils/UttaksperiodeValidatorer';
-export { skalBesvareFlerbarnsdager } from './src/felles/LeggTilEllerEndrePeriodeFellesForm';
+export { skalBesvareFlerbarnsdager } from './src/utils/flerbarnsdager';
 export {
     sorterUttakPerioder,
     harPeriodeDerMorsAktivitetIkkeErValgt,

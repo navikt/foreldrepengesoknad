@@ -24,8 +24,8 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(minMax);
 dayjs.extend(isoWeekday);
 
-export const ANTALL_UTTAKSDAGER_TRE_UKER = 15;
-export const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
+const ANTALL_UTTAKSDAGER_TRE_UKER = 15;
+const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 
 // Vinduet er [familiehendelsesdato - 15 uttaksdager, familiehendelsesdato + 30 uttaksdager] –
 // dvs. 3 veker før og 6 veker etter (matchar UI-validatoren).

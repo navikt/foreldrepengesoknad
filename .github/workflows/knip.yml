@@ -1,0 +1,21 @@
+name: Knip
+
+on:
+  pull_request:
+
+jobs:
+  knip-it:
+    name: Kjør Knip
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Kjør Knip
+        uses: navikt/fp-gha-workflows/.github/actions/knip-it@main
+        with:
+          npm-auth-token: ${{ secrets.READER_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          package-manager: 'pnpm'
+          node-version: 26.1.0

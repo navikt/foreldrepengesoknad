@@ -135,7 +135,7 @@ export const UttaksplanForm = ({
             oppdaterUttaksplan(defaultUttaksperioder);
         }
 
-        return navigator.goToNextDefaultStep();
+        return navigator.goToNextStep();
     };
 
     const [gåTilbakeIsOpen, setGåTilbakeIsOpen] = useState(false);
@@ -310,7 +310,7 @@ const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
     });
 };
 
-export const erJusterbartUttakRundtTermin = (
+const erJusterbartUttakRundtTermin = (
     periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
 ): boolean =>
     periode.kontoType === 'FORELDREPENGER' ||

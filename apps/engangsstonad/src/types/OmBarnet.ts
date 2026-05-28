@@ -1,11 +1,11 @@
-export type BarnetErFødt = {
+type BarnetErFødt = {
     erBarnetFødt: true;
     antallBarn: number;
     fødselsdato: string;
     termindato: string;
 };
 
-export type BarnetErIkkeFødt = {
+type BarnetErIkkeFødt = {
     erBarnetFødt: false;
     antallBarn: number;
     termindato: string;

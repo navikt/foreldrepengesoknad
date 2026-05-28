@@ -51,7 +51,7 @@ const getErBarnetFødtMerEnnTolvUkerFørTermin = (
     return erBarnetFødt && termindato && dayjs(fødselsdato).isBefore(tolvUkerFørTermin, 'd');
 };
 
-export const getErBarnetFødtInnenTreUkerFørTermin = (
+const getErBarnetFødtInnenTreUkerFørTermin = (
     erBarnetFødt: boolean,
     termindato: string | undefined,
     fødselsdato: string | undefined,

@@ -81,7 +81,7 @@ export const Forside = ({
     const gåTilSøkersituasjonSomNySøknad = () => {
         setErEndringssøknad(false);
         setSøknadGjelderNyttBarn(true);
-        return navigator.goToNextStep(SøknadRoutes.SØKERSITUASJON);
+        return navigator.goToStep(SøknadRoutes.SØKERSITUASJON);
     };
 
     const finnValgtEksisterendeSak = (valgteBarn: ValgtBarn) => {
@@ -97,7 +97,7 @@ export const Forside = ({
 
         setErEndringssøknad(true);
         setSøknadGjelderNyttBarn(false);
-        return navigator.goToNextStep(SøknadRoutes.UTTAKSPLAN);
+        return navigator.goToStep(SøknadRoutes.UTTAKSPLAN);
     };
 
     const opprettNySøknadBasertPåValgtBarn = (valgteBarn: ValgtBarn) => {
@@ -163,7 +163,7 @@ export const Forside = ({
 
         setErEndringssøknad(false);
         setSøknadGjelderNyttBarn(false);
-        return navigator.goToNextStep(SøknadRoutes.SØKERSITUASJON);
+        return navigator.goToStep(SøknadRoutes.SØKERSITUASJON);
     };
 
     const formMethods = useForm<ForsideFormValues>({
