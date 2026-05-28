@@ -86,6 +86,7 @@ type FargeSpec = {
     listePerioder?: Uttaksplanperiode[];
     listeErFamiliehendelse?: boolean;
     listeFamiliehendelsedato?: string;
+    listeHarMorsAktivitetIkkeErValgt?: boolean;
 };
 
 // ---------------------------------------------------------------------------
@@ -117,7 +118,11 @@ const beregnEntry = (s: FargeSpec): FargeEntry => ({
         : s.kalenderStatisk ?? { fargekode: null, legendLabel: '—' },
     liste: s.listePerioder
         ? {
-              bakgrunn: finnBakgrunnsfarge(s.listePerioder, false, s.listeErFamiliehendelse),
+              bakgrunn: finnBakgrunnsfarge(
+                  s.listePerioder,
+                  s.listeHarMorsAktivitetIkkeErValgt ?? false,
+                  s.listeErFamiliehendelse,
+              ),
               border: getBorderFarge(s.listePerioder),
               ikonElement: getIkon(s.listePerioder, s.listeFamiliehendelsedato ?? HISTORISK_DATO),
           }
@@ -353,6 +358,18 @@ const OMRÅDER: FargeOmråde[] = [
                 kalenderStatisk: { fargekode: null, legendLabel: '(berre liste)' },
                 listePerioder: [UTEN_UTTAK],
             }),
+            beregnEntry({
+                id: 'mors-aktivitet-mangler',
+                periodetype: 'Mors aktivitet ikkje vald',
+                beskrivelse:
+                    'Berre liste: far/medmors fellesperiode der mors aktivitet ikkje er oppgjeve. ' +
+                    'Raud bakgrunn (danger-200) signaliserer at perioden treng redigering.',
+                kalenderStatisk: { fargekode: null, legendLabel: '(berre liste)' },
+                listePerioder: [
+                    lagPeriode({ forelder: 'FAR_MEDMOR', kontoType: 'FELLESPERIODE' }),
+                ],
+                listeHarMorsAktivitetIkkeErValgt: true,
+            }),
         ],
     },
     {
@@ -429,7 +446,9 @@ const OMRÅDER: FargeOmråde[] = [
                 periodetype: 'Vald periode (redigering)',
                 beskrivelse:
                     'Markerer valde periodar i redigeringsmodus — ' +
-                    'når brukaren klikkar på ein legend-farge, blir dei aktuelle dagane framheva.',
+                    'når brukaren klikkar på ein legend-farge, blir dei aktuelle dagane framheva. ' +
+                    'NB: CalendarLabel rendrar ikkje denne fargen (returnerer null) — ' +
+                    'fargen (--ax-bg-accent-strong-pressed) visast berre på kalenderdagar.',
                 kalenderStatisk: { fargekode: 'DARKBLUE', legendLabel: '(ingen)' },
             }),
             beregnEntry({
