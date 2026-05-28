@@ -101,7 +101,8 @@ const Hero = ({ tittel, intro, kildesti, farge, badge }: HeroProps) => {
             <VStack gap="space-12">
                 <HStack gap="space-12" align="center">
                     <span
-                        className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm font-semibold uppercase tracking-wide ${FARGER[farge].badge}`}
+                        className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm
+                            font-semibold uppercase tracking-wide ${FARGER[farge].badge}`}
                     >
                         <Icon aria-hidden className="h-4 w-4" />
                         {badge}
