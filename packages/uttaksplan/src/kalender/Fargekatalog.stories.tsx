@@ -1,51 +1,460 @@
-import {
-    BabyWrappedFillIcon,
-    BandageFillIcon,
-    BriefcaseFillIcon,
-    CloudFillIcon,
-    HeartFillIcon,
-    InformationSquareFillIcon,
-    ParasolBeachFillIcon,
-    PersonPregnantFillIcon,
-    TeddyBearFillIcon,
-} from '@navikt/aksel-icons';
+import { HeartFillIcon, TeddyBearFillIcon } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { ReactNode } from 'react';
 
-import { BodyShort, HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, VStack } from '@navikt/ds-react';
+import {
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriodeResultat_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import { CalendarLabel, CalendarPeriodColor } from '@navikt/fp-ui';
 
+import {
+    finnBakgrunnsfarge,
+    getBorderFarge,
+    getIkon,
+} from '../liste/periode-liste-item/periode-liste-header/PeriodeListeHeaderUtils';
 import { Kolonne, RegelIdBadge, RegelkatalogSide } from '../regler/RegelkatalogSide';
+import {
+    FamiliehendelseDato,
+    PerioderUtenUttakHull,
+    TapteDagerHull,
+    Uttaksplanperiode,
+    UttaksplanperiodeMedKunTapteDager,
+} from '../types/UttaksplanPeriode';
+import { getLegendLabelFromPeriode } from './legend/uttaksplanLegendUtils';
+import { getKalenderFargeForPeriode } from './utils/usePerioderForKalendervisning';
 
 // ---------------------------------------------------------------------------
-// Datamodell — felles for begge visningar
+// Mock-fabrikkar — minimale periodar som triggar dei ulike kodebanane
+// ---------------------------------------------------------------------------
+
+const FOM = '2025-06-01';
+const TOM = '2025-06-14';
+const HISTORISK_DATO = '2025-01-01';
+
+const lagPeriode = (o: Partial<UttakPeriode_fpoversikt> = {}): UttakPeriode_fpoversikt => ({
+    fom: FOM,
+    tom: TOM,
+    flerbarnsdager: false,
+    forelder: 'MOR',
+    ...o,
+});
+
+const lagEøs = (
+    o: Partial<UttakPeriodeAnnenpartEøs_fpoversikt> = {},
+): UttakPeriodeAnnenpartEøs_fpoversikt => ({
+    fom: FOM,
+    tom: TOM,
+    kontoType: 'FELLESPERIODE',
+    trekkdager: 15,
+    ...o,
+});
+
+const TAPTE: TapteDagerHull = { type: 'TAPTE_DAGER', fom: FOM, tom: TOM, forelder: 'MOR' };
+const UTEN_UTTAK: PerioderUtenUttakHull = { type: 'PERIODE_UTEN_UTTAK', fom: FOM, tom: TOM };
+const FAMHENDELSE: FamiliehendelseDato = { type: 'FAMILIEHENDELSE', fom: FOM, tom: TOM };
+
+const AVSLAG: UttakPeriodeResultat_fpoversikt = {
+    innvilget: false,
+    trekkerDager: false,
+    trekkerMinsterett: false,
+    årsak: 'ANNET',
+};
+const PLEIEPENGE_AVSLAG: UttakPeriodeResultat_fpoversikt = {
+    innvilget: false,
+    trekkerDager: false,
+    trekkerMinsterett: false,
+    årsak: 'AVSLAG_FRATREKK_PLEIEPENGER',
+};
+
+// ---------------------------------------------------------------------------
+// Spesifikasjon — kvar rad definerer mock-input, resten blir utleia
+// ---------------------------------------------------------------------------
+
+type FargeSpec = {
+    id: string;
+    periodetype: string;
+    beskrivelse: string;
+    /** Mock-periode for kalender (getKalenderFargeForPeriode + getLegendLabelFromPeriode) */
+    kalenderPeriode?: UttaksplanperiodeMedKunTapteDager;
+    kalenderErFarEllerMedmor?: boolean;
+    /** Statisk kalender-verdi for ting som ikkje kan avleiast (ikon-markørar, interaksjonsfargar) */
+    kalenderStatisk?: { fargekode: CalendarPeriodColor | null; ikon?: ReactNode; legendLabel: string };
+    /** Mock-periodar for liste (finnBakgrunnsfarge + getBorderFarge + getIkon) */
+    listePerioder?: Uttaksplanperiode[];
+    listeErFamiliehendelse?: boolean;
+    listeFamiliehendelsedato?: string;
+};
+
+// ---------------------------------------------------------------------------
+// Avleiing — slår opp i produksjonskoden for å finne fargar
 // ---------------------------------------------------------------------------
 
 type FargeEntry = {
     id: string;
     periodetype: string;
     beskrivelse: string;
-
-    kalender: {
-        fargekode: CalendarPeriodColor | null;
-        ikon?: ReactNode;
-        legendLabel: string;
-    };
-
-    liste: {
-        bakgrunn: string;
-        border: string;
-        ikon: ReactNode;
-        ikonFarge: string;
-    } | null;
+    kalender: { fargekode: CalendarPeriodColor | null; ikon?: ReactNode; legendLabel: string };
+    liste: { bakgrunn: string; border: string; ikonElement: ReactNode } | null;
 };
 
-type FargeOmråde = {
-    id: string;
-    område: string;
-    beskrivelse: string;
-    regler: FargeEntry[];
-};
+const beregnEntry = (s: FargeSpec): FargeEntry => ({
+    id: s.id,
+    periodetype: s.periodetype,
+    beskrivelse: s.beskrivelse,
+    kalender: s.kalenderPeriode
+        ? {
+              fargekode: getKalenderFargeForPeriode(
+                  s.kalenderPeriode,
+                  s.kalenderErFarEllerMedmor ?? false,
+                  [s.kalenderPeriode],
+              ),
+              legendLabel:
+                  getLegendLabelFromPeriode(s.kalenderPeriode, s.kalenderErFarEllerMedmor ?? false) ?? '(ingen)',
+          }
+        : s.kalenderStatisk ?? { fargekode: null, legendLabel: '—' },
+    liste: s.listePerioder
+        ? {
+              bakgrunn: finnBakgrunnsfarge(s.listePerioder, false, s.listeErFamiliehendelse),
+              border: getBorderFarge(s.listePerioder),
+              ikonElement: getIkon(s.listePerioder, s.listeFamiliehendelsedato ?? HISTORISK_DATO),
+          }
+        : null,
+});
+
+type FargeOmråde = { id: string; område: string; beskrivelse: string; regler: FargeEntry[] };
+
+// ---------------------------------------------------------------------------
+// Alle fargar, gruppert etter periodekategori
+// Fargane er *dynamisk utleia* frå produksjonskoden via beregnEntry().
+// Berre interaksjonsfargar og spesialdagar (barnehage, helg) er statiske.
+// ---------------------------------------------------------------------------
+
+const OMRÅDER: FargeOmråde[] = [
+    {
+        id: 'mor',
+        område: 'Mors periodar (blå)',
+        beskrivelse:
+            'Blå fargar representerer periodar som tilhøyrer mor — mødrekvote, fellesperiode ' +
+            'teken av mor, eller foreldrepengar før fødsel.',
+        regler: [
+            beregnEntry({
+                id: 'mor-vanleg',
+                periodetype: 'Mors uttak',
+                beskrivelse: 'Vanleg uttak — mødrekvote, fellesperiode eller foreldrepengar før fødsel.',
+                kalenderPeriode: lagPeriode({ kontoType: 'MØDREKVOTE' }),
+                listePerioder: [lagPeriode({ kontoType: 'MØDREKVOTE' })],
+            }),
+            beregnEntry({
+                id: 'mor-gradert',
+                periodetype: 'Mors uttak (gradert)',
+                beskrivelse: 'Gradert uttak — mor jobbar deltid og tek ut foreldrepengar samtidig.',
+                kalenderPeriode: lagPeriode({ kontoType: 'MØDREKVOTE', gradering: { arbeidstidprosent: 50 } }),
+                listePerioder: [lagPeriode({ kontoType: 'MØDREKVOTE', gradering: { arbeidstidprosent: 50 } })],
+            }),
+            beregnEntry({
+                id: 'mor-før-fødsel',
+                periodetype: 'Før fødsel / termin',
+                beskrivelse: 'Foreldrepengar før fødsel — perioden med FORELDREPENGER_FØR_FØDSEL-konto.',
+                kalenderPeriode: lagPeriode({ kontoType: 'FORELDREPENGER_FØR_FØDSEL' }),
+                listePerioder: [lagPeriode({ kontoType: 'FORELDREPENGER_FØR_FØDSEL' })],
+                listeFamiliehendelsedato: '2025-12-01',
+            }),
+        ],
+    },
+    {
+        id: 'far',
+        område: 'Fars / medmors periodar (grøn)',
+        beskrivelse:
+            'Grøne fargar representerer periodar som tilhøyrer far eller medmor — fedrekvote ' +
+            'eller fellesperiode. Stripete = gradert, omriss = aktivitetsfri.',
+        regler: [
+            beregnEntry({
+                id: 'far-vanleg',
+                periodetype: 'Fars uttak',
+                beskrivelse: 'Vanleg uttak — fedrekvote eller fellesperiode.',
+                kalenderPeriode: lagPeriode({ forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE' }),
+                kalenderErFarEllerMedmor: true,
+                listePerioder: [lagPeriode({ forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE' })],
+            }),
+            beregnEntry({
+                id: 'far-gradert',
+                periodetype: 'Fars uttak (gradert)',
+                beskrivelse:
+                    'Gradert uttak — far jobbar deltid. Gjeld også aktivitetsfri kvote med gradering ' +
+                    '(FARS_DEL_AKTIVITETSFRI_GRADERT — same kalenderfarge, men labelen skil dei).',
+                kalenderPeriode: lagPeriode({
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FEDREKVOTE',
+                    gradering: { arbeidstidprosent: 50 },
+                }),
+                kalenderErFarEllerMedmor: true,
+                listePerioder: [
+                    lagPeriode({
+                        forelder: 'FAR_MEDMOR',
+                        kontoType: 'FEDREKVOTE',
+                        gradering: { arbeidstidprosent: 50 },
+                    }),
+                ],
+            }),
+            beregnEntry({
+                id: 'far-aktivitetsfri',
+                periodetype: 'Aktivitetsfri kvote',
+                beskrivelse:
+                    'Aktivitetsfri kvote — inga krav til mors aktivitet. ' +
+                    'Berre for FORELDREPENGER-kontoen med morsAktivitet = IKKE_OPPGITT.',
+                kalenderPeriode: lagPeriode({
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FORELDREPENGER',
+                    morsAktivitet: 'IKKE_OPPGITT',
+                }),
+                kalenderErFarEllerMedmor: true,
+                listePerioder: [
+                    lagPeriode({
+                        forelder: 'FAR_MEDMOR',
+                        kontoType: 'FORELDREPENGER',
+                        morsAktivitet: 'IKKE_OPPGITT',
+                    }),
+                ],
+            }),
+        ],
+    },
+    {
+        id: 'samtidig',
+        område: 'Samtidig uttak (splitta farge)',
+        beskrivelse:
+            'Når begge foreldra tek ut foreldrepengar i same periode. Kalenderen viser splitta ' +
+            'farge (retning avheng av innlogga brukar), lista viser diagonal gradient.',
+        regler: (() => {
+            const morSamtidig = lagPeriode({ kontoType: 'FELLESPERIODE', samtidigUttak: 50 });
+            const farSamtidig = lagPeriode({
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                samtidigUttak: 50,
+            });
+            const listePerioder: Uttaksplanperiode[] = [morSamtidig, farSamtidig];
+            return [
+                beregnEntry({
+                    id: 'samtidig-mor',
+                    periodetype: 'Samtidig uttak (sett frå mor)',
+                    beskrivelse: 'Kalender: grøn topp, blå botn. Liste: diagonal gradient grøn → blå.',
+                    kalenderPeriode: morSamtidig,
+                    kalenderErFarEllerMedmor: false,
+                    listePerioder,
+                }),
+                beregnEntry({
+                    id: 'samtidig-far',
+                    periodetype: 'Samtidig uttak (sett frå far)',
+                    beskrivelse:
+                        'Kalender: blå topp, grøn botn. Liste: same gradient (ikkje perspektivavhengig).',
+                    kalenderPeriode: farSamtidig,
+                    kalenderErFarEllerMedmor: true,
+                    listePerioder,
+                }),
+            ];
+        })(),
+    },
+    {
+        id: 'utsettelse',
+        område: 'Utsettelse (omriss / pause)',
+        beskrivelse:
+            'Utsetjingsperiodar «pausar» uttaket. Kalenderen skil ferie (blå omriss) frå ' +
+            'andre årsaker (beige omriss). Lista brukar same bakgrunn for alle utsetjingar, ' +
+            'men ulike ikon per årsak.',
+        regler: [
+            beregnEntry({
+                id: 'utsettelse-ferie',
+                periodetype: 'Ferie',
+                beskrivelse: 'Lovbestemt ferie — uttaket er pausa medan familien har ferie.',
+                kalenderPeriode: lagPeriode({ utsettelseÅrsak: 'LOVBESTEMT_FERIE' }),
+                listePerioder: [lagPeriode({ utsettelseÅrsak: 'LOVBESTEMT_FERIE' })],
+            }),
+            beregnEntry({
+                id: 'utsettelse-arbeid',
+                periodetype: 'Utsettelse (arbeid/fri)',
+                beskrivelse: 'Utsettelse grunna arbeid eller fri — søkar jobbar i perioden.',
+                kalenderPeriode: lagPeriode({ utsettelseÅrsak: 'ARBEID' }),
+                listePerioder: [lagPeriode({ utsettelseÅrsak: 'ARBEID' })],
+            }),
+            beregnEntry({
+                id: 'utsettelse-sjukdom',
+                periodetype: 'Utsettelse (sjukdom/innlegging)',
+                beskrivelse: 'Utsettelse grunna sjukdom, innlegging, HV-øving eller NAV-tiltak.',
+                kalenderPeriode: lagPeriode({ utsettelseÅrsak: 'SØKER_SYKDOM' }),
+                listePerioder: [lagPeriode({ utsettelseÅrsak: 'SØKER_SYKDOM' })],
+            }),
+        ],
+    },
+    {
+        id: 'eøs',
+        område: 'EØS-periodar (fylt med svart omriss)',
+        beskrivelse:
+            'Periodar der den eine forelderen har foreldrepengar frå eit anna EØS-land. ' +
+            'Kalenderen viser hovudfarge + svart omriss. Lista brukar blå bakgrunn (accent-400) for begge.',
+        regler: [
+            beregnEntry({
+                id: 'eøs-mor',
+                periodetype: 'Mors EØS-periode',
+                beskrivelse:
+                    'Visast for far/medmor som er innlogga (mora har EØS-foreldrepengar). ' +
+                    'Merk: Lista brukar same blå bakgrunn uavhengig av forelder.',
+                kalenderPeriode: lagEøs(),
+                kalenderErFarEllerMedmor: true,
+                listePerioder: [lagEøs()],
+            }),
+            beregnEntry({
+                id: 'eøs-far',
+                periodetype: 'Fars EØS-periode',
+                beskrivelse:
+                    'Visast for mor som er innlogga (far/medmor har EØS-foreldrepengar). ' +
+                    'Merk: Lista brukar same blå bakgrunn uavhengig av forelder.',
+                kalenderPeriode: lagEøs(),
+                kalenderErFarEllerMedmor: false,
+                listePerioder: [lagEøs()],
+            }),
+        ],
+    },
+    {
+        id: 'tapte-og-avslag',
+        område: 'Tapte dagar, avslag og uten uttak',
+        beskrivelse:
+            'Mørke og åtvaringsfargar signaliserer problem — tapte dagar (hull), ' +
+            'avslåtte periodar, pleiepengefratrekk, eller periodar utan uttak.',
+        regler: [
+            beregnEntry({
+                id: 'tapte-dagar',
+                periodetype: 'Tapte dagar',
+                beskrivelse: 'Hull i uttaksplanen der dagar kan gå tapt om ikkje planen blir endra.',
+                kalenderPeriode: TAPTE,
+                listePerioder: [TAPTE],
+            }),
+            beregnEntry({
+                id: 'avslag',
+                periodetype: 'Avslått periode',
+                beskrivelse: 'Nav har avslått søknaden for denne perioden.',
+                kalenderPeriode: lagPeriode({ kontoType: 'MØDREKVOTE', resultat: AVSLAG }),
+                listePerioder: [lagPeriode({ kontoType: 'MØDREKVOTE', resultat: AVSLAG })],
+            }),
+            beregnEntry({
+                id: 'pleiepenger',
+                periodetype: 'Pleiepenger-fratrekk',
+                beskrivelse: 'Avslag fordi barnet mottek pleiepenger — foreldrepengar er trekte frå.',
+                kalenderPeriode: lagPeriode({ kontoType: 'MØDREKVOTE', resultat: PLEIEPENGE_AVSLAG }),
+                listePerioder: [lagPeriode({ kontoType: 'MØDREKVOTE', resultat: PLEIEPENGE_AVSLAG })],
+            }),
+            beregnEntry({
+                id: 'uten-uttak',
+                periodetype: 'Periode utan uttak',
+                beskrivelse:
+                    'Periode der ingen forelder tek ut foreldrepengar. ' +
+                    'Finst berre i listevisninga — kalenderen viser ikkje denne periodetypen.',
+                kalenderStatisk: { fargekode: null, legendLabel: '(berre liste)' },
+                listePerioder: [UTEN_UTTAK],
+            }),
+        ],
+    },
+    {
+        id: 'spesial',
+        område: 'Spesialdagar (familiehendelse, barnehage, helg)',
+        beskrivelse:
+            'Desse er ikkje knytte til uttak, men visast som landemerke. ' +
+            'Familiehendelse og barnehagestart finst i begge visningar, helg berre i kalenderen.',
+        regler: [
+            beregnEntry({
+                id: 'familiehendelse',
+                periodetype: 'Fødsel / termin / adopsjon',
+                beskrivelse:
+                    'Familiehendelsesdato — fødselsdato, termindato eller omsorgsovertaking. ' +
+                    'Hjarteikon i begge visningar.',
+                kalenderStatisk: {
+                    fargekode: null,
+                    ikon: (
+                        <HeartFillIcon
+                            aria-hidden
+                            color="var(--ax-bg-brand-magenta-strong)"
+                            width={25}
+                            height={25}
+                        />
+                    ),
+                    legendLabel: 'FØDSEL / TERMIN / ADOPSJON',
+                },
+                listePerioder: [FAMHENDELSE],
+                listeErFamiliehendelse: true,
+            }),
+            beregnEntry({
+                id: 'barnehage',
+                periodetype: 'Barnehageplass',
+                beskrivelse: 'Dato for barnehagestart — markerer slutten på foreldrepengeperioden.',
+                kalenderStatisk: {
+                    fargekode: null,
+                    ikon: (
+                        <TeddyBearFillIcon
+                            aria-hidden
+                            color="var(--ax-brand-beige-800)"
+                            width={25}
+                            height={25}
+                        />
+                    ),
+                    legendLabel: 'BARNEHAGEPLASS',
+                },
+            }),
+            beregnEntry({
+                id: 'helg',
+                periodetype: 'Helg',
+                beskrivelse:
+                    'Laurdag og søndag — det blir ikkje telt uttaksdagar i helgene. Berre i kalenderen.',
+                kalenderStatisk: { fargekode: 'GRAY', legendLabel: 'HELG' },
+            }),
+        ],
+    },
+    {
+        id: 'interaksjon',
+        område: 'Interaksjonsfargar (berre kalender)',
+        beskrivelse:
+            'Desse fargane representerer ikkje ein periodetype, men ein visuell tilstand — ' +
+            'valde periodar, dagar utan uttaksdata, eller outline-stilar for fokus/seleksjon. ' +
+            'Ingen av desse finst i listevisninga.',
+        regler: [
+            beregnEntry({
+                id: 'none',
+                periodetype: 'Ingen periode',
+                beskrivelse:
+                    'Dagar utan periode — standard for dagar som ikkje er del av nokon uttaksperiode.',
+                kalenderStatisk: { fargekode: 'NONE', legendLabel: '(ingen)' },
+            }),
+            beregnEntry({
+                id: 'darkblue',
+                periodetype: 'Vald periode (redigering)',
+                beskrivelse:
+                    'Markerer valde periodar i redigeringsmodus — ' +
+                    'når brukaren klikkar på ein legend-farge, blir dei aktuelle dagane framheva.',
+                kalenderStatisk: { fargekode: 'DARKBLUE', legendLabel: '(ingen)' },
+            }),
+            beregnEntry({
+                id: 'lightblue',
+                periodetype: 'Fokus/seleksjon (blå)',
+                beskrivelse:
+                    'Brukt i outline-/fokusstil for blå periodar — ' +
+                    'ikkje ein eigen periodetype, men del av seleksjonslogikken.',
+                kalenderStatisk: { fargekode: 'LIGHTBLUE', legendLabel: '(ingen)' },
+            }),
+            beregnEntry({
+                id: 'lightgreen',
+                periodetype: 'Fokus/seleksjon (grøn)',
+                beskrivelse:
+                    'Brukt i outline-/fokusstil for grøne periodar — ' +
+                    'ikkje ein eigen periodetype, men del av seleksjonslogikken.',
+                kalenderStatisk: { fargekode: 'LIGHTGREEN', legendLabel: '(ingen)' },
+            }),
+        ],
+    },
+];
+
+// ---------------------------------------------------------------------------
+// Hovudkomponent
+// ---------------------------------------------------------------------------
 
 // ---------------------------------------------------------------------------
 // Swatchar
@@ -63,400 +472,20 @@ const KalenderSwatch = ({ entry }: { entry: FargeEntry }) => {
 
 const ListeSwatch = ({ entry }: { entry: FargeEntry }) => {
     if (!entry.liste) {
-        return <BodyShort size="small" className="text-ax-text-subtle italic">—</BodyShort>;
+        return (
+            <BodyShort size="small" className="text-ax-text-subtle italic">
+                —
+            </BodyShort>
+        );
     }
     return (
-        <HStack gap="space-4" align="center">
-            <div
-                className={`flex h-8 w-8 items-center justify-center rounded-lg border-2 ${entry.liste.bakgrunn} ${entry.liste.border}`}
-            >
-                <span className={entry.liste.ikonFarge}>{entry.liste.ikon}</span>
-            </div>
-        </HStack>
+        <div
+            className={`flex h-8 w-8 items-center justify-center rounded-lg border-2 ${entry.liste.bakgrunn} ${entry.liste.border}`}
+        >
+            {entry.liste.ikonElement}
+        </div>
     );
 };
-
-// ---------------------------------------------------------------------------
-// Listevisning-ikon (gjenskapar getIkon / getIkonFarge)
-// ---------------------------------------------------------------------------
-
-const ikon = (Icon: typeof HeartFillIcon, size = 16) => <Icon width={size} height={size} aria-hidden />;
-
-// ---------------------------------------------------------------------------
-// Alle fargar, gruppert etter periodekategori
-// ---------------------------------------------------------------------------
-
-const OMRÅDER: FargeOmråde[] = [
-    {
-        id: 'mor',
-        område: 'Mors periodar (blå)',
-        beskrivelse:
-            'Blå fargar representerer periodar som tilhøyrer mor — mødrekvote, fellesperiode ' +
-            'teken av mor, eller foreldrepengar før fødsel.',
-        regler: [
-            {
-                id: 'mor-vanleg',
-                periodetype: 'Mors uttak',
-                beskrivelse: 'Vanleg uttak — mødrekvote, fellesperiode eller foreldrepengar før fødsel.',
-                kalender: { fargekode: 'BLUE', legendLabel: 'MORS_DEL' },
-                liste: {
-                    bakgrunn: 'bg-ax-accent-100',
-                    border: 'border-ax-accent-100',
-                    ikon: ikon(BabyWrappedFillIcon),
-                    ikonFarge: 'text-ax-accent-500',
-                },
-            },
-            {
-                id: 'mor-gradert',
-                periodetype: 'Mors uttak (gradert)',
-                beskrivelse: 'Gradert uttak — mor jobbar deltid og tek ut foreldrepengar samtidig.',
-                kalender: { fargekode: 'BLUESTRIPED', legendLabel: 'MORS_DEL_GRADERT' },
-                liste: {
-                    bakgrunn: 'bg-ax-accent-100',
-                    border: 'border-ax-accent-100',
-                    ikon: ikon(BabyWrappedFillIcon),
-                    ikonFarge: 'text-ax-accent-500',
-                },
-            },
-            {
-                id: 'mor-før-fødsel',
-                periodetype: 'Før fødsel / termin',
-                beskrivelse: 'Foreldrepengar før fødsel — perioden med FORELDREPENGER_FØR_FØDSEL-konto.',
-                kalender: { fargekode: 'BLUE', legendLabel: 'MORS_DEL' },
-                liste: {
-                    bakgrunn: 'bg-ax-accent-100',
-                    border: 'border-ax-accent-100',
-                    ikon: ikon(PersonPregnantFillIcon),
-                    ikonFarge: 'text-ax-accent-500',
-                },
-            },
-        ],
-    },
-    {
-        id: 'far',
-        område: 'Fars / medmors periodar (grøn)',
-        beskrivelse:
-            'Grøne fargar representerer periodar som tilhøyrer far eller medmor — fedrekvote ' +
-            'eller fellesperiode. Stripete = gradert, omriss = aktivitetsfri.',
-        regler: [
-            {
-                id: 'far-vanleg',
-                periodetype: 'Fars uttak',
-                beskrivelse: 'Vanleg uttak — fedrekvote eller fellesperiode.',
-                kalender: { fargekode: 'GREEN', legendLabel: 'FARS_DEL' },
-                liste: {
-                    bakgrunn: 'bg-ax-success-200',
-                    border: 'border-ax-success-200',
-                    ikon: ikon(BabyWrappedFillIcon),
-                    ikonFarge: 'text-ax-success-500',
-                },
-            },
-            {
-                id: 'far-gradert',
-                periodetype: 'Fars uttak (gradert)',
-                beskrivelse:
-                    'Gradert uttak — far jobbar deltid. Gjeld også aktivitetsfri kvote med gradering ' +
-                    '(FARS_DEL_AKTIVITETSFRI_GRADERT — same kalenderfarge, men labelen skil dei).',
-                kalender: { fargekode: 'GREENSTRIPED', legendLabel: 'FARS_DEL_GRADERT' },
-                liste: {
-                    bakgrunn: 'bg-ax-success-200',
-                    border: 'border-ax-success-200',
-                    ikon: ikon(BabyWrappedFillIcon),
-                    ikonFarge: 'text-ax-success-500',
-                },
-            },
-            {
-                id: 'far-aktivitetsfri',
-                periodetype: 'Aktivitetsfri kvote',
-                beskrivelse:
-                    'Aktivitetsfri kvote — inga krav til mors aktivitet. ' +
-                    'Berre for FORELDREPENGER-kontoen med morsAktivitet = IKKE_OPPGITT.',
-                kalender: { fargekode: 'GREENOUTLINE', legendLabel: 'FARS_DEL_AKTIVITETSFRI' },
-                liste: {
-                    bakgrunn: 'bg-ax-success-200',
-                    border: 'border-ax-success-200',
-                    ikon: ikon(BabyWrappedFillIcon),
-                    ikonFarge: 'text-ax-success-500',
-                },
-            },
-        ],
-    },
-    {
-        id: 'samtidig',
-        område: 'Samtidig uttak (splitta farge)',
-        beskrivelse:
-            'Når begge foreldra tek ut foreldrepengar i same periode. Kalenderen viser splitta ' +
-            'farge (retning avheng av innlogga brukar), lista viser diagonal gradient.',
-        regler: [
-            {
-                id: 'samtidig-mor',
-                periodetype: 'Samtidig uttak (sett frå mor)',
-                beskrivelse: 'Kalender: grøn topp, blå botn. Liste: diagonal gradient grøn → blå.',
-                kalender: { fargekode: 'LIGHTGREENBLUE', legendLabel: 'SAMTIDIG_UTTAK' },
-                liste: {
-                    bakgrunn:
-                        'bg-[linear-gradient(135deg,var(--ax-success-200)_0%,var(--ax-success-200)_50%,var(--ax-accent-100)_50%,var(--ax-accent-100)_100%)]',
-                    border: 'border-ax-success-200',
-                    ikon: ikon(BabyWrappedFillIcon),
-                    ikonFarge: 'text-ax-success-500',
-                },
-            },
-            {
-                id: 'samtidig-far',
-                periodetype: 'Samtidig uttak (sett frå far)',
-                beskrivelse: 'Kalender: blå topp, grøn botn. Liste: same gradient (ikkje perspektivavhengig).',
-                kalender: { fargekode: 'LIGHTBLUEGREEN', legendLabel: 'SAMTIDIG_UTTAK' },
-                liste: {
-                    bakgrunn:
-                        'bg-[linear-gradient(135deg,var(--ax-success-200)_0%,var(--ax-success-200)_50%,var(--ax-accent-100)_50%,var(--ax-accent-100)_100%)]',
-                    border: 'border-ax-success-200',
-                    ikon: ikon(BabyWrappedFillIcon),
-                    ikonFarge: 'text-ax-success-500',
-                },
-            },
-        ],
-    },
-    {
-        id: 'utsettelse',
-        område: 'Utsettelse (omriss / pause)',
-        beskrivelse:
-            'Utsetjingsperiodar «pausar» uttaket. Kalenderen skil ferie (blå omriss) frå ' +
-            'andre årsaker (beige omriss). Lista brukar same bakgrunn for alle utsetjingar, ' +
-            'men ulike ikon per årsak.',
-        regler: [
-            {
-                id: 'utsettelse-ferie',
-                periodetype: 'Ferie',
-                beskrivelse: 'Lovbestemt ferie — uttaket er pausa medan familien har ferie.',
-                kalender: { fargekode: 'BLUEOUTLINE', legendLabel: 'FERIE' },
-                liste: {
-                    bakgrunn: 'bg-ax-bg-default',
-                    border: 'border-ax-accent-500',
-                    ikon: ikon(ParasolBeachFillIcon),
-                    ikonFarge: 'text-ax-accent-500',
-                },
-            },
-            {
-                id: 'utsettelse-arbeid',
-                periodetype: 'Utsettelse (arbeid/fri)',
-                beskrivelse: 'Utsettelse grunna arbeid eller fri — søkar jobbar i perioden.',
-                kalender: { fargekode: 'BEIGEOUTLINE', legendLabel: 'UTSETTELSE' },
-                liste: {
-                    bakgrunn: 'bg-ax-bg-default',
-                    border: 'border-ax-accent-500',
-                    ikon: ikon(BriefcaseFillIcon),
-                    ikonFarge: 'text-ax-accent-500',
-                },
-            },
-            {
-                id: 'utsettelse-sjukdom',
-                periodetype: 'Utsettelse (sjukdom/innlegging)',
-                beskrivelse: 'Utsettelse grunna sjukdom, innlegging, HV-øving eller NAV-tiltak.',
-                kalender: { fargekode: 'BEIGEOUTLINE', legendLabel: 'UTSETTELSE' },
-                liste: {
-                    bakgrunn: 'bg-ax-bg-default',
-                    border: 'border-ax-accent-500',
-                    ikon: ikon(BandageFillIcon),
-                    ikonFarge: 'text-ax-accent-500',
-                },
-            },
-        ],
-    },
-    {
-        id: 'eøs',
-        område: 'EØS-periodar (fylt med svart omriss)',
-        beskrivelse:
-            'Periodar der den eine forelderen har foreldrepengar frå eit anna EØS-land. ' +
-            'Kalenderen viser hovudfarge + svart omriss. Lista brukar blå bakgrunn (accent-400) for begge.',
-        regler: [
-            {
-                id: 'eøs-mor',
-                periodetype: 'Mors EØS-periode',
-                beskrivelse:
-                    'Visast for far/medmor som er innlogga (mora har EØS-foreldrepengar). ' +
-                    'Merk: Lista brukar same blå bakgrunn uavhengig av forelder.',
-                kalender: { fargekode: 'BLUE_WITH_BLACK_OUTLINE', legendLabel: 'MORS_DEL_EØS' },
-                liste: {
-                    bakgrunn: 'bg-ax-accent-400',
-                    border: 'border-ax-success-400',
-                    ikon: ikon(BabyWrappedFillIcon),
-                    ikonFarge: 'text-ax-success-500',
-                },
-            },
-            {
-                id: 'eøs-far',
-                periodetype: 'Fars EØS-periode',
-                beskrivelse:
-                    'Visast for mor som er innlogga (far/medmor har EØS-foreldrepengar). ' +
-                    'Merk: Lista brukar same blå bakgrunn uavhengig av forelder.',
-                kalender: { fargekode: 'GREEN_WITH_BLACK_OUTLINE', legendLabel: 'FARS_DEL_EØS' },
-                liste: {
-                    bakgrunn: 'bg-ax-accent-400',
-                    border: 'border-ax-success-400',
-                    ikon: ikon(BabyWrappedFillIcon),
-                    ikonFarge: 'text-ax-success-500',
-                },
-            },
-        ],
-    },
-    {
-        id: 'tapte-og-avslag',
-        område: 'Tapte dagar, avslag og uten uttak',
-        beskrivelse:
-            'Mørke og åtvaringsfargar signaliserer problem — tapte dagar (hull), ' +
-            'avslåtte periodar, pleiepengefratrekk, eller periodar utan uttak.',
-        regler: [
-            {
-                id: 'tapte-dagar',
-                periodetype: 'Tapte dagar',
-                beskrivelse: 'Hull i uttaksplanen der dagar kan gå tapt om ikkje planen blir endra.',
-                kalender: { fargekode: 'BLACK', legendLabel: 'TAPTE_DAGER' },
-                liste: {
-                    bakgrunn: 'bg-ax-bg-neutral-moderate-hoverA',
-                    border: 'border-ax-bg-neutral-moderate-hoverA',
-                    ikon: ikon(InformationSquareFillIcon),
-                    ikonFarge: 'text-ax-neutral-800',
-                },
-            },
-            {
-                id: 'avslag',
-                periodetype: 'Avslått periode',
-                beskrivelse: 'Nav har avslått søknaden for denne perioden.',
-                kalender: { fargekode: 'BLACKOUTLINE', legendLabel: 'AVSLAG' },
-                liste: {
-                    bakgrunn: 'bg-ax-bg-default shadow-[inset_0_0_0_2px_var(--ax-bg-neutral-strong)]',
-                    border: 'border-ax-bg-neutral-strong',
-                    ikon: ikon(InformationSquareFillIcon),
-                    ikonFarge: 'text-ax-neutral-800',
-                },
-            },
-            {
-                id: 'pleiepenger',
-                periodetype: 'Pleiepenger-fratrekk',
-                beskrivelse: 'Avslag fordi barnet mottek pleiepenger — foreldrepengar er trekte frå.',
-                kalender: { fargekode: 'DARKGRAY', legendLabel: 'PLEIEPENGER' },
-                liste: {
-                    bakgrunn: 'bg-ax-bg-default shadow-[inset_0_0_0_2px_var(--ax-bg-neutral-strong)]',
-                    border: 'border-ax-bg-neutral-strong',
-                    ikon: ikon(InformationSquareFillIcon),
-                    ikonFarge: 'text-ax-neutral-800',
-                },
-            },
-            {
-                id: 'uten-uttak',
-                periodetype: 'Periode utan uttak',
-                beskrivelse:
-                    'Periode der ingen forelder tek ut foreldrepengar. ' +
-                    'Finst berre i listevisninga — kalenderen viser ikkje denne periodetypen.',
-                kalender: { fargekode: null, legendLabel: '(berre liste)' },
-                liste: {
-                    bakgrunn: 'bg-ax-warning-200',
-                    border: 'border-ax-warning-200',
-                    ikon: ikon(CloudFillIcon),
-                    ikonFarge: 'text-ax-warning-400',
-                },
-            },
-        ],
-    },
-    {
-        id: 'spesial',
-        område: 'Spesialdagar (familiehendelse, barnehage, helg)',
-        beskrivelse:
-            'Desse er ikkje knytte til uttak, men visast som landemerke. ' +
-            'Familiehendelse og barnehagestart finst i begge visningar, helg berre i kalenderen.',
-        regler: [
-            {
-                id: 'familiehendelse',
-                periodetype: 'Fødsel / termin / adopsjon',
-                beskrivelse:
-                    'Familiehendelsesdato — fødselsdato, termindato eller omsorgsovertaking. ' +
-                    'Hjarteikon i begge visningar.',
-                kalender: {
-                    fargekode: null,
-                    ikon: (
-                        <HeartFillIcon
-                            aria-hidden
-                            color="var(--ax-bg-brand-magenta-strong)"
-                            width={25}
-                            height={25}
-                        />
-                    ),
-                    legendLabel: 'FØDSEL / TERMIN / ADOPSJON',
-                },
-                liste: {
-                    bakgrunn: 'bg-ax-danger-100',
-                    border: 'border-ax-danger-100',
-                    ikon: ikon(HeartFillIcon),
-                    ikonFarge: 'text-ax-danger-600',
-                },
-            },
-            {
-                id: 'barnehage',
-                periodetype: 'Barnehageplass',
-                beskrivelse: 'Dato for barnehagestart — markerer slutten på foreldrepengeperioden.',
-                kalender: {
-                    fargekode: null,
-                    ikon: (
-                        <TeddyBearFillIcon aria-hidden color="var(--ax-brand-beige-800)" width={25} height={25} />
-                    ),
-                    legendLabel: 'BARNEHAGEPLASS',
-                },
-                liste: null,
-            },
-            {
-                id: 'helg',
-                periodetype: 'Helg',
-                beskrivelse: 'Laurdag og søndag — det blir ikkje telt uttaksdagar i helgene. Berre i kalenderen.',
-                kalender: { fargekode: 'GRAY', legendLabel: 'HELG' },
-                liste: null,
-            },
-        ],
-    },
-    {
-        id: 'interaksjon',
-        område: 'Interaksjonsfargar (berre kalender)',
-        beskrivelse:
-            'Desse fargane representerer ikkje ein periodetype, men ein visuell tilstand — ' +
-            'valde periodar, dagar utan uttaksdata, eller outline-stilar for fokus/seleksjon. ' +
-            'Ingen av desse finst i listevisninga.',
-        regler: [
-            {
-                id: 'none',
-                periodetype: 'Ingen periode',
-                beskrivelse: 'Dagar utan periode — standard for dagar som ikkje er del av nokon uttaksperiode.',
-                kalender: { fargekode: 'NONE', legendLabel: '(ingen)' },
-                liste: null,
-            },
-            {
-                id: 'darkblue',
-                periodetype: 'Vald periode (redigering)',
-                beskrivelse:
-                    'Markerer valde periodar i redigeringsmodus — ' +
-                    'når brukaren klikkar på ein legend-farge, blir dei aktuelle dagane framheva.',
-                kalender: { fargekode: 'DARKBLUE', legendLabel: '(ingen)' },
-                liste: null,
-            },
-            {
-                id: 'lightblue',
-                periodetype: 'Fokus/seleksjon (blå)',
-                beskrivelse:
-                    'Brukt i outline-/fokusstil for blå periodar — ' +
-                    'ikkje ein eigen periodetype, men del av seleksjonslogikken.',
-                kalender: { fargekode: 'LIGHTBLUE', legendLabel: '(ingen)' },
-                liste: null,
-            },
-            {
-                id: 'lightgreen',
-                periodetype: 'Fokus/seleksjon (grøn)',
-                beskrivelse:
-                    'Brukt i outline-/fokusstil for grøne periodar — ' +
-                    'ikkje ein eigen periodetype, men del av seleksjonslogikken.',
-                kalender: { fargekode: 'LIGHTGREEN', legendLabel: '(ingen)' },
-                liste: null,
-            },
-        ],
-    },
-];
 
 // ---------------------------------------------------------------------------
 // Hovudkomponent
@@ -466,21 +495,21 @@ const OMRÅDER: FargeOmråde[] = [
  * Sjølvdokumenterande Storybook-side: viser fargesystemet i uttaksplanen
  * side om side for kalender- og listevisninga.
  *
- * Dokumenterer heile kartlegginga frå periodetype → visuell farge i begge
- * visningar, slik at designarar og PO kan samanlikne og forstå kvifor
- * ein gitt periode ser slik ut i kalenderen vs. i lista.
- *
- * Kjelder:
- * - Kalender: `getKalenderFargeForPeriode()` i `usePerioderForKalendervisning.tsx`
- * - Legend:   `getLegendLabelFromPeriode()` i `uttaksplanLegendUtils.ts`
- * - Liste:    `finnBakgrunnsfarge()`, `getIkon()`, `getBorderFarge()` i `PeriodeListeHeaderUtils.tsx`
+ * Fargane er **dynamisk utleia** frå produksjonskoden — same funksjonar
+ * som appen brukar (getKalenderFargeForPeriode, finnBakgrunnsfarge, getIkon
+ * osv.) blir kalla med mock-periodar. Endringar i produksjonskoden blir
+ * automatisk reflektert her.
  */
 const Fargekatalog = () => {
     const kolonner: ReadonlyArray<Kolonne<FargeEntry>> = [
         {
             overskrift: 'Periodetype',
             bredde: '18%',
-            render: (entry) => <BodyShort size="small" className="font-semibold">{entry.periodetype}</BodyShort>,
+            render: (entry) => (
+                <BodyShort size="small" className="font-semibold">
+                    {entry.periodetype}
+                </BodyShort>
+            ),
         },
         {
             overskrift: 'Kalender',
@@ -516,10 +545,19 @@ const Fargekatalog = () => {
             intro={
                 <>
                     Uttaksplanen har to visningar — <strong>kalender</strong> og <strong>liste</strong> — som brukar{' '}
-                    <em>ulike fargesystem</em>. Kalenderen brukar <code className="font-mono">CalendarPeriodColor</code>
-                    {' '}(enum → CSS-modul), medan lista brukar Tailwind-klassar direkte. Denne katalogen viser begge
-                    side om side, slik at du kan sjå om same periodetype ser likt ut i begge visningar.
-                    <br /><br />
+                    <em>ulike fargesystem</em>. Kalenderen brukar{' '}
+                    <code className="font-mono">CalendarPeriodColor</code> (enum → CSS-modul), medan lista brukar
+                    Tailwind-klassar direkte. Denne katalogen viser begge side om side, slik at du kan sjå om same
+                    periodetype ser likt ut i begge visningar.
+                    <br />
+                    <br />
+                    <strong>NB:</strong> Fargane i denne oversikta er <em>dynamisk utleia</em> frå produksjonskoden
+                    (same funksjonar som appen brukar). Endringar i{' '}
+                    <code className="font-mono">getKalenderFargeForPeriode</code>,{' '}
+                    <code className="font-mono">finnBakgrunnsfarge</code>,{' '}
+                    <code className="font-mono">getIkon</code> osv. blir automatisk reflektert her.
+                    <br />
+                    <br />
                     Hovudmønster: <strong>blå = mor</strong>, <strong>grøn = far / medmor</strong>,{' '}
                     <strong>stripete = gradert</strong>, <strong>omriss = utsettelse / aktivitetsfri</strong>,{' '}
                     <strong>svart/grå = avslag / tapte dagar</strong>.
