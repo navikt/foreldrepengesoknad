@@ -150,7 +150,7 @@ const lagBarnehageOgfamiliehendelsePeriode = (
     return perioder;
 };
 
-const getKalenderFargeForPeriode = (
+export const getKalenderFargeForPeriode = (
     periode: UttaksplanperiodeMedKunTapteDager,
     erFarEllerMedmor: boolean,
     allePerioder: UttaksplanperiodeMedKunTapteDager[],
