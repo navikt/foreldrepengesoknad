@@ -36,10 +36,12 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
     const [visToast, setVisToast] = useState(false);
 
     const toastTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+    const scrollFallbackRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
     useEffect(() => {
         return () => {
             clearTimeout(toastTimerRef.current);
+            clearTimeout(scrollFallbackRef.current);
         };
     }, []);
 
@@ -67,8 +69,17 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                 if (monthElement && !erElementSynlegIViewport(monthElement)) {
                     monthElement.scrollIntoView?.({ behavior: 'smooth', block: 'center' });
 
+                    let harVistEndring = false;
+                    const visEndringEinGong = () => {
+                        if (harVistEndring) return;
+                        harVistEndring = true;
+                        clearTimeout(scrollFallbackRef.current);
+                        visEndring();
+                    };
+
                     const scrollTarget = document.scrollingElement ?? document.documentElement;
-                    scrollTarget.addEventListener('scrollend', visEndring, { once: true });
+                    scrollTarget.addEventListener('scrollend', visEndringEinGong, { once: true });
+                    scrollFallbackRef.current = setTimeout(visEndringEinGong, 1000);
                 } else {
                     visEndring();
                 }
