@@ -10,13 +10,12 @@ import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
-import { UttaksplanHandlingKnapper } from '../felles/UttaksplanHandlingKnapper';
 import { useUttaksplanListeAlerts } from '../regler/alert/informasjonsAlertHooks';
 import { Uttaksplanperiode } from '../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak } from '../utils/lagHullPerioder';
+import { UttaksplanListeKnapper } from './UttaksplanListeKnapper';
 import { LeggTilEllerEndrePeriodeListPanel } from './legg-til-endre-periode-panel/LeggTilEllerEndrePeriodeListPanel';
 import { PeriodeListeItem } from './periode-liste-item/PeriodeListeItem';
-import { UttaksplanListeKnapper } from './UttaksplanListeKnapper';
 import { mapUttaksplanperioderTilRaderIListe } from './utils/mapUttaksplanperioderTilRaderIListe';
 import { getFørsteUttaksplanperiodeFom, getSisteUttaksplanperiodeTom } from './utils/uttaksplanperiodeUtils';
 

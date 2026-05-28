@@ -37,8 +37,8 @@ const renderVisningssteder = (regel: Alertregel) => (
 
 const renderMeldinger = (regel: Alertregel) => (
     <VStack gap="space-4">
-        {regel.meldinger.map((melding) => (
-            <MeldingSitat key={`${regel.id}-${melding}`}>{melding}</MeldingSitat>
+        {regel.meldinger.map((melding, i) => (
+            <MeldingSitat key={`${regel.id}-${i}`}>{melding}</MeldingSitat>
         ))}
     </VStack>
 );
@@ -53,7 +53,11 @@ const Alertregler = () => {
         {
             overskrift: 'Type',
             bredde: '10%',
-            render: (r) => <Tag variant={r.type === 'blokkerende' ? 'warning' : 'info'} size="small">{r.type}</Tag>,
+            render: (r) => (
+                <Tag variant={r.type === 'blokkerende' ? 'warning' : 'info'} size="small">
+                    {r.type}
+                </Tag>
+            ),
         },
         {
             overskrift: 'Vises',
