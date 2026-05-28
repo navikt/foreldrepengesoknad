@@ -106,6 +106,19 @@ automatically** in Storybook when you change them. However, when you:
 | Field validation | `regler/felt/` | `Feltregler.stories.tsx` |
 | Submit validation | `regler/validering/` | `Valideringsregler.stories.tsx` |
 | Alerts / info messages | `regler/alert/` | `Alertregler.stories.tsx` |
+| Color catalog (kalender + liste) | `kalender/` | `Fargekatalog.stories.tsx` |
+
+The color catalog (`Fargekatalog.stories.tsx`) documents the full color system
+for both the calendar and list views side-by-side. It uses mock periods fed into
+the **production functions** (`getKalenderFargeForPeriode`, `finnBakgrunnsfarge`,
+`getBorderFarge`, `getIkon`, `getLegendLabelFromPeriode`), so color changes are
+reflected automatically. Only interaction colors (NONE, DARKBLUE, LIGHTBLUE,
+LIGHTGREEN) and special-day markers (barnehage, helg) are static. When you:
+
+- **Change color logic** in `usePerioderForKalendervisning.tsx` or
+  `PeriodeListeHeaderUtils.tsx` — the catalog updates automatically.
+- **Add a new period type** — add a new `beregnEntry()` call with a mock period
+  in the relevant område array.
 
 ## Guidelines for code changes
 
