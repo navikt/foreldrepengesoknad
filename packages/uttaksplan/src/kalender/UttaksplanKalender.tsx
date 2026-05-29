@@ -159,6 +159,14 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                     </Alert>
                 )}
 
+                {harPeriodeMedUkjentGraderingsaktivitet(uttakPerioder) && (
+                    <Alert variant="warning">
+                        <BodyShort>
+                            <FormattedMessage id="UttaksplanKalender.MarkertePerioderGradering" />
+                        </BodyShort>
+                    </Alert>
+                )}
+
                 {erRedigeringInaktiv && (
                     <div className="ax-md:pb-2 mb-4 flex flex-wrap" id="legend">
                         <UttaksplanLegend

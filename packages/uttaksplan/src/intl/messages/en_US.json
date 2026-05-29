@@ -295,6 +295,7 @@
     "UttaksplanListeKnapper.EndreValg.Beskrivelse": "Who takes leave, quota and combination with work",
     "UttaksplanListeKnapper.Angre": "Undo",
     "UttaksplanKalender.MarkertePerioder": "You must fill out information about mom's activity in the marked periods",
+    "UttaksplanKalender.MarkertePerioderGradering": "You must select where you will work during graded leave in the marked periods",
     "UttaksplanKalender.HvaErAktivitetskrav": "What is the activity requirement for mom?",
     "RedigeringKalenderIndex.VelgDatoerIKalender": "You can select dates in the calendar",
     "RedigeringKalenderIndex.SeDetaljer": "See details about the plan at the top of the page",
