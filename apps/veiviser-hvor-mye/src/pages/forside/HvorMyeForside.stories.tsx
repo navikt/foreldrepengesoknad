@@ -1,18 +1,17 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
 import { HvorMyeRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
+import { expect, userEvent, within } from 'storybook/test';
 
+import preview from '../../../.storybook/preview';
 import { HvorMyeForside } from './HvorMyeForside';
 
-const meta = {
+const meta = preview.meta({
     title: 'hvorMye/HvorMyeForside',
     component: HvorMyeForside,
-} satisfies Meta<typeof HvorMyeForside>;
+});
 export default meta;
 
-type Story = StoryObj;
-
-export const Default: Story = {
+export const Default = meta.story({
     render: () => {
         return (
             <MemoryRouter initialEntries={[HvorMyeRoutes.ARBEIDSSITUASJON]}>
@@ -20,4 +19,17 @@ export const Default: Story = {
             </MemoryRouter>
         );
     },
-};
+    test: async () => {
+        const canvas = within(document.body);
+        await expect(canvas.findAllByText('Hvor mye kan jeg få i foreldrepenger?')).resolves.toHaveLength(2);
+        await expect(
+            canvas.getByText(
+                'Denne veiviseren er for deg som ønsker å vite omtrent hvor mye foreldrepenger du kan få fra Nav.',
+            ),
+        ).toBeInTheDocument();
+
+        await userEvent.click(canvas.getByText('Start'));
+
+        await expect(canvas.findAllByText('Hvor mye kan jeg få i foreldrepenger?')).resolves.toHaveLength(2);
+    },
+});

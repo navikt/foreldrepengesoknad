@@ -1,22 +1,15 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
+import { type ComponentProps } from 'react';
 import { useForm } from 'react-hook-form';
+import { expect, within } from 'storybook/test';
 
 import { Radio } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
 
+import preview from '../../.storybook/preview';
 import { BlueRadioGroup } from './BlueRadioGroup';
 
-const meta = {
-    title: 'components/BlueRadioGroup',
-    component: BlueRadioGroup,
-    render: (args) => <FormWithGreenRadioGroup {...args} />,
-} satisfies Meta<typeof BlueRadioGroup>;
-export default meta;
-
-type Story = StoryObj<typeof BlueRadioGroup>;
-
-const FormWithGreenRadioGroup = (args: Story) => {
+const FormWithGreenRadioGroup = (args: Partial<ComponentProps<typeof BlueRadioGroup>>) => {
     const formMethods = useForm();
     return (
         <RhfForm formMethods={formMethods}>
@@ -28,8 +21,21 @@ const FormWithGreenRadioGroup = (args: Story) => {
     );
 };
 
-export const Default: Story = {
+const meta = preview.meta({
+    title: 'components/BlueRadioGroup',
+    component: BlueRadioGroup,
+    render: (args) => <FormWithGreenRadioGroup {...args} />,
+});
+export default meta;
+
+export const Default = meta.story({
     args: {
         label: 'Dette er en radioknapp som blir lysere når du trykker på den',
     },
-};
+    test: async () => {
+        const canvas = within(document.body);
+        await expect(
+            canvas.findByText('Dette er en radioknapp som blir lysere når du trykker på den'),
+        ).resolves.toBeInTheDocument();
+    },
+});

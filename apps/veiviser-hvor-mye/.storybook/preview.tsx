@@ -1,4 +1,4 @@
-import { Preview } from '@storybook/react-vite';
+import { definePreview } from '@storybook/react-vite';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
@@ -30,35 +30,6 @@ const withIntlProvider = getIntlDecorator({
     en: { ...enMessages, ...uiMessages.en, ...formHookMessages.en },
 });
 
-export const globalTypes = {
-    locale: {
-        description: 'Internationalization locale',
-        toolbar: {
-            title: 'Språk',
-            icon: 'globe',
-            items: [
-                { value: 'nb', title: 'Bokmål' },
-                { value: 'nn', title: 'Nynorsk' },
-                { value: 'en', title: 'English' },
-            ],
-            dynamicTitle: true,
-        },
-    },
-    theme: {
-        name: 'Tema',
-        description: 'Aksel tema',
-        defaultValue: 'light',
-        toolbar: {
-            icon: 'circlehollow',
-            items: [
-                { value: 'light', icon: 'circlehollow', title: 'Lys' },
-                { value: 'dark', icon: 'circle', title: 'Mørk' },
-            ],
-            showName: true,
-        },
-    },
-};
-
 initialize({
     onUnhandledRequest: 'bypass',
     serviceWorker: {
@@ -66,7 +37,36 @@ initialize({
     },
 });
 
-const preview: Preview = {
+//eslint-disable-next-line import-x/no-default-export
+export default definePreview({
+    globalTypes: {
+        locale: {
+            description: 'Internationalization locale',
+            toolbar: {
+                title: 'Språk',
+                icon: 'globe',
+                items: [
+                    { value: 'nb', title: 'Bokmål' },
+                    { value: 'nn', title: 'Nynorsk' },
+                    { value: 'en', title: 'English' },
+                ],
+                dynamicTitle: true,
+            },
+        },
+        theme: {
+            name: 'Tema',
+            description: 'Aksel tema',
+            defaultValue: 'light',
+            toolbar: {
+                icon: 'circlehollow',
+                items: [
+                    { value: 'light', icon: 'circlehollow', title: 'Lys' },
+                    { value: 'dark', icon: 'circle', title: 'Mørk' },
+                ],
+                showName: true,
+            },
+        },
+    },
     decorators: [
         withIntlProvider,
         withThemeDecorator,
@@ -86,9 +86,5 @@ const preview: Preview = {
             );
         },
     ],
-
     loaders: [mswLoader],
-};
-
-//eslint-disable-next-line import-x/no-default-export
-export default preview;
+});
