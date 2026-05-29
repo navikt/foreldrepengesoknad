@@ -129,6 +129,22 @@ describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
         expect(harPeriodeMedUkjentGraderingsaktivitet(perioder)).toBe(false);
     });
 
+    it('skal returnere true når arbeidsgiver-id er aktivitetstype-plassholdaren ORDINÆRT_ARBEID', () => {
+        const perioder = [
+            lagMorPeriode({
+                gradering: {
+                    arbeidstidprosent: 60,
+                    aktivitet: {
+                        type: 'ORDINÆRT_ARBEID',
+                        arbeidsgiver: { id: 'ORDINÆRT_ARBEID', type: 'ORGANISASJON' },
+                    },
+                },
+            }),
+        ];
+
+        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder)).toBe(true);
+    });
+
     it('skal returnere false for FRILANS uten arbeidsgiver', () => {
         const perioder = [
             lagMorPeriode({

@@ -50,8 +50,13 @@ export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFør
     const manglerMorsAktivitetDerPåkrevd = (perioder: UttaksplanPerioder) =>
         harPeriodeDerMorsAktivitetIkkeErValgt(utledRettighet(erAleneOmOmsorg, erDeltUttak), perioder);
 
-    const manglerGraderingsaktivitet = (perioder: UttaksplanPerioder) =>
-        harPeriodeMedUkjentGraderingsaktivitet(perioder);
+    const manglerGraderingsaktivitet = (perioder: UttaksplanPerioder) => {
+        const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
+        const søkersPerioder = perioder.filter(
+            (periode) => Uttaksperioden.erIkkeEøsPeriode(periode) && periode.forelder === søkersForelder,
+        );
+        return harPeriodeMedUkjentGraderingsaktivitet(søkersPerioder);
+    };
 
     const harKunPerioderForDenAndreForelderen = (perioder: UttaksplanPerioder) =>
         harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, erAleneOmOmsorg, perioder);

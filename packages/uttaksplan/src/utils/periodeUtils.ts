@@ -191,10 +191,11 @@ export const harPeriodeMedUkjentGraderingsaktivitet = (
             return false;
         }
         const aktivitet = periode.gradering?.aktivitet;
-        if (!aktivitet) {
+        if (!aktivitet || aktivitet.type !== 'ORDINÆRT_ARBEID') {
             return false;
         }
-        return aktivitet.type === 'ORDINÆRT_ARBEID' && !aktivitet.arbeidsgiver?.id;
+        const arbeidsgiverId = aktivitet.arbeidsgiver?.id;
+        return !arbeidsgiverId || arbeidsgiverId === aktivitet.type;
     });
 };
 
