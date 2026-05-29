@@ -18,6 +18,27 @@ const proxy = {
     FPGRUNNDATA_API_URL: serverConfig.påkrevMiljøVariabel('FPGRUNNDATA_API_URL'),
 } as const;
 
+const TILLATTE_SEC_FETCH_SITE = new Set(['same-origin', 'same-site']);
+
+/**
+ * CSRF-djupforsvar: avviser API-kall som nettlesaren har markert som kryss-opphav.
+ * Sec-Fetch-Site sendast av alle moderne nettlesarar. Når headeren manglar (eldre
+ * nettlesarar eller ikkje-nettlesar-klientar) lèt vi requesten passere for å unngå
+ * å bryte legitim trafikk.
+ */
+const avvisKryssOpphavsKall = (request: Request, response: Response, next: NextFunction) => {
+    const secFetchSite = request.headers['sec-fetch-site'];
+    if (secFetchSite === undefined || TILLATTE_SEC_FETCH_SITE.has(String(secFetchSite))) {
+        return next();
+    }
+    logger.warning(`Avviste API-kall med Sec-Fetch-Site=${secFetchSite}`);
+    response.status(403).send();
+};
+
+const fjernSesjonsHeadere = (proxyRequest: { removeHeader: (name: string) => void }) => {
+    proxyRequest.removeHeader('cookie');
+};
+
 export function configureReverseProxyApi(router: Router) {
     addProxyHandler(router, {
         ingoingUrl: '/fpsoknad/api',
@@ -33,10 +54,19 @@ export function configureReverseProxyApi(router: Router) {
 
     router.use(
         '/fpgrunndata/api',
+        avvisKryssOpphavsKall,
         createProxyMiddleware({
             target: proxy.FPGRUNNDATA_API_URL,
             changeOrigin: true,
             logger: console,
+            on: {
+                proxyReq: (proxyRequest) => {
+                    // Strip sesjons-cookien slik at IDporten-sidecar-cookien ikkje lek
+                    // ut til fpgrunndata. Tenesta krev ikkje autentisering og skal
+                    // ikkje sjå brukar-sesjonen vår.
+                    fjernSesjonsHeadere(proxyRequest);
+                },
+            },
         }),
     );
 }
@@ -44,6 +74,7 @@ export function configureReverseProxyApi(router: Router) {
 function addProxyHandler(router: Router, { ingoingUrl, outgoingUrl, scope }: ProxyOptions) {
     router.use(
         ingoingUrl,
+        avvisKryssOpphavsKall,
         async (request: Request, response: Response, next: NextFunction) => {
             const token = getToken(request);
             if (!token) {
