@@ -120,8 +120,8 @@ const KONTEKSTUELL_ALERT_OMRÅDE: Alertområde = {
 };
 
 /**
- * Informasjonsalert-reglane lever som `Alertregel<TKontekst>` for runtime, men har eit
- * konsistent supersett (`AlertregelDoc`) — så vi kan liste dei direkte utan cast.
+ * Informasjonsalert-reglene lever som `Alertregel<TKontekst>` for runtime, men har et
+ * konsistent supersett (`AlertregelDoc`) — så vi kan liste dem direkte uten cast.
  */
 const ALLE_INFORMASJONS_ALERTS: readonly AlertregelDoc[] = [
     MANGLER_MORS_AKTIVITET_LISTE,
