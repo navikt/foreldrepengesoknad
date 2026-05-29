@@ -1850,6 +1850,14 @@ export const MarkerPeriodeNårGraderingsaktivitetMangler: Story = {
                 },
                 flerbarnsdager: false,
             },
+            {
+                fom: '2027-01-04',
+                tom: '2027-05-28',
+                kontoType: 'FEDREKVOTE',
+                forelder: 'FAR_MEDMOR',
+                samtidigUttak: 100,
+                flerbarnsdager: false,
+            },
         ] satisfies UttakPeriode_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
