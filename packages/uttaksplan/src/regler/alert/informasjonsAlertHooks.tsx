@@ -16,9 +16,12 @@ import { Periode } from '../types';
 import {
     ADOPSJON_PERIODE_FØR_FAMHEND,
     ForskyvEllerErstattKontekst,
+    GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE,
     IKKE_REDIGERBAR_EØS,
     IKKE_REDIGERBAR_PLEIEPENGER,
     KAN_MISTE_DAGER,
+    MANGLER_GRADERINGSAKTIVITET_KALENDER,
+    MANGLER_GRADERINGSAKTIVITET_LISTE,
     MANGLER_MORS_AKTIVITET_KALENDER,
     MANGLER_MORS_AKTIVITET_LISTE,
     MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING,
@@ -70,7 +73,7 @@ export const useListePanelInfoAlerts = (input: {
  */
 export const useEksisterendeValgtePeriodeAlerts = (): ((
     periode: Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager,
-) => { morsAktivitetIkkeValgt?: AktivAlertMetadata }) => {
+) => { morsAktivitetIkkeValgt?: AktivAlertMetadata; graderingsaktivitetIkkeValgt?: AktivAlertMetadata }) => {
     const {
         foreldreInfo: { rettighetType },
         uttakPerioder,
@@ -86,6 +89,7 @@ export const useEksisterendeValgtePeriodeAlerts = (): ((
             periode,
             morsUttakPerioder,
         }),
+        graderingsaktivitetIkkeValgt: tilAktiv(GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE, { periode }),
     });
 };
 
@@ -98,6 +102,7 @@ export const useUttaksplanListeAlerts = (
     } = useUttaksplanData();
     return {
         manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_LISTE, { rettighetType, perioder }),
+        manglerGraderingsaktivitetAlert: tilAktiv(MANGLER_GRADERINGSAKTIVITET_LISTE, { perioder }),
     };
 };
 
@@ -110,6 +115,7 @@ export const useUttaksplanKalenderAlerts = (
     } = useUttaksplanData();
     return {
         manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_KALENDER, { rettighetType, perioder }),
+        manglerGraderingsaktivitetAlert: tilAktiv(MANGLER_GRADERINGSAKTIVITET_KALENDER, { perioder }),
     };
 };
 
@@ -231,9 +237,11 @@ type ListePanelInfoAlerts = {
 };
 type UttaksplanListeAlerts = {
     manglerMorsAktivitetAlert?: AktivAlertMetadata;
+    manglerGraderingsaktivitetAlert?: AktivAlertMetadata;
 };
 type UttaksplanKalenderAlerts = {
     manglerMorsAktivitetAlert?: AktivAlertMetadata;
+    manglerGraderingsaktivitetAlert?: AktivAlertMetadata;
 };
 type LeggTilEndreSkjemaInfoAlerts = {
     morsAktivitetIkkeOppgittAlert?: AktivAlertMetadata;

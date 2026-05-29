@@ -51,9 +51,7 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
 
     const alleRader = leggTilPeriodeForFamiliehendelsedato(uttaksplanperioderPerRadIListe, familiehendelsedato);
 
-    const { manglerMorsAktivitetAlert } = useUttaksplanListeAlerts(uttakPerioderJustertForFamiliehendelsesdato);
-
-    const harUkjentGraderingsaktivitet = harPeriodeMedUkjentGraderingsaktivitet(
+    const { manglerMorsAktivitetAlert, manglerGraderingsaktivitetAlert } = useUttaksplanListeAlerts(
         uttakPerioderJustertForFamiliehendelsesdato,
     );
 
@@ -62,9 +60,9 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
             {manglerMorsAktivitetAlert && (
                 <Alert variant={manglerMorsAktivitetAlert.variant}>{manglerMorsAktivitetAlert.melding}</Alert>
             )}
-            {harUkjentGraderingsaktivitet && (
-                <Alert variant="warning">
-                    <FormattedMessage id="UttaksplanListe.ManglerGraderingsaktivitet" />
+            {manglerGraderingsaktivitetAlert && (
+                <Alert variant={manglerGraderingsaktivitetAlert.variant}>
+                    {manglerGraderingsaktivitetAlert.melding}
                 </Alert>
             )}
             {uttakPerioder.length > 0 && (
