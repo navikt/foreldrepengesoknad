@@ -34,12 +34,10 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
     const [endredePerioder, setEndredePerioder] = useState<Array<{ fom: string; tom: string }>>([]);
 
-    const scrollFallbackRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+    const scrollAbortRef = useRef<AbortController | null>(null);
 
     useEffect(() => {
-        return () => {
-            clearTimeout(scrollFallbackRef.current);
-        };
+        return () => scrollAbortRef.current?.abort();
     }, []);
 
     const setEndredePerioderMedScroll = useCallback(
@@ -50,29 +48,16 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
             }
 
             const førsteDato = dayjs(perioder[0]!.fom);
-            const year = førsteDato.year();
-            const month = førsteDato.month();
+            const element = document.querySelector(
+                `[data-month-key="${førsteDato.year()}-${førsteDato.month()}"]`,
+            );
 
-            requestAnimationFrame(() => {
-                const monthElement = document.querySelector(`[data-month-key="${year}-${month}"]`);
+            scrollAbortRef.current?.abort();
+            scrollAbortRef.current = new AbortController();
+            const signal = scrollAbortRef.current.signal;
 
-                if (monthElement && !erElementSynlegIViewport(monthElement)) {
-                    monthElement.scrollIntoView?.({ behavior: 'smooth', block: 'center' });
-
-                    let harVistEndring = false;
-                    const visEndring = () => {
-                        if (harVistEndring) {
-                            return;
-                        }
-                        harVistEndring = true;
-                        clearTimeout(scrollFallbackRef.current);
-                        setEndredePerioder(perioder);
-                    };
-
-                    const scrollTarget = document.scrollingElement ?? document.documentElement;
-                    scrollTarget.addEventListener('scrollend', visEndring, { once: true });
-                    scrollFallbackRef.current = setTimeout(visEndring, 1000);
-                } else {
+            ventPåScrollFerdig(element, signal).then(() => {
+                if (!signal.aborted) {
                     setEndredePerioder(perioder);
                 }
             });
@@ -304,4 +289,32 @@ const HEADER_HØGDE = 80;
 const erElementSynlegIViewport = (el: Element): boolean => {
     const rect = el.getBoundingClientRect();
     return rect.bottom > HEADER_HØGDE && rect.top < window.innerHeight;
+};
+
+/**
+ * Scrollar elementet inn i viewporten om naudsynt, og resolvar når scrollen er ferdig.
+ * Brukar `scrollend`-eventen med ein 1s fallback-timeout for nettlesarar/scroll-containerar
+ * der eventet ikkje fyrer.
+ */
+const ventPåScrollFerdig = (element: Element | null, signal: AbortSignal): Promise<void> => {
+    if (!element || erElementSynlegIViewport(element)) {
+        return Promise.resolve();
+    }
+
+    element.scrollIntoView?.({ behavior: 'smooth', block: 'center' });
+
+    return new Promise((resolve) => {
+        const scrollTarget = document.scrollingElement ?? document.documentElement;
+        const timeoutId = setTimeout(ferdig, 1000);
+
+        function ferdig() {
+            clearTimeout(timeoutId);
+            scrollTarget.removeEventListener('scrollend', ferdig);
+            signal.removeEventListener('abort', ferdig);
+            resolve();
+        }
+
+        scrollTarget.addEventListener('scrollend', ferdig, { once: true });
+        signal.addEventListener('abort', ferdig, { once: true });
+    });
 };
