@@ -902,7 +902,7 @@ describe('UttaksplanKalender', () => {
 
         expect(
             await screen.findByText(
-                'Du må velge hvor du skal jobbe i de markerte periodene',
+                'Du må velge hvor du skal jobbe samtidig som du har foreldrepenger i de markerte periodene',
             ),
         ).toBeInTheDocument();
     });

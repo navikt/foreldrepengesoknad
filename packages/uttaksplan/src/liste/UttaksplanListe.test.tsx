@@ -472,10 +472,12 @@ describe('UttaksplanListe', () => {
         render(<MarkeringNårGraderingsaktivitetMangler />);
 
         expect(
-            await screen.findByText('Du må velge hvor du skal jobbe før du går videre'),
+            await screen.findByText('Du må velge hvor du skal jobbe samtidig som du har foreldrepenger før du går videre'),
         ).toBeInTheDocument();
 
-        expect(screen.getAllByText('Mangler hvor du skal jobbe').length).toBeGreaterThanOrEqual(1);
+        expect(
+            screen.getAllByText('Mangler hvor du skal jobbe samtidig som du har foreldrepenger').length,
+        ).toBeGreaterThanOrEqual(1);
     });
 
     it('Skal kunne slette og endre alle perioder bortsett fra periodene til annen part', async () => {
