@@ -12,10 +12,6 @@
         "cpu": "20m",
         "mem": "200Mi"
     },
-    "redirect": {
-        "host": "foreldrepengesoknad.nav.no",
-        "ingressClassName": "nais-ingress-external"
-    },
     "env": {
         "PUBLIC_PATH": "/foreldrepenger/soknad",
         "INNSYN": "https://www.nav.no/foreldrepenger/oversikt",
