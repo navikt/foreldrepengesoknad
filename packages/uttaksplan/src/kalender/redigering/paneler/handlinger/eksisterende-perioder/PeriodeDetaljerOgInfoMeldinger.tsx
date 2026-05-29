@@ -8,15 +8,7 @@ import { useKalenderRedigeringContext } from '../../../context/KalenderRedigerin
 import { finnValgtePerioder } from '../../../utils/kalenderPeriodeUtils';
 import { EksisterendeValgtePerioder } from './EksisterendeValgtePerioder';
 
-interface Props {
-    erForskyvEllerErstattPanelvisningPå: boolean;
-    setErForskyvEllerErstattPanelvisningPå: (skaVise: boolean) => void;
-}
-
-export const PeriodeDetaljerOgInfoMeldinger = ({
-    erForskyvEllerErstattPanelvisningPå,
-    setErForskyvEllerErstattPanelvisningPå,
-}: Props) => {
+export const PeriodeDetaljerOgInfoMeldinger = () => {
     const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
 
     const uttakPerioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
@@ -42,36 +34,31 @@ export const PeriodeDetaljerOgInfoMeldinger = ({
             {eksisterendePerioderSomErValgt.length > 0 && (
                 <EksisterendeValgtePerioder
                     perioder={eksisterendePerioderSomErValgt}
-                    setErForskyvEllerErstattPanelvisningPå={setErForskyvEllerErstattPanelvisningPå}
                 />
             )}
 
-            {!erForskyvEllerErstattPanelvisningPå && (
-                <>
-                    {adopsjonFørFamhend && (
-                        <Alert variant={adopsjonFørFamhend.variant} size="small">
-                            {adopsjonFørFamhend.melding}
-                        </Alert>
-                    )}
+            {adopsjonFørFamhend && (
+                <Alert variant={adopsjonFørFamhend.variant} size="small">
+                    {adopsjonFørFamhend.melding}
+                </Alert>
+            )}
 
-                    {eøs && (
-                        <Alert variant={eøs.variant} size="small">
-                            {eøs.melding}
-                        </Alert>
-                    )}
+            {eøs && (
+                <Alert variant={eøs.variant} size="small">
+                    {eøs.melding}
+                </Alert>
+            )}
 
-                    {pleiepenger && (
-                        <Alert variant={pleiepenger.variant} size="small">
-                            {pleiepenger.melding}
-                        </Alert>
-                    )}
+            {pleiepenger && (
+                <Alert variant={pleiepenger.variant} size="small">
+                    {pleiepenger.melding}
+                </Alert>
+            )}
 
-                    {kanMisteDager && (
-                        <Alert variant={kanMisteDager.variant} size="small">
-                            {kanMisteDager.melding}
-                        </Alert>
-                    )}
-                </>
+            {kanMisteDager && (
+                <Alert variant={kanMisteDager.variant} size="small">
+                    {kanMisteDager.melding}
+                </Alert>
             )}
         </VStack>
     );

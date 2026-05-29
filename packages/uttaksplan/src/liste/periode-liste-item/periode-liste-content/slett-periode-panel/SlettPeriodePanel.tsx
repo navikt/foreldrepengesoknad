@@ -1,5 +1,4 @@
 import { TrashIcon } from '@navikt/aksel-icons';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -12,10 +11,8 @@ import { isRequired } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../../context/UttaksplanRedigeringContext';
-import { SlettPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/SlettPeriodeForskyvEllerErstattPanel';
 import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../../utils/UttakPeriodeBuilder';
-import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
 import { genererPeriodeKey, getStønadskvoteNavn } from '../../../utils/uttaksplanListeUtils';
 
 const ARIA_LABEL_ID = 'slett-periode-panel-heading';
@@ -38,15 +35,6 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
-    const erEksisterendePerioderEtterValgteDager = erDetEksisterendePerioderEtterValgtePerioder(
-        uttakPerioder,
-        uttaksplanperioder,
-    );
-
-    const [valgtePerioderSomSkalSlettes, setValgtePerioderSomSkalSlettes] = useState<Uttaksplanperiode[]>(
-        uttaksplanperioder.length === 1 ? uttaksplanperioder : [],
-    );
-
     const formMethods = useForm<FormValues>();
 
     const onSubmit = (values: FormValues) => {
@@ -60,16 +48,12 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
             }
         }
 
-        if (erEksisterendePerioderEtterValgteDager) {
-            setValgtePerioderSomSkalSlettes(slettedePerioder);
-        } else {
-            slettPerioder(slettedePerioder, false);
-        }
+        slettPerioder(slettedePerioder);
     };
 
-    const slettPerioder = (perioderSomSkalSlettes: Uttaksplanperiode[], skalForskyveBakover: boolean) => {
+    const slettPerioder = (perioderSomSkalSlettes: Uttaksplanperiode[]) => {
         const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder, 'liste')
-            .fjernUttakPerioder(perioderSomSkalSlettes, skalForskyveBakover)
+            .fjernUttakPerioder(perioderSomSkalSlettes, false)
             .getUttakPerioder();
         uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
 
@@ -87,58 +71,45 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
                 </HStack>
             </div>
             <div>
-                {valgtePerioderSomSkalSlettes.length > 0 && (
-                    <SlettPeriodeForskyvEllerErstattPanel
-                        valgtePerioder={valgtePerioderSomSkalSlettes}
-                        avbryt={() => {
-                            setValgtePerioderSomSkalSlettes([]);
-                        }}
-                        fjernPeriode={(skalForskyveBakover: boolean) =>
-                            slettPerioder(valgtePerioderSomSkalSlettes, skalForskyveBakover)
-                        }
-                    />
-                )}
-                {valgtePerioderSomSkalSlettes.length === 0 && (
-                    <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-                        <VStack gap="space-16">
-                            <Heading size="medium">
-                                <FormattedMessage id="uttaksplan.slettPeriode.hvilkePerioder" />
-                            </Heading>
-                            <RhfCheckboxGroup
-                                name="periodeIndexer"
-                                control={formMethods.control}
-                                validate={[isRequired(intl.formatMessage({ id: 'uttaksplan.velgperiode' }))]}
-                                label={intl.formatMessage({ id: 'uttaksplan.perioder' })}
-                            >
-                                {uttaksplanperioder.map((p, index) => {
-                                    const morsAktivitet =
-                                        erVanligUttakPeriode(p) && p.morsAktivitet ? p.morsAktivitet : undefined;
+                <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                    <VStack gap="space-16">
+                        <Heading size="medium">
+                            <FormattedMessage id="uttaksplan.slettPeriode.hvilkePerioder" />
+                        </Heading>
+                        <RhfCheckboxGroup
+                            name="periodeIndexer"
+                            control={formMethods.control}
+                            validate={[isRequired(intl.formatMessage({ id: 'uttaksplan.velgperiode' }))]}
+                            label={intl.formatMessage({ id: 'uttaksplan.perioder' })}
+                        >
+                            {uttaksplanperioder.map((p, index) => {
+                                const morsAktivitet =
+                                    erVanligUttakPeriode(p) && p.morsAktivitet ? p.morsAktivitet : undefined;
 
-                                    return (
-                                        <Checkbox key={genererPeriodeKey(p)} value={index} autoFocus={index === 0}>
-                                            {`${formatDate(p.fom)} - ${formatDate(p.tom)} -
-                                        ${getStønadskvoteNavn(intl, {
-                                            navnPåForeldre,
-                                            erFarEllerMedmor,
-                                            erEøsPeriode: erEøsUttakPeriode(p),
-                                            morsAktivitet,
-                                            konto: erVanligUttakPeriode(p) ? p.kontoType : undefined,
-                                        })}`}
-                                        </Checkbox>
-                                    );
-                                })}
-                            </RhfCheckboxGroup>
-                            <HStack justify="space-between">
-                                <Button type="button" variant="secondary" onClick={closePanel}>
-                                    <FormattedMessage id="uttaksplan.avbryt" />
-                                </Button>
-                                <Button>
-                                    <FormattedMessage id="uttaksplan.slettValgte" />
-                                </Button>
-                            </HStack>
-                        </VStack>
-                    </RhfForm>
-                )}
+                                return (
+                                    <Checkbox key={genererPeriodeKey(p)} value={index} autoFocus={index === 0}>
+                                        {`${formatDate(p.fom)} - ${formatDate(p.tom)} -
+                                    ${getStønadskvoteNavn(intl, {
+                                        navnPåForeldre,
+                                        erFarEllerMedmor,
+                                        erEøsPeriode: erEøsUttakPeriode(p),
+                                        morsAktivitet,
+                                        konto: erVanligUttakPeriode(p) ? p.kontoType : undefined,
+                                    })}`}
+                                    </Checkbox>
+                                );
+                            })}
+                        </RhfCheckboxGroup>
+                        <HStack justify="space-between">
+                            <Button type="button" variant="secondary" onClick={closePanel}>
+                                <FormattedMessage id="uttaksplan.avbryt" />
+                            </Button>
+                            <Button>
+                                <FormattedMessage id="uttaksplan.slettValgte" />
+                            </Button>
+                        </HStack>
+                    </VStack>
+                </RhfForm>
             </div>
         </div>
     );
