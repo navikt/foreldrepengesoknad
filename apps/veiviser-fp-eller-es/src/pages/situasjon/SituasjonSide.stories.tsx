@@ -79,309 +79,270 @@ const seResultatet = async (canvas: Canvas) => {
 };
 
 export const Default = meta.story({
-    args: {
-        satser: DEFAULT_SATSER,
-        setFpEllerEsSituasjon: () => undefined,
-    },
+    args: createArgs(),
 });
 
-export const MorIArbeidMedInntektOgBorINorge = meta.story({
-    args: createArgs(),
-    test: async ({ canvas, args }) => {
-        await velgMor(canvas);
-        await svarPåArbeid(canvas, 'Ja');
-        await svarPåInntekt(canvas, 'Ja');
-        await skrivLønn(canvas, '50000');
-        await svarPåBorINorge(canvas, 'Ja');
-        await seResultatet(canvas);
+Default.test('mor i arbeid med inntekt og bor i Norge', async ({ canvas, args }) => {
+    await velgMor(canvas);
+    await svarPåArbeid(canvas, 'Ja');
+    await svarPåInntekt(canvas, 'Ja');
+    await skrivLønn(canvas, '50000');
+    await svarPåBorINorge(canvas, 'Ja');
+    await seResultatet(canvas);
 
-        await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
-            borDuINorge: true,
-            erIArbeid: true,
-            harHattInntekt: true,
-            lønnPerMåned: '50000',
-            situasjon: 'mor',
-            harHattAndreInntekter: null,
-            jobberDuINorge: null,
-        });
-    },
+    await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
+        borDuINorge: true,
+        erIArbeid: true,
+        harHattInntekt: true,
+        lønnPerMåned: '50000',
+        situasjon: 'mor',
+        harHattAndreInntekter: null,
+        jobberDuINorge: null,
+    });
 });
 
-export const IkkeBorINorgeMenMedlemAvFolketrygden = meta.story({
-    args: createArgs(),
-    test: async ({ canvas, args }) => {
-        await velgMor(canvas);
-        await svarPåArbeid(canvas, 'Ja');
-        await svarPåInntekt(canvas, 'Ja');
-        await skrivLønn(canvas, '50000');
-        await svarPåBorINorge(canvas, 'Nei');
-        await svarPåJobberINorge(canvas, 'Ja');
-        await seResultatet(canvas);
+Default.test('ikke bor i Norge men medlem av folketrygden', async ({ canvas, args }) => {
+    await velgMor(canvas);
+    await svarPåArbeid(canvas, 'Ja');
+    await svarPåInntekt(canvas, 'Ja');
+    await skrivLønn(canvas, '50000');
+    await svarPåBorINorge(canvas, 'Nei');
+    await svarPåJobberINorge(canvas, 'Ja');
+    await seResultatet(canvas);
 
-        await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
-            borDuINorge: false,
-            jobberDuINorge: true,
-            erIArbeid: true,
-            harHattInntekt: true,
-            lønnPerMåned: '50000',
-            situasjon: 'mor',
-            harHattAndreInntekter: null,
-        });
-    },
+    await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
+        borDuINorge: false,
+        jobberDuINorge: true,
+        erIArbeid: true,
+        harHattInntekt: true,
+        lønnPerMåned: '50000',
+        situasjon: 'mor',
+        harHattAndreInntekter: null,
+    });
 });
 
-export const IkkeBorINorgeOgIkkeMedlem = meta.story({
-    args: createArgs(),
-    test: async ({ canvas, args }) => {
-        await velgMor(canvas);
-        await svarPåArbeid(canvas, 'Ja');
-        await svarPåInntekt(canvas, 'Ja');
-        await skrivLønn(canvas, '50000');
-        await svarPåBorINorge(canvas, 'Nei');
-        await svarPåJobberINorge(canvas, 'Nei');
+Default.test('ikke bor i Norge og ikke medlem', async ({ canvas, args }) => {
+    await velgMor(canvas);
+    await svarPåArbeid(canvas, 'Ja');
+    await svarPåInntekt(canvas, 'Ja');
+    await skrivLønn(canvas, '50000');
+    await svarPåBorINorge(canvas, 'Nei');
+    await svarPåJobberINorge(canvas, 'Nei');
 
+    expect(
+        canvas.getByText(
+            'For å kunne ha rett til foreldrepenger eller engangsstønad må man være medlem av folketrygden',
+        ),
+    ).toBeInTheDocument();
+
+    await seResultatet(canvas);
+
+    await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
+        borDuINorge: false,
+        jobberDuINorge: false,
+        erIArbeid: true,
+        harHattInntekt: true,
+        lønnPerMåned: '50000',
+        situasjon: 'mor',
+        harHattAndreInntekter: null,
+    });
+});
+
+Default.test('mor med inntekt under grensen bor i Norge', async ({ canvas, args }) => {
+    await velgMor(canvas);
+    await svarPåArbeid(canvas, 'Ja');
+    await svarPåInntekt(canvas, 'Ja');
+    await skrivLønn(canvas, '5000');
+    await svarPåBorINorge(canvas, 'Ja');
+    await seResultatet(canvas);
+
+    await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
+        borDuINorge: true,
+        erIArbeid: true,
+        harHattInntekt: true,
+        lønnPerMåned: '5000',
+        situasjon: 'mor',
+        harHattAndreInntekter: null,
+        jobberDuINorge: null,
+    });
+});
+
+Default.test('mor med inntekt under grensen ikke bor men medlem', async ({ canvas, args }) => {
+    await velgMor(canvas);
+    await svarPåArbeid(canvas, 'Ja');
+    await svarPåInntekt(canvas, 'Ja');
+    await skrivLønn(canvas, '5000');
+    await svarPåBorINorge(canvas, 'Nei');
+    await svarPåJobberINorge(canvas, 'Ja');
+    await seResultatet(canvas);
+
+    await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
+        borDuINorge: false,
+        jobberDuINorge: true,
+        erIArbeid: true,
+        harHattInntekt: true,
+        lønnPerMåned: '5000',
+        situasjon: 'mor',
+        harHattAndreInntekter: null,
+    });
+});
+
+Default.test('mor med inntekt under grensen ikke bor og ikke medlem', async ({ canvas, args }) => {
+    await velgMor(canvas);
+    await svarPåArbeid(canvas, 'Ja');
+    await svarPåInntekt(canvas, 'Ja');
+    await skrivLønn(canvas, '5000');
+    await svarPåBorINorge(canvas, 'Nei');
+    await svarPåJobberINorge(canvas, 'Nei');
+    await seResultatet(canvas);
+
+    await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
+        borDuINorge: false,
+        jobberDuINorge: false,
+        erIArbeid: true,
+        harHattInntekt: true,
+        lønnPerMåned: '5000',
+        situasjon: 'mor',
+        harHattAndreInntekter: null,
+    });
+});
+
+Default.test('ikke inntekt siste 6 mnd men bor i Norge', async ({ canvas, args }) => {
+    await velgMor(canvas);
+    await svarPåArbeid(canvas, 'Ja');
+    await svarPåInntekt(canvas, 'Nei');
+
+    expect(
+        canvas.getByText('For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
+    ).toBeInTheDocument();
+
+    await svarPåBorINorge(canvas, 'Ja');
+    await seResultatet(canvas);
+
+    await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
+        borDuINorge: true,
+        erIArbeid: true,
+        harHattInntekt: false,
+        situasjon: 'mor',
+        harHattAndreInntekter: null,
+        jobberDuINorge: null,
+        lønnPerMåned: null,
+    });
+});
+
+Default.test('ikke inntekt siste 6 mnd ikke bor men medlem', async ({ canvas, args }) => {
+    await velgMor(canvas);
+    await svarPåArbeid(canvas, 'Ja');
+    await svarPåInntekt(canvas, 'Nei');
+
+    expect(
+        canvas.getByText('For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
+    ).toBeInTheDocument();
+
+    await svarPåBorINorge(canvas, 'Nei');
+    await svarPåJobberINorge(canvas, 'Nei');
+    expect(canvas.getByText(/For å kunne ha rett til foreldrepenger eller engangsstønad/)).toBeInTheDocument();
+    await userEvent.click(canvas.getAllByText('Ja')[3]!);
+    await seResultatet(canvas);
+
+    await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
+        borDuINorge: false,
+        jobberDuINorge: true,
+        erIArbeid: true,
+        harHattInntekt: false,
+        situasjon: 'mor',
+        harHattAndreInntekter: null,
+        lønnPerMåned: null,
+    });
+});
+
+Default.test('ikke inntekt siste 6 mnd ikke bor og ikke medlem', async ({ canvas, args }) => {
+    await velgMor(canvas);
+    await svarPåArbeid(canvas, 'Ja');
+    await svarPåInntekt(canvas, 'Nei');
+
+    expect(
+        canvas.getByText('For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
+    ).toBeInTheDocument();
+
+    await svarPåBorINorge(canvas, 'Nei');
+    await svarPåJobberINorge(canvas, 'Nei');
+    expect(canvas.getByText(/For å kunne ha rett til foreldrepenger eller engangsstønad/)).toBeInTheDocument();
+    await seResultatet(canvas);
+
+    await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
+        borDuINorge: false,
+        jobberDuINorge: false,
+        harHattInntekt: false,
+        erIArbeid: true,
+        situasjon: 'mor',
+        harHattAndreInntekter: null,
+        lønnPerMåned: null,
+    });
+});
+
+Default.test('ikke arbeidstaker men andre inntekter', async ({ canvas, args }) => {
+    await velgMor(canvas);
+    await svarPåArbeid(canvas, 'Nei');
+    await svarPåAndreInntekter(canvas, 'Ja');
+    await svarPåInntekt(canvas, 'Ja', 2);
+    await skrivLønn(canvas, '50000');
+    await svarPåBorINorge(canvas, 'Ja', 3);
+    await seResultatet(canvas);
+
+    await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
+        borDuINorge: true,
+        erIArbeid: false,
+        harHattAndreInntekter: true,
+        harHattInntekt: true,
+        lønnPerMåned: '50000',
+        situasjon: 'mor',
+        jobberDuINorge: null,
+    });
+});
+
+Default.test('ikke arbeidstaker og ikke andre inntekter', async ({ canvas, args }) => {
+    await velgMor(canvas);
+    await svarPåArbeid(canvas, 'Nei');
+    await svarPåAndreInntekter(canvas, 'Nei');
+    await svarPåBorINorge(canvas, 'Ja');
+    await seResultatet(canvas);
+
+    await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
+        borDuINorge: true,
+        erIArbeid: false,
+        harHattAndreInntekter: false,
+        situasjon: 'mor',
+        harHattInntekt: null,
+        jobberDuINorge: null,
+        lønnPerMåned: null,
+    });
+});
+
+Default.test('halvG alert vises ved lav lønn og forsvinn ved høgare', async ({ canvas }) => {
+    await velgMor(canvas);
+    await svarPåArbeid(canvas, 'Ja');
+    await svarPåInntekt(canvas, 'Ja');
+
+    const alertErSynlig = () =>
         expect(
-            canvas.getByText(
-                'For å kunne ha rett til foreldrepenger eller engangsstønad må man være medlem av folketrygden',
-            ),
+            canvas.queryByText('For å kunne ha rett til foreldrepenger må man tjene minst', { exact: false }),
         ).toBeInTheDocument();
 
-        await seResultatet(canvas);
-
-        await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
-            borDuINorge: false,
-            jobberDuINorge: false,
-            erIArbeid: true,
-            harHattInntekt: true,
-            lønnPerMåned: '50000',
-            situasjon: 'mor',
-            harHattAndreInntekter: null,
-        });
-    },
-});
-
-export const MorMedInntektUnderGrensenBorINorge = meta.story({
-    args: createArgs(),
-    test: async ({ canvas, args }) => {
-        await velgMor(canvas);
-        await svarPåArbeid(canvas, 'Ja');
-        await svarPåInntekt(canvas, 'Ja');
-        await skrivLønn(canvas, '5000');
-        await svarPåBorINorge(canvas, 'Ja');
-        await seResultatet(canvas);
-
-        await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
-            borDuINorge: true,
-            erIArbeid: true,
-            harHattInntekt: true,
-            lønnPerMåned: '5000',
-            situasjon: 'mor',
-            harHattAndreInntekter: null,
-            jobberDuINorge: null,
-        });
-    },
-});
-
-export const MorMedInntektUnderGrensenIkkeBorMenMedlem = meta.story({
-    args: createArgs(),
-    test: async ({ canvas, args }) => {
-        await velgMor(canvas);
-        await svarPåArbeid(canvas, 'Ja');
-        await svarPåInntekt(canvas, 'Ja');
-        await skrivLønn(canvas, '5000');
-        await svarPåBorINorge(canvas, 'Nei');
-        await svarPåJobberINorge(canvas, 'Ja');
-        await seResultatet(canvas);
-
-        await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
-            borDuINorge: false,
-            jobberDuINorge: true,
-            erIArbeid: true,
-            harHattInntekt: true,
-            lønnPerMåned: '5000',
-            situasjon: 'mor',
-            harHattAndreInntekter: null,
-        });
-    },
-});
-
-export const MorMedInntektUnderGrensenIkkeBorOgIkkeMedlem = meta.story({
-    args: createArgs(),
-    test: async ({ canvas, args }) => {
-        await velgMor(canvas);
-        await svarPåArbeid(canvas, 'Ja');
-        await svarPåInntekt(canvas, 'Ja');
-        await skrivLønn(canvas, '5000');
-        await svarPåBorINorge(canvas, 'Nei');
-        await svarPåJobberINorge(canvas, 'Nei');
-        await seResultatet(canvas);
-
-        await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
-            borDuINorge: false,
-            jobberDuINorge: false,
-            erIArbeid: true,
-            harHattInntekt: true,
-            lønnPerMåned: '5000',
-            situasjon: 'mor',
-            harHattAndreInntekter: null,
-        });
-    },
-});
-
-export const IkkeInntektSiste6MndMenBorINorge = meta.story({
-    args: createArgs(),
-    test: async ({ canvas, args }) => {
-        await velgMor(canvas);
-        await svarPåArbeid(canvas, 'Ja');
-        await svarPåInntekt(canvas, 'Nei');
-
+    const alertErIkkeSynlig = () =>
         expect(
-            canvas.getByText('For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
-        ).toBeInTheDocument();
+            canvas.queryByText('For å kunne ha rett til foreldrepenger må man tjene minst', { exact: false }),
+        ).not.toBeInTheDocument();
 
-        await svarPåBorINorge(canvas, 'Ja');
-        await seResultatet(canvas);
+    const hvorMye = await skrivLønn(canvas, '5');
+    alertErIkkeSynlig();
+    await userEvent.tab();
+    alertErSynlig();
 
-        await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
-            borDuINorge: true,
-            erIArbeid: true,
-            harHattInntekt: false,
-            situasjon: 'mor',
-            harHattAndreInntekter: null,
-            jobberDuINorge: null,
-            lønnPerMåned: null,
-        });
-    },
-});
+    await userEvent.type(hvorMye, '0000');
+    alertErIkkeSynlig();
 
-export const IkkeInntektSiste6MndIkkeBorMenMedlem = meta.story({
-    args: createArgs(),
-    test: async ({ canvas, args }) => {
-        await velgMor(canvas);
-        await svarPåArbeid(canvas, 'Ja');
-        await svarPåInntekt(canvas, 'Nei');
-
-        expect(
-            canvas.getByText('For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
-        ).toBeInTheDocument();
-
-        await svarPåBorINorge(canvas, 'Nei');
-        await svarPåJobberINorge(canvas, 'Nei');
-        expect(canvas.getByText(/For å kunne ha rett til foreldrepenger eller engangsstønad/)).toBeInTheDocument();
-        await userEvent.click(canvas.getAllByText('Ja')[3]!);
-        await seResultatet(canvas);
-
-        await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
-            borDuINorge: false,
-            jobberDuINorge: true,
-            erIArbeid: true,
-            harHattInntekt: false,
-            situasjon: 'mor',
-            harHattAndreInntekter: null,
-            lønnPerMåned: null,
-        });
-    },
-});
-
-export const IkkeInntektSiste6MndIkkeBorOgIkkeMedlem = meta.story({
-    args: createArgs(),
-    test: async ({ canvas, args }) => {
-        await velgMor(canvas);
-        await svarPåArbeid(canvas, 'Ja');
-        await svarPåInntekt(canvas, 'Nei');
-
-        expect(
-            canvas.getByText('For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
-        ).toBeInTheDocument();
-
-        await svarPåBorINorge(canvas, 'Nei');
-        await svarPåJobberINorge(canvas, 'Nei');
-        expect(canvas.getByText(/For å kunne ha rett til foreldrepenger eller engangsstønad/)).toBeInTheDocument();
-        await seResultatet(canvas);
-
-        await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
-            borDuINorge: false,
-            jobberDuINorge: false,
-            harHattInntekt: false,
-            erIArbeid: true,
-            situasjon: 'mor',
-            harHattAndreInntekter: null,
-            lønnPerMåned: null,
-        });
-    },
-});
-
-export const IkkeArbeidstakerMenAndreInntekter = meta.story({
-    args: createArgs(),
-    test: async ({ canvas, args }) => {
-        await velgMor(canvas);
-        await svarPåArbeid(canvas, 'Nei');
-        await svarPåAndreInntekter(canvas, 'Ja');
-        await svarPåInntekt(canvas, 'Ja', 2);
-        await skrivLønn(canvas, '50000');
-        await svarPåBorINorge(canvas, 'Ja', 3);
-        await seResultatet(canvas);
-
-        await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
-            borDuINorge: true,
-            erIArbeid: false,
-            harHattAndreInntekter: true,
-            harHattInntekt: true,
-            lønnPerMåned: '50000',
-            situasjon: 'mor',
-            jobberDuINorge: null,
-        });
-    },
-});
-
-export const IkkeArbeidstakerOgIkkeAndreInntekter = meta.story({
-    args: createArgs(),
-    test: async ({ canvas, args }) => {
-        await velgMor(canvas);
-        await svarPåArbeid(canvas, 'Nei');
-        await svarPåAndreInntekter(canvas, 'Nei');
-        await svarPåBorINorge(canvas, 'Ja');
-        await seResultatet(canvas);
-
-        await expect(args.setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
-            borDuINorge: true,
-            erIArbeid: false,
-            harHattAndreInntekter: false,
-            situasjon: 'mor',
-            harHattInntekt: null,
-            jobberDuINorge: null,
-            lønnPerMåned: null,
-        });
-    },
-});
-
-export const HalvGAlertOnBlur = meta.story({
-    args: createArgs(),
-    test: async ({ canvas }) => {
-        await velgMor(canvas);
-        await svarPåArbeid(canvas, 'Ja');
-        await svarPåInntekt(canvas, 'Ja');
-
-        const alertErSynlig = () =>
-            expect(
-                canvas.queryByText('For å kunne ha rett til foreldrepenger må man tjene minst', { exact: false }),
-            ).toBeInTheDocument();
-
-        const alertErIkkeSynlig = () =>
-            expect(
-                canvas.queryByText('For å kunne ha rett til foreldrepenger må man tjene minst', { exact: false }),
-            ).not.toBeInTheDocument();
-
-        const hvorMye = await skrivLønn(canvas, '5');
-        alertErIkkeSynlig();
-        await userEvent.tab();
-        alertErSynlig();
-
-        await userEvent.type(hvorMye, '0000');
-        alertErIkkeSynlig();
-
-        await userEvent.type(hvorMye, '{backspace}'.repeat(3));
-        await userEvent.tab();
-        alertErSynlig();
-    },
+    await userEvent.type(hvorMye, '{backspace}'.repeat(3));
+    await userEvent.tab();
+    alertErSynlig();
 });

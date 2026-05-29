@@ -16,6 +16,10 @@ const config: StorybookConfig = {
     },
 
     staticDirs: ['../../../scripts/mock-service-worker'],
+
+    features: {
+        experimentalTestSyntax: true,
+    },
 };
 
 export default config;
