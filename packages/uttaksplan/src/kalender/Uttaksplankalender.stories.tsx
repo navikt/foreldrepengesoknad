@@ -1864,5 +1864,21 @@ export const MarkerPeriodeNårGraderingsaktivitetMangler: Story = {
         },
         harAktivitetskravIPeriodeUtenUttak: false,
         erEndringssøknad: false,
+        aktiveArbeidsforhold: [
+            {
+                arbeidsgiverId: '1',
+                arbeidsgiverIdType: '1',
+                stillingsprosent: 100,
+                arbeidsgiverNavn: 'NAV',
+                fom: '2024-01-01',
+            },
+            {
+                arbeidsgiverId: '2',
+                arbeidsgiverIdType: '2',
+                stillingsprosent: 80,
+                arbeidsgiverNavn: 'Bedrift AS',
+                fom: '2024-01-01',
+            },
+        ],
     },
 };
