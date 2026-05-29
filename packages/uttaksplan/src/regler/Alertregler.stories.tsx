@@ -3,24 +3,9 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { BodyShort, Tag, VStack } from '@navikt/ds-react';
 
 import { Kolonne, MeldingSitat, RegelIdBadge, RegelkatalogSide } from './RegelkatalogSide';
-import {
-    ADOPSJON_PERIODE_FØR_FAMHEND,
-    GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE,
-    IKKE_REDIGERBAR_EØS,
-    IKKE_REDIGERBAR_PLEIEPENGER,
-    KAN_MISTE_DAGER,
-    MANGLER_GRADERINGSAKTIVITET_KALENDER,
-    MANGLER_GRADERINGSAKTIVITET_LISTE,
-    MANGLER_MORS_AKTIVITET_KALENDER,
-    MANGLER_MORS_AKTIVITET_LISTE,
-    MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING,
-    MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE,
-    SENERE_PERIODER_READONLY,
-    VALGTE_DAGER_FØR_FAMHEND,
-    VALGTE_DAGER_FØR_SEKS_UKER,
-} from './alert/informasjonsAlerts';
+import { INFORMASJONS_ALERTS } from './alert/informasjonsAlerts';
 import { BLOKKERENDE_ALERTS, KONTEKSTUELLE_ALERTS } from './alert/skjemaAlerts';
-import { Alertområde, AlertregelDoc, VISNINGSSTED_LABELS } from './alert/types';
+import { Alertområde, VISNINGSSTED_LABELS } from './alert/types';
 
 /**
  * Selvdokumenterende Storybook-side: viser alertreglene i hele
@@ -126,23 +111,6 @@ const KONTEKSTUELL_ALERT_OMRÅDE: Alertområde = {
  * Informasjonsalert-reglene lever som `Alertregel<TKontekst>` for runtime, men har et
  * konsistent supersett (`AlertregelDoc`) — så vi kan liste dem direkte uten cast.
  */
-const ALLE_INFORMASJONS_ALERTS: readonly AlertregelDoc[] = [
-    MANGLER_MORS_AKTIVITET_LISTE,
-    MANGLER_MORS_AKTIVITET_KALENDER,
-    MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING,
-    MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE,
-    MANGLER_GRADERINGSAKTIVITET_LISTE,
-    MANGLER_GRADERINGSAKTIVITET_KALENDER,
-    GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE,
-    KAN_MISTE_DAGER,
-    ADOPSJON_PERIODE_FØR_FAMHEND,
-    IKKE_REDIGERBAR_EØS,
-    IKKE_REDIGERBAR_PLEIEPENGER,
-    SENERE_PERIODER_READONLY,
-    VALGTE_DAGER_FØR_SEKS_UKER,
-    VALGTE_DAGER_FØR_FAMHEND,
-];
-
 const INFORMASJONS_ALERT_OMRÅDE: Alertområde = {
     id: 'informasjonsAlerts',
     område: 'Informasjonsmeldinger i uttaksplanen',
@@ -151,7 +119,7 @@ const INFORMASJONS_ALERT_OMRÅDE: Alertområde = {
         'redigeringspaneler) for å informere brukeren om konsekvenser av valg, manglende ' +
         'utfyllinger eller låste perioder. De stopper ikke brukeren — men gir kontekst ' +
         'eller varsler om noe som krever oppmerksomhet.',
-    regler: ALLE_INFORMASJONS_ALERTS,
+    regler: INFORMASJONS_ALERTS,
 };
 
 const ALLE_ALERTREGLER: readonly Alertområde[] = [

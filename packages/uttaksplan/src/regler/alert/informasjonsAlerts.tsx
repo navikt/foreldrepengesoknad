@@ -14,7 +14,7 @@ import { kanMisteDagerVedEndringTilFerie } from '../../felles/uttaksplanValidato
 import { Uttaksplanperiode, UttaksplanperiodeMedKunTapteDager, erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
 import { harPeriodeDerMorsAktivitetIkkeErValgt, harPeriodeMedUkjentGraderingsaktivitet } from '../../utils/periodeUtils';
 import { Periode } from '../types';
-import { lagAlertregel } from './types';
+import { AlertregelDoc, lagAlertregel } from './types';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
@@ -302,3 +302,25 @@ export const GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE = lagAlertregel<Graderi
     type: 'kontekstuell',
     skalVises: (ctx) => harPeriodeMedUkjentGraderingsaktivitet([ctx.periode]),
 });
+
+/**
+ * Komplett liste over informasjons-alertreglar. Storybook-katalogen
+ * og andre konsumentar importerer denne lista i staden for å vedlikehalde
+ * sin eigen kopi, slik at nye reglar automatisk dukkar opp i dokumentasjonen.
+ */
+export const INFORMASJONS_ALERTS: readonly AlertregelDoc[] = [
+    MANGLER_MORS_AKTIVITET_LISTE,
+    MANGLER_MORS_AKTIVITET_KALENDER,
+    MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING,
+    MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE,
+    MANGLER_GRADERINGSAKTIVITET_LISTE,
+    MANGLER_GRADERINGSAKTIVITET_KALENDER,
+    GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE,
+    KAN_MISTE_DAGER,
+    ADOPSJON_PERIODE_FØR_FAMHEND,
+    IKKE_REDIGERBAR_EØS,
+    IKKE_REDIGERBAR_PLEIEPENGER,
+    SENERE_PERIODER_READONLY,
+    VALGTE_DAGER_FØR_SEKS_UKER,
+    VALGTE_DAGER_FØR_FAMHEND,
+];
