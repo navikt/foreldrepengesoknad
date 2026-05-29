@@ -1,4 +1,6 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
+import { lagSøkersituasjonSchema } from 'schemas/søkersituasjonSchema';
 import { useEsNavigator } from 'appData/useEsNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
@@ -9,7 +11,6 @@ import { Radio, VStack } from '@navikt/ds-react';
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Søkersituasjon } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
-import { isRequired } from '@navikt/fp-validation';
 
 type Props = {
     mellomlagreOgNaviger: () => Promise<void>;
@@ -27,6 +28,7 @@ export const SøkersituasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
 
     const formMethods = useForm<Søkersituasjon>({
         defaultValues: søkersituasjon,
+        resolver: zodResolver(lagSøkersituasjonSchema(intl)),
     });
 
     const lagre = (formValues: Søkersituasjon) => {
@@ -47,13 +49,6 @@ export const SøkersituasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
                             name="situasjon"
                             control={formMethods.control}
                             label={<FormattedMessage id="SøkersituasjonSteg.Situasjon" />}
-                            validate={[
-                                isRequired(
-                                    intl.formatMessage({
-                                        id: 'SøkersituasjonSteg.Validering.OppgiFodselEllerAdopsjon',
-                                    }),
-                                ),
-                            ]}
                         >
                             <Radio value="fødsel">
                                 <FormattedMessage id="SøkersituasjonSteg.Fødsel" />

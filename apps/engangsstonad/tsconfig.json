@@ -5,7 +5,8 @@
         "paths": {
             "styles/*": ["./src/styles/*"],
             "types/*": ["./src/types/*"],
-            "appData/*": ["./src/app-data/*"]
+            "appData/*": ["./src/app-data/*"],
+            "schemas/*": ["./src/schemas/*"]
         },
         "types": ["@testing-library/jest-dom", "vitest/globals", "vite/client"]
     },

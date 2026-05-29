@@ -1,19 +1,16 @@
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Adopsjon } from 'types/OmBarnet';
+import { AdopsjonFormValues } from 'schemas/omBarnetSchema';
 
 import { Radio } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
 import { Kjønn_fpoversikt } from '@navikt/fp-types';
-import { isMaxOneYearIntoTheFuture, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { AdopsjonFodselFieldArray } from './AdopsjonFodselFieldArray';
 
-export type FormValues = {
-    antallBarnDropDown?: string;
-} & Adopsjon;
+export type FormValues = AdopsjonFormValues;
 
 interface Props {
     kjønn: Kjønn_fpoversikt;
@@ -32,7 +29,6 @@ export const AdopsjonPanel = ({ kjønn }: Props) => {
                 name="adopsjonAvEktefellesBarn"
                 control={control}
                 label={<FormattedMessage id="AdopsjonPanel.Spørsmål.Stebarnsadopsjon" />}
-                validate={[isRequired(intl.formatMessage({ id: 'AdopsjonPanel.Spørsmål.Required' }))]}
             >
                 <Radio value={true}>
                     <FormattedMessage id="AdopsjonPanel.Ja" />
@@ -50,28 +46,12 @@ export const AdopsjonPanel = ({ kjønn }: Props) => {
                         : intl.formatMessage({ id: 'AdopsjonPanel.Spørsmål.Overtaomsorgdato' })
                 }
                 minDate={dayjs().subtract(6, 'month')}
-                validate={[
-                    isRequired(
-                        adopsjonAvEktefellesBarn
-                            ? intl.formatMessage({ id: 'AdopsjonPanel.EktefellensBarn.DuMåOppgi' })
-                            : intl.formatMessage({ id: 'AdopsjonPanel.OvertaOmsorg.DuMåOppgi' }),
-                    ),
-                    isValidDate(
-                        adopsjonAvEktefellesBarn
-                            ? intl.formatMessage({ id: 'AdopsjonPanel.Adopsjonsdato.GyldigFormat' })
-                            : intl.formatMessage({ id: 'AdopsjonPanel.Omsorgsovertakelsen.GyldigFormat' }),
-                    ),
-                    isMaxOneYearIntoTheFuture(
-                        intl.formatMessage({ id: 'AdopsjonPanel.AdopsjonDato.ForLangtFremITid' }),
-                    ),
-                ]}
             />
             <RhfRadioGroup
                 name="antallBarn"
                 control={control}
                 label={<FormattedMessage id="AdopsjonPanel.Spørsmål.AntallBarnAdoptert" />}
                 description={<FormattedMessage id="AdopsjonPanel.Spørsmål.AntallBarnAdoptert.Beskrivelse" />}
-                validate={[isRequired(intl.formatMessage({ id: 'AdopsjonPanel.Antallbarn.Required' }))]}
             >
                 <Radio value={1}>
                     <FormattedMessage id="AdopsjonPanel.Radiobutton.Ettbarn" />
@@ -83,12 +63,11 @@ export const AdopsjonPanel = ({ kjønn }: Props) => {
                     <FormattedMessage id="AdopsjonPanel.Radiobutton.Flere" />
                 </Radio>
             </RhfRadioGroup>
-            {antallBarn && antallBarn >= 3 && (
+            {antallBarn !== undefined && antallBarn >= 3 && (
                 <RhfSelect
                     name="antallBarnDropDown"
                     control={control}
                     label={<FormattedMessage id="AdopsjonPanel.AntallBarn.Omsorgsovertakelse" />}
-                    validate={[isRequired(intl.formatMessage({ id: 'AdopsjonPanel.Antallbarndropdown.Required' }))]}
                 >
                     <option value="3">3</option>
                     <option value="4">4</option>
@@ -109,7 +88,6 @@ export const AdopsjonPanel = ({ kjønn }: Props) => {
                     name="søkerAdopsjonAlene"
                     control={control}
                     label={<FormattedMessage id="AdopsjonPanel.Spørsmål.AdoptererDuAlene" />}
-                    validate={[isRequired(intl.formatMessage({ id: 'AdopsjonPanel.AdoptererDuAlene.Required' }))]}
                 >
                     <Radio value={true}>
                         <FormattedMessage id="AdopsjonPanel.Ja" />

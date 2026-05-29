@@ -1,23 +1,13 @@
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Fødsel } from 'types/OmBarnet';
+import { FødselFormValues } from 'schemas/omBarnetSchema';
 
 import { Radio } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
-import {
-    erI22SvangerskapsukeEllerSenere,
-    isAfterOrSameAsSixMonthsAgo,
-    isBeforeTodayOrToday,
-    isRequired,
-    isValidDate,
-} from '@navikt/fp-validation';
-import { isLessThanThreeWeeksBeforeFødsel } from '@navikt/fp-validation/src/form/dateFormValidation';
 
-export type FormValues = {
-    antallBarnDropDown?: string;
-} & Fødsel;
+export type FormValues = FødselFormValues;
 
 export const FødselPanel = () => {
     const intl = useIntl();
@@ -34,7 +24,6 @@ export const FødselPanel = () => {
                 name="erBarnetFødt"
                 control={control}
                 label={<FormattedMessage id="FødselPanel.Spørsmål.ErBarnetFødt" />}
-                validate={[isRequired(intl.formatMessage({ id: 'FødselPanel.Spørsmål.ErBarnetFødt.Required' }))]}
             >
                 <Radio value={true}>
                     <FormattedMessage id="FødselPanel.Radiobutton.Ja" />
@@ -50,17 +39,6 @@ export const FødselPanel = () => {
                 description={intl.formatMessage({ id: 'FødselPanel.TermindatoFodselsdato.beskrivelse' })}
                 minDate={dayjs(fødselsdato).subtract(3, 'week')}
                 maxDate={dayjs().add(18, 'weeks').add(3, 'days')}
-                validate={[
-                    isRequired(intl.formatMessage({ id: 'FødselPanel.Termindato.DuMåOppgi' })),
-                    isValidDate(intl.formatMessage({ id: 'FødselPanel.Termindato.Gyldig' })),
-                    isLessThanThreeWeeksBeforeFødsel(
-                        intl.formatMessage({ id: 'FødselPanel.Termindato.TermindatoKanIkkeVære3UkerFørFødsel' }),
-                        fødselsdato,
-                    ),
-                    erI22SvangerskapsukeEllerSenere(
-                        intl.formatMessage({ id: 'FødselPanel.Termindato.DuMåVæreIUke22' }),
-                    ),
-                ]}
             />
             {erBarnetFødt && (
                 <RhfDatepicker
@@ -69,16 +47,6 @@ export const FødselPanel = () => {
                     label={<FormattedMessage id="FødselPanel.Fødselsdato" />}
                     minDate={dayjs().subtract(6, 'month')}
                     maxDate={dayjs()}
-                    validate={[
-                        isRequired(intl.formatMessage({ id: 'FødselPanel.Fødselsdato.DuMåOppgi' })),
-                        isValidDate(intl.formatMessage({ id: 'FødselPanel.Fødselsdato.Gyldig' })),
-                        isBeforeTodayOrToday(
-                            intl.formatMessage({ id: 'FødselPanel.Fodselsdato.MåVæreIdagEllerTidligere' }),
-                        ),
-                        isAfterOrSameAsSixMonthsAgo(
-                            intl.formatMessage({ id: 'FødselPanel.Fodselsdato.IkkeMerEnn6MånederTilbake' }),
-                        ),
-                    ]}
                 />
             )}
             <RhfRadioGroup
@@ -90,13 +58,6 @@ export const FødselPanel = () => {
                         : intl.formatMessage({ id: 'FødselPanel.AntallBarn.Termin' })
                 }
                 description={intl.formatMessage({ id: 'FødselPanel.AntallBarn.TerminBeskrivelse' })}
-                validate={[
-                    isRequired(
-                        erBarnetFødt
-                            ? intl.formatMessage({ id: 'FødselPanel.AntallBarn.Født.Required' })
-                            : intl.formatMessage({ id: 'FødselPanel.AntallBarn.Venter.Required' }),
-                    ),
-                ]}
             >
                 <Radio value={1}>
                     <FormattedMessage id="FødselPanel.Radiobutton.Ettbarn" />
@@ -108,7 +69,7 @@ export const FødselPanel = () => {
                     <FormattedMessage id="FødselPanel.Radiobutton.Flere" />
                 </Radio>
             </RhfRadioGroup>
-            {antallBarn >= 3 && (
+            {antallBarn !== undefined && antallBarn >= 3 && (
                 <RhfSelect
                     name="antallBarnDropDown"
                     control={control}
@@ -117,13 +78,6 @@ export const FødselPanel = () => {
                             ? intl.formatMessage({ id: 'FødselPanel.AntallBarn.Født' })
                             : intl.formatMessage({ id: 'FødselPanel.AntallBarn.Termin' })
                     }
-                    validate={[
-                        isRequired(
-                            erBarnetFødt
-                                ? intl.formatMessage({ id: 'FødselPanel.AntallBarn.Født.Required' })
-                                : intl.formatMessage({ id: 'FødselPanel.AntallBarn.Venter.Required' }),
-                        ),
-                    ]}
                 >
                     <option value="3">3</option>
                     <option value="4">4</option>
