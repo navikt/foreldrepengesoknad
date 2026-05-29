@@ -180,18 +180,14 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
  * før planen kan sendast inn.
  */
 export const harPeriodeMedUkjentGraderingsaktivitet = (
-    perioder?: UttaksplanperiodeMedKunTapteDager[] | Uttaksplanperiode[],
+    perioder: UttaksplanperiodeMedKunTapteDager[] | Uttaksplanperiode[],
 ) => {
-    if (!perioder) {
-        return false;
-    }
-
     return perioder.some((periode) => {
         if (!erVanligUttakPeriode(periode)) {
             return false;
         }
         const aktivitet = periode.gradering?.aktivitet;
-        if (!aktivitet || aktivitet.type !== 'ORDINÆRT_ARBEID') {
+        if (aktivitet?.type !== 'ORDINÆRT_ARBEID') {
             return false;
         }
         const arbeidsgiverId = aktivitet.arbeidsgiver?.id;

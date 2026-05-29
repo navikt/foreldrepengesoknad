@@ -174,8 +174,7 @@ describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
         expect(harPeriodeMedUkjentGraderingsaktivitet(perioder)).toBe(false);
     });
 
-    it('skal returnere false for tom liste eller undefined', () => {
+    it('skal returnere false for tom liste', () => {
         expect(harPeriodeMedUkjentGraderingsaktivitet([])).toBe(false);
-        expect(harPeriodeMedUkjentGraderingsaktivitet(undefined)).toBe(false);
     });
 });
