@@ -148,7 +148,6 @@
     "leggTilPeriodePanel.samtidiguttaksprosent.måVæreMindreEnn100": "The percentage must be a number less than or equal to 100",
     "LeggTilPeriodePanel.LeggTil": "Add",
     "LeggTilPeriodePanel.Avbryt": "Cancel",
-    "UttaksplanKalender.PlanOppdatert": "Plan updated",
     "endrePeriodePanel.tittel": "Change period",
     "endreTidsPeriodeModal.fom.påkrevd": "You must specify a start date",
     "endreTidsPeriodeModal.fom.gyldigDato": "The start date must be a valid date in dd.mm.yyyy format",
