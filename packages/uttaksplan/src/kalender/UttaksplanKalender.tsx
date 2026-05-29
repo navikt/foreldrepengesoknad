@@ -34,12 +34,10 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
     const [endredePerioder, setEndredePerioder] = useState<Array<{ fom: string; tom: string }>>([]);
 
-    const scrollFallbackRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+    const observerRef = useRef<IntersectionObserver | null>(null);
 
     useEffect(() => {
-        return () => {
-            clearTimeout(scrollFallbackRef.current);
-        };
+        return () => observerRef.current?.disconnect();
     }, []);
 
     const setEndredePerioderMedScroll = useCallback(
@@ -50,32 +48,28 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
             }
 
             const førsteDato = dayjs(perioder[0]!.fom);
-            const year = førsteDato.year();
-            const month = førsteDato.month();
+            const monthElement = document.querySelector(
+                `[data-month-key="${førsteDato.year()}-${førsteDato.month()}"]`,
+            );
 
-            requestAnimationFrame(() => {
-                const monthElement = document.querySelector(`[data-month-key="${year}-${month}"]`);
+            if (!monthElement || typeof IntersectionObserver === 'undefined') {
+                setEndredePerioder(perioder);
+                return;
+            }
 
-                if (monthElement && !erElementSynlegIViewport(monthElement)) {
-                    monthElement.scrollIntoView?.({ behavior: 'smooth', block: 'center' });
-
-                    let harVistEndring = false;
-                    const visEndring = () => {
-                        if (harVistEndring) {
-                            return;
-                        }
-                        harVistEndring = true;
-                        clearTimeout(scrollFallbackRef.current);
+            observerRef.current?.disconnect();
+            observerRef.current = new IntersectionObserver(
+                (entries, observer) => {
+                    if (entries[0]?.isIntersecting) {
                         setEndredePerioder(perioder);
-                    };
+                        observer.disconnect();
+                    }
+                },
+                { rootMargin: `-${HEADER_HØGDE}px 0px 0px 0px` },
+            );
+            observerRef.current.observe(monthElement);
 
-                    const scrollTarget = document.scrollingElement ?? document.documentElement;
-                    scrollTarget.addEventListener('scrollend', visEndring, { once: true });
-                    scrollFallbackRef.current = setTimeout(visEndring, 1000);
-                } else {
-                    setEndredePerioder(perioder);
-                }
-            });
+            monthElement.scrollIntoView?.({ behavior: 'smooth', block: 'center' });
         },
         [],
     );
@@ -299,9 +293,3 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
 
 const HEADER_HØGDE = 80;
-
-/** Sjekkar om ein del av elementet er synleg i viewporten (under headeren). */
-const erElementSynlegIViewport = (el: Element): boolean => {
-    const rect = el.getBoundingClientRect();
-    return rect.bottom > HEADER_HØGDE && rect.top < window.innerHeight;
-};
