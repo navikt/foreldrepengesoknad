@@ -16,6 +16,10 @@
         "host": "foreldrepenger.nav.no",
         "ingressClassName": "nais-ingress-external"
     },
+    "haproxyredirect": {
+        "host": "foreldrepenger.nav.no",
+        "ingressClassName": "external-haproxy"
+    },
     "env": {
         "ENV": "prod",
         "PUBLIC_PATH": "/foreldrepenger/oversikt",
