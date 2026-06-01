@@ -32,7 +32,7 @@ const avvisKryssOpphavsKall = (request: Request, response: Response, next: NextF
         return next();
     }
     logger.warning(`Avviste API-kall med Sec-Fetch-Site=${secFetchSite}`);
-    response.status(403).send();
+    return response.status(403).send();
 };
 
 const fjernSesjonsHeadere = (proxyRequest: { removeHeader: (name: string) => void }) => {
