@@ -686,4 +686,153 @@ describe('useGyldigeKvotetyper - fars kvoter', () => {
 
         expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual([]);
     });
+
+    // Barn født etter termin: far skal kunne starte 2 uker før termindato, ikke fødselsdato
+    describe('barn født etter termin', () => {
+        const TERMINDATO = '2024-06-10'; // Termin mandag 10. juni
+        // familiehendelsedato = 2024-06-17 (1 uke etter termin)
+        // termindato - 10 uttaksdager = mandag 27. mai = tidligst tillatt startdato for far
+
+        const barnMedTermindato = {
+            type: BarnType.FØDT,
+            antallBarn: 1,
+            fødselsdatoer: [FAMILIEHENDELSESDATO],
+            termindato: TERMINDATO,
+        } satisfies ComponentProps<typeof UttaksplanDataProvider>['barn'];
+
+        it('skal ha gyldige kontotyper for far (begge rett) når perioden starter nøyaktig 2 uker før termindato', () => {
+            const { result } = renderHook(
+                () =>
+                    useGyldigeKvotetyper({
+                        valgtePerioder: [{ fom: '2024-05-27', tom: '2024-06-09' }],
+                        harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                        ønskerFlerbarnsdager: false,
+                    }),
+                {
+                    wrapper: getWrapper({
+                        barn: barnMedTermindato,
+                        foreldreInfo: {
+                            søker: 'FAR_MEDMOR',
+                            rettighetType: 'BEGGE_RETT',
+                            navnPåForeldre: NAVN_PÅ_FORELDRE,
+                            erMedmorDelAvSøknaden: false,
+                        },
+                    }),
+                },
+            );
+
+            expect(result.current.gyldigeStønadskontoerForFarMedmor).toContain('FEDREKVOTE');
+        });
+
+        it('skal ha gyldige kontotyper for far (bare far rett) når perioden starter nøyaktig 2 uker før termindato', () => {
+            const { result } = renderHook(
+                () =>
+                    useGyldigeKvotetyper({
+                        valgtePerioder: [{ fom: '2024-05-27', tom: '2024-06-21' }],
+                        harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                        ønskerFlerbarnsdager: false,
+                    }),
+                {
+                    wrapper: getWrapper({
+                        barn: barnMedTermindato,
+                        foreldreInfo: {
+                            søker: 'FAR_MEDMOR',
+                            rettighetType: 'BARE_SØKER_RETT',
+                            navnPåForeldre: NAVN_PÅ_FORELDRE,
+                            erMedmorDelAvSøknaden: false,
+                        },
+                    }),
+                },
+            );
+
+            expect(result.current.gyldigeStønadskontoerForFarMedmor).toContain('FEDREKVOTE');
+        });
+
+        it('skal ikke ha gyldige kontotyper for far (begge rett) når perioden starter før 2 uker før termindato', () => {
+            const { result } = renderHook(
+                () =>
+                    useGyldigeKvotetyper({
+                        valgtePerioder: [{ fom: '2024-05-24', tom: '2024-06-09' }],
+                        harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                        ønskerFlerbarnsdager: false,
+                    }),
+                {
+                    wrapper: getWrapper({
+                        barn: barnMedTermindato,
+                        foreldreInfo: {
+                            søker: 'FAR_MEDMOR',
+                            rettighetType: 'BEGGE_RETT',
+                            navnPåForeldre: NAVN_PÅ_FORELDRE,
+                            erMedmorDelAvSøknaden: false,
+                        },
+                    }),
+                },
+            );
+
+            expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual([]);
+        });
+    });
+
+    // Barn født før termin: grensen skal følge termin (2 uker før termin), i tråd med
+    // søknadssteget «når vil du starte» (getFørsteUttaksdag2UkerFørFødsel i OppstartDatoInput).
+    describe('barn født før termin', () => {
+        const FØDSELSDATO = '2024-06-10'; // Født mandag 10. juni
+        const TERMINDATO = '2024-06-17'; // Termin mandag 17. juni (1 uke etter fødsel)
+        // termin − 2 uker = mandag 3. juni = tidligst tillatt startdato for far
+
+        const barnFødtFørTermin = {
+            type: BarnType.FØDT,
+            antallBarn: 1,
+            fødselsdatoer: [FØDSELSDATO],
+            termindato: TERMINDATO,
+        } satisfies ComponentProps<typeof UttaksplanDataProvider>['barn'];
+
+        it('skal ha gyldige kontotyper for far når perioden starter nøyaktig 2 uker før termin', () => {
+            const { result } = renderHook(
+                () =>
+                    useGyldigeKvotetyper({
+                        valgtePerioder: [{ fom: '2024-06-03', tom: '2024-06-07' }],
+                        harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                        ønskerFlerbarnsdager: false,
+                    }),
+                {
+                    wrapper: getWrapper({
+                        barn: barnFødtFørTermin,
+                        foreldreInfo: {
+                            søker: 'FAR_MEDMOR',
+                            rettighetType: 'BEGGE_RETT',
+                            navnPåForeldre: NAVN_PÅ_FORELDRE,
+                            erMedmorDelAvSøknaden: false,
+                        },
+                    }),
+                },
+            );
+
+            expect(result.current.gyldigeStønadskontoerForFarMedmor).toContain('FEDREKVOTE');
+        });
+
+        it('skal ikke ha gyldige kontotyper for far når perioden starter før 2 uker før termin', () => {
+            const { result } = renderHook(
+                () =>
+                    useGyldigeKvotetyper({
+                        valgtePerioder: [{ fom: '2024-05-31', tom: '2024-06-07' }],
+                        harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                        ønskerFlerbarnsdager: false,
+                    }),
+                {
+                    wrapper: getWrapper({
+                        barn: barnFødtFørTermin,
+                        foreldreInfo: {
+                            søker: 'FAR_MEDMOR',
+                            rettighetType: 'BEGGE_RETT',
+                            navnPåForeldre: NAVN_PÅ_FORELDRE,
+                            erMedmorDelAvSøknaden: false,
+                        },
+                    }),
+                },
+            );
+
+            expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual([]);
+        });
+    });
 });

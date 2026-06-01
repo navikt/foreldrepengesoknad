@@ -116,12 +116,13 @@ export const UttaksperiodeValidatorer = {
         return perioder.some((p) => dayjs(p.tom).isAfter(sisteDag) || dayjs(p.fom).isBefore(førsteDag));
     },
 
-    erNoenPerioderFørToUkerFørFamiliehendelsesdato(perioder: Periode[], familiehendelsedato: string) {
-        return perioder.some((periode) =>
-            dayjs(periode.fom).isBefore(
-                Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(10),
-            ),
-        );
+    erNoenPerioderFørToUkerFørFamiliehendelsesdato(
+        perioder: Periode[],
+        familiehendelsedato: string,
+        termindato?: string,
+    ) {
+        const førsteUttaksdagToUkerFørFødsel = getFørsteUttaksdag2UkerFørFødsel(familiehendelsedato, termindato);
+        return perioder.some((periode) => dayjs(periode.fom).isBefore(førsteUttaksdagToUkerFørFødsel, 'day'));
     },
 
     erNoenPerioderMerEnn60DagerFørFamiliehendelsesdato(perioder: Periode[], familiehendelsedato: string) {
