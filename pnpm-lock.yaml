@@ -121,9 +121,6 @@ importers:
         specifier: 7.15.0
         version: 7.15.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
     devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 8.6.0
-        version: 8.6.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../../packages/config-eslint
@@ -281,9 +278,6 @@ importers:
         specifier: 7.15.0
         version: 7.15.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
     devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 8.6.0
-        version: 8.6.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../../packages/config-eslint
@@ -474,9 +468,6 @@ importers:
         specifier: 7.15.0
         version: 7.15.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
     devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 8.6.0
-        version: 8.6.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../../packages/config-eslint
@@ -637,9 +628,6 @@ importers:
         specifier: 7.15.0
         version: 7.15.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
     devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 8.6.0
-        version: 8.6.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../../packages/config-eslint
@@ -812,9 +800,6 @@ importers:
         specifier: 7.15.0
         version: 7.15.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
     devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 8.6.0
-        version: 8.6.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../../packages/config-eslint
@@ -957,9 +942,6 @@ importers:
         specifier: 7.15.0
         version: 7.15.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
     devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 8.6.0
-        version: 8.6.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../../packages/config-eslint
@@ -1102,9 +1084,6 @@ importers:
         specifier: 7.15.0
         version: 7.15.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
     devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 8.6.0
-        version: 8.6.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../../packages/config-eslint
@@ -1372,9 +1351,6 @@ importers:
         specifier: 10.1.6
         version: 10.1.6(@types/react@19.2.14)(react@19.2.6)
     devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 8.6.0
-        version: 8.6.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -1457,9 +1433,6 @@ importers:
         specifier: 10.1.6
         version: 10.1.6(@types/react@19.2.14)(react@19.2.6)
     devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 8.6.0
-        version: 8.6.0
       '@navikt/ds-tailwind':
         specifier: 8.10.5
         version: 8.10.5
@@ -1655,9 +1628,6 @@ importers:
         specifier: 10.1.6
         version: 10.1.6(@types/react@19.2.14)(react@19.2.6)
     devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 8.6.0
-        version: 8.6.0
       '@navikt/ds-tailwind':
         specifier: 8.10.5
         version: 8.10.5
@@ -1761,9 +1731,6 @@ importers:
         specifier: 10.1.6
         version: 10.1.6(@types/react@19.2.14)(react@19.2.6)
     devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 8.6.0
-        version: 8.6.0
       '@navikt/ds-tailwind':
         specifier: 8.10.5
         version: 8.10.5
@@ -1861,9 +1828,6 @@ importers:
         specifier: 10.1.6
         version: 10.1.6(@types/react@19.2.14)(react@19.2.6)
     devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 8.6.0
-        version: 8.6.0
       '@navikt/ds-tailwind':
         specifier: 8.10.5
         version: 8.10.5
@@ -1949,9 +1913,6 @@ importers:
         specifier: 10.1.6
         version: 10.1.6(@types/react@19.2.14)(react@19.2.6)
     devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 8.6.0
-        version: 8.6.0
       '@navikt/ds-tailwind':
         specifier: 8.10.5
         version: 8.10.5
@@ -2043,9 +2004,6 @@ importers:
         specifier: 10.1.6
         version: 10.1.6(@types/react@19.2.14)(react@19.2.6)
     devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 8.6.0
-        version: 8.6.0
       '@navikt/ds-tailwind':
         specifier: 8.10.5
         version: 8.10.5
@@ -2149,9 +2107,6 @@ importers:
         specifier: 10.1.6
         version: 10.1.6(@types/react@19.2.14)(react@19.2.6)
     devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 8.6.0
-        version: 8.6.0
       '@navikt/ds-tailwind':
         specifier: 8.10.5
         version: 8.10.5
@@ -2271,9 +2226,6 @@ importers:
         specifier: 10.1.6
         version: 10.1.6(@types/react@19.2.14)(react@19.2.6)
     devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 8.6.0
-        version: 8.6.0
       '@navikt/ds-tailwind':
         specifier: 8.10.5
         version: 8.10.5
@@ -2353,9 +2305,6 @@ importers:
         specifier: 10.1.6
         version: 10.1.6(@types/react@19.2.14)(react@19.2.6)
     devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 8.6.0
-        version: 8.6.0
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -2365,6 +2314,9 @@ importers:
       '@navikt/fp-config-vite':
         specifier: workspace:*
         version: link:../config-vite
+      '@navikt/fp-utils-test':
+        specifier: workspace:*
+        version: link:../utils-test
       '@testing-library/jest-dom':
         specifier: 6.9.1
         version: 6.9.1
@@ -2392,6 +2344,9 @@ importers:
 
   packages/utils-test:
     dependencies:
+      '@formatjs/cli-lib':
+        specifier: 8.6.0
+        version: 8.6.0
       '@navikt/ds-react':
         specifier: 8.10.5
         version: 8.10.5(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -2426,6 +2381,9 @@ importers:
       '@testing-library/jest-dom':
         specifier: 6.9.1
         version: 6.9.1
+      '@types/node':
+        specifier: 25.9.0
+        version: 25.9.0
       '@types/react':
         specifier: 19.2.14
         version: 19.2.14
@@ -2505,9 +2463,6 @@ importers:
         specifier: 3.2.2
         version: 3.2.2(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
     devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 8.6.0
-        version: 8.6.0
       '@navikt/ds-tailwind':
         specifier: 8.10.5
         version: 8.10.5
@@ -2590,12 +2545,30 @@ importers:
       '@navikt/fp-config-typescript':
         specifier: workspace:*
         version: link:../config-typescript
+      '@navikt/fp-config-vite':
+        specifier: workspace:*
+        version: link:../config-vite
+      '@testing-library/jest-dom':
+        specifier: 6.9.1
+        version: 6.9.1
+      '@types/node':
+        specifier: 25.9.0
+        version: 25.9.0
       eslint:
         specifier: 10.3.0
         version: 10.3.0(jiti@2.7.0)
+      jsdom:
+        specifier: 29.1.1
+        version: 29.1.1(@noble/hashes@1.8.0)
       typescript:
         specifier: 6.0.3
         version: 6.0.3
+      vite:
+        specifier: 8.0.12
+        version: 8.0.12(@types/node@25.9.0)(esbuild@0.28.0)(jiti@2.7.0)(yaml@2.9.0)
+      vitest:
+        specifier: 4.1.6
+        version: 4.1.6(@opentelemetry/api@1.9.1)(@types/node@25.9.0)(@vitest/browser-playwright@4.1.6)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.0)(typescript@6.0.3))(vite@8.0.12(@types/node@25.9.0)(esbuild@0.28.0)(jiti@2.7.0)(yaml@2.9.0))
 
   server:
     dependencies:

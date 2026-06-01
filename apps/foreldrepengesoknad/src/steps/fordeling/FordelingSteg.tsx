@@ -8,7 +8,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
@@ -49,7 +49,10 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
 
     const termindato = getTermindato(barn);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl);
+    const navnPåForeldre = useMemo(
+        () => getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl),
+        [person, annenForelder, erFarEllerMedmor, intl],
+    );
     const navnMor = navnPåForeldre.mor;
     const navnFarMedmor = navnPåForeldre.farMedmor;
     const deltUttak = getIsDeltUttak(annenForelder);
@@ -72,19 +75,22 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
 
     const minsterett = valgtStønadskvote?.minsteretter;
 
-    const fordelingScenario =
-        valgtStønadskvote && minsterett
-            ? getFordelingFraKontoer(
-                  valgtStønadskvote,
-                  minsterett,
-                  søkersituasjon,
-                  barn,
-                  navnPåForeldre,
-                  annenForelder,
-                  intl,
-                  uttaksplanAnnenPart,
-              )
-            : [];
+    const fordelingScenario = useMemo(
+        () =>
+            valgtStønadskvote && minsterett
+                ? getFordelingFraKontoer(
+                      valgtStønadskvote,
+                      minsterett,
+                      søkersituasjon,
+                      barn,
+                      navnPåForeldre,
+                      annenForelder,
+                      intl,
+                      uttaksplanAnnenPart,
+                  )
+                : [],
+        [valgtStønadskvote, minsterett, søkersituasjon, barn, navnPåForeldre, annenForelder, intl, uttaksplanAnnenPart],
+    );
     const ukerMedFellesperiode = valgtStønadskvote ? getAntallUkerFellesperiode(valgtStønadskvote) : 0;
     const dagerMedFellesperiode = ukerMedFellesperiode * 5;
     const sisteDagAnnenForelder = getSisteUttaksdagAnnenForelder(erFarEllerMedmor, deltUttak, uttaksplanAnnenPart);

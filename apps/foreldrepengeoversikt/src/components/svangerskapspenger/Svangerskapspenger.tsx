@@ -297,9 +297,22 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
 
     const endeligePerioder = [];
     const perioderÅBruke = [...perioder];
-    let i = 0;
+
+    // Hver periode kan i verste fall splittes mot alle de andre periodene. Det gir en
+    // konservativ, men provbar øvre grense på antall iterasjoner som funksjon av input,
+    // i stedet for et magisk tall. Overskrides den har vi en reell bug i splittelogikken,
+    // og da kaster vi heller enn å returnere et stille trunkert (feil) resultat.
+    const maxIterasjoner = (perioder.length + 1) * (perioder.length + 1) * 4;
+    let iterasjoner = 0;
 
     while (perioderÅBruke.length > 0) {
+        if (++iterasjoner > maxIterasjoner) {
+            throw new Error(
+                `lagKronologiskeSvpPerioder terminerte ikke innen ${maxIterasjoner} iterasjoner ` +
+                    `(${perioder.length} perioder). Sannsynlig løkke i splittelogikken for overlappende perioder.`,
+            );
+        }
+
         const periode = perioderÅBruke.shift();
         if (!periode) {
             break;
@@ -362,13 +375,6 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
         // Hvis det ikke finnes overlappende perioder så er perioden "ferdig"
         if (!overlappendePeriode) {
             endeligePerioder.push(periode);
-        }
-
-        // failsafe under utvikling
-        if (++i > 500) {
-            // eslint-disable-next-line no-console
-            console.error('lagKronologiskeSvpPerioder er tilsynelatende stuck i en evig loop');
-            break;
         }
     }
     return endeligePerioder.sort((a, b) => a.fom.localeCompare(b.fom));
