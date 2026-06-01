@@ -293,8 +293,8 @@ const erElementSynlegIViewport = (el: Element): boolean => {
 
 /**
  * Scrollar elementet inn i viewporten om naudsynt, og resolvar når scrollen er ferdig.
- * Detekterer scroll-slutt ved å overvake scroll-posisjonen kvar frame — når posisjonen
- * er stabil i fleire frames på rad, er scrollen ferdig.
+ * Brukar `scrollend`-eventen med ein 1s fallback-timeout for nettlesarar/scroll-containerar
+ * der eventet ikkje fyrer.
  */
 const ventPåScrollFerdig = (element: Element | null, signal: AbortSignal): Promise<void> => {
     if (!element || erElementSynlegIViewport(element)) {
@@ -305,30 +305,16 @@ const ventPåScrollFerdig = (element: Element | null, signal: AbortSignal): Prom
 
     return new Promise((resolve) => {
         const scrollTarget = document.scrollingElement ?? document.documentElement;
-        let førreScrollTop = scrollTarget.scrollTop;
-        let stabileFrames = 0;
-        let rafId = 0;
+        const timeoutId = setTimeout(ferdig, 1000);
 
-        const sjekkScrollPosisjon = () => {
-            if (signal.aborted) {
-                resolve();
-                return;
-            }
-            const noverandeScrollTop = scrollTarget.scrollTop;
-            if (noverandeScrollTop === førreScrollTop) {
-                stabileFrames++;
-                if (stabileFrames >= 3) {
-                    resolve();
-                    return;
-                }
-            } else {
-                stabileFrames = 0;
-                førreScrollTop = noverandeScrollTop;
-            }
-            rafId = requestAnimationFrame(sjekkScrollPosisjon);
-        };
+        function ferdig() {
+            clearTimeout(timeoutId);
+            scrollTarget.removeEventListener('scrollend', ferdig);
+            signal.removeEventListener('abort', ferdig);
+            resolve();
+        }
 
-        signal.addEventListener('abort', () => cancelAnimationFrame(rafId), { once: true });
-        rafId = requestAnimationFrame(sjekkScrollPosisjon);
+        scrollTarget.addEventListener('scrollend', ferdig, { once: true });
+        signal.addEventListener('abort', ferdig, { once: true });
     });
 };
