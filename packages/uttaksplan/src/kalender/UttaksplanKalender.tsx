@@ -56,7 +56,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
             scrollAbortRef.current = new AbortController();
             const signal = scrollAbortRef.current.signal;
 
-            ventPåScrollFerdig(element, signal).then(() => {
+            void ventPåScrollFerdig(element, signal).then(() => {
                 if (!signal.aborted) {
                     setEndredePerioder(perioder);
                 }
