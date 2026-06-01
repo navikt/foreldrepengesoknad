@@ -283,6 +283,9 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 
 const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
 
+// Høgda på den faste app-headeren i px. Same offset som i UttaksplanSteg.tsx og
+// PlanenDeresSteg.tsx, og blir brukt for å unngå å rekne eit element som synleg
+// når det eigentleg ligg skjult bak headeren.
 const HEADER_HØGDE = 80;
 
 /** Sjekkar om ein del av elementet er synleg i viewporten (under headeren). */
