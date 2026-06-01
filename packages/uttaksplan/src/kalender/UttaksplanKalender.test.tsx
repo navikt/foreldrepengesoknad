@@ -14,6 +14,7 @@ const {
     SamtidigUttak,
     MorSøkerOgFarHarEøsPeriode,
     MarkerPeriodeNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt,
+    MarkerPeriodeNårGraderingsaktivitetMangler,
     FarsUttakMorForSyk,
     FarSøkerEtterAtMorHarSøkt,
     MedArbeidsforhold,
@@ -426,7 +427,7 @@ describe('UttaksplanKalender', () => {
 
         const juni = screen.getByTestId('year:2024;month:5');
 
-        await userEvent.click(within(juni).getByTestId('day:14;dayColor:GREENSTRIPED'));
+        await userEvent.click(within(juni).getByTestId('day:14;dayColor:GREENSTRIPED;with-icon'));
         await userEvent.click(within(juni).getByTestId('day:21;dayColor:GREENOUTLINE'));
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[2]!);
@@ -741,7 +742,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getByText('Fortsett'));
 
-        expect(within(september).getByTestId('day:7;dayColor:LIGHTGREENBLUE')).toBeInTheDocument();
+        expect(within(september).getByTestId('day:7;dayColor:LIGHTGREENBLUE;with-icon')).toBeInTheDocument();
     });
 
     it('mor og far tar samtidig uttak - dersom kombinert uttak er mer enn 100 % skal man ikke kunne ta mer enn 50 % fellesperiode', async () => {
@@ -813,7 +814,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getByText('Fortsett'));
 
-        expect(within(september).getByTestId('day:7;dayColor:LIGHTGREENBLUE')).toBeInTheDocument();
+        expect(within(september).getByTestId('day:7;dayColor:LIGHTGREENBLUE;with-icon')).toBeInTheDocument();
     });
 
     it('mor og far tar samtidig uttak - fedrekvote + mødrekvote kan ikke være mer enn 100 % til sammen', async () => {
@@ -894,6 +895,16 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Det er 52 uker og 1 dag igjen som kan legges til i planen')).toBeInTheDocument();
 
         expect(screen.queryByText('Stjernemerkede perioder i kalenderen mangler valg')).not.toBeInTheDocument();
+    });
+
+    it('skal vise melding om at gradering manglar arbeidsgiver når plan kjem frå planleggar', async () => {
+        render(<MarkerPeriodeNårGraderingsaktivitetMangler />);
+
+        expect(
+            await screen.findByText(
+                'Du må velge hvor du skal jobbe samtidig som du har foreldrepenger i de markerte periodene',
+            ),
+        ).toBeInTheDocument();
     });
 
     it('skal ikke som far kunne overskrive en dag i perioden to->tre uker før fødselsdato', async () => {

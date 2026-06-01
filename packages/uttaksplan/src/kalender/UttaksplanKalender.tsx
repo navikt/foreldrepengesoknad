@@ -49,7 +49,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 
     const perioderForKalendervisning = usePerioderForKalendervisning(endredePerioder, barnehagestartdato);
 
-    const { manglerMorsAktivitetAlert } = useUttaksplanKalenderAlerts(uttakPerioder);
+    const { manglerMorsAktivitetAlert, manglerGraderingsaktivitetAlert } = useUttaksplanKalenderAlerts(uttakPerioder);
 
     const {
         førsteDatoIKalender,
@@ -156,6 +156,12 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                                 <FormattedMessage id="UttaksplanKalender.HvaErAktivitetskrav" />
                             </Link>
                         </VStack>
+                    </Alert>
+                )}
+
+                {manglerGraderingsaktivitetAlert && (
+                    <Alert variant={manglerGraderingsaktivitetAlert.variant}>
+                        <BodyShort>{manglerGraderingsaktivitetAlert.melding}</BodyShort>
                     </Alert>
                 )}
 

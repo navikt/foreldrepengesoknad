@@ -12,9 +12,9 @@ import {
 
 import { kanMisteDagerVedEndringTilFerie } from '../../felles/uttaksplanValidatorer';
 import { Uttaksplanperiode, UttaksplanperiodeMedKunTapteDager, erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
-import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../utils/periodeUtils';
+import { harPeriodeDerMorsAktivitetIkkeErValgt, harPeriodeMedUkjentGraderingsaktivitet } from '../../utils/periodeUtils';
 import { Periode } from '../types';
-import { lagAlertregel } from './types';
+import { AlertregelDoc, lagAlertregel } from './types';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
@@ -30,6 +30,14 @@ type EksisterendeValgtePeriodeKontekst = {
     rettighetType: RettighetType_fpoversikt;
     periode: Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager;
     morsUttakPerioder: readonly UttakPeriode_fpoversikt[];
+};
+
+type GraderingsaktivitetListeKontekst = {
+    perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>;
+};
+
+type GraderingsaktivitetPeriodeKontekst = {
+    periode: Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager;
 };
 
 export type PeriodeDetaljerKontekst = {
@@ -239,3 +247,80 @@ export const VALGTE_DAGER_FØR_FAMHEND = lagAlertregel<ForskyvEllerErstattKontek
         !ctx.harPeriodeFørSeksUkerEtterFamiliehendelsedato &&
         ctx.harPeriodeFørFamiliehendelsedato,
 });
+
+export const MANGLER_GRADERINGSAKTIVITET_LISTE = lagAlertregel<GraderingsaktivitetListeKontekst>({
+    id: 'informasjonsAlerts.manglerGraderingsaktivitetListe',
+    beskrivelse:
+        'Brukeren har én eller flere graderte uttaksperioder der arbeidsgiver ikke er valgt. ' +
+        'Dette kan skje når uttaksplanen er importert fra planleggar-appen uten arbeidsforhold-' +
+        'informasjon. Vises som en samlet melding over hele listen, og brukeren må fylle inn ' +
+        'arbeidsgiver på de markerte periodene før planen kan sendes inn.',
+    visningssteder: ['uttaksplan-liste'],
+    meldinger: [
+        <FormattedMessage
+            key="UttaksplanListe.ManglerGraderingsaktivitet"
+            id="UttaksplanListe.ManglerGraderingsaktivitet"
+        />,
+    ],
+    variant: 'warning',
+    type: 'kontekstuell',
+    skalVises: (ctx) => harPeriodeMedUkjentGraderingsaktivitet([...ctx.perioder]),
+});
+
+export const MANGLER_GRADERINGSAKTIVITET_KALENDER = lagAlertregel<GraderingsaktivitetListeKontekst>({
+    id: 'informasjonsAlerts.manglerGraderingsaktivitetKalender',
+    beskrivelse:
+        'Samme tilfelle som listevarianten — graderte perioder uten valgt arbeidsgiver — men ' +
+        'vises samlet over kalendervisningen. Periodene får i tillegg et ikon i kalenderen for ' +
+        'å synliggjøre hvilke dager som mangler informasjon.',
+    visningssteder: ['uttaksplan-kalender'],
+    meldinger: [
+        <FormattedMessage
+            key="UttaksplanKalender.MarkertePerioderGradering"
+            id="UttaksplanKalender.MarkertePerioderGradering"
+        />,
+    ],
+    variant: 'warning',
+    type: 'kontekstuell',
+    skalVises: (ctx) => harPeriodeMedUkjentGraderingsaktivitet([...ctx.perioder]),
+});
+
+export const GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE = lagAlertregel<GraderingsaktivitetPeriodeKontekst>({
+    id: 'informasjonsAlerts.graderingsaktivitetIkkeValgtEksisterende',
+    beskrivelse:
+        'Vises ved hver valgte eksisterende periode i kalender-redigering når perioden er ' +
+        'gradert men mangler valg av arbeidsgiver. Synliggjør hvilke konkrete perioder som ' +
+        'krever utfylling før planen kan sendes inn.',
+    visningssteder: ['eksisterende-valgte-perioder'],
+    meldinger: [
+        <FormattedMessage
+            key="RedigeringPanel.GraderingsaktivitetIkkeValgt"
+            id="RedigeringPanel.GraderingsaktivitetIkkeValgt"
+        />,
+    ],
+    variant: 'warning',
+    type: 'kontekstuell',
+    skalVises: (ctx) => harPeriodeMedUkjentGraderingsaktivitet([ctx.periode]),
+});
+
+/**
+ * Komplett liste over informasjons-alertreglar. Storybook-katalogen
+ * og andre konsumentar importerer denne lista i staden for å vedlikehalde
+ * sin eigen kopi, slik at nye reglar automatisk dukkar opp i dokumentasjonen.
+ */
+export const INFORMASJONS_ALERTS: readonly AlertregelDoc[] = [
+    MANGLER_MORS_AKTIVITET_LISTE,
+    MANGLER_MORS_AKTIVITET_KALENDER,
+    MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING,
+    MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE,
+    MANGLER_GRADERINGSAKTIVITET_LISTE,
+    MANGLER_GRADERINGSAKTIVITET_KALENDER,
+    GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE,
+    KAN_MISTE_DAGER,
+    ADOPSJON_PERIODE_FØR_FAMHEND,
+    IKKE_REDIGERBAR_EØS,
+    IKKE_REDIGERBAR_PLEIEPENGER,
+    SENERE_PERIODER_READONLY,
+    VALGTE_DAGER_FØR_SEKS_UKER,
+    VALGTE_DAGER_FØR_FAMHEND,
+];

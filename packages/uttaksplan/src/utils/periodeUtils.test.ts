@@ -1,6 +1,6 @@
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { harPeriodeDerMorsAktivitetIkkeErValgt } from './periodeUtils';
+import { harPeriodeDerMorsAktivitetIkkeErValgt, harPeriodeMedUkjentGraderingsaktivitet } from './periodeUtils';
 
 const lagFarPeriode = (overrides: Partial<UttakPeriode_fpoversikt> = {}): UttakPeriode_fpoversikt => ({
     fom: '2025-06-02',
@@ -96,5 +96,85 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
         const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', perioder);
 
         expect(result).toBe(false);
+    });
+});
+
+describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
+    it('skal returnere true når periode har gradering med ORDINÆRT_ARBEID uten arbeidsgiver', () => {
+        const perioder = [
+            lagMorPeriode({
+                gradering: {
+                    arbeidstidprosent: 60,
+                    aktivitet: { type: 'ORDINÆRT_ARBEID' },
+                },
+            }),
+        ];
+
+        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder)).toBe(true);
+    });
+
+    it('skal returnere false når ORDINÆRT_ARBEID har gyldig arbeidsgiver', () => {
+        const perioder = [
+            lagMorPeriode({
+                gradering: {
+                    arbeidstidprosent: 60,
+                    aktivitet: {
+                        type: 'ORDINÆRT_ARBEID',
+                        arbeidsgiver: { id: '910909088', type: 'ORGANISASJON' },
+                    },
+                },
+            }),
+        ];
+
+        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder)).toBe(false);
+    });
+
+    it('skal returnere true når arbeidsgiver-id er aktivitetstype-plassholdaren ORDINÆRT_ARBEID', () => {
+        const perioder = [
+            lagMorPeriode({
+                gradering: {
+                    arbeidstidprosent: 60,
+                    aktivitet: {
+                        type: 'ORDINÆRT_ARBEID',
+                        arbeidsgiver: { id: 'ORDINÆRT_ARBEID', type: 'ORGANISASJON' },
+                    },
+                },
+            }),
+        ];
+
+        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder)).toBe(true);
+    });
+
+    it('skal returnere false for FRILANS uten arbeidsgiver', () => {
+        const perioder = [
+            lagMorPeriode({
+                gradering: { arbeidstidprosent: 60, aktivitet: { type: 'FRILANS' } },
+            }),
+        ];
+
+        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder)).toBe(false);
+    });
+
+    it('skal returnere false for SELVSTENDIG_NÆRINGSDRIVENDE uten arbeidsgiver', () => {
+        const perioder = [
+            lagMorPeriode({
+                gradering: {
+                    arbeidstidprosent: 60,
+                    aktivitet: { type: 'SELVSTENDIG_NÆRINGSDRIVENDE' },
+                },
+            }),
+        ];
+
+        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder)).toBe(false);
+    });
+
+    it('skal returnere false når perioden ikke har gradering', () => {
+        const perioder = [lagMorPeriode()];
+
+        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder)).toBe(false);
+    });
+
+    it('skal returnere false for tom liste', () => {
+        expect(harPeriodeMedUkjentGraderingsaktivitet([])).toBe(false);
     });
 });

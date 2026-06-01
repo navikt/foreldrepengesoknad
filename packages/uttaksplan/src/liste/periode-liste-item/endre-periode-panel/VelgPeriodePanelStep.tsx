@@ -11,7 +11,7 @@ import { formatDate } from '@navikt/fp-utils';
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { genererPeriodeKey, getStønadskvoteNavn } from '../../../liste/utils/uttaksplanListeUtils';
 import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
-import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../../../utils/periodeUtils';
+import { harPeriodeDerMorsAktivitetIkkeErValgt, harPeriodeMedUkjentGraderingsaktivitet } from '../../../utils/periodeUtils';
 
 interface Props {
     perioder: Uttaksplanperiode[];
@@ -67,6 +67,15 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                                         <ExclamationmarkTriangleFillIcon
                                             title={intl.formatMessage({
                                                 id: 'PeriodeListeHeader.MorsAktivitetIkkeValgt',
+                                            })}
+                                            fontSize="1.5rem"
+                                            className="text-ax-danger-800"
+                                        />
+                                    )}
+                                    {harPeriodeMedUkjentGraderingsaktivitet([p]) && (
+                                        <ExclamationmarkTriangleFillIcon
+                                            title={intl.formatMessage({
+                                                id: 'PeriodeListeHeader.GraderingsaktivitetIkkeValgt',
                                             })}
                                             fontSize="1.5rem"
                                             className="text-ax-danger-800"

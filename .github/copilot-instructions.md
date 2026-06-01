@@ -89,15 +89,19 @@ validation, submit validation, and alert rules. Each rule category lives in its
 own subdirectory and has a corresponding `*.stories.tsx` file that renders a
 self-documenting catalog page in Storybook.
 
-The stories import the rule constants directly, so **existing rules update
-automatically** in Storybook when you change them. However, when you:
+The stories import the rule arrays directly from the source modules (e.g.
+`INFORMASJONS_ALERTS`, `BLOKKERENDE_ALERTS`, `KONTEKSTUELLE_ALERTS`), so **rules
+update automatically** in Storybook when you change them — and new rules show
+up automatically as long as you add them to the source array. When you:
 
-- **Add a new rule constant** — you must also import it and add it to the
-  relevant array in the corresponding `.stories.tsx` file.
+- **Add a new rule constant** — add it to the exported array in the same source
+  file (e.g. `INFORMASJONS_ALERTS` in `informasjonsAlerts.tsx`). The story picks
+  it up automatically.
 - **Add a new rule area (område)** — you must create a new område object in the
   story and include it in the top-level array.
 - **Add a new rule category** — create a new `.stories.tsx` following the
-  existing pattern (use `RegelkatalogSide`).
+  existing pattern (use `RegelkatalogSide`). Export a single array of rule
+  constants from the source module and import it in the story.
 
 | Rule category | Source directory | Story file |
 |---------------|-----------------|------------|

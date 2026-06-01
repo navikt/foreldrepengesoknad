@@ -10,15 +10,19 @@ import {
     erEøsUttakPeriode,
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
+import { ForeldreInfo } from '../../types/ForeldreInfo';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { erDetReadonlyPerioderEtterValgtePerioder } from '../../utils/periodeUtils';
 import { Periode } from '../types';
 import {
     ADOPSJON_PERIODE_FØR_FAMHEND,
     ForskyvEllerErstattKontekst,
+    GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE,
     IKKE_REDIGERBAR_EØS,
     IKKE_REDIGERBAR_PLEIEPENGER,
     KAN_MISTE_DAGER,
+    MANGLER_GRADERINGSAKTIVITET_KALENDER,
+    MANGLER_GRADERINGSAKTIVITET_LISTE,
     MANGLER_MORS_AKTIVITET_KALENDER,
     MANGLER_MORS_AKTIVITET_LISTE,
     MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING,
@@ -70,9 +74,9 @@ export const useListePanelInfoAlerts = (input: {
  */
 export const useEksisterendeValgtePeriodeAlerts = (): ((
     periode: Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager,
-) => { morsAktivitetIkkeValgt?: AktivAlertMetadata }) => {
+) => { morsAktivitetIkkeValgt?: AktivAlertMetadata; graderingsaktivitetIkkeValgt?: AktivAlertMetadata }) => {
     const {
-        foreldreInfo: { rettighetType },
+        foreldreInfo: { rettighetType, søker },
         uttakPerioder,
     } = useUttaksplanData();
 
@@ -86,6 +90,9 @@ export const useEksisterendeValgtePeriodeAlerts = (): ((
             periode,
             morsUttakPerioder,
         }),
+        graderingsaktivitetIkkeValgt: erSøkersIkkeEøsPeriode(periode, søker)
+            ? tilAktiv(GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE, { periode })
+            : undefined,
     });
 };
 
@@ -94,10 +101,13 @@ export const useUttaksplanListeAlerts = (
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
 ): UttaksplanListeAlerts => {
     const {
-        foreldreInfo: { rettighetType },
+        foreldreInfo: { rettighetType, søker },
     } = useUttaksplanData();
     return {
         manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_LISTE, { rettighetType, perioder }),
+        manglerGraderingsaktivitetAlert: tilAktiv(MANGLER_GRADERINGSAKTIVITET_LISTE, {
+            perioder: filtrerSøkersIkkeEøsPerioder(perioder, søker),
+        }),
     };
 };
 
@@ -106,10 +116,13 @@ export const useUttaksplanKalenderAlerts = (
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
 ): UttaksplanKalenderAlerts => {
     const {
-        foreldreInfo: { rettighetType },
+        foreldreInfo: { rettighetType, søker },
     } = useUttaksplanData();
     return {
         manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_KALENDER, { rettighetType, perioder }),
+        manglerGraderingsaktivitetAlert: tilAktiv(MANGLER_GRADERINGSAKTIVITET_KALENDER, {
+            perioder: filtrerSøkersIkkeEøsPerioder(perioder, søker),
+        }),
     };
 };
 
@@ -214,6 +227,16 @@ export const useForskyvEllerErstattAlerts = (input: {
 const tilAktiv = <T,>(regel: Alertregel<T>, ctx: T): AktivAlertMetadata | undefined =>
     regel.skalVises(ctx) ? { melding: regel.getMelding(ctx), variant: regel.variant } : undefined;
 
+const erSøkersIkkeEøsPeriode = (
+    periode: Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager,
+    søker: ForeldreInfo['søker'],
+): boolean => erVanligUttakPeriode(periode) && periode.forelder === søker;
+
+const filtrerSøkersIkkeEøsPerioder = (
+    perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
+    søker: ForeldreInfo['søker'],
+) => perioder.filter((p) => erSøkersIkkeEøsPeriode(p, søker));
+
 /**
  * Bygg ein AktivAlertMetadata kun fra metadataen på regelen — uten å evaluere
  * `skalVises` eller `getMelding`. Brukes når kallstedet allerede har
@@ -231,9 +254,11 @@ type ListePanelInfoAlerts = {
 };
 type UttaksplanListeAlerts = {
     manglerMorsAktivitetAlert?: AktivAlertMetadata;
+    manglerGraderingsaktivitetAlert?: AktivAlertMetadata;
 };
 type UttaksplanKalenderAlerts = {
     manglerMorsAktivitetAlert?: AktivAlertMetadata;
+    manglerGraderingsaktivitetAlert?: AktivAlertMetadata;
 };
 type LeggTilEndreSkjemaInfoAlerts = {
     morsAktivitetIkkeOppgittAlert?: AktivAlertMetadata;

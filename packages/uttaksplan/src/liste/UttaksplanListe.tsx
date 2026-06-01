@@ -51,12 +51,19 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
 
     const alleRader = leggTilPeriodeForFamiliehendelsedato(uttaksplanperioderPerRadIListe, familiehendelsedato);
 
-    const { manglerMorsAktivitetAlert } = useUttaksplanListeAlerts(uttakPerioderJustertForFamiliehendelsesdato);
+    const { manglerMorsAktivitetAlert, manglerGraderingsaktivitetAlert } = useUttaksplanListeAlerts(
+        uttakPerioderJustertForFamiliehendelsesdato,
+    );
 
     return (
         <VStack gap="space-16">
             {manglerMorsAktivitetAlert && (
                 <Alert variant={manglerMorsAktivitetAlert.variant}>{manglerMorsAktivitetAlert.melding}</Alert>
+            )}
+            {manglerGraderingsaktivitetAlert && (
+                <Alert variant={manglerGraderingsaktivitetAlert.variant}>
+                    {manglerGraderingsaktivitetAlert.melding}
+                </Alert>
             )}
             {uttakPerioder.length > 0 && (
                 <div>

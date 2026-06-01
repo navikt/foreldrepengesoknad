@@ -25,6 +25,7 @@ import { useUttaksplanData } from '../../../../../context/UttaksplanDataContext'
 import { UttakPeriodeMedAntallDager } from '../../../../../kalender/redigering/utils/kalenderPeriodeUtils';
 import { useEksisterendeValgtePeriodeAlerts } from '../../../../../regler/alert/informasjonsAlertHooks';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../../types/UttaksplanPeriode';
+
 import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
 
 interface Props {

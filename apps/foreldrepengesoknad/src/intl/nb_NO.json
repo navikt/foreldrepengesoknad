@@ -535,6 +535,7 @@
     "UttaksplanSteg.AutomatiskJustering.Ja": "Ja",
     "UttaksplanSteg.AutomatiskJustering.Nei": "Nei",
     "UttaksplanSteg.MorsAktivitetIkkeValgt": "Du må fylle ut informasjon om mors aktivitet i de markerte periodene",
+    "UttaksplanSteg.GraderingsaktivitetIkkeValgt": "Du må velge hvor du skal jobbe samtidig som du har foreldrepenger i de markerte periodene",
     "gradering.prosent": "{stillingsprosent}%",
     "rundtFødsel": " rundt fødsel",
     "uttaksplan.periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",

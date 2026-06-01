@@ -9,7 +9,7 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
-import { harPeriodeDerMorsAktivitetIkkeErValgt, useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
+import { harPeriodeDerMorsAktivitetIkkeErValgt, harPeriodeMedUkjentGraderingsaktivitet, useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 export type UttaksplanPerioder = Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
@@ -50,6 +50,14 @@ export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFør
     const manglerMorsAktivitetDerPåkrevd = (perioder: UttaksplanPerioder) =>
         harPeriodeDerMorsAktivitetIkkeErValgt(utledRettighet(erAleneOmOmsorg, erDeltUttak), perioder);
 
+    const manglerGraderingsaktivitet = (perioder: UttaksplanPerioder) => {
+        const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
+        const søkersPerioder = perioder.filter(
+            (periode) => Uttaksperioden.erIkkeEøsPeriode(periode) && periode.forelder === søkersForelder,
+        );
+        return harPeriodeMedUkjentGraderingsaktivitet(søkersPerioder);
+    };
+
     const harKunPerioderForDenAndreForelderen = (perioder: UttaksplanPerioder) =>
         harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, erAleneOmOmsorg, perioder);
 
@@ -71,6 +79,10 @@ export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFør
         {
             gjelder: manglerMorsAktivitetDerPåkrevd,
             message: intl.formatMessage({ id: 'UttaksplanSteg.MorsAktivitetIkkeValgt' }),
+        },
+        {
+            gjelder: manglerGraderingsaktivitet,
+            message: intl.formatMessage({ id: 'UttaksplanSteg.GraderingsaktivitetIkkeValgt' }),
         },
         {
             gjelder: harKunPerioderForDenAndreForelderen,

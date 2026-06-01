@@ -172,6 +172,29 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
     });
 };
 
+/**
+ * Sjekker om noken periode har gradering der aktivitet-typen er ORDINÆRT_ARBEID, men
+ * arbeidsgiver manglar. Dette skjer typisk når ein plan kjem inn frå planleggar-appen
+ * (som ikkje veit om søkjar sine arbeidsforhold) – då blir aktivitetstypen brukt som
+ * orgnummer, noko som er ugyldig. Brukar må velje konkret arbeidsgiver/frilans/sjølvst.
+ * før planen kan sendast inn.
+ */
+export const harPeriodeMedUkjentGraderingsaktivitet = (
+    perioder: UttaksplanperiodeMedKunTapteDager[] | Uttaksplanperiode[],
+) => {
+    return perioder.some((periode) => {
+        if (!erVanligUttakPeriode(periode)) {
+            return false;
+        }
+        const aktivitet = periode.gradering?.aktivitet;
+        if (aktivitet?.type !== 'ORDINÆRT_ARBEID') {
+            return false;
+        }
+        const arbeidsgiverId = aktivitet.arbeidsgiver?.id;
+        return !arbeidsgiverId || arbeidsgiverId === aktivitet.type;
+    });
+};
+
 export const erPerioderEkslFomTomLike = (
     periode1: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
     periode2: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
