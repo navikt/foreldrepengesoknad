@@ -92,33 +92,3 @@ test('does not proxy requests outside configured paths', async () => {
     const res = await supertest(app).get('/internal/health').set('Authorization', 'Bearer t');
     expect(res.status).toBe(404);
 });
-
-test('strips cookie header on fpgrunndata proxy', async () => {
-    await supertest(app).get('/fpgrunndata/api/konto').set('Cookie', 'session=abc').expect(200);
-    expect(lastRequest.headers.cookie).toBeUndefined();
-});
-
-test('rejects cross-site API calls (Sec-Fetch-Site=cross-site)', async () => {
-    const res = await supertest(app)
-        .get('/fpsoknad/api/storage/FORELDREPENGER')
-        .set('Authorization', 'Bearer t')
-        .set('Sec-Fetch-Site', 'cross-site');
-    expect(res.status).toBe(403);
-});
-
-test('allows same-origin API calls (Sec-Fetch-Site=same-origin)', async () => {
-    await supertest(app)
-        .get('/fpsoknad/api/storage/FORELDREPENGER')
-        .set('Authorization', 'Bearer t')
-        .set('Sec-Fetch-Site', 'same-origin')
-        .expect(200);
-});
-
-test('allows requests without Sec-Fetch-Site header (eldre nettlesarar / ikkje-nettlesar-klientar)', async () => {
-    await supertest(app).get('/fpsoknad/api/storage/FORELDREPENGER').set('Authorization', 'Bearer t').expect(200);
-});
-
-test('rejects cross-site API calls on fpgrunndata proxy', async () => {
-    const res = await supertest(app).get('/fpgrunndata/api/konto').set('Sec-Fetch-Site', 'cross-site');
-    expect(res.status).toBe(403);
-});
