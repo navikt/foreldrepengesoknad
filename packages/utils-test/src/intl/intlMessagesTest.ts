@@ -26,8 +26,10 @@ export interface IntlMessagesTestConfig {
 const DEFAULT_SOURCE_GLOB = 'src/**/*.{ts,tsx}';
 const DEFAULT_REFERENCE_LOCALE = 'nb_NO';
 
-const finnManglendeNøkler = (kilde: Messages, mål: Messages): string[] =>
-    Object.keys(kilde).filter((key) => !Object.keys(mål).includes(key));
+const finnManglendeNøkler = (kilde: Messages, mål: Messages): string[] => {
+    const målNøkler = new Set(Object.keys(mål));
+    return Object.keys(kilde).filter((key) => !målNøkler.has(key));
+};
 
 const hentKodeNøkler = async (
     sourceGlob: string,
@@ -92,7 +94,8 @@ export const createIntlMessagesTest = ({
 
         it(`i18n-strenger i koden skal finnes i ${referanseNavn}`, async () => {
             const kodeNøkler = await hentKodeNøkler(sourceGlob, extractAdditionalCodeKeys);
-            const mangler = kodeNøkler.filter((key) => !Object.keys(referanse).includes(key));
+            const referanseNøkler = new Set(Object.keys(referanse));
+            const mangler = kodeNøkler.filter((key) => !referanseNøkler.has(key));
             for (const key of mangler) {
                 // eslint-disable-next-line no-console
                 console.log(`Ikke funnet i ${referanseNavn}: ${key}`);
@@ -101,9 +104,9 @@ export const createIntlMessagesTest = ({
         });
 
         it(`alle i18n-strenger i ${referanseNavn} skal finnes i koden`, async () => {
-            const kodeNøkler = await hentKodeNøkler(sourceGlob, extractAdditionalCodeKeys);
+            const kodeNøkler = new Set(await hentKodeNøkler(sourceGlob, extractAdditionalCodeKeys));
             const mangler = Object.keys(referanse).filter(
-                (key) => !(ignoreReferenceKey?.(key) ?? false) && !kodeNøkler.includes(key),
+                (key) => !(ignoreReferenceKey?.(key) ?? false) && !kodeNøkler.has(key),
             );
             for (const key of mangler) {
                 // eslint-disable-next-line no-console

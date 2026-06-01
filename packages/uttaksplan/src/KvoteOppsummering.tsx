@@ -28,8 +28,8 @@ interface Props {
     erInnsyn: boolean;
 }
 
-// Flere søsken-komponenter filtrerer den samme periodelista likt. Memoiser på `uttakPerioder`
-// slik at filtreringen kun kjøres på nytt når selve periodene endrer seg.
+// Filtrert periodeliste deles av flere søsken-komponenter. Den beregnes én gang i forelderen
+// (memoisert på `uttakPerioder`) og sendes ned som prop, slik at filtreringen ikke gjentas per komponent.
 const useFiltrertePerioder = () => {
     const { uttakPerioder } = useUttaksplanData();
     return useMemo(
@@ -38,18 +38,24 @@ const useFiltrertePerioder = () => {
     );
 };
 
+type KvoteKontoProps = {
+    visStatusIkoner: boolean;
+    filtrertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+};
+
 export const KvoteOppsummering = ({ visStatusIkoner, erInnsyn }: Props) => {
+    const filtrertePerioder = useFiltrertePerioder();
     return (
         <ExpansionCard aria-label="Kvoteoversikt" size="small">
             <KvoteOppsummeringsTittel erInnsyn={erInnsyn} visStatusIkoner={visStatusIkoner} brukEnkelVisning={false} />
             <ExpansionCard.Content>
                 <VStack gap="space-16">
-                    <ForeldrepengerFørFødselKvoter visStatusIkoner={visStatusIkoner} />
-                    <MødreKvoter visStatusIkoner={visStatusIkoner} />
-                    <AktivitetsfriKvoter visStatusIkoner={visStatusIkoner} />
-                    <FedreKvoter visStatusIkoner={visStatusIkoner} />
-                    <KunEnHarForeldrepengeKvoter visStatusIkoner={visStatusIkoner} />
-                    <FellesKvoter visStatusIkoner={visStatusIkoner} />
+                    <ForeldrepengerFørFødselKvoter visStatusIkoner={visStatusIkoner} filtrertePerioder={filtrertePerioder} />
+                    <MødreKvoter visStatusIkoner={visStatusIkoner} filtrertePerioder={filtrertePerioder} />
+                    <AktivitetsfriKvoter visStatusIkoner={visStatusIkoner} filtrertePerioder={filtrertePerioder} />
+                    <FedreKvoter visStatusIkoner={visStatusIkoner} filtrertePerioder={filtrertePerioder} />
+                    <KunEnHarForeldrepengeKvoter visStatusIkoner={visStatusIkoner} filtrertePerioder={filtrertePerioder} />
+                    <FellesKvoter visStatusIkoner={visStatusIkoner} filtrertePerioder={filtrertePerioder} />
                 </VStack>
             </ExpansionCard.Content>
         </ExpansionCard>
@@ -418,20 +424,16 @@ const TittelKomponent = ({
     );
 };
 
-const ForeldrepengerFørFødselKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
+const ForeldrepengerFørFødselKvoter = ({ visStatusIkoner, filtrertePerioder }: KvoteKontoProps) => {
     const { valgtStønadskvote } = useUttaksplanData();
-
-    const filtrertePerioder = useFiltrertePerioder();
 
     const relevantePerioder = filtrertePerioder.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL');
     const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
     return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
 };
 
-const KunEnHarForeldrepengeKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
+const KunEnHarForeldrepengeKvoter = ({ visStatusIkoner, filtrertePerioder }: KvoteKontoProps) => {
     const { valgtStønadskvote } = useUttaksplanData();
-
-    const filtrertePerioder = useFiltrertePerioder();
 
     const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FORELDREPENGER');
     const relevantePerioder = filtrertePerioder.filter(
@@ -442,10 +444,8 @@ const KunEnHarForeldrepengeKvoter = ({ visStatusIkoner }: { visStatusIkoner: boo
     return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
 };
 
-const FedreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
+const FedreKvoter = ({ visStatusIkoner, filtrertePerioder }: KvoteKontoProps) => {
     const { valgtStønadskvote } = useUttaksplanData();
-
-    const filtrertePerioder = useFiltrertePerioder();
 
     const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FEDREKVOTE');
     const relevantePerioder = filtrertePerioder.filter(
@@ -457,12 +457,10 @@ const FedreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
 };
 
-const AktivitetsfriKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
+const AktivitetsfriKvoter = ({ visStatusIkoner, filtrertePerioder }: KvoteKontoProps) => {
     const { valgtStønadskvote } = useUttaksplanData();
 
     const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
-
-    const filtrertePerioder = useFiltrertePerioder();
 
     const relevantePerioder = filtrertePerioder.filter((p) => {
         // I planlegger og søknad brukes denne kontoen på periodene.
@@ -477,10 +475,8 @@ const AktivitetsfriKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) 
     return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
 };
 
-const MødreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
+const MødreKvoter = ({ visStatusIkoner, filtrertePerioder }: KvoteKontoProps) => {
     const { valgtStønadskvote } = useUttaksplanData();
-
-    const filtrertePerioder = useFiltrertePerioder();
 
     const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'MØDREKVOTE');
     const relevantePerioder = filtrertePerioder.filter(
@@ -491,13 +487,12 @@ const MødreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
 };
 
-const FellesKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
+const FellesKvoter = ({ visStatusIkoner, filtrertePerioder }: KvoteKontoProps) => {
     const intl = useIntl();
     const { valgtStønadskvote, foreldreInfo, familiesituasjon, familiehendelsedato } = useUttaksplanData();
 
     const forelder = foreldreInfo.søker;
     const fellesKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FELLESPERIODE');
-    const filtrertePerioder = useFiltrertePerioder();
 
     if (!fellesKonto) {
         return null;
