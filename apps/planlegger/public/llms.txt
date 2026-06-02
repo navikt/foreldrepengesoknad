@@ -1,0 +1,210 @@
+# Foreldrepengeplanleggeren (Parental Benefit Planner) – prefill via link
+
+> Foreldrepengeplanleggeren is Nav's public, no-login planner for parental
+> benefit (foreldrepenger). The user answers a few questions (who is planning,
+> about the child, work situation, coverage level) and is shown a suggested
+> uttaksplan (how the parental-leave period is split between the parents).
+>
+> This document explains how an AI assistant can interview the user, build a
+> shareable link, and open the planner directly on the leave-plan step with
+> everything prefilled.
+
+## How it works
+
+The planner reads the entire application state from a `data` parameter in the
+URL. The parameter is a JSON object, UTF-8 + Base64 encoded. When the user opens
+the link, the app loads the state and jumps straight to the step you point at.
+
+To land on a finished leave plan, use the `/planen-deres` step:
+
+```
+https://www.nav.no/foreldrepenger/planlegger/planen-deres?data=<URL-ENCODED_BASE64>
+```
+
+You do NOT need to compute the leave plan yourself. When you provide the four
+required parts (see below), the app calls Nav's API to compute the benefit
+quotas and generates a suggested split automatically. The user can then adjust
+the plan inside the app.
+
+## Step 1 – Interview the user
+
+Collect the following. Only ask for what you need; never guess a birth date, due
+date, or income.
+
+**Privacy:** Never ask for anything personally sensitive or that could identify
+the users — including names. The planner is fully usable without names, so leave
+the name fields out (see HVEM_PLANLEGGER below).
+
+1. **Who is planning?** Mother and father / mother and co-mother / father and
+   father / mother alone / father alone.
+2. **About the child:** Birth or adoption? Is the child already born? Due date
+   or birth date (and date of care transfer for adoption). Number of children
+   (1, 2, or 3 – twins/triplets).
+3. **Work situation:** Is applicant 1 working? Is the other parent working?
+   (This determines who is entitled to parental benefit.)
+4. **Coverage level (dekningsgrad):** 100% (shorter period, full rate) or 80%
+   (longer period, reduced rate).
+
+## Step 2 – Build the JSON object (ContextDataMap)
+
+The object has these keys. **The first four are required** to land on
+`/planen-deres`; the rest should normally be omitted.
+
+```jsonc
+{
+  "HVEM_PLANLEGGER":  { ... },  // REQUIRED – who is planning
+  "OM_BARNET":        { ... },  // REQUIRED – about the child
+  "ARBEIDSSITUASJON": { ... },  // REQUIRED – must grant entitlement to at least one party
+  "HVOR_LANG_PERIODE":{ ... },  // REQUIRED – coverage level
+  "FORDELING":        { ... },  // optional – omit unless the user wants a specific split
+  "UTTAKSPLAN":       [ ... ]   // ALWAYS omit – generated automatically
+}
+```
+
+### HVEM_PLANLEGGER (who is planning)
+
+One of these. Only `type` is needed — **do not collect or include names**:
+
+```jsonc
+{ "type": "morOgFar" }     // mother + father
+{ "type": "morOgMedmor" }  // mother + co-mother
+{ "type": "farOgFar" }     // father + father
+{ "type": "mor" }          // mother, sole custody
+{ "type": "far" }          // father, sole custody
+```
+
+The schema also accepts optional name fields (`navnPåMor`, `navnPåFar`,
+`navnPåMedmor`, `navnPåMedfar`), but for privacy you should omit them. The app
+falls back to generic labels when names are absent.
+
+### OM_BARNET (about the child)
+
+Choose one of three variants. Dates are ISO format `"YYYY-MM-DD"`. `antallBarn`
+(number of children) is a string (`"1"`, `"2"`, `"3"`).
+
+Unborn child (due date):
+```jsonc
+{ "erFødsel": true, "erBarnetFødt": false, "antallBarn": "1", "termindato": "2026-09-01" }
+```
+
+Child already born:
+```jsonc
+{ "erFødsel": true, "erBarnetFødt": true, "antallBarn": "1",
+  "fødselsdato": "2026-05-20", "termindato": "2026-05-18" }
+```
+
+Adoption:
+```jsonc
+{ "erFødsel": false, "antallBarn": "1",
+  "overtakelsesdato": "2026-08-01", "fødselsdato": "2024-02-10" }
+```
+
+Field meanings: `erFødsel` = is this a birth (vs adoption); `erBarnetFødt` = is
+the child already born; `termindato` = due date; `fødselsdato` = birth date;
+`overtakelsesdato` = date of care transfer (adoption).
+
+### ARBEIDSSITUASJON (work situation)
+
+```jsonc
+{ "status": "jobber", "jobberAnnenPart": true }
+```
+
+- `status` refers to **applicant 1** (see role table below). Values:
+  `"jobber"` (working), `"ufør"` (mother has disability benefit),
+  `"jobberIkke"` (not working).
+- `jobberAnnenPart` (boolean) refers to **applicant 2** (the other parent).
+
+Entitlement is derived like this:
+- `status: "jobber"` + `jobberAnnenPart: true`  → both are entitled
+- `status: "jobber"` + `jobberAnnenPart: false` → only applicant 1 is entitled
+- `status: ≠ "jobber"` + `jobberAnnenPart: true` → only applicant 2 is entitled
+- nobody working → **nobody is entitled** ⚠️ No leave plan is generated and
+  `/planen-deres` hangs on a loading spinner. Avoid this combination.
+
+Role table (who is applicant 1 / applicant 2):
+
+| HVEM_PLANLEGGER | Applicant 1 (`status`) | Applicant 2 (`jobberAnnenPart`) |
+|-----------------|------------------------|---------------------------------|
+| morOgFar        | mother                 | father                          |
+| morOgMedmor     | mother                 | co-mother                       |
+| farOgFar        | father                 | co-father                       |
+| mor             | mother                 | – (set `false`)                 |
+| far             | father                 | – (set `false`)                 |
+
+### HVOR_LANG_PERIODE (coverage level)
+
+```jsonc
+{ "dekningsgrad": "100" }   // or "80"
+```
+
+### FORDELING (split – optional)
+
+Only relevant when both parents are entitled and the user explicitly wants a
+specific split of the shared period (fellesperiode). `antallDagerSøker1` is the
+number of shared-period days assigned to applicant 1. Omit to let the app
+suggest a default split.
+
+```jsonc
+{ "antallDagerSøker1": 40 }
+```
+
+## Step 3 – Encode and build the link
+
+1. Serialize the object to JSON (`JSON.stringify`).
+2. Base64-encode it from the UTF-8 bytes (not "binary"/latin1 – Norwegian
+   characters like æ ø å must survive).
+3. URL-encode the Base64 string (`encodeURIComponent`) before using it as the
+   `data` value. This matters: `+`, `/`, and `=` in Base64 must be
+   percent-encoded, otherwise `+` is interpreted as a space and the data breaks.
+4. Assemble:
+   `https://www.nav.no/foreldrepenger/planlegger/planen-deres?data=<URL-encoded base64>`
+
+JavaScript reference (same encoding the app uses):
+
+```js
+const b64 = btoa(String.fromCodePoint(...new TextEncoder().encode(JSON.stringify(data))));
+const url = `https://www.nav.no/foreldrepenger/planlegger/planen-deres?data=${encodeURIComponent(b64)}`;
+```
+
+Python reference:
+
+```python
+import json, base64, urllib.parse
+b64 = base64.b64encode(json.dumps(data, ensure_ascii=False).encode("utf-8")).decode("ascii")
+url = "https://www.nav.no/foreldrepenger/planlegger/planen-deres?data=" + urllib.parse.quote(b64)
+```
+
+## Full example
+
+User: mother and father, expecting one child due 1 September 2026, both
+working, want 100% coverage. (No names collected.)
+
+```json
+{
+  "HVEM_PLANLEGGER": { "type": "morOgFar" },
+  "OM_BARNET": { "erFødsel": true, "erBarnetFødt": false, "antallBarn": "1", "termindato": "2026-09-01" },
+  "ARBEIDSSITUASJON": { "status": "jobber", "jobberAnnenPart": true },
+  "HVOR_LANG_PERIODE": { "dekningsgrad": "100" }
+}
+```
+
+Resulting link (Base64 is URL-encoded; this example happens to contain no reserved characters so it looks unescaped):
+```
+https://www.nav.no/foreldrepenger/planlegger/planen-deres?data=eyJIVkVNX1BMQU5MRUdHRVIiOnsidHlwZSI6Im1vck9nRmFyIn0sIk9NX0JBUk5FVCI6eyJlckbDuGRzZWwiOnRydWUsImVyQmFybmV0RsO4ZHQiOmZhbHNlLCJhbnRhbGxCYXJuIjoiMSIsInRlcm1pbmRhdG8iOiIyMDI2LTA5LTAxIn0sIkFSQkVJRFNTSVRVQVNKT04iOnsic3RhdHVzIjoiam9iYmVyIiwiam9iYmVyQW5uZW5QYXJ0Ijp0cnVlfSwiSFZPUl9MQU5HX1BFUklPREUiOnsiZGVrbmluZ3NncmFkIjoiMTAwIn19
+```
+
+## Notes and limitations
+
+- The planner is **no-login** and stores no data on Nav's servers. All
+  information lives only in the link. Treat the link as potentially sensitive
+  (dates) and share it only with the user themselves.
+- You can point the `data` parameter at other steps too (e.g. `/oppsummering`
+  or `/hvem-planlegger`) if you want the user to review the steps before the
+  leave plan. The `data` structure is the same.
+- Available steps: `/`, `/hvem-planlegger`, `/om-barnet`, `/barnehageplass`,
+  `/arbeidssituasjon`, `/hvor-mye`, `/hvor-lenge`, `/fordeling`,
+  `/planen-deres`, `/oppsummering`.
+- This is a planning tool, not an application. The actual application for
+  parental benefit happens in a separate logged-in solution on nav.no.
+- Dates must be valid ISO dates. Due/birth dates should be realistic (the
+  planner handles children younger than ~3 years).
