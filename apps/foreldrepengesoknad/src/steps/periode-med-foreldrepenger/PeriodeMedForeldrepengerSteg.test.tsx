@@ -497,11 +497,10 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             ).toBeInTheDocument();
             await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
             expect(
-                await screen.findByText(
-                    'Den totale utbetalingen fra Nav blir høyere dersom man velger 100% i stedet for 80%. ' +
-                        'Likevel kan det være andre grunner som påvirker hva som lønner seg,',
-                    { exact: false },
-                ),
+                await screen.findByText('Begge alternativene gir like mye penger totalt'),
+            ).toBeInTheDocument();
+            expect(
+                await screen.findByText('Beregn hvor mye du kan få på nav.no'),
             ).toBeInTheDocument();
 
             MockDate.reset();
@@ -529,11 +528,10 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             ).toBeInTheDocument();
             await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
             expect(
-                await screen.findByText(
-                    'Den totale utbetalingen fra Nav blir høyere dersom man velger 100% i stedet for 80%.' +
-                        ' Likevel kan det være andre grunner som påvirker hva som lønner seg,',
-                    { exact: false },
-                ),
+                await screen.findByText('Begge alternativene gir like mye penger totalt'),
+            ).toBeInTheDocument();
+            expect(
+                await screen.findByText('Beregn hvor mye du kan få på nav.no'),
             ).toBeInTheDocument();
 
             MockDate.reset();
@@ -562,11 +560,10 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             ).toBeInTheDocument();
             await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
             expect(
-                await screen.findByText(
-                    'Den totale utbetalingen blir omtrent lik om man velger 100 % eller 80 %. Likevel kan det være andre ' +
-                        'grunner som påvirker hva som lønner seg,',
-                    { exact: false },
-                ),
+                await screen.findByText('Begge alternativene gir like mye penger totalt'),
+            ).toBeInTheDocument();
+            expect(
+                await screen.findByText('Beregn hvor mye du kan få på nav.no'),
             ).toBeInTheDocument();
 
             MockDate.reset();
@@ -594,11 +591,10 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             ).toBeInTheDocument();
             await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
             expect(
-                await screen.findByText(
-                    'Den totale utbetalingen fra Nav blir høyere dersom man velger 100% i stedet for 80%.' +
-                        ' Likevel kan det være andre grunner som påvirker hva som lønner seg,',
-                    { exact: false },
-                ),
+                await screen.findByText('Begge alternativene gir like mye penger totalt'),
+            ).toBeInTheDocument();
+            expect(
+                await screen.findByText('Beregn hvor mye du kan få på nav.no'),
             ).toBeInTheDocument();
 
             MockDate.reset();
@@ -630,10 +626,10 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             ).toBeInTheDocument();
             await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
             expect(
-                await screen.findByText(
-                    'Den totale utbetalingen blir omtrent lik om man velger 100 % eller 80 %. Likevel kan det være andre' +
-                        ' grunner som påvirker hva som lønner seg, hvis man for eksempel må ha ulønnet permisjon i en periode.',
-                ),
+                await screen.findByText('Begge alternativene gir like mye penger totalt'),
+            ).toBeInTheDocument();
+            expect(
+                await screen.findByText('Beregn hvor mye du kan få på nav.no'),
             ).toBeInTheDocument();
 
             MockDate.reset();

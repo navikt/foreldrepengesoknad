@@ -9,7 +9,7 @@ import { getFødselsdato, getTermindato } from 'utils/barnUtils';
 import { førsteJuli2024ReglerGjelder, getVarighetString } from 'utils/dateUtils';
 import { getAntallUkerFraStønadskvoter } from 'utils/stønadskvoterUtils';
 
-import { BodyShort, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, HStack, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
@@ -17,6 +17,8 @@ import { Barn, Dekningsgrad, KontoBeregningDto, SøkersituasjonFp, isAdoptertBar
 import { Infobox } from '@navikt/fp-ui';
 import { Uttaksdagen, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
+
+import { DekningsgradUtbetalingKort } from './DekningsgradUtbetalingKort';
 
 const finnSisteDagMedForeldrepenger = (stønadskvoter: KontoBeregningDto, barn: Barn): string | undefined => {
     const erAdopsjon = isAdoptertBarn(barn);
@@ -72,6 +74,77 @@ const getDekningsgradReadMoreTekst = (erDeltUttak: boolean, barn: Barn) => {
     }
     return <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.førFørsteJuli2024" />;
 };
+
+const DekningsgradUtbetalingEksempel = () => (
+    <VStack gap="space-16">
+        <Box
+            padding="space-16"
+            style={{
+                border: '1px solid var(--a-border-default)',
+                borderRadius: '0.5rem',
+            }}
+        >
+            <VStack gap="space-16">
+                <BodyShort weight="semibold" style={{ fontSize: '1.25rem' }}>
+                    <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.eksempel.tittel" />
+                </BodyShort>
+                <BodyShort>
+                    <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.eksempel.intro" />
+                </BodyShort>
+                <HStack gap="space-16" align="start" style={{ flexWrap: 'wrap' }}>
+                    <DekningsgradUtbetalingKort
+                        tittel={<FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.eksempel.hundre.tittel" />}
+                        varighetLabel={
+                            <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.eksempel.rad.varighet" />
+                        }
+                        varighetVerdi={
+                            <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.eksempel.hundre.varighet" />
+                        }
+                        perMånedLabel={
+                            <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.eksempel.rad.perMåned" />
+                        }
+                        perMånedVerdi={
+                            <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.eksempel.hundre.perMåned" />
+                        }
+                        totaltLabel={<FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.eksempel.rad.totalt" />}
+                        totaltVerdi={
+                            <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.eksempel.hundre.totalt" />
+                        }
+                    />
+                    <Box asChild paddingInline="space-4" style={{ alignSelf: 'center' }}>
+                        <span style={{ fontSize: '2em', lineHeight: 1 }}>≈</span>
+                    </Box>
+                    <DekningsgradUtbetalingKort
+                        tittel={<FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.eksempel.åtti.tittel" />}
+                        varighetLabel={
+                            <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.eksempel.rad.varighet" />
+                        }
+                        varighetVerdi={
+                            <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.eksempel.åtti.varighet" />
+                        }
+                        perMånedLabel={
+                            <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.eksempel.rad.perMåned" />
+                        }
+                        perMånedVerdi={
+                            <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.eksempel.åtti.perMåned" />
+                        }
+                        totaltLabel={<FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.eksempel.rad.totalt" />}
+                        totaltVerdi={
+                            <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.eksempel.åtti.totalt" />
+                        }
+                    />
+                </HStack>
+                <BodyShort size="small">
+                    <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.eksempel.fotnote" />
+                </BodyShort>
+            </VStack>
+        </Box>
+        <Link href={links.hvorMye} target="_blank">
+            <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.eksempel.link" />
+            <ExternalLinkIcon title="a11y-title" fontSize="1.5rem" />
+        </Link>
+    </VStack>
+);
 
 const getDekningsgradInformasjonDeltUttak = (barn: Barn) => {
     if (førsteJuli2024ReglerGjelder(barn)) {
@@ -204,11 +277,17 @@ export const DekningsgradForm = ({
                             )
                         }
                     >
-                        {getDekningsgradReadMoreTekst(erDeltUttak, barn)}
-                        <Link href={links.opphold} target="_blank">
-                            <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.link" />
-                            <ExternalLinkIcon title="a11y-title" fontSize="1.5rem" />
-                        </Link>
+                        {erDeltUttak ? (
+                            <DekningsgradUtbetalingEksempel />
+                        ) : (
+                            <>
+                                {getDekningsgradReadMoreTekst(erDeltUttak, barn)}
+                                <Link href={links.opphold} target="_blank">
+                                    <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.link" />
+                                    <ExternalLinkIcon title="a11y-title" fontSize="1.5rem" />
+                                </Link>
+                            </>
+                        )}
                     </ReadMore>
                 </VStack>
                 {!!ekstraDagePrematur && (
