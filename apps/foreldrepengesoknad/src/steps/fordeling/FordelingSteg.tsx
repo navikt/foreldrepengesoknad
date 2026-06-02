@@ -49,10 +49,7 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
 
     const termindato = getTermindato(barn);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const navnPåForeldre = useMemo(
-        () => getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl),
-        [person, annenForelder, erFarEllerMedmor, intl],
-    );
+    const navnPåForeldre = getNavnPåForeldre(person, annenForelder, erFarEllerMedmor, intl);
     const navnMor = navnPåForeldre.mor;
     const navnFarMedmor = navnPåForeldre.farMedmor;
     const deltUttak = getIsDeltUttak(annenForelder);
@@ -83,13 +80,13 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
                       minsterett,
                       søkersituasjon,
                       barn,
-                      navnPåForeldre,
+                      { mor: navnMor, farMedmor: navnFarMedmor },
                       annenForelder,
                       intl,
                       uttaksplanAnnenPart,
                   )
                 : [],
-        [valgtStønadskvote, minsterett, søkersituasjon, barn, navnPåForeldre, annenForelder, intl, uttaksplanAnnenPart],
+        [valgtStønadskvote, minsterett, søkersituasjon, barn, navnMor, navnFarMedmor, annenForelder, intl, uttaksplanAnnenPart],
     );
     const ukerMedFellesperiode = valgtStønadskvote ? getAntallUkerFellesperiode(valgtStønadskvote) : 0;
     const dagerMedFellesperiode = ukerMedFellesperiode * 5;

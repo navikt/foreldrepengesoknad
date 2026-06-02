@@ -27,14 +27,10 @@ const lagArbeidsforhold = (
     oppholdsperioder,
 });
 
-const lagSak = (arbeidsforhold: SvpArbeidsforhold_fpoversikt[]): SvangerskapspengeSak =>
-    ({
-        ytelse: 'SVANGERSKAPSPENGER',
-        saksnummer: '123',
-        sakAvsluttet: false,
-        oppdatertTidspunkt: '2025-01-01T00:00:00',
-        gjeldendeVedtak: { arbeidsforhold },
-    }) as SvangerskapspengeSak;
+const lagSak = (arbeidsforhold: SvpArbeidsforhold_fpoversikt[]): SvangerskapspengeSak => ({
+    ...SAK_1,
+    gjeldendeVedtak: { ...SAK_1.gjeldendeVedtak, arbeidsforhold },
+});
 
 const tilrettelegging = (fom: string, tom: string) =>
     ({
