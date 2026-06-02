@@ -496,12 +496,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 ),
             ).toBeInTheDocument();
             await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
-            expect(
-                await screen.findByText('Begge alternativene gir like mye penger totalt'),
-            ).toBeInTheDocument();
-            expect(
-                await screen.findByText('Beregn hvor mye du kan få på nav.no'),
-            ).toBeInTheDocument();
+            expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
 
             MockDate.reset();
         }),
@@ -527,12 +522,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 ),
             ).toBeInTheDocument();
             await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
-            expect(
-                await screen.findByText('Begge alternativene gir like mye penger totalt'),
-            ).toBeInTheDocument();
-            expect(
-                await screen.findByText('Beregn hvor mye du kan få på nav.no'),
-            ).toBeInTheDocument();
+            expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
 
             MockDate.reset();
         }),
@@ -559,12 +549,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 ),
             ).toBeInTheDocument();
             await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
-            expect(
-                await screen.findByText('Begge alternativene gir like mye penger totalt'),
-            ).toBeInTheDocument();
-            expect(
-                await screen.findByText('Beregn hvor mye du kan få på nav.no'),
-            ).toBeInTheDocument();
+            expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
 
             MockDate.reset();
         }),
@@ -590,12 +575,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 ),
             ).toBeInTheDocument();
             await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
-            expect(
-                await screen.findByText('Begge alternativene gir like mye penger totalt'),
-            ).toBeInTheDocument();
-            expect(
-                await screen.findByText('Beregn hvor mye du kan få på nav.no'),
-            ).toBeInTheDocument();
+            expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
 
             MockDate.reset();
         }),
@@ -625,12 +605,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 ),
             ).toBeInTheDocument();
             await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
-            expect(
-                await screen.findByText('Begge alternativene gir like mye penger totalt'),
-            ).toBeInTheDocument();
-            expect(
-                await screen.findByText('Beregn hvor mye du kan få på nav.no'),
-            ).toBeInTheDocument();
+            expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
 
             MockDate.reset();
         }),

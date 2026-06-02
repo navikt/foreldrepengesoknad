@@ -56,5 +56,20 @@
     "RegisterdataUtdatert.Message": "Opplysningar om deg er endra sidan sist du fylte ut søknaden. Du må derfor starta utfyllinga av søknaden på nytt.",
     "ProgressStepper.ShowSteps": "Vis alle steg",
     "ProgressStepper.HideSteps": "Skjul alle steg",
-    "ProgressStepper.StepCounter": "Steg {activeStep} av {totalSteps}"
+    "ProgressStepper.StepCounter": "Steg {activeStep} av {totalSteps}",
+    "DekningsgradUtbetalingEksempel.Tittel": "Begge alternativa gir omtrent like mykje pengar totalt",
+    "DekningsgradUtbetalingEksempel.Intro": "Eksempelet under bruker ei månadslønn på 50 000 kr.",
+    "DekningsgradUtbetalingEksempel.Rad.Varighet": "Varigheit:",
+    "DekningsgradUtbetalingEksempel.Rad.PerMåned": "Per månad:",
+    "DekningsgradUtbetalingEksempel.Rad.Totalt": "Totalt ca.:",
+    "DekningsgradUtbetalingEksempel.Hundre.Tittel": "100 % utbetaling",
+    "DekningsgradUtbetalingEksempel.Hundre.Varighet": "49 veker",
+    "DekningsgradUtbetalingEksempel.Hundre.PerMåned": "50 000 kr",
+    "DekningsgradUtbetalingEksempel.Hundre.Totalt": "565 460 kr",
+    "DekningsgradUtbetalingEksempel.Atti.Tittel": "80 % utbetaling",
+    "DekningsgradUtbetalingEksempel.Atti.Varighet": "61 veker + 1 dag",
+    "DekningsgradUtbetalingEksempel.Atti.PerMåned": "40 000 kr",
+    "DekningsgradUtbetalingEksempel.Atti.Totalt": "564 876 kr",
+    "DekningsgradUtbetalingEksempel.Fotnote": "* Ved denne lønna er den faktiske forskjellen i totalutbetaling ca. 584 kr. Feriepengane er også omtrent like for begge alternativa.",
+    "DekningsgradUtbetalingEksempel.Link": "Rekn ut kor mykje du kan få på nav.no"
 }
