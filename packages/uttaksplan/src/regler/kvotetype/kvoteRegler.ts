@@ -19,6 +19,7 @@ export const useGyldigeKvotetyper = (input: {
         foreldreInfo: { søker, rettighetType },
         familiehendelsedato,
         familiesituasjon,
+        termindato,
         valgtStønadskvote,
     } = useUttaksplanData();
 
@@ -29,6 +30,7 @@ export const useGyldigeKvotetyper = (input: {
         rettighetType,
         familiesituasjon,
         familiehendelsedato,
+        termindato,
         valgtePerioder: input.valgtePerioder,
         harValgtSamtidigUttak: input.harValgtSamtidigUttak,
         ønskerFlerbarnsdager: input.ønskerFlerbarnsdager,
@@ -45,6 +47,7 @@ type KvoteKontekst = {
     rettighetType: RettighetType_fpoversikt;
     familiesituasjon: Familiesituasjon;
     familiehendelsedato: string;
+    termindato: string | undefined;
     valgtePerioder: Periode[];
     harValgtSamtidigUttak: boolean;
     ønskerFlerbarnsdager: boolean | undefined;
@@ -97,6 +100,7 @@ const harPeriodeFørToUkerFørFamiliehendelsesdato = (k: KvoteKontekst) =>
     UttaksperiodeValidatorer.erNoenPerioderFørToUkerFørFamiliehendelsesdato(
         k.valgtePerioder,
         k.familiehendelsedato,
+        k.termindato,
     );
 
 const harPeriodeFørTreUkerFørFamDatoEllerEtterLikFamDato = (k: KvoteKontekst) =>
