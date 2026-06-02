@@ -18,7 +18,7 @@ the link, the app loads the state and jumps straight to the step you point at.
 To land on a finished leave plan, use the `/planen-deres` step:
 
 ```
-https://www.nav.no/foreldrepenger/planlegger/planen-deres?data=<BASE64>
+https://www.nav.no/foreldrepenger/planlegger/planen-deres?data=<URL-ENCODED_BASE64>
 ```
 
 You do NOT need to compute the leave plan yourself. When you provide the four
