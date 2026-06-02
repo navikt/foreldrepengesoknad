@@ -79,7 +79,7 @@ const FARGER = {
     },
 } as const satisfies Record<string, { badge: string; border: string; Icon: ComponentType<{ className?: string; 'aria-hidden'?: boolean }> }>;
 
-type Katalogfarge = keyof typeof FARGER;
+export type Katalogfarge = keyof typeof FARGER;
 
 type HeroProps = {
     tittel: string;
