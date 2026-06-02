@@ -26,9 +26,38 @@ export interface IntlMessagesTestConfig {
 const DEFAULT_SOURCE_GLOB = 'src/**/*.{ts,tsx}';
 const DEFAULT_REFERENCE_LOCALE = 'nb_NO';
 
+interface Locale {
+    navn: string;
+    meldinger: Messages;
+}
+
 const finnManglendeNøkler = (kilde: Messages, mål: Messages): string[] => {
     const målNøkler = new Set(Object.keys(mål));
     return Object.keys(kilde).filter((key) => !målNøkler.has(key));
+};
+
+/**
+ * Lager alle unike par av locales (rekkefølgen i paret spiller ingen rolle).
+ * F.eks. blir [nb, nn, en] til parene (nb, nn), (nb, en) og (nn, en).
+ */
+const lagUnikeLocalePar = (localeListe: Locale[]): Array<[Locale, Locale]> => {
+    const par: Array<[Locale, Locale]> = [];
+    for (const [indeks, første] of localeListe.entries()) {
+        for (const andre of localeListe.slice(indeks + 1)) {
+            par.push([første, andre]);
+        }
+    }
+    return par;
+};
+
+/** Finner nøkler som finnes i `fra` men mangler i `til`, og logger hver av dem. */
+const loggManglendeNøkler = (fra: Locale, til: Locale): string[] => {
+    const mangler = finnManglendeNøkler(fra.meldinger, til.meldinger);
+    for (const key of mangler) {
+        // eslint-disable-next-line no-console
+        console.log(`Nøkkel '${key}' finnes i ${fra.navn} men ikke i ${til.navn}.`);
+    }
+    return mangler;
 };
 
 const hentKodeNøkler = async (
@@ -60,9 +89,9 @@ export const createIntlMessagesTest = ({
     extractAdditionalCodeKeys,
     ignoreReferenceKey,
 }: IntlMessagesTestConfig): void => {
-    const localeEntries = Object.entries(locales);
+    const localeListe: Locale[] = Object.entries(locales).map(([navn, meldinger]) => ({ navn, meldinger }));
     const referanseNavn =
-        referenceLocale ?? (DEFAULT_REFERENCE_LOCALE in locales ? DEFAULT_REFERENCE_LOCALE : localeEntries[0]?.[0]);
+        referenceLocale ?? (DEFAULT_REFERENCE_LOCALE in locales ? DEFAULT_REFERENCE_LOCALE : localeListe[0]?.navn);
     const referanse = referanseNavn ? locales[referanseNavn] : undefined;
 
     if (!referanse || !referanseNavn) {
@@ -71,25 +100,13 @@ export const createIntlMessagesTest = ({
 
     // eslint-disable-next-line vitest/valid-title
     describe(name, () => {
-        for (let i = 0; i < localeEntries.length; i++) {
-            for (let j = i + 1; j < localeEntries.length; j++) {
-                const [navnA, meldingerA] = localeEntries[i]!;
-                const [navnB, meldingerB] = localeEntries[j]!;
-                it(`${navnA} og ${navnB} skal ha de samme nøklene`, () => {
-                    const manglerIB = finnManglendeNøkler(meldingerA, meldingerB);
-                    const manglerIA = finnManglendeNøkler(meldingerB, meldingerA);
-                    for (const key of manglerIB) {
-                        // eslint-disable-next-line no-console
-                        console.log(`Nøkkel '${key}' finnes i ${navnA} men ikke i ${navnB}.`);
-                    }
-                    for (const key of manglerIA) {
-                        // eslint-disable-next-line no-console
-                        console.log(`Nøkkel '${key}' finnes i ${navnB} men ikke i ${navnA}.`);
-                    }
-                    expect(manglerIB.length).toBe(0);
-                    expect(manglerIA.length).toBe(0);
-                });
-            }
+        for (const [a, b] of lagUnikeLocalePar(localeListe)) {
+            it(`${a.navn} og ${b.navn} skal ha de samme nøklene`, () => {
+                const manglerIB = loggManglendeNøkler(a, b);
+                const manglerIA = loggManglendeNøkler(b, a);
+                expect(manglerIB).toHaveLength(0);
+                expect(manglerIA).toHaveLength(0);
+            });
         }
 
         it(`i18n-strenger i koden skal finnes i ${referanseNavn}`, async () => {
