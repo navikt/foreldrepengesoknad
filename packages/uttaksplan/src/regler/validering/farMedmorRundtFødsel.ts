@@ -11,7 +11,8 @@ export const lagFarMedmorRundtFødselOmråde = (intl: IntlShape): Valideringsomr
     område: 'Far/medmor sitt samtidige uttak rundt fødsel',
     beskrivelse:
         'Regler for samtidig uttak når minst én av periodene ligger i verneperioden rundt fødsel ' +
-        '(fra 2 uker før til 6 uker etter fødsel/termin). Her er kravene strengere enn ellers.',
+        '(fra 2 uker før til 6 uker etter fødsel/termin). Her er kravene strengere enn ellers. ' +
+        'Gjelder ikke ved adopsjon, som ikke har en verneperiode rundt fødsel.',
     byggKontekst: byggKontekst,
     regler: lagRegler(intl),
 });
@@ -83,9 +84,13 @@ const lagRegler = (intl: IntlShape): ReadonlyArray<Valideringsregel<FarMedmorRun
 ];
 
 const byggKontekst = (input: ValideringInput): FarMedmorRundtFødselKontekst | null => {
-    const { formValues, perioder, familiehendelsedato, termindato } = input;
+    const { formValues, perioder, familiehendelsedato, termindato, familiesituasjon } = input;
 
     if (!erUtfyltForSamtidigUttak(formValues)) {
+        return null;
+    }
+
+    if (familiesituasjon === 'adopsjon') {
         return null;
     }
 
