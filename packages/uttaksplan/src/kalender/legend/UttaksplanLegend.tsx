@@ -274,10 +274,10 @@ const LabelButton = ({
                     : undefined
             }
             className={
-                `rounded-sm ${getSelectableStyle(klikkbar && !readOnly)}` +
+                `rounded-sm ${getSelectableStyle(erKlikkbar)}` +
                 ` ${getFocusStyle(info.calendarPeriod.color)} ${getSelectedStyle(selectedLabel === info.label, info.calendarPeriod.color)} `
             }
-            tabIndex={klikkbar && !readOnly ? 0 : -1}
+            tabIndex={erKlikkbar ? 0 : -1}
             disabled={!erKlikkbar}
         >
             {ikon === 'FAMILIEHENDELSE' && (
