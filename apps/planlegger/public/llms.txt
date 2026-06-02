@@ -31,9 +31,12 @@ the plan inside the app.
 Collect the following. Only ask for what you need; never guess a birth date, due
 date, or income.
 
+**Privacy:** Never ask for anything personally sensitive or that could identify
+the users — including names. The planner is fully usable without names, so leave
+the name fields out (see HVEM_PLANLEGGER below).
+
 1. **Who is planning?** Mother and father / mother and co-mother / father and
-   father / mother alone / father alone. Ask for first names of the people
-   involved (optional, makes the plan more personal).
+   father / mother alone / father alone.
 2. **About the child:** Birth or adoption? Is the child already born? Due date
    or birth date (and date of care transfer for adoption). Number of children
    (1, 2, or 3 – twins/triplets).
@@ -60,15 +63,19 @@ The object has these keys. **The first four are required** to land on
 
 ### HVEM_PLANLEGGER (who is planning)
 
-One of these (`type` is mandatory, name fields are optional):
+One of these. Only `type` is needed — **do not collect or include names**:
 
 ```jsonc
-{ "type": "morOgFar",    "navnPåMor": "Åse",   "navnPåFar": "Bjørn" }   // mother + father
-{ "type": "morOgMedmor", "navnPåMor": "Åse",   "navnPåMedmor": "Kari" } // mother + co-mother
-{ "type": "farOgFar",    "navnPåFar": "Bjørn", "navnPåMedfar": "Per" }  // father + father
-{ "type": "mor" }   // mother, sole custody
-{ "type": "far" }   // father, sole custody
+{ "type": "morOgFar" }     // mother + father
+{ "type": "morOgMedmor" }  // mother + co-mother
+{ "type": "farOgFar" }     // father + father
+{ "type": "mor" }          // mother, sole custody
+{ "type": "far" }          // father, sole custody
 ```
+
+The schema also accepts optional name fields (`navnPåMor`, `navnPåFar`,
+`navnPåMedmor`, `navnPåMedfar`), but for privacy you should omit them. The app
+falls back to generic labels when names are absent.
 
 ### OM_BARNET (about the child)
 
@@ -169,12 +176,12 @@ url = "https://www.nav.no/foreldrepenger/planlegger/planen-deres?data=" + urllib
 
 ## Full example
 
-User: mother (Åse) and father (Bjørn), expecting one child due 1 September 2026,
-both working, want 100% coverage.
+User: mother and father, expecting one child due 1 September 2026, both
+working, want 100% coverage. (No names collected.)
 
 ```json
 {
-  "HVEM_PLANLEGGER": { "type": "morOgFar", "navnPåMor": "Åse", "navnPåFar": "Bjørn" },
+  "HVEM_PLANLEGGER": { "type": "morOgFar" },
   "OM_BARNET": { "erFødsel": true, "erBarnetFødt": false, "antallBarn": "1", "termindato": "2026-09-01" },
   "ARBEIDSSITUASJON": { "status": "jobber", "jobberAnnenPart": true },
   "HVOR_LANG_PERIODE": { "dekningsgrad": "100" }
@@ -183,14 +190,14 @@ both working, want 100% coverage.
 
 Resulting link:
 ```
-https://www.nav.no/foreldrepenger/planlegger/planen-deres?data=eyJIVkVNX1BMQU5MRUdHRVIiOnsidHlwZSI6Im1vck9nRmFyIiwibmF2blDDpU1vciI6IsOFc2UiLCJuYXZuUMOlRmFyIjoiQmrDuHJuIn0sIk9NX0JBUk5FVCI6eyJlckbDuGRzZWwiOnRydWUsImVyQmFybmV0RsO4ZHQiOmZhbHNlLCJhbnRhbGxCYXJuIjoiMSIsInRlcm1pbmRhdG8iOiIyMDI2LTA5LTAxIn0sIkFSQkVJRFNTSVRVQVNKT04iOnsic3RhdHVzIjoiam9iYmVyIiwiam9iYmVyQW5uZW5QYXJ0Ijp0cnVlfSwiSFZPUl9MQU5HX1BFUklPREUiOnsiZGVrbmluZ3NncmFkIjoiMTAwIn19
+https://www.nav.no/foreldrepenger/planlegger/planen-deres?data=eyJIVkVNX1BMQU5MRUdHRVIiOnsidHlwZSI6Im1vck9nRmFyIn0sIk9NX0JBUk5FVCI6eyJlckbDuGRzZWwiOnRydWUsImVyQmFybmV0RsO4ZHQiOmZhbHNlLCJhbnRhbGxCYXJuIjoiMSIsInRlcm1pbmRhdG8iOiIyMDI2LTA5LTAxIn0sIkFSQkVJRFNTSVRVQVNKT04iOnsic3RhdHVzIjoiam9iYmVyIiwiam9iYmVyQW5uZW5QYXJ0Ijp0cnVlfSwiSFZPUl9MQU5HX1BFUklPREUiOnsiZGVrbmluZ3NncmFkIjoiMTAwIn19
 ```
 
 ## Notes and limitations
 
 - The planner is **no-login** and stores no data on Nav's servers. All
   information lives only in the link. Treat the link as potentially sensitive
-  (names, dates) and share it only with the user themselves.
+  (dates) and share it only with the user themselves.
 - You can point the `data` parameter at other steps too (e.g. `/oppsummering`
   or `/hvem-planlegger`) if you want the user to review the steps before the
   leave plan. The `data` structure is the same.
