@@ -773,12 +773,13 @@ describe('useGyldigeKvotetyper - fars kvoter', () => {
         });
     });
 
-    // Barn født før termin: grensen skal følge termin (2 uker før termin), i tråd med
-    // søknadssteget «når vil du starte» (getFørsteUttaksdag2UkerFørFødsel i OppstartDatoInput).
+    // Barn født før termin: grensen skal følge den tidligste datoen (fødsel), altså
+    // 2 uker før fødsel. Vi bruker den tidligste av fødsel og termin, og regner 2 uker
+    // (10 uttaksdager) før den.
     describe('barn født før termin', () => {
         const FØDSELSDATO = '2024-06-10'; // Født mandag 10. juni
         const TERMINDATO = '2024-06-17'; // Termin mandag 17. juni (1 uke etter fødsel)
-        // termin − 2 uker = mandag 3. juni = tidligst tillatt startdato for far
+        // fødsel − 2 uker = mandag 27. mai = tidligst tillatt startdato for far
 
         const barnFødtFørTermin = {
             type: BarnType.FØDT,
@@ -787,11 +788,11 @@ describe('useGyldigeKvotetyper - fars kvoter', () => {
             termindato: TERMINDATO,
         } satisfies ComponentProps<typeof UttaksplanDataProvider>['barn'];
 
-        it('skal ha gyldige kontotyper for far når perioden starter nøyaktig 2 uker før termin', () => {
+        it('skal ha gyldige kontotyper for far når perioden starter nøyaktig 2 uker før fødsel', () => {
             const { result } = renderHook(
                 () =>
                     useGyldigeKvotetyper({
-                        valgtePerioder: [{ fom: '2024-06-03', tom: '2024-06-07' }],
+                        valgtePerioder: [{ fom: '2024-05-27', tom: '2024-06-07' }],
                         harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
                         ønskerFlerbarnsdager: false,
                     }),
@@ -811,11 +812,11 @@ describe('useGyldigeKvotetyper - fars kvoter', () => {
             expect(result.current.gyldigeStønadskontoerForFarMedmor).toContain('FEDREKVOTE');
         });
 
-        it('skal ikke ha gyldige kontotyper for far når perioden starter før 2 uker før termin', () => {
+        it('skal ikke ha gyldige kontotyper for far når perioden starter før 2 uker før fødsel', () => {
             const { result } = renderHook(
                 () =>
                     useGyldigeKvotetyper({
-                        valgtePerioder: [{ fom: '2024-05-31', tom: '2024-06-07' }],
+                        valgtePerioder: [{ fom: '2024-05-24', tom: '2024-06-07' }],
                         harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
                         ønskerFlerbarnsdager: false,
                     }),
