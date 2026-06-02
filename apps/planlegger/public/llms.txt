@@ -188,7 +188,7 @@ working, want 100% coverage. (No names collected.)
 }
 ```
 
-Resulting link:
+Resulting link (Base64 is URL-encoded; this example happens to contain no reserved characters so it looks unescaped):
 ```
 https://www.nav.no/foreldrepenger/planlegger/planen-deres?data=eyJIVkVNX1BMQU5MRUdHRVIiOnsidHlwZSI6Im1vck9nRmFyIn0sIk9NX0JBUk5FVCI6eyJlckbDuGRzZWwiOnRydWUsImVyQmFybmV0RsO4ZHQiOmZhbHNlLCJhbnRhbGxCYXJuIjoiMSIsInRlcm1pbmRhdG8iOiIyMDI2LTA5LTAxIn0sIkFSQkVJRFNTSVRVQVNKT04iOnsic3RhdHVzIjoiam9iYmVyIiwiam9iYmVyQW5uZW5QYXJ0Ijp0cnVlfSwiSFZPUl9MQU5HX1BFUklPREUiOnsiZGVrbmluZ3NncmFkIjoiMTAwIn19
 ```
