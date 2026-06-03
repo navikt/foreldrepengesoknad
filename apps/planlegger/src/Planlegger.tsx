@@ -18,7 +18,7 @@ import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettU
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { KontoBeregningResultatDto, OmBarnetPlanlegger } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
-import { decodeBase64 } from '@navikt/fp-utils';
+import { decompressFromUrl } from '@navikt/fp-utils';
 
 import { PlanleggerRouter } from './PlanleggerRouter';
 
@@ -90,7 +90,7 @@ export const PlanleggerDataInit = () => {
     const intl = useIntl();
 
     const dataParam = new URLSearchParams(locations.search).get('data');
-    const data = dataParam ? (JSON.parse(decodeBase64(dataParam)) as ContextDataMap) : undefined;
+    const data = dataParam ? (JSON.parse(decompressFromUrl(dataParam)) as ContextDataMap) : undefined;
 
     // Denne useEffecten kjøres for at skyra-undersøkelsen skal trigges inline på oppsummering-siden
     useEffect(() => {
