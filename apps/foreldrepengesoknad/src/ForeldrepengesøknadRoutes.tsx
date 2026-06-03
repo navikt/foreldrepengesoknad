@@ -319,9 +319,8 @@ export const ForeldrepengesøknadRoutes = ({
         }
 
         const currentPath = decodeURIComponent(routerLocation.pathname);
-        const alltidTillatne: string[] = [SøknadRoutes.KVITTERING, SøknadRoutes.IKKE_MYNDIG];
 
-        if (alltidTillatne.includes(currentPath)) {
+        if (currentPath === SøknadRoutes.KVITTERING || currentPath === SøknadRoutes.IKKE_MYNDIG) {
             return;
         }
 
