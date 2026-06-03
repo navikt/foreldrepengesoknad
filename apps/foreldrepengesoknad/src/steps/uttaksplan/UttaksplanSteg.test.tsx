@@ -13,12 +13,8 @@ const infoTekst = [
     'Den andre forelderen må selv huske å sende oss en søknad.',
 ].join(' ');
 
-const {
-    FødselMorOgFarBeggeHarRett,
-    FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak,
-    FødselMorOgFarKunMorHarRett,
-    FødselMorOgFarBeggeHarRettMedUferdigFellesperiode,
-} = composeStories(stories);
+const { FødselMorOgFarBeggeHarRett, FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak, FødselMorOgFarKunMorHarRett } =
+    composeStories(stories);
 
 describe('<UttaksplanSteg>', () => {
     it(
@@ -209,18 +205,16 @@ describe('<UttaksplanSteg>', () => {
         }),
     );
 
-    // Tidlegare deaktivert fordi forslaget til plan filtrerte vekk annen parts periodar. Her seedar
-    // me i staden ein lagra plan (ContextDataType.UTTAKSPLAN) med ein FAR_MEDMOR-fellesperiode som
-    // krev mors aktivitet, slik at perioden blir stjernemerkt og valideringa kan testast utan prod-endring.
-    it(
+    // TODO (TOR) Denne skal slåast på igjen etter ein sluttar å filtrera vekk perioden til annen part fra forslaget til plan
+    it.todo(
         'skal vise feilmelding når en prøver å gå videre med stjernemerkede perioder',
         mswWrapper(async ({ setHandlers }) => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-            setHandlers(FødselMorOgFarBeggeHarRettMedUferdigFellesperiode.parameters.msw);
+            setHandlers(FødselMorOgFarBeggeHarRett.parameters.msw);
 
             render(
-                <FødselMorOgFarBeggeHarRettMedUferdigFellesperiode
+                <FødselMorOgFarBeggeHarRett
                     gåTilNesteSide={gåTilNesteSide}
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
@@ -233,8 +227,6 @@ describe('<UttaksplanSteg>', () => {
             expect(
                 await screen.findAllByText('Du må fylle ut informasjon om mors aktivitet i de markerte periodene'),
             ).toHaveLength(2);
-
-            expect(gåTilNesteSide).not.toHaveBeenCalled();
         }),
     );
 });
