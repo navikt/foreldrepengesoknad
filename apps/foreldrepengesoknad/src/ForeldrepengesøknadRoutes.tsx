@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions } from 'api/queries';
-import { SøknadRoutes, isRouteAvailable } from 'appData/routes';
+import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
+import { SøknadRoutes } from 'appData/routes';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
 import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSendSøknad } from 'appData/useSendSøknad';
 import { Forside } from 'pages/forside/Forside';
 import { KvitteringPage } from 'pages/kvittering/KvitteringPage';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { AndreInntektskilderSteg } from 'steps/andre-inntektskilder/AndreInntektskilderSteg';
 import { AnnenForelderSteg } from 'steps/annen-forelder/AnnenForelderSteg';
@@ -267,7 +268,6 @@ const renderSøknadRoutes = ({
 };
 
 interface Props {
-    currentRoute: SøknadRoutes;
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
     foreldrepengerSaker: FpSak_fpoversikt[];
     lagretErEndringssøknad?: boolean;
@@ -276,7 +276,6 @@ interface Props {
 }
 
 export const ForeldrepengesøknadRoutes = ({
-    currentRoute,
     søkerInfo,
     foreldrepengerSaker,
     lagretErEndringssøknad,
@@ -285,7 +284,6 @@ export const ForeldrepengesøknadRoutes = ({
 }: Props) => {
     const navigate = useNavigate();
     const routerLocation = useLocation();
-    const isFirstTimeLoadingAppRef = useRef(true);
 
     const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(lagretHarGodkjentVilkår || false);
     const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad || false);
@@ -307,21 +305,30 @@ export const ForeldrepengesøknadRoutes = ({
     const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     useQuery(annenPartVedtakOptions);
 
+    // APP_ROUTE er einaste sanning for kva steg brukaren er på, og blir alltid
+    // halden gyldig av stegnavigasjonen (data for steget finst når APP_ROUTE peikar
+    // dit). Endrar nettlesarens tilbake/fram-knapp URL-en til eit anna steg,
+    // snappar vi tilbake til APP_ROUTE slik at vi aldri monterer eit steg utan dei
+    // påkravde dataene. Stegvelgar og «Tilbake»-knappar navigerer via APP_ROUTE og
+    // held difor URL-en i synk.
+    const appRoute = useContextGetData(ContextDataType.APP_ROUTE);
+
     useEffect(() => {
-        if (
-            currentRoute &&
-            erMyndig(søkerInfo.fødselsdato) &&
-            lagretHarGodkjentVilkår &&
-            isFirstTimeLoadingAppRef.current
-        ) {
-            isFirstTimeLoadingAppRef.current = false;
-            if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår)) {
-                void navigate(currentRoute);
-            } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING.toString()) {
-                void navigate(SøknadRoutes.UTTAKSPLAN);
-            }
+        if (!appRoute || !harGodkjentVilkår || !erMyndig(søkerInfo.fødselsdato)) {
+            return;
         }
-    }, [currentRoute, søkerInfo.fødselsdato, lagretHarGodkjentVilkår, navigate, routerLocation.pathname]);
+
+        const currentPath = decodeURIComponent(routerLocation.pathname);
+
+        const ignoredPaths = [SøknadRoutes.KVITTERING, SøknadRoutes.IKKE_MYNDIG].map((path) => path.toString());
+        if (ignoredPaths.includes(currentPath)) {
+            return;
+        }
+
+        if (currentPath !== appRoute.toString()) {
+            void navigate(appRoute, { replace: true });
+        }
+    }, [appRoute, harGodkjentVilkår, søkerInfo.fødselsdato, routerLocation.pathname, navigate]);
 
     if (errorSendSøknad) {
         return (
