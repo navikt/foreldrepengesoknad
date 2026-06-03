@@ -250,8 +250,9 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                         <div
                             className={[
                                 'fixed right-0 bottom-0 left-0 z-40 w-full',
+                                'bg-ax-bg-default ax-md:bg-transparent',
                                 'ax-md:sticky ax-md:top-24 ax-md:ml-4 ax-md:max-w-82 ax-md:self-start',
-                                'pb-[env(safe-area-inset-bottom,1rem)]',
+                                'pb-[env(safe-area-inset-bottom,1rem)] ax-md:pb-0',
                             ].join(' ')}
                         >
                             <RedigerKalenderIndex
