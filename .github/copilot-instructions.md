@@ -81,6 +81,49 @@ conventions, see:
   `navikt`) – Knowledge base for chat, IDE agent, and CLI. Use with: _"Using the
   TeamForeldrepenger space owned by navikt, ..."_
 
+## Uttaksplan rule catalog (self-documenting Storybook)
+
+The `packages/uttaksplan/src/regler/` directory contains the business rules for
+the leave planner (uttaksplan) — visibility rules, quota type rules, field
+validation, submit validation, and alert rules. Each rule category lives in its
+own subdirectory and has a corresponding `*.stories.tsx` file that renders a
+self-documenting catalog page in Storybook.
+
+The stories import the rule arrays directly from the source modules (e.g.
+`INFORMASJONS_ALERTS`, `BLOKKERENDE_ALERTS`, `KONTEKSTUELLE_ALERTS`), so **rules
+update automatically** in Storybook when you change them — and new rules show
+up automatically as long as you add them to the source array. When you:
+
+- **Add a new rule constant** — add it to the exported array in the same source
+  file (e.g. `INFORMASJONS_ALERTS` in `informasjonsAlerts.tsx`). The story picks
+  it up automatically.
+- **Add a new rule area (område)** — you must create a new område object in the
+  story and include it in the top-level array.
+- **Add a new rule category** — create a new `.stories.tsx` following the
+  existing pattern (use `RegelkatalogSide`). Export a single array of rule
+  constants from the source module and import it in the story.
+
+| Rule category | Source directory | Story file |
+|---------------|-----------------|------------|
+| Quota types (stønadskonto) | `regler/kvotetype/` | `Kvotetyperegler.stories.tsx` |
+| Visibility (field/button) | `regler/synlighet/` | `Synlighetsregler.stories.tsx` |
+| Field validation | `regler/felt/` | `Feltregler.stories.tsx` |
+| Submit validation | `regler/validering/` | `Valideringsregler.stories.tsx` |
+| Alerts / info messages | `regler/alert/` | `Alertregler.stories.tsx` |
+| Color catalog (kalender + liste) | `kalender/` | `Fargekatalog.stories.tsx` |
+
+The color catalog (`Fargekatalog.stories.tsx`) documents the full color system
+for both the calendar and list views side-by-side. It uses mock periods fed into
+the **production functions** (`getKalenderFargeForPeriode`, `finnBakgrunnsfarge`,
+`getBorderFarge`, `getIkon`, `getLegendLabelFromPeriode`), so color changes are
+reflected automatically. Only interaction colors (NONE, DARKBLUE, LIGHTBLUE,
+LIGHTGREEN) and special-day markers (barnehage, helg) are static. When you:
+
+- **Change color logic** in `usePerioderForKalendervisning.tsx` or
+  `PeriodeListeHeaderUtils.tsx` — the catalog updates automatically.
+- **Add a new period type** — add a new `beregnEntry()` call with a mock period
+  in the relevant område array.
+
 ## Guidelines for code changes
 
 - Use Norwegian domain terminology where appropriate (søknad, uttaksplan,

@@ -32,7 +32,6 @@
         "react-intl": "10.1.6"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "8.6.0",
         "@navikt/ds-tailwind": "8.10.5",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",

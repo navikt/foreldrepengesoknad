@@ -18,6 +18,10 @@ const proxy = {
     FPGRUNNDATA_API_URL: serverConfig.påkrevMiljøVariabel('FPGRUNNDATA_API_URL'),
 } as const;
 
+const fjernSesjonsHeadere = (proxyRequest: { removeHeader: (name: string) => void }) => {
+    proxyRequest.removeHeader('cookie');
+};
+
 export function configureReverseProxyApi(router: Router) {
     addProxyHandler(router, {
         ingoingUrl: '/fpsoknad/api',
@@ -37,6 +41,14 @@ export function configureReverseProxyApi(router: Router) {
             target: proxy.FPGRUNNDATA_API_URL,
             changeOrigin: true,
             logger: console,
+            on: {
+                proxyReq: (proxyRequest) => {
+                    // Strip sesjons-cookien slik at IDporten-sidecar-cookien ikkje lek
+                    // ut til fpgrunndata. Tenesta krev ikkje autentisering og skal
+                    // ikkje sjå brukar-sesjonen vår.
+                    fjernSesjonsHeadere(proxyRequest);
+                },
+            },
         }),
     );
 }

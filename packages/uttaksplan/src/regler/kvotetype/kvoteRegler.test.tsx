@@ -4,8 +4,8 @@ import { describe, expect, it } from 'vitest';
 
 import { BarnType } from '@navikt/fp-constants';
 
-import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
-import { useHentGyldigeKvotetyper } from './useHentGyldigeKvotetyper';
+import { UttaksplanDataProvider } from '../../context/UttaksplanDataContext';
+import { useGyldigeKvotetyper } from './kvoteRegler';
 
 const FAMILIEHENDELSESDATO = '2024-06-17';
 
@@ -57,11 +57,15 @@ const getWrapper =
         </UttaksplanDataProvider>
     );
 
-describe('useHentGyldigeKvotetyper - mors kvoter', () => {
+describe('useGyldigeKvotetyper - mors kvoter', () => {
     it('skal ikke ha gyldige kontotyper for mor når far er søker og har aleneomsorg', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper([{ fom: '2024-06-18', tom: '2024-06-20' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-06-18', tom: '2024-06-20' }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -80,7 +84,11 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal ikke ha gyldige kontotyper for mor når far er søker og bare søker har rett', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper([{ fom: '2024-06-18', tom: '2024-06-20' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-06-18', tom: '2024-06-20' }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -99,7 +107,11 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal ikke ha gyldige kontotyper for mor når adopsjon og valgte dager er før familiehendelsesdato', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper([{ fom: '2024-06-14', tom: '2024-06-18' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-06-14', tom: '2024-06-18' }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     barn: {
@@ -118,11 +130,11 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal ha gyldige kontotyper for mor når adopsjon og valgte dager er lik eller etter familiehendelsesdato', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper(
-                    [{ fom: FAMILIEHENDELSESDATO, tom: '2024-08-18' }],
-                    !HAR_VALGT_SAMTIDIG_UTTAK,
-                    false,
-                ),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: FAMILIEHENDELSESDATO, tom: '2024-08-18' }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     barn: {
@@ -145,7 +157,12 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
 
     it('skal som mor ved fødsel ikke kunne velge fedrekvote ved valg av samtidig uttak', () => {
         const { result } = renderHook(
-            () => useHentGyldigeKvotetyper([{ fom: '2024-08-13', tom: '2024-08-18' }], HAR_VALGT_SAMTIDIG_UTTAK, false),
+            () =>
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-08-13', tom: '2024-08-18' }],
+                    harValgtSamtidigUttak: HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper(),
             },
@@ -157,14 +174,14 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal ikke ha gyldige perioder for mor når det er fødsel og det er valgt perioder på begge sider av familiehendelsedato', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper(
-                    [
+                useGyldigeKvotetyper({
+                    valgtePerioder: [
                         { fom: '2024-06-13', tom: '2024-06-14' },
                         { fom: '2024-06-20', tom: '2024-06-21' },
                     ],
-                    !HAR_VALGT_SAMTIDIG_UTTAK,
-                    false,
-                ),
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper(),
             },
@@ -176,7 +193,11 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal kun ha foreldrepenger før fødsel i treukersperioden før fødsel', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper([{ fom: '2024-05-27', tom: '2024-06-14' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-05-27', tom: '2024-06-14' }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper(),
             },
@@ -188,11 +209,11 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal ikke ha foreldrepenger før fødsel når familiehendelsesdato er valgt', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper(
-                    [{ fom: '2024-05-27', tom: FAMILIEHENDELSESDATO }],
-                    !HAR_VALGT_SAMTIDIG_UTTAK,
-                    false,
-                ),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-05-27', tom: FAMILIEHENDELSESDATO }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper(),
             },
@@ -204,11 +225,11 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal ikke ha foreldrepenger når en har valgt dag før tre uker før fødsel', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper(
-                    [{ fom: '2024-05-24', tom: FAMILIEHENDELSESDATO }],
-                    !HAR_VALGT_SAMTIDIG_UTTAK,
-                    false,
-                ),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-05-24', tom: FAMILIEHENDELSESDATO }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper(),
             },
@@ -220,11 +241,11 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal ikke ha noen gyldige kontotyper for mor når en har valgt dag mer enn 60 dager før fødsel', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper(
-                    [{ fom: '2024-03-24', tom: FAMILIEHENDELSESDATO }],
-                    !HAR_VALGT_SAMTIDIG_UTTAK,
-                    false,
-                ),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-03-24', tom: FAMILIEHENDELSESDATO }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper(),
             },
@@ -236,11 +257,11 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal kun ha mors kvote i seksukersperioden etter fødsel når begge har rett', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper(
-                    [{ fom: FAMILIEHENDELSESDATO, tom: '2024-06-20' }],
-                    !HAR_VALGT_SAMTIDIG_UTTAK,
-                    false,
-                ),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: FAMILIEHENDELSESDATO, tom: '2024-06-20' }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper(),
             },
@@ -252,11 +273,11 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal ha mors kvote og foreldrepenger-kvote i seksukersperioden etter fødsel når kun mor har rett', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper(
-                    [{ fom: FAMILIEHENDELSESDATO, tom: '2024-06-20' }],
-                    !HAR_VALGT_SAMTIDIG_UTTAK,
-                    false,
-                ),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: FAMILIEHENDELSESDATO, tom: '2024-06-20' }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -275,7 +296,11 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal ha foreldrepenger som gyldig kontotype for mor når kun mor har rett og perioden er mer enn tre uker før fødsel', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper([{ fom: '2024-04-22', tom: '2024-05-24' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-04-22', tom: '2024-05-24' }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -294,7 +319,11 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal ha foreldrepenger som gyldig kontotype for mor med aleneomsorg og perioden er mer enn tre uker før fødsel', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper([{ fom: '2024-04-22', tom: '2024-05-24' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-04-22', tom: '2024-05-24' }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -313,7 +342,11 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal ikke ha foreldrepenger som gyldig kontotype for mor når kun mor har rett i treukersperioden før fødsel', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper([{ fom: '2024-05-27', tom: '2024-06-14' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-05-27', tom: '2024-06-14' }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -332,7 +365,11 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal ikke ha foreldrepenger som gyldig kontotype for mor med aleneomsorg i treukersperioden før fødsel', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper([{ fom: '2024-05-27', tom: '2024-06-14' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-05-27', tom: '2024-06-14' }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -351,7 +388,11 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     it('skal ikke ha foreldrepenger som gyldig kontotype for mor når kun mor har rett og perioden er mer enn 60 dager før fødsel', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper([{ fom: '2024-03-24', tom: '2024-05-24' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-03-24', tom: '2024-05-24' }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -368,11 +409,15 @@ describe('useHentGyldigeKvotetyper - mors kvoter', () => {
     });
 });
 
-describe('useHentGyldigeKvotetyper - fars kvoter', () => {
+describe('useGyldigeKvotetyper - fars kvoter', () => {
     it('skal ikke ha gyldige kontotyper for far når mor er søker og har aleneomsorg', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper([{ fom: '2024-06-18', tom: '2024-06-20' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-06-18', tom: '2024-06-20' }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -391,7 +436,11 @@ describe('useHentGyldigeKvotetyper - fars kvoter', () => {
     it('skal ikke ha gyldige kontotyper for far når mor er søker og bare søker har rett', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper([{ fom: '2024-06-18', tom: '2024-06-20' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-06-18', tom: '2024-06-20' }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -410,7 +459,11 @@ describe('useHentGyldigeKvotetyper - fars kvoter', () => {
     it('skal ikke ha gyldige kontotyper for far når adopsjon og valgte dager er før familiehendelsesdato', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper([{ fom: '2024-06-14', tom: '2024-06-18' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-06-14', tom: '2024-06-18' }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -435,11 +488,11 @@ describe('useHentGyldigeKvotetyper - fars kvoter', () => {
     it('skal ha gyldige kontotyper for far når adopsjon og valgte dager er lik eller etter familiehendelsesdato', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper(
-                    [{ fom: FAMILIEHENDELSESDATO, tom: '2024-06-18' }],
-                    !HAR_VALGT_SAMTIDIG_UTTAK,
-                    false,
-                ),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: FAMILIEHENDELSESDATO, tom: '2024-06-18' }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -470,11 +523,11 @@ describe('useHentGyldigeKvotetyper - fars kvoter', () => {
     it('skal som far ved fødsel ikke kunne velge mødrekvote ved valg av samtidig uttak', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper(
-                    [{ fom: FAMILIEHENDELSESDATO, tom: '2024-08-18' }],
-                    HAR_VALGT_SAMTIDIG_UTTAK,
-                    false,
-                ),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: FAMILIEHENDELSESDATO, tom: '2024-08-18' }],
+                    harValgtSamtidigUttak: HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -497,14 +550,14 @@ describe('useHentGyldigeKvotetyper - fars kvoter', () => {
     it('skal ikke ha gyldige perioder for far når det er fødsel og det er valgt perioder før to uker før familiehendelsedato', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper(
-                    [
+                useGyldigeKvotetyper({
+                    valgtePerioder: [
                         { fom: '2024-05-31', tom: '2024-06-14' },
                         { fom: '2024-06-20', tom: '2024-06-21' },
                     ],
-                    !HAR_VALGT_SAMTIDIG_UTTAK,
-                    false,
-                ),
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -523,14 +576,14 @@ describe('useHentGyldigeKvotetyper - fars kvoter', () => {
     it('skal ikke ha gyldige perioder for far når det er valgt perioder både før og etter familiehendelsedato', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper(
-                    [
+                useGyldigeKvotetyper({
+                    valgtePerioder: [
                         { fom: '2024-06-03', tom: '2024-06-14' },
                         { fom: '2024-06-20', tom: '2024-06-21' },
                     ],
-                    !HAR_VALGT_SAMTIDIG_UTTAK,
-                    false,
-                ),
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -549,7 +602,11 @@ describe('useHentGyldigeKvotetyper - fars kvoter', () => {
     it('skal tillate periode som krysser familiehendelsedato for far når kun far har rett', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper([{ fom: '2024-06-13', tom: '2024-06-21' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-06-13', tom: '2024-06-21' }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -568,14 +625,14 @@ describe('useHentGyldigeKvotetyper - fars kvoter', () => {
     it('skal tillate perioder både før og etter familiehendelsedato for far når kun far har rett', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper(
-                    [
+                useGyldigeKvotetyper({
+                    valgtePerioder: [
                         { fom: '2024-06-03', tom: '2024-06-14' },
                         { fom: '2024-06-20', tom: '2024-06-21' },
                     ],
-                    !HAR_VALGT_SAMTIDIG_UTTAK,
-                    false,
-                ),
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -594,7 +651,11 @@ describe('useHentGyldigeKvotetyper - fars kvoter', () => {
     it('skal ikke ha gyldige perioder for far når én periode krysser familiehendelsedato', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper([{ fom: '2024-06-13', tom: '2024-06-21' }], !HAR_VALGT_SAMTIDIG_UTTAK, false),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-06-13', tom: '2024-06-21' }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper({
                     foreldreInfo: {
@@ -613,16 +674,166 @@ describe('useHentGyldigeKvotetyper - fars kvoter', () => {
     it('skal ikke ha noen gyldige kontotyper for far når en har valgt dag mer enn 60 dager før fødsel', () => {
         const { result } = renderHook(
             () =>
-                useHentGyldigeKvotetyper(
-                    [{ fom: '2024-03-24', tom: FAMILIEHENDELSESDATO }],
-                    !HAR_VALGT_SAMTIDIG_UTTAK,
-                    false,
-                ),
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-03-24', tom: FAMILIEHENDELSESDATO }],
+                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                    ønskerFlerbarnsdager: false,
+                }),
             {
                 wrapper: getWrapper(),
             },
         );
 
         expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual([]);
+    });
+
+    // Barn født etter termin: far skal kunne starte 2 uker før termindato, ikke fødselsdato
+    describe('barn født etter termin', () => {
+        const TERMINDATO = '2024-06-10'; // Termin mandag 10. juni
+        // familiehendelsedato = 2024-06-17 (1 uke etter termin)
+        // termindato - 10 uttaksdager = mandag 27. mai = tidligst tillatt startdato for far
+
+        const barnMedTermindato = {
+            type: BarnType.FØDT,
+            antallBarn: 1,
+            fødselsdatoer: [FAMILIEHENDELSESDATO],
+            termindato: TERMINDATO,
+        } satisfies ComponentProps<typeof UttaksplanDataProvider>['barn'];
+
+        it('skal ha gyldige kontotyper for far (begge rett) når perioden starter nøyaktig 2 uker før termindato', () => {
+            const { result } = renderHook(
+                () =>
+                    useGyldigeKvotetyper({
+                        valgtePerioder: [{ fom: '2024-05-27', tom: '2024-06-09' }],
+                        harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                        ønskerFlerbarnsdager: false,
+                    }),
+                {
+                    wrapper: getWrapper({
+                        barn: barnMedTermindato,
+                        foreldreInfo: {
+                            søker: 'FAR_MEDMOR',
+                            rettighetType: 'BEGGE_RETT',
+                            navnPåForeldre: NAVN_PÅ_FORELDRE,
+                            erMedmorDelAvSøknaden: false,
+                        },
+                    }),
+                },
+            );
+
+            expect(result.current.gyldigeStønadskontoerForFarMedmor).toContain('FEDREKVOTE');
+        });
+
+        it('skal ha gyldige kontotyper for far (bare far rett) når perioden starter nøyaktig 2 uker før termindato', () => {
+            const { result } = renderHook(
+                () =>
+                    useGyldigeKvotetyper({
+                        valgtePerioder: [{ fom: '2024-05-27', tom: '2024-06-21' }],
+                        harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                        ønskerFlerbarnsdager: false,
+                    }),
+                {
+                    wrapper: getWrapper({
+                        barn: barnMedTermindato,
+                        foreldreInfo: {
+                            søker: 'FAR_MEDMOR',
+                            rettighetType: 'BARE_SØKER_RETT',
+                            navnPåForeldre: NAVN_PÅ_FORELDRE,
+                            erMedmorDelAvSøknaden: false,
+                        },
+                    }),
+                },
+            );
+
+            expect(result.current.gyldigeStønadskontoerForFarMedmor).toContain('FEDREKVOTE');
+        });
+
+        it('skal ikke ha gyldige kontotyper for far (begge rett) når perioden starter før 2 uker før termindato', () => {
+            const { result } = renderHook(
+                () =>
+                    useGyldigeKvotetyper({
+                        valgtePerioder: [{ fom: '2024-05-24', tom: '2024-06-09' }],
+                        harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                        ønskerFlerbarnsdager: false,
+                    }),
+                {
+                    wrapper: getWrapper({
+                        barn: barnMedTermindato,
+                        foreldreInfo: {
+                            søker: 'FAR_MEDMOR',
+                            rettighetType: 'BEGGE_RETT',
+                            navnPåForeldre: NAVN_PÅ_FORELDRE,
+                            erMedmorDelAvSøknaden: false,
+                        },
+                    }),
+                },
+            );
+
+            expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual([]);
+        });
+    });
+
+    // Barn født før termin: grensen skal følge den tidligste datoen (fødsel), altså
+    // 2 uker før fødsel. Vi bruker den tidligste av fødsel og termin, og regner 2 uker
+    // (10 uttaksdager) før den.
+    describe('barn født før termin', () => {
+        const FØDSELSDATO = '2024-06-10'; // Født mandag 10. juni
+        const TERMINDATO = '2024-06-17'; // Termin mandag 17. juni (1 uke etter fødsel)
+        // fødsel − 2 uker = mandag 27. mai = tidligst tillatt startdato for far
+
+        const barnFødtFørTermin = {
+            type: BarnType.FØDT,
+            antallBarn: 1,
+            fødselsdatoer: [FØDSELSDATO],
+            termindato: TERMINDATO,
+        } satisfies ComponentProps<typeof UttaksplanDataProvider>['barn'];
+
+        it('skal ha gyldige kontotyper for far når perioden starter nøyaktig 2 uker før fødsel', () => {
+            const { result } = renderHook(
+                () =>
+                    useGyldigeKvotetyper({
+                        valgtePerioder: [{ fom: '2024-05-27', tom: '2024-06-07' }],
+                        harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                        ønskerFlerbarnsdager: false,
+                    }),
+                {
+                    wrapper: getWrapper({
+                        barn: barnFødtFørTermin,
+                        foreldreInfo: {
+                            søker: 'FAR_MEDMOR',
+                            rettighetType: 'BEGGE_RETT',
+                            navnPåForeldre: NAVN_PÅ_FORELDRE,
+                            erMedmorDelAvSøknaden: false,
+                        },
+                    }),
+                },
+            );
+
+            expect(result.current.gyldigeStønadskontoerForFarMedmor).toContain('FEDREKVOTE');
+        });
+
+        it('skal ikke ha gyldige kontotyper for far når perioden starter før 2 uker før fødsel', () => {
+            const { result } = renderHook(
+                () =>
+                    useGyldigeKvotetyper({
+                        valgtePerioder: [{ fom: '2024-05-24', tom: '2024-06-07' }],
+                        harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                        ønskerFlerbarnsdager: false,
+                    }),
+                {
+                    wrapper: getWrapper({
+                        barn: barnFødtFørTermin,
+                        foreldreInfo: {
+                            søker: 'FAR_MEDMOR',
+                            rettighetType: 'BEGGE_RETT',
+                            navnPåForeldre: NAVN_PÅ_FORELDRE,
+                            erMedmorDelAvSøknaden: false,
+                        },
+                    }),
+                },
+            );
+
+            expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual([]);
+        });
     });
 });

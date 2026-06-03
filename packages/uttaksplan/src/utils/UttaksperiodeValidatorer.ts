@@ -116,12 +116,13 @@ export const UttaksperiodeValidatorer = {
         return perioder.some((p) => dayjs(p.tom).isAfter(sisteDag) || dayjs(p.fom).isBefore(førsteDag));
     },
 
-    erNoenPerioderFørToUkerFørFamiliehendelsesdato(perioder: Periode[], familiehendelsedato: string) {
-        return perioder.some((periode) =>
-            dayjs(periode.fom).isBefore(
-                Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(10),
-            ),
-        );
+    erNoenPerioderFørToUkerFørFamiliehendelsesdato(
+        perioder: Periode[],
+        familiehendelsedato: string,
+        termindato?: string,
+    ) {
+        const førsteUttaksdagToUkerFørFødsel = getFørsteUttaksdag2UkerFørFødsel(familiehendelsedato, termindato);
+        return perioder.some((periode) => dayjs(periode.fom).isBefore(førsteUttaksdagToUkerFørFødsel, 'day'));
     },
 
     erNoenPerioderMerEnn60DagerFørFamiliehendelsesdato(perioder: Periode[], familiehendelsedato: string) {
@@ -159,10 +160,9 @@ const starterTidsperiodeEtter2UkerFørFødsel = (
 };
 
 const getFørsteUttaksdag2UkerFørFødsel = (familiehendelsesdato: string, termindato: string | undefined): string => {
-    const terminEllerFamHendelsesdatoMinusToUker =
+    const tidligsteDato =
         termindato === undefined
-            ? dayjs(familiehendelsesdato).subtract(14, 'day')
-            : dayjs(termindato).subtract(14, 'day');
-    const datoÅRegneFra = dayjs.min(terminEllerFamHendelsesdatoMinusToUker, dayjs(familiehendelsesdato));
-    return Uttaksdagen.denneEllerNeste(datoÅRegneFra.format(ISO_DATE_FORMAT)).getDato();
+            ? familiehendelsesdato
+            : dayjs.min(dayjs(familiehendelsesdato), dayjs(termindato)).format(ISO_DATE_FORMAT);
+    return Uttaksdagen.denneEllerNeste(tidligsteDato).getDatoAntallUttaksdagerTidligere(10);
 };

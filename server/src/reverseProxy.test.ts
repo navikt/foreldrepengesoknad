@@ -1,6 +1,5 @@
-import http from 'node:http';
-
 import express, { Router } from 'express';
+import http from 'node:http';
 import supertest from 'supertest';
 import { afterAll, beforeAll, expect, test, vi } from 'vitest';
 
@@ -91,4 +90,21 @@ test('strips cookie header', async () => {
 test('does not proxy requests outside configured paths', async () => {
     const res = await supertest(app).get('/internal/health').set('Authorization', 'Bearer t');
     expect(res.status).toBe(404);
+});
+
+test('strips cookie header on fpgrunndata proxy', async () => {
+    await supertest(app).get('/fpgrunndata/api/konto').set('Cookie', 'session=abc').expect(200);
+    expect(lastRequest.headers.cookie).toBeUndefined();
+});
+
+test('allows same-origin API calls (Sec-Fetch-Site=same-origin)', async () => {
+    await supertest(app)
+        .get('/fpsoknad/api/storage/FORELDREPENGER')
+        .set('Authorization', 'Bearer t')
+        .set('Sec-Fetch-Site', 'same-origin')
+        .expect(200);
+});
+
+test('allows requests without Sec-Fetch-Site header (eldre nettlesarar / ikkje-nettlesar-klientar)', async () => {
+    await supertest(app).get('/fpsoknad/api/storage/FORELDREPENGER').set('Authorization', 'Bearer t').expect(200);
 });

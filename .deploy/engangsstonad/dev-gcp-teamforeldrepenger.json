@@ -12,10 +12,6 @@
         "cpu": "15m",
         "mem": "160Mi"
     },
-    "redirect": {
-        "host": "engangsstonad.intern.dev.nav.no",
-        "ingressClassName": "nais-ingress"
-    },
     "env": {
         "PUBLIC_PATH": "/engangsstonad/soknad",
         "INNSYN": "https://www.intern.dev.nav.no/foreldrepenger/oversikt",

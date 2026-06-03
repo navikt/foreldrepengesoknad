@@ -22,10 +22,11 @@ export { FjernAltIUttaksplanModal } from './src/FjernAltIUttaksplanModal';
 export { TilbakestillPlanModal } from './src/TilbakestillPlanModal';
 export { useErAntallDagerOvertrukketIUttaksplan } from './src/utils/kvoteOppsummeringUtils';
 export { UttaksperiodeValidatorer } from './src/utils/UttaksperiodeValidatorer';
-export { skalBesvareFlerbarnsdager } from './src/felles/LeggTilEllerEndrePeriodeFellesForm';
+export { skalBesvareFlerbarnsdager } from './src/utils/flerbarnsdager';
 export {
     sorterUttakPerioder,
     harPeriodeDerMorsAktivitetIkkeErValgt,
+    harPeriodeMedUkjentGraderingsaktivitet,
     getAntallUttaksdagerIVinduRundtFødsel,
 } from './src/utils/periodeUtils';
 export { prosesserPerioderForVisning } from './src/utils/prosesserPerioderForVisning';

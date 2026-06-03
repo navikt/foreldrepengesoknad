@@ -21,10 +21,10 @@
         "react-intl": "10.1.6"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "8.6.0",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
+        "@navikt/fp-utils-test": "workspace:*",
         "@testing-library/jest-dom": "6.9.1",
         "@types/node": "25.9.0",
         "@types/react": "19.2.14",

@@ -1834,3 +1834,44 @@ export const SkalIkkeMarkereAvslåttePerioderMedVarselOmMorsAktivitet: Story = {
         erEndringssøknad: true,
     },
 };
+
+export const MarkerPeriodeNårGraderingsaktivitetMangler: Story = {
+    args: {
+        uttakPerioder: [
+            {
+                fom: '2027-01-04',
+                tom: '2027-05-28',
+                kontoType: 'FELLESPERIODE',
+                forelder: 'MOR',
+                samtidigUttak: 40,
+                gradering: {
+                    arbeidstidprosent: 60,
+                    aktivitet: { type: 'ORDINÆRT_ARBEID' },
+                },
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2027-01-04',
+                tom: '2027-05-28',
+                kontoType: 'FEDREKVOTE',
+                forelder: 'FAR_MEDMOR',
+                samtidigUttak: 100,
+                flerbarnsdager: false,
+            },
+        ] satisfies UttakPeriode_fpoversikt[],
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2026-12-01'],
+            antallBarn: 1,
+        },
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: { mor: 'Olga', farMedmor: 'Espen' },
+            erMedmorDelAvSøknaden: false,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
+        aktiveArbeidsforhold: [],
+    },
+};

@@ -8,7 +8,6 @@ import {
     TrashIcon,
 } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
@@ -23,196 +22,149 @@ import { CalendarPeriod } from '@navikt/fp-ui';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../../../context/UttaksplanDataContext';
-import { SlettPeriodeForskyvEllerErstattPanel } from '../../../../../felles/forskyvEllerErstatt/SlettPeriodeForskyvEllerErstattPanel';
-import { useVisForskyvEllerErstattPanel } from '../../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { UttakPeriodeMedAntallDager } from '../../../../../kalender/redigering/utils/kalenderPeriodeUtils';
+import { useEksisterendeValgtePeriodeAlerts } from '../../../../../regler/alert/informasjonsAlertHooks';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../../types/UttaksplanPeriode';
-import {
-    erDetEksisterendePerioderEtterValgtePerioder,
-    harPeriodeDerMorsAktivitetIkkeErValgt,
-} from '../../../../../utils/periodeUtils';
+
 import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
 
 interface Props {
     perioder: UttakPeriodeMedAntallDager[];
-    setErForskyvEllerErstattPanelvisningPå: (skalVise: boolean) => void;
 }
 
-export const EksisterendeValgtePerioder = ({ perioder, setErForskyvEllerErstattPanelvisningPå }: Props) => {
+export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
     const intl = useIntl();
-
-    const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
-
-    const [valgtPeriodeSomSkalSlettes, setValgtPeriodeSomSkalSlettes] = useState<
-        UttakPeriodeMedAntallDager | undefined
-    >(undefined);
-
-    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } =
-        useVisForskyvEllerErstattPanel(sammenslåtteValgtePerioder);
 
     const slettPeriode = useSlettPeriodeFn();
 
     const {
-        foreldreInfo: { erMedmorDelAvSøknaden, søker, rettighetType },
+        foreldreInfo: { erMedmorDelAvSøknaden, søker },
         erPeriodeneTilAnnenPartLåst,
-        uttakPerioder,
     } = useUttaksplanData();
+
+    const alertsForPeriode = useEksisterendeValgtePeriodeAlerts();
 
     return (
         <VStack gap="space-12">
-            {visEndreEllerForskyvPanel && valgtPeriodeSomSkalSlettes && (
-                <SlettPeriodeForskyvEllerErstattPanel
-                    valgtePerioder={finnDagerSomSkalSlettes(sammenslåtteValgtePerioder, valgtPeriodeSomSkalSlettes)}
-                    avbryt={() => {
-                        setValgtPeriodeSomSkalSlettes(undefined);
-                        setVisEndreEllerForskyvPanel(false);
-                        setErForskyvEllerErstattPanelvisningPå(false);
-                    }}
-                    fjernPeriode={(skalForskyveBakover: boolean) => {
-                        setValgtPeriodeSomSkalSlettes(undefined);
-                        setVisEndreEllerForskyvPanel(false);
-                        slettPeriode(valgtPeriodeSomSkalSlettes, skalForskyveBakover);
-                    }}
+            <BodyShort>
+                <FormattedMessage
+                    id="RedigeringPanel.EksisterendePerioder"
+                    values={{ antall: perioder.length }}
                 />
-            )}
-            {!visEndreEllerForskyvPanel && (
-                <>
-                    <BodyShort>
-                        <FormattedMessage
-                            id="RedigeringPanel.EksisterendePerioder"
-                            values={{ antall: perioder.length }}
-                        />
-                    </BodyShort>
-                    {perioder.map((p, index) => {
-                        const erSamtidigUttaksperiodeSomAlleredeErHåndtert =
-                            perioder.findIndex((per) => per.fom === p.fom && per.tom === p.tom) < index;
-                        if (erSamtidigUttaksperiodeSomAlleredeErHåndtert) {
-                            return null;
-                        }
+            </BodyShort>
+            {perioder.map((p, index) => {
+                const erSamtidigUttaksperiodeSomAlleredeErHåndtert =
+                    perioder.findIndex((per) => per.fom === p.fom && per.tom === p.tom) < index;
+                if (erSamtidigUttaksperiodeSomAlleredeErHåndtert) {
+                    return null;
+                }
 
-                        const erSamtidigUttak = erVanligUttakPeriode(p) && p.samtidigUttak !== undefined;
+                const erSamtidigUttak = erVanligUttakPeriode(p) && p.samtidigUttak !== undefined;
 
-                        const erAnnenPartsPeriodeLåst =
-                            erPeriodeneTilAnnenPartLåst && erVanligUttakPeriode(p) && p.forelder !== søker;
+                const erAnnenPartsPeriodeLåst =
+                    erPeriodeneTilAnnenPartLåst && erVanligUttakPeriode(p) && p.forelder !== søker;
 
-                        const erAvslåttPeriode = erVanligUttakPeriode(p) && p.resultat?.innvilget === false;
+                const erAvslåttPeriode = erVanligUttakPeriode(p) && p.resultat?.innvilget === false;
 
-                        const erPleiepengerPeriode =
-                            erAvslåttPeriode && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
+                const erPleiepengerPeriode =
+                    erAvslåttPeriode && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
 
-                        const valgteDager = finnDagerSomSkalSlettes(sammenslåtteValgtePerioder, p);
+                const morsAktivitetIkkeValgtAlert = alertsForPeriode(p).morsAktivitetIkkeValgt;
 
-                        const erEksisterendePerioderEtterValgteDager = erDetEksisterendePerioderEtterValgtePerioder(
-                            uttakPerioder,
-                            valgteDager,
-                        );
+                return (
+                    <HStack
+                        gap="space-8"
+                        key={`eksisterende-periode-${p.fom}-${p.tom}`}
+                        wrap={false}
+                        data-testid={`eksisterende-periode-${p.fom}-${p.tom}`}
+                    >
+                        <PeriodeIkon periode={p} søker={søker} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
 
-                        return (
-                            <HStack
-                                gap="space-8"
-                                key={`eksisterende-periode-${p.fom}-${p.tom}`}
-                                wrap={false}
-                                data-testid={`eksisterende-periode-${p.fom}-${p.tom}`}
-                            >
-                                <PeriodeIkon periode={p} søker={søker} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
-
-                                <VStack gap="space-0">
-                                    {(erEøsUttakPeriode(p) || p.utsettelseÅrsak !== 'LOVBESTEMT_FERIE') && (
-                                        <Heading size="xsmall">
-                                            <PeriodeHeaderText
-                                                periode={p}
-                                                erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
-                                                søker={søker}
-                                            />
-                                        </Heading>
-                                    )}
-
-                                    {!erSamtidigUttak && (
-                                        <PeriodeKvoteType periode={p} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
-                                    )}
-
-                                    {erEøsUttakPeriode(p) && (
-                                        <BodyShort>
-                                            <FormattedMessage id="RedigeringPanel.EøsPeriode" />
-                                        </BodyShort>
-                                    )}
-
-                                    {erSamtidigUttak && (
-                                        <SamtidigUttak
-                                            periode={p}
-                                            allePerioder={perioder}
-                                            erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
-                                        />
-                                    )}
-
-                                    {!erSamtidigUttak && erVanligUttakPeriode(p) && p.gradering !== undefined && (
-                                        <BodyShort>
-                                            <FormattedMessage
-                                                id="RedigeringPanel.Gradering"
-                                                values={{ prosent: p.gradering.arbeidstidprosent }}
-                                            />
-                                        </BodyShort>
-                                    )}
-
-                                    <BodyShort>
-                                        <FormattedMessage
-                                            id="RedigeringPanel.Dager"
-                                            values={{ antall: p.valgteDagerIPeriode }}
-                                        />
-                                    </BodyShort>
-
-                                    {erPleiepengerPeriode && (
-                                        <BodyShort>
-                                            <FormattedMessage
-                                                id="RedigeringPanel.Pleiepenger"
-                                                values={{ antall: p.valgteDagerIPeriode }}
-                                            />
-                                        </BodyShort>
-                                    )}
-
-                                    {erAvslåttPeriode && !erPleiepengerPeriode && (
-                                        <BodyShort>
-                                            <FormattedMessage id="RedigeringPanel.AvslåttPeriode" />
-                                        </BodyShort>
-                                    )}
-
-                                    {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [
-                                        p,
-                                        ...uttakPerioder.filter(
-                                            (mp): mp is UttakPeriode_fpoversikt =>
-                                                !erEøsUttakPeriode(mp) && mp.forelder === 'MOR',
-                                        ),
-                                    ]) && (
-                                        <Alert variant="warning" size="small" className="mt-3 mb-1 p-2">
-                                            <BodyShort>
-                                                <FormattedMessage id="RedigeringPanel.MorsAktivitetIkkeValgt" />
-                                            </BodyShort>
-                                        </Alert>
-                                    )}
-                                </VStack>
-                                <Spacer />
-
-                                {!erEøsUttakPeriode(p) && !erAnnenPartsPeriodeLåst && !erPleiepengerPeriode && (
-                                    <TrashIcon
-                                        title={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}
-                                        fontSize="1.5rem"
-                                        className="cursor-pointer hover:opacity-70"
-                                        onClick={() => {
-                                            if (erEksisterendePerioderEtterValgteDager) {
-                                                setValgtPeriodeSomSkalSlettes(p);
-                                                setVisEndreEllerForskyvPanel(true);
-                                                setErForskyvEllerErstattPanelvisningPå(true);
-                                            } else {
-                                                slettPeriode(p, false);
-                                            }
-                                        }}
+                        <VStack gap="space-0">
+                            {(erEøsUttakPeriode(p) || p.utsettelseÅrsak !== 'LOVBESTEMT_FERIE') && (
+                                <Heading size="xsmall">
+                                    <PeriodeHeaderText
+                                        periode={p}
+                                        erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
+                                        søker={søker}
                                     />
-                                )}
-                            </HStack>
-                        );
-                    })}
-                </>
-            )}
+                                </Heading>
+                            )}
+
+                            {!erSamtidigUttak && (
+                                <PeriodeKvoteType periode={p} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
+                            )}
+
+                            {erEøsUttakPeriode(p) && (
+                                <BodyShort>
+                                    <FormattedMessage id="RedigeringPanel.EøsPeriode" />
+                                </BodyShort>
+                            )}
+
+                            {erSamtidigUttak && (
+                                <SamtidigUttak
+                                    periode={p}
+                                    allePerioder={perioder}
+                                    erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
+                                />
+                            )}
+
+                            {!erSamtidigUttak && erVanligUttakPeriode(p) && p.gradering !== undefined && (
+                                <BodyShort>
+                                    <FormattedMessage
+                                        id="RedigeringPanel.Gradering"
+                                        values={{ prosent: p.gradering.arbeidstidprosent }}
+                                    />
+                                </BodyShort>
+                            )}
+
+                            <BodyShort>
+                                <FormattedMessage
+                                    id="RedigeringPanel.Dager"
+                                    values={{ antall: p.valgteDagerIPeriode }}
+                                />
+                            </BodyShort>
+
+                            {erPleiepengerPeriode && (
+                                <BodyShort>
+                                    <FormattedMessage
+                                        id="RedigeringPanel.Pleiepenger"
+                                        values={{ antall: p.valgteDagerIPeriode }}
+                                    />
+                                </BodyShort>
+                            )}
+
+                            {erAvslåttPeriode && !erPleiepengerPeriode && (
+                                <BodyShort>
+                                    <FormattedMessage id="RedigeringPanel.AvslåttPeriode" />
+                                </BodyShort>
+                            )}
+
+                            {morsAktivitetIkkeValgtAlert && (
+                                <Alert
+                                    variant={morsAktivitetIkkeValgtAlert.variant}
+                                    size="small"
+                                    className="mt-3 mb-1 p-2"
+                                >
+                                    <BodyShort>{morsAktivitetIkkeValgtAlert.melding}</BodyShort>
+                                </Alert>
+                            )}
+                        </VStack>
+                        <Spacer />
+
+                        {!erEøsUttakPeriode(p) && !erAnnenPartsPeriodeLåst && !erPleiepengerPeriode && (
+                            <TrashIcon
+                                title={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}
+                                fontSize="1.5rem"
+                                className="cursor-pointer hover:opacity-70"
+                                onClick={() => {
+                                    slettPeriode(p, false);
+                                }}
+                            />
+                        )}
+                    </HStack>
+                );
+            })}
         </VStack>
     );
 };

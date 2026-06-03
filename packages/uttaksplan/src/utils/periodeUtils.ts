@@ -24,8 +24,8 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(minMax);
 dayjs.extend(isoWeekday);
 
-export const ANTALL_UTTAKSDAGER_TRE_UKER = 15;
-export const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
+const ANTALL_UTTAKSDAGER_TRE_UKER = 15;
+const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 
 // Vinduet er [familiehendelsesdato - 15 uttaksdager, familiehendelsesdato + 30 uttaksdager] –
 // dvs. 3 veker før og 6 veker etter (matchar UI-validatoren).
@@ -169,6 +169,29 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
             periode.flerbarnsdager === false;
 
         return erFarMedmorsKvote && erInnvilgetUtenMorsAktivitet && !morHar100ProsentUttakOgGradering(periode);
+    });
+};
+
+/**
+ * Sjekker om noken periode har gradering der aktivitet-typen er ORDINÆRT_ARBEID, men
+ * arbeidsgiver manglar. Dette skjer typisk når ein plan kjem inn frå planleggar-appen
+ * (som ikkje veit om søkjar sine arbeidsforhold) – då blir aktivitetstypen brukt som
+ * orgnummer, noko som er ugyldig. Brukar må velje konkret arbeidsgiver/frilans/sjølvst.
+ * før planen kan sendast inn.
+ */
+export const harPeriodeMedUkjentGraderingsaktivitet = (
+    perioder: UttaksplanperiodeMedKunTapteDager[] | Uttaksplanperiode[],
+) => {
+    return perioder.some((periode) => {
+        if (!erVanligUttakPeriode(periode)) {
+            return false;
+        }
+        const aktivitet = periode.gradering?.aktivitet;
+        if (aktivitet?.type !== 'ORDINÆRT_ARBEID') {
+            return false;
+        }
+        const arbeidsgiverId = aktivitet.arbeidsgiver?.id;
+        return !arbeidsgiverId || arbeidsgiverId === aktivitet.type;
     });
 };
 

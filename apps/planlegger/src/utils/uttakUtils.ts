@@ -59,7 +59,7 @@ const getUttaksdagFraOgMedDato = (dato: string): string => {
  * Tar hensyn til stilling av klokken ved å gjøre om klokka til kl 12 før antall timer trekkes fra.
  * @param dato
  */
-export const getUttaksdagTilOgMedDato = (dato: string): string => {
+const getUttaksdagTilOgMedDato = (dato: string): string => {
     const d = dayjs(dato).toDate();
     const newDate = dato ? new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12) : dato;
     switch (getUkedag(dato)) {

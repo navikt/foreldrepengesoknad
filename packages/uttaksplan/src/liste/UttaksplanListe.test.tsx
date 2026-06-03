@@ -14,6 +14,7 @@ const {
     VisPerioderMedOppholdsårsakKorrekt,
     MorSøkerOgFarHarEøsPeriode,
     MarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt,
+    MarkeringNårGraderingsaktivitetMangler,
     HarUtsettelse,
     KunFarHarRettOgHarPauseperiode,
     EøsPerioderForAnnenPart,
@@ -310,15 +311,6 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Slett valgte perioder'));
 
-        expect(
-            await screen.findByText(
-                'Du kan ikke forskyve perioder når du har valgt dager før seks uker etter fødsel/termin',
-            ),
-        ).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('La resten av planen være som den er'));
-        await userEvent.click(screen.getByText('Fortsett'));
-
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
             {
@@ -476,6 +468,18 @@ describe('UttaksplanListe', () => {
         expect(screen.queryByText('Du må velge mors aktivitet før du går videre')).not.toBeInTheDocument();
     });
 
+    it('Skal få advarsel om at gradering manglar arbeidsgiver når plan kjem frå planleggar', async () => {
+        render(<MarkeringNårGraderingsaktivitetMangler />);
+
+        expect(
+            await screen.findByText('Du må velge hvor du skal jobbe samtidig som du har foreldrepenger før du går videre'),
+        ).toBeInTheDocument();
+
+        expect(
+            screen.getAllByText('Mangler hvor du skal jobbe samtidig som du har foreldrepenger').length,
+        ).toBeGreaterThanOrEqual(1);
+    });
+
     it('Skal kunne slette og endre alle perioder bortsett fra periodene til annen part', async () => {
         render(<FarSøkerEtterAtMorHarSøkt />);
         expect(await screen.findAllByText('Hanne har foreldrepenger')).toHaveLength(6);
@@ -507,7 +511,7 @@ describe('UttaksplanListe', () => {
         expect(screen.getByText('Begge')).toBeInTheDocument();
     });
 
-    it('Skal slette periode og forskyve resten av planen bakover', async () => {
+    it('Skal slette periode direkte uten å spørre om forskyvning', async () => {
         const oppdaterUttaksplan = vi.fn();
 
         render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
@@ -521,13 +525,6 @@ describe('UttaksplanListe', () => {
         await userEvent.click(screen.getByText('22.08.2025 - 11.12.2025 - Fellesperiode'));
 
         await userEvent.click(screen.getByText('Slett valgte perioder'));
-
-        expect(await screen.findByText('Hva vil du gjøre med dagene du sletter?')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Flytt resten av planen'));
-        await userEvent.click(screen.getByText('Fortsett'));
-
-        expect(await screen.findByText('22. aug. 25 - 04. des. 25')).toBeInTheDocument();
 
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
@@ -546,10 +543,10 @@ describe('UttaksplanListe', () => {
                 flerbarnsdager: false,
             },
             {
-                fom: '2025-08-22',
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
-                tom: '2025-12-04',
+                fom: '2025-12-12',
+                tom: '2026-03-26',
                 flerbarnsdager: false,
             },
         ]);

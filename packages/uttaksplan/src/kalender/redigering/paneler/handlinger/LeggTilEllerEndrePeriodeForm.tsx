@@ -20,12 +20,10 @@ import {
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useFormSubmitValidator } from '../../../../felles/uttaksplanValidatorer';
+import { useLeggTilEndreSkjemaInfoAlerts } from '../../../../regler/alert/informasjonsAlertHooks';
 import { erEøsUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
-import {
-    erDetEksisterendePerioderEtterValgtePerioder,
-    harPeriodeDerMorsAktivitetIkkeErValgt,
-} from '../../../../utils/periodeUtils';
+import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
 import { finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
 
@@ -39,7 +37,7 @@ interface Props {
 export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) => {
     const {
         uttakPerioder,
-        foreldreInfo: { søker, rettighetType },
+        foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
     } = useUttaksplanData();
 
@@ -98,14 +96,16 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
                 dayjs(vp.tom).isAfter(eksisterendePerioderSomErValgt.at(0)!.tom),
         );
 
-    const erMorsAktivitetIkkeOppgitt =
-        harValgtDagerKunForEnEksisterendePeriode &&
-        harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [
-            ...eksisterendePerioderSomErValgt,
-            ...uttakPerioder.filter(
-                (mp): mp is UttakPeriode_fpoversikt => !erEøsUttakPeriode(mp) && mp.forelder === 'MOR',
-            ),
-        ]);
+    const { morsAktivitetIkkeOppgittAlert } = useLeggTilEndreSkjemaInfoAlerts(
+        harValgtDagerKunForEnEksisterendePeriode
+            ? [
+                  ...eksisterendePerioderSomErValgt,
+                  ...uttakPerioder.filter(
+                      (mp): mp is UttakPeriode_fpoversikt => !erEøsUttakPeriode(mp) && mp.forelder === 'MOR',
+                  ),
+              ]
+            : [],
+    );
 
     const onSubmit = (values: LeggTilEllerEndrePeriodeFormFormValues) => {
         const submitFeilmelding = formSubmitValidator(sammenslåtteValgtePerioder, values);
@@ -117,7 +117,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         setFeilmelding(undefined);
 
         if (
-            !erMorsAktivitetIkkeOppgitt &&
+            !morsAktivitetIkkeOppgittAlert &&
             erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, sammenslåtteValgtePerioder)
         ) {
             setVisEndreEllerForskyvPanel(true);
@@ -153,9 +153,9 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
             )}
             {!visEndreEllerForskyvPanel && (
                 <VStack gap="space-16">
-                    {erMorsAktivitetIkkeOppgitt && (
-                        <Alert variant="warning" size="small">
-                            <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt" />
+                    {morsAktivitetIkkeOppgittAlert && (
+                        <Alert variant={morsAktivitetIkkeOppgittAlert.variant} size="small">
+                            {morsAktivitetIkkeOppgittAlert.melding}
                         </Alert>
                     )}
 

@@ -12,10 +12,6 @@
         "cpu": "15m",
         "mem": "160Mi"
     },
-    "redirect": {
-        "host": "foreldrepenger.intern.dev.nav.no",
-        "ingressClassName": "nais-ingress"
-    },
     "env": {
         "ENV": "dev",
         "PUBLIC_PATH": "/foreldrepenger/oversikt",

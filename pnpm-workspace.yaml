@@ -4,6 +4,9 @@ packages:
   - server
   - server-uinnlogget
 
+overrides:
+  js-cookie: 3.0.7
+
 ignoredBuiltDependencies:
   - '@parcel/watcher'
   - esbuild

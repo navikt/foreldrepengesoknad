@@ -16,7 +16,7 @@ import { assertUnreachable } from '@navikt/fp-validation';
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
-import { erAvslåttPeriode, harPeriodeDerMorsAktivitetIkkeErValgt } from '../../../../utils/periodeUtils';
+import { erAvslåttPeriode, harPeriodeDerMorsAktivitetIkkeErValgt, harPeriodeMedUkjentGraderingsaktivitet } from '../../../../utils/periodeUtils';
 import { getStønadskvoteNavn } from '../../../utils/uttaksplanListeUtils';
 
 interface Props {
@@ -55,6 +55,13 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
             {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [periode, ...morsPerioder]) && (
                 <ExclamationmarkTriangleFillIcon
                     title={intl.formatMessage({ id: 'PeriodeListeHeader.MorsAktivitetIkkeValgt' })}
+                    fontSize="1.5rem"
+                    className="text-ax-danger-800"
+                />
+            )}
+            {harPeriodeMedUkjentGraderingsaktivitet([periode]) && (
+                <ExclamationmarkTriangleFillIcon
+                    title={intl.formatMessage({ id: 'PeriodeListeHeader.GraderingsaktivitetIkkeValgt' })}
                     fontSize="1.5rem"
                     className="text-ax-danger-800"
                 />

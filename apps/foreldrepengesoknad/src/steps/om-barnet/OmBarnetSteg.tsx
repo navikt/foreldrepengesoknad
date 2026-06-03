@@ -167,7 +167,7 @@ const OmBarnetStegInner = ({
 
         oppdaterOmBarnet(oppdatertBarn);
 
-        return navigator.goToNextDefaultStep();
+        return navigator.goToNextStep();
     };
 
     const defaultValues = useMemo(
@@ -189,7 +189,7 @@ const OmBarnetStegInner = ({
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step steps={stepConfig}>
+            <Step steps={stepConfig} onStepChange={navigator.goToStep}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                     <VStack gap="space-40">
                         <ErrorSummaryHookForm />

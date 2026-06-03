@@ -4,6 +4,8 @@
     "type": "module",
     "types": "index.ts",
     "scripts": {
+        "test": "vitest --project=jsdom --watch=false",
+        "test:browser": "vitest --project=browser",
         "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
         "prettier:fix": "prettier --write src",
@@ -18,8 +20,14 @@
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
+        "@navikt/fp-config-vite": "workspace:*",
+        "@testing-library/jest-dom": "6.9.1",
+        "@types/node": "25.9.0",
         "eslint": "10.3.0",
-        "typescript": "6.0.3"
+        "jsdom": "29.1.1",
+        "typescript": "6.0.3",
+        "vite": "8.0.12",
+        "vitest": "4.1.6"
     },
     "packageManager": "pnpm@10.33.1"
 }
