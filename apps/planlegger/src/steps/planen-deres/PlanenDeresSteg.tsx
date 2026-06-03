@@ -36,7 +36,7 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { BluePanel, Infobox, StepButtons } from '@navikt/fp-ui';
-import { Uttaksperioden, encodeToBase64, useMedia } from '@navikt/fp-utils';
+import { Uttaksperioden, compressToUrl, useMedia } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import {
     FjernAltIUttaksplanModal,
@@ -100,7 +100,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
             [ContextDataType.UTTAKSPLAN]: oppdatertUttaksplan,
         };
 
-        const encodedData = encodeToBase64(JSON.stringify(contextData));
+        const encodedData = compressToUrl(JSON.stringify(contextData));
         const currentPath = globalThis.location.pathname;
         const newUrl = `${currentPath}?data=${encodedData}`;
 
