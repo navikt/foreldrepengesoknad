@@ -18,7 +18,7 @@ describe('<AppContainer>', () => {
         }));
     });
 
-    it.todo(
+    it(
         'Hvor Mye veiviser: skal gå gjennom app og så tilbake',
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(HvorMyeVeiviserMockaStønadskvoterOgSatser.parameters.msw);

@@ -10,7 +10,13 @@ import { AnnenForelder } from 'types/AnnenForelder';
 import { FellesperiodeFordelingValg, Fordeling, OppstartValg } from 'types/Fordeling';
 
 import { BarnType } from '@navikt/fp-constants';
-import { Barn, Dekningsgrad, FpPersonopplysningerDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
+import {
+    Barn,
+    Dekningsgrad,
+    FpPersonopplysningerDto_fpoversikt,
+    SøkersituasjonFp,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import {
     ALENE_OM_OMSORG_80_FARMEDMOR,
     ALENE_OM_OMSORG_100_FARMEDMOR,
@@ -71,6 +77,7 @@ type StoryArgs = {
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
     dekningsgrad: Dekningsgrad;
     fordeling: Fordeling;
+    uttaksplan?: UttakPeriode_fpoversikt[];
 } & ComponentProps<typeof UttaksplanSteg>;
 
 const meta = {
@@ -91,6 +98,7 @@ const meta = {
         barnet,
         dekningsgrad,
         fordeling,
+        uttaksplan,
     }) => {
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN]}>
@@ -107,6 +115,7 @@ const meta = {
                         [ContextDataType.ANNEN_FORELDER]: annenForelder,
                         [ContextDataType.FORDELING]: fordeling,
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: dekningsgrad,
+                        ...(uttaksplan ? { [ContextDataType.UTTAKSPLAN]: uttaksplan } : {}),
                     }}
                 >
                     <UttaksplanSteg
@@ -170,6 +179,59 @@ export const FødselMorOgFarBeggeHarRett: Story = {
             antallUkerFellesperiodeTilSøker: '12',
             fordelingValg: FellesperiodeFordelingValg.VIL_VELGE,
         },
+    },
+};
+
+export const FødselMorOgFarBeggeHarRettMedUferdigFellesperiode: Story = {
+    parameters: FødselMorOgFarBeggeHarRett.parameters,
+    args: {
+        ...FødselMorOgFarBeggeHarRett.args,
+        barnet: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2024-04-04'],
+            antallBarn: 1,
+            termindato: '2024-04-04',
+        },
+        // Seeder ein lagra plan med ein FAR_MEDMOR-fellesperiode der mors aktivitet ikkje er fylt ut.
+        // Lagra plan blir brukt direkte (utan filteret som elles fjernar annen parts periodar frå forslaget),
+        // slik at perioden blir stjernemerkt og valideringa på «Neste steg» kan testast.
+        uttaksplan: [
+            {
+                fom: '2024-03-14',
+                tom: '2024-04-03',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                forelder: 'MOR',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2024-04-04',
+                tom: '2024-04-18',
+                kontoType: 'MØDREKVOTE',
+                forelder: 'MOR',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2024-05-17',
+                tom: '2024-05-23',
+                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+                forelder: 'MOR',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2024-05-31',
+                tom: '2024-06-13',
+                kontoType: 'FELLESPERIODE',
+                forelder: 'MOR',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2024-07-03',
+                tom: '2024-07-15',
+                kontoType: 'FELLESPERIODE',
+                forelder: 'FAR_MEDMOR',
+                flerbarnsdager: false,
+            },
+        ],
     },
 };
 
