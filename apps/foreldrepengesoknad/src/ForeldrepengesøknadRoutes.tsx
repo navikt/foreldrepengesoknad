@@ -320,7 +320,8 @@ export const ForeldrepengesøknadRoutes = ({
 
         const currentPath = decodeURIComponent(routerLocation.pathname);
 
-        if (currentPath === SøknadRoutes.KVITTERING || currentPath === SøknadRoutes.IKKE_MYNDIG) {
+        const ignoredPaths = [SøknadRoutes.KVITTERING, SøknadRoutes.IKKE_MYNDIG].map((path) => path.toString());
+        if (ignoredPaths.includes(currentPath)) {
             return;
         }
 
