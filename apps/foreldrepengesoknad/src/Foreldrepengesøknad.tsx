@@ -7,7 +7,6 @@ import {
     useAnnenPartVedtakOptions,
 } from 'api/queries';
 import { ContextDataMap, ContextDataType, FpDataContext } from 'appData/FpDataContext';
-import { SøknadRoutes } from 'appData/routes';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import { usePlanleggerDataFromUrl } from 'appData/usePlanleggerDataFromUrl';
 import ky from 'ky';
@@ -19,7 +18,6 @@ import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { ErrorBoundary, RegisterdataUtdatert, Spinner } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
 
 import { ForeldrepengesøknadRoutes } from './ForeldrepengesøknadRoutes';
 
@@ -76,11 +74,6 @@ export const Foreldrepengesøknad = () => {
                     <ForeldrepengesøknadRoutes
                         søkerInfo={søkerinfoQuery.data}
                         foreldrepengerSaker={sakerQuery.data.foreldrepenger}
-                        currentRoute={
-                            skalBrukeMellomlagretData
-                                ? notEmpty(mellomlagretData?.[ContextDataType.APP_ROUTE])
-                                : SøknadRoutes.VELKOMMEN
-                        }
                         lagretErEndringssøknad={mellomlagretData?.erEndringssøknad ?? false}
                         lagretHarGodkjentVilkår={!!mellomlagretData?.[ContextDataType.APP_ROUTE]}
                         lagretSøknadGjelderNyttBarn={mellomlagretData?.søknadGjelderEtNyttBarn ?? false}
