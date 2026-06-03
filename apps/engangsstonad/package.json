@@ -23,6 +23,7 @@
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
+        "@hookform/resolvers": "5.2.2",
         "@navikt/ds-css": "8.10.5",
         "@navikt/ds-react": "8.10.5",
         "@navikt/ds-tailwind": "8.10.5",
@@ -48,7 +49,8 @@
         "react-dom": "19.2.6",
         "react-hook-form": "7.75.0",
         "react-intl": "10.1.6",
-        "react-router-dom": "7.15.0"
+        "react-router-dom": "7.15.0",
+        "zod": "4.4.3"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",

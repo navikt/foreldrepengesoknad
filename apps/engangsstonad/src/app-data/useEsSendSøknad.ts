@@ -5,6 +5,7 @@ import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
+import { engangsstønadDtoSchema } from 'schemas/engangsstønadDtoSchema';
 import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 
 import { ApiError } from '@navikt/fp-observability';
@@ -48,6 +49,14 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
                     },
                 })) ?? [],
         } satisfies EngangsstønadDto;
+
+        // Sjekk søknad mot DTO-skjema før innsending — fangar mappingfeil og korrupt mellomlagra state
+        const parseResultat = engangsstønadDtoSchema.safeParse(søknad);
+        if (!parseResultat.success) {
+            throw new Error(
+                `Søknad bestod ikkje skjema-validering før innsending: ${parseResultat.error.message}`,
+            );
+        }
 
         const signal = initAbortSignal();
 

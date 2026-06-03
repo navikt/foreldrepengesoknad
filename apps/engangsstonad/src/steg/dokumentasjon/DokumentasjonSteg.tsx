@@ -1,6 +1,8 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
 import { useEsNavigator } from 'appData/useEsNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
+import { lagDokumentasjonSchema } from 'schemas/dokumentasjonSchema';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
@@ -33,23 +35,18 @@ export const DokumentasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
 
     const erBarnetAdoptert = barn.type === 'adopsjon';
     const harTermindato = barn.type === 'termin';
+    const termindato = barn.type === 'termin' ? barn.termindato : undefined;
 
     const formMethods = useForm<Dokumentasjon>({
         defaultValues: dokumentasjon,
+        resolver: zodResolver(
+            lagDokumentasjonSchema(intl, { erTermin: harTermindato, termindato }),
+        ),
     });
 
     const lagre = (formValues: Dokumentasjon) => {
-        if (formValues.vedlegg.length === 0) {
-            formMethods.setError('vedlegg', {
-                message: erBarnetAdoptert
-                    ? intl.formatMessage({ id: 'DokumentasjonSteg.MinstEttDokumentAdopsjon' })
-                    : intl.formatMessage({ id: 'DokumentasjonSteg.MinstEttDokumentTermin' }),
-            });
-            return Promise.resolve();
-        } else {
-            oppdaterDokumentasjon(formValues);
-            return navigator.goToNextDefaultStep();
-        }
+        oppdaterDokumentasjon(formValues);
+        return navigator.goToNextDefaultStep();
     };
 
     const updateAttachments = (attachments: Attachment[], hasPendingUploads: boolean) => {
@@ -74,7 +71,7 @@ export const DokumentasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
                             <TerminDokPanel
                                 attachments={dokumentasjon?.vedlegg}
                                 updateAttachments={updateAttachments}
-                                termindato={barn.type === 'termin' ? barn.termindato : ''}
+                                termindato={termindato ?? ''}
                             />
                         )}
                         <ScanDocumentInfo />

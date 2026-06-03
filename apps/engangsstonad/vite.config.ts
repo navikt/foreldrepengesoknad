@@ -31,6 +31,7 @@ export default mergeConfig(createSharedConfigWithCrossorgin(setupFileDirName), {
             styles: path.resolve(__dirname, './src/styles'),
             types: path.resolve(__dirname, './src/types/'),
             appData: path.resolve(__dirname, './src/app-data/'),
+            schemas: path.resolve(__dirname, './src/schemas/'),
         },
     },
 });

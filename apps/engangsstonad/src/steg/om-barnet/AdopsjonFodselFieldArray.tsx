@@ -6,7 +6,6 @@ import { IntlShape, useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
-import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 type FormValues = {
     fødselsdatoer?: Array<{
@@ -20,7 +19,7 @@ interface Props {
     adopsjonsdato?: string;
 }
 
-export const AdopsjonFodselFieldArray = ({ adopsjonsdato, antallBarn, antallBarnDropDown }: Props) => {
+export const AdopsjonFodselFieldArray = ({ antallBarn, antallBarnDropDown }: Props) => {
     const intl = useIntl();
     const { control } = useFormContext<FormValues>();
     const { fields, remove, append } = useFieldArray({
@@ -61,19 +60,6 @@ export const AdopsjonFodselFieldArray = ({ adopsjonsdato, antallBarn, antallBarn
                             ? intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fødselsdato' })
                             : getFødselsdatoLabel(intl, index + 1)
                     }
-                    validate={[
-                        isRequired(intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fodselsdato.DuMåOppgi' })),
-                        isValidDate(intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fødselsdato.Gyldig' })),
-                        (fødselsdato) => {
-                            return !fødselsdato || !adopsjonsdato
-                                ? null
-                                : isBeforeTodayOrToday(
-                                      intl.formatMessage({
-                                          id: 'AdopsjonFodselFieldArray.fodselsdato.MåVæreIdagEllerTidligere',
-                                      }),
-                                  )(fødselsdato);
-                        },
-                    ]}
                 />
             ))}
         </VStack>

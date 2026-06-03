@@ -1,7 +1,9 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import { useEsNavigator } from 'appData/useEsNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
+import { lagAdopsjonSchema, lagFødselSchema, OmBarnetFormValues } from 'schemas/omBarnetSchema';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { Adopsjon, Fødsel } from 'types/OmBarnet';
@@ -13,10 +15,10 @@ import { BarnDto, Kjønn_fpoversikt, Søkersituasjon } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { FormValues as AdopsjonFormValues, AdopsjonPanel } from './AdopsjonPanel';
-import { FødselPanel, FormValues as FødtFormValues } from './FødselPanel';
+import { AdopsjonPanel } from './AdopsjonPanel';
+import { FødselPanel } from './FødselPanel';
 
-type FormValues = FødtFormValues & AdopsjonFormValues;
+type FormValues = OmBarnetFormValues;
 
 interface Props {
     kjønn: Kjønn_fpoversikt;
@@ -47,6 +49,11 @@ export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
 
     const formMethods = useForm<FormValues>({
         defaultValues: barn ? mapBarnFraDtoTilForm(barn) : {},
+        resolver: zodResolver(
+            søkersituasjon.situasjon === 'adopsjon'
+                ? lagAdopsjonSchema(intl, kjønn)
+                : lagFødselSchema(intl),
+        ),
     });
 
     return (
