@@ -42,7 +42,7 @@
         "react-dom": "19.2.6",
         "react-hook-form": "7.75.0",
         "react-intl": "10.1.6",
-        "react-router-dom": "7.15.0"
+        "react-router-dom": "7.16.0"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
