@@ -256,7 +256,7 @@ export type RegelkatalogSideProps<T> = {
 export const RegelIdBadge = ({ id }: { id: string }) => (
     <code className="rounded bg-ax-bg-neutral-moderate px-2 py-0.5 font-mono text-xs">
         {id.split('.').map((segment, i, arr) => (
-            <span key={i}>
+            <span key={`${i}-${segment}`}>
                 {segment}
                 {i < arr.length - 1 && (
                     <>

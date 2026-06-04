@@ -31,12 +31,9 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
     const kommerFraPlanlegger = useContextGetData(ContextDataType.KOMMER_FRA_PLANLEGGER);
     const resetUttaksplanData = useResetUttaksplanData();
 
+    const situasjonFraBarn = barn && isAdoptertBarn(barn) ? 'adopsjon' : 'fødsel';
     const defaultSituasjon =
-        !søkersituasjon?.situasjon && kommerFraPlanlegger && barn
-            ? isAdoptertBarn(barn)
-                ? 'adopsjon'
-                : 'fødsel'
-            : undefined;
+        !søkersituasjon?.situasjon && kommerFraPlanlegger && barn ? situasjonFraBarn : undefined;
 
     const formMethods = useForm<SøkersituasjonFp>({
         defaultValues: søkersituasjon ?? (defaultSituasjon ? { situasjon: defaultSituasjon } : undefined),
