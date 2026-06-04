@@ -42,7 +42,7 @@ type LegendTekstArgs = LegendTekstKontekst & {
 };
 
 type LegendLabelKonfig = {
-    /** Visningsrekkefølge i legend-listen. -1 sorteres først (beholder tidligere adferd). */
+    /** Visningsrekkefølge i legend-listen. -1 sorteres først. */
     rekkefølge: number;
     /** Om brukeren kan klikke på legend-elementet for å markere perioden i kalenderen. */
     klikkbar: boolean;
@@ -55,8 +55,6 @@ type LegendLabelKonfig = {
 /**
  * Én rad per legend-type. Samler alt som styrer en legend på ett sted:
  * rekkefølge, om den er klikkbar, eventuelt ikon og hvordan teksten bygges.
- * Tidligere lå dette spredt over et sorterings-array, et «unselectable»-sett,
- * ikon-betingelser i komponenten og en stor switch.
  */
 const LEGEND_LABELS: Record<LegendLabel, LegendLabelKonfig> = {
     MORS_DEL: {
