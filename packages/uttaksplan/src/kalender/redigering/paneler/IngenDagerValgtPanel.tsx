@@ -68,6 +68,7 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
                         <BodyShort size="small">
                             <FormattedMessage id="RedigeringKalenderIndex.VelgDatoerIKalender" />
                         </BodyShort>
+                        <PerioderSomKanLeggesTilTags />
                     </VStack>
                 </Show>
             </Box>
