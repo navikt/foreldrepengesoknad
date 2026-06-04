@@ -109,13 +109,13 @@ export const OpplastningTimeout: Story = {
     args: {
         ...Default.args,
         existingAttachments: [],
-        timeout: 10,
+        timeout: 50,
     },
     parameters: {
         msw: {
             handlers: [
                 http.post(MOCK_API_PATH, async () => {
-                    await delay(200); // 20ms delay - longer than the 10ms timeout
+                    await delay(500); // 500ms delay - godt over 50ms-timeouten, gir stabil margin i CI
                     return new HttpResponse(JSON.stringify('uuid-test'), {
                         status: 200,
                     });
