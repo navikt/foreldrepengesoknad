@@ -102,7 +102,7 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
 
 const PerioderSomKanLeggesTil = () => {
     const harTags = useHarPerioderSomKanLeggesTil();
-    if (!harTags) return null;
+    if (!harTags) { return null; }
     return (
         <VStack gap="space-4">
             <Detail uppercase style={{ letterSpacing: '1.05px' }}>
@@ -182,7 +182,7 @@ const TagsBeggeRett = ({
         ),
     ].filter(Boolean);
 
-    if (tags.length === 0) return null;
+    if (tags.length === 0) { return null; }
     return (
         <HStack gap="space-4" wrap>
             {tags}
@@ -212,7 +212,7 @@ const TagsKunFar = ({ intl }: { intl: ReturnType<typeof useIntl> }) => {
         ),
     ].filter(Boolean);
 
-    if (tags.length === 0) return null;
+    if (tags.length === 0) { return null; }
     return (
         <HStack gap="space-4" wrap>
             {tags}
@@ -227,7 +227,7 @@ const TagsKunMor = ({ intl }: { intl: ReturnType<typeof useIntl> }) => {
     const totalUbrukte =
         antallUbrukteDager > 0 ? antallUbrukteDager : ubrukteDagerAktivitetsfri + ubrukteDagerMedAktivitetskrav;
 
-    if (totalUbrukte <= 0) return null;
+    if (totalUbrukte <= 0) { return null; }
 
     return (
         <HStack gap="space-4">

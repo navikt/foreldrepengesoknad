@@ -166,7 +166,7 @@ export const useUbrukteDagerPerKontoKunEnHarRett = () => {
                       erVanligUttakPeriode(p) &&
                       getUttaksKontoType(p) === 'FORELDREPENGER' &&
                       p.morsAktivitet === 'IKKE_OPPGITT';
-                  if (erAktivitetsfriPeriode) return false;
+                  if (erAktivitetsfriPeriode) { return false; }
                   return getUttaksKontoType(p) === 'FORELDREPENGER';
               }),
               valgtStønadskvote.kontoer,
