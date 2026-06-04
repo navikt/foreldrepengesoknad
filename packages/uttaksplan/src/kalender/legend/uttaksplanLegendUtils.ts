@@ -20,29 +20,211 @@ export type UttaksplanKalenderLegendInfo = {
     forelder?: 'MOR' | 'FAR_MEDMOR';
 };
 
-export const sortLegendInfoByLabel = (a: UttaksplanKalenderLegendInfo, b: UttaksplanKalenderLegendInfo): number => {
-    const labelOrder: LegendLabel[] = [
-        'MORS_DEL',
-        'MORS_DEL_GRADERT',
-        'FARS_DEL',
-        'FARS_DEL_GRADERT',
-        'FARS_DEL_AKTIVITETSFRI',
-        'FARS_DEL_AKTIVITETSFRI_GRADERT',
-        'SAMTIDIG_UTTAK',
-        'UTSETTELSE',
-        'TAPTE_DAGER',
-        'TERMIN',
-        'FØDSEL',
-        'ADOPSJON',
-        'BARNEHAGEPLASS',
-        'HELG',
-    ];
+export type LegendIkon = 'FAMILIEHENDELSE' | 'BARNEHAGE';
 
-    const indexA = labelOrder.indexOf(a.label);
-    const indexB = labelOrder.indexOf(b.label);
-
-    return indexA - indexB;
+/**
+ * Kontekst som kallstedet må oppgi for å bygge legend-teksten.
+ * `erSøkersPeriode` og `forelder` utledes fra perioden inne i getCalendarLabel.
+ */
+export type LegendTekstKontekst = {
+    intl: IntlShape;
+    navnAnnenPart: string;
+    søker: BrukerRolleSak_fpoversikt;
+    erIkkeSøkerSpesifisert: boolean;
+    erMedmorDelAvSøknaden: boolean;
+    harAktivitetsfriKvote: boolean;
+    rettighetType: RettighetType_fpoversikt;
 };
+
+type LegendTekstArgs = LegendTekstKontekst & {
+    erSøkersPeriode: boolean;
+    forelder?: 'MOR' | 'FAR_MEDMOR';
+};
+
+type LegendLabelKonfig = {
+    /** Visningsrekkefølge i legend-listen. -1 sorteres først. */
+    rekkefølge: number;
+    /** Om brukeren kan klikke på legend-elementet for å markere perioden i kalenderen. */
+    klikkbar: boolean;
+    /** Eget ikon som vises i stedet for den vanlige fargeruten. */
+    ikon?: LegendIkon;
+    /** Bygger den oversatte teksten for legend-elementet. */
+    tekst: (args: LegendTekstArgs) => string;
+};
+
+/**
+ * Én rad per legend-type. Samler alt som styrer en legend på ett sted:
+ * rekkefølge, om den er klikkbar, eventuelt ikon og hvordan teksten bygges.
+ */
+const LEGEND_LABELS: Record<LegendLabel, LegendLabelKonfig> = {
+    MORS_DEL: {
+        rekkefølge: 0,
+        klikkbar: true,
+        tekst: ({ navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, intl }) =>
+            getMorsDelLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, intl),
+    },
+    MORS_DEL_GRADERT: {
+        rekkefølge: 1,
+        klikkbar: true,
+        tekst: ({ navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, intl }) =>
+            getMorsDelGradertLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, intl),
+    },
+    FARS_DEL: {
+        rekkefølge: 2,
+        klikkbar: true,
+        tekst: ({
+            navnAnnenPart,
+            erIkkeSøkerSpesifisert,
+            erSøkersPeriode,
+            erMedmorDelAvSøknaden,
+            harAktivitetsfriKvote,
+            intl,
+        }) =>
+            getFarsDelLabel(
+                navnAnnenPart,
+                erIkkeSøkerSpesifisert,
+                erSøkersPeriode,
+                erMedmorDelAvSøknaden,
+                harAktivitetsfriKvote,
+                intl,
+            ),
+    },
+    FARS_DEL_GRADERT: {
+        rekkefølge: 3,
+        klikkbar: true,
+        tekst: ({
+            navnAnnenPart,
+            erIkkeSøkerSpesifisert,
+            erSøkersPeriode,
+            erMedmorDelAvSøknaden,
+            harAktivitetsfriKvote,
+            intl,
+        }) =>
+            getFarsDelGradertLabel(
+                navnAnnenPart,
+                erIkkeSøkerSpesifisert,
+                erSøkersPeriode,
+                erMedmorDelAvSøknaden,
+                harAktivitetsfriKvote,
+                intl,
+            ),
+    },
+    FARS_DEL_AKTIVITETSFRI: {
+        rekkefølge: 4,
+        klikkbar: true,
+        tekst: ({ erSøkersPeriode, navnAnnenPart, intl }) =>
+            intl.formatMessage(
+                { id: 'kalender.dinPeriode.aktivitetsfri' },
+                { erSokersPeriode: erSøkersPeriode, navnAnnenPart },
+            ),
+    },
+    FARS_DEL_AKTIVITETSFRI_GRADERT: {
+        rekkefølge: 5,
+        klikkbar: true,
+        tekst: ({ erSøkersPeriode, navnAnnenPart, intl }) =>
+            intl.formatMessage(
+                { id: 'kalender.dinPeriode.aktivitetsfri.gradert' },
+                { erSokersPeriode: erSøkersPeriode, navnAnnenPart },
+            ),
+    },
+    SAMTIDIG_UTTAK: {
+        rekkefølge: 6,
+        klikkbar: true,
+        tekst: ({ navnAnnenPart, erIkkeSøkerSpesifisert, intl }) =>
+            getSamtidigUttakLabel(navnAnnenPart, erIkkeSøkerSpesifisert, intl),
+    },
+    UTSETTELSE: {
+        rekkefølge: 7,
+        klikkbar: true,
+        tekst: ({ søker, rettighetType, erSøkersPeriode, navnAnnenPart, intl }) =>
+            søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT'
+                ? intl.formatMessage(
+                      { id: 'kalender.utsettelse.pause.label' },
+                      { erSokersPeriode: erSøkersPeriode, navnAnnenPart },
+                  )
+                : intl.formatMessage(
+                      { id: 'kalender.utsettelse.label' },
+                      { erSokersPeriode: erSøkersPeriode, navnAnnenPart },
+                  ),
+    },
+    TAPTE_DAGER: {
+        rekkefølge: 8,
+        klikkbar: true,
+        tekst: ({ erIkkeSøkerSpesifisert, erSøkersPeriode, navnAnnenPart, forelder, erMedmorDelAvSøknaden, intl }) =>
+            getTapteDagerLabel(
+                erIkkeSøkerSpesifisert,
+                erSøkersPeriode,
+                navnAnnenPart,
+                forelder,
+                erMedmorDelAvSøknaden,
+                intl,
+            ),
+    },
+    TERMIN: {
+        rekkefølge: 9,
+        klikkbar: true,
+        ikon: 'FAMILIEHENDELSE',
+        tekst: ({ intl }) => intl.formatMessage({ id: 'kalender.termin' }),
+    },
+    FØDSEL: {
+        rekkefølge: 10,
+        klikkbar: false,
+        ikon: 'FAMILIEHENDELSE',
+        tekst: ({ intl }) => intl.formatMessage({ id: 'kalender.fødsel' }),
+    },
+    ADOPSJON: {
+        rekkefølge: 11,
+        klikkbar: true,
+        ikon: 'FAMILIEHENDELSE',
+        tekst: ({ intl }) => intl.formatMessage({ id: 'kalender.adopsjon' }),
+    },
+    BARNEHAGEPLASS: {
+        rekkefølge: 12,
+        klikkbar: false,
+        ikon: 'BARNEHAGE',
+        tekst: ({ intl }) => intl.formatMessage({ id: 'kalender.barnehageplass' }),
+    },
+    HELG: {
+        rekkefølge: 13,
+        klikkbar: false,
+        tekst: ({ intl }) => intl.formatMessage({ id: 'kalender.helg' }),
+    },
+    FERIE: {
+        rekkefølge: -1,
+        klikkbar: true,
+        tekst: ({ erSøkersPeriode, navnAnnenPart, intl }) =>
+            intl.formatMessage({ id: 'kalender.ferie' }, { erSokersPeriode: erSøkersPeriode, navnAnnenPart }),
+    },
+    MORS_DEL_EØS: {
+        rekkefølge: -1,
+        klikkbar: true,
+        tekst: ({ navnAnnenPart, erIkkeSøkerSpesifisert, intl }) =>
+            getMorsDelEøsLabel(navnAnnenPart, erIkkeSøkerSpesifisert, intl),
+    },
+    FARS_DEL_EØS: {
+        rekkefølge: -1,
+        klikkbar: true,
+        tekst: ({ navnAnnenPart, erIkkeSøkerSpesifisert, erMedmorDelAvSøknaden, intl }) =>
+            getFarsDelEøsLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erMedmorDelAvSøknaden, intl),
+    },
+    PLEIEPENGER: {
+        rekkefølge: -1,
+        klikkbar: true,
+        tekst: ({ intl }) => intl.formatMessage({ id: 'kalender.avslagFratrekkPleiepenger' }),
+    },
+    AVSLAG: {
+        rekkefølge: -1,
+        klikkbar: true,
+        tekst: ({ intl }) => intl.formatMessage({ id: 'kalender.avslag' }),
+    },
+};
+
+export const sortLegendInfoByLabel = (a: UttaksplanKalenderLegendInfo, b: UttaksplanKalenderLegendInfo): number =>
+    LEGEND_LABELS[a.label].rekkefølge - LEGEND_LABELS[b.label].rekkefølge;
+
+export const erLegendLabelKlikkbar = (label: LegendLabel): boolean => LEGEND_LABELS[label].klikkbar;
+
+export const getLegendIkon = (label: LegendLabel): LegendIkon | undefined => LEGEND_LABELS[label].ikon;
 
 export const getSelectableStyle = (selectable: boolean) => {
     return selectable ? 'cursor-pointer ' : '';
@@ -92,114 +274,12 @@ export const getFocusStyle = (color: CalendarPeriodColor) => {
     return '';
 };
 
-export const getCalendarLabel = (
-    info: UttaksplanKalenderLegendInfo,
-    navnAnnenPart: string,
-    erMedmorDelAvSøknaden: boolean,
-    harAktivitetsfriKvote: boolean,
-    søker: BrukerRolleSak_fpoversikt,
-    erIkkeSøkerSpesifisert: boolean,
-    intl: IntlShape,
-    rettighetType: RettighetType_fpoversikt,
-): string => {
+export const getCalendarLabel = (info: UttaksplanKalenderLegendInfo, kontekst: LegendTekstKontekst): string => {
     const erSøkersPeriode =
-        (søker === 'MOR' && info.forelder === 'MOR') || (søker === 'FAR_MEDMOR' && info.forelder === 'FAR_MEDMOR');
-    switch (info.label) {
-        case 'HELG':
-            return intl.formatMessage({ id: 'kalender.helg' });
-        case 'FERIE':
-            return intl.formatMessage(
-                { id: 'kalender.ferie' },
-                {
-                    erSokersPeriode: erSøkersPeriode,
-                    navnAnnenPart,
-                },
-            );
-        case 'UTSETTELSE':
-            if (søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT') {
-                return intl.formatMessage(
-                    { id: 'kalender.utsettelse.pause.label' },
-                    {
-                        erSokersPeriode: erSøkersPeriode,
-                        navnAnnenPart,
-                    },
-                );
-            }
-            return intl.formatMessage(
-                { id: 'kalender.utsettelse.label' },
-                {
-                    erSokersPeriode: erSøkersPeriode,
-                    navnAnnenPart,
-                },
-            );
-        case 'TERMIN':
-            return intl.formatMessage({ id: 'kalender.termin' });
-        case 'FØDSEL':
-            return intl.formatMessage({ id: 'kalender.fødsel' });
-        case 'ADOPSJON':
-            return intl.formatMessage({ id: 'kalender.adopsjon' });
-        case 'BARNEHAGEPLASS':
-            return intl.formatMessage({ id: 'kalender.barnehageplass' });
-        case 'MORS_DEL':
-            return getMorsDelLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, intl);
-        case 'MORS_DEL_EØS':
-            return getMorsDelEøsLabel(navnAnnenPart, erIkkeSøkerSpesifisert, intl);
-        case 'MORS_DEL_GRADERT':
-            return getMorsDelGradertLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, intl);
-        case 'FARS_DEL':
-            return getFarsDelLabel(
-                navnAnnenPart,
-                erIkkeSøkerSpesifisert,
-                erSøkersPeriode,
-                erMedmorDelAvSøknaden,
-                harAktivitetsfriKvote,
-                intl,
-            );
-        case 'FARS_DEL_EØS':
-            return getFarsDelEøsLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erMedmorDelAvSøknaden, intl);
-        case 'FARS_DEL_GRADERT':
-            return getFarsDelGradertLabel(
-                navnAnnenPart,
-                erIkkeSøkerSpesifisert,
-                erSøkersPeriode,
-                erMedmorDelAvSøknaden,
-                harAktivitetsfriKvote,
-                intl,
-            );
-        case 'FARS_DEL_AKTIVITETSFRI':
-            return intl.formatMessage(
-                { id: 'kalender.dinPeriode.aktivitetsfri' },
-                {
-                    erSokersPeriode: erSøkersPeriode,
-                    navnAnnenPart,
-                },
-            );
-        case 'FARS_DEL_AKTIVITETSFRI_GRADERT':
-            return intl.formatMessage(
-                { id: 'kalender.dinPeriode.aktivitetsfri.gradert' },
-                {
-                    erSokersPeriode: erSøkersPeriode,
-                    navnAnnenPart,
-                },
-            );
-        case 'PLEIEPENGER':
-            return intl.formatMessage({ id: 'kalender.avslagFratrekkPleiepenger' });
-        case 'TAPTE_DAGER':
-            return getTapteDagerLabel(
-                erIkkeSøkerSpesifisert,
-                erSøkersPeriode,
-                navnAnnenPart,
-                info.forelder,
-                erMedmorDelAvSøknaden,
-                intl,
-            );
-        case 'SAMTIDIG_UTTAK':
-            return getSamtidigUttakLabel(navnAnnenPart, erIkkeSøkerSpesifisert, intl);
-        case 'AVSLAG':
-            return intl.formatMessage({ id: 'kalender.avslag' });
-        default:
-            return info.label;
-    }
+        (kontekst.søker === 'MOR' && info.forelder === 'MOR') ||
+        (kontekst.søker === 'FAR_MEDMOR' && info.forelder === 'FAR_MEDMOR');
+
+    return LEGEND_LABELS[info.label].tekst({ ...kontekst, erSøkersPeriode, forelder: info.forelder });
 };
 
 const getSamtidigUttakLabel = (navnAnnenPart: string, erIkkeSøkerSpesifisert: boolean, intl: IntlShape): string => {

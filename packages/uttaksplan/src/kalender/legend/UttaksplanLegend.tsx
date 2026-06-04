@@ -19,8 +19,10 @@ import { filtrerBortAnnenPartsIdentiskePerioder } from '../utils/uttaksplanKalen
 import { useUttaksplanData } from './../../context/UttaksplanDataContext';
 import {
     UttaksplanKalenderLegendInfo,
+    erLegendLabelKlikkbar,
     getCalendarLabel,
     getFocusStyle,
+    getLegendIkon,
     getLegendLabelFromPeriode,
     getSelectableStyle,
     getSelectedStyle,
@@ -29,8 +31,6 @@ import {
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
-
-const UNSELECTABLE_DAYS = new Set<LegendLabel>(['HELG', 'BARNEHAGEPLASS', 'FØDSEL']);
 
 interface Props {
     perioderForKalendervisning: CalendarPeriod[];
@@ -207,16 +207,15 @@ const LabelButtonMedEllerUtenToolip = ({
     const erFarEllerMedmor = søker === 'FAR_MEDMOR';
     const navnAnnenPart = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
-    const label = getCalendarLabel(
-        info,
+    const label = getCalendarLabel(info, {
+        intl,
         navnAnnenPart,
+        søker,
+        erIkkeSøkerSpesifisert: erIkkeSøkerSpesifisert ?? false,
         erMedmorDelAvSøknaden,
         harAktivitetsfriKvote,
-        søker,
-        erIkkeSøkerSpesifisert ?? false,
-        intl,
         rettighetType,
-    );
+    });
 
     if (visTekst) {
         return (
@@ -259,7 +258,9 @@ const LabelButton = ({
 }) => {
     const [selectedLabel, setSelectedLabel] = useState<LegendLabel | undefined>(undefined);
 
-    const erKlikkbar = !!selectLegend && !UNSELECTABLE_DAYS.has(info.label) && !readOnly;
+    const klikkbar = erLegendLabelKlikkbar(info.label);
+    const ikon = getLegendIkon(info.label);
+    const erKlikkbar = !!selectLegend && klikkbar && !readOnly;
 
     return (
         <button
@@ -273,32 +274,29 @@ const LabelButton = ({
                     : undefined
             }
             className={
-                `rounded-sm ${getSelectableStyle(!UNSELECTABLE_DAYS.has(info.label) && !readOnly)}` +
+                `rounded-sm ${getSelectableStyle(erKlikkbar)}` +
                 ` ${getFocusStyle(info.calendarPeriod.color)} ${getSelectedStyle(selectedLabel === info.label, info.calendarPeriod.color)} `
             }
-            tabIndex={!UNSELECTABLE_DAYS.has(info.label) && !readOnly ? 0 : -1}
+            tabIndex={erKlikkbar ? 0 : -1}
             disabled={!erKlikkbar}
         >
-            {(info.label === 'FØDSEL' || info.label === 'TERMIN' || info.label === 'ADOPSJON') && (
+            {ikon === 'FAMILIEHENDELSE' && (
                 <HStack gap="space-4">
                     <HeartFillIcon aria-hidden color="var(--ax-bg-brand-magenta-strong)" width={25} height={25} />
                     {visTekst && <BodyShort>{label}</BodyShort>}
                 </HStack>
             )}
-            {info.label === 'BARNEHAGEPLASS' && (
+            {ikon === 'BARNEHAGE' && (
                 <HStack gap="space-4">
                     <TeddyBearFillIcon aria-hidden color="var(--ax-brand-beige-800)" width={25} height={25} />
                     {visTekst && <BodyShort>{label}</BodyShort>}
                 </HStack>
             )}
-            {info.label !== 'FØDSEL' &&
-                info.label !== 'BARNEHAGEPLASS' &&
-                info.label !== 'TERMIN' &&
-                info.label !== 'ADOPSJON' && (
-                    <CalendarLabel color={info.calendarPeriod.color}>
-                        {visTekst && <BodyShort className="text-left">{label}</BodyShort>}
-                    </CalendarLabel>
-                )}
+            {!ikon && (
+                <CalendarLabel color={info.calendarPeriod.color}>
+                    {visTekst && <BodyShort className="text-left">{label}</BodyShort>}
+                </CalendarLabel>
+            )}
         </button>
     );
 };
