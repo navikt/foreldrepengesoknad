@@ -467,4 +467,40 @@ describe('useFormSubmitValidator', () => {
 
         expect(feilmelding).toBeNull();
     });
+
+    it('skal returnere feilmelding ved 200 % samtidig uttak ved adopsjon med kun ett barn', () => {
+        const { result } = renderHook(() => useFormSubmitValidator(), {
+            wrapper: getWrapper({
+                barn: {
+                    type: BarnType.ADOPTERT_STEBARN,
+                    antallBarn: 1,
+                    adopsjonsdato: FAMILIEHENDELSESDATO,
+                    fødselsdatoer: [FAMILIEHENDELSESDATO],
+                },
+            }),
+        });
+
+        const perioder = [
+            {
+                fom: FAMILIEHENDELSESDATO,
+                tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(10),
+            },
+        ];
+
+        const formValues = {
+            forelder: 'BEGGE',
+            kontoTypeMor: 'FELLESPERIODE',
+            kontoTypeFarMedmor: 'FELLESPERIODE',
+            ønskerFlerbarnsdager: false,
+            samtidigUttaksprosentMor: '100',
+            samtidigUttaksprosentFarMedmor: '100',
+            skalDuKombinereArbeidOgUttakMor: false,
+            skalDuKombinereArbeidOgUttakFarMedmor: false,
+        } satisfies LeggTilEllerEndrePeriodeFormFormValues;
+
+        const valider = result.current;
+        const feilmelding = valider(perioder, formValues);
+
+        expect(feilmelding).toBe('Dere kan ikke ha mer enn 150 % foreldrepenger til sammen');
+    });
 });
