@@ -33,6 +33,8 @@ const vedleggDefault = {
     vedlegg: [],
 };
 
+const pdfVedlegg = new File(['pdf'], 'filnavn.pdf', { type: 'application/pdf' });
+
 type StoryArgs = {
     omBarnet?: BarnDto;
     utenlandsopphold?: Utenlandsopphold;
@@ -99,7 +101,7 @@ export const AdopsjonAvEktefellesBarn: Story = {
                     id: '1',
                     filename: 'filnavn.pdf',
                     filesize: 2323,
-                    file: {} as File,
+                    file: pdfVedlegg,
                     pending: false,
                     innsendingsType: 'LASTET_OPP',
                     uploaded: true,
@@ -129,7 +131,7 @@ export const AdopsjonAvEktefellesFlereBarn: Story = {
                     filename: 'filnavn.pdf',
                     innsendingsType: 'LASTET_OPP',
                     filesize: 2323,
-                    file: {} as File,
+                    file: pdfVedlegg,
                     pending: false,
                     uploaded: true,
                     type: AttachmentType.OMSORGSOVERTAKELSE,
@@ -156,7 +158,7 @@ export const BarnetErIkkeFodt: Story = {
                     id: '1',
                     filename: 'filnavn.pdf',
                     filesize: 2323,
-                    file: {} as File,
+                    file: pdfVedlegg,
                     pending: false,
                     innsendingsType: 'LASTET_OPP',
                     uploaded: true,
