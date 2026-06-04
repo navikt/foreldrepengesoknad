@@ -8,7 +8,7 @@ import type { KontoBeregningResultatDto } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';
 
-const STØNADSKVOTER = {
+const STØNADSKVOTER_FALLBACK = {
     '100': {
         kontoer: [
             { konto: 'MØDREKVOTE', dager: 75 },
@@ -35,27 +35,33 @@ const STØNADSKVOTER = {
     },
 } satisfies KontoBeregningResultatDto;
 
+const createKontoHandler = () =>
+    http.post(API_URLS.konto, async ({ request }) => {
+        const body = await request.json();
+
+        try {
+            const response = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
+                body: JSON.stringify(body),
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            const json = await response.json();
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+            return HttpResponse.json(json);
+        } catch {
+            return HttpResponse.json(STØNADSKVOTER_FALLBACK);
+        }
+    });
+
 const meta = {
     title: 'AppContainer',
     component: AppContainer,
     parameters: {
         msw: {
-            handlers: [
-                http.post(API_URLS.konto, async ({ request }) => {
-                    const body = await request.json();
-                    const response = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
-                        body: JSON.stringify(body),
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    });
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                    const json = await response.json();
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                    return HttpResponse.json(json);
-                }),
-            ],
+            handlers: [createKontoHandler()],
         },
     },
     render: () => {
@@ -77,7 +83,7 @@ export const HvorMyeVeiviser: Story = {};
 export const HvorMyeVeiviserMockaStønadskvoterOgSatser: Story = {
     parameters: {
         msw: {
-            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(STØNADSKVOTER))],
+            handlers: [createKontoHandler()],
         },
     },
 };
