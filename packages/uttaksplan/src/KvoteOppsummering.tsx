@@ -56,7 +56,7 @@ export const KvoteOppsummering = ({ visStatusIkoner, erInnsyn }: Props) => {
     );
 };
 
-export const KvoteOppsummeringsTittel = ({
+const KvoteOppsummeringsTittel = ({
     visStatusIkoner,
     brukEnkelVisning,
     erInnsyn,
