@@ -9,8 +9,24 @@ import { Attachment } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 function VedleggLenke({ attachment }: { readonly attachment: Attachment }) {
-    const href = useMemo(() => URL.createObjectURL(attachment.file), [attachment.file]);
-    useEffect(() => () => URL.revokeObjectURL(href), [href]);
+    const href = useMemo(() => {
+        if (typeof URL?.createObjectURL !== 'function' || !(attachment.file instanceof Blob)) {
+            return undefined;
+        }
+        return URL.createObjectURL(attachment.file);
+    }, [attachment.file]);
+
+    useEffect(() => {
+        return () => {
+            if (href) {
+                URL.revokeObjectURL(href);
+            }
+        };
+    }, [href]);
+
+    if (!href) {
+        return <>{attachment.filename}</>;
+    }
 
     return (
         <Link href={href} target="_blank" rel="noreferrer">
@@ -26,19 +42,19 @@ function TerminDokumentasjonSummary({ dokumentasjon }: { readonly dokumentasjon:
                 <FormSummary.Label>
                     <FormattedMessage id="DokumentasjonOppsummering.Terminbekreftelse" />
                 </FormSummary.Label>
-                <FormSummary.Answer>{formatDate(dokumentasjon.terminbekreftelsedato)}</FormSummary.Answer>
+                <FormSummary.Value>{formatDate(dokumentasjon.terminbekreftelsedato)}</FormSummary.Value>
             </FormSummary.Answer>
             <FormSummary.Answer>
                 <FormSummary.Label>
                     <FormattedMessage id="DokumentasjonOppsummering.TerminbekreftelseDokument" />
                 </FormSummary.Label>
-                <FormSummary.Answer>
+                <FormSummary.Value>
                     <VStack gap="space-8">
                         {dokumentasjon.vedlegg.map((v) => (
                             <VedleggLenke key={v.id} attachment={v} />
                         ))}
                     </VStack>
-                </FormSummary.Answer>
+                </FormSummary.Value>
             </FormSummary.Answer>
         </>
     );
@@ -50,13 +66,13 @@ function AdopsjonDokumentasjon({ dokumentasjon }: { readonly dokumentasjon: Vedl
             <FormSummary.Label>
                 <FormattedMessage id="DokumentasjonOppsummering.adopsjonsdokumenter" />
             </FormSummary.Label>
-            <FormSummary.Answer>
+            <FormSummary.Value>
                 <VStack gap="space-8">
                     {dokumentasjon.vedlegg.map((v) => (
                         <VedleggLenke key={v.id} attachment={v} />
                     ))}
                 </VStack>
-            </FormSummary.Answer>
+            </FormSummary.Value>
         </FormSummary.Answer>
     );
 }
