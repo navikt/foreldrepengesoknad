@@ -1,5 +1,4 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
-import { Path } from 'appData/paths';
 import { useEsNavigator } from 'appData/useEsNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
@@ -7,13 +6,6 @@ import { FormattedMessage } from 'react-intl';
 import { UtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { Utenlandsopphold } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
-
-const utledNesteSide = (formValues: Utenlandsopphold): Path => {
-    if (formValues?.harBoddUtenforNorgeSiste12Mnd) {
-        return Path.TIDLIGERE_UTENLANDSOPPHOLD;
-    }
-    return formValues?.skalBoUtenforNorgeNeste12Mnd ? Path.SENERE_UTENLANDSOPPHOLD : Path.OPPSUMMERING;
-};
 
 type Props = {
     mellomlagreOgNaviger: () => Promise<void>;
@@ -39,7 +31,7 @@ export const UtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) => {
             oppdaterSenereUtenlandsopphold(undefined);
         }
 
-        return navigator.goToNextStep(utledNesteSide(formValues));
+        return navigator.goToNextDefaultStep({ [ContextDataType.UTENLANDSOPPHOLD]: formValues });
     };
 
     return (
@@ -51,7 +43,7 @@ export const UtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) => {
                 onAvsluttOgSlett={navigator.avbrytSøknad}
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
-                onStepChange={navigator.goToNextStep}
+                onStepChange={navigator.goToStep}
                 stepConfig={stepConfig}
                 stønadstype="Engangsstønad"
             />

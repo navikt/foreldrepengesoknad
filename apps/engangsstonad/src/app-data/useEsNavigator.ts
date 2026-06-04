@@ -1,36 +1,45 @@
 import { loggUmamiEvent } from '@navikt/fp-observability';
 
-import { ContextDataType, useContextSaveData } from './EsDataContext';
+import { ContextDataMap, ContextDataType, useContextGetAnyData, useContextSaveData } from './EsDataContext';
 import { Path } from './paths';
-import { useStepConfig } from './useStepConfig';
+import { lagAppStegliste, useCurrentPath } from './useStepConfig';
 
 export const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
-    const stepConfig = useStepConfig();
+    const getStateData = useContextGetAnyData();
+    const currentPath = useCurrentPath();
     const oppdaterPath = useContextSaveData(ContextDataType.CURRENT_PATH);
 
-    const goToPreviousDefaultStep = () => {
-        const index = stepConfig.findIndex((s) => s.isSelected) - 1;
-        const previousPath = stepConfig[index]?.id ?? Path.VELKOMMEN;
-        oppdaterPath(previousPath);
-        void mellomlagreOgNaviger();
-    };
+    // Bygg ein getter som let kallande steg overstyre data det nettopp har lagra.
+    // Dette trengst fordi context-dispatch i same handler enno ikkje er reflektert
+    // i `getStateData`, og vi vil rekne neste steg ut frå ferske verdiar.
+    const medFerskeData =
+        (oppdatert: Partial<ContextDataMap>) =>
+        <TYPE extends ContextDataType>(key: TYPE): ContextDataMap[TYPE] =>
+            key in oppdatert ? oppdatert[key] : getStateData(key);
 
-    const goToNextStep = (path: Path) => {
+    const naviger = (path: Path | undefined) => {
         oppdaterPath(path);
         void mellomlagreOgNaviger();
     };
 
-    const goToNextDefaultStep = () => {
-        const index = stepConfig.findIndex((s) => s.isSelected) + 1;
-        const nextPath = stepConfig[index]?.id;
+    const goToNextDefaultStep = (oppdatertData: Partial<ContextDataMap> = {}) => {
+        const stegliste = lagAppStegliste(medFerskeData(oppdatertData));
+        const index = stegliste.indexOf(currentPath) + 1;
+        naviger(stegliste[index]);
+    };
 
-        oppdaterPath(nextPath);
-        void mellomlagreOgNaviger();
+    const goToPreviousDefaultStep = () => {
+        const stegliste = lagAppStegliste(getStateData);
+        const index = stegliste.indexOf(currentPath) - 1;
+        naviger(stegliste[index] ?? Path.VELKOMMEN);
+    };
+
+    const goToStep = (path: Path) => {
+        naviger(path);
     };
 
     const avbrytSøknad = () => {
-        oppdaterPath(undefined);
-        void mellomlagreOgNaviger();
+        naviger(undefined);
     };
 
     const fortsettSøknadSenere = () => {
@@ -40,8 +49,8 @@ export const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
 
     return {
         goToPreviousDefaultStep,
-        goToNextStep,
         goToNextDefaultStep,
+        goToStep,
         avbrytSøknad,
         fortsettSøknadSenere,
     };
