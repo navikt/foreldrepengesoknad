@@ -136,6 +136,71 @@ export const useTellDagerIUttaksPeriodene = () => {
     return tellDagerIUttaksPeriodene(filtrertePerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato);
 };
 
+export const useUbrukteDagerPerKontoKunEnHarRett = () => {
+    const { uttakPerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato } = useUttaksplanData();
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
+
+    const aktivitetsfriKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
+    const foreldrepengerKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FORELDREPENGER');
+    const førFødselKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
+
+    const bruktAktivitetsfri = aktivitetsfriKonto
+        ? summerDagerIPerioder(
+              filtrertePerioder.filter((p) => {
+                  const erAktivitetsfriPeriode =
+                      erVanligUttakPeriode(p) &&
+                      getUttaksKontoType(p) === 'FORELDREPENGER' &&
+                      p.morsAktivitet === 'IKKE_OPPGITT';
+                  return erAktivitetsfriPeriode || getUttaksKontoType(p) === 'AKTIVITETSFRI_KVOTE';
+              }),
+              valgtStønadskvote.kontoer,
+              familiesituasjon,
+              familiehendelsedato,
+          )
+        : 0;
+
+    const bruktMedAktivitetskrav = foreldrepengerKonto
+        ? summerDagerIPerioder(
+              filtrertePerioder.filter((p) => {
+                  const erAktivitetsfriPeriode =
+                      erVanligUttakPeriode(p) &&
+                      getUttaksKontoType(p) === 'FORELDREPENGER' &&
+                      p.morsAktivitet === 'IKKE_OPPGITT';
+                  if (erAktivitetsfriPeriode) return false;
+                  return getUttaksKontoType(p) === 'FORELDREPENGER';
+              }),
+              valgtStønadskvote.kontoer,
+              familiesituasjon,
+              familiehendelsedato,
+          )
+        : 0;
+
+    const bruktFørFødsel = førFødselKonto
+        ? summerDagerIPerioder(
+              filtrertePerioder.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL'),
+              valgtStønadskvote.kontoer,
+              familiesituasjon,
+              familiehendelsedato,
+          )
+        : 0;
+
+    const ubrukteFørFødselDager =
+        førFødselKonto && familiesituasjon !== 'fødsel'
+            ? Math.max(0, førFødselKonto.dager - bruktFørFødsel)
+            : 0;
+
+    const ubrukteMedAktivitetskravDager = foreldrepengerKonto
+        ? Math.max(0, foreldrepengerKonto.dager - bruktMedAktivitetskrav + ubrukteFørFødselDager)
+        : 0;
+
+    return {
+        ubrukteDagerAktivitetsfri: aktivitetsfriKonto
+            ? Math.max(0, aktivitetsfriKonto.dager - bruktAktivitetsfri)
+            : 0,
+        ubrukteDagerMedAktivitetskrav: ubrukteMedAktivitetskravDager,
+    };
+};
+
 export const tellDagerIUttaksPeriodene = (
     uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     familiesituasjon: Familiesituasjon,
