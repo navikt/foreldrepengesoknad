@@ -4,7 +4,36 @@ import { HttpResponse, http } from 'msw';
 import { StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
+import type { KontoBeregningResultatDto } from '@navikt/fp-types';
+
 import { AppContainer } from './AppContainer';
+
+const STØNADSKVOTER = {
+    '100': {
+        kontoer: [
+            { konto: 'MØDREKVOTE', dager: 75 },
+            { konto: 'FEDREKVOTE', dager: 75 },
+            { konto: 'FELLESPERIODE', dager: 80 },
+            { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+        ],
+        minsteretter: {
+            farRundtFødsel: 0,
+            toTette: 0,
+        },
+    },
+    '80': {
+        kontoer: [
+            { konto: 'MØDREKVOTE', dager: 95 },
+            { konto: 'FEDREKVOTE', dager: 95 },
+            { konto: 'FELLESPERIODE', dager: 90 },
+            { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+        ],
+        minsteretter: {
+            farRundtFødsel: 0,
+            toTette: 0,
+        },
+    },
+} satisfies KontoBeregningResultatDto;
 
 const meta = {
     title: 'AppContainer',
@@ -48,22 +77,7 @@ export const HvorMyeVeiviser: Story = {};
 export const HvorMyeVeiviserMockaStønadskvoterOgSatser: Story = {
     parameters: {
         msw: {
-            handlers: [
-                http.post(API_URLS.konto, async ({ request }) => {
-                    const body = await request.json();
-                    const response = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
-                        body: JSON.stringify(body),
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    });
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                    const json = await response.json();
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                    return HttpResponse.json(json);
-                }),
-            ],
+            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(STØNADSKVOTER))],
         },
     },
 };
