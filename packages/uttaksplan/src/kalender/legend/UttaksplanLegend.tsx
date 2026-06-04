@@ -279,7 +279,7 @@ const LabelButton = ({
             tabIndex={!UNSELECTABLE_DAYS.has(info.label) && !readOnly ? 0 : -1}
             disabled={!erKlikkbar}
         >
-            {(info.label === 'FØDSEL' || info.label === 'TERMIN') && (
+            {(info.label === 'FØDSEL' || info.label === 'TERMIN' || info.label === 'ADOPSJON') && (
                 <HStack gap="space-4">
                     <HeartFillIcon aria-hidden color="var(--ax-bg-brand-magenta-strong)" width={25} height={25} />
                     {visTekst && <BodyShort>{label}</BodyShort>}
@@ -291,11 +291,14 @@ const LabelButton = ({
                     {visTekst && <BodyShort>{label}</BodyShort>}
                 </HStack>
             )}
-            {info.label !== 'FØDSEL' && info.label !== 'BARNEHAGEPLASS' && info.label !== 'TERMIN' && (
-                <CalendarLabel color={info.calendarPeriod.color}>
-                    {visTekst && <BodyShort className="text-left">{label}</BodyShort>}
-                </CalendarLabel>
-            )}
+            {info.label !== 'FØDSEL' &&
+                info.label !== 'BARNEHAGEPLASS' &&
+                info.label !== 'TERMIN' &&
+                info.label !== 'ADOPSJON' && (
+                    <CalendarLabel color={info.calendarPeriod.color}>
+                        {visTekst && <BodyShort className="text-left">{label}</BodyShort>}
+                    </CalendarLabel>
+                )}
         </button>
     );
 };
