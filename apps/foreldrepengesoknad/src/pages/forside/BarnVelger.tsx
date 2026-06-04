@@ -11,12 +11,7 @@ import { DDMMMMYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
-import { ForsideFormValues } from './types/ForsideFormValues';
-
-export enum SelectableBarnOptions {
-    SØKNAD_GJELDER_NYTT_BARN = 'søknad_gjelder_nytt_barn',
-    SØKNAD_GJELDER_PLANLAGT_BARN = 'søknad_gjelder_planlagt_barn',
-}
+import { ForsideFormValues, SelectableBarnOptions } from './types/ForsideFormValues';
 
 const getRadioForUfødtBarn = (barna: ValgtBarn[], intl: IntlShape) => {
     return barna.map((barn) => {

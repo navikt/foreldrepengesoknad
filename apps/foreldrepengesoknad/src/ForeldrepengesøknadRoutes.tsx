@@ -6,9 +6,9 @@ import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
 import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSendSøknad } from 'appData/useSendSøknad';
 import { Forside } from 'pages/forside/Forside';
+import { Søknadsmetadata } from 'pages/forside/useStartSøknad';
 import { KvitteringPage } from 'pages/kvittering/KvitteringPage';
-import { useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { AndreInntektskilderSteg } from 'steps/andre-inntektskilder/AndreInntektskilderSteg';
 import { AnnenForelderSteg } from 'steps/annen-forelder/AnnenForelderSteg';
 import { ArbeidsforholdOgInntektSteg } from 'steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
@@ -300,6 +300,12 @@ export const ForeldrepengesøknadRoutes = ({
 
     const avbrytSøknad = useAvbrytSøknad(setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn);
 
+    const oppdaterSøknadsmetadata = useCallback((metadata: Søknadsmetadata) => {
+        setHarGodkjentVilkår(metadata.harGodkjentVilkår);
+        setErEndringssøknad(metadata.erEndringssøknad);
+        setSøknadGjelderNyttBarn(metadata.søknadGjelderNyttBarn);
+    }, []);
+
     // Hvis valgt barn kan vi forsøke hente termindato fra annenpartsvedtak.
     // Dette trengs ikke før i OmBarnet. Men om vi legger et query på rot for å prefetche så tidlig som mulig.
     const annenPartVedtakOptions = useAnnenPartVedtakOptions();
@@ -349,9 +355,7 @@ export const ForeldrepengesøknadRoutes = ({
                         saker={foreldrepengerSaker}
                         harGodkjentVilkår={harGodkjentVilkår}
                         søkerInfo={søkerInfo}
-                        setHarGodkjentVilkår={setHarGodkjentVilkår}
-                        setErEndringssøknad={setErEndringssøknad}
-                        setSøknadGjelderNyttBarn={setSøknadGjelderNyttBarn}
+                        oppdaterSøknadsmetadata={oppdaterSøknadsmetadata}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                     />
                 }

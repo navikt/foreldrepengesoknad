@@ -2,7 +2,9 @@ import dayjs from 'dayjs';
 
 import { FpBarnDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 
-import { getSelectableBarnOptions } from './forsideUtils';
+import { getSelectableBarnOptions, bestemSøknadsstart } from './forsideUtils';
+import { ValgtBarn, ValgtBarnType } from '../../types/ValgtBarn';
+import { SelectableBarnOptions } from './types/ForsideFormValues';
 
 const fødselsdato = dayjs().subtract(1, 'year').format('YYYY-MM-DD');
 const sak = {
@@ -112,5 +114,64 @@ describe('forsideUtils - getSelectableBarnOptions', () => {
     it('skal ikke vise PDL barn som har avsluttet sak', () => {
         const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd]);
         expect(result.length).toBe(0);
+    });
+});
+
+describe('forsideUtils - bestemSøknadsstart', () => {
+    const lagValgtBarn = (overrides: Partial<ValgtBarn>): ValgtBarn => ({
+        id: 'barn-1',
+        type: ValgtBarnType.FØDT,
+        antallBarn: 1,
+        sortableDato: fødselsdato,
+        alleBarnaLever: true,
+        ...overrides,
+    });
+
+    it('skal returnere PLANLAGT_BARN når brukaren vel det planlagte barnet frå planleggjaren', () => {
+        const start = bestemSøknadsstart(
+            { harForståttRettigheterOgPlikter: true, valgteBarn: SelectableBarnOptions.SØKNAD_GJELDER_PLANLAGT_BARN },
+            [],
+            [],
+        );
+        expect(start.type).toBe('PLANLAGT_BARN');
+    });
+
+    it('skal returnere NYTT_BARN når valt id ikkje finst blant selectableBarn', () => {
+        const start = bestemSøknadsstart(
+            { harForståttRettigheterOgPlikter: true, valgteBarn: SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN },
+            [lagValgtBarn({ id: 'barn-1' })],
+            [],
+        );
+        expect(start.type).toBe('NYTT_BARN');
+    });
+
+    it('skal returnere ENDRING når valt barn kan søke om endring og saka finst', () => {
+        const valgteBarn = lagValgtBarn({ id: 'barn-1', kanSøkeOmEndring: true, sak });
+        const start = bestemSøknadsstart(
+            { harForståttRettigheterOgPlikter: true, valgteBarn: 'barn-1' },
+            [valgteBarn],
+            [sak],
+        );
+        expect(start).toEqual({ type: 'ENDRING', valgteBarn, sak });
+    });
+
+    it('skal returnere NY_FRA_BARN når valt barn ikkje kan søke om endring', () => {
+        const valgteBarn = lagValgtBarn({ id: 'barn-1', kanSøkeOmEndring: false, sak });
+        const start = bestemSøknadsstart(
+            { harForståttRettigheterOgPlikter: true, valgteBarn: 'barn-1' },
+            [valgteBarn],
+            [sak],
+        );
+        expect(start).toEqual({ type: 'NY_FRA_BARN', valgteBarn });
+    });
+
+    it('skal returnere NY_FRA_BARN når barnet kan endrast men saka ikkje finst i saker', () => {
+        const valgtBarn = lagValgtBarn({ id: 'barn-1', kanSøkeOmEndring: true, sak });
+        const start = bestemSøknadsstart(
+            { harForståttRettigheterOgPlikter: true, valgteBarn: 'barn-1' },
+            [valgtBarn],
+            [],
+        );
+        expect(start.type).toBe('NY_FRA_BARN');
     });
 });

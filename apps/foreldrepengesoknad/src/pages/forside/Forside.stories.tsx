@@ -242,9 +242,7 @@ export const Default: Story = {
         harGodkjentVilkår: false,
         saker: [],
         søkerInfo: defaultPerson,
-        setErEndringssøknad: action('button-click'),
-        setHarGodkjentVilkår: action('button-click'),
-        setSøknadGjelderNyttBarn: action('button-click'),
+        oppdaterSøknadsmetadata: action('button-click'),
         mellomlagreSøknadOgNaviger: promiseAction(),
     },
 };
