@@ -57,8 +57,10 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
                             />
                         )}
                         <Heading size="small">
-                            <NotePencilIcon height={16} width={16} />
-                            <FormattedMessage id="RedigeringKalenderIndex.VelgDatoerIKalender" />
+                            <HStack gap="space-4" align="center">
+                                <NotePencilIcon aria-hidden height={16} width={16} />
+                                <FormattedMessage id="RedigeringKalenderIndex.VelgDatoerIKalender" />
+                            </HStack>
                         </Heading>
                     </VStack>
                 </Show>
