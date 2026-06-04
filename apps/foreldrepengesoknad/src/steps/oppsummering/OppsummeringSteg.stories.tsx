@@ -882,9 +882,6 @@ export const VisSendInnSenereVedlegg: Story = {
     },
 };
 
-// TODO: (KALLE) Legg til stillingsprosent som en kontrollbar storybook-parameter for relevante historier
-// TODO: (KALLE) Gjør at datoene i stories er relative til dagens dato
-
 export const FarSøkerMorMåIkkeDokumentereArbeid: Story = {
     args: {
         ...Default.args,

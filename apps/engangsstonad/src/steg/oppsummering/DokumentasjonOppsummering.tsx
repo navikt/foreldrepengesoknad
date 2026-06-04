@@ -1,10 +1,23 @@
 import { Path } from 'appData/paths';
+import { useEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Dokumentasjon, TerminDokumentasjon, Vedlegg, erTerminDokumentasjon } from 'types/Dokumentasjon';
 
-import { FormSummary, VStack } from '@navikt/ds-react';
+import { FormSummary, Link, VStack } from '@navikt/ds-react';
 
+import { Attachment } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
+
+function VedleggLenke({ attachment }: { readonly attachment: Attachment }) {
+    const href = useMemo(() => URL.createObjectURL(attachment.file), [attachment.file]);
+    useEffect(() => () => URL.revokeObjectURL(href), [href]);
+
+    return (
+        <Link href={href} target="_blank" rel="noreferrer">
+            {attachment.filename}
+        </Link>
+    );
+}
 
 function TerminDokumentasjonSummary({ dokumentasjon }: { readonly dokumentasjon: TerminDokumentasjon }) {
     return (
@@ -20,7 +33,11 @@ function TerminDokumentasjonSummary({ dokumentasjon }: { readonly dokumentasjon:
                     <FormattedMessage id="DokumentasjonOppsummering.TerminbekreftelseDokument" />
                 </FormSummary.Label>
                 <FormSummary.Answer>
-                    <VStack gap="space-8">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
+                    <VStack gap="space-8">
+                        {dokumentasjon.vedlegg.map((v) => (
+                            <VedleggLenke key={v.id} attachment={v} />
+                        ))}
+                    </VStack>
                 </FormSummary.Answer>
             </FormSummary.Answer>
         </>
@@ -34,8 +51,11 @@ function AdopsjonDokumentasjon({ dokumentasjon }: { readonly dokumentasjon: Vedl
                 <FormattedMessage id="DokumentasjonOppsummering.adopsjonsdokumenter" />
             </FormSummary.Label>
             <FormSummary.Answer>
-                {/*TODO: klikke på lenke*/}
-                <VStack gap="space-8">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
+                <VStack gap="space-8">
+                    {dokumentasjon.vedlegg.map((v) => (
+                        <VedleggLenke key={v.id} attachment={v} />
+                    ))}
+                </VStack>
             </FormSummary.Answer>
         </FormSummary.Answer>
     );
