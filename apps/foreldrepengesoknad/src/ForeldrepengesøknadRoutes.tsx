@@ -7,8 +7,8 @@ import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSendSøknad } from 'appData/useSendSøknad';
 import { Forside } from 'pages/forside/Forside';
 import { KvitteringPage } from 'pages/kvittering/KvitteringPage';
-import { useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { AndreInntektskilderSteg } from 'steps/andre-inntektskilder/AndreInntektskilderSteg';
 import { AnnenForelderSteg } from 'steps/annen-forelder/AnnenForelderSteg';
 import { ArbeidsforholdOgInntektSteg } from 'steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
@@ -282,7 +282,6 @@ export const ForeldrepengesøknadRoutes = ({
     lagretHarGodkjentVilkår,
     lagretSøknadGjelderNyttBarn,
 }: Props) => {
-    const navigate = useNavigate();
     const routerLocation = useLocation();
 
     const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(lagretHarGodkjentVilkår || false);
@@ -307,28 +306,15 @@ export const ForeldrepengesøknadRoutes = ({
 
     // APP_ROUTE er einaste sanning for kva steg brukaren er på, og blir alltid
     // halden gyldig av stegnavigasjonen (data for steget finst når APP_ROUTE peikar
-    // dit). Endrar nettlesarens tilbake/fram-knapp URL-en til eit anna steg,
-    // snappar vi tilbake til APP_ROUTE slik at vi aldri monterer eit steg utan dei
-    // påkravde dataene. Stegvelgar og «Tilbake»-knappar navigerer via APP_ROUTE og
-    // held difor URL-en i synk.
+    // dit). React Router monterer derimot steget ut frå URL-en allereie under
+    // render. Endrar nettlesarens tilbake/fram-knapp URL-en til eit anna, forelda
+    // steg, må vi difor snappe tilbake til APP_ROUTE *under render* – ein
+    // navigasjon i ein useEffect skjer for seint, då har det forelda steget
+    // allereie rendra og krasja på notEmpty(...). Stegvelgar og «Tilbake»-knappar
+    // navigerer via APP_ROUTE og held URL-en i synk. KVITTERING og IKKE_MYNDIG er
+    // unntatt: kvittering blir navigert til utan å oppdatere APP_ROUTE etter
+    // innsending.
     const appRoute = useContextGetData(ContextDataType.APP_ROUTE);
-
-    useEffect(() => {
-        if (!appRoute || !harGodkjentVilkår || !erMyndig(søkerInfo.fødselsdato)) {
-            return;
-        }
-
-        const currentPath = decodeURIComponent(routerLocation.pathname);
-
-        const ignoredPaths = [SøknadRoutes.KVITTERING, SøknadRoutes.IKKE_MYNDIG].map((path) => path.toString());
-        if (ignoredPaths.includes(currentPath)) {
-            return;
-        }
-
-        if (currentPath !== appRoute.toString()) {
-            void navigate(appRoute, { replace: true });
-        }
-    }, [appRoute, harGodkjentVilkår, søkerInfo.fødselsdato, routerLocation.pathname, navigate]);
 
     if (errorSendSøknad) {
         return (
@@ -338,6 +324,17 @@ export const ForeldrepengesøknadRoutes = ({
                 retryCallback={() => location.reload()}
             />
         );
+    }
+
+    if (
+        appRoute &&
+        harGodkjentVilkår &&
+        erMyndig(søkerInfo.fødselsdato) &&
+        routerLocation.pathname !== appRoute.toString() &&
+        routerLocation.pathname !== SøknadRoutes.KVITTERING.toString() &&
+        routerLocation.pathname !== `/${SøknadRoutes.IKKE_MYNDIG}`
+    ) {
+        return <Navigate to={appRoute} replace />;
     }
 
     return (
