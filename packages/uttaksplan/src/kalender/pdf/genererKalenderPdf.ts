@@ -25,7 +25,7 @@ interface GenererKalenderPdfParams {
     filename: string;
 }
 
-const fangElement = (element: HTMLElement): Promise<HTMLCanvasElement> =>
+const lagBildeAvElement = (element: HTMLElement): Promise<HTMLCanvasElement> =>
     html2canvas(element, {
         scale: SKALA,
         useCORS: true,
@@ -72,7 +72,7 @@ export const genererKalenderPdf = async ({
     };
 
     // Forklaringa (legend) øvst på første side.
-    const legendCanvas = await fangElement(legendElement);
+    const legendCanvas = await lagBildeAvElement(legendElement);
     leggTilBilete(legendCanvas, MARGIN_MM, y, tilgjengeligBredde);
     y += høgdeForBredde(legendCanvas, tilgjengeligBredde) + RAD_GAP_MM;
 
@@ -84,7 +84,7 @@ export const genererKalenderPdf = async ({
     // går vidare til neste rad kan dei føregåande canvasane bli GC-a.
     for (let i = 0; i < månedElementer.length; i += antallKolonner) {
         const radElementer = månedElementer.slice(i, i + antallKolonner);
-        const radCanvaser = await Promise.all(radElementer.map(fangElement));
+        const radCanvaser = await Promise.all(radElementer.map(lagBildeAvElement));
 
         const radHøgde = Math.max(...radCanvaser.map((canvas) => høgdeForBredde(canvas, kolonneBredde)));
 
