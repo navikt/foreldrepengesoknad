@@ -49,22 +49,20 @@ export const HvorMyeVeiviserMockaStønadskvoterOgSatser: Story = {
     parameters: {
         msw: {
             handlers: [
-                [
-                    http.post(API_URLS.konto, async ({ request }) => {
-                        const body = await request.json();
-                        const response = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
-                            body: JSON.stringify(body),
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                        });
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                        const json = await response.json();
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                        return HttpResponse.json(json);
-                    }),
-                ],
+                http.post(API_URLS.konto, async ({ request }) => {
+                    const body = await request.json();
+                    const response = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
+                        body: JSON.stringify(body),
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                    const json = await response.json();
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                    return HttpResponse.json(json);
+                }),
             ],
         },
     },
