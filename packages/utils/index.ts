@@ -34,7 +34,7 @@ export {
 } from './src/stringUtils';
 export { getFamiliehendelsedato, getFamiliesituasjon, sorterPersonEtterEldstOgNavn } from './src/barnUtils';
 export { formatCurrencyWithKr, formatCurrency } from './src/currencyUtils';
-export { encodeToBase64, decodeBase64 } from './src/urlEncodingUtils';
+export { encodeToBase64, decodeBase64, compressToUrl, decompressFromUrl } from './src/urlEncodingUtils';
 export { erLokaltEllerDev } from './src/miljoUtils';
 export {
     getBokmålLocale,

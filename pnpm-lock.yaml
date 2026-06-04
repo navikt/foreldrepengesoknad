@@ -2298,6 +2298,9 @@ importers:
       i18n-iso-countries:
         specifier: 7.14.0
         version: 7.14.0
+      lz-string:
+        specifier: 1.5.0
+        version: 1.5.0
       react:
         specifier: 19.2.6
         version: 19.2.6

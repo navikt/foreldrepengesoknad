@@ -17,6 +17,7 @@
         "@navikt/fp-types": "workspace:*",
         "dayjs": "1.11.20",
         "i18n-iso-countries": "7.14.0",
+        "lz-string": "1.5.0",
         "react": "19.2.6",
         "react-intl": "10.1.6"
     },
