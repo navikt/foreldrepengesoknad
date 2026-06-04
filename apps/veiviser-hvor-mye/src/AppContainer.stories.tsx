@@ -35,24 +35,34 @@ const STØNADSKVOTER_FALLBACK = {
     },
 } satisfies KontoBeregningResultatDto;
 
+const KONTO_REQUEST_TIMEOUT_MS = 500;
+
 const createKontoHandler = () =>
     http.post(API_URLS.konto, async ({ request }) => {
         const body = await request.json();
+        const abortController = new AbortController();
+        const timeout = setTimeout(() => abortController.abort(), KONTO_REQUEST_TIMEOUT_MS);
 
         try {
             const response = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
                 body: JSON.stringify(body),
                 method: 'POST',
+                signal: abortController.signal,
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
+            if (!response.ok) {
+                throw new Error(`Klarte ikke hente kontoer: ${response.status}`);
+            }
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             const json = await response.json();
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             return HttpResponse.json(json);
         } catch {
             return HttpResponse.json(STØNADSKVOTER_FALLBACK);
+        } finally {
+            clearTimeout(timeout);
         }
     });
 
