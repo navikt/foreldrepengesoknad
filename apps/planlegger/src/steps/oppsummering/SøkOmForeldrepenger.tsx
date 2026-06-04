@@ -66,16 +66,16 @@ export const SøkOmForeldrepenger = ({ erAlenesøker, barnet }: Props) => {
 };
 
 // Felter som skal utelates fra payloaden som sendes til søknaden
-const EKSKLUDERTE_FELTER: readonly ContextDataType[] = [
+const EKSKLUDERTE_FELTER: ReadonlySet<ContextDataType> = new Set([
     ContextDataType.HVOR_MYE,
     ContextDataType.ARBEIDSSITUASJON,
     ContextDataType.HVEM_PLANLEGGER,
-];
+]);
 
 const sanitizePlanleggerState = (state: ReturnType<typeof useContextComplete>) => {
     const result: Record<string, unknown> = {};
     for (const key of Object.values(ContextDataType)) {
-        if (EKSKLUDERTE_FELTER.includes(key)) {
+        if (EKSKLUDERTE_FELTER.has(key)) {
             continue;
         }
         const value = state[key];
