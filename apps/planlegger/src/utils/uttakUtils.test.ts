@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { KontoBeregningDto, KontoDto } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import { deltUttak } from '@navikt/fp-uttaksplan';

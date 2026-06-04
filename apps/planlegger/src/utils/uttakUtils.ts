@@ -126,13 +126,13 @@ const getFørsteUttaksdagForeldrepengerFørFødsel = (barnet: OmBarnetPlanlegger
 };
 
 /**
- * Første uttaksdag med foreldrepenger før fødsel for delt uttak, lagt 3 uker (15 uttaksdager)
- * før familiehendelsedatoen. I motsetning til {@link getFørsteUttaksdagForeldrepengerFørFødsel}
- * har denne ingen spesialhåndtering når barnet er født mer enn 3 uker før termin. Dette samsvarer
- * med hvordan selve uttaksplanen (`deltUttak`) plasserer foreldrepenger-før-fødsel-perioden, slik
- * at fordelingssliderens datoer blir like kalender- og listevisningen.
+ * Første uttaksdag med foreldrepenger før fødsel, lagt 3 uker (15 uttaksdager) før
+ * familiehendelsedatoen. I motsetning til {@link getFørsteUttaksdagForeldrepengerFørFødsel} har
+ * denne ingen spesialhåndtering når barnet er født mer enn 3 uker før termin. Dette samsvarer med
+ * hvordan selve uttaksplanen (`deltUttak`) plasserer foreldrepenger-før-fødsel-perioden, slik at
+ * fordelingssliderens datoer blir like kalender- og listevisningen.
  */
-const getFørsteUttaksdagForeldrepengerFørFødselDeltUttak = (familiehendelsedato: string): string => {
+const getStartdatoForeldrepengerFørFødsel = (familiehendelsedato: string): string => {
     return trekkUttaksdagerFraDato(
         getUttaksdagFraOgMedDato(familiehendelsedato),
         ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5,
@@ -168,7 +168,7 @@ const finnDeltUttaksdata = (
     const startdatoPeriode1 =
         erBarnetAdoptert(barnet) || hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR
             ? getUttaksdagFraOgMedDato(getUttaksdagFraOgMedDato(familiehendelsedato))
-            : getFørsteUttaksdagForeldrepengerFørFødselDeltUttak(familiehendelsedato);
+            : getStartdatoForeldrepengerFørFødsel(familiehendelsedato);
 
     const sluttdatoPeriode1 =
         hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR
