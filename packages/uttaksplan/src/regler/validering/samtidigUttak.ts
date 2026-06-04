@@ -118,13 +118,14 @@ const lagRegler = (intl: IntlShape): ReadonlyArray<Valideringsregel<SamtidigUtta
 ];
 
 const byggSamtidigUttakKontekst = (input: ValideringInput): SamtidigUttakKontekst | null => {
-    const { formValues, perioder, familiehendelsedato, termindato } = input;
+    const { formValues, perioder, familiehendelsedato, termindato, familiesituasjon } = input;
 
     if (!erUtfyltForSamtidigUttak(formValues)) {
         return null;
     }
 
     const inneholderPerioderRundtFødsel =
+        familiesituasjon !== 'adopsjon' &&
         UttaksperiodeValidatorer.erNoenPerioderIMellomToUkerFørFamiliehendelsesdatoEllerEtterSeksUkerFamiliehendelsedato(
             perioder,
             familiehendelsedato,
