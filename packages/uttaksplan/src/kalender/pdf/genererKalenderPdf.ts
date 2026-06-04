@@ -13,6 +13,11 @@ const RAD_GAP_MM = 4;
 const SKALA = 1.5;
 const JPEG_KVALITET = 0.7;
 
+// Tvinga «desktop»-breidde slik at PDF-en blir deterministisk og uavhengig av
+// brukarens viewport. Utan dette ville Calendar sin responsive breakpoint
+// (columns={{ sm: 1, md: ... }}) gitt ulik layout på små skjermar.
+const RENDER_BREDDE_PX = 1200;
+
 interface GenererKalenderPdfParams {
     legendElement: HTMLElement;
     månedElementer: HTMLElement[];
@@ -26,6 +31,7 @@ const fangElement = (element: HTMLElement): Promise<HTMLCanvasElement> =>
         useCORS: true,
         logging: false,
         backgroundColor: '#ffffff',
+        windowWidth: RENDER_BREDDE_PX,
     });
 
 const høgdeForBredde = (canvas: HTMLCanvasElement, bredde: number): number =>
@@ -70,13 +76,17 @@ export const genererKalenderPdf = async ({
     leggTilBilete(legendCanvas, MARGIN_MM, y, tilgjengeligBredde);
     y += høgdeForBredde(legendCanvas, tilgjengeligBredde) + RAD_GAP_MM;
 
-    const månedCanvaser = await Promise.all(månedElementer.map(fangElement));
-
     const kolonneBredde = (tilgjengeligBredde - KOLONNE_GAP_MM * (antallKolonner - 1)) / antallKolonner;
 
-    for (let i = 0; i < månedCanvaser.length; i += antallKolonner) {
-        const rad = månedCanvaser.slice(i, i + antallKolonner);
-        const radHøgde = Math.max(...rad.map((canvas) => høgdeForBredde(canvas, kolonneBredde)));
+    // Fang ein rad (maks `antallKolonner` månadar) om gongen i staden for alle
+    // samtidig. Kalenderen kan vere opptil 3 år (≈36 månadar), så å halde alle
+    // canvasane i minnet samstundes ville gitt unødvendig høgt minnebruk. Når vi
+    // går vidare til neste rad kan dei føregåande canvasane bli GC-a.
+    for (let i = 0; i < månedElementer.length; i += antallKolonner) {
+        const radElementer = månedElementer.slice(i, i + antallKolonner);
+        const radCanvaser = await Promise.all(radElementer.map(fangElement));
+
+        const radHøgde = Math.max(...radCanvaser.map((canvas) => høgdeForBredde(canvas, kolonneBredde)));
 
         // Start ny side dersom heile raden ikkje får plass på resten av sida.
         if (y + radHøgde > sideBunn) {
@@ -84,7 +94,7 @@ export const genererKalenderPdf = async ({
             y = MARGIN_MM;
         }
 
-        rad.forEach((canvas, kolonne) => {
+        radCanvaser.forEach((canvas, kolonne) => {
             const x = MARGIN_MM + kolonne * (kolonneBredde + KOLONNE_GAP_MM);
             leggTilBilete(canvas, x, y, kolonneBredde);
         });
