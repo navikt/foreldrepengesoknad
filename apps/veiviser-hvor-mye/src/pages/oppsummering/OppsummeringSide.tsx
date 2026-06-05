@@ -82,7 +82,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskvoter, satser }: P
                 ref={ref}
                 label={intl.formatMessage({ id: 'OppsummeringSide.Oppsummering' })}
                 description={intl.formatMessage({ id: 'Tittel' })}
-                icon={<CheckmarkIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                icon={<CheckmarkIcon fontSize="1.5rem" aria-hidden />}
             >
                 <VStack gap="space-20">
                     {årslønn > grunnbeløpetGanger6 && (

@@ -187,7 +187,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                 <Infobox
                                     header={<FormattedMessage id="SituasjonSide.JobbetMinst6av10" />}
                                     headingLevel="2"
-                                    icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                                    icon={<BabyWrappedIcon fontSize="1.5rem" aria-hidden />}
                                     color="green"
                                 >
                                     <BodyShort>
@@ -217,7 +217,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                 <Infobox
                                     header={<FormattedMessage id="SituasjonSide.JobbetMinst6av10" />}
                                     headingLevel="2"
-                                    icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                                    icon={<BabyWrappedIcon fontSize="1.5rem" aria-hidden />}
                                     color="green"
                                 >
                                     <BodyShort>
@@ -294,7 +294,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                         />
                                     }
                                     headingLevel="2"
-                                    icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                                    icon={<BabyWrappedIcon fontSize="1.5rem" aria-hidden />}
                                     color="green"
                                 >
                                     <BodyShort>
@@ -349,7 +349,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                 <Infobox
                                     header={<FormattedMessage id="SituasjonSide.MåVæreMedlem" />}
                                     headingLevel="2"
-                                    icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                                    icon={<BabyWrappedIcon fontSize="1.5rem" aria-hidden />}
                                     color="green"
                                 >
                                     <BodyShort>

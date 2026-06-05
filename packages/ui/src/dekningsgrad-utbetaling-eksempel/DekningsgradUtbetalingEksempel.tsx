@@ -104,7 +104,7 @@ export const DekningsgradUtbetalingEksempel = () => (
         </Box>
         <Link href={links.hvorMye} target="_blank">
             <FormattedMessage id="DekningsgradUtbetalingEksempel.Link" />
-            <ExternalLinkIcon title="a11y-title" fontSize="1.5rem" />
+            <ExternalLinkIcon fontSize="1.5rem" aria-hidden />
         </Link>
     </VStack>
 );

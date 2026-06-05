@@ -25,9 +25,9 @@ export const HarIkkeRettTilFpInfobox = ({ minÅrslønn, antattÅrslønn, showKrI
             headingLevel="2"
             icon={
                 showKrIcon ? (
-                    <KronerIcon title="a11y-title" fontSize="1.5rem" aria-hidden />
+                    <KronerIcon fontSize="1.5rem" aria-hidden />
                 ) : (
-                    <SackKronerIcon title="a11y-title" fontSize="1.5rem" aria-hidden />
+                    <SackKronerIcon fontSize="1.5rem" aria-hidden />
                 )
             }
             color="green"
