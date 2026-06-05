@@ -37,6 +37,19 @@ const MND_GAP_PX = 12;
 const DESKTOP_DAG_HØGD_PX = 30;
 const DESKTOP_DAG_FONT_PX = 14;
 
+// html2canvas teiknar tekst etter alfabetisk baseline (bounds.top + baseline) og
+// bommar då litt under det optiske midten – sjølv med line-height lik cellehøgda
+// sig dagtalet ~4 px ned. Vi pakkar difor talet i ein span og dyttar han denne
+// avstanden opp att, så talet hamnar midt i den farga firkanten i fanginga.
+const DAG_TEKST_LØFT_PX = 4;
+
+// Breidda vi rendrar forklaringa (legend) i før fanging. Utan ei fast breidde
+// ville HStack-en leggje alle etikettane på éi svært brei linje, og når biletet
+// så blir skalert ned til sidebreidda blir teksten liten. Med denne breidda
+// (≈ to månadskolonnar) brett legenden seg over fleire linjer og får same
+// tekststorleik som månadane på sida.
+const LEGEND_BREDDE_PX = 2 * MND_BREDDE_PX + MND_GAP_PX;
+
 // Klasse som berre offscreen-klonane får, slik at dei aldri påverkar det
 // levande DOM-et i dialogen.
 const OFFSCREEN_KLASSE = 'fp-pdf-offscreen';
@@ -116,21 +129,41 @@ const høgdeForBredde = (bildeBredde: number, bildeHøgde: number, bredde: numbe
 // html2canvas (1.4.1) sentrerer ikkje tekst loddrett slik flexbox/grid gjer –
 // det plasserer teksten etter line-boksen, og teiknar han difor litt for langt
 // ned. Resultatet er at dagtala sig ned i cellene og legend-teksten hamnar lågt
-// og blir klypt. Ved å gi tekst-elementa ein line-height lik høgda på cella si,
-// fyller line-boksen heile høgda, og html2canvas teiknar teksten sentrert.
+// og blir klypt. Vi rettar dette på klonane før fanging: line-height lik høgda
+// fyller line-boksen, og dagtalet blir i tillegg dytta litt opp (sjå under).
 //
-// Vi set stilane *inline på sjølve klonen* (ikkje via eit <style> i <head>).
+// Stilane blir sette *inline på sjølve klonen* (ikkje via eit <style> i <head>).
 // Klonane blir lagde under dialogen/portalen sin DOM, der eit globalt stylesheet
 // ikkje nødvendigvis når fram – inline-stil blir derimot alltid lesen av
 // html2canvas (som måler boksane frå dei verkelege klone-nodane).
+
+// Pakkar dei direkte tekst-noddane (dagtalet) i ein dagcelle inn i ein span som
+// blir dytta litt opp. Ikon-div-en blir ikkje rørt. Dette korrigerer html2canvas
+// sin baseline-skeivskap, slik at talet blir loddrett sentrert i fanginga.
+const løftDagtekst = (celle: HTMLElement): void => {
+    Array.from(celle.childNodes).forEach((node) => {
+        if (node.nodeType !== Node.TEXT_NODE || !node.textContent?.trim()) {
+            return;
+        }
+        const span = celle.ownerDocument.createElement('span');
+        span.style.display = 'inline-block';
+        span.style.transform = `translateY(-${DAG_TEKST_LØFT_PX}px)`;
+        celle.replaceChild(span, node);
+        span.appendChild(node);
+    });
+};
+
 const sentrerTekstForFanging = (klone: HTMLElement): void => {
     // Dagceller: tving deterministisk desktop-storleik og la line-boksen fylle
-    // cella, slik at talet blir loddrett sentrert i fanginga.
+    // cella. I tillegg pakkar vi sjølve dagtalet i ein span og dyttar han litt
+    // opp, slik at html2canvas sin baseline-skeivskap blir korrigert og talet
+    // hamnar midt i den farga firkanten.
     klone.querySelectorAll<HTMLElement>('[data-testid^="day:"]').forEach((celle) => {
         celle.style.height = `${DESKTOP_DAG_HØGD_PX}px`;
         celle.style.minHeight = `${DESKTOP_DAG_HØGD_PX}px`;
         celle.style.fontSize = `${DESKTOP_DAG_FONT_PX}px`;
         celle.style.lineHeight = `${DESKTOP_DAG_HØGD_PX}px`;
+        løftDagtekst(celle);
     });
 
     // Legend-tekst (Aksel BodyShort = <p>): same line-height-triks så teksten
@@ -264,9 +297,12 @@ export const genererKalenderPdf = async ({
         y += radHøgde + RAD_GAP_MM;
     };
 
-    // Forklaringa (legend) øvst på første side, fanga i ein desktop-stor
-    // offscreen-container slik at ho ikkje brett seg på smale skjermar.
+    // Forklaringa (legend) øvst på første side. Vi gir containeren ei fast breidde
+    // (≈ to månadskolonnar) i staden for max-content, slik at etikettane brett seg
+    // over fleire linjer og får same tekststorleik som månadane når biletet blir
+    // skalert til sidebreidda.
     const legendContainer = lagOffscreenContainer(legendElement.parentElement ?? document.body);
+    legendContainer.style.width = `${LEGEND_BREDDE_PX}px`;
     legendContainer.style.padding = `${LEGEND_PADDING_PX}px 0`;
     try {
         const legendKlone = legendElement.cloneNode(true) as HTMLElement;
