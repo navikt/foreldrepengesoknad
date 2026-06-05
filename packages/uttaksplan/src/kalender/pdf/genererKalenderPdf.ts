@@ -154,7 +154,7 @@ const løftDagtekst = (celle: HTMLElement): void => {
         const span = celle.ownerDocument.createElement('span');
         span.style.display = 'inline-block';
         span.style.transform = `translateY(-${DAG_TEKST_LØFT_PX}px)`;
-        celle.replaceChild(span, node);
+        node.replaceWith(span);
         span.appendChild(node);
     });
 };
