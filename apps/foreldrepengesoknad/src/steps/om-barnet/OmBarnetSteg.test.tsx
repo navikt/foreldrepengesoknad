@@ -177,6 +177,60 @@ describe('<OmBarnetSteg>', () => {
         });
     });
 
+    it('skal godta dagens dato som terminbekreftelsesdato', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Nei'));
+
+        await userEvent.click(screen.getByText('Ett barn'));
+
+        const today = dayjs();
+        const termindatoInput = screen.getByLabelText('Når er termindatoen?');
+        await userEvent.type(termindatoInput, today.format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        const termindatoDatertInput = screen.getByLabelText('Når er terminbekreftelsen datert?');
+        await userEvent.type(termindatoDatertInput, today.format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(screen.queryByText('Dato på terminbekreftelse kan ikke være frem i tid')).not.toBeInTheDocument();
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenCalledWith(
+            expect.objectContaining({
+                data: expect.objectContaining({
+                    terminbekreftelsedato: today.format(ISO_DATE_FORMAT),
+                }),
+            }),
+        );
+
+    });
+
+    it('skal avvise morgondagens dato som terminbekreftelsesdato', async () => {
+        render(<MorFødsel />);
+
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Nei'));
+
+        await userEvent.click(screen.getByText('Ett barn'));
+
+        const termindatoInput = screen.getByLabelText('Når er termindatoen?');
+        await userEvent.type(termindatoInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        const termindatoDatertInput = screen.getByLabelText('Når er terminbekreftelsen datert?');
+        await userEvent.type(termindatoDatertInput, dayjs().add(1, 'day').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(screen.getAllByText('Dato på terminbekreftelse kan ikke være frem i tid').length).toBeGreaterThan(0);
+    });
+
     it('skal søke stebarnsadopsjon for ett barn', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
