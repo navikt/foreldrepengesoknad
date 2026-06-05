@@ -166,10 +166,17 @@ const TagsBeggeRett = ({
         ),
         ubrukteDagerFar > 0 && (
             <Tag key="far" variant="success" size="small">
-                <FormattedMessage
-                    id={erMedmorDelAvSøknaden ? 'IngenDagerValgtPanel.UkerTilMedmor' : 'IngenDagerValgtPanel.UkerTilFar'}
-                    values={{ varighet: getVarighetString(ubrukteDagerFar, intl) }}
-                />
+                {erMedmorDelAvSøknaden ? (
+                    <FormattedMessage
+                        id="IngenDagerValgtPanel.UkerTilMedmor"
+                        values={{ varighet: getVarighetString(ubrukteDagerFar, intl) }}
+                    />
+                ) : (
+                    <FormattedMessage
+                        id="IngenDagerValgtPanel.UkerTilFar"
+                        values={{ varighet: getVarighetString(ubrukteDagerFar, intl) }}
+                    />
+                )}
             </Tag>
         ),
         ubrukteDagerFelles > 0 && (
