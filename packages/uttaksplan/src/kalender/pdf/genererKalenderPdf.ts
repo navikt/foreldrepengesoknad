@@ -37,26 +37,15 @@ const MND_GAP_PX = 12;
 const DESKTOP_DAG_HØGD_PX = 30;
 const DESKTOP_DAG_FONT_PX = 14;
 
-// Klasse som berre offscreen-klonane får, slik at fange-stilane under aldri
-// påverkar det levande DOM-et i dialogen.
+// Klasse som berre offscreen-klonane får, slik at dei aldri påverkar det
+// levande DOM-et i dialogen.
 const OFFSCREEN_KLASSE = 'fp-pdf-offscreen';
 
-// html2canvas (1.4.1) sentrerer ikkje tekst loddrett via flexbox sin
-// `align-items: center` – det plasserer teksten etter line-boksen i staden. Både
-// dagcellene og legend-radene sentrerer tekst ved sida av ein fargerute med flex,
-// så utan tiltak sig teksten ned medan fargen «klatrar» opp. Ved å gi teksten ein
-// line-height lik høgda på cella/ruta fyller line-boksen heile høgda, og teksten
-// blir korrekt sentrert i fanginga. Vi scopar stilen til klonane (OFFSCREEN_KLASSE)
-// så dialogen ikkje blinkar.
-const LEGEND_RUTE_HØGD_PX = 25;
-const FANGE_STIL = `
-.${OFFSCREEN_KLASSE} [data-testid^="day:"]{
-  height:${DESKTOP_DAG_HØGD_PX}px !important;
-  font-size:${DESKTOP_DAG_FONT_PX}px !important;
-  line-height:${DESKTOP_DAG_HØGD_PX}px !important;
-}
-.${OFFSCREEN_KLASSE} p{line-height:${LEGEND_RUTE_HØGD_PX}px !important;}
-`;
+// Line-height vi gir legend-teksten under fanginga (sjå sentrerTekstForFanging).
+const LEGEND_TEKST_LINE_HØGD_PX = 24;
+// Litt loddrett luft rundt legenden, slik at teksten ikkje blir klypt sjølv om
+// html2canvas teiknar han litt lågt.
+const LEGEND_PADDING_PX = 4;
 
 interface GenererKalenderPdfParams {
     legendElement: HTMLElement;
@@ -123,6 +112,40 @@ const inlineIkonFargar = (original: HTMLElement, klone: HTMLElement): void => {
 
 const høgdeForBredde = (bildeBredde: number, bildeHøgde: number, bredde: number): number =>
     (bredde * bildeHøgde) / bildeBredde;
+
+// html2canvas (1.4.1) sentrerer ikkje tekst loddrett slik flexbox/grid gjer –
+// det plasserer teksten etter line-boksen, og teiknar han difor litt for langt
+// ned. Resultatet er at dagtala sig ned i cellene og legend-teksten hamnar lågt
+// og blir klypt. Ved å gi tekst-elementa ein line-height lik høgda på cella si,
+// fyller line-boksen heile høgda, og html2canvas teiknar teksten sentrert.
+//
+// Vi set stilane *inline på sjølve klonen* (ikkje via eit <style> i <head>).
+// Klonane blir lagde under dialogen/portalen sin DOM, der eit globalt stylesheet
+// ikkje nødvendigvis når fram – inline-stil blir derimot alltid lesen av
+// html2canvas (som måler boksane frå dei verkelege klone-nodane).
+const sentrerTekstForFanging = (klone: HTMLElement): void => {
+    // Dagceller: tving deterministisk desktop-storleik og la line-boksen fylle
+    // cella, slik at talet blir loddrett sentrert i fanginga.
+    klone.querySelectorAll<HTMLElement>('[data-testid^="day:"]').forEach((celle) => {
+        celle.style.height = `${DESKTOP_DAG_HØGD_PX}px`;
+        celle.style.minHeight = `${DESKTOP_DAG_HØGD_PX}px`;
+        celle.style.fontSize = `${DESKTOP_DAG_FONT_PX}px`;
+        celle.style.lineHeight = `${DESKTOP_DAG_HØGD_PX}px`;
+    });
+
+    // Legend-tekst (Aksel BodyShort = <p>): same line-height-triks så teksten
+    // blir sentrert ved sida av fargeruta og ikkje klypt i botnen.
+    klone.querySelectorAll<HTMLElement>('p').forEach((tekst) => {
+        tekst.style.lineHeight = `${LEGEND_TEKST_LINE_HØGD_PX}px`;
+    });
+
+    // Litt luft mellom vekedag-overskriftene og første veke, slik at fargane i
+    // øvste rad ikkje ser ut til å ligge oppå vekedag-tekstane i fanginga.
+    const headerRad = klone.querySelector<HTMLElement>('.aksel-hgrid');
+    if (headerRad) {
+        headerRad.style.marginBottom = '4px';
+    }
+};
 
 // Vel ein skala som held det ferdige canvas-et innanfor nettlesaren si
 // canvas-grense, men aldri høgare enn ynskt SKALA.
@@ -206,12 +229,6 @@ export const genererKalenderPdf = async ({
     // sidekanten og biletet blei kutta over sideskiftet.
     const maksInnhaldsHøgd = A4_HØGDE_MM - 2 * MARGIN_MM;
 
-    // Fange-stilar som tvingar desktop-høgd og loddrett sentrering. Scopa til
-    // offscreen-klonane via OFFSCREEN_KLASSE, så dialogen ikkje blir påverka.
-    const fangeStil = document.createElement('style');
-    fangeStil.textContent = FANGE_STIL;
-    document.head.appendChild(fangeStil);
-
     let y = MARGIN_MM;
 
     const leggTilBilete = (canvas: HTMLCanvasElement, x: number, øvst: number, bredde: number, høgde: number): void => {
@@ -247,85 +264,84 @@ export const genererKalenderPdf = async ({
         y += radHøgde + RAD_GAP_MM;
     };
 
+    // Forklaringa (legend) øvst på første side, fanga i ein desktop-stor
+    // offscreen-container slik at ho ikkje brett seg på smale skjermar.
+    const legendContainer = lagOffscreenContainer(legendElement.parentElement ?? document.body);
+    legendContainer.style.padding = `${LEGEND_PADDING_PX}px 0`;
     try {
-        // Forklaringa (legend) øvst på første side, fanga i ein desktop-stor
-        // offscreen-container slik at ho ikkje brett seg på smale skjermar.
-        const legendContainer = lagOffscreenContainer(legendElement.parentElement ?? document.body);
-        try {
-            const legendKlone = legendElement.cloneNode(true) as HTMLElement;
-            legendContainer.appendChild(legendKlone);
-            inlineIkonFargar(legendElement, legendKlone);
+        const legendKlone = legendElement.cloneNode(true) as HTMLElement;
+        legendContainer.appendChild(legendKlone);
+        inlineIkonFargar(legendElement, legendKlone);
+        sentrerTekstForFanging(legendKlone);
 
-            const legendCanvas = await fangContainer(legendContainer);
-            const legendNaturligHøgd = høgdeForBredde(legendCanvas.width, legendCanvas.height, tilgjengeligBredde);
-            const legendBredde =
-                legendNaturligHøgd > maksInnhaldsHøgd
-                    ? (tilgjengeligBredde * maksInnhaldsHøgd) / legendNaturligHøgd
-                    : tilgjengeligBredde;
-            const legendHøgd = høgdeForBredde(legendCanvas.width, legendCanvas.height, legendBredde);
-            leggTilBilete(legendCanvas, MARGIN_MM, y, legendBredde, legendHøgd);
-            y += legendHøgd + RAD_GAP_MM;
-        } finally {
-            legendContainer.remove();
-        }
-
-        const månedElementer = Array.from(kalenderElement.querySelectorAll<HTMLElement>('[data-month-key]'));
-        const månederPerBit = antallKolonner * RADER_PER_BIT;
-
-        // Fang månadane bitvis. Kvar bit blir rendra i ein eigen offscreen-
-        // container, fanga, klypt opp i månadar og paginert – deretter blir både
-        // container og bit-canvas sleppt før neste bit.
-        for (let i = 0; i < månedElementer.length; i += månederPerBit) {
-            const bitElementer = månedElementer.slice(i, i + månederPerBit);
-            const container = lagOffscreenContainer(kalenderElement.parentElement ?? document.body);
-            container.style.display = 'grid';
-            container.style.gridTemplateColumns = `repeat(${antallKolonner}, ${MND_BREDDE_PX}px)`;
-            container.style.columnGap = `${MND_GAP_PX}px`;
-            container.style.rowGap = `${MND_GAP_PX}px`;
-
-            try {
-                const bitKloner = bitElementer.map((el) => {
-                    const klone = el.cloneNode(true) as HTMLElement;
-                    klone.style.width = `${MND_BREDDE_PX}px`;
-                    klone.style.maxWidth = `${MND_BREDDE_PX}px`;
-                    container.appendChild(klone);
-                    return klone;
-                });
-                bitElementer.forEach((original, index) => inlineIkonFargar(original, bitKloner[index]!));
-
-                const skala = veljSkala(container.scrollWidth, container.scrollHeight);
-                const bitCanvas = await html2canvas(container, {
-                    scale: skala,
-                    useCORS: true,
-                    logging: false,
-                    backgroundColor: '#ffffff',
-                });
-
-                const containerRect = container.getBoundingClientRect();
-                const månedCanvaser = bitKloner.map((klone) => {
-                    const rect = klone.getBoundingClientRect();
-                    return klyppUtRektangel(
-                        bitCanvas,
-                        {
-                            x: rect.left - containerRect.left,
-                            y: rect.top - containerRect.top,
-                            bredde: rect.width,
-                            høgde: rect.height,
-                        },
-                        skala,
-                    );
-                });
-
-                for (let j = 0; j < månedCanvaser.length; j += antallKolonner) {
-                    tegnRad(månedCanvaser.slice(j, j + antallKolonner));
-                }
-            } finally {
-                container.remove();
-            }
-        }
-
-        await pdf.save(filename, { returnPromise: true });
+        const legendCanvas = await fangContainer(legendContainer);
+        const legendNaturligHøgd = høgdeForBredde(legendCanvas.width, legendCanvas.height, tilgjengeligBredde);
+        const legendBredde =
+            legendNaturligHøgd > maksInnhaldsHøgd
+                ? (tilgjengeligBredde * maksInnhaldsHøgd) / legendNaturligHøgd
+                : tilgjengeligBredde;
+        const legendHøgd = høgdeForBredde(legendCanvas.width, legendCanvas.height, legendBredde);
+        leggTilBilete(legendCanvas, MARGIN_MM, y, legendBredde, legendHøgd);
+        y += legendHøgd + RAD_GAP_MM;
     } finally {
-        fangeStil.remove();
+        legendContainer.remove();
     }
+
+    const månedElementer = Array.from(kalenderElement.querySelectorAll<HTMLElement>('[data-month-key]'));
+    const månederPerBit = antallKolonner * RADER_PER_BIT;
+
+    // Fang månadane bitvis. Kvar bit blir rendra i ein eigen offscreen-
+    // container, fanga, klypt opp i månadar og paginert – deretter blir både
+    // container og bit-canvas sleppt før neste bit.
+    for (let i = 0; i < månedElementer.length; i += månederPerBit) {
+        const bitElementer = månedElementer.slice(i, i + månederPerBit);
+        const container = lagOffscreenContainer(kalenderElement.parentElement ?? document.body);
+        container.style.display = 'grid';
+        container.style.gridTemplateColumns = `repeat(${antallKolonner}, ${MND_BREDDE_PX}px)`;
+        container.style.columnGap = `${MND_GAP_PX}px`;
+        container.style.rowGap = `${MND_GAP_PX}px`;
+
+        try {
+            const bitKloner = bitElementer.map((el) => {
+                const klone = el.cloneNode(true) as HTMLElement;
+                klone.style.width = `${MND_BREDDE_PX}px`;
+                klone.style.maxWidth = `${MND_BREDDE_PX}px`;
+                container.appendChild(klone);
+                return klone;
+            });
+            bitElementer.forEach((original, index) => inlineIkonFargar(original, bitKloner[index]!));
+            bitKloner.forEach(sentrerTekstForFanging);
+
+            const skala = veljSkala(container.scrollWidth, container.scrollHeight);
+            const bitCanvas = await html2canvas(container, {
+                scale: skala,
+                useCORS: true,
+                logging: false,
+                backgroundColor: '#ffffff',
+            });
+
+            const containerRect = container.getBoundingClientRect();
+            const månedCanvaser = bitKloner.map((klone) => {
+                const rect = klone.getBoundingClientRect();
+                return klyppUtRektangel(
+                    bitCanvas,
+                    {
+                        x: rect.left - containerRect.left,
+                        y: rect.top - containerRect.top,
+                        bredde: rect.width,
+                        høgde: rect.height,
+                    },
+                    skala,
+                );
+            });
+
+            for (let j = 0; j < månedCanvaser.length; j += antallKolonner) {
+                tegnRad(månedCanvaser.slice(j, j + antallKolonner));
+            }
+        } finally {
+            container.remove();
+        }
+    }
+
+    await pdf.save(filename, { returnPromise: true });
 };
