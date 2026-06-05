@@ -187,28 +187,26 @@ describe('<OmBarnetSteg>', () => {
 
         await userEvent.click(screen.getByText('Ett barn'));
 
+        const today = dayjs();
         const termindatoInput = screen.getByLabelText('Når er termindatoen?');
-        await userEvent.type(termindatoInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.type(termindatoInput, today.format(DDMMYYYY_DATE_FORMAT));
         await userEvent.tab();
 
         const termindatoDatertInput = screen.getByLabelText('Når er terminbekreftelsen datert?');
-        await userEvent.type(termindatoDatertInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.type(termindatoDatertInput, today.format(DDMMYYYY_DATE_FORMAT));
         await userEvent.tab();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(
-            screen.queryByText('Dato på terminbekreftelse kan ikke være frem i tid'),
-        ).not.toBeInTheDocument();
+        expect(screen.queryByText('Dato på terminbekreftelse kan ikke være frem i tid')).not.toBeInTheDocument();
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenCalledWith(
             expect.objectContaining({
                 data: expect.objectContaining({
-                    terminbekreftelsedato: dayjs().format(ISO_DATE_FORMAT),
+                    terminbekreftelsedato: today.format(ISO_DATE_FORMAT),
                 }),
             }),
         );
-    });
 
     it('skal avvise morgondagens dato som terminbekreftelsesdato', async () => {
         render(<MorFødsel />);
