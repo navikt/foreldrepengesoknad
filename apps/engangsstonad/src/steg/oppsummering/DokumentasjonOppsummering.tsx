@@ -1,5 +1,5 @@
 import { Path } from 'appData/paths';
-import { useEffect, useMemo } from 'react';
+import { API_URLS } from 'appData/queries';
 import { FormattedMessage } from 'react-intl';
 import { Dokumentasjon, TerminDokumentasjon, Vedlegg, erTerminDokumentasjon } from 'types/Dokumentasjon';
 
@@ -8,26 +8,21 @@ import { BodyShort, FormSummary, Link, VStack } from '@navikt/ds-react';
 import { Attachment } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
+// Backenden konverterer alle vedlegg (png/jpg) til PDF ved opplasting, så nedlastinga er alltid ei PDF-fil.
+const tilPdfFilnavn = (filename: string) => `${filename.replace(/\.[^./\\]+$/, '')}.pdf`;
+
 const VedleggLenke = ({ attachment }: { attachment: Attachment }) => {
-    const href = useMemo(
-        () => (attachment.file instanceof Blob ? URL.createObjectURL(attachment.file) : undefined),
-        [attachment.file],
-    );
-
-    useEffect(() => {
-        return () => {
-            if (href) {
-                URL.revokeObjectURL(href);
-            }
-        };
-    }, [href]);
-
-    if (!href) {
+    if (!attachment.uuid) {
         return <BodyShort>{attachment.filename}</BodyShort>;
     }
 
     return (
-        <Link href={href} download={attachment.filename} target="_blank" rel="noreferrer noopener">
+        <Link
+            href={API_URLS.hentVedlegg(attachment.uuid)}
+            download={tilPdfFilnavn(attachment.filename)}
+            target="_blank"
+            rel="noreferrer noopener"
+        >
             {attachment.filename}
         </Link>
     );
