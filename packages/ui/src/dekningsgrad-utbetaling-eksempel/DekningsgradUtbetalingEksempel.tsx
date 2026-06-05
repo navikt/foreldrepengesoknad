@@ -1,8 +1,10 @@
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
-import { links } from '@navikt/fp-constants';
-import { BodyShort, Box, HStack, Link, VStack } from '@navikt/ds-react';
-import { FormattedMessage } from 'react-intl';
 import { ReactNode } from 'react';
+import { FormattedMessage } from 'react-intl';
+
+import { BodyShort, Box, HStack, Link, VStack } from '@navikt/ds-react';
+
+import { links } from '@navikt/fp-constants';
 
 type UtbetalingKortProps = {
     tittel: ReactNode;
@@ -17,9 +19,7 @@ const InfoRad = ({ label, verdi }: { label: ReactNode; verdi: ReactNode }) => (
         gap="space-8"
         style={{ borderBottom: '1px solid var(--ax-border-neutral-subtleA)', paddingBottom: '0.25rem' }}
     >
-        <BodyShort weight="regular">
-            {label}
-        </BodyShort>
+        <BodyShort weight="regular">{label}</BodyShort>
         <BodyShort style={{ textAlign: 'right' }} weight="semibold">
             {verdi}
         </BodyShort>
@@ -37,9 +37,7 @@ const TotalRad = ({ label, verdi }: { label: ReactNode; verdi: ReactNode }) => (
         }}
     >
         <HStack justify="space-between" gap="space-8">
-            <BodyShort weight="regular">
-                {label}
-            </BodyShort>
+            <BodyShort weight="regular">{label}</BodyShort>
             <BodyShort style={{ textAlign: 'right', fontSize: '1.125rem' }} weight="semibold">
                 {verdi}
             </BodyShort>
@@ -47,12 +45,7 @@ const TotalRad = ({ label, verdi }: { label: ReactNode; verdi: ReactNode }) => (
     </Box>
 );
 
-const DekningsgradUtbetalingKort = ({
-    tittel,
-    varighetVerdi,
-    perMånedVerdi,
-    totaltVerdi,
-}: UtbetalingKortProps) => (
+const DekningsgradUtbetalingKort = ({ tittel, varighetVerdi, perMånedVerdi, totaltVerdi }: UtbetalingKortProps) => (
     <Box
         padding="space-12"
         style={{
@@ -63,9 +56,7 @@ const DekningsgradUtbetalingKort = ({
         }}
     >
         <VStack gap="space-8">
-            <BodyShort weight="semibold">
-                {tittel}
-            </BodyShort>
+            <BodyShort weight="semibold">{tittel}</BodyShort>
             <InfoRad
                 label={<FormattedMessage id="DekningsgradUtbetalingEksempel.Rad.Varighet" />}
                 verdi={varighetVerdi}
@@ -74,23 +65,14 @@ const DekningsgradUtbetalingKort = ({
                 label={<FormattedMessage id="DekningsgradUtbetalingEksempel.Rad.PerMåned" />}
                 verdi={perMånedVerdi}
             />
-            <TotalRad
-                label={<FormattedMessage id="DekningsgradUtbetalingEksempel.Rad.Totalt" />}
-                verdi={totaltVerdi}
-            />
+            <TotalRad label={<FormattedMessage id="DekningsgradUtbetalingEksempel.Rad.Totalt" />} verdi={totaltVerdi} />
         </VStack>
     </Box>
 );
 
 export const DekningsgradUtbetalingEksempel = () => (
     <VStack gap="space-16">
-        <Box
-            padding="space-16"
-            style={{
-                border: '1px solid var(--a-border-default)',
-                borderRadius: '0.5rem',
-            }}
-        >
+        <Box padding="space-16">
             <VStack gap="space-16">
                 <BodyShort weight="semibold" style={{ fontSize: '1.25rem' }}>
                     <FormattedMessage id="DekningsgradUtbetalingEksempel.Tittel" />

@@ -211,7 +211,7 @@ export const DekningsgradForm = ({
                                 {getDekningsgradReadMoreTekst(erDeltUttak, barn)}
                                 <Link href={links.opphold} target="_blank">
                                     <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.link" />
-                                    <ExternalLinkIcon title="a11y-title" fontSize="1.5rem" />
+                                    <ExternalLinkIcon aria-hidden fontSize="1.5rem" />
                                 </Link>
                             </>
                         )}
