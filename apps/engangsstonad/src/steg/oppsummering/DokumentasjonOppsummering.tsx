@@ -14,7 +14,7 @@ const VedleggLenke = ({ attachment }: { attachment: Attachment }) => {
     }
 
     return (
-        <Link href={API_URLS.hentVedlegg(attachment.uuid)} download={attachment.filename} target="_blank">
+        <Link href={API_URLS.hentVedlegg(attachment.uuid)} download={attachment.filename} target="_blank" rel="noreferrer noopener">
             {attachment.filename}
         </Link>
     );
