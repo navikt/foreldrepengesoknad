@@ -39,13 +39,9 @@ export const KalenderPdf = ({
 
         setIsCreatingPdf(true);
         try {
-            const månedElementer = Array.from(
-                kalenderElement.querySelectorAll<HTMLElement>('[data-month-key]'),
-            );
-
             await genererKalenderPdf({
                 legendElement,
-                månedElementer,
+                kalenderElement,
                 antallKolonner,
                 filename: 'Min foreldrepengeplan.pdf',
             });
