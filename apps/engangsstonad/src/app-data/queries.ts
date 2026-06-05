@@ -19,6 +19,7 @@ export const API_URLS = {
     status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
     sendSøknad: `${urlPrefiks}/fpsoknad/api/soknad/engangsstonad`,
     sendVedlegg: `${urlPrefiks}/fpsoknad/api/storage/ENGANGSSTONAD/vedlegg`,
+    hentVedlegg: (uuid: string) => `${urlPrefiks}/fpsoknad/api/storage/ENGANGSSTONAD/vedlegg/${uuid}`,
 } as const;
 
 export const personOptions = () =>
