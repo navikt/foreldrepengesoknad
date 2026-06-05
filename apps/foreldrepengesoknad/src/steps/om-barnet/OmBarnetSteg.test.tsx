@@ -208,6 +208,8 @@ describe('<OmBarnetSteg>', () => {
             }),
         );
 
+    });
+
     it('skal avvise morgondagens dato som terminbekreftelsesdato', async () => {
         render(<MorFødsel />);
 
