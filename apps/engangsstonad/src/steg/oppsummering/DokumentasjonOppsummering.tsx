@@ -1,5 +1,5 @@
 import { Path } from 'appData/paths';
-import { API_URLS } from 'appData/queries';
+import { useEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Dokumentasjon, TerminDokumentasjon, Vedlegg, erTerminDokumentasjon } from 'types/Dokumentasjon';
 
@@ -9,12 +9,25 @@ import { Attachment } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 const VedleggLenke = ({ attachment }: { attachment: Attachment }) => {
-    if (!attachment.uuid) {
+    const href = useMemo(
+        () => (attachment.file instanceof Blob ? URL.createObjectURL(attachment.file) : undefined),
+        [attachment.file],
+    );
+
+    useEffect(() => {
+        return () => {
+            if (href) {
+                URL.revokeObjectURL(href);
+            }
+        };
+    }, [href]);
+
+    if (!href) {
         return <BodyShort>{attachment.filename}</BodyShort>;
     }
 
     return (
-        <Link href={API_URLS.hentVedlegg(attachment.uuid)} download={attachment.filename} target="_blank" rel="noreferrer noopener">
+        <Link href={href} download={attachment.filename} target="_blank" rel="noreferrer noopener">
             {attachment.filename}
         </Link>
     );
