@@ -6,7 +6,7 @@ import { BodyShort, FormSummary, Link, VStack } from '@navikt/ds-react';
 
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import { Attachment, EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
-import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
+import { capitalizeFirstLetterInEveryWordOnly, vedleggNedlastingsnavn } from '@navikt/fp-utils';
 
 export function DokumentasjonOppsummering({
     tilretteleggingerVedlegg,
@@ -39,9 +39,10 @@ export function DokumentasjonOppsummering({
                                     return vedlegg.uuid ? (
                                         <Link
                                             key={vedlegg.id}
-                                            download={vedlegg.filename}
+                                            download={vedleggNedlastingsnavn(vedlegg.filename)}
                                             href={`${API_URLS.hentVedlegg(vedlegg.uuid)}`}
                                             target="_blank"
+                                            rel="noreferrer noopener"
                                         >
                                             {vedlegg.filename}
                                         </Link>

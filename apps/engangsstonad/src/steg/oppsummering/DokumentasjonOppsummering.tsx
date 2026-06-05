@@ -6,10 +6,7 @@ import { Dokumentasjon, TerminDokumentasjon, Vedlegg, erTerminDokumentasjon } fr
 import { BodyShort, FormSummary, Link, VStack } from '@navikt/ds-react';
 
 import { Attachment } from '@navikt/fp-types';
-import { formatDate } from '@navikt/fp-utils';
-
-// Backenden konverterer alle vedlegg (png/jpg) til PDF ved opplasting, så nedlastinga er alltid ei PDF-fil.
-const tilPdfFilnavn = (filename: string) => `${filename.replace(/\.[^./\\]+$/, '')}.pdf`;
+import { formatDate, vedleggNedlastingsnavn } from '@navikt/fp-utils';
 
 const VedleggLenke = ({ attachment }: { attachment: Attachment }) => {
     if (!attachment.uuid) {
@@ -19,7 +16,7 @@ const VedleggLenke = ({ attachment }: { attachment: Attachment }) => {
     return (
         <Link
             href={API_URLS.hentVedlegg(attachment.uuid)}
-            download={tilPdfFilnavn(attachment.filename)}
+            download={vedleggNedlastingsnavn(attachment.filename)}
             target="_blank"
             rel="noreferrer noopener"
         >
