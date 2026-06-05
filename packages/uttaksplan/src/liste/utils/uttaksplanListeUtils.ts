@@ -67,7 +67,13 @@ export const getStønadskvoteNavn = (intl: IntlShape, options: GetStønadskvoteN
         );
     }
 
-    if (!erAvslått && !erEøsPeriode && erFarEllerMedmor === true && erAleneOmOmsorg === false) {
+    if (
+        !erAvslått &&
+        !erEøsPeriode &&
+        konto === 'FORELDREPENGER' &&
+        erFarEllerMedmor === true &&
+        erAleneOmOmsorg === false
+    ) {
         if (morsAktivitet === 'IKKE_OPPGITT') {
             return intl.formatMessage({ id: 'uttaksplan.stønadskvotetype.AKTIVITETSFRI_KVOTE_BFHR' });
         }
