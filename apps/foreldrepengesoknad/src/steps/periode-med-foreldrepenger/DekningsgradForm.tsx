@@ -14,7 +14,7 @@ import { BodyShort, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
 import { links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Barn, Dekningsgrad, KontoBeregningDto, SøkersituasjonFp, isAdoptertBarn } from '@navikt/fp-types';
-import { Infobox } from '@navikt/fp-ui';
+import { DekningsgradUtbetalingEksempel, Infobox } from '@navikt/fp-ui';
 import { Uttaksdagen, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
@@ -204,11 +204,17 @@ export const DekningsgradForm = ({
                             )
                         }
                     >
-                        {getDekningsgradReadMoreTekst(erDeltUttak, barn)}
-                        <Link href={links.opphold} target="_blank">
-                            <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.link" />
-                            <ExternalLinkIcon title="a11y-title" fontSize="1.5rem" />
-                        </Link>
+                        {erDeltUttak ? (
+                            <DekningsgradUtbetalingEksempel />
+                        ) : (
+                            <>
+                                {getDekningsgradReadMoreTekst(erDeltUttak, barn)}
+                                <Link href={links.opphold} target="_blank">
+                                    <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.link" />
+                                    <ExternalLinkIcon aria-hidden fontSize="1.5rem" />
+                                </Link>
+                            </>
+                        )}
                     </ReadMore>
                 </VStack>
                 {!!ekstraDagePrematur && (

@@ -124,6 +124,7 @@
     "HvorforSpørNAVOmDette.Info.Tittel": "Kvifor spør Nav om dette?",
     "HvorLangPeriodeSteg.100": "100 % utbetaling over {uker100} veker {dager100, select, 0 {} 1 {+ {dager100} dag} other {+ {dager100} dager}}",
     "HvorLangPeriodeSteg.80": "80 % utbetaling over {uker80} veker {dager80, select, 0 {} 1 {+ {dager80} dag} other {+ {dager80} dager}}",
+    "HvorLangPeriodeSteg.ReadMore.Kroner": "Sjå kva dette betyr i kroner",
     "HvorLangPeriodeSteg.HvorLangPeriode.Required": "Du må svare på kor lang periode med foreldrepengar {deSomHarRett} ønsker.",
     "HvorLangPeriodeSteg.HvorLangPeriode": "Kor lang periode med foreldrepengar ynskjer {deSomHarRett}?",
     "HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst": "{beggeHarRett, select, true {De} other {Ein}} kan velje mellom {uker100} veker{dager100, select, 0 {} other { + {dager100} {dager100, select, 1 {dag} other {dagar}}}} og {uker80} veker{dager80, select, 0 {} other { + {dager80} {dager80, select, 1 {dag} other {dagar}}}} med foreldrepengar{beggeHarRett, select, true {, og valet gjeld for begge} other {}}. Dersom {beggeHarRett, select, true {de} other {ein}} vel {uker100} veker, får {beggeHarRett, select, true {de} other {ein}} 100 % foreldrepengar, medan dersom {beggeHarRett, select, true {de} other {ein}} vel {uker80} veker{dager80, select, 0 {} other { + {dager80} {dager80, select, 1 {dag} other {dagar}}}}, vert utbetalinga redusert til 80 %",
