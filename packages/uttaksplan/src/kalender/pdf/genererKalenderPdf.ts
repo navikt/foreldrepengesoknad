@@ -56,6 +56,12 @@ const OFFSCREEN_KLASSE = 'fp-pdf-offscreen';
 
 // Line-height vi gir legend-teksten under fanginga (sjå sentrerTekstForFanging).
 const LEGEND_TEKST_LINE_HØGD_PX = 24;
+// Same baseline-skeivskap som for dagtala: html2canvas teiknar legend-teksten
+// litt for langt ned i forhold til fargeruta ved sida. (Det synte ikkje før, då
+// heile legenden låg på éi brei line som blei kraftig nedskalert; no når teksten
+// står i naturleg storleik blir avviket synleg.) Vi dyttar teksten tilsvarande
+// opp, slik at han hamnar på linje med midten av fargeruta.
+const LEGEND_TEKST_LØFT_PX = 4;
 // Litt loddrett luft rundt legenden, slik at teksten ikkje blir klypt sjølv om
 // html2canvas teiknar han litt lågt.
 const LEGEND_PADDING_PX = 4;
@@ -167,9 +173,13 @@ const sentrerTekstForFanging = (klone: HTMLElement): void => {
     });
 
     // Legend-tekst (Aksel BodyShort = <p>): same line-height-triks så teksten
-    // blir sentrert ved sida av fargeruta og ikkje klypt i botnen.
+    // blir sentrert ved sida av fargeruta, og same løft opp som dagtala for å
+    // rette html2canvas sin baseline-skeivskap. (Berre legenden har <p>;
+    // månadane bruker Heading/div, så dette påverkar ikkje kalenderen.)
     klone.querySelectorAll<HTMLElement>('p').forEach((tekst) => {
         tekst.style.lineHeight = `${LEGEND_TEKST_LINE_HØGD_PX}px`;
+        tekst.style.display = 'inline-block';
+        tekst.style.transform = `translateY(-${LEGEND_TEKST_LØFT_PX}px)`;
     });
 
     // Litt luft mellom vekedag-overskriftene og første veke, slik at fargane i
