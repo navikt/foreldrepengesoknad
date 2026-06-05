@@ -72,7 +72,7 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
                     </VStack>
                 </Show>
             </Box>
-            {!erMinimert && (
+            <div style={erMinimert ? { display: 'none' } : undefined}>
                 <VStack gap="space-16" className="px-4 pb-4">
                     {labels}
                     <VStack gap="space-8">
@@ -95,7 +95,7 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
                         visTilbakestillModal={uttaksplanRedigering?.visTilbakestillModal}
                     />
                 </VStack>
-            )}
+            </div>
         </VStack>
     );
 };
