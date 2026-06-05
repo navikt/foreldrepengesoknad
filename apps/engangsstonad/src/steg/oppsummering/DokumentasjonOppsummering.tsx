@@ -8,7 +8,7 @@ import { BodyShort, FormSummary, Link, VStack } from '@navikt/ds-react';
 import { Attachment } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
-const VedleggLenke = ({ attachment }: { readonly attachment: Attachment }) => {
+const VedleggLenke = ({ attachment }: { attachment: Attachment }) => {
     const href = useMemo(() => {
         if (typeof URL?.createObjectURL !== 'function' || !(attachment.file instanceof Blob)) {
             return undefined;
@@ -35,7 +35,7 @@ const VedleggLenke = ({ attachment }: { readonly attachment: Attachment }) => {
     );
 };
 
-const TerminDokumentasjonSummary = ({ dokumentasjon }: { readonly dokumentasjon: TerminDokumentasjon }) => {
+const TerminDokumentasjonSummary = ({ dokumentasjon }: { dokumentasjon: TerminDokumentasjon }) => {
     return (
         <>
             <FormSummary.Answer>
@@ -60,7 +60,7 @@ const TerminDokumentasjonSummary = ({ dokumentasjon }: { readonly dokumentasjon:
     );
 };
 
-const AdopsjonDokumentasjon = ({ dokumentasjon }: { readonly dokumentasjon: Vedlegg }) => {
+const AdopsjonDokumentasjon = ({ dokumentasjon }: { dokumentasjon: Vedlegg }) => {
     return (
         <FormSummary.Answer>
             <FormSummary.Label>
@@ -81,8 +81,8 @@ export const DokumentasjonOppsummering = ({
     dokumentasjon,
     onVilEndreSvar,
 }: {
-    readonly dokumentasjon?: Dokumentasjon;
-    readonly onVilEndreSvar: (path: Path) => void;
+    dokumentasjon?: Dokumentasjon;
+    onVilEndreSvar: (path: Path) => void;
 }) => {
     if (!dokumentasjon || dokumentasjon.vedlegg.length === 0) {
         return null;
