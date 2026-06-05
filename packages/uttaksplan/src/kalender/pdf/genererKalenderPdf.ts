@@ -36,7 +36,27 @@ const MND_GAP_PX = 12;
 // fangar, slik at høgda blir deterministisk uavhengig av viewport.
 const DESKTOP_DAG_HØGD_PX = 30;
 const DESKTOP_DAG_FONT_PX = 14;
-const DAG_HØGD_STYLE = `[data-testid^="day:"]{height:${DESKTOP_DAG_HØGD_PX}px !important;font-size:${DESKTOP_DAG_FONT_PX}px !important;}`;
+
+// Klasse som berre offscreen-klonane får, slik at fange-stilane under aldri
+// påverkar det levande DOM-et i dialogen.
+const OFFSCREEN_KLASSE = 'fp-pdf-offscreen';
+
+// html2canvas (1.4.1) sentrerer ikkje tekst loddrett via flexbox sin
+// `align-items: center` – det plasserer teksten etter line-boksen i staden. Både
+// dagcellene og legend-radene sentrerer tekst ved sida av ein fargerute med flex,
+// så utan tiltak sig teksten ned medan fargen «klatrar» opp. Ved å gi teksten ein
+// line-height lik høgda på cella/ruta fyller line-boksen heile høgda, og teksten
+// blir korrekt sentrert i fanginga. Vi scopar stilen til klonane (OFFSCREEN_KLASSE)
+// så dialogen ikkje blinkar.
+const LEGEND_RUTE_HØGD_PX = 25;
+const FANGE_STIL = `
+.${OFFSCREEN_KLASSE} [data-testid^="day:"]{
+  height:${DESKTOP_DAG_HØGD_PX}px !important;
+  font-size:${DESKTOP_DAG_FONT_PX}px !important;
+  line-height:${DESKTOP_DAG_HØGD_PX}px !important;
+}
+.${OFFSCREEN_KLASSE} p{line-height:${LEGEND_RUTE_HØGD_PX}px !important;}
+`;
 
 interface GenererKalenderPdfParams {
     legendElement: HTMLElement;
@@ -116,6 +136,7 @@ const veljSkala = (breddePx: number, høgdePx: number): number => {
 
 const lagOffscreenContainer = (forelder: HTMLElement): HTMLDivElement => {
     const container = document.createElement('div');
+    container.className = OFFSCREEN_KLASSE;
     container.style.position = 'fixed';
     container.style.left = '-100000px';
     container.style.top = '0';
@@ -185,10 +206,11 @@ export const genererKalenderPdf = async ({
     // sidekanten og biletet blei kutta over sideskiftet.
     const maksInnhaldsHøgd = A4_HØGDE_MM - 2 * MARGIN_MM;
 
-    // Tving desktop-høgd på dagane medan vi fangar.
-    const dagHøgdStyle = document.createElement('style');
-    dagHøgdStyle.textContent = DAG_HØGD_STYLE;
-    document.head.appendChild(dagHøgdStyle);
+    // Fange-stilar som tvingar desktop-høgd og loddrett sentrering. Scopa til
+    // offscreen-klonane via OFFSCREEN_KLASSE, så dialogen ikkje blir påverka.
+    const fangeStil = document.createElement('style');
+    fangeStil.textContent = FANGE_STIL;
+    document.head.appendChild(fangeStil);
 
     let y = MARGIN_MM;
 
@@ -304,6 +326,6 @@ export const genererKalenderPdf = async ({
 
         await pdf.save(filename, { returnPromise: true });
     } finally {
-        dagHøgdStyle.remove();
+        fangeStil.remove();
     }
 };
