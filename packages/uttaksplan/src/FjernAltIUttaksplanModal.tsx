@@ -1,13 +1,15 @@
 import { FormattedMessage } from 'react-intl';
 
-import { BodyLong, Button, Dialog } from '@navikt/ds-react';
+import { Alert, BodyLong, Button, Dialog, VStack } from '@navikt/ds-react';
 
 import { notEmpty } from '@navikt/fp-validation';
 
+import { useUttaksplanData } from './context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from './context/UttaksplanRedigeringContext';
 
 export const FjernAltIUttaksplanModal = () => {
     const uttaksplanRedigering = useUttaksplanRedigering();
+    const { erEndringssøknad } = useUttaksplanData();
 
     const { fjernAltIUttaksplan, visFjernAltModal, setVisFjernAltModal } = notEmpty(uttaksplanRedigering);
 
@@ -20,9 +22,16 @@ export const FjernAltIUttaksplanModal = () => {
                     </Dialog.Title>
                 </Dialog.Header>
                 <Dialog.Body>
-                    <BodyLong>
-                        <FormattedMessage id="FjernAltIUttaksplanModal.FjernAlt.Modal.Body" />
-                    </BodyLong>
+                    <VStack gap="space-8">
+                        {erEndringssøknad && (
+                            <Alert variant="warning">
+                                <FormattedMessage id="FjernAltIUttaksplanModal.FjernAlt.Modal.Advarsel.Endringssøknad" />
+                            </Alert>
+                        )}
+                        <BodyLong>
+                            <FormattedMessage id="FjernAltIUttaksplanModal.FjernAlt.Modal.Body" />
+                        </BodyLong>
+                    </VStack>
                 </Dialog.Body>
                 <Dialog.Footer>
                     <Dialog.CloseTrigger>

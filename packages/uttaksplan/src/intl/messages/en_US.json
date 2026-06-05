@@ -306,6 +306,7 @@
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Tittel": "Do you want to remove everything that has been added?",
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Body": "By proceeding, all added periods will be removed and you will start with a completely empty calendar. If your partner has approved periods, they will not be removed.",
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Bekreft": "Remove all",
+    "FjernAltIUttaksplanModal.FjernAlt.Modal.Advarsel.Endringssøknad": "If you delete days you have already received, you may have to repay them. Only delete periods you are not going to receive parental benefit for anyway.",
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Avbryt": "Cancel",
     "TilbakestillPlanModal.Tittel": "Do you want to reset the plan?",
     "TilbakestillPlanModal.Body": "By proceeding, your plan will be reset to the original suggestion based on the information you provided in the previous steps.",

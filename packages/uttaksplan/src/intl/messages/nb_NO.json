@@ -306,6 +306,7 @@
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Tittel": "Ønsker du å fjerne alt som er lagt til?",
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Body": "Ved å gå videre vil alle perioder som er lagt til bli fjernet, og du vil starte med en helt tom kalender. Dersom partner har innvilgede perioder vil de ikke bli fjernet.",
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Bekreft": "Fjern alt",
+    "FjernAltIUttaksplanModal.FjernAlt.Modal.Advarsel.Endringssøknad": "Hvis du sletter dager du allerede har fått, kan du måtte betale dem tilbake. Du må bare slette perioder du ikke skal ha foreldrepenger allikevel.",
     "FjernAltIUttaksplanModal.FjernAlt.Modal.Knapp.Avbryt": "Avbryt",
     "TilbakestillPlanModal.Tittel": "Ønsker du å tilbakestille planen?",
     "TilbakestillPlanModal.Body": "Ved å gå videre vil planen din bli tilbakestilt til det opprinnelige forslaget basert på opplysningene du har oppgitt i stegene før.",
