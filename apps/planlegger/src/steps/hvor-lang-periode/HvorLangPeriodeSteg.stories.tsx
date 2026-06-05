@@ -23,8 +23,6 @@ import {
 
 import { HvorLangPeriodeSteg } from './HvorLangPeriodeSteg';
 
-// TODO: Benytt dayjs for å håndtere datoer i testene. Spesielt for å sørge for at fremtidige datoer alltid er fremtidige.
-
 const MINSTERETTER = {
     farRundtFødsel: 10,
     toTette: 0,

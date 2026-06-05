@@ -40,8 +40,6 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetPlanleggerIkkeOppgi
         ? dayjs(termindato).subtract(18, 'weeks').subtract(3, 'days').toDate()
         : undefined;
 
-    // TODO: disse sjekker nå på dato, skal den sjekke på ukenummer?
-
     const erAlenesøker = erAlene(hvemPlanlegger);
     const erFarMedISøknaden = erFarDelAvSøknaden(hvemPlanlegger);
     const erFedre = erFarOgFar(hvemPlanlegger);

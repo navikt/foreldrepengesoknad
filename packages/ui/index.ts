@@ -10,9 +10,9 @@ export const uiMessages = {
 
 export { SkjemaRotLayout } from './src/skjema-rotlayout/SkjemaRotLayout';
 export { ErrorBoundary } from './src/error/ErrorBoundary';
-export { ErrorSummaryFp } from './src/error/ErrorSummaryFp';
+export { ErrorSummaryFelles } from './src/error/ErrorSummaryFelles';
 export { SimpleErrorPage } from './src/error/SimpleErrorPage';
-export type { ErrorSummaryError } from './src/error/ErrorSummaryFp';
+export type { ErrorSummaryError } from './src/error/ErrorSummaryFelles';
 export { ErrorPage } from './src/error/ErrorPage';
 export { StepButtons } from './src/step/StepButtons';
 export { ScanDocumentInfo } from './src/scan-document-info/ScanDocumentInfo';

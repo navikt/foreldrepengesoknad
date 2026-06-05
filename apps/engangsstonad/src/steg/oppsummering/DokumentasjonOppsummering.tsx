@@ -1,53 +1,79 @@
 import { Path } from 'appData/paths';
+import { API_URLS } from 'appData/queries';
 import { FormattedMessage } from 'react-intl';
 import { Dokumentasjon, TerminDokumentasjon, Vedlegg, erTerminDokumentasjon } from 'types/Dokumentasjon';
 
-import { FormSummary, VStack } from '@navikt/ds-react';
+import { BodyShort, FormSummary, Link, VStack } from '@navikt/ds-react';
 
-import { formatDate } from '@navikt/fp-utils';
+import { Attachment } from '@navikt/fp-types';
+import { formatDate, vedleggNedlastingsnavn } from '@navikt/fp-utils';
 
-function TerminDokumentasjonSummary({ dokumentasjon }: { readonly dokumentasjon: TerminDokumentasjon }) {
+const VedleggLenke = ({ attachment }: { attachment: Attachment }) => {
+    if (!attachment.uuid) {
+        return <BodyShort>{attachment.filename}</BodyShort>;
+    }
+
+    return (
+        <Link
+            href={API_URLS.hentVedlegg(attachment.uuid)}
+            download={vedleggNedlastingsnavn(attachment.filename)}
+            target="_blank"
+            rel="noreferrer noopener"
+        >
+            {attachment.filename}
+        </Link>
+    );
+};
+
+const TerminDokumentasjonSummary = ({ dokumentasjon }: { dokumentasjon: TerminDokumentasjon }) => {
     return (
         <>
             <FormSummary.Answer>
                 <FormSummary.Label>
                     <FormattedMessage id="DokumentasjonOppsummering.Terminbekreftelse" />
                 </FormSummary.Label>
-                <FormSummary.Answer>{formatDate(dokumentasjon.terminbekreftelsedato)}</FormSummary.Answer>
+                <FormSummary.Value>{formatDate(dokumentasjon.terminbekreftelsedato)}</FormSummary.Value>
             </FormSummary.Answer>
             <FormSummary.Answer>
                 <FormSummary.Label>
                     <FormattedMessage id="DokumentasjonOppsummering.TerminbekreftelseDokument" />
                 </FormSummary.Label>
-                <FormSummary.Answer>
-                    <VStack gap="space-8">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
-                </FormSummary.Answer>
+                <FormSummary.Value>
+                    <VStack gap="space-8">
+                        {dokumentasjon.vedlegg.map((v) => (
+                            <VedleggLenke key={v.id} attachment={v} />
+                        ))}
+                    </VStack>
+                </FormSummary.Value>
             </FormSummary.Answer>
         </>
     );
-}
+};
 
-function AdopsjonDokumentasjon({ dokumentasjon }: { readonly dokumentasjon: Vedlegg }) {
+const AdopsjonDokumentasjon = ({ dokumentasjon }: { dokumentasjon: Vedlegg }) => {
     return (
         <FormSummary.Answer>
             <FormSummary.Label>
                 <FormattedMessage id="DokumentasjonOppsummering.adopsjonsdokumenter" />
             </FormSummary.Label>
-            <FormSummary.Answer>
-                {/*TODO: klikke på lenke*/}
-                <VStack gap="space-8">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
-            </FormSummary.Answer>
+            <FormSummary.Value>
+                <VStack gap="space-8">
+                    {dokumentasjon.vedlegg.map((v) => (
+                        <VedleggLenke key={v.id} attachment={v} />
+                    ))}
+                </VStack>
+            </FormSummary.Value>
         </FormSummary.Answer>
     );
-}
+};
 
-export function DokumentasjonOppsummering({
+export const DokumentasjonOppsummering = ({
     dokumentasjon,
     onVilEndreSvar,
 }: {
-    readonly dokumentasjon?: Dokumentasjon;
-    readonly onVilEndreSvar: (path: Path) => void;
-}) {
+    dokumentasjon?: Dokumentasjon;
+    onVilEndreSvar: (path: Path) => void;
+}) => {
     if (!dokumentasjon || dokumentasjon.vedlegg.length === 0) {
         return null;
     }
@@ -79,4 +105,4 @@ export function DokumentasjonOppsummering({
             </FormSummary.Footer>
         </FormSummary>
     );
-}
+};
