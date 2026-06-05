@@ -3,7 +3,7 @@ import { useEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Dokumentasjon, TerminDokumentasjon, Vedlegg, erTerminDokumentasjon } from 'types/Dokumentasjon';
 
-import { FormSummary, Link, VStack } from '@navikt/ds-react';
+import { BodyShort, FormSummary, Link, VStack } from '@navikt/ds-react';
 
 import { Attachment } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
@@ -25,7 +25,7 @@ function VedleggLenke({ attachment }: { readonly attachment: Attachment }) {
     }, [href]);
 
     if (!href) {
-        return <>{attachment.filename}</>;
+        return <BodyShort>{attachment.filename}</BodyShort>;
     }
 
     return (
