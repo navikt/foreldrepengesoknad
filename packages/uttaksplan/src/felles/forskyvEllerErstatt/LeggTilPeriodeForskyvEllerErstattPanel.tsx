@@ -1,34 +1,18 @@
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Alert, BodyShort, Button, Detail, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
-
-import { useForskyvEllerErstattAlerts } from '../../regler/alert/informasjonsAlertHooks';
+import { BodyShort, Button, Detail, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 interface Props {
-    valgtePerioder: Array<{ fom: string; tom: string }>;
-    erFerie: boolean;
-    erGradert: boolean;
     setVisEndreEllerForskyvPanel: (skalVisPanel: boolean) => void;
     leggTilEllerForskyvPeriode: (skalForskyve: boolean) => void;
 }
 
 export const LeggTilPeriodeForskyvEllerErstattPanel = ({
-    valgtePerioder,
-    erFerie,
-    erGradert,
     setVisEndreEllerForskyvPanel,
     leggTilEllerForskyvPeriode,
 }: Props) => {
     const [skalForskyvePeriode, setSkalForskyvePeriode] = useState<boolean | undefined>(undefined);
-
-    const { senerePerioderReadonly, valgteDagerFørSeksUker, valgteDagerFørFamhend } = useForskyvEllerErstattAlerts({
-        valgtePerioder,
-        erFerie,
-        erGradert,
-    });
-
-    const harDisablingAlert = Boolean(senerePerioderReadonly || valgteDagerFørSeksUker || valgteDagerFørFamhend);
 
     return (
         <VStack gap="space-16">
@@ -37,7 +21,7 @@ export const LeggTilPeriodeForskyvEllerErstattPanel = ({
                 description={<FormattedMessage id="RedigeringPanel.HvaSkalSkjeBeskrivelse" />}
                 onChange={(value: boolean) => setSkalForskyvePeriode(value)}
             >
-                <Radio value={true} disabled={harDisablingAlert}>
+                <Radio value={true}>
                     <VStack gap="space-4">
                         <BodyShort>
                             <FormattedMessage id="RedigeringPanel.FlyttPlanen" />
@@ -62,15 +46,6 @@ export const LeggTilPeriodeForskyvEllerErstattPanel = ({
                     </VStack>
                 </Radio>
             </RadioGroup>
-            {senerePerioderReadonly && (
-                <Alert variant={senerePerioderReadonly.variant}>{senerePerioderReadonly.melding}</Alert>
-            )}
-            {valgteDagerFørSeksUker && (
-                <Alert variant={valgteDagerFørSeksUker.variant}>{valgteDagerFørSeksUker.melding}</Alert>
-            )}
-            {valgteDagerFørFamhend && (
-                <Alert variant={valgteDagerFørFamhend.variant}>{valgteDagerFørFamhend.melding}</Alert>
-            )}
             <HStack justify="space-between">
                 <Button
                     type="button"

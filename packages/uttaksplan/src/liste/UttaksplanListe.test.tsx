@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
@@ -797,7 +797,12 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
 
-        expect(screen.getByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
+        // Annen parts EØS-perioder ligger låst senere i planen, så «Endre uten å
+        // flytte resten av planen» er eneste valg. Da skal spørsmålet ikke vises,
+        // og ferien legges til direkte uten å flytte resten av planen.
+        expect(screen.queryByText('Hva skal skje med resten av planen?')).not.toBeInTheDocument();
+
+        await waitFor(() => expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1));
     });
 
     it('Bare far har rett - avslåtte perioder skal ikke vise "med aktivitetskrav" i listevisningen', async () => {

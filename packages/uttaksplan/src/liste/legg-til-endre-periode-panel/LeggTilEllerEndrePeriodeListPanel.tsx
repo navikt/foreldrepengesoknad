@@ -26,7 +26,7 @@ import {
     FormValues as UtsettelseFormValues,
 } from '../../felles/utsettelse/LeggTilUtsettelseForm';
 import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
-import { useListePanelInfoAlerts } from '../../regler/alert/informasjonsAlertHooks';
+import { useListePanelInfoAlerts, useKanKunErstatte } from '../../regler/alert/informasjonsAlertHooks';
 import { lagHvaVilDuGjøreValidatorer } from '../../regler/felt/hvaVilDuGjøre';
 import { useGyldigeKvotetyper } from '../../regler/kvotetype/kvoteRegler';
 import {
@@ -115,6 +115,15 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             : [],
     );
 
+    const kanKunErstatte = useKanKunErstatte({
+        valgtePerioder: fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [],
+        erFerie: hvaVilDuGjøre === 'LEGG_TIL_FERIE',
+        erGradert:
+            hvaVilDuGjøre === 'LEGG_TIL_PERIODE' &&
+            (forelder === 'MOR' || forelder === 'BEGGE') &&
+            skalDuKombinereArbeidOgUttakMor === true,
+    });
+
     const handleAddPeriode = (nyPeriode: UttakPeriode_fpoversikt[], skalForskyve: boolean) => {
         const builder = new UttakPeriodeBuilder(uttakPerioder, 'liste');
         if (uttaksplanperiode) {
@@ -163,6 +172,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
         if (
             !harPeriodeDerMorsAktivitetIkkeErValgt &&
+            !kanKunErstatte &&
             erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, [
                 {
                     fom: uttaksplanperiode?.fom ?? notEmpty(fomValue),
@@ -321,13 +331,6 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 {visEndreEllerForskyvPanel && fomValue && tomValue && (
                     <LeggTilPeriodeForskyvEllerErstattPanel
-                        valgtePerioder={[{ fom: fomValue, tom: tomValue }]}
-                        erFerie={hvaVilDuGjøre === 'LEGG_TIL_FERIE'}
-                        erGradert={
-                            hvaVilDuGjøre === 'LEGG_TIL_PERIODE' &&
-                            (forelder === 'MOR' || forelder === 'BEGGE') &&
-                            skalDuKombinereArbeidOgUttakMor === true
-                        }
                         setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
                         leggTilEllerForskyvPeriode={leggIListe}
                     />

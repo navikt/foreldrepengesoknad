@@ -178,7 +178,7 @@ export const usePeriodeDetaljerAlerts = (input: {
 };
 
 /** Alerter i forskyv- og erstatt-panelene. */
-export const useForskyvEllerErstattAlerts = (input: {
+const useForskyvEllerErstattAlerts = (input: {
     valgtePerioder: readonly Periode[];
     erFerie?: boolean;
     erGradert?: boolean;
@@ -222,6 +222,24 @@ export const useForskyvEllerErstattAlerts = (input: {
         valgteDagerFørSeksUker: tilAktiv(VALGTE_DAGER_FØR_SEKS_UKER, ctx),
         valgteDagerFørFamhend: tilAktiv(VALGTE_DAGER_FØR_FAMHEND, ctx),
     };
+};
+
+/**
+ * Når «Endre og flytt resten av planen» ikke er mulig (det finnes blokkerende
+ * forhold – senere låste perioder eller valgte dager før/rundt familiehendelsen)
+ * er «Endre uten å flytte resten av planen» det eneste mulige valget. Da skal vi
+ * ikke stille spørsmålet «Hva skal skje med resten av planen?», men utføre
+ * endringen direkte uten å flytte resten av planen.
+ */
+export const useKanKunErstatte = (input: {
+    valgtePerioder: readonly Periode[];
+    erFerie?: boolean;
+    erGradert?: boolean;
+}): boolean => {
+    const { senerePerioderReadonly, valgteDagerFørSeksUker, valgteDagerFørFamhend } =
+        useForskyvEllerErstattAlerts(input);
+
+    return Boolean(senerePerioderReadonly || valgteDagerFørSeksUker || valgteDagerFørFamhend);
 };
 
 const tilAktiv = <T,>(regel: Alertregel<T>, ctx: T): AktivAlertMetadata | undefined =>
