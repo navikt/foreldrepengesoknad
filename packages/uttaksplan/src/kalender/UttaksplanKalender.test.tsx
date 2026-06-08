@@ -894,6 +894,8 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getByText('Legg til'));
 
         expect(screen.getByText('16 uker og 4 dager til mor')).toBeInTheDocument();
+        expect(screen.getByText('19 uker til far')).toBeInTheDocument();
+        expect(screen.getByText('16 uker og 2 dager fellesperiode')).toBeInTheDocument();
 
         expect(screen.queryByText('Stjernemerkede perioder i kalenderen mangler valg')).not.toBeInTheDocument();
     });
