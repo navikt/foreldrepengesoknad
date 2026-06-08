@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -97,6 +98,26 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     const skjemaKontekstuelleAlerts = useSkjemaKontekstuelleAlerts(valgtePerioder);
 
     const erBareFarHarRett = søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT';
+
+    // Når bare én forelder kan ha foreldrepenger for perioden (kun mor eller kun
+    // far/medmor er et gyldig valg), forhåndsutfyller vi forelderverdien slik at
+    // brukeren slipper å velge i et radiosett med bare ett alternativ.
+    const forhåndsutfyltForelder: BrukerRolleSak_fpoversikt | undefined =
+        forelderValgSynlighet.visMorRadio &&
+        !forelderValgSynlighet.visFarMedmorRadio &&
+        !forelderValgSynlighet.visBeggeRadio
+            ? 'MOR'
+            : forelderValgSynlighet.visFarMedmorRadio &&
+                !forelderValgSynlighet.visMorRadio &&
+                !forelderValgSynlighet.visBeggeRadio
+              ? 'FAR_MEDMOR'
+              : undefined;
+
+    useEffect(() => {
+        if (forelder === undefined && forhåndsutfyltForelder !== undefined) {
+            resetFormValuesVedEndringAvForelder(forhåndsutfyltForelder);
+        }
+    }, [forelder, forhåndsutfyltForelder]);
 
     const blokkerendeAlert = useBlokkerendeAlert({
         valgtePerioder,
