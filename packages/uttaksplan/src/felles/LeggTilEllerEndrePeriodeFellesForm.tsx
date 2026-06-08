@@ -100,20 +100,9 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     const erBareFarHarRett = søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT';
 
     // Når bare én forelder kan ha foreldrepenger for den valgte perioden, skjuler
-    // vi forelder-spørsmålet og setter verdien bak panseret. Da slipper brukeren å
-    // svare på et spørsmål med kun ett gyldig alternativ.
-    const enesteMuligeForelder: BrukerRolleSak_fpoversikt | undefined =
-        forelderValgSynlighet.visMorRadio &&
-        !forelderValgSynlighet.visFarMedmorRadio &&
-        !forelderValgSynlighet.visBeggeRadio
-            ? 'MOR'
-            : forelderValgSynlighet.visFarMedmorRadio &&
-                !forelderValgSynlighet.visMorRadio &&
-                !forelderValgSynlighet.visBeggeRadio
-              ? 'FAR_MEDMOR'
-              : undefined;
-
-    const visForelderValg = enesteMuligeForelder === undefined;
+    // vi forelder-spørsmålet (se VIS_FORELDER_VALG) og setter verdien bak panseret.
+    // Da slipper brukeren å svare på et spørsmål med kun ett gyldig alternativ.
+    const { visForelderValg, enesteMuligeForelder } = forelderValgSynlighet;
 
     useEffect(() => {
         if (forelder === undefined && enesteMuligeForelder !== undefined) {

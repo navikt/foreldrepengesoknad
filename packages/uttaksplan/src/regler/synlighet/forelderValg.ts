@@ -1,3 +1,5 @@
+import type { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
+
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { useGyldigeKvotetyper } from '../kvotetype/kvoteRegler';
 import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
@@ -46,10 +48,28 @@ export const useForelderValgSynlighet = (
         harGyldigeKontoerForFarMedmor: gyldigeStønadskontoerForFarMedmor.length > 0,
     };
 
+    const visMorRadio = VIS_MOR_RADIO.skalVises(kontekst);
+    const visFarMedmorRadio = VIS_FAR_MEDMOR_RADIO.skalVises(kontekst);
+    const visBeggeRadio = VIS_BEGGE_RADIO.skalVises(kontekst);
+    const visForelderValg = VIS_FORELDER_VALG.skalVises(kontekst);
+
+    // Når forelder-spørsmålet skjules fordi det bare finnes ett gyldig valg, er
+    // dette forelderen perioden automatisk skal gjelde. Samtidig uttak (BEGGE)
+    // kan aldri være eneste alternativ, så her er det alltid mor eller far/medmor.
+    const enesteMuligeForelder: BrukerRolleSak_fpoversikt | undefined = visForelderValg
+        ? undefined
+        : visMorRadio
+          ? 'MOR'
+          : visFarMedmorRadio
+            ? 'FAR_MEDMOR'
+            : undefined;
+
     return {
-        visMorRadio: VIS_MOR_RADIO.skalVises(kontekst),
-        visFarMedmorRadio: VIS_FAR_MEDMOR_RADIO.skalVises(kontekst),
-        visBeggeRadio: VIS_BEGGE_RADIO.skalVises(kontekst),
+        visMorRadio,
+        visFarMedmorRadio,
+        visBeggeRadio,
+        visForelderValg,
+        enesteMuligeForelder,
         visKontoMorRadiogruppe: VIS_KONTO_MOR_RADIOGRUPPE.skalVises(kontekst),
         visKontoFarMedmorRadiogruppe: VIS_KONTO_FAR_MEDMOR_RADIOGRUPPE.skalVises(kontekst),
         erMorGyldigForelder,
@@ -78,8 +98,8 @@ type ForelderValgKontekst = {
 export const VIS_MOR_RADIO: Synlighetsregel<ForelderValgKontekst> = {
     id: 'forelderValg.visMorRadio',
     beskrivelse:
-        'Mor-alternativet vises når mor er en gyldig forelder for den valgte perioden (mor har minst én ' +
-        'gyldig stønadskontotype) og mor ikke er låst av annen parts plan.',
+        'Mor er et tilgjengelig forelder-alternativ når mor er en gyldig forelder for den valgte perioden ' +
+        '(mor har minst én gyldig stønadskontotype) og mor ikke er låst av annen parts plan.',
     skalVises: (k) => k.erMorGyldigForelder && !k.erMorLåst,
 };
 
@@ -89,8 +109,9 @@ export const VIS_MOR_RADIO: Synlighetsregel<ForelderValgKontekst> = {
 export const VIS_FAR_MEDMOR_RADIO: Synlighetsregel<ForelderValgKontekst> = {
     id: 'forelderValg.visFarMedmorRadio',
     beskrivelse:
-        'Far/medmor-alternativet vises når far/medmor er en gyldig forelder for den valgte perioden ' +
-        '(far/medmor har minst én gyldig stønadskontotype) og far/medmor ikke er låst av annen parts plan.',
+        'Far/medmor er et tilgjengelig forelder-alternativ når far/medmor er en gyldig forelder for den ' +
+        'valgte perioden (far/medmor har minst én gyldig stønadskontotype) og far/medmor ikke er låst av ' +
+        'annen parts plan.',
     skalVises: (k) => k.erFarMedmorGyldigForelder && !k.erFarMedmorLåst,
 };
 
@@ -100,10 +121,26 @@ export const VIS_FAR_MEDMOR_RADIO: Synlighetsregel<ForelderValgKontekst> = {
 export const VIS_BEGGE_RADIO: Synlighetsregel<ForelderValgKontekst> = {
     id: 'forelderValg.visBeggeRadio',
     beskrivelse:
-        'Begge-alternativet (samtidig uttak) vises bare når både mor og far/medmor er gyldige foreldre ' +
-        'for perioden, og det ikke finnes noen EØS-perioder i planen — samtidig uttak støttes ikke ' +
+        'Begge-alternativet (samtidig uttak) er tilgjengelig bare når både mor og far/medmor er gyldige ' +
+        'foreldre for perioden, og det ikke finnes noen EØS-perioder i planen — samtidig uttak støttes ikke ' +
         'sammen med EØS-perioder.',
     skalVises: (k) => k.erMorGyldigForelder && k.erFarMedmorGyldigForelder && !k.erMinstEnEøsPeriode,
+};
+
+/**
+ * Vis selve forelder-spørsmålet «Hvem skal ha foreldrepenger?».
+ */
+export const VIS_FORELDER_VALG: Synlighetsregel<ForelderValgKontekst> = {
+    id: 'forelderValg.visForelderValg',
+    beskrivelse:
+        'Spørsmålet «Hvem skal ha foreldrepenger?» vises bare når det finnes mer enn ett tilgjengelig ' +
+        'forelder-alternativ (Mor, Far/medmor og/eller Begge). Når bare ett alternativ er tilgjengelig — ' +
+        'typisk når bare én forelder har rett til foreldrepenger — skjules spørsmålet, og forelderverdien ' +
+        'settes automatisk til det eneste mulige valget.',
+    skalVises: (k) =>
+        [VIS_MOR_RADIO.skalVises(k), VIS_FAR_MEDMOR_RADIO.skalVises(k), VIS_BEGGE_RADIO.skalVises(k)].filter(
+            Boolean,
+        ).length > 1,
 };
 
 /**
@@ -133,6 +170,8 @@ type ForelderValgSynlighet = {
     visMorRadio: boolean;
     visFarMedmorRadio: boolean;
     visBeggeRadio: boolean;
+    visForelderValg: boolean;
+    enesteMuligeForelder: BrukerRolleSak_fpoversikt | undefined;
     visKontoMorRadiogruppe: boolean;
     visKontoFarMedmorRadiogruppe: boolean;
     erMorGyldigForelder: boolean;
