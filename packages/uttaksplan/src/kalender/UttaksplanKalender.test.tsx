@@ -1592,7 +1592,7 @@ describe('UttaksplanKalender', () => {
         expect(within(mai).getAllByTestId('dayColor:BEIGEOUTLINE', { exact: false })).toHaveLength(4);
     });
 
-    it('skal forhåndsutfylle forelder når kun far har rett ved ny periode', async () => {
+    it('skal skjule forelder-spørsmålet og sette verdien bak panseret når kun far har rett', async () => {
         render(<KunFarHarRettOgHarPauseperiode />);
 
         const juni = screen.getByTestId('year:2024;month:5');
@@ -1603,11 +1603,11 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
         await userEvent.click(screen.getAllByText('Legg til')[0]!);
 
-        // Når kun far har rett til foreldrepenger, skal forelderverdien være
-        // forhåndsutfylt. Vi ser at "Far skal ha?" (kvotetype-spørsmålet) vises
-        // direkte uten at brukeren har valgt forelder.
-        expect(screen.getByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
+        // Når kun far har rett til foreldrepenger, skal spørsmålet om hvem som
+        // skal ha foreldrepenger ikke vises. Verdien settes bak panseret, og vi
+        // går rett til kvotetype-spørsmålet "Far skal ha?".
         expect(screen.getByText('Far skal ha?')).toBeInTheDocument();
+        expect(screen.queryByText('Hvem skal ha foreldrepenger?')).not.toBeInTheDocument();
     });
 
     it('skal vise avslåtte periode korrekt og så markere som hull når en sletter', async () => {

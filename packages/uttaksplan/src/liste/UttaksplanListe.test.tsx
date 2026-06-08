@@ -747,7 +747,7 @@ describe('UttaksplanListe', () => {
         ]);
     });
 
-    it('skal forhåndsutfylle forelder når kun far har rett ved ny periode med foreldrepenger', async () => {
+    it('skal skjule forelder-spørsmålet og sette verdien bak panseret når kun far har rett', async () => {
         const oppdaterUttaksplan = vi.fn();
 
         render(<KunFarHarRettOgHarPauseperiode oppdaterUttaksplan={oppdaterUttaksplan} />);
@@ -766,11 +766,11 @@ describe('UttaksplanListe', () => {
         await userEvent.type(tilOgMedDato, dayjs('2024-06-20').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        // Når kun far har rett til foreldrepenger, skal forelderverdien være
-        // forhåndsutfylt. Vi ser at "Far skal ha?" (kvotetype-spørsmålet) vises
-        // direkte uten at brukeren har valgt forelder.
-        expect(await screen.findByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
+        // Når kun far har rett til foreldrepenger, skal spørsmålet om hvem som
+        // skal ha foreldrepenger ikke vises. Verdien settes bak panseret, og vi
+        // går rett til kvotetype-spørsmålet "Far skal ha?".
         expect(await screen.findByText('Far skal ha?')).toBeInTheDocument();
+        expect(screen.queryByText('Hvem skal ha foreldrepenger?')).not.toBeInTheDocument();
     });
 
     it('Skal ikke kunne legge til ferieperiode etter 6-ukerperioden for kun far har rett', async () => {

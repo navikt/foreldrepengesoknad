@@ -99,10 +99,10 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 
     const erBareFarHarRett = søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT';
 
-    // Når bare én forelder kan ha foreldrepenger for perioden (kun mor eller kun
-    // far/medmor er et gyldig valg), forhåndsutfyller vi forelderverdien slik at
-    // brukeren slipper å velge i et radiosett med bare ett alternativ.
-    const forhåndsutfyltForelder: BrukerRolleSak_fpoversikt | undefined =
+    // Når bare én forelder kan ha foreldrepenger for den valgte perioden, skjuler
+    // vi forelder-spørsmålet og setter verdien bak panseret. Da slipper brukeren å
+    // svare på et spørsmål med kun ett gyldig alternativ.
+    const enesteMuligeForelder: BrukerRolleSak_fpoversikt | undefined =
         forelderValgSynlighet.visMorRadio &&
         !forelderValgSynlighet.visFarMedmorRadio &&
         !forelderValgSynlighet.visBeggeRadio
@@ -113,11 +113,13 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
               ? 'FAR_MEDMOR'
               : undefined;
 
+    const visForelderValg = enesteMuligeForelder === undefined;
+
     useEffect(() => {
-        if (forelder === undefined && forhåndsutfyltForelder !== undefined) {
-            resetFormValuesVedEndringAvForelder(forhåndsutfyltForelder);
+        if (forelder === undefined && enesteMuligeForelder !== undefined) {
+            formMethods.setValue('forelder', enesteMuligeForelder, { shouldDirty: false });
         }
-    }, [forelder, forhåndsutfyltForelder]);
+    }, [forelder, enesteMuligeForelder, formMethods]);
 
     const blokkerendeAlert = useBlokkerendeAlert({
         valgtePerioder,
@@ -169,37 +171,41 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 
     return (
         <>
-            <RhfRadioGroup
-                name="forelder"
-                control={formMethods.control}
-                validate={[isRequired(intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Forelder.Påkrevd' }))]}
-                label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Forelder.HvemGjelder' })}
-                onChange={resetFormValuesVedEndringAvForelder}
-            >
-                {
-                    [
-                        forelderValgSynlighet.visMorRadio && (
-                            <Radio key="mor" value="MOR">
-                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />
-                            </Radio>
-                        ),
-                        forelderValgSynlighet.visFarMedmorRadio && (
-                            <Radio key="far" value="FAR_MEDMOR">
-                                {erMedmorDelAvSøknaden ? (
-                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />
-                                ) : (
-                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Far" />
-                                )}
-                            </Radio>
-                        ),
-                        forelderValgSynlighet.visBeggeRadio && (
-                            <Radio key="begge" value="BEGGE">
-                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Begge" />
-                            </Radio>
-                        ),
-                    ].filter(Boolean) as React.ReactElement[]
-                }
-            </RhfRadioGroup>
+            {visForelderValg && (
+                <RhfRadioGroup
+                    name="forelder"
+                    control={formMethods.control}
+                    validate={[
+                        isRequired(intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Forelder.Påkrevd' })),
+                    ]}
+                    label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Forelder.HvemGjelder' })}
+                    onChange={resetFormValuesVedEndringAvForelder}
+                >
+                    {
+                        [
+                            forelderValgSynlighet.visMorRadio && (
+                                <Radio key="mor" value="MOR">
+                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />
+                                </Radio>
+                            ),
+                            forelderValgSynlighet.visFarMedmorRadio && (
+                                <Radio key="far" value="FAR_MEDMOR">
+                                    {erMedmorDelAvSøknaden ? (
+                                        <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />
+                                    ) : (
+                                        <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Far" />
+                                    )}
+                                </Radio>
+                            ),
+                            forelderValgSynlighet.visBeggeRadio && (
+                                <Radio key="begge" value="BEGGE">
+                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Begge" />
+                                </Radio>
+                            ),
+                        ].filter(Boolean) as React.ReactElement[]
+                    }
+                </RhfRadioGroup>
+            )}
 
             {feltSynlighet.visFlerbarnsdager && (
                 <RhfRadioGroup
@@ -222,7 +228,9 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 </RhfRadioGroup>
             )}
 
-            {forelder !== undefined && <hr className="text-ax-border-neutral-subtle" />}
+            {forelder !== undefined && (visForelderValg || feltSynlighet.visFlerbarnsdager) && (
+                <hr className="text-ax-border-neutral-subtle" />
+            )}
 
             {forelderValgSynlighet.visKontoMorRadiogruppe && (
                 <RhfRadioGroup
