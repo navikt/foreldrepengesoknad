@@ -11,7 +11,6 @@ import { Barn, BrukerRolleSak_fpoversikt, isAdoptertBarn, isFødtBarn } from '@n
 import { CalendarLabel, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { useErDesktop } from '../../kalender/redigering/utils/useMediaActions';
 import { LegendLabel } from '../../types/LegendLabel';
 import { UttaksplanperiodeMedKunTapteDager, erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
@@ -49,9 +48,7 @@ export const UttaksplanLegend = ({
 }: Props) => {
     const intl = useIntl();
 
-    const erDesktop = useErDesktop();
-
-    const [visHorisontalt, setVisHorisontalt] = useState(skjulTekstSomDefault ? !erDesktop : true);
+    const [visHorisontalt, setVisHorisontalt] = useState(true);
 
     const {
         foreldreInfo: { søker },
