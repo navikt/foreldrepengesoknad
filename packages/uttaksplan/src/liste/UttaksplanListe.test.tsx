@@ -487,6 +487,16 @@ describe('UttaksplanListe', () => {
         expect(screen.queryByText('Slett')).not.toBeInTheDocument();
     });
 
+    it('Mors fellesperiode skal vises som "Fellesperiode" i fars listevisning, ikke "med aktivitetskrav"', async () => {
+        render(<FarSøkerEtterAtMorHarSøkt />);
+
+        // Mor har tre fellesperioder. Når far ser oversikten sin skal disse vises
+        // som "Fellesperiode", ikke "Foreldrepenger med aktivitetskrav" (som er
+        // forbeholdt bare-far-har-rett-perioder med kontoType FORELDREPENGER).
+        expect(await screen.findAllByText('Fellesperiode')).toHaveLength(3);
+        expect(screen.queryByText('Foreldrepenger med aktivitetskrav')).not.toBeInTheDocument();
+    });
+
     it('Skal ikke kunne legge til annen part som forelder når en legger til ny periode', async () => {
         render(<FarSøkerEtterAtMorHarSøkt />);
 
