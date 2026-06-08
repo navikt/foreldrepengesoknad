@@ -13,6 +13,7 @@ import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../../context/UttaksplanRedigeringContext';
 import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../../utils/UttakPeriodeBuilder';
+import { erAvslåttPeriode } from '../../../../utils/periodeUtils';
 import { genererPeriodeKey, getStønadskvoteNavn } from '../../../utils/uttaksplanListeUtils';
 
 const ARIA_LABEL_ID = 'slett-periode-panel-heading';
@@ -31,7 +32,7 @@ interface FormValues {
 export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
 
-    const { uttakPerioder } = useUttaksplanData();
+    const { uttakPerioder, foreldreInfo } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
@@ -95,6 +96,8 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
                                         erEøsPeriode: erEøsUttakPeriode(p),
                                         morsAktivitet,
                                         konto: erVanligUttakPeriode(p) ? p.kontoType : undefined,
+                                        erAleneOmOmsorg: foreldreInfo.rettighetType === 'ALENEOMSORG',
+                                        erAvslått: erAvslåttPeriode(p),
                                     })}`}
                                     </Checkbox>
                                 );
