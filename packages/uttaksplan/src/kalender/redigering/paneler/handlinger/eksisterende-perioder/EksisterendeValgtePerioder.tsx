@@ -25,6 +25,7 @@ import { useUttaksplanData } from '../../../../../context/UttaksplanDataContext'
 import { UttakPeriodeMedAntallDager } from '../../../../../kalender/redigering/utils/kalenderPeriodeUtils';
 import { useEksisterendeValgtePeriodeAlerts } from '../../../../../regler/alert/informasjonsAlertHooks';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../../types/UttaksplanPeriode';
+import { getVarighetString } from '../../../../../utils/dateUtils';
 
 import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
 
@@ -118,12 +119,7 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                                 </BodyShort>
                             )}
 
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="RedigeringPanel.Dager"
-                                    values={{ antall: p.valgteDagerIPeriode }}
-                                />
-                            </BodyShort>
+                            <BodyShort>{getVarighetString(p.valgteDagerIPeriode, intl, 'kompakt')}</BodyShort>
 
                             {erPleiepengerPeriode && (
                                 <BodyShort>
