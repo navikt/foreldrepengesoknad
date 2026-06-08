@@ -162,7 +162,14 @@ const fjernOverlappUtenSamtidigUttak = (
                 (søker) =>
                     søker.samtidigUttak === undefined &&
                     søker.utsettelseÅrsak === undefined &&
+                    okkupererTid(søker) &&
                     harOverlapp(periodeAnnenPart, søker),
             ),
     );
 };
+
+// Ein avslått periode som ikkje trekkjer dagar okkuperer ikkje tida i planen og blir uansett filtrert
+// vekk seinare. Difor skal han ikkje skjula annen part sin reelle periode (t.d. når far har teke over
+// mødrekvoten medan mor sin mødrekvoteperiode er avslått).
+const okkupererTid = (periode: UttakPeriode_fpoversikt): boolean =>
+    !(periode.resultat?.innvilget === false && periode.resultat.trekkerDager === false);
