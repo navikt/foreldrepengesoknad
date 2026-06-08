@@ -67,13 +67,18 @@ export const getStønadskvoteNavn = (intl: IntlShape, options: GetStønadskvoteN
         );
     }
 
-    if (
+    // En bare-far-har-rett-periode bruker kontoType FORELDREPENGER og vises med
+    // aktivitetskrav-tekst basert på mors aktivitet. Gjelder kun fars egne perioder
+    // (ikke EØS, avslåtte eller aleneomsorg), slik at mors fellesperiode ikke
+    // feilmerkes når far ser oversikten sin.
+    const erBareFarHarRettForeldrepenger =
         !erAvslått &&
         !erEøsPeriode &&
         konto === 'FORELDREPENGER' &&
         erFarEllerMedmor === true &&
-        erAleneOmOmsorg === false
-    ) {
+        erAleneOmOmsorg === false;
+
+    if (erBareFarHarRettForeldrepenger) {
         if (morsAktivitet === 'IKKE_OPPGITT') {
             return intl.formatMessage({ id: 'uttaksplan.stønadskvotetype.AKTIVITETSFRI_KVOTE_BFHR' });
         }
