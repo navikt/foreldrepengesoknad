@@ -296,7 +296,7 @@ describe('UttaksplanKalender', () => {
 
         const foreldrepengerFørFødsel = within(screen.getByTestId(`eksisterende-periode-2024-03-14-2024-04-03`));
 
-        await userEvent.click(foreldrepengerFørFødsel.getByText('Slett dager fra periode'));
+        await userEvent.click(foreldrepengerFørFødsel.getByRole('button', { name: 'Slett dager fra periode' }));
 
         expect(within(mars).getByTestId('day:18;dayColor:NONE')).toBeInTheDocument();
         expect(within(mars).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(2);
@@ -495,7 +495,7 @@ describe('UttaksplanKalender', () => {
         expect(screen.getAllByText('4 dager valgt')).toHaveLength(2);
         expect(screen.getByText('4 dager')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Slett dager fra periode'));
+        await userEvent.click(screen.getByRole('button', { name: 'Slett dager fra periode' }));
 
         expect(within(juni).getByTestId('day:10;dayColor:NONE')).toBeInTheDocument();
         expect(within(juni).getByTestId('day:11;dayColor:NONE')).toBeInTheDocument();
@@ -953,7 +953,7 @@ describe('UttaksplanKalender', () => {
 
         const foreldrepengerFørFødsel = within(screen.getByTestId(`eksisterende-periode-2024-03-14-2024-04-03`));
 
-        expect(foreldrepengerFørFødsel.queryByTitle('Slett dager fra periode')).not.toBeInTheDocument();
+        expect(foreldrepengerFørFødsel.queryByRole('button', { name: 'Slett dager fra periode' })).not.toBeInTheDocument();
     });
 
     it('skal automatisk få opp mor sin gradering når far velger BEGGE etter å ha trykket på mors periode', async () => {
@@ -1149,7 +1149,7 @@ describe('UttaksplanKalender', () => {
 
         const ferie = within(screen.getByTestId(`eksisterende-periode-2024-05-17-2024-05-23`));
 
-        await userEvent.click(ferie.getByText('Slett dager fra periode'));
+        await userEvent.click(ferie.getByRole('button', { name: 'Slett dager fra periode' }));
 
         // Perioden bak skal ikkje flytta (dag 31 er framleis BLUE på same plass)
         expect(within(mai).getByTestId('day:31;dayColor:BLUE')).toBeInTheDocument();
@@ -1274,7 +1274,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
 
-        await userEvent.click(screen.getByText('Slett dager fra periode'));
+        await userEvent.click(screen.getByRole('button', { name: 'Slett dager fra periode' }));
 
         expect(within(juli).getByTestId('day:15;dayColor:NONE')).toBeInTheDocument();
     });
@@ -1605,7 +1605,7 @@ describe('UttaksplanKalender', () => {
 
         expect(screen.getByText('Avslått periode')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Slett dager fra periode'));
+        await userEvent.click(screen.getByRole('button', { name: 'Slett dager fra periode' }));
 
         expect(within(juli).getByTestId('day:14;dayColor:BLACK')).toBeInTheDocument();
     });
