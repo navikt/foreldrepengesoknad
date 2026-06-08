@@ -19,17 +19,6 @@ export const FamiliehendelseContent = ({ barn }: Props) => {
     const erFarEllerMedmor = søker === 'FAR_MEDMOR';
     const kunFarEllerMedmorHarRett = harBareSøkerRett && erFarEllerMedmor;
 
-    if (isUfødtBarn(barn)) {
-        return (
-            <BodyShort>
-                <FormattedMessage
-                    id="uttaksplan.periodeListeContent.familiehendelse.termin"
-                    values={{ navnMor: navnPåForeldre.mor, erFarEllerMedmor: erFarEllerMedmor }}
-                />
-            </BodyShort>
-        );
-    }
-
     if (isAdoptertBarn(barn)) {
         return (
             <BodyShort>
@@ -42,6 +31,17 @@ export const FamiliehendelseContent = ({ barn }: Props) => {
         return (
             <BodyShort>
                 <FormattedMessage id="uttaksplan.periodeListeContent.familiehendelse.bareFarMedmorHarRett" />
+            </BodyShort>
+        );
+    }
+
+    if (isUfødtBarn(barn)) {
+        return (
+            <BodyShort>
+                <FormattedMessage
+                    id="uttaksplan.periodeListeContent.familiehendelse.termin"
+                    values={{ navnMor: navnPåForeldre.mor, erFarEllerMedmor: erFarEllerMedmor }}
+                />
             </BodyShort>
         );
     }
