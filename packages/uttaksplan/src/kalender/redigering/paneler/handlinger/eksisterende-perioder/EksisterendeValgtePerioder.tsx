@@ -10,7 +10,7 @@ import {
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, BodyShort, Button, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, HStack, Heading, Spacer, Tooltip, VStack } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
@@ -149,19 +149,20 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                         <Spacer />
 
                         {!erEøsUttakPeriode(p) && !erAnnenPartsPeriodeLåst && !erPleiepengerPeriode && (
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                size="small"
-                                data-color="danger"
-                                icon={<TrashIcon aria-hidden />}
-                                className="self-start"
-                                onClick={() => {
-                                    slettPeriode(p, false);
-                                }}
-                            >
-                                <FormattedMessage id="RedigeringPanel.SlettPeriode" />
-                            </Button>
+                            <Tooltip content={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}>
+                                <Button
+                                    type="button"
+                                    variant="secondary"
+                                    size="small"
+                                    data-color="danger"
+                                    icon={<TrashIcon aria-hidden />}
+                                    aria-label={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}
+                                    className="self-start"
+                                    onClick={() => {
+                                        slettPeriode(p, false);
+                                    }}
+                                />
+                            </Tooltip>
                         )}
                     </HStack>
                 );
