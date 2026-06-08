@@ -191,21 +191,21 @@ describe('UttaksplanKalender', () => {
         const fpFørFødselPeriode = within(screen.getByTestId(`eksisterende-periode-2024-03-14-2024-04-03`));
         expect(fpFørFødselPeriode.getAllByText('Mor')).toHaveLength(2);
         expect(fpFørFødselPeriode.getByText('Foreldrepenger før fødsel')).toBeInTheDocument();
-        expect(fpFørFødselPeriode.getByText('15 dager valgt')).toBeInTheDocument();
+        expect(fpFørFødselPeriode.getByText('3 uker')).toBeInTheDocument();
 
         const foreldrepengerPeriode = within(screen.getByTestId(`eksisterende-periode-2024-04-04-2024-04-18`));
         expect(foreldrepengerPeriode.getAllByText('Mor')).toHaveLength(2);
         expect(foreldrepengerPeriode.getByText('Mors kvote')).toBeInTheDocument();
-        expect(foreldrepengerPeriode.getByText('11 dager valgt')).toBeInTheDocument();
+        expect(foreldrepengerPeriode.getByText('2 uker 1 dag')).toBeInTheDocument();
 
         const arbeidPeriode = within(screen.getByTestId(`eksisterende-periode-2024-05-17-2024-05-23`));
         expect(arbeidPeriode.getAllByText('Ferie')).toHaveLength(2);
-        expect(arbeidPeriode.getByText('5 dager valgt')).toBeInTheDocument();
+        expect(arbeidPeriode.getByText('1 uke')).toBeInTheDocument();
 
         const fellesperiode = within(screen.getByTestId(`eksisterende-periode-2024-05-31-2024-06-13`));
         expect(fellesperiode.getAllByText('Mor')).toHaveLength(2);
         expect(fellesperiode.getByText('Fellesperiode')).toBeInTheDocument();
-        expect(fellesperiode.getByText('1 dag valgt')).toBeInTheDocument();
+        expect(fellesperiode.getByText('1 dag')).toBeInTheDocument();
     });
 
     it('skal vise infomelding når en velger dag før fødselsdato', async () => {
@@ -492,7 +492,8 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Begge')).toBeInTheDocument();
         expect(screen.getByText('Mor har 60 % mødrekvote')).toBeInTheDocument();
         expect(screen.getByText('Far har 40 % fedrekvote')).toBeInTheDocument();
-        expect(screen.getAllByText('4 dager valgt')).toHaveLength(3);
+        expect(screen.getAllByText('4 dager valgt')).toHaveLength(2);
+        expect(screen.getByText('4 dager')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Slett dager fra periode'));
 
