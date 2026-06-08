@@ -136,8 +136,16 @@ export const harKunPerioderForAnnenForelder = (
     return perioder.every((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.forelder !== søkersForelder);
 };
 
-const erKunUtsettelser = (perioder: UttaksplanPerioder) => {
+export const erKunUtsettelser = (perioder: UttaksplanPerioder) => {
     if (perioder.length === 0) {
+        return false;
+    }
+
+    // Ferie er ein utsettelse som legg dagar tilbake i beholdninga, og er ein gyldig søknad åleine.
+    const harFerie = perioder.some(
+        (periode) => Uttaksperioden.erIkkeEøsPeriode(periode) && periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE',
+    );
+    if (harFerie) {
         return false;
     }
 
