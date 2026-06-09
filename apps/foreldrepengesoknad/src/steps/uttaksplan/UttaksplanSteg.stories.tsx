@@ -612,3 +612,52 @@ export const FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak: Story = {
         ...FødselMorOgFarBeggeHarRett.args,
     },
 };
+
+// Story der far med begge rett melder at han ønsker å starte på termin.
+// Forslaget skal kun inneholde to uker med uttak (fedrekvote simultant med mødrekvote),
+// ikke gjenstående fedrekvote plassert langt frem i tid.
+export const FødselFarBeggeHarRettStarterPåTermin: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+                http.post(API_URLS.konto, () =>
+                    HttpResponse.json({
+                        '80': {
+                            kontoer: DELT_UTTAK_80,
+                            minsteretter: MINSTERETTER,
+                        },
+                        '100': {
+                            kontoer: DELT_UTTAK_100,
+                            minsteretter: MINSTERETTER,
+                        },
+                    }),
+                ),
+            ],
+        },
+    },
+    args: {
+        søkerInfo: søkerInfoMann,
+        søkersituasjon: {
+            situasjon: 'fødsel',
+            rolle: 'far',
+        },
+        barnet: {
+            type: BarnType.UFØDT,
+            antallBarn: 1,
+            termindato: '2024-07-01',
+        },
+        annenForelder: {
+            fnr: '26499118626',
+            fornavn: 'Olga',
+            etternavn: 'Utvikler',
+            kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
+            harRettPåForeldrepengerINorge: true,
+        },
+        dekningsgrad: '100',
+        fordeling: {
+            oppstartAvForeldrepengerValg: OppstartValg.FAMILIEHENDELSESDATO,
+        },
+    },
+};
