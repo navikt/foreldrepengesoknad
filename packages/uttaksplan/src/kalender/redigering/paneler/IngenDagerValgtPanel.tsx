@@ -1,13 +1,17 @@
-import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
+import { ChevronDownIcon, ChevronUpIcon, NotePencilIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Box, Link, Show, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Detail, HStack, Heading, Link, Show, Tag, VStack } from '@navikt/ds-react';
 
-import { KvoteOppsummeringsTittel } from '../../../KvoteOppsummering';
+import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
 import { UttaksplanHandlingKnapper } from '../../../felles/UttaksplanHandlingKnapper';
-import { useTellDagerIUttaksPeriodene } from '../../../utils/kvoteOppsummeringUtils';
+import { getVarighetString } from '../../../utils/dateUtils';
+import {
+    useTellDagerIUttaksPeriodene,
+    useUbrukteDagerPerKontoKunEnHarRett,
+} from '../../../utils/kvoteOppsummeringUtils';
 import { useErDesktop, useMediaResetMinimering } from '../utils/useMediaActions';
 
 interface Props {
@@ -52,25 +56,27 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
                                 width={24}
                             />
                         )}
-                        <VStack gap="space-4" align="center">
-                            <BodyShort size="small">
+                        <Heading size="small">
+                            <HStack gap="space-4" align="center">
+                                <NotePencilIcon aria-hidden height={16} width={16} />
                                 <FormattedMessage id="RedigeringKalenderIndex.VelgDatoerIKalender" />
-                            </BodyShort>
-                            <AntallDagerIgjen />
-                        </VStack>
+                            </HStack>
+                        </Heading>
                     </VStack>
                 </Show>
                 <Show above="md">
-                    <FormattedMessage id="RedigeringKalenderIndex.VelgDatoerIKalender" />
+                    <VStack gap="space-4">
+                        <BodyShort size="small">
+                            <FormattedMessage id="RedigeringKalenderIndex.VelgDatoerIKalender" />
+                        </BodyShort>
+                    </VStack>
                 </Show>
             </Box>
-            {!erMinimert && (
+            <div style={erMinimert ? { display: 'none' } : undefined}>
                 <VStack gap="space-16" className="px-4 pb-4">
                     {labels}
-                    <VStack gap="space-16">
-                        <Show above="md">
-                            <AntallDagerIgjen />
-                        </Show>
+                    <VStack gap="space-8">
+                        <PerioderSomKanLeggesTil />
                         <Link as="button" onClick={scrollToKvoteOppsummering}>
                             <FormattedMessage id="RedigeringKalenderIndex.SeDetaljer" />
                         </Link>
@@ -89,32 +95,163 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
                         visTilbakestillModal={uttaksplanRedigering?.visTilbakestillModal}
                     />
                 </VStack>
-            )}
+            </div>
         </VStack>
     );
 };
 
-const AntallDagerIgjen = () => {
-    const { antallUbrukteDager } = useTellDagerIUttaksPeriodene();
+const PerioderSomKanLeggesTil = () => {
+    const harTags = useHarPerioderSomKanLeggesTil();
+    if (!harTags) {
+        return null;
+    }
+    return (
+        <VStack gap="space-4">
+            <Detail uppercase style={{ letterSpacing: '1.05px' }}>
+                <FormattedMessage id="IngenDagerValgtPanel.PerioderSomKanLeggesTil" />
+            </Detail>
+            <PerioderSomKanLeggesTilTags />
+        </VStack>
+    );
+};
 
-    if (antallUbrukteDager === 0) {
-        return (
-            <Box className="px-2" borderWidth="2" borderRadius="8">
-                <KvoteOppsummeringsTittel erInnsyn={false} visStatusIkoner={false} brukEnkelVisning />
-            </Box>
-        );
+const useHarPerioderSomKanLeggesTil = () => {
+    const {
+        foreldreInfo: { rettighetType, søker },
+    } = useUttaksplanData();
+    const { ubrukteDagerMor, ubrukteDagerFar, ubrukteDagerFelles, antallUbrukteDager } = useTellDagerIUttaksPeriodene();
+    const { ubrukteDagerAktivitetsfri, ubrukteDagerMedAktivitetskrav } = useUbrukteDagerPerKontoKunEnHarRett();
+
+    if (rettighetType === 'BEGGE_RETT') {
+        return ubrukteDagerMor > 0 || ubrukteDagerFar > 0 || ubrukteDagerFelles > 0;
+    }
+    if (søker === 'FAR_MEDMOR') {
+        return ubrukteDagerAktivitetsfri > 0 || ubrukteDagerMedAktivitetskrav > 0;
+    }
+    return antallUbrukteDager > 0 || ubrukteDagerAktivitetsfri + ubrukteDagerMedAktivitetskrav > 0;
+};
+
+const PerioderSomKanLeggesTilTags = () => {
+    const intl = useIntl();
+    const {
+        foreldreInfo: { rettighetType, søker, erMedmorDelAvSøknaden },
+    } = useUttaksplanData();
+
+    if (rettighetType === 'BEGGE_RETT') {
+        return <TagsBeggeRett erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} intl={intl} />;
+    }
+
+    if (søker === 'FAR_MEDMOR') {
+        return <TagsKunFar intl={intl} />;
+    }
+
+    return <TagsKunMor intl={intl} />;
+};
+
+const TagsBeggeRett = ({
+    erMedmorDelAvSøknaden,
+    intl,
+}: {
+    erMedmorDelAvSøknaden: boolean;
+    intl: ReturnType<typeof useIntl>;
+}) => {
+    const { ubrukteDagerMor, ubrukteDagerFar, ubrukteDagerFelles } = useTellDagerIUttaksPeriodene();
+
+    const tags = [
+        ubrukteDagerMor > 0 && (
+            <Tag key="mor" variant="info" size="small">
+                <FormattedMessage
+                    id="IngenDagerValgtPanel.UkerTilMor"
+                    values={{ varighet: getVarighetString(ubrukteDagerMor, intl) }}
+                />
+            </Tag>
+        ),
+        ubrukteDagerFar > 0 && (
+            <Tag key="far" variant="success" size="small">
+                {erMedmorDelAvSøknaden ? (
+                    <FormattedMessage
+                        id="IngenDagerValgtPanel.UkerTilMedmor"
+                        values={{ varighet: getVarighetString(ubrukteDagerFar, intl) }}
+                    />
+                ) : (
+                    <FormattedMessage
+                        id="IngenDagerValgtPanel.UkerTilFar"
+                        values={{ varighet: getVarighetString(ubrukteDagerFar, intl) }}
+                    />
+                )}
+            </Tag>
+        ),
+        ubrukteDagerFelles > 0 && (
+            <Tag key="felles" variant="neutral" size="small">
+                <FormattedMessage
+                    id="IngenDagerValgtPanel.UkerFellesperiode"
+                    values={{ varighet: getVarighetString(ubrukteDagerFelles, intl) }}
+                />
+            </Tag>
+        ),
+    ].filter(Boolean);
+
+    if (tags.length === 0) {
+        return null;
+    }
+    return (
+        <HStack gap="space-4" wrap>
+            {tags}
+        </HStack>
+    );
+};
+
+const TagsKunFar = ({ intl }: { intl: ReturnType<typeof useIntl> }) => {
+    const { ubrukteDagerAktivitetsfri, ubrukteDagerMedAktivitetskrav } = useUbrukteDagerPerKontoKunEnHarRett();
+
+    const tags = [
+        ubrukteDagerAktivitetsfri > 0 && (
+            <Tag key="aktivitetsfri" variant="success" size="small">
+                <FormattedMessage
+                    id="IngenDagerValgtPanel.UkerUtenAktivitetskrav"
+                    values={{ varighet: getVarighetString(ubrukteDagerAktivitetsfri, intl) }}
+                />
+            </Tag>
+        ),
+        ubrukteDagerMedAktivitetskrav > 0 && (
+            <Tag key="medAktivitetskrav" variant="success" size="small">
+                <FormattedMessage
+                    id="IngenDagerValgtPanel.UkerMedAktivitetskrav"
+                    values={{ varighet: getVarighetString(ubrukteDagerMedAktivitetskrav, intl) }}
+                />
+            </Tag>
+        ),
+    ].filter(Boolean);
+
+    if (tags.length === 0) {
+        return null;
+    }
+    return (
+        <HStack gap="space-4" wrap>
+            {tags}
+        </HStack>
+    );
+};
+
+const TagsKunMor = ({ intl }: { intl: ReturnType<typeof useIntl> }) => {
+    const { antallUbrukteDager } = useTellDagerIUttaksPeriodene();
+    const { ubrukteDagerAktivitetsfri, ubrukteDagerMedAktivitetskrav } = useUbrukteDagerPerKontoKunEnHarRett();
+
+    const totalUbrukte =
+        antallUbrukteDager > 0 ? antallUbrukteDager : ubrukteDagerAktivitetsfri + ubrukteDagerMedAktivitetskrav;
+
+    if (totalUbrukte <= 0) {
+        return null;
     }
 
     return (
-        <Box
-            padding="space-6"
-            borderRadius="8"
-            borderWidth="1"
-            borderColor="meta-lime-strong"
-            width="fit-content"
-            className={'bg-ax-meta-lime-100'}
-        >
-            <KvoteOppsummeringsTittel erInnsyn={false} visStatusIkoner={false} brukEnkelVisning />
-        </Box>
+        <HStack gap="space-4">
+            <Tag variant="info" size="small">
+                <FormattedMessage
+                    id="IngenDagerValgtPanel.UkerTilMor"
+                    values={{ varighet: getVarighetString(totalUbrukte, intl) }}
+                />
+            </Tag>
+        </HStack>
     );
 };
