@@ -13,8 +13,12 @@ const infoTekst = [
     'Den andre forelderen må selv huske å sende oss en søknad.',
 ].join(' ');
 
-const { FødselMorOgFarBeggeHarRett, FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak, FødselMorOgFarKunMorHarRett } =
-    composeStories(stories);
+const {
+    FødselMorOgFarBeggeHarRett,
+    FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak,
+    FødselMorOgFarKunMorHarRett,
+    FødselFarBeggeHarRettStarterPåTermin,
+} = composeStories(stories);
 
 describe('<UttaksplanSteg>', () => {
     it(
@@ -227,6 +231,48 @@ describe('<UttaksplanSteg>', () => {
             expect(
                 await screen.findAllByText('Du må fylle ut informasjon om mors aktivitet i de markerte periodene'),
             ).toHaveLength(2);
+        }),
+    );
+
+    it(
+        'skal kun vise to uker for far i forslaget når far med begge rett starter på termin',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
+            setHandlers(FødselFarBeggeHarRettStarterPåTermin.parameters.msw);
+
+            render(
+                <FødselFarBeggeHarRettStarterPåTermin
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
+
+            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+
+            await userEvent.click(screen.getByText('Neste steg'));
+
+            expect(screen.queryByText('Du har ikke lagt til noen perioder i planen')).not.toBeInTheDocument();
+
+            const uttaksplanAction = gåTilNesteSide.mock.calls.find(
+                ([action]) => action.key === ContextDataType.UTTAKSPLAN,
+            );
+            expect(uttaksplanAction).toBeDefined();
+
+            const uttaksplan = uttaksplanAction![0].data as Array<{
+                forelder: string;
+                kontoType: string;
+                fom: string;
+                tom: string;
+            }>;
+            const farPerioder = uttaksplan.filter((p) => p.forelder === 'FAR_MEDMOR');
+
+            // Forslaget skal kun inneholde de to ukene ved termin (10 uttaksdager), ikke gjenstående fedrekvote i fremtiden
+            expect(farPerioder).toHaveLength(1);
+            expect(farPerioder[0]!.kontoType).toBe('FEDREKVOTE');
+            // Perioden skal starte på termindato (2024-07-01) og vare nøyaktig 10 uttaksdager (tom: 2024-07-12)
+            expect(farPerioder[0]!.fom).toBe('2024-07-01');
+            expect(farPerioder[0]!.tom).toBe('2024-07-12');
         }),
     );
 });

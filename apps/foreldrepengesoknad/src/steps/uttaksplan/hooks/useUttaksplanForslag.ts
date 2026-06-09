@@ -51,7 +51,6 @@ const lagDeltUttakForFarMedmor = (
     const mødrekvote = stønadskvoter.find((k) => k.konto === 'MØDREKVOTE');
     const fedrekvote = stønadskvoter.find((k) => k.konto === 'FEDREKVOTE');
     const fellesperiode = stønadskvoter.find((k) => k.konto === 'FELLESPERIODE');
-    const gjenståendreFedrekvote = fedrekvote && harFødselspermisjon ? fedrekvote.dager - 10 : undefined;
 
     let currentFomDate = Uttaksdagen.denneEllerNeste(startdato).getDato();
 
@@ -127,20 +126,19 @@ const lagDeltUttakForFarMedmor = (
         flerbarnsdager: false,
     });
 
-    currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
+    if (!harFødselspermisjon) {
+        currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
 
-    tidsperiode = getTidsperiodeString(
-        currentFomDate,
-        gjenståendreFedrekvote !== undefined ? gjenståendreFedrekvote : fedrekvote ? fedrekvote.dager : 0,
-    );
+        tidsperiode = getTidsperiodeString(currentFomDate, fedrekvote ? fedrekvote.dager : 0);
 
-    forslag.push({
-        forelder: 'FAR_MEDMOR',
-        kontoType: 'FEDREKVOTE',
-        fom: tidsperiode.fom,
-        tom: tidsperiode.tom,
-        flerbarnsdager: false,
-    });
+        forslag.push({
+            forelder: 'FAR_MEDMOR',
+            kontoType: 'FEDREKVOTE',
+            fom: tidsperiode.fom,
+            tom: tidsperiode.tom,
+            flerbarnsdager: false,
+        });
+    }
 
     return forslag;
 };
