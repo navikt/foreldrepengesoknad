@@ -73,8 +73,6 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
         sammenslåtteValgtePerioder,
     );
 
-    // Ferie legges alltid inn for mor, og kan ikke flytte resten av planen når
-    // «Endre uten å flytte» er eneste valg.
     const kanKunErstatte = useKanKunErstatte({
         valgtePerioder: sammenslåtteValgtePerioder,
         erFerie: true,
