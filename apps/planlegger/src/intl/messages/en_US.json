@@ -70,7 +70,7 @@
     "Fødsel.ErFødt": "{antallBarn, select, 1 {Has the child} other {Have the children}} been born?",
     "Fødselsdato.Required": "You must answer what the date of birth is before proceeding.",
     "HvemPlanleggerSteg.HarValgfrieFelt": "All fields must be filled in, except fields marked with (optional).",
-    "HvaErMulig.Tittel": "What is possible when one adapts?",
+    "HvaErMulig.Tittel": "What is possible to change in the application",
     "HvaErMulig.MyeDuKanEndre": "There is a lot that can be changed in the plan.",
     "HvaErMulig.FarFellesperiode": "When the {hvem} takes the joint period",
     "HvaErMulig.FarFellesperiode.Adopsjon": "When {erFedre, select, true {father 2} other {{erMedmor, select, true {mother 2} other {the father}}}} takes common period",

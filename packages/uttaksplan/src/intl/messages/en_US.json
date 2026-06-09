@@ -429,7 +429,7 @@
     "UforutsetteEndringer.UforutsetteEndringer.FødtFørUke33": "The child is born before the 33rd week of pregnancy",
     "UforutsetteEndringer.UforutsetteEndringer.FødtFørUke33.Tekst": "The parental benefit period will be extended from the date of birth until the day before the due date. With this extension, the parental benefit is given for the same duration as if the child had been born on the due date. Attendance allowance (pleiepenger) received before the due date will be deducted from the extended parental benefit period and cannot be used later.",
     "UforutsetteEndringer.UforutsetteEndringer.FødtFørUke33.TekstMorIkkeRett": "Parental benefits with activity requirements are extended from week 7 after birth until the day before the due date. If you receive care allowance during the extended period, the days of parental allowance will be deducted and cannot be taken later. The {erMedmor, select, true {mother who gives birth} other {mother}} must meet the activity requirement when you want to take or postpone the days until later.",
-    "HvaErMulig.Tittel": "What is possible when you customize?",
+    "HvaErMulig.Tittel": "What can you change in the application",
     "HvaErMulig.MyeDuKanEndre": "There is a lot that can be changed in the plan.",
     "HvaErMulig.FarFellesperiode": "When the {hvem} takes the joint period",
     "HvaErMulig.FarFellesperiode.Adopsjon": "When {erFedre, select, true {father 2} other {{erMedmor, select, true {mother 2} other {the father}}}} takes common period",

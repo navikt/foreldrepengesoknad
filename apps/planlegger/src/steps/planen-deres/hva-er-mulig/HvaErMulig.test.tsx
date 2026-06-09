@@ -22,7 +22,7 @@ describe('<HvaErMulig>', () => {
     //MorOgFar
     it('skal vise info for mor og far fødsel hvor begge har rett', async () => {
         render(<FødselMorOgFarBeggeHarRett />);
-        expect(await screen.findByText('Hva er mulig når du tilpasser?')).toBeInTheDocument();
+        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 
         expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
         expect(screen.getByText('Dette kan du ikke endre:')).toBeInTheDocument();
@@ -39,7 +39,7 @@ describe('<HvaErMulig>', () => {
     });
     it('skal vise info for mor og far fødsel hvor kun mor har rett', async () => {
         render(<FødselMorOgFarKunMorHarRett />);
-        expect(await screen.findByText('Hva er mulig når du tilpasser?')).toBeInTheDocument();
+        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 
         expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
         expect(screen.getByText('Dette kan du ikke endre:')).toBeInTheDocument();
@@ -56,7 +56,7 @@ describe('<HvaErMulig>', () => {
     });
     it('skal vise info for mor og far fødsel hvor kun far har rett', async () => {
         render(<FødselMorOgFarKunFarHarRett />);
-        expect(await screen.findByText('Hva er mulig når du tilpasser?')).toBeInTheDocument();
+        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 
         expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
 
@@ -83,7 +83,7 @@ describe('<HvaErMulig>', () => {
     });
     it('skal vise info for mor og far fødsel hvor begge har rett - tvilling og trilling', async () => {
         render(<FødselMorOgFarBeggeHarRettTvilling />);
-        expect(await screen.findByText('Hva er mulig når du tilpasser?')).toBeInTheDocument();
+        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 
         expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
         expect(screen.getByText('Dette kan du ikke endre:')).toBeInTheDocument();
@@ -102,7 +102,7 @@ describe('<HvaErMulig>', () => {
     //MorOgMedmor
     it('skal vise info for mor og medmor fødsel hvor begge har rett', async () => {
         render(<FødselMorOgMedmorBeggeHarRett />);
-        expect(await screen.findByText('Hva er mulig når du tilpasser?')).toBeInTheDocument();
+        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 
         expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
         expect(screen.getByText('Dette kan du ikke endre:')).toBeInTheDocument();
@@ -119,7 +119,7 @@ describe('<HvaErMulig>', () => {
     });
     it('skal vise info for mor og medmor fødsel hvor kun mor har rett', async () => {
         render(<FødselMorOgMedmorKunMorHarRett />);
-        expect(await screen.findByText('Hva er mulig når du tilpasser?')).toBeInTheDocument();
+        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 
         expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
         expect(screen.getByText('Dette kan du ikke endre:')).toBeInTheDocument();
@@ -136,7 +136,7 @@ describe('<HvaErMulig>', () => {
     });
     it('skal vise info for mor og medmor fødsel hvor kun medmor har rett', async () => {
         render(<FødselMorOgMedmorKunMedmorHarRett />);
-        expect(await screen.findByText('Hva er mulig når du tilpasser?')).toBeInTheDocument();
+        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 
         expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
 
@@ -163,7 +163,7 @@ describe('<HvaErMulig>', () => {
     //FarOgFar
     it('skal vise info for far og far fødsel hvor begge har rett', async () => {
         render(<FødselFarOgFarBeggeHarRett />);
-        expect(await screen.findByText('Hva er mulig når du tilpasser?')).toBeInTheDocument();
+        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 
         expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
         expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
@@ -187,7 +187,7 @@ describe('<HvaErMulig>', () => {
     it('skal vise info for far og far fødsel hvor kun far1 har rett', async () => {
         render(<FødselFarOgFarKunFar1HarRett />);
 
-        expect(await screen.findByText('Hva er mulig når du tilpasser?')).toBeInTheDocument();
+        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 
         expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
         expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
@@ -209,7 +209,7 @@ describe('<HvaErMulig>', () => {
     it('skal vise info for aleneforsørger mor fødsel', async () => {
         render(<FødselAleneforsørgerMor />);
 
-        expect(await screen.findByText('Hva er mulig når du tilpasser?')).toBeInTheDocument();
+        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 
         expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
         expect(screen.getByText('Dette kan du ikke endre:')).toBeInTheDocument();
@@ -231,7 +231,7 @@ describe('<HvaErMulig>', () => {
     //Mor og far
     it('skal vise info for mor og far adopsjon hvor begge har rett', async () => {
         render(<AdopsjonMorOgFarBeggeHarRett />);
-        expect(await screen.findByText('Hva er mulig når du tilpasser?')).toBeInTheDocument();
+        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 
         expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
         expect(screen.queryByText('Dette kan du ikke endre:')).not.toBeInTheDocument();
