@@ -53,23 +53,12 @@ export const useForelderValgSynlighet = (
     const visBeggeRadio = VIS_BEGGE_RADIO.skalVises(kontekst);
     const visForelderValg = VIS_FORELDER_VALG.skalVises(kontekst);
 
-    // Når forelder-spørsmålet skjules fordi det bare finnes ett gyldig valg, er
-    // dette forelderen perioden automatisk skal gjelde. Samtidig uttak (BEGGE)
-    // kan aldri være eneste alternativ, så her er det alltid mor eller far/medmor.
-    const enesteMuligeForelder: BrukerRolleSak_fpoversikt | undefined = visForelderValg
-        ? undefined
-        : visMorRadio
-          ? 'MOR'
-          : visFarMedmorRadio
-            ? 'FAR_MEDMOR'
-            : undefined;
-
     return {
         visMorRadio,
         visFarMedmorRadio,
         visBeggeRadio,
         visForelderValg,
-        enesteMuligeForelder,
+        enesteMuligeForelder: finnEnesteMuligeForelder({ visForelderValg, visMorRadio, visFarMedmorRadio }),
         visKontoMorRadiogruppe: VIS_KONTO_MOR_RADIOGRUPPE.skalVises(kontekst),
         visKontoFarMedmorRadiogruppe: VIS_KONTO_FAR_MEDMOR_RADIOGRUPPE.skalVises(kontekst),
         erMorGyldigForelder,
@@ -79,6 +68,28 @@ export const useForelderValgSynlighet = (
         gyldigeStønadskontoerForMor,
         gyldigeStønadskontoerForFarMedmor,
     };
+};
+
+/**
+ * Når forelder-spørsmålet skjules fordi det bare finnes ett gyldig valg, er
+ * dette forelderen perioden automatisk skal gjelde. Samtidig uttak (BEGGE) kan
+ * aldri være eneste alternativ, så her er det alltid mor eller far/medmor.
+ */
+const finnEnesteMuligeForelder = (args: {
+    visForelderValg: boolean;
+    visMorRadio: boolean;
+    visFarMedmorRadio: boolean;
+}): BrukerRolleSak_fpoversikt | undefined => {
+    if (args.visForelderValg) {
+        return undefined;
+    }
+    if (args.visMorRadio) {
+        return 'MOR';
+    }
+    if (args.visFarMedmorRadio) {
+        return 'FAR_MEDMOR';
+    }
+    return undefined;
 };
 
 type ForelderValgKontekst = {
