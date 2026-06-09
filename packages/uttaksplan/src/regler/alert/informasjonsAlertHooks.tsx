@@ -78,6 +78,7 @@ export const useEksisterendeValgtePeriodeAlerts = (): ((
     const {
         foreldreInfo: { rettighetType, søker },
         uttakPerioder,
+        kanVelgeArbeidsgiver,
     } = useUttaksplanData();
 
     const morsUttakPerioder = uttakPerioder.filter(
@@ -90,9 +91,10 @@ export const useEksisterendeValgtePeriodeAlerts = (): ((
             periode,
             morsUttakPerioder,
         }),
-        graderingsaktivitetIkkeValgt: erSøkersIkkeEøsPeriode(periode, søker)
-            ? tilAktiv(GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE, { periode })
-            : undefined,
+        graderingsaktivitetIkkeValgt:
+            kanVelgeArbeidsgiver && erSøkersIkkeEøsPeriode(periode, søker)
+                ? tilAktiv(GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE, { periode })
+                : undefined,
     });
 };
 
@@ -102,12 +104,15 @@ export const useUttaksplanListeAlerts = (
 ): UttaksplanListeAlerts => {
     const {
         foreldreInfo: { rettighetType, søker },
+        kanVelgeArbeidsgiver,
     } = useUttaksplanData();
     return {
         manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_LISTE, { rettighetType, perioder }),
-        manglerGraderingsaktivitetAlert: tilAktiv(MANGLER_GRADERINGSAKTIVITET_LISTE, {
-            perioder: filtrerSøkersIkkeEøsPerioder(perioder, søker),
-        }),
+        manglerGraderingsaktivitetAlert: kanVelgeArbeidsgiver
+            ? tilAktiv(MANGLER_GRADERINGSAKTIVITET_LISTE, {
+                  perioder: filtrerSøkersIkkeEøsPerioder(perioder, søker),
+              })
+            : undefined,
     };
 };
 
@@ -117,12 +122,15 @@ export const useUttaksplanKalenderAlerts = (
 ): UttaksplanKalenderAlerts => {
     const {
         foreldreInfo: { rettighetType, søker },
+        kanVelgeArbeidsgiver,
     } = useUttaksplanData();
     return {
         manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_KALENDER, { rettighetType, perioder }),
-        manglerGraderingsaktivitetAlert: tilAktiv(MANGLER_GRADERINGSAKTIVITET_KALENDER, {
-            perioder: filtrerSøkersIkkeEøsPerioder(perioder, søker),
-        }),
+        manglerGraderingsaktivitetAlert: kanVelgeArbeidsgiver
+            ? tilAktiv(MANGLER_GRADERINGSAKTIVITET_KALENDER, {
+                  perioder: filtrerSøkersIkkeEøsPerioder(perioder, søker),
+              })
+            : undefined,
     };
 };
 

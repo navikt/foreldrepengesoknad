@@ -30,6 +30,14 @@ type ContextValues = Omit<Props, 'children'> & {
     familiesituasjon: Familiesituasjon;
     familiehendelsedato: string;
     termindato: string | undefined;
+    /**
+     * Sann når appen kjenner søkers arbeidsforhold og dermed kan la brukeren
+     * velge graderingsaktivitet (arbeidsgiver/frilans/selvstendig næringsdrivende).
+     * Dette er tilfelle i foreldrepengesøknaden, men ikke i planleggeren – der
+     * finnes ingen arbeidsforhold, så varsler om manglende graderingsaktivitet
+     * skal ikke vises.
+     */
+    kanVelgeArbeidsgiver: boolean;
 };
 
 const UttaksplanDataContext = createContext<ContextValues | null>(null);
@@ -50,6 +58,7 @@ export const UttaksplanDataProvider = (props: Props) => {
             familiesituasjon,
             termindato,
             uttakPerioder: sortertePerioder,
+            kanVelgeArbeidsgiver: otherProps.aktiveArbeidsforhold !== undefined,
         };
     }, [otherProps]);
 
