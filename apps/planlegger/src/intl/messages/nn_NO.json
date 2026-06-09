@@ -70,7 +70,7 @@
     "Fødsel.ErFødt": "Er {antallBarn, select, 1 {barnet} other {barna}} fødd?",
     "Fødselsdato.Required": "Du må oppgi fødselsdato før du går vidare",
     "HvemPlanleggerSteg.HarValgfrieFelt": "Alle felt må fyllast ut, bortsett frå felt markert med (valfritt).",
-    "HvaErMulig.Tittel": "Kva er mogleg når ein tilpassar?",
+    "HvaErMulig.Tittel": "Kva er mogleg å endre i søknaden",
     "HvaErMulig.MyeDuKanEndre": "Det er mykje du kan endra på i planen",
     "HvaErMulig.FarFellesperiode": "Når {hvem} tek fellesperiode",
     "HvaErMulig.FarFellesperiode.Adopsjon": "Når {erFedre, select, true {far 2} other {{erMedmor, select, true {mor 2} other {far}}}} tek fellesperiode",
